@@ -1,7 +1,7 @@
 issue_id: "2026-W32"
 status: "article-construction-in-progress"
 editorial_structure_status: "established-v0.1"
-article_drafting_status: "astra-h3-model-comparison-drafted"
+article_drafting_status: "astra-h3-model-agent-safety-drafted"
 editorial_cutoff: "2026-08-07T18:00:00-04:00"
 editorial_cutoff_timezone: "America/New_York"
 observation_window_start: "2026-08-01T00:00:00-04:00"
@@ -25,7 +25,7 @@ artifacts:
   current_candidate_matrix:
     path: "sources/2026-W32/candidate-matrix-v0.2.md"
     status: "current"
-    note: "Supersedes candidate-matrix.md."
+    note: "Supersedes candidate-matrix.md. Google Agent Quality Flywheel chronology was subsequently normalized to the 2026-06-30 primary blog publication in its candidate record."
 
   verification_backlog:
     path: "sources/2026-W32/verification-backlog-v0.2.md"
@@ -49,9 +49,9 @@ artifacts:
     engine: "LuaLaTeX"
     japanese_layout: "jlreq + LuaTeX-ja + HaranoAji"
     texlive_ci: "2026"
-    status: "local-smoke-tested-warning-free-after-model-comparison"
-    current_skeleton_pages: 8
-    note: "Local smoke test compiled Astra, H3 and the model/open-weight comparison with latexmk + LuaLaTeX + biber. The generated A4 PDF was rendered to PNG and visually checked; the initial cramped comparison table was replaced by a compact comparison box. Push-triggered GitHub Actions run listing is not exposed by the current connector."
+    status: "local-smoke-tested-and-render-reviewed"
+    current_skeleton_pages: 12
+    note: "Local smoke test compiled Astra, H3, Model/Open Weight, Agent & Coding, and Safety Deep Dive with latexmk + LuaLaTeX + biber. The generated A4 PDF was rendered to PNG and visually checked; no unresolved citation, overfull/underfull box, or missing-glyph warnings were detected. Push-triggered GitHub Actions run listing is not exposed by the current connector."
 
   article_drafts:
     - path: "surveys/weekly/2026-W32/sections/10-lead-astra.tex"
@@ -62,6 +62,12 @@ artifacts:
       status: "draft-v0.1"
     - path: "surveys/weekly/2026-W32/sections/30-model-open-weight.tex"
       package: "model-open-weight-comparison"
+      status: "draft-v0.1"
+    - path: "surveys/weekly/2026-W32/sections/40-agent-coding.tex"
+      package: "agent-coding"
+      status: "draft-v0.1"
+    - path: "surveys/weekly/2026-W32/sections/50-safety-deep-dive.tex"
+      package: "safety-deep-dive"
       status: "draft-v0.1"
 
   grok_trend_raw:
@@ -107,13 +113,15 @@ verification_stage_results:
 
   additional_resolutions:
     - candidate: "openai-external-cyber-eval-boundary-event"
-      result: "verified 2026-08-04 primary event; selected for Safety Deep Dive"
+      result: "verified 2026-08-04 primary event; drafted in Safety Deep Dive"
     - candidate: "sglang-v0.5.17"
       result: "verified 2026-08-08 Late Breaking release; selected as model-to-serving follow-through"
     - candidate: "grok-build-harness-open-source"
-      result: "verified 2026-07-15 underlying release; selected as W32 pre-window relevance"
+      result: "verified 2026-07-15 underlying release; drafted as W32 pre-window relevance"
     - candidate: "minimax-h3"
       result: "public H3 model IDs and released FL2VA/Ref2VA checkpoint partitions confirmed through the SGLang primary cookbook; exact first-public timestamp remains unresolved"
+    - candidate: "google-agent-evaluation-flywheel"
+      result: "primary publication chronology normalized to 2026-06-30; drafted as pre-window methodological relevance"
 
   reviewed_papers:
     - "paper-livemem"
@@ -166,7 +174,7 @@ next_stage:
     - "watchlist-chronology"
     - "this-week-in-ai"
     - "references-source-notes"
-  current_position: "safety-deep-dive"
+  current_position: "inference-serving"
   constraints:
     - "Do not promote HOLD_OUT items without candidate-specific verification."
     - "Keep objective event chronology separate from X momentum."
