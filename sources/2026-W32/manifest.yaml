@@ -1,17 +1,27 @@
 issue_id: "2026-W32"
-status: "screening"
+status: "candidate-inventory-complete"
+editorial_structure_status: "not-started"
 created_at: "2026-08-09T23:47:00+09:00"
 editorial_cutoff: "2026-08-07T18:00:00-04:00"
 editorial_cutoff_timezone: "America/New_York"
 observation_window_start: "2026-08-01T00:00:00-04:00"
+
+inventory_note: "The candidate inventory is now the authoritative pre-editorial pool. Topic/section suggestions and the shortlist retained below were created before the full inventory and are provisional only."
 
 principles:
   - "Grok trend observations are discovery signals, not technical fact evidence."
   - "X reaction evidence proves that a reaction was observed, not that technical claims inside the post are true."
   - "Technical claims are normalized against primary sources before editorial use."
   - "Main-window and post-cutoff community reactions are kept separate."
+  - "Complete the cross-source candidate inventory before deciding article structure."
 
 artifacts:
+  candidate_inventory:
+    index: "sources/2026-W32/candidates/index.yaml"
+    readme: "sources/2026-W32/candidates/README.md"
+    record_count: 35
+    status: "complete-for-current-collected-pool"
+
   grok_trend_raw:
     - path: "sources/2026-W32/grok/raw/x-trend-sensor-2026-08-09.md"
       prompt_version: "x-trend-sensor-v0.2"
@@ -33,20 +43,16 @@ artifacts:
 
   technical_screening:
     path: "sources/2026-W32/evidence/technical/verified-candidates-v0.1.md"
-    status: "screening-complete"
+    status: "screening-complete-for-grok-derived-main-candidates"
 
 topics:
   - id: "openai-astra"
     title: "OpenAI Astra — mathematics / theoretical CS results"
     editorial_status: "strong_candidate"
-    likely_sections:
-      - "Lead Stories"
-      - "Model & Reasoning"
-      - "Deep Dive"
+    likely_sections: ["Lead Stories", "Model & Reasoning", "Deep Dive"]
     technical_event_date: "2026-08-01"
     primary_source_class: "OFFICIAL_DOCUMENTATION"
-    primary_sources:
-      - "https://openai.com/index/ten-advances-in-mathematics/"
+    primary_sources: ["https://openai.com/index/ten-advances-in-mathematics/"]
     social_evidence_position: "MAIN"
     social_evidence_quality: "Medium"
     verification_status: "primary_screened"
@@ -57,13 +63,10 @@ topics:
   - id: "qwen3.8-max-preview"
     title: "Qwen3.8-Max-Preview"
     editorial_status: "strong_candidate"
-    likely_sections:
-      - "Model & Reasoning"
-      - "Agent & Coding"
+    likely_sections: ["Model & Reasoning", "Agent & Coding"]
     technical_event_date: "2026-07-19"
     primary_source_class: "OFFICIAL_DOCUMENTATION"
-    primary_sources:
-      - "https://modelstudio.alibabacloud.com/intl/blog/model-studio-token-plan-individual/"
+    primary_sources: ["https://modelstudio.alibabacloud.com/intl/blog/model-studio-token-plan-individual/"]
     social_evidence_position: "MAIN_PLUS_FOLLOWUP"
     social_evidence_quality: "Medium"
     verification_status: "primary_screened"
@@ -75,10 +78,7 @@ topics:
   - id: "deepseek-v4-flash-0731"
     title: "DeepSeek-V4-Flash-0731"
     editorial_status: "candidate_with_timing_note"
-    likely_sections:
-      - "Model & Reasoning"
-      - "Open Weight / Local AI"
-      - "Late Breaking"
+    likely_sections: ["Model & Reasoning", "Open Weight / Local AI", "Late Breaking"]
     technical_event_date: "2026-07-31"
     primary_source_class: "OFFICIAL_DOCUMENTATION"
     primary_sources:
@@ -97,15 +97,10 @@ topics:
   - id: "minimax-h3"
     title: "MiniMax H3"
     editorial_status: "strong_candidate"
-    likely_sections:
-      - "Lead Stories"
-      - "Multimodal"
-      - "Open Weight / Local AI"
-      - "X Community Watch"
+    likely_sections: ["Lead Stories", "Multimodal", "Open Weight / Local AI", "X Community Watch"]
     technical_event_date: "2026-07-31"
     primary_source_class: "OFFICIAL_MODEL_ANNOUNCEMENT"
-    primary_sources:
-      - "https://minimaxi.com/blog/minimax-h3"
+    primary_sources: ["https://minimaxi.com/blog/minimax-h3"]
     social_evidence_position: "MAIN_PLUS_STRONG_POST_CUTOFF"
     social_evidence_quality: "High"
     verification_status: "primary_screened"
@@ -120,12 +115,9 @@ topics:
   - id: "kimi-k3"
     title: "Kimi K3"
     editorial_status: "strong_candidate"
-    likely_sections:
-      - "Open Weight / Local AI"
-      - "X Community Watch"
+    likely_sections: ["Open Weight / Local AI", "X Community Watch"]
     primary_source_class: "OFFICIAL_MODEL_PAGE"
-    primary_sources:
-      - "https://huggingface.co/moonshotai/Kimi-K3/blob/main/README.md"
+    primary_sources: ["https://huggingface.co/moonshotai/Kimi-K3/blob/main/README.md"]
     social_evidence_position: "MAIN_PLUS_FOLLOWUP"
     social_evidence_quality: "Medium"
     verification_status: "primary_screened"
@@ -138,13 +130,10 @@ topics:
   - id: "claude-tag"
     title: "Claude Tag"
     editorial_status: "candidate_followup"
-    likely_sections:
-      - "Agent & Coding"
-      - "X Community Watch"
+    likely_sections: ["Agent & Coding", "X Community Watch"]
     technical_event_date: "2026-06-23"
     primary_source_class: "OFFICIAL_MODEL_ANNOUNCEMENT"
-    primary_sources:
-      - "https://www.anthropic.com/news/introducing-claude-tag"
+    primary_sources: ["https://www.anthropic.com/news/introducing-claude-tag"]
     social_evidence_position: "MAIN"
     social_evidence_quality: "Medium"
     verification_status: "primary_screened"
@@ -157,13 +146,10 @@ topics:
   - id: "shieldstral"
     title: "Mistral Shieldstral"
     editorial_status: "candidate_paper_watch"
-    likely_sections:
-      - "Research Paper Watch"
-      - "Safety / Security"
+    likely_sections: ["Research Paper Watch", "Safety / Security"]
     technical_event_date: "2026-07-28"
     primary_source_class: "PREPRINT"
-    primary_sources:
-      - "https://arxiv.org/abs/2607.25857"
+    primary_sources: ["https://arxiv.org/abs/2607.25857"]
     social_evidence_position: "MAIN_WEAK_PLUS_FOLLOWUP"
     social_evidence_quality: "Low-Medium"
     verification_status: "primary_screened"
@@ -174,8 +160,7 @@ topics:
   - id: "grok-imagine-video-1.5"
     title: "Grok Imagine Video 1.5"
     editorial_status: "rejected_x_momentum"
-    likely_sections:
-      - "Watchlist"
+    likely_sections: ["Watchlist"]
     social_evidence_position: "NONE"
     social_evidence_quality: "Insufficient"
     social_status: "INSUFFICIENT_X_EVIDENCE"
@@ -186,16 +171,15 @@ topics:
   - id: "qwen-image-3.0"
     title: "Qwen Image 3.0 / 3.0 Pro"
     editorial_status: "watchlist"
-    likely_sections:
-      - "Multimodal"
-      - "Watchlist"
+    likely_sections: ["Multimodal", "Watchlist"]
     social_evidence_position: "MAIN_WEAK_PLUS_FOLLOWUP"
     social_evidence_quality: "Low-Medium"
     verification_status: "not_promoted"
     notes:
       - "Main-window signal is dominated by official integration/availability; independent technical testing is limited."
 
-editorial_shortlist:
+pre_inventory_provisional_shortlist:
+  note: "Historical/provisional shortlist produced before the 35-record candidate inventory was completed. Do not treat as the final issue plan."
   strong_main:
     - "openai-astra"
     - "minimax-h3"
