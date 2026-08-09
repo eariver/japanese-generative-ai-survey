@@ -2,7 +2,7 @@
 \sectionkicker{Qwen3.8-Max / DeepSeek-V4-Flash-0731 / Kimi K3}
 
 \textbf{W32で目立った3モデルは、単純な「新モデル3件」ではない。}
-Qwen3.8-Max-Previewは7月19日に先行提供され、W32ではagent/coding評価とopen-weightへの期待が再浮上した。DeepSeek-V4-Flash-0731は7月31日のre-post-trainingによるAPI更新である。Kimi K3は巨大なfull weightsが既に公開されており、W32では「どこまで小さな実行環境へ持ち込めるか」という極端なcommunity experimentが注目された。3件を並べると、frontier modelを追う軸がrelease日やbenchmark scoreだけでは足りなくなっていることが分かる。
+Qwen3.8-Max-Previewは7月19日に先行提供され、W32ではagent/coding評価とopen-weightへの期待が再浮上した。DeepSeek-V4-Flash-0731は7月31日のre-post-trainingによるAPI更新である。Kimi K3は巨大なfull weightsが既に公開されており、W32では「どこまで小さな実行環境へ持ち込めるか」という極端なcommunity experimentが注目された\cite{qwen38-token-plan,deepseek-v4-flash-0731,kimi-k3-hf,kimi-k3-x-lowram}。3件を並べると、frontier modelを追う軸がrelease日やbenchmark scoreだけでは足りなくなっていることが分かる。
 
 \begin{tcolorbox}[enhanced,breakable,colback=SurveySoft,colframe=SurveyRule,boxrule=0.4pt,arc=1mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm]
 \textbf{3モデルのW32における位置づけ}\par\smallskip
@@ -48,6 +48,6 @@ Reaction Passでは、約8 GB peak RAMという主張がMain windowで強い注�
 
 \subsection*{W32で見えたのは、modelからecosystemへの評価軸の移動}
 
-3件をまとめて見ると、``open model''という言葉だけでは差が大きすぎる。Qwen3.8-MaxはPreviewへの関心と将来のweights公開期待、DeepSeek-V4-Flash-0731は同一architectureへのagent-oriented post-trainingとMIT公開model、Kimi K3はfrontier規模のfull weights公開と、それを動かす際の物理的な制約をそれぞれ代表している。
+3件をまとめて見ると、``open model''という言葉だけでは差が大きすぎる。Qwen3.8-MaxはPreviewへの関心と将来のweights公開期待、DeepSeek-V4-Flash-0731は同一architectureへのagent-oriented post-trainingとMIT公開model、Kimi K3はfrontier規模のfull weights公開と、それを動かす際の物理的な制約をそれぞれ代表している\cite{qwen38-token-plan,deepseek-v4-flash-0731,deepseek-v4-flash-hf,kimi-k3-hf}。
 
-この違いは、frontier modelの評価単位がmodel checkpointだけではなくなったことを示す。\textbf{weights、license、harness、reasoning budget、serving engine、memory/storage hierarchyまで含めて初めて「使えるモデル」になる。}Cutoff後のSGLang v0.5.17がKimi K3とMiniMax H3を同時にserving対象へ取り込んだことも、この方向を補強している。次に見るべきなのは「どのモデルが一番強いか」だけでなく、公開された能力がどれだけ速く再現可能なecosystemへ落ちてくるかである。
+この違いは、frontier modelの評価単位がmodel checkpointだけではなくなったことを示す。\textbf{weights、license、harness、reasoning budget、serving engine、memory/storage hierarchyまで含めて初めて「使えるモデル」になる。}Cutoff後のSGLang v0.5.17がKimi K3とMiniMax H3を同時にserving対象へ取り込んだことも、この方向を補強している\cite{sglang-0517}。次に見るべきなのは「どのモデルが一番強いか」だけでなく、公開された能力がどれだけ速く再現可能なecosystemへ落ちてくるかである。
