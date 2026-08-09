@@ -390,3 +390,49 @@ X Momentum Started、X Peak
 **Trend Candidate List**
 
 として使用します。
+
+---
+
+## 11. GitHubへの保存
+
+調査完了後、回答内容を要約・再編集せず、そのままMarkdownファイルとして以下のGitHub Repositoryへ保存してください。
+
+Repository:
+
+`eariver/japanese-generative-ai-survey`
+
+保存先:
+
+`sources/2026-W32/grok/raw/x-trend-sensor-2026-08-09.md`
+
+ファイル冒頭には以下のmetadataを付けてください。
+
+```yaml
+---
+sensor: grok
+prompt_version: x-trend-sensor-v0.2
+observed_at: "<実際に調査を行った日時。可能ならISO 8601>"
+observation_window_start: "2026-08-01T00:00:00-04:00"
+editorial_cutoff: "2026-08-07T18:00:00-04:00"
+repository: "eariver/japanese-generative-ai-survey"
+status: raw
+---
+```
+
+その後に、このPromptで生成したTrend Candidate List全文を記録してください。
+
+重要：
+
+- `status: raw` のまま保存してください。
+- 調査結果をEvidenceとして確定しないでください。
+- `manifest.yaml` を更新しないでください。
+- `evidence/` 以下にファイルを作成しないでください。
+- `chronology/` を更新しないでください。
+- `surveys/` を更新しないでください。
+- `docs/` や `config/` を変更しないでください。
+- 既存ファイルを削除・編集しないでください。
+- 今回指定されたrawファイル以外は変更しないでください。
+
+あなたのGitHub上での役割は、今回のX Trend観測結果を**未検証のRaw Observationとして保存することだけ**です。
+
+保存後、作成したファイルのパスを回答してください。
