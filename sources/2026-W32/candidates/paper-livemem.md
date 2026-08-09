@@ -3,10 +3,11 @@ candidate_id: paper-livemem
 issue_id: "2026-W32"
 title: "LiveMem: Maintaining Memory State Continuity in Long-Running LLM Inference"
 record_type: paper-screening-record
-status: candidate
+status: candidate-reviewed
 discovered_via: [manual-paper-scan]
 published_at: "2026-08-03"
-verification_status: abstract-screened
+verification_status: full-paper-reviewed
+evidence_record: "../evidence/papers/livemem.md"
 ---
 
 # LiveMem — Paper Screening Record
@@ -15,17 +16,17 @@ verification_status: abstract-screened
 - arXiv: https://arxiv.org/abs/2608.02515
 - Authors: Zhichen Liu, Ruihan Sun, Hengjie Yang, Zipeng Wu, Zhaohan Chen, Xiaofan Zhang, Yang Xu
 
-## Collected abstract-level information
-The paper formulates a problem called `state continuity under context turnover`: carrying computation across a long-running interaction through a fixed-capacity memory state whose lifetime is independent of the active context window.
+## Full-review resolution
+Full-paper evidence is recorded in `../evidence/papers/livemem.md`.
 
-LiveMem augments a pretrained full-attention LLM with a persistent memory state while the main attention path keeps a bounded KV window. The authors combine context turnover, memory-state maintenance, memory-oriented post-training and state-aware serving.
+The paper's strongest editorially useful idea is **state continuity under context turnover**: a fixed-size recurrent state persists while old KV pages leave the active attention window.
 
-## Author-reported results
-- The authors report leading overall performance among evaluated intrinsic-memory systems.
-- On LongMemEval, they report answering from the memory state even after supporting evidence has left the active context.
+Important boundaries established by full review:
+- LiveMem is a lossy latent state, not an exact archive.
+- It does not reliably recover arbitrary token-level needles once their KV entries are gone.
+- Retrieval/external storage remains complementary for exact recall.
+- The demonstrated implementation still has the backbone's finite positional horizon; it is not literal unlimited context.
+- Aggregate benchmark results favor LiveMem-RL in the authors' setup, but other approaches win individual tasks.
 
-## Verification boundary
-Only the title, metadata and abstract-level claims have been screened at this stage. No table/figure/methodology reproduction or independent evaluation has yet been performed.
-
-## Screening note
-Keep in the paper inventory for long-term memory / continual inference.
+## Screening state
+Retain as a reviewed Memory / continual-inference candidate. It is now comparison-ready, with quantitative claims governed by the evidence record rather than the original abstract summary.
