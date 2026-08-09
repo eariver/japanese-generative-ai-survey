@@ -7,18 +7,73 @@ Supersedes: v0.2 for future runs
 
 まず、このRepository内の以下のファイルを読んでください。
 
-`config/prompts/grok/x-trend-sensor-v0.2.md`
+- `config/prompts/grok/x-trend-sensor-v0.2.md`
+- `docs/editorial-specification.md`
 
-v0.2の **Sections 1–10** に記載された調査目的、観測対象、Trend判定、出力項目、Late Breaking、Overall X Trend、事実と推測の分離に関する指示をそのまま適用してください。
+v0.2の **Sections 2–7, 9–10** に記載された調査目的、観測対象、Trend判定、出力項目、Overall X Trend、事実と推測の分離に関する方法論を適用してください。
 
-ただし、v0.2の **Section 11「GitHubへの保存」だけは使用しないでください。**
-GitHub ConnectorがRead-Onlyの場合を前提とし、GitHubへの作成・更新・Pushを試みないでください。
+ただし、v0.2に直接記載されている **2026-W32固有の日付・時刻は過去回の値なので再利用しないでください。**
 
-以下のSection 2以降が、v0.2 Section 11を完全に置き換えます。
+また、v0.2の **Section 11「GitHubへの保存」も使用しないでください。** GitHub ConnectorはRead-Onlyとして扱い、GitHubへの作成・更新・Pushを試みないでください。
+
+このv0.3の指示が、v0.2と矛盾する場合はv0.3を優先してください。
 
 ---
 
-## 2. 最終成果物は必ずMarkdownファイルとして提示する
+## 2. 今回の観測期間をRepositoryから決定する
+
+### Editorial Cutoff
+
+`docs/editorial-specification.md` に従い、通常のEditorial Cutoffは
+
+```text
+Friday 18:00 America/New_York
+```
+
+です。
+
+実行時点から見て直近の、すでに到来したFriday 18:00 America/New_Yorkを今回の通常Editorial Cutoffとしてください。
+
+### Observation Window Start
+
+Repository内の
+
+```text
+sources/*/grok/raw/x-trend-sensor-*.md
+```
+
+を確認し、**直前の正常なRaw Observation** のFront Matterにある `observed_at` を今回の観測開始時刻の第一候補としてください。
+
+原則：
+
+```text
+previous successful Grok observation
+    -> current observation
+```
+
+ただし通常枠とLate Breakingの境界はEditorial Cutoffです。
+
+直前のRaw Observationが存在しない場合のみ、今回のEditorial Cutoffのおよそ1週間前から広めに観測してください。その場合、開始時刻が暫定値であることをFront Matterまたは本文で明記してください。
+
+### Late Breaking
+
+今回のEditorial Cutoffより後、実際の観測時刻までに急浮上した重要トピックは、v0.2の方針に従って **Late Breaking** として通常枠から分離してください。
+
+### 重要
+
+Release Dateではなく、今回のObservation Window中における
+
+- `X Momentum Started`
+- `X Peak`
+- `Why Now`
+
+を重視してください。
+
+Underlying Eventが前回Cutoff以前でも、今回の観測期間に技術コミュニティで本格的に話題化した場合は対象です。
+
+---
+
+## 3. 最終成果物は必ずMarkdownファイルとして提示する
 
 調査結果は、**チャット本文へ全文を貼り付けないでください。**
 
@@ -45,7 +100,7 @@ GitHub ConnectorがRead-Onlyの場合を前提とし、GitHubへの作成・更�
 
 ---
 
-## 3. ファイル名
+## 4. ファイル名
 
 原則として以下の形式にしてください。
 
@@ -53,11 +108,11 @@ GitHub ConnectorがRead-Onlyの場合を前提とし、GitHubへの作成・更�
 
 `YYYY-MM-DD` は実際に観測を実施した日付としてください。
 
-Issue IDが明示されている場合でも、Rawファイル名は観測日を基準にしてください。
+Rawファイル名はIssue IDではなく観測日を基準にします。
 
 ---
 
-## 4. Front Matter
+## 5. Front Matter
 
 生成するMarkdownファイルの先頭に、必ず以下のYAML Front Matterを付けてください。
 
@@ -66,8 +121,8 @@ Issue IDが明示されている場合でも、Rawファイル名は観測日を
 sensor: grok
 prompt_version: x-trend-sensor-v0.3
 observed_at: "<実際に調査を行った日時。可能ならISO 8601、timezone付き>"
-observation_window_start: "<今回の観測開始時刻>"
-editorial_cutoff: "<今回のEditorial Cutoff>"
+observation_window_start: "<Repository上の直前観測から決定した開始時刻>"
+editorial_cutoff: "<今回のFriday 18:00 America/New_York>"
 repository: "eariver/japanese-generative-ai-survey"
 status: raw
 ---
@@ -79,7 +134,7 @@ status: raw
 
 ---
 
-## 5. Raw Observationとして保持する
+## 6. Raw Observationとして保持する
 
 生成するファイルは後段のSource Verificationへ渡すための **Raw Observation** です。
 
@@ -96,7 +151,7 @@ status: raw
 
 ---
 
-## 6. GitHubへの搬送は後段で行う
+## 7. GitHubへの搬送は後段で行う
 
 あなた自身はGitHubへ書き込まないでください。
 
@@ -110,7 +165,7 @@ sources/<issue-id>/grok/raw/<generated-file-name>
 
 ---
 
-## 7. 最終回答
+## 8. 最終回答
 
 調査とMarkdownファイル生成が完了したら、チャット本文は短くしてください。
 
@@ -124,7 +179,7 @@ sources/<issue-id>/grok/raw/<generated-file-name>
 
 ---
 
-## 8. 最重要事項
+## 9. 最重要事項
 
 最終成果物は会話テキストではなく、**Markdownファイルです。**
 
