@@ -1,7 +1,7 @@
 issue_id: "2026-W32"
 status: "article-construction-in-progress"
 editorial_structure_status: "established-v0.1"
-article_drafting_status: "astra-and-h3-drafted"
+article_drafting_status: "astra-h3-model-comparison-drafted"
 editorial_cutoff: "2026-08-07T18:00:00-04:00"
 editorial_cutoff_timezone: "America/New_York"
 observation_window_start: "2026-08-01T00:00:00-04:00"
@@ -49,9 +49,9 @@ artifacts:
     engine: "LuaLaTeX"
     japanese_layout: "jlreq + LuaTeX-ja + HaranoAji"
     texlive_ci: "2026"
-    status: "local-smoke-tested-warning-free-after-h3"
-    current_skeleton_pages: 7
-    note: "Local smoke test compiled the current skeleton, Astra draft and H3 draft with latexmk + LuaLaTeX + biber. The H3 feature increased the skeleton from 5 to 7 A4 pages, matching its approximately two-page architecture budget. Push-triggered GitHub Actions run listing is not exposed by the current connector."
+    status: "local-smoke-tested-warning-free-after-model-comparison"
+    current_skeleton_pages: 8
+    note: "Local smoke test compiled Astra, H3 and the model/open-weight comparison with latexmk + LuaLaTeX + biber. The generated A4 PDF was rendered to PNG and visually checked; the initial cramped comparison table was replaced by a compact comparison box. Push-triggered GitHub Actions run listing is not exposed by the current connector."
 
   article_drafts:
     - path: "surveys/weekly/2026-W32/sections/10-lead-astra.tex"
@@ -59,6 +59,9 @@ artifacts:
       status: "draft-v0.1"
     - path: "surveys/weekly/2026-W32/sections/20-minimax-h3.tex"
       package: "minimax-h3-feature"
+      status: "draft-v0.1"
+    - path: "surveys/weekly/2026-W32/sections/30-model-open-weight.tex"
+      package: "model-open-weight-comparison"
       status: "draft-v0.1"
 
   grok_trend_raw:
@@ -163,7 +166,7 @@ next_stage:
     - "watchlist-chronology"
     - "this-week-in-ai"
     - "references-source-notes"
-  current_position: "model-open-weight-comparison"
+  current_position: "safety-deep-dive"
   constraints:
     - "Do not promote HOLD_OUT items without candidate-specific verification."
     - "Keep objective event chronology separate from X momentum."
