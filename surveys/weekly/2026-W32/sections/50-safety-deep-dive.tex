@@ -52,7 +52,7 @@ SparSEEtyは、sparsityを利用するLLM servingでinactive neuronのweight acc
 
 狙いはmoderation categoryをtraining時の固定taxonomyへ閉じ込めず、\textbf{運用者がruntimeでpolicyを記述できる}ことにある。著者らは約54.1M sampleのpublic/synthetic/multimodal training pipelineを使い、最終modelについてtext aggregate F1 84.9\%、policy-adaptability 91.3\%、multimodal aggregate F1 83.8\%を報告している\cite{shieldstral-paper}。
 
-ただし比較対象はdecision mechanismやreasoning effort、label mappingが完全には同一でなく、独立adversarial validationもまだない。したがって「3Bが20Bと同条件で互角」「任意policyを91.3\%正確に理解する」とは言えない。ここで注目すべきなのはscoreより、\textbf{policy enforcementをexplicit runtime componentとして扱うinterface}である。
+ただし比較対象はdecision mechanismやreasoning effort、label mappingが完全には同一でなく、独立adversarial validationもまだない。したがって「3Bが20Bと同条件で互角」「任意policyを91.3\%正確に理解する」とは言えない。ここで注目すべきなのはscoreより、\textbf{policy enforcementをexplicit runtime componentとして扱うinterface}である\cite{shieldstral-paper}。
 
 \subsection*{安全性のunit of analysisを広げる}
 
