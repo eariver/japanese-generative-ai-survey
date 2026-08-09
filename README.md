@@ -72,11 +72,14 @@ Prompt history:
 
 - [X Trend Sensor v0.1](config/prompts/grok/x-trend-sensor-v0.1.md)
 - [X Trend Sensor v0.2](config/prompts/grok/x-trend-sensor-v0.2.md) — first live observation prompt; separates release / publication dates from `X Momentum Started`, `X Peak`, and `Why Now`
-- [X Trend Sensor v0.3](config/prompts/grok/x-trend-sensor-v0.3.md) — **current execution prompt**; keeps v0.2 research rules but requires the final Raw Observation to be delivered as an actual Markdown file rather than pasted into chat
+- [X Trend Sensor v0.3](config/prompts/grok/x-trend-sensor-v0.3.md) — requires the final Raw Observation to be delivered as an actual Markdown file rather than pasted into chat
+- [X Trend Sensor v0.4](config/prompts/grok/x-trend-sensor-v0.4.md) — **current execution prompt**; adds `Coverage Scan -> Candidate Pool -> Global Ranking -> Coverage Audit`, including mandatory second-pass checks for multimodal / image / video / audio topics before final ranking
 
 Because the standard Grok GitHub connector is treated as read-only for this workflow, Grok should not attempt to push the observation itself. It should generate and present a `.md` file; that file is then transferred unchanged into `sources/<issue>/grok/raw/` by a write-capable tool or agent.
 
 Grok output is treated as a **Trend Candidate List** and must be verified against primary or otherwise clearly classified sources before important technical claims are published.
+
+Run-specific instructions may be placed under `config/prompts/grok/runs/`. They can override observation windows or output filenames for regression tests without changing the normal filename convention in the main execution prompt.
 
 ## Planned weekly magazine structure
 
@@ -126,6 +129,7 @@ japanese-generative-ai-survey/
 │  ├─ survey_policy.md
 │  └─ prompts/
 │     ├─ grok/
+│     │  └─ runs/
 │     ├─ screening.md
 │     ├─ evidence.md
 │     ├─ synthesis.md
