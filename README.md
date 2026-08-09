@@ -68,12 +68,13 @@ The important distinction is between:
 - when an underlying model / paper / OSS release occurred, and
 - when the technical community on X actually began discussing, testing, reproducing, disputing, or integrating it.
 
-Current prompts:
+Prompt history:
 
 - [X Trend Sensor v0.1](config/prompts/grok/x-trend-sensor-v0.1.md)
-- [X Trend Sensor v0.2](config/prompts/grok/x-trend-sensor-v0.2.md)
+- [X Trend Sensor v0.2](config/prompts/grok/x-trend-sensor-v0.2.md) — first live observation prompt; separates release / publication dates from `X Momentum Started`, `X Peak`, and `Why Now`
+- [X Trend Sensor v0.3](config/prompts/grok/x-trend-sensor-v0.3.md) — **current execution prompt**; keeps v0.2 research rules but requires the final Raw Observation to be delivered as an actual Markdown file rather than pasted into chat
 
-v0.2 explicitly separates release / publication dates from `X Momentum Started`, `X Peak`, and `Why Now`.
+Because the standard Grok GitHub connector is treated as read-only for this workflow, Grok should not attempt to push the observation itself. It should generate and present a `.md` file; that file is then transferred unchanged into `sources/<issue>/grok/raw/` by a write-capable tool or agent.
 
 Grok output is treated as a **Trend Candidate List** and must be verified against primary or otherwise clearly classified sources before important technical claims are published.
 
