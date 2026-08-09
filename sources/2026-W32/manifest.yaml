@@ -1,6 +1,7 @@
 issue_id: "2026-W32"
-status: "evidence-normalized-selection-ready"
-editorial_structure_status: "not-started"
+status: "architecture-established"
+editorial_structure_status: "established-v0.1"
+article_drafting_status: "not-started"
 editorial_cutoff: "2026-08-07T18:00:00-04:00"
 editorial_cutoff_timezone: "America/New_York"
 observation_window_start: "2026-08-01T00:00:00-04:00"
@@ -12,6 +13,7 @@ principles:
   - "Main-window and post-cutoff community reactions are kept separate."
   - "Reviewed/comparison-ready does not mean selected for publication."
   - "Candidate selection precedes issue architecture; issue architecture precedes article drafting."
+  - "Downstream drafts consume normalized/verified evidence rather than raw collector output when a verified layer exists."
 
 artifacts:
   candidate_inventory:
@@ -23,11 +25,21 @@ artifacts:
   current_candidate_matrix:
     path: "sources/2026-W32/candidate-matrix-v0.2.md"
     status: "current"
-    note: "Supersedes candidate-matrix.md for current comparison state."
+    note: "Supersedes candidate-matrix.md."
 
   verification_backlog:
     path: "sources/2026-W32/verification-backlog-v0.2.md"
-    status: "priority-a-closed"
+    status: "priority-a-closed-selection-dependent-backlog-remains"
+
+  candidate_selection:
+    human_readable: "sources/2026-W32/candidate-selection-v0.1.md"
+    machine_readable: "sources/2026-W32/candidate-selection.yaml"
+    status: "complete"
+
+  issue_architecture:
+    path: "sources/2026-W32/issue-architecture-v0.1.md"
+    target_pages: 18
+    status: "established"
 
   grok_trend_raw:
     - path: "sources/2026-W32/grok/raw/x-trend-sensor-2026-08-09.md"
@@ -66,17 +78,17 @@ verification_stage_results:
       - candidate: "anthropic-skill-plugin-security-scanning"
         result: "real March feature; rejected as new W32 event"
       - candidate: "openai-astra-cyber-critical-late"
-        result: "verified primary; Late Breaking"
+        result: "verified primary; selected Late Breaking"
       - candidate: "xai-imagine-image-2.0"
         result: "rejected-for-w32-unconfirmed"
 
   additional_resolutions:
     - candidate: "openai-external-cyber-eval-boundary-event"
-      result: "verified 2026-08-04 primary event"
+      result: "verified 2026-08-04 primary event; selected for Safety Deep Dive"
     - candidate: "sglang-v0.5.17"
-      result: "verified 2026-08-08 Late Breaking release"
+      result: "verified 2026-08-08 Late Breaking release; selected as model-to-serving follow-through"
     - candidate: "grok-build-harness-open-source"
-      result: "verified 2026-07-15 underlying release; W32 relevance is pre-window resurfacing"
+      result: "verified 2026-07-15 underlying release; selected as W32 pre-window relevance"
 
   reviewed_papers:
     - "paper-livemem"
@@ -87,12 +99,51 @@ verification_stage_results:
     - "paper-from-social-coding-to-agentic-coding"
     - "mistral-shieldstral"
 
+selection_summary:
+  feature_core: 4
+  section_core: 6
+  paper_watch: 6
+  late_breaking: 2
+  chronology: 1
+  watchlist_context: 4
+  hold_out: 6
+  exclude_w32: 6
+  note: "Supporting X reaction streams are consumed as evidence and are not counted as duplicate stories."
+
+architecture_summary:
+  target_pages: 18
+  packages:
+    - "Lead Story: OpenAI Astra scientific reasoning"
+    - "Multimodal Feature: MiniMax H3 release-to-local-workflow"
+    - "Model & Open Weight: Qwen3.8-Max / DeepSeek-V4-Flash-0731 / Kimi K3 comparison"
+    - "Agent & Coding: Claude Tag / Grok Build / Google Agent Evaluation Flywheel"
+    - "Deep Dive: Safety moves outside the model boundary"
+    - "Inference / Serving: empirical adoption and disaggregation trade-offs"
+    - "Memory Spotlight + Research Paper Watch"
+    - "X Community Watch"
+    - "Late Breaking: Astra cyber + SGLang v0.5.17"
+    - "Watchlist + Chronology"
+    - "References / Source Notes"
+
 next_stage:
-  name: "candidate-selection"
-  prerequisites: "satisfied for current collected pool"
+  name: "article-construction"
+  prerequisites: "satisfied for architecture v0.1"
+  drafting_order:
+    - "openai-astra-lead"
+    - "minimax-h3-feature"
+    - "model-open-weight-comparison"
+    - "safety-deep-dive"
+    - "agent-coding"
+    - "inference-serving"
+    - "memory-paper-watch"
+    - "x-community-watch"
+    - "late-breaking"
+    - "watchlist-chronology"
+    - "this-week-in-ai"
+    - "references-source-notes"
   constraints:
-    - "Do not promote HOLD/WATCH records without resolving their candidate-specific backlog if the intended article depends on the unresolved claim."
+    - "Do not promote HOLD_OUT items without candidate-specific verification."
     - "Keep objective event chronology separate from X momentum."
-    - "Keep post-cutoff items identifiable as Late Breaking/follow-up."
+    - "Keep post-cutoff items explicitly Late Breaking/follow-up."
     - "Do not equate source volume or X engagement with editorial importance."
-    - "Do not draft articles until issue architecture is decided."
+    - "Do not reuse vendor or author benchmark claims without attribution and setup context."
