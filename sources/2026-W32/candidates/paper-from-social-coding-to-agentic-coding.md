@@ -3,10 +3,11 @@ candidate_id: paper-from-social-coding-to-agentic-coding
 issue_id: "2026-W32"
 title: "From Social Coding to Agentic Coding: Productivity and Relational Reconfiguration in Open-Source Communities"
 record_type: paper-screening-record
-status: candidate
+status: candidate-reviewed
 discovered_via: [manual-paper-scan]
 published_at: "2026-08-04"
-verification_status: abstract-screened
+verification_status: full-paper-reviewed
+evidence_record: "../evidence/papers/from-social-coding-to-agentic-coding.md"
 ---
 
 # From Social Coding to Agentic Coding — Paper Screening Record
@@ -15,18 +16,14 @@ verification_status: abstract-screened
 - arXiv: https://arxiv.org/abs/2608.03585
 - Authors: Mengying Zhou, Yongjie Yin, Yang Chen
 
-## Collected abstract-level information
-The paper uses an LLM-based multi-agent simulation initialized from real GitHub data for 1,084 active developers and repository relationships. After a historical warm-up, it compares four-week No-CA and coding-agent conditions.
+## Full-review resolution
+Full-paper evidence is recorded in `../evidence/papers/from-social-coding-to-agentic-coding.md`.
 
-## Author-reported findings
-- Planned and completed tasks increase by 34.0% and 39.0% respectively.
-- Median completion time falls from 45 to 20 minutes.
-- Adoption reaches 26.0%, with gains concentrated among already-active / well-connected developers.
-- Direct human-human interaction falls from 32.4% to 11.6%, while coding-agent-involved modes rise.
-- A retrieval benchmark over produced public knowledge reports 22.3% coverage for the CA corpus versus 81.1% for a real-human corpus.
+The decisive interpretation boundary is that this is a **data-grounded LLM multi-agent simulation, not a field experiment**.
 
-## Verification boundary
-These are author-reported simulation results from the abstract. The validity of the agent simulation, calibration to real communities and interpretation of the public-knowledge benchmark require full-paper review.
+The simulator uses 1,084 selected historical GitHub developers, replays recent real activity as warmup and branches into coding-agent and no-coding-agent counterfactual conditions. The authors report higher simulated productivity, uneven agent adoption, a shift from direct human work toward agent-mediated work, and sharply lower retrievability of the simulated public knowledge corpus.
 
-## Screening note
-Keep in the coding-agent / socio-technical paper inventory. It may complement purely performance-oriented coding-agent coverage.
+However, those differences are causal results only **inside the simulator**. The paper itself states that implications beyond the simulated OSS setting remain hypotheses.
+
+## Screening state
+Retain as a reviewed socio-technical Coding-Agent candidate. If used, every quantitative result must be explicitly framed as simulation output rather than measured productivity/collaboration change in real OSS communities.
