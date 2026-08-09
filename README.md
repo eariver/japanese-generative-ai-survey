@@ -1,0 +1,1 @@
+# japanese-generative-ai-survey
