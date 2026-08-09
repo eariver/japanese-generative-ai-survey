@@ -3,10 +3,11 @@ candidate_id: paper-prweaver
 issue_id: "2026-W32"
 title: "PRWeaver: Evaluating LLM-Based Code Auditors against Long-Horizon Malicious Pull Requests"
 record_type: paper-screening-record
-status: candidate
+status: candidate-reviewed
 discovered_via: [manual-paper-scan]
 published_at: "2026-08-03"
-verification_status: abstract-screened
+verification_status: full-paper-reviewed
+evidence_record: "../evidence/papers/prweaver.md"
 ---
 
 # PRWeaver — Paper Screening Record
@@ -15,16 +16,16 @@ verification_status: abstract-screened
 - arXiv: https://arxiv.org/abs/2608.02693
 - Authors: Yuekun Wang, Mingfei Cheng, Xiaofei Xie
 
-## Collected abstract-level information
-PRWeaver is a benchmark for LLM-based pull-request auditors under malicious changes spread across repository evolution. The paper reports 208 execution-validated attacks from ten real-world repositories, rendered under four matched review settings for 832 total renderings.
+## Full-review resolution
+Full-paper evidence is recorded in `../evidence/papers/prweaver.md`.
 
-## Author-reported results
-- Attack decomposition alone changes detection by at most five percentage points across evaluated systems.
-- Per-PR interleaving at N=16 and coherent carrier fusion reduce detection by 5–13 and 10–18 points respectively.
-- Whole-window review at N=24 is reported at 16–22% detection versus 50–60% under per-PR review.
+Review materially sharpens the abstract claim:
+- simple decomposition across PRs has only a small reported effect;
+- benign interleaving and semantically coherent carrier fusion degrade detection more;
+- the steepest degradation appears when benign and malicious changes jointly occupy the active review window;
+- hiding repository history has a smaller effect, so the paper is better read as a review-context/workflow boundary than as evidence that history access is useless.
 
-## Verification boundary
-Abstract-screened only. Benchmark construction, attack validity, auditor configurations, model versions and statistical treatment require full-paper review.
+The benchmark contains 208 execution-validated attacks / 832 renderings across 10 repositories and is heavily Python-skewed. All detection rates remain benchmark-specific author-reported results.
 
-## Screening note
-Keep in coding-agent / security / evaluation paper inventory.
+## Screening state
+Retain as a reviewed Coding-Agent / Security candidate. The strongest editorial angle is that review-window composition and harness behavior are security properties of LLM code auditors.
