@@ -1,0 +1,43 @@
+name: Build weekly survey PDF
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'surveys/weekly/**'
+      - 'templates/survey/**'
+      - '.latexmkrc'
+      - '.github/workflows/build-weekly-survey.yml'
+  pull_request:
+    paths:
+      - 'surveys/weekly/**'
+      - 'templates/survey/**'
+      - '.latexmkrc'
+      - '.github/workflows/build-weekly-survey.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build-2026-w32:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Compile 2026-W32 with LuaLaTeX
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: main.tex
+          working_directory: surveys/weekly/2026-W32
+          texlive_version: 2026
+          os: debian
+          latexmk_use_lualatex: true
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: japanese-generative-ai-survey-2026-W32
+          path: surveys/weekly/2026-W32/main.pdf
+          if-no-files-found: error
+          retention-days: 14
