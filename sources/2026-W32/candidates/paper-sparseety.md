@@ -3,10 +3,11 @@ candidate_id: paper-sparseety
 issue_id: "2026-W32"
 title: "SparSEEty: Extracting Tokens from Sparsity-Exploiting LLM Serving Systems via Deterministic Side Channels"
 record_type: paper-screening-record
-status: candidate
+status: candidate-reviewed
 discovered_via: [manual-paper-scan]
 published_at: "2026-08-04"
-verification_status: abstract-screened
+verification_status: full-paper-reviewed
+evidence_record: "../evidence/papers/sparseety.md"
 ---
 
 # SparSEEty — Paper Screening Record
@@ -15,17 +16,17 @@ verification_status: abstract-screened
 - arXiv: https://arxiv.org/abs/2608.02995
 - Authors: Yongwan Jo, Jinyoung Park, Euihyun Lee, Dokyung Song
 
-## Collected abstract-level information
-The paper studies a side channel created when sparsity-exploiting LLM serving systems skip weight accesses for inactive neurons. `SparSEEty` constructs a neuron-activation oracle from weight-access side channels and attempts to invert activation traces back into input/output tokens.
+## Full-review resolution
+Full-paper evidence is recorded in `../evidence/papers/sparseety.md`.
 
-The authors instantiate the attack against an LLM-serving system inside an Intel TDX confidential VM.
+The paper demonstrates a concrete efficiency–confidentiality interaction: in the authors' PowerInfer/Intel-TDX-style setting, sparse input-dependent weight access can expose host-observable patterns that support token reconstruction.
 
-## Author-reported results
-- Prompt and response reconstruction with BLEU scores above 0.95 across evaluated models/datasets.
-- Monitoring overhead reported between 3.7% and 7.2%.
+Important boundaries established by review:
+- this is architecture/threat-model specific, not a generic break of TDX or all sparse LLM serving;
+- the strongest reconstruction results depend on the available observation channel;
+- `100 monitored neurons` is a result of the primary tested setup, not a universal threshold;
+- private-LoRA and CPU-offload-only variants show materially different attack quality;
+- mitigation can trade away the sparsity/efficiency benefit or require costly access-pattern hiding.
 
-## Verification boundary
-Abstract-screened only. Threat model, attacker prerequisites, exact hardware/serving implementation, leakage channel and robustness across workloads require full-paper review.
-
-## Screening note
-Keep in the inference / safety / side-channel paper inventory.
+## Screening state
+Retain as a reviewed Serving/Safety candidate. Its significance is cross-layer: an inference optimization can create a confidentiality side channel.
