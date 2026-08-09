@@ -3,24 +3,26 @@ candidate_id: xai-imagine-image-2.0
 issue_id: "2026-W32"
 title: "xAI Imagine Image 2.0"
 record_type: screening-record
-status: hold-unverified-late
-discovered_via: [manual-web-scan]
+status: rejected-for-w32-unconfirmed
+original_discovered_via: [manual-web-scan]
 event_date: "2026-08-07?"
-verification_status: primary-source-not-yet-confirmed
+verification_status: primary-event-not-confirmed
 ---
 
 # xAI Imagine Image 2.0 — Screening Record
 
 ## Initial collected note
-The preliminary pool contained an xAI Imagine Image 2.0 official-page candidate around 2026-08-07, likely after or near the editorial cutoff.
+The preliminary W32 pool contained an alleged xAI `Imagine Image 2.0` official-page candidate around 2026-08-07.
 
-## Primary-source check
-The xAI news material captured in the current pass documents Grok Imagine Quality Mode (2026-05-06) and other Imagine releases, but an exact durable `Imagine Image 2.0` announcement matching the initial W32 note has not yet been captured.
+## Primary-source resolution
+A focused review of xAI's official News and Imagine releases did not locate a durable announcement matching the collected `Imagine Image 2.0` name/date.
 
-## Unverified / pending
-- Exact product/model name and publication timestamp.
-- Whether the item is an image-model version, quality mode update, product UI version, or another Imagine artifact.
-- Whether it falls before or after the W32 editorial cutoff.
+Verified related primary artifacts include:
+- Grok Imagine Quality Mode API (2026-05-06): https://x.ai/news/grok-imagine-quality-mode
+- Grok Imagine Video 1.5: https://x.ai/news/grok-imagine-video-1-5
+- xAI News index: https://x.ai/news
 
-## Screening note
-Retain as a Late Breaking / unresolved candidate. Do not merge it into older Grok Imagine image releases without evidence.
+These older/different artifacts must not be substituted for the alleged W32 event.
+
+## Resolution
+The collected W32 item is not sufficiently supported for publication or issue balancing. Preserve the record for provenance and reopen only if an exact xAI primary announcement/docs/model identifier is found.
