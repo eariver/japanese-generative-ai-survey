@@ -1,33 +1,37 @@
 ---
 candidate_id: grok-build-harness-open-source
 issue_id: "2026-W32"
-title: "Grok Build agent harness open-source claim"
+title: "Grok Build open-source coding-agent harness"
 record_type: screening-record
-status: hold-unverified
-discovered_via: [grok-v0.2]
-event_date: "2026-08-07?"
-verification_status: social-observation-needs-primary-repo
+status: candidate-prewindow-relevance
+original_discovered_via: [grok-v0.2]
+event_date: "2026-07-15"
+verification_status: primary-screened
 ---
 
-# Grok Build Harness Open-Source — Screening Record
+# Grok Build Open-Source Harness — Screening Record
 
-## Collected information from Grok v0.2
-Grok v0.2 reported that the Grok Build agent harness had become available as open source and that community members were quickly building desktop GUI variants / self-hosted extensions.
+## Verified primary event
+xAI/SpaceXAI published **“Grok Build is Now Open Source”** on 2026-07-15:
+- https://x.ai/news/grok-build-open-source
 
-## Raw provenance
-- `sources/2026-W32/grok/raw/x-trend-sensor-2026-08-09.md`
+The official announcement says the published source includes:
+- the coding-agent loop, including context assembly, model-response parsing and tool dispatch;
+- tools for reading/editing/searching code and running commands;
+- terminal UI, plan review and inline diff viewer;
+- extension loading for skills, plugins, hooks, MCP servers and subagents.
 
-## Representative posts recorded by v0.2
-- https://x.com/teslaownersSV/status/2085874220463173701
-- https://x.com/MarioNawfal/status/2085873624242667999
+xAI also says Grok Build can be compiled locally and pointed at local inference through configuration.
 
-## Primary-source status
-A canonical xAI/GitHub repository, license and exact scope of the alleged harness release have not yet been captured into this screening record.
+## Timing correction
+The underlying open-source event is **not** a new 2026-08-07 release as implied by the first Grok v0.2 observation. The objective release date is 2026-07-15.
 
-## Unverified / pending
-- Repository and license.
-- Whether the full production harness or only a subset/example was released.
-- Self-hosted model compatibility and community GUI provenance.
+## W32 relevance boundary
+The v0.2 observation may still represent W32 community resurfacing, extension work or secondary amplification, but that social momentum has not received the dedicated Reaction Evidence pass used for the v0.4 shortlist.
+
+## Verification boundary
+- Official source verifies that the coding-agent/TUI source and listed extension mechanisms were published.
+- Community desktop GUI variants and downstream integrations from the v0.2 observation remain social claims until their repositories are inspected.
 
 ## Screening note
-Keep as an unverified social/OSS candidate; do not describe it as a full harness open-source release until the repository is checked.
+Upgrade from HOLD to a primary-screened **pre-window relevance** candidate. Compare it against the broader Agent/Harness pool without treating July 15 as a W32 launch.
