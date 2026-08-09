@@ -1,7 +1,7 @@
 issue_id: "2026-W32"
-status: "draft-v0.1-complete"
+status: "draft-v0.1-validated"
 editorial_structure_status: "established-v0.1"
-article_drafting_status: "all-architecture-packages-drafted-v0.1"
+article_drafting_status: "all-architecture-packages-drafted-and-validated-v0.1"
 editorial_cutoff: "2026-08-07T18:00:00-04:00"
 editorial_cutoff_timezone: "America/New_York"
 observation_window_start: "2026-08-01T00:00:00-04:00"
@@ -40,7 +40,16 @@ artifacts:
     path: "sources/2026-W32/issue-architecture-v0.1.md"
     target_pages: 18
     status: "established"
-    note: "The actual v0.1 draft is intentionally shorter than the provisional target rather than padding weak material."
+    note: "The validated v0.1 draft is intentionally shorter than the provisional target rather than padding weak material."
+
+  draft_validation:
+    path: "sources/2026-W32/draft-validation-v0.1.md"
+    status: "passed"
+    citation_keys_used: 36
+    bibliography_entries: 36
+    missing_citation_keys: 0
+    unused_bibliography_entries: 0
+    chronology_conflicts: 0
 
   latex_environment:
     issue_root: "surveys/weekly/2026-W32/main.tex"
@@ -51,9 +60,9 @@ artifacts:
     japanese_layout: "jlreq + LuaTeX-ja + HaranoAji"
     texlive_ci: "2026"
     local_pdf: "/mnt/data/jgai-tex-smoke/surveys/weekly/2026-W32/main.pdf"
-    local_render_dir: "/mnt/data/jgai-tex-smoke/_renders_tail_layout"
+    local_render_dir: "/mnt/data/jgai-tex-smoke/_renders_validation"
     local_page_count: 14
-    status: "local-build-warning-free-render-reviewed"
+    status: "local-build-warning-free-render-reviewed-preflight-passed"
     validation:
       latexmk: "passed"
       biber: "passed"
@@ -61,46 +70,50 @@ artifacts:
       overfull_boxes: 0
       underfull_boxes: 0
       missing_glyphs: 0
-      visual_render_review: "passed for all newly drafted section transitions and final tail layout"
-    note: "Push-triggered GitHub Actions run listing is not exposed by the current connector; local build uses the same LuaLaTeX/biber source tree."
+      visual_render_review: "passed across 14-page contact sheet"
+      pdf_preflight: "passed"
+      page_size: "A4 on all 14 pages"
+      encrypted: false
+      embedded_fonts: true
+    note: "Push-triggered GitHub Actions run listing is not exposed by the current connector; local validation uses the same LuaLaTeX/biber source tree."
 
   article_drafts:
     - path: "surveys/weekly/2026-W32/sections/00-frontmatter.tex"
       package: "contents-this-week-in-ai"
-      status: "draft-v0.1"
+      status: "validated-draft-v0.1"
     - path: "surveys/weekly/2026-W32/sections/10-lead-astra.tex"
       package: "openai-astra-lead"
-      status: "draft-v0.1"
+      status: "validated-draft-v0.1"
     - path: "surveys/weekly/2026-W32/sections/20-minimax-h3.tex"
       package: "minimax-h3-feature"
-      status: "draft-v0.1"
+      status: "validated-draft-v0.1"
     - path: "surveys/weekly/2026-W32/sections/30-model-open-weight.tex"
       package: "model-open-weight-comparison"
-      status: "draft-v0.1"
+      status: "validated-draft-v0.1"
     - path: "surveys/weekly/2026-W32/sections/40-agent-coding.tex"
       package: "agent-coding"
-      status: "draft-v0.1"
+      status: "validated-draft-v0.1"
     - path: "surveys/weekly/2026-W32/sections/50-safety-deep-dive.tex"
       package: "safety-deep-dive"
-      status: "draft-v0.1"
+      status: "validated-draft-v0.1"
     - path: "surveys/weekly/2026-W32/sections/60-inference-serving.tex"
       package: "inference-serving"
-      status: "draft-v0.1"
+      status: "validated-draft-v0.1"
     - path: "surveys/weekly/2026-W32/sections/70-memory-paper-watch.tex"
       package: "memory-paper-watch"
-      status: "draft-v0.1"
+      status: "validated-draft-v0.1"
     - path: "surveys/weekly/2026-W32/sections/80-x-community-watch.tex"
       package: "x-community-watch"
-      status: "draft-v0.1"
+      status: "validated-draft-v0.1"
     - path: "surveys/weekly/2026-W32/sections/90-late-breaking.tex"
       package: "late-breaking"
-      status: "draft-v0.1"
+      status: "validated-draft-v0.1"
     - path: "surveys/weekly/2026-W32/sections/95-watchlist-chronology.tex"
       package: "watchlist-chronology"
-      status: "draft-v0.1"
+      status: "validated-draft-v0.1"
     - path: "surveys/weekly/2026-W32/sections/99-source-notes.tex"
       package: "references-source-notes"
-      status: "draft-v0.1"
+      status: "validated-draft-v0.1"
 
   grok_trend_raw:
     - path: "sources/2026-W32/grok/raw/x-trend-sensor-2026-08-09.md"
@@ -176,14 +189,15 @@ selection_summary:
   note: "Supporting X reaction streams are consumed as evidence and are not counted as duplicate stories."
 
 next_stage:
-  name: "draft-validation-and-editorial-review"
-  prerequisites: "draft v0.1 complete"
+  name: "editorial-prose-review"
+  prerequisites: "draft v0.1 validation passed"
   tasks:
-    - "Perform citation-to-claim consistency review across the full issue."
-    - "Check repeated facts and chronology across sections for divergence."
-    - "Review Japanese prose for terminology consistency and unnecessary English mixing."
-    - "Decide whether the 14-page actual length is acceptable or whether any evidence-rich topic merits expansion; do not pad for page count alone."
-    - "Rebuild and visually diff after editorial corrections."
+    - "Review Japanese prose for readability and terminology consistency without weakening source terminology."
+    - "Decide final cover anchors/headline after prose review."
+    - "Perform a final human/editorial claim review of the highest-risk Astra, cyber, benchmark, and community-claim passages."
+    - "Rebuild and visually review the final candidate PDF after prose corrections."
+    - "Optionally confirm the GitHub Actions artifact manually in the repository UI because push-run enumeration is not exposed by the current connector."
+  page_budget_decision: "14 pages accepted provisionally; do not pad solely to reach the ~16-page planning target."
   constraints:
     - "Do not promote HOLD_OUT items without candidate-specific verification."
     - "Keep objective event chronology separate from X momentum."
