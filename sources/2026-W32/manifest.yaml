@@ -1,7 +1,7 @@
 issue_id: "2026-W32"
 status: "article-construction-in-progress"
 editorial_structure_status: "established-v0.1"
-article_drafting_status: "started-astra-lead"
+article_drafting_status: "astra-and-h3-drafted"
 editorial_cutoff: "2026-08-07T18:00:00-04:00"
 editorial_cutoff_timezone: "America/New_York"
 observation_window_start: "2026-08-01T00:00:00-04:00"
@@ -49,12 +49,16 @@ artifacts:
     engine: "LuaLaTeX"
     japanese_layout: "jlreq + LuaTeX-ja + HaranoAji"
     texlive_ci: "2026"
-    status: "local-smoke-tested-warning-free"
-    note: "Local smoke test compiled the current skeleton and Astra draft with latexmk + LuaLaTeX + biber. Push-triggered GitHub Actions run listing is not exposed by the current connector."
+    status: "local-smoke-tested-warning-free-after-h3"
+    current_skeleton_pages: 7
+    note: "Local smoke test compiled the current skeleton, Astra draft and H3 draft with latexmk + LuaLaTeX + biber. The H3 feature increased the skeleton from 5 to 7 A4 pages, matching its approximately two-page architecture budget. Push-triggered GitHub Actions run listing is not exposed by the current connector."
 
   article_drafts:
     - path: "surveys/weekly/2026-W32/sections/10-lead-astra.tex"
       package: "openai-astra-lead"
+      status: "draft-v0.1"
+    - path: "surveys/weekly/2026-W32/sections/20-minimax-h3.tex"
+      package: "minimax-h3-feature"
       status: "draft-v0.1"
 
   grok_trend_raw:
@@ -105,6 +109,8 @@ verification_stage_results:
       result: "verified 2026-08-08 Late Breaking release; selected as model-to-serving follow-through"
     - candidate: "grok-build-harness-open-source"
       result: "verified 2026-07-15 underlying release; selected as W32 pre-window relevance"
+    - candidate: "minimax-h3"
+      result: "public H3 model IDs and released FL2VA/Ref2VA checkpoint partitions confirmed through the SGLang primary cookbook; exact first-public timestamp remains unresolved"
 
   reviewed_papers:
     - "paper-livemem"
@@ -157,6 +163,7 @@ next_stage:
     - "watchlist-chronology"
     - "this-week-in-ai"
     - "references-source-notes"
+  current_position: "model-open-weight-comparison"
   constraints:
     - "Do not promote HOLD_OUT items without candidate-specific verification."
     - "Keep objective event chronology separate from X momentum."
