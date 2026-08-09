@@ -1,7 +1,7 @@
 issue_id: "2026-W32"
-status: "article-construction-in-progress"
+status: "draft-v0.1-complete"
 editorial_structure_status: "established-v0.1"
-article_drafting_status: "astra-h3-model-agent-safety-drafted"
+article_drafting_status: "all-architecture-packages-drafted-v0.1"
 editorial_cutoff: "2026-08-07T18:00:00-04:00"
 editorial_cutoff_timezone: "America/New_York"
 observation_window_start: "2026-08-01T00:00:00-04:00"
@@ -11,7 +11,7 @@ principles:
   - "X reaction evidence proves that a reaction was observed, not that technical claims inside the post are true."
   - "Technical claims are normalized against primary sources before editorial use."
   - "Main-window and post-cutoff community reactions are kept separate."
-  - "Reviewed/comparison-ready does not mean selected for publication."
+  - "Vendor/author benchmark claims retain attribution and setup boundaries."
   - "Candidate selection precedes issue architecture; issue architecture precedes article drafting."
   - "Downstream drafts consume normalized/verified evidence rather than raw collector output when a verified layer exists."
 
@@ -40,6 +40,7 @@ artifacts:
     path: "sources/2026-W32/issue-architecture-v0.1.md"
     target_pages: 18
     status: "established"
+    note: "The actual v0.1 draft is intentionally shorter than the provisional target rather than padding weak material."
 
   latex_environment:
     issue_root: "surveys/weekly/2026-W32/main.tex"
@@ -49,11 +50,24 @@ artifacts:
     engine: "LuaLaTeX"
     japanese_layout: "jlreq + LuaTeX-ja + HaranoAji"
     texlive_ci: "2026"
-    status: "local-smoke-tested-and-render-reviewed"
-    current_skeleton_pages: 12
-    note: "Local smoke test compiled Astra, H3, Model/Open Weight, Agent & Coding, and Safety Deep Dive with latexmk + LuaLaTeX + biber. The generated A4 PDF was rendered to PNG and visually checked; no unresolved citation, overfull/underfull box, or missing-glyph warnings were detected. Push-triggered GitHub Actions run listing is not exposed by the current connector."
+    local_pdf: "/mnt/data/jgai-tex-smoke/surveys/weekly/2026-W32/main.pdf"
+    local_render_dir: "/mnt/data/jgai-tex-smoke/_renders_tail_layout"
+    local_page_count: 14
+    status: "local-build-warning-free-render-reviewed"
+    validation:
+      latexmk: "passed"
+      biber: "passed"
+      unresolved_citations: 0
+      overfull_boxes: 0
+      underfull_boxes: 0
+      missing_glyphs: 0
+      visual_render_review: "passed for all newly drafted section transitions and final tail layout"
+    note: "Push-triggered GitHub Actions run listing is not exposed by the current connector; local build uses the same LuaLaTeX/biber source tree."
 
   article_drafts:
+    - path: "surveys/weekly/2026-W32/sections/00-frontmatter.tex"
+      package: "contents-this-week-in-ai"
+      status: "draft-v0.1"
     - path: "surveys/weekly/2026-W32/sections/10-lead-astra.tex"
       package: "openai-astra-lead"
       status: "draft-v0.1"
@@ -68,6 +82,24 @@ artifacts:
       status: "draft-v0.1"
     - path: "surveys/weekly/2026-W32/sections/50-safety-deep-dive.tex"
       package: "safety-deep-dive"
+      status: "draft-v0.1"
+    - path: "surveys/weekly/2026-W32/sections/60-inference-serving.tex"
+      package: "inference-serving"
+      status: "draft-v0.1"
+    - path: "surveys/weekly/2026-W32/sections/70-memory-paper-watch.tex"
+      package: "memory-paper-watch"
+      status: "draft-v0.1"
+    - path: "surveys/weekly/2026-W32/sections/80-x-community-watch.tex"
+      package: "x-community-watch"
+      status: "draft-v0.1"
+    - path: "surveys/weekly/2026-W32/sections/90-late-breaking.tex"
+      package: "late-breaking"
+      status: "draft-v0.1"
+    - path: "surveys/weekly/2026-W32/sections/95-watchlist-chronology.tex"
+      package: "watchlist-chronology"
+      status: "draft-v0.1"
+    - path: "surveys/weekly/2026-W32/sections/99-source-notes.tex"
+      package: "references-source-notes"
       status: "draft-v0.1"
 
   grok_trend_raw:
@@ -107,7 +139,7 @@ verification_stage_results:
       - candidate: "anthropic-skill-plugin-security-scanning"
         result: "real March feature; rejected as new W32 event"
       - candidate: "openai-astra-cyber-critical-late"
-        result: "verified primary; selected Late Breaking"
+        result: "verified primary; drafted as Late Breaking"
       - candidate: "xai-imagine-image-2.0"
         result: "rejected-for-w32-unconfirmed"
 
@@ -115,7 +147,7 @@ verification_stage_results:
     - candidate: "openai-external-cyber-eval-boundary-event"
       result: "verified 2026-08-04 primary event; drafted in Safety Deep Dive"
     - candidate: "sglang-v0.5.17"
-      result: "verified 2026-08-08 Late Breaking release; selected as model-to-serving follow-through"
+      result: "verified 2026-08-08 Late Breaking release; drafted as model-to-serving follow-through"
     - candidate: "grok-build-harness-open-source"
       result: "verified 2026-07-15 underlying release; drafted as W32 pre-window relevance"
     - candidate: "minimax-h3"
@@ -143,38 +175,15 @@ selection_summary:
   exclude_w32: 6
   note: "Supporting X reaction streams are consumed as evidence and are not counted as duplicate stories."
 
-architecture_summary:
-  target_pages: 18
-  packages:
-    - "Lead Story: OpenAI Astra scientific reasoning"
-    - "Multimodal Feature: MiniMax H3 release-to-local-workflow"
-    - "Model & Open Weight: Qwen3.8-Max / DeepSeek-V4-Flash-0731 / Kimi K3 comparison"
-    - "Agent & Coding: Claude Tag / Grok Build / Google Agent Evaluation Flywheel"
-    - "Deep Dive: Safety moves outside the model boundary"
-    - "Inference / Serving: empirical adoption and disaggregation trade-offs"
-    - "Memory Spotlight + Research Paper Watch"
-    - "X Community Watch"
-    - "Late Breaking: Astra cyber + SGLang v0.5.17"
-    - "Watchlist + Chronology"
-    - "References / Source Notes"
-
 next_stage:
-  name: "article-construction"
-  prerequisites: "satisfied for architecture v0.1"
-  drafting_order:
-    - "openai-astra-lead"
-    - "minimax-h3-feature"
-    - "model-open-weight-comparison"
-    - "safety-deep-dive"
-    - "agent-coding"
-    - "inference-serving"
-    - "memory-paper-watch"
-    - "x-community-watch"
-    - "late-breaking"
-    - "watchlist-chronology"
-    - "this-week-in-ai"
-    - "references-source-notes"
-  current_position: "inference-serving"
+  name: "draft-validation-and-editorial-review"
+  prerequisites: "draft v0.1 complete"
+  tasks:
+    - "Perform citation-to-claim consistency review across the full issue."
+    - "Check repeated facts and chronology across sections for divergence."
+    - "Review Japanese prose for terminology consistency and unnecessary English mixing."
+    - "Decide whether the 14-page actual length is acceptable or whether any evidence-rich topic merits expansion; do not pad for page count alone."
+    - "Rebuild and visually diff after editorial corrections."
   constraints:
     - "Do not promote HOLD_OUT items without candidate-specific verification."
     - "Keep objective event chronology separate from X momentum."
