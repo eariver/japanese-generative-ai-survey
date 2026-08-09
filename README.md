@@ -59,27 +59,39 @@ This prevents missed items when compilation timing shifts.
 
 See [Editorial Specification](docs/editorial-specification.md) for the authoritative v0.1 rules.
 
-## X / Grok trend sensing
+## X / Grok sensing
 
-Grok is used as an **X trend sensor**, not as factual evidence by itself.
+Grok is used as an **X sensor**, not as factual evidence by itself.
+
+The workflow separates two different Grok passes:
+
+1. **Trend discovery** — detect what became technically important on X and when momentum arose.
+2. **Community reaction evidence** — for selected topics, collect representative X posts with auditable URLs showing what researchers, engineers, OSS developers, local-AI users, and other technical actors actually tested, praised, questioned, reproduced, or criticized.
 
 The important distinction is between:
 
-- when an underlying model / paper / OSS release occurred, and
-- when the technical community on X actually began discussing, testing, reproducing, disputing, or integrating it.
+- when an underlying model / paper / OSS release occurred,
+- when the technical community on X actually began discussing, testing, reproducing, disputing, or integrating it, and
+- what concrete community reactions can be traced to actual X posts.
 
-Prompt history:
+### Trend prompt history
 
 - [X Trend Sensor v0.1](config/prompts/grok/x-trend-sensor-v0.1.md)
 - [X Trend Sensor v0.2](config/prompts/grok/x-trend-sensor-v0.2.md) — first live observation prompt; separates release / publication dates from `X Momentum Started`, `X Peak`, and `Why Now`
 - [X Trend Sensor v0.3](config/prompts/grok/x-trend-sensor-v0.3.md) — requires the final Raw Observation to be delivered as an actual Markdown file rather than pasted into chat
-- [X Trend Sensor v0.4](config/prompts/grok/x-trend-sensor-v0.4.md) — **current execution prompt**; adds `Coverage Scan -> Candidate Pool -> Global Ranking -> Coverage Audit`, including mandatory second-pass checks for multimodal / image / video / audio topics before final ranking
+- [X Trend Sensor v0.4](config/prompts/grok/x-trend-sensor-v0.4.md) — **current trend-discovery prompt**; adds `Coverage Scan -> Candidate Pool -> Global Ranking -> Coverage Audit`, including mandatory second-pass checks for multimodal / image / video / audio topics before final ranking
 
-Because the standard Grok GitHub connector is treated as read-only for this workflow, Grok should not attempt to push the observation itself. It should generate and present a `.md` file; that file is then transferred unchanged into `sources/<issue>/grok/raw/` by a write-capable tool or agent.
+### Community reaction prompt
 
-Grok output is treated as a **Trend Candidate List** and must be verified against primary or otherwise clearly classified sources before important technical claims are published.
+- [X Community Reaction Evidence Collector v0.1](config/prompts/grok/x-community-reaction-evidence-v0.1.md) — **current reaction-evidence prompt**; requires real X post URLs, independent-post checks, active search for skepticism / limitations, and explicit `INSUFFICIENT_X_EVIDENCE` when community reaction cannot be substantiated.
 
-Run-specific instructions may be placed under `config/prompts/grok/runs/`. They can override observation windows or output filenames for regression tests without changing the normal filename convention in the main execution prompt.
+Because the standard Grok GitHub connector is treated as read-only for this workflow, Grok should not attempt to push observations itself. It should generate and present a `.md` file; that file is then transferred unchanged into the appropriate `sources/<issue>/grok/` path by a write-capable tool or agent.
+
+Trend output is treated as a **Trend Candidate List** and must be verified against primary or otherwise clearly classified sources before important technical claims are published.
+
+Reaction output is treated as **Social Observation Evidence**. It may support statements such as "X上ではこの観点が議論された" but must not be used by itself to establish technical facts such as benchmark scores, release dates, model sizes, licenses, or hardware requirements.
+
+Run-specific instructions may be placed under `config/prompts/grok/runs/`. They can override observation windows, target topics, or output filenames without changing the normal filename convention in the main prompts.
 
 ## Planned weekly magazine structure
 
@@ -137,8 +149,11 @@ japanese-generative-ai-survey/
 ├─ sources/
 │  └─ <issue>/
 │     ├─ manifest.yaml
-│     ├─ grok/raw/
-│     └─ evidence/
+│     ├─ grok/
+│     │  ├─ raw/                  # trend-discovery Raw Observations
+│     │  └─ reactions/
+│     │     └─ raw/               # focused X Community Reaction collections
+│     └─ evidence/                # verified technical Evidence Cards
 ├─ chronology/
 │  └─ events.yaml
 ├─ surveys/
@@ -152,6 +167,8 @@ japanese-generative-ai-survey/
 └─ .github/workflows/
 ```
 
+Existing trend Raw files remain in `sources/<issue>/grok/raw/` to preserve provenance. They are not moved merely to make the tree more symmetrical.
+
 Directories will be added when they acquire real files; empty placeholder trees are intentionally avoided.
 
 ## Current phase
@@ -160,7 +177,8 @@ Current work is Phase 0–1:
 
 - establish repository and editorial policy
 - refine X / Grok trend collection
-- manually collect candidate sources
+- collect auditable X community reaction evidence
+- manually collect and verify candidate sources
 - build Evidence Cards
 - compile the first Japanese weekly survey PoC
 - then introduce LuaLaTeX / LuaTeX-ja and a reproducible GitHub Actions PDF build
