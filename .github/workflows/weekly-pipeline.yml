@@ -40,6 +40,8 @@ on:
       - 'schemas/weekly-pipeline-state.schema.json'
       - 'schemas/collector-run.schema.json'
       - 'schemas/raw-source-index.schema.json'
+      - 'sources/*/raw-index.json'
+      - 'sources/**/raw/**'
       - '.github/workflows/weekly-pipeline.yml'
   pull_request:
     paths:
@@ -51,6 +53,8 @@ on:
       - 'schemas/weekly-pipeline-state.schema.json'
       - 'schemas/collector-run.schema.json'
       - 'schemas/raw-source-index.schema.json'
+      - 'sources/*/raw-index.json'
+      - 'sources/**/raw/**'
       - '.github/workflows/weekly-pipeline.yml'
 
 permissions:
@@ -86,6 +90,35 @@ jobs:
         run: |
           set -euo pipefail
           python -m unittest discover -s tests -p 'test_*.py' -v
+
+  raw-integrity:
+    needs: test
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check every committed raw provenance baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          found=0
+          while IFS= read -r index; do
+            found=1
+            issue_id="$(basename "$(dirname "$index")")"
+            echo "Checking raw provenance for ${issue_id}"
+            python scripts/raw_provenance.py --issue-id "$issue_id" check
+          done < <(find sources -mindepth 2 -maxdepth 2 -name raw-index.json -type f | sort)
+
+          if [ "$found" -eq 0 ]; then
+            echo 'No committed raw provenance baselines found; nothing to check.'
+          fi
 
   plan:
     needs: test
