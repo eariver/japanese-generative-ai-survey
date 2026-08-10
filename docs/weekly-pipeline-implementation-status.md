@@ -117,10 +117,12 @@ Status: **provider-agnostic automation contract implemented; interactive primary
 - [x] primary-source verification prompt v0.1
 - [x] evidence classes: `PRIMARY_FACT`, `VENDOR_CLAIM`, `PROJECT_CLAIM`, `AUTHOR_CLAIM`, `SOCIAL_OBSERVATION`, `INFERENCE`
 - [x] temporal Event/Artifact separation
+- [x] stable `event_id` for event-level downstream references
 - [x] metric context and limitation fields
 - [x] exact Evidence Task / prompt SHA validation
 - [x] source-reference integrity checks
 - [x] verification-target completeness checks
+- [x] unique stable Event ID validation
 - [x] resumable Evidence Run merge
 - [x] `CANDIDATE / HOLD / INSPECT_MORE / REJECT` queues
 - [x] deterministic pre-selection Candidate Record materializer
@@ -132,7 +134,9 @@ Status: **provider-agnostic automation contract implemented; interactive primary
 
 ## Slice D — Editorial runners
 
-Status: **pre-selection comparison + Human Selection Gate implemented; architecture/drafting runners pending**
+Status: **deterministic comparison, Human Selection Gate, Issue Architecture, structured article-drafting contract, and deterministic renderer implemented; live drafting/issue assembly pending**
+
+### Candidate comparison + Human Selection Gate
 
 - [x] deterministic non-ranking Candidate comparison matrix
 - [x] temporal relation classification from issue collection window/cutoff
@@ -146,20 +150,81 @@ Status: **pre-selection comparison + Human Selection Gate implemented; architect
 - [x] `HOLD / INSPECT_MORE / REJECT` cannot be silently promoted to positive editorial roles
 - [x] `POST_CUTOFF` cannot be silently promoted into normal main-window roles
 - [x] explicit `APPROVED` metadata required for the Human Selection Gate
-- [ ] Issue Architecture generator / contract
-- [ ] article-drafting package runners
-- [ ] citation/claim consistency preflight reuse as a general weekly stage
-
-Latest Selection Gate regression: `run 31365181817`, test job passed.
 
 The Selection initializer intentionally leaves ordinary `CANDIDATE` rows `UNASSIGNED`. It only pre-fills roles forced by upstream boundaries (`REJECT -> EXCLUDE`, unresolved Evidence -> `HOLD_OUT`, `POST_CUTOFF CANDIDATE -> LATE_BREAKING`). Editorial priority remains a human decision.
 
+### Issue Architecture
+
+- [x] approved Selection -> SHA-bound Architecture Input package
+- [x] selected-only Architecture input; `HOLD_OUT / EXCLUDE` excluded from article planning
+- [x] Issue Architecture schema and provider-agnostic prompt
+- [x] exact Architecture Input / Matrix / Selection SHA validation
+- [x] every selected non-support Evidence Task must be primary exactly once
+- [x] `SUPPORTING_EVIDENCE` cannot be silently promoted to primary
+- [x] Evidence caveats / remaining boundaries must propagate exactly into package boundaries
+- [x] post-cutoff Evidence may be primary only in `LATE_BREAKING`
+- [x] page-plan sum / maximum validation
+- [x] cover headline deferred until substantive drafts stabilize
+- [x] `This Week in AI` synthesis explicitly written after substantive drafts
+- [x] explicit Architecture `APPROVED` metadata gate
+
+### Structured article drafting
+
+Canonical contract:
+
+```text
+APPROVED Issue Architecture
+  -> immutable Draft Package per package
+  -> provider-agnostic structured Article Draft Result
+  -> Evidence/attribution validator
+  -> deterministic LaTeX renderer
+  -> URL-hash-generated BibLaTeX
+  -> generated bibliography merge
+```
+
+- [x] immutable per-package Draft Package schema/builder
+- [x] separate execution stages: `ARTICLE_DRAFTING / POST_DRAFT_SUMMARY / REFERENCE_GENERATION`
+- [x] Article Draft Result schema using structured blocks rather than model-authored LaTeX
+- [x] stable Evidence refs: `EVENT / CLAIM / METRIC / LIMITATION` + stable Evidence ID
+- [x] deck-level Evidence refs and attribution mode
+- [x] `PRIMARY_FACT` factual boundary validation
+- [x] vendor/project/author claims require attributed treatment
+- [x] social Evidence requires `COMMUNITY_NOTE`
+- [x] inference cannot silently absorb attributed/social Evidence
+- [x] all Architecture-included Evidence Tasks must be materially used
+- [x] exact must-cover and boundary coverage validation
+- [x] Late Breaking packages require explicit acknowledgement and `LATE_BREAKING_NOTE`
+- [x] exact Draft Package / prompt SHA validation
+- [x] deterministic renderer maps blocks to shared survey LaTeX semantics
+- [x] bibliography keys are generated from source URLs, never chosen by the drafting model
+- [x] identical generated Bib entries deduplicate; conflicting metadata is a hard failure
+- [x] Draft Result schema / validator alignment regression (`deck_attribution_mode`)
+- [x] duplicate parallel Drafting contracts removed; stable-Event-ID path is canonical
+- [ ] production article-drafting provider adapter
+- [ ] first real Draft Package -> model -> validated Article Draft smoke on a new issue
+- [ ] deterministic multi-package issue assembly into `surveys/weekly/<issue>/sections/`
+- [ ] post-draft Frontmatter / `This Week in AI` synthesis runner
+- [ ] deterministic References/source-notes generation from merged generated bibliography
+- [ ] general issue-level citation/claim/layout preflight over generated sections
+
+Latest consolidated regression: `run 31367514904`, test job passed after canonical Drafting/renderer consolidation.
+
 ## Slice E — Weekly PR orchestration
 
-Status: not started.
+Status: **not started**.
 
-Primary target: turn reviewed collection/screening/evidence artifacts into an auditable weekly PR without allowing Actions to bypass the Selection or Freeze gates.
+Primary target: turn reviewed collection/screening/evidence/editorial artifacts into an auditable weekly PR without allowing Actions to bypass the Selection, Architecture, Visual Review, or Freeze gates.
+
+Expected first implementation slice:
+
+1. create/update one weekly work branch;
+2. import reviewed collector artifacts append-only;
+3. persist validated screening/evidence/editorial results with prompt/model/hash provenance;
+4. render generated TeX/Bib into the weekly survey tree;
+5. run full deterministic preflight and PDF build;
+6. open/update one auditable Draft PR;
+7. never merge, freeze, publish, or create a public Release without the corresponding explicit gate.
 
 ## Slice F — Chronology + monthly/annual reuse
 
-Status: design intent established; implementation not started.
+Status: **design intent established; implementation not started**.
