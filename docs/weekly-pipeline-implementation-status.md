@@ -15,10 +15,11 @@ Status: **implemented**
 - [x] static internal-page-reference guard
 - [x] unit tests for DST / anchor / optional sections
 - [x] reproducible PDF timestamp policy for new builds
+- [x] assistant-controlled allowlisted workflow dispatch via `automation-control`
 
 ## Slice B — Source intake contracts
 
-Status: **implemented baseline; live weekly operational validation pending**
+Status: **implemented and W32-replay validated; first live new-issue run pending**
 
 - [x] pre-execution collector instruction schema
 - [x] post-execution collector-run provenance schema
@@ -28,12 +29,24 @@ Status: **implemented baseline; live weekly operational validation pending**
 - [x] issue-specific Grok Trend Sensor instruction generator
 - [x] arXiv API intake adapter
 - [x] curated GitHub Releases intake adapter
-- [x] configured official news/blog page snapshot adapter
+- [x] configured official news/blog/feed snapshot adapter
+- [x] OpenAI official News RSS fallback for stable automated intake
 - [x] HTTP-mocked intake unit tests
 - [x] append-only run-specific collector paths
+- [x] W32 replay Actions artifact review
+- [x] deterministic screening-index normalization
+- [x] bounded screening batches
 - [ ] first live `source-intake` Actions artifact review for a new issue
 - [ ] automatic import PR for reviewed collector artifacts
-- [ ] duplicate/artifact/event normalization helper
+
+Validated W32 replay (`run 31359910803`):
+
+- 1,037 screening records total;
+- 921 arXiv paper records;
+- 103 curated GitHub Release records;
+- 10 official feed items;
+- 3 official index snapshots;
+- 39 bounded screening batches.
 
 Current collector Raw layout:
 
@@ -48,46 +61,92 @@ Raw bytes are immutable after acceptance; `summary.json` is derived discovery me
 
 ## GitHub Release distribution
 
-Status: **implemented; validate-mode smoke test pending**
+Status: **implemented; validate and Draft smoke tests passed; public publish intentionally pending**
 
 - [x] frozen release manifest schema
 - [x] W32 release manifest
 - [x] canonical tag convention `weekly/<issue>/<revision>`
 - [x] `validate` mode with no tag/Release write
 - [x] `draft` mode with exact PDF digest check
-- [x] re-runnable Draft verification without asset clobber
+- [x] Draft target/anchor pinned and re-verified
 - [x] `publish` requires existing verified Draft
-- [x] Release PDF + `SHA256SUMS.txt`
+- [x] Release PDF + `SHA256SUMS.txt` + `RELEASE_METADATA.json`
 - [x] W32 exact frozen Actions-artifact source
 - [x] future reproducible rebuild source mode
 - [x] optional immutable-release attestation verification after publish
-- [ ] W32 Release workflow `validate` smoke test
-- [ ] W32 Draft Release creation/review
+- [x] W32 Release workflow `validate` smoke test (`31358396989`)
+- [x] W32 Draft Release creation and asset verification (`31359673413`)
 - [ ] repository Immutable Releases setting decision/enablement
 - [ ] first published weekly Release
 
-## Slice C — Evidence runners
+Release tags are distribution/control anchors. The frozen PDF-producing source commit and PDF digest remain separately authoritative in release provenance.
 
-Status: **not started as automation**
+## Slice C — Screening and Evidence runners
 
-W32 provides manual reference artifacts, but provider/model-agnostic automated runners are not yet implemented.
+Status: **provider-agnostic automation contract implemented; interactive primary-source smoke passed**
 
-Next targets:
+### Screening
 
-1. candidate normalization contract;
-2. screening/evidence schemas;
-3. primary verification runner;
-4. full/targeted paper-review runner;
-5. social normalization v0.2;
-6. provider/model/prompt/tool provenance.
+- [x] machine-collected screening record schema
+- [x] bounded batch generator
+- [x] provider-agnostic screening prompt v0.1
+- [x] screening batch result schema
+- [x] exact input/prompt SHA-256 validation
+- [x] one-decision-per-input completeness validation
+- [x] resumable partial-result merge
+- [x] `KEEP / MAYBE / DROP / INSPECT` separation
+- [x] verification queue containing only retained/inspection items
+- [x] dedicated screening contract CI
+- [x] interactive GPT screening smoke on real W32 replay batches
+- [ ] production inference provider adapter / secret configuration
+- [ ] all-batch live screening for a new issue
+
+### Evidence tasks
+
+- [x] deterministic Evidence Task schema and builder
+- [x] one file per Evidence Task
+- [x] Evidence Task SHA-256 recorded in manifest
+- [x] `VERIFY_ITEM / VERIFY_SERIES / INSPECT_INDEX`
+- [x] unconfirmed LLM duplicate-group hints remain explicitly unconfirmed
+- [x] resumable singleton duplicate-group behavior
+
+### Evidence Cards / Runs
+
+- [x] structured Evidence Card schema
+- [x] Evidence Run provenance wrapper
+- [x] primary-source verification prompt v0.1
+- [x] evidence classes: `PRIMARY_FACT`, `VENDOR_CLAIM`, `PROJECT_CLAIM`, `AUTHOR_CLAIM`, `SOCIAL_OBSERVATION`, `INFERENCE`
+- [x] temporal Event/Artifact separation
+- [x] metric context and limitation fields
+- [x] exact Evidence Task / prompt SHA validation
+- [x] source-reference integrity checks
+- [x] verification-target completeness checks
+- [x] resumable Evidence Run merge
+- [x] `CANDIDATE / HOLD / INSPECT_MORE / REJECT` queues
+- [x] deterministic pre-selection Candidate Record materializer
+- [x] real primary-source smoke using the llama.cpp / DeepSeek V4 support series
+- [ ] production Evidence inference provider adapter
+- [ ] full Evidence-run execution for a new issue
+
+`candidate-ready` is intentionally **not** Candidate Selection. Final comparison and editorial role assignment remain behind the Selection Gate.
 
 ## Slice D — Editorial runners
 
 Status: manual/LLM-assisted reference exists from W32; automation not yet implemented.
 
+Next targets:
+
+1. candidate comparison matrix generation from pre-selection records;
+2. explicit Human Candidate Selection gate;
+3. Issue Architecture generator;
+4. article-drafting package runners;
+5. citation/claim consistency preflight reuse.
+
 ## Slice E — Weekly PR orchestration
 
 Status: not started.
+
+Primary target: turn reviewed collection/screening/evidence artifacts into an auditable weekly PR without allowing Actions to bypass the Selection or Freeze gates.
 
 ## Slice F — Chronology + monthly/annual reuse
 
