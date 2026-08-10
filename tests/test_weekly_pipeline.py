@@ -4,6 +4,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 
 from scripts import weekly_pipeline as wp
 
@@ -119,6 +120,33 @@ class WeeklyPipelineCalendarTests(unittest.TestCase):
             self.assertEqual(
                 plan["collection_window_start"], "2026-08-09T23:40:00+09:00"
             )
+
+    def test_init_rejects_future_issue_id_instead_of_relabeling_current_cutoff(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            args = SimpleNamespace(
+                repo_root=str(root),
+                now="2026-08-10T19:00:00+09:00",
+                issue_id="2026-W33",
+                force=False,
+            )
+            self.assertEqual(wp.cmd_init(args, CONFIG), 2)
+            self.assertFalse((root / "sources" / "2026-W33" / "pipeline-state.json").exists())
+
+    def test_init_allows_current_issue_assertion_and_preserves_derived_cutoff(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            args = SimpleNamespace(
+                repo_root=str(root),
+                now="2026-08-10T19:00:00+09:00",
+                issue_id="2026-W32",
+                force=False,
+            )
+            self.assertEqual(wp.cmd_init(args, CONFIG), 0)
+            state_path = root / "sources" / "2026-W32" / "pipeline-state.json"
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            self.assertEqual(state["issue_id"], "2026-W32")
+            self.assertEqual(state["calendar"]["editorial_cutoff"], "2026-08-07T18:00:00-04:00")
 
 
 class WeeklyPipelineValidationTests(unittest.TestCase):

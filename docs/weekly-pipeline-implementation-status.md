@@ -36,8 +36,11 @@ Status: **implemented and W32-replay validated; first live new-issue run pending
 - [x] W32 replay Actions artifact review
 - [x] deterministic screening-index normalization
 - [x] bounded screening batches
+- [x] reviewed collector-artifact import workflow into the canonical weekly work branch
+- [x] exact Actions run/workflow/ref/artifact/digest verification before reviewed import
+- [x] real W32 resolver/branch-gate smoke (`run 31378110064` using source run `31359910803`)
 - [ ] first live `source-intake` Actions artifact review for a new issue
-- [ ] automatic import PR for reviewed collector artifacts
+- [ ] first successful reviewed new-issue import into its weekly work branch
 
 Validated W32 replay (`run 31359910803`):
 
@@ -47,6 +50,10 @@ Validated W32 replay (`run 31359910803`):
 - 10 official feed items;
 - 3 official index snapshots;
 - 39 bounded screening batches.
+
+The W32 reviewed-import smoke deliberately had no `weekly/2026-W32-work` branch. The source run and Artifact verification passed, then the workflow stopped at the branch gate before download/import, proving the resolver against real GitHub Actions metadata without modifying the frozen W32 issue.
+
+A premature W33 live run (`31377560587`) was also rejected by the calendar guard on 2026-08-10 because the current completed editorial cutoff still maps to W32. W33 becomes the rolling issue only after Friday 2026-08-14 18:00 `America/New_York`; the pipeline must not fabricate a future issue window to bypass that boundary.
 
 Current collector Raw layout:
 
@@ -134,7 +141,7 @@ Status: **provider-agnostic automation contract implemented; interactive primary
 
 ## Slice D — Editorial runners
 
-Status: **deterministic comparison, Human Selection Gate, Issue Architecture, structured article-drafting contract, and deterministic renderer implemented; live drafting/issue assembly pending**
+Status: **deterministic comparison, Human Selection Gate, Issue Architecture, structured drafting/rendering, post-draft synthesis, final assembly, and source preflight contracts implemented; live new-issue execution pending**
 
 ### Candidate comparison + Human Selection Gate
 
@@ -168,7 +175,7 @@ The Selection initializer intentionally leaves ordinary `CANDIDATE` rows `UNASSI
 - [x] `This Week in AI` synthesis explicitly written after substantive drafts
 - [x] explicit Architecture `APPROVED` metadata gate
 
-### Structured article drafting
+### Structured article drafting and final assembly
 
 Canonical contract:
 
@@ -180,6 +187,9 @@ APPROVED Issue Architecture
   -> deterministic LaTeX renderer
   -> URL-hash-generated BibLaTeX
   -> generated bibliography merge
+  -> post-draft issue synthesis
+  -> final weekly source assembly
+  -> deterministic source preflight
 ```
 
 - [x] immutable per-package Draft Package schema/builder
@@ -200,30 +210,41 @@ APPROVED Issue Architecture
 - [x] identical generated Bib entries deduplicate; conflicting metadata is a hard failure
 - [x] Draft Result schema / validator alignment regression (`deck_attribution_mode`)
 - [x] duplicate parallel Drafting contracts removed; stable-Event-ID path is canonical
+- [x] deterministic multi-package final weekly source assembly
+- [x] post-draft Cover / `This Week in AI` synthesis validation and rendering
+- [x] dynamic internal page labels/references for generated sections
+- [x] deterministic final issue source preflight
 - [ ] production article-drafting provider adapter
 - [ ] first real Draft Package -> model -> validated Article Draft smoke on a new issue
-- [ ] deterministic multi-package issue assembly into `surveys/weekly/<issue>/sections/`
-- [ ] post-draft Frontmatter / `This Week in AI` synthesis runner
-- [ ] deterministic References/source-notes generation from merged generated bibliography
-- [ ] general issue-level citation/claim/layout preflight over generated sections
+- [ ] first complete generated new-issue source tree / PDF
 
-Latest consolidated regression: `run 31367514904`, test job passed after canonical Drafting/renderer consolidation.
+Latest consolidated drafting/renderer regression before final assembly: `run 31367514904`. Final assembly and preflight contracts were added afterward and are covered by the generic pipeline contract suite.
 
 ## Slice E — Weekly PR orchestration
 
-Status: **not started**.
+Status: **in progress — weekly work/Draft PR control and reviewed source-intake import implemented; first live new-issue acceptance pending**.
 
-Primary target: turn reviewed collection/screening/evidence/editorial artifacts into an auditable weekly PR without allowing Actions to bypass the Selection, Architecture, Visual Review, or Freeze gates.
+Implemented control surface:
 
-Expected first implementation slice:
+- [x] canonical `weekly/<issue>-work` branch convention
+- [x] Draft PR creation/update control that never merges or changes a non-Draft PR
+- [x] assistant allowlisted dispatch of safe weekly PR control
+- [x] safe fast-forward of an empty/no-unique-work branch to current `main`
+- [x] no automatic rewrite/rebase once a work branch contains unique weekly commits
+- [x] reviewed source-intake run/artifact verification before acceptance
+- [x] append-only collector acceptance with acceptance manifest
+- [x] Raw index update/check before work-branch commit
+- [x] post-import Draft PR refresh
+- [x] contract tests triggered by workflow YAML changes
+- [x] W32 real-metadata resolver/branch-gate smoke without modifying Frozen content
+- [ ] first successful live W33 source-intake after the 2026-08-14 18:00 New York cutoff
+- [ ] first reviewed W33 collector import into `weekly/2026-W33-work`
+- [ ] persist validated screening results into the weekly work branch with run/prompt/model/hash provenance
+- [ ] persist validated Evidence/editorial stage results without bypassing Selection/Architecture gates
+- [ ] orchestrate generated TeX/Bib + final source preflight + PDF build on the weekly Draft PR
+- [ ] record Visual Review and Freeze through explicit human gates only
 
-1. create/update one weekly work branch;
-2. import reviewed collector artifacts append-only;
-3. persist validated screening/evidence/editorial results with prompt/model/hash provenance;
-4. render generated TeX/Bib into the weekly survey tree;
-5. run full deterministic preflight and PDF build;
-6. open/update one auditable Draft PR;
-7. never merge, freeze, publish, or create a public Release without the corresponding explicit gate.
+The weekly PR is an auditable work surface. Actions may prepare or refresh it while it remains Draft, but may not infer Candidate Selection approval, Architecture approval, Visual Review approval, Freeze, merge, or public Release authorization.
 
 ## Slice F — Chronology + monthly/annual reuse
 

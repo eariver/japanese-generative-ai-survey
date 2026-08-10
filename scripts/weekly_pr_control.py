@@ -73,6 +73,8 @@ Automation may create this branch/PR and refresh this description **only while t
         "pipeline_state_status": lifecycle_state,
         "rules": [
             "Create the weekly work branch only when absent; never force-update it.",
+            "If an existing work branch has no unique commits, it may be fast-forwarded to the current default branch before weekly work begins.",
+            "Never rewrite or auto-rebase a work branch that already contains unique weekly commits.",
             "Create or edit only a Draft PR from the canonical weekly work branch to the default branch.",
             "If the existing PR is no longer Draft, fail rather than overwrite human review state.",
             "Never merge, freeze, tag, or publish a Release from this workflow.",
