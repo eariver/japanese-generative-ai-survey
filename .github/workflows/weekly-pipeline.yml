@@ -47,10 +47,7 @@ on:
       - 'scripts/raw_provenance.py'
       - 'scripts/generate_grok_trend_run.py'
       - 'scripts/source_intake.py'
-      - 'tests/test_weekly_pipeline.py'
-      - 'tests/test_raw_provenance.py'
-      - 'tests/test_generate_grok_trend_run.py'
-      - 'tests/test_source_intake.py'
+      - 'tests/test_*.py'
       - 'config/weekly-pipeline.json'
       - 'config/source-intake.json'
       - 'config/prompts/grok/x-trend-sensor-v0.4.md'
@@ -58,19 +55,20 @@ on:
       - 'schemas/collector-instruction.schema.json'
       - 'schemas/collector-run.schema.json'
       - 'schemas/raw-source-index.schema.json'
+      - 'schemas/weekly-release-manifest.schema.json'
       - 'sources/*/raw-index.json'
+      - 'sources/*/release-manifest.json'
       - 'sources/**/raw/**'
       - '.github/workflows/weekly-pipeline.yml'
+      - '.github/workflows/build-weekly-survey.yml'
+      - '.github/workflows/release-weekly-survey.yml'
   pull_request:
     paths:
       - 'scripts/weekly_pipeline.py'
       - 'scripts/raw_provenance.py'
       - 'scripts/generate_grok_trend_run.py'
       - 'scripts/source_intake.py'
-      - 'tests/test_weekly_pipeline.py'
-      - 'tests/test_raw_provenance.py'
-      - 'tests/test_generate_grok_trend_run.py'
-      - 'tests/test_source_intake.py'
+      - 'tests/test_*.py'
       - 'config/weekly-pipeline.json'
       - 'config/source-intake.json'
       - 'config/prompts/grok/x-trend-sensor-v0.4.md'
@@ -78,9 +76,13 @@ on:
       - 'schemas/collector-instruction.schema.json'
       - 'schemas/collector-run.schema.json'
       - 'schemas/raw-source-index.schema.json'
+      - 'schemas/weekly-release-manifest.schema.json'
       - 'sources/*/raw-index.json'
+      - 'sources/*/release-manifest.json'
       - 'sources/**/raw/**'
       - '.github/workflows/weekly-pipeline.yml'
+      - '.github/workflows/build-weekly-survey.yml'
+      - '.github/workflows/release-weekly-survey.yml'
 
 permissions:
   contents: read
@@ -111,6 +113,10 @@ jobs:
           python -m json.tool schemas/collector-instruction.schema.json >/dev/null
           python -m json.tool schemas/collector-run.schema.json >/dev/null
           python -m json.tool schemas/raw-source-index.schema.json >/dev/null
+          python -m json.tool schemas/weekly-release-manifest.schema.json >/dev/null
+          while IFS= read -r manifest; do
+            python -m json.tool "$manifest" >/dev/null
+          done < <(find sources -mindepth 2 -maxdepth 2 -name release-manifest.json -type f | sort)
 
       - name: Run pipeline unit tests
         shell: bash
@@ -223,8 +229,7 @@ jobs:
             exit 2
           fi
           mkdir -p out/source-intake-control
-          python scripts/weekly_pipeline.py plan \
-            --output out/source-intake-control/plan.json
+          python scripts/weekly_pipeline.py plan --output out/source-intake-control/plan.json
           python - "$EXPECTED_ISSUE_ID" <<'PY'
           import json, sys
           with open('out/source-intake-control/plan.json', encoding='utf-8') as fh:
