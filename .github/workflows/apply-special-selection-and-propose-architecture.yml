@@ -1,0 +1,116 @@
+name: Apply Special Selection and propose Architecture
+
+on:
+  workflow_dispatch:
+    inputs:
+      special_slug:
+        required: true
+        type: string
+      evidence_run_sha:
+        required: true
+        type: string
+      approval_reference:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: special-selection-${{ inputs.special_slug }}
+  cancel-in-progress: false
+
+jobs:
+  selection:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Resolve Special edition
+        id: edition
+        shell: bash
+        env:
+          SPECIAL_SLUG: ${{ inputs.special_slug }}
+        run: |
+          set -euo pipefail
+          manifest="control-src/specials/${SPECIAL_SLUG}/edition.json"
+          test -s "$manifest"
+          python control-src/scripts/special_pipeline.py --config control-src/config/special-pipeline.json validate --manifest "$manifest"
+          echo "special_id=$(python -c "import json; print(json.load(open('$manifest'))['special_id'])")" >> "$GITHUB_OUTPUT"
+          echo "work_branch=$(python -c "import json; print(json.load(open('$manifest'))['paths']['work_branch'])")" >> "$GITHUB_OUTPUT"
+          echo "manifest=$manifest" >> "$GITHUB_OUTPUT"
+      - name: Checkout Special work branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ steps.edition.outputs.work_branch }}
+          path: worktree
+          fetch-depth: 0
+      - name: Verify Selection input boundary
+        shell: bash
+        env:
+          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+          EVIDENCE_RUN_SHA: ${{ inputs.evidence_run_sha }}
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id "$SPECIAL_ID" check
+          state="worktree/sources/${SPECIAL_ID}/pipeline-state.json"
+          decision="worktree/sources/${SPECIAL_ID}/editorial/selection-architecture-decision-v0.1.json"
+          evidence="worktree/sources/${SPECIAL_ID}/evidence/runs/${EVIDENCE_RUN_SHA}/evidence-reviewed.jsonl"
+          test -s "$state"
+          test -s "$decision"
+          test -s "$evidence"
+          python -m json.tool "$decision" >/dev/null
+          python - "$state" <<'PY'
+          import json,sys
+          state=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert state['lifecycle_state']=='EVIDENCE_REVIEWED', state['lifecycle_state']
+          assert state['gates']['evidence_normalized']=='passed'
+          assert state['gates']['candidate_selection']=='pending'
+          assert state['gates']['issue_architecture']=='pending'
+          PY
+      - name: Apply approved Selection and generate proposed Architecture
+        shell: bash
+        env:
+          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+          EVIDENCE_RUN_SHA: ${{ inputs.evidence_run_sha }}
+          SPECIAL_MANIFEST: ${{ steps.edition.outputs.manifest }}
+          APPROVAL_REFERENCE: ${{ inputs.approval_reference }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python control-src/scripts/apply_special_selection_and_propose_architecture.py \
+            --repo-root worktree \
+            --issue-id "$SPECIAL_ID" \
+            --evidence-run-sha "$EVIDENCE_RUN_SHA" \
+            --decision "worktree/sources/${SPECIAL_ID}/editorial/selection-architecture-decision-v0.1.json" \
+            --special-manifest "$SPECIAL_MANIFEST" \
+            --approval-reference "$APPROVAL_REFERENCE" \
+            --audit-output selection-architecture-audit.json
+      - name: Commit Selection and proposed Architecture
+        working-directory: worktree
+        shell: bash
+        env:
+          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+          WORK_BRANCH: ${{ steps.edition.outputs.work_branch }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "sources/${SPECIAL_ID}/selection" "sources/${SPECIAL_ID}/architecture" "sources/${SPECIAL_ID}/pipeline-state.json"
+          git diff --cached --quiet && exit 0
+          git commit -m "Approve Candidate Selection and propose Architecture for ${SPECIAL_ID}"
+          git push origin "HEAD:${WORK_BRANCH}"
+      - name: Upload Selection/Architecture audit
+        uses: actions/upload-artifact@v7
+        with:
+          name: special-selection-architecture-${{ inputs.special_slug }}
+          path: selection-architecture-audit.json
+          if-no-files-found: error
+          retention-days: 14
