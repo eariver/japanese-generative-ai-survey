@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import tempfile
 import unittest
@@ -55,6 +56,16 @@ class EvidenceTaskBuilderTests(unittest.TestCase):
             for item in items:
                 fh.write(json.dumps(item) + "\n")
 
+    def _assert_task_file_manifest(self, out: Path, manifest: dict) -> None:
+        self.assertEqual(len(manifest["task_files"]), manifest["evidence_task_count"])
+        for entry in manifest["task_files"]:
+            path = out / entry["path"]
+            self.assertTrue(path.is_file(), entry)
+            self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), entry["sha256"])
+            self.assertEqual(path.stat().st_size, entry["bytes"])
+            task = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(task["evidence_task_id"], entry["evidence_task_id"])
+
     def test_duplicate_group_becomes_unconfirmed_series_task(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -78,6 +89,7 @@ class EvidenceTaskBuilderTests(unittest.TestCase):
             self.assertEqual(series["screening_ids"], ["a", "b"])
             self.assertTrue(series["grouping"]["requires_confirmation"])
             self.assertEqual(series["grouping"]["basis"], "llm-duplicate-group")
+            self._assert_task_file_manifest(out, manifest)
 
     def test_singleton_duplicate_hint_stays_verify_item(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -96,6 +108,7 @@ class EvidenceTaskBuilderTests(unittest.TestCase):
             self.assertEqual(task["grouping"]["basis"], "llm-duplicate-group")
             self.assertTrue(task["grouping"]["requires_confirmation"])
             self.assertEqual(task["grouping"]["duplicate_group"], "series-may-have-more-members")
+            self._assert_task_file_manifest(out, manifest)
 
     def test_inspect_snapshot_becomes_index_inspection(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -111,6 +124,7 @@ class EvidenceTaskBuilderTests(unittest.TestCase):
             task = json.loads((out / "evidence-tasks.jsonl").read_text().strip())
             self.assertEqual(task["task_type"], "INSPECT_INDEX")
             self.assertFalse(task["grouping"]["requires_confirmation"])
+            self._assert_task_file_manifest(out, manifest)
 
     def test_non_promoted_decision_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
