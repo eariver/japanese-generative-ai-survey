@@ -8,8 +8,8 @@ the Weekly pipeline.
 """
 from __future__ import annotations
 
-import argparse
 import calendar
+import argparse
 import json
 from datetime import datetime, timezone
 from pathlib import Path
@@ -169,43 +169,48 @@ def add_months(year: int, month: int, delta: int) -> tuple[int, int]:
     return index // 12, index % 12 + 1
 
 
+def _period_entry(tier: str, value: dict[str, Any]) -> dict[str, Any]:
+    required = {"label", "special_slug", "start", "end"}
+    missing = sorted(required - set(value))
+    if missing:
+        raise ValueError(f"{tier} period missing fields: {missing}")
+    start = datetime.fromisoformat(value["start"] + "T00:00:00+00:00")
+    end = datetime.fromisoformat(value["end"] + "T23:59:59+00:00")
+    if start > end:
+        raise ValueError(f"{tier} period start is after end: {value}")
+    return {
+        "tier": tier,
+        "label": value["label"],
+        "special_slug": value["special_slug"],
+        "start": iso_utc(start),
+        "end": iso_utc(end),
+    }
+
+
 def historical_plan(config: dict[str, Any]) -> dict[str, Any]:
     hist = config["historical_granularity"]
     result: list[dict[str, Any]] = []
-
-    monthly_start = datetime.fromisoformat(hist["monthly"]["start"] + "T00:00:00+00:00")
-    monthly_end = datetime.fromisoformat(hist["monthly"]["end"] + "T23:59:59+00:00")
-    y, m = monthly_start.year, monthly_start.month
-    while (y, m) <= (monthly_end.year, monthly_end.month):
-        start = datetime(y, m, 1, tzinfo=timezone.utc)
-        end = month_end(y, m)
-        result.append({
-            "tier": "MONTHLY", "special_slug": f"{y:04d}-M{m:02d}",
-            "start": iso_utc(start), "end": iso_utc(min(end, monthly_end)),
-        })
-        y, m = add_months(y, m, 1)
-
-    half_start = datetime.fromisoformat(hist["half_year"]["start"] + "T00:00:00+00:00")
-    half_end = datetime.fromisoformat(hist["half_year"]["end"] + "T23:59:59+00:00")
-    cursor = half_start
-    while cursor <= half_end:
-        end_y, end_m = add_months(cursor.year, cursor.month, 5)
-        end = min(month_end(end_y, end_m), half_end)
-        result.append({
-            "tier": "HALF_YEAR", "special_slug": f"{cursor.year:04d}-{cursor.month:02d}_{end.year:04d}-{end.month:02d}",
-            "start": iso_utc(cursor), "end": iso_utc(end),
-        })
-        next_y, next_m = add_months(cursor.year, cursor.month, 6)
-        cursor = datetime(next_y, next_m, 1, tzinfo=timezone.utc)
+    for tier, key in (("ANNUAL", "annual"), ("HALF_YEAR", "half_year"), ("MONTHLY", "monthly")):
+        periods = hist.get(key, {}).get("periods")
+        if not isinstance(periods, list) or not periods:
+            raise ValueError(f"historical_granularity.{key}.periods must be a non-empty array")
+        result.extend(_period_entry(tier, value) for value in periods)
 
     result.sort(key=lambda item: item["start"])
+    previous_end: datetime | None = None
+    for item in result:
+        start = parse_instant(item["start"])
+        end = parse_instant(item["end"])
+        if previous_end is not None and start <= previous_end:
+            raise ValueError(f"historical retrospective periods overlap at {item['special_slug']}")
+        previous_end = end
+
     return {
         "schema_version": "1.0",
-        "monthly_tier_start": hist["monthly"]["start"],
-        "half_year_tier_start": hist["half_year"]["start"],
-        "annual_before": hist["annual"]["before"],
+        "policy_version": hist.get("policy_version", "1.0"),
         "planned_period_specials": result,
-        "note": "Annual editions before the half-year tier are intentionally not exhaustively enumerated here; create them on demand. Fine-grained historical subjects should prefer a thematic Special instead of expanding the default cadence.",
+        "deferred_history": hist.get("deferred_history"),
+        "note": "The default retrospective cadence is explicit rather than algorithmically extrapolated. Finer historical subjects should use a thematic Special or an explicit later cadence revision.",
     }
 
 
