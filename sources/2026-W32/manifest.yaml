@@ -1,7 +1,7 @@
 issue_id: "2026-W32"
-status: "draft-v0.2-source-polished-pending-full-rebuild"
+status: "release-candidate-v0.2-frozen"
 editorial_structure_status: "established-v0.1"
-article_drafting_status: "all-packages-drafted-validation-passed-editorial-polish-applied"
+article_drafting_status: "all-packages-drafted-validated-polished-and-frozen-v0.2"
 editorial_cutoff: "2026-08-07T18:00:00-04:00"
 editorial_cutoff_timezone: "America/New_York"
 observation_window_start: "2026-08-01T00:00:00-04:00"
@@ -15,6 +15,7 @@ principles:
   - "Candidate selection precedes issue architecture; issue architecture precedes article drafting."
   - "Cover framing is derived after body drafting; it must not drive candidate selection."
   - "Downstream drafts consume normalized/verified evidence rather than raw collector output when a verified layer exists."
+  - "A frozen revision is not silently modified; subsequent content changes require a new revision."
 
 artifacts:
   candidate_inventory:
@@ -41,7 +42,7 @@ artifacts:
     path: "sources/2026-W32/issue-architecture-v0.1.md"
     target_pages: 18
     status: "established"
-    note: "The validated v0.1 draft is intentionally shorter than the provisional target rather than padding weak material."
+    note: "The frozen v0.2 release candidate is 16 pages; weak material was not added solely to reach the provisional target."
 
   draft_validation:
     path: "sources/2026-W32/draft-validation-v0.1.md"
@@ -54,16 +55,25 @@ artifacts:
 
   editorial_polish:
     path: "sources/2026-W32/editorial-polish-v0.1.md"
-    status: "applied-to-source"
+    status: "applied-and-full-rebuilt"
     cover_headline: "モデルの外側へ"
-    full_issue_rebuild: "pending"
+    full_issue_rebuild: "passed"
 
   final_claim_review:
     path: "sources/2026-W32/final-claim-review-v0.1.md"
     status: "passed"
     reviewed_claim_groups: 10
     blocking_findings: 0
-    remaining_freeze_blocker: "full-v0.2-rebuild-and-render-review"
+    remaining_freeze_blocker: null
+
+  ci_validation_r1:
+    path: "sources/2026-W32/ci-validation-v0.2-r1.md"
+    status: "superseded-by-r2"
+    note: "r1 compiled successfully but visual review found one stale hard-coded Astra page reference."
+
+  freeze_record:
+    path: "sources/2026-W32/freeze-v0.2.md"
+    status: "frozen-release-candidate"
 
   editorial_style_guide:
     path: "docs/editorial-style-guide.md"
@@ -78,12 +88,33 @@ artifacts:
     engine: "LuaLaTeX"
     japanese_layout: "jlreq + LuaTeX-ja + HaranoAji"
     texlive_ci: "2026"
-    last_full_validated_pdf_revision: "v0.1"
-    last_full_validated_pdf: "/mnt/data/Japanese_Generative_AI_Technical_Survey_2026-W32_v0.1.pdf"
-    last_full_page_count: 14
-    last_full_validation_status: "warning-free-render-reviewed-preflight-passed"
-    current_source_revision: "v0.2 editorial polish"
-    current_full_build_status: "pending"
+    frozen_source_revision: "v0.2"
+    pdf_producing_commit: "6fa5d5d74bdcd063458a6f3e97197a32051f77a1"
+    github_actions_run: 31350762039
+    github_actions_job: 93340968221
+    github_actions_artifact_id: 9048888577
+    github_actions_artifact_name: "japanese-generative-ai-survey-2026-W32"
+    artifact_zip_digest: "sha256:7dd0ffa07eac2ba6b42a2f2e724f7473c68d36fb96339c822d987179dcd78342"
+    artifact_expires_at: "2026-08-24T02:50:05Z"
+    extracted_pdf_sha256: "6507d866476820931af62daa29975698e3ee6849800cf2ce15706680e4f57c21"
+    current_page_count: 16
+    current_full_build_status: "passed-and-frozen"
+    validation:
+      workflow_conclusion: "success"
+      latexmk: "passed"
+      biber: "passed"
+      final_tex_log_gate: "passed"
+      unresolved_citations: 0
+      unresolved_references: 0
+      overfull_boxes: 0
+      underfull_boxes: 0
+      missing_glyphs: 0
+      visual_render_review: "passed across all 16 pages"
+      pdf_preflight: "passed"
+      page_size: "A4 on all 16 pages"
+      encrypted: false
+      embedded_fonts: true
+      regression_diff: "r1-to-r2 changes limited to pages 13-14 as expected after dynamic Astra page-reference fix"
     cover_smoke_test:
       status: "passed"
       engine: "LuaLaTeX"
@@ -93,45 +124,44 @@ artifacts:
         - "removed awkward Survey title hyphenation"
         - "shortened anchor line to avoid isolated trailing word"
         - "rebalanced cover metadata columns"
-    ci_visibility_note: "Latest commit combined-status endpoint returned no status entries. Push-triggered Actions run enumeration remains unavailable through the current connector. The workflow already supports workflow_dispatch. The runtime also cannot clone GitHub because outbound DNS is unavailable."
 
   article_drafts:
     - path: "surveys/weekly/2026-W32/sections/00-frontmatter.tex"
       package: "contents-this-week-in-ai"
-      status: "editorially-polished-v0.2-pending-full-rebuild"
+      status: "frozen-v0.2"
     - path: "surveys/weekly/2026-W32/sections/10-lead-astra.tex"
       package: "openai-astra-lead"
-      status: "validated-draft-v0.1-current"
+      status: "frozen-v0.2"
     - path: "surveys/weekly/2026-W32/sections/20-minimax-h3.tex"
       package: "minimax-h3-feature"
-      status: "validated-draft-v0.1-current"
+      status: "frozen-v0.2"
     - path: "surveys/weekly/2026-W32/sections/30-model-open-weight.tex"
       package: "model-open-weight-comparison"
-      status: "validated-draft-v0.1-current"
+      status: "frozen-v0.2"
     - path: "surveys/weekly/2026-W32/sections/40-agent-coding.tex"
       package: "agent-coding"
-      status: "editorially-polished-v0.2-pending-full-rebuild"
+      status: "frozen-v0.2"
     - path: "surveys/weekly/2026-W32/sections/50-safety-deep-dive.tex"
       package: "safety-deep-dive"
-      status: "validated-draft-v0.1-current"
+      status: "frozen-v0.2"
     - path: "surveys/weekly/2026-W32/sections/60-inference-serving.tex"
       package: "inference-serving"
-      status: "validated-draft-v0.1-current"
+      status: "frozen-v0.2"
     - path: "surveys/weekly/2026-W32/sections/70-memory-paper-watch.tex"
       package: "memory-paper-watch"
-      status: "validated-draft-v0.1-current"
+      status: "frozen-v0.2"
     - path: "surveys/weekly/2026-W32/sections/80-x-community-watch.tex"
       package: "x-community-watch"
-      status: "editorially-polished-v0.2-pending-full-rebuild"
+      status: "frozen-v0.2"
     - path: "surveys/weekly/2026-W32/sections/90-late-breaking.tex"
       package: "late-breaking"
-      status: "validated-draft-v0.1-current"
+      status: "frozen-v0.2"
     - path: "surveys/weekly/2026-W32/sections/95-watchlist-chronology.tex"
       package: "watchlist-chronology"
-      status: "validated-draft-v0.1-current"
+      status: "frozen-v0.2"
     - path: "surveys/weekly/2026-W32/sections/99-source-notes.tex"
       package: "references-source-notes"
-      status: "editorially-polished-v0.2-pending-full-rebuild"
+      status: "frozen-v0.2"
 
   grok_trend_raw:
     - path: "sources/2026-W32/grok/raw/x-trend-sensor-2026-08-09.md"
@@ -207,14 +237,13 @@ selection_summary:
   note: "Supporting X reaction streams are consumed as evidence and are not counted as duplicate stories."
 
 next_stage:
-  name: "full-rebuild-and-final-editorial-gate"
-  prerequisites: "v0.1 full draft validated; v0.2 editorial source polish applied; high-risk claim review passed"
+  name: "frozen-release-candidate"
+  prerequisites: "all editorial, evidence, CI, preflight, and visual gates passed"
   tasks:
-    - "Perform a full LuaLaTeX+biber rebuild from the current repository source tree."
-    - "Render all pages and compare against the validated v0.1 layout for regressions."
-    - "Repeat citation-to-claim and chronology checks only if subsequent prose/layout corrections alter wording."
-    - "Freeze the final candidate PDF only after the full rebuild passes."
-  page_budget_decision: "14 pages accepted provisionally; do not pad solely to reach the ~16-page planning target."
+    - "Do not silently modify v0.2."
+    - "If a substantive correction is required, create a new revision and repeat affected validation gates."
+    - "Use the frozen v0.2 source and build provenance as the baseline for weekly-pipeline automation work."
+  page_budget_decision: "16 pages accepted as the final v0.2 release-candidate length."
   constraints:
     - "Do not promote HOLD_OUT items without candidate-specific verification."
     - "Keep objective event chronology separate from X momentum."
