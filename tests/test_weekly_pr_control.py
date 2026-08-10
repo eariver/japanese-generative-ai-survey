@@ -20,18 +20,31 @@ class WeeklyPrControlTests(unittest.TestCase):
             self.assertTrue(any("never force-update" in rule for rule in value["rules"]))
             self.assertTrue(any("Never merge" in rule for rule in value["rules"]))
 
-    def test_pipeline_state_status_is_reported_but_not_interpreted_as_gate_approval(self) -> None:
+    def test_pipeline_lifecycle_state_is_reported_but_not_interpreted_as_gate_approval(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            state = root / "sources" / "2026-W33" / "pipeline-state.json"
+            state.parent.mkdir(parents=True)
+            state.write_text(
+                json.dumps({"issue_id": "2026-W33", "lifecycle_state": "EVIDENCE_REVIEWED"}),
+                encoding="utf-8",
+            )
+            value = control.build("2026-W33", root)
+            self.assertEqual(value["pipeline_state_status"], "EVIDENCE_REVIEWED")
+            self.assertIn("`EVIDENCE_REVIEWED`", value["body"])
+            # Gate checklist stays explicit/unapproved regardless of the lifecycle state.
+            self.assertIn("- [ ] Candidate Selection explicitly `APPROVED`", value["body"])
+            self.assertIn("- [ ] Freeze decision recorded", value["body"])
+
+    def test_legacy_status_field_does_not_masquerade_as_canonical_lifecycle_state(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             state = root / "sources" / "2026-W33" / "pipeline-state.json"
             state.parent.mkdir(parents=True)
             state.write_text(json.dumps({"issue_id": "2026-W33", "status": "evidence-reviewed"}), encoding="utf-8")
             value = control.build("2026-W33", root)
-            self.assertEqual(value["pipeline_state_status"], "evidence-reviewed")
-            self.assertIn("`evidence-reviewed`", value["body"])
-            # Gate checklist stays explicit/unapproved regardless of the status string.
-            self.assertIn("- [ ] Candidate Selection explicitly `APPROVED`", value["body"])
-            self.assertIn("- [ ] Freeze decision recorded", value["body"])
+            self.assertIsNone(value["pipeline_state_status"])
+            self.assertIn("not initialized", value["body"])
 
     def test_invalid_issue_id_fails(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
