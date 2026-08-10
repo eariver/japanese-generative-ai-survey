@@ -22,6 +22,13 @@ PLAN = {
 }
 
 
+def only_match(root: Path, pattern: str) -> Path:
+    matches = list(root.glob(pattern))
+    if len(matches) != 1:
+        raise AssertionError(f"expected exactly one match for {pattern}, found {matches}")
+    return matches[0]
+
+
 class SourceIntakeTests(unittest.TestCase):
     def test_parse_arxiv_atom(self):
         atom = b'''<?xml version="1.0" encoding="utf-8"?>
@@ -84,9 +91,16 @@ class SourceIntakeTests(unittest.TestCase):
             root = Path(td)
             run = module.run_github_releases(PLAN, config, root)
             self.assertEqual(run["status"], "success")
-            raw_path = root / "sources/2026-W33/collectors/github-releases/raw/example__repo.json"
+            raw_path = only_match(
+                root,
+                "sources/2026-W33/collectors/github-releases/runs/*/raw/example__repo.json",
+            )
             self.assertEqual(raw_path.read_bytes(), raw)
-            summary = json.loads((root / "sources/2026-W33/collectors/github-releases/summary.json").read_text())
+            summary_path = only_match(
+                root,
+                "sources/2026-W33/collectors/github-releases/runs/*/summary.json",
+            )
+            summary = json.loads(summary_path.read_text())
             self.assertEqual(summary["matching_release_count"], 1)
             self.assertEqual(summary["matching_releases"][0]["tag_name"], "v1.2.3")
 
@@ -118,9 +132,10 @@ class SourceIntakeTests(unittest.TestCase):
             root = Path(td)
             run = module.run_arxiv(PLAN, config, root)
             self.assertEqual(run["status"], "success")
-            raw_path = root / "sources/2026-W33/collectors/arxiv/raw/cs-ai.atom"
+            raw_path = only_match(root, "sources/2026-W33/collectors/arxiv/runs/*/raw/cs-ai.atom")
             self.assertEqual(raw_path.read_bytes(), atom)
-            summary = json.loads((root / "sources/2026-W33/collectors/arxiv/summary.json").read_text())
+            summary_path = only_match(root, "sources/2026-W33/collectors/arxiv/runs/*/summary.json")
+            summary = json.loads(summary_path.read_text())
             self.assertEqual(summary["unique_entry_count"], 1)
 
     def test_official_snapshot_preserves_html(self):
@@ -139,8 +154,18 @@ class SourceIntakeTests(unittest.TestCase):
             root = Path(td)
             run = module.run_official_pages(PLAN, config, root)
             self.assertEqual(run["status"], "success")
-            raw_path = root / "sources/2026-W33/collectors/official-pages/raw/vendor-news.html"
+            raw_path = only_match(
+                root,
+                "sources/2026-W33/collectors/official-pages/runs/*/raw/vendor-news.html",
+            )
             self.assertEqual(raw_path.read_bytes(), html)
+
+    def test_run_paths_do_not_collide_across_observation_times(self):
+        a = module.run_base("2026-W33", "arxiv", module.parse_instant("2026-08-15T00:00:00Z"))
+        b = module.run_base("2026-W33", "arxiv", module.parse_instant("2026-08-15T00:00:01Z"))
+        self.assertNotEqual(a, b)
+        self.assertIn("runs/20260815T000000Z", a)
+        self.assertIn("runs/20260815T000001Z", b)
 
 
 if __name__ == "__main__":
