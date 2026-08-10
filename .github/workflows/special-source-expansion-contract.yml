@@ -1,0 +1,37 @@
+name: Special source expansion contract
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/expand-special-validated-source.yml'
+      - '.github/workflows/build-special-pdf.yml'
+      - '.github/workflows/special-source-expansion-contract.yml'
+      - 'scripts/expand_special_validated_source.py'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/expand-special-validated-source.yml'
+      - '.github/workflows/build-special-pdf.yml'
+      - '.github/workflows/special-source-expansion-contract.yml'
+      - 'scripts/expand_special_validated_source.py'
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify source-expansion and PDF-build control code
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/expand_special_validated_source.py
+          python - <<'PY'
+          from scripts import expand_special_validated_source as e
+          assert e.CLASS_LABELS['PRIMARY_FACT']
+          assert e.CLASS_LABELS['AUTHOR_CLAIM']
+          PY
