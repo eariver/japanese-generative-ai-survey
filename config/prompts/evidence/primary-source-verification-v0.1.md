@@ -28,13 +28,14 @@ Do not infer missing specifications, dates, licenses, benchmark conditions, hard
 
 Every claim, metric and limitation must be assigned exactly one evidence class:
 
-- `PRIMARY_FACT` — a directly checkable fact established by the cited primary source, such as a publication date, repository artifact, documented API behavior, or stated release existence.
+- `PRIMARY_FACT` — a directly checkable fact established by the cited primary source, such as a publication date, repository artifact, documented API behavior, merged change, or stated release existence.
 - `VENDOR_CLAIM` — a performance, quality, capability, cost, efficiency, safety or comparative claim made by a vendor/organization about its own system.
+- `PROJECT_CLAIM` — a performance, compatibility, quality or comparative claim reported by an OSS project, maintainer or contributor in repository material. A merged PR/release existing is a `PRIMARY_FACT`; measurements or generalizations reported by the project remain `PROJECT_CLAIM` unless independently verified.
 - `AUTHOR_CLAIM` — a research-paper result or interpretation reported by the authors and not independently reproduced in the supplied evidence.
 - `SOCIAL_OBSERVATION` — a social/community observation, demonstration or reaction.
 - `INFERENCE` — a clearly marked synthesis derived from cited evidence. Never use `INFERENCE` to fabricate a missing factual value.
 
-A source being primary does not make every statement in it `PRIMARY_FACT`; vendor benchmark claims remain `VENDOR_CLAIM`, and paper results remain `AUTHOR_CLAIM`.
+A source being primary does not make every statement in it `PRIMARY_FACT`; vendor benchmark claims remain `VENDOR_CLAIM`, OSS maintainer/contributor measurements remain `PROJECT_CLAIM`, and paper results remain `AUTHOR_CLAIM`.
 
 ## 4. Temporal model
 
@@ -58,7 +59,7 @@ For `VERIFY_SERIES`, first decide whether the screening `duplicate_group` is a c
 - If items are materially different and should not be one candidate, set `split_recommended=true`.
 - Never merge distinct events only to reduce candidate count.
 
-For `VERIFY_ITEM`, grouping is normally accepted unless the locator itself resolves to a misleading or unrelated artifact.
+For `VERIFY_ITEM`, grouping is normally accepted unless the locator itself resolves to a misleading or unrelated artifact. A `VERIFY_ITEM` may still carry an unconfirmed `duplicate_group` hint when screening is only partially complete; do not claim a series exists until another member is actually present and verified.
 
 For `INSPECT_INDEX`, identify concrete item-level official sources when possible. If the index cannot support item extraction, return `NEEDS_MORE` or `REJECTED`; do not invent an article from an index-page snapshot.
 
