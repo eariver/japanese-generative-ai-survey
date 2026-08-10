@@ -1,0 +1,164 @@
+name: Build Special survey PDF
+
+on:
+  workflow_dispatch:
+    inputs:
+      special_slug:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: special-pdf-${{ inputs.special_slug }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - name: Resolve Special edition
+        id: edition
+        shell: bash
+        env:
+          SPECIAL_SLUG: ${{ inputs.special_slug }}
+        run: |
+          set -euo pipefail
+          manifest="control-src/specials/${SPECIAL_SLUG}/edition.json"
+          test -s "$manifest"
+          python control-src/scripts/special_pipeline.py --config control-src/config/special-pipeline.json validate --manifest "$manifest"
+          echo "special_id=$(python -c "import json; print(json.load(open('$manifest'))['special_id'])")" >> "$GITHUB_OUTPUT"
+          echo "work_branch=$(python -c "import json; print(json.load(open('$manifest'))['paths']['work_branch'])")" >> "$GITHUB_OUTPUT"
+      - name: Checkout Special work branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ steps.edition.outputs.work_branch }}
+          path: worktree
+          fetch-depth: 0
+      - name: Verify PDF build boundary
+        shell: bash
+        env:
+          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+          SPECIAL_SLUG: ${{ inputs.special_slug }}
+        run: |
+          set -euo pipefail
+          python - "$SPECIAL_ID" "$SPECIAL_SLUG" <<'PY'
+          import json,sys,pathlib
+          issue,slug=sys.argv[1:]
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT', state['lifecycle_state']
+          assert state['gates']['claim_and_chronology_validation']=='passed'
+          assert state['gates']['latex_build']=='pending'
+          source=root/'surveys'/'special'/slug/'source-manifest.json'
+          assert source.is_file()
+          assert (root/'surveys'/'special'/slug/'main.tex').is_file()
+          PY
+      - name: Set reproducible PDF timestamp
+        shell: bash
+        run: echo 'SOURCE_DATE_EPOCH=1786406400' >> "$GITHUB_ENV"
+      - name: Compile Special issue with LuaLaTeX
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: main.tex
+          working_directory: worktree/surveys/special/${{ inputs.special_slug }}
+          texlive_version: 2026
+          latexmk_use_lualatex: true
+      - name: Analyze final TeX log and page count
+        id: analyze
+        shell: bash
+        env:
+          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+          SPECIAL_SLUG: ${{ inputs.special_slug }}
+        run: |
+          set -euo pipefail
+          dir="worktree/surveys/special/${SPECIAL_SLUG}"
+          pdf="$dir/main.pdf"
+          log="$dir/main.log"
+          test -s "$pdf" && test -s "$log"
+          bad=$(grep -E -n 'LaTeX Warning: (There were undefined references|Citation .* undefined)|Package biblatex Warning: Please (re)?run|Overfull \\hbox|Underfull \\hbox|Missing character:' "$log" || true)
+          pages=$(python - "$log" <<'PY'
+          import re,sys
+          text=open(sys.argv[1],encoding='utf-8',errors='replace').read()
+          matches=re.findall(r'Output written on .*?\((\d+) pages?',text,re.S)
+          if not matches: raise SystemExit('could not determine PDF page count from TeX log')
+          print(matches[-1])
+          PY
+          )
+          digest=$(sha256sum "$pdf" | awk '{print $1}')
+          if [ -z "$bad" ]; then clean=true; else clean=false; fi
+          python - "$SPECIAL_ID" "$SPECIAL_SLUG" "$pages" "$digest" "$clean" "$bad" <<'PY'
+          import json,sys
+          issue,slug,pages,digest,clean,bad=sys.argv[1:]
+          out={'schema_version':'1.0','issue_id':issue,'special_slug':slug,
+               'page_count':int(pages),'pdf_sha256':digest,'log_clean':clean=='true',
+               'log_gate_findings':bad.splitlines() if bad else [],
+               'page_target_min':32,'page_target_max':40}
+          open('special-pdf-build-audit.json','w',encoding='utf-8').write(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+          echo "page_count=$pages" >> "$GITHUB_OUTPUT"
+          echo "pdf_sha256=$digest" >> "$GITHUB_OUTPUT"
+          echo "log_clean=$clean" >> "$GITHUB_OUTPUT"
+      - name: Upload PDF preview artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: japanese-generative-ai-survey-special-${{ inputs.special_slug }}
+          path: |
+            worktree/surveys/special/${{ inputs.special_slug }}/main.pdf
+            worktree/surveys/special/${{ inputs.special_slug }}/main.log
+            special-pdf-build-audit.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Enforce TeX log and Special page budget
+        shell: bash
+        env:
+          PAGE_COUNT: ${{ steps.analyze.outputs.page_count }}
+          LOG_CLEAN: ${{ steps.analyze.outputs.log_clean }}
+        run: |
+          set -euo pipefail
+          test "$LOG_CLEAN" = true
+          test "$PAGE_COUNT" -ge 32
+          test "$PAGE_COUNT" -le 40
+      - name: Record successful PDF build gate
+        working-directory: worktree
+        shell: bash
+        env:
+          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+          WORK_BRANCH: ${{ steps.edition.outputs.work_branch }}
+          PAGE_COUNT: ${{ steps.analyze.outputs.page_count }}
+          PDF_SHA256: ${{ steps.analyze.outputs.pdf_sha256 }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          python - "$SPECIAL_ID" "$PAGE_COUNT" "$PDF_SHA256" "$RUN_ID" <<'PY'
+          import json,sys,hashlib,pathlib
+          issue,pages,pdf_sha,run_id=sys.argv[1:]
+          path=pathlib.Path('sources')/issue/'pipeline-state.json'
+          state=json.load(open(path,encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT'
+          state['lifecycle_state']='RELEASE_CANDIDATE'
+          state['gates']['latex_build']='passed'
+          source_path=pathlib.Path(state['provenance']['validated_issue_source']['path'])
+          state.setdefault('provenance',{})['latex_build']={
+              'workflow_run_id':int(run_id),
+              'pdf_sha256':pdf_sha,
+              'page_count':int(pages),
+              'validated_issue_source_path':source_path.as_posix(),
+              'validated_issue_source_sha256':hashlib.sha256(source_path.read_bytes()).hexdigest(),
+          }
+          path.write_text(json.dumps(state,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "sources/${SPECIAL_ID}/pipeline-state.json"
+          git commit -m "Record successful PDF build for ${SPECIAL_ID}"
+          git push origin "HEAD:${WORK_BRANCH}"
