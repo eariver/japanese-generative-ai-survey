@@ -1,234 +1,175 @@
 # Weekly Survey GitHub Release Process
 
-Status: operational release policy for frozen weekly issues  
-Applies after: human/reviewer Freeze Gate
+Status: operational release design for frozen weekly survey PDFs.
 
-## 1. Purpose
+## 1. Objective
 
-A frozen weekly issue may be published as a GitHub Release with:
+A frozen weekly survey should be distributable as a GitHub Release with:
 
-- a Git tag fixed to the frozen source commit;
-- the exact frozen PDF as a Release asset;
-- `SHA256SUMS.txt` for independent digest verification;
-- release notes containing source/freeze provenance.
+- a stable release tag;
+- the verified PDF as a Release asset;
+- `SHA256SUMS.txt`;
+- machine-readable `RELEASE_METADATA.json`;
+- an auditable link back to the exact PDF-producing source commit and freeze record.
 
-The Release is a distribution surface. The repository TeX/Bib/Evidence tree remains the Source of Truth.
+The public Release is downstream of the existing Freeze Gate. A successful TeX build alone never authorizes publication.
 
-## 2. Tag convention
+## 2. Important distinction: Release tag vs frozen source commit
 
-Weekly release tags use:
+The Release tag is deliberately a **release-control anchor**, not the authoritative pointer to the PDF-producing source tree.
 
-```text
-weekly/<issue-id>/<revision>
-```
+GitHub rejects creation of a tag at some historical commits through `GITHUB_TOKEN` when that historical commit adds or modifies `.github/workflows/` relative to the current default branch. The token would need repository `Workflows: write`, which the Actions `GITHUB_TOKEN` cannot be granted for this case.
 
-Example:
+Therefore the release design records two different commits:
 
 ```text
-weekly/2026-W32/v0.2
+release_tag -> release_anchor_commit on the current default branch
+
+RELEASE_METADATA.json / release-manifest.json
+    -> frozen_source_commit
+    -> exact PDF SHA-256
 ```
 
-The tag must resolve to the PDF-producing frozen source commit recorded in:
+The contents of the survey are identified by `frozen_source_commit + pdf_sha256`, not by assuming that the Release tag itself points to the source commit.
+
+This separation is intentional and must not be collapsed later for convenience.
+
+## 3. Per-issue release manifest
+
+Each frozen issue has:
 
 ```text
 sources/<issue>/release-manifest.json
 ```
 
-A tag is never moved to a later commit merely because operational metadata was added after freeze.
+It records at least:
 
-## 3. Release manifest
-
-Each releasable frozen revision records at least:
-
-- issue ID / revision;
+- issue and revision;
 - frozen source commit;
-- canonical release tag/title;
-- release PDF filename;
+- canonical Release tag/name;
+- PDF asset filename;
 - expected PDF SHA-256;
 - page count;
 - freeze record;
-- PDF source mode.
+- the source of the PDF binary.
 
-Supported PDF source modes:
+For W32 the exact binary comes from the already validated frozen Actions Artifact because that issue was frozen before reproducible PDF timestamps were introduced.
 
-### `actions-artifact`
+For later issues, `pdf_source.mode = rebuild` may be used once the normal build has been frozen with the repository's reproducible timestamp policy.
 
-Used when the exact frozen PDF bytes are available only from the already validated GitHub Actions artifact.
+## 4. Workflow modes
 
-The manifest pins:
-
-- workflow run ID;
-- artifact ID;
-- artifact name;
-- expected PDF SHA-256.
-
-The release workflow verifies all of those before using the PDF.
-
-### `rebuild`
-
-Preferred for future issues after reproducible-PDF controls are enabled.
-
-The workflow checks out the frozen source commit, sets a deterministic `SOURCE_DATE_EPOCH`, rebuilds with the pinned TeX Live version, and requires the resulting PDF SHA-256 to match the frozen digest.
-
-## 4. Why W32 uses the frozen Actions artifact
-
-The W32 v0.2 PDF was frozen before deterministic PDF timestamps were introduced.
-
-Inspection of the frozen file showed a build-time `CreationDate` / `ModDate` and PDF identifier. Therefore source equality alone is not sufficient to assume a later build will be byte-identical.
-
-For W32, the release manifest deliberately points to the exact validated Actions artifact from:
+Use:
 
 ```text
-run      31350762039
-artifact 9048888577
+Actions -> Release frozen weekly survey
 ```
 
-The release workflow downloads that artifact and checks:
+The workflow has three modes.
+
+### `validate`
+
+Read-only with respect to tags and Releases.
+
+1. Validate `release-manifest.json` and the freeze record.
+2. Obtain the exact frozen PDF, either from the recorded Actions Artifact or by reproducible rebuild.
+3. Verify its SHA-256 against the frozen manifest.
+4. Upload a temporary `weekly-release-validation-*` Actions Artifact.
+
+This is the safest first operation for every frozen issue.
+
+### `draft`
+
+Creates a GitHub Draft Release after the same PDF validation.
+
+1. Determine the repository default branch.
+2. Ask the GitHub Releases API/CLI to create the new Release tag from that **current default branch**, avoiding a historical-workflow tag write.
+3. Resolve and record the actual tag commit as `release_anchor_commit`.
+4. Attach:
+   - the verified PDF;
+   - `SHA256SUMS.txt`;
+   - `RELEASE_METADATA.json`.
+5. Download the PDF from the new Draft Release and verify its SHA-256 again.
+6. Leave the Release as a Draft.
+
+`RELEASE_METADATA.json` contains both `release_anchor_commit` and `frozen_source_commit` so the distinction remains machine-readable.
+
+### `publish`
+
+Publishes **an existing Draft only**. It never creates a new Release.
+
+Before changing Draft state it:
+
+1. downloads the PDF, checksum, and `RELEASE_METADATA.json` from the Draft itself;
+2. verifies the PDF digest against the frozen manifest;
+3. verifies the recorded frozen source commit;
+4. verifies that the current Release tag still resolves to the recorded `release_anchor_commit`;
+5. only then changes the Release from Draft to published.
+
+This means publication does not depend on the original Actions Artifact still being within its retention window, provided the Draft was created while the artifact was available.
+
+## 5. W32 special case
+
+W32 frozen PDF:
 
 ```text
-SHA-256 = 6507d866476820931af62daa29975698e3ee6849800cf2ce15706680e4f57c21
+source commit:
+6fa5d5d74bdcd063458a6f3e97197a32051f77a1
+
+PDF SHA-256:
+6507d866476820931af62daa29975698e3ee6849800cf2ce15706680e4f57c21
+
+frozen Actions run:
+31350762039
+
+frozen Artifact ID:
+9048888577
 ```
 
-before any tag or GitHub Release write.
+The PDF contains a build-time CreationDate/PDF ID, so a later rebuild is not assumed to be byte-for-byte identical. The Release workflow therefore retrieves that exact frozen Artifact and verifies the digest before Draft creation.
 
-The pinned W32 Actions artifact currently expires on 2026-08-24, so W32 should at least be promoted to a GitHub Release draft before that artifact expires. Once the verified PDF is attached to the draft, the draft Release becomes the durable staging copy for publication.
+## 6. Reproducible PDFs for later issues
 
-## 5. Future reproducible PDF policy
-
-`Build weekly survey PDF` now exports:
+The normal weekly build sets:
 
 ```text
 SOURCE_DATE_EPOCH=<source commit timestamp>
 FORCE_SOURCE_DATE=1
 ```
 
-before LuaLaTeX compilation and records `main.pdf.sha256` beside the PDF artifact.
+and records `main.pdf.sha256` beside the PDF in the Actions Artifact.
 
-For new issues, the expected workflow is:
-
-1. build with deterministic timestamp inputs;
-2. visual/citation/freeze review;
-3. record the frozen PDF SHA-256 in `release-manifest.json`;
-4. later rebuild the same frozen commit under the same TeX Live/toolchain;
-5. require byte-for-byte digest equality before Release publication.
-
-The TeX Live version remains part of release provenance.
-
-## 6. GitHub Actions workflow
-
-Use:
+The intended later-issue freeze process is:
 
 ```text
-Actions -> Release frozen weekly survey -> Run workflow
+frozen source commit
+    -> reproducible LuaLaTeX build
+    -> verified PDF SHA-256
+    -> release-manifest.json
 ```
 
-Inputs:
-
-```text
-issue_id
-revision
-mode = validate | draft | publish
-confirmation = <issue>@<revision>
-```
-
-Example:
-
-```text
-issue_id      2026-W32
-revision      v0.2
-mode          validate
-confirmation  2026-W32@v0.2
-```
-
-### `validate`
-
-Safe/no-write release smoke test.
-
-It:
-
-- validates the frozen release manifest;
-- obtains the exact frozen PDF according to `pdf_source`;
-- verifies the PDF SHA-256;
-- emits the proposed PDF, `SHA256SUMS.txt` and Release Notes as an Actions artifact.
-
-It creates no tag and no GitHub Release.
-
-### `draft`
-
-After `validate` passes, this mode:
-
-- creates or verifies the canonical frozen source tag;
-- creates a GitHub Draft Release if none exists;
-- attaches the verified PDF and `SHA256SUMS.txt`;
-- refuses to overwrite an already-published Release;
-- if the Draft already exists, downloads its PDF asset and verifies the frozen digest instead of clobbering it.
-
-This is the human inspection point before publication.
-
-### `publish`
-
-This mode requires:
-
-- the canonical tag already exists and resolves to the frozen source commit;
-- a Draft Release already exists;
-- the Draft PDF asset matches the frozen SHA-256;
-- `SHA256SUMS.txt` is present.
-
-Only then does it change the Draft to a published Release and mark it Latest.
-
-`publish` is intentionally not a one-click shortcut from no Release to public Release; `draft` must occur first.
+A future issue should use `pdf_source.mode = rebuild` only after byte-for-byte reproducibility has actually been demonstrated for that issue.
 
 ## 7. Immutable Releases
 
-GitHub supports repository-level Immutable Releases.
+GitHub Immutable Releases are recommended once the Draft/Publish workflow is proven operational for the repository.
 
-When enabled, immutability is enforced after publication:
+With immutability enabled, after publication:
 
-- the Git tag associated with a published Release cannot be modified or deleted while the Release exists;
-- published Release assets cannot be modified or deleted;
-- GitHub can provide a cryptographically signed release attestation covering the Release assets.
+- the tag associated with the Release cannot be moved or deleted while the Release exists;
+- Release assets cannot be replaced or deleted;
+- GitHub creates a release attestation that can be verified with `gh release verify` and `gh release verify-asset`.
 
-This project should enable Immutable Releases before routine public publication, after the first Draft/Publish workflow has been validated. Draft Releases remain mutable until publication, which matches the project's desired review process.
-
-When immutability is enabled, the workflow attempts `gh release verify` after publication. Failure of this optional verification step does not undo an otherwise successful release; the release digest has already been independently checked before publication.
-
-## 8. Security / permission model
-
-The Release workflow is `workflow_dispatch` only.
-
-It requires:
-
-```yaml
-permissions:
-  contents: write
-  actions: read
-```
-
-`actions: read` is required when the frozen PDF is downloaded from a prior Actions artifact. `contents: write` is required to push the release tag and manage the GitHub Release.
-
-The workflow does not create a Release by targeting an arbitrary old commit through the Releases API. It first creates/verifies an explicit Git tag at the frozen source commit and then creates the Release using `--verify-tag`.
-
-## 9. Failure semantics
-
-Publication must fail when:
-
-- confirmation does not match issue/revision;
-- manifest is not frozen;
-- tag points to a different commit;
-- pinned Actions artifact metadata is wrong or expired;
-- rebuilt/frozen PDF SHA-256 differs from the manifest;
-- an existing Draft contains a different PDF asset;
-- `publish` is requested before a Draft exists;
-- `SHA256SUMS.txt` is missing from the Draft.
-
-A failed release operation must not silently replace assets with `--clobber`.
-
-## 10. Revision policy
-
-Once a weekly Release is published, substantive content corrections create a new survey revision and a new tag, for example:
+The recommended sequence remains:
 
 ```text
-weekly/2026-W32/v0.3
+validate -> draft -> inspect -> publish
 ```
 
-Do not silently replace the PDF behind `weekly/2026-W32/v0.2`.
+because immutability applies after publication, not while a Release is still a Draft.
+
+## 8. Assistant workflow execution
+
+Routine workflow execution may be initiated through the repository's `automation-control` branch and `.github/workflows/assistant-control.yml`.
+
+The control channel allowlists only known workflows/inputs. A public Release `publish` request additionally requires `publish_authorized=true` in the control request; operational validation and Draft creation do not imply permission to publish publicly.
