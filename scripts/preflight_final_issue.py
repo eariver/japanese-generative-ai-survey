@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Run deterministic source-level preflight on a finalized weekly survey tree.
 
-This stage validates only concerns visible in final source material: manifest/file
+This stage validates concerns visible in final source material: manifest/file
 integrity, section ordering, dynamic package labels/page refs, literal page-number
-regressions, and exact TeX/Bib citation-key consistency. Semantic Evidence checks
+regressions, exact TeX/Bib citation-key consistency, and reader-facing prose
+separation from internal editorial workflow metadata. Semantic Evidence checks
 remain upstream in the structured drafting validators.
 """
 
@@ -23,6 +24,23 @@ PACKAGE_PAGEREF_RE = re.compile(r"\\pageref\{pkg:([^}]+)\}")
 CITE_RE = re.compile(r"\\(?:auto|text|paren)cite(?:\[[^\]]*\]){0,2}\{([^}]+)\}")
 INPUT_RE = re.compile(r"\\input\{([^}]+)\}")
 LITERAL_INTERNAL_PAGE_RE = re.compile(r"(?:今号|本号)\s*[pP]\.?(?:~|\s)*\d+")
+PROSE_LINT_EXEMPT_MARKER = "% reader-facing-prose-lint: allow-internal-metadata"
+LEGACY_READER_PROSE_EXEMPT_ISSUES = {"2026-W32"}
+READER_FACING_FORBIDDEN_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("Candidate Inventory", re.compile(r"Candidate\s+Inventory", re.IGNORECASE)),
+    ("Candidate Selection", re.compile(r"Candidate\s+Selection", re.IGNORECASE)),
+    ("Reaction Pass", re.compile(r"(?:Grok\s+)?Reaction\s+Pass", re.IGNORECASE)),
+    ("primary verification workflow status", re.compile(r"primary\s+verification", re.IGNORECASE)),
+    ("Issue Architecture", re.compile(r"Issue\s+Architecture", re.IGNORECASE)),
+    ("Evidence Task", re.compile(r"Evidence\s+Task", re.IGNORECASE)),
+    ("Draft Package", re.compile(r"Draft\s+Package", re.IGNORECASE)),
+    ("selected-candidate workflow phrasing", re.compile(r"今号で採用した[^。\n]{0,30}候補")),
+    ("future production TODO", re.compile(r"次号(?:以降)?[^。\n]{0,40}(?:追跡|昇格)")),
+    (
+        "candidate queue-management language",
+        re.compile(r"候補として保存|Candidate\s+Inventoryへ残|昇格させ|選考ステータス|記事にできなかった情報の墓場", re.IGNORECASE),
+    ),
+)
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -70,6 +88,38 @@ def normalize_input_path(value: str) -> str:
     if path.suffix == ".tex":
         path = path.with_suffix("")
     return path.as_posix()
+
+
+def strip_tex_comment(line: str) -> str:
+    """Remove an unescaped TeX comment from one source line."""
+    return re.sub(r"(?<!\\)%.*$", "", line)
+
+
+def reader_facing_prose_errors(path: Path, issue_dir: Path) -> list[str]:
+    """Return deterministic errors for internal workflow language in visible prose.
+
+    Files that intentionally contain internal metadata, such as a dedicated Source
+    Notes/provenance section, may opt out with PROSE_LINT_EXEMPT_MARKER on a TeX
+    comment line. Ordinary article sections must not use that marker merely to
+    bypass reader-facing editorial review.
+    """
+    text = path.read_text(encoding="utf-8")
+    if PROSE_LINT_EXEMPT_MARKER in text:
+        return []
+
+    relative = path.relative_to(issue_dir).as_posix()
+    errors: list[str] = []
+    for line_number, raw_line in enumerate(text.splitlines(), start=1):
+        visible = strip_tex_comment(raw_line)
+        if not visible.strip():
+            continue
+        for rule, pattern in READER_FACING_FORBIDDEN_PATTERNS:
+            match = pattern.search(visible)
+            if match:
+                errors.append(
+                    f"reader-facing prose violation [{rule}] at {relative}:{line_number}: {match.group(0)!r}"
+                )
+    return errors
 
 
 def preflight(issue_dir: Path, manifest_path: Path | None = None) -> tuple[dict[str, Any], bool]:
@@ -184,6 +234,11 @@ def preflight(issue_dir: Path, manifest_path: Path | None = None) -> tuple[dict[
             literal_refs.append(f"{path.relative_to(issue_dir).as_posix()}:{match.group(0)}")
     if literal_refs:
         errors.append(f"literal internal page references are forbidden: {literal_refs}")
+
+    issue_id = manifest.get("issue_id")
+    if issue_id not in LEGACY_READER_PROSE_EXEMPT_ISSUES:
+        for path in all_tex_paths:
+            errors.extend(reader_facing_prose_errors(path, issue_dir))
 
     citations = sorted(cite_keys(all_tex_text))
     bibliography_keys: list[str] = []
