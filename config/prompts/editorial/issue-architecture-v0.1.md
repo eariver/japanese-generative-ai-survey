@@ -65,6 +65,39 @@ Other selected items whose `timing_relation` is `POST_CUTOFF` must also remain i
 
 `TIMING_UNRESOLVED` means unresolved. Do not infer a clock time or assign the item to Main vs Post-Cutoff by guesswork.
 
+### 5.1 Weekly relevance / why-this-week gate
+
+A Weekly article is not automatically justified merely because its Evidence is valid.
+
+For any primary item whose underlying artifact/event predates the current issue window, decide whether there is a concrete current-window reason for ordinary Weekly placement. Examples include:
+
+- a new release, weights, API, serving engine or integration;
+- a material independent evaluation;
+- reproducible local/deployment evidence;
+- a new failure, security or governance finding;
+- clear technical-community momentum in the current window;
+- a current-window candidate set that makes an older artifact necessary to explain a structural trend.
+
+When a pre-window primary item remains in a normal Weekly feature/comparison package, encode a short **reader-facing why-this-week requirement** in `must_cover` or `editorial_angle`. The later draft must be able to explain the reason without referring to Candidate Selection, Reaction Pass, Evidence workflow state or other internal editorial machinery.
+
+If no defensible current-window trigger exists, do not frame the item as weekly newness. Prefer an appropriate `DEEP_DIVE`, `WATCHLIST`, or `CHRONOLOGY` treatment rather than a normal current-news package. Do not write `今週リリース` for an older artifact.
+
+`This Week in AI` may later synthesize a structural trend from older artifacts, but the Architecture should make clear that the trend is visible **from this week's evidence/candidate set**, not that every artifact originated this week.
+
+### 5.2 One substantive home for each Late Breaking event
+
+Avoid repeating one post-cutoff event as substantive content in several packages.
+
+Each selected Late Breaking event/Evidence item must have exactly one **canonical substantive home**, normally its `LATE_BREAKING` package.
+
+If the same post-cutoff Evidence Task is also included as supporting context in another package:
+
+- the non-canonical package may use it only for a short bridge/cross-reference;
+- add an explicit boundary stating that the event is **cross-reference-only** in that package and naming the canonical Late Breaking package ID;
+- do not ask the other package to repeat detailed mechanism, chronology, benchmark results or implications already assigned to the canonical home.
+
+The purpose is to preserve contextual links without duplicating a Late Breaking mini-article across a short issue.
+
 ## 6. Editorial packaging
 
 Available package types are defined by `schemas/issue-architecture-plan.schema.json`.
@@ -81,6 +114,14 @@ Use packages to create a coherent weekend-magazine reading flow. Appropriate pat
 Do not force every role to correspond one-to-one with a package type.
 
 `CHRONOLOGY` and `WATCHLIST` are usually compact treatments rather than full features.
+
+For `WATCHLIST`, plan reader-facing content around three questions where the Evidence permits it:
+
+1. what credible signal exists now;
+2. what remains unconfirmed;
+3. what future evidence/event would materially change the assessment.
+
+Do not make Watchlist copy about Candidate Inventory status, promotion/demotion, or production TODOs.
 
 ## 7. Page budget
 
@@ -121,7 +162,21 @@ Choose the order based on dependency:
 
 Do not use `drafting_order` as a ranking of candidate importance.
 
-## 10. Approval boundary
+## 10. Reader-facing vs internal metadata boundary
+
+Architecture fields may contain internal IDs and workflow metadata because they are repository artifacts. However, requirements intended to become prose must be phrased so they can be rendered naturally for readers.
+
+Do not require article prose to say things like:
+
+- `Candidate Inventoryへ残す`;
+- `Reaction Passで取得した`;
+- `今回primary verificationしていない`;
+- `次号で昇格させる`;
+- `今号で採用した候補`.
+
+Instead require the underlying reader-relevant fact or boundary, such as source uncertainty, current X observation, lack of primary confirmation, or a concrete future Watchlist observation point.
+
+## 11. Approval boundary
 
 Output a `PROPOSED` Architecture Plan by default.
 
@@ -129,7 +184,7 @@ Do not set `status=APPROVED` or invent approval metadata. Approval is a separate
 
 Article drafting must not begin until a validator has accepted an `APPROVED` Architecture Plan.
 
-## 11. Output
+## 12. Output
 
 Return exactly one JSON object conforming to `schemas/issue-architecture-plan.schema.json`.
 
