@@ -34,6 +34,21 @@ jobs:
           os: debian
           latexmk_use_lualatex: true
 
+      - name: Validate final TeX log
+        working-directory: surveys/weekly/2026-W32
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s main.pdf
+          test -s main.log
+
+          if grep -E -n 'LaTeX Warning: (There were undefined references|Citation .* undefined)|Package biblatex Warning: Please (re)?run|Overfull \\hbox|Underfull \\hbox|Missing character:' main.log; then
+            echo '::error::Final TeX log contains publication-blocking warnings.'
+            exit 1
+          fi
+
+          echo 'Final TeX log passed publication-warning gate.'
+
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v7
         with:
