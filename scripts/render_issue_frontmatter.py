@@ -10,7 +10,9 @@ from pathlib import Path
 from typing import Any
 
 from scripts import validate_issue_synthesis as synthesis_validator
-from scripts.render_article_draft_tex import BS, tex_escape
+from scripts.render_article_draft_tex import tex_escape
+
+BS = chr(92)
 
 
 def load_json(path: Path) -> dict[str, Any]:
