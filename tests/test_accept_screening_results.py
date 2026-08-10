@@ -30,6 +30,18 @@ class ScreeningAcceptanceTests(unittest.TestCase):
                 "issue_id": self.ISSUE,
                 "lifecycle_state": "DISCOVERY_COLLECTED",
                 "revision": "working",
+                "gates": {
+                    "raw_sources_preserved": "passed",
+                    "candidate_inventory": "pending",
+                    "evidence_normalized": "pending",
+                    "candidate_selection": "pending",
+                    "issue_architecture": "pending",
+                    "article_draft": "pending",
+                    "claim_and_chronology_validation": "pending",
+                    "latex_build": "pending",
+                    "visual_review": "pending",
+                    "freeze": "pending",
+                },
             },
         )
         self._json(raw_index_path, {"schema_version": "1.0", "issue_id": self.ISSUE, "entries": []})
@@ -159,7 +171,7 @@ class ScreeningAcceptanceTests(unittest.TestCase):
             review_reference="assistant-review:screening-complete",
         )
 
-    def test_accepts_complete_validated_result_set_append_only(self) -> None:
+    def test_accepts_complete_validated_result_set_and_closes_discovery(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             repo, package, results = self._fixture(Path(tmp))
             result, passed = self._accept(repo, package, results)
@@ -168,6 +180,8 @@ class ScreeningAcceptanceTests(unittest.TestCase):
             self.assertEqual(result["batch_count"], 1)
             self.assertEqual(result["reviewed_record_count"], 1)
             self.assertEqual(result["verification_queue_count"], 1)
+            self.assertEqual(result["lifecycle_state"], "CANDIDATES_NORMALIZED")
+            self.assertEqual(result["candidate_inventory_gate"], "passed")
 
             accepted = repo / "sources" / self.ISSUE / "screening" / "runs" / result["result_set_sha256"]
             self.assertTrue((accepted / "results" / "batch-001.json").is_file())
@@ -175,10 +189,13 @@ class ScreeningAcceptanceTests(unittest.TestCase):
             self.assertTrue((accepted / "verification-queue.jsonl").is_file())
             self.assertTrue((accepted / "validation" / "batch-001.json").is_file())
             manifest = json.loads((accepted / "acceptance.json").read_text())
-            self.assertIsNone(manifest["state_transition"])
+            self.assertEqual(manifest["state_transition"]["from"], "DISCOVERY_COLLECTED")
+            self.assertEqual(manifest["state_transition"]["to"], "CANDIDATES_NORMALIZED")
             self.assertEqual(manifest["results"][0]["runner"]["model"], "test-model")
             state = json.loads((repo / "sources" / self.ISSUE / "pipeline-state.json").read_text())
-            self.assertEqual(state["lifecycle_state"], "DISCOVERY_COLLECTED")
+            self.assertEqual(state["lifecycle_state"], "CANDIDATES_NORMALIZED")
+            self.assertEqual(state["gates"]["candidate_inventory"], "passed")
+            self.assertEqual(state["gates"]["evidence_normalized"], "pending")
 
     def test_exact_result_set_is_idempotent_after_lifecycle_progress(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -188,6 +205,7 @@ class ScreeningAcceptanceTests(unittest.TestCase):
             state_path = repo / "sources" / self.ISSUE / "pipeline-state.json"
             state = json.loads(state_path.read_text())
             state["lifecycle_state"] = "EVIDENCE_REVIEWED"
+            state["gates"]["evidence_normalized"] = "passed"
             state_path.write_text(json.dumps(state), encoding="utf-8")
             # Exact accepted bytes remain a stable audit lookup and must not mutate state.
             second, passed = self._accept(repo, package, results)
@@ -201,6 +219,7 @@ class ScreeningAcceptanceTests(unittest.TestCase):
             state_path = repo / "sources" / self.ISSUE / "pipeline-state.json"
             state = json.loads(state_path.read_text())
             state["lifecycle_state"] = "CANDIDATES_NORMALIZED"
+            state["gates"]["candidate_inventory"] = "passed"
             state_path.write_text(json.dumps(state), encoding="utf-8")
             # Package provenance must be updated to the exact state bytes before lifecycle policy is evaluated.
             package_manifest_path = package / "screening-run-package.json"
