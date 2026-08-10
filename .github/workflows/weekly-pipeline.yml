@@ -1,0 +1,107 @@
+name: Weekly pipeline spine
+
+on:
+  schedule:
+    # Saturday 00:30 UTC is after Friday 18:00 America/New_York in both EDT and EST.
+    - cron: '30 0 * * 6'
+  workflow_dispatch:
+    inputs:
+      command:
+        description: Deterministic pipeline command
+        required: true
+        default: plan
+        type: choice
+        options:
+          - plan
+          - validate
+      issue_id:
+        description: Required for validate, for example 2026-W32
+        required: false
+        type: string
+      target:
+        description: Validation target
+        required: true
+        default: draft
+        type: choice
+        options:
+          - selection
+          - draft
+          - release-candidate
+          - frozen
+
+permissions:
+  contents: read
+
+concurrency:
+  group: weekly-pipeline-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    if: github.event_name == 'schedule' || inputs.command == 'plan'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build weekly operational plan
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out/weekly-pipeline
+          python scripts/weekly_pipeline.py plan \
+            --output out/weekly-pipeline/plan.json \
+            --markdown-output out/weekly-pipeline/plan.md
+
+      - name: Upload weekly plan artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: weekly-pipeline-plan
+          path: out/weekly-pipeline/
+          if-no-files-found: error
+          retention-days: 14
+
+  validate:
+    if: github.event_name == 'workflow_dispatch' && inputs.command == 'validate'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate issue input
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z '${{ inputs.issue_id }}' ]; then
+            echo '::error::issue_id is required when command=validate.'
+            exit 2
+          fi
+
+      - name: Validate deterministic repository gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out/weekly-pipeline
+          python scripts/weekly_pipeline.py validate \
+            --issue-id '${{ inputs.issue_id }}' \
+            --target '${{ inputs.target }}' \
+            --output out/weekly-pipeline/validation.json
+
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: weekly-pipeline-validation-${{ inputs.issue_id }}
+          path: out/weekly-pipeline/
+          if-no-files-found: warn
+          retention-days: 14
