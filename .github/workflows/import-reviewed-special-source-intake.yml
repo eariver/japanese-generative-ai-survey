@@ -51,7 +51,7 @@ jobs:
           fi
           manifest="control-src/specials/${SPECIAL_SLUG}/edition.json"
           test -s "$manifest"
-          python control-src/scripts/special_pipeline.py validate --manifest "$manifest"
+          python control-src/scripts/special_pipeline.py --config control-src/config/special-pipeline.json validate --manifest "$manifest"
           special_id="$(python -c "import json; print(json.load(open('$manifest'))['special_id'])")"
           work_branch="$(python -c "import json; print(json.load(open('$manifest'))['paths']['work_branch'])")"
           echo "special_id=$special_id" >> "$GITHUB_OUTPUT"
