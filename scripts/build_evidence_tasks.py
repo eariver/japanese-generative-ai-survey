@@ -94,10 +94,17 @@ def build_task(issue_id: str, group_kind: str, group_value: str, items: list[dic
 
     duplicate_group = group_value if group_kind == "duplicate" else None
     if group_kind == "duplicate":
-        task_type = "VERIFY_SERIES"
         grouping_basis = "llm-duplicate-group"
         requires_confirmation = True
-        task_key = f"series:{group_value}"
+        if len(items) >= 2:
+            task_type = "VERIFY_SERIES"
+            task_key = f"series:{group_value}"
+        else:
+            # Partial/resumable screening may expose a duplicate-group hint before
+            # another member is processed. Keep the hint without pretending a
+            # one-item series exists.
+            task_type = "VERIFY_ITEM"
+            task_key = f"duplicate-hint:{group_value}:{items[0]['screening_id']}"
     else:
         only = items[0]
         if only["screening"].get("decision") == "INSPECT" or only["record"].get("source_type") == "official-index-snapshot":
@@ -157,8 +164,6 @@ def build(queue_path: Path, output_dir: Path) -> tuple[dict[str, Any], bool]:
             errors.append(f"duplicate evidence_task_id: {task_id}")
         seen_ids.add(task_id)
         covered.extend(task["screening_ids"])
-        if task["task_type"] == "VERIFY_SERIES" and len(task["screening_ids"]) < 2:
-            errors.append(f"VERIFY_SERIES has fewer than two members: {task_id}")
 
     expected_ids = sorted(item["screening_id"] for item in queue)
     covered_counts = Counter(covered)
@@ -188,7 +193,7 @@ def build(queue_path: Path, output_dir: Path) -> tuple[dict[str, Any], bool]:
         "missing_screening_ids": missing,
         "duplicate_screening_coverage": duplicate_coverage,
         "errors": errors,
-        "note": "VERIFY_SERIES grouping comes from LLM screening duplicate_group and remains unconfirmed until Evidence review.",
+        "note": "LLM screening duplicate_group remains unconfirmed until Evidence review. Singleton duplicate hints stay VERIFY_ITEM until another retained member is present.",
         "outputs": {"tasks": "evidence-tasks.jsonl"},
     }
     write_jsonl(output_dir / "evidence-tasks.jsonl", tasks)
