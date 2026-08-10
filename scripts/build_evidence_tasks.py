@@ -45,6 +45,14 @@ def write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def stable_slug(value: str) -> str:
     base = re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
     digest = hashlib.sha256(value.encode("utf-8")).hexdigest()[:10]
@@ -100,9 +108,6 @@ def build_task(issue_id: str, group_kind: str, group_value: str, items: list[dic
             task_type = "VERIFY_SERIES"
             task_key = f"series:{group_value}"
         else:
-            # Partial/resumable screening may expose a duplicate-group hint before
-            # another member is processed. Keep the hint without pretending a
-            # one-item series exists.
             task_type = "VERIFY_ITEM"
             task_key = f"duplicate-hint:{group_value}:{items[0]['screening_id']}"
     else:
@@ -134,6 +139,10 @@ def build_task(issue_id: str, group_kind: str, group_value: str, items: list[dic
         "verification_targets": unique_strings(verification_targets),
         "status": "PENDING_VERIFICATION",
     }
+
+
+def task_filename(task: dict[str, Any]) -> str:
+    return task["evidence_task_id"].rsplit(":", 1)[-1] + ".json"
 
 
 def build(queue_path: Path, output_dir: Path) -> tuple[dict[str, Any], bool]:
@@ -177,6 +186,21 @@ def build(queue_path: Path, output_dir: Path) -> tuple[dict[str, Any], bool]:
     if unexpected:
         errors.append(f"unexpected screening coverage: {unexpected}")
 
+    write_jsonl(output_dir / "evidence-tasks.jsonl", tasks)
+    task_files: list[dict[str, Any]] = []
+    for task in tasks:
+        relative = Path("tasks") / task_filename(task)
+        path = output_dir / relative
+        write_json(path, task)
+        task_files.append(
+            {
+                "evidence_task_id": task["evidence_task_id"],
+                "path": relative.as_posix(),
+                "sha256": sha256_file(path),
+                "bytes": path.stat().st_size,
+            }
+        )
+
     type_counts = Counter(task["task_type"] for task in tasks)
     manifest = {
         "schema_version": "1.0",
@@ -193,10 +217,13 @@ def build(queue_path: Path, output_dir: Path) -> tuple[dict[str, Any], bool]:
         "missing_screening_ids": missing,
         "duplicate_screening_coverage": duplicate_coverage,
         "errors": errors,
-        "note": "LLM screening duplicate_group remains unconfirmed until Evidence review. Singleton duplicate hints stay VERIFY_ITEM until another retained member is present.",
-        "outputs": {"tasks": "evidence-tasks.jsonl"},
+        "note": "LLM screening duplicate_group remains unconfirmed until Evidence review. Singleton duplicate hints stay VERIFY_ITEM until another retained member is present. Evidence Runner consumes one file under tasks/ so its exact input SHA-256 is stable.",
+        "outputs": {
+            "task_index": "evidence-tasks.jsonl",
+            "task_directory": "tasks/",
+        },
+        "task_files": task_files,
     }
-    write_jsonl(output_dir / "evidence-tasks.jsonl", tasks)
     write_json(output_dir / "evidence-task-manifest.json", manifest)
     return manifest, not errors
 
