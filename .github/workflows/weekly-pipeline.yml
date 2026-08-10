@@ -218,7 +218,7 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Validate issue input and build current plan
+      - name: Validate issue input and build issue-specific plan
         shell: bash
         env:
           EXPECTED_ISSUE_ID: ${{ inputs.issue_id }}
@@ -229,18 +229,20 @@ jobs:
             exit 2
           fi
           mkdir -p out/source-intake-control
-          python scripts/weekly_pipeline.py plan --output out/source-intake-control/plan.json
-          python - "$EXPECTED_ISSUE_ID" <<'PY'
-          import json, sys
+          python scripts/weekly_pipeline.py plan \
+            --issue-id "$EXPECTED_ISSUE_ID" \
+            --output out/source-intake-control/plan.json \
+            --markdown-output out/source-intake-control/plan.md
+          python - <<'PY'
+          import json
           with open('out/source-intake-control/plan.json', encoding='utf-8') as fh:
               plan = json.load(fh)
-          expected = sys.argv[1]
-          if plan['issue_id'] != expected:
-              raise SystemExit(
-                  f"requested issue {expected} does not match latest completed cutoff issue {plan['issue_id']}"
-              )
-          if not plan.get('collection_window_start'):
-              raise SystemExit('collection_window_start is unset; refusing to guess a collection window')
+          if not plan.get('collection_window_start') or not plan.get('collection_window_end'):
+              raise SystemExit('source-intake plan has an incomplete collection window')
+          print(
+              f"Source intake plan: issue={plan['issue_id']} mode={plan.get('automation_mode')} "
+              f"start={plan['collection_window_start']} end={plan['collection_window_end']}"
+          )
           PY
 
       - name: Run reproducible source intake
@@ -259,7 +261,9 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: weekly-source-intake-${{ inputs.issue_id }}
-          path: out/source-intake/
+          path: |
+            out/source-intake/
+            out/source-intake-control/
           if-no-files-found: warn
           retention-days: 14
 
