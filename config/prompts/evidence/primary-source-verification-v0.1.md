@@ -42,10 +42,13 @@ A source being primary does not make every statement in it `PRIMARY_FACT`; vendo
 Keep the following distinct:
 
 - `artifact_first_announced`
-- each concrete `event_type`
+- each concrete Event with a stable `event_id`
+- `event_type`
 - `event_date`
 - `source_published_at`
 - `observed_at`
+
+Assign a unique, stable `event_id` within the Evidence Card to every concrete Event so later drafting can cite chronology at Event granularity rather than referring to an anonymous list position.
 
 Release date and weekly trend relevance are not the same thing. Confirm `why_now` only when the evidence supports a new release, update, weights, serving/integration support, benchmark/reproduction, safety finding, or other material event relevant to the issue window.
 
@@ -122,7 +125,7 @@ The outer Evidence Run object records provenance:
 The Card must be self-contained and audit-friendly:
 
 - every referenced `source_id` must exist in `card.sources`;
-- every event must cite at least one source;
+- every Event must have a unique `event_id` and cite at least one source;
 - every claim/metric/limitation must cite at least one source;
 - `card.temporal.observed_at` must reflect this verification run, not the original release date;
 - every Evidence Task `verification_target` must be addressed exactly once or remain explicitly unresolved;
