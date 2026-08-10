@@ -38,6 +38,10 @@ jobs:
             --issue-id '${{ inputs.issue_id }}' \
             --repo-root . \
             --output pr-control/metadata.json
+          python - pr-control/metadata.json > pr-control/body.md <<'PY'
+          import json, sys
+          print(json.load(open(sys.argv[1], encoding='utf-8'))['body'], end='')
+          PY
 
       - name: Ensure work branch and Draft PR
         id: control
@@ -97,13 +101,7 @@ jobs:
               --head "${branch}" \
               --draft \
               --title "${title}" \
-              --body-file "${metadata}")"
-            # Replace the temporary JSON body immediately with the deterministic Markdown body.
-            python - "$metadata" > pr-control/body.md <<'PY'
-          import json, sys
-          print(json.load(open(sys.argv[1], encoding='utf-8'))['body'], end='')
-          PY
-            gh pr edit "${pr_url}" --repo "${REPOSITORY}" --body-file pr-control/body.md >/dev/null
+              --body-file pr-control/body.md)"
             pr_number="$(gh pr view "${pr_url}" --repo "${REPOSITORY}" --json number --jq '.number')"
             created_pr=true
             status='DRAFT_PR_CREATED'
@@ -115,10 +113,6 @@ jobs:
               echo "::error::PR #${pr_number} is no longer Draft; automation will not overwrite human review state."
               exit 1
             fi
-            python - "$metadata" > pr-control/body.md <<'PY'
-          import json, sys
-          print(json.load(open(sys.argv[1], encoding='utf-8'))['body'], end='')
-          PY
             gh pr edit "${pr_number}" \
               --repo "${REPOSITORY}" \
               --title "${title}" \
@@ -164,5 +158,5 @@ jobs:
             pr-control/metadata.json
             pr-control/result.json
             pr-control/body.md
-          if-no-files-found: ignore
+          if-no-files-found: error
           retention-days: 14
