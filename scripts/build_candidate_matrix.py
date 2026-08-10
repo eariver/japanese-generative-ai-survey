@@ -8,6 +8,7 @@ remaining boundaries. It never assigns importance scores or selects candidates.
 from __future__ import annotations
 
 import argparse
+import email.utils
 import json
 from collections import Counter
 from datetime import datetime, timezone
@@ -47,7 +48,13 @@ def parse_instant(value: str | None) -> datetime | None:
     if is_date_only(text):
         return datetime.fromisoformat(text).replace(tzinfo=timezone.utc)
     normalized = text[:-1] + "+00:00" if text.endswith("Z") else text
-    parsed = datetime.fromisoformat(normalized)
+    try:
+        parsed = datetime.fromisoformat(normalized)
+    except ValueError:
+        try:
+            parsed = email.utils.parsedate_to_datetime(text)
+        except (TypeError, ValueError, OverflowError) as exc:
+            raise ValueError(f"unsupported event timestamp: {value!r}") from exc
     if parsed.tzinfo is None:
         parsed = parsed.replace(tzinfo=timezone.utc)
     return parsed.astimezone(timezone.utc)
