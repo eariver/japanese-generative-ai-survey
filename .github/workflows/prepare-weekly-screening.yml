@@ -98,7 +98,7 @@ jobs:
           SOURCE_COMMIT: ${{ steps.provenance.outputs.commit_sha }}
         run: |
           set -euo pipefail
-          python control-src/scripts/prepare_screening_run.py \
+          PYTHONPATH=control-src python control-src/scripts/prepare_screening_run.py \
             --repo-root source-tree \
             --output-root screening-package \
             --issue-id "${ISSUE_ID}" \
