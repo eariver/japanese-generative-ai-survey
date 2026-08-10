@@ -2,7 +2,8 @@
 """Generate a deterministic Grok Trend Sensor run instruction from a weekly plan.
 
 The generator never calls Grok. It creates a reviewable Markdown instruction and
-collector-run metadata that bind the issue/window to a specific prompt hash.
+pre-execution collector-instruction metadata bound to a specific prompt hash.
+Completed collector provenance is recorded separately with collector-run.schema.
 """
 
 from __future__ import annotations
@@ -51,29 +52,48 @@ def generate(plan: dict[str, Any], repo_root: Path) -> tuple[str, dict[str, Any]
     generated_at = parse_iso(plan["generated_at"])
     jst_date = generated_at.astimezone(ZoneInfo("Asia/Tokyo")).date().isoformat()
     output_filename = f"x-trend-sensor-{jst_date}-v0.4.md"
+    instruction_id = f"{issue_id}-grok-trend-v0.4-{jst_date}"
 
     metadata = {
         "schema_version": "1.0",
-        "stage": "trend-discovery",
-        "collector": "grok",
         "issue_id": issue_id,
-        "prompt_id": "x-trend-sensor",
-        "prompt_version": "v0.4",
-        "prompt_path": str(prompt_rel),
-        "prompt_sha256": prompt_hash,
+        "instruction_id": instruction_id,
+        "stage": "trend-discovery",
+        "collector": {
+            "id": "grok",
+            "provider": "xAI",
+            "model": None,
+            "prompt_id": "x-trend-sensor",
+            "prompt_version": "v0.4",
+            "prompt_hash": f"sha256:{prompt_hash}",
+        },
         "generated_at": plan["generated_at"],
-        "observation_window_start": window_start,
-        "editorial_cutoff": cutoff,
-        "expected_output_filename": output_filename,
-        "expected_repository_path": f"sources/{issue_id}/grok/raw/{output_filename}",
-        "execution_mode": "manual-or-agent-assisted",
-        "repository_write_authority": "none",
-        "status": "instruction-generated",
+        "time": {
+            "collection_window_start": window_start,
+            "editorial_cutoff": cutoff,
+        },
+        "expected_output": {
+            "filename": output_filename,
+            "repository_path": f"sources/{issue_id}/grok/raw/{output_filename}",
+        },
+        "execution": {
+            "mode": "manual-or-agent-assisted",
+            "repository_write_authority": "none",
+        },
+        "status": "ready",
+        "notes": [
+            "This is pre-execution instruction metadata, not completed collector-run provenance.",
+            "observed_at and output hashes belong in a collector-run record after Grok actually completes the observation.",
+        ],
     }
 
     md = f"""# {issue_id} X Trend Sensor Run Instruction — v0.4
 
 このRunは `{issue_id}` のX Trend Discoveryを行うためのissue-specific instructionです。
+
+Instruction ID:
+
+`{instruction_id}`
 
 ## 1. 使用するPrompt
 
@@ -88,7 +108,7 @@ Authority / Context:
 
 Prompt SHA-256:
 
-`{prompt_hash}`
+`sha256:{prompt_hash}`
 
 ## 2. Observation Window
 
@@ -146,7 +166,11 @@ status: raw
 
 `observed_at` は実際にGrokが観測を完了した時刻を記録してください。Run Instruction生成時刻を代入しないでください。
 
-## 6. Final artifact
+## 6. Completed run provenance
+
+このinstruction JSONは実行前metadataです。Grok実行完了後は、`schemas/collector-run.schema.json` に従う別のrun provenance recordで、実際の `observed_at`、出力path、SHA-256、bytes、実行結果を記録してください。
+
+## 7. Final artifact
 
 最終成果物はチャット本文へ貼らず、実際のMarkdownファイルとして提示してください。
 
