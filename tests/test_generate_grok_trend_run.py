@@ -29,17 +29,21 @@ class GrokTrendRunGenerationTests(unittest.TestCase):
             md, metadata = module.generate(plan, root)
 
             self.assertEqual(metadata["issue_id"], "2026-W33")
-            self.assertEqual(metadata["observation_window_start"], "2026-08-09T23:00:00+09:00")
-            self.assertEqual(metadata["editorial_cutoff"], "2026-08-14T18:00:00-04:00")
-            self.assertEqual(metadata["expected_output_filename"], "x-trend-sensor-2026-08-15-v0.4.md")
+            self.assertEqual(metadata["stage"], "trend-discovery")
+            self.assertEqual(metadata["status"], "ready")
+            self.assertEqual(metadata["time"]["collection_window_start"], "2026-08-09T23:00:00+09:00")
+            self.assertEqual(metadata["time"]["editorial_cutoff"], "2026-08-14T18:00:00-04:00")
+            self.assertEqual(metadata["expected_output"]["filename"], "x-trend-sensor-2026-08-15-v0.4.md")
             self.assertEqual(
-                metadata["expected_repository_path"],
+                metadata["expected_output"]["repository_path"],
                 "sources/2026-W33/grok/raw/x-trend-sensor-2026-08-15-v0.4.md",
             )
-            self.assertEqual(len(metadata["prompt_sha256"]), 64)
+            self.assertRegex(metadata["collector"]["prompt_hash"], r"^sha256:[0-9a-f]{64}$")
+            self.assertEqual(metadata["execution"]["repository_write_authority"], "none")
             self.assertIn("2026-08-14T18:00:00-04:00", md)
             self.assertIn("2026-08-09T23:00:00+09:00", md)
             self.assertIn("observed_at", md)
+            self.assertIn("collector-run.schema.json", md)
             self.assertIn("GitHubへのPushは試みないでください", md)
 
     def test_generate_requires_collection_anchor(self):
