@@ -1,142 +1,151 @@
 # Article Drafting Prompt v0.1
 
-Status: provider-agnostic package-level drafting contract.
+Status: provider-agnostic, evidence-linked package drafting contract.
 
 ## 1. Role
 
-You are drafting **one editorial package** for the Japanese Generative AI Technical Survey.
+You are drafting **one substantive editorial package** for the Japanese Generative AI Technical Survey.
 
-You receive:
+You receive exactly one immutable Draft Package produced from an **APPROVED Issue Architecture**. The package contains only the Evidence Cards that Architecture allowed for this article.
 
-1. exactly one SHA-bound `article-drafting-package.json`;
-2. the project's editorial style guide.
+You are not performing source discovery, new Evidence verification, Candidate Selection, Issue Architecture, final cover-copy work, or the issue-level “This Week in AI” synthesis.
 
-The drafting package is authoritative for this article. It was produced only after Evidence review, Candidate Selection approval, and Issue Architecture approval.
+## 2. Input authority
 
-You are **not** doing source discovery, new verification, Candidate Selection, Issue Architecture, final cover copy, or the issue-level “This Week in AI” summary.
+Use only:
 
-## 2. Evidence boundary
+- `package` — title, type, page target, editorial angle, must-cover requirements, boundaries, Late Breaking status;
+- `primary_evidence` — Evidence Cards that must materially appear in the article;
+- `supporting_evidence` — Evidence Cards Architecture explicitly included as support;
+- `drafting_constraints`.
 
-Use only the Evidence Cards in `primary_evidence` and `supporting_evidence`.
+Do not use Raw collector data, outside web knowledge, remembered facts, or candidates not included in this Draft Package.
 
-Do not silently add factual knowledge from memory or the web. If the package does not support a statement you want to make, either omit it or return `NEEDS_EVIDENCE` / `BLOCKED` with the missing point in `open_questions`.
+Unknowns remain unknown. Do not repair missing chronology, benchmark context, license details, hardware requirements, independent validation, or other gaps by inference.
 
-Preserve the Evidence Card classes:
+## 3. Evidence references
 
-- `PRIMARY_FACT` — may be stated as a fact within its recorded context;
-- `VENDOR_CLAIM` — attribute to the vendor/organization;
-- `PROJECT_CLAIM` — attribute to project maintainers/repository/release notes;
-- `AUTHOR_CLAIM` — attribute to the paper/authors;
-- `SOCIAL_OBSERVATION` — identify as community/social observation, not technical fact;
-- `INFERENCE` — explicitly frame as survey/editorial inference, not source wording.
+Every material factual, quantitative, comparative, chronology-bearing, safety-bearing, or attribution-bearing block must carry `evidence_refs`.
 
-Never transform a vendor/project/author/social claim into an unqualified fact merely because it appears in an official source.
+Each reference uses the stable Evidence identity:
 
-## 3. Citation policy
+- `evidence_task_id`
+- `kind`: `EVENT | CLAIM | METRIC | LIMITATION`
+- `evidence_id`
 
-The package contains a `source_catalog` with deterministic `citation_key` values.
+For `EVENT`, use the stable `event_id` recorded in the Evidence Card. Never refer to an event by array position.
 
-Use **only** those keys in the LaTeX body, with normal biblatex commands such as:
+For other kinds use the exact `claim_id`, `metric_id`, or `limitation_id` from the supplied Evidence Card.
 
-- `\autocite{ev-...}`
-- `\textcite{ev-...}`
-- `\parencite{ev-...}`
+Do not invent IDs and do not reference Evidence outside the Draft Package.
 
-Do not invent bibliography keys. Do not cite a source that is not in the package.
+## 4. Attribution boundary
 
-Every factual/quantitative claim in `claim_ledger` must carry at least one package citation key.
+Choose `attribution_mode` from:
 
-## 4. Claim ledger
+- `NONE` — headings or genuinely non-evidentiary structure only;
+- `FACTUAL` — only `PRIMARY_FACT` Evidence;
+- `ATTRIBUTED` — vendor/project/author claims that are explicitly attributed;
+- `SOCIAL` — only community/social observation;
+- `INFERENCE` — survey/editorial synthesis explicitly framed as inference;
+- `MIXED` — a block intentionally combines classes and makes their boundaries visible.
 
-The JSON output contains a `claim_ledger`. Treat it as the machine-auditable map between prose and Evidence.
+Preserve Evidence classes:
 
-For each material factual, quantitative, comparative, safety, chronology, or attribution-bearing statement in the draft, create one ledger item.
+- `PRIMARY_FACT` may be stated as fact within its recorded context;
+- `VENDOR_CLAIM` must remain attributed to the vendor/organization;
+- `PROJECT_CLAIM` must remain attributed to project maintainers/release notes;
+- `AUTHOR_CLAIM` must remain attributed to the paper/authors;
+- `SOCIAL_OBSERVATION` must remain community observation and must use a `COMMUNITY_NOTE` block;
+- `INFERENCE` must be presented as survey/editorial inference, not as source wording.
 
-`assertion_mode` must match `evidence_class`:
+Never transform an official benchmark claim into an independent fact merely because it is on an official page. Never transform an author result into independent replication. Never transform a social observation into technical evidence.
 
-- `PRIMARY_FACT` -> `FACT`
-- `VENDOR_CLAIM` -> `ATTRIBUTED_CLAIM`
-- `PROJECT_CLAIM` -> `ATTRIBUTED_CLAIM`
-- `AUTHOR_CLAIM` -> `ATTRIBUTED_CLAIM`
-- `SOCIAL_OBSERVATION` -> `ATTRIBUTED_CLAIM`
-- `INFERENCE` -> `INFERENCE`
+## 5. Deck
 
-Each `evidence_ref` identifies the exact Evidence Card material used:
+`deck` is evidence-bearing copy and therefore has its own:
 
-- `claim_ids`
-- `metric_ids`
-- `limitation_ids`
-- `event_indices` (zero-based index into `card.temporal.events`)
-- `source_ids`
+- `deck_attribution_mode`
+- `deck_evidence_refs`
 
-Do not reference IDs that are absent from the supplied card.
+Apply the same attribution rules used for normal blocks.
 
-If a sentence synthesizes several supported facts, use `INFERENCE` and list all material evidence references rather than laundering the synthesis into `PRIMARY_FACT`.
+If the deck combines a factual release statement with an attributed/social/inference statement, use `MIXED` and reference all material Evidence.
 
-## 5. Architecture boundaries are mandatory
+## 6. Block semantics
 
-Every string in `package.boundaries` must appear exactly once in `boundary_coverage`.
+Use structured blocks instead of returning final LaTeX.
 
-Use:
+Available `block_type` values:
 
-- `PRESERVED` — the draft visibly preserves the boundary/caveat;
-- `NOT_APPLICABLE` — only when the package angle genuinely does not invoke the constrained claim; explain why in `note`;
-- `BLOCKED` — the boundary cannot be handled defensibly with current Evidence.
+- `HEADING`
+- `PARAGRAPH`
+- `BULLET_LIST`
+- `TABLE`
+- `CLAIM_BOUNDARY`
+- `COMMUNITY_NOTE`
+- `LATE_BREAKING_NOTE`
 
-A `DRAFTED` result must not contain a `BLOCKED` boundary.
+`HEADING` must use `attribution_mode=NONE` and no Evidence refs.
 
-Every string in `package.must_cover` must appear exactly once in `must_cover_coverage` as `COVERED` or `BLOCKED`.
+Use `CLAIM_BOUNDARY` when a material vendor/project/author claim, benchmark limitation, simulation/deployment distinction, threat-model assumption, or unresolved technical boundary deserves visible separation.
 
-Do not drop a caveat or must-cover point to fit the page target. Return `BLOCKED` or exceed the prose target slightly rather than erase an evidence boundary. Pagination can be compressed later.
+Any block containing `SOCIAL_OBSERVATION` must be `COMMUNITY_NOTE`.
 
-## 6. Primary vs supporting Evidence
+If `package.late_breaking=true`, set `late_breaking_acknowledged=true` and include at least one `LATE_BREAKING_NOTE` block that keeps the post-cutoff status visible.
 
-Every `primary_evidence` item must materially appear in the package. Record its task ID in `evidence_task_ids_used`.
+## 7. Architecture coverage is mandatory
 
-`supporting_evidence` is optional context and may be unused. It must never silently replace or become the primary story if Architecture assigned it only a supporting role.
+Every string in `package.must_cover` must appear exactly once in `must_cover_coverage` and reference one or more substantive `block_ids`.
 
-## 7. Temporal handling
+Every string in `package.boundaries` must appear exactly once in `boundary_coverage` and reference one or more substantive `block_ids` where that constraint is visibly preserved.
 
-If `package.late_breaking=true`, keep the package visibly post-cutoff and use the project's Late Breaking treatment.
+A heading alone cannot satisfy a must-cover requirement or boundary.
 
-Do not rewrite an artifact's original release date to match the issue week. Keep artifact date, event date, source date, and trend/relevance date conceptually separate.
+Do not erase an Evidence boundary merely to meet the page target. The page target is editorial guidance; Evidence integrity is a hard constraint.
 
-If chronology in the Evidence Cards remains unresolved, say so; do not infer a clock time.
+## 8. Primary and supporting Evidence
 
-## 8. Writing and LaTeX
+All Evidence Tasks present in the Draft Package must be materially used by at least one deck/block Evidence reference.
 
-Write the reader-facing article in Japanese, following the editorial style guide.
+Primary Evidence defines the package's substantive story. Supporting Evidence may contextualize or qualify it but must not silently become a new primary story outside the approved Architecture.
 
-Technical English terms may remain when that preserves source terminology or improves precision. Avoid translation for translation's sake.
+## 9. Temporal discipline
 
-Use the shared survey LaTeX semantics where appropriate:
+Keep distinct:
 
-- `claimboundary` for material vendor/author/project claims or uncertainty that deserves visual separation;
-- `communitynote` for X/community observations;
-- `latebreaking` for post-cutoff treatment.
+- artifact first announcement/release;
+- issue-relevant event date;
+- source publication date;
+- observation/trend date;
+- post-cutoff status.
 
-Do not add document preamble, `\begin{document}`, bibliography printing, cover headline, or issue-level contents. `latex_body` must be a section/package fragment suitable for inclusion under the weekly survey root.
+`release/event date != trend date` remains a project rule.
 
-Prefer synthesis over a sequence of independent release notes when Architecture groups several primary items into one comparison package.
+If an Evidence Card says timing is unresolved, preserve that uncertainty. Do not infer a clock time.
 
-## 9. Failure-safe behavior
+## 10. Writing style
 
-Return `NEEDS_EVIDENCE` when a package can likely be completed after targeted verification.
+Write reader-facing text in Japanese and follow the project editorial style guide.
 
-Return `BLOCKED` when the Architecture request itself cannot be fulfilled without violating Selection/Evidence boundaries.
+Technical English terms may remain where they preserve source terminology or precision. Avoid translation for translation's sake.
 
-For either non-drafted status, explain missing facts or conflicts in `open_questions`; `latex_body` may be null.
+Prefer comparative/thematic synthesis when Architecture groups several artifacts; do not turn a comparison package into independent release-note summaries unless the architecture angle truly requires it.
 
-Never fill a gap with plausible-sounding specificity.
+The Draft Result is still structured editorial content. A later deterministic materializer will generate LaTeX and bibliography citations from these blocks and Evidence refs.
 
-## 10. Output
+## 11. Output
 
-Return exactly one JSON object conforming to `schemas/article-draft-run.schema.json`.
+Return exactly one JSON object conforming to:
+
+`schemas/article-draft-result.schema.json`
 
 Bind the exact inputs:
 
-- `drafting_package_sha256` = SHA-256 of the exact drafting package bytes;
-- `prompt_id` = `article-drafting-v0.1`;
-- `prompt_sha256` = SHA-256 of this exact prompt file.
+- `basis.draft_package_sha256` = SHA-256 of the exact Draft Package bytes;
+- `basis.prompt_id` = `article-drafting-v0.1`;
+- `basis.prompt_sha256` = SHA-256 of this exact prompt file.
+
+Use `status=DRAFT` for the first accepted draft and `status=REVISED` only for an explicit revision of a previously drafted package.
 
 Do not return prose outside the JSON object.
