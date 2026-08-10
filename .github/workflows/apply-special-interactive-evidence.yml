@@ -49,7 +49,7 @@ jobs:
           ref: ${{ steps.edition.outputs.work_branch }}
           path: worktree
           fetch-depth: 0
-      - name: Verify state, Raw, and interactive Evidence file
+      - name: Verify state, Raw, and assemble compact Evidence overrides
         id: input
         shell: bash
         env:
@@ -57,10 +57,29 @@ jobs:
         run: |
           set -euo pipefail
           python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id "$SPECIAL_ID" check
-          path="worktree/sources/${SPECIAL_ID}/evidence/interactive-cards-v0.1.json"
-          test -s "$path"
-          python -m json.tool "$path" >/dev/null
-          screening_sha="$(python -c "import json; print(json.load(open('$path'))['screening_run_sha'])")"
+          directory="worktree/sources/${SPECIAL_ID}/evidence/interactive-overrides-v0.1"
+          manifest="${directory}/manifest.json"
+          test -s "$manifest"
+          python -m json.tool "$manifest" >/dev/null
+          python - "$directory" assembled-evidence-overrides.json <<'PY'
+          import json, pathlib, sys
+          directory=pathlib.Path(sys.argv[1]); output=pathlib.Path(sys.argv[2])
+          doc=json.loads((directory/'manifest.json').read_text(encoding='utf-8'))
+          overrides=[]
+          parts=sorted(directory.glob('part-*.json'))
+          if not parts:
+              raise SystemExit('no Evidence override part files found')
+          for path in parts:
+              value=json.loads(path.read_text(encoding='utf-8'))
+              items=value.get('overrides')
+              if not isinstance(items,list) or not items:
+                  raise SystemExit(f'{path}: overrides must be non-empty array')
+              overrides.extend(items)
+          doc['overrides']=overrides
+          output.write_text(json.dumps(doc,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(f'assembled {len(overrides)} Evidence overrides from {len(parts)} review parts')
+          PY
+          screening_sha="$(python -c "import json; print(json.load(open('assembled-evidence-overrides.json'))['screening_run_sha'])")"
           state="worktree/sources/${SPECIAL_ID}/pipeline-state.json"
           python - "$state" <<'PY'
           import json,sys
@@ -70,7 +89,7 @@ jobs:
           assert s['gates']['evidence_normalized']=='pending'
           assert s['gates']['candidate_selection']=='pending'
           PY
-          echo "cards_path=$path" >> "$GITHUB_OUTPUT"
+          echo "overrides_path=assembled-evidence-overrides.json" >> "$GITHUB_OUTPUT"
           echo "screening_sha=$screening_sha" >> "$GITHUB_OUTPUT"
       - name: Generate, validate, and accept complete Evidence result set
         shell: bash
@@ -78,14 +97,14 @@ jobs:
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
           WORK_BRANCH: ${{ steps.edition.outputs.work_branch }}
           SCREENING_SHA: ${{ steps.input.outputs.screening_sha }}
-          CARDS_PATH: ${{ steps.input.outputs.cards_path }}
+          OVERRIDES_PATH: ${{ steps.input.outputs.overrides_path }}
           REVIEW_REFERENCE: ${{ inputs.review_reference }}
         run: |
           set -euo pipefail
           source_commit="$(git -C worktree rev-parse HEAD)"
           PYTHONPATH=control-src python control-src/scripts/run_special_interactive_evidence.py \
             --repo-root worktree --issue-id "$SPECIAL_ID" --screening-run-sha "$SCREENING_SHA" \
-            --source-ref "$WORK_BRANCH" --source-commit "$source_commit" --cards "$CARDS_PATH" \
+            --source-ref "$WORK_BRANCH" --source-commit "$source_commit" --overrides "$OVERRIDES_PATH" \
             --review-reference "$REVIEW_REFERENCE" --audit-output evidence-audit.json
       - name: Commit accepted Evidence set and state transition
         working-directory: worktree
