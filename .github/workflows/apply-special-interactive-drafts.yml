@@ -64,6 +64,7 @@ jobs:
           assert state['gates']['article_draft']=='pending'
           PY
           test -s "worktree/sources/${SPECIAL_ID}/drafting/packages/v0.1/draft-package-manifest.json"
+          test -s "worktree/config/prompts/editorial/article-drafting-v0.1.md"
           test -d "worktree/sources/${SPECIAL_ID}/drafting/interactive-overrides-v0.1"
       - name: Accept, validate, and render complete interactive Draft set
         shell: bash
@@ -83,7 +84,7 @@ jobs:
             --issue-id "$SPECIAL_ID" \
             --package-dir "sources/${SPECIAL_ID}/drafting/packages/v0.1" \
             --overrides-dir "sources/${SPECIAL_ID}/drafting/interactive-overrides-v0.1" \
-            --prompt "../control-src/config/prompts/editorial/article-drafting-v0.1.md" \
+            --prompt "config/prompts/editorial/article-drafting-v0.1.md" \
             --provider "OpenAI" \
             --model "GPT-5.6 Sol" \
             --invocation "interactive ChatGPT project drafting; no paid inference-provider API" \
