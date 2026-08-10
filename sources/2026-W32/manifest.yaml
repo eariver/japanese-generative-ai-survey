@@ -1,7 +1,7 @@
 issue_id: "2026-W32"
-status: "draft-v0.1-validated"
+status: "draft-v0.2-source-polished-pending-full-rebuild"
 editorial_structure_status: "established-v0.1"
-article_drafting_status: "all-architecture-packages-drafted-and-validated-v0.1"
+article_drafting_status: "all-packages-drafted-validation-passed-editorial-polish-applied"
 editorial_cutoff: "2026-08-07T18:00:00-04:00"
 editorial_cutoff_timezone: "America/New_York"
 observation_window_start: "2026-08-01T00:00:00-04:00"
@@ -13,6 +13,7 @@ principles:
   - "Main-window and post-cutoff community reactions are kept separate."
   - "Vendor/author benchmark claims retain attribution and setup boundaries."
   - "Candidate selection precedes issue architecture; issue architecture precedes article drafting."
+  - "Cover framing is derived after body drafting; it must not drive candidate selection."
   - "Downstream drafts consume normalized/verified evidence rather than raw collector output when a verified layer exists."
 
 artifacts:
@@ -44,12 +45,23 @@ artifacts:
 
   draft_validation:
     path: "sources/2026-W32/draft-validation-v0.1.md"
-    status: "passed"
+    status: "passed-for-v0.1-full-pdf"
     citation_keys_used: 36
     bibliography_entries: 36
     missing_citation_keys: 0
     unused_bibliography_entries: 0
     chronology_conflicts: 0
+
+  editorial_polish:
+    path: "sources/2026-W32/editorial-polish-v0.1.md"
+    status: "applied-to-source"
+    cover_headline: "モデルの外側へ"
+    full_issue_rebuild: "pending"
+
+  editorial_style_guide:
+    path: "docs/editorial-style-guide.md"
+    version: "v0.1"
+    status: "active"
 
   latex_environment:
     issue_root: "surveys/weekly/2026-W32/main.tex"
@@ -59,61 +71,60 @@ artifacts:
     engine: "LuaLaTeX"
     japanese_layout: "jlreq + LuaTeX-ja + HaranoAji"
     texlive_ci: "2026"
-    local_pdf: "/mnt/data/jgai-tex-smoke/surveys/weekly/2026-W32/main.pdf"
-    local_render_dir: "/mnt/data/jgai-tex-smoke/_renders_validation"
-    local_page_count: 14
-    status: "local-build-warning-free-render-reviewed-preflight-passed"
-    validation:
-      latexmk: "passed"
-      biber: "passed"
-      unresolved_citations: 0
-      overfull_boxes: 0
-      underfull_boxes: 0
-      missing_glyphs: 0
-      visual_render_review: "passed across 14-page contact sheet"
-      pdf_preflight: "passed"
-      page_size: "A4 on all 14 pages"
-      encrypted: false
-      embedded_fonts: true
-    note: "Push-triggered GitHub Actions run listing is not exposed by the current connector; local validation uses the same LuaLaTeX/biber source tree."
+    last_full_validated_pdf_revision: "v0.1"
+    last_full_validated_pdf: "/mnt/data/Japanese_Generative_AI_Technical_Survey_2026-W32_v0.1.pdf"
+    last_full_page_count: 14
+    last_full_validation_status: "warning-free-render-reviewed-preflight-passed"
+    current_source_revision: "v0.2 editorial polish"
+    current_full_build_status: "pending"
+    cover_smoke_test:
+      status: "passed"
+      engine: "LuaLaTeX"
+      page_size: "A4"
+      visual_review: "passed"
+      fixes:
+        - "removed awkward Survey title hyphenation"
+        - "shortened anchor line to avoid isolated trailing word"
+        - "rebalanced cover metadata columns"
+    ci_visibility_note: "Latest commit combined-status endpoint returned no status entries. Push-triggered Actions run enumeration remains unavailable through the current connector. The runtime also cannot clone GitHub because outbound DNS is unavailable."
 
   article_drafts:
     - path: "surveys/weekly/2026-W32/sections/00-frontmatter.tex"
       package: "contents-this-week-in-ai"
-      status: "validated-draft-v0.1"
+      status: "editorially-polished-v0.2-pending-full-rebuild"
     - path: "surveys/weekly/2026-W32/sections/10-lead-astra.tex"
       package: "openai-astra-lead"
-      status: "validated-draft-v0.1"
+      status: "validated-draft-v0.1-current"
     - path: "surveys/weekly/2026-W32/sections/20-minimax-h3.tex"
       package: "minimax-h3-feature"
-      status: "validated-draft-v0.1"
+      status: "validated-draft-v0.1-current"
     - path: "surveys/weekly/2026-W32/sections/30-model-open-weight.tex"
       package: "model-open-weight-comparison"
-      status: "validated-draft-v0.1"
+      status: "validated-draft-v0.1-current"
     - path: "surveys/weekly/2026-W32/sections/40-agent-coding.tex"
       package: "agent-coding"
-      status: "validated-draft-v0.1"
+      status: "editorially-polished-v0.2-pending-full-rebuild"
     - path: "surveys/weekly/2026-W32/sections/50-safety-deep-dive.tex"
       package: "safety-deep-dive"
-      status: "validated-draft-v0.1"
+      status: "validated-draft-v0.1-current"
     - path: "surveys/weekly/2026-W32/sections/60-inference-serving.tex"
       package: "inference-serving"
-      status: "validated-draft-v0.1"
+      status: "validated-draft-v0.1-current"
     - path: "surveys/weekly/2026-W32/sections/70-memory-paper-watch.tex"
       package: "memory-paper-watch"
-      status: "validated-draft-v0.1"
+      status: "validated-draft-v0.1-current"
     - path: "surveys/weekly/2026-W32/sections/80-x-community-watch.tex"
       package: "x-community-watch"
-      status: "validated-draft-v0.1"
+      status: "editorially-polished-v0.2-pending-full-rebuild"
     - path: "surveys/weekly/2026-W32/sections/90-late-breaking.tex"
       package: "late-breaking"
-      status: "validated-draft-v0.1"
+      status: "validated-draft-v0.1-current"
     - path: "surveys/weekly/2026-W32/sections/95-watchlist-chronology.tex"
       package: "watchlist-chronology"
-      status: "validated-draft-v0.1"
+      status: "validated-draft-v0.1-current"
     - path: "surveys/weekly/2026-W32/sections/99-source-notes.tex"
       package: "references-source-notes"
-      status: "validated-draft-v0.1"
+      status: "editorially-polished-v0.2-pending-full-rebuild"
 
   grok_trend_raw:
     - path: "sources/2026-W32/grok/raw/x-trend-sensor-2026-08-09.md"
@@ -189,14 +200,14 @@ selection_summary:
   note: "Supporting X reaction streams are consumed as evidence and are not counted as duplicate stories."
 
 next_stage:
-  name: "editorial-prose-review"
-  prerequisites: "draft v0.1 validation passed"
+  name: "full-rebuild-and-final-editorial-gate"
+  prerequisites: "v0.1 full draft validated; v0.2 editorial source polish applied"
   tasks:
-    - "Review Japanese prose for readability and terminology consistency without weakening source terminology."
-    - "Decide final cover anchors/headline after prose review."
-    - "Perform a final human/editorial claim review of the highest-risk Astra, cyber, benchmark, and community-claim passages."
-    - "Rebuild and visually review the final candidate PDF after prose corrections."
-    - "Optionally confirm the GitHub Actions artifact manually in the repository UI because push-run enumeration is not exposed by the current connector."
+    - "Perform a full LuaLaTeX+biber rebuild from the current repository source tree."
+    - "Render all pages and compare against the validated v0.1 layout for regressions."
+    - "Repeat citation-to-claim and chronology checks if page/prose corrections alter wording."
+    - "Perform final high-risk claim review for Astra math, Astra cyber, benchmark comparisons, security threat-model claims, and community low-resource inference claims."
+    - "Freeze the final candidate PDF only after the full rebuild passes."
   page_budget_decision: "14 pages accepted provisionally; do not pad solely to reach the ~16-page planning target."
   constraints:
     - "Do not promote HOLD_OUT items without candidate-specific verification."
