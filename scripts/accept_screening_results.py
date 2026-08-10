@@ -69,7 +69,7 @@ def validate_sha_field(value: Any, label: str) -> str:
     return value
 
 
-def validate_package(package_root: Path, repo_root: Path, issue_id: str) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+def validate_package_files(package_root: Path, issue_id: str) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     package_path = require_regular_file(package_root, "screening-run-package.json")
     package = load_json(package_path)
     if package.get("schema_version") != "1.0":
@@ -87,17 +87,8 @@ def validate_package(package_root: Path, repo_root: Path, issue_id: str) -> tupl
     provenance = package.get("provenance")
     if not isinstance(provenance, dict):
         raise ValueError("screening package provenance is missing")
-    state_path = repo_root / "sources" / issue_id / "pipeline-state.json"
-    raw_index_path = repo_root / "sources" / issue_id / "raw-index.json"
-    if not state_path.is_file() or not raw_index_path.is_file():
-        raise ValueError("weekly work tree must contain pipeline-state.json and raw-index.json before screening acceptance")
-    if sha256_file(state_path) != validate_sha_field(provenance.get("pipeline_state_sha256"), "pipeline_state_sha256"):
-        raise ValueError("weekly pipeline-state bytes no longer match the screening package basis")
-    if sha256_file(raw_index_path) != validate_sha_field(provenance.get("raw_index_sha256"), "raw_index_sha256"):
-        raise ValueError("weekly raw-index bytes no longer match the screening package basis")
-    state = load_json(state_path)
-    if state.get("issue_id") != issue_id:
-        raise ValueError("weekly pipeline state issue_id mismatch")
+    validate_sha_field(provenance.get("pipeline_state_sha256"), "pipeline_state_sha256")
+    validate_sha_field(provenance.get("raw_index_sha256"), "raw_index_sha256")
 
     prompt_meta = package.get("prompt")
     if not isinstance(prompt_meta, dict) or prompt_meta.get("prompt_id") != "source-screening-v0.1":
@@ -168,6 +159,22 @@ def validate_package(package_root: Path, repo_root: Path, issue_id: str) -> tupl
     return package, normalized
 
 
+def validate_repo_basis(package: dict[str, Any], repo_root: Path, issue_id: str) -> dict[str, Any]:
+    state_path = repo_root / "sources" / issue_id / "pipeline-state.json"
+    raw_index_path = repo_root / "sources" / issue_id / "raw-index.json"
+    if not state_path.is_file() or not raw_index_path.is_file():
+        raise ValueError("weekly work tree must contain pipeline-state.json and raw-index.json before screening acceptance")
+    provenance = package["provenance"]
+    if sha256_file(state_path) != provenance["pipeline_state_sha256"]:
+        raise ValueError("weekly pipeline-state bytes no longer match the screening package basis")
+    if sha256_file(raw_index_path) != provenance["raw_index_sha256"]:
+        raise ValueError("weekly raw-index bytes no longer match the screening package basis")
+    state = load_json(state_path)
+    if state.get("issue_id") != issue_id:
+        raise ValueError("weekly pipeline state issue_id mismatch")
+    return state
+
+
 def result_set_digest(result_records: list[dict[str, Any]]) -> str:
     digest = hashlib.sha256()
     for item in sorted(result_records, key=lambda value: value["batch_id"]):
@@ -201,14 +208,16 @@ def accept(
     if not results_dir.is_dir():
         raise ValueError(f"screening results directory missing: {results_dir}")
 
-    package, batches = validate_package(package_root, repo_root, issue_id)
-    state_path = repo_root / "sources" / issue_id / "pipeline-state.json"
-    state = load_json(state_path)
+    package, batches = validate_package_files(package_root, issue_id)
 
-    expected_names = {f"{item['batch_id']}.json" for item in batches}
-    actual_paths = sorted(path for path in results_dir.iterdir() if path.is_file())
-    if any(path.is_symlink() for path in results_dir.iterdir()):
+    entries = list(results_dir.iterdir())
+    if any(path.is_symlink() for path in entries):
         raise ValueError("symlinks are forbidden in screening results")
+    non_files = sorted(path.name for path in entries if not path.is_file())
+    if non_files:
+        raise ValueError(f"screening results directory may contain files only: {non_files}")
+    actual_paths = sorted(entries)
+    expected_names = {f"{item['batch_id']}.json" for item in batches}
     actual_names = {path.name for path in actual_paths}
     missing = sorted(expected_names - actual_names)
     extra = sorted(actual_names - expected_names)
@@ -237,7 +246,6 @@ def accept(
     set_sha = result_set_digest(result_records)
     destination = acceptance_dir(repo_root, issue_id, set_sha)
     manifest_path = destination / "acceptance.json"
-
     acceptance = {
         "schema_version": "1.0",
         "issue_id": issue_id,
@@ -276,6 +284,7 @@ def accept(
             "acceptance_manifest": manifest_path.relative_to(repo_root).as_posix(),
         }, True
 
+    state = validate_repo_basis(package, repo_root, issue_id)
     if state.get("lifecycle_state") != ALLOWED_LIFECYCLE:
         raise ValueError(
             f"new screening results may be accepted only in {ALLOWED_LIFECYCLE}; "
