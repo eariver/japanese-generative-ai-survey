@@ -28,6 +28,20 @@ on:
           - draft
           - release-candidate
           - frozen
+  push:
+    paths:
+      - 'scripts/weekly_pipeline.py'
+      - 'tests/test_weekly_pipeline.py'
+      - 'config/weekly-pipeline.json'
+      - 'schemas/weekly-pipeline-state.schema.json'
+      - '.github/workflows/weekly-pipeline.yml'
+  pull_request:
+    paths:
+      - 'scripts/weekly_pipeline.py'
+      - 'tests/test_weekly_pipeline.py'
+      - 'config/weekly-pipeline.json'
+      - 'schemas/weekly-pipeline-state.schema.json'
+      - '.github/workflows/weekly-pipeline.yml'
 
 permissions:
   contents: read
@@ -37,8 +51,33 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate JSON configuration and schema syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m json.tool config/weekly-pipeline.json >/dev/null
+          python -m json.tool schemas/weekly-pipeline-state.schema.json >/dev/null
+
+      - name: Run weekly pipeline unit tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_weekly_pipeline.py' -v
+
   plan:
-    if: github.event_name == 'schedule' || inputs.command == 'plan'
+    needs: test
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.command == 'plan')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -67,6 +106,7 @@ jobs:
           retention-days: 14
 
   validate:
+    needs: test
     if: github.event_name == 'workflow_dispatch' && inputs.command == 'validate'
     runs-on: ubuntu-latest
     steps:
