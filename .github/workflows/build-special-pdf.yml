@@ -61,6 +61,22 @@ jobs:
           assert source.is_file()
           assert (root/'surveys'/'special'/slug/'main.tex').is_file()
           PY
+      - name: Pin current main survey style as build input
+        id: build_style
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_style="control-src/templates/survey/jgaisurvey.sty"
+          target_style="worktree/templates/survey/jgaisurvey.sty"
+          test -s "$source_style"
+          mkdir -p "$(dirname "$target_style")"
+          cp "$source_style" "$target_style"
+          control_commit=$(git -C control-src rev-parse HEAD)
+          style_sha=$(sha256sum "$source_style" | awk '{print $1}')
+          copied_sha=$(sha256sum "$target_style" | awk '{print $1}')
+          test "$style_sha" = "$copied_sha"
+          echo "control_commit=$control_commit" >> "$GITHUB_OUTPUT"
+          echo "style_sha256=$style_sha" >> "$GITHUB_OUTPUT"
       - name: Set reproducible PDF timestamp
         shell: bash
         run: echo 'SOURCE_DATE_EPOCH=1786406400' >> "$GITHUB_ENV"
@@ -77,6 +93,8 @@ jobs:
         env:
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
           SPECIAL_SLUG: ${{ inputs.special_slug }}
+          CONTROL_COMMIT: ${{ steps.build_style.outputs.control_commit }}
+          STYLE_SHA256: ${{ steps.build_style.outputs.style_sha256 }}
         run: |
           set -euo pipefail
           dir="worktree/surveys/special/${SPECIAL_SLUG}"
@@ -94,13 +112,20 @@ jobs:
           )
           digest=$(sha256sum "$pdf" | awk '{print $1}')
           if [ -z "$bad" ]; then clean=true; else clean=false; fi
-          python - "$SPECIAL_ID" "$SPECIAL_SLUG" "$pages" "$digest" "$clean" "$bad" <<'PY'
+          python - "$SPECIAL_ID" "$SPECIAL_SLUG" "$pages" "$digest" "$clean" "$bad" "$CONTROL_COMMIT" "$STYLE_SHA256" <<'PY'
           import json,sys
-          issue,slug,pages,digest,clean,bad=sys.argv[1:]
+          issue,slug,pages,digest,clean,bad,control_commit,style_sha=sys.argv[1:]
           out={'schema_version':'1.0','issue_id':issue,'special_slug':slug,
                'page_count':int(pages),'pdf_sha256':digest,'log_clean':clean=='true',
                'log_gate_findings':bad.splitlines() if bad else [],
-               'page_target_min':32,'page_target_max':40}
+               'page_target_min':32,'page_target_max':40,
+               'build_style':{
+                   'source_ref':'main',
+                   'control_commit_sha':control_commit,
+                   'path':'templates/survey/jgaisurvey.sty',
+                   'sha256':style_sha,
+                   'application':'copied byte-for-byte over worktree shared style only in ephemeral build checkout'
+               }}
           open('special-pdf-build-audit.json','w',encoding='utf-8').write(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
           print(json.dumps(out,ensure_ascii=False,indent=2))
           PY
@@ -137,11 +162,13 @@ jobs:
           PAGE_COUNT: ${{ steps.analyze.outputs.page_count }}
           PDF_SHA256: ${{ steps.analyze.outputs.pdf_sha256 }}
           RUN_ID: ${{ github.run_id }}
+          CONTROL_COMMIT: ${{ steps.build_style.outputs.control_commit }}
+          STYLE_SHA256: ${{ steps.build_style.outputs.style_sha256 }}
         run: |
           set -euo pipefail
-          python - "$SPECIAL_ID" "$PAGE_COUNT" "$PDF_SHA256" "$RUN_ID" <<'PY'
+          python - "$SPECIAL_ID" "$PAGE_COUNT" "$PDF_SHA256" "$RUN_ID" "$CONTROL_COMMIT" "$STYLE_SHA256" <<'PY'
           import json,sys,hashlib,pathlib
-          issue,pages,pdf_sha,run_id=sys.argv[1:]
+          issue,pages,pdf_sha,run_id,control_commit,style_sha=sys.argv[1:]
           path=pathlib.Path('sources')/issue/'pipeline-state.json'
           state=json.load(open(path,encoding='utf-8'))
           assert state['lifecycle_state']=='VALIDATED_DRAFT'
@@ -154,6 +181,11 @@ jobs:
               'page_count':int(pages),
               'validated_issue_source_path':source_path.as_posix(),
               'validated_issue_source_sha256':hashlib.sha256(source_path.read_bytes()).hexdigest(),
+              'build_style':{
+                  'control_commit_sha':control_commit,
+                  'path':'templates/survey/jgaisurvey.sty',
+                  'sha256':style_sha,
+              },
           }
           path.write_text(json.dumps(state,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           PY
