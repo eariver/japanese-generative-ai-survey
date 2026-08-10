@@ -57,7 +57,84 @@ previous successful collection time
 
 This prevents missed items when compilation timing shifts.
 
-See [Editorial Specification](docs/editorial-specification.md) for the authoritative v0.1 rules.
+See [Editorial Specification](docs/editorial-specification.md) for the authoritative editorial rules and [Weekly Pipeline Automation Design](docs/weekly-pipeline-design-v0.1.md) for the operational automation model.
+
+## Weekly pipeline automation
+
+The first full issue, `2026-W32`, was completed end-to-end and frozen as a release candidate. The automation work now uses that issue as the reference implementation.
+
+The system is intentionally **not** an unattended publishing bot. Work is separated into:
+
+- **Deterministic automation** — calendar/cutoff calculation, issue state, structural validation, TeX/Biber build, log gates and build provenance;
+- **LLM/tool-assisted work** — discovery, verification, paper review, selection proposal, architecture, drafting and claim review;
+- **Human/reviewer gates** — candidate selection approval and final PDF freeze.
+
+The initial deterministic spine is implemented in:
+
+```text
+config/weekly-pipeline.json
+schemas/weekly-pipeline-state.schema.json
+scripts/weekly_pipeline.py
+.github/workflows/weekly-pipeline.yml
+```
+
+Per-issue machine orchestration state lives separately from the rich editorial manifest:
+
+```text
+sources/<issue>/pipeline-state.json
+```
+
+### CLI
+
+Build the operational plan for the latest completed cutoff:
+
+```bash
+python scripts/weekly_pipeline.py plan
+```
+
+Create an issue state file without overwriting an existing state:
+
+```bash
+python scripts/weekly_pipeline.py init --issue-id 2026-W33
+```
+
+Validate deterministic repository gates:
+
+```bash
+python scripts/weekly_pipeline.py validate \
+  --issue-id 2026-W32 \
+  --target frozen
+```
+
+Validation targets are:
+
+```text
+selection
+draft
+release-candidate
+frozen
+```
+
+The structural validator also blocks explicit hard-coded internal page references such as `今号p.3--4`; internal references should use LaTeX labels and `\pageref` so pagination changes do not silently stale them.
+
+Paper Watch is optional: the deterministic gate does not fail a week merely because no paper-review section exists.
+
+### Scheduled workflow
+
+`Weekly pipeline spine` runs a **plan-only** job every Saturday at `00:30 UTC`, safely after Friday 18:00 New York in both EDT and EST.
+
+The scheduled job computes and uploads:
+
+- issue ID;
+- editorial cutoff;
+- previous successful collection anchor;
+- current collection window end.
+
+It does **not** call an LLM, modify the repository, merge a PR or publish an issue.
+
+Manual `workflow_dispatch` can also run deterministic validation for a named issue.
+
+The W32 frozen state provides the bootstrap collection anchor for the next weekly plan. Overlap is preferred to a guessed later anchor because duplicate discoveries can be deduplicated while missed events cannot be recovered reliably.
 
 ## X / Grok sensing
 
@@ -93,7 +170,7 @@ Reaction output is treated as **Social Observation Evidence**. It may support st
 
 Run-specific instructions may be placed under `config/prompts/grok/runs/`. They can override observation windows, target topics, or output filenames without changing the normal filename convention in the main prompts.
 
-## Planned weekly magazine structure
+## Weekly magazine structure
 
 Initial structure:
 
@@ -115,6 +192,8 @@ Initial structure:
 
 Initial page budget is approximately **16 pages**, with a provisional maximum of approximately **24 pages**. Weak weeks should not be padded merely to fill the target.
 
+The 2026-W32 frozen release candidate is 16 pages and serves as the first complete editorial/build reference.
+
 ## Chronology
 
 The project also intends to maintain an AI / model chronology generated from the same underlying event data used by the survey.
@@ -128,62 +207,66 @@ For example, a model may be released on one date but become a major weekly topic
 
 ## Repository direction
 
-Planned structure as the project develops:
+Current structure is growing toward:
 
 ```text
 japanese-generative-ai-survey/
 ├─ README.md
 ├─ docs/
-│  └─ editorial-specification.md
+│  ├─ editorial-specification.md
+│  ├─ editorial-style-guide.md
+│  └─ weekly-pipeline-design-v0.1.md
 ├─ config/
-│  ├─ topics.yaml
-│  ├─ source_policy.yaml
-│  ├─ survey_policy.md
+│  ├─ weekly-pipeline.json
 │  └─ prompts/
-│     ├─ grok/
-│     │  └─ runs/
-│     ├─ screening.md
-│     ├─ evidence.md
-│     ├─ synthesis.md
-│     └─ citation-review.md
+│     └─ grok/
+│        └─ runs/
 ├─ sources/
 │  └─ <issue>/
 │     ├─ manifest.yaml
+│     ├─ pipeline-state.json
+│     ├─ candidates/
 │     ├─ grok/
-│     │  ├─ raw/                  # trend-discovery Raw Observations
-│     │  └─ reactions/
-│     │     └─ raw/               # focused X Community Reaction collections
-│     └─ evidence/                # verified technical Evidence Cards
+│     │  ├─ raw/
+│     │  └─ reactions/raw/
+│     └─ evidence/
 ├─ chronology/
-│  └─ events.yaml
 ├─ surveys/
 │  ├─ weekly/
 │  ├─ monthly/
 │  └─ annual/
 ├─ schemas/
 ├─ scripts/
-├─ templates/
-│  └─ survey/
+├─ tests/
+├─ templates/survey/
 └─ .github/workflows/
 ```
 
 Existing trend Raw files remain in `sources/<issue>/grok/raw/` to preserve provenance. They are not moved merely to make the tree more symmetrical.
 
-Directories will be added when they acquire real files; empty placeholder trees are intentionally avoided.
+Directories are added when they acquire real files; empty placeholder trees are intentionally avoided.
 
 ## Current phase
 
-Current work is Phase 0–1:
+The first manual/LLM-assisted end-to-end weekly PoC is complete. Current work is the first automation slice:
 
-- establish repository and editorial policy
-- refine X / Grok trend collection
-- collect auditable X community reaction evidence
-- manually collect and verify candidate sources
-- build Evidence Cards
-- compile the first Japanese weekly survey PoC
-- then introduce LuaLaTeX / LuaTeX-ja and a reproducible GitHub Actions PDF build
+- frozen W32 as the reference issue;
+- deterministic issue/calendar planning;
+- pipeline state contract;
+- deterministic validation CLI;
+- scheduled plan-only GitHub Actions workflow;
+- unit tests for DST, collection-anchor carry-forward and optional-section behavior.
 
-Later phases will add automated source collection, schema-constrained evidence extraction, scheduled weekly PR generation, and monthly / annual synthesis.
+Next implementation slices are:
+
+1. source-intake contracts and immutable raw hashing;
+2. collector adapters and run metadata;
+3. schema-constrained Evidence Card runners;
+4. candidate-matrix / selection / architecture runners;
+5. weekly issue PR orchestration;
+6. chronology plus monthly/annual reuse.
+
+Unattended automatic public release remains out of scope until intentionally authorized by a later policy revision.
 
 ## Design principle
 
