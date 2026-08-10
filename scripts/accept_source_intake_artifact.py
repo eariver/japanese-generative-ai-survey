@@ -6,6 +6,11 @@ collector-run provenance, and collector summary metadata. Deterministic screenin
 indexes/batches from the Actions artifact are deliberately not committed; they are
 regenerated from accepted collector files when needed.
 
+The accepted source-intake plan is also the authoritative bootstrap/transition
+input for the weekly pipeline state. A new issue becomes DISCOVERY_COLLECTED only
+after a reviewed successful source-intake artifact is accepted. Source collection
+cannot be appended after downstream normalization/selection has begun.
+
 Existing destination files are append-only: identical bytes are idempotent, while
 a same-path byte change is a hard failure.
 """
@@ -16,8 +21,12 @@ import argparse
 import hashlib
 import json
 import shutil
+from copy import deepcopy
+from datetime import datetime
 from pathlib import Path
 from typing import Any
+
+ALLOWED_SOURCE_STATES = {"ISSUE_INITIALIZED", "DISCOVERY_COLLECTED"}
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -33,6 +42,17 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: fh.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def parse_timestamp(value: str, label: str) -> datetime:
+    normalized = value[:-1] + "+00:00" if value.endswith("Z") else value
+    try:
+        parsed = datetime.fromisoformat(normalized)
+    except ValueError as exc:
+        raise ValueError(f"{label} must be ISO-8601 date-time") from exc
+    if parsed.tzinfo is None:
+        raise ValueError(f"{label} must include an explicit UTC offset or Z")
+    return parsed
 
 
 def file_record(repo_root: Path, path: Path, kind: str) -> dict[str, Any]:
@@ -108,6 +128,31 @@ def validate_report(artifact_root: Path, issue_id: str) -> tuple[Path, dict[str,
     return report_path, report
 
 
+def validate_plan(artifact_root: Path, issue_id: str) -> tuple[Path, dict[str, Any]]:
+    plan_path = artifact_root / "source-intake-control" / "plan.json"
+    if not plan_path.is_file():
+        raise ValueError("source-intake-control/plan.json missing from artifact")
+    plan = load_json(plan_path)
+    if plan.get("schema_version") != "1.0":
+        raise ValueError("unsupported source-intake plan schema_version")
+    if plan.get("issue_id") != issue_id:
+        raise ValueError("source-intake plan issue_id mismatch")
+    if plan.get("editorial_cutoff_timezone") != "America/New_York":
+        raise ValueError("source-intake plan cutoff timezone mismatch")
+    if plan.get("unattended_public_release") is not False:
+        raise ValueError("source-intake plan must not authorize unattended public release")
+    for key in ("editorial_cutoff", "collection_window_start", "collection_window_end"):
+        value = plan.get(key)
+        if not isinstance(value, str) or not value:
+            raise ValueError(f"source-intake plan {key} must be a non-empty date-time string")
+        parse_timestamp(value, f"source-intake plan {key}")
+    if parse_timestamp(plan["collection_window_end"], "source-intake plan collection_window_end") < parse_timestamp(
+        plan["collection_window_start"], "source-intake plan collection_window_start"
+    ):
+        raise ValueError("source-intake plan collection window end precedes start")
+    return plan_path, plan
+
+
 def validate_collector_runs(source_root: Path, report: dict[str, Any], issue_id: str) -> None:
     expected = {run["run_id"]: run["collector"] for run in report["runs"]}
     found: dict[str, str] = {}
@@ -140,6 +185,75 @@ def acceptance_path(repo_root: Path, issue_id: str, workflow_run_id: int) -> Pat
     return repo_root / "sources" / issue_id / "imports" / "source-intake" / f"actions-run-{workflow_run_id}.json"
 
 
+def new_discovery_state(plan: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "schema_version": "1.0",
+        "issue_id": plan["issue_id"],
+        "lifecycle_state": "DISCOVERY_COLLECTED",
+        "revision": "working",
+        "calendar": {
+            "editorial_cutoff": plan["editorial_cutoff"],
+            "cutoff_timezone": plan["editorial_cutoff_timezone"],
+            "collection_window_start": plan["collection_window_start"],
+            "collection_anchor_at": plan["collection_window_end"],
+        },
+        "gates": {
+            "raw_sources_preserved": "passed",
+            "candidate_inventory": "pending",
+            "evidence_normalized": "pending",
+            "candidate_selection": "pending",
+            "issue_architecture": "pending",
+            "article_draft": "pending",
+            "claim_and_chronology_validation": "pending",
+            "latex_build": "pending",
+            "visual_review": "pending",
+            "freeze": "pending",
+        },
+        "automation": {
+            "unattended_public_release": False,
+            "human_gate_required_for_selection": True,
+            "human_gate_required_for_freeze": True,
+        },
+    }
+
+
+def transition_discovery_state(existing: dict[str, Any] | None, plan: dict[str, Any]) -> dict[str, Any]:
+    if existing is None:
+        return new_discovery_state(plan)
+    if existing.get("issue_id") != plan["issue_id"]:
+        raise ValueError("existing pipeline state issue_id mismatch")
+    lifecycle = existing.get("lifecycle_state")
+    if lifecycle not in ALLOWED_SOURCE_STATES:
+        raise ValueError(
+            f"source intake cannot modify issue after downstream work has begun: lifecycle_state={lifecycle!r}"
+        )
+    calendar = existing.get("calendar")
+    if not isinstance(calendar, dict):
+        raise ValueError("existing pipeline state calendar is missing")
+    if calendar.get("editorial_cutoff") != plan["editorial_cutoff"]:
+        raise ValueError("existing pipeline state editorial_cutoff differs from accepted source plan")
+    if calendar.get("cutoff_timezone") != plan["editorial_cutoff_timezone"]:
+        raise ValueError("existing pipeline state cutoff_timezone differs from accepted source plan")
+    if calendar.get("collection_window_start") != plan["collection_window_start"]:
+        raise ValueError("existing pipeline state collection_window_start differs from accepted source plan")
+
+    updated = deepcopy(existing)
+    updated["lifecycle_state"] = "DISCOVERY_COLLECTED"
+    current_anchor = calendar.get("collection_anchor_at")
+    candidate_anchor = plan["collection_window_end"]
+    if current_anchor:
+        current_dt = parse_timestamp(current_anchor, "existing collection_anchor_at")
+        candidate_dt = parse_timestamp(candidate_anchor, "source-intake plan collection_window_end")
+        updated["calendar"]["collection_anchor_at"] = current_anchor if current_dt >= candidate_dt else candidate_anchor
+    else:
+        updated["calendar"]["collection_anchor_at"] = candidate_anchor
+    gates = updated.get("gates")
+    if not isinstance(gates, dict):
+        raise ValueError("existing pipeline state gates are missing")
+    gates["raw_sources_preserved"] = "passed"
+    return updated
+
+
 def accept(
     *,
     artifact_root: Path,
@@ -163,6 +277,7 @@ def accept(
     repo_root = repo_root.resolve()
     artifact_root = artifact_root.resolve()
     report_path, report = validate_report(artifact_root, issue_id)
+    plan_path, plan = validate_plan(artifact_root, issue_id)
     source_root = artifact_source_root(artifact_root, issue_id)
     validate_collector_runs(source_root, report, issue_id)
     discovered = discover_files(source_root)
@@ -207,23 +322,37 @@ def accept(
             "review_reference": review_reference.strip(),
         },
         "source_intake_report_sha256": sha256_file(report_path),
+        "source_plan_sha256": sha256_file(plan_path),
         "collector_run_count": len(report["runs"]),
         "files": sorted(planned_records, key=lambda value: value["path"]),
         "raw_file_count": raw_count,
         "derived_screening_committed": False,
+        "state_transition": {
+            "target_lifecycle_state": "DISCOVERY_COLLECTED",
+            "collection_anchor_candidate": plan["collection_window_end"],
+            "raw_sources_preserved": "passed",
+        },
         "rules": [
             "Collector Raw bytes, collector-run provenance, and collector summary metadata are accepted append-only.",
             "A same-path byte change is a hard failure; identical bytes are idempotent.",
             "Deterministic screening indexes/batches from the Actions artifact are not committed and must be regenerated.",
-            "The source Actions run/artifact identity, artifact digest, and review reference are recorded for auditability.",
+            "The accepted source plan initializes/advances only ISSUE_INITIALIZED or DISCOVERY_COLLECTED state.",
+            "New source intake is rejected after downstream normalization/selection has begun.",
+            "The source Actions run/artifact identity, artifact digest, plan digest, and review reference are recorded for auditability.",
         ],
     }
 
     manifest_path = acceptance_path(repo_root, issue_id, workflow_run_id)
+    state_path = repo_root / "sources" / issue_id / "pipeline-state.json"
     if manifest_path.exists():
-        existing = load_json(manifest_path)
-        if existing != manifest:
+        existing_manifest = load_json(manifest_path)
+        if existing_manifest != manifest:
             raise ValueError(f"acceptance manifest already exists with different content: {manifest_path}")
+        if not state_path.is_file():
+            raise ValueError("accepted source-intake manifest exists but pipeline-state.json is missing")
+        state = load_json(state_path)
+        if state.get("issue_id") != issue_id:
+            raise ValueError("accepted source-intake manifest exists but pipeline state issue_id mismatches")
         return {
             "schema_version": "1.0",
             "passed": True,
@@ -233,7 +362,11 @@ def accept(
             "new_file_count": 0,
             "total_file_count": len(planned_records),
             "raw_file_count": raw_count,
+            "pipeline_state": state_path.relative_to(repo_root).as_posix(),
         }, True
+
+    existing_state = load_json(state_path) if state_path.is_file() else None
+    updated_state = transition_discovery_state(existing_state, plan)
 
     for source, destination in copies:
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -241,6 +374,8 @@ def accept(
         if sha256_file(destination) != sha256_file(source) or destination.stat().st_size != source.stat().st_size:
             raise RuntimeError(f"copy verification failed: {destination}")
 
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    state_path.write_text(json.dumps(updated_state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     result = {
@@ -249,9 +384,12 @@ def accept(
         "issue_id": issue_id,
         "status": "ACCEPTED",
         "acceptance_manifest": manifest_path.relative_to(repo_root).as_posix(),
-        "new_file_count": len(copies) + 1,
+        "new_file_count": len(copies) + 1 + (0 if existing_state is not None else 1),
         "total_file_count": len(planned_records),
         "raw_file_count": raw_count,
+        "pipeline_state": state_path.relative_to(repo_root).as_posix(),
+        "pipeline_state_created": existing_state is None,
+        "pipeline_state_updated": existing_state is not None and existing_state != updated_state,
     }
     return result, True
 
