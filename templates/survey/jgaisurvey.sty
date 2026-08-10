@@ -13,6 +13,7 @@
 \RequirePackage{fancyhdr}
 \RequirePackage{hyperref}
 \RequirePackage{bookmark}
+\RequirePackage{etoolbox}
 \RequirePackage[
   backend=biber,
   style=numeric,
@@ -50,6 +51,9 @@
 \newcommand{\SurveyDate}{UNSET}
 \newcommand{\SurveyCutoff}{UNSET}
 \newcommand{\SurveyRepository}{eariver/japanese-generative-ai-survey}
+\newcommand{\SurveyCoverHeadline}{}
+\newcommand{\SurveyCoverDeck}{}
+\newcommand{\SurveyCoverAnchors}{}
 
 \newcommand{\surveysetup}[4]{%
   \renewcommand{\SurveyIssue}{#1}%
@@ -57,6 +61,12 @@
   \renewcommand{\SurveyDate}{#3}%
   \renewcommand{\SurveyCutoff}{#4}%
   \hypersetup{pdftitle={#2 -- #1}}%
+}
+
+\newcommand{\surveycoverstory}[3]{%
+  \renewcommand{\SurveyCoverHeadline}{#1}%
+  \renewcommand{\SurveyCoverDeck}{#2}%
+  \renewcommand{\SurveyCoverAnchors}{#3}%
 }
 
 \pagestyle{fancy}
@@ -76,6 +86,16 @@
   {\Large\bfseries \SurveyIssue\par}
   \vspace{3mm}
   {\large \SurveyDate\par}
+  \ifstrempty{\SurveyCoverHeadline}{}{%
+    \vspace{14mm}%
+    {\fontsize{22}{29}\selectfont\bfseries\color{SurveyInk}\SurveyCoverHeadline\par}
+    \vspace{4mm}%
+    {\large\color{SurveyMuted}\SurveyCoverDeck\par}
+    \ifstrempty{\SurveyCoverAnchors}{}{%
+      \vspace{8mm}%
+      {\small\bfseries\color{SurveyAccent}\SurveyCoverAnchors\par}%
+    }%
+  }%
   \vfill
   \noindent\begin{tabularx}{\linewidth}{@{}>{\bfseries}l X@{}}
     Editorial cutoff & \SurveyCutoff \\
@@ -83,7 +103,7 @@
     Build & LuaLaTeX / jlreq / LuaTeX-ja \\
   \end{tabularx}
   \vspace{8mm}
-  {\small\color{SurveyMuted}Evidence-first weekly technical survey. Draft content is built only from the issue evidence store and candidate selection.\par}
+  {\small\color{SurveyMuted}一次情報・論文・OSS・X上の技術反応を分離し、検証可能なEvidence chainとして編成する週刊Technical Survey。\par}
   \vspace*{10mm}
 }
 
