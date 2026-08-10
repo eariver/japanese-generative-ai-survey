@@ -151,7 +151,6 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p dist frozen-artifact
-
           actual_name="$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}" --jq '.name')"
           actual_run="$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}" --jq '.workflow_run.id')"
           expired="$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}" --jq '.expired')"
@@ -159,11 +158,7 @@ jobs:
             echo "::error::Frozen Actions artifact metadata does not match release manifest or artifact has expired."
             exit 1
           fi
-
-          gh run download "$RUN_ID" \
-            --repo "$GITHUB_REPOSITORY" \
-            --name "$ARTIFACT_NAME" \
-            --dir frozen-artifact
+          gh run download "$RUN_ID" --repo "$GITHUB_REPOSITORY" --name "$ARTIFACT_NAME" --dir frozen-artifact
           test -s frozen-artifact/main.pdf
           cp frozen-artifact/main.pdf "dist/${ASSET_NAME}"
 
@@ -198,12 +193,10 @@ jobs:
           build_dir="release-src/${SURVEY_ROOT}"
           test -s "${build_dir}/main.pdf"
           test -s "${build_dir}/main.log"
-
           if grep -E -n 'LaTeX Warning: (There were undefined references|Citation .* undefined)|Package biblatex Warning: Please (re)?run|Overfull \\hbox|Underfull \\hbox|Missing character:' "${build_dir}/main.log"; then
             echo '::error::Final TeX log contains publication-blocking warnings.'
             exit 1
           fi
-
           mkdir -p dist
           cp "${build_dir}/main.pdf" "dist/${ASSET_NAME}"
 
@@ -263,9 +256,8 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-      - name: Create draft Release anchored to current default branch
+      - name: Create draft Release with pinned release anchor
         if: inputs.mode == 'draft'
-        id: draft
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -277,24 +269,32 @@ jobs:
           PAGE_COUNT: ${{ steps.manifest.outputs.page_count }}
         run: |
           set -euo pipefail
+
           if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            echo "::error::Release ${TAG} already exists. Use mode=publish for an existing verified draft."
-            exit 1
+            is_draft="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq '.isDraft')"
+            remote_tag="$(git ls-remote --tags origin "refs/tags/${TAG}" | awk 'NR==1 {print $1}')"
+            if [ "$is_draft" = 'true' ] && [ -z "$remote_tag" ]; then
+              echo "Removing incomplete unpublished Draft Release ${TAG} from a previous failed attempt."
+              gh release delete "$TAG" --repo "$GITHUB_REPOSITORY" --yes
+            else
+              echo "::error::Release ${TAG} already exists in a state that draft mode will not replace."
+              exit 1
+            fi
           fi
 
           default_branch="$(gh api "repos/${GITHUB_REPOSITORY}" --jq '.default_branch')"
-          remote_head_before="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${default_branch}" --jq '.sha')"
+          release_anchor="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${default_branch}" --jq '.sha')"
 
           gh release create "$TAG" \
             --repo "$GITHUB_REPOSITORY" \
-            --target "$default_branch" \
+            --target "$release_anchor" \
             --draft \
             --title "$TITLE" \
             --notes-file dist/RELEASE_NOTES.md
 
-          tag_sha="$(git ls-remote --tags origin "refs/tags/${TAG}" | awk 'NR==1 {print $1}')"
-          if [ -z "$tag_sha" ]; then
-            echo "::error::Release was created but tag ${TAG} could not be resolved."
+          draft_target="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json targetCommitish --jq '.targetCommitish')"
+          if [ "$draft_target" != "$release_anchor" ]; then
+            echo "::error::Draft targetCommitish ${draft_target} differs from pinned release anchor ${release_anchor}."
             exit 1
           fi
 
@@ -304,9 +304,8 @@ jobs:
             "issue_id": "${{ inputs.issue_id }}",
             "revision": "${{ inputs.revision }}",
             "release_tag": "${TAG}",
-            "release_anchor_commit": "${tag_sha}",
+            "release_anchor_commit": "${release_anchor}",
             "default_branch": "${default_branch}",
-            "default_branch_head_before_release": "${remote_head_before}",
             "frozen_source_commit": "${SOURCE_COMMIT}",
             "pdf_sha256": "${PDF_SHA256}",
             "asset_name": "${ASSET_NAME}",
@@ -317,11 +316,9 @@ jobs:
 
           cat >> dist/RELEASE_NOTES.md <<EOF
 
-          - Release anchor commit: \`${tag_sha}\`
+          - Release anchor commit: \`${release_anchor}\`
           EOF
-          gh release edit "$TAG" \
-            --repo "$GITHUB_REPOSITORY" \
-            --notes-file dist/RELEASE_NOTES.md
+          gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --notes-file dist/RELEASE_NOTES.md
 
           gh release upload "$TAG" \
             "dist/${ASSET_NAME}#Japanese Generative AI Technical Survey PDF" \
@@ -329,7 +326,7 @@ jobs:
             'dist/RELEASE_METADATA.json#Release provenance metadata' \
             --repo "$GITHUB_REPOSITORY"
 
-      - name: Verify newly created draft assets
+      - name: Verify newly created draft assets and anchor
         if: inputs.mode == 'draft'
         shell: bash
         env:
@@ -340,24 +337,27 @@ jobs:
         run: |
           set -euo pipefail
           is_draft="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq '.isDraft')"
+          target="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json targetCommitish --jq '.targetCommitish')"
           if [ "$is_draft" != 'true' ]; then
-            echo "::error::Expected ${TAG} to remain a draft Release."
+            echo "::error::Expected ${TAG} to remain a Draft Release."
             exit 1
           fi
+
           rm -rf verify-draft
           mkdir verify-draft
-          gh release download "$TAG" \
-            --repo "$GITHUB_REPOSITORY" \
-            --dir verify-draft \
-            --pattern "$ASSET_NAME" \
-            --pattern 'SHA256SUMS.txt' \
-            --pattern 'RELEASE_METADATA.json'
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir verify-draft \
+            --pattern "$ASSET_NAME" --pattern 'SHA256SUMS.txt' --pattern 'RELEASE_METADATA.json'
           test -s "verify-draft/${ASSET_NAME}"
           test -s verify-draft/SHA256SUMS.txt
           test -s verify-draft/RELEASE_METADATA.json
           actual="$(sha256sum "verify-draft/${ASSET_NAME}" | awk '{print $1}')"
           if [ "$actual" != "$EXPECTED_SHA256" ]; then
             echo "::error::Draft Release PDF digest mismatch after upload."
+            exit 1
+          fi
+          metadata_anchor="$(python -c "import json; print(json.load(open('verify-draft/RELEASE_METADATA.json'))['release_anchor_commit'])")"
+          if [ "$target" != "$metadata_anchor" ]; then
+            echo "::error::Draft targetCommitish no longer matches RELEASE_METADATA.json."
             exit 1
           fi
 
@@ -373,19 +373,16 @@ jobs:
         run: |
           set -euo pipefail
           is_draft="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq '.isDraft')"
+          target="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json targetCommitish --jq '.targetCommitish')"
           if [ "$is_draft" != 'true' ]; then
-            echo "::error::Publish requires an existing draft Release for ${TAG}."
+            echo "::error::Publish requires an existing Draft Release for ${TAG}."
             exit 1
           fi
 
           rm -rf verify-publish
           mkdir verify-publish
-          gh release download "$TAG" \
-            --repo "$GITHUB_REPOSITORY" \
-            --dir verify-publish \
-            --pattern "$ASSET_NAME" \
-            --pattern 'SHA256SUMS.txt' \
-            --pattern 'RELEASE_METADATA.json'
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir verify-publish \
+            --pattern "$ASSET_NAME" --pattern 'SHA256SUMS.txt' --pattern 'RELEASE_METADATA.json'
           test -s "verify-publish/${ASSET_NAME}"
           test -s verify-publish/SHA256SUMS.txt
           test -s verify-publish/RELEASE_METADATA.json
@@ -396,9 +393,9 @@ jobs:
             exit 1
           fi
 
-          python - verify-publish/RELEASE_METADATA.json "$TAG" "$SOURCE_COMMIT" "$EXPECTED_SHA256" <<'PY'
+          python - verify-publish/RELEASE_METADATA.json "$TAG" "$SOURCE_COMMIT" "$EXPECTED_SHA256" "$target" <<'PY'
           import json, sys
-          path, tag, source_commit, pdf_sha = sys.argv[1:]
+          path, tag, source_commit, pdf_sha, target = sys.argv[1:]
           with open(path, encoding='utf-8') as fh:
               data = json.load(fh)
           if data.get('release_tag') != tag:
@@ -407,17 +404,9 @@ jobs:
               raise SystemExit('release metadata frozen_source_commit mismatch')
           if data.get('pdf_sha256') != pdf_sha:
               raise SystemExit('release metadata PDF digest mismatch')
-          anchor = data.get('release_anchor_commit')
-          if not isinstance(anchor, str) or len(anchor) != 40:
-              raise SystemExit('release metadata lacks a valid release_anchor_commit')
-          print(anchor)
+          if data.get('release_anchor_commit') != target:
+              raise SystemExit('draft targetCommitish differs from recorded release anchor')
           PY
-          metadata_anchor="$(python -c "import json; print(json.load(open('verify-publish/RELEASE_METADATA.json'))['release_anchor_commit'])")"
-          tag_sha="$(git ls-remote --tags origin "refs/tags/${TAG}" | awk 'NR==1 {print $1}')"
-          if [ "$tag_sha" != "$metadata_anchor" ]; then
-            echo "::error::Release tag no longer resolves to the recorded release anchor."
-            exit 1
-          fi
 
       - name: Publish verified draft Release
         if: inputs.mode == 'publish'
@@ -427,10 +416,25 @@ jobs:
           TAG: ${{ steps.manifest.outputs.release_tag }}
         run: |
           set -euo pipefail
-          gh release edit "$TAG" \
-            --repo "$GITHUB_REPOSITORY" \
-            --draft=false \
-            --latest
+          gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest
+
+      - name: Verify published tag matches release anchor
+        if: inputs.mode == 'publish'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.manifest.outputs.release_tag }}
+        run: |
+          set -euo pipefail
+          rm -rf verify-published
+          mkdir verify-published
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir verify-published --pattern 'RELEASE_METADATA.json'
+          anchor="$(python -c "import json; print(json.load(open('verify-published/RELEASE_METADATA.json'))['release_anchor_commit'])")"
+          tag_sha="$(git ls-remote --tags origin "refs/tags/${TAG}" | awk 'NR==1 {print $1}')"
+          if [ "$tag_sha" != "$anchor" ]; then
+            echo "::error::Published tag ${TAG} resolves to ${tag_sha}, expected release anchor ${anchor}."
+            exit 1
+          fi
 
       - name: Verify immutable release attestation when enabled
         if: inputs.mode == 'publish'
@@ -451,6 +455,5 @@ jobs:
           TAG: ${{ steps.manifest.outputs.release_tag }}
         run: |
           set -euo pipefail
-          gh release view "$TAG" \
-            --repo "$GITHUB_REPOSITORY" \
-            --json tagName,name,isDraft,isImmutable,publishedAt,url
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" \
+            --json tagName,name,isDraft,isImmutable,publishedAt,targetCommitish,url
