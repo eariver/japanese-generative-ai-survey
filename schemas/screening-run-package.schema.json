@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/eariver/japanese-generative-ai-survey/schemas/screening-run-package.schema.json",
+  "title": "Weekly Survey Screening Run Package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "issue_id",
+    "source",
+    "provenance",
+    "prompt",
+    "result_contract",
+    "screening_input",
+    "expected_outputs",
+    "rules"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "issue_id": { "type": "string", "pattern": "^[0-9]{4}-W[0-9]{2}$" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "commit_sha"],
+      "properties": {
+        "ref": { "type": "string", "minLength": 1 },
+        "commit_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pipeline_state_sha256", "raw_index_sha256"],
+      "properties": {
+        "pipeline_state_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "raw_index_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "prompt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prompt_id", "path", "sha256"],
+      "properties": {
+        "prompt_id": { "const": "source-screening-v0.1" },
+        "path": { "const": "contract/source-screening-v0.1.md" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "result_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "const": "contract/screening-batch-result.schema.json" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "screening_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifest_path", "manifest_sha256", "index_path", "index_sha256", "record_count", "batch_policy", "batches"],
+      "properties": {
+        "manifest_path": { "const": "input/screening-manifest.json" },
+        "manifest_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "index_path": { "const": "input/screening-index.jsonl" },
+        "index_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "record_count": { "type": "integer", "minimum": 1 },
+        "batch_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["max_records", "max_json_chars"],
+          "properties": {
+            "max_records": { "type": "integer", "minimum": 1 },
+            "max_json_chars": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "batches": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["batch_id", "path", "record_count", "sha256", "bytes"],
+            "properties": {
+              "batch_id": { "type": "string", "pattern": "^batch-[0-9]{3}$" },
+              "path": { "type": "string", "pattern": "^input/batches/batch-[0-9]{3}\\.jsonl$" },
+              "record_count": { "type": "integer", "minimum": 1 },
+              "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "bytes": { "type": "integer", "minimum": 1 }
+            }
+          }
+        }
+      }
+    },
+    "expected_outputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file_pattern", "one_result_per_batch", "schema_version"],
+      "properties": {
+        "file_pattern": { "const": "results/batch-###.json" },
+        "one_result_per_batch": { "const": true },
+        "schema_version": { "const": "1.0" }
+      }
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}
