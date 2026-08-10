@@ -12,7 +12,7 @@ on:
         required: true
         type: string
       mode:
-        description: Validate only, create a draft release, or publish it
+        description: Validate only, create/verify a draft, or publish an existing draft
         required: true
         default: validate
         type: choice
@@ -255,21 +255,22 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-      - name: Create or verify frozen source tag
-        if: inputs.mode != 'validate'
+      - name: Create or verify frozen source tag for draft
+        if: inputs.mode == 'draft'
         shell: bash
         env:
           TAG: ${{ steps.manifest.outputs.release_tag }}
           SOURCE_COMMIT: ${{ steps.manifest.outputs.source_commit }}
         run: |
           set -euo pipefail
-          existing="$(git -C release-src ls-remote --tags origin "refs/tags/${TAG}" | awk 'NR==1 {print $1}')"
-          if [ -n "$existing" ]; then
-            if [ "$existing" != "$SOURCE_COMMIT" ]; then
-              echo "::error::Existing tag ${TAG} points to ${existing}, expected ${SOURCE_COMMIT}."
+          if git -C release-src ls-remote --exit-code --tags origin "refs/tags/${TAG}" >/dev/null 2>&1; then
+            git -C release-src fetch --force origin "refs/tags/${TAG}:refs/tags/${TAG}"
+            resolved="$(git -C release-src rev-list -n1 "$TAG")"
+            if [ "$resolved" != "$SOURCE_COMMIT" ]; then
+              echo "::error::Existing tag ${TAG} resolves to ${resolved}, expected ${SOURCE_COMMIT}."
               exit 1
             fi
-            echo "Existing tag ${TAG} already points to frozen source commit."
+            echo "Existing tag ${TAG} resolves to frozen source commit."
           else
             git -C release-src config user.name 'github-actions[bot]'
             git -C release-src config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -277,41 +278,104 @@ jobs:
             git -C release-src push origin "refs/tags/${TAG}"
           fi
 
-      - name: Create draft release
-        if: inputs.mode != 'validate'
+      - name: Verify frozen source tag for publish
+        if: inputs.mode == 'publish'
+        shell: bash
+        env:
+          TAG: ${{ steps.manifest.outputs.release_tag }}
+          SOURCE_COMMIT: ${{ steps.manifest.outputs.source_commit }}
+        run: |
+          set -euo pipefail
+          if ! git -C release-src ls-remote --exit-code --tags origin "refs/tags/${TAG}" >/dev/null 2>&1; then
+            echo "::error::Publish requires an existing frozen source tag. Run draft mode first."
+            exit 1
+          fi
+          git -C release-src fetch --force origin "refs/tags/${TAG}:refs/tags/${TAG}"
+          resolved="$(git -C release-src rev-list -n1 "$TAG")"
+          if [ "$resolved" != "$SOURCE_COMMIT" ]; then
+            echo "::error::Tag ${TAG} resolves to ${resolved}, expected ${SOURCE_COMMIT}."
+            exit 1
+          fi
+
+      - name: Create or verify draft release and assets
+        if: inputs.mode == 'draft'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.manifest.outputs.release_tag }}
           TITLE: ${{ steps.manifest.outputs.release_title }}
+          ASSET_NAME: ${{ steps.manifest.outputs.asset_name }}
+          EXPECTED_SHA256: ${{ steps.manifest.outputs.expected_pdf_sha256 }}
         run: |
           set -euo pipefail
           if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            echo "::error::Release ${TAG} already exists. Refusing to overwrite or clobber an existing release."
-            exit 1
+            is_draft="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq '.isDraft')"
+            if [ "$is_draft" != "true" ]; then
+              echo "::error::Release ${TAG} is already published; draft mode will not modify it."
+              exit 1
+            fi
+            rm -rf existing-release
+            mkdir -p existing-release
+            gh release download "$TAG" \
+              --repo "$GITHUB_REPOSITORY" \
+              --pattern "$ASSET_NAME" \
+              --dir existing-release
+            test -s "existing-release/${ASSET_NAME}"
+            actual="$(sha256sum "existing-release/${ASSET_NAME}" | awk '{print $1}')"
+            if [ "$actual" != "$EXPECTED_SHA256" ]; then
+              echo "::error::Existing draft PDF asset digest does not match frozen digest."
+              exit 1
+            fi
+            echo "Existing draft release and PDF asset verified; no asset was overwritten."
+          else
+            gh release create "$TAG" \
+              "dist/${ASSET_NAME}#Japanese Generative AI Technical Survey PDF" \
+              'dist/SHA256SUMS.txt#SHA-256 checksums' \
+              --repo "$GITHUB_REPOSITORY" \
+              --verify-tag \
+              --draft \
+              --title "$TITLE" \
+              --notes-file dist/RELEASE_NOTES.md
           fi
-          gh release create "$TAG" \
-            --repo "$GITHUB_REPOSITORY" \
-            --verify-tag \
-            --draft \
-            --title "$TITLE" \
-            --notes-file dist/RELEASE_NOTES.md
 
-      - name: Upload frozen PDF and checksum
-        if: inputs.mode != 'validate'
+      - name: Verify existing draft before publish
+        if: inputs.mode == 'publish'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.manifest.outputs.release_tag }}
           ASSET_NAME: ${{ steps.manifest.outputs.asset_name }}
+          EXPECTED_SHA256: ${{ steps.manifest.outputs.expected_pdf_sha256 }}
         run: |
           set -euo pipefail
-          gh release upload "$TAG" \
-            "dist/${ASSET_NAME}#Japanese Generative AI Technical Survey PDF" \
-            'dist/SHA256SUMS.txt#SHA-256 checksums' \
-            --repo "$GITHUB_REPOSITORY"
+          if ! gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "::error::Publish requires an existing draft release. Run draft mode first."
+            exit 1
+          fi
+          is_draft="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq '.isDraft')"
+          if [ "$is_draft" != "true" ]; then
+            echo "::error::Release ${TAG} is not a draft; refusing to republish or mutate it."
+            exit 1
+          fi
+          rm -rf existing-release
+          mkdir -p existing-release
+          gh release download "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern "$ASSET_NAME" \
+            --dir existing-release
+          test -s "existing-release/${ASSET_NAME}"
+          actual="$(sha256sum "existing-release/${ASSET_NAME}" | awk '{print $1}')"
+          if [ "$actual" != "$EXPECTED_SHA256" ]; then
+            echo "::error::Draft PDF asset digest does not match frozen digest."
+            exit 1
+          fi
+          asset_names="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name')"
+          grep -Fxq 'SHA256SUMS.txt' <<< "$asset_names" || {
+            echo '::error::Draft release is missing SHA256SUMS.txt.'
+            exit 1
+          }
 
-      - name: Publish release
+      - name: Publish verified draft release
         if: inputs.mode == 'publish'
         shell: bash
         env:
@@ -323,6 +387,22 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --draft=false \
             --latest
+
+      - name: Verify immutable release attestation when enabled
+        if: inputs.mode == 'publish'
+        continue-on-error: true
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.manifest.outputs.release_tag }}
+        run: |
+          set -euo pipefail
+          immutable="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isImmutable --jq '.isImmutable')"
+          if [ "$immutable" = "true" ]; then
+            gh release verify "$TAG" --repo "$GITHUB_REPOSITORY"
+          else
+            echo 'Immutable Releases is not enabled for this repository; release digest was still verified by this workflow.'
+          fi
 
       - name: Summarize release state
         if: inputs.mode != 'validate'
