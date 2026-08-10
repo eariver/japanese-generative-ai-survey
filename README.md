@@ -93,9 +93,12 @@ Typical CLI:
 
 ```bash
 python scripts/weekly_pipeline.py plan
-python scripts/weekly_pipeline.py init --issue-id 2026-W33
+python scripts/weekly_pipeline.py init
+python scripts/weekly_pipeline.py init --issue-id 2026-W33   # assertion only when W33 is the current completed issue
 python scripts/weekly_pipeline.py validate --issue-id 2026-W32 --target frozen
 ```
+
+`init --issue-id` never relabels another week's calendar. A future or historical issue ID is rejected; initialization follows the issue derived from the latest completed editorial cutoff.
 
 `Weekly pipeline spine` runs a **plan-only** scheduled job every Saturday at `00:30 UTC`, safely after Friday 18:00 New York in both EDT and EST. Scheduled execution does not call an LLM, modify the repository, merge a PR, or publish an issue.
 
@@ -128,6 +131,8 @@ sources/<issue>/collectors/<collector>/runs/<observed-at>/
 ```
 
 Exact HTTP response bytes are kept under `raw/`. Multiple runs in the same issue therefore coexist instead of overwriting one another.
+
+Reviewed source-intake artifacts are accepted only through the canonical weekly work branch. Before import, the control workflow verifies the exact successful `weekly-pipeline.yml` `workflow_dispatch` run on `main`, repository identity, artifact identity, expiry state and SHA-256 digest. Acceptance is append-only and refreshes the weekly Draft PR after a successful work-branch commit.
 
 ## Raw provenance
 
@@ -261,14 +266,14 @@ A model may be released on one date but become a weekly topic later because of w
 
 ```text
 Slice A  Deterministic spine                 implemented
-Slice B  Source intake / Raw provenance      baseline implemented
-Slice C  Evidence runners                    next
-Slice D  Editorial runners                   manual W32 reference exists
-Slice E  Weekly PR orchestration             not started
+Slice B  Source intake / Raw provenance      implemented; W32 replay validated, first live new issue pending
+Slice C  Screening / Evidence runners        contracts implemented; production provider/live new issue pending
+Slice D  Editorial / rendering runners       deterministic contracts through final source preflight implemented
+Slice E  Weekly PR orchestration             in progress; work PR + reviewed intake import implemented
 Slice F  Chronology + monthly/annual reuse   not started
 ```
 
-The next automation focus is schema-constrained candidate normalization and Evidence Card generation without weakening the evidence boundaries established by W32.
+The next operational milestone is the first live W33 collection after its Friday 18:00 New York cutoff, followed by reviewed import into `weekly/2026-W33-work`. In parallel, Slice E continues with auditable persistence of validated screening, Evidence and editorial stage results into the weekly Draft PR without weakening the Selection, Architecture, Visual Review or Freeze gates.
 
 ## Design principle
 
