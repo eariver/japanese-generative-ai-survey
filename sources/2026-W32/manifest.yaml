@@ -58,6 +58,13 @@ artifacts:
     cover_headline: "モデルの外側へ"
     full_issue_rebuild: "pending"
 
+  final_claim_review:
+    path: "sources/2026-W32/final-claim-review-v0.1.md"
+    status: "passed"
+    reviewed_claim_groups: 10
+    blocking_findings: 0
+    remaining_freeze_blocker: "full-v0.2-rebuild-and-render-review"
+
   editorial_style_guide:
     path: "docs/editorial-style-guide.md"
     version: "v0.1"
@@ -86,7 +93,7 @@ artifacts:
         - "removed awkward Survey title hyphenation"
         - "shortened anchor line to avoid isolated trailing word"
         - "rebalanced cover metadata columns"
-    ci_visibility_note: "Latest commit combined-status endpoint returned no status entries. Push-triggered Actions run enumeration remains unavailable through the current connector. The runtime also cannot clone GitHub because outbound DNS is unavailable."
+    ci_visibility_note: "Latest commit combined-status endpoint returned no status entries. Push-triggered Actions run enumeration remains unavailable through the current connector. The workflow already supports workflow_dispatch. The runtime also cannot clone GitHub because outbound DNS is unavailable."
 
   article_drafts:
     - path: "surveys/weekly/2026-W32/sections/00-frontmatter.tex"
@@ -201,12 +208,11 @@ selection_summary:
 
 next_stage:
   name: "full-rebuild-and-final-editorial-gate"
-  prerequisites: "v0.1 full draft validated; v0.2 editorial source polish applied"
+  prerequisites: "v0.1 full draft validated; v0.2 editorial source polish applied; high-risk claim review passed"
   tasks:
     - "Perform a full LuaLaTeX+biber rebuild from the current repository source tree."
     - "Render all pages and compare against the validated v0.1 layout for regressions."
-    - "Repeat citation-to-claim and chronology checks if page/prose corrections alter wording."
-    - "Perform final high-risk claim review for Astra math, Astra cyber, benchmark comparisons, security threat-model claims, and community low-resource inference claims."
+    - "Repeat citation-to-claim and chronology checks only if subsequent prose/layout corrections alter wording."
     - "Freeze the final candidate PDF only after the full rebuild passes."
   page_budget_decision: "14 pages accepted provisionally; do not pad solely to reach the ~16-page planning target."
   constraints:
