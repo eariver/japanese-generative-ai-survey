@@ -38,7 +38,7 @@ def render(input_path: Path, result_path: Path, prompt_path: Path, output_path: 
     article_by_id = {article["package_id"]: article for article in synthesis_input["articles"]}
 
     anchors = [article_by_id[package_id]["headline"] for package_id in result["cover"]["anchor_package_ids"]]
-    anchor_text = f" {BS}textbullet{} ".join(tex_escape(value) for value in anchors)
+    anchor_text = f" {BS}textbullet{{}} ".join(tex_escape(value) for value in anchors)
     lines = [
         "% Generated from validated post-draft Issue Synthesis. Do not hand-edit.",
         f"{BS}surveycoverstory",
