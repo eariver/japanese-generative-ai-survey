@@ -3,7 +3,7 @@
 
 This stdlib validator focuses on invariants that are easy to violate silently:
 provenance hashes, task/issue identity, verification-target coverage, unique
-source IDs, and referential integrity for every claim/metric/limitation/event.
+source/event IDs, and referential integrity for every claim/metric/limitation/event.
 """
 
 from __future__ import annotations
@@ -150,6 +150,7 @@ def validate(task_path: Path, run_path: Path, prompt_path: Path) -> tuple[dict[s
     known_sources = set(source_ids)
 
     temporal = card.get("temporal")
+    event_ids: list[str] = []
     if not isinstance(temporal, dict):
         errors.append("card.temporal must be an object")
     else:
@@ -163,9 +164,17 @@ def validate(task_path: Path, run_path: Path, prompt_path: Path) -> tuple[dict[s
                 if not isinstance(event, dict):
                     errors.append(f"events[{index}] must be an object")
                     continue
+                event_id = event.get("event_id")
+                if not nonempty(event_id):
+                    errors.append(f"events[{index}].event_id must be non-empty")
+                else:
+                    event_ids.append(event_id)
                 if not nonempty(event.get("event_type")):
                     errors.append(f"events[{index}].event_type must be non-empty")
                 errors.extend(source_ref_errors(event.get("source_ids"), known_sources, f"events[{index}].source_ids"))
+            duplicate_event_ids = sorted(key for key, count in Counter(event_ids).items() if count > 1)
+            if duplicate_event_ids:
+                errors.append(f"duplicate event_id values: {duplicate_event_ids}")
 
     for field, id_field in (("claims", "claim_id"), ("metrics", "metric_id"), ("limitations", "limitation_id")):
         items = card.get(field)
@@ -245,6 +254,7 @@ def validate(task_path: Path, run_path: Path, prompt_path: Path) -> tuple[dict[s
         "evidence_task_sha256": sha256_file(task_path),
         "prompt_sha256": sha256_file(prompt_path),
         "source_count": len(sources),
+        "event_count": len(event_ids),
         "claim_count": len(card.get("claims", [])) if isinstance(card.get("claims"), list) else 0,
         "metric_count": len(card.get("metrics", [])) if isinstance(card.get("metrics"), list) else 0,
         "limitation_count": len(card.get("limitations", [])) if isinstance(card.get("limitations"), list) else 0,
