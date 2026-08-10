@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "series_name": "Japanese Generative AI Technical Survey Special",
+  "policy": {
+    "unattended_public_release": false,
+    "human_gate_required_for_selection": true,
+    "human_gate_required_for_architecture": true,
+    "human_gate_required_for_visual_review": true,
+    "human_gate_required_for_freeze": true,
+    "human_gate_required_for_public_release": true,
+    "raw_collector_output_is_immutable": true,
+    "frozen_revision_is_immutable": true,
+    "retrospective_grok_default": "DISABLED",
+    "thematic_grok_default": "OPTIONAL"
+  },
+  "lifecycle_states": [
+    "ISSUE_INITIALIZED",
+    "DISCOVERY_COLLECTED",
+    "CANDIDATES_NORMALIZED",
+    "EVIDENCE_REVIEWED",
+    "SELECTION_COMPLETE",
+    "ARCHITECTURE_ESTABLISHED",
+    "DRAFT_COMPLETE",
+    "VALIDATED_DRAFT",
+    "RELEASE_CANDIDATE",
+    "FROZEN"
+  ],
+  "historical_granularity": {
+    "monthly": {
+      "start": "2025-08-01",
+      "end": "2026-07-31",
+      "note": "Monthly retrospective Specials bridge the year immediately preceding the first Weekly issues."
+    },
+    "half_year": {
+      "start": "2022-11-01",
+      "end": "2025-07-31",
+      "anchor_months": [11, 5],
+      "months_per_window": 6,
+      "truncate_final_window_at_monthly_start": true,
+      "note": "Six-month historical windows are anchored to November/May; the final window may be shorter so it does not overlap the monthly tier."
+    },
+    "annual": {
+      "before": "2022-11-01",
+      "note": "Older history is normally summarized annually; finer treatment belongs in a thematic Special when justified."
+    }
+  },
+  "paths": {
+    "edition_manifest": "specials/{special_slug}/edition.json",
+    "survey_root": "surveys/special/{special_slug}",
+    "source_root": "sources/{special_id}",
+    "work_branch": "special/{special_slug}-work"
+  }
+}

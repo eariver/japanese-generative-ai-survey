@@ -1,27 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/eariver/japanese-generative-ai-survey/schemas/evidence-card.schema.json",
-  "title": "Weekly Survey Evidence Card",
+  "title": "Survey Evidence Card",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "schema_version",
-    "issue_id",
-    "evidence_task_id",
-    "status",
-    "grouping_resolution",
-    "artifact",
-    "temporal",
-    "sources",
-    "claims",
-    "metrics",
-    "limitations",
-    "verification",
-    "editorial"
-  ],
+  "required": ["schema_version", "issue_id", "evidence_task_id", "status", "grouping_resolution", "artifact", "temporal", "sources", "claims", "metrics", "limitations", "verification", "editorial"],
   "properties": {
     "schema_version": { "const": "1.0" },
-    "issue_id": { "type": "string", "pattern": "^[0-9]{4}-W[0-9]{2}$" },
+    "issue_id": { "type": "string", "pattern": "^(?:[0-9]{4}-W[0-9]{2}|SP-[A-Za-z0-9][A-Za-z0-9._-]{2,63})$" },
     "evidence_task_id": { "type": "string", "minLength": 1 },
     "status": { "enum": ["VERIFIED", "PARTIAL", "REJECTED", "NEEDS_MORE"] },
     "grouping_resolution": {
@@ -40,23 +26,7 @@
       "required": ["canonical_name", "artifact_type", "organization", "canonical_url"],
       "properties": {
         "canonical_name": { "type": "string", "minLength": 1 },
-        "artifact_type": {
-          "enum": [
-            "MODEL",
-            "MODEL_UPDATE",
-            "OPEN_WEIGHT",
-            "API",
-            "PRODUCT",
-            "AGENT",
-            "FRAMEWORK",
-            "PAPER",
-            "BENCHMARK",
-            "SAFETY_EVENT",
-            "SECURITY_EVENT",
-            "INTEGRATION",
-            "OTHER"
-          ]
-        },
+        "artifact_type": { "enum": ["MODEL", "MODEL_UPDATE", "OPEN_WEIGHT", "API", "PRODUCT", "AGENT", "FRAMEWORK", "PAPER", "BENCHMARK", "SAFETY_EVENT", "SECURITY_EVENT", "INTEGRATION", "OTHER"] },
         "organization": { "type": ["string", "null"] },
         "canonical_url": { "type": ["string", "null"] }
       }
@@ -79,12 +49,7 @@
               "event_type": { "type": "string", "minLength": 1 },
               "event_date": { "type": ["string", "null"] },
               "source_published_at": { "type": ["string", "null"] },
-              "source_ids": {
-                "type": "array",
-                "minItems": 1,
-                "uniqueItems": true,
-                "items": { "type": "string", "minLength": 1 }
-              }
+              "source_ids": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
             }
           }
         }
@@ -100,9 +65,7 @@
         "properties": {
           "source_id": { "type": "string", "minLength": 1 },
           "url": { "type": "string", "minLength": 1 },
-          "source_class": {
-            "enum": ["PRIMARY_OFFICIAL", "PRIMARY_PAPER", "PRIMARY_REPOSITORY", "SOCIAL", "SECONDARY"]
-          },
+          "source_class": { "enum": ["PRIMARY_OFFICIAL", "PRIMARY_PAPER", "PRIMARY_REPOSITORY", "SOCIAL", "SECONDARY"] },
           "title": { "type": "string", "minLength": 1 },
           "published_at": { "type": ["string", "null"] },
           "accessed_at": { "type": "string", "format": "date-time" },
@@ -119,15 +82,8 @@
         "properties": {
           "claim_id": { "type": "string", "minLength": 1 },
           "text": { "type": "string", "minLength": 1 },
-          "evidence_class": {
-            "enum": ["PRIMARY_FACT", "VENDOR_CLAIM", "PROJECT_CLAIM", "AUTHOR_CLAIM", "SOCIAL_OBSERVATION", "INFERENCE"]
-          },
-          "source_ids": {
-            "type": "array",
-            "minItems": 1,
-            "uniqueItems": true,
-            "items": { "type": "string", "minLength": 1 }
-          },
+          "evidence_class": { "enum": ["PRIMARY_FACT", "VENDOR_CLAIM", "PROJECT_CLAIM", "AUTHOR_CLAIM", "SOCIAL_OBSERVATION", "INFERENCE"] },
+          "source_ids": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
           "context": { "type": ["string", "null"] }
         }
       }
@@ -145,12 +101,7 @@
           "unit": { "type": ["string", "null"] },
           "context": { "type": "string", "minLength": 1 },
           "evidence_class": { "enum": ["PRIMARY_FACT", "VENDOR_CLAIM", "PROJECT_CLAIM", "AUTHOR_CLAIM", "SOCIAL_OBSERVATION", "INFERENCE"] },
-          "source_ids": {
-            "type": "array",
-            "minItems": 1,
-            "uniqueItems": true,
-            "items": { "type": "string", "minLength": 1 }
-          }
+          "source_ids": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
         }
       }
     },
@@ -164,12 +115,7 @@
           "limitation_id": { "type": "string", "minLength": 1 },
           "text": { "type": "string", "minLength": 1 },
           "evidence_class": { "enum": ["PRIMARY_FACT", "VENDOR_CLAIM", "PROJECT_CLAIM", "AUTHOR_CLAIM", "SOCIAL_OBSERVATION", "INFERENCE"] },
-          "source_ids": {
-            "type": "array",
-            "minItems": 1,
-            "uniqueItems": true,
-            "items": { "type": "string", "minLength": 1 }
-          }
+          "source_ids": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
         }
       }
     },
@@ -188,22 +134,12 @@
               "target": { "type": "string", "minLength": 1 },
               "status": { "enum": ["VERIFIED", "UNRESOLVED", "CONTRADICTED", "NOT_APPLICABLE"] },
               "finding": { "type": "string", "minLength": 1 },
-              "source_ids": {
-                "type": "array",
-                "uniqueItems": true,
-                "items": { "type": "string", "minLength": 1 }
-              }
+              "source_ids": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
             }
           }
         },
-        "unresolved_questions": {
-          "type": "array",
-          "items": { "type": "string", "minLength": 1 }
-        },
-        "contradictions": {
-          "type": "array",
-          "items": { "type": "string", "minLength": 1 }
-        }
+        "unresolved_questions": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "contradictions": { "type": "array", "items": { "type": "string", "minLength": 1 } }
       }
     },
     "editorial": {
