@@ -58,67 +58,28 @@ jobs:
             echo "::error::source_run_id must be numeric"
             exit 2
           fi
-          artifact_name="weekly-source-intake-${ISSUE_ID}"
-          run_json="$(gh api "repos/${REPOSITORY}/actions/runs/${SOURCE_RUN_ID}")"
-          conclusion="$(python -c 'import json,sys; print(json.load(sys.stdin).get("conclusion") or "")' <<<"${run_json}")"
-          head_repo="$(python -c 'import json,sys; print((json.load(sys.stdin).get("head_repository") or {}).get("full_name") or "")' <<<"${run_json}")"
-          if [ "${conclusion}" != 'success' ]; then
-            echo "::error::source Actions run must be completed successfully; conclusion=${conclusion}"
-            exit 1
-          fi
-          if [ "${head_repo}" != "${REPOSITORY}" ]; then
-            echo "::error::source Actions run does not belong to this repository"
-            exit 1
-          fi
 
-          artifacts="$(gh api "repos/${REPOSITORY}/actions/runs/${SOURCE_RUN_ID}/artifacts?per_page=100")"
-          match_count="$(python -c 'import json,sys,os; a=json.load(sys.stdin).get("artifacts",[]); n=os.environ["ARTIFACT_NAME"]; print(sum(1 for x in a if x.get("name")==n))' <<<"${artifacts}" ARTIFACT_NAME="${artifact_name}")"
-          if [ "${match_count}" -ne 1 ]; then
-            echo "::error::expected exactly one artifact named ${artifact_name}, found ${match_count}"
-            exit 1
-          fi
-          python - "${artifact_name}" > source-artifact.json <<'PY' <<<"${artifacts}"
-          PY
-          # The previous here-doc cannot consume stdin simultaneously; render with a temp file instead.
-          printf '%s' "${artifacts}" > source-artifacts.json
-          python - "${artifact_name}" > source-artifact.json <<'PY'
-          import json, sys
-          artifact_name = sys.argv[1]
-          data = json.load(open('source-artifacts.json', encoding='utf-8'))
-          matches = [item for item in data.get('artifacts', []) if item.get('name') == artifact_name]
-          if len(matches) != 1:
-              raise SystemExit('artifact uniqueness changed during resolution')
-          print(json.dumps(matches[0], ensure_ascii=False, indent=2))
-          PY
-          artifact_id="$(python -c 'import json; print(json.load(open("source-artifact.json"))["id"])')"
-          artifact_digest="$(python -c 'import json; print(json.load(open("source-artifact.json")).get("digest") or "")')"
-          expired="$(python -c 'import json; print(str(json.load(open("source-artifact.json")).get("expired", False)).lower())')"
-          artifact_run="$(python -c 'import json; print((json.load(open("source-artifact.json")).get("workflow_run") or {}).get("id") or "")')"
-          if [ "${expired}" != 'false' ] || [ "${artifact_run}" != "${SOURCE_RUN_ID}" ]; then
-            echo "::error::source artifact expired or workflow_run identity mismatch"
-            exit 1
-          fi
-          if ! [[ "${artifact_digest}" =~ ^sha256:[0-9a-f]{64}$ ]]; then
-            echo "::error::source artifact digest is missing or invalid: ${artifact_digest}"
-            exit 1
-          fi
-          {
-            echo "artifact_name=${artifact_name}"
-            echo "artifact_id=${artifact_id}"
-            echo "artifact_digest=${artifact_digest}"
-          } >> "${GITHUB_OUTPUT}"
+          gh api "repos/${REPOSITORY}/actions/runs/${SOURCE_RUN_ID}" > source-run.json
+          gh api "repos/${REPOSITORY}/actions/runs/${SOURCE_RUN_ID}/artifacts?per_page=100" > source-artifacts.json
+
+          python control-src/scripts/resolve_source_intake_artifact.py \
+            --run-json source-run.json \
+            --artifacts-json source-artifacts.json \
+            --repository "${REPOSITORY}" \
+            --issue-id "${ISSUE_ID}" \
+            --source-run-id "${SOURCE_RUN_ID}" \
+            --output source-artifact.json \
+            --github-output "${GITHUB_OUTPUT}"
 
       - name: Require canonical weekly work branch
         id: branch
         shell: bash
         env:
-          GH_TOKEN: ${{ github.token }}
-          REPOSITORY: ${{ github.repository }}
           ISSUE_ID: ${{ inputs.issue_id }}
         run: |
           set -euo pipefail
           branch="weekly/${ISSUE_ID}-work"
-          if ! gh api "repos/${REPOSITORY}/branches/${branch}" >/dev/null 2>&1; then
+          if ! git -C control-src ls-remote --exit-code --heads origin "refs/heads/${branch}" >/dev/null 2>&1; then
             echo "::error::work branch ${branch} does not exist; run Weekly work PR control first"
             exit 1
           fi
@@ -229,6 +190,8 @@ jobs:
         with:
           name: weekly-source-intake-import-${{ inputs.issue_id }}-${{ inputs.source_run_id }}
           path: |
+            source-run.json
+            source-artifacts.json
             source-artifact.json
             import-result.json
             raw-update-report.json
