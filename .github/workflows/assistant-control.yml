@@ -63,6 +63,14 @@ jobs:
                       'target': {'selection', 'draft', 'release-candidate', 'frozen'},
                   },
               },
+              'special-pipeline': {
+                  'file': 'special-pipeline.yml',
+                  'keys': {'command', 'special_slug', 'collector'},
+                  'values': {
+                      'command': {'plan', 'validate', 'history-plan', 'source-intake'},
+                      'collector': {'all', 'arxiv', 'github', 'official'},
+                  },
+              },
               'build-weekly-survey': {
                   'file': 'build-weekly-survey.yml',
                   'keys': {'issue_id'},
