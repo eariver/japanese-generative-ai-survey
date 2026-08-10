@@ -73,6 +73,7 @@ class SourceIntakeAcceptanceTests(unittest.TestCase):
             artifact_id=67890,
             artifact_name=f"weekly-source-intake-{issue}",
             artifact_digest="sha256:" + "a" * 64,
+            review_reference="assistant-review:run-12345",
         )
 
     def test_accepts_only_collector_tree_and_records_actions_provenance(self) -> None:
@@ -93,6 +94,7 @@ class SourceIntakeAcceptanceTests(unittest.TestCase):
             self.assertEqual(manifest["source_actions"]["workflow_run_id"], 12345)
             self.assertEqual(manifest["source_actions"]["artifact_id"], 67890)
             self.assertEqual(manifest["source_actions"]["artifact_digest"], "sha256:" + "a" * 64)
+            self.assertEqual(manifest["source_actions"]["review_reference"], "assistant-review:run-12345")
             self.assertEqual(sum(item["kind"] == "RAW" for item in manifest["files"]), 2)
             self.assertFalse((repo / "source-intake-screening").exists())
 
@@ -156,6 +158,24 @@ class SourceIntakeAcceptanceTests(unittest.TestCase):
             (collectors / "README.md").write_text("unexpected", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "unexpected file"):
                 self._accept(artifact, repo)
+
+    def test_review_reference_is_required(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            artifact = self._artifact(root)
+            repo = root / "repo"
+            repo.mkdir()
+            with self.assertRaisesRegex(ValueError, "review_reference"):
+                acceptor.accept(
+                    artifact_root=artifact,
+                    repo_root=repo,
+                    issue_id="2026-W33",
+                    workflow_run_id=12345,
+                    artifact_id=67890,
+                    artifact_name="weekly-source-intake-2026-W33",
+                    artifact_digest="sha256:" + "a" * 64,
+                    review_reference="",
+                )
 
 
 if __name__ == "__main__":
