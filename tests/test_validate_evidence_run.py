@@ -45,6 +45,7 @@ class EvidenceRunValidationTests(unittest.TestCase):
                 "observed_at": "2026-08-10T00:00:00Z",
                 "events": [
                     {
+                        "event_id": "event-release",
                         "event_type": "MODEL_UPDATE",
                         "event_date": "2026-08-07",
                         "source_published_at": "2026-08-07",
@@ -149,6 +150,7 @@ class EvidenceRunValidationTests(unittest.TestCase):
             report, passed = ver.validate(task_path, run_path, prompt)
             self.assertTrue(passed, report)
             self.assertEqual(report["source_count"], 1)
+            self.assertEqual(report["event_count"], 1)
 
     def test_unknown_source_and_missing_target_fail(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -167,6 +169,22 @@ class EvidenceRunValidationTests(unittest.TestCase):
             self.assertFalse(passed)
             self.assertTrue(any("unknown source IDs" in error for error in report["errors"]))
             self.assertTrue(any("not addressed" in error for error in report["errors"]))
+
+    def test_duplicate_event_id_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            task_path = root / "task.json"
+            task = self._task()
+            task_path.write_text(json.dumps(task), encoding="utf-8")
+            prompt = root / "prompt.md"
+            prompt.write_text("prompt", encoding="utf-8")
+            card = self._card(task)
+            card["temporal"]["events"].append(dict(card["temporal"]["events"][0]))
+            run_path = root / "run.json"
+            run_path.write_text(json.dumps(self._run(task_path, prompt, card)), encoding="utf-8")
+            report, passed = ver.validate(task_path, run_path, prompt)
+            self.assertFalse(passed)
+            self.assertTrue(any("duplicate event_id" in error for error in report["errors"]))
 
     def test_task_hash_mismatch_fails(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
