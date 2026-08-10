@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/eariver/japanese-generative-ai-survey/schemas/candidate-selection.schema.json",
+  "title": "Weekly Survey Candidate Selection Gate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "issue_id",
+    "status",
+    "selection_version",
+    "comparison_input_sha256",
+    "assignments",
+    "gate"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "issue_id": { "type": "string", "pattern": "^[0-9]{4}-W[0-9]{2}$" },
+    "status": { "enum": ["selection-draft", "selection-complete"] },
+    "selection_version": { "type": "string", "minLength": 1 },
+    "comparison_input_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "assignments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["comparison_id", "candidate_id", "role", "rationale", "temporal_override_reason"],
+        "properties": {
+          "comparison_id": { "type": "string", "minLength": 1 },
+          "candidate_id": { "type": ["string", "null"] },
+          "role": {
+            "enum": [
+              "UNASSIGNED",
+              "FEATURE_CORE",
+              "SECTION_CORE",
+              "PAPER_WATCH",
+              "SUPPORTING_EVIDENCE",
+              "X_REACTION_SUPPORT",
+              "LATE_BREAKING",
+              "CHRONOLOGY",
+              "WATCHLIST",
+              "HOLD_OUT",
+              "EXCLUDE"
+            ]
+          },
+          "rationale": { "type": ["string", "null"] },
+          "temporal_override_reason": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["approved", "approved_by", "approved_at", "approval_reference"],
+      "properties": {
+        "approved": { "type": "boolean" },
+        "approved_by": { "type": ["string", "null"] },
+        "approved_at": { "type": ["string", "null"], "format": "date-time" },
+        "approval_reference": { "type": ["string", "null"] }
+      }
+    }
+  }
+}
