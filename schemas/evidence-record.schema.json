@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/eariver/japanese-generative-ai-survey/schemas/evidence-record.schema.json",
+  "title": "Weekly Survey Evidence Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "issue_id",
+    "evidence_id",
+    "screening_id",
+    "artifact",
+    "verification_status",
+    "primary_sources",
+    "claims",
+    "metrics",
+    "limitations",
+    "open_questions",
+    "safe_editorial_core",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "issue_id": { "type": "string", "pattern": "^[0-9]{4}-W[0-9]{2}$" },
+    "evidence_id": { "type": "string", "minLength": 1 },
+    "screening_id": { "type": "string", "minLength": 1 },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "canonical_locator", "artifact_type", "artifact_first_announced", "event_type", "event_date"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "canonical_locator": { "type": "string", "minLength": 1 },
+        "artifact_type": { "type": "string", "pattern": "^[A-Z0-9_]+$" },
+        "artifact_first_announced": { "type": ["string", "null"] },
+        "event_type": { "type": ["string", "null"], "pattern": "^[A-Z0-9_]+$" },
+        "event_date": { "type": ["string", "null"] }
+      }
+    },
+    "verification_status": {
+      "enum": ["VERIFIED", "PARTIAL", "REJECTED", "NEEDS_REVIEW"]
+    },
+    "primary_sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "locator", "source_type", "published_at", "observed_at", "content_sha256", "notes"],
+        "properties": {
+          "source_id": { "type": "string", "minLength": 1 },
+          "locator": { "type": "string", "minLength": 1 },
+          "source_type": {
+            "enum": [
+              "OFFICIAL_PAGE",
+              "OFFICIAL_CHANGELOG",
+              "OFFICIAL_MODEL_CARD",
+              "OFFICIAL_REPOSITORY",
+              "OFFICIAL_RELEASE",
+              "ARXIV_ABSTRACT",
+              "ARXIV_PDF",
+              "PAPER_SUPPLEMENT",
+              "OTHER_PRIMARY"
+            ]
+          },
+          "published_at": { "type": ["string", "null"] },
+          "observed_at": { "type": "string", "format": "date-time" },
+          "content_sha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+          "notes": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim_id", "text", "evidence_class", "source_ids", "publishable", "confidence", "caveats"],
+        "properties": {
+          "claim_id": { "type": "string", "minLength": 1 },
+          "text": { "type": "string", "minLength": 1 },
+          "evidence_class": {
+            "enum": [
+              "VERIFIED_PRIMARY",
+              "VENDOR_CLAIM",
+              "AUTHOR_RESULT",
+              "INDEPENDENT_EVALUATION",
+              "SOCIAL_OBSERVATION",
+              "INFERENCE",
+              "PENDING"
+            ]
+          },
+          "source_ids": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          },
+          "publishable": { "type": "boolean" },
+          "confidence": { "enum": ["low", "medium", "high"] },
+          "caveats": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "value", "unit", "context", "evidence_class", "source_ids"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "value": { "type": ["number", "string"] },
+          "unit": { "type": ["string", "null"] },
+          "context": { "type": "string", "minLength": 1 },
+          "evidence_class": {
+            "enum": ["VERIFIED_PRIMARY", "VENDOR_CLAIM", "AUTHOR_RESULT", "INDEPENDENT_EVALUATION", "PENDING"]
+          },
+          "source_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "safe_editorial_core": { "type": ["string", "null"] },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["screening_batch_id", "screening_decision", "verification_targets", "runner", "generated_at"],
+      "properties": {
+        "screening_batch_id": { "type": "string", "minLength": 1 },
+        "screening_decision": { "enum": ["KEEP", "MAYBE", "INSPECT"] },
+        "verification_targets": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "runner": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["provider", "model", "invocation"],
+          "properties": {
+            "provider": { "type": "string", "minLength": 1 },
+            "model": { "type": "string", "minLength": 1 },
+            "invocation": { "type": "string", "minLength": 1 },
+            "run_reference": { "type": ["string", "null"] }
+          }
+        },
+        "generated_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}
