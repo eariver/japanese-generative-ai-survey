@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import tempfile
 import unittest
 from pathlib import Path
@@ -141,11 +142,7 @@ class PrepareScreeningRunTests(unittest.TestCase):
             root = Path(tmp)
             self._fixture(root)
             collectors = root / "sources" / self.ISSUE / "collectors"
-            for path in sorted(collectors.rglob("*"), reverse=True):
-                if path.is_file():
-                    path.unlink()
-                elif path.is_dir():
-                    path.rmdir()
+            shutil.rmtree(collectors)
             collectors.mkdir(parents=True, exist_ok=True)
             with self.assertRaisesRegex(ValueError, "produced no records/batches"):
                 prepare.build_package(
