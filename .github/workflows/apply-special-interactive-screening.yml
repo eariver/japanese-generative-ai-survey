@@ -1,0 +1,114 @@
+name: Apply Special interactive screening
+
+on:
+  workflow_dispatch:
+    inputs:
+      special_slug:
+        description: Special slug, for example 2026-M07
+        required: true
+        type: string
+      review_reference:
+        description: Human/interactive review reference
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: special-interactive-screening-${{ inputs.special_slug }}
+  cancel-in-progress: false
+
+jobs:
+  screening:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Resolve edition and branch
+        id: edition
+        shell: bash
+        env:
+          SPECIAL_SLUG: ${{ inputs.special_slug }}
+        run: |
+          set -euo pipefail
+          manifest="control-src/specials/${SPECIAL_SLUG}/edition.json"
+          test -s "$manifest"
+          python control-src/scripts/special_pipeline.py --config control-src/config/special-pipeline.json validate --manifest "$manifest"
+          special_id="$(python -c "import json; print(json.load(open('$manifest'))['special_id'])")"
+          work_branch="$(python -c "import json; print(json.load(open('$manifest'))['paths']['work_branch'])")"
+          echo "special_id=$special_id" >> "$GITHUB_OUTPUT"
+          echo "work_branch=$work_branch" >> "$GITHUB_OUTPUT"
+      - name: Checkout Special work branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ steps.edition.outputs.work_branch }}
+          path: worktree
+          fetch-depth: 0
+      - name: Verify Raw provenance before screening
+        shell: bash
+        env:
+          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id "$SPECIAL_ID" check
+      - name: Require interactive override review file
+        id: override
+        shell: bash
+        env:
+          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+        run: |
+          set -euo pipefail
+          path="worktree/sources/${SPECIAL_ID}/screening/interactive-overrides-v0.1.json"
+          test -s "$path"
+          python -m json.tool "$path" >/dev/null
+          echo "path=$path" >> "$GITHUB_OUTPUT"
+      - name: Generate, validate, and accept complete Screening results
+        shell: bash
+        env:
+          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+          WORK_BRANCH: ${{ steps.edition.outputs.work_branch }}
+          REVIEW_REFERENCE: ${{ inputs.review_reference }}
+        run: |
+          set -euo pipefail
+          source_commit="$(git -C worktree rev-parse HEAD)"
+          PYTHONPATH=control-src python control-src/scripts/run_special_interactive_screening.py \
+            --repo-root worktree \
+            --issue-id "$SPECIAL_ID" \
+            --source-ref "$WORK_BRANCH" \
+            --source-commit "$source_commit" \
+            --overrides "worktree/sources/${SPECIAL_ID}/screening/interactive-overrides-v0.1.json" \
+            --review-reference "$REVIEW_REFERENCE" \
+            --audit-output screening-audit.json
+      - name: Commit accepted Screening set and state transition
+        working-directory: worktree
+        shell: bash
+        env:
+          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+          WORK_BRANCH: ${{ steps.edition.outputs.work_branch }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "sources/${SPECIAL_ID}/screening" "sources/${SPECIAL_ID}/pipeline-state.json"
+          if git diff --cached --quiet; then
+            echo 'No Screening change to commit.'
+            exit 0
+          fi
+          git commit -m "Accept interactive screening for ${SPECIAL_ID}"
+          git push origin "HEAD:${WORK_BRANCH}"
+      - name: Upload Screening audit
+        uses: actions/upload-artifact@v7
+        with:
+          name: special-interactive-screening-${{ inputs.special_slug }}
+          path: screening-audit.json
+          if-no-files-found: error
+          retention-days: 14
