@@ -132,15 +132,27 @@ Status: **provider-agnostic automation contract implemented; interactive primary
 
 ## Slice D — Editorial runners
 
-Status: manual/LLM-assisted reference exists from W32; automation not yet implemented.
+Status: **pre-selection comparison + Human Selection Gate implemented; architecture/drafting runners pending**
 
-Next targets:
+- [x] deterministic non-ranking Candidate comparison matrix
+- [x] temporal relation classification from issue collection window/cutoff
+- [x] cutoff-day date-only events remain `TIMING_UNRESOLVED`
+- [x] Evidence/source class counts shown as evidence depth, never importance score
+- [x] comparison readiness `READY / READY_WITH_CAVEAT / HOLD / REJECT`
+- [x] SHA-bound Candidate Selection decision schema
+- [x] deterministic Selection template initializer
+- [x] every matrix row must receive exactly one role before approval
+- [x] Matrix byte changes invalidate the Selection basis
+- [x] `HOLD / INSPECT_MORE / REJECT` cannot be silently promoted to positive editorial roles
+- [x] `POST_CUTOFF` cannot be silently promoted into normal main-window roles
+- [x] explicit `APPROVED` metadata required for the Human Selection Gate
+- [ ] Issue Architecture generator / contract
+- [ ] article-drafting package runners
+- [ ] citation/claim consistency preflight reuse as a general weekly stage
 
-1. candidate comparison matrix generation from pre-selection records;
-2. explicit Human Candidate Selection gate;
-3. Issue Architecture generator;
-4. article-drafting package runners;
-5. citation/claim consistency preflight reuse.
+Latest Selection Gate regression: `run 31365181817`, test job passed.
+
+The Selection initializer intentionally leaves ordinary `CANDIDATE` rows `UNASSIGNED`. It only pre-fills roles forced by upstream boundaries (`REJECT -> EXCLUDE`, unresolved Evidence -> `HOLD_OUT`, `POST_CUTOFF CANDIDATE -> LATE_BREAKING`). Editorial priority remains a human decision.
 
 ## Slice E — Weekly PR orchestration
 
