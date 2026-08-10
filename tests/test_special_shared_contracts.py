@@ -13,13 +13,14 @@ class SpecialSharedContractTests(unittest.TestCase):
             value = value[key]
         return value
 
-    def test_core_discovery_contracts_accept_weekly_and_special_ids(self) -> None:
+    def test_core_discovery_and_evidence_contracts_accept_weekly_and_special_ids(self) -> None:
         paths = [
             "schemas/collector-run.schema.json",
             "schemas/screening-record.schema.json",
             "schemas/screening-batch-result.schema.json",
             "schemas/evidence-task.schema.json",
             "schemas/evidence-run.schema.json",
+            "schemas/evidence-card.schema.json",
         ]
         for path in paths:
             with self.subTest(path=path):
