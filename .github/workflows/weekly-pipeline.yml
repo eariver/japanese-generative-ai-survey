@@ -47,6 +47,7 @@ on:
       - 'scripts/raw_provenance.py'
       - 'scripts/generate_grok_trend_run.py'
       - 'scripts/source_intake.py'
+      - 'scripts/build_screening_index.py'
       - 'tests/test_*.py'
       - 'config/weekly-pipeline.json'
       - 'config/source-intake.json'
@@ -55,6 +56,7 @@ on:
       - 'schemas/collector-instruction.schema.json'
       - 'schemas/collector-run.schema.json'
       - 'schemas/raw-source-index.schema.json'
+      - 'schemas/screening-record.schema.json'
       - 'schemas/weekly-release-manifest.schema.json'
       - 'sources/*/raw-index.json'
       - 'sources/*/release-manifest.json'
@@ -68,6 +70,7 @@ on:
       - 'scripts/raw_provenance.py'
       - 'scripts/generate_grok_trend_run.py'
       - 'scripts/source_intake.py'
+      - 'scripts/build_screening_index.py'
       - 'tests/test_*.py'
       - 'config/weekly-pipeline.json'
       - 'config/source-intake.json'
@@ -76,6 +79,7 @@ on:
       - 'schemas/collector-instruction.schema.json'
       - 'schemas/collector-run.schema.json'
       - 'schemas/raw-source-index.schema.json'
+      - 'schemas/screening-record.schema.json'
       - 'schemas/weekly-release-manifest.schema.json'
       - 'sources/*/raw-index.json'
       - 'sources/*/release-manifest.json'
@@ -113,6 +117,7 @@ jobs:
           python -m json.tool schemas/collector-instruction.schema.json >/dev/null
           python -m json.tool schemas/collector-run.schema.json >/dev/null
           python -m json.tool schemas/raw-source-index.schema.json >/dev/null
+          python -m json.tool schemas/screening-record.schema.json >/dev/null
           python -m json.tool schemas/weekly-release-manifest.schema.json >/dev/null
           while IFS= read -r manifest; do
             python -m json.tool "$manifest" >/dev/null
@@ -148,7 +153,6 @@ jobs:
             echo "Checking raw provenance for ${issue_id}"
             python scripts/raw_provenance.py --issue-id "$issue_id" check
           done < <(find sources -mindepth 2 -maxdepth 2 -name raw-index.json -type f | sort)
-
           if [ "$found" -eq 0 ]; then
             echo 'No committed raw provenance baselines found; nothing to check.'
           fi
@@ -256,6 +260,17 @@ jobs:
             --collector '${{ inputs.collector }}' \
             --output-root out/source-intake
 
+      - name: Build deterministic screening index and bounded batches
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_screening_index.py \
+            --input-root out/source-intake \
+            --output-dir out/source-intake-screening \
+            --issue-id '${{ inputs.issue_id }}' \
+            --max-records 40 \
+            --max-json-chars 80000
+
       - name: Upload source intake artifact
         if: always()
         uses: actions/upload-artifact@v7
@@ -264,6 +279,7 @@ jobs:
           path: |
             out/source-intake/
             out/source-intake-control/
+            out/source-intake-screening/
           if-no-files-found: warn
           retention-days: 14
 
