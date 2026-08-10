@@ -27,6 +27,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 concurrency:
   group: weekly-release-${{ inputs.issue_id }}-${{ inputs.revision }}
@@ -77,7 +78,7 @@ jobs:
           required = {
               'schema_version', 'issue_id', 'revision', 'status', 'source_commit',
               'release_tag', 'release_title', 'asset_name', 'expected_pdf_sha256',
-              'page_count', 'survey_root', 'freeze_record'
+              'page_count', 'survey_root', 'freeze_record', 'pdf_source'
           }
           missing = sorted(required - data.keys())
           if missing:
@@ -95,6 +96,15 @@ jobs:
           if data['release_tag'] != f"weekly/{issue_id}/{revision}":
               raise SystemExit('release_tag does not match canonical weekly/<issue>/<revision> form')
 
+          pdf_source = data['pdf_source']
+          mode = pdf_source.get('mode')
+          if mode not in {'actions-artifact', 'rebuild'}:
+              raise SystemExit(f'unsupported pdf_source mode: {mode}')
+          if mode == 'actions-artifact':
+              for key in ('workflow_run_id', 'artifact_id', 'artifact_name'):
+                  if not pdf_source.get(key):
+                      raise SystemExit(f'actions-artifact pdf_source requires {key}')
+
           print(f"source_commit={data['source_commit']}")
           print(f"release_tag={data['release_tag']}")
           print(f"release_title={data['release_title']}")
@@ -103,6 +113,10 @@ jobs:
           print(f"page_count={data['page_count']}")
           print(f"survey_root={data['survey_root']}")
           print(f"freeze_record={data['freeze_record']}")
+          print(f"pdf_source_mode={mode}")
+          print(f"workflow_run_id={pdf_source.get('workflow_run_id', '')}")
+          print(f"artifact_id={pdf_source.get('artifact_id', '')}")
+          print(f"artifact_name={pdf_source.get('artifact_name', '')}")
           PY
 
           freeze_record="$(python - "$manifest" <<'PY'
@@ -120,7 +134,46 @@ jobs:
           path: release-src
           fetch-depth: 0
 
+      - name: Download exact frozen Actions artifact
+        if: steps.manifest.outputs.pdf_source_mode == 'actions-artifact'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ steps.manifest.outputs.workflow_run_id }}
+          ARTIFACT_ID: ${{ steps.manifest.outputs.artifact_id }}
+          ARTIFACT_NAME: ${{ steps.manifest.outputs.artifact_name }}
+          ASSET_NAME: ${{ steps.manifest.outputs.asset_name }}
+        run: |
+          set -euo pipefail
+          mkdir -p dist frozen-artifact
+
+          actual_name="$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}" --jq '.name')"
+          actual_run="$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}" --jq '.workflow_run.id')"
+          expired="$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}" --jq '.expired')"
+          if [ "$actual_name" != "$ARTIFACT_NAME" ] || [ "$actual_run" != "$RUN_ID" ] || [ "$expired" != "false" ]; then
+            echo "::error::Frozen Actions artifact metadata does not match release manifest or artifact has expired."
+            exit 1
+          fi
+
+          gh run download "$RUN_ID" \
+            --repo "$GITHUB_REPOSITORY" \
+            --name "$ARTIFACT_NAME" \
+            --dir frozen-artifact
+          test -s frozen-artifact/main.pdf
+          cp frozen-artifact/main.pdf "dist/${ASSET_NAME}"
+
+      - name: Set reproducible PDF epoch for rebuild source
+        if: steps.manifest.outputs.pdf_source_mode == 'rebuild'
+        shell: bash
+        env:
+          SOURCE_COMMIT: ${{ steps.manifest.outputs.source_commit }}
+        run: |
+          set -euo pipefail
+          echo "SOURCE_DATE_EPOCH=$(git -C release-src show -s --format=%ct "$SOURCE_COMMIT")" >> "$GITHUB_ENV"
+          echo 'FORCE_SOURCE_DATE=1' >> "$GITHUB_ENV"
+
       - name: Compile frozen source with LuaLaTeX
+        if: steps.manifest.outputs.pdf_source_mode == 'rebuild'
         uses: xu-cheng/latex-action@v4
         with:
           root_file: main.tex
@@ -129,11 +182,11 @@ jobs:
           os: debian
           latexmk_use_lualatex: true
 
-      - name: Validate final TeX log and frozen PDF digest
+      - name: Collect reproducibly rebuilt PDF
+        if: steps.manifest.outputs.pdf_source_mode == 'rebuild'
         shell: bash
         env:
           SURVEY_ROOT: ${{ steps.manifest.outputs.survey_root }}
-          EXPECTED_SHA256: ${{ steps.manifest.outputs.expected_pdf_sha256 }}
           ASSET_NAME: ${{ steps.manifest.outputs.asset_name }}
         run: |
           set -euo pipefail
@@ -146,14 +199,22 @@ jobs:
             exit 1
           fi
 
-          actual="$(sha256sum "${build_dir}/main.pdf" | awk '{print $1}')"
-          if [ "$actual" != "$EXPECTED_SHA256" ]; then
-            echo "::error::Rebuilt PDF digest does not match frozen digest. expected=${EXPECTED_SHA256} actual=${actual}"
-            exit 1
-          fi
-
           mkdir -p dist
           cp "${build_dir}/main.pdf" "dist/${ASSET_NAME}"
+
+      - name: Verify frozen PDF digest
+        shell: bash
+        env:
+          EXPECTED_SHA256: ${{ steps.manifest.outputs.expected_pdf_sha256 }}
+          ASSET_NAME: ${{ steps.manifest.outputs.asset_name }}
+        run: |
+          set -euo pipefail
+          test -s "dist/${ASSET_NAME}"
+          actual="$(sha256sum "dist/${ASSET_NAME}" | awk '{print $1}')"
+          if [ "$actual" != "$EXPECTED_SHA256" ]; then
+            echo "::error::Release PDF digest does not match frozen digest. expected=${EXPECTED_SHA256} actual=${actual}"
+            exit 1
+          fi
           (cd dist && sha256sum "$ASSET_NAME" > SHA256SUMS.txt)
           echo "Frozen PDF digest verified: ${actual}"
 
@@ -166,6 +227,7 @@ jobs:
           PDF_SHA256: ${{ steps.manifest.outputs.expected_pdf_sha256 }}
           PAGE_COUNT: ${{ steps.manifest.outputs.page_count }}
           FREEZE_RECORD: ${{ steps.manifest.outputs.freeze_record }}
+          PDF_SOURCE_MODE: ${{ steps.manifest.outputs.pdf_source_mode }}
         run: |
           set -euo pipefail
           cat > dist/RELEASE_NOTES.md <<EOF
@@ -177,8 +239,9 @@ jobs:
           - PDF SHA-256: \`${PDF_SHA256}\`
           - Pages: ${PAGE_COUNT}
           - Freeze record: \`${FREEZE_RECORD}\`
+          - PDF source mode: \`${PDF_SOURCE_MODE}\`
 
-          The PDF was rebuilt from the frozen source commit in this workflow and its SHA-256 was verified against the committed release manifest before any tag or Release write was attempted.
+          The release workflow verified the exact frozen PDF digest before any tag or Release write was attempted.
           EOF
 
       - name: Upload validation artifact
@@ -269,4 +332,4 @@ jobs:
           TAG: ${{ steps.manifest.outputs.release_tag }}
         run: |
           set -euo pipefail
-          gh release view "$TAG" --repo "$GITHUB_REPOSITORY"
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json tagName,name,isDraft,isImmutable,publishedAt,url
