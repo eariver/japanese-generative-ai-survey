@@ -11,13 +11,21 @@
   "page_count": 16,
   "survey_root": "surveys/weekly/2026-W32",
   "freeze_record": "sources/2026-W32/freeze-v0.2.md",
+  "pdf_source": {
+    "mode": "actions-artifact",
+    "workflow_run_id": 31350762039,
+    "artifact_id": 9048888577,
+    "artifact_name": "japanese-generative-ai-survey-2026-W32"
+  },
   "build": {
     "engine": "LuaLaTeX",
-    "texlive": "2026"
+    "texlive": "2026",
+    "source_date_epoch_policy": null
   },
   "notes": [
-    "The release workflow must rebuild from source_commit and compare the resulting PDF SHA-256 with expected_pdf_sha256 before creating a release.",
-    "The release tag is intended to point at the frozen PDF-producing source commit, not the current main branch tip.",
+    "W32 was frozen before reproducible PDF timestamps were introduced; its exact release asset therefore comes from the already validated frozen Actions artifact.",
+    "The release workflow verifies the downloaded PDF SHA-256 against expected_pdf_sha256 before creating a tag or Release.",
+    "The release tag points at the frozen PDF-producing source commit, not the current main branch tip.",
     "Publication remains an explicit workflow_dispatch action after the human Freeze Gate."
   ]
 }
