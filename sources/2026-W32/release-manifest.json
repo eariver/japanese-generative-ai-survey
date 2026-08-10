@@ -24,8 +24,9 @@
   },
   "notes": [
     "W32 was frozen before reproducible PDF timestamps were introduced; its exact release asset therefore comes from the already validated frozen Actions artifact.",
-    "The release workflow verifies the downloaded PDF SHA-256 against expected_pdf_sha256 before creating a tag or Release.",
-    "The release tag points at the frozen PDF-producing source commit, not the current main branch tip.",
+    "The release workflow verifies the PDF SHA-256 against expected_pdf_sha256 before any Release is created or published.",
+    "The GitHub Release tag is a release-control anchor created from the current default branch at Draft creation time. It is not the authoritative pointer to the PDF-producing source tree.",
+    "The authoritative survey provenance is the pair of source_commit and expected_pdf_sha256 recorded here and repeated in RELEASE_METADATA.json attached to the Draft/Release.",
     "Publication remains an explicit workflow_dispatch action after the human Freeze Gate."
   ]
 }
