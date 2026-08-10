@@ -13,13 +13,24 @@ on:
         type: choice
         options:
           - plan
+          - source-intake
           - validate
           - raw-index
           - raw-check
       issue_id:
-        description: Required for validate/raw-index/raw-check, for example 2026-W32
+        description: Required for source-intake/validate/raw-index/raw-check, for example 2026-W32
         required: false
         type: string
+      collector:
+        description: Source-intake collector set
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - arxiv
+          - github
+          - official
       target:
         description: Validation target
         required: true
@@ -35,10 +46,13 @@ on:
       - 'scripts/weekly_pipeline.py'
       - 'scripts/raw_provenance.py'
       - 'scripts/generate_grok_trend_run.py'
+      - 'scripts/source_intake.py'
       - 'tests/test_weekly_pipeline.py'
       - 'tests/test_raw_provenance.py'
       - 'tests/test_generate_grok_trend_run.py'
+      - 'tests/test_source_intake.py'
       - 'config/weekly-pipeline.json'
+      - 'config/source-intake.json'
       - 'config/prompts/grok/x-trend-sensor-v0.4.md'
       - 'schemas/weekly-pipeline-state.schema.json'
       - 'schemas/collector-instruction.schema.json'
@@ -52,10 +66,13 @@ on:
       - 'scripts/weekly_pipeline.py'
       - 'scripts/raw_provenance.py'
       - 'scripts/generate_grok_trend_run.py'
+      - 'scripts/source_intake.py'
       - 'tests/test_weekly_pipeline.py'
       - 'tests/test_raw_provenance.py'
       - 'tests/test_generate_grok_trend_run.py'
+      - 'tests/test_source_intake.py'
       - 'config/weekly-pipeline.json'
+      - 'config/source-intake.json'
       - 'config/prompts/grok/x-trend-sensor-v0.4.md'
       - 'schemas/weekly-pipeline-state.schema.json'
       - 'schemas/collector-instruction.schema.json'
@@ -89,6 +106,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m json.tool config/weekly-pipeline.json >/dev/null
+          python -m json.tool config/source-intake.json >/dev/null
           python -m json.tool schemas/weekly-pipeline-state.schema.json >/dev/null
           python -m json.tool schemas/collector-instruction.schema.json >/dev/null
           python -m json.tool schemas/collector-run.schema.json >/dev/null
@@ -179,6 +197,65 @@ jobs:
           name: weekly-pipeline-plan
           path: out/weekly-pipeline/
           if-no-files-found: error
+          retention-days: 14
+
+  source-intake:
+    needs: test
+    if: github.event_name == 'workflow_dispatch' && inputs.command == 'source-intake'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate issue input and build current plan
+        shell: bash
+        env:
+          EXPECTED_ISSUE_ID: ${{ inputs.issue_id }}
+        run: |
+          set -euo pipefail
+          if [ -z "$EXPECTED_ISSUE_ID" ]; then
+            echo '::error::issue_id is required when command=source-intake.'
+            exit 2
+          fi
+          mkdir -p out/source-intake-control
+          python scripts/weekly_pipeline.py plan \
+            --output out/source-intake-control/plan.json
+          python - "$EXPECTED_ISSUE_ID" <<'PY'
+          import json, sys
+          with open('out/source-intake-control/plan.json', encoding='utf-8') as fh:
+              plan = json.load(fh)
+          expected = sys.argv[1]
+          if plan['issue_id'] != expected:
+              raise SystemExit(
+                  f"requested issue {expected} does not match latest completed cutoff issue {plan['issue_id']}"
+              )
+          if not plan.get('collection_window_start'):
+              raise SystemExit('collection_window_start is unset; refusing to guess a collection window')
+          PY
+
+      - name: Run reproducible source intake
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python scripts/source_intake.py \
+            --plan out/source-intake-control/plan.json \
+            --collector '${{ inputs.collector }}' \
+            --output-root out/source-intake
+
+      - name: Upload source intake artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: weekly-source-intake-${{ inputs.issue_id }}
+          path: out/source-intake/
+          if-no-files-found: warn
           retention-days: 14
 
   validate:
