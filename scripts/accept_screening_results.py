@@ -7,7 +7,9 @@ package. Acceptance is complete-only: partial screening may be resumed outside
 the repository, but a weekly work branch receives one auditable complete result
 set at a time.
 
-This step does not promote Candidate Selection, Evidence, or editorial gates.
+A successful new acceptance closes discovery and advances the coarse lifecycle to
+CANDIDATES_NORMALIZED. It still does not imply primary-source Evidence review,
+Candidate Selection, Issue Architecture, or any publication gate.
 """
 
 from __future__ import annotations
@@ -18,6 +20,7 @@ import json
 import re
 import shutil
 import tempfile
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
@@ -27,6 +30,7 @@ from scripts import validate_screening_result
 ISSUE_RE = re.compile(r"^[0-9]{4}-W[0-9]{2}$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 ALLOWED_LIFECYCLE = "DISCOVERY_COLLECTED"
+TARGET_LIFECYCLE = "CANDIDATES_NORMALIZED"
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -262,12 +266,18 @@ def accept(
             "screening_index_sha256": package["screening_input"]["index_sha256"],
         },
         "results": sorted(result_records, key=lambda value: value["batch_id"]),
-        "state_transition": None,
+        "state_transition": {
+            "from": ALLOWED_LIFECYCLE,
+            "to": TARGET_LIFECYCLE,
+            "gate": "candidate_inventory",
+            "gate_value": "passed",
+        },
         "rules": [
             "Only a complete one-result-per-batch screening set is accepted into the weekly work tree.",
             "Every result is revalidated against the exact package batch and prompt bytes before persistence.",
             "Accepted result bytes are append-only and addressed by a deterministic result-set SHA-256.",
-            "Screening acceptance does not imply primary-source verification, Candidate Selection, Issue Architecture, or publication approval.",
+            "Successful screening acceptance closes discovery by advancing lifecycle to CANDIDATES_NORMALIZED and candidate_inventory to passed.",
+            "Screening acceptance does not imply primary-source Evidence review, Candidate Selection, Issue Architecture, or publication approval.",
         ],
     }
 
@@ -290,6 +300,12 @@ def accept(
             f"new screening results may be accepted only in {ALLOWED_LIFECYCLE}; "
             f"current lifecycle_state={state.get('lifecycle_state')!r}"
         )
+    gates = state.get("gates")
+    if not isinstance(gates, dict) or "candidate_inventory" not in gates:
+        raise ValueError("weekly pipeline state candidate_inventory gate is missing")
+    updated_state = deepcopy(state)
+    updated_state["lifecycle_state"] = TARGET_LIFECYCLE
+    updated_state["gates"]["candidate_inventory"] = "passed"
 
     with tempfile.TemporaryDirectory() as tmp:
         derived = Path(tmp) / "derived"
@@ -323,6 +339,9 @@ def accept(
             )
         manifest_path.write_text(json.dumps(acceptance, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
+    state_path = repo_root / "sources" / issue_id / "pipeline-state.json"
+    state_path.write_text(json.dumps(updated_state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
     return {
         "schema_version": "1.0",
         "passed": True,
@@ -333,6 +352,8 @@ def accept(
         "batch_count": len(result_records),
         "reviewed_record_count": merge_manifest["reviewed_record_count"],
         "verification_queue_count": merge_manifest["verification_queue_count"],
+        "lifecycle_state": TARGET_LIFECYCLE,
+        "candidate_inventory_gate": "passed",
     }, True
 
 
