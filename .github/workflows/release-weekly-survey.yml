@@ -135,7 +135,7 @@ jobs:
           fetch-depth: 0
 
       - name: Download exact frozen Actions artifact
-        if: steps.manifest.outputs.pdf_source_mode == 'actions-artifact'
+        if: inputs.mode != 'publish' && steps.manifest.outputs.pdf_source_mode == 'actions-artifact'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -146,7 +146,6 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p dist frozen-artifact
-
           actual_name="$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}" --jq '.name')"
           actual_run="$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}" --jq '.workflow_run.id')"
           expired="$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}" --jq '.expired')"
@@ -154,16 +153,12 @@ jobs:
             echo "::error::Frozen Actions artifact metadata does not match release manifest or artifact has expired."
             exit 1
           fi
-
-          gh run download "$RUN_ID" \
-            --repo "$GITHUB_REPOSITORY" \
-            --name "$ARTIFACT_NAME" \
-            --dir frozen-artifact
+          gh run download "$RUN_ID" --repo "$GITHUB_REPOSITORY" --name "$ARTIFACT_NAME" --dir frozen-artifact
           test -s frozen-artifact/main.pdf
           cp frozen-artifact/main.pdf "dist/${ASSET_NAME}"
 
       - name: Set reproducible PDF epoch for rebuild source
-        if: steps.manifest.outputs.pdf_source_mode == 'rebuild'
+        if: inputs.mode != 'publish' && steps.manifest.outputs.pdf_source_mode == 'rebuild'
         shell: bash
         env:
           SOURCE_COMMIT: ${{ steps.manifest.outputs.source_commit }}
@@ -173,7 +168,7 @@ jobs:
           echo 'FORCE_SOURCE_DATE=1' >> "$GITHUB_ENV"
 
       - name: Compile frozen source with LuaLaTeX
-        if: steps.manifest.outputs.pdf_source_mode == 'rebuild'
+        if: inputs.mode != 'publish' && steps.manifest.outputs.pdf_source_mode == 'rebuild'
         uses: xu-cheng/latex-action@v4
         with:
           root_file: main.tex
@@ -183,7 +178,7 @@ jobs:
           latexmk_use_lualatex: true
 
       - name: Collect reproducibly rebuilt PDF
-        if: steps.manifest.outputs.pdf_source_mode == 'rebuild'
+        if: inputs.mode != 'publish' && steps.manifest.outputs.pdf_source_mode == 'rebuild'
         shell: bash
         env:
           SURVEY_ROOT: ${{ steps.manifest.outputs.survey_root }}
@@ -193,16 +188,15 @@ jobs:
           build_dir="release-src/${SURVEY_ROOT}"
           test -s "${build_dir}/main.pdf"
           test -s "${build_dir}/main.log"
-
           if grep -E -n 'LaTeX Warning: (There were undefined references|Citation .* undefined)|Package biblatex Warning: Please (re)?run|Overfull \\hbox|Underfull \\hbox|Missing character:' "${build_dir}/main.log"; then
             echo '::error::Final TeX log contains publication-blocking warnings.'
             exit 1
           fi
-
           mkdir -p dist
           cp "${build_dir}/main.pdf" "dist/${ASSET_NAME}"
 
       - name: Verify frozen PDF digest
+        if: inputs.mode != 'publish'
         shell: bash
         env:
           EXPECTED_SHA256: ${{ steps.manifest.outputs.expected_pdf_sha256 }}
@@ -219,6 +213,7 @@ jobs:
           echo "Frozen PDF digest verified: ${actual}"
 
       - name: Prepare release notes
+        if: inputs.mode != 'publish'
         shell: bash
         env:
           ISSUE_ID: ${{ inputs.issue_id }}
@@ -245,6 +240,7 @@ jobs:
           EOF
 
       - name: Upload validation artifact
+        if: inputs.mode != 'publish'
         uses: actions/upload-artifact@v7
         with:
           name: weekly-release-validation-${{ inputs.issue_id }}-${{ inputs.revision }}
@@ -270,7 +266,6 @@ jobs:
               echo "::error::Existing tag ${TAG} resolves to ${resolved}, expected ${SOURCE_COMMIT}."
               exit 1
             fi
-            echo "Existing tag ${TAG} resolves to frozen source commit."
           else
             git -C release-src config user.name 'github-actions[bot]'
             git -C release-src config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -314,19 +309,17 @@ jobs:
               echo "::error::Release ${TAG} is already published; draft mode will not modify it."
               exit 1
             fi
-            rm -rf existing-release
-            mkdir -p existing-release
-            gh release download "$TAG" \
-              --repo "$GITHUB_REPOSITORY" \
-              --pattern "$ASSET_NAME" \
-              --dir existing-release
+            rm -rf existing-release && mkdir -p existing-release
+            gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern "$ASSET_NAME" --dir existing-release
             test -s "existing-release/${ASSET_NAME}"
             actual="$(sha256sum "existing-release/${ASSET_NAME}" | awk '{print $1}')"
             if [ "$actual" != "$EXPECTED_SHA256" ]; then
               echo "::error::Existing draft PDF asset digest does not match frozen digest."
               exit 1
             fi
-            echo "Existing draft release and PDF asset verified; no asset was overwritten."
+            asset_names="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name')"
+            grep -Fxq 'SHA256SUMS.txt' <<< "$asset_names" || { echo '::error::Existing Draft is missing SHA256SUMS.txt.'; exit 1; }
+            echo 'Existing Draft and assets verified; no asset was overwritten.'
           else
             gh release create "$TAG" \
               "dist/${ASSET_NAME}#Japanese Generative AI Technical Survey PDF" \
@@ -357,12 +350,8 @@ jobs:
             echo "::error::Release ${TAG} is not a draft; refusing to republish or mutate it."
             exit 1
           fi
-          rm -rf existing-release
-          mkdir -p existing-release
-          gh release download "$TAG" \
-            --repo "$GITHUB_REPOSITORY" \
-            --pattern "$ASSET_NAME" \
-            --dir existing-release
+          rm -rf existing-release && mkdir -p existing-release
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern "$ASSET_NAME" --dir existing-release
           test -s "existing-release/${ASSET_NAME}"
           actual="$(sha256sum "existing-release/${ASSET_NAME}" | awk '{print $1}')"
           if [ "$actual" != "$EXPECTED_SHA256" ]; then
@@ -370,10 +359,7 @@ jobs:
             exit 1
           fi
           asset_names="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name')"
-          grep -Fxq 'SHA256SUMS.txt' <<< "$asset_names" || {
-            echo '::error::Draft release is missing SHA256SUMS.txt.'
-            exit 1
-          }
+          grep -Fxq 'SHA256SUMS.txt' <<< "$asset_names" || { echo '::error::Draft Release is missing SHA256SUMS.txt.'; exit 1; }
 
       - name: Publish verified draft release
         if: inputs.mode == 'publish'
@@ -383,10 +369,7 @@ jobs:
           TAG: ${{ steps.manifest.outputs.release_tag }}
         run: |
           set -euo pipefail
-          gh release edit "$TAG" \
-            --repo "$GITHUB_REPOSITORY" \
-            --draft=false \
-            --latest
+          gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest
 
       - name: Verify immutable release attestation when enabled
         if: inputs.mode == 'publish'
@@ -401,7 +384,7 @@ jobs:
           if [ "$immutable" = "true" ]; then
             gh release verify "$TAG" --repo "$GITHUB_REPOSITORY"
           else
-            echo 'Immutable Releases is not enabled for this repository; release digest was still verified by this workflow.'
+            echo 'Immutable Releases is not enabled; the workflow still verified the frozen PDF digest before publication.'
           fi
 
       - name: Summarize release state
