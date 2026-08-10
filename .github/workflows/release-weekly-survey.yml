@@ -11,11 +11,15 @@ on:
         description: Frozen revision, for example v0.2
         required: true
         type: string
-      publish:
-        description: Publish after creating the draft and attaching assets
+      mode:
+        description: Validate only, create a draft release, or publish it
         required: true
-        default: false
-        type: boolean
+        default: validate
+        type: choice
+        options:
+          - validate
+          - draft
+          - publish
       confirmation:
         description: Enter ISSUE@REVISION, for example 2026-W32@v0.2
         required: true
@@ -101,7 +105,13 @@ jobs:
           print(f"freeze_record={data['freeze_record']}")
           PY
 
-          test -s "${{ steps.manifest.outputs.freeze_record }}" || true
+          freeze_record="$(python - "$manifest" <<'PY'
+          import json, sys
+          with open(sys.argv[1], encoding='utf-8') as fh:
+              print(json.load(fh)['freeze_record'])
+          PY
+          )"
+          test -s "$freeze_record"
 
       - name: Checkout frozen PDF-producing source commit
         uses: actions/checkout@v6
@@ -168,10 +178,22 @@ jobs:
           - Pages: ${PAGE_COUNT}
           - Freeze record: \`${FREEZE_RECORD}\`
 
-          The PDF was rebuilt from the frozen source commit in this workflow and its SHA-256 was verified against the committed release manifest before the release tag was created.
+          The PDF was rebuilt from the frozen source commit in this workflow and its SHA-256 was verified against the committed release manifest before any tag or Release write was attempted.
           EOF
 
+      - name: Upload validation artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: weekly-release-validation-${{ inputs.issue_id }}-${{ inputs.revision }}
+          path: |
+            dist/${{ steps.manifest.outputs.asset_name }}
+            dist/SHA256SUMS.txt
+            dist/RELEASE_NOTES.md
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Create or verify frozen source tag
+        if: inputs.mode != 'validate'
         shell: bash
         env:
           TAG: ${{ steps.manifest.outputs.release_tag }}
@@ -193,6 +215,7 @@ jobs:
           fi
 
       - name: Create draft release
+        if: inputs.mode != 'validate'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -212,6 +235,7 @@ jobs:
             --notes-file dist/RELEASE_NOTES.md
 
       - name: Upload frozen PDF and checksum
+        if: inputs.mode != 'validate'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -225,7 +249,7 @@ jobs:
             --repo "$GITHUB_REPOSITORY"
 
       - name: Publish release
-        if: inputs.publish
+        if: inputs.mode == 'publish'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -238,6 +262,7 @@ jobs:
             --latest
 
       - name: Summarize release state
+        if: inputs.mode != 'validate'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
