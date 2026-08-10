@@ -105,9 +105,8 @@ def build_package(
     if gates.get("evidence_normalized") != "pending":
         raise ValueError("Evidence package requires evidence_normalized gate=pending")
 
-    acceptance_path, acceptance, queue_path = validate_screening_run(repo_root, issue_id, screening_run_sha)
-    queue_text = queue_path.read_text(encoding="utf-8")
-    retained_count = sum(1 for line in queue_text.splitlines() if line.strip())
+    acceptance_path, _acceptance, queue_path = validate_screening_run(repo_root, issue_id, screening_run_sha)
+    retained_count = sum(1 for line in queue_path.read_text(encoding="utf-8").splitlines() if line.strip())
     if retained_count == 0:
         raise ValueError("accepted screening verification queue is empty; zero-Evidence issue handling requires an explicit no-task path")
 
@@ -124,25 +123,37 @@ def build_package(
 
     input_root = output_root / "input"
     task_build_root = output_root / "task-build"
-    task_manifest, passed = build_evidence_tasks.build(queue_path, task_build_root, issue_id)
+    task_manifest, passed = build_evidence_tasks.build(queue_path, task_build_root)
     if not passed:
         raise ValueError(f"Evidence Task build failed: {task_manifest}")
-    task_count = task_manifest.get("task_count")
+    if task_manifest.get("issue_id") != issue_id:
+        raise ValueError("Evidence Task manifest issue_id mismatch")
+    task_count = task_manifest.get("evidence_task_count")
     if not isinstance(task_count, int) or task_count <= 0:
         raise ValueError("Evidence Task build produced no tasks")
 
-    # Flatten the deterministic task artifacts into the package input root.
+    # Flatten deterministic builder outputs into stable package names.
     input_root.mkdir(parents=True, exist_ok=True)
     copy_verified(task_build_root / "evidence-task-manifest.json", input_root / "evidence-task-manifest.json")
-    copy_verified(task_build_root / "evidence-task-index.jsonl", input_root / "evidence-task-index.jsonl")
+    copy_verified(task_build_root / "evidence-tasks.jsonl", input_root / "evidence-task-index.jsonl")
     tasks_dir = input_root / "tasks"
     tasks_dir.mkdir(parents=True, exist_ok=True)
     task_records: list[dict[str, Any]] = []
-    for task_source in sorted((task_build_root / "tasks").glob("*.json")):
+    for entry in task_manifest.get("task_files", []):
+        if not isinstance(entry, dict):
+            raise ValueError("Evidence Task manifest task_files entries must be objects")
+        task_id = entry.get("evidence_task_id")
+        relative = entry.get("path")
+        if not isinstance(task_id, str) or not task_id or not isinstance(relative, str) or not relative:
+            raise ValueError(f"invalid Evidence Task manifest entry: {entry}")
+        task_source = task_build_root / relative
+        if not task_source.is_file():
+            raise ValueError(f"Evidence Task file missing: {task_source}")
+        if sha256_file(task_source) != entry.get("sha256") or task_source.stat().st_size != entry.get("bytes"):
+            raise ValueError(f"Evidence Task bytes disagree with builder manifest: {task_id}")
         task = load_json(task_source)
-        task_id = task.get("evidence_task_id")
-        if not isinstance(task_id, str) or not task_id:
-            raise ValueError(f"Evidence Task missing evidence_task_id: {task_source}")
+        if task.get("evidence_task_id") != task_id or task.get("issue_id") != issue_id:
+            raise ValueError(f"Evidence Task identity mismatch: {task_source}")
         target = tasks_dir / task_source.name
         copy_verified(task_source, target)
         task_records.append(
