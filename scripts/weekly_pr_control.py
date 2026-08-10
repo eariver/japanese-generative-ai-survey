@@ -31,13 +31,17 @@ def build(issue_id: str, repo_root: Path) -> dict[str, Any]:
     branch = f"weekly/{issue_id}-work"
     title = f"Weekly survey work — {issue_id}"
     state = load_optional_state(repo_root, issue_id)
-    state_status = state.get("status") if state else None
-    state_note = f"`{state_status}`" if isinstance(state_status, str) and state_status else "not initialized on this branch"
+    lifecycle_state = state.get("lifecycle_state") if state else None
+    state_note = (
+        f"`{lifecycle_state}`"
+        if isinstance(lifecycle_state, str) and lifecycle_state
+        else "not initialized on this branch"
+    )
     body = f"""## Weekly survey work — {issue_id}
 
 This is the auditable **Draft PR** for the weekly survey pipeline. It is a work surface, not an editorial approval, Freeze decision, or public Release authorization.
 
-Current committed pipeline-state status: {state_note}
+Current committed pipeline lifecycle state: {state_note}
 
 ### Required gates
 
@@ -66,7 +70,7 @@ Automation may create this branch/PR and refresh this description **only while t
         "branch": branch,
         "title": title,
         "body": body,
-        "pipeline_state_status": state_status,
+        "pipeline_state_status": lifecycle_state,
         "rules": [
             "Create the weekly work branch only when absent; never force-update it.",
             "Create or edit only a Draft PR from the canonical weekly work branch to the default branch.",
