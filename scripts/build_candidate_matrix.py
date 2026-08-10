@@ -10,7 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 from collections import Counter
-from datetime import datetime, time, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -36,13 +36,16 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
     return values
 
 
-def parse_temporal(value: str | None, *, end_of_day: bool = False) -> datetime | None:
+def is_date_only(value: str) -> bool:
+    return len(value.strip()) == 10
+
+
+def parse_instant(value: str | None) -> datetime | None:
     if not value:
         return None
     text = value.strip()
-    if len(text) == 10:
-        day = datetime.fromisoformat(text).date()
-        return datetime.combine(day, time.max if end_of_day else time.min, tzinfo=timezone.utc)
+    if is_date_only(text):
+        return datetime.fromisoformat(text).replace(tzinfo=timezone.utc)
     normalized = text[:-1] + "+00:00" if text.endswith("Z") else text
     parsed = datetime.fromisoformat(normalized)
     if parsed.tzinfo is None:
@@ -50,27 +53,65 @@ def parse_temporal(value: str | None, *, end_of_day: bool = False) -> datetime |
     return parsed.astimezone(timezone.utc)
 
 
-def timing_relation(card: dict[str, Any], window_start: datetime | None, cutoff: datetime) -> tuple[str, list[str]]:
+def timing_relation(
+    card: dict[str, Any],
+    window_start_raw: str | None,
+    cutoff_raw: str,
+) -> tuple[str, list[str]]:
     raw_dates = sorted({event.get("event_date") for event in card["temporal"].get("events", []) if event.get("event_date")})
-    parsed = [(raw, parse_temporal(raw, end_of_day=True)) for raw in raw_dates]
-    parsed = [(raw, value) for raw, value in parsed if value is not None]
-    if not parsed:
+    if not raw_dates:
         return "TIMING_UNRESOLVED", raw_dates
 
-    instants = [value for _, value in parsed]
-    has_post = any(value > cutoff for value in instants)
-    has_main = window_start is not None and any(window_start <= value <= cutoff for value in instants)
-    has_pre = window_start is not None and any(value < window_start for value in instants)
+    window_start = parse_instant(window_start_raw)
+    cutoff = parse_instant(cutoff_raw)
+    if cutoff is None:
+        raise ValueError("editorial cutoff is required")
 
-    if has_post and (has_main or has_pre):
+    # Date-only events on the cutoff calendar day cannot be assigned to Main or
+    # Post-Cutoff because the editorial cutoff has a clock time. Preserve that
+    # uncertainty instead of manufacturing 00:00/23:59 semantics.
+    cutoff_calendar_date = cutoff.date()
+    if any(is_date_only(raw) and datetime.fromisoformat(raw).date() == cutoff_calendar_date for raw in raw_dates):
+        return "TIMING_UNRESOLVED", raw_dates
+
+    has_post = False
+    has_main = False
+    has_pre = False
+    start_date = window_start.date() if window_start is not None else None
+    cutoff_date = cutoff.date()
+
+    for raw in raw_dates:
+        if is_date_only(raw):
+            day = datetime.fromisoformat(raw).date()
+            if day > cutoff_date:
+                has_post = True
+            elif start_date is not None and start_date <= day < cutoff_date:
+                has_main = True
+            elif start_date is not None and day < start_date:
+                has_pre = True
+            else:
+                return "TIMING_UNRESOLVED", raw_dates
+        else:
+            instant = parse_instant(raw)
+            if instant is None:
+                return "TIMING_UNRESOLVED", raw_dates
+            if instant > cutoff:
+                has_post = True
+            elif window_start is not None and instant >= window_start:
+                has_main = True
+            elif window_start is not None and instant < window_start:
+                has_pre = True
+            else:
+                return "TIMING_UNRESOLVED", raw_dates
+
+    categories = sum(bool(value) for value in (has_post, has_main, has_pre))
+    if categories > 1:
         return "MIXED_WINDOW", raw_dates
     if has_post:
         return "POST_CUTOFF", raw_dates
     if has_main:
         return "MAIN_EVENT", raw_dates
-    if window_start is None:
-        return "TIMING_UNRESOLVED", raw_dates
-    if all(value < window_start for value in instants):
+    if has_pre:
         return ("PRE_WINDOW_RELEVANCE" if card["editorial"]["why_now_confirmed"] else "PRE_WINDOW"), raw_dates
     return "TIMING_UNRESOLVED", raw_dates
 
@@ -134,9 +175,9 @@ def build(evidence_reviewed: Path, pipeline_state: Path) -> dict[str, Any]:
     reviewed = read_jsonl(evidence_reviewed)
     state = read_json(pipeline_state)
     issue_id = state["issue_id"]
-    start = parse_temporal(state.get("calendar", {}).get("collection_window_start"))
-    cutoff = parse_temporal(state.get("calendar", {}).get("editorial_cutoff"), end_of_day=False)
-    if cutoff is None:
+    window_start_raw = state.get("calendar", {}).get("collection_window_start")
+    cutoff_raw = state.get("calendar", {}).get("editorial_cutoff")
+    if not cutoff_raw:
         raise ValueError("pipeline state editorial_cutoff is required")
 
     rows: list[dict[str, Any]] = []
@@ -144,7 +185,7 @@ def build(evidence_reviewed: Path, pipeline_state: Path) -> dict[str, Any]:
         if item.get("issue_id") != issue_id:
             raise ValueError(f"Evidence item issue mismatch: {item.get('issue_id')} != {issue_id}")
         card = item["card"]
-        relation, event_dates = timing_relation(card, start, cutoff)
+        relation, event_dates = timing_relation(card, window_start_raw, cutoff_raw)
         rows.append(
             {
                 "evidence_task_id": item["evidence_task_id"],
@@ -175,8 +216,8 @@ def build(evidence_reviewed: Path, pipeline_state: Path) -> dict[str, Any]:
         "status": "pre-selection-comparison",
         "ranking": None,
         "row_count": len(rows),
-        "collection_window_start": state.get("calendar", {}).get("collection_window_start"),
-        "editorial_cutoff": state.get("calendar", {}).get("editorial_cutoff"),
+        "collection_window_start": window_start_raw,
+        "editorial_cutoff": cutoff_raw,
         "recommendation_counts": dict(sorted(recommendation_counts.items())),
         "readiness_counts": dict(sorted(readiness_counts.items())),
         "rows": rows,
@@ -184,6 +225,7 @@ def build(evidence_reviewed: Path, pipeline_state: Path) -> dict[str, Any]:
             "This matrix does not rank candidates or imply inclusion.",
             "Evidence Runner recommendation is distinct from final Candidate Selection.",
             "Source volume is displayed as evidence depth, not importance.",
+            "Date-only events on the cutoff day remain TIMING_UNRESOLVED unless a source provides time-of-day evidence.",
             "Remaining boundaries must travel with any candidate promoted by Selection.",
         ],
     }
@@ -216,15 +258,7 @@ def render_markdown(matrix: dict[str, Any]) -> str:
             f"| {title} | `{row['artifact_type']}` | `{row['timing_relation']}` | `{row['evidence_status']}` | "
             f"`{row['recommendation']}` | `{row['comparison_readiness']}` | {classes} | {boundaries} |"
         )
-    lines.extend(
-        [
-            "",
-            "## Rules",
-            "",
-            *[f"- {rule}" for rule in matrix["rules"]],
-            "",
-        ]
-    )
+    lines.extend(["", "## Rules", "", *[f"- {rule}" for rule in matrix["rules"]], ""])
     return "\n".join(lines)
 
 
