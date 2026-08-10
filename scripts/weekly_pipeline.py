@@ -79,8 +79,8 @@ def latest_cutoff(now_utc: datetime, cfg: dict[str, Any]) -> datetime:
 
 
 def issue_id_from_cutoff(cutoff: datetime) -> str:
-    iso = cutoff.date().isocalendar()
-    return f"{iso.year}-W{iso.week:02d}"
+    iso_calendar = cutoff.date().isocalendar()
+    return f"{iso_calendar.year}-W{iso_calendar.week:02d}"
 
 
 def iso(dt: datetime) -> str:
@@ -363,8 +363,13 @@ def cmd_plan(args: argparse.Namespace, cfg: dict[str, Any]) -> int:
 def cmd_init(args: argparse.Namespace, cfg: dict[str, Any]) -> int:
     root = Path(args.repo_root).resolve()
     plan = build_plan(root, cfg, parse_instant(args.now))
-    if args.issue_id:
-        plan["issue_id"] = args.issue_id
+    if args.issue_id and args.issue_id != plan["issue_id"]:
+        print(
+            f"refusing to initialize {args.issue_id}: current completed cutoff maps to {plan['issue_id']}; "
+            "wait for that issue's editorial cutoff rather than fabricating a future calendar",
+            file=sys.stderr,
+        )
+        return 2
     state_path = root / "sources" / plan["issue_id"] / "pipeline-state.json"
     if state_path.exists() and not args.force:
         print(f"refusing to overwrite existing state: {state_path}", file=sys.stderr)
@@ -396,9 +401,9 @@ def build_parser() -> argparse.ArgumentParser:
     p_plan.add_argument("--output")
     p_plan.add_argument("--markdown-output")
 
-    p_init = sub.add_parser("init", help="create a non-destructive pipeline-state.json for an issue")
+    p_init = sub.add_parser("init", help="create a non-destructive pipeline-state.json for the current completed issue")
     p_init.add_argument("--now", help="override current instant (ISO-8601 with offset)")
-    p_init.add_argument("--issue-id")
+    p_init.add_argument("--issue-id", help="optional assertion of the current issue; future/historical IDs are rejected")
     p_init.add_argument("--force", action="store_true")
 
     p_val = sub.add_parser("validate", help="validate deterministic repository gates")
