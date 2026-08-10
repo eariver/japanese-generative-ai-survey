@@ -79,6 +79,24 @@ class EvidenceTaskBuilderTests(unittest.TestCase):
             self.assertTrue(series["grouping"]["requires_confirmation"])
             self.assertEqual(series["grouping"]["basis"], "llm-duplicate-group")
 
+    def test_singleton_duplicate_hint_stays_verify_item(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            queue = root / "queue.jsonl"
+            self._write_queue(
+                queue,
+                [self._item("a", "MAYBE", duplicate_group="series-may-have-more-members")],
+            )
+            out = root / "out"
+            manifest, passed = bet.build(queue, out)
+            self.assertTrue(passed, manifest)
+            self.assertEqual(manifest["task_type_counts"]["VERIFY_SERIES"], 0)
+            task = json.loads((out / "evidence-tasks.jsonl").read_text().strip())
+            self.assertEqual(task["task_type"], "VERIFY_ITEM")
+            self.assertEqual(task["grouping"]["basis"], "llm-duplicate-group")
+            self.assertTrue(task["grouping"]["requires_confirmation"])
+            self.assertEqual(task["grouping"]["duplicate_group"], "series-may-have-more-members")
+
     def test_inspect_snapshot_becomes_index_inspection(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
