@@ -14,8 +14,10 @@ on:
         options:
           - plan
           - validate
+          - raw-index
+          - raw-check
       issue_id:
-        description: Required for validate, for example 2026-W32
+        description: Required for validate/raw-index/raw-check, for example 2026-W32
         required: false
         type: string
       target:
@@ -31,16 +33,24 @@ on:
   push:
     paths:
       - 'scripts/weekly_pipeline.py'
+      - 'scripts/raw_provenance.py'
       - 'tests/test_weekly_pipeline.py'
+      - 'tests/test_raw_provenance.py'
       - 'config/weekly-pipeline.json'
       - 'schemas/weekly-pipeline-state.schema.json'
+      - 'schemas/collector-run.schema.json'
+      - 'schemas/raw-source-index.schema.json'
       - '.github/workflows/weekly-pipeline.yml'
   pull_request:
     paths:
       - 'scripts/weekly_pipeline.py'
+      - 'scripts/raw_provenance.py'
       - 'tests/test_weekly_pipeline.py'
+      - 'tests/test_raw_provenance.py'
       - 'config/weekly-pipeline.json'
       - 'schemas/weekly-pipeline-state.schema.json'
+      - 'schemas/collector-run.schema.json'
+      - 'schemas/raw-source-index.schema.json'
       - '.github/workflows/weekly-pipeline.yml'
 
 permissions:
@@ -68,12 +78,14 @@ jobs:
           set -euo pipefail
           python -m json.tool config/weekly-pipeline.json >/dev/null
           python -m json.tool schemas/weekly-pipeline-state.schema.json >/dev/null
+          python -m json.tool schemas/collector-run.schema.json >/dev/null
+          python -m json.tool schemas/raw-source-index.schema.json >/dev/null
 
-      - name: Run weekly pipeline unit tests
+      - name: Run pipeline unit tests
         shell: bash
         run: |
           set -euo pipefail
-          python -m unittest discover -s tests -p 'test_weekly_pipeline.py' -v
+          python -m unittest discover -s tests -p 'test_*.py' -v
 
   plan:
     needs: test
@@ -142,6 +154,60 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: weekly-pipeline-validation-${{ inputs.issue_id }}
+          path: out/weekly-pipeline/
+          if-no-files-found: warn
+          retention-days: 14
+
+  raw-provenance:
+    needs: test
+    if: github.event_name == 'workflow_dispatch' && (inputs.command == 'raw-index' || inputs.command == 'raw-check')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate issue input
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z '${{ inputs.issue_id }}' ]; then
+            echo '::error::issue_id is required for raw provenance commands.'
+            exit 2
+          fi
+
+      - name: Update raw provenance index in checkout
+        if: inputs.command == 'raw-index'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out/weekly-pipeline
+          python scripts/raw_provenance.py \
+            --issue-id '${{ inputs.issue_id }}' \
+            --report out/weekly-pipeline/raw-provenance-report.json \
+            update
+          cp 'sources/${{ inputs.issue_id }}/raw-index.json' out/weekly-pipeline/raw-index.json
+
+      - name: Check committed raw provenance index
+        if: inputs.command == 'raw-check'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out/weekly-pipeline
+          python scripts/raw_provenance.py \
+            --issue-id '${{ inputs.issue_id }}' \
+            --report out/weekly-pipeline/raw-provenance-report.json \
+            check
+
+      - name: Upload raw provenance artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: weekly-raw-provenance-${{ inputs.issue_id }}
           path: out/weekly-pipeline/
           if-no-files-found: warn
           retention-days: 14
