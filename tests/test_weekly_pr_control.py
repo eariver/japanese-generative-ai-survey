@@ -18,6 +18,8 @@ class WeeklyPrControlTests(unittest.TestCase):
             self.assertIn("Release publication is a separate workflow", value["body"])
             self.assertIn("not initialized", value["body"])
             self.assertTrue(any("never force-update" in rule for rule in value["rules"]))
+            self.assertTrue(any("no unique commits" in rule and "fast-forwarded" in rule for rule in value["rules"]))
+            self.assertTrue(any("Never rewrite" in rule and "unique weekly commits" in rule for rule in value["rules"]))
             self.assertTrue(any("Never merge" in rule for rule in value["rules"]))
 
     def test_pipeline_lifecycle_state_is_reported_but_not_interpreted_as_gate_approval(self) -> None:
