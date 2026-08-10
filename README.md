@@ -6,20 +6,16 @@ Evidence-first Japanese weekly technical survey for generative AI, built with LL
 
 This repository is the Source of Truth for a Japanese-language weekly technical survey / magazine covering current developments in:
 
-- Large Language Models
-- Reasoning Models
+- Large Language Models / Reasoning Models
 - AI Agents / Coding Agents / Agent Harness
 - Inference / Serving
-- Multimodal AI
-- Image / Video / Audio Generation
+- Multimodal / Image / Video / Audio Generation
 - Open Weight Models / Local AI
 - Long-term Memory / Multi-Agent Systems
 - Evaluation / Benchmarks
 - AI Safety / Agent Security
 
 The project does **not** aim to have an LLM write an unchecked AI-news digest.
-
-Its core approach is:
 
 ```text
 Source Collection
@@ -30,6 +26,8 @@ Source Collection
     -> Claim / Citation Validation
     -> LaTeX
     -> Reproducible PDF
+    -> Explicit Freeze
+    -> Optional GitHub Release
 ```
 
 Core priority:
@@ -40,36 +38,43 @@ Correctness > Traceability > Coverage > Speed
 
 ## Weekly cycle
 
-The standard editorial cutoff is:
+Standard editorial cutoff:
 
 ```text
 Friday 18:00 America/New_York
 ```
 
-Compilation is normally performed in Japan on Saturday after that cutoff, so the finished issue can be read over the weekend.
-
-The collection window is not forced to an exact seven-day / 168-hour interval. Operationally it should cover:
+Compilation is normally performed in Japan on Saturday after that cutoff. The collection window is not forced to an exact 168 hours; operationally it covers:
 
 ```text
 previous successful collection time
     -> current collection time
 ```
 
-This prevents missed items when compilation timing shifts.
+See:
 
-See [Editorial Specification](docs/editorial-specification.md) for the authoritative editorial rules and [Weekly Pipeline Automation Design](docs/weekly-pipeline-design-v0.1.md) for the operational automation model.
+- [Editorial Specification](docs/editorial-specification.md)
+- [Editorial Style Guide](docs/editorial-style-guide.md)
+- [Weekly Pipeline Automation Design](docs/weekly-pipeline-design-v0.1.md)
+- [Weekly Pipeline Operations Guide](docs/weekly-pipeline-operations.md)
+- [Weekly Pipeline Implementation Status](docs/weekly-pipeline-implementation-status.md)
+- [Weekly GitHub Release Process](docs/weekly-release-process.md)
 
-## Weekly pipeline automation
+## Automation model
 
-The first full issue, `2026-W32`, was completed end-to-end and frozen as a release candidate. The automation work now uses that issue as the reference implementation.
+The first full issue, `2026-W32`, was completed end-to-end and frozen as the reference implementation.
 
-The system is intentionally **not** an unattended publishing bot. Work is separated into:
+The system intentionally separates:
 
-- **Deterministic automation** — calendar/cutoff calculation, issue state, structural validation, TeX/Biber build, log gates and build provenance;
-- **LLM/tool-assisted work** — discovery, verification, paper review, selection proposal, architecture, drafting and claim review;
-- **Human/reviewer gates** — candidate selection approval and final PDF freeze.
+- **Deterministic automation** — calendar/cutoff calculation, issue state, Raw integrity, structural validation, TeX/Biber build, log gates, PDF digest and build provenance;
+- **LLM/tool-assisted work** — discovery, verification, paper review, candidate selection proposal, issue architecture, drafting and claim review;
+- **Human/reviewer gates** — candidate selection approval, final PDF freeze, and GitHub Release publication.
 
-The initial deterministic spine is implemented in:
+Unattended public publication remains out of scope.
+
+## Deterministic weekly spine
+
+Implemented in:
 
 ```text
 config/weekly-pipeline.json
@@ -78,195 +83,192 @@ scripts/weekly_pipeline.py
 .github/workflows/weekly-pipeline.yml
 ```
 
-Per-issue machine orchestration state lives separately from the rich editorial manifest:
+Per-issue machine state:
 
 ```text
 sources/<issue>/pipeline-state.json
 ```
 
-### CLI
-
-Build the operational plan for the latest completed cutoff:
+Typical CLI:
 
 ```bash
 python scripts/weekly_pipeline.py plan
-```
-
-Create an issue state file without overwriting an existing state:
-
-```bash
 python scripts/weekly_pipeline.py init --issue-id 2026-W33
+python scripts/weekly_pipeline.py validate --issue-id 2026-W32 --target frozen
 ```
 
-Validate deterministic repository gates:
+`Weekly pipeline spine` runs a **plan-only** scheduled job every Saturday at `00:30 UTC`, safely after Friday 18:00 New York in both EDT and EST. Scheduled execution does not call an LLM, modify the repository, merge a PR, or publish an issue.
 
-```bash
-python scripts/weekly_pipeline.py validate \
-  --issue-id 2026-W32 \
-  --target frozen
-```
+## Source intake
 
-Validation targets are:
+The baseline deterministic source-intake layer supports:
+
+- arXiv API category/date-window collection;
+- a curated GitHub Releases watchlist;
+- configured official news/blog index snapshots;
+- issue-specific Grok Trend Sensor Run Instruction generation.
+
+Manual Actions entry:
 
 ```text
-selection
-draft
-release-candidate
-frozen
+Actions -> Weekly pipeline spine -> Run workflow
+command: source-intake
+collector: all | arxiv | github | official
 ```
 
-The structural validator also blocks explicit hard-coded internal page references such as `今号p.3--4`; internal references should use LaTeX labels and `\pageref` so pagination changes do not silently stale them.
+Collector outputs are review artifacts, not verified Evidence Cards.
 
-Paper Watch is optional: the deterministic gate does not fail a week merely because no paper-review section exists.
+Accepted deterministic collector runs use append-only paths:
 
-### Scheduled workflow
+```text
+sources/<issue>/collectors/<collector>/runs/<observed-at>/
+├─ raw/
+├─ summary.json
+└─ collector-run.json
+```
 
-`Weekly pipeline spine` runs a **plan-only** job every Saturday at `00:30 UTC`, safely after Friday 18:00 New York in both EDT and EST.
+Exact HTTP response bytes are kept under `raw/`. Multiple runs in the same issue therefore coexist instead of overwriting one another.
 
-The scheduled job computes and uploads:
+## Raw provenance
 
-- issue ID;
-- editorial cutoff;
-- previous successful collection anchor;
-- current collection window end.
+Raw collector/Grok material is immutable after acceptance.
 
-It does **not** call an LLM, modify the repository, merge a PR or publish an issue.
+Per issue:
 
-Manual `workflow_dispatch` can also run deterministic validation for a named issue.
+```text
+sources/<issue>/raw-index.json
+```
 
-The W32 frozen state provides the bootstrap collection anchor for the next weekly plan. Overlap is preferred to a guessed later anchor because duplicate discoveries can be deduplicated while missed events cannot be recovered reliably.
+stores SHA-256 and byte size for every accepted file under a `raw/` path.
+
+Commands:
+
+```text
+raw-index
+raw-check
+```
+
+Normal push/PR CI also runs a `raw-integrity` job whenever Raw files or Raw indexes change.
+
+The W32 Grok Raw baseline is already committed and protected by this mechanism.
 
 ## X / Grok sensing
 
 Grok is used as an **X sensor**, not as factual evidence by itself.
 
-The workflow separates two different Grok passes:
+Two passes remain distinct:
 
-1. **Trend discovery** — detect what became technically important on X and when momentum arose.
-2. **Community reaction evidence** — for selected topics, collect representative X posts with auditable URLs showing what researchers, engineers, OSS developers, local-AI users, and other technical actors actually tested, praised, questioned, reproduced, or criticized.
+1. **Trend discovery** — what became technically important and when momentum arose;
+2. **Community reaction evidence** — auditable X post URLs showing what technical users actually tested, reproduced, questioned or integrated.
 
-The important distinction is between:
+Current trend prompt:
 
-- when an underlying model / paper / OSS release occurred,
-- when the technical community on X actually began discussing, testing, reproducing, disputing, or integrating it, and
-- what concrete community reactions can be traced to actual X posts.
+- [X Trend Sensor v0.4](config/prompts/grok/x-trend-sensor-v0.4.md)
 
-### Trend prompt history
+Current reaction prompt:
 
-- [X Trend Sensor v0.1](config/prompts/grok/x-trend-sensor-v0.1.md)
-- [X Trend Sensor v0.2](config/prompts/grok/x-trend-sensor-v0.2.md) — first live observation prompt; separates release / publication dates from `X Momentum Started`, `X Peak`, and `Why Now`
-- [X Trend Sensor v0.3](config/prompts/grok/x-trend-sensor-v0.3.md) — requires the final Raw Observation to be delivered as an actual Markdown file rather than pasted into chat
-- [X Trend Sensor v0.4](config/prompts/grok/x-trend-sensor-v0.4.md) — **current trend-discovery prompt**; adds `Coverage Scan -> Candidate Pool -> Global Ranking -> Coverage Audit`, including mandatory second-pass checks for multimodal / image / video / audio topics before final ranking
+- [X Community Reaction Evidence Collector v0.1](config/prompts/grok/x-community-reaction-evidence-v0.1.md)
 
-### Community reaction prompt
+A Trend Raw Observation is a candidate-discovery artifact. It is not sufficient by itself for release dates, parameter counts, licenses, benchmark numbers, hardware requirements or other technical facts.
 
-- [X Community Reaction Evidence Collector v0.1](config/prompts/grok/x-community-reaction-evidence-v0.1.md) — **current reaction-evidence prompt**; requires real X post URLs, independent-post checks, active search for skepticism / limitations, and explicit `INSUFFICIENT_X_EVIDENCE` when community reaction cannot be substantiated.
+## Reproducible PDF build
 
-Because the standard Grok GitHub connector is treated as read-only for this workflow, Grok should not attempt to push observations itself. It should generate and present a `.md` file; that file is then transferred unchanged into the appropriate `sources/<issue>/grok/` path by a write-capable tool or agent.
+Current typesetting stack:
 
-Trend output is treated as a **Trend Candidate List** and must be verified against primary or otherwise clearly classified sources before important technical claims are published.
+```text
+LuaLaTeX + jlreq + LuaTeX-ja + HaranoAji
+```
 
-Reaction output is treated as **Social Observation Evidence**. It may support statements such as "X上ではこの観点が議論された" but must not be used by itself to establish technical facts such as benchmark scores, release dates, model sizes, licenses, or hardware requirements.
+GitHub Actions builds the weekly PDF and fails on publication-blocking TeX warnings such as unresolved citations/references, Overfull/Underfull boxes and missing glyphs.
 
-Run-specific instructions may be placed under `config/prompts/grok/runs/`. They can override observation windows, target topics, or output filenames without changing the normal filename convention in the main prompts.
+New builds also set:
+
+```text
+SOURCE_DATE_EPOCH=<source commit timestamp>
+FORCE_SOURCE_DATE=1
+```
+
+and upload both `main.pdf` and `main.pdf.sha256`, providing a deterministic-byte baseline for future frozen revisions under the same source/toolchain.
+
+## Frozen GitHub Releases
+
+A frozen issue may be distributed through a GitHub Release without committing the PDF into the repository.
+
+Canonical tag:
+
+```text
+weekly/<issue>/<revision>
+```
+
+Example:
+
+```text
+weekly/2026-W32/v0.2
+```
+
+Release workflow:
+
+```text
+Actions -> Release frozen weekly survey
+```
+
+Modes:
+
+```text
+validate -> draft -> human inspection -> publish
+```
+
+- `validate` performs no tag/Release write;
+- `draft` creates/verifies the frozen source tag and attaches the digest-verified PDF + `SHA256SUMS.txt`;
+- `publish` requires an existing Draft and re-verifies its PDF before publication.
+
+W32 predates deterministic PDF timestamps, so its release manifest points to the exact already-validated frozen Actions artifact. Later issues can use reproducible rebuild mode.
+
+See [Weekly GitHub Release Process](docs/weekly-release-process.md).
 
 ## Weekly magazine structure
 
 Initial structure:
 
 1. Cover
-2. Contents
-3. This Week in AI
-4. Lead Stories
-5. Model & Reasoning
-6. Agent & Coding
-7. Multimodal
-8. Inference / Serving
-9. Open Weight / Local AI
-10. Research Paper Watch
-11. OSS & GitHub Watch
-12. X Community Watch
-13. Deep Dive
-14. Watchlist
-15. References / Source Notes
+2. Contents / This Week in AI
+3. Lead Stories
+4. Model & Reasoning / Open Weight
+5. Agent & Coding
+6. Multimodal
+7. Inference / Serving
+8. Research Paper Watch
+9. OSS & GitHub Watch
+10. X Community Watch
+11. Deep Dive
+12. Watchlist / Chronology
+13. References / Source Notes
 
-Initial page budget is approximately **16 pages**, with a provisional maximum of approximately **24 pages**. Weak weeks should not be padded merely to fill the target.
+The initial page budget is approximately 16 pages, with a provisional maximum of approximately 24. Weak weeks should not be padded merely to fill the target.
 
-The 2026-W32 frozen release candidate is 16 pages and serves as the first complete editorial/build reference.
+The frozen 2026-W32 v0.2 release candidate is 16 pages and is the first complete editorial/build reference.
 
 ## Chronology
 
-The project also intends to maintain an AI / model chronology generated from the same underlying event data used by the survey.
+The project maintains a conceptual distinction between:
 
-The chronology and weekly survey have different roles:
-
-- **Chronology:** objective artifact / event history.
+- **Chronology:** objective artifact/event history;
 - **Weekly survey:** what became technically important during a given observation period.
 
-For example, a model may be released on one date but become a major weekly topic several days later when weights, quantizations, serving support, benchmarks, or integrations appear.
+A model may be released on one date but become a weekly topic later because of weights, quantization, local deployment, serving support, independent evaluation or integrations.
 
-## Repository direction
-
-Current structure is growing toward:
+## Current implementation direction
 
 ```text
-japanese-generative-ai-survey/
-├─ README.md
-├─ docs/
-│  ├─ editorial-specification.md
-│  ├─ editorial-style-guide.md
-│  └─ weekly-pipeline-design-v0.1.md
-├─ config/
-│  ├─ weekly-pipeline.json
-│  └─ prompts/
-│     └─ grok/
-│        └─ runs/
-├─ sources/
-│  └─ <issue>/
-│     ├─ manifest.yaml
-│     ├─ pipeline-state.json
-│     ├─ candidates/
-│     ├─ grok/
-│     │  ├─ raw/
-│     │  └─ reactions/raw/
-│     └─ evidence/
-├─ chronology/
-├─ surveys/
-│  ├─ weekly/
-│  ├─ monthly/
-│  └─ annual/
-├─ schemas/
-├─ scripts/
-├─ tests/
-├─ templates/survey/
-└─ .github/workflows/
+Slice A  Deterministic spine                 implemented
+Slice B  Source intake / Raw provenance      baseline implemented
+Slice C  Evidence runners                    next
+Slice D  Editorial runners                   manual W32 reference exists
+Slice E  Weekly PR orchestration             not started
+Slice F  Chronology + monthly/annual reuse   not started
 ```
 
-Existing trend Raw files remain in `sources/<issue>/grok/raw/` to preserve provenance. They are not moved merely to make the tree more symmetrical.
-
-Directories are added when they acquire real files; empty placeholder trees are intentionally avoided.
-
-## Current phase
-
-The first manual/LLM-assisted end-to-end weekly PoC is complete. Current work is the first automation slice:
-
-- frozen W32 as the reference issue;
-- deterministic issue/calendar planning;
-- pipeline state contract;
-- deterministic validation CLI;
-- scheduled plan-only GitHub Actions workflow;
-- unit tests for DST, collection-anchor carry-forward and optional-section behavior.
-
-Next implementation slices are:
-
-1. source-intake contracts and immutable raw hashing;
-2. collector adapters and run metadata;
-3. schema-constrained Evidence Card runners;
-4. candidate-matrix / selection / architecture runners;
-5. weekly issue PR orchestration;
-6. chronology plus monthly/annual reuse.
-
-Unattended automatic public release remains out of scope until intentionally authorized by a later policy revision.
+The next automation focus is schema-constrained candidate normalization and Evidence Card generation without weakening the evidence boundaries established by W32.
 
 ## Design principle
 
