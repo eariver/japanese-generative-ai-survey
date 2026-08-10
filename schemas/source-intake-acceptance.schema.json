@@ -23,12 +23,13 @@
     "source_actions": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["workflow_run_id", "artifact_id", "artifact_name", "artifact_digest"],
+      "required": ["workflow_run_id", "artifact_id", "artifact_name", "artifact_digest", "review_reference"],
       "properties": {
         "workflow_run_id": { "type": "integer", "minimum": 1 },
         "artifact_id": { "type": "integer", "minimum": 1 },
         "artifact_name": { "type": "string", "minLength": 1 },
-        "artifact_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+        "artifact_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "review_reference": { "type": "string", "minLength": 1 }
       }
     },
     "source_intake_report_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
