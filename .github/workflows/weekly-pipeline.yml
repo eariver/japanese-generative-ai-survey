@@ -41,6 +41,7 @@ on:
       - 'config/weekly-pipeline.json'
       - 'config/prompts/grok/x-trend-sensor-v0.4.md'
       - 'schemas/weekly-pipeline-state.schema.json'
+      - 'schemas/collector-instruction.schema.json'
       - 'schemas/collector-run.schema.json'
       - 'schemas/raw-source-index.schema.json'
       - 'sources/*/raw-index.json'
@@ -57,6 +58,7 @@ on:
       - 'config/weekly-pipeline.json'
       - 'config/prompts/grok/x-trend-sensor-v0.4.md'
       - 'schemas/weekly-pipeline-state.schema.json'
+      - 'schemas/collector-instruction.schema.json'
       - 'schemas/collector-run.schema.json'
       - 'schemas/raw-source-index.schema.json'
       - 'sources/*/raw-index.json'
@@ -88,6 +90,7 @@ jobs:
           set -euo pipefail
           python -m json.tool config/weekly-pipeline.json >/dev/null
           python -m json.tool schemas/weekly-pipeline-state.schema.json >/dev/null
+          python -m json.tool schemas/collector-instruction.schema.json >/dev/null
           python -m json.tool schemas/collector-run.schema.json >/dev/null
           python -m json.tool schemas/raw-source-index.schema.json >/dev/null
 
@@ -162,7 +165,7 @@ jobs:
             python scripts/generate_grok_trend_run.py \
               --plan out/weekly-pipeline/plan.json \
               --markdown-output out/weekly-pipeline/grok-trend-run.md \
-              --metadata-output out/weekly-pipeline/grok-trend-collector-run.json
+              --metadata-output out/weekly-pipeline/grok-trend-instruction.json
           else
             printf '%s\n' \
               'Grok run instruction was not generated because collection_window_start is unset.' \
