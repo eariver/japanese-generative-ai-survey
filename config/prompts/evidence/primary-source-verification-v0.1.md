@@ -106,14 +106,25 @@ Do not promote items to fill section quotas.
 
 ## 9. Output
 
-Return exactly one JSON object conforming to `schemas/evidence-card.schema.json`.
+Return exactly one JSON object conforming to `schemas/evidence-run.schema.json`.
 
-The output must be self-contained and audit-friendly:
+The outer Evidence Run object records provenance:
 
-- every referenced `source_id` must exist in `sources`;
+- `issue_id`
+- `evidence_task_id`
+- SHA-256 of the exact Evidence Task input bytes
+- `prompt_id = primary-source-verification-v0.1`
+- SHA-256 of this exact prompt
+- runner provider/model/invocation/time/reference
+- `card`, conforming to `schemas/evidence-card.schema.json`
+
+The Card must be self-contained and audit-friendly:
+
+- every referenced `source_id` must exist in `card.sources`;
 - every event must cite at least one source;
 - every claim/metric/limitation must cite at least one source;
-- `observed_at` must reflect this verification run, not the original release date;
+- `card.temporal.observed_at` must reflect this verification run, not the original release date;
+- every Evidence Task `verification_target` must be addressed exactly once or remain explicitly unresolved;
 - unresolved issues must remain explicit.
 
 Do not return prose outside the JSON object.
