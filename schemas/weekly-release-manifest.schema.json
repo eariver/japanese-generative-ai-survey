@@ -16,7 +16,8 @@
     "expected_pdf_sha256",
     "page_count",
     "survey_root",
-    "freeze_record"
+    "freeze_record",
+    "pdf_source"
   ],
   "properties": {
     "schema_version": { "const": "1.0" },
@@ -49,12 +50,24 @@
     "page_count": { "type": "integer", "minimum": 1 },
     "survey_root": { "type": "string", "minLength": 1 },
     "freeze_record": { "type": "string", "minLength": 1 },
+    "pdf_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": { "enum": ["actions-artifact", "rebuild"] },
+        "workflow_run_id": { "type": "integer", "minimum": 1 },
+        "artifact_id": { "type": "integer", "minimum": 1 },
+        "artifact_name": { "type": "string", "minLength": 1 }
+      }
+    },
     "build": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
         "engine": { "type": "string" },
-        "texlive": { "type": "string" }
+        "texlive": { "type": "string" },
+        "source_date_epoch_policy": { "type": ["string", "null"] }
       }
     },
     "notes": {
@@ -62,5 +75,24 @@
       "items": { "type": "string" },
       "default": []
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "pdf_source": {
+            "properties": { "mode": { "const": "actions-artifact" } },
+            "required": ["mode"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "pdf_source": {
+            "required": ["mode", "workflow_run_id", "artifact_id", "artifact_name"]
+          }
+        }
+      }
+    }
+  ]
 }
