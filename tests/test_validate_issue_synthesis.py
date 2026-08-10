@@ -127,6 +127,17 @@ class IssueSynthesisValidationTests(unittest.TestCase):
             self.assertFalse(passed)
             self.assertTrue(any("Late Breaking package" in error for error in report["errors"]))
 
+    def test_late_signal_requires_explicit_post_cutoff_wording(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            input_path, result_path, prompt_path = self._write(root)
+            result = json.loads(result_path.read_text())
+            result["this_week_signals"][1]["summary"] = "Late articleを要約する。"
+            result_path.write_text(json.dumps(result), encoding="utf-8")
+            report, passed = vis.validate(input_path, result_path, prompt_path)
+            self.assertFalse(passed)
+            self.assertTrue(any("post-cutoff wording" in error for error in report["errors"]))
+
     def test_unknown_package_reference_fails(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -137,6 +148,30 @@ class IssueSynthesisValidationTests(unittest.TestCase):
             report, passed = vis.validate(input_path, result_path, prompt_path)
             self.assertFalse(passed)
             self.assertTrue(any("cover references unknown" in error for error in report["errors"]))
+
+    def test_cover_anchor_must_come_from_architecture_candidates(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            input_path, result_path, prompt_path = self._write(root)
+            result = json.loads(result_path.read_text())
+            result["cover"]["anchor_package_ids"] = ["late"]
+            result["cover"]["headline"] = "後発情報を見る"
+            result["cover"]["deck"] = "Late deckから考える。"
+            result_path.write_text(json.dumps(result), encoding="utf-8")
+            report, passed = vis.validate(input_path, result_path, prompt_path)
+            self.assertFalse(passed)
+            self.assertTrue(any("cover_anchor_candidates" in error for error in report["errors"]))
+
+    def test_new_concrete_identifier_or_number_in_signal_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            input_path, result_path, prompt_path = self._write(root)
+            result = json.loads(result_path.read_text())
+            result["this_week_signals"][0]["summary"] = "Feature articleはGPT-99で42%改善した。"
+            result_path.write_text(json.dumps(result), encoding="utf-8")
+            report, passed = vis.validate(input_path, result_path, prompt_path)
+            self.assertFalse(passed)
+            self.assertTrue(any("concrete ASCII identifiers/numbers" in error for error in report["errors"]))
 
     def test_input_sha_mismatch_fails(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
