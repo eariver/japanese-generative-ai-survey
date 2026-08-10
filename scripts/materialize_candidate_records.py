@@ -174,6 +174,7 @@ def render(item: dict[str, Any], cid: str) -> str:
 
 def materialize(candidate_ready: Path, output_dir: Path) -> tuple[dict[str, Any], bool]:
     items = read_jsonl(candidate_ready)
+    output_dir.mkdir(parents=True, exist_ok=True)
     ids: set[str] = set()
     records: list[dict[str, Any]] = []
     errors: list[str] = []
