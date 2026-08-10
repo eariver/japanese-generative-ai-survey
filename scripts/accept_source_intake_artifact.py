@@ -149,6 +149,7 @@ def accept(
     artifact_id: int,
     artifact_name: str,
     artifact_digest: str,
+    review_reference: str,
 ) -> tuple[dict[str, Any], bool]:
     if not artifact_digest.startswith("sha256:") or len(artifact_digest) != 71:
         raise ValueError("artifact_digest must be sha256:<64 hex>")
@@ -156,6 +157,8 @@ def accept(
         int(artifact_digest.split(":", 1)[1], 16)
     except ValueError as exc:
         raise ValueError("artifact_digest contains non-hex SHA-256") from exc
+    if not isinstance(review_reference, str) or not review_reference.strip():
+        raise ValueError("review_reference must be a non-empty string")
 
     repo_root = repo_root.resolve()
     artifact_root = artifact_root.resolve()
@@ -201,6 +204,7 @@ def accept(
             "artifact_id": artifact_id,
             "artifact_name": artifact_name,
             "artifact_digest": artifact_digest,
+            "review_reference": review_reference.strip(),
         },
         "source_intake_report_sha256": sha256_file(report_path),
         "collector_run_count": len(report["runs"]),
@@ -211,7 +215,7 @@ def accept(
             "Collector Raw bytes, collector-run provenance, and collector summary metadata are accepted append-only.",
             "A same-path byte change is a hard failure; identical bytes are idempotent.",
             "Deterministic screening indexes/batches from the Actions artifact are not committed and must be regenerated.",
-            "The source Actions run/artifact identity and artifact digest are recorded for auditability.",
+            "The source Actions run/artifact identity, artifact digest, and review reference are recorded for auditability.",
         ],
     }
 
@@ -261,6 +265,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--artifact-id", required=True, type=int)
     parser.add_argument("--artifact-name", required=True)
     parser.add_argument("--artifact-digest", required=True)
+    parser.add_argument("--review-reference", required=True)
     parser.add_argument("--report")
     return parser
 
@@ -275,6 +280,7 @@ def main() -> int:
         artifact_id=args.artifact_id,
         artifact_name=args.artifact_name,
         artifact_digest=args.artifact_digest,
+        review_reference=args.review_reference,
     )
     if args.report:
         path = Path(args.report)
