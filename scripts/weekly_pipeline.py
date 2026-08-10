@@ -79,8 +79,8 @@ def latest_cutoff(now_utc: datetime, cfg: dict[str, Any]) -> datetime:
 
 
 def issue_id_from_cutoff(cutoff: datetime) -> str:
-    iso_week = cutoff.date().isocalendar()
-    return f"{iso_week.year}-W{iso_week.week:02d}"
+    iso = cutoff.date().isocalendar()
+    return f"{iso.year}-W{iso.week:02d}"
 
 
 def iso(dt: datetime) -> str:
@@ -186,6 +186,7 @@ def validation_checks(repo_root: Path, issue_id: str) -> list[dict[str, Any]]:
     issue_sources = repo_root / "sources" / issue_id
     issue_survey = repo_root / "surveys" / "weekly" / issue_id
     checks: list[tuple[str, bool, str]] = [
+        ("pipeline_state", (issue_sources / "pipeline-state.json").is_file(), f"sources/{issue_id}/pipeline-state.json"),
         ("manifest", (issue_sources / "manifest.yaml").is_file(), f"sources/{issue_id}/manifest.yaml"),
         ("candidate_inventory", (issue_sources / "candidates" / "index.yaml").is_file(), f"sources/{issue_id}/candidates/index.yaml"),
         ("candidate_selection", (issue_sources / "candidate-selection.yaml").is_file(), f"sources/{issue_id}/candidate-selection.yaml"),
@@ -205,50 +206,49 @@ def internal_page_reference_findings(repo_root: Path, issue_id: str) -> list[dic
     findings: list[dict[str, Any]] = []
     if not section_dir.exists():
         return findings
-    pattern = re.compile(r"(?:今号\s*)?p\.\s*\d+(?:\s*--\s*\d+)?")
+    pattern = re.compile(r"(?:今号|本号)\s*p\.\s*\d+(?:\s*--\s*\d+)?")
     for tex in sorted(section_dir.glob("*.tex")):
         text = tex.read_text(encoding="utf-8")
         for match in pattern.finditer(text):
             line = text.count("\n", 0, match.start()) + 1
-            findings.append(
-                {
-                    "file": str(tex.relative_to(repo_root)),
-                    "line": line,
-                    "text": match.group(0),
-                }
-            )
+            findings.append({"file": str(tex.relative_to(repo_root)), "line": line, "text": match.group(0)})
     return findings
 
 
 def required_names(target: str) -> set[str]:
     levels = {
-        "selection": {"manifest", "candidate_inventory", "candidate_selection", "paper_evidence"},
+        "selection": {
+            "pipeline_state",
+            "manifest",
+            "candidate_inventory",
+            "candidate_selection",
+        },
         "draft": {
+            "pipeline_state",
             "manifest",
             "candidate_inventory",
             "candidate_selection",
             "issue_architecture",
-            "paper_evidence",
             "survey_main",
             "bibliography",
         },
         "release-candidate": {
+            "pipeline_state",
             "manifest",
             "candidate_inventory",
             "candidate_selection",
             "issue_architecture",
-            "paper_evidence",
             "survey_main",
             "bibliography",
             "draft_validation",
             "claim_review",
         },
         "frozen": {
+            "pipeline_state",
             "manifest",
             "candidate_inventory",
             "candidate_selection",
             "issue_architecture",
-            "paper_evidence",
             "survey_main",
             "bibliography",
             "draft_validation",
@@ -332,11 +332,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_val = sub.add_parser("validate", help="validate deterministic repository gates")
     p_val.add_argument("--issue-id", required=True)
-    p_val.add_argument(
-        "--target",
-        choices=["selection", "draft", "release-candidate", "frozen"],
-        default="draft",
-    )
+    p_val.add_argument("--target", choices=["selection", "draft", "release-candidate", "frozen"], default="draft")
     p_val.add_argument("--output")
 
     return parser
