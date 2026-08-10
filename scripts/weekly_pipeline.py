@@ -133,6 +133,71 @@ def build_plan(repo_root: Path, cfg: dict[str, Any], now_utc: datetime) -> dict[
     }
 
 
+def build_plan_for_issue(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    now_utc: datetime,
+    issue_id: str,
+) -> dict[str, Any]:
+    """Build a plan for a named issue without guessing historical windows.
+
+    The normal/current issue uses the rolling previous-collection anchor. If that
+    anchor is unavailable (notably the bootstrap issue) or the requested issue is
+    historical, replay metadata is read from that issue's committed pipeline state.
+    """
+    current = build_plan(repo_root, cfg, now_utc)
+    if current["issue_id"] == issue_id and current.get("collection_window_start"):
+        current["plan_source"] = "latest-cutoff"
+        return current
+
+    state_path = repo_root / "sources" / issue_id / "pipeline-state.json"
+    if not state_path.is_file():
+        raise ValueError(
+            f"cannot plan requested issue {issue_id}: current rolling plan is {current['issue_id']} "
+            f"and {state_path.relative_to(repo_root)} does not exist"
+        )
+
+    state = load_json(state_path)
+    if state.get("issue_id") not in (None, issue_id):
+        raise ValueError(f"pipeline state issue_id does not match requested issue {issue_id}")
+    calendar = state.get("calendar", {})
+    start = calendar.get("collection_window_start")
+    end = calendar.get("collection_anchor_at")
+    cutoff = calendar.get("editorial_cutoff")
+    if not start or not end or not cutoff:
+        raise ValueError(
+            f"historical replay for {issue_id} requires calendar.collection_window_start, "
+            "collection_anchor_at, and editorial_cutoff in pipeline-state.json"
+        )
+
+    # Parse once so malformed historical state fails before a collector uses it.
+    parse_instant(start)
+    parse_instant(end)
+    parse_instant(cutoff)
+    compilation_zone = ZoneInfo(cfg["editorial"]["compilation_timezone"])
+    return {
+        "schema_version": "1.0",
+        "issue_id": issue_id,
+        "generated_at": iso(now_utc),
+        "generated_at_local": iso(now_utc.astimezone(compilation_zone)),
+        "editorial_cutoff": cutoff,
+        "editorial_cutoff_timezone": calendar.get(
+            "cutoff_timezone", cfg["editorial"]["cutoff_timezone"]
+        ),
+        "collection_window_start": start,
+        "collection_window_end": end,
+        "automation_mode": "historical-replay",
+        "plan_source": "pipeline-state",
+        "unattended_public_release": False,
+        "notes": [
+            "This named-issue plan replays a committed historical collection window from pipeline-state.json.",
+            "It is suitable for collector smoke tests or explicit historical replay; it does not redefine the issue chronology.",
+            "Official-page snapshots fetched during a replay are current snapshots unless the upstream service itself provides historical retrieval.",
+            "This plan does not publish, merge, or call an LLM.",
+        ],
+    }
+
+
 def plan_markdown(plan: dict[str, Any]) -> str:
     start = plan["collection_window_start"] or "UNSET — bootstrap required"
     return (
@@ -141,7 +206,7 @@ def plan_markdown(plan: dict[str, Any]) -> str:
         f"- Editorial cutoff: `{plan['editorial_cutoff']}`\n"
         f"- Collection window start: `{start}`\n"
         f"- Collection window end: `{plan['collection_window_end']}`\n"
-        "- Mode: `plan-only`\n\n"
+        f"- Mode: `{plan.get('automation_mode', 'plan-only')}`\n\n"
         "This artifact is an operational plan. It does not authorize unattended publication.\n"
     )
 
@@ -279,7 +344,12 @@ def validate(repo_root: Path, issue_id: str, target: str) -> tuple[dict[str, Any
 
 def cmd_plan(args: argparse.Namespace, cfg: dict[str, Any]) -> int:
     root = Path(args.repo_root).resolve()
-    plan = build_plan(root, cfg, parse_instant(args.now))
+    now = parse_instant(args.now)
+    plan = (
+        build_plan_for_issue(root, cfg, now, args.issue_id)
+        if args.issue_id
+        else build_plan(root, cfg, now)
+    )
     if args.output:
         write_json(Path(args.output), plan)
     if args.markdown_output:
@@ -320,8 +390,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--config", default=str(DEFAULT_CONFIG))
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_plan = sub.add_parser("plan", help="compute the current completed issue and collection window")
+    p_plan = sub.add_parser("plan", help="compute the current completed issue or replay a named issue")
     p_plan.add_argument("--now", help="override current instant (ISO-8601 with offset)")
+    p_plan.add_argument("--issue-id", help="named issue for deterministic historical replay")
     p_plan.add_argument("--output")
     p_plan.add_argument("--markdown-output")
 
