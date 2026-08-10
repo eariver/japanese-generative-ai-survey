@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 SPECIAL_ID_RE = re.compile(r"^SP-[A-Za-z0-9][A-Za-z0-9._-]{2,63}$")
-SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9._-]{2,63}$")
+SLUG_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{2,63}$")
 SHA256_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 GIT_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 EXPECTED_WORKFLOW_PATH = ".github/workflows/special-pipeline.yml"
@@ -43,13 +43,10 @@ def resolve(*, run: dict[str, Any], artifacts: dict[str, Any], repository: str,
         raise ValueError("source_run_id must be positive")
     if not repository or "/" not in repository:
         raise ValueError("repository must use owner/name form")
-
     if run.get("id") != source_run_id:
         raise ValueError("source Actions run id mismatch")
     if run.get("status") != "completed" or run.get("conclusion") != "success":
-        raise ValueError(
-            f"source Actions run must be completed successfully; status={run.get('status')!r} conclusion={run.get('conclusion')!r}"
-        )
+        raise ValueError(f"source Actions run must be completed successfully; status={run.get('status')!r} conclusion={run.get('conclusion')!r}")
     if _repo_full_name(run.get("repository")) != repository:
         raise ValueError("source Actions run repository mismatch")
     if _repo_full_name(run.get("head_repository")) != repository:
@@ -63,7 +60,6 @@ def resolve(*, run: dict[str, Any], artifacts: dict[str, Any], repository: str,
     head_sha = run.get("head_sha")
     if not isinstance(head_sha, str) or not GIT_SHA_RE.fullmatch(head_sha):
         raise ValueError("source Actions run head_sha missing or invalid")
-
     values = artifacts.get("artifacts")
     if not isinstance(values, list):
         raise ValueError("artifacts response must contain an artifacts array")
@@ -84,27 +80,10 @@ def resolve(*, run: dict[str, Any], artifacts: dict[str, Any], repository: str,
     artifact_run_id = artifact_run.get("id") if isinstance(artifact_run, dict) else None
     if artifact_run_id != source_run_id:
         raise ValueError("source artifact workflow_run id mismatch")
-
     return {
-        "schema_version": "1.0",
-        "special_id": special_id,
-        "special_slug": special_slug,
-        "status": "VERIFIED",
-        "source_actions": {
-            "workflow_run_id": source_run_id,
-            "workflow_path": EXPECTED_WORKFLOW_PATH,
-            "event": EXPECTED_EVENT,
-            "head_branch": EXPECTED_HEAD_BRANCH,
-            "head_sha": head_sha,
-            "html_url": run.get("html_url"),
-        },
-        "artifact": {
-            "id": artifact_id,
-            "name": expected_name,
-            "digest": digest,
-            "expired": False,
-            "archive_download_url": artifact.get("archive_download_url"),
-        },
+        "schema_version": "1.0", "special_id": special_id, "special_slug": special_slug, "status": "VERIFIED",
+        "source_actions": {"workflow_run_id": source_run_id, "workflow_path": EXPECTED_WORKFLOW_PATH, "event": EXPECTED_EVENT, "head_branch": EXPECTED_HEAD_BRANCH, "head_sha": head_sha, "html_url": run.get("html_url")},
+        "artifact": {"id": artifact_id, "name": expected_name, "digest": digest, "expired": False, "archive_download_url": artifact.get("archive_download_url")},
     }
 
 
@@ -112,36 +91,20 @@ def write_github_output(path: Path, result: dict[str, Any]) -> None:
     artifact = result["artifact"]
     source = result["source_actions"]
     with path.open("a", encoding="utf-8") as fh:
-        fh.write(f"artifact_name={artifact['name']}\n")
-        fh.write(f"artifact_id={artifact['id']}\n")
-        fh.write(f"artifact_digest={artifact['digest']}\n")
-        fh.write(f"source_head_sha={source['head_sha']}\n")
+        fh.write(f"artifact_name={artifact['name']}\nartifact_id={artifact['id']}\nartifact_digest={artifact['digest']}\nsource_head_sha={source['head_sha']}\n")
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--run-json", required=True)
-    parser.add_argument("--artifacts-json", required=True)
-    parser.add_argument("--repository", required=True)
-    parser.add_argument("--special-id", required=True)
-    parser.add_argument("--special-slug", required=True)
-    parser.add_argument("--source-run-id", required=True, type=int)
-    parser.add_argument("--output", required=True)
-    parser.add_argument("--github-output")
+    parser.add_argument("--run-json", required=True); parser.add_argument("--artifacts-json", required=True)
+    parser.add_argument("--repository", required=True); parser.add_argument("--special-id", required=True)
+    parser.add_argument("--special-slug", required=True); parser.add_argument("--source-run-id", required=True, type=int)
+    parser.add_argument("--output", required=True); parser.add_argument("--github-output")
     args = parser.parse_args()
-    result = resolve(
-        run=load_json(Path(args.run_json)), artifacts=load_json(Path(args.artifacts_json)),
-        repository=args.repository, special_id=args.special_id, special_slug=args.special_slug,
-        source_run_id=args.source_run_id,
-    )
-    output = Path(args.output)
-    output.parent.mkdir(parents=True, exist_ok=True)
+    result = resolve(run=load_json(Path(args.run_json)), artifacts=load_json(Path(args.artifacts_json)), repository=args.repository, special_id=args.special_id, special_slug=args.special_slug, source_run_id=args.source_run_id)
+    output = Path(args.output); output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    if args.github_output:
-        write_github_output(Path(args.github_output), result)
-    print(json.dumps(result, ensure_ascii=False, indent=2))
-    return 0
+    if args.github_output: write_github_output(Path(args.github_output), result)
+    print(json.dumps(result, ensure_ascii=False, indent=2)); return 0
 
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+if __name__ == "__main__": raise SystemExit(main())
