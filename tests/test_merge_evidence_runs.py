@@ -46,6 +46,7 @@ class MergeEvidenceRunsTests(unittest.TestCase):
                 "observed_at": "2026-08-10T00:00:00Z",
                 "events": [
                     {
+                        "event_id": "event-release",
                         "event_type": "MODEL_UPDATE",
                         "event_date": "2026-08-07",
                         "source_published_at": "2026-08-07",
