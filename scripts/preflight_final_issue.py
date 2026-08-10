@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Run deterministic source-level preflight on a finalized weekly survey tree.
 
-This stage validates only concerns visible in final source material: manifest/file
+This stage validates concerns visible in final source material: manifest/file
 integrity, section ordering, dynamic package labels/page refs, literal page-number
-regressions, and exact TeX/Bib citation-key consistency. Semantic Evidence checks
+regressions, exact TeX/Bib citation-key consistency, and reader-facing prose
+separation from internal editorial workflow metadata. Semantic Evidence checks
 remain upstream in the structured drafting validators.
 """
 
@@ -16,6 +17,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from scripts.editorial_prose_guard import PROSE_LINT_EXEMPT_MARKER, reader_facing_prose_errors
 from scripts.merge_generated_bibliography import parse_generated_bib
 
 PACKAGE_LABEL_RE = re.compile(r"\\label\{pkg:([^}]+)\}")
@@ -23,6 +25,7 @@ PACKAGE_PAGEREF_RE = re.compile(r"\\pageref\{pkg:([^}]+)\}")
 CITE_RE = re.compile(r"\\(?:auto|text|paren)cite(?:\[[^\]]*\]){0,2}\{([^}]+)\}")
 INPUT_RE = re.compile(r"\\input\{([^}]+)\}")
 LITERAL_INTERNAL_PAGE_RE = re.compile(r"(?:今号|本号)\s*[pP]\.?(?:~|\s)*\d+")
+LEGACY_READER_PROSE_EXEMPT_ISSUES = {"2026-W32"}
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -184,6 +187,11 @@ def preflight(issue_dir: Path, manifest_path: Path | None = None) -> tuple[dict[
             literal_refs.append(f"{path.relative_to(issue_dir).as_posix()}:{match.group(0)}")
     if literal_refs:
         errors.append(f"literal internal page references are forbidden: {literal_refs}")
+
+    issue_id = manifest.get("issue_id")
+    if issue_id not in LEGACY_READER_PROSE_EXEMPT_ISSUES:
+        for path in all_tex_paths:
+            errors.extend(reader_facing_prose_errors(path, issue_dir))
 
     citations = sorted(cite_keys(all_tex_text))
     bibliography_keys: list[str] = []

@@ -115,6 +115,12 @@ class FinalIssuePreflightTests(unittest.TestCase):
         manifest["references"]["bytes"] = references.stat().st_size
         manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
 
+    def _set_issue_id(self, issue: Path, issue_id: str) -> None:
+        manifest_path = issue / "final-source-manifest.json"
+        manifest = json.loads(manifest_path.read_text())
+        manifest["issue_id"] = issue_id
+        manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
     def test_valid_final_source_passes_exact_citation_and_pageref_checks(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             issue = self._fixture(Path(tmp))
@@ -167,6 +173,65 @@ class FinalIssuePreflightTests(unittest.TestCase):
             report, passed = preflight.preflight(issue)
             self.assertFalse(passed)
             self.assertEqual(report["unused_bibliography_keys"], ["src-unused"])
+
+    def test_internal_editorial_workflow_language_fails_reader_facing_preflight(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            issue = self._fixture(Path(tmp))
+            article = issue / "sections" / "generated" / "01-feature.tex"
+            article.write_text(
+                "\\section{Feature}\n"
+                "\\label{pkg:feature}\n"
+                "Reaction Passでは有力だったため、次号で追跡する。\\autocite{src-test}\n",
+                encoding="utf-8",
+            )
+            self._refresh_section_record(issue)
+            report, passed = preflight.preflight(issue)
+            self.assertFalse(passed)
+            self.assertTrue(any("reader-facing prose violation [Reaction Pass]" in error for error in report["errors"]))
+            self.assertTrue(any("reader-facing prose violation [future production TODO]" in error for error in report["errors"]))
+
+    def test_tex_comments_do_not_trigger_reader_facing_prose_guard(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            issue = self._fixture(Path(tmp))
+            article = issue / "sections" / "generated" / "01-feature.tex"
+            article.write_text(
+                "\\section{Feature}\n"
+                "\\label{pkg:feature}\n"
+                "% Reaction Pass and Candidate Inventory are internal provenance comments.\n"
+                "X上ではlocal deploymentの検証が観測された。\\autocite{src-test}\n",
+                encoding="utf-8",
+            )
+            self._refresh_section_record(issue)
+            report, passed = preflight.preflight(issue)
+            self.assertTrue(passed, report)
+
+    def test_explicit_source_notes_marker_can_exempt_internal_metadata_file(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            issue = self._fixture(Path(tmp))
+            article = issue / "sections" / "generated" / "01-feature.tex"
+            article.write_text(
+                preflight.PROSE_LINT_EXEMPT_MARKER
+                + "\n\\section{Source Notes}\n"
+                + "\\label{pkg:feature}\n"
+                + "Reaction Pass provenance。\\autocite{src-test}\n",
+                encoding="utf-8",
+            )
+            self._refresh_section_record(issue)
+            report, passed = preflight.preflight(issue)
+            self.assertTrue(passed, report)
+
+    def test_frozen_w32_remains_legacy_exempt_from_new_prose_guard(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            issue = self._fixture(Path(tmp))
+            self._set_issue_id(issue, "2026-W32")
+            article = issue / "sections" / "generated" / "01-feature.tex"
+            article.write_text(
+                "\\section{Feature}\n\\label{pkg:feature}\nReaction Passでは観測した。\\autocite{src-test}\n",
+                encoding="utf-8",
+            )
+            self._refresh_section_record(issue)
+            report, passed = preflight.preflight(issue)
+            self.assertTrue(passed, report)
 
 
 if __name__ == "__main__":

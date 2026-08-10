@@ -110,6 +110,8 @@ All Evidence Tasks present in the Draft Package must be materially used by at le
 
 Primary Evidence defines the package's substantive story. Supporting Evidence may contextualize or qualify it but must not silently become a new primary story outside the approved Architecture.
 
+If a package boundary says that a Late Breaking item is **cross-reference-only** here, supporting Evidence for that event must be used only for a short bridge/cross-reference. Do not repeat the event's detailed mechanism, chronology, benchmark results or implications in this package; those belong in the named canonical Late Breaking package.
+
 ## 9. Temporal discipline
 
 Keep distinct:
@@ -124,7 +126,53 @@ Keep distinct:
 
 If an Evidence Card says timing is unresolved, preserve that uncertainty. Do not infer a clock time.
 
-## 10. Writing style
+For Weekly packages, if `package.must_cover` or `package.editorial_angle` requires a **why this week** explanation for a pre-window artifact, state that reason early in reader-facing prose. The explanation must identify the actual current-window trigger or structural relevance; never imply that an older artifact was newly released.
+
+For Special editions, the equivalent requirement is **why this Special**: explain how the item supports the declared historical period or thematic argument rather than inventing weekly urgency.
+
+## 10. Reader-facing prose boundary
+
+Write the article as a finished technical magazine, not as a production report.
+
+The JSON result may contain internal IDs and status fields because they are repository metadata. The **reader-facing fields** — `headline`, `deck`, block text, table/bullet content and visible notes — must not expose internal workflow jargon or production TODOs unless the package is explicitly a Source Notes/provenance package.
+
+Do not write ordinary article prose such as:
+
+- `Reaction Passでは...`
+- `Grok Reaction Passで取得した...`
+- `Candidate Inventoryへ残す...`
+- `今号で採用した候補...`
+- `今回primary verificationしていない...`
+- `次号で追跡する...`
+- `次号以降に昇格させる...`
+- `候補として保存している...`
+- `記事にできなかった情報の墓場...`
+- `Issue Architecture`, `Evidence Task`, `Draft Package` as explanations of editorial decisions.
+
+Translate the underlying meaning into reader-relevant language. For example:
+
+- `Reaction Passでは～` -> `X上では～が観測された`
+- `今回のEvidenceでは固定できていない` -> `公開時点で一次情報から正確な公開時刻までは確認できていない`
+- `今回primary verificationしていない` -> `現時点で一次情報による確認が取れていないため、本稿では扱わない`
+- `次号で追跡する` -> when useful, a concrete statement such as `今後の追加検証を要する` or a Watchlist observation point.
+
+Claim Boundary, Community Observation and Editorial Cutoff are reader-facing evidence-strength concepts and may remain when useful.
+
+Do not weaken traceability to make the prose smoother. Move internal production detail to Source Notes / Repository provenance instead of deleting the underlying provenance.
+
+## 11. Watchlist treatment
+
+When `package.package_type` is `WATCHLIST`, write it as a reader-facing observation column rather than editorial queue management.
+
+Where supported by the package Evidence, structure each item around:
+
+1. **現状** — the credible signal currently visible;
+2. **未確認** — the missing evidence or unresolved technical condition;
+3. **注視点** — the future evidence/event that would materially change the assessment.
+
+Do not discuss internal promotion, Candidate Inventory status, or whether editors plan to turn the item into an article next week.
+
+## 12. Writing style
 
 Write reader-facing text in Japanese and follow the project editorial style guide.
 
@@ -134,7 +182,7 @@ Prefer comparative/thematic synthesis when Architecture groups several artifacts
 
 The Draft Result is still structured editorial content. A later deterministic materializer will generate LaTeX and bibliography citations from these blocks and Evidence refs.
 
-## 11. Output
+## 13. Output
 
 Return exactly one JSON object conforming to:
 
