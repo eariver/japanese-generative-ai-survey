@@ -1,0 +1,247 @@
+name: Release frozen weekly survey
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_id:
+        description: Frozen issue ID, for example 2026-W32
+        required: true
+        type: string
+      revision:
+        description: Frozen revision, for example v0.2
+        required: true
+        type: string
+      publish:
+        description: Publish after creating the draft and attaching assets
+        required: true
+        default: false
+        type: boolean
+      confirmation:
+        description: Enter ISSUE@REVISION, for example 2026-W32@v0.2
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-release-${{ inputs.issue_id }}-${{ inputs.revision }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout release control metadata
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate frozen release manifest
+        id: manifest
+        shell: bash
+        env:
+          ISSUE_ID: ${{ inputs.issue_id }}
+          REVISION: ${{ inputs.revision }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          set -euo pipefail
+          expected_confirmation="${ISSUE_ID}@${REVISION}"
+          if [ "$CONFIRMATION" != "$expected_confirmation" ]; then
+            echo "::error::confirmation must be ${expected_confirmation}"
+            exit 2
+          fi
+
+          manifest="sources/${ISSUE_ID}/release-manifest.json"
+          test -s "$manifest"
+          python -m json.tool "$manifest" >/dev/null
+
+          python - "$manifest" "$ISSUE_ID" "$REVISION" >> "$GITHUB_OUTPUT" <<'PY'
+          import json
+          import re
+          import sys
+
+          path, issue_id, revision = sys.argv[1:]
+          with open(path, encoding='utf-8') as fh:
+              data = json.load(fh)
+
+          required = {
+              'schema_version', 'issue_id', 'revision', 'status', 'source_commit',
+              'release_tag', 'release_title', 'asset_name', 'expected_pdf_sha256',
+              'page_count', 'survey_root', 'freeze_record'
+          }
+          missing = sorted(required - data.keys())
+          if missing:
+              raise SystemExit(f'missing release-manifest fields: {missing}')
+          if data['schema_version'] != '1.0':
+              raise SystemExit('unsupported release manifest schema_version')
+          if data['issue_id'] != issue_id or data['revision'] != revision:
+              raise SystemExit('workflow inputs do not match release-manifest.json')
+          if data['status'] != 'frozen':
+              raise SystemExit('release manifest is not frozen')
+          if not re.fullmatch(r'[0-9a-f]{40}', data['source_commit']):
+              raise SystemExit('invalid source_commit')
+          if not re.fullmatch(r'[0-9a-f]{64}', data['expected_pdf_sha256']):
+              raise SystemExit('invalid expected_pdf_sha256')
+          if data['release_tag'] != f"weekly/{issue_id}/{revision}":
+              raise SystemExit('release_tag does not match canonical weekly/<issue>/<revision> form')
+
+          print(f"source_commit={data['source_commit']}")
+          print(f"release_tag={data['release_tag']}")
+          print(f"release_title={data['release_title']}")
+          print(f"asset_name={data['asset_name']}")
+          print(f"expected_pdf_sha256={data['expected_pdf_sha256']}")
+          print(f"page_count={data['page_count']}")
+          print(f"survey_root={data['survey_root']}")
+          print(f"freeze_record={data['freeze_record']}")
+          PY
+
+          test -s "${{ steps.manifest.outputs.freeze_record }}" || true
+
+      - name: Checkout frozen PDF-producing source commit
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ steps.manifest.outputs.source_commit }}
+          path: release-src
+          fetch-depth: 0
+
+      - name: Compile frozen source with LuaLaTeX
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: main.tex
+          working_directory: release-src/${{ steps.manifest.outputs.survey_root }}
+          texlive_version: 2026
+          os: debian
+          latexmk_use_lualatex: true
+
+      - name: Validate final TeX log and frozen PDF digest
+        shell: bash
+        env:
+          SURVEY_ROOT: ${{ steps.manifest.outputs.survey_root }}
+          EXPECTED_SHA256: ${{ steps.manifest.outputs.expected_pdf_sha256 }}
+          ASSET_NAME: ${{ steps.manifest.outputs.asset_name }}
+        run: |
+          set -euo pipefail
+          build_dir="release-src/${SURVEY_ROOT}"
+          test -s "${build_dir}/main.pdf"
+          test -s "${build_dir}/main.log"
+
+          if grep -E -n 'LaTeX Warning: (There were undefined references|Citation .* undefined)|Package biblatex Warning: Please (re)?run|Overfull \\hbox|Underfull \\hbox|Missing character:' "${build_dir}/main.log"; then
+            echo '::error::Final TeX log contains publication-blocking warnings.'
+            exit 1
+          fi
+
+          actual="$(sha256sum "${build_dir}/main.pdf" | awk '{print $1}')"
+          if [ "$actual" != "$EXPECTED_SHA256" ]; then
+            echo "::error::Rebuilt PDF digest does not match frozen digest. expected=${EXPECTED_SHA256} actual=${actual}"
+            exit 1
+          fi
+
+          mkdir -p dist
+          cp "${build_dir}/main.pdf" "dist/${ASSET_NAME}"
+          (cd dist && sha256sum "$ASSET_NAME" > SHA256SUMS.txt)
+          echo "Frozen PDF digest verified: ${actual}"
+
+      - name: Prepare release notes
+        shell: bash
+        env:
+          ISSUE_ID: ${{ inputs.issue_id }}
+          REVISION: ${{ inputs.revision }}
+          SOURCE_COMMIT: ${{ steps.manifest.outputs.source_commit }}
+          PDF_SHA256: ${{ steps.manifest.outputs.expected_pdf_sha256 }}
+          PAGE_COUNT: ${{ steps.manifest.outputs.page_count }}
+          FREEZE_RECORD: ${{ steps.manifest.outputs.freeze_record }}
+        run: |
+          set -euo pipefail
+          cat > dist/RELEASE_NOTES.md <<EOF
+          # ${ISSUE_ID} ${REVISION}
+
+          Frozen release of the Japanese Generative AI Technical Survey.
+
+          - Frozen source commit: \`${SOURCE_COMMIT}\`
+          - PDF SHA-256: \`${PDF_SHA256}\`
+          - Pages: ${PAGE_COUNT}
+          - Freeze record: \`${FREEZE_RECORD}\`
+
+          The PDF was rebuilt from the frozen source commit in this workflow and its SHA-256 was verified against the committed release manifest before the release tag was created.
+          EOF
+
+      - name: Create or verify frozen source tag
+        shell: bash
+        env:
+          TAG: ${{ steps.manifest.outputs.release_tag }}
+          SOURCE_COMMIT: ${{ steps.manifest.outputs.source_commit }}
+        run: |
+          set -euo pipefail
+          existing="$(git -C release-src ls-remote --tags origin "refs/tags/${TAG}" | awk 'NR==1 {print $1}')"
+          if [ -n "$existing" ]; then
+            if [ "$existing" != "$SOURCE_COMMIT" ]; then
+              echo "::error::Existing tag ${TAG} points to ${existing}, expected ${SOURCE_COMMIT}."
+              exit 1
+            fi
+            echo "Existing tag ${TAG} already points to frozen source commit."
+          else
+            git -C release-src config user.name 'github-actions[bot]'
+            git -C release-src config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git -C release-src tag "$TAG" "$SOURCE_COMMIT"
+            git -C release-src push origin "refs/tags/${TAG}"
+          fi
+
+      - name: Create draft release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.manifest.outputs.release_tag }}
+          TITLE: ${{ steps.manifest.outputs.release_title }}
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "::error::Release ${TAG} already exists. Refusing to overwrite or clobber an existing release."
+            exit 1
+          fi
+          gh release create "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --verify-tag \
+            --draft \
+            --title "$TITLE" \
+            --notes-file dist/RELEASE_NOTES.md
+
+      - name: Upload frozen PDF and checksum
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.manifest.outputs.release_tag }}
+          ASSET_NAME: ${{ steps.manifest.outputs.asset_name }}
+        run: |
+          set -euo pipefail
+          gh release upload "$TAG" \
+            "dist/${ASSET_NAME}#Japanese Generative AI Technical Survey PDF" \
+            'dist/SHA256SUMS.txt#SHA-256 checksums' \
+            --repo "$GITHUB_REPOSITORY"
+
+      - name: Publish release
+        if: inputs.publish
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.manifest.outputs.release_tag }}
+        run: |
+          set -euo pipefail
+          gh release edit "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --draft=false \
+            --latest
+
+      - name: Summarize release state
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.manifest.outputs.release_tag }}
+        run: |
+          set -euo pipefail
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY"
