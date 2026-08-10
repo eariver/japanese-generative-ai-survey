@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Reproducible source-intake adapters for the weekly survey.
 
-Collectors save exact HTTP response bytes under a Raw path and emit a separate
-summary plus collector-run provenance. They do not perform editorial selection
-or promote any observation into verified evidence.
+Collectors save exact HTTP response bytes under a run-specific Raw path and emit
+separate summary plus collector-run provenance. They do not perform editorial
+selection or promote any observation into verified evidence.
 """
 
 from __future__ import annotations
@@ -46,6 +46,14 @@ def iso_utc(dt: datetime) -> str:
     return dt.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
 
+def run_stamp(dt: datetime) -> str:
+    return dt.astimezone(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+
+
+def run_base(issue_id: str, collector_slug: str, observed_at: datetime) -> str:
+    return f"sources/{issue_id}/collectors/{collector_slug}/runs/{run_stamp(observed_at)}"
+
+
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
@@ -61,6 +69,8 @@ def output_record(repo_path: str, data: bytes) -> dict[str, Any]:
 def save_bytes(root: Path, repo_path: str, data: bytes) -> dict[str, Any]:
     path = root / repo_path
     path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        raise FileExistsError(f"source-intake output is append-only; refusing to overwrite {path}")
     path.write_bytes(data)
     return output_record(repo_path, data)
 
@@ -101,6 +111,7 @@ def parse_arxiv_atom(data: bytes) -> list[dict[str, Any]]:
             {"href": node.attrib.get("href"), "rel": node.attrib.get("rel"), "type": node.attrib.get("type")}
             for node in entry.findall("atom:link", ns)
         ]
+        primary = entry.find("arxiv:primary_category", ns)
         entries.append(
             {
                 "id": (entry.findtext("atom:id", default="", namespaces=ns) or "").strip(),
@@ -110,11 +121,7 @@ def parse_arxiv_atom(data: bytes) -> list[dict[str, Any]]:
                 "updated": (entry.findtext("atom:updated", default="", namespaces=ns) or "").strip(),
                 "authors": authors,
                 "categories": categories,
-                "primary_category": (
-                    entry.find("arxiv:primary_category", ns).attrib.get("term")
-                    if entry.find("arxiv:primary_category", ns) is not None
-                    else None
-                ),
+                "primary_category": primary.attrib.get("term") if primary is not None else None,
                 "links": links,
             }
         )
@@ -126,12 +133,13 @@ def run_arxiv(plan: dict[str, Any], cfg: dict[str, Any], output_root: Path) -> d
     start = parse_instant(plan["collection_window_start"])
     end = parse_instant(plan["collection_window_end"])
     observed_at = datetime.now(timezone.utc)
-    base = f"sources/{issue_id}/collectors/arxiv"
+    base = run_base(issue_id, "arxiv", observed_at)
     outputs: list[dict[str, Any]] = []
     summary: dict[str, Any] = {
         "schema_version": "1.0",
         "issue_id": issue_id,
         "collector": "arxiv-api",
+        "observed_at": iso_utc(observed_at),
         "collection_window_start": iso_utc(start),
         "collection_window_end": iso_utc(end),
         "queries": [],
@@ -158,29 +166,20 @@ def run_arxiv(plan: dict[str, Any], cfg: dict[str, Any], output_root: Path) -> d
         url = f"{arxiv_cfg['endpoint']}?{params}"
         raw_path = f"{base}/raw/{query_id}.atom"
         try:
-            data, http_meta = http_get(
-                url,
-                user_agent=cfg["user_agent"],
-                timeout=int(cfg.get("http_timeout_seconds", 45)),
-            )
+            data, http_meta = http_get(url, user_agent=cfg["user_agent"], timeout=int(cfg.get("http_timeout_seconds", 45)))
             outputs.append(save_bytes(output_root, raw_path, data))
             parsed = parse_arxiv_atom(data)
             successes += 1
-            summary["queries"].append(
-                {
-                    "id": item["id"],
-                    "search_query": search_query,
-                    "request": http_meta,
-                    "raw_path": raw_path,
-                    "entry_count": len(parsed),
-                }
-            )
+            summary["queries"].append({
+                "id": item["id"], "search_query": search_query, "request": http_meta,
+                "raw_path": raw_path, "entry_count": len(parsed)
+            })
             for entry in parsed:
                 key = entry["id"]
                 if key and key not in seen:
                     seen.add(key)
                     summary["entries"].append(entry)
-        except Exception as exc:  # collector must report partial failures, not hide them
+        except Exception as exc:
             summary["errors"].append({"id": item["id"], "url": url, "error": repr(exc)})
         if index + 1 < len(queries):
             time.sleep(float(arxiv_cfg.get("delay_seconds", 3)))
@@ -190,14 +189,8 @@ def run_arxiv(plan: dict[str, Any], cfg: dict[str, Any], output_root: Path) -> d
     outputs.append(save_bytes(output_root, f"{base}/summary.json", summary_bytes))
     status = "success" if successes == len(queries) else ("partial" if successes else "failed")
     run = collector_run(
-        issue_id=issue_id,
-        stage="paper-discovery",
-        collector_id="arxiv-api",
-        provider="arXiv",
-        observed_at=observed_at,
-        plan=plan,
-        outputs=outputs,
-        status=status,
+        issue_id=issue_id, stage="paper-discovery", collector_id="arxiv-api", provider="arXiv",
+        observed_at=observed_at, plan=plan, outputs=outputs, status=status,
         tool_access=["HTTPS GET https://export.arxiv.org/api/query"],
         notes=["Raw Atom responses are preserved unchanged; summary.json is collector-derived metadata for later screening."],
     )
@@ -220,17 +213,12 @@ def run_github_releases(plan: dict[str, Any], cfg: dict[str, Any], output_root: 
     start = parse_instant(plan["collection_window_start"])
     end = parse_instant(plan["collection_window_end"])
     observed_at = datetime.now(timezone.utc)
-    base = f"sources/{issue_id}/collectors/github-releases"
+    base = run_base(issue_id, "github-releases", observed_at)
     outputs: list[dict[str, Any]] = []
     summary: dict[str, Any] = {
-        "schema_version": "1.0",
-        "issue_id": issue_id,
-        "collector": "github-releases",
-        "collection_window_start": iso_utc(start),
-        "collection_window_end": iso_utc(end),
-        "repositories": [],
-        "matching_releases": [],
-        "errors": [],
+        "schema_version": "1.0", "issue_id": issue_id, "collector": "github-releases",
+        "observed_at": iso_utc(observed_at), "collection_window_start": iso_utc(start),
+        "collection_window_end": iso_utc(end), "repositories": [], "matching_releases": [], "errors": [],
     }
     gh_cfg = cfg["github_releases"]
     token = os.environ.get("GITHUB_TOKEN")
@@ -240,20 +228,12 @@ def run_github_releases(plan: dict[str, Any], cfg: dict[str, Any], output_root: 
         slug = safe_id(repo.replace("/", "__"))
         params = urllib.parse.urlencode({"per_page": int(gh_cfg.get("per_page", 100))})
         url = f"https://api.github.com/repos/{repo}/releases?{params}"
-        headers = {
-            "Accept": "application/vnd.github+json",
-            "X-GitHub-Api-Version": gh_cfg.get("api_version", "2026-03-10"),
-        }
+        headers = {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": gh_cfg.get("api_version", "2026-03-10")}
         if token:
             headers["Authorization"] = f"Bearer {token}"
         raw_path = f"{base}/raw/{slug}.json"
         try:
-            data, http_meta = http_get(
-                url,
-                user_agent=cfg["user_agent"],
-                timeout=int(cfg.get("http_timeout_seconds", 45)),
-                headers=headers,
-            )
+            data, http_meta = http_get(url, user_agent=cfg["user_agent"], timeout=int(cfg.get("http_timeout_seconds", 45)), headers=headers)
             outputs.append(save_bytes(output_root, raw_path, data))
             releases = json.loads(data.decode("utf-8"))
             if not isinstance(releases, list):
@@ -265,27 +245,18 @@ def run_github_releases(plan: dict[str, Any], cfg: dict[str, Any], output_root: 
                 timestamp = release.get("published_at") or release.get("created_at")
                 if in_window(timestamp, start, end):
                     item = {
-                        "repository": repo,
-                        "id": release.get("id"),
-                        "tag_name": release.get("tag_name"),
-                        "name": release.get("name"),
-                        "html_url": release.get("html_url"),
-                        "created_at": release.get("created_at"),
-                        "published_at": release.get("published_at"),
+                        "repository": repo, "id": release.get("id"), "tag_name": release.get("tag_name"),
+                        "name": release.get("name"), "html_url": release.get("html_url"),
+                        "created_at": release.get("created_at"), "published_at": release.get("published_at"),
                         "prerelease": bool(release.get("prerelease")),
                     }
                     matches.append(item)
                     summary["matching_releases"].append(item)
             successes += 1
-            summary["repositories"].append(
-                {
-                    "repository": repo,
-                    "request": http_meta,
-                    "raw_path": raw_path,
-                    "returned_release_count": len(releases),
-                    "window_match_count": len(matches),
-                }
-            )
+            summary["repositories"].append({
+                "repository": repo, "request": http_meta, "raw_path": raw_path,
+                "returned_release_count": len(releases), "window_match_count": len(matches)
+            })
         except Exception as exc:
             summary["errors"].append({"repository": repo, "url": url, "error": repr(exc)})
 
@@ -295,14 +266,8 @@ def run_github_releases(plan: dict[str, Any], cfg: dict[str, Any], output_root: 
     total = len(gh_cfg.get("repositories", []))
     status = "success" if successes == total else ("partial" if successes else "failed")
     run = collector_run(
-        issue_id=issue_id,
-        stage="github-discovery",
-        collector_id="github-releases",
-        provider="GitHub REST API",
-        observed_at=observed_at,
-        plan=plan,
-        outputs=outputs,
-        status=status,
+        issue_id=issue_id, stage="github-discovery", collector_id="github-releases", provider="GitHub REST API",
+        observed_at=observed_at, plan=plan, outputs=outputs, status=status,
         tool_access=["GitHub REST Releases API"],
         notes=["The configured repository watchlist is intentionally curated and is not a complete search of GitHub."],
     )
@@ -313,15 +278,11 @@ def run_github_releases(plan: dict[str, Any], cfg: dict[str, Any], output_root: 
 def run_official_pages(plan: dict[str, Any], cfg: dict[str, Any], output_root: Path) -> dict[str, Any]:
     issue_id = plan["issue_id"]
     observed_at = datetime.now(timezone.utc)
-    base = f"sources/{issue_id}/collectors/official-pages"
+    base = run_base(issue_id, "official-pages", observed_at)
     outputs: list[dict[str, Any]] = []
     summary: dict[str, Any] = {
-        "schema_version": "1.0",
-        "issue_id": issue_id,
-        "collector": "official-pages",
-        "observed_at": iso_utc(observed_at),
-        "pages": [],
-        "errors": [],
+        "schema_version": "1.0", "issue_id": issue_id, "collector": "official-pages",
+        "observed_at": iso_utc(observed_at), "pages": [], "errors": [],
     }
     pages = cfg["official_pages"].get("pages", [])
     successes = 0
@@ -329,23 +290,13 @@ def run_official_pages(plan: dict[str, Any], cfg: dict[str, Any], output_root: P
         page_id = safe_id(item["id"])
         raw_path = f"{base}/raw/{page_id}.html"
         try:
-            data, http_meta = http_get(
-                item["url"],
-                user_agent=cfg["user_agent"],
-                timeout=int(cfg.get("http_timeout_seconds", 45)),
-            )
+            data, http_meta = http_get(item["url"], user_agent=cfg["user_agent"], timeout=int(cfg.get("http_timeout_seconds", 45)))
             outputs.append(save_bytes(output_root, raw_path, data))
             successes += 1
-            summary["pages"].append(
-                {
-                    "id": item["id"],
-                    "url": item["url"],
-                    "request": http_meta,
-                    "raw_path": raw_path,
-                    "sha256": sha256_bytes(data),
-                    "bytes": len(data),
-                }
-            )
+            summary["pages"].append({
+                "id": item["id"], "url": item["url"], "request": http_meta, "raw_path": raw_path,
+                "sha256": sha256_bytes(data), "bytes": len(data)
+            })
         except Exception as exc:
             summary["errors"].append({"id": item["id"], "url": item["url"], "error": repr(exc)})
 
@@ -354,55 +305,30 @@ def run_official_pages(plan: dict[str, Any], cfg: dict[str, Any], output_root: P
     total = len(pages)
     status = "success" if successes == total else ("partial" if successes else "failed")
     run = collector_run(
-        issue_id=issue_id,
-        stage="official-source-discovery",
-        collector_id="official-pages",
-        provider="Official publisher websites",
-        observed_at=observed_at,
-        plan=plan,
-        outputs=outputs,
-        status=status,
+        issue_id=issue_id, stage="official-source-discovery", collector_id="official-pages", provider="Official publisher websites",
+        observed_at=observed_at, plan=plan, outputs=outputs, status=status,
         tool_access=["HTTPS GET configured official news/blog index pages"],
         notes=[
             "This collector records deterministic snapshots of configured official index pages; it is not a complete web-discovery system.",
-            "HTML snapshots are Raw observations. Technical claims still require candidate-specific primary-source verification."
+            "HTML snapshots are Raw observations. Technical claims still require candidate-specific primary-source verification.",
         ],
     )
     write_json(output_root / f"{base}/collector-run.json", run)
     return run
 
 
-def collector_run(
-    *,
-    issue_id: str,
-    stage: str,
-    collector_id: str,
-    provider: str,
-    observed_at: datetime,
-    plan: dict[str, Any],
-    outputs: list[dict[str, Any]],
-    status: str,
-    tool_access: list[str],
-    notes: list[str],
-) -> dict[str, Any]:
-    stamp = observed_at.strftime("%Y%m%dT%H%M%SZ")
+def collector_run(*, issue_id: str, stage: str, collector_id: str, provider: str, observed_at: datetime,
+                  plan: dict[str, Any], outputs: list[dict[str, Any]], status: str,
+                  tool_access: list[str], notes: list[str]) -> dict[str, Any]:
+    stamp = run_stamp(observed_at)
     return {
         "schema_version": "1.0",
         "issue_id": issue_id,
         "run_id": f"{collector_id}-{issue_id}-{stamp}",
         "stage": stage,
-        "collector": {
-            "id": collector_id,
-            "provider": provider,
-            "model": None,
-            "prompt_id": None,
-            "prompt_version": None,
-            "prompt_hash": None,
-        },
+        "collector": {"id": collector_id, "provider": provider, "model": None, "prompt_id": None, "prompt_version": None, "prompt_hash": None},
         "time": {
-            "started_at": None,
-            "completed_at": iso_utc(observed_at),
-            "observed_at": iso_utc(observed_at),
+            "started_at": None, "completed_at": iso_utc(observed_at), "observed_at": iso_utc(observed_at),
             "collection_window_start": plan.get("collection_window_start"),
             "collection_window_end": plan.get("collection_window_end"),
             "editorial_cutoff": plan["editorial_cutoff"],
@@ -416,9 +342,7 @@ def collector_run(
 
 
 def selected_collectors(value: str) -> list[str]:
-    if value == "all":
-        return ["arxiv", "github", "official"]
-    return [value]
+    return ["arxiv", "github", "official"] if value == "all" else [value]
 
 
 def main() -> int:
