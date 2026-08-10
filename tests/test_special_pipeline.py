@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import tempfile
 import unittest
 from pathlib import Path
 
@@ -31,7 +30,7 @@ class SpecialPipelineTests(unittest.TestCase):
                 "why_this_special_required": True,
                 "primary_sources_required": True,
             },
-            "page_budget": {"target": 24, "max": 36},
+            "page_budget": {"target": 32, "max": 40},
             "paths": {
                 "survey_root": "surveys/special/2026-M07",
                 "source_root": "sources/SP-2026-M07",
@@ -70,13 +69,32 @@ class SpecialPipelineTests(unittest.TestCase):
         plan = special_pipeline.historical_plan(config)
         monthly = [x for x in plan["planned_period_specials"] if x["tier"] == "MONTHLY"]
         half_year = [x for x in plan["planned_period_specials"] if x["tier"] == "HALF_YEAR"]
-        self.assertEqual(monthly[0]["special_slug"], "2025-M08")
-        self.assertEqual(monthly[-1]["special_slug"], "2026-M07")
-        self.assertEqual(len(monthly), 12)
-        self.assertEqual(half_year[0]["start"], "2022-11-01T00:00:00Z")
-        self.assertEqual(half_year[-1]["start"], "2025-05-01T00:00:00Z")
-        self.assertEqual(half_year[-1]["end"], "2025-07-31T23:59:59Z")
-        self.assertEqual(plan["annual_before"], "2022-11-01")
+        annual = [x for x in plan["planned_period_specials"] if x["tier"] == "ANNUAL"]
+
+        self.assertEqual([x["special_slug"] for x in monthly], [
+            "2026-M01", "2026-M02", "2026-M03", "2026-M04", "2026-M05", "2026-M06", "2026-M07"
+        ])
+        self.assertEqual([x["special_slug"] for x in half_year], [
+            "2024-H1", "2024-H2", "2025-H1", "2025-H2"
+        ])
+        self.assertEqual([x["special_slug"] for x in annual], [
+            "2020-Y", "2021-Y", "2022-Y", "2023-Y"
+        ])
+        self.assertEqual(half_year[0]["start"], "2024-01-01T00:00:00Z")
+        self.assertEqual(half_year[-1]["end"], "2025-12-31T23:59:59Z")
+        self.assertEqual(monthly[0]["start"], "2026-01-01T00:00:00Z")
+        self.assertEqual(monthly[-1]["end"], "2026-07-31T23:59:59Z")
+        self.assertEqual(plan["deferred_history"]["before"], "2020-01-01")
+        self.assertEqual(plan["deferred_history"]["status"], "DEFERRED")
+
+    def test_historical_plan_has_no_overlaps(self) -> None:
+        config = json.loads(Path("config/special-pipeline.json").read_text(encoding="utf-8"))
+        periods = special_pipeline.historical_plan(config)["planned_period_specials"]
+        for previous, current in zip(periods, periods[1:]):
+            self.assertLess(
+                special_pipeline.parse_instant(previous["end"]),
+                special_pipeline.parse_instant(current["start"]),
+            )
 
     def test_manifest_rejects_source_path_aliasing(self) -> None:
         manifest = self.manifest()
