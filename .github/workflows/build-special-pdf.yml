@@ -42,34 +42,45 @@ jobs:
           ref: ${{ steps.edition.outputs.work_branch }}
           path: worktree
           fetch-depth: 0
-      - name: Verify PDF build boundary
+      - name: Resolve and verify state-pinned PDF source
+        id: source
         shell: bash
         env:
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
-          SPECIAL_SLUG: ${{ inputs.special_slug }}
         run: |
           set -euo pipefail
-          python - "$SPECIAL_ID" "$SPECIAL_SLUG" <<'PY'
-          import json,sys,pathlib
-          issue,slug=sys.argv[1:]
+          python - "$SPECIAL_ID" >> "$GITHUB_OUTPUT" <<'PY'
+          import hashlib,json,sys,pathlib
+          issue=sys.argv[1]
           root=pathlib.Path('worktree')
           state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
           assert state['lifecycle_state']=='VALIDATED_DRAFT', state['lifecycle_state']
           assert state['gates']['claim_and_chronology_validation']=='passed'
           assert state['gates']['latex_build']=='pending'
-          source=root/'surveys'/'special'/slug/'source-manifest.json'
-          assert source.is_file()
-          assert (root/'surveys'/'special'/slug/'main.tex').is_file()
+          prov=state['provenance']['validated_issue_source']
+          manifest=root/prov['path']
+          assert manifest.is_file(), manifest
+          digest=hashlib.sha256(manifest.read_bytes()).hexdigest()
+          assert digest==prov['sha256'], (digest,prov['sha256'])
+          data=json.load(open(manifest,encoding='utf-8'))
+          source_dir=manifest.parent
+          main=source_dir/data['main_tex']['path']
+          assert main.is_file(), main
+          print(f"source_manifest={manifest.as_posix()}")
+          print(f"source_manifest_sha256={digest}")
+          print(f"source_dir={source_dir.as_posix()}")
+          print(f"source_version={data.get('source_version','v0.1')}")
           PY
-      - name: Pin current main survey style as build input
+      - name: Pin current main survey style into ephemeral source directory
         id: build_style
         shell: bash
+        env:
+          SOURCE_DIR: ${{ steps.source.outputs.source_dir }}
         run: |
           set -euo pipefail
           source_style="control-src/templates/survey/jgaisurvey.sty"
-          target_style="worktree/templates/survey/jgaisurvey.sty"
+          target_style="${SOURCE_DIR}/jgaisurvey.sty"
           test -s "$source_style"
-          mkdir -p "$(dirname "$target_style")"
           cp "$source_style" "$target_style"
           control_commit=$(git -C control-src rev-parse HEAD)
           style_sha=$(sha256sum "$source_style" | awk '{print $1}')
@@ -84,7 +95,7 @@ jobs:
         uses: xu-cheng/latex-action@v4
         with:
           root_file: main.tex
-          working_directory: worktree/surveys/special/${{ inputs.special_slug }}
+          working_directory: ${{ steps.source.outputs.source_dir }}
           texlive_version: 2026
           latexmk_use_lualatex: true
       - name: Analyze final TeX log and page count
@@ -93,13 +104,16 @@ jobs:
         env:
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
           SPECIAL_SLUG: ${{ inputs.special_slug }}
+          SOURCE_DIR: ${{ steps.source.outputs.source_dir }}
+          SOURCE_MANIFEST: ${{ steps.source.outputs.source_manifest }}
+          SOURCE_MANIFEST_SHA256: ${{ steps.source.outputs.source_manifest_sha256 }}
+          SOURCE_VERSION: ${{ steps.source.outputs.source_version }}
           CONTROL_COMMIT: ${{ steps.build_style.outputs.control_commit }}
           STYLE_SHA256: ${{ steps.build_style.outputs.style_sha256 }}
         run: |
           set -euo pipefail
-          dir="worktree/surveys/special/${SPECIAL_SLUG}"
-          pdf="$dir/main.pdf"
-          log="$dir/main.log"
+          pdf="$SOURCE_DIR/main.pdf"
+          log="$SOURCE_DIR/main.log"
           test -s "$pdf" && test -s "$log"
           bad=$(grep -E -n 'LaTeX Warning: (There were undefined references|Citation .* undefined)|Package biblatex Warning: Please (re)?run|Overfull \\hbox|Underfull \\hbox|Missing character:' "$log" || true)
           pages=$(python - "$log" <<'PY'
@@ -112,19 +126,19 @@ jobs:
           )
           digest=$(sha256sum "$pdf" | awk '{print $1}')
           if [ -z "$bad" ]; then clean=true; else clean=false; fi
-          python - "$SPECIAL_ID" "$SPECIAL_SLUG" "$pages" "$digest" "$clean" "$bad" "$CONTROL_COMMIT" "$STYLE_SHA256" <<'PY'
+          python - "$SPECIAL_ID" "$SPECIAL_SLUG" "$pages" "$digest" "$clean" "$bad" "$CONTROL_COMMIT" "$STYLE_SHA256" "$SOURCE_MANIFEST" "$SOURCE_MANIFEST_SHA256" "$SOURCE_VERSION" <<'PY'
           import json,sys
-          issue,slug,pages,digest,clean,bad,control_commit,style_sha=sys.argv[1:]
+          issue,slug,pages,digest,clean,bad,control_commit,style_sha,source_manifest,source_sha,source_version=sys.argv[1:]
           out={'schema_version':'1.0','issue_id':issue,'special_slug':slug,
+               'source_version':source_version,'source_manifest_path':source_manifest,
+               'source_manifest_sha256':source_sha,
                'page_count':int(pages),'pdf_sha256':digest,'log_clean':clean=='true',
                'log_gate_findings':bad.splitlines() if bad else [],
                'page_target_min':32,'page_target_max':40,
                'build_style':{
-                   'source_ref':'main',
-                   'control_commit_sha':control_commit,
-                   'path':'templates/survey/jgaisurvey.sty',
-                   'sha256':style_sha,
-                   'application':'copied byte-for-byte over worktree shared style only in ephemeral build checkout'
+                   'source_ref':'main','control_commit_sha':control_commit,
+                   'path':'templates/survey/jgaisurvey.sty','sha256':style_sha,
+                   'application':'copied byte-for-byte into ephemeral state-pinned source directory'
                }}
           open('special-pdf-build-audit.json','w',encoding='utf-8').write(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
           print(json.dumps(out,ensure_ascii=False,indent=2))
@@ -136,10 +150,10 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: japanese-generative-ai-survey-special-${{ inputs.special_slug }}
+          name: japanese-generative-ai-survey-special-${{ inputs.special_slug }}-${{ steps.source.outputs.source_version }}
           path: |
-            worktree/surveys/special/${{ inputs.special_slug }}/main.pdf
-            worktree/surveys/special/${{ inputs.special_slug }}/main.log
+            ${{ steps.source.outputs.source_dir }}/main.pdf
+            ${{ steps.source.outputs.source_dir }}/main.log
             special-pdf-build-audit.json
           if-no-files-found: error
           retention-days: 14
@@ -164,28 +178,25 @@ jobs:
           RUN_ID: ${{ github.run_id }}
           CONTROL_COMMIT: ${{ steps.build_style.outputs.control_commit }}
           STYLE_SHA256: ${{ steps.build_style.outputs.style_sha256 }}
+          SOURCE_MANIFEST: ${{ steps.source.outputs.source_manifest }}
+          SOURCE_MANIFEST_SHA256: ${{ steps.source.outputs.source_manifest_sha256 }}
+          SOURCE_VERSION: ${{ steps.source.outputs.source_version }}
         run: |
           set -euo pipefail
-          python - "$SPECIAL_ID" "$PAGE_COUNT" "$PDF_SHA256" "$RUN_ID" "$CONTROL_COMMIT" "$STYLE_SHA256" <<'PY'
-          import json,sys,hashlib,pathlib
-          issue,pages,pdf_sha,run_id,control_commit,style_sha=sys.argv[1:]
+          python - "$SPECIAL_ID" "$PAGE_COUNT" "$PDF_SHA256" "$RUN_ID" "$CONTROL_COMMIT" "$STYLE_SHA256" "$SOURCE_MANIFEST" "$SOURCE_MANIFEST_SHA256" "$SOURCE_VERSION" <<'PY'
+          import json,sys,pathlib
+          issue,pages,pdf_sha,run_id,control_commit,style_sha,source_manifest,source_sha,source_version=sys.argv[1:]
           path=pathlib.Path('sources')/issue/'pipeline-state.json'
           state=json.load(open(path,encoding='utf-8'))
           assert state['lifecycle_state']=='VALIDATED_DRAFT'
           state['lifecycle_state']='RELEASE_CANDIDATE'
           state['gates']['latex_build']='passed'
-          source_path=pathlib.Path(state['provenance']['validated_issue_source']['path'])
           state.setdefault('provenance',{})['latex_build']={
-              'workflow_run_id':int(run_id),
-              'pdf_sha256':pdf_sha,
-              'page_count':int(pages),
-              'validated_issue_source_path':source_path.as_posix(),
-              'validated_issue_source_sha256':hashlib.sha256(source_path.read_bytes()).hexdigest(),
-              'build_style':{
-                  'control_commit_sha':control_commit,
-                  'path':'templates/survey/jgaisurvey.sty',
-                  'sha256':style_sha,
-              },
+              'workflow_run_id':int(run_id),'pdf_sha256':pdf_sha,'page_count':int(pages),
+              'source_version':source_version,
+              'validated_issue_source_path':source_manifest,
+              'validated_issue_source_sha256':source_sha,
+              'build_style':{'control_commit_sha':control_commit,'path':'templates/survey/jgaisurvey.sty','sha256':style_sha},
           }
           path.write_text(json.dumps(state,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           PY
