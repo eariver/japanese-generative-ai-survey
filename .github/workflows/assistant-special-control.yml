@@ -1,0 +1,66 @@
+name: Assistant Special workflow control
+
+on:
+  push:
+    branches: [automation-control]
+    paths: ['automation/special-request.json']
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: assistant-special-workflow-control
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: automation-control
+          fetch-depth: 1
+      - name: Validate and dispatch allowlisted Special workflow
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os, pathlib, urllib.request, datetime as dt
+          p=pathlib.Path('automation/special-request.json')
+          r=json.loads(p.read_text(encoding='utf-8'))
+          if r.get('schema_version')!='1.0': raise SystemExit('unsupported schema_version')
+          if r.get('workflow')!='import-reviewed-special-source-intake': raise SystemExit('workflow is not allowlisted')
+          if r.get('ref','main')!='main': raise SystemExit('only main ref may be dispatched')
+          inputs=r.get('inputs') or {}
+          if set(inputs)!={'special_slug','source_run_id','review_reference'}: raise SystemExit('unexpected Special import inputs')
+          if not all(str(inputs[k]).strip() for k in inputs): raise SystemExit('all inputs are required')
+          payload=json.dumps({'ref':'main','inputs':{k:str(v) for k,v in inputs.items()}}).encode()
+          req=urllib.request.Request(
+              f"https://api.github.com/repos/{os.environ['REPOSITORY']}/actions/workflows/import-reviewed-special-source-intake.yml/dispatches",
+              data=payload, method='POST', headers={
+                  'Accept':'application/vnd.github+json','Authorization':f"Bearer {os.environ['GH_TOKEN']}",
+                  'X-GitHub-Api-Version':'2026-03-10','Content-Type':'application/json','User-Agent':'survey-special-control'})
+          with urllib.request.urlopen(req,timeout=30) as response:
+              body=response.read(); status=response.status
+          if status not in (200,204): raise SystemExit(f'dispatch failed: HTTP {status}')
+          data=json.loads(body.decode()) if body else {}
+          out={'schema_version':'1.0','nonce':r.get('nonce'),'workflow':r['workflow'],'inputs':inputs,
+               'dispatched_at':dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds'),
+               'http_status':status,'workflow_run_id':data.get('workflow_run_id'),'html_url':data.get('html_url')}
+          pathlib.Path('automation/special-last-result.json').write_text(json.dumps(out,indent=2)+'\n')
+          print(json.dumps(out,indent=2))
+          PY
+      - name: Persist result
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add automation/special-last-result.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Record assistant Special workflow dispatch'
+          git push origin HEAD:automation-control
