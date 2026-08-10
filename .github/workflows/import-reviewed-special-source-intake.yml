@@ -35,11 +35,9 @@ jobs:
           ref: main
           path: control-src
           fetch-depth: 1
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
       - name: Resolve exact Special edition identity
         id: edition
         shell: bash
@@ -47,7 +45,7 @@ jobs:
           SPECIAL_SLUG: ${{ inputs.special_slug }}
         run: |
           set -euo pipefail
-          if ! [[ "$SPECIAL_SLUG" =~ ^[a-z0-9][a-z0-9._-]{2,63}$ ]]; then
+          if ! [[ "$SPECIAL_SLUG" =~ ^[A-Za-z0-9][A-Za-z0-9._-]{2,63}$ ]]; then
             echo '::error::invalid Special slug'
             exit 2
           fi
@@ -58,7 +56,6 @@ jobs:
           work_branch="$(python -c "import json; print(json.load(open('$manifest'))['paths']['work_branch'])")"
           echo "special_id=$special_id" >> "$GITHUB_OUTPUT"
           echo "work_branch=$work_branch" >> "$GITHUB_OUTPUT"
-
       - name: Resolve and verify source Actions artifact
         id: source
         shell: bash
@@ -74,41 +71,28 @@ jobs:
           gh api "repos/${REPOSITORY}/actions/runs/${SOURCE_RUN_ID}" > source-run.json
           gh api "repos/${REPOSITORY}/actions/runs/${SOURCE_RUN_ID}/artifacts?per_page=100" > source-artifacts.json
           python control-src/scripts/resolve_special_source_intake_artifact.py \
-            --run-json source-run.json \
-            --artifacts-json source-artifacts.json \
-            --repository "$REPOSITORY" \
-            --special-id "$SPECIAL_ID" \
-            --special-slug "$SPECIAL_SLUG" \
-            --source-run-id "$SOURCE_RUN_ID" \
-            --output source-artifact.json \
-            --github-output "$GITHUB_OUTPUT"
-
+            --run-json source-run.json --artifacts-json source-artifacts.json \
+            --repository "$REPOSITORY" --special-id "$SPECIAL_ID" --special-slug "$SPECIAL_SLUG" \
+            --source-run-id "$SOURCE_RUN_ID" --output source-artifact.json --github-output "$GITHUB_OUTPUT"
       - name: Require canonical Special work branch
         shell: bash
         env:
           WORK_BRANCH: ${{ steps.edition.outputs.work_branch }}
         run: |
           set -euo pipefail
-          if ! git -C control-src ls-remote --exit-code --heads origin "refs/heads/${WORK_BRANCH}" >/dev/null 2>&1; then
-            echo "::error::Special work branch ${WORK_BRANCH} does not exist"
-            exit 1
-          fi
-
+          git -C control-src ls-remote --exit-code --heads origin "refs/heads/${WORK_BRANCH}" >/dev/null || {
+            echo "::error::Special work branch ${WORK_BRANCH} does not exist"; exit 1; }
       - name: Checkout Special work branch
         uses: actions/checkout@v6
         with:
           ref: ${{ steps.edition.outputs.work_branch }}
           path: worktree
           fetch-depth: 0
-
-      - name: Refuse import into divergent/stale edition definition
+      - name: Refuse import into divergent edition definition
         shell: bash
         env:
           SPECIAL_SLUG: ${{ inputs.special_slug }}
-        run: |
-          set -euo pipefail
-          cmp "control-src/specials/${SPECIAL_SLUG}/edition.json" "worktree/specials/${SPECIAL_SLUG}/edition.json"
-
+        run: cmp "control-src/specials/${SPECIAL_SLUG}/edition.json" "worktree/specials/${SPECIAL_SLUG}/edition.json"
       - name: Download exact reviewed artifact
         shell: bash
         env:
@@ -122,7 +106,6 @@ jobs:
           gh run download "$SOURCE_RUN_ID" --repo "$REPOSITORY" --name "$ARTIFACT_NAME" --dir artifact-download
           test -s artifact-download/special-source-intake/source-intake-report.json
           test -s artifact-download/special-source-intake-control/plan.json
-
       - name: Accept reviewed collector bytes and Special discovery state
         shell: bash
         env:
@@ -135,16 +118,9 @@ jobs:
         run: |
           set -euo pipefail
           python control-src/scripts/accept_special_source_intake_artifact.py \
-            --artifact-root artifact-download \
-            --repo-root worktree \
-            --special-slug "$SPECIAL_SLUG" \
-            --workflow-run-id "$SOURCE_RUN_ID" \
-            --artifact-id "$ARTIFACT_ID" \
-            --artifact-name "$ARTIFACT_NAME" \
-            --artifact-digest "$ARTIFACT_DIGEST" \
-            --review-reference "$REVIEW_REFERENCE" \
-            --report import-result.json
-
+            --artifact-root artifact-download --repo-root worktree --special-slug "$SPECIAL_SLUG" \
+            --workflow-run-id "$SOURCE_RUN_ID" --artifact-id "$ARTIFACT_ID" --artifact-name "$ARTIFACT_NAME" \
+            --artifact-digest "$ARTIFACT_DIGEST" --review-reference "$REVIEW_REFERENCE" --report import-result.json
       - name: Update and verify Raw provenance
         shell: bash
         env:
@@ -153,14 +129,12 @@ jobs:
           set -euo pipefail
           python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id "$SPECIAL_ID" --report raw-update-report.json update
           python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id "$SPECIAL_ID" --report raw-check-report.json check
-
       - name: Commit accepted source intake
         id: commit
         working-directory: worktree
         shell: bash
         env:
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
-          SPECIAL_SLUG: ${{ inputs.special_slug }}
           SOURCE_RUN_ID: ${{ inputs.source_run_id }}
           WORK_BRANCH: ${{ steps.edition.outputs.work_branch }}
         run: |
@@ -177,30 +151,24 @@ jobs:
           git push origin "HEAD:${WORK_BRANCH}"
           echo 'committed=true' >> "$GITHUB_OUTPUT"
           echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-
       - name: Create or refresh Draft Special PR
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
-          SPECIAL_SLUG: ${{ inputs.special_slug }}
           WORK_BRANCH: ${{ steps.edition.outputs.work_branch }}
         run: |
           set -euo pipefail
-          number="$(gh pr list --repo "$REPOSITORY" --head "$WORK_BRANCH" --base main --state open --json number,isDraft --jq '.[0].number // empty')"
+          number="$(gh pr list --repo "$REPOSITORY" --head "$WORK_BRANCH" --base main --state open --json number --jq '.[0].number // empty')"
           if [ -z "$number" ]; then
             gh pr create --repo "$REPOSITORY" --base main --head "$WORK_BRANCH" --draft \
               --title "Special ${SPECIAL_ID} — reviewed editorial work" \
               --body "Auditable work surface for ${SPECIAL_ID}. Candidate Selection, Issue Architecture, visual review, Freeze, merge, and public Release remain explicit human gates."
           else
             is_draft="$(gh pr view "$number" --repo "$REPOSITORY" --json isDraft --jq '.isDraft')"
-            if [ "$is_draft" != 'true' ]; then
-              echo "::error::Existing Special PR #${number} is no longer Draft; automation will not modify it."
-              exit 1
-            fi
+            [ "$is_draft" = 'true' ] || { echo "::error::Existing Special PR #${number} is non-Draft"; exit 1; }
           fi
-
       - name: Upload import audit reports
         uses: actions/upload-artifact@v7
         with:
