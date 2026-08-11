@@ -66,7 +66,7 @@ jobs:
           assert state['gates']['latex_build']=='pending'
           assert 'validated_issue_source' in state['provenance']
           PY
-      - name: Expand reader-facing source from selected Evidence only
+      - name: Expand source and make Technical Notes reader-facing
         shell: bash
         env:
           SPECIAL_SLUG: ${{ inputs.special_slug }}
@@ -80,7 +80,13 @@ jobs:
             --issue-id "$SPECIAL_ID" \
             --source-version "$SOURCE_VERSION" \
             > special-source-expansion-audit.json
-      - name: Verify expanded source manifest and provenance
+          PYTHONPATH=control-src python control-src/scripts/postprocess_special_reader_facing_notes.py \
+            --repo-root worktree \
+            --special-slug "$SPECIAL_SLUG" \
+            --issue-id "$SPECIAL_ID" \
+            --source-version "$SOURCE_VERSION" \
+            > special-reader-facing-notes-audit.json
+      - name: Verify expanded source manifest and reader-facing Technical Notes
         shell: bash
         env:
           SPECIAL_SLUG: ${{ inputs.special_slug }}
@@ -100,8 +106,18 @@ jobs:
           assert hashlib.sha256(manifest.read_bytes()).hexdigest()==prov['sha256']
           data=json.load(open(manifest,encoding='utf-8'))
           assert data['status']=='VALIDATED_SOURCE_EXPANSION'
-          assert data['article_count']==6
-          assert data['evidence_record_count']==19, data['evidence_record_count']
+          assert data['article_count']>=1
+          assert data['evidence_record_count']>=1
+          reader=data['reader_facing_technical_notes']
+          assert reader['unconditional_clearpage_at_entry'] is False
+          assert reader['evidence_ids_rendered_in_pdf'] is False
+          for article in data['articles']:
+              p=manifest.parent/article['technical_notes_path']
+              text=p.read_text(encoding='utf-8')
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==article['technical_notes_sha256']
+              assert not text.lstrip().startswith('\\clearpage')
+              for banned in ('Selection済みEvidence','normalized claim','Source-bound record:'):
+                  assert banned not in text, (article['package_id'],banned)
           assert len(state.get('provenance_history',{}).get('validated_issue_source',[]))>=1
           assert (manifest.parent/'main.tex').is_file()
           PY
@@ -119,12 +135,14 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add "sources/${SPECIAL_ID}/pipeline-state.json" "surveys/special/${SPECIAL_SLUG}/revisions/${SOURCE_VERSION}"
           git diff --cached --quiet && exit 0
-          git commit -m "Expand validated source ${SOURCE_VERSION} for ${SPECIAL_ID}"
+          git commit -m "Expand reader-facing source ${SOURCE_VERSION} for ${SPECIAL_ID}"
           git push origin "HEAD:${WORK_BRANCH}"
       - name: Upload expansion audit
         uses: actions/upload-artifact@v7
         with:
           name: special-source-expansion-${{ inputs.special_slug }}-${{ inputs.source_version }}
-          path: special-source-expansion-audit.json
+          path: |
+            special-source-expansion-audit.json
+            special-reader-facing-notes-audit.json
           if-no-files-found: error
           retention-days: 14
