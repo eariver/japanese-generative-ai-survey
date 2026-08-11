@@ -2,9 +2,10 @@
 """Execute mixed-layout Special revision with reader-facing text normalization.
 
 Editorial synthesis artifacts may retain review-context wording for provenance. This
-runner removes only known internal-review references before rendering, then delegates
-all validation, Evidence binding, source copying, and state transitions to the
-canonical mixed-layout revision builder.
+runner removes only known internal-review references before rendering, normalizes
+legacy JSON-style boolean names used by the revision builder, then delegates all
+validation, Evidence binding, source copying, and state transitions to the canonical
+mixed-layout revision builder.
 """
 
 from __future__ import annotations
@@ -12,6 +13,14 @@ from __future__ import annotations
 import re
 
 from scripts import revise_special_mixed_layout as revision
+
+# The initial mixed-layout builder accidentally used JSON-style boolean literals in
+# Python dictionary expressions. They are looked up as module globals only when the
+# build function executes, so bind them explicitly here until the canonical builder
+# is mechanically rewritten. This keeps the failed run non-mutating and makes the
+# execution path deterministic.
+revision.false = False
+revision.true = True
 
 
 def reader_normalize(text: str) -> str:
