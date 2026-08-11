@@ -1,0 +1,95 @@
+\documentclass[lualatex,a4paper,11pt]{jlreq}
+\usepackage{jgaisurvey}
+\usepackage{multicol}
+\usepackage{needspace}
+\addbibresource{references.bib}
+
+% Special-local long-form presentation. Shared weekly source remains unchanged.
+\geometry{margin=22mm,headsep=5mm,footskip=10mm}
+\setlength{\headheight}{14.5pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1em}
+\newtcolorbox{technicalnote}[2]{
+  enhanced,breakable,colback=SurveySoft,colframe=SurveyAccent,
+  boxrule=0.65pt,arc=1mm,title={#1 \hfill \footnotesize #2},fonttitle=\bfseries,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=4mm,after skip=3mm
+}
+
+\surveysetup
+  {SP-2026-M05}
+  {Japanese Generative AI Technical Survey}
+  {Special / Coverage 2026-05-01 -- 2026-05-31 / Retrospective as of 2026-08-11}
+  {Coverage window: 2026-05-01 -- 2026-05-31 UTC}
+\surveyeditiondescriptor{Retrospective Survey}
+\surveycoverstory
+  {2026年5月 — Agentは実行環境を持ち始めた}
+  {GPT-5.5 InstantやClaude Opus 4.8などのモデル更新と並行して、sandbox、CLI／MCP、serving、memory security、evaluationまで実行系が広がった1か月を振り返る。}
+  {Frontier Models \& Voice — モデル更新が利用面へ広がった5月 \quad / \quad Agents \& Runtime — Codexを安全に長く動かす実行環境}
+
+\setlength{\columnsep}{6mm}
+\setlength{\multicolsep}{0.8em plus 0.2em minus 0.1em}
+
+\begin{document}
+\surveycover
+\clearpage
+\input{sections/00-frontmatter}
+
+\clearpage
+\section{Frontier Models \& Voice — 5月、モデル更新は「使い方」の更新へ広がった}
+\label{pkg:frontier-models-may}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/frontier-models-may}
+\end{multicols}
+\input{technical-notes/10-frontier-models-may-notes}
+
+\clearpage
+\section{Agents \& Runtime — 「賢いAgent」より先に、どこで何を許すか}
+\label{pkg:agents-runtime-may}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/agents-runtime-may}
+\end{multicols}
+\input{technical-notes/20-agents-runtime-may-notes}
+
+\clearpage
+\section{Inference \& Serving — 5月、最適化はcache・MoE・kernel・runtimeをまたいだ}
+\label{pkg:inference-serving-may}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/inference-serving-may}
+\end{multicols}
+\input{technical-notes/30-inference-serving-may-notes}
+
+\clearpage
+\section{Agent Safety \& Security — 攻撃はpromptから記憶とworkspaceへ伸びる}
+\label{pkg:agent-safety-security-may}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/agent-safety-security-may}
+\end{multicols}
+\input{technical-notes/40-agent-safety-security-may-notes}
+
+\clearpage
+\section{Capability \& Evaluation — benchmarkの外で起きた成果をどう読むか}
+\label{pkg:capability-evaluation-may}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/capability-evaluation-may}
+\end{multicols}
+\input{technical-notes/50-capability-evaluation-may-notes}
+
+\clearpage
+\section{Paper Watch — Agentを測る、測定器を疑う、modalの壁を外す}
+\label{pkg:paper-watch-may}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/paper-watch-may}
+\end{multicols}
+\input{technical-notes/60-paper-watch-may-notes}
+
+\clearpage
+\input{final-synthesis/70-retrospective-synthesis}
+\clearpage
+\printbibliography[title={References / Source Notes}]
+\end{document}
