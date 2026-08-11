@@ -1,0 +1,181 @@
+name: Run M06 Theme Synthesis month-label fix once
+
+on:
+  pull_request:
+    types: [synchronize]
+    paths:
+      - 'sources/SP-2026-M06/editorial/v0.9-trigger.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  revise:
+    if: github.event.pull_request.head.ref == 'special/2026-M06-work'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout Special work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2026-M06-work
+          fetch-depth: 0
+
+      - name: Verify v0.8 Human Visual Review boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib, hashlib
+          root=pathlib.Path('.')
+          state=json.load(open(root/'sources/SP-2026-M06/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='RELEASE_CANDIDATE'
+          assert state['gates']['latex_build']=='passed'
+          assert state['gates']['visual_review']=='pending'
+          assert state['gates']['freeze']=='pending'
+          src=state['provenance']['validated_issue_source']
+          assert src['source_version']=='v0.8'
+          assert src['sha256']=='1c4102cd7e56e9c22ab6d1ecc91d1b3390f311b09f162c7f9f6224754703c4c9'
+          build=state['provenance']['latex_build']
+          assert build['pdf_sha256']=='69faa6b5b5fb87cd18ad12c38854957f925cdfeea70a64c681b7efce56b02996'
+          assert build['page_count']==32
+          art=root/'sources/SP-2026-M06/editorial/layout-revision-v0.9.json'
+          assert art.exists()
+          value=json.load(open(art,encoding='utf-8'))
+          assert value['changes']['expected_replacements']==5
+          assert value['changes']['semantic_claims_changed'] is False
+          assert value['constraints']['human_visual_review_remains_pending'] is True
+          PY
+
+      - name: Build v0.9 month-label correction
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import copy, hashlib, json, shutil
+          root=Path('.')
+          issue='SP-2026-M06'; slug='2026-M06'; version='v0.9'
+          state_path=root/'sources'/issue/'pipeline-state.json'
+          state=json.load(open(state_path,encoding='utf-8'))
+          current=copy.deepcopy(state['provenance']['validated_issue_source'])
+          src_dir=root/'surveys/special'/slug/'revisions/v0.8'
+          out=root/'surveys/special'/slug/'revisions'/version
+          assert not out.exists()
+          shutil.copytree(src_dir,out)
+          old='7月の一次資料・論文から読めること'
+          new='6月の一次資料・論文から読めること'
+          changed=[]; total=0
+          for p in sorted((out/'theme-synthesis').glob('*.tex')):
+              text=p.read_text(encoding='utf-8')
+              n=text.count(old)
+              if n:
+                  text=text.replace(old,new)
+                  p.write_text(text,encoding='utf-8')
+                  changed.append(p.relative_to(out).as_posix())
+                  total += n
+          assert total==5, (total, changed)
+          assert len(changed)==5, changed
+          # No stale July-specific comparison label may remain anywhere in reader source.
+          leftovers=[]
+          for p in out.rglob('*'):
+              if p.is_file() and p.suffix in {'.tex','.json','.bib'}:
+                  try: t=p.read_text(encoding='utf-8')
+                  except UnicodeDecodeError: continue
+                  if old in t: leftovers.append(p.relative_to(out).as_posix())
+          assert not leftovers, leftovers
+          def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+          manifest_path=out/'source-manifest.json'
+          manifest=json.load(open(manifest_path,encoding='utf-8'))
+          manifest['source_version']=version
+          manifest['status']='VALIDATED_THEME_MONTH_LABEL_CORRECTION'
+          manifest['derivation']='Reader-label correction of v0.8. Five Theme Synthesis table headers incorrectly retained the July-specific month label. Only those five labels are corrected from July to June; claims, citations, Evidence bindings, chronology, Technical Notes, final synthesis, bibliography, and layout policy remain unchanged.'
+          manifest['basis']=copy.deepcopy(manifest.get('basis') or {})
+          manifest['basis']['previous_source_manifest_path']=current['path']
+          manifest['basis']['previous_source_manifest_sha256']=current['sha256']
+          art=root/'sources'/issue/'editorial'/'layout-revision-v0.9.json'
+          manifest['reader_label_correction']={
+              'artifact_path':art.relative_to(root).as_posix(),
+              'artifact_sha256':sha(art),
+              'from_label':old,
+              'to_label':new,
+              'replacement_count':total,
+              'changed_files':[{'path':p,'sha256':sha(out/p)} for p in changed],
+              'semantic_claims_changed':False,
+              'citations_changed':False,
+              'evidence_changed':False,
+          }
+          # Refresh any manifest entries that directly enumerate changed files.
+          def refresh(obj):
+              if isinstance(obj,dict):
+                  path=obj.get('path')
+                  if isinstance(path,str) and path in changed and 'sha256' in obj:
+                      obj['sha256']=sha(out/path)
+                  for v in obj.values(): refresh(v)
+              elif isinstance(obj,list):
+                  for v in obj: refresh(v)
+          refresh(manifest)
+          manifest_path.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          manifest_sha=sha(manifest_path)
+          hist=state.setdefault('provenance_history',{})
+          hist.setdefault('validated_issue_source',[]).append(current)
+          prev_build=copy.deepcopy(state['provenance'].get('latex_build') or {})
+          if prev_build: hist.setdefault('latex_build',[]).append(prev_build)
+          state['lifecycle_state']='VALIDATED_DRAFT'
+          state['gates']['latex_build']='pending'
+          state['gates']['visual_review']='pending'
+          state['gates']['freeze']='pending'
+          state['provenance']['validated_issue_source']={
+              'path':manifest_path.relative_to(root).as_posix(),
+              'sha256':manifest_sha,
+              'source_version':version,
+              'layout_mode':'balanced-multicol-adaptive-spacing-with-june-chronology-inline-boundary-month-label-corrected',
+              'layout_revision_sha256':sha(art)
+          }
+          state['provenance']['reader_layout_revision']={
+              'source_version':version,
+              'layout_revision_path':art.relative_to(root).as_posix(),
+              'layout_revision_sha256':sha(art),
+              'reason':'Visual preflight found five July-specific Theme Synthesis column labels in the June Special. Correct only those reader-facing month labels before Human Visual Review.'
+          }
+          state['provenance'].pop('latex_build',None)
+          state_path.write_text(json.dumps(state,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps({'source_version':version,'source_manifest_sha256':manifest_sha,'replacements':total,'changed_files':changed},ensure_ascii=False))
+          PY
+
+      - name: Verify v0.9 invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib, hashlib
+          root=pathlib.Path('.')
+          state=json.load(open(root/'sources/SP-2026-M06/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT'
+          assert state['gates']['latex_build']=='pending'
+          assert state['gates']['visual_review']=='pending'
+          assert state['gates']['freeze']=='pending'
+          src=state['provenance']['validated_issue_source']
+          assert src['source_version']=='v0.9'
+          out=root/'surveys/special/2026-M06/revisions/v0.9'
+          manifest=out/'source-manifest.json'
+          assert hashlib.sha256(manifest.read_bytes()).hexdigest()==src['sha256']
+          old='7月の一次資料・論文から読めること'; new='6月の一次資料・論文から読めること'
+          count=0
+          for p in (out/'theme-synthesis').glob('*.tex'):
+              t=p.read_text(encoding='utf-8')
+              assert old not in t
+              count += t.count(new)
+          assert count==5, count
+          PY
+
+      - name: Commit v0.9 and remove run-once wrapper
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm -f .github/workflows/run-m06-theme-month-fix-once.yml
+          rm -f sources/SP-2026-M06/editorial/v0.9-trigger.txt
+          git add -A
+          git commit -m 'Correct June Theme Synthesis month labels for SP-2026-M06'
+          git push origin HEAD:special/2026-M06-work
