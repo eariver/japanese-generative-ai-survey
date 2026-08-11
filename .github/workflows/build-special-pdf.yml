@@ -71,6 +71,20 @@ jobs:
           print(f"source_dir={source_dir.as_posix()}")
           print(f"source_version={data.get('source_version','v0.1')}")
           PY
+      - name: Preflight reader-facing language and period consistency
+        shell: bash
+        env:
+          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+          SPECIAL_SLUG: ${{ inputs.special_slug }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python control-src/scripts/special_reader_notes_ja.py check \
+            --repo-root worktree \
+            --issue-id "$SPECIAL_ID"
+          PYTHONPATH=control-src python control-src/scripts/special_period_consistency.py check \
+            --repo-root worktree \
+            --special-slug "$SPECIAL_SLUG" \
+            --issue-id "$SPECIAL_ID"
       - name: Pin current main survey style into ephemeral source directory
         id: build_style
         shell: bash
