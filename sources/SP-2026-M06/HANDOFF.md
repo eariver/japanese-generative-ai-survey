@@ -71,7 +71,7 @@ The earlier layout findings remain resolved:
 - the final retrospective and cross-chapter synthesis render without isolated boxes or chapter-transition page holes;
 - References begin naturally after the retrospective; the remaining whitespace on the final page is terminal bibliography whitespace, not a forced structural page break.
 
-This is **editorial preflight only**. `visual_review` remains `pending` until the user explicitly approves the rendered v0.9 PDF.
+No remaining issue from the assistant's self-check currently blocks Human Visual Review approval. This is still **editorial preflight only**: `visual_review` remains `pending` until the user explicitly approves the rendered v0.9 PDF.
 
 ## Approved Candidate Selection
 
