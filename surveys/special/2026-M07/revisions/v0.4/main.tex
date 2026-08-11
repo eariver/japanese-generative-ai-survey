@@ -1,0 +1,90 @@
+\documentclass[lualatex,a4paper,11pt]{jlreq}
+\usepackage{jgaisurvey}
+\addbibresource{references.bib}
+
+% Special-local mixed presentation: narrative two-column, synthesis/technical notes full-width. Shared weekly source remains unchanged.
+\geometry{margin=22mm,headsep=5mm,footskip=10mm}
+\setlength{\headheight}{14.5pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1em}
+\newtcolorbox{technicalnote}[2]{
+  enhanced,breakable,colback=SurveySoft,colframe=SurveyAccent,
+  boxrule=0.65pt,arc=1mm,title={#1 \hfill \footnotesize #2},fonttitle=\bfseries,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=4mm,after skip=3mm
+}
+
+\surveysetup
+  {SP-2026-M07}
+  {Japanese Generative AI Technical Survey}
+  {Special / Coverage 2026-07-01 -- 2026-07-31 / Retrospective as of 2026-08-10}
+  {Coverage window: 2026-07-01 -- 2026-07-31 UTC}
+\surveyeditiondescriptor{Retrospective}
+\surveycoverstory
+  {2026年7月 — モデル競争の次へ}
+  {フロンティアモデルの世代交代と同時に、リアルタイムmultimodal、serving runtime、長時間agent、安全境界まで実行系全体が動いた1か月を振り返る。}
+  {Frontier Models — 7月の世代交代 \quad / \quad Multimodal — 生成からリアルタイム統合へ}
+
+\setlength{\columnsep}{6mm}
+
+\begin{document}
+\surveycover
+\clearpage
+\onecolumn
+\input{sections/00-frontmatter}
+
+\clearpage
+\twocolumn
+\input{sections/10-frontier-models-july}
+\clearpage
+\onecolumn
+\input{theme-synthesis/01-frontier-models-july-synthesis}
+\medskip
+\input{technical-notes/10-frontier-models-july-notes}
+
+\clearpage
+\twocolumn
+\input{sections/20-multimodal-july}
+\clearpage
+\onecolumn
+\input{theme-synthesis/02-multimodal-july-synthesis}
+\medskip
+\input{technical-notes/20-multimodal-july-notes}
+
+\clearpage
+\twocolumn
+\input{sections/30-inference-serving-july}
+\clearpage
+\onecolumn
+\input{theme-synthesis/03-inference-serving-july-synthesis}
+\medskip
+\input{technical-notes/30-inference-serving-july-notes}
+
+\clearpage
+\twocolumn
+\input{sections/40-agents-july}
+\clearpage
+\onecolumn
+\input{theme-synthesis/04-agents-july-synthesis}
+\medskip
+\input{technical-notes/40-agents-july-notes}
+
+\clearpage
+\twocolumn
+\input{sections/50-agent-safety-security-july}
+\clearpage
+\onecolumn
+\input{theme-synthesis/05-agent-safety-security-july-synthesis}
+\medskip
+\input{technical-notes/50-agent-safety-security-july-notes}
+
+\clearpage
+\twocolumn
+\input{sections/60-paper-watch-july}
+\clearpage
+\onecolumn
+\input{technical-notes/60-paper-watch-july-notes}
+
+\clearpage
+\onecolumn
+\printbibliography[title={References / Source Notes}]
+\end{document}
