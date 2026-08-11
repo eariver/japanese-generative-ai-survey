@@ -66,8 +66,9 @@ jobs:
           assert state['gates']['latex_build']=='passed'
           assert state['gates']['visual_review']=='pending'
           assert state['gates']['freeze']=='pending'
-          supplement=root/'sources'/issue/'editorial'/f'theme-synthesis-{version}.json'
-          assert supplement.is_file(), supplement
+          theme=root/'sources'/issue/'editorial'/f'theme-synthesis-{version}.json'
+          final=root/'sources'/issue/'editorial'/f'final-synthesis-{version}.json'
+          assert theme.is_file() or final.is_file(), (theme,final)
           PY
       - name: Build immutable mixed-layout source revision
         shell: bash
@@ -77,12 +78,22 @@ jobs:
           SOURCE_VERSION: ${{ inputs.source_version }}
         run: |
           set -euo pipefail
-          PYTHONPATH=control-src python control-src/scripts/run_revise_special_mixed_layout.py \
-            --repo-root worktree \
-            --special-slug "$SPECIAL_SLUG" \
-            --issue-id "$SPECIAL_ID" \
-            --source-version "$SOURCE_VERSION" \
-            > special-mixed-layout-audit.json
+          final="worktree/sources/${SPECIAL_ID}/editorial/final-synthesis-${SOURCE_VERSION}.json"
+          if test -s "$final"; then
+            PYTHONPATH=control-src python control-src/scripts/revise_special_balanced_layout.py \
+              --repo-root worktree \
+              --special-slug "$SPECIAL_SLUG" \
+              --issue-id "$SPECIAL_ID" \
+              --source-version "$SOURCE_VERSION" \
+              > special-mixed-layout-audit.json
+          else
+            PYTHONPATH=control-src python control-src/scripts/run_revise_special_mixed_layout.py \
+              --repo-root worktree \
+              --special-slug "$SPECIAL_SLUG" \
+              --issue-id "$SPECIAL_ID" \
+              --source-version "$SOURCE_VERSION" \
+              > special-mixed-layout-audit.json
+          fi
           cat special-mixed-layout-audit.json
       - name: Verify revised state and source manifest
         shell: bash
@@ -106,11 +117,23 @@ jobs:
           assert hashlib.sha256(path.read_bytes()).hexdigest()==src['sha256']
           manifest=json.load(open(path,encoding='utf-8'))
           assert manifest['source_version']==version
-          assert manifest['layout']['body_mode'].startswith('mixed: narrative articles two-column')
-          assert manifest['layout_revision']['article_sections_changed'] is False
-          assert manifest['layout_revision']['technical_notes_changed'] is False
-          assert manifest['layout_revision']['new_external_evidence'] is False
-          assert manifest['editorial_supplement']['selected_evidence_only'] is True
+          if 'final_synthesis' in manifest:
+              assert manifest['layout']['body_mode'].startswith('balanced mixed:')
+              assert manifest['layout_revision']['full_width_chapter_headings'] is True
+              assert manifest['layout_revision']['balanced_multicols'] is True
+              assert manifest['layout_revision']['hard_column_mode_switches'] is False
+              assert manifest['layout_revision']['article_sections_changed'] is False
+              assert manifest['layout_revision']['theme_synthesis_changed'] is False
+              assert manifest['layout_revision']['technical_notes_changed'] is False
+              assert manifest['layout_revision']['final_chapter_added'] is True
+              assert manifest['layout_revision']['new_external_evidence'] is False
+              assert manifest['final_synthesis']['selected_evidence_only'] is True
+          else:
+              assert manifest['layout']['body_mode'].startswith('mixed: narrative articles two-column')
+              assert manifest['layout_revision']['article_sections_changed'] is False
+              assert manifest['layout_revision']['technical_notes_changed'] is False
+              assert manifest['layout_revision']['new_external_evidence'] is False
+              assert manifest['editorial_supplement']['selected_evidence_only'] is True
           PY
       - name: Commit revised source and state
         working-directory: worktree
@@ -125,7 +148,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add "sources/${SPECIAL_ID}/pipeline-state.json" "surveys/special/${SPECIAL_SLUG}/revisions/${SOURCE_VERSION}"
-          git commit -m "Revise ${SPECIAL_ID} to mixed layout ${SOURCE_VERSION}"
+          git commit -m "Revise ${SPECIAL_ID} reader layout ${SOURCE_VERSION}"
           git push origin "HEAD:${WORK_BRANCH}"
       - name: Upload revision audit
         uses: actions/upload-artifact@v7
