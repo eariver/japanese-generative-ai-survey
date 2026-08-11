@@ -1,0 +1,183 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M06",
+  "revision": "v0.3",
+  "purpose": "Restore cross-theme comparison depth from already-selected June Evidence while moving narrative articles toward the Survey's mixed-layout house style.",
+  "constraints": {
+    "new_external_evidence_allowed": false,
+    "selected_evidence_only": true,
+    "paper_watch_supplement": false
+  },
+  "themes": [
+    {
+      "package_id": "frontier-models-june",
+      "title": "横断比較 — 6月のモデル競争は「何を出したか」だけでは測れない",
+      "intro": "6月の主要releaseを並べると、model capabilityの主張そのものより、open-weightかmanaged APIか、multimodal/computer-use/codingへどう接続したか、preview・GA・deprecationを含む提供状態が採用判断を左右していたことが見える。",
+      "rows": [
+        {
+          "dimension": "配布・提供形態",
+          "observation": "MiniMax M3はopen weightsを伴うreleaseとして提示された一方、Anthropic、Alibaba Model Studio、Gemini APIはmanaged product/API lifecycleの更新として確認される。Kimi K2.7 Codeはcode modelのrelease/open-sourceとKimi Code側のworkflow更新が接続した。",
+          "evidence_task_ids": [
+            "evidence:SP-2026-M06:item-official-index-minimax-news-8be7d33438",
+            "evidence:SP-2026-M06:item-official-index-anthropic-news-afddcb8068",
+            "evidence:SP-2026-M06:item-official-index-alibaba-model-studio-154c528d30",
+            "evidence:SP-2026-M06:item-official-index-google-gemini-api-re-d5b8ea25b2",
+            "evidence:SP-2026-M06:item-official-index-kimi-code-whats-new-788743b9bb"
+          ]
+        },
+        {
+          "dimension": "agent / computer-use接続",
+          "observation": "MiniMax M3はdesktop operationをvendor claimとして掲げ、Gemini APIではComputer Use、Kimi CodeではGoal modeと/swarmが同月に更新された。モデル単体の公開と、実行環境へ接続する機能が同じ競争面へ寄っている。",
+          "evidence_task_ids": [
+            "evidence:SP-2026-M06:item-official-index-minimax-news-8be7d33438",
+            "evidence:SP-2026-M06:item-official-index-google-gemini-api-re-d5b8ea25b2",
+            "evidence:SP-2026-M06:item-official-index-kimi-code-whats-new-788743b9bb"
+          ]
+        },
+        {
+          "dimension": "availability / lifecycle",
+          "observation": "Geminiではpreview、GA、deprecation、shutdownが同じ月次changelogに並び、Alibabaでもsnapshotやregion別availabilityが更新された。GPT-5.6は6月26日時点ではlimited previewであり、翌月の一般的な展開と同一視しないことが重要である。",
+          "evidence_task_ids": [
+            "evidence:SP-2026-M06:item-official-index-google-gemini-api-re-d5b8ea25b2",
+            "evidence:SP-2026-M06:item-official-index-alibaba-model-studio-154c528d30",
+            "evidence:SP-2026-M06:item-official-feed-30f48121decc708b123e-bbd0d72643"
+          ]
+        },
+        {
+          "dimension": "modalitiesと用途",
+          "observation": "MiniMax M3のimage/video input、Alibabaのvisual/video系更新、Google DeepMindのDiffusionGemma等、Kimiのcoding workflowは同じ『frontier』でも用途面が異なる。単一benchmark順位だけでは6月の差分を表しにくい。",
+          "evidence_task_ids": [
+            "evidence:SP-2026-M06:item-official-index-minimax-news-8be7d33438",
+            "evidence:SP-2026-M06:item-official-index-alibaba-model-studio-154c528d30",
+            "evidence:SP-2026-M06:item-official-index-google-deepmind-blog-9b2b580695",
+            "evidence:SP-2026-M06:item-official-index-kimi-code-whats-new-788743b9bb"
+          ]
+        }
+      ]
+    },
+    {
+      "package_id": "agents-memory-june",
+      "title": "横断比較 — 長時間Agentでは状態をどこで持つかが設計になる",
+      "intro": "SwarmX、ChatGPT Dreaming、SmoothAgentは同じagent研究・機能ではないが、長時間実行を一回のmodel callとして扱えない点で共通する。scheduler、persistent memory、context transformationという別々の状態管理層へ分けると関係が見えやすい。",
+      "rows": [
+        {
+          "dimension": "実行スケジューリング",
+          "observation": "SwarmXはmulti-call / tool-using agent workloadをschedulerの対象として扱い、単一inference requestではなく依存を持つ実行列としてserving問題を定義する。",
+          "evidence_task_ids": ["evidence:SP-2026-M06:item-arxiv-2606-21401v2-4165ae826f"]
+        },
+        {
+          "dimension": "persistent memory",
+          "observation": "ChatGPT Dreamingはreviewable memory summaryとstaged rolloutを伴うmemory architectureとして説明され、長期contextを単純にpromptへ積み続ける以外のproduct-level state managementを示した。",
+          "evidence_task_ids": ["evidence:SP-2026-M06:item-official-feed-c3ab33c62226049804cd-d14cbef1ed"]
+        },
+        {
+          "dimension": "context transformation",
+          "observation": "SmoothAgentはlong-horizon servingでcontext transformationを先回りして実行するsystems researchであり、contextそのものをruntime側で加工・準備する設計を扱う。報告性能はauthor claimの範囲に留める。",
+          "evidence_task_ids": ["evidence:SP-2026-M06:item-arxiv-2607-00151v1-972482f7af"]
+        },
+        {
+          "dimension": "model intelligenceとの境界",
+          "observation": "3件を横断すると、長時間Agentの品質はmodel capabilityだけでなく、いつ実行するか、何を記憶するか、どのcontextを渡すかというruntime/state設計にも依存する。各資料は異なる層を扱うため性能値を直接比較しない。",
+          "evidence_task_ids": [
+            "evidence:SP-2026-M06:item-arxiv-2606-21401v2-4165ae826f",
+            "evidence:SP-2026-M06:item-official-feed-c3ab33c62226049804cd-d14cbef1ed",
+            "evidence:SP-2026-M06:item-arxiv-2607-00151v1-972482f7af"
+          ]
+        }
+      ]
+    },
+    {
+      "package_id": "inference-serving-june",
+      "title": "横断比較 — acceleratorからruntimeまで最適化層が連動する",
+      "intro": "6月のinference/serving更新は一つの高速化技法へ収束していない。custom accelerator、serving engine、kernel、MoE parallelism、memory-heterogeneous servingが別々の層で進み、model architectureとhardwareの変化がstack全体へ伝播している。",
+      "rows": [
+        {
+          "dimension": "hardware layer",
+          "observation": "JalapeñoはLLM inference向けcustom processorとしてengineering sample到達が報告されたが、最終performance measurementは継続中であり、性能・performance-per-wattの表現はvendorの予備的報告として読む。",
+          "evidence_task_ids": ["evidence:SP-2026-M06:item-official-feed-855db08b75f6ecdec51e-80a5df82a3"]
+        },
+        {
+          "dimension": "serving engine",
+          "observation": "vLLM v0.24.0とSGLang v0.5.14はいずれも新model family対応だけでなくrunner、serving、kernel周辺を更新しており、frontier model追加がruntime実装の更新を伴うことを示す。",
+          "evidence_task_ids": [
+            "evidence:SP-2026-M06:item-github-release-vllm-project-vllm-v0-56abd4df4f",
+            "evidence:SP-2026-M06:item-github-release-sgl-project-sglang-v-64c3048ca8"
+          ]
+        },
+        {
+          "dimension": "kernel / MoE parallelism",
+          "observation": "FlashInferはattention/MoE/quantization/autotuningを更新し、MoebiusはruntimeでTP/EPを切り替える研究を提示した。project releaseとauthor-evaluated researchはEvidence classを分けたまま扱う。",
+          "evidence_task_ids": [
+            "evidence:SP-2026-M06:item-github-release-flashinfer-ai-flashi-a92bf9d6cd",
+            "evidence:SP-2026-M06:item-arxiv-2606-26607v1-2d0c18d545"
+          ]
+        },
+        {
+          "dimension": "memory placement",
+          "observation": "HMA-Serveはmemory-heterogeneous accelerator間のdisaggregated servingを扱い、HBM容量だけを前提にしない配置問題を研究対象にした。6月のserving論点はcompute kernelだけでなくmemory topologyへ広がっている。",
+          "evidence_task_ids": ["evidence:SP-2026-M06:item-arxiv-2606-29986v1-362da4ce89"]
+        }
+      ]
+    },
+    {
+      "package_id": "agent-safety-security-june",
+      "title": "横断比較 — 『Agent security』を権限・注入・接続面・評価へ分解する",
+      "intro": "6月のAgent security資料は同じfailure modeを測っているわけではない。capability exposureとauthorization、adaptive prompt injection、MCP multi-tool poisoning、persistent-agent attack surfaces、deployment simulationを別のthreat/evaluation modelとして分ける必要がある。",
+      "rows": [
+        {
+          "dimension": "capabilityとauthorization",
+          "observation": "Capability Gates Are Not Authorizationはtoolを見せる/隠すこととper-call authorizationを区別する。ShareLockはMCPの複数toolをまたぐpoisoning例を扱い、接続可能性そのものを権限保証とみなせないことを別角度から示す。",
+          "evidence_task_ids": [
+            "evidence:SP-2026-M06:item-arxiv-2606-28679v1-49b746661c",
+            "evidence:SP-2026-M06:item-arxiv-2606-27027v1-92e00c43cb"
+          ]
+        },
+        {
+          "dimension": "adaptive prompt injection",
+          "observation": "Out-of-Band Defensesの研究はdefense-awareなadaptive attackで評価する必要を提示し、固定attack suiteだけで防御性能を判断する危険を扱う。",
+          "evidence_task_ids": ["evidence:SP-2026-M06:item-arxiv-2606-26479v1-8a5efbff54"]
+        },
+        {
+          "dimension": "persistent-agent attack surface",
+          "observation": "SafeClawArenaはClaw-like agentをcomputer systemとして捉え、複数component/attack surfaceを横断するadversarial taskを構成する。単一promptの安全性評価より広いsystem boundaryが対象である。",
+          "evidence_task_ids": ["evidence:SP-2026-M06:item-arxiv-2606-30755v1-1555fea072"]
+        },
+        {
+          "dimension": "pre-deployment evaluation",
+          "observation": "Deployment Simulationはcandidate modelとsimulated toolsで過去conversationを再生するoperational safety methodとして説明された。研究benchmarkとは異なる評価層であり、vendor-reported methodとして帰属を維持する。",
+          "evidence_task_ids": ["evidence:SP-2026-M06:item-official-feed-c000018ba1f035750668-0decc9ddcd"]
+        }
+      ]
+    },
+    {
+      "package_id": "ai-for-science-june",
+      "title": "横断比較 — 科学Agentの価値は『完全自律』ではなくworkflow境界で読む",
+      "intro": "6月のAI for Scienceでは、near-autonomous chemistry workflowとGPT-Rosalind更新を、単なるbenchmark向上ではなく、人間・model・実験操作・検証がどこで分担されるかというworkflow境界から読むことが重要である。",
+      "rows": [
+        {
+          "dimension": "自律性の境界",
+          "observation": "OAI-M1-03のchemistry workflowではhumanがproposal selection、lab operation、validationを担った。したがってnear-autonomousという表現をfully autonomousへ拡張しない。",
+          "evidence_task_ids": ["evidence:SP-2026-M06:item-official-feed-5ff2f715f1e6274165f0-4746937cec"]
+        },
+        {
+          "dimension": "実験結果の帰属",
+          "observation": "tested substrate pairの11/14でyield improvementが報告されたが、これはOpenAI/Molecule.oneによる一次報告であり、一般的な化学実験性能へ拡張しない。",
+          "evidence_task_ids": ["evidence:SP-2026-M06:item-official-feed-5ff2f715f1e6274165f0-4746937cec"]
+        },
+        {
+          "dimension": "対象領域の広がり",
+          "observation": "GPT-RosalindのJune updateはmedicinal chemistry、genomics、lab-work能力をbenchmarksやvendor evaluationとともに提示した。chemistry workflowとは証拠形態が異なり、domain breadthの補助線として扱う。",
+          "evidence_task_ids": ["evidence:SP-2026-M06:item-official-feed-ba562226725de1d8218d-c668505e27"]
+        },
+        {
+          "dimension": "workflowへの接続",
+          "observation": "2件を合わせると、6月の科学応用は『modelが科学問題へ回答する』だけでなく、proposal、実験計画、lab work、validationへどこまで接続できるかを問う段階へ進んでいる。ただし実世界の責任境界はhuman-in-the-loopとして残る。",
+          "evidence_task_ids": [
+            "evidence:SP-2026-M06:item-official-feed-5ff2f715f1e6274165f0-4746937cec",
+            "evidence:SP-2026-M06:item-official-feed-ba562226725de1d8218d-c668505e27"
+          ]
+        }
+      ]
+    }
+  ]
+}
