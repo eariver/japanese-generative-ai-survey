@@ -22,6 +22,15 @@ ARTICLE_TYPES = {
 }
 JP_RE = re.compile(r"[ぁ-んァ-ヶ一-龠々〆ヵヶー]")
 NOTE_BLOCK_RE = re.compile(r"\\begin\{technicalnote\}.*?\\end\{technicalnote\}", re.DOTALL)
+RAW_EVENT_ENUMS = {
+    "OFFICIAL_PUBLICATION", "PRODUCT_RELEASE", "PRODUCT_UPDATE", "AGENT_RELEASE",
+    "FRAMEWORK_RELEASE", "MODEL_RELEASE", "MODEL_UPDATE", "OPEN_WEIGHT_RELEASE",
+    "PAPER_RELEASE", "RESEARCH_RELEASE", "SAFETY_EVENT", "API_RELEASE", "API_UPDATE",
+}
+RAW_TYPE_ENUMS = {
+    "OTHER", "MODEL_UPDATE", "OPEN_WEIGHT", "FRAMEWORK_RELEASE", "SAFETY_EVENT",
+}
+MIXED_ENUM_RE = re.compile(r"(?:モデル|研究|論文|Framework|Agent|API)(?:\\_|_)(?:RELEASE|UPDATE|PUBLICATION)")
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -184,6 +193,24 @@ def replace_item(block: str, source: dict[str, Any], summary: dict[str, Any], id
     return block.replace(old, new, 1), 1
 
 
+def find_note_block(blocks: list[re.Match[str]], task_id: str, artifact_name: str) -> re.Match[str]:
+    """Find a card before or after repository-only Source-bound IDs are stripped."""
+    marker = "Source-bound record: \\texttt{" + expansion.tex_escape(task_id) + "}"
+    by_id = [m for m in blocks if marker in m.group(0)]
+    if len(by_id) == 1:
+        return by_id[0]
+    if len(by_id) > 1:
+        raise ValueError(f"multiple Technical Notes blocks contain Evidence ID: {task_id}")
+
+    title_prefix = r"\begin{technicalnote}{" + expansion.tex_escape(artifact_name) + "}{"
+    by_title = [m for m in blocks if m.group(0).startswith(title_prefix)]
+    if len(by_title) != 1:
+        raise ValueError(
+            f"expected one Technical Notes block for {task_id}; Source-bound ID is absent and title fallback found {len(by_title)} for {artifact_name!r}"
+        )
+    return by_title[0]
+
+
 def apply(root: Path, issue_id: str, special_slug: str, summary_path: Path) -> dict[str, Any]:
     data = load_json(summary_path)
     if data.get("issue_id") != issue_id:
@@ -211,17 +238,19 @@ def apply(root: Path, issue_id: str, special_slug: str, summary_path: Path) -> d
         text = note_path.read_text(encoding="utf-8")
         blocks = list(NOTE_BLOCK_RE.finditer(text))
         replacements: list[tuple[int, int, str]] = []
+        used_ranges: set[tuple[int, int]] = set()
         for record in evidence_records(package):
             task_id = str(record.get("evidence_task_id") or "")
             if task_id not in summaries:
                 raise ValueError(f"Japanese summary record missing: {task_id}")
-            marker = "Source-bound record: \\texttt{" + expansion.tex_escape(task_id) + "}"
-            matching = [m for m in blocks if marker in m.group(0)]
-            if len(matching) != 1:
-                raise ValueError(f"expected one Technical Notes block for {task_id}, found {len(matching)}")
-            block_match = matching[0]
-            block = block_match.group(0)
             summary_record = summaries[task_id]
+            artifact_name = str(summary_record.get("artifact_name") or (card(record).get("artifact") or {}).get("canonical_name") or task_id)
+            block_match = find_note_block(blocks, task_id, artifact_name)
+            block_range = (block_match.start(), block_match.end())
+            if block_range in used_ranges:
+                raise ValueError(f"Technical Notes title fallback was ambiguous across Evidence records: {artifact_name}")
+            used_ranges.add(block_range)
+            block = block_match.group(0)
             claim_map = item_index(summary_record, "claims")
             limitation_map = item_index(summary_record, "limitations")
             c = card(record)
@@ -277,6 +306,17 @@ def apply(root: Path, issue_id: str, special_slug: str, summary_path: Path) -> d
     }
 
 
+def raw_enum_findings(text: str) -> list[str]:
+    findings: list[str] = []
+    for value in sorted(RAW_EVENT_ENUMS | RAW_TYPE_ENUMS):
+        forms = {value, value.replace("_", r"\_")}
+        for form in forms:
+            if re.search(r"(?<![A-Za-z0-9])" + re.escape(form) + r"(?![A-Za-z0-9])", text):
+                findings.append(form)
+    findings.extend(m.group(0) for m in MIXED_ENUM_RE.finditer(text))
+    return sorted(set(findings))
+
+
 def check(root: Path, issue_id: str) -> dict[str, Any]:
     state = load_json(root / "sources" / issue_id / "pipeline-state.json")
     source = state.get("provenance", {}).get("validated_issue_source") or {}
@@ -298,6 +338,7 @@ def check(root: Path, issue_id: str) -> dict[str, Any]:
     labels = [re.escape(v) for v in expansion.CLASS_LABELS.values()]
     line_re = re.compile(r"\\item \\textbf\{(?:" + "|".join(labels) + r")\}:\s*(.+)")
     inspected = 0
+    machine_enum_findings = 0
     for article in manifest.get("articles") or []:
         note_path = manifest_path.parent / str(article.get("technical_notes_path") or "")
         if not note_path.is_file():
@@ -311,6 +352,10 @@ def check(root: Path, issue_id: str) -> dict[str, Any]:
             inspected += 1
             if not JP_RE.search(match.group(1)):
                 errors.append(f"non-Japanese Technical Notes narrative: {article.get('package_id')}: {line[:120]}")
+        findings = raw_enum_findings(text)
+        if findings:
+            machine_enum_findings += len(findings)
+            errors.append(f"raw machine enum leaked in {article.get('package_id')}: {', '.join(findings)}")
     if inspected == 0:
         errors.append("no claim/limitation Technical Notes lines were inspected")
     return {
@@ -318,6 +363,7 @@ def check(root: Path, issue_id: str) -> dict[str, Any]:
         "issue_id": issue_id,
         "source_manifest": manifest_path.relative_to(root).as_posix(),
         "inspected_items": inspected,
+        "machine_enum_findings": machine_enum_findings,
         "passed": not errors,
         "errors": errors,
     }
