@@ -82,12 +82,27 @@ jobs:
           layout="worktree/sources/${SPECIAL_ID}/editorial/layout-revision-${SOURCE_VERSION}.json"
           final="worktree/sources/${SPECIAL_ID}/editorial/final-synthesis-${SOURCE_VERSION}.json"
           if test -s "$layout"; then
-            PYTHONPATH=control-src python control-src/scripts/revise_special_adaptive_spacing.py \
-              --repo-root worktree \
-              --special-slug "$SPECIAL_SLUG" \
-              --issue-id "$SPECIAL_ID" \
-              --source-version "$SOURCE_VERSION" \
-              > special-mixed-layout-audit.json
+            subsection_mode=$(python - "$layout" <<'PY'
+          import json,sys
+          value=json.load(open(sys.argv[1],encoding='utf-8'))
+          print('true' if (value.get('layout_changes') or {}).get('apply_to_layout_only_article_bodies') is True else 'false')
+          PY
+            )
+            if test "$subsection_mode" = true; then
+              PYTHONPATH=control-src python control-src/scripts/revise_special_subsection_spacing.py \
+                --repo-root worktree \
+                --special-slug "$SPECIAL_SLUG" \
+                --issue-id "$SPECIAL_ID" \
+                --source-version "$SOURCE_VERSION" \
+                > special-mixed-layout-audit.json
+            else
+              PYTHONPATH=control-src python control-src/scripts/revise_special_adaptive_spacing.py \
+                --repo-root worktree \
+                --special-slug "$SPECIAL_SLUG" \
+                --issue-id "$SPECIAL_ID" \
+                --source-version "$SOURCE_VERSION" \
+                > special-mixed-layout-audit.json
+            fi
           elif test -s "$final"; then
             PYTHONPATH=control-src python control-src/scripts/revise_special_balanced_layout.py \
               --repo-root worktree \
@@ -127,7 +142,16 @@ jobs:
           manifest=json.load(open(path,encoding='utf-8'))
           assert manifest['source_version']==version
           lr=manifest.get('layout_revision') or {}
-          if lr.get('adaptive_chapter_starts') is True:
+          if lr.get('subsection_spacing_guard') is True:
+              assert manifest['status']=='VALIDATED_SUBSECTION_SPACING_REVISION'
+              assert lr['reader_content_changed'] is False
+              assert lr['new_external_evidence'] is False
+              assert lr['subsection_needspace_baselines']==4
+              assert lr['accepted_article_sections_changed'] is False
+              assert lr['theme_synthesis_changed'] is False
+              assert lr['technical_notes_changed'] is False
+              assert lr['final_synthesis_changed'] is False
+          elif lr.get('adaptive_chapter_starts') is True:
               assert manifest['status']=='VALIDATED_ADAPTIVE_SPACING_REVISION'
               assert lr['reader_content_changed'] is False
               assert lr['new_external_evidence'] is False

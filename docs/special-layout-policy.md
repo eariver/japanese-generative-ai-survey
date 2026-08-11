@@ -17,6 +17,8 @@ For normal Special issues, use a **mixed layout**:
 
 This is intentionally different from an all-two-column rule. Technical Notes contain long model names, paper titles, chronology fields, source URLs, and attribution boundaries that become fragile or hard to scan in narrow columns. Long chapter headings also must not be constrained to a single narrow column because they can collide with the adjacent column.
 
+Within the two-column narrative, subsection headings require deliberate separation from the preceding paragraph. A clean TeX log is not sufficient evidence that a heading is visually separated. The layout layer should explicitly terminate the paragraph, add modest vertical separation, and require enough remaining column height for the heading plus following text before placing a subsection.
+
 ## 2. Column-mode transitions must not waste a page
 
 Do not implement a normal article-to-synthesis transition as a global `twocolumn -> clearpage -> onecolumn` switch. That pattern can freeze a partially used left column while leaving the right column and most of the page empty.
@@ -65,6 +67,7 @@ The release-candidate direction therefore uses:
 
 - full-width chapter headings;
 - balanced two-column narrative articles implemented as a local multi-column flow;
+- explicit paragraph separation and a four-baseline minimum-space guard before narrative subsection headings;
 - one-column full-width theme synthesis for Frontier Models, Multimodal, Inference & Serving, Agents, and Agent Safety & Security;
 - one-column Technical Notes;
 - adaptive later chapter starts instead of unconditional new-page breaks;

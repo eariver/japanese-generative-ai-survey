@@ -14,6 +14,7 @@ on:
       - 'scripts/run_revise_special_mixed_layout.py'
       - 'scripts/revise_special_balanced_layout.py'
       - 'scripts/revise_special_adaptive_spacing.py'
+      - 'scripts/revise_special_subsection_spacing.py'
       - 'docs/special-layout-policy.md'
   push:
     branches: [main]
@@ -29,6 +30,7 @@ on:
       - 'scripts/run_revise_special_mixed_layout.py'
       - 'scripts/revise_special_balanced_layout.py'
       - 'scripts/revise_special_adaptive_spacing.py'
+      - 'scripts/revise_special_subsection_spacing.py'
       - 'docs/special-layout-policy.md'
 
 permissions:
@@ -51,7 +53,8 @@ jobs:
             scripts/revise_special_mixed_layout.py \
             scripts/run_revise_special_mixed_layout.py \
             scripts/revise_special_balanced_layout.py \
-            scripts/revise_special_adaptive_spacing.py
+            scripts/revise_special_adaptive_spacing.py \
+            scripts/revise_special_subsection_spacing.py
           python - <<'PY'
           from pathlib import Path
           import tempfile
@@ -107,14 +110,22 @@ jobs:
           assert r'\Needspace{5\baselineskip}' in adaptive
           assert 'forced_bibliography_clearpage' in adaptive
           assert 'reader_content_changed' in adaptive
-          assert "new_external_evidence_allowed') is not False" in adaptive
-          assert "selected_evidence_only') is not True" in adaptive
-          assert "text.replace(r'\\clearpage'+'\\n'+r'\\printbibliography" in adaptive
+
+          subsection=Path('scripts/revise_special_subsection_spacing.py').read_text(encoding='utf-8')
+          assert r'\par\medskip\Needspace{4\baselineskip}' in subsection
+          assert "apply_to_layout_only_article_bodies" in subsection
+          assert "accepted_article_sections_changed" in subsection
+          assert "final_synthesis_changed" in subsection
+          assert "reader_content_changed" in subsection
+          assert "new_external_evidence_allowed') is not False" in subsection
+          assert "selected_evidence_only') is not True" in subsection
 
           workflow=Path('.github/workflows/revise-special-mixed-layout.yml').read_text(encoding='utf-8')
           assert 'layout-revision-${SOURCE_VERSION}.json' in workflow
           assert 'revise_special_adaptive_spacing.py' in workflow
-          assert "adaptive_chapter_starts" in workflow
+          assert 'revise_special_subsection_spacing.py' in workflow
+          assert 'apply_to_layout_only_article_bodies' in workflow
+          assert "subsection_spacing_guard" in workflow
 
           policy=Path('docs/special-layout-policy.md').read_text(encoding='utf-8')
           assert 'chapter / feature heading: **one column, full width**' in policy
