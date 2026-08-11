@@ -1,8 +1,8 @@
 # SP-2026-M06 Handoff Checkpoint
 
-Recorded: 2026-08-11 16:43 JST
+Recorded: 2026-08-11 JST
 
-This file is an editorial handoff checkpoint. It does not approve any human gate and does not alter Evidence conclusions.
+This file is the authoritative editorial handoff checkpoint for the June 2026 retrospective Special.
 
 ## Current lifecycle
 
@@ -10,17 +10,131 @@ This file is an editorial handoff checkpoint. It does not approve any human gate
 - Special slug: `2026-M06`
 - Work branch: `special/2026-M06-work`
 - Draft work PR: `#45`
-- Lifecycle state: `EVIDENCE_REVIEWED`
-- Next Human Gate: **Candidate Selection**
-- Candidate Selection: pending
-- Issue Architecture: pending
+- Repository lifecycle state: `EVIDENCE_REVIEWED`
+- Human Candidate Selection decision: **APPROVED by eariver on 2026-08-11 JST**
+- Canonical Candidate Selection application: **pending**
+- Issue Architecture Human Gate: **not approved**
 - Article Draft: pending
 - Claim / chronology validation: pending
 - LaTeX build: pending
 - Visual Review: pending
 - Freeze: pending
 
-No Candidate Selection, Issue Architecture, Visual Review, Freeze, merge, or publication approval has been inferred.
+The distinction above is intentional. The user has explicitly approved the reviewed Candidate Selection allocation, but `pipeline-state.json` must not be advanced until the canonical SHA-bound Selection workflow successfully materializes and validates the Candidate matrix / Selection outputs.
+
+No Issue Architecture, Visual Review, Freeze, merge, or publication approval has been inferred.
+
+## Approved Candidate Selection decision
+
+The reviewed decision is recorded at:
+
+- `sources/SP-2026-M06/editorial/selection-architecture-decision-v0.1.json`
+- decision-record commit: `589e2bb61811030b3ecaddd9683f441416d6ca5d`
+- approved by: `eariver`
+- approved at: `2026-08-11T18:17:00+09:00`
+- Evidence result-set binding target: `8d2a27b7958295817e39760b01d85b52dde6d77525b04703118d46b3c2d51449`
+
+Approved roles across the 28 `CANDIDATE` Evidence Cards:
+
+- `FEATURE_CORE`: 3
+- `SECTION_CORE`: 12
+- `SUPPORTING_EVIDENCE`: 8
+- `PAPER_WATCH`: 3
+- `HOLD_OUT`: 2
+
+The allocation was explicitly reviewed against the July Special's editorial granularity and Issues `#9` and `#40` before approval.
+
+### FEATURE_CORE
+
+- MiniMax M3
+- Anthropic June 2026 technical releases
+- Near-autonomous AI chemist / OAI-M1-03
+
+### SECTION_CORE
+
+- Alibaba Model Studio June 2026 model lifecycle
+- Gemini API June 2026 lifecycle
+- Kimi Code June 2026 releases
+- SwarmX
+- ChatGPT Dreaming memory architecture
+- Jalapeño inference chip
+- FlashInfer v0.6.13
+- SGLang v0.5.14
+- vLLM v0.24.0
+- Capability Gates Are Not Authorization
+- Adaptive Evaluation of Out-of-Band Defenses Against Prompt Injection in LLM Agents
+- Understanding and Evaluating Claw-like Agent Security Through a Computer-Systems Lens / SafeClawArena
+
+### SUPPORTING_EVIDENCE
+
+- GPT-5.6 series limited preview
+- Google DeepMind June 2026 model and agent-safety releases
+- SmoothAgent
+- Moebius
+- HBM Is Not All You Need / HMA-Serve
+- ShareLock
+- Deployment Simulation
+- GPT-Rosalind June capability update
+
+### PAPER_WATCH
+
+- The Unfireable Safety Kernel
+- Diagnosing and Mitigating Context Rot in Long-horizon Search
+- MemDelta
+
+### HOLD_OUT
+
+- Daybreak / Codex Security / GPT-5.5-Cyber
+- GLM-5.2
+
+The upstream Evidence `REJECT` for the DeepSeek API June chronology remains excluded by the canonical Selection gate; the 20 upstream `HOLD` cards remain constrained to non-positive roles unless Evidence is formally revised.
+
+## Architecture proposal encoded but not approved
+
+The same reviewed decision file contains an `architecture_proposal` solely as the input to the Selection -> proposed Architecture workflow. It is **not an Architecture approval**.
+
+Proposed editorial thesis:
+
+> 2026年6月は、生成AIのエージェント化がモデル単体の能力競争から、記憶・スケジューリング・推論基盤・権限境界・実世界の科学ワークフローまで実行系全体へ広がった月だった。
+
+Proposed single-volume package plan, 36 pages total against target 32 / maximum 40:
+
+1. June 2026 — 月の全体像: 2p
+2. Frontier Models — モデル競争から利用形態の競争へ: 7p
+3. Agents & Memory — 長時間動作を支える状態とスケジューリング: 5p
+4. Inference & Serving — モデルの外側で進む最適化: 6p
+5. Agent Safety & Security — 能力、権限、接続面を分けて考える: 6p
+6. AI for Science — Agentが実験ワークフローへ入る: 5p
+7. Paper Watch — 長時間Agentを測る・守る: 2p
+8. References & Technical Notes: 3p
+
+The proposal incorporates Issue `#9` reader-facing separation / `why this Special` rules and Issue `#40` Technical Notes / mixed-layout / Visual QA requirements. The canonical Architecture output must remain `PROPOSED` and `issue_architecture=pending` until a separate explicit user approval.
+
+## Canonical workflow still to run
+
+Use the existing workflow on `main`:
+
+- workflow: `Apply Special Selection and propose Architecture`
+- file: `.github/workflows/apply-special-selection-and-propose-architecture.yml`
+- `special_slug`: `2026-M06`
+- `evidence_run_sha`: `8d2a27b7958295817e39760b01d85b52dde6d77525b04703118d46b3c2d51449`
+- `approval_reference`: `User approval 2026-08-11 JST: approved revised June Candidate Selection aligned with the July Special and Issues 9 and 40.`
+
+Expected successful transition:
+
+- Candidate matrix is deterministically built from all 49 accepted Evidence Cards.
+- Every `CANDIDATE` row is assigned exactly the reviewed role set above.
+- `HOLD` / `REJECT` Evidence remains constrained by the shared gate.
+- Candidate Selection becomes `APPROVED` and SHA-bound to the exact matrix bytes.
+- `pipeline-state.json` advances to `SELECTION_COMPLETE` with `candidate_selection=passed`.
+- Issue Architecture is generated and validated as `PROPOSED` only.
+- `issue_architecture` remains `pending`.
+
+### Interactive-session execution note
+
+The current ChatGPT GitHub connector exposes workflow inspection and re-run operations, but not `workflow_dispatch`, and the local execution environment has no authenticated `gh` path. A temporary branch-only push trigger was tested in this session; GitHub did not start the workflow from that connector-originated push. The temporary workflow edit was restored to the exact original workflow content and its trigger marker was deleted. Do not infer any gate transition from those temporary commits.
+
+The durable state from this session is therefore the approved decision file plus this checkpoint; repository lifecycle remains truthfully `EVIDENCE_REVIEWED` until the canonical workflow above runs.
 
 ## Edition policy
 
@@ -31,83 +145,56 @@ No Candidate Selection, Issue Architecture, Visual Review, Freeze, merge, or pub
 - Volume policy: single volume
 - Page target: 32
 - Page maximum: 40
-- Overflow policy: return to Candidate Selection rather than silently splitting or exceeding the maximum
+- Overflow policy: return to Candidate Selection / Architecture rather than silently splitting or exceeding the maximum
 
-## Completed provenance
+## Completed provenance before Selection
 
 ### Edition initialization
 
 - Initialization PR: `#43`
 - Initialization merge commit: `86c3a4dd30807b7d011e2dfa826afcfeb0fb4976`
-- A deterministic `ISSUE_INITIALIZED` state was created before Source Intake.
 
 ### Shared Source Intake acceptance fix
 
-Starting M06 exposed a contract defect in the shared Special Source Intake acceptor: a valid deterministic `ISSUE_INITIALIZED` state was incorrectly treated as downstream work.
-
 - Fix PR: `#44`
 - Fix merge commit: `5e4b086b8995d84af9bfad280848d6545b371bbc`
-- The shared acceptor now permits only the exact canonical `ISSUE_INITIALIZED -> DISCOVERY_COLLECTED` transition, while still rejecting altered initialized state or later lifecycle states.
 
 ### Source Intake
 
-- Source Intake workflow run: `31465439609`
-- Artifact: `9091346904` (`special-source-intake-2026-M06`)
-- Artifact digest: `sha256:f4148be3f85d826bc6f973d84e96093deb8bd15334200d72681d884c7ce9a7aa`
-- Records: `1,118`
-- Screening batches: `40`
-- Raw files indexed: `23`
-- Collectors: arXiv API / GitHub Releases / official pages
+- workflow run: `31465439609`
+- artifact: `9091346904`
+- artifact digest: `sha256:f4148be3f85d826bc6f973d84e96093deb8bd15334200d72681d884c7ce9a7aa`
+- records: `1,118`
+- screening batches: `40`
+- raw files indexed: `23`
+- collectors: arXiv API / GitHub Releases / official pages
 - Grok/X: not run
-
-The exact reviewed artifact was accepted append-only. Raw provenance check passed with no modified, removed, or unindexed Raw files.
 
 ### Screening
 
 - Interactive Screening workflow run: `31466634350`
-- Screening result-set SHA256: `21710ce702c11c01ad93ccebe4d11aaa18df93f5832007bcf73a48fef2eeabfd`
-- Reviewed records: `1,118`
-- Verification queue: `49`
-- Decisions:
-  - KEEP: `24`
-  - MAYBE: `15`
-  - INSPECT: `10`
-  - DROP: `1,069`
-- Runner: OpenAI GPT-5.6 Sol, interactive ChatGPT project review, no paid inference-provider API
+- result-set SHA256: `21710ce702c11c01ad93ccebe4d11aaa18df93f5832007bcf73a48fef2eeabfd`
+- decisions: KEEP `24` / MAYBE `15` / INSPECT `10` / DROP `1,069`
+- verification queue: `49`
 
-### Evidence package
+### Evidence
 
 - Evidence package workflow run: `31466802855`
-- Artifact: `9091815838`
-- Artifact digest: `sha256:073e4fa5c96242671a697abb865f54b3ac7703b1f762420bbc80f23f446adce4`
-- Package manifest SHA256: `4aa052627e497606a3515617da9ff525f638afe5744651f4b8327d46f4a96426`
-- Screening result-set input SHA256: `21710ce702c11c01ad93ccebe4d11aaa18df93f5832007bcf73a48fef2eeabfd`
-- Evidence task manifest SHA256: `d6cc8f165ba7af149b0e51710d5b0b4f702461625db073d3774e36c3d76cea05`
-
-### Interactive Evidence review
-
+- artifact: `9091815838`
+- artifact digest: `sha256:073e4fa5c96242671a697abb865f54b3ac7703b1f762420bbc80f23f446adce4`
 - Interactive Evidence workflow run: `31468359822`
-- Accepted Evidence result-set SHA256: `8d2a27b7958295817e39760b01d85b52dde6d77525b04703118d46b3c2d51449`
-- Evidence Tasks reviewed: `49`
-- Recommendations:
-  - CANDIDATE: `28`
-  - HOLD: `20`
-  - REJECT: `1`
+- accepted result-set SHA256: `8d2a27b7958295817e39760b01d85b52dde6d77525b04703118d46b3c2d51449`
+- Evidence Tasks: `49`
+- recommendations: CANDIDATE `28` / HOLD `20` / REJECT `1`
 - Evidence normalization gate: passed
-- Runner: OpenAI GPT-5.6 Sol, interactive primary-source Evidence review, no paid inference-provider API
 
-The exact accepted Evidence run is authoritative for the next editorial decision. Do not regenerate or substitute the Evidence set unless a documented corrective revision is intentionally started.
+Do not repeat Source Intake, Screening, Evidence review, or Candidate Selection analysis when resuming unless a documented corrective revision is intentionally started.
 
-## Next work to perform
+## Resume instruction
 
-1. Read the 28 `CANDIDATE` Evidence Cards as a set and cluster them into coherent June themes. Use the 20 `HOLD` cards only as optional context; preserve the single `REJECT` as excluded unless new primary evidence justifies a formal corrective pass.
-2. Prepare a proposed **Candidate Selection role allocation** using the existing Special taxonomy where appropriate: `FEATURE_CORE`, `SECTION_CORE`, `SUPPORTING_EVIDENCE`, `PAPER_WATCH`, `HOLD_OUT`, `EXCLUDE`.
-3. Optimize for the June issue as a coherent monthly retrospective, not for maximizing item count. Keep the single-volume 32-page target / 40-page maximum in mind. If all strong themes cannot fit coherently, prefer explicit editorial prioritization at Candidate Selection.
-4. Present the proposed Candidate Selection to the user. **Do not mark Candidate Selection passed without explicit user approval.**
-5. After explicit Candidate Selection approval, bind the approval to Evidence result-set SHA `8d2a27b7958295817e39760b01d85b52dde6d77525b04703118d46b3c2d51449` and run the Selection -> proposed Architecture workflow.
-6. Present the resulting Issue Architecture as a separate Human Gate. **Do not infer Architecture approval from Candidate Selection approval.**
-7. Only after explicit Architecture approval proceed to Draft Packages and article drafting. Visual Review and Freeze remain later independent Human Gates.
+Start from `special/2026-M06-work`, PR `#45`, this `HANDOFF.md`, and the approved decision file. Verify `pipeline-state.json` first.
 
-## Resume instruction for the next session
-
-Start from `special/2026-M06-work`, PR `#45`, and `sources/SP-2026-M06/pipeline-state.json`. Verify that lifecycle remains `EVIDENCE_REVIEWED` and that the accepted Evidence result-set SHA remains `8d2a27b7958295817e39760b01d85b52dde6d77525b04703118d46b3c2d51449`. Then continue with Candidate Selection analysis; do not repeat Source Intake, Screening, or Evidence collection.
+- If it is still `EVIDENCE_REVIEWED`, run the canonical Selection -> proposed Architecture workflow with the exact inputs above.
+- If it is `SELECTION_COMPLETE`, verify the Selection / matrix hashes and the generated Architecture is `PROPOSED`, then present that Architecture to the user as the separate Human Gate.
+- Do not begin Draft Packages until the user explicitly approves Issue Architecture.
+- Visual Review and Freeze remain later independent Human Gates.
