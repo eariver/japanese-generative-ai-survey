@@ -1,0 +1,141 @@
+name: Expand and preview SP-2026-M05 v0.2 once
+
+on:
+  pull_request:
+    types: [synchronize]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: special-v02-preview-2026-M05-run-once
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    if: github.event.pull_request.number == 53 && github.event.pull_request.head.ref == 'special/2026-M05-work'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - name: Checkout May work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2026-M05-work
+          path: worktree
+          fetch-depth: 0
+      - name: Verify source-expansion boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2026-M05 check >/dev/null
+          python - <<'PY'
+          import json,pathlib
+          r=pathlib.Path('worktree'); s=json.load(open(r/'sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
+          assert s['lifecycle_state']=='VALIDATED_DRAFT'
+          assert s['gates']['claim_and_chronology_validation']=='passed'
+          assert s['gates']['latex_build']=='pending'
+          assert not (r/'surveys/special/2026-M05/revisions/v0.2').exists()
+          PY
+      - name: Expand selected-Evidence source and reader-facing Technical Notes
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python control-src/scripts/run_expand_special_validated_source.py \
+            --repo-root worktree --special-slug 2026-M05 --issue-id SP-2026-M05 --source-version v0.2 \
+            > special-source-expansion-audit.json
+          PYTHONPATH=control-src python control-src/scripts/postprocess_special_reader_facing_notes.py \
+            --repo-root worktree --special-slug 2026-M05 --issue-id SP-2026-M05 --source-version v0.2 \
+            > special-reader-facing-notes-audit.json
+      - name: Verify v0.2 source and expose path
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - >> "$GITHUB_OUTPUT" <<'PY'
+          import hashlib,json,pathlib,re
+          r=pathlib.Path('worktree'); s=json.load(open(r/'sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
+          src=s['provenance']['validated_issue_source']; assert src['source_version']=='v0.2'
+          m=r/src['path']; assert hashlib.sha256(m.read_bytes()).hexdigest()==src['sha256']
+          d=json.load(open(m,encoding='utf-8')); assert d['status']=='VALIDATED_SOURCE_EXPANSION'; assert d['article_count']==6
+          notes=d.get('reader_facing_technical_notes') or {}; assert notes.get('evidence_ids_rendered_in_pdf') is False
+          for a in d['articles']:
+              t=(m.parent/a['technical_notes_path']).read_text(encoding='utf-8')
+              assert not re.search(r'evidence:SP-2026-M05:',t)
+          print('source_dir='+m.parent.as_posix()); print('source_manifest='+m.as_posix()); print('source_manifest_sha256='+src['sha256'])
+          PY
+      - name: Pin survey style
+        id: style
+        shell: bash
+        env:
+          SOURCE_DIR: ${{ steps.source.outputs.source_dir }}
+        run: |
+          set -euo pipefail
+          cp control-src/templates/survey/jgaisurvey.sty "$SOURCE_DIR/jgaisurvey.sty"
+          echo "control_commit=$(git -C control-src rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "style_sha256=$(sha256sum control-src/templates/survey/jgaisurvey.sty | awk '{print $1}')" >> "$GITHUB_OUTPUT"
+      - name: Set reproducible PDF timestamp
+        run: echo 'SOURCE_DATE_EPOCH=1779926400' >> "$GITHUB_ENV"
+      - name: Compile LuaLaTeX preview
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: main.tex
+          working_directory: ${{ steps.source.outputs.source_dir }}
+          texlive_version: 2026
+          latexmk_use_lualatex: true
+          os: alpine
+      - name: Audit preview
+        id: audit
+        shell: bash
+        env:
+          SOURCE_DIR: ${{ steps.source.outputs.source_dir }}
+          MANIFEST: ${{ steps.source.outputs.source_manifest }}
+          MANIFEST_SHA: ${{ steps.source.outputs.source_manifest_sha256 }}
+          CONTROL_COMMIT: ${{ steps.style.outputs.control_commit }}
+          STYLE_SHA: ${{ steps.style.outputs.style_sha256 }}
+        run: |
+          set -euo pipefail
+          pdf="$SOURCE_DIR/main.pdf"; log="$SOURCE_DIR/main.log"; test -s "$pdf" && test -s "$log"
+          bad=$(grep -E -n 'LaTeX Warning: (There were undefined references|Citation .* undefined)|Package biblatex Warning: Please (re)?run|Overfull \\hbox|Underfull \\hbox|Missing character:' "$log" || true)
+          pages=$(python - "$log" <<'PY'
+          import re,sys
+          t=open(sys.argv[1],encoding='utf-8',errors='replace').read(); m=re.findall(r'Output written on .*?\((\d+) pages?',t,re.S)
+          if not m: raise SystemExit('page count unavailable')
+          print(m[-1])
+          PY
+          )
+          sha=$(sha256sum "$pdf" | awk '{print $1}'); [ -z "$bad" ] && clean=true || clean=false
+          python - "$pages" "$sha" "$clean" "$bad" "$MANIFEST" "$MANIFEST_SHA" "$CONTROL_COMMIT" "$STYLE_SHA" <<'PY'
+          import json,sys
+          pages,sha,clean,bad,manifest,msha,commit,style=sys.argv[1:]
+          o={'schema_version':'1.0','issue_id':'SP-2026-M05','source_version':'v0.2','page_count':int(pages),'pdf_sha256':sha,'log_clean':clean=='true','log_gate_findings':bad.splitlines() if bad else [],'page_target_min':32,'page_target_max':40,'page_budget_passed':32<=int(pages)<=40,'source_manifest_path':manifest,'source_manifest_sha256':msha,'build_style':{'control_commit_sha':commit,'path':'templates/survey/jgaisurvey.sty','sha256':style}}
+          open('special-pdf-build-audit.json','w',encoding='utf-8').write(json.dumps(o,ensure_ascii=False,indent=2)+'\n'); print(json.dumps(o,ensure_ascii=False,indent=2))
+          PY
+          echo "pages=$pages" >> "$GITHUB_OUTPUT"; echo "clean=$clean" >> "$GITHUB_OUTPUT"; echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          test "$clean" = true
+      - name: Upload v0.2 preview
+        uses: actions/upload-artifact@v7
+        with:
+          name: japanese-generative-ai-survey-special-2026-M05-v0.2
+          path: |
+            ${{ steps.source.outputs.source_dir }}/main.pdf
+            ${{ steps.source.outputs.source_dir }}/main.log
+            special-pdf-build-audit.json
+            special-source-expansion-audit.json
+            special-reader-facing-notes-audit.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Commit v0.2 source while keeping Human Visual Review pending
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/m05-v02-expand-preview-run-once.yml
+          git add sources/SP-2026-M05/pipeline-state.json surveys/special/2026-M05/revisions/v0.2
+          git commit -m 'Expand reader-facing source v0.2 for SP-2026-M05'
+          git push origin HEAD:special/2026-M05-work
