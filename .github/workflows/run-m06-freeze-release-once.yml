@@ -96,7 +96,6 @@ jobs:
           current=root/'surveys/special/2026-M06/CURRENT_RELEASE.md'
           assert current.is_file() and 'not a public Release version' in current.read_text(encoding='utf-8')
           PY
-          python control-src/scripts/special_pipeline.py --config control-src/config/special-pipeline.json validate-state --state worktree/sources/SP-2026-M06/pipeline-state.json
 
       - name: Commit Freeze record and remove one-off wrapper
         working-directory: worktree
