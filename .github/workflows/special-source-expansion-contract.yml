@@ -66,6 +66,12 @@ jobs:
           runner=Path('scripts/run_revise_special_mixed_layout.py').read_text(encoding='utf-8')
           assert '本Evidence set' in runner
           assert 'Issue #' in runner
+          assert 'revision.false = False' in runner
+          assert 'revision.true = True' in runner
+          from scripts import run_revise_special_mixed_layout  # noqa: F401
+          from scripts import revise_special_mixed_layout as mixed_module
+          assert mixed_module.false is False
+          assert mixed_module.true is True
           policy=Path('docs/special-layout-policy.md').read_text(encoding='utf-8')
           assert 'narrative article body: **two columns**' in policy
           assert 'wide comparison tables and theme-synthesis matrices: **one column, full width**' in policy
