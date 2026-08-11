@@ -38,12 +38,19 @@ The automated period-consistency guard checks structured identity fields. Human 
 - [ ] No `Selection済みEvidence`, `normalized claim`, `Source-bound record`, or equivalent production-language leakage.
 - [ ] Full repository Evidence IDs are not printed as normal magazine prose.
 - [ ] Machine role/event labels are reader-facing.
+- [ ] Raw schema enums such as `OTHER`, `OFFICIAL_PUBLICATION`, `PRODUCT_UPDATE`, or partially translated forms such as `モデル_RELEASE` are not exposed in the PDF.
+- [ ] `Theme at a glance` and the corresponding Technical Notes card use the same reader-facing taxonomy.
+- [ ] Reader-facing type labels are semantically appropriate to the source; for example, evaluation guidance is not presented as a safety incident merely because the material discusses safeguards.
 - [ ] Primary URLs remain readable/clickable.
 - [ ] Vendor/project/author claim attribution and limitations remain visible.
-- [ ] Claim and limitation explanations use natural Japanese sentence structure by default.
+- [ ] Claim and limitation explanations use natural Japanese sentence structure by default, including `一次情報で確認できる事実` entries.
 - [ ] Model/API/benchmark/framework/paper-defined terms may remain English where translation would reduce precision; this is not treated as a language defect.
 - [ ] A full English source sentence appears only when intentionally presented as an original quotation and is clearly distinguished from the Japanese reader-facing summary.
 - [ ] Japanese rendering has not weakened attribution, numerical setup, threat-model, simulation, or other evidence boundaries.
+- [ ] A page does not begin with only a URL or a tiny remainder of the preceding Technical Notes card.
+- [ ] `一次資料` and at least its first URL stay together across page boundaries.
+- [ ] A limitation paragraph does not leave only its final line at the top of the next page.
+- [ ] Large Technical Notes cards may still break naturally; widow/orphan prevention must not make the whole card unbreakable or recreate large structural whitespace.
 
 ## Release-source discoverability
 
