@@ -80,6 +80,7 @@ def main() -> int:
         "release_revision": args.release_revision,
         "frozen_at": args.approved_at,
         "approval_reference": args.approval_reference,
+        "release_authority": "FREEZE_APPROVAL",
         "release": {
             "tag": candidate["proposed_release_tag"],
             "title": candidate["proposed_release_title"],
@@ -93,7 +94,7 @@ def main() -> int:
             "path": str(candidate_path.relative_to(root)),
             "sha256": sha256_file(candidate_path),
         },
-        "scope": "Human Freeze approval only. Work-PR merge and public Release remain separate explicit Human Gates.",
+        "scope": "Human Freeze approval is the final editorial gate and authorizes work-PR merge plus publication of the exact frozen PDF. Frozen source/PDF bytes may not change downstream.",
     }
     dump(freeze_record_path, freeze_record)
 
@@ -120,11 +121,16 @@ def main() -> int:
             "artifact_name": pdf["artifact_name"],
             "artifact_digest": pdf["artifact_digest"],
         },
-        "public_release_authorized": False,
+        "public_release_authorized": True,
+        "release_authorization": {
+            "mode": "FREEZE_APPROVAL",
+            "authorized_at": args.approved_at,
+            "approval_reference": args.approval_reference,
+        },
         "notes": [
             "The exact Visual-Review-approved PDF artifact is the canonical frozen release asset.",
             "The release workflow must verify expected_pdf_sha256 before creating or publishing a GitHub Release.",
-            "Work-PR merge and public Release remain separate explicit Human Gates after Freeze.",
+            "Human Freeze approval is the final publication authority; downstream merge/release is execution of that approval, not a new editorial gate.",
         ],
     }
     dump(release_manifest_path, release_manifest)
@@ -133,12 +139,14 @@ def main() -> int:
     state["revision"] = args.release_revision
     state["calendar"]["frozen_at"] = args.approved_at
     state["gates"]["freeze"] = "passed"
+    state["automation"]["human_gate_required_for_public_release"] = False
     state.setdefault("provenance", {})["freeze"] = {
         "path": str(freeze_record_path.relative_to(root)),
         "sha256": sha256_file(freeze_record_path),
         "release_revision": args.release_revision,
         "frozen_at": args.approved_at,
         "approval_reference": args.approval_reference,
+        "release_authority": "FREEZE_APPROVAL",
         "release_manifest_path": str(release_manifest_path.relative_to(root)),
         "release_manifest_sha256": sha256_file(release_manifest_path),
     }
@@ -155,8 +163,8 @@ def main() -> int:
         "source_sha256": source["sha256"],
         "pdf_sha256": pdf["sha256"],
         "page_count": pdf["page_count"],
-        "work_pr_merge": "pending",
-        "public_release": "pending",
+        "work_pr_merge": "authorized-by-freeze",
+        "public_release": "authorized-by-freeze",
     }
     print(json.dumps(out, ensure_ascii=False, indent=2))
     return 0

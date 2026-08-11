@@ -18,6 +18,8 @@ on:
 
 permissions:
   contents: write
+  actions: write
+  pull-requests: write
 
 concurrency:
   group: special-freeze-${{ inputs.special_slug }}
@@ -100,7 +102,7 @@ jobs:
             --approved-at "$APPROVED_AT" \
             --approval-reference "$APPROVAL_REFERENCE" \
             | tee special-freeze-audit.json
-      - name: Verify frozen state and separate Release gate
+      - name: Verify frozen state and Freeze-authorized Release
         shell: bash
         env:
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
@@ -120,18 +122,20 @@ jobs:
           assert state['gates']['visual_review']=='passed'
           assert state['gates']['freeze']=='passed'
           assert state['automation']['unattended_public_release'] is False
-          assert state['automation']['human_gate_required_for_public_release'] is True
+          assert state['automation']['human_gate_required_for_public_release'] is False
           freeze=state['provenance']['freeze']
           fp=root/freeze['path']; rp=root/freeze['release_manifest_path']
           assert hashlib.sha256(fp.read_bytes()).hexdigest()==freeze['sha256']
           assert hashlib.sha256(rp.read_bytes()).hexdigest()==freeze['release_manifest_sha256']
           manifest=json.load(open(rp,encoding='utf-8'))
           assert manifest['status']=='frozen'
-          assert manifest['public_release_authorized'] is False
+          assert manifest['public_release_authorized'] is True
+          assert manifest['release_authorization']['mode']=='FREEZE_APPROVAL'
           assert manifest['revision']==revision
           assert manifest['expected_pdf_sha256']==json.load(open(fp,encoding='utf-8'))['canonical_pdf']['sha256']
           PY
-      - name: Commit Freeze record and frozen release manifest
+          python control-src/scripts/special_pipeline.py --config control-src/config/special-pipeline.json validate-state --state "worktree/sources/${SPECIAL_ID}/pipeline-state.json"
+      - name: Commit Freeze record and release-authorized manifest
         working-directory: worktree
         shell: bash
         env:
@@ -148,6 +152,38 @@ jobs:
             "sources/${SPECIAL_ID}/release-manifest.json"
           git commit -m "Freeze ${SPECIAL_ID} ${RELEASE_REVISION}"
           git push origin "HEAD:${WORK_BRANCH}"
+      - name: Merge frozen work PR
+        working-directory: worktree
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          WORK_BRANCH: ${{ steps.edition.outputs.work_branch }}
+        run: |
+          set -euo pipefail
+          pr_number=$(gh pr list --repo "$REPOSITORY" --head "$WORK_BRANCH" --base main --state open --json number --jq '.[0].number')
+          test -n "$pr_number"
+          if [ "$(gh pr view "$pr_number" --repo "$REPOSITORY" --json isDraft --jq .isDraft)" = "true" ]; then
+            gh pr ready "$pr_number" --repo "$REPOSITORY"
+          fi
+          head_sha=$(git rev-parse HEAD)
+          gh pr merge "$pr_number" --repo "$REPOSITORY" --merge --match-head-commit "$head_sha"
+      - name: Dispatch publication under Freeze authority
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          SPECIAL_SLUG: ${{ inputs.special_slug }}
+          RELEASE_REVISION: ${{ inputs.release_revision }}
+          APPROVAL_REFERENCE: ${{ inputs.approval_reference }}
+        run: |
+          set -euo pipefail
+          gh workflow run publish-special-frozen-release.yml \
+            --repo "$REPOSITORY" \
+            --ref main \
+            -f special_slug="$SPECIAL_SLUG" \
+            -f release_revision="$RELEASE_REVISION" \
+            -f approval_reference="$APPROVAL_REFERENCE"
       - name: Upload Freeze audit
         uses: actions/upload-artifact@v7
         with:
