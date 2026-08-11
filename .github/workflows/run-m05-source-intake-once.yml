@@ -39,8 +39,10 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p out/special-source-intake-control
-          python control-src/scripts/special_pipeline.py validate --manifest control-src/specials/2026-M05/edition.json
-          python control-src/scripts/special_pipeline.py plan \
+          python control-src/scripts/special_pipeline.py --config control-src/config/special-pipeline.json \
+            validate --manifest control-src/specials/2026-M05/edition.json
+          python control-src/scripts/special_pipeline.py --config control-src/config/special-pipeline.json \
+            plan \
             --manifest control-src/specials/2026-M05/edition.json \
             --output out/special-source-intake-control/plan.json \
             --markdown-output out/special-source-intake-control/plan.md
