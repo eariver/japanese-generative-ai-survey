@@ -1,0 +1,59 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{Inference \& Serving — 6月、最適化競争はchipからruntimeまで積み上がった}
+\label{pkg:inference-serving-june}
+\noindent\textbf{モデルの大型化とagent化の裏側では、accelerator、kernel、parallelism、serving runtimeが同時に更新されていた。Jalapeño、vLLM、SGLang、FlashInferに、MoebiusとHMA-Serveを重ねると、推論性能は単一のchipやframeworkではなくstack全体で決まることが見えてくる。}\autocite{src-272a6dac5bcc,src-43606e2afafd,src-538cecdad845,src-6cc910fb0183,src-855db08b75f6,src-a66d76643eee}
+
+\subsection{hardware: inference専用chipがengineering sampleへ}
+
+OpenAIとBroadcomは6月24日にcustom LLM inference processor「Jalapeño」を紹介した。一次資料ではengineering sampleがtarget frequency/powerでML workloadを動かしている一方、最終的なperformance measurementは進行中とされている。したがって、chipの存在と開発段階は確認できても、performance-per-wattの最終評価はまだ固定できない。\autocite{src-855db08b75f6}
+
+
+\subsection{runtime: 新モデル対応とexecution engineの更新}
+
+\begin{center}
+\small
+\begin{tabularx}{\columnwidth}{>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X}
+\toprule
+\textbf{層} & \textbf{6月の主な更新} \\
+\midrule
+vLLM & MiniMax-M3対応、Model Runner V2、expert-parallel等の継続開発 \\
+SGLang & GLM-5.2、Kimi K2.7 Code等のmodel supportとserving/kernel更新 \\
+FlashInfer & Blackwell/GQA decode、attention/MoE、quantization/autotuning周辺の更新 \\
+\bottomrule
+\end{tabularx}
+\autocite{src-272a6dac5bcc,src-538cecdad845,src-6cc910fb0183}
+\end{center}
+
+vLLM v0.24.0ではMiniMax-M3 supportに加え、DeepSeek-V4、Model Runner V2、diffusion model、expert-parallel servingに関する作業がrelease noteへ並んだ。新modelを受け入れる互換層と、execution engine側の再設計が同じrelease trainで進んでいる。\autocite{src-6cc910fb0183}
+
+
+SGLang v0.5.14もGLM-5.2やKimi K2.7 Codeなど新しいmodel familyへの対応と、serving/kernel側の変更を同時に含む。frontier modelの更新頻度が高いほど、serving frameworkはmodel adapterだけでなくkernelやparallel executionを継続的に追随させる必要がある。\autocite{src-538cecdad845}
+
+
+FlashInfer v0.6.13はBlackwell/GQA decodeを含むattention・MoE、quantization、autotuning周辺を更新した。frameworkより下層のkernel/backend側でも、model architectureとhardware世代に合わせた最適化が独立したrelease cadenceを持っている。\autocite{src-272a6dac5bcc}
+
+
+\subsection{parallelism: 実行中に構成を切り替える}
+
+Moebiusの著者らはMixture-of-Experts servingでtensor parallelismとexpert parallelismをruntimeに切り替える仕組みを提案した。workloadやphaseに応じて固定parallelismの非効率を避ける狙いで、Qwen3-235B-A22Bなどを用いた評価は著者報告として扱う。\autocite{src-43606e2afafd}
+
+
+\subsection{memory: HBMだけを前提にしないserving}
+
+HMA-Serveの著者らは、memory capacityの異なるacceleratorを分離・組み合わせてLLM servingを行う設計を提示した。HBM容量が均一なclusterだけを前提にせず、memory-heterogeneousな資源をどう使うかをserving問題として扱う点が特徴である。\autocite{src-a66d76643eee}
+
+
+6月の動きをstackとして並べると、inference最適化はchip単体の話では終わらない。hardwareの電力・memory、kernelの実装、parallelismの切替、runtimeのmodel supportまでが相互依存する。新しいmodelを実運用へ持ち込む速度は、このstack全体の更新速度に左右される。\autocite{src-272a6dac5bcc,src-43606e2afafd,src-538cecdad845,src-6cc910fb0183,src-855db08b75f6,src-a66d76643eee}
+
+
+\begin{claimboundary}
+Jalapeñoのperformance-per-wattなどの優位性は最終測定前のfirst-party説明である。engineering sampleが存在することと、量産時の性能・効率を一般化することは分ける。\autocite{src-855db08b75f6}
+\end{claimboundary}
+
+\begin{claimboundary}
+vLLM、SGLang、FlashInferのrelease noteは、何が追加・変更されたかを確認する一次project資料である。一方、そこに含まれる性能表現を独立benchmarkの保証へ拡張しない。\autocite{src-272a6dac5bcc,src-538cecdad845,src-6cc910fb0183}
+\end{claimboundary}
+
+\begin{claimboundary}
+MoebiusとHMA-Serveの性能結果は著者が設定したevaluationであり、別hardware・別workloadでも同じ改善が得られることを意味しない。本稿ではmechanismと設計上のtrade-offを中心に読む。\autocite{src-43606e2afafd,src-a66d76643eee}
+\end{claimboundary}
