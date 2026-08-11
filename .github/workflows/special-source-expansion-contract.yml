@@ -11,6 +11,7 @@ on:
       - 'scripts/expand_special_validated_source.py'
       - 'scripts/run_expand_special_validated_source.py'
       - 'scripts/revise_special_mixed_layout.py'
+      - 'scripts/run_revise_special_mixed_layout.py'
       - 'docs/special-layout-policy.md'
   push:
     branches: [main]
@@ -23,6 +24,7 @@ on:
       - 'scripts/expand_special_validated_source.py'
       - 'scripts/run_expand_special_validated_source.py'
       - 'scripts/revise_special_mixed_layout.py'
+      - 'scripts/run_revise_special_mixed_layout.py'
       - 'docs/special-layout-policy.md'
 
 permissions:
@@ -42,7 +44,8 @@ jobs:
           python -m py_compile \
             scripts/expand_special_validated_source.py \
             scripts/run_expand_special_validated_source.py \
-            scripts/revise_special_mixed_layout.py
+            scripts/revise_special_mixed_layout.py \
+            scripts/run_revise_special_mixed_layout.py
           python - <<'PY'
           from pathlib import Path
           from scripts import expand_special_validated_source as e
@@ -60,6 +63,9 @@ jobs:
           assert 'selected_evidence_only' in mixed
           assert 'article_sections_changed' in mixed
           assert 'technical_notes_changed' in mixed
+          runner=Path('scripts/run_revise_special_mixed_layout.py').read_text(encoding='utf-8')
+          assert '本Evidence set' in runner
+          assert 'Issue #' in runner
           policy=Path('docs/special-layout-policy.md').read_text(encoding='utf-8')
           assert 'narrative article body: **two columns**' in policy
           assert 'wide comparison tables and theme-synthesis matrices: **one column, full width**' in policy
