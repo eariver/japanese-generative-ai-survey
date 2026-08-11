@@ -1,0 +1,107 @@
+name: Run M06 post-draft finalization once
+
+on:
+  pull_request:
+    types: [synchronize]
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: special-finalization-2026-M06-run-once
+  cancel-in-progress: false
+
+jobs:
+  finalization:
+    if: github.event.pull_request.number == 45 && github.event.pull_request.head.ref == 'special/2026-M06-work'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Checkout Special work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2026-M06-work
+          path: worktree
+          fetch-depth: 0
+      - name: Verify post-draft boundary
+        id: boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2026-M06 check
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          state=json.load(open('worktree/sources/SP-2026-M06/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='DRAFT_COMPLETE', state['lifecycle_state']
+          assert state['gates']['article_draft']=='passed'
+          assert state['gates']['claim_and_chronology_validation']=='pending'
+          print(f"article_run_dir={state['provenance']['article_draft']['result_set_path']}")
+          PY
+          test -s worktree/sources/SP-2026-M06/synthesis/interactive-overrides-v0.1/issue-synthesis-v0.1.json
+      - name: Finalize synthesis, audits, and issue source
+        shell: bash
+        env:
+          ARTICLE_RUN_DIR: ${{ steps.boundary.outputs.article_run_dir }}
+        run: |
+          set -euo pipefail
+          generated_at=$(python - <<'PY'
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          print(datetime.now(ZoneInfo('Asia/Tokyo')).isoformat(timespec='seconds'))
+          PY
+          )
+          PYTHONPATH=control-src python control-src/scripts/finalize_special_validated_draft.py \
+            --repo-root worktree \
+            --special-slug 2026-M06 \
+            --issue-id SP-2026-M06 \
+            --article-run-dir "$ARTICLE_RUN_DIR" \
+            --synthesis-body sources/SP-2026-M06/synthesis/interactive-overrides-v0.1/issue-synthesis-v0.1.json \
+            --generated-at "$generated_at" \
+            --run-reference 'ChatGPT post-draft synthesis 2026-08-11 JST: June issue cover and monthly signals synthesized only from six validated article drafts; no external browsing or new facts.' \
+            > special-finalization-audit.json
+      - name: Verify validated-draft state
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,pathlib
+          root=pathlib.Path('worktree')
+          issue='SP-2026-M06'; slug='2026-M06'
+          state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT', state['lifecycle_state']
+          assert state['gates']['claim_and_chronology_validation']=='passed'
+          assert state['gates']['latex_build']=='pending'
+          audit=json.load(open(root/'sources'/issue/'finalization/v0.1/claim-chronology-audit.json',encoding='utf-8'))
+          assert audit['passed'] is True, audit['errors']
+          source=json.load(open(root/'surveys/special'/slug/'source-manifest.json',encoding='utf-8'))
+          assert source['status']=='VALIDATED_SOURCE'
+          assert source['article_count']==6
+          print(json.dumps({'claim_chronology_passed':audit['passed'],'source_status':source['status'],'article_count':source['article_count']},indent=2))
+          PY
+      - name: Commit validated Special source and remove run-once wrapper
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/m06-finalization-run-once.yml
+          git add sources/SP-2026-M06/pipeline-state.json sources/SP-2026-M06/finalization/v0.1 surveys/special/2026-M06
+          git commit -m 'Finalize validated issue source for SP-2026-M06'
+          git push origin HEAD:special/2026-M06-work
+      - name: Upload finalization audit
+        uses: actions/upload-artifact@v7
+        with:
+          name: special-finalization-2026-M06
+          path: special-finalization-audit.json
+          if-no-files-found: error
+          retention-days: 14
