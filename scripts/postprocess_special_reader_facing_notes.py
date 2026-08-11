@@ -150,13 +150,17 @@ def main() -> int:
     if not changed:
         raise ValueError("source manifest contains no Technical Notes")
 
-    manifest["reader_facing_technical_notes"] = {
+    # Preserve any earlier derived-language provenance written by the Japanese
+    # summary pass; this presentation cleanup must not erase that binding.
+    reader = dict(manifest.get("reader_facing_technical_notes") or {})
+    reader.update({
         "policy": "reader-facing technical appendix; complete Evidence identifiers remain repository provenance",
         "unconditional_clearpage_at_entry": False,
         "evidence_ids_rendered_in_pdf": False,
         "pipeline_terms_removed": ["Selection済みEvidence", "normalized claim", "Source-bound record"],
         "changed_files": changed,
-    }
+    })
+    manifest["reader_facing_technical_notes"] = reader
     write_json(manifest_path, manifest)
     source["sha256"] = sha256_file(manifest_path)
     source["reader_facing_technical_notes"] = True
@@ -168,6 +172,7 @@ def main() -> int:
         "source_version": args.source_version,
         "source_manifest_sha256": source["sha256"],
         "technical_notes_changed": len(changed),
+        "language_policy": reader.get("language_policy"),
     }, ensure_ascii=False, indent=2))
     return 0
 
