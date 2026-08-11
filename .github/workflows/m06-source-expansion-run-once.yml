@@ -1,0 +1,124 @@
+name: Run M06 source expansion once
+
+on:
+  pull_request:
+    types: [synchronize]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: special-source-expansion-2026-M06-run-once
+  cancel-in-progress: false
+
+jobs:
+  expand:
+    if: github.event.pull_request.number == 45 && github.event.pull_request.head.ref == 'special/2026-M06-work'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Checkout Special work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2026-M06-work
+          path: worktree
+          fetch-depth: 0
+      - name: Verify source-expansion boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2026-M06 check
+          python - <<'PY'
+          import json,pathlib
+          root=pathlib.Path('worktree'); issue='SP-2026-M06'; slug='2026-M06'
+          state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT', state['lifecycle_state']
+          assert state['gates']['article_draft']=='passed'
+          assert state['gates']['claim_and_chronology_validation']=='passed'
+          assert state['gates']['latex_build']=='pending'
+          assert 'validated_issue_source' in state['provenance']
+          assert not (root/'surveys'/'special'/slug/'revisions'/'v0.2').exists()
+          PY
+      - name: Expand source from selected Evidence only
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python control-src/scripts/expand_special_validated_source.py \
+            --repo-root worktree \
+            --special-slug 2026-M06 \
+            --issue-id SP-2026-M06 \
+            --source-version v0.2 \
+            > special-source-expansion-audit.json
+      - name: Apply Issue 40 reader-facing Technical Notes policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python control-src/scripts/postprocess_special_reader_facing_notes.py \
+            --repo-root worktree \
+            --special-slug 2026-M06 \
+            --issue-id SP-2026-M06 \
+            --source-version v0.2 \
+            > special-reader-facing-notes-audit.json
+      - name: Verify expanded source manifest and provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,pathlib,re
+          root=pathlib.Path('worktree'); issue='SP-2026-M06'; slug='2026-M06'; version='v0.2'
+          state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT'
+          assert state['gates']['latex_build']=='pending'
+          prov=state['provenance']['validated_issue_source']
+          manifest=root/prov['path']
+          expected=root/'surveys'/'special'/slug/'revisions'/version/'source-manifest.json'
+          assert manifest==expected, (manifest,expected)
+          assert hashlib.sha256(manifest.read_bytes()).hexdigest()==prov['sha256']
+          data=json.load(open(manifest,encoding='utf-8'))
+          assert data['status']=='VALIDATED_SOURCE_EXPANSION'
+          assert data['article_count']==6
+          assert int(data['evidence_record_count']) > 0
+          notes=data.get('reader_facing_technical_notes') or {}
+          assert notes.get('unconditional_clearpage_at_entry') is False
+          assert notes.get('evidence_ids_rendered_in_pdf') is False
+          assert len(notes.get('changed_files') or [])==6
+          for article in data['articles']:
+              nrel=article['technical_notes_path']
+              text=(manifest.parent/nrel).read_text(encoding='utf-8')
+              assert not text.lstrip().startswith(r'\clearpage')
+              for banned in ('Selection済みEvidence','normalized claim','Source-bound record:'):
+                  assert banned not in text, (nrel,banned)
+              assert not re.search(r'evidence:SP-2026-M06:', text), nrel
+          history=state.get('provenance_history',{}).get('validated_issue_source',[])
+          assert len(history)>=1
+          assert (manifest.parent/'main.tex').is_file()
+          print(json.dumps({'evidence_record_count':data['evidence_record_count'],'technical_notes_changed':len(notes['changed_files']),'source_manifest_sha256':prov['sha256']},ensure_ascii=False))
+          PY
+      - name: Commit v0.2 and remove run-once wrapper
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/m06-source-expansion-run-once.yml
+          git add sources/SP-2026-M06/pipeline-state.json surveys/special/2026-M06/revisions/v0.2
+          git commit -m 'Expand reader-facing source v0.2 for SP-2026-M06'
+          git push origin HEAD:special/2026-M06-work
+      - name: Upload source expansion audits
+        uses: actions/upload-artifact@v7
+        with:
+          name: special-source-expansion-2026-M06-v0.2
+          path: |
+            special-source-expansion-audit.json
+            special-reader-facing-notes-audit.json
+          if-no-files-found: error
+          retention-days: 14
