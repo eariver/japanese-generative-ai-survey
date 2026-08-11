@@ -1,0 +1,84 @@
+name: Prepare SP-2026-M05 Evidence package once
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/prepare-m05-evidence-once.yml'
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  prepare:
+    if: github.event.pull_request.number == 53 && github.head_ref == 'special/2026-M05-work'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Checkout May work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2026-M05-work
+          path: source-tree
+          fetch-depth: 1
+      - name: Verify screening basis
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s source-tree/sources/SP-2026-M05/screening/runs/6190a7e7933d6b81caad435253dcd7443f3ca2f80967312149a01dd6e493f139/acceptance.json
+          python - <<'PY'
+          import json
+          s=json.load(open('source-tree/sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
+          assert s['lifecycle_state']=='CANDIDATES_NORMALIZED'
+          assert s['gates']['candidate_inventory']=='passed'
+          assert s['gates']['evidence_normalized']=='pending'
+          a=json.load(open('source-tree/sources/SP-2026-M05/screening/runs/6190a7e7933d6b81caad435253dcd7443f3ca2f80967312149a01dd6e493f139/acceptance.json',encoding='utf-8'))
+          assert a['status']=='ACCEPTED' and a['result_set_sha256']=='6190a7e7933d6b81caad435253dcd7443f3ca2f80967312149a01dd6e493f139'
+          PY
+      - name: Enable Special ID in generic Evidence package helper for this run
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('control-src/scripts/prepare_evidence_run.py')
+          t=p.read_text(encoding='utf-8')
+          old='ISSUE_RE = re.compile(r"^[0-9]{4}-W[0-9]{2}$")'
+          new='ISSUE_RE = re.compile(r"^(?:[0-9]{4}-W[0-9]{2}|SP-[A-Za-z0-9][A-Za-z0-9._-]{2,63})$")'
+          assert old in t
+          p.write_text(t.replace(old,new,1),encoding='utf-8')
+          PY
+      - name: Build deterministic Evidence execution package
+        shell: bash
+        run: |
+          set -euo pipefail
+          commit=$(git -C source-tree rev-parse HEAD)
+          PYTHONPATH=control-src python control-src/scripts/prepare_evidence_run.py \
+            --repo-root source-tree \
+            --output-root evidence-package \
+            --issue-id SP-2026-M05 \
+            --screening-run-sha 6190a7e7933d6b81caad435253dcd7443f3ca2f80967312149a01dd6e493f139 \
+            --source-ref special/2026-M05-work \
+            --source-commit "$commit"
+          python - <<'PY'
+          import json
+          p=json.load(open('evidence-package/evidence-execution-package.json',encoding='utf-8'))
+          assert p['issue_id']=='SP-2026-M05'
+          assert p['evidence_tasks']['task_count'] > 0
+          print('task_count',p['evidence_tasks']['task_count'])
+          PY
+      - name: Upload Evidence package
+        uses: actions/upload-artifact@v7
+        with:
+          name: sp-2026-m05-evidence-input
+          path: evidence-package/
+          if-no-files-found: error
+          retention-days: 14
