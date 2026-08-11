@@ -22,7 +22,7 @@ on:
       - '.github/workflows/*.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: pipeline-contract-tests-${{ github.ref }}
@@ -48,6 +48,7 @@ jobs:
             echo "Validating JSON: ${path}"
             python -m json.tool "$path" >/dev/null
           done < <(find config schemas -type f -name '*.json' -print0 | sort -z)
+
           while IFS= read -r -d '' manifest; do
             echo "Validating release manifest: ${manifest}"
             python -m json.tool "$manifest" >/dev/null
@@ -64,131 +65,3 @@ jobs:
         run: |
           set -euo pipefail
           python -m unittest discover -s tests -p 'test_*.py' -v
-
-  m05-build-existing-v04:
-    if: github.event_name == 'pull_request' && github.event.pull_request.number == 53 && github.event.pull_request.head.ref == 'special/2026-M05-work'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout canonical control code
-        uses: actions/checkout@v6
-        with:
-          ref: main
-          path: control-src
-          fetch-depth: 1
-
-      - name: Checkout May work branch
-        uses: actions/checkout@v6
-        with:
-          ref: special/2026-M05-work
-          path: worktree
-          fetch-depth: 0
-
-      - name: Verify exact v0.4 source
-        id: source
-        shell: bash
-        run: |
-          set -euo pipefail
-          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2026-M05 check >/dev/null
-          python - >> "$GITHUB_OUTPUT" <<'PY'
-          import hashlib,json,pathlib
-          r=pathlib.Path('worktree')
-          s=json.load(open(r/'sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
-          assert s['lifecycle_state']=='VALIDATED_DRAFT'
-          assert s['gates']['latex_build']=='pending' and s['gates']['visual_review']=='pending' and s['gates']['freeze']=='pending'
-          src=s['provenance']['validated_issue_source']; assert src['source_version']=='v0.4'
-          m=r/src['path']; assert hashlib.sha256(m.read_bytes()).hexdigest()==src['sha256']
-          d=json.load(open(m,encoding='utf-8')); assert d['status']=='VALIDATED_BALANCED_ADAPTIVE_CHRONOLOGY_REVISION'
-          assert d['layout_revision']['may_chronology_added'] is True and d['layout_revision']['scope_month_corrected'] is True
-          print('source_dir='+m.parent.as_posix())
-          print('source_manifest='+m.as_posix())
-          print('source_manifest_sha256='+src['sha256'])
-          PY
-          cp control-src/templates/survey/jgaisurvey.sty "${{ steps.source.outputs.source_dir }}/jgaisurvey.sty"
-
-      - name: Set reproducible PDF timestamp
-        run: echo 'SOURCE_DATE_EPOCH=1779926400' >> "$GITHUB_ENV"
-
-      - name: Compile v0.4 Preview
-        uses: xu-cheng/latex-action@v4
-        with:
-          root_file: main.tex
-          working_directory: ${{ steps.source.outputs.source_dir }}
-          texlive_version: 2026
-          latexmk_use_lualatex: true
-          os: alpine
-
-      - name: Audit v0.4 Preview
-        id: audit
-        shell: bash
-        env:
-          SOURCE_DIR: ${{ steps.source.outputs.source_dir }}
-          MANIFEST: ${{ steps.source.outputs.source_manifest }}
-          MANIFEST_SHA: ${{ steps.source.outputs.source_manifest_sha256 }}
-        run: |
-          set -u
-          pdf="$SOURCE_DIR/main.pdf"; log="$SOURCE_DIR/main.log"; test -s "$pdf" && test -s "$log"
-          bad=$(grep -E -n 'LaTeX Warning: (There were undefined references|Citation .* undefined)|Package biblatex Warning: Please (re)?run|Overfull \\hbox|Underfull \\hbox|Missing character:' "$log" || true)
-          pages=$(python - "$log" <<'PY'
-          import re,sys
-          text=open(sys.argv[1],encoding='utf-8',errors='replace').read(); values=re.findall(r'Output written on .*?\((\d+) pages?',text,re.S); print(values[-1] if values else '-1')
-          PY
-          )
-          sha=$(sha256sum "$pdf" | awk '{print $1}'); [ -z "$bad" ] && clean=true || clean=false
-          python - "$pages" "$sha" "$clean" "$bad" "$MANIFEST" "$MANIFEST_SHA" <<'PY'
-          import json,sys
-          pages,sha,clean,bad,manifest,msha=sys.argv[1:]; n=int(pages)
-          result={'schema_version':'1.0','issue_id':'SP-2026-M05','source_version':'v0.4','page_count':n,'pdf_sha256':sha,'log_clean':clean=='true','log_gate_findings':bad.splitlines() if bad else [],'page_target_min':32,'page_target_max':40,'page_budget_passed':32<=n<=40,'source_manifest_path':manifest,'source_manifest_sha256':msha}
-          open('special-pdf-build-audit.json','w',encoding='utf-8').write(json.dumps(result,ensure_ascii=False,indent=2)+'\n'); print(json.dumps(result,ensure_ascii=False,indent=2))
-          PY
-          echo "pages=$pages" >> "$GITHUB_OUTPUT"; echo "sha=$sha" >> "$GITHUB_OUTPUT"; echo "clean=$clean" >> "$GITHUB_OUTPUT"
-
-      - name: Upload v0.4 Preview artifact
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: japanese-generative-ai-survey-special-2026-M05-v0.4
-          path: |
-            ${{ steps.source.outputs.source_dir }}/main.pdf
-            ${{ steps.source.outputs.source_dir }}/main.log
-            special-pdf-build-audit.json
-          if-no-files-found: error
-          retention-days: 14
-
-      - name: Record clean page-budget release candidate
-        if: steps.audit.outputs.clean == 'true' && fromJSON(steps.audit.outputs.pages) >= 32 && fromJSON(steps.audit.outputs.pages) <= 40
-        working-directory: worktree
-        shell: bash
-        env:
-          PAGES: ${{ steps.audit.outputs.pages }}
-          PDF_SHA: ${{ steps.audit.outputs.sha }}
-          RUN_ID: ${{ github.run_id }}
-          MANIFEST: ${{ steps.source.outputs.source_manifest }}
-          MANIFEST_SHA: ${{ steps.source.outputs.source_manifest_sha256 }}
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          import json,pathlib,os
-          p=pathlib.Path('sources/SP-2026-M05/pipeline-state.json'); s=json.load(open(p,encoding='utf-8'))
-          s['lifecycle_state']='RELEASE_CANDIDATE'; s['gates']['latex_build']='passed'; s['gates']['visual_review']='pending'; s['gates']['freeze']='pending'
-          s['provenance']['latex_build']={'workflow_run_id':int(os.environ['RUN_ID']),'pdf_sha256':os.environ['PDF_SHA'],'page_count':int(os.environ['PAGES']),'source_version':'v0.4','validated_issue_source_path':os.environ['MANIFEST'],'validated_issue_source_sha256':os.environ['MANIFEST_SHA'],'preview_only':True,'log_clean':True}
-          p.write_text(json.dumps(s,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          PY
-          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add sources/SP-2026-M05/pipeline-state.json
-          git commit -m 'Record v0.4 pre-Human Preview candidate for SP-2026-M05'
-          git push origin HEAD:special/2026-M05-work
-
-      - name: Restore canonical contract workflow and clean build helpers
-        if: always()
-        working-directory: worktree
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git pull --rebase origin special/2026-M05-work
-          cp ../control-src/.github/workflows/pipeline-contract-tests.yml .github/workflows/pipeline-contract-tests.yml
-          git rm -f sources/SP-2026-M05/editorial/build-v0.4-source-impl.py || true
-          git rm -f sources/SP-2026-M05/editorial/v0.4-retry-trigger.json || true
-          git rm -f surveys/special/2026-M05/revisions/v0.4/main.pdf || true
-          git add .github/workflows/pipeline-contract-tests.yml
-          if ! git diff --cached --quiet; then git commit -m 'Clean SP-2026-M05 v0.4 PDF helper'; git push origin HEAD:special/2026-M05-work; fi
