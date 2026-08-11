@@ -4,14 +4,18 @@ on:
   pull_request:
     paths:
       - '.github/workflows/accept-special-freeze.yml'
+      - '.github/workflows/publish-special-frozen-release.yml'
       - '.github/workflows/special-freeze-contract.yml'
       - 'scripts/accept_special_freeze.py'
+      - 'schemas/special-pipeline-state.schema.json'
   push:
     branches: [main]
     paths:
       - '.github/workflows/accept-special-freeze.yml'
+      - '.github/workflows/publish-special-frozen-release.yml'
       - '.github/workflows/special-freeze-contract.yml'
       - 'scripts/accept_special_freeze.py'
+      - 'schemas/special-pipeline-state.schema.json'
 
 permissions:
   contents: read
@@ -24,7 +28,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Verify Freeze acceptance contract
+      - name: Verify Freeze acceptance and publication contract
         run: |
           set -euo pipefail
           python -m py_compile scripts/accept_special_freeze.py
@@ -68,15 +72,24 @@ jobs:
               state=json.loads(state_path.read_text())
               assert state['lifecycle_state']=='FROZEN' and state['gates']['freeze']=='passed'
               assert state['calendar']['frozen_at']=='2026-08-11T13:00:00+09:00'
+              assert state['automation']['unattended_public_release'] is False
+              assert state['automation']['human_gate_required_for_public_release'] is False
               freeze=json.loads((root/'sources'/issue/'freeze'/f'freeze-{rev}.json').read_text())
               release=json.loads((root/'sources'/issue/'release-manifest.json').read_text())
               assert freeze['canonical_pdf']['sha256']==pdf['sha256']
+              assert freeze['release_authority']=='FREEZE_APPROVAL'
               assert release['expected_pdf_sha256']==pdf['sha256']
-              assert release['public_release_authorized'] is False
+              assert release['public_release_authorized'] is True
+              assert release['release_authorization']['mode']=='FREEZE_APPROVAL'
 
           workflow=pathlib.Path('.github/workflows/accept-special-freeze.yml').read_text(encoding='utf-8')
+          publisher=pathlib.Path('.github/workflows/publish-special-frozen-release.yml').read_text(encoding='utf-8')
           assert 'PENDING_HUMAN_FREEZE_APPROVAL' in workflow
-          assert 'human_gate_required_for_public_release' in workflow
+          assert 'gh pr merge' in workflow
+          assert 'publish-special-frozen-release.yml' in workflow
           assert 'public_release_authorized' in workflow
-          assert 'Freeze ${SPECIAL_ID}' in workflow
+          assert 'expected_pdf_sha256' in publisher
+          assert 'actions/artifacts/${ARTIFACT_ID}/zip' in publisher
+          assert 'gh release create' in publisher
+          assert 'RELEASE_METADATA.json' in publisher
           PY
