@@ -1,0 +1,190 @@
+name: Run M06 June chronology v0.7 once
+
+on:
+  pull_request:
+    types: [synchronize]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: special-june-chronology-2026-M06-v0.7-run-once
+  cancel-in-progress: false
+
+jobs:
+  revise:
+    if: github.event.pull_request.number == 45 && github.event.pull_request.head.ref == 'special/2026-M06-work'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - name: Checkout Special work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2026-M06-work
+          path: worktree
+          fetch-depth: 0
+      - name: Verify v0.6 render-first boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2026-M06 check >/dev/null
+          python - <<'PY'
+          import json,pathlib
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources/SP-2026-M06/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='RELEASE_CANDIDATE'
+          assert state['gates']['latex_build']=='passed' and state['gates']['visual_review']=='pending' and state['gates']['freeze']=='pending'
+          src=state['provenance']['validated_issue_source']
+          assert src['source_version']=='v0.6' and src['sha256']=='41d33513a9c556f76ecac54904fbb4f0173667006d206671763bfd0ef89cfd62'
+          build=state['provenance']['latex_build']
+          assert build['pdf_sha256']=='d6f116750e132e7c7965d13ec94e8662e940ce3a61bfcd040e73789a3bea593e'
+          assert build['page_count']==32
+          art=root/'sources/SP-2026-M06/editorial/june-chronology-v0.7.json'
+          value=json.load(open(art,encoding='utf-8'))
+          assert value['constraints']['new_external_evidence_allowed'] is False
+          assert value['constraints']['selected_evidence_only'] is True
+          assert len(value['rows'])==9
+          assert not (root/'surveys/special/2026-M06/revisions/v0.7').exists()
+          PY
+      - name: Build selected-Evidence chronology revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import copy,hashlib,json,re,shutil
+          root=Path('worktree'); issue='SP-2026-M06'; slug='2026-M06'; version='v0.7'
+          state_path=root/'sources'/issue/'pipeline-state.json'
+          state=json.load(open(state_path,encoding='utf-8'))
+          current=copy.deepcopy(state['provenance']['validated_issue_source'])
+          current_manifest_path=root/current['path']; current_manifest=json.load(open(current_manifest_path,encoding='utf-8'))
+          current_dir=current_manifest_path.parent; out=root/'surveys/special'/slug/'revisions'/version
+          shutil.copytree(current_dir,out)
+          def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+          def tex_escape(value):
+              table={'\\':r'\textbackslash{}','&':r'\&','%':r'\%','$':r'\$','#':r'\#','_':r'\_','{':r'\{','}':r'\}','~':r'\textasciitilde{}','^':r'\textasciicircum{}'}
+              return ''.join(table.get(ch,ch) for ch in str(value))
+          # Build a unique selected-Evidence index from immutable Draft Packages.
+          records={}
+          for article in current_manifest['articles']:
+              package_path=root/article['draft_package_path']
+              assert sha(package_path)==article['draft_package_sha256']
+              package=json.load(open(package_path,encoding='utf-8'))
+              for kind in ('primary_evidence','supporting_evidence'):
+                  for rec in package.get(kind) or []:
+                      tid=rec['evidence_task_id']
+                      if tid in records:
+                          assert records[tid]==rec
+                      records[tid]=rec
+          assert records
+          # Parse source URL -> bibliography key from the already-validated references file.
+          bib_text=(out/'references.bib').read_text(encoding='utf-8')
+          bib_map={}
+          for block in re.split(r'(?=@online\{)',bib_text):
+              km=re.match(r'@online\{([^,]+),',block); um=re.search(r'\n\s*url\s*=\s*\{([^}]*)\},',block)
+              if km and um: bib_map[um.group(1).strip()]=km.group(1).strip()
+          assert bib_map
+          def resolve(token):
+              token_l=token.lower(); found=[]
+              for tid,rec in records.items():
+                  card=rec.get('card') or {}; name=str((card.get('artifact') or {}).get('canonical_name') or '')
+                  if token_l in name.lower(): found.append((tid,rec,name))
+              if len(found)!=1:
+                  raise ValueError(f'chronology token {token!r} resolved to {[(x[0],x[2]) for x in found]}')
+              return found[0]
+          def citation_for(rec):
+              keys=[]
+              for source in (rec.get('card') or {}).get('sources') or []:
+                  url=str(source.get('url') or '').strip()
+                  if not url: continue
+                  if url not in bib_map: raise ValueError(f'chronology source missing bibliography key: {url}')
+                  key=bib_map[url]
+                  if key not in keys: keys.append(key)
+              if not keys: raise ValueError('chronology record has no citable source')
+              return keys
+          artifact_path=root/'sources'/issue/'editorial'/f'june-chronology-{version}.json'
+          artifact=json.load(open(artifact_path,encoding='utf-8'))
+          used=[]; rendered_rows=[]
+          for row in artifact['rows']:
+              resolved=[resolve(t) for t in row['match_tokens']]
+              dates=[]; keys=[]
+              for tid,rec,name in resolved:
+                  if tid not in used: used.append(tid)
+                  date=str(((rec.get('card') or {}).get('temporal') or {}).get('artifact_first_announced') or '')
+                  if not re.fullmatch(r'2026-06-\d{2}',date): raise ValueError(f'chronology requires day-precision June date: {name}: {date}')
+                  dates.append(date)
+                  for key in citation_for(rec):
+                      if key not in keys: keys.append(key)
+              start=min(dates); end=max(dates)
+              label=start[5:] if start==end else f'{start[5:]}–{end[5:]}'
+              rendered_rows.append((label,row['layer'],row['text'],keys))
+          # Reader-facing compact table; chronology is an editorial index, not new Evidence.
+          lines=[r'\sectionkicker{June chronology}',r'\subsection*{'+tex_escape(artifact['title'])+'}',r'\noindent '+tex_escape(artifact['lead']),r'\medskip',r'\begin{center}',r'\scriptsize',r'\renewcommand{\arraystretch}{1.08}',r'\begin{tabularx}{\linewidth}{@{}p{0.10\linewidth}p{0.20\linewidth}X@{}}',r'\toprule',r'日付 & 層 & 観測点 \\',r'\midrule']
+          for date,layer,text,keys in rendered_rows:
+              lines.append(tex_escape(date)+' & '+tex_escape(layer)+' & '+tex_escape(text)+r' \cite{'+','.join(keys)+r'} \\')
+          lines += [r'\bottomrule',r'\end{tabularx}',r'\renewcommand{\arraystretch}{1.0}',r'\end{center}',r'\normalsize',r'\begin{claimboundary}[この年表の境界]',tex_escape(artifact['boundary']),r'\end{claimboundary}','']
+          chron_dir=out/'chronology'; chron_dir.mkdir(parents=True,exist_ok=True)
+          chron_rel='chronology/65-june-chronology.tex'; chron_path=out/chron_rel
+          chron_path.write_text('\n'.join(lines),encoding='utf-8')
+          # Insert after Paper Watch notes and before the existing final-synthesis Needspace.
+          main_path=out/'main.tex'; text=main_path.read_text(encoding='utf-8')
+          anchor=r'\input{technical-notes/60-paper-watch-june-notes}'+'\n\n'+r'\Needspace{0.55\textheight}'
+          replacement=r'\input{technical-notes/60-paper-watch-june-notes}'+'\n\n'+r'\Needspace{0.40\textheight}'+'\n'+r'\input{chronology/65-june-chronology}'+'\n'+r'\medskip'+'\n\n'+r'\Needspace{0.55\textheight}'
+          if text.count(anchor)!=1: raise ValueError('chronology insertion anchor mismatch')
+          text=text.replace(anchor,replacement,1); main_path.write_text(text,encoding='utf-8')
+          new_manifest=copy.deepcopy(current_manifest)
+          new_manifest['source_version']=version
+          new_manifest['status']='VALIDATED_JUNE_CHRONOLOGY_REVISION'
+          new_manifest['derivation']='Render-first editorial revision of v0.6. A compact chronology is added in structural whitespace before the final retrospective synthesis, using only Evidence already selected by the approved Issue Architecture. Accepted Article Draft sections, layout article bodies, Theme Synthesis, Technical Notes, final synthesis wording, and bibliography content remain unchanged.'
+          new_manifest['basis']=copy.deepcopy(current_manifest.get('basis') or {})
+          new_manifest['basis']['previous_source_manifest_path']=current['path']; new_manifest['basis']['previous_source_manifest_sha256']=current['sha256']
+          new_manifest['main_tex']={'path':'main.tex','sha256':sha(main_path)}
+          new_manifest['chronology_synthesis']={'artifact_path':artifact_path.relative_to(root).as_posix(),'artifact_sha256':sha(artifact_path),'tex_path':chron_rel,'tex_sha256':sha(chron_path),'new_external_evidence':False,'selected_evidence_only':True,'referenced_evidence_task_ids':used,'row_count':len(rendered_rows)}
+          new_manifest['layout_revision']={'from_source_version':'v0.6','reader_content_changed':True,'new_external_evidence':False,'selected_evidence_only':True,'chronology_synthesis_added':True,'accepted_article_sections_changed':False,'layout_article_bodies_changed':False,'theme_synthesis_changed':False,'technical_notes_changed':False,'final_synthesis_changed':False,'references_bib_changed':False}
+          manifest_path=out/'source-manifest.json'; manifest_path.write_text(json.dumps(new_manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8'); manifest_sha=sha(manifest_path)
+          history=state.setdefault('provenance_history',{}); history.setdefault('validated_issue_source',[]).append(current)
+          prev_build=copy.deepcopy(state['provenance'].get('latex_build') or {})
+          if prev_build: history.setdefault('latex_build',[]).append(prev_build)
+          state['lifecycle_state']='VALIDATED_DRAFT'; state['gates']['latex_build']='pending'; state['gates']['visual_review']='pending'; state['gates']['freeze']='pending'
+          state['provenance']['validated_issue_source']={'path':manifest_path.relative_to(root).as_posix(),'sha256':manifest_sha,'source_version':version,'layout_mode':'balanced-multicol-adaptive-spacing-with-june-chronology','editorial_supplement_sha256':sha(artifact_path)}
+          state['provenance'].pop('latex_build',None)
+          state['provenance']['reader_layout_revision']={'source_version':version,'supplement_path':artifact_path.relative_to(root).as_posix(),'supplement_sha256':sha(artifact_path),'reason':'Render-first QA of v0.6 found a large structural blank tail before the final synthesis. Use that space for a selected-Evidence-only June chronology instead of preserving whitespace merely to satisfy the page budget.'}
+          state_path.write_text(json.dumps(state,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps({'source_version':version,'source_manifest_sha256':manifest_sha,'chronology_rows':len(rendered_rows),'referenced_evidence_count':len(used),'chronology_tex_sha256':sha(chron_path)},ensure_ascii=False))
+          PY
+      - name: Verify v0.7 invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('worktree'); state=json.load(open(root/'sources/SP-2026-M06/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT'
+          assert state['gates']['latex_build']=='pending' and state['gates']['visual_review']=='pending' and state['gates']['freeze']=='pending'
+          src=state['provenance']['validated_issue_source']; assert src['source_version']=='v0.7'
+          manifest=root/src['path']; assert hashlib.sha256(manifest.read_bytes()).hexdigest()==src['sha256']
+          data=json.load(open(manifest,encoding='utf-8')); assert data['status']=='VALIDATED_JUNE_CHRONOLOGY_REVISION'
+          c=data['chronology_synthesis']; assert c['new_external_evidence'] is False and c['selected_evidence_only'] is True and c['row_count']==9
+          assert len(c['referenced_evidence_task_ids'])>=9
+          chron=manifest.parent/c['tex_path']; text=chron.read_text(encoding='utf-8')
+          assert 'June chronology' in text and 'この年表の境界' in text
+          assert 'Candidate Selection' not in text and 'Issue Architecture' not in text and 'Evidence Task' not in text
+          lr=data['layout_revision']; assert lr['chronology_synthesis_added'] is True and lr['new_external_evidence'] is False
+          assert lr['accepted_article_sections_changed'] is False and lr['technical_notes_changed'] is False and lr['final_synthesis_changed'] is False and lr['references_bib_changed'] is False
+          PY
+      - name: Commit v0.7 and remove wrapper
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/m06-june-chronology-v07-run-once.yml
+          git add sources/SP-2026-M06/pipeline-state.json surveys/special/2026-M06/revisions/v0.7
+          git commit -m 'Add June chronology synthesis v0.7 for SP-2026-M06'
+          git push origin HEAD:special/2026-M06-work
