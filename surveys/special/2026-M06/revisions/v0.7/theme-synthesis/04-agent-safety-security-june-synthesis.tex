@@ -1,0 +1,24 @@
+\sectionkicker{Theme synthesis}
+\subsection*{横断比較 — 『Agent security』を権限・注入・接続面・評価へ分解する}
+\addcontentsline{toc}{subsection}{横断比較 — 『Agent security』を権限・注入・接続面・評価へ分解する}
+6月のAgent security資料は同じfailure modeを測っているわけではない。capability exposureとauthorization、adaptive prompt injection、MCP multi-tool poisoning、persistent-agent attack surfaces、deployment simulationを別のthreat/evaluation modelとして分ける必要がある。
+\medskip
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}X@{}}
+\toprule
+観察軸 & 7月の一次資料・論文から読めること \\
+\midrule
+capabilityとauthorization & Capability Gates Are Not Authorizationはtoolを見せる/隠すこととper-call authorizationを区別する。ShareLockはMCPの複数toolをまたぐpoisoning例を扱い、接続可能性そのものを権限保証とみなせないことを別角度から示す。 \cite{src-02da0db00c2d,src-91b06074799d} \\
+adaptive prompt injection & Out-of-Band Defensesの研究はdefense-awareなadaptive attackで評価する必要を提示し、固定attack suiteだけで防御性能を判断する危険を扱う。 \cite{src-cd4b60edfee7} \\
+persistent-agent attack surface & SafeClawArenaはClaw-like agentをcomputer systemとして捉え、複数component/attack surfaceを横断するadversarial taskを構成する。単一promptの安全性評価より広いsystem boundaryが対象である。 \cite{src-6da0c5a88fa4} \\
+pre-deployment evaluation & Deployment Simulationはcandidate modelとsimulated toolsで過去conversationを再生するoperational safety methodとして説明された。研究benchmarkとは異なる評価層であり、vendor-reported methodとして帰属を維持する。 \cite{src-c000018ba1f0} \\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\end{center}
+\normalsize
+\begin{claimboundary}[この比較の境界]
+この表は本号で既に検証・参照している一次資料と論文を横断比較の形へ再配置したものである。vendor / project / author が報告した性能値や優位性は独立再現済みの一般則へ変換せず、本文とSource Notesの帰属境界をそのまま維持する。
+\end{claimboundary}
