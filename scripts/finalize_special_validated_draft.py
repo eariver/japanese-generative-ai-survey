@@ -22,7 +22,7 @@ import hashlib
 import json
 import re
 import shutil
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -69,6 +69,29 @@ def parse_instant(value: str) -> datetime:
     if parsed.tzinfo is None:
         parsed = parsed.replace(tzinfo=timezone.utc)
     return parsed.astimezone(timezone.utc)
+
+
+def event_timing_relation(value: str, start: datetime, cutoff: datetime) -> str:
+    text = value.strip()
+    if re.fullmatch(r"\d{4}-\d{2}", text):
+        year, month = (int(part) for part in text.split("-"))
+        first = datetime(year, month, 1, tzinfo=timezone.utc).date()
+        if month == 12:
+            next_month = datetime(year + 1, 1, 1, tzinfo=timezone.utc)
+        else:
+            next_month = datetime(year, month + 1, 1, tzinfo=timezone.utc)
+        last = (next_month - timedelta(days=1)).date()
+        if first >= start.date() and last <= cutoff.date():
+            return "MAIN_EVENT"
+        if last < start.date():
+            return "PRE_WINDOW"
+        if first > cutoff.date():
+            return "POST_CUTOFF"
+        return "TIMING_UNRESOLVED"
+    instant = parse_instant(text)
+    if start <= instant <= cutoff:
+        return "MAIN_EVENT"
+    return "PRE_WINDOW" if instant < start else "POST_CUTOFF"
 
 
 def body_text(article: dict[str, Any]) -> str:
@@ -352,8 +375,7 @@ def chronology_audit(
                 raw = event.get("event_date")
                 if not isinstance(raw, str) or not raw.strip():
                     continue
-                instant = parse_instant(raw)
-                relation = "MAIN_EVENT" if start <= instant <= cutoff else ("PRE_WINDOW" if instant < start else "POST_CUTOFF")
+                relation = event_timing_relation(raw, start, cutoff)
                 event_rows.append({
                     "package_id": article["package_id"],
                     "evidence_task_id": str(task_id),
