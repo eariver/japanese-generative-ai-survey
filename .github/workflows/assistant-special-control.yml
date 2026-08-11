@@ -35,6 +35,10 @@ jobs:
           if r.get('schema_version')!='1.0': raise SystemExit('unsupported schema_version')
           if r.get('ref','main')!='main': raise SystemExit('only main ref may be dispatched')
           specs={
+            'run-special-source-intake': {
+              'file':'special-pipeline.yml',
+              'keys':{'command','special_slug','collector'},
+            },
             'import-reviewed-special-source-intake': {
               'file':'import-reviewed-special-source-intake.yml',
               'keys':{'special_slug','source_run_id','review_reference'},
