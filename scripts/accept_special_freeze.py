@@ -68,7 +68,10 @@ def main() -> int:
     assert approved.tzinfo is not None
 
     freeze_record_path = root / "sources" / issue / "freeze" / f"freeze-{args.release_revision}.json"
+    release_manifest_path = root / "sources" / issue / "release-manifest.json"
     assert not freeze_record_path.exists(), freeze_record_path
+    assert not release_manifest_path.exists(), release_manifest_path
+
     freeze_record = {
         "schema_version": "1.0",
         "issue_id": issue,
@@ -94,6 +97,38 @@ def main() -> int:
     }
     dump(freeze_record_path, freeze_record)
 
+    release_manifest = {
+        "schema_version": "1.0",
+        "issue_id": issue,
+        "special_slug": args.special_slug,
+        "revision": args.release_revision,
+        "status": "frozen",
+        "source_version": candidate["source_version"],
+        "source_manifest_path": source["path"],
+        "source_manifest_sha256": source["sha256"],
+        "release_tag": candidate["proposed_release_tag"],
+        "release_title": candidate["proposed_release_title"],
+        "asset_name": candidate["proposed_pdf_asset_name"],
+        "expected_pdf_sha256": pdf["sha256"],
+        "page_count": pdf["page_count"],
+        "survey_root": f"surveys/special/{args.special_slug}/revisions/{candidate['source_version']}",
+        "freeze_record": str(freeze_record_path.relative_to(root)),
+        "pdf_source": {
+            "mode": "actions-artifact",
+            "workflow_run_id": pdf["workflow_run_id"],
+            "artifact_id": pdf["artifact_id"],
+            "artifact_name": pdf["artifact_name"],
+            "artifact_digest": pdf["artifact_digest"],
+        },
+        "public_release_authorized": False,
+        "notes": [
+            "The exact Visual-Review-approved PDF artifact is the canonical frozen release asset.",
+            "The release workflow must verify expected_pdf_sha256 before creating or publishing a GitHub Release.",
+            "Work-PR merge and public Release remain separate explicit Human Gates after Freeze.",
+        ],
+    }
+    dump(release_manifest_path, release_manifest)
+
     state["lifecycle_state"] = "FROZEN"
     state["revision"] = args.release_revision
     state["calendar"]["frozen_at"] = args.approved_at
@@ -104,6 +139,8 @@ def main() -> int:
         "release_revision": args.release_revision,
         "frozen_at": args.approved_at,
         "approval_reference": args.approval_reference,
+        "release_manifest_path": str(release_manifest_path.relative_to(root)),
+        "release_manifest_sha256": sha256_file(release_manifest_path),
     }
     dump(state_path, state)
 
@@ -113,6 +150,8 @@ def main() -> int:
         "release_revision": args.release_revision,
         "freeze_record": str(freeze_record_path.relative_to(root)),
         "freeze_record_sha256": sha256_file(freeze_record_path),
+        "release_manifest": str(release_manifest_path.relative_to(root)),
+        "release_manifest_sha256": sha256_file(release_manifest_path),
         "source_sha256": source["sha256"],
         "pdf_sha256": pdf["sha256"],
         "page_count": pdf["page_count"],
