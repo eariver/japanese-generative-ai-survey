@@ -1,0 +1,191 @@
+name: Run M06 final synthesis spacing v0.6 once
+
+on:
+  pull_request:
+    types: [synchronize]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: special-final-synthesis-spacing-2026-M06-v0.6-run-once
+  cancel-in-progress: false
+
+jobs:
+  revise:
+    if: github.event.pull_request.number == 45 && github.event.pull_request.head.ref == 'special/2026-M06-work'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - name: Checkout Special work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2026-M06-work
+          path: worktree
+          fetch-depth: 0
+      - name: Verify v0.5 release-candidate boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2026-M06 check >/dev/null
+          python - <<'PY'
+          import json,pathlib
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources/SP-2026-M06/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='RELEASE_CANDIDATE'
+          assert state['gates']['latex_build']=='passed'
+          assert state['gates']['visual_review']=='pending'
+          assert state['gates']['freeze']=='pending'
+          src=state['provenance']['validated_issue_source']
+          assert src['source_version']=='v0.5'
+          assert src['sha256']=='529050f9cf4ab7729fea55aa4aae0a8a18bb1140dfc395eff41cb30c86412f28'
+          build=state['provenance']['latex_build']
+          assert build['pdf_sha256']=='507b35e183d4ce00cd7feaedf0881dbf55892852582ad280167c278a17058199'
+          assert build['page_count']==33
+          marker=root/'sources/SP-2026-M06/editorial/layout-revision-v0.6.json'
+          value=json.load(open(marker,encoding='utf-8'))
+          assert value['constraints']['reader_content_changed'] is False
+          assert value['constraints']['new_external_evidence_allowed'] is False
+          assert value['constraints']['selected_evidence_only'] is True
+          assert value['layout_changes']['remove_final_synthesis_subsection_needspace'] is True
+          assert value['layout_changes']['expected_replacement_count']==6
+          assert not (root/'surveys/special/2026-M06/revisions/v0.6').exists()
+          PY
+      - name: Build immutable v0.6 layout-only source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import copy,hashlib,json,pathlib,shutil
+          root=pathlib.Path('worktree')
+          issue='SP-2026-M06'; slug='2026-M06'; version='v0.6'
+          state_path=root/'sources'/issue/'pipeline-state.json'
+          state=json.load(open(state_path,encoding='utf-8'))
+          current=copy.deepcopy(state['provenance']['validated_issue_source'])
+          current_manifest_path=root/current['path']
+          current_manifest=json.load(open(current_manifest_path,encoding='utf-8'))
+          current_dir=current_manifest_path.parent
+          out=root/'surveys/special'/slug/'revisions'/version
+          shutil.copytree(current_dir,out)
+          def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+          # Verify copied reader-facing inputs are initially byte-identical.
+          assert sha(out/'main.tex')==current_manifest['main_tex']['sha256']
+          assert sha(out/'references.bib')==current_manifest['references']['sha256']
+          for article in current_manifest['articles']:
+              assert sha(out/article['article_section_path'])==article['article_section_sha256']
+              assert sha(out/article['technical_notes_path'])==article['technical_notes_sha256']
+          for record in current_manifest.get('article_layout_bodies') or []:
+              assert sha(out/record['path'])==record['sha256']
+          for synth in current_manifest.get('theme_synthesis') or []:
+              assert sha(out/synth['path'])==synth['sha256']
+
+          final=copy.deepcopy(current_manifest['final_synthesis'])
+          final_path=out/final['tex_path']
+          before=final_path.read_text(encoding='utf-8')
+          old=r'\Needspace{5\baselineskip}'+'\n'+r'\subsection{'
+          new=r'\par\medskip'+'\n'+r'\subsection{'
+          count=before.count(old)
+          assert count==6, count
+          after=before.replace(old,new)
+          assert r'\Needspace{5\baselineskip}' not in after
+          # Layout command replacement only: prose/citations remain exactly in place.
+          assert after.replace(r'\par\medskip'+'\n'+r'\subsection{', r'\subsection{') == before.replace(r'\Needspace{5\baselineskip}'+'\n'+r'\subsection{', r'\subsection{')
+          final_path.write_text(after,encoding='utf-8')
+          final['tex_sha256']=sha(final_path)
+          final['layout_only_revision']=True
+
+          new_manifest=copy.deepcopy(current_manifest)
+          new_manifest['source_version']=version
+          new_manifest['status']='VALIDATED_FINAL_SYNTHESIS_SPACING_REVISION'
+          new_manifest['derivation']='Layout-only revision of v0.5. Reader wording, citations, selected Evidence, accepted Article Draft sections, layout article bodies, Theme Synthesis, Technical Notes, bibliography, and main document structure are unchanged. Only six five-baseline Needspace guards before final-retrospective subsections are replaced by paragraph termination plus medskip.'
+          new_manifest['basis']=copy.deepcopy(current_manifest.get('basis') or {})
+          new_manifest['basis']['previous_source_manifest_path']=current['path']
+          new_manifest['basis']['previous_source_manifest_sha256']=current['sha256']
+          new_manifest['final_synthesis']=final
+          new_manifest['layout']=copy.deepcopy(current_manifest.get('layout') or {})
+          new_manifest['layout']['final_synthesis_subsection_policy']='paragraph termination + medskip before each subsection; no Needspace inside multicol'
+          new_manifest['layout_revision']={
+              'from_source_version':'v0.5',
+              'reader_content_changed':False,
+              'new_external_evidence':False,
+              'final_synthesis_subsection_needspace_removed':True,
+              'final_synthesis_subsection_replacement_count':count,
+              'accepted_article_sections_changed':False,
+              'layout_article_bodies_changed':False,
+              'theme_synthesis_changed':False,
+              'technical_notes_changed':False,
+              'references_bib_changed':False,
+              'main_tex_changed':False
+          }
+          manifest_path=out/'source-manifest.json'
+          manifest_path.write_text(json.dumps(new_manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          manifest_sha=sha(manifest_path)
+
+          history=state.setdefault('provenance_history',{})
+          history.setdefault('validated_issue_source',[]).append(current)
+          prev_build=copy.deepcopy(state['provenance'].get('latex_build') or {})
+          if prev_build:
+              history.setdefault('latex_build',[]).append(prev_build)
+          marker=root/'sources'/issue/'editorial'/f'layout-revision-{version}.json'
+          state['lifecycle_state']='VALIDATED_DRAFT'
+          state['gates']['latex_build']='pending'
+          state['gates']['visual_review']='pending'
+          state['gates']['freeze']='pending'
+          state['provenance']['validated_issue_source']={
+              'path':manifest_path.relative_to(root).as_posix(),
+              'sha256':manifest_sha,
+              'source_version':version,
+              'layout_mode':'balanced-multicol-adaptive-spacing-final-synthesis-relaxed',
+              'layout_revision_sha256':sha(marker)
+          }
+          state['provenance'].pop('latex_build',None)
+          state['provenance']['reader_layout_revision']={
+              'source_version':version,
+              'layout_revision_path':marker.relative_to(root).as_posix(),
+              'layout_revision_sha256':sha(marker),
+              'reason':'Render-first QA of v0.5 found page 29 almost empty because five-baseline Needspace guards inside the final retrospective multicols caused a page hole. v0.6 removes only those guards while retaining paragraph separation.'
+          }
+          state_path.write_text(json.dumps(state,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps({'source_version':version,'source_manifest_sha256':manifest_sha,'replacement_count':count,'final_tex_sha256':final['tex_sha256']},ensure_ascii=False))
+          PY
+      - name: Verify v0.6 source invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources/SP-2026-M06/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT'
+          assert state['gates']['latex_build']=='pending' and state['gates']['visual_review']=='pending' and state['gates']['freeze']=='pending'
+          src=state['provenance']['validated_issue_source']; assert src['source_version']=='v0.6'
+          manifest=root/src['path']; assert hashlib.sha256(manifest.read_bytes()).hexdigest()==src['sha256']
+          data=json.load(open(manifest,encoding='utf-8'))
+          assert data['status']=='VALIDATED_FINAL_SYNTHESIS_SPACING_REVISION'
+          lr=data['layout_revision']
+          assert lr['reader_content_changed'] is False and lr['new_external_evidence'] is False
+          assert lr['final_synthesis_subsection_needspace_removed'] is True
+          assert lr['final_synthesis_subsection_replacement_count']==6
+          assert all(lr[k] is False for k in ['accepted_article_sections_changed','layout_article_bodies_changed','theme_synthesis_changed','technical_notes_changed','references_bib_changed','main_tex_changed'])
+          final=manifest.parent/data['final_synthesis']['tex_path']
+          text=final.read_text(encoding='utf-8')
+          assert r'\Needspace{5\baselineskip}' not in text
+          assert text.count(r'\par\medskip'+'\n'+r'\subsection{')==6
+          assert '6月をどう位置づけるか' in text and '7月をどう位置づけるか' not in text
+          PY
+      - name: Commit v0.6 and remove wrapper
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/m06-final-synthesis-spacing-v06-run-once.yml
+          git add sources/SP-2026-M06/pipeline-state.json surveys/special/2026-M06/revisions/v0.6
+          git commit -m 'Relax final synthesis spacing v0.6 for SP-2026-M06'
+          git push origin HEAD:special/2026-M06-work
