@@ -33,6 +33,8 @@ Canonical reader source:
 Current PDF candidate:
 
 - build workflow run: `31496494165`
+- build artifact: `9103267882` (`japanese-generative-ai-survey-special-2026-M06-v0.9`)
+- artifact digest: `sha256:06eadab5aee9934606b607af4cd4841c514c62fee52edfba02d1c19d2e4e169d`
 - PDF SHA256: `2d7b9d3abe3e90fcf3de9112f1204b8b8ed765986a04e30dc0ba92b1c0c499cf`
 - page count: `32`
 - allowed range: `32-40`
