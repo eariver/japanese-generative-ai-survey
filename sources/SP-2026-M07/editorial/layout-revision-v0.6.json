@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M07",
+  "revision": "v0.6",
+  "purpose": "Remove remaining large blank areas caused by forced chapter/reference page breaks while preserving all v0.5 reader content and Evidence bindings.",
+  "constraints": {
+    "new_external_evidence_allowed": false,
+    "reader_content_changed": false,
+    "selected_evidence_only": true
+  },
+  "layout_changes": {
+    "keep_first_feature_on_new_page": true,
+    "later_chapter_start_policy": "start on the current page only when at least 0.45 text-height is available; otherwise move to the next page",
+    "final_synthesis_start_policy": "start on the current page only when at least 0.55 text-height is available; otherwise move to the next page",
+    "remove_forced_clearpage_before_references": true,
+    "final_synthesis_subsection_needspace_baselines": 5
+  },
+  "review_reference": "Human Visual Review requested more relaxed placement around two-column/full-width transitions; ChatGPT render-first review of v0.5 also found avoidable blank areas at chapter boundaries and before References."
+}

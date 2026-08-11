@@ -1,0 +1,160 @@
+\clearpage
+\sectionkicker{Source-backed technical notes}
+\subsection*{Frontier Models — 7月の世代交代: Technical Notes}
+この欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形へ展開したものである。新しい外部情報は追加せず、Selection済みEvidenceのchronology、normalized claim、limitations、source URLのみを再配置する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+Artifact & Role & Type & Objective chronology \\
+\midrule
+GPT-5.6 family & PRIMARY & MODEL & 2026-07-09 (MODEL\_RELEASE); 2026-07-30 (MODEL\_UPDATE) \\
+Claude Opus 5 & PRIMARY & MODEL & 2026-07-24 (MODEL\_RELEASE) \\
+DeepSeek V4-Flash July API lifecycle & PRIMARY & MODEL UPDATE & 2026-07-24 (API\_DEPRECATION); 2026-07-31 (MODEL\_UPDATE) \\
+Gemini API July model lifecycle & PRIMARY & MODEL UPDATE & 2026-07-21 (MODEL\_GA); 2026-07-30 (API\_PREVIEW) \\
+Kimi K3 & PRIMARY & OPEN WEIGHT & 2026-07-16 (MODEL\_RELEASE) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{GPT-5.6 family}{PRIMARY}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+Organization & OpenAI \\
+Artifact type & MODEL \\
+Chronology & 2026-07-09 (MODEL\_RELEASE); 2026-07-30 (MODEL\_UPDATE) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAI launched the GPT-5.6 family for general availability on July 9, 2026 with Sol, Terra, and Luna tiers across ChatGPT, Codex, and the API.
+\item \textbf{一次情報で確認できる事実}: The release introduced Programmatic Tool Calling in the Responses API and a multi-agent beta; OpenAI's `ultra` setting coordinates parallel agents for demanding tasks.
+\item \textbf{一次情報で確認できる事実}: OpenAI later reduced GPT-5.6 Luna pricing by 80\% and Terra pricing by 20\% on July 30.
+\item \textbf{Vendor claim}: Performance-per-dollar and benchmark superiority claims in the launch and follow-up articles are OpenAI/vendor claims even when they reference third-party benchmarks.
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: Benchmark, efficiency, and estimated-cost comparisons are largely vendor-reported and depend on effort levels, harnesses, token usage, and pricing assumptions; they should not be flattened into a universal ranking.
+\end{itemize}
+{\bfseries Primary source}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6}}
+\item {\scriptsize\url{https://openai.com/index/gpt-5-6}}
+\item {\scriptsize\url{https://openai.com/index/gpt-5-6-frontier-intelligence-efficiency}}
+\end{itemize}
+\endgroup
+{\scriptsize\color{SurveyMuted}Source-bound record: \texttt{evidence:SP-2026-M07:series-gpt-5-6-july-85e8f41ad0}.}
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Claude Opus 5}{PRIMARY}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+Organization & Anthropic \\
+Artifact type & MODEL \\
+Chronology & 2026-07-24 (MODEL\_RELEASE) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Anthropic released Claude Opus 5 on July 24, 2026 and made it available across its platforms and API that day.
+\item \textbf{一次情報で確認できる事実}: Anthropic priced Opus 5 at \$5 per million input tokens and \$25 per million output tokens and positioned it as the new default on Claude Max and the strongest model on Claude Pro.
+\item \textbf{Vendor claim}: Anthropic reports Opus 5 as close to Fable 5 frontier capability at lower cost and presents broad coding, knowledge-work, science, and safety evaluation gains.
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: Benchmark and alignment comparisons are primarily Anthropic-reported; individual evaluation harnesses and partner testimonials are not equivalent to independent replication.
+\end{itemize}
+{\bfseries Primary source}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://www.anthropic.com/news}}
+\end{itemize}
+\endgroup
+{\scriptsize\color{SurveyMuted}Source-bound record: \texttt{evidence:SP-2026-M07:item-official-index-anthropic-news-afddcb8068}.}
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{DeepSeek V4-Flash July API lifecycle}{PRIMARY}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+Organization & DeepSeek \\
+Artifact type & MODEL UPDATE \\
+Chronology & 2026-07-24 (API\_DEPRECATION); 2026-07-31 (MODEL\_UPDATE) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: DeepSeek's changelog records the DeepSeek-V4-Flash API as entering public beta on July 31, 2026 under the model name `deepseek-v4-flash`.
+\item \textbf{Vendor claim}: DeepSeek states that the July 31 build keeps the architecture and size of V4-Flash-Preview and changes post-training only.
+\item \textbf{一次情報で確認できる事実}: An April 24 migration notice scheduled the legacy `deepseek-chat` and `deepseek-reasoner` names for discontinuation on July 24, 2026.
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: DeepSeek's benchmark scores for V4-Flash are vendor-reported and include a specified DeepSeek Harness configuration; this card treats the July lifecycle and API change as the primary fact.
+\end{itemize}
+{\bfseries Primary source}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://api-docs.deepseek.com/updates/}}
+\end{itemize}
+\endgroup
+{\scriptsize\color{SurveyMuted}Source-bound record: \texttt{evidence:SP-2026-M07:item-official-index-deepseek-api-updates-72fd8b1ca6}.}
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Gemini API July model lifecycle}{PRIMARY}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+Organization & Google \\
+Artifact type & MODEL UPDATE \\
+Chronology & 2026-07-21 (MODEL\_GA); 2026-07-30 (API\_PREVIEW) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Google made Gemini 3.6 Flash and Gemini 3.5 Flash-Lite generally available on July 21, 2026.
+\item \textbf{一次情報で確認できる事実}: On July 30 Google added Gemini Robotics ER 2 and a streaming variant in public preview, with multimodal inputs and function calling for robotics workflows.
+\item \textbf{Vendor claim}: Google describes Gemini 3.6 Flash as improving token efficiency and code/agentic planning while lowering price relative to 3.5 Flash.
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: Capability/efficiency positioning is Google-reported; the July release-notes page establishes model lifecycle and availability rather than independent benchmark superiority.
+\end{itemize}
+{\bfseries Primary source}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://ai.google.dev/gemini-api/docs/changelog}}
+\end{itemize}
+\endgroup
+{\scriptsize\color{SurveyMuted}Source-bound record: \texttt{evidence:SP-2026-M07:item-official-index-google-gemini-api-re-d5b8ea25b2}.}
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Kimi K3}{PRIMARY}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+Organization & Moonshot AI \\
+Artifact type & OPEN WEIGHT \\
+Chronology & 2026-07-16 (MODEL\_RELEASE) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Kimi Code's official changelog records Kimi K3 as released and open-sourced on July 16, 2026 and available in Kimi Code.
+\item \textbf{Vendor claim}: Moonshot describes Kimi K3 as a 2.8-trillion-parameter model using KDA hybrid linear attention and Attention Residuals, with native visual understanding and up to a 1M-token context window.
+\item \textbf{一次情報で確認できる事実}: The same July 16 Kimi Code release aligned the coder sub-agent with background tasks, plan mode, skills, and nested-agent capabilities.
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: Architecture scale, capability comparisons, and benchmark positioning are vendor claims from the Kimi documentation; open-source status should be interpreted using the actual published license/weights when drafting.
+\end{itemize}
+{\bfseries Primary source}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://www.kimi.com/code/docs/en/kimi-code/whats-new.html}}
+\end{itemize}
+\endgroup
+{\scriptsize\color{SurveyMuted}Source-bound record: \texttt{evidence:SP-2026-M07:item-official-index-kimi-code-whats-new-788743b9bb}.}
+\end{technicalnote}
+\medskip

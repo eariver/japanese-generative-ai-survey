@@ -1,0 +1,129 @@
+\clearpage
+\sectionkicker{Source-backed technical notes}
+\subsection*{Inference \& Serving — モデルの外側も更新された: Technical Notes}
+この欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形へ展開したものである。新しい外部情報は追加せず、Selection済みEvidenceのchronology、normalized claim、limitations、source URLのみを再配置する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+Artifact & Role & Type & Objective chronology \\
+\midrule
+vLLM July releases & PRIMARY & FRAMEWORK & 2026-07-11 (FRAMEWORK\_RELEASE); 2026-07-27 (FRAMEWORK\_RELEASE) \\
+SGLang July releases & PRIMARY & FRAMEWORK & 2026-07-10 (FRAMEWORK\_RELEASE); 2026-07-25 (FRAMEWORK\_RELEASE) \\
+FlashInfer July MoE/Blackwell serving releases & PRIMARY & FRAMEWORK & 2026-07-17 (FRAMEWORK\_RELEASE); 2026-07-31 (FRAMEWORK\_RELEASE) \\
+July diffusion/MoE inference research & SUPPORTING & OTHER & 2026-07-13 (PAPER\_PUBLICATION); 2026-07-14 (PAPER\_PUBLICATION) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{vLLM July releases}{PRIMARY}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+Organization & vLLM \\
+Artifact type & FRAMEWORK \\
+Chronology & 2026-07-11 (FRAMEWORK\_RELEASE); 2026-07-27 (FRAMEWORK\_RELEASE) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Project claim}: vLLM v0.25.0 made Model Runner V2 the default execution path for dense models and removed the legacy PagedAttention implementation.
+\item \textbf{Project claim}: vLLM v0.26.0 added broad new model-family support and expanded attention, speculative-decoding, KV-offload, and DeepSeek-V4-related optimizations.
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: Performance percentages in release notes are project measurements for specific kernels/models; integration support does not by itself prove model quality or availability outside vLLM.
+\end{itemize}
+{\bfseries Primary source}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://github.com/vllm-project/vllm/releases/tag/v0.25.0}}
+\item {\scriptsize\url{https://github.com/vllm-project/vllm/releases/tag/v0.26.0}}
+\end{itemize}
+\endgroup
+{\scriptsize\color{SurveyMuted}Source-bound record: \texttt{evidence:SP-2026-M07:series-vllm-july-18398a2366}.}
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{SGLang July releases}{PRIMARY}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+Organization & SGLang \\
+Artifact type & FRAMEWORK \\
+Chronology & 2026-07-10 (FRAMEWORK\_RELEASE); 2026-07-25 (FRAMEWORK\_RELEASE) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Project claim}: SGLang v0.5.15 made its Spec V2 path default and included production tuning for newer model/hardware combinations.
+\item \textbf{Project claim}: SGLang v0.5.16 introduced DSpark, a confidence-driven speculative-decoding algorithm that varies verification windows using draft confidence.
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: Reported throughput/TPS figures are project benchmarks under specific batch size, tensor-parallel, model, and GPU configurations.
+\end{itemize}
+{\bfseries Primary source}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://github.com/sgl-project/sglang/releases/tag/v0.5.15}}
+\item {\scriptsize\url{https://github.com/sgl-project/sglang/releases/tag/v0.5.16}}
+\end{itemize}
+\endgroup
+{\scriptsize\color{SurveyMuted}Source-bound record: \texttt{evidence:SP-2026-M07:series-sglang-july-1ce78e1eff}.}
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{FlashInfer July MoE/Blackwell serving releases}{PRIMARY}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+Organization & FlashInfer \\
+Artifact type & FRAMEWORK \\
+Chronology & 2026-07-17 (FRAMEWORK\_RELEASE); 2026-07-31 (FRAMEWORK\_RELEASE) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Project claim}: FlashInfer v0.6.15 shipped expert-parallel MoE support in the default install and expanded Blackwell-family serving coverage.
+\item \textbf{Project claim}: FlashInfer v0.6.16 followed with MegaMoE kernels, further Blackwell model coverage, an expanded unified MoE API, and distributed-serving changes including confidential-computing support.
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: Hardware/model support is highly GPU-generation-specific, and any throughput numbers in release notes are project benchmarks rather than general serving guarantees.
+\end{itemize}
+{\bfseries Primary source}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://github.com/flashinfer-ai/flashinfer/releases/tag/v0.6.15}}
+\item {\scriptsize\url{https://github.com/flashinfer-ai/flashinfer/releases/tag/v0.6.16}}
+\end{itemize}
+\endgroup
+{\scriptsize\color{SurveyMuted}Source-bound record: \texttt{evidence:SP-2026-M07:series-flashinfer-july-41fd93a505}.}
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{July diffusion/MoE inference research}{SUPPORTING}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+Organization & - \\
+Artifact type & OTHER \\
+Chronology & 2026-07-13 (PAPER\_PUBLICATION); 2026-07-14 (PAPER\_PUBLICATION) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: FlashDiff proposes regional execution and scheduling to reduce repeated full-region computation and communication overhead in diffusion-model serving.
+\item \textbf{Author claim}: EcoSpec proposes cost-aware speculative decoding for sparse MoE models by considering expert activation/scattering in addition to token acceptance likelihood.
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: Both are author-evaluated systems papers; reported gains depend on their selected models, hardware, workloads, and baselines.
+\end{itemize}
+{\bfseries Primary source}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2607.12121v2}}
+\item {\scriptsize\url{http://arxiv.org/abs/2607.12696v1}}
+\end{itemize}
+\endgroup
+{\scriptsize\color{SurveyMuted}Source-bound record: \texttt{evidence:SP-2026-M07:series-inference-systems-july-e02ad54ec0}.}
+\end{technicalnote}
+\medskip

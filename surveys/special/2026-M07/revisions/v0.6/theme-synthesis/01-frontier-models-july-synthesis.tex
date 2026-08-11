@@ -1,0 +1,24 @@
+\sectionkicker{Theme synthesis}
+\subsection*{横断比較 — 採用判断を変える競争軸}
+\addcontentsline{toc}{subsection}{横断比較 — 採用判断を変える競争軸}
+7月のfrontier model群は、単一benchmarkの順位よりも、配布形態、product/API統合、価格とlifecycle、stable/previewの成熟度という異なる軸で差が付いた。ここでは本文で分散していた運用上の差を一枚にまとめる。
+\medskip
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}X@{}}
+\toprule
+観察軸 & 7月の一次資料・論文から読めること \\
+\midrule
+配布形態 & Kimi K3はopen-sourceとして公開されcoding環境へ接続された一方、GPT-5.6、Claude Opus 5、Gemini 3.6 Flash、DeepSeek V4-Flashは本号で確認した一次資料群では主にmanaged product/API lifecycleとして確認される。 \cite{src-9191d43918fc,src-dca7adc62d79,src-e19fbb75eb44,src-eb71f165025c,src-f6aa679babd7,src-a24fd97eb3d0,src-e547d0d8cbe3} \\
+product / agent接続 & GPT-5.6はChatGPT・Codex・APIとtool/multi-agent surfaceを横断し、Kimi K3はKimi Codeのsub-agent・plan・skills系更新と同じ日に接続された。モデル公開と実行環境の統合が同じ競争面になっている。 \cite{src-dca7adc62d79,src-e19fbb75eb44,src-eb71f165025c,src-9191d43918fc} \\
+価格とAPI lifecycle & GPT-5.6は月内に価格改定、Claude Opus 5は公開時から上位tierの価格を提示し、DeepSeekはlegacy alias廃止予定とV4-Flash public betaが重なった。採用判断はrelease日だけでは閉じない。 \cite{src-dca7adc62d79,src-e19fbb75eb44,src-eb71f165025c,src-f6aa679babd7,src-e547d0d8cbe3} \\
+成熟度の表現 & GeminiではFlash系GAとRobotics previewが同月に並び、DeepSeekではpublic betaが明示された。model名だけでなくGA・preview・betaという提供状態を分離して追う必要がある。 \cite{src-a24fd97eb3d0,src-e547d0d8cbe3} \\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\end{center}
+\normalsize
+\begin{claimboundary}[この比較の境界]
+この表は本号で既に検証・参照している一次資料と論文を横断比較の形へ再配置したものである。vendor / project / author が報告した性能値や優位性は独立再現済みの一般則へ変換せず、本文とSource Notesの帰属境界をそのまま維持する。
+\end{claimboundary}
