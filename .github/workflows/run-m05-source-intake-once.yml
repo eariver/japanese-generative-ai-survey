@@ -1,0 +1,77 @@
+name: Run SP-2026-M05 source intake once
+
+on:
+  push:
+    branches:
+      - special/2026-M05-work
+    paths:
+      - '.ai-work/m05-source-intake-trigger.txt'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sp-2026-m05-source-intake-once
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate May edition and build exact collection plan
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out/special-source-intake-control
+          python control-src/scripts/special_pipeline.py validate --manifest control-src/specials/2026-M05/edition.json
+          python control-src/scripts/special_pipeline.py plan \
+            --manifest control-src/specials/2026-M05/edition.json \
+            --output out/special-source-intake-control/plan.json \
+            --markdown-output out/special-source-intake-control/plan.md
+          python - <<'PY'
+          import json
+          p=json.load(open('out/special-source-intake-control/plan.json',encoding='utf-8'))
+          assert p['issue_id']=='SP-2026-M05'
+          assert p['collection_window_start']=='2026-05-01T00:00:00Z'
+          assert p['collection_window_end']=='2026-05-31T23:59:59Z'
+          assert p['community_research']['mode']=='DISABLED'
+          PY
+      - name: Run primary-source collectors
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python control-src/scripts/source_intake.py \
+            --plan out/special-source-intake-control/plan.json \
+            --collector all \
+            --output-root out/special-source-intake
+      - name: Build deterministic screening index and batches
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/build_screening_index.py \
+            --input-root out/special-source-intake \
+            --output-dir out/special-source-intake-screening \
+            --issue-id SP-2026-M05 \
+            --max-records 40 \
+            --max-json-chars 80000
+      - name: Upload immutable source-intake review artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: special-source-intake-2026-M05
+          path: |
+            out/special-source-intake/
+            out/special-source-intake-control/
+            out/special-source-intake-screening/
+          if-no-files-found: error
+          retention-days: 14
