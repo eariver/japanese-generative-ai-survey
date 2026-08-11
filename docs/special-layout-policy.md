@@ -1,6 +1,6 @@
 # Special Layout Policy
 
-Status: adopted as the default reader-facing layout direction after the first `SP-2026-M07` Visual Review iterations.
+Status: adopted as the default reader-facing layout direction after the first `SP-2026-M07` Visual Review iterations; refined by Issue #40 after the first public Special.
 
 ## 1. Relationship to the Weekly house style
 
@@ -54,16 +54,35 @@ Such synthesis must:
 - preserve vendor/project/author attribution classes and recorded limitations;
 - avoid internal pipeline terminology in reader-facing prose;
 - be stored as a reviewed editorial artifact and SHA-bound into the source manifest;
-- leave accepted Article Draft TeX and Technical Notes immutable when the revision is only re-expressing already-selected material;
+- leave accepted Article Draft TeX immutable when the revision is only re-expressing already-selected material;
 - explicitly record whether new external Evidence was introduced.
 
 A final retrospective chapter may synthesize relationships across multiple approved packages without reopening Candidate Selection when the human Visual Review explicitly requests that synthesis and no new external Evidence is introduced. Such a chapter must distinguish structural/editorial relationships from demonstrated causality.
 
-## 5. July 2026 application
+## 5. Theme Synthesis / Technical Notes boundary and reader-facing appendix
 
-For `SP-2026-M07`, the initial long-form one-column revision was useful for validating that all selected Evidence could be rendered cleanly, but it weakened visual continuity with the Weekly issue and moved too much information into Technical Notes.
+Issue #40 identified a public-PDF regression in which a small Theme Synthesis Claim Boundary became nearly isolated on a page because the following Technical Notes source began with an unconditional `\clearpage`.
 
-The release-candidate direction therefore uses:
+For future Specials:
+
+- a generated Technical Notes file **must not begin with an unconditional `\clearpage`**;
+- Theme Synthesis, its closing Claim Boundary, and the following Technical Notes should flow as a continuous full-width sequence unless a natural page break is required;
+- do not compensate with aggressive `Needspace` inside `multicols`; the earlier July regression showed that this can create a different almost-empty page;
+- Visual Review must explicitly inspect every page for an isolated small box, accidental blank page, or large whitespace region caused only by structural commands;
+- a clean TeX log is necessary but not sufficient for Visual acceptance.
+
+Technical Notes are a **reader-facing technical appendix**, not a rendering of repository production metadata. They should retain the material readers need to audit the article—chronology, confirmed facts, vendor/project/author attribution, limitations, and primary URLs—while keeping pipeline state and full Evidence identifiers in repository provenance.
+
+Therefore PDF-facing Technical Notes should normally:
+
+- avoid phrases such as `Selection済みEvidence`, `normalized claim`, and `Source-bound record`;
+- translate machine role/event labels into reader-facing labels;
+- omit full `evidence:SP-...` identifiers from the magazine body;
+- preserve complete IDs and selection state in the Draft Package/source-manifest/repository provenance.
+
+## 6. July 2026 application and legacy boundary
+
+For `SP-2026-M07`, the release-candidate direction used:
 
 - full-width chapter headings;
 - balanced two-column narrative articles implemented as a local multi-column flow;
@@ -71,8 +90,8 @@ The release-candidate direction therefore uses:
 - one-column full-width theme synthesis for Frontier Models, Multimodal, Inference & Serving, Agents, and Agent Safety & Security;
 - one-column Technical Notes;
 - adaptive later chapter starts instead of unconditional new-page breaks;
-- Paper Watch kept intentionally compact unless its selected Evidence justifies additional treatment;
-- a final retrospective synthesis chapter that revisits all six themes and explains their structural relationships using only already-selected July Evidence;
-- References allowed to follow the final synthesis naturally rather than being forced onto a new page when sufficient space remains.
+- Paper Watch kept intentionally compact;
+- a final retrospective synthesis chapter using only already-selected July Evidence;
+- References allowed to follow the final synthesis naturally.
 
-The additional synthesis is restricted to already-selected July Evidence. No new topic is introduced merely to preserve a page count, and cross-chapter relationships are editorial synthesis rather than claims of direct causation.
+The published `SP-2026-M07` source/PDF remains immutable legacy evidence of the first Special. Issue #40 improvements are prospective and must be demonstrated by the next rendered Special before that Issue is closed.
