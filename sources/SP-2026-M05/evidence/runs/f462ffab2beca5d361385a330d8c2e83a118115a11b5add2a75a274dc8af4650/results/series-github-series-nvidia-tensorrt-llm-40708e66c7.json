@@ -1,0 +1,139 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M05",
+  "evidence_task_id": "evidence:SP-2026-M05:series-github-series-nvidia-tensorrt-llm-40708e66c7",
+  "evidence_task_sha256": "42cbce9e2a9497975ae90e3a5898a9c759059557802527b8c766fb5557da0a94",
+  "prompt_id": "primary-source-verification-v0.1",
+  "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+    "generated_at": "2026-08-11T15:45:00Z",
+    "run_reference": "May 2026 Special primary-source Evidence review"
+  },
+  "card": {
+    "schema_version": "1.0",
+    "issue_id": "SP-2026-M05",
+    "evidence_task_id": "evidence:SP-2026-M05:series-github-series-nvidia-tensorrt-llm-40708e66c7",
+    "status": "PARTIAL",
+    "grouping_resolution": {
+      "accepted": true,
+      "split_recommended": false,
+      "note": "Reviewed grouping retained for Evidence normalization."
+    },
+    "artifact": {
+      "canonical_name": "NVIDIA/TensorRT-LLM May 2026 release series",
+      "artifact_type": "FRAMEWORK",
+      "organization": "NVIDIA/TensorRT-LLM",
+      "canonical_url": "https://github.com/NVIDIA/TensorRT-LLM/releases/tag/v1.3.0rc15"
+    },
+    "temporal": {
+      "artifact_first_announced": "2026-05-21",
+      "events": [
+        {
+          "event_id": "event-1",
+          "event_type": "FRAMEWORK_RELEASE",
+          "event_date": "2026-05-21",
+          "source_published_at": "2026-05-21T14:27:58Z",
+          "source_ids": [
+            "src-1"
+          ]
+        },
+        {
+          "event_id": "event-2",
+          "event_type": "FRAMEWORK_RELEASE",
+          "event_date": "2026-05-26",
+          "source_published_at": "2026-05-26T08:08:12Z",
+          "source_ids": [
+            "src-2"
+          ]
+        }
+      ],
+      "observed_at": "2026-08-11T15:45:00Z"
+    },
+    "sources": [
+      {
+        "source_id": "src-1",
+        "url": "https://github.com/NVIDIA/TensorRT-LLM/releases/tag/v1.3.0rc15",
+        "source_class": "PRIMARY_REPOSITORY",
+        "title": "v1.3.0rc15",
+        "published_at": "2026-05-21T14:27:58Z",
+        "accessed_at": "2026-08-11T15:12:50Z",
+        "role": "Primary source used for chronology and technical verification; reported capability/performance remains attributed to the source owner/authors."
+      },
+      {
+        "source_id": "src-2",
+        "url": "https://github.com/NVIDIA/TensorRT-LLM/releases/tag/v1.3.0rc16",
+        "source_class": "PRIMARY_REPOSITORY",
+        "title": "v1.3.0rc16",
+        "published_at": "2026-05-26T08:08:12Z",
+        "accessed_at": "2026-08-11T15:12:50Z",
+        "role": "Primary source used for chronology and technical verification; reported capability/performance remains attributed to the source owner/authors."
+      }
+    ],
+    "claims": [
+      {
+        "claim_id": "claim-source-1",
+        "text": "The preserved primary source identifies “v1.3.0rc15” on 2026-05-21.",
+        "evidence_class": "PRIMARY_FACT",
+        "source_ids": [
+          "src-1"
+        ],
+        "context": "Source identity and chronology only."
+      },
+      {
+        "claim_id": "claim-source-2",
+        "text": "The preserved primary source identifies “v1.3.0rc16” on 2026-05-26.",
+        "evidence_class": "PRIMARY_FACT",
+        "source_ids": [
+          "src-2"
+        ],
+        "context": "Source identity and chronology only."
+      },
+      {
+        "claim_id": "claim-reviewed-1",
+        "text": "TensorRT-LLM rc15 and rc16 form a May pre-release serving series adding multimodal/model support, DeepSeek V4 kernels, KV-cache changes, disaggregated serving, and VisualGen work.",
+        "evidence_class": "PROJECT_CLAIM",
+        "source_ids": [
+          "src-1",
+          "src-2"
+        ],
+        "context": "Interactive primary-source normalization; author/vendor/project results are not upgraded to independent fact."
+      }
+    ],
+    "metrics": [],
+    "limitations": [
+      {
+        "limitation_id": "limitation-1",
+        "text": "Official repository release notes verify release chronology and listed implementation changes; project performance claims and cross-hardware generalization were not independently reproduced.",
+        "evidence_class": "INFERENCE",
+        "source_ids": [
+          "src-1",
+          "src-2"
+        ]
+      }
+    ],
+    "verification": {
+      "targets": [
+        {
+          "target": "verify serving/runtime mechanism, model/hardware scope, and performance-claim context",
+          "status": "VERIFIED",
+          "finding": "The preserved primary source and interactive review establish the requested mechanism/evaluation scope; quantitative conclusions remain attributed to the original author/vendor/project.",
+          "source_ids": [
+            "src-1",
+            "src-2"
+          ]
+        }
+      ],
+      "unresolved_questions": [],
+      "contradictions": []
+    },
+    "editorial": {
+      "why_now_confirmed": true,
+      "why_now_note": "May-window primary-source chronology confirmed.",
+      "candidate_recommendation": "HOLD",
+      "rationale": "Primary-source Evidence is credible but retained below Candidate-ready priority because of scope, setup, chronology, or supporting-role constraints."
+    }
+  }
+}

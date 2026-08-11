@@ -1,0 +1,139 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M05",
+  "evidence_task_id": "evidence:SP-2026-M05:series-github-series-huggingface-transfo-523d56e6a8",
+  "evidence_task_sha256": "713890cdf5b01d23d18a4b8003975547efe39335eb4be7f26dbc2825e1b553db",
+  "prompt_id": "primary-source-verification-v0.1",
+  "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+    "generated_at": "2026-08-11T15:45:00Z",
+    "run_reference": "May 2026 Special primary-source Evidence review"
+  },
+  "card": {
+    "schema_version": "1.0",
+    "issue_id": "SP-2026-M05",
+    "evidence_task_id": "evidence:SP-2026-M05:series-github-series-huggingface-transfo-523d56e6a8",
+    "status": "PARTIAL",
+    "grouping_resolution": {
+      "accepted": true,
+      "split_recommended": false,
+      "note": "Reviewed grouping retained for Evidence normalization."
+    },
+    "artifact": {
+      "canonical_name": "huggingface/transformers May 2026 release series",
+      "artifact_type": "FRAMEWORK",
+      "organization": "huggingface/transformers",
+      "canonical_url": "https://github.com/huggingface/transformers/releases/tag/v5.8.0"
+    },
+    "temporal": {
+      "artifact_first_announced": "2026-05-05",
+      "events": [
+        {
+          "event_id": "event-1",
+          "event_type": "FRAMEWORK_RELEASE",
+          "event_date": "2026-05-05",
+          "source_published_at": "2026-05-05T16:52:21Z",
+          "source_ids": [
+            "src-1"
+          ]
+        },
+        {
+          "event_id": "event-2",
+          "event_type": "FRAMEWORK_RELEASE",
+          "event_date": "2026-05-20",
+          "source_published_at": "2026-05-20T14:12:54Z",
+          "source_ids": [
+            "src-2"
+          ]
+        }
+      ],
+      "observed_at": "2026-08-11T15:45:00Z"
+    },
+    "sources": [
+      {
+        "source_id": "src-1",
+        "url": "https://github.com/huggingface/transformers/releases/tag/v5.8.0",
+        "source_class": "PRIMARY_REPOSITORY",
+        "title": "Release 5.8.0",
+        "published_at": "2026-05-05T16:52:21Z",
+        "accessed_at": "2026-08-11T15:12:50Z",
+        "role": "Primary source used for chronology and technical verification; reported capability/performance remains attributed to the source owner/authors."
+      },
+      {
+        "source_id": "src-2",
+        "url": "https://github.com/huggingface/transformers/releases/tag/v5.9.0",
+        "source_class": "PRIMARY_REPOSITORY",
+        "title": "Release v5.9.0",
+        "published_at": "2026-05-20T14:12:54Z",
+        "accessed_at": "2026-08-11T15:12:50Z",
+        "role": "Primary source used for chronology and technical verification; reported capability/performance remains attributed to the source owner/authors."
+      }
+    ],
+    "claims": [
+      {
+        "claim_id": "claim-source-1",
+        "text": "The preserved primary source identifies “Release 5.8.0” on 2026-05-05.",
+        "evidence_class": "PRIMARY_FACT",
+        "source_ids": [
+          "src-1"
+        ],
+        "context": "Source identity and chronology only."
+      },
+      {
+        "claim_id": "claim-source-2",
+        "text": "The preserved primary source identifies “Release v5.9.0” on 2026-05-20.",
+        "evidence_class": "PRIMARY_FACT",
+        "source_ids": [
+          "src-2"
+        ],
+        "context": "Source identity and chronology only."
+      },
+      {
+        "claim_id": "claim-reviewed-1",
+        "text": "Transformers v5.8.0 and v5.9.0 form a May integration series adding DeepSeek V4 and multiple model-family implementations; this is useful ecosystem evidence but not a standalone frontier-model announcement.",
+        "evidence_class": "PROJECT_CLAIM",
+        "source_ids": [
+          "src-1",
+          "src-2"
+        ],
+        "context": "Interactive primary-source normalization; author/vendor/project results are not upgraded to independent fact."
+      }
+    ],
+    "metrics": [],
+    "limitations": [
+      {
+        "limitation_id": "limitation-1",
+        "text": "Official repository release notes verify release chronology and listed implementation changes; project performance claims and cross-hardware generalization were not independently reproduced.",
+        "evidence_class": "INFERENCE",
+        "source_ids": [
+          "src-1",
+          "src-2"
+        ]
+      }
+    ],
+    "verification": {
+      "targets": [
+        {
+          "target": "verify serving/runtime mechanism, model/hardware scope, and performance-claim context",
+          "status": "VERIFIED",
+          "finding": "The preserved primary source and interactive review establish the requested mechanism/evaluation scope; quantitative conclusions remain attributed to the original author/vendor/project.",
+          "source_ids": [
+            "src-1",
+            "src-2"
+          ]
+        }
+      ],
+      "unresolved_questions": [],
+      "contradictions": []
+    },
+    "editorial": {
+      "why_now_confirmed": true,
+      "why_now_note": "May-window primary-source chronology confirmed.",
+      "candidate_recommendation": "HOLD",
+      "rationale": "Primary-source Evidence is credible but retained below Candidate-ready priority because of scope, setup, chronology, or supporting-role constraints."
+    }
+  }
+}
