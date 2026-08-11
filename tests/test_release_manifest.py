@@ -30,7 +30,12 @@ class ReleaseManifestTests(unittest.TestCase):
         self.assertTrue(manifests)
         for path in manifests:
             data = json.loads(path.read_text(encoding="utf-8"))
-            expected = f"weekly/{data['issue_id']}/{data['revision']}"
+            issue_id = data["issue_id"]
+            if issue_id.startswith("SP-"):
+                self.assertIn("special_slug", data, path)
+                expected = f"special/{data['special_slug']}/{data['revision']}"
+            else:
+                expected = f"weekly/{issue_id}/{data['revision']}"
             self.assertEqual(data["release_tag"], expected, path)
             self.assertTrue(re.fullmatch(r"[0-9a-f]{64}", data["expected_pdf_sha256"]), path)
             self.assertIn(data["pdf_source"]["mode"], {"actions-artifact", "rebuild"}, path)
