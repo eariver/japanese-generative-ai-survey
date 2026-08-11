@@ -61,9 +61,11 @@ jobs:
         run: |
           set -euo pipefail
           python control-src/scripts/source_intake.py \
-            --plan out/special-source-intake-control/plan.json \
+            --repo-root control-src \
+            --config config/source-intake.json \
+            --plan "$GITHUB_WORKSPACE/out/special-source-intake-control/plan.json" \
             --collector all \
-            --output-root out/special-source-intake
+            --output-root "$GITHUB_WORKSPACE/out/special-source-intake"
       - name: Build deterministic screening index and batches
         shell: bash
         run: |
