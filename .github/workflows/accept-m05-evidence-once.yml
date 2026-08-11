@@ -1,0 +1,167 @@
+name: Accept SP-2026-M05 reviewed Evidence once
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/accept-m05-evidence-once.yml'
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: sp-2026-m05-evidence-once
+  cancel-in-progress: false
+
+jobs:
+  evidence:
+    if: github.event.pull_request.number == 53 && github.head_ref == 'special/2026-M05-work'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Checkout May work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2026-M05-work
+          path: worktree
+          fetch-depth: 0
+      - name: Verify pre-Evidence boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2026-M05 check
+          python - <<'PY'
+          import json,pathlib
+          s=json.load(open('worktree/sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
+          assert s['lifecycle_state']=='CANDIDATES_NORMALIZED'
+          assert s['gates']['candidate_inventory']=='passed'
+          assert s['gates']['evidence_normalized']=='pending'
+          root=pathlib.Path('worktree/sources/SP-2026-M05/evidence/interactive-overrides-v0.1')
+          m=json.load(open(root/'manifest.json',encoding='utf-8'))
+          assert m['review_summary']=={'evidence_task_count':58,'candidate':37,'hold':18,'reject':3,'chronology_caution_tasks':3,'notes':'Primary-source review uses preserved arXiv paper metadata/abstracts, official first-party feed/index snapshots, and official GitHub release notes. Metrics remain author/vendor/project claims unless independently reproduced.'}
+          rows=[]
+          for p in sorted(root.glob('part-*.json')):
+              rows.extend(json.load(open(p,encoding='utf-8'))['overrides'])
+          assert len(rows)==58 and len({r['evidence_task_id'] for r in rows})==58
+          PY
+      - name: Enable Special ID in generic Evidence helpers for this run
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          old='ISSUE_RE = re.compile(r"^[0-9]{4}-W[0-9]{2}$")'
+          new='ISSUE_RE = re.compile(r"^(?:[0-9]{4}-W[0-9]{2}|SP-[A-Za-z0-9][A-Za-z0-9._-]{2,63})$")'
+          for rel in ['scripts/prepare_evidence_run.py','scripts/accept_evidence_results.py']:
+              p=Path('control-src')/rel
+              t=p.read_text(encoding='utf-8')
+              assert old in t, rel
+              p.write_text(t.replace(old,new,1),encoding='utf-8')
+          PY
+      - name: Prepare exact Evidence execution package
+        shell: bash
+        run: |
+          set -euo pipefail
+          commit=$(git -C worktree rev-parse HEAD)
+          PYTHONPATH=control-src python control-src/scripts/prepare_evidence_run.py \
+            --repo-root worktree \
+            --output-root evidence-package \
+            --issue-id SP-2026-M05 \
+            --screening-run-sha 6190a7e7933d6b81caad435253dcd7443f3ca2f80967312149a01dd6e493f139 \
+            --source-ref special/2026-M05-work \
+            --source-commit "$commit"
+          python - <<'PY'
+          import json
+          p=json.load(open('evidence-package/evidence-execution-package.json',encoding='utf-8'))
+          assert p['evidence_tasks']['task_count']==58
+          assert p['screening_basis']['result_set_sha256']=='6190a7e7933d6b81caad435253dcd7443f3ca2f80967312149a01dd6e493f139'
+          PY
+      - name: Bind reviewed primary-source Evidence to exact tasks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence-results evidence-validation evidence-merged
+          PYTHONPATH=control-src python worktree/.ai-work/build_m05_evidence.py \
+            --package-root evidence-package \
+            --repo-root worktree \
+            --overrides-dir worktree/sources/SP-2026-M05/evidence/interactive-overrides-v0.1 \
+            --output-dir evidence-results \
+            > evidence-build-report.json
+      - name: Validate all 58 Evidence Runs
+        shell: bash
+        run: |
+          set -euo pipefail
+          for task in evidence-package/input/tasks/*.json; do
+            f=$(basename "$task")
+            PYTHONPATH=control-src python control-src/scripts/validate_evidence_run.py \
+              --task "$task" --run "evidence-results/$f" \
+              --prompt evidence-package/contract/primary-source-verification-v0.1.md \
+              --report "evidence-validation/$f" >/dev/null
+          done
+          test "$(find evidence-validation -type f -name '*.json' | wc -l)" -eq 58
+          PYTHONPATH=control-src python control-src/scripts/merge_evidence_runs.py \
+            --tasks-dir evidence-package/input/tasks \
+            --runs-dir evidence-results \
+            --prompt evidence-package/contract/primary-source-verification-v0.1.md \
+            --output-dir evidence-merged --require-complete > evidence-merge-report.json
+          python - <<'PY'
+          import json
+          m=json.load(open('evidence-merged/evidence-progress.json',encoding='utf-8'))
+          assert m['passed'] and m['complete']
+          assert m['evidence_task_count']==58 and m['validated_run_count']==58
+          assert m['recommendation_counts']=={'CANDIDATE':37,'HOLD':18,'INSPECT_MORE':0,'REJECT':3}
+          assert m['candidate_ready_count']==37 and m['hold_count']==18 and m['rejected_count']==3
+          PY
+      - name: Accept complete Evidence result set append-only
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python control-src/scripts/accept_evidence_results.py \
+            --package-root evidence-package \
+            --results-dir evidence-results \
+            --repo-root worktree \
+            --issue-id SP-2026-M05 \
+            --review-reference 'Interactive GPT-5.6 Sol primary-source Evidence review of all 58 SP-2026-M05 Evidence Tasks; preserved arXiv papers, official feeds/indexes, and GitHub releases; 37 CANDIDATE / 18 HOLD / 3 REJECT; no paid inference-provider API.' \
+            --report evidence-acceptance-report.json
+          python - <<'PY'
+          import json
+          s=json.load(open('worktree/sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
+          assert s['lifecycle_state']=='EVIDENCE_REVIEWED'
+          assert s['gates']['evidence_normalized']=='passed'
+          assert s['gates']['candidate_selection']=='pending'
+          PY
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2026-M05 check
+      - name: Commit accepted Evidence and remove one-shot machinery
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/prepare-m05-evidence-once.yml
+          rm -f .github/workflows/accept-m05-evidence-once.yml
+          rm -f .ai-work/build_m05_evidence.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A sources/SP-2026-M05 .github/workflows .ai-work
+          git commit -m 'Accept interactive Evidence for SP-2026-M05'
+          git push origin HEAD:special/2026-M05-work
+      - name: Upload Evidence audit
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sp-2026-m05-evidence-audit
+          path: |
+            evidence-build-report.json
+            evidence-merge-report.json
+            evidence-acceptance-report.json
+            evidence-validation/
+          if-no-files-found: warn
+          retention-days: 14
