@@ -6,6 +6,12 @@ on:
       - special/2026-M05-work
     paths:
       - '.ai-work/m05-source-intake-trigger.txt'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.ai-work/m05-source-intake-trigger.txt'
+      - '.github/workflows/run-m05-source-intake-once.yml'
 
 permissions:
   contents: read
@@ -16,6 +22,7 @@ concurrency:
 
 jobs:
   collect:
+    if: github.event_name == 'push' || (github.event.pull_request.number == 53 && github.head_ref == 'special/2026-M05-work')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current control code
