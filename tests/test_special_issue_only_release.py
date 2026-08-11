@@ -69,7 +69,7 @@ class SpecialIssueOnlyReleaseTests(unittest.TestCase):
 
             subprocess.run([
                 sys.executable,
-                str(ROOT / "scripts" / "accept_special_visual_review_issue_only.py"),
+                "-m", "scripts.accept_special_visual_review_issue_only",
                 "--repo-root", str(root),
                 "--issue-id", issue,
                 "--special-slug", slug,
@@ -92,7 +92,7 @@ class SpecialIssueOnlyReleaseTests(unittest.TestCase):
 
             subprocess.run([
                 sys.executable,
-                str(ROOT / "scripts" / "accept_special_freeze_issue_only.py"),
+                "-m", "scripts.accept_special_freeze_issue_only",
                 "--repo-root", str(root),
                 "--issue-id", issue,
                 "--special-slug", slug,
