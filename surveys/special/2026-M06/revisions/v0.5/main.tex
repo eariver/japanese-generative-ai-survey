@@ -1,0 +1,117 @@
+\documentclass[lualatex,a4paper,11pt]{jlreq}
+\usepackage{jgaisurvey}
+\usepackage{multicol}
+\usepackage{needspace}
+\addbibresource{references.bib}
+
+% Special-local balanced mixed presentation: full-width chapter headings, balanced two-column narrative, full-width synthesis/technical notes. Shared weekly source remains unchanged.
+\geometry{margin=22mm,headsep=5mm,footskip=10mm}
+\setlength{\headheight}{14.5pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1em}
+\newtcolorbox{technicalnote}[2]{
+  enhanced,breakable,colback=SurveySoft,colframe=SurveyAccent,
+  boxrule=0.65pt,arc=1mm,title={#1 \hfill \footnotesize #2},fonttitle=\bfseries,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=4mm,after skip=3mm
+}
+
+\surveysetup
+  {SP-2026-M06}
+  {Japanese Generative AI Technical Survey}
+  {Special / Coverage 2026-06-01 -- 2026-06-30 / Retrospective as of 2026-08-11}
+  {Coverage window: 2026-06-01 -- 2026-06-30 UTC}
+\surveyeditiondescriptor{Retrospective}
+\surveycoverstory
+  {2026年6月 — Agentは実行系へ広がった}
+  {モデル競争の一方で、memory、scheduling、serving、authorization、そして科学実験workflowまで、生成AIのagent化がモデルの外側へ広がった1か月を振り返る。}
+  {Frontier Models — モデル競争から利用形態の競争へ \quad / \quad AI for Science — Agentが実験ワークフローへ入る}
+
+\setlength{\columnsep}{6mm}
+
+\setlength{\multicolsep}{0.8em plus 0.2em minus 0.1em}
+
+\begin{document}
+\surveycover
+\clearpage
+\input{sections/00-frontmatter}
+
+\clearpage
+\section{Frontier Models — 6月、競争は「モデル性能」から提供形態へ広がった}
+\label{pkg:frontier-models-june}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/frontier-models-june}
+\end{multicols}
+\Needspace{0.34\textheight}
+\input{theme-synthesis/01-frontier-models-june-synthesis}
+\medskip
+\input{technical-notes/10-frontier-models-june-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Agents \& Memory — 長時間動作は「モデルの賢さ」だけでは成立しない}
+\label{pkg:agents-memory-june}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/agents-memory-june}
+\end{multicols}
+\Needspace{0.34\textheight}
+\input{theme-synthesis/02-agents-memory-june-synthesis}
+\medskip
+\input{technical-notes/20-agents-memory-june-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Inference \& Serving — 6月、最適化競争はchipからruntimeまで積み上がった}
+\label{pkg:inference-serving-june}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/inference-serving-june}
+\end{multicols}
+\Needspace{0.34\textheight}
+\input{theme-synthesis/03-inference-serving-june-synthesis}
+\medskip
+\input{technical-notes/30-inference-serving-june-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Agent Safety \& Security — 「使える」と「許される」を分ける}
+\label{pkg:agent-safety-security-june}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/agent-safety-security-june}
+\end{multicols}
+\Needspace{0.34\textheight}
+\input{theme-synthesis/04-agent-safety-security-june-synthesis}
+\medskip
+\input{technical-notes/40-agent-safety-security-june-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{AI for Science — Agentが「提案」から実験workflowへ踏み込む}
+\label{pkg:ai-for-science-june}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/ai-for-science-june}
+\end{multicols}
+\Needspace{0.34\textheight}
+\input{theme-synthesis/05-ai-for-science-june-synthesis}
+\medskip
+\input{technical-notes/50-ai-for-science-june-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Paper Watch — 長時間Agentを「守る・止めない・正しく測る」}
+\label{pkg:paper-watch-june}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/paper-watch-june}
+\end{multicols}
+\input{technical-notes/60-paper-watch-june-notes}
+
+\Needspace{0.55\textheight}
+\bigskip
+\input{final-synthesis/70-retrospective-synthesis}
+\bigskip
+\printbibliography[title={References / Source Notes}]
+\end{document}
