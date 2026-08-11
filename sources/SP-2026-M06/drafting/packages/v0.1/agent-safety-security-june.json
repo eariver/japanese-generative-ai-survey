@@ -1,0 +1,554 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M06",
+  "package_id": "agent-safety-security-june",
+  "draft_source_mode": "EVIDENCE_PACKAGE",
+  "execution_stage": "ARTICLE_DRAFTING",
+  "basis": {
+    "architecture_plan_sha256": "a1e41c37d9a50febdc514a78ad11a8f6f3982ad54e3e1407ba0825bb6b436e14",
+    "architecture_input_sha256": "9ef859922a401e29a219a63dce6e1051d202e15cd60f54040ee23777e71e1ff5",
+    "evidence_reviewed_sha256": "97d30e9a821aabaad5f910c2c3ecb87e0633ae4d5b85561f0b6f89cfc27ab111"
+  },
+  "package": {
+    "title": "Agent Safety & Security — 能力、権限、接続面を分けて考える",
+    "package_type": "DEEP_DIVE",
+    "page_target": 6,
+    "editorial_angle": "capability exposure、per-call authorization、adaptive prompt injection、MCP tool poisoning、persistent-agent attack surfaces、pre-deployment simulationを別個のthreat/evaluation modelとして整理し、共通する制御境界だけを横断する。",
+    "must_cover": [
+      "capability gateとauthorizationを同一視しない",
+      "adaptive defense-aware evaluationの意味",
+      "SafeClawArenaの複数attack surface",
+      "ShareLockのMCP threat assumptions",
+      "Deployment Simulationはvendor-reported safety methodとして扱う",
+      "異なるthreat modelを単一の『agents are unsafe』主張へ潰さない"
+    ],
+    "boundaries": [
+      "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review.",
+      "The source is first-party OpenAI material. Capability, benchmark, efficiency, or performance statements remain vendor claims unless explicitly described as externally reproduced."
+    ],
+    "late_breaking": false,
+    "drafting_order": 5
+  },
+  "primary_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M06",
+      "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-28679v1-49b746661c",
+      "task_file": "item-arxiv-2606-28679v1-49b746661c.json",
+      "run_file": "item-arxiv-2606-28679v1-49b746661c.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+        "generated_at": "2026-08-11T07:05:00Z",
+        "run_reference": "June 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "cf3e61b7cd9179c54a917103955a86b5103c75c0ed92d3186b26c04319c87220",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M06",
+        "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-28679v1-49b746661c",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Capability Gates Are Not Authorization: Confused-Deputy Failures in LLM Agent Frameworks",
+          "artifact_type": "PAPER",
+          "organization": "Paper authors",
+          "canonical_url": "http://arxiv.org/abs/2606.28679v1"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-06-27",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PAPER_RELEASE",
+              "event_date": "2026-06-27",
+              "source_published_at": "2026-06-27T01:33:19Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-11T07:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "http://arxiv.org/abs/2606.28679v1",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Primary source 1: http://arxiv.org/abs/2606.28679v1",
+            "published_at": null,
+            "accessed_at": "2026-08-11T07:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The authors distinguish tool capability exposure from per-call authorization and demonstrate confused-deputy risks in common agent frameworks.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify audited framework versions/defaults",
+              "status": "VERIFIED",
+              "finding": "The paper audits pinned public-source versions of LangChain/LangGraph, LlamaIndex, and Stripe Agent Toolkit, finding default capability gates but no deterministic fail-closed per-call value authorization gate; it evaluates a ScopeGate control.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "This June paper materially informs the month-level theme and is suitable for Candidate Selection.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-paper evidence supports Candidate Selection."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M06",
+      "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-26479v1-8a5efbff54",
+      "task_file": "item-arxiv-2606-26479v1-8a5efbff54.json",
+      "run_file": "item-arxiv-2606-26479v1-8a5efbff54.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+        "generated_at": "2026-08-11T07:05:00Z",
+        "run_reference": "June 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "4d44cb595beb10bf3a5ef7cab70af9147eb765cc70babf2c8c8c30482ab63495",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M06",
+        "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-26479v1-8a5efbff54",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Adaptive Evaluation of Out-of-Band Defenses Against Prompt Injection in LLM Agents",
+          "artifact_type": "PAPER",
+          "organization": "Paper authors",
+          "canonical_url": "http://arxiv.org/abs/2606.26479v1"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-06-25",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PAPER_RELEASE",
+              "event_date": "2026-06-25",
+              "source_published_at": "2026-06-25T00:35:23Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-11T07:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "http://arxiv.org/abs/2606.26479v1",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Primary source 1: http://arxiv.org/abs/2606.26479v1",
+            "published_at": null,
+            "accessed_at": "2026-08-11T07:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The authors argue prompt-injection defenses must be evaluated with adaptive, defense-aware attacks rather than a fixed attack suite.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify surveyed defenses and adaptive evaluation method",
+              "status": "VERIFIED",
+              "finding": "The paper surveys out-of-band prompt-injection defenses, argues fixed attacks are insufficient, and runs a defense-aware adaptive evaluation protocol against Progent on AgentDojo.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "This June paper materially informs the month-level theme and is suitable for Candidate Selection.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-paper evidence supports Candidate Selection."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M06",
+      "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-30755v1-1555fea072",
+      "task_file": "item-arxiv-2606-30755v1-1555fea072.json",
+      "run_file": "item-arxiv-2606-30755v1-1555fea072.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+        "generated_at": "2026-08-11T07:05:00Z",
+        "run_reference": "June 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "1566ba17f84b3cc0377ad1da3a4afdbbca299d91a921f327cb0b454a3e18e058",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M06",
+        "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-30755v1-1555fea072",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Understanding and Evaluating Claw-like Agent Security Through a Computer-Systems Lens",
+          "artifact_type": "PAPER",
+          "organization": "Paper authors",
+          "canonical_url": "http://arxiv.org/abs/2606.30755v1"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-06-29",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PAPER_RELEASE",
+              "event_date": "2026-06-29",
+              "source_published_at": "2026-06-29T18:00:45Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-11T07:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "http://arxiv.org/abs/2606.30755v1",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Primary source 1: http://arxiv.org/abs/2606.30755v1",
+            "published_at": null,
+            "accessed_at": "2026-08-11T07:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The authors frame persistent Claw-like agents as computer systems and introduce SafeClawArena for cross-component security evaluation.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify benchmark/system model and tested agents",
+              "status": "VERIFIED",
+              "finding": "SafeClawArena contains 406 adversarial tasks spanning four attack surfaces and evaluates three Claw-like platforms with five frontier LLMs in containerized replicas with taint tracking.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "This June paper materially informs the month-level theme and is suitable for Candidate Selection.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-paper evidence supports Candidate Selection."
+        }
+      }
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M06",
+      "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-27027v1-92e00c43cb",
+      "task_file": "item-arxiv-2606-27027v1-92e00c43cb.json",
+      "run_file": "item-arxiv-2606-27027v1-92e00c43cb.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+        "generated_at": "2026-08-11T07:05:00Z",
+        "run_reference": "June 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "38267fed6ee538b199488c9ad8febb77557d26f96a1044d49ff38076707b0757",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M06",
+        "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-27027v1-92e00c43cb",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "ShareLock: A Stealthy Multi-Tool Threshold Poisoning Attack Against MCP",
+          "artifact_type": "PAPER",
+          "organization": "Paper authors",
+          "canonical_url": "http://arxiv.org/abs/2606.27027v1"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-06-25",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PAPER_RELEASE",
+              "event_date": "2026-06-25",
+              "source_published_at": "2026-06-25T13:35:28Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-11T07:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "http://arxiv.org/abs/2606.27027v1",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Primary source 1: http://arxiv.org/abs/2606.27027v1",
+            "published_at": null,
+            "accessed_at": "2026-08-11T07:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The authors introduce ShareLock, a threshold-based multi-tool poisoning attack for MCP ecosystems.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify threat model and MCP assumptions",
+              "status": "VERIFIED",
+              "finding": "ShareLock models MCP tool-poisoning across multiple tools, using threshold secret sharing to distribute a hidden instruction and a reconstruction trigger; the threat model assumes multiple tool descriptions can cooperatively contribute to an attack.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "This June paper materially informs the month-level theme and is suitable for Candidate Selection.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-paper evidence supports Candidate Selection."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M06",
+      "evidence_task_id": "evidence:SP-2026-M06:item-official-feed-c000018ba1f035750668-0decc9ddcd",
+      "task_file": "item-official-feed-c000018ba1f035750668-0decc9ddcd.json",
+      "run_file": "item-official-feed-c000018ba1f035750668-0decc9ddcd.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+        "generated_at": "2026-08-11T07:05:00Z",
+        "run_reference": "June 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "27c9def95c4b095c094e66140f97f3622f427eae0d88e6b80f2a04c9b6c19cde",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M06",
+        "evidence_task_id": "evidence:SP-2026-M06:item-official-feed-c000018ba1f035750668-0decc9ddcd",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Deployment Simulation",
+          "artifact_type": "SAFETY_EVENT",
+          "organization": "OpenAI",
+          "canonical_url": "https://openai.com/index/deployment-simulation"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-06-16",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "SAFETY_METHOD_RELEASE",
+              "event_date": "2026-06-16",
+              "source_published_at": "2026-06-16T00:00:00Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-11T07:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://openai.com/index/deployment-simulation",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://openai.com/index/deployment-simulation",
+            "published_at": null,
+            "accessed_at": "2026-08-11T07:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "OpenAI introduced Deployment Simulation, which replays prior conversations with a candidate model and simulates tool behavior to estimate pre-deployment behavior in more realistic contexts.",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The source is first-party OpenAI material. Capability, benchmark, efficiency, or performance statements remain vendor claims unless explicitly described as externally reproduced.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify method inputs and validation evidence",
+              "status": "VERIFIED",
+              "finding": "The source documents the simulation inputs and validation rationale; effectiveness remains based on OpenAI's reported methodology/evaluation.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "This first-party June item materially changes a core model, agent, safety, science, or infrastructure theme.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "First-party June evidence supports Candidate Selection."
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION",
+    "cover_headline_finalization_forbidden": true,
+    "this_week_summary_forbidden": true
+  }
+}
