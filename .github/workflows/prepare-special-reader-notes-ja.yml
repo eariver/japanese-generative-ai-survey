@@ -1,0 +1,102 @@
+name: Prepare Special Technical Notes Japanese summaries
+
+on:
+  workflow_dispatch:
+    inputs:
+      special_slug:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: special-reader-notes-ja-${{ inputs.special_slug }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Resolve Special edition
+        id: edition
+        shell: bash
+        env:
+          SPECIAL_SLUG: ${{ inputs.special_slug }}
+        run: |
+          set -euo pipefail
+          manifest="control-src/specials/${SPECIAL_SLUG}/edition.json"
+          test -s "$manifest"
+          python control-src/scripts/special_pipeline.py --config control-src/config/special-pipeline.json validate --manifest "$manifest"
+          echo "special_id=$(python -c "import json; print(json.load(open('$manifest'))['special_id'])")" >> "$GITHUB_OUTPUT"
+          echo "work_branch=$(python -c "import json; print(json.load(open('$manifest'))['paths']['work_branch'])")" >> "$GITHUB_OUTPUT"
+      - name: Checkout Special work branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ steps.edition.outputs.work_branch }}
+          path: worktree
+          fetch-depth: 0
+      - name: Verify drafting boundary
+        shell: bash
+        env:
+          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+        run: |
+          set -euo pipefail
+          python - "$SPECIAL_ID" <<'PY'
+          import json,sys,pathlib
+          issue=sys.argv[1]
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
+          assert state['gates']['article_draft']=='passed'
+          assert state['lifecycle_state'] in {'DRAFT_COMPLETE','VALIDATED_DRAFT'}, state['lifecycle_state']
+          assert (root/'sources'/issue/'drafting'/'packages'/'v0.1').is_dir()
+          PY
+      - name: Prepare exact source-text summary template
+        shell: bash
+        env:
+          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+        run: |
+          set -euo pipefail
+          output="sources/${SPECIAL_ID}/editorial/technical-notes-ja-v0.1.json"
+          PYTHONPATH=control-src python control-src/scripts/special_reader_notes_ja.py prepare \
+            --repo-root worktree \
+            --issue-id "$SPECIAL_ID" \
+            --output "$output" \
+            > special-reader-notes-ja-prepare-audit.json
+          python - "$output" <<'PY'
+          import json,sys,pathlib
+          p=pathlib.Path('worktree')/sys.argv[1]
+          data=json.load(open(p,encoding='utf-8'))
+          assert data['status']=='DRAFT'
+          assert data['records']
+          assert all(item['text_ja']=='' for r in data['records'] for k in ('claims','limitations') for item in r[k])
+          PY
+      - name: Commit summary template for interactive editorial fill
+        working-directory: worktree
+        shell: bash
+        env:
+          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+          WORK_BRANCH: ${{ steps.edition.outputs.work_branch }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "sources/${SPECIAL_ID}/editorial/technical-notes-ja-v0.1.json"
+          git commit -m "Prepare Japanese Technical Notes summaries for ${SPECIAL_ID}"
+          git push origin "HEAD:${WORK_BRANCH}"
+      - name: Upload preparation audit
+        uses: actions/upload-artifact@v7
+        with:
+          name: special-reader-notes-ja-${{ inputs.special_slug }}
+          path: special-reader-notes-ja-prepare-audit.json
+          if-no-files-found: error
+          retention-days: 14
