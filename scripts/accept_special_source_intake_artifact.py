@@ -83,6 +83,15 @@ def build_state(edition: dict[str, Any], plan: dict[str, Any]) -> dict[str, Any]
     }
 
 
+def build_initial_state(edition: dict[str, Any], plan: dict[str, Any]) -> dict[str, Any]:
+    """Return the exact deterministic pre-intake state for this accepted plan."""
+    state = build_state(edition, plan)
+    state["lifecycle_state"] = "ISSUE_INITIALIZED"
+    state["calendar"]["collection_anchor_at"] = None
+    state["gates"]["raw_sources_preserved"] = "pending"
+    return state
+
+
 def accept(*, artifact_root: Path, repo_root: Path, special_slug: str, workflow_run_id: int,
            artifact_id: int, artifact_name: str, artifact_digest: str, review_reference: str) -> dict[str, Any]:
     repo_root = repo_root.resolve()
@@ -143,12 +152,19 @@ def accept(*, artifact_root: Path, repo_root: Path, special_slug: str, workflow_
 
     state_path = repo_root / "sources" / special_id / "pipeline-state.json"
     expected_state = build_state(edition, plan)
+    expected_initial_state = build_initial_state(edition, plan)
     if state_path.exists():
         existing = load_json(state_path)
-        if existing.get("lifecycle_state") != "DISCOVERY_COLLECTED":
+        lifecycle = existing.get("lifecycle_state")
+        if lifecycle == "ISSUE_INITIALIZED":
+            if existing != expected_initial_state:
+                raise ValueError("existing Special initialized state differs from exact accepted plan")
+            state_path.write_text(json.dumps(expected_state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        elif lifecycle == "DISCOVERY_COLLECTED":
+            if existing != expected_state:
+                raise ValueError("existing Special discovery state differs from exact accepted plan")
+        else:
             raise ValueError("Special source intake cannot change state after downstream work has begun")
-        if existing != expected_state:
-            raise ValueError("existing Special discovery state differs from exact accepted plan")
     else:
         state_path.parent.mkdir(parents=True, exist_ok=True)
         state_path.write_text(json.dumps(expected_state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
