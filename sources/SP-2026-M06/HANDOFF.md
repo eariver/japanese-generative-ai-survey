@@ -25,15 +25,15 @@ No Human Visual Review, Freeze, merge, or publication approval has been inferred
 
 Canonical reader source:
 
-- source version: `v0.8`
-- source manifest: `surveys/special/2026-M06/revisions/v0.8/source-manifest.json`
-- source manifest SHA256: `1c4102cd7e56e9c22ab6d1ecc91d1b3390f311b09f162c7f9f6224754703c4c9`
-- layout mode: `balanced-multicol-adaptive-spacing-with-june-chronology-inline-boundary`
+- source version: `v0.9`
+- source manifest: `surveys/special/2026-M06/revisions/v0.9/source-manifest.json`
+- source manifest SHA256: `4aa9f1803e0dc8b64c56ea0369461d073aca014218031d3efbba0d0fd9abedee`
+- layout mode: `balanced-multicol-adaptive-spacing-with-june-chronology-inline-boundary-month-label-corrected`
 
 Current PDF candidate:
 
-- build workflow run: `31493327596`
-- PDF SHA256: `69faa6b5b5fb87cd18ad12c38854957f925cdfeea70a64c681b7efce56b02996`
+- build workflow run: `31496494165`
+- PDF SHA256: `2d7b9d3abe3e90fcf3de9112f1204b8b8ed765986a04e30dc0ba92b1c0c499cf`
 - page count: `32`
 - allowed range: `32-40`
 - TeX log gate: **clean**
@@ -43,18 +43,33 @@ Current PDF candidate:
 
 ### Pre-Human render-first QA
 
-All pages of the predecessor candidates were inspected while layout defects were iteratively removed. The final v0.8 delta was re-rendered and the affected tail was inspected through the end of the document.
+All pages of the predecessor candidates were inspected while layout defects were iteratively removed. v0.8 was then fully self-reviewed before Human approval. That review found one reader-facing month-label error in the five Theme Synthesis tables: `7月の一次資料・論文から読めること` remained from the July renderer/template even though the table contents and Evidence were June-specific.
 
-Current findings:
+v0.9 corrects only those five labels to `6月の一次資料・論文から読めること`.
 
-- the former nearly-empty page caused by `Needspace` inside the final-synthesis `multicols` is gone;
-- the former structural blank tail before the final retrospective is now used by a reader-facing June chronology derived only from already-selected Evidence;
-- the chronology boundary wording remains unchanged but is rendered inline, so a standalone Claim Boundary box no longer spills onto the next page;
-- the final retrospective and cross-chapter synthesis render without isolated boxes or chapter-transition page holes;
-- References begin naturally after the retrospective; the remaining whitespace on the final page is terminal bibliography whitespace, not a forced structural page break;
+Verification of the v0.8 -> v0.9 delta:
+
+- exactly `5` reader-facing replacements were made;
+- semantic claims changed: `false`;
+- citations changed: `false`;
+- Evidence changed: `false`;
+- PDF page count remains `32`;
+- PDF render diff reports exactly `5` changed pages: p5, p10, p14, p19, p23;
+- on each changed page the diff bounding box is confined to the single month numeral in the Theme Synthesis table header;
+- the other `27` pages are pixel-identical to v0.8 at the comparison render resolution;
+- all five corrected pages were re-rendered and visually inspected; the corrected `6月` label is legible and causes no reflow;
+- PDF preflight passes: 32 pages, openable, unencrypted, not likely scanned;
 - no clipping, overlap, broken glyph, undefined citation/reference, overfull/underfull hbox, or missing-character finding is present in the final TeX log gate.
 
-This is **editorial preflight only**. `visual_review` remains `pending` until the user explicitly approves the rendered PDF.
+The earlier layout findings remain resolved:
+
+- the former nearly-empty page caused by `Needspace` inside the final-synthesis `multicols` is gone;
+- the former structural blank tail before the final retrospective is used by a reader-facing June chronology derived only from already-selected Evidence;
+- the chronology boundary wording remains unchanged but is rendered inline, so a standalone Claim Boundary box no longer spills onto the next page;
+- the final retrospective and cross-chapter synthesis render without isolated boxes or chapter-transition page holes;
+- References begin naturally after the retrospective; the remaining whitespace on the final page is terminal bibliography whitespace, not a forced structural page break.
+
+This is **editorial preflight only**. `visual_review` remains `pending` until the user explicitly approves the rendered v0.9 PDF.
 
 ## Approved Candidate Selection
 
@@ -123,7 +138,8 @@ The accepted article text and Evidence gates were not reopened. Revisions after 
 - `v0.5`: adaptive chapter/reference spacing; 33p, clean log; render QA found a nearly-empty final-synthesis page caused by subsection `Needspace` inside `multicols`.
 - `v0.6`: removed only those six final-synthesis `Needspace` guards; 32p, clean log; page hole removed, but structural whitespace remained before final synthesis.
 - `v0.7`: added a compact selected-Evidence-only June chronology in that whitespace; 32p, clean log; chronology boundary box alone spilled to the next page.
-- `v0.8`: preserved the exact boundary wording but rendered it inline; 32p, clean log; current Human Visual Review candidate.
+- `v0.8`: preserved the exact chronology boundary wording but rendered it inline; 32p, clean log; full self-review then found five July-specific Theme Synthesis table labels.
+- `v0.9`: corrected only those five `7月` labels to `6月`; 32p, clean log; render diff confirms only those five month numerals changed. **Current Human Visual Review candidate.**
 
 June chronology artifact:
 
@@ -131,6 +147,13 @@ June chronology artifact:
 - SHA256: `3095e7dc21f2bc8d302d4f90c1f037ffeb939127db171f9ce119c875341e8d1b`
 - 9 rows, each resolved against selected Draft Package Evidence and existing bibliography sources
 - no new external Evidence; Selection and Architecture were not reopened
+
+v0.9 label-correction artifact:
+
+- `sources/SP-2026-M06/editorial/layout-revision-v0.9.json`
+- SHA256: `7afbab5072e02b3ade8cab5db5fca63876c6051104f415840f0123d89b0470b2`
+- exactly five reader-facing replacements
+- no claim, citation, Evidence, chronology, Technical Notes, bibliography, or layout-policy change
 
 ## Shared contract fixes discovered during this Special
 
@@ -151,9 +174,9 @@ Do not repeat Source Intake, Screening, Evidence review, Candidate Selection, Ar
 
 ## Resume instruction
 
-Start from `special/2026-M06-work`, PR `#45`, `pipeline-state.json`, this `HANDOFF.md`, and the v0.8 source manifest.
+Start from `special/2026-M06-work`, PR `#45`, `pipeline-state.json`, this `HANDOFF.md`, and the v0.9 source manifest.
 
-1. Present the v0.8 rendered PDF to the user for the **Human Visual Review** gate.
-2. Do not mark `visual_review=passed` unless the user explicitly approves that PDF.
-3. After Visual Review approval, bind the approval to the v0.8 source/PDF SHA and run the canonical Visual Review acceptance path.
+1. Present the v0.9 rendered PDF to the user for the **Human Visual Review** gate.
+2. Do not mark `visual_review=passed` unless the user explicitly approves that exact v0.9 PDF.
+3. After Visual Review approval, bind the approval to source manifest SHA256 `4aa9f1803e0dc8b64c56ea0369461d073aca014218031d3efbba0d0fd9abedee` and PDF SHA256 `2d7b9d3abe3e90fcf3de9112f1204b8b8ed765986a04e30dc0ba92b1c0c499cf`, then run the canonical Visual Review acceptance path.
 4. **Freeze remains a later independent Human Gate.** Do not freeze, merge, tag, or publish merely because Visual Review was approved.
