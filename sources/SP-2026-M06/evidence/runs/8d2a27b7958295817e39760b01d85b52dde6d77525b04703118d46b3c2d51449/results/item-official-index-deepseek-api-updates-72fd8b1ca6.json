@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M06",
+  "evidence_task_id": "evidence:SP-2026-M06:item-official-index-deepseek-api-updates-72fd8b1ca6",
+  "evidence_task_sha256": "02e2ecf7d2c26812701adc955ef0015eb9113ee3196a4fe28d2a76eda1278ce1",
+  "prompt_id": "primary-source-verification-v0.1",
+  "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+    "generated_at": "2026-08-11T07:05:00Z",
+    "run_reference": "June 2026 Special primary-source Evidence review"
+  },
+  "card": {
+    "schema_version": "1.0",
+    "issue_id": "SP-2026-M06",
+    "evidence_task_id": "evidence:SP-2026-M06:item-official-index-deepseek-api-updates-72fd8b1ca6",
+    "status": "REJECTED",
+    "grouping_resolution": {
+      "accepted": true,
+      "split_recommended": false,
+      "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+    },
+    "artifact": {
+      "canonical_name": "DeepSeek API June 2026 chronology check",
+      "artifact_type": "MODEL_UPDATE",
+      "organization": "DeepSeek",
+      "canonical_url": "https://api-docs.deepseek.com/updates/"
+    },
+    "temporal": {
+      "artifact_first_announced": null,
+      "events": [],
+      "observed_at": "2026-08-11T07:05:00Z"
+    },
+    "sources": [
+      {
+        "source_id": "src-1",
+        "url": "https://api-docs.deepseek.com/updates/",
+        "source_class": "PRIMARY_OFFICIAL",
+        "title": "Primary source 1: https://api-docs.deepseek.com/updates/",
+        "published_at": null,
+        "accessed_at": "2026-08-11T07:05:00Z",
+        "role": "Primary source used for chronology and technical verification"
+      }
+    ],
+    "claims": [
+      {
+        "claim_id": "claim-1",
+        "text": "The collected DeepSeek API changelog has no June 2026 dated model or API release between its April 24 DeepSeek-V4 entry and July 31 V4-Flash update.",
+        "evidence_class": "PRIMARY_FACT",
+        "source_ids": [
+          "src-1"
+        ],
+        "context": null
+      }
+    ],
+    "metrics": [],
+    "limitations": [
+      {
+        "limitation_id": "limitation-1",
+        "text": "The absence finding is bounded to the collected official API changelog; it does not prove that no DeepSeek-related ecosystem activity occurred elsewhere.",
+        "evidence_class": "INFERENCE",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "verification": {
+      "targets": [
+        {
+          "target": "extract June-dated model/API changes",
+          "status": "VERIFIED",
+          "finding": "No June-dated model/API change is present in the official changelog snapshot; downstream serving-project references are insufficient to create a June DeepSeek release event.",
+          "source_ids": [
+            "src-1"
+          ]
+        }
+      ],
+      "unresolved_questions": [],
+      "contradictions": []
+    },
+    "editorial": {
+      "why_now_confirmed": false,
+      "why_now_note": "The official chronology does not establish a June-dated release for this vendor.",
+      "candidate_recommendation": "REJECT",
+      "rationale": "Official chronology does not support a June release event, so the screening lead is rejected."
+    }
+  }
+}
