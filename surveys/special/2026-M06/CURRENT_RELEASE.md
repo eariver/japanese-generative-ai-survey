@@ -10,5 +10,6 @@ This directory contains working/history material as well as the canonical frozen
 - Internal source revision: `v0.9` — provenance only; it is not a public Release version.
 - Frozen PDF SHA-256: `2d7b9d3abe3e90fcf3de9112f1204b8b8ed765986a04e30dc0ba92b1c0c499cf`
 - Release manifest: `/sources/SP-2026-M06/release-manifest.json`
+- Post-release errata: [`ERRATA.md`](ERRATA.md)
 
-The top-level `main.tex` is a workspace entry point and must not be treated as the source of the frozen public PDF unless it resolves to the canonical source above. The SHA-bound release manifest is authoritative.
+The top-level `main.tex` is a workspace entry point and must not be treated as the source of the frozen public PDF unless it resolves to the canonical source above. The SHA-bound release manifest is authoritative. Errata are recorded separately and do not silently replace the frozen release bytes.

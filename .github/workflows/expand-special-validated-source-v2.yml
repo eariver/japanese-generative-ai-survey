@@ -57,16 +57,21 @@ jobs:
           set -euo pipefail
           python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id "$SPECIAL_ID" check
           python - "$SPECIAL_ID" <<'PY'
-          import json,sys
+          import json,sys,pathlib
           issue=sys.argv[1]
-          state=json.load(open(f'worktree/sources/{issue}/pipeline-state.json',encoding='utf-8'))
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
           assert state['lifecycle_state']=='VALIDATED_DRAFT', state['lifecycle_state']
           assert state['gates']['article_draft']=='passed'
           assert state['gates']['claim_and_chronology_validation']=='passed'
           assert state['gates']['latex_build']=='pending'
           assert 'validated_issue_source' in state['provenance']
+          summary=root/'sources'/issue/'editorial'/'technical-notes-ja-v0.1.json'
+          assert summary.is_file(), 'prepare/fill Japanese Technical Notes summary artifact before source expansion'
+          data=json.load(open(summary,encoding='utf-8'))
+          assert data['status']=='READY', 'Japanese Technical Notes summary artifact must be READY'
           PY
-      - name: Expand source and make Technical Notes reader-facing
+      - name: Expand source, apply Japanese summaries, and make Technical Notes reader-facing
         shell: bash
         env:
           SPECIAL_SLUG: ${{ inputs.special_slug }}
@@ -80,13 +85,24 @@ jobs:
             --issue-id "$SPECIAL_ID" \
             --source-version "$SOURCE_VERSION" \
             > special-source-expansion-audit.json
+          PYTHONPATH=control-src python control-src/scripts/special_reader_notes_ja.py apply \
+            --repo-root worktree \
+            --special-slug "$SPECIAL_SLUG" \
+            --issue-id "$SPECIAL_ID" \
+            --summary "sources/${SPECIAL_ID}/editorial/technical-notes-ja-v0.1.json" \
+            > special-reader-notes-ja-apply-audit.json
           PYTHONPATH=control-src python control-src/scripts/postprocess_special_reader_facing_notes.py \
             --repo-root worktree \
             --special-slug "$SPECIAL_SLUG" \
             --issue-id "$SPECIAL_ID" \
             --source-version "$SOURCE_VERSION" \
             > special-reader-facing-notes-audit.json
-      - name: Verify expanded source manifest and reader-facing Technical Notes
+          PYTHONPATH=control-src python control-src/scripts/special_period_consistency.py apply \
+            --repo-root worktree \
+            --special-slug "$SPECIAL_SLUG" \
+            --issue-id "$SPECIAL_ID" \
+            > special-period-consistency-audit.json
+      - name: Verify expanded source, Japanese Technical Notes, and period consistency
         shell: bash
         env:
           SPECIAL_SLUG: ${{ inputs.special_slug }}
@@ -111,6 +127,10 @@ jobs:
           reader=data['reader_facing_technical_notes']
           assert reader['unconditional_clearpage_at_entry'] is False
           assert reader['evidence_ids_rendered_in_pdf'] is False
+          assert reader['language_policy']=='ja-reader-summary-v1'
+          assert reader['source_evidence_unchanged'] is True
+          assert reader['attribution_labels_preserved'] is True
+          assert data['period_consistency']['retrospective_scope_derived_from_manifest'] is True
           for article in data['articles']:
               p=manifest.parent/article['technical_notes_path']
               text=p.read_text(encoding='utf-8')
@@ -121,6 +141,13 @@ jobs:
           assert len(state.get('provenance_history',{}).get('validated_issue_source',[]))>=1
           assert (manifest.parent/'main.tex').is_file()
           PY
+          PYTHONPATH=control-src python control-src/scripts/special_reader_notes_ja.py check \
+            --repo-root worktree \
+            --issue-id "$SPECIAL_ID"
+          PYTHONPATH=control-src python control-src/scripts/special_period_consistency.py check \
+            --repo-root worktree \
+            --special-slug "$SPECIAL_SLUG" \
+            --issue-id "$SPECIAL_ID"
       - name: Commit expanded source revision
         working-directory: worktree
         shell: bash
@@ -143,6 +170,8 @@ jobs:
           name: special-source-expansion-${{ inputs.special_slug }}-${{ inputs.source_version }}
           path: |
             special-source-expansion-audit.json
+            special-reader-notes-ja-apply-audit.json
             special-reader-facing-notes-audit.json
+            special-period-consistency-audit.json
           if-no-files-found: error
           retention-days: 14
