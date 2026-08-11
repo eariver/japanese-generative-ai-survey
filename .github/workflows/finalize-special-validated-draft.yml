@@ -91,7 +91,12 @@ jobs:
             --generated-at "$generated_at" \
             --run-reference "$REVIEW_REFERENCE" \
             > special-finalization-audit.json
-      - name: Verify validated-draft state
+          PYTHONPATH=control-src python control-src/scripts/special_period_consistency.py apply \
+            --repo-root worktree \
+            --special-slug "$SPECIAL_SLUG" \
+            --issue-id "$SPECIAL_ID" \
+            > special-period-consistency-audit.json
+      - name: Verify validated-draft state and period consistency
         shell: bash
         env:
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
@@ -111,7 +116,12 @@ jobs:
           source=json.load(open(root/'surveys'/'special'/slug/'source-manifest.json',encoding='utf-8'))
           assert source['status']=='VALIDATED_SOURCE'
           assert source['article_count']==6
+          assert source['period_consistency']['retrospective_scope_derived_from_manifest'] is True
           PY
+          PYTHONPATH=control-src python control-src/scripts/special_period_consistency.py check \
+            --repo-root worktree \
+            --special-slug "$SPECIAL_SLUG" \
+            --issue-id "$SPECIAL_ID"
       - name: Commit validated Special source
         working-directory: worktree
         shell: bash
@@ -133,6 +143,8 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: special-finalization-${{ inputs.special_slug }}
-          path: special-finalization-audit.json
+          path: |
+            special-finalization-audit.json
+            special-period-consistency-audit.json
           if-no-files-found: error
           retention-days: 14
