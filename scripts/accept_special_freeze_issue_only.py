@@ -37,7 +37,7 @@ This directory contains working/history material as well as the canonical frozen
 - Public Release title: `{candidate['release_title']}`
 - Canonical source: [`{source_root}`]({source_root})
 - Canonical source manifest: [`{source_root}source-manifest.json`]({source_root}source-manifest.json)
-- Internal source revision: `{source_version}` — provenance only; it is **not** a public Release version.
+- Internal source revision: `{source_version}` — provenance only; it is not a public Release version.
 - Frozen PDF SHA-256: `{candidate['canonical_pdf_candidate']['sha256']}`
 - Release manifest: `/{release_manifest_rel}`
 
