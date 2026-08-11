@@ -1,4 +1,4 @@
-name: Publish Special finalizer month-date fix once
+name: Run M06 finalization once
 
 on:
   pull_request:
@@ -7,64 +7,103 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: special-finalization-2026-M06-run-once
+  cancel-in-progress: false
+
 jobs:
-  publish-fix:
+  finalization:
     if: github.event.pull_request.number == 45 && github.event.pull_request.head.ref == 'special/2026-M06-work'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout current main
+      - name: Checkout current control code
         uses: actions/checkout@v6
         with:
           ref: main
-          fetch-depth: 0
+          path: control-src
+          fetch-depth: 1
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Patch finalizer and tests conservatively
+      - name: Checkout Special work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2026-M06-work
+          path: worktree
+          fetch-depth: 0
+      - name: Verify post-draft boundary
+        id: boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2026-M06 check
+          python - >> "$GITHUB_OUTPUT" <<'PY'
+          import json
+          issue='SP-2026-M06'
+          state=json.load(open(f'worktree/sources/{issue}/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='DRAFT_COMPLETE', state['lifecycle_state']
+          assert state['gates']['article_draft']=='passed'
+          assert state['gates']['claim_and_chronology_validation']=='pending'
+          path=state['provenance']['article_draft']['result_set_path']
+          print(f'article_run_dir={path}')
+          PY
+          test -s worktree/sources/SP-2026-M06/synthesis/interactive-overrides-v0.1/issue-synthesis-v0.1.json
+      - name: Finalize synthesis, audits, and issue source
+        shell: bash
+        env:
+          ARTICLE_RUN_DIR: ${{ steps.boundary.outputs.article_run_dir }}
+        run: |
+          set -euo pipefail
+          generated_at=$(python - <<'PY'
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          print(datetime.now(ZoneInfo('Asia/Tokyo')).isoformat(timespec='seconds'))
+          PY
+          )
+          PYTHONPATH=control-src python control-src/scripts/finalize_special_validated_draft.py \
+            --repo-root worktree \
+            --special-slug 2026-M06 \
+            --issue-id SP-2026-M06 \
+            --article-run-dir "$ARTICLE_RUN_DIR" \
+            --synthesis-body sources/SP-2026-M06/synthesis/interactive-overrides-v0.1/issue-synthesis-v0.1.json \
+            --generated-at "$generated_at" \
+            --run-reference 'ChatGPT editorial finalization after accepted SP-2026-M06 Article Draft results, 2026-08-11 JST.' \
+            > special-finalization-audit.json
+      - name: Verify validated-draft state
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
-          from pathlib import Path
-
-          script = Path('scripts/finalize_special_validated_draft.py')
-          text = script.read_text(encoding='utf-8')
-          old_import = 'from datetime import datetime, timezone\n'
-          new_import = 'from datetime import datetime, timedelta, timezone\n'
-          if old_import not in text:
-              raise SystemExit('datetime import anchor not found')
-          text = text.replace(old_import, new_import, 1)
-
-          old = '''def parse_instant(value: str) -> datetime:\n    text = value.strip()\n    if len(text) == 10:\n        return datetime.fromisoformat(text).replace(tzinfo=timezone.utc)\n    normalized = text[:-1] + "+00:00" if text.endswith("Z") else text\n    parsed = datetime.fromisoformat(normalized)\n    if parsed.tzinfo is None:\n        parsed = parsed.replace(tzinfo=timezone.utc)\n    return parsed.astimezone(timezone.utc)\n\n\n'''
-          new = '''def parse_instant(value: str) -> datetime:\n    text = value.strip()\n    if len(text) == 10:\n        return datetime.fromisoformat(text).replace(tzinfo=timezone.utc)\n    normalized = text[:-1] + "+00:00" if text.endswith("Z") else text\n    parsed = datetime.fromisoformat(normalized)\n    if parsed.tzinfo is None:\n        parsed = parsed.replace(tzinfo=timezone.utc)\n    return parsed.astimezone(timezone.utc)\n\n\ndef event_timing_relation(value: str, start: datetime, cutoff: datetime) -> str:\n    text = value.strip()\n    if re.fullmatch(r"\\d{4}-\\d{2}", text):\n        year, month = (int(part) for part in text.split("-"))\n        first = datetime(year, month, 1, tzinfo=timezone.utc).date()\n        if month == 12:\n            next_month = datetime(year + 1, 1, 1, tzinfo=timezone.utc)\n        else:\n            next_month = datetime(year, month + 1, 1, tzinfo=timezone.utc)\n        last = (next_month - timedelta(days=1)).date()\n        if first >= start.date() and last <= cutoff.date():\n            return "MAIN_EVENT"\n        if last < start.date():\n            return "PRE_WINDOW"\n        if first > cutoff.date():\n            return "POST_CUTOFF"\n        return "TIMING_UNRESOLVED"\n    instant = parse_instant(text)\n    if start <= instant <= cutoff:\n        return "MAIN_EVENT"\n    return "PRE_WINDOW" if instant < start else "POST_CUTOFF"\n\n\n'''
-          if old not in text:
-              raise SystemExit('parse_instant block anchor not found')
-          text = text.replace(old, new, 1)
-
-          old_relation = '''                instant = parse_instant(raw)\n                relation = "MAIN_EVENT" if start <= instant <= cutoff else ("PRE_WINDOW" if instant < start else "POST_CUTOFF")\n'''
-          new_relation = '''                relation = event_timing_relation(raw, start, cutoff)\n'''
-          if old_relation not in text:
-              raise SystemExit('chronology relation anchor not found')
-          text = text.replace(old_relation, new_relation, 1)
-          script.write_text(text, encoding='utf-8')
-
-          test = Path('tests/test_finalize_special_validated_draft.py')
-          t = test.read_text(encoding='utf-8')
-          anchor = '''    def test_parse_date_only_is_utc_midnight(self) -> None:\n        parsed = finalizer.parse_instant("2026-07-31")\n        self.assertEqual(parsed.isoformat(), "2026-07-31T00:00:00+00:00")\n'''
-          addition = anchor + '''\n    def test_month_only_event_inside_monthly_window_is_main(self) -> None:\n        start = finalizer.parse_instant("2026-06-01T00:00:00Z")\n        cutoff = finalizer.parse_instant("2026-06-30T23:59:59Z")\n        self.assertEqual(finalizer.event_timing_relation("2026-06", start, cutoff), "MAIN_EVENT")\n\n    def test_month_only_event_crossing_partial_window_is_unresolved(self) -> None:\n        start = finalizer.parse_instant("2026-06-15T00:00:00Z")\n        cutoff = finalizer.parse_instant("2026-06-30T23:59:59Z")\n        self.assertEqual(finalizer.event_timing_relation("2026-06", start, cutoff), "TIMING_UNRESOLVED")\n'''
-          if anchor not in t:
-              raise SystemExit('test anchor not found')
-          t = t.replace(anchor, addition, 1)
-          test.write_text(t, encoding='utf-8')
+          import json,pathlib
+          issue='SP-2026-M06'; slug='2026-M06'
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT', state['lifecycle_state']
+          assert state['gates']['claim_and_chronology_validation']=='passed'
+          assert state['gates']['latex_build']=='pending'
+          audit=json.load(open(root/'sources'/issue/'finalization'/'v0.1'/'claim-chronology-audit.json',encoding='utf-8'))
+          assert audit['passed'] is True, audit['errors']
+          source=json.load(open(root/'surveys'/'special'/slug/'source-manifest.json',encoding='utf-8'))
+          assert source['status']=='VALIDATED_SOURCE'
+          assert source['article_count']==6
           PY
-          python -m unittest tests.test_finalize_special_validated_draft
-      - name: Publish fix branch
+      - name: Commit validated Special source and remove run-once wrapper
+        working-directory: worktree
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git checkout -b agent/fix-special-finalizer-month-date
-          git add scripts/finalize_special_validated_draft.py tests/test_finalize_special_validated_draft.py
-          git commit -m 'Preserve month-precision chronology in Special finalizer'
-          git push --force-with-lease origin HEAD:agent/fix-special-finalizer-month-date
+          git rm .github/workflows/m06-finalization-run-once.yml
+          git add sources/SP-2026-M06/pipeline-state.json \
+                  sources/SP-2026-M06/finalization/v0.1 \
+                  surveys/special/2026-M06
+          git commit -m 'Finalize validated issue source for SP-2026-M06'
+          git push origin HEAD:special/2026-M06-work
+      - name: Upload finalization audit
+        uses: actions/upload-artifact@v7
+        with:
+          name: special-finalization-2026-M06
+          path: special-finalization-audit.json
+          if-no-files-found: error
+          retention-days: 14
