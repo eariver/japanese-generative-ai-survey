@@ -112,10 +112,14 @@ jobs:
           issue,revision=sys.argv[1:]
           root=pathlib.Path('worktree')
           state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
+          assert state['schema_version']=='1.0'
+          assert state['issue_id']==issue
           assert state['lifecycle_state']=='FROZEN'
           assert state['revision']==revision
+          assert state['calendar']['frozen_at']
           assert state['gates']['visual_review']=='passed'
           assert state['gates']['freeze']=='passed'
+          assert state['automation']['unattended_public_release'] is False
           assert state['automation']['human_gate_required_for_public_release'] is True
           freeze=state['provenance']['freeze']
           fp=root/freeze['path']; rp=root/freeze['release_manifest_path']
@@ -125,8 +129,8 @@ jobs:
           assert manifest['status']=='frozen'
           assert manifest['public_release_authorized'] is False
           assert manifest['revision']==revision
+          assert manifest['expected_pdf_sha256']==json.load(open(fp,encoding='utf-8'))['canonical_pdf']['sha256']
           PY
-          python control-src/scripts/special_pipeline.py --config control-src/config/special-pipeline.json validate-state --state "worktree/sources/${SPECIAL_ID}/pipeline-state.json"
       - name: Commit Freeze record and frozen release manifest
         working-directory: worktree
         shell: bash
