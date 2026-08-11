@@ -1,0 +1,51 @@
+name: Publish balanced Special closing-heading fix once
+
+on:
+  pull_request:
+    types: [synchronize]
+
+permissions:
+  contents: write
+
+jobs:
+  publish-fix:
+    if: github.event.pull_request.number == 45 && github.event.pull_request.head.ref == 'special/2026-M06-work'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generalize final synthesis closing heading
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/revise_special_balanced_layout.py')
+          text=p.read_text(encoding='utf-8')
+          old='''    lines.extend([r"\\bottomrule", r"\\end{tabularx}", r"\\renewcommand{\\arraystretch}{1.0}", r"\\end{center}", r"\\normalsize", r"\\begin{claimboundary}[この総括の境界]", tex_escape(boundary), r"\\end{claimboundary}", r"\\subsection*{7月をどう位置づけるか}", r"\\addcontentsline{toc}{subsection}{7月をどう位置づけるか}"])\n'''
+          new='''    closing_heading = str(final.get("closing_heading") or "この月をどう位置づけるか").strip()\n    if not closing_heading:\n        raise ValueError("final synthesis closing heading must not be empty")\n    validate_reader_text(closing_heading, "final synthesis closing heading")\n    lines.extend([r"\\bottomrule", r"\\end{tabularx}", r"\\renewcommand{\\arraystretch}{1.0}", r"\\end{center}", r"\\normalsize", r"\\begin{claimboundary}[この総括の境界]", tex_escape(boundary), r"\\end{claimboundary}", "\\\\subsection*{" + tex_escape(closing_heading) + "}", "\\\\addcontentsline{toc}{subsection}{" + tex_escape(closing_heading) + "}"])\n'''
+          if old not in text:
+              raise SystemExit('balanced closing-heading anchor not found')
+          p.write_text(text.replace(old,new,1),encoding='utf-8')
+
+          t=Path('tests/test_special_balanced_closing_heading.py')
+          t.write_text('''from pathlib import Path\nimport unittest\n\n\nclass BalancedClosingHeadingContractTests(unittest.TestCase):\n    def test_closing_heading_is_artifact_driven(self) -> None:\n        text=Path("scripts/revise_special_balanced_layout.py").read_text(encoding="utf-8")\n        self.assertIn('final.get("closing_heading")', text)\n        self.assertIn('この月をどう位置づけるか', text)\n        self.assertNotIn(r"\\subsection*{7月をどう位置づけるか}", text)\n\n\nif __name__ == "__main__":\n    unittest.main()\n''',encoding='utf-8')
+          PY
+          python -m py_compile scripts/revise_special_balanced_layout.py
+          python -m unittest tests.test_special_balanced_closing_heading
+      - name: Push shared fix branch and remove source wrapper from M06 branch later
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout -b agent/generalize-special-balanced-closing-heading
+          git add scripts/revise_special_balanced_layout.py tests/test_special_balanced_closing_heading.py
+          git commit -m 'Generalize Special final synthesis closing heading'
+          git push --force-with-lease origin HEAD:agent/generalize-special-balanced-closing-heading
