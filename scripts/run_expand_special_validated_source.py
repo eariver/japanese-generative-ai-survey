@@ -2,14 +2,17 @@
 """Run Special source expansion with safe reader-facing joins/rendering.
 
 Draft Packages intentionally do not duplicate Architecture package titles. This
-runner joins title by package_id and replaces only the Technical Note string
-renderer with an equivalent implementation that avoids Python-format/TeX brace
-collisions. Immutable upstream artifacts are never mutated.
+runner joins title by package_id, normalizes machine artifact-type labels only for
+display, uses smaller/sloppy URL rendering inside source notes, and applies a few
+Special-local cover/header typography adjustments after deterministic expansion.
+Immutable upstream Evidence, Draft Packages, Article Drafts, and previous source
+revisions are never mutated.
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
@@ -22,6 +25,14 @@ def load_json(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"{path}: expected JSON object")
     return value
+
+
+def write_json(path: Path, value: Any) -> None:
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def sha256_file(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def safe_note(role: str, record: dict[str, Any]) -> str:
@@ -67,10 +78,14 @@ def safe_note(role: str, record: dict[str, Any]) -> str:
 
     urls = expansion.source_urls(record)
     if urls:
-        lines.extend([r"{\bfseries Primary source}", r"\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]"])
+        lines.extend([
+            r"{\bfseries Primary source}",
+            r"\begingroup\sloppy",
+            r"\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]",
+        ])
         for url in urls:
-            lines.append(r"\item \url{" + url + "}")
-        lines.append(r"\end{itemize}")
+            lines.append(r"\item {\scriptsize\url{" + url + "}}")
+        lines.extend([r"\end{itemize}", r"\endgroup"])
 
     lines.extend([
         r"{\scriptsize\color{SurveyMuted}Source-bound record: \texttt{" + esc(task_id) + "}.}",
@@ -79,6 +94,66 @@ def safe_note(role: str, record: dict[str, Any]) -> str:
         "",
     ])
     return "\n".join(lines)
+
+
+def postprocess_special_source(
+    root: Path,
+    special_slug: str,
+    issue_id: str,
+    source_version: str,
+    titles: dict[str, str],
+) -> dict[str, Any]:
+    state_path = root / "sources" / issue_id / "pipeline-state.json"
+    state = load_json(state_path)
+    source_dir = root / "surveys" / "special" / special_slug / "revisions" / source_version
+    manifest_path = source_dir / "source-manifest.json"
+    main_path = source_dir / "main.tex"
+    manifest = load_json(manifest_path)
+    text = main_path.read_text(encoding="utf-8")
+
+    text = text.replace(
+        r"\surveyeditiondescriptor{Retrospective Technical Survey}",
+        r"\surveyeditiondescriptor{Retrospective Survey}",
+    )
+    geometry_line = r"\geometry{margin=22mm,headsep=5mm,footskip=10mm}"
+    if geometry_line in text and r"\setlength{\headheight}{14.5pt}" not in text:
+        text = text.replace(
+            geometry_line,
+            geometry_line + "\n" + r"\setlength{\headheight}{14.5pt}",
+        )
+
+    synthesis_path = root / state["provenance"]["issue_synthesis"]["result_path"]
+    synthesis = load_json(synthesis_path)
+    article_run = root / state["provenance"]["article_draft"]["result_set_path"]
+    acceptance = load_json(article_run / "acceptance.json")
+    result_by_id = {row["package_id"]: row for row in acceptance.get("results") or []}
+    for package_id in synthesis["cover"]["anchor_package_ids"]:
+        row = result_by_id[package_id]
+        draft = load_json(article_run / row["draft_path"])
+        old = expansion.tex_escape(str(draft["headline"]))
+        new = expansion.tex_escape(titles[package_id])
+        text = text.replace(old, new)
+
+    main_path.write_text(text, encoding="utf-8")
+    manifest["main_tex"]["sha256"] = sha256_file(main_path)
+    manifest["typography_adjustments"] = {
+        "artifact_type_display": "underscores replaced by spaces in reader-facing technical-note labels",
+        "source_urls": "scriptsize + sloppy URL paragraphs inside technical notes",
+        "cover_descriptor": "Retrospective Survey",
+        "cover_anchors": "approved Architecture package titles instead of full article headlines",
+        "headheight": "14.5pt Special-local override",
+        "content_semantics_changed": False,
+    }
+    write_json(manifest_path, manifest)
+
+    current = state["provenance"]["validated_issue_source"]
+    expected_path = manifest_path.relative_to(root).as_posix()
+    if current.get("path") != expected_path or current.get("source_version") != source_version:
+        raise ValueError("state-pinned source does not match generated source revision")
+    current["sha256"] = sha256_file(manifest_path)
+    current["typography_revision"] = "v0.3-cleanup"
+    write_json(state_path, state)
+    return manifest
 
 
 def main() -> int:
@@ -101,6 +176,10 @@ def main() -> int:
     }
 
     original_renderer = expansion.render_technical_notes
+    original_artifact_type = expansion.artifact_type
+
+    def display_artifact_type(record: dict[str, Any]) -> str:
+        return original_artifact_type(record).replace("_", " ")
 
     def render_with_architecture_title(package: dict[str, Any]) -> str:
         package_id = str(package.get("package_id") or "")
@@ -110,9 +189,11 @@ def main() -> int:
         joined["title"] = titles[package_id]
         return original_renderer(joined)
 
+    expansion.artifact_type = display_artifact_type
     expansion.render_note = safe_note
     expansion.render_technical_notes = render_with_architecture_title
-    result = expansion.build(root, args.special_slug, args.issue_id, args.source_version)
+    expansion.build(root, args.special_slug, args.issue_id, args.source_version)
+    result = postprocess_special_source(root, args.special_slug, args.issue_id, args.source_version, titles)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
 

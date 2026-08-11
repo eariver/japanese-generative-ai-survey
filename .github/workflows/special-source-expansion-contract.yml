@@ -4,16 +4,20 @@ on:
   pull_request:
     paths:
       - '.github/workflows/expand-special-validated-source.yml'
+      - '.github/workflows/expand-special-validated-source-v2.yml'
       - '.github/workflows/build-special-pdf.yml'
       - '.github/workflows/special-source-expansion-contract.yml'
       - 'scripts/expand_special_validated_source.py'
+      - 'scripts/run_expand_special_validated_source.py'
   push:
     branches: [main]
     paths:
       - '.github/workflows/expand-special-validated-source.yml'
+      - '.github/workflows/expand-special-validated-source-v2.yml'
       - '.github/workflows/build-special-pdf.yml'
       - '.github/workflows/special-source-expansion-contract.yml'
       - 'scripts/expand_special_validated_source.py'
+      - 'scripts/run_expand_special_validated_source.py'
 
 permissions:
   contents: read
@@ -29,9 +33,15 @@ jobs:
       - name: Verify source-expansion and PDF-build control code
         run: |
           set -euo pipefail
-          python -m py_compile scripts/expand_special_validated_source.py
+          python -m py_compile scripts/expand_special_validated_source.py scripts/run_expand_special_validated_source.py
           python - <<'PY'
+          from pathlib import Path
           from scripts import expand_special_validated_source as e
           assert e.CLASS_LABELS['PRIMARY_FACT']
           assert e.CLASS_LABELS['AUTHOR_CLAIM']
+          text=Path('scripts/run_expand_special_validated_source.py').read_text(encoding='utf-8')
+          assert 'replace("_", " ")' in text
+          assert r'\scriptsize\url{' in text
+          assert 'Retrospective Survey' in text
+          assert '14.5pt' in text
           PY
