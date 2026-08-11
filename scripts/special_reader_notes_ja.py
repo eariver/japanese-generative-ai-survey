@@ -231,12 +231,6 @@ def apply(root: Path, issue_id: str, special_slug: str, summary_path: Path) -> d
                 item_id = str(claim.get("claim_id") or "")
                 if item_id not in claim_map:
                     raise ValueError(f"Japanese claim summary missing: {task_id}/{item_id}")
-                block, count = replace_item(block, claim, claim_map[item_id], "claim", "") if False else (block, 0)
-            # Apply with explicit context; kept separate for clear errors.
-            for claim in c.get("claims") or []:
-                if not isinstance(claim, dict) or not claim.get("text"):
-                    continue
-                item_id = str(claim.get("claim_id") or "")
                 block, count = replace_item(block, claim, claim_map[item_id], "claim_id", task_id)
                 total += count
             for limitation in c.get("limitations") or []:
