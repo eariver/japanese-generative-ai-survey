@@ -1,0 +1,162 @@
+name: Run M06 Architecture approval once
+
+on:
+  pull_request:
+    types: [synchronize]
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: special-architecture-2026-M06-run-once
+  cancel-in-progress: false
+
+jobs:
+  architecture:
+    if: github.event.pull_request.number == 45 && github.event.pull_request.head.ref == 'special/2026-M06-work'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Checkout Special work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2026-M06-work
+          path: worktree
+          fetch-depth: 0
+      - name: Verify Architecture approval boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2026-M06 check
+          state="worktree/sources/SP-2026-M06/pipeline-state.json"
+          input="worktree/sources/SP-2026-M06/architecture/architecture-input-v0.1.json"
+          plan="worktree/sources/SP-2026-M06/architecture/issue-architecture-v0.1.json"
+          evidence="worktree/sources/SP-2026-M06/evidence/runs/8d2a27b7958295817e39760b01d85b52dde6d77525b04703118d46b3c2d51449/evidence-reviewed.jsonl"
+          test -s "$state" && test -s "$input" && test -s "$plan" && test -s "$evidence"
+          PYTHONPATH=control-src python control-src/scripts/validate_issue_architecture.py \
+            --architecture-input "$input" --plan "$plan" --report architecture-proposed-validation.json
+          python - "$state" "$plan" <<'PY'
+          import json,sys
+          state=json.load(open(sys.argv[1],encoding='utf-8'))
+          plan=json.load(open(sys.argv[2],encoding='utf-8'))
+          assert state['lifecycle_state']=='SELECTION_COMPLETE', state['lifecycle_state']
+          assert state['gates']['candidate_selection']=='passed'
+          assert state['gates']['issue_architecture']=='pending'
+          assert state['gates']['article_draft']=='pending'
+          assert plan['status']=='PROPOSED', plan['status']
+          approval=plan.get('approval') or {}
+          assert not approval.get('approved_by') and not approval.get('approved_at') and not approval.get('approval_reference')
+          PY
+      - name: Record Architecture human approval
+        shell: bash
+        run: |
+          set -euo pipefail
+          input="worktree/sources/SP-2026-M06/architecture/architecture-input-v0.1.json"
+          plan="worktree/sources/SP-2026-M06/architecture/issue-architecture-v0.1.json"
+          state="worktree/sources/SP-2026-M06/pipeline-state.json"
+          python - "$plan" "$state" <<'PY'
+          import hashlib,json,sys
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          plan_path,state_path=sys.argv[1:]
+          reference='User approval 2026-08-11 JST: approved SP-2026-M06 Issue Architecture v0.1 as proposed (36 pages, 8 packages).'
+          now=datetime.now(ZoneInfo('Asia/Tokyo')).isoformat(timespec='seconds')
+          plan=json.load(open(plan_path,encoding='utf-8'))
+          plan['status']='APPROVED'
+          plan['approval']={'approved_by':'eariver','approved_at':now,'approval_reference':reference}
+          with open(plan_path,'w',encoding='utf-8') as f: json.dump(plan,f,ensure_ascii=False,indent=2); f.write('\n')
+          plan_sha=hashlib.sha256(open(plan_path,'rb').read()).hexdigest()
+          state=json.load(open(state_path,encoding='utf-8'))
+          state['lifecycle_state']='ARCHITECTURE_ESTABLISHED'
+          state['gates']['issue_architecture']='passed'
+          provenance=state.setdefault('provenance',{})
+          provenance['issue_architecture']={
+              'path':f"sources/{state['issue_id']}/architecture/issue-architecture-v0.1.json",
+              'sha256':plan_sha,
+              'approved_at':now,
+              'approval_reference':reference,
+          }
+          with open(state_path,'w',encoding='utf-8') as f: json.dump(state,f,ensure_ascii=False,indent=2); f.write('\n')
+          PY
+          PYTHONPATH=control-src python control-src/scripts/validate_issue_architecture.py \
+            --architecture-input "$input" --plan "$plan" --require-approved --report architecture-approved-validation.json
+      - name: Build immutable Draft Packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="worktree/sources/SP-2026-M06/drafting/packages/v0.1"
+          PYTHONPATH=control-src python control-src/scripts/build_draft_packages.py \
+            --architecture-input "worktree/sources/SP-2026-M06/architecture/architecture-input-v0.1.json" \
+            --architecture-plan "worktree/sources/SP-2026-M06/architecture/issue-architecture-v0.1.json" \
+            --evidence-reviewed "worktree/sources/SP-2026-M06/evidence/runs/8d2a27b7958295817e39760b01d85b52dde6d77525b04703118d46b3c2d51449/evidence-reviewed.jsonl" \
+            --output-dir "$out" > draft-package-build.json
+          python - "$out/draft-package-manifest.json" <<'PY'
+          import json,sys
+          m=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert m['passed'] is True, m['errors']
+          assert m['materialized_package_count']==m['package_count']==8, m
+          assert m['article_drafting_count']==6, m
+          assert m['post_draft_summary_count']==1, m
+          assert m['reference_generation_count']==1, m
+          PY
+      - name: Build Architecture approval audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json
+          issue='SP-2026-M06'
+          evidence_sha='8d2a27b7958295817e39760b01d85b52dde6d77525b04703118d46b3c2d51449'
+          reference='User approval 2026-08-11 JST: approved SP-2026-M06 Issue Architecture v0.1 as proposed (36 pages, 8 packages).'
+          root=f'worktree/sources/{issue}'
+          plan=f'{root}/architecture/issue-architecture-v0.1.json'
+          state=f'{root}/pipeline-state.json'
+          manifest=f'{root}/drafting/packages/v0.1/draft-package-manifest.json'
+          m=json.load(open(manifest,encoding='utf-8'))
+          out={
+            'schema_version':'1.0','issue_id':issue,'evidence_run_sha':evidence_sha,
+            'approval_reference':reference,
+            'architecture_plan_sha256':hashlib.sha256(open(plan,'rb').read()).hexdigest(),
+            'pipeline_state_sha256':hashlib.sha256(open(state,'rb').read()).hexdigest(),
+            'draft_package_manifest_sha256':hashlib.sha256(open(manifest,'rb').read()).hexdigest(),
+            'article_drafting_count':m['article_drafting_count'],
+            'post_draft_summary_count':m['post_draft_summary_count'],
+            'reference_generation_count':m['reference_generation_count'],
+            'human_gate':'Architecture approved; article drafting may begin. Visual Review / Freeze / Release remain pending.',
+          }
+          open('special-architecture-approval-audit.json','w',encoding='utf-8').write(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+      - name: Commit approved Architecture and Draft Packages, then remove run-once wrapper
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/m06-architecture-run-once.yml
+          git add sources/SP-2026-M06/architecture/issue-architecture-v0.1.json \
+                  sources/SP-2026-M06/pipeline-state.json \
+                  sources/SP-2026-M06/drafting/packages/v0.1
+          git commit -m 'Approve Architecture and prepare Draft Packages for SP-2026-M06'
+          git push origin HEAD:special/2026-M06-work
+      - name: Upload Architecture approval audit
+        uses: actions/upload-artifact@v7
+        with:
+          name: special-architecture-approval-2026-M06
+          path: |
+            special-architecture-approval-audit.json
+            architecture-proposed-validation.json
+            architecture-approved-validation.json
+            draft-package-build.json
+          if-no-files-found: error
+          retention-days: 14
