@@ -29,7 +29,9 @@ The default Special implementation should use a balanced local multi-column envi
 4. return to full-width synthesis / Technical Notes on the same page when sufficient space remains;
 5. use a minimum-space guard for wide tables or synthesis panels so they move cleanly to the next page rather than being cramped at the bottom.
 
-A new chapter may still begin on a new page. The goal is not to eliminate editorial page breaks, but to avoid accidental large blank areas created solely by a column-mode implementation detail.
+Chapter boundaries should also be **adaptive rather than mechanically page-breaking**. The first major feature may start on a fresh page, but later chapters should start in the remaining space when there is enough room for the heading and a meaningful amount of narrative. If the remaining page is too short, move the chapter cleanly to the next page. The same principle applies to the final retrospective synthesis and to References: do not create a largely blank page solely because a new structural unit follows.
+
+The goal is not to maximize text density. It is to make whitespace deliberate: enough separation to signal structure, but not large unused regions caused only by TeX mode switches or unconditional `clearpage` commands.
 
 ## 3. Page count is not a justification for column choice
 
@@ -59,13 +61,15 @@ A final retrospective chapter may synthesize relationships across multiple appro
 
 For `SP-2026-M07`, the initial long-form one-column revision was useful for validating that all selected Evidence could be rendered cleanly, but it weakened visual continuity with the Weekly issue and moved too much information into Technical Notes.
 
-The next release-candidate revision therefore uses:
+The release-candidate direction therefore uses:
 
 - full-width chapter headings;
 - balanced two-column narrative articles implemented as a local multi-column flow;
 - one-column full-width theme synthesis for Frontier Models, Multimodal, Inference & Serving, Agents, and Agent Safety & Security;
 - one-column Technical Notes;
+- adaptive later chapter starts instead of unconditional new-page breaks;
 - Paper Watch kept intentionally compact unless its selected Evidence justifies additional treatment;
-- a final retrospective synthesis chapter that revisits all six themes and explains their structural relationships using only already-selected July Evidence.
+- a final retrospective synthesis chapter that revisits all six themes and explains their structural relationships using only already-selected July Evidence;
+- References allowed to follow the final synthesis naturally rather than being forced onto a new page when sufficient space remains.
 
 The additional synthesis is restricted to already-selected July Evidence. No new topic is introduced merely to preserve a page count, and cross-chapter relationships are editorial synthesis rather than claims of direct causation.

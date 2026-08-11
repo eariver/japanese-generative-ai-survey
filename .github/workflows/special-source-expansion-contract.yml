@@ -13,6 +13,7 @@ on:
       - 'scripts/revise_special_mixed_layout.py'
       - 'scripts/run_revise_special_mixed_layout.py'
       - 'scripts/revise_special_balanced_layout.py'
+      - 'scripts/revise_special_adaptive_spacing.py'
       - 'docs/special-layout-policy.md'
   push:
     branches: [main]
@@ -27,6 +28,7 @@ on:
       - 'scripts/revise_special_mixed_layout.py'
       - 'scripts/run_revise_special_mixed_layout.py'
       - 'scripts/revise_special_balanced_layout.py'
+      - 'scripts/revise_special_adaptive_spacing.py'
       - 'docs/special-layout-policy.md'
 
 permissions:
@@ -48,7 +50,8 @@ jobs:
             scripts/run_expand_special_validated_source.py \
             scripts/revise_special_mixed_layout.py \
             scripts/run_revise_special_mixed_layout.py \
-            scripts/revise_special_balanced_layout.py
+            scripts/revise_special_balanced_layout.py \
+            scripts/revise_special_adaptive_spacing.py
           python - <<'PY'
           from pathlib import Path
           import tempfile
@@ -97,6 +100,21 @@ jobs:
               rendered=body.read_text(encoding='utf-8')
               assert r'\section{' not in rendered and r'\label{' not in rendered
               assert 'Body.' in rendered
+
+          adaptive=Path('scripts/revise_special_adaptive_spacing.py').read_text(encoding='utf-8')
+          assert r'\Needspace{0.45\textheight}' in adaptive
+          assert r'\Needspace{0.55\textheight}' in adaptive
+          assert r'\Needspace{5\baselineskip}' in adaptive
+          assert 'forced_bibliography_clearpage' in adaptive
+          assert 'reader_content_changed' in adaptive
+          assert "new_external_evidence_allowed') is not False" in adaptive
+          assert "selected_evidence_only') is not True" in adaptive
+          assert "text.replace(r'\\clearpage'+'\\n'+r'\\printbibliography" in adaptive
+
+          workflow=Path('.github/workflows/revise-special-mixed-layout.yml').read_text(encoding='utf-8')
+          assert 'layout-revision-${SOURCE_VERSION}.json' in workflow
+          assert 'revise_special_adaptive_spacing.py' in workflow
+          assert "adaptive_chapter_starts" in workflow
 
           policy=Path('docs/special-layout-policy.md').read_text(encoding='utf-8')
           assert 'chapter / feature heading: **one column, full width**' in policy
