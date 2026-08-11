@@ -17,7 +17,7 @@ For normal Special issues, use a **mixed layout**:
 
 This is intentionally different from an all-two-column rule. Technical Notes contain long model names, paper titles, chronology fields, source URLs, and attribution boundaries that become fragile or hard to scan in narrow columns. Long chapter headings also must not be constrained to a single narrow column because they can collide with the adjacent column.
 
-Within the two-column narrative, subsection headings require deliberate separation from the preceding paragraph. A clean TeX log is not sufficient evidence that a heading is visually separated. The layout layer should explicitly terminate the paragraph, add modest vertical separation, and require enough remaining column height for the heading plus following text before placing a subsection.
+Within the two-column narrative, subsection headings require deliberate separation from the preceding paragraph. A clean TeX log is not sufficient evidence that a heading is visually separated. The layout layer should explicitly terminate the preceding paragraph and add modest vertical separation. Avoid aggressive `Needspace` guards inside `multicols`: render-first testing on the July Special showed that such a guard can create an almost empty page even when substantial physical space appears to remain.
 
 ## 2. Column-mode transitions must not waste a page
 
@@ -29,7 +29,7 @@ The default Special implementation should use a balanced local multi-column envi
 2. enter a local two-column narrative flow;
 3. balance the two narrative columns at the end of the article;
 4. return to full-width synthesis / Technical Notes on the same page when sufficient space remains;
-5. use a minimum-space guard for wide tables or synthesis panels so they move cleanly to the next page rather than being cramped at the bottom.
+5. use a minimum-space guard for wide full-width tables or synthesis panels so they move cleanly to the next page rather than being cramped at the bottom.
 
 Chapter boundaries should also be **adaptive rather than mechanically page-breaking**. The first major feature may start on a fresh page, but later chapters should start in the remaining space when there is enough room for the heading and a meaningful amount of narrative. If the remaining page is too short, move the chapter cleanly to the next page. The same principle applies to the final retrospective synthesis and to References: do not create a largely blank page solely because a new structural unit follows.
 
@@ -67,7 +67,7 @@ The release-candidate direction therefore uses:
 
 - full-width chapter headings;
 - balanced two-column narrative articles implemented as a local multi-column flow;
-- explicit paragraph separation and a four-baseline minimum-space guard before narrative subsection headings;
+- explicit paragraph termination plus modest vertical separation before narrative subsection headings, without a `Needspace` guard inside `multicols`;
 - one-column full-width theme synthesis for Frontier Models, Multimodal, Inference & Serving, Agents, and Agent Safety & Security;
 - one-column Technical Notes;
 - adaptive later chapter starts instead of unconditional new-page breaks;
