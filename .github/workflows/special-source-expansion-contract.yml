@@ -5,19 +5,27 @@ on:
     paths:
       - '.github/workflows/expand-special-validated-source.yml'
       - '.github/workflows/expand-special-validated-source-v2.yml'
+      - '.github/workflows/revise-special-mixed-layout.yml'
       - '.github/workflows/build-special-pdf.yml'
       - '.github/workflows/special-source-expansion-contract.yml'
       - 'scripts/expand_special_validated_source.py'
       - 'scripts/run_expand_special_validated_source.py'
+      - 'scripts/revise_special_mixed_layout.py'
+      - 'scripts/run_revise_special_mixed_layout.py'
+      - 'docs/special-layout-policy.md'
   push:
     branches: [main]
     paths:
       - '.github/workflows/expand-special-validated-source.yml'
       - '.github/workflows/expand-special-validated-source-v2.yml'
+      - '.github/workflows/revise-special-mixed-layout.yml'
       - '.github/workflows/build-special-pdf.yml'
       - '.github/workflows/special-source-expansion-contract.yml'
       - 'scripts/expand_special_validated_source.py'
       - 'scripts/run_expand_special_validated_source.py'
+      - 'scripts/revise_special_mixed_layout.py'
+      - 'scripts/run_revise_special_mixed_layout.py'
+      - 'docs/special-layout-policy.md'
 
 permissions:
   contents: read
@@ -33,7 +41,11 @@ jobs:
       - name: Verify source-expansion and PDF-build control code
         run: |
           set -euo pipefail
-          python -m py_compile scripts/expand_special_validated_source.py scripts/run_expand_special_validated_source.py
+          python -m py_compile \
+            scripts/expand_special_validated_source.py \
+            scripts/run_expand_special_validated_source.py \
+            scripts/revise_special_mixed_layout.py \
+            scripts/run_revise_special_mixed_layout.py
           python - <<'PY'
           from pathlib import Path
           from scripts import expand_special_validated_source as e
@@ -44,4 +56,17 @@ jobs:
           assert r'\scriptsize\url{' in text
           assert 'Retrospective Survey' in text
           assert '14.5pt' in text
+          mixed=Path('scripts/revise_special_mixed_layout.py').read_text(encoding='utf-8')
+          assert r'\twocolumn' in mixed
+          assert r'\onecolumn' in mixed
+          assert 'new_external_evidence' in mixed
+          assert 'selected_evidence_only' in mixed
+          assert 'article_sections_changed' in mixed
+          assert 'technical_notes_changed' in mixed
+          runner=Path('scripts/run_revise_special_mixed_layout.py').read_text(encoding='utf-8')
+          assert '本Evidence set' in runner
+          assert 'Issue #' in runner
+          policy=Path('docs/special-layout-policy.md').read_text(encoding='utf-8')
+          assert 'narrative article body: **two columns**' in policy
+          assert 'wide comparison tables and theme-synthesis matrices: **one column, full width**' in policy
           PY
