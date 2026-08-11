@@ -1,0 +1,164 @@
+name: Prepare SP-2026-M05 Candidate Selection proposal once
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/prepare-m05-selection-proposal-once.yml'
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  proposal:
+    if: github.event.pull_request.number == 53 && github.head_ref == 'special/2026-M05-work'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Checkout May work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2026-M05-work
+          path: worktree
+          fetch-depth: 0
+      - name: Verify Candidate Selection boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2026-M05 check
+          python - <<'PY'
+          import json
+          s=json.load(open('worktree/sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
+          assert s['lifecycle_state']=='EVIDENCE_REVIEWED'
+          assert s['gates']['evidence_normalized']=='passed'
+          assert s['gates']['candidate_selection']=='pending'
+          assert s['gates']['issue_architecture']=='pending'
+          PY
+      - name: Build deterministic Candidate matrix and reviewed proposal
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p worktree/sources/SP-2026-M05/selection worktree/sources/SP-2026-M05/editorial
+          PYTHONPATH=control-src python - <<'PY'
+          import hashlib,json,pathlib
+          from scripts import build_candidate_matrix
+          root=pathlib.Path('worktree')
+          evidence=root/'sources/SP-2026-M05/evidence/runs/f462ffab2beca5d361385a330d8c2e83a118115a11b5add2a75a274dc8af4650/evidence-reviewed.jsonl'
+          state=root/'sources/SP-2026-M05/pipeline-state.json'
+          out=root/'sources/SP-2026-M05/selection'
+          matrix=build_candidate_matrix.build(evidence,state)
+          matrix_path=out/'candidate-matrix-v0.1.json'
+          matrix_path.write_text(json.dumps(matrix,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          (out/'candidate-matrix-v0.1.md').write_text(build_candidate_matrix.render_markdown(matrix),encoding='utf-8')
+          assert matrix['row_count']==58
+          assert matrix['recommendation_counts']=={'CANDIDATE':37,'HOLD':18,'REJECT':3}
+
+          feature={
+            'evidence:SP-2026-M05:item-official-feed-01a8b52eee8198f545c2-8346b492d8',
+            'evidence:SP-2026-M05:item-official-index-anthropic-news-afddcb8068',
+            'evidence:SP-2026-M05:item-official-feed-66be1220771465af8b1a-7856302980',
+          }
+          section={
+            'evidence:SP-2026-M05:item-official-index-google-deepmind-blog-9b2b580695',
+            'evidence:SP-2026-M05:item-official-index-google-gemini-api-re-d5b8ea25b2',
+            'evidence:SP-2026-M05:item-official-index-kimi-code-whats-new-788743b9bb',
+            'evidence:SP-2026-M05:item-official-index-mistral-news-e5054b4c4c',
+            'evidence:SP-2026-M05:item-official-feed-24a3c172de4842007009-03f3682026',
+            'evidence:SP-2026-M05:series-github-series-vllm-project-vllm-14c8073114',
+            'evidence:SP-2026-M05:series-github-series-sgl-project-sglang-e63ed0bdf0',
+            'evidence:SP-2026-M05:duplicate-hint-github-series-flashinfer-7f4c25e2bf',
+            'evidence:SP-2026-M05:item-official-feed-4a3442a5ca8c193564d3-64f2b96644',
+            'evidence:SP-2026-M05:item-arxiv-2605-29960v1-5f120301f7',
+            'evidence:SP-2026-M05:item-arxiv-2605-31042v1-c387077175',
+            'evidence:SP-2026-M05:item-official-feed-1c93d6c1c7251e5ff843-6aba32b1d0',
+          }
+          supporting={
+            'evidence:SP-2026-M05:item-official-index-alibaba-model-studio-154c528d30',
+            'evidence:SP-2026-M05:item-official-feed-5c3d93bd7160f244287b-342f518305',
+            'evidence:SP-2026-M05:item-arxiv-2605-26297v1-3ac98fa507',
+            'evidence:SP-2026-M05:item-arxiv-2605-24022v1-46c9a2231e',
+            'evidence:SP-2026-M05:item-arxiv-2605-27081v1-5ebb44e7f0',
+            'evidence:SP-2026-M05:item-arxiv-2605-29224v1-a99bec87b1',
+            'evidence:SP-2026-M05:item-arxiv-2605-30837v2-48975417a3',
+            'evidence:SP-2026-M05:item-official-feed-8c84b8422093501f7094-f577b525fa',
+          }
+          paper_watch={
+            'evidence:SP-2026-M05:item-arxiv-2605-27705v1-e4df13546d',
+            'evidence:SP-2026-M05:item-arxiv-2605-31604v4-2ad57a9c16',
+            'evidence:SP-2026-M05:item-arxiv-2605-24217v2-b4a80388d7',
+          }
+          positive=feature|section|supporting|paper_watch
+          assert len(feature)==3 and len(section)==12 and len(supporting)==8 and len(paper_watch)==3 and len(positive)==26
+          candidate_ids={r['evidence_task_id'] for r in matrix['rows'] if r['recommendation']=='CANDIDATE'}
+          assert positive <= candidate_ids, sorted(positive-candidate_ids)
+          assert len(candidate_ids-positive)==11
+
+          def role_for(row):
+              tid=row['evidence_task_id']; rec=row['recommendation']
+              if rec=='REJECT': return 'EXCLUDE'
+              if rec!='CANDIDATE': return 'HOLD_OUT'
+              if tid in feature: return 'FEATURE_CORE'
+              if tid in section: return 'SECTION_CORE'
+              if tid in supporting: return 'SUPPORTING_EVIDENCE'
+              if tid in paper_watch: return 'PAPER_WATCH'
+              return 'HOLD_OUT'
+          def rationale(row,role):
+              title=row['title']
+              if role=='FEATURE_CORE': return f'May issue anchor: {title} represents a major model or agent-operation transition with primary-source Evidence.'
+              if role=='SECTION_CORE': return f'Core section evidence: {title} supplies a concrete May mechanism, release, or safety/system change needed for the issue-wide argument.'
+              if role=='SUPPORTING_EVIDENCE': return f'Use {title} to broaden or qualify a selected core theme without spending a standalone feature slot.'
+              if role=='PAPER_WATCH': return f'Retain {title} as a concise research/methodology watch item with author-reported boundaries intact.'
+              if role=='EXCLUDE': return 'Evidence recommendation is REJECT; no concrete May item survived primary-source verification.'
+              if row['recommendation']!='CANDIDATE': return 'Evidence remains HOLD/PARTIAL; retain outside the drafted issue unless Evidence is explicitly reopened.'
+              return f'Editorial cut for page/section density: {title} is Candidate-ready but overlaps stronger selected May serving/security/multimodal evidence.'
+          assignments=[]; counts={}
+          for row in matrix['rows']:
+              role=role_for(row); counts[role]=counts.get(role,0)+1
+              assignments.append({'evidence_task_id':row['evidence_task_id'],'title':row['title'],'evidence_recommendation':row['recommendation'],'role':role,'rationale':rationale(row,role)})
+          assert counts=={'FEATURE_CORE':3,'SECTION_CORE':12,'SUPPORTING_EVIDENCE':8,'PAPER_WATCH':3,'HOLD_OUT':29,'EXCLUDE':3}, counts
+          proposal={
+            'schema_version':'1.0','issue_id':'SP-2026-M05','proposal_version':'v0.1','status':'PENDING_APPROVAL',
+            'basis':{'evidence_result_set_sha256':'f462ffab2beca5d361385a330d8c2e83a118115a11b5add2a75a274dc8af4650','matrix_path':'sources/SP-2026-M05/selection/candidate-matrix-v0.1.json','matrix_sha256':hashlib.sha256(matrix_path.read_bytes()).hexdigest()},
+            'working_thesis':'2026年5月は、frontier modelの更新と並行して、agentの実運用がsandbox・権限・長期state・retrieval・serving最適化へ広がり、生成AIの競争軸がモデル単体から実行環境全体へ移った月だった。',
+            'selection_summary':{'FEATURE_CORE':3,'SECTION_CORE':12,'SUPPORTING_EVIDENCE':8,'PAPER_WATCH':3,'HOLD_OUT':29,'EXCLUDE':3,'positive_selected':26,'candidate_ready_editorial_hold_out':11},
+            'editorial_principles':['Do not select all Candidate-ready Evidence merely to fill pages.','Prefer official May releases as structural anchors; use research papers to explain mechanisms and failure modes.','Keep Agent Safety/Security representative rather than exhaustive because May has unusually dense security literature.','Keep serving research representative across cache/reuse, MoE and production stacks; hold overlapping diffusion-serving papers outside the main issue.','Preserve author/vendor/project claim boundaries and chronology cautions.'],
+            'selection_assignments':assignments,
+            'approval':{'approved_by':None,'approved_at':None,'approval_reference':None}
+          }
+          p=root/'sources/SP-2026-M05/editorial/candidate-selection-proposal-v0.1.json'
+          p.write_text(json.dumps(proposal,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps({'matrix_sha256':proposal['basis']['matrix_sha256'],'counts':counts,'positive_selected':26},ensure_ascii=False,indent=2))
+          PY
+      - name: Verify proposal is non-mutating Human Gate input
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          s=json.load(open('worktree/sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
+          p=json.load(open('worktree/sources/SP-2026-M05/editorial/candidate-selection-proposal-v0.1.json',encoding='utf-8'))
+          assert s['lifecycle_state']=='EVIDENCE_REVIEWED'
+          assert s['gates']['candidate_selection']=='pending'
+          assert p['status']=='PENDING_APPROVAL'
+          assert p['approval']=={'approved_by':None,'approved_at':None,'approval_reference':None}
+          PY
+      - name: Commit proposal and self-delete runner
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/prepare-m05-selection-proposal-once.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sources/SP-2026-M05/selection sources/SP-2026-M05/editorial/candidate-selection-proposal-v0.1.json .github/workflows
+          git commit -m 'Prepare Candidate Selection proposal for SP-2026-M05'
+          git push origin HEAD:special/2026-M05-work
