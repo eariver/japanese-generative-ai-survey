@@ -21,23 +21,40 @@ ROLE_LABELS = {
     "SUPPORTING": "補足資料",
 }
 EVENT_LABELS = {
+    "OFFICIAL_PUBLICATION": "公式公開",
+    "PRODUCT_RELEASE": "製品公開",
+    "PRODUCT_UPDATE": "製品更新",
+    "AGENT_RELEASE": "Agent公開",
+    "FRAMEWORK_RELEASE": "Framework公開",
     "MODEL_RELEASE": "モデル公開",
     "MODEL_UPDATE": "モデル更新",
-    "FRAMEWORK_RELEASE": "フレームワーク公開",
     "OPEN_WEIGHT_RELEASE": "オープンウェイト公開",
     "PAPER_RELEASE": "論文公開",
+    "RESEARCH_RELEASE": "研究公開",
     "SAFETY_EVENT": "安全性事象",
     "API_RELEASE": "API公開",
+    "API_UPDATE": "API更新",
 }
 TYPE_LABELS = {
-    "MODEL UPDATE": "モデル更新",
-    "OPEN WEIGHT": "オープンウェイト",
-    "FRAMEWORK RELEASE": "フレームワーク公開",
-    "SAFETY EVENT": "安全性事象",
+    "FRAMEWORK_RELEASE": "Framework公開",
+    "MODEL_UPDATE": "モデル更新",
+    "OPEN_WEIGHT": "オープンウェイト",
+    "SAFETY_EVENT": "安全性関連",
+    "FRAMEWORK": "Framework",
     "RESEARCH": "研究",
     "PAPER": "論文",
     "MODEL": "モデル",
+    "AGENT": "Agent",
     "API": "API",
+    "OTHER": "公式情報",
+    # Backward-compatible pre-reader-facing spellings.
+    "MODEL UPDATE": "モデル更新",
+    "OPEN WEIGHT": "オープンウェイト",
+    "FRAMEWORK RELEASE": "Framework公開",
+    "SAFETY EVENT": "安全性関連",
+}
+TYPE_OVERRIDES = {
+    "A shared playbook for trustworthy third party evaluations": "評価ガイダンス",
 }
 
 OLD_INTRO = (
@@ -48,6 +65,7 @@ NEW_INTRO = (
     "本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。"
     "時系列、確認済みの主張、留意点、一次資料URLを掲載する。"
 )
+BREAK_POLICY_MARKER = "% reader-facing Technical Notes break policy"
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -65,18 +83,108 @@ def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def enum_forms(value: str) -> tuple[str, ...]:
+    escaped = value.replace("_", r"\_")
+    return (value,) if escaped == value else (value, escaped)
+
+
 def translate_machine_labels(text: str) -> str:
-    for old, new in EVENT_LABELS.items():
-        text = text.replace(f"({old})", f"({new})")
+    # Event types must be translated before broad artifact-type tokens so an
+    # escaped MODEL\_RELEASE cannot degrade into a mixed label such as
+    # モデル\_RELEASE.
+    for old, new in sorted(EVENT_LABELS.items(), key=lambda item: len(item[0]), reverse=True):
+        for form in enum_forms(old):
+            text = text.replace(f"({form})", f"({new})")
     for old, new in ROLE_LABELS.items():
         text = text.replace("{" + old + "}", "{" + new + "}")
         text = text.replace(f" & {old} & ", f" & {new} & ")
-    # Artifact types are uppercase machine labels in generated metadata/tables.
-    # Longest labels are replaced first so MODEL does not partially consume
-    # MODEL UPDATE.
+    # Artifact types are machine labels in generated metadata/tables. Replace
+    # both raw and TeX-escaped forms, longest first.
     for old, new in sorted(TYPE_LABELS.items(), key=lambda item: len(item[0]), reverse=True):
-        text = text.replace(old, new)
+        for form in enum_forms(old):
+            text = text.replace(form, new)
     return text
+
+
+def apply_type_overrides(text: str) -> str:
+    lines = text.splitlines()
+    current_title: str | None = None
+    for i, line in enumerate(lines):
+        for title, label in TYPE_OVERRIDES.items():
+            if line.startswith(title + " & "):
+                parts = line.split(" & ")
+                if len(parts) >= 4:
+                    parts[2] = label
+                    lines[i] = " & ".join(parts)
+                    line = lines[i]
+        match = re.match(r"\\begin\{technicalnote\}\{(.+?)\}\{", line)
+        if match:
+            current_title = match.group(1)
+            continue
+        if line == r"\end{technicalnote}":
+            current_title = None
+            continue
+        if current_title in TYPE_OVERRIDES and line.startswith("種別 & "):
+            suffix = r" \\" if line.rstrip().endswith(r"\\") else ""
+            lines[i] = f"種別 & {TYPE_OVERRIDES[current_title]}{suffix}"
+    return "\n".join(lines) + ("\n" if text.endswith("\n") else "")
+
+
+def protect_primary_source_blocks(text: str) -> str:
+    """Keep a source heading with its URL list without making the whole card rigid."""
+    lines = text.splitlines()
+    output: list[str] = []
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if line == r"{\bfseries 一次資料}" and (not output or output[-1] != r"\begin{samepage}"):
+            output.append(r"\begin{samepage}")
+            output.append(line)
+            i += 1
+            while i < len(lines):
+                output.append(lines[i])
+                if lines[i] == r"\end{itemize}":
+                    i += 1
+                    if i < len(lines) and lines[i] == r"\endgroup":
+                        output.append(lines[i])
+                        i += 1
+                    output.append(r"\end{samepage}")
+                    break
+                i += 1
+            continue
+        output.append(line)
+        i += 1
+    return "\n".join(output) + ("\n" if text.endswith("\n") else "")
+
+
+def add_card_break_policy(text: str) -> str:
+    """Discourage single-line card continuations while retaining breakable cards."""
+    lines = text.splitlines()
+    output: list[str] = []
+    in_note = False
+    policy_open = False
+    for line in lines:
+        if re.match(r"\\begin\{technicalnote\}\{.*?\}\{.*?\}$", line):
+            in_note = True
+            output.append(line)
+            output.extend([
+                r"\begingroup",
+                BREAK_POLICY_MARKER,
+                r"\widowpenalty=10000",
+                r"\clubpenalty=10000",
+                r"\displaywidowpenalty=10000",
+            ])
+            policy_open = True
+            continue
+        if line == r"\end{technicalnote}" and in_note:
+            if policy_open:
+                output.append(r"\endgroup")
+            output.append(line)
+            in_note = False
+            policy_open = False
+            continue
+        output.append(line)
+    return "\n".join(output) + ("\n" if text.endswith("\n") else "")
 
 
 def transform_note(text: str) -> str:
@@ -104,7 +212,12 @@ def transform_note(text: str) -> str:
         text,
         flags=re.MULTILINE,
     )
-    return translate_machine_labels(text)
+    text = translate_machine_labels(text)
+    text = apply_type_overrides(text)
+    text = protect_primary_source_blocks(text)
+    if BREAK_POLICY_MARKER not in text:
+        text = add_card_break_policy(text)
+    return text
 
 
 def main() -> int:
@@ -158,6 +271,10 @@ def main() -> int:
         "unconditional_clearpage_at_entry": False,
         "evidence_ids_rendered_in_pdf": False,
         "pipeline_terms_removed": ["Selection済みEvidence", "normalized claim", "Source-bound record"],
+        "machine_enum_policy": "reader-facing-labels-v2",
+        "whole_card_unbreakable": False,
+        "source_block_samepage": True,
+        "paragraph_widow_orphan_penalty": 10000,
         "changed_files": changed,
     })
     manifest["reader_facing_technical_notes"] = reader
@@ -173,6 +290,8 @@ def main() -> int:
         "source_manifest_sha256": source["sha256"],
         "technical_notes_changed": len(changed),
         "language_policy": reader.get("language_policy"),
+        "machine_enum_policy": reader.get("machine_enum_policy"),
+        "source_block_samepage": reader.get("source_block_samepage"),
     }, ensure_ascii=False, indent=2))
     return 0
 
