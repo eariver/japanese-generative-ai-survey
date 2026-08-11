@@ -12,6 +12,7 @@ on:
       - 'scripts/run_expand_special_validated_source.py'
       - 'scripts/revise_special_mixed_layout.py'
       - 'scripts/run_revise_special_mixed_layout.py'
+      - 'scripts/revise_special_balanced_layout.py'
       - 'docs/special-layout-policy.md'
   push:
     branches: [main]
@@ -25,6 +26,7 @@ on:
       - 'scripts/run_expand_special_validated_source.py'
       - 'scripts/revise_special_mixed_layout.py'
       - 'scripts/run_revise_special_mixed_layout.py'
+      - 'scripts/revise_special_balanced_layout.py'
       - 'docs/special-layout-policy.md'
 
 permissions:
@@ -45,10 +47,14 @@ jobs:
             scripts/expand_special_validated_source.py \
             scripts/run_expand_special_validated_source.py \
             scripts/revise_special_mixed_layout.py \
-            scripts/run_revise_special_mixed_layout.py
+            scripts/run_revise_special_mixed_layout.py \
+            scripts/revise_special_balanced_layout.py
           python - <<'PY'
           from pathlib import Path
+          import tempfile
           from scripts import expand_special_validated_source as e
+          from scripts import revise_special_balanced_layout as balanced
+
           assert e.CLASS_LABELS['PRIMARY_FACT']
           assert e.CLASS_LABELS['AUTHOR_CLAIM']
           text=Path('scripts/run_expand_special_validated_source.py').read_text(encoding='utf-8')
@@ -56,6 +62,7 @@ jobs:
           assert r'\scriptsize\url{' in text
           assert 'Retrospective Survey' in text
           assert '14.5pt' in text
+
           mixed=Path('scripts/revise_special_mixed_layout.py').read_text(encoding='utf-8')
           assert r'\twocolumn' in mixed
           assert r'\onecolumn' in mixed
@@ -72,7 +79,28 @@ jobs:
           from scripts import revise_special_mixed_layout as mixed_module
           assert mixed_module.false is False
           assert mixed_module.true is True
+
+          balanced_text=Path('scripts/revise_special_balanced_layout.py').read_text(encoding='utf-8')
+          assert r'\usepackage{multicol}' in balanced_text
+          assert r'\begin{multicols}{2}' in balanced_text
+          assert 'full_width_chapter_headings' in balanced_text
+          assert 'hard_column_mode_switches' in balanced_text
+          assert 'final_chapter_added' in balanced_text
+          assert 'new_external_evidence_allowed' in balanced_text
+          assert 'selected_evidence_only' in balanced_text
+          with tempfile.TemporaryDirectory() as td:
+              src=Path(td)/'article.tex'; body=Path(td)/'body.tex'
+              src.write_text('% generated\n\\section{A long full-width heading}\n\\label{pkg:test}\nBody.\n',encoding='utf-8')
+              result=balanced.split_article_section(src,body)
+              assert result['section_line']==r'\section{A long full-width heading}'
+              assert result['label_line']==r'\label{pkg:test}'
+              rendered=body.read_text(encoding='utf-8')
+              assert r'\section{' not in rendered and r'\label{' not in rendered
+              assert 'Body.' in rendered
+
           policy=Path('docs/special-layout-policy.md').read_text(encoding='utf-8')
+          assert 'chapter / feature heading: **one column, full width**' in policy
           assert 'narrative article body: **two columns**' in policy
-          assert 'wide comparison tables and theme-synthesis matrices: **one column, full width**' in policy
+          assert 'balanced local multi-column environment' in policy
+          assert 'final retrospective chapter' in policy
           PY
