@@ -41,6 +41,17 @@ def is_date_only(value: str) -> bool:
     return len(value.strip()) == 10
 
 
+def is_month_only(value: str) -> bool:
+    text = value.strip()
+    if len(text) != 7:
+        return False
+    try:
+        datetime.strptime(text, "%Y-%m")
+    except ValueError:
+        return False
+    return True
+
+
 def parse_instant(value: str | None) -> datetime | None:
     if not value:
         return None
@@ -67,6 +78,11 @@ def timing_relation(
 ) -> tuple[str, list[str]]:
     raw_dates = sorted({event.get("event_date") for event in card["temporal"].get("events", []) if event.get("event_date")})
     if not raw_dates:
+        return "TIMING_UNRESOLVED", raw_dates
+
+    # Month-precision evidence cannot be placed safely relative to a day/time
+    # cutoff. Preserve the source precision instead of inventing a day.
+    if any(is_month_only(raw) for raw in raw_dates):
         return "TIMING_UNRESOLVED", raw_dates
 
     window_start = parse_instant(window_start_raw)
@@ -232,6 +248,7 @@ def build(evidence_reviewed: Path, pipeline_state: Path) -> dict[str, Any]:
             "This matrix does not rank candidates or imply inclusion.",
             "Evidence Runner recommendation is distinct from final Candidate Selection.",
             "Source volume is displayed as evidence depth, not importance.",
+            "Month-only event dates remain TIMING_UNRESOLVED rather than inventing day precision.",
             "Date-only events on the cutoff day remain TIMING_UNRESOLVED unless a source provides time-of-day evidence.",
             "Remaining boundaries must travel with any candidate promoted by Selection.",
         ],
