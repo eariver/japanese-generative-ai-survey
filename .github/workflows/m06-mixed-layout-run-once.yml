@@ -1,0 +1,145 @@
+name: Run M06 mixed layout once
+
+on:
+  pull_request:
+    types: [synchronize]
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: special-mixed-layout-2026-M06-run-once
+  cancel-in-progress: false
+
+jobs:
+  revise:
+    if: github.event.pull_request.number == 45 && github.event.pull_request.head.ref == 'special/2026-M06-work'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Checkout Special work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2026-M06-work
+          path: worktree
+          fetch-depth: 0
+      - name: Verify revision boundary and clean v0.2 preview
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2026-M06 check
+          python - <<'PY'
+          import json,pathlib
+          root=pathlib.Path('worktree'); issue='SP-2026-M06'; slug='2026-M06'
+          state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT', state['lifecycle_state']
+          assert state['gates']['latex_build']=='pending'
+          src=state['provenance']['validated_issue_source']
+          assert src['source_version']=='v0.2'
+          assert src['sha256']=='f0a6db1d13ab43dd508a48a3b8a777bf2441b716ce5e098b6c6a8916dc797f7a'
+          assert (root/'sources'/issue/'editorial'/'theme-synthesis-v0.3.json').is_file()
+          assert not (root/'surveys'/'special'/slug/'revisions'/'v0.3').exists()
+          PY
+          rm -rf preview-build && mkdir preview-build
+          gh run download 31486501534 --repo "$GH_REPO" -n japanese-generative-ai-survey-special-2026-M06-v0.2 -D preview-build
+          audit=$(find preview-build -name special-pdf-build-audit.json -print -quit)
+          pdf=$(find preview-build -name main.pdf -print -quit)
+          test -s "$audit" && test -s "$pdf"
+          python - "$audit" "$pdf" <<'PY'
+          import hashlib,json,sys
+          a=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert a['source_version']=='v0.2'
+          assert a['source_manifest_sha256']=='f0a6db1d13ab43dd508a48a3b8a777bf2441b716ce5e098b6c6a8916dc797f7a'
+          assert a['page_count']==31
+          assert a['log_clean'] is True and a['log_gate_findings']==[]
+          assert a['pdf_sha256']=='baf09596f93ffe18ad87f34659214ecb3d4c6dd7ead36271b7c1e1f3d2b13fd9'
+          assert hashlib.sha256(open(sys.argv[2],'rb').read()).hexdigest()==a['pdf_sha256']
+          PY
+      - name: Bridge clean underfilled preview into canonical layout revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('worktree/sources/SP-2026-M06/pipeline-state.json')
+          state=json.load(open(p,encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT' and state['gates']['latex_build']=='pending'
+          state['lifecycle_state']='RELEASE_CANDIDATE'
+          state['gates']['latex_build']='passed'
+          state.setdefault('provenance',{})['latex_build']={
+            'workflow_run_id':31486501534,
+            'pdf_sha256':'baf09596f93ffe18ad87f34659214ecb3d4c6dd7ead36271b7c1e1f3d2b13fd9',
+            'page_count':31,
+            'source_version':'v0.2',
+            'validated_issue_source_path':'surveys/special/2026-M06/revisions/v0.2/source-manifest.json',
+            'validated_issue_source_sha256':'f0a6db1d13ab43dd508a48a3b8a777bf2441b716ce5e098b6c6a8916dc797f7a',
+            'preview_only':True,
+            'page_budget_passed':False,
+            'log_clean':True,
+            'reason':'Clean render-first preview used only as the evidence for a pre-Human-Visual-Review layout revision; the 32-page minimum did not pass.'
+          }
+          p.write_text(json.dumps(state,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+          PYTHONPATH=control-src python control-src/scripts/run_revise_special_mixed_layout.py \
+            --repo-root worktree \
+            --special-slug 2026-M06 \
+            --issue-id SP-2026-M06 \
+            --source-version v0.3 \
+            > special-mixed-layout-audit.json
+      - name: Normalize pre-Human Visual QA provenance and verify v0.3
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('worktree'); issue='SP-2026-M06'; slug='2026-M06'; version='v0.3'
+          sp=root/'sources'/issue/'pipeline-state.json'; state=json.load(open(sp,encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT'
+          assert state['gates']['latex_build']=='pending' and state['gates']['visual_review']=='pending'
+          lr=state['provenance']['reader_layout_revision']
+          lr['reason']='Editorial render-first QA of the clean 31-page v0.2 preview found structural whitespace and a house-style mismatch before the Human Visual Review gate; add selected-Evidence Theme Synthesis and mixed layout without new external Evidence.'
+          hist=state.get('provenance_history',{}).get('latex_build',[])
+          assert hist and hist[-1].get('preview_only') is True and hist[-1].get('page_budget_passed') is False
+          src=state['provenance']['validated_issue_source']; manifest=root/src['path']
+          assert src['source_version']==version and hashlib.sha256(manifest.read_bytes()).hexdigest()==src['sha256']
+          data=json.load(open(manifest,encoding='utf-8'))
+          assert data['status']=='VALIDATED_MIXED_LAYOUT_REVISION'
+          assert data['layout_revision']['article_sections_changed'] is False
+          assert data['layout_revision']['technical_notes_changed'] is False
+          assert data['layout_revision']['new_external_evidence'] is False
+          assert data['editorial_supplement']['selected_evidence_only'] is True
+          assert data['editorial_supplement']['synthesis_panel_count']==5
+          assert data.get('reader_facing_technical_notes',{}).get('evidence_ids_rendered_in_pdf') is False
+          sp.write_text(json.dumps(state,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps({'source_version':version,'manifest_sha256':src['sha256'],'synthesis_panels':5},ensure_ascii=False))
+          PY
+      - name: Commit mixed layout and remove run-once wrapper
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/m06-mixed-layout-run-once.yml
+          git add sources/SP-2026-M06/pipeline-state.json surveys/special/2026-M06/revisions/v0.3
+          git commit -m 'Add mixed layout and Theme Synthesis v0.3 for SP-2026-M06'
+          git push origin HEAD:special/2026-M06-work
+      - name: Upload layout audit
+        uses: actions/upload-artifact@v7
+        with:
+          name: special-mixed-layout-2026-M06-v0.3
+          path: special-mixed-layout-audit.json
+          if-no-files-found: error
+          retention-days: 14
