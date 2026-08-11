@@ -1,0 +1,193 @@
+name: Build balanced SP-2026-M05 v0.3 once
+
+on:
+  pull_request:
+    types: [synchronize]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: special-balanced-2026-M05-v03-run-once
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.event.pull_request.number == 53 && github.event.pull_request.head.ref == 'special/2026-M05-work'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - name: Checkout May work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2026-M05-work
+          path: worktree
+          fetch-depth: 0
+      - name: Verify v0.2 preflight and bridge to layout revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2026-M05 check >/dev/null
+          python - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('worktree/sources/SP-2026-M05/pipeline-state.json'); s=json.load(open(p,encoding='utf-8'))
+          assert s['lifecycle_state']=='VALIDATED_DRAFT'
+          assert s['gates']['latex_build']=='pending' and s['gates']['visual_review']=='pending' and s['gates']['freeze']=='pending'
+          src=s['provenance']['validated_issue_source']; assert src['source_version']=='v0.2' and src['sha256']=='a22ff55832bb7994f71c25ea55c9c86582c8d653fdc263181f4da445392b3f9b'
+          s['lifecycle_state']='RELEASE_CANDIDATE'; s['gates']['latex_build']='passed'
+          s.setdefault('provenance',{})['latex_build']={
+            'workflow_run_id':31512740242,'pdf_sha256':'4ac6829d300360914f90e0867e5a038dd2e8562df9e0b544c0b39990b852dea1','page_count':33,'source_version':'v0.2',
+            'validated_issue_source_path':'surveys/special/2026-M05/revisions/v0.2/source-manifest.json','validated_issue_source_sha256':'a22ff55832bb7994f71c25ea55c9c86582c8d653fdc263181f4da445392b3f9b',
+            'preview_only':True,'page_budget_passed':True,'log_clean':True,
+            'reason':'Clean 33-page v0.2 render used only for pre-Human-Review layout QA; visual inspection found structural whitespace and single-column source-card paging, so balanced revision is required.'
+          }
+          p.write_text(json.dumps(s,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+      - name: Write selected-Evidence-only final synthesis
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p worktree/sources/SP-2026-M05/editorial
+          cat > worktree/sources/SP-2026-M05/editorial/final-synthesis-v0.3.json <<'JSON'
+          {
+            "schema_version":"1.0",
+            "issue_id":"SP-2026-M05",
+            "revision":"v0.3",
+            "constraints":{"new_external_evidence_allowed":false,"selected_evidence_only":true},
+            "title":"総括 — 5月、生成AIの競争軸はモデルから実行環境へ広がった",
+            "lead":"本号の各章を重ねると、2026年5月は単なるmodel releaseの月ではなかった。default modelとAPI lifecycleが動く一方で、agentを置くsandboxとnetwork policy、長時間workloadを支えるserving stack、memory／retrievalを守るsecurity、そしてbenchmark外のcapabilityを測るevaluation設計まで、生成AIの実行条件そのものが競争軸として前景化した。",
+            "sections":[
+              {"heading":"Frontier Models — model名ではなくdelivery surfaceを見る","paragraphs":[{"text":"GPT-5.5 Instant、AnthropicのMay release、Gemini APIを並べると、5月の更新はmodel identityだけでなくdefault experience、GA／preview、agent integrationといったdelivery surfaceに現れた。利用者にとっては性能表だけでなく、いつ何がどの提供形態で変わるかがarchitecture上の条件になる。","evidence_task_ids":["evidence:SP-2026-M05:item-official-feed-01a8b52eee8198f545c2-8346b492d8","evidence:SP-2026-M05:item-official-index-anthropic-news-afddcb8068","evidence:SP-2026-M05:item-official-index-google-gemini-api-re-d5b8ea25b2"]}]},
+              {"heading":"Agents & Runtime — capabilityを実行してよい範囲を設計する","paragraphs":[{"text":"Running Codex safelyとWindows sandbox、Kimi Code CLI、MistralのMCP／workflow更新を接続すると、agent engineeringの中心はtoolを増やすことだけではない。file、network、approval、telemetry、CLI／protocolを通じて、長時間動作をどの境界の中へ置くかが実運用の設計対象になった。","evidence_task_ids":["evidence:SP-2026-M05:item-official-feed-66be1220771465af8b1a-7856302980","evidence:SP-2026-M05:item-official-feed-4a3442a5ca8c193564d3-64f2b96644","evidence:SP-2026-M05:item-official-index-kimi-code-whats-new-788743b9bb","evidence:SP-2026-M05:item-official-index-mistral-news-e5054b4c4c"]}]},
+              {"heading":"Inference & Serving — agent時代のworkloadをstack全体で支える","paragraphs":[{"text":"vLLM、SGLang、FlashInferのMay releasesでは、attention backend、cache、quantization、MoE、model-specific pathが継続的に更新された。agent workloadが複数callと成長するcontextを持つほど、model qualityだけでなくruntimeが長時間taskのcostとlatencyを決める。","evidence_task_ids":["evidence:SP-2026-M05:series-github-series-vllm-project-vllm-14c8073114","evidence:SP-2026-M05:series-github-series-sgl-project-sglang-e63ed0bdf0","evidence:SP-2026-M05:duplicate-hint-github-series-flashinfer-7f4c25e2bf","evidence:SP-2026-M05:item-arxiv-2605-26297v1-3ac98fa507"]}]},
+              {"heading":"Safety & Security — 長時間stateは新しいtrust boundaryになる","paragraphs":[{"text":"ClawTrojanとMemPoisonは異なるthreat modelだが、どちらも一回のpromptを超えてstateへ残るcontrolを問題にする。workspace、long-term memory、retrievalのprovenanceを追跡しなければ、agentの安全性をper-request filterだけで閉じることは難しくなる。","evidence_task_ids":["evidence:SP-2026-M05:item-arxiv-2605-31042v1-c387077175","evidence:SP-2026-M05:item-arxiv-2605-29960v1-5f120301f7","evidence:SP-2026-M05:item-arxiv-2605-29224v1-a99bec87b1"]}]},
+              {"heading":"Capability & Evaluation — 成果と評価方法を同時に読む","paragraphs":[{"text":"離散幾何の事例はbenchmark外のresearch taskでmodel capabilityが現れる可能性を示すfirst-party reportである一方、third-party evaluation playbookはcapability、safeguard、evaluation validityをどう切り分けるかを問う。単一の成功例を一般能力へ広げず、評価手続きそのものを証拠の一部として扱う必要がある。","evidence_task_ids":["evidence:SP-2026-M05:item-official-feed-1c93d6c1c7251e5ff843-6aba32b1d0","evidence:SP-2026-M05:item-official-feed-8c84b8422093501f7094-f577b525fa","evidence:SP-2026-M05:item-arxiv-2605-24217v2-b4a80388d7"]}]}
+            ],
+            "relationships":[
+              {"from":"Frontier Models","to":"Agents & Runtime","relation":"model／APIの更新がagent surfaceへ入るほど、capabilityと実行権限を別々に設計する必要が強まる。","evidence_task_ids":["evidence:SP-2026-M05:item-official-index-google-gemini-api-re-d5b8ea25b2","evidence:SP-2026-M05:item-official-feed-66be1220771465af8b1a-7856302980"]},
+              {"from":"Agents & Runtime","to":"Safety & Security","relation":"長時間動作とpersistent stateは、workspaceやmemoryを新しいtrust boundaryへ変える。","evidence_task_ids":["evidence:SP-2026-M05:item-official-feed-4a3442a5ca8c193564d3-64f2b96644","evidence:SP-2026-M05:item-arxiv-2605-29960v1-5f120301f7"]},
+              {"from":"Inference & Serving","to":"Agents & Runtime","relation":"agent workloadの複数call・成長contextは、cacheやruntime最適化をmodel外の主要設計問題にする。","evidence_task_ids":["evidence:SP-2026-M05:item-arxiv-2605-26297v1-3ac98fa507","evidence:SP-2026-M05:series-github-series-vllm-project-vllm-14c8073114"]},
+              {"from":"Capability","to":"Evaluation","relation":"benchmark外の成果が増えるほど、第三者評価とmeasurement validityの設計がcapability claimの解釈に不可欠になる。","evidence_task_ids":["evidence:SP-2026-M05:item-official-feed-1c93d6c1c7251e5ff843-6aba32b1d0","evidence:SP-2026-M05:item-official-feed-8c84b8422093501f7094-f577b525fa","evidence:SP-2026-M05:item-arxiv-2605-24217v2-b4a80388d7"]}
+            ],
+            "boundary":"この総括は本号で選択した一次資料と原論文を横断した編集上のsynthesisである。vendor／project／authorが報告した性能、attack success、capability比較を独立再現済みの事実へ昇格させず、異なる評価条件の数値を直接比較しない。",
+            "closing_heading":"5月をどう位置づけるか",
+            "closing":"2026年5月は、より賢いmodelが登場した月であると同時に、その能力を現実のworkflowへ持ち込むためのexecution environmentが急速に具体化した月だった。6月以降にagentのmemory、scheduling、authorization、scientific workflowがさらに前景化する前段として、5月はsandbox・serving・persistent state・evaluationという基盤が同時に動き始めた転換点として位置付けられる。",
+            "closing_evidence_task_ids":["evidence:SP-2026-M05:item-official-feed-01a8b52eee8198f545c2-8346b492d8","evidence:SP-2026-M05:item-official-feed-66be1220771465af8b1a-7856302980","evidence:SP-2026-M05:series-github-series-vllm-project-vllm-14c8073114","evidence:SP-2026-M05:item-arxiv-2605-29960v1-5f120301f7","evidence:SP-2026-M05:item-official-feed-8c84b8422093501f7094-f577b525fa"]
+          }
+          JSON
+          python -m json.tool worktree/sources/SP-2026-M05/editorial/final-synthesis-v0.3.json >/dev/null
+      - name: Build balanced multicol source v0.3
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python control-src/scripts/revise_special_balanced_layout.py \
+            --repo-root worktree --special-slug 2026-M05 --issue-id SP-2026-M05 --source-version v0.3 \
+            > balanced-layout-audit.json
+          python - <<'PY'
+          import hashlib,json,pathlib
+          r=pathlib.Path('worktree'); s=json.load(open(r/'sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
+          assert s['lifecycle_state']=='VALIDATED_DRAFT' and s['gates']['latex_build']=='pending'
+          src=s['provenance']['validated_issue_source']; assert src['source_version']=='v0.3'
+          m=r/src['path']; assert hashlib.sha256(m.read_bytes()).hexdigest()==src['sha256']
+          d=json.load(open(m,encoding='utf-8')); assert d['status']=='VALIDATED_BALANCED_MIXED_LAYOUT_REVISION'
+          assert d['layout_revision']['balanced_multicols'] is True and d['layout_revision']['hard_column_mode_switches'] is False
+          PY
+      - name: Commit balanced source before build
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sources/SP-2026-M05/pipeline-state.json sources/SP-2026-M05/editorial/final-synthesis-v0.3.json surveys/special/2026-M05/revisions/v0.3
+          git commit -m 'Add balanced reader layout v0.3 for SP-2026-M05'
+          git push origin HEAD:special/2026-M05-work
+      - name: Resolve v0.3 source path and pin style
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - >> "$GITHUB_OUTPUT" <<'PY'
+          import json,pathlib
+          r=pathlib.Path('worktree'); s=json.load(open(r/'sources/SP-2026-M05/pipeline-state.json',encoding='utf-8')); src=s['provenance']['validated_issue_source']; m=r/src['path']
+          print('source_dir='+m.parent.as_posix()); print('source_manifest='+m.as_posix()); print('source_manifest_sha256='+src['sha256'])
+          PY
+          cp control-src/templates/survey/jgaisurvey.sty "${{ steps.source.outputs.source_dir }}/jgaisurvey.sty"
+      - name: Compile balanced v0.3
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: main.tex
+          working_directory: ${{ steps.source.outputs.source_dir }}
+          texlive_version: 2026
+          latexmk_use_lualatex: true
+          os: alpine
+      - name: Audit balanced v0.3
+        id: audit
+        shell: bash
+        env:
+          SOURCE_DIR: ${{ steps.source.outputs.source_dir }}
+          MANIFEST: ${{ steps.source.outputs.source_manifest }}
+          MANIFEST_SHA: ${{ steps.source.outputs.source_manifest_sha256 }}
+        run: |
+          set -euo pipefail
+          pdf="$SOURCE_DIR/main.pdf"; log="$SOURCE_DIR/main.log"; bad=$(grep -E -n 'LaTeX Warning: (There were undefined references|Citation .* undefined)|Package biblatex Warning: Please (re)?run|Overfull \\hbox|Underfull \\hbox|Missing character:' "$log" || true)
+          pages=$(python - "$log" <<'PY'
+          import re,sys
+          t=open(sys.argv[1],encoding='utf-8',errors='replace').read(); m=re.findall(r'Output written on .*?\((\d+) pages?',t,re.S); print(m[-1])
+          PY
+          ); sha=$(sha256sum "$pdf"|awk '{print $1}'); [ -z "$bad" ] && clean=true || clean=false
+          python - "$pages" "$sha" "$clean" "$bad" "$MANIFEST" "$MANIFEST_SHA" <<'PY'
+          import json,sys
+          pages,sha,clean,bad,m,msha=sys.argv[1:]; o={'schema_version':'1.0','issue_id':'SP-2026-M05','source_version':'v0.3','page_count':int(pages),'pdf_sha256':sha,'log_clean':clean=='true','log_gate_findings':bad.splitlines() if bad else [],'page_target_min':32,'page_target_max':40,'source_manifest_path':m,'source_manifest_sha256':msha}
+          open('special-pdf-build-audit.json','w').write(json.dumps(o,indent=2)+'\n'); print(json.dumps(o,indent=2))
+          PY
+          echo "pages=$pages" >> "$GITHUB_OUTPUT"; echo "sha=$sha" >> "$GITHUB_OUTPUT"; echo "clean=$clean" >> "$GITHUB_OUTPUT"
+      - name: Upload balanced v0.3 preview
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: japanese-generative-ai-survey-special-2026-M05-v0.3
+          path: |
+            ${{ steps.source.outputs.source_dir }}/main.pdf
+            ${{ steps.source.outputs.source_dir }}/main.log
+            special-pdf-build-audit.json
+            balanced-layout-audit.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Record clean page-budget candidate when eligible
+        if: steps.audit.outputs.clean == 'true' && fromJSON(steps.audit.outputs.pages) >= 32 && fromJSON(steps.audit.outputs.pages) <= 40
+        working-directory: worktree
+        shell: bash
+        env:
+          PAGES: ${{ steps.audit.outputs.pages }}
+          PDF_SHA: ${{ steps.audit.outputs.sha }}
+          RUN_ID: ${{ github.run_id }}
+          MANIFEST: ${{ steps.source.outputs.source_manifest }}
+          MANIFEST_SHA: ${{ steps.source.outputs.source_manifest_sha256 }}
+        run: |
+          set -euo pipefail
+          python - <<PY
+          import json,pathlib,os
+          p=pathlib.Path('sources/SP-2026-M05/pipeline-state.json'); s=json.load(open(p,encoding='utf-8'))
+          s['lifecycle_state']='RELEASE_CANDIDATE'; s['gates']['latex_build']='passed'
+          s['provenance']['latex_build']={'workflow_run_id':int(os.environ['RUN_ID']),'pdf_sha256':os.environ['PDF_SHA'],'page_count':int(os.environ['PAGES']),'source_version':'v0.3','validated_issue_source_path':os.environ['MANIFEST'],'validated_issue_source_sha256':os.environ['MANIFEST_SHA'],'preview_only':True,'log_clean':True}
+          p.write_text(json.dumps(s,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+          git add sources/SP-2026-M05/pipeline-state.json
+          git commit -m 'Record balanced v0.3 preflight for SP-2026-M05'
+          git push origin HEAD:special/2026-M05-work
+      - name: Remove one-shot wrapper
+        if: always()
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin special/2026-M05-work
+          git rm .github/workflows/m05-v03-balanced-pdf-run-once.yml
+          git commit -m 'Remove M05 balanced preflight wrapper'
+          git push origin HEAD:special/2026-M05-work
