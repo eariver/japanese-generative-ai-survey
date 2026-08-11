@@ -54,6 +54,19 @@ jobs:
           assert p['collection_window_end']=='2026-05-31T23:59:59Z'
           assert p['community_research']['mode']=='DISABLED'
           PY
+      - name: Prepare conservative arXiv collection config
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          src='control-src/config/source-intake.json'
+          dst='out/source-intake-slow-arxiv.json'
+          cfg=json.load(open(src,encoding='utf-8'))
+          cfg['http_timeout_seconds']=120
+          cfg['arxiv']['delay_seconds']=20
+          open(dst,'w',encoding='utf-8').write(json.dumps(cfg,ensure_ascii=False,indent=2)+'\n')
+          PY
       - name: Run primary-source collectors
         shell: bash
         env:
@@ -62,10 +75,16 @@ jobs:
           set -euo pipefail
           python control-src/scripts/source_intake.py \
             --repo-root control-src \
-            --config config/source-intake.json \
+            --config "$GITHUB_WORKSPACE/out/source-intake-slow-arxiv.json" \
             --plan "$GITHUB_WORKSPACE/out/special-source-intake-control/plan.json" \
             --collector all \
             --output-root "$GITHUB_WORKSPACE/out/special-source-intake"
+          python - <<'PY'
+          import json
+          r=json.load(open('out/special-source-intake/source-intake-report.json',encoding='utf-8'))
+          assert r['overall_status']=='success', r
+          assert all(x['status']=='success' for x in r['runs']), r
+          PY
       - name: Build deterministic screening index and batches
         shell: bash
         run: |
