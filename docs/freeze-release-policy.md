@@ -1,6 +1,6 @@
 # Freeze approval and publication policy
 
-Effective: 2026-08-11 13:39 JST.
+Effective: 2026-08-11 13:39 JST. Public issue-only identity update effective: 2026-08-11 14:28 JST.
 
 ## Decision
 
@@ -18,6 +18,12 @@ The authorized downstream sequence is:
 6. create the predetermined tag/title/asset name;
 7. publish the GitHub Release and attach release provenance metadata.
 
+## Public identity after Freeze
+
+For releases after the legacy W32 and SP-2026-M07 publications, **the issue number is the complete public Release identity**. No routine `v0.1` / `v0.2` suffix is assigned after Freeze.
+
+Internal `source_version` values may remain for deterministic drafting/build provenance, but they are not public Release versions. Canonical naming and the exceptional correction policy are defined in `docs/release-identity-policy.md`.
+
 ## Human gates that remain
 
 - Candidate Selection
@@ -34,7 +40,10 @@ Freeze approval therefore means: **the reviewed bytes are final and may be merge
 - `unattended_public_release=false` remains true: publication is still grounded in an explicit human Freeze approval.
 - The publication workflow must preserve exact provenance for source manifest, PDF artifact/run, PDF SHA-256, tag, release anchor commit, and approval reference.
 - Weekly and Special editions use the same editorial principle. Individual runners may differ, but they must not reintroduce a separate editorial Release approval after a valid Freeze approval.
+- Post-Release correction is exceptional and explicit; routine version increments must not be used as an editing loop.
 
-## Transition note
+## Transition notes
 
 `SP-2026-M07 v0.1` was frozen under the previous policy, which still required a separate Release approval. The user explicitly supplied that Release approval on 2026-08-11 and simultaneously changed the policy above for future issues. Its frozen source/PDF are not rewritten to retrofit the new policy; a separate release-authorization record bridges the legacy Freeze record to the new publisher.
+
+`2026-W32 v0.2` and `SP-2026-M07 v0.1` retain their historical public tags exactly as published. The issue-only naming policy applies prospectively.
