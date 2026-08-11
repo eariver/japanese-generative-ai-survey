@@ -1,0 +1,24 @@
+\sectionkicker{Theme synthesis}
+\subsection*{横断比較 — acceleratorからruntimeまで最適化層が連動する}
+\addcontentsline{toc}{subsection}{横断比較 — acceleratorからruntimeまで最適化層が連動する}
+6月のinference/serving更新は一つの高速化技法へ収束していない。custom accelerator、serving engine、kernel、MoE parallelism、memory-heterogeneous servingが別々の層で進み、model architectureとhardwareの変化がstack全体へ伝播している。
+\medskip
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}X@{}}
+\toprule
+観察軸 & 6月の一次資料・論文から読めること \\
+\midrule
+hardware layer & JalapeñoはLLM inference向けcustom processorとしてengineering sample到達が報告されたが、最終performance measurementは継続中であり、性能・performance-per-wattの表現はvendorの予備的報告として読む。 \cite{src-855db08b75f6} \\
+serving engine & vLLM v0.24.0とSGLang v0.5.14はいずれも新model family対応だけでなくrunner、serving、kernel周辺を更新しており、frontier model追加がruntime実装の更新を伴うことを示す。 \cite{src-6cc910fb0183,src-538cecdad845} \\
+kernel / MoE parallelism & FlashInferはattention/MoE/quantization/autotuningを更新し、MoebiusはruntimeでTP/EPを切り替える研究を提示した。project releaseとauthor-evaluated researchはEvidence classを分けたまま扱う。 \cite{src-272a6dac5bcc,src-43606e2afafd} \\
+memory placement & HMA-Serveはmemory-heterogeneous accelerator間のdisaggregated servingを扱い、HBM容量だけを前提にしない配置問題を研究対象にした。6月のserving論点はcompute kernelだけでなくmemory topologyへ広がっている。 \cite{src-a66d76643eee} \\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\end{center}
+\normalsize
+\begin{claimboundary}[この比較の境界]
+この表は本号で既に検証・参照している一次資料と論文を横断比較の形へ再配置したものである。vendor / project / author が報告した性能値や優位性は独立再現済みの一般則へ変換せず、本文とSource Notesの帰属境界をそのまま維持する。
+\end{claimboundary}

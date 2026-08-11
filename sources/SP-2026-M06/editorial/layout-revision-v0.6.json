@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M06",
+  "revision": "v0.6",
+  "purpose": "Remove the multicol-incompatible five-baseline Needspace guards before subsections in the final retrospective synthesis after render-first QA found an almost empty page in v0.5.",
+  "constraints": {
+    "new_external_evidence_allowed": false,
+    "reader_content_changed": false,
+    "selected_evidence_only": true
+  },
+  "observed_render_findings": [
+    "v0.5 passed the clean TeX-log and 32-40 page gates at 33 pages.",
+    "Page 29 was almost empty immediately before the final retrospective Paper Watch subsection.",
+    "The final retrospective TeX contains six Needspace(5 baselines) guards inside multicols; the last guard triggers the same class of page-hole behavior previously observed in the July Special.",
+    "The final references page was also sparse; reflow after removing the multicol guard may improve it and will be re-reviewed rather than assumed."
+  ],
+  "layout_changes": {
+    "target": "final-synthesis/70-retrospective-synthesis.tex",
+    "remove_final_synthesis_subsection_needspace": true,
+    "preserve_subsection_separation": "paragraph termination + medskip",
+    "expected_replacement_count": 6,
+    "accepted_article_sections_immutable": true,
+    "layout_article_bodies_immutable": true,
+    "theme_synthesis_immutable": true,
+    "technical_notes_immutable": true,
+    "final_synthesis_reader_wording_immutable": true,
+    "references_bib_immutable": true
+  },
+  "review_reference": "Render-first Visual QA of SP-2026-M06 v0.5: remove only the final-synthesis subsection Needspace guards that caused page 29 to become almost empty; do not alter prose, claims, citations, or Evidence."
+}

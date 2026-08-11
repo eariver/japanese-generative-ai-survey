@@ -1,0 +1,31 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{AI for Science — Agentが「提案」から実験workflowへ踏み込む}
+\noindent\textbf{6月17日にOpenAIとMolecule.oneが報告したAI chemistは、化学反応の改善を長時間のagent workflowとして扱った。ただし完全自律ではない。人間がproposal selection、lab operation、代表反応のvalidationを担う構成であり、この境界こそ実世界scientific workflowへAIを接続する現在地を示している。}\autocite{src-5ff2f715f1e6}
+
+\subsection{「near-autonomous」の中身を見る}
+
+OpenAIとMolecule.oneはGPT-5.4を用いたnear-autonomous chemistry workflowでChan–Lam reactionの改善を試みたと報告した。agentが研究taskの長い連鎖へ入った一方、人間はproposalの選択、実験室のoperation、代表的reactionのvalidationを担っている。したがって、これはfully autonomous laboratoryの実証ではない。\autocite{src-5ff2f715f1e6}
+
+
+\subsection{結果は「11/14」だが、独立再現ではない}
+
+一次資料では、benchで試験した14のsubstrate pairのうち11組でyieldが高くなったと報告されている。この数値はOpenAI/Molecule.oneによる実験報告であり、独立labによる再現結果ではない。成果の大きさだけでなく、どの主体が実験を設計・実行・検証したかを併記する必要がある。\autocite{src-5ff2f715f1e6}
+
+
+\subsection{科学特化modelの評価面も広がる}
+
+OpenAIは6月3日にGPT-Rosalindのmedicinal chemistry、genomics、lab-work capability更新を報告し、MedChemBench、GeneBench、LabWorkBenchを評価面として示した。science向けAIがknowledge questionだけでなく、実験計画やlab workを意識した評価へ広がっていることを示す材料である。\autocite{src-ba562226725d}
+
+
+| 層 | AIが担う範囲 | 人間・外部系に残る範囲 |\textbackslash{}n|---|---|---|\textbackslash{}n| Scientific reasoning | proposal生成、条件探索、知識統合 | 問題設定・採否判断 |\textbackslash{}n| Experimental workflow | 長時間の探索・提案loop | lab equipmentのoperation |\textbackslash{}n| Validation | 結果解釈の支援 | 代表反応の実測・妥当性確認 |\autocite{src-5ff2f715f1e6,src-ba562226725d}
+
+6月の重要点は、frontier modelの能力更新がsoftware内のtool useに留まらず、物理的な実験工程を含むworkflowへ接続されたことにある。agentの長時間化を語る時、実世界ではlatencyやtool permissionだけでなく、実験安全、再現性、人間の責任分界までsystem boundaryに含まれる。\autocite{src-5ff2f715f1e6,src-ba562226725d}
+
+
+\begin{claimboundary}
+GPT-Rosalindのbenchmark結果はOpenAIの評価であり、LabWorkBenchにはproprietary dataが含まれる。公開されたbenchmark名やcapability scopeと、外部から同条件で再現可能な性能評価は分けて扱う。\autocite{src-ba562226725d}
+\end{claimboundary}
+
+\begin{claimboundary}
+AI chemistのyield改善やworkflow effectivenessはOpenAI/Molecule.oneのfirst-party報告である。11/14という結果を一般的な化学agent性能へ外挿せず、対象reactionとhuman-in-the-loop条件を保ったまま読む。\autocite{src-5ff2f715f1e6}
+\end{claimboundary}
