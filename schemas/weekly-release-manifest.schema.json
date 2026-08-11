@@ -47,6 +47,17 @@
     "page_count": { "type": "integer", "minimum": 1 },
     "survey_root": { "type": "string", "minLength": 1 },
     "freeze_record": { "type": "string", "minLength": 1 },
+    "public_release_authorized": { "type": "boolean" },
+    "release_authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "authorized_at", "approval_reference"],
+      "properties": {
+        "mode": { "const": "FREEZE_APPROVAL" },
+        "authorized_at": { "type": "string", "format": "date-time" },
+        "approval_reference": { "type": "string", "minLength": 1 }
+      }
+    },
     "pdf_source": {
       "type": "object",
       "additionalProperties": false,
@@ -55,7 +66,8 @@
         "mode": { "enum": ["actions-artifact", "rebuild"] },
         "workflow_run_id": { "type": "integer", "minimum": 1 },
         "artifact_id": { "type": "integer", "minimum": 1 },
-        "artifact_name": { "type": "string", "minLength": 1 }
+        "artifact_name": { "type": "string", "minLength": 1 },
+        "artifact_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
       }
     },
     "build": {
@@ -77,11 +89,12 @@
     {
       "oneOf": [
         {
-          "required": ["release_identity_mode"],
+          "required": ["release_identity_mode", "public_release_authorized", "release_authorization"],
           "not": { "required": ["revision"] },
           "properties": {
             "release_identity_mode": { "const": "ISSUE_ONLY" },
-            "release_tag": { "pattern": "^weekly/[0-9]{4}-W[0-9]{2}$" }
+            "release_tag": { "pattern": "^weekly/[0-9]{4}-W[0-9]{2}$" },
+            "public_release_authorized": { "const": true }
           }
         },
         {
