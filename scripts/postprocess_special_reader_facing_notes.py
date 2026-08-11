@@ -30,13 +30,13 @@ EVENT_LABELS = {
     "API_RELEASE": "API公開",
 }
 TYPE_LABELS = {
-    "MODEL": "モデル",
     "MODEL UPDATE": "モデル更新",
     "OPEN WEIGHT": "オープンウェイト",
     "FRAMEWORK RELEASE": "フレームワーク公開",
+    "SAFETY EVENT": "安全性事象",
     "RESEARCH": "研究",
     "PAPER": "論文",
-    "SAFETY EVENT": "安全性事象",
+    "MODEL": "モデル",
     "API": "API",
 }
 
@@ -71,9 +71,11 @@ def translate_machine_labels(text: str) -> str:
     for old, new in ROLE_LABELS.items():
         text = text.replace("{" + old + "}", "{" + new + "}")
         text = text.replace(f" & {old} & ", f" & {new} & ")
+    # Artifact types are uppercase machine labels in generated metadata/tables.
+    # Longest labels are replaced first so MODEL does not partially consume
+    # MODEL UPDATE.
     for old, new in sorted(TYPE_LABELS.items(), key=lambda item: len(item[0]), reverse=True):
-        text = text.replace(f"Artifact type & {old} \\\", f"種別 & {new} \\\")
-        text = text.replace(f" & {old} & ", f" & {new} & ")
+        text = text.replace(old, new)
     return text
 
 
