@@ -1,0 +1,71 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\noindent\textbf{2026年7月にはGPT-5.6、Kimi K3、Gemini 3.6 Flash、Claude Opus 5、DeepSeek V4-Flashが相次いで公開・更新された。だが各社の変化を一列の性能順位に並べるより、提供形態、価格、API、open-weight性、agent/codingへの接続という別々の軸で読む方が、この月の構造を正確に捉えられる。}\autocite{src-9191d43918fc,src-a24fd97eb3d0,src-e19fbb75eb44,src-e547d0d8cbe3,src-f6aa679babd7}
+
+\subsection{7月の時系列を先に置く}
+
+\begin{center}
+\small
+\begin{tabularx}{\columnwidth}{>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X}
+\toprule
+\textbf{日付} & \textbf{主な変化} & \textbf{読みどころ} \\
+\midrule
+7月9日 & GPT-5.6 familyが一般提供 & ChatGPT・Codex・APIをまたぐfamily展開 \\
+7月16日 & Kimi K3公開 & open modelとcoding-agent環境の接続 \\
+7月21日 & Gemini 3.6 Flash / 3.5 Flash-Lite GA & stable API lifecycleの更新 \\
+7月24日 & Claude Opus 5公開 & 上位モデルの価格とproduct tierを同時更新 \\
+7月31日 & DeepSeek V4-Flash public beta & API世代移行とpost-training更新 \\
+\bottomrule
+\end{tabularx}
+\autocite{src-9191d43918fc,src-a24fd97eb3d0,src-e19fbb75eb44,src-e547d0d8cbe3,src-f6aa679babd7}
+\end{center}
+
+\subsection{同じ「frontier」でも、売っているものが違う}
+
+GPT-5.6は7月9日にSol、Terra、Lunaのfamilyとして一般提供され、ChatGPT、Codex、APIを横断して展開された。Responses APIにはProgrammatic Tool Callingが入り、multi-agent betaも同時に示された。モデル単体の更新というより、推論モデルをtool実行や複数agentの協調へ接続するproduct surfaceまで含めた更新として読むべき出来事だった。\autocite{src-e19fbb75eb44}
+
+
+Anthropicは7月24日にClaude Opus 5を公開し、同日から自社platformとAPIで利用可能にした。価格は100万input tokenあたり5ドル、output tokenあたり25ドルとされ、Claude Maxでは新しいdefault、Claude Proでは最上位モデルとして位置付けられた。ここでは「能力が何点上がったか」だけでなく、最上位能力をどのproduct tierと価格で提供するかがfrontier競争の一部になっている。\autocite{src-f6aa679babd7}
+
+
+Google側では7月21日にGemini 3.6 FlashとGemini 3.5 Flash-LiteがGAとなり、7月30日にはGemini Robotics ER 2とstreaming variantがpublic previewに追加された。7月のGemini APIは、汎用Flash系のstable化と、multimodal input・function callingを持つrobotics workflowへの展開が同じ月のrelease notesに並ぶ構成になった。\autocite{src-a24fd97eb3d0}
+
+
+DeepSeekは7月31日に`deepseek-v4-flash`をpublic betaへ移した。公式changelogでは、このbuildはV4-Flash-Previewとarchitecture・sizeを維持し、post-trainingのみを変更したと説明されている。また、旧`deepseek-chat`と`deepseek-reasoner`名は4月時点の告知で7月24日の終了予定が示されており、7月は新モデルの更新とAPI名の世代移行が重なる境界だった。\autocite{src-e547d0d8cbe3}
+
+
+Kimi K3は7月16日にreleaseとopen-sourceが公式changelogへ記録され、同時にKimi Codeで利用可能になった。さらに同日のKimi Code更新ではcoder sub-agentがbackground task、plan mode、skills、nested-agent capabilityへ接続された。open modelの公開をweightsの存在だけで捉えるのではなく、開発者向けagent環境へ直結させるdistributionとして見える点が7月の特徴である。\autocite{src-9191d43918fc}
+
+
+\subsection{価格とAPI lifecycleがモデル評価を動かす}
+
+GPT-5.6では7月30日にLunaの価格が80\%、Terraの価格が20\%引き下げられた。Claude Opus 5は公開時点でinput 5ドル／output 25ドルという価格を伴って投入され、DeepSeekではlegacy model nameの廃止とV4-Flash public betaがAPI移行として現れた。月次で追うと、model releaseは固定された一点ではなく、価格・名前・提供経路が数週間のうちに更新されるlifecycleとして見えてくる。\autocite{src-dca7adc62d79,src-e19fbb75eb44,src-e547d0d8cbe3,src-f6aa679babd7}
+
+
+\subsection{open-weightとclosed modelは同じ物差しではない}
+
+Kimi K3はopen-sourceとして公開された一方、GPT-5.6、Claude Opus 5、Gemini 3.6 Flash、DeepSeek V4-Flashは、このEvidence setでは主に各社product/APIのlifecycleとして確認されている。したがって比較すべきなのは単純なbenchmark順位だけではない。ローカルに持ち込めるartifactなのか、managed APIとして継続更新されるのか、tool・agent機能と一体で提供されるのかという運用上の違いが、採用判断を直接左右する。\autocite{src-9191d43918fc,src-a24fd97eb3d0,src-e19fbb75eb44,src-e547d0d8cbe3,src-f6aa679babd7}
+
+
+\begin{claimboundary}
+GPT-5.6のbenchmark、efficiency、推定cost比較はOpenAI側の報告を中心とし、effort level、harness、token使用量、価格前提に依存する。したがって本誌では、それらを普遍的な総合順位へ変換しない。\autocite{src-dca7adc62d79,src-e19fbb75eb44,src-eb71f165025c}
+\end{claimboundary}
+
+\begin{claimboundary}
+Claude Opus 5のbenchmarkやalignment比較は主としてAnthropic報告であり、個別のevaluation harnessやpartner testimonialは独立再現と同義ではない。公開日・価格・availabilityと、優位性の主張を分けて読む。\autocite{src-f6aa679babd7}
+\end{claimboundary}
+
+\begin{claimboundary}
+DeepSeek V4-Flashのbenchmark値は指定されたDeepSeek Harnessを含むvendor-reported resultである。本稿では7月のAPI lifecycleとpublic beta移行を一次事実の中心に置く。\autocite{src-e547d0d8cbe3}
+\end{claimboundary}
+
+\begin{claimboundary}
+Gemini 3.6 Flashのcapabilityやefficiencyに関する優位性はGoogleのpositioningである。release notesが直接確定するのはGAやpreviewといったmodel lifecycleであり、独立benchmark superiorityではない。\autocite{src-a24fd97eb3d0}
+\end{claimboundary}
+
+\begin{claimboundary}
+Kimi K3の2.8T parameter、KDA hybrid linear attention、1M-token contextなどのarchitecture/capability説明はMoonshot側のdocumentationに基づく。また「open-source」の実運用上の意味は、実際に公開されたlicenseとweightsを確認して評価すべきである。\autocite{src-9191d43918fc}
+\end{claimboundary}
+
+\subsection{7月のfrontier競争をどう読むか}
+
+この5系統を横に並べると、2026年7月のfrontier競争は一つのleaderboardへ収束するより、むしろ分岐している。closed serviceでは価格とtool/agent統合、APIのstable化やproduct tierが競争軸になり、open model側ではweight公開とcoding環境への接続が別の価値を作る。次の月を読む際にも、model nameだけでなく『どの形で届き、何と接続され、どの条件で更新されるか』を追う必要がある。\autocite{src-9191d43918fc,src-a24fd97eb3d0,src-e19fbb75eb44,src-e547d0d8cbe3,src-f6aa679babd7}

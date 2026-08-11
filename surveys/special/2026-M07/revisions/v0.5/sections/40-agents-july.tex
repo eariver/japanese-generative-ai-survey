@@ -1,0 +1,35 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{Agents — 一回のtool callから、長時間動くsystemへ}
+\label{pkg:agents-july}
+\noindent\textbf{7月のagent研究では、評価対象が独立した一問一答からdependencyを持つ長時間coding taskやstreaming taskへ広がり、runtime側でもKV reuse、sandbox cold start、tokenizationが独立したsystem problemとして扱われた。Agentはmodel capabilityだけでなく、時間をまたいで状態を保つ実行系として評価すべき段階に入っている。}\autocite{src-30d9d574d4a1,src-4051106eaef3,src-4141dfcd9b12}
+
+\subsection{長時間化すると、benchmarkの形から変わる}
+
+LoopsBenchは112個のdependency-structured taskを8言語・9 domainにまたがって構成し、coding agentを単発問題ではなく、前の作業結果が後続taskへ効くloopとして評価する。task間のdependencyが入ることで、局所的に正しい一手を出す能力だけでなく、途中状態を壊さず進み続ける能力が評価対象になる。\autocite{src-4141dfcd9b12}
+
+
+AgentStreamはself-evolving agentを、isolated taskだけでなくsequentialとinterleavedのstreaming-task settingで評価する。現実のagent運用に近づくほど、task distributionは固定されたtest setではなく、順序と履歴を持つstreamになる。そこで問われるのは一回の成功率だけではなく、経験を取り込みながら次のtaskへ適応する振る舞いである。\autocite{src-30d9d574d4a1}
+
+
+\begin{claimboundary}
+LoopsBenchとAgentStreamのbenchmark設計およびmodel ranking/resultはauthor-reportedであり、含まれるmodel、harness、task source、scoring protocolに依存する。本稿では『長時間・streamingという評価軸が前景化した』ことを主に読み取り、順位を一般化しない。\autocite{src-30d9d574d4a1,src-4141dfcd9b12}
+\end{claimboundary}
+
+\subsection{長時間agentはruntimeの前提も変える}
+
+AAFLOW+はmulti-agent pipelineで再利用できるKV cacheをrequest-localなoptimizationではなく、distributed workflow objectとして扱う。Agentが同じ長いcontextや中間状態を繰り返し参照するなら、cacheの寿命と所有範囲をrequest単位に閉じる設計そのものが見直し対象になる。\autocite{src-4051106eaef3}
+
+
+SpecBoxはsandboxed agent workloadのcold-start tail latencyに対し、sandboxをspeculativeにpreallocate/prewarmする設計を提案する。Agentがtool executionを何度も行うなら、毎回のisolation setupは安全性だけでなくlatency budgetの一部になる。ここではresourceを先に消費する代わりにtail latencyを抑えるtrade-offが明示的なsystem designになる。\autocite{src-2266222d4bb7}
+
+
+TokTierはappend-heavyなagent sessionで、長いprefixを繰り返しtokenizeするcostに注目し、statefulなCPU/GPU tokenizationを提案する。prompt cache hit率が高まりmodel-side computeを節約できても、front-endで同じ長文prefixを再tokenizeし続ければ別のbottleneckが残る、という問題設定である。\autocite{src-6513817b493c}
+
+
+\begin{claimboundary}
+AAFLOW+、SpecBox、TokTierのsystem gainはauthor-reportedであり、分析・microbenchmark assumptions、workload trace、serving stack、hardwareに依存する。ここではproduction標準としてではなく、長時間agentが露出させるruntime costの分類として使う。\autocite{src-2266222d4bb7,src-4051106eaef3,src-6513817b493c}
+\end{claimboundary}
+
+\subsection{evaluationとruntimeは同じ長時間性を見ている}
+
+LoopsBench/AgentStreamがtaskの継続性を評価側へ持ち込み、AAFLOW+、SpecBox、TokTierがcache、sandbox、tokenizationの継続性をruntime側で扱う。この二つは独立した研究群だが、どちらもagentを『LLMにtoolを付けたもの』ではなく、履歴・state・resourceを長時間抱えるsystemとして扱う点で接続する。Agentの性能を議論するとき、model benchmarkだけでなく、何時間・何taskにわたり状態を保てるか、その間にどのsystem costが累積するかを分けて見る必要がある。\autocite{src-4051106eaef3,src-4141dfcd9b12,src-6513817b493c}
