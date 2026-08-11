@@ -146,7 +146,11 @@ def render_final_synthesis(final: dict[str, Any], records: dict[str, dict[str, A
         left = tex_escape(from_name) + r" $\rightarrow$ " + tex_escape(to_name)
         lines.append(left + " & " + tex_escape(relation) + cite_tex(task_ids, records, bib_map) + r" \\")
         used.extend(x for x in task_ids if x not in used)
-    lines.extend([r"\bottomrule", r"\end{tabularx}", r"\renewcommand{\arraystretch}{1.0}", r"\end{center}", r"\normalsize", r"\begin{claimboundary}[この総括の境界]", tex_escape(boundary), r"\end{claimboundary}", r"\subsection*{7月をどう位置づけるか}", r"\addcontentsline{toc}{subsection}{7月をどう位置づけるか}"])
+    closing_heading = str(final.get("closing_heading") or "この月をどう位置づけるか").strip()
+    if not closing_heading:
+        raise ValueError("final synthesis closing heading must not be empty")
+    validate_reader_text(closing_heading, "final synthesis closing heading")
+    lines.extend([r"\bottomrule", r"\end{tabularx}", r"\renewcommand{\arraystretch}{1.0}", r"\end{center}", r"\normalsize", r"\begin{claimboundary}[この総括の境界]", tex_escape(boundary), r"\end{claimboundary}", "\\subsection*{" + tex_escape(closing_heading) + "}", "\\addcontentsline{toc}{subsection}{" + tex_escape(closing_heading) + "}"])
     closing_task_ids = [str(x) for x in (final.get("closing_evidence_task_ids") or [])]
     if not closing_task_ids:
         raise ValueError("final synthesis closing Evidence is required")
