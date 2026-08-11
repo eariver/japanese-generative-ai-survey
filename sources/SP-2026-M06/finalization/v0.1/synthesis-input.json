@@ -1,0 +1,554 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M06",
+  "status": "post-draft-synthesis-input-ready",
+  "basis": {
+    "architecture_input_sha256": "9ef859922a401e29a219a63dce6e1051d202e15cd60f54040ee23777e71e1ff5",
+    "architecture_plan_sha256": "a1e41c37d9a50febdc514a78ad11a8f6f3982ad54e3e1407ba0825bb6b436e14",
+    "article_prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c",
+    "article_drafts": [
+      {
+        "package_id": "frontier-models-june",
+        "article_draft_sha256": "9cb9ed25bfc7199bfcd09652a3e8d06cfc792566178fa012aeb153cb253fd7dd"
+      },
+      {
+        "package_id": "agents-memory-june",
+        "article_draft_sha256": "ac5b57eba1550764fee87a0a2ca76e9297c1413bdc63e66aac20f3f94cabf20a"
+      },
+      {
+        "package_id": "inference-serving-june",
+        "article_draft_sha256": "09f471852e98188c3cc261c87e4441e6ba27fe6a2ba1bdd88890cd00c178de93"
+      },
+      {
+        "package_id": "agent-safety-security-june",
+        "article_draft_sha256": "434a320ce5d9d4067bc779f2aea03561066c46a9e23b99411e1f95ffc4b0d951"
+      },
+      {
+        "package_id": "ai-for-science-june",
+        "article_draft_sha256": "3a24e396529af742c8ac5f56bd9a4577c44c513872c9a03230f1e520955ff2c2"
+      },
+      {
+        "package_id": "paper-watch-june",
+        "article_draft_sha256": "d70f48cf1b6d358e5106fd426a75d0c0d19781287d0039a2dd7edcc05fc4e12b"
+      }
+    ]
+  },
+  "editorial_thesis": "2026年6月は、生成AIのエージェント化がモデル単体の能力競争から、記憶・スケジューリング・推論基盤・権限境界・実世界の科学ワークフローまで実行系全体へ広がった月だった。",
+  "cover_anchor_candidates": [
+    "frontier-models-june",
+    "ai-for-science-june"
+  ],
+  "articles": [
+    {
+      "package_id": "frontier-models-june",
+      "package_type": "FEATURE",
+      "drafting_order": 2,
+      "page_target": 7,
+      "late_breaking": false,
+      "editorial_angle": "MiniMax M3、Claude Sonnet 5、Alibaba/Qwen、Gemini API、Kimi Codeを単純な性能ランキングにせず、open-weight、multimodal、API lifecycle、agent/coding接続という利用形態の違いで比較する。GPT-5.6はlimited previewとして翌月への橋渡しに留める。",
+      "boundaries": [
+        "This card is derived from the collected first-party index/release-note snapshot. Capability or benchmark language on vendor pages is not independently reproduced.",
+        "The source is first-party OpenAI material. Capability, benchmark, efficiency, or performance statements remain vendor claims unless explicitly described as externally reproduced."
+      ],
+      "headline": "Frontier Models — 6月、競争は「モデル性能」から提供形態へ広がった",
+      "deck": "2026年6月はMiniMax M3、Claude Sonnet 5、Qwen系更新、Gemini API、Kimi Codeが相次いで動いた。重要なのは一列の性能順位ではなく、open-weight、multimodal、API lifecycle、computer-use、coding/agent統合という提供形態の違いである。月末のGPT-5.6はlimited previewであり、7月の本格展開とは分けて読む必要がある。",
+      "blocks": [
+        {
+          "block_id": "chronology-heading",
+          "block_type": "HEADING",
+          "text": "6月の流れを、提供形態の変化として読む",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "chronology",
+          "block_type": "PARAGRAPH",
+          "text": "6月1日のMiniMax M3とAlibaba Model Studioの更新から始まり、Kimi CodeのGoal modeや/swarm、月後半のGemini APIのcomputer-use系更新、6月30日のAnthropicのモデル・科学・安全性関連発表へと、モデルそのものと利用面の更新が並行した。月末にはGPT-5.6 seriesのlimited previewも公表されたが、これは一般提供ではない。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "minimax-heading",
+          "block_type": "HEADING",
+          "text": "open-weightとcomputer operationを同じモデル面に置くMiniMax M3",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "minimax-model",
+          "block_type": "PARAGRAPH",
+          "text": "MiniMaxはM3について、MSA sparse attention、最大1M context、画像・動画入力、desktop-computer operation、open weightsを組み合わせたモデルとして説明した。ここで注目すべきなのは、長文脈やmultimodalだけでなく、モデル配布とcomputer-use志向が一つの製品像にまとめられている点である。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "anthropic-update",
+          "block_type": "PARAGRAPH",
+          "text": "Anthropicの6月30日のnewsroomにはClaude Sonnet 5、Claude Science、Fable 5の再展開と安全性framework更新が同日に並ぶ。モデル更新を単独で見るより、agentic use、科学用途、安全性運用を一つのproduct lifecycleとして束ねていることが6月末の特徴だった。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "alibaba-lifecycle",
+          "block_type": "PARAGRAPH",
+          "text": "Alibaba Model Studioの6月はQwen3.7-Plusの更新から始まり、Qwen3.7-Max snapshot、video系、image系へと複数modalのmodel lifecycleが続いた。さらにKimi K2.7 Codeの地域availabilityも記録され、model catalog自体が静的な一覧ではなく、能力・modal・地域提供を継続更新するsurfaceになっている。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "gemini-lifecycle",
+          "block_type": "PARAGRAPH",
+          "text": "Gemini APIでも、model shutdownやdeprecationと並行してstreaming speech、computer-use、月末の新preview/GAが進んだ。新モデルだけでなく、終了・移行・機能追加を含むAPI lifecycleが利用者の設計条件を変える。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "kimi-agent",
+          "block_type": "PARAGRAPH",
+          "text": "Kimi Codeは6月にGoal mode、/swarm、Kimi K2.7 Codeのrelease/open-sourceを段階的に投入した。coding modelの更新を、単発のchat補助ではなくgoal-driven・multi-agentな開発workflowへ接続しようとする動きとして読める。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "deepmind-context",
+          "block_type": "PARAGRAPH",
+          "text": "Google DeepMind側でもDiffusionGemma、Gemma系更新、computer-useやvoice、agent-safety roadmapが6月の公式発信に並んだ。個別modelの優劣より、multimodal生成とagent操作、安全性設計が並行して開発面へ出てきたことが重要である。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "gpt56-bridge",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "OpenAIが6月26日に示したGPT-5.6 seriesはlimited previewであり、Solは小規模なtrusted partner向けを含む限定段階だった。7月の一般提供を6月へ遡及させてはならない。6月号では、翌月の本格展開へつながるchronology bridgeとしてのみ位置付ける。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "distribution-heading",
+          "block_type": "HEADING",
+          "text": "同じ「frontier」でも、採用判断の物差しは異なる",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "distribution-synthesis",
+          "block_type": "PARAGRAPH",
+          "text": "open-weightで持ち込めるモデル、managed APIとして更新され続けるモデル、coding/agent環境と一体化したモデルでは、利用者が評価すべきリスクと便益が違う。6月は「最高性能は何か」より、「どの実行環境へ、どの更新速度で、どの操作能力まで持ち込めるか」が競争軸として前景化した月だった。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "boundary-vendor",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "各社の公式release pageやnewsroomは、公開日・availability・記載機能を確認する一次資料である一方、capabilityやbenchmarkの優位性まで独立検証したものではない。本稿ではvendorの性能表現をそのまま横断ランキングへ変換しない。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "boundary-openai",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "GPT-5.6に関する6月時点のcapability、efficiency、performance表現もOpenAIのfirst-party claimとして扱う。limited previewというavailabilityの事実と、性能評価の主張は分離して読む。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    },
+    {
+      "package_id": "agents-memory-june",
+      "package_type": "SECTION",
+      "drafting_order": 3,
+      "page_target": 5,
+      "late_breaking": false,
+      "editorial_angle": "Agentを一回のtool callではなく、複数call/toolのスケジューリング、永続memory、context transformationを伴う長時間システムとして整理する。",
+      "boundaries": [
+        "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review.",
+        "The source is first-party OpenAI material. Capability, benchmark, efficiency, or performance statements remain vendor claims unless explicitly described as externally reproduced."
+      ],
+      "headline": "Agents & Memory — 長時間動作は「モデルの賢さ」だけでは成立しない",
+      "deck": "6月のagent研究と製品更新では、複数のmodel callとtool実行をどうscheduleするか、過去の情報をどうmemoryとして保持するか、長いcontextの再処理をどう抑えるかが前面に出た。長時間agentは、model intelligenceにruntime・memory・context engineeringを重ねたsystemとして見る必要がある。",
+      "blocks": [
+        {
+          "block_id": "system-heading",
+          "block_type": "HEADING",
+          "text": "Agentを一回の推論ではなく実行系として捉える",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "swarmx",
+          "block_type": "PARAGRAPH",
+          "text": "SwarmXの著者らは、agentic workloadを独立した推論requestの集合ではなく、model callとtool executionが連鎖するworkloadとして扱い、その前提でschedulerを設計した。agentが長く動くほど、GPU計算だけでなくCPU側toolや依存関係を含むscheduleがlatencyへ効いてくるという問題設定である。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "memory-heading",
+          "block_type": "HEADING",
+          "text": "永続memoryはcontext長とは別の設計問題",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "dreaming",
+          "block_type": "PARAGRAPH",
+          "text": "OpenAIはChatGPTのmemoryを「dreaming」を用いる新architectureへ移し、reviewableなmemory summaryとstaged rolloutを組み合わせたと説明している。ここで扱われているのは単なるcontext window延長ではなく、継続利用の履歴をどの形で再構成し、次の会話へ持ち越すかというproduct-levelのstate managementである。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "context-heading",
+          "block_type": "HEADING",
+          "text": "context transformationを先回りする",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "smoothagent",
+          "block_type": "PARAGRAPH",
+          "text": "SmoothAgentの著者らは、長時間agentでcontext transformationが起きるたびにKV cacheが無効化され、re-prefillが発生するoverheadへ着目した。提案手法はcontext変換をahead-of-timeで進め、TTFTを抑えることを狙うsystems researchであり、報告された効果は著者のevaluation条件に依存する。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "three-layers",
+          "block_type": "TABLE",
+          "text": "| 層 | 6月に見えた課題 | 代表例 |\n|---|---|---|\n| Scheduling | model/toolを含む複数stepの資源配分 | SwarmX |\n| Persistent state | 過去情報の選別・再構成・reviewability | ChatGPT Dreaming |\n| Context serving | context変換後の再処理とlatency | SmoothAgent |",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "system-synthesis",
+          "block_type": "PARAGRAPH",
+          "text": "この3つをまとめると、agent性能をmodel benchmarkだけで予測することは難しい。長時間taskでは、何を覚えるか、いつtoolを動かすか、contextをどのタイミングで変換するかがsystem-levelの失敗率や応答性を左右する。model intelligenceとruntime/memory qualityは別の評価軸として持つべきである。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "boundary-paper",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "SwarmXとSmoothAgentの性能・latency評価は論文著者が構成した環境での報告であり、production一般で同じ改善幅を保証するものではない。問題設定とmechanismを重視し、数値は独立再現済みとして扱わない。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "boundary-openai",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "ChatGPT Dreamingの能力やcompute efficiencyに関する説明はOpenAIのfirst-party報告である。staged rolloutやreviewable summaryという製品挙動と、効率改善の主張は分離して読む必要がある。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    },
+    {
+      "package_id": "inference-serving-june",
+      "package_type": "DEEP_DIVE",
+      "drafting_order": 4,
+      "page_target": 6,
+      "late_breaking": false,
+      "editorial_angle": "Jalapeño、vLLM、SGLang、FlashInferを主軸に、MoebiusとHMA-Serveを補助線として、accelerator・parallelism・kernel・runtimeの各層がモデル進化と同時に更新されたことを説明する。",
+      "boundaries": [
+        "The source is first-party OpenAI material. Capability, benchmark, efficiency, or performance statements remain vendor claims unless explicitly described as externally reproduced.",
+        "GitHub release notes are primary project evidence for release contents, but project performance claims are not independently reproduced here.",
+        "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review."
+      ],
+      "headline": "Inference & Serving — 6月、最適化競争はchipからruntimeまで積み上がった",
+      "deck": "モデルの大型化とagent化の裏側では、accelerator、kernel、parallelism、serving runtimeが同時に更新されていた。Jalapeño、vLLM、SGLang、FlashInferに、MoebiusとHMA-Serveを重ねると、推論性能は単一のchipやframeworkではなくstack全体で決まることが見えてくる。",
+      "blocks": [
+        {
+          "block_id": "hardware-heading",
+          "block_type": "HEADING",
+          "text": "hardware: inference専用chipがengineering sampleへ",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "jalapeno",
+          "block_type": "PARAGRAPH",
+          "text": "OpenAIとBroadcomは6月24日にcustom LLM inference processor「Jalapeño」を紹介した。一次資料ではengineering sampleがtarget frequency/powerでML workloadを動かしている一方、最終的なperformance measurementは進行中とされている。したがって、chipの存在と開発段階は確認できても、performance-per-wattの最終評価はまだ固定できない。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "runtime-heading",
+          "block_type": "HEADING",
+          "text": "runtime: 新モデル対応とexecution engineの更新",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "runtime-table",
+          "block_type": "TABLE",
+          "text": "| 層 | 6月の主な更新 |\n|---|---|\n| vLLM | MiniMax-M3対応、Model Runner V2、expert-parallel等の継続開発 |\n| SGLang | GLM-5.2、Kimi K2.7 Code等のmodel supportとserving/kernel更新 |\n| FlashInfer | Blackwell/GQA decode、attention/MoE、quantization/autotuning周辺の更新 |",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "vllm",
+          "block_type": "PARAGRAPH",
+          "text": "vLLM v0.24.0ではMiniMax-M3 supportに加え、DeepSeek-V4、Model Runner V2、diffusion model、expert-parallel servingに関する作業がrelease noteへ並んだ。新modelを受け入れる互換層と、execution engine側の再設計が同じrelease trainで進んでいる。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "sglang",
+          "block_type": "PARAGRAPH",
+          "text": "SGLang v0.5.14もGLM-5.2やKimi K2.7 Codeなど新しいmodel familyへの対応と、serving/kernel側の変更を同時に含む。frontier modelの更新頻度が高いほど、serving frameworkはmodel adapterだけでなくkernelやparallel executionを継続的に追随させる必要がある。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "flashinfer",
+          "block_type": "PARAGRAPH",
+          "text": "FlashInfer v0.6.13はBlackwell/GQA decodeを含むattention・MoE、quantization、autotuning周辺を更新した。frameworkより下層のkernel/backend側でも、model architectureとhardware世代に合わせた最適化が独立したrelease cadenceを持っている。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "parallel-heading",
+          "block_type": "HEADING",
+          "text": "parallelism: 実行中に構成を切り替える",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "moebius",
+          "block_type": "PARAGRAPH",
+          "text": "Moebiusの著者らはMixture-of-Experts servingでtensor parallelismとexpert parallelismをruntimeに切り替える仕組みを提案した。workloadやphaseに応じて固定parallelismの非効率を避ける狙いで、Qwen3-235B-A22Bなどを用いた評価は著者報告として扱う。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "memory-heading",
+          "block_type": "HEADING",
+          "text": "memory: HBMだけを前提にしないserving",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "hma",
+          "block_type": "PARAGRAPH",
+          "text": "HMA-Serveの著者らは、memory capacityの異なるacceleratorを分離・組み合わせてLLM servingを行う設計を提示した。HBM容量が均一なclusterだけを前提にせず、memory-heterogeneousな資源をどう使うかをserving問題として扱う点が特徴である。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "stack-synthesis",
+          "block_type": "PARAGRAPH",
+          "text": "6月の動きをstackとして並べると、inference最適化はchip単体の話では終わらない。hardwareの電力・memory、kernelの実装、parallelismの切替、runtimeのmodel supportまでが相互依存する。新しいmodelを実運用へ持ち込む速度は、このstack全体の更新速度に左右される。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "boundary-vendor",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Jalapeñoのperformance-per-wattなどの優位性は最終測定前のfirst-party説明である。engineering sampleが存在することと、量産時の性能・効率を一般化することは分ける。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "boundary-project",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "vLLM、SGLang、FlashInferのrelease noteは、何が追加・変更されたかを確認する一次project資料である。一方、そこに含まれる性能表現を独立benchmarkの保証へ拡張しない。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "boundary-paper",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "MoebiusとHMA-Serveの性能結果は著者が設定したevaluationであり、別hardware・別workloadでも同じ改善が得られることを意味しない。本稿ではmechanismと設計上のtrade-offを中心に読む。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    },
+    {
+      "package_id": "agent-safety-security-june",
+      "package_type": "DEEP_DIVE",
+      "drafting_order": 5,
+      "page_target": 6,
+      "late_breaking": false,
+      "editorial_angle": "capability exposure、per-call authorization、adaptive prompt injection、MCP tool poisoning、persistent-agent attack surfaces、pre-deployment simulationを別個のthreat/evaluation modelとして整理し、共通する制御境界だけを横断する。",
+      "boundaries": [
+        "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review.",
+        "The source is first-party OpenAI material. Capability, benchmark, efficiency, or performance statements remain vendor claims unless explicitly described as externally reproduced."
+      ],
+      "headline": "Agent Safety & Security — 「使える」と「許される」を分ける",
+      "deck": "agentがtool、memory、外部serviceへ接続するほど、securityはprompt injectionだけでは説明できなくなる。6月の研究はcapability exposure、per-call authorization、MCP tool poisoning、persistent-agent attack surface、adaptive evaluationを別々の問題として切り分けた。安全性評価も、固定attack suiteから実行系全体へ広がっている。",
+      "blocks": [
+        {
+          "block_id": "authorization-heading",
+          "block_type": "HEADING",
+          "text": "Capability gateはAuthorizationではない",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "capability-authorization",
+          "block_type": "PARAGRAPH",
+          "text": "Capability Gates Are Not Authorizationの著者らは、agentにtool capabilityを見せる／隠す制御と、実際の各tool callで値やscopeを検証するauthorizationは別物だと整理した。一般的なagent frameworkを対象にconfused-deputy riskを示し、fail-closedなper-call controlの必要性を論じている。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "adaptive-heading",
+          "block_type": "HEADING",
+          "text": "防御を知ったattackで評価する",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "adaptive-eval",
+          "block_type": "PARAGRAPH",
+          "text": "prompt injection防御の評価では、固定attackを同じ形で当て続けるだけでは防御の実力を測りにくい。Adaptive Evaluationの著者らは、defense-awareなattackへ適応させる評価を主張し、Progent/AgentDojoを用いた検証を行った。防御を公開した後の攻撃者適応まで評価modelへ入れる考え方である。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "persistent-heading",
+          "block_type": "HEADING",
+          "text": "persistent agentはcomputer systemとして攻撃面が増える",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "safeclaw",
+          "block_type": "PARAGRAPH",
+          "text": "SafeClawArenaの著者らはClaw-likeなpersistent agentをcomputer systemとして捉え、単一promptだけでなく複数componentにまたがるattack surfaceを評価対象にした。長時間稼働し、toolやstateを持つagentでは、model inputだけを守ってもsystem全体のsecurityを説明できないという問題設定である。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "mcp-heading",
+          "block_type": "HEADING",
+          "text": "MCPではtool集合そのものがtrust boundaryになる",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "sharelock",
+          "block_type": "PARAGRAPH",
+          "text": "ShareLockの著者らはMCP環境で、複数toolに分散したpoisoning情報を組み合わせるthreshold-style attackを提示した。個々のtoolを単独で検査して安全に見えても、agentが複数toolを横断して情報を統合した時にattackが成立し得るというthreat assumptionが重要である。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "deployment-heading",
+          "block_type": "HEADING",
+          "text": "本番前に、過去の会話を候補modelへ再生する",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "deployment-sim",
+          "block_type": "PARAGRAPH",
+          "text": "OpenAIはDeployment Simulationとして、過去のconversationをcandidate modelとsimulated tool環境へreplayし、pre-deploymentで振る舞いを観察する方法を紹介した。これは運用前評価の一つの手法としてのfirst-party報告であり、すべてのfailureを捕捉する保証と同義ではない。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "threat-model-table",
+          "block_type": "TABLE",
+          "text": "| 問題 | 主な境界 | 代表的な6月材料 |\n|---|---|---|\n| Confused deputy | toolを使えること vs 呼出しを許可すること | Capability Gates |\n| Prompt injection | 固定attack vs defense-aware attack | Adaptive Evaluation |\n| Persistent agent | model input vs system全体のattack surface | SafeClawArena |\n| MCP poisoning | 単一tool検査 vs 複数toolの合成 | ShareLock |\n| Pre-deployment safety | offline test vs 実際の利用履歴に近いsimulation | Deployment Simulation |",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "security-synthesis",
+          "block_type": "PARAGRAPH",
+          "text": "これらを一括して「agentは危険」と結論づけるのは粗すぎる。権限設計、入力汚染、tool間の合成、persistent state、評価方法はfailure modeが異なり、必要なcontrolも異なる。共通するのは、model outputを信用するか否かではなく、実行前後に独立したpolicy boundaryを置く発想である。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "boundary-paper",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "4本のsecurity paperで示されたattack、benchmark、防御効果はそれぞれ著者のthreat modelとevaluation環境に依存する。別frameworkや実運用へそのまま成功率・防御率を一般化せず、何を攻撃者へ許し、どの境界を検証したかを先に確認する。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "boundary-openai",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Deployment Simulationの有効性はOpenAIによるfirst-party safety methodの報告である。実運用への近さは評価設計上の利点になり得るが、独立した再現や完全なrisk coverageを意味しない。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    },
+    {
+      "package_id": "ai-for-science-june",
+      "package_type": "FEATURE",
+      "drafting_order": 6,
+      "page_target": 5,
+      "late_breaking": false,
+      "editorial_angle": "near-autonomous chemistry workflowを中心に、GPT-Rosalindのmedicinal chemistry/genomics/lab-work updateを背景として、生成AIが提案だけでなく長時間の科学ワークフローへ入る範囲と限界を描く。",
+      "boundaries": [
+        "The source is first-party OpenAI material. Capability, benchmark, efficiency, or performance statements remain vendor claims unless explicitly described as externally reproduced."
+      ],
+      "headline": "AI for Science — Agentが「提案」から実験workflowへ踏み込む",
+      "deck": "6月17日にOpenAIとMolecule.oneが報告したAI chemistは、化学反応の改善を長時間のagent workflowとして扱った。ただし完全自律ではない。人間がproposal selection、lab operation、代表反応のvalidationを担う構成であり、この境界こそ実世界scientific workflowへAIを接続する現在地を示している。",
+      "blocks": [
+        {
+          "block_id": "workflow-heading",
+          "block_type": "HEADING",
+          "text": "「near-autonomous」の中身を見る",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "chemist-workflow",
+          "block_type": "PARAGRAPH",
+          "text": "OpenAIとMolecule.oneはGPT-5.4を用いたnear-autonomous chemistry workflowでChan–Lam reactionの改善を試みたと報告した。agentが研究taskの長い連鎖へ入った一方、人間はproposalの選択、実験室のoperation、代表的reactionのvalidationを担っている。したがって、これはfully autonomous laboratoryの実証ではない。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "result-heading",
+          "block_type": "HEADING",
+          "text": "結果は「11/14」だが、独立再現ではない",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "chemist-result",
+          "block_type": "PARAGRAPH",
+          "text": "一次資料では、benchで試験した14のsubstrate pairのうち11組でyieldが高くなったと報告されている。この数値はOpenAI/Molecule.oneによる実験報告であり、独立labによる再現結果ではない。成果の大きさだけでなく、どの主体が実験を設計・実行・検証したかを併記する必要がある。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "rosalind-heading",
+          "block_type": "HEADING",
+          "text": "科学特化modelの評価面も広がる",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "rosalind",
+          "block_type": "PARAGRAPH",
+          "text": "OpenAIは6月3日にGPT-Rosalindのmedicinal chemistry、genomics、lab-work capability更新を報告し、MedChemBench、GeneBench、LabWorkBenchを評価面として示した。science向けAIがknowledge questionだけでなく、実験計画やlab workを意識した評価へ広がっていることを示す材料である。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "workflow-stack",
+          "block_type": "TABLE",
+          "text": "| 層 | AIが担う範囲 | 人間・外部系に残る範囲 |\\n|---|---|---|\\n| Scientific reasoning | proposal生成、条件探索、知識統合 | 問題設定・採否判断 |\\n| Experimental workflow | 長時間の探索・提案loop | lab equipmentのoperation |\\n| Validation | 結果解釈の支援 | 代表反応の実測・妥当性確認 |",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "why-special",
+          "block_type": "PARAGRAPH",
+          "text": "6月の重要点は、frontier modelの能力更新がsoftware内のtool useに留まらず、物理的な実験工程を含むworkflowへ接続されたことにある。agentの長時間化を語る時、実世界ではlatencyやtool permissionだけでなく、実験安全、再現性、人間の責任分界までsystem boundaryに含まれる。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "boundary-rosalind",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "GPT-Rosalindのbenchmark結果はOpenAIの評価であり、LabWorkBenchにはproprietary dataが含まれる。公開されたbenchmark名やcapability scopeと、外部から同条件で再現可能な性能評価は分けて扱う。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "boundary-chemist",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "AI chemistのyield改善やworkflow effectivenessはOpenAI/Molecule.oneのfirst-party報告である。11/14という結果を一般的な化学agent性能へ外挿せず、対象reactionとhuman-in-the-loop条件を保ったまま読む。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    },
+    {
+      "package_id": "paper-watch-june",
+      "package_type": "PAPER_WATCH",
+      "drafting_order": 7,
+      "page_target": 2,
+      "late_breaking": false,
+      "editorial_angle": "execution-time safety kernel、context rot、memory-evaluation confoundsを短くまとめ、長時間Agentの制御と評価が研究課題として立ち上がっていることを示す。",
+      "boundaries": [
+        "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review."
+      ],
+      "headline": "Paper Watch — 長時間Agentを「守る・止めない・正しく測る」",
+      "deck": "6月末の研究では、agent runtimeの外側に安全kernelを置く設計、長いcontextで探索が早期終了するcontext rot、memory system比較を歪めるhidden confoundが相次いで論点になった。共通するのは、長時間agentの品質をmodel能力だけで説明できないという問題意識である。",
+      "blocks": [
+        {
+          "block_id": "kernel",
+          "block_type": "PARAGRAPH",
+          "text": "The Unfireable Safety Kernelの著者らは、agent自身が変更できるruntimeの外側にexecution-time safety kernelを置く設計を提案した。Rust prototypeとformal/implementation checksで制御propertyを検討しており、alignmentをmodel内部だけでなく実行時の外部controlとして扱う。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "context-rot",
+          "block_type": "PARAGRAPH",
+          "text": "Diagnosing and Mitigating Context Rotの著者らは、long-horizon searchでcontextが長くなるにつれてpremature terminationが増えるfailure modeを報告した。複数model・benchmarkとcontext-management手法を比較し、単純にcontext windowを長くするだけでは探索の持続性を保証できないことを問題化している。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "memdelta",
+          "block_type": "PARAGRAPH",
+          "text": "MemDeltaの著者らはagent memoryの比較で、model、embedding、retrieval条件の違いがmemory system自体の差と混ざることを指摘した。componentを一つずつ変えるcontrolled baselineを重視し、rankingが実装以外の条件で反転し得るというevaluation confoundを示している。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "common-axis",
+          "block_type": "PARAGRAPH",
+          "text": "3本は対象が異なるが、長時間agentを成立させるために「実行時の外部control」「taskを途中で止めないcontext運用」「比較条件を固定したmemory評価」というmodel外の設計を求めている。agent研究の焦点が能力追加から、制御可能性と測定可能性へ広がっていることを示す。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "boundary-paper",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "いずれもprototypeまたはauthor-controlled benchmarkによる研究結果である。productionでの安全性・latency・memory qualityを保証するものではなく、異なるmodelやworkloadをまたぐ普遍的rankingとして扱わない。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    }
+  ],
+  "constraints": {
+    "language": "ja",
+    "max_this_week_signals": 5,
+    "no_new_external_facts": true,
+    "summarize_only_validated_article_text": true,
+    "late_breaking_boundary_required": true,
+    "page_references_must_use_package_ids": true
+  }
+}
