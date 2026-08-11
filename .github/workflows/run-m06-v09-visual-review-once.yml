@@ -56,6 +56,7 @@ jobs:
           print(f"APPROVED_PDF_SHA256={latex['pdf_sha256']}")
           PY
           cat build.env >> "$GITHUB_ENV"
+          . ./build.env
           mkdir -p approved-build
           gh run download "$RUN_ID" --repo "$GH_REPO" -n "$ARTIFACT_NAME" -D approved-build
           pdf=$(find approved-build -type f -name main.pdf -print -quit)
@@ -119,7 +120,7 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          rm -f ../.github/workflows/run-m06-v09-visual-review-once.yml
+          rm -f .github/workflows/run-m06-v09-visual-review-once.yml
           rm -f sources/SP-2026-M06/editorial/v0.9-visual-review-trigger.txt
           git add -A
           git commit -m 'Accept SP-2026-M06 v0.9 Visual Review and prepare issue-only Freeze candidate'
