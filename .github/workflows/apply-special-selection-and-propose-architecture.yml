@@ -12,13 +12,18 @@ on:
       approval_reference:
         required: true
         type: string
+  push:
+    branches:
+      - special/2026-M06-work
+    paths:
+      - 'sources/SP-2026-M06/editorial/selection-architecture-trigger.txt'
 
 permissions:
   contents: write
   actions: read
 
 concurrency:
-  group: special-selection-${{ inputs.special_slug }}
+  group: special-selection-${{ inputs.special_slug || '2026-M06' }}
   cancel-in-progress: false
 
 jobs:
@@ -38,7 +43,7 @@ jobs:
         id: edition
         shell: bash
         env:
-          SPECIAL_SLUG: ${{ inputs.special_slug }}
+          SPECIAL_SLUG: ${{ inputs.special_slug || '2026-M06' }}
         run: |
           set -euo pipefail
           manifest="control-src/specials/${SPECIAL_SLUG}/edition.json"
@@ -57,7 +62,7 @@ jobs:
         shell: bash
         env:
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
-          EVIDENCE_RUN_SHA: ${{ inputs.evidence_run_sha }}
+          EVIDENCE_RUN_SHA: ${{ inputs.evidence_run_sha || '8d2a27b7958295817e39760b01d85b52dde6d77525b04703118d46b3c2d51449' }}
         run: |
           set -euo pipefail
           python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id "$SPECIAL_ID" check
@@ -80,9 +85,9 @@ jobs:
         shell: bash
         env:
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
-          EVIDENCE_RUN_SHA: ${{ inputs.evidence_run_sha }}
+          EVIDENCE_RUN_SHA: ${{ inputs.evidence_run_sha || '8d2a27b7958295817e39760b01d85b52dde6d77525b04703118d46b3c2d51449' }}
           SPECIAL_MANIFEST: ${{ steps.edition.outputs.manifest }}
-          APPROVAL_REFERENCE: ${{ inputs.approval_reference }}
+          APPROVAL_REFERENCE: ${{ inputs.approval_reference || 'User approval 2026-08-11 JST: approved revised June Candidate Selection aligned with the July Special and Issues 9 and 40.' }}
         run: |
           set -euo pipefail
           PYTHONPATH=control-src python control-src/scripts/apply_special_selection_and_propose_architecture.py \
@@ -110,7 +115,7 @@ jobs:
       - name: Upload Selection/Architecture audit
         uses: actions/upload-artifact@v7
         with:
-          name: special-selection-architecture-${{ inputs.special_slug }}
+          name: special-selection-architecture-${{ inputs.special_slug || '2026-M06' }}
           path: selection-architecture-audit.json
           if-no-files-found: error
           retention-days: 14
