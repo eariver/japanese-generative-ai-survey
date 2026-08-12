@@ -47,6 +47,14 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
 
         return build_visual_review_recovery(repo_root, special_slug, issue_id, source_version)
 
+    # A mixed-layout Visual Review source can compile but still fail the strict
+    # TeX log gate because long standfirsts/headings are justified in narrow
+    # columns. Keep wording immutable and recover only the derived typography.
+    if changes.get("visual_review_typography_recovery") is True:
+        from scripts.revise_special_visual_review_typography_recovery import build as build_visual_review_typography_recovery
+
+        return build_visual_review_typography_recovery(repo_root, special_slug, issue_id, source_version)
+
     if changes.get("single_column_adaptive_chapter_starts") is True:
         from scripts.revise_special_single_column_adaptive_spacing import build as build_single_column
 
