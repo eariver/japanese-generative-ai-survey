@@ -139,6 +139,51 @@ def enrich_bibliography_titles(path: Path, title_by_url: dict[str, str]) -> tupl
     return changed, len(ENTRY_RE.findall(revised))
 
 
+FALLBACK_TAIL_GROUP_MARKER = "% reader-facing Technical Notes limitation/source fallback group"
+
+
+def group_limitation_source_tail(text: str, selected_titles: set[str]) -> tuple[str, int]:
+    """Fallback for cards whose technical point is a verified fact, not an attributed claim.
+
+    The existing coherent-tail grouper starts at Vendor/Project/Author claim. Some
+    first-party cards instead contain only a directly verified fact. For those cards,
+    keep the limitation heading/block and primary-source block together while leaving
+    the whole technicalnote breakable.
+    """
+    grouped = 0
+    for title in sorted(selected_titles):
+        pattern = re.compile(
+            r"(\\begin\{technicalnote\}\{" + re.escape(title) + r"\}\{[^\n]*\}\n)"
+            r"(.*?)"
+            r"(\\end\{technicalnote\})",
+            re.DOTALL,
+        )
+        match = pattern.search(text)
+        if match is None:
+            continue
+        body = match.group(2)
+        if reader_notes.TAIL_GROUP_MARKER in body or FALLBACK_TAIL_GROUP_MARKER in body:
+            continue
+        boundary = r"{\bfseries 読む際の境界}"
+        source_end = r"\end{samepage}"
+        if boundary not in body or source_end not in body:
+            continue
+        body = body.replace(
+            boundary,
+            r"\begin{minipage}{\linewidth}"
+            + "\n"
+            + FALLBACK_TAIL_GROUP_MARKER
+            + "\n"
+            + boundary,
+            1,
+        )
+        body = body.replace(source_end, source_end + "\n" + r"\end{minipage}", 1)
+        replacement = match.group(1) + body + match.group(3)
+        text = text[: match.start()] + replacement + text[match.end() :]
+        grouped += 1
+    return text, grouped
+
+
 def normalize_technical_notes(
     source_dir: Path,
     manifest: dict[str, Any],
@@ -177,6 +222,7 @@ def normalize_technical_notes(
             if rf"\begin{{technicalnote}}{{{title}}}" in original:
                 found_titles.add(title)
         revised = reader_notes.transform_note(original, selected_titles=selected_titles)
+        revised, fallback_groups = group_limitation_source_tail(revised, selected_titles)
         forbidden_fragments = (
             "_RELEASE",
             r"\_RELEASE",
@@ -195,7 +241,7 @@ def normalize_technical_notes(
         if leaks:
             raise ValueError(f"{rel}: raw/partial reader taxonomy leak: {sorted(set(leaks))}")
         current_groups = revised.count(reader_notes.TAIL_GROUP_MARKER)
-        grouped += current_groups
+        grouped += current_groups + fallback_groups
         if revised != original:
             path.write_text(revised, encoding="utf-8")
             changed += 1
