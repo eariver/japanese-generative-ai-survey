@@ -1,0 +1,181 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{Paper Watch — Agent・RL・Securityの次の論点: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+RouteGuard: Internal-Signal Detection of Skill Poisoning in LLM Agents & 主要資料 & 論文 & 2026-04-24 (論文公開) \\
+DORA: A Scalable Asynchronous Reinforcement Learning System for Language Model Training & 主要資料 & 論文 & 2026-04-29 (論文公開) \\
+Accelerating RL Post-Training Rollouts via System-Integrated Speculative Decoding & 主要資料 & 論文 & 2026-04-29 (論文公開) \\
+Claw-Eval-Live: A Live Agent Benchmark for Evolving Real-World Workflows & 主要資料 & 論文 & 2026-04-30 (論文公開) \\
+Are Tools All We Need? Unveiling the Tool-Use Tax in LLM Agents & 主要資料 & 論文 & 2026-04-30 (論文公開) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{RouteGuard: Internal-Signal Detection of Skill Poisoning in LLM Agents}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-04-24 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: RouteGuardは、response-conditioned attentionとhidden-state alignmentを組み合わせ、backboneを固定したままagent実行前にskill poisoningを検知する手法として提案されている。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 結果や比較は論文著者による報告であり、本サーベイでは独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2604.22888v1}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{DORA: A Scalable Asynchronous Reinforcement Learning System for Language Model Training}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-04-29 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: DORA（Dynamic ORchestration for Asynchronous Rollout）は、asynchronous rolloutの課題をalgorithm-system co-designで扱うframeworkとして提案されている。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 結果や比較は著者報告で独立再現していない。保持している版は2026年7月20日更新だが、4月のchronologyは4月29日の初回投稿に基づくため、4月以降の本文変更を4月時点へ帰属させない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2604.26256v2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Accelerating RL Post-Training Rollouts via System-Integrated Speculative Decoding}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-04-29 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: RL rolloutを高速化するため、target modelの出力分布を保つlossless acceleration primitiveとしてspeculative decodingを検討している。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 結果や比較は論文著者による報告であり、本サーベイでは独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2604.26779v1}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Claw-Eval-Live: A Live Agent Benchmark for Evolving Real-World Workflows}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-04-30 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: Claw-Eval-Liveは、更新可能なworkflow-demand signal layerと再現可能なtime-stamped release snapshotを分離するlive agent benchmarkとして提案されている。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 結果や比較は著者報告で独立再現していない。保持している版は2026年5月1日更新だが、4月のchronologyは4月30日の初回投稿に基づくため、5月1日の本文変更を4月時点へ帰属させない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2604.28139v2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Are Tools All We Need? Unveiling the Tool-Use Tax in LLM Agents}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-04-30 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: Factorized Intervention Frameworkは、prompt formattingのcost、tool-calling protocolのoverhead、実際にtoolを実行して得られるgainを分離して測るために提案されている。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 結果や比較は論文著者による報告であり、本サーベイでは独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2605.00136v1}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
