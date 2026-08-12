@@ -203,6 +203,21 @@ jobs:
               assert lr['reader_content_changed'] is False
               assert lr['new_external_evidence'] is False
               assert lr['forced_bibliography_clearpage'] is False
+          elif lr.get('retrospective_final_synthesis_repair') is True:
+              assert manifest['status']=='VALIDATED_RETROSPECTIVE_SYNTHESIS_REPAIR_REVISION'
+              assert lr['reader_content_changed'] is True
+              assert lr['new_external_evidence'] is False
+              assert lr['accepted_article_sections_changed'] is False
+              assert lr['evidence_and_draft_packages_changed'] is False
+              assert lr['final_synthesis_added'] is True
+              assert manifest['layout']['body_mode'].startswith('mixed: narrative articles two-column')
+              assert manifest['reader_facing_technical_notes']['machine_enum_policy']=='reader-facing-labels-v6-space-enum-guard'
+              fs=manifest['final_synthesis']
+              assert fs['required'] is True
+              assert fs['selected_evidence_only'] is True
+              assert fs['new_external_evidence'] is False
+              assert fs['later_period_facts_used'] is False
+              assert fs['toc_navigation'] is True
           elif 'final_synthesis' in manifest:
               assert manifest['layout']['body_mode'].startswith('balanced mixed:')
               assert lr['full_width_chapter_headings'] is True
