@@ -36,6 +36,18 @@ EVENT_LABELS = {
     "API_UPDATE": "API更新",
 }
 TYPE_LABELS = {
+    # Legacy partially translated forms can remain in historical derived
+    # revisions. Keep them here so a reprocessed revision does not expose
+    # mixed labels such as モデル\_RELEASE.
+    "モデル_RELEASE": "モデル公開",
+    "モデル_UPDATE": "モデル更新",
+    "研究_RELEASE": "研究公開",
+    "論文_RELEASE": "論文公開",
+    "Framework_RELEASE": "Framework公開",
+    "Agent_RELEASE": "Agent公開",
+    "API_RELEASE": "API公開",
+    "API_UPDATE": "API更新",
+    "オープンウェイト_RELEASE": "オープンウェイト公開",
     "FRAMEWORK_RELEASE": "Framework公開",
     "MODEL_UPDATE": "モデル更新",
     "OPEN_WEIGHT": "オープンウェイト",
@@ -98,8 +110,8 @@ def translate_machine_labels(text: str) -> str:
     for old, new in ROLE_LABELS.items():
         text = text.replace("{" + old + "}", "{" + new + "}")
         text = text.replace(f" & {old} & ", f" & {new} & ")
-    # Artifact types are machine labels in generated metadata/tables. Replace
-    # both raw and TeX-escaped forms, longest first.
+    # Artifact types and legacy partially translated event labels are machine
+    # presentation artifacts. Replace raw and TeX-escaped forms, longest first.
     for old, new in sorted(TYPE_LABELS.items(), key=lambda item: len(item[0]), reverse=True):
         for form in enum_forms(old):
             text = text.replace(form, new)
