@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M05",
+  "source_version": "v0.12",
+  "status": "PASSED_PRE_HUMAN_SELF_CHECK",
+  "review_issues": {
+    "50": {
+      "status": "passed",
+      "checks": [
+        "All 81 Technical Notes claim/limitation reader-facing summaries use Japanese sentence structure.",
+        "PRIMARY_FACT lines are Japanese rather than normalized English source sentences.",
+        "Vendor/Project/Author attribution labels and evidence boundaries remain visible.",
+        "Immutable Evidence cards and Draft Packages were not modified."
+      ]
+    },
+    "54": {
+      "status": "passed",
+      "checks": [
+        "No raw or partially translated schema event/type enums are exposed in PDF-facing Technical Notes.",
+        "Theme-at-a-glance and detail cards use reader-facing labels.",
+        "The third-party evaluation playbook is labeled 評価ガイダンス rather than 安全性事象.",
+        "Reader-facing validation rejects raw-enum re-exposure while provenance enums remain unchanged."
+      ]
+    },
+    "55": {
+      "status": "passed",
+      "checks": [
+        "Primary-source heading and URL stay together.",
+        "No rendered page begins with a URL-only continuation.",
+        "No rendered page begins with only the final limitation/source remainder of a Technical Notes card.",
+        "Seven render-confirmed late-card tails are selectively grouped from the final attributed claim through limitation/source; the other 19 cards remain normally breakable.",
+        "FlashInfer, ClawTrojan, AgentREVEAL/Relevance, discrete geometry, evaluation playbook, AgenticVBench, measurement-bias and final Representation Forcing boundaries were explicitly rechecked."
+      ]
+    },
+    "40_regression": {
+      "status": "passed",
+      "checks": [
+        "No accidental blank page.",
+        "No isolated Claim Boundary page.",
+        "No structural large-whitespace regression from global Technical Notes grouping.",
+        "Whole Technical Notes cards remain breakable; grouping is exact-title opt-in only."
+      ]
+    }
+  },
+  "pdf_build": {
+    "workflow_run_id": 31552757234,
+    "artifact_id": 9124899681,
+    "artifact_digest": "sha256:67b843fffbbc160f379eb2ef9859dffe817e097316f4b1beaba627ca7ddbca05",
+    "pdf_sha256": "23cf50e1ea0b8cbf7caa9451dea04764459c8768feaba478fd79e839dbfb6241",
+    "page_count": 33,
+    "page_budget": "32-40",
+    "log_clean": true,
+    "log_gate_findings": []
+  },
+  "source": {
+    "manifest_path": "surveys/special/2026-M05/revisions/v0.12/source-manifest.json",
+    "manifest_sha256": "a8cf95072e662b8a4fcf4d480b09bd711da444b0b02e25a9a044906f8a4de94d",
+    "layout_revision_path": "sources/SP-2026-M05/editorial/layout-revision-v0.12.json",
+    "layout_revision_sha256": "9ba5db5bd4946fc301abc1b3b0c045d9888d49accad0abefd6813672945a4ad5"
+  },
+  "render_qa": {
+    "all_pages_rendered": true,
+    "rendered_page_count": 33,
+    "clipping": false,
+    "overlap": false,
+    "broken_glyph": false,
+    "undefined_citation_or_reference": false,
+    "overfull_underfull_hbox": false,
+    "missing_character": false,
+    "terminal_bibliography_whitespace_is_natural": true,
+    "critical_transitions": [
+      "p21-p23 Agent Safety Technical Notes: grouped ClawTrojan and AgentREVEAL tails are substantive; no URL-only tail.",
+      "p25-p26 Capability/Evaluation: discrete-geometry and evaluation-playbook tails remain coherent; Paper Watch follows naturally.",
+      "p27-p29 Paper Watch Technical Notes: AgenticVBench, measurement-bias, and Representation Forcing tails are coherent; final synthesis begins naturally on p29.",
+      "p18 FlashInfer source URL remains with the card and does not spill alone."
+    ]
+  },
+  "withheld_intermediate_revisions": {
+    "v0.6": "Japanese/taxonomy repair passed but small Technical Notes tails remained.",
+    "v0.7": "List-local Needspace did not affect breakable tcolorbox splitting.",
+    "v0.8": "Global grouping fixed tails but introduced Issue #40 structural whitespace.",
+    "v0.9": "Two selective groups fixed their targets but evaluation-playbook URL-only tail appeared.",
+    "v0.10": "Three selective groups passed their targets but Relevance and AgenticVBench tails remained.",
+    "v0.11": "Six selective groups left the final Representation Forcing limitation/source tail at p29."
+  },
+  "human_gates": {
+    "visual_review": "pending",
+    "freeze": "pending",
+    "publication": "not_authorized"
+  }
+}
