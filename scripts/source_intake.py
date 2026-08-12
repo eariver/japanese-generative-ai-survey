@@ -14,6 +14,7 @@ import json
 import os
 import re
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -97,6 +98,26 @@ def arxiv_date(dt: datetime) -> str:
     return dt.astimezone(timezone.utc).strftime("%Y%m%d%H%M")
 
 
+def arxiv_retryable_error(exc: Exception) -> bool:
+    if isinstance(exc, urllib.error.HTTPError):
+        return exc.code == 429 or 500 <= exc.code < 600
+    if isinstance(exc, (TimeoutError, urllib.error.URLError)):
+        return True
+    return False
+
+
+def arxiv_retry_delay(exc: Exception, *, base_seconds: float, attempt: int) -> float:
+    delay = base_seconds * (2 ** max(0, attempt - 1))
+    if isinstance(exc, urllib.error.HTTPError) and exc.headers:
+        retry_after = exc.headers.get("Retry-After")
+        if retry_after:
+            try:
+                delay = max(delay, float(retry_after))
+            except ValueError:
+                pass
+    return delay
+
+
 def parse_arxiv_atom(data: bytes) -> list[dict[str, Any]]:
     ns = {"atom": "http://www.w3.org/2005/Atom", "arxiv": "http://arxiv.org/schemas/atom"}
     root = ET.fromstring(data)
@@ -151,6 +172,9 @@ def run_arxiv(plan: dict[str, Any], cfg: dict[str, Any], output_root: Path) -> d
 
     arxiv_cfg = cfg["arxiv"]
     queries = arxiv_cfg.get("queries", [])
+    request_timeout = int(arxiv_cfg.get("request_timeout_seconds", cfg.get("http_timeout_seconds", 45)))
+    max_attempts = max(1, int(arxiv_cfg.get("max_attempts", 1)))
+    retry_backoff = float(arxiv_cfg.get("retry_backoff_seconds", arxiv_cfg.get("delay_seconds", 3)))
     for index, item in enumerate(queries):
         query_id = safe_id(item["id"])
         search_query = f"({item['search_query']}) AND submittedDate:[{arxiv_date(start)} TO {arxiv_date(end)}]"
@@ -165,14 +189,50 @@ def run_arxiv(plan: dict[str, Any], cfg: dict[str, Any], output_root: Path) -> d
         )
         url = f"{arxiv_cfg['endpoint']}?{params}"
         raw_path = f"{base}/raw/{query_id}.atom"
+        attempts: list[dict[str, Any]] = []
+        attempt_number = 0
         try:
-            data, http_meta = http_get(url, user_agent=cfg["user_agent"], timeout=int(cfg.get("http_timeout_seconds", 45)))
+            while attempt_number < max_attempts:
+                attempt_number += 1
+                try:
+                    data, http_meta = http_get(
+                        url,
+                        user_agent=cfg["user_agent"],
+                        timeout=request_timeout,
+                    )
+                    break
+                except Exception as exc:
+                    retryable = arxiv_retryable_error(exc)
+                    attempt_record: dict[str, Any] = {
+                        "attempt": attempt_number,
+                        "error": repr(exc),
+                        "retryable": retryable,
+                    }
+                    if not retryable or attempt_number >= max_attempts:
+                        attempts.append(attempt_record)
+                        raise
+                    wait_seconds = arxiv_retry_delay(
+                        exc,
+                        base_seconds=retry_backoff,
+                        attempt=attempt_number,
+                    )
+                    attempt_record["retry_delay_seconds"] = wait_seconds
+                    attempts.append(attempt_record)
+                    time.sleep(wait_seconds)
+            else:
+                raise RuntimeError("arXiv request exhausted attempts without a response")
+
             outputs.append(save_bytes(output_root, raw_path, data))
             parsed = parse_arxiv_atom(data)
             successes += 1
             summary["queries"].append({
-                "id": item["id"], "search_query": search_query, "request": http_meta,
-                "raw_path": raw_path, "entry_count": len(parsed)
+                "id": item["id"],
+                "search_query": search_query,
+                "request": http_meta,
+                "raw_path": raw_path,
+                "entry_count": len(parsed),
+                "attempt_count": attempt_number,
+                "retry_history": attempts,
             })
             for entry in parsed:
                 key = entry["id"]
@@ -180,7 +240,13 @@ def run_arxiv(plan: dict[str, Any], cfg: dict[str, Any], output_root: Path) -> d
                     seen.add(key)
                     summary["entries"].append(entry)
         except Exception as exc:
-            summary["errors"].append({"id": item["id"], "url": url, "error": repr(exc)})
+            summary["errors"].append({
+                "id": item["id"],
+                "url": url,
+                "error": repr(exc),
+                "attempt_count": attempt_number,
+                "retry_history": attempts,
+            })
         if index + 1 < len(queries):
             time.sleep(float(arxiv_cfg.get("delay_seconds", 3)))
 
@@ -192,7 +258,10 @@ def run_arxiv(plan: dict[str, Any], cfg: dict[str, Any], output_root: Path) -> d
         issue_id=issue_id, stage="paper-discovery", collector_id="arxiv-api", provider="arXiv",
         observed_at=observed_at, plan=plan, outputs=outputs, status=status,
         tool_access=["HTTPS GET https://export.arxiv.org/api/query"],
-        notes=["Raw Atom responses are preserved unchanged; summary.json is collector-derived metadata for later screening."],
+        notes=[
+            "Raw Atom responses are preserved unchanged; summary.json is collector-derived metadata for later screening.",
+            "Transient arXiv HTTP 429/5xx and transport timeout failures use configured conservative retry/backoff before the query is marked failed.",
+        ],
     )
     write_json(output_root / f"{base}/collector-run.json", run)
     return run

@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -81,6 +82,7 @@ def safe_note(role: str, record: dict[str, Any]) -> str:
         lines.extend([
             r"{\bfseries Primary source}",
             r"\begingroup\sloppy",
+            r"\Urlmuskip=0mu plus 2mu\relax",
             r"\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]",
         ])
         for url in urls:
@@ -96,6 +98,36 @@ def safe_note(role: str, record: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def normalize_duplicate_url_titles(path: Path) -> int:
+    """Shorten derived BibLaTeX titles that merely repeat the exact URL field.
+
+    Evidence and the URL field remain byte-for-byte unchanged. Only entries whose
+    generated title has the exact form ``Primary source N: <url>`` and whose
+    ``url`` field contains the same URL are normalized to ``Primary source N``.
+    """
+    text = path.read_text(encoding="utf-8")
+    entry_re = re.compile(r"(?ms)^@online\{[^\n]+\n.*?^\}\s*$")
+    title_re = re.compile(r"(?m)^  title = \{Primary source (\d+): ([^}]+)\},$")
+    url_re = re.compile(r"(?m)^  url = \{([^}]+)\},$")
+    replacements = 0
+
+    def rewrite(match: re.Match[str]) -> str:
+        nonlocal replacements
+        entry = match.group(0)
+        title = title_re.search(entry)
+        url = url_re.search(entry)
+        if not title or not url or title.group(2) != url.group(1):
+            return entry
+        replacements += 1
+        start, end = title.span()
+        shortened = f"  title = {{Primary source {title.group(1)}}},"
+        return entry[:start] + shortened + entry[end:]
+
+    revised = entry_re.sub(rewrite, text)
+    path.write_text(revised, encoding="utf-8")
+    return replacements
+
+
 def postprocess_special_source(
     root: Path,
     special_slug: str,
@@ -108,6 +140,7 @@ def postprocess_special_source(
     source_dir = root / "surveys" / "special" / special_slug / "revisions" / source_version
     manifest_path = source_dir / "source-manifest.json"
     main_path = source_dir / "main.tex"
+    references_path = source_dir / "references.bib"
     manifest = load_json(manifest_path)
     text = main_path.read_text(encoding="utf-8")
 
@@ -135,10 +168,14 @@ def postprocess_special_source(
         text = text.replace(old, new)
 
     main_path.write_text(text, encoding="utf-8")
+    reference_title_replacements = normalize_duplicate_url_titles(references_path)
     manifest["main_tex"]["sha256"] = sha256_file(main_path)
+    manifest["references"]["sha256"] = sha256_file(references_path)
     manifest["typography_adjustments"] = {
         "artifact_type_display": "underscores replaced by spaces in reader-facing technical-note labels",
-        "source_urls": "scriptsize + sloppy URL paragraphs inside technical notes",
+        "source_urls": "scriptsize + sloppy URL paragraphs + Urlmuskip stretch inside technical notes",
+        "bibliography_titles": "generated Primary source N titles no longer duplicate an identical URL field",
+        "bibliography_title_replacement_count": reference_title_replacements,
         "cover_descriptor": "Retrospective Survey",
         "cover_anchors": "approved Architecture package titles instead of full article headlines",
         "headheight": "14.5pt Special-local override",
@@ -151,7 +188,7 @@ def postprocess_special_source(
     if current.get("path") != expected_path or current.get("source_version") != source_version:
         raise ValueError("state-pinned source does not match generated source revision")
     current["sha256"] = sha256_file(manifest_path)
-    current["typography_revision"] = "v0.3-cleanup"
+    current["typography_revision"] = "v0.4-reference-title-cleanup"
     write_json(state_path, state)
     return manifest
 
