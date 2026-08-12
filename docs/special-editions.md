@@ -47,6 +47,8 @@ Source Intake
 
 The default backfill cadence is intentionally coarser as history recedes.
 
+Operational progress is tracked separately in [`docs/retrospective-special-backfill-status.md`](retrospective-special-backfill-status.md). That checkpoint records which historical editions are complete and which edition should be initialized next; this document remains the policy source of truth.
+
 ### Monthly tier
 
 From **2025-08-01 through 2026-07-31**, create one Retrospective Period Special per calendar month.
