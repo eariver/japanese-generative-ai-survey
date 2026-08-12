@@ -3,22 +3,20 @@
   "issue_id": "SP-2026-M03",
   "revision": "v0.5",
   "from_source_version": "v0.4",
-  "reason": "Internal full-page visual preflight of the clean v0.4 build found repeated large blank areas where a short Technical Notes tail occupied the top of a page before an unconditional next-article boundary. Reflow derived presentation to the established mixed house style before Human Visual Review, without changing accepted article wording or selected Evidence.",
+  "reason": "Internal visual-preflight layout conversion exposed a legacy machine event enum in derived Technical Notes. Normalize those reader-facing event labels first, without changing article wording, Evidence, chronology, or bibliography data; mixed-layout reflow follows in the next immutable revision.",
   "constraints": {
     "new_external_evidence_allowed": false,
     "selected_evidence_only": true,
+    "reader_content_changed": false,
     "evidence_and_draft_packages_immutable": true
   },
   "layout_changes": {
-    "visual_review_repairs": true,
-    "late_card_tail_group_titles": [],
-    "issue_refs": []
+    "normalize_reader_event_enums": true
   },
   "qa_targets": [
-    "Eliminate avoidable near-blank Technical Notes tail pages",
-    "Keep narrative article copy in local two-column house style while retaining Claim Boundary and Technical Notes full-width",
-    "Preserve all accepted Article Draft and Evidence semantics",
-    "Keep March period labels and arXiv revision chronology boundaries intact",
-    "Rebuild under the strict TeX log and 32-40 page budget gates before Human Visual Review"
+    "No PROJECT_RELEASE or other raw machine event enum remains in Technical Notes",
+    "Accepted Article Draft prose remains byte-identical",
+    "Selected Evidence and chronology remain unchanged",
+    "Rebuild before the subsequent layout-only Visual preflight revision"
   ]
 }
