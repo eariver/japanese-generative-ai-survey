@@ -108,8 +108,11 @@ jobs:
           prov=state['provenance']['article_draft']
           run=pathlib.Path('worktree')/prov['result_set_path']
           acceptance=json.load(open(run/'acceptance.json',encoding='utf-8'))
-          assert acceptance['article_draft_count']==6, acceptance
-          assert len(acceptance['results'])==6
+          manifest=json.load(open(root/'drafting'/'packages'/'v0.1'/'draft-package-manifest.json',encoding='utf-8'))
+          expected=manifest['article_drafting_count']
+          assert expected>=1, manifest
+          assert acceptance['article_draft_count']==expected, (acceptance,manifest)
+          assert len(acceptance['results'])==expected, (acceptance,manifest)
           assert all((run/row['draft_path']).is_file() for row in acceptance['results'])
           assert all((run/row['tex_path']).is_file() for row in acceptance['results'])
           PY
