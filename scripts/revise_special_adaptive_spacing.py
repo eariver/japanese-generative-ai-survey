@@ -55,6 +55,15 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
 
         return build_visual_review_typography_recovery(repo_root, special_slug, issue_id, source_version)
 
+    # A nearly-final mixed-layout source can still miss the Special page floor
+    # by one page or retain an isolated narrow-column Underfull paragraph after
+    # typography recovery. Adjust only vertical page breathing and explicitly
+    # selected generated paragraph alignment, without changing reader wording.
+    if changes.get("visual_review_final_spacing_recovery") is True:
+        from scripts.revise_special_final_spacing_recovery import build as build_final_spacing_recovery
+
+        return build_final_spacing_recovery(repo_root, special_slug, issue_id, source_version)
+
     # Issue #55: apply one generic per-card invariant instead of a Human-selected
     # title allowlist.  Boundary/limitation/source stay together; the whole card
     # remains breakable.
