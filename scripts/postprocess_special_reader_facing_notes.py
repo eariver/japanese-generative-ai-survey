@@ -25,7 +25,9 @@ EVENT_LABELS = {
     "PRODUCT_RELEASE": "製品公開",
     "PRODUCT_UPDATE": "製品更新",
     "AGENT_RELEASE": "Agent公開",
+    "AGENT_UPDATE": "Agent更新",
     "FRAMEWORK_RELEASE": "Framework公開",
+    "FRAMEWORK_UPDATE": "Framework更新",
     "MODEL_RELEASE": "モデル公開",
     "MODEL_UPDATE": "モデル更新",
     "OPEN_WEIGHT_RELEASE": "オープンウェイト公開",
@@ -44,12 +46,18 @@ TYPE_LABELS = {
     "研究_RELEASE": "研究公開",
     "論文_RELEASE": "論文公開",
     "Framework_RELEASE": "Framework公開",
+    "Framework_UPDATE": "Framework更新",
     "Agent_RELEASE": "Agent公開",
+    "Agent_UPDATE": "Agent更新",
     "API_RELEASE": "API公開",
     "API_UPDATE": "API更新",
     "オープンウェイト_RELEASE": "オープンウェイト公開",
     "FRAMEWORK_RELEASE": "Framework公開",
+    "FRAMEWORK_UPDATE": "Framework更新",
+    "MODEL_RELEASE": "モデル公開",
     "MODEL_UPDATE": "モデル更新",
+    "AGENT_RELEASE": "Agent公開",
+    "AGENT_UPDATE": "Agent更新",
     "OPEN_WEIGHT": "オープンウェイト",
     "SAFETY_EVENT": "安全性関連",
     "FRAMEWORK": "Framework",
@@ -63,6 +71,9 @@ TYPE_LABELS = {
     "MODEL UPDATE": "モデル更新",
     "OPEN WEIGHT": "オープンウェイト",
     "FRAMEWORK RELEASE": "Framework公開",
+    "FRAMEWORK UPDATE": "Framework更新",
+    "AGENT RELEASE": "Agent公開",
+    "AGENT UPDATE": "Agent更新",
     "SAFETY EVENT": "安全性関連",
 }
 TYPE_OVERRIDES = {
@@ -104,12 +115,18 @@ def enum_forms(value: str) -> tuple[str, ...]:
 
 
 def translate_machine_labels(text: str) -> str:
-    # Event types must be translated before broad artifact-type tokens so an
-    # escaped MODEL\_RELEASE cannot degrade into a mixed label such as
-    # モデル\_RELEASE.
+    # Event types are normally emitted inside parentheses. Translate those
+    # first, before broad artifact-type tokens, so MODEL\_RELEASE cannot
+    # degrade into a mixed label such as モデル\_RELEASE.
     for old, new in sorted(EVENT_LABELS.items(), key=lambda item: len(item[0]), reverse=True):
         for form in enum_forms(old):
             text = text.replace(f"({form})", f"({new})")
+    # Some derived/historical renderer paths can expose the same event enum
+    # outside the parenthesized chronology form. Normalize any remainder
+    # before replacing broad tokens such as MODEL or FRAMEWORK.
+    for old, new in sorted(EVENT_LABELS.items(), key=lambda item: len(item[0]), reverse=True):
+        for form in enum_forms(old):
+            text = text.replace(form, new)
     for old, new in ROLE_LABELS.items():
         text = text.replace("{" + old + "}", "{" + new + "}")
         text = text.replace(f" & {old} & ", f" & {new} & ")
@@ -339,7 +356,7 @@ def main() -> int:
         "unconditional_clearpage_at_entry": False,
         "evidence_ids_rendered_in_pdf": False,
         "pipeline_terms_removed": ["Selection済みEvidence", "normalized claim", "Source-bound record"],
-        "machine_enum_policy": "reader-facing-labels-v2",
+        "machine_enum_policy": "reader-facing-labels-v3",
         "whole_card_unbreakable": False,
         "source_block_samepage": True,
         "paragraph_widow_orphan_penalty": 10000,
