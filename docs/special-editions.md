@@ -47,7 +47,7 @@ Source Intake
 
 The default backfill cadence is intentionally coarser as history recedes.
 
-Operational progress is tracked separately in [`docs/retrospective-special-backfill-status.md`](retrospective-special-backfill-status.md). That checkpoint records which historical editions are complete and which edition should be initialized next; this document remains the policy source of truth.
+Cross-session bootstrap behavior is documented in [`docs/retrospective-special-backfill-status.md`](retrospective-special-backfill-status.md). The target period is supplied by the user's task prompt; that document intentionally does not maintain a `next edition` pointer or duplicated completion ledger. Repository state remains authoritative for whether the requested edition is new, in progress, frozen, or already released. This document remains the historical-granularity policy source of truth.
 
 ### Monthly tier
 
