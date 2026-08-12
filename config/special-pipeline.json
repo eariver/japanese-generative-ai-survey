@@ -2,12 +2,37 @@
   "schema_version": "1.0",
   "series_name": "Japanese Generative AI Technical Survey Special",
   "policy": {
+    "human_gate_model": "ARCHITECTURE_PUBLICATION_PREVIEW_WITH_EXCEPTION",
     "unattended_public_release": false,
-    "human_gate_required_for_selection": true,
+    "human_gate_required_for_selection": false,
     "human_gate_required_for_architecture": true,
     "human_gate_required_for_visual_review": true,
-    "human_gate_required_for_freeze": true,
-    "human_gate_required_for_public_release": true,
+    "human_gate_required_for_freeze": false,
+    "human_gate_required_for_public_release": false,
+    "publication_preview_authorizes": [
+      "visual_review",
+      "freeze",
+      "work_pr_merge",
+      "public_release"
+    ],
+    "exception_gate": {
+      "mode": "ON_DEMAND",
+      "principle": "Require human input only when a new editorial or publication decision is needed; deterministic recovery that preserves approved content and provenance does not create a new Human Gate.",
+      "triggers": [
+        "evidence_is_insufficient_for_a_reasonable_architecture",
+        "material_source_conflict_requires_editorial_judgment",
+        "material_architecture_change_after_architecture_approval",
+        "material_content_change_after_publication_preview_approval",
+        "approved_pdf_or_source_provenance_cannot_be_preserved",
+        "publication_scope_or_identity_must_deviate_from_normal_policy"
+      ],
+      "non_triggers": [
+        "retryable_collection_or_ci_failure",
+        "layout_only_repair_before_publication_preview",
+        "merge_conflict_resolvable_without_changing_approved_source_or_pdf",
+        "mechanical_release_retry_with_identical_frozen_bytes"
+      ]
+    },
     "raw_collector_output_is_immutable": true,
     "frozen_revision_is_immutable": true,
     "retrospective_grok_default": "DISABLED",
