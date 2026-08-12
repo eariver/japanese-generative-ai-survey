@@ -54,6 +54,7 @@ jobs:
               raise SystemExit('inputs must be an object')
 
           allowed = {
+              # Weekly production workflows.
               'weekly-pipeline': {
                   'file': 'weekly-pipeline.yml',
                   'keys': {'command', 'issue_id', 'collector', 'target'},
@@ -103,6 +104,96 @@ jobs:
                   'keys': {'issue_id', 'screening_run_sha'},
                   'values': {},
               },
+
+              # Canonical Special production workflows. Historical one-shot
+              # workflows are intentionally not allowlisted.
+              'special-pipeline': {
+                  'file': 'special-pipeline.yml',
+                  'keys': {'command', 'special_slug', 'collector'},
+                  'values': {
+                      'command': {'plan', 'validate', 'history-plan', 'source-intake'},
+                      'collector': {'all', 'arxiv', 'github', 'official'},
+                  },
+              },
+              'import-reviewed-special-source-intake': {
+                  'file': 'import-reviewed-special-source-intake.yml',
+                  'keys': {'special_slug', 'source_run_id', 'review_reference'},
+                  'values': {},
+              },
+              'apply-special-interactive-screening': {
+                  'file': 'apply-special-interactive-screening.yml',
+                  'keys': {'special_slug', 'review_reference'},
+                  'values': {},
+              },
+              'prepare-special-evidence': {
+                  'file': 'prepare-special-evidence.yml',
+                  'keys': {'special_slug', 'screening_run_sha'},
+                  'values': {},
+              },
+              'apply-special-interactive-evidence': {
+                  'file': 'apply-special-interactive-evidence.yml',
+                  'keys': {'special_slug', 'review_reference'},
+                  'values': {},
+              },
+              'apply-special-selection-and-propose-architecture': {
+                  'file': 'apply-special-selection-and-propose-architecture.yml',
+                  'keys': {'special_slug', 'evidence_run_sha', 'approval_reference'},
+                  'values': {},
+                  'human_gate': True,
+              },
+              'approve-special-architecture-and-prepare-drafts': {
+                  'file': 'approve-special-architecture-and-prepare-drafts.yml',
+                  'keys': {'special_slug', 'evidence_run_sha', 'approval_reference'},
+                  'values': {},
+                  'human_gate': True,
+              },
+              'apply-special-interactive-drafts': {
+                  'file': 'apply-special-interactive-drafts.yml',
+                  'keys': {'special_slug', 'review_reference'},
+                  'values': {},
+              },
+              'finalize-special-validated-draft': {
+                  'file': 'finalize-special-validated-draft.yml',
+                  'keys': {'special_slug', 'review_reference'},
+                  'values': {},
+              },
+              'prepare-special-reader-notes-ja': {
+                  'file': 'prepare-special-reader-notes-ja.yml',
+                  'keys': {'special_slug'},
+                  'values': {},
+              },
+              'expand-special-validated-source-v2': {
+                  'file': 'expand-special-validated-source-v2.yml',
+                  'keys': {'special_slug', 'source_version'},
+                  'values': {},
+              },
+              'build-special-pdf': {
+                  'file': 'build-special-pdf.yml',
+                  'keys': {'special_slug'},
+                  'values': {},
+              },
+              'revise-special-mixed-layout': {
+                  'file': 'revise-special-mixed-layout.yml',
+                  'keys': {'special_slug', 'source_version'},
+                  'values': {},
+              },
+              'accept-special-visual-review-issue-only': {
+                  'file': 'accept-special-visual-review-issue-only.yml',
+                  'keys': {'special_slug', 'approved_pdf_sha256', 'approved_at', 'approval_reference'},
+                  'values': {},
+                  'human_gate': True,
+              },
+              'accept-special-freeze-issue-only': {
+                  'file': 'accept-special-freeze-issue-only.yml',
+                  'keys': {'special_slug', 'approved_at', 'approval_reference'},
+                  'values': {},
+                  'human_gate': True,
+              },
+              'publish-special-frozen-release-issue-only': {
+                  'file': 'publish-special-frozen-release-issue-only.yml',
+                  'keys': {'special_slug', 'approval_reference'},
+                  'values': {},
+              },
           }
           spec = allowed.get(workflow)
           if spec is None:
@@ -113,6 +204,9 @@ jobs:
           for key, choices in spec['values'].items():
               if key in inputs and str(inputs[key]) not in choices:
                   raise SystemExit(f'invalid {key}: {inputs[key]!r}')
+
+          if spec.get('human_gate') and request.get('human_gate_authorized') is not True:
+              raise SystemExit(f'{workflow} requires human_gate_authorized=true in the control request')
 
           if workflow == 'release-weekly-survey' and inputs.get('mode') == 'publish':
               if request.get('publish_authorized') is not True:
