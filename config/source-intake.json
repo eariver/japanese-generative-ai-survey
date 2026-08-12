@@ -5,7 +5,10 @@
   "arxiv": {
     "enabled": true,
     "endpoint": "https://export.arxiv.org/api/query",
-    "delay_seconds": 3,
+    "delay_seconds": 20,
+    "request_timeout_seconds": 120,
+    "max_attempts": 3,
+    "retry_backoff_seconds": 20,
     "max_results_per_query": 200,
     "queries": [
       { "id": "cs-ai", "search_query": "cat:cs.AI" },
@@ -42,6 +45,7 @@
       { "id": "deepseek-api-updates", "url": "https://api-docs.deepseek.com/updates/" },
       { "id": "kimi-code-whats-new", "url": "https://www.kimi.com/code/docs/en/kimi-code/whats-new.html" },
       { "id": "minimax-news", "url": "https://www.minimax.io/news" },
+      { "id": "mistral-news", "url": "https://mistral.ai/news/" },
       { "id": "zai-release-notes", "url": "https://docs.z.ai/release-notes/new-released" }
     ]
   }
