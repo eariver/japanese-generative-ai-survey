@@ -1,0 +1,58 @@
+name: Patch selective Technical Notes tail grouping once
+
+on:
+  pull_request:
+    types: [synchronize]
+    paths:
+      - 'tests/.selective-tail-grouping-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event.pull_request.head.ref == 'agent/selective-special-card-tail-grouping'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: agent/selective-special-card-tail-grouping
+          fetch-depth: 0
+      - name: Make card-tail grouping opt-in by exact Technical Notes title
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/postprocess_special_reader_facing_notes.py')
+          t=p.read_text(encoding='utf-8')
+          t=t.replace('def group_late_card_tail(text: str) -> str:', 'def group_late_card_tail(text: str, selected_titles: set[str] | None = None) -> str:', 1)
+          old='''    in_note = False\n    group_open = False\n    groups = 0\n    for line in lines:\n        if re.match(r"\\\\begin\\{technicalnote\\}\\{.*?\\}\\{.*?\\}$", line):\n            in_note = True\n        if in_note and not group_open and re.match(r"\\\\item \\\\textbf\\{(?:Vendor claim|Project claim|Author claim)\\}:", line):\n'''
+          new='''    in_note = False\n    current_title: str | None = None\n    group_open = False\n    groups = 0\n    selected_titles = selected_titles or set()\n    for line in lines:\n        note_match = re.match(r"\\\\begin\\{technicalnote\\}\\{(.+?)\\}\\{.*?\\}$", line)\n        if note_match:\n            in_note = True\n            current_title = note_match.group(1)\n        if in_note and current_title in selected_titles and not group_open and re.match(r"\\\\item \\\\textbf\\{(?:Vendor claim|Project claim|Author claim)\\}:", line):\n'''
+          if old not in t: raise SystemExit('group loop block not found')
+          t=t.replace(old,new,1)
+          t=t.replace('''            in_note = False\n    # Some source records legitimately have no separately attributed claim.\n''','''            in_note = False\n            current_title = None\n    # Some source records legitimately have no separately attributed claim,\n''',1)
+          t=t.replace('def transform_note(text: str) -> str:', 'def transform_note(text: str, selected_titles: set[str] | None = None) -> str:', 1)
+          t=t.replace('    text = group_late_card_tail(text)\n', '    text = group_late_card_tail(text, selected_titles=selected_titles)\n', 1)
+          old='''    manifest = read_json(manifest_path)\n    changed: list[dict[str, str]] = []\n'''
+          new='''    manifest = read_json(manifest_path)\n    configured_reader = dict(manifest.get("reader_facing_technical_notes") or {})\n    tail_group_titles = set(configured_reader.get("late_card_tail_group_titles") or [])\n    changed: list[dict[str, str]] = []\n'''
+          if old not in t: raise SystemExit('manifest block not found')
+          t=t.replace(old,new,1)
+          t=t.replace('        revised = transform_note(original)\n','        revised = transform_note(original, selected_titles=tail_group_titles)\n',1)
+          t=t.replace('''        "late_card_tail_group": "minipage from final attributed claim through limitation/source block",\n        "late_card_tail_group_scope": "card tail only; technicalnote remains breakable",\n''','''        "late_card_tail_group_titles": sorted(tail_group_titles),\n        "late_card_tail_group": "opt-in minipage from final attributed claim through limitation/source block",\n        "late_card_tail_group_scope": "only exact titles selected after render QA; technicalnote remains breakable",\n''',1)
+          p.write_text(t,encoding='utf-8')
+
+          q=Path('tests/test_special_reader_facing_notes.py')
+          s=q.read_text(encoding='utf-8')
+          s=s.replace('''        result = transform_note(source)\n        claim = r"\\item \\textbf{Author claim}: 著者は結果を報告している。"\n''','''        result = transform_note(source, selected_titles={"X"})\n        claim = r"\\item \\textbf{Author claim}: 著者は結果を報告している。"\n''',1)
+          insertion='''\n    def test_attributed_claim_is_not_grouped_without_visual_qa_opt_in(self):\n        source = r\'''\\begin{technicalnote}{X}{主要資料}\n\\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]\n\\item \\textbf{一次情報で確認できる事実}: 保存済み一次資料で確認できる。\n\\item \\textbf{Author claim}: 著者は結果を報告している。\n\\end{itemize}\n{\\bfseries 読む際の境界}\n\\begin{itemize}\n\\item \\textbf{分析上の留意点}: 本号では独立再現していない。\n\\end{itemize}\n\\begin{samepage}\n{\\bfseries 一次資料}\n\\begin{itemize}\n\\item \\url{https://example.com/paper}\n\\end{itemize}\n\\end{samepage}\n\\end{technicalnote}\n\'''\n        result = transform_note(source)\n        self.assertNotIn(r"\\begin{minipage}{\\linewidth}", result)\n        self.assertNotIn("coherent tail group", result)\n\n'''
+          marker='    def test_legacy_partially_translated_event_labels_are_normalized(self):\n'
+          if marker not in s: raise SystemExit('test insertion marker not found')
+          s=s.replace(marker,insertion+marker,1)
+          q.write_text(s,encoding='utf-8')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/postprocess_special_reader_facing_notes.py tests/test_special_reader_facing_notes.py
+          git commit -m 'Make Special card-tail grouping visual-QA opt-in'
+          git push origin HEAD:agent/selective-special-card-tail-grouping
