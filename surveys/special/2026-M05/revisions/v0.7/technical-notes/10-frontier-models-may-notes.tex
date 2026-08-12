@@ -1,0 +1,268 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{Frontier Models \& Voice — モデル更新が利用面へ広がった5月: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+GPT-5.5 Instant: smarter, clearer, and more personalized & 主要資料 & モデル更新 & 2026-05-05 (公式公開) \\
+Anthropic May 2026 technical releases & 主要資料 & 公式情報 & 2026-05-28 (モデル公開) \\
+Gemini API May 2026 lifecycle & 主要資料 & 公式情報 & 2026-05-19 (モデル公開); 2026-05-19 (Agent公開); 2026-05-07 (モデル公開); 2026-05-05 (API更新); 2026-05-28 (モデル公開) \\
+Google DeepMind May 2026 releases & 主要資料 & 公式情報 & 2026-05 (モデル公開); 2026-05 (モデル公開); 2026-05 (研究公開); 2026-05 (研究公開) \\
+Advancing voice intelligence with new models in the API & 主要資料 & API & 2026-05-07 (公式公開) \\
+Alibaba Model Studio May 2026 model lifecycle & 補足資料 & 公式情報 & 2026-05-21 (モデル公開); 2026-05-25 (モデル公開); 2026-05-19 (モデル公開) \\
+How OpenAI delivers low-latency voice AI at scale & 補足資料 & 公式情報 & 2026-05-04 (公式公開) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{GPT-5.5 Instant: smarter, clearer, and more personalized}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & モデル更新 \\
+時系列 & 2026-05-05 (公式公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 保存済み一次資料では「GPT-5.5 Instant: smarter, clearer, and more personalized」が2026-05-05に確認できる。
+% reader-facing Technical Notes late-card tail guard
+\Needspace{12\baselineskip}
+\item \textbf{Vendor claim}: OpenAIの公式feedでは、GPT-5.5 Instantを5月5日のChatGPT default model更新として記録し、回答品質、hallucination低減、personalization controlの改善を説明している。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 当該first-party feedは公開時系列とvendorが説明したscopeの確認には使えるが、詳細なcapability・benchmark・safety上の主張は本号で独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/gpt-5-5-instant}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Anthropic May 2026 technical releases}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Anthropic \\
+種別 & 公式情報 \\
+時系列 & 2026-05-28 (モデル公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 保存済み一次資料ではAnthropic newsroomのMay 2026 snapshotを確認できる。
+% reader-facing Technical Notes late-card tail guard
+\Needspace{12\baselineskip}
+\item \textbf{Vendor claim}: Anthropic newsroomのsnapshotでは、5月28日にClaude Opus 4.8を導入し、coding、agentic task、professional work、long-running work向けのOpus級upgradeとして説明している。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 当該first-party indexは掲載された時系列の確認には使えるが、capability / benchmarkの説明はvendor claimであり、月精度の日付は日単位へ補完しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://www.anthropic.com/news}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Gemini API May 2026 lifecycle}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Google \\
+種別 & 公式情報 \\
+時系列 & 2026-05-19 (モデル公開); 2026-05-19 (Agent公開); 2026-05-07 (モデル公開); 2026-05-05 (API更新); 2026-05-28 (モデル公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 保存済み一次資料ではGemini API changelogのMay 2026 snapshotを確認できる。
+% reader-facing Technical Notes late-card tail guard
+\Needspace{12\baselineskip}
+\item \textbf{Vendor claim}: Gemini API changelogでは、5月19日のGemini 3.5 Flash GAとManaged Agents public preview、5月7日のGemini 3.1 Flash-Lite GA、5月5日のmultimodal File Search、5月28日のnative visual model GAなどを記録している。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 当該first-party indexは掲載された時系列の確認には使えるが、capability / benchmarkの説明はvendor claimであり、月精度の日付は日単位へ補完しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://ai.google.dev/gemini-api/docs/changelog}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Google DeepMind May 2026 releases}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Google DeepMind \\
+種別 & 公式情報 \\
+時系列 & 2026-05 (モデル公開); 2026-05 (モデル公開); 2026-05 (研究公開); 2026-05 (研究公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 保存済み一次資料ではGoogle DeepMind blogのMay 2026 snapshotを確認できる。
+% reader-facing Technical Notes late-card tail guard
+\Needspace{12\baselineskip}
+\item \textbf{Vendor claim}: DeepMind blogのsnapshotでは、May 2026の項目としてGemini 3.5、Gemini Omni、Gemini for Science、Co-Scientistを掲載しており、frontier modelsとAI-for-scienceを月精度で追える。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 当該first-party indexは掲載された時系列の確認には使えるが、capability / benchmarkの説明はvendor claimであり、月精度の日付は日単位へ補完しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://deepmind.google/blog/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Advancing voice intelligence with new models in the API}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & API \\
+時系列 & 2026-05-07 (公式公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 保存済み一次資料では「Advancing voice intelligence with new models in the API」が2026-05-07に確認できる。
+% reader-facing Technical Notes late-card tail guard
+\Needspace{12\baselineskip}
+\item \textbf{Vendor claim}: OpenAIの公式feedでは、speech reasoning、translation、transcription向けの新しいRealtime voice modelをAPIに追加したと説明している。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 当該first-party feedは公開時系列とvendorが説明したscopeの確認には使えるが、詳細なcapability・benchmark・safety上の主張は本号で独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/advancing-voice-intelligence-with-new-models-in-the-api}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Alibaba Model Studio May 2026 model lifecycle}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Alibaba Cloud \\
+種別 & 公式情報 \\
+時系列 & 2026-05-21 (モデル公開); 2026-05-25 (モデル公開); 2026-05-19 (モデル公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 保存済み一次資料ではAlibaba Model StudioのMay 2026 lifecycleを確認できる。
+% reader-facing Technical Notes late-card tail guard
+\Needspace{12\baselineskip}
+\item \textbf{Vendor claim}: Model Studioの公式lifecycle snapshotでは、5月21日のqwen3.7-max、5月25日のqwen3.7-max-preview、5月19日のqwen3.5-livetranslate-flash-realtimeなど、複数のMay 2026 model eventを記録している。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 当該first-party indexは掲載された時系列の確認には使えるが、capability / benchmarkの説明はvendor claimであり、月精度の日付は日単位へ補完しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://www.alibabacloud.com/help/en/model-studio/newly-released-models}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{How OpenAI delivers low-latency voice AI at scale}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & 公式情報 \\
+時系列 & 2026-05-04 (公式公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 保存済み一次資料では「How OpenAI delivers low-latency voice AI at scale」が2026-05-04に確認できる。
+% reader-facing Technical Notes late-card tail guard
+\Needspace{12\baselineskip}
+\item \textbf{Vendor claim}: OpenAIの公式feedでは、low-latencyかつglobal scaleのRealtime voice AIとturn-takingのため、WebRTC stackを再構築したと説明している。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 当該first-party feedは公開時系列とvendorが説明したscopeの確認には使えるが、詳細なcapability・benchmark・safety上の主張は本号で独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/delivering-low-latency-voice-ai-at-scale}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
