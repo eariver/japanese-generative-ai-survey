@@ -1,0 +1,38 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{Agent Safety \& Security — 攻撃はpromptから記憶とworkspaceへ伸びる}
+\label{pkg:agent-safety-security-may}
+\noindent\textbf{persistent control、agent memory poisoning、retrieval経由のalignment低下、adaptive detector allocation。5月の研究は、長時間agentでは「一度の危険なprompt」だけを守ればよいわけではないことを示した。}\autocite{src-062c2718dd96,src-7fa0ea6bcf47,src-b818bca6d4b6,src-f216d6cd7707}
+
+\subsection{5月の変化を一つのsystemとして読む}
+
+tool-using agentの安全性をprompt injectionだけで語ると、長時間化によって増える状態を取りこぼす。workspaceへ残るcontrol-like content、会話から選択的に書き込まれるlong-term memory、retrieval結果、detectorをどこへ配分するかというruntime判断は、それぞれ異なるattack surfaceである。\autocite{src-062c2718dd96,src-7fa0ea6bcf47,src-b818bca6d4b6,src-f216d6cd7707}
+
+
+\subsection{From Prompt Injection to Persistent Control: Defending Agentic Harness Against Trojan Backdoors}
+
+ClawTrojanはlocal agentic harnessを対象に、prompt injectionを一度きりの指示改変ではなく、workspaceへ残る情報を介したmulti-step persistent controlとしてモデル化する。著者はDASGuardによるuntrusted control-like contentのtrace／removalも提案し、simulated workspaceで高いASRを報告しているが、その数値は特定環境での著者評価に限定される。\autocite{src-7fa0ea6bcf47}
+
+
+\subsection{Hijacking Agent Memory: Stealthy Trojan Attacks Through Conversational Interaction}
+
+MemPoisonは会話を通じてselective long-term memory pipelineへtriggerとpayloadを結び付け、後続interactionで悪性挙動を誘発する攻撃を扱う。著者は複数domain・memory mechanismで高いattack successを報告するが、重要なのは数値そのものより、memory writeが新しいtrust boundaryになるという点だ。\autocite{src-f216d6cd7707}
+
+
+\subsection{Relevance as a Vulnerability: How Web Retrieval Degrades Safety Alignment in LLM Agents}
+
+この研究は、retrievalで「関連性の高い」情報を取り込むことが必ずしもsafety alignmentと一致しないという問題を扱う。retrieverが有用性を最大化するほど、安全性の低いcontextも強く注入され得るという構造は、RAG／web agentでrelevanceとtrustを別軸に設計する必要性を示す。\autocite{src-062c2718dd96}
+
+
+\subsection{Send a SCOUT First: Pre-hoc Reasoning for Adaptive Detector Allocation in Prompt-Injection Defense}
+
+SCOUTは、すべてのinputへ同じ防御costを掛けるのではなく、pre-hoc reasoningでriskを見積もってdetector allocationを適応させる方向を提案する。防御性能は著者評価に依存するが、agent securityをstatic filterではなくruntime resource allocationとして考える点が特徴的だ。\autocite{src-b818bca6d4b6}
+
+
+\subsection{Theme Synthesis}
+
+これらの研究をまとめて「agentは危険」と一般化するのは不正確だ。ClawTrojan、MemPoison、retrieval degradation、SCOUTは攻撃者能力・対象component・評価環境が異なる。共通して見えるのは、長時間agentでは権限だけでなくprovenance、state更新、retrieval、monitoring policyまでcontrol boundaryとして扱う必要がある、という設計上の問いである。\autocite{src-062c2718dd96,src-7fa0ea6bcf47,src-b818bca6d4b6,src-f216d6cd7707}
+
+
+\begin{claimboundary}
+Claim Boundary: 原論文は研究内容を確認する一次資料だが、benchmark結果・speedup・attack success・quality比較は著者報告であり、本稿で独立再現した結果ではない。\autocite{src-062c2718dd96,src-7fa0ea6bcf47,src-b818bca6d4b6,src-f216d6cd7707}
+\end{claimboundary}
