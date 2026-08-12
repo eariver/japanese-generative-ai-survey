@@ -46,8 +46,15 @@ class SpecialPipelineTests(unittest.TestCase):
         self.assertEqual(plan["collection_window_start"], "2026-07-01T00:00:00Z")
         self.assertEqual(plan["collection_window_end"], "2026-07-31T23:59:59Z")
         self.assertEqual(plan["community_research"]["mode"], "DISABLED")
-        self.assertIn("candidate_selection", plan["human_gates"])
-        self.assertIn("public_release", plan["human_gates"])
+        self.assertEqual(plan["human_gates"], ["issue_architecture", "publication_preview"])
+        self.assertNotIn("candidate_selection", plan["human_gates"])
+        self.assertNotIn("freeze", plan["human_gates"])
+        self.assertNotIn("public_release", plan["human_gates"])
+        self.assertEqual(
+            plan["publication_preview_authorizes"],
+            ["visual_review", "freeze", "work_pr_merge", "public_release"],
+        )
+        self.assertEqual(plan["exception_gate"], "ON_DEMAND")
 
     def test_retrospective_cannot_require_grok(self) -> None:
         manifest = self.manifest()
@@ -55,14 +62,31 @@ class SpecialPipelineTests(unittest.TestCase):
         errors = special_pipeline.validate_manifest(manifest)
         self.assertTrue(any("Grok/X" in error for error in errors))
 
-    def test_initial_state_preserves_human_gates(self) -> None:
+    def test_initial_state_preserves_machine_checkpoints_but_only_two_human_stops(self) -> None:
         state = special_pipeline.initial_state(self.manifest())
         self.assertEqual(state["lifecycle_state"], "ISSUE_INITIALIZED")
         self.assertEqual(state["gates"]["candidate_selection"], "pending")
         self.assertEqual(state["gates"]["issue_architecture"], "pending")
         self.assertEqual(state["gates"]["visual_review"], "pending")
         self.assertEqual(state["gates"]["freeze"], "pending")
-        self.assertTrue(state["automation"]["human_gate_required_for_public_release"])
+        automation = state["automation"]
+        self.assertFalse(automation["human_gate_required_for_selection"])
+        self.assertTrue(automation["human_gate_required_for_architecture"])
+        self.assertTrue(automation["human_gate_required_for_visual_review"])
+        self.assertFalse(automation["human_gate_required_for_freeze"])
+        self.assertFalse(automation["human_gate_required_for_public_release"])
+        self.assertEqual(automation["exception_gate"], "ON_DEMAND")
+
+    def test_config_declares_architecture_preview_exception_model(self) -> None:
+        config = json.loads(Path("config/special-pipeline.json").read_text(encoding="utf-8"))
+        policy = config["policy"]
+        self.assertEqual(policy["human_gate_model"], "ARCHITECTURE_PUBLICATION_PREVIEW_WITH_EXCEPTION")
+        self.assertFalse(policy["human_gate_required_for_selection"])
+        self.assertTrue(policy["human_gate_required_for_architecture"])
+        self.assertTrue(policy["human_gate_required_for_visual_review"])
+        self.assertFalse(policy["human_gate_required_for_freeze"])
+        self.assertFalse(policy["human_gate_required_for_public_release"])
+        self.assertEqual(policy["exception_gate"]["mode"], "ON_DEMAND")
 
     def test_historical_granularity_matches_editorial_decision(self) -> None:
         config = json.loads(Path("config/special-pipeline.json").read_text(encoding="utf-8"))
