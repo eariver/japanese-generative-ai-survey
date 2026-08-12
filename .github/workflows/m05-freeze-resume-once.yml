@@ -1,0 +1,211 @@
+name: Resume SP-2026-M05 Freeze and publication once
+
+on:
+  pull_request:
+    types: [synchronize]
+    paths:
+      - 'sources/SP-2026-M05/editorial/freeze-resume-trigger.json'
+
+permissions:
+  contents: write
+  actions: write
+  pull-requests: write
+
+concurrency:
+  group: special-m05-freeze-resume
+  cancel-in-progress: false
+
+jobs:
+  freeze-merge-publish:
+    if: github.event.pull_request.number == 53 && github.event.pull_request.head.ref == 'special/2026-M05-work'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout canonical control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Checkout M05 work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2026-M05-work
+          path: worktree
+          fetch-depth: 0
+
+      - name: Verify Visual Review-passed Freeze candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2026-M05 check
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='RELEASE_CANDIDATE'
+          assert state['gates']['visual_review']=='passed'
+          assert state['gates']['freeze']=='pending'
+          assert state['provenance']['validated_issue_source']['source_version']=='v0.12'
+          assert state['provenance']['validated_issue_source']['sha256']=='a8cf95072e662b8a4fcf4d480b09bd711da444b0b02e25a9a044906f8a4de94d'
+          assert state['provenance']['latex_build']['pdf_sha256']=='23cf50e1ea0b8cbf7caa9451dea04764459c8768feaba478fd79e839dbfb6241'
+          candidate_path=root/'sources/SP-2026-M05/freeze/freeze-candidate.json'
+          candidate=json.load(open(candidate_path,encoding='utf-8'))
+          assert candidate['status']=='PENDING_HUMAN_FREEZE_APPROVAL'
+          assert candidate['release_identity_mode']=='ISSUE_ONLY'
+          assert candidate['release_tag']=='special/2026-M05'
+          assert candidate['source_version']=='v0.12'
+          assert candidate['canonical_pdf_candidate']['sha256']=='23cf50e1ea0b8cbf7caa9451dea04764459c8768feaba478fd79e839dbfb6241'
+          assert candidate['canonical_pdf_candidate']['artifact_id']==9124899681
+          vr=candidate['visual_review']; vp=root/vr['path']
+          assert hashlib.sha256(vp.read_bytes()).hexdigest()==vr['sha256']
+          approval=json.load(open(vp,encoding='utf-8'))
+          assert approval['status']=='APPROVED'
+          assert approval['approved_at']=='2026-08-12T10:43:00+09:00'
+          PY
+
+      - name: Accept Human Freeze approval
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python control-src/scripts/accept_special_freeze_issue_only.py \
+            --repo-root worktree \
+            --issue-id SP-2026-M05 \
+            --special-slug 2026-M05 \
+            --approved-at '2026-08-12T10:43:00+09:00' \
+            --approval-reference 'User explicit approval 2026-08-12 10:43 JST: Preview approved and Freeze approved for the exact v0.12 candidate.' \
+            | tee special-freeze-audit.json
+
+      - name: Verify frozen issue-only release
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='FROZEN'
+          assert state['gates']['visual_review']=='passed' and state['gates']['freeze']=='passed'
+          assert state['automation']['unattended_public_release'] is False
+          assert state['automation']['human_gate_required_for_public_release'] is False
+          freeze=state['provenance']['freeze']; fp=root/freeze['path']; rp=root/freeze['release_manifest_path']
+          assert hashlib.sha256(fp.read_bytes()).hexdigest()==freeze['sha256']
+          assert hashlib.sha256(rp.read_bytes()).hexdigest()==freeze['release_manifest_sha256']
+          manifest=json.load(open(rp,encoding='utf-8'))
+          assert manifest['status']=='frozen'
+          assert manifest['release_identity_mode']=='ISSUE_ONLY'
+          assert manifest['release_tag']=='special/2026-M05'
+          assert 'revision' not in manifest
+          assert manifest['public_release_authorized'] is True
+          assert manifest['source_version']=='v0.12'
+          assert manifest['source_manifest_sha256']=='a8cf95072e662b8a4fcf4d480b09bd711da444b0b02e25a9a044906f8a4de94d'
+          assert manifest['expected_pdf_sha256']=='23cf50e1ea0b8cbf7caa9451dea04764459c8768feaba478fd79e839dbfb6241'
+          assert manifest['pdf_source']['artifact_id']==9124899681
+          current=root/'surveys/special/2026-M05/CURRENT_RELEASE.md'
+          assert current.is_file() and 'not a public Release version' in current.read_text(encoding='utf-8')
+          PY
+
+      - name: Refresh frozen handoff and remove one-shot triggers
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,pathlib
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
+          manifest=json.load(open(root/'sources/SP-2026-M05/release-manifest.json',encoding='utf-8'))
+          freeze=state['provenance']['freeze']
+          text=f'''# SP-2026-M05 HANDOFF
+
+Status: `FROZEN`
+
+## Gates
+
+- Raw Sources Preserved: passed
+- Candidate Inventory: passed
+- Evidence Normalized: passed
+- Candidate Selection: passed
+- Issue Architecture: passed
+- Article Draft: passed
+- Claim & Chronology Validation: passed
+- LaTeX Build: passed
+- Human Visual Review: passed
+- Freeze: passed
+
+## Frozen release
+
+- Public identity: `2026-M05`
+- Release tag: `{manifest['release_tag']}`
+- Canonical internal source revision: `{manifest['source_version']}` (provenance only)
+- Source manifest SHA-256: `{manifest['source_manifest_sha256']}`
+- Frozen PDF SHA-256: `{manifest['expected_pdf_sha256']}`
+- Page count: `{manifest['page_count']}`
+- Freeze time: `{state['calendar']['frozen_at']}`
+- Release manifest: `sources/SP-2026-M05/release-manifest.json`
+- Freeze record: `{freeze['path']}`
+- Canonical source navigation: `surveys/special/2026-M05/CURRENT_RELEASE.md`
+
+Human Visual Review and Freeze were explicitly approved for the exact v0.12 PDF candidate. Freeze authorizes normal PR merge and publication under the issue-only release identity. The publisher must still reverify the frozen source and PDF SHA-256 before creating the GitHub Release.
+'''
+          (root/'sources/SP-2026-M05/HANDOFF.md').write_text(text,encoding='utf-8')
+          PY
+          rm -f worktree/sources/SP-2026-M05/editorial/final-human-approval-trigger.json
+          rm -f worktree/sources/SP-2026-M05/editorial/freeze-resume-trigger.json
+
+      - name: Commit Freeze record and release manifest
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            sources/SP-2026-M05/pipeline-state.json \
+            sources/SP-2026-M05/freeze/freeze.json \
+            sources/SP-2026-M05/release-manifest.json \
+            sources/SP-2026-M05/HANDOFF.md \
+            surveys/special/2026-M05/CURRENT_RELEASE.md
+          if git ls-files --error-unmatch surveys/special/2026-M05/main.tex >/dev/null 2>&1; then
+            git add surveys/special/2026-M05/main.tex
+          fi
+          git add -u sources/SP-2026-M05/editorial
+          git commit -m 'Freeze SP-2026-M05'
+          git push origin HEAD:special/2026-M05-work
+
+      - name: Merge frozen work PR
+        working-directory: worktree
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          if [ "$(gh pr view 53 --repo "$REPOSITORY" --json isDraft --jq .isDraft)" = true ]; then
+            gh pr ready 53 --repo "$REPOSITORY"
+          fi
+          head_sha=$(git rev-parse HEAD)
+          gh pr merge 53 --repo "$REPOSITORY" --merge --match-head-commit "$head_sha"
+
+      - name: Dispatch publication under Freeze authority
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          gh workflow run publish-special-frozen-release-issue-only.yml \
+            --repo "$REPOSITORY" --ref main \
+            -f special_slug=2026-M05 \
+            -f approval_reference='User explicit approval 2026-08-12 10:43 JST: Preview approved and Freeze approved for the exact v0.12 candidate.'
+
+      - name: Upload Freeze audit
+        uses: actions/upload-artifact@v7
+        with:
+          name: special-freeze-2026-M05-v0.12
+          path: special-freeze-audit.json
+          if-no-files-found: error
+          retention-days: 90
