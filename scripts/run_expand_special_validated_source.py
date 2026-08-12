@@ -81,6 +81,7 @@ def safe_note(role: str, record: dict[str, Any]) -> str:
         lines.extend([
             r"{\bfseries Primary source}",
             r"\begingroup\sloppy",
+            r"\Urlmuskip=0mu plus 2mu\relax",
             r"\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]",
         ])
         for url in urls:
@@ -138,7 +139,7 @@ def postprocess_special_source(
     manifest["main_tex"]["sha256"] = sha256_file(main_path)
     manifest["typography_adjustments"] = {
         "artifact_type_display": "underscores replaced by spaces in reader-facing technical-note labels",
-        "source_urls": "scriptsize + sloppy URL paragraphs inside technical notes",
+        "source_urls": "scriptsize + sloppy URL paragraphs + Urlmuskip stretch inside technical notes",
         "cover_descriptor": "Retrospective Survey",
         "cover_anchors": "approved Architecture package titles instead of full article headlines",
         "headheight": "14.5pt Special-local override",
