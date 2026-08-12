@@ -1,0 +1,229 @@
+name: Apply SP-2026-M05 final Human approvals once
+
+on:
+  pull_request:
+    types: [synchronize]
+    paths:
+      - 'sources/SP-2026-M05/editorial/final-human-approval-trigger.json'
+
+permissions:
+  contents: write
+  actions: write
+  pull-requests: write
+
+concurrency:
+  group: special-m05-final-human-approval
+  cancel-in-progress: false
+
+jobs:
+  approve-freeze-publish:
+    if: github.event.pull_request.number == 53 && github.event.pull_request.head.ref == 'special/2026-M05-work'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout canonical control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Checkout M05 work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2026-M05-work
+          path: worktree
+          fetch-depth: 0
+
+      - name: Verify exact approved v0.12 candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='RELEASE_CANDIDATE'
+          assert state['gates']['latex_build']=='passed'
+          assert state['gates']['visual_review']=='pending'
+          assert state['gates']['freeze']=='pending'
+          source=state['provenance']['validated_issue_source']
+          latex=state['provenance']['latex_build']
+          assert source['source_version']=='v0.12'
+          assert source['path']=='surveys/special/2026-M05/revisions/v0.12/source-manifest.json'
+          assert source['sha256']=='a8cf95072e662b8a4fcf4d480b09bd711da444b0b02e25a9a044906f8a4de94d'
+          assert latex['source_version']=='v0.12'
+          assert latex['workflow_run_id']==31552757234
+          assert latex['pdf_sha256']=='23cf50e1ea0b8cbf7caa9451dea04764459c8768feaba478fd79e839dbfb6241'
+          assert latex['page_count']==33
+          p=root/source['path']
+          assert hashlib.sha256(p.read_bytes()).hexdigest()==source['sha256']
+          PY
+
+      - name: Re-fetch and verify exact approved PDF artifact
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          mkdir -p approved-build
+          gh run download 31552757234 --repo "$GH_REPO" -n japanese-generative-ai-survey-special-2026-M05-v0.12 -D approved-build
+          pdf=$(find approved-build -type f -name main.pdf -print -quit)
+          test -n "$pdf" && test -s "$pdf"
+          actual=$(sha256sum "$pdf" | awk '{print $1}')
+          test "$actual" = '23cf50e1ea0b8cbf7caa9451dea04764459c8768feaba478fd79e839dbfb6241'
+          artifact_json=$(gh api "repos/${GH_REPO}/actions/runs/31552757234/artifacts" --jq '.artifacts[] | select(.name == "japanese-generative-ai-survey-special-2026-M05-v0.12") | {id: .id, digest: .digest, expired: .expired}')
+          test -n "$artifact_json"
+          test "$(printf '%s' "$artifact_json" | jq -r '.expired')" = false
+          test "$(printf '%s' "$artifact_json" | jq -r '.id')" = '9124899681'
+          test "$(printf '%s' "$artifact_json" | jq -r '.digest')" = 'sha256:67b843fffbbc160f379eb2ef9859dffe817e097316f4b1beaba627ca7ddbca05'
+          echo "APPROVED_PDF_PATH=$pdf" >> "$GITHUB_ENV"
+
+      - name: Accept Human Visual Review
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python control-src/scripts/accept_special_visual_review_issue_only.py \
+            --repo-root worktree \
+            --issue-id SP-2026-M05 \
+            --special-slug 2026-M05 \
+            --approved-pdf "$APPROVED_PDF_PATH" \
+            --approved-pdf-sha256 23cf50e1ea0b8cbf7caa9451dea04764459c8768feaba478fd79e839dbfb6241 \
+            --approved-at '2026-08-12T10:43:00+09:00' \
+            --approval-reference 'User explicit approval 2026-08-12 10:43 JST: Preview approved; Freeze also approved for this exact v0.12 Preview.' \
+            --artifact-name japanese-generative-ai-survey-special-2026-M05-v0.12 \
+            --artifact-id 9124899681 \
+            --artifact-digest 'sha256:67b843fffbbc160f379eb2ef9859dffe817e097316f4b1beaba627ca7ddbca05' \
+            | tee visual-review-acceptance-audit.json
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('worktree'); state=json.load(open(root/'sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
+          assert state['gates']['visual_review']=='passed' and state['gates']['freeze']=='pending'
+          fc=state['provenance']['freeze_candidate']; p=root/fc['path']
+          assert hashlib.sha256(p.read_bytes()).hexdigest()==fc['sha256']
+          c=json.load(open(p,encoding='utf-8'))
+          assert c['status']=='PENDING_HUMAN_FREEZE_APPROVAL'
+          assert c['release_identity_mode']=='ISSUE_ONLY'
+          assert c['release_tag']=='special/2026-M05'
+          assert c['canonical_pdf_candidate']['sha256']=='23cf50e1ea0b8cbf7caa9451dea04764459c8768feaba478fd79e839dbfb6241'
+          PY
+
+      - name: Commit Visual Review approval
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sources/SP-2026-M05/pipeline-state.json sources/SP-2026-M05/visual-review sources/SP-2026-M05/freeze
+          git commit -m 'Accept SP-2026-M05 Visual Review and prepare Freeze candidate'
+          git push origin HEAD:special/2026-M05-work
+
+      - name: Verify pre-Freeze provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2026-M05 check
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='RELEASE_CANDIDATE'
+          assert state['gates']['visual_review']=='passed' and state['gates']['freeze']=='pending'
+          candidate=json.load(open(root/'sources/SP-2026-M05/freeze/freeze-candidate.json',encoding='utf-8'))
+          assert candidate['status']=='PENDING_HUMAN_FREEZE_APPROVAL'
+          assert candidate['release_identity_mode']=='ISSUE_ONLY'
+          assert candidate['release_tag']=='special/2026-M05'
+          source=candidate['validated_issue_source']; sp=root/source['path']
+          assert hashlib.sha256(sp.read_bytes()).hexdigest()==source['sha256']
+          vr=candidate['visual_review']; vp=root/vr['path']
+          assert hashlib.sha256(vp.read_bytes()).hexdigest()==vr['sha256']
+          assert json.load(open(vp,encoding='utf-8'))['status']=='APPROVED'
+          PY
+
+      - name: Accept Human Freeze approval
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python control-src/scripts/accept_special_freeze_issue_only.py \
+            --repo-root worktree \
+            --issue-id SP-2026-M05 \
+            --special-slug 2026-M05 \
+            --approved-at '2026-08-12T10:43:00+09:00' \
+            --approval-reference 'User explicit approval 2026-08-12 10:43 JST: Preview approved and Freeze approved for the exact v0.12 candidate.' \
+            | tee special-freeze-audit.json
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='FROZEN'
+          assert state['gates']['visual_review']=='passed' and state['gates']['freeze']=='passed'
+          assert state['automation']['human_gate_required_for_public_release'] is False
+          freeze=state['provenance']['freeze']; fp=root/freeze['path']; rp=root/freeze['release_manifest_path']
+          assert hashlib.sha256(fp.read_bytes()).hexdigest()==freeze['sha256']
+          assert hashlib.sha256(rp.read_bytes()).hexdigest()==freeze['release_manifest_sha256']
+          manifest=json.load(open(rp,encoding='utf-8'))
+          assert manifest['status']=='frozen'
+          assert manifest['release_tag']=='special/2026-M05'
+          assert manifest['expected_pdf_sha256']=='23cf50e1ea0b8cbf7caa9451dea04764459c8768feaba478fd79e839dbfb6241'
+          assert manifest['public_release_authorized'] is True
+          current=root/'surveys/special/2026-M05/CURRENT_RELEASE.md'
+          assert current.is_file() and 'not a public Release version' in current.read_text(encoding='utf-8')
+          PY
+          python control-src/scripts/special_pipeline.py --config control-src/config/special-pipeline.json validate-state --state worktree/sources/SP-2026-M05/pipeline-state.json
+
+      - name: Commit Freeze record and release manifest
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add \
+            sources/SP-2026-M05/pipeline-state.json \
+            sources/SP-2026-M05/freeze/freeze.json \
+            sources/SP-2026-M05/release-manifest.json \
+            surveys/special/2026-M05/CURRENT_RELEASE.md
+          if git ls-files --error-unmatch surveys/special/2026-M05/main.tex >/dev/null 2>&1; then
+            git add surveys/special/2026-M05/main.tex
+          fi
+          git commit -m 'Freeze SP-2026-M05'
+          git push origin HEAD:special/2026-M05-work
+
+      - name: Merge frozen work PR
+        working-directory: worktree
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          if [ "$(gh pr view 53 --repo "$REPOSITORY" --json isDraft --jq .isDraft)" = true ]; then
+            gh pr ready 53 --repo "$REPOSITORY"
+          fi
+          head_sha=$(git rev-parse HEAD)
+          gh pr merge 53 --repo "$REPOSITORY" --merge --match-head-commit "$head_sha"
+
+      - name: Dispatch publication under Freeze authority
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          gh workflow run publish-special-frozen-release-issue-only.yml \
+            --repo "$REPOSITORY" --ref main \
+            -f special_slug=2026-M05 \
+            -f approval_reference='User explicit approval 2026-08-12 10:43 JST: Preview approved and Freeze approved for the exact v0.12 candidate.'
+
+      - name: Upload final-gate audits
+        uses: actions/upload-artifact@v7
+        with:
+          name: special-final-approval-2026-M05-v0.12
+          path: |
+            visual-review-acceptance-audit.json
+            special-freeze-audit.json
+          if-no-files-found: error
+          retention-days: 90
