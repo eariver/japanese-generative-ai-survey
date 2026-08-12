@@ -45,31 +45,39 @@ Chronology & 2026-07-01 (MODEL\_RELEASE) \\
         self.assertLess(result.index(r"\begin{samepage}"), result.index(r"\url{https://example.com}"))
         self.assertLess(result.index(r"\url{https://example.com}"), result.index(r"\end{samepage}"))
 
-    def test_attributed_claim_gets_local_tail_guard_without_unbreakable_card(self):
+    def test_attributed_claim_and_card_tail_are_grouped_without_unbreakable_whole_card(self):
         source = r'''\begin{technicalnote}{X}{主要資料}
-\begin{itemize}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
 \item \textbf{一次情報で確認できる事実}: 保存済み一次資料で確認できる。
+% reader-facing Technical Notes late-card tail guard
+\Needspace{12\baselineskip}
 \item \textbf{Author claim}: 著者は結果を報告している。
 \end{itemize}
 {\bfseries 読む際の境界}
-\begin{itemize}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
 \item \textbf{分析上の留意点}: 本号では独立再現していない。
 \end{itemize}
+\begin{samepage}
 {\bfseries 一次資料}
 \begin{itemize}
 \item \url{https://example.com/paper}
 \end{itemize}
+\end{samepage}
 \end{technicalnote}
 '''
         result = transform_note(source)
         claim = r"\item \textbf{Author claim}: 著者は結果を報告している。"
-        self.assertIn(r"\Needspace{12\baselineskip}", result)
-        self.assertLess(result.index(r"\Needspace{12\baselineskip}"), result.index(claim))
+        self.assertNotIn(r"\Needspace{12\baselineskip}", result)
+        self.assertNotIn("late-card tail guard", result)
+        self.assertIn(r"\begin{minipage}{\linewidth}", result)
+        self.assertIn("coherent tail group", result)
+        self.assertLess(result.index(r"\begin{minipage}{\linewidth}"), result.index(claim))
         self.assertLess(result.index(claim), result.index(r"{\bfseries 読む際の境界}"))
-        self.assertIn(r"\begin{samepage}", result)
-        # The whole technicalnote is not wrapped in samepage; only the source block is.
-        self.assertLess(result.index(r"\begin{technicalnote}"), result.index(r"\begin{samepage}"))
-        self.assertNotIn(r"\begin{samepage}\n\begin{technicalnote}", result)
+        self.assertLess(result.index(r"\url{https://example.com/paper}"), result.index(r"\end{minipage}"))
+        # The card starts before the minipage and remains breakable before the grouped tail.
+        self.assertLess(result.index(r"\begin{technicalnote}"), result.index(r"\begin{minipage}{\linewidth}"))
+        primary = r"\item \textbf{一次情報で確認できる事実}: 保存済み一次資料で確認できる。"
+        self.assertLess(result.index(primary), result.index(r"\begin{minipage}{\linewidth}"))
 
     def test_legacy_partially_translated_event_labels_are_normalized(self):
         source = r'''\subsection*{Theme at a glance}

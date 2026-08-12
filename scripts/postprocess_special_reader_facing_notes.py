@@ -78,8 +78,9 @@ NEW_INTRO = (
     "時系列、確認済みの主張、留意点、一次資料URLを掲載する。"
 )
 BREAK_POLICY_MARKER = "% reader-facing Technical Notes break policy"
-TAIL_GUARD_MARKER = "% reader-facing Technical Notes late-card tail guard"
-TAIL_GUARD_BASELINES = 12
+OLD_TAIL_GUARD_MARKER = "% reader-facing Technical Notes late-card tail guard"
+OLD_TAIL_GUARD = OLD_TAIL_GUARD_MARKER + "\n" + r"\Needspace{12\baselineskip}" + "\n"
+TAIL_GROUP_MARKER = "% reader-facing Technical Notes coherent tail group"
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -201,26 +202,48 @@ def add_card_break_policy(text: str) -> str:
     return "\n".join(output) + ("\n" if text.endswith("\n") else "")
 
 
-def add_late_card_tail_guard(text: str) -> str:
-    """Keep an attributed claim near its limitation/source tail when space is tight.
+def group_late_card_tail(text: str) -> str:
+    """Keep the attributed-claim/limitation/source tail as one compact unit.
 
-    The card remains breakable.  The guard is deliberately local to the final
-    attributed claim rather than the whole tcolorbox so it does not recreate
-    the large structural whitespace regressions tracked in Issue #40.
+    The technicalnote itself stays breakable.  Only the final attributed claim,
+    the limitation block, and the primary-source block are put into a minipage.
+    This gives the tcolorbox a deterministic break boundary without making the
+    whole card unbreakable or inserting a broad page-level Needspace guard.
     """
+    text = text.replace(OLD_TAIL_GUARD, "")
+    if TAIL_GROUP_MARKER in text:
+        return text
+
     lines = text.splitlines()
     output: list[str] = []
     in_note = False
+    group_open = False
+    groups = 0
     for line in lines:
         if re.match(r"\\begin\{technicalnote\}\{.*?\}\{.*?\}$", line):
             in_note = True
-        elif line == r"\end{technicalnote}":
-            in_note = False
-        if in_note and re.match(r"\\item \\textbf\{(?:Vendor claim|Project claim|Author claim)\}:", line):
-            if not output or output[-1] != TAIL_GUARD_MARKER:
-                output.append(TAIL_GUARD_MARKER)
-                output.append(rf"\Needspace{{{TAIL_GUARD_BASELINES}\baselineskip}}")
+        if in_note and not group_open and re.match(r"\\item \\textbf\{(?:Vendor claim|Project claim|Author claim)\}:", line):
+            # Close the technical-points list after the primary fact and reopen
+            # a list for the final attributed claim inside an unbreakable tail.
+            output.append(r"\end{itemize}")
+            output.append(r"\begin{minipage}{\linewidth}")
+            output.append(TAIL_GROUP_MARKER)
+            output.append(r"\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]")
+            output.append(line)
+            group_open = True
+            groups += 1
+            continue
         output.append(line)
+        if group_open and line == r"\end{samepage}":
+            output.append(r"\end{minipage}")
+            group_open = False
+        if line == r"\end{technicalnote}":
+            if group_open:
+                raise ValueError("Technical Notes coherent tail group did not close before card end")
+            in_note = False
+    # Some source records legitimately have no separately attributed claim.
+    # In that case there is no late-card tail to group; keep the card unchanged
+    # apart from removing any obsolete Needspace marker from an older revision.
     return "\n".join(output) + ("\n" if text.endswith("\n") else "")
 
 
@@ -254,8 +277,7 @@ def transform_note(text: str) -> str:
     text = protect_primary_source_blocks(text)
     if BREAK_POLICY_MARKER not in text:
         text = add_card_break_policy(text)
-    if TAIL_GUARD_MARKER not in text:
-        text = add_late_card_tail_guard(text)
+    text = group_late_card_tail(text)
     return text
 
 
@@ -314,8 +336,9 @@ def main() -> int:
         "whole_card_unbreakable": False,
         "source_block_samepage": True,
         "paragraph_widow_orphan_penalty": 10000,
-        "late_card_tail_needspace_baselines": TAIL_GUARD_BASELINES,
-        "late_card_tail_guard_scope": "attributed claim only; whole card remains breakable",
+        "late_card_tail_needspace_baselines": 0,
+        "late_card_tail_group": "minipage from final attributed claim through limitation/source block",
+        "late_card_tail_group_scope": "card tail only; technicalnote remains breakable",
         "changed_files": changed,
     })
     manifest["reader_facing_technical_notes"] = reader
@@ -333,7 +356,7 @@ def main() -> int:
         "language_policy": reader.get("language_policy"),
         "machine_enum_policy": reader.get("machine_enum_policy"),
         "source_block_samepage": reader.get("source_block_samepage"),
-        "late_card_tail_needspace_baselines": reader.get("late_card_tail_needspace_baselines"),
+        "late_card_tail_group": reader.get("late_card_tail_group"),
     }, ensure_ascii=False, indent=2))
     return 0
 
