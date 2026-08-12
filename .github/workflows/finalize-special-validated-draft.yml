@@ -114,8 +114,11 @@ jobs:
           audit=json.load(open(root/'sources'/issue/'finalization'/'v0.1'/'claim-chronology-audit.json',encoding='utf-8'))
           assert audit['passed'] is True, audit['errors']
           source=json.load(open(root/'surveys'/'special'/slug/'source-manifest.json',encoding='utf-8'))
+          packages=json.load(open(root/'sources'/issue/'drafting'/'packages'/'v0.1'/'draft-package-manifest.json',encoding='utf-8'))
+          expected=packages['article_drafting_count']
+          assert expected>=1, packages
           assert source['status']=='VALIDATED_SOURCE'
-          assert source['article_count']==6
+          assert source['article_count']==expected, (source,packages)
           assert source['period_consistency']['retrospective_scope_derived_from_manifest'] is True
           PY
           PYTHONPATH=control-src python control-src/scripts/special_period_consistency.py check \
