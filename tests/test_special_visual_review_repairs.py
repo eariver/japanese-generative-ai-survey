@@ -7,6 +7,7 @@ from pathlib import Path
 from scripts.revise_special_visual_review_repairs import (
     enrich_bibliography_titles,
     fix_frontmatter_toc,
+    group_limitation_source_tail,
     split_article,
 )
 
@@ -74,6 +75,26 @@ class SpecialVisualReviewRepairTests(unittest.TestCase):
             self.assertNotIn("Theme Synthesis", body.read_text(encoding="utf-8"))
             self.assertIn("Theme Synthesis", wide.read_text(encoding="utf-8"))
             self.assertIn("claimboundary", wide.read_text(encoding="utf-8"))
+
+    def test_verified_fact_card_groups_limitation_and_source_tail(self):
+        text = (
+            "\\begin{technicalnote}{Voxtral TTS}{補足資料}\n"
+            "\\begingroup\n"
+            "{\\bfseries 一次資料から整理したtechnical points}\n"
+            "\\begin{itemize}\n"
+            "\\item \\textbf{一次情報で確認できる事実}: fact\n"
+            "\\end{itemize}\n"
+            "{\\bfseries 読む際の境界}\n"
+            "\\begin{itemize}\n\\item limitation\n\\end{itemize}\n"
+            "\\begin{samepage}\n{\\bfseries 一次資料}\nurl\n\\end{samepage}\n"
+            "\\endgroup\n"
+            "\\end{technicalnote}\n"
+        )
+        revised, grouped = group_limitation_source_tail(text, {"Voxtral TTS"})
+        self.assertEqual(grouped, 1)
+        self.assertIn("limitation/source fallback group", revised)
+        self.assertIn("\\begin{minipage}{\\linewidth}\n% reader-facing", revised)
+        self.assertIn("\\end{samepage}\n\\end{minipage}", revised)
 
 
 if __name__ == "__main__":
