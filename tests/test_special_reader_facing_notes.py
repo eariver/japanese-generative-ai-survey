@@ -74,11 +74,9 @@ Chronology & 2026-07-01 (MODEL\_RELEASE) \\
         self.assertLess(result.index(r"\begin{minipage}{\linewidth}"), result.index(claim))
         self.assertLess(result.index(claim), result.index(r"{\bfseries 読む際の境界}"))
         self.assertLess(result.index(r"\url{https://example.com/paper}"), result.index(r"\end{minipage}"))
-        # The card starts before the minipage and remains breakable before the grouped tail.
         self.assertLess(result.index(r"\begin{technicalnote}"), result.index(r"\begin{minipage}{\linewidth}"))
         primary = r"\item \textbf{一次情報で確認できる事実}: 保存済み一次資料で確認できる。"
         self.assertLess(result.index(primary), result.index(r"\begin{minipage}{\linewidth}"))
-
 
     def test_attributed_claim_is_not_grouped_without_visual_qa_opt_in(self):
         source = r'''\begin{technicalnote}{X}{主要資料}
@@ -123,6 +121,23 @@ C & 主要資料 & 論文 & 2026-05-03 (論文\_RELEASE) \\
         for banned in (r"モデル\_RELEASE", r"研究\_RELEASE", r"論文\_RELEASE"):
             self.assertNotIn(banned, result)
 
+    def test_update_event_enums_are_normalized_even_outside_parentheses(self):
+        source = r'''\subsection*{Theme at a glance}
+A & 主要資料 & MODEL\_RELEASE & 2026-04-01 (MODEL\_RELEASE) \\
+B & 主要資料 & Agent\_UPDATE & 2026-04-16 (AGENT\_UPDATE) \\
+C & 主要資料 & Framework\_UPDATE & 2026-04-15 (FRAMEWORK\_UPDATE) \\
+'''
+        result = transform_note(source)
+        for banned in (
+            r"MODEL\_RELEASE", r"モデル\_RELEASE",
+            r"AGENT\_UPDATE", r"Agent\_UPDATE",
+            r"FRAMEWORK\_UPDATE", r"Framework\_UPDATE",
+        ):
+            self.assertNotIn(banned, result)
+        self.assertEqual(result.count("モデル公開"), 2)
+        self.assertEqual(result.count("Agent更新"), 2)
+        self.assertEqual(result.count("Framework更新"), 2)
+
     def test_evaluation_playbook_gets_semantic_reader_label(self):
         source = r'''\subsection*{Theme at a glance}
 A shared playbook for trustworthy third party evaluations & 補足資料 & SAFETY EVENT & 2026-05-29 (OFFICIAL\_PUBLICATION) \\
@@ -140,7 +155,6 @@ A shared playbook for trustworthy third party evaluations & 補足資料 & SAFET
         self.assertNotIn("安全性事象", result)
         self.assertNotIn("SAFETY EVENT", result)
         self.assertNotIn(r"OFFICIAL\_PUBLICATION", result)
-        # Only the compact source block is rigid; the whole technicalnote remains breakable.
         begin = result.index(r"\begin{technicalnote}")
         same = result.index(r"\begin{samepage}")
         self.assertLess(begin, same)
