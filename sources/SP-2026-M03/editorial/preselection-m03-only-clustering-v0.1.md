@@ -12,7 +12,7 @@ Primary clustering criteria:
 3. strength of chronology/source attribution;
 4. distinct editorial value within M03.
 
-Cross-cluster links are noted conceptually, but every Candidate receives one primary cluster for counting so that a later narrative cannot inflate a preferred theme by double-counting.
+Cross-cluster links are noted conceptually, but every Candidate receives one primary cluster for counting so that a later narrative cannot inflate a preferred theme by double-counting. Cluster counts describe the accepted Candidate surface; they are not a claim about the complete universe of March 2026 AI activity.
 
 ## Primary-cluster result
 
