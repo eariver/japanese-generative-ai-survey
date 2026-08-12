@@ -111,12 +111,17 @@ def check_structured_periods(root: Path, issue_id: str, special_slug: str) -> di
         errors.append(f"Retrospective scope period mismatch: expected {expected['ja']}, got {actual_ja}")
 
     main = main_path.read_text(encoding="utf-8")
-    expected_coverage = f"Coverage: {expected['start_date']} -- {expected['end_date']}"
+    coverage_re = re.compile(
+        rf"\bCoverage(?::)?\s+{re.escape(expected['start_date'])}\s+--\s+{re.escape(expected['end_date'])}\b"
+    )
     expected_window = f"Coverage window: {expected['start_date']} -- {expected['end_date']}"
     if issue_id not in main:
         errors.append(f"survey setup does not contain issue id {issue_id}")
-    if expected_coverage not in main:
-        errors.append(f"survey setup coverage mismatch: missing {expected_coverage}")
+    if not coverage_re.search(main):
+        errors.append(
+            "survey setup coverage mismatch: expected Coverage date range "
+            f"{expected['start_date']} -- {expected['end_date']}"
+        )
     if expected_window not in main:
         errors.append(f"coverage-window label mismatch: missing {expected_window}")
 

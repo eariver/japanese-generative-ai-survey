@@ -48,7 +48,7 @@ class SpecialPeriodConsistencyTests(unittest.TestCase):
             "\\surveysetup\n"
             "  {SP-2026-M06}\n"
             "  {Japanese Generative AI Technical Survey Special}\n"
-            "  {Coverage: 2026-06-01 -- 2026-06-30 / Retrospective as of 2026-08-11}\n"
+            "  {Special / Coverage 2026-06-01 -- 2026-06-30 / Retrospective as of 2026-08-11}\n"
             "  {Coverage window: 2026-06-01 -- 2026-06-30 UTC}\n",
             encoding="utf-8",
         )
