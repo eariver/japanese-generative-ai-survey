@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "issue_id": "SP-2026-M03",
   "edition_kind": "RETROSPECTIVE_PERIOD",
-  "lifecycle_state": "RELEASE_CANDIDATE",
+  "lifecycle_state": "VALIDATED_DRAFT",
   "revision": "v0.1",
   "calendar": {
     "editorial_cutoff": "2026-03-31T23:59:59Z",
@@ -21,7 +21,7 @@
     "issue_architecture": "passed",
     "article_draft": "passed",
     "claim_and_chronology_validation": "passed",
-    "latex_build": "passed",
+    "latex_build": "pending",
     "visual_review": "pending",
     "freeze": "pending"
   },
@@ -68,30 +68,24 @@
       "sha256": "5fc3f508f543161c5d42e0fa991a1cb6963a1a2710c23012bab5761bb19b2a19"
     },
     "validated_issue_source": {
-      "path": "surveys/special/2026-M03/revisions/v0.8/source-manifest.json",
-      "sha256": "0693cedfaa24881943c19e2ffb41e7e51ec499a4966686e507a96c9e0980d12b",
-      "source_version": "v0.8",
-      "layout_mode": "balanced-local-multicol-final-spacing-recovery",
-      "layout_revision_sha256": "4eb9b1463d26f0f3f0856fc1670174e8f615a22af69640e039a1b01f6b3bef3f"
+      "path": "surveys/special/2026-M03/revisions/v0.9/source-manifest.json",
+      "sha256": "b9f75c404ac51cc3a96599697f364e3e2bacba0797aaa741add64553382c4a7d",
+      "source_version": "v0.9",
+      "layout_mode": "balanced-local-multicol-retrospective-synthesis-repair",
+      "layout_revision_sha256": "8d4271fd0eed229d2ef5125d6fdbcc6e339b21431b6d952b3e42f23ec9b0ebd3"
     },
     "reader_layout_revision": {
-      "source_version": "v0.8",
-      "layout_revision_path": "sources/SP-2026-M03/editorial/layout-revision-v0.8.json",
-      "layout_revision_sha256": "4eb9b1463d26f0f3f0856fc1670174e8f615a22af69640e039a1b01f6b3bef3f",
-      "reason": "The v0.7 preview retained one isolated narrow-column Underfull paragraph and remained at 31 pages, one page below the Special budget floor. Increase only top/bottom page breathing while preserving column width, and render the single affected generated paragraph ragged-right. No reader wording, Evidence, chronology, Technical Notes, or References content changes are permitted."
+      "source_version": "v0.9",
+      "layout_revision_path": "sources/SP-2026-M03/editorial/layout-revision-v0.9.json",
+      "layout_revision_sha256": "8d4271fd0eed229d2ef5125d6fdbcc6e339b21431b6d952b3e42f23ec9b0ebd3",
+      "reason": "Human Visual Review found a reader-facing SECURITY EVENT taxonomy leak and a missing issue-level Retrospective Synthesis before References. Repair only SP-2026-M03 in this task; do not modify or regenerate SP-2026-M04."
     },
-    "latex_build": {
-      "workflow_run_id": 31620084643,
-      "pdf_sha256": "89db37c7f95321a83b7116472933ccd01536d90f2186517a7109cffc0bad0e60",
-      "page_count": 33,
-      "source_version": "v0.8",
-      "validated_issue_source_path": "worktree/surveys/special/2026-M03/revisions/v0.8/source-manifest.json",
-      "validated_issue_source_sha256": "0693cedfaa24881943c19e2ffb41e7e51ec499a4966686e507a96c9e0980d12b",
-      "build_style": {
-        "control_commit_sha": "966be2a38f165d188c0c4b609b436b8675c64926",
-        "path": "templates/survey/jgaisurvey.sty",
-        "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
-      }
+    "retrospective_synthesis_correction": {
+      "path": "sources/SP-2026-M03/finalization/v0.2/retrospective-synthesis.json",
+      "sha256": "fa36a21f3a06ba6215c40c5a636ae1931180e46626f0b37369adf0183d3b1412",
+      "tex_sha256": "6766c2daf58b45e1beef0bf9f1a74a2c0e2c4c3f1532bc8d2b9eb08c17cca2b0",
+      "selected_evidence_only": true,
+      "later_period_facts_used": false
     }
   },
   "provenance_history": {
@@ -155,6 +149,13 @@
         "source_version": "v0.7",
         "layout_mode": "balanced-local-multicol-visual-review-typography-recovery",
         "layout_revision_sha256": "6c3c9f634587131f42369e56261d4553ca31b9e2a45d5b86544727fae0c3ecf0"
+      },
+      {
+        "path": "surveys/special/2026-M03/revisions/v0.8/source-manifest.json",
+        "sha256": "0693cedfaa24881943c19e2ffb41e7e51ec499a4966686e507a96c9e0980d12b",
+        "source_version": "v0.8",
+        "layout_mode": "balanced-local-multicol-final-spacing-recovery",
+        "layout_revision_sha256": "4eb9b1463d26f0f3f0856fc1670174e8f615a22af69640e039a1b01f6b3bef3f"
       }
     ],
     "latex_build": [
@@ -180,6 +181,19 @@
         "validated_issue_source_sha256": "fc0fbf577e14035b604195b0444a817b95adb979dfea68d5b1574ec0ee36e97d",
         "build_style": {
           "control_commit_sha": "4f526e2bd050f279d275de20f17f388b65e0eb9b",
+          "path": "templates/survey/jgaisurvey.sty",
+          "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+        }
+      },
+      {
+        "workflow_run_id": 31620084643,
+        "pdf_sha256": "89db37c7f95321a83b7116472933ccd01536d90f2186517a7109cffc0bad0e60",
+        "page_count": 33,
+        "source_version": "v0.8",
+        "validated_issue_source_path": "worktree/surveys/special/2026-M03/revisions/v0.8/source-manifest.json",
+        "validated_issue_source_sha256": "0693cedfaa24881943c19e2ffb41e7e51ec499a4966686e507a96c9e0980d12b",
+        "build_style": {
+          "control_commit_sha": "966be2a38f165d188c0c4b609b436b8675c64926",
           "path": "templates/survey/jgaisurvey.sty",
           "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
         }
