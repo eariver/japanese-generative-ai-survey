@@ -93,7 +93,9 @@ jobs:
           import json,sys
           value=json.load(open(sys.argv[1],encoding='utf-8'))
           changes=value.get('layout_changes') or {}
-          if changes.get('compact_toc_to_sections') is True:
+          if changes.get('normalize_reader_event_enums') is True:
+              print('reader-enum-cleanup')
+          elif changes.get('compact_toc_to_sections') is True:
               print('compact-toc')
           elif changes.get('remove_subsection_needspace') is True:
               print('relaxed-subsection')
@@ -104,6 +106,11 @@ jobs:
           PY
             )
             case "$mode" in
+              reader-enum-cleanup)
+                PYTHONPATH=control-src python control-src/scripts/revise_special_reader_enum_cleanup.py \
+                  --repo-root worktree --special-slug "$SPECIAL_SLUG" --issue-id "$SPECIAL_ID" --source-version "$SOURCE_VERSION" \
+                  > special-mixed-layout-audit.json
+                ;;
               compact-toc)
                 PYTHONPATH=control-src python control-src/scripts/revise_special_compact_toc.py \
                   --repo-root worktree --special-slug "$SPECIAL_SLUG" --issue-id "$SPECIAL_ID" --source-version "$SOURCE_VERSION" \
@@ -158,7 +165,16 @@ jobs:
           manifest=json.load(open(path,encoding='utf-8'))
           assert manifest['source_version']==version
           lr=manifest.get('layout_revision') or {}
-          if lr.get('compact_toc_to_sections') is True:
+          if lr.get('normalize_reader_event_enums') is True:
+              assert manifest['status']=='VALIDATED_READER_ENUM_CLEANUP_REVISION'
+              assert lr['reader_content_changed'] is False
+              assert lr['new_external_evidence'] is False
+              assert lr['machine_event_enum_replacement_count'] >= 1
+              assert lr['article_sections_changed'] is False
+              assert lr['theme_synthesis_changed'] is False
+              assert lr['bibliography_data_changed'] is False
+              assert manifest['reader_facing_technical_notes']['machine_enum_policy']=='reader-facing-labels-v4'
+          elif lr.get('compact_toc_to_sections') is True:
               assert manifest['status']=='VALIDATED_COMPACT_TOC_REVISION'
               assert lr['reader_content_changed'] is False
               assert lr['new_external_evidence'] is False
