@@ -65,7 +65,7 @@ Chronology & 2026-07-01 (MODEL\_RELEASE) \\
 \end{samepage}
 \end{technicalnote}
 '''
-        result = transform_note(source)
+        result = transform_note(source, selected_titles={"X"})
         claim = r"\item \textbf{Author claim}: 著者は結果を報告している。"
         self.assertNotIn(r"\Needspace{12\baselineskip}", result)
         self.assertNotIn("late-card tail guard", result)
@@ -78,6 +78,29 @@ Chronology & 2026-07-01 (MODEL\_RELEASE) \\
         self.assertLess(result.index(r"\begin{technicalnote}"), result.index(r"\begin{minipage}{\linewidth}"))
         primary = r"\item \textbf{一次情報で確認できる事実}: 保存済み一次資料で確認できる。"
         self.assertLess(result.index(primary), result.index(r"\begin{minipage}{\linewidth}"))
+
+
+    def test_attributed_claim_is_not_grouped_without_visual_qa_opt_in(self):
+        source = r'''\begin{technicalnote}{X}{主要資料}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 保存済み一次資料で確認できる。
+\item \textbf{Author claim}: 著者は結果を報告している。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}
+\item \textbf{分析上の留意点}: 本号では独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begin{itemize}
+\item \url{https://example.com/paper}
+\end{itemize}
+\end{samepage}
+\end{technicalnote}
+'''
+        result = transform_note(source)
+        self.assertNotIn(r"\begin{minipage}{\linewidth}", result)
+        self.assertNotIn("coherent tail group", result)
 
     def test_legacy_partially_translated_event_labels_are_normalized(self):
         source = r'''\subsection*{Theme at a glance}

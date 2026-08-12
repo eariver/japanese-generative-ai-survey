@@ -202,7 +202,7 @@ def add_card_break_policy(text: str) -> str:
     return "\n".join(output) + ("\n" if text.endswith("\n") else "")
 
 
-def group_late_card_tail(text: str) -> str:
+def group_late_card_tail(text: str, selected_titles: set[str] | None = None) -> str:
     """Keep the attributed-claim/limitation/source tail as one compact unit.
 
     The technicalnote itself stays breakable.  Only the final attributed claim,
@@ -217,12 +217,16 @@ def group_late_card_tail(text: str) -> str:
     lines = text.splitlines()
     output: list[str] = []
     in_note = False
+    current_title: str | None = None
     group_open = False
     groups = 0
+    selected_titles = selected_titles or set()
     for line in lines:
-        if re.match(r"\\begin\{technicalnote\}\{.*?\}\{.*?\}$", line):
+        note_match = re.match(r"\\begin\{technicalnote\}\{(.+?)\}\{.*?\}$", line)
+        if note_match:
             in_note = True
-        if in_note and not group_open and re.match(r"\\item \\textbf\{(?:Vendor claim|Project claim|Author claim)\}:", line):
+            current_title = note_match.group(1)
+        if in_note and current_title in selected_titles and not group_open and re.match(r"\\item \\textbf\{(?:Vendor claim|Project claim|Author claim)\}:", line):
             # Close the technical-points list after the primary fact and reopen
             # a list for the final attributed claim inside an unbreakable tail.
             output.append(r"\end{itemize}")
@@ -241,13 +245,14 @@ def group_late_card_tail(text: str) -> str:
             if group_open:
                 raise ValueError("Technical Notes coherent tail group did not close before card end")
             in_note = False
-    # Some source records legitimately have no separately attributed claim.
+            current_title = None
+    # Some source records legitimately have no separately attributed claim,
     # In that case there is no late-card tail to group; keep the card unchanged
     # apart from removing any obsolete Needspace marker from an older revision.
     return "\n".join(output) + ("\n" if text.endswith("\n") else "")
 
 
-def transform_note(text: str) -> str:
+def transform_note(text: str, selected_titles: set[str] | None = None) -> str:
     # A Technical Notes block must follow the preceding synthesis naturally. An
     # unconditional clearpage can otherwise strand a small Claim Boundary box.
     text = re.sub(r"\A\\clearpage\s*\n", "", text, count=1)
@@ -277,7 +282,7 @@ def transform_note(text: str) -> str:
     text = protect_primary_source_blocks(text)
     if BREAK_POLICY_MARKER not in text:
         text = add_card_break_policy(text)
-    text = group_late_card_tail(text)
+    text = group_late_card_tail(text, selected_titles=selected_titles)
     return text
 
 
@@ -301,6 +306,8 @@ def main() -> int:
         raise ValueError("source manifest SHA mismatch before reader-facing pass")
 
     manifest = read_json(manifest_path)
+    configured_reader = dict(manifest.get("reader_facing_technical_notes") or {})
+    tail_group_titles = set(configured_reader.get("late_card_tail_group_titles") or [])
     changed: list[dict[str, str]] = []
     for article in manifest.get("articles") or []:
         rel = article.get("technical_notes_path")
@@ -309,7 +316,7 @@ def main() -> int:
         path = manifest_path.parent / rel
         before = sha256_file(path)
         original = path.read_text(encoding="utf-8")
-        revised = transform_note(original)
+        revised = transform_note(original, selected_titles=tail_group_titles)
         if revised == original:
             raise ValueError(f"reader-facing Technical Notes pass made no change: {rel}")
         if "Selection済みEvidence" in revised or "normalized claim" in revised or "Source-bound record:" in revised:
@@ -337,8 +344,9 @@ def main() -> int:
         "source_block_samepage": True,
         "paragraph_widow_orphan_penalty": 10000,
         "late_card_tail_needspace_baselines": 0,
-        "late_card_tail_group": "minipage from final attributed claim through limitation/source block",
-        "late_card_tail_group_scope": "card tail only; technicalnote remains breakable",
+        "late_card_tail_group_titles": sorted(tail_group_titles),
+        "late_card_tail_group": "opt-in minipage from final attributed claim through limitation/source block",
+        "late_card_tail_group_scope": "only exact titles selected after render QA; technicalnote remains breakable",
         "changed_files": changed,
     })
     manifest["reader_facing_technical_notes"] = reader
