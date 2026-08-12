@@ -1,0 +1,258 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M03",
+  "package_id": "multimodal-generation-march",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "basis": {
+    "draft_package_sha256": "42dfed2a13cb127fb66018d4294ea46f362aa90dab27b9329241722cbced233d",
+    "prompt_id": "article-drafting-v0.1",
+    "prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project drafting; no paid inference-provider API",
+    "generated_at": "2026-08-13T00:17:40+09:00",
+    "run_reference": "ChatGPT interactive M03 article drafting after Architecture approval 2026-08-13 JST"
+  },
+  "headline": "Multimodal & Generation — 生成・理解・groundingが別々に伸びる",
+  "deck": "LongCat-Next、Unify-Agent、DreamLite、Gen-Searcher。3月のmultimodal領域は、共通token空間、world-grounded image synthesis、on-device generation、search-augmented generationという異なる方向へ同時に広がった。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-27538v1-fd812ed157",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-29620v2-5c6b0b58c4",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28713v1-9f0433d8f0",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28767v3-6665fb5105",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "opening-h",
+      "block_type": "HEADING",
+      "text": "MultimodalをAgentの一部だけで読まない",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "opening",
+      "block_type": "PARAGRAPH",
+      "text": "3月のmultimodal/generation研究には、modalitiesを共通表現へ寄せるmodeling、端末上で生成と編集を両立するdeployment、外部検索で生成をgroundするpipelineが並ぶ。Agent的な構成もあるが、すべてをagent narrativeへ吸収すると、generation/understandingそのものの設計変化を見失う。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-27538v1-fd812ed157",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-29620v2-5c6b0b58c4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28713v1-9f0433d8f0",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28767v3-6665fb5105",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "unified-h",
+      "block_type": "HEADING",
+      "text": "LongCat-Next: modalityをshared discrete spaceへ",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "unified",
+      "block_type": "PARAGRAPH",
+      "text": "LongCat-NextはauthorsがDiNA（Discrete Native Autoregressive）を提案し、multimodal informationをshared discrete spaceで扱ってmodalities横断のautoregressive modelingを統一する方向を示した。ここで重要なのは、画像生成だけの話ではなく、generationとunderstandingを同一の表現・生成原理へ寄せようとする設計である。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-27538v1-fd812ed157",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "grounding-h",
+      "block_type": "HEADING",
+      "text": "Image generationへsearchとgroundingを持ち込む",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "grounding",
+      "block_type": "PARAGRAPH",
+      "text": "Unify-Agentはauthorsがprompt understanding、multimodal evidence search、grounded recaptioning、final synthesisから成るworld-grounded image synthesis pipelineとして提案した。Gen-Searcherもsearch-augmented image generation agentとして、multi-hop reasoningとsearchでtext knowledgeやreference imageを収集する構成を示す。両者はAgent技術との接点を持つが、目的は画像生成を外部evidenceへgroundすることにあり、一般的なagent runtimeとは区別して読むべきだ。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-29620v2-5c6b0b58c4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28767v3-6665fb5105",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "device-h",
+      "block_type": "HEADING",
+      "text": "DreamLite: on-deviceでも生成と編集を統合する",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "device",
+      "block_type": "PARAGRAPH",
+      "text": "DreamLiteはauthorsが0.39Bのcompact unified on-device diffusion modelとして、text-to-image generationとtext-guided image editingを単一networkで扱う構成を提案した。frontier-scale modelとは別の方向から、generation capabilityをdevice側へ近づける研究である。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28713v1-9f0433d8f0",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "synth",
+      "block_type": "PARAGRAPH",
+      "text": "3月のmultimodal領域は、unification、grounding、deploymentという複数の設計軸を持っていた。後から見ればagentic synthesisへの接続も目立つが、当月のEvidenceだけから見ても独立した主要テーマとして扱うだけの厚みがある。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-27538v1-fd812ed157",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-29620v2-5c6b0b58c4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28713v1-9f0433d8f0",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28767v3-6665fb5105",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "claim-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "Claim Boundary: 各architectureと評価結果はauthorsの報告であり、本誌はbenchmarkを独立再現していない。March chronologyは初回投稿を基準とし、Unify-Agentのv2、Gen-Searcherのv3など後日revisionの内容を3月時点へ遡及させない。LongCat-Nextについても3月初回投稿として扱い、後から得た知見で当月の記述を膨らませない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-27538v1-fd812ed157",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-29620v2-5c6b0b58c4",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28713v1-9f0433d8f0",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28767v3-6665fb5105",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "LongCat-NextのMarch初回投稿と後日revisionの分離",
+      "block_ids": [
+        "unified",
+        "claim-boundary"
+      ]
+    },
+    {
+      "requirement": "generationとunderstandingの境界",
+      "block_ids": [
+        "unified",
+        "grounding"
+      ]
+    },
+    {
+      "requirement": "on-device deployment",
+      "block_ids": [
+        "device"
+      ]
+    },
+    {
+      "requirement": "search/groundingをAgent全体史観に吸収しない",
+      "block_ids": [
+        "grounding",
+        "synth"
+      ]
+    }
+  ],
+  "boundary_coverage": [
+    {
+      "requirement": "Paper results and benchmarks are author-reported and not independently reproduced.",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    },
+    {
+      "requirement": "Separate March-submission claims from later-revision changes before drafting.",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    },
+    {
+      "requirement": "Locator is arXiv v2; March chronology uses the initial publication date, so later-revision changes must not be back-attributed.",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    },
+    {
+      "requirement": "Locator is arXiv v3; March chronology uses the initial publication date, so later-revision changes must not be back-attributed.",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    }
+  ],
+  "late_breaking_acknowledged": false
+}
