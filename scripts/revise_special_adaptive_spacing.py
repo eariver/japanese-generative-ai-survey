@@ -64,6 +64,15 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
 
         return build_final_spacing_recovery(repo_root, special_slug, issue_id, source_version)
 
+    # Pre-Freeze review can identify a required cross-article retrospective
+    # synthesis that is missing from an otherwise built Special preview, along
+    # with reader taxonomy leakage in derived Technical Notes. Keep Evidence and
+    # accepted Article Drafts immutable and derive a new source revision.
+    if changes.get("retrospective_final_synthesis_repair") is True:
+        from scripts.revise_special_retrospective_synthesis_repair import build as build_retrospective_synthesis_repair
+
+        return build_retrospective_synthesis_repair(repo_root, special_slug, issue_id, source_version)
+
     # Issue #55: apply one generic per-card invariant instead of a Human-selected
     # title allowlist.  Boundary/limitation/source stay together; the whole card
     # remains breakable.
