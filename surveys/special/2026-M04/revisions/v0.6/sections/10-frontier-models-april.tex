@@ -1,0 +1,55 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{Frontier Models — 4月、モデル競争は複数の軸へ分かれ始めた}
+\label{pkg:frontier-models-april}
+\noindent\textbf{GPT-5.5、Claude Opus 4.7、Qwen、DeepSeek V4、Gemini、GLM。4月の更新を一列の性能順位ではなく、API lifecycle、multimodal、agent接続、open ecosystemへの波及という異なる競争軸から読み直す。}\autocite{src-9156c37fb1c2,src-a24fd97eb3d0,src-dfe7e0c6ff39,src-e547d0d8cbe3,src-eac8dfbeb78c,src-f6aa679babd7}
+
+\subsection{一つの性能表では捉えられない4月}
+
+2026年4月のfrontier model競争は、単純な「最も賢いモデル」の更新競争として読むより、提供形態と接続先が枝分かれした月として読む方が実態に近い。OpenAIのGPT-5.5、AnthropicのClaude Opus 4.7に加えて、Alibaba Cloud、DeepSeek、Google、Z.aiの一次資料には、API lifecycle、互換interface、multimodal、agent利用へつながる更新が同じ月に並ぶ。ここで比較したいのはvendor間の総合順位ではなく、モデルをどのsurfaceから、どの周辺stackと組み合わせて使うのかという設計条件の違いである。\autocite{src-9156c37fb1c2,src-a24fd97eb3d0,src-dfe7e0c6ff39,src-e547d0d8cbe3,src-eac8dfbeb78c,src-f6aa679babd7}
+
+
+\subsection{April chronology — 更新は月を通して分散した}
+
+4月1日にはZ.aiのrelease notesにGLM-5V-Turbo、4月2日にはAlibaba Model StudioにQwen3.6-Plus、Gemini API changelogにGemma 4 API modelsが記録されている。Alibaba側では3日にWan 2.7系のmedia-model更新、16日にQwen3.6-Flash、20日にQwen3.6-Max-Preview、23日にQwen3.5-Plus／Qwen3.6-27B関連の更新が続く。Anthropic newsroomの保存snapshotは16日のClaude Opus 4.7を、OpenAIの一次資料は23日のGPT-5.5を記録し、DeepSeek API updatesは24日にV4を記録する。Google側でも14日のGemini Robotics ER 1.6 preview、15日のGemini 3.1 Flash TTS Preview、21日のDeep Research agent更新、22日のGemini Embedding 2 GAと、model familyの外縁まで動いている。\autocite{src-9156c37fb1c2,src-a24fd97eb3d0,src-dfe7e0c6ff39,src-e547d0d8cbe3,src-eac8dfbeb78c,src-f6aa679babd7}
+
+
+\subsection{GPT-5.5とClaude Opus 4.7 — releaseの事実と能力主張を分ける}
+
+OpenAIはGPT-5.5をcoding、research、data analysisを含む複雑なtaskへ向けたモデルとして説明しているが、「smartest」「faster」「more capable」といった評価語はOpenAI自身の主張である。GPT-5.5 System Cardの公開も同月の安全・評価面の文脈を示すが、今回保持されたEvidenceから詳細なbenchmark内容を補うことはしない。一方Claude Opus 4.7について、この号で確実に固定できるのは保存されたAnthropic newsroom内部のfirst-party item dataが4月16日のreleaseを示すことまでである。詳細な能力比較に踏み込まずとも、両社のfrontier級更新が同じ月に存在したこと自体が競争の基準線になる。\autocite{src-a07eb39dec04,src-dfe7e0c6ff39,src-f6aa679babd7}
+
+
+\subsection{API lifecycleがモデル選択そのものになる}
+
+DeepSeek V4では、保存されたAPI updatesからV4-ProとV4-FlashがOpenAI ChatCompletions互換およびAnthropic互換interfaceで提供され、legacy API model nameのdeprecation予定も記録されている。これはモデルの能力とは別に、既存clientやagent stackへどう接続できるかが競争力の一部になっていることを示す。Gemini APIでも4月はmodel releaseだけでなくRobotics、TTS、Deep Research agent、Embeddingの状態遷移が連続した。開発者から見れば、model family名だけを追うよりpreview／GA、interface互換性、周辺APIの更新を追う必要がある。\autocite{src-a24fd97eb3d0,src-e547d0d8cbe3}
+
+
+\subsection{QwenとGLM — model familyの広がりを一つの順位に畳まない}
+
+Alibaba Model StudioのsnapshotはQwen3.6系の複数更新とWan 2.7のmedia-model更新を同じ4月のlifecycleとして記録する。Z.aiはGLM-5V-Turboをmultimodal agent workflow向け、GLM-5.1をlong-horizon autonomous task execution向けとしてrelease notesに位置付けている。これらは「中国勢」という一枚岩の性能カテゴリーではなく、managed API、multimodal、agent-oriented modelという複数の提供戦略が並行した事例として読むべきだ。各社のcapability表現はvendor由来であり、本号ではavailabilityとchronologyを比較の足場とする。\autocite{src-9156c37fb1c2,src-eac8dfbeb78c}
+
+
+\subsection{open ecosystemへ波及するまでがrelease cycle}
+
+Hugging Face Transformers v5.5.0は4月2日にreleaseされ、Gemma 4のnative supportと、multimodal image processingやvision-position handlingをrelease notesに記録した。これはfrontier／multimodal modelの発表がvendor pageで完結せず、広く使われるdeveloper library側へ実装対応として伝播することを示す。ただしrelease notesが保証するのはprojectが記録したsupport内容とchronologyであり、あらゆる環境における性能・互換性を独立検証したものではない。\autocite{src-6ddeedd7665f}
+
+
+\subsection{Theme Synthesis — 競争軸の分化}
+
+4月の断面から見えるのは、frontier modelの競争が消えたのではなく、その意味が広がったことだ。model capabilityは依然として中心にあるが、実際の利用条件はAPI lifecycle、互換interface、multimodal surface、agent接続、open-source libraryの追随によって形作られる。5月以降に実行環境全体の競争が前景化する前に、4月にはすでにその構成要素が別々の方向へ伸び始めていた。本号のfrontier比較は、その分岐点を捉えるためのものであり、vendor benchmarkを単一ランキングへ変換するためのものではない。\autocite{src-6ddeedd7665f,src-9156c37fb1c2,src-a24fd97eb3d0,src-dfe7e0c6ff39,src-e547d0d8cbe3,src-eac8dfbeb78c}
+
+
+\begin{claimboundary}
+Claim Boundary: first-partyのrelease pageや公式feedは、公開chronologyとsource ownerが述べたscopeを確認する一次資料である。一方、「より賢い」「高性能」といったcapability・benchmark・safety・performanceの評価は、それだけで独立再現済みの事実にはならない。\autocite{src-a07eb39dec04,src-dfe7e0c6ff39}
+\end{claimboundary}
+
+\begin{claimboundary}
+Claim Boundary: Claude Opus 4.7は保存されたAnthropic newsroomのembedded first-party dataから4月16日のreleaseを確認できる。ただし今回の保存資料だけから詳細なcapabilityやbenchmarkを補完しない。\autocite{src-f6aa679babd7}
+\end{claimboundary}
+
+\begin{claimboundary}
+Claim Boundary: vendor index／changelogは保存時点で残っている具体的な4月entryだけを扱う。site更新で過去paginationやdetailが失われ得るため、snapshotにない詳細を現在の知識から遡及的に埋めない。\autocite{src-9156c37fb1c2,src-a24fd97eb3d0,src-e547d0d8cbe3,src-eac8dfbeb78c}
+\end{claimboundary}
+
+\begin{claimboundary}
+Claim Boundary: Transformers release notesはproject chronologyと記載されたsupport変更の一次資料だが、すべてのdeploymentにおけるperformanceやcompatibilityを独立に保証するものではない。\autocite{src-6ddeedd7665f}
+\end{claimboundary}
