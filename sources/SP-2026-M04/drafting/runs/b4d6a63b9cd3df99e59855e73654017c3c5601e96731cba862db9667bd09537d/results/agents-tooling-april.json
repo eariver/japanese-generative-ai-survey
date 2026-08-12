@@ -1,0 +1,295 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M04",
+  "package_id": "agents-tooling-april",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "basis": {
+    "draft_package_sha256": "7b5408052b5b68bf44ee1644d1ed9bbefb94461aa32279ba65018d7d4250beb1",
+    "prompt_id": "article-drafting-v0.1",
+    "prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project drafting; no paid inference-provider API",
+    "generated_at": "2026-08-12T13:45:43+09:00",
+    "run_reference": "Interactive GPT-5.6 Sol drafting for the seven approved SP-2026-M04 ARTICLE_DRAFTING packages after explicit Architecture approval; prose follows the approved 36-page competition-axis-diversification architecture, preserves later-revision chronology cautions, and uses only package-bound Evidence."
+  },
+  "headline": "Agents & Tooling — 4月、Agentは開発・操作の現場へ入り始めた",
+  "deck": "Native sandbox、computer use、memory、workspace automation、issue-driven orchestration。4月は長時間Agent基盤が完成した月ではなく、その構成要素が実際の作業surfaceへ姿を現した月だった。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-1ecdad90bfb46efdc460-078f7cb1e1",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-20e34cbfb714919ccbb0-ffb9c96138",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-c71ef79e3212dc880b6b-a3cb5d2ded",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-f9ff221789e0942ded4a-bca9e6d988",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "opening-heading",
+      "block_type": "HEADING",
+      "text": "Agentが「機能」から作業surfaceへ出てくる",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "opening",
+      "block_type": "PARAGRAPH",
+      "text": "4月のagent関連更新を、すでに完成した長時間自律runtimeの到来として読むのは早い。むしろ重要なのは、sandbox、computer use、browsing、memory、workspace automation、orchestrationといった部品が、開発者やチームが日常的に触れるproduct／frameworkへ入り始めたことである。5月以降に実行環境全体の設計が前景化する直前、4月はagentが「modelにtoolを呼ばせる機能」から、作業を預けるsurfaceへ踏み出した段階だった。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-1ecdad90bfb46efdc460-078f7cb1e1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-20e34cbfb714919ccbb0-ffb9c96138",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-c71ef79e3212dc880b6b-a3cb5d2ded",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-f9ff221789e0942ded4a-bca9e6d988",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "sdk-heading",
+      "block_type": "HEADING",
+      "text": "Agents SDK — sandboxとharnessをframework側へ",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "sdk-body",
+      "block_type": "PARAGRAPH",
+      "text": "OpenAIは4月15日、Agents SDKの更新としてnative sandbox executionとmodel-native harnessを公表した。公式説明ではfilesやtoolsを横断するsecureかつlong-runningなagent構築を支えるとしている。ここで注目すべきなのは「長時間動く」という性能主張そのものより、sandboxとharnessがagent frameworkの明示的な構成要素になったことだ。agentを実環境へ接続するほど、model responseだけでなく、どこでcodeを実行し、何にaccessでき、どの状態を保持するかが設計対象になる。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-1ecdad90bfb46efdc460-078f7cb1e1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "codex-heading",
+      "block_type": "HEADING",
+      "text": "Codex — coding agentからcomputer workflowへ",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "codex-body",
+      "block_type": "PARAGRAPH",
+      "text": "4月16日に公表されたCodex appの更新では、computer use、in-app browsing、image generation、memory、pluginsが列挙されている。これらは同じ種類の能力ではない。computer useは画面上の操作、browsingは外部情報への接続、memoryは継続状態、pluginsは拡張interfaceに関わる。したがって「Codexが多機能になった」という要約よりも、codingを起点とするagent surfaceが複数のI/Oと状態管理へ広がったと見る方が、4月から後続月への変化を説明しやすい。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-20e34cbfb714919ccbb0-ffb9c96138",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "workspace-heading",
+      "block_type": "HEADING",
+      "text": "Workspace agents — 個人toolからteam workflowへ",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "workspace-body",
+      "block_type": "PARAGRAPH",
+      "text": "4月22日のWorkspace agents in ChatGPTは、Codex-powered agentをcloud上で動かし、複雑なworkflowを複数toolにまたがって自動化するものとして紹介された。一次資料が固定するのはproductのreleaseとstated scopeであり、実際の生産性向上を独立に保証するものではない。それでも、agentの配置先が個人のinteractive sessionだけでなくteam workspaceへ広がったことは、authorization、共有context、運用境界が後に重要になる流れの一部として読める。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-c71ef79e3212dc880b6b-a3cb5d2ded",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "orchestration-heading",
+      "block_type": "HEADING",
+      "text": "Symphony — issue trackerをorchestration surfaceにする",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "orchestration-body",
+      "block_type": "PARAGRAPH",
+      "text": "4月27日にOpenAIが公開したSymphonyは、Codex orchestrationのopen-source specとして、issue trackerをalways-on agent systemへ接続する構想を示す。ここでも「always-on」はagentが無制限に自律するという意味ではなく、仕事の入口、task queue、実行主体をorchestrationとして結び付ける設計語として読むべきだ。issue単位の仕事をagentへ渡す発想は、単発promptからwork queueへと運用単位が変わる兆候でもある。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-f9ff221789e0942ded4a-bca9e6d988",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "stack-heading",
+      "block_type": "HEADING",
+      "text": "4月時点で見えるstackの層",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "stack-body",
+      "block_type": "PARAGRAPH",
+      "text": "4件を並べると、同じagentという言葉の下に異なる層がある。Agents SDKはexecution substrateとharness、Codex appはuser-facing interaction surface、Workspace agentsはteam-level deployment、Symphonyはtask orchestrationを扱う。これらを単一製品のfeature listへ畳まず層として見ると、5月以降にsandbox、権限、retrieval、serving、persistent stateが「実行環境」として統合的に論じられる理由が見えてくる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-1ecdad90bfb46efdc460-078f7cb1e1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-20e34cbfb714919ccbb0-ffb9c96138",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-c71ef79e3212dc880b6b-a3cb5d2ded",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-f9ff221789e0942ded4a-bca9e6d988",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "month-boundary-heading",
+      "block_type": "HEADING",
+      "text": "4月と5月を同じ結論にしない",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "month-boundary",
+      "block_type": "PARAGRAPH",
+      "text": "Retrospectiveで注意したいのは、後から見えている成熟像を4月へ持ち込まないことだ。4月の一次資料から確実に言えるのは、sandbox、computer use、memory、workspace、orchestrationといった構成要素が明示的になったことまでである。これらが長時間agentの運用基盤としてどう組み合わさり、権限・retrieval・servingと一体化するかは5月以降の主題として残す。この段階差があるからこそ、4月を「競争軸の分化」、5月を「実行環境化」として連続して読める。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-1ecdad90bfb46efdc460-078f7cb1e1",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-20e34cbfb714919ccbb0-ffb9c96138",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-c71ef79e3212dc880b6b-a3cb5d2ded",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-f9ff221789e0942ded4a-bca9e6d988",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        }
+      ]
+    },
+    {
+      "block_id": "boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "Claim Boundary: ここで使うOpenAI資料はrelease chronologyとvendor-described scopeを確認するfirst-party evidenceである。security、生産性、長時間安定性、performanceといった効果は独立再現済みとは扱わない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-1ecdad90bfb46efdc460-078f7cb1e1",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-20e34cbfb714919ccbb0-ffb9c96138",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-c71ef79e3212dc880b6b-a3cb5d2ded",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M04:item-official-feed-f9ff221789e0942ded4a-bca9e6d988",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "Agents SDK native sandbox/model-native harness",
+      "block_ids": [
+        "sdk-body"
+      ]
+    },
+    {
+      "requirement": "Codexのcomputer use・browsing・memory等の拡張",
+      "block_ids": [
+        "codex-body"
+      ]
+    },
+    {
+      "requirement": "workspace agentsとSymphonyのorchestration",
+      "block_ids": [
+        "workspace-body",
+        "orchestration-body"
+      ]
+    },
+    {
+      "requirement": "4月と5月の境界を潰さず、長時間runtime成熟は後続号へ送る",
+      "block_ids": [
+        "month-boundary"
+      ]
+    }
+  ],
+  "boundary_coverage": [
+    {
+      "requirement": "Official first-party evidence establishes release chronology and stated scope; capability, safety, and performance statements are not independent reproduction.",
+      "block_ids": [
+        "boundary"
+      ]
+    }
+  ],
+  "late_breaking_acknowledged": false
+}
