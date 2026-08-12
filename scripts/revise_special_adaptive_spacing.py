@@ -39,6 +39,14 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
 
         return build_visual_review_repairs(repo_root, special_slug, issue_id, source_version)
 
+    # If a derived Visual Review source passed structural validation but failed
+    # at the TeX compiler, recover into a new immutable revision rather than
+    # mutating or overwriting the failed source version.
+    if changes.get("visual_review_recovery") is True:
+        from scripts.revise_special_visual_review_recovery import build as build_visual_review_recovery
+
+        return build_visual_review_recovery(repo_root, special_slug, issue_id, source_version)
+
     if changes.get("single_column_adaptive_chapter_starts") is True:
         from scripts.revise_special_single_column_adaptive_spacing import build as build_single_column
 
