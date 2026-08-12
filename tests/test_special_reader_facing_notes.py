@@ -78,7 +78,7 @@ Chronology & 2026-07-01 (MODEL\_RELEASE) \\
         primary = r"\item \textbf{一次情報で確認できる事実}: 保存済み一次資料で確認できる。"
         self.assertLess(result.index(primary), result.index(r"\begin{minipage}{\linewidth}"))
 
-    def test_attributed_claim_is_not_grouped_without_visual_qa_opt_in(self):
+    def test_generic_boundary_source_tail_is_grouped_without_visual_qa_opt_in(self):
         source = r'''\begin{technicalnote}{X}{主要資料}
 \begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
 \item \textbf{一次情報で確認できる事実}: 保存済み一次資料で確認できる。
@@ -97,8 +97,15 @@ Chronology & 2026-07-01 (MODEL\_RELEASE) \\
 \end{technicalnote}
 '''
         result = transform_note(source)
-        self.assertNotIn(r"\begin{minipage}{\linewidth}", result)
+        claim = r"\item \textbf{Author claim}: 著者は結果を報告している。"
+        minipage = r"\begin{minipage}{\linewidth}"
+        boundary = r"{\bfseries 読む際の境界}"
+        self.assertIn(minipage, result)
+        self.assertIn("generic boundary/source tail group", result)
         self.assertNotIn("coherent tail group", result)
+        self.assertLess(result.index(claim), result.index(minipage))
+        self.assertLess(result.index(minipage), result.index(boundary))
+        self.assertLess(result.index(r"\url{https://example.com/paper}"), result.index(r"\end{minipage}"))
 
     def test_legacy_partially_translated_event_labels_are_normalized(self):
         source = r'''\subsection*{Theme at a glance}
