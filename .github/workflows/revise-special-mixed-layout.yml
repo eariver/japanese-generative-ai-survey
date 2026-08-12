@@ -62,10 +62,17 @@ jobs:
           issue,version=sys.argv[1:]
           root=pathlib.Path('worktree')
           state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
-          assert state['lifecycle_state']=='RELEASE_CANDIDATE', state['lifecycle_state']
-          assert state['gates']['latex_build']=='passed'
-          assert state['gates']['visual_review']=='pending'
-          assert state['gates']['freeze']=='pending'
+          lifecycle=state['lifecycle_state']
+          gates=state['gates']
+          if lifecycle=='RELEASE_CANDIDATE':
+              assert gates['latex_build']=='passed'
+          elif lifecycle=='VALIDATED_DRAFT':
+              assert gates['claim_and_chronology_validation']=='passed'
+              assert gates['latex_build']=='pending'
+          else:
+              raise AssertionError(lifecycle)
+          assert gates['visual_review']=='pending'
+          assert gates['freeze']=='pending'
           theme=root/'sources'/issue/'editorial'/f'theme-synthesis-{version}.json'
           final=root/'sources'/issue/'editorial'/f'final-synthesis-{version}.json'
           layout=root/'sources'/issue/'editorial'/f'layout-revision-{version}.json'
@@ -86,7 +93,9 @@ jobs:
           import json,sys
           value=json.load(open(sys.argv[1],encoding='utf-8'))
           changes=value.get('layout_changes') or {}
-          if changes.get('remove_subsection_needspace') is True:
+          if changes.get('compact_toc_to_sections') is True:
+              print('compact-toc')
+          elif changes.get('remove_subsection_needspace') is True:
               print('relaxed-subsection')
           elif changes.get('apply_to_layout_only_article_bodies') is True:
               print('subsection')
@@ -95,6 +104,11 @@ jobs:
           PY
             )
             case "$mode" in
+              compact-toc)
+                PYTHONPATH=control-src python control-src/scripts/revise_special_compact_toc.py \
+                  --repo-root worktree --special-slug "$SPECIAL_SLUG" --issue-id "$SPECIAL_ID" --source-version "$SOURCE_VERSION" \
+                  > special-mixed-layout-audit.json
+                ;;
               relaxed-subsection)
                 PYTHONPATH=control-src python control-src/scripts/revise_special_relaxed_subsection_spacing.py \
                   --repo-root worktree --special-slug "$SPECIAL_SLUG" --issue-id "$SPECIAL_ID" --source-version "$SOURCE_VERSION" \
@@ -144,7 +158,17 @@ jobs:
           manifest=json.load(open(path,encoding='utf-8'))
           assert manifest['source_version']==version
           lr=manifest.get('layout_revision') or {}
-          if lr.get('relaxed_subsection_spacing') is True:
+          if lr.get('compact_toc_to_sections') is True:
+              assert manifest['status']=='VALIDATED_COMPACT_TOC_REVISION'
+              assert lr['reader_content_changed'] is False
+              assert lr['new_external_evidence'] is False
+              assert lr['article_sections_changed'] is False
+              assert lr['technical_notes_changed'] is False
+              assert lr['theme_synthesis_changed'] is False
+              assert lr['final_synthesis_changed'] is False
+              assert lr['bibliography_data_changed'] is False
+              assert manifest['layout']['toc_depth']=='section'
+          elif lr.get('relaxed_subsection_spacing') is True:
               assert manifest['status']=='VALIDATED_RELAXED_SUBSECTION_SPACING_REVISION'
               assert lr['reader_content_changed'] is False
               assert lr['new_external_evidence'] is False
