@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Create an immutable layout-only Special revision with adaptive single-column chapter starts."""
 from __future__ import annotations
-import argparse, hashlib, json, re, shutil
+import argparse, hashlib, json, shutil
 from pathlib import Path
 from typing import Any
 
@@ -40,19 +40,17 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     main_path=out/'main.tex'; text=main_path.read_text(encoding='utf-8')
     article_inputs=[str(a.get('article_section_path') or '') for a in current_manifest.get('articles') or []]
     if len(article_inputs)<2: raise ValueError('expected multiple article sections')
-    replacements=0
     for index, rel in enumerate(article_inputs):
         token='\\clearpage\n\\input{'+rel.removesuffix('.tex')+'}'
         if token not in text: raise ValueError(f'missing article boundary in main.tex: {rel}')
         if index==0: continue
         replacement='\\Needspace{0.45\\textheight}\n\\bigskip\n\\input{'+rel.removesuffix('.tex')+'}'
-        text=text.replace(token,replacement,1); replacements+=1
+        text=text.replace(token,replacement,1)
     bib_token='\\clearpage\n\\printbibliography[title={References / Source Notes}]'
     if bib_token in text:
-        text=text.replace(bib_token,'\\Needspace{0.35\\textheight}\n\\bigskip\n\\printbibliography[title={References / Source Notes}]',1); replacements+=1
+        text=text.replace(bib_token,'\\Needspace{0.35\\textheight}\n\\bigskip\n\\printbibliography[title={References / Source Notes}]',1)
     main_path.write_text(text,encoding='utf-8')
 
-    # All reader content files remain byte-identical; only main.tex pagination policy changes.
     for article in current_manifest.get('articles') or []:
         for path_key, sha_key in (('article_section_path','article_section_sha256'),('technical_notes_path','technical_notes_sha256')):
             target=out/str(article[path_key])
@@ -61,12 +59,12 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
         target=out/str(synth['path'])
         if sha(target)!=synth['sha256']: raise ValueError(f'theme synthesis changed unexpectedly: {synth.get("package_id")}')
 
-    new=dict(current_manifest); new['source_version']=source_version; new['status']='VALIDATED_SINGLE_COLUMN_ADAPTIVE_SPACING_REVISION'
+    new=dict(current_manifest); new['source_version']=source_version; new['status']='VALIDATED_ADAPTIVE_SPACING_REVISION'
     new['derivation']='Layout-only revision of the prior validated single-column source. Reader wording and Evidence are unchanged; later article starts use minimum-space guards instead of unconditional page breaks.'
     new['basis']=dict(current_manifest.get('basis') or {}); new['basis']['previous_source_manifest_path']=current['path']; new['basis']['previous_source_manifest_sha256']=current['sha256']
     new['main_tex']=dict(current_manifest.get('main_tex') or {}); new['main_tex']['sha256']=sha(main_path)
     new['layout']=dict(current_manifest.get('layout') or {}); new['layout']['chapter_start_policy']='first feature on new page; later articles Needspace(0.45 textheight)'; new['layout']['references_start_policy']='Needspace(0.35 textheight)'
-    new['layout_revision']={'from_source_version':current_manifest.get('source_version'),'reader_content_changed':False,'new_external_evidence':False,'single_column_adaptive_chapter_starts':True,'article_boundary_replacement_count':len(article_inputs)-1,'references_needspace':True,'article_sections_changed':False,'technical_notes_changed':False,'theme_synthesis_changed':False,'bibliography_data_changed':False}
+    new['layout_revision']={'from_source_version':current_manifest.get('source_version'),'reader_content_changed':False,'new_external_evidence':False,'adaptive_chapter_starts':True,'single_column_adaptive_chapter_starts':True,'forced_bibliography_clearpage':False,'article_boundary_replacement_count':len(article_inputs)-1,'references_needspace':True,'article_sections_changed':False,'technical_notes_changed':False,'theme_synthesis_changed':False,'bibliography_data_changed':False}
     manifest_path=out/'source-manifest.json'; write_json(manifest_path,new); manifest_sha=sha(manifest_path)
 
     hist=state.setdefault('provenance_history',{}); hist.setdefault('validated_issue_source',[]).append(current); prev_build=dict(state.get('provenance',{}).get('latex_build') or {})
