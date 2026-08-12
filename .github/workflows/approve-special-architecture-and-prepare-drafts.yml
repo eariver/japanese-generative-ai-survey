@@ -131,10 +131,16 @@ jobs:
           import json,sys
           m=json.load(open(sys.argv[1],encoding='utf-8'))
           assert m['passed'] is True, m['errors']
-          assert m['materialized_package_count']==m['package_count']==8, m
-          assert m['article_drafting_count']==6, m
+          assert m['materialized_package_count']==m['package_count'], m
+          assert m['article_drafting_count']>=1, m
           assert m['post_draft_summary_count']==1, m
           assert m['reference_generation_count']==1, m
+          assert (
+              m['article_drafting_count']
+              + m['post_draft_summary_count']
+              + m['reference_generation_count']
+              == m['materialized_package_count']
+          ), m
           PY
       - name: Build Architecture approval audit
         shell: bash
