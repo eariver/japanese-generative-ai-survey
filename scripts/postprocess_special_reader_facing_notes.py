@@ -241,8 +241,9 @@ def group_late_card_tail(text: str) -> str:
             if group_open:
                 raise ValueError("Technical Notes coherent tail group did not close before card end")
             in_note = False
-    if groups == 0:
-        raise ValueError("no attributed Technical Notes claim found for coherent tail grouping")
+    # Some source records legitimately have no separately attributed claim.
+    # In that case there is no late-card tail to group; keep the card unchanged
+    # apart from removing any obsolete Needspace marker from an older revision.
     return "\n".join(output) + ("\n" if text.endswith("\n") else "")
 
 
