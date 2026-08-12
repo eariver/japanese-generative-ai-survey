@@ -2,9 +2,11 @@
 """Deterministic planning spine for Japanese Generative AI Technical Survey Special editions.
 
 Special editions intentionally do not reuse the Weekly calendar resolver. A Special
-manifest explicitly fixes its coverage window and editorial purpose, while the
-later Evidence/Selection/Architecture/Freeze gates remain equivalent in spirit to
-the Weekly pipeline.
+manifest explicitly fixes its coverage window and editorial purpose. Deterministic
+Selection, drafting, validation, Freeze, and release checkpoints remain auditable,
+while normal human interaction is limited to Architecture Review and Publication
+Preview. An on-demand Exception Gate is used only when a new editorial/publication
+decision is required.
 """
 from __future__ import annotations
 
@@ -22,6 +24,9 @@ LIFECYCLE = [
     "SELECTION_COMPLETE", "ARCHITECTURE_ESTABLISHED", "DRAFT_COMPLETE", "VALIDATED_DRAFT",
     "RELEASE_CANDIDATE", "FROZEN",
 ]
+
+HUMAN_GATES = ["issue_architecture", "publication_preview"]
+PUBLICATION_PREVIEW_AUTHORIZES = ["visual_review", "freeze", "work_pr_merge", "public_release"]
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -120,7 +125,10 @@ def build_plan(manifest: dict[str, Any]) -> dict[str, Any]:
         "survey_root": manifest["paths"]["survey_root"],
         "source_root": manifest["paths"]["source_root"],
         "work_branch": manifest["paths"]["work_branch"],
-        "human_gates": ["candidate_selection", "issue_architecture", "visual_review", "freeze", "public_release"],
+        "human_gate_model": "ARCHITECTURE_PUBLICATION_PREVIEW_WITH_EXCEPTION",
+        "human_gates": list(HUMAN_GATES),
+        "publication_preview_authorizes": list(PUBLICATION_PREVIEW_AUTHORIZES),
+        "exception_gate": "ON_DEMAND",
     }
 
 
@@ -148,12 +156,15 @@ def initial_state(manifest: dict[str, Any]) -> dict[str, Any]:
         },
         "gates": pending,
         "automation": {
+            "human_gate_model": plan["human_gate_model"],
             "unattended_public_release": False,
-            "human_gate_required_for_selection": True,
+            "human_gate_required_for_selection": False,
             "human_gate_required_for_architecture": True,
             "human_gate_required_for_visual_review": True,
-            "human_gate_required_for_freeze": True,
-            "human_gate_required_for_public_release": True,
+            "human_gate_required_for_freeze": False,
+            "human_gate_required_for_public_release": False,
+            "publication_preview_authorizes": list(PUBLICATION_PREVIEW_AUTHORIZES),
+            "exception_gate": "ON_DEMAND",
         },
         "provenance": {"edition_manifest": f"specials/{manifest['special_slug']}/edition.json"},
     }
@@ -222,8 +233,10 @@ def markdown_plan(plan: dict[str, Any]) -> str:
         f"- Coverage: `{plan['collection_window_start']}` → `{plan['collection_window_end']}`\n"
         f"- Retrospective as of: `{plan['retrospective_as_of']}`\n"
         f"- Community research: `{plan['community_research']['mode']}` — {plan['community_research']['reason']}\n"
-        f"- Work branch: `{plan['work_branch']}`\n\n"
-        "This explicit historical window is independent from the Weekly cutoff resolver. Public release still requires the normal human editorial gates.\n"
+        f"- Work branch: `{plan['work_branch']}`\n"
+        f"- Normal Human Gates: `{', '.join(plan['human_gates'])}`\n"
+        f"- Exception Gate: `{plan['exception_gate']}`\n\n"
+        "This explicit historical window is independent from the Weekly cutoff resolver. Candidate Selection, validation, Freeze, merge, and publication remain deterministic auditable checkpoints, but normal user interaction stops only at Architecture Review and Publication Preview.\n"
     )
 
 

@@ -105,8 +105,8 @@ jobs:
                   'values': {},
               },
 
-              # Canonical Special production workflows. Historical one-shot
-              # workflows are intentionally not allowlisted.
+              # Canonical Special production workflows. Normal human interaction
+              # stops only at Architecture Review and Publication Preview.
               'special-pipeline': {
                   'file': 'special-pipeline.yml',
                   'keys': {'command', 'special_slug', 'collector'},
@@ -140,12 +140,14 @@ jobs:
                   'keys': {'special_slug', 'prior_evidence_run_sha', 'review_reference'},
                   'values': {},
               },
+              # Candidate Selection is an auditable editorial checkpoint, not a
+              # separate user stop. It prepares the Architecture proposal.
               'apply-special-selection-and-propose-architecture': {
                   'file': 'apply-special-selection-and-propose-architecture.yml',
                   'keys': {'special_slug', 'evidence_run_sha', 'approval_reference'},
                   'values': {},
-                  'human_gate': True,
               },
+              # Human Gate 1: Architecture Review.
               'approve-special-architecture-and-prepare-drafts': {
                   'file': 'approve-special-architecture-and-prepare-drafts.yml',
                   'keys': {'special_slug', 'evidence_run_sha', 'approval_reference'},
@@ -182,17 +184,22 @@ jobs:
                   'keys': {'special_slug', 'source_version'},
                   'values': {},
               },
-              'accept-special-visual-review-issue-only': {
-                  'file': 'accept-special-visual-review-issue-only.yml',
+              # Human Gate 2: Publication Preview. One approval SHA-binds the PDF
+              # and authorizes deterministic Visual Review recording, Freeze,
+              # merge, and public Release.
+              'accept-special-publication-preview-issue-only': {
+                  'file': 'accept-special-publication-preview-issue-only.yml',
                   'keys': {'special_slug', 'approved_pdf_sha256', 'approved_at', 'approval_reference'},
                   'values': {},
                   'human_gate': True,
               },
+              # Internal recovery after an already-approved Publication Preview.
+              # These workflows verify existing approval/provenance and do not
+              # create additional user interaction gates.
               'accept-special-freeze-issue-only': {
                   'file': 'accept-special-freeze-issue-only.yml',
                   'keys': {'special_slug', 'approved_at', 'approval_reference'},
                   'values': {},
-                  'human_gate': True,
               },
               'publish-special-frozen-release-issue-only': {
                   'file': 'publish-special-frozen-release-issue-only.yml',
