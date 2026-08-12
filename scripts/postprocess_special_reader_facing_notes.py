@@ -15,6 +15,11 @@ import re
 from pathlib import Path
 from typing import Any
 
+from scripts.special_technical_note_tail_policy import (
+    apply_generic_tail_policy,
+    unprotected_tail_titles,
+)
+
 
 ROLE_LABELS = {
     "PRIMARY": "主要資料",
@@ -300,6 +305,11 @@ def transform_note(text: str, selected_titles: set[str] | None = None) -> str:
     if BREAK_POLICY_MARKER not in text:
         text = add_card_break_policy(text)
     text = group_late_card_tail(text, selected_titles=selected_titles)
+    generic = apply_generic_tail_policy(text)
+    text = generic.text
+    unprotected = unprotected_tail_titles(text)
+    if unprotected:
+        raise ValueError(f"Technical Notes tail policy left unprotected card(s): {unprotected}")
     return text
 
 
@@ -340,6 +350,9 @@ def main() -> int:
             raise ValueError(f"pipeline-centric wording remained in Technical Notes: {rel}")
         if revised.lstrip().startswith(r"\clearpage"):
             raise ValueError(f"unconditional clearpage remained at Technical Notes boundary: {rel}")
+        unprotected = unprotected_tail_titles(revised)
+        if unprotected:
+            raise ValueError(f"generic Technical Notes tail policy failed in {rel}: {unprotected}")
         path.write_text(revised, encoding="utf-8")
         after = sha256_file(path)
         article["technical_notes_sha256"] = after
@@ -364,6 +377,9 @@ def main() -> int:
         "late_card_tail_group_titles": sorted(tail_group_titles),
         "late_card_tail_group": "opt-in minipage from final attributed claim through limitation/source block",
         "late_card_tail_group_scope": "only exact titles selected after render QA; technicalnote remains breakable",
+        "generic_boundary_source_tail_group": True,
+        "generic_boundary_source_tail_scope": "all Technical Notes cards with a reader boundary and primary-source block; whole card remains breakable",
+        "generic_boundary_source_tail_validation": "no unprotected boundary/limitation/source tail may remain",
         "changed_files": changed,
     })
     manifest["reader_facing_technical_notes"] = reader
@@ -382,6 +398,7 @@ def main() -> int:
         "machine_enum_policy": reader.get("machine_enum_policy"),
         "source_block_samepage": reader.get("source_block_samepage"),
         "late_card_tail_group": reader.get("late_card_tail_group"),
+        "generic_boundary_source_tail_group": reader.get("generic_boundary_source_tail_group"),
     }, ensure_ascii=False, indent=2))
     return 0
 

@@ -55,6 +55,14 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
 
         return build_visual_review_typography_recovery(repo_root, special_slug, issue_id, source_version)
 
+    # Issue #55: apply one generic per-card invariant instead of a Human-selected
+    # title allowlist.  Boundary/limitation/source stay together; the whole card
+    # remains breakable.
+    if changes.get("generic_technical_note_tail_policy") is True:
+        from scripts.revise_special_technical_note_tail_policy import build as build_tail_policy
+
+        return build_tail_policy(repo_root, special_slug, issue_id, source_version)
+
     if changes.get("single_column_adaptive_chapter_starts") is True:
         from scripts.revise_special_single_column_adaptive_spacing import build as build_single_column
 
