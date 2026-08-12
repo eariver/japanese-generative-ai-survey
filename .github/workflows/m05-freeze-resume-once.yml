@@ -109,50 +109,10 @@ jobs:
           assert current.is_file() and 'not a public Release version' in current.read_text(encoding='utf-8')
           PY
 
-      - name: Refresh frozen handoff and remove one-shot triggers
+      - name: Remove one-shot trigger files
         shell: bash
         run: |
           set -euo pipefail
-          python - <<'PY'
-          import json,pathlib
-          root=pathlib.Path('worktree')
-          state=json.load(open(root/'sources/SP-2026-M05/pipeline-state.json',encoding='utf-8'))
-          manifest=json.load(open(root/'sources/SP-2026-M05/release-manifest.json',encoding='utf-8'))
-          freeze=state['provenance']['freeze']
-          text=f'''# SP-2026-M05 HANDOFF
-
-Status: `FROZEN`
-
-## Gates
-
-- Raw Sources Preserved: passed
-- Candidate Inventory: passed
-- Evidence Normalized: passed
-- Candidate Selection: passed
-- Issue Architecture: passed
-- Article Draft: passed
-- Claim & Chronology Validation: passed
-- LaTeX Build: passed
-- Human Visual Review: passed
-- Freeze: passed
-
-## Frozen release
-
-- Public identity: `2026-M05`
-- Release tag: `{manifest['release_tag']}`
-- Canonical internal source revision: `{manifest['source_version']}` (provenance only)
-- Source manifest SHA-256: `{manifest['source_manifest_sha256']}`
-- Frozen PDF SHA-256: `{manifest['expected_pdf_sha256']}`
-- Page count: `{manifest['page_count']}`
-- Freeze time: `{state['calendar']['frozen_at']}`
-- Release manifest: `sources/SP-2026-M05/release-manifest.json`
-- Freeze record: `{freeze['path']}`
-- Canonical source navigation: `surveys/special/2026-M05/CURRENT_RELEASE.md`
-
-Human Visual Review and Freeze were explicitly approved for the exact v0.12 PDF candidate. Freeze authorizes normal PR merge and publication under the issue-only release identity. The publisher must still reverify the frozen source and PDF SHA-256 before creating the GitHub Release.
-'''
-          (root/'sources/SP-2026-M05/HANDOFF.md').write_text(text,encoding='utf-8')
-          PY
           rm -f worktree/sources/SP-2026-M05/editorial/final-human-approval-trigger.json
           rm -f worktree/sources/SP-2026-M05/editorial/freeze-resume-trigger.json
 
@@ -167,7 +127,6 @@ Human Visual Review and Freeze were explicitly approved for the exact v0.12 PDF 
             sources/SP-2026-M05/pipeline-state.json \
             sources/SP-2026-M05/freeze/freeze.json \
             sources/SP-2026-M05/release-manifest.json \
-            sources/SP-2026-M05/HANDOFF.md \
             surveys/special/2026-M05/CURRENT_RELEASE.md
           if git ls-files --error-unmatch surveys/special/2026-M05/main.tex >/dev/null 2>&1; then
             git add surveys/special/2026-M05/main.tex
