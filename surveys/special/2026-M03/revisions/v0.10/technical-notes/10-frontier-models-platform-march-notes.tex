@@ -1,0 +1,275 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{Frontier Models \& Developer Platform — 更新波と実行能力への接続: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+GPT-5.4 & 主要資料 & モデル & 2026-03-05 (モデル公開) \\
+Claude Sonnet 4.6 & 主要資料 & モデル & 2026-03-31 (モデル公開) \\
+Gemini API March 2026 model and tool updates & 主要資料 & モデル更新 & 2026-03-03 (モデル公開); 2026-03-10 (モデル公開); 2026-03-18 (API更新); 2026-03-26 (モデル公開); 2026-03-31 (モデル公開) \\
+GPT-5.3 Instant: Smoother, more useful everyday conversations & 主要資料 & モデル & 2026-03-03 (公式公開) \\
+GPT-5.4 mini and nano & 主要資料 & モデル更新 & 2026-03-17 (モデル公開) \\
+GLM-5-Turbo & 補足資料 & モデル & 2026-03-15 (モデル公開) \\
+Alibaba Model Studio March 2026 model updates & 補足資料 & モデル更新 & 2026-03-03 (モデル公開) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{GPT-5.4}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & モデル \\
+時系列 & 2026-03-05 (モデル公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Vendor claim}: OpenAIはGPT-5.4をprofessional work向けfrontier modelとして紹介し、coding、computer use、tool search、100万token context windowなどを主なcapabilityとして挙げている。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: model identity、時系列、availability context、vendorが示したcapabilityは確認できるが、benchmark superiorityは本サーベイで独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/introducing-gpt-5-4}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Claude Sonnet 4.6}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Anthropic \\
+種別 & モデル \\
+時系列 & 2026-03-31 (モデル公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Vendor claim}: Anthropicの保存済みnews-index metadataでは、Claude Sonnet 4.6が3月31日に告知され、coding、computer use、long-context reasoning、agent planningの強化、Claude/API/主要cloudでの提供、betaの100万token context windowが説明されている。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 保存資料はfull item pageではなくAnthropic news indexである。埋め込まれた3月のrelease metadataと時系列は確認できるが、snapshotにないbenchmark detailを推定しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://www.anthropic.com/news}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Gemini API March 2026 model and tool updates}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Google \\
+種別 & モデル更新 \\
+時系列 & 2026-03-03 (モデル公開); 2026-03-10 (モデル公開); 2026-03-18 (API更新); 2026-03-26 (モデル公開); 2026-03-31 (モデル公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Vendor claim}: Gemini APIの保存済みrelease notesでは、3月3日のGemini 3.1 Flash-Lite Preview/Nano Banana 2、10日のgemini-embedding-2-preview、18日のbuilt-in toolsとfunction callingの併用、26日のGemini 3.1 Flash Live Preview、31日のVeo 3.1 Lite Previewなど、3月中の連続更新を確認できる。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: release-note snapshotから日付付きentryは確認できるが、model quality、latency、cost-efficiency、tool-use performanceは独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://ai.google.dev/gemini-api/docs/changelog}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{GPT-5.3 Instant: Smoother, more useful everyday conversations}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & モデル \\
+時系列 & 2026-03-03 (公式公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIの一次情報では、GPT-5.3 Instantに関する公開が2026年3月に行われたことを確認できる。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 一次情報で公開時系列は確認できるが、capability・evaluation上の主張は独立再現がない限りvendor claimとして扱う。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/gpt-5-3-instant}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{GPT-5.4 mini and nano}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & モデル更新 \\
+時系列 & 2026-03-17 (モデル公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Vendor claim}: OpenAIはGPT-5.4 mini/nanoをGPT-5.4 familyの小型・高速variantとして紹介し、coding、tool use、multimodal、subagent用途を強調している。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: model identity、3月の時系列、vendorが示した位置付けは確認できるが、benchmarkやefficiency上の優位性は独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/introducing-gpt-5-4-mini-and-nano}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{GLM-5-Turbo}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Z.ai \\
+種別 & モデル \\
+時系列 & 2026-03-15 (モデル公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Vendor claim}: Z.aiの保存済みrelease notesでは、GLM-5-Turboが3月15日に記録され、high-throughput OpenClaw workloadを対象に、long-chain agent taskのstability/efficiency、tool/Skills integration、instruction decomposition、multi-agent coordinationなどを重視すると説明されている。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 日付付きmodel entryとvendor descriptionは確認できるが、throughput、stability、tool use、multi-agent performanceは独立benchmarkしていない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://docs.z.ai/release-notes/new-released}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Alibaba Model Studio March 2026 model updates}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Alibaba Cloud \\
+種別 & モデル更新 \\
+時系列 & 2026-03-03 (モデル公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Vendor claim}: Alibaba Model Studioの保存済みlifecycle snapshotには、3月3日付のQwen Image 2.0関連entryがあり、image generationとeditingを扱うmodel familyとして記載されている。また3月付のspeech-recognition lifecycle entryも確認できる。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 保存資料は3月当時のimmutable item pageではなく後日のlifecycle index snapshotである。3月付entryの存在は確認できるが、capability比較はAlibabaの主張として扱い、後日のindex編集を3月当時の本文と同一視しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://www.alibabacloud.com/help/en/model-studio/newly-released-models}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

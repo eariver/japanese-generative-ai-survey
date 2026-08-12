@@ -1,0 +1,117 @@
+\documentclass[lualatex,a4paper,11pt]{jlreq}
+\usepackage{jgaisurvey}
+\usepackage{needspace}
+\usepackage{multicol}
+\addbibresource{references.bib}
+
+% Special-local long-form presentation. Shared weekly source remains unchanged.
+\geometry{margin=22mm,headsep=5mm,footskip=10mm}
+\setlength{\headheight}{14.5pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1em}
+\newtcolorbox{technicalnote}[2]{
+  enhanced,breakable,colback=SurveySoft,colframe=SurveyAccent,
+  boxrule=0.65pt,arc=1mm,title={#1 \hfill \footnotesize #2},fonttitle=\bfseries,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=4mm,after skip=3mm
+}
+
+\surveysetup
+  {SP-2026-M03}
+  {Japanese Generative AI Technical Survey}
+  {Special / Coverage 2026-03-01 -- 2026-03-31 / Retrospective as of 2026-08-12}
+  {Coverage window: 2026-03-01 -- 2026-03-31 UTC}
+\surveyeditiondescriptor{Retrospective Survey}
+\surveycoverstory
+  {3月 — AIをどう動かし、つなぎ、守るか}
+  {Frontier modelの更新と並行して、serving、security、multimodal、agent runtimeがそれぞれ独立した技術課題として前景化した1か月を振り返る。}
+  {Frontier Models \& Developer Platform — 更新波と実行能力への接続 \quad / \quad Inference, Serving \& Systems — AIをどう動かすか \quad / \quad Safety, Security \& Control — AIをどう守るか}
+
+\setlength{\columnsep}{6mm}
+\setlength{\multicolsep}{0.8em plus 0.2em minus 0.1em}
+
+\begin{document}
+\surveycover
+\clearpage
+\input{sections/00-frontmatter}
+
+\clearpage
+\section{Frontier Models \& Developer Platform — 3月、モデル更新は実行面へ広がった}
+\label{pkg:frontier-models-platform-march}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/01-frontier-models-platform-march-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/01-frontier-models-platform-march-wide}
+\medskip
+\input{technical-notes/10-frontier-models-platform-march-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Inference, Serving \& Systems — モデルの外側で競争が厚くなる}
+\label{pkg:inference-serving-systems-march}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/02-inference-serving-systems-march-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/02-inference-serving-systems-march-wide}
+\medskip
+\input{technical-notes/20-inference-serving-systems-march-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Safety, Security \& Control — 実行するAIをどこで止めるか}
+\label{pkg:safety-security-control-march}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/03-safety-security-control-march-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/03-safety-security-control-march-wide}
+\medskip
+\input{technical-notes/30-safety-security-control-march-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Multimodal \& Generation — 生成・理解・groundingが別々に伸びる}
+\label{pkg:multimodal-generation-march}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/04-multimodal-generation-march-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/04-multimodal-generation-march-wide}
+\medskip
+\input{technical-notes/40-multimodal-generation-march-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Agents, Runtime \& Long-horizon Work — モデルを実行環境へ置く}
+\label{pkg:agents-runtime-long-horizon-march}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/05-agents-runtime-long-horizon-march-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/05-agents-runtime-long-horizon-march-wide}
+\medskip
+\input{technical-notes/50-agents-runtime-long-horizon-march-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Paper Watch — 評価・攻撃・効率、3月末に広がった次の論点}
+\label{pkg:paper-watch-march}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/06-paper-watch-march-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/06-paper-watch-march-wide}
+\medskip
+\input{technical-notes/60-paper-watch-march-notes}
+
+\Needspace{0.30\textheight}
+\bigskip
+\printbibliography[title={References / Source Notes}]
+\end{document}
