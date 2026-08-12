@@ -78,6 +78,8 @@ NEW_INTRO = (
     "時系列、確認済みの主張、留意点、一次資料URLを掲載する。"
 )
 BREAK_POLICY_MARKER = "% reader-facing Technical Notes break policy"
+TAIL_GUARD_MARKER = "% reader-facing Technical Notes late-card tail guard"
+TAIL_GUARD_BASELINES = 12
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -199,6 +201,29 @@ def add_card_break_policy(text: str) -> str:
     return "\n".join(output) + ("\n" if text.endswith("\n") else "")
 
 
+def add_late_card_tail_guard(text: str) -> str:
+    """Keep an attributed claim near its limitation/source tail when space is tight.
+
+    The card remains breakable.  The guard is deliberately local to the final
+    attributed claim rather than the whole tcolorbox so it does not recreate
+    the large structural whitespace regressions tracked in Issue #40.
+    """
+    lines = text.splitlines()
+    output: list[str] = []
+    in_note = False
+    for line in lines:
+        if re.match(r"\\begin\{technicalnote\}\{.*?\}\{.*?\}$", line):
+            in_note = True
+        elif line == r"\end{technicalnote}":
+            in_note = False
+        if in_note and re.match(r"\\item \\textbf\{(?:Vendor claim|Project claim|Author claim)\}:", line):
+            if not output or output[-1] != TAIL_GUARD_MARKER:
+                output.append(TAIL_GUARD_MARKER)
+                output.append(rf"\Needspace{{{TAIL_GUARD_BASELINES}\baselineskip}}")
+        output.append(line)
+    return "\n".join(output) + ("\n" if text.endswith("\n") else "")
+
+
 def transform_note(text: str) -> str:
     # A Technical Notes block must follow the preceding synthesis naturally. An
     # unconditional clearpage can otherwise strand a small Claim Boundary box.
@@ -229,6 +254,8 @@ def transform_note(text: str) -> str:
     text = protect_primary_source_blocks(text)
     if BREAK_POLICY_MARKER not in text:
         text = add_card_break_policy(text)
+    if TAIL_GUARD_MARKER not in text:
+        text = add_late_card_tail_guard(text)
     return text
 
 
@@ -287,6 +314,8 @@ def main() -> int:
         "whole_card_unbreakable": False,
         "source_block_samepage": True,
         "paragraph_widow_orphan_penalty": 10000,
+        "late_card_tail_needspace_baselines": TAIL_GUARD_BASELINES,
+        "late_card_tail_guard_scope": "attributed claim only; whole card remains breakable",
         "changed_files": changed,
     })
     manifest["reader_facing_technical_notes"] = reader
@@ -304,6 +333,7 @@ def main() -> int:
         "language_policy": reader.get("language_policy"),
         "machine_enum_policy": reader.get("machine_enum_policy"),
         "source_block_samepage": reader.get("source_block_samepage"),
+        "late_card_tail_needspace_baselines": reader.get("late_card_tail_needspace_baselines"),
     }, ensure_ascii=False, indent=2))
     return 0
 

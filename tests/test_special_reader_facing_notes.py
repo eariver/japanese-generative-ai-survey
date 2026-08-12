@@ -45,6 +45,32 @@ Chronology & 2026-07-01 (MODEL\_RELEASE) \\
         self.assertLess(result.index(r"\begin{samepage}"), result.index(r"\url{https://example.com}"))
         self.assertLess(result.index(r"\url{https://example.com}"), result.index(r"\end{samepage}"))
 
+    def test_attributed_claim_gets_local_tail_guard_without_unbreakable_card(self):
+        source = r'''\begin{technicalnote}{X}{主要資料}
+\begin{itemize}
+\item \textbf{一次情報で確認できる事実}: 保存済み一次資料で確認できる。
+\item \textbf{Author claim}: 著者は結果を報告している。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}
+\item \textbf{分析上の留意点}: 本号では独立再現していない。
+\end{itemize}
+{\bfseries 一次資料}
+\begin{itemize}
+\item \url{https://example.com/paper}
+\end{itemize}
+\end{technicalnote}
+'''
+        result = transform_note(source)
+        claim = r"\item \textbf{Author claim}: 著者は結果を報告している。"
+        self.assertIn(r"\Needspace{12\baselineskip}", result)
+        self.assertLess(result.index(r"\Needspace{12\baselineskip}"), result.index(claim))
+        self.assertLess(result.index(claim), result.index(r"{\bfseries 読む際の境界}"))
+        self.assertIn(r"\begin{samepage}", result)
+        # The whole technicalnote is not wrapped in samepage; only the source block is.
+        self.assertLess(result.index(r"\begin{technicalnote}"), result.index(r"\begin{samepage}"))
+        self.assertNotIn(r"\begin{samepage}\n\begin{technicalnote}", result)
+
     def test_legacy_partially_translated_event_labels_are_normalized(self):
         source = r'''\subsection*{Theme at a glance}
 A & 主要資料 & モデル & 2026-05-01 (モデル\_RELEASE) \\
