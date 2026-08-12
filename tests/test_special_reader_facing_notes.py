@@ -45,6 +45,27 @@ Chronology & 2026-07-01 (MODEL\_RELEASE) \\
         self.assertLess(result.index(r"\begin{samepage}"), result.index(r"\url{https://example.com}"))
         self.assertLess(result.index(r"\url{https://example.com}"), result.index(r"\end{samepage}"))
 
+    def test_legacy_partially_translated_event_labels_are_normalized(self):
+        source = r'''\subsection*{Theme at a glance}
+A & 主要資料 & モデル & 2026-05-01 (モデル\_RELEASE) \\
+B & 主要資料 & 研究 & 2026-05-02 (研究\_RELEASE) \\
+C & 主要資料 & 論文 & 2026-05-03 (論文\_RELEASE) \\
+\begin{technicalnote}{A}{主要資料}
+種別 & モデル \\
+時系列 & 2026-05-01 (モデル\_RELEASE) \\
+{\bfseries 一次資料}
+\begin{itemize}
+\item \url{https://example.com/a}
+\end{itemize}
+\end{technicalnote}
+'''
+        result = transform_note(source)
+        self.assertEqual(result.count("モデル公開"), 2)
+        self.assertIn("研究公開", result)
+        self.assertIn("論文公開", result)
+        for banned in (r"モデル\_RELEASE", r"研究\_RELEASE", r"論文\_RELEASE"):
+            self.assertNotIn(banned, result)
+
     def test_evaluation_playbook_gets_semantic_reader_label(self):
         source = r'''\subsection*{Theme at a glance}
 A shared playbook for trustworthy third party evaluations & 補足資料 & SAFETY EVENT & 2026-05-29 (OFFICIAL\_PUBLICATION) \\
