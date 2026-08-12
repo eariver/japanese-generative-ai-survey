@@ -16,10 +16,14 @@ def write_json(path: Path, value: dict[str, Any]) -> None:
 def sha(path: Path) -> str: return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str) -> dict[str, Any]:
+    marker_path=repo_root/'sources'/issue_id/'editorial'/f'layout-revision-{source_version}.json'; marker=load_json(marker_path)
+    if (marker.get('layout_changes') or {}).get('single_column_adaptive_chapter_starts') is True:
+        from scripts.revise_special_single_column_adaptive_spacing import build as build_single_column
+        return build_single_column(repo_root,special_slug,issue_id,source_version)
+
     state_path=repo_root/'sources'/issue_id/'pipeline-state.json'; state=load_json(state_path); gates=state.get('gates') or {}
     if state.get('lifecycle_state')!='RELEASE_CANDIDATE': raise ValueError('adaptive spacing requires RELEASE_CANDIDATE')
     if gates.get('latex_build')!='passed' or gates.get('visual_review')!='pending' or gates.get('freeze')!='pending': raise ValueError('adaptive spacing requires built, unapproved release candidate')
-    marker_path=repo_root/'sources'/issue_id/'editorial'/f'layout-revision-{source_version}.json'; marker=load_json(marker_path)
     if marker.get('issue_id')!=issue_id or marker.get('revision')!=source_version: raise ValueError('layout marker mismatch')
     constraints=marker.get('constraints') or {}
     if constraints.get('new_external_evidence_allowed') is not False or constraints.get('reader_content_changed') is not False or constraints.get('selected_evidence_only') is not True: raise ValueError('layout marker must be content-neutral and selected-Evidence-only')
