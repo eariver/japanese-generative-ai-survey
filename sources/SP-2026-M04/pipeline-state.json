@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "issue_id": "SP-2026-M04",
   "edition_kind": "RETROSPECTIVE_PERIOD",
-  "lifecycle_state": "RELEASE_CANDIDATE",
+  "lifecycle_state": "VALIDATED_DRAFT",
   "revision": "v0.1",
   "calendar": {
     "editorial_cutoff": "2026-04-30T23:59:59Z",
@@ -21,7 +21,7 @@
     "issue_architecture": "passed",
     "article_draft": "passed",
     "claim_and_chronology_validation": "passed",
-    "latex_build": "passed",
+    "latex_build": "pending",
     "visual_review": "pending",
     "freeze": "pending"
   },
@@ -68,35 +68,22 @@
       "sha256": "89cb86bd9b00d2b4ed03379ece91d515eb39b691b247e9e23801e1d3fd451e15"
     },
     "validated_issue_source": {
-      "path": "surveys/special/2026-M04/revisions/v0.4/source-manifest.json",
-      "sha256": "d13c02a7511b98dcd6b07321ead9992c704537426d58ab1ac1a06f88662b8d22",
-      "source_version": "v0.4",
+      "path": "surveys/special/2026-M04/revisions/v0.5/source-manifest.json",
+      "sha256": "68509d25d94df510a5abc420e7d3516fe91b78eb1900714336b10ff03d24f6be",
+      "source_version": "v0.5",
       "expansion_basis": "selected Evidence cards only",
       "typography_revision": "v0.3-cleanup",
       "reader_facing_notes_language": "ja-reader-summary-v1",
       "reader_facing_technical_notes": true,
       "period_consistency": true,
       "layout_mode": "section-level-toc",
-      "layout_revision_sha256": "9a8d5e8662f593153ac343b5f0f2928172b56e00da89d6ac7075653ee0e61fb1"
+      "layout_revision_sha256": "a2b506d9f162c0b40a5f110c726b5e3cab05b91883af13281116a2ad6390fceb"
     },
     "reader_layout_revision": {
-      "source_version": "v0.4",
-      "layout_revision_path": "sources/SP-2026-M04/editorial/layout-revision-v0.4.json",
-      "layout_revision_sha256": "9a8d5e8662f593153ac343b5f0f2928172b56e00da89d6ac7075653ee0e61fb1",
-      "reason": "Visual QA of the canonical v0.3 40-page PDF found only two remaining raw machine event enums in reader-facing Technical Notes: PROJECT_RELEASE and EVALUATION_RELEASE. Normalize all known event enums to reader-facing labels without changing Evidence, chronology dates, Japanese summaries, article prose, or source URLs."
-    },
-    "latex_build": {
-      "workflow_run_id": 31567279695,
-      "pdf_sha256": "7774a2c6d11bb7b302893a7f632f3b33ede4f40937f4d9662363f4683b6a7cba",
-      "page_count": 40,
-      "source_version": "v0.4",
-      "validated_issue_source_path": "worktree/surveys/special/2026-M04/revisions/v0.4/source-manifest.json",
-      "validated_issue_source_sha256": "d13c02a7511b98dcd6b07321ead9992c704537426d58ab1ac1a06f88662b8d22",
-      "build_style": {
-        "control_commit_sha": "2bc2f21b49e57825208ee48fac519584cde7fd5f",
-        "path": "templates/survey/jgaisurvey.sty",
-        "sha256": "0f7fce1bb98ead90d4321190b5be953a1b57d32d10bca5acc4fbecce12ce4920"
-      }
+      "source_version": "v0.5",
+      "layout_revision_path": "sources/SP-2026-M04/editorial/layout-revision-v0.5.json",
+      "layout_revision_sha256": "a2b506d9f162c0b40a5f110c726b5e3cab05b91883af13281116a2ad6390fceb",
+      "reason": "Full-page visual QA of the canonical v0.4 40-page PDF found avoidable large whitespace at article boundaries, notably around pages 23 and 32, caused by unconditional clearpage directives. Keep the first feature on a new page but use minimum-space guards for later article and reference starts so the issue does not appear padded to the 40-page maximum."
     }
   },
   "provenance_history": {
@@ -127,6 +114,18 @@
         "period_consistency": true,
         "layout_mode": "section-level-toc",
         "layout_revision_sha256": "bcff26b3a32d8f0c23575562bfb91dbadbfe71e8c47ed12badb52defcdb50f21"
+      },
+      {
+        "path": "surveys/special/2026-M04/revisions/v0.4/source-manifest.json",
+        "sha256": "d13c02a7511b98dcd6b07321ead9992c704537426d58ab1ac1a06f88662b8d22",
+        "source_version": "v0.4",
+        "expansion_basis": "selected Evidence cards only",
+        "typography_revision": "v0.3-cleanup",
+        "reader_facing_notes_language": "ja-reader-summary-v1",
+        "reader_facing_technical_notes": true,
+        "period_consistency": true,
+        "layout_mode": "section-level-toc",
+        "layout_revision_sha256": "9a8d5e8662f593153ac343b5f0f2928172b56e00da89d6ac7075653ee0e61fb1"
       }
     ],
     "latex_build": [
@@ -139,6 +138,19 @@
         "validated_issue_source_sha256": "6c4684852eafbf3836e74643fac97aa552f890a4d1a905c0c729c935ba861d29",
         "build_style": {
           "control_commit_sha": "0e0f55f9ea373fb24f15b0321af1a64e5a741ecd",
+          "path": "templates/survey/jgaisurvey.sty",
+          "sha256": "0f7fce1bb98ead90d4321190b5be953a1b57d32d10bca5acc4fbecce12ce4920"
+        }
+      },
+      {
+        "workflow_run_id": 31567279695,
+        "pdf_sha256": "7774a2c6d11bb7b302893a7f632f3b33ede4f40937f4d9662363f4683b6a7cba",
+        "page_count": 40,
+        "source_version": "v0.4",
+        "validated_issue_source_path": "worktree/surveys/special/2026-M04/revisions/v0.4/source-manifest.json",
+        "validated_issue_source_sha256": "d13c02a7511b98dcd6b07321ead9992c704537426d58ab1ac1a06f88662b8d22",
+        "build_style": {
+          "control_commit_sha": "2bc2f21b49e57825208ee48fac519584cde7fd5f",
           "path": "templates/survey/jgaisurvey.sty",
           "sha256": "0f7fce1bb98ead90d4321190b5be953a1b57d32d10bca5acc4fbecce12ce4920"
         }
