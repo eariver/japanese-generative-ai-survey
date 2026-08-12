@@ -36,8 +36,12 @@ Source Intake
   -> TeX/PDF
   -> Human visual review
   -> Human Freeze
-  -> Human public Release approval
+  -> normal work-PR merge
+  -> exact frozen source/PDF SHA verification
+  -> GitHub Release
 ```
+
+**Freeze is the final Human publication gate.** Freeze binds the exact reviewed source manifest and PDF SHA-256, authorizes the normal work-PR merge, and grants publication authority for the corresponding issue-only Release. There is no additional independent Human public-Release approval after Freeze. Publication still fails closed unless the publisher can re-fetch and verify the exact frozen source and PDF bytes recorded by the Freeze manifest.
 
 ## 3. Historical granularity
 
@@ -137,11 +141,13 @@ surveys/special/<slug>/
 sources/SP-<slug>/
 ```
 
-Release tags will use:
+Public Release identity is **issue-only**. Release tags use:
 
 ```text
-special/<slug>/<revision>
+special/<slug>
 ```
+
+The public Release title and asset name likewise use the issue identity without an internal source revision. Source revisions such as `v0.12` remain repository provenance used to identify the exact frozen source; they are not public Release versions.
 
 ## 8. First edition
 
