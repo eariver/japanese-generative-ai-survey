@@ -1,0 +1,406 @@
+name: One-shot fix Special publication layout and taxonomy contract
+
+on:
+  push:
+    branches:
+      - fix/special-publication-layout-taxonomy-contract
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: fix/special-publication-layout-taxonomy-contract
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Patch shared reader taxonomy and publication layout contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          def replace_once(path: str, old: str, new: str) -> None:
+              p=Path(path); text=p.read_text(encoding='utf-8')
+              if text.count(old) != 1:
+                  raise SystemExit(f'{path}: expected one anchor, found {text.count(old)}')
+              p.write_text(text.replace(old,new,1),encoding='utf-8')
+
+          # 1) Shared reader-facing mapper: normalize full M02 event kinds before
+          # broad MODEL/AGENT/etc replacements can create partially translated labels.
+          path='scripts/postprocess_special_reader_facing_notes.py'
+          replace_once(path,
+              '    "API_UPDATE": "API更新",\n}\nTYPE_LABELS = {',
+              '    "API_UPDATE": "API更新",\n'
+              '    "AGENT_PRODUCT_RELEASE": "Agent製品公開",\n'
+              '    "PROJECT_RELEASE": "プロジェクト公開",\n'
+              '    "PROJECT_UPDATE": "プロジェクト更新",\n'
+              '    "SYSTEM_CARD_PUBLICATION": "System Card公開",\n'
+              '    "RESEARCH_PREVIEW": "研究Preview",\n'
+              '    "REGIONAL_MODEL_RELEASE": "地域別モデル公開",\n'
+              '    "INTERNATIONAL_MODEL_RELEASE": "国際提供モデル公開",\n'
+              '    "OPEN_WEIGHT_MODEL_RELEASE": "オープンウェイトモデル公開",\n'
+              '    "TECHNICAL_FRAMEWORK_RELEASE": "技術Framework公開",\n'
+              '    "API_MODEL_RELEASE": "APIモデル公開",\n'
+              '    "EVALUATION_RELEASE": "評価公開",\n'
+              '    "MEDIA_MODEL_RELEASE": "メディアモデル公開",\n'
+              '    "MEDIA_MODEL_UPDATE": "メディアモデル更新",\n'
+              '}\nTYPE_LABELS = {'
+          )
+          replace_once(path,
+              '    "SAFETY EVENT": "安全性関連",\n}\nTYPE_OVERRIDES = {',
+              '    "SAFETY EVENT": "安全性関連",\n'
+              '    "Agent_製品公開": "Agent製品公開",\n'
+              '    "研究_PREVIEW": "研究Preview",\n'
+              '    "REGIONAL_モデル公開": "地域別モデル公開",\n'
+              '    "INTERNATIONAL_モデル公開": "国際提供モデル公開",\n'
+              '    "オープンウェイト_モデル公開": "オープンウェイトモデル公開",\n'
+              '    "TECHNICAL_Framework公開": "技術Framework公開",\n'
+              '    "API_モデル公開": "APIモデル公開",\n'
+              '}\nTYPE_OVERRIDES = {'
+          )
+          validator = r'''
+
+          CHRONOLOGY_EVENT_RE = re.compile(r"\b\d{4}-\d{2}(?:-\d{2})?\s*\(([^)]+)\)")
+          ALLCAPS_SPACE_RE = re.compile(r"^[A-Z][A-Z0-9]*(?:\s+[A-Z][A-Z0-9]*)+$")
+          MACHINE_SINGLE_TYPE_LABELS = {"PRODUCT", "OTHER"}
+
+
+          def _machine_taxonomy_label(value: str) -> bool:
+              value = value.replace(r"\_", "_").strip()
+              if not value:
+                  return False
+              if "_" in value:
+                  return True
+              if ALLCAPS_SPACE_RE.fullmatch(value):
+                  return True
+              if value in MACHINE_SINGLE_TYPE_LABELS:
+                  return True
+              return False
+
+
+          def reader_taxonomy_findings(text: str) -> list[str]:
+              """Return reader-facing taxonomy leaks without scanning URLs/free prose.
+
+              Event kinds are inspected only in dated chronology parentheses. Artifact
+              types are inspected only in the Technical Notes type row or the four-column
+              Theme-at-a-glance table. This keeps the guard generic without treating model
+              names, code identifiers, or source URLs as taxonomy.
+              """
+              normalized = text.replace(r"\_", "_")
+              findings: set[str] = set()
+              for value in CHRONOLOGY_EVENT_RE.findall(normalized):
+                  label = value.strip()
+                  if _machine_taxonomy_label(label):
+                      findings.add(label)
+              for line in normalized.splitlines():
+                  stripped = line.strip()
+                  if stripped.startswith("種別 & "):
+                      value = stripped[len("種別 & "):].rsplit(r"\\", 1)[0].strip()
+                      if _machine_taxonomy_label(value):
+                          findings.add(value)
+                      continue
+                  if " & " in stripped and "2026-" in stripped:
+                      parts = [part.strip() for part in stripped.rsplit(r"\\", 1)[0].split(" & ")]
+                      if len(parts) >= 4:
+                          value = parts[-2]
+                          if _machine_taxonomy_label(value):
+                              findings.add(value)
+              return sorted(findings)
+          '''
+          replace_once(path,
+              'def translate_machine_labels(text: str) -> str:\n',
+              validator + '\n\ndef translate_machine_labels(text: str) -> str:\n'
+          )
+          replace_once(path,
+              '    generic = apply_generic_tail_policy(text)\n',
+              '    taxonomy_findings = reader_taxonomy_findings(text)\n'
+              '    if taxonomy_findings:\n'
+              '        raise ValueError(f"reader-facing taxonomy leak remains: {taxonomy_findings}")\n'
+              '    generic = apply_generic_tail_policy(text)\n'
+          )
+
+          # 2) Make the final Japanese Technical Notes preflight use the same generic
+          # taxonomy guard. build-special-pdf already runs this check on every candidate.
+          path='scripts/special_reader_notes_ja.py'
+          replace_once(path,
+              'from scripts import expand_special_validated_source as expansion\n',
+              'from scripts import expand_special_validated_source as expansion\n'
+              'from scripts import postprocess_special_reader_facing_notes as reader_taxonomy\n'
+          )
+          p=Path(path); text=p.read_text(encoding='utf-8')
+          pattern=re.compile(r'def raw_enum_findings\(text: str\) -> list\[str\]:\n.*?\n\n\ndef check\(', re.S)
+          if len(pattern.findall(text)) != 1:
+              raise SystemExit('special_reader_notes_ja.py: raw_enum_findings anchor mismatch')
+          text=pattern.sub('def raw_enum_findings(text: str) -> list[str]:\n    return reader_taxonomy.reader_taxonomy_findings(text)\n\n\ndef check(', text, count=1)
+          p.write_text(text,encoding='utf-8')
+
+          # 3) Generic visual-review repair path uses the same mapper + rejector.
+          path='scripts/revise_special_visual_review_repairs.py'
+          p=Path(path); text=p.read_text(encoding='utf-8')
+          pattern=re.compile(r'        forbidden_fragments = \(.*?        if leaks:\n            raise ValueError\(f"\{rel\}: raw/partial reader taxonomy leak: \{sorted\(set\(leaks\)\)\}"\)\n', re.S)
+          if len(pattern.findall(text)) != 1:
+              raise SystemExit('visual review repair taxonomy guard anchor mismatch')
+          text=pattern.sub(
+              '        taxonomy_findings = reader_notes.reader_taxonomy_findings(revised)\n'
+              '        if taxonomy_findings:\n'
+              '            raise ValueError(f"{rel}: raw/partial reader taxonomy leak: {taxonomy_findings}")\n',
+              text, count=1)
+          text=text.replace('reader["machine_enum_policy"] = "reader-facing-labels-v5"',
+                            'reader["machine_enum_policy"] = "reader-facing-labels-v6-generic-taxonomy-guard"')
+          p.write_text(text,encoding='utf-8')
+
+          # 4) Generic publication layout validator. The only opt-out is an explicit,
+          # approved Architecture layout override, so page budget cannot silently select
+          # a one-column body.
+          Path('scripts/special_publication_layout_check.py').write_text(r'''#!/usr/bin/env python3
+          """Validate the reader-facing Special layout contract before PDF publication."""
+          from __future__ import annotations
+
+          import argparse
+          import hashlib
+          import json
+          from pathlib import Path
+          from typing import Any
+
+
+          def load_json(path: Path) -> dict[str, Any]:
+              value = json.loads(path.read_text(encoding="utf-8"))
+              if not isinstance(value, dict):
+                  raise ValueError(f"{path}: expected object")
+              return value
+
+
+          def sha(path: Path) -> str:
+              return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+          def inspect_layout(manifest: dict[str, Any], main_text: str, architecture: dict[str, Any]) -> list[str]:
+              errors: list[str] = []
+              articles = [x for x in (manifest.get("articles") or []) if isinstance(x, dict)]
+              if not articles:
+                  return ["validated Special source has no article entries"]
+              override = architecture.get("layout_override") or {}
+              single_column_approved = (
+                  architecture.get("status") == "APPROVED"
+                  and isinstance(override, dict)
+                  and override.get("narrative_body_mode") == "single-column"
+                  and bool(str(override.get("approval_reference") or "").strip())
+              )
+              if single_column_approved:
+                  return errors
+
+              body_mode = str((manifest.get("layout") or {}).get("body_mode") or "")
+              if "single-column" in body_mode.lower():
+                  errors.append("Special narrative body_mode regressed to single-column without approved override")
+              if "two-column" not in body_mode.lower() or "multicol" not in body_mode.lower():
+                  errors.append("Special layout manifest does not declare local two-column multicols narrative")
+              if r"\twocolumn" in main_text or r"\onecolumn" in main_text:
+                  errors.append("global twocolumn/onecolumn switch is forbidden for normal Special layout")
+              begin_count = main_text.count(r"\begin{multicols}{2}")
+              end_count = main_text.count(r"\end{multicols}")
+              if begin_count != len(articles) or end_count != len(articles):
+                  errors.append(
+                      f"expected one balanced two-column narrative block per article: articles={len(articles)} begin={begin_count} end={end_count}"
+                  )
+              front = str((manifest.get("frontmatter") or {}).get("path") or "sections/00-frontmatter.tex")
+              front_input = r"\input{" + Path(front).with_suffix("").as_posix() + "}"
+              first_multicol = main_text.find(r"\begin{multicols}{2}")
+              if front_input not in main_text or (first_multicol >= 0 and main_text.find(front_input) > first_multicol):
+                  errors.append("frontmatter must remain full-width before narrative multicols")
+              depth = 0
+              for line in main_text.splitlines():
+                  if r"\begin{multicols}{2}" in line:
+                      depth += 1
+                  if "technical-notes/" in line and r"\input{" in line and depth != 0:
+                      errors.append("Technical Notes input is nested inside narrative multicols")
+                  if r"\end{multicols}" in line:
+                      depth -= 1
+                  if depth < 0:
+                      errors.append("unbalanced multicols end marker")
+                      depth = 0
+              if depth != 0:
+                  errors.append("unbalanced multicols environment")
+              return errors
+
+
+          def check(repo_root: Path, issue_id: str) -> dict[str, Any]:
+              state = load_json(repo_root / "sources" / issue_id / "pipeline-state.json")
+              source = state.get("provenance", {}).get("validated_issue_source") or {}
+              manifest_path = repo_root / str(source.get("path") or "")
+              if not manifest_path.is_file() or sha(manifest_path) != source.get("sha256"):
+                  raise ValueError("state-pinned source manifest missing or SHA mismatch")
+              manifest = load_json(manifest_path)
+              main_rel = str((manifest.get("main_tex") or {}).get("path") or "main.tex")
+              main_path = manifest_path.parent / main_rel
+              if not main_path.is_file():
+                  raise ValueError("state-pinned main.tex missing")
+              architecture_path = repo_root / "sources" / issue_id / "architecture" / "issue-architecture-v0.1.json"
+              architecture = load_json(architecture_path)
+              errors = inspect_layout(manifest, main_path.read_text(encoding="utf-8"), architecture)
+              return {
+                  "schema_version": "1.0",
+                  "issue_id": issue_id,
+                  "source_manifest": manifest_path.relative_to(repo_root).as_posix(),
+                  "article_count": len(manifest.get("articles") or []),
+                  "passed": not errors,
+                  "errors": errors,
+              }
+
+
+          def main() -> int:
+              ap = argparse.ArgumentParser(description=__doc__)
+              ap.add_argument("--repo-root", default=".")
+              ap.add_argument("--issue-id", required=True)
+              args = ap.parse_args()
+              report = check(Path(args.repo_root).resolve(), args.issue_id)
+              print(json.dumps(report, ensure_ascii=False, indent=2))
+              return 0 if report["passed"] else 1
+
+
+          if __name__ == "__main__":
+              raise SystemExit(main())
+          '''.replace('\n          ','\n').lstrip(), encoding='utf-8')
+
+          # 5) Enforce layout contract in every build-special-pdf candidate preflight.
+          path='.github/workflows/build-special-pdf.yml'
+          replace_once(path,
+              '          PYTHONPATH=control-src python control-src/scripts/special_period_consistency.py check \\\n            --repo-root worktree \\\n            --special-slug "$SPECIAL_SLUG" \\\n            --issue-id "$SPECIAL_ID"\n',
+              '          PYTHONPATH=control-src python control-src/scripts/special_period_consistency.py check \\\n            --repo-root worktree \\\n            --special-slug "$SPECIAL_SLUG" \\\n            --issue-id "$SPECIAL_ID"\n'
+              '          PYTHONPATH=control-src python control-src/scripts/special_publication_layout_check.py \\\n            --repo-root worktree \\\n            --issue-id "$SPECIAL_ID"\n'
+          )
+
+          # 6) Regression tests for the M02 composite/partially translated taxonomy
+          # and generic layout rejection.
+          path='tests/test_special_reader_facing_notes.py'
+          p=Path(path); text=p.read_text(encoding='utf-8')
+          text=text.replace(
+              'from scripts.postprocess_special_reader_facing_notes import transform_note\n',
+              'from scripts.postprocess_special_reader_facing_notes import reader_taxonomy_findings, transform_note\n'
+          )
+          anchor='    def test_evaluation_playbook_gets_semantic_reader_label(self):\n'
+          if text.count(anchor) != 1:
+              raise SystemExit('reader facing test insertion anchor mismatch')
+          tests=r'''    def test_m02_composite_and_legacy_partial_event_labels_are_normalized(self):
+              source = r'''\subsection*{Theme at a glance}
+          A & 主要資料 & モデル & 2026-02-02 (Agent\_製品公開); 2026-02-05 (SYSTEM\_CARD\_PUBLICATION); 2026-02-12 (研究\_PREVIEW) \\
+          B & 補足資料 & Framework & 2026-02-24 (PROJECT\_RELEASE) \\
+          C & 主要資料 & モデル & 2026-02-16 (REGIONAL\_モデル公開); 2026-02-20 (INTERNATIONAL\_モデル公開) \\
+          D & 主要資料 & オープンウェイト & 2026-02-12 (オープンウェイト\_モデル公開) \\
+          E & 主要資料 & Framework & 2026-02-13 (TECHNICAL\_Framework公開) \\
+          F & 主要資料 & モデル & 2026-02-19 (API\_モデル公開) \\
+          '''
+              result = transform_note(source)
+              for expected in (
+                  "Agent製品公開", "System Card公開", "研究Preview", "プロジェクト公開",
+                  "地域別モデル公開", "国際提供モデル公開", "オープンウェイトモデル公開",
+                  "技術Framework公開", "APIモデル公開",
+              ):
+                  self.assertIn(expected, result)
+              self.assertEqual(reader_taxonomy_findings(result), [])
+
+              def test_generic_taxonomy_guard_rejects_unknown_underscore_and_space_allcaps(self):
+                  source = (
+                      "A & 主要資料 & Framework & 2026-02-01 (FUTURE\\_EVENT) \\\\\n"
+                      "B & 主要資料 & Framework & 2026-02-02 (SECURITY EVENT) \\\\\n"
+                      "C & 主要資料 & Framework & 2026-02-03 (研究\\_UNKNOWN) \\\\\n"
+                  )
+                  findings = reader_taxonomy_findings(source)
+                  self.assertIn("FUTURE_EVENT", findings)
+                  self.assertIn("SECURITY EVENT", findings)
+                  self.assertIn("研究_UNKNOWN", findings)
+
+          '''
+          # normalize accidental indentation from embedding
+          tests=tests.replace('\n              def test_generic','\n    def test_generic').replace('\n                  source = (','\n        source = (').replace('\n                  findings =','\n        findings =').replace('\n                  self.assert','\n        self.assert').replace('\n              source = r','\n        source = r').replace('\n              result =','\n        result =').replace('\n              for expected','\n        for expected').replace('\n                  "Agent','\n            "Agent').replace('\n                  "地域','\n            "地域').replace('\n                  "技術','\n            "技術').replace('\n              ):','\n        ):').replace('\n                  self.assertIn(expected, result)','\n            self.assertIn(expected, result)').replace('\n              self.assertEqual','\n        self.assertEqual')
+          text=text.replace(anchor,tests+anchor,1)
+          p.write_text(text,encoding='utf-8')
+
+          Path('tests/test_special_publication_layout_check.py').write_text(r'''from __future__ import annotations
+
+          import unittest
+
+          from scripts.special_publication_layout_check import inspect_layout
+
+
+          class SpecialPublicationLayoutCheckTests(unittest.TestCase):
+              def test_balanced_local_multicols_passes(self):
+                  manifest = {
+                      "layout": {"body_mode": "mixed: narrative articles two-column via local balanced multicols"},
+                      "frontmatter": {"path": "sections/00-frontmatter.tex"},
+                      "articles": [{"package_id": "a"}, {"package_id": "b"}],
+                  }
+                  main = r'''\input{sections/00-frontmatter}
+          \section{A}
+          \begin{multicols}{2}
+          text
+          \end{multicols}
+          \input{technical-notes/a-notes}
+          \section{B}
+          \begin{multicols}{2}
+          text
+          \end{multicols}
+          \input{technical-notes/b-notes}
+          '''
+                  self.assertEqual(inspect_layout(manifest, main, {"status": "APPROVED"}), [])
+
+              def test_single_column_regression_is_rejected(self):
+                  manifest = {
+                      "layout": {"body_mode": "single-column long-form"},
+                      "frontmatter": {"path": "sections/00-frontmatter.tex"},
+                      "articles": [{"package_id": "a"}],
+                  }
+                  errors = inspect_layout(manifest, r'''\input{sections/00-frontmatter}
+          \section{A}
+          text
+          \input{technical-notes/a-notes}
+          ''', {"status": "APPROVED"})
+                  self.assertTrue(any("single-column" in e for e in errors))
+                  self.assertTrue(any("two-column" in e for e in errors))
+
+              def test_explicit_approved_layout_override_can_opt_out(self):
+                  manifest = {
+                      "layout": {"body_mode": "single-column long-form"},
+                      "articles": [{"package_id": "a"}],
+                  }
+                  architecture = {
+                      "status": "APPROVED",
+                      "layout_override": {
+                          "narrative_body_mode": "single-column",
+                          "approval_reference": "Human Gate architecture approval explicitly selected single-column narrative",
+                      },
+                  }
+                  self.assertEqual(inspect_layout(manifest, "single-column text", architecture), [])
+
+
+          if __name__ == "__main__":
+              unittest.main()
+          '''.replace('\n          ','\n').lstrip(), encoding='utf-8')
+          PY
+      - name: Run focused regression tests
+        run: |
+          set -euo pipefail
+          python -m compileall -q scripts tests
+          python -m unittest -v \
+            tests.test_special_reader_facing_notes \
+            tests.test_special_reader_notes_ja \
+            tests.test_special_visual_review_repairs \
+            tests.test_special_publication_layout_check
+      - name: Commit contract repair and remove one-shot workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm .github/workflows/one-shot-fix-special-publication-layout-taxonomy-contract.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts tests .github/workflows/build-special-pdf.yml .github/workflows/one-shot-fix-special-publication-layout-taxonomy-contract.yml
+          git commit -m 'Harden Special publication layout and reader taxonomy contracts'
+          git push origin HEAD:fix/special-publication-layout-taxonomy-contract
