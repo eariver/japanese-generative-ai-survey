@@ -21,12 +21,13 @@
     "vLLM、SGLang、Transformersを、frontier model発表がserving/API/共通実装層へ流れ込む速度を示すsystems evidenceとして統合する。",
     "ベンチマーク、速度、latency、training scaleなどの数値はvendor/project claimとして明示し、一次資料で確認できるrelease/architecture factと分離する。",
     "Source IntakeのarXiv 200件/カテゴリ上限、GitHub latest-100深度、living official index、community research無効というcoverage制約を誌面上の完全性主張へ持ち込まない。",
-    "単巻32ページ目標、最大40ページを維持し、11 Candidateを11本の記事へ分解せず7 packageへ再クラスタリングする。"
+    "3月以降との連続性は2月のCandidate Selectionや事実認定の根拠には使用せず、本文末総括で、2月に顕在化したagent execution・serving/runtime・safety/control・multimodal interaction・specialized reasoningの論点が後続Specialへどう接続するかをreader-facingな見取り図として示す。後続月の個別事実を2月へ遡及させない。",
+    "本文の最後に独立した総括packageを置き、各章の横断的含意、2月という月の位置付け、後続Specialへの接続点をまとめる。単巻32ページ目標、最大40ページを維持し、11 Candidateを11本の記事へ分解せず8 packageへ再クラスタリングする。"
   ],
   "page_budget": {
     "target": 32,
     "max": 40,
-    "planned": 32.0
+    "planned": 34.0
   },
   "cover": {
     "headline_deferred": true,
@@ -220,6 +221,46 @@
       "drafting_order": 6
     },
     {
+      "package_id": "closing-synthesis",
+      "title": "総括 — 2月が残した技術的な転換点",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3",
+        "evidence:SP-2026-M02:item-official-index-alibaba-model-studio-154c528d30",
+        "evidence:SP-2026-M02:item-official-index-mistral-news-e5054b4c4c",
+        "evidence:SP-2026-M02:item-official-index-google-deepmind-blog-9b2b580695",
+        "evidence:SP-2026-M02:series-vllm-february-a6b9cdefea"
+      ],
+      "page_target": 2,
+      "editorial_angle": "本文最後の総括として、2月の個別発表を再列挙するのではなく、agentic engineering、open-model competition、realtime/multimodal interaction、specialized reasoning、serving/runtimeの五つの軸を横断的に束ねる。3月以降への接続は、後続月の具体的な出来事を2月へ遡及させず、『2月に何が技術課題として立ち上がったか』というreader-facingな継続線として示す。",
+      "must_cover": [
+        "2月全体を『モデル単体から継続実行可能なAI技術スタックへの重心移動』として総括する",
+        "agent execution・serving/runtime・safety/control・multimodal interaction・specialized reasoningを後続Specialへ接続する観察軸として示す",
+        "3月以降の個別イベント、性能値、提供状況を2月の事実認定へ遡及させない",
+        "本文の最終メッセージとして、2月に確認できた変化と未確定な境界を分けて示す"
+      ],
+      "boundaries": [
+        "The Evidence task intentionally groups four related first-party items; drafting must keep product, base model, system-card, and specialized Spark boundaries explicit.",
+        "Performance and benchmark comparisons are vendor-reported.",
+        "Codex-Spark’s throughput statement depends on specialized Cerebras hardware and research-preview conditions.",
+        "Cyber capability classification must reproduce the System Card’s stated threshold/precaution boundary rather than exaggerating it.",
+        "Model Studio availability and dates differ by China/international region; drafting must preserve the regional scope of each lifecycle entry.",
+        "The lifecycle page is a living document and may include later global rollouts; February chronology must use the dated entries rather than current availability alone.",
+        "Sub-200ms latency and accuracy comparisons are vendor-reported and depend on the stated serving configuration.",
+        "Open-weight/license status does not imply every surrounding hosted service component is open source.",
+        "The task source is Mistral’s news index; item-level wording must remain consistent with the February launch article.",
+        "Deep Think is a specialized reasoning mode, so its results should not be generalized to the entire Gemini 3 family.",
+        "Announcement-time API availability was limited/early access.",
+        "Scientific benchmark and comparison claims are vendor-reported.",
+        "The v0.16.0 branch-cut date means it cannot be used as evidence that every late-February model change was already integrated.",
+        "Performance figures are project release-note measurements and are not independently reproduced.",
+        "The series groups one patch and one major release; architecture should center v0.16.0."
+      ],
+      "late_breaking": false,
+      "drafting_order": 7
+    },
+    {
       "package_id": "references-method",
       "title": "参考文献・一次資料・検証メモ",
       "package_type": "REFERENCES",
@@ -235,7 +276,7 @@
       ],
       "boundaries": [],
       "late_breaking": false,
-      "drafting_order": 7
+      "drafting_order": 8
     }
   ],
   "this_week_summary_written_last": true
