@@ -34,6 +34,15 @@ def reader_normalize(text: str) -> str:
     return text
 
 
+def reader_month_label(package: dict) -> str:
+    """Return the reader-facing month label from the package issue id."""
+    issue_id = str(package.get("issue_id") or "")
+    match = re.fullmatch(r"SP-\d{4}-M(\d{2})", issue_id)
+    if match is None:
+        return "一次資料・論文から読めること"
+    return f"{int(match.group(1))}月の一次資料・論文から読めること"
+
+
 _original_render = revision.render_synthesis
 
 
@@ -48,27 +57,58 @@ def normalized_render(theme, package, bib_map):
         item["observation"] = reader_normalize(str(row.get("observation") or ""))
         rows.append(item)
     normalized["rows"] = rows
-    return _original_render(normalized, package, bib_map)
+    rendered, used = _original_render(normalized, package, bib_map)
+    # The historical renderer carried a July-specific table heading from the
+    # first retrospective issue that used Theme Synthesis. Keep the canonical
+    # builder byte-compatible and normalize the derived reader label here.
+    rendered = rendered.replace(
+        "7月の一次資料・論文から読めること",
+        reader_month_label(package),
+        1,
+    )
+    return rendered, used
 
 
 revision.render_synthesis = normalized_render
 
 
 def inject_synthesis_into_current_layout(current_main: Path, manifest, synthesis_paths) -> str:
-    """Preserve the current layout byte-shape and insert synthesis before notes."""
+    """Preserve the current layout byte-shape and insert or refresh synthesis."""
     text = current_main.read_text(encoding="utf-8")
+    existing_by_package = {
+        str(item.get("package_id") or ""): str(item.get("path") or "")
+        for item in (manifest.get("theme_synthesis") or [])
+        if isinstance(item, dict) and item.get("package_id") and item.get("path")
+    }
     for article in manifest.get("articles") or []:
         package_id = str(article.get("package_id") or "")
         synthesis = synthesis_paths.get(package_id)
         if not synthesis:
             continue
+        synthesis_input = "\\input{" + revision.input_path(synthesis) + "}"
+
+        # Immutable revisions copy the prior source tree first. When a prior
+        # Theme Synthesis exists, the new renderer writes the refreshed panel to
+        # the same relative path in the new revision. Preserve one input rather
+        # than inserting a duplicate panel. If a future revision changes the
+        # relative path, replace the old input exactly once.
+        existing = existing_by_package.get(package_id)
+        if existing:
+            existing_input = "\\input{" + revision.input_path(existing) + "}"
+            if text.count(existing_input) != 1:
+                raise ValueError(
+                    f"{package_id}: expected exactly one existing Theme Synthesis input in current main.tex"
+                )
+            if existing_input != synthesis_input:
+                text = text.replace(existing_input, synthesis_input, 1)
+            continue
+
         notes = str(article.get("technical_notes_path") or "")
         if not notes:
             raise ValueError(f"{package_id}: technical_notes_path required")
         notes_input = "\\input{" + revision.input_path(notes) + "}"
         if text.count(notes_input) != 1:
             raise ValueError(f"{package_id}: expected exactly one Technical Notes input in current main.tex")
-        synthesis_input = "\\input{" + revision.input_path(synthesis) + "}"
         text = text.replace(notes_input, synthesis_input + "\n\\medskip\n" + notes_input, 1)
     return text
 
