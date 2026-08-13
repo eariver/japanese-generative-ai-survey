@@ -146,8 +146,11 @@ def validate_and_collect_articles(
             f"accepted Article Draft set differs from Architecture: expected={expected_ids}, actual={sorted(result_by_id)}"
         )
 
-    cover_evidence_ids = set(plan.get("cover", {}).get("anchor_candidates") or [])
-    cover_package_ids: list[str] = []
+    cover_anchor_candidates = set(plan.get("cover", {}).get("anchor_candidates") or [])
+    unknown_cover_anchors = sorted(cover_anchor_candidates - set(expected_ids))
+    if unknown_cover_anchors:
+        raise ValueError(f"Architecture cover anchors reference unknown article packages: {unknown_cover_anchors}")
+    cover_package_ids = [package_id for package_id in expected_ids if package_id in cover_anchor_candidates]
 
     for package_plan in packages:
         package_id = package_plan["package_id"]
@@ -195,13 +198,6 @@ def validate_and_collect_articles(
                 "bib_sha256": row["bib_sha256"],
             }
         )
-        primary_ids = {
-            item.get("evidence_task_id")
-            for item in package.get("primary_evidence") or []
-            if isinstance(item, dict)
-        }
-        if primary_ids & cover_evidence_ids:
-            cover_package_ids.append(package_id)
 
     if errors:
         raise ValueError(f"Article finalization validation failed: {errors}")

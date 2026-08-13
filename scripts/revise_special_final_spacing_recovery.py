@@ -70,8 +70,8 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
         raise ValueError("final spacing recovery must not change reader wording")
 
     vertical_margin_mm = float(changes.get("vertical_margin_mm", 27.0))
-    if not 22.0 <= vertical_margin_mm <= 30.0:
-        raise ValueError("vertical_margin_mm must remain within the conservative 22-30 mm range")
+    if not 22.0 <= vertical_margin_mm <= 32.0:
+        raise ValueError("vertical_margin_mm must remain within the conservative 22-32 mm range")
     ragged_specs = changes.get("ragged_paragraphs") or []
     if not isinstance(ragged_specs, list):
         raise ValueError("ragged_paragraphs must be an array")
@@ -114,7 +114,11 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
 
     main_path = output_dir / str((new_manifest.get("main_tex") or {}).get("path") or "main.tex")
     main_text = main_path.read_text(encoding="utf-8")
-    geometry_re = re.compile(r"\\geometry\{margin=22mm,headsep=5mm,footskip=10mm\}")
+    geometry_re = re.compile(
+        r"\\geometry\{(?:margin=22mm|left=22mm,right=22mm,"
+        r"top=(?P<vertical>\d+(?:\.\d+)?)mm,bottom=(?P=vertical)mm),"
+        r"headsep=5mm,footskip=10mm\}"
+    )
     replacement = (
         r"\geometry{left=22mm,right=22mm,top=" + f"{vertical_margin_mm:g}" +
         r"mm,bottom=" + f"{vertical_margin_mm:g}" + r"mm,headsep=5mm,footskip=10mm}"

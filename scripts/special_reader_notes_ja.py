@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any
 
 from scripts import expand_special_validated_source as expansion
+from scripts import postprocess_special_reader_facing_notes as reader_taxonomy
 
 ARTICLE_TYPES = {
     "LEAD", "FEATURE", "COMPARISON", "SECTION", "DEEP_DIVE", "PAPER_WATCH",
@@ -307,14 +308,7 @@ def apply(root: Path, issue_id: str, special_slug: str, summary_path: Path) -> d
 
 
 def raw_enum_findings(text: str) -> list[str]:
-    findings: list[str] = []
-    for value in sorted(RAW_EVENT_ENUMS | RAW_TYPE_ENUMS):
-        forms = {value, value.replace("_", r"\_")}
-        for form in forms:
-            if re.search(r"(?<![A-Za-z0-9])" + re.escape(form) + r"(?![A-Za-z0-9])", text):
-                findings.append(form)
-    findings.extend(m.group(0) for m in MIXED_ENUM_RE.finditer(text))
-    return sorted(set(findings))
+    return reader_taxonomy.reader_taxonomy_findings(text)
 
 
 def check(root: Path, issue_id: str) -> dict[str, Any]:

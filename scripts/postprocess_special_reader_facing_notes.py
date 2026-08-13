@@ -32,6 +32,7 @@ EVENT_LABELS = {
     "AGENT_RELEASE": "Agent公開",
     "AGENT_UPDATE": "Agent更新",
     "FRAMEWORK_RELEASE": "Framework公開",
+    "FRAMEWORK_PUBLICATION": "Framework公開",
     "FRAMEWORK_UPDATE": "Framework更新",
     "MODEL_RELEASE": "モデル公開",
     "MODEL_UPDATE": "モデル更新",
@@ -41,6 +42,19 @@ EVENT_LABELS = {
     "SAFETY_EVENT": "安全性事象",
     "API_RELEASE": "API公開",
     "API_UPDATE": "API更新",
+    "AGENT_PRODUCT_RELEASE": "Agent製品公開",
+    "PROJECT_RELEASE": "プロジェクト公開",
+    "PROJECT_UPDATE": "プロジェクト更新",
+    "SYSTEM_CARD_PUBLICATION": "System Card公開",
+    "RESEARCH_PREVIEW": "研究Preview",
+    "REGIONAL_MODEL_RELEASE": "地域別モデル公開",
+    "INTERNATIONAL_MODEL_RELEASE": "国際提供モデル公開",
+    "OPEN_WEIGHT_MODEL_RELEASE": "オープンウェイトモデル公開",
+    "TECHNICAL_FRAMEWORK_RELEASE": "技術Framework公開",
+    "API_MODEL_RELEASE": "APIモデル公開",
+    "EVALUATION_RELEASE": "評価公開",
+    "MEDIA_MODEL_RELEASE": "メディアモデル公開",
+    "MEDIA_MODEL_UPDATE": "メディアモデル更新",
 }
 TYPE_LABELS = {
     # Legacy partially translated forms can remain in historical derived
@@ -58,6 +72,7 @@ TYPE_LABELS = {
     "API_UPDATE": "API更新",
     "オープンウェイト_RELEASE": "オープンウェイト公開",
     "FRAMEWORK_RELEASE": "Framework公開",
+    "FRAMEWORK_PUBLICATION": "Framework公開",
     "FRAMEWORK_UPDATE": "Framework更新",
     "MODEL_RELEASE": "モデル公開",
     "MODEL_UPDATE": "モデル更新",
@@ -80,6 +95,13 @@ TYPE_LABELS = {
     "AGENT RELEASE": "Agent公開",
     "AGENT UPDATE": "Agent更新",
     "SAFETY EVENT": "安全性関連",
+    "Agent_製品公開": "Agent製品公開",
+    "研究_PREVIEW": "研究Preview",
+    "REGIONAL_モデル公開": "地域別モデル公開",
+    "INTERNATIONAL_モデル公開": "国際提供モデル公開",
+    "オープンウェイト_モデル公開": "オープンウェイトモデル公開",
+    "TECHNICAL_Framework公開": "技術Framework公開",
+    "API_モデル公開": "APIモデル公開",
 }
 TYPE_OVERRIDES = {
     "A shared playbook for trustworthy third party evaluations": "評価ガイダンス",
@@ -118,6 +140,47 @@ def enum_forms(value: str) -> tuple[str, ...]:
     escaped = value.replace("_", r"\_")
     return (value,) if escaped == value else (value, escaped)
 
+
+CHRONOLOGY_EVENT_RE = re.compile(r"\b\d{4}-\d{2}(?:-\d{2})?\s*\(([^)]+)\)")
+ALLCAPS_SPACE_RE = re.compile(r"^[A-Z][A-Z0-9]*(?:\s+[A-Z][A-Z0-9]*)+$")
+MACHINE_SINGLE_TYPE_LABELS = {"PRODUCT", "OTHER"}
+
+
+def _machine_taxonomy_label(value: str) -> bool:
+    value = value.replace(r"\_", "_").strip()
+    if not value:
+        return False
+    if "_" in value:
+        return True
+    if ALLCAPS_SPACE_RE.fullmatch(value):
+        return True
+    if value in MACHINE_SINGLE_TYPE_LABELS:
+        return True
+    return False
+
+
+def reader_taxonomy_findings(text: str) -> list[str]:
+    # Inspect only taxonomy fields, not URLs or free prose.
+    normalized = text.replace(r"\_", "_")
+    findings: set[str] = set()
+    for value in CHRONOLOGY_EVENT_RE.findall(normalized):
+        label = value.strip()
+        if _machine_taxonomy_label(label):
+            findings.add(label)
+    for line in normalized.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("種別 & "):
+            value = stripped[len("種別 & "):].rsplit(r"\\", 1)[0].strip()
+            if _machine_taxonomy_label(value):
+                findings.add(value)
+            continue
+        if " & " in stripped and re.search(r"\b\d{4}-\d{2}", stripped):
+            parts = [part.strip() for part in stripped.rsplit(r"\\", 1)[0].split(" & ")]
+            if len(parts) >= 4:
+                value = parts[-2]
+                if _machine_taxonomy_label(value):
+                    findings.add(value)
+    return sorted(findings)
 
 def translate_machine_labels(text: str) -> str:
     # Event types are normally emitted inside parentheses. Translate those
@@ -305,6 +368,9 @@ def transform_note(text: str, selected_titles: set[str] | None = None) -> str:
     if BREAK_POLICY_MARKER not in text:
         text = add_card_break_policy(text)
     text = group_late_card_tail(text, selected_titles=selected_titles)
+    taxonomy_findings = reader_taxonomy_findings(text)
+    if taxonomy_findings:
+        raise ValueError(f"reader-facing taxonomy leak remains: {taxonomy_findings}")
     generic = apply_generic_tail_policy(text)
     text = generic.text
     unprotected = unprotected_tail_titles(text)
