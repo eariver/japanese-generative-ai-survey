@@ -8,6 +8,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CONTROL = ROOT / ".github" / "workflows" / "assistant-control.yml"
 PUBLICATION = ROOT / ".github" / "workflows" / "accept-special-publication-preview-issue-only.yml"
+FREEZE_RECOVERY = ROOT / ".github" / "workflows" / "accept-special-freeze-issue-only.yml"
+PUBLISH = ROOT / ".github" / "workflows" / "publish-special-frozen-release-issue-only.yml"
+LEGACY_VISUAL_WORKFLOW = ROOT / ".github" / "workflows" / "accept-special-visual-review-issue-only.yml"
 SELECTION = ROOT / ".github" / "workflows" / "apply-special-selection-and-propose-architecture.yml"
 
 
@@ -34,6 +37,11 @@ class SpecialHumanGatePolicyTests(unittest.TestCase):
         self.assertNotIn("'human_gate': True", freeze)
         self.assertNotIn("'human_gate': True", publish)
         self.assertNotIn("'accept-special-visual-review-issue-only': {", text)
+        self.assertIn("'keys': {'special_slug'}", freeze)
+        self.assertIn("'keys': {'special_slug'}", publish)
+
+    def test_legacy_standalone_visual_review_workflow_is_removed(self) -> None:
+        self.assertFalse(LEGACY_VISUAL_WORKFLOW.exists())
 
     def test_selection_checkpoint_uses_internal_not_human_authority(self) -> None:
         text = SELECTION.read_text(encoding="utf-8")
@@ -45,11 +53,23 @@ class SpecialHumanGatePolicyTests(unittest.TestCase):
     def test_publication_preview_workflow_binds_one_approval_to_finalize_and_publish(self) -> None:
         text = PUBLICATION.read_text(encoding="utf-8")
         self.assertIn("approved_pdf_sha256", text)
+        self.assertIn("PUBLICATION_PREVIEW_APPROVAL", text)
+        self.assertIn("READY_FOR_DETERMINISTIC_FREEZE", text)
         self.assertIn("accept_special_visual_review_issue_only.py", text)
         self.assertIn("accept_special_freeze_issue_only.py", text)
         self.assertIn("gh pr merge", text)
         self.assertIn("publish-special-frozen-release-issue-only.yml", text)
         self.assertIn("test \"$actual\" = \"$APPROVED_PDF_SHA256\"", text)
+
+    def test_recovery_workflows_derive_existing_publication_preview_authority(self) -> None:
+        freeze = FREEZE_RECOVERY.read_text(encoding="utf-8")
+        publish = PUBLISH.read_text(encoding="utf-8")
+        self.assertIn("Resolve and verify existing Publication Preview authority", freeze)
+        self.assertIn("PUBLICATION_PREVIEW_APPROVAL", freeze)
+        self.assertNotIn("approval_reference:\n        required: true", freeze)
+        self.assertNotIn("approved_at:\n        required: true", freeze)
+        self.assertIn("PUBLICATION_PREVIEW_APPROVAL", publish)
+        self.assertNotIn("approval_reference:\n        required: true", publish)
 
 
 if __name__ == "__main__":
