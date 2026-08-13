@@ -1,0 +1,359 @@
+name: One-shot fix Special standfirst and list contract
+
+on:
+  push:
+    branches:
+      - fix/special-standfirst-list-contract
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: fix/special-standfirst-list-contract
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Patch mixed-layout renderer and publication preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(text: str, old: str, new: str, label: str) -> str:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{label}: expected one anchor, found {count}')
+              return text.replace(old, new, 1)
+
+          revise_path = Path('scripts/revise_special_visual_review_repairs.py')
+          revise = revise_path.read_text(encoding='utf-8')
+          revise = replace_once(
+              revise,
+              'from scripts import postprocess_special_reader_facing_notes as reader_notes\n',
+              'from scripts import postprocess_special_reader_facing_notes as reader_notes\n'
+              'from scripts.special_layout_text_normalization import (\n'
+              '    normalize_itemize_manual_markers,\n'
+              '    split_leading_standfirst,\n'
+              ')\n',
+              'revise imports',
+          )
+
+          start = revise.index('def split_article(')
+          end = revise.index('\n\ndef build_main_tex(', start)
+          new_split = r'''def split_article(
+              source: Path,
+              standfirst_target: Path,
+              body_target: Path,
+              wide_target: Path,
+          ) -> dict[str, Any]:
+              lines = source.read_text(encoding="utf-8").splitlines(keepends=True)
+              section_index = next(
+                  (i for i, line in enumerate(lines) if line.lstrip().startswith(r"\section{")),
+                  None,
+              )
+              if section_index is None:
+                  raise ValueError(f"{source}: top-level section heading missing")
+              section_line = lines[section_index].strip()
+              label_line = ""
+              remove: set[int] = {section_index}
+              for index in range(section_index + 1, min(section_index + 4, len(lines))):
+                  stripped = lines[index].strip()
+                  if not stripped:
+                      continue
+                  if stripped.startswith(r"\label{"):
+                      label_line = stripped
+                      remove.add(index)
+                  break
+              remainder = [line for i, line in enumerate(lines) if i not in remove]
+
+              wide_index: int | None = None
+              for index, line in enumerate(remainder):
+                  stripped = line.lstrip()
+                  if stripped.startswith(r"\subsection{Theme Synthesis"):
+                      wide_index = index
+                      break
+                  if stripped.startswith(r"\begin{claimboundary}"):
+                      wide_index = index
+                      break
+              narrative_lines = remainder if wide_index is None else remainder[:wide_index]
+              wide_lines = [] if wide_index is None else remainder[wide_index:]
+
+              standfirst_lines, narrative_lines = split_leading_standfirst(narrative_lines)
+              narrative_text, narrative_markers, narrative_lifted = normalize_itemize_manual_markers(
+                  "".join(narrative_lines)
+              )
+              wide_text, wide_markers, wide_lifted = normalize_itemize_manual_markers(
+                  "".join(wide_lines)
+              )
+              standfirst_text = "".join(standfirst_lines)
+
+              if not narrative_text.strip():
+                  raise ValueError(f"{source}: narrative body became empty")
+              standfirst_target.parent.mkdir(parents=True, exist_ok=True)
+              body_target.parent.mkdir(parents=True, exist_ok=True)
+              wide_target.parent.mkdir(parents=True, exist_ok=True)
+              standfirst_target.write_text(standfirst_text, encoding="utf-8")
+              body_target.write_text(narrative_text, encoding="utf-8")
+              wide_target.write_text(wide_text, encoding="utf-8")
+              return {
+                  "section_line": section_line,
+                  "label_line": label_line,
+                  "standfirst_sha256": sha(standfirst_target),
+                  "standfirst_present": bool(standfirst_text.strip()),
+                  "body_sha256": sha(body_target),
+                  "wide_sha256": sha(wide_target),
+                  "wide_present": bool(wide_text.strip()),
+                  "manual_list_markers_removed": narrative_markers + wide_markers,
+                  "list_wrapper_items_lifted": narrative_lifted + wide_lifted,
+              }
+          '''
+          revise = revise[:start] + new_split + revise[end:]
+
+          old_main = '''        lines.extend(\n            [\n                r"\\vspace{0.15em}",\n                r"\\begin{multicols}{2}",\n                rf"\\input{{{input_path(str(layout['body_path']))}}}",\n                r"\\end{multicols}",\n            ]\n        )\n'''
+          new_main = '''        lines.append(r"\\vspace{0.15em}")\n        if layout.get("standfirst_present"):\n            lines.extend(\n                [\n                    rf"\\input{{{input_path(str(layout['standfirst_path']))}}}",\n                    r"\\vspace{0.20em}",\n                ]\n            )\n        lines.extend(\n            [\n                r"\\begin{multicols}{2}",\n                rf"\\input{{{input_path(str(layout['body_path']))}}}",\n                r"\\end{multicols}",\n            ]\n        )\n'''
+          revise = replace_once(revise, old_main, new_main, 'main standfirst placement')
+
+          old_refs = '''    reference_titles_changed, reference_count = enrich_bibliography_titles(references_path, title_map)\n    if reference_titles_changed != reference_count:\n        raise ValueError(\n            f"not every bibliography entry received a canonical title: "\n            f"changed={reference_titles_changed} entries={reference_count}"\n        )\n'''
+          new_refs = '''    reference_titles_changed, reference_count = enrich_bibliography_titles(references_path, title_map)\n    # Idempotent Visual Review passes may start from an already enriched bibliography.\n    # enrich_bibliography_titles itself rejects unresolved generic placeholders, so a\n    # zero changed-count is valid on re-entry.\n'''
+          revise = replace_once(revise, old_refs, new_refs, 'bibliography re-entry')
+
+          old_loop_head = '''    layout_dir = output_dir / "layout-bodies"\n    layout_records: dict[str, dict[str, Any]] = {}\n    for index, article in enumerate(new_manifest.get("articles") or [], start=1):\n'''
+          new_loop_head = '''    layout_dir = output_dir / "layout-bodies"\n    layout_records: dict[str, dict[str, Any]] = {}\n    standfirst_count = 0\n    manual_list_markers_removed = 0\n    list_wrapper_items_lifted = 0\n    for index, article in enumerate(new_manifest.get("articles") or [], start=1):\n'''
+          revise = replace_once(revise, old_loop_head, new_loop_head, 'layout totals')
+
+          old_loop = '''        body_rel = f"layout-bodies/{index:02d}-{package_id}-narrative.tex"\n        wide_rel = f"layout-bodies/{index:02d}-{package_id}-wide.tex"\n        info = split_article(source, output_dir / body_rel, output_dir / wide_rel)\n        info["body_path"] = body_rel\n        info["wide_path"] = wide_rel\n        layout_records[package_id] = info\n        article["layout_body_path"] = body_rel\n        article["layout_body_sha256"] = info["body_sha256"]\n        article["layout_wide_path"] = wide_rel\n        article["layout_wide_sha256"] = info["wide_sha256"]\n        article["layout_wide_present"] = info["wide_present"]\n'''
+          new_loop = '''        standfirst_rel = f"layout-bodies/{index:02d}-{package_id}-standfirst.tex"\n        body_rel = f"layout-bodies/{index:02d}-{package_id}-narrative.tex"\n        wide_rel = f"layout-bodies/{index:02d}-{package_id}-wide.tex"\n        info = split_article(\n            source,\n            output_dir / standfirst_rel,\n            output_dir / body_rel,\n            output_dir / wide_rel,\n        )\n        info["standfirst_path"] = standfirst_rel\n        info["body_path"] = body_rel\n        info["wide_path"] = wide_rel\n        layout_records[package_id] = info\n        if info["standfirst_present"]:\n            standfirst_count += 1\n        manual_list_markers_removed += int(info["manual_list_markers_removed"])\n        list_wrapper_items_lifted += int(info["list_wrapper_items_lifted"])\n        article["layout_standfirst_path"] = standfirst_rel\n        article["layout_standfirst_sha256"] = info["standfirst_sha256"]\n        article["layout_standfirst_present"] = info["standfirst_present"]\n        article["layout_body_path"] = body_rel\n        article["layout_body_sha256"] = info["body_sha256"]\n        article["layout_wide_path"] = wide_rel\n        article["layout_wide_sha256"] = info["wide_sha256"]\n        article["layout_wide_present"] = info["wide_present"]\n'''
+          revise = replace_once(revise, old_loop, new_loop, 'layout split loop')
+
+          revise = replace_once(
+              revise,
+              '"mixed: narrative articles two-column via local balanced multicols; full-width chapter headings, "\n                "Theme Synthesis, Claim Boundary, Technical Notes, and References"',
+              '"mixed: narrative articles two-column via local balanced multicols; full-width chapter headings "\n                "and standfirsts, Theme Synthesis, Claim Boundary, Technical Notes, and References"',
+              'layout body mode',
+          )
+
+          revise = replace_once(
+              revise,
+              '        "derived_layout_body_count": len(layout_records),\n',
+              '        "derived_layout_body_count": len(layout_records),\n'
+              '        "standfirst_full_width": True,\n'
+              '        "standfirst_count": standfirst_count,\n'
+              '        "manual_list_markers_removed": manual_list_markers_removed,\n'
+              '        "list_wrapper_items_lifted": list_wrapper_items_lifted,\n',
+              'layout revision audit fields',
+          )
+          revise = replace_once(
+              revise,
+              '        "bibliography_entry_count": reference_count,\n        "new_external_evidence": False,\n',
+              '        "bibliography_entry_count": reference_count,\n'
+              '        "standfirst_count": standfirst_count,\n'
+              '        "manual_list_markers_removed": manual_list_markers_removed,\n'
+              '        "list_wrapper_items_lifted": list_wrapper_items_lifted,\n'
+              '        "new_external_evidence": False,\n',
+              'return audit fields',
+          )
+          revise_path.write_text(revise, encoding='utf-8')
+
+          check_path = Path('scripts/special_publication_layout_check.py')
+          check = check_path.read_text(encoding='utf-8')
+          check = replace_once(
+              check,
+              'from typing import Any\n',
+              'from typing import Any\n\n'
+              'from scripts.special_layout_text_normalization import (\n'
+              '    first_substantive_line,\n'
+              '    manual_item_marker_findings,\n'
+              ')\n',
+              'check imports',
+          )
+          front_anchor = '''    if front_input not in main_text or (\n        first_multicol >= 0 and main_text.find(front_input) > first_multicol\n    ):\n        errors.append("frontmatter must remain full-width before narrative multicols")\n\n'''
+          stand_check = '''    if front_input not in main_text or (\n        first_multicol >= 0 and main_text.find(front_input) > first_multicol\n    ):\n        errors.append("frontmatter must remain full-width before narrative multicols")\n\n    standfirst_inputs: list[str] = []\n    for article in articles:\n        if not article.get("layout_standfirst_present"):\n            continue\n        standfirst = str(article.get("layout_standfirst_path") or "")\n        body = str(article.get("layout_body_path") or "")\n        if not standfirst:\n            errors.append(f"{article.get('package_id')}: standfirst marked present without path")\n            continue\n        standfirst_input = r"\\input{" + Path(standfirst).with_suffix("").as_posix() + "}"\n        standfirst_inputs.append(standfirst_input)\n        if standfirst_input not in main_text:\n            errors.append(f"{article.get('package_id')}: full-width standfirst input missing")\n            continue\n        if body:\n            body_input = r"\\input{" + Path(body).with_suffix("").as_posix() + "}"\n            if body_input in main_text and main_text.find(standfirst_input) > main_text.find(body_input):\n                errors.append(f"{article.get('package_id')}: standfirst must precede narrative body")\n\n'''
+          check = replace_once(check, front_anchor, stand_check, 'standfirst manifest check')
+          depth_anchor = '''        if (\n            "technical-notes/" in line\n            and r"\\input{" in line\n            and depth != 0\n        ):\n            errors.append("Technical Notes input is nested inside narrative multicols")\n'''
+          depth_new = depth_anchor + '''        if depth != 0 and any(token in line for token in standfirst_inputs):\n            errors.append("standfirst input is nested inside narrative multicols")\n'''
+          check = replace_once(check, depth_anchor, depth_new, 'standfirst depth check')
+
+          insert_at = check.index('\n\ndef check(')
+          derived = r'''
+
+          def inspect_derived_layout_files(manifest: dict[str, Any], source_dir: Path) -> list[str]:
+              errors: list[str] = []
+              for article in manifest.get("articles") or []:
+                  if not isinstance(article, dict):
+                      continue
+                  package_id = str(article.get("package_id") or "<unknown>")
+                  standfirst_rel = str(article.get("layout_standfirst_path") or "")
+                  if article.get("layout_standfirst_present"):
+                      standfirst_path = source_dir / standfirst_rel
+                      if not standfirst_rel or not standfirst_path.is_file():
+                          errors.append(f"{package_id}: declared standfirst file missing")
+                      else:
+                          expected = str(article.get("layout_standfirst_sha256") or "")
+                          if expected and sha(standfirst_path) != expected:
+                              errors.append(f"{package_id}: standfirst digest mismatch")
+                          first = first_substantive_line(standfirst_path.read_text(encoding="utf-8"))
+                          if not first.startswith(r"\noindent\textbf{"):
+                              errors.append(f"{package_id}: full-width standfirst is not the generated bold lead")
+
+                  for key in ("layout_body_path", "layout_wide_path"):
+                      rel = str(article.get(key) or "")
+                      if not rel:
+                          continue
+                      path = source_dir / rel
+                      if not path.is_file():
+                          errors.append(f"{package_id}: derived layout file missing: {rel}")
+                          continue
+                      text = path.read_text(encoding="utf-8")
+                      if key == "layout_body_path" and first_substantive_line(text).startswith(r"\noindent\textbf{"):
+                          errors.append(f"{package_id}: standfirst leaked into two-column narrative body")
+                      findings = manual_item_marker_findings(text)
+                      if findings:
+                          errors.append(
+                              f"{package_id}: manual bullet marker remains inside LaTeX item(s): {findings}"
+                          )
+              return errors
+          '''
+          check = check[:insert_at] + derived + check[insert_at:]
+          call_anchor = '''    errors = inspect_layout(\n        manifest,\n        main_path.read_text(encoding="utf-8"),\n        architecture,\n    )\n'''
+          call_new = call_anchor + '''    errors.extend(inspect_derived_layout_files(manifest, manifest_path.parent))\n'''
+          check = replace_once(check, call_anchor, call_new, 'derived layout preflight call')
+          check_path.write_text(check, encoding='utf-8')
+
+          test_path = Path('tests/test_special_publication_contract_regressions.py')
+          tests = test_path.read_text(encoding='utf-8')
+          tests = replace_once(
+              tests,
+              'import unittest\n',
+              'import tempfile\nimport unittest\nfrom pathlib import Path\n',
+              'test stdlib imports',
+          )
+          tests = replace_once(
+              tests,
+              'from scripts.special_publication_layout_check import inspect_layout\n',
+              'from scripts.special_layout_text_normalization import (\n'
+              '    manual_item_marker_findings,\n'
+              '    normalize_itemize_manual_markers,\n'
+              '    split_leading_standfirst,\n'
+              ')\n'
+              'from scripts.special_publication_layout_check import (\n'
+              '    inspect_derived_layout_files,\n'
+              '    inspect_layout,\n'
+              ')\n',
+              'test helper imports',
+          )
+          test_insert = r'''
+              def test_standfirst_and_manual_list_normalization(self):
+                  lines = [
+                      "% generated\n",
+                      r"\noindent\textbf{Lead sentence.}\autocite{x}" + "\n",
+                      "\n",
+                      "Narrative body.\n",
+                  ]
+                  standfirst, body = split_leading_standfirst(lines)
+                  self.assertIn(r"\noindent\textbf{Lead sentence.}", "".join(standfirst))
+                  self.assertEqual("".join(body), "Narrative body.\n")
+
+                  source = (
+                      r"\begin{itemize}" + "\n"
+                      r"  \item Lead sentence." + "\n"
+                      r"  \item ・agent execution: a" + "\n"
+                      r"  \item ・serving/runtime: b" + "\n"
+                      r"  \item ・safety/control: c" + "\n"
+                      r"  \item ・multimodal interaction: d" + "\n"
+                      r"  \item ・specialized reasoning: e" + "\n"
+                      r"  \item Trailing explanation." + "\n"
+                      r"\end{itemize}" + "\n"
+                  )
+                  normalized, removed, lifted = normalize_itemize_manual_markers(source)
+                  self.assertEqual(removed, 5)
+                  self.assertEqual(lifted, 2)
+                  self.assertEqual(manual_item_marker_findings(normalized), [])
+                  self.assertTrue(normalized.startswith("Lead sentence.\n\n"))
+                  self.assertIn(r"\item agent execution: a", normalized)
+                  self.assertIn(r"\end{itemize}\n\nTrailing explanation.", normalized)
+
+              def test_derived_layout_rejects_standfirst_and_manual_bullet_leaks(self):
+                  with tempfile.TemporaryDirectory() as temp:
+                      root = Path(temp)
+                      body = root / "layout-bodies/a-narrative.tex"
+                      body.parent.mkdir(parents=True)
+                      body.write_text(
+                          "% generated\n"
+                          r"\noindent\textbf{Lead still in columns.}" + "\n"
+                          r"\begin{itemize}" + "\n"
+                          r"\item ・duplicated bullet" + "\n"
+                          r"\end{itemize}" + "\n",
+                          encoding="utf-8",
+                      )
+                      manifest = {
+                          "articles": [
+                              {
+                                  "package_id": "a",
+                                  "layout_body_path": "layout-bodies/a-narrative.tex",
+                              }
+                          ]
+                      }
+                      errors = inspect_derived_layout_files(manifest, root)
+                      self.assertTrue(any("standfirst leaked" in error for error in errors))
+                      self.assertTrue(any("manual bullet marker" in error for error in errors))
+
+              def test_full_width_standfirst_contract_passes(self):
+                  manifest = {
+                      "layout": {
+                          "body_mode": "mixed: narrative articles two-column via local balanced multicols"
+                      },
+                      "frontmatter": {"path": "sections/00-frontmatter.tex"},
+                      "articles": [
+                          {
+                              "package_id": "a",
+                              "layout_standfirst_present": True,
+                              "layout_standfirst_path": "layout-bodies/a-standfirst.tex",
+                              "layout_body_path": "layout-bodies/a-narrative.tex",
+                          }
+                      ],
+                  }
+                  main = (
+                      "\\input{sections/00-frontmatter}\n"
+                      "\\section{A}\n"
+                      "\\input{layout-bodies/a-standfirst}\n"
+                      "\\begin{multicols}{2}\n"
+                      "\\input{layout-bodies/a-narrative}\n"
+                      "\\end{multicols}\n"
+                      "\\input{technical-notes/a-notes}\n"
+                  )
+                  self.assertEqual(inspect_layout(manifest, main, {"status": "APPROVED"}), [])
+          '''
+          marker = '    def test_single_column_regression_is_rejected(self):\n'
+          if marker not in tests:
+              raise SystemExit('test insertion marker missing')
+          tests = tests.replace(marker, test_insert + '\n' + marker, 1)
+          test_path.write_text(tests, encoding='utf-8')
+          PY
+          python -m py_compile \
+            scripts/special_layout_text_normalization.py \
+            scripts/revise_special_visual_review_repairs.py \
+            scripts/special_publication_layout_check.py \
+            tests/test_special_publication_contract_regressions.py
+          python -m unittest tests.test_special_publication_contract_regressions -v
+          git diff --check
+      - name: Commit implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            scripts/special_layout_text_normalization.py \
+            scripts/revise_special_visual_review_repairs.py \
+            scripts/special_publication_layout_check.py \
+            tests/test_special_publication_contract_regressions.py
+          git commit -m 'Keep Special standfirsts full-width and normalize list markers'
+          git push origin HEAD:fix/special-standfirst-list-contract
