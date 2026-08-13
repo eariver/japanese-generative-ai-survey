@@ -1,0 +1,470 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M02",
+  "status": "post-draft-synthesis-input-ready",
+  "basis": {
+    "architecture_input_sha256": "8031c74a3c50fbc9cc80ec05300dd12c1990718d8debbbddab3c8918f465de3f",
+    "architecture_plan_sha256": "ea684e639bfea5705eb85df9bee0d3eb130a8d43ae5df2d27af471df6ffa6056",
+    "article_prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c",
+    "article_drafts": [
+      {
+        "package_id": "agentic-engineering-frontier",
+        "article_draft_sha256": "c21efeb9d3945d821405b0409447ce4870629bff2e00b44383f78008fd4b9018"
+      },
+      {
+        "package_id": "open-model-agent-stack",
+        "article_draft_sha256": "abb9f3e6c99a104aa97f8b4fb2923fb490d72801ffa173ce108ea7417bcc9746"
+      },
+      {
+        "package_id": "realtime-multimodal-interaction",
+        "article_draft_sha256": "9a0f7585a146b982be930e7cb6fb0241fec88ea4a9eed7508a1ac8ca020f1bda"
+      },
+      {
+        "package_id": "specialized-reasoning-science",
+        "article_draft_sha256": "61d7f7c5d6a782edc3757718cc040d41d0fe736407fae4582addc8b5074d69f8"
+      },
+      {
+        "package_id": "serving-stack-catches-up",
+        "article_draft_sha256": "9f3c2ab7b33df16a5f355dbff01f1f067d5540b5b7569877508810db153089e0"
+      },
+      {
+        "package_id": "closing-synthesis",
+        "article_draft_sha256": "6f3e98103bf831994e1551f21a4a0fefc6654985e614a494c40d03562b986b8e"
+      }
+    ]
+  },
+  "editorial_thesis": "2026年2月は、frontier model競争の焦点が単純な知能・ベンチマーク競争から、coding・tool use・long-horizon executionを統合した『agentic engineering』へ明確に収束した月だった。同時に、realtime speech、画像生成、科学推論、そしてそれらを実際に動かすserving/runtimeまで更新が連鎖し、モデル単体ではなく『AIを仕事として継続実行させる技術スタック』が前景化した。",
+  "cover_anchor_candidates": [
+    "agentic-engineering-frontier",
+    "open-model-agent-stack",
+    "serving-stack-catches-up"
+  ],
+  "articles": [
+    {
+      "package_id": "agentic-engineering-frontier",
+      "package_type": "LEAD",
+      "drafting_order": 2,
+      "page_target": 7,
+      "late_breaking": false,
+      "editorial_angle": "OpenAIとAnthropicを軸に、coding能力そのものではなく、長時間タスク、tool/computer use、複数agent、低latency interaction、安全性境界へ競争軸が広がったことを比較する。",
+      "boundaries": [
+        "The Evidence task intentionally groups four related first-party items; drafting must keep product, base model, system-card, and specialized Spark boundaries explicit.",
+        "Performance and benchmark comparisons are vendor-reported.",
+        "Codex-Spark’s throughput statement depends on specialized Cerebras hardware and research-preview conditions.",
+        "Cyber capability classification must reproduce the System Card’s stated threshold/precaution boundary rather than exaggerating it.",
+        "This Evidence task groups two related February model releases rather than treating them as independent articles.",
+        "Capability and benchmark comparisons are vendor-reported and are not independently reproduced here.",
+        "Availability and 1M-context status must preserve announcement-time beta/product boundaries."
+      ],
+      "headline": "Coding ModelからAgentic Engineeringへ",
+      "deck": "2026年2月、OpenAIとAnthropicの更新は、coding性能だけでなく、複数agentの管理、長時間のtool-using execution、computer use、低latency interactionへと射程を広げた。モデル単体の能力ではなく、仕事を継続して実行する系としてAIを設計する競争が前面に出た。",
+      "blocks": [
+        {
+          "block_id": "openai-february-sequence",
+          "block_type": "PARAGRAPH",
+          "text": "OpenAI側では、2月2日のCodex app、2月5日のGPT-5.3-CodexとSystem Card、2月12日のGPT-5.3-Codex-Sparkという順で更新が続いた。ここで重要なのは、四つを一つの『新モデル』として潰さないことだ。Codex appは複数のcoding agentと長時間の並列作業を管理するworkspace、GPT-5.3-Codexはcodingに加えてresearch・tool use・複雑なexecutionを担うモデル、System Cardはその安全性評価、Sparkはrealtime coding interactionを狙うresearch previewであり、同じ流れに属しながら役割は異なる。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "workspace-not-chatbox",
+          "block_type": "PARAGRAPH",
+          "text": "Codex appが示した変化は、AI codingの操作単位を一往復のprompt-responseから、複数agentが並行して進める作業へ移した点にある。GPT-5.3-Codexも長時間のresearchやtool use、複雑なexecutionを対象に掲げており、UIとモデルの双方で『一度答える』より『仕事を持ち続ける』方向が明確になった。これはcoding benchmarkの更新だけでは説明しにくい、実行系としての設計変更である。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "anthropic-sustained-work",
+          "block_type": "PARAGRAPH",
+          "text": "Anthropicも同じ月に、2月5日のClaude Opus 4.6と2月17日のClaude Sonnet 4.6を通じて、codingだけでなくsustained agentic work、computer use、agent planning、knowledge workへ重点を広げた。Sonnet 4.6では1M-token context windowが示されたが、発表時点ではbetaである。Opus 4.6とSonnet 4.6は二つの独立記事に分解するより、2月中に続いた同一方向の更新として読む方が技術的な連続性を捉えやすい。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "agentic-engineering-common-axis",
+          "block_type": "PARAGRAPH",
+          "text": "両社の一次資料を共通軸で並べると、競争の焦点は『codeを生成できるか』から、長いcontextを保持し、toolやcomputerを使い、途中状態を抱えたまま作業を継続できるかへ移っている。OpenAIでは複数agentを扱うworkspaceとlong-running execution、Anthropicではsustained agentic workとcomputer use・planningが前面に出た。2月をagentic engineeringへの収束として捉える根拠は、この実行時間と作業面の拡張にある。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "spark-realtime-branch",
+          "block_type": "PARAGRAPH",
+          "text": "同じagentic engineeringでも、Sparkは別の枝を示す。GPT-5.3-Codex-Sparkはrealtime coding interaction向けのresearch previewとして位置付けられた。OpenAIは1,000 tokens/s超というthroughputを掲げているが、これはCerebrasの専用hardwareとresearch-preview条件に依存するvendor claimである。したがって『通常のCodexが常時その速度で動く』と一般化してはならない。ここで見えるのは、長時間自律実行とは反対側にある、人間との低latencyな往復を最適化する設計軸だ。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "safety-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "長時間・tool-usingな実行能力が高まるほど、安全性評価はモデルの付録ではなく実行系の設計条件になる。GPT-5.3-CodexのSystem CardはPreparedness Frameworkのcybersecurity評価を適用している。ただし、その分類はSystem Cardが記載したthresholdとprecautionの文脈で読む必要があり、『危険な能力が確立した』といった強い表現へ置き換えることはできない。2月の技術的ポイントは、agentic capabilityの拡張と同時に、その実行可能性をどの境界で制御するかが同じ製品系列の論点として現れたことにある。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "benchmark-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "性能比較には明確な境界を置く。GPT-5.3-Codexの速度向上やSparkのthroughput、Claude 4.6系のbenchmark・比較性能はいずれも各社の発表に基づくvendor claimであり、本稿で独立再現した値ではない。モデルのrelease、対象task、preview/betaといった一次資料で固定できる事実と、優位性を示す比較値は同じ確度で扱わない。agentic engineeringの方向性はbenchmarkの順位ではなく、製品とモデルが実際にどの実行surfaceへ拡張されたかから読む。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "two-timescales",
+          "block_type": "PARAGRAPH",
+          "text": "2月のagentic engineeringには二つの時間軸が同居している。一つは、複数agentやlong-running research、computer useのようにAIへ長い仕事を任せる方向。もう一つは、Sparkのように人間とのrealtimeなcoding loopを短くする方向である。自律時間を延ばすことと対話遅延を縮めることは一見逆向きだが、どちらも『AIを実際の作業工程へ埋め込む』ための最適化である。3月以降を見る際にも、単純なmodel scoreより、この二つの時間軸と安全な制御面がどこまで実装へ落ちるかが重要な観察点になる。",
+          "attribution_mode": "MIXED"
+        }
+      ]
+    },
+    {
+      "package_id": "open-model-agent-stack",
+      "package_type": "COMPARISON",
+      "drafting_order": 3,
+      "page_target": 7,
+      "late_breaking": false,
+      "editorial_angle": "Qwen3.5/Qwen3-Coder-Next、GLM-5、M2.5/Forgeを、open-weight/availability、architecture、tool/coding scope、agent training、serving integrationの観点で比較する。",
+      "boundaries": [
+        "Model Studio availability and dates differ by China/international region; drafting must preserve the regional scope of each lifecycle entry.",
+        "The lifecycle page is a living document and may include later global rollouts; February chronology must use the dated entries rather than current availability alone.",
+        "Architecture/training figures are first-party technical disclosures, not independently audited.",
+        "Benchmark superiority statements remain vendor-reported.",
+        "The model’s release and license can be verified independently from its claimed performance.",
+        "M2.5 benchmark and relative-speed figures are not independently reproduced.",
+        "Forge scale statements and training-throughput claims are first-party reports.",
+        "Architecture should distinguish the public model release from the training-system story rather than imply Forge itself is a broadly available product.",
+        "Performance figures come from project release notes and are not independently reproduced.",
+        "Support entries establish implementation availability, not equivalent quality or benchmark validation across model families.",
+        "Framework integration proves implementation/support landed in Transformers; it does not independently validate the model vendors’ benchmark claims.",
+        "v5.1.0 is supporting context; v5.2.0 is the materially stronger February integration milestone.",
+        "The v5.2 release also contains breaking interface changes, so model support should not be reduced to a simple compatibility list."
+      ],
+      "headline": "Open ModelsもAgent Stackへ — Qwen・GLM・MiniMax",
+      "deck": "2026年2月、中国系・open-weight系の主要更新でも、coding、tool use、long-horizon agentは中心的な設計目標になった。Qwen3.5/Qwen3-Coder-Next、GLM-5、MiniMax M2.5/Forgeを並べると、競争はmodel weightsだけでなく、agent trainingとserving integrationまで含むstackへ広がっている。",
+      "blocks": [
+        {
+          "block_id": "qwen-regional-rollout",
+          "block_type": "PARAGRAPH",
+          "text": "Qwen3.5系列は2月16日にChina側のModel Studio lifecycleへ現れ、2月20日にはinternational側でQwen3-Coder-Nextが記録された。Qwen3.5側はtext・image・video inputとreasoning/coding/agent capability、Qwen3-Coder-Next側はmulti-turn tool interactionとrepository-level code understandingを対象としている。ただし、Chinaとinternationalではavailabilityと日付が一致しない。現在のliving lifecycle pageに後日の展開が追記されていても、2月号では2月のdated entryを基準にchronologyを固定する。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "glm-engineering-scale",
+          "block_type": "PARAGRAPH",
+          "text": "GLM-5は2月12日にopen-weight modelとして公開され、複雑なsystems engineeringとlong-horizon agentic taskを明示的な対象に据えた。Z.aiの一次資料は744B total / 40B active、28.5T pre-training tokens、DeepSeek Sparse Attention、非同期RL基盤slimeを記載し、weightsはMIT license、vLLMやSGLangを含むdeployment pathも示す。ここで確定できるのは公開・licenseとfirst-party technical disclosureであり、architecture/training規模そのものを第三者監査済みの値として扱うことはできない。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "minimax-model-and-forge",
+          "block_type": "PARAGRAPH",
+          "text": "MiniMaxは2月12日にM2.5を発表し、coding、agentic tool use/search、office・workflow taskを強調した。翌13日のForgeは別のartifactであり、agent-native reinforcement learningのframeworkとして、scaffold/environment abstractionと大規模agent training向けのasynchronous schedulingを説明している。M2.5という利用可能なmodelの話と、Forgeというtraining-systemの話を混同すると『Forge自体が一般向けmodel/productとして提供された』かのように読めるため、両者の境界を維持する必要がある。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "three-forms-of-agent-stack",
+          "block_type": "PARAGRAPH",
+          "text": "三者は同じ『open model』の一語では括れない。Qwenはmultimodal reasoningからrepository-level codingとmulti-turn tool interactionまでproduct familyを広げ、GLM-5は大規模MoEとRL基盤を含むarchitecture/training storyをopen weightsと結び、MiniMaxはM2.5のtask能力とForgeのagent-native RLを連続して提示した。共通しているのは、model capabilityだけでagentを語らず、tool interaction、長時間task、training環境、deploymentまでを一つの技術問題として扱い始めている点である。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "sglang-absorption",
+          "block_type": "PARAGRAPH",
+          "text": "重要なのは、model releaseがすぐにserving layerへ流れ込んだことだ。SGLang v0.5.9は2月24日に公開され、Kimi-K2.5、GLM-5、Qwen3.5、MiniMax M2.5などを同じreleaseでsupport対象へ加えた。加えてAnthropic-compatible API endpointやMoE・multimodal・diffusion runtimeの変更も含む。これは各modelのqualityを横並びに証明するものではないが、2月のmodel waveをruntime側が短い時間差で吸収していたことを示す実装上の証拠になる。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "transformers-convergence",
+          "block_type": "PARAGRAPH",
+          "text": "Transformers v5.2.0も2月16日のreleaseで、VoxtralRealtime、GLM-5、Qwen3.5/Qwen3.5 MoE、VibeVoice Acoustic Tokenizerなどを明示的に統合した。v5.1.0は同月前半のcontextとして存在するが、本号で強いsignalになるのはv5.2である。common implementation layerへ複数のfrontier/open model familyが一度に入った事実は、model発表を単発ニュースではなくecosystem更新として読む理由になる。一方、v5.2にはbreaking interface changesも含まれるため、単純な『対応model一覧』だけでrelease全体を説明するのは不十分だ。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "benchmark-separation",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "このclusterでは、releaseとperformanceを明確に分離する。Qwenの優位性、GLM-5がproprietary frontierとの差を縮めたという評価、M2.5のbenchmark・speedup、Forgeのscale/throughput、SGLangのTTFTやacceleration、Transformers release note内に引用されたvendor performanceは、いずれも独立再現された比較ではない。公開日、license、support追加、architectureとして何が記載されたかは一次資料で固定できるが、『どれが最も優れているか』はこのEvidence setからは決めない。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "stack-level-meaning",
+          "block_type": "PARAGRAPH",
+          "text": "2月のopen-model側で注目すべきなのは、weightsの公開そのものより、その周囲にagent trainingとruntime integrationが同時に現れたことだ。model providerがtool useやlong-horizon workを狙い、training frameworkがagent environmentを扱い、SGLangやTransformersが新familyを実装層へ運ぶ。この連鎖は、3月以降の動向を読む際にも『新モデルが出たか』だけでなく、『training・serving・common frameworkまでどれだけ早く接続されたか』を見る必要があることを示している。",
+          "attribution_mode": "MIXED"
+        }
+      ]
+    },
+    {
+      "package_id": "realtime-multimodal-interaction",
+      "package_type": "FEATURE",
+      "drafting_order": 4,
+      "page_target": 5,
+      "late_breaking": false,
+      "editorial_angle": "Voxtral Realtimeのstreaming speechとGemini 3.1 Flash Image Previewを中心に、agentic workとは別のinteraction速度・modal breadthの進展を整理する。",
+      "boundaries": [
+        "Sub-200ms latency and accuracy comparisons are vendor-reported and depend on the stated serving configuration.",
+        "Open-weight/license status does not imply every surrounding hosted service component is open source.",
+        "The task source is Mistral’s news index; item-level wording must remain consistent with the February launch article.",
+        "Both highlighted model identifiers were preview-stage February releases; drafting must not describe them as generally stable at that date.",
+        "The API changelog is chronology evidence and does not independently validate quality/benchmark claims.",
+        "This task combines a reasoning/tool-use model update and an image-generation model update; architecture should split their editorial roles if needed.",
+        "Framework integration proves implementation/support landed in Transformers; it does not independently validate the model vendors’ benchmark claims.",
+        "v5.1.0 is supporting context; v5.2.0 is the materially stronger February integration milestone.",
+        "The v5.2 release also contains breaking interface changes, so model support should not be reduced to a simple compatibility list."
+      ],
+      "headline": "RealtimeとMultimodalがInteractionを変える",
+      "deck": "2月の進化はagentの自律時間を延ばす方向だけではない。Voxtral Realtimeはstreaming speechを、Gemini 3.1 Flash Image Previewは高速・大量のimage generationをAPI surfaceへ持ち込み、AIとのinteractionを『待って答えを受け取る』形から連続的な入出力へ近づけた。",
+      "blocks": [
+        {
+          "block_id": "voxtral-realtime-core",
+          "block_type": "PARAGRAPH",
+          "text": "Mistralは2月4日にVoxtral Transcribe 2 familyを発表し、その中にrealtime streaming speech-to-text modelを含めた。Realtime modelはopen weights、Apache 2.0、4B parameters、13 languages対応として記載されている。ここでの技術的な転換は、音声を一括uploadして後からtranscribeするだけでなく、streaming inputを前提にしたASRをmodel familyの中心的な利用形態として扱っていることだ。agentic workとは別軸だが、人間とAIの時間的な距離を縮める更新である。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "voxtral-claim-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Realtimeという言葉はlatencyの数字を強く印象付けるが、Mistralが示したsub-200ms latency、WER、price/performance比較はvendor-reportedであり、記載されたserving configurationに依存する。本稿ではopen-weight・license・model size・language scopeといったrelease factと、速度・精度の優位性を同一視しない。またopen weightsであることは、周辺のhosted service全体がopen sourceであることを意味しない。一次資料はMistralのnews indexを起点としているため、item-levelの表現もFebruary launch articleの範囲から広げない。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "gemini-two-surfaces",
+          "block_type": "PARAGRAPH",
+          "text": "Google側では、2月19日にGemini 3.1 Pro Previewとcustom-tools endpoint、2月26日にGemini 3.1 Flash Image Preview（Nano Banana 2）がGemini API changelogへ記録された。前者はreasoning/tool-use側、後者はspeed/high-volume image generation側の更新であり、一つの『Gemini 3.1 update』として潰すべきではない。特に本章の主役はinteractionのmodal breadthなので、Pro Previewはtool surfaceの変化を示すcontext、Flash Image Previewは画像生成の応答面を広げる主題として役割を分ける。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "gemini-preview-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Gemini 3.1 ProとGemini 3.1 Flash Imageは、2月時点ではいずれもPreviewとして記録されている。したがって、後日のstable availabilityを2月へ遡及させたり、changelogの存在だけを根拠にquality・benchmark superiorityを独立検証済みとみなしたりはしない。API changelogが強いのはidentifierとchronologyの固定であり、性能評価の再現ではない。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "transformers-implementation",
+          "block_type": "PARAGRAPH",
+          "text": "model releaseがcommon implementation layerへ到達したことも確認できる。Transformers v5.2.0は2月16日にVoxtralRealtime、GLM-5、Qwen3.5/Qwen3.5 MoE、VibeVoice Acoustic Tokenizerをsupportへ加え、VoxtralRealtimeについてはaudio encoderとMistral-based LM decoder、time conditioning、causal-convolution cachesを使うstreaming ASR implementationを説明している。これはMistralのlatencyやaccuracy claimを再検証するものではないが、realtime speechが一般的なframework側の実装対象になったことを示す。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "framework-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Transformers integrationは『実装可能になった』ことの証拠であって、model vendorのbenchmarkを独立に保証するものではない。v5.1.0は同月前半のsupporting context、v5.2.0がより強いFebruary milestoneである。またv5.2にはbreaking interface changesも含まれるため、新model supportだけを切り出して互換性が全面的に単純化したと読むこともできない。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "interaction-axis",
+          "block_type": "PARAGRAPH",
+          "text": "2月のinteraction進化をまとめると、二つの方向が見える。Voxtral Realtimeは音声をstreamとして処理し、Gemini 3.1 Flash Image Previewはimage generationを高速・大量利用向けのAPI surfaceへ置く。これは『より賢いtext model』とは別の競争であり、input/outputのmodalityと応答時間をworkloadに合わせて組み替える動きである。3月以降を読む際も、model intelligenceだけでなく、音声・画像・toolを含むinteraction loopがどのruntimeとAPIへ定着するかが独立した観察軸になる。",
+          "attribution_mode": "FACTUAL"
+        }
+      ]
+    },
+    {
+      "package_id": "specialized-reasoning-science",
+      "package_type": "FEATURE",
+      "drafting_order": 5,
+      "page_target": 4,
+      "late_breaking": false,
+      "editorial_angle": "Gemini 3 Deep Thinkを、coding-agentの延長ではなくscience/research/engineering向けのspecialized reasoningとして位置付け、Gemini 3.1 Pro Previewとの役割差を明確にする。",
+      "boundaries": [
+        "Deep Think is a specialized reasoning mode, so its results should not be generalized to the entire Gemini 3 family.",
+        "Announcement-time API availability was limited/early access.",
+        "Scientific benchmark and comparison claims are vendor-reported.",
+        "Both highlighted model identifiers were preview-stage February releases; drafting must not describe them as generally stable at that date.",
+        "The API changelog is chronology evidence and does not independently validate quality/benchmark claims.",
+        "This task combines a reasoning/tool-use model update and an image-generation model update; architecture should split their editorial roles if needed."
+      ],
+      "headline": "汎用Agent競争の外側 — Deep Thinkと科学推論",
+      "deck": "coding agentが2月の主旋律だった一方、Google DeepMindはGemini 3 Deep Thinkをscience・research・engineering向けのspecialized reasoning modeとして更新した。汎用modelの一律な能力向上ではなく、難しい推論workloadへ計算と利用形態を寄せる別のfrontierが見えている。",
+      "blocks": [
+        {
+          "block_id": "deep-think-specialized-mode",
+          "block_type": "PARAGRAPH",
+          "text": "Google DeepMindは2月12日、Gemini 3 Deep Thinkの更新をscience、research、engineering problem向けのspecialized reasoning modeとして発表した。この位置付けは重要だ。Deep Thinkの結果をGemini 3 family全体の標準能力として一般化するのではなく、特定の難度・領域へ推論資源を寄せたmodeとして読む必要がある。2月のfrontier競争をagentだけで説明すると、この『用途を絞って推論を深くする』方向を見落とす。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "availability-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "発表時点のavailabilityにも境界がある。Deep ThinkはGemini appでGoogle AI Ultra subscriber向けに提供され、APIについてはearly-access pathとして説明された。したがって、2月時点で一般的なGemini API modelと同じ広いavailabilityを持っていたとは書けない。specialized reasoningの技術的意味と、誰がどのsurfaceから利用できたかは分けて扱う。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "science-benchmark-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "科学・工学領域のbenchmarkや他modelとの比較結果はGoogle側のvendor claimであり、本稿で独立再現したものではない。Deep Thinkがscience/research/engineering向けに更新されたことは一次資料で固定できるが、そこで示されたscoreをもって一般的な『科学能力の優位』を確定することはしない。specialized modeという設計上の事実と、performance superiorityの主張を分離する。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "gemini-pro-is-different",
+          "block_type": "PARAGRAPH",
+          "text": "同じ月のGemini APIには、2月19日にGemini 3.1 Pro Previewとcustom-tools endpointが記録されている。こちらはreasoningとtool useを一般的なAPI surfaceへ接続する更新であり、Deep Thinkとは役割が異なる。Deep ThinkをGemini 3.1 Pro Previewの上位版として単純に並べるより、前者はspecialized science/research reasoning、後者はpreview-stageのgeneral reasoning/tool-use APIとして別々に読む方が、2月のGoogle stackの広がりを正確に表せる。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "gemini-preview-context",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Gemini 3.1 Proは2月時点でPreviewであり、Gemini API changelogはidentifierとchronologyを確認する一次資料ではあっても、qualityやbenchmarkを独立検証する資料ではない。同じEvidence taskには2月26日のFlash Image Previewも含まれるが、本章ではimage generationを主題化しない。reasoning/tool-use側のPro PreviewだけをDeep Thinkとの役割比較に使い、別modalの更新はinteraction章へ委ねる。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "specialization-as-axis",
+          "block_type": "PARAGRAPH",
+          "text": "2月の構図にDeep Thinkを残す意義は、frontierの評価軸が一つではないことを示す点にある。agentic engineeringは長時間のtool-using executionを伸ばす。一方、Deep Thinkはscience・research・engineeringという難しいproblem classへreasoning modeを特化する。3月以降を見る際にも、汎用modelのscoreだけでなく、『どのworkloadに対してspecialized modeやaccess pathが設計されるか』を独立した軸として追う必要がある。これは2月以降の具体的な成果を先取りする主張ではなく、2月時点で成立した技術的な問いである。",
+          "attribution_mode": "MIXED"
+        }
+      ]
+    },
+    {
+      "package_id": "serving-stack-catches-up",
+      "package_type": "DEEP_DIVE",
+      "drafting_order": 6,
+      "page_target": 4,
+      "late_breaking": false,
+      "editorial_angle": "モデル発表一覧ではなく、Realtime API、tool/Responses API、speculative decoding、parallel scheduling、MoE/hardware support、model integrationがserving stackへどう現れたかを見る。",
+      "boundaries": [
+        "The v0.16.0 branch-cut date means it cannot be used as evidence that every late-February model change was already integrated.",
+        "Performance figures are project release-note measurements and are not independently reproduced.",
+        "The series groups one patch and one major release; architecture should center v0.16.0.",
+        "Performance figures come from project release notes and are not independently reproduced.",
+        "Support entries establish implementation availability, not equivalent quality or benchmark validation across model families.",
+        "Framework integration proves implementation/support landed in Transformers; it does not independently validate the model vendors’ benchmark claims.",
+        "v5.1.0 is supporting context; v5.2.0 is the materially stronger February integration milestone.",
+        "The v5.2 release also contains breaking interface changes, so model support should not be reduced to a simple compatibility list."
+      ],
+      "headline": "Serving Stackは同じ月に何を吸収したか",
+      "deck": "frontier modelの発表速度が上がるほど、実用上の律速点はserving/runtimeへ移る。2月のvLLM、SGLang、Transformersを見ると、realtime audio、Responses/tool API、new model families、MoE、multimodal supportが同じ月の実装課題として一気に流れ込んでいる。",
+      "blocks": [
+        {
+          "block_id": "vllm-february-sequence",
+          "block_type": "PARAGRAPH",
+          "text": "vLLMは2月4日のv0.15.1を経て、2月25日にv0.16.0を公開した。後者のrelease noteはbranch cutが2月8日だったことも明記している。本号ではv0.15.1を月初のcontextとし、より強いsystems signalを持つv0.16.0を中心に読む。branch cutという時間境界がある以上、2月後半に登場した全model changeがv0.16.0へ既に取り込まれていた、とrelease日だけから推論することはできない。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "vllm-realtime-and-tools",
+          "block_type": "PARAGRAPH",
+          "text": "v0.16.0で目立つのは、WebSocket-based Realtime APIとstreaming audio / Voxtral realtime support、Responses APIの改善、tool-calling fixes、unified parallel drafting、XPU関連の大きな変更が同じreleaseへ並んだことだ。これはserving engineがtext completionを高速に返すだけでは足りず、音声stream、tool protocol、agent-style response surface、複数のdecoding/scheduling経路を同時に扱う必要が出てきたことを示す。model capabilityの拡張がruntime APIの複雑さへ直結している。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "vllm-performance-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "vLLM release noteはasync schedulingとpipeline parallelismの組み合わせについて、end-to-end throughput 30.8%改善、TPOT 31.8%改善と報告している。ただし、これはproject-reported measurementであり、本稿で再現したbenchmarkではない。serving stackの技術方向を説明する材料にはなるが、環境を越えた一般性能として扱わない。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "sglang-model-wave",
+          "block_type": "PARAGRAPH",
+          "text": "SGLang v0.5.9は2月24日に公開され、Kimi-K2.5、GLM-5、Qwen3.5、MiniMax M2.5を含む新しいmodel familiesに加え、multimodal/diffusion model supportを広げた。Anthropic-compatible API endpointやinference、MoE、multimodal、diffusion runtimeの変更も同時に入っている。model providerごとのreleaseを横断してruntimeが吸収する様子が一つのrelease noteに集約されており、2月の『model wave』をsystems側から確認できる。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "sglang-performance-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "SGLangが報告するoverlapped LoRA loadingのTTFT低減や、Blackwell上のDeepSeek V3.2 NSA accelerationはproject claimである。また『supportが入った』ことは、そのmodel familyが同一条件で同等品質・同等performanceを持つことを意味しない。implementation availabilityとmodel evaluationは別の層として扱う。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "transformers-common-layer",
+          "block_type": "PARAGRAPH",
+          "text": "Transformers v5.2.0は2月16日にVoxtralRealtime、GLM-5、Qwen3.5/Qwen3.5 MoE、VibeVoice Acoustic Tokenizerをsupportへ加えた。v5.1.0も同月前半に存在するが、複数の2月model familyが一度にcommon implementation layerへ到達したという意味ではv5.2が強いmilestoneである。vLLMやSGLangがserving engineとしてproduction pathを広げる一方、Transformersはmodel implementationの共通入口を更新しており、同じmodel waveを異なる層で受け止めている。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "transformers-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Transformersへのintegrationはimplementation/supportの成立を示すが、vendor benchmarkを独立に検証するものではない。またv5.2にはbreaking interface changesも含まれている。したがって、support listが増えたことを『ecosystem互換性が単純に改善した』とだけ評価せず、API・interface changeを含むmigration costも同じreleaseの一部として見る必要がある。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "serving-is-now-model-feature",
+          "block_type": "PARAGRAPH",
+          "text": "2月のsystems側から見える最大の変化は、servingがmodel release後の単なる最適化工程ではなく、model capabilityを成立させる機能層になったことだ。realtime audioにはstreaming API、agentにはtool/Responses surface、MoEや新architectureにはkernel・scheduler・hardware supportが要る。3月以降を見る際には、新modelの能力表だけでなく、その機能がcommon frameworkとserving engineへ到達したか、どのAPI contractで利用可能になったかまで見なければ、実用上の進展を測れない。",
+          "attribution_mode": "FACTUAL"
+        }
+      ]
+    },
+    {
+      "package_id": "closing-synthesis",
+      "package_type": "SECTION",
+      "drafting_order": 7,
+      "page_target": 2,
+      "late_breaking": false,
+      "editorial_angle": "本文最後の総括として、2月の個別発表を再列挙するのではなく、agentic engineering、open-model competition、realtime/multimodal interaction、specialized reasoning、serving/runtimeの五つの軸を横断的に束ねる。3月以降への接続は、後続月の具体的な出来事を2月へ遡及させず、『2月に何が技術課題として立ち上がったか』というreader-facingな継続線として示す。",
+      "boundaries": [
+        "The Evidence task intentionally groups four related first-party items; drafting must keep product, base model, system-card, and specialized Spark boundaries explicit.",
+        "Performance and benchmark comparisons are vendor-reported.",
+        "Codex-Spark’s throughput statement depends on specialized Cerebras hardware and research-preview conditions.",
+        "Cyber capability classification must reproduce the System Card’s stated threshold/precaution boundary rather than exaggerating it.",
+        "Model Studio availability and dates differ by China/international region; drafting must preserve the regional scope of each lifecycle entry.",
+        "The lifecycle page is a living document and may include later global rollouts; February chronology must use the dated entries rather than current availability alone.",
+        "Sub-200ms latency and accuracy comparisons are vendor-reported and depend on the stated serving configuration.",
+        "Open-weight/license status does not imply every surrounding hosted service component is open source.",
+        "The task source is Mistral’s news index; item-level wording must remain consistent with the February launch article.",
+        "Deep Think is a specialized reasoning mode, so its results should not be generalized to the entire Gemini 3 family.",
+        "Announcement-time API availability was limited/early access.",
+        "Scientific benchmark and comparison claims are vendor-reported.",
+        "The v0.16.0 branch-cut date means it cannot be used as evidence that every late-February model change was already integrated.",
+        "Performance figures are project release-note measurements and are not independently reproduced.",
+        "The series groups one patch and one major release; architecture should center v0.16.0."
+      ],
+      "headline": "総括 — 2月が残した技術的な転換点",
+      "deck": "2026年2月を横断して見えるのは、AI競争の重心がmodel単体から『継続して仕事を実行できる技術stack』へ移ったことだ。agent execution、open-model deployment、realtime interaction、specialized reasoning、serving/runtimeが同じ月に接続し始めた。",
+      "blocks": [
+        {
+          "block_id": "month-level-shift",
+          "block_type": "PARAGRAPH",
+          "text": "2月の個別releaseを一列に並べるだけでは、この月の意味は見えにくい。Codex appは複数coding agentとlong-running workを管理するworkspaceを提示し、Qwen3-Coder-Nextはmulti-turn tool interactionとrepository-level understandingを対象にし、Voxtral Realtimeはstreaming speech、Deep Thinkはscience/research/engineering向けspecialized reasoning、vLLMはRealtime APIやResponses/tool surfaceをruntimeへ取り込んだ。対象は異なるが、共通してmodelの出力品質だけでなく『どの時間幅・tool・modality・runtimeで仕事として成立させるか』へ技術課題が広がっている。これが2月全体を貫く転換点である。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "five-observation-axes",
+          "block_type": "BULLET_LIST",
+          "text": "2月から後続月へ持ち越される観察軸は五つある。\n・agent execution：一回の回答ではなく、複数agent・tool use・long-running taskを安全に継続できるか。\n・serving/runtime：model capabilityがRealtime API、tool protocol、scheduler、hardware supportまで到達するか。\n・safety/control：agentが長く強く動くほど、実行権限とcyber boundaryをどう設計するか。\n・multimodal interaction：speechやimageが低latency・高頻度のinteraction loopへ定着するか。\n・specialized reasoning：汎用modelとは別に、science/research/engineeringなど特定workloadへreasoningを特化する設計がどう位置付くか。\nこれらは3月以降の具体的イベントを2月へ持ち込むためではなく、2月時点で成立した技術的な問いを後続月でも同じ物差しで読むための軸である。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "openai-limit",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "OpenAIの2月stackは、Codex app、GPT-5.3-Codex、System Card、Sparkを一つのartifactに潰さない。workspace、base model、安全性文書、realtime-oriented research previewは役割が異なる。Sparkの1,000 tokens/s超という値はCerebras hardwareとresearch-preview条件に依存するvendor claimであり、一般的なCodex throughputとして扱わない。System Cardのcyber classificationも、記載されたthreshold/precautionの境界を越えて強く言い換えない。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "qwen-limit",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Qwen3.5/Qwen3-Coder-Nextのchronologyは地域差を保持する。Model StudioのChinaとinternationalではavailabilityとdated entryが異なり、living lifecycle pageには後日のglobal rolloutが追記され得る。したがって2月号では2月16日・20日の記録を2月の事実として固定し、後から見えるcurrent availabilityを遡及して使わない。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "multimodal-limit",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Voxtral Realtimeについて確定できるのは、2月4日のrelease、streaming speech-to-text、open weights、Apache 2.0、4B、13 languagesといった範囲である。sub-200ms latencyやaccuracy比較はserving configurationに依存するvendor claimであり、open-weightであることも周辺hosted service全体のopen-source化を意味しない。またEvidenceはMistral news indexを起点としているため、item-level表現をFebruary launch articleの記載から広げない。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "deepthink-limit",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Deep ThinkはGemini 3 family全体へ一般化できる能力ではなく、science/research/engineering向けのspecialized reasoning modeとして扱う。2月発表時点のAPI accessはlimited/early accessであり、科学benchmarkや比較結果もvendor-reportedである。後日のavailabilityや結果を2月へ遡及させず、2月時点で確認できたspecializationの方向だけを残す。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "runtime-limit",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "vLLM v0.16.0は2月25日releaseだが、branch cutは2月8日である。このためlate-Februaryのmodel updateがすべて同releaseへ統合済みだったとは言えない。またseriesにはv0.15.1とv0.16.0が含まれるが、systems signalの中心はv0.16.0である。release noteのthroughput/TPOT改善値もproject measurementとして扱い、独立benchmarkへ昇格させない。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "claim-integrity",
+          "block_type": "PARAGRAPH",
+          "text": "この総括で意図的に残したいのは、『確認できた変化』と『まだ強く言えないこと』の差である。複数agent workspace、repository-level tool interaction、streaming ASR、specialized reasoning、Realtime/tool serving APIは2月の一次資料で確認できる。一方、benchmark superiority、latency・throughput、科学性能などの数値比較はvendor/project claimのままである。2月が後続月へ残したのは、勝者の順位ではなく、AIを継続実行可能なsystemにするための論点がmodel・training・interaction・runtime・safetyへ分解され、同時進行し始めたという技術地図である。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "forward-continuity",
+          "block_type": "PARAGRAPH",
+          "text": "したがって3月以降との接続は、後続月のニュースを2月へ逆輸入する形では行わない。後続月を読むときに問うべきなのは、2月に立ち上がった五つの軸が継続・変形・収束したかである。agentはより長く安全に仕事を持てるようになったか。runtimeは新しいmodalityとtool contractを吸収したか。open modelはtrainingからdeploymentまで一貫したstackを作れたか。specialized reasoningは汎用modelと異なる価値を定着させたか。2月号は、その後の変化を比較可能にする基準点として閉じる。",
+          "attribution_mode": "MIXED"
+        }
+      ]
+    }
+  ],
+  "constraints": {
+    "language": "ja",
+    "max_this_week_signals": 5,
+    "no_new_external_facts": true,
+    "summarize_only_validated_article_text": true,
+    "late_breaking_boundary_required": true,
+    "page_references_must_use_package_ids": true
+  }
+}
