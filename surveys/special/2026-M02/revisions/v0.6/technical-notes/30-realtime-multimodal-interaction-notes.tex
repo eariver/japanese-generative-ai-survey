@@ -1,0 +1,141 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{RealtimeとMultimodalがInteractionを変える: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+Voxtral Transcribe 2 / Voxtral Realtime & 主要資料 & オープンウェイト & 2026-02-04 (モデル公開) \\
+Gemini 3.1 Pro / Gemini 3.1 Flash Image February API releases & 主要資料 & モデル更新 & 2026-02-19 (APIモデル公開); 2026-02-26 (APIモデル公開) \\
+Transformers v5.1 / v5.2 model-family integrations & 補足資料 & Framework & 2026-02-05 (プロジェクト公開); 2026-02-16 (プロジェクト公開) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{Voxtral Transcribe 2 / Voxtral Realtime}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Mistral AI \\
+種別 & オープンウェイト \\
+時系列 & 2026-02-04 (モデル公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Mistralは2026年2月4日にVoxtral Transcribe 2 familyを発表し、その中にはrealtime streaming speech-to-text modelが含まれる。
+\item \textbf{一次情報で確認できる事実}: realtime modelはApache 2.0のopen weightsとして公開され、13言語に対応する4B-parameter streaming ASR modelと説明されている。
+\item \textbf{Vendor claim}: launch materialに記載されたlatency、word-error-rate、price/performance比較はvendor claimである。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 200ms未満とされるlatencyやaccuracy比較はvendor報告であり、記載されたserving configurationに依存する。
+\item \textbf{分析上の留意点}: open-weight/license statusは、周辺のhosted service componentすべてがopen sourceであることを意味しない。
+\item \textbf{分析上の留意点}: task sourceはMistralのnews indexであり、item-levelの表現は2月のlaunch articleと整合させる必要がある。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://mistral.ai/news/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Gemini 3.1 Pro / Gemini 3.1 Flash Image February API releases}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Google \\
+種別 & モデル更新 \\
+時系列 & 2026-02-19 (APIモデル公開); 2026-02-26 (APIモデル公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Gemini API changelogには、2026年2月19日のGemini 3.1 Pro Previewと、built-in execution capabilityと併せてuser-defined toolを優先できるcustom-tools endpointが記録されている。
+\item \textbf{一次情報で確認できる事実}: changelogには、Gemini 3.1 Flash Image Preview（Nano Banana 2）が2026年2月26日に、高速・高volumeのimage generation向けreleaseとして記録されている。
+\item \textbf{Vendor claim}: これらのpreviewに関連する性能・品質の優位性主張はvendor claimとして扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 両model identifierはいずれも2月時点ではpreview-stageのreleaseであり、その時点で一般にstableだったとは記述しない。
+\item \textbf{分析上の留意点}: API changelogはchronologyのEvidenceであり、品質やbenchmark claimを独立に検証するものではない。
+\item \textbf{分析上の留意点}: このtaskはreasoning/tool-use modelの更新とimage-generation modelの更新を含むため、編集上は両者の役割を必要に応じて分離する。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://ai.google.dev/gemini-api/docs/changelog}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Transformers v5.1 / v5.2 model-family integrations}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Hugging Face \\
+種別 & Framework \\
+時系列 & 2026-02-05 (プロジェクト公開); 2026-02-16 (プロジェクト公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Transformers v5.2.0は2026年2月16日に公開され、VoxtralRealtime、GLM-5、Qwen3.5/Qwen3.5 MoE、VibeVoice Acoustic Tokenizerへの明示的なsupportが追加された。
+\item \textbf{Project claim}: VoxtralRealtime implementationでは、audio encoderとMistral-based language-model decoderにtime conditioningとcausal-convolution cacheを組み合わせたstreaming ASRが説明されている。
+\item \textbf{一次情報で確認できる事実}: Transformers v5.1.0は2月前半に公開され、GLM-OCRなど追加のmodel-family integrationを含んでいた。
+\item \textbf{分析上の留意点}: Transformers release note内に引用されたvendorのperformance記述は、Hugging Faceによる独立検証ではない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: framework integrationはTransformersへimplementation/supportが入ったことを示すが、model vendorのbenchmark claimを独立検証するものではない。
+\item \textbf{分析上の留意点}: v5.1.0はsupporting contextであり、2月のintegration milestoneとしてはv5.2.0の方が強い。
+\item \textbf{分析上の留意点}: v5.2 releaseにはbreaking interface changeも含まれるため、model supportを単純なcompatibility listだけに還元すべきではない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://github.com/huggingface/transformers/releases/tag/v5.1.0}}
+\item {\scriptsize\url{https://github.com/huggingface/transformers/releases/tag/v5.2.0}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

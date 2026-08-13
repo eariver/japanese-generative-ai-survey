@@ -1,0 +1,43 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{総括 — 2月が残した技術的な転換点}
+\label{pkg:closing-synthesis}
+\noindent\textbf{2026年2月を横断して見えるのは、AI競争の重心がmodel単体から『継続して仕事を実行できる技術stack』へ移ったことだ。agent execution、open-model deployment、realtime interaction、specialized reasoning、serving/runtimeが同じ月に接続し始めた。}\autocite{src-15823ae5556e,src-5041feb6f87f,src-d8b7c1c36830,src-dd5d9b8662f3,src-eac8dfbeb78c}
+
+2月の個別releaseを一列に並べるだけでは、この月の意味は見えにくい。Codex appは複数coding agentとlong-running workを管理するworkspaceを提示し、Qwen3-Coder-Nextはmulti-turn tool interactionとrepository-level understandingを対象にし、Voxtral Realtimeはstreaming speech、Deep Thinkはscience/research/engineering向けspecialized reasoning、vLLMはRealtime APIやResponses/tool surfaceをruntimeへ取り込んだ。対象は異なるが、共通してmodelの出力品質だけでなく『どの時間幅・tool・modality・runtimeで仕事として成立させるか』へ技術課題が広がっている。これが2月全体を貫く転換点である。\autocite{src-15823ae5556e,src-5041feb6f87f,src-d8b7c1c36830,src-dd5d9b8662f3,src-eac8dfbeb78c}
+
+
+\begin{itemize}
+  \item 2月から後続月へ持ち越される観察軸は五つある。
+  \item ・agent execution：一回の回答ではなく、複数agent・tool use・long-running taskを安全に継続できるか。
+  \item ・serving/runtime：model capabilityがRealtime API、tool protocol、scheduler、hardware supportまで到達するか。
+  \item ・safety/control：agentが長く強く動くほど、実行権限とcyber boundaryをどう設計するか。
+  \item ・multimodal interaction：speechやimageが低latency・高頻度のinteraction loopへ定着するか。
+  \item ・specialized reasoning：汎用modelとは別に、science/research/engineeringなど特定workloadへreasoningを特化する設計がどう位置付くか。
+  \item これらは3月以降の具体的イベントを2月へ持ち込むためではなく、2月時点で成立した技術的な問いを後続月でも同じ物差しで読むための軸である。
+\end{itemize}
+\autocite{src-15823ae5556e,src-4a841ea7ec7c,src-5041feb6f87f,src-9aba7995b6a5,src-d8b7c1c36830,src-dd5d9b8662f3,src-dd64fe3084a4}
+
+\begin{claimboundary}
+OpenAIの2月stackは、Codex app、GPT-5.3-Codex、System Card、Sparkを一つのartifactに潰さない。workspace、base model、安全性文書、realtime-oriented research previewは役割が異なる。Sparkの1,000 tokens/s超という値はCerebras hardwareとresearch-preview条件に依存するvendor claimであり、一般的なCodex throughputとして扱わない。System Cardのcyber classificationも、記載されたthreshold/precautionの境界を越えて強く言い換えない。\autocite{src-15823ae5556e,src-4a841ea7ec7c,src-9aba7995b6a5,src-dd64fe3084a4}
+\end{claimboundary}
+
+\begin{claimboundary}
+Qwen3.5/Qwen3-Coder-Nextのchronologyは地域差を保持する。Model StudioのChinaとinternationalではavailabilityとdated entryが異なり、living lifecycle pageには後日のglobal rolloutが追記され得る。したがって2月号では2月16日・20日の記録を2月の事実として固定し、後から見えるcurrent availabilityを遡及して使わない。\autocite{src-eac8dfbeb78c}
+\end{claimboundary}
+
+\begin{claimboundary}
+Voxtral Realtimeについて確定できるのは、2月4日のrelease、streaming speech-to-text、open weights、Apache 2.0、4B、13 languagesといった範囲である。sub-200ms latencyやaccuracy比較はserving configurationに依存するvendor claimであり、open-weightであることも周辺hosted service全体のopen-source化を意味しない。またEvidenceはMistral news indexを起点としているため、item-level表現をFebruary launch articleの記載から広げない。\autocite{src-d8b7c1c36830}
+\end{claimboundary}
+
+\begin{claimboundary}
+Deep ThinkはGemini 3 family全体へ一般化できる能力ではなく、science/research/engineering向けのspecialized reasoning modeとして扱う。2月発表時点のAPI accessはlimited/early accessであり、科学benchmarkや比較結果もvendor-reportedである。後日のavailabilityや結果を2月へ遡及させず、2月時点で確認できたspecializationの方向だけを残す。\autocite{src-dd5d9b8662f3}
+\end{claimboundary}
+
+\begin{claimboundary}
+vLLM v0.16.0は2月25日releaseだが、branch cutは2月8日である。このためlate-Februaryのmodel updateがすべて同releaseへ統合済みだったとは言えない。またseriesにはv0.15.1とv0.16.0が含まれるが、systems signalの中心はv0.16.0である。release noteのthroughput/TPOT改善値もproject measurementとして扱い、独立benchmarkへ昇格させない。\autocite{src-5041feb6f87f,src-67307025f5d9}
+\end{claimboundary}
+
+この総括で意図的に残したいのは、『確認できた変化』と『まだ強く言えないこと』の差である。複数agent workspace、repository-level tool interaction、streaming ASR、specialized reasoning、Realtime/tool serving APIは2月の一次資料で確認できる。一方、benchmark superiority、latency・throughput、科学性能などの数値比較はvendor/project claimのままである。2月が後続月へ残したのは、勝者の順位ではなく、AIを継続実行可能なsystemにするための論点がmodel・training・interaction・runtime・safetyへ分解され、同時進行し始めたという技術地図である。\autocite{src-15823ae5556e,src-4a841ea7ec7c,src-5041feb6f87f,src-67307025f5d9,src-9aba7995b6a5,src-d8b7c1c36830,src-dd5d9b8662f3,src-dd64fe3084a4,src-eac8dfbeb78c}
+
+
+したがって3月以降との接続は、後続月のニュースを2月へ逆輸入する形では行わない。後続月を読むときに問うべきなのは、2月に立ち上がった五つの軸が継続・変形・収束したかである。agentはより長く安全に仕事を持てるようになったか。runtimeは新しいmodalityとtool contractを吸収したか。open modelはtrainingからdeploymentまで一貫したstackを作れたか。specialized reasoningは汎用modelと異なる価値を定着させたか。2月号は、その後の変化を比較可能にする基準点として閉じる。\autocite{src-5041feb6f87f,src-67307025f5d9,src-9aba7995b6a5,src-d8b7c1c36830,src-dd5d9b8662f3,src-eac8dfbeb78c}
