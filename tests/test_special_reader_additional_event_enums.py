@@ -17,6 +17,7 @@ E & 主要資料 & MODEL & 2026-01-22 (MODEL\_BEHAVIOR\_POLICY\_RELEASE) \\
 F & 主要資料 & SECURITY EVENT & 2026-01-28 (SECURITY\_ENGINEERING\_NOTE) \\
 G & 主要資料 & PAPER & 2026-01-24 (PAPER\_SUBMISSION) \\
 H & 主要資料 & MODEL & 2026-01-27 (MODEL\_STUDIO\_AVAILABILITY) \\
+I & 主要資料 & FRAMEWORK & 2026-01-26 (PROJECT\_PRERELEASE) \\
 '''
         result = translate_machine_labels(source)
         self.assertEqual(reader_taxonomy_findings(result), [])
@@ -30,6 +31,7 @@ H & 主要資料 & MODEL & 2026-01-27 (MODEL\_STUDIO\_AVAILABILITY) \\
             "セキュリティ技術解説",
             "論文投稿",
             "Model Studio提供開始",
+            "プロジェクトPre-release",
         ):
             self.assertIn(label, result)
         for leaked in (
@@ -46,6 +48,7 @@ H & 主要資料 & MODEL & 2026-01-27 (MODEL\_STUDIO\_AVAILABILITY) \\
             "論文_SUBMISSION",
             "MODEL_STUDIO_AVAILABILITY",
             "モデル_STUDIO_AVAILABILITY",
+            "PROJECT_PRERELEASE",
         ):
             self.assertNotIn(leaked, result.replace(r"\_", "_"))
 

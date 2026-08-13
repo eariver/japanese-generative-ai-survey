@@ -52,6 +52,7 @@ EVENT_LABELS = {
     "MODEL_BEHAVIOR_POLICY_RELEASE": "モデル行動方針公開",
     "AGENT_PRODUCT_RELEASE": "Agent製品公開",
     "PROJECT_RELEASE": "プロジェクト公開",
+    "PROJECT_PRERELEASE": "プロジェクトPre-release",
     "PROJECT_UPDATE": "プロジェクト更新",
     "SYSTEM_CARD_PUBLICATION": "System Card公開",
     "RESEARCH_PREVIEW": "研究Preview",
