@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2025-H2",
+  "overrides": [
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:item-arxiv-2512-13525v4-b0678ef6e8",
+      "artifact": {"canonical_name": "JANUS MoE inference system", "artifact_type": "PAPER", "organization": "Research authors"},
+      "events": [{"event_type": "INITIAL_ARXIV_SUBMISSION", "event_date": "2025-12-15"}],
+      "claims": [{"text": "JANUS proposes disaggregating attention and MoE layers onto separate GPU worker pools with adaptive communication, activation scheduling, and SLO-aware scaling.", "evidence_class": "AUTHOR_CLAIM"}, {"text": "The collected arXiv record reports up to 4.7x per-GPU throughput over evaluated MoE inference baselines while satisfying token-level latency SLOs.", "evidence_class": "AUTHOR_CLAIM"}],
+      "limitations": ["The collected artifact is arXiv v4 updated on 2026-08-11; chronology is anchored to the 2025-12-15 initial submission, while technical wording may include post-period revisions.", "Reported performance is an author evaluation, not independently reproduced."],
+      "unresolved_questions": [], "candidate_recommendation": "HOLD", "why_this_special": "Useful supporting evidence that late-2025 serving research was moving toward cross-layer disaggregation rather than treating large MoE models as monolithic units.", "canonical_url": "https://arxiv.org/abs/2512.13525", "status": "PARTIAL", "rationale": "Keep as supporting runtime research, not a headline event; its current v4 text postdates the coverage window."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:item-arxiv-2512-15834v1-f98004e324",
+      "artifact": {"canonical_name": "Speculative Tool Calls for agentic LM inference", "artifact_type": "PAPER", "organization": "Research authors"},
+      "events": [{"event_type": "INITIAL_ARXIV_SUBMISSION", "event_date": "2025-12-17"}],
+      "claims": [{"text": "The paper proposes speculating tool calls and keeping sequences resident in the inference engine to reduce tool-mediated agent inference overhead.", "evidence_class": "AUTHOR_CLAIM"}, {"text": "The authors report throughput improvements of several hundred tokens per second in their evaluated agent-hosting settings.", "evidence_class": "AUTHOR_CLAIM"}],
+      "limitations": ["The throughput result is setup-dependent and author-reported; it should support, not define, the retrospective thesis."],
+      "unresolved_questions": [], "candidate_recommendation": "HOLD", "why_this_special": "Provides systems-level evidence that agent tool execution had become an inference-path concern by the end of the half-year.", "canonical_url": "https://arxiv.org/abs/2512.15834"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:item-official-feed-0661418088b8e2710c8e-65d3c9a193",
+      "artifact": {"canonical_name": "AgentKit, Evals, and RFT for agents", "artifact_type": "FRAMEWORK", "organization": "OpenAI"},
+      "events": [{"event_type": "PRODUCT_TOOLING_RELEASE", "event_date": "2025-10-06"}],
+      "claims": [{"text": "OpenAI announced AgentKit together with expanded evals capabilities and reinforcement fine-tuning for agents.", "evidence_class": "PRIMARY_FACT"}],
+      "limitations": [], "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "Marks the shift from individual agent demos toward reusable construction, evaluation, and tuning infrastructure.", "canonical_url": "https://openai.com/index/introducing-agentkit"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:item-official-feed-10ab1c39be1497734c70-6925368411",
+      "artifact": {"canonical_name": "GPT-5.2", "artifact_type": "MODEL", "organization": "OpenAI"},
+      "events": [{"event_type": "MODEL_RELEASE", "event_date": "2025-12-11"}],
+      "claims": [{"text": "OpenAI released GPT-5.2 for ChatGPT and the API with reasoning, long-context, coding, and vision positioned for professional and agentic workflows.", "evidence_class": "PRIMARY_FACT"}],
+      "limitations": [], "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "A late-period frontier-model iteration showing that the GPT-5 family had become a rapid lifecycle rather than a single August launch.", "canonical_url": "https://openai.com/index/introducing-gpt-5-2"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:item-official-feed-2081c76ea2b4319d2ba2-225a091e4c",
+      "artifact": {"canonical_name": "gpt-oss-safeguard", "artifact_type": "SAFETY_EVENT", "organization": "OpenAI"},
+      "events": [{"event_type": "OPEN_WEIGHT_SAFETY_MODEL_RELEASE", "event_date": "2025-10-29"}],
+      "claims": [{"text": "OpenAI introduced gpt-oss-safeguard as open-weight reasoning models for policy-conditioned safety classification.", "evidence_class": "PRIMARY_FACT"}],
+      "limitations": [], "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "Shows control/safety components becoming programmable model artifacts alongside general-purpose open weights.", "canonical_url": "https://openai.com/index/introducing-gpt-oss-safeguard"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:item-official-feed-55da04f42e321f995dad-c0e2883961",
+      "artifact": {"canonical_name": "GPT-5.1-Codex-Max", "artifact_type": "MODEL_UPDATE", "organization": "OpenAI"},
+      "events": [{"event_type": "CODING_MODEL_RELEASE", "event_date": "2025-11-19"}],
+      "claims": [{"text": "OpenAI released GPT-5.1-Codex-Max for Codex and described it as designed for long-running, project-scale agentic coding work.", "evidence_class": "PRIMARY_FACT"}],
+      "limitations": [], "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "A distinct coding-specialized model event connecting frontier model iteration to long-horizon software execution.", "canonical_url": "https://openai.com/index/gpt-5-1-codex-max"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:item-official-feed-5bea303cfdb176bb1a01-f1c915a303",
+      "artifact": {"canonical_name": "GPT-5.1", "artifact_type": "MODEL_UPDATE", "organization": "OpenAI"},
+      "events": [{"event_type": "MODEL_RELEASE", "event_date": "2025-11-12"}],
+      "claims": [{"text": "OpenAI announced GPT-5.1 and began rolling it out to paid ChatGPT users.", "evidence_class": "PRIMARY_FACT"}],
+      "limitations": [], "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "Documents a mid-family behavior/capability refresh three months after GPT-5, relevant to lifecycle compression.", "canonical_url": "https://openai.com/index/gpt-5-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:item-official-feed-6deeebce1719b9f21b32-837ba14bfc",
+      "artifact": {"canonical_name": "Codex September upgrades", "artifact_type": "PRODUCT", "organization": "OpenAI"},
+      "events": [{"event_type": "CODING_AGENT_UPGRADE", "event_date": "2025-09-15"}],
+      "claims": [{"text": "OpenAI announced Codex upgrades spanning terminal, IDE, web, and mobile surfaces and emphasized more independent task execution.", "evidence_class": "PRIMARY_FACT"}],
+      "limitations": [], "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "Shows coding assistants becoming cross-surface agents rather than isolated code-completion interfaces.", "canonical_url": "https://openai.com/index/introducing-upgrades-to-codex"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:item-official-feed-ad13fe7d3321b824a618-aeb0fa89f4",
+      "artifact": {"canonical_name": "OpenAI–Anthropic joint safety evaluation", "artifact_type": "SAFETY_EVENT", "organization": "OpenAI / Anthropic"},
+      "events": [{"event_type": "CROSS_LAB_SAFETY_EVALUATION", "event_date": "2025-08-27"}],
+      "claims": [{"text": "OpenAI and Anthropic published a joint evaluation in which the labs tested each other's models across misalignment, instruction following, hallucination, jailbreaking, and related safety dimensions.", "evidence_class": "PRIMARY_FACT"}],
+      "limitations": [], "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "Provides unusually direct cross-lab safety evidence during a period of fast model and agent releases.", "canonical_url": "https://openai.com/index/openai-anthropic-safety-evaluation"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:item-official-feed-bef6cbe2a83e51bc89a8-5f3fd437ab",
+      "artifact": {"canonical_name": "Scheming detection and mitigation research", "artifact_type": "SAFETY_EVENT", "organization": "OpenAI / Apollo Research"},
+      "events": [{"event_type": "SAFETY_RESEARCH_PUBLICATION", "event_date": "2025-09-17"}],
+      "claims": [{"text": "OpenAI and Apollo Research published controlled evaluations for hidden misalignment or 'scheming' and an early mitigation method.", "evidence_class": "PRIMARY_FACT"}],
+      "limitations": ["Findings come from controlled evaluations and should not be generalized to deployed-model behavior without the stated experimental scope."],
+      "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "Connects increasing agent horizon and autonomy to new control/evaluation concerns.", "canonical_url": "https://openai.com/index/detecting-and-reducing-scheming-in-ai-models"
+    }
+  ]
+}
