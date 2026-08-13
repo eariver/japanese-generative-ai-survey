@@ -82,7 +82,7 @@ jobs:
           print(datetime.now(ZoneInfo('Asia/Tokyo')).isoformat(timespec='seconds'))
           PY
           )
-          PYTHONPATH=control-src python control-src/scripts/finalize_special_validated_draft.py \
+          PYTHONPATH=control-src python control-src/scripts/finalize_special_retrospective_compat.py \
             --repo-root worktree \
             --special-slug "$SPECIAL_SLUG" \
             --issue-id "$SPECIAL_ID" \
@@ -91,7 +91,7 @@ jobs:
             --generated-at "$generated_at" \
             --run-reference "$REVIEW_REFERENCE" \
             > special-finalization-audit.json
-          PYTHONPATH=control-src python control-src/scripts/special_period_consistency.py apply \
+          PYTHONPATH=control-src python control-src/scripts/special_period_consistency_retrospective.py apply \
             --repo-root worktree \
             --special-slug "$SPECIAL_SLUG" \
             --issue-id "$SPECIAL_ID" \
@@ -121,7 +121,7 @@ jobs:
           assert source['article_count']==expected, (source,packages)
           assert source['period_consistency']['retrospective_scope_derived_from_manifest'] is True
           PY
-          PYTHONPATH=control-src python control-src/scripts/special_period_consistency.py check \
+          PYTHONPATH=control-src python control-src/scripts/special_period_consistency_retrospective.py check \
             --repo-root worktree \
             --special-slug "$SPECIAL_SLUG" \
             --issue-id "$SPECIAL_ID"
