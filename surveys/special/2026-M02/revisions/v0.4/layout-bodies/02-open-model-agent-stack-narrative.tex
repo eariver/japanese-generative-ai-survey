@@ -1,0 +1,21 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\noindent\textbf{2026年2月、中国系・open-weight系の主要更新でも、coding、tool use、long-horizon agentは中心的な設計目標になった。Qwen3.5/Qwen3-Coder-Next、GLM-5、MiniMax M2.5/Forgeを並べると、競争はmodel weightsだけでなく、agent trainingとserving integrationまで含むstackへ広がっている。}\autocite{src-9156c37fb1c2,src-d8e13386974c,src-eac8dfbeb78c}
+
+Qwen3.5系列は2月16日にChina側のModel Studio lifecycleへ現れ、2月20日にはinternational側でQwen3-Coder-Nextが記録された。Qwen3.5側はtext・image・video inputとreasoning/coding/agent capability、Qwen3-Coder-Next側はmulti-turn tool interactionとrepository-level code understandingを対象としている。ただし、Chinaとinternationalではavailabilityと日付が一致しない。現在のliving lifecycle pageに後日の展開が追記されていても、2月号では2月のdated entryを基準にchronologyを固定する。\autocite{src-eac8dfbeb78c}
+
+
+GLM-5は2月12日にopen-weight modelとして公開され、複雑なsystems engineeringとlong-horizon agentic taskを明示的な対象に据えた。Z.aiの一次資料は744B total / 40B active、28.5T pre-training tokens、DeepSeek Sparse Attention、非同期RL基盤slimeを記載し、weightsはMIT license、vLLMやSGLangを含むdeployment pathも示す。ここで確定できるのは公開・licenseとfirst-party technical disclosureであり、architecture/training規模そのものを第三者監査済みの値として扱うことはできない。\autocite{src-9156c37fb1c2}
+
+
+MiniMaxは2月12日にM2.5を発表し、coding、agentic tool use/search、office・workflow taskを強調した。翌13日のForgeは別のartifactであり、agent-native reinforcement learningのframeworkとして、scaffold/environment abstractionと大規模agent training向けのasynchronous schedulingを説明している。M2.5という利用可能なmodelの話と、Forgeというtraining-systemの話を混同すると『Forge自体が一般向けmodel/productとして提供された』かのように読めるため、両者の境界を維持する必要がある。\autocite{src-d8e13386974c}
+
+
+三者は同じ『open model』の一語では括れない。Qwenはmultimodal reasoningからrepository-level codingとmulti-turn tool interactionまでproduct familyを広げ、GLM-5は大規模MoEとRL基盤を含むarchitecture/training storyをopen weightsと結び、MiniMaxはM2.5のtask能力とForgeのagent-native RLを連続して提示した。共通しているのは、model capabilityだけでagentを語らず、tool interaction、長時間task、training環境、deploymentまでを一つの技術問題として扱い始めている点である。\autocite{src-9156c37fb1c2,src-d8e13386974c,src-eac8dfbeb78c}
+
+
+重要なのは、model releaseがすぐにserving layerへ流れ込んだことだ。SGLang v0.5.9は2月24日に公開され、Kimi-K2.5、GLM-5、Qwen3.5、MiniMax M2.5などを同じreleaseでsupport対象へ加えた。加えてAnthropic-compatible API endpointやMoE・multimodal・diffusion runtimeの変更も含む。これは各modelのqualityを横並びに証明するものではないが、2月のmodel waveをruntime側が短い時間差で吸収していたことを示す実装上の証拠になる。\autocite{src-5bc0746a47c6}
+
+
+Transformers v5.2.0も2月16日のreleaseで、VoxtralRealtime、GLM-5、Qwen3.5/Qwen3.5 MoE、VibeVoice Acoustic Tokenizerなどを明示的に統合した。v5.1.0は同月前半のcontextとして存在するが、本号で強いsignalになるのはv5.2である。common implementation layerへ複数のfrontier/open model familyが一度に入った事実は、model発表を単発ニュースではなくecosystem更新として読む理由になる。一方、v5.2にはbreaking interface changesも含まれるため、単純な『対応model一覧』だけでrelease全体を説明するのは不十分だ。\autocite{src-0bd04783f97b,src-a43d64987293}
+
+
