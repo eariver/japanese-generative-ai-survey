@@ -1,0 +1,47 @@
+name: One-shot extend Special final spacing recovery range
+
+on:
+  push:
+    branches:
+      - fix/special-final-spacing-32mm
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: fix/special-final-spacing-32mm
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Extend narrow final spacing recovery range
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/revise_special_final_spacing_recovery.py')
+          text=p.read_text(encoding='utf-8')
+          old='''    if not 22.0 <= vertical_margin_mm <= 30.0:\n        raise ValueError("vertical_margin_mm must remain within the conservative 22-30 mm range")\n'''
+          new='''    if not 22.0 <= vertical_margin_mm <= 32.0:\n        raise ValueError("vertical_margin_mm must remain within the conservative 22-32 mm range")\n'''
+          if text.count(old) != 1:
+              raise SystemExit(f'expected range anchor once, found {text.count(old)}')
+          p.write_text(text.replace(old,new,1),encoding='utf-8')
+          PY
+          python -m py_compile scripts/revise_special_final_spacing_recovery.py
+          git diff --check
+      - name: Commit implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/revise_special_final_spacing_recovery.py
+          git commit -m 'Allow 32mm vertical margin for final Special spacing recovery'
+          git push origin HEAD:fix/special-final-spacing-32mm
