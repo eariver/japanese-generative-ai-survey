@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M02",
+  "overrides": [
+    {
+      "evidence_task_id": "evidence:SP-2026-M02:duplicate-hint-tensorrt-llm-february-rc-a43c5b89ce",
+      "artifact": {"canonical_name": "TensorRT-LLM v1.3.0rc5", "artifact_type": "FRAMEWORK", "organization": "NVIDIA"},
+      "events": [{"event_type": "PROJECT_PRERELEASE", "event_date": "2026-02-24"}],
+      "claims": [
+        {"text": "TensorRT-LLM v1.3.0rc5 was published as a prerelease on 2026-02-24.", "evidence_class": "PRIMARY_FACT"},
+        {"text": "Any performance or compatibility improvements described in the release notes are project-reported rather than independently reproduced.", "evidence_class": "PROJECT_CLAIM"}
+      ],
+      "limitations": ["The retained task covers only rc5 rather than the full February RC sequence.", "Prerelease status makes it unsuitable as a standalone month-defining release without stronger distinct technical significance."],
+      "unresolved_questions": [],
+      "candidate_recommendation": "HOLD",
+      "why_this_special": "Month-end inference-stack context, but it is a prerelease within a fast-moving RC sequence and is weaker than stable vLLM/SGLang evidence for the February narrative.",
+      "rationale": "Retain as supporting/background evidence; do not allocate a standalone core story unless Architecture needs it."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M02:item-github-release-sgl-project-sglang-v-97031e7cb8",
+      "artifact": {"canonical_name": "SGLang v0.5.9", "artifact_type": "FRAMEWORK", "organization": "SGLang Project"},
+      "events": [{"event_type": "PROJECT_RELEASE", "event_date": "2026-02-24"}],
+      "claims": [
+        {"text": "SGLang v0.5.9 was published on 2026-02-24 and added support for model families including Kimi-K2.5, GLM-5, Qwen3.5, MiniMax M2.5, and multiple multimodal/diffusion models.", "evidence_class": "PRIMARY_FACT"},
+        {"text": "The release added an Anthropic-compatible API endpoint and substantial inference, MoE, multimodal, and diffusion runtime changes.", "evidence_class": "PRIMARY_FACT"},
+        {"text": "Reported improvements such as roughly 78% lower TTFT for overlapped LoRA loading and 3–5x DeepSeek V3.2 NSA acceleration on Blackwell are project claims, not independent measurements.", "evidence_class": "PROJECT_CLAIM"}
+      ],
+      "limitations": ["Performance figures come from project release notes and are not independently reproduced.", "Support entries establish implementation availability, not equivalent quality or benchmark validation across model families."],
+      "unresolved_questions": [],
+      "candidate_recommendation": "CANDIDATE",
+      "why_this_special": "Shows the serving layer rapidly absorbing February frontier-model families and agent/runtime interfaces, making it a strong systems-side counterpart to the model-release wave.",
+      "rationale": "Primary-source evidence supports Candidate Selection for a material February 2026 technical change."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M02:item-official-index-alibaba-model-studio-154c528d30",
+      "artifact": {"canonical_name": "Qwen3.5 / Qwen3-Coder-Next February Model Studio rollout", "artifact_type": "MODEL_UPDATE", "organization": "Alibaba Cloud / Qwen"},
+      "events": [{"event_type": "REGIONAL_MODEL_RELEASE", "event_date": "2026-02-16"}, {"event_type": "INTERNATIONAL_MODEL_RELEASE", "event_date": "2026-02-20"}],
+      "claims": [
+        {"text": "Alibaba Cloud Model Studio lifecycle records place Qwen3.5-series availability in February 2026, including qwen3.5-plus and Qwen3.5-397B-A17B, with text, image, and video inputs and reasoning/coding/agent capabilities described in the first-party catalog.", "evidence_class": "PRIMARY_FACT"},
+        {"text": "The international lifecycle record lists Qwen3-Coder-Next on 2026-02-20 as an open-source code model aimed at multi-turn tool interaction and repository-level code understanding.", "evidence_class": "PRIMARY_FACT"},
+        {"text": "Any claims of superior benchmark capability or efficiency remain vendor claims unless independently reproduced.", "evidence_class": "VENDOR_CLAIM"}
+      ],
+      "limitations": ["Model Studio availability and dates differ by China/international region; drafting must preserve the regional scope of each lifecycle entry.", "The lifecycle page is a living document and may include later global rollouts; February chronology must use the dated entries rather than current availability alone."],
+      "unresolved_questions": [],
+      "candidate_recommendation": "CANDIDATE",
+      "why_this_special": "Qwen3.5 and Qwen3-Coder-Next make the Chinese/open-model side of February’s convergence on multimodal reasoning, coding, tool use, and agents explicit.",
+      "rationale": "Primary-source evidence supports Candidate Selection for a material February 2026 technical change."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M02:item-official-index-anthropic-news-afddcb8068",
+      "artifact": {"canonical_name": "Claude Opus 4.6 / Sonnet 4.6", "artifact_type": "MODEL_UPDATE", "organization": "Anthropic"},
+      "events": [{"event_type": "MODEL_RELEASE", "event_date": "2026-02-05"}, {"event_type": "MODEL_RELEASE", "event_date": "2026-02-17"}],
+      "claims": [
+        {"text": "Anthropic announced Claude Opus 4.6 on 2026-02-05 with improvements aimed at coding and sustained agentic work over larger codebases.", "evidence_class": "PRIMARY_FACT"},
+        {"text": "Anthropic announced Claude Sonnet 4.6 on 2026-02-17 with coding, computer-use, long-context reasoning, agent planning, and knowledge-work improvements; a 1M-token context window was described as beta.", "evidence_class": "PRIMARY_FACT"},
+        {"text": "Benchmark and comparative performance statements in Anthropic’s announcements are vendor claims.", "evidence_class": "VENDOR_CLAIM"}
+      ],
+      "limitations": ["This Evidence task groups two related February model releases rather than treating them as independent articles.", "Capability and benchmark comparisons are vendor-reported and are not independently reproduced here.", "Availability and 1M-context status must preserve announcement-time beta/product boundaries."],
+      "unresolved_questions": [],
+      "candidate_recommendation": "CANDIDATE",
+      "why_this_special": "Anthropic’s two February Claude updates reinforce the same month-level shift toward longer-running coding, computer-use, planning, and knowledge-work agents.",
+      "rationale": "Primary-source evidence supports Candidate Selection for a material February 2026 technical change."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M02:item-official-index-deepseek-api-updates-72fd8b1ca6",
+      "artifact": {"canonical_name": "DeepSeek API updates — February 2026 chronology check", "artifact_type": "API", "organization": "DeepSeek"},
+      "events": [],
+      "claims": [{"text": "No distinct February 2026 technical release was established from the supplied DeepSeek official API update index during this Evidence review.", "evidence_class": "INFERENCE", "context": "A bounded conclusion from the retained official index; absence from this index is not proof that no DeepSeek activity occurred anywhere."}],
+      "limitations": ["Absence from the retained official update index is not evidence of universal absence.", "A later or separately documented February item would require a new evidence source rather than backfilling it from memory."],
+      "unresolved_questions": [],
+      "candidate_recommendation": "REJECT",
+      "why_this_special": "The official update index was retained specifically to prevent calendar hallucination; this review did not establish a distinct February-dated model/API release strong enough for the Special.",
+      "rationale": "Do not carry into Candidate Selection as a February technical item.",
+      "status": "REJECTED",
+      "why_now_confirmed": false,
+      "target_findings": {"extract any February-dated API/model update and verify exact date, model identity, API behavior, and technical significance": {"status": "UNRESOLVED", "finding": "The retained official update index did not yield a sufficiently bounded February-specific technical item for this Special."}}
+    }
+  ]
+}
