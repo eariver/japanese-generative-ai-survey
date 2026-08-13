@@ -1,0 +1,47 @@
+name: One-shot fix Special framework publication label
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/one-shot-fix-special-framework-publication-label.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Add missing reader-facing event label
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/postprocess_special_reader_facing_notes.py')
+          text = path.read_text(encoding='utf-8')
+          needle = '    "FRAMEWORK_RELEASE": "Framework公開",\n'
+          replacement = needle + '    "FRAMEWORK_PUBLICATION": "Framework公開",\n'
+          if text.count(needle) != 2:
+              raise SystemExit(f'expected FRAMEWORK_RELEASE in EVENT_LABELS and TYPE_LABELS exactly twice; found {text.count(needle)}')
+          # Add the publication spelling to EVENT_LABELS and TYPE_LABELS so both
+          # raw and partially transformed derived sources remain reader-safe.
+          text = text.replace(needle, replacement)
+          path.write_text(text, encoding='utf-8')
+          PY
+          python -m py_compile scripts/postprocess_special_reader_facing_notes.py
+      - name: Commit repair and remove one-shot workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm .github/workflows/one-shot-fix-special-framework-publication-label.yml
+          git add scripts/postprocess_special_reader_facing_notes.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Normalize framework publication label in Special notes'
+          git push origin HEAD:main
