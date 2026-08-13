@@ -9,6 +9,15 @@ Use this checklist on the actual PDF candidate before Human Visual Review approv
 - [ ] No accidental blank page.
 - [ ] No page is occupied almost entirely by a small isolated Claim Boundary / callout / box.
 - [ ] No large whitespace region is caused solely by `clearpage`, column-mode switching, or an overly aggressive space guard.
+- [ ] A page count below the 32-page soft editorial target is not treated as a defect by itself; do not retain low-density pages or add padding merely to reach the target.
+
+## Contents / navigation
+
+- [ ] The printed Contents is reader-facing and normally section-level for Retrospective Specials.
+- [ ] Repeated internal subentries such as `Theme at a glance` are not mechanically exposed in the Contents.
+- [ ] Theme Synthesis / cross-comparison subheads appear in the Contents only when deliberately promoted as navigation units, not simply because they use `\addcontentsline` internally.
+- [ ] The Contents does not spill onto a continuation page containing only a few lines and otherwise large blank space.
+- [ ] The first chapter begins naturally after the Contents; page-count targets do not justify preserving an otherwise avoidable sparse TOC page.
 
 ## Issue identity and period consistency
 
@@ -51,6 +60,14 @@ The automated period-consistency guard checks structured identity fields. Human 
 - [ ] `一次資料` and at least its first URL stay together across page boundaries.
 - [ ] A limitation paragraph does not leave only its final line at the top of the next page.
 - [ ] Large Technical Notes cards may still break naturally; widow/orphan prevention must not make the whole card unbreakable or recreate large structural whitespace.
+
+## References / Source Notes
+
+- [ ] Every bibliography entry uses the already-pinned reader-facing source/paper/release title when that metadata exists.
+- [ ] Paper entries can be identified by paper title without relying on the raw arXiv URL alone.
+- [ ] Generic `Primary source N` titles are used only as an explicit fallback when selected Evidence truly lacks a usable canonical title; a whole References section of such placeholders is a failure.
+- [ ] Owner/authors, URL, visited date, and verification/source-note traceability remain present where available.
+- [ ] Long titles and URLs wrap naturally without clipping or overfull text.
 
 ## Release-source discoverability
 
