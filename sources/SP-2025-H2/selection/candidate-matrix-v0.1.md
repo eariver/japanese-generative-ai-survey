@@ -1,0 +1,51 @@
+# SP-2025-H2 Pre-selection Candidate Comparison Matrix
+
+Status: **pre-selection comparison**
+
+This matrix is deterministic and non-ranking. It does not imply article inclusion.
+
+- Collection window start: `2025-07-01T00:00:00Z`
+- Editorial cutoff: `2025-12-31T23:59:59Z`
+- Rows: 30
+
+| Candidate | Type | Timing | Evidence | Recommendation | Readiness | Evidence classes | Remaining boundary |
+|---|---|---|---|---|---|---|---|
+| Agentic AI Foundation / AGENTS.md donation | `INTEGRATION` | `MAIN_EVENT` | `VERIFIED` | `HOLD` | `HOLD` | PRIMARY_FACT=1, INFERENCE=1 | Foundation creation and artifact donation are factual; ecosystem adoption and lasting standardization impact are not established by the announcement. |
+| AgentKit, Evals, and RFT for agents | `FRAMEWORK` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=1, INFERENCE=1 | Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction. |
+| ChatGPT agent | `AGENT` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=2, INFERENCE=1 | Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction. |
+| ChatGPT Atlas / OWL / prompt-injection hardening | `AGENT` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=2, INFERENCE=1 | Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction. |
+| Claude 4.5 model and agent platform sequence | `MODEL_UPDATE` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=2, INFERENCE=2 | The preserved newsroom snapshot is a living paginated index and its first HTML page emphasized 2026 entries; item-level official Anthropic pages were followed during interactive verification to reconstruct H2 2025 chronology. |
+| Codex September upgrades | `PRODUCT` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=1, INFERENCE=1 | Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction. |
+| DeepSeek V3.1→V3.2 API lifecycle | `MODEL_UPDATE` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=3, INFERENCE=1 | These dates establish DeepSeek API service transitions; upstream training/checkpoint publication dates must not be inferred when not stated. |
+| Gemini API H2 2025 lifecycle | `API` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=3, INFERENCE=1 | The changelog is a service/API chronology, not an upstream research-release chronology; preview-to-GA and shutdown events should not be merged with initial model announcements. |
+| GLM / AutoGLM H2 2025 lifecycle | `MODEL_UPDATE` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=2, INFERENCE=1 | Performance superlatives in the release notes are vendor claims; use only release identity, dates, stated feature scope, and clearly attributed evaluation claims. |
+| Google DeepMind H2 world-model, robotics, and agent research | `MODEL_UPDATE` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=3, INFERENCE=2 | The preserved DeepMind index snapshot is paginated and its first page is not a complete H2 archive; item-level first-party pages were used during interactive verification.<br>Research prototypes, limited-partner robotics access, and generally available API models must remain distinct. |
+| GPT-5 release / developer API / safe-completions | `MODEL` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=2, INFERENCE=1 | Benchmark and 'best' claims remain vendor-attributed; release, API availability, model identity, controls, and safety-method publication are primary facts. |
+| GPT-5.1 | `MODEL_UPDATE` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=1, INFERENCE=1 | Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction. |
+| GPT-5.1-Codex-Max | `MODEL_UPDATE` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=1, INFERENCE=1 | Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction. |
+| GPT-5.2 | `MODEL` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=1, INFERENCE=1 | Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction. |
+| GPT-5.2-Codex | `MODEL_UPDATE` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=1, INFERENCE=1 | Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction. |
+| gpt-oss-120b / gpt-oss-20b | `OPEN_WEIGHT` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=1, VENDOR_CLAIM=1, INFERENCE=1 | Open weights do not imply an unrestricted data/training disclosure; openness should be described specifically in terms of weights/license and deployment. |
+| gpt-oss-safeguard | `SAFETY_EVENT` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=1, INFERENCE=1 | Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction. |
+| JANUS MoE inference system | `PAPER` | `MAIN_EVENT` | `PARTIAL` | `HOLD` | `HOLD` | AUTHOR_CLAIM=2, INFERENCE=2 | The collected artifact is arXiv v4 updated on 2026-08-11; chronology is anchored to the 2025-12-15 initial submission, while technical wording may include post-period revisions.<br>Reported performance is an author evaluation, not independently reproduced. |
+| Kimi K2 / K2 Thinking lifecycle | `MODEL_UPDATE` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=1, VENDOR_CLAIM=1, INFERENCE=1 | The hash-pinned Kimi Code 'What's New' page is a living product document whose current rendered history begins much later; item chronology was cross-checked against Kimi's first-party platform blog/changelog during interactive verification. |
+| MiniMax M2 / Hailuo 2.3 / M2.1 lifecycle | `MODEL_UPDATE` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=2, INFERENCE=1 | The preserved `minimax.io/news` landing snapshot is client-rendered and sparse; item-level first-party MiniMax release notes/news were used during interactive verification. |
+| Mistral H2 2025 model and agent stack | `MODEL_UPDATE` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=2, INFERENCE=1 | The news index reliably establishes publication chronology and titles; detailed benchmark/license claims require item-level pages and should remain vendor-attributed if used in drafting. |
+| OpenAI–Anthropic joint safety evaluation | `SAFETY_EVENT` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=1, INFERENCE=1 | Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction. |
+| Qwen / Alibaba Model Studio H2 2025 lifecycle | `MODEL_UPDATE` | `TIMING_UNRESOLVED` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=2, INFERENCE=2 | The Model Studio page is a living deployment catalog; it mixes release, snapshot, regional availability, and later global availability entries. Architecture must not collapse those into one upstream model release date. |
+| Scheming detection and mitigation research | `SAFETY_EVENT` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=1, INFERENCE=1 | Findings come from controlled evaluations and should not be generalized to deployed-model behavior without the stated experimental scope. |
+| SGLang v0.5.1→v0.5.6 | `FRAMEWORK` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PROJECT_CLAIM=1, INFERENCE=1 | Release-note feature/performance statements are project claims; no independent benchmark reproduction is implied. |
+| Sora 2 | `MODEL` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PRIMARY_FACT=2, INFERENCE=1 | Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction. |
+| Speculative Tool Calls for agentic LM inference | `PAPER` | `MAIN_EVENT` | `VERIFIED` | `HOLD` | `HOLD` | AUTHOR_CLAIM=2, INFERENCE=1 | The throughput result is setup-dependent and author-reported; it should support, not define, the retrospective thesis. |
+| TensorRT-LLM v1.0→v1.1 | `FRAMEWORK` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PROJECT_CLAIM=1, INFERENCE=1 | Feature and performance descriptions are NVIDIA project claims and are hardware/configuration dependent. |
+| Transformers v4.54→v4.57 model/runtime uptake | `FRAMEWORK` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PROJECT_CLAIM=1, INFERENCE=2 | Library support date is an integration event and must not be used as the upstream model's original release date. |
+| vLLM v0.10→v0.13 | `FRAMEWORK` | `MAIN_EVENT` | `VERIFIED` | `CANDIDATE` | `READY_WITH_CAVEAT` | PROJECT_CLAIM=1, INFERENCE=1 | Project release notes establish software changes and dates; performance implications vary by workload and hardware. |
+
+## Rules
+
+- This matrix does not rank candidates or imply inclusion.
+- Evidence Runner recommendation is distinct from final Candidate Selection.
+- Source volume is displayed as evidence depth, not importance.
+- Month-only event dates remain TIMING_UNRESOLVED rather than inventing day precision.
+- Date-only events on the cutoff day remain TIMING_UNRESOLVED unless a source provides time-of-day evidence.
+- Remaining boundaries must travel with any candidate promoted by Selection.
