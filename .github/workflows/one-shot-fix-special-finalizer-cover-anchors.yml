@@ -2,8 +2,7 @@ name: One-shot fix Special finalizer cover anchors
 
 on:
   push:
-    branches:
-      - fix/special-finalizer-cover-anchors
+    branches: [main]
     paths:
       - .github/workflows/one-shot-fix-special-finalizer-cover-anchors.yml
 
@@ -16,36 +15,38 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: fix/special-finalizer-cover-anchors
+          ref: main
           fetch-depth: 0
       - name: Patch package-id cover anchors
-        shell: python
+        shell: bash
         run: |
+          set -euo pipefail
+          python - <<'PY'
           from pathlib import Path
           path = Path('scripts/finalize_special_validated_draft.py')
           text = path.read_text(encoding='utf-8')
           old1 = '''    cover_evidence_ids = set(plan.get("cover", {}).get("anchor_candidates") or [])
-    cover_package_ids: list[str] = []
-'''
+              cover_package_ids: list[str] = []
+          '''.replace('              ', '')
           new1 = '''    cover_anchor_candidates = set(plan.get("cover", {}).get("anchor_candidates") or [])
-    unknown_cover_anchors = sorted(cover_anchor_candidates - set(expected_ids))
-    if unknown_cover_anchors:
-        raise ValueError(f"Architecture cover anchors reference unknown article packages: {unknown_cover_anchors}")
-    cover_package_ids = [package_id for package_id in expected_ids if package_id in cover_anchor_candidates]
-'''
+              unknown_cover_anchors = sorted(cover_anchor_candidates - set(expected_ids))
+              if unknown_cover_anchors:
+                  raise ValueError(f"Architecture cover anchors reference unknown article packages: {unknown_cover_anchors}")
+              cover_package_ids = [package_id for package_id in expected_ids if package_id in cover_anchor_candidates]
+          '''.replace('              ', '')
           old2 = '''        primary_ids = {
-            item.get("evidence_task_id")
-            for item in package.get("primary_evidence") or []
-            if isinstance(item, dict)
-        }
-        if primary_ids & cover_evidence_ids:
-            cover_package_ids.append(package_id)
-'''
+                  item.get("evidence_task_id")
+                  for item in package.get("primary_evidence") or []
+                  if isinstance(item, dict)
+              }
+              if primary_ids & cover_evidence_ids:
+                  cover_package_ids.append(package_id)
+          '''.replace('              ', '')
           if text.count(old1) != 1 or text.count(old2) != 1:
               raise SystemExit('expected finalizer anchor snippets not found exactly once')
-          text = text.replace(old1, new1).replace(old2, '')
-          path.write_text(text, encoding='utf-8')
-      - name: Remove one-shot workflow and commit fix
+          path.write_text(text.replace(old1, new1).replace(old2, ''), encoding='utf-8')
+          PY
+      - name: Commit repair and remove one-shot workflow
         shell: bash
         run: |
           set -euo pipefail
@@ -54,4 +55,4 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'Fix Special finalizer cover anchor resolution'
-          git push origin HEAD:fix/special-finalizer-cover-anchors
+          git push origin HEAD:main
