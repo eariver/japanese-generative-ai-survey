@@ -3,10 +3,10 @@
 
 Draft Packages intentionally do not duplicate Architecture package titles. This
 runner joins title by package_id, normalizes machine artifact-type labels only for
-display, uses smaller/sloppy URL rendering inside source notes, and applies a few
-Special-local cover/header typography adjustments after deterministic expansion.
-Immutable upstream Evidence, Draft Packages, Article Drafts, and previous source
-revisions are never mutated.
+display, uses smaller/sloppy URL rendering inside source notes, applies Special-local
+cover/header typography adjustments, and derives the normal local balanced two-column
+reader layout before the first PDF build. Immutable upstream Evidence, Draft Packages,
+Article Drafts, and previous source revisions are never mutated.
 """
 
 from __future__ import annotations
@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any
 
 from scripts import expand_special_validated_source as expansion
+from scripts import postprocess_special_prebuild_balanced_layout as balanced_layout
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -230,7 +231,9 @@ def main() -> int:
     expansion.render_note = safe_note
     expansion.render_technical_notes = render_with_architecture_title
     expansion.build(root, args.special_slug, args.issue_id, args.source_version)
-    result = postprocess_special_source(root, args.special_slug, args.issue_id, args.source_version, titles)
+    postprocess_special_source(root, args.special_slug, args.issue_id, args.source_version, titles)
+    balanced_layout.apply(root, args.special_slug, args.issue_id, args.source_version)
+    result = load_json(root / "surveys" / "special" / args.special_slug / "revisions" / args.source_version / "source-manifest.json")
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
 
