@@ -22,6 +22,10 @@ from scripts import revise_special_mixed_layout as revision
 # is mechanically rewritten.
 revision.false = False
 revision.true = True
+# Architecture may legitimately classify an article package as LEAD or COMPARISON.
+# They are reader-facing article forms just like FEATURE/SECTION/DEEP_DIVE and may
+# receive selected-Evidence Theme Synthesis without changing the approved package.
+revision.ARTICLE_TYPES.update({"LEAD", "COMPARISON"})
 
 
 def reader_normalize(text: str) -> str:
@@ -51,14 +55,7 @@ revision.render_synthesis = normalized_render
 
 
 def inject_synthesis_into_current_layout(current_main: Path, manifest, synthesis_paths) -> str:
-    """Preserve the current layout byte-shape and insert synthesis before notes.
-
-    New validated sources already use full-width headings/standfirsts, one local
-    ``multicols`` narrative per article, and full-width Technical Notes. Rebuilding
-    those files with legacy global ``twocolumn`` switches would violate the current
-    publication contract, so this revision only inserts the new full-width synthesis
-    at the existing narrative/Technical-Notes boundary.
-    """
+    """Preserve the current layout byte-shape and insert synthesis before notes."""
     text = current_main.read_text(encoding="utf-8")
     for article in manifest.get("articles") or []:
         package_id = str(article.get("package_id") or "")
@@ -110,10 +107,6 @@ def prebuild_aware_build(repo_root: Path, special_slug: str, issue_id: str, sour
             revision.write_json(state_path, original_state)
         raise
 
-    # The canonical builder has now created an immutable source revision and reset
-    # the state to VALIDATED_DRAFT. Correct only presentation metadata so it describes
-    # the preserved current layout rather than the builder's historical global-column
-    # implementation.
     manifest_path = repo_root / str(result["source_manifest"])
     manifest = revision.load_json(manifest_path)
     local_multicols = r"\begin{multicols}{2}" in current_main_text
