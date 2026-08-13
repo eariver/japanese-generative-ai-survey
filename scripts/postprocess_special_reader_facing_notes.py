@@ -42,6 +42,11 @@ EVENT_LABELS = {
     "SAFETY_EVENT": "安全性事象",
     "API_RELEASE": "API公開",
     "API_UPDATE": "API更新",
+    "API_INPUT_EXPANSION": "API入力拡張",
+    "API_LIFECYCLE_FEATURE": "APIライフサイクル機能",
+    "API_TOOL_RELEASE": "APIツール公開",
+    "ENGINEERING_NOTE": "技術解説",
+    "MODEL_BEHAVIOR_POLICY_RELEASE": "モデル行動方針公開",
     "AGENT_PRODUCT_RELEASE": "Agent製品公開",
     "PROJECT_RELEASE": "プロジェクト公開",
     "PROJECT_UPDATE": "プロジェクト更新",
@@ -397,7 +402,6 @@ def main() -> int:
         raise ValueError("state-pinned source is not the requested Special revision")
     if sha256_file(manifest_path) != source["sha256"]:
         raise ValueError("source manifest SHA mismatch before reader-facing pass")
-
     manifest = read_json(manifest_path)
     configured_reader = dict(manifest.get("reader_facing_technical_notes") or {})
     tail_group_titles = set(configured_reader.get("late_card_tail_group_titles") or [])
