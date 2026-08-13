@@ -30,13 +30,13 @@ The user is shown the exact PDF that will become the public release asset. Appro
 
 A single Publication Preview approval authorizes, for those identical approved bytes:
 
-1. Visual Review approval record;
+1. Visual Review machine-checkpoint record;
 2. Freeze record and release manifest;
 3. work PR merge;
 4. exact-artifact re-download and SHA verification;
 5. GitHub Release publication.
 
-Freeze and Public Release therefore remain auditable state transitions, but they are **not additional normal Human Gates**.
+Freeze and Public Release therefore remain auditable state transitions, but they are **not additional normal Human Gates**. `visual_review` is retained as a machine/provenance checkpoint name; it is not a third Human Gate. New pipeline state declares `human_gate_required_for_publication_preview=true` and `human_gate_required_for_visual_review=false`.
 
 ## Exception Gate — on demand only
 
@@ -66,6 +66,7 @@ The simplification applies only to user interaction. Existing machine checkpoint
 - claim / chronology validation;
 - LaTeX build and log/page-budget checks;
 - exact PDF SHA binding;
+- Visual Review record derived from Publication Preview approval;
 - Freeze source/PDF integrity checks;
 - release manifest / release asset SHA verification.
 
@@ -83,7 +84,7 @@ Issue initialization
   -> Drafting / Validation / Layout / Build
   -> Publication Preview PDF
   -> HUMAN GATE 2: Publication Preview
-  -> Visual Review record
+  -> Visual Review record (machine checkpoint)
   -> Freeze
   -> Merge
   -> Public Release
@@ -97,4 +98,5 @@ At any point, a genuinely new editorial/publication choice branches to an on-dem
 - Architecture preparation: `apply-special-selection-and-propose-architecture.yml` — internal editorial checkpoint; no standalone Human Gate.
 - Architecture approval: `approve-special-architecture-and-prepare-drafts.yml` — **Human Gate 1**.
 - Publication approval: `accept-special-publication-preview-issue-only.yml` — **Human Gate 2**, then deterministic Visual Review/Freeze/merge/Release.
-- `accept-special-freeze-issue-only.yml` and `publish-special-frozen-release-issue-only.yml` remain available as verified recovery primitives after an already-recorded Publication Preview approval; they do not establish new editorial authority.
+- The historical standalone `accept-special-visual-review-issue-only.yml` workflow is removed so it cannot create a partial legacy approval path. The Python module `accept_special_visual_review_issue_only.py` is retained only as an internal implementation primitive used by the Publication Preview workflow.
+- `accept-special-freeze-issue-only.yml` and `publish-special-frozen-release-issue-only.yml` remain verified recovery primitives after an already-recorded Publication Preview approval. They derive timestamp/reference authority from the committed Publication Preview record and accept no new Human approval parameters.

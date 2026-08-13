@@ -76,6 +76,10 @@ jobs:
           assert state['gates']['latex_build']=='passed'
           assert state['gates']['visual_review']=='pending'
           assert state['gates']['freeze']=='pending'
+          automation=state.get('automation') or {}
+          model=automation.get('human_gate_model')
+          if model is not None:
+              assert model=='ARCHITECTURE_PUBLICATION_PREVIEW_WITH_EXCEPTION'
           latex=state['provenance']['latex_build']; source=state['provenance']['validated_issue_source']
           assert latex['pdf_sha256']==approved_sha
           assert latex['source_version']==source['source_version']
@@ -130,22 +134,34 @@ jobs:
             > publication-preview-acceptance-audit.json
           cat publication-preview-acceptance-audit.json
 
-      - name: Verify exact Freeze candidate
+      - name: Verify Publication Preview authority and exact Freeze candidate
         shell: bash
         env:
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
           SPECIAL_SLUG: ${{ inputs.special_slug }}
+          APPROVED_AT: ${{ inputs.approved_at }}
+          APPROVAL_REFERENCE: ${{ inputs.approval_reference }}
         run: |
           set -euo pipefail
-          python - "$SPECIAL_ID" "$SPECIAL_SLUG" <<'PY'
+          python - "$SPECIAL_ID" "$SPECIAL_SLUG" "$APPROVED_AT" "$APPROVAL_REFERENCE" <<'PY'
           import hashlib,json,pathlib,sys
-          issue,slug=sys.argv[1:]; root=pathlib.Path('worktree')
+          issue,slug,approved_at,reference=sys.argv[1:]; root=pathlib.Path('worktree')
           state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
           assert state['gates']['visual_review']=='passed' and state['gates']['freeze']=='pending'
+          preview=state['provenance']['publication_preview']; pp=root/preview['path']
+          assert hashlib.sha256(pp.read_bytes()).hexdigest()==preview['sha256']
+          approval=json.load(open(pp,encoding='utf-8'))
+          assert approval['status']=='APPROVED'
+          assert approval['approval_mode']=='PUBLICATION_PREVIEW_APPROVAL'
+          assert approval['approved_at']==approved_at
+          assert approval['approval_reference']==reference
+          assert approval['authorizes']==['visual_review','freeze','work_pr_merge','public_release']
           fc=state['provenance']['freeze_candidate']; p=root/fc['path']
           assert p.name=='freeze-candidate.json'
           assert hashlib.sha256(p.read_bytes()).hexdigest()==fc['sha256']
           candidate=json.load(open(p,encoding='utf-8'))
+          assert candidate['status']=='READY_FOR_DETERMINISTIC_FREEZE'
+          assert candidate['publication_authority']['mode']=='PUBLICATION_PREVIEW_APPROVAL'
           assert candidate['release_identity_mode']=='ISSUE_ONLY'
           assert candidate['release_tag']==f'special/{slug}'
           assert 'proposed_release_revision' not in candidate
@@ -182,13 +198,16 @@ jobs:
           assert state['gates']['visual_review']=='passed' and state['gates']['freeze']=='pending'
           p=root/'sources'/issue/'freeze'/'freeze-candidate.json'
           candidate=json.load(open(p,encoding='utf-8'))
+          assert candidate['status']=='READY_FOR_DETERMINISTIC_FREEZE'
+          assert candidate['publication_authority']['mode']=='PUBLICATION_PREVIEW_APPROVAL'
           assert candidate['release_identity_mode']=='ISSUE_ONLY'
           assert candidate['release_tag']==f'special/{slug}'
           source=candidate['validated_issue_source']; sp=root/source['path']
           assert hashlib.sha256(sp.read_bytes()).hexdigest()==source['sha256']
-          vr=candidate['visual_review']; vp=root/vr['path']
+          vr=candidate['visual_review']; vp=root/vr['path']; approval=json.load(open(vp,encoding='utf-8'))
           assert hashlib.sha256(vp.read_bytes()).hexdigest()==vr['sha256']
-          assert json.load(open(vp,encoding='utf-8'))['status']=='APPROVED'
+          assert approval['status']=='APPROVED'
+          assert approval['approval_mode']=='PUBLICATION_PREVIEW_APPROVAL'
           PY
 
       - name: Freeze under Publication Preview authority
@@ -226,12 +245,15 @@ jobs:
           assert fp.name=='freeze.json'
           assert hashlib.sha256(fp.read_bytes()).hexdigest()==freeze['sha256']
           assert hashlib.sha256(rp.read_bytes()).hexdigest()==freeze['release_manifest_sha256']
+          frozen=json.load(open(fp,encoding='utf-8'))
           manifest=json.load(open(rp,encoding='utf-8'))
+          assert frozen['release_authority']=='PUBLICATION_PREVIEW_APPROVAL'
           assert manifest['release_identity_mode']=='ISSUE_ONLY'
           assert manifest['release_tag']==f'special/{slug}'
           assert 'revision' not in manifest
           assert manifest['public_release_authorized'] is True
-          assert manifest['expected_pdf_sha256']==json.load(open(fp,encoding='utf-8'))['canonical_pdf']['sha256']
+          assert manifest['release_authorization']['mode']=='PUBLICATION_PREVIEW_APPROVAL'
+          assert manifest['expected_pdf_sha256']==frozen['canonical_pdf']['sha256']
           current=root/'surveys'/'special'/slug/'CURRENT_RELEASE.md'
           assert current.is_file() and 'not a public Release version' in current.read_text(encoding='utf-8')
           PY
@@ -279,13 +301,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
           SPECIAL_SLUG: ${{ inputs.special_slug }}
-          APPROVAL_REFERENCE: ${{ inputs.approval_reference }}
         run: |
           set -euo pipefail
           gh workflow run publish-special-frozen-release-issue-only.yml \
             --repo "$REPOSITORY" --ref main \
-            -f special_slug="$SPECIAL_SLUG" \
-            -f approval_reference="$APPROVAL_REFERENCE"
+            -f special_slug="$SPECIAL_SLUG"
 
       - name: Upload Publication Preview audit
         uses: actions/upload-artifact@v7

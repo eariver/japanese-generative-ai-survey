@@ -1,15 +1,9 @@
-name: Accept Special Freeze — issue-only release
+name: Finalize Special Freeze — Publication Preview recovery
 
 on:
   workflow_dispatch:
     inputs:
       special_slug:
-        required: true
-        type: string
-      approved_at:
-        required: true
-        type: string
-      approval_reference:
         required: true
         type: string
 
@@ -53,7 +47,7 @@ jobs:
           ref: ${{ steps.edition.outputs.work_branch }}
           path: worktree
           fetch-depth: 0
-      - name: Verify pre-Freeze provenance
+      - name: Resolve and verify existing Publication Preview authority
         shell: bash
         env:
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
@@ -61,7 +55,7 @@ jobs:
         run: |
           set -euo pipefail
           python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id "$SPECIAL_ID" check
-          python - "$SPECIAL_ID" "$SPECIAL_SLUG" <<'PY'
+          python - "$SPECIAL_ID" "$SPECIAL_SLUG" <<'PY' > authority.env
           import hashlib,json,pathlib,sys
           issue,slug=sys.argv[1:]; root=pathlib.Path('worktree')
           state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
@@ -69,22 +63,30 @@ jobs:
           assert state['gates']['visual_review']=='passed' and state['gates']['freeze']=='pending'
           p=root/'sources'/issue/'freeze'/'freeze-candidate.json'
           candidate=json.load(open(p,encoding='utf-8'))
-          assert candidate['status']=='PENDING_HUMAN_FREEZE_APPROVAL'
+          assert candidate['status']=='READY_FOR_DETERMINISTIC_FREEZE'
           assert candidate['release_identity_mode']=='ISSUE_ONLY'
           assert candidate['release_tag']==f'special/{slug}'
+          authority=candidate['publication_authority']
+          assert authority['mode']=='PUBLICATION_PREVIEW_APPROVAL'
+          assert authority['authorizes']==['visual_review','freeze','work_pr_merge','public_release']
+          approval_path=root/authority['approval_path']
+          assert hashlib.sha256(approval_path.read_bytes()).hexdigest()==authority['approval_sha256']
+          approval=json.load(open(approval_path,encoding='utf-8'))
+          assert approval['status']=='APPROVED'
+          assert approval['approval_mode']=='PUBLICATION_PREVIEW_APPROVAL'
+          assert approval['approved_at']==authority['approved_at']
+          assert approval['approval_reference']==authority['approval_reference']
           source=candidate['validated_issue_source']; sp=root/source['path']
           assert hashlib.sha256(sp.read_bytes()).hexdigest()==source['sha256']
-          vr=candidate['visual_review']; vp=root/vr['path']
-          assert hashlib.sha256(vp.read_bytes()).hexdigest()==vr['sha256']
-          assert json.load(open(vp,encoding='utf-8'))['status']=='APPROVED'
+          print(f"APPROVED_AT={authority['approved_at']}")
+          print(f"APPROVAL_REFERENCE={authority['approval_reference']}")
           PY
-      - name: Accept Human Freeze approval
+          cat authority.env >> "$GITHUB_ENV"
+      - name: Finalize Freeze under existing Publication Preview authority
         shell: bash
         env:
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
           SPECIAL_SLUG: ${{ inputs.special_slug }}
-          APPROVED_AT: ${{ inputs.approved_at }}
-          APPROVAL_REFERENCE: ${{ inputs.approval_reference }}
         run: |
           set -euo pipefail
           PYTHONPATH=control-src python control-src/scripts/accept_special_freeze_issue_only.py \
@@ -112,12 +114,15 @@ jobs:
           assert fp.name=='freeze.json'
           assert hashlib.sha256(fp.read_bytes()).hexdigest()==freeze['sha256']
           assert hashlib.sha256(rp.read_bytes()).hexdigest()==freeze['release_manifest_sha256']
+          frozen=json.load(open(fp,encoding='utf-8'))
           manifest=json.load(open(rp,encoding='utf-8'))
+          assert frozen['release_authority']=='PUBLICATION_PREVIEW_APPROVAL'
           assert manifest['release_identity_mode']=='ISSUE_ONLY'
           assert manifest['release_tag']==f'special/{slug}'
           assert 'revision' not in manifest
           assert manifest['public_release_authorized'] is True
-          assert manifest['expected_pdf_sha256']==json.load(open(fp,encoding='utf-8'))['canonical_pdf']['sha256']
+          assert manifest['release_authorization']['mode']=='PUBLICATION_PREVIEW_APPROVAL'
+          assert manifest['expected_pdf_sha256']==frozen['canonical_pdf']['sha256']
           current=root/'surveys'/'special'/slug/'CURRENT_RELEASE.md'
           assert current.is_file() and 'not a public Release version' in current.read_text(encoding='utf-8')
           PY
@@ -140,7 +145,7 @@ jobs:
           if git ls-files --error-unmatch "surveys/special/${SPECIAL_SLUG}/main.tex" >/dev/null 2>&1; then
             git add "surveys/special/${SPECIAL_SLUG}/main.tex"
           fi
-          git commit -m "Freeze ${SPECIAL_ID}"
+          git commit -m "Finalize ${SPECIAL_ID} Freeze under Publication Preview authority"
           git push origin "HEAD:${WORK_BRANCH}"
       - name: Merge frozen work PR
         working-directory: worktree
@@ -158,23 +163,21 @@ jobs:
           fi
           head_sha=$(git rev-parse HEAD)
           gh pr merge "$pr_number" --repo "$REPOSITORY" --merge --match-head-commit "$head_sha"
-      - name: Dispatch publication under Freeze authority
+      - name: Dispatch publication under existing Publication Preview authority
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
           SPECIAL_SLUG: ${{ inputs.special_slug }}
-          APPROVAL_REFERENCE: ${{ inputs.approval_reference }}
         run: |
           set -euo pipefail
           gh workflow run publish-special-frozen-release-issue-only.yml \
             --repo "$REPOSITORY" --ref main \
-            -f special_slug="$SPECIAL_SLUG" \
-            -f approval_reference="$APPROVAL_REFERENCE"
-      - name: Upload Freeze audit
+            -f special_slug="$SPECIAL_SLUG"
+      - name: Upload Freeze recovery audit
         uses: actions/upload-artifact@v7
         with:
-          name: special-freeze-${{ inputs.special_slug }}
+          name: special-freeze-recovery-${{ inputs.special_slug }}
           path: special-freeze-audit.json
           if-no-files-found: error
           retention-days: 30

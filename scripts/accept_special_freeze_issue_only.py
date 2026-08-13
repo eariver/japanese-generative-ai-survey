@@ -9,6 +9,8 @@ from pathlib import Path
 
 from scripts.release_identity import special_release_identity
 
+EXPECTED_AUTHORIZES = ["visual_review", "freeze", "work_pr_merge", "public_release"]
+
 
 def read_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
@@ -55,7 +57,9 @@ The top-level `main.tex` is a workspace entry point and must not be treated as t
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Freeze an issue-only Special release. Freeze is the final Human publication gate.")
+    ap = argparse.ArgumentParser(
+        description="Finalize an issue-only Special Freeze under an existing Publication Preview approval."
+    )
     ap.add_argument("--repo-root", type=Path, required=True)
     ap.add_argument("--issue-id", required=True)
     ap.add_argument("--special-slug", required=True)
@@ -74,11 +78,26 @@ def main() -> int:
     assert state["lifecycle_state"] == "RELEASE_CANDIDATE", state["lifecycle_state"]
     assert state["gates"]["visual_review"] == "passed"
     assert state["gates"]["freeze"] == "pending"
-    assert candidate["status"] == "PENDING_HUMAN_FREEZE_APPROVAL"
+    assert candidate["status"] == "READY_FOR_DETERMINISTIC_FREEZE"
     assert candidate["special_slug"] == args.special_slug
     assert candidate["release_identity_mode"] == "ISSUE_ONLY"
     for key, value in identity.items():
         assert candidate[key] == value, (key, candidate[key], value)
+
+    authority = candidate.get("publication_authority") or {}
+    assert authority.get("mode") == "PUBLICATION_PREVIEW_APPROVAL"
+    assert authority.get("approved_at") == args.approved_at
+    assert authority.get("approval_reference") == args.approval_reference
+    assert authority.get("authorizes") == EXPECTED_AUTHORIZES
+    approval_path = root / authority["approval_path"]
+    assert approval_path.is_file()
+    assert sha256_file(approval_path) == authority["approval_sha256"]
+    approval = read_json(approval_path)
+    assert approval["status"] == "APPROVED"
+    assert approval["approval_mode"] == "PUBLICATION_PREVIEW_APPROVAL"
+    assert approval["approved_at"] == args.approved_at
+    assert approval["approval_reference"] == args.approval_reference
+    assert approval["authorizes"] == EXPECTED_AUTHORIZES
 
     source = candidate["validated_issue_source"]
     source_path = root / source["path"]
@@ -87,9 +106,8 @@ def main() -> int:
 
     vr = candidate["visual_review"]
     vr_path = root / vr["path"]
-    assert vr_path.is_file()
-    assert sha256_file(vr_path) == vr["sha256"]
-    assert read_json(vr_path)["status"] == "APPROVED"
+    assert vr_path == approval_path
+    assert hashlib.sha256(vr_path.read_bytes()).hexdigest() == vr["sha256"]
 
     pdf = candidate["canonical_pdf_candidate"]
     state_pdf = state["provenance"]["latex_build"]
@@ -114,7 +132,7 @@ def main() -> int:
         "release_identity_mode": "ISSUE_ONLY",
         "frozen_at": args.approved_at,
         "approval_reference": args.approval_reference,
-        "release_authority": "FREEZE_APPROVAL",
+        "release_authority": "PUBLICATION_PREVIEW_APPROVAL",
         "release": {
             "tag": candidate["release_tag"],
             "title": candidate["release_title"],
@@ -122,13 +140,19 @@ def main() -> int:
         },
         "source_version": candidate["source_version"],
         "validated_issue_source": source,
+        "publication_preview": {
+            "path": str(approval_path.relative_to(root)),
+            "sha256": sha256_file(approval_path),
+            "approved_at": args.approved_at,
+            "approval_reference": args.approval_reference,
+        },
         "visual_review": vr,
         "canonical_pdf": pdf,
         "candidate": {
             "path": str(candidate_path.relative_to(root)),
             "sha256": sha256_file(candidate_path),
         },
-        "scope": "Freeze approval fixes the issue bytes and authorizes normal merge plus publication. Public identity is the issue number only; internal source_version remains provenance.",
+        "scope": "Publication Preview approval fixes the exact reviewed PDF bytes and authorizes deterministic Freeze, normal work-PR merge, and publication. Public identity is the issue number only; internal source_version remains provenance.",
     }
     dump(freeze_record_path, freeze_record)
 
@@ -157,14 +181,17 @@ def main() -> int:
         },
         "public_release_authorized": True,
         "release_authorization": {
-            "mode": "FREEZE_APPROVAL",
+            "mode": "PUBLICATION_PREVIEW_APPROVAL",
             "authorized_at": args.approved_at,
             "approval_reference": args.approval_reference,
+            "approval_path": str(approval_path.relative_to(root)),
+            "approval_sha256": sha256_file(approval_path),
         },
         "notes": [
             "The issue number is the sole public release identity; no public semantic version is assigned.",
             "Internal source_version is retained only for deterministic provenance and source-history reconstruction.",
-            "The exact Visual-Review-approved PDF artifact is the canonical frozen release asset.",
+            "The exact Publication-Preview-approved PDF artifact is the canonical frozen release asset.",
+            "Freeze, merge, and public Release are deterministic consequences of the recorded Publication Preview approval.",
             "The publisher must reverify source and PDF SHA-256 before creating the GitHub Release.",
         ],
     }
@@ -187,7 +214,7 @@ def main() -> int:
         "sha256": sha256_file(freeze_record_path),
         "frozen_at": args.approved_at,
         "approval_reference": args.approval_reference,
-        "release_authority": "FREEZE_APPROVAL",
+        "release_authority": "PUBLICATION_PREVIEW_APPROVAL",
         "release_identity_mode": "ISSUE_ONLY",
         "release_tag": identity["release_tag"],
         "release_manifest_path": str(release_manifest_path.relative_to(root)),
@@ -202,6 +229,7 @@ def main() -> int:
         "issue_id": issue,
         "release_identity_mode": "ISSUE_ONLY",
         "release_tag": identity["release_tag"],
+        "release_authority": "PUBLICATION_PREVIEW_APPROVAL",
         "freeze_record": str(freeze_record_path.relative_to(root)),
         "freeze_record_sha256": sha256_file(freeze_record_path),
         "release_manifest": str(release_manifest_path.relative_to(root)),
@@ -210,8 +238,8 @@ def main() -> int:
         "source_sha256": source["sha256"],
         "pdf_sha256": pdf["sha256"],
         "page_count": pdf["page_count"],
-        "work_pr_merge": "authorized-by-freeze",
-        "public_release": "authorized-by-freeze",
+        "work_pr_merge": "authorized-by-publication-preview",
+        "public_release": "authorized-by-publication-preview",
     }, ensure_ascii=False, indent=2))
     return 0
 
