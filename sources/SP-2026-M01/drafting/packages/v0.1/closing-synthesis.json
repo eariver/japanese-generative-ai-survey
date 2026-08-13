@@ -1,0 +1,732 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M01",
+  "package_id": "closing-synthesis",
+  "draft_source_mode": "EVIDENCE_PACKAGE",
+  "execution_stage": "ARTICLE_DRAFTING",
+  "basis": {
+    "architecture_plan_sha256": "d614537d751a79e102eddedaf5587ee1bc8123f75b3fb79c9903b9134d9df539",
+    "architecture_input_sha256": "15b5b0ada0063ec02efe41326b9f822d6f9e16189dc73468eb1c737b5fb6076e",
+    "evidence_reviewed_sha256": "153ea4d424328621be8afd4567cd7dc7d68411f77b929a46664215899422b2e8"
+  },
+  "package": {
+    "title": "総括 — 1月に立ち上がったAgent Execution Stack",
+    "package_type": "SECTION",
+    "page_target": 2,
+    "editorial_angle": "本文最後の総括として、個別発表を再列挙するのではなく、1月にbase modelからharness/context/action surface、security/control、agent training、tool-native model/API、serving/runtimeへ責務が分散し始めたことを束ねる。2月以降への接続は後続月の具体的な出来事を1月へ遡及させず、『1月にどの技術課題と構成要素が立ち上がったか』というreader-facingな継続線として示す。",
+    "must_cover": [
+      "1月全体を『agentic engineeringの完成』ではなく『agent execution stackの立ち上がり』として総括する",
+      "harness/context/tool execution・security/control・training environment・tool-native model/API・serving/runtimeを後続Specialへ接続する観察軸として示す",
+      "2月〜7月の個別イベント、性能値、提供状況を1月の事実認定へ遡及させない",
+      "本文の最終メッセージとして、1月に確認できた変化とliving index・later revision等に残る未確定境界を分けて示す"
+    ],
+    "boundaries": [
+      "The two sources describe different systems and should remain separately attributed even when used as one architecture cluster.",
+      "The in-house data-agent lessons are organizational case-study evidence and should not be generalized as a universal architecture benchmark.",
+      "The mechanism targets URL-based exfiltration and does not establish that arbitrary web content is safe or that prompt injection is solved generally.",
+      "Security properties are implementation claims from OpenAI and are not independently penetration-tested here.",
+      "A simulated web world model can differ materially from adversarial, dynamic live-web behavior.",
+      "The task locator is arXiv v2 updated after January; chronology should use the original January submission.",
+      "Model Studio availability dates can differ by region and need to remain scoped to the listed deployment region.",
+      "The lifecycle page is living documentation; dated entries rather than current default aliases anchor January chronology.",
+      "The series spans two releases nine days apart and should be summarized as serving/runtime evolution rather than one atomic feature.",
+      "Project performance claims are not independently reproduced."
+    ],
+    "late_breaking": false,
+    "drafting_order": 7
+  },
+  "primary_evidence": [],
+  "supporting_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M01",
+      "evidence_task_id": "evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76",
+      "task_file": "series-openai-agent-systems-january-3d9dd98e76.json",
+      "run_file": "series-openai-agent-systems-january-3d9dd98e76.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material and first-party item-level verification; no paid inference-provider API",
+        "generated_at": "2026-08-13T04:49:00Z",
+        "run_reference": "January 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "751fbaf669b7fdcc4208c71b45353c24a1fe9408f0453b5e644c6923b5a0ebb9",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M01",
+        "evidence_task_id": "evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Grouping accepted as an editorial series on agent-system architecture; claims remain source-specific."
+        },
+        "artifact": {
+          "canonical_name": "OpenAI January agent-system engineering: Codex loop and in-house data agent",
+          "artifact_type": "AGENT",
+          "organization": "OpenAI",
+          "canonical_url": null
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-01-23",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "ENGINEERING_NOTE",
+              "event_date": "2026-01-23",
+              "source_published_at": null,
+              "source_ids": [
+                "src-2"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "ENGINEERING_NOTE",
+              "event_date": "2026-01-29",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T04:49:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://openai.com/index/inside-our-in-house-data-agent",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://openai.com/index/inside-our-in-house-data-agent",
+            "published_at": null,
+            "accessed_at": "2026-08-13T04:49:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          },
+          {
+            "source_id": "src-2",
+            "url": "https://openai.com/index/unrolling-the-codex-agent-loop",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 2: https://openai.com/index/unrolling-the-codex-agent-loop",
+            "published_at": null,
+            "accessed_at": "2026-08-13T04:49:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "OpenAI’s Codex article describes the agent loop as the harness logic orchestrating the user, model inference, tools, conversation history, and context-window management.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-2"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "OpenAI’s in-house data-agent article describes an internal-only GPT-5.2 agent with layered context (metadata, human annotations, code enrichment, institutional knowledge, memory, runtime context) and pass-through access controls.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-3",
+            "text": "The data agent is explicitly an internal tool rather than a public product; examples of faster analysis and improved reliability are OpenAI-reported experience, not an independent benchmark.",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The two sources describe different systems and should remain separately attributed even when used as one architecture cluster.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ]
+          },
+          {
+            "limitation_id": "limitation-2",
+            "text": "The in-house data-agent lessons are organizational case-study evidence and should not be generalized as a universal architecture benchmark.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify January chronology, agent-loop components, tool/execution boundaries, context handling, and distinguish implementation description from benchmark claims",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: verify January chronology, agent-loop components, tool/execution boundaries, context handling, and distinguish implementation description from benchmark claims. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            },
+            {
+              "target": "verify January chronology, internal-only deployment boundary, context/memory layers, permission model, security controls, and avoid generalizing internal results to public products",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: verify January chronology, internal-only deployment boundary, context/memory layers, permission model, security controls, and avoid generalizing internal results to public products. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Together they expose the harness/context/security layers increasingly responsible for agent quality beyond the base model.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-source evidence supports Candidate Selection for a material January 2026 technical change."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M01",
+      "evidence_task_id": "evidence:SP-2026-M01:duplicate-hint-openai-agent-security-jan-e3b7cdc137",
+      "task_file": "duplicate-hint-openai-agent-security-jan-e3b7cdc137.json",
+      "run_file": "duplicate-hint-openai-agent-security-jan-e3b7cdc137.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material and first-party item-level verification; no paid inference-provider API",
+        "generated_at": "2026-08-13T04:49:00Z",
+        "run_reference": "January 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "2dfc84ef9d29c4971d57c4b588030094d2c28778780d0b2afddcedd4e8741cb9",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M01",
+        "evidence_task_id": "evidence:SP-2026-M01:duplicate-hint-openai-agent-security-jan-e3b7cdc137",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Safe URL / agent link data-exfiltration safeguards",
+          "artifact_type": "SECURITY_EVENT",
+          "organization": "OpenAI",
+          "canonical_url": "https://openai.com/index/ai-agent-link-safety"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-01-28",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "SECURITY_ENGINEERING_NOTE",
+              "event_date": "2026-01-28",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T04:49:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://openai.com/index/ai-agent-link-safety",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://openai.com/index/ai-agent-link-safety",
+            "published_at": null,
+            "accessed_at": "2026-08-13T04:49:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "OpenAI published a January 28 engineering note describing a URL-based data-exfiltration threat in which prompt-injected content can induce an agent to fetch a URL carrying conversation-derived secrets.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "The described safeguard allows automatic retrieval for URLs independently observed as public and otherwise blocks the fetch or requires explicit user action; OpenAI presents this as one layer in a defense-in-depth strategy.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The mechanism targets URL-based exfiltration and does not establish that arbitrary web content is safe or that prompt injection is solved generally.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          },
+          {
+            "limitation_id": "limitation-2",
+            "text": "Security properties are implementation claims from OpenAI and are not independently penetration-tested here.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify threat model, link-clicking/action boundary, mitigation claims, confirmation behavior, and scope of protection",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: verify threat model, link-clicking/action boundary, mitigation claims, confirmation behavior, and scope of protection. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Directly captures the security architecture forced by agents that browse and act on external content.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-source evidence supports Candidate Selection for a material January 2026 technical change."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M01",
+      "evidence_task_id": "evidence:SP-2026-M01:item-arxiv-2601-22149v2-316b4642be",
+      "task_file": "item-arxiv-2601-22149v2-316b4642be.json",
+      "run_file": "item-arxiv-2601-22149v2-316b4642be.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material and first-party item-level verification; no paid inference-provider API",
+        "generated_at": "2026-08-13T04:49:00Z",
+        "run_reference": "January 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "733285b78942e4eb60c984eab4ef48a4553f506eae8634b405810a4d7365dc61",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M01",
+        "evidence_task_id": "evidence:SP-2026-M01:item-arxiv-2601-22149v2-316b4642be",
+        "status": "PARTIAL",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "DynaWeb: Model-Based Reinforcement Learning of Web Agents",
+          "artifact_type": "PAPER",
+          "organization": "Hang Ding et al.",
+          "canonical_url": "http://arxiv.org/abs/2601.22149v2"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-01-29",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PAPER_SUBMISSION",
+              "event_date": "2026-01-29",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T04:49:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "http://arxiv.org/abs/2601.22149v2",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Primary source 1: http://arxiv.org/abs/2601.22149v2",
+            "published_at": null,
+            "accessed_at": "2026-08-13T04:49:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "DynaWeb trains a web world model to predict page representations from agent actions, then uses it as a synthetic environment for model-based reinforcement learning rollouts.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "The paper reports improvements on WebArena and WebVoyager for open-source web-agent models; these are author-reported experimental results.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "A simulated web world model can differ materially from adversarial, dynamic live-web behavior.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          },
+          {
+            "limitation_id": "limitation-2",
+            "text": "The task locator is arXiv v2 updated after January; chronology should use the original January submission.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify model-based RL setup, synthetic web-environment mechanism, benchmark attribution, open-source baseline scope, and limitations of simulated-to-live transfer",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: verify model-based RL setup, synthetic web-environment mechanism, benchmark attribution, open-source baseline scope, and limitations of simulated-to-live transfer. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Shows a concrete training response to the cost and risk of letting increasingly autonomous web agents learn directly on the live internet.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-source evidence supports Candidate Selection for a material January 2026 technical change."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M01",
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-alibaba-model-studio-154c528d30",
+      "task_file": "item-official-index-alibaba-model-studio-154c528d30.json",
+      "run_file": "item-official-index-alibaba-model-studio-154c528d30.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material and first-party item-level verification; no paid inference-provider API",
+        "generated_at": "2026-08-13T04:49:00Z",
+        "run_reference": "January 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "f786e52be48e23787ed46a4897fb971545720929d2010dfdf51d8e55933d586c",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M01",
+        "evidence_task_id": "evidence:SP-2026-M01:item-official-index-alibaba-model-studio-154c528d30",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Qwen3-Max January Model Studio updates",
+          "artifact_type": "MODEL_UPDATE",
+          "organization": "Alibaba Cloud / Qwen",
+          "canonical_url": "https://www.alibabacloud.com/help/en/model-studio/newly-released-models"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-01-27",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "MODEL_STUDIO_AVAILABILITY",
+              "event_date": "2026-01-27",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T04:49:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/newly-released-models",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://www.alibabacloud.com/help/en/model-studio/newly-released-models",
+            "published_at": null,
+            "accessed_at": "2026-08-13T04:49:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "Alibaba Cloud Model Studio lists qwen3-max-2026-01-23 for international availability on January 27, describing merged thinking/non-thinking modes and built-in web search, web extraction, and code interpreter use during thinking.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "The same lifecycle page records broad January 4 global availability for multiple Qwen3 and Wan 2.6 model families, including tool-oriented/coding and multimodal models.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-3",
+            "text": "Comparative capability language in the lifecycle catalog is vendor-reported and not independently reproduced.",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Model Studio availability dates can differ by region and need to remain scoped to the listed deployment region.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          },
+          {
+            "limitation_id": "limitation-2",
+            "text": "The lifecycle page is living documentation; dated entries rather than current default aliases anchor January chronology.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "extract January-dated model/API items; verify model identifiers, modalities, availability status, chronology, and deprecation boundaries",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: extract January-dated model/API items; verify model identifiers, modalities, availability status, chronology, and deprecation boundaries. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Provides the model/API side of the January shift toward reasoning models that can directly invoke retrieval and code tools.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-source evidence supports Candidate Selection for a material January 2026 technical change."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M01",
+      "evidence_task_id": "evidence:SP-2026-M01:series-vllm-january-91cad48301",
+      "task_file": "series-vllm-january-91cad48301.json",
+      "run_file": "series-vllm-january-91cad48301.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material and first-party item-level verification; no paid inference-provider API",
+        "generated_at": "2026-08-13T04:49:00Z",
+        "run_reference": "January 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "c2406a81f11773ec01985a35d9b5a53fc84d983fb1bf3388250ab16ba63ef987",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M01",
+        "evidence_task_id": "evidence:SP-2026-M01:series-vllm-january-91cad48301",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Grouping accepted as a January runtime series; release-specific claims remain source-indexed."
+        },
+        "artifact": {
+          "canonical_name": "vLLM v0.14.0 and v0.15.0",
+          "artifact_type": "FRAMEWORK",
+          "organization": "vLLM Project",
+          "canonical_url": null
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-01-20",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-01-20",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-01-29",
+              "source_published_at": null,
+              "source_ids": [
+                "src-2"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T04:49:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://github.com/vllm-project/vllm/releases/tag/v0.14.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Primary source 1: https://github.com/vllm-project/vllm/releases/tag/v0.14.0",
+            "published_at": null,
+            "accessed_at": "2026-08-13T04:49:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          },
+          {
+            "source_id": "src-2",
+            "url": "https://github.com/vllm-project/vllm/releases/tag/v0.15.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Primary source 2: https://github.com/vllm-project/vllm/releases/tag/v0.15.0",
+            "published_at": null,
+            "accessed_at": "2026-08-13T04:49:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "vLLM v0.14.0 enabled async scheduling by default and added numerous engine, tool-calling, API, and model-support changes; the release notes explicitly call this a breaking change with unsupported configurations documented.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "vLLM v0.15.0 added a Kimi-K2.5 architecture among new model support and extended async scheduling to pipeline parallelism, alongside streaming-input, quantization, and platform changes.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-2"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-3",
+            "text": "Any speedup figures in the release notes are project-reported and configuration dependent.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The series spans two releases nine days apart and should be summarized as serving/runtime evolution rather than one atomic feature.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ]
+          },
+          {
+            "limitation_id": "limitation-2",
+            "text": "Project performance claims are not independently reproduced.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify release chronology, Kimi-K2.5 support scope, other major model/runtime changes, performance claims, and compatibility boundaries",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: verify release chronology, Kimi-K2.5 support scope, other major model/runtime changes, performance claims, and compatibility boundaries. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            },
+            {
+              "target": "verify substantive serving changes versus v0.15.0, breaking changes, and performance-claim attribution",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: verify substantive serving changes versus v0.15.0, breaking changes, and performance-claim attribution. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Provides deployment-side evidence that January agent/model changes were rapidly absorbed into high-throughput serving infrastructure.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-source evidence supports Candidate Selection for a material January 2026 technical change."
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION",
+    "cover_headline_finalization_forbidden": true,
+    "this_week_summary_forbidden": true
+  }
+}

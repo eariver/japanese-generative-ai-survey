@@ -1,0 +1,303 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M01",
+  "revision": "v0.5",
+  "purpose": "Restore the approved January comparison depth after local two-column layout compression, using only Evidence already selected by the approved Issue Architecture, and add the approved closing stack map without importing later-month facts.",
+  "constraints": {
+    "new_external_evidence_allowed": false,
+    "selected_evidence_only": true,
+    "paper_watch_supplement": false
+  },
+  "themes": [
+    {
+      "package_id": "agent-stack-leaves-chat",
+      "title": "横断比較 — Agent Execution Stackはどこへ責務を移したか",
+      "intro": "1月のagent関連更新を同じ製品カテゴリとして並べるより、base modelの外側へ移った責務で分解すると変化が見えやすい。harness、context、action surface、access control、human controlは別々の実装面で拡張されていた。",
+      "rows": [
+        {
+          "dimension": "harness / orchestration",
+          "observation": "OpenAIのCodex loopではuser、model inference、tools、conversation history、context-window managementをharness logicが編成する。model単体ではなく実行loop全体が設計対象になる。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76"]
+        },
+        {
+          "dimension": "context / permission",
+          "observation": "OpenAIのin-house data agentではmetadata、human annotation、code enrichment、institutional knowledge、memory、runtime contextを層として重ね、既存権限をpass-throughする。Codex loopとは別systemであり、組織内case studyとして読む。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76"]
+        },
+        {
+          "dimension": "desktop action surface",
+          "observation": "AnthropicのCoworkは1月12日時点のresearch previewとしてClaudeのagentic capabilityをdesktop workflowへ持ち込んだ。後日のavailabilityをこの時点へ逆投影しない。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-official-index-anthropic-news-afddcb8068"]
+        },
+        {
+          "dimension": "behavior guidance",
+          "observation": "Anthropicが1月22日に公開したClaude constitutionはtraining processの一部としてbehaviorを方向付ける規範層であり、desktop execution surfaceとは役割が異なる。実出力が常に理想どおりになる保証でもない。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-official-index-anthropic-news-afddcb8068"]
+        },
+        {
+          "dimension": "computer use",
+          "observation": "Gemini API changelogは1月29日、gemini-3-pro-previewとgemini-3-flash-previewにComputer Use tool supportを記録した。一次事実はpreview identifierへのAPI availabilityであり、behavior品質の独立評価ではない。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-official-index-google-gemini-api-re-d5b8ea25b2"]
+        },
+        {
+          "dimension": "input / lifecycle",
+          "observation": "同じGemini API changelogは1月8日のCloud Storage・public/private pre-signed database URL入力対応と1月12日のmodel lifecycle機能も記録する。action surfaceだけでなく入力経路とlifecycle管理も同じAPI面で拡張された。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-official-index-google-gemini-api-re-d5b8ea25b2"]
+        },
+        {
+          "dimension": "terminal control loop",
+          "observation": "Mistral Vibe 2.0はterminal-native coding agentへcustom subagents、multi-choice clarification、slash-command skills、unified agent modesを加えた。1月のeventは基盤model familyの新設ではなくagent/harness側の更新である。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-official-index-mistral-news-e5054b4c4c"]
+        },
+        {
+          "dimension": "distribution / access",
+          "observation": "Vibe 2.0はLe Chat Pro/TeamとPAYGまたはBYOK経路で提供されたとされる。実行harnessの機能だけでなく、どのcredential・product経路で使うかもagent deploymentの境界になる一方、生産性評価はvendor claimのままである。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-official-index-mistral-news-e5054b4c4c"]
+        }
+      ]
+    },
+    {
+      "package_id": "autonomy-needs-guardrails",
+      "title": "横断比較 — Prompt Injectionはどの境界を越えるのか",
+      "intro": "Agentがweb、tool、fileへ接続されると、prompt injectionは単なる誤応答ではなく情報flowとexternal actionの問題になる。1月の資料は、具体的なURL exfiltration対策と広い攻撃taxonomyを異なるEvidence classとして示した。",
+      "rows": [
+        {
+          "dimension": "脅威の具体形",
+          "observation": "OpenAIの1月28日の技術解説は、prompt-injected contentがAgentにURL取得を促し、会話由来の秘密をURLへ載せて外部送出し得るURL-based data exfiltrationを扱う。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:duplicate-hint-openai-agent-security-jan-e3b7cdc137"]
+        },
+        {
+          "dimension": "data flow",
+          "observation": "このthreat modelでは秘密情報そのものが通常のresponse本文ではなく、Agentが取得するURLの一部として外部へ運ばれる。tool actionを持つAgentではoutput filteringだけでは捉えにくい情報flowになる。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:duplicate-hint-openai-agent-security-jan-e3b7cdc137"]
+        },
+        {
+          "dimension": "automatic retrieval境界",
+          "observation": "説明されたsafeguardは、独立にpublicと確認されたURLだけを自動取得の候補とし、それ以外はfetchを遮断するか明示的user actionへ戻す。autonomyとconfirmationの境界をURL provenanceで切る設計である。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:duplicate-hint-openai-agent-security-jan-e3b7cdc137"]
+        },
+        {
+          "dimension": "defense-in-depth",
+          "observation": "Safe URLはURL-based exfiltrationへの一層であり、任意のweb contentが安全になったことやprompt injection一般の解決を意味しない。security propertyもここでは独立penetration testしていない。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:duplicate-hint-openai-agent-security-jan-e3b7cdc137"]
+        },
+        {
+          "dimension": "attack ecosystem",
+          "observation": "Prompt Injection SoKはagentic coding assistantだけでなくskills、tools、protocol ecosystemにまたがる攻撃を整理する。入力prompt一箇所ではなく、Agentが接続する周辺surfaceまで脅威モデルを広げている。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-arxiv-2601-17548v1-5a10976468"]
+        },
+        {
+          "dimension": "taxonomy",
+          "observation": "同SoKは3次元のattack taxonomyを提案し、異なる攻撃条件を整理する。ここで重要なのは単一attack success rateではなく、どのsurface・条件・mechanismを比較しているかを分離することである。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-arxiv-2601-17548v1-5a10976468"]
+        },
+        {
+          "dimension": "literature scale",
+          "observation": "abstractが報告する78研究、42攻撃手法、18防御機構は著者によるliterature synthesisの集計であり、新規controlled benchmarkの再現値ではない。異質な研究を一つの実験結果へ潰さない。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-arxiv-2601-17548v1-5a10976468"]
+        },
+        {
+          "dimension": "Evidence boundary",
+          "observation": "OpenAI資料は特定実装のdefense-in-depth、SoKは文献全体のtaxonomyという異なるEvidenceである。前者の実装claimと後者のsurvey集計を同じ強さの検証結果として扱わず、SoKは1月時点のarXiv v1へ固定する。",
+          "evidence_task_ids": [
+            "evidence:SP-2026-M01:duplicate-hint-openai-agent-security-jan-e3b7cdc137",
+            "evidence:SP-2026-M01:item-arxiv-2601-17548v1-5a10976468"
+          ]
+        }
+      ]
+    },
+    {
+      "package_id": "training-agents-offline",
+      "title": "横断比較 — Live environmentを何で置き換えるか",
+      "intro": "DynaWebとSYNTHAGENTはどちらもreal environment依存を下げるが、代替しているものが異なる。world modelによるrolloutと、task・tool・user・rewardの合成を分けると設計上のtrade-offが見える。",
+      "rows": [
+        {
+          "dimension": "world representation",
+          "observation": "DynaWebはAgent actionから次のpage representationを予測するweb world modelを学習する。live webを直接反復する代わりに、状態遷移を近似するlearned environmentを訓練対象へ持ち込む。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-arxiv-2601-22149v2-316b4642be"]
+        },
+        {
+          "dimension": "model-based rollout",
+          "observation": "学習したworld modelはmodel-based reinforcement learningのrollout用synthetic environmentとして使われる。DynaWebの代替対象は主にweb transitionであり、task specification全体を合成する方式とは異なる。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-arxiv-2601-22149v2-316b4642be"]
+        },
+        {
+          "dimension": "DynaWeb evaluation",
+          "observation": "WebArenaとWebVoyagerでの改善は論文著者が報告する実験結果である。open-source web-agent model上の結果を、異なるlive serviceやproduction Agent全般の優位性へ拡張しない。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-arxiv-2601-22149v2-316b4642be"]
+        },
+        {
+          "dimension": "task / mock tools",
+          "observation": "SYNTHAGENTはtool-use taskとmock tool environmentを合成する。learned world transitionではなく、Agentが解くtaskと呼び出すtool側をsyntheticに構成する点がDynaWebとの大きな差である。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-arxiv-2601-22511v2-df6f8833e4"]
+        },
+        {
+          "dimension": "user / reward",
+          "observation": "SYNTHAGENTは不足するprivate informationを補うLLM user simulatorとtask-level rubric rewardも構成する。environmentだけでなくuser interactionと評価信号までsynthetic stackに含める。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-arxiv-2601-22511v2-df6f8833e4"]
+        },
+        {
+          "dimension": "SYNTHAGENT evaluation",
+          "observation": "14のmath・search・tool-use datasetでの改善や小型modelが大型baselineを上回る例はauthor-reported resultである。synthetic trainingの一般的優位性を独立再現したものとしては扱わない。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-arxiv-2601-22511v2-df6f8833e4"]
+        },
+        {
+          "dimension": "simulation gap",
+          "observation": "learned web world modelもsynthetic tool environmentも、dynamic・adversarialなlive systemの障害や攻撃条件を過小表現し得る。安定したtraining surfaceと実環境transferは別問題として残る。",
+          "evidence_task_ids": [
+            "evidence:SP-2026-M01:item-arxiv-2601-22149v2-316b4642be",
+            "evidence:SP-2026-M01:item-arxiv-2601-22511v2-df6f8833e4"
+          ]
+        },
+        {
+          "dimension": "chronology boundary",
+          "observation": "両taskのlocatorは1月後に更新されたv2を含むため、Retrospectiveで後日読める本文を参照しても、月次chronologyはそれぞれのJanuary original submission dateへ固定する。",
+          "evidence_task_ids": [
+            "evidence:SP-2026-M01:item-arxiv-2601-22149v2-316b4642be",
+            "evidence:SP-2026-M01:item-arxiv-2601-22511v2-df6f8833e4"
+          ]
+        }
+      ]
+    },
+    {
+      "package_id": "tool-native-models",
+      "title": "横断比較 — Tool-Native化はmodel、API、runtimeのどこで起きたか",
+      "intro": "Qwen、GLM、SGLangを同じmodel比較へ押し込むのではなく、tool-enabled API、model release、runtime uptakeという層に分けると、1月にstackの上下が同時に変わったことが見える。",
+      "rows": [
+        {
+          "dimension": "reasoning mode",
+          "observation": "Alibaba Cloud Model Studioはqwen3-max-2026-01-23についてthinking/non-thinking modeの統合を説明する。model lifecycleだけでなく、同一managed endpointでreasoning modeをどう切り替えるかがAPI surfaceになる。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-official-index-alibaba-model-studio-154c528d30"]
+        },
+        {
+          "dimension": "tools during thinking",
+          "observation": "同更新はthinking中のweb search、web extraction、code interpreter利用を記録する。tool useが外付けharnessだけでなくmanaged model/APIのreasoning pathへ組み込まれている。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-official-index-alibaba-model-studio-154c528d30"]
+        },
+        {
+          "dimension": "broader availability",
+          "observation": "同じlifecycle pageには1月4日、tool-oriented／codingやmultimodal modelを含む複数のQwen3・Wan 2.6系のglobal availabilityも記録される。単一model releaseより広いmanaged catalog更新が同月に進んだ。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-official-index-alibaba-model-studio-154c528d30"]
+        },
+        {
+          "dimension": "region / living docs",
+          "observation": "Model Studioのavailability dateはregion差を持ち得て、lifecycle page自体もliving documentationである。January chronologyはcurrent default aliasではなくdated entryとdeployment regionへ固定する。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-official-index-alibaba-model-studio-154c528d30"]
+        },
+        {
+          "dimension": "GLM-Image",
+          "observation": "Z.aiは1月14日のGLM-Imageをautoregressive semantic understandingとdiffusion-based decodingを組み合わせるcontrollable image-generation modelとして説明した。multimodal生成側のreleaseである。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-official-index-zai-release-notes-409a030c15"]
+        },
+        {
+          "dimension": "GLM-4.7-Flash",
+          "observation": "1月19日のGLM-4.7-Flashはcoding・reasoning・generative task向けのlightweight／free-tier variantとして記録される。GLM-Imageとは別release・別役割であり、一つのarchitectureとして混同しない。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-official-index-zai-release-notes-409a030c15"]
+        },
+        {
+          "dimension": "vendor claim boundary",
+          "observation": "Qwen lifecycle catalogやZ.ai release notesのcapability、quality、latency、throughput、best-in-class等の比較表現はvendor-reportedである。release availabilityの一次事実と性能評価を分ける。",
+          "evidence_task_ids": [
+            "evidence:SP-2026-M01:item-official-index-alibaba-model-studio-154c528d30",
+            "evidence:SP-2026-M01:item-official-index-zai-release-notes-409a030c15"
+          ]
+        },
+        {
+          "dimension": "runtime uptake",
+          "observation": "SGLang v0.5.8はGLM-4.7-Flashのday-zero supportを含むmodel/runtime更新をまとめた。これはimplementation availabilityのEvidenceであり、同等品質やproduction validationを意味せず、release内speedup値もproject claimである。",
+          "evidence_task_ids": [
+            "evidence:SP-2026-M01:item-official-index-zai-release-notes-409a030c15",
+            "evidence:SP-2026-M01:item-github-release-sgl-project-sglang-v-46461c1047"
+          ]
+        }
+      ]
+    },
+    {
+      "package_id": "runtime-catches-the-agent-wave",
+      "title": "横断比較 — Runtimeは何を同じ月に吸収したか",
+      "intro": "1月のruntime更新は単一の高速化競争ではない。model architecture、weight loading、tokenizer、scheduler、tool/API compatibility、long-contextやdiffusion servingまで、異なる変化を共通実装層が短い周期で受け止めていた。",
+      "rows": [
+        {
+          "dimension": "major-version interface",
+          "observation": "Transformers v5は5年ぶりのmajor releaseとして大きなAPI変更を導入した。new model supportだけでなく、共通library側の契約そのものを更新するeventだった。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:series-transformers-january-01def3d72a"]
+        },
+        {
+          "dimension": "loading / tokenizer",
+          "observation": "v5ではdynamic weight-loading／WeightConverter設計、tokenizer変更、quantization／loading整理、deprecated pathからのmigrationなどが説明された。modelの増加を受け止めるloader/interface層も変わる。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:series-transformers-january-01def3d72a"]
+        },
+        {
+          "dimension": "rapid model integration",
+          "observation": "v5.0.0rc3はstable release直前にGLM-4.7、GLM-Image、MiniMax-M2 supportを追加した。RCとstableは同日であり、stable v5を主要event、rc3をintegration速度のsupporting evidenceとして読む。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:series-transformers-january-01def3d72a"]
+        },
+        {
+          "dimension": "compatibility boundary",
+          "observation": "Transformersのlibrary supportが示すのはimplementation compatibilityであり、model endorsementや独立測定されたqualityではない。runtime uptakeと性能評価を分離する必要がある。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:series-transformers-january-01def3d72a"]
+        },
+        {
+          "dimension": "async default",
+          "observation": "vLLM v0.14.0はasync schedulingをdefaultで有効化し、engine、tool-calling、API、model supportを多数更新した。release notes自身がbreaking changeとunsupported configurationを明記する。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:series-vllm-january-91cad48301"]
+        },
+        {
+          "dimension": "second release",
+          "observation": "9日後のvLLM v0.15.0はKimi-K2.5 architecture support、pipeline parallelismへのasync scheduling拡張、streaming input、quantization、platform更新を加えた。一つのatomic featureではなく連続的runtime evolutionである。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:series-vllm-january-91cad48301"]
+        },
+        {
+          "dimension": "workload expansion",
+          "observation": "SGLang v0.5.8はGLM-4.7-Flash day-zero supportに加え、diffusion serving、FlashAttention 4 decoding、long-context／disaggregated-serving変更を含む。LLM servingだけに閉じないworkload面が同時に広がった。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-github-release-sgl-project-sglang-v-46461c1047"]
+        },
+        {
+          "dimension": "performance claims",
+          "observation": "vLLMのspeedupやSGLangのdiffusion高速化・TTFT改善などはproject-reportedでconfiguration、model、hardwareに依存する。release noteはimplementation changeの一次資料として使い、速度の一般則には変換しない。",
+          "evidence_task_ids": [
+            "evidence:SP-2026-M01:series-vllm-january-91cad48301",
+            "evidence:SP-2026-M01:item-github-release-sgl-project-sglang-v-46461c1047"
+          ]
+        }
+      ]
+    },
+    {
+      "package_id": "closing-synthesis",
+      "title": "横断整理 — 1月に立ち上がったExecution Stackの6層",
+      "intro": "個別発表をもう一度列挙するのではなく、本号で確認した1月のEvidenceを責務の層へ写像すると、Agentをbase modelだけでは説明しにくくなった理由が見える。これは後続月の事実を持ち込む図ではなく、1月時点で立ち上がった観察軸である。",
+      "rows": [
+        {
+          "dimension": "harness",
+          "observation": "Codex loopではuser、model、tools、history、context-window managementをharnessが編成する。Agentの実行品質を左右する責務がmodel inferenceの外側に明示された。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76"]
+        },
+        {
+          "dimension": "context / access",
+          "observation": "in-house data agentはmetadata、annotations、institutional knowledge、memory、runtime contextとpass-through access controlを組み合わせる。internal case studyであり普遍benchmarkではないが、contextとpermissionが独立設計層であることを示す。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76"]
+        },
+        {
+          "dimension": "security / control",
+          "observation": "Safe URLの設計ではURL provenanceに応じてautomatic retrieval、block、explicit user actionを分ける。外部actionが増えるほどsecurity boundaryとhuman confirmationがexecution stackの一部になる。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:duplicate-hint-openai-agent-security-jan-e3b7cdc137"]
+        },
+        {
+          "dimension": "training environment",
+          "observation": "DynaWebはlearned web world modelをrollout環境として使い、live web依存を下げる方向を示した。simulation gapを残しつつ、Agent trainingのenvironment自体が設計対象として現れる。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-arxiv-2601-22149v2-316b4642be"]
+        },
+        {
+          "dimension": "tool-native API",
+          "observation": "Qwen3-Maxのmanaged lifecycleではthinking中のweb search、web extraction、code interpreterが記録される。tool executionがharnessだけでなくmodel/API surfaceにも入る。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:item-official-index-alibaba-model-studio-154c528d30"]
+        },
+        {
+          "dimension": "serving / runtime",
+          "observation": "vLLMは1月に二つのreleaseを重ね、async scheduling、tool/API、model architecture、streaming inputなどを更新した。new workloadを受け止めるruntimeもAgent execution stackの下支えとして変化していた。",
+          "evidence_task_ids": ["evidence:SP-2026-M01:series-vllm-january-91cad48301"]
+        }
+      ]
+    }
+  ]
+}

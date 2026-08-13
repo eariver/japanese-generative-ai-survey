@@ -1,0 +1,176 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M01",
+  "status": "READY",
+  "policy": {
+    "reader_language": "ja",
+    "technical_terms_may_remain_english": true,
+    "attribution_labels_preserved": true,
+    "source_evidence_mutation_forbidden": true,
+    "instruction": "Fill every text_ja with natural Japanese, preserve model/API/benchmark/paper-defined terms when precision benefits, then set status to READY."
+  },
+  "records": [
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:duplicate-hint-openai-agent-security-jan-e3b7cdc137",
+      "artifact_name": "Safe URL / agent link data-exfiltration safeguards",
+      "claims": [
+        {"item_id":"claim-1","evidence_class":"PRIMARY_FACT","source_text":"OpenAI published a January 28 engineering note describing a URL-based data-exfiltration threat in which prompt-injected content can induce an agent to fetch a URL carrying conversation-derived secrets.","source_text_sha256":"d5b927b2383ed3f66b46100b1216cde58c7443e12b3e18e287ba01d899d4dba0","text_ja":"OpenAIは1月28日、prompt injectionされた内容がAgentにURL取得を促し、会話由来の秘密情報をURLへ載せて外部へ送出し得るdata-exfiltration脅威を説明した。"},
+        {"item_id":"claim-2","evidence_class":"PRIMARY_FACT","source_text":"The described safeguard allows automatic retrieval for URLs independently observed as public and otherwise blocks the fetch or requires explicit user action; OpenAI presents this as one layer in a defense-in-depth strategy.","source_text_sha256":"0fec4ce321d9ee57e5724112464af51a20b0fafd6804d8ed018075863c3507a1","text_ja":"説明されたsafeguardは、独立にpublicと確認されたURLのみ自動取得を許し、それ以外はfetchを遮断するか明示的なuser actionを要求する。OpenAIはこれをdefense-in-depthの一層として位置付ける。"}
+      ],
+      "limitations": [
+        {"item_id":"limitation-1","evidence_class":"INFERENCE","source_text":"The mechanism targets URL-based exfiltration and does not establish that arbitrary web content is safe or that prompt injection is solved generally.","source_text_sha256":"417ee76b9c1dae3f9f20f67d212b7b7dfc3dc1d9b118ef1365da79ddb8655f7d","text_ja":"対象はURL-based exfiltrationであり、任意のweb contentが安全であることやprompt injection全般の解決を示すものではない。"},
+        {"item_id":"limitation-2","evidence_class":"INFERENCE","source_text":"Security properties are implementation claims from OpenAI and are not independently penetration-tested here.","source_text_sha256":"f60bdef983b20119ded37684e8885d93d66671ae2ece0c6ed93be1159a0966ee","text_ja":"security propertyはOpenAIによる実装説明であり、本サーベイでは独立したpenetration testを実施していない。"}
+      ]
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-arxiv-2601-17548v1-5a10976468",
+      "artifact_name": "Prompt Injection Attacks on Agentic Coding Assistants",
+      "claims": [
+        {"item_id":"claim-1","evidence_class":"PRIMARY_FACT","source_text":"The paper is a Systematization of Knowledge on prompt-injection attacks across agentic coding assistants, skills, tools, and protocol ecosystems, and proposes a three-dimensional attack taxonomy.","source_text_sha256":"d99cca8532ee41cf5be5af6997bed53ab5485009af2b1e6a82fc091d6c30dfe8","text_ja":"本論文はagentic coding assistant、skills、tools、protocol ecosystemにまたがるprompt-injection攻撃を整理するSystematization of Knowledgeで、3次元のattack taxonomyを提案する。"},
+        {"item_id":"claim-2","evidence_class":"AUTHOR_CLAIM","source_text":"The abstract reports a synthesis of 78 studies, 42 attack techniques, and 18 defense mechanisms; aggregate attack/defense percentages are author-reported meta-analysis results rather than a new controlled benchmark.","source_text_sha256":"a4d6e3b8ef30ad2e2c0d13245e8bb8aaed28656314e43e05604004138199434c","text_ja":"abstractは78研究、42攻撃手法、18防御機構の統合を報告する。攻撃・防御の集計値は著者によるmeta-analysisであり、新規のcontrolled benchmarkではない。"}
+      ],
+      "limitations": [
+        {"item_id":"limitation-1","evidence_class":"INFERENCE","source_text":"This is a literature synthesis; its aggregate percentages depend on heterogeneous studies and should not be narrated as a single reproducible experiment.","source_text_sha256":"1e268f4573de62c7495eec8db79611dea21fbbdd5db3279fb8bea59516512e98","text_ja":"異質な研究を束ねたliterature synthesisであるため、集計率を単一の再現可能な実験結果として扱わない。"},
+        {"item_id":"limitation-2","evidence_class":"INFERENCE","source_text":"The retained source is arXiv v1 from January; later research may revise the landscape.","source_text_sha256":"26c1933238dcf52284fe327368d8058f3bc7ec3aea22c83e93690f2f4c402904","text_ja":"保持sourceは1月時点のarXiv v1であり、その後の研究によって脅威・防御の全体像は更新され得る。"}
+      ]
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-arxiv-2601-22149v2-316b4642be",
+      "artifact_name": "DynaWeb: Model-Based Reinforcement Learning of Web Agents",
+      "claims": [
+        {"item_id":"claim-1","evidence_class":"PRIMARY_FACT","source_text":"DynaWeb trains a web world model to predict page representations from agent actions, then uses it as a synthetic environment for model-based reinforcement learning rollouts.","source_text_sha256":"89164c853a9a30400056cf6f470dbeb7b1d4b952dd38d3464b816ac040dd3c6d","text_ja":"DynaWebはAgent actionからpage representationを予測するweb world modelを学習し、それをmodel-based reinforcement learningのrollout用synthetic environmentとして利用する。"},
+        {"item_id":"claim-2","evidence_class":"AUTHOR_CLAIM","source_text":"The paper reports improvements on WebArena and WebVoyager for open-source web-agent models; these are author-reported experimental results.","source_text_sha256":"cee07614abfce51acabe56a1bb49c9bfc5140e8f3d3120f5af503257219824d2","text_ja":"論文はopen-source web-agent modelについてWebArenaとWebVoyagerでの改善を報告しているが、これは著者報告の実験結果である。"}
+      ],
+      "limitations": [
+        {"item_id":"limitation-1","evidence_class":"INFERENCE","source_text":"A simulated web world model can differ materially from adversarial, dynamic live-web behavior.","source_text_sha256":"72f19996048533f0c4829c8ec12c8fcfeff2f5f1f556da6ff4fad34a888a7f15","text_ja":"simulated web world modelは、敵対的かつ動的なlive webの挙動と大きく異なる可能性がある。"},
+        {"item_id":"limitation-2","evidence_class":"INFERENCE","source_text":"The task locator is arXiv v2 updated after January; chronology should use the original January submission.","source_text_sha256":"0dd64a5a23c0ab2b9c71aba0d70db8712cb1621b90456abf87710b5246a0621e","text_ja":"locatorは1月後に更新されたarXiv v2であるため、chronologyは1月のoriginal submissionを基準とする。"}
+      ]
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-arxiv-2601-22511v2-df6f8833e4",
+      "artifact_name": "SYNTHAGENT: synthetic tasks, simulated tools, rubric rewards",
+      "claims": [
+        {"item_id":"claim-1","evidence_class":"PRIMARY_FACT","source_text":"SYNTHAGENT synthesizes tool-use tasks and mock tool environments, includes an LLM user simulator for missing private information, and constructs task-level rubric rewards.","source_text_sha256":"6e6b1c16ef16263f9d39a8bb91e4c8e24c3c6666c40dea527fc86dcde161de2f","text_ja":"SYNTHAGENTはtool-use taskとmock tool environmentを合成し、不足するprivate information向けにLLM user simulatorを用い、task-level rubric rewardを構成する。"},
+        {"item_id":"claim-2","evidence_class":"AUTHOR_CLAIM","source_text":"The paper reports gains across 14 math, search, and tool-use datasets, including small models outperforming larger baselines; these are author-reported results.","source_text_sha256":"61f5d4c7cdc5e1f76336242c9576f9e6477882d6af3d19a78e30a7337370aeea","text_ja":"論文は14のmath・search・tool-use datasetで改善を報告し、小型modelが大型baselineを上回る例も示すが、いずれも著者報告値である。"}
+      ],
+      "limitations": [
+        {"item_id":"limitation-1","evidence_class":"INFERENCE","source_text":"Synthetic environments provide stability but may underrepresent failures and adversarial conditions of real APIs.","source_text_sha256":"343a6d4222dd460cd731628c1ff4b5d08bd0e6ee53c9877bddb7a3b56c50ba49","text_ja":"synthetic environmentは安定性を与える一方、実APIの障害や敵対的条件を過小表現する可能性がある。"},
+        {"item_id":"limitation-2","evidence_class":"INFERENCE","source_text":"The task locator is v2 updated after January; chronology should use the original submission date.","source_text_sha256":"9e515d39c187f7cbbbe7dcc8c1f654c76f51d9bfc3635a83b1c70913be63ab33","text_ja":"locatorは1月後に更新されたv2であるため、chronologyはoriginal submission dateを用いる。"}
+      ]
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-github-release-sgl-project-sglang-v-46461c1047",
+      "artifact_name": "SGLang v0.5.8",
+      "claims": [
+        {"item_id":"claim-1","evidence_class":"PRIMARY_FACT","source_text":"SGLang v0.5.8 added day-zero GLM-4.7-Flash support, expanded diffusion serving, FlashAttention 4 decoding support, and multiple long-context / disaggregated-serving changes.","source_text_sha256":"a14173de1f88d22e6ef9485924fb2fa99cfb5a7a61fdc6b2999321393c3d19e9","text_ja":"SGLang v0.5.8はGLM-4.7-Flashのday-zero support、diffusion serving拡張、FlashAttention 4 decoding、複数のlong-context／disaggregated-serving変更を追加した。"},
+        {"item_id":"claim-2","evidence_class":"PROJECT_CLAIM","source_text":"Release-note performance figures such as up to 1.5x diffusion speedups, near-linear chunked-pipeline scaling, and a 65% TTFT improvement for a GLM4-MoE setup are project-reported claims.","source_text_sha256":"422b605337881d8ad9c617fe2b24b017c584d8ff833df739e603e01c8707af68","text_ja":"最大1.5倍のdiffusion高速化、chunked pipelineのnear-linear scaling、特定GLM4-MoE構成で65%のTTFT改善などはprojectのrelease noteによる報告値である。"}
+      ],
+      "limitations": [
+        {"item_id":"limitation-1","evidence_class":"INFERENCE","source_text":"The release aggregates many upstream PRs and performance claims across different models/hardware.","source_text_sha256":"738260e9d2243521a2122b541eefe40a03248356eebd8e25bde324775a61aa9e","text_ja":"releaseは多数のupstream PRと、異なるmodel／hardware条件のperformance claimを集約している。"},
+        {"item_id":"limitation-2","evidence_class":"INFERENCE","source_text":"Model support establishes implementation availability, not equivalent quality or production validation.","source_text_sha256":"eb314456858ac362f2edaa0934ab88f84ffedd3c3632c2d9a5f57f6e3ef56bb2","text_ja":"model supportは実装上利用可能になったことを示すが、同等の品質やproduction validationを意味しない。"}
+      ]
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-alibaba-model-studio-154c528d30",
+      "artifact_name": "Qwen3-Max January Model Studio updates",
+      "claims": [
+        {"item_id":"claim-1","evidence_class":"PRIMARY_FACT","source_text":"Alibaba Cloud Model Studio lists qwen3-max-2026-01-23 for international availability on January 27, describing merged thinking/non-thinking modes and built-in web search, web extraction, and code interpreter use during thinking.","source_text_sha256":"b71f5085e1d7a197a8b21149231426540605f3cd0d362d28ffc115b7c6a2c30d","text_ja":"Alibaba Cloud Model Studioはqwen3-max-2026-01-23を1月27日のinternational availabilityとして記録し、thinking/non-thinking modeの統合とthinking中のweb search・web extraction・code interpreter利用を説明する。"},
+        {"item_id":"claim-2","evidence_class":"PRIMARY_FACT","source_text":"The same lifecycle page records broad January 4 global availability for multiple Qwen3 and Wan 2.6 model families, including tool-oriented/coding and multimodal models.","source_text_sha256":"608305d21f3dac54c2163fd71f15cb9827fb7158862561705eee16b209fddfc8","text_ja":"同じlifecycle pageは1月4日、tool-oriented／codingやmultimodal modelを含む複数のQwen3・Wan 2.6系について広範なglobal availabilityを記録している。"},
+        {"item_id":"claim-3","evidence_class":"VENDOR_CLAIM","source_text":"Comparative capability language in the lifecycle catalog is vendor-reported and not independently reproduced.","source_text_sha256":"8c9fea4f95a85a8ed8807fc03ae7308d9101976cdbc02f8adbe3cf8c964de7dc","text_ja":"lifecycle catalog内の比較的なcapability表現はvendor報告であり、本サーベイでは独立再現していない。"}
+      ],
+      "limitations": [
+        {"item_id":"limitation-1","evidence_class":"INFERENCE","source_text":"Model Studio availability dates can differ by region and need to remain scoped to the listed deployment region.","source_text_sha256":"375742cdce142b38bfccd665bc2f8217257f7e3f1c51a397008c7b623e15fdd1","text_ja":"Model Studioのavailability dateはregionにより異なり得るため、記載されたdeployment regionへscopeを限定する必要がある。"},
+        {"item_id":"limitation-2","evidence_class":"INFERENCE","source_text":"The lifecycle page is living documentation; dated entries rather than current default aliases anchor January chronology.","source_text_sha256":"98449ac287d6b629b09ecac9a04c4ede8d1c8970c7625c181e46bee4dfba8b54","text_ja":"lifecycle pageはliving documentationであるため、現在のdefault aliasではなくdated entryを1月chronologyの基準とする。"}
+      ]
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-anthropic-news-afddcb8068",
+      "artifact_name": "Claude Cowork research preview and new Claude constitution",
+      "claims": [
+        {"item_id":"claim-1","evidence_class":"PRIMARY_FACT","source_text":"Anthropic’s January 13 Labs announcement states that Cowork launched as a research preview the previous day to bring Claude’s agentic capabilities to desktop workflows.","source_text_sha256":"a9ef9a73137e6cd5fc9c92986d084c2ff6f53c5e5b88a4a7dfc401eb38837541","text_ja":"Anthropicの1月13日Labs announcementは、前日にCoworkがresearch previewとして公開され、Claudeのagentic capabilityをdesktop workflowへ持ち込んだと記載する。"},
+        {"item_id":"claim-2","evidence_class":"PRIMARY_FACT","source_text":"Anthropic published Claude’s new constitution on January 22 and states that the document is a crucial part of its model training process that directly shapes Claude behavior.","source_text_sha256":"ba08c1bd18ddc7d15f8347fe3315a3d1d118709fbe1a6c4db06ba9c0aa635758","text_ja":"Anthropicは1月22日にClaudeの新constitutionを公開し、model training processの重要な一部としてClaudeのbehaviorを直接方向付ける文書だと説明している。"}
+      ],
+      "limitations": [
+        {"item_id":"limitation-1","evidence_class":"INFERENCE","source_text":"Cowork was a research preview, so announcement-time product boundaries must not be generalized to later availability.","source_text_sha256":"db1e89267c34ce266a3291da43e9ec1ba145c562d918ef59c28f9ad93a409b73","text_ja":"Coworkは発表時点でresearch previewであり、その時点のproduct boundaryを後日のavailabilityへ一般化しない。"},
+        {"item_id":"limitation-2","evidence_class":"INFERENCE","source_text":"The constitution describes intended behavior and training guidance; actual model outputs may not always follow its ideals, as Anthropic itself notes.","source_text_sha256":"7eefe8c12468a97cfc744c8caaf5df18491003cdcd2f740e2c8667ef9ce9eb19","text_ja":"constitutionは意図されたbehaviorとtraining guidanceを示すが、Anthropic自身が述べる通り、実際のmodel outputが常にその理想に従うとは限らない。"}
+      ]
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-google-gemini-api-re-d5b8ea25b2",
+      "artifact_name": "Gemini API January 2026 tool and lifecycle updates",
+      "claims": [
+        {"item_id":"claim-1","evidence_class":"PRIMARY_FACT","source_text":"The Gemini API changelog records Computer Use tool support for gemini-3-pro-preview and gemini-3-flash-preview on January 29.","source_text_sha256":"aac25ff8682352008bf706d04e3921b68a182f4d87de6ab9f98d8f39a5847d40","text_ja":"Gemini API changelogは1月29日、gemini-3-pro-previewとgemini-3-flash-previewへのComputer Use tool supportを記録している。"},
+        {"item_id":"claim-2","evidence_class":"PRIMARY_FACT","source_text":"The changelog records a model lifecycle feature on January 12 and support for Cloud Storage/public/private pre-signed database URLs as input sources, with a 100 MB file limit, on January 8.","source_text_sha256":"a8c61ce540da2e539527879353c9a0410d994d8a95c1ca4189daa6f7b0377676","text_ja":"changelogは1月12日のmodel lifecycle機能と、1月8日のCloud Storageおよびpublic/private pre-signed database URL入力対応（100 MB file limit）を記録する。"},
+        {"item_id":"claim-3","evidence_class":"PRIMARY_FACT","source_text":"The changelog also records Veo 4K/portrait-output changes and several alias/deprecation events during January.","source_text_sha256":"10a3ad19c3cb71b9926d86191531d75863756182e9e25e78f888f9e16590fe4b","text_ja":"同changelogには1月中のVeo 4K／portrait-output変更と、複数のalias・deprecation eventも記録されている。"}
+      ],
+      "limitations": [
+        {"item_id":"limitation-1","evidence_class":"INFERENCE","source_text":"Computer Use support is tied to preview model identifiers and must preserve announcement-time preview/deprecation status.","source_text_sha256":"60104d36fdeacf4a584b81ba2860de186e009ad86799cb4fd3ad03bb10f4d7fe","text_ja":"Computer Use supportはpreview model identifierに紐付くため、発表時点のpreview／deprecation statusを保持して扱う。"},
+        {"item_id":"limitation-2","evidence_class":"INFERENCE","source_text":"The changelog establishes API availability, not independent quality or safety of computer-use behavior.","source_text_sha256":"304f60f4e1bd9affbde6045a1d3a4420eea712258912671abb04940601f136eb","text_ja":"changelogが確認するのはAPI availabilityであり、computer-use behaviorの品質や安全性を独立評価する資料ではない。"}
+      ]
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-mistral-news-e5054b4c4c",
+      "artifact_name": "Mistral Vibe 2.0",
+      "claims": [
+        {"item_id":"claim-1","evidence_class":"PRIMARY_FACT","source_text":"Mistral released Vibe 2.0 on January 27 as a terminal-native coding agent powered by the Devstral 2 model family.","source_text_sha256":"a2418692281213b928fabde29ff821f4637fe891580e54eef5941a16d4e601f9","text_ja":"Mistralは1月27日、Devstral 2 model familyを用いるterminal-native coding agentとしてVibe 2.0を公開した。"},
+        {"item_id":"claim-2","evidence_class":"PRIMARY_FACT","source_text":"The release added custom subagents, multi-choice clarifications, slash-command skills, unified agent modes, and automatic updates, with availability on Le Chat Pro/Team plus PAYG or BYOK paths.","source_text_sha256":"cf8c691f010581836ffc138709941156877e270c1684634ad3636429c596d881","text_ja":"releaseはcustom subagents、multi-choice clarification、slash-command skills、unified agent modes、automatic updatesを追加し、Le Chat Pro/TeamとPAYGまたはBYOK経路で提供された。"}
+      ],
+      "limitations": [
+        {"item_id":"limitation-1","evidence_class":"INFERENCE","source_text":"The announcement is vendor-authored; claims about productivity or model quality are not independently reproduced.","source_text_sha256":"70ef5479f81fdee7878b1dc5bc087bba1f3114e56a7000dff7e82c1ecc12ad62","text_ja":"announcementはvendor authoredであり、生産性やmodel qualityに関する主張は独立再現していない。"},
+        {"item_id":"limitation-2","evidence_class":"INFERENCE","source_text":"Devstral 2 itself predates January, so the month-level event is the Vibe 2.0 agent/harness update rather than a new underlying model family.","source_text_sha256":"f27e83db8feb94e01a4da7ae6215594c78b3ccf2845017da19034d547bd8043d","text_ja":"Devstral 2自体は1月以前から存在するため、月次eventは新しい基盤model familyではなくVibe 2.0のagent／harness更新である。"}
+      ]
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-zai-release-notes-409a030c15",
+      "artifact_name": "GLM-4.7-Flash and GLM-Image",
+      "claims": [
+        {"item_id":"claim-1","evidence_class":"PRIMARY_FACT","source_text":"Z.ai release notes record GLM-Image on January 14, described as combining autoregressive semantic understanding with diffusion-based decoding for controllable image generation.","source_text_sha256":"24dd28ef774102a0f41180e0054107abf983916e964905cb1c90cebdbc3b1eed","text_ja":"Z.ai release notesは1月14日のGLM-Imageを記録し、autoregressive semantic understandingとdiffusion-based decodingを組み合わせたcontrollable image generation modelとして説明する。"},
+        {"item_id":"claim-2","evidence_class":"PRIMARY_FACT","source_text":"Z.ai release notes record GLM-4.7-Flash on January 19 as a lightweight/free-tier GLM-4.7 variant for coding, reasoning, and generative tasks.","source_text_sha256":"f64c7318dc11f673020048adc2d58d46a8a7a8a734eb08b6ff950d1e6267b50d","text_ja":"Z.ai release notesは1月19日のGLM-4.7-Flashを、coding・reasoning・generative task向けのlightweight／free-tier GLM-4.7 variantとして記録する。"},
+        {"item_id":"claim-3","evidence_class":"VENDOR_CLAIM","source_text":"Comparative quality, latency, throughput, and ‘best-in-class’ language in the release notes are vendor claims.","source_text_sha256":"a6709fba69b3cf2f2f4255b47ade14beadf6bf8319b3f78d411d1eb5bb7934df","text_ja":"quality、latency、throughputや「best-in-class」といった比較表現はvendor claimである。"}
+      ],
+      "limitations": [
+        {"item_id":"limitation-1","evidence_class":"INFERENCE","source_text":"The task groups two distinct model releases because both establish the January Z.ai model line; drafting should not imply a single architecture.","source_text_sha256":"e9898a02aa287a428112adc2d9561660cc656d30fbbe32f823a633f86afa0b29","text_ja":"1月のZ.ai model lineとして二つのreleaseを一括したtaskであり、単一architectureであるかのように記述しない。"},
+        {"item_id":"limitation-2","evidence_class":"INFERENCE","source_text":"Performance claims are vendor-reported and not independently reproduced.","source_text_sha256":"0586f2ad9e35b08182383bd5c11c44d534504c9658e861fe81b30b56c808f648","text_ja":"performance claimはvendor報告であり、本サーベイでは独立再現していない。"}
+      ]
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76",
+      "artifact_name": "OpenAI January agent-system engineering: Codex loop and in-house data agent",
+      "claims": [
+        {"item_id":"claim-1","evidence_class":"PRIMARY_FACT","source_text":"OpenAI’s Codex article describes the agent loop as the harness logic orchestrating the user, model inference, tools, conversation history, and context-window management.","source_text_sha256":"30e62b62d1f873505bb12dfd97801d3e5dd5f13c914dabffaf2953a7f3d79808","text_ja":"OpenAIのCodex記事はagent loopを、user、model inference、tools、conversation history、context-window managementを編成するharness logicとして説明する。"},
+        {"item_id":"claim-2","evidence_class":"PRIMARY_FACT","source_text":"OpenAI’s in-house data-agent article describes an internal-only GPT-5.2 agent with layered context (metadata, human annotations, code enrichment, institutional knowledge, memory, runtime context) and pass-through access controls.","source_text_sha256":"828f45a154e705c23263c7d7c58565aaab7bc651f37b8eabece4950f4ba4c7ba","text_ja":"OpenAIのin-house data-agent記事は、metadata、human annotation、code enrichment、institutional knowledge、memory、runtime contextを重ね、pass-through access controlを用いるinternal-only GPT-5.2 agentを説明する。"},
+        {"item_id":"claim-3","evidence_class":"VENDOR_CLAIM","source_text":"The data agent is explicitly an internal tool rather than a public product; examples of faster analysis and improved reliability are OpenAI-reported experience, not an independent benchmark.","source_text_sha256":"22a367b6152e9756598a0defc760a58a9c084bead3a2f4d09bd6f1502481a65f","text_ja":"data agentはpublic productではなくinternal toolであり、分析高速化やreliability向上の例はOpenAIの運用経験で、独立benchmarkではない。"}
+      ],
+      "limitations": [
+        {"item_id":"limitation-1","evidence_class":"INFERENCE","source_text":"The two sources describe different systems and should remain separately attributed even when used as one architecture cluster.","source_text_sha256":"d7acb641f56600699f9f68f60c7092bb2137513dff8a7da3bcf34005203bc730","text_ja":"二つのsourceは異なるsystemを説明しており、一つのarchitecture clusterで扱う場合も帰属を分ける必要がある。"},
+        {"item_id":"limitation-2","evidence_class":"INFERENCE","source_text":"The in-house data-agent lessons are organizational case-study evidence and should not be generalized as a universal architecture benchmark.","source_text_sha256":"e54dd6705733464d98bc6f78c2d9b6de486dae85c8467165d6360052513e1070","text_ja":"in-house data agentの知見は組織内case studyであり、普遍的なarchitecture benchmarkへ一般化しない。"}
+      ]
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:series-transformers-january-01def3d72a",
+      "artifact_name": "Transformers v5 and v5.0.0rc3",
+      "claims": [
+        {"item_id":"claim-1","evidence_class":"PRIMARY_FACT","source_text":"Hugging Face released Transformers v5 on January 26, its first major release in five years, with significant API changes including a new dynamic weight-loading/WeightConverter design and tokenizer changes.","source_text_sha256":"f6a74462504076581c5e04a631183a17849c414d4b49e63bf866a5e8c0db9a64","text_ja":"Hugging Faceは1月26日、5年ぶりのmajor releaseとなるTransformers v5を公開し、新しいdynamic weight-loading／WeightConverter設計やtokenizer変更など大きなAPI変更を導入した。"},
+        {"item_id":"claim-2","evidence_class":"PRIMARY_FACT","source_text":"The v5 release notes describe breaking changes and quantization/loading cleanup, including migration away from deprecated loading paths and broader architectural refactoring.","source_text_sha256":"10bf0214b0123aec64cadd16b3500b4a52026af6b8a97366da5d496f541c1b18","text_ja":"v5 release notesはbreaking changeとquantization／loadingの整理、deprecated loading pathからのmigration、広範なarchitecture refactoringを説明する。"},
+        {"item_id":"claim-3","evidence_class":"PRIMARY_FACT","source_text":"The v5.0.0rc3 notes added GLM-4.7/GLM-Image support and MiniMax-M2 support shortly before the stable release, illustrating rapid integration of contemporary model families.","source_text_sha256":"67dd6f9dd51a8c907602254b7cfe4ad584263b99bfb6c517f98e5292755dee8f","text_ja":"v5.0.0rc3 notesはstable release直前にGLM-4.7／GLM-ImageとMiniMax-M2 supportを追加し、新しいmodel familyが迅速に統合される様子を示す。"}
+      ],
+      "limitations": [
+        {"item_id":"limitation-1","evidence_class":"INFERENCE","source_text":"The RC and stable release occurred on the same date; stable v5 is the primary event and rc3 is supporting model-integration evidence.","source_text_sha256":"ab6d6c4a55e3de4a5c1e76b023738d5ce6454fa3d5d4fe7d2b79352183f2519e","text_ja":"RCとstable releaseは同日であり、stable v5を主要event、rc3をmodel integrationのsupporting evidenceとして扱う。"},
+        {"item_id":"limitation-2","evidence_class":"INFERENCE","source_text":"Library support indicates implementation compatibility, not endorsement or independently measured model quality.","source_text_sha256":"8dc98ea2d2a5ea638ce2e2a278625270c26c63a0e14f5e140e228a1d668fd5b6","text_ja":"library supportが示すのはimplementation compatibilityであり、endorsementや独立測定されたmodel qualityではない。"}
+      ]
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:series-vllm-january-91cad48301",
+      "artifact_name": "vLLM v0.14.0 and v0.15.0",
+      "claims": [
+        {"item_id":"claim-1","evidence_class":"PRIMARY_FACT","source_text":"vLLM v0.14.0 enabled async scheduling by default and added numerous engine, tool-calling, API, and model-support changes; the release notes explicitly call this a breaking change with unsupported configurations documented.","source_text_sha256":"5e21d1dcae5c50155bf1afd0e9f17100a651cdbcde1e2ed6367a02a62d0de3e4","text_ja":"vLLM v0.14.0はasync schedulingをdefaultで有効化し、engine、tool-calling、API、model supportを多数更新した。release notesはこれをbreaking changeとし、unsupported configurationも明記する。"},
+        {"item_id":"claim-2","evidence_class":"PRIMARY_FACT","source_text":"vLLM v0.15.0 added a Kimi-K2.5 architecture among new model support and extended async scheduling to pipeline parallelism, alongside streaming-input, quantization, and platform changes.","source_text_sha256":"aaf23cdfd55c4aa8fc30002340e76236a101331e86e4c1d373047f0f67b84ebf","text_ja":"vLLM v0.15.0はnew model supportにKimi-K2.5 architectureを追加し、async schedulingをpipeline parallelismへ拡張したほか、streaming input、quantization、platformも更新した。"},
+        {"item_id":"claim-3","evidence_class":"PROJECT_CLAIM","source_text":"Any speedup figures in the release notes are project-reported and configuration dependent.","source_text_sha256":"2a4ce26f33d4a36588beebfe8fead313a293eb6f5a24c6df2562d25adbbbe050","text_ja":"release notes内のspeedup値はproject報告であり、configurationに依存する。"}
+      ],
+      "limitations": [
+        {"item_id":"limitation-1","evidence_class":"INFERENCE","source_text":"The series spans two releases nine days apart and should be summarized as serving/runtime evolution rather than one atomic feature.","source_text_sha256":"3c3a43e7e04767ba2aae215df649da6097740eafade3af3521bacc5903711735","text_ja":"seriesは9日間隔の二つのreleaseを含むため、一つのatomic featureではなくserving／runtime evolutionとして要約する。"},
+        {"item_id":"limitation-2","evidence_class":"INFERENCE","source_text":"Project performance claims are not independently reproduced.","source_text_sha256":"86310d01329e2639844182c5edefddb03dd4a55b3fbf6ad9a9545ceecdde6703","text_ja":"projectのperformance claimは独立再現していない。"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+% WORKSPACE ENTRY POINT — NOT THE CANONICAL FROZEN RELEASE SOURCE. See CURRENT_RELEASE.md.
+\documentclass[lualatex,a4paper,10pt]{jlreq}
+\usepackage{../../../templates/survey/jgaisurvey}
+\addbibresource{references.bib}
+
+\surveysetup
+  {SP-2026-M01}
+  {Japanese Generative AI Technical Survey Special}
+  {Coverage: 2026-01-01 -- 2026-01-31 / Retrospective as of 2026-08-13}
+  {Coverage window: 2026-01-01 -- 2026-01-31 UTC}
+\surveyeditiondescriptor{Retrospective Technical Survey}
+
+\surveycoverstory
+  {AgentはChatを出る — 実行系が前景化した月}
+  {2026年1月、生成AIの焦点はbase modelだけでなく、harness、context、tool execution、security、training environment、serving runtimeへ広がり始めた。Agentを一つのmodelではなく、仕事を成立させる技術stackとして読むための構成要素が姿を現した月を追う。}
+  {AgentはChatを出る — Harness・Context・Computer/Terminal Use \quad / \quad AutonomyにはGuardrailが要る — Prompt InjectionとData Exfiltration \quad / \quad Runtimeは同じ月に何を吸収したか — Transformers v5・vLLM・SGLang}
+
+\begin{document}
+
+\surveycover
+\clearpage
+\input{sections/00-frontmatter}
+
+\clearpage
+\twocolumn
+\input{sections/10-agent-stack-leaves-chat}
+\input{sections/20-autonomy-needs-guardrails}
+\input{sections/30-training-agents-offline}
+\input{sections/40-tool-native-models}
+\input{sections/50-runtime-catches-the-agent-wave}
+\input{sections/60-closing-synthesis}
+
+\clearpage
+\onecolumn
+\printbibliography[title={References / Source Notes}]
+
+\end{document}

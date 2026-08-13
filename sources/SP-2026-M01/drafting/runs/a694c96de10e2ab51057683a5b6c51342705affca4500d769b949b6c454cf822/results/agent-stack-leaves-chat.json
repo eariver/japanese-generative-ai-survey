@@ -1,0 +1,307 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M01",
+  "package_id": "agent-stack-leaves-chat",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "basis": {
+    "draft_package_sha256": "a2828c249e1c8eb52b3d48a20dde242cb93a792cd2523707b3b3f76277d9c8f2",
+    "prompt_id": "article-drafting-v0.1",
+    "prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project drafting; no paid inference-provider API",
+    "generated_at": "2026-08-13T15:08:53+09:00",
+    "run_reference": "Interactive article drafting by GPT-5.6 Sol on 2026-08-13 JST after Human Gate 1 Architecture approval. Six complete ARTICLE_DRAFTING bodies were produced solely from immutable SP-2026-M01 Draft Packages, including the independent closing synthesis, with claim classes, chronology boundaries, must-cover coverage, and Evidence refs preserved. User explicitly authorized autonomous progression to the next Human Gate."
+  },
+  "headline": "AgentはChatを出る — Harness・Context・Computer/Terminal Use",
+  "deck": "2026年1月、Agentの実装面はchatの応答からdesktop、terminal、computer useへ広がり、harness、context、tools、behavior controlがbase modelとは別の設計対象として前景化した。",
+  "deck_attribution_mode": "FACTUAL",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-anthropic-news-afddcb8068",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-google-gemini-api-re-d5b8ea25b2",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-mistral-news-e5054b4c4c",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "openai-harness",
+      "block_type": "PARAGRAPH",
+      "text": "OpenAIの1月の技術記事が示したのは、Agentの品質がbase modelだけで決まらないという構造だった。Codexのagent loopでは、user、model inference、tools、conversation history、context-window managementをharnessが編成する。一方、社内data agentではmetadata、human annotations、code enrichment、institutional knowledge、memory、runtime contextを層として組み合わせ、既存の権限をpass-throughする設計が説明された。後者はinternal-onlyの事例であり、前者と同一製品ではない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        }
+      ]
+    },
+    {
+      "block_id": "openai-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "社内data agentの設計は、組織内のデータ・権限・知識をどうAgentへ渡すかという具体例として重要だが、その運用経験を一般的なAgent architectureの優位性やbenchmarkへ拡張することはできない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2"
+        }
+      ]
+    },
+    {
+      "block_id": "anthropic-control",
+      "block_type": "PARAGRAPH",
+      "text": "Anthropicでは1月12日にCoworkがresearch previewとしてdesktop workflowへAgent機能を持ち込み、1月22日にはClaudeの新constitutionが公開された。前者は実行surfaceの拡張、後者はtrainingとbehaviorを方向付ける規範層であり、同じ『Agent化』でも役割が異なる。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:item-official-index-anthropic-news-afddcb8068",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:item-official-index-anthropic-news-afddcb8068",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2"
+        }
+      ]
+    },
+    {
+      "block_id": "anthropic-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "Coworkは発表時点でresearch previewだった。後日の提供範囲を1月へ逆投影しない。またconstitutionは意図されたbehaviorとtraining guidanceを示すもので、個々の出力が常にその理想どおりになることまで保証する資料ではない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:item-official-index-anthropic-news-afddcb8068",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:item-official-index-anthropic-news-afddcb8068",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2"
+        }
+      ]
+    },
+    {
+      "block_id": "gemini-computer-use",
+      "block_type": "PARAGRAPH",
+      "text": "GoogleのGemini API changelogでは1月29日、gemini-3-pro-previewとgemini-3-flash-previewにComputer Use tool supportが記録された。ここでの一次事実は、preview model identifierに対してAPI上のaction surfaceが追加されたことだ。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:item-official-index-google-gemini-api-re-d5b8ea25b2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "gemini-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "Computer Useはpreview model identifierとその時点のlifecycleに結び付く。changelogはavailabilityを固定する資料であって、computer-use behaviorの品質や安全性を独立に検証するものではない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:item-official-index-google-gemini-api-re-d5b8ea25b2",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:item-official-index-google-gemini-api-re-d5b8ea25b2",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2"
+        }
+      ]
+    },
+    {
+      "block_id": "mistral-vibe",
+      "block_type": "PARAGRAPH",
+      "text": "Mistralは1月27日にterminal-native coding agentのVibe 2.0を公開し、custom subagents、multi-choice clarifications、slash-command skills、unified agent modesなどを加えた。単にcodeを返すCLIではなく、subagentとskill、確認ループを持つharnessへ機能が広がっている。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:item-official-index-mistral-news-e5054b4c4c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:item-official-index-mistral-news-e5054b4c4c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2"
+        }
+      ]
+    },
+    {
+      "block_id": "mistral-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "Vibe 2.0の生産性やmodel qualityに関する評価はvendor側の説明であり、ここでは独立検証済み性能として扱わない。また基盤となるDevstral 2自体は1月より前から存在し、この月の出来事はmodel familyの新設ではなくagent/harness側の更新である。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:item-official-index-mistral-news-e5054b4c4c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:item-official-index-mistral-news-e5054b4c4c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2"
+        }
+      ]
+    },
+    {
+      "block_id": "stack-synthesis",
+      "block_type": "PARAGRAPH",
+      "text": "これらを横断すると、1月に共通して見えるのは『より強いmodel』という一本の軸ではない。harnessがcontextとtoolを編成し、desktopやterminal、computer useへaction surfaceが広がり、その外側にbehavior policyとhuman controlが置かれる。Agentを一つのmodelではなくexecution stackとして読む必要性が、複数の実装面から立ち上がった。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:item-official-index-anthropic-news-afddcb8068",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:item-official-index-google-gemini-api-re-d5b8ea25b2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M01:item-official-index-mistral-news-e5054b4c4c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "OpenAI Codex loopのuser/model/tools/history/context-window orchestration",
+      "block_ids": [
+        "openai-harness"
+      ]
+    },
+    {
+      "requirement": "in-house data agentのlayered context・memory・pass-through access controlとinternal-only境界",
+      "block_ids": [
+        "openai-harness",
+        "openai-boundary"
+      ]
+    },
+    {
+      "requirement": "Cowork research previewとClaude constitutionの役割差",
+      "block_ids": [
+        "anthropic-control",
+        "anthropic-boundary"
+      ]
+    },
+    {
+      "requirement": "Gemini Computer Useのpreview model identifier境界",
+      "block_ids": [
+        "gemini-computer-use",
+        "gemini-boundary"
+      ]
+    },
+    {
+      "requirement": "Vibe 2.0のsubagents・skills・clarification/control mechanisms",
+      "block_ids": [
+        "mistral-vibe"
+      ]
+    },
+    {
+      "requirement": "後日のavailabilityを1月時点へ逆投影しない",
+      "block_ids": [
+        "anthropic-boundary",
+        "gemini-boundary",
+        "mistral-boundary"
+      ]
+    }
+  ],
+  "boundary_coverage": [
+    {
+      "requirement": "The two sources describe different systems and should remain separately attributed even when used as one architecture cluster.",
+      "block_ids": [
+        "openai-harness"
+      ]
+    },
+    {
+      "requirement": "The in-house data-agent lessons are organizational case-study evidence and should not be generalized as a universal architecture benchmark.",
+      "block_ids": [
+        "openai-boundary"
+      ]
+    },
+    {
+      "requirement": "Cowork was a research preview, so announcement-time product boundaries must not be generalized to later availability.",
+      "block_ids": [
+        "anthropic-boundary"
+      ]
+    },
+    {
+      "requirement": "The constitution describes intended behavior and training guidance; actual model outputs may not always follow its ideals, as Anthropic itself notes.",
+      "block_ids": [
+        "anthropic-boundary"
+      ]
+    },
+    {
+      "requirement": "Computer Use support is tied to preview model identifiers and must preserve announcement-time preview/deprecation status.",
+      "block_ids": [
+        "gemini-boundary"
+      ]
+    },
+    {
+      "requirement": "The changelog establishes API availability, not independent quality or safety of computer-use behavior.",
+      "block_ids": [
+        "gemini-boundary"
+      ]
+    },
+    {
+      "requirement": "The announcement is vendor-authored; claims about productivity or model quality are not independently reproduced.",
+      "block_ids": [
+        "mistral-boundary"
+      ]
+    },
+    {
+      "requirement": "Devstral 2 itself predates January, so the month-level event is the Vibe 2.0 agent/harness update rather than a new underlying model family.",
+      "block_ids": [
+        "mistral-boundary"
+      ]
+    }
+  ],
+  "late_breaking_acknowledged": false
+}

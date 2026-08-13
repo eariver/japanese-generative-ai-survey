@@ -1,0 +1,21 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+
+DynaWebは、Agent actionから次のpage representationを予測するweb world modelを学習し、そのmodelをsynthetic environmentとしてmodel-based reinforcement learningのrolloutに使う。live web上で大量の試行を直接行う代わりに、環境そのものを学習対象へ取り込む設計だ。\autocite{src-85bc3e4f7b39}
+
+
+\begin{claimboundary}
+WebArenaとWebVoyagerでの改善はpaper authorsが報告したexperimental resultであり、本稿で再現したbenchmarkではない。またsimulated web world modelは、adversarialで動的なlive webと同じfailure modeを持つとは限らない。\autocite{src-85bc3e4f7b39}
+\end{claimboundary}
+
+SYNTHAGENTは別の方向から実環境依存を減らす。tool-use taskとmock tool environmentを合成し、private informationが不足する場面にはLLM user simulatorを置き、task-level rubric rewardを構成する。world modelで環境遷移を学ぶDynaWebに対し、こちらはtask・tool・user・rewardを人工的に組み上げる。\autocite{src-01d8ab4a2c6f}
+
+
+\begin{claimboundary}
+14のmath、search、tool-use datasetでのgainやsmall modelとlarger baselineの比較はauthor-reported resultである。synthetic environmentは安定した訓練を作れる一方、real APIの障害やadversarial conditionを過小表現する可能性がある。\autocite{src-01d8ab4a2c6f}
+\end{claimboundary}
+
+\begin{claimboundary}
+両paperとも現在のlocatorはJanuary後に更新されたv2であるため、本号のchronologyはoriginal January submissionに固定する。後日revisionの記述を1月時点の事実へ遡及させない。\autocite{src-01d8ab4a2c6f,src-85bc3e4f7b39}
+\end{claimboundary}
+
+二つの研究に共通するのは、Agent trainingをlive environmentへ全面依存させないことだ。ただしsimulationが現実を置き換えるわけではない。world modelとsynthetic toolsはいずれもcost・privacy・stabilityを扱う手段であり、最終的な課題はsimulated distributionと実世界の差をどう管理するかに残る。\autocite{src-01d8ab4a2c6f,src-85bc3e4f7b39}
