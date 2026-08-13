@@ -194,16 +194,16 @@ jobs:
                   'human_gate': True,
               },
               # Internal recovery after an already-approved Publication Preview.
-              # These workflows verify existing approval/provenance and do not
-              # create additional user interaction gates.
+              # Recovery workflows derive authority from the committed approval;
+              # they accept no new approval timestamp/reference.
               'accept-special-freeze-issue-only': {
                   'file': 'accept-special-freeze-issue-only.yml',
-                  'keys': {'special_slug', 'approved_at', 'approval_reference'},
+                  'keys': {'special_slug'},
                   'values': {},
               },
               'publish-special-frozen-release-issue-only': {
                   'file': 'publish-special-frozen-release-issue-only.yml',
-                  'keys': {'special_slug', 'approval_reference'},
+                  'keys': {'special_slug'},
                   'values': {},
               },
           }
