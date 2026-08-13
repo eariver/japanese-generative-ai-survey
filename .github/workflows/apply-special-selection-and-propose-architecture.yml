@@ -10,6 +10,7 @@ on:
         required: true
         type: string
       approval_reference:
+        description: Internal editorial/proposal reference; this is not a Human Gate approval
         required: true
         type: string
 
@@ -76,23 +77,62 @@ jobs:
           assert state['gates']['candidate_selection']=='pending'
           assert state['gates']['issue_architecture']=='pending'
           PY
-      - name: Apply approved Selection and generate proposed Architecture
+      - name: Bind Selection to internal editorial authority
+        id: internal_decision
+        shell: bash
+        env:
+          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+        run: |
+          set -euo pipefail
+          src="worktree/sources/${SPECIAL_ID}/editorial/selection-architecture-decision-v0.1.json"
+          dst="worktree/sources/${SPECIAL_ID}/editorial/.internal-selection-architecture-decision.json"
+          python - "$src" "$dst" <<'PY'
+          import datetime as dt,json,sys
+          src,dst=sys.argv[1:]
+          decision=json.load(open(src,encoding='utf-8'))
+          decision['approved_by']='special-editorial-pipeline'
+          decision['approved_at']=dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')
+          decision['approval_mode']='INTERNAL_EDITORIAL_CHECKPOINT_FOR_ARCHITECTURE_PROPOSAL'
+          with open(dst,'w',encoding='utf-8') as f:
+              json.dump(decision,f,ensure_ascii=False,indent=2); f.write('\n')
+          PY
+          echo "path=$dst" >> "$GITHUB_OUTPUT"
+      - name: Record Selection checkpoint and generate proposed Architecture
         shell: bash
         env:
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
           EVIDENCE_RUN_SHA: ${{ inputs.evidence_run_sha }}
           SPECIAL_MANIFEST: ${{ steps.edition.outputs.manifest }}
           APPROVAL_REFERENCE: ${{ inputs.approval_reference }}
+          INTERNAL_DECISION: ${{ steps.internal_decision.outputs.path }}
         run: |
           set -euo pipefail
           PYTHONPATH=control-src python control-src/scripts/apply_special_selection_and_propose_architecture.py \
             --repo-root worktree \
             --issue-id "$SPECIAL_ID" \
             --evidence-run-sha "$EVIDENCE_RUN_SHA" \
-            --decision "worktree/sources/${SPECIAL_ID}/editorial/selection-architecture-decision-v0.1.json" \
+            --decision "$INTERNAL_DECISION" \
             --special-manifest "$SPECIAL_MANIFEST" \
             --approval-reference "$APPROVAL_REFERENCE" \
             --audit-output selection-architecture-audit.json
+          rm -f "$INTERNAL_DECISION"
+      - name: Verify Selection is not attributed to a human approver
+        shell: bash
+        env:
+          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+        run: |
+          set -euo pipefail
+          python - "$SPECIAL_ID" <<'PY'
+          import json,sys,pathlib
+          issue=sys.argv[1]
+          selection=json.load(open(pathlib.Path('worktree')/'sources'/issue/'selection'/'candidate-selection-v0.1.json',encoding='utf-8'))
+          assert selection['status']=='APPROVED'
+          assert selection['approval']['approved_by']=='special-editorial-pipeline'
+          assert selection['approval']['approved_by']!='eariver'
+          state=json.load(open(pathlib.Path('worktree')/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
+          assert state['gates']['candidate_selection']=='passed'
+          assert state['gates']['issue_architecture']=='pending'
+          PY
       - name: Commit Selection and proposed Architecture
         working-directory: worktree
         shell: bash
@@ -105,7 +145,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add "sources/${SPECIAL_ID}/selection" "sources/${SPECIAL_ID}/architecture" "sources/${SPECIAL_ID}/pipeline-state.json"
           git diff --cached --quiet && exit 0
-          git commit -m "Approve Candidate Selection and propose Architecture for ${SPECIAL_ID}"
+          git commit -m "Record Candidate Selection and propose Architecture for ${SPECIAL_ID}"
           git push origin "HEAD:${WORK_BRANCH}"
       - name: Upload Selection/Architecture audit
         uses: actions/upload-artifact@v7
