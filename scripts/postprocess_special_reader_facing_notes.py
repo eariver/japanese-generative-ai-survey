@@ -36,6 +36,7 @@ EVENT_LABELS = {
     "FRAMEWORK_UPDATE": "Framework更新",
     "MODEL_RELEASE": "モデル公開",
     "MODEL_UPDATE": "モデル更新",
+    "MODEL_STUDIO_AVAILABILITY": "Model Studio提供開始",
     "OPEN_WEIGHT_RELEASE": "オープンウェイト公開",
     "PAPER_RELEASE": "論文公開",
     "PAPER_SUBMISSION": "論文投稿",
