@@ -73,16 +73,18 @@
   ],
   "architecture_proposal": {
     "architecture_version": "v0.1",
-    "editorial_thesis": "2026年1月は、生成AIの競争軸が『より強いモデル』だけでは説明できなくなり、AIを実際に仕事へ接続するharness・context・memory・computer/terminal use・tool execution・access control・serving runtimeが前景化した月だった。desktop/coding agentの実行面が広がる一方で、prompt injectionやdata exfiltrationへの防御、live webを避けたagent training、そして新モデルを即座に吸収するopen runtimeが同時進行し、agentを一つのモデルではなく技術スタックとして捉える必要性が明確になった。",
+    "editorial_thesis": "2026年1月は、生成AIの競争軸が『より強いモデル』だけでは説明できなくなり、AIを実際に仕事へ接続するharness・context・memory・computer/terminal use・tool execution・access control・serving runtimeが前景化し始めた月だった。desktop/coding agentの実行面が広がる一方で、prompt injectionやdata exfiltrationへの防御、live webを避けたagent training、そして新モデルを即座に吸収するopen runtimeが同時進行し、agentic engineeringが完成したというより、agentを一つのモデルではなくexecution stackとして捉えるための構成要素と責務分担が立ち上がった。",
     "architecture_goals": [
       "OpenAI、Anthropic、Google、Mistralのagent関連更新を製品比較ではなく、harness・context・action surface・human controlという共通アーキテクチャ軸で整理する。",
+      "1月をagentic engineeringの完成・収束とは表現せず、責務がbase modelからharness・context・tool/runtime・securityへ分散し始めたexecution stackの立ち上がりとして位置付け、2月のagentic engineeringへの収束と役割を分ける。",
       "agent autonomyの拡大とsecurity boundaryを同じ物語として扱い、prompt injectionとURL data exfiltrationを単なる脆弱性一覧ではなく設計制約として説明する。",
       "DynaWebとSYNTHAGENTを、live environment依存を下げながらtool-using agentを訓練する2つの異なるアプローチとして比較する。",
       "Qwen3-Max、GLM-4.7-Flash/GLM-Imageをモデルランキングにせず、tool-native reasoning・lightweight/open deployment・multimodal integrationの文脈で位置付ける。",
       "Transformers v5、vLLM、SGLangを、新モデルやagent APIが共通実装・serving層へ吸収される速度を示すsystems evidenceとして統合する。",
       "benchmark、速度、memory、attack/defense率などの数値はvendor/project/author claimとして明示し、release・API・architectureの一次資料factと分離する。",
       "arXivのbounded collection、GitHub release depth、living official index、community research無効というSource Intake制約を完全性主張へ持ち込まない。",
-      "単巻32ページ目標、最大40ページを維持し、13 Candidateを13本の記事へ分割せず5つの技術パッケージへ再クラスタリングする。"
+      "M02〜M07との連続性は1月のCandidate Selectionや事実認定の根拠には使用せず、本文末総括で、1月に立ち上がったagent execution・security/control・agent training・tool-native model/API・serving/runtimeの論点が後続Specialへどう接続するかをreader-facingな見取り図として示す。後続月の個別事実を1月へ遡及させない。",
+      "本文の最後に独立した総括packageを置き、各章の横断的含意、1月という月の位置付け、後続Specialへの接続点をまとめる。単巻32ページ目標、最大40ページを維持し、13 Candidateを5つの技術パッケージへ再クラスタリングした上で、総括2ページを加えplanned 34ページとする。"
     ],
     "cover_anchor_candidates": [
       "agent-stack-leaves-chat",
@@ -206,6 +208,27 @@
           "vLLM v0.15.0のKimi-K2.5 architecture supportはdownstream uptake evidenceとして扱う",
           "SGLang v0.5.8のGLM-4.7-Flash・diffusion・long-context support",
           "runtime speedup/TTFT/memory数値はproject claimとして扱う"
+        ]
+      },
+      {
+        "package_id": "closing-synthesis",
+        "title": "総括 — 1月に立ち上がったAgent Execution Stack",
+        "package_type": "SECTION",
+        "primary_evidence_task_ids": [],
+        "supporting_evidence_task_ids": [
+          "evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76",
+          "evidence:SP-2026-M01:duplicate-hint-openai-agent-security-jan-e3b7cdc137",
+          "evidence:SP-2026-M01:item-arxiv-2601-22149v2-316b4642be",
+          "evidence:SP-2026-M01:item-official-index-alibaba-model-studio-154c528d30",
+          "evidence:SP-2026-M01:series-vllm-january-91cad48301"
+        ],
+        "page_target": 2,
+        "editorial_angle": "本文最後の総括として、個別発表を再列挙するのではなく、1月にbase modelからharness/context/action surface、security/control、agent training、tool-native model/API、serving/runtimeへ責務が分散し始めたことを束ねる。2月以降への接続は後続月の具体的な出来事を1月へ遡及させず、『1月にどの技術課題と構成要素が立ち上がったか』というreader-facingな継続線として示す。",
+        "must_cover": [
+          "1月全体を『agentic engineeringの完成』ではなく『agent execution stackの立ち上がり』として総括する",
+          "harness/context/tool execution・security/control・training environment・tool-native model/API・serving/runtimeを後続Specialへ接続する観察軸として示す",
+          "2月〜7月の個別イベント、性能値、提供状況を1月の事実認定へ遡及させない",
+          "本文の最終メッセージとして、1月に確認できた変化とliving index・later revision等に残る未確定境界を分けて示す"
         ]
       },
       {
