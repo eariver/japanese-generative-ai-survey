@@ -1,0 +1,24 @@
+\sectionkicker{Theme synthesis}
+\subsection*{横断比較 — Tool-Native化はmodel、API、runtimeのどこで起きたか}
+\addcontentsline{toc}{subsection}{横断比較 — Tool-Native化はmodel、API、runtimeのどこで起きたか}
+Qwen、GLM、SGLangを同じmodel比較へ押し込むのではなく、tool-enabled API、model release、runtime uptakeという層に分けると、1月にstackの上下が同時に変わったことが見える。
+\medskip
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}X@{}}
+\toprule
+観察軸 & 7月の一次資料・論文から読めること \\
+\midrule
+tool-enabled API & Qwen3-MaxのJanuary Model Studio更新ではthinking/non-thinking modeとともにweb search、web extraction、code interpreterが組み込まれた。tool useが外付けharnessだけでなくmanaged model/API surfaceにも入る。 \cite{src-eac8dfbeb78c} \\
+model lineの分離 & Z.aiの1月更新ではGLM-ImageとGLM-4.7-Flashが別々のreleaseとして現れる。multimodal generationとlightweight language modelを単一architectureとして語らず、release単位を保つ必要がある。 \cite{src-9156c37fb1c2} \\
+availability / lifecycle & Qwen3-Maxのavailabilityはregionとdated entryに依存し、living lifecycle pageの現在値を1月へ逆投影できない。managed modelの採用ではmodel名だけでなくregionと時点を固定する必要がある。 \cite{src-eac8dfbeb78c} \\
+runtime uptake & SGLang v0.5.8はGLM-4.7-Flashのday-zero supportを含むmodel/runtime更新をまとめた。これはimplementation availabilityのEvidenceであり、同等品質やproduction validationまでを意味しない。 \cite{src-9156c37fb1c2,src-6a97353d35a9} \\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\end{center}
+\normalsize
+\begin{claimboundary}[この比較の境界]
+この表は本号で既に検証・参照している一次資料と論文を横断比較の形へ再配置したものである。vendor / project / author が報告した性能値や優位性は独立再現済みの一般則へ変換せず、本文とSource Notesの帰属境界をそのまま維持する。
+\end{claimboundary}

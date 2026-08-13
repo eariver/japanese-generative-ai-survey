@@ -1,0 +1,24 @@
+\sectionkicker{Theme synthesis}
+\subsection*{横断比較 — Agent Execution Stackはどこへ責務を移したか}
+\addcontentsline{toc}{subsection}{横断比較 — Agent Execution Stackはどこへ責務を移したか}
+1月のagent関連更新を同じ製品カテゴリとして並べるより、base modelの外側へ移った責務で分解すると変化が見えやすい。harness、context、action surface、human controlは別々の実装面で拡張されていた。
+\medskip
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}X@{}}
+\toprule
+観察軸 & 7月の一次資料・論文から読めること \\
+\midrule
+harness / orchestration & OpenAIのCodex loopではuser、model、tools、history、context-window managementをharnessが編成し、社内data agentではmetadata、annotations、institutional knowledge、memory、runtime contextを層として扱った。両者は別システムであり、同一製品として統合しない。 \cite{src-fa5410010e0a,src-ae10eb4597fe} \\
+desktop / behavior boundary & AnthropicではCoworkのresearch previewがdesktop workflowへ実行面を広げる一方、Claude constitutionはtrainingとbehaviorを方向付ける規範層として公開された。実行surfaceとbehavior guidanceは役割が異なる。 \cite{src-f6aa679babd7} \\
+computer action surface & Gemini APIではpreview model identifierにComputer Use supportが追加され、model responseの生成だけでなく外部actionを扱うAPI surfaceが明示された。availabilityの一次事実と品質・安全性の評価は分離する必要がある。 \cite{src-a24fd97eb3d0} \\
+terminal / control loop & Mistral Vibe 2.0はterminal-native coding agentへcustom subagents、clarifications、slash-command skills、unified modesを加えた。1月の出来事は基盤model familyの新設ではなくagent/harness側のcontrol surface拡張である。 \cite{src-d8b7c1c36830} \\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\end{center}
+\normalsize
+\begin{claimboundary}[この比較の境界]
+この表は本号で既に検証・参照している一次資料と論文を横断比較の形へ再配置したものである。vendor / project / author が報告した性能値や優位性は独立再現済みの一般則へ変換せず、本文とSource Notesの帰属境界をそのまま維持する。
+\end{claimboundary}
