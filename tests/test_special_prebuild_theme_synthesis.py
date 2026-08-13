@@ -2,10 +2,15 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from scripts import revise_special_mixed_layout as revision
 from scripts.run_revise_special_mixed_layout import inject_synthesis_into_current_layout
 
 
 class SpecialPrebuildThemeSynthesisTests(unittest.TestCase):
+    def test_lead_and_comparison_are_article_synthesis_types(self):
+        self.assertIn("LEAD", revision.ARTICLE_TYPES)
+        self.assertIn("COMPARISON", revision.ARTICLE_TYPES)
+
     def test_inserts_full_width_synthesis_without_changing_local_multicols(self):
         with tempfile.TemporaryDirectory() as tmp:
             main = Path(tmp) / "main.tex"
