@@ -49,16 +49,18 @@ class SpecialVisualReviewRepairTests(unittest.TestCase):
             self.assertIn("urldate = {2026-08-12}", text)
             self.assertNotIn("Primary source 1:", text)
 
-    def test_article_split_keeps_heading_full_width_and_synthesis_wide(self):
+    def test_article_split_keeps_heading_and_standfirst_full_width_and_synthesis_wide(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
             source = root / "article.tex"
+            standfirst = root / "standfirst.tex"
             body = root / "body.tex"
             wide = root / "wide.tex"
             source.write_text(
                 "\\section{Heading}\n"
                 "\\label{pkg:x}\n"
                 "\\noindent\\textbf{Lead}\n"
+                "\n"
                 "\\subsection{Narrative}\n"
                 "Body.\n"
                 "\\subsection{Theme Synthesis — Wide}\n"
@@ -68,9 +70,12 @@ class SpecialVisualReviewRepairTests(unittest.TestCase):
                 "\\end{claimboundary}\n",
                 encoding="utf-8",
             )
-            info = split_article(source, body, wide)
+            info = split_article(source, standfirst, body, wide)
             self.assertEqual(info["section_line"], "\\section{Heading}")
             self.assertEqual(info["label_line"], "\\label{pkg:x}")
+            self.assertTrue(info["standfirst_present"])
+            self.assertIn("\\noindent\\textbf{Lead}", standfirst.read_text(encoding="utf-8"))
+            self.assertNotIn("\\noindent\\textbf{Lead}", body.read_text(encoding="utf-8"))
             self.assertIn("\\subsection{Narrative}", body.read_text(encoding="utf-8"))
             self.assertNotIn("Theme Synthesis", body.read_text(encoding="utf-8"))
             self.assertIn("Theme Synthesis", wide.read_text(encoding="utf-8"))

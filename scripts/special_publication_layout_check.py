@@ -8,6 +8,11 @@ import json
 from pathlib import Path
 from typing import Any
 
+from scripts.special_layout_text_normalization import (
+    first_substantive_line,
+    manual_item_marker_findings,
+)
+
 
 def load_json(path: Path) -> dict[str, Any]:
     value = json.loads(path.read_text(encoding="utf-8"))
@@ -73,6 +78,25 @@ def inspect_layout(
     ):
         errors.append("frontmatter must remain full-width before narrative multicols")
 
+    standfirst_inputs: list[str] = []
+    for article in articles:
+        if not article.get("layout_standfirst_present"):
+            continue
+        standfirst = str(article.get("layout_standfirst_path") or "")
+        body = str(article.get("layout_body_path") or "")
+        if not standfirst:
+            errors.append(f"{article.get('package_id')}: standfirst marked present without path")
+            continue
+        standfirst_input = r"\input{" + Path(standfirst).with_suffix("").as_posix() + "}"
+        standfirst_inputs.append(standfirst_input)
+        if standfirst_input not in main_text:
+            errors.append(f"{article.get('package_id')}: full-width standfirst input missing")
+            continue
+        if body:
+            body_input = r"\input{" + Path(body).with_suffix("").as_posix() + "}"
+            if body_input in main_text and main_text.find(standfirst_input) > main_text.find(body_input):
+                errors.append(f"{article.get('package_id')}: standfirst must precede narrative body")
+
     depth = 0
     for line in main_text.splitlines():
         if r"\begin{multicols}{2}" in line:
@@ -83,6 +107,8 @@ def inspect_layout(
             and depth != 0
         ):
             errors.append("Technical Notes input is nested inside narrative multicols")
+        if depth != 0 and any(token in line for token in standfirst_inputs):
+            errors.append("standfirst input is nested inside narrative multicols")
         if r"\end{multicols}" in line:
             depth -= 1
         if depth < 0:
@@ -90,6 +116,44 @@ def inspect_layout(
             depth = 0
     if depth != 0:
         errors.append("unbalanced multicols environment")
+    return errors
+
+
+def inspect_derived_layout_files(manifest: dict[str, Any], source_dir: Path) -> list[str]:
+    errors: list[str] = []
+    for article in manifest.get("articles") or []:
+        if not isinstance(article, dict):
+            continue
+        package_id = str(article.get("package_id") or "<unknown>")
+        standfirst_rel = str(article.get("layout_standfirst_path") or "")
+        if article.get("layout_standfirst_present"):
+            standfirst_path = source_dir / standfirst_rel
+            if not standfirst_rel or not standfirst_path.is_file():
+                errors.append(f"{package_id}: declared standfirst file missing")
+            else:
+                expected = str(article.get("layout_standfirst_sha256") or "")
+                if expected and sha(standfirst_path) != expected:
+                    errors.append(f"{package_id}: standfirst digest mismatch")
+                first = first_substantive_line(standfirst_path.read_text(encoding="utf-8"))
+                if not first.startswith(r"\noindent\textbf{"):
+                    errors.append(f"{package_id}: full-width standfirst is not the generated bold lead")
+
+        for key in ("layout_body_path", "layout_wide_path"):
+            rel = str(article.get(key) or "")
+            if not rel:
+                continue
+            path = source_dir / rel
+            if not path.is_file():
+                errors.append(f"{package_id}: derived layout file missing: {rel}")
+                continue
+            text = path.read_text(encoding="utf-8")
+            if key == "layout_body_path" and first_substantive_line(text).startswith(r"\noindent\textbf{"):
+                errors.append(f"{package_id}: standfirst leaked into two-column narrative body")
+            findings = manual_item_marker_findings(text)
+            if findings:
+                errors.append(
+                    f"{package_id}: manual bullet marker remains inside LaTeX item(s): {findings}"
+                )
     return errors
 
 
@@ -119,6 +183,7 @@ def check(repo_root: Path, issue_id: str) -> dict[str, Any]:
         main_path.read_text(encoding="utf-8"),
         architecture,
     )
+    errors.extend(inspect_derived_layout_files(manifest, manifest_path.parent))
     return {
         "schema_version": "1.0",
         "issue_id": issue_id,

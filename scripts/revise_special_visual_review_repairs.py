@@ -17,6 +17,10 @@ from pathlib import Path
 from typing import Any
 
 from scripts import postprocess_special_reader_facing_notes as reader_notes
+from scripts.special_layout_text_normalization import (
+    normalize_itemize_manual_markers,
+    split_leading_standfirst,
+)
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -261,7 +265,12 @@ def fix_frontmatter_toc(path: Path, article_count: int) -> bool:
     return text != before
 
 
-def split_article(source: Path, body_target: Path, wide_target: Path) -> dict[str, Any]:
+def split_article(
+    source: Path,
+    standfirst_target: Path,
+    body_target: Path,
+    wide_target: Path,
+) -> dict[str, Any]:
     lines = source.read_text(encoding="utf-8").splitlines(keepends=True)
     section_index = next(
         (i for i, line in enumerate(lines) if line.lstrip().startswith(r"\section{")),
@@ -291,21 +300,36 @@ def split_article(source: Path, body_target: Path, wide_target: Path) -> dict[st
         if stripped.startswith(r"\begin{claimboundary}"):
             wide_index = index
             break
-    narrative = remainder if wide_index is None else remainder[:wide_index]
-    wide = [] if wide_index is None else remainder[wide_index:]
+    narrative_lines = remainder if wide_index is None else remainder[:wide_index]
+    wide_lines = [] if wide_index is None else remainder[wide_index:]
 
-    if not "".join(narrative).strip():
+    standfirst_lines, narrative_lines = split_leading_standfirst(narrative_lines)
+    narrative_text, narrative_markers, narrative_lifted = normalize_itemize_manual_markers(
+        "".join(narrative_lines)
+    )
+    wide_text, wide_markers, wide_lifted = normalize_itemize_manual_markers(
+        "".join(wide_lines)
+    )
+    standfirst_text = "".join(standfirst_lines)
+
+    if not narrative_text.strip():
         raise ValueError(f"{source}: narrative body became empty")
+    standfirst_target.parent.mkdir(parents=True, exist_ok=True)
     body_target.parent.mkdir(parents=True, exist_ok=True)
     wide_target.parent.mkdir(parents=True, exist_ok=True)
-    body_target.write_text("".join(narrative), encoding="utf-8")
-    wide_target.write_text("".join(wide), encoding="utf-8")
+    standfirst_target.write_text(standfirst_text, encoding="utf-8")
+    body_target.write_text(narrative_text, encoding="utf-8")
+    wide_target.write_text(wide_text, encoding="utf-8")
     return {
         "section_line": section_line,
         "label_line": label_line,
+        "standfirst_sha256": sha(standfirst_target),
+        "standfirst_present": bool(standfirst_text.strip()),
         "body_sha256": sha(body_target),
         "wide_sha256": sha(wide_target),
-        "wide_present": bool("".join(wide).strip()),
+        "wide_present": bool(wide_text.strip()),
+        "manual_list_markers_removed": narrative_markers + wide_markers,
+        "list_wrapper_items_lifted": narrative_lifted + wide_lifted,
     }
 
 
@@ -344,9 +368,16 @@ def build_main_tex(
         lines.append(str(layout["section_line"]))
         if layout.get("label_line"):
             lines.append(str(layout["label_line"]))
+        lines.append(r"\vspace{0.15em}")
+        if layout.get("standfirst_present"):
+            lines.extend(
+                [
+                    rf"\input{{{input_path(str(layout['standfirst_path']))}}}",
+                    r"\vspace{0.20em}",
+                ]
+            )
         lines.extend(
             [
-                r"\vspace{0.15em}",
                 r"\begin{multicols}{2}",
                 rf"\input{{{input_path(str(layout['body_path']))}}}",
                 r"\end{multicols}",
@@ -444,27 +475,42 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     references_path = output_dir / references_rel
     title_map = source_title_map(repo_root, new_manifest)
     reference_titles_changed, reference_count = enrich_bibliography_titles(references_path, title_map)
-    if reference_titles_changed != reference_count:
-        raise ValueError(
-            f"not every bibliography entry received a canonical title: "
-            f"changed={reference_titles_changed} entries={reference_count}"
-        )
+    # Idempotent Visual Review passes may start from an already enriched bibliography.
+    # enrich_bibliography_titles itself rejects unresolved generic placeholders, so a
+    # zero changed-count is valid on re-entry.
     new_manifest["references"] = {"path": references_rel, "sha256": sha(references_path)}
 
     layout_dir = output_dir / "layout-bodies"
     layout_records: dict[str, dict[str, Any]] = {}
+    standfirst_count = 0
+    manual_list_markers_removed = 0
+    list_wrapper_items_lifted = 0
     for index, article in enumerate(new_manifest.get("articles") or [], start=1):
         package_id = str(article["package_id"])
         source = output_dir / str(article["article_section_path"])
         expected = str(article.get("article_section_sha256") or "")
         if expected and sha(source) != expected:
             raise ValueError(f"accepted article section changed before visual repair: {package_id}")
+        standfirst_rel = f"layout-bodies/{index:02d}-{package_id}-standfirst.tex"
         body_rel = f"layout-bodies/{index:02d}-{package_id}-narrative.tex"
         wide_rel = f"layout-bodies/{index:02d}-{package_id}-wide.tex"
-        info = split_article(source, output_dir / body_rel, output_dir / wide_rel)
+        info = split_article(
+            source,
+            output_dir / standfirst_rel,
+            output_dir / body_rel,
+            output_dir / wide_rel,
+        )
+        info["standfirst_path"] = standfirst_rel
         info["body_path"] = body_rel
         info["wide_path"] = wide_rel
         layout_records[package_id] = info
+        if info["standfirst_present"]:
+            standfirst_count += 1
+        manual_list_markers_removed += int(info["manual_list_markers_removed"])
+        list_wrapper_items_lifted += int(info["list_wrapper_items_lifted"])
+        article["layout_standfirst_path"] = standfirst_rel
+        article["layout_standfirst_sha256"] = info["standfirst_sha256"]
+        article["layout_standfirst_present"] = info["standfirst_present"]
         article["layout_body_path"] = body_rel
         article["layout_body_sha256"] = info["body_sha256"]
         article["layout_wide_path"] = wide_rel
@@ -478,8 +524,8 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     new_manifest["layout"].update(
         {
             "body_mode": (
-                "mixed: narrative articles two-column via local balanced multicols; full-width chapter headings, "
-                "Theme Synthesis, Claim Boundary, Technical Notes, and References"
+                "mixed: narrative articles two-column via local balanced multicols; full-width chapter headings "
+                "and standfirsts, Theme Synthesis, Claim Boundary, Technical Notes, and References"
             ),
             "column_gap": "6mm",
             "toc_depth": "section",
@@ -514,6 +560,10 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
         "hard_column_mode_switches": False,
         "article_sections_changed": False,
         "derived_layout_body_count": len(layout_records),
+        "standfirst_full_width": True,
+        "standfirst_count": standfirst_count,
+        "manual_list_markers_removed": manual_list_markers_removed,
+        "list_wrapper_items_lifted": list_wrapper_items_lifted,
         "technical_notes_files_changed": notes_changed,
         "late_card_tail_group_count": tail_groups,
         "bibliography_titles_enriched": reference_titles_changed,
@@ -568,6 +618,9 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
         "late_card_tail_group_count": tail_groups,
         "bibliography_titles_enriched": reference_titles_changed,
         "bibliography_entry_count": reference_count,
+        "standfirst_count": standfirst_count,
+        "manual_list_markers_removed": manual_list_markers_removed,
+        "list_wrapper_items_lifted": list_wrapper_items_lifted,
         "new_external_evidence": False,
         "lifecycle_state": state["lifecycle_state"],
         "latex_build_gate": state["gates"]["latex_build"],

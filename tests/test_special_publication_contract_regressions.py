@@ -1,12 +1,22 @@
 from __future__ import annotations
 
+import tempfile
 import unittest
+from pathlib import Path
 
 from scripts.postprocess_special_reader_facing_notes import (
     reader_taxonomy_findings,
     transform_note,
 )
-from scripts.special_publication_layout_check import inspect_layout
+from scripts.special_layout_text_normalization import (
+    manual_item_marker_findings,
+    normalize_itemize_manual_markers,
+    split_leading_standfirst,
+)
+from scripts.special_publication_layout_check import (
+    inspect_derived_layout_files,
+    inspect_layout,
+)
 
 
 class SpecialPublicationContractRegressionTests(unittest.TestCase):
@@ -77,6 +87,88 @@ class SpecialPublicationContractRegressionTests(unittest.TestCase):
             inspect_layout(manifest, main, {"status": "APPROVED"}),
             [],
         )
+
+
+    def test_standfirst_and_manual_list_normalization(self):
+        lines = [
+            "% generated\n",
+            r"\noindent\textbf{Lead sentence.}\autocite{x}" + "\n",
+            "\n",
+            "Narrative body.\n",
+        ]
+        standfirst, body = split_leading_standfirst(lines)
+        self.assertIn(r"\noindent\textbf{Lead sentence.}", "".join(standfirst))
+        self.assertEqual("".join(body), "Narrative body.\n")
+
+        source = (
+            r"\begin{itemize}" + "\n"
+            r"  \item Lead sentence." + "\n"
+            r"  \item ・agent execution: a" + "\n"
+            r"  \item ・serving/runtime: b" + "\n"
+            r"  \item ・safety/control: c" + "\n"
+            r"  \item ・multimodal interaction: d" + "\n"
+            r"  \item ・specialized reasoning: e" + "\n"
+            r"  \item Trailing explanation." + "\n"
+            r"\end{itemize}" + "\n"
+        )
+        normalized, removed, lifted = normalize_itemize_manual_markers(source)
+        self.assertEqual(removed, 5)
+        self.assertEqual(lifted, 2)
+        self.assertEqual(manual_item_marker_findings(normalized), [])
+        self.assertTrue(normalized.startswith("Lead sentence.\n\n"))
+        self.assertIn(r"\item agent execution: a", normalized)
+        self.assertIn("\\end{itemize}\n\nTrailing explanation.", normalized)
+
+    def test_derived_layout_rejects_standfirst_and_manual_bullet_leaks(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            body = root / "layout-bodies/a-narrative.tex"
+            body.parent.mkdir(parents=True)
+            body.write_text(
+                "% generated\n"
+                r"\noindent\textbf{Lead still in columns.}" + "\n"
+                r"\begin{itemize}" + "\n"
+                r"\item ・duplicated bullet" + "\n"
+                r"\end{itemize}" + "\n",
+                encoding="utf-8",
+            )
+            manifest = {
+                "articles": [
+                    {
+                        "package_id": "a",
+                        "layout_body_path": "layout-bodies/a-narrative.tex",
+                    }
+                ]
+            }
+            errors = inspect_derived_layout_files(manifest, root)
+            self.assertTrue(any("standfirst leaked" in error for error in errors))
+            self.assertTrue(any("manual bullet marker" in error for error in errors))
+
+    def test_full_width_standfirst_contract_passes(self):
+        manifest = {
+            "layout": {
+                "body_mode": "mixed: narrative articles two-column via local balanced multicols"
+            },
+            "frontmatter": {"path": "sections/00-frontmatter.tex"},
+            "articles": [
+                {
+                    "package_id": "a",
+                    "layout_standfirst_present": True,
+                    "layout_standfirst_path": "layout-bodies/a-standfirst.tex",
+                    "layout_body_path": "layout-bodies/a-narrative.tex",
+                }
+            ],
+        }
+        main = (
+            "\\input{sections/00-frontmatter}\n"
+            "\\section{A}\n"
+            "\\input{layout-bodies/a-standfirst}\n"
+            "\\begin{multicols}{2}\n"
+            "\\input{layout-bodies/a-narrative}\n"
+            "\\end{multicols}\n"
+            "\\input{technical-notes/a-notes}\n"
+        )
+        self.assertEqual(inspect_layout(manifest, main, {"status": "APPROVED"}), [])
 
     def test_single_column_regression_is_rejected(self):
         manifest = {
