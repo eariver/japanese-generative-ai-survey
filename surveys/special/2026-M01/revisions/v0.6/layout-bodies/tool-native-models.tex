@@ -1,0 +1,24 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+
+Alibaba Cloud Model Studioはqwen3-max-2026-01-23を1月27日にinternational availabilityとして記録し、thinking/non-thinking modeの統合と、thinking中のweb search、web extraction、code interpreter利用を説明している。tool useが外付けharnessだけでなくmodel/APIの提供仕様へ入り込んだ例として読める。\autocite{src-eac8dfbeb78c}
+
+
+\begin{claimboundary}
+Model Studioのavailabilityはregionで日付が異なり得るため、本号ではinternationalのdated entryへscopeを限定する。またlifecycle pageはliving documentationなので、現在のdefault aliasではなく1月のdated entryをchronology anchorとする。比較性能に関するcatalogの表現はvendor-reportedである。\autocite{src-eac8dfbeb78c}
+\end{claimboundary}
+
+Z.aiでは1月14日にGLM-Image、1月19日にGLM-4.7-Flashがrelease notesへ記録された。GLM-Imageはsemantic understandingとdiffusion-based decodingを組み合わせるimage generation系、GLM-4.7-Flashはcoding・reasoning・generative task向けのlightweight variantとして説明されており、同じJanuary lineでも一つのarchitectureとしてまとめるべきではない。\autocite{src-9156c37fb1c2}
+
+
+\begin{claimboundary}
+quality、latency、throughputやbest-in-classといった比較表現はZ.aiのvendor claimであり、release chronologyやmodel identityと同じ確度で独立検証済み性能へ昇格させない。\autocite{src-9156c37fb1c2}
+\end{claimboundary}
+
+SGLang v0.5.8はGLM-4.7-Flashのday-zero supportに加え、diffusion serving、FlashAttention 4 decoding、long-context / disaggregated-servingの変更を含んだ。ここで重要なのはmodel qualityではなく、新しいmodel familyやworkloadが同じ月にopen runtimeへ吸収されたというimplementation uptakeである。\autocite{src-6a97353d35a9}
+
+
+\begin{claimboundary}
+SGLangのreleaseは多数のupstream PRと異なるmodel/hardware上のperformance claimを集約している。supportされたことはimplementation availabilityの証拠だが、すべてのmodelで同等の品質・性能・production validationが得られたことを意味しない。\autocite{src-6a97353d35a9}
+\end{claimboundary}
+
+1月の変化は『Agent側がtoolを呼ぶ』だけではない。model/API自身がretrievalやcode executionを前提にし、image generationなど異なるmodalityが並行し、runtimeがそれらをすぐ実装へ取り込む。tool-native化はmodel、API、servingをまたぐstack-levelの変化として現れ始めた。\autocite{src-6a97353d35a9,src-9156c37fb1c2,src-eac8dfbeb78c}
