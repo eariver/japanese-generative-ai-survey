@@ -7,10 +7,11 @@ import unittest
 from pathlib import Path
 
 from scripts import special_period_consistency as period
+from scripts import special_period_consistency_retrospective as retrospective_period
 
 
 def dump(path: Path, value: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+    path.parent.mkdir(parents=True)
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
@@ -100,6 +101,28 @@ class SpecialPeriodConsistencyTests(unittest.TestCase):
         )
         self.assertEqual(value["year_month"], "2026-11")
         self.assertEqual(value["ja"], "2026年11月")
+
+    def test_retrospective_wrapper_preserves_monthly_display_label(self) -> None:
+        value = retrospective_period.derive_period(
+            {
+                "display_label": "2026年6月 Retrospective",
+                "coverage": {"start": "2026-06-01T00:00:00Z", "end": "2026-06-30T23:59:59Z"},
+            }
+        )
+        self.assertEqual(value["label"], "2026年6月")
+        self.assertEqual(value["year_month"], "2026-06")
+
+    def test_retrospective_wrapper_accepts_half_year_display_label(self) -> None:
+        value = retrospective_period.derive_period(
+            {
+                "display_label": "2025年後期 Retrospective",
+                "coverage": {"start": "2025-07-01T00:00:00Z", "end": "2025-12-31T23:59:59Z"},
+            }
+        )
+        self.assertEqual(value["label"], "2025年後期")
+        self.assertEqual(value["start_date"], "2025-07-01")
+        self.assertEqual(value["end_date"], "2025-12-31")
+        self.assertNotIn("year_month", value)
 
 
 if __name__ == "__main__":
