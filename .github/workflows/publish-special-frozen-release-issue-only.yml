@@ -6,9 +6,6 @@ on:
       special_slug:
         required: true
         type: string
-      approval_reference:
-        required: true
-        type: string
 
 permissions:
   contents: write
@@ -50,8 +47,18 @@ jobs:
           assert 'revision' not in manifest
           assert manifest['release_tag']==f'special/{slug}'
           assert freeze['status']=='FROZEN' and freeze['release_identity_mode']=='ISSUE_ONLY'
+          assert freeze['release_authority']=='PUBLICATION_PREVIEW_APPROVAL'
           assert manifest['public_release_authorized'] is True
-          assert manifest['release_authorization']['mode']=='FREEZE_APPROVAL'
+          authorization=manifest['release_authorization']
+          assert authorization['mode']=='PUBLICATION_PREVIEW_APPROVAL'
+          approval_path=root/authorization['approval_path']
+          assert hashlib.sha256(approval_path.read_bytes()).hexdigest()==authorization['approval_sha256']
+          approval=json.load(open(approval_path,encoding='utf-8'))
+          assert approval['status']=='APPROVED'
+          assert approval['approval_mode']=='PUBLICATION_PREVIEW_APPROVAL'
+          assert approval['approved_at']==authorization['authorized_at']
+          assert approval['approval_reference']==authorization['approval_reference']
+          assert approval['authorizes']==['visual_review','freeze','work_pr_merge','public_release']
           source_path=root/manifest['source_manifest_path']
           assert hashlib.sha256(source_path.read_bytes()).hexdigest()==manifest['source_manifest_sha256']
           assert manifest['expected_pdf_sha256']==freeze['canonical_pdf']['sha256']
@@ -71,6 +78,7 @@ jobs:
             'source_version':manifest['source_version'],
             'survey_root':manifest['survey_root'],
             'release_manifest_path':str(manifest_path),
+            'approval_reference':authorization['approval_reference'],
           }
           pathlib.Path('release-input.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:
@@ -103,7 +111,6 @@ jobs:
       - name: Build release metadata and canonical-source notes
         shell: bash
         env:
-          APPROVAL_REFERENCE: ${{ inputs.approval_reference }}
           RELEASE_INPUT: release-input.json
           REPOSITORY: ${{ github.repository }}
         run: |
@@ -118,6 +125,7 @@ jobs:
             'schema_version':'1.0',
             'issue_id':r['issue_id'],
             'release_identity_mode':'ISSUE_ONLY',
+            'release_authority':'PUBLICATION_PREVIEW_APPROVAL',
             'release_tag':r['tag'],
             'release_title':r['title'],
             'asset_name':r['asset_name'],
@@ -132,7 +140,7 @@ jobs:
             'pdf_artifact_digest':r['artifact_digest'],
             'release_anchor_commit':anchor,
             'published_at':dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds'),
-            'approval_reference':os.environ['APPROVAL_REFERENCE'],
+            'approval_reference':r['approval_reference'],
           }
           pathlib.Path('RELEASE_METADATA.json').write_text(json.dumps(meta,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           notes=(f"# {r['title']}\n\n"
@@ -142,7 +150,7 @@ jobs:
                  f"- Frozen source manifest SHA-256: `{r['source_manifest_sha256']}`\n"
                  f"- Canonical source: {source_url}\n"
                  f"- Release manifest: {manifest_url}\n\n"
-                 "PDFはVisual ReviewおよびFreezeで承認されたActions artifactを再取得し、SHA-256を再検証した同一バイト列です。\n")
+                 "PDFはPublication Previewで承認されたActions artifactをFreeze後に再取得し、SHA-256を再検証した同一バイト列です。\n")
           pathlib.Path('release-notes.md').write_text(notes,encoding='utf-8')
           PY
       - name: Publish GitHub Release
