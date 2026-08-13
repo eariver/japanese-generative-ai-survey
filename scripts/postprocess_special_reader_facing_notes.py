@@ -38,8 +38,10 @@ EVENT_LABELS = {
     "MODEL_UPDATE": "モデル更新",
     "OPEN_WEIGHT_RELEASE": "オープンウェイト公開",
     "PAPER_RELEASE": "論文公開",
+    "PAPER_SUBMISSION": "論文投稿",
     "RESEARCH_RELEASE": "研究公開",
     "SAFETY_EVENT": "安全性事象",
+    "SECURITY_ENGINEERING_NOTE": "セキュリティ技術解説",
     "API_RELEASE": "API公開",
     "API_UPDATE": "API更新",
     "API_INPUT_EXPANSION": "API入力拡張",
@@ -85,6 +87,7 @@ TYPE_LABELS = {
     "AGENT_UPDATE": "Agent更新",
     "OPEN_WEIGHT": "オープンウェイト",
     "SAFETY_EVENT": "安全性関連",
+    "SECURITY_EVENT": "セキュリティ関連",
     "FRAMEWORK": "Framework",
     "RESEARCH": "研究",
     "PAPER": "論文",
@@ -100,6 +103,7 @@ TYPE_LABELS = {
     "AGENT RELEASE": "Agent公開",
     "AGENT UPDATE": "Agent更新",
     "SAFETY EVENT": "安全性関連",
+    "SECURITY EVENT": "セキュリティ関連",
     "Agent_製品公開": "Agent製品公開",
     "研究_PREVIEW": "研究Preview",
     "REGIONAL_モデル公開": "地域別モデル公開",
@@ -186,6 +190,7 @@ def reader_taxonomy_findings(text: str) -> list[str]:
                 if _machine_taxonomy_label(value):
                     findings.add(value)
     return sorted(findings)
+
 
 def translate_machine_labels(text: str) -> str:
     # Event types are normally emitted inside parentheses. Translate those
