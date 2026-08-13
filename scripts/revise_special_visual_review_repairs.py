@@ -223,23 +223,9 @@ def normalize_technical_notes(
                 found_titles.add(title)
         revised = reader_notes.transform_note(original, selected_titles=selected_titles)
         revised, fallback_groups = group_limitation_source_tail(revised, selected_titles)
-        forbidden_fragments = (
-            "_RELEASE",
-            r"\_RELEASE",
-            "_UPDATE",
-            r"\_UPDATE",
-            "_PUBLICATION",
-            r"\_PUBLICATION",
-            "MEDIA_モデル",
-            r"MEDIA\_モデル",
-        )
-        leaks = [fragment for fragment in forbidden_fragments if fragment in revised]
-        if re.search(r"(?<![A-Za-z0-9])PRODUCT(?![A-Za-z0-9])", revised):
-            leaks.append("PRODUCT")
-        if re.search(r"(?<![A-Za-z0-9])OTHER(?![A-Za-z0-9])", revised):
-            leaks.append("OTHER")
-        if leaks:
-            raise ValueError(f"{rel}: raw/partial reader taxonomy leak: {sorted(set(leaks))}")
+        taxonomy_findings = reader_notes.reader_taxonomy_findings(revised)
+        if taxonomy_findings:
+            raise ValueError(f"{rel}: raw/partial reader taxonomy leak: {taxonomy_findings}")
         current_groups = revised.count(reader_notes.TAIL_GROUP_MARKER)
         grouped += current_groups + fallback_groups
         if revised != original:
@@ -503,7 +489,7 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
         }
     )
     reader = dict(new_manifest.get("reader_facing_technical_notes") or {})
-    reader["machine_enum_policy"] = "reader-facing-labels-v5"
+    reader["machine_enum_policy"] = "reader-facing-labels-v6-generic-taxonomy-guard"
     reader["late_card_tail_group_titles"] = sorted(selected_titles)
     reader["late_card_tail_group_scope"] = (
         "exact titles selected from Human Visual Review; only the coherent claim/limitation/source tail "
