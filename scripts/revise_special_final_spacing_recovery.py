@@ -70,8 +70,8 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
         raise ValueError("final spacing recovery must not change reader wording")
 
     vertical_margin_mm = float(changes.get("vertical_margin_mm", 27.0))
-    if not 22.0 <= vertical_margin_mm <= 30.0:
-        raise ValueError("vertical_margin_mm must remain within the conservative 22-30 mm range")
+    if not 22.0 <= vertical_margin_mm <= 32.0:
+        raise ValueError("vertical_margin_mm must remain within the conservative 22-32 mm range")
     ragged_specs = changes.get("ragged_paragraphs") or []
     if not isinstance(ragged_specs, list):
         raise ValueError("ragged_paragraphs must be an array")
