@@ -77,22 +77,68 @@ _TOKEN_LABELS = {
     "KIMI": "Kimi", "MINIMAX": "MiniMax", "HAILUO": "Hailuo", "MISTRAL": "Mistral",
     "DEVSTRAL": "Devstral", "VOXTRAL": "Voxtral", "CODESTRAL": "Codestral",
     "AUTOGLM": "AutoGLM", "GLM": "GLM", "SIMA": "SIMA", "GENIE": "Genie",
-    "VEO3": "VEO3", "IMAGEN4": "Imagen 4", "ROBOTICS": "Robotics", "ER": "ER",
+    "VEO3": "Veo 3", "IMAGEN4": "Imagen 4", "ROBOTICS": "Robotics", "ER": "ER",
     "GPT": "GPT", "OSS": "OSS", "API": "API", "AI": "AI", "MCP": "MCP",
     "MODEL": "モデル", "PRODUCT": "製品", "AGENT": "Agent", "SAFETY": "安全性",
     "RESEARCH": "Research", "RUNTIME": "Runtime", "LIBRARY": "Library",
-    "SYSTEM": "System", "CARD": "Card", "COMPUTER": "COMPUTER", "USE": "USE",
+    "SYSTEM": "System", "CARD": "Card", "COMPUTER": "Computer", "USE": "Use",
     "BATCH": "Batch", "MODE": "Mode", "FLASH": "Flash", "LITE": "Lite",
     "IMAGE": "Image", "DEEP": "Deep", "INTERACTIONS": "Interactions", "TOOLING": "ツール",
     "ARCHITECTURE": "アーキテクチャ", "SECURITY": "セキュリティ", "PHONE": "Phone",
     "MULTILINGUAL": "Multilingual", "NEXT": "Next", "MAX": "Max", "OMNI": "Omni",
     "THINKING": "Thinking", "STUDIO": "Studio", "EXP": "Exp", "TERMINUS": "Terminus",
-    "CODING": "Coding", "AND": "/",
+    "CODING": "Coding", "CODER": "Coder", "PRO": "Pro", "AND": "/",
 }
 
 _MACHINE_SCHEMA_TOKENS = {
     "ANNOUNCEMENT", "EVALUATION", "HARDENING", "INTEGRATION", "METHOD", "MULTIMODAL",
     "SAFETY", "STABLE", "TOOLING", "UPTAKE", "VIDEO", "AUDIO", "CROSS", "LAB",
+}
+
+# Reader-facing canonicalization for historical/derived labels that have already
+# lost their underscore form but still expose source-schema casing.  These are
+# display-only spellings; Evidence event_type values remain unchanged.
+_CANONICAL_DISPLAY_REPLACEMENTS = {
+    "Claude Sonnet 4 5": "Claude Sonnet 4.5",
+    "Claude Haiku 4 5": "Claude Haiku 4.5",
+    "Claude Opus 4 5": "Claude Opus 4.5",
+    "Batch MODE": "Batch Mode",
+    "VEO3 1": "Veo 3.1",
+    "VEO3": "Veo 3",
+    "Gemini 2.5 Flash LITE": "Gemini 2.5 Flash-Lite",
+    "IMAGEN4": "Imagen 4",
+    "Gemini 2.5 IMAGE": "Gemini 2.5 Image",
+    "Robotics ER 1 5": "Robotics-ER 1.5",
+    "COMPUTER USE": "Computer Use",
+    "Gemini 3 PRO": "Gemini 3 Pro",
+    "Gemini 3 FLASH": "Gemini 3 Flash",
+    "Interactions API / Deep 研究": "Interactions API / Deep Research",
+    "Qwen3 CODER": "Qwen3-Coder",
+    "Qwen3 NEXT": "Qwen3-Next",
+    "Qwen3 MAX": "Qwen3-Max",
+    "Qwen3 OMNI": "Qwen3-Omni",
+    "Qwen Image MAX": "Qwen Image Max",
+    "Kimi K2 THINKING": "Kimi K2 Thinking",
+    "DEVSTRAL": "Devstral",
+    "VOXTRAL": "Voxtral",
+    "Codestral 25 08": "Codestral 25.08",
+    "Le Chat Deep 研究": "Le Chat Deep Research",
+    "GLM 4 5": "GLM 4.5",
+    "GLM 4 6": "GLM 4.6",
+    "GLM 4 7": "GLM 4.7",
+    "V3.1 Terminus API": "V3.1-Terminus API",
+    "V3.2 Exp API": "V3.2-Exp API",
+    "Minimax M2 1": "MiniMax M2.1",
+    "Minimax M2": "MiniMax M2",
+    "Hailuo 2 3": "Hailuo 2.3",
+}
+
+# ALLCAPS in an event label is not automatically wrong: API, GPT, GLM, SIMA,
+# etc. are intentional acronyms.  Everything else with three or more alphabetic
+# capitals is suspicious in taxonomy fields after canonicalization.
+_INTENTIONAL_UPPER_ACRONYMS = {
+    "AI", "API", "ASR", "CLI", "CUDA", "ER", "GA", "GLM", "GPT", "HTTP",
+    "JSON", "LLM", "MCP", "OWL", "RFT", "SDK", "SIMA", "SQL", "SWE", "URL",
 }
 
 _READER_LABELS = (
@@ -108,6 +154,13 @@ def _strip_generic_event_suffix(value: str) -> str:
     if value.endswith("（技術イベント）"):
         value = value[: -len("（技術イベント）")].rstrip()
     return value
+
+
+def _canonicalize_known_names(value: str) -> str:
+    rendered = value
+    for old, new in sorted(_CANONICAL_DISPLAY_REPLACEMENTS.items(), key=lambda item: len(item[0]), reverse=True):
+        rendered = rendered.replace(old, new)
+    return rendered
 
 
 def _normalize_legacy_label(value: str) -> str:
@@ -131,11 +184,14 @@ def _humanize_subject(value: str) -> str:
     text = " ".join(rendered).replace(" / ", " / ")
     text = re.sub(r"(?<=\d) (?=\d(?:V|$|\s))", ".", text)
     text = re.sub(r"\bGPT (\d(?:\.\d)?)\b", r"GPT-\1", text)
-    return text.strip()
+    return _canonicalize_known_names(text.strip())
 
 
 def readable_taxonomy_label(value: str) -> str:
     original = _strip_generic_event_suffix(value.replace(r"\_", "_").strip())
+    canonical = _canonicalize_known_names(original)
+    if canonical != original:
+        return canonical
     if original in _READER_LABELS:
         return original
     if original in _LEGACY_H2_LABELS:
@@ -152,7 +208,7 @@ def readable_taxonomy_label(value: str) -> str:
     if normalized == "PRODUCT":
         return "製品"
     if not core._machine_taxonomy_label(normalized):
-        return _LEGACY_H2_LABELS.get(normalized, normalized)
+        return _canonicalize_known_names(_LEGACY_H2_LABELS.get(normalized, normalized))
     for suffix, label in _SUFFIX_LABELS:
         if normalized.endswith(suffix):
             subject = _humanize_subject(normalized[: -len(suffix)])
@@ -189,7 +245,14 @@ def translate_machine_labels_compat(text: str) -> str:
 
 
 def _machine_word_findings(label: str) -> set[str]:
-    return {token for token in re.findall(r"\b[A-Z][A-Z0-9]*\b", label) if token in _MACHINE_SCHEMA_TOKENS}
+    findings = {token for token in re.findall(r"\b[A-Z][A-Z0-9]*\b", label) if token in _MACHINE_SCHEMA_TOKENS}
+    for token in re.findall(r"\b[A-Z][A-Z0-9-]*\b", label):
+        head = token.split("-", 1)[0]
+        letters = "".join(ch for ch in head if ch.isalpha())
+        if len(letters) < 3 or head in _INTENTIONAL_UPPER_ACRONYMS:
+            continue
+        findings.add(token)
+    return findings
 
 
 def reader_taxonomy_findings(text: str) -> list[str]:
