@@ -132,6 +132,10 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     rtext=re.sub(r"\n{3,}","\n\n",rtext); refs.write_text(rtext,encoding="utf-8")
 
     main=out/str((manifest.get("main_tex") or {}).get("path") or "main.tex"); text=main.read_text(encoding="utf-8")
+    if r"\usepackage{needspace}" not in text:
+        anchor=r"\usepackage{multicol}"
+        if anchor not in text: raise ValueError("H1 repair requires multicol package anchor")
+        text=text.replace(anchor, r"\usepackage{needspace}"+"\n"+anchor, 1)
     text=text.replace(r"\input{technical-notes/80-chronology-notes}"+"\n","")
     heading=r"\section{Half-year Synthesis — ReasoningからExecution Stackへ}"
     insertion=(r"\Needspace{0.40\textheight}"+"\n"+r"\bigskip"+"\n"+r"\input{half-year-analysis/80-half-year-analysis}"+"\n\n"+r"\Needspace{0.40\textheight}"+"\n"+r"\bigskip"+"\n"+heading)
