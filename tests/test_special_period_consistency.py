@@ -124,6 +124,19 @@ class SpecialPeriodConsistencyTests(unittest.TestCase):
         self.assertEqual(value["end_date"], "2025-12-31")
         self.assertNotIn("year_month", value)
 
+    def test_signal_heading_is_monthly_by_default(self) -> None:
+        self.assertEqual(retrospective_period.signal_section_title({}), "Monthly Signals")
+        self.assertEqual(
+            retrospective_period.signal_section_title({"edition_kind": "RETROSPECTIVE_MONTH"}),
+            "Monthly Signals",
+        )
+
+    def test_signal_heading_is_retrospective_for_period_special(self) -> None:
+        self.assertEqual(
+            retrospective_period.signal_section_title({"edition_kind": "RETROSPECTIVE_PERIOD"}),
+            "Retrospective Signals",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
