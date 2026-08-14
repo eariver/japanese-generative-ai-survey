@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "issue_id": "SP-2025-H2",
   "edition_kind": "RETROSPECTIVE_PERIOD",
-  "lifecycle_state": "RELEASE_CANDIDATE",
+  "lifecycle_state": "VALIDATED_DRAFT",
   "revision": "v0.1",
   "calendar": {
     "editorial_cutoff": "2025-12-31T23:59:59Z",
@@ -21,7 +21,7 @@
     "issue_architecture": "passed",
     "article_draft": "passed",
     "claim_and_chronology_validation": "passed",
-    "latex_build": "passed",
+    "latex_build": "pending",
     "visual_review": "pending",
     "freeze": "pending"
   },
@@ -77,36 +77,17 @@
       "sha256": "a492aae3c40bc234fbd398882171358542a2ba76fe4f093142ac636749ae164d"
     },
     "validated_issue_source": {
-      "path": "surveys/special/2025-H2/revisions/v0.6/source-manifest.json",
-      "sha256": "56c4139c37f4e0b5fbe2f9a1510831088be1b99e4dac6ebb8cf952400a6a42af",
-      "source_version": "v0.6",
+      "path": "surveys/special/2025-H2/revisions/v0.7/source-manifest.json",
+      "sha256": "0a5821e29ad1e1c02a6374892f37f9ef61012a5637aa5f3d713073442c9428cf",
+      "source_version": "v0.7",
       "layout_mode": "mixed: narrative articles two-column via local multicols; theme synthesis and Technical Notes one-column full-width",
-      "layout_revision_sha256": "4a4d72ea28ca7faa204b3ff72edcade76aca1a8d4ddfe5263b116ad8b64e7eef"
+      "layout_revision_sha256": "5672094a62085a069a7167a0e4b676389275645ce1962c0bd6168d5227f759c3"
     },
     "reader_layout_revision": {
-      "source_version": "v0.6",
-      "layout_revision_path": "sources/SP-2025-H2/editorial/layout-revision-v0.6.json",
-      "layout_revision_sha256": "4a4d72ea28ca7faa204b3ff72edcade76aca1a8d4ddfe5263b116ad8b64e7eef",
-      "reason": "All-page Publication Preview QA of v0.5 found accidental whitespace at the TOC tail, later chapter boundaries, and the References boundary, plus generic bibliography labels. Preserve accepted article claims and the seven selected-Evidence Theme Synthesis panels while repairing only reader-facing navigation, break policy, bibliography titles, and adaptive page starts."
-    },
-    "latex_build": {
-      "workflow_run_id": 31762644856,
-      "pdf_sha256": "ff5bf4043f149618bff500e01b4b9280ce1d5a1a3648a5e49f7573471fc95b93",
-      "page_count": 34,
-      "source_version": "v0.6",
-      "validated_issue_source_path": "worktree/surveys/special/2025-H2/revisions/v0.6/source-manifest.json",
-      "validated_issue_source_sha256": "56c4139c37f4e0b5fbe2f9a1510831088be1b99e4dac6ebb8cf952400a6a42af",
-      "page_budget": {
-        "soft_target": 64,
-        "hard_max": 96,
-        "below_soft_target": true,
-        "policy": "manifest-soft-target-hard-ceiling"
-      },
-      "build_style": {
-        "control_commit_sha": "1967050832039e9ea2a180f2804b433ff2de0b21",
-        "path": "templates/survey/jgaisurvey.sty",
-        "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
-      }
+      "source_version": "v0.7",
+      "layout_revision_path": "sources/SP-2025-H2/editorial/layout-revision-v0.7.json",
+      "layout_revision_sha256": "5672094a62085a069a7167a0e4b676389275645ce1962c0bd6168d5227f759c3",
+      "reason": "Publication Preview review requested alignment with the H1 half-year analysis structure, reader-facing taxonomy cleanup, removal of generic fallback Technical Notes, and compact References. Preserve accepted Article Draft claims and selected Evidence while deriving a new immutable reader-facing revision."
     }
   },
   "provenance_history": {
@@ -158,6 +139,13 @@
         "source_version": "v0.5",
         "layout_mode": "mixed-local-two-column-narrative-full-width-evidence",
         "editorial_supplement_sha256": "76349cbeff1e4b085e091cd48d68be00c6fd5fe4ec7874791c6c4de963848df6"
+      },
+      {
+        "path": "surveys/special/2025-H2/revisions/v0.6/source-manifest.json",
+        "sha256": "56c4139c37f4e0b5fbe2f9a1510831088be1b99e4dac6ebb8cf952400a6a42af",
+        "source_version": "v0.6",
+        "layout_mode": "mixed: narrative articles two-column via local multicols; theme synthesis and Technical Notes one-column full-width",
+        "layout_revision_sha256": "4a4d72ea28ca7faa204b3ff72edcade76aca1a8d4ddfe5263b116ad8b64e7eef"
       }
     ],
     "latex_build": [
@@ -195,6 +183,25 @@
         },
         "build_style": {
           "control_commit_sha": "95065825f9b8aec4d037c35c84c5a5c1e6bca2f7",
+          "path": "templates/survey/jgaisurvey.sty",
+          "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+        }
+      },
+      {
+        "workflow_run_id": 31762644856,
+        "pdf_sha256": "ff5bf4043f149618bff500e01b4b9280ce1d5a1a3648a5e49f7573471fc95b93",
+        "page_count": 34,
+        "source_version": "v0.6",
+        "validated_issue_source_path": "worktree/surveys/special/2025-H2/revisions/v0.6/source-manifest.json",
+        "validated_issue_source_sha256": "56c4139c37f4e0b5fbe2f9a1510831088be1b99e4dac6ebb8cf952400a6a42af",
+        "page_budget": {
+          "soft_target": 64,
+          "hard_max": 96,
+          "below_soft_target": true,
+          "policy": "manifest-soft-target-hard-ceiling"
+        },
+        "build_style": {
+          "control_commit_sha": "1967050832039e9ea2a180f2804b433ff2de0b21",
           "path": "templates/survey/jgaisurvey.sty",
           "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
         }

@@ -1,0 +1,24 @@
+\sectionkicker{Theme synthesis}
+\subsection*{横断比較 — Autonomy拡大に追従した4つのcontrol面}
+\addcontentsline{toc}{subsection}{横断比較 — Autonomy拡大に追従した4つのcontrol面}
+2025年後半のcontrol layerは一つのsafety scoreへ収束していない。cross-lab evaluation、agent/browser hardening、policy-conditioned classification、schemingのcontrolled evaluationという異なる問題設定を分離すると、action surfaceの拡大に対して何を制御しようとしていたかが見える。
+\medskip
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}X@{}}
+\toprule
+観察軸 & 一次資料・論文から読めること \\
+\midrule
+cross-lab evaluation & OpenAIとAnthropicは互いのmodelを複数のsafety dimensionで評価する共同結果を公開した。これは重要なcross-lab evidenceだが、独立第三者benchmarkへ読み替えない。 \cite{src-ad13fe7d3321} \\
+browser / prompt-injection hardening & ChatGPT Atlasのlaunch、OWL architecture publication、12月のprompt-injection hardeningは一つのrelease arcに属しつつ別eventである。hardeningはprompt injection一般の解決を意味しない。 \cite{src-3556c47e80db,src-0ad9fbef8c87,src-240a05c02f85} \\
+policy-conditioned classification & gpt-oss-safeguardはpolicy-conditioned safety classification向けのopen-weight reasoning modelとして紹介された。gpt-oss本体の一般的な能力・公開条件と同一視しない。 \cite{src-2081c76ea2b4} \\
+schemingのcontrolled evaluation & scheming detection/mitigation研究はcontrolled evaluationで得られた結果として扱う。実験条件を外してdeployed-model behavior全般へ一般化しない。 \cite{src-bef6cbe2a83e} \\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\end{center}
+\normalsize
+\begin{claimboundary}[この比較の境界]
+この表は本号で既に検証・参照している一次資料と論文を横断比較の形へ再配置したものである。vendor / project / author が報告した性能値や優位性は独立再現済みの一般則へ変換せず、本文とSource Notesの帰属境界をそのまま維持する。
+\end{claimboundary}
