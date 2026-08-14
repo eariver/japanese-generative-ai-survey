@@ -1,0 +1,124 @@
+name: Audit SP-2025-H1 source intake
+
+on:
+  push:
+    branches:
+      - audit/2025-H1-source-intake
+    paths:
+      - '.github/workflows/audit-2025-h1-source-intake.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  source-intake-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build frozen-period audit plan
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out/audit-control out/audit-intake out/audit-screening
+          python scripts/special_pipeline.py plan \
+            --manifest specials/2025-H1/edition.json \
+            --output out/audit-control/plan.json \
+            --markdown-output out/audit-control/plan.md
+      - name: Run current temporal-aware Special Source Intake
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python scripts/special_source_intake.py \
+            --plan out/audit-control/plan.json \
+            --output-root out/audit-intake \
+            --collector all
+      - name: Build audit Screening index
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_screening_index.py \
+            --input-root out/audit-intake \
+            --output-dir out/audit-screening \
+            --issue-id SP-2025-H1 \
+            --max-records 200 \
+            --max-json-chars 400000
+      - name: Summarize audit intake
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('out/audit-intake')
+          report = json.loads((root/'source-intake-report.json').read_text())
+          out = {
+              'source_intake_report': report,
+              'arxiv': [],
+              'github': [],
+              'official': [],
+              'screening_files': [],
+          }
+          for p in sorted(root.glob('sources/SP-2025-H1/collectors/*/runs/*/summary.json')):
+              data = json.loads(p.read_text())
+              collector = data.get('collector')
+              if collector == 'arxiv-api':
+                  out['arxiv'].append({
+                      'path': str(p),
+                      'window_start': data.get('collection_window_start'),
+                      'window_end': data.get('collection_window_end'),
+                      'unique_entry_count': data.get('unique_entry_count'),
+                      'queries': [
+                          {'id': q.get('id'), 'entry_count': q.get('entry_count')}
+                          for q in data.get('queries', [])
+                      ],
+                      'errors': data.get('errors', []),
+                  })
+              elif collector == 'github-releases':
+                  out['github'].append({
+                      'path': str(p),
+                      'matching_release_count': data.get('matching_release_count'),
+                      'repositories': data.get('repositories', []),
+                      'matching_releases': data.get('matching_releases', []),
+                      'errors': data.get('errors', []),
+                  })
+              elif collector == 'official-pages':
+                  out['official'].append({
+                      'path': str(p),
+                      'pages': data.get('pages', []),
+                      'errors': data.get('errors', []),
+                  })
+          sroot = Path('out/audit-screening')
+          for p in sorted(sroot.rglob('*.json')):
+              try:
+                  d = json.loads(p.read_text())
+              except Exception:
+                  continue
+              item = {'path': str(p)}
+              if isinstance(d, dict):
+                  for key in ('record_count','total_record_count','batch_count','input_record_count'):
+                      if key in d:
+                          item[key] = d[key]
+              out['screening_files'].append(item)
+          Path('out/audit-summary.json').write_text(json.dumps(out, ensure_ascii=False, indent=2)+'\n')
+          print(json.dumps(out, ensure_ascii=False, indent=2))
+          PY
+      - name: Upload audit artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: SP-2025-H1-source-intake-audit
+          path: |
+            out/audit-control/
+            out/audit-intake/
+            out/audit-screening/
+            out/audit-summary.json
+          if-no-files-found: error
+          retention-days: 14
