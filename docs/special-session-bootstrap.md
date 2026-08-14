@@ -18,7 +18,7 @@ When repository identity should be explicit:
 
 `<target>` may be a configured slug such as `2024-H1`, `2024-H2`, `2025-H1`, `2025-H2`, `2026-M07`, or another period represented by the current Special configuration.
 
-The target plus the requested stopping Human Gate is sufficient. The user does not need to restate pipeline stages, manifest initialization, branch creation, work-branch naming, period dates, Human Gate rules, page-budget policy, validation policy, or release mechanics.
+The target plus the requested stopping Human Gate is sufficient. The user does not need to restate pipeline stages, manifest initialization, branch creation, work-branch naming, period dates, Human Gate rules, page-budget policy, validation policy, source-coverage policy, or release mechanics.
 
 ## Start-prompt initialization authority
 
@@ -58,7 +58,8 @@ For the common request to proceed through Architecture Review, perform the curre
 
 ```text
 Initialization / resume (no Human Gate)
-  -> Source Intake
+  -> canonical Source Intake (all enabled base collectors)
+  -> period-specific coverage audit and primary-source gap-fill where required
   -> Screening
   -> Evidence normalization/review
   -> Candidate Selection (internal checkpoint)
@@ -66,11 +67,13 @@ Initialization / resume (no Human Gate)
   -> HUMAN GATE 1: Architecture Review
 ```
 
+The standard Source Intake watchlists are a broad discovery baseline rather than a proof of historical completeness. Never replace the canonical base intake with a hand-curated chronology or a small set of expected headline events. Curated primary-source reconstruction is permitted only as supplemental gap-fill after the base intake has been preserved and audited under the applicable period guide.
+
 Do not start reader-facing drafting before Architecture approval.
 
-Candidate Selection is not copied from another edition. Architecture, cluster names, story units, taxonomy, chapter count, thesis, and page allocation are derived from the target period's Evidence under the current period-specific guidance.
+Candidate Selection is not copied from another edition. Architecture, cluster names, story units, taxonomy, chapter count, thesis, and page allocation are derived from the target period's audited Evidence under the current period-specific guidance.
 
-For `HALF_YEAR` editions, the Architecture Review package must satisfy the current requirements in `docs/half-year-retrospective-specials.md`, including cross-period normalization and candidates for cross-month comparison, half-year reclassification, cross-layer synthesis, and final half-year synthesis.
+For `HALF_YEAR` editions, the Architecture Review package must satisfy the current requirements in `docs/half-year-retrospective-specials.md`, including the Source Intake coverage audit, cross-period normalization, and candidates for cross-month comparison, half-year reclassification, cross-layer synthesis, and final half-year synthesis.
 
 ## State and implementation boundaries
 

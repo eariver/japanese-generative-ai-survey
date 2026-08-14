@@ -28,7 +28,7 @@ Monthly editions are not a prerequisite. Existing monthly Evidence may be reused
 The normal gate sequence is shared with current Specials:
 
 ```text
-Source Intake / Screening / Evidence
+Source Intake / coverage audit / Screening / Evidence
   -> Candidate Selection (internal checkpoint)
   -> Architecture Proposal
   -> HUMAN GATE 1: Architecture Review
@@ -40,9 +40,40 @@ Source Intake / Screening / Evidence
 
 Candidate Selection is reviewed together with Architecture rather than as a separate user stop. Exception Gates follow `docs/special-human-gates.md` and are reserved for genuinely new editorial/publication decisions.
 
+## Source Intake completeness and coverage audit
+
+The reusable Source Intake collectors are a **broad discovery baseline, not a completeness proof**. Their configured arXiv categories, GitHub repository watchlist, and official-page watchlist inevitably lag changes in the ecosystem and may be uneven for older periods. A collector run that returns `success` means the configured sources were collected successfully; it does **not** mean that every material event in the covered period was found.
+
+For a half-year retrospective, the following rules are mandatory before Candidate Selection and Architecture:
+
+1. Run the canonical Source Intake with all enabled base collectors for the exact six-month window. A hand-curated event list, search result list, or reconstructed chronology may not replace this base intake.
+2. Preserve the complete normalized intake through Screening. Do not pre-compress Source Intake to the events already expected to become editorial candidates.
+3. Perform a **period-specific coverage audit** after base collection and before declaring Evidence reconstruction complete. The audit asks whether the intake materially covers the actors and technical surfaces that were active in that period, rather than assuming the current static watchlists are sufficient.
+4. Audit at least these source planes where applicable:
+   - major foundation/model vendors and open-weight model families active during the period;
+   - multimodal image/audio/video model releases and generation systems;
+   - reasoning, tool-use, search, agent/action, API and protocol surfaces;
+   - serving, inference, quantization, local/edge and framework/runtime milestones;
+   - retrieval, evaluation, safety/alignment and control-layer work;
+   - material first-publication research papers relevant to the eventual technical synthesis.
+5. Compare the base intake against period-specific known actors/events discovered from primary-source indexes, existing monthly provenance when available, and targeted first-party historical search. This comparison is discovery-oriented; it does not predetermine Selection roles.
+6. When the audit finds a material gap, add a **supplemental primary-source gap-fill** with immutable provenance and feed the added records through the same Screening/Evidence boundary. Supplemental curated sources augment the base intake; they never substitute for it.
+7. If a material source surface cannot be reconstructed reliably, retain that as an explicit coverage limitation. Absence from the configured collectors or a current index page is not evidence that the event did not occur.
+
+There is intentionally no fixed minimum record count: source density varies by period. However, a retrospective Source Intake that is only a small hand-selected list of expected headline events is presumptively incomplete and must not be presented as the complete intake.
+
+The repository should retain enough provenance to distinguish:
+
+- base collector records;
+- supplemental gap-fill records;
+- duplicates or lifecycle-linked observations normalized later;
+- unresolved coverage gaps.
+
+Architecture Review may only describe Source Intake as complete after this coverage audit. The review must report base-intake count, supplemental/gap-fill count, Screening/Evidence counts, and material residual limitations separately.
+
 ## Half-year normalization and Selection
 
-Before Architecture, the complete six-month Evidence pool is normalized across month boundaries. The review distinguishes:
+Before Architecture, the complete audited six-month Evidence pool is normalized across month boundaries. The review distinguishes:
 
 - repeated references to the same objective event;
 - model/product family continuation;
@@ -72,7 +103,7 @@ A half-year Architecture should support both historical record and longitudinal 
 The first Architecture Review should present at least:
 
 - exact coverage and retrospective-as-of date;
-- Source Intake / Screening / Evidence counts and material limitations;
+- base Source Intake count, supplemental gap-fill count, coverage-audit status, Screening/Evidence counts, and material limitations;
 - cross-period normalization results and important identity decisions;
 - material chronology conflicts and claim boundaries;
 - Selection role counts and proposed cross-period story units;
