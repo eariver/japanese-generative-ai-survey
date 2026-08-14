@@ -65,6 +65,12 @@ _TOKEN_LABELS = {
     "THINKING": "Thinking", "STUDIO": "Studio", "EXP": "Exp", "TERMINUS": "Terminus",
 }
 
+_MACHINE_SCHEMA_TOKENS = {
+    "ANNOUNCEMENT", "CODING", "EVALUATION", "HARDENING", "INTEGRATION", "LIBRARY",
+    "METHOD", "MULTIMODAL", "RUNTIME", "SAFETY", "STABLE", "TOOLING", "UPTAKE",
+    "VIDEO", "AUDIO", "CROSS", "LAB",
+}
+
 
 def _humanize_subject(value: str) -> str:
     parts = [p for p in value.split("_") if p]
@@ -73,7 +79,6 @@ def _humanize_subject(value: str) -> str:
     text = re.sub(r"(?<=\d) (?=\d(?:V|$|\s))", ".", text)
     text = re.sub(r"\bGPT (\d(?:\.\d)?)\b", r"GPT-\1", text)
     text = re.sub(r"\bV(\d)\.(\d)\b", r"V\1.\2", text)
-    text = text.replace("Veo 3.1", "Veo 3.1")
     return text.strip()
 
 
@@ -94,7 +99,6 @@ def readable_taxonomy_label(value: str) -> str:
             subject = _humanize_subject(normalized[: -len(suffix)])
             return f"{subject}{label}" if subject else label
     # Unknown schema values must not degrade to the old generic 技術イベント label.
-    # Preserve a readable subject and make the uncertainty explicit without leaking enum syntax.
     return _humanize_subject(normalized) or "技術更新"
 
 
@@ -123,10 +127,18 @@ def translate_remaining_taxonomy(text: str) -> str:
 
 
 def translate_machine_labels_compat(text: str) -> str:
-    return translate_remaining_taxonomy(_ORIGINAL_TRANSLATE(text))
+    # Normalize unknown raw event enums before the legacy broad token mapper can
+    # partially translate MODEL/AGENT/etc. Then run a second cleanup pass for
+    # historical partially translated forms.
+    return translate_remaining_taxonomy(_ORIGINAL_TRANSLATE(translate_remaining_taxonomy(text)))
 
 
-_UPPERCASE_WITH_JA_SUFFIX = re.compile(r"\b[A-Z][A-Z0-9]*(?:[ _][A-Z0-9]+)+(?=（|公開|更新|発表|Preview|一般提供|提供開始|強化|評価|統合|対応|非推奨化|停止)")
+def _machine_word_findings(label: str) -> set[str]:
+    findings: set[str] = set()
+    for token in re.findall(r"\b[A-Z][A-Z0-9]*\b", label):
+        if token in _MACHINE_SCHEMA_TOKENS:
+            findings.add(token)
+    return findings
 
 
 def reader_taxonomy_findings(text: str) -> list[str]:
@@ -134,8 +146,15 @@ def reader_taxonomy_findings(text: str) -> list[str]:
     normalized = text.replace(r"\_", "_")
     if "技術イベント" in normalized:
         findings.add("技術イベント")
-    for match in _UPPERCASE_WITH_JA_SUFFIX.finditer(normalized):
-        findings.add(match.group(0))
+    for value in core.CHRONOLOGY_EVENT_RE.findall(normalized):
+        for token in _machine_word_findings(value):
+            findings.add(f"{token} in chronology label")
+    for line in normalized.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("種別 & "):
+            value = stripped[len("種別 & "):].rsplit(r"\\", 1)[0].strip()
+            for token in _machine_word_findings(value):
+                findings.add(f"{token} in type label")
     return sorted(findings)
 
 
