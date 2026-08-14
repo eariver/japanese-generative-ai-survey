@@ -16,9 +16,27 @@ When repository identity should be explicit:
 
 > `eariver/japanese-generative-ai-survey で <target> SpecialをArchitecture Reviewまで編纂してください。`
 
-`<target>` may be a configured slug such as `2025-H1`, `2025-H2`, `2026-M07`, or another period represented by the current Special configuration.
+`<target>` may be a configured slug such as `2024-H1`, `2024-H2`, `2025-H1`, `2025-H2`, `2026-M07`, or another period represented by the current Special configuration.
 
-The target plus the requested stopping Human Gate is sufficient. The user does not need to restate pipeline stages, manifest initialization, work-branch naming, period dates, Human Gate rules, page-budget policy, validation policy, or release mechanics.
+The target plus the requested stopping Human Gate is sufficient. The user does not need to restate pipeline stages, manifest initialization, branch creation, work-branch naming, period dates, Human Gate rules, page-budget policy, validation policy, or release mechanics.
+
+## Start-prompt initialization authority
+
+A request to compile a configured Special is itself authorization for the deterministic bootstrap needed to begin that edition. **Initialization is not a Human Gate.** Do not ask for a separate confirmation before creating or merging bootstrap repository state.
+
+If the requested edition does not yet exist, the agent should autonomously:
+
+1. resolve the configured period and current manifest contract from `main`;
+2. create `special/<slug>-init` from the current `main`;
+3. create the schema-valid `specials/<slug>/edition.json` and `sources/SP-<slug>/pipeline-state.json` with lifecycle `ISSUE_INITIALIZED`;
+4. validate the bootstrap against current code/config/schema;
+5. open the initialization PR to `main` and merge it after deterministic validation succeeds;
+6. create the canonical `special/<slug>-work` branch from the merged initialization state;
+7. continue immediately through all non-Human-Gate work toward the requested stopping gate.
+
+The start prompt authorizes these bootstrap actions because they establish deterministic control/provenance state and do not approve Candidate Selection, Architecture, Publication Preview, Freeze, or publication content. Ask the user only if initialization itself requires a genuinely new editorial/publication decision, such as an unconfigured/ambiguous target period or a requested scope that conflicts with current policy.
+
+If an init/work branch or bootstrap PR already exists, inspect and resume it rather than creating a duplicate. A deterministic branch/PR conflict that can be resolved without changing editorial scope is not a Human Gate.
 
 ## Required startup behavior
 
@@ -27,8 +45,8 @@ On every new Special production session:
 1. Read current `main` first. Current code, config, schemas, workflows, and canonical docs take precedence over prior chat history or older editions.
 2. Read `config/special-pipeline.json`, `docs/special-human-gates.md`, and `docs/special-editions.md`.
 3. Resolve the requested target from current configuration. Do not infer a different calendar window from an older issue.
-4. Inspect the canonical edition manifest, pipeline state, survey source, and work branch if they exist.
-5. If the edition does not yet exist, initialize it using the current schema/workflow rather than copying another edition by hand.
+4. Inspect the canonical edition manifest, pipeline state, survey source, init/work branches, and relevant PRs if they exist.
+5. If the edition does not yet exist, execute the autonomous initialization sequence above using the current schema/workflow rather than copying another edition by hand.
 6. If the edition already exists, resume from the recorded lifecycle state instead of restarting completed stages.
 7. Read the applicable period guide. `HALF_YEAR` editions additionally require `docs/half-year-retrospective-specials.md`.
 8. Proceed autonomously through all non-Human-Gate stages needed to reach the requested gate. Retry deterministic collection/CI failures when recovery does not require editorial judgment.
@@ -39,7 +57,8 @@ On every new Special production session:
 For the common request to proceed through Architecture Review, perform the current Special flow through:
 
 ```text
-Source Intake
+Initialization / resume (no Human Gate)
+  -> Source Intake
   -> Screening
   -> Evidence normalization/review
   -> Candidate Selection (internal checkpoint)

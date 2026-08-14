@@ -90,6 +90,36 @@ class SpecialPipelineTests(unittest.TestCase):
         self.assertFalse(policy["human_gate_required_for_public_release"])
         self.assertEqual(policy["exception_gate"]["mode"], "ON_DEMAND")
 
+    def test_start_prompt_authorizes_deterministic_initialization(self) -> None:
+        config = json.loads(Path("config/special-pipeline.json").read_text(encoding="utf-8"))
+        policy = config["policy"]
+        self.assertFalse(policy["human_gate_required_for_initialization"])
+        self.assertTrue(policy["start_prompt_authorizes_initialization"])
+        self.assertEqual(
+            policy["initialization_actions_authorized"],
+            [
+                "create_init_branch",
+                "write_edition_manifest",
+                "write_initial_pipeline_state",
+                "open_and_merge_init_pr",
+                "create_work_branch",
+            ],
+        )
+
+    def test_initial_state_matches_current_state_schema_automation_contract(self) -> None:
+        state = special_pipeline.initial_state(self.manifest())
+        schema = json.loads(Path("schemas/special-pipeline-state.schema.json").read_text(encoding="utf-8"))
+        automation_schema = schema["properties"]["automation"]
+        self.assertEqual(set(state["automation"]), set(automation_schema["required"]))
+        for key, value in state["automation"].items():
+            property_schema = automation_schema["properties"][key]
+            if "const" in property_schema:
+                self.assertEqual(value, property_schema["const"], key)
+        self.assertEqual(
+            state["automation"]["publication_preview_authorizes"],
+            [item["const"] for item in automation_schema["properties"]["publication_preview_authorizes"]["prefixItems"]],
+        )
+
     def test_historical_granularity_matches_editorial_decision(self) -> None:
         config = json.loads(Path("config/special-pipeline.json").read_text(encoding="utf-8"))
         plan = special_pipeline.historical_plan(config)
