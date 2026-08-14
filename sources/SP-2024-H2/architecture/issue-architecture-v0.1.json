@@ -1,1 +1,276 @@
-{"schema_version":"1.0","issue_id":"SP-2024-H2","architecture_version":"v0.1","status":"PROPOSED","basis":{"architecture_input_sha256":"edf6ca5299707a71ea77337c6b79a6bd05a590bfae60316525a77337a10f3e05","selection_sha256":"cb1b6ea7387c4c3a7cbffc247145b5acace3d8925956e4b777c6c76755994502","matrix_sha256":"65e6b684cb53bce56727d06e33094e81efce4a9110c3efce4bab7efeddccf1bb"},"approval":{"approved_by":null,"approved_at":null,"approval_reference":null},"editorial_thesis":"2024年後半は、生成AIの競争軸が「より大きい基盤モデル」だけでは説明できなくなり、推論時に計算を増やす reasoning、検索・GUI・外部データへ接続する action/tool layer、open-weight・小型化・quantizationによる deployment choice、音声・画像・動画を横断する multimodality へ分岐した半年だった。したがって本号はモデル順位表ではなく、model capability・inference-time compute・execution surface・deployment form・control boundaryを分離し、モデル単体から execution / deployment stack へ評価単位が移り始めた過程として再構成する。","architecture_goals":["7〜12月を月別ダイジェストにせず、open/deployment・reasoning・action/connectivity・multimodality・controlの横断テーマで再構成する。","Inference-time reasoningをpretraining scaleと別のcapability/deployment軸として扱い、o1 preview→product→APIのlifecycleを分離する。","Search、computer use、MCP、native tool useを一括してagentと呼ばず、information access・GUI action・protocol・model capabilityの差を保持する。","Open weights、license、source availability、hosted API、training transparency、edge deployabilityを別の属性として比較する。","Multimodal understanding、speech-to-speech realtime、image/video generation、agent actionを別カテゴリとして整理する。","Living primary sourcesの後日deprecationや2025年のoutcomeを2024-H2 eventへ逆投影しない。","Half-year Synthesisで、2025-H1へ持ち越したagent reliability、security、evaluation、reproducibilityの課題を明示する。"],"page_budget":{"target":64,"max":96,"planned":60},"cover":{"headline_deferred":true,"headline":null,"anchor_candidates":["reasoning-to-action","open-deployment-stack","multimodal-execution-surface"]},"packages":[{"package_id":"front","title":"2024年後半の技術地図と読み方","package_type":"FRONTMATTER","primary_evidence_task_ids":[],"supporting_evidence_task_ids":[],"page_target":4,"editorial_angle":"対象期間、Evidence境界、主要chronologyと、モデル単体ではなく複数のexecution/deployment層で読むための座標軸を示す。","must_cover":["2024-07-01〜2024-12-31 UTCの対象期間","retrospective-as-of 2026-08-14T11:35:00Z","一次資料によるcurrent reconstructionと後知恵の分離","model / reasoning / tool-action / deployment / modality / controlの分離"],"boundaries":[],"late_breaking":false,"drafting_order":1},{"package_id":"open-deployment","title":"Open-weight Frontierが「最大」から「選べる配備」へ — Llama・Qwen・Mistral・DeepSeek","package_type":"LEAD","primary_evidence_task_ids":["meta-llama31","qwen25","meta-llama32","deepseek-v3"],"supporting_evidence_task_ids":["mistral-large2","mistral-ministral","meta-llama33","qwen25-coder"],"page_target":8,"editorial_angle":"405B級frontier、幅広いmodel size、edge向け小型、MoE効率化を同じ『open』ラベルではなく、weights/license/deployment/architectureの別軸で比較する。","must_cover":["Llama 3.1 405Bとreference-system/safety layer","Qwen2.5の0.5B〜72B family breadth","Llama 3.2のvisionと1B/3B edge bifurcation","Llama 3.3 70Bとfrontier-quality/serving-efficiencyの再配置","DeepSeek-V3の671B total / 37B active MoEというarchitecture","open weightsとopen source、license、API availabilityを分離"],"boundaries":["Primary-source reconstruction establishes the dated event and stated scope; vendor/project benchmark, performance, cost, and superlative claims remain attributed rather than independently reproduced.","DeepSeek-R1 public release is a 2025-H1 event and must not be back-projected into the December 2024 DeepSeek-V3 story."],"late_breaking":false,"drafting_order":2},{"package_id":"reasoning","title":"Inference-time Computeが競争軸になる — o1からQwQへ","package_type":"FEATURE","primary_evidence_task_ids":["oa-o1preview","qwen-qwq-preview"],"supporting_evidence_task_ids":["oa-o1mini","oa-o1-pro","oa-o1-api"],"page_target":8,"editorial_angle":"pretraining規模とは別に、回答前の追加計算・reasoning budget・latency/costを使って難問性能を引き上げる設計が製品軸として現れた過程を追う。","must_cover":["o1-previewの『考える時間』を増やす設計","o1-miniのcost/performance分岐","QwQ-32B-Previewのopen reasoning experimentと明示的limitations","12月のfull o1 / o1 pro / API snapshotをpreviewと別eventとして扱う","reasoning tokenやbenchmark数値を独立再現済み性能として書かない"],"boundaries":["Primary-source reconstruction establishes the dated event and stated scope; vendor/project benchmark, performance, cost, and superlative claims remain attributed rather than independently reproduced.","Visible or described reasoning behavior must not be equated with disclosure of complete hidden chain-of-thought or training internals."],"late_breaking":false,"drafting_order":3},{"package_id":"action-connectivity","title":"回答から接続・操作へ — Search・Computer Use・MCP・Gemini 2.0","package_type":"FEATURE","primary_evidence_task_ids":["anthropic-computer-use","anthropic-mcp","google-gemini20"],"supporting_evidence_task_ids":["oa-searchgpt","oa-chatgpt-search","oa-realtime","xai-grok2"],"page_target":8,"editorial_angle":"検索による外部情報取得、GUI操作、tool protocol、native tool useを『agent』の一語に潰さず、action surfaceとtrust boundaryの拡張として比較する。","must_cover":["SearchGPT prototype→ChatGPT searchのlifecycle","Claude computer use public betaのGUI action surface","MCPのclient/server接続標準という位置付け","Gemini 2.0 Flashのnative tool useとMariner/Jules等research prototypeのavailability分離","Realtime API function callingをvoice interfaceとtool actionの接点として扱う"],"boundaries":["Primary-source reconstruction establishes the dated event and stated scope; vendor/project benchmark, performance, cost, and superlative claims remain attributed rather than independently reproduced.","Research prototypes, public beta capabilities, protocols, and broadly available products must retain distinct availability labels."],"late_breaking":false,"drafting_order":4},{"package_id":"multimodal-media","title":"Multimodalityが入力理解からRealtime・生成Mediaへ広がる","package_type":"FEATURE","primary_evidence_task_ids":["qwen2-vl","oa-realtime","oa-sora","google-veo2"],"supporting_evidence_task_ids":["qwen2-audio","mistral-pixtral12","stability-sd35","mistral-pixtral-large","google-gemini20"],"page_target":8,"editorial_angle":"vision/audio理解、speech-to-speech、native multimodal output、image/video generationを同じmultimodal語の下で混同せず、interaction surfaceの拡張として整理する。","must_cover":["Qwen2-Audio/Qwen2-VLのaudio/vision input系","Pixtral 12B→Largeのopen-weight multimodal scaling","OpenAI Realtime APIのstreaming speech-to-speech","Stable Diffusion 3.5のcustomizable image generation","Sora Turboのresearch preview→product transition","Gemini 2.0 native multimodal outputとVeo 2/Imagen 3 generation workflow"],"boundaries":["Primary-source reconstruction establishes the dated event and stated scope; vendor/project benchmark, performance, cost, and superlative claims remain attributed rather than independently reproduced.","Multimodal understanding, multimodal generation, realtime transport, and agent action are separate capability categories."],"late_breaking":false,"drafting_order":5},{"package_id":"efficient-edge","title":"Small・Edge・Long Context — 能力密度と配備制約の再設計","package_type":"COMPARISON","primary_evidence_task_ids":["oa-gpt4omini","mistral-ministral","meta-llama32-quantized"],"supporting_evidence_task_ids":["meta-llama32","qwen25-turbo-1m","meta-llama33"],"page_target":6,"editorial_angle":"小型化、quantization、context拡張、モデルfamily再編を、単純なbenchmark競争ではなくcost/latency/memory/locality/servingの制約として比較する。","must_cover":["GPT-4o miniのhigh-volume API positioning","Ministral 3B/8Bのon-device/edge positioning","Llama 3.2 1B/3Bとofficial quantized variants","Qwen2.5-Turbo 1M contextのhosted long-context engineering","Llama 3.3 70Bを405Bとの単純代替ではなくserving tradeoffとして読む"],"boundaries":["Primary-source reconstruction establishes the dated event and stated scope; vendor/project benchmark, performance, cost, and superlative claims remain attributed rather than independently reproduced.","Context-window size, usable long-context quality, and retrieval quality are separate properties."],"late_breaking":false,"drafting_order":6},{"package_id":"control-grounding","title":"Execution Surfaceの拡大にControlが追いつく — Retrieval・Moderation・Alignment","package_type":"DEEP_DIVE","primary_evidence_task_ids":["anthropic-contextual-retrieval","mistral-moderation"],"supporting_evidence_task_ids":["anthropic-alignment-faking","oa-deliberative-alignment","meta-llama31"],"page_target":5,"editorial_angle":"接続・操作・推論が強くなるほど、grounding、system-level guardrail、alignment/evaluationをmodel qualityと別レイヤーで設計する必要があることをH2のEvidenceから示す。","must_cover":["Contextual RetrievalをRAG engineering evidenceとして扱う","Mistral Moderation APIをdeployment guardrailとして扱う","Llama Guard 3/Prompt GuardをLlama 3.1 system layerの一部として扱う","alignment fakingを研究結果として限定して解釈する","deliberative alignmentをo-series safety methodとして扱い、万能安全性を示すものとしない"],"boundaries":["Primary-source reconstruction establishes the dated event and stated scope; vendor/project benchmark, performance, cost, and superlative claims remain attributed rather than independently reproduced.","Research demonstrations of alignment failure or safety methods do not establish general behavior of all deployed models."],"late_breaking":false,"drafting_order":7},{"package_id":"synthesis","title":"Half-year Synthesis — Model単体からExecution / Deployment Stackへ","package_type":"SECTION","primary_evidence_task_ids":[],"supporting_evidence_task_ids":["meta-llama31","oa-o1preview","anthropic-computer-use","anthropic-mcp","google-gemini20","deepseek-v3","oa-realtime"],"page_target":5,"editorial_angle":"7〜12月を月別ダイジェストではなく、能力の増加場所がtraining scaleだけでなくinference、tool/action、interface、deploymentへ分散した半年として再分類する。","must_cover":["Jul-Augのcost/open frontier/multimodality expansion","Sep-Octのreasoning・edge・realtime・computer use分岐","Nov-Decのprotocol・reasoning competition・agentic model・MoE efficiency convergence","2025-H1へ持ち越すagent reliability/security/evaluation問題","後日の標準化・普及を2024年末時点の事実へ逆投影しない"],"boundaries":["Primary-source reconstruction establishes the dated event and stated scope; vendor/project benchmark, performance, cost, and superlative claims remain attributed rather than independently reproduced."],"late_breaking":false,"drafting_order":8},{"package_id":"chronology","title":"Detailed Chronology","package_type":"WATCHLIST_CHRONOLOGY","primary_evidence_task_ids":[],"supporting_evidence_task_ids":["oa-gpt4omini","meta-llama31","mistral-large2","oa-searchgpt","qwen2-audio","xai-grok2","qwen2-vl","oa-o1preview","oa-o1mini","mistral-pixtral12","qwen25","anthropic-contextual-retrieval","meta-llama32","oa-realtime","mistral-ministral","anthropic-computer-use","stability-sd35","meta-llama32-quantized","oa-chatgpt-search","mistral-moderation","qwen25-coder","qwen25-turbo-1m","mistral-pixtral-large","anthropic-mcp","qwen-qwq-preview","oa-o1-pro","meta-llama33","oa-sora","google-gemini20","google-veo2","oa-o1-api","anthropic-alignment-faking","oa-deliberative-alignment","deepseek-v3"],"page_target":5,"editorial_angle":"2024-H2のmaterial objective eventsを日付順に保持し、preview/product/API/protocol/researchのidentityを比較可能にするhistorical index。","must_cover":["2024-07-18から2024-12-26までの34 accepted events","SearchGPT→ChatGPT search、o1 preview→product→APIのdistinct lifecycle","model releaseとlater deprecation/statusを分離","held itemsを本文へ自動昇格しない"],"boundaries":["Primary-source reconstruction establishes the dated event and stated scope; vendor/project benchmark, performance, cost, and superlative claims remain attributed rather than independently reproduced."],"late_breaking":false,"drafting_order":9},{"package_id":"references","title":"References and Evidence Notes","package_type":"REFERENCES","primary_evidence_task_ids":[],"supporting_evidence_task_ids":["oa-gpt4omini","meta-llama31","mistral-large2","oa-searchgpt","qwen2-audio","xai-grok2","qwen2-vl","oa-o1preview","oa-o1mini","mistral-pixtral12","qwen25","anthropic-contextual-retrieval","meta-llama32","oa-realtime","mistral-ministral","anthropic-computer-use","stability-sd35","meta-llama32-quantized","oa-chatgpt-search","mistral-moderation","qwen25-coder","qwen25-turbo-1m","mistral-pixtral-large","anthropic-mcp","qwen-qwq-preview","oa-o1-pro","meta-llama33","oa-sora","google-gemini20","google-veo2","oa-o1-api","anthropic-alignment-faking","oa-deliberative-alignment","deepseek-v3"],"page_target":3,"editorial_angle":"一次資料URL、event identity、vendor-claim境界、後日更新されたliving pageの扱いを読者が追跡できる形でまとめる。","must_cover":["primary-source references","availability/deprecation note","vendor claim attribution","retrospective reconstruction note"],"boundaries":[],"late_breaking":false,"drafting_order":10}],"this_week_summary_written_last":true}
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2024-H2",
+  "architecture_version": "v0.2",
+  "status": "PROPOSED",
+  "basis": {
+    "architecture_input_sha256": "a187a2304c9f00f14de53e0b1af993879b06690f8329848265c8dea4e44c9ff4",
+    "selection_sha256": "77a27e0baaadf2e6b10c643ac972bd8b0aa2622b3e82b9e79078ed41d50d58e7",
+    "matrix_sha256": "9e749310fb02c1ed4fe968e4b66bb2262e3cff8a749fad8b2c90013d36c57d49"
+  },
+  "approval": {
+    "approved_by": null,
+    "approved_at": null,
+    "approval_reference": null
+  },
+  "editorial_thesis": "2024 H2: model capability expanded into inference, execution, deployment, multimodal and control stacks.",
+  "architecture_goals": [
+    "Preserve event identity and cross-layer boundaries."
+  ],
+  "page_budget": {
+    "target": 64,
+    "max": 96,
+    "planned": 68.0
+  },
+  "cover": {
+    "headline_deferred": true,
+    "headline": null,
+    "anchor_candidates": [
+      "execution-stack"
+    ]
+  },
+  "packages": [
+    {
+      "package_id": "front",
+      "title": "front",
+      "package_type": "FRONTMATTER",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [],
+      "page_target": 4,
+      "editorial_angle": "Evidence-led half-year comparison.",
+      "must_cover": [],
+      "boundaries": [],
+      "late_breaking": false,
+      "drafting_order": 1
+    },
+    {
+      "package_id": "open-deployment",
+      "title": "open-deployment",
+      "package_type": "LEAD",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2024-H2:item-official-index-supplemental-meta-ll-b2f241f1e6",
+        "evidence:SP-2024-H2:item-official-index-supplemental-meta-ll-63de35b698",
+        "evidence:SP-2024-H2:item-official-index-supplemental-qwen25-8dd1e3f879",
+        "evidence:SP-2024-H2:item-official-index-supplemental-deepsee-ad2d5208e7",
+        "evidence:SP-2024-H2:item-official-index-supplemental-ai2-olm-7b99d53c97",
+        "evidence:SP-2024-H2:item-official-index-supplemental-ai2-olm-f51e7d2d2e",
+        "evidence:SP-2024-H2:item-official-index-supplemental-ai2-tul-cb4984a361",
+        "evidence:SP-2024-H2:item-official-index-supplemental-ai21-ja-8a93c45f8a",
+        "evidence:SP-2024-H2:item-official-index-supplemental-tencent-7cdef72f8f",
+        "evidence:SP-2024-H2:item-official-index-supplemental-microso-2c4bcdd078",
+        "evidence:SP-2024-H2:item-official-index-supplemental-mistral-f96bef138e"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H2:item-official-index-supplemental-mistral-817dbb2d5b",
+        "evidence:SP-2024-H2:item-official-index-supplemental-qwen25-8266731621",
+        "evidence:SP-2024-H2:item-official-index-supplemental-qwen25-a08848f9e2",
+        "evidence:SP-2024-H2:item-official-index-supplemental-meta-ll-ad2b5f1ffa"
+      ],
+      "page_target": 10,
+      "editorial_angle": "Evidence-led half-year comparison.",
+      "must_cover": [],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 2
+    },
+    {
+      "package_id": "reasoning",
+      "title": "reasoning",
+      "package_type": "FEATURE",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2024-H2:series-openai-o1-h2-0d30feb81d",
+        "evidence:SP-2024-H2:item-official-index-supplemental-qwen-qw-f71822682c",
+        "evidence:SP-2024-H2:item-official-index-supplemental-deepsee-885648ad0d",
+        "evidence:SP-2024-H2:item-official-index-supplemental-arxiv-2-dba715d87a",
+        "evidence:SP-2024-H2:item-official-index-supplemental-arxiv-2-4b1b5385f8",
+        "evidence:SP-2024-H2:item-official-index-supplemental-aws-aut-0dc866d77f"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H2:item-official-feed-9cf289b414fdf955889f-334b8e42b4"
+      ],
+      "page_target": 8,
+      "editorial_angle": "Evidence-led half-year comparison.",
+      "must_cover": [],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 3
+    },
+    {
+      "package_id": "action-connectivity",
+      "title": "action-connectivity",
+      "package_type": "FEATURE",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2024-H2:item-official-index-supplemental-anthrop-ac55c1d50e",
+        "evidence:SP-2024-H2:item-official-index-supplemental-anthrop-0df1f59fe9",
+        "evidence:SP-2024-H2:item-official-index-supplemental-google-64e8c45f48",
+        "evidence:SP-2024-H2:item-official-feed-6cafd8cf566841b60dd7-8d4c3f9c2a",
+        "evidence:SP-2024-H2:item-official-feed-bd5105ccfa254f063bb1-625957152c",
+        "evidence:SP-2024-H2:item-official-feed-ed98251ab05d389802e7-38722a88d1",
+        "evidence:SP-2024-H2:item-arxiv-2410-23218v1-0b125f270d",
+        "evidence:SP-2024-H2:item-official-index-supplemental-arxiv-2-5699988ad2"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H2:item-arxiv-2407-18901v1-96c2b7922d",
+        "evidence:SP-2024-H2:item-official-index-supplemental-arxiv-2-86190136bc"
+      ],
+      "page_target": 9,
+      "editorial_angle": "Evidence-led half-year comparison.",
+      "must_cover": [],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 4
+    },
+    {
+      "package_id": "multimodal-media",
+      "title": "multimodal-media",
+      "package_type": "FEATURE",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2024-H2:item-official-feed-c5ed64e39d0c81b756c4-27d9affdd8",
+        "evidence:SP-2024-H2:item-official-feed-2d134659d4de90af66b9-ce28b4f6a9",
+        "evidence:SP-2024-H2:item-official-index-supplemental-ai2-mol-817cff5b14",
+        "evidence:SP-2024-H2:item-official-index-supplemental-kyutai-6a4894271b",
+        "evidence:SP-2024-H2:item-official-index-supplemental-bfl-flu-325608d650",
+        "evidence:SP-2024-H2:item-official-index-supplemental-cogvide-b79b6be167",
+        "evidence:SP-2024-H2:item-official-index-supplemental-tencent-f8aff7245d",
+        "evidence:SP-2024-H2:item-official-index-supplemental-qwen2-v-70a0644ea2",
+        "evidence:SP-2024-H2:item-official-index-supplemental-stabili-51417c6c20",
+        "evidence:SP-2024-H2:item-arxiv-2409-20566v1-75bddfde7b",
+        "evidence:SP-2024-H2:item-official-index-supplemental-arxiv-2-5e19023315"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H2:item-official-index-supplemental-qwen2-a-a3e4bf9b76",
+        "evidence:SP-2024-H2:item-official-index-supplemental-arxiv-2-0174da8a36",
+        "evidence:SP-2024-H2:item-official-index-supplemental-arxiv-2-16c2972340",
+        "evidence:SP-2024-H2:item-official-index-supplemental-arxiv-2-45f66e1072",
+        "evidence:SP-2024-H2:item-official-index-supplemental-arxiv-2-76658f08a3",
+        "evidence:SP-2024-H2:item-official-index-supplemental-arxiv-2-7a3d197614",
+        "evidence:SP-2024-H2:item-official-index-supplemental-arxiv-2-88de0d6425",
+        "evidence:SP-2024-H2:item-official-index-supplemental-arxiv-2-a31a81c95e",
+        "evidence:SP-2024-H2:item-official-index-supplemental-meta-mo-ff27a8a19b",
+        "evidence:SP-2024-H2:item-official-index-supplemental-mistral-03429c4c7f",
+        "evidence:SP-2024-H2:item-official-index-supplemental-mistral-f2a1165eec"
+      ],
+      "page_target": 10,
+      "editorial_angle": "Evidence-led half-year comparison.",
+      "must_cover": [],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 5
+    },
+    {
+      "package_id": "efficiency-serving",
+      "title": "efficiency-serving",
+      "package_type": "COMPARISON",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2024-H2:item-official-feed-031c86eaad2b766793d4-c736525315",
+        "evidence:SP-2024-H2:item-official-index-supplemental-flashat-87ac31fa20",
+        "evidence:SP-2024-H2:item-official-feed-ec05e05a8071c87a9f4f-7734c13c78",
+        "evidence:SP-2024-H2:item-official-feed-f086061a9e86f7b55db4-02a81c6561",
+        "evidence:SP-2024-H2:item-official-index-supplemental-ltx-vid-b5ef420ed1"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H2:item-official-index-supplemental-arxiv-2-98385f929f",
+        "evidence:SP-2024-H2:item-official-index-supplemental-qwen25-a08848f9e2",
+        "evidence:SP-2024-H2:item-official-index-supplemental-meta-ll-ad2b5f1ffa"
+      ],
+      "page_target": 7,
+      "editorial_angle": "Evidence-led half-year comparison.",
+      "must_cover": [],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 6
+    },
+    {
+      "package_id": "control-evaluation",
+      "title": "control-evaluation",
+      "package_type": "DEEP_DIVE",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2024-H2:item-official-index-supplemental-anthrop-c7276c9f19",
+        "evidence:SP-2024-H2:item-official-index-supplemental-mistral-dba514b239",
+        "evidence:SP-2024-H2:item-arxiv-2409-19091v2-1cf39a3f41",
+        "evidence:SP-2024-H2:item-official-index-supplemental-arxiv-2-8d4446284a"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H2:item-official-index-supplemental-anthrop-1653a2a285",
+        "evidence:SP-2024-H2:item-official-feed-9cf289b414fdf955889f-334b8e42b4",
+        "evidence:SP-2024-H2:item-official-feed-e92e95daf8e048b1a539-b60b7fb090"
+      ],
+      "page_target": 7,
+      "editorial_angle": "Evidence-led half-year comparison.",
+      "must_cover": [],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 7
+    },
+    {
+      "package_id": "synthesis",
+      "title": "synthesis",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H2:item-official-index-supplemental-mistral-817dbb2d5b",
+        "evidence:SP-2024-H2:item-official-index-supplemental-meta-ll-ad2b5f1ffa",
+        "evidence:SP-2024-H2:item-official-feed-9cf289b414fdf955889f-334b8e42b4",
+        "evidence:SP-2024-H2:item-official-index-supplemental-anthrop-1653a2a285"
+      ],
+      "page_target": 5,
+      "editorial_angle": "Evidence-led half-year comparison.",
+      "must_cover": [],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 8
+    },
+    {
+      "package_id": "chronology",
+      "title": "chronology",
+      "package_type": "WATCHLIST_CHRONOLOGY",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2024-H2:item-official-feed-10b59b402b80208a6b65-e1b323636e",
+        "evidence:SP-2024-H2:item-official-feed-c3a08c57269d6a101252-297c1b9e1b",
+        "evidence:SP-2024-H2:item-official-feed-e92e95daf8e048b1a539-b60b7fb090",
+        "evidence:SP-2024-H2:item-official-index-supplemental-bfl-flu-1cb0448174",
+        "evidence:SP-2024-H2:item-official-index-supplemental-aws-nov-0e59ad450e",
+        "evidence:SP-2024-H2:item-official-index-supplemental-google-f36806032b",
+        "evidence:SP-2024-H2:item-official-index-supplemental-meta-ll-7f0718b016",
+        "evidence:SP-2024-H2:item-official-index-supplemental-xai-gro-74ed3148ac"
+      ],
+      "supporting_evidence_task_ids": [],
+      "page_target": 5,
+      "editorial_angle": "Evidence-led half-year comparison.",
+      "must_cover": [],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 9
+    },
+    {
+      "package_id": "references",
+      "title": "references",
+      "package_type": "REFERENCES",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [],
+      "page_target": 3,
+      "editorial_angle": "Evidence-led half-year comparison.",
+      "must_cover": [],
+      "boundaries": [],
+      "late_breaking": false,
+      "drafting_order": 10
+    }
+  ],
+  "this_week_summary_written_last": true
+}
