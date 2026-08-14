@@ -29,6 +29,15 @@ class SpecialReaderIdentifierPreservationTests(unittest.TestCase):
         self.assertIn("https://example.com/MODEL_CARD.md", rendered)
         self.assertNotIn("https://example.com/モデル_CARD.md", rendered)
 
+    def test_nested_opaque_guards_are_composable(self) -> None:
+        source = r"MODEL_RELEASE \url{https://example.com/MODEL_CARD.md}"
+        outer_text, outer = reader._protect_opaque_identifiers(source)
+        inner_text, inner = reader._protect_opaque_identifiers(outer_text)
+        restored_inner = reader._restore_opaque_identifiers(inner_text, inner)
+        self.assertEqual(restored_inner, outer_text)
+        restored = reader._restore_opaque_identifiers(restored_inner, outer)
+        self.assertEqual(restored, source)
+
     def test_safety_material_uses_source_semantic_overrides(self) -> None:
         expected = {
             "Automated Reasoning checks for Amazon Bedrock Guardrails": "安全性手法",

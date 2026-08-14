@@ -7,6 +7,7 @@ the legacy wrapper live here so translation and leak detection share the same vo
 """
 from __future__ import annotations
 
+import hashlib
 import re
 
 from scripts import postprocess_special_reader_facing_notes_core as core
@@ -28,37 +29,56 @@ _OPAQUE_MACRO_RE = re.compile(r"\\(?:url|nolinkurl|path|texttt)\{[^{}]*\}|\\href
 _RAW_URL_RE = re.compile(r"https?://[^\s{}]+")
 
 
-def _protect_opaque_identifiers(text: str) -> tuple[str, list[str]]:
-    """Protect URL/path/code identifier spans from broad legacy token replacement."""
-    values: list[str] = []
+def _opaque_prefix(text: str) -> str:
+    """Return a deterministic namespace that does not already occur in *text*."""
+    digest = hashlib.sha256(text.encode("utf-8")).hexdigest()[:16]
+    prefix = f"@@JGOPAQUE-{digest}-"
+    while prefix in text:
+        prefix += "X"
+    return prefix
+
+
+def _protect_opaque_identifiers(text: str) -> tuple[str, list[tuple[str, str]]]:
+    """Protect URL/path/code identifier spans from broad legacy token replacement.
+
+    Each call receives its own token namespace. This makes protection composable: an
+    outer compatibility wrapper may leave its placeholders in the text while an inner
+    translator independently protects/restores its own spans.
+    """
+    replacements: list[tuple[str, str]] = []
+    prefix = _opaque_prefix(text)
 
     def protect(match: re.Match[str]) -> str:
-        token = f"@@JGOPAQUE{len(values)}@@"
-        values.append(match.group(0))
+        token = f"{prefix}{len(replacements)}@@"
+        replacements.append((token, match.group(0)))
         return token
 
     # Protect complete TeX identifier macros first, then any remaining raw URLs.
     rendered = _OPAQUE_MACRO_RE.sub(protect, text)
     rendered = _RAW_URL_RE.sub(protect, rendered)
-    return rendered, values
+    return rendered, replacements
 
 
-def _restore_opaque_identifiers(text: str, values: list[str]) -> str:
+def _restore_opaque_identifiers(text: str, replacements: list[tuple[str, str]]) -> str:
+    """Restore exactly this call's placeholders and ignore namespaces owned by callers."""
     rendered = text
-    for index, value in enumerate(values):
-        token = f"@@JGOPAQUE{index}@@"
-        if token not in rendered:
-            raise ValueError(f"reader-facing opaque identifier placeholder disappeared: {token}")
-        rendered = rendered.replace(token, value)
-    if "@@JGOPAQUE" in rendered:
-        raise ValueError("reader-facing opaque identifier placeholder remains after restoration")
+    for token, value in replacements:
+        count = rendered.count(token)
+        if count != 1:
+            raise ValueError(
+                f"reader-facing opaque identifier placeholder occurrence mismatch: {token} count={count}"
+            )
+        rendered = rendered.replace(token, value, 1)
+    for token, _ in replacements:
+        if token in rendered:
+            raise ValueError(f"reader-facing opaque identifier placeholder remains after restoration: {token}")
     return rendered
 
 
 def translate_machine_labels_preserving_identifiers(text: str) -> str:
-    protected, values = _protect_opaque_identifiers(text)
+    protected, replacements = _protect_opaque_identifiers(text)
     translated = _BASE_TRANSLATE(protected)
-    return _restore_opaque_identifiers(translated, values)
+    return _restore_opaque_identifiers(translated, replacements)
 
 
 # The legacy compatibility wrapper captures core.translate_machine_labels at import time.
@@ -74,9 +94,9 @@ def translate_machine_labels_compat(text: str) -> str:
     # Protect identifiers around the entire compatibility translation as well.
     # This remains safe even when the legacy compatibility module was imported earlier
     # in the same Python process and had already captured the historical broad translator.
-    protected, values = _protect_opaque_identifiers(text)
+    protected, replacements = _protect_opaque_identifiers(text)
     translated = _COMPAT_TRANSLATE(protected)
-    return _restore_opaque_identifiers(translated, values)
+    return _restore_opaque_identifiers(translated, replacements)
 
 
 translate_machine_labels = translate_machine_labels_compat
