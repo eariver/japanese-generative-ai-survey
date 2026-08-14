@@ -1,0 +1,962 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2025-H2",
+  "package_id": "open",
+  "draft_source_mode": "EVIDENCE_PACKAGE",
+  "execution_stage": "ARTICLE_DRAFTING",
+  "basis": {
+    "architecture_plan_sha256": "20522c77374c66a329ddc2a92cdadfeb5495293279a136db5dd3d192e4c9657a",
+    "architecture_input_sha256": "042cd6fce9e5f9f94222fcf0f8cd9b70675cd737aa3e296f972aa6e774966dd2",
+    "evidence_reviewed_sha256": "2cd711d695868b1c04dc7f614983568e09c87d9fd0dad8a267732e86234c05af"
+  },
+  "package": {
+    "title": "Open Weightと非US Model Family — Qwen・DeepSeek・Kimi・Mistral・GLM",
+    "package_type": "COMPARISON",
+    "page_target": 11,
+    "editorial_angle": "gpt-ossをopen-weight deploymentのanchorにし、Qwen、DeepSeek、Kimi、Mistral、GLMをreasoning/coding/tool use、deployment、service lifecycleの差で比較する。国・企業ランキングではなく技術スタックの選択肢拡大として読む。",
+    "must_cover": [
+      "open weightsとtraining/data transparencyを混同しない",
+      "Alibaba Model Studioのsnapshot/regional/global availabilityをupstream release dateに統合しない",
+      "DeepSeek API service transitionとcheckpoint publicationを分離",
+      "Kimi/Mistralのliving index境界",
+      "GLM/AutoGLMのrelease identityとvendor superlativeの帰属"
+    ],
+    "boundaries": [
+      "Open weights do not imply an unrestricted data/training disclosure; openness should be described specifically in terms of weights/license and deployment.",
+      "The Model Studio page is a living deployment catalog; it mixes release, snapshot, regional availability, and later global availability entries. Architecture must not collapse those into one upstream model release date.",
+      "These dates establish DeepSeek API service transitions; upstream training/checkpoint publication dates must not be inferred when not stated.",
+      "The hash-pinned Kimi Code 'What's New' page is a living product document whose current rendered history begins much later; item chronology was cross-checked against Kimi's first-party platform blog/changelog during interactive verification.",
+      "The news index reliably establishes publication chronology and titles; detailed benchmark/license claims require item-level pages and should remain vendor-attributed if used in drafting.",
+      "Performance superlatives in the release notes are vendor claims; use only release identity, dates, stated feature scope, and clearly attributed evaluation claims."
+    ],
+    "late_breaking": false,
+    "drafting_order": 4
+  },
+  "primary_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2025-H2",
+      "evidence_task_id": "evidence:SP-2025-H2:series-oa-gpt-oss-ca4a8f2a95",
+      "task_file": "series-oa-gpt-oss-ca4a8f2a95.json",
+      "run_file": "series-oa-gpt-oss-ca4a8f2a95.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "Interactive ChatGPT evidence review of hash-pinned Special Evidence package plus preserved first-party Source Intake snapshots; item-level first-party pages were followed where living indexes required pagination/navigation; no paid inference-provider API.",
+        "generated_at": "2026-08-13T22:34:18Z",
+        "run_reference": "prepare-special-evidence run 31750122823; artifact 9200578871 sha256:aaa9abd7c9ba262a39399b7ec44b0b20f82d107577b19169c3aa60247efc97d2"
+      },
+      "evidence_task_sha256": "ba6f0d35421664017a0d1d6cb9291fca4044cad9e31cd8f2391925952d163dfd",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2025-H2",
+        "evidence_task_id": "evidence:SP-2025-H2:series-oa-gpt-oss-ca4a8f2a95",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Release announcement and model card are one open-weight package."
+        },
+        "artifact": {
+          "canonical_name": "gpt-oss-120b / gpt-oss-20b",
+          "artifact_type": "OPEN_WEIGHT",
+          "organization": "OpenAI",
+          "canonical_url": "https://openai.com/index/introducing-gpt-oss"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-08-05",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "OPEN_WEIGHT_RELEASE",
+              "event_date": "2025-08-05",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "MODEL_CARD_PUBLICATION",
+              "event_date": "2025-08-05",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T22:34:18Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://openai.com/index/gpt-oss-model-card",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://openai.com/index/gpt-oss-model-card",
+            "published_at": null,
+            "accessed_at": "2026-08-13T22:34:18Z",
+            "role": "Primary source used for chronology and technical verification"
+          },
+          {
+            "source_id": "src-2",
+            "url": "https://openai.com/index/introducing-gpt-oss",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 2: https://openai.com/index/introducing-gpt-oss",
+            "published_at": null,
+            "accessed_at": "2026-08-13T22:34:18Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "OpenAI released gpt-oss-120b and gpt-oss-20b as open-weight reasoning models under Apache 2.0 plus its usage policy.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "The release positioned the models for reasoning/tool use and efficient local or self-hosted deployment; detailed performance remains vendor/model-card attributed.",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Open weights do not imply an unrestricted data/training disclosure; openness should be described specifically in terms of weights/license and deployment.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify date, 120B/20B identities, license, openness, tool/reasoning and deployment claims",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: verify date, 120B/20B identities, license, openness, tool/reasoning and deployment claims. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            },
+            {
+              "target": "verify model-card facts, evaluations and limitations",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: verify model-card facts, evaluations and limitations. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Reintroduced OpenAI into open-weight deployment and immediately created a runtime-integration event across the ecosystem.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2025-H2",
+      "evidence_task_id": "evidence:SP-2025-H2:item-official-index-alibaba-model-studio-154c528d30",
+      "task_file": "item-official-index-alibaba-model-studio-154c528d30.json",
+      "run_file": "item-official-index-alibaba-model-studio-154c528d30.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "Interactive ChatGPT evidence review of hash-pinned Special Evidence package plus preserved first-party Source Intake snapshots; item-level first-party pages were followed where living indexes required pagination/navigation; no paid inference-provider API.",
+        "generated_at": "2026-08-13T22:34:18Z",
+        "run_reference": "prepare-special-evidence run 31750122823; artifact 9200578871 sha256:aaa9abd7c9ba262a39399b7ec44b0b20f82d107577b19169c3aa60247efc97d2"
+      },
+      "evidence_task_sha256": "c4d517242f2d9018a9e0eb6e64043040670b2e2c35a9e1d6b9239e75b6856b1b",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2025-H2",
+        "evidence_task_id": "evidence:SP-2025-H2:item-official-index-alibaba-model-studio-154c528d30",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Qwen / Alibaba Model Studio H2 2025 lifecycle",
+          "artifact_type": "MODEL_UPDATE",
+          "organization": "Alibaba Cloud / Qwen",
+          "canonical_url": "https://www.alibabacloud.com/help/en/model-studio/newly-released-models"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-07-22",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "QWEN3_CODER_RELEASE",
+              "event_date": "2025-07-22",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "QWEN3_NEXT_RELEASE",
+              "event_date": "2025-09-11",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-3",
+              "event_type": "QWEN3_CODER_UPDATE",
+              "event_date": "2025-09-23",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-4",
+              "event_type": "QWEN3_MAX_PREVIEW",
+              "event_date": "2025-11-03",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-5",
+              "event_type": "QWEN3_OMNI_UPDATE",
+              "event_date": "2025-12-04",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-6",
+              "event_type": "QWEN_IMAGE_MAX_RELEASE",
+              "event_date": "2025-12-31",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T22:34:18Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://www.alibabacloud.com/help/en/model-studio/newly-released-models",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://www.alibabacloud.com/help/en/model-studio/newly-released-models",
+            "published_at": null,
+            "accessed_at": "2026-08-13T22:34:18Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "Alibaba Model Studio recorded Qwen3-Coder on July 22 as a Qwen3-based code model with agent/tool-calling and environment-interaction capabilities.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "The lifecycle page shows continued H2 expansion across long-context/reasoning, coder, vision/omni, speech, and image-generation model families rather than a single-model cadence.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-3",
+            "text": "Availability entries distinguish regions and dated snapshots, so model identity and deployment availability must remain separate from upstream/open-weight announcements.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The Model Studio page is a living deployment catalog; it mixes release, snapshot, regional availability, and later global availability entries. Architecture must not collapse those into one upstream model release date.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "extract all material 2025-H2 model/API lifecycle events; verify exact dates, model identifiers, modalities, availability states, regional boundaries, and deprecations",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: extract all material 2025-H2 model/API lifecycle events; verify exact dates, model identifiers, modalities, availability states, regional boundaries, and deprecations. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Provides a non-US model/API lifecycle showing rapid family proliferation across coding, multimodality, speech, and generation.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2025-H2",
+      "evidence_task_id": "evidence:SP-2025-H2:item-official-index-deepseek-api-updates-72fd8b1ca6",
+      "task_file": "item-official-index-deepseek-api-updates-72fd8b1ca6.json",
+      "run_file": "item-official-index-deepseek-api-updates-72fd8b1ca6.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "Interactive ChatGPT evidence review of hash-pinned Special Evidence package plus preserved first-party Source Intake snapshots; item-level first-party pages were followed where living indexes required pagination/navigation; no paid inference-provider API.",
+        "generated_at": "2026-08-13T22:34:18Z",
+        "run_reference": "prepare-special-evidence run 31750122823; artifact 9200578871 sha256:aaa9abd7c9ba262a39399b7ec44b0b20f82d107577b19169c3aa60247efc97d2"
+      },
+      "evidence_task_sha256": "5af8b0e735ce4872ac0c597335b609d8e71a9cf78ab5a711bf81c8db575dcb2d",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2025-H2",
+        "evidence_task_id": "evidence:SP-2025-H2:item-official-index-deepseek-api-updates-72fd8b1ca6",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "DeepSeek V3.1→V3.2 API lifecycle",
+          "artifact_type": "MODEL_UPDATE",
+          "organization": "DeepSeek",
+          "canonical_url": "https://api-docs.deepseek.com/updates/"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-08-21",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "V3_1_API_UPGRADE",
+              "event_date": "2025-08-21",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "V3_1_TERMINUS_API_UPGRADE",
+              "event_date": "2025-09-22",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-3",
+              "event_type": "V3_2_EXP_API_UPGRADE",
+              "event_date": "2025-09-29",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-4",
+              "event_type": "V3_2_API_UPGRADE",
+              "event_date": "2025-12-01",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T22:34:18Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://api-docs.deepseek.com/updates/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://api-docs.deepseek.com/updates/",
+            "published_at": null,
+            "accessed_at": "2026-08-13T22:34:18Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "DeepSeek's API changelog records V3.1 on August 21, V3.1-Terminus on September 22, V3.2-Exp on September 29, and V3.2 on December 1.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "The changelog maps deepseek-chat and deepseek-reasoner to non-thinking and thinking modes of these model versions.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-3",
+            "text": "V3.2-Speciale was exposed through a temporary endpoint with no tool calls and an explicit expiration, so it is not equivalent to the stable V3.2 service.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "These dates establish DeepSeek API service transitions; upstream training/checkpoint publication dates must not be inferred when not stated.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "extract 2025-H2 V3.1, V3.1-Terminus, V3.2-Exp, V3.2/Speciale events; verify exact dates, API/model identities, tool/reasoning behavior, availability, and experiment/stable boundaries",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: extract 2025-H2 V3.1, V3.1-Terminus, V3.2-Exp, V3.2/Speciale events; verify exact dates, API/model identities, tool/reasoning behavior, availability, and experiment/stable boundaries. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Shows a compressed non-US API/model lifecycle and the growing importance of reasoning-mode/tool-use distinctions in deployment identity.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2025-H2",
+      "evidence_task_id": "evidence:SP-2025-H2:item-official-index-kimi-code-whats-new-788743b9bb",
+      "task_file": "item-official-index-kimi-code-whats-new-788743b9bb.json",
+      "run_file": "item-official-index-kimi-code-whats-new-788743b9bb.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "Interactive ChatGPT evidence review of hash-pinned Special Evidence package plus preserved first-party Source Intake snapshots; item-level first-party pages were followed where living indexes required pagination/navigation; no paid inference-provider API.",
+        "generated_at": "2026-08-13T22:34:18Z",
+        "run_reference": "prepare-special-evidence run 31750122823; artifact 9200578871 sha256:aaa9abd7c9ba262a39399b7ec44b0b20f82d107577b19169c3aa60247efc97d2"
+      },
+      "evidence_task_sha256": "8da0c5cf56922d38b4e0d46f426e515adfa037386952f3f2f731fcc2fb246159",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2025-H2",
+        "evidence_task_id": "evidence:SP-2025-H2:item-official-index-kimi-code-whats-new-788743b9bb",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Kimi K2 / K2 Thinking lifecycle",
+          "artifact_type": "MODEL_UPDATE",
+          "organization": "Moonshot AI / Kimi",
+          "canonical_url": "https://platform.kimi.com/blog"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-07-11",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "KIMI_K2_RELEASE",
+              "event_date": "2025-07-11",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "KIMI_K2_UPDATE",
+              "event_date": "2025-09-05",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-3",
+              "event_type": "KIMI_K2_THINKING_RELEASE",
+              "event_date": "2025-11-06",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T22:34:18Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://www.kimi.com/code/docs/en/kimi-code/whats-new.html",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://www.kimi.com/code/docs/en/kimi-code/whats-new.html",
+            "published_at": null,
+            "accessed_at": "2026-08-13T22:34:18Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "Kimi's official platform records Kimi K2 on July 11, a September 5 update with stronger coding/context behavior, and Kimi K2 Thinking on November 6.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "K2 Thinking was positioned as a thinking agent model that interleaves reasoning and tool use.",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The hash-pinned Kimi Code 'What's New' page is a living product document whose current rendered history begins much later; item chronology was cross-checked against Kimi's first-party platform blog/changelog during interactive verification.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "extract 2025-H2 dated coding-agent/model events; verify dates, tool/subagent/context features, model identity, availability, and later-edit contamination",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: extract 2025-H2 dated coding-agent/model events; verify dates, tool/subagent/context features, model identity, availability, and later-edit contamination. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Adds an open-model agentic sequence centered on coding, tool calling, and test-time reasoning outside the US vendor set.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2025-H2",
+      "evidence_task_id": "evidence:SP-2025-H2:item-official-index-mistral-news-e5054b4c4c",
+      "task_file": "item-official-index-mistral-news-e5054b4c4c.json",
+      "run_file": "item-official-index-mistral-news-e5054b4c4c.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "Interactive ChatGPT evidence review of hash-pinned Special Evidence package plus preserved first-party Source Intake snapshots; item-level first-party pages were followed where living indexes required pagination/navigation; no paid inference-provider API.",
+        "generated_at": "2026-08-13T22:34:18Z",
+        "run_reference": "prepare-special-evidence run 31750122823; artifact 9200578871 sha256:aaa9abd7c9ba262a39399b7ec44b0b20f82d107577b19169c3aa60247efc97d2"
+      },
+      "evidence_task_sha256": "754b249e4807eaf5c6e4b31b17d6342da7a72f24ee4a003a29a7ddd3e333f1e2",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2025-H2",
+        "evidence_task_id": "evidence:SP-2025-H2:item-official-index-mistral-news-e5054b4c4c",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Mistral H2 2025 model and agent stack",
+          "artifact_type": "MODEL_UPDATE",
+          "organization": "Mistral AI",
+          "canonical_url": "https://mistral.ai/news/"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-07-10",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "DEVSTRAL_UPDATE",
+              "event_date": "2025-07-10",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "VOXTRAL_RELEASE",
+              "event_date": "2025-07-15",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-3",
+              "event_type": "LE_CHAT_DEEP_RESEARCH",
+              "event_date": "2025-07-17",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-4",
+              "event_type": "CODESTRAL_25_08",
+              "event_date": "2025-07-30",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-5",
+              "event_type": "LE_CHAT_MCP_MEMORY",
+              "event_date": "2025-09-02",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-6",
+              "event_type": "MISTRAL_AI_STUDIO",
+              "event_date": "2025-10-24",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-7",
+              "event_type": "MISTRAL_3_RELEASE",
+              "event_date": "2025-12-02",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-8",
+              "event_type": "DEVSTRAL_2_RELEASE",
+              "event_date": "2025-12-09",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T22:34:18Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://mistral.ai/news/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://mistral.ai/news/",
+            "published_at": null,
+            "accessed_at": "2026-08-13T22:34:18Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "Mistral's official news index records a July sequence across Devstral coding, Voxtral speech, Le Chat research, and Codestral, followed by MCP/connectors/memory in September.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "The index records Mistral AI Studio on October 24, Mistral 3 on December 2, and Devstral 2 with Mistral Vibe CLI on December 9.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The news index reliably establishes publication chronology and titles; detailed benchmark/license claims require item-level pages and should remain vendor-attributed if used in drafting.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "extract material 2025-H2 model, coding-agent, speech, API/product and open-model events; verify dates, model identities, availability/licensing, tool scope, and benchmark attribution",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: extract material 2025-H2 model, coding-agent, speech, API/product and open-model events; verify dates, model identities, availability/licensing, tool scope, and benchmark attribution. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Shows open-model/coding/speech and product-agent layers evolving together, strengthening the cross-vendor stack thesis.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2025-H2",
+      "evidence_task_id": "evidence:SP-2025-H2:item-official-index-zai-release-notes-409a030c15",
+      "task_file": "item-official-index-zai-release-notes-409a030c15.json",
+      "run_file": "item-official-index-zai-release-notes-409a030c15.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "Interactive ChatGPT evidence review of hash-pinned Special Evidence package plus preserved first-party Source Intake snapshots; item-level first-party pages were followed where living indexes required pagination/navigation; no paid inference-provider API.",
+        "generated_at": "2026-08-13T22:34:18Z",
+        "run_reference": "prepare-special-evidence run 31750122823; artifact 9200578871 sha256:aaa9abd7c9ba262a39399b7ec44b0b20f82d107577b19169c3aa60247efc97d2"
+      },
+      "evidence_task_sha256": "e50a57171f832fbed5e9a58a79d02aab987ebf9cd85bf358fdbb8b8d6e248b50",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2025-H2",
+        "evidence_task_id": "evidence:SP-2025-H2:item-official-index-zai-release-notes-409a030c15",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "GLM / AutoGLM H2 2025 lifecycle",
+          "artifact_type": "MODEL_UPDATE",
+          "organization": "Z.ai",
+          "canonical_url": "https://docs.z.ai/release-notes/new-released"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-07-28",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "GLM_4_5_RELEASE",
+              "event_date": "2025-07-28",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "GLM_4_5V_RELEASE",
+              "event_date": "2025-08-11",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-3",
+              "event_type": "GLM_4_6_RELEASE",
+              "event_date": "2025-09-30",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-4",
+              "event_type": "GLM_4_6V_RELEASE",
+              "event_date": "2025-12-08",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-5",
+              "event_type": "AUTOGLM_PHONE_MULTILINGUAL",
+              "event_date": "2025-12-11",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-6",
+              "event_type": "GLM_4_7_RELEASE",
+              "event_date": "2025-12-22",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T22:34:18Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://docs.z.ai/release-notes/new-released",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://docs.z.ai/release-notes/new-released",
+            "published_at": null,
+            "accessed_at": "2026-08-13T22:34:18Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "Z.ai's release notes record GLM-4.5 on July 28 as a native agentic LLM, GLM-4.5V on August 11 as a vision reasoning model, and GLM-4.6 on September 30 as a coding-focused model with a 200K context window.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "December entries add GLM-4.6V, AutoGLM-Phone-Multilingual for screen-driven mobile actions, and GLM-4.7 with coding/reasoning/agentic updates.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Performance superlatives in the release notes are vendor claims; use only release identity, dates, stated feature scope, and clearly attributed evaluation claims.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "extract material 2025-H2 GLM/AutoGLM releases; verify exact dates, model identity, modality, agent/coding scope, open-weight/license status, availability and vendor-claim attribution",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: extract material 2025-H2 GLM/AutoGLM releases; verify exact dates, model identity, modality, agent/coding scope, open-weight/license status, availability and vendor-claim attribution. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Adds a model family where coding, multimodal reasoning, and explicit mobile-action agents converge over the half-year.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION",
+    "cover_headline_finalization_forbidden": true,
+    "this_week_summary_forbidden": true
+  }
+}

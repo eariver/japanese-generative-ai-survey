@@ -1,0 +1,25 @@
+\sectionkicker{Theme synthesis}
+\subsection*{横断比較 — Model Churnを吸収する4つのruntime面}
+\addcontentsline{toc}{subsection}{横断比較 — Model Churnを吸収する4つのruntime面}
+半年のmodel更新を実際に動かす側では、engine migration、distributed/long-context support、hardware-specific optimization、library integrationが別々の速度で進んだ。runtime supportの日付はmodelのrelease chronologyとは別の技術史として残す。
+\medskip
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}X@{}}
+\toprule
+観察軸 & 一次資料・論文から読めること \\
+\midrule
+serving engine transition & vLLMはv0.10からv0.11で旧V0 engineの整理・削除を進め、V1を中心にconfigurationやmodel/tool supportを更新し、v0.13まで継続した。性能影響はworkloadとhardwareに依存する。 \cite{src-43eaa2f12960,src-58ef6e84aa65,src-455a78bc36fa} \\
+distributed / long-context support & SGLangはruntime/disaggregated-transfer、long-context、model supportを更新し、後半にはDeepSeek V3.2系やdiffusion/JITなど対応面を広げた。release-note性能表現はproject claimである。 \cite{src-4197b73cea93,src-ee0eb9562688} \\
+hardware-specific runtime & TensorRT-LLMのrelease系列はmodel supportやserving/runtime機能を進めたが、性能記述はNVIDIAのproject claimでありhardware/configuration条件から切り離さない。 \cite{src-283a52c58291,src-04b5c0f10b59} \\
+library integration & Transformersのmodel/runtime uptakeはdownstream integration eventである。library support日をupstream modelのoriginal release dateとして扱うとchronologyが崩れる。 \cite{src-a783d282600b,src-d4b1979540fd,src-2595cdd4fabc} \\
+downstream uptakeという別時系列 & 4系列を並べると、新モデルへの対応はmodel announcementと同時ではなく、frameworkごとのrelease cadenceで吸収される。deployabilityはmodel単体ではなくdownstream stackにも依存する。 \cite{src-43eaa2f12960,src-58ef6e84aa65,src-455a78bc36fa,src-a783d282600b,src-d4b1979540fd,src-2595cdd4fabc} \\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\end{center}
+\normalsize
+\begin{claimboundary}[この比較の境界]
+この表は本号で既に検証・参照している一次資料と論文を横断比較の形へ再配置したものである。vendor / project / author が報告した性能値や優位性は独立再現済みの一般則へ変換せず、本文とSource Notesの帰属境界をそのまま維持する。
+\end{claimboundary}

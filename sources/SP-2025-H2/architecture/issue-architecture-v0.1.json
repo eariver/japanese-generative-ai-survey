@@ -1,0 +1,300 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2025-H2",
+  "architecture_version": "v0.1",
+  "status": "APPROVED",
+  "basis": {
+    "architecture_input_sha256": "042cd6fce9e5f9f94222fcf0f8cd9b70675cd737aa3e296f972aa6e774966dd2",
+    "selection_sha256": "6a9ae04bdbef4cf2fc23f4971b531e59ffda7d5a54f6bb31c34981731dd55821",
+    "matrix_sha256": "d86378369413bb2babda9c0be4899e14d5bd5ee7ace7e72dc924ab774d1ff994"
+  },
+  "approval": {
+    "approved_by": "eariver",
+    "approved_at": "2026-08-14T08:03:44+09:00",
+    "approval_reference": "Human Gate 1 approval by eariver in ChatGPT on 2026-08-14 JST; authorization limited to SP-2025-H2 Architecture approval and Draft Package preparation."
+  },
+  "editorial_thesis": "2025年後半は、生成AIの進歩単位が「より強い単体モデル」から、model・agent harness/context/tools・action surface・serving runtime・safety/controlを結ぶexecution stackへ広がった半年だった。単一モデルの性能向上だけでは実用能力、deployability、riskを説明しにくくなり、モデル外側の実行系と制御層が同じ技術史の中で前景化した。",
+  "architecture_goals": [
+    "半年を月別ダイジェストとして並べず、7〜8月のlayer立ち上がり、9〜10月の実行系接続、11〜12月のfamily高速更新とcontrol hardeningというcross-month比較で再構成する。",
+    "ChatGPT agent、Claude 4.5系、Gemini APIを製品比較ではなく、harness・context・tool/action surface・availability lifecycleという共通軸で比較する。",
+    "GPT-5→5.1→5.2とCodex派生を単発launchではなくmodel family lifecycleとして扱い、release/API/productのidentityを分離する。",
+    "gpt-oss、Qwen、DeepSeek、Kimi、Mistral、GLMを単純ランキングにせず、open-weight/deployment、reasoning、coding、tool use、service lifecycleの差として整理する。",
+    "World model、robotics、video generationを「multimodal生成」だけでなくAIのinteraction/action space拡大として横断する。",
+    "Transformers、vLLM、SGLang、TensorRT-LLMをdownstream uptakeとして扱い、model release dateとruntime integration dateを混同しない。",
+    "joint safety evaluation、scheming研究、gpt-oss-safeguard、Atlas hardeningを、autonomy拡大に追従するcontrol layerとして統合する。",
+    "vendor/project/author benchmarkや性能表現は帰属claimとして明示し、一次資料で確認できるrelease、identifier、availability、architecture/control factと分離する。",
+    "living index、bounded arXiv/GitHub collection、後日改訂arXivなどSource Intake/Evidenceのcoverage limitationを完全性主張へ持ち込まない。",
+    "本文末にHalf-year Synthesisを置き、何が変化し、何が未解決のまま2025年末を越えたかをcross-layerにまとめる。"
+  ],
+  "page_budget": {
+    "target": 64,
+    "max": 96,
+    "planned": 67.0
+  },
+  "cover": {
+    "headline_deferred": true,
+    "headline": null,
+    "anchor_candidates": [
+      "execution-stack",
+      "model-family-to-system",
+      "autonomy-needs-control"
+    ]
+  },
+  "packages": [
+    {
+      "package_id": "front",
+      "title": "2025年後期の技術地図と読み方",
+      "package_type": "FRONTMATTER",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [],
+      "page_target": 4,
+      "editorial_angle": "対象期間、Evidence/claim境界、主要chronologyを先に示し、半年を「modelからexecution stackへ」という横断軸で読むための地図を与える。",
+      "must_cover": [
+        "2025-07-01〜2025-12-31 UTCの対象期間",
+        "retrospective-as-of 2026-08-13T22:08:00Z",
+        "PRIMARY_FACTとvendor/project/author claimの区別",
+        "1,329件Source Intakeとbounded collection limitation",
+        "reader-facing chronologyはEvidence ledgerの全件dumpではないこと"
+      ],
+      "boundaries": [],
+      "late_breaking": false,
+      "drafting_order": 1
+    },
+    {
+      "package_id": "agent",
+      "title": "AgentはUIを出て実行系になる — Harness・Context・Tool・Browser/Computer Use",
+      "package_type": "LEAD",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2025-H2:series-oa-chatgpt-agent-41b09142b4",
+        "evidence:SP-2025-H2:item-official-index-anthropic-news-afddcb8068",
+        "evidence:SP-2025-H2:item-official-index-google-gemini-api-re-d5b8ea25b2"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2025-H2:item-official-feed-0661418088b8e2710c8e-65d3c9a193",
+        "evidence:SP-2025-H2:item-official-feed-6deeebce1719b9f21b32-837ba14bfc"
+      ],
+      "page_target": 11,
+      "editorial_angle": "ChatGPT agent、Claude 4.5系、Gemini APIとOpenAIのagent/coding周辺更新を横断し、能力の観測単位がbase modelからharness、context、tools、action surface、評価・学習ループへ広がったことを示す。",
+      "must_cover": [
+        "ChatGPT agentのaction-oriented product identity",
+        "Claude 4.5 model/agent platform sequenceをliving newsroomからitem-level chronologyで再構成",
+        "Gemini APIのpreview→GA/deprecation/shutdownをupstream model announcementと分離",
+        "AgentKit/Evals/RFTをagent開発・評価・学習の補助レイヤとして位置付ける",
+        "Codex September upgradesをcoding-agent execution surfaceの継続として扱う"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+        "The preserved newsroom snapshot is a living paginated index and its first HTML page emphasized 2026 entries; item-level official Anthropic pages were followed during interactive verification to reconstruct H2 2025 chronology.",
+        "The changelog is a service/API chronology, not an upstream research-release chronology; preview-to-GA and shutdown events should not be merged with initial model announcements."
+      ],
+      "late_breaking": false,
+      "drafting_order": 2
+    },
+    {
+      "package_id": "model",
+      "title": "単発LaunchからModel Family Lifecycleへ — GPT-5→5.1→5.2",
+      "package_type": "FEATURE",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2025-H2:series-oa-gpt5-d90a8cae40"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2025-H2:item-official-feed-5bea303cfdb176bb1a01-f1c915a303",
+        "evidence:SP-2025-H2:item-official-feed-55da04f42e321f995dad-c0e2883961",
+        "evidence:SP-2025-H2:item-official-feed-10ab1c39be1497734c70-6925368411",
+        "evidence:SP-2025-H2:item-official-feed-cd8d6c8023f2f56d4036-961d055191"
+      ],
+      "page_target": 7,
+      "editorial_angle": "GPT-5のrelease/API/safe-completionsを起点に、5.1、5.2、Codex派生までをfamily lifecycleとして追い、モデル更新がproduct/API specializationと結びついて加速した半年を示す。",
+      "must_cover": [
+        "GPT-5 release・developer API・safe-completionsのidentity分離",
+        "GPT-5.1/5.2を同一releaseの後日補足ではなく別eventとして保持",
+        "Codex-Max / GPT-5.2-Codexをcoding specializationとして扱う",
+        "benchmarkやbest表現はvendor claimとして帰属"
+      ],
+      "boundaries": [
+        "Benchmark and 'best' claims remain vendor-attributed; release, API availability, model identity, controls, and safety-method publication are primary facts.",
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 3
+    },
+    {
+      "package_id": "open",
+      "title": "Open Weightと非US Model Family — Qwen・DeepSeek・Kimi・Mistral・GLM",
+      "package_type": "COMPARISON",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2025-H2:series-oa-gpt-oss-ca4a8f2a95"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2025-H2:item-official-index-alibaba-model-studio-154c528d30",
+        "evidence:SP-2025-H2:item-official-index-deepseek-api-updates-72fd8b1ca6",
+        "evidence:SP-2025-H2:item-official-index-kimi-code-whats-new-788743b9bb",
+        "evidence:SP-2025-H2:item-official-index-mistral-news-e5054b4c4c",
+        "evidence:SP-2025-H2:item-official-index-zai-release-notes-409a030c15"
+      ],
+      "page_target": 11,
+      "editorial_angle": "gpt-ossをopen-weight deploymentのanchorにし、Qwen、DeepSeek、Kimi、Mistral、GLMをreasoning/coding/tool use、deployment、service lifecycleの差で比較する。国・企業ランキングではなく技術スタックの選択肢拡大として読む。",
+      "must_cover": [
+        "open weightsとtraining/data transparencyを混同しない",
+        "Alibaba Model Studioのsnapshot/regional/global availabilityをupstream release dateに統合しない",
+        "DeepSeek API service transitionとcheckpoint publicationを分離",
+        "Kimi/Mistralのliving index境界",
+        "GLM/AutoGLMのrelease identityとvendor superlativeの帰属"
+      ],
+      "boundaries": [
+        "Open weights do not imply an unrestricted data/training disclosure; openness should be described specifically in terms of weights/license and deployment.",
+        "The Model Studio page is a living deployment catalog; it mixes release, snapshot, regional availability, and later global availability entries. Architecture must not collapse those into one upstream model release date.",
+        "These dates establish DeepSeek API service transitions; upstream training/checkpoint publication dates must not be inferred when not stated.",
+        "The hash-pinned Kimi Code 'What's New' page is a living product document whose current rendered history begins much later; item chronology was cross-checked against Kimi's first-party platform blog/changelog during interactive verification.",
+        "The news index reliably establishes publication chronology and titles; detailed benchmark/license claims require item-level pages and should remain vendor-attributed if used in drafting.",
+        "Performance superlatives in the release notes are vendor claims; use only release identity, dates, stated feature scope, and clearly attributed evaluation claims."
+      ],
+      "late_breaking": false,
+      "drafting_order": 4
+    },
+    {
+      "package_id": "multi",
+      "title": "Multimodalは生成からAction Spaceへ — Video・World Model・Robotics",
+      "package_type": "FEATURE",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2025-H2:item-official-index-google-deepmind-blog-9b2b580695"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2025-H2:series-oa-sora2-dd9d8f230a",
+        "evidence:SP-2025-H2:item-official-index-minimax-news-8be7d33438"
+      ],
+      "page_target": 8,
+      "editorial_angle": "DeepMindのworld-model/robotics研究をanchorに、Sora 2とMiniMax/Hailuo系を重ね、画像・動画生成の拡大だけでなく、環境理解・予測・物理actionへ向かうinteraction spaceの拡張として整理する。",
+      "must_cover": [
+        "DeepMindのresearch prototype・limited partner access・GA APIを区別",
+        "world modelとroboticsを同一製品releaseとして扱わない",
+        "Sora 2のvideo/audio generation identity",
+        "MiniMax M2/Hailuo 2.3/M2.1をclient-rendered indexからitem-level verificationした境界",
+        "性能比較はvendor claimに限定"
+      ],
+      "boundaries": [
+        "The preserved DeepMind index snapshot is paginated and its first page is not a complete H2 archive; item-level first-party pages were used during interactive verification.",
+        "Research prototypes, limited-partner robotics access, and generally available API models must remain distinct.",
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+        "The preserved `minimax.io/news` landing snapshot is client-rendered and sparse; item-level first-party MiniMax release notes/news were used during interactive verification."
+      ],
+      "late_breaking": false,
+      "drafting_order": 5
+    },
+    {
+      "package_id": "runtime",
+      "title": "RuntimeはModel Churnをどう吸収したか — Transformers・vLLM・SGLang・TensorRT-LLM",
+      "package_type": "DEEP_DIVE",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2025-H2:series-vllm-h2-c06db6d580"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2025-H2:series-sglang-h2-17aa4e2a64",
+        "evidence:SP-2025-H2:series-tensorrt-h2-f352c9873f",
+        "evidence:SP-2025-H2:series-transformers-h2-1299e5aa8a"
+      ],
+      "page_target": 9,
+      "editorial_angle": "vLLMの0.10→0.13を半年のserving anchorに、Transformers、SGLang、TensorRT-LLMのrelease系列を重ね、新モデル・long context・tool/multimodal系の変化がdownstream実装へ吸収される速度と制約を見る。",
+      "must_cover": [
+        "vLLM release系列を一つのatomic featureに潰さない",
+        "Transformersのsupport dateをupstream model release dateに使わない",
+        "SGLangのfeature/performanceはproject claim",
+        "TensorRT-LLMの性能はhardware/config依存",
+        "runtime availabilityはproduction validationやmodel qualityの証明ではない"
+      ],
+      "boundaries": [
+        "Project release notes establish software changes and dates; performance implications vary by workload and hardware.",
+        "Release-note feature/performance statements are project claims; no independent benchmark reproduction is implied.",
+        "Feature and performance descriptions are NVIDIA project claims and are hardware/configuration dependent.",
+        "Library support date is an integration event and must not be used as the upstream model's original release date."
+      ],
+      "late_breaking": false,
+      "drafting_order": 6
+    },
+    {
+      "package_id": "control",
+      "title": "Autonomyの後ろからControl Layerが追う — Safety・Scheming・Prompt Injection",
+      "package_type": "DEEP_DIVE",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2025-H2:item-official-feed-ad13fe7d3321b824a618-aeb0fa89f4"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2025-H2:series-oa-atlas-93e282cc32",
+        "evidence:SP-2025-H2:item-official-feed-2081c76ea2b4319d2ba2-225a091e4c",
+        "evidence:SP-2025-H2:item-official-feed-bef6cbe2a83e51bc89a8-5f3fd437ab"
+      ],
+      "page_target": 7,
+      "editorial_angle": "OpenAI–Anthropic joint evaluationをanchorに、scheming研究、gpt-oss-safeguard、Atlas/OWLのprompt-injection hardeningを結び、agent/action surfaceの拡大がsafety evaluationとcontrol engineeringを別レイヤとして要求したことを示す。",
+      "must_cover": [
+        "joint safety evaluationを独立第三者benchmarkと誤認しない",
+        "scheming結果をcontrolled evaluationの範囲で扱う",
+        "gpt-oss-safeguardをopen-weight modelそのものと同一視しない",
+        "Atlas/OWL hardeningをprompt injection一般解決と表現しない",
+        "autonomy拡大とcontrol requirementを同一のcross-layer storyとして扱う"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+        "Findings come from controlled evaluations and should not be generalized to deployed-model behavior without the stated experimental scope."
+      ],
+      "late_breaking": false,
+      "drafting_order": 7
+    },
+    {
+      "package_id": "synth",
+      "title": "Half-year Synthesis — 進歩の単位はModelからExecution Stackへ",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2025-H2:series-oa-chatgpt-agent-41b09142b4",
+        "evidence:SP-2025-H2:item-official-index-anthropic-news-afddcb8068",
+        "evidence:SP-2025-H2:item-official-index-google-gemini-api-re-d5b8ea25b2",
+        "evidence:SP-2025-H2:series-oa-gpt5-d90a8cae40",
+        "evidence:SP-2025-H2:series-oa-gpt-oss-ca4a8f2a95",
+        "evidence:SP-2025-H2:item-official-index-google-deepmind-blog-9b2b580695",
+        "evidence:SP-2025-H2:series-vllm-h2-c06db6d580",
+        "evidence:SP-2025-H2:item-official-feed-ad13fe7d3321b824a618-aeb0fa89f4"
+      ],
+      "page_target": 7,
+      "editorial_angle": "個別発表を再列挙せず、model family、agent execution、open deployment、multimodal/action space、runtime、controlが半年の中で相互依存するようになったことを束ね、2025年末時点で残った未解決境界を示す。",
+      "must_cover": [
+        "7〜8月→9〜10月→11〜12月のcross-month変化",
+        "model/API/product/runtimeのidentity分離が必要になった理由",
+        "execution stackというhalf-year reclassification",
+        "runtimeとmodel churn、autonomyとcontrolのcross-layer依存",
+        "変わらなかった点・未解決点・coverage limitationを区別"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+        "The preserved newsroom snapshot is a living paginated index and its first HTML page emphasized 2026 entries; item-level official Anthropic pages were followed during interactive verification to reconstruct H2 2025 chronology.",
+        "The changelog is a service/API chronology, not an upstream research-release chronology; preview-to-GA and shutdown events should not be merged with initial model announcements.",
+        "Benchmark and 'best' claims remain vendor-attributed; release, API availability, model identity, controls, and safety-method publication are primary facts.",
+        "Open weights do not imply an unrestricted data/training disclosure; openness should be described specifically in terms of weights/license and deployment.",
+        "The preserved DeepMind index snapshot is paginated and its first page is not a complete H2 archive; item-level first-party pages were used during interactive verification.",
+        "Research prototypes, limited-partner robotics access, and generally available API models must remain distinct.",
+        "Project release notes establish software changes and dates; performance implications vary by workload and hardware."
+      ],
+      "late_breaking": false,
+      "drafting_order": 8
+    },
+    {
+      "package_id": "references-method",
+      "title": "参考文献・一次資料・検証メモ",
+      "package_type": "REFERENCES",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [],
+      "page_target": 3,
+      "editorial_angle": "採用Evidence、HOLD判断、claim class、chronology、collector coverageを読者と監査者が追跡できる形で生成する。",
+      "must_cover": [
+        "一次資料一覧",
+        "HOLD: Agentic AI Foundation / JANUS / Speculative Tool Calls",
+        "living/paginated/client-rendered indexの再検証境界",
+        "bounded arXiv/GitHub/official collector coverage",
+        "後日arXiv revisionをperiod factへ逆投影しない"
+      ],
+      "boundaries": [],
+      "late_breaking": false,
+      "drafting_order": 9
+    }
+  ],
+  "this_week_summary_written_last": true
+}

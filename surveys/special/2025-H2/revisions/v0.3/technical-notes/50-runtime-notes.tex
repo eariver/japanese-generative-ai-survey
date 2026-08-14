@@ -1,0 +1,171 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{RuntimeはModel Churnをどう吸収したか — Transformers・vLLM・SGLang・TensorRT-LLM: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+vLLM v0.10→v0.13 & 主要資料 & Framework & 2025-07-24 (RUNTIME（公開）); 2025-10-02 (RUNTIME（公開）); 2025-12-19 (RUNTIME（公開）)  \\
+SGLang v0.5.1→v0.5.6 & 補足資料 & Framework & 2025-08-23 (RUNTIME（公開）); 2025-12-03 (RUNTIME（公開）)  \\
+TensorRT-LLM v1.0→v1.1 & 補足資料 & Framework & 2025-09-24 (RUNTIME STABLE（公開）); 2025-12-19 (RUNTIME（公開）)  \\
+Transformers v4.54→v4.57 model/runtime uptake & 補足資料 & Framework & 2025-07-25 (LIBRARY（公開）); 2025-08-05 (GPT OSS INTEGRATION（公開）); 2025-10-03 (MULTIMODAL モデル UPTAKE（公開）)  \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{vLLM v0.10→v0.13}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & vLLM project \\
+種別 & Framework \\
+時系列 & 2025-07-24 (RUNTIME（公開）); 2025-10-02 (RUNTIME（公開）); 2025-12-19 (RUNTIME（公開）) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Project claim}: 「vLLM v0.10→v0.13」について、提供元・プロジェクト・著者側の評価または説明として記録された項目。独立再現された結果を意味しない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 「vLLM v0.10→v0.13」の扱いでは、一次資料で確認できる範囲、提供時点、評価条件を維持し、記載範囲を超えて一般化しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://github.com/vllm-project/vllm/releases/tag/v0.10.0}}
+\item {\scriptsize\url{https://github.com/vllm-project/vllm/releases/tag/v0.11.0}}
+\item {\scriptsize\url{https://github.com/vllm-project/vllm/releases/tag/v0.13.0}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{SGLang v0.5.1→v0.5.6}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & SGLang project \\
+種別 & Framework \\
+時系列 & 2025-08-23 (RUNTIME（公開）); 2025-12-03 (RUNTIME（公開）) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Project claim}: 「SGLang v0.5.1→v0.5.6」について、提供元・プロジェクト・著者側の評価または説明として記録された項目。独立再現された結果を意味しない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 「SGLang v0.5.1→v0.5.6」の扱いでは、一次資料で確認できる範囲、提供時点、評価条件を維持し、記載範囲を超えて一般化しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://github.com/sgl-project/sglang/releases/tag/v0.5.1}}
+\item {\scriptsize\url{https://github.com/sgl-project/sglang/releases/tag/v0.5.6}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{TensorRT-LLM v1.0→v1.1}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & NVIDIA \\
+種別 & Framework \\
+時系列 & 2025-09-24 (RUNTIME STABLE（公開）); 2025-12-19 (RUNTIME（公開）) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Project claim}: 「TensorRT-LLM v1.0→v1.1」について、提供元・プロジェクト・著者側の評価または説明として記録された項目。独立再現された結果を意味しない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 「TensorRT-LLM v1.0→v1.1」の扱いでは、一次資料で確認できる範囲、提供時点、評価条件を維持し、記載範囲を超えて一般化しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://github.com/NVIDIA/TensorRT-LLM/releases/tag/v1.0.0}}
+\item {\scriptsize\url{https://github.com/NVIDIA/TensorRT-LLM/releases/tag/v1.1.0}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Transformers v4.54→v4.57 model/runtime uptake}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Hugging Face \\
+種別 & Framework \\
+時系列 & 2025-07-25 (LIBRARY（公開）); 2025-08-05 (GPT OSS INTEGRATION（公開）); 2025-10-03 (MULTIMODAL モデル UPTAKE（公開）) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Project claim}: 「Transformers v4.54→v4.57 model/runtime uptake」について、提供元・プロジェクト・著者側の評価または説明として記録された項目。独立再現された結果を意味しない。
+\item \textbf{分析上の留意点}: 「Transformers v4.54→v4.57 model/runtime uptake」について、一次資料と時系列から導いた編集上の整理。根拠となる事実と推論を区別して扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 「Transformers v4.54→v4.57 model/runtime uptake」の扱いでは、一次資料で確認できる範囲、提供時点、評価条件を維持し、記載範囲を超えて一般化しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://github.com/huggingface/transformers/releases/tag/v4.54.0}}
+\item {\scriptsize\url{https://github.com/huggingface/transformers/releases/tag/v4.55.0}}
+\item {\scriptsize\url{https://github.com/huggingface/transformers/releases/tag/v4.57.0}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
