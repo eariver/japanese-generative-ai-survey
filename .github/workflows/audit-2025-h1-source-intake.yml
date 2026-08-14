@@ -31,6 +31,14 @@ jobs:
             --manifest specials/2025-H1/edition.json \
             --output out/audit-control/plan.json \
             --markdown-output out/audit-control/plan.md
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          cfg=json.loads(Path('config/source-intake.json').read_text())
+          # Audit-only pacing reduction. Query set, limits, temporal partitioning, and collector semantics are unchanged.
+          cfg['arxiv']['delay_seconds']=3
+          Path('out/audit-control/source-intake.json').write_text(json.dumps(cfg, ensure_ascii=False, indent=2)+'\n')
+          PY
       - name: Run current temporal-aware Special Source Intake
         shell: bash
         env:
@@ -38,6 +46,7 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/special_source_intake.py \
+            --config out/audit-control/source-intake.json \
             --plan out/audit-control/plan.json \
             --output-root out/audit-intake \
             --collector all
