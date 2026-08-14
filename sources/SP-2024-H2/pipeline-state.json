@@ -2,22 +2,22 @@
   "schema_version": "1.0",
   "issue_id": "SP-2024-H2",
   "edition_kind": "RETROSPECTIVE_PERIOD",
-  "lifecycle_state": "SELECTION_COMPLETE",
-  "revision": "v0.1",
+  "lifecycle_state": "ISSUE_INITIALIZED",
+  "revision": "v0.1-recovery",
   "calendar": {
     "editorial_cutoff": "2024-12-31T23:59:59Z",
     "cutoff_timezone": "UTC",
     "collection_window_start": "2024-07-01T00:00:00Z",
     "collection_window_end": "2024-12-31T23:59:59Z",
-    "collection_anchor_at": "2024-12-31T23:59:59Z",
+    "collection_anchor_at": null,
     "retrospective_as_of": "2026-08-14T11:35:00Z",
     "frozen_at": null
   },
   "gates": {
-    "raw_sources_preserved": "passed",
-    "candidate_inventory": "passed",
-    "evidence_normalized": "passed",
-    "candidate_selection": "passed",
+    "raw_sources_preserved": "pending",
+    "candidate_inventory": "pending",
+    "evidence_normalized": "pending",
+    "candidate_selection": "pending",
     "issue_architecture": "pending",
     "article_draft": "pending",
     "claim_and_chronology_validation": "pending",
@@ -44,39 +44,23 @@
   },
   "provenance": {
     "edition_manifest": "specials/2024-H2/edition.json",
-    "primary_source_reconstruction": {
-      "path": "sources/SP-2024-H2/collectors/curated/runs/20260814T115800Z/raw/h2-primary-source-reconstruction.json",
-      "sha256": "72fbe26528c18e7a179521c49db806947629091ff4ea26dc19b64ecad1991c3d"
-    },
-    "evidence_reconstruction": {
-      "path": "sources/SP-2024-H2/evidence/h2-reconstruction-v0.1.json",
-      "sha256": "0db0fb21fcfa29c403ae2d9d2add1313867e73ad396bd69dc484fd3074011108",
-      "source_intake": 36,
-      "screened_accept": 34,
-      "held": 2,
-      "rejected": 0
-    },
-    "candidate_selection": {
-      "path": "sources/SP-2024-H2/selection/candidate-selection-v0.1.json",
-      "sha256": "cb1b6ea7387c4c3a7cbffc247145b5acace3d8925956e4b777c6c76755994502",
-      "matrix_path": "sources/SP-2024-H2/selection/candidate-matrix-v0.1.json",
-      "matrix_sha256": "65e6b684cb53bce56727d06e33094e81efce4a9110c3efce4bab7efeddccf1bb",
-      "approval_reference": "Internal Candidate Selection checkpoint for SP-2024-H2 from 34 accepted primary-source reconstruction records; this is not a Human Gate Architecture approval. The user requested autonomous progress through Architecture Review only."
-    },
-    "architecture_input": {
-      "path": "sources/SP-2024-H2/architecture/architecture-input-v0.1.json",
-      "sha256": "edf6ca5299707a71ea77337c6b79a6bd05a590bfae60316525a77337a10f3e05"
-    },
-    "issue_architecture": {
-      "path": "sources/SP-2024-H2/architecture/issue-architecture-v0.1.json",
-      "sha256": "721e6a4c19f3cda11ba47b3d5121d4253509ace0d05ea0d250607eca05a4129d",
-      "status": "PROPOSED",
-      "approval_reference": null
-    },
-    "architecture_review": {
-      "path": "sources/SP-2024-H2/architecture/architecture-review-v0.1.md",
-      "sha256": "f6df0b8f57e5ffdabbcff2ff7f5d289d0e2ed804ec6e9219f698ecff510ca97a",
-      "status": "AWAITING_HUMAN_GATE_1"
+    "recovery": {
+      "status": "FULL_SOURCE_INTAKE_REDISPATCHED",
+      "reason": "The first Architecture attempt incorrectly treated a 36-item curated primary-source reconstruction as Source Intake instead of running the canonical broad source-intake collectors and Screening pipeline.",
+      "workflow_run_id": 31799954883,
+      "request_nonce": "20260814-2024-h2-source-intake-recovery-v01"
+    }
+  },
+  "provenance_history": {
+    "superseded_curated_attempt_v0.1": {
+      "primary_source_reconstruction_path": "sources/SP-2024-H2/collectors/curated/runs/20260814T115800Z/raw/h2-primary-source-reconstruction.json",
+      "evidence_path": "sources/SP-2024-H2/evidence/h2-reconstruction-v0.1.json",
+      "selection_path": "sources/SP-2024-H2/selection/candidate-selection-v0.1.json",
+      "architecture_path": "sources/SP-2024-H2/architecture/issue-architecture-v0.1.json",
+      "architecture_review_path": "sources/SP-2024-H2/architecture/architecture-review-v0.1.md",
+      "source_intake_claimed": 36,
+      "status": "SUPERSEDED_INCOMPLETE_SOURCE_INTAKE",
+      "superseded_reason": "Canonical Special source-intake was not executed before Screening/Evidence/Selection. Architecture v0.1 is not eligible for Human Gate approval."
     }
   }
 }
