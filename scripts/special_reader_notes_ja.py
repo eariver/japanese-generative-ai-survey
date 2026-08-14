@@ -7,6 +7,7 @@ import shlex
 import stat
 import sys
 from pathlib import Path
+from typing import Any
 
 from scripts.special_reader_notes_ja_core import *  # noqa: F401,F403
 from scripts import special_reader_notes_ja_core as core
@@ -26,6 +27,235 @@ def arg_value(name: str, default: str | None = None) -> str | None:
         return sys.argv[sys.argv.index(name) + 1]
     except (ValueError, IndexError):
         return default
+
+
+def _artifact_name(record: dict[str, Any]) -> str:
+    task_id = str(record.get("evidence_task_id") or "")
+    value = core.card(record)
+    artifact = value.get("artifact") or {}
+    canonical = str(artifact.get("canonical_name") or "").strip()
+    if canonical:
+        return canonical
+    for source in value.get("sources") or []:
+        if isinstance(source, dict) and str(source.get("title") or "").strip():
+            return str(source["title"]).strip()
+    return task_id
+
+
+def _event_summary_item(event: dict[str, Any]) -> dict[str, Any]:
+    text = str(event.get("description") or "")
+    return {
+        "item_id": str(event.get("event_id") or ""),
+        "evidence_class": "PRIMARY_FACT",
+        "source_text": text,
+        "source_text_sha256": core.sha256_bytes(text),
+        "text_ja": "",
+    }
+
+
+def collect_template_records_compat(root: Path, issue_id: str) -> list[dict[str, Any]]:
+    plan = core.load_json(root / "sources" / issue_id / "architecture" / "issue-architecture-v0.1.json")
+    package_dir = root / "sources" / issue_id / "drafting" / "packages" / "v0.1"
+    package_ids = [
+        str(p["package_id"])
+        for p in plan.get("packages") or []
+        if isinstance(p, dict) and p.get("package_type") in core.ARTICLE_TYPES
+    ]
+    records: dict[str, dict[str, Any]] = {}
+    for package_id in package_ids:
+        package = core.load_json(package_dir / f"{package_id}.json")
+        for record in core.evidence_records(package):
+            task_id = str(record.get("evidence_task_id") or "")
+            if not task_id:
+                raise ValueError(f"{package_id}: Evidence record has no evidence_task_id")
+            c = core.card(record)
+            claims = [core.summary_item(x, "claim_id") for x in c.get("claims") or [] if isinstance(x, dict) and x.get("text")]
+            limitations = [core.summary_item(x, "limitation_id") for x in c.get("limitations") or [] if isinstance(x, dict) and x.get("text")]
+            events = []
+            if not claims:
+                for event in (c.get("temporal") or {}).get("events") or []:
+                    if isinstance(event, dict) and event.get("event_id") and event.get("description"):
+                        events.append(_event_summary_item(event))
+            prepared = {
+                "evidence_task_id": task_id,
+                "artifact_name": _artifact_name(record),
+                "claims": claims,
+                "limitations": limitations,
+                "event_facts": events,
+            }
+            existing = records.get(task_id)
+            if existing is not None and existing != prepared:
+                raise ValueError(f"Evidence record differs across Draft Packages: {task_id}")
+            records[task_id] = prepared
+    return [records[key] for key in sorted(records)]
+
+
+def _replace_event_item(block: str, source: dict[str, Any], summary: dict[str, Any], context: str) -> tuple[str, int]:
+    item_id = str(source.get("event_id") or "")
+    source_text = str(source.get("description") or "")
+    if not item_id or not source_text:
+        return block, 0
+    if summary.get("source_text_sha256") != core.sha256_bytes(source_text):
+        raise ValueError(f"source text SHA mismatch in Japanese summary artifact: {context}/{item_id}")
+    if summary.get("source_text") != source_text:
+        raise ValueError(f"source text copy mismatch in Japanese summary artifact: {context}/{item_id}")
+    text_ja = str(summary.get("text_ja") or "")
+    core.validate_ja(text_ja, f"{context}/{item_id}")
+    label = core.expansion.CLASS_LABELS.get("PRIMARY_FACT", "PRIMARY_FACT")
+    old = r"\item \textbf{" + core.expansion.tex_escape(label) + "}: " + core.expansion.tex_escape(source_text)
+    new = r"\item \textbf{" + core.expansion.tex_escape(label) + "}: " + core.expansion.tex_escape(text_ja)
+    count = block.count(old)
+    if count != 1:
+        raise ValueError(f"expected one source-bound Technical Notes event item, found {count}: {context}/{item_id}")
+    return block.replace(old, new, 1), 1
+
+
+def apply_compat(root: Path, issue_id: str, special_slug: str, summary_path: Path) -> dict[str, Any]:
+    data = core.load_json(summary_path)
+    if data.get("issue_id") != issue_id:
+        raise ValueError("reader-facing summary issue_id mismatch")
+    summaries = core.summary_index(data)
+
+    state_path = root / "sources" / issue_id / "pipeline-state.json"
+    state = core.load_json(state_path)
+    source = state.get("provenance", {}).get("validated_issue_source") or {}
+    manifest_path = root / str(source.get("path") or "")
+    if not manifest_path.is_file() or core.sha256_file(manifest_path) != source.get("sha256"):
+        raise ValueError("state-pinned source manifest missing or SHA mismatch")
+    if root / "surveys" / "special" / special_slug not in manifest_path.parents:
+        raise ValueError("state-pinned source does not belong to requested Special slug")
+    manifest = core.load_json(manifest_path)
+
+    total = 0
+    used_tasks: set[str] = set()
+    for article in manifest.get("articles") or []:
+        package_path = root / str(article.get("draft_package_path") or "")
+        note_path = manifest_path.parent / str(article.get("technical_notes_path") or "")
+        if not package_path.is_file() or not note_path.is_file():
+            raise ValueError(f"article source/Technical Notes missing: {article.get('package_id')}")
+        package = core.load_json(package_path)
+        text = note_path.read_text(encoding="utf-8")
+        blocks = list(core.NOTE_BLOCK_RE.finditer(text))
+        replacements: list[tuple[int, int, str]] = []
+        used_ranges: set[tuple[int, int]] = set()
+        for record in core.evidence_records(package):
+            task_id = str(record.get("evidence_task_id") or "")
+            if task_id not in summaries:
+                raise ValueError(f"Japanese summary record missing: {task_id}")
+            summary_record = summaries[task_id]
+            artifact_name = str(summary_record.get("artifact_name") or _artifact_name(record))
+            block_match = core.find_note_block(blocks, task_id, artifact_name)
+            block_range = (block_match.start(), block_match.end())
+            if block_range in used_ranges:
+                raise ValueError(f"Technical Notes title fallback was ambiguous across Evidence records: {artifact_name}")
+            used_ranges.add(block_range)
+            block = block_match.group(0)
+            claim_map = core.item_index(summary_record, "claims")
+            limitation_map = core.item_index(summary_record, "limitations")
+            event_map = core.item_index(summary_record, "event_facts")
+            c = core.card(record)
+            claims = c.get("claims") or []
+            for claim in claims:
+                if not isinstance(claim, dict) or not claim.get("text"):
+                    continue
+                item_id = str(claim.get("claim_id") or "")
+                if item_id not in claim_map:
+                    raise ValueError(f"Japanese claim summary missing: {task_id}/{item_id}")
+                block, count = core.replace_item(block, claim, claim_map[item_id], "claim_id", task_id)
+                total += count
+            if not claims:
+                for event in (c.get("temporal") or {}).get("events") or []:
+                    if not isinstance(event, dict) or not event.get("description"):
+                        continue
+                    item_id = str(event.get("event_id") or "")
+                    if item_id not in event_map:
+                        raise ValueError(f"Japanese event summary missing: {task_id}/{item_id}")
+                    block, count = _replace_event_item(block, event, event_map[item_id], task_id)
+                    total += count
+            for limitation in c.get("limitations") or []:
+                if not isinstance(limitation, dict) or not limitation.get("text"):
+                    continue
+                item_id = str(limitation.get("limitation_id") or "")
+                if item_id not in limitation_map:
+                    raise ValueError(f"Japanese limitation summary missing: {task_id}/{item_id}")
+                block, count = core.replace_item(block, limitation, limitation_map[item_id], "limitation_id", task_id)
+                total += count
+            replacements.append((block_match.start(), block_match.end(), block))
+            used_tasks.add(task_id)
+        for start, end, block in reversed(replacements):
+            text = text[:start] + block + text[end:]
+        note_path.write_text(text, encoding="utf-8")
+        article["technical_notes_sha256"] = core.sha256_file(note_path)
+
+    extra = sorted(set(summaries) - used_tasks)
+    if extra:
+        raise ValueError(f"Japanese summary artifact contains unused Evidence records: {extra}")
+
+    reader = dict(manifest.get("reader_facing_technical_notes") or {})
+    reader.update({
+        "language_policy": "ja-reader-summary-v1",
+        "claim_limitation_sentence_structure": "Japanese by default for claim, limitation, and event-fact summaries; precision-critical technical terms may remain English",
+        "attribution_labels_preserved": True,
+        "source_evidence_unchanged": True,
+        "event_only_evidence_policy": "temporal-event-as-primary-fact",
+        "summary_artifact_path": summary_path.relative_to(root).as_posix(),
+        "summary_artifact_sha256": core.sha256_file(summary_path),
+        "summary_replacement_count": total,
+    })
+    manifest["reader_facing_technical_notes"] = reader
+    core.write_json(manifest_path, manifest)
+    source["sha256"] = core.sha256_file(manifest_path)
+    source["reader_facing_notes_language"] = "ja-reader-summary-v1"
+    core.write_json(state_path, state)
+    return {
+        "status": "READER_NOTES_JA_APPLIED",
+        "issue_id": issue_id,
+        "source_manifest": manifest_path.relative_to(root).as_posix(),
+        "source_manifest_sha256": source["sha256"],
+        "summary_artifact": summary_path.relative_to(root).as_posix(),
+        "summary_replacement_count": total,
+    }
+
+
+def verify_source_text(root: Path, issue_id: str, doc: dict[str, Any]) -> None:
+    expected = {r["evidence_task_id"]: r for r in collect_template_records_compat(root, issue_id)}
+    actual = {str(r.get("evidence_task_id") or ""): r for r in doc.get("records") or [] if isinstance(r, dict)}
+    if set(expected) != set(actual):
+        raise ValueError("reader-notes Evidence task set differs from immutable Draft Packages")
+    for task_id, source_record in expected.items():
+        supplied = actual[task_id]
+        if supplied.get("artifact_name") != source_record.get("artifact_name"):
+            raise ValueError(f"reader-notes artifact name mismatch: {task_id}")
+        for key in ("claims", "limitations", "event_facts"):
+            source_items = {x["item_id"]: x for x in source_record.get(key) or []}
+            supplied_items = {x.get("item_id"): x for x in supplied.get(key) or [] if isinstance(x, dict)}
+            if set(source_items) != set(supplied_items):
+                raise ValueError(f"reader-notes {key} set mismatch: {task_id}")
+            for item_id, src in source_items.items():
+                item = supplied_items[item_id]
+                if item.get("source_text") != src.get("source_text") or item.get("source_text_sha256") != src.get("source_text_sha256"):
+                    raise ValueError(f"reader-notes source text mismatch: {task_id}/{key}/{item_id}")
+
+
+def validate_summary(doc: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    ready = doc.get("status") == "READY"
+    for record in doc.get("records") or []:
+        if not isinstance(record, dict):
+            errors.append("summary record must be object")
+            continue
+        task = str(record.get("evidence_task_id") or "<missing>")
+        for key in ("claims", "limitations", "event_facts"):
+            for item in record.get(key) or []:
+                if not isinstance(item, dict):
+                    errors.append(f"{task}/{key}: summary item must be object")
+                    continue
+                if ready:
+                    try:
+                        core.validate_ja(str(item.get("text_ja") or ""), f"{task}/{key}/{item.get('item_id')}")
+                    except ValueError as exc:
+                        errors.append(str(exc))
+    return errors
 
 
 def check_compat(root: Path, issue_id: str) -> dict:
@@ -78,9 +308,12 @@ def check_compat(root: Path, issue_id: str) -> dict:
     return report
 
 
-# core.main resolves check from its module globals, so patch the compatibility
-# validation before dispatching any subcommand.
+core.collect_template_records = collect_template_records_compat
+core.apply = apply_compat
 core.check = check_compat
+collect_template_records = collect_template_records_compat
+apply = apply_compat
+check = check_compat
 
 
 def install_fill_hook() -> None:

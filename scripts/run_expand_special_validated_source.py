@@ -37,10 +37,40 @@ def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def compat_card_name(record: dict[str, Any]) -> str:
+    """Return a reader-facing name even for compact event-only Evidence cards."""
+    c = expansion.card(record)
+    artifact = c.get("artifact") or {}
+    canonical = str(artifact.get("canonical_name") or "").strip()
+    if canonical:
+        return canonical
+    for source in c.get("sources") or []:
+        if isinstance(source, dict) and str(source.get("title") or "").strip():
+            return str(source["title"]).strip()
+    return str(record.get("evidence_task_id") or "Evidence record")
+
+
+def compat_event_dates(record: dict[str, Any]) -> str:
+    """Read both canonical event_date and compact reconstruction occurred_at fields."""
+    c = expansion.card(record)
+    dates: list[str] = []
+    for event in (c.get("temporal") or {}).get("events") or []:
+        if not isinstance(event, dict):
+            continue
+        value = str(event.get("event_date") or event.get("occurred_at") or "").strip()
+        if value and value not in dates:
+            dates.append(value)
+    return ", ".join(dates) if dates else "—"
+
+
 def safe_note(role: str, record: dict[str, Any]) -> str:
     c = expansion.card(record)
     claims = c.get("claims") or []
     limitations = c.get("limitations") or []
+    events = [
+        event for event in (c.get("temporal") or {}).get("events") or []
+        if isinstance(event, dict) and str(event.get("description") or "").strip()
+    ]
     esc = expansion.tex_escape
     task_id = str(record.get("evidence_task_id") or "")
     lines = [
@@ -61,8 +91,12 @@ def safe_note(role: str, record: dict[str, Any]) -> str:
             cls = str(claim.get("evidence_class") or "")
             label = expansion.CLASS_LABELS.get(cls, cls or "Claim")
             lines.append(r"\item \textbf{" + esc(label) + "}: " + esc(str(claim["text"])))
+    elif events:
+        label = expansion.CLASS_LABELS.get("PRIMARY_FACT", "PRIMARY_FACT")
+        for event in events:
+            lines.append(r"\item \textbf{" + esc(label) + "}: " + esc(str(event["description"])))
     else:
-        lines.append(r"\item このrecordには独立したnormalized claimは記録されていない。")
+        raise ValueError(f"{task_id}: Technical Notes require a normalized claim or temporal event description")
     lines.append(r"\end{itemize}")
 
     if limitations:
@@ -227,6 +261,8 @@ def main() -> int:
         joined["title"] = titles[package_id]
         return original_renderer(joined)
 
+    expansion.card_name = compat_card_name
+    expansion.event_dates = compat_event_dates
     expansion.artifact_type = display_artifact_type
     expansion.render_note = safe_note
     expansion.render_technical_notes = render_with_architecture_title

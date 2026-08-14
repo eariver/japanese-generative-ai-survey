@@ -2,8 +2,8 @@
 """Fill Special Japanese Technical Notes only from reviewed source-bound overrides.
 
 Missing reader-facing summaries are an editorial error. This path deliberately has
-no generic fallback: if an Evidence claim/limitation has not been reviewed, the
-revision must stop before publication-facing TeX is generated.
+no generic fallback: if an Evidence claim, limitation, or event fact has not been
+reviewed, the revision must stop before publication-facing TeX is generated.
 """
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ def run(repo_root: Path, issue_id: str, summary_path: Path, overrides_dir: Path)
     artifact_by_task: dict[str,str]={}
     for record in doc.get('records') or []:
         task=record['evidence_task_id']; artifact_by_task[task]=record['artifact_name']
-        for key,kind in (('claims','claim'),('limitations','limitation')):
+        for key,kind in (('claims','claim'),('limitations','limitation'),('event_facts','event')):
             for item in record.get(key) or []:
                 index[(task,kind,item['item_id'])]=item
 
