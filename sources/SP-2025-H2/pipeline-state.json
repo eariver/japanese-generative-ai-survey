@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "issue_id": "SP-2025-H2",
   "edition_kind": "RETROSPECTIVE_PERIOD",
-  "lifecycle_state": "RELEASE_CANDIDATE",
+  "lifecycle_state": "VALIDATED_DRAFT",
   "revision": "v0.1",
   "calendar": {
     "editorial_cutoff": "2025-12-31T23:59:59Z",
@@ -21,7 +21,7 @@
     "issue_architecture": "passed",
     "article_draft": "passed",
     "claim_and_chronology_validation": "passed",
-    "latex_build": "passed",
+    "latex_build": "pending",
     "visual_review": "pending",
     "freeze": "pending"
   },
@@ -77,35 +77,17 @@
       "sha256": "a492aae3c40bc234fbd398882171358542a2ba76fe4f093142ac636749ae164d"
     },
     "validated_issue_source": {
-      "path": "surveys/special/2025-H2/revisions/v0.4/source-manifest.json",
-      "sha256": "3b30afb6a3ff62980b08e2598460c823b6987e07584fa89af3e2257d4b23c686",
-      "source_version": "v0.4",
-      "expansion_basis": "selected Evidence cards only",
-      "typography_revision": "v0.4-reference-title-cleanup",
-      "layout_mode": "balanced-local-multicol-narrative-full-width-evidence",
-      "prebuild_layout": true,
-      "reader_facing_notes_language": "ja-reader-summary-v1",
-      "reader_facing_technical_notes": true,
-      "period_consistency": true
+      "path": "surveys/special/2025-H2/revisions/v0.5/source-manifest.json",
+      "sha256": "28af2596eccfbac0e02fbaff5cc209766302732e57e4c3b36753bed27ffdaa12",
+      "source_version": "v0.5",
+      "layout_mode": "mixed-local-two-column-narrative-full-width-evidence",
+      "editorial_supplement_sha256": "76349cbeff1e4b085e091cd48d68be00c6fd5fe4ec7874791c6c4de963848df6"
     },
-    "latex_build": {
-      "workflow_run_id": 31760794301,
-      "pdf_sha256": "3826fbf53eeb1eda38137f02a57f8eda943dddb7b863aaa3fa44ce59743a4e10",
-      "page_count": 32,
-      "source_version": "v0.4",
-      "validated_issue_source_path": "worktree/surveys/special/2025-H2/revisions/v0.4/source-manifest.json",
-      "validated_issue_source_sha256": "3b30afb6a3ff62980b08e2598460c823b6987e07584fa89af3e2257d4b23c686",
-      "page_budget": {
-        "soft_target": 64,
-        "hard_max": 96,
-        "below_soft_target": true,
-        "policy": "manifest-soft-target-hard-ceiling"
-      },
-      "build_style": {
-        "control_commit_sha": "95065825f9b8aec4d037c35c84c5a5c1e6bca2f7",
-        "path": "templates/survey/jgaisurvey.sty",
-        "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
-      }
+    "reader_layout_revision": {
+      "source_version": "v0.5",
+      "supplement_path": "sources/SP-2025-H2/editorial/theme-synthesis-v0.5.json",
+      "supplement_sha256": "76349cbeff1e4b085e091cd48d68be00c6fd5fe4ec7874791c6c4de963848df6",
+      "reason": "Reader-facing comparison-depth revision using only Evidence already selected by the approved Architecture; the existing local balanced two-column narrative and full-width Technical Notes are preserved."
     }
   },
   "provenance_history": {
@@ -138,6 +120,39 @@
         "reader_facing_notes_language": "ja-reader-summary-v1",
         "reader_facing_technical_notes": true,
         "period_consistency": true
+      },
+      {
+        "path": "surveys/special/2025-H2/revisions/v0.4/source-manifest.json",
+        "sha256": "3b30afb6a3ff62980b08e2598460c823b6987e07584fa89af3e2257d4b23c686",
+        "source_version": "v0.4",
+        "expansion_basis": "selected Evidence cards only",
+        "typography_revision": "v0.4-reference-title-cleanup",
+        "layout_mode": "balanced-local-multicol-narrative-full-width-evidence",
+        "prebuild_layout": true,
+        "reader_facing_notes_language": "ja-reader-summary-v1",
+        "reader_facing_technical_notes": true,
+        "period_consistency": true
+      }
+    ],
+    "latex_build": [
+      {
+        "workflow_run_id": 31760794301,
+        "pdf_sha256": "3826fbf53eeb1eda38137f02a57f8eda943dddb7b863aaa3fa44ce59743a4e10",
+        "page_count": 32,
+        "source_version": "v0.4",
+        "validated_issue_source_path": "worktree/surveys/special/2025-H2/revisions/v0.4/source-manifest.json",
+        "validated_issue_source_sha256": "3b30afb6a3ff62980b08e2598460c823b6987e07584fa89af3e2257d4b23c686",
+        "page_budget": {
+          "soft_target": 64,
+          "hard_max": 96,
+          "below_soft_target": true,
+          "policy": "manifest-soft-target-hard-ceiling"
+        },
+        "build_style": {
+          "control_commit_sha": "95065825f9b8aec4d037c35c84c5a5c1e6bca2f7",
+          "path": "templates/survey/jgaisurvey.sty",
+          "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+        }
       }
     ]
   }
