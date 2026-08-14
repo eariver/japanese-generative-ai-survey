@@ -1,0 +1,23 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{Half-year Synthesis — ReasoningからExecution Stackへ}
+\label{pkg:synthesis}
+\noindent\textbf{2025年前半を半年単位で見ると、reasoningの製品化、agent primitives、open-weight multimodality、tool protocolが別々の流行ではなく、modelの外側まで含むexecution stackへ収束し始めたことが見える。}\autocite{src-421ee9af3f80,src-4ec03078d316,src-78593f4b387f}
+
+1〜2月は、reasoningとagentがまだ別々の線として見えた。DeepSeek-R1やo3-miniがthinking capabilityを製品化する一方、OperatorやDeep Researchはbrowser actionとweb researchを別のuser-facing workflowとして立ち上げた。\autocite{src-421ee9af3f80}
+
+
+3〜4月になると、Responses API/Agents SDKがbuilt-in toolsやtracingをplatform primitiveとしてまとめ、Gemini 2.5、Llama 4、Qwen3のようなmodel側でもreasoning、multimodality、MoE、thinking modeが重なった。model capabilityとharnessの境界が接近した。\autocite{src-05f285e9757b,src-3e4a3f3b3d83,src-421ee9af3f80,src-78593f4b387f}
+
+
+5〜6月にはClaude 4がcoding/reasoning/agent利用を前面に出し、Responses APIではremote MCPやbackground modeなどexecution surfaceが拡張された。Gemini 2.5のGAを含め、experimentだけでなく継続運用を前提にしたservice lifecycleも定着した。\autocite{src-4ec03078d316,src-9257c39d4172}
+
+
+この流れから、reasoning modelを独立カテゴリとして固定するより、agent executionを支えるcapability layerとして読む方が半年の変化を説明しやすい。thinkingそのものより、tool、context、sandbox、multimodalityとどう接続されるかが実用能力を左右し始めた。\autocite{src-421ee9af3f80,src-4ec03078d316,src-78593f4b387f}
+
+
+一方で、long-horizon reliability、tool経由のsecurity boundary、vendor benchmarkの再現性、open-weightのlicense/data transparency、preview→GA→deprecationの運用負荷はH1末にも解消していない。H2ではこれらがexecution stackとcontrol layerの問題としてさらに前景化する。\autocite{src-05f285e9757b,src-3e4a3f3b3d83,src-9257c39d4172}
+
+
+\begin{claimboundary}
+このSynthesisは、H1の選定Evidenceを横断して得られる編集上の整理である。各社の性能優位を追加で認定するものではなく、確認されたrelease/availability/tool surfaceの関係から技術史上の構造を記述する。
+\end{claimboundary}
