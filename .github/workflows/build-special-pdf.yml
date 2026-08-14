@@ -36,6 +36,8 @@ jobs:
           python control-src/scripts/special_pipeline.py --config control-src/config/special-pipeline.json validate --manifest "$manifest"
           echo "special_id=$(python -c "import json; print(json.load(open('$manifest'))['special_id'])")" >> "$GITHUB_OUTPUT"
           echo "work_branch=$(python -c "import json; print(json.load(open('$manifest'))['paths']['work_branch'])")" >> "$GITHUB_OUTPUT"
+          echo "page_target=$(python -c "import json; print(int(json.load(open('$manifest'))['page_budget']['target']))")" >> "$GITHUB_OUTPUT"
+          echo "page_max=$(python -c "import json; print(int(json.load(open('$manifest'))['page_budget']['max']))")" >> "$GITHUB_OUTPUT"
       - name: Checkout Special work branch
         uses: actions/checkout@v6
         with:
@@ -121,6 +123,8 @@ jobs:
         env:
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
           SPECIAL_SLUG: ${{ inputs.special_slug }}
+          PAGE_TARGET: ${{ steps.edition.outputs.page_target }}
+          PAGE_MAX: ${{ steps.edition.outputs.page_max }}
           SOURCE_DIR: ${{ steps.source.outputs.source_dir }}
           SOURCE_MANIFEST: ${{ steps.source.outputs.source_manifest }}
           SOURCE_MANIFEST_SHA256: ${{ steps.source.outputs.source_manifest_sha256 }}
@@ -143,19 +147,21 @@ jobs:
           )
           digest=$(sha256sum "$pdf" | awk '{print $1}')
           if [ -z "$bad" ]; then clean=true; else clean=false; fi
-          python - "$SPECIAL_ID" "$SPECIAL_SLUG" "$pages" "$digest" "$clean" "$bad" "$CONTROL_COMMIT" "$STYLE_SHA256" "$SOURCE_MANIFEST" "$SOURCE_MANIFEST_SHA256" "$SOURCE_VERSION" <<'PY'
+          python - "$SPECIAL_ID" "$SPECIAL_SLUG" "$pages" "$digest" "$clean" "$bad" "$CONTROL_COMMIT" "$STYLE_SHA256" "$SOURCE_MANIFEST" "$SOURCE_MANIFEST_SHA256" "$SOURCE_VERSION" "$PAGE_TARGET" "$PAGE_MAX" <<'PY'
           import json,sys
-          issue,slug,pages,digest,clean,bad,control_commit,style_sha,source_manifest,source_sha,source_version=sys.argv[1:]
+          issue,slug,pages,digest,clean,bad,control_commit,style_sha,source_manifest,source_sha,source_version,page_target,page_max=sys.argv[1:]
           page_count=int(pages)
+          soft_target=int(page_target)
+          hard_max=int(page_max)
           out={'schema_version':'1.0','issue_id':issue,'special_slug':slug,
                'source_version':source_version,'source_manifest_path':source_manifest,
                'source_manifest_sha256':source_sha,
                'page_count':page_count,'pdf_sha256':digest,'log_clean':clean=='true',
                'log_gate_findings':bad.splitlines() if bad else [],
-               'page_target_soft':32,'page_target_max':40,
-               'below_soft_target':page_count < 32,
-               'page_target_status':'below-soft-target' if page_count < 32 else 'at-or-above-soft-target',
-               'page_budget_policy':'soft-target-hard-ceiling',
+               'page_target_soft':soft_target,'page_target_max':hard_max,
+               'below_soft_target':page_count < soft_target,
+               'page_target_status':'below-soft-target' if page_count < soft_target else 'at-or-above-soft-target',
+               'page_budget_policy':'manifest-soft-target-hard-ceiling',
                'build_style':{
                    'source_ref':'main','control_commit_sha':control_commit,
                    'path':'templates/survey/jgaisurvey.sty','sha256':style_sha,
@@ -164,7 +170,7 @@ jobs:
           open('special-pdf-build-audit.json','w',encoding='utf-8').write(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
           print(json.dumps(out,ensure_ascii=False,indent=2))
           PY
-          if [ "$pages" -lt 32 ]; then below_soft_target=true; else below_soft_target=false; fi
+          if [ "$pages" -lt "$PAGE_TARGET" ]; then below_soft_target=true; else below_soft_target=false; fi
           echo "page_count=$pages" >> "$GITHUB_OUTPUT"
           echo "pdf_sha256=$digest" >> "$GITHUB_OUTPUT"
           echo "log_clean=$clean" >> "$GITHUB_OUTPUT"
@@ -185,13 +191,15 @@ jobs:
         env:
           PAGE_COUNT: ${{ steps.analyze.outputs.page_count }}
           LOG_CLEAN: ${{ steps.analyze.outputs.log_clean }}
+          PAGE_TARGET: ${{ steps.edition.outputs.page_target }}
+          PAGE_MAX: ${{ steps.edition.outputs.page_max }}
         run: |
           set -euo pipefail
           test "$LOG_CLEAN" = true
-          if [ "$PAGE_COUNT" -lt 32 ]; then
-            echo "::warning title=Special page target::${PAGE_COUNT} pages is below the 32-page soft editorial target. Review Evidence/editorial completeness; do not add layout padding solely to reach the target."
+          if [ "$PAGE_COUNT" -lt "$PAGE_TARGET" ]; then
+            echo "::warning title=Special page target::${PAGE_COUNT} pages is below the ${PAGE_TARGET}-page soft editorial target. Review Evidence/editorial completeness; do not add layout padding solely to reach the target."
           fi
-          test "$PAGE_COUNT" -le 40
+          test "$PAGE_COUNT" -le "$PAGE_MAX"
       - name: Record successful PDF build gate
         working-directory: worktree
         shell: bash
@@ -199,6 +207,8 @@ jobs:
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
           WORK_BRANCH: ${{ steps.edition.outputs.work_branch }}
           PAGE_COUNT: ${{ steps.analyze.outputs.page_count }}
+          PAGE_TARGET: ${{ steps.edition.outputs.page_target }}
+          PAGE_MAX: ${{ steps.edition.outputs.page_max }}
           PDF_SHA256: ${{ steps.analyze.outputs.pdf_sha256 }}
           RUN_ID: ${{ github.run_id }}
           CONTROL_COMMIT: ${{ steps.build_style.outputs.control_commit }}
@@ -208,10 +218,12 @@ jobs:
           SOURCE_VERSION: ${{ steps.source.outputs.source_version }}
         run: |
           set -euo pipefail
-          python - "$SPECIAL_ID" "$PAGE_COUNT" "$PDF_SHA256" "$RUN_ID" "$CONTROL_COMMIT" "$STYLE_SHA256" "$SOURCE_MANIFEST" "$SOURCE_MANIFEST_SHA256" "$SOURCE_VERSION" <<'PY'
+          python - "$SPECIAL_ID" "$PAGE_COUNT" "$PDF_SHA256" "$RUN_ID" "$CONTROL_COMMIT" "$STYLE_SHA256" "$SOURCE_MANIFEST" "$SOURCE_MANIFEST_SHA256" "$SOURCE_VERSION" "$PAGE_TARGET" "$PAGE_MAX" <<'PY'
           import json,sys,pathlib
-          issue,pages,pdf_sha,run_id,control_commit,style_sha,source_manifest,source_sha,source_version=sys.argv[1:]
+          issue,pages,pdf_sha,run_id,control_commit,style_sha,source_manifest,source_sha,source_version,page_target,page_max=sys.argv[1:]
           page_count=int(pages)
+          soft_target=int(page_target)
+          hard_max=int(page_max)
           path=pathlib.Path('sources')/issue/'pipeline-state.json'
           state=json.load(open(path,encoding='utf-8'))
           assert state['lifecycle_state']=='VALIDATED_DRAFT'
@@ -223,10 +235,10 @@ jobs:
               'validated_issue_source_path':source_manifest,
               'validated_issue_source_sha256':source_sha,
               'page_budget':{
-                  'soft_target':32,
-                  'hard_max':40,
-                  'below_soft_target':page_count < 32,
-                  'policy':'soft-target-hard-ceiling',
+                  'soft_target':soft_target,
+                  'hard_max':hard_max,
+                  'below_soft_target':page_count < soft_target,
+                  'policy':'manifest-soft-target-hard-ceiling',
               },
               'build_style':{'control_commit_sha':control_commit,'path':'templates/survey/jgaisurvey.sty','sha256':style_sha},
           }
