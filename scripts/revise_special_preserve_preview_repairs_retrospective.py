@@ -26,23 +26,15 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--repo-root", default=".")
-    parser.add_argument("--special-slug", required=True)
-    parser.add_argument("--issue-id", required=True)
-    parser.add_argument("--source-version", required=True)
-    args = parser.parse_args()
+def build(root: Path, special_slug: str, issue_id: str, source_version: str) -> dict[str, Any]:
+    result = core.build(root, special_slug, issue_id, source_version)
 
-    root = Path(args.repo_root).resolve()
-    result = core.build(root, args.special_slug, args.issue_id, args.source_version)
-
-    edition = load_json(root / "specials" / args.special_slug / "edition.json")
+    edition = load_json(root / "specials" / special_slug / "edition.json")
     budget = edition.get("page_budget") or {}
     soft_target = int(budget["target"])
     hard_max = int(budget["max"])
 
-    state_path = root / "sources" / args.issue_id / "pipeline-state.json"
+    state_path = root / "sources" / issue_id / "pipeline-state.json"
     state = load_json(state_path)
     source = state["provenance"]["validated_issue_source"]
     manifest_path = root / source["path"]
@@ -56,7 +48,7 @@ def main() -> int:
     revision = manifest.setdefault("layout_revision", {})
     revision["page_target_soft"] = soft_target
     revision["page_target_hard_max"] = hard_max
-    revision["page_budget_source"] = f"specials/{args.special_slug}/edition.json"
+    revision["page_budget_source"] = f"specials/{special_slug}/edition.json"
     write_json(manifest_path, manifest)
 
     source["sha256"] = sha256(manifest_path)
@@ -65,7 +57,19 @@ def main() -> int:
     result["source_manifest_sha256"] = source["sha256"]
     result["page_target_soft"] = soft_target
     result["page_target_hard_max"] = hard_max
-    result["page_budget_source"] = f"specials/{args.special_slug}/edition.json"
+    result["page_budget_source"] = f"specials/{special_slug}/edition.json"
+    return result
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--repo-root", default=".")
+    parser.add_argument("--special-slug", required=True)
+    parser.add_argument("--issue-id", required=True)
+    parser.add_argument("--source-version", required=True)
+    args = parser.parse_args()
+
+    result = build(Path(args.repo_root).resolve(), args.special_slug, args.issue_id, args.source_version)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
 
