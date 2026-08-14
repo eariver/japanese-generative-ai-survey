@@ -8,43 +8,59 @@ from scripts.postprocess_special_reader_facing_notes_core import *  # noqa: F401
 from scripts import postprocess_special_reader_facing_notes_core as core
 
 _ORIGINAL_TRANSLATE = core.translate_machine_labels
+_ORIGINAL_FINDINGS = core.reader_taxonomy_findings
 _SUFFIX_LABELS = (
-    ("_PRERELEASE", "Pre-release"),
-    ("_PUBLICATION", "公開"),
-    ("_ANNOUNCEMENT", "発表"),
-    ("_RELEASE", "公開"),
-    ("_PREVIEW", "Preview"),
-    ("_UPDATE", "更新"),
-    ("_UPGRADE", "更新"),
-    ("_LAUNCH", "公開"),
-    ("_GA", "一般提供"),
-    ("_AVAILABILITY", "提供開始"),
-    ("_HARDENING", "強化"),
-    ("_EVALUATION", "評価"),
-    ("_INTEGRATION", "統合"),
-    ("_UPTAKE", "対応"),
-    ("_DEPRECATION", "非推奨化"),
-    ("_SHUTDOWN", "停止"),
+    ("_PRERELEASE", "（Pre-release）"),
+    ("_PUBLICATION", "（公開）"),
+    ("_ANNOUNCEMENT", "（発表）"),
+    ("_RELEASE", "（公開）"),
+    ("_PREVIEW", "（Preview）"),
+    ("_UPDATE", "（更新）"),
+    ("_UPGRADE", "（更新）"),
+    ("_LAUNCH", "（公開）"),
+    ("_GA", "（一般提供）"),
+    ("_AVAILABILITY", "（提供開始）"),
+    ("_HARDENING", "（強化）"),
+    ("_EVALUATION", "（評価）"),
+    ("_INTEGRATION", "（統合）"),
+    ("_UPTAKE", "（対応）"),
+    ("_DEPRECATION", "（非推奨化）"),
+    ("_SHUTDOWN", "（停止）"),
 )
 
 _EXACT_EVENT_LABELS = {
-    "AGENT_LAUNCH": "Agent公開",
-    "SAFETY_METHOD_PUBLICATION": "安全手法公開",
-    "MODEL_CARD_PUBLICATION": "Model Card公開",
-    "PRODUCT_TOOLING_RELEASE": "製品ツール公開",
-    "CODING_AGENT_UPDATE": "Coding Agent更新",
-    "CODING_MODEL_RELEASE": "Codingモデル公開",
-    "VIDEO_AUDIO_MODEL_RELEASE": "映像・音声モデル公開",
-    "RUNTIME_RELEASE": "Runtime公開",
-    "RUNTIME_STABLE_RELEASE": "Runtime安定版公開",
-    "LIBRARY_RELEASE": "Library公開",
-    "GPT_OSS_INTEGRATION_RELEASE": "gpt-oss統合",
-    "MULTIMODAL_MODEL_UPTAKE_RELEASE": "マルチモーダルモデル対応",
+    "AGENT_LAUNCH": "Agent（公開）",
+    "SAFETY_METHOD_PUBLICATION": "安全手法（公開）",
+    "MODEL_CARD_PUBLICATION": "Model Card（公開）",
+    "PRODUCT_TOOLING_RELEASE": "製品ツール（公開）",
+    "CODING_AGENT_UPDATE": "Coding Agent（更新）",
+    "CODING_MODEL_RELEASE": "Codingモデル（公開）",
+    "VIDEO_AUDIO_MODEL_RELEASE": "映像・音声モデル（公開）",
+    "RUNTIME_RELEASE": "Runtime（公開）",
+    "RUNTIME_STABLE_RELEASE": "Runtime安定版（公開）",
+    "LIBRARY_RELEASE": "Library（公開）",
+    "GPT_OSS_INTEGRATION_RELEASE": "gpt-oss（統合）",
+    "MULTIMODAL_MODEL_UPTAKE_RELEASE": "マルチモーダルモデル（対応）",
     "CROSS_LAB_SAFETY_EVALUATION": "複数組織安全性評価",
-    "ATLAS_SECURITY_HARDENING": "Atlasセキュリティ強化",
-    "OPEN_WEIGHT_SAFETY_MODEL_RELEASE": "オープンウェイト安全モデル公開",
-    "SAFETY_RESEARCH_RELEASE": "安全性研究公開",
-    "INTERACTIONS_API_AND_DEEP_RESEARCH_PREVIEW": "Interactions API / Deep Research Preview",
+    "ATLAS_SECURITY_HARDENING": "Atlasセキュリティ（強化）",
+    "OPEN_WEIGHT_SAFETY_MODEL_RELEASE": "オープンウェイト安全モデル（公開）",
+    "SAFETY_RESEARCH_RELEASE": "安全性研究（公開）",
+    "INTERACTIONS_API_AND_DEEP_RESEARCH_PREVIEW": "Interactions API / Deep Research（Preview）",
+}
+
+_LEGACY_H2_LABELS = {
+    "SAFETY METHOD（公開）": "安全手法（公開）",
+    "モデル CARD（公開）": "Model Card（公開）",
+    "CODING モデル公開": "Codingモデル（公開）",
+    "VIDEO AUDIO モデル公開": "映像・音声モデル（公開）",
+    "RUNTIME（公開）": "Runtime（公開）",
+    "RUNTIME STABLE（公開）": "Runtime安定版（公開）",
+    "LIBRARY（公開）": "Library（公開）",
+    "GPT OSS INTEGRATION（公開）": "gpt-oss（統合）",
+    "MULTIMODAL モデル UPTAKE（公開）": "マルチモーダルモデル（対応）",
+    "OPEN WEIGHT SAFETY モデル公開": "オープンウェイト安全モデル（公開）",
+    "OPEN_WEIGHT SAFETY モデル公開": "オープンウェイト安全モデル（公開）",
+    "SAFETY 研究（公開）": "安全性研究（公開）",
 }
 
 _TOKEN_LABELS = {
@@ -53,37 +69,60 @@ _TOKEN_LABELS = {
     "KIMI": "Kimi", "MINIMAX": "MiniMax", "HAILUO": "Hailuo", "MISTRAL": "Mistral",
     "DEVSTRAL": "Devstral", "VOXTRAL": "Voxtral", "CODESTRAL": "Codestral",
     "AUTOGLM": "AutoGLM", "GLM": "GLM", "SIMA": "SIMA", "GENIE": "Genie",
-    "VEO3": "Veo 3", "IMAGEN4": "Imagen 4", "ROBOTICS": "Robotics", "ER": "ER",
-    "GPT": "GPT", "OSS": "oss", "API": "API", "AI": "AI", "MCP": "MCP",
+    "VEO3": "VEO3", "IMAGEN4": "Imagen 4", "ROBOTICS": "Robotics", "ER": "ER",
+    "GPT": "GPT", "OSS": "OSS", "API": "API", "AI": "AI", "MCP": "MCP",
     "MODEL": "モデル", "PRODUCT": "製品", "AGENT": "Agent", "SAFETY": "安全性",
     "RESEARCH": "Research", "RUNTIME": "Runtime", "LIBRARY": "Library",
-    "SYSTEM": "System", "CARD": "Card", "COMPUTER": "Computer", "USE": "Use",
+    "SYSTEM": "System", "CARD": "Card", "COMPUTER": "COMPUTER", "USE": "USE",
     "BATCH": "Batch", "MODE": "Mode", "FLASH": "Flash", "LITE": "Lite",
     "IMAGE": "Image", "DEEP": "Deep", "INTERACTIONS": "Interactions", "TOOLING": "ツール",
     "ARCHITECTURE": "アーキテクチャ", "SECURITY": "セキュリティ", "PHONE": "Phone",
     "MULTILINGUAL": "Multilingual", "NEXT": "Next", "MAX": "Max", "OMNI": "Omni",
     "THINKING": "Thinking", "STUDIO": "Studio", "EXP": "Exp", "TERMINUS": "Terminus",
+    "CODING": "Coding", "AND": "/",
 }
 
 _MACHINE_SCHEMA_TOKENS = {
-    "ANNOUNCEMENT", "CODING", "EVALUATION", "HARDENING", "INTEGRATION", "LIBRARY",
-    "METHOD", "MULTIMODAL", "RUNTIME", "SAFETY", "STABLE", "TOOLING", "UPTAKE",
-    "VIDEO", "AUDIO", "CROSS", "LAB",
+    "ANNOUNCEMENT", "EVALUATION", "HARDENING", "INTEGRATION", "METHOD", "MULTIMODAL",
+    "SAFETY", "STABLE", "TOOLING", "UPTAKE", "VIDEO", "AUDIO", "CROSS", "LAB",
 }
+
+
+def _strip_generic_event_suffix(value: str) -> str:
+    value = value.strip()
+    if value.endswith("（技術イベント）"):
+        value = value[: -len("（技術イベント）")].rstrip()
+    return value
+
+
+def _normalize_legacy_label(value: str) -> str:
+    value = _strip_generic_event_suffix(value.replace(r"\_", "_").strip())
+    if value in _LEGACY_H2_LABELS:
+        return _LEGACY_H2_LABELS[value]
+    # Historical reader passes could replace only RESEARCH/MODEL while leaving
+    # the rest of a compound enum untouched. Recover the raw semantic shape.
+    value = value.replace("研究Preview", "RESEARCH_PREVIEW")
+    value = value.replace("研究（公開）", "RESEARCH_RELEASE")
+    value = value.replace("モデル公開", "MODEL_RELEASE")
+    value = value.replace("モデル更新", "MODEL_UPDATE")
+    if "_" not in value and re.search(r"\b[A-Z][A-Z0-9]*\b", value):
+        candidate = re.sub(r"\s+", "_", value)
+        if core._machine_taxonomy_label(candidate):
+            value = candidate
+    return value
 
 
 def _humanize_subject(value: str) -> str:
     parts = [p for p in value.split("_") if p]
     rendered = [_TOKEN_LABELS.get(p, p.title() if p.isalpha() else p) for p in parts]
-    text = " ".join(rendered)
+    text = " ".join(rendered).replace(" / ", " / ")
     text = re.sub(r"(?<=\d) (?=\d(?:V|$|\s))", ".", text)
     text = re.sub(r"\bGPT (\d(?:\.\d)?)\b", r"GPT-\1", text)
-    text = re.sub(r"\bV(\d)\.(\d)\b", r"V\1.\2", text)
     return text.strip()
 
 
 def readable_taxonomy_label(value: str) -> str:
-    normalized = value.replace(r"\_", "_").strip()
+    normalized = _normalize_legacy_label(value)
     if normalized in _EXACT_EVENT_LABELS:
         return _EXACT_EVENT_LABELS[normalized]
     if normalized in core.EVENT_LABELS:
@@ -93,11 +132,11 @@ def readable_taxonomy_label(value: str) -> str:
     if normalized == "PRODUCT":
         return "製品"
     if not core._machine_taxonomy_label(normalized):
-        return value
+        return _LEGACY_H2_LABELS.get(normalized, normalized)
     for suffix, label in _SUFFIX_LABELS:
         if normalized.endswith(suffix):
             subject = _humanize_subject(normalized[: -len(suffix)])
-            return f"{subject}{label}" if subject else label
+            return f"{subject}{label}" if subject else label.strip('（）')
     # Unknown schema values must not degrade to the old generic 技術イベント label.
     return _humanize_subject(normalized) or "技術更新"
 
@@ -127,22 +166,15 @@ def translate_remaining_taxonomy(text: str) -> str:
 
 
 def translate_machine_labels_compat(text: str) -> str:
-    # Normalize unknown raw event enums before the legacy broad token mapper can
-    # partially translate MODEL/AGENT/etc. Then run a second cleanup pass for
-    # historical partially translated forms.
     return translate_remaining_taxonomy(_ORIGINAL_TRANSLATE(translate_remaining_taxonomy(text)))
 
 
 def _machine_word_findings(label: str) -> set[str]:
-    findings: set[str] = set()
-    for token in re.findall(r"\b[A-Z][A-Z0-9]*\b", label):
-        if token in _MACHINE_SCHEMA_TOKENS:
-            findings.add(token)
-    return findings
+    return {token for token in re.findall(r"\b[A-Z][A-Z0-9]*\b", label) if token in _MACHINE_SCHEMA_TOKENS}
 
 
 def reader_taxonomy_findings(text: str) -> list[str]:
-    findings = set(core.reader_taxonomy_findings(text))
+    findings = set(_ORIGINAL_FINDINGS(text))
     normalized = text.replace(r"\_", "_")
     if "技術イベント" in normalized:
         findings.add("技術イベント")
@@ -158,8 +190,6 @@ def reader_taxonomy_findings(text: str) -> list[str]:
     return sorted(findings)
 
 
-# Patch at import time because other repair/check scripts import this compatibility
-# module and call core.transform_note directly rather than invoking this module's CLI.
 core.translate_machine_labels = translate_machine_labels_compat
 core.reader_taxonomy_findings = reader_taxonomy_findings
 
