@@ -117,13 +117,17 @@ This policy does not weaken a checker that found a genuine defect.
 
 Primary sources are preferred for objective chronology and lifecycle. Vendor, project, and author claims retain attribution. Availability states retain their contemporary boundaries. Later revisions and later outcomes are not back-projected into the covered period. Uneven source availability is reported as a coverage limitation rather than interpreted as proof of historical absence.
 
-## Reusable session prompt
+## Session invocation
 
-A half-year production session can start with:
+Special session startup is defined by `docs/special-session-bootstrap.md` and the repository-level `AGENTS.md`. A half-year production session normally needs only the target and stopping gate:
 
-> `eariver/japanese-generative-ai-survey` の現在のmainをsource of truthとして参照し、Specialの `<target half-year>` 分の編纂作業を開始してください。必要であれば今回向けのmanifest初期化も行い、現行のSpecial pipelineと `docs/half-year-retrospective-specials.md` に従って、最初のHuman GateであるArchitecture Reviewまで進めてください。
+> `<target> SpecialをArchitecture Reviewまで編纂してください。`
 
-The user-specified target period identifies the edition. Current repository policy and state supply the remaining operational details.
+If repository identity is not already clear from context:
+
+> `eariver/japanese-generative-ai-survey で <target> SpecialをArchitecture Reviewまで編纂してください。`
+
+The repository expands this short request into the current bootstrap, initialization/resume, pipeline, and Human Gate rules. Do not require the user to restate those rules in each new chat session.
 
 ## Non-goals
 
