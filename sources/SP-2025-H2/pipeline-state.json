@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "issue_id": "SP-2025-H2",
   "edition_kind": "RETROSPECTIVE_PERIOD",
-  "lifecycle_state": "RELEASE_CANDIDATE",
+  "lifecycle_state": "VALIDATED_DRAFT",
   "revision": "v0.1",
   "calendar": {
     "editorial_cutoff": "2025-12-31T23:59:59Z",
@@ -21,7 +21,7 @@
     "issue_architecture": "passed",
     "article_draft": "passed",
     "claim_and_chronology_validation": "passed",
-    "latex_build": "passed",
+    "latex_build": "pending",
     "visual_review": "pending",
     "freeze": "pending"
   },
@@ -77,36 +77,18 @@
       "sha256": "a492aae3c40bc234fbd398882171358542a2ba76fe4f093142ac636749ae164d"
     },
     "validated_issue_source": {
-      "path": "surveys/special/2025-H2/revisions/v0.7/source-manifest.json",
-      "sha256": "0a5821e29ad1e1c02a6374892f37f9ef61012a5637aa5f3d713073442c9428cf",
-      "source_version": "v0.7",
+      "path": "surveys/special/2025-H2/revisions/v0.8/source-manifest.json",
+      "sha256": "cc8197316c681199a496f3e55b85d99603488d8808940b53cd49ec154eb05e8a",
+      "source_version": "v0.8",
       "layout_mode": "mixed: narrative articles two-column via local multicols; theme synthesis and Technical Notes one-column full-width",
-      "layout_revision_sha256": "5672094a62085a069a7167a0e4b676389275645ce1962c0bd6168d5227f759c3"
+      "layout_revision_sha256": "3b2dcbf724cbccc9f08b12943dc65e384318eb48dc73e935ee6f18b1bff7b9f7",
+      "reader_facing_technical_notes": true
     },
     "reader_layout_revision": {
-      "source_version": "v0.7",
-      "layout_revision_path": "sources/SP-2025-H2/editorial/layout-revision-v0.7.json",
-      "layout_revision_sha256": "5672094a62085a069a7167a0e4b676389275645ce1962c0bd6168d5227f759c3",
-      "reason": "Publication Preview review requested alignment with the H1 half-year analysis structure, reader-facing taxonomy cleanup, removal of generic fallback Technical Notes, and compact References. Preserve accepted Article Draft claims and selected Evidence while deriving a new immutable reader-facing revision."
-    },
-    "latex_build": {
-      "workflow_run_id": 31768100017,
-      "pdf_sha256": "23d844aa3ea52d9a63f82c948cdb534f06d050eea9e12a25ed6ad9dea8af6db4",
-      "page_count": 30,
-      "source_version": "v0.7",
-      "validated_issue_source_path": "worktree/surveys/special/2025-H2/revisions/v0.7/source-manifest.json",
-      "validated_issue_source_sha256": "0a5821e29ad1e1c02a6374892f37f9ef61012a5637aa5f3d713073442c9428cf",
-      "page_budget": {
-        "soft_target": 64,
-        "hard_max": 96,
-        "below_soft_target": true,
-        "policy": "manifest-soft-target-hard-ceiling"
-      },
-      "build_style": {
-        "control_commit_sha": "1feacf3519009f2ebc3bb1657da4ad0161fad3a9",
-        "path": "templates/survey/jgaisurvey.sty",
-        "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
-      }
+      "source_version": "v0.8",
+      "layout_revision_path": "sources/SP-2025-H2/editorial/layout-revision-v0.8.json",
+      "layout_revision_sha256": "3b2dcbf724cbccc9f08b12943dc65e384318eb48dc73e935ee6f18b1bff7b9f7",
+      "reason": "Issue #54 Human Visual Review of v0.7 found residual machine-style casing in reader-facing Technical Notes. Derive a presentation-only revision that canonicalizes known product/model/event spellings and revalidates taxonomy fields while preserving Evidence, dates, accepted Article Draft prose, theme synthesis, half-year analysis, and References compaction."
     }
   },
   "provenance_history": {
@@ -165,6 +147,13 @@
         "source_version": "v0.6",
         "layout_mode": "mixed: narrative articles two-column via local multicols; theme synthesis and Technical Notes one-column full-width",
         "layout_revision_sha256": "4a4d72ea28ca7faa204b3ff72edcade76aca1a8d4ddfe5263b116ad8b64e7eef"
+      },
+      {
+        "path": "surveys/special/2025-H2/revisions/v0.7/source-manifest.json",
+        "sha256": "0a5821e29ad1e1c02a6374892f37f9ef61012a5637aa5f3d713073442c9428cf",
+        "source_version": "v0.7",
+        "layout_mode": "mixed: narrative articles two-column via local multicols; theme synthesis and Technical Notes one-column full-width",
+        "layout_revision_sha256": "5672094a62085a069a7167a0e4b676389275645ce1962c0bd6168d5227f759c3"
       }
     ],
     "latex_build": [
@@ -221,6 +210,25 @@
         },
         "build_style": {
           "control_commit_sha": "1967050832039e9ea2a180f2804b433ff2de0b21",
+          "path": "templates/survey/jgaisurvey.sty",
+          "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+        }
+      },
+      {
+        "workflow_run_id": 31768100017,
+        "pdf_sha256": "23d844aa3ea52d9a63f82c948cdb534f06d050eea9e12a25ed6ad9dea8af6db4",
+        "page_count": 30,
+        "source_version": "v0.7",
+        "validated_issue_source_path": "worktree/surveys/special/2025-H2/revisions/v0.7/source-manifest.json",
+        "validated_issue_source_sha256": "0a5821e29ad1e1c02a6374892f37f9ef61012a5637aa5f3d713073442c9428cf",
+        "page_budget": {
+          "soft_target": 64,
+          "hard_max": 96,
+          "below_soft_target": true,
+          "policy": "manifest-soft-target-hard-ceiling"
+        },
+        "build_style": {
+          "control_commit_sha": "1feacf3519009f2ebc3bb1657da4ad0161fad3a9",
           "path": "templates/survey/jgaisurvey.sty",
           "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
         }
