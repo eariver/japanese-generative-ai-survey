@@ -1,0 +1,178 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2025-H1",
+  "package_id": "lifecycle",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "basis": {
+    "draft_package_sha256": "2ad68f84710078fa34fd4aedb1942d515c1b2aeab24e77356557e6f6a549c52f",
+    "prompt_id": "article-drafting-v0.1",
+    "prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project drafting; no paid inference-provider API",
+    "generated_at": "2026-08-14T16:33:11+09:00",
+    "run_reference": "Interactive GPT-5.6 Sol drafting for SP-2025-H1 after explicit Human Gate 1 approval; evidence-bound drafting only, preserving the approved Architecture and Control-package caveat."
+  },
+  "headline": "Model Family Lifecycleが速くなる — Releaseだけでは歴史を追えない",
+  "deck": "2025年前半は、model announcementだけを並べると実態を見失う。research preview、API family、retirement announcement、experimental、GAが短い間隔で連続し、availability lifecycleそのものが技術運用上の重要事項になった。",
+  "deck_attribution_mode": "FACTUAL",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "oa-gpt45",
+      "kind": "EVENT",
+      "evidence_id": "e"
+    },
+    {
+      "evidence_task_id": "oa-gpt41",
+      "kind": "EVENT",
+      "evidence_id": "e"
+    },
+    {
+      "evidence_task_id": "google-gemini25-ga",
+      "kind": "EVENT",
+      "evidence_id": "e"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "gpt45-preview",
+      "block_type": "PARAGRAPH",
+      "text": "2月27日のGPT-4.5はresearch previewとして登場した。これは後続のGPT-4.1とは別のmodel identityであり、pretraining scaleを軸にしたpreviewとして記録する。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "oa-gpt45",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        }
+      ]
+    },
+    {
+      "block_id": "gpt41-api",
+      "block_type": "PARAGRAPH",
+      "text": "4月14日のGPT-4.1 familyはAPI向けにGPT-4.1、mini、nanoを提示し、coding、instruction following、long contextをdeveloper-facingな軸として前面に出した。同日の出来事は単なるGPT-4.5の更新ではない。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "oa-gpt41",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        }
+      ]
+    },
+    {
+      "block_id": "gpt45-retirement",
+      "block_type": "PARAGRAPH",
+      "text": "さらに同じ4月14日、GPT-4.5 Preview APIを7月14日にretireする予定が告知された。releaseとdeprecationは異なるobjective eventであり、後者を前者へ畳み込むと利用者が直面したmigration timelineを失う。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "oa-gpt45-deprecation",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        }
+      ]
+    },
+    {
+      "block_id": "claude4-generation",
+      "block_type": "PARAGRAPH",
+      "text": "5月22日のClaude Opus 4 / Sonnet 4は新しいmodel generationとして、coding、reasoning、agents、extended thinkingとの接続を前面に出した。Claude 3.7からの流れはfamily continuityを持つ一方、release identityは分けて追う。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "anthropic-claude4",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        }
+      ]
+    },
+    {
+      "block_id": "gemini-ga",
+      "block_type": "PARAGRAPH",
+      "text": "6月17日にはGemini 2.5 ProとFlashがGAへ移り、Flash-Liteがpreviewに入った。3月のGemini 2.5 Pro Experimentalと6月のGAは同一系列でも別のavailability eventであり、experimental→GAというservice lifecycleを保存する。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "google-gemini25-ga",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        }
+      ]
+    },
+    {
+      "block_id": "lifecycle-ops",
+      "block_type": "PARAGRAPH",
+      "text": "この半年のmodel familyは「発表日」だけでなく、preview、API-only、GA、retirementを含む時間軸で管理する必要が強まった。能力比較と同時に、採用側にはversion pinningやmigrationを含む運用上の負荷が増えている。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "oa-gpt41",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        },
+        {
+          "evidence_task_id": "oa-gpt45-deprecation",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        },
+        {
+          "evidence_task_id": "google-gemini25-ga",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        }
+      ]
+    },
+    {
+      "block_id": "lifecycle-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "本章はrelease identityとavailability chronologyを中心に扱う。各社が掲げる性能指標や優位性は、一次資料の主張と独立再現を区別する。",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "GPT-4.5 research previewとAPI retirement announcementの分離",
+      "block_ids": [
+        "gpt45-preview",
+        "gpt45-retirement"
+      ]
+    },
+    {
+      "requirement": "GPT-4.1 API familyの位置付け",
+      "block_ids": [
+        "gpt41-api"
+      ]
+    },
+    {
+      "requirement": "Claude 4へのmodel-generation更新",
+      "block_ids": [
+        "claude4-generation"
+      ]
+    },
+    {
+      "requirement": "Gemini 2.5 Experimental→GAを別eventとして保持",
+      "block_ids": [
+        "gemini-ga"
+      ]
+    },
+    {
+      "requirement": "高速化するpreview/GA/deprecation運用負荷",
+      "block_ids": [
+        "lifecycle-ops"
+      ]
+    }
+  ],
+  "boundary_coverage": [
+    {
+      "requirement": "Primary-source reconstruction establishes the dated event and stated scope; vendor performance claims are not independently reproduced.",
+      "block_ids": [
+        "lifecycle-boundary"
+      ]
+    }
+  ],
+  "late_breaking_acknowledged": false
+}

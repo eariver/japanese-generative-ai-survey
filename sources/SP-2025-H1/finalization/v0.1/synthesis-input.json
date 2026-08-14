@@ -1,0 +1,497 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2025-H1",
+  "status": "post-draft-synthesis-input-ready",
+  "basis": {
+    "architecture_input_sha256": "aec7f2ddba97e5cdd3a3f908bd600df4dcf94244bbc772ab1d0e63fbfb5c434d",
+    "architecture_plan_sha256": "c4a9e1953a9df5e4768bcd33b5336c70a9d46b52df846ee06f5fcefda90a84a6",
+    "article_prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c",
+    "article_drafts": [
+      {
+        "package_id": "reasoning",
+        "article_draft_sha256": "1f6c7e5114d2d6007f5b89c70c52ba4fca5637d954a9d205c5f1ce677560365d"
+      },
+      {
+        "package_id": "agents",
+        "article_draft_sha256": "4f927f27dee2677476cb07311128a2ff5e6c00bb37af4522881d97743b60a0a0"
+      },
+      {
+        "package_id": "lifecycle",
+        "article_draft_sha256": "e47b93347ec6c98a76866087a3b031e28f90eb2a9e56f1c7c637dd13b240fc25"
+      },
+      {
+        "package_id": "open",
+        "article_draft_sha256": "789ede0256a90ad454096e6c250d428dffcfe5085660b54e30522bba1775f23a"
+      },
+      {
+        "package_id": "multimodal",
+        "article_draft_sha256": "1a2c222f2e24535249f74e8c05a298dac86f85d3c8483596a29d4553e824aa24"
+      },
+      {
+        "package_id": "control",
+        "article_draft_sha256": "f16e5fdd1ea818aee6404071a51453a071af05b13efe503a881b1cfe301bf5cf"
+      },
+      {
+        "package_id": "synthesis",
+        "article_draft_sha256": "aabd94c44812046a4a0185783e3c89421509e454180d3e28a07ea836351438cf"
+      },
+      {
+        "package_id": "chronology",
+        "article_draft_sha256": "aec502bd03705c822168bc6685244152e6a4c8622dee5c69bc2ad6cbbc91309d"
+      }
+    ]
+  },
+  "editorial_thesis": "2025年前半は、生成AIの競争軸が「単体モデルの知識・会話性能」から、推論時に考え、外部情報を調べ、ツールを呼び、ブラウザやコード環境で行動する実行系へ急速に移った半年だった。同時に、open-weight MoE・長文脈・native multimodality・生成メディアが並行して進み、model capability・agent harness・tool protocol・deployment形態を分離して読む必要が生じた。",
+  "cover_anchor_candidates": [
+    "reasoning",
+    "agents",
+    "lifecycle",
+    "open",
+    "multimodal",
+    "control",
+    "synthesis",
+    "chronology"
+  ],
+  "articles": [
+    {
+      "package_id": "reasoning",
+      "package_type": "LEAD",
+      "drafting_order": 2,
+      "page_target": 8,
+      "late_breaking": false,
+      "editorial_angle": "thinking mode、cost/latency、tool use、API readinessの組合せとして比較し、reasoningをagent executionのcapability layerとして位置付ける。",
+      "boundaries": [
+        "Primary-source reconstruction establishes the dated event and stated scope; vendor performance claims are not independently reproduced."
+      ],
+      "headline": "Reasoningが標準機能になる — 「考えるモデル」から実行能力の一層へ",
+      "deck": "2025年前半、推論能力は単独のモデル分類から、API・ツール利用・長文脈・視覚理解と結び付く実行能力へ移り始めた。重要なのは順位表ではなく、どのsurfaceで、どの形のthinkingが利用可能になったかである。",
+      "blocks": [
+        {
+          "block_id": "r1-service",
+          "block_type": "PARAGRAPH",
+          "text": "1月20日のDeepSeek-R1 API提供は、推論モデルを専用endpointで利用するservice eventとして現れた。一方、3月24日のDeepSeek-V3-0324はdeepseek-chat系の更新であり、R1の登場とV3系service lifecycleは別の出来事として扱う必要がある。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "openai-reasoning",
+          "block_type": "PARAGRAPH",
+          "text": "1月末のo3-miniはChatGPTとAPIの双方へ小型reasoning modelを持ち込み、4月のo3/o4-miniではreasoningとtool accessの結合がさらに明示された。ここではモデル名の更新以上に、推論がdeveloper-facing executionへ接続されたことが重要である。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "claude-hybrid",
+          "block_type": "PARAGRAPH",
+          "text": "2月24日のClaude 3.7 Sonnetはhybrid reasoningを掲げ、同じ発表でClaude Codeのresearch previewも提示された。モデル内部のthinkingと、terminal上で作業するcoding agentは同一物ではないが、同じ日に接続されたことがH1の転換を象徴する。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "gemini-thinking",
+          "block_type": "PARAGRAPH",
+          "text": "3月25日のGemini 2.5 Pro Experimentalはthinking、long context、coding、multimodal capabilityを一つのexperimental modelとして提示した。H1ではこのexperimental availability自体が重要で、6月のGAは後段のlifecycleとして別に保持する。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "visual-reasoning",
+          "block_type": "PARAGRAPH",
+          "text": "QwenのQVQ-Maxは3月末にvisual reasoningの系譜を示した。reasoningという語がtext-only chainに閉じず、視覚入力へ広がっていた点は、同時期のnative multimodalityと合わせて読む必要がある。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "reasoning-reclass",
+          "block_type": "PARAGRAPH",
+          "text": "半年を通してみると、reasoningは独立した製品ジャンルというより、tool use、coding、research、multimodal processingを支えるcapability layerへ再分類できる。R1、o3系、Claude 3.7、Gemini 2.5は実装・提供形態が異なるため、単一benchmark順位だけで同列比較しない。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "reasoning-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "本章で確定するのは、一次資料で確認できるrelease、availability、tool接続、model identityである。各社が示す性能優位やbenchmark評価は、独立再現された測定値としては扱わない。",
+          "attribution_mode": "NONE"
+        }
+      ]
+    },
+    {
+      "package_id": "agents",
+      "package_type": "FEATURE",
+      "drafting_order": 3,
+      "page_target": 8,
+      "late_breaking": false,
+      "editorial_angle": "browser、research、tool orchestration、coding sandboxへaction surfaceが広がった過程を比較する。",
+      "boundaries": [
+        "Primary-source reconstruction establishes the dated event and stated scope; vendor performance claims are not independently reproduced."
+      ],
+      "headline": "ModelからActionへ — Browser・Research・Tool・Codingへ広がる実行面",
+      "deck": "2025年前半のAgent化は一つの完成形へ収束したのではなく、browser操作、調査、API orchestration、cloud codingという異なるaction surfaceが並行して立ち上がる過程だった。",
+      "blocks": [
+        {
+          "block_id": "browser-agent",
+          "block_type": "PARAGRAPH",
+          "text": "1月23日のOperator research previewは、ブラウザ上の操作をuser-facing agentとして切り出した。会話応答ではなく画面上で行動するsurfaceが製品として前景化した点に意味がある。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "research-agent",
+          "block_type": "PARAGRAPH",
+          "text": "2月2日のDeep Researchはmulti-step web researchをChatGPT内の仕事としてまとめた。Operatorがbrowser actionを前面に出したのに対し、Deep Researchは情報探索と統合を主目的とし、同じ「agent」でもaction semanticsは異なる。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "platform-primitives",
+          "block_type": "PARAGRAPH",
+          "text": "3月11日のResponses API、built-in tools、Agents SDKは、web/file search、computer use、tracingなどをdeveloperが組み合わせるplatform primitivesとして提示した。Agentは単体アプリではなく、modelとtoolを束ねるharness設計の問題へ移った。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "coding-agents",
+          "block_type": "PARAGRAPH",
+          "text": "5月にはOpenAI Codexのcloud software-engineering agentとGoogle Julesのpublic betaが並んだ。Codexはparallel sandbox tasks、JulesはGitHub repositoryをcloud VM上で扱う非同期作業として現れ、coding agentもCLI補助から遠隔実行環境へ広がった。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "external-tools",
+          "block_type": "PARAGRAPH",
+          "text": "同じ5月、Responses APIはremote MCPやCode Interpreterなどを拡張し、AnthropicもMessages APIへweb search toolを追加した。外部情報源・tool surfaceへ接続するほど、agentの実用能力はbase model単体よりもexecution environmentの設計に依存する。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "agent-stack",
+          "block_type": "PARAGRAPH",
+          "text": "H1の各製品は互換な「Agent製品」ではない。browser action、research、orchestration、coding sandboxを区別したうえで見ると、半年の変化はmodel responseからaction surfaceへ能力の観測単位が広がったことにある。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "agents-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "一次資料から確認できるのは、各製品・APIが提示したaction surfaceとavailabilityである。タスク成功率や生産性向上といった性能評価は、本章では独立検証済みの事実として扱わない。",
+          "attribution_mode": "NONE"
+        }
+      ]
+    },
+    {
+      "package_id": "lifecycle",
+      "package_type": "COMPARISON",
+      "drafting_order": 4,
+      "page_target": 7,
+      "late_breaking": false,
+      "editorial_angle": "releaseだけでなくpreview→GA、API-only、retirementを同じ技術史に置く。",
+      "boundaries": [
+        "Primary-source reconstruction establishes the dated event and stated scope; vendor performance claims are not independently reproduced."
+      ],
+      "headline": "Model Family Lifecycleが速くなる — Releaseだけでは歴史を追えない",
+      "deck": "2025年前半は、model announcementだけを並べると実態を見失う。research preview、API family、retirement announcement、experimental、GAが短い間隔で連続し、availability lifecycleそのものが技術運用上の重要事項になった。",
+      "blocks": [
+        {
+          "block_id": "gpt45-preview",
+          "block_type": "PARAGRAPH",
+          "text": "2月27日のGPT-4.5はresearch previewとして登場した。これは後続のGPT-4.1とは別のmodel identityであり、pretraining scaleを軸にしたpreviewとして記録する。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "gpt41-api",
+          "block_type": "PARAGRAPH",
+          "text": "4月14日のGPT-4.1 familyはAPI向けにGPT-4.1、mini、nanoを提示し、coding、instruction following、long contextをdeveloper-facingな軸として前面に出した。同日の出来事は単なるGPT-4.5の更新ではない。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "gpt45-retirement",
+          "block_type": "PARAGRAPH",
+          "text": "さらに同じ4月14日、GPT-4.5 Preview APIを7月14日にretireする予定が告知された。releaseとdeprecationは異なるobjective eventであり、後者を前者へ畳み込むと利用者が直面したmigration timelineを失う。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "claude4-generation",
+          "block_type": "PARAGRAPH",
+          "text": "5月22日のClaude Opus 4 / Sonnet 4は新しいmodel generationとして、coding、reasoning、agents、extended thinkingとの接続を前面に出した。Claude 3.7からの流れはfamily continuityを持つ一方、release identityは分けて追う。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "gemini-ga",
+          "block_type": "PARAGRAPH",
+          "text": "6月17日にはGemini 2.5 ProとFlashがGAへ移り、Flash-Liteがpreviewに入った。3月のGemini 2.5 Pro Experimentalと6月のGAは同一系列でも別のavailability eventであり、experimental→GAというservice lifecycleを保存する。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "lifecycle-ops",
+          "block_type": "PARAGRAPH",
+          "text": "この半年のmodel familyは「発表日」だけでなく、preview、API-only、GA、retirementを含む時間軸で管理する必要が強まった。能力比較と同時に、採用側にはversion pinningやmigrationを含む運用上の負荷が増えている。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "lifecycle-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "本章はrelease identityとavailability chronologyを中心に扱う。各社が掲げる性能指標や優位性は、一次資料の主張と独立再現を区別する。",
+          "attribution_mode": "NONE"
+        }
+      ]
+    },
+    {
+      "package_id": "open",
+      "package_type": "COMPARISON",
+      "drafting_order": 5,
+      "page_target": 8,
+      "late_breaking": false,
+      "editorial_angle": "open weights、MoE、multimodality、単一accelerator運用、hosted APIを別軸で比較する。",
+      "boundaries": [
+        "Primary-source reconstruction establishes the dated event and stated scope; vendor performance claims are not independently reproduced."
+      ],
+      "headline": "Open-weightの再加速 — 「Open model」を一つの軸で語らない",
+      "deck": "2025年前半のopen-weight系は、vision-language、portable model、multimodal MoE、thinking/non-thinkingと異なる設計を広げた。同時にhosted APIも増え、「weightsが得られること」と「serviceとして使えること」は別の選択肢になった。",
+      "blocks": [
+        {
+          "block_id": "qwen-family",
+          "block_type": "PARAGRAPH",
+          "text": "1月のQwen2.5-VLは3B・7B・72Bのvision-language familyとして公開され、4月末のQwen3ではdenseとMoE、thinking/non-thinking modesを含む新系列へ進んだ。同じQwenでも、H1の技術的焦点は視覚理解からreasoning/deploymentの組合せへ広がった。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "qwen-hosted",
+          "block_type": "PARAGRAPH",
+          "text": "Qwen2.5-Maxは1月末に大規模MoEとして発表され、Alibaba Cloud API availabilityも示された。ここで重要なのは、hosted serviceとしての利用可能性と、weight distributionの性質を同じ「open」という語でまとめないことである。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "gemma-portable",
+          "block_type": "PARAGRAPH",
+          "text": "3月のGemma 3は1B・4B・12B・27Bを含むportable open-model familyとして登場した。model sizeの幅はdeployment choiceを広げるが、weights availabilityだけからtraining data transparencyまで推論してはならない。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "llama-moe",
+          "block_type": "PARAGRAPH",
+          "text": "4月のLlama 4 Scout / Maverickはnatively multimodalなMoE modelとして公開され、同月末にはLlama API limited previewが別に提示された。model weight releaseとhosted API previewは異なるproduct identityである。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "open-axes",
+          "block_type": "PARAGRAPH",
+          "text": "H1のopen-weight競争をparameter countだけで比較すると、MoE、multimodality、thinking mode、device portability、hosted APIという実用上の差を落とす。採用時にはlicense、weights、runtime、service availability、data disclosureを分解して評価する必要がある。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "open-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "本章で「open-weight」と呼ぶ場合、weightsの利用可能性を中心に記述し、license条件やtraining/data transparencyが同等であることを意味しない。性能比較も各社資料の主張を独立測定値へ読み替えない。",
+          "attribution_mode": "NONE"
+        }
+      ]
+    },
+    {
+      "package_id": "multimodal",
+      "package_type": "FEATURE",
+      "drafting_order": 6,
+      "page_target": 8,
+      "late_breaking": false,
+      "editorial_angle": "native multimodalityと生成media workflowが前景化し、interaction spaceがtext/image inputから生成video/audioまで広がったことを示す。",
+      "boundaries": [
+        "Primary-source reconstruction establishes the dated event and stated scope; vendor performance claims are not independently reproduced."
+      ],
+      "headline": "Native Multimodalityと生成Media — 入力対応から制作workflowへ",
+      "deck": "2025年前半、multimodalは画像を理解できるという入力側の機能だけではなく、画像・音声・動画を生成し、制作workflowの中で扱う能力へ広がった。",
+      "blocks": [
+        {
+          "block_id": "image-native",
+          "block_type": "PARAGRAPH",
+          "text": "3月25日のGPT-4o image generationは、画像生成をGPT-4oのnative capabilityとしてChatGPTの対話フローへ統合した。画像生成が独立した専門モデルUIだけでなく、general-purpose multimodal interactionの一部へ入った出来事である。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "omni-stream",
+          "block_type": "PARAGRAPH",
+          "text": "3月27日のQwen2.5-Omniはtext、image、audio、videoを入力として扱い、streaming speech outputまで含むend-to-end multimodal modelとして公開された。入出力modalitiesの組合せ自体がmodel architectureとUXの設計対象になった。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "media-wave",
+          "block_type": "PARAGRAPH",
+          "text": "5月のGoogle I/OではVeo 3、Imagen 4、Flow、Lyria 2が同時期に示され、video、image、filmmaking workflow、musicまでgenerative media surfaceが広がった。個々のmodel identityを保ちつつ、制作環境としての束を読む必要がある。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "input-vs-generation",
+          "block_type": "PARAGRAPH",
+          "text": "multimodalという言葉には、複数modalitiesを理解する能力と、複数mediaを生成する能力が混在する。H1では後者が急速に前景化し、model evaluationだけでなく編集・制作workflowとの接続が重要になった。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "media-not-action",
+          "block_type": "PARAGRAPH",
+          "text": "ただしmedia generationは、そのまま外部世界で行動するagent actionと同義ではない。画像・動画・音声の生成surface拡大と、browser/tool/sandboxを操作するexecution surfaceは、相互に近づきつつも別の技術層として区別する。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "multimodal-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "一次資料から確認できるmodalities、release scope、product integrationを記録する。画質・音質・動画品質などの優位性は、vendor評価を独立再現した結果としては扱わない。",
+          "attribution_mode": "NONE"
+        }
+      ]
+    },
+    {
+      "package_id": "control",
+      "package_type": "DEEP_DIVE",
+      "drafting_order": 7,
+      "page_target": 5,
+      "late_breaking": false,
+      "editorial_angle": "tool access拡大に伴うprotocol boundary、safeguard、observability/interpretabilityを横断する。",
+      "boundaries": [
+        "Primary-source reconstruction establishes the dated event and stated scope; vendor performance claims are not independently reproduced."
+      ],
+      "headline": "Execution LayerにはControlが要る — H1に現れたSearch・Safeguard・Interpretabilityの萌芽",
+      "deck": "外部情報へ接続し行動するsystemが増えると、能力の追加と同時にtrust boundaryの設計が必要になる。2025年前半では、そのcontrol layerはまだ統一された体系ではなく、search、safeguard、interpretabilityとして分散して現れた。",
+      "blocks": [
+        {
+          "block_id": "search-product-api",
+          "block_type": "PARAGRAPH",
+          "text": "Anthropicは3月にClaude productへweb searchをpreviewとして追加し、5月にはMessages API向けweb search toolを公開した。user-facing product featureとdeveloper-facing tool APIは別のeventであり、同じ検索機能でもcontrol pointが異なる。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "trust-boundary",
+          "block_type": "PARAGRAPH",
+          "text": "外部検索やtool接続は、modelが閉じたcontextだけで答える場合とは異なるtrust boundaryを作る。H1の直接Evidenceではweb search product/APIがその変化を示しており、MCPを含むより広いtool protocolの詳細はAgent章のexecution surfaceとして分けて扱う。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "guard4",
+          "block_type": "PARAGRAPH",
+          "text": "4月末のLlama Guard 4とprotection toolsは、multimodal systemに対するsafeguardをmodel/platform側の独立したcontrol componentとして提示した。base modelの能力向上と安全制御の更新を同じrelease identityに畳み込まない。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "interpretability",
+          "block_type": "PARAGRAPH",
+          "text": "3月27日のAnthropic研究はlarge language modelの内部思考をtraceするinterpretability researchとして位置付けられる。内部機構を観測・理解しようとする研究はcontrolに重要だが、それ自体をdeployment safeguardや事故防止機構と同一視することはできない。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "control-emergent",
+          "block_type": "PARAGRAPH",
+          "text": "H1時点のEvidenceは、H2のような成熟したcontrol stackを示すにはまだ薄い。それでもsearch接続、safeguard model、interpretabilityが同じ半年に前景化したことは、execution surfaceの拡大がcontrol/observabilityを別層として要求し始めた兆候として読める。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "control-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "本章はH1に確認できるcontrol-related evidenceの範囲に限定する。各仕組みの実効性、攻撃耐性、事故低減効果を一次資料の存在だけから推定しない。",
+          "attribution_mode": "NONE"
+        }
+      ]
+    },
+    {
+      "package_id": "synthesis",
+      "package_type": "SECTION",
+      "drafting_order": 8,
+      "page_target": 5,
+      "late_breaking": false,
+      "editorial_angle": "半年で変化した層、変わらなかった制約、H2へ持ち越した未解決点をcross-layerに総括する。",
+      "boundaries": [
+        "Primary-source reconstruction establishes the dated event and stated scope; vendor performance claims are not independently reproduced."
+      ],
+      "headline": "Half-year Synthesis — ReasoningからExecution Stackへ",
+      "deck": "2025年前半を半年単位で見ると、reasoningの製品化、agent primitives、open-weight multimodality、tool protocolが別々の流行ではなく、modelの外側まで含むexecution stackへ収束し始めたことが見える。",
+      "blocks": [
+        {
+          "block_id": "jan-feb",
+          "block_type": "PARAGRAPH",
+          "text": "1〜2月は、reasoningとagentがまだ別々の線として見えた。DeepSeek-R1やo3-miniがthinking capabilityを製品化する一方、OperatorやDeep Researchはbrowser actionとweb researchを別のuser-facing workflowとして立ち上げた。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "mar-apr",
+          "block_type": "PARAGRAPH",
+          "text": "3〜4月になると、Responses API/Agents SDKがbuilt-in toolsやtracingをplatform primitiveとしてまとめ、Gemini 2.5、Llama 4、Qwen3のようなmodel側でもreasoning、multimodality、MoE、thinking modeが重なった。model capabilityとharnessの境界が接近した。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "may-jun",
+          "block_type": "PARAGRAPH",
+          "text": "5〜6月にはClaude 4がcoding/reasoning/agent利用を前面に出し、Responses APIではremote MCPやbackground modeなどexecution surfaceが拡張された。Gemini 2.5のGAを含め、experimentだけでなく継続運用を前提にしたservice lifecycleも定着した。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "reasoning-layer",
+          "block_type": "PARAGRAPH",
+          "text": "この流れから、reasoning modelを独立カテゴリとして固定するより、agent executionを支えるcapability layerとして読む方が半年の変化を説明しやすい。thinkingそのものより、tool、context、sandbox、multimodalityとどう接続されるかが実用能力を左右し始めた。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "toward-h2",
+          "block_type": "PARAGRAPH",
+          "text": "一方で、long-horizon reliability、tool経由のsecurity boundary、vendor benchmarkの再現性、open-weightのlicense/data transparency、preview→GA→deprecationの運用負荷はH1末にも解消していない。H2ではこれらがexecution stackとcontrol layerの問題としてさらに前景化する。",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "synthesis-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "このSynthesisは、H1の選定Evidenceを横断して得られる編集上の整理である。各社の性能優位を追加で認定するものではなく、確認されたrelease/availability/tool surfaceの関係から技術史上の構造を記述する。",
+          "attribution_mode": "NONE"
+        }
+      ]
+    },
+    {
+      "package_id": "chronology",
+      "package_type": "WATCHLIST_CHRONOLOGY",
+      "drafting_order": 9,
+      "page_target": 4,
+      "late_breaking": false,
+      "editorial_angle": "2025-H1のmaterial objective eventsを日付順に保持するhistorical index。",
+      "boundaries": [
+        "Primary-source reconstruction establishes the dated event and stated scope; vendor performance claims are not independently reproduced."
+      ],
+      "headline": "Detailed Chronology — 2025年前半の主要イベント",
+      "deck": "2025年1月20日から6月17日まで、モデル、API、製品、研究、GA/deprecationを同一化せず、半年の主要なobjective eventを日付順に記録する。",
+      "blocks": [
+        {
+          "block_id": "chron-jan",
+          "block_type": "BULLET_LIST",
+          "text": "- 2025-01-20: DeepSeek-R1 API release\n- 2025-01-23: OpenAI Operator research preview\n- 2025-01-26: Qwen2.5-VL open models\n- 2025-01-28: Qwen2.5-Max API availability\n- 2025-01-31: OpenAI o3-mini",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "chron-feb",
+          "block_type": "BULLET_LIST",
+          "text": "- 2025-02-02: OpenAI Deep Research\n- 2025-02-24: Claude 3.7 Sonnet / Claude Code\n- 2025-02-27: GPT-4.5 research preview",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "chron-mar",
+          "block_type": "BULLET_LIST",
+          "text": "- 2025-03-11: Responses API / built-in tools / Agents SDK\n- 2025-03-12: Gemma 3\n- 2025-03-20: Claude web search product preview\n- 2025-03-24: DeepSeek-V3-0324 API upgrade\n- 2025-03-25: Gemini 2.5 Pro Experimental\n- 2025-03-25: GPT-4o native image generation\n- 2025-03-27: Anthropic interpretability research: Tracing thoughts\n- 2025-03-27: Qwen2.5-Omni\n- 2025-03-28: QVQ-Max visual reasoning",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "chron-apr",
+          "block_type": "BULLET_LIST",
+          "text": "- 2025-04-05: Llama 4 Scout / Maverick\n- 2025-04-14: GPT-4.1 API family\n- 2025-04-14: GPT-4.5 Preview API retirement announcement\n- 2025-04-16: OpenAI o3 / o4-mini\n- 2025-04-29: Llama API limited preview\n- 2025-04-29: Llama Guard 4 / protection tools\n- 2025-04-29: Qwen3",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "chron-may",
+          "block_type": "BULLET_LIST",
+          "text": "- 2025-05-07: Anthropic web search API\n- 2025-05-16: OpenAI Codex cloud software engineering agent\n- 2025-05-20: Jules coding agent public beta\n- 2025-05-20: Veo 3 / Imagen 4 / Flow / Lyria 2\n- 2025-05-21: Responses API remote MCP / tool expansion\n- 2025-05-22: Claude Opus 4 / Sonnet 4",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "chron-jun",
+          "block_type": "BULLET_LIST",
+          "text": "- 2025-06-17: Gemini 2.5 Pro / Flash GA",
+          "attribution_mode": "FACTUAL"
+        },
+        {
+          "block_id": "chron-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "ChronologyはH1中に確認できるobjective eventを日付順に保持する。release、API availability、product preview、GA、deprecationを分離し、H2で判明した後続結果をH1へ逆投影しない。",
+          "attribution_mode": "NONE"
+        }
+      ]
+    }
+  ],
+  "constraints": {
+    "language": "ja",
+    "max_this_week_signals": 5,
+    "no_new_external_facts": true,
+    "summarize_only_validated_article_text": true,
+    "late_breaking_boundary_required": true,
+    "page_references_must_use_package_ids": true
+  }
+}
