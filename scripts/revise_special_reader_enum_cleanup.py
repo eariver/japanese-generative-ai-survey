@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Create an immutable reader-facing enum-cleanup Special source revision.
+"""Create an immutable reader-facing taxonomy-cleanup Special source revision.
 
-Only machine event labels in already-derived Technical Notes are normalized. The
+Only taxonomy presentation in already-derived Technical Notes is normalized. The
 underlying Evidence, Japanese claim/limitation summaries, article prose, URLs,
-and chronology dates remain unchanged.
+and chronology dates remain unchanged.  The same shared mapper/validator used by
+canonical Special preflight is used here so historical repair paths cannot drift.
 """
 from __future__ import annotations
 
@@ -15,27 +16,7 @@ import shutil
 from pathlib import Path
 from typing import Any
 
-EVENT_LABELS = {
-    "OFFICIAL_PUBLICATION": "公式公開",
-    "PRODUCT_RELEASE": "製品公開",
-    "PRODUCT_UPDATE": "製品更新",
-    "AGENT_RELEASE": "Agent公開",
-    "AGENT_UPDATE": "Agent更新",
-    "FRAMEWORK_RELEASE": "Framework公開",
-    "FRAMEWORK_UPDATE": "Framework更新",
-    "PROJECT_RELEASE": "プロジェクト公開",
-    "MODEL_RELEASE": "モデル公開",
-    "MODEL_UPDATE": "モデル更新",
-    "MEDIA_MODEL_RELEASE": "メディアモデル公開",
-    "OPEN_WEIGHT_RELEASE": "オープンウェイト公開",
-    "PAPER_RELEASE": "論文公開",
-    "RESEARCH_RELEASE": "研究公開",
-    "EVALUATION_RELEASE": "評価公開",
-    "SAFETY_EVENT": "安全性事象",
-    "API_RELEASE": "API公開",
-    "API_UPDATE": "API更新",
-}
-RAW_ENUM_RE = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b")
+from scripts import postprocess_special_reader_facing_notes as reader_notes
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -53,26 +34,32 @@ def sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def forms(value: str) -> tuple[str, ...]:
-    escaped = value.replace("_", r"\_")
-    return (value, escaped) if escaped != value else (value,)
+def taxonomy_values(text: str) -> list[str]:
+    normalized = text.replace(r"\_", "_")
+    values = [value.strip() for value in reader_notes.core.CHRONOLOGY_EVENT_RE.findall(normalized)]
+    for line in normalized.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("種別 & "):
+            values.append(stripped[len("種別 & "):].rsplit(r"\\", 1)[0].strip())
+            continue
+        if " & " in stripped and re.search(r"\b\d{4}-\d{2}", stripped):
+            parts = [part.strip() for part in stripped.rsplit(r"\\", 1)[0].split(" & ")]
+            if len(parts) >= 4:
+                values.append(parts[-2])
+    return values
 
 
 def normalize(text: str) -> tuple[str, int]:
-    count = 0
-    for raw, label in sorted(EVENT_LABELS.items(), key=lambda item: len(item[0]), reverse=True):
-        for form in forms(raw):
-            occurrences = text.count(form)
-            if occurrences:
-                text = text.replace(form, label)
-                count += occurrences
-    return text, count
+    before_values = taxonomy_values(text)
+    revised = reader_notes.translate_machine_labels_compat(text)
+    after_values = taxonomy_values(revised)
+    count = sum(1 for old, new in zip(before_values, after_values) if old != new)
+    count += abs(len(before_values) - len(after_values))
+    return revised, count
 
 
 def remaining_machine_enums(text: str) -> list[str]:
-    # Convert TeX-escaped underscores to plain underscores for deterministic scanning.
-    normalized = text.replace(r"\_", "_")
-    return sorted(set(RAW_ENUM_RE.findall(normalized)))
+    return reader_notes.reader_taxonomy_findings(text)
 
 
 def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str) -> dict[str, Any]:
@@ -80,9 +67,9 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     state = load_json(state_path)
     gates = state.get("gates") or {}
     if state.get("lifecycle_state") != "RELEASE_CANDIDATE":
-        raise ValueError("reader enum cleanup requires RELEASE_CANDIDATE")
+        raise ValueError("reader taxonomy cleanup requires RELEASE_CANDIDATE")
     if gates.get("latex_build") != "passed" or gates.get("visual_review") != "pending" or gates.get("freeze") != "pending":
-        raise ValueError("reader enum cleanup requires built, unapproved release candidate")
+        raise ValueError("reader taxonomy cleanup requires built, unapproved release candidate")
 
     marker_path = repo_root / "sources" / issue_id / "editorial" / f"layout-revision-{source_version}.json"
     marker = load_json(marker_path)
@@ -91,7 +78,7 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     if marker.get("issue_id") != issue_id or marker.get("revision") != source_version:
         raise ValueError("layout marker mismatch")
     if constraints.get("new_external_evidence_allowed") is not False or constraints.get("reader_content_changed") is not False or constraints.get("selected_evidence_only") is not True:
-        raise ValueError("reader enum cleanup must be content-neutral and selected-Evidence-only")
+        raise ValueError("reader taxonomy cleanup must be content-neutral and selected-Evidence-only")
     if changes.get("normalize_reader_event_enums") is not True:
         raise ValueError("normalize_reader_event_enums marker is required")
 
@@ -118,14 +105,19 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
         after, count = normalize(before)
         findings = remaining_machine_enums(after)
         if findings:
-            raise ValueError(f"unmapped reader-facing event enums remain in {rel}: {findings}")
-        if count:
+            raise ValueError(f"unmapped reader-facing taxonomy remains in {rel}: {findings}")
+        if after != before:
             target.write_text(after, encoding="utf-8")
-            total_replacements += count
-            changed_files.append({"path": rel, "replacement_count": count, "before_sha256": sha(current_dir / rel), "after_sha256": sha(target)})
+            total_replacements += max(count, 1)
+            changed_files.append({
+                "path": rel,
+                "replacement_count": max(count, 1),
+                "before_sha256": sha(current_dir / rel),
+                "after_sha256": sha(target),
+            })
         article["technical_notes_sha256"] = sha(target)
     if total_replacements < 1:
-        raise ValueError("reader enum cleanup found no machine event labels to replace")
+        raise ValueError("reader taxonomy cleanup found no labels to normalize")
 
     # Non-Technical-Notes reader content must remain byte-identical.
     for old, new in zip(current_manifest.get("articles") or [], articles):
@@ -141,8 +133,9 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     new_manifest["source_version"] = source_version
     new_manifest["status"] = "VALIDATED_READER_ENUM_CLEANUP_REVISION"
     new_manifest["derivation"] = (
-        "Layout/presentation-only revision of the prior validated source. Machine event enums in Technical Notes "
-        "are replaced by reader-facing labels; Evidence, chronology dates, Japanese summaries and article wording are unchanged."
+        "Layout/presentation-only revision of the prior validated source. Machine or partially normalized taxonomy "
+        "in Technical Notes is replaced by canonical reader-facing labels; Evidence, chronology dates, Japanese "
+        "summaries and article wording are unchanged."
     )
     new_manifest["basis"] = dict(current_manifest.get("basis") or {})
     new_manifest["basis"]["previous_source_manifest_path"] = current["path"]
@@ -152,7 +145,7 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     new_manifest["main_tex"] = dict(current_manifest.get("main_tex") or {})
     new_manifest["main_tex"]["sha256"] = sha(main_path)
     new_manifest["reader_facing_technical_notes"] = dict(current_manifest.get("reader_facing_technical_notes") or {})
-    new_manifest["reader_facing_technical_notes"]["machine_enum_policy"] = "reader-facing-labels-v4"
+    new_manifest["reader_facing_technical_notes"]["machine_enum_policy"] = "reader-facing-labels-v5-canonical-casing"
     new_manifest["reader_facing_technical_notes"]["enum_cleanup_files"] = changed_files
     new_manifest["layout_revision"] = {
         "from_source_version": current_manifest.get("source_version"),
@@ -191,7 +184,7 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
         "source_version": source_version,
         "layout_revision_path": marker_path.relative_to(repo_root).as_posix(),
         "layout_revision_sha256": sha(marker_path),
-        "reason": str(marker.get("reason") or "Normalize reader-facing event labels after render QA."),
+        "reason": str(marker.get("reason") or "Normalize reader-facing taxonomy after render QA."),
     }
     write_json(state_path, state)
     return {
