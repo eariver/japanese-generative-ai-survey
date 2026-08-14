@@ -9,12 +9,13 @@ class SpecialReaderTaxonomyCompatTests(unittest.TestCase):
     def test_known_suffixes_become_reader_labels(self) -> None:
         self.assertEqual(compat.readable_taxonomy_label("VEO3_GA"), "VEO3（一般提供）")
         self.assertEqual(compat.readable_taxonomy_label("COMPUTER_USE_PREVIEW"), "COMPUTER USE（Preview）")
-        self.assertEqual(compat.readable_taxonomy_label("CODING_Agent_UPGRADE"), "CODING Agent（更新）")
+        self.assertEqual(compat.readable_taxonomy_label("CODING_Agent_UPGRADE"), "Coding Agent（更新）")
 
-    def test_unknown_compound_label_has_no_machine_underscore(self) -> None:
+    def test_unknown_compound_label_has_no_machine_underscore_or_generic_fallback(self) -> None:
         value = compat.readable_taxonomy_label("INTERACTIONS_API_AND_DEEP_研究Preview")
+        self.assertEqual(value, "Interactions API / Deep Research（Preview）")
         self.assertNotIn("_", value)
-        self.assertIn("技術イベント", value)
+        self.assertNotIn("技術イベント", value)
 
     def test_chronology_event_field_is_translated(self) -> None:
         text = "2025-10-07 (COMPUTER_USE_PREVIEW)\\\\\n"
