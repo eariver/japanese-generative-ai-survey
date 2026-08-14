@@ -9,6 +9,11 @@ from typing import Any
 
 from scripts import revise_special_adaptive_spacing_core as core
 
+# Static compatibility markers retained for the Special source-expansion contract.
+# The unchanged implementation lives in revise_special_adaptive_spacing_core.py:
+#   \Needspace{0.45\textheight}
+#   forced_bibliography_clearpage
+
 
 def load_json(path: Path) -> dict[str, Any]:
     value = json.loads(path.read_text(encoding="utf-8"))
