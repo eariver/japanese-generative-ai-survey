@@ -3,7 +3,8 @@
 
 The validator enforces the Human Selection boundary before drafting: exact input
 SHA binding, complete primary coverage, no HOLD/EXCLUDE intrusion, Late Breaking
-placement, evidence-boundary propagation, page accounting, and approval metadata.
+placement, evidence-boundary propagation, per-package/page accounting, and
+approval metadata.
 """
 
 from __future__ import annotations
@@ -39,6 +40,7 @@ PACKAGE_TYPES = {
     "WATCHLIST_CHRONOLOGY",
     "REFERENCES",
 }
+MAX_PACKAGE_PAGES = 8
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -173,6 +175,10 @@ def validate(
         if not isinstance(page_target, (int, float)) or isinstance(page_target, bool) or page_target <= 0:
             errors.append(f"{prefix}.page_target must be positive")
         else:
+            if page_target > MAX_PACKAGE_PAGES:
+                errors.append(
+                    f"{prefix}.page_target {page_target!r} exceeds package maximum {MAX_PACKAGE_PAGES}"
+                )
             planned_sum += float(page_target)
         if not isinstance(drafting_order, int) or isinstance(drafting_order, bool) or drafting_order < 1:
             errors.append(f"{prefix}.drafting_order must be a positive integer")
@@ -225,9 +231,6 @@ def validate(
                 continue
             support_occurrences[task_id].append(package_id or prefix)
 
-        # Evidence boundaries are exact strings from Architecture Input. Any item
-        # used in a package brings all of its boundaries with it, whether primary
-        # or supporting, so a cross-reference cannot silently lose caveats.
         package_boundary_set = {value for value in boundaries if isinstance(value, str)}
         for task_id in list(dict.fromkeys([*primaries, *supports])):
             if task_id not in selected:
@@ -241,9 +244,7 @@ def validate(
                 if isinstance(boundary, str) and boundary not in package_boundary_set
             )
             if missing_boundaries:
-                errors.append(
-                    f"{prefix}: missing Evidence boundaries for {task_id}: {missing_boundaries}"
-                )
+                errors.append(f"{prefix}: missing Evidence boundaries for {task_id}: {missing_boundaries}")
 
     duplicate_package_ids = sorted(key for key, count in Counter(package_ids).items() if count > 1)
     duplicate_orders = sorted(key for key, count in Counter(drafting_orders).items() if count > 1)
