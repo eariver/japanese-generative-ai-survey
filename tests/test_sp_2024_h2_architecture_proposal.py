@@ -25,6 +25,10 @@ class SP2024H2ArchitectureProposalTests(unittest.TestCase):
         self.assertTrue(all(package["page_target"] <= 8 for package in plan["packages"]))
         self.assertEqual(sum(package["page_target"] for package in plan["packages"]), 64)
 
+        # All Evidence boundaries must survive as exact strings, not paraphrases.
+        self.assertEqual(report["missing_primary_items"], [])
+        self.assertEqual(report["duplicate_primary_items"], [])
+
 
 if __name__ == "__main__":
     unittest.main()
