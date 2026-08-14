@@ -79,12 +79,13 @@ _TOKEN_LABELS = {
     "AUTOGLM": "AutoGLM", "GLM": "GLM", "SIMA": "SIMA", "GENIE": "Genie",
     "VEO3": "Veo 3", "IMAGEN4": "Imagen 4", "ROBOTICS": "Robotics", "ER": "ER",
     "GPT": "GPT", "OSS": "OSS", "API": "API", "AI": "AI", "MCP": "MCP",
+    "OWL": "OWL", "ATLAS": "Atlas",
     "MODEL": "モデル", "PRODUCT": "製品", "AGENT": "Agent", "SAFETY": "安全性",
     "RESEARCH": "Research", "RUNTIME": "Runtime", "LIBRARY": "Library",
     "SYSTEM": "System", "CARD": "Card", "COMPUTER": "Computer", "USE": "Use",
     "BATCH": "Batch", "MODE": "Mode", "FLASH": "Flash", "LITE": "Lite",
     "IMAGE": "Image", "DEEP": "Deep", "INTERACTIONS": "Interactions", "TOOLING": "ツール",
-    "ARCHITECTURE": "アーキテクチャ", "SECURITY": "セキュリティ", "PHONE": "Phone",
+    "ARCHITECTURE": "architecture", "SECURITY": "セキュリティ", "PHONE": "Phone",
     "MULTILINGUAL": "Multilingual", "NEXT": "Next", "MAX": "Max", "OMNI": "Omni",
     "THINKING": "Thinking", "STUDIO": "Studio", "EXP": "Exp", "TERMINUS": "Terminus",
     "CODING": "Coding", "CODER": "Coder", "PRO": "Pro", "AND": "/",
@@ -128,6 +129,9 @@ _CANONICAL_DISPLAY_REPLACEMENTS = {
     "Minimax M2 1": "MiniMax M2.1",
     "Minimax M2": "MiniMax M2",
     "Hailuo 2 3": "Hailuo 2.3",
+    "Owl ARCHITECTURE": "OWL architecture",
+    "OWL ARCHITECTURE": "OWL architecture",
+    "ATLAS": "Atlas",
 }
 
 _INTENTIONAL_UPPER_ACRONYMS = {
