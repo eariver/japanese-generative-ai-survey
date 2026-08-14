@@ -65,6 +65,10 @@ _LEGACY_H2_LABELS = {
     "INTERNATIONAL_モデル_RELEASE": "国際提供モデル公開",
     "オープンウェイト_モデル_RELEASE": "オープンウェイトモデル公開",
     "API_モデル_RELEASE": "APIモデル公開",
+    "REGIONAL_モデル公開": "地域別モデル公開",
+    "INTERNATIONAL_モデル公開": "国際提供モデル公開",
+    "オープンウェイト_モデル公開": "オープンウェイトモデル公開",
+    "API_モデル公開": "APIモデル公開",
 }
 
 _TOKEN_LABELS = {
