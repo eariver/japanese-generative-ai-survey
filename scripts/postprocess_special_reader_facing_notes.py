@@ -61,6 +61,10 @@ _LEGACY_H2_LABELS = {
     "OPEN WEIGHT SAFETY モデル公開": "オープンウェイト安全モデル（公開）",
     "OPEN_WEIGHT SAFETY モデル公開": "オープンウェイト安全モデル（公開）",
     "SAFETY 研究（公開）": "安全性研究（公開）",
+    "REGIONAL_モデル_RELEASE": "地域別モデル公開",
+    "INTERNATIONAL_モデル_RELEASE": "国際提供モデル公開",
+    "オープンウェイト_モデル_RELEASE": "オープンウェイトモデル公開",
+    "API_モデル_RELEASE": "APIモデル公開",
 }
 
 _TOKEN_LABELS = {
@@ -99,8 +103,6 @@ def _normalize_legacy_label(value: str) -> str:
     value = _strip_generic_event_suffix(value.replace(r"\_", "_").strip())
     if value in _LEGACY_H2_LABELS:
         return _LEGACY_H2_LABELS[value]
-    # Historical reader passes could replace only RESEARCH/MODEL while leaving
-    # the rest of a compound enum untouched. Recover the raw semantic shape.
     value = value.replace("研究Preview", "RESEARCH_PREVIEW")
     value = value.replace("研究（公開）", "RESEARCH_RELEASE")
     value = value.replace("モデル公開", "MODEL_RELEASE")
@@ -122,7 +124,10 @@ def _humanize_subject(value: str) -> str:
 
 
 def readable_taxonomy_label(value: str) -> str:
-    normalized = _normalize_legacy_label(value)
+    original = _strip_generic_event_suffix(value.replace(r"\_", "_").strip())
+    if original in _LEGACY_H2_LABELS:
+        return _LEGACY_H2_LABELS[original]
+    normalized = _normalize_legacy_label(original)
     if normalized in _EXACT_EVENT_LABELS:
         return _EXACT_EVENT_LABELS[normalized]
     if normalized in core.EVENT_LABELS:
@@ -137,7 +142,6 @@ def readable_taxonomy_label(value: str) -> str:
         if normalized.endswith(suffix):
             subject = _humanize_subject(normalized[: -len(suffix)])
             return f"{subject}{label}" if subject else label.strip('（）')
-    # Unknown schema values must not degrade to the old generic 技術イベント label.
     return _humanize_subject(normalized) or "技術更新"
 
 
