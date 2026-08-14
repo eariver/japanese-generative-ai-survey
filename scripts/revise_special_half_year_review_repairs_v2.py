@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compatibility wrapper for duplicate generic Technical Notes fallback bullets."""
+"""Compatibility wrapper for duplicate fallbacks and historical H2 taxonomy forms."""
 from __future__ import annotations
 
 import argparse
@@ -39,9 +39,24 @@ def replace_generic_items(
     return revised, len(items)
 
 
-# The core build resolves replace_generic_items from module globals. Rebind only
-# that operation; all evidence/source/state validators remain unchanged.
+_ORIGINAL_TRANSLATE = core.reader_notes.translate_machine_labels_compat
+
+
+def translate_historical_h2_taxonomy(text: str) -> str:
+    rendered = _ORIGINAL_TRANSLATE(text)
+    replacements = {
+        "製品 TOOLING（公開）": "製品ツール（公開）",
+        "CODING Agent（更新）": "Coding Agent（更新）",
+    }
+    for old, new in replacements.items():
+        rendered = rendered.replace(old, new)
+    return rendered
+
+
+# The core build resolves these operations from module globals. Rebind narrowly;
+# all evidence/source/state validators and the final taxonomy checker remain unchanged.
 core.replace_generic_items = replace_generic_items
+core.reader_notes.translate_machine_labels_compat = translate_historical_h2_taxonomy
 
 
 def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str) -> dict[str, Any]:
