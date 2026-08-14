@@ -9,6 +9,7 @@ from unittest.mock import patch
 from scripts import fill_special_reader_notes_ja as fill_notes
 from scripts import postprocess_special_reader_facing_notes as taxonomy
 from scripts import revise_special_adaptive_spacing as router
+from scripts import revise_special_half_year_review_repairs_v2 as half_year_v2
 
 
 class HalfYearReviewRepairTests(unittest.TestCase):
@@ -20,18 +21,37 @@ class HalfYearReviewRepairTests(unittest.TestCase):
             encoding="utf-8",
         )
 
-    def test_half_year_marker_routes_to_dedicated_builder(self) -> None:
+    def test_half_year_marker_routes_to_duplicate_safe_builder(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
             self.marker(root, {"half_year_review_repairs": True})
             expected = {"mode": "half-year"}
             with patch(
-                "scripts.revise_special_half_year_review_repairs.build",
+                "scripts.revise_special_half_year_review_repairs_v2.build",
                 return_value=expected,
             ) as mocked:
                 actual = router.build(root, "test", "SP-TEST", "v0.7")
             self.assertEqual(actual, expected)
             mocked.assert_called_once_with(root, "test", "SP-TEST", "v0.7")
+
+    def test_duplicate_generic_fallbacks_replace_in_source_order(self) -> None:
+        phrase = half_year_v2.core._GENERIC_FALLBACKS[0]
+        old = r"\item \textbf{一次情報で確認できる事実}: Exampleについて、" + phrase + "。"
+        block = "\n".join([old, old])
+        revised, count = half_year_v2.replace_generic_items(
+            block,
+            "Example",
+            {
+                "Example": [
+                    {"label": "一次情報で確認できる事実", "text_ja": "一つ目の具体的事実。"},
+                    {"label": "一次情報で確認できる事実", "text_ja": "二つ目の具体的事実。"},
+                ]
+            },
+        )
+        self.assertEqual(count, 2)
+        self.assertIn("一つ目の具体的事実", revised)
+        self.assertIn("二つ目の具体的事実", revised)
+        self.assertNotIn(phrase, revised)
 
     def test_h2_taxonomy_examples_are_reader_facing(self) -> None:
         source = "\n".join(
