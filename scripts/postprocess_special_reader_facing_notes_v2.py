@@ -67,10 +67,22 @@ core.translate_machine_labels = translate_machine_labels_preserving_identifiers
 
 from scripts import postprocess_special_reader_facing_notes as compat  # noqa: E402
 
-translate_machine_labels = compat.translate_machine_labels
-translate_machine_labels_compat = compat.translate_machine_labels_compat
+_COMPAT_TRANSLATE = compat.translate_machine_labels_compat
+
+
+def translate_machine_labels_compat(text: str) -> str:
+    # Protect identifiers around the entire compatibility translation as well.
+    # This remains safe even when the legacy compatibility module was imported earlier
+    # in the same Python process and had already captured the historical broad translator.
+    protected, values = _protect_opaque_identifiers(text)
+    translated = _COMPAT_TRANSLATE(protected)
+    return _restore_opaque_identifiers(translated, values)
+
+
+translate_machine_labels = translate_machine_labels_compat
 reader_taxonomy_findings = compat.reader_taxonomy_findings
 readable_taxonomy_label = compat.readable_taxonomy_label
+core.translate_machine_labels = translate_machine_labels_compat
 
 
 def main() -> int:
