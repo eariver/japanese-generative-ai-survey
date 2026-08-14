@@ -91,6 +91,13 @@ _MACHINE_SCHEMA_TOKENS = {
     "SAFETY", "STABLE", "TOOLING", "UPTAKE", "VIDEO", "AUDIO", "CROSS", "LAB",
 }
 
+_READER_LABELS = (
+    set(core.EVENT_LABELS.values())
+    | set(core.TYPE_LABELS.values())
+    | set(_EXACT_EVENT_LABELS.values())
+    | set(_LEGACY_H2_LABELS.values())
+)
+
 
 def _strip_generic_event_suffix(value: str) -> str:
     value = value.strip()
@@ -125,9 +132,13 @@ def _humanize_subject(value: str) -> str:
 
 def readable_taxonomy_label(value: str) -> str:
     original = _strip_generic_event_suffix(value.replace(r"\_", "_").strip())
+    if original in _READER_LABELS:
+        return original
     if original in _LEGACY_H2_LABELS:
         return _LEGACY_H2_LABELS[original]
     normalized = _normalize_legacy_label(original)
+    if normalized in _READER_LABELS:
+        return normalized
     if normalized in _EXACT_EVENT_LABELS:
         return _EXACT_EVENT_LABELS[normalized]
     if normalized in core.EVENT_LABELS:
