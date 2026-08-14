@@ -9,6 +9,7 @@ from scripts.special_technical_note_tail_policy import apply_generic_tail_policy
 
 NOTE_RE = re.compile(r"\\begin\{technicalnote\}\{(.+?)\}\{.*?\\end\{technicalnote\}", re.DOTALL)
 THEME_ROW_RE = re.compile(r"^(.+?)\s*&\s*(.+?)\s*&\s*-\s*&\s*(.+?)\s*\\\\$", re.MULTILINE)
+ROW_END = r"\\"
 
 CITE_BY_EVENT = {
 "DeepSeek-R1 API release":"src-8f8555b73e1b",
@@ -70,12 +71,12 @@ def repair_notes(path: Path) -> tuple[int,int]:
     changes=[]
     for m in NOTE_RE.finditer(text):
         block=m.group(0); title=m.group(1); label=taxonomy(title)
-        revised=block.replace("種別 & - \\\", f"種別 & {label} \\\", 1)
+        revised=block.replace(f"種別 & - {ROW_END}", f"種別 & {label} {ROW_END}", 1)
         if revised != block: changes.append((m.start(),m.end(),revised))
     for s,e,r in reversed(changes): text=text[:s]+r+text[e:]
     def row(m):
         title=m.group(1).strip()
-        return f"{m.group(1)} & {m.group(2)} & {taxonomy(title)} & {m.group(3)} \\\\"
+        return f"{m.group(1)} & {m.group(2)} & {taxonomy(title)} & {m.group(3)} {ROW_END}"
     text=THEME_ROW_RE.sub(row,text)
     tail=apply_generic_tail_policy(text)
     text=tail.text
@@ -145,7 +146,7 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     manifest["main_tex"]={"path":main.relative_to(out).as_posix(),"sha256":sha(main)}; manifest["references"]={"path":refs.relative_to(out).as_posix(),"sha256":sha(refs)}
     manifest["half_year_analysis"]={"path":"half-year-analysis/80-half-year-analysis.tex","sha256":sha(analysis_target),"selected_evidence_only":True,"new_external_evidence":False}
     manifest["layout_revision"]={"from_source_version":current.get("source_version"),"review_issues":[128,153,122,55,54,140],"reader_content_changed":True,"new_external_evidence":False,"accepted_article_claims_changed":False,"evidence_cards_mutated":False,"half_year_analysis_added":True,"chronology_technical_notes_deduplicated":True,"chronology_item_level_source_mapping_count":mapped,"theme_at_a_glance_toc_entries_removed":True,"reader_taxonomy_recovered_from_source_identity":True,"generic_technical_note_tail_policy":True,"technical_note_card_count":cards,"technical_note_tail_groups_added":groups,"references_common_note_removed_count":n}
-    manifest.setdefault("layout",{})["toc_depth"]="section"; manifest["layout"]["body_mode"]="balanced mixed: local two-column narrative; full-width notes; half-year analysis; compact chronology"
+    manifest.setdefault("layout",{})["toc_depth"]="section"; manifest["layout"]["body_mode"]="mixed: narrative articles two-column; full-width notes; half-year analysis; compact chronology"
     mp=out/"source-manifest.json"; write(mp,manifest); msha=sha(mp)
 
     hist=state.setdefault("provenance_history",{}); hist.setdefault("validated_issue_source",[]).append(current)
