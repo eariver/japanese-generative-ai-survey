@@ -5,14 +5,20 @@ This collector is intentionally narrow: its input is an edition-scoped coverage-
 plan produced after the canonical base Source Intake. It is not a replacement for
 base discovery. Every planned URL is fetched as immutable Raw bytes and normalized
 later through the same Screening/Evidence boundary as base collector records.
+
+Supplemental article pages use the existing `official-pages` collector identity so
+the canonical Screening normalizer treats each fetched page as an
+`official-index-snapshot`. The collector-run stage and summary metadata preserve the
+fact that these observations are coverage-gap supplements rather than base-watchlist
+pages.
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 from datetime import datetime, timezone
-from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
@@ -21,36 +27,6 @@ import source_intake as base
 
 
 ISSUE_RE = re.compile(r"^SP-[A-Za-z0-9][A-Za-z0-9._-]{2,63}$")
-
-
-class VisibleTextParser(HTMLParser):
-    def __init__(self) -> None:
-        super().__init__(convert_charrefs=True)
-        self._skip = 0
-        self.parts: list[str] = []
-
-    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        if tag.lower() in {"script", "style", "noscript", "svg"}:
-            self._skip += 1
-
-    def handle_endtag(self, tag: str) -> None:
-        if tag.lower() in {"script", "style", "noscript", "svg"} and self._skip:
-            self._skip -= 1
-
-    def handle_data(self, data: str) -> None:
-        if not self._skip and data.strip():
-            self.parts.append(data)
-
-
-def visible_text(data: bytes, *, limit: int = 16000) -> str:
-    text = data.decode("utf-8", errors="replace")
-    parser = VisibleTextParser()
-    try:
-        parser.feed(text)
-        normalized = " ".join(" ".join(parser.parts).split())
-    except Exception:
-        normalized = " ".join(text.split())
-    return normalized[:limit]
 
 
 def load_plan(path: Path) -> dict[str, Any]:
@@ -79,6 +55,8 @@ def load_plan(path: Path) -> dict[str, Any]:
         item_id = item.get("id")
         if not isinstance(item_id, str) or not item_id.strip() or item_id in seen:
             raise ValueError(f"invalid or duplicate supplemental id: {item_id!r}")
+        if not item_id.startswith("supplemental-"):
+            raise ValueError(f"supplemental id must start with 'supplemental-': {item_id!r}")
         seen.add(item_id)
         url = item.get("url")
         parsed = urlparse(url) if isinstance(url, str) else None
@@ -98,34 +76,78 @@ def load_plan(path: Path) -> dict[str, Any]:
     return value
 
 
+def collector_run(*, issue_id: str, observed_at: datetime, plan: dict[str, Any], outputs: list[dict[str, Any]], status: str) -> dict[str, Any]:
+    stamp = base.run_stamp(observed_at)
+    return {
+        "schema_version": "1.0",
+        "issue_id": issue_id,
+        "run_id": f"official-pages-{issue_id}-{stamp}",
+        "stage": "supplemental-primary-source-discovery",
+        "collector": {
+            "id": "official-pages",
+            "provider": "Audited first-party web sources",
+            "model": None,
+            "prompt_id": None,
+            "prompt_version": None,
+            "prompt_hash": None,
+        },
+        "time": {
+            "started_at": None,
+            "completed_at": base.iso_utc(observed_at),
+            "observed_at": base.iso_utc(observed_at),
+            "collection_window_start": plan["coverage"]["start"],
+            "collection_window_end": plan["coverage"]["end"],
+            "editorial_cutoff": plan["coverage"]["end"],
+        },
+        "inputs": [plan.get("repository_path", "edition-scoped supplemental coverage-gap plan")],
+        "outputs": outputs,
+        "tool_access": ["HTTPS GET edition-scoped first-party URLs from coverage-gap plan"],
+        "status": status,
+        "notes": [
+            "SUPPLEMENTAL_COVERAGE_GAP_FILL: this run supplements and never replaces canonical base Source Intake.",
+            "Raw HTTP response bodies are preserved unchanged.",
+            "The existing official-pages Screening adapter intentionally materializes each item-level article as an official-index-snapshot for triage.",
+            "Candidate-specific factual claims still require Evidence verification.",
+        ],
+    }
+
+
 def run(*, plan_path: Path, output_root: Path, user_agent: str, timeout: int = 45) -> dict[str, Any]:
     plan = load_plan(plan_path)
     issue_id = plan["issue_id"]
     observed_at = datetime.now(timezone.utc)
-    collector_id = "supplemental-primary-sources"
-    run_base = base.run_base(issue_id, collector_id, observed_at)
+    collector_id = "official-pages"
+    run_root = base.run_base(issue_id, collector_id, observed_at)
     outputs: list[dict[str, Any]] = []
-    entries: list[dict[str, Any]] = []
+    pages: list[dict[str, Any]] = []
     errors: list[dict[str, Any]] = []
+
+    try:
+        repository_path = plan_path.resolve().relative_to(output_root.resolve()).as_posix()
+    except ValueError:
+        repository_path = plan_path.as_posix()
+    plan = dict(plan)
+    plan["repository_path"] = repository_path
 
     for item in plan["items"]:
         item_id = base.safe_id(item["id"])
-        extension = ".html"
-        raw_path = f"{run_base}/raw/{item_id}{extension}"
+        raw_path = f"{run_root}/raw/{item_id}.html"
         try:
             data, http_meta = base.http_get(item["url"], user_agent=user_agent, timeout=timeout)
             outputs.append(base.save_bytes(output_root, raw_path, data))
-            entries.append(
+            pages.append(
                 {
                     "id": item["id"],
-                    "title": item["title"],
                     "url": item["url"],
+                    "request": http_meta,
+                    "raw_path": raw_path,
+                    "sha256": hashlib.sha256(data).hexdigest(),
+                    "bytes": len(data),
+                    "supplemental": True,
+                    "title": item["title"],
                     "published_at": item.get("published_at"),
                     "publisher": item.get("publisher"),
                     "coverage_gap_reason": item["coverage_gap_reason"],
-                    "raw_path": raw_path,
-                    "request": http_meta,
-                    "summary_text": visible_text(data),
                     "metadata": item.get("metadata", {}),
                 }
             )
@@ -135,63 +157,49 @@ def run(*, plan_path: Path, output_root: Path, user_agent: str, timeout: int = 4
     summary = {
         "schema_version": "1.0",
         "issue_id": issue_id,
-        "collector": collector_id,
+        "collector": "official-pages",
+        "collection_mode": "SUPPLEMENTAL_COVERAGE_GAP_FILL",
         "observed_at": base.iso_utc(observed_at),
         "coverage": plan["coverage"],
-        "plan_path": plan_path.as_posix(),
-        "entries": entries,
+        "plan_path": repository_path,
+        "pages": pages,
         "errors": errors,
-        "entry_count": len(entries),
+        "page_count": len(pages),
         "planned_count": len(plan["items"]),
     }
     summary_bytes = (json.dumps(summary, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
-    outputs.append(base.save_bytes(output_root, f"{run_base}/summary.json", summary_bytes))
-    status = "success" if len(entries) == len(plan["items"]) else ("partial" if entries else "failed")
-    collector_run = base.collector_run(
+    outputs.append(base.save_bytes(output_root, f"{run_root}/summary.json", summary_bytes))
+    status = "success" if len(pages) == len(plan["items"]) else ("partial" if pages else "failed")
+    run_doc = collector_run(
         issue_id=issue_id,
-        stage="supplemental-primary-source-discovery",
-        collector_id=collector_id,
-        provider="Audited first-party web sources",
         observed_at=observed_at,
-        plan={
-            "editorial_cutoff": plan["coverage"]["end"],
-            "collection_window_start": plan["coverage"]["start"],
-            "collection_window_end": plan["coverage"]["end"],
-        },
+        plan=plan,
         outputs=outputs,
         status=status,
-        tool_access=["HTTPS GET edition-scoped first-party URLs from coverage-gap plan"],
-        notes=[
-            "This collector supplements, and never replaces, the canonical base Source Intake.",
-            "Each Raw response is retained unchanged; summary_text is derived only for Screening triage.",
-            "Candidate-specific factual claims still require Evidence verification.",
-        ],
     )
-    base.write_json(output_root / f"{run_base}/collector-run.json", collector_run)
-    audit = {
+    base.write_json(output_root / f"{run_root}/collector-run.json", run_doc)
+    return {
         "schema_version": "1.0",
         "issue_id": issue_id,
-        "collector_run_id": collector_run["run_id"],
+        "collector_run_id": run_doc["run_id"],
         "status": status,
         "planned_count": len(plan["items"]),
-        "collected_count": len(entries),
+        "collected_count": len(pages),
         "errors": errors,
-        "summary_path": f"{run_base}/summary.json",
+        "summary_path": f"{run_root}/summary.json",
+        "screening_ids": [f"official-index:{item['id']}" for item in pages],
     }
-    return audit
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--plan", required=True)
     parser.add_argument("--output-root", default=".")
-    parser.add_argument("--config", default=str(base.DEFAULT_CONFIG))
+    parser.add_argument("--config", required=True)
     parser.add_argument("--audit-output")
     args = parser.parse_args()
     output_root = Path(args.output_root).resolve()
-    config_path = Path(args.config)
-    if not config_path.is_absolute():
-        config_path = output_root / config_path
+    config_path = Path(args.config).resolve()
     cfg = base.load_json(config_path)
     audit = run(
         plan_path=Path(args.plan).resolve(),
