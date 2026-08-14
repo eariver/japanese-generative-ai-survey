@@ -47,17 +47,44 @@
     "automation": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["unattended_public_release", "human_gate_required_for_selection", "human_gate_required_for_architecture", "human_gate_required_for_visual_review", "human_gate_required_for_freeze", "human_gate_required_for_public_release"],
+      "required": [
+        "human_gate_model",
+        "unattended_public_release",
+        "human_gate_required_for_selection",
+        "human_gate_required_for_architecture",
+        "human_gate_required_for_publication_preview",
+        "human_gate_required_for_visual_review",
+        "human_gate_required_for_freeze",
+        "human_gate_required_for_public_release",
+        "publication_preview_authorizes",
+        "exception_gate"
+      ],
       "properties": {
+        "human_gate_model": { "const": "ARCHITECTURE_PUBLICATION_PREVIEW_WITH_EXCEPTION" },
         "unattended_public_release": { "const": false },
-        "human_gate_required_for_selection": { "const": true },
+        "human_gate_required_for_selection": { "const": false },
         "human_gate_required_for_architecture": { "const": true },
-        "human_gate_required_for_visual_review": { "const": true },
-        "human_gate_required_for_freeze": { "const": true },
-        "human_gate_required_for_public_release": { "type": "boolean" }
+        "human_gate_required_for_publication_preview": { "const": true },
+        "human_gate_required_for_visual_review": { "const": false },
+        "human_gate_required_for_freeze": { "const": false },
+        "human_gate_required_for_public_release": { "const": false },
+        "publication_preview_authorizes": {
+          "type": "array",
+          "prefixItems": [
+            { "const": "visual_review" },
+            { "const": "freeze" },
+            { "const": "work_pr_merge" },
+            { "const": "public_release" }
+          ],
+          "items": false,
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "exception_gate": { "const": "ON_DEMAND" }
       }
     },
-    "provenance": { "type": "object" }
+    "provenance": { "type": "object" },
+    "provenance_history": { "type": "object" }
   },
   "$defs": { "gateStatus": { "enum": ["pending", "passed", "failed", "not-applicable"] } }
 }
