@@ -26,6 +26,10 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     marker_path = repo_root / "sources" / issue_id / "editorial" / f"layout-revision-{source_version}.json"
     marker = load_json(marker_path)
     changes = marker.get("layout_changes") or {}
+    if changes.get("h1_publication_preview_repairs") is True:
+        from scripts.revise_special_h1_publication_preview_repairs import build as h1_build
+
+        return h1_build(repo_root, special_slug, issue_id, source_version)
     if changes.get("half_year_review_repairs") is True:
         from scripts.revise_special_half_year_review_repairs_v2 import build as half_year_build
 
