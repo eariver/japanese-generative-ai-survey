@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compatibility router for adaptive and preserve-preview Special repairs."""
+"""Compatibility router for adaptive and Publication Preview Special repairs."""
 from __future__ import annotations
 
 import argparse
@@ -26,6 +26,10 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     marker_path = repo_root / "sources" / issue_id / "editorial" / f"layout-revision-{source_version}.json"
     marker = load_json(marker_path)
     changes = marker.get("layout_changes") or {}
+    if changes.get("half_year_review_repairs") is True:
+        from scripts.revise_special_half_year_review_repairs import build as half_year_build
+
+        return half_year_build(repo_root, special_slug, issue_id, source_version)
     if changes.get("preserve_current_layout_visual_review_repairs") is True:
         from scripts.revise_special_preserve_preview_repairs_retrospective import build as preserve_build
 
