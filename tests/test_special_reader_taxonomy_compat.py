@@ -22,6 +22,14 @@ class SpecialReaderTaxonomyCompatTests(unittest.TestCase):
         self.assertIn("COMPUTER USE（Preview）", rendered)
         self.assertNotIn("COMPUTER_USE_PREVIEW", rendered)
 
+    def test_type_table_row_keeps_latex_row_ending(self) -> None:
+        text = "種別 & Agent \\\\\n時系列 & 2025-07-17 (Agent_LAUNCH) \\\\\n"
+        rendered = compat.translate_remaining_taxonomy(text)
+        lines = rendered.splitlines()
+        self.assertTrue(lines[0].endswith(r"\\"), rendered)
+        self.assertIn("種別 & Agent", lines[0])
+        self.assertIn("Agent（公開）", lines[1])
+
 
 if __name__ == "__main__":
     unittest.main()
