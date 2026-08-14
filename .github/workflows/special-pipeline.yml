@@ -31,17 +31,25 @@ on:
   push:
     paths:
       - 'config/special-pipeline.json'
+      - 'config/source-intake.json'
       - 'schemas/special-edition-manifest.schema.json'
       - 'schemas/special-pipeline-state.schema.json'
       - 'scripts/special_pipeline.py'
+      - 'scripts/source_intake.py'
+      - 'scripts/special_source_intake.py'
+      - 'tests/test_special_source_intake.py'
       - 'specials/**/edition.json'
       - '.github/workflows/special-pipeline.yml'
   pull_request:
     paths:
       - 'config/special-pipeline.json'
+      - 'config/source-intake.json'
       - 'schemas/special-edition-manifest.schema.json'
       - 'schemas/special-pipeline-state.schema.json'
       - 'scripts/special_pipeline.py'
+      - 'scripts/source_intake.py'
+      - 'scripts/special_source_intake.py'
+      - 'tests/test_special_source_intake.py'
       - 'specials/**/edition.json'
       - '.github/workflows/special-pipeline.yml'
 
@@ -65,6 +73,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m json.tool config/special-pipeline.json >/dev/null
+          python -m json.tool config/source-intake.json >/dev/null
           python -m json.tool schemas/special-edition-manifest.schema.json >/dev/null
           python -m json.tool schemas/special-pipeline-state.schema.json >/dev/null
           while IFS= read -r manifest; do
@@ -76,7 +85,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m unittest tests.test_special_pipeline -v
+          python -m unittest tests.test_special_pipeline tests.test_special_source_intake -v
 
   plan:
     needs: test
@@ -172,13 +181,13 @@ jobs:
               raise SystemExit('retrospective Special may not require Grok/X source intake')
           print(f"Special intake: {plan['issue_id']} {plan['collection_window_start']} -> {plan['collection_window_end']}")
           PY
-      - name: Run reusable primary-source intake
+      - name: Run temporal-aware primary-source intake
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          python scripts/source_intake.py \
+          python scripts/special_source_intake.py \
             --plan out/special-source-intake-control/plan.json \
             --collector '${{ inputs.collector }}' \
             --output-root out/special-source-intake
