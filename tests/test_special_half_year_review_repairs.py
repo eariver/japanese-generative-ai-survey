@@ -36,12 +36,12 @@ class HalfYearReviewRepairTests(unittest.TestCase):
     def test_h2_taxonomy_examples_are_reader_facing(self) -> None:
         source = "\n".join(
             [
-                r"時系列 & 2025-08-07 (SAFETY_METHOD_PUBLICATION) \\",
-                r"時系列 & 2025-11-19 (CODING_MODEL_RELEASE) \\",
-                r"時系列 & 2025-08-05 (GENIE_3_ANNOUNCEMENT) \\",
-                r"時系列 & 2025-09-30 (VIDEO_AUDIO_MODEL_RELEASE) \\",
-                r"時系列 & 2025-07-24 (RUNTIME_RELEASE) \\",
-                r"時系列 & 2025-08-27 (CROSS_LAB_SAFETY_EVALUATION) \\",
+                "時系列 & 2025-08-07 (SAFETY_METHOD_PUBLICATION)",
+                "時系列 & 2025-11-19 (CODING_MODEL_RELEASE)",
+                "時系列 & 2025-08-05 (GENIE_3_ANNOUNCEMENT)",
+                "時系列 & 2025-09-30 (VIDEO_AUDIO_MODEL_RELEASE)",
+                "時系列 & 2025-07-24 (RUNTIME_RELEASE)",
+                "時系列 & 2025-08-27 (CROSS_LAB_SAFETY_EVALUATION)",
             ]
         )
         rendered = taxonomy.translate_machine_labels_compat(source)
