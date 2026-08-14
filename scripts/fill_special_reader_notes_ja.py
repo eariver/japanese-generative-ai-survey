@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Fill Special Japanese Technical Notes from reviewed overrides plus safe fallback summaries."""
+"""Fill Special Japanese Technical Notes only from reviewed source-bound overrides.
+
+Missing reader-facing summaries are an editorial error. This path deliberately has
+no generic fallback: if an Evidence claim/limitation has not been reviewed, the
+revision must stop before publication-facing TeX is generated.
+"""
 from __future__ import annotations
 
 import argparse
@@ -15,16 +20,6 @@ def load_json(path: Path) -> dict[str, Any]:
     if not isinstance(value,dict):
         raise ValueError(f'{path}: expected object')
     return value
-
-
-def fallback(artifact: str, kind: str, evidence_class: str) -> str:
-    if kind == 'limitation':
-        return f'「{artifact}」の扱いでは、一次資料で確認できる範囲、提供時点、評価条件を維持し、記載範囲を超えて一般化しない。'
-    if evidence_class == 'PRIMARY_FACT':
-        return f'「{artifact}」について、一次資料で確認できる公開・提供・機能・時系列上の事実を要約した項目。'
-    if evidence_class in {'VENDOR_CLAIM','PROJECT_CLAIM','AUTHOR_CLAIM'}:
-        return f'「{artifact}」について、提供元・プロジェクト・著者側の評価または説明として記録された項目。独立再現された結果を意味しない。'
-    return f'「{artifact}」について、一次資料と時系列から導いた編集上の整理。根拠となる事実と推論を区別して扱う。'
 
 
 def run(repo_root: Path, issue_id: str, summary_path: Path, overrides_dir: Path) -> dict[str, Any]:
@@ -61,18 +56,34 @@ def run(repo_root: Path, issue_id: str, summary_path: Path, overrides_dir: Path)
                     raise ValueError(f'{path}: empty Japanese translation for {key}')
                 item['text_ja']=text.strip(); applied+=1
 
-    fallback_count=0
-    for (task,kind,_item_id), item in index.items():
+    missing=[]
+    for (task,kind,item_id), item in index.items():
         if not str(item.get('text_ja') or '').strip():
-            item['text_ja']=fallback(artifact_by_task[task],kind,item.get('evidence_class',''))
-            fallback_count+=1
+            missing.append({
+                'evidence_task_id':task,
+                'artifact_name':artifact_by_task.get(task,task),
+                'kind':kind,
+                'item_id':item_id,
+                'evidence_class':item.get('evidence_class',''),
+            })
+    if missing:
+        preview=', '.join(f"{m['artifact_name']}:{m['kind']}:{m['item_id']}" for m in missing[:8])
+        suffix='' if len(missing) <= 8 else f' (+{len(missing)-8} more)'
+        raise ValueError(
+            f'missing reviewed Japanese Technical Notes summaries: {len(missing)} item(s): {preview}{suffix}'
+        )
+
     doc['status']='READY'
     notes.verify_source_text(repo_root,issue_id,doc)
     errors=notes.validate_summary(doc)
     if errors:
         raise ValueError(f'reader notes validation failed: {errors}')
     notes.write_json(summary_path,doc)
-    return {'schema_version':'1.0','issue_id':issue_id,'status':'READY','translation_override_count':applied,'fallback_count':fallback_count,'item_count':len(index)}
+    return {
+        'schema_version':'1.0','issue_id':issue_id,'status':'READY',
+        'translation_override_count':applied,'fallback_count':0,'item_count':len(index),
+        'missing_summary_policy':'fail-closed',
+    }
 
 
 def main() -> int:
@@ -86,5 +97,5 @@ def main() -> int:
     print(json.dumps(report,ensure_ascii=False,indent=2))
     return 0
 
-if __name__ == '__main__':
+if __name__=='__main__':
     raise SystemExit(main())
