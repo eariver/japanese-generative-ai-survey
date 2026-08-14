@@ -1,0 +1,17 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{能力密度・Serving・Localityを再設計する}
+\label{pkg:efficiency-serving}
+\noindent\textbf{2024年後半は、frontier capabilityだけでなく、同じ機能をどれだけ小さく、速く、少ないmemoryで、手元や既存serving基盤へ載せられるかが独立した設計軸になった。modelとruntimeの改善を分けて読む。}\autocite{src-031c86eaad2b,src-3aa7f9dab810}
+
+GPT-4o miniや小型系列の更新は、最大モデルの性能競争とは別に、cost、latency、throughput、localityを含む『能力密度』の競争を前景化した。小型化や長文脈対応は、それ自体で大型モデルと同等の品質を意味しないが、用途ごとのmodel choiceを増やし、API/edge/localの設計余地を広げた。\autocite{src-031c86eaad2b,src-ec05e05a8071,src-f086061a9e86}
+
+
+FlashAttention-3のようなkernel/runtime側の進歩は、model architectureそのものを変えずにmemory trafficや実行効率へ影響する。一方でcaching、distillation、efficient generationに関する研究は、モデルの能力とserving costの間に複数の最適化レイヤがあることを示す。model releaseの性能とruntime optimizationの効果を同じ数字へ畳み込まないことが重要である。\autocite{src-3aa7f9dab810,src-ecac5d71389f,src-ee43656ed6da,src-fc4f100c5e5a}
+
+
+LTX-Videoのようなefficient media generationも同じ延長線上にある。video生成ではqualityだけでなく、sampling cost、VRAM、resolution、duration、local execution feasibilityが実用性を大きく左右するため、生成結果の見栄えだけでなくdeployment条件を技術仕様として扱う必要がある。\autocite{src-fd5d0edaf394}
+
+
+\begin{claimboundary}
+速度、memory、cost、長文脈品質などの性能値は、hardware、batch、context length、precision、samplerなど条件依存である。一次資料やproject/paperが報告する値はその条件へ帰属させ、異なるmodel/runtime間の独立した横断benchmarkには読み替えない。\autocite{src-3aa7f9dab810}
+\end{claimboundary}
