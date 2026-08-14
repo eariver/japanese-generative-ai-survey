@@ -44,9 +44,10 @@ def translate_remaining_taxonomy(text: str) -> str:
         stripped = line.strip()
         if stripped.startswith("種別 & "):
             prefix, rest = line.split("種別 & ", 1)
-            value, suffix = (rest.rsplit(r"\\", 1) + [""])[:2] if r"\\" in rest else (rest, "")
+            had_row_end = r"\\" in rest
+            value = rest.rsplit(r"\\", 1)[0] if had_row_end else rest
             replacement = readable_taxonomy_label(value.strip())
-            lines[index] = prefix + "種別 & " + replacement + (r" \\" if suffix != "" else "")
+            lines[index] = prefix + "種別 & " + replacement + (r" \\" if had_row_end else "")
             continue
         if " & " in stripped and re.search(r"\b\d{4}-\d{2}", stripped):
             trailer = r" \\" if stripped.endswith(r"\\") else ""
