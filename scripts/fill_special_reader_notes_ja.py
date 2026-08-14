@@ -9,8 +9,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any
+
+# This helper is also invoked directly by a generated git pre-commit hook. In that
+# mode Python's import root is ``scripts/`` rather than the control checkout root.
+# Add the repository/control root deterministically before importing the package.
+_control_root = Path(__file__).resolve().parents[1]
+if str(_control_root) not in sys.path:
+    sys.path.insert(0, str(_control_root))
 
 from scripts import special_reader_notes_ja as notes
 
