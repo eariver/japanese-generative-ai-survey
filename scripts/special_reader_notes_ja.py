@@ -2,7 +2,6 @@
 """Compatibility entry point for Special Japanese reader notes."""
 from __future__ import annotations
 
-import os
 import shlex
 import stat
 import sys
@@ -43,7 +42,7 @@ def install_fill_hook() -> None:
     ]
     script = "#!/bin/sh\nset -eu\n" + " ".join(shlex.quote(v) for v in command) + " > " + shlex.quote(str(audit)) + "\n"
     script += "git -C " + shlex.quote(str(repo_root)) + " add " + shlex.quote(str(summary.relative_to(repo_root))) + "\n"
-    script += "rm -f "$0"\n"
+    script += 'rm -f "$0"\n'
     hook.parent.mkdir(parents=True, exist_ok=True)
     hook.write_text(script, encoding="utf-8")
     hook.chmod(hook.stat().st_mode | stat.S_IXUSR)
