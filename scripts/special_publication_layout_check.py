@@ -50,9 +50,12 @@ def inspect_layout(
         errors.append(
             "Special narrative body_mode regressed to single-column without approved override"
         )
-    if "two-column" not in body_mode.lower() or "multicol" not in body_mode.lower():
+    has_local_multicols = r"\begin{multicols}{2}" in main_text
+    if "two-column" not in body_mode.lower() or (
+        "multicol" not in body_mode.lower() and not has_local_multicols
+    ):
         errors.append(
-            "Special layout manifest does not declare local two-column multicols narrative"
+            "Special layout manifest/source does not declare or implement local two-column multicols narrative"
         )
     if r"\twocolumn" in main_text or r"\onecolumn" in main_text:
         errors.append(
