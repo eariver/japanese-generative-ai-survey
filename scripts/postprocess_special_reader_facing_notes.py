@@ -95,9 +95,6 @@ _MACHINE_SCHEMA_TOKENS = {
     "SAFETY", "STABLE", "TOOLING", "UPTAKE", "VIDEO", "AUDIO", "CROSS", "LAB",
 }
 
-# Reader-facing canonicalization for historical/derived labels that have already
-# lost their underscore form but still expose source-schema casing.  These are
-# display-only spellings; Evidence event_type values remain unchanged.
 _CANONICAL_DISPLAY_REPLACEMENTS = {
     "Claude Sonnet 4 5": "Claude Sonnet 4.5",
     "Claude Haiku 4 5": "Claude Haiku 4.5",
@@ -133,9 +130,6 @@ _CANONICAL_DISPLAY_REPLACEMENTS = {
     "Hailuo 2 3": "Hailuo 2.3",
 }
 
-# ALLCAPS in an event label is not automatically wrong: API, GPT, GLM, SIMA,
-# etc. are intentional acronyms.  Everything else with three or more alphabetic
-# capitals is suspicious in taxonomy fields after canonicalization.
 _INTENTIONAL_UPPER_ACRONYMS = {
     "AI", "API", "ASR", "CLI", "CUDA", "ER", "GA", "GLM", "GPT", "HTTP",
     "JSON", "LLM", "MCP", "OWL", "RFT", "SDK", "SIMA", "SQL", "SWE", "URL",
@@ -189,9 +183,10 @@ def _humanize_subject(value: str) -> str:
 
 def readable_taxonomy_label(value: str) -> str:
     original = _strip_generic_event_suffix(value.replace(r"\_", "_").strip())
-    canonical = _canonicalize_known_names(original)
-    if canonical != original:
-        return canonical
+    if "_" not in original:
+        canonical = _canonicalize_known_names(original)
+        if canonical != original:
+            return canonical
     if original in _READER_LABELS:
         return original
     if original in _LEGACY_H2_LABELS:
