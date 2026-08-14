@@ -13,6 +13,7 @@ from scripts import special_period_consistency as legacy
 SCOPE_LABEL_RE = re.compile(
     r"本号は(?P<label>[^\n]+?)を、?後日確認可能になった一次情報も用いて再構成するRetrospective Specialである。"
 )
+SIGNAL_HEADING_RE = re.compile(r"\\section\*\{(?P<title>[^{}]+ Signals)\}")
 
 
 def display_period_label(edition: dict[str, Any]) -> str:
@@ -29,6 +30,10 @@ def display_period_label(edition: dict[str, Any]) -> str:
     if start.year == end.year:
         return f"{start.year}年{start.month}月〜{end.month}月"
     return f"{start.year}年{start.month}月〜{end.year}年{end.month}月"
+
+
+def signal_section_title(edition: dict[str, Any]) -> str:
+    return "Retrospective Signals" if edition.get("edition_kind") == "RETROSPECTIVE_PERIOD" else "Monthly Signals"
 
 
 def derive_period(edition: dict[str, Any]) -> dict[str, str]:
@@ -54,6 +59,7 @@ def _resolve(root: Path, issue_id: str, special_slug: str):
 def check_structured_periods(root: Path, issue_id: str, special_slug: str) -> dict[str, Any]:
     edition_path, edition, _state, manifest_path, manifest = _resolve(root, issue_id, special_slug)
     expected = derive_period(edition)
+    expected_signal_title = signal_section_title(edition)
     source_dir = manifest_path.parent
     front_rel = str((manifest.get("frontmatter") or {}).get("path") or "sections/00-frontmatter.tex")
     main_rel = str((manifest.get("main_tex") or {}).get("path") or "main.tex")
@@ -62,7 +68,8 @@ def check_structured_periods(root: Path, issue_id: str, special_slug: str) -> di
     if not front_path.is_file() or not main_path.is_file():
         raise ValueError("reader-facing frontmatter/main.tex missing")
 
-    body = legacy.scope_body(front_path.read_text(encoding="utf-8"))
+    front_text = front_path.read_text(encoding="utf-8")
+    body = legacy.scope_body(front_text)
     match = SCOPE_LABEL_RE.search(body)
     if not match:
         raise ValueError("Retrospective scope does not contain the structured period sentence")
@@ -70,6 +77,15 @@ def check_structured_periods(root: Path, issue_id: str, special_slug: str) -> di
     errors: list[str] = []
     if actual != expected["label"]:
         errors.append(f"Retrospective scope period mismatch: expected {expected['label']}, got {actual}")
+
+    signal_match = SIGNAL_HEADING_RE.search(front_text)
+    actual_signal_title = signal_match.group("title") if signal_match else None
+    if actual_signal_title is not None and actual_signal_title != expected_signal_title:
+        errors.append(
+            f"reader signal heading mismatch: expected {expected_signal_title}, got {actual_signal_title}"
+        )
+    if signal_match and f"\\addcontentsline{{toc}}{{section}}{{{expected_signal_title}}}" not in front_text:
+        errors.append(f"reader signal TOC heading mismatch: expected {expected_signal_title}")
 
     main = main_path.read_text(encoding="utf-8")
     coverage_re = re.compile(
@@ -94,6 +110,8 @@ def check_structured_periods(root: Path, issue_id: str, special_slug: str) -> di
         "source_manifest": manifest_path.relative_to(root).as_posix(),
         "expected_period": expected,
         "retrospective_scope_period": actual,
+        "expected_signal_heading": expected_signal_title,
+        "reader_signal_heading": actual_signal_title,
         "passed": not errors,
         "errors": errors,
     }
@@ -102,6 +120,7 @@ def check_structured_periods(root: Path, issue_id: str, special_slug: str) -> di
 def apply_scope_period(root: Path, issue_id: str, special_slug: str) -> dict[str, Any]:
     edition_path, edition, state, manifest_path, manifest = _resolve(root, issue_id, special_slug)
     expected = derive_period(edition)
+    expected_signal_title = signal_section_title(edition)
     source_dir = manifest_path.parent
     front_info = dict(manifest.get("frontmatter") or {})
     front_rel = str(front_info.get("path") or "sections/00-frontmatter.tex")
@@ -123,6 +142,19 @@ def apply_scope_period(root: Path, issue_id: str, special_slug: str) -> dict[str
     )
     new_body = SCOPE_LABEL_RE.sub(replacement, body, count=1)
     revised = original[: scope_match.start(2)] + new_body + original[scope_match.end(2) :]
+
+    signal_match = SIGNAL_HEADING_RE.search(revised)
+    previous_signal_title = signal_match.group("title") if signal_match else None
+    if signal_match:
+        revised = SIGNAL_HEADING_RE.sub(
+            rf"\\section*{{{expected_signal_title}}}", revised, count=1
+        )
+        for known_title in ("Monthly Signals", "Retrospective Signals"):
+            revised = revised.replace(
+                f"\\addcontentsline{{toc}}{{section}}{{{known_title}}}",
+                f"\\addcontentsline{{toc}}{{section}}{{{expected_signal_title}}}",
+            )
+
     changed = revised != original
     if changed:
         front_path.write_text(revised, encoding="utf-8")
@@ -133,6 +165,8 @@ def apply_scope_period(root: Path, issue_id: str, special_slug: str) -> dict[str
             "source": "specials/<slug>/edition.json coverage/display_label",
             "reader_period_label": expected["label"],
             "retrospective_scope_derived_from_manifest": True,
+            "signal_heading": expected_signal_title,
+            "signal_heading_derived_from_edition_kind": True,
         }
         if "year_month" in expected:
             consistency["expected_year_month"] = expected["year_month"]
@@ -145,7 +179,14 @@ def apply_scope_period(root: Path, issue_id: str, special_slug: str) -> dict[str
     report = check_structured_periods(root, issue_id, special_slug)
     if not report["passed"]:
         raise ValueError(f"period consistency check failed after apply: {report['errors']}")
-    report.update({"status": "PERIOD_CONSISTENCY_APPLIED", "changed": changed, "previous_scope_period": previous})
+    report.update(
+        {
+            "status": "PERIOD_CONSISTENCY_APPLIED",
+            "changed": changed,
+            "previous_scope_period": previous,
+            "previous_signal_heading": previous_signal_title,
+        }
+    )
     return report
 
 
