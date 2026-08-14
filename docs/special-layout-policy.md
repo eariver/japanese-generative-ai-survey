@@ -39,11 +39,13 @@ The goal is not to maximize text density. It is to make whitespace deliberate: e
 
 Do not choose one-column layout, retain low-density navigation pages, or add presentation-only spacing merely to inflate a Special to its planned page budget. Page targets are editorial planning signals, not density requirements.
 
-The default Special publication policy treats **32 pages as a soft editorial target** and **40 pages as a hard ceiling**. A build below 32 pages must not fail for page count alone. It should emit/report a below-target condition so Human Review can ask whether Evidence or editorial depth is missing, but the correct response is not to pad the layout. A candidate below the soft target may proceed when Evidence coverage, editorial structure, TeX checks, and Visual QA are satisfactory.
+The default monthly Special publication policy treats **32 pages as the default soft editorial target** and **40 pages as the default hard ceiling**. An edition manifest may define a different page budget when its editorial form requires it, including multi-month retrospective editions. The PDF build must resolve the active edition's `page_budget.target` and `page_budget.max` from the manifest rather than embedding one global numeric ceiling.
+
+A build below its manifest soft target must not fail for page count alone. It should emit/report a below-target condition so Human Review can ask whether Evidence or editorial depth is missing, but the correct response is not to pad the layout. A candidate below the soft target may proceed when Evidence coverage, editorial structure, TeX checks, and Visual QA are satisfactory.
 
 If returning narrative prose to two columns materially reduces page count, restore depth only when the already-collected Evidence genuinely supports more reader-facing analysis: comparison matrices, chronology, threat-model separation, runtime-layer maps, cross-chapter synthesis, or other useful synthesis. Do not use blank pages, exaggerated spacing, repeated prose, unnecessary TOC depth, forced page breaks, or tail-only pages as page padding.
 
-If the issue remains substantially below the planned target after selected Evidence has been represented at an appropriate depth, record that fact for Human Review. Revisit the editorial architecture only when the content itself appears incomplete; do not manipulate typography merely to reach 32 pages. Presentation-only spacing recovery must not be invoked solely to satisfy the soft target.
+If the issue remains substantially below the planned target after selected Evidence has been represented at an appropriate depth, record that fact for Human Review. Revisit the editorial architecture only when the content itself appears incomplete; do not manipulate typography merely to reach the manifest target. Presentation-only spacing recovery must not be invoked solely to satisfy the soft target.
 
 ## 4. Evidence-backed supplemental synthesis
 
