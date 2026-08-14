@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import email.utils
 import hashlib
+import html
 import json
 import re
 import xml.etree.ElementTree as ET
@@ -70,6 +71,23 @@ def in_window(value: str | None, start: datetime | None, end: datetime | None) -
 
 def normalize_ws(value: str | None) -> str:
     return " ".join((value or "").split())
+
+
+def html_visible_text(data: bytes, limit: int = 12000) -> str | None:
+    """Return a bounded, derived text view for item-level supplemental HTML.
+
+    Raw bytes remain authoritative. This helper exists only so Screening receives
+    enough content to triage a specifically audited first-party page instead of
+    seeing an opaque page id.
+    """
+    if not data:
+        return None
+    text = data.decode("utf-8", errors="replace")
+    text = re.sub(r"(?is)<(script|style|noscript|svg)\b.*?</\1\s*>", " ", text)
+    text = re.sub(r"(?s)<[^>]+>", " ", text)
+    text = html.unescape(text)
+    text = normalize_ws(text)
+    return text[:limit] or None
 
 
 def screening_record(
@@ -239,6 +257,34 @@ def official_records(input_root: Path, run: dict[str, Any], summary: dict[str, A
             continue
         full = input_root / raw_path
         data = full.read_bytes() if full.is_file() else b""
+
+        if page.get("supplemental") is True:
+            yield screening_record(
+                issue_id=run["issue_id"],
+                screening_id=f"official-index:{page.get('id')}",
+                source_type="official-index-snapshot",
+                collector_id=run["collector"]["id"],
+                collector_run_id=run["run_id"],
+                observed_at=run["time"]["observed_at"],
+                title=page.get("title") or page.get("id", "supplemental primary source"),
+                locator=page.get("url", ""),
+                raw_paths=[raw_path],
+                published_at=page.get("published_at"),
+                summary_text=html_visible_text(data),
+                metadata={
+                    "content_type": page.get("request", {}).get("content_type"),
+                    "etag": page.get("request", {}).get("etag"),
+                    "last_modified": page.get("request", {}).get("last_modified"),
+                    "bytes": page.get("bytes"),
+                    "supplemental": True,
+                    "publisher": page.get("publisher"),
+                    "coverage_gap_reason": page.get("coverage_gap_reason"),
+                    "supplemental_metadata": page.get("metadata", {}),
+                    "requires_page_item_extraction": False,
+                },
+            )
+            continue
+
         feed_items = _rss_items(data)
         emitted = False
         for index, item in enumerate(feed_items):
@@ -384,7 +430,8 @@ def build(input_root: Path, output_dir: Path, issue_id: str, max_records: int, m
         "semantics": [
             "This layer normalizes source-intake outputs; it does not rank or reject candidates.",
             "Raw HTTP bytes remain authoritative and are referenced through raw_paths.",
-            "official-index-snapshot means the index page still needs item-level extraction during screening.",
+            "ordinary official-index-snapshot means the index page still needs item-level extraction during screening.",
+            "supplemental official-index-snapshot records are audited item-level first-party pages and retain title/date/derived text with requires_page_item_extraction=false.",
         ],
     }
     write_json(output_dir / "screening-manifest.json", manifest)
