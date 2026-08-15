@@ -66,23 +66,25 @@ class HalfYearRenderedNoteScopeV28Tests(unittest.TestCase):
             queue = root / "queue.jsonl"
             queue.write_text("{}\n", encoding="utf-8")
 
+            rendered_url = "https://example.com/rendered"
+            chronology_url = "https://example.com/chronology"
             rendered = {
                 "canonical_title": "Rendered Model",
-                "urls": ["https://example.com/rendered"],
+                "urls": [rendered_url],
                 "events": [],
             }
             chronology = {
                 "canonical_title": "Chronology Only",
-                "urls": ["https://example.com/chronology"],
+                "urls": [chronology_url],
                 "events": [],
             }
             index = {"Rendered Model": rendered, "Chronology Only": chronology}
             screening = {
-                "https://example.com/rendered": {
+                event.impl._normalize_url(rendered_url): {
                     "summary_text": "Rendered Model supports tool use.",
                     "screening_id": "rendered",
                 },
-                "https://example.com/chronology": {
+                event.impl._normalize_url(chronology_url): {
                     "summary_text": "",
                     "screening_id": "chronology",
                 },
