@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts import revise_special_half_year_review_repairs_v6 as repair
+from scripts import revise_special_half_year_review_repairs_v7 as repair
 
 
 class HalfYearSourceSpecificTechnicalNoteTests(unittest.TestCase):
