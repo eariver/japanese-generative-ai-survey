@@ -90,6 +90,19 @@ jobs:
           echo "commit_sha=${commit_sha}" >> "${GITHUB_OUTPUT}"
           echo "commit_short=${commit_sha:0:12}" >> "${GITHUB_OUTPUT}"
 
+      - name: Validate cross-issue carry-over coverage
+        if: steps.source.outputs.source_ref != 'main'
+        shell: bash
+        env:
+          ISSUE_ID: ${{ inputs.issue_id }}
+        run: |
+          set -euo pipefail
+          ledger="source-tree/sources/${ISSUE_ID}/carryover/carryover-ledger-v0.1.json"
+          test -s "$ledger"
+          PYTHONPATH=control-src python control-src/scripts/validate_weekly_carryover_ledger.py \
+            --repo-root source-tree --issue-id "$ISSUE_ID" --ledger "$ledger" --stage screening \
+            --report screening-package-carryover-check.json
+
       - name: Build deterministic screening package
         shell: bash
         env:
@@ -113,6 +126,7 @@ jobs:
           path: |
             screening-package/
             screening-package-raw-check.json
+            screening-package-carryover-check.json
           if-no-files-found: error
           retention-days: 14
           compression-level: 6

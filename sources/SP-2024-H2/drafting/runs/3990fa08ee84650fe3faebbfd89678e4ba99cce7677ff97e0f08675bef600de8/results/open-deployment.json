@@ -1,0 +1,174 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2024-H2",
+  "package_id": "open-deployment",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "basis": {
+    "draft_package_sha256": "0e4b93400d8560e864a09bab056b18149cc262e7c2136a04a3ca1842feb73612",
+    "prompt_id": "article-drafting-v0.1",
+    "prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project drafting; no paid inference-provider API",
+    "generated_at": "2026-08-14T23:39:18+09:00",
+    "run_reference": "Autonomous post-Architecture drafting for SP-2024-H2 after Human Gate 1 approval; eight evidence-bound article drafts prepared in ChatGPT and constrained to approved Draft Packages. Proceed toward Publication Preview Human Gate 2."
+  },
+  "headline": "Openは「重み公開」から配備設計へ",
+  "deck": "2024年後半のopen-weight競争は、単純なパラメータ数比較では捉えにくくなった。Llama、Qwen、DeepSeek、OLMo/Tulu、Jamba、Mistral系などを、weights・license・training artifacts・architecture・local/hosted deploymentの組み合わせとして読む。",
+  "deck_attribution_mode": "INFERENCE",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-meta-ll-b2f241f1e6",
+      "kind": "EVENT",
+      "evidence_id": "event-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-qwen25-8dd1e3f879",
+      "kind": "EVENT",
+      "evidence_id": "event-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-deepsee-ad2d5208e7",
+      "kind": "EVENT",
+      "evidence_id": "event-1"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "open-is-not-one-axis",
+      "block_type": "PARAGRAPH",
+      "text": "Llama 3.x、Qwen2.5、DeepSeek-V3、Ai2のOLMo/Tulu、AI21のJamba、Tencent系モデル、Microsoft系小型モデル、Mistral系を同じ『open model』という一語で括ると、2024年後半に増えた実務上の選択肢を取り落とす。重要なのは、重みを取得できるかだけでなく、license、training artifacts、dense/MoE/hybrid SSMというarchitecture、model size、量子化やlocal実行、hosted APIの有無までを分離して比較することである。これらは同じ公開性を意味せず、open weights、open source、open trainingは別の属性として扱う必要がある。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-meta-ll-b2f241f1e6",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-meta-ll-63de35b698",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-qwen25-8dd1e3f879",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-deepsee-ad2d5208e7",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-ai2-olm-7b99d53c97",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-ai2-olm-f51e7d2d2e",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-ai2-tul-cb4984a361",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-ai21-ja-8a93c45f8a",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-tencent-7cdef72f8f",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-microso-2c4bcdd078",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-mistral-f96bef138e",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        }
+      ]
+    },
+    {
+      "block_id": "deployment-is-the-comparison",
+      "block_type": "PARAGRAPH",
+      "text": "この変化は、モデルを『公開された成果物』として見るだけでなく、『どこで、どのruntimeで、どの程度の資源で動かせるか』というdeployment architectureとして見る必要を生んだ。量子化版、長文脈版、coder系派生、小型系列などの追加は、単一のfrontier scoreではなく、edge/local/hostedの配備境界を細分化した。したがって本稿では、各組織が示す性能値はその評価条件に帰属させ、公開形態と配備可能性の事実を性能優位の独立証明へ読み替えない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-mistral-817dbb2d5b",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-qwen25-8266731621",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-qwen25-a08848f9e2",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-meta-ll-ad2b5f1ffa",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        }
+      ]
+    },
+    {
+      "block_id": "claim-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "一次資料から確認できるのは、release、weights/licenseの提示、architectureや提供形態など各資料が明示する範囲である。vendor/project/authorが示すbenchmarkや優位性は、その主張主体と条件を保持し、独立再現済みの性能とは扱わない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2024-H2:item-official-index-supplemental-deepsee-ad2d5208e7",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "open weightsとopen source/open trainingを分離",
+      "block_ids": [
+        "open-is-not-one-axis"
+      ]
+    },
+    {
+      "requirement": "dense/MoE/hybrid SSMの違い",
+      "block_ids": [
+        "open-is-not-one-axis"
+      ]
+    },
+    {
+      "requirement": "edge/local/hostedの配備境界",
+      "block_ids": [
+        "deployment-is-the-comparison"
+      ]
+    }
+  ],
+  "boundary_coverage": [
+    {
+      "requirement": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    }
+  ],
+  "late_breaking_acknowledged": false
+}

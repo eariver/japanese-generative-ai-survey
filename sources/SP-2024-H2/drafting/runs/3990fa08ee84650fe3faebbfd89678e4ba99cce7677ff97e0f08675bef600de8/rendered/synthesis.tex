@@ -1,0 +1,19 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{Half-year Synthesis — Model単体からExecution / Deployment Stackへ}
+\noindent\textbf{2024年後半を通して見ると、生成AIの進歩を『最も強いmodelはどれか』だけで説明することが難しくなった。推論時計算、外部接続、multimodal interaction、deployment/runtime、grounding/controlが独立した設計層として立ち上がり、能力の観測単位がstackへ広がり始めた。}\autocite{src-9cf289b414fd,src-bcbc025369e3}
+
+7〜8月にはopen-weight、小型化、multimodal理解などmodel/deployment側の選択肢が広がり、9〜10月にはreasoning、Realtime、Computer Use、retrieval/controlのようにmodel外側の実行面が目立ち始めた。11〜12月にはMCP、reasoning previewの拡大、video/open media、model familyの高速更新が重なり、個々のreleaseを追うだけでは半年の変化を説明しにくくなった。これは単一の因果列というより、複数layerが並行して立ち上がったcross-month変化として読むのが妥当である。\autocite{src-bcbc025369e3,src-ee43656ed6da}
+
+
+この半年の再分類で重要なのは三点ある。第一にreasoningは新しいmodel categoryであるだけでなく、inference-time computeをどう配分するかというlayerになった。第二にagentは単一製品ではなく、search、tool call、GUI action、protocol、state/context、evaluationへ分解して考える必要が生じた。第三にopenは『重みがあるか』という二値ではなく、license、training artifacts、quantization、runtime、local/hosted deploymentを含む配備設計へ広がった。\autocite{src-9cf289b414fd,src-ee43656ed6da}
+
+
+各layerは独立しているが、実用上は相互依存する。推論能力を増やしても外部情報への接続やaction surfaceがなければ実行できず、toolやcomputer useを増やせばprompt injection、factuality、moderation、authorizationなどcontrolの重要性が上がる。open-weightや小型化でdeployment choiceが増えれば、runtime効率と再現性、license境界が同時に重要になる。2024-H2の本質は、modelが不要になったことではなく、modelだけではsystem能力を記述できなくなり始めた点にある。\autocite{src-3278a129a17e,src-9cf289b414fd}
+
+
+2024年末の時点で未解決だったのは、reasoningを長いtool executionへ安定して接続できるか、Computer Useやprotocol経由の権限・prompt injectionをどう扱うか、vendor benchmarkをどう再現・比較するか、openという語のlicense/data/training transparency差をどう表現するか、そして高速なpreview→product→API lifecycleをruntimeや運用がどう吸収するかである。これらは2024-H2の資料だけから将来の解答を予告できる問題ではないが、次の半期を読むための問いとして明確に残った。\autocite{src-3278a129a17e,src-bcbc025369e3}
+
+
+\begin{claimboundary}
+本総括は、監査済みSource Intakeと選定Evidenceから導くhalf-year reclassificationであり、2024-H2の全イベント・全論文を完全列挙したという主張ではない。一次資料で確定したeventと、vendor/project/authorの評価claim、編集上のcross-layer inferenceを分けて読む。\autocite{src-bcbc025369e3}
+\end{claimboundary}

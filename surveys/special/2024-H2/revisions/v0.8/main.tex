@@ -1,0 +1,161 @@
+\documentclass[lualatex,a4paper,11pt]{jlreq}
+\usepackage{jgaisurvey}
+\usepackage{needspace}
+\usepackage{multicol}
+\addbibresource{references.bib}
+
+% Special-local long-form presentation. Shared weekly source remains unchanged.
+\geometry{margin=22mm,headsep=5mm,footskip=10mm}
+\setlength{\headheight}{14.5pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1em}
+\newtcolorbox{technicalnote}[2]{
+  enhanced,breakable,colback=SurveySoft,colframe=SurveyAccent,
+  boxrule=0.65pt,arc=1mm,title={#1 \hfill \footnotesize #2},fonttitle=\bfseries,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=4mm,after skip=3mm
+}
+
+\surveysetup
+  {SP-2024-H2}
+  {Japanese Generative AI Technical Survey}
+  {Special / Coverage 2024-07-01 -- 2024-12-31 / Retrospective as of 2026-08-14}
+  {Coverage window: 2024-07-01 -- 2024-12-31 UTC}
+\surveyeditiondescriptor{Retrospective Survey}
+\surveycoverstory
+  {モデルの外側が技術史になる}
+  {2024年後半、生成AIの競争はモデル単体から、推論、接続、配備、マルチモーダル、制御を組み合わせる実行スタックへ広がり始めた。}
+  {Inference-time Computeが新しい能力軸になる \quad / \quad 回答から検索・操作・接続へ \quad / \quad Openは「重み公開」から配備・再現性の設計問題へ}
+
+\setlength{\columnsep}{6mm}
+\setlength{\multicolsep}{0.8em plus 0.2em minus 0.1em}
+
+\begin{document}
+\surveycover
+\clearpage
+\input{sections/00-frontmatter}
+
+\clearpage
+\section{Openは「重み公開」から配備設計へ}
+\label{pkg:open-deployment}
+\vspace{0.15em}
+\input{layout-bodies/01-open-deployment-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/01-open-deployment-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/01-open-deployment-wide}
+\medskip
+\input{technical-notes/10-open-deployment-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Inference-time Computeが能力軸になる}
+\label{pkg:reasoning}
+\vspace{0.15em}
+\input{layout-bodies/02-reasoning-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/02-reasoning-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/02-reasoning-wide}
+\medskip
+\input{technical-notes/20-reasoning-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{回答から検索・操作・接続へ}
+\label{pkg:action-connectivity}
+\vspace{0.15em}
+\input{layout-bodies/03-action-connectivity-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/03-action-connectivity-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/03-action-connectivity-wide}
+\medskip
+\input{technical-notes/30-action-connectivity-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Multimodalityは理解からRealtime・統合生成・Videoへ}
+\label{pkg:multimodal-media}
+\vspace{0.15em}
+\input{layout-bodies/04-multimodal-media-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/04-multimodal-media-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/04-multimodal-media-wide}
+\medskip
+\input{technical-notes/40-multimodal-media-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{能力密度・Serving・Localityを再設計する}
+\label{pkg:efficiency-serving}
+\vspace{0.15em}
+\input{layout-bodies/05-efficiency-serving-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/05-efficiency-serving-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/05-efficiency-serving-wide}
+\medskip
+\input{technical-notes/50-efficiency-serving-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Execution Surfaceの拡大にControlが追いつく}
+\label{pkg:control-evaluation}
+\vspace{0.15em}
+\input{layout-bodies/06-control-evaluation-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/06-control-evaluation-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/06-control-evaluation-wide}
+\medskip
+\input{technical-notes/60-control-evaluation-notes}
+
+\Needspace{0.35\textheight}
+\bigskip
+\input{half-year-analysis/80-half-year-analysis}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Half-year Synthesis — Model単体からExecution / Deployment Stackへ}
+\label{pkg:synthesis}
+\vspace{0.15em}
+\input{layout-bodies/07-synthesis-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/07-synthesis-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/07-synthesis-wide}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Detailed Chronology — 2024年後半の主要lifecycle}
+\label{pkg:chronology}
+\vspace{0.15em}
+\input{layout-bodies/08-chronology-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/08-chronology-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/08-chronology-wide}
+
+\Needspace{0.30\textheight}
+\bigskip
+\noindent{\small\textit{以下のReferencesは本号のchronology・技術確認・横断分析に用いた一次資料である。各entryでは識別・追跡に必要な資料名、組織、URL、参照日を示す。}}\par
+\smallskip
+\printbibliography[title={References / Source Notes}]
+\end{document}
