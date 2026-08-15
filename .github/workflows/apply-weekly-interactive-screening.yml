@@ -63,14 +63,14 @@ jobs:
           set -euo pipefail
           python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id "$ISSUE_ID" check
 
-      - name: Require interactive override review file
-        id: override
+      - name: Require compact interactive selection file
+        id: selection
         shell: bash
         env:
           ISSUE_ID: ${{ inputs.issue_id }}
         run: |
           set -euo pipefail
-          path="worktree/sources/${ISSUE_ID}/screening/interactive-overrides-v0.1.json"
+          path="worktree/sources/${ISSUE_ID}/screening/interactive-selection-v0.1.json"
           test -s "$path"
           python -m json.tool "$path" >/dev/null
           echo "path=$path" >> "$GITHUB_OUTPUT"
@@ -89,7 +89,7 @@ jobs:
             --issue-id "$ISSUE_ID" \
             --source-ref "$WORK_BRANCH" \
             --source-commit "$source_commit" \
-            --overrides "worktree/sources/${ISSUE_ID}/screening/interactive-overrides-v0.1.json" \
+            --selection "worktree/sources/${ISSUE_ID}/screening/interactive-selection-v0.1.json" \
             --review-reference "$REVIEW_REFERENCE" \
             --audit-output screening-audit.json
 
