@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-"""Run a complete Weekly screening pass from a compact interactive override file.
+"""Run a complete Weekly screening pass from a compact interactive selection file.
 
 This is the no-paid-provider path for weekly issues. It regenerates the exact
-screening package from the weekly work tree, expands explicit KEEP/MAYBE/INSPECT
-choices plus a default DROP into one result per input record, validates every
-batch, and persists the complete result set through accept_screening_results.
+screening package from the weekly work tree, expands compact retained selections
+plus a default DROP into one result per input record, validates every batch, and
+persists the complete result set through accept_screening_results.
+
+For compatibility, the Special-style explicit ``overrides`` document is also
+accepted. Weekly issues may instead use ``decision_defaults`` + ``selections``
+to avoid repeating the same reason/verification text hundreds of times.
 """
 from __future__ import annotations
 
@@ -19,6 +23,7 @@ from scripts import accept_screening_results, prepare_screening_run
 from scripts import run_special_interactive_screening as shared
 
 WEEKLY_RE = re.compile(r"^[0-9]{4}-W[0-9]{2}$")
+DECISIONS = {"KEEP", "MAYBE", "INSPECT"}
 
 
 def load_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -31,6 +36,73 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
             raise ValueError(f"{path}:{line_no}: expected JSON object")
         result.append(value)
     return result
+
+
+def expand_selection_document(value: dict[str, Any], issue_id: str) -> tuple[dict[str, Any], dict[str, dict[str, Any]]]:
+    """Expand compact Weekly selections to the existing explicit override contract."""
+    if "overrides" in value:
+        return value, shared.validate_overrides(value, issue_id)
+
+    if value.get("schema_version") != "1.0" or value.get("issue_id") != issue_id:
+        raise ValueError("selection schema/issue_id mismatch")
+    runner = value.get("runner")
+    if not isinstance(runner, dict):
+        raise ValueError("runner metadata is required")
+    default_drop = value.get("default_drop")
+    if not isinstance(default_drop, dict) or not isinstance(default_drop.get("reason"), str) or not default_drop["reason"].strip():
+        raise ValueError("default_drop.reason must be non-empty")
+
+    defaults = value.get("decision_defaults")
+    if not isinstance(defaults, dict):
+        raise ValueError("decision_defaults must be an object")
+    for decision in DECISIONS:
+        spec = defaults.get(decision)
+        if not isinstance(spec, dict):
+            raise ValueError(f"decision_defaults.{decision} is required")
+        if not isinstance(spec.get("reason"), str) or not spec["reason"].strip():
+            raise ValueError(f"decision_defaults.{decision}.reason must be non-empty")
+        targets = spec.get("verification_targets", [])
+        if not isinstance(targets, list) or any(not isinstance(x, str) or not x.strip() for x in targets):
+            raise ValueError(f"decision_defaults.{decision}.verification_targets is invalid")
+        if spec.get("confidence") not in {"low", "medium", "high"}:
+            raise ValueError(f"decision_defaults.{decision}.confidence is invalid")
+
+    selections = value.get("selections")
+    if not isinstance(selections, list):
+        raise ValueError("selections must be an array")
+    explicit: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for item in selections:
+        if not isinstance(item, dict):
+            raise ValueError("selection entries must be objects")
+        sid = item.get("screening_id")
+        if not isinstance(sid, str) or not sid or sid in seen:
+            raise ValueError(f"invalid/duplicate selection screening_id: {sid!r}")
+        seen.add(sid)
+        decision = item.get("decision")
+        if decision not in DECISIONS:
+            raise ValueError(f"invalid selection decision for {sid}: {decision!r}")
+        spec = defaults[decision]
+        expanded = {
+            "screening_id": sid,
+            "decision": decision,
+            "reason": item.get("reason", spec["reason"]),
+            "why_now": item.get("why_now"),
+            "topic_lanes": item.get("topic_lanes", []),
+            "duplicate_group": item.get("duplicate_group"),
+            "verification_targets": item.get("verification_targets", spec.get("verification_targets", [])),
+            "confidence": item.get("confidence", spec["confidence"]),
+        }
+        explicit.append(expanded)
+
+    expanded_doc = {
+        "schema_version": "1.0",
+        "issue_id": issue_id,
+        "runner": runner,
+        "default_drop": default_drop,
+        "overrides": explicit,
+    }
+    return expanded_doc, shared.validate_overrides(expanded_doc, issue_id)
 
 
 def run(
@@ -48,8 +120,8 @@ def run(
 
     repo_root = repo_root.resolve()
     overrides_path = overrides_path.resolve()
-    override_doc = shared.load_json(overrides_path)
-    overrides = shared.validate_overrides(override_doc, issue_id)
+    source_doc = shared.load_json(overrides_path)
+    override_doc, overrides = expand_selection_document(source_doc, issue_id)
 
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
@@ -98,7 +170,7 @@ def run(
 
         unknown = sorted(set(overrides) - seen)
         if unknown:
-            raise ValueError(f"override screening_ids are absent from regenerated package: {unknown}")
+            raise ValueError(f"selected screening_ids are absent from regenerated package: {unknown}")
         if len(seen) != package["screening_input"]["record_count"]:
             raise ValueError("generated screening record count mismatch")
 
@@ -114,7 +186,7 @@ def run(
 
         report = dict(report)
         report["decision_counts"] = counts
-        report["interactive_override_path"] = overrides_path.relative_to(repo_root).as_posix()
+        report["interactive_selection_path"] = overrides_path.relative_to(repo_root).as_posix()
         report["runner"] = runner
         if audit_output:
             audit_output.parent.mkdir(parents=True, exist_ok=True)
@@ -128,7 +200,7 @@ def main() -> int:
     parser.add_argument("--issue-id", required=True)
     parser.add_argument("--source-ref", required=True)
     parser.add_argument("--source-commit", required=True)
-    parser.add_argument("--overrides", required=True)
+    parser.add_argument("--selection", required=True)
     parser.add_argument("--review-reference", required=True)
     parser.add_argument("--audit-output")
     args = parser.parse_args()
@@ -138,7 +210,7 @@ def main() -> int:
         issue_id=args.issue_id,
         source_ref=args.source_ref,
         source_commit=args.source_commit,
-        overrides_path=Path(args.overrides),
+        overrides_path=Path(args.selection),
         review_reference=args.review_reference,
         audit_output=Path(args.audit_output) if args.audit_output else None,
     )
