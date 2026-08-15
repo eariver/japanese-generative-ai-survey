@@ -18,7 +18,6 @@ from typing import Any
 
 from scripts import revise_special_half_year_review_repairs_v18 as base
 from scripts import revise_special_half_year_review_repairs_v16 as event_layer
-from scripts import revise_special_half_year_review_repairs_v15 as structural_layer
 
 # v16/v15 ultimately resolve event positions through the shared v13 module.
 event = event_layer.event
