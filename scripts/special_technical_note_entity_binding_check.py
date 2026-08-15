@@ -12,6 +12,8 @@ from typing import Any
 ENTITY_BINDING_CONTRACT = "SUBJECT_VERSION_AWARE_HIGH_RISK_SIGNALS_V2"
 NOTE_RE = re.compile(r"\\begin\{technicalnote\}\{(.+?)\}\{.*?\\end\{technicalnote\}", re.DOTALL)
 FACT_RE = re.compile(r"^\\item \\textbf\{一次情報で確認できる事実\}: (.+)$", re.MULTILINE)
+INPUT_RE = re.compile(r"\\(?:input|include)\{([^}]+)\}")
+TOKEN_EDGE_CLASS = r"A-Za-z0-9_.-"
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -37,6 +39,45 @@ def _title_key(value: str) -> str:
     ):
         text = text.replace(encoded, plain)
     return re.sub(r"\s+", " ", text).strip()
+
+
+def _normalize_tex_path(value: str) -> str:
+    text = str(value or "").strip().replace("\\", "/")
+    while text.startswith("./"):
+        text = text[2:]
+    if text and not Path(text).suffix:
+        text += ".tex"
+    return Path(text).as_posix() if text else ""
+
+
+def _included_tex_paths(manifest: dict[str, Any], source_dir: Path, errors: list[str]) -> set[str]:
+    """Return TeX files that are actually rendered by the state-pinned main document."""
+    main_info = manifest.get("main_tex") or {}
+    main_rel = _normalize_tex_path(str(main_info.get("path") or "main.tex"))
+    main_path = source_dir / main_rel
+    if not main_path.is_file():
+        errors.append(f"main TeX missing during entity check: {main_rel}")
+        return set()
+    expected = str(main_info.get("sha256") or "")
+    if expected and sha(main_path) != expected:
+        errors.append(f"main TeX digest mismatch during entity check: {main_rel}")
+        return set()
+    return {
+        _normalize_tex_path(match.group(1))
+        for match in INPUT_RE.finditer(main_path.read_text(encoding="utf-8"))
+        if _normalize_tex_path(match.group(1))
+    }
+
+
+def _signal_occurs(text: str, signal: str) -> bool:
+    """Match a rejected signal as a token sequence, not as a numeric/model substring."""
+    value = str(signal or "").strip()
+    if not value:
+        return False
+    pattern = re.compile(
+        rf"(?<![{TOKEN_EDGE_CLASS}]){re.escape(value)}(?![{TOKEN_EDGE_CLASS}])"
+    )
+    return pattern.search(text) is not None
 
 
 def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[str]:
@@ -89,11 +130,21 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
             f"audited={len(artifacts)} visible={visible} overrides={overrides}"
         )
 
+    # The manifest can retain provenance-only Technical Note files for packages whose
+    # cards are deliberately omitted from the publication (for example synthesis and
+    # compact chronology packages). Entity correctness must be checked against the
+    # files actually rendered by main.tex, not every historical/provenance file.
+    included_paths = _included_tex_paths(manifest, source_dir, errors)
+    if errors and not included_paths:
+        return errors
+
     cards: dict[str, str] = {}
     for article in manifest.get("articles") or []:
         if not isinstance(article, dict) or article.get("technical_notes_reader_facing") is not True:
             continue
-        rel = str(article.get("technical_notes_path") or "")
+        rel = _normalize_tex_path(str(article.get("technical_notes_path") or ""))
+        if rel not in included_paths:
+            continue
         path = source_dir / rel
         if not rel or not path.is_file():
             errors.append(f"reader-facing Technical Notes file missing during entity check: {rel}")
@@ -122,9 +173,19 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
             errors.append(f"Technical Note primary-fact line missing during entity check: {title}")
             continue
         fact = fact_match.group(1)
-        for signal in item.get("rejected_entity_bound_signals") or []:
-            signal = str(signal)
-            if signal and signal in fact:
+        accepted = {
+            str(signal).strip()
+            for signal in (item.get("accepted_entity_bound_signals") or [])
+            if str(signal).strip()
+        }
+        for signal_value in item.get("rejected_entity_bound_signals") or []:
+            signal = str(signal_value).strip()
+            # A signal can occur both in a target-bound sentence and elsewhere in a
+            # comparison/history context. The audit deliberately records both. Only
+            # rejected-only signals are forbidden from the rendered target card.
+            if not signal or signal in accepted:
+                continue
+            if _signal_occurs(fact, signal):
                 errors.append(
                     f"Technical Note contains a source signal rejected by subject binding: {title}: {signal}"
                 )
