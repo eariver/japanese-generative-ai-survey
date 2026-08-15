@@ -1,0 +1,43 @@
+\section*{Contents}
+\begin{tabularx}{0.98\linewidth}{@{}>{\bfseries}p{0.30\linewidth}X@{}}
+Lead Feature & GPT-5.6-Cyber / Daybreak --- capabilityをどう配り、どう制御するか \\
+Model Feature & Muse Glimmer --- model identityからTransformers ecosystemへ \\
+Deep Dive & Inference becomes a product surface --- API / framework / kernelを一枚で読む \\
+Media Integration & ComfyUI --- model releaseとworkflow adoptionを分ける \\
+X Trend Watch & 話題になったが一次情報では確定しなかった5つのsignal \\
+Chronology & W33のevent sequenceとEvidence boundary \\
+今週の総括 & 能力競争がmodel単体から運用stackへ広がった意味 \\
+\end{tabularx}
+
+\vspace{4mm}
+\section*{This Week in AI}
+
+\begin{tcolorbox}[enhanced,colback=SurveySoft,colframe=SurveyRule,boxrule=0.4pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm]
+\textbf{1. Frontier cyber capabilityは「モデル発表」だけでは終わらなかった。}\quad
+OpenAIはGPT-5.6-CyberをDaybreak Red経由のcybersecurity-specific modelとして公表し、同日にtrusted-partner accessを説明、翌日にはAmazon Bedrockでの提供を案内した\cite{openai-daybreak-cyber,openai-daybreak-partners,openai-daybreak-aws}。W33では能力そのものと同じくらい、\textbf{誰に、どの境界で、どのdeployment surfaceから届けるか}が技術的な論点になった。
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced,colback=SurveySoft,colframe=SurveyRule,boxrule=0.4pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm]
+\textbf{2. Modelの存在と、developerが扱えるecosystem artifactになる時点は同じではない。}\quad
+Transformers v5.15.0はMeta Muse Glimmerをnew model additionとして載せた\cite{hf-transformers-515}。今週のMuse storyは名前の新しさより、主要libraryへの統合によって実験・実装へ接続しやすくなった点にある。
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced,colback=SurveySoft,colframe=SurveyRule,boxrule=0.4pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm]
+\textbf{3. 推論性能はAPI、serving framework、kernelのどこからでも変わる。}\quad
+GPT-5.6 Sol Ultrafast、SGLang v0.5.17、vLLM v0.27系、FlashInfer v0.6.17は同じ「速さ」を語っているようで、実際には異なるlayerを更新している\cite{openai-ultrafast,sglang-0517-w33,vllm-0270,flashinfer-0617}。数値を横並びにするより、改善がどの層で生まれるかを分けて読む必要がある。
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced,colback=SurveySoft,colframe=SurveyRule,boxrule=0.4pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm]
+\textbf{4. Media generationではintegration chronologyが独立した意味を持つ。}\quad
+ComfyUIはW33にv0.31.0、v0.32.0、v0.33.1を公開し、v0.32.0で複数のimage/video model向けsupportを追加した\cite{comfyui-0310,comfyui-0320,comfyui-0331}。ただし、workflow supportが今週入ったことと、underlying model自体が今週初公開されたことは別のchronologyである。
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced,colback=SurveySoft,colframe=SurveyRule,boxrule=0.4pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm]
+\textbf{5. Xは早いsignalを出すが、早さと確度は同じではない。}\quad
+W33ではGrok 4.6、Qwen3.8-27B、Nemotron 3.5 Lightningなどの名称がX上の観測対象になった一方、公開時点の一次情報からexactなrelease identityを確定できない例も残った\cite{w33-grok-r3-observation,w33-grok-r3-review}。Trend Watchでは「何が見えたか」と「何がまだ確認できないか」を分けて記録する。
+\end{tcolorbox}
+
+\vspace{2mm}
+\footnotesize
+\textbf{Editorial boundary:} 通常本文の対象期間は2026-08-07 18:00から2026-08-14 18:00 America/New\_Yorkまで。X上の観測はtechnical factの代替ではなく、release identity・chronology・capabilityは一次情報またはtechnical sourceと分けて扱う。
+\normalsize
