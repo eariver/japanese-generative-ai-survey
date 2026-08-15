@@ -1,0 +1,45 @@
+\section{Weekly Chronology --- 一週間をrelease sequenceで読む}
+\label{sec:chronology}
+\sectionkicker{Chronology / Evidence Boundary}
+
+\textbf{W33の特徴は、一つのbig launchより、model・access・deployment・serving・integrationが数日の間に連続したことにある。} 以下は今号で扱った主要eventを、America/New\_Yorkのeditorial windowに属するものとして日付順に並べたものである。
+
+\begin{center}
+\small
+\begin{tabularx}{0.98\linewidth}{@{}>{\bfseries}p{0.16\linewidth}p{0.27\linewidth}X@{}}
+Aug 8 & SGLang v0.5.17 & serving framework更新。W32でcutoff近傍に見えたfollow-throughをW33の通常chronologyで扱う\cite{sglang-0517-w33}。 \\
+Aug 8 & ComfyUI v0.31.0 & W33 media-integration seriesの開始点\cite{comfyui-0310}。 \\
+Aug 10 & GPT-5.6-Cyber / Daybreak & OpenAIがcybersecurity-specific modelとDaybreak Redのscopeを公表\cite{openai-daybreak-cyber}。 \\
+Aug 10 & Daybreak trusted partners & approved partnerを介したgoverned cybersecurity serviceの提供形態を説明\cite{openai-daybreak-partners}。 \\
+Aug 10 & Transformers v5.15.0 & Muse Glimmerをnew model additionとして掲載\cite{hf-transformers-515}。 \\
+Aug 10 & vLLM v0.27.0 & model support / engine / quantization / distributed serving等を含むfeature-bearing release\cite{vllm-0270}。 \\
+Aug 11 & FlashInfer v0.6.17 & attention / MoE / quantized inference等のkernel / runtime更新\cite{flashinfer-0617}。 \\
+Aug 11 & Daybreak on AWS & OpenAIがAmazon BedrockからのDaybreak availabilityを発表\cite{openai-daybreak-aws}。 \\
+Aug 11 & vLLM v0.27.1 & v0.27.0直後のpatch continuation\cite{vllm-0271}。 \\
+Aug 11 & ComfyUI v0.32.0 & Qwen-Image 3.0 Pro、LTX 2.5、Grok-Imagine-Image-2.0等に関するintegrationをrelease notesへ追加\cite{comfyui-0320}。 \\
+Aug 13 & GPT-5.6 Sol Ultrafast & OpenAIが新しいAPI service-tier previewを公表\cite{openai-ultrafast}。 \\
+Aug 13 & ComfyUI v0.33.1 & 同週のintegration seriesを継続\cite{comfyui-0331}。 \\
+\end{tabularx}
+\end{center}
+
+\subsection*{一本の線にすると何が見えるか}
+
+Daybreakは\textbf{model identity → access model → cloud deployment}と進む。Muse Glimmerは\textbf{model identity → library integration}の地点でW33に現れる。Inferenceは\textbf{hosted API → serving framework → kernel/runtime}の複数layerが同時に更新される。ComfyUIでは\textbf{underlying model → workflow adoption}の後段が記事になる。
+
+この並びから、今週の共通項は「modelが増えた」だけではない。能力がsoftware / service stackの別layerへ接続されるeventが集中したことである。
+
+\subsection*{W32の訂正事項はW33 newsへ数えない}
+
+W33の編纂中、W32で一次情報を取り逃がしたGPT-5.6 Solの8月6日update、Claude Opus 4.1の8月5日retirement、Astra cyber記事のcutoff判定についてbackfill / chronology correctionが必要と分かった\cite{w32-backfill-errata}。これらはW33で発見した訂正ではあるが、\textbf{event自体はW32 chronologyに属する}。
+
+そのため今号のevent countやThis Weekのheadlineへ再投入しない。週の境界を守るには、「いつ知ったか」と「いつ起きたか」を分ける必要がある。
+
+\subsection*{今週は独立Paper Watchを設けない}
+
+W33には多数の新着論文が存在する。しかし、abstract-levelの魅力的な結果を、method / setup / limitationを十分に読まないまま確定的なtechnical articleへ引き上げると、記事密度よりclaim riskが大きくなる。
+
+今号では、full-paperのsetupまで掘り下げて独立sectionを成立させるより、Daybreak、Muse、Inference、ComfyUIという一次・repository sourceの強いevent群に紙幅を使った。これは研究動向が弱いという意味ではなく、\textbf{論文のheadlineと検証済みのtechnical conclusionを同一視しない}ための編集上の境界である。
+
+\subsection*{Late Breakingについて}
+
+今号の通常本文へ採用した主要eventはすべて2026-08-14 18:00 America/New\_Yorkのcutoff以前に入っている。そのため、空のLate Breaking欄は設けない。Cutoff後の情報を後から本文chronologyへ混ぜず、必要な場合だけ独立したpost-cutoff扱いにする。
