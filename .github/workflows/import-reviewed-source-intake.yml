@@ -145,6 +145,20 @@ jobs:
             --issue-id "${ISSUE_ID}" \
             --report raw-check-report.json
 
+      - name: Initialize cross-issue carry-over ledger
+        shell: bash
+        env:
+          ISSUE_ID: ${{ inputs.issue_id }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python control-src/scripts/initialize_weekly_carryover_ledger.py \
+            --repo-root worktree --issue-id "$ISSUE_ID" \
+            --report carryover-initialization-report.json
+          PYTHONPATH=control-src python control-src/scripts/validate_weekly_carryover_ledger.py \
+            --repo-root worktree --issue-id "$ISSUE_ID" \
+            --ledger "worktree/sources/${ISSUE_ID}/carryover/carryover-ledger-v0.1.json" \
+            --stage screening --report carryover-screening-audit.json
+
       - name: Commit accepted source intake to weekly work branch
         id: commit
         shell: bash
@@ -196,5 +210,7 @@ jobs:
             import-result.json
             raw-update-report.json
             raw-check-report.json
+            carryover-initialization-report.json
+            carryover-screening-audit.json
           if-no-files-found: error
           retention-days: 14

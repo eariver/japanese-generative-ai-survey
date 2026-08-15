@@ -93,6 +93,19 @@ jobs:
               raise SystemExit(f'Evidence run is superseded and cannot initialize Selection: {superseders}')
           PY
 
+      - name: Require resolved cross-issue carry-over ledger
+        working-directory: worktree
+        shell: bash
+        env:
+          ISSUE_ID: ${{ inputs.issue_id }}
+        run: |
+          set -euo pipefail
+          ledger="sources/${ISSUE_ID}/carryover/carryover-ledger-v0.1.json"
+          test -s "$ledger"
+          PYTHONPATH=../control-src python ../control-src/scripts/validate_weekly_carryover_ledger.py \
+            --repo-root . --issue-id "$ISSUE_ID" --ledger "$ledger" --stage selection \
+            --report carryover-selection-audit.json
+
       - name: Build deterministic Candidate matrix and pending Human Gate
         working-directory: worktree
         shell: bash
@@ -169,6 +182,7 @@ jobs:
             worktree/sources/${{ inputs.issue_id }}/selection/candidate-matrix-v0.1.json
             worktree/sources/${{ inputs.issue_id }}/selection/candidate-matrix-v0.1.md
             worktree/sources/${{ inputs.issue_id }}/selection/candidate-selection-v0.1.json
+            worktree/carryover-selection-audit.json
             worktree/candidate-selection-gate-audit.json
             worktree/candidate-selection-gate-summary.json
           if-no-files-found: error
