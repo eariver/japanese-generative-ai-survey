@@ -57,8 +57,8 @@ def validate(repo_root: Path, issue_id: str) -> dict[str, Any]:
     state = load_json(state_path)
     selection = load_json(selection_path)
     arch = load_json(arch_approval_path)
-    if state.get("lifecycle_state") != "ARCHITECTURE_ESTABLISHED":
-        errors.append(f"expected ARCHITECTURE_ESTABLISHED, got {state.get('lifecycle_state')}")
+    if state.get("lifecycle_state") not in {"ARCHITECTURE_ESTABLISHED", "DRAFT_COMPLETE"}:
+        errors.append(f"expected ARCHITECTURE_ESTABLISHED or DRAFT_COMPLETE, got {state.get('lifecycle_state')}")
     if state.get("gates", {}).get("candidate_selection") != "passed" or state.get("gates", {}).get("issue_architecture") != "passed":
         errors.append("Candidate Selection and Architecture gates must be passed")
     if selection.get("status") != "APPROVED":
@@ -160,7 +160,12 @@ def advance(repo_root: Path, issue_id: str, report: dict[str, Any]) -> None:
         raise ValueError("cannot advance failed draft validation")
     state_path = repo_root / "sources" / issue_id / "pipeline-state.json"
     state = load_json(state_path)
-    if state.get("lifecycle_state") != "ARCHITECTURE_ESTABLISHED":
+    lifecycle = state.get("lifecycle_state")
+    if lifecycle == "DRAFT_COMPLETE":
+        if state.get("gates", {}).get("article_draft") != "passed":
+            raise ValueError("DRAFT_COMPLETE state must have article_draft gate passed")
+        return
+    if lifecycle != "ARCHITECTURE_ESTABLISHED":
         raise ValueError("state changed after validation; refusing draft transition")
     state["lifecycle_state"] = "DRAFT_COMPLETE"
     state["gates"]["article_draft"] = "passed"
