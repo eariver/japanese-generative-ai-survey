@@ -26,6 +26,12 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     marker_path = repo_root / "sources" / issue_id / "editorial" / f"layout-revision-{source_version}.json"
     marker = load_json(marker_path)
     changes = marker.get("layout_changes") or {}
+    # Sparse early Half-year architectures need a compatibility envelope around the current v30
+    # semantic repair chain. Route this before the ordinary v30 marker because the compatibility
+    # implementation deliberately retains half_year_review_repairs_v3=true.
+    if changes.get("sparse_half_year_architecture_repairs") is True:
+        from scripts.revise_special_half_year_sparse_architecture_repairs import build as sparse_half_year_build
+        return sparse_half_year_build(repo_root, special_slug, issue_id, source_version)
     # Semantic/source regeneration is the primary operation when a marker composes it with a
     # layout-preservation flag. The regenerated revision inherits the current source/layout;
     # a dense-table guard must not short-circuit the Half-year repair before it runs.
