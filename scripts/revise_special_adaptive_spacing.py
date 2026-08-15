@@ -26,6 +26,13 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     marker_path = repo_root / "sources" / issue_id / "editorial" / f"layout-revision-{source_version}.json"
     marker = load_json(marker_path)
     changes = marker.get("layout_changes") or {}
+    # A Half-year repair may already be immutable before an independent References audit exposes
+    # legacy Primary source N placeholders. Route this narrow descendant before the broader
+    # Half-year semantic chain so the existing repaired analysis/chronology/Technical Notes remain
+    # byte-stable while bibliography titles are restored from selected Evidence.
+    if changes.get("half_year_reference_title_repair") is True:
+        from scripts.revise_special_half_year_reference_titles import build as reference_title_build
+        return reference_title_build(repo_root, special_slug, issue_id, source_version)
     # Sparse early Half-year architectures need both provenance and legacy reader-surface
     # compatibility around the current v30 semantic repair chain. Route this before the ordinary
     # v30 marker because the compatibility implementation deliberately retains
