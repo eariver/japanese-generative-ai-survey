@@ -1,0 +1,68 @@
+\section{ComfyUI --- model releaseとworkflow adoptionを分ける}
+\label{sec:comfyui}
+\sectionkicker{Image / Video / Workflow Integration}
+
+\textbf{生成モデルのニュースは、model自体が出た日だけでは終わらない。主要workflowがsupportを取り込み、実際に試せるsurfaceへ届いた日にも技術的な意味がある。}
+ComfyUIはW33にv0.31.0、v0.32.0、v0.33.1を公開した\cite{comfyui-0310,comfyui-0320,comfyui-0331}。このうちmedia-generation integrationとして特に材料が多いのはv0.32.0で、release notesにはQwen-Image 3.0 Pro partner nodes、LTX 2.5 support / partner nodes、Grok-Imagine-Image-2.0 partner nodes、MiniMax-H3 fixesが並ぶ\cite{comfyui-0320}。
+
+ここで記事にするのは、underlying modelの「初公開」ではなく、\textbf{ComfyUIというworkflow surfaceにsupportが入ったW33 event}である。この区別をしないと、integration dateをmodel launch dateへ誤変換してしまう。
+
+\subsection*{Integration chronologyは独立して追う価値がある}
+
+Image / video generationでは、model artifactが公開されても、それだけで一般的なworkflowへ組み込めるとは限らない。model loader、conditioning、VAE、sampler、reference input、audio / video path、memory handling、node interfaceなどの接続が必要になる。ComfyUIのようなnode-based workflowでは、supportが入ることで初めて既存pipelineの一部として扱いやすくなるmodelもある。
+
+したがって、少なくとも二つのchronologyを分けたい。
+
+\begin{center}
+\small
+\begin{tabularx}{0.96\linewidth}{@{}>{\bfseries}p{0.30\linewidth}X@{}}
+Underlying model chronology & model card、API、weights、official announcementなどでmodel自体が公開・更新された時系列 \\
+Integration chronology & ComfyUI等がloader / node / workflow supportを追加した時系列 \\
+\end{tabularx}
+\end{center}
+
+前者が古くても、後者が今週起きればdeveloper experienceは今週変化し得る。逆に、ComfyUI supportが今週入ったからといって、model自体が今週初めて存在したことにはならない。
+
+\begin{claimboundary}[Workflow supportはmodel capabilityの独立検証ではない]
+ComfyUI release notesから確認できるのは、projectが特定model / service向けsupportやpartner nodesを追加したことである\cite{comfyui-0320}。これはintegration / adoption evidenceであり、underlying modelのfirst-release date、quality、benchmark superiority、market shareを証明しない。
+\end{claimboundary}
+
+\subsection*{LTX 2.5で見えた「reframe」の必要性}
+
+W33のX観測ではLTX 2.5が強いsignalとして現れたが、一次情報との照合では「W33にunderlying modelが初公開された」という形では固定できなかった。一方、ComfyUI v0.32.0にLTX 2.5 support / partner nodesが入ったことはrepository releaseから確認できる\cite{comfyui-0320,w33-grok-r3-review}。
+
+この場合、確かな記事は「LTX 2.5が今週releaseされた」ではなく、\textbf{「LTX 2.5 supportが今週ComfyUIへ入った」}である。主語をmodelからintegrationへ変えるだけで、social signalを捨てずにchronology errorを避けられる。
+
+同じ原則はQwen-Image 3.0 ProやGrok-Imagine-Image-2.0 partner nodesにも当てはまる。本稿ではComfyUIがsupportした事実を扱い、それぞれのunderlying model identity / release date / capabilityをComfyUIのrelease noteだけから逆算しない。
+
+\subsection*{Partner nodeとnative supportを一括りにしない}
+
+ComfyUIのrelease noteでは、native model supportとpartner node / service integrationが同じreleaseの中に並ぶことがある\cite{comfyui-0320}。利用者から見ればどちらもworkflow上のnodeとして見える可能性があるが、技術的な境界は異なる。
+
+Local weightsを直接loadしてGPU上で推論するpathと、外部service / partner endpointをworkflowから呼び出すpathでは、data flow、latency、cost、offline availability、version control、reproducibilityが違う。したがって「ComfyUI対応」という一語だけでは、local model supportなのかservice integrationなのかまで説明できない。
+
+W33の記事では、release noteが示すsupport categoryをそのまま尊重し、\textbf{integration surfaceの種類を混同しない}ことを優先する。
+
+\subsection*{v0.31.0--v0.33.1をseriesとして見る}
+
+W33にはv0.31.0、v0.32.0、v0.33.1という複数releaseが入った\cite{comfyui-0310,comfyui-0320,comfyui-0331}。短期間のreleaseを一つずつ独立記事にすると、読者にはpatch noteの羅列になりやすい。そこで今号ではseriesとしてまとめ、v0.32.0をmedia integrationの中心点として扱う。
+
+このまとめ方は「すべてのreleaseが同じ重要度」という意味ではない。むしろ、短いrelease cycleの中でどこにmaterialなintegrationが入ったかを見つけるためである。W33ではv0.32.0が複数のimage / video supportを一度に持ち込み、前後releaseが同じ週のworkflow evolutionを構成した。
+
+\begin{communitynote}
+X上ではmedia-generation関連の名称が複数観測されたが、今週のtargeted passでは「画像生成全体を代表する一つのmajor trend」を選ぶには至らなかった\cite{w33-grok-r3-review}。ComfyUI integrationが実在することと、X全体で特定modelが支配的trendだったことは別である。
+\end{communitynote}
+
+\subsection*{Adoption surfaceとしてのComfyUI}
+
+ComfyUIを追う価値は、単にpopular UIだからではない。node graphという形で、model loader、conditioning、control、post-processing、video / audio、external serviceを同じworkflowへ接続する\textbf{integration layer}として機能するからである。
+
+新しい生成modelが登場したとき、model cardだけでは「既存production workflowにどう入れるか」は分からない。ComfyUI supportは、そのmodelがどのinput / output pathを持ち、どのnode interfaceへ接続され、既存toolingとどう組み合わせられるかを見る一つの実装面になる。
+
+もちろん、supportがあることはqualityやstabilityの保証ではない。release直後にはbug fix、memory optimization、workflow exampleの成熟が続くことも多い。だからこそ、model releaseとintegration releaseを別々に追う方が、実用性の変化を正確に捉えられる。
+
+\subsection*{今週の意味}
+
+W33のComfyUI storyは「今週は画像・動画modelが大量releaseされた」という話ではない。\textbf{複数のmedia model / serviceが一つのworkflow ecosystemへ取り込まれ、adoption surfaceが更新された}ことにある。
+
+Muse GlimmerではTransformers integrationを、Inferenceではserving / kernel stackを見た。ComfyUIも同じ構図の別の側面である。生成AIの競争をmodel announcementだけで追うと、実際にdeveloperが触れるsurfaceの変化を見逃す。W33は、integration chronologyをmodel chronologyと同じくらい丁寧に追う必要性を示した週だった。
