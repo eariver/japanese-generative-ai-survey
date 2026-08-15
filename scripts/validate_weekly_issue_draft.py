@@ -5,8 +5,8 @@ The validator is deterministic. It checks that Human-approved Selection and
 Architecture are in force, that the reader-facing TeX surface matches the
 approved structure, that Issue #9 prose rules pass, and that all citation keys
 used by the draft exist in the bibliography. On success it may advance the
-issue only to DRAFT_COMPLETE; claim/chronology, LaTeX, visual and freeze gates
-remain separate.
+issue only to DRAFT_COMPLETE; downstream validated states remain idempotently
+re-checkable while claim/chronology, LaTeX, visual and freeze gates stay separate.
 """
 from __future__ import annotations
 
@@ -21,6 +21,7 @@ from editorial_prose_guard import reader_facing_prose_errors
 CITE_RE = re.compile(r"\\cite\{([^}]+)\}")
 BIB_KEY_RE = re.compile(r"^@[A-Za-z]+\{([^,]+),", re.MULTILINE)
 HARD_PAGE_RE = re.compile(r"(?:今号|本号)\s*p\.\s*\d+(?:\s*--\s*\d+)?")
+DRAFT_RECHECKABLE_STATES = {"ARCHITECTURE_ESTABLISHED", "DRAFT_COMPLETE", "VALIDATED_DRAFT"}
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -57,10 +58,14 @@ def validate(repo_root: Path, issue_id: str) -> dict[str, Any]:
     state = load_json(state_path)
     selection = load_json(selection_path)
     arch = load_json(arch_approval_path)
-    if state.get("lifecycle_state") not in {"ARCHITECTURE_ESTABLISHED", "DRAFT_COMPLETE"}:
-        errors.append(f"expected ARCHITECTURE_ESTABLISHED or DRAFT_COMPLETE, got {state.get('lifecycle_state')}")
+    if state.get("lifecycle_state") not in DRAFT_RECHECKABLE_STATES:
+        errors.append(f"expected one of {sorted(DRAFT_RECHECKABLE_STATES)}, got {state.get('lifecycle_state')}")
     if state.get("gates", {}).get("candidate_selection") != "passed" or state.get("gates", {}).get("issue_architecture") != "passed":
         errors.append("Candidate Selection and Architecture gates must be passed")
+    if state.get("lifecycle_state") in {"DRAFT_COMPLETE", "VALIDATED_DRAFT"} and state.get("gates", {}).get("article_draft") != "passed":
+        errors.append("downstream draft state requires article_draft gate passed")
+    if state.get("lifecycle_state") == "VALIDATED_DRAFT" and state.get("gates", {}).get("claim_and_chronology_validation") != "passed":
+        errors.append("VALIDATED_DRAFT requires claim_and_chronology_validation gate passed")
     if selection.get("status") != "APPROVED":
         errors.append("structured Candidate Selection must be APPROVED")
     if any(a.get("role") == "UNASSIGNED" for a in selection.get("assignments", []) if isinstance(a, dict)):
@@ -161,9 +166,9 @@ def advance(repo_root: Path, issue_id: str, report: dict[str, Any]) -> None:
     state_path = repo_root / "sources" / issue_id / "pipeline-state.json"
     state = load_json(state_path)
     lifecycle = state.get("lifecycle_state")
-    if lifecycle == "DRAFT_COMPLETE":
+    if lifecycle in {"DRAFT_COMPLETE", "VALIDATED_DRAFT"}:
         if state.get("gates", {}).get("article_draft") != "passed":
-            raise ValueError("DRAFT_COMPLETE state must have article_draft gate passed")
+            raise ValueError("downstream draft state must have article_draft gate passed")
         return
     if lifecycle != "ARCHITECTURE_ESTABLISHED":
         raise ValueError("state changed after validation; refusing draft transition")
