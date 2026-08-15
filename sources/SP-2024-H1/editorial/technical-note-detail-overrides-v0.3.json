@@ -38,6 +38,36 @@
       "source_urls": ["https://runwayml.com/research/introducing-gen-3-alpha"],
       "technical_points": ["Gen-3 AlphaはRunwayが新しいlarge-scale multimodal training infrastructure上で学習した次世代foundation modelとして公開し、動画と画像をjointly trainingしたと説明している。同モデルはText to Video、Image to Video、Text to Imageと、Motion BrushやAdvanced Camera Controls等のcontrol modesを支える基盤として位置付けられた。"],
       "source_specificity": "Runway launch post training modality and supported generation/control modes; quality claims remain vendor-attributed."
+    },
+    "Apple Foundation Models": {
+      "source_urls": ["https://machinelearning.apple.com/research/introducing-apple-foundation-models"],
+      "technical_points": ["AppleがWWDC24で説明したfoundation-model構成は、約3B parametersのon-device language modelと、Apple silicon servers上のPrivate Cloud Computeで動くlarger server modelを組み合わせる。両モデルはgrouped-query attentionを使い、on-device側ではmixed 2-bit/4-bit LoRA-based palletizationを含む低bit最適化を適用するほか、featureごとのadapterをbase modelへ動的にload/swapしてtask specializationを行う。性能値はAppleによる評価として扱う。"],
+      "source_specificity": "Apple WWDC24 research overview: on-device/server split, GQA, low-bit optimization, adapters and Private Cloud Compute deployment."
+    },
+    "Jamba": {
+      "source_urls": ["https://www.ai21.com/blog/announcing-jamba/"],
+      "technical_points": ["JambaはTransformer、Mamba SSM、Mixture-of-Expertsを組み合わせたhybrid architectureで、AI21は52B total parametersのうちinference時に12Bをactiveにする構成と説明している。1/8層をTransformer layerとするblocks-and-layers設計、256K context、Apache 2.0のopen weightsが公開時点の主要仕様で、throughput/benchmark値はAI21による評価として扱う。"],
+      "source_specificity": "AI21 launch post hybrid SSM-Transformer-MoE architecture, active parameters, context and open-weight scope."
+    },
+    "Google I/O 2024 generative media models": {
+      "source_urls": ["https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2024-collection/"],
+      "technical_points": ["Google I/O 2024の公式collectionでは、生成メディア系をVeoのvideo generation、Imagen 3のimage generation、Music AI Sandboxのmusic toolingとして同一発表群に整理している。Veo/Imagen 3は発表時点でcreator/trusted-tester向けの限定導入を含む段階であり、後年の一般提供状態をH1へ遡及しない。"],
+      "source_specificity": "Google I/O 2024 collection: named generative-media model/tool family and bounded announcement/access state."
+    },
+    "Kling": {
+      "source_urls": ["https://ir.kuaishou.com/news-releases/news-release-details/kuaishou-unveils-proprietary-video-generation-model-kling"],
+      "technical_points": ["Klingはdiffusion-based Transformer (DiT)を基盤とし、Kuaishou独自の3D VAEでspatiotemporal compressionを行い、temporal/spatial informationを統合するfull-attention mechanismを時間モデリングに用いると説明された。初期発表では最大2分、30fps、最大1080p、複数aspect ratioの生成と、中国向けKuaiYing内beta testingが示された。"],
+      "source_specificity": "Kuaishou June 2024 release: DiT, 3D VAE, spatiotemporal attention, output envelope and beta-access boundary."
+    },
+    "Many-shot jailbreaking": {
+      "source_urls": ["https://www.anthropic.com/research/many-shot-jailbreaking"],
+      "technical_points": ["Many-shot jailbreakingは、長いcontextへ多数のfaux dialogue demonstrationsを並べ、最後の危険なrequestに対するsafety behaviorを崩すlong-context attackとしてAnthropicが報告した。shot数が増えるほどharmful responseが生じやすくなる傾向と、既存jailbreak技法との組合せで必要prompt lengthを短縮できる結果を示しているが、攻撃成功率等は著者報告として扱う。"],
+      "source_specificity": "Anthropic research note: long-context many-shot attack mechanism and reported scaling behavior."
+    },
+    "Anthropic interpretability research (Mapping the Mind / Golden Gate Claude)": {
+      "source_urls": ["https://www.anthropic.com/news/golden-gate-claude", "https://www.anthropic.com/research/mapping-mind-language-model"],
+      "technical_points": ["Anthropicはdictionary learningをClaude 3 Sonnetのmiddle layerへscaleし、neuron activation patternsをhuman-interpretable featuresへ分解してmillions of featuresを抽出したと報告した。featuresはmultilingual/multimodalなconceptにも反応し、feature activationを人工的に増減するとmodel behaviorが変化することをGolden Gate Claude demoで示した。一方、抽出featureは全conceptの一部で、featureが属するcircuitsの理解は未解決と明記している。"],
+      "source_specificity": "Anthropic May 2024 interpretability research/demo: dictionary learning, Claude 3 Sonnet features, causal steering experiment and stated limitations."
     }
   }
 }
