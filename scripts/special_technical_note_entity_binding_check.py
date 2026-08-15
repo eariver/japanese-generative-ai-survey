@@ -9,7 +9,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-ENTITY_BINDING_CONTRACT = "SUBJECT_VERSION_AWARE_HIGH_RISK_SIGNALS_V2"
+ENTITY_BINDING_CONTRACT = "SUBJECT_COMPONENT_VARIANT_PROPERTY_BINDING_V3"
 NOTE_RE = re.compile(r"\\begin\{technicalnote\}\{(.+?)\}\{.*?\\end\{technicalnote\}", re.DOTALL)
 FACT_RE = re.compile(r"^\\item \\textbf\{一次情報で確認できる事実\}: (.+)$", re.MULTILINE)
 INPUT_RE = re.compile(r"\\(?:input|include)\{([^}]+)\}")
@@ -41,14 +41,6 @@ def _title_key(value: str) -> str:
 
 
 def _contains_rendered_signal(fact: str, signal: str) -> bool:
-    """Match one rendered signal without colliding with longer alphanumeric tokens.
-
-    Reader-facing facts are prose, whereas entity-binding audit values include compact model
-    scales such as ``1B parameter scale``. A plain substring test would incorrectly find that
-    value inside ``11B parameter scale`` (and similarly 3B/13B or 7B/70B). ASCII alphanumeric
-    boundaries preserve exact rendered-signal semantics while still allowing normal Japanese
-    punctuation and separators around the signal.
-    """
     if not signal:
         return False
     return re.search(
@@ -69,12 +61,6 @@ def _normalize_tex_path(value: str) -> str:
 def _rendered_top_level_tex_paths(
     manifest: dict[str, Any], source_dir: Path, errors: list[str]
 ) -> set[str] | None:
-    """Return main.tex inputs when a state-pinned main document is available.
-
-    Older unit fixtures and non-publication manifests may omit ``main_tex``; those keep the
-    historical all-manifest-files behavior. Real Publication Preview manifests pin main.tex,
-    so provenance-only Technical Note files that are no longer rendered are excluded there.
-    """
     main_info = manifest.get("main_tex")
     if not isinstance(main_info, dict):
         return None
@@ -95,7 +81,6 @@ def _rendered_top_level_tex_paths(
 
 
 def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[str]:
-    """Return fail-closed pre-release findings for Half-year source-specific notes."""
     errors: list[str] = []
     if str(manifest.get("status") or "") != "VALIDATED_HALF_YEAR_SOURCE_SPECIFIC_NOTES_REVISION":
         return errors
@@ -106,7 +91,7 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
     if reader.get("entity_binding_contract") != ENTITY_BINDING_CONTRACT:
         errors.append(
             "Half-year Technical Notes lack the required subject/entity binding contract "
-            "(version-aware V2 required): "
+            "(component/variant/property V3 required): "
             f"expected={ENTITY_BINDING_CONTRACT} actual={reader.get('entity_binding_contract')}"
         )
         return errors
@@ -185,7 +170,6 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
             continue
         card_group = cards.get(title)
         if not card_group:
-            # Suppressed/non-reader-facing Evidence can still be audited by the generator.
             continue
         facts: list[str] = []
         for card in card_group:
@@ -198,10 +182,6 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
                 facts.append(fact)
 
         accepted = {str(signal) for signal in (item.get("accepted_entity_bound_signals") or []) if str(signal)}
-        # The audit is occurrence-aware while the reader-facing card is value-only. A value may
-        # therefore appear in both lists when one occurrence is correctly bound to the selected
-        # artifact and another occurrence belongs to a comparator. Any accepted occurrence is
-        # sufficient authority to render that value; only rejected-only signals are forbidden.
         rejected_only = [
             str(signal)
             for signal in (item.get("rejected_entity_bound_signals") or [])
