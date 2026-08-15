@@ -27,11 +27,11 @@ _EXTRA_SIGNAL_PATTERNS_V21: tuple[tuple[str, str], ...] = (
     ),
     (
         "diffusion / compositional architectureを不要化",
-        r"eliminating the need for diffusion or compositional architectures",
+        r"(?:eliminat(?:e|es|ing)) the need for diffusion or compositional architectures",
     ),
     (
         "video sequenceのnext-token predictionによるvideo生成",
-        r"generating high[- ]fidelity video via predicting the next token in a video sequence",
+        r"(?:generat(?:e|es|ing)) high[- ]fidelity video via predicting the next token in a video sequence",
     ),
 )
 
