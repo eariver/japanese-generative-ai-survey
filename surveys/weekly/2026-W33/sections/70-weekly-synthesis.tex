@@ -1,0 +1,37 @@
+\section{今週の総括 --- 能力競争は運用stackへ広がった}
+\label{sec:weekly-synthesis}
+\sectionkicker{Weekly Synthesis}
+
+\textbf{W33を横断して見えるのは、生成AIの競争軸がmodel capabilityだけでは閉じなくなったことだ。} Daybreakではaccessとdeployment、Muse Glimmerではlibrary integration、GPT-5.6 Sol / SGLang / vLLM / FlashInferではinference stack、ComfyUIではworkflow adoptionが前面に出た。どれも「modelの外側」にあるが、実際の利用可能性を決める重要な技術層である。
+
+\subsection*{1. 「何ができるか」から「どう届けるか」へ}
+
+GPT-5.6-Cyber / Daybreakは、この変化を最も分かりやすく示した。OpenAIのcyber capability claimそのものはvendor evaluationとして慎重に読む必要がある。一方、trusted partnerとAmazon Bedrockというdistribution surfaceが同じ週に示されたことで、能力の運用方法が独立した設計問題として見えるようになった\cite{openai-daybreak-cyber,openai-daybreak-partners,openai-daybreak-aws}。
+
+Frontier modelが強くなるほど、利用者へ露出するのはcheckpointだけではない。authorization、service boundary、deployment environment、monitoring、operator responsibilityまで含んだsystemになる。特にdual-use性の高い領域では、\textbf{capability controlはmodel safetyの外付け機能ではなく、deployment architectureの一部}として考える必要がある。
+
+\subsection*{2. Ecosystem supportがmodelの実用性を変える}
+
+Muse GlimmerとComfyUIは別カテゴリの話に見えるが、共通するのは\textbf{integration chronology}である。Transformers v5.15.0がMuse Glimmerを取り込んだこと、ComfyUI v0.32.0が複数media model / serviceのsupportを追加したことは、underlying modelのfirst releaseとは別のeventである\cite{hf-transformers-515,comfyui-0320}。
+
+この区別は「新モデルを誰が最初に報じたか」より実務的である。Developerにとって重要なのは、modelが存在することだけではなく、既存code、serving engine、workflow、monitoringへ接続できることだからだ。Library / framework / UI supportは、modelをecosystemの一部へ変えるsecond-order releaseと言える。
+
+\subsection*{3. Inferenceはbackend optimizationからproduct behaviorへ}
+
+Ultrafast、SGLang、vLLM、FlashInferを一つのstackとして見ると、性能改善が複数layerへ分散していることが分かる\cite{openai-ultrafast,sglang-0517-w33,vllm-0270,flashinfer-0617}。Hosted APIではservice tierとして見え、自前servingではscheduler / engine choiceとして見え、その下ではkernel / quantization / hardware mappingとして現れる。
+
+このため「tokens/s」という単一の数字だけでは比較が難しくなる。TTFT、decode rate、throughput、tail latency、resource efficiencyは同じではないし、vendor serviceとopen-source frameworkとkernel microbenchmarkでは測定境界も違う。W33は、\textbf{推論性能のheadlineより、どのlayerでどのworkloadを改善したのかを読む必要性}を強く示した。
+
+\subsection*{4. 速いsignalほど、fact boundaryが重要になる}
+
+X Trend Watchに残った5件は、今週のもう一つの特徴である。Grok 4.6、Qwen3.8-27B、Nemotron 3.5 Lightning、DeepSeek-V4-Pro-0813、Anthropic August Risk Reportはsocial signalとして観測された一方、exactなidentity / chronologyを一次情報から確定できない部分が残った\cite{w33-grok-r3-observation,w33-grok-r3-review}。
+
+これはXが役に立たないという意味ではない。むしろ、\textbf{一次情報より先に「次に確認すべき場所」を教えるsensor}として有効だった。ただしsensorとauthorityを混ぜると、community packagingや仮称がofficial releaseへ化ける。Muse Glimmerのようにtechnical sourceへ接続できたsignalと、まだ接続できないsignalを同じconfidenceで扱わないことが重要になる。
+
+\subsection*{5. W33を一文で位置づけるなら}
+
+W33は「今年最大のmodelが出た週」という種類の号ではない。むしろ、\textbf{frontier capabilityがaccess、library、serving、kernel、workflowという複数の実装surfaceへ降り、競争の主戦場がsystem全体へ拡張していることが可視化された週}だった。
+
+この変化は今後のsurveyの読み方にも影響する。Model announcementだけを追えば、技術の入口は分かる。しかし実用性、cost、latency、安全性、developer experienceを決めるのは、その後に続くintegration / serving / deployment eventであることが増えている。
+
+したがって次に注目すべきなのは、単純な「より大きいmodel」だけではない。\textbf{新しいcapabilityがどのtoolchainへ入り、どのtrust boundaryで配られ、どのserving stackで動き、どのworkflowで使われるか。} W33は、その全体を一つの技術ニュースとして読む必要があることを示した。
