@@ -1,1 +1,270 @@
-{"schema_version":"1.0","issue_id":"2026-W33","screening_run_sha":"c78d2e4019d64a931b4c327f6c6b08a4b8ff731cd9159e3fbbf5c2a315c2fbb2","runner":{"provider":"OpenAI","model":"GPT-5.6 Sol","invocation":"interactive-primary-source-review","generated_at":"2026-08-15T21:18:10+09:00"},"overrides":[{"evidence_task_id":"evidence:2026-W33:duplicate-hint-sglang-w33-release-github-76b2ee1bdf","artifact":{"canonical_name":"SGLang v0.5.17","artifact_type":"FRAMEWORK","organization":"sgl-project/SGLang"},"canonical_url":"https://github.com/sgl-project/sglang/releases/tag/v0.5.17","candidate_recommendation":"CANDIDATE","status":"VERIFIED","why_now_confirmed":true,"why_this_special":"SGLang v0.5.17 was published inside W33 and bundles materially new model-serving, diffusion, agent-session cache, Rust-frontend, and MoE serving work rather than a routine patch.","artifact_first_announced":"2026-08-08T00:19:16Z","events":[{"event_type":"SOFTWARE_RELEASE","event_date":"2026-08-08T00:19:16Z","source_published_at":"2026-08-08T00:19:16Z","source_indexes":[1]}],"claims":[{"text":"The SGLang project published v0.5.17 on 2026-08-08 UTC.","evidence_class":"PRIMARY_FACT","source_indexes":[1]},{"text":"The v0.5.17 release notes describe day-0 support for Kimi K3 and MiniMax-H3, an initial Rust frontend, session-reference-aware Unified Radix Cache, and a DeepSeek-V4 FP8 MegaMoE path.","evidence_class":"PROJECT_CLAIM","source_indexes":[1]}],"limitations":["Performance, hardware-compatibility, and resource-reduction figures in the release notes are project-reported and are not independently reproduced in this Evidence pass."],"target_findings":{"Verify chronology, primary-source identity, technical claims, and overlap before selection.":{"status":"VERIFIED","finding":"The first-party project release page establishes the W33 release date and the listed feature additions. Quantitative results remain project claims; overlap with vLLM/FlashInfer should be resolved during cross-candidate selection.","source_indexes":[1]}},"rationale":"Strong W33 systems candidate; likely useful as part of an inference/serving package, subject to cross-candidate deduplication."},{"evidence_task_id":"evidence:2026-W33:duplicate-hint-transformers-5-15-model-a-21de98c2da","artifact":{"canonical_name":"Transformers v5.15.0 / Muse Glimmer model addition","artifact_type":"INTEGRATION","organization":"Hugging Face"},"canonical_url":"https://github.com/huggingface/transformers/releases/tag/v5.15.0","candidate_recommendation":"CANDIDATE","status":"VERIFIED","why_now_confirmed":true,"why_this_special":"Transformers v5.15.0 landed in W33 and its release notes explicitly surface Meta Muse Glimmer as a newly released multimodal model, providing an independent integration/chronology anchor for the Grok lead.","artifact_first_announced":"2026-08-10T10:28:13Z","events":[{"event_type":"SOFTWARE_RELEASE","event_date":"2026-08-10T10:28:13Z","source_published_at":"2026-08-10T10:28:13Z","source_indexes":[1]}],"claims":[{"text":"Hugging Face published Transformers v5.15.0 on 2026-08-10 UTC and included Meta Muse Glimmer under New Model additions.","evidence_class":"PRIMARY_FACT","source_indexes":[1]},{"text":"The Hugging Face release notes describe Muse Glimmer as a dense 30B multimodal model with a 2B vision encoder and 28B text decoder and state that it was released that day under Apache 2.0.","evidence_class":"PROJECT_CLAIM","source_indexes":[1]}],"limitations":["This verifies the Hugging Face integration/release-note record, not the exact Meta first-party announcement or W33 X momentum; those remain part of the Grok r3 reconciliation."],"target_findings":{"Verify chronology, primary-source identity, technical claims, and overlap before selection.":{"status":"VERIFIED","finding":"The Hugging Face project release and its Muse Glimmer model-addition text are directly verified. Exact Meta-origin chronology and X-trend strength remain separate open questions for r3.","source_indexes":[1]}},"rationale":"Retain as a candidate-level integration/chronology anchor; final article identity depends on r3 and Meta primary-source reconciliation."},{"evidence_task_id":"evidence:2026-W33:series-vllm-0-27-series-3608c00cea","artifact":{"canonical_name":"vLLM v0.27.0–v0.27.1","artifact_type":"FRAMEWORK","organization":"vLLM project"},"canonical_url":"https://github.com/vllm-project/vllm/releases/tag/v0.27.0","candidate_recommendation":"CANDIDATE","status":"VERIFIED","grouping_accepted":true,"split_recommended":false,"grouping_note":"v0.27.1 is a patch on top of v0.27.0 and is retained as one W33 release series.","why_now_confirmed":true,"why_this_special":"vLLM v0.27.0 was a substantial W33 serving release and v0.27.1 followed as a narrow patch, so the two belong to one candidate series rather than separate stories.","artifact_first_announced":"2026-08-10T21:18:11Z","events":[{"event_type":"SOFTWARE_RELEASE","event_date":"2026-08-10T21:18:11Z","source_published_at":"2026-08-10T21:18:11Z","source_indexes":[1]},{"event_type":"PATCH_RELEASE","event_date":"2026-08-11T10:47:49Z","source_published_at":"2026-08-11T10:47:49Z","source_indexes":[2]}],"claims":[{"text":"The vLLM project published v0.27.0 on 2026-08-10 UTC and v0.27.1 on 2026-08-11 UTC.","evidence_class":"PRIMARY_FACT","source_indexes":[1,2]},{"text":"v0.27.0 release notes describe full-stack Kimi K3 support, Qwen3.5 dense/MoE support, PyTorch 2.13/Triton 3.7.1 changes, deeper FlashAttention 4 integration, DeepSeek-V4 work, Model Runner V2 expansion, fault-tolerance/elastic-EP work, and Rust-frontend control-plane changes.","evidence_class":"PROJECT_CLAIM","source_indexes":[1]},{"text":"v0.27.1 is described as a patch release adding quantized DSpark Markov-head support.","evidence_class":"PROJECT_CLAIM","source_indexes":[2]}],"limitations":["Any throughput, latency, memory, or hardware-support improvement quoted from release notes remains project-reported unless independently reproduced."],"target_findings":{"Verify chronology, primary-source identity, technical claims, and overlap before selection.":{"status":"VERIFIED","finding":"The project release pages establish both dates, the v0.27.0 feature set, and v0.27.1 patch relationship. Performance claims remain attributed.","source_indexes":[1,2]},"Verify primary source, weekly significance, and whether this is distinct or redundant.":{"status":"VERIFIED","finding":"v0.27.1 is explicitly a patch atop v0.27.0; one grouped v0.27 series is the appropriate W33 evidence unit.","source_indexes":[1,2]}},"rationale":"Strong serving-stack candidate; likely to be compared/merged with SGLang and FlashInfer during selection."},{"evidence_task_id":"evidence:2026-W33:duplicate-hint-flashinfer-0-6-17-series-b33954318b","artifact":{"canonical_name":"FlashInfer v0.6.17","artifact_type":"FRAMEWORK","organization":"FlashInfer project"},"canonical_url":"https://github.com/flashinfer-ai/flashinfer/releases/tag/v0.6.17","candidate_recommendation":"CANDIDATE","status":"VERIFIED","why_now_confirmed":true,"why_this_special":"FlashInfer v0.6.17 was published in W33 with material MoE-serving and decode-kernel integration changes that connect directly to the vLLM/SGLang serving stack.","artifact_first_announced":"2026-08-11T05:09:14Z","events":[{"event_type":"SOFTWARE_RELEASE","event_date":"2026-08-11T05:09:14Z","source_published_at":"2026-08-11T05:09:14Z","source_indexes":[1]}],"claims":[{"text":"The FlashInfer project published v0.6.17 on 2026-08-11 UTC.","evidence_class":"PRIMARY_FACT","source_indexes":[1]},{"text":"The release notes describe MoE expert parallelism for serving engines, refreshed Blackwell SM12x fused-MoE kernels with an FP4 accuracy fix, MXFP4 W4A8/W4A16/shared-expert support, and Kimi K3 MLA plus MiniMax-M3 sparse-attention decode coverage under vLLM.","evidence_class":"PROJECT_CLAIM","source_indexes":[1]}],"limitations":["The release-note characterization of production readiness, fault tolerance, kernel accuracy, and performance is a project claim; this Evidence pass does not independently benchmark it."],"target_findings":{"Verify chronology, primary-source identity, technical claims, and overlap before selection.":{"status":"VERIFIED","finding":"The project release page establishes the W33 date and the listed kernel/MoE integration changes. Its overlap with vLLM and SGLang is intentional and should be consolidated editorially.","source_indexes":[1]}},"rationale":"Candidate for an inference-stack package rather than necessarily a standalone article."},{"evidence_task_id":"evidence:2026-W33:series-comfyui-w33-media-integrations-c921833559","artifact":{"canonical_name":"ComfyUI v0.31.0–v0.33.1 media-generation integration series","artifact_type":"INTEGRATION","organization":"Comfy-Org/ComfyUI"},"canonical_url":"https://github.com/Comfy-Org/ComfyUI/releases/tag/v0.32.0","candidate_recommendation":"CANDIDATE","status":"VERIFIED","grouping_accepted":true,"split_recommended":false,"grouping_note":"The three W33 ComfyUI releases form one integration series; v0.32.0 contains the material image/video model additions.","why_now_confirmed":true,"why_this_special":"ComfyUI had multiple W33 releases; v0.32.0 is a concrete integration event for image/video models and directly reopens the image-generation coverage lane that Grok r2 had closed.","artifact_first_announced":"2026-08-08T03:10:59Z","events":[{"event_type":"SOFTWARE_RELEASE","event_date":"2026-08-08T03:10:59Z","source_published_at":"2026-08-08T03:10:59Z","source_indexes":[1]},{"event_type":"SOFTWARE_RELEASE","event_date":"2026-08-11T21:56:20Z","source_published_at":"2026-08-11T21:56:20Z","source_indexes":[2]},{"event_type":"SOFTWARE_RELEASE","event_date":"2026-08-13T22:18:34Z","source_published_at":"2026-08-13T22:18:34Z","source_indexes":[3]}],"claims":[{"text":"ComfyUI published v0.31.0, v0.32.0, and v0.33.1 during the W33 window.","evidence_class":"PRIMARY_FACT","source_indexes":[1,2,3]},{"text":"The v0.32.0 release notes add Qwen-Image 3.0 Pro partner nodes, LTX 2.5 support and partner nodes, Grok-Imagine-Image-2.0 partner nodes, and several MiniMax-H3 VAE/memory fixes.","evidence_class":"PROJECT_CLAIM","source_indexes":[2]}],"limitations":["ComfyUI support proves W33 integration/adoption activity only. It does not establish the underlying model release date, first-party capability claims, or X momentum for Qwen-Image 3.0 Pro, LTX 2.5, or Grok-Imagine-Image-2.0."],"target_findings":{"Verify chronology, primary-source identity, technical claims, and overlap before selection.":{"status":"VERIFIED","finding":"The three ComfyUI releases and the v0.32.0 integration additions are directly verified from project release notes. Underlying model chronology remains separate.","source_indexes":[1,2,3]},"Verify primary source, weekly significance, and whether this is distinct or redundant.":{"status":"VERIFIED","finding":"v0.32.0 contains the material W33 media integrations; grouping v0.31/v0.32/v0.33.1 as one ComfyUI series avoids duplicate treatment.","source_indexes":[1,2,3]}},"rationale":"Candidate as an integration/adoption signal and Lane-D evidence; final ranking awaits Grok r3 X-trend reconciliation."},{"evidence_task_id":"evidence:2026-W33:item-official-feed-081601c279be28d3ef5a-e6497a589c","artifact":{"canonical_name":"GPT-5.6-Cyber / Daybreak Red","artifact_type":"MODEL","organization":"OpenAI"},"canonical_url":"https://openai.com/index/expanding-daybreak-as-the-cyber-defense-window-narrows","candidate_recommendation":"CANDIDATE","status":"VERIFIED","why_now_confirmed":true,"why_this_special":"OpenAI introduced GPT-5.6-Cyber and expanded Daybreak Blue/Red controlled access on August 10 inside W33, creating a distinct model-and-deployment boundary for advanced defensive cyber work.","artifact_first_announced":"2026-08-10T10:00:00Z","events":[{"event_type":"MODEL_RELEASE","event_date":"2026-08-10T10:00:00Z","source_published_at":"2026-08-10T10:00:00Z","source_indexes":[1]}],"claims":[{"text":"OpenAI introduced GPT-5.6-Cyber on August 10, 2026 and made it available through Daybreak Red, while Daybreak Blue provides controlled access to general-purpose frontier models including GPT-5.6 Sol.","evidence_class":"PRIMARY_FACT","source_indexes":[1]},{"text":"OpenAI describes GPT-5.6-Cyber as built on GPT-5.6 Sol and purpose-trained for specialized cybersecurity tasks with reduced refusals for some higher-risk dual-use cyber tasks.","evidence_class":"VENDOR_CLAIM","source_indexes":[1]},{"text":"OpenAI reports an internal Advanced Cybersecurity Completion Rate of 95.0% for GPT-5.6-Cyber versus 1.5% for GPT-5.6 Sol and 2.0% with Daybreak Blue access.","evidence_class":"VENDOR_CLAIM","source_indexes":[1]},{"text":"OpenAI reports that GPT-5.6-Cyber reaches the High cybersecurity-capability threshold but remains below Critical under its Preparedness Framework.","evidence_class":"VENDOR_CLAIM","source_indexes":[1]}],"limitations":["The benchmark results and real-world vulnerability findings are OpenAI-reported and are not independently reproduced in this Evidence pass.","The controlled-access and authorization context is part of the technical deployment story and must not be omitted when discussing reduced safeguards/refusals."],"target_findings":{"Verify chronology, primary-source identity, technical claims, and overlap before selection.":{"status":"VERIFIED","finding":"The OpenAI first-party article directly establishes the August 10 release/access event and provides the product/model descriptions. Evaluation numbers remain vendor claims.","source_indexes":[1]}},"rationale":"Strong W33 safety/security candidate because the model capability is inseparable from a controlled-access deployment architecture."},{"evidence_task_id":"evidence:2026-W33:item-official-feed-29b0e61ec6cd1ed38342-9841f7eb7a","artifact":{"canonical_name":"Daybreak Cyber Partner Program expansion","artifact_type":"PRODUCT","organization":"OpenAI"},"canonical_url":"https://openai.com/index/putting-frontier-cyber-models-in-more-trusted-hands","candidate_recommendation":"HOLD","status":"VERIFIED","why_now_confirmed":true,"why_this_special":"OpenAI expanded the Daybreak Cyber Partner Program on August 10, but this is best treated as supporting deployment/access evidence for the GPT-5.6-Cyber story rather than a second standalone W33 article.","artifact_first_announced":"2026-08-10T10:00:00Z","events":[{"event_type":"PROGRAM_EXPANSION","event_date":"2026-08-10T10:00:00Z","source_published_at":"2026-08-10T10:00:00Z","source_indexes":[1]}],"claims":[{"text":"OpenAI announced an expansion of the Daybreak Cyber Partner Program on August 10, 2026.","evidence_class":"PRIMARY_FACT","source_indexes":[1]},{"text":"The program allows approved partners to bring Daybreak Blue or Daybreak Red into governed security products, managed services, and customer engagements, with access retained by the approved partner rather than transferred directly to customers.","evidence_class":"PRIMARY_FACT","source_indexes":[1]}],"limitations":["Partner quotations and claimed customer/security outcomes are promotional testimony and are not treated as independent technical validation."],"target_findings":{"Verify primary source, weekly significance, and whether this is distinct or redundant.":{"status":"VERIFIED","finding":"The first-party article verifies the program expansion; editorially it overlaps the August 10 GPT-5.6-Cyber/Daybreak event and is supporting evidence rather than a distinct feature.","source_indexes":[1]}},"rationale":"Keep as verified supporting evidence for the Daybreak package; do not count it as a separate core candidate."}]}
+{
+  "schema_version": "1.0",
+  "issue_id": "2026-W33",
+  "screening_run_sha": "c78d2e4019d64a931b4c327f6c6b08a4b8ff731cd9159e3fbbf5c2a315c2fbb2",
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive-primary-source-review",
+    "generated_at": "2026-08-15T21:18:10+09:00"
+  },
+  "overrides": [
+    {
+      "evidence_task_id": "evidence:2026-W33:duplicate-hint-sglang-w33-release-github-76b2ee1bdf",
+      "artifact": {
+        "canonical_name": "SGLang v0.5.17",
+        "artifact_type": "FRAMEWORK",
+        "organization": "sgl-project/sglang"
+      },
+      "canonical_url": "https://github.com/sgl-project/sglang/releases/tag/v0.5.17",
+      "candidate_recommendation": "CANDIDATE",
+      "status": "VERIFIED",
+      "why_now_confirmed": true,
+      "why_this_special": "SGLang v0.5.17 is a material W33 serving release: it combines day-0 support for major new model families with a Rust frontend, session-aware cache behavior, MoE serving paths, and concrete loading/memory optimizations.",
+      "artifact_first_announced": "2026-08-08T00:19:16Z",
+      "events": [
+        {
+          "event_type": "SOFTWARE_RELEASE",
+          "event_date": "2026-08-08T00:19:16Z",
+          "source_published_at": "2026-08-08T00:19:16Z",
+          "source_indexes": [1]
+        }
+      ],
+      "claims": [
+        {
+          "text": "SGLang published v0.5.17 on 2026-08-08 UTC with day-0 support for Kimi K3 and MiniMax-H3 plus an initial Rust server/frontend path.",
+          "evidence_class": "PRIMARY_FACT",
+          "source_indexes": [1]
+        },
+        {
+          "text": "The project release notes report session-reference-aware Unified Radix Cache behavior, new DeepSeek-V4 serving kernels, MoE prefill/loading improvements, and multiple measured throughput/memory gains.",
+          "evidence_class": "PROJECT_CLAIM",
+          "source_indexes": [1]
+        }
+      ],
+      "limitations": [
+        "Performance and memory numbers in the release notes are project-reported measurements on the stated hardware/configurations and are not independently reproduced in this Evidence pass.",
+        "Day-0 support establishes serving integration, not independent validation of the supported models' own capability claims."
+      ],
+      "target_findings": {
+        "Verify chronology, primary-source identity, technical claims, and overlap before selection.": {
+          "status": "VERIFIED",
+          "finding": "The GitHub release page directly establishes the W33 release date, the model-support list, Rust-server work, cache changes, and the project-attributed optimization claims. It is distinct from narrower vLLM/FlashInfer releases because it bundles model onboarding, server architecture, cache semantics, and MoE serving changes in one release.",
+          "source_indexes": [1]
+        }
+      },
+      "rationale": "Strong Inference / Serving candidate with enough independently identifiable subthemes for a concise release article or systems sidebar."
+    },
+    {
+      "evidence_task_id": "evidence:2026-W33:duplicate-hint-transformers-5-15-model-a-21de98c2da",
+      "artifact": {
+        "canonical_name": "Transformers v5.15.0 / Muse Glimmer model addition",
+        "artifact_type": "INTEGRATION",
+        "organization": "Hugging Face"
+      },
+      "canonical_url": "https://github.com/huggingface/transformers/releases/tag/v5.15.0",
+      "candidate_recommendation": "CANDIDATE",
+      "status": "VERIFIED",
+      "why_now_confirmed": true,
+      "why_this_special": "Transformers v5.15.0 landed in W33 and its release notes explicitly surface Meta Muse Glimmer as a newly released multimodal model, providing an independent integration/chronology anchor for the Grok lead.",
+      "artifact_first_announced": "2026-08-10T10:28:13Z",
+      "events": [
+        {
+          "event_type": "SOFTWARE_RELEASE",
+          "event_date": "2026-08-10T10:28:13Z",
+          "source_published_at": "2026-08-10T10:28:13Z",
+          "source_indexes": [1]
+        }
+      ],
+      "claims": [
+        {
+          "text": "Hugging Face published Transformers v5.15.0 on 2026-08-10 UTC and included Meta Muse Glimmer under New Model additions.",
+          "evidence_class": "PRIMARY_FACT",
+          "source_indexes": [1]
+        },
+        {
+          "text": "The Hugging Face release notes describe Muse Glimmer as a dense 30B multimodal model with a 2B vision encoder and 28B text decoder and state that it was released that day under Apache 2.0.",
+          "evidence_class": "PROJECT_CLAIM",
+          "source_indexes": [1]
+        }
+      ],
+      "limitations": [
+        "This verifies the Hugging Face project release and its Muse Glimmer integration/release-note record. Grok r3 is retained only as trend-priority evidence; detailed model capability, architecture, and performance claims remain attributed unless separately verified from Meta/model-card sources."
+      ],
+      "target_findings": {
+        "Verify chronology, primary-source identity, technical claims, and overlap before selection.": {
+          "status": "VERIFIED",
+          "finding": "Transformers v5.15.0 directly establishes the 2026-08-10 project release and Muse Glimmer model addition. The r3 trend lead survives reconciliation because the model identity is independently corroborated here; detailed model claims remain attributed to the project/Meta source chain.",
+          "source_indexes": [1]
+        }
+      },
+      "rationale": "Candidate-level open-weight/model-integration lead; use the Transformers release as the canonical W33 Evidence anchor and use Grok r3 only to prioritize the trend."
+    },
+    {
+      "evidence_task_id": "evidence:2026-W33:series-vllm-0-27-series-3608c00cea",
+      "artifact": {
+        "canonical_name": "vLLM v0.27.0–v0.27.1",
+        "artifact_type": "FRAMEWORK",
+        "organization": "vllm-project/vllm"
+      },
+      "canonical_url": "https://github.com/vllm-project/vllm/releases/tag/v0.27.0",
+      "candidate_recommendation": "CANDIDATE",
+      "status": "VERIFIED",
+      "grouping_accepted": true,
+      "split_recommended": false,
+      "grouping_note": "v0.27.0 is the material W33 release and v0.27.1 is an immediate patch-level continuation; grouping avoids double counting one release family.",
+      "why_now_confirmed": true,
+      "why_this_special": "vLLM v0.27.0 is a substantial W33 serving release and v0.27.1 follows immediately as a patch release, so the series is one coherent systems candidate.",
+      "artifact_first_announced": "2026-08-10T21:18:11Z",
+      "events": [
+        {
+          "event_type": "SOFTWARE_RELEASE",
+          "event_date": "2026-08-10T21:18:11Z",
+          "source_published_at": "2026-08-10T21:18:11Z",
+          "source_indexes": [1]
+        },
+        {
+          "event_type": "SOFTWARE_RELEASE",
+          "event_date": "2026-08-11T10:47:49Z",
+          "source_published_at": "2026-08-11T10:47:49Z",
+          "source_indexes": [2]
+        }
+      ],
+      "claims": [
+        {
+          "text": "vLLM published v0.27.0 on 2026-08-10 UTC and v0.27.1 on 2026-08-11 UTC.",
+          "evidence_class": "PRIMARY_FACT",
+          "source_indexes": [1, 2]
+        },
+        {
+          "text": "The v0.27.0 release notes describe a broad set of model-support, engine, quantization, distributed-serving, and platform changes; v0.27.1 is an immediate maintenance continuation rather than an independent feature release.",
+          "evidence_class": "PROJECT_CLAIM",
+          "source_indexes": [1, 2]
+        }
+      ],
+      "limitations": [
+        "The release-note performance and compatibility statements remain project claims unless reproduced under the same model/hardware/configuration.",
+        "The series is broad; article treatment should select a small number of technically material changes rather than enumerate the changelog."
+      ],
+      "target_findings": {
+        "Verify chronology, primary-source identity, technical claims, and overlap before selection.": {
+          "status": "VERIFIED",
+          "finding": "Both GitHub release pages establish the series chronology inside W33. v0.27.0 is the feature-bearing release and v0.27.1 is the immediate patch continuation, supporting one grouped candidate.",
+          "source_indexes": [1, 2]
+        }
+      },
+      "rationale": "Candidate as a major serving/runtime release series; compare against SGLang/FlashInfer at Candidate Selection rather than treating all three as separate lead stories automatically."
+    },
+    {
+      "evidence_task_id": "evidence:2026-W33:duplicate-hint-flashinfer-0-6-17-series-b33954318b",
+      "artifact": {
+        "canonical_name": "FlashInfer v0.6.17",
+        "artifact_type": "FRAMEWORK",
+        "organization": "flashinfer-ai/flashinfer"
+      },
+      "canonical_url": "https://github.com/flashinfer-ai/flashinfer/releases/tag/v0.6.17",
+      "candidate_recommendation": "CANDIDATE",
+      "status": "VERIFIED",
+      "why_now_confirmed": true,
+      "why_this_special": "FlashInfer v0.6.17 is a W33 low-level inference-kernel release that complements higher-level SGLang/vLLM changes and is relevant to MoE, attention, and GPU serving performance.",
+      "artifact_first_announced": "2026-08-11T05:09:14Z",
+      "events": [
+        {
+          "event_type": "SOFTWARE_RELEASE",
+          "event_date": "2026-08-11T05:09:14Z",
+          "source_published_at": "2026-08-11T05:09:14Z",
+          "source_indexes": [1]
+        }
+      ],
+      "claims": [
+        {
+          "text": "FlashInfer published v0.6.17 on 2026-08-11 UTC with packaged CUDA artifacts for multiple CUDA versions.",
+          "evidence_class": "PRIMARY_FACT",
+          "source_indexes": [1]
+        },
+        {
+          "text": "The release notes describe kernel/runtime improvements relevant to attention, MoE expert parallelism, quantized inference, and serving backends.",
+          "evidence_class": "PROJECT_CLAIM",
+          "source_indexes": [1]
+        }
+      ],
+      "limitations": [
+        "Kernel performance claims are implementation- and hardware-specific and are not independently benchmarked in this Evidence pass.",
+        "FlashInfer is a lower-level dependency than SGLang/vLLM, so editorial distinctness should be judged by whether the kernel changes explain broader serving shifts."
+      ],
+      "target_findings": {
+        "Verify chronology, primary-source identity, technical claims, and overlap before selection.": {
+          "status": "VERIFIED",
+          "finding": "The first-party GitHub release establishes W33 chronology and the kernel/runtime scope. It overlaps the serving theme but remains technically distinct as the kernel layer beneath engines such as SGLang/vLLM.",
+          "source_indexes": [1]
+        }
+      },
+      "rationale": "Retain for Candidate Selection as either a compact systems item or supporting evidence in a broader W33 inference-stack story."
+    },
+    {
+      "evidence_task_id": "evidence:2026-W33:series-comfyui-w33-media-integrations-c921833559",
+      "artifact": {
+        "canonical_name": "ComfyUI v0.31.0–v0.33.1 media-generation integration series",
+        "artifact_type": "INTEGRATION",
+        "organization": "Comfy-Org/ComfyUI"
+      },
+      "canonical_url": "https://github.com/Comfy-Org/ComfyUI/releases/tag/v0.32.0",
+      "candidate_recommendation": "CANDIDATE",
+      "status": "VERIFIED",
+      "grouping_accepted": true,
+      "split_recommended": false,
+      "grouping_note": "The three W33 ComfyUI releases form one integration series; v0.32.0 contains the material image/video model additions.",
+      "why_now_confirmed": true,
+      "why_this_special": "ComfyUI shipped multiple W33 releases; v0.32.0 is a concrete image/video integration event. Grok r3 independently reframes LTX 2.5 as an integration/adoption signal and finds Lane D technical X momentum too weak for a core image-generation trend.",
+      "artifact_first_announced": "2026-08-08T03:10:59Z",
+      "events": [
+        {
+          "event_type": "SOFTWARE_RELEASE",
+          "event_date": "2026-08-08T03:10:59Z",
+          "source_published_at": "2026-08-08T03:10:59Z",
+          "source_indexes": [1]
+        },
+        {
+          "event_type": "SOFTWARE_RELEASE",
+          "event_date": "2026-08-11T21:56:20Z",
+          "source_published_at": "2026-08-11T21:56:20Z",
+          "source_indexes": [2]
+        },
+        {
+          "event_type": "SOFTWARE_RELEASE",
+          "event_date": "2026-08-13T22:18:34Z",
+          "source_published_at": "2026-08-13T22:18:34Z",
+          "source_indexes": [3]
+        }
+      ],
+      "claims": [
+        {
+          "text": "ComfyUI published v0.31.0, v0.32.0, and v0.33.1 during the W33 window.",
+          "evidence_class": "PRIMARY_FACT",
+          "source_indexes": [1, 2, 3]
+        },
+        {
+          "text": "The v0.32.0 release notes add Qwen-Image 3.0 Pro partner nodes, LTX 2.5 support and partner nodes, Grok-Imagine-Image-2.0 partner nodes, and several MiniMax-H3 VAE/memory fixes.",
+          "evidence_class": "PROJECT_CLAIM",
+          "source_indexes": [2]
+        }
+      ],
+      "limitations": [
+        "ComfyUI support proves W33 integration/adoption activity only. It does not establish the underlying model release date, first-party capability claims, or X momentum for Qwen-Image 3.0 Pro, LTX 2.5, or Grok-Imagine-Image-2.0."
+      ],
+      "target_findings": {
+        "Verify chronology, primary-source identity, technical claims, and overlap before selection.": {
+          "status": "VERIFIED",
+          "finding": "The three ComfyUI releases and the v0.32.0 integration additions are directly verified from project release notes. Underlying model chronology remains separate.",
+          "source_indexes": [1, 2, 3]
+        },
+        "Verify primary source, weekly significance, and whether this is distinct or redundant.": {
+          "status": "VERIFIED",
+          "finding": "v0.32.0 contains the material W33 media integrations; grouping v0.31/v0.32/v0.33.1 as one ComfyUI series avoids duplicate treatment.",
+          "source_indexes": [1, 2, 3]
+        }
+      },
+      "rationale": "Candidate-level OSS integration/adoption signal. Treat LTX 2.5 and the image partner-node additions as W33 integration events, not as proof of same-week underlying model releases; r3 keeps Lane D non-core."
+    }
+  ]
+}
