@@ -3,8 +3,8 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-from scripts.run_special_interactive_screening import make_decision, validate_overrides
-from scripts.run_weekly_interactive_screening import run
+from scripts.run_special_interactive_screening import make_decision
+from scripts.run_weekly_interactive_screening import expand_selection_document, run
 
 
 class WeeklyInteractiveScreeningTests(unittest.TestCase):
@@ -14,7 +14,7 @@ class WeeklyInteractiveScreeningTests(unittest.TestCase):
         self.assertEqual(decision["screening_id"], "x")
         self.assertEqual(decision["verification_targets"], [])
 
-    def test_weekly_override_document_is_accepted(self):
+    def test_compact_selection_expands_to_override_contract(self):
         value = {
             "schema_version": "1.0",
             "issue_id": "2026-W33",
@@ -25,19 +25,25 @@ class WeeklyInteractiveScreeningTests(unittest.TestCase):
                 "generated_at": "2026-08-15T00:00:00Z",
             },
             "default_drop": {"reason": "default"},
-            "overrides": [
+            "decision_defaults": {
+                "KEEP": {"reason": "keep", "verification_targets": ["verify"], "confidence": "medium"},
+                "MAYBE": {"reason": "maybe", "verification_targets": ["verify"], "confidence": "medium"},
+                "INSPECT": {"reason": "inspect", "verification_targets": ["inspect"], "confidence": "medium"},
+            },
+            "selections": [
                 {
                     "screening_id": "x",
                     "decision": "KEEP",
-                    "reason": "technically material weekly candidate",
                     "topic_lanes": ["A"],
-                    "verification_targets": ["verify primary source"],
                     "confidence": "high",
                 }
             ],
         }
-        overrides = validate_overrides(value, "2026-W33")
+        _, overrides = expand_selection_document(value, "2026-W33")
         self.assertEqual(overrides["x"]["decision"], "KEEP")
+        self.assertEqual(overrides["x"]["reason"], "keep")
+        self.assertEqual(overrides["x"]["verification_targets"], ["verify"])
+        self.assertEqual(overrides["x"]["confidence"], "high")
 
     def test_runner_rejects_special_issue_id_before_io(self):
         with self.assertRaisesRegex(ValueError, "YYYY-Www"):
