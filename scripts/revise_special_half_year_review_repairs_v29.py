@@ -9,9 +9,9 @@ Technical Note regeneration (for example a stronger entity-binding contract).
 This compatibility layer keeps the old assertion fail-closed and permits a re-entrant bridge only
 when the marker explicitly opts in and the state-pinned, actually rendered Technical Notes prove
 that the old limitation is already absent and the consolidated COMMON_BOUNDARY is present.
-The legacy one-shot counter is bridged only in memory; after a successful build the persisted
-manifest/state/result are corrected to the truthful removal count (zero) and record that the
-limitation was already absent before this revision.
+The legacy one-shot counter is bridged only in memory at V28's final rendered-note delegate;
+after a successful build the persisted manifest/state/result are corrected to the truthful
+removal count (zero) and record that the limitation was already absent before this revision.
 """
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from scripts import revise_special_half_year_review_repairs_v3 as legacy
 from scripts import revise_special_half_year_review_repairs_v28 as base
@@ -135,6 +135,27 @@ def _correct_persisted_reentrant_audit(
     return result
 
 
+def _reentrant_delegate(
+    original: Callable[[Path, dict[str, dict[str, Any]]], tuple[int, int, int]],
+    bridge_state: dict[str, bool],
+) -> Callable[[Path, dict[str, dict[str, Any]]], tuple[int, int, int]]:
+    """Bridge the legacy counter at V28's final rendered-file delegate only."""
+
+    def wrapped(path: Path, evidence: dict[str, dict[str, Any]]) -> tuple[int, int, int]:
+        facts, removed, checked = original(path, evidence)
+        if removed != 0:
+            raise ValueError(
+                "re-entrant Half-year parent proof contradicted during repair: "
+                f"unexpected common limitation removal in {path}"
+            )
+        if not bridge_state.get("used", False):
+            bridge_state["used"] = True
+            return facts, 1, checked
+        return facts, 0, checked
+
+    return wrapped
+
+
 def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str) -> dict[str, Any]:
     marker_path = repo_root / "sources" / issue_id / "editorial" / f"layout-revision-{source_version}.json"
     marker = _load_json(marker_path)
@@ -145,35 +166,22 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
 
     proof = _validate_parent_common_limitation_already_absent(repo_root, issue_id)
 
-    # v3's historical assertion requires a positive migration count. The parent proof above
-    # establishes that the true count for this revision must be zero. Bridge exactly one in-memory
-    # count so the one-shot assertion can complete, then rewrite every persisted audit surface to
-    # the truthful zero count below. No reader content is changed by the bridge itself.
-    original_repair = legacy.repair_note_file
-    bridge_used = False
-
-    def reentrant_repair(path: Path, evidence: dict[str, dict[str, Any]]) -> tuple[int, int, int]:
-        nonlocal bridge_used
-        facts, removed, checked = original_repair(path, evidence)
-        if removed != 0:
-            raise ValueError(
-                "re-entrant Half-year parent proof contradicted during repair: "
-                f"unexpected common limitation removal in {path}"
-            )
-        if not bridge_used:
-            bridge_used = True
-            return facts, 1, checked
-        return facts, 0, checked
-
-    legacy.repair_note_file = reentrant_repair
+    # V7/V11/V13 install their compatibility functions while descending toward v3, so patching
+    # v3.repair_note_file here is too early and gets overwritten. V28 is the final scope guard:
+    # its rendered-only wrapper calls _ORIGINAL_REENRICH_NOTE_FILE at runtime. Bridging that
+    # delegate is therefore both late enough to survive the compatibility chain and narrow enough
+    # to touch only files proven to be part of the state-pinned reader surface.
+    original_delegate = base._ORIGINAL_REENRICH_NOTE_FILE
+    bridge_state = {"used": False}
+    base._ORIGINAL_REENRICH_NOTE_FILE = _reentrant_delegate(original_delegate, bridge_state)
     try:
         result = base.build(repo_root, special_slug, issue_id, source_version)
     finally:
-        legacy.repair_note_file = original_repair
+        base._ORIGINAL_REENRICH_NOTE_FILE = original_delegate
 
     if not isinstance(result, dict):
         raise ValueError("re-entrant Half-year repair returned malformed result")
-    if not bridge_used:
+    if not bridge_state["used"]:
         raise ValueError("re-entrant Half-year repair did not traverse any rendered Technical Notes file")
     return _correct_persisted_reentrant_audit(repo_root, issue_id, result, proof)
 
