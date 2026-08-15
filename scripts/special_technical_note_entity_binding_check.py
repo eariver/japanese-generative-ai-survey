@@ -50,7 +50,8 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
         errors.append("Half-year Technical Notes lost SCREENING_BACKED_FAIL_CLOSED provenance")
     if reader.get("entity_binding_contract") != ENTITY_BINDING_CONTRACT:
         errors.append(
-            "Half-year Technical Notes lack the required version-aware subject/entity binding contract: "
+            "Half-year Technical Notes lack the required subject/entity binding contract "
+            "(version-aware V2 required): "
             f"expected={ENTITY_BINDING_CONTRACT} actual={reader.get('entity_binding_contract')}"
         )
         return errors
