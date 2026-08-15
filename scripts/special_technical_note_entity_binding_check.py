@@ -39,8 +39,27 @@ def _title_key(value: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+def _fact_text(card: str) -> str | None:
+    match = FACT_RE.search(card)
+    return match.group(1) if match is not None else None
+
+
+def _normalized_fact(value: str) -> str:
+    return re.sub(r"\s+", " ", value).strip()
+
+
 def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[str]:
-    """Return fail-closed pre-release findings for Half-year source-specific notes."""
+    """Return fail-closed pre-release findings for Half-year source-specific notes.
+
+    V2 audits individual source occurrences. The same rendered signal can therefore appear in
+    both accepted and rejected lists when one occurrence belongs to the selected artifact and
+    another belongs to a comparator. Reader-facing preflight must reject only *rejected-only*
+    signal labels, not labels for which at least one target-bound occurrence was accepted.
+
+    A selected Evidence record can also be intentionally reused as a supporting card in more
+    than one package. Such duplicate titles are permitted only when every reader-facing copy has
+    the same normalized primary-fact text; every occurrence is still checked independently.
+    """
     errors: list[str] = []
     if str(manifest.get("status") or "") != "VALIDATED_HALF_YEAR_SOURCE_SPECIFIC_NOTES_REVISION":
         return errors
@@ -89,7 +108,7 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
             f"audited={len(artifacts)} visible={visible} overrides={overrides}"
         )
 
-    cards: dict[str, str] = {}
+    cards: dict[str, list[str]] = {}
     for article in manifest.get("articles") or []:
         if not isinstance(article, dict) or article.get("technical_notes_reader_facing") is not True:
             continue
@@ -104,30 +123,47 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
             continue
         for match in NOTE_RE.finditer(path.read_text(encoding="utf-8")):
             key = _title_key(match.group(1))
-            if key in cards:
-                errors.append(f"duplicate reader-facing Technical Note title during entity check: {key}")
-            cards[key] = match.group(0)
+            cards.setdefault(key, []).append(match.group(0))
+
+    # Reuse across packages is legal only when the reader-facing claim is identical.
+    for title, occurrences in cards.items():
+        if len(occurrences) < 2:
+            continue
+        facts = [_fact_text(card) for card in occurrences]
+        if any(fact is None for fact in facts):
+            errors.append(f"Technical Note primary-fact line missing during duplicate check: {title}")
+            continue
+        normalized = {_normalized_fact(str(fact)) for fact in facts}
+        if len(normalized) != 1:
+            errors.append(
+                f"duplicate reader-facing Technical Note title has inconsistent primary facts: {title}"
+            )
 
     for item in artifacts:
         title = _title_key(str(item.get("title") or ""))
         if not title:
             errors.append("entity-binding audit contains an empty title")
             continue
-        card = cards.get(title)
-        if card is None:
+        occurrences = cards.get(title) or []
+        if not occurrences:
             # Suppressed/non-reader-facing Evidence can still be audited by the generator.
             continue
-        fact_match = FACT_RE.search(card)
-        if fact_match is None:
-            errors.append(f"Technical Note primary-fact line missing during entity check: {title}")
-            continue
-        fact = fact_match.group(1)
-        for signal in item.get("rejected_entity_bound_signals") or []:
-            signal = str(signal)
-            if signal and signal in fact:
-                errors.append(
-                    f"Technical Note contains a source signal rejected by subject binding: {title}: {signal}"
-                )
+
+        accepted = {str(signal) for signal in (item.get("accepted_entity_bound_signals") or []) if str(signal)}
+        rejected = {str(signal) for signal in (item.get("rejected_entity_bound_signals") or []) if str(signal)}
+        rejected_only = rejected - accepted
+
+        for card in occurrences:
+            fact = _fact_text(card)
+            if fact is None:
+                errors.append(f"Technical Note primary-fact line missing during entity check: {title}")
+                continue
+            for signal in sorted(rejected_only):
+                if signal in fact:
+                    errors.append(
+                        f"Technical Note contains a rejected-only source signal after subject binding: "
+                        f"{title}: {signal}"
+                    )
 
     rejected_actual = sum(len(item.get("rejected_entity_bound_signals") or []) for item in artifacts)
     rejected_manifest = int(reader.get("entity_binding_rejected_signal_count") or 0)
