@@ -3,9 +3,9 @@
 
 V25 intentionally requires a selected-artifact alias in the same sentence as a high-risk
 signal. This layer fixes detector edge cases: candidate signal vocabulary (for example
-``Mamba`` or ``SSM-Transformer``) must not be counted as a competing entity, while ordinary
-capitalised prose such as ``Research License`` must not outrank the selected model.
-Comparison-model/version mentions remain stronger owners of nearby numeric signals.
+``Mamba`` or ``SSM-Transformer``) and tokens that are constituents of the selected artifact's
+version-aware aliases must not be counted as competing entities. Comparison-model/version
+mentions remain stronger owners of nearby numeric signals.
 """
 from __future__ import annotations
 
@@ -31,15 +31,32 @@ _NON_SUBJECT_SIGNAL_KEYS = {
 }
 
 
+def _alias_constituent_keys(aliases: list[str]) -> set[str]:
+    """Return capitalised/textual tokens that belong to the selected artifact identity."""
+    out: set[str] = set()
+    for alias in aliases:
+        for token in re.findall(r"[A-Za-z][A-Za-z0-9._+-]*", alias):
+            key = base._normal(token)
+            if key:
+                out.add(key)
+    return out
+
+
 def _foreign_mentions(sentence: str, aliases: list[str], rendered: str) -> list[tuple[int, int, str]]:
-    """Return plausible competing subjects, excluding signal vocabulary itself."""
+    """Return plausible competing subjects, excluding selected/signal vocabulary."""
     signal_key = base._normal(rendered)
+    alias_tokens = _alias_constituent_keys(aliases)
     candidates: list[tuple[int, int, str]] = []
     for regex in (base._MODEL_MENTION_RE, _SINGLE_TOKEN_RE):
         for match in regex.finditer(sentence):
             mention = match.group(1).strip()
             mention_key = base._normal(mention)
-            if not mention_key or mention_key == signal_key or mention_key in _NON_SUBJECT_SIGNAL_KEYS:
+            if (
+                not mention_key
+                or mention_key == signal_key
+                or mention_key in _NON_SUBJECT_SIGNAL_KEYS
+                or mention_key in alias_tokens
+            ):
                 continue
             tokens = mention.split()
             first = tokens[0].lower()
