@@ -12,6 +12,7 @@ from typing import Any
 ENTITY_BINDING_CONTRACT = "SUBJECT_VERSION_AWARE_HIGH_RISK_SIGNALS_V2"
 NOTE_RE = re.compile(r"\\begin\{technicalnote\}\{(.+?)\}\{.*?\\end\{technicalnote\}", re.DOTALL)
 FACT_RE = re.compile(r"^\\item \\textbf\{一次情報で確認できる事実\}: (.+)$", re.MULTILINE)
+INPUT_RE = re.compile(r"\\(?:input|include)\{([^}]+)\}")
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -54,6 +55,43 @@ def _contains_rendered_signal(fact: str, signal: str) -> bool:
         rf"(?<![A-Za-z0-9]){re.escape(signal)}(?![A-Za-z0-9])",
         fact,
     ) is not None
+
+
+def _normalize_tex_path(value: str) -> str:
+    text = str(value or "").strip().replace("\\", "/")
+    while text.startswith("./"):
+        text = text[2:]
+    if text and not Path(text).suffix:
+        text += ".tex"
+    return Path(text).as_posix() if text else ""
+
+
+def _rendered_top_level_tex_paths(
+    manifest: dict[str, Any], source_dir: Path, errors: list[str]
+) -> set[str] | None:
+    """Return main.tex inputs when a state-pinned main document is available.
+
+    Older unit fixtures and non-publication manifests may omit ``main_tex``; those keep the
+    historical all-manifest-files behavior. Real Publication Preview manifests pin main.tex,
+    so provenance-only Technical Note files that are no longer rendered are excluded there.
+    """
+    main_info = manifest.get("main_tex")
+    if not isinstance(main_info, dict):
+        return None
+    main_rel = _normalize_tex_path(str(main_info.get("path") or "main.tex"))
+    main_path = source_dir / main_rel
+    if not main_path.is_file():
+        errors.append(f"main TeX missing during entity check: {main_rel}")
+        return set()
+    expected = str(main_info.get("sha256") or "")
+    if expected and sha(main_path) != expected:
+        errors.append(f"main TeX digest mismatch during entity check: {main_rel}")
+        return set()
+    return {
+        _normalize_tex_path(match.group(1))
+        for match in INPUT_RE.finditer(main_path.read_text(encoding="utf-8"))
+        if _normalize_tex_path(match.group(1))
+    }
 
 
 def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[str]:
@@ -106,11 +144,17 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
             f"audited={len(artifacts)} visible={visible} overrides={overrides}"
         )
 
+    rendered_paths = _rendered_top_level_tex_paths(manifest, source_dir, errors)
+    if rendered_paths == set() and errors:
+        return errors
+
     cards: dict[str, list[str]] = {}
     for article in manifest.get("articles") or []:
         if not isinstance(article, dict) or article.get("technical_notes_reader_facing") is not True:
             continue
-        rel = str(article.get("technical_notes_path") or "")
+        rel = _normalize_tex_path(str(article.get("technical_notes_path") or ""))
+        if rendered_paths is not None and rel not in rendered_paths:
+            continue
         path = source_dir / rel
         if not rel or not path.is_file():
             errors.append(f"reader-facing Technical Notes file missing during entity check: {rel}")
