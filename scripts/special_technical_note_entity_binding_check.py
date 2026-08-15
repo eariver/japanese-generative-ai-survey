@@ -9,7 +9,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-ENTITY_BINDING_CONTRACT = "SUBJECT_ANCHORED_HIGH_RISK_SIGNALS_V1"
+ENTITY_BINDING_CONTRACT = "SUBJECT_VERSION_AWARE_HIGH_RISK_SIGNALS_V2"
 NOTE_RE = re.compile(r"\\begin\{technicalnote\}\{(.+?)\}\{.*?\\end\{technicalnote\}", re.DOTALL)
 FACT_RE = re.compile(r"^\\item \\textbf\{一次情報で確認できる事実\}: (.+)$", re.MULTILINE)
 
@@ -50,7 +50,8 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
         errors.append("Half-year Technical Notes lost SCREENING_BACKED_FAIL_CLOSED provenance")
     if reader.get("entity_binding_contract") != ENTITY_BINDING_CONTRACT:
         errors.append(
-            "Half-year Technical Notes lack the required subject/entity binding contract: "
+            "Half-year Technical Notes lack the required subject/entity binding contract "
+            "(version-aware V2 required): "
             f"expected={ENTITY_BINDING_CONTRACT} actual={reader.get('entity_binding_contract')}"
         )
         return errors
@@ -128,9 +129,7 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
                     f"Technical Note contains a source signal rejected by subject binding: {title}: {signal}"
                 )
 
-    rejected_actual = sum(
-        len(item.get("rejected_entity_bound_signals") or []) for item in artifacts
-    )
+    rejected_actual = sum(len(item.get("rejected_entity_bound_signals") or []) for item in artifacts)
     rejected_manifest = int(reader.get("entity_binding_rejected_signal_count") or 0)
     if rejected_actual != rejected_manifest:
         errors.append(
