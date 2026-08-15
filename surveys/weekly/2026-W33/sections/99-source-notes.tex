@@ -1,0 +1,32 @@
+% reader-facing-prose-lint: allow-internal-metadata
+\section{Source Notes / Provenance}
+\label{sec:source-notes}
+\sectionkicker{Evidence / Verification / Repository Provenance}
+
+\small
+
+\textbf{Editorial window.} 2026-W33のcanonical windowは\texttt{[2026-08-07 18:00, 2026-08-14 18:00)} America/New\_York。通常本文に採用した9 Candidateはこのwindow内のeventとして整理した。W32編纂時の一次情報取り逃がし・chronology correctionは\texttt{sources/2026-W32/errata/2026-08-15-primary-source-backfill.md}へappend-onlyで記録し、W33 newsへ再分類していない\cite{w32-backfill-errata}。
+
+\textbf{Evidence basis.} 本号のCandidate Selection / ArchitectureはEvidence Result Set SHA-256
+\texttt{0bcb4bef8e70d6df60833a8604ea4048cd87b60a623d8f7abb820efc584d516e}
+に拘束される。旧Evidence result setはappend-only supersessionで履歴を保持している。
+
+\textbf{Selected roles.} FEATURE\_COREはGPT-5.6-Cyber / Daybreak RedとTransformers v5.15.0 / Muse Glimmer。SECTION\_COREはGPT-5.6 Sol Ultrafast、SGLang v0.5.17、ComfyUI v0.31.0--v0.33.1。SUPPORTING\_EVIDENCEはDaybreak trusted-partner expansion、Daybreak on AWS、vLLM v0.27.0--v0.27.1、FlashInfer v0.6.17。Human role approvalは\texttt{sources/2026-W33/selection/human-role-approval-v0.1.json}、Architecture approvalは\texttt{sources/2026-W33/architecture/human-architecture-approval-v0.2.json}に保存される。
+
+\textbf{Claim classes.} 本文では一次sourceから確認できるidentity / chronology / availabilityを通常のcited factとして扱う。OpenAIのcapability / safety / performance、OSS projectのperformance / compatibility、model positioning等はVENDOR\_CLAIM / PROJECT\_CLAIMとして必要に応じてattributionまたはClaim Boundaryを付ける。Editorial synthesisは複数の確認済みeventを横断する解釈であり、source factへの格上げを行わない。
+
+\textbf{Ultrafast.} `up to 14X' / `up to 750 output tokens per second'はOpenAI announcementのvendor-reported metricsであり、独立benchmarkではない\cite{openai-ultrafast}。本号はこれらをservice-tier positioningの説明に限定し、SGLang / vLLM / FlashInferとの横並びperformance rankingを作らない。
+
+\textbf{Muse Glimmer.} W33のcanonical anchorはTransformers v5.15.0 release\cite{hf-transformers-515}。X Trend Sensorはtopic priorityを示すsupplemental observationであり、model release chronology / architecture / benchmark authorityとしては使わない。
+
+\textbf{ComfyUI.} v0.31.0 / v0.32.0 / v0.33.1のrepository release chronologyを一つのmedia-integration seriesとして扱う\cite{comfyui-0310,comfyui-0320,comfyui-0331}。ComfyUI supportからunderlying modelのfirst-release dateやqualityを推定しない。
+
+\textbf{X Trend Sensor.} Raw observationは\texttt{sources/2026-W33/grok/observations/x-trend-sensor-2026-08-15-v0.4-r3.md}、authoritative downstream reviewは\texttt{sources/2026-W33/grok/reviews/x-trend-sensor-2026-08-15-v0.4-r3-review.md}\cite{w33-grok-r3-observation,w33-grok-r3-review}。Grok 4.6、Qwen3.8-27B、Nemotron 3.5 Lightning、DeepSeek-V4-Pro-0813、Anthropic August 2026 Risk ReportはSOCIAL OBSERVATIONとしてreader-facing Trend Watchに残すが、exact first-party identity / chronologyが未確認の部分をtechnical factとして使用しない。
+
+\textbf{Issue \#9.} Ordinary proseはinternal workflow terminologyを避け、Trend Watchを\texttt{現状 / 未確認 / 注視点}で構成した。W33にはcutoff後のselected eventがないため空のLate Breaking sectionは作らず、同一post-cutoff eventの重複問題は発生していない。Rendered PDFでreader-facing separation / Watchlist readabilityを確認した後、Issue \#9の最終close可否を判断する。
+
+\textbf{Paper coverage.} Screening / Evidence poolにはW33論文が存在するが、full-paper setup reviewを経てPAPER\_WATCHへ選定された項目はない。Abstract-only resultをheadline technical conclusionへ変換しないため、本号では独立Paper Watchを設けない。
+
+\textbf{Repository trace.} Article claimからcitation、Evidence Card、primary/raw sourceへ辿れる完全なproduction provenanceはGitHub repositoryに保持する。Reader-facing本文ではこのmetadataを必要最小限に分離し、Source Notesでのみproduction-level terminologyを許可する。
+
+\normalsize
