@@ -2,14 +2,14 @@
 """Create an immutable Half-year descendant that restores reader-facing bibliography titles.
 
 This pass exists for an already validated Half-year review repair whose References still expose
-legacy ``Primary source N`` placeholders.  It reuses only selected Draft Package Evidence metadata:
+legacy ``Primary source N`` placeholders. It reuses only selected Draft Package Evidence metadata:
 source URLs are matched to ``artifact.canonical_name`` exactly as in the established Special visual-
-review repair contract.  It also places Detailed Chronology before the References heading when an
+review repair contract. It also places Detailed Chronology before the References heading when an
 early Half-year source emitted the consolidated References note before chronology.
 
 Accepted article sections, Evidence cards, Technical Notes content, chronology content, and analysis
-content are immutable.  Any unresolved bibliography placeholder or ambiguous structural placement
-fails closed.
+content are immutable. Any unresolved bibliography placeholder, undeclared article without a Draft
+Package, or ambiguous structural placement fails closed.
 """
 from __future__ import annotations
 
@@ -74,6 +74,35 @@ def _validate_marker(marker: dict[str, Any], issue_id: str, source_version: str)
         raise ValueError("reference-title repair cannot mutate Evidence cards")
 
 
+def _draft_package_manifest(manifest: dict[str, Any]) -> tuple[dict[str, Any], int, list[str]]:
+    """Return a strict title-mapping view containing only real Draft Package articles.
+
+    Sparse Half-year compatibility may append a declared derived chronology article. Such a reader
+    layer has no Draft Package by design and contributes no bibliography Evidence. Any *undeclared*
+    article lacking a Draft Package remains an error rather than being silently skipped.
+    """
+    source_articles: list[dict[str, Any]] = []
+    skipped: list[str] = []
+    for article in manifest.get("articles") or []:
+        if not isinstance(article, dict):
+            raise ValueError("source manifest articles must be objects")
+        package_id = str(article.get("package_id") or "").strip()
+        draft_path = str(article.get("draft_package_path") or "").strip()
+        if draft_path:
+            source_articles.append(article)
+            continue
+        if article.get("_sparse_architecture_derived") is True and article.get("derived_reader_layer") is True:
+            skipped.append(package_id or "<unnamed-derived-layer>")
+            continue
+        raise ValueError(f"non-derived article lacks Draft Package while restoring bibliography titles: {package_id}")
+
+    if not source_articles:
+        raise ValueError("no Draft Package articles available for bibliography title restoration")
+    evidence_manifest = deepcopy(manifest)
+    evidence_manifest["articles"] = source_articles
+    return evidence_manifest, len(source_articles), skipped
+
+
 def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str) -> dict[str, Any]:
     marker_path = repo_root / "sources" / issue_id / "editorial" / f"layout-revision-{source_version}.json"
     marker = visual.load_json(marker_path)
@@ -120,7 +149,8 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     refs_path = output_dir / refs_rel
     if not refs_path.is_file():
         raise ValueError("references bibliography missing")
-    title_map = visual.source_title_map(repo_root, new_manifest)
+    evidence_manifest, draft_article_count, skipped_derived = _draft_package_manifest(new_manifest)
+    title_map = visual.source_title_map(repo_root, evidence_manifest)
     titles_changed, entry_count = visual.enrich_bibliography_titles(refs_path, title_map)
     refs_text = refs_path.read_text(encoding="utf-8")
     if _GENERIC_BIB_TITLE_RE.search(refs_text):
@@ -157,6 +187,8 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
             "bibliography_generic_placeholder_count": 0,
             "bibliography_title_source": "selected Draft Package Evidence artifact.canonical_name keyed by exact source URL",
             "bibliography_traceability_fields_preserved": True,
+            "bibliography_draft_package_article_count": draft_article_count,
+            "bibliography_derived_reader_layers_skipped": skipped_derived,
             "detailed_chronology_before_references": True,
             "detailed_chronology_input_moved": chronology_moved,
         }
@@ -183,6 +215,8 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
         "bibliography_titles_enriched": titles_changed,
         "bibliography_entry_count": entry_count,
         "generic_placeholder_count": 0,
+        "draft_package_article_count": draft_article_count,
+        "derived_reader_layers_skipped": skipped_derived,
         "detailed_chronology_before_references": True,
     }
     visual.write_json(state_path, state)
@@ -198,6 +232,8 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
         "bibliography_titles_enriched": titles_changed,
         "bibliography_entry_count": entry_count,
         "bibliography_generic_placeholder_count": 0,
+        "bibliography_draft_package_article_count": draft_article_count,
+        "bibliography_derived_reader_layers_skipped": skipped_derived,
         "detailed_chronology_before_references": True,
         "detailed_chronology_input_moved": chronology_moved,
         "new_external_evidence": False,
