@@ -24,12 +24,7 @@ _GENERIC_MODEL_WORDS = set(base._GENERIC_MODEL_WORDS) | {
 
 
 def _foreign_mentions(sentence: str, aliases: list[str], rendered: str) -> list[tuple[int, int, str]]:
-    """Return plausible competing subjects, excluding the signal token itself.
-
-    Versioned/scaled spans are strong subject cues. For unversioned names we also inspect
-    individual capitalised tokens so ``Codestral Mamba`` can still make ``Mamba`` foreign to
-    Mistral Large 2, while generic prose tokens are ignored.
-    """
+    """Return plausible competing subjects, excluding the signal token itself."""
     signal_key = base._normal(rendered)
     candidates: list[tuple[int, int, str]] = []
     for regex in (base._MODEL_MENTION_RE, _SINGLE_TOKEN_RE):
@@ -43,8 +38,8 @@ def _foreign_mentions(sentence: str, aliases: list[str], rendered: str) -> list[
             has_identity_cue = any(ch.isdigit() for ch in mention) or any(ch in mention for ch in ".+-")
             if not has_identity_cue:
                 if len(tokens) > 1:
-                    # Multi-word capitalised prose is too ambiguous; its constituent tokens are
-                    # examined separately by _SINGLE_TOKEN_RE.
+                    # Multi-word capitalised prose is ambiguous; constituent tokens are checked
+                    # separately by _SINGLE_TOKEN_RE.
                     continue
                 if first in _GENERIC_MODEL_WORDS:
                     continue
@@ -68,11 +63,13 @@ def _signal_is_target_bound(window: str, start: int, end: int, title: str, rende
     if not target_spans:
         return False
 
+    # Category language is not a model parameter specification.
     if rendered.endswith("B parameter scale"):
         prefix = sentence[max(0, local_start - 16):local_start].lower()
         if re.search(r"(?:sub-|under\s+|below\s+|less\s+than\s+)$", prefix):
             return False
 
+    # Deployment-capacity values are not the advertised context-window specification.
     if rendered.endswith("K context") or rendered.endswith("M context"):
         vicinity = sentence[max(0, local_start - 120):min(len(sentence), local_end + 120)].lower()
         if re.search(r"single\s+(?:gpu|node)", vicinity):
@@ -98,26 +95,24 @@ def _signal_is_target_bound(window: str, start: int, end: int, title: str, rende
 
 
 def _entity_aware_technical_signals(summary: str, events: list[tuple[str, str]], title: str = "") -> list[str]:
-    old = base._signal_is_target_bound
+    old_signal = base._signal_is_target_bound
     base._signal_is_target_bound = _signal_is_target_bound
     try:
         return base._entity_aware_technical_signals(summary, events, title)
     finally:
-        base._signal_is_target_bound = old
+        base._signal_is_target_bound = old_signal
 
 
 def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str) -> dict[str, Any]:
     old_signal = base._signal_is_target_bound
-    old_entity = base._entity_aware_technical_signals
     base._signal_is_target_bound = _signal_is_target_bound
-    base._entity_aware_technical_signals = _entity_aware_technical_signals
     try:
-        # base.build captures its module-level _entity_aware_technical_signals into V24. The
-        # wrapper above keeps the V26 signal predicate active for every extracted candidate.
+        # V25's build installs its own entity-aware extractor into V24. That extractor resolves
+        # _signal_is_target_bound dynamically from the V25 module, so replacing only this
+        # predicate is sufficient and avoids recursive wrapper capture.
         return base.build(repo_root, special_slug, issue_id, source_version)
     finally:
         base._signal_is_target_bound = old_signal
-        base._entity_aware_technical_signals = old_entity
 
 
 if __name__ == "__main__":
