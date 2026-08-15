@@ -14,21 +14,39 @@ class HalfYearRenderedNoteScopeV28Tests(unittest.TestCase):
     def _fixture(self, root: Path) -> dict[str, object]:
         issue_id = "SP-TEST-H2"
         source_dir = root / "surveys" / "special" / "test" / "revisions" / "v0.1"
-        note_path = source_dir / "technical-notes" / "10-notes.tex"
-        note_path.parent.mkdir(parents=True)
-        note_path.write_text(
+        note_dir = source_dir / "technical-notes"
+        note_dir.mkdir(parents=True)
+        (note_dir / "10-notes.tex").write_text(
             "\\begin{technicalnote}{Rendered Model}{主要資料}\n"
             "\\item \\textbf{一次情報で確認できる事実}: placeholder\n"
             "\\end{technicalnote}\n",
             encoding="utf-8",
         )
+        (note_dir / "80-retired-notes.tex").write_text(
+            "\\begin{technicalnote}{Retired Chronology Card}{補足資料}\n"
+            "\\item \\textbf{一次情報で確認できる事実}: legacy placeholder\n"
+            "\\end{technicalnote}\n",
+            encoding="utf-8",
+        )
+        (source_dir / "main.tex").write_text(
+            "\\documentclass{article}\n"
+            "\\begin{document}\n"
+            "\\input{technical-notes/10-notes}\n"
+            "\\end{document}\n",
+            encoding="utf-8",
+        )
         current_manifest = {
             "issue_id": issue_id,
+            "main_tex": {"path": "main.tex"},
             "articles": [
                 {
                     "technical_notes_reader_facing": True,
                     "technical_notes_path": "technical-notes/10-notes.tex",
-                }
+                },
+                {
+                    "technical_notes_reader_facing": True,
+                    "technical_notes_path": "technical-notes/80-retired-notes.tex",
+                },
             ],
         }
         manifest_path = source_dir / "source-manifest.json"
@@ -50,7 +68,7 @@ class HalfYearRenderedNoteScopeV28Tests(unittest.TestCase):
         )
         return {"issue_id": issue_id, "articles": current_manifest["articles"]}
 
-    def test_rendered_titles_come_from_state_pinned_reader_files(self) -> None:
+    def test_rendered_titles_follow_main_tex_inputs_not_stale_reader_files(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             manifest = self._fixture(root)
