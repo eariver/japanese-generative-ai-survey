@@ -93,6 +93,26 @@ class HalfYearReentrantLimitationsV29Tests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "COMMON_BOUNDARY missing"):
                 repair._validate_parent_common_limitation_already_absent(root, issue_id)
 
+    def test_final_delegate_bridges_exactly_once_and_rejects_proof_contradiction(self) -> None:
+        calls: list[str] = []
+
+        def clean(path: Path, evidence: dict[str, dict[str, object]]) -> tuple[int, int, int]:
+            calls.append(path.name)
+            return 2, 0, 3
+
+        state = {"used": False}
+        bridged = repair._reentrant_delegate(clean, state)
+        self.assertEqual(bridged(Path("10-notes.tex"), {}), (2, 1, 3))
+        self.assertEqual(bridged(Path("20-notes.tex"), {}), (2, 0, 3))
+        self.assertEqual(calls, ["10-notes.tex", "20-notes.tex"])
+        self.assertTrue(state["used"])
+
+        def dirty(path: Path, evidence: dict[str, dict[str, object]]) -> tuple[int, int, int]:
+            return 1, 1, 1
+
+        with self.assertRaisesRegex(ValueError, "proof contradicted"):
+            repair._reentrant_delegate(dirty, {"used": False})(Path("dirty.tex"), {})
+
     def test_persisted_audit_is_corrected_to_truthful_zero(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
