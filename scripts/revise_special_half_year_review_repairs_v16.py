@@ -10,18 +10,21 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 from typing import Any
 
 from scripts import revise_special_half_year_review_repairs_v15 as base
 
-# v15.event is v13.
+# v15.event is v13. Capture its original classifier before this module installs the extended
+# predicate during build; otherwise the extension would recurse through the patched global.
 event = base.event
 impl = base.impl
+_BASE_IS_LIVING_CHANGELOG = event._is_living_changelog
 
 
 def _is_living_changelog(summary: str) -> bool:
-    if event._is_living_changelog(summary):
+    if _BASE_IS_LIVING_CHANGELOG(summary):
         return True
     head = summary[:900].lower()
     dated_entries = event._DATE_TOKEN_RE.findall(summary[:2200])
@@ -64,7 +67,6 @@ def _safe_technical_signals(summary: str, events: list[tuple[str, str]], title: 
     for display, pattern in impl._SIGNAL_PATTERNS:
         if display in event._UNSAFE_SIGNAL_NAMES:
             continue
-        import re
         if re.search(pattern, window, flags=re.IGNORECASE | re.DOTALL) and display not in signals:
             signals.append(display)
         if len(signals) >= 7:
