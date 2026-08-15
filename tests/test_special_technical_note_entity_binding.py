@@ -147,7 +147,7 @@ class SpecialTechnicalNoteEntityBindingTests(unittest.TestCase):
             )
             self.assertEqual(inspect_entity_binding(manifest, root), [])
 
-    def test_guard_still_rejects_duplicate_title_when_both_files_are_rendered(self):
+    def test_guard_rejects_conflicting_duplicate_when_both_files_are_rendered(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             manifest = self._fixture(
@@ -159,7 +159,7 @@ class SpecialTechnicalNoteEntityBindingTests(unittest.TestCase):
             duplicate.write_text(
                 "\\begin{technicalnote}{Jamba 1.5 Mini and Large}{MODEL}\n"
                 "\\begin{itemize}\n"
-                "\\item \\textbf{一次情報で確認できる事実}: Mamba\n"
+                "\\item \\textbf{一次情報で確認できる事実}: Jambaについて256K contextを確認できる。\n"
                 "\\end{itemize}\n"
                 "\\end{technicalnote}\n",
                 encoding="utf-8",
@@ -179,7 +179,7 @@ class SpecialTechnicalNoteEntityBindingTests(unittest.TestCase):
             )
             manifest["main_tex"]["sha256"] = sha(main)
             errors = inspect_entity_binding(manifest, root)
-            self.assertTrue(any("duplicate reader-facing Technical Note title" in error for error in errors))
+            self.assertTrue(any("conflicting reader-facing Technical Note fact" in error for error in errors))
 
     def test_guard_rejects_half_year_source_without_contract(self):
         with tempfile.TemporaryDirectory() as temp:
