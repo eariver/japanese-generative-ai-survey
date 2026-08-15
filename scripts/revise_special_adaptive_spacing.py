@@ -26,6 +26,12 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     marker_path = repo_root / "sources" / issue_id / "editorial" / f"layout-revision-{source_version}.json"
     marker = load_json(marker_path)
     changes = marker.get("layout_changes") or {}
+    # Semantic/source regeneration is the primary operation when a marker composes it with a
+    # layout-preservation flag. The regenerated revision inherits the current source/layout;
+    # a dense-table guard must not short-circuit the Half-year repair before it runs.
+    if changes.get("half_year_review_repairs_v3") is True:
+        from scripts.revise_special_half_year_review_repairs_v27 import build as half_year_v3_build
+        return half_year_v3_build(repo_root, special_slug, issue_id, source_version)
     if changes.get("dense_theme_table_font_guard") is True:
         from scripts.revise_special_dense_theme_table import build as dense_theme_build
         return dense_theme_build(repo_root, special_slug, issue_id, source_version)
@@ -35,9 +41,6 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     if changes.get("h1_publication_preview_repairs") is True:
         from scripts.revise_special_h1_publication_preview_repairs import build as h1_build
         return h1_build(repo_root, special_slug, issue_id, source_version)
-    if changes.get("half_year_review_repairs_v3") is True:
-        from scripts.revise_special_half_year_review_repairs_v27 import build as half_year_v3_build
-        return half_year_v3_build(repo_root, special_slug, issue_id, source_version)
     if changes.get("half_year_review_repairs") is True:
         from scripts.revise_special_half_year_review_repairs_v2 import build as half_year_build
         return half_year_build(repo_root, special_slug, issue_id, source_version)
