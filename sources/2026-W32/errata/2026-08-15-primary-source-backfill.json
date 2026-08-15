@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "2026-W32",
+  "status": "NON_DESTRUCTIVE_POST_RELEASE_ERRATA",
+  "recorded_at": "2026-08-15T22:15:00+09:00",
+  "authority": "user-approved W32-to-W33 carry-over audit correction during 2026-W33 compilation",
+  "published_release_preserved": "weekly/2026-W32/v0.2",
+  "mutates_frozen_release": false,
+  "corrections": [
+    {
+      "prior_item_id": "openai-gpt-5.6-w32-update",
+      "correction_type": "PRIMARY_SOURCE_BACKFILL",
+      "corrected_event_date": "2026-08-06T10:00:00Z",
+      "corrected_disposition": "W32_MAIN_EVENT_PRIMARY_CONFIRMABLE",
+      "canonical_url": "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt",
+      "evidence": [
+        {
+          "kind": "PRESERVED_PRIMARY_RSS",
+          "path": "sources/2026-W33/collectors/official-pages/runs/20260815T104430Z/raw/openai-news-rss.html",
+          "sha256": "382fe92628ebc1b69481cc6f62a56a05c3610ef3755291d2621923260356fb3a"
+        }
+      ],
+      "note": "The first-party item existed inside W32; the prior HOLD_OUT was a verification miss, not a missing release."
+    },
+    {
+      "prior_item_id": "claude-opus-4.1-api-retirement",
+      "correction_type": "PRIMARY_SOURCE_BACKFILL",
+      "corrected_event_date": "2026-08-05",
+      "corrected_disposition": "W32_MAIN_EVENT_PRIMARY_CONFIRMABLE",
+      "canonical_url": "https://platform.claude.com/docs/en/docs/about-claude/model-deprecations",
+      "bounded_primary_facts": {
+        "model": "claude-opus-4-1-20250805",
+        "deprecated": "2026-06-05",
+        "retirement_date": "2026-08-05",
+        "recommended_replacement_at_recheck": "claude-opus-4-8"
+      },
+      "note": "Living first-party documentation was rechecked on 2026-08-15; the Aug 5 retirement belongs to W32, not W33."
+    },
+    {
+      "prior_item_id": "openai-astra-cyber-critical-late",
+      "correction_type": "CHRONOLOGY_CORRECTION",
+      "corrected_event_date": "2026-08-07T15:20:00Z",
+      "corrected_event_date_editorial_timezone": "2026-08-07T11:20:00-04:00",
+      "w32_editorial_cutoff": "2026-08-07T18:00:00-04:00",
+      "corrected_disposition": "W32_MAIN_EVENT_NOT_LATE_BREAKING",
+      "canonical_url": "https://openai.com/index/responding-next-frontier-critical-cyber-capabilities",
+      "evidence": [
+        {
+          "kind": "PRESERVED_PRIMARY_RSS",
+          "path": "sources/2026-W33/collectors/official-pages/runs/20260815T104430Z/raw/openai-news-rss.html",
+          "sha256": "382fe92628ebc1b69481cc6f62a56a05c3610ef3755291d2621923260356fb3a"
+        }
+      ],
+      "note": "The item preceded the W32 cutoff by 6h40m. This correction does not change the substantive safety wording retained by W32."
+    }
+  ]
+}
