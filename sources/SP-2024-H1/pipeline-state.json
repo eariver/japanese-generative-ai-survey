@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "issue_id": "SP-2024-H1",
   "edition_kind": "RETROSPECTIVE_PERIOD",
-  "lifecycle_state": "RELEASE_CANDIDATE",
+  "lifecycle_state": "VALIDATED_DRAFT",
   "revision": "v0.1",
   "calendar": {
     "editorial_cutoff": "2024-06-30T23:59:59Z",
@@ -21,7 +21,7 @@
     "issue_architecture": "passed",
     "article_draft": "passed",
     "claim_and_chronology_validation": "passed",
-    "latex_build": "passed",
+    "latex_build": "pending",
     "visual_review": "pending",
     "freeze": "pending"
   },
@@ -77,35 +77,17 @@
       "sha256": "6624c7d3d0fade23554d4263e6e657cde5afb0a757a1d3cf1724e17c637d30f2"
     },
     "validated_issue_source": {
-      "path": "surveys/special/2024-H1/revisions/v0.2/source-manifest.json",
-      "sha256": "b039b2c8f53c29e67f7e7dd0560bdb794bcf8b7ebcc540bab23d6ca1bd84f6e4",
-      "source_version": "v0.2",
-      "expansion_basis": "selected Evidence cards only",
-      "typography_revision": "v0.4-reference-title-cleanup",
-      "layout_mode": "balanced-local-multicol-narrative-full-width-evidence",
-      "prebuild_layout": true,
-      "reader_facing_notes_language": "ja-reader-summary-v1",
-      "reader_facing_technical_notes": true,
-      "period_consistency": true
+      "path": "surveys/special/2024-H1/revisions/v0.3/source-manifest.json",
+      "sha256": "b55bd0156cbb04c70148e29563f63831dcc8e57d3154ab8f3fcbaa437989819d",
+      "source_version": "v0.3",
+      "layout_mode": "local two-column multicol narrative; full-width chapter headings, standfirsts, Technical Notes",
+      "layout_revision_sha256": "656858c9776cc6a1e9cf58ff040bb1d648ed5dc043359507254949dea43fdce8"
     },
-    "latex_build": {
-      "workflow_run_id": 31889049605,
-      "pdf_sha256": "f19d6a7dd50b9adec5633de6cade3a166e323130d31084f55b245850fd4e90cf",
-      "page_count": 43,
-      "source_version": "v0.2",
-      "validated_issue_source_path": "worktree/surveys/special/2024-H1/revisions/v0.2/source-manifest.json",
-      "validated_issue_source_sha256": "b039b2c8f53c29e67f7e7dd0560bdb794bcf8b7ebcc540bab23d6ca1bd84f6e4",
-      "page_budget": {
-        "soft_target": 64,
-        "hard_max": 96,
-        "below_soft_target": true,
-        "policy": "manifest-soft-target-hard-ceiling"
-      },
-      "build_style": {
-        "control_commit_sha": "00351d45385118a47bc1bf87ab15fc9c90b08268",
-        "path": "templates/survey/jgaisurvey.sty",
-        "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
-      }
+    "reader_layout_revision": {
+      "source_version": "v0.3",
+      "layout_revision_path": "sources/SP-2024-H1/editorial/layout-revision-v0.3.json",
+      "layout_revision_sha256": "656858c9776cc6a1e9cf58ff040bb1d648ed5dc043359507254949dea43fdce8",
+      "reason": "Repair Publication Preview v0.2 after Human Review: replace generic Technical Notes with current source-specific fail-closed details, add explicit Half-year analysis layers, derive compact Detailed Chronology from selected Evidence despite the older Architecture lacking a chronology package, compact TOC, protect Technical Notes tails, restore reader-facing References identity, consolidate boilerplate, and normalize chronology metadata."
     }
   },
   "provenance_history": {
@@ -114,6 +96,39 @@
         "path": "surveys/special/2024-H1/source-manifest.json",
         "sha256": "583432b79396bbf3475e5f1f6678a9b5d9eef4389d8f55453f519dfb6f4e041d",
         "period_consistency": true
+      },
+      {
+        "path": "surveys/special/2024-H1/revisions/v0.2/source-manifest.json",
+        "sha256": "b039b2c8f53c29e67f7e7dd0560bdb794bcf8b7ebcc540bab23d6ca1bd84f6e4",
+        "source_version": "v0.2",
+        "expansion_basis": "selected Evidence cards only",
+        "typography_revision": "v0.4-reference-title-cleanup",
+        "layout_mode": "balanced-local-multicol-narrative-full-width-evidence",
+        "prebuild_layout": true,
+        "reader_facing_notes_language": "ja-reader-summary-v1",
+        "reader_facing_technical_notes": true,
+        "period_consistency": true
+      }
+    ],
+    "latex_build": [
+      {
+        "workflow_run_id": 31889049605,
+        "pdf_sha256": "f19d6a7dd50b9adec5633de6cade3a166e323130d31084f55b245850fd4e90cf",
+        "page_count": 43,
+        "source_version": "v0.2",
+        "validated_issue_source_path": "worktree/surveys/special/2024-H1/revisions/v0.2/source-manifest.json",
+        "validated_issue_source_sha256": "b039b2c8f53c29e67f7e7dd0560bdb794bcf8b7ebcc540bab23d6ca1bd84f6e4",
+        "page_budget": {
+          "soft_target": 64,
+          "hard_max": 96,
+          "below_soft_target": true,
+          "policy": "manifest-soft-target-hard-ceiling"
+        },
+        "build_style": {
+          "control_commit_sha": "00351d45385118a47bc1bf87ab15fc9c90b08268",
+          "path": "templates/survey/jgaisurvey.sty",
+          "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+        }
       }
     ]
   }
