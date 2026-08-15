@@ -143,7 +143,24 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     def compat_remove(main_text: str, technical_notes_path: str) -> str:
         if not str(technical_notes_path or "").strip():
             return main_text
-        return original_remove(main_text, technical_notes_path)
+        rel = Path(technical_notes_path).with_suffix("").as_posix()
+        needle = rf"\input{{{rel}}}"
+        if needle not in main_text:
+            raise ValueError(f"expected sparse Technical Notes input not found: {needle}")
+        # Current Half-year sources place a \medskip immediately before the synthesis note,
+        # while early H1 sources render the conclusion note directly after \end{multicols}.
+        # Preserve the ordinary strict remover whenever its exact shape is present; otherwise
+        # remove exactly one standalone direct input line and leave surrounding article content.
+        standard = r"\medskip" + "\n" + needle + "\n"
+        if standard in main_text:
+            return original_remove(main_text, technical_notes_path)
+        direct = needle + "\n"
+        if main_text.count(needle) != 1 or direct not in main_text:
+            raise ValueError(f"ambiguous sparse Technical Notes input placement: {needle}")
+        revised = main_text.replace(direct, "", 1)
+        if needle in revised:
+            raise ValueError(f"sparse Technical Notes input remains after removal: {needle}")
+        return revised
 
     structural.insert_half_year_analysis = compat._compat_insert_half_year_analysis
     structural.remove_article_notes_input = compat_remove
