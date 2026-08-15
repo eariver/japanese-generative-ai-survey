@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
-"""Limit Half-year Technical Note enrichment to cards that are actually reader-rendered.
+"""Limit Half-year Technical Note enrichment and rewrites to reader-rendered files.
 
 The selected Evidence set also contains chronology-only and other non-card roles. Earlier
-fail-closed enrichment walked every selected Evidence record and therefore required a
-reader-facing Technical Notes technical point even for items that never appear in the published
-Technical Notes surface. That is the wrong scope: provenance must remain strict for rendered
-cards, while chronology-only or retired note files should keep their Evidence identity without
+fail-closed enrichment walked every selected Evidence record and the lower repair chain rewrote
+every manifest Technical Notes file, even when that file was no longer included by the published
+``main.tex``. That is the wrong scope: provenance must remain strict for rendered cards, while
+chronology-only or retired note files should keep their Evidence/source identity without
 inventing a reader claim solely to satisfy regeneration.
 
-V28 preserves the V3 component/variant/property binding contract and changes only the enrichment
-scope. It derives rendered Technical Note files from the state-pinned ``main.tex`` input graph,
-then applies Screening-backed signal extraction / hash-bound overrides only to cards in those
-files. This matches Publication Preview preflight's rendered-file boundary.
+V28 preserves the V3 component/variant/property binding contract and changes only the reader
+surface scope. It derives rendered Technical Note files from the state-pinned ``main.tex`` input
+graph, applies Screening-backed signal extraction / hash-bound overrides only to cards in those
+files, and guards the downstream re-enrichment hook so retired note files are copied unchanged.
+This matches Publication Preview preflight's rendered-file boundary.
 """
 from __future__ import annotations
 
@@ -25,6 +26,8 @@ from scripts import revise_special_half_year_review_repairs_v13 as event
 from scripts import revise_special_half_year_review_repairs_v27 as base
 
 _INPUT_RE = re.compile(r"\\(?:input|include)\{([^}]+)\}")
+_ACTIVE_RENDERED_NOTE_PATHS: set[str] = set()
+_ORIGINAL_REENRICH_NOTE_FILE = event._reenrich_note_file
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -57,7 +60,9 @@ def _normalize_tex_path(value: str) -> str:
     return Path(text).as_posix() if text else ""
 
 
-def _rendered_technical_note_titles(repo_root: Path, manifest: dict[str, Any]) -> set[str]:
+def _state_pinned_rendered_note_context(
+    repo_root: Path, manifest: dict[str, Any]
+) -> tuple[Path, dict[str, Any], set[str]]:
     issue_id = str(manifest.get("issue_id") or "").strip()
     if not issue_id:
         raise ValueError("source manifest missing issue_id")
@@ -77,27 +82,63 @@ def _rendered_technical_note_titles(repo_root: Path, manifest: dict[str, Any]) -
     main_path = source_dir / main_rel
     if not main_path.is_file():
         raise ValueError(f"state-pinned main TeX missing while resolving rendered Technical Notes: {main_rel}")
-    rendered_paths = {
+    inputs = {
         _normalize_tex_path(match.group(1))
         for match in _INPUT_RE.finditer(main_path.read_text(encoding="utf-8"))
         if _normalize_tex_path(match.group(1))
     }
 
-    titles: set[str] = set()
+    rendered_paths: set[str] = set()
     for article in current_manifest.get("articles") or []:
         if not isinstance(article, dict) or article.get("technical_notes_reader_facing") is not True:
             continue
         rel = _normalize_tex_path(str(article.get("technical_notes_path") or ""))
-        if rel not in rendered_paths:
-            continue
+        if rel and rel in inputs:
+            rendered_paths.add(rel)
+    if not rendered_paths:
+        raise ValueError("state-pinned main TeX contains no rendered reader-facing Technical Notes files")
+    return source_dir, current_manifest, rendered_paths
+
+
+def _rendered_technical_note_paths(repo_root: Path, manifest: dict[str, Any]) -> set[str]:
+    return _state_pinned_rendered_note_context(repo_root, manifest)[2]
+
+
+def _rendered_technical_note_titles(repo_root: Path, manifest: dict[str, Any]) -> set[str]:
+    source_dir, _current_manifest, rendered_paths = _state_pinned_rendered_note_context(repo_root, manifest)
+    titles: set[str] = set()
+    for rel in sorted(rendered_paths):
         path = source_dir / rel
-        if not rel or not path.is_file():
+        if not path.is_file():
             raise ValueError(f"state-pinned rendered Technical Notes file missing: {rel}")
         for match in event.core.NOTE_RE.finditer(path.read_text(encoding="utf-8")):
             titles.add(_title_key(match.group(1)))
     if not titles:
-        raise ValueError("state-pinned main TeX contains no rendered reader-facing Technical Note cards")
+        raise ValueError("state-pinned rendered Technical Notes files contain no cards")
     return titles
+
+
+def _technical_note_rel(path: Path) -> str:
+    """Recover ``technical-notes/...`` identity from copied revision paths."""
+    normalized = path.as_posix()
+    marker = "/technical-notes/"
+    if marker in normalized:
+        return "technical-notes/" + normalized.split(marker, 1)[1]
+    if normalized.startswith("technical-notes/"):
+        return normalized
+    return path.name
+
+
+def _reenrich_rendered_note_file(
+    path: Path, evidence: dict[str, dict[str, Any]]
+) -> tuple[int, int, int]:
+    rel = _technical_note_rel(path)
+    if rel not in _ACTIVE_RENDERED_NOTE_PATHS:
+        # The immutable revision was copied from the current validated source. A non-rendered
+        # Technical Notes file is historical/supporting material only; preserving it byte-for-byte
+        # is safer than requiring or synthesizing new reader-facing technical points.
+        return 0, 0, 0
+    return _ORIGINAL_REENRICH_NOTE_FILE(path, evidence)
 
 
 def _merge_rendered_scope(repo_root: Path, manifest: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -193,14 +234,21 @@ def _merge_rendered_scope(repo_root: Path, manifest: dict[str, Any]) -> dict[str
 
 
 def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str) -> dict[str, Any]:
+    global _ACTIVE_RENDERED_NOTE_PATHS
     previous_merge = event._merge_event_bounded
+    previous_reenrich = event._reenrich_note_file
+    marker_manifest = {"issue_id": issue_id}
+    _ACTIVE_RENDERED_NOTE_PATHS = _rendered_technical_note_paths(repo_root, marker_manifest)
     event._merge_event_bounded = _merge_rendered_scope
+    event._reenrich_note_file = _reenrich_rendered_note_file
     try:
         result = base.build(repo_root, special_slug, issue_id, source_version)
     finally:
         event._merge_event_bounded = previous_merge
+        event._reenrich_note_file = previous_reenrich
+        _ACTIVE_RENDERED_NOTE_PATHS = set()
     if isinstance(result, dict):
-        result["technical_note_enrichment_scope"] = "STATE_PINNED_MAIN_TEX_RENDERED_CARDS_ONLY_V2"
+        result["technical_note_enrichment_scope"] = "STATE_PINNED_MAIN_TEX_RENDERED_CARDS_AND_REWRITES_ONLY_V3"
     return result
 
 

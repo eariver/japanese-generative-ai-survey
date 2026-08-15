@@ -4,7 +4,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from scripts import revise_special_half_year_review_repairs_v13 as event
 from scripts import revise_special_half_year_review_repairs_v28 as repair
@@ -68,14 +68,40 @@ class HalfYearRenderedNoteScopeV28Tests(unittest.TestCase):
         )
         return {"issue_id": issue_id, "articles": current_manifest["articles"]}
 
-    def test_rendered_titles_follow_main_tex_inputs_not_stale_reader_files(self) -> None:
+    def test_rendered_paths_and_titles_follow_main_tex_not_stale_reader_files(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             manifest = self._fixture(root)
             self.assertEqual(
+                repair._rendered_technical_note_paths(root, manifest),
+                {"technical-notes/10-notes.tex"},
+            )
+            self.assertEqual(
                 repair._rendered_technical_note_titles(root, manifest),
                 {"rendered model"},
             )
+
+    def test_retired_note_file_rewrite_is_noop_and_rendered_file_delegates(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            rendered = root / "out" / "technical-notes" / "10-notes.tex"
+            retired = root / "out" / "technical-notes" / "80-retired-notes.tex"
+            rendered.parent.mkdir(parents=True)
+            rendered.write_text("rendered", encoding="utf-8")
+            retired.write_text("retired", encoding="utf-8")
+
+            delegate = Mock(return_value=(3, 2, 1))
+            old_paths = set(repair._ACTIVE_RENDERED_NOTE_PATHS)
+            repair._ACTIVE_RENDERED_NOTE_PATHS = {"technical-notes/10-notes.tex"}
+            try:
+                with patch.object(repair, "_ORIGINAL_REENRICH_NOTE_FILE", delegate):
+                    self.assertEqual(repair._reenrich_rendered_note_file(retired, {}), (0, 0, 0))
+                    self.assertEqual(retired.read_text(encoding="utf-8"), "retired")
+                    delegate.assert_not_called()
+                    self.assertEqual(repair._reenrich_rendered_note_file(rendered, {}), (3, 2, 1))
+                    delegate.assert_called_once_with(rendered, {})
+            finally:
+                repair._ACTIVE_RENDERED_NOTE_PATHS = old_paths
 
     def test_chronology_only_selected_evidence_does_not_require_technical_note_detail(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
