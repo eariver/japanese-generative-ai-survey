@@ -166,12 +166,26 @@ jobs:
             push_work_branch
           done
 
-          # Commit the acceptance/derived files and pipeline-state transition last.
-          # Therefore a branch interrupted during chunk persistence remains at the
-          # pre-Screening lifecycle and cannot be consumed by downstream Evidence.
-          git add "sources/${SPECIAL_ID}/screening" "sources/${SPECIAL_ID}/pipeline-state.json"
+          # Large derived JSONL/package blobs can independently exceed the reliable
+          # size of the final Git transport. Persist them one at a time while the
+          # lifecycle is still DISCOVERY_COLLECTED. They are inert until acceptance
+          # and the state transition land together in the final commit.
+          for derived in screening-reviewed.jsonl screening-run-package.json verification-queue.jsonl screening-progress.json; do
+            path="${run_root}/${derived}"
+            test -f "$path"
+            git add -- "$path"
+            if git diff --cached --quiet; then
+              continue
+            fi
+            git commit -m "Persist Screening derived ${derived} for ${SPECIAL_ID}"
+            push_work_branch
+          done
+
+          # Acceptance and lifecycle transition are deliberately last. An interrupted
+          # persistence sequence therefore cannot be consumed by downstream Evidence.
+          git add -- "${run_root}/acceptance.json" "sources/${SPECIAL_ID}/pipeline-state.json"
           if git diff --cached --quiet; then
-            echo 'No final Screening change to commit.'
+            echo 'No final Screening acceptance/state change to commit.'
             exit 0
           fi
           git commit -m "Accept interactive screening for ${SPECIAL_ID}"
