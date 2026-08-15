@@ -80,7 +80,6 @@ jobs:
           set -euo pipefail
           python - "$SPECIAL_ID" <<'PY'
           import json, pathlib, shutil, sys
-
           issue = sys.argv[1]
           root = pathlib.Path('sources') / issue
           state = json.loads((root / 'pipeline-state.json').read_text(encoding='utf-8'))
@@ -136,19 +135,12 @@ jobs:
           push_work_branch() {
             local attempt
             for attempt in 1 2 3; do
-              if git push origin "HEAD:${WORK_BRANCH}"; then
-                return 0
-              fi
-              if [ "$attempt" -lt 3 ]; then
-                sleep $((attempt * 2))
-              fi
+              if git push origin "HEAD:${WORK_BRANCH}"; then return 0; fi
+              if [ "$attempt" -lt 3 ]; then sleep $((attempt * 2)); fi
             done
             return 1
           }
 
-          # Large half-year retrospectives can exceed 1,000 Screening batches. Persist
-          # immutable per-batch payloads first in bounded pushes, while keeping the
-          # acceptance manifest and lifecycle transition uncommitted until the end.
           mapfile -d '' payload_paths < <(
             find "${run_root}/results" "${run_root}/validation" -type f -print0 | sort -z
           )
@@ -158,31 +150,27 @@ jobs:
           for ((offset=0; offset<total; offset+=chunk_size)); do
             chunk=("${payload_paths[@]:offset:chunk_size}")
             git add -- "${chunk[@]}"
-            if git diff --cached --quiet; then
-              continue
-            fi
+            if git diff --cached --quiet; then continue; fi
             chunk_number=$((chunk_number + 1))
             git commit -m "Persist Screening payload chunk ${chunk_number} for ${SPECIAL_ID}"
             push_work_branch
           done
 
-          # Large derived JSONL/package blobs can independently exceed the reliable
-          # size of the final Git transport. Persist them one at a time while the
-          # lifecycle is still DISCOVERY_COLLECTED. They are inert until acceptance
-          # and the state transition land together in the final commit.
-          for derived in screening-reviewed.jsonl screening-run-package.json verification-queue.jsonl screening-progress.json; do
+          # screening-reviewed.jsonl is a reproducible convenience aggregate of all
+          # batch result files. Very large half-year issues can exceed GitHub's 100 MB
+          # single-file limit. The canonical acceptance, exact batch results, validation
+          # reports, verification queue, and progress/package metadata are sufficient to
+          # reproduce it; downstream Evidence consumes the verification queue, not this
+          # aggregate. Therefore do not persist the aggregate itself.
+          for derived in screening-run-package.json verification-queue.jsonl screening-progress.json; do
             path="${run_root}/${derived}"
             test -f "$path"
             git add -- "$path"
-            if git diff --cached --quiet; then
-              continue
-            fi
+            if git diff --cached --quiet; then continue; fi
             git commit -m "Persist Screening derived ${derived} for ${SPECIAL_ID}"
             push_work_branch
           done
 
-          # Acceptance and lifecycle transition are deliberately last. An interrupted
-          # persistence sequence therefore cannot be consumed by downstream Evidence.
           git add -- "${run_root}/acceptance.json" "sources/${SPECIAL_ID}/pipeline-state.json"
           if git diff --cached --quiet; then
             echo 'No final Screening acceptance/state change to commit.'
