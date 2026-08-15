@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "issue_id": "SP-2024-H1",
-  "architecture_version": "v0.1",
+  "architecture_version": "v0.2",
   "status": "PROPOSED",
   "basis": {
     "architecture_input_sha256": "f223194f692fc953e3f1bc5d7902a17669733edef8f26bd46eee66f2a6a2c941",
@@ -20,7 +20,8 @@
     "小型/on-device、MoE/SSM/低ビット/長文脈、serving/dataをモデル能力を成立させる設計制約として扱う。",
     "RAG/tool/agentと生成メディアを独立した能力面として整理し、preview・release・availabilityの境界を保存する。",
     "安全性、behavior specification、interpretabilityを能力向上の付録ではなく制御面の同時進化として扱う。",
-    "vendor/project/authorの性能主張は一次情報に帰属させ、retrospective hindsightと当時確定していた事実を分離する。"
+    "vendor/project/authorの性能主張は一次情報に帰属させ、retrospective hindsightと当時確定していた事実を分離する。",
+    "本文末の総括では各章を単純反復せず、2024-H1の構造変化を統合し、H2へ持ち越された論点を当時の境界を保って示す。"
   ],
   "page_budget": {
     "target": 64,
@@ -43,7 +44,7 @@
       "package_type": "FRONTMATTER",
       "primary_evidence_task_ids": [],
       "supporting_evidence_task_ids": [],
-      "page_target": 4,
+      "page_target": 3,
       "editorial_angle": "半年間の時系列、用語、open-weight/open-training、preview/release/availabilityの読み分けを先に固定する。",
       "must_cover": [
         "coverage window and retrospective-as-of boundary",
@@ -231,7 +232,7 @@
         "evidence:SP-2024-H1:series-claude3-lineage-30b9150888",
         "evidence:SP-2024-H1:series-gemini15-lineage-69bf2d8acb"
       ],
-      "page_target": 6,
+      "page_target": 5,
       "editorial_angle": "長文脈が新しい攻撃面を作る一方、behavior specificationとmechanistic interpretabilityが制御可能性を別レイヤで扱い始めたことを示す。",
       "must_cover": [
         "behavior policy versus model internals",
@@ -257,7 +258,7 @@
         "evidence:SP-2024-H1:item-official-index-supplemental-meta-ll-6853b7b5a9",
         "evidence:SP-2024-H1:series-olmo-lineage-beb6f920a3"
       ],
-      "page_target": 5,
+      "page_target": 4,
       "editorial_angle": "モデル本体だけでは説明できないH1の進歩を、推論パッケージングとpretraining-data engineeringの両端から補う。",
       "must_cover": [
         "deployment packaging versus model architecture",
@@ -269,6 +270,34 @@
       ],
       "late_breaking": false,
       "drafting_order": 9
+    },
+    {
+      "package_id": "conclusion",
+      "title": "総括――2024 H1に何が変わったのか",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H1:item-official-feed-2d3a533e91db8cea0f48-a91052b9ff",
+        "evidence:SP-2024-H1:item-official-index-supplemental-meta-ll-6853b7b5a9",
+        "evidence:SP-2024-H1:item-official-index-supplemental-apple-f-e433f4ee0a",
+        "evidence:SP-2024-H1:item-official-index-supplemental-ai21-ja-97a4f32859",
+        "evidence:SP-2024-H1:series-command-r-lineage-c82e93228a",
+        "evidence:SP-2024-H1:item-official-feed-0fe3432110402a0f01ed-dc6498b5a9",
+        "evidence:SP-2024-H1:series-anthropic-interpretability-ccc4f27ac2",
+        "evidence:SP-2024-H1:item-official-index-supplemental-nvidia-2ded866237"
+      ],
+      "page_target": 3,
+      "editorial_angle": "各章の要約を並べ直すのではなく、モデル単体の性能競争から、インタラクション・公開形態・配置・アーキテクチャ・行動・メディア・制御・運用を含むシステム競争へ移った半年として論点を収束させる。H2への接続はretrospective hindsightで過去を書き換えず、2024-H1末時点で残った問いとして示す。",
+      "must_cover": [
+        "synthesize structural shift from model race to system stack",
+        "connect multimodality/open/edge/action/media/control/serving without repeating chapter summaries",
+        "separate 2024-H1 established facts from retrospective hindsight and identify H2 transition questions"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 10
     },
     {
       "package_id": "references",
@@ -285,7 +314,7 @@
       ],
       "boundaries": [],
       "late_breaking": false,
-      "drafting_order": 10
+      "drafting_order": 11
     }
   ],
   "this_week_summary_written_last": true
