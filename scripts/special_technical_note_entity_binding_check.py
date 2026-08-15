@@ -13,7 +13,6 @@ ENTITY_BINDING_CONTRACT = "SUBJECT_VERSION_AWARE_HIGH_RISK_SIGNALS_V2"
 NOTE_RE = re.compile(r"\\begin\{technicalnote\}\{(.+?)\}\{.*?\\end\{technicalnote\}", re.DOTALL)
 FACT_RE = re.compile(r"^\\item \\textbf\{一次情報で確認できる事実\}: (.+)$", re.MULTILINE)
 INPUT_RE = re.compile(r"\\(?:input|include)\{([^}]+)\}")
-TOKEN_EDGE_CLASS = r"A-Za-z0-9_.-"
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -41,6 +40,23 @@ def _title_key(value: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+def _contains_rendered_signal(fact: str, signal: str) -> bool:
+    """Match one rendered signal without colliding with longer alphanumeric tokens.
+
+    Reader-facing facts are prose, whereas entity-binding audit values include compact model
+    scales such as ``1B parameter scale``. A plain substring test would incorrectly find that
+    value inside ``11B parameter scale`` (and similarly 3B/13B or 7B/70B). ASCII alphanumeric
+    boundaries preserve exact rendered-signal semantics while still allowing normal Japanese
+    punctuation and separators around the signal.
+    """
+    if not signal:
+        return False
+    return re.search(
+        rf"(?<![A-Za-z0-9]){re.escape(signal)}(?![A-Za-z0-9])",
+        fact,
+    ) is not None
+
+
 def _normalize_tex_path(value: str) -> str:
     text = str(value or "").strip().replace("\\", "/")
     while text.startswith("./"):
@@ -51,7 +67,7 @@ def _normalize_tex_path(value: str) -> str:
 
 
 def _included_tex_paths(manifest: dict[str, Any], source_dir: Path, errors: list[str]) -> set[str]:
-    """Return TeX files that are actually rendered by the state-pinned main document."""
+    """Return top-level TeX files actually rendered by the state-pinned main document."""
     main_info = manifest.get("main_tex") or {}
     main_rel = _normalize_tex_path(str(main_info.get("path") or "main.tex"))
     main_path = source_dir / main_rel
@@ -67,17 +83,6 @@ def _included_tex_paths(manifest: dict[str, Any], source_dir: Path, errors: list
         for match in INPUT_RE.finditer(main_path.read_text(encoding="utf-8"))
         if _normalize_tex_path(match.group(1))
     }
-
-
-def _signal_occurs(text: str, signal: str) -> bool:
-    """Match a rejected signal as a token sequence, not as a numeric/model substring."""
-    value = str(signal or "").strip()
-    if not value:
-        return False
-    pattern = re.compile(
-        rf"(?<![{TOKEN_EDGE_CLASS}]){re.escape(value)}(?![{TOKEN_EDGE_CLASS}])"
-    )
-    return pattern.search(text) is not None
 
 
 def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[str]:
@@ -130,15 +135,14 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
             f"audited={len(artifacts)} visible={visible} overrides={overrides}"
         )
 
-    # The manifest can retain provenance-only Technical Note files for packages whose
-    # cards are deliberately omitted from the publication (for example synthesis and
-    # compact chronology packages). Entity correctness must be checked against the
-    # files actually rendered by main.tex, not every historical/provenance file.
+    # A Half-year manifest can retain Technical Note files solely for provenance after a
+    # package has been converted to compact chronology/synthesis reader-facing output.
+    # Validate only Technical Note files actually included by the state-pinned main.tex.
     included_paths = _included_tex_paths(manifest, source_dir, errors)
     if errors and not included_paths:
         return errors
 
-    cards: dict[str, str] = {}
+    cards: dict[str, list[str]] = {}
     for article in manifest.get("articles") or []:
         if not isinstance(article, dict) or article.get("technical_notes_reader_facing") is not True:
             continue
@@ -155,40 +159,54 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
             continue
         for match in NOTE_RE.finditer(path.read_text(encoding="utf-8")):
             key = _title_key(match.group(1))
-            if key in cards:
-                errors.append(f"duplicate reader-facing Technical Note title during entity check: {key}")
-            cards[key] = match.group(0)
+            card = match.group(0)
+            existing = cards.setdefault(key, [])
+            if existing:
+                current_fact = FACT_RE.search(card)
+                current_text = current_fact.group(1) if current_fact is not None else None
+                prior_facts = [FACT_RE.search(item) for item in existing]
+                prior_texts = [item.group(1) if item is not None else None for item in prior_facts]
+                if any(prior != current_text for prior in prior_texts):
+                    errors.append(
+                        f"conflicting reader-facing Technical Note fact for duplicate title during entity check: {key}"
+                    )
+            existing.append(card)
 
     for item in artifacts:
         title = _title_key(str(item.get("title") or ""))
         if not title:
             errors.append("entity-binding audit contains an empty title")
             continue
-        card = cards.get(title)
-        if card is None:
-            # Suppressed/non-reader-facing Evidence can still be audited by the generator.
+        card_group = cards.get(title)
+        if not card_group:
+            # Suppressed/non-rendered Evidence can still be audited by the generator.
             continue
-        fact_match = FACT_RE.search(card)
-        if fact_match is None:
-            errors.append(f"Technical Note primary-fact line missing during entity check: {title}")
-            continue
-        fact = fact_match.group(1)
-        accepted = {
-            str(signal).strip()
-            for signal in (item.get("accepted_entity_bound_signals") or [])
-            if str(signal).strip()
-        }
-        for signal_value in item.get("rejected_entity_bound_signals") or []:
-            signal = str(signal_value).strip()
-            # A signal can occur both in a target-bound sentence and elsewhere in a
-            # comparison/history context. The audit deliberately records both. Only
-            # rejected-only signals are forbidden from the rendered target card.
-            if not signal or signal in accepted:
+        facts: list[str] = []
+        for card in card_group:
+            fact_match = FACT_RE.search(card)
+            if fact_match is None:
+                errors.append(f"Technical Note primary-fact line missing during entity check: {title}")
                 continue
-            if _signal_occurs(fact, signal):
-                errors.append(
-                    f"Technical Note contains a source signal rejected by subject binding: {title}: {signal}"
-                )
+            fact = fact_match.group(1)
+            if fact not in facts:
+                facts.append(fact)
+
+        accepted = {str(signal) for signal in (item.get("accepted_entity_bound_signals") or []) if str(signal)}
+        # The audit is occurrence-aware while the reader-facing card is value-only. A value may
+        # therefore appear in both lists when one occurrence is correctly bound to the selected
+        # artifact and another occurrence belongs to a comparator. Any accepted occurrence is
+        # sufficient authority to render that value; only rejected-only signals are forbidden.
+        rejected_only = [
+            str(signal)
+            for signal in (item.get("rejected_entity_bound_signals") or [])
+            if str(signal) and str(signal) not in accepted
+        ]
+        for fact in facts:
+            for signal in rejected_only:
+                if _contains_rendered_signal(fact, signal):
+                    errors.append(
+                        f"Technical Note contains a source signal rejected by subject binding: {title}: {signal}"
+                    )
 
     rejected_actual = sum(len(item.get("rejected_entity_bound_signals") or []) for item in artifacts)
     rejected_manifest = int(reader.get("entity_binding_rejected_signal_count") or 0)
