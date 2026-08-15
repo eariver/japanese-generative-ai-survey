@@ -35,7 +35,7 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
 
         return h1_build(repo_root, special_slug, issue_id, source_version)
     if changes.get("half_year_review_repairs_v3") is True:
-        from scripts.revise_special_half_year_review_repairs_v7 import build as half_year_v3_build
+        from scripts.revise_special_half_year_review_repairs_v8 import build as half_year_v3_build
 
         return half_year_v3_build(repo_root, special_slug, issue_id, source_version)
     if changes.get("half_year_review_repairs") is True:
