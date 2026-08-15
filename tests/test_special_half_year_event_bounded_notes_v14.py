@@ -4,12 +4,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts import revise_special_half_year_review_repairs_v14 as repair
+from scripts import revise_special_half_year_review_repairs_v15 as repair
 
 
 class HalfYearEventBoundedNotesV14Tests(unittest.TestCase):
     def _signals(self, text: str, date: str, title: str) -> str:
-        event = repair.base
+        event = repair.event
         impl = repair.impl
         previous_patterns = impl._SIGNAL_PATTERNS
         previous_dynamic = impl._DYNAMIC_PATTERNS
@@ -98,7 +98,7 @@ class HalfYearEventBoundedNotesV14Tests(unittest.TestCase):
             "July 16, 2025: released 13B distilled FP8 models. "
             "November 21, 2024: Initial release v0.9.0. Initial release of LTX-Video. "
             "Support text-to-video and image-to-video generation. "
-            "Models table now lists 13B FP8 variants."
+            "Current model table now lists 13B FP8 variants."
         )
         window = repair._safe_event_window(
             summary,
@@ -107,6 +107,7 @@ class HalfYearEventBoundedNotesV14Tests(unittest.TestCase):
         )
         self.assertIn("text-to-video", window)
         self.assertNotIn("July 16, 2025", window)
+        self.assertNotIn("Current model table", window)
         rendered = self._signals(summary, "2024-11-21", "LTX-Video")
         self.assertIn("text-to-video", rendered)
         self.assertIn("image-to-video", rendered)
