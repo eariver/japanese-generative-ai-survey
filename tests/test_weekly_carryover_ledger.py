@@ -2,6 +2,9 @@ import hashlib
 import json
 from pathlib import Path
 
+import pytest
+
+from scripts.initialize_weekly_carryover_ledger import initialize
 from scripts.validate_weekly_carryover_ledger import validate
 
 
@@ -111,3 +114,51 @@ def test_structured_selection_allows_resolved_entry(tmp_path: Path) -> None:
     assert report["passed"]
     assert report["expected_count"] == 1
     assert report["pending_count"] == 0
+
+
+def test_initializer_creates_pending_entries_from_approved_selection(tmp_path: Path) -> None:
+    previous = tmp_path / "sources/2026-W33/selection/candidate-selection-v0.1.json"
+    write_json(previous, {
+        "schema_version": "1.0",
+        "issue_id": "2026-W33",
+        "status": "APPROVED",
+        "assignments": [
+            {"evidence_task_id": "task-z", "title": "Z", "role": "LATE_BREAKING"},
+            {"evidence_task_id": "task-a", "title": "A", "role": "HOLD_OUT"},
+            {"evidence_task_id": "task-core", "title": "Core", "role": "FEATURE_CORE"},
+        ],
+    })
+    ledger = tmp_path / "sources/2026-W34/carryover/carryover-ledger-v0.1.json"
+    result = initialize(tmp_path, "2026-W34", ledger)
+    assert result["status"] == "INITIALIZED"
+    doc = json.loads(ledger.read_text(encoding="utf-8"))
+    assert [entry["prior_evidence_task_id"] for entry in doc["entries"]] == ["task-a", "task-z"]
+    assert all(entry["status"] == "PENDING_RECHECK" for entry in doc["entries"])
+    assert validate(tmp_path, "2026-W34", ledger, "screening")["passed"]
+    assert not validate(tmp_path, "2026-W34", ledger, "selection")["passed"]
+
+
+def test_initializer_preserves_existing_legacy_ledger(tmp_path: Path) -> None:
+    ledger = tmp_path / "sources/2026-W33/carryover/carryover-ledger-v0.1.json"
+    write_json(ledger, {
+        "schema_version": "1.0",
+        "issue_id": "2026-W33",
+        "source_issue_id": "2026-W32",
+        "entries": [],
+    })
+    result = initialize(tmp_path, "2026-W33", ledger)
+    assert result["status"] == "EXISTING_LEDGER_PRESERVED"
+    assert result["entry_count"] == 0
+
+
+def test_initializer_refuses_unapproved_previous_selection(tmp_path: Path) -> None:
+    previous = tmp_path / "sources/2026-W33/selection/candidate-selection-v0.1.json"
+    write_json(previous, {
+        "schema_version": "1.0",
+        "issue_id": "2026-W33",
+        "status": "PENDING_APPROVAL",
+        "assignments": [],
+    })
+    ledger = tmp_path / "sources/2026-W34/carryover/carryover-ledger-v0.1.json"
+    with pytest.raises(ValueError, match="must be APPROVED"):
+        initialize(tmp_path, "2026-W34", ledger)
