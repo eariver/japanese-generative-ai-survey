@@ -32,6 +32,10 @@
       "source_urls": ["https://allenai.org/blog/olmoe-an-open-small-and-state-of-the-art-mixture-of-experts-model-c258432d0514"],
       "technical_points": ["Ai2の受理済み2024-09-04一次資料では、OLMoEをOLMo family初のsparse Mixture-of-Experts modelとして公開し、1B active / 7B total parameters、5T training tokensと記載している。releaseにはdata、code、evaluations、logs、intermediate training checkpointsを含み、pretrained modelについて5000 stepsごとの244 checkpointsなども公開した。training speed、Pareto frontier、benchmark等の性能表現はAi2による報告として扱い、独立再現結果へ昇格させない。"]
     },
+    "Hunyuan-Large": {
+      "source_urls": ["https://github.com/Tencent-Hunyuan/Tencent-Hunyuan-Large"],
+      "technical_points": ["Tencent Hunyuanの受理済み2024-11-05一次資料では、Hunyuan-Large（Hunyuan-MoE-A52B）をTransformer-based MoEとして公開し、389B total / 52B active parametersと記載している。pretrained modelは256K、Instruct modelは128Kのtext sequenceをサポートし、GQAとCross-Layer AttentionによるKV-cache圧縮、FP8版、vLLM backend、training scriptsとmodel implementationsを公開範囲として示す。throughput、memory削減、benchmark等の性能値はTencent Hunyuanの報告として扱い、比較対象モデルの数値をHunyuan-Large自身の仕様へ昇格させない。"]
+    },
     "Llama 3.3 70B Instruct": {
       "source_urls": ["https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/MODEL_CARD.md"],
       "technical_points": ["Metaの受理済みmodel cardではLlama 3.3を70Bのmultilingual text-in/text-out pretrained / instruction-tuned modelとして記載し、70B Instructのrelease dateを2024-12-06、context lengthを128K、architectureをoptimized auto-regressive transformer、attentionをGQAとしている。instruction-tuned版はSFTとRLHFを用い、Llama 3.3 Community Licenseの対象である。benchmark表に併記されたLlama 3.1 8B/70B/405Bの値はLlama 3.3自身の仕様へ昇格させない。"]
