@@ -3,8 +3,8 @@
 
 V25 intentionally requires a selected-artifact alias in the same sentence as a high-risk
 signal. This layer fixes detector edge cases: candidate signal vocabulary (for example
-``Mamba`` or ``SSM-Transformer``) and tokens that are constituents of the selected artifact's
-version-aware aliases must not be counted as competing entities. Comparison-model/version
+``Mamba`` or ``SSM-Transformer``), selected-artifact alias tokens, and decimal version points
+must not manufacture competing subjects or false sentence boundaries. Comparison-model/version
 mentions remain stronger owners of nearby numeric signals.
 """
 from __future__ import annotations
@@ -18,21 +18,20 @@ from scripts import revise_special_half_year_review_repairs_v24 as v24
 
 _ENTITY_BINDING_CONTRACT = base._ENTITY_BINDING_CONTRACT
 _SINGLE_TOKEN_RE = re.compile(r"\b([A-Z][A-Za-z0-9._+-]*)\b")
+# A decimal point in a model version such as Jamba 1.5 is not a sentence boundary. Terminal
+# periods still split because they are not followed by another digit.
+_SENTENCE_BOUNDARY_RE = re.compile(r"[!?;\n]|\.(?!\d)")
 _GENERIC_MODEL_WORDS = set(base._GENERIC_MODEL_WORDS) | {
     "community", "license", "parameters", "research", "score", "quality", "release",
     "today", "built", "effective", "novel", "improved",
 }
-# Architecture/training/quantization/license vocabulary is a predicate about a subject, not a
-# competing subject by itself. Excluding the whole protected vocabulary prevents sibling signals
-# such as ``SSM-Transformer`` and ``Mamba`` from mutually disqualifying each other while the
-# version-aware alias and foreign-model distance checks still decide ownership.
 _NON_SUBJECT_SIGNAL_KEYS = {
     base._normal(signal) for signal in v24._ENTITY_BOUND_STATIC_SIGNALS
 }
 
 
 def _alias_constituent_keys(aliases: list[str]) -> set[str]:
-    """Return capitalised/textual tokens that belong to the selected artifact identity."""
+    """Return textual tokens that belong to the selected artifact identity."""
     out: set[str] = set()
     for alias in aliases:
         for token in re.findall(r"[A-Za-z][A-Za-z0-9._+-]*", alias):
@@ -40,6 +39,15 @@ def _alias_constituent_keys(aliases: list[str]) -> set[str]:
             if key:
                 out.add(key)
     return out
+
+
+def _sentence_span(text: str, pos: int) -> tuple[int, int]:
+    start = 0
+    for match in _SENTENCE_BOUNDARY_RE.finditer(text, 0, pos):
+        start = match.end()
+    end_match = _SENTENCE_BOUNDARY_RE.search(text, pos)
+    end = end_match.start() if end_match else len(text)
+    return start, end
 
 
 def _foreign_mentions(sentence: str, aliases: list[str], rendered: str) -> list[tuple[int, int, str]]:
@@ -63,8 +71,6 @@ def _foreign_mentions(sentence: str, aliases: list[str], rendered: str) -> list[
             has_identity_cue = any(ch.isdigit() for ch in mention) or any(ch in mention for ch in ".+-")
             if not has_identity_cue:
                 if len(tokens) > 1:
-                    # Multi-word capitalised prose is ambiguous; constituent tokens are checked
-                    # separately by _SINGLE_TOKEN_RE.
                     continue
                 if first in _GENERIC_MODEL_WORDS:
                     continue
@@ -80,7 +86,7 @@ def _signal_is_target_bound(window: str, start: int, end: int, title: str, rende
     aliases = base._subject_aliases(title)
     if not aliases:
         return False
-    sent_start, sent_end = base._sentence_span(window, start)
+    sent_start, sent_end = _sentence_span(window, start)
     sentence = window[sent_start:sent_end]
     local_start = start - sent_start
     local_end = end - sent_start
@@ -88,13 +94,11 @@ def _signal_is_target_bound(window: str, start: int, end: int, title: str, rende
     if not target_spans:
         return False
 
-    # Category language is not a model parameter specification.
     if rendered.endswith("B parameter scale"):
         prefix = sentence[max(0, local_start - 16):local_start].lower()
         if re.search(r"(?:sub-|under\s+|below\s+|less\s+than\s+)$", prefix):
             return False
 
-    # Deployment-capacity values are not the advertised context-window specification.
     if rendered.endswith("K context") or rendered.endswith("M context"):
         vicinity = sentence[max(0, local_start - 120):min(len(sentence), local_end + 120)].lower()
         if re.search(r"single\s+(?:gpu|node)", vicinity):
@@ -132,9 +136,6 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     old_signal = base._signal_is_target_bound
     base._signal_is_target_bound = _signal_is_target_bound
     try:
-        # V25's build installs its own entity-aware extractor into V24. That extractor resolves
-        # _signal_is_target_bound dynamically from the V25 module, so replacing only this
-        # predicate is sufficient and avoids recursive wrapper capture.
         return base.build(repo_root, special_slug, issue_id, source_version)
     finally:
         base._signal_is_target_bound = old_signal
