@@ -53,10 +53,14 @@ class HalfYearEntityBindingV27Tests(unittest.TestCase):
             audit_base._AUDIT_ROWS[-1]["rejected_entity_bound_signals"],
         )
 
-    def test_component_owned_rag_remains_valid_for_component_card(self) -> None:
+    def test_ambiguous_component_property_stays_fail_closed_for_explicit_override(self) -> None:
         summary = "Llama Stack Distributions provide Retrieval-Augmented Generation (RAG) deployment APIs."
         signals = self._signals(summary, "Llama Stack")
-        self.assertIn("Retrieval-Augmented Generation (RAG)", signals)
+        self.assertNotIn("Retrieval-Augmented Generation (RAG)", signals)
+        self.assertIn(
+            "Retrieval-Augmented Generation (RAG)",
+            audit_base._AUDIT_ROWS[-1]["rejected_entity_bound_signals"],
+        )
 
     def test_unqualified_single_model_license_remains_eligible(self) -> None:
         summary = "Mistral Large 2 is released under the Mistral Research License with a 128K context window."
