@@ -45,6 +45,13 @@ _SCOPE_SENSITIVE_STATIC_SIGNALS = _LICENSE_SIGNALS | _COMPONENT_SCOPED_SIGNALS |
     "open weights",
 }
 
+# Only well-established identity abbreviations belong here. These are aliases of the selected
+# artifact, not generic capability acronyms. Adding them lets a component own its own signals
+# without weakening the closer-foreign-subject checks used for other models/components.
+_KNOWN_IDENTITY_ALIASES: dict[str, tuple[str, ...]] = {
+    "model context protocol": ("MCP",),
+}
+
 # Adjacent implementation surfaces are real subjects even without a version number. V26
 # deliberately ignored most two-word capitalised spans to avoid prose false positives; V27
 # allows only explicit engineering-component nouns through that boundary.
@@ -61,6 +68,17 @@ _OTHER_LICENSE_RE = re.compile(
     r"\b(?:Qwen\s+Research|Qwen\s+License|Research\s+License|Community\s+License)\b",
     re.IGNORECASE,
 )
+
+
+def _subject_aliases(title: str) -> list[str]:
+    aliases = list(v25._subject_aliases(title))
+    key = v25._normal(title)
+    aliases.extend(_KNOWN_IDENTITY_ALIASES.get(key, ()))
+    out: list[str] = []
+    for alias in aliases:
+        if alias and v25._normal(alias) not in {v25._normal(item) for item in out}:
+            out.append(alias)
+    return sorted(out, key=len, reverse=True)
 
 
 def _foreign_mentions(sentence: str, aliases: list[str], rendered: str) -> list[tuple[int, int, str]]:
@@ -112,7 +130,7 @@ def _license_scope_is_safe(window: str, sentence: str, rendered: str) -> bool:
 
 
 def _signal_is_target_bound(window: str, start: int, end: int, title: str, rendered: str) -> bool:
-    aliases = v25._subject_aliases(title)
+    aliases = _subject_aliases(title)
     if not aliases:
         return False
     sent_start, sent_end = v26._sentence_span(window, start)
@@ -157,7 +175,7 @@ def _signal_is_target_bound(window: str, start: int, end: int, title: str, rende
 
 def _entity_aware_technical_signals(summary: str, events: list[tuple[str, str]], title: str = "") -> list[str]:
     window = event_layer._safe_event_window(summary, events, title)
-    aliases = v25._subject_aliases(title)
+    aliases = _subject_aliases(title)
     anchor = aliases[0] if aliases else v24._artifact_anchor(title)
     if not window:
         v24._AUDIT_ROWS.append({

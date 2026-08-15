@@ -62,6 +62,24 @@ class HalfYearEntityBindingV27Tests(unittest.TestCase):
             audit_base._AUDIT_ROWS[-1]["rejected_entity_bound_signals"],
         )
 
+    def test_standard_component_acronym_can_own_its_own_scoped_signals(self) -> None:
+        summary = (
+            "Model Context Protocol (MCP) connects AI assistants to systems through an open protocol. "
+            "MCP client/server implementations and SDK support are provided for the protocol."
+        )
+        signals = self._signals(summary, "Model Context Protocol")
+        self.assertIn("MCP client/server", signals)
+        self.assertIn("SDK", signals)
+
+    def test_mcp_signal_is_not_absorbed_by_unrelated_model(self) -> None:
+        summary = (
+            "Example Model integrates with Model Context Protocol. MCP client/server implementations "
+            "and SDK support belong to MCP."
+        )
+        signals = self._signals(summary, "Example Model")
+        self.assertNotIn("MCP client/server", signals)
+        self.assertNotIn("SDK", signals)
+
     def test_unqualified_single_model_license_remains_eligible(self) -> None:
         summary = "Mistral Large 2 is released under the Mistral Research License with a 128K context window."
         signals = self._signals(summary, "Mistral Large 2")
