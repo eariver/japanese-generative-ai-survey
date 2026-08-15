@@ -39,6 +39,23 @@ def _title_key(value: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+def _contains_rendered_signal(fact: str, signal: str) -> bool:
+    """Match one rendered signal without colliding with longer alphanumeric tokens.
+
+    Reader-facing facts are prose, whereas entity-binding audit values include compact model
+    scales such as ``1B parameter scale``. A plain substring test would incorrectly find that
+    value inside ``11B parameter scale`` (and similarly 3B/13B or 7B/70B). ASCII alphanumeric
+    boundaries preserve exact rendered-signal semantics while still allowing normal Japanese
+    punctuation and separators around the signal.
+    """
+    if not signal:
+        return False
+    return re.search(
+        rf"(?<![A-Za-z0-9]){re.escape(signal)}(?![A-Za-z0-9])",
+        fact,
+    ) is not None
+
+
 def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[str]:
     """Return fail-closed pre-release findings for Half-year source-specific notes."""
     errors: list[str] = []
@@ -148,7 +165,7 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
         ]
         for fact in facts:
             for signal in rejected_only:
-                if signal in fact:
+                if _contains_rendered_signal(fact, signal):
                     errors.append(
                         f"Technical Note contains a source signal rejected by subject binding: {title}: {signal}"
                     )
