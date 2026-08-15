@@ -6,6 +6,7 @@ from scripts.revise_special_dense_theme_table import densify_theme_tables
 
 
 def _theme(rows: int, size: str = r"\footnotesize") -> str:
+    row_end = chr(92) * 2
     lines = [
         r"\sectionkicker{Source-backed technical notes}",
         r"\subsection*{Theme at a glance}",
@@ -14,10 +15,13 @@ def _theme(rows: int, size: str = r"\footnotesize") -> str:
         size,
         r"\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}",
         r"\toprule",
-        r"資料 & 位置づけ & 種別 & 時系列 \",
+        "資料 & 位置づけ & 種別 & 時系列 " + row_end,
         r"\midrule",
     ]
-    lines.extend(f"Artifact {index} & 主要資料 & モデル & 2024-10-{index:02d} \\\\" for index in range(1, rows + 1))
+    lines.extend(
+        f"Artifact {index} & 主要資料 & モデル & 2024-10-{index:02d} {row_end}"
+        for index in range(1, rows + 1)
+    )
     lines.extend([r"\bottomrule", r"\end{tabularx}", r"\end{center}", r"\normalsize", ""])
     return "\n".join(lines)
 
