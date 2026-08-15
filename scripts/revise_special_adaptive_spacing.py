@@ -28,23 +28,18 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     changes = marker.get("layout_changes") or {}
     if changes.get("prebuild_visual_review_repairs") is True:
         from scripts.revise_special_prebuild_visual_review_repairs import build as prebuild_repair
-
         return prebuild_repair(repo_root, special_slug, issue_id, source_version)
     if changes.get("h1_publication_preview_repairs") is True:
         from scripts.revise_special_h1_publication_preview_repairs import build as h1_build
-
         return h1_build(repo_root, special_slug, issue_id, source_version)
     if changes.get("half_year_review_repairs_v3") is True:
-        from scripts.revise_special_half_year_review_repairs_v21 import build as half_year_v3_build
-
+        from scripts.revise_special_half_year_review_repairs_v22 import build as half_year_v3_build
         return half_year_v3_build(repo_root, special_slug, issue_id, source_version)
     if changes.get("half_year_review_repairs") is True:
         from scripts.revise_special_half_year_review_repairs_v2 import build as half_year_build
-
         return half_year_build(repo_root, special_slug, issue_id, source_version)
     if changes.get("preserve_current_layout_visual_review_repairs") is True:
         from scripts.revise_special_preserve_preview_repairs_retrospective import build as preserve_build
-
         return preserve_build(repo_root, special_slug, issue_id, source_version)
     return core.build(repo_root, special_slug, issue_id, source_version)
 
