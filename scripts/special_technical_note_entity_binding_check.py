@@ -89,7 +89,7 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
             f"audited={len(artifacts)} visible={visible} overrides={overrides}"
         )
 
-    cards: dict[str, str] = {}
+    cards: dict[str, list[str]] = {}
     for article in manifest.get("articles") or []:
         if not isinstance(article, dict) or article.get("technical_notes_reader_facing") is not True:
             continue
@@ -104,30 +104,54 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
             continue
         for match in NOTE_RE.finditer(path.read_text(encoding="utf-8")):
             key = _title_key(match.group(1))
-            if key in cards:
-                errors.append(f"duplicate reader-facing Technical Note title during entity check: {key}")
-            cards[key] = match.group(0)
+            card = match.group(0)
+            existing = cards.setdefault(key, [])
+            if existing:
+                current_fact = FACT_RE.search(card)
+                current_text = current_fact.group(1) if current_fact is not None else None
+                prior_facts = [FACT_RE.search(item) for item in existing]
+                prior_texts = [item.group(1) if item is not None else None for item in prior_facts]
+                if any(prior != current_text for prior in prior_texts):
+                    errors.append(
+                        f"conflicting reader-facing Technical Note fact for duplicate title during entity check: {key}"
+                    )
+            existing.append(card)
 
     for item in artifacts:
         title = _title_key(str(item.get("title") or ""))
         if not title:
             errors.append("entity-binding audit contains an empty title")
             continue
-        card = cards.get(title)
-        if card is None:
+        card_group = cards.get(title)
+        if not card_group:
             # Suppressed/non-reader-facing Evidence can still be audited by the generator.
             continue
-        fact_match = FACT_RE.search(card)
-        if fact_match is None:
-            errors.append(f"Technical Note primary-fact line missing during entity check: {title}")
-            continue
-        fact = fact_match.group(1)
-        for signal in item.get("rejected_entity_bound_signals") or []:
-            signal = str(signal)
-            if signal and signal in fact:
-                errors.append(
-                    f"Technical Note contains a source signal rejected by subject binding: {title}: {signal}"
-                )
+        facts: list[str] = []
+        for card in card_group:
+            fact_match = FACT_RE.search(card)
+            if fact_match is None:
+                errors.append(f"Technical Note primary-fact line missing during entity check: {title}")
+                continue
+            fact = fact_match.group(1)
+            if fact not in facts:
+                facts.append(fact)
+
+        accepted = {str(signal) for signal in (item.get("accepted_entity_bound_signals") or []) if str(signal)}
+        # The audit is occurrence-aware while the reader-facing card is value-only. A value may
+        # therefore appear in both lists when one occurrence is correctly bound to the selected
+        # artifact and another occurrence belongs to a comparator. Any accepted occurrence is
+        # sufficient authority to render that value; only rejected-only signals are forbidden.
+        rejected_only = [
+            str(signal)
+            for signal in (item.get("rejected_entity_bound_signals") or [])
+            if str(signal) and str(signal) not in accepted
+        ]
+        for fact in facts:
+            for signal in rejected_only:
+                if signal in fact:
+                    errors.append(
+                        f"Technical Note contains a source signal rejected by subject binding: {title}: {signal}"
+                    )
 
     rejected_actual = sum(len(item.get("rejected_entity_bound_signals") or []) for item in artifacts)
     rejected_manifest = int(reader.get("entity_binding_rejected_signal_count") or 0)
