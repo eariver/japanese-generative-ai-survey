@@ -141,7 +141,7 @@ def validate_package_files(package_root: Path, issue_id: str) -> tuple[dict[str,
             raise ValueError("screening package batch metadata must be objects")
         batch_id = item.get("batch_id")
         relative = item.get("path")
-        if not isinstance(batch_id, str) or not re.fullmatch(r"batch-[0-9]{3}", batch_id):
+        if not isinstance(batch_id, str) or not re.fullmatch(r"batch-[0-9]{3,}", batch_id):
             raise ValueError(f"invalid screening batch_id: {batch_id!r}")
         if batch_id in seen:
             raise ValueError(f"duplicate screening batch_id: {batch_id}")
