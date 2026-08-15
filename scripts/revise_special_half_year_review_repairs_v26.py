@@ -2,9 +2,9 @@
 """Refine V25 entity attribution without relaxing its fail-closed policy.
 
 V25 intentionally requires a selected-artifact alias in the same sentence as a high-risk
-signal. This layer fixes one detector edge case: the candidate signal token itself (for
-example ``Mamba`` or ``SSM-Transformer``) must not be counted as a competing entity, while
-ordinary capitalised prose such as ``Research License`` must not outrank the selected model.
+signal. This layer fixes detector edge cases: candidate signal vocabulary (for example
+``Mamba`` or ``SSM-Transformer``) must not be counted as a competing entity, while ordinary
+capitalised prose such as ``Research License`` must not outrank the selected model.
 Comparison-model/version mentions remain stronger owners of nearby numeric signals.
 """
 from __future__ import annotations
@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from scripts import revise_special_half_year_review_repairs_v25 as base
+from scripts import revise_special_half_year_review_repairs_v24 as v24
 
 _ENTITY_BINDING_CONTRACT = base._ENTITY_BINDING_CONTRACT
 _SINGLE_TOKEN_RE = re.compile(r"\b([A-Z][A-Za-z0-9._+-]*)\b")
@@ -21,17 +22,24 @@ _GENERIC_MODEL_WORDS = set(base._GENERIC_MODEL_WORDS) | {
     "community", "license", "parameters", "research", "score", "quality", "release",
     "today", "built", "effective", "novel", "improved",
 }
+# Architecture/training/quantization/license vocabulary is a predicate about a subject, not a
+# competing subject by itself. Excluding the whole protected vocabulary prevents sibling signals
+# such as ``SSM-Transformer`` and ``Mamba`` from mutually disqualifying each other while the
+# version-aware alias and foreign-model distance checks still decide ownership.
+_NON_SUBJECT_SIGNAL_KEYS = {
+    base._normal(signal) for signal in v24._ENTITY_BOUND_STATIC_SIGNALS
+}
 
 
 def _foreign_mentions(sentence: str, aliases: list[str], rendered: str) -> list[tuple[int, int, str]]:
-    """Return plausible competing subjects, excluding the signal token itself."""
+    """Return plausible competing subjects, excluding signal vocabulary itself."""
     signal_key = base._normal(rendered)
     candidates: list[tuple[int, int, str]] = []
     for regex in (base._MODEL_MENTION_RE, _SINGLE_TOKEN_RE):
         for match in regex.finditer(sentence):
             mention = match.group(1).strip()
             mention_key = base._normal(mention)
-            if not mention_key or mention_key == signal_key:
+            if not mention_key or mention_key == signal_key or mention_key in _NON_SUBJECT_SIGNAL_KEYS:
                 continue
             tokens = mention.split()
             first = tokens[0].lower()
