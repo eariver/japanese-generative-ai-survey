@@ -108,6 +108,26 @@ class HalfYearReentrantLimitationsV29Tests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "COMMON_BOUNDARY missing"):
                 repair._validate_parent_common_limitation_already_absent(root, issue_id)
 
+    def test_final_delegate_bridges_exactly_once_and_rejects_proof_contradiction(self) -> None:
+        calls: list[str] = []
+
+        def clean(path: Path, evidence: dict[str, dict[str, object]]) -> tuple[int, int, int]:
+            calls.append(path.name)
+            return 2, 0, 3
+
+        state = {"used": False}
+        bridged = repair._reentrant_delegate(clean, state)
+        self.assertEqual(bridged(Path("10-notes.tex"), {}), (2, 1, 3))
+        self.assertEqual(bridged(Path("20-notes.tex"), {}), (2, 0, 3))
+        self.assertEqual(calls, ["10-notes.tex", "20-notes.tex"])
+        self.assertTrue(state["used"])
+
+        def dirty(path: Path, evidence: dict[str, dict[str, object]]) -> tuple[int, int, int]:
+            return 1, 1, 1
+
+        with self.assertRaisesRegex(ValueError, "proof contradicted"):
+            repair._reentrant_delegate(dirty, {"used": False})(Path("dirty.tex"), {})
+
     def test_persisted_audit_is_corrected_to_truthful_zero(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -165,7 +185,7 @@ class HalfYearReentrantLimitationsV29Tests(unittest.TestCase):
                 repair._sha(manifest_path),
             )
 
-    def test_build_wraps_the_v7_installed_repair_hook_and_restores_it(self) -> None:
+    def test_build_wraps_final_rendered_delegate_and_restores_it(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             issue_id, _ = self._fixture(
@@ -179,7 +199,7 @@ class HalfYearReentrantLimitationsV29Tests(unittest.TestCase):
                 return 2, 0, 3
 
             def fake_base_build(_root: Path, _slug: str, _issue: str, version: str) -> dict[str, object]:
-                _facts, removed, _checked = repair.scoped.impl.repair_note_file(Path("dummy.tex"), {})
+                _facts, removed, _checked = repair.base._ORIGINAL_REENRICH_NOTE_FILE(Path("dummy.tex"), {})
                 observed_removed.append(removed)
                 out = root / "surveys" / "special" / "test" / "revisions" / version
                 out.mkdir(parents=True)
@@ -207,8 +227,8 @@ class HalfYearReentrantLimitationsV29Tests(unittest.TestCase):
                     "technical_notes_common_limitation_removed_count": removed,
                 }
 
-            previous = repair.scoped.impl.repair_note_file
-            repair.scoped.impl.repair_note_file = underlying_repair
+            previous = repair.base._ORIGINAL_REENRICH_NOTE_FILE
+            repair.base._ORIGINAL_REENRICH_NOTE_FILE = underlying_repair
             try:
                 with patch.object(repair.base, "build", side_effect=fake_base_build):
                     result = repair.build(root, "test", issue_id, "v0.2")
@@ -216,11 +236,11 @@ class HalfYearReentrantLimitationsV29Tests(unittest.TestCase):
                 self.assertEqual(result["technical_notes_common_limitation_removed_count"], 0)
                 self.assertEqual(
                     result["half_year_reentrant_repair_contract"],
-                    "EXPLICIT_PARENT_CLEAN_PROOF_V2_V7_INSTALLED_HOOK",
+                    "EXPLICIT_PARENT_CLEAN_PROOF_V3_FINAL_RENDERED_DELEGATE",
                 )
-                self.assertIs(repair.scoped.impl.repair_note_file, underlying_repair)
+                self.assertIs(repair.base._ORIGINAL_REENRICH_NOTE_FILE, underlying_repair)
             finally:
-                repair.scoped.impl.repair_note_file = previous
+                repair.base._ORIGINAL_REENRICH_NOTE_FILE = previous
 
 
 if __name__ == "__main__":

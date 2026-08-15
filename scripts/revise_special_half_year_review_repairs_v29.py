@@ -9,11 +9,9 @@ Technical Note regeneration (for example a stronger entity-binding contract).
 This compatibility layer keeps the old assertion fail-closed and permits a re-entrant bridge only
 when the marker explicitly opts in and the state-pinned, actually rendered Technical Notes prove
 that the old limitation is already absent and the consolidated COMMON_BOUNDARY is present.
-V7 installs the V6 repair implementation into the legacy v3 module at build time, so the bridge
-wraps that installed implementation rather than the v3 module global that V7 subsequently
-replaces. The historical positive counter is bridged only in memory; after a successful build the
-persisted manifest/state/result are corrected to the truthful removal count (zero) and record that
-the limitation was already absent before this revision.
+The legacy one-shot counter is bridged only in memory at V28's final rendered-note delegate;
+after a successful build the persisted manifest/state/result are corrected to the truthful
+removal count (zero) and record that the limitation was already absent before this revision.
 """
 from __future__ import annotations
 
@@ -21,10 +19,9 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from scripts import revise_special_half_year_review_repairs_v3 as legacy
-from scripts import revise_special_half_year_review_repairs_v7 as scoped
 from scripts import revise_special_half_year_review_repairs_v28 as base
 
 
@@ -134,8 +131,29 @@ def _correct_persisted_reentrant_audit(
     result["technical_notes_common_limitation_removed_count"] = 0
     result["technical_notes_common_limitation_already_absent_before_revision"] = True
     result["technical_notes_common_limitation_reentrant_parent_proof"] = dict(proof)
-    result["half_year_reentrant_repair_contract"] = "EXPLICIT_PARENT_CLEAN_PROOF_V2_V7_INSTALLED_HOOK"
+    result["half_year_reentrant_repair_contract"] = "EXPLICIT_PARENT_CLEAN_PROOF_V3_FINAL_RENDERED_DELEGATE"
     return result
+
+
+def _reentrant_delegate(
+    original: Callable[[Path, dict[str, dict[str, Any]]], tuple[int, int, int]],
+    bridge_state: dict[str, bool],
+) -> Callable[[Path, dict[str, dict[str, Any]]], tuple[int, int, int]]:
+    """Bridge the historical removal counter at V28's final rendered-file delegate only."""
+
+    def wrapped(path: Path, evidence: dict[str, dict[str, Any]]) -> tuple[int, int, int]:
+        facts, removed, checked = original(path, evidence)
+        if removed != 0:
+            raise ValueError(
+                "re-entrant Half-year parent proof contradicted during repair: "
+                f"unexpected common limitation removal in {path}"
+            )
+        if not bridge_state.get("used", False):
+            bridge_state["used"] = True
+            return facts, 1, checked
+        return facts, 0, checked
+
+    return wrapped
 
 
 def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str) -> dict[str, Any]:
@@ -148,36 +166,23 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
 
     proof = _validate_parent_common_limitation_already_absent(repo_root, issue_id)
 
-    # V7 installs scoped.impl.repair_note_file into the v3 core immediately before invoking the
-    # legacy chain. Wrapping legacy.repair_note_file here would therefore be overwritten. Wrap the
-    # implementation V7 actually installs, bridge exactly one historical in-memory count, and
-    # correct every persisted audit surface to the truthful zero after a successful build.
-    original_repair = scoped.impl.repair_note_file
-    bridge_used = False
-
-    def reentrant_repair(path: Path, evidence: dict[str, dict[str, Any]]) -> tuple[int, int, int]:
-        nonlocal bridge_used
-        facts, removed, checked = original_repair(path, evidence)
-        if removed != 0:
-            raise ValueError(
-                "re-entrant Half-year parent proof contradicted during repair: "
-                f"unexpected common limitation removal in {path}"
-            )
-        if not bridge_used:
-            bridge_used = True
-            return facts, 1, checked
-        return facts, 0, checked
-
-    scoped.impl.repair_note_file = reentrant_repair
+    # V7/V11/V13 install their compatibility hooks while descending toward the legacy v3 build,
+    # so patching those module globals before base.build is not stable. V28 is the final reader-
+    # surface guard and calls _ORIGINAL_REENRICH_NOTE_FILE at runtime for rendered files only.
+    # Bridging that delegate is both late enough to survive compatibility substitutions and narrow
+    # enough to affect only state-pinned main.tex-rendered Technical Notes.
+    original_delegate = base._ORIGINAL_REENRICH_NOTE_FILE
+    bridge_state = {"used": False}
+    base._ORIGINAL_REENRICH_NOTE_FILE = _reentrant_delegate(original_delegate, bridge_state)
     try:
         result = base.build(repo_root, special_slug, issue_id, source_version)
     finally:
-        scoped.impl.repair_note_file = original_repair
+        base._ORIGINAL_REENRICH_NOTE_FILE = original_delegate
 
     if not isinstance(result, dict):
         raise ValueError("re-entrant Half-year repair returned malformed result")
-    if not bridge_used:
-        raise ValueError("re-entrant Half-year repair did not traverse the V7-installed Technical Notes repair hook")
+    if not bridge_state["used"]:
+        raise ValueError("re-entrant Half-year repair did not traverse any rendered Technical Notes file")
     return _correct_persisted_reentrant_audit(repo_root, issue_id, result, proof)
 
 
