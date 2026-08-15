@@ -4,6 +4,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from scripts import revise_special_half_year_review_repairs_v3 as legacy
 from scripts import revise_special_half_year_review_repairs_v29 as repair
@@ -54,6 +55,20 @@ class HalfYearReentrantLimitationsV29Tests(unittest.TestCase):
             encoding="utf-8",
         )
         return issue_id, manifest_path
+
+    def _marker(self, root: Path, issue_id: str, version: str = "v0.2") -> None:
+        path = root / "sources" / issue_id / "editorial" / f"layout-revision-{version}.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(
+            json.dumps(
+                {
+                    "layout_changes": {
+                        "allow_reentrant_half_year_repairs": True,
+                    }
+                }
+            ),
+            encoding="utf-8",
+        )
 
     def test_parent_clean_proof_requires_boundary_and_no_legacy_limitation(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -149,6 +164,63 @@ class HalfYearReentrantLimitationsV29Tests(unittest.TestCase):
                 updated_state["provenance"]["validated_issue_source"]["sha256"],
                 repair._sha(manifest_path),
             )
+
+    def test_build_wraps_the_v7_installed_repair_hook_and_restores_it(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            issue_id, _ = self._fixture(
+                root,
+                note_text=legacy.COMMON_BOUNDARY + "\n\\begin{technicalnote}{A}{主要資料}\n\\end{technicalnote}\n",
+            )
+            self._marker(root, issue_id)
+            observed_removed: list[int] = []
+
+            def underlying_repair(_path: Path, _evidence: dict[str, dict[str, object]]) -> tuple[int, int, int]:
+                return 2, 0, 3
+
+            def fake_base_build(_root: Path, _slug: str, _issue: str, version: str) -> dict[str, object]:
+                _facts, removed, _checked = repair.scoped.impl.repair_note_file(Path("dummy.tex"), {})
+                observed_removed.append(removed)
+                out = root / "surveys" / "special" / "test" / "revisions" / version
+                out.mkdir(parents=True)
+                manifest_path = out / "source-manifest.json"
+                manifest_path.write_text(
+                    json.dumps(
+                        {
+                            "reader_facing_technical_notes": {"common_limitation_removed_count": removed},
+                            "layout_revision": {"technical_notes_common_limitation_removed_count": removed},
+                        }
+                    ),
+                    encoding="utf-8",
+                )
+                state_path = root / "sources" / issue_id / "pipeline-state.json"
+                state = json.loads(state_path.read_text(encoding="utf-8"))
+                state["provenance"]["validated_issue_source"] = {
+                    "path": manifest_path.relative_to(root).as_posix(),
+                    "sha256": repair._sha(manifest_path),
+                    "source_version": version,
+                }
+                state_path.write_text(json.dumps(state), encoding="utf-8")
+                return {
+                    "source_manifest": manifest_path.relative_to(root).as_posix(),
+                    "source_manifest_sha256": repair._sha(manifest_path),
+                    "technical_notes_common_limitation_removed_count": removed,
+                }
+
+            previous = repair.scoped.impl.repair_note_file
+            repair.scoped.impl.repair_note_file = underlying_repair
+            try:
+                with patch.object(repair.base, "build", side_effect=fake_base_build):
+                    result = repair.build(root, "test", issue_id, "v0.2")
+                self.assertEqual(observed_removed, [1])
+                self.assertEqual(result["technical_notes_common_limitation_removed_count"], 0)
+                self.assertEqual(
+                    result["half_year_reentrant_repair_contract"],
+                    "EXPLICIT_PARENT_CLEAN_PROOF_V2_V7_INSTALLED_HOOK",
+                )
+                self.assertIs(repair.scoped.impl.repair_note_file, underlying_repair)
+            finally:
+                repair.scoped.impl.repair_note_file = previous
 
 
 if __name__ == "__main__":
