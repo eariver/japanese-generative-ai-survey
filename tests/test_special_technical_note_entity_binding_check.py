@@ -131,6 +131,18 @@ class SpecialTechnicalNoteEntityBindingCheckTests(unittest.TestCase):
             errors = inspect_entity_binding(manifest, source_dir)
             self.assertTrue(any("405B parameter scale" in error for error in errors))
 
+    def test_short_rejected_scale_does_not_match_longer_numeric_token(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            fact = "対象event近傍の一次資料から 11B parameter scale / 13B parameter scale / 70B parameter scale を確認できる。"
+            manifest, source_dir = self._fixture(
+                root,
+                [self._note("Llama 3.1", fact)],
+                accepted=[],
+                rejected=["1B parameter scale", "3B parameter scale", "7B parameter scale"],
+            )
+            self.assertEqual(inspect_entity_binding(manifest, source_dir), [])
+
 
 if __name__ == "__main__":
     unittest.main()
