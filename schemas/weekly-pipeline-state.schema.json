@@ -49,6 +49,11 @@
         "collection_anchor_at"
       ],
       "properties": {
+        "editorial_window_start": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "Canonical issue membership start for W33 and later. Legacy frozen issues may omit it."
+        },
         "editorial_cutoff": {
           "type": "string",
           "format": "date-time"
@@ -58,11 +63,18 @@
         },
         "collection_window_start": {
           "type": ["string", "null"],
-          "format": "date-time"
+          "format": "date-time",
+          "description": "Compatibility field. For W33 and later this is the canonical editorial-window start in issue state; per-run segment bounds live in the generated plan."
+        },
+        "intake_split_boundary": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "Deterministic boundary between front and back intake segments."
         },
         "collection_anchor_at": {
           "type": ["string", "null"],
-          "format": "date-time"
+          "format": "date-time",
+          "description": "Accepted observation anchor for provenance continuity only; it does not define W33+ issue membership."
         },
         "frozen_at": {
           "type": ["string", "null"],

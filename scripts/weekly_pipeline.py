@@ -18,6 +18,7 @@ from typing import Any
 from zoneinfo import ZoneInfo
 
 DEFAULT_CONFIG = Path("config/weekly-pipeline.json")
+INTAKE_SEGMENTS = ("full", "front", "back")
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -92,6 +93,11 @@ def state_paths(repo_root: Path) -> list[Path]:
 
 
 def previous_collection_anchor(repo_root: Path, current_issue: str) -> str | None:
+    """Return the latest accepted observation anchor for continuity diagnostics.
+
+    The anchor is deliberately *not* an editorial-window boundary. Starting with
+    W33, issue membership is defined by cutoff-to-cutoff event time instead.
+    """
     best: tuple[datetime, str] | None = None
     for path in state_paths(repo_root):
         if path.parent.name == current_issue:
@@ -109,25 +115,74 @@ def previous_collection_anchor(repo_root: Path, current_issue: str) -> str | Non
     return None if best is None else best[1]
 
 
-def build_plan(repo_root: Path, cfg: dict[str, Any], now_utc: datetime) -> dict[str, Any]:
+def editorial_window(cutoff: datetime, cfg: dict[str, Any]) -> tuple[datetime, datetime]:
+    intake_cfg = cfg.get("intake", {})
+    days = int(intake_cfg.get("canonical_window_days", 7))
+    if days <= 0:
+        raise ValueError("intake.canonical_window_days must be positive")
+    return cutoff - timedelta(days=days), cutoff
+
+
+def intake_split_boundary(start: datetime, end: datetime, cfg: dict[str, Any]) -> datetime:
+    intake_cfg = cfg.get("intake", {})
+    days = int(intake_cfg.get("front_segment_days", 4))
+    boundary = start + timedelta(days=days)
+    if not start < boundary < end:
+        raise ValueError("intake.front_segment_days must place the split inside the editorial window")
+    return boundary
+
+
+def segment_window(
+    start: datetime,
+    end: datetime,
+    cfg: dict[str, Any],
+    segment: str,
+) -> tuple[datetime, datetime, datetime]:
+    if segment not in INTAKE_SEGMENTS:
+        raise ValueError(f"unsupported intake segment: {segment}")
+    split = intake_split_boundary(start, end, cfg)
+    if segment == "front":
+        return start, split, split
+    if segment == "back":
+        return split, end, split
+    return start, end, split
+
+
+def build_plan(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    now_utc: datetime,
+    intake_segment: str = "full",
+) -> dict[str, Any]:
     cutoff = latest_cutoff(now_utc, cfg)
     issue_id = issue_id_from_cutoff(cutoff)
     compilation_zone = ZoneInfo(cfg["editorial"]["compilation_timezone"])
+    editorial_start, editorial_end = editorial_window(cutoff, cfg)
+    collection_start, collection_end, split = segment_window(
+        editorial_start, editorial_end, cfg, intake_segment
+    )
     previous_anchor = previous_collection_anchor(repo_root, issue_id)
     return {
         "schema_version": "1.0",
         "issue_id": issue_id,
         "generated_at": iso(now_utc),
         "generated_at_local": iso(now_utc.astimezone(compilation_zone)),
+        "editorial_window_start": iso(editorial_start),
+        "editorial_window_end": iso(editorial_end),
         "editorial_cutoff": iso(cutoff),
         "editorial_cutoff_timezone": cfg["editorial"]["cutoff_timezone"],
-        "collection_window_start": previous_anchor,
-        "collection_window_end": iso(now_utc.astimezone(compilation_zone)),
+        "intake_segment": intake_segment,
+        "intake_split_boundary": iso(split),
+        "collection_window_start": iso(collection_start),
+        "collection_window_end": iso(collection_end),
+        "previous_collection_anchor": previous_anchor,
         "automation_mode": "plan-only",
         "unattended_public_release": False,
         "notes": [
-            "Issue ID is derived from the ISO week containing the editorial cutoff; it remains an edition label, not a strict content window.",
-            "If collection_window_start is null, establish or import a prior successful collection anchor before unattended collection.",
+            "The canonical weekly editorial window is the half-open cutoff-to-cutoff interval [previous Friday 18:00, current Friday 18:00) in America/New_York.",
+            "collection_window_start/end describe the selected intake segment, not fetch execution time.",
+            "The previous collection anchor is retained only as an observation/provenance continuity signal and never defines issue membership.",
+            "front and back intake segments are deterministic partitions of the same editorial window; full remains valid when splitting is unnecessary.",
             "This plan does not publish, merge, or call an LLM.",
         ],
     }
@@ -138,22 +193,23 @@ def build_plan_for_issue(
     cfg: dict[str, Any],
     now_utc: datetime,
     issue_id: str,
+    intake_segment: str = "full",
 ) -> dict[str, Any]:
-    """Build a plan for a named issue without guessing historical windows.
+    """Build a plan for a named current issue or replay committed historical state.
 
-    The normal/current issue uses the rolling previous-collection anchor. If that
-    anchor is unavailable (notably the bootstrap issue) or the requested issue is
-    historical, replay metadata is read from that issue's committed pipeline state.
+    Current issues always use canonical cutoff-to-cutoff editorial time. Historical
+    W33+ states can replay that canonical window. Older states remain replayable
+    through their legacy committed collection window without rewriting frozen data.
     """
-    current = build_plan(repo_root, cfg, now_utc)
-    if current["issue_id"] == issue_id and current.get("collection_window_start"):
+    current = build_plan(repo_root, cfg, now_utc, intake_segment=intake_segment)
+    if current["issue_id"] == issue_id:
         current["plan_source"] = "latest-cutoff"
         return current
 
     state_path = repo_root / "sources" / issue_id / "pipeline-state.json"
     if not state_path.is_file():
         raise ValueError(
-            f"cannot plan requested issue {issue_id}: current rolling plan is {current['issue_id']} "
+            f"cannot plan requested issue {issue_id}: current completed cutoff maps to {current['issue_id']} "
             f"and {state_path.relative_to(repo_root)} does not exist"
         )
 
@@ -161,51 +217,84 @@ def build_plan_for_issue(
     if state.get("issue_id") not in (None, issue_id):
         raise ValueError(f"pipeline state issue_id does not match requested issue {issue_id}")
     calendar = state.get("calendar", {})
-    start = calendar.get("collection_window_start")
-    end = calendar.get("collection_anchor_at")
-    cutoff = calendar.get("editorial_cutoff")
-    if not start or not end or not cutoff:
-        raise ValueError(
-            f"historical replay for {issue_id} requires calendar.collection_window_start, "
-            "collection_anchor_at, and editorial_cutoff in pipeline-state.json"
-        )
-
-    # Parse once so malformed historical state fails before a collector uses it.
-    parse_instant(start)
-    parse_instant(end)
-    parse_instant(cutoff)
+    cutoff_raw = calendar.get("editorial_cutoff")
+    if not cutoff_raw:
+        raise ValueError(f"historical replay for {issue_id} requires calendar.editorial_cutoff")
+    cutoff = parse_instant(cutoff_raw).astimezone(ZoneInfo(cfg["editorial"]["cutoff_timezone"]))
+    canonical_start_raw = calendar.get("editorial_window_start")
     compilation_zone = ZoneInfo(cfg["editorial"]["compilation_timezone"])
+
+    if canonical_start_raw:
+        editorial_start = parse_instant(canonical_start_raw).astimezone(cutoff.tzinfo)
+        editorial_end = cutoff
+        collection_start, collection_end, split = segment_window(
+            editorial_start, editorial_end, cfg, intake_segment
+        )
+        mode = "historical-canonical-replay"
+        notes = [
+            "This named-issue plan replays the committed canonical editorial window.",
+            "The selected front/back/full segment is derived deterministically from that window.",
+            "Official-page snapshots fetched during replay are current snapshots unless the upstream service provides historical retrieval.",
+            "This plan does not publish, merge, or call an LLM.",
+        ]
+    else:
+        if intake_segment != "full":
+            raise ValueError(
+                f"legacy historical replay for {issue_id} does not define editorial_window_start; only --intake-segment full is supported"
+            )
+        legacy_start_raw = calendar.get("collection_window_start")
+        legacy_end_raw = calendar.get("collection_anchor_at")
+        if not legacy_start_raw or not legacy_end_raw:
+            raise ValueError(
+                f"legacy historical replay for {issue_id} requires calendar.collection_window_start and collection_anchor_at"
+            )
+        collection_start = parse_instant(legacy_start_raw).astimezone(compilation_zone)
+        collection_end = parse_instant(legacy_end_raw).astimezone(compilation_zone)
+        editorial_start = collection_start
+        editorial_end = cutoff
+        split = intake_split_boundary(cutoff - timedelta(days=7), cutoff, cfg)
+        mode = "historical-legacy-replay"
+        notes = [
+            "This pre-W33 issue replays its committed legacy collection window exactly; frozen history is not rewritten.",
+            "The legacy collection anchor is an observation boundary and is not retroactively reinterpreted as an editorial cutoff.",
+            "Official-page snapshots fetched during replay are current snapshots unless the upstream service provides historical retrieval.",
+            "This plan does not publish, merge, or call an LLM.",
+        ]
+
     return {
         "schema_version": "1.0",
         "issue_id": issue_id,
         "generated_at": iso(now_utc),
         "generated_at_local": iso(now_utc.astimezone(compilation_zone)),
-        "editorial_cutoff": cutoff,
+        "editorial_window_start": iso(editorial_start),
+        "editorial_window_end": iso(editorial_end),
+        "editorial_cutoff": cutoff_raw,
         "editorial_cutoff_timezone": calendar.get(
             "cutoff_timezone", cfg["editorial"]["cutoff_timezone"]
         ),
-        "collection_window_start": start,
-        "collection_window_end": end,
-        "automation_mode": "historical-replay",
+        "intake_segment": intake_segment,
+        "intake_split_boundary": iso(split),
+        "collection_window_start": iso(collection_start),
+        "collection_window_end": iso(collection_end),
+        "previous_collection_anchor": calendar.get("collection_anchor_at"),
+        "automation_mode": mode,
         "plan_source": "pipeline-state",
         "unattended_public_release": False,
-        "notes": [
-            "This named-issue plan replays a committed historical collection window from pipeline-state.json.",
-            "It is suitable for collector smoke tests or explicit historical replay; it does not redefine the issue chronology.",
-            "Official-page snapshots fetched during a replay are current snapshots unless the upstream service itself provides historical retrieval.",
-            "This plan does not publish, merge, or call an LLM.",
-        ],
+        "notes": notes,
     }
 
 
 def plan_markdown(plan: dict[str, Any]) -> str:
-    start = plan["collection_window_start"] or "UNSET — bootstrap required"
+    anchor = plan.get("previous_collection_anchor") or "UNSET"
     return (
         f"# Weekly Pipeline Plan — {plan['issue_id']}\n\n"
         f"- Generated: `{plan['generated_at_local']}`\n"
+        f"- Editorial window: `[{plan['editorial_window_start']}, {plan['editorial_window_end']})`\n"
         f"- Editorial cutoff: `{plan['editorial_cutoff']}`\n"
-        f"- Collection window start: `{start}`\n"
-        f"- Collection window end: `{plan['collection_window_end']}`\n"
+        f"- Intake segment: `{plan.get('intake_segment', 'full')}`\n"
+        f"- Intake split boundary: `{plan.get('intake_split_boundary')}`\n"
+        f"- Collection window: `[{plan['collection_window_start']}, {plan['collection_window_end']})`\n"
+        f"- Previous accepted observation anchor: `{anchor}`\n"
         f"- Mode: `{plan.get('automation_mode', 'plan-only')}`\n\n"
         "This artifact is an operational plan. It does not authorize unattended publication.\n"
     )
@@ -218,9 +307,11 @@ def default_state(plan: dict[str, Any]) -> dict[str, Any]:
         "lifecycle_state": "ISSUE_INITIALIZED",
         "revision": "working",
         "calendar": {
+            "editorial_window_start": plan["editorial_window_start"],
             "editorial_cutoff": plan["editorial_cutoff"],
             "cutoff_timezone": plan["editorial_cutoff_timezone"],
-            "collection_window_start": plan["collection_window_start"],
+            "collection_window_start": plan["editorial_window_start"],
+            "intake_split_boundary": plan["intake_split_boundary"],
             "collection_anchor_at": None,
         },
         "gates": {
@@ -282,44 +373,10 @@ def internal_page_reference_findings(repo_root: Path, issue_id: str) -> list[dic
 
 def required_names(target: str) -> set[str]:
     levels = {
-        "selection": {
-            "pipeline_state",
-            "manifest",
-            "candidate_inventory",
-            "candidate_selection",
-        },
-        "draft": {
-            "pipeline_state",
-            "manifest",
-            "candidate_inventory",
-            "candidate_selection",
-            "issue_architecture",
-            "survey_main",
-            "bibliography",
-        },
-        "release-candidate": {
-            "pipeline_state",
-            "manifest",
-            "candidate_inventory",
-            "candidate_selection",
-            "issue_architecture",
-            "survey_main",
-            "bibliography",
-            "draft_validation",
-            "claim_review",
-        },
-        "frozen": {
-            "pipeline_state",
-            "manifest",
-            "candidate_inventory",
-            "candidate_selection",
-            "issue_architecture",
-            "survey_main",
-            "bibliography",
-            "draft_validation",
-            "claim_review",
-            "freeze_record",
-        },
+        "selection": {"pipeline_state", "manifest", "candidate_inventory", "candidate_selection"},
+        "draft": {"pipeline_state", "manifest", "candidate_inventory", "candidate_selection", "issue_architecture", "survey_main", "bibliography"},
+        "release-candidate": {"pipeline_state", "manifest", "candidate_inventory", "candidate_selection", "issue_architecture", "survey_main", "bibliography", "draft_validation", "claim_review"},
+        "frozen": {"pipeline_state", "manifest", "candidate_inventory", "candidate_selection", "issue_architecture", "survey_main", "bibliography", "draft_validation", "claim_review", "freeze_record"},
     }
     return levels[target]
 
@@ -346,9 +403,9 @@ def cmd_plan(args: argparse.Namespace, cfg: dict[str, Any]) -> int:
     root = Path(args.repo_root).resolve()
     now = parse_instant(args.now)
     plan = (
-        build_plan_for_issue(root, cfg, now, args.issue_id)
+        build_plan_for_issue(root, cfg, now, args.issue_id, intake_segment=args.intake_segment)
         if args.issue_id
-        else build_plan(root, cfg, now)
+        else build_plan(root, cfg, now, intake_segment=args.intake_segment)
     )
     if args.output:
         write_json(Path(args.output), plan)
@@ -362,7 +419,7 @@ def cmd_plan(args: argparse.Namespace, cfg: dict[str, Any]) -> int:
 
 def cmd_init(args: argparse.Namespace, cfg: dict[str, Any]) -> int:
     root = Path(args.repo_root).resolve()
-    plan = build_plan(root, cfg, parse_instant(args.now))
+    plan = build_plan(root, cfg, parse_instant(args.now), intake_segment="full")
     if args.issue_id and args.issue_id != plan["issue_id"]:
         print(
             f"refusing to initialize {args.issue_id}: current completed cutoff maps to {plan['issue_id']}; "
@@ -398,6 +455,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_plan = sub.add_parser("plan", help="compute the current completed issue or replay a named issue")
     p_plan.add_argument("--now", help="override current instant (ISO-8601 with offset)")
     p_plan.add_argument("--issue-id", help="named issue for deterministic historical replay")
+    p_plan.add_argument("--intake-segment", choices=INTAKE_SEGMENTS, default="full")
     p_plan.add_argument("--output")
     p_plan.add_argument("--markdown-output")
 
