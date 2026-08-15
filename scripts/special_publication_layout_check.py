@@ -12,6 +12,7 @@ from scripts.special_layout_text_normalization import (
     first_substantive_line,
     manual_item_marker_findings,
 )
+from scripts.special_technical_note_entity_binding_check import inspect_entity_binding
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -187,6 +188,10 @@ def check(repo_root: Path, issue_id: str) -> dict[str, Any]:
         architecture,
     )
     errors.extend(inspect_derived_layout_files(manifest, manifest_path.parent))
+    # Publication Preview preflight is also the final reader-facing source contract gate.
+    # Half-year source-specific revisions must prove that comparison-page quantities/features
+    # were bound to the selected artifact rather than merely co-located on its source page.
+    errors.extend(inspect_entity_binding(manifest, manifest_path.parent))
     return {
         "schema_version": "1.0",
         "issue_id": issue_id,
