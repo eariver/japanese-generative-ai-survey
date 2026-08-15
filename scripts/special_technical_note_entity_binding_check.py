@@ -9,9 +9,10 @@ import re
 from pathlib import Path
 from typing import Any
 
-ENTITY_BINDING_CONTRACT = "SUBJECT_VERSION_AWARE_HIGH_RISK_SIGNALS_V2"
+ENTITY_BINDING_CONTRACT = "SUBJECT_COMPONENT_VARIANT_PROPERTY_BINDING_V3"
 NOTE_RE = re.compile(r"\\begin\{technicalnote\}\{(.+?)\}\{.*?\\end\{technicalnote\}", re.DOTALL)
 FACT_RE = re.compile(r"^\\item \\textbf\{一次情報で確認できる事実\}: (.+)$", re.MULTILINE)
+INPUT_RE = re.compile(r"\\(?:input|include)\{([^}]+)\}")
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -40,14 +41,6 @@ def _title_key(value: str) -> str:
 
 
 def _contains_rendered_signal(fact: str, signal: str) -> bool:
-    """Match one rendered signal without colliding with longer alphanumeric tokens.
-
-    Reader-facing facts are prose, whereas entity-binding audit values include compact model
-    scales such as ``1B parameter scale``. A plain substring test would incorrectly find that
-    value inside ``11B parameter scale`` (and similarly 3B/13B or 7B/70B). ASCII alphanumeric
-    boundaries preserve exact rendered-signal semantics while still allowing normal Japanese
-    punctuation and separators around the signal.
-    """
     if not signal:
         return False
     return re.search(
@@ -56,8 +49,38 @@ def _contains_rendered_signal(fact: str, signal: str) -> bool:
     ) is not None
 
 
+def _normalize_tex_path(value: str) -> str:
+    text = str(value or "").strip().replace("\\", "/")
+    while text.startswith("./"):
+        text = text[2:]
+    if text and not Path(text).suffix:
+        text += ".tex"
+    return Path(text).as_posix() if text else ""
+
+
+def _rendered_top_level_tex_paths(
+    manifest: dict[str, Any], source_dir: Path, errors: list[str]
+) -> set[str] | None:
+    main_info = manifest.get("main_tex")
+    if not isinstance(main_info, dict):
+        return None
+    main_rel = _normalize_tex_path(str(main_info.get("path") or "main.tex"))
+    main_path = source_dir / main_rel
+    if not main_path.is_file():
+        errors.append(f"main TeX missing during entity check: {main_rel}")
+        return set()
+    expected = str(main_info.get("sha256") or "")
+    if expected and sha(main_path) != expected:
+        errors.append(f"main TeX digest mismatch during entity check: {main_rel}")
+        return set()
+    return {
+        _normalize_tex_path(match.group(1))
+        for match in INPUT_RE.finditer(main_path.read_text(encoding="utf-8"))
+        if _normalize_tex_path(match.group(1))
+    }
+
+
 def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[str]:
-    """Return fail-closed pre-release findings for Half-year source-specific notes."""
     errors: list[str] = []
     if str(manifest.get("status") or "") != "VALIDATED_HALF_YEAR_SOURCE_SPECIFIC_NOTES_REVISION":
         return errors
@@ -68,7 +91,7 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
     if reader.get("entity_binding_contract") != ENTITY_BINDING_CONTRACT:
         errors.append(
             "Half-year Technical Notes lack the required subject/entity binding contract "
-            "(version-aware V2 required): "
+            "(component/variant/property V3 required): "
             f"expected={ENTITY_BINDING_CONTRACT} actual={reader.get('entity_binding_contract')}"
         )
         return errors
@@ -106,11 +129,17 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
             f"audited={len(artifacts)} visible={visible} overrides={overrides}"
         )
 
+    rendered_paths = _rendered_top_level_tex_paths(manifest, source_dir, errors)
+    if rendered_paths == set() and errors:
+        return errors
+
     cards: dict[str, list[str]] = {}
     for article in manifest.get("articles") or []:
         if not isinstance(article, dict) or article.get("technical_notes_reader_facing") is not True:
             continue
-        rel = str(article.get("technical_notes_path") or "")
+        rel = _normalize_tex_path(str(article.get("technical_notes_path") or ""))
+        if rendered_paths is not None and rel not in rendered_paths:
+            continue
         path = source_dir / rel
         if not rel or not path.is_file():
             errors.append(f"reader-facing Technical Notes file missing during entity check: {rel}")
@@ -141,7 +170,6 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
             continue
         card_group = cards.get(title)
         if not card_group:
-            # Suppressed/non-reader-facing Evidence can still be audited by the generator.
             continue
         facts: list[str] = []
         for card in card_group:
@@ -154,10 +182,6 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
                 facts.append(fact)
 
         accepted = {str(signal) for signal in (item.get("accepted_entity_bound_signals") or []) if str(signal)}
-        # The audit is occurrence-aware while the reader-facing card is value-only. A value may
-        # therefore appear in both lists when one occurrence is correctly bound to the selected
-        # artifact and another occurrence belongs to a comparator. Any accepted occurrence is
-        # sufficient authority to render that value; only rejected-only signals are forbidden.
         rejected_only = [
             str(signal)
             for signal in (item.get("rejected_entity_bound_signals") or [])

@@ -143,6 +143,26 @@ class SpecialTechnicalNoteEntityBindingCheckTests(unittest.TestCase):
             )
             self.assertEqual(inspect_entity_binding(manifest, source_dir), [])
 
+    def test_state_pinned_main_limits_check_to_rendered_note_files(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest, source_dir = self._fixture(
+                root,
+                [
+                    self._note("Llama 3.1", "rendered target-bound fact"),
+                    self._note("Llama 3.1", "provenance-only conflicting fact"),
+                ],
+                accepted=[],
+                rejected=[],
+            )
+            main = source_dir / "main.tex"
+            main.write_text("\\input{technical-notes/01}\n", encoding="utf-8")
+            manifest["main_tex"] = {
+                "path": "main.tex",
+                "sha256": hashlib.sha256(main.read_bytes()).hexdigest(),
+            }
+            self.assertEqual(inspect_entity_binding(manifest, source_dir), [])
+
 
 if __name__ == "__main__":
     unittest.main()
