@@ -64,7 +64,16 @@ _OTHER_LICENSE_RE = re.compile(
 
 
 def _foreign_mentions(sentence: str, aliases: list[str], rendered: str) -> list[tuple[int, int, str]]:
-    found = v26._foreign_mentions(sentence, aliases, rendered)
+    signal_key = v25._normal(rendered)
+    found: list[tuple[int, int, str]] = []
+    for start, end, mention in v26._foreign_mentions(sentence, aliases, rendered):
+        mention_key = v25._normal(mention)
+        # V26's generic product detector predates V3 scope-sensitive signals. Do not let a
+        # capitalised token that is literally part of the property name (for example
+        # ``Retrieval-Augmented`` inside RAG) masquerade as a competing subject.
+        if mention_key and (mention_key in signal_key or signal_key in mention_key):
+            continue
+        found.append((start, end, mention))
     for match in _COMPONENT_OWNER_RE.finditer(sentence):
         mention = match.group(1).strip()
         if v25._mention_is_target(mention, aliases):
