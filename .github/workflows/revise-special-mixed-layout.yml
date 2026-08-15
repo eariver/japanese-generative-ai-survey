@@ -240,6 +240,30 @@ jobs:
               fs=manifest['final_synthesis']
               assert fs['layout_only_revision'] is True
               assert fs['numbered_subsection_guard_count']==lr['numbered_subsection_guard_count']
+          elif lr.get('half_year_review_repairs_v3') is True:
+              assert manifest['status']=='VALIDATED_HALF_YEAR_REVIEW_REPAIR_V3_REVISION'
+              assert lr['reader_content_changed'] is True
+              assert lr['new_external_evidence'] is False
+              assert lr['accepted_article_sections_changed'] is False
+              assert lr['evidence_cards_changed'] is False
+              assert lr['technical_notes_source_specific_replacement_count'] >= 1
+              assert lr['technical_notes_common_limitation_removed_count'] >= 1
+              assert lr['technical_notes_url_identity_checks'] >= lr['technical_notes_source_specific_replacement_count']
+              assert lr['chronology_event_count'] >= 1
+              assert lr['chronology_item_level_source_mapping'] is True
+              assert lr['references_common_note_removed_count'] >= 1
+              assert lr['references_common_note_consolidated'] is True
+              expected={'HALF_YEAR_RECLASSIFICATION','CROSS_MONTH_COMPARISON','CROSS_LAYER_SYNTHESIS'}
+              analysis=manifest['half_year_analysis']
+              assert set(analysis['analysis_layers'])==expected
+              assert set(lr['half_year_analysis_layers_added'])==expected
+              assert analysis['selected_evidence_only'] is True
+              assert analysis['new_external_evidence'] is False
+              reader=manifest['reader_facing_technical_notes']
+              assert reader['generic_fallback_policy']=='forbidden-fail-closed'
+              assert reader['generic_fallback_findings']==0
+              assert reader['source_specific_replacement_count']==lr['technical_notes_source_specific_replacement_count']
+              assert reader['url_identity_checks']==lr['technical_notes_url_identity_checks']
           elif 'final_synthesis' in manifest:
               assert manifest['layout']['body_mode'].startswith('balanced mixed:')
               assert lr['full_width_chapter_headings'] is True
