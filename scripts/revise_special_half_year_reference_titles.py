@@ -4,8 +4,8 @@
 This pass exists for an already validated Half-year review repair whose References still expose
 legacy ``Primary source N`` placeholders. It reuses only selected Draft Package Evidence metadata:
 source URLs are matched to ``artifact.canonical_name`` exactly as in the established Special visual-
-review repair contract. It also places Detailed Chronology before the References heading when an
-early Half-year source emitted the consolidated References note before chronology.
+review repair contract. It also ensures Detailed Chronology sits between the conclusion and the
+References intro/bibliography in sparse early Half-year sources.
 
 Accepted article sections, Evidence cards, Technical Notes content, chronology content, and analysis
 content are immutable. Any unresolved bibliography placeholder, undeclared article without a Draft
@@ -25,34 +25,52 @@ from scripts import revise_special_visual_review_repairs as visual
 
 
 _GENERIC_BIB_TITLE_RE = re.compile(r"\btitle\s*=\s*\{Primary source\s+\d+\b", re.IGNORECASE)
-_REFERENCES_HEADING = r"\section*{References / Source Notes}"
+_REFERENCES_PRINT = r"\printbibliography[title={References / Source Notes}]"
+_REFERENCES_NOTE_PREFIX = r"\noindent{\small\textit{以下のReferencesは"
 _CHRONOLOGY_INPUT = r"\input{layout-bodies/chronology}"
 
 
-def _reorder_chronology_before_references(path: Path) -> bool:
+def _normalize_chronology_reference_order(path: Path) -> bool:
+    """Put the consolidated References intro after Detailed Chronology and before bibliography."""
     text = path.read_text(encoding="utf-8")
-    if text.count(_REFERENCES_HEADING) != 1:
-        raise ValueError("expected exactly one References / Source Notes heading")
+    if text.count(_REFERENCES_PRINT) != 1:
+        raise ValueError("expected exactly one References / Source Notes bibliography")
     if text.count(_CHRONOLOGY_INPUT) != 1:
         raise ValueError("expected exactly one Detailed Chronology input")
+    if text.count(_REFERENCES_NOTE_PREFIX) != 1:
+        raise ValueError("expected exactly one consolidated References intro note")
 
-    refs_at = text.index(_REFERENCES_HEADING)
     chronology_at = text.index(_CHRONOLOGY_INPUT)
-    if chronology_at < refs_at:
+    refs_at = text.index(_REFERENCES_PRINT)
+    note_at = text.index(_REFERENCES_NOTE_PREFIX)
+    if chronology_at > refs_at:
+        raise ValueError("Detailed Chronology follows bibliography in sparse Half-year source")
+    if chronology_at < note_at < refs_at:
         return False
+    if note_at > refs_at:
+        raise ValueError("References intro follows bibliography")
 
-    line_end = text.find("\n", chronology_at)
-    if line_end < 0:
-        line_end = len(text)
-    else:
-        line_end += 1
-    chronology_line = text[chronology_at:line_end]
-    without = text[:chronology_at] + text[line_end:]
-    refs_at = without.index(_REFERENCES_HEADING)
-    revised = without[:refs_at] + chronology_line + "\n" + without[refs_at:]
+    # H1 v0.3 has: conclusion -> clearpage -> References intro -> clearpage -> chronology
+    # -> clearpage -> bibliography. Remove only the first clearpage+intro block and place the intro
+    # immediately before \printbibliography; the existing clearpage before bibliography is retained.
+    intro_clearpage = text.rfind("\\clearpage\n", 0, note_at)
+    if intro_clearpage < 0:
+        raise ValueError("consolidated References intro has no preceding clearpage")
+    note_end_marker = "\\smallskip\n"
+    note_end = text.find(note_end_marker, note_at)
+    if note_end < 0:
+        raise ValueError("consolidated References intro has no smallskip terminator")
+    note_end += len(note_end_marker)
+    note_block = text[note_at:note_end]
+    revised = text[:intro_clearpage] + text[note_end:]
+    refs_at = revised.index(_REFERENCES_PRINT)
+    revised = revised[:refs_at] + note_block + revised[refs_at:]
 
-    if revised.index(_CHRONOLOGY_INPUT) > revised.index(_REFERENCES_HEADING):
-        raise ValueError("Detailed Chronology still follows References heading after reorder")
+    chronology_at = revised.index(_CHRONOLOGY_INPUT)
+    note_at = revised.index(_REFERENCES_NOTE_PREFIX)
+    refs_at = revised.index(_REFERENCES_PRINT)
+    if not chronology_at < note_at < refs_at:
+        raise ValueError("failed to establish conclusion -> Detailed Chronology -> References order")
     path.write_text(revised, encoding="utf-8")
     return True
 
@@ -164,7 +182,7 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     main_path = output_dir / main_rel
     if not main_path.is_file():
         raise ValueError("main TeX missing")
-    chronology_moved = _reorder_chronology_before_references(main_path)
+    references_intro_moved = _normalize_chronology_reference_order(main_path)
     main_sha = visual.sha(main_path)
     new_manifest["main_tex"] = {"path": main_rel, "sha256": main_sha}
 
@@ -190,7 +208,7 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
             "bibliography_draft_package_article_count": draft_article_count,
             "bibliography_derived_reader_layers_skipped": skipped_derived,
             "detailed_chronology_before_references": True,
-            "detailed_chronology_input_moved": chronology_moved,
+            "references_intro_moved_after_chronology": references_intro_moved,
         }
     )
     new_manifest["layout_revision"] = lr
@@ -218,6 +236,7 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
         "draft_package_article_count": draft_article_count,
         "derived_reader_layers_skipped": skipped_derived,
         "detailed_chronology_before_references": True,
+        "references_intro_moved_after_chronology": references_intro_moved,
     }
     visual.write_json(state_path, state)
 
@@ -235,7 +254,7 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
         "bibliography_draft_package_article_count": draft_article_count,
         "bibliography_derived_reader_layers_skipped": skipped_derived,
         "detailed_chronology_before_references": True,
-        "detailed_chronology_input_moved": chronology_moved,
+        "references_intro_moved_after_chronology": references_intro_moved,
         "new_external_evidence": False,
         "lifecycle_state": state["lifecycle_state"],
         "latex_build_gate": state["gates"]["latex_build"],
