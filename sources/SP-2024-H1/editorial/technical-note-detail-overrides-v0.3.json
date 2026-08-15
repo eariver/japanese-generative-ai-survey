@@ -5,31 +5,39 @@
   "policy": "Source-specific editorial technical points are allowed only when deterministic extraction from the accepted hash-pinned Screening record is too thin. URLs must exactly match selected Evidence; no source-window widening.",
   "entries": {
     "Quiet-STaR": {
-      "source_urls": [
-        "http://arxiv.org/abs/2403.09629v2"
-      ],
-      "technical_points": [
-        "Quiet-STaRは、将来のテキストを説明するrationaleを各token位置で生成する学習法として、tokenwise parallel sampling、thoughtの開始・終了を示すlearnable token、extended teacher forcingを組み合わせる。著者らはcontinued pretraining後のGSM8K・CommonsenseQA等の改善を報告しているが、数値性能は著者報告として扱う。"
-      ],
+      "source_urls": ["http://arxiv.org/abs/2403.09629v2"],
+      "technical_points": ["Quiet-STaRは、将来のテキストを説明するrationaleを各token位置で生成する学習法として、tokenwise parallel sampling、thoughtの開始・終了を示すlearnable token、extended teacher forcingを組み合わせる。著者らはcontinued pretraining後のGSM8K・CommonsenseQA等の改善を報告しているが、数値性能は著者報告として扱う。"],
       "source_specificity": "Primary paper abstract/method description; no independent reproduction claim."
     },
     "Infini-attention": {
-      "source_urls": [
-        "http://arxiv.org/abs/2404.07143v2"
-      ],
-      "technical_points": [
-        "Infini-attentionは、通常のattention blockへcompressive memoryを組み込み、masked local attentionとlong-term linear attentionを単一Transformer block内で扱う構成である。著者らはbounded memory/computationを保った長文脈処理とstreaming inferenceを目的として提示しており、長文脈タスク上の性能値は著者報告として扱う。"
-      ],
+      "source_urls": ["http://arxiv.org/abs/2404.07143v2"],
+      "technical_points": ["Infini-attentionは、通常のattention blockへcompressive memoryを組み込み、masked local attentionとlong-term linear attentionを単一Transformer block内で扱う構成である。著者らはbounded memory/computationを保った長文脈処理とstreaming inferenceを目的として提示しており、長文脈タスク上の性能値は著者報告として扱う。"],
       "source_specificity": "Primary paper abstract/architecture description; no independent reproduction claim."
     },
     "Meta Llama 3": {
-      "source_urls": [
-        "https://ai.meta.com/blog/meta-llama-3/"
-      ],
-      "technical_points": [
-        "Meta Llama 3の2024年4月公開分は8B/70Bのpretrained版とinstruction-fine-tuned版で、decoder-only Transformerを基盤に128K-token vocabularyのtokenizer、両サイズでgrouped query attention (GQA)、8,192-token sequence trainingを採用した。Metaはpretraining corpusを公開情報由来15T token超と説明しており、benchmark性能はMetaによる評価として扱う。"
-      ],
+      "source_urls": ["https://ai.meta.com/blog/meta-llama-3/"],
+      "technical_points": ["Meta Llama 3の2024年4月公開分は8B/70Bのpretrained版とinstruction-fine-tuned版で、decoder-only Transformerを基盤に128K-token vocabularyのtokenizer、両サイズでgrouped query attention (GQA)、8,192-token sequence trainingを採用した。Metaはpretraining corpusを公開情報由来15T token超と説明しており、benchmark性能はMetaによる評価として扱う。"],
       "source_specificity": "Meta launch post model-architecture/training description; vendor benchmark claims remain attributed."
+    },
+    "Mixtral 8x22B": {
+      "source_urls": ["https://mistral.ai/news/mixtral-8x22b"],
+      "technical_points": ["Mixtral 8x22Bはsparse Mixture-of-Expertsモデルで、総141B parametersのうち推論時のactive parametersは39BとMistral AIが説明している。64K-token context、native function calling、Apache 2.0でのweights公開が同じリリースの主要仕様であり、性能比較はMistral AIによる評価として扱う。"],
+      "source_specificity": "Mistral AI launch post architecture, active-parameter, context, function-calling and license details."
+    },
+    "NVIDIA NIM": {
+      "source_urls": ["https://blogs.nvidia.com/blog/2024-gtc-keynote/"],
+      "technical_points": ["NVIDIA NIMはGTC 2024でinference microservicesとして提示され、NVIDIAのaccelerated-computing librariesとgenerative-AI modelsをパッケージ化し、industry-standard APIsで接続できる配備単位として説明された。NVIDIAはCUDA installed base上での利用、GPU世代に応じた再最適化、security vulnerability scanningを運用面の特徴として挙げている。"],
+      "source_specificity": "NVIDIA GTC launch post deployment/API/security properties; no throughput claim imported from later releases."
+    },
+    "Qwen2": {
+      "source_urls": ["https://qwenlm.github.io/blog/qwen2/"],
+      "technical_points": ["Qwen2は0.5B、1.5B、7B、57B-A14B、72Bのbase/instruction-tuned familyとして公開され、全サイズでGQAを採用した。Qwen Teamは英語・中国語に加えて27言語の学習データを含むこと、instruction-tuned 7B/72BでYARNを用いた最大128K context対応を説明しており、benchmark値は提供元評価として扱う。"],
+      "source_specificity": "Qwen launch post family sizes, GQA, multilingual training and context configuration."
+    },
+    "Runway Gen-3 Alpha": {
+      "source_urls": ["https://runwayml.com/research/introducing-gen-3-alpha"],
+      "technical_points": ["Gen-3 AlphaはRunwayが新しいlarge-scale multimodal training infrastructure上で学習した次世代foundation modelとして公開し、動画と画像をjointly trainingしたと説明している。同モデルはText to Video、Image to Video、Text to Imageと、Motion BrushやAdvanced Camera Controls等のcontrol modesを支える基盤として位置付けられた。"],
+      "source_specificity": "Runway launch post training modality and supported generation/control modes; quality claims remain vendor-attributed."
     }
   }
 }
