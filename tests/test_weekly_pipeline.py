@@ -16,7 +16,12 @@ CONFIG = {
         "cutoff_hour": 18,
         "cutoff_minute": 0,
         "compilation_timezone": "Asia/Tokyo",
-    }
+    },
+    "intake": {
+        "canonical_window_days": 7,
+        "front_segment_days": 4,
+        "default_segment": "full",
+    },
 }
 
 
@@ -32,7 +37,7 @@ class WeeklyPipelineCalendarTests(unittest.TestCase):
         cutoff = wp.latest_cutoff(now, CONFIG)
         self.assertEqual(cutoff.isoformat(), "2026-12-04T18:00:00-05:00")
 
-    def test_plan_carries_previous_collection_anchor(self) -> None:
+    def test_current_plan_uses_cutoff_to_cutoff_editorial_window(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             state = root / "sources" / "2026-W32" / "pipeline-state.json"
@@ -50,17 +55,33 @@ class WeeklyPipelineCalendarTests(unittest.TestCase):
             plan = wp.build_plan(
                 root,
                 CONFIG,
-                wp.parse_instant("2026-08-15T10:00:00+09:00"),
+                wp.parse_instant("2026-08-15T18:08:00+09:00"),
             )
             self.assertEqual(plan["issue_id"], "2026-W33")
-            self.assertEqual(
-                plan["editorial_cutoff"], "2026-08-14T18:00:00-04:00"
-            )
-            self.assertEqual(
-                plan["collection_window_start"], "2026-08-09T23:40:00+09:00"
-            )
+            self.assertEqual(plan["editorial_cutoff"], "2026-08-14T18:00:00-04:00")
+            self.assertEqual(plan["editorial_window_start"], "2026-08-07T18:00:00-04:00")
+            self.assertEqual(plan["editorial_window_end"], "2026-08-14T18:00:00-04:00")
+            self.assertEqual(plan["collection_window_start"], "2026-08-07T18:00:00-04:00")
+            self.assertEqual(plan["collection_window_end"], "2026-08-14T18:00:00-04:00")
+            self.assertEqual(plan["previous_collection_anchor"], "2026-08-09T23:40:00+09:00")
 
-    def test_named_bootstrap_issue_replays_its_committed_window(self) -> None:
+    def test_front_and_back_partition_same_editorial_window(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            now = wp.parse_instant("2026-08-15T18:08:00+09:00")
+            front = wp.build_plan(root, CONFIG, now, intake_segment="front")
+            back = wp.build_plan(root, CONFIG, now, intake_segment="back")
+            full = wp.build_plan(root, CONFIG, now, intake_segment="full")
+
+            self.assertEqual(front["editorial_window_start"], full["editorial_window_start"])
+            self.assertEqual(back["editorial_window_end"], full["editorial_window_end"])
+            self.assertEqual(front["collection_window_start"], full["collection_window_start"])
+            self.assertEqual(front["collection_window_end"], "2026-08-11T18:00:00-04:00")
+            self.assertEqual(back["collection_window_start"], "2026-08-11T18:00:00-04:00")
+            self.assertEqual(back["collection_window_end"], full["collection_window_end"])
+            self.assertEqual(front["collection_window_end"], back["collection_window_start"])
+
+    def test_named_bootstrap_issue_replays_legacy_committed_window(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             state = root / "sources" / "2026-W32" / "pipeline-state.json"
@@ -82,20 +103,16 @@ class WeeklyPipelineCalendarTests(unittest.TestCase):
             plan = wp.build_plan_for_issue(
                 root,
                 CONFIG,
-                wp.parse_instant("2026-08-10T14:23:28+09:00"),
+                wp.parse_instant("2026-08-15T18:08:00+09:00"),
                 "2026-W32",
             )
             self.assertEqual(plan["issue_id"], "2026-W32")
             self.assertEqual(plan["plan_source"], "pipeline-state")
-            self.assertEqual(plan["automation_mode"], "historical-replay")
-            self.assertEqual(
-                plan["collection_window_start"], "2026-08-01T00:00:00-04:00"
-            )
-            self.assertEqual(
-                plan["collection_window_end"], "2026-08-09T23:40:00+09:00"
-            )
+            self.assertEqual(plan["automation_mode"], "historical-legacy-replay")
+            self.assertEqual(plan["collection_window_start"], "2026-08-01T13:00:00+09:00")
+            self.assertEqual(plan["collection_window_end"], "2026-08-09T23:40:00+09:00")
 
-    def test_named_current_issue_prefers_rolling_previous_anchor(self) -> None:
+    def test_legacy_replay_rejects_split_segment(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             state = root / "sources" / "2026-W32" / "pipeline-state.json"
@@ -103,23 +120,40 @@ class WeeklyPipelineCalendarTests(unittest.TestCase):
             state.write_text(
                 json.dumps(
                     {
+                        "issue_id": "2026-W32",
                         "calendar": {
-                            "collection_anchor_at": "2026-08-09T23:40:00+09:00"
-                        }
+                            "editorial_cutoff": "2026-08-07T18:00:00-04:00",
+                            "cutoff_timezone": "America/New_York",
+                            "collection_window_start": "2026-08-01T00:00:00-04:00",
+                            "collection_anchor_at": "2026-08-09T23:40:00+09:00",
+                        },
                     }
                 ),
                 encoding="utf-8",
             )
+            with self.assertRaisesRegex(ValueError, "only --intake-segment full"):
+                wp.build_plan_for_issue(
+                    root,
+                    CONFIG,
+                    wp.parse_instant("2026-08-15T18:08:00+09:00"),
+                    "2026-W32",
+                    intake_segment="front",
+                )
+
+    def test_named_current_issue_does_not_require_previous_anchor(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
             plan = wp.build_plan_for_issue(
                 root,
                 CONFIG,
-                wp.parse_instant("2026-08-15T10:00:00+09:00"),
+                wp.parse_instant("2026-08-15T18:08:00+09:00"),
                 "2026-W33",
+                intake_segment="back",
             )
             self.assertEqual(plan["plan_source"], "latest-cutoff")
-            self.assertEqual(
-                plan["collection_window_start"], "2026-08-09T23:40:00+09:00"
-            )
+            self.assertEqual(plan["previous_collection_anchor"], None)
+            self.assertEqual(plan["collection_window_start"], "2026-08-11T18:00:00-04:00")
+            self.assertEqual(plan["collection_window_end"], "2026-08-14T18:00:00-04:00")
 
     def test_init_rejects_future_issue_id_instead_of_relabeling_current_cutoff(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -146,6 +180,7 @@ class WeeklyPipelineCalendarTests(unittest.TestCase):
             state_path = root / "sources" / "2026-W32" / "pipeline-state.json"
             state = json.loads(state_path.read_text(encoding="utf-8"))
             self.assertEqual(state["issue_id"], "2026-W32")
+            self.assertEqual(state["calendar"]["editorial_window_start"], "2026-07-31T18:00:00-04:00")
             self.assertEqual(state["calendar"]["editorial_cutoff"], "2026-08-07T18:00:00-04:00")
 
 
