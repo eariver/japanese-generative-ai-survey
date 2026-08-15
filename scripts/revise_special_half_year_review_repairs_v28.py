@@ -3,14 +3,15 @@
 
 The selected Evidence set also contains chronology-only and other non-card roles. Earlier
 fail-closed enrichment walked every selected Evidence record and therefore required a
-reader-facing Technical Notes technical point even for items that never appear in a Technical
-Notes file. That is the wrong scope: provenance must remain strict for rendered cards, while a
-chronology-only item should keep its selected Evidence/chronology identity without inventing a
-Technical Notes claim solely to satisfy the regeneration pipeline.
+reader-facing Technical Notes technical point even for items that never appear in the published
+Technical Notes surface. That is the wrong scope: provenance must remain strict for rendered
+cards, while chronology-only or retired note files should keep their Evidence identity without
+inventing a reader claim solely to satisfy regeneration.
 
 V28 preserves the V3 component/variant/property binding contract and changes only the enrichment
-scope. It derives the current rendered Technical Note titles from the state-pinned source and
-applies Screening-backed signal extraction / hash-bound overrides only to those titles.
+scope. It derives rendered Technical Note files from the state-pinned ``main.tex`` input graph,
+then applies Screening-backed signal extraction / hash-bound overrides only to cards in those
+files. This matches Publication Preview preflight's rendered-file boundary.
 """
 from __future__ import annotations
 
@@ -22,6 +23,8 @@ from typing import Any
 
 from scripts import revise_special_half_year_review_repairs_v13 as event
 from scripts import revise_special_half_year_review_repairs_v27 as base
+
+_INPUT_RE = re.compile(r"\\(?:input|include)\{([^}]+)\}")
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -45,6 +48,15 @@ def _title_key(value: str) -> str:
     return re.sub(r"\s+", " ", text).strip().lower()
 
 
+def _normalize_tex_path(value: str) -> str:
+    text = str(value or "").strip().replace("\\", "/")
+    while text.startswith("./"):
+        text = text[2:]
+    if text and not Path(text).suffix:
+        text += ".tex"
+    return Path(text).as_posix() if text else ""
+
+
 def _rendered_technical_note_titles(repo_root: Path, manifest: dict[str, Any]) -> set[str]:
     issue_id = str(manifest.get("issue_id") or "").strip()
     if not issue_id:
@@ -58,18 +70,33 @@ def _rendered_technical_note_titles(repo_root: Path, manifest: dict[str, Any]) -
     current_manifest = _load_json(current_manifest_path)
     source_dir = current_manifest_path.parent
 
+    main_info = current_manifest.get("main_tex")
+    main_rel = "main.tex"
+    if isinstance(main_info, dict):
+        main_rel = _normalize_tex_path(str(main_info.get("path") or main_rel))
+    main_path = source_dir / main_rel
+    if not main_path.is_file():
+        raise ValueError(f"state-pinned main TeX missing while resolving rendered Technical Notes: {main_rel}")
+    rendered_paths = {
+        _normalize_tex_path(match.group(1))
+        for match in _INPUT_RE.finditer(main_path.read_text(encoding="utf-8"))
+        if _normalize_tex_path(match.group(1))
+    }
+
     titles: set[str] = set()
     for article in current_manifest.get("articles") or []:
         if not isinstance(article, dict) or article.get("technical_notes_reader_facing") is not True:
             continue
-        rel = str(article.get("technical_notes_path") or "")
+        rel = _normalize_tex_path(str(article.get("technical_notes_path") or ""))
+        if rel not in rendered_paths:
+            continue
         path = source_dir / rel
         if not rel or not path.is_file():
-            raise ValueError(f"state-pinned reader-facing Technical Notes file missing: {rel}")
+            raise ValueError(f"state-pinned rendered Technical Notes file missing: {rel}")
         for match in event.core.NOTE_RE.finditer(path.read_text(encoding="utf-8")):
             titles.add(_title_key(match.group(1)))
     if not titles:
-        raise ValueError("state-pinned source contains no reader-facing Technical Note cards")
+        raise ValueError("state-pinned main TeX contains no rendered reader-facing Technical Note cards")
     return titles
 
 
@@ -152,10 +179,6 @@ def _merge_rendered_scope(repo_root: Path, manifest: dict[str, Any]) -> dict[str
         info["technical_point_mode"] = "EVENT_BOUNDED_SCREENING_SIGNAL_EXTRACTION"
         enriched += 1
 
-    # Non-reader Evidence remains in the returned index for chronology/selection provenance;
-    # only reader-card enrichment is scoped. The counters are attached to the manifest-local
-    # index metadata through a synthetic private key only during this build and removed by the
-    # ordinary downstream renderer, which iterates canonical Evidence records.
     manifest.setdefault("_technical_note_enrichment_scope", {})
     if isinstance(manifest["_technical_note_enrichment_scope"], dict):
         manifest["_technical_note_enrichment_scope"].update(
@@ -163,6 +186,7 @@ def _merge_rendered_scope(repo_root: Path, manifest: dict[str, Any]) -> dict[str
                 "rendered_title_count": len(rendered_titles),
                 "enriched_record_count": enriched,
                 "skipped_nonrendered_record_count": skipped_nonrendered,
+                "rendered_file_scope": "STATE_PINNED_MAIN_TEX_INPUTS_ONLY",
             }
         )
     return index
@@ -176,7 +200,7 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     finally:
         event._merge_event_bounded = previous_merge
     if isinstance(result, dict):
-        result["technical_note_enrichment_scope"] = "CURRENT_READER_RENDERED_CARDS_ONLY_V1"
+        result["technical_note_enrichment_scope"] = "STATE_PINNED_MAIN_TEX_RENDERED_CARDS_ONLY_V2"
     return result
 
 
