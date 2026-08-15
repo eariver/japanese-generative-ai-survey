@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts import revise_special_half_year_review_repairs_v15 as repair
+from scripts import revise_special_half_year_review_repairs_v16 as repair
 
 
 class HalfYearEventBoundedNotesV14Tests(unittest.TestCase):
