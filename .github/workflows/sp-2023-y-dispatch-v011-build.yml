@@ -1,0 +1,36 @@
+name: One-time SP-2023-Y v0.11 final build dispatch
+on:
+  push:
+    branches: [special/2023-Y-work]
+    paths: ['.github/workflows/sp-2023-y-dispatch-v011-build.yml']
+permissions:
+  actions: write
+  contents: write
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: special/2023-Y-work, fetch-depth: 0}
+      - name: Verify v0.11 build source
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open('sources/SP-2023-Y/pipeline-state.json'))
+          assert s['lifecycle_state']=='VALIDATED_DRAFT'
+          assert s['gates']['latex_build']=='pending'
+          assert s['provenance']['validated_issue_source']['source_version']=='v0.11'
+          assert s['provenance']['annual_chronology']['source_version']=='v0.11'
+          PY
+      - name: Dispatch canonical build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run build-special-pdf.yml --repo eariver/japanese-generative-ai-survey --ref main -f special_slug=2023-Y
+      - name: Self-delete
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm .github/workflows/sp-2023-y-dispatch-v011-build.yml
+          git add .github/workflows/sp-2023-y-dispatch-v011-build.yml
+          git commit -m 'Remove one-time SP-2023-Y v0.11 build dispatcher'
+          git push origin HEAD:special/2023-Y-work
