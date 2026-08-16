@@ -144,8 +144,12 @@ def render_tex(events: list[dict[str, Any]], unresolved: list[dict[str, Any]]) -
             current_month = month
             month_number = int(month[5:7])
             lines.extend(["\\medskip", f"\\noindent\\textbf{{{month_number}月}}\\par", "\\smallskip"])
-        lines.append(
-            f"\\noindent\\textbf{{{tex_escape(event['date'])}}}\\quad {tex_escape(event['title'])}\\par"
+        lines.extend(
+            [
+                f"\\noindent\\textbf{{{tex_escape(event['date'])}}}\\par",
+                f"{{\\raggedright {tex_escape(event['title'])}\\par}}",
+                "\\smallskip",
+            ]
         )
     if unresolved:
         lines.extend([
@@ -205,7 +209,8 @@ def materialize(repo_root: Path, special_slug: str, issue_id: str, source_versio
     row["layout_body_sha256"] = body_sha
     row["layout_transform"] = (
         "approved annual chronology package expanded from accepted Screening published_at metadata; "
-        "reader-facing event index preserves source-date precision and unresolved dates remain unresolved"
+        "date and title use separate reader-facing lines to preserve source titles without two-column justification warnings; "
+        "source-date precision and unresolved dates remain unresolved"
     )
 
     audit_rel = Path("sources") / issue_id / "chronology" / f"annual-chronology-{source_version}.json"
