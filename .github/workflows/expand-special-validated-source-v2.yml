@@ -176,8 +176,10 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add "sources/${SPECIAL_ID}/pipeline-state.json" \
-                  "sources/${SPECIAL_ID}/chronology" \
                   "surveys/special/${SPECIAL_SLUG}/revisions/${SOURCE_VERSION}"
+          if [ -d "sources/${SPECIAL_ID}/chronology" ]; then
+            git add "sources/${SPECIAL_ID}/chronology"
+          fi
           git diff --cached --quiet && exit 0
           git commit -m "Expand reader-facing source ${SOURCE_VERSION} for ${SPECIAL_ID}"
           git push origin "HEAD:${WORK_BRANCH}"
