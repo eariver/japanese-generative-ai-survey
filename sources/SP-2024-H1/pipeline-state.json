@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "issue_id": "SP-2024-H1",
   "edition_kind": "RETROSPECTIVE_PERIOD",
-  "lifecycle_state": "RELEASE_CANDIDATE",
+  "lifecycle_state": "VALIDATED_DRAFT",
   "revision": "v0.1",
   "calendar": {
     "editorial_cutoff": "2024-06-30T23:59:59Z",
@@ -21,7 +21,7 @@
     "issue_architecture": "passed",
     "article_draft": "passed",
     "claim_and_chronology_validation": "passed",
-    "latex_build": "passed",
+    "latex_build": "pending",
     "visual_review": "pending",
     "freeze": "pending"
   },
@@ -77,17 +77,17 @@
       "sha256": "6624c7d3d0fade23554d4263e6e657cde5afb0a757a1d3cf1724e17c637d30f2"
     },
     "validated_issue_source": {
-      "path": "surveys/special/2024-H1/revisions/v0.13/source-manifest.json",
-      "sha256": "ac931d6123b67488fdd5cce1ea3dde6b20bc88a5da2cb05d1aeba53b660a9e9b",
-      "source_version": "v0.13",
+      "path": "surveys/special/2024-H1/revisions/v0.14/source-manifest.json",
+      "sha256": "cc62908bb6307463f481006a4dfc2952f1a7142ab589b68d6169b5b034cf8bec",
+      "source_version": "v0.14",
       "layout_mode": "local two-column multicol narrative; full-width chapter headings, standfirsts, Technical Notes",
-      "layout_revision_sha256": "1773fd8c6f1f1d34eb3d925be9189e354b1d9220b71f3abb8e901aa98b665904"
+      "layout_revision_sha256": "d8782cef580645fb2bff79d8a6a89d8e93bb64bba5e9803b6865db3612ce7532"
     },
     "reader_layout_revision": {
-      "source_version": "v0.13",
-      "layout_revision_path": "sources/SP-2024-H1/editorial/layout-revision-v0.13.json",
-      "layout_revision_sha256": "1773fd8c6f1f1d34eb3d925be9189e354b1d9220b71f3abb8e901aa98b665904",
-      "reason": "Incremental Publication Preview repair after SP-2024-H1 v0.12 Human Review for #153, #54, and #191, including chapter-crossing duplicate-card entity audit."
+      "source_version": "v0.14",
+      "layout_revision_path": "sources/SP-2024-H1/editorial/layout-revision-v0.14.json",
+      "layout_revision_sha256": "d8782cef580645fb2bff79d8a6a89d8e93bb64bba5e9803b6865db3612ce7532",
+      "reason": "Residual Issue #191 repair: prevent current living-page navigation chrome from being misattributed to historical Command R / Command R+ events by recognizing zero-padded event dates and failing closed on long unanchored snapshots. Reuse the existing hash-bound selected-Evidence editorial technical-point overrides for cards that intentionally cannot satisfy the stricter event-window extractor without widening provenance, then add only revision-local Human-reviewed exceptions through an additive overlay."
     },
     "reference_title_revision": {
       "source_version": "v0.4",
@@ -172,25 +172,6 @@
       "entity_binding_contract": "SUBJECT_COMPONENT_VARIANT_PROPERTY_BINDING_V3",
       "previous_preview_pdf_sha256": "63c79a64c0d79538e3d6a9bf71cb08cb736ede0da8f555c34daf959b2d666aae",
       "previous_preview_workflow_run_id": 31923524195
-    },
-    "latex_build": {
-      "workflow_run_id": 31938903937,
-      "pdf_sha256": "1a5728c60f660c8e0a65b7833a5113b2064cc213431d80f5f568bbe22d778877",
-      "page_count": 48,
-      "source_version": "v0.13",
-      "validated_issue_source_path": "worktree/surveys/special/2024-H1/revisions/v0.13/source-manifest.json",
-      "validated_issue_source_sha256": "ac931d6123b67488fdd5cce1ea3dde6b20bc88a5da2cb05d1aeba53b660a9e9b",
-      "page_budget": {
-        "soft_target": 64,
-        "hard_max": 96,
-        "below_soft_target": true,
-        "policy": "manifest-soft-target-hard-ceiling"
-      },
-      "build_style": {
-        "control_commit_sha": "c305fb1d72287a5ee9f8047e4aca541384da15b0",
-        "path": "templates/survey/jgaisurvey.sty",
-        "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
-      }
     }
   },
   "provenance_history": {
@@ -281,6 +262,13 @@
         "source_version": "v0.12",
         "layout_mode": "local two-column multicol narrative; full-width chapter headings, standfirsts, Technical Notes",
         "layout_revision_sha256": "656858c9776cc6a1e9cf58ff040bb1d648ed5dc043359507254949dea43fdce8"
+      },
+      {
+        "path": "surveys/special/2024-H1/revisions/v0.13/source-manifest.json",
+        "sha256": "ac931d6123b67488fdd5cce1ea3dde6b20bc88a5da2cb05d1aeba53b660a9e9b",
+        "source_version": "v0.13",
+        "layout_mode": "local two-column multicol narrative; full-width chapter headings, standfirsts, Technical Notes",
+        "layout_revision_sha256": "1773fd8c6f1f1d34eb3d925be9189e354b1d9220b71f3abb8e901aa98b665904"
       }
     ],
     "latex_build": [
@@ -413,6 +401,25 @@
         },
         "build_style": {
           "control_commit_sha": "69a5200ac712dd976f1876272b964b7c010cff9f",
+          "path": "templates/survey/jgaisurvey.sty",
+          "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+        }
+      },
+      {
+        "workflow_run_id": 31938903937,
+        "pdf_sha256": "1a5728c60f660c8e0a65b7833a5113b2064cc213431d80f5f568bbe22d778877",
+        "page_count": 48,
+        "source_version": "v0.13",
+        "validated_issue_source_path": "worktree/surveys/special/2024-H1/revisions/v0.13/source-manifest.json",
+        "validated_issue_source_sha256": "ac931d6123b67488fdd5cce1ea3dde6b20bc88a5da2cb05d1aeba53b660a9e9b",
+        "page_budget": {
+          "soft_target": 64,
+          "hard_max": 96,
+          "below_soft_target": true,
+          "policy": "manifest-soft-target-hard-ceiling"
+        },
+        "build_style": {
+          "control_commit_sha": "c305fb1d72287a5ee9f8047e4aca541384da15b0",
           "path": "templates/survey/jgaisurvey.sty",
           "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
         }
