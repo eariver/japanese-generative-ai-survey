@@ -1,7 +1,7 @@
 # Retrospective Special Backfill Bootstrap
 
 Status: stable cross-session bootstrap contract  
-Updated: 2026-08-14
+Updated: 2026-08-16
 
 ## Purpose
 
@@ -18,6 +18,7 @@ Examples:
 - `2026-M03 Special` -> `SP-2026-M03`
 - `2025-H2 Special` -> `SP-2025-H2`
 - `2024-H1 Special` -> `SP-2024-H1`
+- `2023-Y Special` -> `SP-2023-Y`
 
 Do not infer the target from the most recently completed Special, gaps in history, previous chat state, or an older edition's cadence.
 
@@ -32,7 +33,7 @@ When asked to start or continue a historical Special:
 3. Inspect `specials/<slug>/edition.json`, `sources/SP-<slug>/pipeline-state.json`, survey source, init/work branches, and relevant PRs.
 4. If the edition already exists, resume from repository-recorded lifecycle/provenance.
 5. If it does not exist, treat the user's start request as authorization for deterministic initialization: create/validate the init state, merge the init PR, create the work branch, and continue without asking for a separate confirmation.
-6. Follow the applicable period guide; half-year editions additionally use `docs/half-year-retrospective-specials.md`.
+6. Follow the applicable period guide; half-year editions additionally use `docs/half-year-retrospective-specials.md`, and annual editions additionally use `docs/annual-retrospective-specials.md`.
 7. Proceed autonomously through non-Human-Gate stages and stop at the requested Human Gate.
 
 ## Human Gate contract
