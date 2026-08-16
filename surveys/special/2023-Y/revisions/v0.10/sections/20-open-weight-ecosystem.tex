@@ -1,0 +1,46 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{LLaMAからMixtralへ――open weightsは生態系になった}
+\label{pkg:open-weight-ecosystem}
+\noindent\textbf{2023年は、公開されたweightsを起点に、規模、言語、専門化、効率、配布条件の異なるモデル系列が並走し始めた年だった。LLaMA/Llama 2、Falcon、Qwen、Mistral/Mixtralを通じて、open weightsをopen sourceやopen trainingと同一視せず、その多様化を追う。}\autocite{src-00c370ab2324,src-1fd43f93adcc,src-240ca564b6b8,src-3db09fede330,src-5c8e2db8871a,src-74aa7e2a7ca4,src-81f670ec1e74,src-8bdb904686fb,src-9df482e2c96c,src-b7e5243e6d59,src-bc7aba201f01,src-d4b6359bbad1,src-dd2cfa98160d,src-f0349196879e}
+
+\subsection{「open」を一つの属性にしない}
+
+openという一語で括られがちなモデル群の公開範囲は同じではない。weightsが取得できること、利用条件が広いこと、学習データや学習手順まで再現可能であることは別の軸である。2023年のopen-weight拡大は、単一の公開モデルが現れたというより、異なる公開境界を持つ複数の系列が競争可能になった出来事として読む方が正確である。\autocite{src-00c370ab2324,src-1fd43f93adcc,src-240ca564b6b8,src-3db09fede330,src-5c8e2db8871a,src-74aa7e2a7ca4,src-81f670ec1e74,src-8bdb904686fb,src-9df482e2c96c,src-b7e5243e6d59,src-bc7aba201f01,src-d4b6359bbad1,src-dd2cfa98160d,src-f0349196879e}
+
+
+モデルの技術的特徴だけでなく、licenseとaccessの条件が利用可能性を規定する。Llama 2以降の広い利用、FalconやQwenなど他系列の登場、Mistral系の公開は、weights公開の有無だけでは説明できない実装・再配布上の差を伴う。したがって本稿では「open」という形容ではなく、公開された成果物と利用条件を分けて記述する。\autocite{src-00c370ab2324,src-1fd43f93adcc,src-240ca564b6b8,src-3db09fede330,src-5c8e2db8871a,src-74aa7e2a7ca4,src-81f670ec1e74,src-8bdb904686fb,src-9df482e2c96c,src-b7e5243e6d59,src-bc7aba201f01,src-d4b6359bbad1,src-dd2cfa98160d,src-f0349196879e}
+
+
+この区別は再現性の議論でも重要になる。weightsが入手できれば推論やfine-tuningの実験はしやすくなるが、元のpretrainingを追試できることまでは保証しない。反対に、学習工程の透明性を高めるにはdata、code、recipe、checkpointなど別の成果物が必要になる。open-weight ecosystemは再現性を完成させたのではなく、どこまで公開されれば何を検証できるかという段階差を明確にした。\autocite{src-240ca564b6b8,src-3db09fede330,src-5c8e2db8871a,src-8bdb904686fb,src-9df482e2c96c,src-b7e5243e6d59,src-bc7aba201f01,src-d4b6359bbad1}
+
+
+\subsection{単発モデルからfamilyと派生用途へ}
+
+年の進行とともに、open-weightモデルは単発のbase modelからfamilyへ拡張した。汎用モデルに加え、instruction tuning、codeなどの専門化、複数サイズ、複数言語への展開が進み、利用者は一つの代表モデルを選ぶのではなく、用途と計算資源に合わせて系列内外を比較するようになった。\autocite{src-00c370ab2324,src-240ca564b6b8,src-3db09fede330,src-5c8e2db8871a,src-8bdb904686fb,src-9df482e2c96c,src-b7e5243e6d59,src-bc7aba201f01,src-d4b6359bbad1,src-dd2cfa98160d,src-f0349196879e}
+
+
+選択肢が増えたことで、モデル選定の問いも変わった。最大規模のモデルを使うかどうかだけでなく、対象言語、用途、hardware予算、再配布条件、fine-tuningの必要性を合わせて判断する必要がある。これはopen-weightの価値を単純な「無料で使えるモデル」に還元せず、deployment設計の自由度として捉える視点につながる。\autocite{src-00c370ab2324,src-1fd43f93adcc,src-240ca564b6b8,src-3db09fede330,src-5c8e2db8871a,src-74aa7e2a7ca4,src-81f670ec1e74,src-8bdb904686fb,src-9df482e2c96c,src-b7e5243e6d59,src-bc7aba201f01,src-d4b6359bbad1,src-dd2cfa98160d,src-f0349196879e}
+
+
+weightsが手元に来ると、次に問題になるのは動かし方である。量子化、fine-tuning、serving、API互換性などの周辺実装が価値を左右し、open-weightの拡大はruntime/adaptation layerの需要を強くした。2023年のopen ecosystemはモデル配布だけで閉じず、その周辺にあるtoolingやdeployment技術と結び付いて初めて実利用の選択肢になった。\autocite{src-00c370ab2324,src-240ca564b6b8,src-3db09fede330,src-8bdb904686fb,src-9df482e2c96c,src-b7e5243e6d59,src-bc7aba201f01,src-dd2cfa98160d,src-f0349196879e}
+
+
+\subsection{規模・言語・効率という複数の差別化軸}
+
+Falcon、Qwen、Mistralなどが加わることで、open-weight側にも単一企業・単一地域だけではない多様なfamilyが並んだ。この多様化は性能順位だけでなく、扱う言語やmodel size、利用条件といった異なる差別化軸を持ち込んだ。open ecosystemの競争は「誰が最強モデルを公開したか」より、どの制約条件に対して選択肢を提供したかを見る方が実態に近い。\autocite{src-00c370ab2324,src-1fd43f93adcc,src-5c8e2db8871a,src-74aa7e2a7ca4,src-81f670ec1e74,src-d4b6359bbad1,src-dd2cfa98160d,src-f0349196879e}
+
+
+年末のMixtralは、この多様化にarchitectureの選択肢をさらに加えた。ここで重要なのはMoEが既存方式を置き換えたと結論することではなく、公開weightsの世界でもparameter countだけでない効率設計が主要な比較軸へ入った点である。\autocite{src-00c370ab2324,src-dd2cfa98160d,src-f0349196879e}
+
+
+MoEのような設計が注目されると、モデル規模の表記だけでは計算コストや利用特性を説明しにくくなる。総parameter数、実際に使われる計算、memory、serving方法は別の変数であり、open-weight側でもmodel architectureとruntimeを一緒に評価する必要が生まれる。これは次章の「モデルを動かす技術」が独立した競争軸になったこととも接続する。\autocite{src-00c370ab2324,src-dd2cfa98160d,src-f0349196879e}
+
+
+\subsection{open-weight化が変えたのは比較可能性の範囲}
+
+2023年の変化を年次的にまとめると、open-weightの重要性は「閉じたモデルの代替品ができた」ことだけではない。複数familyを同じhardwareやtoolchain上で比較し、用途別にadaptし、local/deployment条件を選ぶ余地が増えたことで、モデルの価値が周辺stackとの組み合わせで決まる生態系へ移った点にある。\autocite{src-00c370ab2324,src-1fd43f93adcc,src-240ca564b6b8,src-3db09fede330,src-5c8e2db8871a,src-74aa7e2a7ca4,src-81f670ec1e74,src-8bdb904686fb,src-9df482e2c96c,src-b7e5243e6d59,src-bc7aba201f01,src-d4b6359bbad1,src-dd2cfa98160d,src-f0349196879e}
+
+
+\begin{claimboundary}
+各プロジェクトや著者による性能比較は、その評価条件に基づく主張として扱う。公開範囲が広いことも、性能や再現性が自動的に保証されることを意味しない。\autocite{src-240ca564b6b8,src-3db09fede330,src-8bdb904686fb,src-9df482e2c96c,src-b7e5243e6d59,src-bc7aba201f01}
+\end{claimboundary}

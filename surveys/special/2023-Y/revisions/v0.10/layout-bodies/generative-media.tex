@@ -1,0 +1,46 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+
+\subsection{同じ生成でも公開surfaceが違う}
+
+生成メディアの進歩は「新しい画像モデルが出た」という一列の出来事ではない。DALL-E 3は会話型製品との接続、SDXL系はmodel releaseと高速化、Stable Video Diffusionは動画生成、Fireflyは既存クリエイティブツールとの統合という異なるsurfaceを持つ。\autocite{src-091bbe9dbf4e,src-096341c0ccf6,src-0b410c70bfc7,src-18f22707bf78,src-2b694ab9a461,src-2c97fc5583a3,src-317afaba6510,src-9bc8e7751f80,src-9da0d929aa45,src-a4f61fbe35c5,src-ba80e5e27a11,src-e79065444906}
+
+
+研究・モデル公開、API提供、製品機能への統合は区別すべきである。ユーザーが利用できる生成機能の価値はmodel qualityだけでなく、prompt作成支援、編集workflow、配布形態、既存アプリケーションとの接続によっても変わる。\autocite{src-091bbe9dbf4e,src-18f22707bf78,src-2b694ab9a461,src-317afaba6510,src-9bc8e7751f80,src-9da0d929aa45,src-a4f61fbe35c5,src-ba80e5e27a11,src-e79065444906}
+
+
+配布形態の違いは、誰がどこでgeneration pipelineを制御できるかにも関係する。APIや統合製品ではprovider側の更新がそのまま利用体験へ反映されやすい。一方、download可能なmodelでは実行環境やworkflowを利用者側が組み替えられる余地が大きい。2023年は画像生成でこの二つの経路が明確に並走した。\autocite{src-091bbe9dbf4e,src-18f22707bf78,src-2b694ab9a461,src-317afaba6510,src-9bc8e7751f80,src-9da0d929aa45,src-a4f61fbe35c5,src-ba80e5e27a11,src-e79065444906}
+
+
+\subsection{model qualityから制作workflowへ}
+
+DALL-E 3のように会話UIと接続されると、画像生成は一回のpromptから画像を返すだけでなく、意図の言語化、修正指示、再生成という対話loopの中へ入る。ここではlanguage modelとimage modelの役割を同一視せず、promptを組み立てる層と画像を生成する層が連携するsystemとして見ることが重要になる。\autocite{src-9bc8e7751f80,src-ba80e5e27a11}
+
+
+Firefly/Generative Fillのような既存編集環境への統合では、生成は完成画像を一から作る機能だけではなく、局所編集や制作工程の一操作になる。生成AIが「専用サイトで使うモデル」から「既存softwareの中に埋め込まれた機能」へ移ることで、評価対象も単体outputからworkflow全体へ広がる。\autocite{src-2b694ab9a461,src-a4f61fbe35c5}
+
+
+SDXL Turboのような高速化方向やGenerative Fillのような編集統合は、生成品質だけでなくiteration timeとworkflowへの組み込みが競争軸になることを示した。生成モデルは単体アプリではなく、制作工程の一部として評価され始めた。\autocite{src-091bbe9dbf4e,src-18f22707bf78,src-2b694ab9a461,src-317afaba6510,src-9da0d929aa45,src-a4f61fbe35c5,src-e79065444906}
+
+
+制作では一回の最高品質より、試行回数と待ち時間が重要な場面も多い。生成が速くなれば、promptや編集条件を変えて複数案を比較するloopを短くできる。そのためfast generationは単なるbenchmark上の速度ではなく、人間がmodel outputを評価し次の指示を出すinteraction cadenceを変える技術でもある。\autocite{src-091bbe9dbf4e,src-18f22707bf78,src-317afaba6510,src-9da0d929aa45,src-e79065444906}
+
+
+\subsection{画像から動画へ――同じ生成でも制約は増える}
+
+画像生成と動画生成も同じ成熟度として扱えない。Stable Video Diffusionの登場は、画像で進んだ生成モデルの公開・利用パターンが動画へ拡張され始めたことを示すが、対象となる出力、計算量、評価方法、製品化の境界は異なる。\autocite{src-091bbe9dbf4e,src-096341c0ccf6,src-0b410c70bfc7,src-18f22707bf78,src-2c97fc5583a3,src-317afaba6510,src-9da0d929aa45,src-e79065444906}
+
+
+動画では個々のframe品質だけでなく、時間方向の一貫性やmotionを扱う必要があるため、静止画と同じ評価軸だけでは足りない。さらにsequenceが増えるほど計算・memory・出力sizeも大きくなる。2023年のvideo generationは完成された代替手段というより、生成メディアstackが時間軸を持つ出力へ拡張し始めた段階として位置付ける。\autocite{src-096341c0ccf6,src-0b410c70bfc7,src-2c97fc5583a3}
+
+
+\subsection{生成メディアも多層systemとして見る}
+
+年末までの流れをまとめると、生成メディアはmodel weightsだけでなく、prompt/interface、runtime、編集workflow、distributionを含むstackへ広がった。open model、hosted API、会話型製品、desktop application integrationは同じ技術を別の場所に載せただけではなく、利用者が制御できる範囲とiteration loopを変える異なるproduct architectureである。\autocite{src-091bbe9dbf4e,src-096341c0ccf6,src-0b410c70bfc7,src-18f22707bf78,src-2b694ab9a461,src-2c97fc5583a3,src-317afaba6510,src-9bc8e7751f80,src-9da0d929aa45,src-a4f61fbe35c5,src-ba80e5e27a11,src-e79065444906}
+
+
+この多層化により、比較の仕方も難しくなる。model outputの好み、生成速度、編集しやすさ、tool integrationは別の指標であり、一つのscoreへまとめると製品の違いを見失う。年間史では「どのモデルが最も高品質か」ではなく、生成能力がどのworkflowへ組み込まれたかを軸に変化を追う。\autocite{src-091bbe9dbf4e,src-18f22707bf78,src-2b694ab9a461,src-317afaba6510,src-9bc8e7751f80,src-9da0d929aa45,src-a4f61fbe35c5,src-ba80e5e27a11,src-e79065444906}
+
+
+\begin{claimboundary}
+画質、速度、創造性、安全性などの比較値は、各vendor/project/authorの条件に依存する。本稿はrelease形態と技術方向を整理し、異なる評価条件を独立した共通ランキングへ換算しない。\autocite{src-9bc8e7751f80,src-ba80e5e27a11}
+\end{claimboundary}
