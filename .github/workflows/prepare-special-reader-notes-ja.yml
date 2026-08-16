@@ -64,6 +64,7 @@ jobs:
         shell: bash
         env:
           SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
+          SPECIAL_SLUG: ${{ inputs.special_slug }}
         run: |
           set -euo pipefail
           output="sources/${SPECIAL_ID}/editorial/technical-notes-ja-v0.1.json"
@@ -85,6 +86,15 @@ jobs:
           assert data.get('status') in {'DRAFT','READY'}, data.get('status')
           PY
             printf '%s\n' '{"schema_version":"1.0","status":"EXISTING_TEMPLATE_REUSED"}' > special-reader-notes-ja-prepare-audit.json
+          fi
+
+          if [[ "$SPECIAL_SLUG" == *-Y ]] && ! { [ -d "$overrides_path" ] && compgen -G "$overrides_path/part-*.json" >/dev/null; }; then
+            PYTHONPATH=control-src python control-src/scripts/prepare_annual_reader_notes_ja_overrides.py \
+              --repo-root worktree \
+              --issue-id "$SPECIAL_ID" \
+              --summary "$output" \
+              --overrides-dir "$overrides" \
+              > special-reader-notes-ja-annual-overrides-audit.json
           fi
 
           if [ -d "$overrides_path" ] && compgen -G "$overrides_path/part-*.json" >/dev/null; then
@@ -120,6 +130,9 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add "sources/${SPECIAL_ID}/editorial/technical-notes-ja-v0.1.json"
+          if [ -d "sources/${SPECIAL_ID}/editorial/technical-notes-ja-overrides-v0.1" ]; then
+            git add "sources/${SPECIAL_ID}/editorial/technical-notes-ja-overrides-v0.1"
+          fi
           if git diff --cached --quiet; then
             echo 'Japanese Technical Notes summary artifact is already current.'
             exit 0
@@ -132,6 +145,7 @@ jobs:
           name: special-reader-notes-ja-${{ inputs.special_slug }}
           path: |
             special-reader-notes-ja-prepare-audit.json
+            special-reader-notes-ja-annual-overrides-audit.json
             special-reader-notes-ja-fill-audit.json
           if-no-files-found: error
           retention-days: 14
