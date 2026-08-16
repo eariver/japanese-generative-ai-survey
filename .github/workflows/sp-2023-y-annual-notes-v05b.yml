@@ -1,0 +1,62 @@
+name: One-time SP-2023-Y v0.5 Annual legacy repair
+on:
+  push:
+    branches: [special/2023-Y-work]
+    paths: ['.github/workflows/sp-2023-y-annual-notes-v05b.yml']
+permissions:
+  contents: write
+concurrency:
+  group: sp-2023-y-annual-notes-v05
+  cancel-in-progress: false
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: main, path: control-src, fetch-depth: 1}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: actions/checkout@v6
+        with: {ref: special/2023-Y-work, path: worktree, fetch-depth: 0}
+      - name: Verify recovery boundary
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2023-Y check
+          python - <<'PY'
+          import json,pathlib
+          r=pathlib.Path('worktree'); s=json.load(open(r/'sources/SP-2023-Y/pipeline-state.json'))
+          assert s['lifecycle_state']=='RELEASE_CANDIDATE'
+          assert s['gates']['visual_review']=='pending' and s['gates']['freeze']=='pending'
+          assert 'publication_preview' not in s.get('provenance',{})
+          PY
+      - name: Build v0.5
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python control-src/scripts/revise_special_annual_source_specific_notes_v5.py --repo-root worktree --special-slug 2023-Y --issue-id SP-2023-Y --source-version v0.5 > audit.json
+          cat audit.json
+      - name: Verify #139 contracts
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,hashlib,pathlib
+          r=pathlib.Path('worktree'); s=json.load(open(r/'sources/SP-2023-Y/pipeline-state.json'))
+          assert s['lifecycle_state']=='VALIDATED_DRAFT' and s['gates']['latex_build']=='pending'
+          p=s['provenance']['validated_issue_source']; assert p['source_version']=='v0.5'
+          f=r/p['path']; assert hashlib.sha256(f.read_bytes()).hexdigest()==p['sha256']
+          m=json.load(open(f)); n=m['reader_facing_technical_notes']
+          assert n['generic_fallback_findings']==0 and n['duplicate_bullet_findings']==0
+          assert n['source_specific_detail_visible_card_count']==n['source_specific_detail_enrichment_count']==26
+          assert n['subject_entity_binding_contract']=='SUBJECT_COMPONENT_VARIANT_PROPERTY_BINDING_V3'
+          c=s['provenance']['annual_chronology']; assert c['event_count']==75 and c['unresolved_date_count']==3
+          PY
+      - name: Commit result
+        run: |
+          set -euo pipefail
+          cd worktree
+          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm -f .github/workflows/sp-2023-y-annual-notes-v05.yml .github/workflows/sp-2023-y-annual-notes-v05b.yml
+          git add -A surveys/special/2023-Y sources/SP-2023-Y .github/workflows
+          git commit -m 'Repair SP-2023-Y Technical Notes for #139 (v0.5)'
+          git push origin HEAD:special/2023-Y-work
+      - uses: actions/upload-artifact@v4
+        with: {name: sp-2023-y-v0.5-technical-notes-audit, path: audit.json, retention-days: 14}
