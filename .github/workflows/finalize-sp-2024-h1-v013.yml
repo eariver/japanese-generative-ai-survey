@@ -1,0 +1,391 @@
+name: Finalize SP-2024-H1 v0.13 review repairs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/finalize-sp-2024-h1-v013.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: finalize-sp-2024-h1-v013
+  cancel-in-progress: false
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Special work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2024-H1-work
+          path: worktree
+          fetch-depth: 0
+
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+
+      - name: Normalize v0.13 source, audit, manifest, and state
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+          import copy
+          import hashlib
+          import json
+          from pathlib import Path
+
+          root = Path('worktree')
+          issue = 'SP-2024-H1'
+          slug = '2024-H1'
+          version = 'v0.13'
+          parent_version = 'v0.12'
+          rev_root = root / 'surveys' / 'special' / slug / 'revisions'
+          parent_dir = rev_root / parent_version
+          out = rev_root / version
+          state_path = root / 'sources' / issue / 'pipeline-state.json'
+          marker_path = root / 'sources' / issue / 'editorial' / f'layout-revision-{version}.json'
+
+          def sha(path: Path) -> str:
+              return hashlib.sha256(path.read_bytes()).hexdigest()
+
+          def load(path: Path):
+              return json.loads(path.read_text(encoding='utf-8'))
+
+          def write(path: Path, value) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          state = load(state_path)
+          current = copy.deepcopy((state.get('provenance') or {}).get('validated_issue_source') or {})
+          parent_manifest_path = parent_dir / 'source-manifest.json'
+          assert current.get('path') == parent_manifest_path.relative_to(root).as_posix(), current
+          assert current.get('source_version') == parent_version, current
+          assert state.get('lifecycle_state') == 'RELEASE_CANDIDATE', state.get('lifecycle_state')
+          assert state['gates']['latex_build'] == 'passed'
+          assert state['gates']['visual_review'] == 'pending'
+          assert state['gates']['freeze'] == 'pending'
+          assert sha(parent_manifest_path) == current.get('sha256'), (sha(parent_manifest_path), current.get('sha256'))
+          assert out.is_dir(), out
+
+          expected_changed = {
+              'main.tex',
+              'technical-notes/30-edge-private-notes.tex',
+              'technical-notes/40-architecture-efficiency-notes.tex',
+              'technical-notes/70-safety-control-notes.tex',
+          }
+          parent_files = {p.relative_to(parent_dir).as_posix(): p for p in parent_dir.rglob('*') if p.is_file()}
+          out_files = {p.relative_to(out).as_posix(): p for p in out.rglob('*') if p.is_file()}
+          observed = {
+              rel for rel in parent_files.keys() & out_files.keys()
+              if rel not in {'source-manifest.json', 'technical-note-entity-binding-audit.json'}
+              and parent_files[rel].read_bytes() != out_files[rel].read_bytes()
+          }
+          assert observed == expected_changed, (observed, expected_changed)
+          assert parent_files.keys() == out_files.keys(), (parent_files.keys() - out_files.keys(), out_files.keys() - parent_files.keys())
+
+          openelm_path = out / 'technical-notes/30-edge-private-notes.tex'
+          deepseek_path = out / 'technical-notes/40-architecture-efficiency-notes.tex'
+          safety_path = out / 'technical-notes/70-safety-control-notes.tex'
+
+          openelm = openelm_path.read_text(encoding='utf-8')
+          old_openelm_tail = 'これらをOpenELM自身の属性として扱い、同一資料近傍のimage generation等の別subjectの語をOpenELMへ帰属させない。'
+          assert old_openelm_tail in openelm
+          openelm = openelm.replace(old_openelm_tail, '', 1)
+          openelm_path.write_text(openelm, encoding='utf-8')
+
+          deepseek = deepseek_path.read_text(encoding='utf-8')
+          old_deepseek_tail = '`source links in search answers`は両モデルのtechnical propertyとして扱わず、別source/event近傍の語をfamily cardへ混在させない。'
+          assert old_deepseek_tail in deepseek
+          deepseek = deepseek.replace(old_deepseek_tail, '', 1)
+          old_longrope = '論文中の8Kはextended modelのcontext上限ではなく、短いcontextでの性能回復のために行うreadjustmentの長さとして記載される値である。したがって本欄では8KをLongRoPE自身のcontext windowとして扱わない。'
+          new_longrope = '論文中では、短いcontextでの性能回復に用いるreadjustment lengthを8Kとしている。これはextended modelのcontext上限ではなく、2048K tokens超へのcontext extensionとは値の役割が異なる。'
+          assert old_longrope in deepseek
+          deepseek = deepseek.replace(old_longrope, new_longrope, 1)
+          deepseek_path.write_text(deepseek, encoding='utf-8')
+
+          safety = safety_path.read_text(encoding='utf-8')
+          assert safety.count('Many-shot jailbreaking') >= 2
+          assert 'Many-shot jailbreaking & 主要資料 & 安全性研究 &' in safety
+          many_start = safety.index('\\begin{technicalnote}{Many-shot jailbreaking}')
+          many_end = safety.index('\\end{technicalnote}', many_start)
+          many = safety[many_start:many_end]
+          assert '種別 & 安全性研究' in many
+          assert '安全性事象' not in many
+
+          audit_path = out / 'technical-note-entity-binding-audit.json'
+          audit = load(audit_path)
+          assert audit.get('contract') == 'SUBJECT_COMPONENT_VARIANT_PROPERTY_BINDING_V3'
+          audit['source_version'] = version
+          rows = {row['title']: row for row in audit.get('artifacts') or []}
+
+          ds = rows['DeepSeek-V2 / DeepSeek-Coder-V2']
+          accepted = list(ds.get('accepted_entity_bound_signals') or [])
+          rejected = list(ds.get('rejected_entity_bound_signals') or [])
+          if '128K context' not in accepted:
+              accepted.append('128K context')
+          rejected = [x for x in rejected if x != '128K context']
+          ds['accepted_entity_bound_signals'] = accepted
+          ds['rejected_entity_bound_signals'] = rejected
+          ds['binding_note'] = '128K context is explicitly bound to DeepSeek-Coder-V2; MoE is shared family architecture. Other nearby numeric/property tokens remain rejected unless variant ownership is explicit.'
+
+          lr = rows['LongRoPE']
+          lr['accepted_entity_bound_signals'] = [x for x in (lr.get('accepted_entity_bound_signals') or []) if x != '8K context']
+          if '8K readjustment length' not in lr['accepted_entity_bound_signals']:
+              lr['accepted_entity_bound_signals'].append('8K readjustment length')
+          lr_rejected = list(lr.get('rejected_entity_bound_signals') or [])
+          if '8K context' not in lr_rejected:
+              lr_rejected.append('8K context')
+          lr['rejected_entity_bound_signals'] = lr_rejected
+          lr['binding_note'] = '8K is a short-context readjustment length, not LongRoPE context capacity; context extension is described separately as exceeding 2048K tokens.'
+
+          oe = rows['OpenELM']
+          oe_acc = list(oe.get('accepted_entity_bound_signals') or [])
+          for signal in ('layer-wise scaling strategy', 'MLX conversion code'):
+              if signal not in oe_acc:
+                  oe_acc.append(signal)
+          oe['accepted_entity_bound_signals'] = oe_acc
+          oe_rej = list(oe.get('rejected_entity_bound_signals') or [])
+          if 'image generation' not in oe_rej:
+              oe_rej.append('image generation')
+          oe['rejected_entity_bound_signals'] = oe_rej
+          oe['binding_note'] = 'OpenELM ownership is limited to the language-model family, layer-wise parameter scaling, release framework/checkpoints, and Apple-device MLX conversion; adjacent image-generation language is rejected.'
+
+          audit['artifact_count'] = len(audit.get('artifacts') or [])
+          audit['accepted_entity_bound_signal_count'] = sum(len(row.get('accepted_entity_bound_signals') or []) for row in audit['artifacts'])
+          audit['rejected_entity_bound_signal_count'] = sum(len(row.get('rejected_entity_bound_signals') or []) for row in audit['artifacts'])
+          audit['review_issue_refs'] = [191]
+          audit['review_scope'] = 'SP-2024-H1 v0.12 regression re-audit: OpenELM unrelated-property contamination, DeepSeek family component/variant ownership, LongRoPE value-role binding; all V3 audit rows retained.'
+          write(audit_path, audit)
+
+          openelm = openelm_path.read_text(encoding='utf-8')
+          oe_start = openelm.index('\\begin{technicalnote}{OpenELM}')
+          oe_end = openelm.index('\\end{technicalnote}', oe_start)
+          oe_card = openelm[oe_start:oe_end]
+          assert 'image generation' not in oe_card
+          assert 'layer-wise scaling strategy' in oe_card
+          assert 'MLX conversion code' in oe_card
+          deepseek = deepseek_path.read_text(encoding='utf-8')
+          ds_start = deepseek.index('\\begin{technicalnote}{DeepSeek-V2 / DeepSeek-Coder-V2}')
+          ds_end = deepseek.index('\\end{technicalnote}', ds_start)
+          ds_card = deepseek[ds_start:ds_end]
+          assert 'source links in search answers' not in ds_card
+          assert 'Mixture-of-Experts' in ds_card and 'Multi-head Latent Attention' in ds_card and '128K context' in ds_card
+          lr_start = deepseek.index('\\begin{technicalnote}{LongRoPE}')
+          lr_end = deepseek.index('\\end{technicalnote}', lr_start)
+          lr_card = deepseek[lr_start:lr_end]
+          assert 'readjustment lengthを8K' in lr_card
+          assert '8K context' not in lr_card
+
+          marker = {
+              'schema_version': '1.0',
+              'issue_id': issue,
+              'special_slug': slug,
+              'source_version': version,
+              'reason': 'Incremental Publication Preview repair after SP-2024-H1 v0.12 Human Review: remove the chronology-to-References forced page break (#153), correct Many-shot jailbreaking to a research taxonomy (#54), and repair/re-audit subject-component-variant-property-value-role attribution (#191).',
+              'review_issues': [153, 54, 191],
+              'layout_changes': {
+                  'incremental_publication_preview_repairs_v013': True,
+                  'chronology_reference_forced_clearpage_removed': True,
+                  'many_shot_jailbreaking_reader_taxonomy': '安全性研究',
+                  'subject_component_variant_property_value_role_repair': True,
+                  'technical_note_entity_binding': 'SUBJECT_COMPONENT_VARIANT_PROPERTY_BINDING_V3',
+                  'entity_binding_preflight_required': True,
+              },
+              'constraints': {
+                  'new_external_evidence_allowed': False,
+                  'selected_evidence_only': True,
+                  'accepted_article_claims_changed': False,
+                  'evidence_cards_mutated': False,
+                  'half_year_analysis_changed': False,
+                  'chronology_event_content_changed': False,
+                  'bibliography_data_changed': False,
+              },
+          }
+          write(marker_path, marker)
+
+          parent_manifest = load(parent_manifest_path)
+          manifest = copy.deepcopy(parent_manifest)
+          manifest['source_version'] = version
+          manifest['status'] = 'VALIDATED_HALF_YEAR_REVIEW_REPAIR_V3_REVISION'
+          manifest['derivation'] = (
+              'Incremental Publication Preview repair over v0.12 for Human Review findings #153, #54, and #191. '
+              'Selected Evidence, accepted Article Drafts, Half-year analysis, chronology event content, and bibliography data remain immutable. '
+              'The mutable surface is limited to chronology/References pagination, the Many-shot jailbreaking reader taxonomy, and three subject/property Technical Notes corrections plus their V3 entity-binding audit.'
+          )
+          basis = dict(manifest.get('basis') or {})
+          basis['previous_source_manifest_path'] = parent_manifest_path.relative_to(root).as_posix()
+          basis['previous_source_manifest_sha256'] = sha(parent_manifest_path)
+          manifest['basis'] = basis
+
+          def repin(obj, path_key: str, sha_key: str) -> None:
+              rel = str(obj.get(path_key) or '')
+              if not rel:
+                  return
+              path = out / rel
+              if path.is_file():
+                  obj[sha_key] = sha(path)
+
+          repin(manifest['main_tex'], 'path', 'sha256')
+          repin(manifest['frontmatter'], 'path', 'sha256')
+          repin(manifest['references'], 'path', 'sha256')
+          if isinstance(manifest.get('half_year_analysis'), dict):
+              repin(manifest['half_year_analysis'], 'path', 'sha256')
+          for article in manifest.get('articles') or []:
+              for pkey, skey in (
+                  ('article_section_path', 'article_section_sha256'),
+                  ('technical_notes_path', 'technical_notes_sha256'),
+                  ('layout_standfirst_path', 'layout_standfirst_sha256'),
+                  ('layout_body_path', 'layout_body_sha256'),
+                  ('layout_wide_path', 'layout_wide_sha256'),
+              ):
+                  repin(article, pkey, skey)
+
+          reader = dict(manifest.get('reader_facing_technical_notes') or {})
+          reader['entity_binding_contract'] = 'SUBJECT_COMPONENT_VARIANT_PROPERTY_BINDING_V3'
+          reader['entity_binding_audit_path'] = 'technical-note-entity-binding-audit.json'
+          reader['entity_binding_audit_sha256'] = sha(audit_path)
+          reader['entity_binding_audited_artifact_count'] = audit['artifact_count']
+          reader['entity_binding_accepted_signal_count'] = audit['accepted_entity_bound_signal_count']
+          reader['entity_binding_rejected_signal_count'] = audit['rejected_entity_bound_signal_count']
+          manifest['reader_facing_technical_notes'] = reader
+
+          lrmeta = dict(manifest.get('layout_revision') or {})
+          prior_refs = [int(x) for x in (lrmeta.get('issue_refs') or [])]
+          lrmeta.update({
+              'from_source_version': parent_version,
+              'issue_refs': sorted(set(prior_refs + [153, 54, 191])),
+              'incremental_issue_refs': [153, 54, 191],
+              'incremental_publication_preview_repairs_v013': True,
+              'reader_content_changed': True,
+              'reader_content_change_scope': 'chronology/reference pagination + reader taxonomy + subject/property/value-role corrections only',
+              'new_external_evidence': False,
+              'accepted_article_sections_changed': False,
+              'evidence_cards_changed': False,
+              'technical_notes_content_changed': True,
+              'technical_notes_files_changed_in_v013': 3,
+              'main_tex_changed_in_v013': True,
+              'chronology_event_content_changed_in_v013': False,
+              'bibliography_data_changed_in_v013': False,
+              'half_year_analysis_changed_in_v013': False,
+              'chronology_reference_forced_clearpage_removed': True,
+              'many_shot_jailbreaking_reader_taxonomy': '安全性研究',
+              'technical_note_entity_binding': 'SUBJECT_COMPONENT_VARIANT_PROPERTY_BINDING_V3',
+              'entity_binding_reaudit_issue_ref': 191,
+          })
+          manifest['layout_revision'] = lrmeta
+
+          changed = []
+          for rel in sorted(expected_changed | {'technical-note-entity-binding-audit.json'}):
+              changed.append({
+                  'path': rel,
+                  'before_sha256': sha(parent_dir / rel),
+                  'after_sha256': sha(out / rel),
+              })
+          manifest['incremental_review_repairs'] = {
+              'from_source_version': parent_version,
+              'issue_refs': [153, 54, 191],
+              'changed_files': changed,
+              'new_external_evidence': False,
+              'accepted_article_sections_changed': False,
+              'evidence_cards_changed': False,
+              'half_year_analysis_changed': False,
+              'chronology_event_content_changed': False,
+              'bibliography_data_changed': False,
+          }
+
+          new_manifest_path = out / 'source-manifest.json'
+          write(new_manifest_path, manifest)
+          manifest_sha = sha(new_manifest_path)
+          marker_sha = sha(marker_path)
+
+          history = state.setdefault('provenance_history', {})
+          hist_sources = history.setdefault('validated_issue_source', [])
+          if not any(item.get('path') == current.get('path') and item.get('sha256') == current.get('sha256') for item in hist_sources):
+              hist_sources.append(current)
+          prior_build = copy.deepcopy((state.get('provenance') or {}).get('latex_build') or {})
+          if prior_build:
+              hist_builds = history.setdefault('latex_build', [])
+              if not any(item.get('workflow_run_id') == prior_build.get('workflow_run_id') for item in hist_builds):
+                  hist_builds.append(prior_build)
+
+          state['lifecycle_state'] = 'VALIDATED_DRAFT'
+          state['gates']['latex_build'] = 'pending'
+          state['gates']['visual_review'] = 'pending'
+          state['gates']['freeze'] = 'pending'
+          state['provenance']['validated_issue_source'] = {
+              'path': new_manifest_path.relative_to(root).as_posix(),
+              'sha256': manifest_sha,
+              'source_version': version,
+              'layout_mode': str((manifest.get('layout') or {}).get('body_mode') or current.get('layout_mode') or 'mixed'),
+              'layout_revision_sha256': marker_sha,
+          }
+          state['provenance'].pop('latex_build', None)
+          state['provenance']['reader_layout_revision'] = {
+              'source_version': version,
+              'layout_revision_path': marker_path.relative_to(root).as_posix(),
+              'layout_revision_sha256': marker_sha,
+              'reason': marker['reason'],
+          }
+          state['provenance']['publication_preview_repair_revision'] = {
+              'source_version': version,
+              'layout_revision_path': marker_path.relative_to(root).as_posix(),
+              'layout_revision_sha256': marker_sha,
+              'issue_refs': [153, 54, 191],
+              'entity_binding_contract': 'SUBJECT_COMPONENT_VARIANT_PROPERTY_BINDING_V3',
+              'previous_preview_pdf_sha256': prior_build.get('pdf_sha256'),
+              'previous_preview_workflow_run_id': prior_build.get('workflow_run_id'),
+          }
+          write(state_path, state)
+
+          print(json.dumps({
+              'source_version': version,
+              'source_manifest_sha256': manifest_sha,
+              'layout_revision_sha256': marker_sha,
+              'entity_binding_audit_sha256': sha(audit_path),
+              'entity_binding_accepted_signal_count': audit['accepted_entity_bound_signal_count'],
+              'entity_binding_rejected_signal_count': audit['rejected_entity_bound_signal_count'],
+              'changed_files': changed,
+          }, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Run current main Publication Preview preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python control-src/scripts/special_reader_notes_ja.py check --repo-root worktree --issue-id SP-2024-H1
+          PYTHONPATH=control-src python control-src/scripts/special_period_consistency.py check --repo-root worktree --special-slug 2024-H1 --issue-id SP-2024-H1
+          PYTHONPATH=control-src python control-src/scripts/special_technical_note_entity_binding_check.py --repo-root worktree --issue-id SP-2024-H1
+          PYTHONPATH=control-src python control-src/scripts/special_publication_layout_check.py --repo-root worktree --issue-id SP-2024-H1
+
+      - name: Persist normalized v0.13
+        shell: bash
+        working-directory: worktree
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/finalize-sp-2024-h1-v013.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/finalize-sp-2024-h1-v013.yml sources/SP-2024-H1/pipeline-state.json sources/SP-2024-H1/editorial/layout-revision-v0.13.json surveys/special/2024-H1/revisions/v0.13
+          git commit -m 'Finalize SP-2024-H1 v0.13 review repairs'
+          git push origin HEAD:special/2024-H1-work
+
+      - name: Retire one-shot workflow from main
+        shell: bash
+        working-directory: control-src
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/finalize-sp-2024-h1-v013.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/finalize-sp-2024-h1-v013.yml
+          git commit -m 'Retire SP-2024-H1 v0.13 finalizer'
+          git push origin HEAD:main
