@@ -88,6 +88,20 @@ class SpecialTechnicalNoteEntityBindingCheckTests(unittest.TestCase):
             )
             self.assertEqual(inspect_entity_binding(manifest, source_dir), [])
 
+    def test_declared_contract_is_enforced_for_review_repair_status(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            fact = "対象event近傍の一次資料から comparator-only-token を確認できる。"
+            manifest, source_dir = self._fixture(
+                root,
+                [self._note("Llama 3.1", fact)],
+                accepted=[],
+                rejected=["comparator-only-token"],
+            )
+            manifest["status"] = "VALIDATED_HALF_YEAR_REVIEW_REPAIR_V3_REVISION"
+            errors = inspect_entity_binding(manifest, source_dir)
+            self.assertTrue(any("comparator-only-token" in error for error in errors))
+
     def test_identical_fact_may_be_repeated_across_article_placements(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

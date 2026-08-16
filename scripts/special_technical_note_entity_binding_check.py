@@ -82,10 +82,12 @@ def _rendered_top_level_tex_paths(
 
 def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[str]:
     errors: list[str] = []
-    if str(manifest.get("status") or "") != "VALIDATED_HALF_YEAR_SOURCE_SPECIFIC_NOTES_REVISION":
-        return errors
-
     reader = manifest.get("reader_facing_technical_notes") or {}
+    # Entity-binding validation is a publication contract, not a revision-status
+    # implementation detail. Legacy manifests without the contract remain out of
+    # scope, while every manifest that declares it is checked fail-closed.
+    if reader.get("entity_binding_contract") is None:
+        return errors
     if reader.get("source_specific_detail_contract") != "SCREENING_BACKED_FAIL_CLOSED":
         errors.append("Half-year Technical Notes lost SCREENING_BACKED_FAIL_CLOSED provenance")
     if reader.get("entity_binding_contract") != ENTITY_BINDING_CONTRACT:
