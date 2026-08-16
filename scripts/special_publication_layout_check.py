@@ -26,6 +26,13 @@ def sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def is_derived_reader_layer(article: dict[str, Any]) -> bool:
+    return (
+        article.get("_sparse_architecture_derived") is True
+        and article.get("derived_reader_layer") is True
+    )
+
+
 def inspect_layout(
     manifest: dict[str, Any],
     main_text: str,
@@ -35,6 +42,9 @@ def inspect_layout(
     articles = [x for x in (manifest.get("articles") or []) if isinstance(x, dict)]
     if not articles:
         return ["validated Special source has no article entries"]
+    narrative_articles = [x for x in articles if not is_derived_reader_layer(x)]
+    if not narrative_articles:
+        return ["validated Special source has no narrative article entries"]
 
     override = architecture.get("layout_override") or {}
     single_column_approved = (
@@ -65,10 +75,11 @@ def inspect_layout(
 
     begin_count = main_text.count(r"\begin{multicols}{2}")
     end_count = main_text.count(r"\end{multicols}")
-    if begin_count != len(articles) or end_count != len(articles):
+    if begin_count != len(narrative_articles) or end_count != len(narrative_articles):
         errors.append(
-            "expected one balanced two-column narrative block per article: "
-            f"articles={len(articles)} begin={begin_count} end={end_count}"
+            "expected one balanced two-column narrative block per narrative article: "
+            f"narrative_articles={len(narrative_articles)} total_articles={len(articles)} "
+            f"begin={begin_count} end={end_count}"
         )
 
     front = str(
@@ -83,7 +94,7 @@ def inspect_layout(
         errors.append("frontmatter must remain full-width before narrative multicols")
 
     standfirst_inputs: list[str] = []
-    for article in articles:
+    for article in narrative_articles:
         if not article.get("layout_standfirst_present"):
             continue
         standfirst = str(article.get("layout_standfirst_path") or "")
@@ -192,11 +203,19 @@ def check(repo_root: Path, issue_id: str) -> dict[str, Any]:
     # Half-year source-specific revisions must prove that comparison-page quantities/features
     # were bound to the selected artifact rather than merely co-located on its source page.
     errors.extend(inspect_entity_binding(manifest, manifest_path.parent))
+    articles = [x for x in (manifest.get("articles") or []) if isinstance(x, dict)]
+    derived_layers = [
+        str(x.get("package_id") or "<unknown>")
+        for x in articles
+        if is_derived_reader_layer(x)
+    ]
     return {
         "schema_version": "1.0",
         "issue_id": issue_id,
         "source_manifest": manifest_path.relative_to(repo_root).as_posix(),
-        "article_count": len(manifest.get("articles") or []),
+        "article_count": len(articles),
+        "narrative_article_count": len(articles) - len(derived_layers),
+        "derived_reader_layers": derived_layers,
         "passed": not errors,
         "errors": errors,
     }
