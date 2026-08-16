@@ -90,6 +90,97 @@
         "同 release-history table では Qwen-7B / 1.8B / 72B に32K、Qwen-14B に8K の max length が記録される一方、base model と chat model、各 model size の release / context specification を相互に一般化しない。",
         "公式説明では tool use を ReAct-format data で学習し、function calling・code interpreter・Hugging Face agent をサポートするとする。これは Qwen project / chat-agent 系の提供能力として扱い、すべての base checkpoint の一様な能力とはみなさない。"
       ]
+    },
+    "OpenAI tool/action surface 2023": {
+      "source_urls": [
+        "https://openai.com/index/chatgpt-plugins",
+        "https://openai.com/index/function-calling-and-other-api-updates",
+        "https://openai.com/index/introducing-gpts",
+        "https://openai.com/index/new-models-and-developer-products-announced-at-devday"
+      ],
+      "technical_points": [
+        "2023年3月の ChatGPT plugins は ChatGPT から外部の最新情報・計算・第三者サービスへ接続する tool surface として initial support が公表された。これは後の API-level function calling とは別の ChatGPT product surface として扱う。",
+        "2023年6月の API update では function calling capability が API model に追加され、model output と developer-defined function / external tool の間を構造化する interface が提示された。ChatGPT plugin の user-facing rollout と同一の availability event とはみなさない。",
+        "2023年11月の GPTs は instructions・extra knowledge・skills を組み合わせた custom versions of ChatGPT を end user が構成する product surface として公表された。",
+        "同日の DevDay developer release では GPT-4 Turbo の 128K context、Assistants API、GPT-4 Turbo with Vision、DALL·E 3 API などが別々の developer product / model availability として発表されたため、GPT builder の product lifecycle と hosted API lifecycle を区別する。"
+      ]
+    },
+    "DALL-E 3 2023 lifecycle": {
+      "source_urls": [
+        "https://openai.com/index/dall-e-3-is-now-available-in-chatgpt-plus-and-enterprise",
+        "https://openai.com/index/dall-e-3-system-card"
+      ],
+      "technical_points": [
+        "DALL·E 3 system card は2023年10月3日に公開され、model release に伴う safety / technical boundary を記録する一次資料として扱う。system-card publication と user-facing product availability は同一イベントではない。",
+        "2023年10月19日には DALL·E 3 が ChatGPT Plus と Enterprise で利用可能になったことが別途公表され、model / safety documentation から product availability への移行が確認できる。",
+        "OpenAI は wider release に向けた safety mitigation stack と provenance research の更新を説明しているが、その有効性評価は提供元の主張として扱う。"
+      ]
+    },
+    "Stable Diffusion XL / SDXL Turbo 2023": {
+      "source_urls": [
+        "http://arxiv.org/abs/2307.01952v1",
+        "http://arxiv.org/abs/2311.17042v1",
+        "https://stability.ai/news-updates/stability-ai-sdxl-turbo",
+        "https://stability.ai/news-updates/stable-diffusion-sdxl-1-announcement",
+        "https://stability.ai/news-updates/stable-diffusion-xl-beta-available-for-api-customers-and-dreamstudio-users"
+      ],
+      "technical_points": [
+        "2023年4月の SDXL beta は API customers と DreamStudio users 向けに提供され、open-source release は当時まだ後続予定と明記されていたため、beta service availability と weights release を区別する。",
+        "2023年7月の SDXL 1.0 は 3.5B parameter base model と 6.6B parameter ensemble pipeline を持つ two-stage latent-diffusion architecture として説明され、base が noisy latents を生成した後に refinement model が最終 denoising を担う。weights / source code、Stability API、AWS、DreamStudio など複数の access surface が同時に示された。",
+        "SDXL 1.0 weights は CreativeML OpenRAIL++-M License で公開された一方、2023年11月の SDXL Turbo weights / code は non-commercial research license での公開であり、両者の license / commercial-use boundary を同一視しない。",
+        "SDXL Turbo は Adversarial Diffusion Distillation (ADD) を用いて single-step image generation を狙う model として公表され、対応論文は adversarial loss と score-distillation を組み合わせた 1--4 step sampling を記述する。性能比較値は Stability AI / 著者側の評価として扱う。"
+      ]
+    },
+    "Stable Video Diffusion 2023": {
+      "source_urls": [
+        "http://arxiv.org/abs/2311.15127v1",
+        "https://stability.ai/news-updates/introducing-stable-video-diffusion-api",
+        "https://stability.ai/news-updates/stable-video-diffusion-open-ai-video-model"
+      ],
+      "technical_points": [
+        "2023年11月21日の Stable Video Diffusion は Stable Diffusion image model を基礎とする generative-video foundation model の research preview として公開され、code は GitHub、local execution 用 weights は Hugging Face で提供された。",
+        "research-preview 時点の公開物は image-to-video の2 model で、14 frames と 25 frames を 3--30 fps の範囲で生成すると説明された一方、real-world / commercial applications 向けではないと明記されていた。",
+        "2023年12月20日には Stable Video Diffusion が Stability AI Developer Platform API に追加され、programmatic image-to-video access が別の availability event として成立した。API版は 25 generated frames と 24 FILM-interpolated frames から2秒の動画を生成する product specification を持つ。",
+        "研究論文、research-preview weights、Developer Platform API はそれぞれ publication / open research access / hosted service の異なる lifecycle state として扱う。"
+      ]
+    },
+    "Adobe Firefly / Generative Fill": {
+      "source_urls": [
+        "https://news.adobe.com/news/news-details/2023/adobe-unveils-firefly-a-family-of-new-creative-generative-ai",
+        "https://news.adobe.com/news/news-details/2023/adobe-unveils-future-of-creative-cloud-with-generative-ai-as-a-creative-co-pilot-in-photoshop"
+      ],
+      "technical_points": [
+        "2023年3月21日の Firefly 初回 beta は creative generative-AI model family の第一弾として image generation と text effects に焦点を置き、最初の model は Adobe Stock、openly licensed content、copyright-expired public-domain content を training source とする設計として説明された。",
+        "初回発表では Creative Cloud 等への将来 integration と API 提供計画が示されたが、それらを3月時点で既に一般提供済みだったとは扱わない。",
+        "2023年5月23日の Photoshop Generative Fill は Firefly を Photoshop workflow に直接統合し、text prompt から image content を add / extend / remove しつつ generated layers で non-destructive editing を行う beta feature として公開された。",
+        "同日、Generative Fill は Photoshop desktop beta と Firefly beta web module で利用可能とされ、Content Credentials 対応も説明された。将来の general availability と beta availability を区別する。"
+      ]
+    },
+    "OpenAI 2023 alignment and agent-governance work": {
+      "source_urls": [
+        "https://openai.com/index/frontier-risk-and-preparedness",
+        "https://openai.com/index/improving-mathematical-reasoning-with-process-supervision",
+        "https://openai.com/index/practices-for-governing-agentic-ai-systems",
+        "https://openai.com/index/weak-to-strong-generalization"
+      ],
+      "technical_points": [
+        "2023年5月の process-supervision work は最終回答だけを reward する outcome supervision と対比し、reasoning の各 correct step を reward する training setup を提示した。数学性能や alignment 上の利点は OpenAI の研究結果として扱う。",
+        "2023年10月の frontier-risk / preparedness 公表では catastrophic-risk preparedness を明示的な対象とし、Preparedness team の設置と challenge の開始を含む control-design trajectory が示された。",
+        "2023年12月の Practices for Governing Agentic AI Systems は agentic capability に対する governance practices を論じる publication として扱い、論文・policy proposal の公表を既に deployed された production control と同一視しない。",
+        "同月の weak-to-strong generalization は weak supervisors から stronger models を制御できるかを問う superalignment research direction と initial results を提示した。結果の有効性は OpenAI の研究主張であり、一般的な強モデル制御が確立した証拠とは扱わない。"
+      ]
+    },
+    "Anthropic Constitutional AI / Responsible Scaling Policy": {
+      "source_urls": [
+        "https://www.anthropic.com/news/anthropics-responsible-scaling-policy",
+        "https://www.anthropic.com/news/claudes-constitution"
+      ],
+      "technical_points": [
+        "Claude's Constitution の説明では Constitutional AI は explicit principles を使い、supervised phase で model が原応答を critique / revise し、reinforcement-learning phase では constitution に基づく AI-generated feedback で harmless output を選ぶという2段階の training process として説明される。",
+        "Anthropic は Constitutional AI を human feedback のみに依存しない scalable oversight / transparency の方法として位置づけるが、helpfulness / harmlessness の改善結果は Anthropic 側の評価として扱う。",
+        "2023年9月の Responsible Scaling Policy は catastrophic-risk potential に応じて safety / security / operational standard を強める AI Safety Levels (ASL) を定義し、ASL-1、ASL-2、ASL-3 以降を capability/risk threshold として区別した。",
+        "RSP は scaling が必要な safety procedures への compliance を上回る場合に training を一時停止する含意を持ち、ASL-3 model の adversarial testing / deployment constraints などを提示した。これは Anthropic board-approved policy の early iteration として扱い、業界全体の標準や既存製品全般の状態へ一般化しない。"
+      ]
     }
   }
 }
