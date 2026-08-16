@@ -27,7 +27,7 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     marker = load_json(marker_path)
     changes = marker.get("layout_changes") or {}
     if changes.get("half_year_reference_common_urldate_consolidation") is True:
-        from scripts.revise_special_half_year_reference_common_urldate import build as common_urldate_build
+        from scripts.revise_special_half_year_reference_common_urldate_v2 import build as common_urldate_build
         return common_urldate_build(repo_root, special_slug, issue_id, source_version)
     if changes.get("half_year_reference_raggedright_compaction") is True:
         from scripts.revise_special_half_year_reference_raggedright import build as reference_raggedright_build
