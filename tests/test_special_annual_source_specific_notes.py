@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 
 from scripts import revise_special_annual_source_specific_notes as annual
+from scripts import revise_special_annual_source_specific_notes_v2 as annual_v2
 from scripts import revise_special_half_year_review_repairs_v32 as event_hardening
 
 
@@ -72,3 +73,18 @@ def test_generic_fallback_detector_rejects_v04_regression_phrasing() -> None:
     assert annual._GENERIC_RE.search(
         "一次資料で確認できる範囲の事実を記録しており、独立再現ではない。"
     )
+
+
+def test_legacy_annual_manifest_gets_reader_flags_only_in_copy() -> None:
+    original = {
+        "articles": [
+            {"package_id": "runtime", "evidence_record_count": 4, "technical_notes_path": "technical-notes/40.tex"},
+            {"package_id": "chronology", "evidence_record_count": 0, "technical_notes_path": "technical-notes/80.tex"},
+        ]
+    }
+    compatible, visible = annual_v2._reader_flagged_manifest(original)
+    assert visible == 1
+    assert compatible["articles"][0]["technical_notes_reader_facing"] is True
+    assert compatible["articles"][1]["technical_notes_reader_facing"] is False
+    assert "technical_notes_reader_facing" not in original["articles"][0]
+    assert annual_v2._COMPAT_CONTRACT == "EVIDENCE_BACKED_READER_FACING_FLAGS_IN_MEMORY_V2"
