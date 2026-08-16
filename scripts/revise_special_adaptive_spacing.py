@@ -26,6 +26,12 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     marker_path = repo_root / "sources" / issue_id / "editorial" / f"layout-revision-{source_version}.json"
     marker = load_json(marker_path)
     changes = marker.get("layout_changes") or {}
+    # Full-page visual review can expose density-only defects after semantic review is complete.
+    # Route this immutable layout-only descendant before the semantic Half-year chain so accepted
+    # article/Evidence/Technical Notes/analysis/chronology content stays byte-stable.
+    if changes.get("half_year_visual_compaction") is True:
+        from scripts.revise_special_half_year_visual_compaction import build as visual_compaction_build
+        return visual_compaction_build(repo_root, special_slug, issue_id, source_version)
     # A Half-year repair may already be immutable before an independent References audit exposes
     # legacy Primary source N placeholders. Route this narrow descendant before the broader
     # Half-year semantic chain so the existing repaired analysis/chronology/Technical Notes remain
