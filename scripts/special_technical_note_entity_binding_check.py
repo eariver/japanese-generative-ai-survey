@@ -58,6 +58,51 @@ def _normalize_tex_path(value: str) -> str:
     return Path(text).as_posix() if text else ""
 
 
+def _coverage_population(reader: dict[str, Any]) -> tuple[int, int, int, str]:
+    """Resolve entity-audit coverage using the same units as title-keyed audit artifacts.
+
+    Audit rows and editorial overrides are keyed by canonical/rendered title, while
+    ``source_specific_detail_visible_card_count`` counts rendered card placements and can be
+    larger when one title is intentionally repeated in more than one article. New manifests
+    persist the compatible unique-title population explicitly. Older manifests retain the
+    historical placement-count fallback.
+    """
+    visible = int(reader.get("source_specific_detail_visible_card_count") or 0)
+    overrides = int(reader.get("source_specific_detail_override_count") or 0)
+    declared_population = int(reader.get("entity_binding_coverage_population_count") or 0)
+    declared_basis = str(reader.get("entity_binding_coverage_basis") or "")
+    declared_visible = int(reader.get("entity_binding_visible_card_placement_count") or 0)
+
+    if declared_population > 0:
+        if declared_basis != "UNIQUE_RENDERED_TITLE_COUNT":
+            raise ValueError(
+                "unsupported Technical Note entity-binding coverage basis: "
+                f"{declared_basis or '<missing>'}"
+            )
+        if declared_visible and visible and declared_visible != visible:
+            raise ValueError(
+                "Technical Note entity-binding visible-card placement count mismatch: "
+                f"declared={declared_visible} current={visible}"
+            )
+        if visible and declared_population > visible:
+            raise ValueError(
+                "Technical Note entity-binding coverage population exceeds visible card placements: "
+                f"population={declared_population} visible={visible}"
+            )
+        population = declared_population
+        basis = declared_basis
+    else:
+        population = visible
+        basis = "VISIBLE_CARD_COUNT_LEGACY_FALLBACK"
+
+    if overrides > population:
+        raise ValueError(
+            "Technical Note entity-binding override count exceeds compatible coverage population: "
+            f"overrides={overrides} population={population} basis={basis}"
+        )
+    return population, visible, overrides, basis
+
+
 def _rendered_top_level_tex_paths(
     manifest: dict[str, Any], source_dir: Path, errors: list[str]
 ) -> set[str] | None:
@@ -135,12 +180,17 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
             f"manifest={audited_count} audit={audit.get('artifact_count')} actual={len(artifacts)}"
         )
 
-    visible = int(reader.get("source_specific_detail_visible_card_count") or 0)
-    overrides = int(reader.get("source_specific_detail_override_count") or 0)
-    if len(artifacts) < max(0, visible - overrides):
+    try:
+        population, visible, overrides, coverage_basis = _coverage_population(reader)
+    except ValueError as exc:
+        errors.append(str(exc))
+        population = visible = overrides = 0
+        coverage_basis = "INVALID"
+    if coverage_basis != "INVALID" and len(artifacts) < max(0, population - overrides):
         errors.append(
-            "Technical Note entity-binding audit does not cover automatically extracted visible cards: "
-            f"audited={len(artifacts)} visible={visible} overrides={overrides}"
+            "Technical Note entity-binding audit does not cover automatically extracted unique titles: "
+            f"audited={len(artifacts)} population={population} basis={coverage_basis} "
+            f"visible_placements={visible} overrides={overrides}"
         )
 
     rendered_paths = _rendered_top_level_tex_paths(manifest, source_dir, errors)
