@@ -1,0 +1,103 @@
+name: One-time SP-2023-Y v0.11 build recovery
+on:
+  push:
+    branches: [special/2023-Y-work]
+    paths: ['.github/workflows/sp-2023-y-v011-build-recovery.yml']
+permissions:
+  contents: write
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: special/2023-Y-work, fetch-depth: 0}
+      - name: Create immutable v0.11 dependency-only revision
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import copy, hashlib, json, pathlib, shutil
+          r=pathlib.Path('.')
+          issue='SP-2023-Y'
+          state_path=r/'sources'/issue/'pipeline-state.json'
+          s=json.load(open(state_path,encoding='utf-8'))
+          assert s['lifecycle_state']=='VALIDATED_DRAFT'
+          assert s['gates']['latex_build']=='pending'
+          assert s['gates']['visual_review']=='pending' and s['gates']['freeze']=='pending'
+          prev=dict(s['provenance']['validated_issue_source'])
+          assert prev['source_version']=='v0.10'
+          src=r/pathlib.Path(prev['path']).parent
+          out=r/'surveys/special/2023-Y/revisions/v0.11'
+          assert not out.exists()
+          shutil.copytree(src,out)
+          main=out/'main.tex'
+          text=main.read_text(encoding='utf-8')
+          assert '\\Needspace{' in text
+          assert '\\usepackage{needspace}' not in text
+          text=text.replace('\\usepackage{multicol}\n','\\usepackage{multicol}\n\\usepackage{needspace}\n',1)
+          main.write_text(text,encoding='utf-8')
+          def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+          m=json.load(open(out/'source-manifest.json',encoding='utf-8'))
+          m['source_version']='v0.11'
+          m['status']='VALIDATED_ANNUAL_BUILD_RECOVERY'
+          m['basis']=dict(m.get('basis') or {})
+          m['basis']['previous_source_manifest_path']=prev['path']
+          m['basis']['previous_source_manifest_sha256']=prev['sha256']
+          m['build_recovery']={
+            'reason':'Add explicit needspace package required by the already-reviewed #122/#55 pagination guards.',
+            'content_or_evidence_changed':False,
+            'issue_sequence_changed':False,
+            'tex_dependency_only':True
+          }
+          m['main_tex']={'path':'main.tex','sha256':sha(main)}
+          front=out/pathlib.Path(m['frontmatter']['path']); refs=out/pathlib.Path(m['references']['path'])
+          m['frontmatter']['sha256']=sha(front); m['references']['sha256']=sha(refs)
+          for a in m.get('articles') or []:
+            for k,hk in [('technical_notes_path','technical_notes_sha256'),('layout_body_path','layout_body_sha256')]:
+              rel=str(a.get(k) or '')
+              if rel and (out/rel).is_file(): a[hk]=sha(out/rel)
+          mp=out/'source-manifest.json'
+          mp.write_text(json.dumps(m,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          newsha=sha(mp)
+          s.setdefault('provenance_history',{}).setdefault('validated_issue_source',[]).append(prev)
+          s['provenance']['validated_issue_source']={
+            'path':mp.as_posix(),'sha256':newsha,'source_version':'v0.11',
+            'layout_mode':'annual-ordered-publication-preview-repair+dependency-recovery'
+          }
+          oldc=copy.deepcopy(s['provenance']['annual_chronology'])
+          cp=r/pathlib.Path(oldc['path']); data=json.load(open(cp,encoding='utf-8'))
+          before=[(e.get('date'),e.get('title'),e.get('locator'),e.get('reference_key')) for e in data.get('events',[])]
+          data['source_version']='v0.11'
+          cout=r/'sources'/issue/'chronology/annual-chronology-v0.11.json'
+          cout.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          after=[(e.get('date'),e.get('title'),e.get('locator'),e.get('reference_key')) for e in data.get('events',[])]
+          assert before==after and len(before)==75
+          s.setdefault('provenance_history',{}).setdefault('annual_chronology',[]).append(oldc)
+          s['provenance']['annual_chronology']={
+            'source_version':'v0.11','path':cout.as_posix(),'sha256':sha(cout),
+            'event_count':75,'unresolved_date_count':3
+          }
+          marker=r/'sources'/issue/'editorial/build-recovery-v0.11.json'
+          marker.write_text(json.dumps({
+            'schema_version':'1.0','issue_id':issue,'source_version':'v0.11',
+            'parent_source_version':'v0.10','parent_source_sha256':prev['sha256'],
+            'change':'add \\usepackage{needspace} only','content_or_evidence_changed':False,
+            'review_issue_sequence':[139,54,78,140,271,272,122,55]
+          },ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          s['provenance']['reader_layout_revision']={
+            'source_version':'v0.11','build_recovery_path':marker.as_posix(),
+            'build_recovery_sha256':sha(marker),'issue_refs':[122,55]
+          }
+          state_path.write_text(json.dumps(s,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          # Strong equivalence check: only main.tex, source-manifest metadata and source-version chronology may differ.
+          assert '\\usepackage{needspace}' in main.read_text(encoding='utf-8')
+          print(json.dumps({'source_version':'v0.11','source_manifest_sha256':newsha,'chronology_sha256':sha(cout)},indent=2))
+          PY
+      - name: Commit recovery and self-delete
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm .github/workflows/sp-2023-y-v011-build-recovery.yml
+          git add -A surveys/special/2023-Y/revisions/v0.11 sources/SP-2023-Y .github/workflows/sp-2023-y-v011-build-recovery.yml
+          git commit -m 'Recover SP-2023-Y v0.11 needspace dependency'
+          git push origin HEAD:special/2023-Y-work
