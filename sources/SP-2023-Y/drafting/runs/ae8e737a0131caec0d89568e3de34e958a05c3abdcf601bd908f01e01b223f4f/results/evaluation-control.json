@@ -1,0 +1,307 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2023-Y",
+  "package_id": "evaluation-control",
+  "draft_version": "v0.2",
+  "status": "REVISED",
+  "basis": {
+    "draft_package_sha256": "5e34906b3ffd3da50066cc633d4f8b91723cec1271ca9fd6f4e1e577710d153a",
+    "prompt_id": "article-drafting-v0.1",
+    "prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT pre-publication redraft after exact v0.3 visual density review; no paid inference-provider API",
+    "generated_at": "2026-08-17T00:33:05+09:00",
+    "run_reference": "SP-2023-Y pre-publication narrative depth repair: exact v0.3 PDF passed machine layout gates but visual review found the seven approved trajectory chapters under-explained; revise prose only against unchanged Draft Packages and Evidence, without reopening Selection or Architecture."
+  },
+  "headline": "能力を測り、制御する層が追いつき始めた",
+  "deck": "強いモデルが増えるほど、「何が強いのかをどう比較するか」と「どの能力をどの条件で運用するか」が独立した問題になった。Chatbot Arena/MT-Benchと、OpenAI・Anthropicのalignment / governance面の取り組みを、evaluation layerとcontrol layerの形成として並べる。",
+  "deck_attribution_mode": "INFERENCE",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-2023-Y:series-lmsys-evaluation-2023-5eba28d764",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2023-Y:series-openai-control-2023-4780e6d49f",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2023-Y:series-anthropic-control-2023-50cf238a04",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "h-evaluation",
+      "block_type": "HEADING",
+      "text": "強いモデルが増えると比較方法そのものが問題になる",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "evaluation-shared",
+      "block_type": "PARAGRAPH",
+      "text": "Chatbot ArenaとMT-Benchは、モデル比較を個々の発表資料だけに閉じず、複数モデルを同じ評価surfaceへ載せる方向を押し出した。とくに人間の選好を含む比較は、単一の自動benchmarkとは異なる情報を与える一方、それ自体が絶対的な能力真値になるわけではない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-lmsys-evaluation-2023-5eba28d764",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "evaluation-surface",
+      "block_type": "PARAGRAPH",
+      "text": "共通の比較surfaceが重要なのは、vendorごとの発表値だけでは条件を揃えにくいからである。同じpromptを与える、複数modelをblindに比較する、一定形式のtaskを使うといった仕組みは、少なくとも比較の入口を共有できる。ただし、その入口を共有しても全用途の能力を一つの数字にまとめられるわけではない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-lmsys-evaluation-2023-5eba28d764",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "benchmark-boundary",
+      "block_type": "PARAGRAPH",
+      "text": "benchmark scoreやhuman preferenceは、task設計、prompt、比較対象、評価者構成などに依存する。Arena/MT-Benchを共通比較基盤として評価しても、そこから全用途の総合順位を導くことはしない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-lmsys-evaluation-2023-5eba28d764",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "preference-meaning",
+      "block_type": "PARAGRAPH",
+      "text": "人間の選好を使う評価には、正解ラベルを作りにくい会話品質を比較できる利点がある一方、評価者が何を好むかという別の変数が入る。文章の自然さ、慎重さ、詳細さ、task達成度は同じ尺度ではない。human preferenceを取り入れることは評価を完全にするのではなく、能力測定に人間側の目的関数を明示的に加えることである。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-lmsys-evaluation-2023-5eba28d764",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "h-control",
+      "block_type": "HEADING",
+      "text": "評価とcontrol policyは役割が違う",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "control-policy",
+      "block_type": "PARAGRAPH",
+      "text": "OpenAIとAnthropicの年内のalignment / governance関連の取り組みは、モデルの能力向上とは別に、利用・評価・scale-upの条件を定義するcontrol surfaceが必要だという問題設定を明示した。研究結果、内部評価、公開policyは同じ証拠種別ではないため、本稿では区別して扱う。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-openai-control-2023-4780e6d49f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-anthropic-control-2023-50cf238a04",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "evaluation-vs-policy",
+      "block_type": "PARAGRAPH",
+      "text": "evaluationはmodel behaviorを観測する仕組みであり、policyは観測結果や想定riskをどの運用判断へ結び付けるかを定める仕組みである。両者を混同すると、scoreが高いことを安全性の証明とみなしたり、policyが存在することを技術的有効性の証明とみなしたりする。2023年は測定と運用判断をつなぐinterfaceが必要だと認識され始めた段階である。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-openai-control-2023-4780e6d49f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-anthropic-control-2023-50cf238a04",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-lmsys-evaluation-2023-5eba28d764",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "h-threshold",
+      "block_type": "HEADING",
+      "text": "能力の増加と運用条件を結び付ける",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "risk-thresholds",
+      "block_type": "PARAGRAPH",
+      "text": "年末に向かうにつれ、将来のより強い能力をどのthresholdで評価し、どの運用条件と結び付けるかが公開policyの論点として前面に出た。ここで重要なのは具体的な安全性が達成済みとみなすことではなく、capability growthとcontrol obligationを結び付ける枠組み自体が明示されたことである。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-openai-control-2023-4780e6d49f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-anthropic-control-2023-50cf238a04",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "threshold-design",
+      "block_type": "PARAGRAPH",
+      "text": "threshold型の考え方では、すべてのmodel releaseへ同じcontrolを適用するのではなく、能力やriskの水準に応じて評価・配備条件を強めることを目指す。これは計測がcontrolの前提になることを意味する一方、どの能力を測るか、thresholdをどう定義するか、想定外の能力をどう扱うかという未解決問題を残す。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-openai-control-2023-4780e6d49f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-anthropic-control-2023-50cf238a04",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "agentic-control",
+      "block_type": "PARAGRAPH",
+      "text": "tool/action layerが広がるほど、出力contentだけでなく外部actionを伴うbehaviorをどう評価するかも重要になる。agentic riskを考える場合、モデルが何を生成したかだけでなく、何を選択し、どの権限で実行し、失敗からどう続行したかというsystem-level observationが必要になる。control layerはmodel cardの付録ではなくapplication architectureへ近づいていく。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-openai-control-2023-4780e6d49f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-anthropic-control-2023-50cf238a04",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "h-coupling",
+      "block_type": "HEADING",
+      "text": "能力競争とevaluation/controlは同時に進む",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "coupled-layer",
+      "block_type": "PARAGRAPH",
+      "text": "2023年のevaluation/controlを能力向上の「後処理」とみなすと、年内の構造変化を見誤る。フロンティアmodel、open-weight family、tool-using systemが増えるほど、比較対象と運用条件も増えた。評価基盤とcontrol policyは強いmodelの後に追いついたというより、多様化したsystemを運用可能な対象として扱うための別layerとして同時に形成された。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-lmsys-evaluation-2023-5eba28d764",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-openai-control-2023-4780e6d49f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-anthropic-control-2023-50cf238a04",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "open-questions",
+      "block_type": "PARAGRAPH",
+      "text": "年末時点で残った問いは、どのbenchmarkを信頼するかだけではない。用途別評価をどう組み合わせるか、human preferenceの偏りをどう理解するか、capability評価をどの配備条件へ結び付けるか、policyが想定していない新しいbehaviorをどう扱うか。evaluation/control layerの成立は問題の解決ではなく、管理すべき変数を明示したことに意味がある。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-lmsys-evaluation-2023-5eba28d764",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-openai-control-2023-4780e6d49f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-anthropic-control-2023-50cf238a04",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "control-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "評価結果と安全・alignment上の主張は、それぞれのproject/vendorが示した条件と範囲に帰属する。本稿はpolicyの存在や問題設定を一次資料で確認するが、有効性を独立に実証したとは扱わない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-openai-control-2023-4780e6d49f",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "benchmark/human preference versus independent capability truth",
+      "block_ids": [
+        "benchmark-boundary",
+        "preference-meaning"
+      ]
+    },
+    {
+      "requirement": "research alignment result versus governance policy",
+      "block_ids": [
+        "control-policy",
+        "evaluation-vs-policy"
+      ]
+    },
+    {
+      "requirement": "capability thresholds and agentic risk as late-year control concerns",
+      "block_ids": [
+        "risk-thresholds",
+        "agentic-control"
+      ]
+    }
+  ],
+  "boundary_coverage": [
+    {
+      "requirement": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+      "block_ids": [
+        "control-boundary"
+      ]
+    }
+  ],
+  "late_breaking_acknowledged": false
+}
