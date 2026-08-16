@@ -33,6 +33,32 @@ def is_derived_reader_layer(article: dict[str, Any]) -> bool:
     )
 
 
+def declared_non_narrative_multicols(manifest: dict[str, Any], main_text: str) -> tuple[int, list[str]]:
+    """Count explicitly declared reader layers that may use multicols outside narrative articles.
+
+    Narrative article cardinality remains strict. A later layout-only descendant may declare a
+    two-column References body; that block is allowed only when the manifest explicitly records the
+    References multicol contract and the source has the full-width heading plus heading=none body.
+    """
+    errors: list[str] = []
+    lr = manifest.get("layout_revision") or {}
+    extra = 0
+    if lr.get("half_year_reference_multicol_compaction") is True:
+        if lr.get("references_columns") != 2:
+            errors.append("References multicol revision must declare references_columns=2")
+        required = (
+            r"\section*{References / Source Notes}",
+            r"\addcontentsline{toc}{section}{References / Source Notes}",
+            r"\begin{multicols}{2}" + "\n" + r"\printbibliography[heading=none]" + "\n" + r"\end{multicols}",
+        )
+        for token in required:
+            if token not in main_text:
+                errors.append(f"declared References multicol source marker missing: {token}")
+        if not errors:
+            extra += 1
+    return extra, errors
+
+
 def inspect_layout(
     manifest: dict[str, Any],
     main_text: str,
@@ -73,13 +99,16 @@ def inspect_layout(
             "global twocolumn/onecolumn switch is forbidden for normal Special layout"
         )
 
+    non_narrative_multicols, non_narrative_errors = declared_non_narrative_multicols(manifest, main_text)
+    errors.extend(non_narrative_errors)
     begin_count = main_text.count(r"\begin{multicols}{2}")
     end_count = main_text.count(r"\end{multicols}")
-    if begin_count != len(narrative_articles) or end_count != len(narrative_articles):
+    expected_multicols = len(narrative_articles) + non_narrative_multicols
+    if begin_count != expected_multicols or end_count != expected_multicols:
         errors.append(
-            "expected one balanced two-column narrative block per narrative article: "
+            "expected one balanced two-column narrative block per narrative article plus declared reader blocks: "
             f"narrative_articles={len(narrative_articles)} total_articles={len(articles)} "
-            f"begin={begin_count} end={end_count}"
+            f"declared_non_narrative={non_narrative_multicols} begin={begin_count} end={end_count}"
         )
 
     front = str(
@@ -199,9 +228,6 @@ def check(repo_root: Path, issue_id: str) -> dict[str, Any]:
         architecture,
     )
     errors.extend(inspect_derived_layout_files(manifest, manifest_path.parent))
-    # Publication Preview preflight is also the final reader-facing source contract gate.
-    # Half-year source-specific revisions must prove that comparison-page quantities/features
-    # were bound to the selected artifact rather than merely co-located on its source page.
     errors.extend(inspect_entity_binding(manifest, manifest_path.parent))
     articles = [x for x in (manifest.get("articles") or []) if isinstance(x, dict)]
     derived_layers = [
