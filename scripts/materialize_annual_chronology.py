@@ -2,18 +2,19 @@
 """Materialize an annual reader-facing chronology from accepted Screening metadata.
 
 Annual narrative drafting intentionally compresses events into story units and
-trajectories.  This recovery/expansion step restores objective event resolution
+trajectories. This recovery/expansion step restores objective event resolution
 without reopening Raw sources or inventing dates: it consumes the accepted
 Screening verification queue, keeps records with explicit ``published_at``
 metadata, sorts them chronologically, writes a compact reader-facing TeX index,
 and records the exact source locator for auditability.
 
-The script operates only on an already-expanded source revision.  It changes no
+The script operates only on an already-expanded source revision. It changes no
 Architecture role or article prose outside the annual-chronology layout body.
 """
 from __future__ import annotations
 
 import argparse
+import email.utils
 import hashlib
 import json
 from datetime import datetime, timezone
@@ -40,7 +41,13 @@ def sha256_file(path: Path) -> str:
 def parse_instant(value: str) -> datetime:
     text = value.strip()
     normalized = text[:-1] + "+00:00" if text.endswith("Z") else text
-    parsed = datetime.fromisoformat(normalized)
+    try:
+        parsed = datetime.fromisoformat(normalized)
+    except ValueError:
+        try:
+            parsed = email.utils.parsedate_to_datetime(text)
+        except (TypeError, ValueError, OverflowError) as exc:
+            raise ValueError(f"unsupported chronology timestamp: {value!r}") from exc
     if parsed.tzinfo is None:
         parsed = parsed.replace(tzinfo=timezone.utc)
     return parsed.astimezone(timezone.utc)
@@ -114,12 +121,12 @@ def collect_events(queue_path: Path, start: datetime, end: datetime) -> tuple[li
             raise ValueError(
                 f"accepted annual chronology record outside coverage: {item.get('screening_id')} {published_at}"
             )
-        key = (published_at, locator)
+        key = (instant.isoformat(), locator)
         if key in seen:
             continue
         seen.add(key)
         events.append({**base, "published_at": published_at, "date": instant.date().isoformat()})
-    events.sort(key=lambda item: (item["published_at"], item["title"], item["screening_id"] or ""))
+    events.sort(key=lambda item: (parse_instant(item["published_at"]), item["title"], item["screening_id"] or ""))
     unresolved.sort(key=lambda item: (item["title"], item["screening_id"] or ""))
     return events, unresolved
 
