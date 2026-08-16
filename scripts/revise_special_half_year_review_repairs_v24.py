@@ -220,6 +220,40 @@ def _aggregate_audit() -> list[dict[str, Any]]:
     ]
 
 
+def _audit_coverage_population(manifest: dict[str, Any]) -> tuple[int, int, int, str]:
+    """Return the unique-title audit population and its provenance.
+
+    Entity-binding audit rows and editorial overrides are both keyed by canonical/rendered
+    title. A rendered title may appear in multiple Technical Note placements, so card placement
+    count is not a compatible denominator. Prefer the already-recorded rendered-title scope;
+    retain the historical visible-card denominator only for older manifests that predate it.
+    """
+    reader = dict(manifest.get("reader_facing_technical_notes") or {})
+    enrichment = dict(manifest.get("_technical_note_enrichment_scope") or {})
+    visible_cards = int(reader.get("source_specific_detail_visible_card_count") or 0)
+    overrides = int(reader.get("source_specific_detail_override_count") or 0)
+    rendered_titles = int(enrichment.get("rendered_title_count") or 0)
+
+    if rendered_titles > 0:
+        population = rendered_titles
+        basis = "UNIQUE_RENDERED_TITLE_COUNT"
+        if visible_cards and visible_cards < rendered_titles:
+            raise ValueError(
+                "entity-binding coverage metadata is inconsistent: "
+                f"visible_cards={visible_cards} unique_rendered_titles={rendered_titles}"
+            )
+    else:
+        population = visible_cards
+        basis = "VISIBLE_CARD_COUNT_LEGACY_FALLBACK"
+
+    if overrides > population:
+        raise ValueError(
+            "entity-binding override count exceeds the compatible audit population: "
+            f"overrides={overrides} population={population} basis={basis}"
+        )
+    return population, visible_cards, overrides, basis
+
+
 def _record_contract(
     repo_root: Path,
     issue_id: str,
@@ -263,13 +297,13 @@ def _record_contract(
 
     manifest = _load_json(manifest_path)
     reader = dict(manifest.get("reader_facing_technical_notes") or {})
-    visible = int(reader.get("source_specific_detail_visible_card_count") or 0)
-    overrides = int(reader.get("source_specific_detail_override_count") or 0)
-    minimum_audited = max(0, visible - overrides)
+    population, visible_cards, overrides, coverage_basis = _audit_coverage_population(manifest)
+    minimum_audited = max(0, population - overrides)
     if len(artifacts) < minimum_audited:
         raise ValueError(
             "entity-binding audit does not cover all automatically extracted visible Technical Notes: "
-            f"audited={len(artifacts)} minimum={minimum_audited} visible={visible} overrides={overrides}"
+            f"audited={len(artifacts)} minimum={minimum_audited} population={population} "
+            f"basis={coverage_basis} visible_cards={visible_cards} overrides={overrides}"
         )
     reader.update(
         {
@@ -279,6 +313,9 @@ def _record_contract(
             "entity_binding_audited_artifact_count": len(artifacts),
             "entity_binding_accepted_signal_count": accepted_count,
             "entity_binding_rejected_signal_count": rejected_count,
+            "entity_binding_coverage_population_count": population,
+            "entity_binding_coverage_basis": coverage_basis,
+            "entity_binding_visible_card_placement_count": visible_cards,
         }
     )
     manifest["reader_facing_technical_notes"] = reader
