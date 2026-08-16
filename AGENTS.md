@@ -19,3 +19,9 @@ Never infer Human Gate approval from a request to begin or continue compilation.
 Repository state must remain sufficient for a later chat session to resume without relying on prior conversation history.
 
 Cross-edition pipeline, validator, schema, or workflow improvements belong on `main` through the repository's normal review/CI process. Edition-specific Evidence, Architecture, drafts, provenance, and release artifacts remain scoped to that edition's work branch and canonical paths.
+
+## Daily X compilation bootstrap
+
+When a user asks to compile, resume, or automate a Daily X edition, read `docs/daily-x-compilation.md` before editorial work and follow it as the operational procedure.
+
+Daily X has a deliberately narrower responsibility than Weekly or Special editions: use the Grok DailyX Markdown as the authoritative intake, convert it into the prescribed Japanese TeX article, and do not add an independent web/source-validation stage unless the user explicitly requests one. Preserve enough repository state that another agent, including Luna MAX, can reproduce the build without conversation history.

@@ -1,0 +1,89 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{jgaidailyx}[2026/08/16 Japanese Generative AI Daily X style]
+
+\RequirePackage[haranoaji,deluxe,match,nfssonly]{luatexja-preset}
+\RequirePackage[margin=15mm,headsep=4mm,footskip=8mm]{geometry}
+\RequirePackage{xcolor}
+\RequirePackage{enumitem}
+\RequirePackage{fancyhdr}
+\RequirePackage{xurl}
+\RequirePackage{hyperref}
+\RequirePackage{bookmark}
+\RequirePackage{titlesec}
+\RequirePackage{flushend}
+
+\definecolor{DailyInk}{HTML}{17202A}
+\definecolor{DailyAccent}{HTML}{2457A6}
+\definecolor{DailyMuted}{HTML}{5D6D7E}
+\definecolor{DailyRule}{HTML}{D5D8DC}
+\definecolor{DailySoft}{HTML}{F4F6F7}
+
+\hypersetup{
+  unicode=true,
+  colorlinks=true,
+  linkcolor=DailyAccent,
+  urlcolor=DailyAccent,
+  pdfcreator={LuaLaTeX}
+}
+
+\setlength{\headheight}{13pt}
+\setlength{\columnsep}{6.5mm}
+\setlength{\columnseprule}{0pt}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0pt}
+\setlist{nosep,leftmargin=1.7em}
+\raggedbottom
+
+\newcommand{\DailyXIssue}{UNSET}
+\newcommand{\DailyXRange}{UNSET}
+\newcommand{\DailyXRun}{UNSET}
+\newcommand{\DailyXTitleText}{生成AI Daily X レポート}
+
+\newcommand{\dailyxsetup}[3]{%
+  \renewcommand{\DailyXIssue}{#1}%
+  \renewcommand{\DailyXRange}{#2}%
+  \renewcommand{\DailyXRun}{#3}%
+  \hypersetup{pdftitle={\DailyXTitleText -- #1}}%
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{DailyMuted}\DailyXTitleText}
+\fancyhead[R]{\small\color{DailyMuted}\DailyXIssue}
+\fancyfoot[C]{\small\color{DailyMuted}\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\titleformat{\section}
+  {\large\bfseries\color{DailyInk}}
+  {\thesection.}{0.5em}{}
+\titlespacing*{\section}{0pt}{1.0\baselineskip}{0.35\baselineskip}
+
+\newcommand{\dailyxtitle}{%
+  \twocolumn[{%
+    \begin{@twocolumnfalse}
+      \thispagestyle{empty}%
+      \noindent{\color{DailyAccent}\rule{\linewidth}{1.8pt}}\\[3mm]
+      {\fontsize{20}{25}\selectfont\bfseries\color{DailyInk}\DailyXTitleText\par}
+      \vspace{1.5mm}
+      {\Large\bfseries \DailyXIssue\par}
+      \vspace{1mm}
+      {\small\color{DailyMuted}観測範囲: \DailyXRange\quad / \quad Grok収集: \DailyXRun\par}
+      \vspace{2.5mm}
+      \noindent{\color{DailyRule}\rule{\linewidth}{0.6pt}}
+      \vspace{2mm}
+    \end{@twocolumnfalse}
+  }]%
+  \pagestyle{fancy}%
+}
+
+\newcommand{\dailyxsource}[2]{%
+  \par\vspace{0.25\baselineskip}%
+  {\footnotesize\color{DailyMuted}\textbf{X観測:} #1%
+    \if\relax\detokenize{#2}\relax\else\space\href{#2}{\nolinkurl{#2}}\fi\par}%
+}
+
+\newcommand{\dailyxnote}[1]{%
+  \par\vspace{0.15\baselineskip}%
+  {\footnotesize\color{DailyMuted}#1\par}%
+}
