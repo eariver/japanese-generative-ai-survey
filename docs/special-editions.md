@@ -2,7 +2,7 @@
 
 Status: active design and operations contract  
 Established: 2026-08-10  
-Updated: 2026-08-14
+Updated: 2026-08-16
 
 ## 1. Purpose
 
@@ -88,6 +88,8 @@ Calendar-year retrospectives are configured for 2020 through 2023:
 2020-Y ... 2023-Y
 ```
 
+Annual editorial behavior additionally follows `docs/annual-retrospective-specials.md`. Annual editions preserve event-level chronology while compressing narrative through story units and evidence-backed annual trajectories; high event density alone does not justify splitting a configured year.
+
 History before 2020 is deferred by default and requires an explicit later scope/cadence decision.
 
 ## 5. Retrospective method
@@ -126,6 +128,8 @@ Published prose must not leak internal pipeline vocabulary such as Candidate Inv
 Every substantive Special package must have a reader-facing rationale for why the event/artifact is necessary to understand the selected period or theme.
 
 For half-year retrospectives, cross-month comparison, half-year reclassification, cross-layer synthesis, and final half-year synthesis are considered during Architecture rather than being bolted on after drafting.
+
+For annual retrospectives, year-wide normalization, story-unit to annual-trajectory construction, evidence-derived phase analysis where useful, annual reclassification, cross-layer synthesis, and final annual synthesis are considered during Architecture rather than being bolted on after drafting.
 
 ## 8. Canonical identifiers and paths
 
