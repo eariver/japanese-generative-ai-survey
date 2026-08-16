@@ -1,0 +1,55 @@
+name: One-time SP-2023-Y v0.14 final reference compaction
+on:
+  push:
+    branches: [special/2023-Y-work]
+    paths: ['.github/workflows/sp-2023-y-v014-reference-final.yml']
+permissions:
+  contents: write
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: special/2023-Y-work, fetch-depth: 0}
+      - name: Create immutable v0.14 References compaction
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import copy,hashlib,json,pathlib,shutil
+          r=pathlib.Path('.'); issue='SP-2023-Y'; sp=r/'sources'/issue/'pipeline-state.json'; s=json.load(open(sp,encoding='utf-8'))
+          prev=dict(s['provenance']['validated_issue_source']); assert prev['source_version']=='v0.13'
+          assert s['lifecycle_state']=='RELEASE_CANDIDATE'; assert s['gates']['visual_review']=='pending' and s['gates']['freeze']=='pending'
+          src=r/pathlib.Path(prev['path']).parent; out=r/'surveys/special/2023-Y/revisions/v0.14'; assert not out.exists(); shutil.copytree(src,out)
+          main=out/'main.tex'; t=main.read_text(encoding='utf-8')
+          hook='\\AtEveryBibitem{\\clearfield{urldate}\\clearfield{urlyear}\\clearfield{urlmonth}\\clearfield{urlday}}\n'
+          anchor='\\addbibresource{references.bib}\n'
+          assert hook not in t and anchor in t
+          t=t.replace(anchor,anchor+'% Annual common References access date\n'+hook,1)
+          old='\\noindent{\\small Referencesには本文・Detailed Chronologyの検証に用いた一次資料の識別情報とURLを掲載する。各entryに共通する用途説明はここに集約する。}\\par'
+          new='\\noindent{\\small Referencesには本文・Detailed Chronologyの検証に用いた一次資料の識別情報とURLを掲載する。各entryに共通する用途説明はここに集約する。全URLの参照日は2026-08-16である。}\\par'
+          assert old in t; t=t.replace(old,new,1)
+          assert '\\footnotesize\n\\setlength{\\bibitemsep}{0pt}' in t
+          t=t.replace('\\footnotesize\n\\setlength{\\bibitemsep}{0pt}','\\scriptsize\n\\setlength{\\bibitemsep}{0pt}',1)
+          main.write_text(t,encoding='utf-8')
+          def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+          m=json.load(open(out/'source-manifest.json',encoding='utf-8')); m['source_version']='v0.14'; m['status']='VALIDATED_ANNUAL_FINAL_REFERENCE_COMPACTION'
+          m['basis']=dict(m.get('basis') or {}); m['basis']['previous_source_manifest_path']=prev['path']; m['basis']['previous_source_manifest_sha256']=prev['sha256']
+          rr=dict(m.get('reference_layout_repair') or {}); rr.update({'issue_ref':140,'layout':'two-column scriptsize ragged-right bibliography','common_access_date':'2026-08-16','per_entry_urldate_rendered':False,'source_metadata_changed':False,'content_or_evidence_changed':False}); m['reference_layout_repair']=rr
+          m['main_tex']={'path':'main.tex','sha256':sha(main)}; mp=out/'source-manifest.json'; mp.write_text(json.dumps(m,ensure_ascii=False,indent=2)+'\n',encoding='utf-8'); ms=sha(mp)
+          s.setdefault('provenance_history',{}).setdefault('validated_issue_source',[]).append(prev); s['lifecycle_state']='VALIDATED_DRAFT'; s['gates']['latex_build']='pending'; s['provenance'].pop('latex_build',None)
+          s['provenance']['validated_issue_source']={'path':mp.as_posix(),'sha256':ms,'source_version':'v0.14','layout_mode':'annual-ordered-publication-preview-repair+final-compact-references'}
+          oldc=copy.deepcopy(s['provenance']['annual_chronology']); data=json.load(open(r/pathlib.Path(oldc['path']),encoding='utf-8')); before=[(e.get('date'),e.get('title'),e.get('locator'),e.get('reference_key')) for e in data['events']]; data['source_version']='v0.14'; after=[(e.get('date'),e.get('title'),e.get('locator'),e.get('reference_key')) for e in data['events']]; assert before==after and len(before)==75
+          cout=r/'sources'/issue/'chronology/annual-chronology-v0.14.json'; cout.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          s.setdefault('provenance_history',{}).setdefault('annual_chronology',[]).append(oldc); s['provenance']['annual_chronology']={'source_version':'v0.14','path':cout.as_posix(),'sha256':sha(cout),'event_count':75,'unresolved_date_count':3}
+          marker=r/'sources'/issue/'editorial/reference-final-compaction-v0.14.json'; marker.write_text(json.dumps({'schema_version':'1.0','source_version':'v0.14','parent':'v0.13','issue_ref':140,'common_access_date':'2026-08-16','layout':'scriptsize two-column ragged-right','content_or_evidence_changed':False},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          s['provenance']['reader_layout_revision']={'source_version':'v0.14','reference_final_compaction_path':marker.as_posix(),'reference_final_compaction_sha256':sha(marker),'issue_refs':[140]}; sp.write_text(json.dumps(s,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+      - name: Verify canonical layout preflight
+        run: PYTHONPATH=. python scripts/special_publication_layout_check.py --repo-root . --issue-id SP-2023-Y
+      - name: Commit and self-delete
+        run: |
+          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm .github/workflows/sp-2023-y-v014-reference-final.yml
+          git add -A surveys/special/2023-Y/revisions/v0.14 sources/SP-2023-Y .github/workflows/sp-2023-y-v014-reference-final.yml
+          git commit -m 'Finalize SP-2023-Y References compaction for #140 (v0.14)'
+          git push origin HEAD:special/2023-Y-work
