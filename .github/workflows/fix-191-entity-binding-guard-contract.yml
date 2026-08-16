@@ -1,0 +1,55 @@
+name: Bootstrap issue 191 entity-binding guard fix
+
+on:
+  push:
+    branches:
+      - fix/191-entity-binding-guard-contract
+    paths:
+      - '.github/workflows/fix-191-entity-binding-guard-contract.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: fix/191-entity-binding-guard-contract
+          fetch-depth: 0
+      - name: Patch guard and regression test
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          checker = Path('scripts/special_technical_note_entity_binding_check.py')
+          text = checker.read_text(encoding='utf-8')
+          old = '''    if str(manifest.get("status") or "") != "VALIDATED_HALF_YEAR_SOURCE_SPECIFIC_NOTES_REVISION":\n        return errors\n\n    reader = manifest.get("reader_facing_technical_notes") or {}\n'''
+          new = '''    reader = manifest.get("reader_facing_technical_notes") or {}\n    # Entity-binding validation is a publication contract, not a revision-status\n    # implementation detail. Legacy manifests without the contract remain out of\n    # scope, while every manifest that declares it is checked fail-closed.\n    if reader.get("entity_binding_contract") is None:\n        return errors\n'''
+          if old not in text:
+              raise SystemExit('checker patch anchor not found')
+          checker.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          test = Path('tests/test_special_technical_note_entity_binding_check.py')
+          text = test.read_text(encoding='utf-8')
+          anchor = '''    def test_identical_fact_may_be_repeated_across_article_placements(self) -> None:\n'''
+          addition = '''    def test_declared_contract_is_enforced_for_review_repair_status(self) -> None:\n        with tempfile.TemporaryDirectory() as tmp:\n            root = Path(tmp)\n            fact = "対象event近傍の一次資料から comparator-only-token を確認できる。"\n            manifest, source_dir = self._fixture(\n                root,\n                [self._note("Llama 3.1", fact)],\n                accepted=[],\n                rejected=["comparator-only-token"],\n            )\n            manifest["status"] = "VALIDATED_HALF_YEAR_REVIEW_REPAIR_V3_REVISION"\n            errors = inspect_entity_binding(manifest, source_dir)\n            self.assertTrue(any("comparator-only-token" in error for error in errors))\n\n'''
+          if anchor not in text:
+              raise SystemExit('test patch anchor not found')
+          test.write_text(text.replace(anchor, addition + anchor, 1), encoding='utf-8')
+          PY
+      - name: Run focused tests
+        run: python -m unittest tests/test_special_technical_note_entity_binding_check.py
+      - name: Persist fix and remove bootstrap workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/fix-191-entity-binding-guard-contract.yml
+          git add scripts/special_technical_note_entity_binding_check.py tests/test_special_technical_note_entity_binding_check.py
+          git commit -m 'Enforce Special entity binding guard by contract'
+          git push origin HEAD:fix/191-entity-binding-guard-contract
