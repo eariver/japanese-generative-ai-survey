@@ -26,6 +26,9 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     marker_path = repo_root / "sources" / issue_id / "editorial" / f"layout-revision-{source_version}.json"
     marker = load_json(marker_path)
     changes = marker.get("layout_changes") or {}
+    if changes.get("half_year_reader_quality_cleanup") is True:
+        from scripts.revise_special_half_year_reader_quality_cleanup import build as reader_quality_build
+        return reader_quality_build(repo_root, special_slug, issue_id, source_version)
     if changes.get("half_year_final_pagination_compaction") is True:
         from scripts.revise_special_half_year_final_pagination_compaction import build as final_pagination_build
         return final_pagination_build(repo_root, special_slug, issue_id, source_version)
