@@ -16,7 +16,7 @@ When repository identity should be explicit:
 
 > `eariver/japanese-generative-ai-survey で <target> SpecialをArchitecture Reviewまで編纂してください。`
 
-`<target>` may be a configured slug such as `2024-H1`, `2024-H2`, `2025-H1`, `2025-H2`, `2026-M07`, or another period represented by the current Special configuration.
+`<target>` may be a configured slug such as `2023-Y`, `2024-H1`, `2024-H2`, `2025-H1`, `2025-H2`, `2026-M07`, or another period represented by the current Special configuration.
 
 The target plus the requested stopping Human Gate is sufficient. The user does not need to restate pipeline stages, manifest initialization, branch creation, work-branch naming, period dates, Human Gate rules, page-budget policy, validation policy, source-coverage policy, or release mechanics.
 
@@ -48,7 +48,7 @@ On every new Special production session:
 4. Inspect the canonical edition manifest, pipeline state, survey source, init/work branches, and relevant PRs if they exist.
 5. If the edition does not yet exist, execute the autonomous initialization sequence above using the current schema/workflow rather than copying another edition by hand.
 6. If the edition already exists, resume from the recorded lifecycle state instead of restarting completed stages.
-7. Read the applicable period guide. `HALF_YEAR` editions additionally require `docs/half-year-retrospective-specials.md`.
+7. Read the applicable period guide. `HALF_YEAR` editions additionally require `docs/half-year-retrospective-specials.md`; `ANNUAL` editions additionally require `docs/annual-retrospective-specials.md`.
 8. Proceed autonomously through all non-Human-Gate stages needed to reach the requested gate. Retry deterministic collection/CI failures when recovery does not require editorial judgment.
 9. Stop at the requested Human Gate and present the repository-backed review package. Never infer or manufacture approval.
 
@@ -74,6 +74,8 @@ Do not start reader-facing drafting before Architecture approval.
 Candidate Selection is not copied from another edition. Architecture, cluster names, story units, taxonomy, chapter count, thesis, and page allocation are derived from the target period's audited Evidence under the current period-specific guidance.
 
 For `HALF_YEAR` editions, the Architecture Review package must satisfy the current requirements in `docs/half-year-retrospective-specials.md`, including the Source Intake coverage audit, cross-period normalization, and candidates for cross-month comparison, half-year reclassification, cross-layer synthesis, and final half-year synthesis.
+
+For `ANNUAL` editions, the Architecture Review package must satisfy `docs/annual-retrospective-specials.md`, including the annual coverage audit and within-year temporal-skew check, year-wide normalization, story-unit to annual-trajectory construction, evidence-derived phase analysis where useful, annual reclassification, cross-layer synthesis, final annual synthesis, and an explicit single-volume coherence assessment.
 
 ## State and implementation boundaries
 
