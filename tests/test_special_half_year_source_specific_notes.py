@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import unittest
+from unittest import mock
 
 from scripts import revise_special_half_year_review_repairs_v7 as repair
+from scripts import revise_special_half_year_review_repairs_v31 as dedup
 
 
 class HalfYearSourceSpecificTechnicalNoteTests(unittest.TestCase):
@@ -68,6 +70,27 @@ class HalfYearSourceSpecificTechnicalNoteTests(unittest.TestCase):
         revised, count = repair._enrich_fact_line(block, "Artifact", info)
         self.assertEqual(count, 1)
         self.assertIn("JSON Schema", revised)
+
+    def test_existing_source_specific_point_is_not_appended_twice(self) -> None:
+        point = "MobileLLMはdeep-and-thinなTransformer構成を中心に探索した。"
+        inherited = "選定済み一次資料では、" + point
+        info = {
+            "canonical_title": "MobileLLM",
+            "technical_points": [point],
+        }
+        with mock.patch.object(dedup.detail, "_ORIGINAL_FACT", return_value=inherited):
+            rendered = dedup.deduplicated_source_specific_fact("MobileLLM", info)
+        self.assertEqual(rendered, inherited)
+        self.assertEqual(rendered.count(point), 1)
+
+    def test_new_source_specific_point_is_still_appended(self) -> None:
+        info = {
+            "canonical_title": "Artifact",
+            "technical_points": ["追加の技術点。"],
+        }
+        with mock.patch.object(dedup.detail, "_ORIGINAL_FACT", return_value="時系列上の事実。"):
+            rendered = dedup.deduplicated_source_specific_fact("Artifact", info)
+        self.assertEqual(rendered, "時系列上の事実。 追加の技術点。")
 
 
 if __name__ == "__main__":
