@@ -77,6 +77,17 @@ jobs:
           final=root/'sources'/issue/'editorial'/f'final-synthesis-{version}.json'
           layout=root/'sources'/issue/'editorial'/f'layout-revision-{version}.json'
           assert theme.is_file() or final.is_file() or layout.is_file(), (theme,final,layout)
+          if layout.is_file():
+              spec=json.load(open(layout,encoding='utf-8'))
+              changes=spec.get('layout_changes') or {}
+              if changes.get('redraft_article_narrative') is True:
+                  assert lifecycle=='RELEASE_CANDIDATE', 'narrative redraft begins from a machine-built Release Candidate'
+                  revision=changes.get('draft_overrides_revision')
+                  assert isinstance(revision,str) and revision, changes
+                  overrides=root/'sources'/issue/'drafting'/f'interactive-overrides-{revision}'
+                  assert overrides.is_dir(), overrides
+                  assert state['automation']['human_gate_required_for_publication_preview'] is True
+                  assert 'publication_preview' not in state.get('provenance',{}), 'redraft forbidden after Publication Preview approval'
           PY
       - name: Build immutable mixed-layout source revision
         shell: bash
@@ -93,7 +104,9 @@ jobs:
           import json,sys
           value=json.load(open(sys.argv[1],encoding='utf-8'))
           changes=value.get('layout_changes') or {}
-          if changes.get('normalize_reader_event_enums') is True:
+          if changes.get('redraft_article_narrative') is True:
+              print('redraft')
+          elif changes.get('normalize_reader_event_enums') is True:
               print('reader-enum-cleanup')
           elif changes.get('compact_toc_to_sections') is True:
               print('compact-toc')
@@ -108,6 +121,38 @@ jobs:
           PY
             )
             case "$mode" in
+              redraft)
+                generated_at=$(python - <<'PY'
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          print(datetime.now(ZoneInfo('Asia/Tokyo')).isoformat(timespec='seconds'))
+          PY
+                )
+                revision=$(python - "$layout" <<'PY'
+          import json,sys
+          changes=json.load(open(sys.argv[1],encoding='utf-8')).get('layout_changes') or {}
+          print(changes['draft_overrides_revision'])
+          PY
+                )
+                reference=$(python - "$layout" <<'PY'
+          import json,sys
+          value=json.load(open(sys.argv[1],encoding='utf-8'))
+          print(value.get('review_reference') or 'Pre-publication evidence-bound narrative redraft')
+          PY
+                )
+                PYTHONPATH=control-src python control-src/scripts/revise_special_interactive_drafts.py \
+                  --repo-root worktree \
+                  --issue-id "$SPECIAL_ID" \
+                  --package-dir "sources/${SPECIAL_ID}/drafting/packages/v0.1" \
+                  --overrides-dir "sources/${SPECIAL_ID}/drafting/interactive-overrides-${revision}" \
+                  --prompt "config/prompts/editorial/article-drafting-v0.1.md" \
+                  --provider "OpenAI" \
+                  --model "GPT-5.6 Sol" \
+                  --invocation "interactive ChatGPT pre-publication redraft after visual density review; no paid inference-provider API" \
+                  --generated-at "$generated_at" \
+                  --run-reference "$reference" \
+                  --audit-output special-mixed-layout-audit.json
+                ;;
               reader-enum-cleanup)
                 PYTHONPATH=control-src python control-src/scripts/revise_special_reader_enum_cleanup.py \
                   --repo-root worktree --special-slug "$SPECIAL_SLUG" --issue-id "$SPECIAL_ID" --source-version "$SOURCE_VERSION" \
@@ -160,7 +205,28 @@ jobs:
           import hashlib,json,pathlib,sys
           issue,version=sys.argv[1:]
           root=pathlib.Path('worktree')
+          layout=root/'sources'/issue/'editorial'/f'layout-revision-{version}.json'
+          spec=json.load(open(layout,encoding='utf-8')) if layout.is_file() else {}
+          lr=spec.get('layout_changes') or {}
           state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
+          if lr.get('redraft_article_narrative') is True:
+              assert state['lifecycle_state']=='DRAFT_COMPLETE', state['lifecycle_state']
+              assert state['gates']['article_draft']=='passed'
+              assert state['gates']['claim_and_chronology_validation']=='pending'
+              assert state['gates']['latex_build']=='pending'
+              assert state['gates']['visual_review']=='pending'
+              assert state['gates']['freeze']=='pending'
+              assert state['gates']['issue_architecture']=='passed'
+              assert 'validated_issue_source' not in state.get('provenance',{})
+              assert 'latex_build' not in state.get('provenance',{})
+              assert state.get('provenance_history',{}).get('pre_publication_redraft')
+              prov=state['provenance']['article_draft']
+              run=root/../prov['result_set_path']
+              assert run.is_dir(), run
+              acceptance=json.load(open(run/'acceptance.json',encoding='utf-8'))
+              assert acceptance['status']=='ACCEPTED'
+              assert acceptance['article_draft_count']>=1
+              raise SystemExit(0)
           assert state['lifecycle_state']=='VALIDATED_DRAFT'
           assert state['gates']['latex_build']=='pending'
           assert state['gates']['visual_review']=='pending'
@@ -297,8 +363,26 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add "sources/${SPECIAL_ID}/pipeline-state.json" "surveys/special/${SPECIAL_SLUG}/revisions/${SOURCE_VERSION}"
-          git commit -m "Revise ${SPECIAL_ID} reader layout ${SOURCE_VERSION}"
+          layout="sources/${SPECIAL_ID}/editorial/layout-revision-${SOURCE_VERSION}.json"
+          mode=$(python - "$layout" <<'PY'
+          import json,sys,pathlib
+          p=pathlib.Path(sys.argv[1])
+          if not p.is_file():
+              print('normal')
+          else:
+              changes=json.load(open(p,encoding='utf-8')).get('layout_changes') or {}
+              print('redraft' if changes.get('redraft_article_narrative') is True else 'normal')
+          PY
+          )
+          if [ "$mode" = redraft ]; then
+            git add "sources/${SPECIAL_ID}/pipeline-state.json" "sources/${SPECIAL_ID}/drafting/runs"
+            git add -A "sources/${SPECIAL_ID}/preview-transfer" || true
+            git diff --cached --quiet && exit 0
+            git commit -m "Accept pre-publication narrative redraft for ${SPECIAL_ID}"
+          else
+            git add "sources/${SPECIAL_ID}/pipeline-state.json" "surveys/special/${SPECIAL_SLUG}/revisions/${SOURCE_VERSION}"
+            git commit -m "Revise ${SPECIAL_ID} reader layout ${SOURCE_VERSION}"
+          fi
           git push origin "HEAD:${WORK_BRANCH}"
       - name: Upload revision audit
         uses: actions/upload-artifact@v7
