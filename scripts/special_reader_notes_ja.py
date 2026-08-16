@@ -258,6 +258,14 @@ def validate_summary(doc: dict[str, Any]) -> list[str]:
     return errors
 
 
+def _declared_derived_layer_without_notes(article: dict[str, Any]) -> bool:
+    return (
+        article.get('_sparse_architecture_derived') is True
+        and article.get('derived_reader_layer') is True
+        and not str(article.get('technical_notes_path') or '').strip()
+    )
+
+
 def check_compat(root: Path, issue_id: str) -> dict:
     report = _ORIGINAL_CHECK(root, issue_id)
     errors = list(report.get('errors') or [])
@@ -265,6 +273,24 @@ def check_compat(root: Path, issue_id: str) -> dict:
     source = state.get('provenance', {}).get('validated_issue_source') or {}
     manifest_path = root / str(source.get('path') or '')
     manifest = core.load_json(manifest_path)
+
+    derived_without_notes: list[str] = []
+    for article in manifest.get('articles') or []:
+        if not isinstance(article, dict) or not _declared_derived_layer_without_notes(article):
+            continue
+        package_id = str(article.get('package_id') or '').strip()
+        if not package_id:
+            errors.append('declared derived reader layer has no package_id')
+            continue
+        expected = f"Technical Notes missing: {package_id}"
+        matches = [index for index, value in enumerate(errors) if value == expected]
+        if len(matches) != 1:
+            errors.append(
+                f"derived reader-layer Technical Notes compatibility expected one core finding for {package_id}, found {len(matches)}"
+            )
+            continue
+        errors.pop(matches[0])
+        derived_without_notes.append(package_id)
 
     fallback_findings = 0
     duplicate_bullet_findings = 0
@@ -300,6 +326,8 @@ def check_compat(root: Path, issue_id: str) -> dict:
                     + '; '.join(sorted(duplicates))[:300]
                 )
 
+    report['derived_reader_layers_without_technical_notes'] = derived_without_notes
+    report['derived_reader_layer_notes_policy'] = 'explicit-derived-reader-layer-only'
     report['generic_fallback_findings'] = fallback_findings
     report['duplicate_bullet_findings'] = duplicate_bullet_findings
     report['source_specific_summary_policy'] = 'required-no-generic-fallback'
