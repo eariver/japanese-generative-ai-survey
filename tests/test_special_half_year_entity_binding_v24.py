@@ -66,6 +66,47 @@ class HalfYearEntityBindingV24Tests(unittest.TestCase):
         self.assertNotIn("405B parameter scale", signals)
         self.assertNotIn("Mamba", signals)
 
+    def test_audit_coverage_uses_unique_rendered_titles_not_card_placements(self):
+        manifest = {
+            "reader_facing_technical_notes": {
+                "source_specific_detail_visible_card_count": 49,
+                "source_specific_detail_override_count": 23,
+            },
+            "_technical_note_enrichment_scope": {
+                "rendered_title_count": 34,
+            },
+        }
+        population, visible_cards, overrides, basis = repair._audit_coverage_population(manifest)
+        self.assertEqual(population, 34)
+        self.assertEqual(visible_cards, 49)
+        self.assertEqual(overrides, 23)
+        self.assertEqual(basis, "UNIQUE_RENDERED_TITLE_COUNT")
+        self.assertEqual(population - overrides, 11)
+
+    def test_audit_coverage_fails_when_overrides_exceed_unique_titles(self):
+        manifest = {
+            "reader_facing_technical_notes": {
+                "source_specific_detail_visible_card_count": 49,
+                "source_specific_detail_override_count": 35,
+            },
+            "_technical_note_enrichment_scope": {
+                "rendered_title_count": 34,
+            },
+        }
+        with self.assertRaisesRegex(ValueError, "override count exceeds"):
+            repair._audit_coverage_population(manifest)
+
+    def test_audit_coverage_retains_legacy_visible_card_fallback(self):
+        manifest = {
+            "reader_facing_technical_notes": {
+                "source_specific_detail_visible_card_count": 5,
+                "source_specific_detail_override_count": 2,
+            },
+        }
+        population, visible_cards, overrides, basis = repair._audit_coverage_population(manifest)
+        self.assertEqual((population, visible_cards, overrides), (5, 5, 2))
+        self.assertEqual(basis, "VISIBLE_CARD_COUNT_LEGACY_FALLBACK")
+
 
 if __name__ == "__main__":
     unittest.main()
