@@ -51,7 +51,7 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
         from scripts.revise_special_half_year_sparse_architecture_repairs_v3 import build as sparse_half_year_build
         return sparse_half_year_build(repo_root, special_slug, issue_id, source_version)
     if changes.get("half_year_review_repairs_v3") is True:
-        from scripts.revise_special_half_year_review_repairs_v32 import build as half_year_v3_build
+        from scripts.revise_special_half_year_review_repairs_v33 import build as half_year_v3_build
         return half_year_v3_build(repo_root, special_slug, issue_id, source_version)
     if changes.get("dense_theme_table_font_guard") is True:
         from scripts.revise_special_dense_theme_table import build as dense_theme_build
