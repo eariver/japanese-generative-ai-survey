@@ -148,7 +148,7 @@ DeepSeek-V2 / DeepSeek-Coder-V2 & 補足資料 & オープンウェイト & 2024
 % reader-facing Technical Notes event-only fact/source tail group
 {\bfseries 一次資料から整理したtechnical points}
 \begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
-\item \textbf{一次情報で確認できる事実}: 選定済み一次資料では、対象event近傍の一次資料から 8K context を確認できる。
+\item \textbf{一次情報で確認できる事実}: LongRoPE論文は、pretrained LLMのcontext windowをprogressive extensionとnon-uniform positional interpolationによって2048K tokens超まで拡張する方法を提示する。論文中の8Kはextended modelのcontext上限ではなく、短いcontextでの性能回復のために行うreadjustmentの長さとして記載される値である。したがって本欄では8KをLongRoPE自身のcontext windowとして扱わない。性能値は著者報告として扱う。
 \end{itemize}
 \begin{minipage}{\linewidth}
 % reader-facing Technical Notes generic boundary/source tail group
@@ -256,7 +256,7 @@ DeepSeek-V2 / DeepSeek-Coder-V2 & 補足資料 & オープンウェイト & 2024
 % reader-facing Technical Notes event-only fact/source tail group
 {\bfseries 一次資料から整理したtechnical points}
 \begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
-\item \textbf{一次情報で確認できる事実}: DeepSeekの一次資料により、DeepSeek-V2 / DeepSeek-Coder-V2について2024-05-06にモデル公開、2024-06-17にモデル公開を確認した。 対象event近傍の一次資料から source links in search answers / Mixture-of-Experts (MoE) / KV-cache を確認できる。
+\item \textbf{一次情報で確認できる事実}: DeepSeekの一次資料により、DeepSeek-V2は2024-05-06、DeepSeek-Coder-V2は2024-06-17にそれぞれモデル公開を確認した。DeepSeek-V2自身はMixture-of-Experts構成とMulti-head Latent Attentionを用い、KV-cache量を抑える設計として説明される。DeepSeek-Coder-V2はDeepSeek-V2系のMoE code modelとして公開され、128K contextをサポートすると説明される。`source links in search answers`は両モデルのtechnical propertyとして扱わず、別source/event近傍の語をfamily cardへ混在させない。
 \end{itemize}
 \begin{minipage}{\linewidth}
 % reader-facing Technical Notes generic boundary/source tail group
