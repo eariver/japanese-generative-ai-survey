@@ -94,6 +94,20 @@ class HalfYearEntityBindingV27Tests(unittest.TestCase):
         signals = self._signals(summary, "Rerank")
         self.assertIn("reranking", signals)
 
+    def test_longrope_readjustment_length_is_not_flattened_to_context_capacity(self) -> None:
+        summary = (
+            "LongRoPE extends the context window beyond 2048K tokens. "
+            "For short-context performance recovery, LongRoPE uses an 8K context during positional-embedding readjustment."
+        )
+        signals = self._signals(summary, "LongRoPE")
+        self.assertNotIn("8K context", signals)
+        self.assertIn("8K context", audit_base._AUDIT_ROWS[-1]["rejected_entity_bound_signals"])
+
+    def test_explicit_context_capacity_remains_eligible(self) -> None:
+        summary = "Example Model supports a 128K context window for inference."
+        signals = self._signals(summary, "Example Model")
+        self.assertIn("128K context", signals)
+
     def test_unqualified_single_model_license_remains_eligible(self) -> None:
         summary = "Mistral Large 2 is released under the Mistral Research License with a 128K context window."
         signals = self._signals(summary, "Mistral Large 2")
