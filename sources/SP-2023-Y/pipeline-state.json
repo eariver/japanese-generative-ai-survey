@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "issue_id": "SP-2023-Y",
   "edition_kind": "RETROSPECTIVE_PERIOD",
-  "lifecycle_state": "RELEASE_CANDIDATE",
+  "lifecycle_state": "VALIDATED_DRAFT",
   "revision": "v0.1",
   "calendar": {
     "editorial_cutoff": "2023-12-31T23:59:59Z",
@@ -21,7 +21,7 @@
     "issue_architecture": "passed",
     "article_draft": "passed",
     "claim_and_chronology_validation": "passed",
-    "latex_build": "passed",
+    "latex_build": "pending",
     "visual_review": "pending",
     "freeze": "pending"
   },
@@ -77,42 +77,24 @@
       "sha256": "297febbcbfd5db9c20ef7fef78739cab16f8f98442e29e333e3765bd672a4a74"
     },
     "validated_issue_source": {
-      "path": "surveys/special/2023-Y/revisions/v0.4/source-manifest.json",
-      "sha256": "8288f6f27b437b781e460512121416b0bc860ca398697ab592ffd13f0f12ff19",
-      "source_version": "v0.4",
-      "expansion_basis": "selected Evidence cards only",
-      "typography_revision": "v0.4-reference-title-cleanup",
-      "layout_mode": "balanced-local-multicol-narrative-full-width-evidence",
-      "prebuild_layout": true,
-      "reader_facing_notes_language": "ja-reader-summary-v1",
-      "reader_facing_technical_notes": true,
-      "period_consistency": true
+      "path": "surveys/special/2023-Y/revisions/v0.5/source-manifest.json",
+      "sha256": "c72652bee5dc5f98f722445656a5366c784dd3dcfcf40e6a3412a6d3d1feda7e",
+      "source_version": "v0.5",
+      "layout_mode": "local two-column multicol narrative; full-width chapter headings, standfirsts, Technical Notes",
+      "layout_revision_sha256": "ae0c5e61fec4fbd41c564c0d00bcc2729434053c8604d81329cda49ba3f8a330"
     },
     "annual_chronology": {
-      "source_version": "v0.4",
-      "path": "sources/SP-2023-Y/chronology/annual-chronology-v0.4.json",
-      "sha256": "7bb2033e1b2c1f1e3a655859b2b52bfc74ec3c7ab654fea77e7a642561b107d7",
+      "source_version": "v0.5",
+      "path": "sources/SP-2023-Y/chronology/annual-chronology-v0.5.json",
+      "sha256": "cdf7e5415a9bae3012a2585ffd4792a2ed3df6aa87114766d77f429bc9a61ab7",
       "event_count": 75,
       "unresolved_date_count": 3
     },
-    "latex_build": {
-      "workflow_run_id": 31956125025,
-      "pdf_sha256": "c6f3ceb7bf8643790509bdcc822f904fa729aa6b5813d01e4c17a870e7a9c545",
-      "page_count": 45,
-      "source_version": "v0.4",
-      "validated_issue_source_path": "worktree/surveys/special/2023-Y/revisions/v0.4/source-manifest.json",
-      "validated_issue_source_sha256": "8288f6f27b437b781e460512121416b0bc860ca398697ab592ffd13f0f12ff19",
-      "page_budget": {
-        "soft_target": 96,
-        "hard_max": 144,
-        "below_soft_target": true,
-        "policy": "manifest-soft-target-hard-ceiling"
-      },
-      "build_style": {
-        "control_commit_sha": "a18edabcfac68941861ca5697d928357f74c197a",
-        "path": "templates/survey/jgaisurvey.sty",
-        "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
-      }
+    "reader_layout_revision": {
+      "source_version": "v0.5",
+      "layout_revision_path": "sources/SP-2023-Y/editorial/layout-revision-v0.5.json",
+      "layout_revision_sha256": "ae0c5e61fec4fbd41c564c0d00bcc2729434053c8604d81329cda49ba3f8a330",
+      "reason": "Publication Preview repair for #139: replace generic Annual Technical Notes fallback prose with source-specific technical details from the exact accepted, hash-pinned Screening queue while preserving #191 subject/component/variant/property binding. v0.4 narrative, Evidence, approved Architecture, bibliography, and 75-event chronology remain unchanged."
     }
   },
   "provenance_history": {
@@ -137,6 +119,18 @@
       {
         "path": "surveys/special/2023-Y/source-manifest.json",
         "sha256": "48dee86013a983d30bf96e54e0a218b25e29cebf9046d199773a0ad64ef1c1d2",
+        "period_consistency": true
+      },
+      {
+        "path": "surveys/special/2023-Y/revisions/v0.4/source-manifest.json",
+        "sha256": "8288f6f27b437b781e460512121416b0bc860ca398697ab592ffd13f0f12ff19",
+        "source_version": "v0.4",
+        "expansion_basis": "selected Evidence cards only",
+        "typography_revision": "v0.4-reference-title-cleanup",
+        "layout_mode": "balanced-local-multicol-narrative-full-width-evidence",
+        "prebuild_layout": true,
+        "reader_facing_notes_language": "ja-reader-summary-v1",
+        "reader_facing_technical_notes": true,
         "period_consistency": true
       }
     ],
@@ -216,6 +210,36 @@
             }
           }
         }
+      }
+    ],
+    "latex_build": [
+      {
+        "workflow_run_id": 31956125025,
+        "pdf_sha256": "c6f3ceb7bf8643790509bdcc822f904fa729aa6b5813d01e4c17a870e7a9c545",
+        "page_count": 45,
+        "source_version": "v0.4",
+        "validated_issue_source_path": "worktree/surveys/special/2023-Y/revisions/v0.4/source-manifest.json",
+        "validated_issue_source_sha256": "8288f6f27b437b781e460512121416b0bc860ca398697ab592ffd13f0f12ff19",
+        "page_budget": {
+          "soft_target": 96,
+          "hard_max": 144,
+          "below_soft_target": true,
+          "policy": "manifest-soft-target-hard-ceiling"
+        },
+        "build_style": {
+          "control_commit_sha": "a18edabcfac68941861ca5697d928357f74c197a",
+          "path": "templates/survey/jgaisurvey.sty",
+          "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+        }
+      }
+    ],
+    "annual_chronology": [
+      {
+        "source_version": "v0.4",
+        "path": "sources/SP-2023-Y/chronology/annual-chronology-v0.4.json",
+        "sha256": "7bb2033e1b2c1f1e3a655859b2b52bfc74ec3c7ab654fea77e7a642561b107d7",
+        "event_count": 75,
+        "unresolved_date_count": 3
       }
     ]
   }
