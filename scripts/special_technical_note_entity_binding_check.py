@@ -82,19 +82,33 @@ def _rendered_top_level_tex_paths(
 
 def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[str]:
     errors: list[str] = []
-    if str(manifest.get("status") or "") != "VALIDATED_HALF_YEAR_SOURCE_SPECIFIC_NOTES_REVISION":
-        return errors
-
     reader = manifest.get("reader_facing_technical_notes") or {}
-    if reader.get("source_specific_detail_contract") != "SCREENING_BACKED_FAIL_CLOSED":
-        errors.append("Half-year Technical Notes lost SCREENING_BACKED_FAIL_CLOSED provenance")
-    if reader.get("entity_binding_contract") != ENTITY_BINDING_CONTRACT:
+    status = str(manifest.get("status") or "")
+    declared_contract = reader.get("entity_binding_contract")
+
+    # The original source-specific-notes revision requires V3 fail-closed.
+    # Later descendants may use a different status, so any descendant that
+    # carries the V3 contract must still be audited regardless of status.
+    if status == "VALIDATED_HALF_YEAR_SOURCE_SPECIFIC_NOTES_REVISION":
+        if declared_contract != ENTITY_BINDING_CONTRACT:
+            errors.append(
+                "Half-year Technical Notes lack the required subject/entity binding contract "
+                "(component/variant/property V3 required): "
+                f"expected={ENTITY_BINDING_CONTRACT} actual={declared_contract}"
+            )
+            return errors
+    elif declared_contract is None:
+        return errors
+    elif declared_contract != ENTITY_BINDING_CONTRACT:
         errors.append(
             "Half-year Technical Notes lack the required subject/entity binding contract "
             "(component/variant/property V3 required): "
-            f"expected={ENTITY_BINDING_CONTRACT} actual={reader.get('entity_binding_contract')}"
+            f"expected={ENTITY_BINDING_CONTRACT} actual={declared_contract}"
         )
         return errors
+
+    if reader.get("source_specific_detail_contract") != "SCREENING_BACKED_FAIL_CLOSED":
+        errors.append("Half-year Technical Notes lost SCREENING_BACKED_FAIL_CLOSED provenance")
 
     audit_rel = str(reader.get("entity_binding_audit_path") or "")
     expected_audit_sha = str(reader.get("entity_binding_audit_sha256") or "")
