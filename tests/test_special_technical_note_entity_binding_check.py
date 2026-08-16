@@ -8,6 +8,7 @@ from pathlib import Path
 
 from scripts.special_technical_note_entity_binding_check import (
     ENTITY_BINDING_CONTRACT,
+    _coverage_population,
     inspect_entity_binding,
 )
 
@@ -176,6 +177,49 @@ class SpecialTechnicalNoteEntityBindingCheckTests(unittest.TestCase):
                 "sha256": hashlib.sha256(main.read_bytes()).hexdigest(),
             }
             self.assertEqual(inspect_entity_binding(manifest, source_dir), [])
+
+    def test_unique_title_coverage_population_matches_v017_shape(self) -> None:
+        reader = {
+            "source_specific_detail_visible_card_count": 49,
+            "source_specific_detail_override_count": 26,
+            "entity_binding_coverage_population_count": 34,
+            "entity_binding_coverage_basis": "UNIQUE_RENDERED_TITLE_COUNT",
+            "entity_binding_visible_card_placement_count": 49,
+        }
+        population, visible, overrides, basis = _coverage_population(reader)
+        self.assertEqual((population, visible, overrides), (34, 49, 26))
+        self.assertEqual(basis, "UNIQUE_RENDERED_TITLE_COUNT")
+        self.assertEqual(population - overrides, 8)
+
+    def test_override_count_cannot_exceed_unique_title_population(self) -> None:
+        reader = {
+            "source_specific_detail_visible_card_count": 49,
+            "source_specific_detail_override_count": 35,
+            "entity_binding_coverage_population_count": 34,
+            "entity_binding_coverage_basis": "UNIQUE_RENDERED_TITLE_COUNT",
+            "entity_binding_visible_card_placement_count": 49,
+        }
+        with self.assertRaisesRegex(ValueError, "override count exceeds"):
+            _coverage_population(reader)
+
+    def test_unknown_declared_coverage_basis_fails_closed(self) -> None:
+        reader = {
+            "source_specific_detail_visible_card_count": 49,
+            "source_specific_detail_override_count": 26,
+            "entity_binding_coverage_population_count": 34,
+            "entity_binding_coverage_basis": "CARD_PLACEMENTS",
+        }
+        with self.assertRaisesRegex(ValueError, "unsupported"):
+            _coverage_population(reader)
+
+    def test_legacy_manifest_uses_visible_card_fallback(self) -> None:
+        reader = {
+            "source_specific_detail_visible_card_count": 5,
+            "source_specific_detail_override_count": 2,
+        }
+        population, visible, overrides, basis = _coverage_population(reader)
+        self.assertEqual((population, visible, overrides), (5, 5, 2))
+        self.assertEqual(basis, "VISIBLE_CARD_COUNT_LEGACY_FALLBACK")
 
 
 if __name__ == "__main__":
