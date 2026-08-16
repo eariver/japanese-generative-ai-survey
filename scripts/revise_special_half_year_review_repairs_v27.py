@@ -38,6 +38,7 @@ _COMPONENT_SCOPED_SIGNALS = {
     "Retrieval-Augmented Generation (RAG)",
     "function calling",
     "tool use",
+    "reranking",
     "SDK",
     "MCP client/server",
 }
