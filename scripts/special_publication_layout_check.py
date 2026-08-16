@@ -39,6 +39,8 @@ def declared_non_narrative_multicols(manifest: dict[str, Any], main_text: str) -
     Narrative article cardinality remains strict. A later layout-only descendant may declare a
     two-column References body; that block is allowed only when the manifest explicitly records the
     References multicol contract and the source has the full-width heading plus heading=none body.
+    A still later log-cleanup descendant may additionally declare local ``\\raggedright`` inside
+    that exact References block; the declaration is accepted only when its manifest flag is true.
     """
     errors: list[str] = []
     lr = manifest.get("layout_revision") or {}
@@ -49,11 +51,25 @@ def declared_non_narrative_multicols(manifest: dict[str, Any], main_text: str) -
         required = (
             r"\section*{References / Source Notes}",
             r"\addcontentsline{toc}{section}{References / Source Notes}",
-            r"\begin{multicols}{2}" + "\n" + r"\printbibliography[heading=none]" + "\n" + r"\end{multicols}",
         )
         for token in required:
             if token not in main_text:
                 errors.append(f"declared References multicol source marker missing: {token}")
+
+        body_lines = [r"\begin{multicols}{2}"]
+        if lr.get("half_year_reference_raggedright_compaction") is True:
+            if lr.get("references_raggedright") is not True:
+                errors.append("References ragged-right revision must declare references_raggedright=true")
+            body_lines.extend(
+                [
+                    "% half-year References ragged-right compaction",
+                    r"\raggedright",
+                ]
+            )
+        body_lines.extend([r"\printbibliography[heading=none]", r"\end{multicols}"])
+        body = "\n".join(body_lines)
+        if body not in main_text:
+            errors.append(f"declared References multicol source marker missing: {body}")
         if not errors:
             extra += 1
     return extra, errors
