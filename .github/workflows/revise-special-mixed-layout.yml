@@ -241,7 +241,16 @@ jobs:
               assert fs['layout_only_revision'] is True
               assert fs['numbered_subsection_guard_count']==lr['numbered_subsection_guard_count']
           elif lr.get('half_year_review_repairs_v3') is True:
-              assert manifest['status']=='VALIDATED_HALF_YEAR_REVIEW_REPAIR_V3_REVISION'
+              if lr.get('half_year_source_specific_notes_v1') is True:
+                  assert manifest['status']=='VALIDATED_HALF_YEAR_SOURCE_SPECIFIC_NOTES_REVISION'
+                  assert lr['prior_half_year_structure_preserved'] is True
+                  reader=manifest['reader_facing_technical_notes']
+                  assert reader['source_specific_detail_contract']=='SCREENING_BACKED_FAIL_CLOSED'
+                  assert reader['source_specific_detail_enrichment_count']==lr['technical_notes_source_specific_detail_enrichment_count']
+                  assert reader['source_specific_detail_visible_card_count']==lr['technical_notes_visible_card_count']
+                  assert reader['source_specific_detail_url_identity_checks']==lr['technical_notes_url_identity_checks']
+              else:
+                  assert manifest['status']=='VALIDATED_HALF_YEAR_REVIEW_REPAIR_V3_REVISION'
               assert lr['reader_content_changed'] is True
               assert lr['new_external_evidence'] is False
               assert lr['accepted_article_sections_changed'] is False
