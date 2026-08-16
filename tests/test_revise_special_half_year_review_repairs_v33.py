@@ -114,6 +114,50 @@ class HalfYearLayeredOverrideV33Tests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "screening_verification_queue_sha256 is required"):
                 repair._load_overrides_with_overlay(root, ISSUE_ID, VERSION)
 
+    def test_eventless_fact_uses_validated_source_specific_technical_point(self) -> None:
+        def ordinary_fact(title, info):
+            self.fail("ordinary chronology renderer must not run for a validated eventless card")
+
+        value = repair._eventless_source_specific_fact(
+            "MobileLLM",
+            {
+                "events": [],
+                "organization": "Meta",
+                "technical_points": ["mobile向けの小規模言語モデル設計を提示する。"],
+            },
+            ordinary_fact,
+        )
+
+        self.assertEqual(
+            value,
+            "Metaの選定済み一次資料では、mobile向けの小規模言語モデル設計を提示する。",
+        )
+
+    def test_eventless_fact_delegates_when_chronology_exists(self) -> None:
+        calls = []
+
+        def ordinary_fact(title, info):
+            calls.append((title, info))
+            return "chronology fact"
+
+        info = {"events": [{"date": "2024-01-01"}], "technical_points": ["point"]}
+        self.assertEqual(
+            repair._eventless_source_specific_fact("Example", info, ordinary_fact),
+            "chronology fact",
+        )
+        self.assertEqual(calls, [("Example", info)])
+
+    def test_eventless_fact_still_fails_closed_without_technical_point(self) -> None:
+        def ordinary_fact(title, info):
+            raise ValueError(f"no structured chronology available for Technical Notes fact: {title}")
+
+        with self.assertRaisesRegex(ValueError, "no structured chronology"):
+            repair._eventless_source_specific_fact(
+                "NoEvidence",
+                {"events": [], "technical_points": []},
+                ordinary_fact,
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
