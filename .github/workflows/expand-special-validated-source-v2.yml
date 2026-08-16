@@ -97,12 +97,19 @@ jobs:
             --issue-id "$SPECIAL_ID" \
             --source-version "$SOURCE_VERSION" \
             > special-reader-facing-notes-audit.json
+          PYTHONPATH=control-src python control-src/scripts/materialize_annual_chronology.py \
+            --repo-root worktree \
+            --special-slug "$SPECIAL_SLUG" \
+            --issue-id "$SPECIAL_ID" \
+            --source-version "$SOURCE_VERSION" \
+            --audit-output special-annual-chronology-audit.json \
+            > special-annual-chronology-output.json
           PYTHONPATH=control-src python control-src/scripts/special_period_consistency.py apply \
             --repo-root worktree \
             --special-slug "$SPECIAL_SLUG" \
             --issue-id "$SPECIAL_ID" \
             > special-period-consistency-audit.json
-      - name: Verify expanded source, Japanese Technical Notes, and period consistency
+      - name: Verify expanded source, Japanese Technical Notes, annual chronology, and period consistency
         shell: bash
         env:
           SPECIAL_SLUG: ${{ inputs.special_slug }}
@@ -138,6 +145,14 @@ jobs:
               assert not text.lstrip().startswith('\\clearpage')
               for banned in ('Selection済みEvidence','normalized claim','Source-bound record:'):
                   assert banned not in text, (article['package_id'],banned)
+          if slug.endswith('-Y'):
+              chronology=data.get('annual_chronology') or {}
+              assert chronology.get('status')=='MATERIALIZED_FROM_ACCEPTED_SCREENING_METADATA', chronology
+              assert int(chronology.get('event_count',0))>0, chronology
+              chronology_audit=root/chronology['audit_path']
+              assert chronology_audit.is_file()
+              assert hashlib.sha256(chronology_audit.read_bytes()).hexdigest()==chronology['audit_sha256']
+              assert state['provenance']['annual_chronology']['event_count']==chronology['event_count']
           assert len(state.get('provenance_history',{}).get('validated_issue_source',[]))>=1
           assert (manifest.parent/'main.tex').is_file()
           PY
@@ -160,7 +175,9 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add "sources/${SPECIAL_ID}/pipeline-state.json" "surveys/special/${SPECIAL_SLUG}/revisions/${SOURCE_VERSION}"
+          git add "sources/${SPECIAL_ID}/pipeline-state.json" \
+                  "sources/${SPECIAL_ID}/chronology" \
+                  "surveys/special/${SPECIAL_SLUG}/revisions/${SOURCE_VERSION}"
           git diff --cached --quiet && exit 0
           git commit -m "Expand reader-facing source ${SOURCE_VERSION} for ${SPECIAL_ID}"
           git push origin "HEAD:${WORK_BRANCH}"
@@ -172,6 +189,7 @@ jobs:
             special-source-expansion-audit.json
             special-reader-notes-ja-apply-audit.json
             special-reader-facing-notes-audit.json
+            special-annual-chronology-audit.json
             special-period-consistency-audit.json
           if-no-files-found: error
           retention-days: 14
