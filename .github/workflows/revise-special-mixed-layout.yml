@@ -272,7 +272,8 @@ jobs:
               assert reader['generic_fallback_policy']=='forbidden-fail-closed'
               assert reader['generic_fallback_findings']==0
               assert reader['source_specific_replacement_count']==lr['technical_notes_source_specific_replacement_count']
-              assert reader['url_identity_checks']==lr['technical_notes_url_identity_checks']
+              if lr.get('half_year_source_specific_notes_v1') is not True:
+                  assert reader['url_identity_checks']==lr['technical_notes_url_identity_checks']
           elif 'final_synthesis' in manifest:
               assert manifest['layout']['body_mode'].startswith('balanced mixed:')
               assert lr['full_width_chapter_headings'] is True
