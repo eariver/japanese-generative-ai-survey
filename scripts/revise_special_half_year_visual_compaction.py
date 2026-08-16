@@ -189,13 +189,16 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     manifest["main_tex"] = {"path": main_rel, "sha256": visual.sha(main_path)}
     chronology["layout_body_sha256"] = visual.sha(chronology_path)
 
+    # layout_revision is cumulative lineage metadata. Keep the parent's semantic
+    # reader_content_changed=true from the v0.3 Half-year repair, and record the
+    # current descendant's semantic delta separately as false.
     lr = dict(manifest.get("layout_revision") or {})
     lr.update(
         {
             "from_source_version": parent_manifest.get("source_version"),
             "half_year_visual_compaction": True,
             "visual_issue_refs": [122, 55, 153],
-            "reader_content_changed": False,
+            "visual_compaction_reader_semantic_content_changed": False,
             "new_external_evidence": False,
             "selected_evidence_only": True,
             "accepted_article_sections_changed": False,
