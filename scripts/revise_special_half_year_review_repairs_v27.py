@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
-"""Enforce component/variant/property binding for Half-year Technical Notes.
+"""Enforce component/variant/property/value-role binding for Half-year Technical Notes.
 
-V26 binds high-risk values to a version-aware selected artifact, but two finer attribution
+V26 binds high-risk values to a version-aware selected artifact, but finer attribution
 boundaries remain:
 
 * a family announcement may contain variants with different licenses/properties; a bare
   ``A / B / C / Apache 2.0`` list loses variant -> property ownership;
 * one announcement may describe a model plus an adjacent Stack/API/runtime component;
-  deployment capabilities owned by that component must not become model attributes.
+  deployment capabilities owned by that component must not become model attributes;
+* a numeric token that syntactically resembles a context size may describe an intermediate
+  algorithm parameter (for example a positional-embedding readjustment length) rather than
+  the selected model's context capacity.
 
-V27 therefore expands the fail-closed audit to scope-sensitive properties and rejects an
-automatically rendered property when ownership is heterogeneous, exception-qualified, or
-split across a closer component subject. Hash-bound editorial overrides remain the recovery
-path for explicit subject-labelled statements.
+V27 therefore expands the fail-closed audit to scope-sensitive properties and value roles. It
+rejects an automatically rendered property when ownership is heterogeneous, exception-qualified,
+split across a closer component subject, or locally labelled as a non-capacity algorithm value.
+Hash-bound editorial overrides remain the recovery path for explicit subject-labelled statements.
 """
 from __future__ import annotations
 
@@ -67,6 +70,14 @@ _LICENSE_EXCEPTION_RE = re.compile(
 _VARIANT_SCALE_RE = re.compile(r"\b\d+(?:\.\d+)?B\b", re.IGNORECASE)
 _OTHER_LICENSE_RE = re.compile(
     r"\b(?:Qwen\s+Research|Qwen\s+License|Research\s+License|Community\s+License)\b",
+    re.IGNORECASE,
+)
+
+# A context-like token is not a context-capacity fact when the same local clause explicitly
+# assigns it to positional-embedding readjustment. This protects value-role ownership: e.g.
+# LongRoPE's 8K readjustment length must not be flattened into an ``8K context`` card fact.
+_CONTEXT_NON_CAPACITY_ROLE_RE = re.compile(
+    r"\b(?:readjustment|re-adjustment|readjust(?:ed|ing)?|re-adjust(?:ed|ing)?)\b",
     re.IGNORECASE,
 )
 
@@ -148,8 +159,10 @@ def _signal_is_target_bound(window: str, start: int, end: int, title: str, rende
             return False
 
     if rendered.endswith("K context") or rendered.endswith("M context"):
-        vicinity = sentence[max(0, local_start - 120):min(len(sentence), local_end + 120)].lower()
-        if re.search(r"single\s+(?:gpu|node)", vicinity):
+        vicinity = sentence[max(0, local_start - 120):min(len(sentence), local_end + 120)]
+        if re.search(r"single\s+(?:gpu|node)", vicinity, flags=re.IGNORECASE):
+            return False
+        if _CONTEXT_NON_CAPACITY_ROLE_RE.search(vicinity):
             return False
 
     if not _license_scope_is_safe(window, sentence, rendered):
