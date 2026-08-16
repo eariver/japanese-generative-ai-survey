@@ -26,37 +26,20 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     marker_path = repo_root / "sources" / issue_id / "editorial" / f"layout-revision-{source_version}.json"
     marker = load_json(marker_path)
     changes = marker.get("layout_changes") or {}
-    # Final full-page inspection may still expose pagination-only continuations after the first
-    # visual compaction. Route this narrower descendant first; it preserves all semantic content
-    # and bibliography data while reducing frontmatter and References vertical footprint.
     if changes.get("half_year_final_pagination_compaction") is True:
         from scripts.revise_special_half_year_final_pagination_compaction import build as final_pagination_build
         return final_pagination_build(repo_root, special_slug, issue_id, source_version)
-    # Full-page visual review can expose density-only defects after semantic review is complete.
-    # Route this immutable layout-only descendant before the semantic Half-year chain so accepted
-    # article/Evidence/Technical Notes/analysis/chronology content stays byte-stable.
     if changes.get("half_year_visual_compaction") is True:
         from scripts.revise_special_half_year_visual_compaction import build as visual_compaction_build
         return visual_compaction_build(repo_root, special_slug, issue_id, source_version)
-    # A Half-year repair may already be immutable before an independent References audit exposes
-    # legacy Primary source N placeholders. Route this narrow descendant before the broader
-    # Half-year semantic chain so the existing repaired analysis/chronology/Technical Notes remain
-    # byte-stable while bibliography titles are restored from selected Evidence.
     if changes.get("half_year_reference_title_repair") is True:
         from scripts.revise_special_half_year_reference_titles import build as reference_title_build
         return reference_title_build(repo_root, special_slug, issue_id, source_version)
-    # Sparse early Half-year architectures need both provenance and legacy reader-surface
-    # compatibility around the current v30 semantic repair chain. Route this before the ordinary
-    # v30 marker because the compatibility implementation deliberately retains
-    # half_year_review_repairs_v3=true.
     if changes.get("sparse_half_year_architecture_repairs") is True:
         from scripts.revise_special_half_year_sparse_architecture_repairs_v3 import build as sparse_half_year_build
         return sparse_half_year_build(repo_root, special_slug, issue_id, source_version)
-    # Semantic/source regeneration is the primary operation when a marker composes it with a
-    # layout-preservation flag. The regenerated revision inherits the current source/layout;
-    # a dense-table guard must not short-circuit the Half-year repair before it runs.
     if changes.get("half_year_review_repairs_v3") is True:
-        from scripts.revise_special_half_year_review_repairs_v30 import build as half_year_v3_build
+        from scripts.revise_special_half_year_review_repairs_v31 import build as half_year_v3_build
         return half_year_v3_build(repo_root, special_slug, issue_id, source_version)
     if changes.get("dense_theme_table_font_guard") is True:
         from scripts.revise_special_dense_theme_table import build as dense_theme_build
