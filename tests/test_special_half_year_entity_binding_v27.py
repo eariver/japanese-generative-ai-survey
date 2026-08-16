@@ -80,6 +80,20 @@ class HalfYearEntityBindingV27Tests(unittest.TestCase):
         self.assertNotIn("MCP client/server", signals)
         self.assertNotIn("SDK", signals)
 
+    def test_command_r_does_not_absorb_adjacent_rerank_product_signal(self) -> None:
+        summary = (
+            "Command R is a retrieval-augmented generation model for enterprise workloads. "
+            "Rerank provides semantic-search reranking for retrieval results."
+        )
+        signals = self._signals(summary, "Command R / Command R+")
+        self.assertNotIn("reranking", signals)
+        self.assertIn("reranking", audit_base._AUDIT_ROWS[-1]["rejected_entity_bound_signals"])
+
+    def test_rerank_subject_can_own_reranking_signal(self) -> None:
+        summary = "Rerank is a semantic-search model that performs reranking of retrieval results."
+        signals = self._signals(summary, "Rerank")
+        self.assertIn("reranking", signals)
+
     def test_unqualified_single_model_license_remains_eligible(self) -> None:
         summary = "Mistral Large 2 is released under the Mistral Research License with a 128K context window."
         signals = self._signals(summary, "Mistral Large 2")
