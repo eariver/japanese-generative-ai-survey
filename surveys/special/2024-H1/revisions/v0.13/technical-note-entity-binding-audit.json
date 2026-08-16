@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0",
   "issue_id": "SP-2024-H1",
-  "source_version": "v0.3",
+  "source_version": "v0.13",
   "contract": "SUBJECT_COMPONENT_VARIANT_PROPERTY_BINDING_V3",
   "scope": "event-bounded Screening-backed Technical Note signal extraction",
   "policy": "Model scale/architecture/training/release-form signals require a local selected-artifact identity anchor; unbound candidates are rejected before reader-facing synthesis.",
   "artifact_count": 12,
-  "accepted_entity_bound_signal_count": 15,
-  "rejected_entity_bound_signal_count": 46,
+  "accepted_entity_bound_signal_count": 18,
+  "rejected_entity_bound_signal_count": 47,
   "artifacts": [
     {
       "title": "Chameleon",
@@ -67,18 +67,19 @@
       "anchor": "DeepSeek-V2",
       "extraction_calls": 2,
       "accepted_entity_bound_signals": [
-        "Mixture-of-Experts (MoE)"
+        "Mixture-of-Experts (MoE)",
+        "128K context"
       ],
       "rejected_entity_bound_signals": [
         "33B parameter scale",
-        "128K context",
         "Mixture-of-Experts (MoE)",
         "236B parameter scale",
         "21B parameter scale",
         "67B parameter scale",
         "Supervised Fine-Tuning (SFT)"
       ],
-      "empty_window_calls": 0
+      "empty_window_calls": 0,
+      "binding_note": "128K context is bound to DeepSeek-Coder-V2; MoE is shared family architecture. Adjacent search-answer properties are not model properties."
     },
     {
       "title": "Gemini 1.5 / Gemini 1.5 Flash",
@@ -121,13 +122,15 @@
       "anchor": "LongRoPE",
       "extraction_calls": 1,
       "accepted_entity_bound_signals": [
-        "8K context"
+        "8K readjustment length"
       ],
       "rejected_entity_bound_signals": [
         "128K context",
-        "2048K context"
+        "2048K context",
+        "8K context"
       ],
-      "empty_window_calls": 0
+      "empty_window_calls": 0,
+      "binding_note": "8K is a short-context readjustment length, not context capacity; context extension exceeds 2048K tokens."
     },
     {
       "title": "OLMo / OLMo 1.7",
@@ -152,9 +155,15 @@
       "title": "OpenELM",
       "anchor": "OpenELM",
       "extraction_calls": 2,
-      "accepted_entity_bound_signals": [],
-      "rejected_entity_bound_signals": [],
-      "empty_window_calls": 0
+      "accepted_entity_bound_signals": [
+        "layer-wise scaling strategy",
+        "MLX conversion code"
+      ],
+      "rejected_entity_bound_signals": [
+        "image generation"
+      ],
+      "empty_window_calls": 0,
+      "binding_note": "OpenELM properties are bound to the language-model family; adjacent image-generation language is rejected."
     },
     {
       "title": "Phi-3 family",
@@ -184,5 +193,9 @@
       "rejected_entity_bound_signals": [],
       "empty_window_calls": 0
     }
-  ]
+  ],
+  "review_issue_refs": [
+    191
+  ],
+  "review_scope": "SP-2024-H1 v0.12 regression re-audit across all rendered duplicate placements: OpenELM, DeepSeek family, LongRoPE value role; all prior V3 audit rows retained."
 }
