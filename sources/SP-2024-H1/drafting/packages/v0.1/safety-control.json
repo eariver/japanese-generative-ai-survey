@@ -1,0 +1,608 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2024-H1",
+  "package_id": "safety-control",
+  "draft_source_mode": "EVIDENCE_PACKAGE",
+  "execution_stage": "ARTICLE_DRAFTING",
+  "basis": {
+    "architecture_plan_sha256": "c236c41dfba45e636d7f4d0e9c7444a3fbb626b958fdd0acf4eb5f0cccb4a9e6",
+    "architecture_input_sha256": "f223194f692fc953e3f1bc5d7902a17669733edef8f26bd46eee66f2a6a2c941",
+    "evidence_reviewed_sha256": "7da7e954d4e7848a5070ef925a418426dbab977b8e6031781fd1d3a24e12aa07"
+  },
+  "package": {
+    "title": "能力拡張と同時に増えた制御面",
+    "package_type": "SECTION",
+    "page_target": 5,
+    "editorial_angle": "長文脈が新しい攻撃面を作る一方、behavior specificationとmechanistic interpretabilityが制御可能性を別レイヤで扱い始めたことを示す。",
+    "must_cover": [
+      "behavior policy versus model internals",
+      "jailbreak result scope and threat-model boundary",
+      "interpretability demonstration versus general control guarantee"
+    ],
+    "boundaries": [
+      "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+    ],
+    "late_breaking": false,
+    "drafting_order": 8
+  },
+  "primary_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2024-H1",
+      "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-anthrop-1e34b43c2f",
+      "task_file": "item-official-index-supplemental-anthrop-1e34b43c2f.json",
+      "run_file": "item-official-index-supplemental-anthrop-1e34b43c2f.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review of hash-pinned SP-2024-H1 Evidence Tasks against preserved primary-source locators; no paid inference-provider API",
+        "generated_at": "2026-08-15T13:02:00Z"
+      },
+      "evidence_task_sha256": "d73f95aeb726494df3eaa246e8911de7c3fc1458e1965e57228f3604c5aa71a6",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2024-H1",
+        "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-anthrop-1e34b43c2f",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Many-shot jailbreaking",
+          "artifact_type": "SAFETY_EVENT",
+          "organization": "Anthropic",
+          "canonical_url": "https://www.anthropic.com/research/many-shot-jailbreaking"
+        },
+        "temporal": {
+          "artifact_first_announced": "2024-04-02",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "RESEARCH_PUBLICATION",
+              "event_date": "2024-04-02",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-15T13:02:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://www.anthropic.com/research/many-shot-jailbreaking",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://www.anthropic.com/research/many-shot-jailbreaking",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The reviewed primary source set documents Many-shot jailbreaking within the July 2026 retrospective evidence pool.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Source/chronology fact only; technical claims remain bounded by the primary sources and verification findings."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "long-context safety and jailbreak attack-surface research",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2024-H1",
+      "evidence_task_id": "evidence:SP-2024-H1:series-anthropic-interpretability-ccc4f27ac2",
+      "task_file": "series-anthropic-interpretability-ccc4f27ac2.json",
+      "run_file": "series-anthropic-interpretability-ccc4f27ac2.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review of hash-pinned SP-2024-H1 Evidence Tasks against preserved primary-source locators; no paid inference-provider API",
+        "generated_at": "2026-08-15T13:02:00Z"
+      },
+      "evidence_task_sha256": "027a15b63dc3f057050234878149ab3a5ed0c91e5c1d363d64050e711b622580",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2024-H1",
+        "evidence_task_id": "evidence:SP-2024-H1:series-anthropic-interpretability-ccc4f27ac2",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Coherent 2024-H1 technical lineage; lifecycle events remain separately dated and attributed."
+        },
+        "artifact": {
+          "canonical_name": "Anthropic interpretability research (Mapping the Mind / Golden Gate Claude)",
+          "artifact_type": "OTHER",
+          "organization": "Anthropic",
+          "canonical_url": null
+        },
+        "temporal": {
+          "artifact_first_announced": "2024-05-23",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "RESEARCH_PUBLICATION",
+              "event_date": "2024-05-23",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "RESEARCH_PUBLICATION",
+              "event_date": "2024-05-21",
+              "source_published_at": null,
+              "source_ids": [
+                "src-2"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-15T13:02:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://www.anthropic.com/news/golden-gate-claude",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://www.anthropic.com/news/golden-gate-claude",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          },
+          {
+            "source_id": "src-2",
+            "url": "https://www.anthropic.com/research/mapping-mind-language-model",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 2: https://www.anthropic.com/research/mapping-mind-language-model",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The reviewed primary source set documents Anthropic interpretability research (Mapping the Mind / Golden Gate Claude) within the July 2026 retrospective evidence pool.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ],
+            "context": "Source/chronology fact only; technical claims remain bounded by the primary sources and verification findings."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "mechanistic interpretability and controllable feature interventions",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2024-H1",
+      "evidence_task_id": "evidence:SP-2024-H1:item-official-feed-d1406200c99ecf17fe68-ec72b5918c",
+      "task_file": "item-official-feed-d1406200c99ecf17fe68-ec72b5918c.json",
+      "run_file": "item-official-feed-d1406200c99ecf17fe68-ec72b5918c.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review of hash-pinned SP-2024-H1 Evidence Tasks against preserved primary-source locators; no paid inference-provider API",
+        "generated_at": "2026-08-15T13:02:00Z"
+      },
+      "evidence_task_sha256": "f9aeedfad58e2aef0786dc72371d4bdde5789db1bee2a8ac3f8652049198af45",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2024-H1",
+        "evidence_task_id": "evidence:SP-2024-H1:item-official-feed-d1406200c99ecf17fe68-ec72b5918c",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "OpenAI Model Spec",
+          "artifact_type": "OTHER",
+          "organization": "OpenAI",
+          "canonical_url": "https://openai.com/index/introducing-the-model-spec"
+        },
+        "temporal": {
+          "artifact_first_announced": "2024-05-08",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "SPEC_PUBLICATION",
+              "event_date": "2024-05-08",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-15T13:02:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://openai.com/index/introducing-the-model-spec",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://openai.com/index/introducing-the-model-spec",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The reviewed primary source set documents OpenAI Model Spec within the July 2026 retrospective evidence pool.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Source/chronology fact only; technical claims remain bounded by the primary sources and verification findings."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the May 2024 Model Spec publication event, its stated purpose, and the distinction between specification and deployed-model behavior.",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: Verify the May 2024 Model Spec publication event, its stated purpose, and the distinction between specification and deployed-model behavior.. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "explicit model-behavior specification and control-policy layer",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2024-H1",
+      "evidence_task_id": "evidence:SP-2024-H1:series-claude3-lineage-30b9150888",
+      "task_file": "series-claude3-lineage-30b9150888.json",
+      "run_file": "series-claude3-lineage-30b9150888.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review of hash-pinned SP-2024-H1 Evidence Tasks against preserved primary-source locators; no paid inference-provider API",
+        "generated_at": "2026-08-15T13:02:00Z"
+      },
+      "evidence_task_sha256": "6c67f5cb6da9c47b3b190d833ad0e6fc53515f91f58fa2b07e2dd4977dfe5a75",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2024-H1",
+        "evidence_task_id": "evidence:SP-2024-H1:series-claude3-lineage-30b9150888",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Coherent 2024-H1 technical lineage; lifecycle events remain separately dated and attributed."
+        },
+        "artifact": {
+          "canonical_name": "Claude 3 → Claude 3.5 Sonnet",
+          "artifact_type": "MODEL_UPDATE",
+          "organization": "Anthropic",
+          "canonical_url": null
+        },
+        "temporal": {
+          "artifact_first_announced": "2024-06-21",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "MODEL_LAUNCH",
+              "event_date": "2024-06-21",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "MODEL_LAUNCH",
+              "event_date": "2024-03-04",
+              "source_published_at": null,
+              "source_ids": [
+                "src-2"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-15T13:02:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://www.anthropic.com/news/claude-3-5-sonnet",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://www.anthropic.com/news/claude-3-5-sonnet",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          },
+          {
+            "source_id": "src-2",
+            "url": "https://www.anthropic.com/news/claude-3-family",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 2: https://www.anthropic.com/news/claude-3-family",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The reviewed primary source set documents Claude 3 → Claude 3.5 Sonnet within the July 2026 retrospective evidence pool.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ],
+            "context": "Source/chronology fact only; technical claims remain bounded by the primary sources and verification findings."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "frontier multimodal model progression and availability chronology",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2024-H1",
+      "evidence_task_id": "evidence:SP-2024-H1:series-gemini15-lineage-69bf2d8acb",
+      "task_file": "series-gemini15-lineage-69bf2d8acb.json",
+      "run_file": "series-gemini15-lineage-69bf2d8acb.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review of hash-pinned SP-2024-H1 Evidence Tasks against preserved primary-source locators; no paid inference-provider API",
+        "generated_at": "2026-08-15T13:02:00Z"
+      },
+      "evidence_task_sha256": "6f9495f3897e205a3bd34f9c37cde01410f83439e8faa4ac9647f81a17d95265",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2024-H1",
+        "evidence_task_id": "evidence:SP-2024-H1:series-gemini15-lineage-69bf2d8acb",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Coherent 2024-H1 technical lineage; lifecycle events remain separately dated and attributed."
+        },
+        "artifact": {
+          "canonical_name": "Gemini 1.5 / Gemini 1.5 Flash",
+          "artifact_type": "MODEL_UPDATE",
+          "organization": "Google",
+          "canonical_url": null
+        },
+        "temporal": {
+          "artifact_first_announced": "2024-02-15",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "MODEL_PREVIEW",
+              "event_date": "2024-02-15",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "MODEL_ANNOUNCEMENT",
+              "event_date": "2024-05-14",
+              "source_published_at": null,
+              "source_ids": [
+                "src-2"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-15T13:02:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://blog.google/innovation-and-ai/products/google-gemini-next-generation-model-february-2024/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://blog.google/innovation-and-ai/products/google-gemini-next-generation-model-february-2024/",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          },
+          {
+            "source_id": "src-2",
+            "url": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-gemma-developer-updates-may-2024/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 2: https://blog.google/innovation-and-ai/technology/developers-tools/gemini-gemma-developer-updates-may-2024/",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The reviewed primary source set documents Gemini 1.5 / Gemini 1.5 Flash within the July 2026 retrospective evidence pool.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ],
+            "context": "Source/chronology fact only; technical claims remain bounded by the primary sources and verification findings."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "long-context MoE frontier models and fast multimodal serving",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION",
+    "cover_headline_finalization_forbidden": true,
+    "this_week_summary_forbidden": true
+  }
+}

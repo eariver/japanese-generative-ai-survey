@@ -1,0 +1,219 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2024-H1",
+  "package_id": "architecture-efficiency",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "basis": {
+    "draft_package_sha256": "ed9023f3311b04a2b5a30572d446baf9048016f36d83cd58fce5388f1480743c",
+    "prompt_id": "article-drafting-v0.1",
+    "prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project drafting; no paid inference-provider API",
+    "generated_at": "2026-08-15T22:45:51+09:00",
+    "run_reference": "Interactive SP-2024-H1 drafting after approved Architecture v0.2; nine ARTICLE_DRAFTING packages completed; paper-only Evidence refs normalized to authored claims where no event ID exists; concluding synthesis drafted last."
+  },
+  "headline": "Dense Transformerだけではない――2024 H1に広がった設計空間",
+  "deck": "Jamba、Mamba-2、BitNet b1.58、LongRoPEは、Transformerを単純に大きくする以外の道を示した。SSM、MoE、低ビット表現、長文脈拡張を、memory・throughput・contextという制約への異なる回答として整理する。BitNetとLongRoPEの性能評価は論文著者の報告に基づく。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-ai21-ja-97a4f32859",
+      "kind": "EVENT",
+      "evidence_id": "event-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2024-H1:item-arxiv-2405-21060v1-34ab887f2a",
+      "kind": "EVENT",
+      "evidence_id": "event-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2024-H1:item-arxiv-2402-17764v1-cf7e0465e5",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2024-H1:item-arxiv-2402-13753v1-a5ead6bb56",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "constraint-driven",
+      "block_type": "PARAGRAPH",
+      "text": "2024年上期のarchitecture研究を横断すると、共通しているのは「より大きなdense Transformer」を唯一の解としない姿勢である。Jambaはhybrid architecture、Mamba-2はstate-space architectureの発展を示し、BitNet b1.58は低ビットweight表現、LongRoPEは長文脈拡張を研究対象にした。BitNetとLongRoPEの技術評価は各論文著者の報告として扱う。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-ai21-ja-97a4f32859",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-arxiv-2405-21060v1-34ab887f2a",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-arxiv-2402-17764v1-cf7e0465e5",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-arxiv-2402-13753v1-a5ead6bb56",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "hybrid-sparse",
+      "block_type": "PARAGRAPH",
+      "text": "Jamba、Mixtral 8x22B、DeepSeek-V2のようなモデルは、dense設計だけではないhybrid/sparseな構成を競争軸へ持ち込んだ。ここではarchitectureとserving implementationが密接に結びつくため、理論上のparameter効率と実際のhardware上の速度を同一視できない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-ai21-ja-97a4f32859",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-mistral-9ae62fe6d3",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:series-deepseek-v2-lineage-42737841bd",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        }
+      ]
+    },
+    {
+      "block_id": "memory-context",
+      "block_type": "PARAGRAPH",
+      "text": "BitNet b1.58はweight representationの制約に、LongRoPEとInfini-attentionはcontext lengthとmemoryの制約に向き合った。これらは同じ性能指標を改善する研究ではなく、学習・推論時にどこでcostが発生するかを別々の層で組み替える試みである。LongRoPEのcontext拡張と品質評価、BitNetの効率評価は論文著者の報告であり、一般条件へそのまま外挿しない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-arxiv-2402-17764v1-cf7e0465e5",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-arxiv-2402-13753v1-a5ead6bb56",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-arxiv-2404-07143v2-9fe62232b0",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        }
+      ]
+    },
+    {
+      "block_id": "paper-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "各paperやvendorが報告するspeedup、memory削減、context length、benchmark結果は、それぞれのmodel・hardware・evaluation setupに依存する。本稿は設計原理の違いを比較するものであり、これらの数値を独立再現済みの共通尺度として扱わない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-ai21-ja-97a4f32859",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-arxiv-2405-21060v1-34ab887f2a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-arxiv-2402-17764v1-cf7e0465e5",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-arxiv-2402-13753v1-a5ead6bb56",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        }
+      ]
+    },
+    {
+      "block_id": "design-space",
+      "block_type": "PARAGRAPH",
+      "text": "この半年に確立したのは特定architectureの勝利ではなく、設計空間の再拡大だった。attentionをどう構成するか、どこにsparsityを入れるか、weightをどの表現で持つか、contextをどの方法で伸ばすかという選択が、model qualityと並ぶengineering変数として前面に出た。BitNetとLongRoPEについては著者報告の範囲で位置付ける。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-ai21-ja-97a4f32859",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-arxiv-2405-21060v1-34ab887f2a",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-arxiv-2402-17764v1-cf7e0465e5",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-arxiv-2402-13753v1-a5ead6bb56",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-mistral-9ae62fe6d3",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2024-H1:series-deepseek-v2-lineage-42737841bd",
+          "kind": "EVENT",
+          "evidence_id": "event-1"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "architecture versus implementation optimization",
+      "block_ids": [
+        "hybrid-sparse",
+        "paper-boundary"
+      ]
+    },
+    {
+      "requirement": "claimed context length versus effective quality",
+      "block_ids": [
+        "memory-context",
+        "paper-boundary"
+      ]
+    },
+    {
+      "requirement": "research-paper results remain author claims",
+      "block_ids": [
+        "constraint-driven",
+        "memory-context",
+        "paper-boundary"
+      ]
+    }
+  ],
+  "boundary_coverage": [
+    {
+      "requirement": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+      "block_ids": [
+        "paper-boundary"
+      ]
+    }
+  ],
+  "late_breaking_acknowledged": false
+}

@@ -1,0 +1,271 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{動画・画像生成が研究デモから競争軸へ: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\smallskip
+\noindent{\small\textit{Technical Notesでは、一次資料から確認した公開・提供・研究上の事実を記載する。数値・能力評価や提供元・著者による比較表現は、独立再現済みの結果ではなく帰属claimとして扱う。}}\par
+\medskip
+\subsection*{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+Sora & 主要資料 & モデル & 2024-02-15     \\
+Google I/O 2024 generative media models & 主要資料 & モデル & 2024-05-14     \\
+Stable Diffusion 3 & 主要資料 & モデル更新 & 2024-02-22, 2024-06-12     \\
+Kling & 主要資料 & モデル & 2024-06-10     \\
+Runway Gen-3 Alpha & 補足資料 & モデル & 2024-06-17     \\
+Chameleon & 補足資料 & モデル & 2024-05-16, 2024-06-18     \\
+GPT-4o & 補足資料 & モデル & 2024-05-13     \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{Sora}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & モデル \\
+時系列 & 2024-02-15 \\
+\end{tabularx}
+\smallskip
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes event-only fact/source tail group
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIの一次資料により、Soraについて2024-02-15に研究Previewを確認した。 Soraの2024年2月technical reportは、可変duration・resolution・aspect ratioのvideo/imageを共同学習するtext-conditional diffusion modelとして記述し、時空間的に圧縮したvisual latentからspacetime patchesを切り出してTransformer tokenとして扱う。生成時はnoisy patchesからclean patchesを予測し、最大モデルでは最長1分のvideo生成を示したが、同資料はresearch previewとqualitative capability/limitation evaluationの範囲であり、後年の一般提供状態をH1へ遡及しない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/video-generation-models-as-world-simulators}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Google I/O 2024 generative media models}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Google \\
+種別 & モデル \\
+時系列 & 2024-05-14 \\
+\end{tabularx}
+\smallskip
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes event-only fact/source tail group
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Googleの一次資料により、Google I/O 2024 generative media modelsについて2024-05-14に製品発表を確認した。 Google I/O 2024の公式collectionでは、生成メディア系をVeoのvideo generation、Imagen 3のimage generation、Music AI Sandboxのmusic toolingとして同一発表群に整理している。Veo/Imagen 3は発表時点でcreator/trusted-tester向けの限定導入を含む段階であり、後年の一般提供状態をH1へ遡及しない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2024-collection/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Stable Diffusion 3}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Stability AI \\
+種別 & モデル更新 \\
+時系列 & 2024-02-22, 2024-06-12 \\
+\end{tabularx}
+\smallskip
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes event-only fact/source tail group
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Stability AIの一次資料により、Stable Diffusion 3について2024-02-22にモデルPreview、2024-06-12にモデル公開を確認した。 対象event近傍の一次資料から 8B parameter scale / diffusion Transformer / image generation を確認できる。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://stability.ai/news-updates/stable-diffusion-3}}
+\item {\scriptsize\url{https://stability.ai/news-updates/stable-diffusion-3-medium}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Kling}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Kuaishou \\
+種別 & モデル \\
+時系列 & 2024-06-10 \\
+\end{tabularx}
+\smallskip
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes event-only fact/source tail group
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Kuaishouの一次資料により、Klingについて2024-06-10にモデル発表を確認した。 Klingはdiffusion-based Transformer (DiT)を基盤とし、Kuaishou独自の3D VAEでspatiotemporal compressionを行い、temporal/spatial informationを統合するfull-attention mechanismを時間モデリングに用いると説明された。初期発表では最大2分、30fps、最大1080p、複数aspect ratioの生成と、中国向けKuaiYing内beta testingが示された。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://ir.kuaishou.com/news-releases/news-release-details/kuaishou-unveils-proprietary-video-generation-model-kling}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Runway Gen-3 Alpha}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Runway \\
+種別 & モデル \\
+時系列 & 2024-06-17 \\
+\end{tabularx}
+\smallskip
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes event-only fact/source tail group
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Runwayの一次資料により、Runway Gen-3 Alphaについて2024-06-17にモデル発表を確認した。 Gen-3 AlphaはRunwayが新しいlarge-scale multimodal training infrastructure上で学習した次世代foundation modelとして公開し、動画と画像をjointly trainingしたと説明している。同モデルはText to Video、Image to Video、Text to Imageと、Motion BrushやAdvanced Camera Controls等のcontrol modesを支える基盤として位置付けられた。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://runwayml.com/research/introducing-gen-3-alpha}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Chameleon}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Meta \\
+種別 & モデル \\
+時系列 & 2024-05-16, 2024-06-18 \\
+\end{tabularx}
+\smallskip
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes event-only fact/source tail group
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Metaの一次資料により、Chameleonについて2024-05-16にPaper First Submission、2024-06-18に研究公開を確認した。 対象event近傍の一次資料から image generation / 7B parameter scale / 34B parameter scale を確認できる。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2405.09818v2}}
+\item {\scriptsize\url{https://ai.meta.com/blog/meta-fair-research-new-releases/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{GPT-4o}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & モデル \\
+時系列 & 2024-05-13 \\
+\end{tabularx}
+\smallskip
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes event-only fact/source tail group
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIの一次資料により、GPT-4oについて2024-05-13にモデル公開を確認した。 GPT-4oはtext・vision・audioを単一neural networkでend-to-end学習し、従来Voice Modeのspeech-to-text→LLM→text-to-speechという3-model pipelineでは失われていたtone・multiple speakers・background noise等を直接扱う設計として発表された。2024年5月13日のlaunch時点で公開されたのは主にtext/image inputとtext outputで、audio/video capabilityは段階提供予定だったため、model architecture上のmultimodalityと当日のproduct availabilityを分けて扱う。benchmark・latency・price比較はOpenAIによる評価として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/hello-gpt-4o}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

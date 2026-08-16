@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2024-H1",
+  "status": "GAP_FILL_PLANNED",
+  "coverage": {
+    "start": "2024-01-01T00:00:00Z",
+    "end": "2024-06-30T23:59:59Z"
+  },
+  "base_intake": {
+    "workflow_run_id": 31883881025,
+    "artifact_digest": "sha256:b48410f5743a8647cc7a73699b0d486dc63569e24c0414cab94375ca8eda4441",
+    "screening_record_count": 36191,
+    "records_by_source_type": {
+      "arxiv-paper": 36065,
+      "official-feed-item": 83,
+      "github-release": 22,
+      "official-index-snapshot": 21
+    },
+    "raw_file_count": 65,
+    "arxiv_month_category_query_count": 36,
+    "arxiv_queries_at_max_results": 17,
+    "arxiv_max_results_per_query": 2000,
+    "limitations": [
+      "Base Source Intake is a broad seed, not an exhaustive census.",
+      "Seventeen of 36 month/category arXiv queries reached max_results=2000, so paper discovery is known to be truncated in high-volume slices.",
+      "Current official index snapshots do not reliably preserve item-level historical events for every publisher.",
+      "GitHub Releases coverage is intentionally limited to the configured serving/runtime repository watchlist."
+    ],
+    "base_feed_gap_fill_coverage": [
+      "Sora / Video generation models as world simulators (2024-02-15)",
+      "Introducing the Model Spec (2024-05-08)",
+      "Hello GPT-4o (2024-05-13)"
+    ]
+  },
+  "audit_method": "Period-specific primary-source coverage audit across frontier multimodality and long context, open/open-weight/open-training releases, small/on-device models, MoE and SSM/hybrid architectures, RAG/tool-use/action surfaces, generative image/video/audio, serving/deployment infrastructure, and safety/control/interpretability. Base records are retained; supplemental first-party pages fill material item-level gaps and do not replace base discovery.",
+  "coverage_surfaces": [
+    {
+      "surface": "frontier_multimodal_long_context",
+      "assessment": "GAP_FILL_REQUIRED",
+      "notes": "OpenAI RSS already preserves item-level GPT-4o and Sora events; Gemini and Claude historical product pages require supplemental item-level preservation and lifecycle normalization."
+    },
+    {
+      "surface": "open_and_open_weight_models",
+      "assessment": "GAP_FILL_REQUIRED",
+      "notes": "Material H1 releases include OLMo, Gemma, Llama 3, Qwen2, Grok-1, OpenELM, Arctic and DeepSeek-V2; current publisher indexes alone do not preserve all release pages."
+    },
+    {
+      "surface": "small_and_on_device_models",
+      "assessment": "GAP_FILL_REQUIRED",
+      "notes": "Phi-3, OpenELM and Apple's on-device/server foundation-model work are material to the H1 small-model and edge-deployment shift."
+    },
+    {
+      "surface": "moe_ssm_hybrid_architectures",
+      "assessment": "GAP_FILL_REQUIRED",
+      "notes": "Jamba, Mixtral 8x22B, DBRX, DeepSeek-V2, Arctic and Grok-1 form a material non-dense/efficient-architecture thread."
+    },
+    {
+      "surface": "rag_tool_use_agents",
+      "assessment": "GAP_FILL_REQUIRED",
+      "notes": "Command R/R+, Claude-era tool/action work and relevant primary papers establish the transition from chat-only models toward retrieval and execution surfaces."
+    },
+    {
+      "surface": "generative_media",
+      "assessment": "GAP_FILL_REQUIRED",
+      "notes": "Base OpenAI feed captures Sora; Stable Diffusion 3, Stable Audio, Google I/O media releases, Kling and Runway Gen-3 require supplemental item-level primary pages."
+    },
+    {
+      "surface": "serving_and_deployment",
+      "assessment": "GAP_FILL_REQUIRED",
+      "notes": "Base GitHub Release records cover vLLM/SGLang/TensorRT-LLM/llama.cpp/Transformers; NVIDIA NIM and cloud/model-serving launches add deployment product transitions."
+    },
+    {
+      "surface": "safety_control_interpretability",
+      "assessment": "GAP_FILL_REQUIRED",
+      "notes": "Base OpenAI feed preserves the May Model Spec event; long-context jailbreak behavior and mechanistic-interpretability demonstrations require complementary primary sources."
+    }
+  ],
+  "supplemental_plan": {
+    "path": "sources/SP-2024-H1/coverage/supplemental-source-plan-v0.1.json",
+    "planned_item_count": 42,
+    "policy": "SUPPLEMENTAL_PRIMARY_SOURCE_GAP_FILL",
+    "revision_note": "Three OpenAI direct-page entries were removed after deterministic HTTP 403 because the exact events are already preserved by canonical base official-feed records."
+  },
+  "architecture_readiness": "NOT_READY_UNTIL_GAP_FILL_SCREENING_EVIDENCE_NORMALIZATION_COMPLETE"
+}

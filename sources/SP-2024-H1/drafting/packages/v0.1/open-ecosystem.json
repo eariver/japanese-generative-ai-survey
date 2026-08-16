@@ -1,0 +1,962 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2024-H1",
+  "package_id": "open-ecosystem",
+  "draft_source_mode": "EVIDENCE_PACKAGE",
+  "execution_stage": "ARTICLE_DRAFTING",
+  "basis": {
+    "architecture_plan_sha256": "c236c41dfba45e636d7f4d0e9c7444a3fbb626b958fdd0acf4eb5f0cccb4a9e6",
+    "architecture_input_sha256": "f223194f692fc953e3f1bc5d7902a17669733edef8f26bd46eee66f2a6a2c941",
+    "evidence_reviewed_sha256": "7da7e954d4e7848a5070ef925a418426dbab977b8e6031781fd1d3a24e12aa07"
+  },
+  "package": {
+    "title": "Open weightsから「再現できるモデルスタック」へ",
+    "package_type": "FEATURE",
+    "page_target": 8,
+    "editorial_angle": "Llama 3の規模、OLMoのopen-training、DeepSeek-V2の効率設計を軸に、単なるweight公開と学習再現性を分離して整理する。",
+    "must_cover": [
+      "open-weight versus open-training distinction",
+      "license/data/training-artifact boundaries",
+      "MoE efficiency claims remain source-attributed"
+    ],
+    "boundaries": [
+      "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+    ],
+    "late_breaking": false,
+    "drafting_order": 3
+  },
+  "primary_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2024-H1",
+      "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-meta-ll-6853b7b5a9",
+      "task_file": "item-official-index-supplemental-meta-ll-6853b7b5a9.json",
+      "run_file": "item-official-index-supplemental-meta-ll-6853b7b5a9.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review of hash-pinned SP-2024-H1 Evidence Tasks against preserved primary-source locators; no paid inference-provider API",
+        "generated_at": "2026-08-15T13:02:00Z"
+      },
+      "evidence_task_sha256": "dfce217358a42d3fa09462141ae3aff4abeef8116175f7133fd13bc1a35933ff",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2024-H1",
+        "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-meta-ll-6853b7b5a9",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Meta Llama 3",
+          "artifact_type": "OPEN_WEIGHT",
+          "organization": "Meta",
+          "canonical_url": "https://ai.meta.com/blog/meta-llama-3/"
+        },
+        "temporal": {
+          "artifact_first_announced": "2024-04-18",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "MODEL_RELEASE",
+              "event_date": "2024-04-18",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-15T13:02:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://ai.meta.com/blog/meta-llama-3/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://ai.meta.com/blog/meta-llama-3/",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The reviewed primary source set documents Meta Llama 3 within the July 2026 retrospective evidence pool.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Source/chronology fact only; technical claims remain bounded by the primary sources and verification findings."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "major open-weight foundation-model release",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2024-H1",
+      "evidence_task_id": "evidence:SP-2024-H1:series-olmo-lineage-beb6f920a3",
+      "task_file": "series-olmo-lineage-beb6f920a3.json",
+      "run_file": "series-olmo-lineage-beb6f920a3.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review of hash-pinned SP-2024-H1 Evidence Tasks against preserved primary-source locators; no paid inference-provider API",
+        "generated_at": "2026-08-15T13:02:00Z"
+      },
+      "evidence_task_sha256": "2a4974bb359b8bc75e29a40fdf8de8c46858b40245924b26878bb38184197e9b",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2024-H1",
+        "evidence_task_id": "evidence:SP-2024-H1:series-olmo-lineage-beb6f920a3",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Coherent 2024-H1 technical lineage; lifecycle events remain separately dated and attributed."
+        },
+        "artifact": {
+          "canonical_name": "OLMo / OLMo 1.7",
+          "artifact_type": "OPEN_WEIGHT",
+          "organization": "Ai2",
+          "canonical_url": null
+        },
+        "temporal": {
+          "artifact_first_announced": "2024-04-17",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "MODEL_UPDATE",
+              "event_date": "2024-04-17",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "MODEL_RELEASE",
+              "event_date": "2024-02-01",
+              "source_published_at": null,
+              "source_ids": [
+                "src-2"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-15T13:02:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://allenai.org/blog/olmo-1-7-7b-a-24-point-improvement-on-mmlu-92b43f7d269d",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://allenai.org/blog/olmo-1-7-7b-a-24-point-improvement-on-mmlu-92b43f7d269d",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          },
+          {
+            "source_id": "src-2",
+            "url": "https://allenai.org/blog/olmo-open-language-model-87ccfc95f580",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 2: https://allenai.org/blog/olmo-open-language-model-87ccfc95f580",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The reviewed primary source set documents OLMo / OLMo 1.7 within the July 2026 retrospective evidence pool.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ],
+            "context": "Source/chronology fact only; technical claims remain bounded by the primary sources and verification findings."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "fully open model stack and reproducible training progression",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2024-H1",
+      "evidence_task_id": "evidence:SP-2024-H1:series-deepseek-v2-lineage-42737841bd",
+      "task_file": "series-deepseek-v2-lineage-42737841bd.json",
+      "run_file": "series-deepseek-v2-lineage-42737841bd.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review of hash-pinned SP-2024-H1 Evidence Tasks against preserved primary-source locators; no paid inference-provider API",
+        "generated_at": "2026-08-15T13:02:00Z"
+      },
+      "evidence_task_sha256": "75d6f8450dc5d70f7d2088a811163c812e72f1be1c4a2879d19ca205136d4eef",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2024-H1",
+        "evidence_task_id": "evidence:SP-2024-H1:series-deepseek-v2-lineage-42737841bd",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Coherent 2024-H1 technical lineage; lifecycle events remain separately dated and attributed."
+        },
+        "artifact": {
+          "canonical_name": "DeepSeek-V2 / DeepSeek-Coder-V2",
+          "artifact_type": "OPEN_WEIGHT",
+          "organization": "DeepSeek",
+          "canonical_url": null
+        },
+        "temporal": {
+          "artifact_first_announced": "2024-06-17",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "MODEL_RELEASE",
+              "event_date": "2024-06-17",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "MODEL_RELEASE",
+              "event_date": "2024-05-06",
+              "source_published_at": null,
+              "source_ids": [
+                "src-2"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-15T13:02:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://github.com/deepseek-ai/DeepSeek-Coder-V2",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Primary source 1: https://github.com/deepseek-ai/DeepSeek-Coder-V2",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          },
+          {
+            "source_id": "src-2",
+            "url": "https://github.com/deepseek-ai/DeepSeek-V2",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Primary source 2: https://github.com/deepseek-ai/DeepSeek-V2",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The reviewed primary source set documents DeepSeek-V2 / DeepSeek-Coder-V2 within the July 2026 retrospective evidence pool.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ],
+            "context": "Source/chronology fact only; technical claims remain bounded by the primary sources and verification findings."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "MoE/MLA efficiency and open model progression",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2024-H1",
+      "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-databri-3508d0001e",
+      "task_file": "item-official-index-supplemental-databri-3508d0001e.json",
+      "run_file": "item-official-index-supplemental-databri-3508d0001e.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review of hash-pinned SP-2024-H1 Evidence Tasks against preserved primary-source locators; no paid inference-provider API",
+        "generated_at": "2026-08-15T13:02:00Z"
+      },
+      "evidence_task_sha256": "3922d3409869de9baae09db9227d4bef38bdd2e4ea30be8b8fda46e8b6873461",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2024-H1",
+        "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-databri-3508d0001e",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "DBRX",
+          "artifact_type": "OPEN_WEIGHT",
+          "organization": "Databricks",
+          "canonical_url": "https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm"
+        },
+        "temporal": {
+          "artifact_first_announced": "2024-03-27",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "MODEL_RELEASE",
+              "event_date": "2024-03-27",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-15T13:02:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The reviewed primary source set documents DBRX within the July 2026 retrospective evidence pool.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Source/chronology fact only; technical claims remain bounded by the primary sources and verification findings."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "open sparse-MoE frontier model and active-parameter efficiency",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2024-H1",
+      "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-mistral-9ae62fe6d3",
+      "task_file": "item-official-index-supplemental-mistral-9ae62fe6d3.json",
+      "run_file": "item-official-index-supplemental-mistral-9ae62fe6d3.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review of hash-pinned SP-2024-H1 Evidence Tasks against preserved primary-source locators; no paid inference-provider API",
+        "generated_at": "2026-08-15T13:02:00Z"
+      },
+      "evidence_task_sha256": "b2cf09a008c3fd1ec63856aa0482c1f9602cc4ebdc8faa8c040d66d47fbaea59",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2024-H1",
+        "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-mistral-9ae62fe6d3",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Mixtral 8x22B",
+          "artifact_type": "OPEN_WEIGHT",
+          "organization": "Mistral AI",
+          "canonical_url": "https://mistral.ai/news/mixtral-8x22b"
+        },
+        "temporal": {
+          "artifact_first_announced": "2024-04-17",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "MODEL_RELEASE",
+              "event_date": "2024-04-17",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-15T13:02:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://mistral.ai/news/mixtral-8x22b",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://mistral.ai/news/mixtral-8x22b",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The reviewed primary source set documents Mixtral 8x22B within the July 2026 retrospective evidence pool.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Source/chronology fact only; technical claims remain bounded by the primary sources and verification findings."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "open sparse-MoE scaling and deployment efficiency",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2024-H1",
+      "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-qwen2-2-9a60a7cbf4",
+      "task_file": "item-official-index-supplemental-qwen2-2-9a60a7cbf4.json",
+      "run_file": "item-official-index-supplemental-qwen2-2-9a60a7cbf4.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review of hash-pinned SP-2024-H1 Evidence Tasks against preserved primary-source locators; no paid inference-provider API",
+        "generated_at": "2026-08-15T13:02:00Z"
+      },
+      "evidence_task_sha256": "aa2f71d59893e9726eb128856b8667d7c4cd8e79ddfa6dec0c015038fbd017ad",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2024-H1",
+        "evidence_task_id": "evidence:SP-2024-H1:item-official-index-supplemental-qwen2-2-9a60a7cbf4",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Qwen2",
+          "artifact_type": "OPEN_WEIGHT",
+          "organization": "Alibaba / Qwen",
+          "canonical_url": "https://qwenlm.github.io/blog/qwen2/"
+        },
+        "temporal": {
+          "artifact_first_announced": "2024-06-07",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "MODEL_RELEASE",
+              "event_date": "2024-06-07",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-15T13:02:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://qwenlm.github.io/blog/qwen2/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://qwenlm.github.io/blog/qwen2/",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The reviewed primary source set documents Qwen2 within the July 2026 retrospective evidence pool.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Source/chronology fact only; technical claims remain bounded by the primary sources and verification findings."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "broad multilingual open-weight model-family competition",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2024-H1",
+      "evidence_task_id": "evidence:SP-2024-H1:series-gemma-family-73c494c390",
+      "task_file": "series-gemma-family-73c494c390.json",
+      "run_file": "series-gemma-family-73c494c390.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review of hash-pinned SP-2024-H1 Evidence Tasks against preserved primary-source locators; no paid inference-provider API",
+        "generated_at": "2026-08-15T13:02:00Z"
+      },
+      "evidence_task_sha256": "a21f912b21e3e1e9f0ee50d9f22e0e429f37b9ad5d39989caca99ab7275dddb1",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2024-H1",
+        "evidence_task_id": "evidence:SP-2024-H1:series-gemma-family-73c494c390",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Coherent 2024-H1 technical lineage; lifecycle events remain separately dated and attributed."
+        },
+        "artifact": {
+          "canonical_name": "Gemma family (Gemma / PaliGemma / Gemma 2)",
+          "artifact_type": "OPEN_WEIGHT",
+          "organization": "Google",
+          "canonical_url": null
+        },
+        "temporal": {
+          "artifact_first_announced": "2024-02-21",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "MODEL_RELEASE",
+              "event_date": "2024-02-21",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "MODEL_RELEASE",
+              "event_date": "2024-06-27",
+              "source_published_at": null,
+              "source_ids": [
+                "src-2"
+              ]
+            },
+            {
+              "event_id": "event-3",
+              "event_type": "MODEL_RELEASE",
+              "event_date": "2024-05-14",
+              "source_published_at": null,
+              "source_ids": [
+                "src-3"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-15T13:02:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://blog.google/innovation-and-ai/technology/developers-tools/gemma-open-models/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://blog.google/innovation-and-ai/technology/developers-tools/gemma-open-models/",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          },
+          {
+            "source_id": "src-2",
+            "url": "https://blog.google/innovation-and-ai/technology/developers-tools/google-gemma-2/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 2: https://blog.google/innovation-and-ai/technology/developers-tools/google-gemma-2/",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          },
+          {
+            "source_id": "src-3",
+            "url": "https://developers.googleblog.com/en/gemma-family-and-toolkit-expansion-io-2024/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 3: https://developers.googleblog.com/en/gemma-family-and-toolkit-expansion-io-2024/",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The reviewed primary source set documents Gemma family (Gemma / PaliGemma / Gemma 2) within the July 2026 retrospective evidence pool.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1",
+              "src-2",
+              "src-3"
+            ],
+            "context": "Source/chronology fact only; technical claims remain bounded by the primary sources and verification findings."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2",
+              "src-3"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2",
+                "src-3"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "open-weight small models, multimodality and family scaling",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2024-H1",
+      "evidence_task_id": "evidence:SP-2024-H1:series-openelm-event-748574cab6",
+      "task_file": "series-openelm-event-748574cab6.json",
+      "run_file": "series-openelm-event-748574cab6.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review of hash-pinned SP-2024-H1 Evidence Tasks against preserved primary-source locators; no paid inference-provider API",
+        "generated_at": "2026-08-15T13:02:00Z"
+      },
+      "evidence_task_sha256": "b522863478a53b5987b8a341a09c782c8a155864b928d45bf48d531f5b2a4fa5",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2024-H1",
+        "evidence_task_id": "evidence:SP-2024-H1:series-openelm-event-748574cab6",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Coherent 2024-H1 technical lineage; lifecycle events remain separately dated and attributed."
+        },
+        "artifact": {
+          "canonical_name": "OpenELM",
+          "artifact_type": "OPEN_WEIGHT",
+          "organization": "Apple",
+          "canonical_url": null
+        },
+        "temporal": {
+          "artifact_first_announced": "2024-04-22",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PAPER_FIRST_SUBMISSION",
+              "event_date": "2024-04-22",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "RESEARCH_RELEASE",
+              "event_date": "2024-04-22",
+              "source_published_at": null,
+              "source_ids": [
+                "src-2"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-15T13:02:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "http://arxiv.org/abs/2404.14619v2",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Primary source 1: http://arxiv.org/abs/2404.14619v2",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          },
+          {
+            "source_id": "src-2",
+            "url": "https://machinelearning.apple.com/research/openelm",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 2: https://machinelearning.apple.com/research/openelm",
+            "published_at": null,
+            "accessed_at": "2026-08-15T13:02:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The reviewed primary source set documents OpenELM within the July 2026 retrospective evidence pool.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ],
+            "context": "Source/chronology fact only; technical claims remain bounded by the primary sources and verification findings."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify OpenELM's architecture/training method, released research artifacts, evaluation claims, and limitations.",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: Verify OpenELM's architecture/training method, released research artifacts, evaluation claims, and limitations.. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            },
+            {
+              "target": "Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: Verify the exact 2024-H1 event date, model/artifact/product availability state, technical claims, released scope, and any vendor-attributed benchmark claims.. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "small efficient models with open training and inference artifacts",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION",
+    "cover_headline_finalization_forbidden": true,
+    "this_week_summary_forbidden": true
+  }
+}
