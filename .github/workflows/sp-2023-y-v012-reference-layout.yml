@@ -1,0 +1,60 @@
+name: One-time SP-2023-Y v0.12 reference layout repair
+on:
+  push:
+    branches: [special/2023-Y-work]
+    paths: ['.github/workflows/sp-2023-y-v012-reference-layout.yml']
+permissions:
+  contents: write
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: special/2023-Y-work, fetch-depth: 0}
+      - name: Create immutable v0.12 reference-layout revision
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import copy,hashlib,json,pathlib,shutil
+          r=pathlib.Path('.'); issue='SP-2023-Y'
+          sp=r/'sources'/issue/'pipeline-state.json'; s=json.load(open(sp,encoding='utf-8'))
+          assert s['provenance']['validated_issue_source']['source_version']=='v0.11'
+          assert s['lifecycle_state']=='RELEASE_CANDIDATE' or s['lifecycle_state']=='VALIDATED_DRAFT'
+          assert s['gates']['visual_review']=='pending' and s['gates']['freeze']=='pending'
+          # Build success may have moved state to RELEASE_CANDIDATE. We are still pre-Publication-Preview approval.
+          prev=dict(s['provenance']['validated_issue_source']); src=r/pathlib.Path(prev['path']).parent
+          out=r/'surveys/special/2023-Y/revisions/v0.12'; assert not out.exists(); shutil.copytree(src,out)
+          main=out/'main.tex'; t=main.read_text(encoding='utf-8')
+          old='\\Needspace{0.30\\textheight}\n\\bigskip\n\\noindent{\\small Referencesには本文・Detailed Chronologyの検証に用いた一次資料の識別情報とURLを掲載する。各entryに共通する用途説明はここに集約する。}\\par\n\\smallskip\n\\printbibliography[title={References / Source Notes}]'
+          new='\\Needspace{0.30\\textheight}\n\\bigskip\n\\noindent{\\small Referencesには本文・Detailed Chronologyの検証に用いた一次資料の識別情報とURLを掲載する。各entryに共通する用途説明はここに集約する。}\\par\n\\smallskip\n\\section*{References / Source Notes}\n\\addcontentsline{toc}{section}{References / Source Notes}\n\\begingroup\n\\footnotesize\n\\setlength{\\bibitemsep}{0pt}\n\\begin{multicols}{2}\n\\raggedright\n\\printbibliography[heading=none]\n\\end{multicols}\n\\endgroup'
+          assert old in t
+          t=t.replace(old,new,1); main.write_text(t,encoding='utf-8')
+          def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+          m=json.load(open(out/'source-manifest.json',encoding='utf-8'))
+          m['source_version']='v0.12'; m['status']='VALIDATED_ANNUAL_REFERENCE_LAYOUT_REPAIR'
+          m['basis']=dict(m.get('basis') or {}); m['basis']['previous_source_manifest_path']=prev['path']; m['basis']['previous_source_manifest_sha256']=prev['sha256']
+          m['reference_layout_repair']={'issue_ref':140,'layout':'two-column footnotesize ragged-right bibliography','source_metadata_changed':False,'content_or_evidence_changed':False}
+          m['main_tex']={'path':'main.tex','sha256':sha(main)}
+          mp=out/'source-manifest.json'; mp.write_text(json.dumps(m,ensure_ascii=False,indent=2)+'\n',encoding='utf-8'); ms=sha(mp)
+          s.setdefault('provenance_history',{}).setdefault('validated_issue_source',[]).append(prev)
+          s['lifecycle_state']='VALIDATED_DRAFT'; s['gates']['latex_build']='pending'; s['gates']['visual_review']='pending'; s['gates']['freeze']='pending'
+          s['provenance'].pop('latex_build',None)
+          s['provenance']['validated_issue_source']={'path':mp.as_posix(),'sha256':ms,'source_version':'v0.12','layout_mode':'annual-ordered-publication-preview-repair+compact-references'}
+          oldc=copy.deepcopy(s['provenance']['annual_chronology']); cp=r/pathlib.Path(oldc['path']); data=json.load(open(cp,encoding='utf-8')); data['source_version']='v0.12'
+          cout=r/'sources'/issue/'chronology/annual-chronology-v0.12.json'; cout.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          assert len(data['events'])==75 and len(data.get('unresolved_dates',[]))==3
+          s.setdefault('provenance_history',{}).setdefault('annual_chronology',[]).append(oldc)
+          s['provenance']['annual_chronology']={'source_version':'v0.12','path':cout.as_posix(),'sha256':sha(cout),'event_count':75,'unresolved_date_count':3}
+          marker=r/'sources'/issue/'editorial/reference-layout-repair-v0.12.json'; marker.write_text(json.dumps({'schema_version':'1.0','issue_id':issue,'source_version':'v0.12','parent':'v0.11','issue_ref':140,'reason':'Eliminate low-density final References page using readable two-column bibliography.','content_or_evidence_changed':False},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          s['provenance']['reader_layout_revision']={'source_version':'v0.12','reference_layout_repair_path':marker.as_posix(),'reference_layout_repair_sha256':sha(marker),'issue_refs':[140]}
+          sp.write_text(json.dumps(s,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps({'source_version':'v0.12','source_manifest_sha256':ms},indent=2))
+          PY
+      - name: Commit and self-delete
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm .github/workflows/sp-2023-y-v012-reference-layout.yml
+          git add -A surveys/special/2023-Y/revisions/v0.12 sources/SP-2023-Y .github/workflows/sp-2023-y-v012-reference-layout.yml
+          git commit -m 'Compact SP-2023-Y References for #140 (v0.12)'
+          git push origin HEAD:special/2023-Y-work
