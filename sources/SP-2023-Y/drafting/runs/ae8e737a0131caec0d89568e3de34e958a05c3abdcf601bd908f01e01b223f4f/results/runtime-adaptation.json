@@ -1,0 +1,331 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2023-Y",
+  "package_id": "runtime-adaptation",
+  "draft_version": "v0.2",
+  "status": "REVISED",
+  "basis": {
+    "draft_package_sha256": "0ec0f3bcc70ab347ef1c231196691a8855b1bdb5a1047c397b88654f75a546b4",
+    "prompt_id": "article-drafting-v0.1",
+    "prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT pre-publication redraft after exact v0.3 visual density review; no paid inference-provider API",
+    "generated_at": "2026-08-17T00:33:05+09:00",
+    "run_reference": "SP-2023-Y pre-publication narrative depth repair: exact v0.3 PDF passed machine layout gates but visual review found the seven approved trajectory chapters under-explained; revise prose only against unchanged Draft Packages and Evidence, without reopening Selection or Architecture."
+  },
+  "headline": "モデルを動かす技術が競争軸になった",
+  "deck": "2023年には、モデルの規模や能力だけでなく、限られたmemoryでどう適応させ、attentionをどう高速化し、同時要求をどう捌くかが実用性を左右する独立した技術面になった。QLoRA、FlashAttention-2、vLLM/PagedAttention、Phi-2を、学習・推論・servingの異なる制約への応答として読む。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-2023-Y:series-vllm-2023-141d9f46ea",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2023-Y:item-arxiv-2305-14314v1-270f3dbce2",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2023-Y:item-arxiv-2307-08691v1-1ada3fe769",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2023-Y:item-official-index-supplemental-microso-2052e07525",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "h-cost-planes",
+      "block_type": "HEADING",
+      "text": "training・adaptation・inference・servingは別の予算を持つ",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "adapt-vs-infer",
+      "block_type": "PARAGRAPH",
+      "text": "QLoRAが向き合うのは主として既存モデルを限られた計算資源でfine-tuningする側の制約であり、FlashAttention-2はattention計算の効率、vLLM/PagedAttentionは推論時のmemory管理とservingを主眼とする。同じ「効率化」でも、最適化する段階とボトルネックは異なる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:item-arxiv-2305-14314v1-270f3dbce2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:item-arxiv-2307-08691v1-1ada3fe769",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-vllm-2023-141d9f46ea",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "budget-decomposition",
+      "block_type": "PARAGRAPH",
+      "text": "model lifecycleを分解すると、pretrainingの巨大な一回費用だけでなく、用途別のadaptation、各requestのinference、継続的なserving capacityが別々に現れる。ある手法が一つの段階を安くしても、別の段階のcostを自動的に下げるわけではない。この分解があると、効率化技術を「速いモデル」という一語で混ぜずに比較できる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:item-arxiv-2305-14314v1-270f3dbce2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:item-arxiv-2307-08691v1-1ada3fe769",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-vllm-2023-141d9f46ea",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "h-adaptation",
+      "block_type": "HEADING",
+      "text": "adaptation costを下げると用途別モデルが作りやすくなる",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "qlora-role",
+      "block_type": "PARAGRAPH",
+      "text": "QLoRAが示した方向の意味は、巨大モデルのpretrainingそのものを安価にすることではなく、既存weightsを用途に合わせて調整する際のmemory pressureを下げることにある。adaptationの入口が広がれば、単一の汎用モデルをそのまま使う以外に、domainやtaskごとの調整を検討しやすくなる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:item-arxiv-2305-14314v1-270f3dbce2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "adaptation-boundary",
+      "block_type": "PARAGRAPH",
+      "text": "ただし、memory効率が改善しても、data preparation、evaluation、deploymentまで自動化されるわけではない。fine-tuningを実行可能にする技術と、望ましいbehaviorを得るための学習設計は別問題である。2023年は「調整できること」と「調整後に何が良くなるか」を分ける必要性も強めた。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:item-arxiv-2305-14314v1-270f3dbce2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "h-kernel",
+      "block_type": "HEADING",
+      "text": "同じモデルでもkernelで実行特性は変わる",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "flash-role",
+      "block_type": "PARAGRAPH",
+      "text": "FlashAttention-2が属する層では、model architectureを変えずにattention computationの実装を改善する。これはalgorithm名やparameter数だけ見ても分からない差である。GPU上のmemory movementやparallelismの扱いが変われば、同じ数学的処理でも実行時間と利用可能なsequence長に影響しうる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:item-arxiv-2307-08691v1-1ada3fe769",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "kernel-system",
+      "block_type": "PARAGRAPH",
+      "text": "この種の最適化は、モデル研究とsystems研究の境界を曖昧にする。新しいmodel capabilityを提案していなくても、既存モデルを現実的なlatencyやmemory budgetで動かせる範囲を変えるからである。2023年には「モデルの論文」と「実装の論文」を別世界として扱いにくくなった。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:item-arxiv-2307-08691v1-1ada3fe769",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "h-serving",
+      "block_type": "HEADING",
+      "text": "一件の推論と、多数の要求を捌くservingは違う",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "serving-layer",
+      "block_type": "PARAGRAPH",
+      "text": "モデルが一度応答できることと、多数の要求を安定して処理できることも別問題である。vLLM/PagedAttentionの登場は、KV-cacheを含むruntime側の資源管理が、モデル選定と同じ程度にdeployment設計へ影響しうることを可視化した。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-vllm-2023-141d9f46ea",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "throughput-latency",
+      "block_type": "PARAGRAPH",
+      "text": "servingではthroughputとlatency、memory occupancy、request長、同時実行数が相互に影響する。そのためprojectが示すthroughput改善をmodel capabilityの向上として読むべきではない。runtime optimizationは「同じ能力を何人に、どの待ち時間で提供できるか」という別の性能面を扱う。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-vllm-2023-141d9f46ea",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "api-consequence",
+      "block_type": "PARAGRAPH",
+      "text": "serving layerが成熟すると、application側は巨大モデルの内部実装よりAPI surfaceを意識するようになる。同時にprovider側ではcache、batching、schedulerなどがeconomicsを左右する。tool/action layerがapplication interfaceを作ったのに対し、serving layerはそのinterfaceを継続的に成立させる裏側の基盤である。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-vllm-2023-141d9f46ea",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "h-small",
+      "block_type": "HEADING",
+      "text": "小型モデルは別の制約条件を選ぶ設計",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "small-model",
+      "block_type": "PARAGRAPH",
+      "text": "Phi-2のような小型モデルへの関心は、parameter scaleだけを増やす以外の設計空間も示した。ここでは小型であること自体を優位性と断定せず、data qualityや用途、hardware制約と組み合わせて「必要な能力をどの資源予算で実現するか」という問いが強まったことを重視する。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:item-official-index-supplemental-microso-2052e07525",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "portfolio-view",
+      "block_type": "PARAGRAPH",
+      "text": "フロンティア最大モデルと小型モデルは、必ずしも同じ役割を競う必要がない。cloudで最大能力を使う設計、端末や局所環境で小さなモデルを使う設計、taskに応じて複数tierを組み合わせる設計は別々に成立する。model portfolioという見方をすると、runtimeとmodel sizeは一体のdeployment decisionになる。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:item-official-index-supplemental-microso-2052e07525",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "systems-layer",
+      "block_type": "PARAGRAPH",
+      "text": "2023年のsystems面の変化は、モデル能力を「学習済みweightsの属性」だけで語れなくした。適応コスト、kernel、cache、serving、モデルサイズが相互に作用し、同じモデルでも運用可能性が大きく変わるという認識が、研究と実装の両側で前面に出た。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:item-arxiv-2305-14314v1-270f3dbce2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:item-arxiv-2307-08691v1-1ada3fe769",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-vllm-2023-141d9f46ea",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:item-official-index-supplemental-microso-2052e07525",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "benchmark-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "QLoRA、FlashAttention-2、vLLM、Phi-2に関する速度・memory・品質などの数値は、それぞれの著者やproject/vendorが設定した実験条件に依存する。異なるhardware・workload・benchmarkを横断して一つの優劣表へ変換しない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:item-arxiv-2305-14314v1-270f3dbce2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:item-arxiv-2307-08691v1-1ada3fe769",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:series-vllm-2023-141d9f46ea",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2023-Y:item-official-index-supplemental-microso-2052e07525",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "training adaptation versus inference optimization",
+      "block_ids": [
+        "adapt-vs-infer",
+        "budget-decomposition"
+      ]
+    },
+    {
+      "requirement": "paper benchmark claims remain author-attributed",
+      "block_ids": [
+        "benchmark-boundary"
+      ]
+    },
+    {
+      "requirement": "serving throughput versus model capability",
+      "block_ids": [
+        "serving-layer",
+        "throughput-latency"
+      ]
+    }
+  ],
+  "boundary_coverage": [
+    {
+      "requirement": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+      "block_ids": [
+        "benchmark-boundary"
+      ]
+    }
+  ],
+  "late_breaking_acknowledged": false
+}

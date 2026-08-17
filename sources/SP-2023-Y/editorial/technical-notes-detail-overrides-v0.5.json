@@ -1,0 +1,186 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2023-Y",
+  "source_version": "v0.5",
+  "screening_verification_queue_sha256": "e9f86ddbb09a38a1f78cc05eeda6801f995ecd6cbad1c8d2b7e5ce289eab121a",
+  "entries": {
+    "Claude 2023 model family": {
+      "source_urls": [
+        "https://www.anthropic.com/news/100k-context-windows",
+        "https://www.anthropic.com/news/claude-2",
+        "https://www.anthropic.com/news/claude-2-1",
+        "https://www.anthropic.com/news/introducing-claude"
+      ],
+      "technical_points": [
+        "2023年3月の初回公開では Claude と軽量・低価格・高速版の Claude Instant の2版が提示され、Claude は chat interface と developer console の API から利用可能とされた。",
+        "2023年5月には Claude の context window が 9K から 100K tokens へ拡張され、100K context は API で利用可能とされた。",
+        "2023年7月の Claude 2 は API と claude.ai の public-facing beta で提供され、1 prompt あたり最大 100K tokens の入力をサポートした。",
+        "2023年11月の Claude 2.1 は API と claude.ai で提供され、200K-token context window を導入し、developer-defined functions / APIs と連携する tool use を beta feature として追加した。"
+      ]
+    },
+    "Gemini 2023 launch family": {
+      "source_urls": [
+        "http://arxiv.org/abs/2312.11805v5",
+        "https://blog.google/innovation-and-ai/products/gemini-api-developers-cloud/",
+        "https://blog.google/innovation-and-ai/technology/ai/google-gemini-ai/",
+        "https://blog.google/products-and-platforms/devices/pixel/pixel-feature-drop-december-2023/"
+      ],
+      "technical_points": [
+        "Gemini 1.0 は Ultra・Pro・Nano の3サイズとして発表され、モデル自体は text・code・audio・image・video を横断する native multimodality を前提に設計された。",
+        "2023年12月13日時点で developer / enterprise 向けに公開されたのは Gemini Pro 系で、Gemini API の text版は 32K context で text input / text output、Gemini Pro Vision endpoint は text と imagery を入力して text を出力する構成だった。",
+        "Gemini Ultra は2023年12月の API 公開時点では追加の fine-tuning と safety testing 後に翌年提供予定とされており、2023年中の Gemini Pro availability と同一視しない。",
+        "Gemini Nano は Pixel 8 Pro 上の on-device model として2023年12月6日に展開され、Recorder の Summarize を端末上で実行し、Gboard Smart Reply は developer preview として段階展開された。"
+      ]
+    },
+    "PaLM 2": {
+      "source_urls": [
+        "https://blog.google/innovation-and-ai/products/google-palm-2-ai-large-language-model/"
+      ],
+      "technical_points": [
+        "PaLM 2 は2023年5月10日に次世代 language model として公開され、Google は multilingual・reasoning・coding を主要な能力軸として説明し、100超の言語を含む multilingual text や公開 source-code dataset を学習面の特徴として挙げた。",
+        "PaLM 2 family は小さい順に Gecko・Otter・Bison・Unicorn の4サイズとして提示され、Gecko は mobile device 上で offline でも対話用途に使える軽量 variant として位置づけられた。",
+        "公開時点で PaLM 2 は25超の Google products / features に組み込まれ、developer は PaLM 2 model への sign-up、enterprise customer は Vertex AI からの利用という別の availability boundary が示された。",
+        "Med-PaLM 2 や Sec-PaLM は PaLM 2 family の用途特化 variant として記述されており、Med-PaLM 2 の限定 Cloud customer feedback や Sec-PaLM の Google Cloud availability を、base PaLM 2 全体の提供条件として一般化しない。"
+      ]
+    },
+    "Lost in the Middle": {
+      "source_urls": [
+        "http://arxiv.org/abs/2307.03172v3"
+      ],
+      "technical_points": [
+        "著者らは multi-document question answering と key-value retrieval の2タスクを用い、long context 内で relevant information の位置を変えたときの利用性能を評価した。",
+        "著者実験では relevant information が入力の先頭または末尾にある場合に性能が高くなりやすく、中間に置かれた場合に大きく低下する傾向が、明示的な long-context model を含めて観測された。",
+        "したがって公称 context-window length は、その全域の情報を一様に有効利用できることの証拠にはならない。この点は論文著者の実験結果として扱い、個別モデルの全条件へ一般化しない。"
+      ]
+    },
+    "Mistral 7B / Mixtral": {
+      "source_urls": [
+        "http://arxiv.org/abs/2310.06825v1",
+        "https://mistral.ai/news/announcing-mistral-7b/",
+        "https://mistral.ai/news/mixtral-of-experts/"
+      ],
+      "technical_points": [
+        "Mistral 7B v0.1 は 7.3B parameter model で、Grouped-Query Attention (GQA) と Sliding Window Attention (SWA) を組み合わせる。Mistral AI の公開説明では SWA の各層が直前 4,096 hidden states を参照する構成で、固定 window により KV cache を rotating buffer へ制限できる。",
+        "Mistral 7B は Apache 2.0 license で公開され、local download、主要 cloud、Hugging Face などを通じた利用経路が示された。Mistral 7B Instruct は instruction data で fine-tune した別 variant として扱う。",
+        "Mixtral 8x7B は decoder-only sparse mixture-of-experts model で、各 layer の feed-forward block に8 expert groupsを持ち、router が token ごとに2 expertを選択する。公開説明では総 parameter 数 46.7B に対し token ごとの active parameters は 12.9B とされる。",
+        "Mixtral 8x7B は 32K context と Apache 2.0 open weights として公開された。Mixtral 8x7B Instruct は supervised fine-tuning と DPO を施した別 variantであり、Mistral platform 上の mistral-small beta endpoint という hosted availability と open weights の公開を区別する。"
+      ]
+    },
+    "Falcon 40B / 180B": {
+      "source_urls": [
+        "http://arxiv.org/abs/2311.16867v2",
+        "https://www.tii.ae/index.php/news/uaes-technology-innovation-institute-launches-open-source-falcon-40b-large-language-model",
+        "https://www.tii.ae/news/technology-innovation-institute-introduces-worlds-most-powerful-open-llm-falcon-180b"
+      ],
+      "technical_points": [
+        "Falcon 40B は40B parameter、1T tokens で学習された foundation model として2023年5月に model weights を含む形で研究・商用利用向けに公開された。TII の同時説明では Falcon 7.5B / 1.3B と RefinedWeb dataset も open-source release 群に含められている。",
+        "Falcon 180B は2023年9月に180B parameter、3.5T tokens で学習された model として公開され、研究者と商用利用者向けの open-access boundary が明示された。Falcon 180B TII License は Apache 2.0 を基礎とする別ライセンスとして記録する。",
+        "Falcon technical report は 7B・40B・180B の causal decoder-only series と、Falcon-180B の 3.5T tokens 超の pretraining、最大 4,096 A100s を用いる custom distributed training stack を記述している。",
+        "同 technical report は 600B-token web-dataset extract と Falcon model series の公開も報告する。benchmark 上の優劣は著者・TII側の評価として扱い、独立再現済みとはしない。"
+      ]
+    },
+    "Qwen 2023 family": {
+      "source_urls": [
+        "http://arxiv.org/abs/2309.16609v1",
+        "https://qwenlm.github.io/blog/qwen/"
+      ],
+      "technical_points": [
+        "Qwen technical report は base pretrained model の Qwen と、SFT / RLHF などで human alignment を行った Qwen-Chat を区別し、Code-Qwen・Math-Qwen-Chat といった domain specialization、および Qwen-Chat の tool-use / planning を別の model / capability scope として記述する。",
+        "Qwen Team の後年の公式 release-history table は、2023年の open-source chronology として Qwen-7B を8月3日、Qwen-14B を9月25日、Qwen-1.8B と Qwen-72B を11月30日と記録している。この表は2023年イベントを回顧的に記録する資料であり、ページ自体の公開日を2023年の出来事として扱わない。",
+        "同 release-history table では Qwen-7B / 1.8B / 72B に32K、Qwen-14B に8K の max length が記録される一方、base model と chat model、各 model size の release / context specification を相互に一般化しない。",
+        "公式説明では tool use を ReAct-format data で学習し、function calling・code interpreter・Hugging Face agent をサポートするとする。これは Qwen project / chat-agent 系の提供能力として扱い、すべての base checkpoint の一様な能力とはみなさない。"
+      ]
+    },
+    "OpenAI tool/action surface 2023": {
+      "source_urls": [
+        "https://openai.com/index/chatgpt-plugins",
+        "https://openai.com/index/function-calling-and-other-api-updates",
+        "https://openai.com/index/introducing-gpts",
+        "https://openai.com/index/new-models-and-developer-products-announced-at-devday"
+      ],
+      "technical_points": [
+        "2023年3月の ChatGPT plugins は ChatGPT から外部の最新情報・計算・第三者サービスへ接続する tool surface として initial support が公表された。これは後の API-level function calling とは別の ChatGPT product surface として扱う。",
+        "2023年6月の API update では function calling capability が API model に追加され、model output と developer-defined function / external tool の間を構造化する interface が提示された。ChatGPT plugin の user-facing rollout と同一の availability event とはみなさない。",
+        "2023年11月の GPTs は instructions・extra knowledge・skills を組み合わせた custom versions of ChatGPT を end user が構成する product surface として公表された。",
+        "同日の DevDay developer release では GPT-4 Turbo の 128K context、Assistants API、GPT-4 Turbo with Vision、DALL·E 3 API などが別々の developer product / model availability として発表されたため、GPT builder の product lifecycle と hosted API lifecycle を区別する。"
+      ]
+    },
+    "DALL-E 3 2023 lifecycle": {
+      "source_urls": [
+        "https://openai.com/index/dall-e-3-is-now-available-in-chatgpt-plus-and-enterprise",
+        "https://openai.com/index/dall-e-3-system-card"
+      ],
+      "technical_points": [
+        "DALL·E 3 system card は2023年10月3日に公開され、model release に伴う safety / technical boundary を記録する一次資料として扱う。system-card publication と user-facing product availability は同一イベントではない。",
+        "2023年10月19日には DALL·E 3 が ChatGPT Plus と Enterprise で利用可能になったことが別途公表され、model / safety documentation から product availability への移行が確認できる。",
+        "OpenAI は wider release に向けた safety mitigation stack と provenance research の更新を説明しているが、その有効性評価は提供元の主張として扱う。"
+      ]
+    },
+    "Stable Diffusion XL / SDXL Turbo 2023": {
+      "source_urls": [
+        "http://arxiv.org/abs/2307.01952v1",
+        "http://arxiv.org/abs/2311.17042v1",
+        "https://stability.ai/news-updates/stability-ai-sdxl-turbo",
+        "https://stability.ai/news-updates/stable-diffusion-sdxl-1-announcement",
+        "https://stability.ai/news-updates/stable-diffusion-xl-beta-available-for-api-customers-and-dreamstudio-users"
+      ],
+      "technical_points": [
+        "2023年4月の SDXL beta は API customers と DreamStudio users 向けに提供され、open-source release は当時まだ後続予定と明記されていたため、beta service availability と weights release を区別する。",
+        "2023年7月の SDXL 1.0 は 3.5B parameter base model と 6.6B parameter ensemble pipeline を持つ two-stage latent-diffusion architecture として説明され、base が noisy latents を生成した後に refinement model が最終 denoising を担う。weights / source code、Stability API、AWS、DreamStudio など複数の access surface が同時に示された。",
+        "SDXL 1.0 weights は CreativeML OpenRAIL++-M License で公開された一方、2023年11月の SDXL Turbo weights / code は non-commercial research license での公開であり、両者の license / commercial-use boundary を同一視しない。",
+        "SDXL Turbo は Adversarial Diffusion Distillation (ADD) を用いて single-step image generation を狙う model として公表され、対応論文は adversarial loss と score-distillation を組み合わせた 1--4 step sampling を記述する。性能比較値は Stability AI / 著者側の評価として扱う。"
+      ]
+    },
+    "Stable Video Diffusion 2023": {
+      "source_urls": [
+        "http://arxiv.org/abs/2311.15127v1",
+        "https://stability.ai/news-updates/introducing-stable-video-diffusion-api",
+        "https://stability.ai/news-updates/stable-video-diffusion-open-ai-video-model"
+      ],
+      "technical_points": [
+        "2023年11月21日の Stable Video Diffusion は Stable Diffusion image model を基礎とする generative-video foundation model の research preview として公開され、code は GitHub、local execution 用 weights は Hugging Face で提供された。",
+        "research-preview 時点の公開物は image-to-video の2 model で、14 frames と 25 frames を 3--30 fps の範囲で生成すると説明された一方、real-world / commercial applications 向けではないと明記されていた。",
+        "2023年12月20日には Stable Video Diffusion が Stability AI Developer Platform API に追加され、programmatic image-to-video access が別の availability event として成立した。API版は 25 generated frames と 24 FILM-interpolated frames から2秒の動画を生成する product specification を持つ。",
+        "研究論文、research-preview weights、Developer Platform API はそれぞれ publication / open research access / hosted service の異なる lifecycle state として扱う。"
+      ]
+    },
+    "Adobe Firefly / Generative Fill": {
+      "source_urls": [
+        "https://news.adobe.com/news/news-details/2023/adobe-unveils-firefly-a-family-of-new-creative-generative-ai",
+        "https://news.adobe.com/news/news-details/2023/adobe-unveils-future-of-creative-cloud-with-generative-ai-as-a-creative-co-pilot-in-photoshop"
+      ],
+      "technical_points": [
+        "2023年3月21日の Firefly 初回 beta は creative generative-AI model family の第一弾として image generation と text effects に焦点を置き、最初の model は Adobe Stock、openly licensed content、copyright-expired public-domain content を training source とする設計として説明された。",
+        "初回発表では Creative Cloud 等への将来 integration と API 提供計画が示されたが、それらを3月時点で既に一般提供済みだったとは扱わない。",
+        "2023年5月23日の Photoshop Generative Fill は Firefly を Photoshop workflow に直接統合し、text prompt から image content を add / extend / remove しつつ generated layers で non-destructive editing を行う beta feature として公開された。",
+        "同日、Generative Fill は Photoshop desktop beta と Firefly beta web module で利用可能とされ、Content Credentials 対応も説明された。将来の general availability と beta availability を区別する。"
+      ]
+    },
+    "OpenAI 2023 alignment and agent-governance work": {
+      "source_urls": [
+        "https://openai.com/index/frontier-risk-and-preparedness",
+        "https://openai.com/index/improving-mathematical-reasoning-with-process-supervision",
+        "https://openai.com/index/practices-for-governing-agentic-ai-systems",
+        "https://openai.com/index/weak-to-strong-generalization"
+      ],
+      "technical_points": [
+        "2023年5月の process-supervision work は最終回答だけを reward する outcome supervision と対比し、reasoning の各 correct step を reward する training setup を提示した。数学性能や alignment 上の利点は OpenAI の研究結果として扱う。",
+        "2023年10月の frontier-risk / preparedness 公表では catastrophic-risk preparedness を明示的な対象とし、Preparedness team の設置と challenge の開始を含む control-design trajectory が示された。",
+        "2023年12月の Practices for Governing Agentic AI Systems は agentic capability に対する governance practices を論じる publication として扱い、論文・policy proposal の公表を既に deployed された production control と同一視しない。",
+        "同月の weak-to-strong generalization は weak supervisors から stronger models を制御できるかを問う superalignment research direction と initial results を提示した。結果の有効性は OpenAI の研究主張であり、一般的な強モデル制御が確立した証拠とは扱わない。"
+      ]
+    },
+    "Anthropic Constitutional AI / Responsible Scaling Policy": {
+      "source_urls": [
+        "https://www.anthropic.com/news/anthropics-responsible-scaling-policy",
+        "https://www.anthropic.com/news/claudes-constitution"
+      ],
+      "technical_points": [
+        "Claude's Constitution の説明では Constitutional AI は explicit principles を使い、supervised phase で model が原応答を critique / revise し、reinforcement-learning phase では constitution に基づく AI-generated feedback で harmless output を選ぶという2段階の training process として説明される。",
+        "Anthropic は Constitutional AI を human feedback のみに依存しない scalable oversight / transparency の方法として位置づけるが、helpfulness / harmlessness の改善結果は Anthropic 側の評価として扱う。",
+        "2023年9月の Responsible Scaling Policy は catastrophic-risk potential に応じて safety / security / operational standard を強める AI Safety Levels (ASL) を定義し、ASL-1、ASL-2、ASL-3 以降を capability/risk threshold として区別した。",
+        "RSP は scaling が必要な safety procedures への compliance を上回る場合に training を一時停止する含意を持ち、ASL-3 model の adversarial testing / deployment constraints などを提示した。これは Anthropic board-approved policy の early iteration として扱い、業界全体の標準や既存製品全般の状態へ一般化しない。"
+      ]
+    }
+  }
+}

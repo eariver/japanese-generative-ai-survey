@@ -1,0 +1,53 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{推論・検索・学習後最適化、そしてTransformerの外側へ}
+\noindent\textbf{2023年の研究は、一つの「次世代LLM手法」へ収束したのではない。Tree of Thoughts、DPO、Self-RAG、Mambaは、それぞれ推論時探索、post-training、retrieval-control、sequence architectureという異なる層を広げた。設計空間の拡張として並べることで、何が同じ問題で何が別問題かを明確にする。}\autocite{src-21aef0026892,src-5dd64e15cc75,src-8a38211129c4,src-e413c7ab8da4}
+
+\subsection{同じ「賢くする研究」でも操作する場所が違う}
+
+Tree of Thoughts、DPO、Self-RAG、Mambaを横並びにするとき、まず操作対象を分ける必要がある。Tree of Thoughtsは推論時の探索、DPOは学習後の選好調整、Self-RAGは生成と検索の制御、Mambaはsequenceを処理するarchitectureそのものに焦点を置く。これらを一つの性能トレンドとして混ぜると、どの層を変えて結果を得ているのかが見えなくなる。\autocite{src-21aef0026892,src-5dd64e15cc75,src-8a38211129c4,src-e413c7ab8da4}
+
+
+この分解が2023年を読むうえで重要なのは、scaleだけが改良手段ではなくなったからである。学習済みモデルを固定して推論過程を変える、preference dataでbehaviorを調整する、外部知識との往復を設計する、sequence operatorを変えるという複数の入口が同時に見えるようになった。競争はparameter countだけでなく、どのlayerへ計算と制御を置くかへ広がった。\autocite{src-21aef0026892,src-5dd64e15cc75,src-8a38211129c4,src-e413c7ab8da4}
+
+
+\subsection{推論時に探索を増やすという設計}
+
+Tree of Thoughtsは、単一の逐次生成だけでなく、複数の候補状態を探索・評価する推論時の計算構造を研究対象にした。この方向は「モデルそのものを大きくする」以外に、推論プロセスの編成で結果を変える設計余地があることを示す。\autocite{src-8a38211129c4}
+
+
+推論時探索を導入すると、品質だけでなく計算予算の配分が問題になる。候補を増やす、途中評価を入れる、探索を打ち切るといった選択は、latencyと計算量を増やしうる。つまりreasoning methodはmodel capabilityの上に乗るruntime policyでもあり、常に最大限探索することが実用上の最適解とは限らない。\autocite{src-8a38211129c4}
+
+
+探索を使う場合、どの候補を良いと判定するかという評価器も必要になる。その評価が同じモデルの自己評価であれ外部規則であれ、生成と選択を分けることでsystem側にcontrol pointが生まれる。tool/action layerと同じく、強い生成能力だけでなく、途中状態を観測して次の処理を選ぶ構造が重要になる。\autocite{src-8a38211129c4}
+
+
+\subsection{post-trainingは推論方法ではなくbehaviorを変える}
+
+DPOはpretrainingや推論時探索とは異なり、人間の選好情報を用いるpost-trainingの設計を簡素化する方向に位置する。ここで扱うのはモデルが推論中に考える方法ではなく、どの応答傾向を学習後に選好させるかという別レイヤである。\autocite{src-21aef0026892}
+
+
+preference optimizationでは、何を好ましい応答とみなすかが学習interfaceになる。algorithmを簡素化しても、preference dataの品質、比較基準、対象domainが消えるわけではない。post-trainingの進歩は「alignmentが解決した」ことではなく、base modelの後段でbehaviorを設計する技術が独立した研究領域になったことを示す。\autocite{src-21aef0026892}
+
+
+\subsection{検索を固定pipelineから制御loopへ}
+
+Self-RAGはretrievalを常時付加する固定pipelineではなく、生成過程と検索・自己評価を結び付ける制御問題として扱う方向を示した。retrievalの有無、参照結果の使い方、生成の自己点検を一つのsystem loopとして設計する発想である。\autocite{src-e413c7ab8da4}
+
+
+検索を使うsystemでは、検索するかどうか、何をqueryにするか、得たdocumentをどこまで信用するか、回答に反映できたかという判断が連鎖する。context windowが伸びても、この判断連鎖が自動的に不要になるわけではない。long contextとretrievalは代替関係だけでなく、情報供給の異なる制御手段として併存する。\autocite{src-e413c7ab8da4}
+
+
+\subsection{sequence architectureの探索が再び広がる}
+
+Mambaは年末に、attention中心のTransformerとは異なるsequence modelingの選択肢として注目を集めた。ただし2023年時点のEvidenceから「Transformerが置き換えられた」と結論することはできない。重要なのは、長いsequenceと計算効率をめぐるarchitecture探索が再び広がったことである。\autocite{src-5dd64e15cc75}
+
+
+新しいsequence architectureを評価するときも、論文上の計算量だけでなくkernelやhardwareとの相性、学習安定性、既存toolchainとの統合を考える必要がある。architecture innovationとruntime engineeringは分離できず、Mambaの登場は「モデルの構造」と「モデルを動かす実装」の境界を改めて意識させる出来事でもあった。\autocite{src-5dd64e15cc75}
+
+
+四つの方向をまとめると、2023年の研究は「より大きなTransformerを作る」以外の設計変数を増やした。推論時に計算を使う、post-trainingでbehaviorを変える、外部検索とのloopを作る、sequence operator自体を変える。それぞれの成果を同じランキングに押し込むのではなく、どのlayerを操作する手法かを識別することが、その後の組み合わせを理解する前提になる。\autocite{src-21aef0026892,src-5dd64e15cc75,src-8a38211129c4,src-e413c7ab8da4}
+
+
+\begin{claimboundary}
+各論文・projectが報告する性能向上は、それぞれの課題設定と評価条件に基づく。ここでは互いに異なるレイヤの研究を共通ランキングへ置かず、2023年に設計可能な場所が増えたという年次的意味を抽出する。\autocite{src-8a38211129c4}
+\end{claimboundary}

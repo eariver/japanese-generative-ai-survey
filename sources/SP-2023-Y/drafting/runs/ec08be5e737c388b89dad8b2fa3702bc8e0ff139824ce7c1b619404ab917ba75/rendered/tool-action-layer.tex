@@ -1,0 +1,19 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{生成から行動へ――Tool UseがAPI層を作った}
+\noindent\textbf{2023年には、言語モデルが文章を返すだけでなく、外部機能を選び、構造化された呼び出しへ接続する設計が製品・APIの中心へ入った。Toolformerの研究的発想とOpenAIのPlugins、Function Calling、GPTs/Assistantsの展開を、tool selectionと実行主体を分けて整理する。}\autocite{src-150e07b331df,src-4de1cea0a896,src-6b76b870b4ae,src-97786632d087,src-e17d0bf10781}
+
+tool useでは、モデルが「何を呼ぶべきか」を決めることと、外部システムが実際に副作用を伴う処理を実行することを分ける必要がある。自然言語の生成能力が高くても、実行権限、引数検証、失敗時の扱いは別のsystem layerである。\autocite{src-150e07b331df,src-4de1cea0a896,src-6b76b870b4ae,src-97786632d087,src-e17d0bf10781}
+
+
+Toolformerはモデルが外部ツール利用を学習する研究方向を示した。一方、PluginsやFunction Callingは開発者が接続先と構造を定義する製品・API面の仕組みである。両者は同じ「tool use」という語で呼べても、研究上の問いと配備上の責任分界は異なる。\autocite{src-150e07b331df,src-4de1cea0a896,src-6b76b870b4ae,src-97786632d087,src-e17d0bf10781}
+
+
+Function Callingのような構造化インターフェースは、自由文から外部実行へ直接飛ぶのではなく、モデル出力を機械可読な境界へ落とし込む考え方を前面に出した。この境界は利便性だけでなく、検証、再試行、権限管理を実装する場所にもなる。\autocite{src-4de1cea0a896,src-6b76b870b4ae,src-97786632d087,src-e17d0bf10781}
+
+
+年末までにGPTsやAssistantsへ連なる製品面が現れたことで、tool accessは個別デモではなくapplication-facing layerとして認識されやすくなった。2023年の転換は「モデルが何でも自律実行できるようになった」ことではなく、生成と実行の間に明示的なinterfaceが必要だと広く実装されたことである。\autocite{src-4de1cea0a896,src-6b76b870b4ae,src-97786632d087,src-e17d0bf10781}
+
+
+\begin{claimboundary}
+tool-useの信頼性や有効性に関する評価は、研究・プロジェクト・vendorの条件に依存する。本稿では機構の成立と公開形態を扱い、それらの性能主張を独立再現済みの事実とはみなさない。\autocite{src-4de1cea0a896,src-6b76b870b4ae,src-97786632d087,src-e17d0bf10781}
+\end{claimboundary}
