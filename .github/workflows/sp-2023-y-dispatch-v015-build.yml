@@ -1,0 +1,44 @@
+name: One-time SP-2023-Y v0.15 final build dispatch
+on:
+  push:
+    branches: [special/2023-Y-work]
+    paths: [.github/workflows/sp-2023-y-dispatch-v015-build.yml]
+permissions:
+  actions: write
+  contents: write
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: special/2023-Y-work
+      - name: Verify v0.15 state pin
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          state=json.loads(Path('sources/SP-2023-Y/pipeline-state.json').read_text(encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT'
+          assert state['gates']['latex_build']=='pending'
+          p=Path(state['provenance']['validated_issue_source']['path'])
+          assert p.as_posix()=='surveys/special/2023-Y/revisions/v0.15/source-manifest.json'
+          assert hashlib.sha256(p.read_bytes()).hexdigest()==state['provenance']['validated_issue_source']['sha256']
+          assert state['provenance']['validated_issue_source']['source_version']=='v0.15'
+          PY
+      - name: Dispatch canonical build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run build-special-pdf.yml --ref main -f special_slug=2023-Y
+      - name: Self-delete
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm .github/workflows/sp-2023-y-dispatch-v015-build.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/sp-2023-y-dispatch-v015-build.yml
+          git commit -m 'Remove one-time SP-2023-Y v0.15 build dispatcher'
+          git push origin HEAD:special/2023-Y-work
