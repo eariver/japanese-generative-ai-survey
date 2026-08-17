@@ -27,6 +27,10 @@ LIFECYCLE = [
 
 HUMAN_GATES = ["issue_architecture", "publication_preview"]
 PUBLICATION_PREVIEW_AUTHORIZES = ["visual_review", "freeze", "work_pr_merge", "public_release"]
+PERIOD_GUIDES = {
+    "ANNUAL": "docs/annual-retrospective-specials.md",
+    "HALF_YEAR": "docs/half-year-retrospective-specials.md",
+}
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -199,7 +203,7 @@ def _period_entry(tier: str, value: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def historical_plan(config: dict[str, Any]) -> dict[str, Any]:
+def configured_periods(config: dict[str, Any]) -> list[dict[str, Any]]:
     hist = config["historical_granularity"]
     result: list[dict[str, Any]] = []
     for tier, key in (("ANNUAL", "annual"), ("HALF_YEAR", "half_year"), ("MONTHLY", "monthly")):
@@ -207,7 +211,89 @@ def historical_plan(config: dict[str, Any]) -> dict[str, Any]:
         if not isinstance(periods, list) or not periods:
             raise ValueError(f"historical_granularity.{key}.periods must be a non-empty array")
         result.extend(_period_entry(tier, value) for value in periods)
+    return result
 
+
+def resolve_configured_period(config: dict[str, Any], special_slug: str) -> dict[str, Any]:
+    matches = [item for item in configured_periods(config) if item["special_slug"] == special_slug]
+    if not matches:
+        raise ValueError(f"Special slug is not configured in historical_granularity: {special_slug}")
+    if len(matches) != 1:
+        raise ValueError(f"Special slug is configured more than once: {special_slug}")
+    return matches[0]
+
+
+def bootstrap_plan(config: dict[str, Any], special_slug: str) -> dict[str, Any]:
+    """Resolve startup authority before an edition manifest exists.
+
+    This intentionally does not materialize ``retrospective_as_of``. That timestamp belongs to the
+    actual initialization session, so unstarted historical editions remain fresh until requested.
+    """
+    period = resolve_configured_period(config, special_slug)
+    policy = config["policy"]
+    special_id = f"SP-{special_slug}"
+    guides = [
+        "docs/special-session-bootstrap.md",
+        "docs/special-human-gates.md",
+        "docs/special-editions.md",
+    ]
+    period_guide = PERIOD_GUIDES.get(period["tier"])
+    if period_guide:
+        guides.append(period_guide)
+    return {
+        "schema_version": "1.0",
+        "series": "SPECIAL",
+        "target_status": "CONFIGURED",
+        "special_slug": special_slug,
+        "special_id": special_id,
+        "tier": period["tier"],
+        "label": period["label"],
+        "coverage": {
+            "start": period["start"],
+            "end": period["end"],
+            "timezone": "UTC",
+            "retrospective_as_of": "SET_AT_INITIALIZATION",
+        },
+        "paths": {
+            "edition_manifest": f"specials/{special_slug}/edition.json",
+            "pipeline_state": f"sources/{special_id}/pipeline-state.json",
+            "survey_root": f"surveys/special/{special_slug}",
+            "source_root": f"sources/{special_id}",
+        },
+        "branches": {
+            "init": f"special/{special_slug}-init",
+            "work": f"special/{special_slug}-work",
+        },
+        "required_guides": guides,
+        "initialization": {
+            "authorized_by_start_prompt": policy.get("start_prompt_authorizes_initialization") is True,
+            "human_gate_required": policy.get("human_gate_required_for_initialization") is True,
+            "authorized_actions": list(policy.get("initialization_actions_authorized") or []),
+            "mode": "RESUME_IF_PRESENT_ELSE_INITIALIZE",
+        },
+        "architecture_review_execution": {
+            "canonical_source_intake": "ALL_ENABLED_BASE_COLLECTORS",
+            "period_specific_coverage_audit": True,
+            "supplemental_primary_source_gap_fill": True,
+            "screening": True,
+            "evidence_normalization": True,
+            "candidate_selection": "INTERNAL_CHECKPOINT",
+            "architecture_proposal": True,
+            "reader_facing_drafting_before_approval": False,
+        },
+        "community_research_default": policy.get("retrospective_grok_default", "DISABLED"),
+        "stop_gate": {
+            "name": "Architecture Review",
+            "gate": "issue_architecture",
+            "human_gate": True,
+        },
+        "exception_gate": policy.get("exception_gate"),
+    }
+
+
+def historical_plan(config: dict[str, Any]) -> dict[str, Any]:
+    hist = config["historical_granularity"]
+    result = configured_periods(config)
     result.sort(key=lambda item: item["start"])
     previous_end: datetime | None = None
     for item in result:
@@ -256,11 +342,20 @@ def main() -> int:
     p_init.add_argument("--output", required=True)
     p_history = sub.add_parser("history-plan")
     p_history.add_argument("--output")
+    p_bootstrap = sub.add_parser("bootstrap-plan")
+    p_bootstrap.add_argument("--special-slug", required=True)
+    p_bootstrap.add_argument("--output")
     args = parser.parse_args()
 
     config = load_json(Path(args.config))
     if args.command == "history-plan":
         value = historical_plan(config)
+        if args.output:
+            write_json(Path(args.output), value)
+        print(json.dumps(value, ensure_ascii=False, indent=2))
+        return 0
+    if args.command == "bootstrap-plan":
+        value = bootstrap_plan(config, args.special_slug)
         if args.output:
             write_json(Path(args.output), value)
         print(json.dumps(value, ensure_ascii=False, indent=2))
