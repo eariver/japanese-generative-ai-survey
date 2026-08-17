@@ -26,6 +26,9 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     marker_path = repo_root / "sources" / issue_id / "editorial" / f"layout-revision-{source_version}.json"
     marker = load_json(marker_path)
     changes = marker.get("layout_changes") or {}
+    if changes.get("suppress_zero_evidence_technical_notes") is True:
+        from scripts.revise_special_suppress_empty_technical_notes import build as suppress_empty_notes_build
+        return suppress_empty_notes_build(repo_root, special_slug, issue_id, source_version)
     if changes.get("half_year_reference_common_urldate_consolidation") is True:
         from scripts.revise_special_half_year_reference_common_urldate_v3 import build as common_urldate_build
         return common_urldate_build(repo_root, special_slug, issue_id, source_version)
