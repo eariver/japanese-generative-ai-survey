@@ -188,6 +188,13 @@ class SpecialPipelineTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "not configured"):
             special_pipeline.bootstrap_plan(config, "2019-Y")
 
+    def test_annual_repair_workflow_preserves_edition_scoped_chronology_counts(self) -> None:
+        workflow = Path(".github/workflows/revise-special-annual-source-specific-notes-v2.yml").read_text(encoding="utf-8")
+        self.assertNotIn("chronology['event_count']==75", workflow)
+        self.assertNotIn("chronology['unresolved_date_count']==3", workflow)
+        self.assertIn("BASE_ANNUAL_CHRONOLOGY_EVENT_COUNT", workflow)
+        self.assertIn("BASE_ANNUAL_CHRONOLOGY_UNRESOLVED_DATE_COUNT", workflow)
+
     def test_manifest_rejects_source_path_aliasing(self) -> None:
         manifest = self.manifest()
         manifest["paths"]["source_root"] = "sources/2026-W31"
