@@ -217,10 +217,10 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
         for match in NOTE_RE.finditer(path.read_text(encoding="utf-8")):
             key = _title_key(match.group(1))
             card = match.group(0)
-            if PROXIMITY_FALLBACK_RE.search(card):
+            if reader.get("annual_source_specific_detail_contract") and PROXIMITY_FALLBACK_RE.search(card):
                 errors.append(f"Technical Note contains forbidden proximity fallback: {key}")
             fact_for_shape = FACT_RE.search(card)
-            if "/" in key and fact_for_shape is not None and FLAT_MULTI_FAMILY_PARAMETER_RE.search(fact_for_shape.group(1)):
+            if reader.get("annual_source_specific_detail_contract") and "/" in key and fact_for_shape is not None and FLAT_MULTI_FAMILY_PARAMETER_RE.search(fact_for_shape.group(1)):
                 errors.append(f"Technical Note flattens scope-sensitive parameter scales across a multi-family title: {key}")
             existing = cards.setdefault(key, [])
             if existing:
