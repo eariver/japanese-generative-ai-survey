@@ -1,0 +1,250 @@
+name: Finalize SP-2023-Y v0.15 residual #139/#191 repair
+on:
+  push:
+    branches: [special/2023-Y-work]
+    paths: [.github/workflows/sp-2023-y-v015-139-191-residual-v3.yml]
+permissions:
+  contents: write
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: special/2023-Y-work
+          path: worktree
+          fetch-depth: 0
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - name: Materialize immutable v0.15
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+          import hashlib, json, re, shutil
+          from pathlib import Path
+
+          root = Path('worktree')
+          issue = 'SP-2023-Y'
+          parent = root/'surveys/special/2023-Y/revisions/v0.14'
+          dest = root/'surveys/special/2023-Y/revisions/v0.15'
+          state_path = root/'sources'/issue/'pipeline-state.json'
+          state = json.loads(state_path.read_text(encoding='utf-8'))
+          prior = dict(state['provenance']['validated_issue_source'])
+          assert prior['path'] == 'surveys/special/2023-Y/revisions/v0.14/source-manifest.json', prior
+          assert prior['source_version'] == 'v0.14', prior
+          assert state['lifecycle_state'] == 'RELEASE_CANDIDATE'
+          assert state['gates']['latex_build'] == 'passed'
+          assert state['gates']['visual_review'] == 'pending'
+          assert state['gates']['freeze'] == 'pending'
+          review14 = json.loads((root/'sources'/issue/'reviews/publication-preview-v0.14.json').read_text(encoding='utf-8'))
+          assert review14['human_publication_preview_approved'] is False
+          parent_manifest = parent/'source-manifest.json'
+          parent_sha = hashlib.sha256(parent_manifest.read_bytes()).hexdigest()
+          assert parent_sha == prior['sha256'], (parent_sha, prior['sha256'])
+          assert not dest.exists(), dest
+          shutil.copytree(parent, dest)
+
+          def replace_fact(rel: str, title: str, fact: str) -> None:
+              path = dest/rel
+              text = path.read_text(encoding='utf-8')
+              start = r'\begin{technicalnote}{' + title + '}'
+              si = text.find(start)
+              assert si >= 0, (rel, title, 'card missing')
+              ei = text.find(r'\end{technicalnote}', si)
+              assert ei > si, (rel, title, 'card end missing')
+              card = text[si:ei]
+              prefix = r'\item \textbf{一次情報で確認できる事実}: '
+              fi = card.find(prefix)
+              assert fi >= 0, (rel, title, 'fact line missing')
+              abs_start = si + fi + len(prefix)
+              abs_end = text.find('\n', abs_start)
+              assert abs_end > abs_start
+              old = text[abs_start:abs_end]
+              assert re.search(r'対象\s*event\s*近傍', old, re.I), (title, old)
+              text = text[:abs_start] + fact + text[abs_end:]
+              path.write_text(text, encoding='utf-8')
+
+          replace_fact(
+              'technical-notes/10-frontier-interface-notes.tex',
+              'GPT-4 / GPT-4V 2023 lifecycle',
+              'OpenAIのGPT-4 Technical ReportはGPT-4を画像とテキストを入力しテキストを出力するmultimodal modelとして記述し、post-training alignmentでfactuality等の指標が改善したと報告する。2023-09-25のGPT-4V system cardは画像入力に固有の安全性評価・準備・mitigationを扱う。ChatGPTへの画像・音声機能の展開は製品availabilityとして、GPT-4本体の学習仕様とは分けて扱う。'
+          )
+          replace_fact(
+              'technical-notes/20-open-weight-ecosystem-notes.tex',
+              'LLaMA / Llama 2 / Code Llama 2023',
+              'Metaの一次資料では、LLaMA v1は7B/13B/33B/65B、Llama 2は7B/13B/70B、Code Llamaの2023年初版（v1）は7B/13B/34Bのcode-specialized familyとして記載される。Code Llamaの70Bは2024年の後続改訂に属するため、本カードの2023年eventへは帰属させない。'
+          )
+          replace_fact(
+              'technical-notes/40-runtime-adaptation-notes.tex',
+              'vLLM / PagedAttention',
+              'vLLMの論文では、PagedAttentionはOSのvirtual memory/pagingに着想を得てKV cacheをblock単位で管理し、vLLMはKV-cache memory wasteをほぼゼロにし、request内外でKV cacheを共有できるよう設計されていると著者が報告する。'
+          )
+          replace_fact(
+              'technical-notes/40-runtime-adaptation-notes.tex',
+              'QLoRA',
+              'QLoRAはfrozen 4-bit quantized pretrained modelを通してgradientをbackpropagateし、学習対象をlow-rank adapter weightsへ限定する。論文はnormally distributed weights向けの4-bit NormalFloat (NF4)と、NVIDIA unified memoryを介してoptimizer-state pressureを処理するpaged optimizersをmemory-saving mechanismsとして導入する。'
+          )
+
+          llama_note = dest/'technical-notes/20-open-weight-ecosystem-notes.tex'
+          text = llama_note.read_text(encoding='utf-8')
+          text, n = re.subn(r'https?://arxiv\.org/abs/2308\.12950v3', 'https://arxiv.org/abs/2308.12950v1', text, count=1)
+          assert n == 1, 'Code Llama v3 locator was not replaced exactly once'
+          llama_note.write_text(text, encoding='utf-8')
+
+          # Exact residual-review invariants.
+          note_rels = [
+              'technical-notes/10-frontier-interface-notes.tex',
+              'technical-notes/20-open-weight-ecosystem-notes.tex',
+              'technical-notes/40-runtime-adaptation-notes.tex',
+          ]
+          rendered = '\n'.join((dest/r).read_text(encoding='utf-8') for r in note_rels)
+          assert re.search(r'対象\s*event\s*近傍', rendered, re.I) is None
+          assert '7B parameter scale / 65B parameter scale / 13B parameter scale / 33B parameter scale' not in rendered
+          assert 'LLaMA v1は7B/13B/33B/65B' in rendered
+          assert 'Llama 2は7B/13B/70B' in rendered
+          assert '2023年初版（v1）は7B/13B/34B' in rendered
+          assert 'Code Llamaの70Bは2024年の後続改訂' in rendered
+          assert 'https://arxiv.org/abs/2308.12950v1' in rendered
+          assert '2308.12950v3' not in llama_note.read_text(encoding='utf-8')
+          assert 'multimodal model' in rendered and 'GPT-4V system card' in rendered
+          assert 'virtual memory/paging' in rendered and 'KV cacheをblock単位' in rendered
+          assert '4-bit NormalFloat (NF4)' in rendered and 'paged optimizers' in rendered
+          # V3 audit explicitly rejects these naked QLoRA signals; keep them out of the QLoRA fact.
+          qpath = dest/'technical-notes/40-runtime-adaptation-notes.tex'
+          qtext = qpath.read_text(encoding='utf-8')
+          qsi = qtext.find(r'\begin{technicalnote}{QLoRA}')
+          qei = qtext.find(r'\end{technicalnote}', qsi)
+          qcard = qtext[qsi:qei]
+          qfact = re.search(r'\\item \\textbf\{一次情報で確認できる事実\}: ([^\n]+)', qcard).group(1)
+          assert re.search(r'(?<![A-Za-z])LoRA(?![A-Za-z])', qfact) is None
+          assert 'double quantization' not in qfact
+
+          chronology_old = root/'sources'/issue/'chronology/annual-chronology-v0.14.json'
+          chronology_new = root/'sources'/issue/'chronology/annual-chronology-v0.15.json'
+          chronology = json.loads(chronology_old.read_text(encoding='utf-8'))
+          if 'source_version' in chronology:
+              chronology['source_version'] = 'v0.15'
+          chronology_new.write_text(json.dumps(chronology, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+          chronology_sha = hashlib.sha256(chronology_new.read_bytes()).hexdigest()
+
+          residual_path = root/'sources'/issue/'editorial/issues-139-191-v0.15.json'
+          residual = {
+              'schema_version':'1.0',
+              'issue_id':issue,
+              'source_version':'v0.15',
+              'status':'VALIDATED_REVIEW_RESIDUAL_REPAIR',
+              'issue_refs':[139,191],
+              'basis':{
+                  'previous_source_manifest_path':'surveys/special/2023-Y/revisions/v0.14/source-manifest.json',
+                  'previous_source_manifest_sha256':parent_sha,
+                  'human_review':['Issue #139 v0.14 PARTIAL / Open維持','Issue #191 v0.14 Regression / Reopen推奨']
+              },
+              'repairs':[
+                  {'title':'GPT-4 / GPT-4V 2023 lifecycle','details':['GPT-4 multimodal input/output scope','post-training factuality claim','GPT-4V image-input safety evaluation','product availability separated from model training properties']},
+                  {'title':'LLaMA / Llama 2 / Code Llama 2023','details':['LLaMA v1 7B/13B/33B/65B','Llama 2 7B/13B/70B','Code Llama 2023 v1 7B/13B/34B','Code Llama 70B excluded as 2024 follow-up'],'exact_2023_source':'https://arxiv.org/abs/2308.12950v1'},
+                  {'title':'vLLM / PagedAttention','details':['virtual-memory/paging inspiration','block-granular KV-cache management','near-zero KV-cache memory waste author claim','KV sharing']},
+                  {'title':'QLoRA','details':['frozen 4-bit quantized base','gradient flow into low-rank adapter weights','4-bit NormalFloat (NF4)','paged optimizers via unified memory']}
+              ],
+              'contracts':{
+                  'proximity_fallback_findings':0,
+                  'flat_multi_family_parameter_bucket_findings':0,
+                  'subject_entity_binding_contract':'SUBJECT_COMPONENT_VARIANT_PROPERTY_BINDING_V3',
+                  'annual_source_specific_detail_contract':'ANNUAL_SCREENING_BACKED_FAIL_CLOSED_V1',
+                  'temporal_version_boundary':'Code Llama v1 is 2023; Code Llama 70B is a 2024 follow-up and is not back-projected'
+              }
+          }
+          residual_path.parent.mkdir(parents=True, exist_ok=True)
+          residual_path.write_text(json.dumps(residual, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+          residual_sha = hashlib.sha256(residual_path.read_bytes()).hexdigest()
+
+          manifest_path = dest/'source-manifest.json'
+          manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+          manifest['source_version'] = 'v0.15'
+          manifest['status'] = 'VALIDATED_ANNUAL_139_191_RESIDUAL_REPAIR'
+          manifest['derivation'] = '#139/#191 residual repair: four proximity-fallback cards are replaced by subject-specific technical facts; multi-family scale ownership and Code Llama 2023 v1 boundary are explicit.'
+          manifest['basis']['previous_source_manifest_path'] = 'surveys/special/2023-Y/revisions/v0.14/source-manifest.json'
+          manifest['basis']['previous_source_manifest_sha256'] = parent_sha
+          for article in manifest.get('articles', []):
+              rel = article.get('technical_notes_path')
+              if rel:
+                  article['technical_notes_sha256'] = hashlib.sha256((dest/rel).read_bytes()).hexdigest()
+          reader = manifest.setdefault('reader_facing_technical_notes', {})
+          reader['residual_review_contract'] = 'ANNUAL_NO_PROXIMITY_FALLBACK_AND_FAMILY_SCOPED_SCALE_V1'
+          reader['residual_proximity_fallback_findings'] = 0
+          reader['residual_flat_multi_family_parameter_findings'] = 0
+          reader['residual_review_issue_refs'] = [139,191]
+          manifest['review_residual_repair'] = {
+              'path':'sources/SP-2023-Y/editorial/issues-139-191-v0.15.json',
+              'sha256':residual_sha,
+              'issue_refs':[139,191]
+          }
+          if isinstance(manifest.get('annual_chronology'), dict):
+              manifest['annual_chronology']['source_version']='v0.15'
+              manifest['annual_chronology']['path']='sources/SP-2023-Y/chronology/annual-chronology-v0.15.json'
+              manifest['annual_chronology']['sha256']=chronology_sha
+          manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+          manifest_sha = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+
+          old_chron = dict(state['provenance']['annual_chronology'])
+          history = state.setdefault('provenance_history', {}).setdefault('validated_issue_source', [])
+          if not any(isinstance(x,dict) and x.get('path')==prior['path'] and x.get('sha256')==prior['sha256'] for x in history):
+              history.append(prior)
+          state['lifecycle_state']='VALIDATED_DRAFT'
+          state['gates']['latex_build']='pending'
+          state['gates']['visual_review']='pending'
+          state['gates']['freeze']='pending'
+          state['provenance']['validated_issue_source']={
+              'path':'surveys/special/2023-Y/revisions/v0.15/source-manifest.json',
+              'sha256':manifest_sha,
+              'source_version':'v0.15',
+              'layout_mode':'annual-ordered-publication-preview-repair+final-compact-references+139-191-residual'
+          }
+          state['provenance']['annual_chronology']={
+              'source_version':'v0.15',
+              'path':'sources/SP-2023-Y/chronology/annual-chronology-v0.15.json',
+              'sha256':chronology_sha,
+              'event_count':old_chron['event_count'],
+              'unresolved_date_count':old_chron['unresolved_date_count']
+          }
+          state['provenance']['review_residual_repair']={
+              'source_version':'v0.15','path':'sources/SP-2023-Y/editorial/issues-139-191-v0.15.json','sha256':residual_sha,'issue_refs':[139,191]
+          }
+          state['provenance'].pop('latex_build',None)
+          state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+          print(json.dumps({'manifest_sha256':manifest_sha,'chronology_sha256':chronology_sha,'residual_sha256':residual_sha}, indent=2))
+          PY
+      - name: Run current-main fail-closed checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python control-src/scripts/special_reader_notes_ja.py check --repo-root worktree --issue-id SP-2023-Y
+          PYTHONPATH=control-src python control-src/scripts/special_period_consistency.py check --repo-root worktree --special-slug 2023-Y --issue-id SP-2023-Y
+          PYTHONPATH=control-src python control-src/scripts/special_publication_layout_check.py --repo-root worktree --issue-id SP-2023-Y
+          python - <<'PY'
+          import json,re
+          from pathlib import Path
+          root=Path('worktree')
+          manifest=json.loads((root/'surveys/special/2023-Y/revisions/v0.15/source-manifest.json').read_text(encoding='utf-8'))
+          text='\n'.join((root/'surveys/special/2023-Y/revisions/v0.15'/a['technical_notes_path']).read_text(encoding='utf-8') for a in manifest['articles'] if a.get('technical_notes_reader_facing') and a.get('technical_notes_path'))
+          assert len(re.findall(r'\\begin\{technicalnote\}',text))==26
+          assert re.search(r'対象\s*event\s*近傍',text,re.I) is None
+          assert 'https://arxiv.org/abs/2308.12950v1' in text
+          assert '2308.12950v3' not in text
+          assert 'Code Llamaの70Bは2024年の後続改訂' in text
+          PY
+      - name: Commit repair and remove one-time workflows
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd worktree
+          rm -f .github/workflows/sp-2023-y-v015-139-191-residual.yml .github/workflows/sp-2023-y-v015-139-191-residual-v2.yml .github/workflows/sp-2023-y-v015-139-191-residual-v3.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add surveys/special/2023-Y/revisions/v0.15 sources/SP-2023-Y/chronology/annual-chronology-v0.15.json sources/SP-2023-Y/editorial/issues-139-191-v0.15.json sources/SP-2023-Y/pipeline-state.json .github/workflows/
+          git commit -m 'Repair SP-2023-Y residual Technical Notes findings (#139 #191)'
+          git push origin HEAD:special/2023-Y-work
