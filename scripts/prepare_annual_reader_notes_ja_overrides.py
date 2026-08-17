@@ -16,13 +16,19 @@ from pathlib import Path
 from typing import Any
 
 
+ISSUE_RE = re.compile(r"^SP-(?P<year>\d{4})-Y$")
 TECHNICAL_RE = re.compile(
-    r"^The reviewed primary source set documents (?P<name>.+) within 2023; "
+    r"^The reviewed primary source set documents (?P<name>.+) within (?P<year>\d{4}); "
     r"technical and evaluation results remain attributed to the originating authors\.$"
 )
 LIFECYCLE_RE = re.compile(
-    r"^The reviewed primary source set documents the 2023 release/publication lifecycle of (?P<name>.+); "
+    r"^The reviewed primary source set documents the (?P<year>\d{4}) release/publication lifecycle of (?P<name>.+); "
     r"capability and performance claims remain attributed to the originating vendor, project, or authors\.$"
+)
+GENERIC_RECORD_RE = re.compile(
+    r"^The reviewed primary source set documents (?P<name>.+) as part of the (?P<year>\d{4}) generative-AI technical record\. "
+    r"Technical, performance, access, and safety assertions remain attributed to the originating authors/projects "
+    r"rather than treated as independent reproduction\.$"
 )
 LIMITATION = (
     "Primary-source verification establishes the bounded facts recorded here; "
@@ -42,26 +48,46 @@ def write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def translate_claim(source_text: str, artifact_name: str) -> str:
+def annual_year(issue_id: str) -> str:
+    match = ISSUE_RE.fullmatch(issue_id)
+    if not match:
+        raise ValueError(f"unsupported Annual issue_id: {issue_id!r}")
+    return match.group("year")
+
+
+def _check_identity(match: re.Match[str], artifact_name: str, year: str, template: str) -> None:
+    if match.group("name") != artifact_name:
+        raise ValueError(
+            f"{template} claim artifact mismatch: template={match.group('name')!r}, record={artifact_name!r}"
+        )
+    if match.group("year") != year:
+        raise ValueError(
+            f"{template} claim year mismatch: template={match.group('year')!r}, issue={year!r}"
+        )
+
+
+def translate_claim(source_text: str, artifact_name: str, year: str) -> str:
     match = TECHNICAL_RE.fullmatch(source_text)
     if match:
-        if match.group("name") != artifact_name:
-            raise ValueError(
-                f"technical claim artifact mismatch: template={match.group('name')!r}, record={artifact_name!r}"
-            )
+        _check_identity(match, artifact_name, year, "technical")
         return (
-            f"一次資料で「{artifact_name}」が2023年の技術動向として記録されていることを確認できる。"
+            f"一次資料で「{artifact_name}」が{year}年の技術動向として記録されていることを確認できる。"
             "技術内容や評価結果は、原著者による主張として扱い、独立再現済みの結果とはみなさない。"
         )
     match = LIFECYCLE_RE.fullmatch(source_text)
     if match:
-        if match.group("name") != artifact_name:
-            raise ValueError(
-                f"lifecycle claim artifact mismatch: template={match.group('name')!r}, record={artifact_name!r}"
-            )
+        _check_identity(match, artifact_name, year, "lifecycle")
         return (
-            f"一次資料で「{artifact_name}」の2023年における公開・リリースの経緯を確認できる。"
+            f"一次資料で「{artifact_name}」の{year}年における公開・リリースの経緯を確認できる。"
             "能力や性能に関する評価は、提供元・プロジェクト・著者の主張として扱う。"
+        )
+    match = GENERIC_RECORD_RE.fullmatch(source_text)
+    if match:
+        _check_identity(match, artifact_name, year, "generic-record")
+        return (
+            f"一次資料で「{artifact_name}」が{year}年の生成AI技術記録に含まれることを確認できる。"
+            "技術内容、性能、アクセス、安全性に関する記述は、原著者・プロジェクトの主張として扱い、"
+            "独立再現済みの結果とはみなさない。"
         )
     raise ValueError(f"unsupported Annual Technical Notes claim template for {artifact_name!r}: {source_text!r}")
 
@@ -80,6 +106,7 @@ def build(summary: dict[str, Any], issue_id: str) -> list[dict[str, Any]]:
         raise ValueError("summary identity mismatch")
     if summary.get("status") not in {"DRAFT", "READY"}:
         raise ValueError(f"unexpected summary status: {summary.get('status')!r}")
+    year = annual_year(issue_id)
     translations: list[dict[str, Any]] = []
     records = summary.get("records")
     if not isinstance(records, list) or not records:
@@ -108,7 +135,7 @@ def build(summary: dict[str, Any], issue_id: str) -> list[dict[str, Any]]:
                     "kind": "claim",
                     "item_id": item_id,
                     "source_text_sha256": source_sha,
-                    "text_ja": translate_claim(source, artifact),
+                    "text_ja": translate_claim(source, artifact, year),
                 }
             )
         for item in record.get("limitations") or []:
