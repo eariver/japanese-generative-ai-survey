@@ -1,0 +1,39 @@
+name: One-time scope #139/#191 residual guards
+on:
+  push:
+    branches: [fix/annual-139-191-residual]
+    paths: [.github/workflows/one-time-scope-139-191.yml]
+permissions:
+  contents: write
+jobs:
+  scope:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: fix/annual-139-191-residual
+      - name: Scope guards to Annual source-specific contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/special_technical_note_entity_binding_check.py')
+          s=p.read_text(encoding='utf-8')
+          old='            if PROXIMITY_FALLBACK_RE.search(card):\n                errors.append(f"Technical Note contains forbidden proximity fallback: {key}")\n            fact_for_shape = FACT_RE.search(card)\n            if "/" in key and fact_for_shape is not None and FLAT_MULTI_FAMILY_PARAMETER_RE.search(fact_for_shape.group(1)):\n'
+          new='            if reader.get("annual_source_specific_detail_contract") and PROXIMITY_FALLBACK_RE.search(card):\n                errors.append(f"Technical Note contains forbidden proximity fallback: {key}")\n            fact_for_shape = FACT_RE.search(card)\n            if reader.get("annual_source_specific_detail_contract") and "/" in key and fact_for_shape is not None and FLAT_MULTI_FAMILY_PARAMETER_RE.search(fact_for_shape.group(1)):\n'
+          if old not in s:
+              raise SystemExit('scope target missing')
+          p.write_text(s.replace(old,new,1),encoding='utf-8')
+          PY
+          python -m py_compile scripts/special_technical_note_entity_binding_check.py
+      - name: Commit and self-delete
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm .github/workflows/one-time-scope-139-191.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/special_technical_note_entity_binding_check.py .github/workflows/one-time-scope-139-191.yml
+          git commit -m 'Scope residual fallback guard to Annual Technical Notes'
+          git push origin HEAD:fix/annual-139-191-residual
