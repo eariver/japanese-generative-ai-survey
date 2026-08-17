@@ -1,0 +1,67 @@
+name: One-time harden #139/#191 Technical Notes residual guards
+on:
+  push:
+    branches: [fix/annual-139-191-residual]
+    paths: [.github/workflows/one-time-harden-139-191.yml]
+permissions:
+  contents: write
+jobs:
+  harden:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: fix/annual-139-191-residual
+          fetch-depth: 0
+      - name: Add fail-closed residual guards
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/special_technical_note_entity_binding_check.py')
+          s=p.read_text(encoding='utf-8')
+          anchor='INPUT_RE = re.compile(r"\\\\(?:input|include)\\{([^}]+)\\}")\n'
+          insert=(
+              'PROXIMITY_FALLBACK_RE = re.compile(r"対象\\s*event\\s*近傍", re.IGNORECASE)\n'
+              'FLAT_MULTI_FAMILY_PARAMETER_RE = re.compile(' 
+              'r"\\b\\d+(?:\\.\\d+)?[BM]\\s+parameter\\s+scale(?:\\s*/\\s*\\d+(?:\\.\\d+)?[BM]\\s+parameter\\s+scale)+", re.IGNORECASE)\n'
+          )
+          if insert not in s:
+              if anchor not in s:
+                  raise SystemExit('regex anchor missing')
+              s=s.replace(anchor, anchor+insert, 1)
+          anchor2='            card = match.group(0)\n            existing = cards.setdefault(key, [])\n'
+          insert2=(
+              '            card = match.group(0)\n'
+              '            if PROXIMITY_FALLBACK_RE.search(card):\n'
+              '                errors.append(f"Technical Note contains forbidden proximity fallback: {key}")\n'
+              '            fact_for_shape = FACT_RE.search(card)\n'
+              '            if "/" in key and fact_for_shape is not None and FLAT_MULTI_FAMILY_PARAMETER_RE.search(fact_for_shape.group(1)):\n'
+              '                errors.append(f"Technical Note flattens scope-sensitive parameter scales across a multi-family title: {key}")\n'
+              '            existing = cards.setdefault(key, [])\n'
+          )
+          if 'Technical Note contains forbidden proximity fallback' not in s:
+              if anchor2 not in s:
+                  raise SystemExit('card anchor missing')
+              s=s.replace(anchor2, insert2, 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+          python -m py_compile scripts/special_technical_note_entity_binding_check.py
+          PYTHONPATH=. python - <<'PY'
+          from scripts.special_technical_note_entity_binding_check import PROXIMITY_FALLBACK_RE, FLAT_MULTI_FAMILY_PARAMETER_RE
+          assert PROXIMITY_FALLBACK_RE.search('対象 event 近傍の一次資料')
+          assert PROXIMITY_FALLBACK_RE.search('対象event近傍の一次資料')
+          assert FLAT_MULTI_FAMILY_PARAMETER_RE.search('7B parameter scale / 65B parameter scale / 13B parameter scale')
+          assert not FLAT_MULTI_FAMILY_PARAMETER_RE.search('LLaMA: 7B/13B/33B/65B; Llama 2: 7B/13B/70B')
+          PY
+      - name: Commit hardening and self-delete
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm .github/workflows/one-time-harden-139-191.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/special_technical_note_entity_binding_check.py .github/workflows/one-time-harden-139-191.yml
+          git commit -m 'Fail closed on residual Technical Notes fallback (#139 #191)'
+          git push origin HEAD:fix/annual-139-191-residual
