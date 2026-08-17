@@ -9,12 +9,13 @@ on:
         default: plan
         type: choice
         options:
+          - bootstrap-plan
           - plan
           - validate
           - history-plan
           - source-intake
       special_slug:
-        description: Special slug under specials/<slug>/edition.json
+        description: Configured Special slug; manifest is not required for bootstrap-plan
         required: false
         default: 2026-M07
         type: string
@@ -37,9 +38,11 @@ on:
       - 'scripts/special_pipeline.py'
       - 'scripts/source_intake.py'
       - 'scripts/special_source_intake.py'
+      - 'tests/test_special_pipeline.py'
       - 'tests/test_special_source_intake.py'
       - 'specials/**/edition.json'
       - '.github/workflows/special-pipeline.yml'
+      - '.github/workflows/revise-special-annual-source-specific-notes-v2.yml'
   pull_request:
     paths:
       - 'config/special-pipeline.json'
@@ -49,9 +52,11 @@ on:
       - 'scripts/special_pipeline.py'
       - 'scripts/source_intake.py'
       - 'scripts/special_source_intake.py'
+      - 'tests/test_special_pipeline.py'
       - 'tests/test_special_source_intake.py'
       - 'specials/**/edition.json'
       - '.github/workflows/special-pipeline.yml'
+      - '.github/workflows/revise-special-annual-source-specific-notes-v2.yml'
 
 permissions:
   contents: read
@@ -81,11 +86,41 @@ jobs:
             python scripts/special_pipeline.py validate --manifest "$manifest"
           done < <(find specials -mindepth 2 -maxdepth 2 -name edition.json -type f | sort)
           python scripts/special_pipeline.py history-plan >/dev/null
+          python scripts/special_pipeline.py bootstrap-plan --special-slug 2020-Y >/dev/null
+          python scripts/special_pipeline.py bootstrap-plan --special-slug 2021-Y >/dev/null
+          python scripts/special_pipeline.py bootstrap-plan --special-slug 2022-Y >/dev/null
       - name: Run Special unit tests
         shell: bash
         run: |
           set -euo pipefail
           python -m unittest tests.test_special_pipeline tests.test_special_source_intake -v
+
+  bootstrap-plan:
+    needs: test
+    if: github.event_name == 'workflow_dispatch' && inputs.command == 'bootstrap-plan'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Resolve configured Special before manifest initialization
+        shell: bash
+        env:
+          SPECIAL_SLUG: ${{ inputs.special_slug }}
+        run: |
+          set -euo pipefail
+          test -n "$SPECIAL_SLUG"
+          mkdir -p out/special-pipeline
+          python scripts/special_pipeline.py bootstrap-plan \
+            --special-slug "$SPECIAL_SLUG" \
+            --output out/special-pipeline/bootstrap-plan.json
+      - uses: actions/upload-artifact@v7
+        with:
+          name: special-bootstrap-plan-${{ inputs.special_slug }}
+          path: out/special-pipeline/bootstrap-plan.json
+          if-no-files-found: error
+          retention-days: 14
 
   plan:
     needs: test

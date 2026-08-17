@@ -66,7 +66,7 @@ jobs:
           set -euo pipefail
           python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id "$SPECIAL_ID" check
           python - "$SPECIAL_ID" "$SOURCE_VERSION" <<'PY'
-          import json,pathlib,sys
+          import hashlib,json,os,pathlib,sys
           issue,version=sys.argv[1:]
           root=pathlib.Path('worktree')
           state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
@@ -87,6 +87,18 @@ jobs:
           assert constraints.get('selected_evidence_only') is True
           assert constraints.get('accepted_article_claims_changed') is False
           assert constraints.get('evidence_cards_mutated') is False
+
+          chronology=(state.get('provenance') or {}).get('annual_chronology') or {}
+          event_count=int(chronology['event_count'])
+          unresolved_count=int(chronology['unresolved_date_count'])
+          assert event_count >= 1
+          assert 0 <= unresolved_count <= event_count
+          chronology_path=root/chronology['path']
+          assert chronology_path.is_file()
+          assert hashlib.sha256(chronology_path.read_bytes()).hexdigest()==chronology['sha256']
+          with open(os.environ['GITHUB_ENV'],'a',encoding='utf-8') as f:
+              f.write(f"BASE_ANNUAL_CHRONOLOGY_EVENT_COUNT={event_count}\n")
+              f.write(f"BASE_ANNUAL_CHRONOLOGY_UNRESOLVED_DATE_COUNT={unresolved_count}\n")
           PY
       - name: Build immutable Annual Technical Notes revision
         shell: bash
@@ -111,7 +123,7 @@ jobs:
         run: |
           set -euo pipefail
           python - "$SPECIAL_ID" "$SOURCE_VERSION" <<'PY'
-          import hashlib,json,pathlib,sys
+          import hashlib,json,os,pathlib,sys
           issue,version=sys.argv[1:]
           root=pathlib.Path('worktree')
           state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
@@ -139,8 +151,8 @@ jobs:
           assert reader['event_window_contract']=='ZERO_PADDED_DATE_AND_LONG_HTML_FAIL_CLOSED_V1'
           chronology=state['provenance']['annual_chronology']
           assert chronology['source_version']==version
-          assert chronology['event_count']==75
-          assert chronology['unresolved_date_count']==3
+          assert int(chronology['event_count'])==int(os.environ['BASE_ANNUAL_CHRONOLOGY_EVENT_COUNT'])
+          assert int(chronology['unresolved_date_count'])==int(os.environ['BASE_ANNUAL_CHRONOLOGY_UNRESOLVED_DATE_COUNT'])
           chronology_path=root/chronology['path']
           assert chronology_path.is_file()
           assert hashlib.sha256(chronology_path.read_bytes()).hexdigest()==chronology['sha256']
@@ -159,7 +171,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A "surveys/special/${SPECIAL_SLUG}" "sources/${SPECIAL_ID}"
           git diff --cached --quiet && { echo 'No Annual Technical Notes revision changes to commit' >&2; exit 1; }
-          git commit -m "Revise ${SPECIAL_SLUG} Technical Notes for #139 (${SOURCE_VERSION})"
+          git commit -m "Revise ${SPECIAL_SLUG} Technical Notes (${SOURCE_VERSION})"
           git push origin HEAD:${{ steps.edition.outputs.work_branch }}
       - name: Upload repair audit
         uses: actions/upload-artifact@v4

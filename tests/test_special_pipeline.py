@@ -152,6 +152,49 @@ class SpecialPipelineTests(unittest.TestCase):
                 special_pipeline.parse_instant(current["start"]),
             )
 
+    def test_annual_backfill_bootstrap_plans_are_manifest_independent(self) -> None:
+        config = json.loads(Path("config/special-pipeline.json").read_text(encoding="utf-8"))
+        expected = {
+            "2020-Y": ("2020-01-01T00:00:00Z", "2020-12-31T23:59:59Z"),
+            "2021-Y": ("2021-01-01T00:00:00Z", "2021-12-31T23:59:59Z"),
+            "2022-Y": ("2022-01-01T00:00:00Z", "2022-12-31T23:59:59Z"),
+        }
+        for slug, (start, end) in expected.items():
+            with self.subTest(slug=slug):
+                plan = special_pipeline.bootstrap_plan(config, slug)
+                self.assertEqual(plan["tier"], "ANNUAL")
+                self.assertEqual(plan["special_id"], f"SP-{slug}")
+                self.assertEqual(plan["coverage"]["start"], start)
+                self.assertEqual(plan["coverage"]["end"], end)
+                self.assertEqual(plan["coverage"]["retrospective_as_of"], "SET_AT_INITIALIZATION")
+                self.assertEqual(plan["branches"]["init"], f"special/{slug}-init")
+                self.assertEqual(plan["branches"]["work"], f"special/{slug}-work")
+                self.assertIn("docs/annual-retrospective-specials.md", plan["required_guides"])
+                self.assertTrue(plan["initialization"]["authorized_by_start_prompt"])
+                self.assertFalse(plan["initialization"]["human_gate_required"])
+                self.assertEqual(plan["initialization"]["mode"], "RESUME_IF_PRESENT_ELSE_INITIALIZE")
+                self.assertEqual(plan["community_research_default"], "DISABLED")
+                self.assertEqual(plan["stop_gate"]["gate"], "issue_architecture")
+                self.assertTrue(plan["stop_gate"]["human_gate"])
+                execution = plan["architecture_review_execution"]
+                self.assertEqual(execution["canonical_source_intake"], "ALL_ENABLED_BASE_COLLECTORS")
+                self.assertTrue(execution["period_specific_coverage_audit"])
+                self.assertTrue(execution["supplemental_primary_source_gap_fill"])
+                self.assertEqual(execution["candidate_selection"], "INTERNAL_CHECKPOINT")
+                self.assertFalse(execution["reader_facing_drafting_before_approval"])
+
+    def test_bootstrap_plan_rejects_unconfigured_period(self) -> None:
+        config = json.loads(Path("config/special-pipeline.json").read_text(encoding="utf-8"))
+        with self.assertRaisesRegex(ValueError, "not configured"):
+            special_pipeline.bootstrap_plan(config, "2019-Y")
+
+    def test_annual_repair_workflow_preserves_edition_scoped_chronology_counts(self) -> None:
+        workflow = Path(".github/workflows/revise-special-annual-source-specific-notes-v2.yml").read_text(encoding="utf-8")
+        self.assertNotIn("chronology['event_count']==75", workflow)
+        self.assertNotIn("chronology['unresolved_date_count']==3", workflow)
+        self.assertIn("BASE_ANNUAL_CHRONOLOGY_EVENT_COUNT", workflow)
+        self.assertIn("BASE_ANNUAL_CHRONOLOGY_UNRESOLVED_DATE_COUNT", workflow)
+
     def test_manifest_rejects_source_path_aliasing(self) -> None:
         manifest = self.manifest()
         manifest["paths"]["source_root"] = "sources/2026-W31"
