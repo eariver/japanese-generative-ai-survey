@@ -77,6 +77,11 @@ class SpecialTechnicalNoteEntityBindingCheckTests(unittest.TestCase):
         }
         return manifest, source_dir
 
+    def _annualize(self, manifest: dict[str, object]) -> None:
+        reader = manifest["reader_facing_technical_notes"]
+        assert isinstance(reader, dict)
+        reader["annual_source_specific_detail_contract"] = "ANNUAL_SCREENING_BACKED_FAIL_CLOSED_V1"
+
     def test_acceptance_wins_when_same_rendered_signal_has_accepted_and_rejected_occurrences(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -88,6 +93,32 @@ class SpecialTechnicalNoteEntityBindingCheckTests(unittest.TestCase):
                 rejected=["405B parameter scale"],
             )
             self.assertEqual(inspect_entity_binding(manifest, source_dir), [])
+
+    def test_annual_source_specific_contract_rejects_proximity_fallback(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest, source_dir = self._fixture(
+                root,
+                [self._note("GPT-4 / GPT-4V", "対象 event 近傍の一次資料から factuality evaluation を確認できる。")],
+                accepted=[],
+                rejected=[],
+            )
+            self._annualize(manifest)
+            errors = inspect_entity_binding(manifest, source_dir)
+            self.assertTrue(any("forbidden proximity fallback" in error for error in errors))
+
+    def test_annual_multi_family_card_rejects_flat_parameter_scale_bucket(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest, source_dir = self._fixture(
+                root,
+                [self._note("LLaMA / Llama 2 / Code Llama", "7B parameter scale / 65B parameter scale / 13B parameter scale / 33B parameter scale")],
+                accepted=[],
+                rejected=[],
+            )
+            self._annualize(manifest)
+            errors = inspect_entity_binding(manifest, source_dir)
+            self.assertTrue(any("flattens scope-sensitive parameter scales" in error for error in errors))
 
     def test_declared_contract_is_enforced_for_review_repair_status(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
