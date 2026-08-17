@@ -1,0 +1,5621 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    
+        
+<meta name="description" content="Posted by Sharan Narang and Aakanksha Chowdhery, Software Engineers, Google Research In recent years, large neural networks trained for language un..."><meta name="keywords" content="Natural Language Processing,Machine Learning,Self-Supervised Learning"><link rel="canonical" href="https://research.google/blog/pathways-language-model-palm-scaling-to-540-billion-parameters-for-breakthrough-performance/" /><meta property="og:title" content="Pathways Language Model (PaLM): Scaling to 540 Billion Parameters for Breakthrou"><meta property="og:url" content="https://research.google/blog/pathways-language-model-palm-scaling-to-540-billion-parameters-for-breakthrough-performance/"><meta property="og:description" content="Posted by Sharan Narang and Aakanksha Chowdhery, Software Engineers, Google Research In recent years, large neural networks trained for language un..."><meta property="og:image" content="https://storage.googleapis.com/gweb-research2023-media/original_images/07ef38036e86f81ac74829e59384929b-image8.gif"><meta property="og:image:secure_url" content="https://storage.googleapis.com/gweb-research2023-media/original_images/07ef38036e86f81ac74829e59384929b-image8.gif"><meta property="og:type" content="Website">
+
+    
+    
+    <title>Pathways Language Model (PaLM): Scaling to 540 Billion Parameters for Breakthrou</title>
+    
+    <meta name="description" content="Posted by Sharan Narang and Aakanksha Chowdhery, Software Engineers, Google Research In recent years, large neural networks trained for language un..." />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1 viewport-fit=cover"/>
+
+    
+    
+
+    <link rel="icon" type="image/png" href="https://www.gstatic.com/images/branding/googleg_gradient/1x/googleg_gradient_standard_20dp.png">
+
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Product+Sans&display=swap"
+        as="style">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Product+Sans&display=swap">
+    <link rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Product+Sans&family=Google+Sans+Display:ital@0;1&family=Google+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Google+Sans+Text:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
+        as="style">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Product+Sans&family=Google+Sans+Display:ital@0;1&family=Google+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Google+Sans+Text:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Google+Symbols:opsz,wght,FILL,GRAD,ROND@48,100..300,0..1,0,100&display=swap" as="style" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Symbols:opsz,wght,FILL,GRAD,ROND@48,100..300,0..1,0,100&display=swap">
+
+    
+    <link href="https://www.gstatic.com/glue/cookienotificationbar/cookienotificationbar.min.css" rel="stylesheet" />
+    <link href="https://www.gstatic.com/glue/v27_1/glue-material.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/gr/static/css/googleresearch.css?id=1df8cfd093ef74378ad52e9df6e91ef9">
+    
+    
+    
+
+    
+    
+      <script id="analyticsScript" data-blog-publish-date="20220404"
+          data-blog-word-count="1758">
+        window.dataLayer = window.dataLayer || [];
+        const blogData = document.querySelector('#analyticsScript')
+
+        dataLayer.push({
+          publishDate: blogData?.dataset.blogPublishDate,
+          wordCount: blogData?.dataset.blogWordCount,
+        });
+      </script>
+    
+
+    <!-- Google Tag Manager -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function glueCookieNotificationBarLoaded() {
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-K8QBZ7Q');
+      }
+    </script>
+    <!-- End Google Tag Manager -->
+</head>
+
+<body class=" js-google-tag-wrapper" data-gt-page-path="https://research.google/blog/pathways-language-model-palm-scaling-to-540-billion-parameters-for-breakthrough-performance/" data-env="production">
+    
+    <div class="button-group skip-link">
+      <a href="#page-content" class="glue-button glue-button--high-emphasis">Skip to main content</a>
+    </div>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K8QBZ7Q"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
+    
+      
+
+
+
+
+  
+    
+    
+      
+        
+  <site-nav>
+    <header class="site-navigation-isolation header glue-header glue-header--no-cta deepai-header js-header js-site-navigation">
+      <div class="header-container">
+        <div class="header__background mobile tablet"></div>
+        
+          <div class="header flyout__desktop-container">
+            
+              
+                
+<nav class="header flyout desktop"
+    data-section="Research"
+    aria-labelledby="Research">
+  <div class="flyout__container grid">
+    
+    <div class="flyout__intro">
+      <div>
+        <h2 class="headline-6">Explore our many areas of focus</h2>
+        
+      </div>
+      
+        <div class="button-group button-group--compact">
+          <div class="button-group__buttons">
+            
+              
+
+
+
+  
+  
+    <a href="/research-areas/"
+      
+      
+       class="glue-button glue-button--medium-emphasis cta-small"
+      
+      
+        data-gtm-event="nav_select"
+        data-event-nav-type="subheader"
+        data-event-nav-name="Research - Explore all research areas"
+      
+      
+      >
+      <div class="button__label">
+        
+          Explore all research areas
+        
+      </div>
+    </a>
+  
+
+
+            
+          </div>
+        </div>
+      
+    </div>
+
+    
+    <div class="flyout__content-desktop">
+      <div class="flyout__subnav subnav subnav--3-column">
+        
+          <div class="subnav__column">
+            <div class="subnav__content">
+              
+                <div class="subnav__header">
+                  
+                    <div class="cta-small">Applied AI &amp; sciences</div>
+                  
+                  
+                </div>
+              
+
+              
+              
+                <div class="subnav__links">
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/research-areas/google-earth-ai/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/earth_AI_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="earth_AI_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Earth AI</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/research-areas/health-ai/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/health_AI_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="health_AI_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Health AI</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/research-areas/science-ai/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/science_AI_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="science_AI_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Science AI</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/research-areas/sustainability-crisis-resilience/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/sustainability_crisis_resilience_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="sustainability_crisis_resilience_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Sustainability &amp; crisis resilience</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                </div>
+              
+
+              
+              
+            </div>
+          </div>
+        
+          <div class="subnav__column">
+            <div class="subnav__content">
+              
+                <div class="subnav__header">
+                  
+                    <div class="cta-small">Foundational ML &amp; algorithms</div>
+                  
+                  
+                </div>
+              
+
+              
+              
+                <div class="subnav__links">
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/research-areas/algorithms-and-theory/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/algorithms_theory_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="algorithms_theory_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Algorithms &amp; theory</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/research-areas/information-retrieval/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/information_retrieval_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="information_retrieval_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Information retrieval</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/research-areas/machine-intelligence/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/machine_intelligence_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="machine_intelligence_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Machine intelligence</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/research-areas/machine-perception/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/machine_perception_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="machine_perception_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Machine perception</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/research-areas/natural-language-processing/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/NLP_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="NLP_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Natural language processing</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                </div>
+              
+
+              
+              
+            </div>
+          </div>
+        
+          <div class="subnav__column">
+            <div class="subnav__content">
+              
+                <div class="subnav__header">
+                  
+                    <div class="cta-small">People, systems &amp; quantum AI</div>
+                  
+                  
+                </div>
+              
+
+              
+              
+                <div class="subnav__links">
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/research-areas/human-computer-interaction-and-visualization/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/human_computer_interaction_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="human_computer_interaction_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Human-computer interaction and visualization</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/research-areas/networking/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/networking_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="networking_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Networking</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/research-areas/quantum-computing/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/quantum_AI_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="quantum_AI_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Quantum AI</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/research-areas/responsible-ai/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/responsible_AI_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="responsible_AI_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Responsible AI</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/research-areas/anti-abuse/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/anti_abuse_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="anti_abuse_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Anti abuse</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/research-areas/software-engineering/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/software_engineering_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="software_engineering_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Software engineering</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/research-areas/software-systems/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/software_systems_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="software_systems_nav1">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Software systems</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                </div>
+              
+
+              
+              
+            </div>
+          </div>
+        
+          <div class="subnav__column">
+            <div class="subnav__content">
+              
+                <div class="subnav__header">
+                  
+                    <div class="cta-small">Learn More</div>
+                  
+                  
+                </div>
+              
+
+              
+              
+                <div class="subnav__links">
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/pubs/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/publications_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="publications_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Publications</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small "
+                          href="/resources/our-projects/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--small">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/projects_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="projects_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Projects</div>
+                          <div class="small-text"></div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                </div>
+              
+
+              
+              
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+              
+            
+              
+                
+<nav class="header flyout desktop"
+    data-section="Resources"
+    aria-labelledby="Resources">
+  <div class="flyout__container grid">
+    
+    <div class="flyout__intro">
+      <div>
+        <h2 class="headline-6">Building a collaborative ecosystem</h2>
+        
+      </div>
+      
+    </div>
+
+    
+    <div class="flyout__content-desktop">
+      <div class="flyout__subnav subnav subnav--2-column">
+        
+          <div class="subnav__column">
+            <div class="subnav__content">
+              
+
+              
+              
+                <div class="subnav__links">
+                  
+                    
+                      
+                      <a class="subnav__link cta-small  subnav__link--has-icon"
+                          href="https://research.google/resources/#datasets-1"
+                          
+                            target="_self"
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--large">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/dataset_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="dataset_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Datasets</div>
+                          <div class="small-text">Access high-quality datasets to accelerate your research.</div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small  subnav__link--has-icon"
+                          href="https://research.google/resources/#tools-services-2"
+                          
+                            target="_self"
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--large">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/models_products_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="models_products_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Tools &amp; services</div>
+                          <div class="small-text">Explore our latest AI models and products.</div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                </div>
+              
+
+              
+              
+            </div>
+          </div>
+        
+          <div class="subnav__column">
+            <div class="subnav__content">
+              
+
+              
+              
+                <div class="subnav__links">
+                  
+                    
+                      
+                      <a class="subnav__link cta-small  subnav__link--has-icon"
+                          href="https://research.google/resources/#open-source-3"
+                          
+                            target="_self"
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--large">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/software_engineering_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="software_engineering_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Open source</div>
+                          <div class="small-text">Discover open-source code and collaborate with the community.</div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                </div>
+              
+
+              
+              
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+              
+            
+              
+            
+              
+                
+<nav class="header flyout desktop"
+    data-section="Careers"
+    aria-labelledby="Careers">
+  <div class="flyout__container grid">
+    
+    <div class="flyout__intro">
+      <div>
+        <h2 class="headline-6">Shaping the future together</h2>
+        
+      </div>
+      
+        <div class="button-group button-group--compact">
+          <div class="button-group__buttons">
+            
+              
+
+
+
+  
+  
+    <a href="/programs-and-events/"
+      
+      
+       class="glue-button glue-button--medium-emphasis cta-small"
+      
+      
+        data-gtm-event="nav_select"
+        data-event-nav-type="subheader"
+        data-event-nav-name="Careers - See all programs"
+      
+      
+      >
+      <div class="button__label">
+        
+          See all programs
+        
+      </div>
+    </a>
+  
+
+
+            
+          </div>
+        </div>
+      
+    </div>
+
+    
+    <div class="flyout__content-desktop">
+      <div class="flyout__subnav subnav subnav--2-column">
+        
+          <div class="subnav__column">
+            <div class="subnav__content">
+              
+
+              
+              
+                <div class="subnav__links">
+                  
+                    
+                      
+                      <a class="subnav__link cta-small  subnav__link--has-icon"
+                          href="/programs-and-events/faculty-engagement/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--large">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/faculty_programs_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="faculty_programs_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Faculty programs</div>
+                          <div class="small-text">Participating in the academic research community through meaningful engagement with university faculty.</div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small  subnav__link--has-icon"
+                          href="/programs-and-events/student-engagement/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--large">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/student_programs_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="student_programs_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Student programs</div>
+                          <div class="small-text">Supporting the next generation of researchers through a wide range of programming.</div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                </div>
+              
+
+              
+              
+            </div>
+          </div>
+        
+          <div class="subnav__column">
+            <div class="subnav__content">
+              
+
+              
+              
+                <div class="subnav__links">
+                  
+                    
+                      
+                      <a class="subnav__link cta-small  subnav__link--has-icon"
+                          href="/programs-and-events/2026-google-carbon-removal-and-superpollutant-elimination-rd-awards/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--large">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/RD-programs_nav_f.svg" class="image image--svg picture__image " loading="lazy"  alt="R&amp;D-programs_nav_f">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">R&amp;D programs</div>
+                          <div class="small-text">Collaborating with industry and academic experts to support foundational science and innovation.</div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                    
+                      
+                      <a class="subnav__link cta-small  subnav__link--has-icon"
+                          href="/careers/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--large">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/locations_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="locations_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Locations</div>
+                          <div class="small-text">Find your place in our global offices and research labs.</div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                </div>
+              
+
+              
+              
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+              
+            
+              
+            
+              
+                
+<nav class="header flyout desktop"
+    data-section="About"
+    aria-labelledby="About">
+  <div class="flyout__container grid">
+    
+    <div class="flyout__intro">
+      <div>
+        <h2 class="headline-6">Translating discovery into real-world impact</h2>
+        
+      </div>
+      
+    </div>
+
+    
+    <div class="flyout__content-desktop">
+      <div class="flyout__subnav subnav subnav--2-column">
+        
+          <div class="subnav__column">
+            <div class="subnav__content">
+              
+
+              
+              
+                <div class="subnav__links">
+                  
+                    
+                      
+                      <a class="subnav__link cta-small  subnav__link--has-icon"
+                          href="/people/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--large">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/earth_AI_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="earth_AI_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">People</div>
+                          <div class="small-text">Our researchers drive advancements in computer science through both fundamental and applied research.</div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                </div>
+              
+
+              
+              
+            </div>
+          </div>
+        
+          <div class="subnav__column">
+            <div class="subnav__content">
+              
+
+              
+              
+                <div class="subnav__links">
+                  
+                    
+                      
+                      <a class="subnav__link cta-small  subnav__link--has-icon"
+                          href="/teams/"
+                          
+                            
+                          >
+                        
+                          <div class="subnav__link-image subnav__link-image--large">
+                            <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/teams_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="teams_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                          </div>
+                        
+                        <div class="subnav__link-text">
+                          <div class="cta-small">Teams</div>
+                          <div class="small-text">Collaborative groups tackling the world&#x27;s most challenging AI problems.</div>
+                        </div>
+                      </a>
+                      
+                    
+                  
+                </div>
+              
+
+              
+              
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+              
+            
+          </div>
+        
+
+        
+
+<nav class="header flyout mobile">
+  <div class="flyout__container">
+    <div class="flyout__content-mobile">
+      
+        
+          <div class="flyout__accordion">
+            
+            <button type="button" data-title="Research"
+                class="main-menu__label-tablet flyout__accordion__toggle text-call-to-action"
+                aria-expanded="false" aria-controls="submenu-1">
+              <span class="flyout__accordion__label cta">Research</span>
+              <span class="button-group button-group--compact" aria-hidden="true">
+                <span class="button-group__buttons">
+                  
+                  <span class="button flyout__accordion__icon open">
+                    <span class="icon-md-outlined">
+                      
+<svg xmlns="http://www.w3.org/2000/svg"
+     height="18px"
+     width="18px"
+     viewBox="0 -960 960 960"
+     fill="currentColor"
+     class=""
+     aria-hidden="true"
+     role="presentation">
+  
+    <path d="M480-357.85 253.85-584l32.61-32.61L480-423.08l193.54-193.53L706.15-584 480-357.85Z" />
+  
+</svg>
+
+                    </span>
+                  </span>
+                  <span class="button flyout__accordion__icon close">
+                    <span class="icon-md-outlined">
+                      
+<svg xmlns="http://www.w3.org/2000/svg"
+     height="18px"
+     width="18px"
+     viewBox="0 -960 960 960"
+     fill="currentColor"
+     class=""
+     aria-hidden="true"
+     role="presentation">
+  
+    <path d="m480-541.85-184 184L253.85-400 480-626.15 706.15-400 664-357.85l-184-184Z" />
+  
+</svg>
+
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </button>
+            
+            <div id="submenu-1" class="flyout__accordion__content"
+                data-section="Research" hidden>
+              <div class="flyout__accordion__content-inner">
+                <div class="flyout__intro">
+                  <div>
+                    <h2 class="flyout__title headline-5">Explore our many areas of focus</h2>
+                    
+                  </div>
+                  
+                    <div class="button-group button-group--row_start button-group--compact">
+                      <div class="button-group__buttons">
+                        
+                          
+
+
+
+  
+  
+    <a href="/research-areas/"
+      
+      
+       class="glue-button glue-button--medium-emphasis cta-small"
+      
+      
+        data-gtm-event="nav_select"
+        data-event-nav-type="subheader"
+        data-event-nav-name="Research - Explore all research areas"
+      
+      
+      >
+      <div class="button__label">
+        
+          Explore all research areas
+        
+      </div>
+    </a>
+  
+
+
+                        
+                      </div>
+                    </div>
+                  
+                </div>
+                <div class="flyout__subnav subnav subnav--3-column">
+                  
+                    <div class="subnav__column">
+                      <div class="subnav__content">
+                        
+                        
+                          
+                            <div class="subnav__header">
+                              
+                                <div class="subnav__title">Applied AI &amp; sciences</div>
+                              
+                              
+                            </div>
+                          
+                        
+                        <div class="subnav__links">
+                        
+                          
+                          
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/research-areas/google-earth-ai/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/earth_AI_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="earth_AI_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Earth AI</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/research-areas/health-ai/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/health_AI_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="health_AI_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Health AI</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/research-areas/science-ai/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/science_AI_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="science_AI_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Science AI</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/research-areas/sustainability-crisis-resilience/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/sustainability_crisis_resilience_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="sustainability_crisis_resilience_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Sustainability &amp; crisis resilience</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                          
+                        
+                        </div> 
+
+                        
+                          
+                        
+                      </div>
+                    </div>
+                  
+                    <div class="subnav__column">
+                      <div class="subnav__content">
+                        
+                        
+                          
+                            <div class="subnav__header">
+                              
+                                <div class="subnav__title">Foundational ML &amp; algorithms</div>
+                              
+                              
+                            </div>
+                          
+                        
+                        <div class="subnav__links">
+                        
+                          
+                          
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/research-areas/algorithms-and-theory/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/algorithms_theory_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="algorithms_theory_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Algorithms &amp; theory</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/research-areas/information-retrieval/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/information_retrieval_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="information_retrieval_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Information retrieval</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/research-areas/machine-intelligence/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/machine_intelligence_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="machine_intelligence_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Machine intelligence</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/research-areas/machine-perception/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/machine_perception_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="machine_perception_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Machine perception</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/research-areas/natural-language-processing/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/NLP_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="NLP_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Natural language processing</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                          
+                        
+                        </div> 
+
+                        
+                          
+                        
+                      </div>
+                    </div>
+                  
+                    <div class="subnav__column">
+                      <div class="subnav__content">
+                        
+                        
+                          
+                            <div class="subnav__header">
+                              
+                                <div class="subnav__title">People, systems &amp; quantum AI</div>
+                              
+                              
+                            </div>
+                          
+                        
+                        <div class="subnav__links">
+                        
+                          
+                          
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/research-areas/human-computer-interaction-and-visualization/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/human_computer_interaction_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="human_computer_interaction_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Human-computer interaction and visualization</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/research-areas/networking/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/networking_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="networking_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Networking</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/research-areas/quantum-computing/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/quantum_AI_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="quantum_AI_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Quantum AI</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/research-areas/responsible-ai/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/responsible_AI_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="responsible_AI_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Responsible AI</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/research-areas/anti-abuse/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/anti_abuse_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="anti_abuse_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Anti abuse</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/research-areas/software-engineering/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/software_engineering_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="software_engineering_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Software engineering</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/research-areas/software-systems/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/software_systems_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="software_systems_nav1">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Software systems</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                          
+                        
+                        </div> 
+
+                        
+                          
+                        
+                      </div>
+                    </div>
+                  
+                    <div class="subnav__column">
+                      <div class="subnav__content">
+                        
+                        
+                          
+                            <div class="subnav__header">
+                              
+                                <div class="subnav__title">Learn More</div>
+                              
+                              
+                            </div>
+                          
+                        
+                        <div class="subnav__links">
+                        
+                          
+                          
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/pubs/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/publications_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="publications_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Publications</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link"
+                                    href="/resources/our-projects/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--small">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/projects_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="projects_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Projects</div>
+                                    <div class="subnav__link-description small-text"></div>
+                                  </div>
+                                </a>
+                              
+                            
+                          
+                        
+                        </div> 
+
+                        
+                          
+                        
+                      </div>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        
+      
+        
+          <div class="flyout__accordion">
+            
+            <button type="button" data-title="Resources"
+                class="main-menu__label-tablet flyout__accordion__toggle text-call-to-action"
+                aria-expanded="false" aria-controls="submenu-2">
+              <span class="flyout__accordion__label cta">Resources</span>
+              <span class="button-group button-group--compact" aria-hidden="true">
+                <span class="button-group__buttons">
+                  
+                  <span class="button flyout__accordion__icon open">
+                    <span class="icon-md-outlined">
+                      
+<svg xmlns="http://www.w3.org/2000/svg"
+     height="18px"
+     width="18px"
+     viewBox="0 -960 960 960"
+     fill="currentColor"
+     class=""
+     aria-hidden="true"
+     role="presentation">
+  
+    <path d="M480-357.85 253.85-584l32.61-32.61L480-423.08l193.54-193.53L706.15-584 480-357.85Z" />
+  
+</svg>
+
+                    </span>
+                  </span>
+                  <span class="button flyout__accordion__icon close">
+                    <span class="icon-md-outlined">
+                      
+<svg xmlns="http://www.w3.org/2000/svg"
+     height="18px"
+     width="18px"
+     viewBox="0 -960 960 960"
+     fill="currentColor"
+     class=""
+     aria-hidden="true"
+     role="presentation">
+  
+    <path d="m480-541.85-184 184L253.85-400 480-626.15 706.15-400 664-357.85l-184-184Z" />
+  
+</svg>
+
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </button>
+            
+            <div id="submenu-2" class="flyout__accordion__content"
+                data-section="Resources" hidden>
+              <div class="flyout__accordion__content-inner">
+                <div class="flyout__intro">
+                  <div>
+                    <h2 class="flyout__title headline-5">Building a collaborative ecosystem</h2>
+                    
+                  </div>
+                  
+                </div>
+                <div class="flyout__subnav subnav subnav--2-column">
+                  
+                    <div class="subnav__column">
+                      <div class="subnav__content">
+                        
+                        
+                          
+                        
+                        <div class="subnav__links">
+                        
+                          
+                          
+                            
+                              
+                                <a class="subnav__link subnav__link--has-icon"
+                                    href="https://research.google/resources/#datasets-1"
+                                    
+                                      target="_self"
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--large">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/dataset_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="dataset_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Datasets</div>
+                                    <div class="subnav__link-description small-text">Access high-quality datasets to accelerate your research.</div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link subnav__link--has-icon"
+                                    href="https://research.google/resources/#tools-services-2"
+                                    
+                                      target="_self"
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--large">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/models_products_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="models_products_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Tools &amp; services</div>
+                                    <div class="subnav__link-description small-text">Explore our latest AI models and products.</div>
+                                  </div>
+                                </a>
+                              
+                            
+                          
+                        
+                          
+                          
+                            
+                              
+                                <a class="subnav__link subnav__link--has-icon"
+                                    href="https://research.google/resources/#open-source-3"
+                                    
+                                      target="_self"
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--large">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/software_engineering_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="software_engineering_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Open source</div>
+                                    <div class="subnav__link-description small-text">Discover open-source code and collaborate with the community.</div>
+                                  </div>
+                                </a>
+                              
+                            
+                          
+                        
+                        </div> 
+
+                        
+                          
+                        
+                          
+                        
+                      </div>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        
+      
+        
+          <a href="/conferences-and-events/"
+              class="main-menu__label-tablet text-call-to-action cta"
+              data-title="Conferences &amp; events"
+              
+                
+              >
+            Conferences &amp; events
+          </a>
+        
+      
+        
+          <div class="flyout__accordion">
+            
+            <button type="button" data-title="Careers"
+                class="main-menu__label-tablet flyout__accordion__toggle text-call-to-action"
+                aria-expanded="false" aria-controls="submenu-4">
+              <span class="flyout__accordion__label cta">Careers</span>
+              <span class="button-group button-group--compact" aria-hidden="true">
+                <span class="button-group__buttons">
+                  
+                  <span class="button flyout__accordion__icon open">
+                    <span class="icon-md-outlined">
+                      
+<svg xmlns="http://www.w3.org/2000/svg"
+     height="18px"
+     width="18px"
+     viewBox="0 -960 960 960"
+     fill="currentColor"
+     class=""
+     aria-hidden="true"
+     role="presentation">
+  
+    <path d="M480-357.85 253.85-584l32.61-32.61L480-423.08l193.54-193.53L706.15-584 480-357.85Z" />
+  
+</svg>
+
+                    </span>
+                  </span>
+                  <span class="button flyout__accordion__icon close">
+                    <span class="icon-md-outlined">
+                      
+<svg xmlns="http://www.w3.org/2000/svg"
+     height="18px"
+     width="18px"
+     viewBox="0 -960 960 960"
+     fill="currentColor"
+     class=""
+     aria-hidden="true"
+     role="presentation">
+  
+    <path d="m480-541.85-184 184L253.85-400 480-626.15 706.15-400 664-357.85l-184-184Z" />
+  
+</svg>
+
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </button>
+            
+            <div id="submenu-4" class="flyout__accordion__content"
+                data-section="Careers" hidden>
+              <div class="flyout__accordion__content-inner">
+                <div class="flyout__intro">
+                  <div>
+                    <h2 class="flyout__title headline-5">Shaping the future together</h2>
+                    
+                  </div>
+                  
+                    <div class="button-group button-group--row_start button-group--compact">
+                      <div class="button-group__buttons">
+                        
+                          
+
+
+
+  
+  
+    <a href="/programs-and-events/"
+      
+      
+       class="glue-button glue-button--medium-emphasis cta-small"
+      
+      
+        data-gtm-event="nav_select"
+        data-event-nav-type="subheader"
+        data-event-nav-name="Careers - See all programs"
+      
+      
+      >
+      <div class="button__label">
+        
+          See all programs
+        
+      </div>
+    </a>
+  
+
+
+                        
+                      </div>
+                    </div>
+                  
+                </div>
+                <div class="flyout__subnav subnav subnav--2-column">
+                  
+                    <div class="subnav__column">
+                      <div class="subnav__content">
+                        
+                        
+                          
+                        
+                        <div class="subnav__links">
+                        
+                          
+                          
+                            
+                              
+                                <a class="subnav__link subnav__link--has-icon"
+                                    href="/programs-and-events/faculty-engagement/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--large">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/faculty_programs_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="faculty_programs_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Faculty programs</div>
+                                    <div class="subnav__link-description small-text">Participating in the academic research community through meaningful engagement with university faculty.</div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link subnav__link--has-icon"
+                                    href="/programs-and-events/student-engagement/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--large">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/student_programs_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="student_programs_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Student programs</div>
+                                    <div class="subnav__link-description small-text">Supporting the next generation of researchers through a wide range of programming.</div>
+                                  </div>
+                                </a>
+                              
+                            
+                          
+                        
+                          
+                          
+                            
+                              
+                                <a class="subnav__link subnav__link--has-icon"
+                                    href="/programs-and-events/2026-google-carbon-removal-and-superpollutant-elimination-rd-awards/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--large">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/RD-programs_nav_f.svg" class="image image--svg picture__image " loading="lazy"  alt="R&amp;D-programs_nav_f">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">R&amp;D programs</div>
+                                    <div class="subnav__link-description small-text">Collaborating with industry and academic experts to support foundational science and innovation.</div>
+                                  </div>
+                                </a>
+                              
+                            
+                              
+                                <a class="subnav__link subnav__link--has-icon"
+                                    href="/careers/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--large">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/locations_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="locations_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Locations</div>
+                                    <div class="subnav__link-description small-text">Find your place in our global offices and research labs.</div>
+                                  </div>
+                                </a>
+                              
+                            
+                          
+                        
+                        </div> 
+
+                        
+                          
+                        
+                          
+                        
+                      </div>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        
+      
+        
+          <a href="/blog/"
+              class="main-menu__label-tablet text-call-to-action cta"
+              data-title="Blog"
+              
+                
+              >
+            Blog
+          </a>
+        
+      
+        
+          <div class="flyout__accordion">
+            
+            <button type="button" data-title="About"
+                class="main-menu__label-tablet flyout__accordion__toggle text-call-to-action"
+                aria-expanded="false" aria-controls="submenu-6">
+              <span class="flyout__accordion__label cta">About</span>
+              <span class="button-group button-group--compact" aria-hidden="true">
+                <span class="button-group__buttons">
+                  
+                  <span class="button flyout__accordion__icon open">
+                    <span class="icon-md-outlined">
+                      
+<svg xmlns="http://www.w3.org/2000/svg"
+     height="18px"
+     width="18px"
+     viewBox="0 -960 960 960"
+     fill="currentColor"
+     class=""
+     aria-hidden="true"
+     role="presentation">
+  
+    <path d="M480-357.85 253.85-584l32.61-32.61L480-423.08l193.54-193.53L706.15-584 480-357.85Z" />
+  
+</svg>
+
+                    </span>
+                  </span>
+                  <span class="button flyout__accordion__icon close">
+                    <span class="icon-md-outlined">
+                      
+<svg xmlns="http://www.w3.org/2000/svg"
+     height="18px"
+     width="18px"
+     viewBox="0 -960 960 960"
+     fill="currentColor"
+     class=""
+     aria-hidden="true"
+     role="presentation">
+  
+    <path d="m480-541.85-184 184L253.85-400 480-626.15 706.15-400 664-357.85l-184-184Z" />
+  
+</svg>
+
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </button>
+            
+            <div id="submenu-6" class="flyout__accordion__content"
+                data-section="About" hidden>
+              <div class="flyout__accordion__content-inner">
+                <div class="flyout__intro">
+                  <div>
+                    <h2 class="flyout__title headline-5">Translating discovery into real-world impact</h2>
+                    
+                  </div>
+                  
+                </div>
+                <div class="flyout__subnav subnav subnav--2-column">
+                  
+                    <div class="subnav__column">
+                      <div class="subnav__content">
+                        
+                        
+                          
+                        
+                        <div class="subnav__links">
+                        
+                          
+                          
+                            
+                              
+                                <a class="subnav__link subnav__link--has-icon"
+                                    href="/people/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--large">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/earth_AI_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="earth_AI_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">People</div>
+                                    <div class="subnav__link-description small-text">Our researchers drive advancements in computer science through both fundamental and applied research.</div>
+                                  </div>
+                                </a>
+                              
+                            
+                          
+                        
+                          
+                          
+                            
+                              
+                                <a class="subnav__link subnav__link--has-icon"
+                                    href="/teams/"
+                                    
+                                      
+                                    >
+                                  
+                                    <div class="subnav__link-image subnav__link-image--large">
+                                      <div class="block-icon">
+
+
+  
+  <div class="media-image-block no-light-mode-mobile no-dark-mode no-dark-mode-mobile has-default-media">
+    
+      
+      
+      
+
+
+
+  
+    
+      
+      
+        <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/teams_nav.svg" class="image image--svg picture__image " loading="lazy"  alt="teams_nav">
+      
+      
+    
+  
+
+
+      
+    
+  </div>
+
+</div>
+                                    </div>
+                                  
+                                  <div class="subnav__link-text">
+                                    <div class="subnav__link-label caption">Teams</div>
+                                    <div class="subnav__link-description small-text">Collaborative groups tackling the world&#x27;s most challenging AI problems.</div>
+                                  </div>
+                                </a>
+                              
+                            
+                          
+                        
+                        </div> 
+
+                        
+                          
+                        
+                          
+                        
+                      </div>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        
+      
+      <div class="divider"></div>
+      <div class="flyout__accordion__right-ctas">
+        
+      </div>
+    </div>
+  </div>
+</nav>
+        <div class="header-bar__background"></div>
+        
+<div class="header-bar">
+  <div class="header-bar__blur" aria-hidden="true">
+    <span class="header-bar__blur-layer header-bar__blur-layer--1"></span>
+    <span class="header-bar__blur-layer header-bar__blur-layer--2"></span>
+    <span class="header-bar__blur-layer header-bar__blur-layer--3"></span>
+    <span class="header-bar__blur-layer header-bar__blur-layer--4"></span>
+    <span class="header-bar__blur-layer header-bar__blur-layer--5"></span>
+  </div>
+  <div class="left-menu">
+    <div class="hamburger-mobile">
+      <div class="button-group button-group--compact">
+        <div class="button-group__buttons">
+          <button class="button open button--background-blur icon-center icon-center--wide"
+                  aria-label="Open the site navigation">
+            <span class="icon-md-outlined">
+              
+<svg xmlns="http://www.w3.org/2000/svg"
+     height="18px"
+     width="18px"
+     viewBox="0 -960 960 960"
+     fill="currentColor"
+     class=""
+     aria-hidden="true"
+     role="presentation">
+  
+    <path d="M164-278.62v-51.99h632v51.99H164ZM164-454v-52h632v52H164Zm0-175.39v-51.99h632v51.99H164Z" />
+  
+</svg>
+
+            </span>
+          </button>
+          <button class="button close button--outlined icon-center icon-center--wide"
+                  aria-label="Close the site navigation">
+            <span class="icon-md-outlined">
+              
+<svg xmlns="http://www.w3.org/2000/svg"
+     height="18px"
+     width="18px"
+     viewBox="0 -960 960 960"
+     fill="currentColor"
+     class=""
+     aria-hidden="true"
+     role="presentation">
+  
+    <path d="M480-448 266.92-234.92q-6.69 6.69-15.8 6.88-9.12.19-16.2-6.88-7.07-7.08-7.07-16 0-8.93 7.07-16L448-480 234.92-693.08q-6.69-6.69-6.88-15.8-.19-9.12 6.88-16.2 7.08-7.07 16-7.07 8.93 0 16 7.07L480-512l213.08-213.08q6.69-6.69 15.8-6.88 9.12-.19 16.2 6.88 7.07 7.08 7.07 16 0 8.93-7.07 16L512-480l213.08 213.08q6.69 6.69 6.88 15.8.19 9.12-6.88 16.2-7.08 7.07-16 7.07-8.93 0-16-7.07L480-448Z" />
+  
+</svg>
+
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="site-switcher">
+      <div class="site-switcher__bar">
+        <a class="site-switcher__home"
+           href="/"
+           data-gtm-tag="header-selection"
+           data-event-io="nav_select"
+           data-event-nav-type="header"
+           data-event-nav-name="Site Home logo">
+          <span class="sr-only">Google</span>
+          
+            
+              
+
+
+
+  
+
+<svg role="presentation" aria-hidden="true"  class="glue-icon  site-switcher__google-logo">
+  <use href="/gr/static/assets/icons/glue-icons.svg#google-solid-logo"></use>
+</svg>
+
+              <span class="site-switcher__title">Research</span>
+            
+          
+        </a>
+        
+          <div class="button-group button-group--micro site-switcher__toggle">
+            <div class="button-group__buttons site-switcher__toggle">
+              <button class="open button button--background-blur icon-center icon-center--wide"
+                      aria-label="Open the website selector panel"
+                      data-gtm-event="nav_select"
+                      data-event-nav-type="site selector"
+                      data-event-nav-name="open"
+                      data-event-interaction-type="expand">
+                      <span class="icon-md-outlined">
+                        
+<svg xmlns="http://www.w3.org/2000/svg"
+     height="18px"
+     width="18px"
+     viewBox="0 -960 960 960"
+     fill="currentColor"
+     class=""
+     aria-hidden="true"
+     role="presentation">
+  
+    <path d="M480-357.85 253.85-584l32.61-32.61L480-423.08l193.54-193.53L706.15-584 480-357.85Z" />
+  
+</svg>
+
+                      </span>
+              </button>
+              <button class="close button button--outlined icon-center icon-center--wide"
+                      aria-label="Close the website selector panel"
+                      data-gtm-event="nav_select"
+                      data-event-nav-type="site selector"
+                      data-event-nav-name="close"
+                      data-event-interaction-type="collapse">
+                      <span class="icon-md-outlined">
+                        
+<svg xmlns="http://www.w3.org/2000/svg"
+     height="18px"
+     width="18px"
+     viewBox="0 -960 960 960"
+     fill="currentColor"
+     class=""
+     aria-hidden="true"
+     role="presentation">
+  
+    <path d="m480-541.85-184 184L253.85-400 480-626.15 706.15-400 664-357.85l-184-184Z" />
+  
+</svg>
+
+                      </span>
+              </button>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+    
+      <nav class="site-switcher__nav">
+  
+    <div class="site-switcher__group">
+      
+      
+        <a class="site-switcher__link"
+           aria-label="Google AI"
+           target="_blank"
+           href="https://ai.google/?utm_source=deepmind.google&amp;utm_medium=referral&amp;utm_campaign=gdm&amp;utm_content="
+           >
+          <div class="site-switcher__link-title cta-small">Google AI</div>
+          <div class="site-switcher__link-description small-text">Learn about all our AI</div>
+        </a>
+      
+        <a class="site-switcher__link"
+           aria-label="Google DeepMind"
+           target="_blank"
+           href="https://deepmind.google?utm_source=deepmind.google&amp;utm_medium=referral&amp;utm_campaign=gdm&amp;utm_content=/"
+           >
+          <div class="site-switcher__link-title cta-small">Google DeepMind</div>
+          <div class="site-switcher__link-description small-text">Explore the frontier of AI</div>
+        </a>
+      
+        <a class="site-switcher__link"
+           aria-label="Google Labs"
+           target="_blank"
+           href="https://labs.google/?utm_source=deepmind.google&amp;utm_medium=referral&amp;utm_campaign=gdm&amp;utm_content="
+           >
+          <div class="site-switcher__link-title cta-small">Google Labs</div>
+          <div class="site-switcher__link-description small-text">Try our AI experiments</div>
+        </a>
+      
+    </div>
+  
+</nav>
+
+    
+  </div>
+  <div class="main-menu">
+
+<nav class="main-menu__container button-group button-group--compact" aria-label="Main menu">
+  
+    <div class="main-menu__item" data-title="Research">
+      
+        <button type="button"
+            class="main-menu__label deepai-text-call-to-action--nav button button--hover_outline cta-small"
+            data-title="Research"
+            aria-haspopup="true"
+            aria-expanded="false">
+          Research
+        </button>
+      
+
+      
+        <button type="button"
+            class="main-menu__submenu-toggle"
+            data-title="Research"
+            aria-label="Open submenu for Research"
+            aria-expanded="false"
+            aria-haspopup="true">
+          
+<svg xmlns="http://www.w3.org/2000/svg"
+     height="18px"
+     width="18px"
+     viewBox="0 -960 960 960"
+     fill="currentColor"
+     class=""
+     aria-hidden="true"
+     role="presentation">
+  
+    <path d="M480-357.85 253.85-584l32.61-32.61L480-423.08l193.54-193.53L706.15-584 480-357.85Z" />
+  
+</svg>
+
+        </button>
+      
+    </div>
+  
+    <div class="main-menu__item" data-title="Resources">
+      
+        <button type="button"
+            class="main-menu__label deepai-text-call-to-action--nav button button--hover_outline cta-small"
+            data-title="Resources"
+            aria-haspopup="true"
+            aria-expanded="false">
+          Resources
+        </button>
+      
+
+      
+        <button type="button"
+            class="main-menu__submenu-toggle"
+            data-title="Resources"
+            aria-label="Open submenu for Resources"
+            aria-expanded="false"
+            aria-haspopup="true">
+          
+<svg xmlns="http://www.w3.org/2000/svg"
+     height="18px"
+     width="18px"
+     viewBox="0 -960 960 960"
+     fill="currentColor"
+     class=""
+     aria-hidden="true"
+     role="presentation">
+  
+    <path d="M480-357.85 253.85-584l32.61-32.61L480-423.08l193.54-193.53L706.15-584 480-357.85Z" />
+  
+</svg>
+
+        </button>
+      
+    </div>
+  
+    <div class="main-menu__item" data-title="Conferences &amp; events">
+      
+        <a href="/conferences-and-events/"
+            class="main-menu__label deepai-text-call-to-action--nav button button--hover_outline cta-small"
+            data-title="Conferences &amp; events"
+            default
+            
+              
+            >
+          Conferences &amp; events
+        </a>
+      
+
+      
+    </div>
+  
+    <div class="main-menu__item" data-title="Careers">
+      
+        <button type="button"
+            class="main-menu__label deepai-text-call-to-action--nav button button--hover_outline cta-small"
+            data-title="Careers"
+            aria-haspopup="true"
+            aria-expanded="false">
+          Careers
+        </button>
+      
+
+      
+        <button type="button"
+            class="main-menu__submenu-toggle"
+            data-title="Careers"
+            aria-label="Open submenu for Careers"
+            aria-expanded="false"
+            aria-haspopup="true">
+          
+<svg xmlns="http://www.w3.org/2000/svg"
+     height="18px"
+     width="18px"
+     viewBox="0 -960 960 960"
+     fill="currentColor"
+     class=""
+     aria-hidden="true"
+     role="presentation">
+  
+    <path d="M480-357.85 253.85-584l32.61-32.61L480-423.08l193.54-193.53L706.15-584 480-357.85Z" />
+  
+</svg>
+
+        </button>
+      
+    </div>
+  
+    <div class="main-menu__item" data-title="Blog">
+      
+        <a href="/blog/"
+            class="main-menu__label deepai-text-call-to-action--nav button button--hover_outline cta-small"
+            data-title="Blog"
+            default
+            
+              
+            >
+          Blog
+        </a>
+      
+
+      
+    </div>
+  
+    <div class="main-menu__item" data-title="About">
+      
+        <button type="button"
+            class="main-menu__label deepai-text-call-to-action--nav button button--hover_outline cta-small"
+            data-title="About"
+            aria-haspopup="true"
+            aria-expanded="false">
+          About
+        </button>
+      
+
+      
+        <button type="button"
+            class="main-menu__submenu-toggle"
+            data-title="About"
+            aria-label="Open submenu for About"
+            aria-expanded="false"
+            aria-haspopup="true">
+          
+<svg xmlns="http://www.w3.org/2000/svg"
+     height="18px"
+     width="18px"
+     viewBox="0 -960 960 960"
+     fill="currentColor"
+     class=""
+     aria-hidden="true"
+     role="presentation">
+  
+    <path d="M480-357.85 253.85-584l32.61-32.61L480-423.08l193.54-193.53L706.15-584 480-357.85Z" />
+  
+</svg>
+
+        </button>
+      
+    </div>
+  
+</nav>
+</div>
+  <div class="right-menu">
+    <div class="right-menu__ctas button-group button-group--compact">
+      <div class="button-group__buttons">
+      
+      </div>
+    </div>
+    
+      
+    
+    
+  </div>
+</div>
+
+      </div>
+    </header>
+  </site-nav>
+
+
+      
+    
+  
+
+
+    
+
+    <main id="page-content" tabindex="-1">
+        
+<div class="blog-detail-page --legacy " >
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="basic-hero bhoig --theme-light  --large-image" data-gt-id="basic_hero" data-gt-component-name="">
+  <div class="glue-page">
+    <div class="glue-grid">
+      <div class="bhoig__image-wrapper glue-grid__col--span-4 glue-grid__col--span-5-md glue-grid__col--span-4-lg">
+      
+        
+        
+          
+            <div class="bhoig__image-bg" style="">
+              
+                <picture>
+                  <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/07ef38036e86f81ac74829e59384929b-image8.gif" alt="" class=""/>
+                </picture>
+              
+            </div>
+        
+      
+    </div>
+
+        
+        <div class="bhoig__breadcrumb-wrapper glue-grid__col--span-10 glue-grid__col--span-9-md glue-grid__col--span-10-lg">
+          
+
+
+
+
+<nav class="glue-breadcrumbs" aria-label="Breadcrumbs">
+    
+    <ol class="glue-breadcrumbs__list">
+        
+        
+        
+        
+        <li class="glue-breadcrumbs__item">
+            <a class="glue-breadcrumbs__link attribution" href="/">Home</a>
+            
+
+
+
+  
+
+<svg role="presentation" aria-hidden="true"  class="glue-icon  ">
+  <use href="/gr/static/assets/icons/glue-icons.svg#chevron-right"></use>
+</svg>
+
+        </li>
+        
+        
+        
+        <li class="glue-breadcrumbs__item">
+            <a class="glue-breadcrumbs__link attribution" href="/blog/">Blog</a>
+            
+
+
+
+  
+
+<svg role="presentation" aria-hidden="true"  class="glue-icon  ">
+  <use href="/gr/static/assets/icons/glue-icons.svg#chevron-right"></use>
+</svg>
+
+        </li>
+        
+        
+    </ol>
+    
+</nav>
+        </div>
+
+        <h1 class="headline-1 bhoig__headline glue-grid__col--span-8 glue-grid__col--span-7-md glue-grid__col--span-8-lg">Pathways Language Model (PaLM): Scaling to 540 Billion Parameters for Breakthrough Performance</h1>
+
+        
+
+          <div class="basic-hero__description bhoig__description glue-grid__col--span-8 glue-grid__col--span-7-md glue-grid__col--span-8-lg">
+            <div class="basic-hero--blog-detail__description"><p>April 4, 2022</p><span class="dot-separator"></span><p>Posted by Sharan Narang and Aakanksha Chowdhery, Software Engineers, Google Research</p></div>
+          </div>
+
+        
+
+        <div class="bhoig__cta glue-grid__col--span-8 glue-grid__col--span-7-md glue-grid__col--span-8-lg">
+          
+        </div>
+    </div>
+  </div>
+</section>
+
+
+    <div class="glue-page">
+        <div class="glue-grid blog-detail-page__grid">
+            <div class="glue-grid__col glue-grid__col--span-4-sm glue-grid__col--span-12-md  glue-grid__col--span-9-lg">
+                
+                
+                <div class="quicklinks-wrapper--mobile">
+                    <div class="block-quick_links">
+
+
+<section class="quicklinks">
+    
+        <h2 class="eyebrow">Quick links</h2>
+        <ul class="quicklinks__list">
+            
+            
+            <li class="quicklinks__item quicklinks__item--share js-quicklinks-share">
+                
+                <button
+                    class="quicklinks__share-button js-quicklinks-share__button"
+                    aria-expanded="false"
+                    aria-controls="js-quicklinks-share__list-3e905ef7">
+                    <span class="icon icon--share"></span>
+                    <span class="quicklinks__item__text">Share</span>
+                </button>
+                
+
+
+
+<section id="js-quicklinks-share__list-3e905ef7" class="glue-social glue-social--monochrome quicklinks__share-list js-quicklinks-share__list glue-elevation-level-1 js-gt-share-wrapper">
+  <div class="glue-social__group">
+    <ul class="glue-social__list" role="list">
+
+      <li class="glue-social__item">
+        <a class="glue-social__link" href="https://twitter.com/intent/tweet?text=https%3A//research.google/blog/pathways-language-model-palm-scaling-to-540-billion-parameters-for-breakthrough-performance/"
+            title="Share on Twitter" target="_blank" rel="noopener" data-gt-method="x">
+            <svg role="presentation" aria-hidden="true"
+              class="glue-icon glue-icon--social glue-icon--24px">
+              <use href="/gr/static/assets/icons/twitter-x.svg#twitter-x"></use>
+          </svg>
+        </a>
+      </li>
+      <li class="glue-social__item">
+        <a class="glue-social__link" href="https://www.facebook.com/sharer/sharer.php?u=https%3A//research.google/blog/pathways-language-model-palm-scaling-to-540-billion-parameters-for-breakthrough-performance/"
+            title="Share on Facebook" target="_blank" rel="noopener" data-gt-method="facebook">
+          <svg role="presentation" aria-hidden="true"
+              class="glue-icon glue-icon--social glue-icon--color-facebook glue-icon--24px">
+            <use href="/gr/static/assets/icons/facebook.svg#facebook"></use>
+          </svg>
+        </a>
+      </li>
+      <li class="glue-social__item">
+        <a class="glue-social__link" href="https://www.linkedin.com/shareArticle?url=https%3A//research.google/blog/pathways-language-model-palm-scaling-to-540-billion-parameters-for-breakthrough-performance/&amp;mini=true" title="Share on LinkedIn" target="_blank" rel="noopener" data-gt-method="linkedin">
+          <svg role="presentation" aria-hidden="true"
+              class="glue-icon glue-icon--social glue-icon--color-linkedin glue-icon--24px">
+            <use href="/gr/static/assets/icons/glue-icons.svg#post-linkedin"></use>
+          </svg>
+        </a>
+      </li>
+      <li class="glue-social__item">
+        <a class="glue-social__link" href="mailto:name@example.com?subject=Check%20out%20this%20site&body=Check%20out%20https%3A//research.google/blog/pathways-language-model-palm-scaling-to-540-billion-parameters-for-breakthrough-performance/" title="Send via Email" data-gt-method="email">
+          <svg role="presentation" aria-hidden="true"
+              class="glue-icon glue-icon--social glue-icon--color-sharemail glue-icon--24px">
+            <use href="/gr/static/assets/icons/glue-icons.svg#email"></use>
+          </svg>
+        </a>
+      </li>
+      <li class="glue-social__item">
+        <div class="glue-social__popover">
+          <div class="glue-social__icon-trigger" aria-label="Get shareable link" title="Get shareable link" id="share-static-popover-trigger-3e905ef7">
+            <svg role="presentation" aria-hidden="true"
+                class="glue-icon glue-icon--social glue-icon--color-sharelink glue-icon--24px">
+              <use href="/gr/static/assets/icons/glue-icons.svg#link"></use>
+            </svg>
+          </div>
+
+          <div class="glue-social__dialog" id="share-popover-dialog-3e905ef7">
+            <svg role="presentation" aria-hidden="true"
+                class="glue-icon glue-icon--social glue-icon--color-sharelink glue-icon--24px">
+              <use href="/gr/static/assets/icons/glue-icons.svg#link"></use>
+            </svg>
+            <div class="glue-social__copy" glue-copy-success="Copied to clipboard"
+                glue-copy-fail="Press Ctrl+C or ⌘+C to copy">
+              <input class="glue-social__copy-input" readonly="" type="text"
+                  value="https://research.google/blog/pathways-language-model-palm-scaling-to-540-billion-parameters-for-breakthrough-performance/" aria-label="URL" name="glue-social__copy-input">
+              <button class="glue-social__copy-btn" id="share-copy-btn-3e905ef7" data-gt-method="link-copied">Copy link</button>
+            </div>
+            <div aria-label="Close" class="glue-social__close-btn">
+              ×
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+            </li>
+            
+        </ul>
+    
+</section>
+</div>
+                </div>
+
+                <div class="blog-detail-wrapper js-gt-blog-detail-wrapper" data-gt-publish-date="20220404">
+                    
+                    
+    
+
+
+<div class="rich-text --theme- --mode-" data-gt-id="rich_text"
+    data-gt-component-name="">
+  
+
+
+
+
+  
+<p>
+In recent years, large neural networks trained for language understanding and generation have achieved impressive results across a wide range of tasks. <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener noreferrer">GPT-3</a> first showed that large language models (LLMs) can be used for <em>few-shot</em> <i>learning</i> and can achieve impressive results without large-scale task-specific data collection or model parameter updating. More recent LLMs, such as <a href="https://ai.googleblog.com/2021/12/more-efficient-in-context-learning-with.html" target="_blank" rel="noopener noreferrer">GLaM</a>, <a href="https://ai.googleblog.com/2022/01/lamda-towards-safe-grounded-and-high.html" target="_blank" rel="noopener noreferrer">LaMDA</a>, <a href="https://arxiv.org/abs/2112.11446" target="_blank" rel="noopener noreferrer">Gopher</a>, and <a href="https://arxiv.org/abs/2201.11990" target="_blank" rel="noopener noreferrer">Megatron-Turing NLG</a>, achieved state-of-the-art few-shot results on many tasks by scaling model size, using sparsely activated modules, and training on larger datasets from more diverse sources. Yet much work remains in understanding the capabilities that emerge with few-shot learning as we push the limits of model scale.
+</p><a name="more"></a>
+<p>
+Last year Google Research announced our vision for <a href="https://blog.google/technology/ai/introducing-pathways-next-generation-ai-architecture/" target="_blank" rel="noopener noreferrer">Pathways</a>, a single model that could generalize across domains and tasks while being highly efficient. An important milestone toward realizing this vision was to develop the new <a href="https://arxiv.org/abs/2203.12533" target="_blank" rel="noopener noreferrer">Pathways system</a> to orchestrate distributed computation for accelerators. In “<a href="https://goo.gle/palm-paper" target="_blank" rel="noopener noreferrer">PaLM: Scaling Language Modeling with Pathways</a>”, we introduce the Pathways Language Model (PaLM), a 540-billion parameter, dense decoder-only <a href="https://ai.googleblog.com/2017/08/transformer-novel-neural-network.html" target="_blank" rel="noopener noreferrer">Transformer</a> model trained with the <a href="https://arxiv.org/abs/2203.12533" target="_blank" rel="noopener noreferrer">Pathways system</a>, which enabled us to efficiently train a single model across multiple <a href="https://cloud.google.com/blog/topics/tpus/google-showcases-cloud-tpu-v4-pods-for-large-model-training" target="_blank" rel="noopener noreferrer">TPU v4 Pods</a>. We evaluated PaLM on hundreds of language understanding and generation tasks, and found that it achieves state-of-the-art few-shot performance across most tasks, by significant margins in many cases. 
+</p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto;"><tbody><tr><td style="text-align: center;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgLXCWMlipdu0gFF6hsiJHbxg1zSaEkdDWfl-8RakQuW__8RPvlOS9KGIScNCytxT4jz9isnx0GLMwbS1G0Q4WdXzT42GszgfwIIAVX1H3J-43lVWWqcb--q9cPsxCsJFFz2dRfpKgEmLe-xfIyBqQuPq1BPYcK9CtAK1_xnhgvgAAx0GeZmODJxGNMYQ/s1600/image8.gif" target="_blank" rel="noopener noreferrer"><img alt="Abstract tree diagram displaying question answering, arithmetic, and language understanding capabilities above eight billion parameters text." border="0" data-original-height="583" data-original-width="1600" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgLXCWMlipdu0gFF6hsiJHbxg1zSaEkdDWfl-8RakQuW__8RPvlOS9KGIScNCytxT4jz9isnx0GLMwbS1G0Q4WdXzT42GszgfwIIAVX1H3J-43lVWWqcb--q9cPsxCsJFFz2dRfpKgEmLe-xfIyBqQuPq1BPYcK9CtAK1_xnhgvgAAx0GeZmODJxGNMYQ/s16000/image8.gif"/></a></td></tr><tr><td class="tr-caption" style="text-align: center;">As the scale of the model increases, the performance improves across tasks while also unlocking new capabilities.</td></tr></tbody></table>
+<div style="line-height:40%;">
+<br/>
+</div>
+<h2>Training a 540-Billion Parameter Language Model with Pathways</h2><p>
+PaLM demonstrates the first large-scale use of the Pathways system to scale training to 6144 chips, the largest TPU-based system configuration used for training to date. The training is scaled using <a href="https://en.wikipedia.org/wiki/Data_parallelism" target="_blank" rel="noopener noreferrer">data parallelism</a> at the Pod level across two <a href="https://cloud.google.com/blog/topics/tpus/google-showcases-cloud-tpu-v4-pods-for-large-model-training" target="_blank" rel="noopener noreferrer">Cloud TPU v4 Pods</a>, while using standard data and model parallelism within each Pod. This is a significant increase in scale compared to most previous LLMs, which were either trained on a single TPU v3 Pod (e.g., <a href="https://arxiv.org/abs/2112.06905" target="_blank" rel="noopener noreferrer">GLaM</a>, <a href="https://arxiv.org/abs/2201.08239" target="_blank" rel="noopener noreferrer">LaMDA</a>), used pipeline parallelism to scale to 2240 A100 GPUs across GPU clusters (<a href="https://arxiv.org/abs/2201.11990.pdf" target="_blank" rel="noopener noreferrer">Megatron-Turing NLG</a>) or used multiple TPU v3 Pods (<a href="https://arxiv.org/abs/2112.11446" target="_blank" rel="noopener noreferrer">Gopher</a>) with a maximum scale of 4096 TPU v3 chips.
+</p>
+<p>
+PaLM achieves a training efficiency of 57.8% hardware FLOPs utilization, <em>the highest yet achieved for LLMs at this scale</em>. This is due to a combination of the parallelism strategy and a reformulation of the <a href="https://arxiv.org/abs/1706.03762.pdf" target="_blank" rel="noopener noreferrer">Transformer block</a> that allows for <a href="https://en.wikipedia.org/wiki/Attention_(machine_learning)" target="_blank" rel="noopener noreferrer">attention</a> and <a href="https://en.wikipedia.org/wiki/Feedforward_neural_network" target="_blank" rel="noopener noreferrer">feedforward</a> layers to be computed in parallel, enabling speedups from TPU compiler optimizations.
+</p>
+<p>
+PaLM was trained using a combination of English and multilingual datasets that include high-quality web documents, books, Wikipedia, conversations, and GitHub code. We also created a “lossless” vocabulary that preserves all whitespace (especially important for code), splits out-of-vocabulary Unicode characters into bytes, and splits numbers into individual tokens, one for each digit.
+</p>
+<div style="line-height:40%;">
+<br/>
+</div>
+<h2>Breakthrough Capabilities on Language, Reasoning, and Code Tasks</h2><p>
+PaLM shows breakthrough capabilities on numerous very difficult tasks. We highlight a few examples for language understanding and generation, reasoning, and code-related tasks below.
+</p>
+<div style="line-height:40%;">
+<br/>
+</div>
+<h3>Language Understanding and Generation</h3><p>
+We evaluated PaLM on 29 widely-used English natural language processing (NLP) tasks. PaLM 540B surpassed few-shot performance of prior large models, such as <a href="https://arxiv.org/abs/2112.06905.pdf" target="_blank" rel="noopener noreferrer">GLaM</a>, <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener noreferrer">GPT-3</a>, <a href="https://arxiv.org/abs/2201.11990.pdf" target="_blank" rel="noopener noreferrer">Megatron-Turing NLG</a>, <a href="https://arxiv.org/abs/2112.11446" target="_blank" rel="noopener noreferrer">Gopher</a>, <a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener noreferrer">Chinchilla</a>, and <a href="https://arxiv.org/abs/2201.08239.pdf" target="_blank" rel="noopener noreferrer">LaMDA</a>, on 28 of 29 of tasks that span question-answering tasks (open-domain closed-book variant), <a href="https://en.wikipedia.org/wiki/Cloze_test" target="_blank" rel="noopener noreferrer">cloze</a> and sentence-completion tasks, <a href="https://en.wikipedia.org/wiki/Winograd_schema_challenge" target="_blank" rel="noopener noreferrer">Winograd</a>-style tasks, in-context reading comprehension tasks, common-sense reasoning tasks, <a href="https://arxiv.org/abs/1905.00537" target="_blank" rel="noopener noreferrer">SuperGLUE</a> tasks, and natural language inference tasks.</p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto;"><tbody><tr><td style="text-align: center;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhJ0IurIGscLmiuGVKNqXv3G_vKjlSpRbL_wkMSSiva3SGwOtHcHKWGab324yW6-TpmfnsNNlO9fqw2KtqFPa6X4AwAqdLSlEkPsF22NZSu1HaaOImnshjq0ahMlr6C1sh5NlvnZ2OqFg0D-7FY5w1KR-mqy3IJPOvqe6hrRfGcabJa7xSjhtYbWv4SiA/s1312/chart.png" target="_blank" rel="noopener noreferrer"><img alt="Vertical bar chart quantifying performance improvements over state-of-the-art across six distinct language comprehension and reasoning tasks." border="0" data-original-height="590" data-original-width="1312" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhJ0IurIGscLmiuGVKNqXv3G_vKjlSpRbL_wkMSSiva3SGwOtHcHKWGab324yW6-TpmfnsNNlO9fqw2KtqFPa6X4AwAqdLSlEkPsF22NZSu1HaaOImnshjq0ahMlr6C1sh5NlvnZ2OqFg0D-7FY5w1KR-mqy3IJPOvqe6hrRfGcabJa7xSjhtYbWv4SiA/s16000/chart.png"/></a></td></tr><tr><td class="tr-caption" style="text-align: center;">PaLM 540B performance improvement over prior state-of-the-art (SOTA) results on 29 English-based NLP tasks.</td></tr></tbody></table>
+<p>
+In addition to English NLP tasks, PaLM also shows strong performance on multilingual NLP benchmarks, including translation, even though only 22% of the training corpus is non-English.
+</p>
+<p>
+We also probe emerging and future capabilities of PaLM on the <a href="https://github.com/google/BIG-bench" target="_blank" rel="noopener noreferrer">Beyond the Imitation Game Benchmark</a> (BIG-bench), a recently released suite of more than 150 new language modeling tasks, and find that PaLM achieves breakthrough performance. We compare the performance of PaLM to <a href="https://arxiv.org/abs/2112.11446" target="_blank" rel="noopener noreferrer">Gopher</a> and <a href="https://arxiv.org/abs/2203.15556.pdf" target="_blank" rel="noopener noreferrer">Chinchilla</a>, averaged across a common subset of 58 of these tasks. Interestingly, we note that PaLM’s performance as a function of scale follows a log-linear behavior similar to prior models, suggesting that <em>performance improvements from scale have not yet plateaued</em>. PaLM 540B 5-shot also does better than the average performance of people asked to solve the same tasks.
+</p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto;"><tbody><tr><td style="text-align: center;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgz-gW-L-HTRNa4FFX_HrnUnoQhXc2b7tjd-NFV_3KqG0n2pDrPzAhP-3Zx70jtygkDZV_VeE6u-XCjRWgY3ec_Ise8lK02iRuv6VzhJcayGnze6fv65oc3TgZ6JvfRso_xCW56-xI4xnScI0-oVsOu2kH3mBoU1CvtBVD99twdUtqsxyJj1DlAt3m1nQ/s1172/Screenshot%202022-04-01%205.25.47%20PM.png" target="_blank" rel="noopener noreferrer"><img alt="Line graph comparing PaLM, Gopher, and Chinchilla model performance against parameter counts and human baseline metrics." border="0" data-original-height="642" data-original-width="1172" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgz-gW-L-HTRNa4FFX_HrnUnoQhXc2b7tjd-NFV_3KqG0n2pDrPzAhP-3Zx70jtygkDZV_VeE6u-XCjRWgY3ec_Ise8lK02iRuv6VzhJcayGnze6fv65oc3TgZ6JvfRso_xCW56-xI4xnScI0-oVsOu2kH3mBoU1CvtBVD99twdUtqsxyJj1DlAt3m1nQ/s16000/Screenshot%202022-04-01%205.25.47%20PM.png"/></a></td></tr><tr><td class="tr-caption" style="text-align: center;">Scaling behavior of PaLM on a subset of 58 BIG-bench tasks. </td></tr></tbody></table>
+<p>
+PaLM demonstrates impressive natural language understanding and generation capabilities on several BIG-bench tasks. For example, the model can distinguish cause and effect, understand conceptual combinations in appropriate contexts, and even guess the movie from an emoji.
+</p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto;"><tbody><tr><td style="text-align: center;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLmQjS3gOQ2x7ru3xovYjVw-Yr2fKDCqhDHByQZitD92Yu4L-v2BBa5f_VMfpWM4D0930Dmk35EY1TqGrYUtMQqJO41hkLqXuu51eOpXZ3PvYPSjf5stfEJNJn2idWnRYCCEgBiJuLDTXX5Fgt-Mk13kCKdO12JShGvDO_cArtLKv8U8obJaHiL5ASQg/s1320/Big%20Bench%20Sped%20Up%20Cropped.gif" target="_blank" rel="noopener noreferrer"><img alt="Minimalist user interface titled Cause and Effect displaying a prompt input field beginning with the letters Wh." border="0" data-original-height="732" data-original-width="1320" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLmQjS3gOQ2x7ru3xovYjVw-Yr2fKDCqhDHByQZitD92Yu4L-v2BBa5f_VMfpWM4D0930Dmk35EY1TqGrYUtMQqJO41hkLqXuu51eOpXZ3PvYPSjf5stfEJNJn2idWnRYCCEgBiJuLDTXX5Fgt-Mk13kCKdO12JShGvDO_cArtLKv8U8obJaHiL5ASQg/s16000/Big%20Bench%20Sped%20Up%20Cropped.gif"/></a></td></tr><tr><td class="tr-caption" style="text-align: center;">Examples that showcase PaLM 540B 1-shot performance on BIG-bench tasks: labeling cause and effect, conceptual understanding, guessing movies from emoji, and finding synonyms and counterfactuals.</td></tr></tbody></table>
+<div style="line-height:40%;">
+<br/>
+</div>
+<h3>Reasoning</h3><p>
+By combining model scale with <a href="https://arxiv.org/abs/2201.11903.pdf" target="_blank" rel="noopener noreferrer">chain-of-thought prompting</a><em>, </em>PaLM shows breakthrough capabilities on reasoning tasks that require multi-step arithmetic or common-sense reasoning. Prior LLMs, like <a href="https://arxiv.org/abs/2112.11446" target="_blank" rel="noopener noreferrer">Gopher</a>, saw less benefit from model scale in improving performance.
+</p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto;"><tbody><tr><td style="text-align: center;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiCZkpChUnyojDE_nPmg-xZyTFgjo4qgBB7Pmbi0ZlIVNiiD2DXV1dcMW-QMIn-CTNNTA7bJlln0p8wuNju06E62adtn4C-sRngwKhvhA1-f0-8knYuWB-m3MyIXclYAQNkojWaf-kfibm1OjFfhC45EHkeJkVNKid-K2dd_O1c5H-rVx8ypOTuQv8ELQ/s1228/Screenshot%202022-04-01%205.34.54%20PM.png" target="_blank" rel="noopener noreferrer"><img alt="Comparison showing standard prompting failing a math question while chain of thought prompting succeeds using highlighted reasoning." border="0" data-original-height="704" data-original-width="1228" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiCZkpChUnyojDE_nPmg-xZyTFgjo4qgBB7Pmbi0ZlIVNiiD2DXV1dcMW-QMIn-CTNNTA7bJlln0p8wuNju06E62adtn4C-sRngwKhvhA1-f0-8knYuWB-m3MyIXclYAQNkojWaf-kfibm1OjFfhC45EHkeJkVNKid-K2dd_O1c5H-rVx8ypOTuQv8ELQ/s16000/Screenshot%202022-04-01%205.34.54%20PM.png"/></a></td></tr><tr><td class="tr-caption" style="text-align: center;">Standard prompting versus chain-of-thought prompting for an example grade-school math problem. Chain-of-thought prompting decomposes the prompt for a multi-step reasoning problem into intermediate steps (highlighted in yellow), similar to how a person would approach it.</td></tr></tbody></table>
+<p>
+We observed strong performance from PaLM 540B combined with chain-of-thought prompting on three arithmetic datasets and two commonsense reasoning datasets. For example, with 8-shot prompting, PaLM solves 58% of the problems in <a href="https://github.com/openai/grade-school-math" target="_blank" rel="noopener noreferrer">GSM8K</a>, a benchmark of thousands of challenging grade school level math questions, outperforming the <a href="https://arxiv.org/abs/2110.14168" target="_blank" rel="noopener noreferrer">prior top score</a> of 55% achieved by fine-tuning the GPT-3 175B model with a training set of 7500 problems and combining it with an external calculator and verifier. 
+</p>
+<p>
+This new score is especially interesting, as it approaches the 60% average of problems solved by 9-12 year olds, who are the target audience for the question set. We suspect that separate encoding of digits in the PaLM vocabulary helps enable these performance improvements.
+</p>
+<p>
+Remarkably, PaLM can even generate explicit explanations for scenarios that require a complex combination of multi-step logical inference, world knowledge, and deep language understanding. For example, it can provide high quality explanations for novel jokes not found on the web.
+</p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto;"><tbody><tr><td style="text-align: center;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHKfA6Vxw9li1vDfDChv-yzCp4ubKpOR2D62IMui3mAe5Un0jZ3P2_60stEZdtJNUt1b2XNzXbPoM0EO6B7UGneMd-2Bq0JK0gC5rIMSgQM02jwe5VmGxYLo_jz78vnG79oDIpv3mNu6kD0tqAUT6pcYkbkRpeoO9P-92I5O8ZsZefCpcxfIfEJREAyA/s1999/image5.png" target="_blank" rel="noopener noreferrer"><img alt="Interface displaying a prompt asking to explain a whale joke, followed by the model's detailed text response." border="0" data-original-height="1206" data-original-width="1999" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHKfA6Vxw9li1vDfDChv-yzCp4ubKpOR2D62IMui3mAe5Un0jZ3P2_60stEZdtJNUt1b2XNzXbPoM0EO6B7UGneMd-2Bq0JK0gC5rIMSgQM02jwe5VmGxYLo_jz78vnG79oDIpv3mNu6kD0tqAUT6pcYkbkRpeoO9P-92I5O8ZsZefCpcxfIfEJREAyA/s16000/image5.png"/></a></td></tr><tr><td class="tr-caption" style="text-align: center;">PaLM explains an original joke with two-shot prompts.</td></tr></tbody></table>
+<div style="line-height:40%;">
+<br/>
+</div>
+<h3>Code Generation</h3><p>
+LLMs have also been shown [<a href="https://arxiv.org/abs/2107.03374.pdf" target="_blank" rel="noopener noreferrer">1</a>, <a href="https://arxiv.org/abs/2108.07732.pdf" target="_blank" rel="noopener noreferrer">2</a>, <a href="https://www.deepmind.com/blog/competitive-programming-with-alphacode" target="_blank" rel="noopener noreferrer">3</a>, <a href="https://arxiv.org/abs/2112.02969" target="_blank" rel="noopener noreferrer">4</a>] to generalize well to coding tasks, such as writing code given a natural language description (text-to-code), translating code from one language to another, and fixing compilation errors (code-to-code).
+</p>
+<p>
+PaLM 540B shows strong performance across coding tasks and natural language tasks in a single model, even though it has only 5% code in the pre-training dataset. Its few-shot performance is especially remarkable because it is on par with the fine-tuned <a href="https://arxiv.org/abs/2107.03374.pdf" target="_blank" rel="noopener noreferrer">Codex 12B</a> while using <em>50 times less <a href="https://en.wikipedia.org/wiki/Python_(programming_language)" target="_blank" rel="noopener noreferrer">Python</a> code</em> for training. This result reinforces <a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noopener noreferrer">earlier findings</a> that larger models can be more sample efficient than smaller models because they transfer learning from both other programming languages and natural language data more effectively.
+</p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto;"><tbody><tr><td style="text-align: center;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj6gdPPoicGB0nweCccX9zN8mEwp8Nye503s604BUI1EO36-iTJNe3cJptm1lpWX5oEvXRoQl8cCRtYI1UkD5bfkN5zModWSoxMOGIlxBbNvI-g4SMsdEWZTDbR-ifbV7HQK0VX0yWXsSqGbR_vu_gtAUJ5BgJyAODkxiqA6I2GKkFn3mrKzKbd0aZVzA/s1200/Coding%20Examples%20v2%20Cropped.gif" target="_blank" rel="noopener noreferrer"><img alt="Interface displaying a C programming code snippet being actively translated into Python under a model response section." border="0" data-original-height="666" data-original-width="1200" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj6gdPPoicGB0nweCccX9zN8mEwp8Nye503s604BUI1EO36-iTJNe3cJptm1lpWX5oEvXRoQl8cCRtYI1UkD5bfkN5zModWSoxMOGIlxBbNvI-g4SMsdEWZTDbR-ifbV7HQK0VX0yWXsSqGbR_vu_gtAUJ5BgJyAODkxiqA6I2GKkFn3mrKzKbd0aZVzA/s16000/Coding%20Examples%20v2%20Cropped.gif"/></a></td></tr><tr><td class="tr-caption" style="text-align: center;">Examples of a fine-tuned PaLM 540B model on text-to-code tasks, such as <a href="https://github.com/openai/grade-school-math" target="_blank" rel="noopener noreferrer">GSM8K-</a>Python and <a href="https://arxiv.org/abs/2107.03374.pdf" target="_blank" rel="noopener noreferrer">HumanEval</a>, and code-to-code tasks, such as <a href="https://github.com/facebookresearch/TransCoder" target="_blank" rel="noopener noreferrer">Transcoder</a>.</td></tr></tbody></table>
+<p>
+We also see a further increase in performance by fine-tuning PaLM on a Python-only code dataset, which we refer to as PaLM-Coder. For an example code repair task called <a href="https://ojs.aaai.org/index.php/AAAI/article/view/10742" target="_blank" rel="noopener noreferrer">DeepFix</a>, where the objective is to modify initially broken <a href="https://en.wikipedia.org/wiki/C_(programming_language)" target="_blank" rel="noopener noreferrer">C</a> programs until they compile successfully, PaLM-Coder 540B demonstrates impressive performance, achieving a compile rate of 82.1%, which outperforms the prior 71.7% <a href="https://arxiv.org/abs/2106.06600.pdf" target="_blank" rel="noopener noreferrer">state of the art</a>. This opens up <a href="https://arxiv.org/abs/1911.01205" target="_blank" rel="noopener noreferrer">opportunities for fixing more complex errors</a> that arise during software development.
+</p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto;"><tbody><tr><td style="text-align: center;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjU6EWTNme8i8UftAzTxGA9X0n8nLzA5pkVV0BgzCRrxqddh7A65r4_svL5vYJl49HWN2QYNRFQgF6TrGpncz2Q_TuLvA2ynGZq9wnFP7wEnhSbkS-_viwhHtdahGozhCxHeILT7XS4w4cfGkJtum5nbUk6Mi9TP5s_OWRkvPAznhfWIOsvuVX8QgoisA/s2951/deepfix_task_879.png" target="_blank" rel="noopener noreferrer"><img alt="Side-by-side code snippets comparing red highlighted lines indicating syntax errors against green highlighted lines displaying corrected code." border="0" data-original-height="968" data-original-width="2951" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjU6EWTNme8i8UftAzTxGA9X0n8nLzA5pkVV0BgzCRrxqddh7A65r4_svL5vYJl49HWN2QYNRFQgF6TrGpncz2Q_TuLvA2ynGZq9wnFP7wEnhSbkS-_viwhHtdahGozhCxHeILT7XS4w4cfGkJtum5nbUk6Mi9TP5s_OWRkvPAznhfWIOsvuVX8QgoisA/s16000/deepfix_task_879.png"/></a></td></tr><tr><td class="tr-caption" style="text-align: center;">An example from the DeepFix Code Repair task. The fine-tuned PaLM-Coder 540B fixes compilation errors (<b>left</b>, in red) to a version of code that compiles (<b>right</b>).</td></tr></tbody></table>
+<div style="line-height:40%;">
+<br/>
+</div>
+<h2>Ethical Considerations</h2><p>
+Recent research has highlighted various potential risks associated with LLMs trained on web text. It is crucial to analyze and document such potential undesirable risks through transparent artifacts such as <a href="https://modelcards.withgoogle.com/about" target="_blank" rel="noopener noreferrer">model cards</a> and datasheets, which also include information on intended use and testing. To this end, our <a href="https://goo.gle/palm-paper" target="_blank" rel="noopener noreferrer">paper</a> provides a datasheet, model card and Responsible AI benchmark results, and it reports thorough analyses of the dataset and model outputs for biases and risks. While the analysis helps outline some potential risks of the model, domain- and task-specific analysis is essential to truly calibrate, contextualize, and mitigate possible harms. Further understanding of risks and benefits of these models is a topic of ongoing research, together with developing scalable solutions that can put guardrails against malicious uses of language models. 
+</p>
+<div style="line-height:40%;">
+<br/>
+</div>
+<h2>Conclusion and Future Work</h2><p>
+PaLM demonstrates the scaling capability of the <a href="https://arxiv.org/abs/2203.12533" target="_blank" rel="noopener noreferrer">Pathways system</a> to thousands of accelerator chips across two TPU v4 Pods by training a 540-billion parameter model efficiently with a well-studied, well-established recipe of a dense decoder-only Transformer model. Pushing the limits of model scale enables breakthrough few-shot performance of PaLM across a variety of natural language processing, reasoning, and code tasks. 
+</p>
+<p>
+PaLM paves the way for even more capable models by combining the scaling capabilities with novel architectural choices and training schemes, and brings us closer to the <a href="https://blog.google/technology/ai/introducing-pathways-next-generation-ai-architecture/" target="_blank" rel="noopener noreferrer">Pathways</a> vision: 
+</p>
+<p></p>
+<br/>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: 3em; margin-right: 3em; text-align: center;"><tbody>
+<tr><td style="color: #4f4f4f; text-align: center;"><em>“Enable a single AI system to generalize across thousands or millions of tasks, to understand different types of data, and to do so with remarkable efficiency."</em></td></tr>
+</tbody></table>
+<div style="line-height:40%;">
+<br/>
+</div>
+<br/>
+<h2>Acknowledgements</h2><p>
+<em>PaLM is the result of a large, collaborative effort by many teams within Google Research and across Alphabet. We’d like to thank the entire PaLM team for their contributions: Jacob Devlin, Maarten Bosma, Gaurav Mishra, Adam Roberts, Paul Barham, Hyung Won Chung, Charles Sutton, Sebastian Gehrmann, Parker Schuh, Kensen Shi, Sasha Tsvyashchenko, Joshua Maynez, Abhishek Rao, Parker Barnes, Yi Tay, Noam Shazeer, Vinodkumar Prabhakaran, Emily Reif, Nan Du, Ben Hutchinson, Reiner Pope, James Bradbury, Jacob Austin, Michael Isard, Guy Gur-Ari, Pengcheng Yin, Toju Duke, Anselm Levskaya, Sanjay Ghemawat, Sunipa Dev, Henryk Michalewski, Xavier Garcia, Vedant Misra, Kevin Robinson, Liam Fedus, Denny Zhou, Daphne Ippolito, David Luan, Hyeontaek Lim, Barret Zoph, Alexander Spiridonov, Ryan Sepassi, David Dohan, Shivani Agrawal, Mark Omernick, Andrew Dai, Thanumalayan Sankaranarayana Pillai, Marie Pellat, Aitor Lewkowycz, Erica Moreira, Rewon Child, Oleksandr Polozov, Katherine Lee, Zongwei Zhou, Xuezhi Wang, Brennan Saeta, Mark Diaz, Orhan Firat, Michele Catasta, and Jason Wei. PaLM builds on top of work by many, many teams at Google and we would especially like to recognize the T5X </em><em>team, the Pathways infrastructure team, the JAX team, the Flaxformer team, the XLA team, the Plaque team, the Borg team, and the Datacenter networking infrastructure team. We’d like to thank our co-authors on this blog post, Alexander Spiridonov and Maysam Moussalem, as well as Josh Newlan and Tom Small for the images and animations in this blog post. Finally, we would like to thank our advisors for the project: Noah Fiedel, Slav Petrov, Jeff Dean, Douglas Eck, and Kathy Meier-Hellstern.</em></p>
+  
+</div>
+
+                    
+                </div>
+
+                
+<section class="blog-labels" data-gt-id="blog_labels" data-gt-component-name="Blog Labels">
+    <ul class="blog-labels__list">
+        <li class="caption" aria-hidden="true">Labels:</li>
+        
+        <li class="caption">
+            <a class="caption" href="/blog/label/machine-intelligence">Machine Intelligence</a>
+            
+            <div class="blog-labels__spacer"></div>
+            
+        </li>
+        
+        <li class="caption">
+            <a class="caption" href="/blog/label/natural-language-processing">Natural Language Processing</a>
+            
+        </li>
+        
+    </ul>
+</section>
+
+                
+    
+
+
+<section aria-label="List of footnotes" data-gt-id="footnotes" data-gt-component-name="Footnotes">
+  <ol class="js-footnotes footnotes">
+    
+  </ol>
+</section>
+
+
+            </div>
+            
+                <div class="glue-grid__col glue-grid__col--span-4-sm glue-grid__col--span-12-md glue-grid__col--span-3-lg">
+                    <div class="quicklinks-wrapper--desktop quicklinks-wrapper--sticky">
+                        <div class="block-quick_links">
+
+
+<section class="quicklinks">
+    
+        <h2 class="eyebrow">Quick links</h2>
+        <ul class="quicklinks__list">
+            
+            
+            <li class="quicklinks__item quicklinks__item--share js-quicklinks-share">
+                
+                <button
+                    class="quicklinks__share-button js-quicklinks-share__button"
+                    aria-expanded="false"
+                    aria-controls="js-quicklinks-share__list-edfa08c7">
+                    <span class="icon icon--share"></span>
+                    <span class="quicklinks__item__text">Share</span>
+                </button>
+                
+
+
+
+<section id="js-quicklinks-share__list-edfa08c7" class="glue-social glue-social--monochrome quicklinks__share-list js-quicklinks-share__list glue-elevation-level-1 js-gt-share-wrapper">
+  <div class="glue-social__group">
+    <ul class="glue-social__list" role="list">
+
+      <li class="glue-social__item">
+        <a class="glue-social__link" href="https://twitter.com/intent/tweet?text=https%3A//research.google/blog/pathways-language-model-palm-scaling-to-540-billion-parameters-for-breakthrough-performance/"
+            title="Share on Twitter" target="_blank" rel="noopener" data-gt-method="x">
+            <svg role="presentation" aria-hidden="true"
+              class="glue-icon glue-icon--social glue-icon--24px">
+              <use href="/gr/static/assets/icons/twitter-x.svg#twitter-x"></use>
+          </svg>
+        </a>
+      </li>
+      <li class="glue-social__item">
+        <a class="glue-social__link" href="https://www.facebook.com/sharer/sharer.php?u=https%3A//research.google/blog/pathways-language-model-palm-scaling-to-540-billion-parameters-for-breakthrough-performance/"
+            title="Share on Facebook" target="_blank" rel="noopener" data-gt-method="facebook">
+          <svg role="presentation" aria-hidden="true"
+              class="glue-icon glue-icon--social glue-icon--color-facebook glue-icon--24px">
+            <use href="/gr/static/assets/icons/facebook.svg#facebook"></use>
+          </svg>
+        </a>
+      </li>
+      <li class="glue-social__item">
+        <a class="glue-social__link" href="https://www.linkedin.com/shareArticle?url=https%3A//research.google/blog/pathways-language-model-palm-scaling-to-540-billion-parameters-for-breakthrough-performance/&amp;mini=true" title="Share on LinkedIn" target="_blank" rel="noopener" data-gt-method="linkedin">
+          <svg role="presentation" aria-hidden="true"
+              class="glue-icon glue-icon--social glue-icon--color-linkedin glue-icon--24px">
+            <use href="/gr/static/assets/icons/glue-icons.svg#post-linkedin"></use>
+          </svg>
+        </a>
+      </li>
+      <li class="glue-social__item">
+        <a class="glue-social__link" href="mailto:name@example.com?subject=Check%20out%20this%20site&body=Check%20out%20https%3A//research.google/blog/pathways-language-model-palm-scaling-to-540-billion-parameters-for-breakthrough-performance/" title="Send via Email" data-gt-method="email">
+          <svg role="presentation" aria-hidden="true"
+              class="glue-icon glue-icon--social glue-icon--color-sharemail glue-icon--24px">
+            <use href="/gr/static/assets/icons/glue-icons.svg#email"></use>
+          </svg>
+        </a>
+      </li>
+      <li class="glue-social__item">
+        <div class="glue-social__popover">
+          <div class="glue-social__icon-trigger" aria-label="Get shareable link" title="Get shareable link" id="share-static-popover-trigger-edfa08c7">
+            <svg role="presentation" aria-hidden="true"
+                class="glue-icon glue-icon--social glue-icon--color-sharelink glue-icon--24px">
+              <use href="/gr/static/assets/icons/glue-icons.svg#link"></use>
+            </svg>
+          </div>
+
+          <div class="glue-social__dialog" id="share-popover-dialog-edfa08c7">
+            <svg role="presentation" aria-hidden="true"
+                class="glue-icon glue-icon--social glue-icon--color-sharelink glue-icon--24px">
+              <use href="/gr/static/assets/icons/glue-icons.svg#link"></use>
+            </svg>
+            <div class="glue-social__copy" glue-copy-success="Copied to clipboard"
+                glue-copy-fail="Press Ctrl+C or ⌘+C to copy">
+              <input class="glue-social__copy-input" readonly="" type="text"
+                  value="https://research.google/blog/pathways-language-model-palm-scaling-to-540-billion-parameters-for-breakthrough-performance/" aria-label="URL" name="glue-social__copy-input">
+              <button class="glue-social__copy-btn" id="share-copy-btn-edfa08c7" data-gt-method="link-copied">Copy link</button>
+            </div>
+            <div aria-label="Close" class="glue-social__close-btn">
+              ×
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+            </li>
+            
+        </ul>
+    
+</section>
+</div>
+                    </div>
+                </div>
+            
+        </div>
+    </div>
+    
+    
+
+<section class="related-posts offset-two-up" data-gt-id="related_blog_posts" data-gt-component-name="Related Blog Posts">
+    <div class="glue-page glue-grid">
+        <div
+            class="offset-two-up__left-col glue-grid__col glue-grid__col--span-4-sm glue-grid__col--span-12-md glue-grid__col--span-3-lg">
+            <h2 class="offset-two-up__headline headline-3">Other posts of interest</h2>
+        </div>
+        <div class="glue-grid__col glue-grid__col--span-4-sm glue-grid__col--span-12-md glue-grid__col--span-9-lg">
+            <ul class="card-stack--basic nested-glue-grid-override">
+                
+                <li class="glue-grid__col glue-grid__col--span-4-md glue-grid__col--span-4-sm">
+                    
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    <a class="glue-card glue-card--basic not-glue glue-card--blog" href="/blog/seeing-beyond-bmi-estimating-cardiometabolic-risk-with-smartphone-imagery/"  >
+
+        <div class="glue-card__inner">
+            
+    
+
+
+
+<div class="related-posts__image">
+  
+  
+  
+  <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/PhotoScanIR_Overview.png" alt="PhotoScanIR_Overview" />
+</div>
+
+
+
+
+            <div class="glue-card__content --no-media">
+  
+    <p class="glue-card__eyebrow label">August 17, 2026</p>
+  
+
+  
+    <span class="headline-6 js-gt-item-id">
+      Seeing beyond BMI: Estimating cardiometabolic risk with smartphone imagery
+    </span>
+  
+
+  
+</div>
+
+
+            
+    <ul class="glue-card__link-list">
+        
+            <li class="glue-card__link-list__item">
+                <span class="not-glue caption">
+                    General Science
+                    
+                    <span class="glue-card__link-list__spacer">&#183;</span>
+                    
+                </span>
+            </li>
+        
+            <li class="glue-card__link-list__item">
+                <span class="not-glue caption">
+                    Health &amp; Bioscience
+                    
+                    <span class="glue-card__link-list__spacer">&#183;</span>
+                    
+                </span>
+            </li>
+        
+            <li class="glue-card__link-list__item">
+                <span class="not-glue caption">
+                    Machine Intelligence
+                    
+                </span>
+            </li>
+        
+    </ul>
+
+
+
+        
+            
+
+        
+        </div>
+
+    </a>
+
+
+
+                </li>
+                
+                <li class="glue-grid__col glue-grid__col--span-4-md glue-grid__col--span-4-sm">
+                    
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    <a class="glue-card glue-card--basic not-glue glue-card--blog" href="/blog/empty-shelves-or-lost-keys-recall-is-the-bottleneck-for-parametric-factuality/"  >
+
+        <div class="glue-card__inner">
+            
+    
+
+
+
+<div class="related-posts__image">
+  
+  
+  
+  <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/KnowledgeProfiling1_Overview.png" alt="Diagram illustrating five knowledge retrieval states in language models, ranging from encoding failure to direct recall." />
+</div>
+
+
+
+
+            <div class="glue-card__content --no-media">
+  
+    <p class="glue-card__eyebrow label">August 12, 2026</p>
+  
+
+  
+    <span class="headline-6 js-gt-item-id">
+      Empty shelves or lost keys? Recall is the bottleneck for parametric factuality
+    </span>
+  
+
+  
+</div>
+
+
+            
+    <ul class="glue-card__link-list">
+        
+            <li class="glue-card__link-list__item">
+                <span class="not-glue caption">
+                    Generative AI
+                    
+                    <span class="glue-card__link-list__spacer">&#183;</span>
+                    
+                </span>
+            </li>
+        
+            <li class="glue-card__link-list__item">
+                <span class="not-glue caption">
+                    Natural Language Processing
+                    
+                </span>
+            </li>
+        
+    </ul>
+
+
+
+        
+            
+
+        
+        </div>
+
+    </a>
+
+
+
+                </li>
+                
+                <li class="glue-grid__col glue-grid__col--span-4-md glue-grid__col--span-4-sm">
+                    
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    <a class="glue-card glue-card--basic not-glue glue-card--blog" href="/blog/advancing-amie-towards-expert-level-audio-visual-clinical-consultations/"  >
+
+        <div class="glue-card__inner">
+            
+    
+
+
+
+<div class="related-posts__image">
+  
+  
+  
+  <img src="https://storage.googleapis.com/gweb-research2023-media/original_images/AMIE_Video-hero.png" alt="AMIE (Video)-hero" />
+</div>
+
+
+
+
+            <div class="glue-card__content --no-media">
+  
+    <p class="glue-card__eyebrow label">August 11, 2026</p>
+  
+
+  
+    <span class="headline-6 js-gt-item-id">
+      Advancing AMIE towards expert-level audio-visual clinical consultations
+    </span>
+  
+
+  
+</div>
+
+
+            
+    <ul class="glue-card__link-list">
+        
+            <li class="glue-card__link-list__item">
+                <span class="not-glue caption">
+                    Health &amp; Bioscience
+                    
+                    <span class="glue-card__link-list__spacer">&#183;</span>
+                    
+                </span>
+            </li>
+        
+            <li class="glue-card__link-list__item">
+                <span class="not-glue caption">
+                    Machine Intelligence
+                    
+                </span>
+            </li>
+        
+    </ul>
+
+
+
+        
+            
+
+        
+        </div>
+
+    </a>
+
+
+
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</section>
+
+    
+
+    
+      
+
+
+
+  <div id="imageModal" class="image-modal">
+    <span class="image-modal-close">&times;</span>
+    <span class="image-modal-prev">&#10094;</span>
+    <span class="image-modal-next">&#10095;</span>
+    <div class="image-modal-content">
+    
+      
+        <div class="modal-slide" data-slide-alt="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj6gdPPoicGB0nweCccX9zN8mEwp8Nye503s604BUI1EO36-iTJNe3cJptm1lpWX5oEvXRoQl8cCRtYI1UkD5bfkN5zModWSoxMOGIlxBbNvI-g4SMsdEWZTDbR-ifbV7HQK0VX0yWXsSqGbR_vu_gtAUJ5BgJyAODkxiqA6I2GKkFn3mrKzKbd0aZVzA/s16000/Coding%20Examples%20v2%20Cropped.gif" data-slide-source="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj6gdPPoicGB0nweCccX9zN8mEwp8Nye503s604BUI1EO36-iTJNe3cJptm1lpWX5oEvXRoQl8cCRtYI1UkD5bfkN5zModWSoxMOGIlxBbNvI-g4SMsdEWZTDbR-ifbV7HQK0VX0yWXsSqGbR_vu_gtAUJ5BgJyAODkxiqA6I2GKkFn3mrKzKbd0aZVzA/s16000/Coding%20Examples%20v2%20Cropped.gif">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj6gdPPoicGB0nweCccX9zN8mEwp8Nye503s604BUI1EO36-iTJNe3cJptm1lpWX5oEvXRoQl8cCRtYI1UkD5bfkN5zModWSoxMOGIlxBbNvI-g4SMsdEWZTDbR-ifbV7HQK0VX0yWXsSqGbR_vu_gtAUJ5BgJyAODkxiqA6I2GKkFn3mrKzKbd0aZVzA/s16000/Coding%20Examples%20v2%20Cropped.gif" width="760" height="530" alt="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj6gdPPoicGB0nweCccX9zN8mEwp8Nye503s604BUI1EO36-iTJNe3cJptm1lpWX5oEvXRoQl8cCRtYI1UkD5bfkN5zModWSoxMOGIlxBbNvI-g4SMsdEWZTDbR-ifbV7HQK0VX0yWXsSqGbR_vu_gtAUJ5BgJyAODkxiqA6I2GKkFn3mrKzKbd0aZVzA/s16000/Coding%20Examples%20v2%20Cropped.gif">
+        </div>
+      
+    
+      
+        <div class="modal-slide" data-slide-alt="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiCZkpChUnyojDE_nPmg-xZyTFgjo4qgBB7Pmbi0ZlIVNiiD2DXV1dcMW-QMIn-CTNNTA7bJlln0p8wuNju06E62adtn4C-sRngwKhvhA1-f0-8knYuWB-m3MyIXclYAQNkojWaf-kfibm1OjFfhC45EHkeJkVNKid-K2dd_O1c5H-rVx8ypOTuQv8ELQ/s16000/Screenshot%202022-04-01%205.34.54%20PM.png" data-slide-source="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiCZkpChUnyojDE_nPmg-xZyTFgjo4qgBB7Pmbi0ZlIVNiiD2DXV1dcMW-QMIn-CTNNTA7bJlln0p8wuNju06E62adtn4C-sRngwKhvhA1-f0-8knYuWB-m3MyIXclYAQNkojWaf-kfibm1OjFfhC45EHkeJkVNKid-K2dd_O1c5H-rVx8ypOTuQv8ELQ/s16000/Screenshot%202022-04-01%205.34.54%20PM.png">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiCZkpChUnyojDE_nPmg-xZyTFgjo4qgBB7Pmbi0ZlIVNiiD2DXV1dcMW-QMIn-CTNNTA7bJlln0p8wuNju06E62adtn4C-sRngwKhvhA1-f0-8knYuWB-m3MyIXclYAQNkojWaf-kfibm1OjFfhC45EHkeJkVNKid-K2dd_O1c5H-rVx8ypOTuQv8ELQ/s16000/Screenshot%202022-04-01%205.34.54%20PM.png" width="760" height="530" alt="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiCZkpChUnyojDE_nPmg-xZyTFgjo4qgBB7Pmbi0ZlIVNiiD2DXV1dcMW-QMIn-CTNNTA7bJlln0p8wuNju06E62adtn4C-sRngwKhvhA1-f0-8knYuWB-m3MyIXclYAQNkojWaf-kfibm1OjFfhC45EHkeJkVNKid-K2dd_O1c5H-rVx8ypOTuQv8ELQ/s16000/Screenshot%202022-04-01%205.34.54%20PM.png">
+        </div>
+      
+    
+      
+        <div class="modal-slide" data-slide-alt="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhJ0IurIGscLmiuGVKNqXv3G_vKjlSpRbL_wkMSSiva3SGwOtHcHKWGab324yW6-TpmfnsNNlO9fqw2KtqFPa6X4AwAqdLSlEkPsF22NZSu1HaaOImnshjq0ahMlr6C1sh5NlvnZ2OqFg0D-7FY5w1KR-mqy3IJPOvqe6hrRfGcabJa7xSjhtYbWv4SiA/s16000/chart.png" data-slide-source="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhJ0IurIGscLmiuGVKNqXv3G_vKjlSpRbL_wkMSSiva3SGwOtHcHKWGab324yW6-TpmfnsNNlO9fqw2KtqFPa6X4AwAqdLSlEkPsF22NZSu1HaaOImnshjq0ahMlr6C1sh5NlvnZ2OqFg0D-7FY5w1KR-mqy3IJPOvqe6hrRfGcabJa7xSjhtYbWv4SiA/s16000/chart.png">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhJ0IurIGscLmiuGVKNqXv3G_vKjlSpRbL_wkMSSiva3SGwOtHcHKWGab324yW6-TpmfnsNNlO9fqw2KtqFPa6X4AwAqdLSlEkPsF22NZSu1HaaOImnshjq0ahMlr6C1sh5NlvnZ2OqFg0D-7FY5w1KR-mqy3IJPOvqe6hrRfGcabJa7xSjhtYbWv4SiA/s16000/chart.png" width="760" height="530" alt="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhJ0IurIGscLmiuGVKNqXv3G_vKjlSpRbL_wkMSSiva3SGwOtHcHKWGab324yW6-TpmfnsNNlO9fqw2KtqFPa6X4AwAqdLSlEkPsF22NZSu1HaaOImnshjq0ahMlr6C1sh5NlvnZ2OqFg0D-7FY5w1KR-mqy3IJPOvqe6hrRfGcabJa7xSjhtYbWv4SiA/s16000/chart.png">
+        </div>
+      
+    
+      
+        <div class="modal-slide" data-slide-alt="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgz-gW-L-HTRNa4FFX_HrnUnoQhXc2b7tjd-NFV_3KqG0n2pDrPzAhP-3Zx70jtygkDZV_VeE6u-XCjRWgY3ec_Ise8lK02iRuv6VzhJcayGnze6fv65oc3TgZ6JvfRso_xCW56-xI4xnScI0-oVsOu2kH3mBoU1CvtBVD99twdUtqsxyJj1DlAt3m1nQ/s16000/Screenshot%202022-04-01%205.25.47%20PM.png" data-slide-source="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgz-gW-L-HTRNa4FFX_HrnUnoQhXc2b7tjd-NFV_3KqG0n2pDrPzAhP-3Zx70jtygkDZV_VeE6u-XCjRWgY3ec_Ise8lK02iRuv6VzhJcayGnze6fv65oc3TgZ6JvfRso_xCW56-xI4xnScI0-oVsOu2kH3mBoU1CvtBVD99twdUtqsxyJj1DlAt3m1nQ/s16000/Screenshot%202022-04-01%205.25.47%20PM.png">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgz-gW-L-HTRNa4FFX_HrnUnoQhXc2b7tjd-NFV_3KqG0n2pDrPzAhP-3Zx70jtygkDZV_VeE6u-XCjRWgY3ec_Ise8lK02iRuv6VzhJcayGnze6fv65oc3TgZ6JvfRso_xCW56-xI4xnScI0-oVsOu2kH3mBoU1CvtBVD99twdUtqsxyJj1DlAt3m1nQ/s16000/Screenshot%202022-04-01%205.25.47%20PM.png" width="760" height="530" alt="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgz-gW-L-HTRNa4FFX_HrnUnoQhXc2b7tjd-NFV_3KqG0n2pDrPzAhP-3Zx70jtygkDZV_VeE6u-XCjRWgY3ec_Ise8lK02iRuv6VzhJcayGnze6fv65oc3TgZ6JvfRso_xCW56-xI4xnScI0-oVsOu2kH3mBoU1CvtBVD99twdUtqsxyJj1DlAt3m1nQ/s16000/Screenshot%202022-04-01%205.25.47%20PM.png">
+        </div>
+      
+    
+      
+        <div class="modal-slide" data-slide-alt="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgLXCWMlipdu0gFF6hsiJHbxg1zSaEkdDWfl-8RakQuW__8RPvlOS9KGIScNCytxT4jz9isnx0GLMwbS1G0Q4WdXzT42GszgfwIIAVX1H3J-43lVWWqcb--q9cPsxCsJFFz2dRfpKgEmLe-xfIyBqQuPq1BPYcK9CtAK1_xnhgvgAAx0GeZmODJxGNMYQ/s16000/image8.gif" data-slide-source="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgLXCWMlipdu0gFF6hsiJHbxg1zSaEkdDWfl-8RakQuW__8RPvlOS9KGIScNCytxT4jz9isnx0GLMwbS1G0Q4WdXzT42GszgfwIIAVX1H3J-43lVWWqcb--q9cPsxCsJFFz2dRfpKgEmLe-xfIyBqQuPq1BPYcK9CtAK1_xnhgvgAAx0GeZmODJxGNMYQ/s16000/image8.gif">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgLXCWMlipdu0gFF6hsiJHbxg1zSaEkdDWfl-8RakQuW__8RPvlOS9KGIScNCytxT4jz9isnx0GLMwbS1G0Q4WdXzT42GszgfwIIAVX1H3J-43lVWWqcb--q9cPsxCsJFFz2dRfpKgEmLe-xfIyBqQuPq1BPYcK9CtAK1_xnhgvgAAx0GeZmODJxGNMYQ/s16000/image8.gif" width="760" height="530" alt="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgLXCWMlipdu0gFF6hsiJHbxg1zSaEkdDWfl-8RakQuW__8RPvlOS9KGIScNCytxT4jz9isnx0GLMwbS1G0Q4WdXzT42GszgfwIIAVX1H3J-43lVWWqcb--q9cPsxCsJFFz2dRfpKgEmLe-xfIyBqQuPq1BPYcK9CtAK1_xnhgvgAAx0GeZmODJxGNMYQ/s16000/image8.gif">
+        </div>
+      
+    
+      
+        <div class="modal-slide" data-slide-alt="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjU6EWTNme8i8UftAzTxGA9X0n8nLzA5pkVV0BgzCRrxqddh7A65r4_svL5vYJl49HWN2QYNRFQgF6TrGpncz2Q_TuLvA2ynGZq9wnFP7wEnhSbkS-_viwhHtdahGozhCxHeILT7XS4w4cfGkJtum5nbUk6Mi9TP5s_OWRkvPAznhfWIOsvuVX8QgoisA/s16000/deepfix_task_879.png" data-slide-source="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjU6EWTNme8i8UftAzTxGA9X0n8nLzA5pkVV0BgzCRrxqddh7A65r4_svL5vYJl49HWN2QYNRFQgF6TrGpncz2Q_TuLvA2ynGZq9wnFP7wEnhSbkS-_viwhHtdahGozhCxHeILT7XS4w4cfGkJtum5nbUk6Mi9TP5s_OWRkvPAznhfWIOsvuVX8QgoisA/s16000/deepfix_task_879.png">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjU6EWTNme8i8UftAzTxGA9X0n8nLzA5pkVV0BgzCRrxqddh7A65r4_svL5vYJl49HWN2QYNRFQgF6TrGpncz2Q_TuLvA2ynGZq9wnFP7wEnhSbkS-_viwhHtdahGozhCxHeILT7XS4w4cfGkJtum5nbUk6Mi9TP5s_OWRkvPAznhfWIOsvuVX8QgoisA/s16000/deepfix_task_879.png" width="760" height="530" alt="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjU6EWTNme8i8UftAzTxGA9X0n8nLzA5pkVV0BgzCRrxqddh7A65r4_svL5vYJl49HWN2QYNRFQgF6TrGpncz2Q_TuLvA2ynGZq9wnFP7wEnhSbkS-_viwhHtdahGozhCxHeILT7XS4w4cfGkJtum5nbUk6Mi9TP5s_OWRkvPAznhfWIOsvuVX8QgoisA/s16000/deepfix_task_879.png">
+        </div>
+      
+    
+      
+        <div class="modal-slide" data-slide-alt="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLmQjS3gOQ2x7ru3xovYjVw-Yr2fKDCqhDHByQZitD92Yu4L-v2BBa5f_VMfpWM4D0930Dmk35EY1TqGrYUtMQqJO41hkLqXuu51eOpXZ3PvYPSjf5stfEJNJn2idWnRYCCEgBiJuLDTXX5Fgt-Mk13kCKdO12JShGvDO_cArtLKv8U8obJaHiL5ASQg/s16000/Big%20Bench%20Sped%20Up%20Cropped.gif" data-slide-source="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLmQjS3gOQ2x7ru3xovYjVw-Yr2fKDCqhDHByQZitD92Yu4L-v2BBa5f_VMfpWM4D0930Dmk35EY1TqGrYUtMQqJO41hkLqXuu51eOpXZ3PvYPSjf5stfEJNJn2idWnRYCCEgBiJuLDTXX5Fgt-Mk13kCKdO12JShGvDO_cArtLKv8U8obJaHiL5ASQg/s16000/Big%20Bench%20Sped%20Up%20Cropped.gif">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLmQjS3gOQ2x7ru3xovYjVw-Yr2fKDCqhDHByQZitD92Yu4L-v2BBa5f_VMfpWM4D0930Dmk35EY1TqGrYUtMQqJO41hkLqXuu51eOpXZ3PvYPSjf5stfEJNJn2idWnRYCCEgBiJuLDTXX5Fgt-Mk13kCKdO12JShGvDO_cArtLKv8U8obJaHiL5ASQg/s16000/Big%20Bench%20Sped%20Up%20Cropped.gif" width="760" height="530" alt="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLmQjS3gOQ2x7ru3xovYjVw-Yr2fKDCqhDHByQZitD92Yu4L-v2BBa5f_VMfpWM4D0930Dmk35EY1TqGrYUtMQqJO41hkLqXuu51eOpXZ3PvYPSjf5stfEJNJn2idWnRYCCEgBiJuLDTXX5Fgt-Mk13kCKdO12JShGvDO_cArtLKv8U8obJaHiL5ASQg/s16000/Big%20Bench%20Sped%20Up%20Cropped.gif">
+        </div>
+      
+    
+      
+        <div class="modal-slide" data-slide-alt="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHKfA6Vxw9li1vDfDChv-yzCp4ubKpOR2D62IMui3mAe5Un0jZ3P2_60stEZdtJNUt1b2XNzXbPoM0EO6B7UGneMd-2Bq0JK0gC5rIMSgQM02jwe5VmGxYLo_jz78vnG79oDIpv3mNu6kD0tqAUT6pcYkbkRpeoO9P-92I5O8ZsZefCpcxfIfEJREAyA/s16000/image5.png" data-slide-source="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHKfA6Vxw9li1vDfDChv-yzCp4ubKpOR2D62IMui3mAe5Un0jZ3P2_60stEZdtJNUt1b2XNzXbPoM0EO6B7UGneMd-2Bq0JK0gC5rIMSgQM02jwe5VmGxYLo_jz78vnG79oDIpv3mNu6kD0tqAUT6pcYkbkRpeoO9P-92I5O8ZsZefCpcxfIfEJREAyA/s16000/image5.png">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHKfA6Vxw9li1vDfDChv-yzCp4ubKpOR2D62IMui3mAe5Un0jZ3P2_60stEZdtJNUt1b2XNzXbPoM0EO6B7UGneMd-2Bq0JK0gC5rIMSgQM02jwe5VmGxYLo_jz78vnG79oDIpv3mNu6kD0tqAUT6pcYkbkRpeoO9P-92I5O8ZsZefCpcxfIfEJREAyA/s16000/image5.png" width="760" height="530" alt="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHKfA6Vxw9li1vDfDChv-yzCp4ubKpOR2D62IMui3mAe5Un0jZ3P2_60stEZdtJNUt1b2XNzXbPoM0EO6B7UGneMd-2Bq0JK0gC5rIMSgQM02jwe5VmGxYLo_jz78vnG79oDIpv3mNu6kD0tqAUT6pcYkbkRpeoO9P-92I5O8ZsZefCpcxfIfEJREAyA/s16000/image5.png">
+        </div>
+      
+    
+    </div>
+  </div>
+
+
+    
+</div>
+
+
+    </main>
+
+    
+    
+      
+        
+          
+            
+
+
+  <div class="gweb-footer__border-top"></div>
+  <footer class="gweb-footer" role="contentinfo">
+    
+      <div class="gweb-footer-wrapper-main">
+        
+          <div class="gweb-footer-social_links">
+            
+
+
+  <section class="glue-social">
+    <div class="glue-social__group glue-social--monochrome">
+      <h2 class="glue-social__title glue-social__title--inline caption">
+        Follow us
+      </h2>
+      <nav class="js-gt-follow-us-wrapper" aria-label="Social media links">
+        <ul class="glue-social__list" role="list">
+            
+              
+                  <li class="glue-social__item">
+                    <a class="glue-social__link"
+                        href="https://x.com/GoogleResearch"
+                        aria-label="x"
+                        title="Follow us on x"
+                        target="_blank"
+                        rel="noopener"
+                        data-gtm-event="social"
+                        data-gt-method="x">
+                      <svg id="icon-x" role="presentation" aria-hidden="true"
+                          class="glue-icon glue-icon--social glue-icon--24px">
+                        <use href="/gr/static/assets/icons/x.svg?v=2#x"></use>
+                      </svg>
+                    </a>
+                  </li>
+              
+                  <li class="glue-social__item">
+                    <a class="glue-social__link"
+                        href="https://www.linkedin.com/showcase/googleresearch/"
+                        aria-label="linkedin"
+                        title="Follow us on linkedin"
+                        target="_blank"
+                        rel="noopener"
+                        data-gtm-event="social"
+                        data-gt-method="linkedin">
+                      <svg id="icon-linkedin" role="presentation" aria-hidden="true"
+                          class="glue-icon glue-icon--social glue-icon--24px">
+                        <use href="/gr/static/assets/icons/linkedin.svg?v=2#linkedin"></use>
+                      </svg>
+                    </a>
+                  </li>
+              
+                  <li class="glue-social__item">
+                    <a class="glue-social__link"
+                        href="https://www.youtube.com/c/GoogleResearch"
+                        aria-label="youtube"
+                        title="Follow us on youtube"
+                        target="_blank"
+                        rel="noopener"
+                        data-gtm-event="social"
+                        data-gt-method="youtube">
+                      <svg id="icon-youtube" role="presentation" aria-hidden="true"
+                          class="glue-icon glue-icon--social glue-icon--24px">
+                        <use href="/gr/static/assets/icons/youtube.svg?v=2#youtube"></use>
+                      </svg>
+                    </a>
+                  </li>
+              
+                  <li class="glue-social__item">
+                    <a class="glue-social__link"
+                        href="https://github.com/google-research"
+                        aria-label="github"
+                        title="Follow us on github"
+                        target="_blank"
+                        rel="noopener"
+                        data-gtm-event="social"
+                        data-gt-method="github">
+                      <svg id="icon-github" role="presentation" aria-hidden="true"
+                          class="glue-icon glue-icon--social glue-icon--24px">
+                        <use href="/gr/static/assets/icons/github.svg?v=2#github"></use>
+                      </svg>
+                    </a>
+                  </li>
+              
+            
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+
+          </div>
+        
+        <div class="gweb-footer-main_links">
+          
+
+
+  <div class="gweb-footer-main-links__wrapper">
+    <div class="gweb-footer-main-links__title-wrapper">
+      
+        <h2 class="headline">Explore our other initiatives</h2>
+      
+    </div>
+    <div class="gweb-footer-main-links__content-wrapper">
+      
+        <div class="gweb-footer-main-links__link-group align-auto">
+          <div class="gweb-footer-main-links__group-heading-wrapper">
+            
+              <h3 class="gweb-footer-main-links__group-title headline-6">Google AI</h3>
+            
+            
+              <div class="gweb-footer-main-links__group-description text-body">
+                <span>Discover how Google AI is committed to enriching knowledge and solving complex challenges</span>
+              </div>
+            
+          </div>
+          <ul class="gweb-footer-main-links__group-links-wrapper" role="list">
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://ai.google/products/"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="Products"
+        
+        >
+      <div class="link__label">
+        
+          Products
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://ai.google/build/"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="Build"
+        
+        >
+      <div class="link__label">
+        
+          Build
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://ai.google/research/"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="Research"
+        
+        >
+      <div class="link__label">
+        
+          Research
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://ai.google/public-policy-perspectives/"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="Responsibility"
+        
+        >
+      <div class="link__label">
+        
+          Responsibility
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://ai.google/societal-impact/"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="Societal Impact"
+        
+        >
+      <div class="link__label">
+        
+          Societal Impact
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://ai.google/our-ai-journey/?section=intro"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="About"
+        
+        >
+      <div class="link__label">
+        
+          About
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+          </ul>
+          
+        </div>
+      
+        <div class="gweb-footer-main-links__link-group align-auto">
+          <div class="gweb-footer-main-links__group-heading-wrapper">
+            
+              <h3 class="gweb-footer-main-links__group-title headline-6">Google Cloud</h3>
+            
+            
+              <div class="gweb-footer-main-links__group-description text-body">
+                <span>High-performance infrastructure for cloud computing, data analytics &amp; machine learning</span>
+              </div>
+            
+          </div>
+          <ul class="gweb-footer-main-links__group-links-wrapper" role="list">
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://cloud.google.com/"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="Overview"
+        
+        >
+      <div class="link__label">
+        
+          Overview
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://cloud.google.com/solutions"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="Solutions"
+        
+        >
+      <div class="link__label">
+        
+          Solutions
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://cloud.google.com/products"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="Products"
+        
+        >
+      <div class="link__label">
+        
+          Products
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://cloud.google.com/pricing"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="Pricing"
+        
+        >
+      <div class="link__label">
+        
+          Pricing
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://cloud.google.com/resources"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="Resources"
+        
+        >
+      <div class="link__label">
+        
+          Resources
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+          </ul>
+          
+        </div>
+      
+        <div class="gweb-footer-main-links__link-group align-auto">
+          <div class="gweb-footer-main-links__group-heading-wrapper">
+            
+              <h3 class="gweb-footer-main-links__group-title headline-6">Google DeepMind</h3>
+            
+            
+              <div class="gweb-footer-main-links__group-description text-body">
+                <span>Our mission is to build AI responsibly to benefit humanity</span>
+              </div>
+            
+          </div>
+          <ul class="gweb-footer-main-links__group-links-wrapper" role="list">
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://deepmind.google/models/"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="Models"
+        
+        >
+      <div class="link__label">
+        
+          Models
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://deepmind.google/research/"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="Research"
+        
+        >
+      <div class="link__label">
+        
+          Research
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://deepmind.google/science/"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="Science"
+        
+        >
+      <div class="link__label">
+        
+          Science
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://deepmind.google/about/"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="About"
+        
+        >
+      <div class="link__label">
+        
+          About
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+          </ul>
+          
+        </div>
+      
+        <div class="gweb-footer-main-links__link-group align-auto">
+          <div class="gweb-footer-main-links__group-heading-wrapper">
+            
+              <h3 class="gweb-footer-main-links__group-title headline-6">Google Labs</h3>
+            
+            
+              <div class="gweb-footer-main-links__group-description text-body">
+                <span>Explore the future of AI responsibly with Google Labs</span>
+              </div>
+            
+          </div>
+          <ul class="gweb-footer-main-links__group-links-wrapper" role="list">
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://labs.google/#about"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="About"
+        
+        >
+      <div class="link__label">
+        
+          About
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://labs.google/#experiments"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="Experiments"
+        
+        >
+      <div class="link__label">
+        
+          Experiments
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+              
+                <li>
+                  
+
+
+
+  
+  
+    <a href="https://labs.google/#stay-connected"
+        target="_blank" rel="noopener noreferrer"
+        
+        class="not-glue"
+        
+        data-gtm-event="select_content"
+        data-event-content-type="outbound"
+        data-event-content-name="Stay connected"
+        
+        >
+      <div class="link__label">
+        
+          Stay connected
+        
+      </div>
+    </a>
+  
+
+
+                </li>
+              
+            
+          </ul>
+          
+        </div>
+      
+    </div>
+  </div>
+
+
+        </div>
+      </div>
+    
+    <div class="gweb-footer-wrapper-legal">
+      <div class="gweb-footer-google_links">
+        
+
+
+  <div class="gweb-footer-google-links__wrapper">
+    <div class="gweb-footer-google-links__title-wrapper">
+      <a class="gweb-footer-google-links__brand"
+          target="_blank"
+          aria-label="Google"
+          title="Google"
+          href="https://www.google.com/?utm_source=research.google&utm_medium=referral"
+          data-gtm-event="nav_select"
+          data-event-nav-type="footer"
+          data-event-nav-name="https://www.google.com/?utm_source=research.google&utm_medium=referral">
+        <svg role="img"
+            aria-hidden="true"
+            focusable="false"
+            width="75"
+            height="25">
+          <use href="/gr/static/assets/icons/glue-icons.svg#google-solid-logo"></use>
+        </svg>
+      </a>
+    </div>
+    <div class="gweb-footer-google-links__content-wrapper">
+      
+        <div class="gweb-footer-google-links__link">
+          <a class="not-glue"
+              href="https://about.google/"
+              aria-label="About Google"
+              data-gtm-event="nav_select"
+              data-event-nav-type="footer"
+              data-event-nav-name="About Google"
+              target="_blank" rel="noopener noreferrer"
+              >
+            <span>About Google</span>
+          </a>
+        </div>
+      
+        <div class="gweb-footer-google-links__link">
+          <a class="not-glue"
+              href="https://about.google/intl/en/products/"
+              aria-label="Google Products"
+              data-gtm-event="nav_select"
+              data-event-nav-type="footer"
+              data-event-nav-name="Google Products"
+              target="_blank" rel="noopener noreferrer"
+              >
+            <span>Google Products</span>
+          </a>
+        </div>
+      
+        <div class="gweb-footer-google-links__link">
+          <a class="not-glue"
+              href="https://policies.google.com/privacy"
+              aria-label="Privacy"
+              data-gtm-event="nav_select"
+              data-event-nav-type="footer"
+              data-event-nav-name="Privacy"
+              target="_blank" rel="noopener noreferrer"
+              >
+            <span>Privacy</span>
+          </a>
+        </div>
+      
+        <div class="gweb-footer-google-links__link">
+          <a class="not-glue"
+              href="https://policies.google.com/terms"
+              aria-label="Terms"
+              data-gtm-event="nav_select"
+              data-event-nav-type="footer"
+              data-event-nav-name="Terms"
+              target="_blank" rel="noopener noreferrer"
+              >
+            <span>Terms</span>
+          </a>
+        </div>
+      
+      
+      <div class="gweb-footer-google-links__link">
+        <button type="button"
+            aria-hidden="true"
+            class="not-glue glue-cookie-notification-bar-control">
+          Cookies management controls
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+      </div>
+    </div>
+  </footer>
+
+
+          
+        
+      
+    
+
+    <div id="dynamicImageModal" class="image-modal">
+  <span class="image-modal-close">&times;</span>
+  <div class="image-modal-content">
+    <div class="dynamic-modal-image">
+      <img width="800" height="540">
+    </div>
+  </div>
+</div>
+
+
+    
+    <script>
+        var scriptUrl = "https://www.gstatic.com/glue/v27_1/material-components-web.min.js";
+        var scriptElement = document.createElement('script');
+        scriptElement.async = false;
+        scriptElement.src = scriptUrl;
+        document.body.appendChild(scriptElement);
+    </script>
+    <script>
+        var scriptUrl = "https://www.youtube.com/player_api";
+        var scriptElement = document.createElement('script');
+        scriptElement.async = false;
+        scriptElement.src = scriptUrl;
+        document.body.appendChild(scriptElement);
+    </script>
+    <script>
+        var scriptUrl = "/gr/static/js/googleresearch.js?id=1db86c2c4ce1c6902b92830acba1963e";
+        var scriptElement = document.createElement('script');
+        scriptElement.async = false;
+        scriptElement.src = scriptUrl;
+        document.body.appendChild(scriptElement);
+    </script>
+    <script>
+        var scriptUrl = "https://support.google.com/inapp/api.js";
+        var scriptElement = document.createElement('script');
+        scriptElement.async = false;
+        scriptElement.src = scriptUrl;
+        document.body.appendChild(scriptElement);
+    </script>
+
+    
+    
+    
+
+    <script>
+        var scripts = [
+            "https://www.gstatic.com/glue/cookienotificationbar/cookienotificationbar.min.js"
+        ];
+
+        scripts.forEach(function(scriptUrl) {
+            var scriptElement = document.createElement('script');
+            scriptElement.async = false;
+            scriptElement.src = scriptUrl;
+            scriptElement.setAttribute("data-glue-cookie-notification-bar-category", "2B");
+            document.body.appendChild(scriptElement);
+        });
+    </script>
+</body>
+
+</html>
+
