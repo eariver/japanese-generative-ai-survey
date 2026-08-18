@@ -8,6 +8,7 @@ on:
       - "experiments/automotive-ee-architecture/source-intake-profile.json"
       - "experiments/automotive-ee-architecture/source-intake-plan.json"
       - "experiments/automotive-ee-architecture/profiled_source_intake.py"
+      - "experiments/automotive-ee-architecture/profiled_screening_index.py"
       - ".github/workflows/experiment-automotive-ee-source-intake.yml"
   workflow_dispatch:
 
@@ -51,6 +52,17 @@ jobs:
             --output-dir "$SCREEN" \
             --issue-id SP-automotive-ee-architecture-2023-2026
 
+      - name: Run page-role profiled Screening normalizer
+        run: |
+          set -euo pipefail
+          OUT="${RUNNER_TEMP}/automotive-ee-source-intake"
+          SCREEN="$OUT/sources/SP-automotive-ee-architecture-2023-2026/screening/profiled"
+          python experiments/automotive-ee-architecture/profiled_screening_index.py \
+            --input-root "$OUT" \
+            --output-dir "$SCREEN" \
+            --issue-id SP-automotive-ee-architecture-2023-2026 \
+            --profile experiments/automotive-ee-architecture/source-intake-profile.json
+
       - name: Build compact intake digest
         if: always()
         run: |
@@ -64,14 +76,30 @@ jobs:
           issue = "SP-automotive-ee-architecture-2023-2026"
           report_path = out / "source-intake-report.json"
           report = json.loads(report_path.read_text(encoding="utf-8")) if report_path.exists() else None
-          screening_path = out / "sources" / issue / "screening" / "base" / "screening-manifest.json"
-          screening = json.loads(screening_path.read_text(encoding="utf-8")) if screening_path.exists() else None
+
+          def screening_manifest(name: str):
+              path = out / "sources" / issue / "screening" / name / "screening-manifest.json"
+              return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+
+          canonical_screening = screening_manifest("base")
+          profiled_screening = screening_manifest("profiled")
 
           def newest_summary(collector: str):
               paths = sorted((out / "sources" / issue / "collectors" / collector / "runs").glob("*/summary.json"))
               if not paths:
                   return None
               return json.loads(paths[-1].read_text(encoding="utf-8"))
+
+          def screening_digest(value):
+              if value is None:
+                  return None
+              return {
+                  "record_count": value.get("record_count"),
+                  "counts_by_source_type": value.get("counts_by_source_type"),
+                  "batch_count": value.get("batch_count"),
+                  "profiled_item_page_count": value.get("profiled_item_page_count"),
+                  "screening_index_sha256": (value.get("screening_index") or {}).get("sha256"),
+              }
 
           arxiv = newest_summary("arxiv")
           github = newest_summary("github-releases")
@@ -87,11 +115,9 @@ jobs:
               "screening_storage": "GITHUB_ACTIONS_ARTIFACT_ONLY",
               "production_ai_pipeline_modified": False,
               "report": report,
-              "screening": None if screening is None else {
-                  "record_count": screening.get("record_count"),
-                  "counts_by_source_type": screening.get("counts_by_source_type"),
-                  "batch_count": screening.get("batch_count"),
-                  "screening_index_sha256": (screening.get("screening_index") or {}).get("sha256"),
+              "screening": {
+                  "canonical": screening_digest(canonical_screening),
+                  "profiled": screening_digest(profiled_screening),
               },
               "counts": {
                   "arxiv_unique_entries": None if arxiv is None else arxiv.get("unique_entry_count"),
