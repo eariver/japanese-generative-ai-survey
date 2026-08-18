@@ -1,0 +1,346 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-automotive-ee-architecture-2023-2026",
+  "architecture_version": "v0.3",
+  "status": "APPROVED",
+  "basis": {
+    "architecture_input_sha256": "ea873015da9213e24abbc23f20bdaf35556cb36bb5634c76c6931a8a88d781ce",
+    "selection_sha256": "5be50caeb87a521429c3d070232ba2ae44eb1b885eb8b27f6f2f3c48423f2413",
+    "matrix_sha256": "30396de0ff17500c93718934b1c4fe6cfeb0d7fdce54f3b5f6843c1b38bac529"
+  },
+  "approval": {
+    "approved_by": "eariver",
+    "approved_at": "2026-08-19T07:36:00+09:00",
+    "approval_reference": "ChatGPT Architecture Review approval: end-of-body synthesis required and reflected by P08 before References (2026-08-19 JST)"
+  },
+  "editorial_thesis": "2023–2026年の車載E&Eアーキテクチャは、ECUを単純に『中央へ集める』変化ではない。物理I/O、計算資源、通信、サービス/データ契約、開発・検証、そして安全・セキュリティの責務境界を再配置する変化として捉えると、zonalとcentral/HPC、EthernetとCAN XL、標準仕様とOSS platformが一つの連続した設計問題として見えてくる。",
+  "architecture_goals": [
+    "物理的zonal化と計算のcentral/HPC化を対立概念ではなく相補的な責務分割として説明する。",
+    "centralizationの利点だけでなくmixed-criticality・ASIL・isolationが作る集約限界を一次資料と研究Evidenceで示す。",
+    "Automotive Ethernet/TSNを主軸にしつつCAN XLと10BASE-T1Sを含め、用途別のnetwork fabricとして整理する。",
+    "VSS、SOME/IP/vSomeIP、AUTOSAR Adaptive/ROS 2、S-CORE等をECU製品名ではなくservice/data/software responsibility boundaryとして比較する。",
+    "CI/CD、software integration、diagnostics、digital twin/VILをArchitectureの外付け工程ではなくSDV E/E設計の一部として扱う。",
+    "functional safetyとcybersecurityを独立した付録ではなく全層を制約するcross-cutting concernとして統合する。",
+    "本文の最後に独立した総括を置き、各章で示した責務境界の再配置を一つの設計像として再統合する。"
+  ],
+  "page_budget": {
+    "target": 48,
+    "max": 64,
+    "planned": 48.0
+  },
+  "cover": {
+    "headline_deferred": true,
+    "headline": null,
+    "anchor_candidates": [
+      "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2409-10690v1-6f8ee796d3",
+      "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-ieee-8021dg-automoti-52b21e32f1",
+      "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-eclipse-score-projec-f643a9aa96"
+    ]
+  },
+  "packages": [
+    {
+      "package_id": "P00",
+      "title": "Front Matter / 読み方とEvidence境界",
+      "package_type": "FRONTMATTER",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [],
+      "page_target": 2,
+      "editorial_angle": "調査期間、Evidence class、標準・論文・OSSの読み分け、AUTOSAR/ISO取得gapを先に明示する。",
+      "must_cover": [
+        "2023-08-18〜2026-08-18のretrospective window",
+        "一次資料優先と未解決事項の保持",
+        "arXivだけでは標準化・実装動向を取りこぼす理由"
+      ],
+      "boundaries": [],
+      "late_breaking": false,
+      "drafting_order": 1
+    },
+    {
+      "package_id": "P01",
+      "title": "Lead — 『中央集約』ではなく責務境界の再設計",
+      "package_type": "LEAD",
+      "primary_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2409-10690v1-6f8ee796d3",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2407-17287v2-e9ad789af2"
+      ],
+      "supporting_evidence_task_ids": [],
+      "page_target": 5,
+      "editorial_angle": "zonal、central/HPC、determinism、service orientationを別々の流行語として並べず、物理I/O・compute・network・software contractの責務再配置という一つの設計問題に統合する。",
+      "must_cover": [
+        "centralization potentialと限界",
+        "physically zonal / computationally centralized",
+        "determinism/reliabilityを後段各章への接続点にする"
+      ],
+      "boundaries": [
+        "The authors frame the interview analysis as qualitative rather than statistically significant; findings therefore should not be treated as population-level quantitative validation.",
+        "The practitioner interview study is tied to Daimler Truck AG and the paper discusses external-generalizability limits; architecture conclusions should be treated as contextual rather than universal.",
+        "The five-component architecture is a survey-derived vision; the paper discusses validation paths rather than establishing production deployment or end-to-end certification of the complete architecture.",
+        "Many architecture-transition statements synthesize cited literature and industry material and should not be treated as independently measured facts from this paper."
+      ],
+      "late_breaking": false,
+      "drafting_order": 2
+    },
+    {
+      "package_id": "P02",
+      "title": "Compute — HPC統合とmixed-criticalityの現実",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2506-05822v1-eba4e624a8",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2412-09995v1-81f16c9648"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2505-07881v1-86b88e7eff",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2410-09839v1-7bf0812c87",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2408-02127v1-ea848722f0"
+      ],
+      "page_target": 7,
+      "editorial_angle": "ECU削減という物量の話から離れ、mixed criticality、ASIL decomposition、virtualization、resource governance、hardware isolationがHPC統合の上限を決めることを示す。",
+      "must_cover": [
+        "mixed-criticality SLR",
+        "virtualization/microservices trade-off",
+        "ASIL/resource allocation",
+        "initiator-side isolation"
+      ],
+      "boundaries": [
+        "The review does not apply snowballing and excludes some inaccessible/non-English material, including Chinese-language papers and SAE reports; the authors acknowledge publication-bias risk.",
+        "The authors note that limited public industry data hinders validation of recent automotive software-architecture advances and that gray literature/expert interviews could improve current-practice coverage.",
+        "Best practices transferred from avionics/cloud and the review's applicability outside automotive require further investigation.",
+        "The paper shows different start-up behavior on AMD64 and ARM64, so the percentages are not portable across hardware/runtime configurations without retesting.",
+        "The authors explicitly find that the best microservice/container count is neither necessarily the maximum nor minimum and must be determined experimentally.",
+        "The study is a performance evaluation, not evidence that virtualization/containerization automatically satisfies automotive safety isolation, certification, or deterministic timing requirements.",
+        "For simplicity, the model assumes coexistence/freedom-from-interference criteria are satisfied when mixed-criticality tasks share hardware; the optimization does not itself establish the complete safety argument for that coexistence.",
+        "Scalability experiments use a fixed four-ECU architecture with randomly generated task graphs and randomized WCET/WCRT/cost values, limiting direct transfer to a production E/E program.",
+        "Reported objective values and solver timings are case-study/problem-instance results rather than universal design-space optimization performance.",
+        "The paper explicitly focuses on initiator-side mechanisms and defers resource-side developments.",
+        "The open-source QEMU/CPU/Bao proof-of-concept is presented as a roadmap rather than completed validation in this paper.",
+        "The demonstration is a simulated SDV environment; the authors explicitly identify a more comprehensive demonstration with realistic automotive hardware and software as future work.",
+        "The authors note that online integration on the vehicle may be restricted to relatively small problems because vehicle compute resources are limited; larger-scale analysis is better suited to design time.",
+        "The PoC predefines VMs because the selected ACRN setup has limited runtime configuration flexibility."
+      ],
+      "late_breaking": false,
+      "drafting_order": 3
+    },
+    {
+      "package_id": "P03",
+      "title": "Network Fabric — TSN EthernetとCAN XLの役割分担",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-ieee-8021dg-automoti-52b21e32f1",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-cia-can-xl-d6279c76c3"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-open-alliance-10base-057097804e",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-open-alliance-channe-8482a0781d",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2504-05793v3-f90db43860"
+      ],
+      "page_target": 7,
+      "editorial_angle": "Ethernet一本化ではなく、TSNによるdeterministic backbone、10BASE-T1S等のedge接続、CAN XLのbackbone/sub-backbone可能性を物理・論理両面から比較する。",
+      "must_cover": [
+        "IEEE 802.1DG-2025",
+        "CAN XL / ISO 11898-1:2024 public status boundary",
+        "OPEN Alliance physical/channel specifications",
+        "dynamic TSN QoS"
+      ],
+      "boundaries": [
+        "Which detailed mandatory/optional TSN feature selections and configuration parameters are normative in the full IEEE Std 802.1DG-2025 text?",
+        "This verification used public IEEE project/publication pages; detailed normative requirements and parameter values in the full standard were not independently inspected.",
+        "The ISO 11898-1:2024 normative text was not available through the pinned Source Intake; this card verifies only the public CiA description and standardization status.",
+        "The committee page establishes document scope/version status but does not by itself prove that a specific PHY/ECU product passes the conformance or interoperability suites.",
+        "This page verifies channel/component specification activity and versions, not electrical performance of any particular production harness or connector implementation.",
+        "The central controller is a potential single point of failure during reservation/setup, although established real-time data paths do not continuously depend on it.",
+        "Hard deadline guarantees can require substantial bandwidth overprovisioning relative to less conservative schemes.",
+        "Reliable delivery/retransmission is treated as orthogonal to the strict real-time reservation problem, and redundancy mechanisms such as FRER are left for extensions."
+      ],
+      "late_breaking": false,
+      "drafting_order": 4
+    },
+    {
+      "package_id": "P04",
+      "title": "Service & Data — ECU境界から契約境界へ",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:series-covesa-vss-major-evolution-67e4b52d14",
+        "evidence:SP-automotive-ee-architecture-2023-2026:series-covesa-vsomeip-3x-evolution-3c75418e40"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-covesa-vsomeip-dbf82021e8",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2505-02734v2-8e61103b56",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2403-04378v1-e19e02d33d",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2511-17540v1-bb32e08743"
+      ],
+      "page_target": 7,
+      "editorial_angle": "サービス指向をAPIという語だけで扱わず、vehicle signal semantics、service discovery、middleware/runtime、ROS 2との境界まで含む『ソフトウェア契約の独立化』として整理する。",
+      "must_cover": [
+        "VSS 4.1〜6.0 evolution",
+        "vSomeIP 3.x maturity chronology",
+        "middleware comparison",
+        "AUTOSAR Adaptive / ROS 2 boundary"
+      ],
+      "boundaries": [
+        "VSS specifies a vehicle-data taxonomy/model and associated tooling; these releases do not by themselves establish a transport protocol, service runtime, or OEM-wide adoption.",
+        "Release notes establish project changes, not independent SOME/IP conformance, production deployment scale, safety qualification or comparative performance.",
+        "The same page makes broad adoption/deployment statements; this card does not treat those as independently verified production-deployment evidence.",
+        "Results are configuration- and Linux-testbed-specific; the authors identify embedded-platform evaluation as future work.",
+        "Two configurations were omitted as not meaningful: vSomeIP best-effort above the small-message case because SOME/IP-TP was not implemented, and Zenoh reliable because the selected reliable configuration did not affect transmission.",
+        "The paper itself shows topology/data-rate dependent reversals, so its measurements should not be generalized into a single universal middleware ranking.",
+        "What latency, jitter, CPU/memory overhead and failure-mode behavior would CARISMA exhibit on automotive HPC hardware and deterministic in-vehicle networks?",
+        "Validation is a two-VM proof of concept rather than embedded automotive HPC hardware or an in-vehicle network.",
+        "The authors explicitly defer a sound evaluation of CARISMA overhead versus direct inter-service communication to future work.",
+        "The prototype intentionally uses exactly one proxy per HPC and does not claim redundant proxy behavior.",
+        "AUTOSAR Adaptive/QNX is evaluated in QEMU rather than on an automotive target ECU/HPC.",
+        "The implementation/evaluation is tied to ROS 2 Humble, Fast DDS, vsomeip 3.4.9.1 and AUTOSAR Adaptive R20-11; interoperability across other implementations/releases requires separate evidence."
+      ],
+      "late_breaking": false,
+      "drafting_order": 5
+    },
+    {
+      "package_id": "P05",
+      "title": "Open Platform — S-COREが示す共通実装への移行",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-eclipse-score-projec-f643a9aa96",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-eclipse-score-launch-2a18862fac",
+        "evidence:SP-automotive-ee-architecture-2023-2026:series-eclipse-score-maturity-evolution-437752c125"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-soafee-denso-determi-f82f7eda52",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2607-05227v1-ce8cde65b9"
+      ],
+      "page_target": 6,
+      "editorial_angle": "仕様策定だけでなく共有core stack/reference implementationへ進む動きを、S-COREのlaunch→release maturityとSOAFEE系実装の両面から追う。",
+      "must_cover": [
+        "S-CORE launch",
+        "release maturity chronology",
+        "safety/integration artefacts",
+        "AUTOSAR Adaptive industry frictionはpartial evidenceとして限定"
+      ],
+      "boundaries": [
+        "Statements such as 'production-ready' or predictable/safe behavior are project claims unless backed by separate certification, conformance or deployment evidence.",
+        "The announcement included forward-looking release targets and safety-process goals; those targets are not treated here as proof of later delivery or certification.",
+        "What exact runtime/platform component baseline was delivered in v0.1.0 beyond the existence of the tag/release?",
+        "Which S-CORE components had production-grade or safety-qualified status at each release, as distinct from documentation/process maturity?",
+        "Release notes are project-authored evidence of repository changes; they do not by themselves establish production deployment, interoperability, functional-safety certification or automotive-grade maturity.",
+        "The v0.1.0 release page provides a release and full-changelog link but no detailed release-note body, so its exact technical baseline is unresolved from this source alone.",
+        "The page is authored by DENSO and hosted by SOAFEE; deterministic guarantees and portability/safety benefits are vendor/project claims rather than independent certification evidence.",
+        "The pinned article does not provide a sufficiently detailed independent latency/jitter or safety-certification evaluation for quantitative comparison.",
+        "Inspect the full paper for minimal-AP components, industry context, detailed pain-point taxonomy, attribution evidence and threats to validity.",
+        "The accessible primary abstract does not expose the minimal-AP implementation scope, participant/industry context, concrete pain-point inventory, trace from each pain point to specification/vendor/local causes, or study validity discussion.",
+        "Findings explicitly mix specification, vendor implementation and local practice; they should not be generalized as intrinsic AUTOSAR Adaptive defects without item-level attribution."
+      ],
+      "late_breaking": false,
+      "drafting_order": 6
+    },
+    {
+      "package_id": "P06",
+      "title": "Lifecycle — SDVではintegration/diagnostics/validationもArchitectureになる",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2507-19446v1-5be9173ad5"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2503-04928v1-491b9006c9",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2408-02127v1-ea848722f0",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2603-05279v1-f6ffbbc676",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2507-19403v1-bf12410710"
+      ],
+      "page_target": 6,
+      "editorial_angle": "中央計算機とサービス分離が進むほど、variant management、CI/CD、自動integration、diagnostics、digital twin/VILがE&E architectureの成立条件になることを示す。",
+      "must_cover": [
+        "variant-rich CI/CD",
+        "automatic platform configuration",
+        "AUTOFRAME",
+        "SDVDiag",
+        "central car server VIL/digital twin"
+      ],
+      "boundaries": [
+        "The evaluation is a laboratory setup using TurtleBots, ESP32-based ECU emulation and a central backend, not a production vehicle/fleet validation.",
+        "The authors explicitly identify deployment to a larger connected-vehicle testbed and deeper feature-model/variant-management integration as future work.",
+        "The evaluation uses CARLA and workstation-class hardware to emulate the vehicle/sensor-actuator environment; it does not establish behavior on production automotive compute or physical vehicle buses.",
+        "The authors list stronger cybersecurity measures, throughput/processing optimization and reliable real-time operation as future work, so those properties are not fully established by the current evaluation.",
+        "The demonstration is a simulated SDV environment; the authors explicitly identify a more comprehensive demonstration with realistic automotive hardware and software as future work.",
+        "The authors note that online integration on the vehicle may be restricted to relatively small problems because vehicle compute resources are limited; larger-scale analysis is better suited to design time.",
+        "The PoC predefines VMs because the selected ACRN setup has limited runtime configuration flexibility.",
+        "Inspect the full paper for dynamometer/vehicle/server setup, synchronization architecture, case-study metrics, and comparison with conventional ViL/HIL.",
+        "The accessible primary text does not expose case-study scenario definitions, central-server hardware, timing/accuracy metrics, synchronization error, comparison baseline, or quantitative development-effort reduction.",
+        "The evaluation is centered on autonomous-driving software; conclusions about other centralized vehicle domains require separate evidence.",
+        "The evaluation is a controlled 5G test-fleet/smart-charging scenario with injected faults rather than broad production-fleet fault distributions.",
+        "Graph-based rankings identify likely root causes; their correctness depends on dependency/causal graph quality, anomaly detection, and the selected analysis module."
+      ],
+      "late_breaking": false,
+      "drafting_order": 7
+    },
+    {
+      "package_id": "P07",
+      "title": "Cross-cutting Deep Dive — Safety / Security / Trust Boundary",
+      "package_type": "DEEP_DIVE",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2506-13261v1-cb2daee51e",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2410-09839v1-7bf0812c87",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2505-07881v1-86b88e7eff",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-soafee-denso-determi-f82f7eda52"
+      ],
+      "page_target": 3,
+      "editorial_angle": "Safety/Securityを独立ECUへ逃がす前提が崩れると、isolation、resource partitioning、service authentication、deterministic runtimeが各層横断のarchitecture contractになる。",
+      "must_cover": [
+        "ASIL decomposition",
+        "hardware isolation",
+        "service authentication/authorization",
+        "implementation claimsとindependent assuranceの区別"
+      ],
+      "boundaries": [
+        "The evaluation shows high performance jitter, attributed partly to parallel execution on a single system; Open vSwitch/Mininet emulation also omits physical network transmission times.",
+        "Supply-chain attacks, secure builds, OTA distribution and some mixed-security downgrade cases are outside the detailed security analysis.",
+        "The main automotive evaluation does not include remote DNSSEC resolution in the service-setup path; the authors expect such resolution to occur during update procedures.",
+        "The paper explicitly focuses on initiator-side mechanisms and defers resource-side developments.",
+        "The open-source QEMU/CPU/Bao proof-of-concept is presented as a roadmap rather than completed validation in this paper.",
+        "For simplicity, the model assumes coexistence/freedom-from-interference criteria are satisfied when mixed-criticality tasks share hardware; the optimization does not itself establish the complete safety argument for that coexistence.",
+        "Scalability experiments use a fixed four-ECU architecture with randomly generated task graphs and randomized WCET/WCRT/cost values, limiting direct transfer to a production E/E program.",
+        "Reported objective values and solver timings are case-study/problem-instance results rather than universal design-space optimization performance.",
+        "The page is authored by DENSO and hosted by SOAFEE; deterministic guarantees and portability/safety benefits are vendor/project claims rather than independent certification evidence.",
+        "The pinned article does not provide a sufficiently detailed independent latency/jitter or safety-certification evaluation for quantitative comparison."
+      ],
+      "late_breaking": false,
+      "drafting_order": 8
+    },
+    {
+      "package_id": "P08",
+      "title": "総括 — 2026年夏の到達点と残る設計課題",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [],
+      "page_target": 3,
+      "editorial_angle": "本文各章で分解した物理配置、計算資源、network fabric、service/data contract、open platform、development lifecycle、安全・セキュリティを再び一枚のE&E設計像へ統合する。『centralize everything』ではなく、責務をどこに置き、何を契約として固定するかが2026年時点の本質的な設計課題であると結論づける。",
+      "must_cover": [
+        "physically zonal / computationally centralized の再確認",
+        "Ethernet中心だが単一busではない",
+        "ECU境界からservice/data/resource contractへの移行",
+        "software development/validation infrastructureもE&E architectureの一部",
+        "安全・セキュリティ・determinismが中央集約の実効上限を決める",
+        "標準仕様・OSS実装・OEM/Tier1実装の間に残る検証gap"
+      ],
+      "boundaries": [],
+      "late_breaking": false,
+      "drafting_order": 9
+    },
+    {
+      "package_id": "P09",
+      "title": "References / Evidence Map / 未解決事項",
+      "package_type": "REFERENCES",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [],
+      "page_target": 2,
+      "editorial_angle": "一次資料、論文、release chronology、取得できなかったAUTOSAR/ISO資料、PARTIAL/HOLDの扱いをEvidence mapとして残す。",
+      "must_cover": [
+        "source/evidence class一覧",
+        "AUTOSAR TLS / ISO 403 coverage gap",
+        "TIMING_UNRESOLVED 5件の精度境界",
+        "PARTIAL Evidenceの非昇格原則"
+      ],
+      "boundaries": [],
+      "late_breaking": false,
+      "drafting_order": 10
+    }
+  ],
+  "this_week_summary_written_last": true
+}

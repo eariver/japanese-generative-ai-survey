@@ -1,0 +1,758 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-automotive-ee-architecture-2023-2026",
+  "package_id": "P03",
+  "draft_source_mode": "EVIDENCE_PACKAGE",
+  "execution_stage": "ARTICLE_DRAFTING",
+  "basis": {
+    "architecture_plan_sha256": "a1ff65d079c0a52e4d16f1094ac497adb993a7ce67d9786ac0c2ee2075121b35",
+    "architecture_input_sha256": "ea873015da9213e24abbc23f20bdaf35556cb36bb5634c76c6931a8a88d781ce",
+    "evidence_reviewed_sha256": "029142cec0c09127aa64e51ddfdb3652277af108cc53f8c0d9d9c22eb696ffc5"
+  },
+  "package": {
+    "title": "Network Fabric — TSN EthernetとCAN XLの役割分担",
+    "package_type": "SECTION",
+    "page_target": 7,
+    "editorial_angle": "Ethernet一本化ではなく、TSNによるdeterministic backbone、10BASE-T1S等のedge接続、CAN XLのbackbone/sub-backbone可能性を物理・論理両面から比較する。",
+    "must_cover": [
+      "IEEE 802.1DG-2025",
+      "CAN XL / ISO 11898-1:2024 public status boundary",
+      "OPEN Alliance physical/channel specifications",
+      "dynamic TSN QoS"
+    ],
+    "boundaries": [
+      "Which detailed mandatory/optional TSN feature selections and configuration parameters are normative in the full IEEE Std 802.1DG-2025 text?",
+      "This verification used public IEEE project/publication pages; detailed normative requirements and parameter values in the full standard were not independently inspected.",
+      "The ISO 11898-1:2024 normative text was not available through the pinned Source Intake; this card verifies only the public CiA description and standardization status.",
+      "The committee page establishes document scope/version status but does not by itself prove that a specific PHY/ECU product passes the conformance or interoperability suites.",
+      "This page verifies channel/component specification activity and versions, not electrical performance of any particular production harness or connector implementation.",
+      "The central controller is a potential single point of failure during reservation/setup, although established real-time data paths do not continuously depend on it.",
+      "Hard deadline guarantees can require substantial bandwidth overprovisioning relative to less conservative schemes.",
+      "Reliable delivery/retransmission is treated as orthogonal to the strict real-time reservation problem, and redundancy mechanisms such as FRER are left for extensions."
+    ],
+    "late_breaking": false,
+    "drafting_order": 4
+  },
+  "primary_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-ieee-8021dg-automoti-52b21e32f1",
+      "evidence_task_sha256": "1f1970ba6c11c16666fc272f81736f07ee0e6764208d646564220de11c6b56a0",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence vertical-slice verification",
+        "generated_at": "2026-08-18T13:56:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-ieee-8021dg-automoti-52b21e32f1",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single item-level IEEE 802.1 project/publication evidence; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "IEEE Std 802.1DG-2025 — Time-Sensitive Networking Profile for Automotive In-Vehicle Ethernet Communications",
+          "artifact_type": "STANDARD",
+          "organization": "IEEE 802.1",
+          "canonical_url": "https://1.ieee802.org/tsn/802-1dg/"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-06-06",
+          "observed_at": "2026-08-18T13:56:00Z",
+          "events": [
+            {
+              "event_id": "event-board-approval",
+              "event_type": "STANDARD_BOARD_APPROVAL",
+              "event_date": "2025-05-28",
+              "source_published_at": null,
+              "source_ids": [
+                "src-ieee-project"
+              ]
+            },
+            {
+              "event_id": "event-publication",
+              "event_type": "STANDARD_PUBLICATION",
+              "event_date": "2025-06-06",
+              "source_published_at": null,
+              "source_ids": [
+                "src-ieee-project"
+              ]
+            },
+            {
+              "event_id": "event-publication-news",
+              "event_type": "PUBLICATION_ANNOUNCEMENT",
+              "event_date": "2025-12-04",
+              "source_published_at": "2025-12-04",
+              "source_ids": [
+                "src-ieee-publication-news"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-ieee-project",
+            "url": "https://1.ieee802.org/tsn/802-1dg/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "P802.1DG – TSN Profile for Automotive In-Vehicle Ethernet Communications",
+            "published_at": null,
+            "accessed_at": "2026-08-18T13:56:00Z",
+            "role": "Official IEEE 802.1 project page establishing scope, publication status, approval/publication dates and project history."
+          },
+          {
+            "source_id": "src-ieee-publication-news",
+            "url": "https://1.ieee802.org/publication-ieee-802-1dg-2025/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Publication: IEEE 802.1DG-2025 Time-Sensitive Networking Profile for Automotive In-Vehicle Ethernet Communications",
+            "published_at": "2025-12-04",
+            "accessed_at": "2026-08-18T13:56:00Z",
+            "role": "Official IEEE 802.1 publication announcement summarizing automotive TSN profile purpose and applicability."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-publication-status",
+            "text": "IEEE 802.1DG is a published 2025 standard; the project page records Board approval on 2025-05-28 and publication on 2025-06-06.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-ieee-project"
+            ],
+            "context": "Status/date evidence from the IEEE 802.1 project page."
+          },
+          {
+            "claim_id": "claim-scope",
+            "text": "The standard defines an automotive in-vehicle Ethernet TSN profile for bridged IEEE 802.3 networks, addressing deterministic/bounded latency and selecting applicable IEEE 802.1 TSN/security features for automotive use.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-ieee-project",
+              "src-ieee-publication-news"
+            ],
+            "context": "Publicly stated standard scope; detailed normative parameters were not inspected."
+          },
+          {
+            "claim_id": "claim-architecture-relevance",
+            "text": "The public IEEE summary positions 802.1DG as guidance for automotive vendors/suppliers designing in-vehicle networks with bounded latency, bandwidth and synchronization requirements.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-ieee-publication-news"
+            ],
+            "context": "Architecture relevance follows the standard’s stated profile purpose."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-normative-text",
+            "text": "This verification used public IEEE project/publication pages; detailed normative requirements and parameter values in the full standard were not independently inspected.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-ieee-project",
+              "src-ieee-publication-news"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the official scope/status and architecture-significant statements on ieee-8021dg-automotive-tsn; distinguish directly checkable facts from organization/project claims.",
+              "status": "VERIFIED",
+              "finding": "Official IEEE 802.1 pages establish published-standard status, approval/publication dates, and the automotive TSN profile scope. Detailed normative contents remain outside this verification.",
+              "source_ids": [
+                "src-ieee-project",
+                "src-ieee-publication-news"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "Which detailed mandatory/optional TSN feature selections and configuration parameters are normative in the full IEEE Std 802.1DG-2025 text?"
+          ],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Publication in 2025 places a formal automotive TSN profile inside the 2023-2026 E/E transition window.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "A published automotive-specific TSN profile is directly relevant to deterministic Ethernet as the network substrate for centralized/zonal E/E architectures."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-cia-can-xl-d6279c76c3",
+      "evidence_task_sha256": "ec5e6048232f96529cfc9b293a0aa340ec603ea97d072c873a94b66ab02c6e6b",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-02 primary-source verification",
+        "generated_at": "2026-08-18T14:40:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-cia-can-xl-d6279c76c3",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single item-level primary source; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "CAN XL",
+          "artifact_type": "PROTOCOL",
+          "organization": "CAN in Automation (CiA)",
+          "canonical_url": "https://www.can-cia.org/can-knowledge/can-xl"
+        },
+        "temporal": {
+          "artifact_first_announced": null,
+          "observed_at": "2026-08-18T14:40:00Z",
+          "events": [
+            {
+              "event_id": "event-iso-standardization",
+              "event_type": "STANDARDIZATION_STATUS",
+              "event_date": null,
+              "source_published_at": null,
+              "source_ids": [
+                "src-cia"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-cia",
+            "url": "https://www.can-cia.org/can-knowledge/can-xl",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "CAN XL: CAN in Automation (CiA)",
+            "published_at": null,
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official CiA technical knowledge page establishing protocol properties, intended network role and ISO 11898-1:2024 standardization status."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-data-field",
+            "text": "The CiA page describes CAN XL as the third generation of the CAN data link layer with a data-field length from 1 to 2048 bytes.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-cia"
+            ],
+            "context": "Protocol characteristics stated by the relevant CAN industry association."
+          },
+          {
+            "claim_id": "claim-backbone",
+            "text": "CiA states that CAN XL is intended for backbone and sub-backbone network applications and is designed for integration into TCP/IP network systems.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-cia"
+            ],
+            "context": "Architecture role stated on the official technical page."
+          },
+          {
+            "claim_id": "claim-standardization",
+            "text": "CiA states that CAN XL is standardized in ISO 11898-1:2024 and lists CiA 610–613 document series for related specifications, services and guidance.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-cia"
+            ],
+            "context": "Public standardization/status metadata; inaccessible ISO normative text was not reconstructed."
+          },
+          {
+            "claim_id": "claim-bit-rate",
+            "text": "The page states that optional PWM coding can support bit rates of 20 Mbit/s and higher depending on physical network design.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-cia"
+            ],
+            "context": "Public protocol capability statement with an explicit physical-network dependency."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "lim-normative",
+            "text": "The ISO 11898-1:2024 normative text was not available through the pinned Source Intake; this card verifies only the public CiA description and standardization status.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-cia"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the official scope/status and architecture-significant statements on cia-can-xl; distinguish directly checkable facts from organization/project claims.",
+              "status": "VERIFIED",
+              "finding": "The pinned CiA page directly establishes CAN XL scope, public protocol characteristics, backbone/sub-backbone intent and ISO 11898-1:2024 status; detailed normative clauses remain outside this evidence.",
+              "source_ids": [
+                "src-cia"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "CAN XL provides an important non-Ethernet high-bandwidth backbone/sub-backbone path in the 2023-2026 architecture transition.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "It is a directly architecture-relevant in-vehicle network technology whose public specification status and intended role can be separated cleanly from unavailable normative detail."
+        }
+      }
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-open-alliance-10base-057097804e",
+      "evidence_task_sha256": "9b5c9adb856bbad7731ff5668d89d8c548d97ba0f3202d2baef75aea1ce45727",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-02 primary-source verification",
+        "generated_at": "2026-08-18T14:40:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-open-alliance-10base-057097804e",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single item-level primary source; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "OPEN Alliance TC14 10BASE-T1S automotive specification suite",
+          "artifact_type": "SPECIFICATION",
+          "organization": "OPEN Alliance",
+          "canonical_url": "https://opensig.org/tech-committee/tc14-interoperability-compliance-tests-for-10base-t1s-phys/"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-06",
+          "observed_at": "2026-08-18T14:40:00Z",
+          "events": [
+            {
+              "event_id": "event-emc-transceiver-v1",
+              "event_type": "SPECIFICATION_RELEASE",
+              "event_date": "2025-06",
+              "source_published_at": null,
+              "source_ids": [
+                "src-open"
+              ]
+            },
+            {
+              "event_id": "event-plca-conformance-v14",
+              "event_type": "SPECIFICATION_RELEASE",
+              "event_date": "2026-03",
+              "source_published_at": null,
+              "source_ids": [
+                "src-open"
+              ]
+            },
+            {
+              "event_id": "event-digphy-v1",
+              "event_type": "SPECIFICATION_RELEASE",
+              "event_date": "2026-07",
+              "source_published_at": null,
+              "source_ids": [
+                "src-open"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-open",
+            "url": "https://opensig.org/tech-committee/tc14-interoperability-compliance-tests-for-10base-t1s-phys/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "TC14 – Interoperability & Compliance Tests for 10BASE-T1S PHYs",
+            "published_at": null,
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official OPEN Alliance committee page and roadmap snapshot for automotive 10BASE-T1S conformance/interoperability specifications."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-goal",
+            "text": "OPEN Alliance TC14 states that its goal is enabling 10BASE-T1S in an automotive context through conformance, interoperability and EMC test specifications plus implementation/diagnostic work.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-open"
+            ],
+            "context": "Committee scope."
+          },
+          {
+            "claim_id": "claim-cross-layer",
+            "text": "The committee scope includes PLCA registers, topology discovery, PMD transceiver interfaces, sleep/wake, and collaboration on ECU/channel/MACsec-related specifications.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-open"
+            ],
+            "context": "Public specification-suite scope."
+          },
+          {
+            "claim_id": "claim-roadmap",
+            "text": "The pinned roadmap lists multiple approved 2025-2026 specification/test-suite versions, including transceiver EMC, PLCA conformance and digPHY conformance deliverables.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-open"
+            ],
+            "context": "Roadmap status at pinned observation time."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "lim-conformance",
+            "text": "The committee page establishes document scope/version status but does not by itself prove that a specific PHY/ECU product passes the conformance or interoperability suites.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-open"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the official scope/status and architecture-significant statements on open-alliance-10base-t1s; distinguish directly checkable facts from organization/project claims.",
+              "status": "VERIFIED",
+              "finding": "The official committee page verifies an automotive 10BASE-T1S specification/conformance ecosystem and concrete 2025-2026 roadmap milestones.",
+              "source_ids": [
+                "src-open"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "10BASE-T1S fills a lower-speed/multidrop Ethernet niche and its automotive interoperability ecosystem matters to zonal edge connectivity.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Useful physical/network-layer evidence distinct from higher-speed backbone TSN and CAN XL."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-open-alliance-channe-8482a0781d",
+      "evidence_task_sha256": "290c97979a947c98794f21cb394c5c7b3fb1f26f6e9b2378b3ba84bf6044c7a9",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-02 primary-source verification",
+        "generated_at": "2026-08-18T14:40:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-open-alliance-channe-8482a0781d",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single item-level primary source; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "OPEN Alliance TC9 Automotive Ethernet Channel & Components specifications",
+          "artifact_type": "SPECIFICATION",
+          "organization": "OPEN Alliance",
+          "canonical_url": "https://opensig.org/tech-committee/tc9-automotive-ethernet-channel-components/"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-06",
+          "observed_at": "2026-08-18T14:40:00Z",
+          "events": [
+            {
+              "event_id": "event-10base-channel-v11",
+              "event_type": "SPECIFICATION_RELEASE",
+              "event_date": "2025-06",
+              "source_published_at": null,
+              "source_ids": [
+                "src-open"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-open",
+            "url": "https://opensig.org/tech-committee/tc9-automotive-ethernet-channel-components/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "TC9 – Automotive Ethernet Channel & Components",
+            "published_at": null,
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official OPEN Alliance committee page used for cabling/channel requirements, test methodology scope and current focus."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-scope",
+            "text": "TC9 defines electrical requirements and test procedures for automotive Ethernet cabling channels and components, including cables, connectors and assemblies aligned with IEEE 802.3 link-segment requirements.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-open"
+            ],
+            "context": "Committee scope."
+          },
+          {
+            "claim_id": "claim-speed-grades",
+            "text": "The committee states that its work covers automotive Ethernet speed grades on electrical media and develops generic measurement/test procedures for link-segment and component qualification.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-open"
+            ],
+            "context": "Public scope statement."
+          },
+          {
+            "claim_id": "claim-current-focus",
+            "text": "The pinned page states current work includes 1000BASE-T1 over coaxial media and 25GBASE-T1, while the roadmap lists 10BASE-T1S channel/component requirements v1.1 from June 2025.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-open"
+            ],
+            "context": "Roadmap/current-focus snapshot."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "lim-physical-layer",
+            "text": "This page verifies channel/component specification activity and versions, not electrical performance of any particular production harness or connector implementation.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-open"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the official scope/status and architecture-significant statements on open-alliance-channel-components; distinguish directly checkable facts from organization/project claims.",
+              "status": "VERIFIED",
+              "finding": "The official page establishes physical-channel/component responsibilities and test methodology spanning multiple Automotive Ethernet media/speeds.",
+              "source_ids": [
+                "src-open"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Physical link/channel specifications are an often-hidden but essential constraint on the move to Ethernet-centric zonal/backbone architectures.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Strong supporting candidate for the physical-network layer, especially to prevent the survey from treating Ethernet as a purely logical/software transition."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2504-05793v3-f90db43860",
+      "evidence_task_sha256": "159c498a28a54511563fb496ff814d63681c0c47f3325aec021b55e9309ac3d5",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-04 primary-source verification",
+        "generated_at": "2026-08-18T15:10:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2504-05793v3-f90db43860",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single paper; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "Negotiating strict latency limits for dynamic real-time services in vehicular time-sensitive networks",
+          "artifact_type": "PAPER",
+          "organization": "TU Dresden / HAW Hamburg / TU Eindhoven",
+          "canonical_url": "https://arxiv.org/abs/2504.05793"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-04-08T08:22:32Z",
+          "observed_at": "2026-08-18T15:10:00Z",
+          "events": [
+            {
+              "event_id": "event-arxiv",
+              "event_type": "PREPRINT_SUBMISSION",
+              "event_date": "2025-04-08T08:22:32Z",
+              "source_published_at": "2025-12-01",
+              "source_ids": [
+                "src-paper"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-paper",
+            "url": "https://arxiv.org/abs/2504.05793",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Negotiating strict latency limits for dynamic real-time services in vehicular time-sensitive networks",
+            "published_at": "2025-12-01",
+            "accessed_at": "2026-08-18T15:10:00Z",
+            "role": "Author arXiv paper/preprint used to verify the architecture, evaluation scope, material claims, and limitations available in the primary text."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-qos-bridge",
+            "text": "The authors propose a service-discovery/QoS negotiation mechanism that communicates application requirements to a central TSN controller, which performs admission/resource configuration using network-calculus delay budgets.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Proposed SOA-to-TSN control architecture."
+          },
+          {
+            "claim_id": "claim-valid-scheme",
+            "text": "In the evaluated realistic IVN, the authors find the per-queue delay-budget/network-calculus reservation approach to be the only tested scheme that consistently enforces hard latency constraints; alternative interval-based approaches can misconfigure resources.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Simulation/worst-case-analysis result."
+          },
+          {
+            "claim_id": "claim-controller-boundary",
+            "text": "Real-time data transfer bypasses the controller after flows/reservations are established, while the controller remains a setup-time dependency and potential single point of failure.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Architecture and explicit limitation."
+          }
+        ],
+        "metrics": [
+          {
+            "metric_id": "metric-subscriptions",
+            "name": "vehicular subscriptions configured",
+            "value": "450",
+            "unit": "subscriptions",
+            "context": "Full IVN case study.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "metric_id": "metric-setup-time",
+            "name": "setup/signaling duration with SOME/IP scatter",
+            "value": "11.1",
+            "unit": "ms",
+            "context": "450 subscriptions in the realistic-IVN simulation; negotiation without scatter is reported around 2 ms.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "metric_id": "metric-deadline",
+            "name": "target worst-case end-to-end latency per flow",
+            "value": "1",
+            "unit": "ms",
+            "context": "Critical-flow deadline used in the IVN evaluation.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "metric_id": "metric-overprovisioning",
+            "name": "maximum relative idle-slope provisioning versus flow-interval baseline",
+            "value": "3",
+            "unit": "x",
+            "context": "Delay-budget approach may provision up to roughly three times higher idle slope to guarantee deadlines.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          }
+        ],
+        "limitations": [
+          {
+            "limitation_id": "limitation-single-point",
+            "text": "The central controller is a potential single point of failure during reservation/setup, although established real-time data paths do not continuously depend on it.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "limitation_id": "limitation-resource-cost",
+            "text": "Hard deadline guarantees can require substantial bandwidth overprovisioning relative to less conservative schemes.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "limitation_id": "limitation-reliability",
+            "text": "Reliable delivery/retransmission is treated as orthogonal to the strict real-time reservation problem, and redundancy mechanisms such as FRER are left for extensions.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the architecture, evaluation setup, material claims and limitations reported for Negotiating strict latency limits for dynamic real-time services in vehicular time-sensitive networks; preserve paper results as AUTHOR_CLAIM unless independently established.",
+              "status": "VERIFIED",
+              "finding": "The full v3 primary text verifies the SOA-to-TSN signaling architecture, network-calculus delay-budget method, 450-subscription/11.1-ms result, 1-ms deadline target, overprovisioning trade-off, controller/SPOF and reliability limitations.",
+              "source_ids": [
+                "src-paper"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Dynamic service deployment makes deterministic network configuration a runtime control-plane responsibility rather than a static communication-matrix-only activity.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Directly connects application/SOA QoS requests to centralized TSN resource control with worst-case latency validation; one of the strongest network-control architecture items in the intake."
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION",
+    "cover_headline_finalization_forbidden": true,
+    "this_week_summary_forbidden": true
+  }
+}

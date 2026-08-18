@@ -1,0 +1,1173 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-automotive-ee-architecture-2023-2026",
+  "package_id": "P04",
+  "draft_source_mode": "EVIDENCE_PACKAGE",
+  "execution_stage": "ARTICLE_DRAFTING",
+  "basis": {
+    "architecture_plan_sha256": "a1ff65d079c0a52e4d16f1094ac497adb993a7ce67d9786ac0c2ee2075121b35",
+    "architecture_input_sha256": "ea873015da9213e24abbc23f20bdaf35556cb36bb5634c76c6931a8a88d781ce",
+    "evidence_reviewed_sha256": "029142cec0c09127aa64e51ddfdb3652277af108cc53f8c0d9d9c22eb696ffc5"
+  },
+  "package": {
+    "title": "Service & Data — ECU境界から契約境界へ",
+    "package_type": "SECTION",
+    "page_target": 7,
+    "editorial_angle": "サービス指向をAPIという語だけで扱わず、vehicle signal semantics、service discovery、middleware/runtime、ROS 2との境界まで含む『ソフトウェア契約の独立化』として整理する。",
+    "must_cover": [
+      "VSS 4.1〜6.0 evolution",
+      "vSomeIP 3.x maturity chronology",
+      "middleware comparison",
+      "AUTOSAR Adaptive / ROS 2 boundary"
+    ],
+    "boundaries": [
+      "VSS specifies a vehicle-data taxonomy/model and associated tooling; these releases do not by themselves establish a transport protocol, service runtime, or OEM-wide adoption.",
+      "Release notes establish project changes, not independent SOME/IP conformance, production deployment scale, safety qualification or comparative performance.",
+      "The same page makes broad adoption/deployment statements; this card does not treat those as independently verified production-deployment evidence.",
+      "Results are configuration- and Linux-testbed-specific; the authors identify embedded-platform evaluation as future work.",
+      "Two configurations were omitted as not meaningful: vSomeIP best-effort above the small-message case because SOME/IP-TP was not implemented, and Zenoh reliable because the selected reliable configuration did not affect transmission.",
+      "The paper itself shows topology/data-rate dependent reversals, so its measurements should not be generalized into a single universal middleware ranking.",
+      "What latency, jitter, CPU/memory overhead and failure-mode behavior would CARISMA exhibit on automotive HPC hardware and deterministic in-vehicle networks?",
+      "Validation is a two-VM proof of concept rather than embedded automotive HPC hardware or an in-vehicle network.",
+      "The authors explicitly defer a sound evaluation of CARISMA overhead versus direct inter-service communication to future work.",
+      "The prototype intentionally uses exactly one proxy per HPC and does not claim redundant proxy behavior.",
+      "AUTOSAR Adaptive/QNX is evaluated in QEMU rather than on an automotive target ECU/HPC.",
+      "The implementation/evaluation is tied to ROS 2 Humble, Fast DDS, vsomeip 3.4.9.1 and AUTOSAR Adaptive R20-11; interoperability across other implementations/releases requires separate evidence."
+    ],
+    "late_breaking": false,
+    "drafting_order": 5
+  },
+  "primary_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:series-covesa-vss-major-evolution-67e4b52d14",
+      "evidence_task_sha256": "f719bd0634ad486ff6f6d602f71c812627f6711a030d85185bdc74857b420be8",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-02 primary-source verification",
+        "generated_at": "2026-08-18T14:40:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:series-covesa-vss-major-evolution-67e4b52d14",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Retained releases are successive versions of one project/specification trajectory and are coherent as a series."
+        },
+        "artifact": {
+          "canonical_name": "COVESA Vehicle Signal Specification v4.1–v6.0 evolution",
+          "artifact_type": "SPECIFICATION",
+          "organization": "COVESA",
+          "canonical_url": "https://github.com/COVESA/vehicle_signal_specification"
+        },
+        "temporal": {
+          "artifact_first_announced": "2023-12-22T14:49:26Z",
+          "observed_at": "2026-08-18T14:40:00Z",
+          "events": [
+            {
+              "event_id": "event-release-1",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2023-12-22T14:49:26Z",
+              "source_published_at": "2023-12-22T14:49:26Z",
+              "source_ids": [
+                "src-release-1"
+              ]
+            },
+            {
+              "event_id": "event-release-2",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2024-06-03T12:10:06Z",
+              "source_published_at": "2024-06-03T12:10:06Z",
+              "source_ids": [
+                "src-release-2"
+              ]
+            },
+            {
+              "event_id": "event-release-3",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2024-10-09T08:27:11Z",
+              "source_published_at": "2024-10-09T08:27:11Z",
+              "source_ids": [
+                "src-release-3"
+              ]
+            },
+            {
+              "event_id": "event-release-4",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2025-07-29T10:52:08Z",
+              "source_published_at": "2025-07-29T10:52:08Z",
+              "source_ids": [
+                "src-release-4"
+              ]
+            },
+            {
+              "event_id": "event-release-5",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-01-16T13:23:07Z",
+              "source_published_at": "2026-01-16T13:23:07Z",
+              "source_ids": [
+                "src-release-5"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-release-1",
+            "url": "https://github.com/COVESA/vehicle_signal_specification/releases/tag/v4.1",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "v4.1",
+            "published_at": "2023-12-22T14:49:26Z",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA Vehicle Signal Specification GitHub release record and project-authored change notes."
+          },
+          {
+            "source_id": "src-release-2",
+            "url": "https://github.com/COVESA/vehicle_signal_specification/releases/tag/v4.2",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "v4.2",
+            "published_at": "2024-06-03T12:10:06Z",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA Vehicle Signal Specification GitHub release record and project-authored change notes."
+          },
+          {
+            "source_id": "src-release-3",
+            "url": "https://github.com/COVESA/vehicle_signal_specification/releases/tag/v5.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "v5.0",
+            "published_at": "2024-10-09T08:27:11Z",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA Vehicle Signal Specification GitHub release record and project-authored change notes."
+          },
+          {
+            "source_id": "src-release-4",
+            "url": "https://github.com/COVESA/vehicle_signal_specification/releases/tag/v5.1",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "v5.1",
+            "published_at": "2025-07-29T10:52:08Z",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA Vehicle Signal Specification GitHub release record and project-authored change notes."
+          },
+          {
+            "source_id": "src-release-5",
+            "url": "https://github.com/COVESA/vehicle_signal_specification/releases/tag/v6.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "v6.0",
+            "published_at": "2026-01-16T13:23:07Z",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA Vehicle Signal Specification GitHub release record and project-authored change notes."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-series",
+            "text": "The retained VSS releases show active evolution of the common vehicle-data model and its tooling, including schema/ID generation, struct support, overlays/profiles, motion-management/health signals and deliberate backward-incompatible cleanup.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-release-1",
+              "src-release-2",
+              "src-release-3",
+              "src-release-4",
+              "src-release-5"
+            ],
+            "context": "Synthesis of release notes across major/minor versions."
+          },
+          {
+            "claim_id": "claim-tooling",
+            "text": "V4.2 adds struct support for DDS IDL generation together with JSON Schema and identifier-generation tooling.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-release-2"
+            ],
+            "context": "Direct release-note entries relevant to typed data contracts and interface generation."
+          },
+          {
+            "claim_id": "claim-v6-breaks",
+            "text": "V6.0 explicitly documents multiple backward-incompatible signal/unit changes and removal of the OBD branch.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-release-5"
+            ],
+            "context": "Direct release-note compatibility boundary."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "lim-data-model",
+            "text": "VSS specifies a vehicle-data taxonomy/model and associated tooling; these releases do not by themselves establish a transport protocol, service runtime, or OEM-wide adoption.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-release-1",
+              "src-release-2",
+              "src-release-3",
+              "src-release-4",
+              "src-release-5"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v4.1; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "Release notes introduce quantity files/unit syntax updates, new signals and vss-tools support for static IDs and JSON Schema.",
+              "source_ids": [
+                "src-release-1"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v4.2; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "Release notes add new signal areas plus struct support in vspec2ddsidl, a JSON Schema generator and an ID generator.",
+              "source_ids": [
+                "src-release-2"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v5.0; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "Release notes remove UUIDs from standard release artifacts by default, deprecate the OBD branch, improve overlay support and refactor tooling.",
+              "source_ids": [
+                "src-release-3"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v5.1; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "Release notes add/adjust motion-management and seat-related signals and include VSS Extension Profile documentation work.",
+              "source_ids": [
+                "src-release-4"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v6.0; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "Release notes remove the OBD branch, add pattern/default support, change units and several signal definitions including backward-incompatible changes, and add vehicle-health-management signals.",
+              "source_ids": [
+                "src-release-5"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "The series spans late 2023 to early 2026 and shows a common data-contract layer maturing while SDV ecosystems converge on reusable vehicle semantics.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Strong data-contract candidate that complements middleware/network evidence and makes the service/data separation explicit."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:series-covesa-vsomeip-3x-evolution-3c75418e40",
+      "evidence_task_sha256": "418978bcfd8a008243e9b2aaa5aec14f0d990020920b7faa25e3ab538f7ad36d",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-02 primary-source verification",
+        "generated_at": "2026-08-18T14:40:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:series-covesa-vsomeip-3x-evolution-3c75418e40",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Retained releases are successive versions of one project/specification trajectory and are coherent as a series."
+        },
+        "artifact": {
+          "canonical_name": "COVESA vSomeIP 3.x release evolution",
+          "artifact_type": "MIDDLEWARE",
+          "organization": "COVESA",
+          "canonical_url": "https://github.com/COVESA/vsomeip"
+        },
+        "temporal": {
+          "artifact_first_announced": "2024-10-04T09:52:54Z",
+          "observed_at": "2026-08-18T14:40:00Z",
+          "events": [
+            {
+              "event_id": "event-release-1",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2024-10-04T09:52:54Z",
+              "source_published_at": "2024-10-04T09:52:54Z",
+              "source_ids": [
+                "src-release-1"
+              ]
+            },
+            {
+              "event_id": "event-release-2",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-01-08T09:48:28Z",
+              "source_published_at": "2026-01-08T09:48:28Z",
+              "source_ids": [
+                "src-release-2"
+              ]
+            },
+            {
+              "event_id": "event-release-3",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-04-07T09:44:23Z",
+              "source_published_at": "2026-04-07T09:44:23Z",
+              "source_ids": [
+                "src-release-3"
+              ]
+            },
+            {
+              "event_id": "event-release-4",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-04-20T14:58:34Z",
+              "source_published_at": "2026-04-20T14:58:34Z",
+              "source_ids": [
+                "src-release-4"
+              ]
+            },
+            {
+              "event_id": "event-release-5",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-05-12T08:11:05Z",
+              "source_published_at": "2026-05-12T08:11:05Z",
+              "source_ids": [
+                "src-release-5"
+              ]
+            },
+            {
+              "event_id": "event-release-6",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-08-14T11:32:50Z",
+              "source_published_at": "2026-08-14T11:32:50Z",
+              "source_ids": [
+                "src-release-6"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-release-1",
+            "url": "https://github.com/COVESA/vsomeip/releases/tag/3.5.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "vSomeIP-Lib 3.5.0",
+            "published_at": "2024-10-04T09:52:54Z",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA/vsomeip GitHub release record and project-authored change notes."
+          },
+          {
+            "source_id": "src-release-2",
+            "url": "https://github.com/COVESA/vsomeip/releases/tag/3.6.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "vSomeIP-Lib 3.6.0",
+            "published_at": "2026-01-08T09:48:28Z",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA/vsomeip GitHub release record and project-authored change notes."
+          },
+          {
+            "source_id": "src-release-3",
+            "url": "https://github.com/COVESA/vsomeip/releases/tag/3.7.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "vSomeIP-Lib 3.7.0",
+            "published_at": "2026-04-07T09:44:23Z",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA/vsomeip GitHub release record and project-authored change notes."
+          },
+          {
+            "source_id": "src-release-4",
+            "url": "https://github.com/COVESA/vsomeip/releases/tag/3.7.2",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "vSomeIP-Lib 3.7.2",
+            "published_at": "2026-04-20T14:58:34Z",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA/vsomeip GitHub release record and project-authored change notes."
+          },
+          {
+            "source_id": "src-release-5",
+            "url": "https://github.com/COVESA/vsomeip/releases/tag/3.7.3",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "vSomeIP-Lib 3.7.3",
+            "published_at": "2026-05-12T08:11:05Z",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA/vsomeip GitHub release record and project-authored change notes."
+          },
+          {
+            "source_id": "src-release-6",
+            "url": "https://github.com/COVESA/vsomeip/releases/tag/3.7.5",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "vSomeIP-Lib 3.7.5",
+            "published_at": "2026-08-14T11:32:50Z",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA/vsomeip GitHub release record and project-authored change notes."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-series",
+            "text": "Across retained 3.5.0–3.7.5 releases, vSomeIP shows continuing work on routing/service discovery, endpoint architecture, concurrency/race robustness, platform portability and test infrastructure.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-release-1",
+              "src-release-2",
+              "src-release-3",
+              "src-release-4",
+              "src-release-5",
+              "src-release-6"
+            ],
+            "context": "Synthesis of project-authored release notes; not a claim of independent conformance or deployment maturity."
+          },
+          {
+            "claim_id": "claim-370",
+            "text": "The 3.7.0 notes include a client/server endpoint architecture rework and fully atomic offer/stop-service operations.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-release-3"
+            ],
+            "context": "Direct release-note entries."
+          },
+          {
+            "claim_id": "claim-375",
+            "text": "The 3.7.5 notes include support for multiple major-version offerings and broad routing-command/IPC refactoring.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-release-6"
+            ],
+            "context": "Direct release-note entries."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "lim-project-notes",
+            "text": "Release notes establish project changes, not independent SOME/IP conformance, production deployment scale, safety qualification or comparative performance.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-release-1",
+              "src-release-2",
+              "src-release-3",
+              "src-release-4",
+              "src-release-5",
+              "src-release-6"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of vSomeIP-Lib 3.5.0; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "Release notes add lazy policy loading, event debouncing/selective events, SOME/IP-TP remote-address rework, security-configuration separation for applications in one process, and reliability fixes.",
+              "source_ids": [
+                "src-release-1"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of vSomeIP-Lib 3.6.0; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "Release notes drop vsomeip2 compatibility and include endpoint/routing/service-subscription synchronization, suspend/resume/network-change and test-harness work.",
+              "source_ids": [
+                "src-release-2"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of vSomeIP-Lib 3.7.0; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "Release notes include endpoint client/server restructuring, atomic offer/stop-service operations, connection control, service-discovery reliability fixes and substantial robustness/test work.",
+              "source_ids": [
+                "src-release-3"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of vSomeIP-Lib 3.7.2; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "Release notes introduce hybrid mode and further separate/decouple endpoint/routing structures while addressing data races and service-discovery/routing synchronization.",
+              "source_ids": [
+                "src-release-4"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of vSomeIP-Lib 3.7.3; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "Release notes upgrade the project to C++20 and continue endpoint, service-discovery and routing synchronization/refactoring plus reliability/test work.",
+              "source_ids": [
+                "src-release-5"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of vSomeIP-Lib 3.7.5; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "Release notes include multiple-major-version offerings, routing IPC/command refactoring, provider/consumer error separation, portability and extensive race/robustness/test improvements.",
+              "source_ids": [
+                "src-release-6"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "The release series spans October 2024 through August 2026 and provides an implementation-level view of a major open SOME/IP middleware stack evolving alongside SDV architecture changes.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Useful maturity/implementation trajectory for the runtime layer when kept distinct from standardization and deployment claims."
+        }
+      }
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-covesa-vsomeip-dbf82021e8",
+      "evidence_task_sha256": "db956be4f872c9fac257ce578daad8833b3c355c340888723b31056fce757a60",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-02 primary-source verification",
+        "generated_at": "2026-08-18T14:40:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-covesa-vsomeip-dbf82021e8",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single item-level primary source; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "COVESA vSomeIP",
+          "artifact_type": "MIDDLEWARE",
+          "organization": "COVESA",
+          "canonical_url": "https://covesa.global/covesa-hidden-gem-the-vsomeip-project/"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-03-11",
+          "observed_at": "2026-08-18T14:40:00Z",
+          "events": [
+            {
+              "event_id": "event-spotlight",
+              "event_type": "PROJECT_SPOTLIGHT",
+              "event_date": "2025-03-11",
+              "source_published_at": "2025-03-11",
+              "source_ids": [
+                "src-covesa"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-covesa",
+            "url": "https://covesa.global/covesa-hidden-gem-the-vsomeip-project/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "COVESA’s Hidden Gem: The vSomeIP Project",
+            "published_at": "2025-03-11",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA project article used to verify project scope, relationship to SOME/IP/VSS and project history."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-implementation",
+            "text": "COVESA states that the vSomeIP stack implements the SOME/IP protocol and provides a communication mechanism for exchanging structured vehicle data.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-covesa"
+            ],
+            "context": "Project identity and implementation scope on the official host page."
+          },
+          {
+            "claim_id": "claim-history",
+            "text": "COVESA states that BMW Group initially contributed the vSomeIP code and that COVESA has hosted the project since the GENIVI era.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-covesa"
+            ],
+            "context": "First-party project-history statement."
+          },
+          {
+            "claim_id": "claim-vss-complement",
+            "text": "COVESA presents VSS as a common vehicle-data model and vSomeIP as a complementary communication mechanism.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-covesa"
+            ],
+            "context": "Consortium architectural framing, not a normative interoperability guarantee."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "lim-adoption",
+            "text": "The same page makes broad adoption/deployment statements; this card does not treat those as independently verified production-deployment evidence.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-covesa"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the official scope/status and architecture-significant statements on covesa-vsomeip; distinguish directly checkable facts from organization/project claims.",
+              "status": "VERIFIED",
+              "finding": "The official COVESA page establishes vSomeIP project scope, SOME/IP implementation role and its relationship to VSS; adoption scale is deliberately not upgraded to an independent fact.",
+              "source_ids": [
+                "src-covesa"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "A concrete open SOME/IP middleware implementation is directly relevant to the service-oriented runtime layer of centralized/zonal E/E architectures.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Provides implementation-level evidence that complements protocol/specification discussion without equating project-host claims with independent adoption proof."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2505-02734v2-8e61103b56",
+      "evidence_task_sha256": "713c090683a74be4cdd918879e5a15fa9f4ae7f34d91136f22c18a4d9878918e",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-01 primary-source verification",
+        "generated_at": "2026-08-18T14:15:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2505-02734v2-8e61103b56",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single paper; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "Automotive Middleware Performance: Comparison of FastDDS, Zenoh and vSomeIP",
+          "artifact_type": "PAPER",
+          "organization": "RWTH Aachen University / associated AUTOtechagil project",
+          "canonical_url": "https://arxiv.org/abs/2505.02734"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-05-05T15:36:31Z",
+          "observed_at": "2026-08-18T14:15:00Z",
+          "events": [
+            {
+              "event_id": "event-arxiv-v1",
+              "event_type": "PREPRINT_SUBMISSION",
+              "event_date": "2025-05-05T15:36:31Z",
+              "source_published_at": "2025-05-05T15:36:31Z",
+              "source_ids": [
+                "src-paper"
+              ]
+            },
+            {
+              "event_id": "event-arxiv-v2",
+              "event_type": "PREPRINT_REVISION",
+              "event_date": "2025-08-22T10:14:43Z",
+              "source_published_at": "2025-08-22T10:14:43Z",
+              "source_ids": [
+                "src-paper"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-paper",
+            "url": "https://arxiv.org/abs/2505.02734",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Automotive Middleware Performance: Comparison of FastDDS, Zenoh and vSomeIP",
+            "published_at": "2025-08-22T10:14:43Z",
+            "accessed_at": "2026-08-18T14:15:00Z",
+            "role": "Author v2 paper used to verify test metrics, centralized/distributed topology setup, middleware findings, network-stack contribution and explicit experiment exclusions."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-method",
+            "text": "The study compares FastDDS, Zenoh and vSomeIP using time-to-first-message, steady-state communication time, latency decomposition, message loss, scaling and resource usage across centralized and Ethernet-distributed topologies and several sensor-message profiles.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Experiment design."
+          },
+          {
+            "claim_id": "claim-discovery",
+            "text": "The authors report Zenoh as fastest to first message, FastDDS close behind, and vSomeIP substantially slower, especially in larger/distributed topologies.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Finding from the tested configurations only."
+          },
+          {
+            "claim_id": "claim-latency",
+            "text": "For D1-1 IMU best-effort communication, the paper reports roughly 0.487 ms for FastDDS, 3.170 ms for Zenoh, and 7.817 ms for vSomeIP; behavior varies with topology and data rate.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "One concrete test configuration; not a universal middleware ranking."
+          },
+          {
+            "claim_id": "claim-kernel",
+            "text": "The authors find that kernel/network-stack processing contributes more than half of end-to-end latency for FastDDS and Zenoh in the examined D1-1 setup and is even larger for vSomeIP reliable mode.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Instrumented Linux testbed result."
+          }
+        ],
+        "metrics": [
+          {
+            "metric_id": "metric-d11-discovery-zenoh",
+            "name": "D1-1 Zenoh time to first message",
+            "value": "11.631",
+            "unit": "ms",
+            "context": "Example reported discovery/startup result.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "metric_id": "metric-d11-discovery-fastdds",
+            "name": "D1-1 FastDDS time to first message",
+            "value": "51.624",
+            "unit": "ms",
+            "context": "Same example test configuration.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "metric_id": "metric-d11-discovery-vsomeip",
+            "name": "D1-1 vSomeIP median time to first message",
+            "value": "98.443",
+            "unit": "ms",
+            "context": "Reported median in D1-1.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "metric_id": "metric-d11-imu-latency-fastdds",
+            "name": "D1-1 IMU best-effort communication latency FastDDS",
+            "value": "0.487",
+            "unit": "ms",
+            "context": "Reported mean/central value described in Finding 3 for the test setup.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "metric_id": "metric-d11-imu-latency-zenoh",
+            "name": "D1-1 IMU best-effort communication latency Zenoh",
+            "value": "3.170",
+            "unit": "ms",
+            "context": "Reported comparison value in Finding 3.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "metric_id": "metric-d11-imu-latency-vsomeip",
+            "name": "D1-1 IMU best-effort communication latency vSomeIP",
+            "value": "7.817",
+            "unit": "ms",
+            "context": "Reported comparison value in Finding 3.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "metric_id": "metric-kernel-share",
+            "name": "kernel/network-stack share for FastDDS and Zenoh",
+            "value": ">54.8",
+            "unit": "%",
+            "context": "D1-1 instrumented experiment; the paper reports about 0.35-0.37 ms from kernel/network stack.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          }
+        ],
+        "limitations": [
+          {
+            "limitation_id": "limitation-testbed",
+            "text": "Results are configuration- and Linux-testbed-specific; the authors identify embedded-platform evaluation as future work.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "limitation_id": "limitation-qos",
+            "text": "Two configurations were omitted as not meaningful: vSomeIP best-effort above the small-message case because SOME/IP-TP was not implemented, and Zenoh reliable because the selected reliable configuration did not affect transmission.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "limitation_id": "limitation-ranking",
+            "text": "The paper itself shows topology/data-rate dependent reversals, so its measurements should not be generalized into a single universal middleware ranking.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-paper"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the architecture, evaluation setup, material claims and limitations reported for Automotive Middleware Performance: Comparison of FastDDS, Zenoh and vSomeIP; preserve paper results as AUTHOR_CLAIM unless independently established.",
+              "status": "VERIFIED",
+              "finding": "The v2 paper provides a concrete multi-topology measurement methodology, detailed discovery/latency/message-loss/resource findings, kernel instrumentation and explicit excluded configurations. Reported measurements remain AUTHOR_CLAIM tied to the testbed.",
+              "source_ids": [
+                "src-paper"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "The paper directly quantifies middleware and OS/network-stack trade-offs that become important when SDV functions move onto central HPCs and Ethernet-distributed zones.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Strong comparative evidence for the communication/runtime layer, provided measurements are presented with topology/testbed boundaries."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2403-04378v1-e19e02d33d",
+      "evidence_task_sha256": "cd1cd4e74a2691b90359a151343786526f48bd96a09ec4c4f4112e9e29b2b29d",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-01 primary-source verification",
+        "generated_at": "2026-08-18T14:15:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2403-04378v1-e19e02d33d",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single paper; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "CARISMA: CAR-Integrated Service Mesh Architecture",
+          "artifact_type": "PAPER",
+          "organization": "University of Stuttgart",
+          "canonical_url": "https://arxiv.org/abs/2403.04378"
+        },
+        "temporal": {
+          "artifact_first_announced": "2024-03-07T10:10:34Z",
+          "observed_at": "2026-08-18T14:15:00Z",
+          "events": [
+            {
+              "event_id": "event-arxiv-v1",
+              "event_type": "PREPRINT_SUBMISSION",
+              "event_date": "2024-03-07T10:10:34Z",
+              "source_published_at": "2024-03-07T10:10:34Z",
+              "source_ids": [
+                "src-paper"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-paper",
+            "url": "https://arxiv.org/abs/2403.04378",
+            "source_class": "PRIMARY_PAPER",
+            "title": "CARISMA: CAR-Integrated Service Mesh Architecture",
+            "published_at": "2024-03-07T10:10:34Z",
+            "accessed_at": "2026-08-18T14:15:00Z",
+            "role": "Author paper used to verify the multi-HPC service-mesh architecture, proof-of-concept setup, runtime relocation behavior, and evaluation boundary."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-architecture",
+            "text": "CARISMA adapts the service-mesh pattern to multiple interlinked automotive HPCs, with a central Control Plane, one proxy per HPC, node/service registries, and location-transparent service routing.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Proposed architecture."
+          },
+          {
+            "claim_id": "claim-cloud-extension",
+            "text": "The architecture can model a cloud backend as another registered node/service endpoint so in-vehicle callers use the same proxy-mediated service mechanism.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Architecture capability described by the authors."
+          },
+          {
+            "claim_id": "claim-poc",
+            "text": "A proof of concept on two private-networked virtual machines used Go, gRPC, Envoy, a Control Plane, registries, orchestrator and three software components; the authors demonstrated communication across nodes and relocation of a service without reconfiguring its caller.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Feasibility validation, not production-vehicle validation."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-prototype",
+            "text": "Validation is a two-VM proof of concept rather than embedded automotive HPC hardware or an in-vehicle network.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "limitation_id": "limitation-overhead-unmeasured",
+            "text": "The authors explicitly defer a sound evaluation of CARISMA overhead versus direct inter-service communication to future work.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "limitation_id": "limitation-redundancy",
+            "text": "The prototype intentionally uses exactly one proxy per HPC and does not claim redundant proxy behavior.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the architecture, evaluation setup, material claims and limitations reported for CARISMA: CAR-Integrated Service Mesh Architecture; preserve paper results as AUTHOR_CLAIM unless independently established.",
+              "status": "VERIFIED",
+              "finding": "The primary paper establishes the multi-HPC service-mesh design and a two-VM proof-of-concept feasibility test, while explicitly leaving communication-overhead evaluation for future work.",
+              "source_ids": [
+                "src-paper"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "What latency, jitter, CPU/memory overhead and failure-mode behavior would CARISMA exhibit on automotive HPC hardware and deterministic in-vehicle networks?"
+          ],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "CARISMA directly explores the runtime/service-routing consequences of distributing software across multiple automotive HPCs, a central issue in centralized/zonal SDV architectures.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Strong architecture-pattern evidence for separating service location from application logic, with clear prototype limitations that can be carried into comparison."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2511-17540v1-bb32e08743",
+      "evidence_task_sha256": "d8403648d85620b86c1d92747a63d81becca26b6869997616778ccf75d5d9a17",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-05 primary-source verification",
+        "generated_at": "2026-08-18T15:20:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2511-17540v1-bb32e08743",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single paper; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "AUTOSAR AP and ROS 2 Collaboration Framework",
+          "artifact_type": "PAPER",
+          "organization": null,
+          "canonical_url": "https://arxiv.org/abs/2511.17540"
+        },
+        "temporal": {
+          "artifact_first_announced": "2024",
+          "observed_at": "2026-08-18T15:20:00Z",
+          "events": [
+            {
+              "event_id": "event-arxiv",
+              "event_type": "PREPRINT_SUBMISSION",
+              "event_date": "2025-11-07T10:15:47Z",
+              "source_published_at": "2025-11-07T10:15:47Z",
+              "source_ids": [
+                "src-paper"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-paper",
+            "url": "https://arxiv.org/abs/2511.17540",
+            "source_class": "PRIMARY_PAPER",
+            "title": "AUTOSAR AP and ROS 2 Collaboration Framework",
+            "published_at": "2025-11-07T10:15:47Z",
+            "accessed_at": "2026-08-18T15:20:00Z",
+            "role": "Author arXiv paper/preprint used to verify the architecture, evaluation scope, material claims, and limitations available in the primary text."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-bridge",
+            "text": "The proposed framework implements a ROS 2-side bridge that converts between DDS and SOME/IP, including SOME/IP service discovery and type conversion, to connect ROS 2 nodes with AUTOSAR Adaptive applications.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Author paper result or framing."
+          },
+          {
+            "claim_id": "claim-config-generation",
+            "text": "The framework includes automatic generation of FIDL/FDEPL configuration from a small set of service/message identifiers and can derive conversion specifications for custom ROS 2 messages.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Author paper result or framing."
+          },
+          {
+            "claim_id": "claim-evaluation",
+            "text": "The paper evaluates the bridge using ROS 2 Humble/Fast DDS and vsomeip on two Ubuntu PCs, and an AUTOSAR Adaptive R20-11/QNX environment running in QEMU; seven PointCloud2 data sizes are used for latency evaluation.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Author paper result or framing."
+          }
+        ],
+        "metrics": [
+          {
+            "metric_id": "metric-pointcloud-config-lines",
+            "name": "generated PointCloud2 conversion file length",
+            "value": "78",
+            "unit": "lines",
+            "context": "Example reported for sensor_msgs::msg::PointCloud2 configuration generation.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "metric_id": "metric-message-sizes",
+            "name": "PointCloud2 data sizes evaluated",
+            "value": "7",
+            "unit": "sizes",
+            "context": "Latency evaluation varies the number of point-cloud points across seven data sizes.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          }
+        ],
+        "limitations": [
+          {
+            "limitation_id": "limitation-autosar-qemu",
+            "text": "AUTOSAR Adaptive/QNX is evaluated in QEMU rather than on an automotive target ECU/HPC.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "limitation_id": "limitation-version",
+            "text": "The implementation/evaluation is tied to ROS 2 Humble, Fast DDS, vsomeip 3.4.9.1 and AUTOSAR Adaptive R20-11; interoperability across other implementations/releases requires separate evidence.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-paper"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the architecture, evaluation setup, material claims and limitations reported for AUTOSAR AP and ROS 2 Collaboration Framework; preserve paper results as AUTHOR_CLAIM unless independently established.",
+              "status": "VERIFIED",
+              "finding": "The full primary text verifies the DDS-SOME/IP bridge architecture, automatic configuration generation, software versions, QEMU AUTOSAR environment, and seven-size PointCloud2 latency methodology.",
+              "source_ids": [
+                "src-paper"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Bridging AUTOSAR Adaptive/SOME-IP and ROS 2/DDS directly addresses mixed-platform SDV development and reuse rather than forcing one middleware stack everywhere.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Strong middleware-boundary evidence: it demonstrates a concrete conversion/configuration architecture and realistic development tooling, with the QEMU/vendor/version boundary retained."
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION",
+    "cover_headline_finalization_forbidden": true,
+    "this_week_summary_forbidden": true
+  }
+}

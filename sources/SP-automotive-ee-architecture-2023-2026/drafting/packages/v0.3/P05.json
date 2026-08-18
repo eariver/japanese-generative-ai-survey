@@ -1,0 +1,863 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-automotive-ee-architecture-2023-2026",
+  "package_id": "P05",
+  "draft_source_mode": "EVIDENCE_PACKAGE",
+  "execution_stage": "ARTICLE_DRAFTING",
+  "basis": {
+    "architecture_plan_sha256": "a1ff65d079c0a52e4d16f1094ac497adb993a7ce67d9786ac0c2ee2075121b35",
+    "architecture_input_sha256": "ea873015da9213e24abbc23f20bdaf35556cb36bb5634c76c6931a8a88d781ce",
+    "evidence_reviewed_sha256": "029142cec0c09127aa64e51ddfdb3652277af108cc53f8c0d9d9c22eb696ffc5"
+  },
+  "package": {
+    "title": "Open Platform — S-COREが示す共通実装への移行",
+    "package_type": "SECTION",
+    "page_target": 6,
+    "editorial_angle": "仕様策定だけでなく共有core stack/reference implementationへ進む動きを、S-COREのlaunch→release maturityとSOAFEE系実装の両面から追う。",
+    "must_cover": [
+      "S-CORE launch",
+      "release maturity chronology",
+      "safety/integration artefacts",
+      "AUTOSAR Adaptive industry frictionはpartial evidenceとして限定"
+    ],
+    "boundaries": [
+      "Statements such as 'production-ready' or predictable/safe behavior are project claims unless backed by separate certification, conformance or deployment evidence.",
+      "The announcement included forward-looking release targets and safety-process goals; those targets are not treated here as proof of later delivery or certification.",
+      "What exact runtime/platform component baseline was delivered in v0.1.0 beyond the existence of the tag/release?",
+      "Which S-CORE components had production-grade or safety-qualified status at each release, as distinct from documentation/process maturity?",
+      "Release notes are project-authored evidence of repository changes; they do not by themselves establish production deployment, interoperability, functional-safety certification or automotive-grade maturity.",
+      "The v0.1.0 release page provides a release and full-changelog link but no detailed release-note body, so its exact technical baseline is unresolved from this source alone.",
+      "The page is authored by DENSO and hosted by SOAFEE; deterministic guarantees and portability/safety benefits are vendor/project claims rather than independent certification evidence.",
+      "The pinned article does not provide a sufficiently detailed independent latency/jitter or safety-certification evaluation for quantitative comparison.",
+      "Inspect the full paper for minimal-AP components, industry context, detailed pain-point taxonomy, attribution evidence and threats to validity.",
+      "The accessible primary abstract does not expose the minimal-AP implementation scope, participant/industry context, concrete pain-point inventory, trace from each pain point to specification/vendor/local causes, or study validity discussion.",
+      "Findings explicitly mix specification, vendor implementation and local practice; they should not be generalized as intrinsic AUTOSAR Adaptive defects without item-level attribution."
+    ],
+    "late_breaking": false,
+    "drafting_order": 6
+  },
+  "primary_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-eclipse-score-projec-f643a9aa96",
+      "evidence_task_sha256": "837425c78650347db4192fdb6b16ab2a3843c9d08b1973452a9fe117ffee4cf7",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-02 primary-source verification",
+        "generated_at": "2026-08-18T14:40:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-eclipse-score-projec-f643a9aa96",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single item-level primary source; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "Eclipse S-CORE",
+          "artifact_type": "PLATFORM",
+          "organization": "Eclipse S-CORE",
+          "canonical_url": "https://eclipse.dev/score/"
+        },
+        "temporal": {
+          "artifact_first_announced": null,
+          "observed_at": "2026-08-18T14:40:00Z",
+          "events": [
+            {
+              "event_id": "event-project-snapshot",
+              "event_type": "PROJECT_STATUS_SNAPSHOT",
+              "event_date": null,
+              "source_published_at": null,
+              "source_ids": [
+                "src-score"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-score",
+            "url": "https://eclipse.dev/score/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Eclipse S-CORE",
+            "published_at": null,
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Pinned official project-page snapshot used to verify platform scope, layering, code-first orientation and current stated release-gate status."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-layer-scope",
+            "text": "The S-CORE project page states that it targets software-platform layers above the SoC board-support package and below the application layer, spanning OS abstraction, middleware and application-level services.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-score"
+            ],
+            "context": "Current project-defined scope."
+          },
+          {
+            "claim_id": "claim-code-first",
+            "text": "The page explicitly describes S-CORE as code-first, with executable code, tests, CI and reference implementations rather than only a paper standard.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-score"
+            ],
+            "context": "Project methodology statement."
+          },
+          {
+            "claim_id": "claim-decoupling",
+            "text": "The page identifies hardware/software decoupling, modularity and project-specific extensibility as platform goals.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-score"
+            ],
+            "context": "Project architecture goals."
+          },
+          {
+            "claim_id": "claim-release-gate",
+            "text": "The pinned page snapshot states that S-CORE had reached release gate v0.8 and describes stronger requirements/architecture/safety-artifact expectations for modules in scope for v1.0.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-score"
+            ],
+            "context": "Direct page content at the pinned observation time; not equivalent to safety certification."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "lim-project-claims",
+            "text": "Statements such as 'production-ready' or predictable/safe behavior are project claims unless backed by separate certification, conformance or deployment evidence.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-score"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the official scope/status and architecture-significant statements on eclipse-score-project; distinguish directly checkable facts from organization/project claims.",
+              "status": "VERIFIED",
+              "finding": "The pinned project page provides direct evidence of S-CORE's intended stack boundaries, code-first delivery model and current project-status language; safety/production claims remain project claims.",
+              "source_ids": [
+                "src-score"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "S-CORE is a concrete shared runtime/platform effort that directly reflects the shift from proprietary per-OEM core stacks toward common automotive software infrastructure.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Strong platform-level candidate when combined with release-series evidence and explicit maturity caveats."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-eclipse-score-launch-2a18862fac",
+      "evidence_task_sha256": "4851ccdb27fed1f5309e9a09ec5e712a366c4be9dd949189c41063e72abca5a6",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-02 primary-source verification",
+        "generated_at": "2026-08-18T14:40:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-eclipse-score-launch-2a18862fac",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single item-level primary source; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "Eclipse S-CORE project launch",
+          "artifact_type": "CONSORTIUM_INITIATIVE",
+          "organization": "Eclipse Foundation",
+          "canonical_url": "https://newsroom.eclipse.org/news/announcements/eclipse-foundation-launches-s-core-project-automotive-industrys-first-open"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-06-12",
+          "observed_at": "2026-08-18T14:40:00Z",
+          "events": [
+            {
+              "event_id": "event-launch",
+              "event_type": "PROJECT_LAUNCH_ANNOUNCEMENT",
+              "event_date": "2025-06-12",
+              "source_published_at": "2025-06-12",
+              "source_ids": [
+                "src-eclipse"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-eclipse",
+            "url": "https://newsroom.eclipse.org/news/announcements/eclipse-foundation-launches-s-core-project-automotive-industrys-first-open",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "The Eclipse Foundation Launches the S-CORE Project",
+            "published_at": "2025-06-12",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official Eclipse Foundation launch announcement used for project intent, layer placement, supporters and stated safety-development direction."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-stack-position",
+            "text": "The Eclipse Foundation describes S-CORE as core software commonly called middleware, positioned between the operating system and application layer.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-eclipse"
+            ],
+            "context": "Project positioning in the launch announcement."
+          },
+          {
+            "claim_id": "claim-common-stack",
+            "text": "The announcement frames S-CORE as an open-source common core stack for software-defined vehicles intended to reduce duplicated non-differentiating platform work.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-eclipse"
+            ],
+            "context": "Foundation/project rationale rather than measured industry outcome."
+          },
+          {
+            "claim_id": "claim-safety-process",
+            "text": "The announcement states that the S-CORE development process was under audit by a certification agency and aimed to support production of open-source software suitable for safety-critical standards such as ISO 26262.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-eclipse"
+            ],
+            "context": "Status/goal as announced in June 2025; not certification evidence."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "lim-launch-target",
+            "text": "The announcement included forward-looking release targets and safety-process goals; those targets are not treated here as proof of later delivery or certification.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-eclipse"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the official scope/status and architecture-significant statements on eclipse-score-launch; distinguish directly checkable facts from organization/project claims.",
+              "status": "VERIFIED",
+              "finding": "The official launch announcement verifies the June 2025 project launch context and stated platform/safety goals while keeping forward-looking claims distinct from later release evidence.",
+              "source_ids": [
+                "src-eclipse"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "The launch marks an industry collaboration moving from interface specifications toward shared code for the SDV core stack.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Architecture-significant ecosystem event, best read together with the S-CORE project page and release-series Evidence rather than as standalone maturity proof."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:series-eclipse-score-maturity-evolution-437752c125",
+      "evidence_task_sha256": "d368b8c88d904f442e35a436c17f45febb627d5df601e5fe301a34742dd97fdc",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence vertical-slice verification",
+        "generated_at": "2026-08-18T13:56:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:series-eclipse-score-maturity-evolution-437752c125",
+        "status": "PARTIAL",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "The seven retained tags are successive releases of the same Eclipse S-CORE platform repository and form a coherent maturity series; v0.1.0 has sparse release-note detail."
+        },
+        "artifact": {
+          "canonical_name": "Eclipse Safe Open Vehicle Core (S-CORE)",
+          "artifact_type": "PLATFORM",
+          "organization": "Eclipse Foundation / Eclipse S-CORE",
+          "canonical_url": "https://github.com/eclipse-score/score"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-05-22T15:28:12Z",
+          "observed_at": "2026-08-18T13:56:00Z",
+          "events": [
+            {
+              "event_id": "event-v0-1-0",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2025-05-22T15:28:12Z",
+              "source_published_at": "2025-05-22T15:28:12Z",
+              "source_ids": [
+                "src-score-v0-1-0"
+              ]
+            },
+            {
+              "event_id": "event-v0-2-0",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2025-06-06T08:11:30Z",
+              "source_published_at": "2025-06-06T08:11:30Z",
+              "source_ids": [
+                "src-score-v0-2-0"
+              ]
+            },
+            {
+              "event_id": "event-v0-3-0",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2025-07-31T12:05:02Z",
+              "source_published_at": "2025-07-31T12:05:02Z",
+              "source_ids": [
+                "src-score-v0-3-0"
+              ]
+            },
+            {
+              "event_id": "event-v0-4-0",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2025-09-30T15:50:16Z",
+              "source_published_at": "2025-09-30T15:50:16Z",
+              "source_ids": [
+                "src-score-v0-4-0"
+              ]
+            },
+            {
+              "event_id": "event-v0-5-0",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2025-12-10T07:29:46Z",
+              "source_published_at": "2025-12-10T07:29:46Z",
+              "source_ids": [
+                "src-score-v0-5-0"
+              ]
+            },
+            {
+              "event_id": "event-v0-6-0",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-06-26T11:50:59Z",
+              "source_published_at": "2026-06-26T11:50:59Z",
+              "source_ids": [
+                "src-score-v0-6-0"
+              ]
+            },
+            {
+              "event_id": "event-v0-6-4",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-08-07T07:04:24Z",
+              "source_published_at": "2026-08-07T07:04:24Z",
+              "source_ids": [
+                "src-score-v0-6-4"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-score-v0-1-0",
+            "url": "https://github.com/eclipse-score/score/releases/tag/v0.1.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Eclipse S-CORE score v0.1.0 release",
+            "published_at": "2025-05-22T15:28:12Z",
+            "accessed_at": "2026-08-18T13:56:00Z",
+            "role": "Official GitHub release record used for release chronology and project-authored change notes."
+          },
+          {
+            "source_id": "src-score-v0-2-0",
+            "url": "https://github.com/eclipse-score/score/releases/tag/v0.2.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Eclipse S-CORE score v0.2.0 release",
+            "published_at": "2025-06-06T08:11:30Z",
+            "accessed_at": "2026-08-18T13:56:00Z",
+            "role": "Official GitHub release record used for release chronology and project-authored change notes."
+          },
+          {
+            "source_id": "src-score-v0-3-0",
+            "url": "https://github.com/eclipse-score/score/releases/tag/v0.3.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Eclipse S-CORE score v0.3.0 release",
+            "published_at": "2025-07-31T12:05:02Z",
+            "accessed_at": "2026-08-18T13:56:00Z",
+            "role": "Official GitHub release record used for release chronology and project-authored change notes."
+          },
+          {
+            "source_id": "src-score-v0-4-0",
+            "url": "https://github.com/eclipse-score/score/releases/tag/v0.4.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Eclipse S-CORE score v0.4.0 release",
+            "published_at": "2025-09-30T15:50:16Z",
+            "accessed_at": "2026-08-18T13:56:00Z",
+            "role": "Official GitHub release record used for release chronology and project-authored change notes."
+          },
+          {
+            "source_id": "src-score-v0-5-0",
+            "url": "https://github.com/eclipse-score/score/releases/tag/v0.5.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Eclipse S-CORE score v0.5.0 release",
+            "published_at": "2025-12-10T07:29:46Z",
+            "accessed_at": "2026-08-18T13:56:00Z",
+            "role": "Official GitHub release record used for release chronology and project-authored change notes."
+          },
+          {
+            "source_id": "src-score-v0-6-0",
+            "url": "https://github.com/eclipse-score/score/releases/tag/v0.6.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Eclipse S-CORE score v0.6.0 release",
+            "published_at": "2026-06-26T11:50:59Z",
+            "accessed_at": "2026-08-18T13:56:00Z",
+            "role": "Official GitHub release record used for release chronology and project-authored change notes."
+          },
+          {
+            "source_id": "src-score-v0-6-4",
+            "url": "https://github.com/eclipse-score/score/releases/tag/v0.6.4",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Eclipse S-CORE score v0.6.4 release",
+            "published_at": "2026-08-07T07:04:24Z",
+            "accessed_at": "2026-08-18T13:56:00Z",
+            "role": "Official GitHub release record used for release chronology and project-authored change notes."
+          },
+          {
+            "source_id": "src-score-org",
+            "url": "https://github.com/eclipse-score",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Eclipse S-CORE GitHub organization",
+            "published_at": null,
+            "accessed_at": "2026-08-18T13:56:00Z",
+            "role": "Official project organization page describing S-CORE as an open-source core stack for SDVs targeting embedded high-performance ECUs."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-project-scope",
+            "text": "The Eclipse S-CORE project describes itself as an open-source core stack for Software Defined Vehicles, specifically targeting embedded high-performance ECUs.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-score-org"
+            ],
+            "context": "Project-stated scope, not independent adoption evidence."
+          },
+          {
+            "claim_id": "claim-series-evolution",
+            "text": "Across v0.2.0 through v0.6.4, release notes show a progression from safety manuals/component requirements and communication/persistency architecture through API/SOME-IP work, safety artefacts/platform testing, reference integration, and explicit module maturity classification.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-score-v0-2-0",
+              "src-score-v0-3-0",
+              "src-score-v0-4-0",
+              "src-score-v0-5-0",
+              "src-score-v0-6-0",
+              "src-score-v0-6-4"
+            ],
+            "context": "Synthesis of project-authored release notes; not a claim of certification or production deployment."
+          },
+          {
+            "claim_id": "claim-v06-integration",
+            "text": "The v0.6.0 release notes include a reference integration repository, platform integration tests, persistency safety analysis and multiple safety/tool-evaluation changes.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-score-v0-6-0"
+            ],
+            "context": "Directly checkable entries in the official GitHub release notes."
+          },
+          {
+            "claim_id": "claim-v064-maturity-taxonomy",
+            "text": "The v0.6.4 release notes include a decision record for module maturity classification using Release, Experimental and Preview categories.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-score-v0-6-4"
+            ],
+            "context": "Directly checkable release-note entry."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-project-authored",
+            "text": "Release notes are project-authored evidence of repository changes; they do not by themselves establish production deployment, interoperability, functional-safety certification or automotive-grade maturity.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-score-v0-2-0",
+              "src-score-v0-3-0",
+              "src-score-v0-4-0",
+              "src-score-v0-5-0",
+              "src-score-v0-6-0",
+              "src-score-v0-6-4"
+            ]
+          },
+          {
+            "limitation_id": "limitation-v010-sparse",
+            "text": "The v0.1.0 release page provides a release and full-changelog link but no detailed release-note body, so its exact technical baseline is unresolved from this source alone.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-score-v0-1-0"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v0.1.0; distinguish release existence from maintainer/project claims.",
+              "status": "UNRESOLVED",
+              "finding": "The official v0.1.0 release date is verified, but the release page has no detailed change body, so material technical changes/maturity significance cannot be fully established from this source alone.",
+              "source_ids": [
+                "src-score-v0-1-0"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v0.2.0; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "The official v0.2.0 release record establishes its release date and lists architecture/process/safety changes used in the maturity-series synthesis; significance remains project-contextual rather than independent adoption evidence.",
+              "source_ids": [
+                "src-score-v0-2-0"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v0.3.0; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "The official v0.3.0 release record establishes its release date and lists architecture/process/safety changes used in the maturity-series synthesis; significance remains project-contextual rather than independent adoption evidence.",
+              "source_ids": [
+                "src-score-v0-3-0"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v0.4.0; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "The official v0.4.0 release record establishes its release date and lists architecture/process/safety changes used in the maturity-series synthesis; significance remains project-contextual rather than independent adoption evidence.",
+              "source_ids": [
+                "src-score-v0-4-0"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v0.5.0; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "The official v0.5.0 release record establishes its release date and lists architecture/process/safety changes used in the maturity-series synthesis; significance remains project-contextual rather than independent adoption evidence.",
+              "source_ids": [
+                "src-score-v0-5-0"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v0.6.0; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "The official v0.6.0 release record establishes its release date and lists architecture/process/safety changes used in the maturity-series synthesis; significance remains project-contextual rather than independent adoption evidence.",
+              "source_ids": [
+                "src-score-v0-6-0"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v0.6.4; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "The official v0.6.4 release record establishes its release date and lists architecture/process/safety changes used in the maturity-series synthesis; significance remains project-contextual rather than independent adoption evidence.",
+              "source_ids": [
+                "src-score-v0-6-4"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "What exact runtime/platform component baseline was delivered in v0.1.0 beyond the existence of the tag/release?",
+            "Which S-CORE components had production-grade or safety-qualified status at each release, as distinct from documentation/process maturity?"
+          ],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "The retained releases span May 2025 through August 2026 and show rapid maturation of an open core-stack effort aimed at SDV high-performance ECUs.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "The release series is a useful implementation-level trace of how an open automotive core platform accumulates communication, safety, integration and maturity mechanisms."
+        }
+      }
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-soafee-denso-determi-f82f7eda52",
+      "evidence_task_sha256": "77344619a301abb336d4f4fcd485bfa248ccc7b553c873aa8870af79ba2f28a2",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-02 primary-source verification",
+        "generated_at": "2026-08-18T14:40:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-soafee-denso-determi-f82f7eda52",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single item-level primary source; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "DENSO deterministic middleware SOAFEE Blueprint",
+          "artifact_type": "MIDDLEWARE",
+          "organization": "DENSO / SOAFEE",
+          "canonical_url": "https://www.soafee.io/blog/2025/denso-develops-deterministic-middleware-for-sdv/"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-05-22",
+          "observed_at": "2026-08-18T14:40:00Z",
+          "events": [
+            {
+              "event_id": "event-blueprint",
+              "event_type": "BLUEPRINT_PUBLICATION",
+              "event_date": "2025-05-22",
+              "source_published_at": "2025-05-22",
+              "source_ids": [
+                "src-soafee"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-soafee",
+            "url": "https://www.soafee.io/blog/2025/denso-develops-deterministic-middleware-for-sdv/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "SOAFEE Blueprint: DENSO develops deterministic middleware for SDV",
+            "published_at": "2025-05-22",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "SOAFEE-hosted DENSO-authored blueprint used for deterministic middleware architecture, mixed-criticality goals and demonstration framing."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-lingua-franca",
+            "text": "DENSO describes using the open-source Lingua Franca time-coordination language to define application behavior and support time-centric scheduling/runtime monitoring.",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-soafee"
+            ],
+            "context": "DENSO-authored architecture claim hosted as a SOAFEE blueprint."
+          },
+          {
+            "claim_id": "claim-mixed-critical",
+            "text": "The blueprint proposes running safety and non-safety workloads in parallel while combining cloud-native technologies with functional-safety and real-time requirements, including application-level safety envelopes and violation detection.",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-soafee"
+            ],
+            "context": "Proposed mixed-criticality design goals/mechanisms."
+          },
+          {
+            "claim_id": "claim-blueprint-demo",
+            "text": "The article states that the first blueprint demonstrates the approach using an Autoware Foundation automated-driving stack.",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-soafee"
+            ],
+            "context": "Demonstration statement, not independent qualification."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "lim-vendor",
+            "text": "The page is authored by DENSO and hosted by SOAFEE; deterministic guarantees and portability/safety benefits are vendor/project claims rather than independent certification evidence.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-soafee"
+            ]
+          },
+          {
+            "limitation_id": "lim-no-metrics",
+            "text": "The pinned article does not provide a sufficiently detailed independent latency/jitter or safety-certification evaluation for quantitative comparison.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-soafee"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the official scope/status and architecture-significant statements on soafee-denso-deterministic-middleware; distinguish directly checkable facts from organization/project claims.",
+              "status": "VERIFIED",
+              "finding": "The blueprint directly verifies the proposed time-centric/mixed-criticality middleware architecture and demonstration framing; its guarantees remain VENDOR_CLAIM.",
+              "source_ids": [
+                "src-soafee"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "The blueprint is a useful industry implementation pattern connecting cloud-native SDV development to deterministic mixed-critical execution.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Strong architecture signal if presented explicitly as a DENSO/SOAFEE blueprint rather than neutral proof of deterministic performance."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2607-05227v1-ce8cde65b9",
+      "evidence_task_sha256": "8586ec061f59c99f21811f51a57e2841d6beceda3722e0f6111b913ae67e1c52",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-05 primary-source verification",
+        "generated_at": "2026-08-18T15:20:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2607-05227v1-ce8cde65b9",
+        "status": "PARTIAL",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single paper; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "An Investigation of the AUTOSAR Adaptive Platform from an Industry Perspective",
+          "artifact_type": "PAPER",
+          "organization": null,
+          "canonical_url": "https://arxiv.org/abs/2607.05227"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-07-06T15:41:04Z",
+          "observed_at": "2026-08-18T15:20:00Z",
+          "events": [
+            {
+              "event_id": "event-arxiv",
+              "event_type": "PREPRINT_SUBMISSION",
+              "event_date": "2026-07-06T15:41:04Z",
+              "source_published_at": "2026-07-06T15:41:04Z",
+              "source_ids": [
+                "src-paper"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-paper",
+            "url": "https://arxiv.org/abs/2607.05227",
+            "source_class": "PRIMARY_PAPER",
+            "title": "An Investigation of the AUTOSAR Adaptive Platform from an Industry Perspective",
+            "published_at": "2026-07-06T15:41:04Z",
+            "accessed_at": "2026-08-18T15:20:00Z",
+            "role": "Author arXiv paper/preprint used to verify the architecture, evaluation scope, material claims, and limitations available in the primary text."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-method",
+            "text": "The authors use Design Science Research and build a minimal AUTOSAR Adaptive Platform as an experimental prototype to investigate application-development pain points.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Author paper result or framing."
+          },
+          {
+            "claim_id": "claim-painpoint-sources",
+            "text": "They report that pain points arise from a combination of AUTOSAR specification-inherent choices, vendor implementation and local organizational practices.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Author paper result or framing."
+          },
+          {
+            "claim_id": "claim-implication",
+            "text": "The authors identify configuration-file management and developer understanding/training around the Adaptive application runtime life cycle as areas requiring better tooling/support.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Author paper result or framing."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-abstract-depth",
+            "text": "The accessible primary abstract does not expose the minimal-AP implementation scope, participant/industry context, concrete pain-point inventory, trace from each pain point to specification/vendor/local causes, or study validity discussion.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "limitation_id": "limitation-implementation-dependence",
+            "text": "Findings explicitly mix specification, vendor implementation and local practice; they should not be generalized as intrinsic AUTOSAR Adaptive defects without item-level attribution.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-paper"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the architecture, evaluation setup, material claims and limitations reported for An Investigation of the AUTOSAR Adaptive Platform from an Industry Perspective; preserve paper results as AUTHOR_CLAIM unless independently established.",
+              "status": "UNRESOLVED",
+              "finding": "The primary abstract verifies the Design Science/minimal-AP method and three-way pain-point attribution, but detailed prototype/study evidence and validity limits remain unresolved.",
+              "source_ids": [
+                "src-paper"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "Inspect the full paper for minimal-AP components, industry context, detailed pain-point taxonomy, attribution evidence and threats to validity."
+          ],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "AUTOSAR Adaptive is a key service/runtime layer for central HPCs; implementation and configuration friction materially affects whether the architectural standard translates into deployable SDV software.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "High-value candidate because it examines specification-versus-implementation-versus-local causes, but exact pain-point attribution requires full-paper inspection."
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION",
+    "cover_headline_finalization_forbidden": true,
+    "this_week_summary_forbidden": true
+  }
+}
