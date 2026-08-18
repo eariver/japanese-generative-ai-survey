@@ -1,0 +1,166 @@
+name: Experiment - Accept Automotive E/E Drafts
+
+on:
+  push:
+    branches:
+      - experiment/automotive-ee-architecture-special
+    paths:
+      - ".github/workflows/experiment-automotive-ee-accept-drafts.yml"
+      - "experiments/automotive-ee-architecture/draft-payload/v0.1/drafts.json.gz.b64"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  accept-drafts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout experiment branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restore reviewed draft bodies
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64,gzip,hashlib,json
+          from pathlib import Path
+          src=Path('experiments/automotive-ee-architecture/draft-payload/v0.1/drafts.json.gz.b64')
+          raw=gzip.decompress(base64.b64decode(src.read_text(encoding='utf-8').strip()))
+          actual=hashlib.sha256(raw).hexdigest()
+          expected='33954e64cf1a9083571b0dba8b92b86ad1bd33ff856c3dccb2503799c7ee8991'
+          assert actual==expected,(actual,expected)
+          value=json.loads(raw)
+          expected_ids=[f'P0{i}' for i in range(1,9)]
+          assert sorted(value)==expected_ids, sorted(value)
+          out=Path('experiments/automotive-ee-architecture/draft-overrides/v0.1')
+          out.mkdir(parents=True,exist_ok=True)
+          for package_id in expected_ids:
+              body=value[package_id]
+              assert body['package_id']==package_id
+              (out/f'{package_id}.json').write_text(json.dumps(body,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(f'restored {len(value)} draft bodies; payload_sha256={actual}')
+          PY
+
+      - name: Accept with shared Special drafting implementation
+        id: accept
+        run: |
+          set +e
+          generated_at=$(python - <<'PY'
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          print(datetime.now(ZoneInfo('Asia/Tokyo')).isoformat(timespec='seconds'))
+          PY
+          )
+          OUT="${RUNNER_TEMP}/automotive-ee-draft-acceptance"
+          mkdir -p "$OUT"
+          PYTHONPATH=. python scripts/accept_special_interactive_drafts.py \
+            --repo-root . \
+            --issue-id SP-automotive-ee-architecture-2023-2026 \
+            --package-dir sources/SP-automotive-ee-architecture-2023-2026/drafting/packages/v0.3 \
+            --overrides-dir experiments/automotive-ee-architecture/draft-overrides/v0.1 \
+            --prompt experiments/automotive-ee-architecture/article-drafting-v0.1.md \
+            --provider OpenAI \
+            --model "GPT-5.6 Sol" \
+            --invocation "interactive ChatGPT Automotive E/E thematic drafting; pinned Evidence only" \
+            --generated-at "$generated_at" \
+            --run-reference "experiment/automotive-ee-architecture-special; Architecture v0.3 approved by eariver" \
+            >"$OUT/acceptance-stdout.json" 2>"$OUT/stderr.log"
+          status=$?
+          echo "$status" > "$OUT/exit-status.txt"
+          echo "exit_status=$status" >> "$GITHUB_OUTPUT"
+          cat "$OUT/acceptance-stdout.json" || true
+          cat "$OUT/stderr.log" >&2 || true
+          exit 0
+
+      - name: Build compact drafting digest
+        if: always()
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          issue='SP-automotive-ee-architecture-2023-2026'
+          out=Path(os.environ['RUNNER_TEMP'])/'automotive-ee-draft-acceptance'
+          status=int((out/'exit-status.txt').read_text().strip()) if (out/'exit-status.txt').exists() else 255
+          stderr=(out/'stderr.log').read_text(encoding='utf-8',errors='replace') if (out/'stderr.log').exists() else ''
+          state_path=Path('sources')/issue/'pipeline-state.json'
+          state=json.load(open(state_path,encoding='utf-8'))
+          article=state.get('provenance',{}).get('article_draft') if status==0 else None
+          acceptance=None
+          validations=[]
+          if article:
+              run_dir=Path(article['result_set_path'])
+              acceptance=json.load(open(run_dir/'acceptance.json',encoding='utf-8'))
+              for path in sorted((run_dir/'validation').glob('P*.json')):
+                  validations.append(json.load(open(path,encoding='utf-8')))
+          value={
+            'schema_version':'1.0',
+            'issue_id':issue,
+            'purpose':'EXPERIMENTAL_AUTOMOTIVE_EE_DRAFT_ACCEPTANCE',
+            'workflow_run_id':int(os.environ['GITHUB_RUN_ID']),
+            'workflow_run_attempt':int(os.environ['GITHUB_RUN_ATTEMPT']),
+            'commit_sha':os.environ['GITHUB_SHA'],
+            'exit_status':status,
+            'passed':bool(status==0 and state.get('lifecycle_state')=='DRAFT_COMPLETE'),
+            'lifecycle_state':state.get('lifecycle_state'),
+            'article_draft_count':None if acceptance is None else acceptance.get('article_draft_count'),
+            'result_set_path':None if article is None else article.get('result_set_path'),
+            'result_set_sha256':None if article is None else article.get('result_set_sha256'),
+            'validation_pass_count':sum(1 for x in validations if x.get('passed') is True),
+            'validation_error_count':sum(len(x.get('errors') or []) for x in validations),
+            'attribution_mode_strengthening_count':0 if acceptance is None else len(acceptance.get('attribution_mode_strengthening') or []),
+            'p08_end_body_synthesis_present':bool(acceptance and any(x.get('package_id')=='P08' for x in acceptance.get('results') or [])),
+            'shared_acceptor':'scripts/accept_special_interactive_drafts.py',
+            'shared_validator':'scripts/validate_article_draft.py',
+            'shared_renderer':'scripts/render_article_draft_tex.py',
+            'production_ai_pipeline_modified':False,
+            'failure_stderr_tail':None if status==0 else stderr[-5000:],
+          }
+          dest=Path('sources')/issue/'imports'/'draft-acceptance'/'experiment-latest-digest.json'
+          dest.parent.mkdir(parents=True,exist_ok=True)
+          dest.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(value,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Upload acceptance audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: automotive-ee-draft-acceptance-${{ github.run_id }}
+          path: ${{ runner.temp }}/automotive-ee-draft-acceptance/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Commit accepted drafts and state
+        if: always()
+        run: |
+          set -euo pipefail
+          ISSUE="SP-automotive-ee-architecture-2023-2026"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add experiments/automotive-ee-architecture/draft-overrides/v0.1 \
+                  "sources/${ISSUE}/pipeline-state.json" \
+                  "sources/${ISSUE}/imports/draft-acceptance/experiment-latest-digest.json"
+          if [[ -d "sources/${ISSUE}/drafting/runs" ]]; then
+            git add "sources/${ISSUE}/drafting/runs"
+          fi
+          git diff --cached --quiet || (git commit -m "experiment: accept automotive E/E article drafts [skip ci]" && git push origin HEAD:experiment/automotive-ee-architecture-special)
+
+      - name: Confirm production boundary
+        if: always()
+        run: |
+          echo "Reused unchanged: scripts/accept_special_interactive_drafts.py"
+          echo "Reused unchanged: scripts/validate_article_draft.py"
+          echo "Reused unchanged: scripts/render_article_draft_tex.py"
+          echo "Production AI prompts/schemas/pipeline controller intentionally untouched."
+
+      - name: Fail if drafting failed
+        if: always() && steps.accept.outputs.exit_status != '0'
+        run: exit 1
