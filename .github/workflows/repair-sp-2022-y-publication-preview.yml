@@ -6,6 +6,11 @@ on:
       - special/2022-Y-work
     paths:
       - sources/SP-2022-Y/editorial/layout-revision-v0.3.json
+  pull_request:
+    branches:
+      - main
+    paths:
+      - sources/SP-2022-Y/editorial/layout-revision-v0.3.json
 
 permissions:
   contents: write
@@ -17,6 +22,7 @@ concurrency:
 
 jobs:
   repair:
+    if: github.event_name == 'push' || github.event.pull_request.head.ref == 'special/2022-Y-work'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current control code
