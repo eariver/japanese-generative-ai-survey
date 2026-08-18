@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-automotive-ee-architecture-2023-2026",
+  "status": "EXPERIMENTAL_INSPECTION_COMPLETE",
+  "source_artifact": {
+    "workflow_run_id": 32136725988,
+    "artifact_id": 9324322317,
+    "artifact_sha256": "989d29facf67fee624c878b54be0da04c9702219dfe2490643355de209d896d5"
+  },
+  "inspection_policy": "Resolve official-index-snapshot INSPECT decisions from preserved Raw HTML only; do not promote organization/project claims to independently reproduced facts.",
+  "resolutions": [
+    {
+      "screening_id": "official-index:cia-can-xl",
+      "raw_sha256": "a03c12da11ebcc079f1d4b7c66fecfebf54be8f9943ae64c9e71f54a15d9c171",
+      "decision": "KEEP",
+      "topic_lanes": ["C"],
+      "reason": "CiA describes CAN XL as the third CAN data-link generation, intended for backbone/sub-backbone use and standardized in ISO 11898-1:2024; this is directly relevant to the coexistence of Ethernet and evolving CAN roles.",
+      "verification_targets": [
+        "Verify ISO 11898-1:2024 standardization identity and publication chronology.",
+        "Verify CAN XL payload, bit-rate statements, backbone/sub-backbone positioning and TCP/IP integration wording from primary material."
+      ]
+    },
+    {
+      "screening_id": "official-index:covesa-2024-highlights",
+      "raw_sha256": "ef51fb53a24cede74443c5e64834c5d5f192b8f56907d8827a64131dfbe86559",
+      "decision": "MAYBE",
+      "topic_lanes": ["D", "E"],
+      "reason": "The page records consortium chronology such as the SDV Alliance launch and VSS alignment activity, but is a broad annual highlights post rather than a focused technical artifact.",
+      "verification_targets": [
+        "Use only for dated ecosystem/consortium chronology that cannot be better established from the underlying initiative pages.",
+        "Do not treat annual-highlight language as independent evidence of technical adoption."
+      ]
+    },
+    {
+      "screening_id": "official-index:covesa-vsomeip",
+      "raw_sha256": "4cb03d4a91f78190e27df33dc001c7928e58efe8e69ca59572d778013e0dc1be",
+      "decision": "KEEP",
+      "topic_lanes": ["C", "D"],
+      "reason": "COVESA explains vSomeIP's relationship to AUTOSAR SOME/IP, its BMW-originated open implementation lineage, and its complementarity with VSS for service/data interoperability.",
+      "verification_targets": [
+        "Verify project lineage, maintainer roles, AUTOSAR SOME/IP relationship and supported implementation scope.",
+        "Separate COVESA interoperability claims from independently established production deployment."
+      ]
+    },
+    {
+      "screening_id": "official-index:eclipse-score-launch",
+      "raw_sha256": "297a417e2ceb1de80bdc3e30bc3165f7a5a9d3ba3ff0e3d317cd2a5aa10d7339",
+      "decision": "KEEP",
+      "topic_lanes": ["D", "E", "F"],
+      "reason": "The Eclipse Foundation launch announcement defines S-CORE as an open core stack for embedded high-performance ECUs and describes a safety-oriented development process aimed at ISO 26262-suitable software.",
+      "verification_targets": [
+        "Verify launch date, initial release/maturity claims, target ECU/platform scope and governance/contributor facts.",
+        "Treat safety suitability/certification language as organization/project claims unless independently established."
+      ]
+    },
+    {
+      "screening_id": "official-index:eclipse-score-project",
+      "raw_sha256": "f192b62097bffc367f6e80235b50f9b642909f4586d2195f37953af47a4df377",
+      "decision": "KEEP",
+      "topic_lanes": ["D", "E", "F"],
+      "reason": "The current S-CORE project page describes a common safety-critical runtime foundation and explicit release-gate/maturity expectations for requirements, architecture documentation and safety artifacts.",
+      "verification_targets": [
+        "Verify current release-gate chronology against versioned release artifacts within the coverage cutoff.",
+        "Verify module maturity/safety process semantics without back-projecting post-cutoff page updates into earlier events."
+      ]
+    },
+    {
+      "screening_id": "official-index:ieee-8021dg-automotive-tsn",
+      "raw_sha256": "8c5a621aec58b0f57dd2e75d08116eae70c722092d8cdb36ca15527e6377fcbc",
+      "decision": "KEEP",
+      "topic_lanes": ["C", "F"],
+      "reason": "IEEE 802.1 records IEEE Std 802.1DG-2025 as published and defines an automotive in-vehicle Ethernet TSN profile covering deterministic latency, reliability, availability and security requirements.",
+      "verification_targets": [
+        "Verify board approval/publication dates and exact standard identity.",
+        "Verify scope of the automotive TSN profile and referenced TSN/security standards."
+      ]
+    },
+    {
+      "screening_id": "official-index:open-alliance-10base-t1s",
+      "raw_sha256": "c7bd3faa72f4c2ed79b9966d6d8732f3478b0f628a3a63cf870146ee1f823587",
+      "decision": "KEEP",
+      "topic_lanes": ["C"],
+      "reason": "OPEN Alliance TC14 provides a concrete automotive 10BASE-T1S specification/interoperability roadmap including PLCA, diagnostics, topology discovery, sleep/wake, EMC and multidrop-MACsec work.",
+      "verification_targets": [
+        "Verify specification versions/dates that fall within the coverage window.",
+        "Verify which artifacts are approved versus in progress and avoid treating roadmap targets as completed standards."
+      ]
+    },
+    {
+      "screening_id": "official-index:open-alliance-channel-components",
+      "raw_sha256": "f2ef713b8e89e8042ab8f49d278b1b289306e5dcb274e681140fcb68a8abcc36",
+      "decision": "KEEP",
+      "topic_lanes": ["C"],
+      "reason": "OPEN Alliance TC9 documents automotive Ethernet cabling/channel requirements across IEEE 802.3 speed grades and current work on coaxial 1000BASE-T1 and 25GBASE-T1.",
+      "verification_targets": [
+        "Verify approved specification versions/dates in the coverage window.",
+        "Separate published channel/component requirements from work-in-progress focus areas."
+      ]
+    },
+    {
+      "screening_id": "official-index:soafee-denso-deterministic-middleware",
+      "raw_sha256": "b7bdbc6f932becb57a4df3a1b7a4974d9bcd736df5ad3ee98fd5e8309135d6e3",
+      "decision": "KEEP",
+      "topic_lanes": ["B", "D", "E"],
+      "reason": "The SOAFEE/DENSO blueprint explicitly links cloud-native development parity, deterministic execution and mixed-critical orchestration for SDV middleware.",
+      "verification_targets": [
+        "Verify deterministic execution mechanism, Lingua Franca usage, mixed-critical orchestration design and deployment environment.",
+        "Treat guarantee/performance language as DENSO/SOAFEE claims unless independently reproduced."
+      ]
+    }
+  ],
+  "post_inspection_decision_counts": {
+    "KEEP": 43,
+    "MAYBE": 16,
+    "INSPECT": 0,
+    "DROP": 53
+  },
+  "canonical_pipeline_state_advanced": false
+}
