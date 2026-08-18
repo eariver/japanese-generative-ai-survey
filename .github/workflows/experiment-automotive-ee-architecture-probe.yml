@@ -1,0 +1,135 @@
+name: Experiment - Automotive E/E Architecture Probe
+
+on:
+  push:
+    branches:
+      - experiment/automotive-ee-architecture-special
+    paths:
+      - "experiments/automotive-ee-architecture/architecture-profile.json"
+      - "experiments/automotive-ee-architecture/profiled_architecture_probe.py"
+      - ".github/workflows/experiment-automotive-ee-architecture-probe.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  architecture-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout experiment branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download Selection probe artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: automotive-ee-selection-probe-32192464595
+          path: ${{ runner.temp }}/selection-probe
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: eariver/japanese-generative-ai-survey
+          run-id: 32192464595
+
+      - name: Build and validate Architecture proposal
+        id: probe
+        run: |
+          set +e
+          OUT="${RUNNER_TEMP}/automotive-ee-architecture-probe"
+          mkdir -p "$OUT"
+          python experiments/automotive-ee-architecture/profiled_architecture_probe.py \
+            --shared-input "${RUNNER_TEMP}/selection-probe/dry-run/architecture-input-shared.json" \
+            --profile experiments/automotive-ee-architecture/architecture-profile.json \
+            --output-root "$OUT" \
+            >"$OUT/stdout.log" 2>"$OUT/stderr.log"
+          status=$?
+          echo "$status" > "$OUT/exit-status.txt"
+          echo "exit_status=$status" >> "$GITHUB_OUTPUT"
+          cat "$OUT/stdout.log"
+          cat "$OUT/stderr.log" >&2
+          exit 0
+
+      - name: Build compact Architecture digest
+        if: always()
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          out = Path(os.environ["RUNNER_TEMP"]) / "automotive-ee-architecture-probe"
+          manifest_path = out / "architecture-probe-manifest.json"
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.exists() else None
+          stderr = (out / "stderr.log").read_text(encoding="utf-8", errors="replace") if (out / "stderr.log").exists() else ""
+          exit_status = int((out / "exit-status.txt").read_text().strip()) if (out / "exit-status.txt").exists() else 255
+          digest = {
+              "schema_version": "1.0",
+              "issue_id": "SP-automotive-ee-architecture-2023-2026",
+              "purpose": "EXPERIMENTAL_ARCHITECTURE_PROBE_DIGEST",
+              "workflow_run_id": int(os.environ["GITHUB_RUN_ID"]),
+              "workflow_run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+              "commit_sha": os.environ["GITHUB_SHA"],
+              "selection_probe_run_id": 32192464595,
+              "exit_status": exit_status,
+              "passed": bool(manifest and exit_status == 0 and manifest.get("status") == "PROPOSED"),
+              "architecture_version": None if manifest is None else manifest.get("architecture_version"),
+              "status": None if manifest is None else manifest.get("status"),
+              "profiled_architecture_input": None if manifest is None else manifest.get("profiled_architecture_input"),
+              "plan": None if manifest is None else manifest.get("plan"),
+              "review_markdown": None if manifest is None else manifest.get("review_markdown"),
+              "shared_validator": None if manifest is None else manifest.get("shared_validator"),
+              "shared_validator_modified": False if manifest is None else manifest.get("shared_validator_modified"),
+              "production_lifecycle_advanced": False if manifest is None else manifest.get("production_lifecycle_advanced"),
+              "architecture_human_gate_reached": False if manifest is None else manifest.get("architecture_human_gate_reached"),
+              "architecture_human_gate_approved": False if manifest is None else manifest.get("architecture_human_gate_approved"),
+              "finding": None if manifest is None else manifest.get("finding"),
+              "failure_stderr_tail": None if exit_status == 0 else stderr[-5000:],
+          }
+          dest = Path("sources/SP-automotive-ee-architecture-2023-2026/imports/architecture-probe/experiment-latest-digest.json")
+          dest.parent.mkdir(parents=True, exist_ok=True)
+          dest.write_text(json.dumps(digest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(digest, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Upload immutable Architecture Review artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: automotive-ee-architecture-review-${{ github.run_id }}
+          path: ${{ runner.temp }}/automotive-ee-architecture-probe/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Commit compact Architecture digest
+        if: always()
+        run: |
+          set -euo pipefail
+          DIGEST="sources/SP-automotive-ee-architecture-2023-2026/imports/architecture-probe/experiment-latest-digest.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$DIGEST"
+          if git diff --cached --quiet; then
+            echo "Digest unchanged"
+          else
+            git commit -m "experiment: record automotive E/E Architecture Review [skip ci]"
+            git push origin HEAD:experiment/automotive-ee-architecture-special
+          fi
+
+      - name: Confirm human gate boundary
+        if: always()
+        run: |
+          echo "Reused unchanged: scripts/validate_issue_architecture.py"
+          echo "Architecture plan remains PROPOSED."
+          echo "No Architecture approval is recorded."
+          echo "Production lifecycle state remains untouched."
+          echo "Drafting must not begin until explicit Architecture Review approval."
+
+      - name: Fail if Architecture probe failed
+        if: always() && steps.probe.outputs.exit_status != '0'
+        run: exit 1
