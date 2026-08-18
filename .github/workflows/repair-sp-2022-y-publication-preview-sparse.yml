@@ -127,7 +127,7 @@ jobs:
           assert state['gates']['visual_review']=='pending' and state['gates']['freeze']=='pending'
           source=state['provenance']['validated_issue_source']
           assert source['source_version']=='v0.8'
-          src=root/source['path'].parent
+          src=(root/source['path']).parent
           manifest=json.load(open(root/source['path'],encoding='utf-8'))
           assert manifest['evidence_record_count']==42
           notes='\n'.join((src/a['technical_notes_path']).read_text(encoding='utf-8') for a in manifest['articles'] if a.get('technical_notes_path') and (src/a['technical_notes_path']).is_file())
