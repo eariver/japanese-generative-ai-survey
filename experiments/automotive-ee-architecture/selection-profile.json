@@ -1,0 +1,218 @@
+{
+  "schema_version": "1.0",
+  "profile_id": "automotive-ee-selection-v0.1",
+  "status": "EXPERIMENTAL",
+  "issue_id": "SP-automotive-ee-architecture-2023-2026",
+  "selection_version": "v0.1",
+  "human_gate_required_for_selection": false,
+  "architecture_human_gate_required": true,
+  "role_policy": {
+    "allowed_positive_roles_used": [
+      "FEATURE_CORE",
+      "SECTION_CORE",
+      "SUPPORTING_EVIDENCE",
+      "CHRONOLOGY"
+    ],
+    "candidate_exclusion_role": "EXCLUDE",
+    "non_candidate_role": "HOLD_OUT",
+    "unused_weekly_roles": [
+      "PAPER_WATCH",
+      "LATE_BREAKING",
+      "WATCHLIST"
+    ]
+  },
+  "themes": {
+    "A": "Physical/zonal topology and I/O responsibility boundaries",
+    "B": "Central/HPC compute, consolidation, virtualization and mixed criticality",
+    "C": "In-vehicle networking, Ethernet/TSN/CAN XL and deterministic communication",
+    "D": "Runtime, middleware, service/data contracts and platform interoperability",
+    "E": "Cloud-to-edge development, CI/CD, integration, diagnostics and validation lifecycle",
+    "F": "Functional safety, cybersecurity, isolation and trust boundaries"
+  },
+  "candidate_assignments": [
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2409-10690v1-6f8ee796d3",
+      "role": "FEATURE_CORE",
+      "themes": ["A", "B"],
+      "rationale": "Use as the cross-cutting decision framework for how far centralization should proceed and where local/distributed constraints remain."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2407-17287v2-e9ad789af2",
+      "role": "FEATURE_CORE",
+      "themes": ["B", "C", "D", "F"],
+      "rationale": "Use as a synthesis anchor for deterministic/reliable SDV building blocks and the coupling between compute, communication and dependability."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2506-05822v1-eba4e624a8",
+      "role": "SECTION_CORE",
+      "themes": ["B", "F"],
+      "rationale": "Core evidence for mixed-criticality integration on centralized HPC and for the safety/isolation constraints on consolidation."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2412-09995v1-81f16c9648",
+      "role": "SECTION_CORE",
+      "themes": ["B", "D"],
+      "rationale": "Core empirical evidence for virtualization and microservice trade-offs on SDV compute platforms."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-ieee-8021dg-automoti-52b21e32f1",
+      "role": "SECTION_CORE",
+      "themes": ["C"],
+      "rationale": "Published automotive-specific TSN profile is a primary standard anchor for deterministic Ethernet."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-cia-can-xl-d6279c76c3",
+      "role": "SECTION_CORE",
+      "themes": ["C"],
+      "rationale": "Core non-Ethernet backbone/sub-backbone counterpoint that prevents the network chapter from collapsing into an Ethernet-only story."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:series-covesa-vss-major-evolution-67e4b52d14",
+      "role": "SECTION_CORE",
+      "themes": ["D"],
+      "rationale": "Core evidence for stable vehicle-data semantics as software/service boundaries move independently of physical ECU topology."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-eclipse-score-projec-f643a9aa96",
+      "role": "SECTION_CORE",
+      "themes": ["B", "D", "E", "F"],
+      "rationale": "Core implementation-platform evidence for the open software foundation emerging around high-performance SDV ECUs."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2507-19446v1-5be9173ad5",
+      "role": "SECTION_CORE",
+      "themes": ["E"],
+      "rationale": "Core evidence for variant-aware CI/CD and the development-lifecycle implications of SDV architecture."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2505-07881v1-86b88e7eff",
+      "role": "SUPPORTING_EVIDENCE",
+      "themes": ["B", "F"],
+      "rationale": "Supports the mixed-criticality section with an ASIL-decomposition/resource-allocation optimization example."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2410-09839v1-7bf0812c87",
+      "role": "SUPPORTING_EVIDENCE",
+      "themes": ["B", "F"],
+      "rationale": "Supports hardware-enforced isolation and trust-boundary discussion for consolidated automotive compute."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-open-alliance-10base-057097804e",
+      "role": "SUPPORTING_EVIDENCE",
+      "themes": ["A", "C"],
+      "rationale": "Supports the physical/zonal edge of the Ethernet story with multidrop 10BASE-T1S automotive specifications."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-open-alliance-channe-8482a0781d",
+      "role": "SUPPORTING_EVIDENCE",
+      "themes": ["A", "C"],
+      "rationale": "Supports the network chapter with channel/component constraints that keep logical architecture tied to physical automotive Ethernet reality."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2504-05793v3-f90db43860",
+      "role": "SUPPORTING_EVIDENCE",
+      "themes": ["C", "D"],
+      "rationale": "Provides research evidence for dynamic QoS negotiation under strict latency constraints on vehicular TSN."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-covesa-vsomeip-dbf82021e8",
+      "role": "SUPPORTING_EVIDENCE",
+      "themes": ["C", "D"],
+      "rationale": "Primary project evidence for the SOME/IP implementation layer used in service-oriented in-vehicle communication."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:series-covesa-vsomeip-3x-evolution-3c75418e40",
+      "role": "CHRONOLOGY",
+      "themes": ["C", "D"],
+      "rationale": "Use the release series as maturity chronology rather than a separate architecture story."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2505-02734v2-8e61103b56",
+      "role": "SUPPORTING_EVIDENCE",
+      "themes": ["C", "D"],
+      "rationale": "Provides comparative middleware performance evidence for the consequences of choosing different communication substrates."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2403-04378v1-e19e02d33d",
+      "role": "SUPPORTING_EVIDENCE",
+      "themes": ["B", "D"],
+      "rationale": "Supports cloud-native/service-mesh influence on in-vehicle service architecture without making it the survey thesis."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2511-17540v1-bb32e08743",
+      "role": "SUPPORTING_EVIDENCE",
+      "themes": ["D", "E"],
+      "rationale": "Supports interoperability discussion at the AUTOSAR Adaptive/ROS 2 boundary."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2607-05227v1-ce8cde65b9",
+      "role": "SUPPORTING_EVIDENCE",
+      "themes": ["D", "E"],
+      "rationale": "Industry-perspective evidence is useful for AUTOSAR Adaptive friction and adoption context, but remains partial and should not anchor normative claims."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-soafee-denso-determi-f82f7eda52",
+      "role": "SUPPORTING_EVIDENCE",
+      "themes": ["B", "D", "E", "F"],
+      "rationale": "Supports cloud-native-to-deterministic-runtime discussion with a concrete SOAFEE/DENSO implementation claim."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-eclipse-score-launch-2a18862fac",
+      "role": "CHRONOLOGY",
+      "themes": ["B", "D", "E", "F"],
+      "rationale": "Use the launch announcement to establish the start of the open core-stack initiative, not as a separate technical package."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:series-eclipse-score-maturity-evolution-437752c125",
+      "role": "CHRONOLOGY",
+      "themes": ["B", "D", "E", "F"],
+      "rationale": "Use the S-CORE release series to show maturation across communication, safety, integration and module-maturity mechanisms."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2503-04928v1-491b9006c9",
+      "role": "SUPPORTING_EVIDENCE",
+      "themes": ["B", "D", "E"],
+      "rationale": "Supports software-driven integration and configuration as a bridge between platform architecture and development tooling."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2408-02127v1-ea848722f0",
+      "role": "SUPPORTING_EVIDENCE",
+      "themes": ["B", "E", "F"],
+      "rationale": "Supports automated platform configuration/integration and its resource/safety constraints."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2603-05279v1-f6ffbbc676",
+      "role": "SUPPORTING_EVIDENCE",
+      "themes": ["B", "E"],
+      "rationale": "Supports the validation-lifecycle section with a central-car-server Vehicle-in-the-Loop/digital-twin example; preserve its partial evidence caveat."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2507-19403v1-bf12410710",
+      "role": "SUPPORTING_EVIDENCE",
+      "themes": ["D", "E"],
+      "rationale": "Supports diagnostics as a modular software-defined vehicle service and lifecycle concern."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2506-13261v1-cb2daee51e",
+      "role": "SUPPORTING_EVIDENCE",
+      "themes": ["D", "F"],
+      "rationale": "Supports service authentication/authorization and trust-boundary discussion using Internet-standard security mechanisms."
+    },
+    {
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2604-12297v2-8b5aeb12e8",
+      "role": "EXCLUDE",
+      "themes": ["A", "B"],
+      "rationale": "Evidence is credible but the power-packet/sensorless-drive architecture is peripheral to the survey's E/E responsibility-boundary thesis and would dilute the 48-page volume."
+    }
+  ],
+  "abstraction_probe": {
+    "production_selection_validator_modified": false,
+    "finding": "The shared role safety model is reusable. Domain-specific thematic grouping should remain a separate overlay because the production Selection contract does not preserve Screening topic lanes into Architecture Input.",
+    "future_profile_candidates": [
+      "active editorial role subset",
+      "domain theme taxonomy",
+      "theme assignments carried as an Architecture overlay",
+      "edition-specific page/editorial constraints"
+    ]
+  }
+}
