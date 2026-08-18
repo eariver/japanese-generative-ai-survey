@@ -83,9 +83,12 @@ jobs:
           latex=state['provenance']['latex_build']; source=state['provenance']['validated_issue_source']
           assert latex['pdf_sha256']==approved_sha
           assert latex['source_version']==source['source_version']
+          artifact_name=f"japanese-generative-ai-survey-special-{slug}-{source['source_version']}"
+          if latex.get('build_mode') == 'sparse-equivalent-of-build-special-pdf':
+              artifact_name += '-sparse'
           print(f"RUN_ID={latex['workflow_run_id']}")
           print(f"SOURCE_VERSION={source['source_version']}")
-          print(f"ARTIFACT_NAME=japanese-generative-ai-survey-special-{slug}-{source['source_version']}")
+          print(f"ARTIFACT_NAME={artifact_name}")
           PY
           cat build.env >> "$GITHUB_ENV"
 
