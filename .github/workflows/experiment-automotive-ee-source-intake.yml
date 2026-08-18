@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   source-intake:
@@ -39,15 +39,60 @@ jobs:
             --output-root "$OUT" \
             --collector all
 
-      - name: Summarize Source Intake
+      - name: Build compact intake digest
         if: always()
         run: |
           OUT="${RUNNER_TEMP}/automotive-ee-source-intake"
-          if [[ -f "$OUT/source-intake-report.json" ]]; then
-            cat "$OUT/source-intake-report.json"
-          else
-            echo "source-intake-report.json was not produced"
-          fi
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          out = Path(os.environ["RUNNER_TEMP"]) / "automotive-ee-source-intake"
+          issue = "SP-automotive-ee-architecture-2023-2026"
+          report_path = out / "source-intake-report.json"
+          report = json.loads(report_path.read_text(encoding="utf-8")) if report_path.exists() else None
+
+          def newest_summary(collector: str):
+              paths = sorted((out / "sources" / issue / "collectors" / collector / "runs").glob("*/summary.json"))
+              if not paths:
+                  return None
+              return json.loads(paths[-1].read_text(encoding="utf-8"))
+
+          arxiv = newest_summary("arxiv")
+          github = newest_summary("github-releases")
+          official = newest_summary("official-pages")
+          digest = {
+              "schema_version": "1.0",
+              "issue_id": issue,
+              "purpose": "EXPERIMENTAL_SOURCE_INTAKE_DIGEST",
+              "workflow_run_id": int(os.environ["GITHUB_RUN_ID"]),
+              "workflow_run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+              "commit_sha": os.environ["GITHUB_SHA"],
+              "raw_storage": "GITHUB_ACTIONS_ARTIFACT_ONLY",
+              "production_ai_pipeline_modified": False,
+              "report": report,
+              "counts": {
+                  "arxiv_unique_entries": None if arxiv is None else arxiv.get("unique_entry_count"),
+                  "arxiv_query_success_count": None if arxiv is None else len(arxiv.get("queries", [])),
+                  "arxiv_error_count": None if arxiv is None else len(arxiv.get("errors", [])),
+                  "github_repository_success_count": None if github is None else len(github.get("repositories", [])),
+                  "github_matching_release_count": None if github is None else github.get("matching_release_count"),
+                  "github_error_count": None if github is None else len(github.get("errors", [])),
+                  "official_page_success_count": None if official is None else len(official.get("pages", [])),
+                  "official_error_count": None if official is None else len(official.get("errors", [])),
+              },
+              "errors": {
+                  "arxiv": [] if arxiv is None else arxiv.get("errors", []),
+                  "github": [] if github is None else github.get("errors", []),
+                  "official": [] if official is None else official.get("errors", []),
+              },
+          }
+          dest = Path("sources") / issue / "imports" / "source-intake" / "experiment-latest-digest.json"
+          dest.parent.mkdir(parents=True, exist_ok=True)
+          dest.write_text(json.dumps(digest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(digest, ensure_ascii=False, indent=2))
+          PY
 
       - name: Upload immutable experiment artifact
         if: always()
@@ -57,6 +102,25 @@ jobs:
           path: ${{ runner.temp }}/automotive-ee-source-intake/
           if-no-files-found: error
           retention-days: 30
+
+      - name: Commit compact digest to experiment branch
+        if: always()
+        run: |
+          set -euo pipefail
+          DIGEST="sources/SP-automotive-ee-architecture-2023-2026/imports/source-intake/experiment-latest-digest.json"
+          if [[ ! -f "$DIGEST" ]]; then
+            echo "Digest was not produced"
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$DIGEST"
+          if git diff --cached --quiet; then
+            echo "Digest unchanged"
+          else
+            git commit -m "experiment: record automotive E/E source intake digest [skip ci]"
+            git push origin HEAD:experiment/automotive-ee-architecture-special
+          fi
 
       - name: Confirm production boundary
         if: always()
