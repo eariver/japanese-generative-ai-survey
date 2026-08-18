@@ -1,0 +1,118 @@
+name: Experiment - Automotive E/E Evidence Task Probe
+
+on:
+  push:
+    branches:
+      - experiment/automotive-ee-architecture-special
+    paths:
+      - "experiments/automotive-ee-architecture/screening-selection-v0.1.json"
+      - "experiments/automotive-ee-architecture/profiled_screening_to_evidence_tasks.py"
+      - ".github/workflows/experiment-automotive-ee-evidence-task-probe.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  evidence-task-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout experiment branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download pinned Source Intake artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: automotive-ee-source-intake-32138312160
+          path: ${{ runner.temp }}/pinned-automotive-ee-intake
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: eariver/japanese-generative-ai-survey
+          run-id: 32138312160
+
+      - name: Build verification queue and shared Evidence tasks
+        run: |
+          set -euo pipefail
+          INDEX="${RUNNER_TEMP}/pinned-automotive-ee-intake/sources/SP-automotive-ee-architecture-2023-2026/screening/profiled/screening-index.jsonl"
+          OUT="${RUNNER_TEMP}/automotive-ee-evidence-task-probe"
+          test -f "$INDEX"
+          python experiments/automotive-ee-architecture/profiled_screening_to_evidence_tasks.py \
+            --screening-index "$INDEX" \
+            --selection experiments/automotive-ee-architecture/screening-selection-v0.1.json \
+            --output-dir "$OUT"
+          python -m json.tool "$OUT/screening-to-evidence-manifest.json" >/dev/null
+          python -m json.tool "$OUT/evidence/evidence-task-manifest.json" >/dev/null
+
+      - name: Build compact probe digest
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          out = Path(os.environ["RUNNER_TEMP"]) / "automotive-ee-evidence-task-probe"
+          manifest = json.loads((out / "screening-to-evidence-manifest.json").read_text(encoding="utf-8"))
+          evidence = manifest["evidence_task_manifest"]
+          digest = {
+              "schema_version": "1.0",
+              "issue_id": manifest["issue_id"],
+              "purpose": "EXPERIMENTAL_SCREENING_TO_EVIDENCE_TASK_DIGEST",
+              "workflow_run_id": int(os.environ["GITHUB_RUN_ID"]),
+              "workflow_run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+              "commit_sha": os.environ["GITHUB_SHA"],
+              "pinned_source_intake_run_id": 32138312160,
+              "pinned_screening_index_sha256": manifest["pinned_input"]["screening_index_sha256"],
+              "selection_sha256": manifest["pinned_input"]["selection_sha256"],
+              "decision_counts": manifest["decision_counts"],
+              "retained_count": manifest["retained_count"],
+              "retained_source_counts": manifest["retained_source_counts"],
+              "evidence_task_count": evidence["evidence_task_count"],
+              "evidence_task_type_counts": evidence["task_type_counts"],
+              "screening_coverage_count": evidence["screening_coverage_count"],
+              "missing_screening_ids": evidence["missing_screening_ids"],
+              "duplicate_screening_coverage": evidence["duplicate_screening_coverage"],
+              "shared_evidence_task_builder": manifest["shared_evidence_task_builder"],
+              "shared_evidence_task_builder_modified": manifest["shared_evidence_task_builder_modified"],
+              "production_ai_pipeline_modified": manifest["production_ai_pipeline_modified"],
+              "finding": manifest["finding"],
+          }
+          dest = Path("sources/SP-automotive-ee-architecture-2023-2026/imports/evidence-task-probe/experiment-latest-digest.json")
+          dest.parent.mkdir(parents=True, exist_ok=True)
+          dest.write_text(json.dumps(digest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(digest, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Upload immutable Evidence-task probe artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: automotive-ee-evidence-task-probe-${{ github.run_id }}
+          path: ${{ runner.temp }}/automotive-ee-evidence-task-probe/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Commit compact probe digest
+        run: |
+          set -euo pipefail
+          DIGEST="sources/SP-automotive-ee-architecture-2023-2026/imports/evidence-task-probe/experiment-latest-digest.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$DIGEST"
+          if git diff --cached --quiet; then
+            echo "Digest unchanged"
+          else
+            git commit -m "experiment: record automotive E/E Evidence-task probe [skip ci]"
+            git push origin HEAD:experiment/automotive-ee-architecture-special
+          fi
+
+      - name: Confirm production boundary
+        if: always()
+        run: |
+          echo "Production implementation intentionally reused unchanged: scripts/build_evidence_tasks.py"
+          echo "Production AI pipeline/config/prompts/schemas intentionally untouched."
