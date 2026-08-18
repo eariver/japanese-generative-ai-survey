@@ -5,7 +5,11 @@
   "issue_id": "SP-automotive-ee-architecture-2023-2026",
   "prompt": "experiments/automotive-ee-architecture/source-screening-v0.1.md",
   "result_schema": "schemas/screening-batch-result.schema.json",
-  "source_screening_index": "Actions artifact from workflow run 32136725988, SHA-256 989d29facf67fee624c878b54be0da04c9702219dfe2490643355de209d896d5",
+  "source_screening_index": {
+    "producer": ".github/workflows/experiment-automotive-ee-source-intake.yml",
+    "variant": "profiled",
+    "pin_policy": "Pin the immutable Actions artifact and profiled screening-index SHA-256 at execution time; do not hard-code a mutable latest run into this profile."
+  },
   "topic_lanes": {
     "A": "Physical E/E topology, zonal architecture, I/O aggregation and wiring",
     "B": "Central/HPC compute, consolidation, mixed criticality, partitioning and resource governance",
@@ -24,6 +28,7 @@
     "kind": "THEMATIC_RETROSPECTIVE_TRIAGE",
     "no_target_count": true,
     "official_index_default": "INSPECT",
+    "official_item_default": "EVALUATE_FROM_SUPPLIED_ITEM_TEXT",
     "release_series_may_be_grouped": true,
     "retain_sources_that_explain_architecture_transition": true,
     "drop_transport_mobility_or_ai_papers_without_material_EE_architecture_content": true,
@@ -32,6 +37,6 @@
   "abstraction_probe": {
     "production_prompt_modified": false,
     "production_schema_modified": false,
-    "finding": "The result schema can be reused unchanged if topic-lane semantics and editorial relevance are supplied by a domain-specific screening profile/prompt."
+    "finding": "The result schema can be reused unchanged if page-role-aware normalized records, topic-lane semantics and editorial relevance are supplied by domain-specific profile/prompt context. Mutable run identity should be pinned by an execution package, not embedded in the profile."
   }
 }
