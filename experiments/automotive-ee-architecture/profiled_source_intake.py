@@ -11,8 +11,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any, Callable
+
+# Direct execution sets sys.path[0] to this experiment directory, not repository root.
+# Add only the repository root so the production collector can be imported unchanged.
+SCRIPT_PATH = Path(__file__).resolve()
+REPOSITORY_ROOT = SCRIPT_PATH.parents[2]
+if str(REPOSITORY_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPOSITORY_ROOT))
 
 from scripts import source_intake as base
 
