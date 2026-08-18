@@ -1,0 +1,113 @@
+name: Experiment - Automotive E/E Evidence Vertical Slice
+
+on:
+  push:
+    branches:
+      - experiment/automotive-ee-architecture-special
+    paths:
+      - "experiments/automotive-ee-architecture/evidence-vertical-slice/**"
+      - "experiments/automotive-ee-architecture/validate_evidence_vertical_slice.py"
+      - ".github/workflows/experiment-automotive-ee-evidence-vertical-slice.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  validate-vertical-slice:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout experiment branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install schema validator
+        run: python -m pip install --disable-pip-version-check "jsonschema>=4.23,<5"
+
+      - name: Download pinned Evidence execution package
+        uses: actions/download-artifact@v5
+        with:
+          name: automotive-ee-evidence-package-32144428137
+          path: ${{ runner.temp }}/pinned-evidence-package
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: eariver/japanese-generative-ai-survey
+          run-id: 32144428137
+
+      - name: Validate representative Evidence Runs
+        run: |
+          set -euo pipefail
+          OUT="${RUNNER_TEMP}/automotive-ee-evidence-vertical-slice"
+          mkdir -p "$OUT"
+          python experiments/automotive-ee-architecture/validate_evidence_vertical_slice.py \
+            --repo-root . \
+            --package-root "${RUNNER_TEMP}/pinned-evidence-package" \
+            --manifest experiments/automotive-ee-architecture/evidence-vertical-slice/vertical-slice-manifest.json \
+            --output "$OUT/validation-report.json"
+          python -m json.tool "$OUT/validation-report.json" >/dev/null
+
+      - name: Build compact vertical-slice digest
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          out = Path(os.environ["RUNNER_TEMP"]) / "automotive-ee-evidence-vertical-slice"
+          report = json.loads((out / "validation-report.json").read_text(encoding="utf-8"))
+          digest = {
+              "schema_version": "1.0",
+              "issue_id": report["issue_id"],
+              "purpose": "EXPERIMENTAL_EVIDENCE_VERTICAL_SLICE_DIGEST",
+              "workflow_run_id": int(os.environ["GITHUB_RUN_ID"]),
+              "workflow_run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+              "commit_sha": os.environ["GITHUB_SHA"],
+              "pinned_evidence_package_run_id": 32144428137,
+              "passed": report["passed"],
+              "case_count": report["case_count"],
+              "artifact_types": report["artifact_types"],
+              "cases": report["cases"],
+              "production_validator": report["production_validator"],
+              "production_validator_modified": report["production_validator_modified"],
+              "production_ai_pipeline_modified": report["production_ai_pipeline_modified"],
+              "finding": report["finding"],
+          }
+          dest = Path("sources/SP-automotive-ee-architecture-2023-2026/imports/evidence-vertical-slice/experiment-latest-digest.json")
+          dest.parent.mkdir(parents=True, exist_ok=True)
+          dest.write_text(json.dumps(digest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(digest, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Upload immutable validation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: automotive-ee-evidence-vertical-slice-${{ github.run_id }}
+          path: ${{ runner.temp }}/automotive-ee-evidence-vertical-slice/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Commit compact vertical-slice digest
+        run: |
+          set -euo pipefail
+          DIGEST="sources/SP-automotive-ee-architecture-2023-2026/imports/evidence-vertical-slice/experiment-latest-digest.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$DIGEST"
+          if git diff --cached --quiet; then
+            echo "Digest unchanged"
+          else
+            git commit -m "experiment: record automotive E/E Evidence vertical slice [skip ci]"
+            git push origin HEAD:experiment/automotive-ee-architecture-special
+          fi
+
+      - name: Confirm production boundary
+        if: always()
+        run: |
+          echo "Reused unchanged: scripts/validate_evidence_run.py"
+          echo "Production AI Evidence prompt/schema/lifecycle acceptance intentionally untouched."
