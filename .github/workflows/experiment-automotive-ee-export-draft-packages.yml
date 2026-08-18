@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   export:
@@ -25,3 +25,20 @@ jobs:
             schemas/article-draft-result.schema.json
           if-no-files-found: error
           retention-days: 14
+      - name: Record export run
+        run: |
+          set -euo pipefail
+          mkdir -p sources/SP-automotive-ee-architecture-2023-2026/imports/draft-package-export
+          cat > sources/SP-automotive-ee-architecture-2023-2026/imports/draft-package-export/experiment-latest-digest.json <<EOF
+          {
+            "schema_version": "1.0",
+            "issue_id": "SP-automotive-ee-architecture-2023-2026",
+            "workflow_run_id": ${GITHUB_RUN_ID},
+            "artifact_name": "automotive-ee-draft-packages-v0.3-${GITHUB_RUN_ID}",
+            "production_ai_pipeline_modified": false
+          }
+          EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sources/SP-automotive-ee-architecture-2023-2026/imports/draft-package-export/experiment-latest-digest.json
+          git diff --cached --quiet || (git commit -m "experiment: record automotive E/E draft package export [skip ci]" && git push origin HEAD:experiment/automotive-ee-architecture-special)
