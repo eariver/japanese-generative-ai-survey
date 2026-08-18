@@ -5,7 +5,7 @@
   "draft_source_mode": "EVIDENCE_PACKAGE",
   "execution_stage": "ARTICLE_DRAFTING",
   "basis": {
-    "architecture_plan_sha256": "a1ff65d079c0a52e4d16f1094ac497adb993a7ce67d9786ac0c2ee2075121b35",
+    "architecture_plan_sha256": "661771379d556cc0879cc20b404cccb4eef2bdf8aa84db6d654aa7fb3243344b",
     "architecture_input_sha256": "ea873015da9213e24abbc23f20bdaf35556cb36bb5634c76c6931a8a88d781ce",
     "evidence_reviewed_sha256": "029142cec0c09127aa64e51ddfdb3652277af108cc53f8c0d9d9c22eb696ffc5"
   },
@@ -22,12 +22,1040 @@
       "安全・セキュリティ・determinismが中央集約の実効上限を決める",
       "標準仕様・OSS実装・OEM/Tier1実装の間に残る検証gap"
     ],
-    "boundaries": [],
+    "boundaries": [
+      "The authors frame the interview analysis as qualitative rather than statistically significant; findings therefore should not be treated as population-level quantitative validation.",
+      "The practitioner interview study is tied to Daimler Truck AG and the paper discusses external-generalizability limits; architecture conclusions should be treated as contextual rather than universal.",
+      "Which detailed mandatory/optional TSN feature selections and configuration parameters are normative in the full IEEE Std 802.1DG-2025 text?",
+      "This verification used public IEEE project/publication pages; detailed normative requirements and parameter values in the full standard were not independently inspected.",
+      "VSS specifies a vehicle-data taxonomy/model and associated tooling; these releases do not by themselves establish a transport protocol, service runtime, or OEM-wide adoption.",
+      "Statements such as 'production-ready' or predictable/safe behavior are project claims unless backed by separate certification, conformance or deployment evidence.",
+      "The evaluation is a laboratory setup using TurtleBots, ESP32-based ECU emulation and a central backend, not a production vehicle/fleet validation.",
+      "The authors explicitly identify deployment to a larger connected-vehicle testbed and deeper feature-model/variant-management integration as future work.",
+      "For simplicity, the model assumes coexistence/freedom-from-interference criteria are satisfied when mixed-criticality tasks share hardware; the optimization does not itself establish the complete safety argument for that coexistence.",
+      "Scalability experiments use a fixed four-ECU architecture with randomly generated task graphs and randomized WCET/WCRT/cost values, limiting direct transfer to a production E/E program.",
+      "Reported objective values and solver timings are case-study/problem-instance results rather than universal design-space optimization performance."
+    ],
     "late_breaking": false,
     "drafting_order": 9
   },
   "primary_evidence": [],
-  "supporting_evidence": [],
+  "supporting_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2409-10690v1-6f8ee796d3",
+      "evidence_task_sha256": "74d8865dab14b3584a100bc7ddbab2532f9eaa77f978ceb086c0655cf08923e8",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence vertical-slice verification",
+        "generated_at": "2026-08-18T13:56:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2409-10690v1-6f8ee796d3",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single paper; no grouping issue."
+        },
+        "artifact": {
+          "canonical_name": "Centralization potential of automotive E/E architectures",
+          "artifact_type": "PAPER",
+          "organization": "Daimler Truck AG / Technical University of Munich / University of Stuttgart",
+          "canonical_url": "https://arxiv.org/abs/2409.10690"
+        },
+        "temporal": {
+          "artifact_first_announced": "2024-09-16T19:36:32Z",
+          "observed_at": "2026-08-18T13:56:00Z",
+          "events": [
+            {
+              "event_id": "event-arxiv-v1",
+              "event_type": "PREPRINT_SUBMISSION",
+              "event_date": "2024-09-16T19:36:32Z",
+              "source_published_at": "2024-09-16T19:36:32Z",
+              "source_ids": [
+                "src-arxiv"
+              ]
+            },
+            {
+              "event_id": "event-jss-publication",
+              "event_type": "JOURNAL_PUBLICATION",
+              "event_date": "2025-01",
+              "source_published_at": null,
+              "source_ids": [
+                "src-elsevier"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-arxiv",
+            "url": "https://arxiv.org/abs/2409.10690",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Centralization potential of automotive E/E architectures (arXiv:2409.10690)",
+            "published_at": "2024-09-16T19:36:32Z",
+            "accessed_at": "2026-08-18T13:56:00Z",
+            "role": "Author preprint and metadata establishing methodology summary, criteria and author claims."
+          },
+          {
+            "source_id": "src-elsevier",
+            "url": "https://www.sciencedirect.com/science/article/pii/S0164121224002644",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Centralization potential of automotive E/E architectures — Journal of Systems and Software",
+            "published_at": null,
+            "accessed_at": "2026-08-18T13:56:00Z",
+            "role": "Publisher page and article text/snippets used to verify research-method and threats-to-validity statements."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-seven-criteria",
+            "text": "The authors identify seven evaluation criteria for centralization potential: busload, functional safety, computing power, feature dependencies, development and maintenance costs, error rate, and modularity/flexibility.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-arxiv"
+            ],
+            "context": "Author-derived criteria from literature review."
+          },
+          {
+            "claim_id": "claim-method",
+            "text": "The study combines a literature review with qualitative interviews of practitioners at Daimler Truck AG; the interview analysis is qualitative and explicitly not aimed at statistical significance.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-arxiv",
+              "src-elsevier"
+            ],
+            "context": "Methodological description from the paper/publisher text."
+          },
+          {
+            "claim_id": "claim-centralization-boundary",
+            "text": "The authors report centralization as a key SDV enabler while also warning that centralization can shift rather than eliminate complexity, and that some strict functional-safety needs may still favor local embedded ECUs.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-elsevier"
+            ],
+            "context": "Paper highlights/conclusions; not independently reproduced."
+          }
+        ],
+        "metrics": [
+          {
+            "metric_id": "metric-criteria-count",
+            "name": "centralization evaluation criteria count",
+            "value": "7",
+            "unit": "criteria",
+            "context": "Author-defined set derived from literature review and used in the qualitative study.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-arxiv"
+            ]
+          }
+        ],
+        "limitations": [
+          {
+            "limitation_id": "limitation-qualitative",
+            "text": "The authors frame the interview analysis as qualitative rather than statistically significant; findings therefore should not be treated as population-level quantitative validation.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-elsevier"
+            ]
+          },
+          {
+            "limitation_id": "limitation-generalizability",
+            "text": "The practitioner interview study is tied to Daimler Truck AG and the paper discusses external-generalizability limits; architecture conclusions should be treated as contextual rather than universal.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-elsevier"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the architecture, evaluation setup, material claims and limitations reported for Centralization potential of automotive E/E architectures; preserve paper results as AUTHOR_CLAIM unless independently established.",
+              "status": "VERIFIED",
+              "finding": "The primary paper/publisher text confirms the literature-review plus qualitative-interview design, the seven criteria, architecture framing, qualitative-analysis boundary and threats-to-validity discussion. Claims remain AUTHOR_CLAIM rather than independent validation.",
+              "source_ids": [
+                "src-arxiv",
+                "src-elsevier"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Published during the 2023-2026 transition window, the paper directly addresses when centralization is beneficial and when local/distributed constraints remain.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "It provides a useful architecture-decision framework and explicit anti-monolith/safety caveats, complementing standards and implementation evidence."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-ieee-8021dg-automoti-52b21e32f1",
+      "evidence_task_sha256": "1f1970ba6c11c16666fc272f81736f07ee0e6764208d646564220de11c6b56a0",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence vertical-slice verification",
+        "generated_at": "2026-08-18T13:56:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-ieee-8021dg-automoti-52b21e32f1",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single item-level IEEE 802.1 project/publication evidence; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "IEEE Std 802.1DG-2025 — Time-Sensitive Networking Profile for Automotive In-Vehicle Ethernet Communications",
+          "artifact_type": "STANDARD",
+          "organization": "IEEE 802.1",
+          "canonical_url": "https://1.ieee802.org/tsn/802-1dg/"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-06-06",
+          "observed_at": "2026-08-18T13:56:00Z",
+          "events": [
+            {
+              "event_id": "event-board-approval",
+              "event_type": "STANDARD_BOARD_APPROVAL",
+              "event_date": "2025-05-28",
+              "source_published_at": null,
+              "source_ids": [
+                "src-ieee-project"
+              ]
+            },
+            {
+              "event_id": "event-publication",
+              "event_type": "STANDARD_PUBLICATION",
+              "event_date": "2025-06-06",
+              "source_published_at": null,
+              "source_ids": [
+                "src-ieee-project"
+              ]
+            },
+            {
+              "event_id": "event-publication-news",
+              "event_type": "PUBLICATION_ANNOUNCEMENT",
+              "event_date": "2025-12-04",
+              "source_published_at": "2025-12-04",
+              "source_ids": [
+                "src-ieee-publication-news"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-ieee-project",
+            "url": "https://1.ieee802.org/tsn/802-1dg/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "P802.1DG – TSN Profile for Automotive In-Vehicle Ethernet Communications",
+            "published_at": null,
+            "accessed_at": "2026-08-18T13:56:00Z",
+            "role": "Official IEEE 802.1 project page establishing scope, publication status, approval/publication dates and project history."
+          },
+          {
+            "source_id": "src-ieee-publication-news",
+            "url": "https://1.ieee802.org/publication-ieee-802-1dg-2025/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Publication: IEEE 802.1DG-2025 Time-Sensitive Networking Profile for Automotive In-Vehicle Ethernet Communications",
+            "published_at": "2025-12-04",
+            "accessed_at": "2026-08-18T13:56:00Z",
+            "role": "Official IEEE 802.1 publication announcement summarizing automotive TSN profile purpose and applicability."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-publication-status",
+            "text": "IEEE 802.1DG is a published 2025 standard; the project page records Board approval on 2025-05-28 and publication on 2025-06-06.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-ieee-project"
+            ],
+            "context": "Status/date evidence from the IEEE 802.1 project page."
+          },
+          {
+            "claim_id": "claim-scope",
+            "text": "The standard defines an automotive in-vehicle Ethernet TSN profile for bridged IEEE 802.3 networks, addressing deterministic/bounded latency and selecting applicable IEEE 802.1 TSN/security features for automotive use.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-ieee-project",
+              "src-ieee-publication-news"
+            ],
+            "context": "Publicly stated standard scope; detailed normative parameters were not inspected."
+          },
+          {
+            "claim_id": "claim-architecture-relevance",
+            "text": "The public IEEE summary positions 802.1DG as guidance for automotive vendors/suppliers designing in-vehicle networks with bounded latency, bandwidth and synchronization requirements.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-ieee-publication-news"
+            ],
+            "context": "Architecture relevance follows the standard’s stated profile purpose."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-normative-text",
+            "text": "This verification used public IEEE project/publication pages; detailed normative requirements and parameter values in the full standard were not independently inspected.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-ieee-project",
+              "src-ieee-publication-news"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the official scope/status and architecture-significant statements on ieee-8021dg-automotive-tsn; distinguish directly checkable facts from organization/project claims.",
+              "status": "VERIFIED",
+              "finding": "Official IEEE 802.1 pages establish published-standard status, approval/publication dates, and the automotive TSN profile scope. Detailed normative contents remain outside this verification.",
+              "source_ids": [
+                "src-ieee-project",
+                "src-ieee-publication-news"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "Which detailed mandatory/optional TSN feature selections and configuration parameters are normative in the full IEEE Std 802.1DG-2025 text?"
+          ],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Publication in 2025 places a formal automotive TSN profile inside the 2023-2026 E/E transition window.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "A published automotive-specific TSN profile is directly relevant to deterministic Ethernet as the network substrate for centralized/zonal E/E architectures."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:series-covesa-vss-major-evolution-67e4b52d14",
+      "evidence_task_sha256": "f719bd0634ad486ff6f6d602f71c812627f6711a030d85185bdc74857b420be8",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-02 primary-source verification",
+        "generated_at": "2026-08-18T14:40:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:series-covesa-vss-major-evolution-67e4b52d14",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Retained releases are successive versions of one project/specification trajectory and are coherent as a series."
+        },
+        "artifact": {
+          "canonical_name": "COVESA Vehicle Signal Specification v4.1–v6.0 evolution",
+          "artifact_type": "SPECIFICATION",
+          "organization": "COVESA",
+          "canonical_url": "https://github.com/COVESA/vehicle_signal_specification"
+        },
+        "temporal": {
+          "artifact_first_announced": "2023-12-22T14:49:26Z",
+          "observed_at": "2026-08-18T14:40:00Z",
+          "events": [
+            {
+              "event_id": "event-release-1",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2023-12-22T14:49:26Z",
+              "source_published_at": "2023-12-22T14:49:26Z",
+              "source_ids": [
+                "src-release-1"
+              ]
+            },
+            {
+              "event_id": "event-release-2",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2024-06-03T12:10:06Z",
+              "source_published_at": "2024-06-03T12:10:06Z",
+              "source_ids": [
+                "src-release-2"
+              ]
+            },
+            {
+              "event_id": "event-release-3",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2024-10-09T08:27:11Z",
+              "source_published_at": "2024-10-09T08:27:11Z",
+              "source_ids": [
+                "src-release-3"
+              ]
+            },
+            {
+              "event_id": "event-release-4",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2025-07-29T10:52:08Z",
+              "source_published_at": "2025-07-29T10:52:08Z",
+              "source_ids": [
+                "src-release-4"
+              ]
+            },
+            {
+              "event_id": "event-release-5",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-01-16T13:23:07Z",
+              "source_published_at": "2026-01-16T13:23:07Z",
+              "source_ids": [
+                "src-release-5"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-release-1",
+            "url": "https://github.com/COVESA/vehicle_signal_specification/releases/tag/v4.1",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "v4.1",
+            "published_at": "2023-12-22T14:49:26Z",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA Vehicle Signal Specification GitHub release record and project-authored change notes."
+          },
+          {
+            "source_id": "src-release-2",
+            "url": "https://github.com/COVESA/vehicle_signal_specification/releases/tag/v4.2",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "v4.2",
+            "published_at": "2024-06-03T12:10:06Z",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA Vehicle Signal Specification GitHub release record and project-authored change notes."
+          },
+          {
+            "source_id": "src-release-3",
+            "url": "https://github.com/COVESA/vehicle_signal_specification/releases/tag/v5.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "v5.0",
+            "published_at": "2024-10-09T08:27:11Z",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA Vehicle Signal Specification GitHub release record and project-authored change notes."
+          },
+          {
+            "source_id": "src-release-4",
+            "url": "https://github.com/COVESA/vehicle_signal_specification/releases/tag/v5.1",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "v5.1",
+            "published_at": "2025-07-29T10:52:08Z",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA Vehicle Signal Specification GitHub release record and project-authored change notes."
+          },
+          {
+            "source_id": "src-release-5",
+            "url": "https://github.com/COVESA/vehicle_signal_specification/releases/tag/v6.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "v6.0",
+            "published_at": "2026-01-16T13:23:07Z",
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Official COVESA Vehicle Signal Specification GitHub release record and project-authored change notes."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-series",
+            "text": "The retained VSS releases show active evolution of the common vehicle-data model and its tooling, including schema/ID generation, struct support, overlays/profiles, motion-management/health signals and deliberate backward-incompatible cleanup.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-release-1",
+              "src-release-2",
+              "src-release-3",
+              "src-release-4",
+              "src-release-5"
+            ],
+            "context": "Synthesis of release notes across major/minor versions."
+          },
+          {
+            "claim_id": "claim-tooling",
+            "text": "V4.2 adds struct support for DDS IDL generation together with JSON Schema and identifier-generation tooling.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-release-2"
+            ],
+            "context": "Direct release-note entries relevant to typed data contracts and interface generation."
+          },
+          {
+            "claim_id": "claim-v6-breaks",
+            "text": "V6.0 explicitly documents multiple backward-incompatible signal/unit changes and removal of the OBD branch.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-release-5"
+            ],
+            "context": "Direct release-note compatibility boundary."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "lim-data-model",
+            "text": "VSS specifies a vehicle-data taxonomy/model and associated tooling; these releases do not by themselves establish a transport protocol, service runtime, or OEM-wide adoption.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-release-1",
+              "src-release-2",
+              "src-release-3",
+              "src-release-4",
+              "src-release-5"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v4.1; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "Release notes introduce quantity files/unit syntax updates, new signals and vss-tools support for static IDs and JSON Schema.",
+              "source_ids": [
+                "src-release-1"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v4.2; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "Release notes add new signal areas plus struct support in vspec2ddsidl, a JSON Schema generator and an ID generator.",
+              "source_ids": [
+                "src-release-2"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v5.0; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "Release notes remove UUIDs from standard release artifacts by default, deprecate the OBD branch, improve overlay support and refactor tooling.",
+              "source_ids": [
+                "src-release-3"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v5.1; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "Release notes add/adjust motion-management and seat-related signals and include VSS Extension Profile documentation work.",
+              "source_ids": [
+                "src-release-4"
+              ]
+            },
+            {
+              "target": "Verify the release date, material technical changes and maturity significance of v6.0; distinguish release existence from maintainer/project claims.",
+              "status": "VERIFIED",
+              "finding": "Release notes remove the OBD branch, add pattern/default support, change units and several signal definitions including backward-incompatible changes, and add vehicle-health-management signals.",
+              "source_ids": [
+                "src-release-5"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "The series spans late 2023 to early 2026 and shows a common data-contract layer maturing while SDV ecosystems converge on reusable vehicle semantics.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Strong data-contract candidate that complements middleware/network evidence and makes the service/data separation explicit."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-eclipse-score-projec-f643a9aa96",
+      "evidence_task_sha256": "837425c78650347db4192fdb6b16ab2a3843c9d08b1973452a9fe117ffee4cf7",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-02 primary-source verification",
+        "generated_at": "2026-08-18T14:40:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-eclipse-score-projec-f643a9aa96",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single item-level primary source; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "Eclipse S-CORE",
+          "artifact_type": "PLATFORM",
+          "organization": "Eclipse S-CORE",
+          "canonical_url": "https://eclipse.dev/score/"
+        },
+        "temporal": {
+          "artifact_first_announced": null,
+          "observed_at": "2026-08-18T14:40:00Z",
+          "events": [
+            {
+              "event_id": "event-project-snapshot",
+              "event_type": "PROJECT_STATUS_SNAPSHOT",
+              "event_date": null,
+              "source_published_at": null,
+              "source_ids": [
+                "src-score"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-score",
+            "url": "https://eclipse.dev/score/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Eclipse S-CORE",
+            "published_at": null,
+            "accessed_at": "2026-08-18T14:40:00Z",
+            "role": "Pinned official project-page snapshot used to verify platform scope, layering, code-first orientation and current stated release-gate status."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-layer-scope",
+            "text": "The S-CORE project page states that it targets software-platform layers above the SoC board-support package and below the application layer, spanning OS abstraction, middleware and application-level services.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-score"
+            ],
+            "context": "Current project-defined scope."
+          },
+          {
+            "claim_id": "claim-code-first",
+            "text": "The page explicitly describes S-CORE as code-first, with executable code, tests, CI and reference implementations rather than only a paper standard.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-score"
+            ],
+            "context": "Project methodology statement."
+          },
+          {
+            "claim_id": "claim-decoupling",
+            "text": "The page identifies hardware/software decoupling, modularity and project-specific extensibility as platform goals.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-score"
+            ],
+            "context": "Project architecture goals."
+          },
+          {
+            "claim_id": "claim-release-gate",
+            "text": "The pinned page snapshot states that S-CORE had reached release gate v0.8 and describes stronger requirements/architecture/safety-artifact expectations for modules in scope for v1.0.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-score"
+            ],
+            "context": "Direct page content at the pinned observation time; not equivalent to safety certification."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "lim-project-claims",
+            "text": "Statements such as 'production-ready' or predictable/safe behavior are project claims unless backed by separate certification, conformance or deployment evidence.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-score"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the official scope/status and architecture-significant statements on eclipse-score-project; distinguish directly checkable facts from organization/project claims.",
+              "status": "VERIFIED",
+              "finding": "The pinned project page provides direct evidence of S-CORE's intended stack boundaries, code-first delivery model and current project-status language; safety/production claims remain project claims.",
+              "source_ids": [
+                "src-score"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "S-CORE is a concrete shared runtime/platform effort that directly reflects the shift from proprietary per-OEM core stacks toward common automotive software infrastructure.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Strong platform-level candidate when combined with release-series evidence and explicit maturity caveats."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2507-19446v1-5be9173ad5",
+      "evidence_task_sha256": "c1a6f9fd95fc1789a24b98900809c8bbb386461142fa03ef8ccd77b8a65dd076",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-04 primary-source verification",
+        "generated_at": "2026-08-18T15:10:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2507-19446v1-5be9173ad5",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single paper; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "An OpenSource CI/CD Pipeline for Variant-Rich Software-Defined Vehicles",
+          "artifact_type": "PAPER",
+          "organization": "University of Stuttgart",
+          "canonical_url": "https://arxiv.org/abs/2507.19446"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-07-25T17:26:36Z",
+          "observed_at": "2026-08-18T15:10:00Z",
+          "events": [
+            {
+              "event_id": "event-arxiv",
+              "event_type": "PREPRINT_SUBMISSION",
+              "event_date": "2025-07-25T17:26:36Z",
+              "source_published_at": "2025-07-25T17:26:36Z",
+              "source_ids": [
+                "src-paper"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-paper",
+            "url": "https://arxiv.org/abs/2507.19446",
+            "source_class": "PRIMARY_PAPER",
+            "title": "An OpenSource CI/CD Pipeline for Variant-Rich Software-Defined Vehicles",
+            "published_at": "2025-07-25T17:26:36Z",
+            "accessed_at": "2026-08-18T15:10:00Z",
+            "role": "Author arXiv paper/preprint used to verify the architecture, evaluation scope, material claims, and limitations available in the primary text."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-pipeline",
+            "text": "The proposed open-source pipeline structures SDV software into development, build/test, artifact storage and deployment stages, with variant metadata driving target-specific artifacts across ECUs, HPCs and backend systems.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Pipeline architecture."
+          },
+          {
+            "claim_id": "claim-ota",
+            "text": "A cloud/client OTA middleware pair selects compatible versions from artifact metadata, delivers updates to heterogeneous targets, verifies them and supports rollback/telemetry.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Implemented middleware concept."
+          },
+          {
+            "claim_id": "claim-evaluation",
+            "text": "The laboratory evaluation demonstrates variant-specific firmware updates/rollback on emulated ECUs, Snap-based vehicle-control updates, and containerized AI-model deployment to TurtleBot/ROS 2 targets with a backend.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Lab validation, not production-fleet deployment."
+          }
+        ],
+        "metrics": [
+          {
+            "metric_id": "metric-turtlebots",
+            "name": "TurtleBots used in AI evaluation",
+            "value": "3",
+            "unit": "robots",
+            "context": "One designated as the Ego TurtleBot for model deployment.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "metric_id": "metric-vehicle-variants",
+            "name": "embedded-software vehicle variants evaluated",
+            "value": "2",
+            "unit": "variants",
+            "context": "Variant-specific OTA packages and rollback were tested on two ECU configurations.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          }
+        ],
+        "limitations": [
+          {
+            "limitation_id": "limitation-lab",
+            "text": "The evaluation is a laboratory setup using TurtleBots, ESP32-based ECU emulation and a central backend, not a production vehicle/fleet validation.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "limitation_id": "limitation-scale",
+            "text": "The authors explicitly identify deployment to a larger connected-vehicle testbed and deeper feature-model/variant-management integration as future work.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the architecture, evaluation setup, material claims and limitations reported for An OpenSource CI/CD Pipeline for Variant-Rich Software-Defined Vehicles; preserve paper results as AUTHOR_CLAIM unless independently established.",
+              "status": "VERIFIED",
+              "finding": "The full primary text verifies the variant-aware CI/CD/OTA architecture, ECU/HPC/backend target model, rollback, two embedded variants, three-TurtleBot AI test, and larger-testbed/variant-management future-work boundary.",
+              "source_ids": [
+                "src-paper"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "SDV architecture extends beyond runtime ECUs: software provenance, target compatibility, OTA, rollback and variant management become part of the vehicle system architecture.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Direct evidence for cloud-to-vehicle software lifecycle architecture, including variant derivation, OTA delivery, rollback and multiple deployment target classes."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-automotive-ee-architecture-2023-2026",
+      "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2505-07881v1-86b88e7eff",
+      "evidence_task_sha256": "fbf82f7abddae54ede6b5cef4536fefedbbeaa9381d2a1753305cea92a2226cb",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "69fe1c7015ebc4f85c69a86b029575ee18551bcfbf25ea93c146684789bfaf8a",
+      "runner": {
+        "provider": "openai",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive Automotive E/E Evidence batch-03 primary-source verification",
+        "generated_at": "2026-08-18T14:58:00Z",
+        "run_reference": "experiment/automotive-ee-architecture-special"
+      },
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-automotive-ee-architecture-2023-2026",
+        "evidence_task_id": "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2505-07881v1-86b88e7eff",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Single paper; no grouping ambiguity."
+        },
+        "artifact": {
+          "canonical_name": "ASIL-Decomposition Based Resource Allocation Optimization for Automotive E/E Architectures",
+          "artifact_type": "PAPER",
+          "organization": "University of Stuttgart",
+          "canonical_url": "https://arxiv.org/abs/2505.07881"
+        },
+        "temporal": {
+          "artifact_first_announced": "2025-05-10T15:48:29Z",
+          "observed_at": "2026-08-18T14:58:00Z",
+          "events": [
+            {
+              "event_id": "event-arxiv-v1",
+              "event_type": "PREPRINT_SUBMISSION",
+              "event_date": "2025-05-10T15:48:29Z",
+              "source_published_at": "2025-05-10T15:48:29Z",
+              "source_ids": [
+                "src-paper"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-paper",
+            "url": "https://arxiv.org/abs/2505.07881",
+            "source_class": "PRIMARY_PAPER",
+            "title": "ASIL-Decomposition Based Resource Allocation Optimization for Automotive E/E Architectures",
+            "published_at": "2025-05-10T15:48:29Z",
+            "accessed_at": "2026-08-18T14:58:00Z",
+            "role": "Author paper/preprint used to verify the reported architecture, method/evaluation scope, material claims, and limitations available in the primary text."
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-milp",
+            "text": "The authors formulate automotive software-to-hardware mapping, scheduling and ASIL decomposition as a single mixed-integer linear optimization problem targeting development cost and critical-chain execution time while applying safety/reliability constraints.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Proposed design-space optimization model."
+          },
+          {
+            "claim_id": "claim-tradeoff",
+            "text": "The exemplary case study exposes a cost/latency trade-off: prioritizing development cost yields lower cost with longer maximum application execution time, while prioritizing latency increases cost and reduces that execution time.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "One exemplary case study."
+          },
+          {
+            "claim_id": "claim-solver-scaling",
+            "text": "The authors compare Gurobi and CPLEX and report that solving time grows as task count increases; ASIL decomposition cases can materially increase optimization time.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ],
+            "context": "Generated/evaluated problem instances, not production design-cycle measurements."
+          }
+        ],
+        "metrics": [
+          {
+            "metric_id": "metric-cost-first-cost",
+            "name": "development cost when cost is primary objective",
+            "value": "98",
+            "unit": "relative cost units",
+            "context": "Exemplary case-study solution.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "metric_id": "metric-cost-first-latency",
+            "name": "maximum execution time when cost is primary objective",
+            "value": "74",
+            "unit": "ms",
+            "context": "Exemplary case-study solution.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "metric_id": "metric-latency-first-cost",
+            "name": "development cost when latency is primary objective",
+            "value": "109",
+            "unit": "relative cost units",
+            "context": "Exemplary case-study solution.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "metric_id": "metric-latency-first-latency",
+            "name": "maximum execution time when latency is primary objective",
+            "value": "68",
+            "unit": "ms",
+            "context": "Exemplary case-study solution.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "metric_id": "metric-gurobi-cost",
+            "name": "Gurobi solve time for cost-priority case",
+            "value": "0.266",
+            "unit": "s",
+            "context": "Default solver configuration in the reported case study.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "metric_id": "metric-cplex-cost",
+            "name": "CPLEX solve time for cost-priority case",
+            "value": "0.844",
+            "unit": "s",
+            "context": "Default solver configuration in the reported case study.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          }
+        ],
+        "limitations": [
+          {
+            "limitation_id": "limitation-ffi-assumption",
+            "text": "For simplicity, the model assumes coexistence/freedom-from-interference criteria are satisfied when mixed-criticality tasks share hardware; the optimization does not itself establish the complete safety argument for that coexistence.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "limitation_id": "limitation-generated-scaling",
+            "text": "Scalability experiments use a fixed four-ECU architecture with randomly generated task graphs and randomized WCET/WCRT/cost values, limiting direct transfer to a production E/E program.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-paper"
+            ]
+          },
+          {
+            "limitation_id": "limitation-case-study",
+            "text": "Reported objective values and solver timings are case-study/problem-instance results rather than universal design-space optimization performance.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-paper"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify the architecture, evaluation setup, material claims and limitations reported for ASIL-Decomposition Based Resource Allocation Optimization for Automotive E/E Architectures; preserve paper results as AUTHOR_CLAIM unless independently established.",
+              "status": "VERIFIED",
+              "finding": "The full primary paper verifies the MILP/ASIL-decomposition formulation, objective trade-off, concrete case-study values, solver comparison, generated scalability experiment and the explicit FFI/coexistence assumption.",
+              "source_ids": [
+                "src-paper"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Resource allocation under ASIL and timing constraints is a direct mechanism by which centralized/mixed-criticality E/E architecture choices become computable rather than intuitive.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Strong design-method evidence if solver/cost/latency values remain tied to the exemplary case study and FFI assumption."
+        }
+      }
+    }
+  ],
   "drafting_constraints": {
     "language": "ja",
     "raw_sources_forbidden": true,

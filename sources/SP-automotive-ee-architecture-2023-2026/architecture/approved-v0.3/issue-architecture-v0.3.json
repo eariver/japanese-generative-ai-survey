@@ -11,7 +11,7 @@
   "approval": {
     "approved_by": "eariver",
     "approved_at": "2026-08-19T07:36:00+09:00",
-    "approval_reference": "ChatGPT Architecture Review approval: end-of-body synthesis required and reflected by P08 before References (2026-08-19 JST)"
+    "approval_reference": "ChatGPT Architecture Review approval: end-of-body synthesis required and reflected by P08 before References (2026-08-19 JST); P08 evidence binding strengthened after approval without changing reader-visible architecture"
   },
   "editorial_thesis": "2023–2026年の車載E&Eアーキテクチャは、ECUを単純に『中央へ集める』変化ではない。物理I/O、計算資源、通信、サービス/データ契約、開発・検証、そして安全・セキュリティの責務境界を再配置する変化として捉えると、zonalとcentral/HPC、EthernetとCAN XL、標準仕様とOSS platformが一つの連続した設計問題として見えてくる。",
   "architecture_goals": [
@@ -308,7 +308,14 @@
       "title": "総括 — 2026年夏の到達点と残る設計課題",
       "package_type": "SECTION",
       "primary_evidence_task_ids": [],
-      "supporting_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2409-10690v1-6f8ee796d3",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-ieee-8021dg-automoti-52b21e32f1",
+        "evidence:SP-automotive-ee-architecture-2023-2026:series-covesa-vss-major-evolution-67e4b52d14",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-eclipse-score-projec-f643a9aa96",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2507-19446v1-5be9173ad5",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2505-07881v1-86b88e7eff"
+      ],
       "page_target": 3,
       "editorial_angle": "本文各章で分解した物理配置、計算資源、network fabric、service/data contract、open platform、development lifecycle、安全・セキュリティを再び一枚のE&E設計像へ統合する。『centralize everything』ではなく、責務をどこに置き、何を契約として固定するかが2026年時点の本質的な設計課題であると結論づける。",
       "must_cover": [
@@ -319,7 +326,19 @@
         "安全・セキュリティ・determinismが中央集約の実効上限を決める",
         "標準仕様・OSS実装・OEM/Tier1実装の間に残る検証gap"
       ],
-      "boundaries": [],
+      "boundaries": [
+        "The authors frame the interview analysis as qualitative rather than statistically significant; findings therefore should not be treated as population-level quantitative validation.",
+        "The practitioner interview study is tied to Daimler Truck AG and the paper discusses external-generalizability limits; architecture conclusions should be treated as contextual rather than universal.",
+        "Which detailed mandatory/optional TSN feature selections and configuration parameters are normative in the full IEEE Std 802.1DG-2025 text?",
+        "This verification used public IEEE project/publication pages; detailed normative requirements and parameter values in the full standard were not independently inspected.",
+        "VSS specifies a vehicle-data taxonomy/model and associated tooling; these releases do not by themselves establish a transport protocol, service runtime, or OEM-wide adoption.",
+        "Statements such as 'production-ready' or predictable/safe behavior are project claims unless backed by separate certification, conformance or deployment evidence.",
+        "The evaluation is a laboratory setup using TurtleBots, ESP32-based ECU emulation and a central backend, not a production vehicle/fleet validation.",
+        "The authors explicitly identify deployment to a larger connected-vehicle testbed and deeper feature-model/variant-management integration as future work.",
+        "For simplicity, the model assumes coexistence/freedom-from-interference criteria are satisfied when mixed-criticality tasks share hardware; the optimization does not itself establish the complete safety argument for that coexistence.",
+        "Scalability experiments use a fixed four-ECU architecture with randomly generated task graphs and randomized WCET/WCRT/cost values, limiting direct transfer to a production E/E program.",
+        "Reported objective values and solver timings are case-study/problem-instance results rather than universal design-space optimization performance."
+      ],
       "late_breaking": false,
       "drafting_order": 9
     },
