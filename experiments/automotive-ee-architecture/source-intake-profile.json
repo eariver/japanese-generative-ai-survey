@@ -1,0 +1,135 @@
+{
+  "schema_version": "1.0",
+  "profile_id": "automotive-ee-architecture-v0.1",
+  "profile_status": "EXPERIMENTAL",
+  "domain": "automotive-ee-architecture",
+  "base_collector_compatibility": "scripts/source_intake.py@main-compatible",
+  "user_agent": "japanese-generative-ai-survey-automotive-ee-experiment/0.1 (+https://github.com/eariver/japanese-generative-ai-survey)",
+  "http_timeout_seconds": 45,
+  "coverage_policy": {
+    "base_intake_role": "BROAD_SEED_NOT_EXHAUSTIVE",
+    "thematic_requires_coverage_audit": true,
+    "supplemental_primary_source_gap_fill_required_when_material_gaps_found": true,
+    "architecture_may_claim_source_intake_complete_without_coverage_audit": false,
+    "note": "Experimental domain profile only. It does not alter or replace config/source-intake.json used by the AI survey."
+  },
+  "arxiv": {
+    "enabled": true,
+    "endpoint": "https://export.arxiv.org/api/query",
+    "delay_seconds": 20,
+    "request_timeout_seconds": 120,
+    "max_attempts": 3,
+    "retry_backoff_seconds": 20,
+    "max_results_per_query": 500,
+    "queries": [
+      {
+        "id": "ee-centralization",
+        "search_query": "(all:\"automotive\" OR all:\"vehicle\") AND (all:\"E/E architecture\" OR all:\"electrical electronic architecture\" OR all:\"centralized architecture\")"
+      },
+      {
+        "id": "zonal-architecture",
+        "search_query": "(all:\"automotive\" OR all:\"vehicle\") AND (all:\"zonal architecture\" OR all:\"zone controller\")"
+      },
+      {
+        "id": "sdv-central-hpc",
+        "search_query": "(all:\"software-defined vehicle\" OR all:\"software defined vehicle\") AND (all:\"HPC\" OR all:\"centralized\" OR all:\"mixed-criticality\")"
+      },
+      {
+        "id": "automotive-ethernet-tsn",
+        "search_query": "(all:\"automotive Ethernet\" OR all:\"in-vehicle Ethernet\") AND (all:\"TSN\" OR all:\"time-sensitive networking\" OR all:\"deterministic\")"
+      },
+      {
+        "id": "automotive-soa",
+        "search_query": "(all:\"automotive\" OR all:\"vehicle\") AND (all:\"service-oriented architecture\" OR all:\"SOME/IP\" OR all:\"vehicle service\")"
+      },
+      {
+        "id": "sdv-cloud-edge-validation",
+        "search_query": "(all:\"software-defined vehicle\" OR all:\"software defined vehicle\") AND (all:\"cloud\" OR all:\"virtual validation\" OR all:\"digital twin\" OR all:\"CI/CD\")"
+      }
+    ]
+  },
+  "github_releases": {
+    "enabled": true,
+    "api_version": "2026-03-10",
+    "per_page": 100,
+    "repositories": [
+      "eclipse-score/score",
+      "COVESA/vsomeip",
+      "COVESA/vehicle_signal_specification",
+      "autowarefoundation/openadkit"
+    ],
+    "note": "Curated implementation lane. Release absence must not be interpreted as project inactivity."
+  },
+  "official_pages": {
+    "enabled": true,
+    "pages": [
+      {
+        "id": "autosar-adaptive-platform",
+        "url": "https://www.autosar.org/standards/adaptive-platform/"
+      },
+      {
+        "id": "autosar-release-events",
+        "url": "https://www.autosar.org/news-events/release-event"
+      },
+      {
+        "id": "autosar-capi",
+        "url": "https://www.autosar.org/capi"
+      },
+      {
+        "id": "ieee-8021dg-automotive-tsn",
+        "url": "https://1.ieee802.org/tsn/802-1dg/"
+      },
+      {
+        "id": "open-alliance-10base-t1s",
+        "url": "https://opensig.org/tech-committee/tc14-interoperability-compliance-tests-for-10base-t1s-phys/"
+      },
+      {
+        "id": "open-alliance-channel-components",
+        "url": "https://opensig.org/tech-committee/tc9-automotive-ethernet-channel-components/"
+      },
+      {
+        "id": "cia-can-xl",
+        "url": "https://www.can-cia.org/can-knowledge/can-xl"
+      },
+      {
+        "id": "iso-11898-1-2024",
+        "url": "https://www.iso.org/standard/86384.html"
+      },
+      {
+        "id": "covesa-2024-highlights",
+        "url": "https://covesa.global/covesa-2024-highlights/"
+      },
+      {
+        "id": "covesa-vsomeip",
+        "url": "https://covesa.global/covesa-hidden-gem-the-vsomeip-project/"
+      },
+      {
+        "id": "soafee-denso-deterministic-middleware",
+        "url": "https://www.soafee.io/blog/2025/denso-develops-deterministic-middleware-for-sdv/"
+      },
+      {
+        "id": "eclipse-score-launch",
+        "url": "https://newsroom.eclipse.org/news/announcements/eclipse-foundation-launches-s-core-project-automotive-industrys-first-open"
+      },
+      {
+        "id": "eclipse-score-project",
+        "url": "https://eclipse.dev/score/"
+      }
+    ]
+  },
+  "source_lanes": [
+    "PAPER",
+    "STANDARD_BODY",
+    "INDUSTRY_SPEC",
+    "CONSORTIUM",
+    "OSS_FOUNDATION"
+  ],
+  "future_generic_profile_fields": [
+    "domain",
+    "coverage_policy",
+    "arxiv.queries",
+    "github_releases.repositories",
+    "official_pages.pages",
+    "source_lanes"
+  ]
+}
