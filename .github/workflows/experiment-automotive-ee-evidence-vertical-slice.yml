@@ -40,18 +40,26 @@ jobs:
           run-id: 32144428137
 
       - name: Validate representative Evidence Runs
+        id: validate
         run: |
-          set -euo pipefail
+          set +e
           OUT="${RUNNER_TEMP}/automotive-ee-evidence-vertical-slice"
           mkdir -p "$OUT"
           python experiments/automotive-ee-architecture/validate_evidence_vertical_slice.py \
             --repo-root . \
             --package-root "${RUNNER_TEMP}/pinned-evidence-package" \
             --manifest experiments/automotive-ee-architecture/evidence-vertical-slice/vertical-slice-manifest.json \
-            --output "$OUT/validation-report.json"
-          python -m json.tool "$OUT/validation-report.json" >/dev/null
+            --output "$OUT/validation-report.json" \
+            >"$OUT/stdout.log" 2>"$OUT/stderr.log"
+          status=$?
+          echo "$status" > "$OUT/exit-status.txt"
+          echo "exit_status=$status" >> "$GITHUB_OUTPUT"
+          cat "$OUT/stdout.log"
+          cat "$OUT/stderr.log" >&2
+          exit 0
 
       - name: Build compact vertical-slice digest
+        if: always()
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -60,23 +68,28 @@ jobs:
           from pathlib import Path
 
           out = Path(os.environ["RUNNER_TEMP"]) / "automotive-ee-evidence-vertical-slice"
-          report = json.loads((out / "validation-report.json").read_text(encoding="utf-8"))
+          report_path = out / "validation-report.json"
+          report = json.loads(report_path.read_text(encoding="utf-8")) if report_path.exists() else None
+          stderr = (out / "stderr.log").read_text(encoding="utf-8", errors="replace") if (out / "stderr.log").exists() else ""
+          exit_status = int((out / "exit-status.txt").read_text().strip()) if (out / "exit-status.txt").exists() else 255
           digest = {
               "schema_version": "1.0",
-              "issue_id": report["issue_id"],
+              "issue_id": "SP-automotive-ee-architecture-2023-2026",
               "purpose": "EXPERIMENTAL_EVIDENCE_VERTICAL_SLICE_DIGEST",
               "workflow_run_id": int(os.environ["GITHUB_RUN_ID"]),
               "workflow_run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
               "commit_sha": os.environ["GITHUB_SHA"],
               "pinned_evidence_package_run_id": 32144428137,
-              "passed": report["passed"],
-              "case_count": report["case_count"],
-              "artifact_types": report["artifact_types"],
-              "cases": report["cases"],
-              "production_validator": report["production_validator"],
-              "production_validator_modified": report["production_validator_modified"],
-              "production_ai_pipeline_modified": report["production_ai_pipeline_modified"],
-              "finding": report["finding"],
+              "exit_status": exit_status,
+              "passed": bool(report and report.get("passed") is True and exit_status == 0),
+              "case_count": None if report is None else report.get("case_count"),
+              "artifact_types": None if report is None else report.get("artifact_types"),
+              "cases": [] if report is None else report.get("cases", []),
+              "production_validator": None if report is None else report.get("production_validator"),
+              "production_validator_modified": None if report is None else report.get("production_validator_modified"),
+              "production_ai_pipeline_modified": False if report is None else report.get("production_ai_pipeline_modified"),
+              "finding": None if report is None else report.get("finding"),
+              "failure_stderr_tail": None if exit_status == 0 else stderr[-4000:],
           }
           dest = Path("sources/SP-automotive-ee-architecture-2023-2026/imports/evidence-vertical-slice/experiment-latest-digest.json")
           dest.parent.mkdir(parents=True, exist_ok=True)
@@ -85,6 +98,7 @@ jobs:
           PY
 
       - name: Upload immutable validation artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: automotive-ee-evidence-vertical-slice-${{ github.run_id }}
@@ -93,6 +107,7 @@ jobs:
           retention-days: 30
 
       - name: Commit compact vertical-slice digest
+        if: always()
         run: |
           set -euo pipefail
           DIGEST="sources/SP-automotive-ee-architecture-2023-2026/imports/evidence-vertical-slice/experiment-latest-digest.json"
@@ -111,3 +126,7 @@ jobs:
         run: |
           echo "Reused unchanged: scripts/validate_evidence_run.py"
           echo "Production AI Evidence prompt/schema/lifecycle acceptance intentionally untouched."
+
+      - name: Fail if vertical-slice validation failed
+        if: always() && steps.validate.outputs.exit_status != '0'
+        run: exit 1
