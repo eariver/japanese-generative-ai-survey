@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
-  "profile_id": "automotive-ee-architecture-v0.2",
+  "profile_id": "automotive-ee-architecture-v0.3",
   "status": "EXPERIMENTAL_PROPOSAL",
   "issue_id": "SP-automotive-ee-architecture-2023-2026",
-  "architecture_version": "v0.2",
+  "architecture_version": "v0.3",
   "editorial_thesis": "2023–2026年の車載E&Eアーキテクチャは、ECUを単純に『中央へ集める』変化ではない。物理I/O、計算資源、通信、サービス/データ契約、開発・検証、そして安全・セキュリティの責務境界を再配置する変化として捉えると、zonalとcentral/HPC、EthernetとCAN XL、標準仕様とOSS platformが一つの連続した設計問題として見えてくる。",
   "architecture_goals": [
     "物理的zonal化と計算のcentral/HPC化を対立概念ではなく相補的な責務分割として説明する。",
@@ -11,7 +11,8 @@
     "Automotive Ethernet/TSNを主軸にしつつCAN XLと10BASE-T1Sを含め、用途別のnetwork fabricとして整理する。",
     "VSS、SOME/IP/vSomeIP、AUTOSAR Adaptive/ROS 2、S-CORE等をECU製品名ではなくservice/data/software responsibility boundaryとして比較する。",
     "CI/CD、software integration、diagnostics、digital twin/VILをArchitectureの外付け工程ではなくSDV E/E設計の一部として扱う。",
-    "functional safetyとcybersecurityを独立した付録ではなく全層を制約するcross-cutting concernとして統合する。"
+    "functional safetyとcybersecurityを独立した付録ではなく全層を制約するcross-cutting concernとして統合する。",
+    "本文の最後に独立した総括を置き、各章で示した責務境界の再配置を一つの設計像として再統合する。"
   ],
   "cover_anchor_candidates": [
     "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2409-10690v1-6f8ee796d3",
@@ -124,8 +125,8 @@
         "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2603-05279v1-f6ffbbc676",
         "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2507-19403v1-bf12410710"
       ],
-      "page_target": 7,
-      "editorial_angle": "中央計算機とサービス分離が進むほど、variant management、CI/CD、自動integration、diagnostics、digital twin/VILがE/E architectureの成立条件になることを示す。",
+      "page_target": 6,
+      "editorial_angle": "中央計算機とサービス分離が進むほど、variant management、CI/CD、自動integration、diagnostics、digital twin/VILがE&E architectureの成立条件になることを示す。",
       "must_cover": ["variant-rich CI/CD", "automatic platform configuration", "AUTOFRAME", "SDVDiag", "central car server VIL/digital twin"]
     },
     {
@@ -139,17 +140,27 @@
         "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2505-07881v1-86b88e7eff",
         "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-soafee-denso-determi-f82f7eda52"
       ],
-      "page_target": 4,
+      "page_target": 3,
       "editorial_angle": "Safety/Securityを独立ECUへ逃がす前提が崩れると、isolation、resource partitioning、service authentication、deterministic runtimeが各層横断のarchitecture contractになる。",
       "must_cover": ["ASIL decomposition", "hardware isolation", "service authentication/authorization", "implementation claimsとindependent assuranceの区別"]
     },
     {
       "package_id": "P08",
+      "title": "総括 — 2026年夏の到達点と残る設計課題",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [],
+      "page_target": 3,
+      "editorial_angle": "本文各章で分解した物理配置、計算資源、network fabric、service/data contract、open platform、development lifecycle、安全・セキュリティを再び一枚のE&E設計像へ統合する。『centralize everything』ではなく、責務をどこに置き、何を契約として固定するかが2026年時点の本質的な設計課題であると結論づける。",
+      "must_cover": ["physically zonal / computationally centralized の再確認", "Ethernet中心だが単一busではない", "ECU境界からservice/data/resource contractへの移行", "software development/validation infrastructureもE&E architectureの一部", "安全・セキュリティ・determinismが中央集約の実効上限を決める", "標準仕様・OSS実装・OEM/Tier1実装の間に残る検証gap"]
+    },
+    {
+      "package_id": "P09",
       "title": "References / Evidence Map / 未解決事項",
       "package_type": "REFERENCES",
       "primary_evidence_task_ids": [],
       "supporting_evidence_task_ids": [],
-      "page_target": 3,
+      "page_target": 2,
       "editorial_angle": "一次資料、論文、release chronology、取得できなかったAUTOSAR/ISO資料、PARTIAL/HOLDの扱いをEvidence mapとして残す。",
       "must_cover": ["source/evidence class一覧", "AUTOSAR TLS / ISO 403 coverage gap", "TIMING_UNRESOLVED 5件の精度境界", "PARTIAL Evidenceの非昇格原則"]
     }
@@ -159,7 +170,8 @@
     "max": 64,
     "planned": 48
   },
-  "summary_semantics": "全パッケージのdraftが安定した後にExecutive Synthesisを最終調整する。production validator互換のlegacy field `this_week_summary_written_last=true` は実験planでは保持するが、週次意味は持たせない。",
+  "summary_semantics": "本文の最終package P08を総括とし、各技術章のdraftが安定した後に全章の結論を再統合して最終調整する。References/Evidence Mapは総括の後に置き、本文上の結論を参照資料より前で閉じる。production validator互換のlegacy field `this_week_summary_written_last=true` は実験planでは保持するが、週次意味は持たせない。",
+  "approval_condition": "2026-08-19 JST: user approved Architecture Review on condition that an explicit synthesis/conclusion appears at the end of the body. Reflected by P08 before P09 References.",
   "abstraction_probe": {
     "shared_validator_modified": false,
     "finding": "Architecture package coverage, boundary propagation and page accounting can remain shared. Page budget, domain themes and summary semantics are edition/profile context; the fixed `this_week_summary_written_last` field is a naming-level weekly leak."
