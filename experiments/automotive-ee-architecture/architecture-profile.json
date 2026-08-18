@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0",
+  "profile_id": "automotive-ee-architecture-v0.2",
+  "status": "EXPERIMENTAL_PROPOSAL",
+  "issue_id": "SP-automotive-ee-architecture-2023-2026",
+  "architecture_version": "v0.2",
+  "editorial_thesis": "2023–2026年の車載E&Eアーキテクチャは、ECUを単純に『中央へ集める』変化ではない。物理I/O、計算資源、通信、サービス/データ契約、開発・検証、そして安全・セキュリティの責務境界を再配置する変化として捉えると、zonalとcentral/HPC、EthernetとCAN XL、標準仕様とOSS platformが一つの連続した設計問題として見えてくる。",
+  "architecture_goals": [
+    "物理的zonal化と計算のcentral/HPC化を対立概念ではなく相補的な責務分割として説明する。",
+    "centralizationの利点だけでなくmixed-criticality・ASIL・isolationが作る集約限界を一次資料と研究Evidenceで示す。",
+    "Automotive Ethernet/TSNを主軸にしつつCAN XLと10BASE-T1Sを含め、用途別のnetwork fabricとして整理する。",
+    "VSS、SOME/IP/vSomeIP、AUTOSAR Adaptive/ROS 2、S-CORE等をECU製品名ではなくservice/data/software responsibility boundaryとして比較する。",
+    "CI/CD、software integration、diagnostics、digital twin/VILをArchitectureの外付け工程ではなくSDV E/E設計の一部として扱う。",
+    "functional safetyとcybersecurityを独立した付録ではなく全層を制約するcross-cutting concernとして統合する。"
+  ],
+  "cover_anchor_candidates": [
+    "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2409-10690v1-6f8ee796d3",
+    "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-ieee-8021dg-automoti-52b21e32f1",
+    "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-eclipse-score-projec-f643a9aa96"
+  ],
+  "packages": [
+    {
+      "package_id": "P00",
+      "title": "Front Matter / 読み方とEvidence境界",
+      "package_type": "FRONTMATTER",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [],
+      "page_target": 2,
+      "editorial_angle": "調査期間、Evidence class、標準・論文・OSSの読み分け、AUTOSAR/ISO取得gapを先に明示する。",
+      "must_cover": ["2023-08-18〜2026-08-18のretrospective window", "一次資料優先と未解決事項の保持", "arXivだけでは標準化・実装動向を取りこぼす理由"]
+    },
+    {
+      "package_id": "P01",
+      "title": "Lead — 『中央集約』ではなく責務境界の再設計",
+      "package_type": "LEAD",
+      "primary_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2409-10690v1-6f8ee796d3",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2407-17287v2-e9ad789af2"
+      ],
+      "supporting_evidence_task_ids": [],
+      "page_target": 5,
+      "editorial_angle": "zonal、central/HPC、determinism、service orientationを別々の流行語として並べず、物理I/O・compute・network・software contractの責務再配置という一つの設計問題に統合する。",
+      "must_cover": ["centralization potentialと限界", "physically zonal / computationally centralized", "determinism/reliabilityを後段各章への接続点にする"]
+    },
+    {
+      "package_id": "P02",
+      "title": "Compute — HPC統合とmixed-criticalityの現実",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2506-05822v1-eba4e624a8",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2412-09995v1-81f16c9648"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2505-07881v1-86b88e7eff",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2410-09839v1-7bf0812c87",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2408-02127v1-ea848722f0"
+      ],
+      "page_target": 7,
+      "editorial_angle": "ECU削減という物量の話から離れ、mixed criticality、ASIL decomposition、virtualization、resource governance、hardware isolationがHPC統合の上限を決めることを示す。",
+      "must_cover": ["mixed-criticality SLR", "virtualization/microservices trade-off", "ASIL/resource allocation", "initiator-side isolation"]
+    },
+    {
+      "package_id": "P03",
+      "title": "Network Fabric — TSN EthernetとCAN XLの役割分担",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-ieee-8021dg-automoti-52b21e32f1",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-cia-can-xl-d6279c76c3"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-open-alliance-10base-057097804e",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-open-alliance-channe-8482a0781d",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2504-05793v3-f90db43860"
+      ],
+      "page_target": 7,
+      "editorial_angle": "Ethernet一本化ではなく、TSNによるdeterministic backbone、10BASE-T1S等のedge接続、CAN XLのbackbone/sub-backbone可能性を物理・論理両面から比較する。",
+      "must_cover": ["IEEE 802.1DG-2025", "CAN XL / ISO 11898-1:2024 public status boundary", "OPEN Alliance physical/channel specifications", "dynamic TSN QoS"]
+    },
+    {
+      "package_id": "P04",
+      "title": "Service & Data — ECU境界から契約境界へ",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:series-covesa-vss-major-evolution-67e4b52d14",
+        "evidence:SP-automotive-ee-architecture-2023-2026:series-covesa-vsomeip-3x-evolution-3c75418e40"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-covesa-vsomeip-dbf82021e8",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2505-02734v2-8e61103b56",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2403-04378v1-e19e02d33d",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2511-17540v1-bb32e08743"
+      ],
+      "page_target": 7,
+      "editorial_angle": "サービス指向をAPIという語だけで扱わず、vehicle signal semantics、service discovery、middleware/runtime、ROS 2との境界まで含む『ソフトウェア契約の独立化』として整理する。",
+      "must_cover": ["VSS 4.1〜6.0 evolution", "vSomeIP 3.x maturity chronology", "middleware comparison", "AUTOSAR Adaptive / ROS 2 boundary"]
+    },
+    {
+      "package_id": "P05",
+      "title": "Open Platform — S-COREが示す共通実装への移行",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-eclipse-score-projec-f643a9aa96",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-eclipse-score-launch-2a18862fac",
+        "evidence:SP-automotive-ee-architecture-2023-2026:series-eclipse-score-maturity-evolution-437752c125"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-soafee-denso-determi-f82f7eda52",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2607-05227v1-ce8cde65b9"
+      ],
+      "page_target": 6,
+      "editorial_angle": "仕様策定だけでなく共有core stack/reference implementationへ進む動きを、S-COREのlaunch→release maturityとSOAFEE系実装の両面から追う。",
+      "must_cover": ["S-CORE launch", "release maturity chronology", "safety/integration artefacts", "AUTOSAR Adaptive industry frictionはpartial evidenceとして限定"]
+    },
+    {
+      "package_id": "P06",
+      "title": "Lifecycle — SDVではintegration/diagnostics/validationもArchitectureになる",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2507-19446v1-5be9173ad5"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2503-04928v1-491b9006c9",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2408-02127v1-ea848722f0",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2603-05279v1-f6ffbbc676",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2507-19403v1-bf12410710"
+      ],
+      "page_target": 7,
+      "editorial_angle": "中央計算機とサービス分離が進むほど、variant management、CI/CD、自動integration、diagnostics、digital twin/VILがE/E architectureの成立条件になることを示す。",
+      "must_cover": ["variant-rich CI/CD", "automatic platform configuration", "AUTOFRAME", "SDVDiag", "central car server VIL/digital twin"]
+    },
+    {
+      "package_id": "P07",
+      "title": "Cross-cutting Deep Dive — Safety / Security / Trust Boundary",
+      "package_type": "DEEP_DIVE",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2506-13261v1-cb2daee51e",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2410-09839v1-7bf0812c87",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2505-07881v1-86b88e7eff",
+        "evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-soafee-denso-determi-f82f7eda52"
+      ],
+      "page_target": 4,
+      "editorial_angle": "Safety/Securityを独立ECUへ逃がす前提が崩れると、isolation、resource partitioning、service authentication、deterministic runtimeが各層横断のarchitecture contractになる。",
+      "must_cover": ["ASIL decomposition", "hardware isolation", "service authentication/authorization", "implementation claimsとindependent assuranceの区別"]
+    },
+    {
+      "package_id": "P08",
+      "title": "References / Evidence Map / 未解決事項",
+      "package_type": "REFERENCES",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [],
+      "page_target": 3,
+      "editorial_angle": "一次資料、論文、release chronology、取得できなかったAUTOSAR/ISO資料、PARTIAL/HOLDの扱いをEvidence mapとして残す。",
+      "must_cover": ["source/evidence class一覧", "AUTOSAR TLS / ISO 403 coverage gap", "TIMING_UNRESOLVED 5件の精度境界", "PARTIAL Evidenceの非昇格原則"]
+    }
+  ],
+  "page_budget": {
+    "target": 48,
+    "max": 64,
+    "planned": 48
+  },
+  "summary_semantics": "全パッケージのdraftが安定した後にExecutive Synthesisを最終調整する。production validator互換のlegacy field `this_week_summary_written_last=true` は実験planでは保持するが、週次意味は持たせない。",
+  "abstraction_probe": {
+    "shared_validator_modified": false,
+    "finding": "Architecture package coverage, boundary propagation and page accounting can remain shared. Page budget, domain themes and summary semantics are edition/profile context; the fixed `this_week_summary_written_last` field is a naming-level weekly leak."
+  }
+}
