@@ -1,0 +1,203 @@
+name: Experiment - Approve Automotive E/E Architecture
+
+on:
+  push:
+    branches:
+      - experiment/automotive-ee-architecture-special
+    paths:
+      - ".github/workflows/experiment-automotive-ee-approve-architecture.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  approve-and-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout experiment branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download approved Architecture Review artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: automotive-ee-architecture-review-32193607664
+          path: ${{ runner.temp }}/architecture-review
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: eariver/japanese-generative-ai-survey
+          run-id: 32193607664
+
+      - name: Download complete Evidence artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: automotive-ee-complete-evidence-32192057765
+          path: ${{ runner.temp }}/complete-evidence
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: eariver/japanese-generative-ai-survey
+          run-id: 32192057765
+
+      - name: Materialize approved Architecture v0.3
+        run: |
+          set -euo pipefail
+          ISSUE="SP-automotive-ee-architecture-2023-2026"
+          ROOT="sources/${ISSUE}"
+          ARCH="${ROOT}/architecture/approved-v0.3"
+          mkdir -p "$ARCH"
+          cp "${RUNNER_TEMP}/architecture-review/architecture-input-profiled-v0.2.json" "$ARCH/architecture-input-v0.3.json"
+          cp "${RUNNER_TEMP}/architecture-review/issue-architecture-proposal-v0.2.json" "$ARCH/issue-architecture-v0.3.json"
+
+          python - "$ARCH/issue-architecture-v0.3.json" <<'PY'
+          import json,sys
+          path=sys.argv[1]
+          value=json.load(open(path,encoding='utf-8'))
+          assert value['architecture_version']=='v0.3', value.get('architecture_version')
+          assert value['status']=='PROPOSED', value.get('status')
+          value['status']='APPROVED'
+          value['approval']={
+            'approved_by':'eariver',
+            'approved_at':'2026-08-19T07:36:00+09:00',
+            'approval_reference':'ChatGPT Architecture Review approval: end-of-body synthesis required and reflected by P08 before References (2026-08-19 JST)'
+          }
+          with open(path,'w',encoding='utf-8') as f:
+              json.dump(value,f,ensure_ascii=False,indent=2); f.write('\n')
+          PY
+
+          PYTHONPATH=. python scripts/validate_issue_architecture.py \
+            --architecture-input "$ARCH/architecture-input-v0.3.json" \
+            --plan "$ARCH/issue-architecture-v0.3.json" \
+            --require-approved \
+            --report "$ARCH/approved-validation.json"
+
+      - name: Build immutable Draft Packages with shared builder
+        run: |
+          set -euo pipefail
+          ISSUE="SP-automotive-ee-architecture-2023-2026"
+          ROOT="sources/${ISSUE}"
+          ARCH="${ROOT}/architecture/approved-v0.3"
+          OUT="${ROOT}/drafting/packages/v0.3"
+          rm -rf "$OUT"
+          PYTHONPATH=. python scripts/build_draft_packages.py \
+            --architecture-input "$ARCH/architecture-input-v0.3.json" \
+            --architecture-plan "$ARCH/issue-architecture-v0.3.json" \
+            --evidence-reviewed "${RUNNER_TEMP}/complete-evidence/evidence-reviewed.jsonl" \
+            --output-dir "$OUT" > "${RUNNER_TEMP}/draft-package-build.json"
+          python - "$OUT/draft-package-manifest.json" <<'PY'
+          import json,sys
+          m=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert m['passed'] is True, m
+          assert m['package_count']==10, m
+          assert m['materialized_package_count']==10, m
+          assert m['article_drafting_count']==8, m
+          assert m['post_draft_summary_count']==1, m
+          assert m['reference_generation_count']==1, m
+          PY
+
+      - name: Advance experiment-only pipeline state
+        run: |
+          set -euo pipefail
+          ISSUE="SP-automotive-ee-architecture-2023-2026"
+          STATE="sources/${ISSUE}/pipeline-state.json"
+          python - "$STATE" <<'PY'
+          import hashlib,json,sys
+          from pathlib import Path
+          p=Path(sys.argv[1])
+          state=json.load(open(p,encoding='utf-8'))
+          assert state['issue_id']=='SP-automotive-ee-architecture-2023-2026'
+          state['lifecycle_state']='ARCHITECTURE_ESTABLISHED'
+          state['gates']['raw_sources_preserved']='passed'
+          state['gates']['candidate_inventory']='passed'
+          state['gates']['evidence_normalized']='passed'
+          state['gates']['candidate_selection']='passed'
+          state['gates']['issue_architecture']='passed'
+          state['gates']['article_draft']='pending'
+          state['gates']['claim_and_chronology_validation']='pending'
+          state['gates']['latex_build']='pending'
+          state['gates']['visual_review']='pending'
+          state['gates']['freeze']='pending'
+          prov=state.setdefault('provenance',{})
+          prov['experiment_source_intake']={'workflow_run_id':32138312160,'status':'passed'}
+          prov['experiment_complete_evidence']={'workflow_run_id':32192057765,'task_count':45,'status':'passed'}
+          prov['experiment_candidate_selection']={'workflow_run_id':32192464595,'candidate_count':29,'architecture_selected_count':28,'status':'passed','human_gate_required':False}
+          plan=Path('sources/SP-automotive-ee-architecture-2023-2026/architecture/approved-v0.3/issue-architecture-v0.3.json')
+          prov['issue_architecture']={
+            'path':str(plan),
+            'sha256':hashlib.sha256(plan.read_bytes()).hexdigest(),
+            'architecture_version':'v0.3',
+            'approved_by':'eariver',
+            'approved_at':'2026-08-19T07:36:00+09:00',
+            'approval_reference':'ChatGPT Architecture Review approval with explicit end-of-body synthesis condition'
+          }
+          with open(p,'w',encoding='utf-8') as f:
+              json.dump(state,f,ensure_ascii=False,indent=2); f.write('\n')
+          PY
+
+      - name: Build approval digest
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          issue='SP-automotive-ee-architecture-2023-2026'
+          root=Path('sources')/issue
+          arch=root/'architecture'/'approved-v0.3'
+          packages=root/'drafting'/'packages'/'v0.3'
+          m=json.load(open(packages/'draft-package-manifest.json',encoding='utf-8'))
+          plan=json.load(open(arch/'issue-architecture-v0.3.json',encoding='utf-8'))
+          digest={
+            'schema_version':'1.0',
+            'issue_id':issue,
+            'purpose':'EXPERIMENTAL_ARCHITECTURE_APPROVAL_DIGEST',
+            'workflow_run_id':int(os.environ['GITHUB_RUN_ID']),
+            'commit_sha':os.environ['GITHUB_SHA'],
+            'architecture_review_run_id':32193607664,
+            'complete_evidence_run_id':32192057765,
+            'architecture_version':'v0.3',
+            'architecture_status':plan['status'],
+            'approval':plan['approval'],
+            'package_count':m['package_count'],
+            'article_drafting_count':m['article_drafting_count'],
+            'post_draft_summary_count':m['post_draft_summary_count'],
+            'reference_generation_count':m['reference_generation_count'],
+            'draft_package_manifest_sha256':hashlib.sha256((packages/'draft-package-manifest.json').read_bytes()).hexdigest(),
+            'production_ai_pipeline_modified':False,
+            'shared_validator':'scripts/validate_issue_architecture.py',
+            'shared_draft_package_builder':'scripts/build_draft_packages.py',
+            'next_stage':'ARTICLE_DRAFTING'
+          }
+          dest=root/'imports'/'architecture-approval'/'experiment-latest-digest.json'
+          dest.parent.mkdir(parents=True,exist_ok=True)
+          dest.write_text(json.dumps(digest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(digest,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Commit experiment approval and Draft Packages
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            sources/SP-automotive-ee-architecture-2023-2026/architecture/approved-v0.3 \
+            sources/SP-automotive-ee-architecture-2023-2026/drafting/packages/v0.3 \
+            sources/SP-automotive-ee-architecture-2023-2026/pipeline-state.json \
+            sources/SP-automotive-ee-architecture-2023-2026/imports/architecture-approval/experiment-latest-digest.json
+          if git diff --cached --quiet; then
+            echo "No approval changes"
+          else
+            git commit -m "experiment: approve automotive E/E Architecture v0.3 [skip ci]"
+            git push origin HEAD:experiment/automotive-ee-architecture-special
+          fi
+
+      - name: Confirm production boundary
+        if: always()
+        run: |
+          echo "Shared production scripts reused unchanged:"
+          echo "  scripts/validate_issue_architecture.py"
+          echo "  scripts/build_draft_packages.py"
+          echo "AI production manifests, prompts, schemas, and pipeline controller remain untouched."
