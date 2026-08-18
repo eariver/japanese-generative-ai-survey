@@ -80,7 +80,10 @@ def generated_card_schema(base_card: dict[str, Any], artifact_types: list[str], 
     if not isinstance(old_type, dict) or not isinstance(old_type.get("enum"), list):
         raise ValueError("base artifact_type is no longer a closed enum; abstraction probe must be reviewed")
     artifact["artifact_type"] = {"enum": artifact_types}
-    result["$id"] = f"urn:japanese-generative-ai-survey:experiment:{profile_id}:evidence-card"
+    # Keep the generated contract relocatable inside an execution package. A
+    # relative $id lets evidence-run.schema.json resolve evidence-card.schema.json
+    # against the package retrieval location without reaching back to production.
+    result["$id"] = "evidence-card.schema.json"
     result["title"] = f"Profiled Survey Evidence Card ({profile_id})"
     return result
 
@@ -93,7 +96,7 @@ def generated_run_schema(base_run: dict[str, Any], profile_id: str) -> dict[str,
         raise ValueError("base Evidence Run schema does not expose card.$ref") from exc
     if card_ref != "evidence-card.schema.json":
         raise ValueError(f"unexpected base Evidence Card ref: {card_ref!r}")
-    result["$id"] = f"urn:japanese-generative-ai-survey:experiment:{profile_id}:evidence-run"
+    result["$id"] = "evidence-run.schema.json"
     result["title"] = f"Profiled Survey Evidence Runner Output ({profile_id})"
     return result
 
