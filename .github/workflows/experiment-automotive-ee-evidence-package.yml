@@ -1,0 +1,117 @@
+name: Experiment - Automotive E/E Evidence Package
+
+on:
+  push:
+    branches:
+      - experiment/automotive-ee-architecture-special
+    paths:
+      - "experiments/automotive-ee-architecture/evidence-profile.json"
+      - "experiments/automotive-ee-architecture/primary-source-verification-v0.1.md"
+      - "experiments/automotive-ee-architecture/profiled_evidence_contract.py"
+      - "experiments/automotive-ee-architecture/profiled_evidence_package.py"
+      - ".github/workflows/experiment-automotive-ee-evidence-package.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  evidence-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout experiment branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download pinned Evidence-task probe
+        uses: actions/download-artifact@v5
+        with:
+          name: automotive-ee-evidence-task-probe-32144179268
+          path: ${{ runner.temp }}/pinned-evidence-task-probe
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: eariver/japanese-generative-ai-survey
+          run-id: 32144179268
+
+      - name: Build profiled Evidence execution package
+        run: |
+          set -euo pipefail
+          OUT="${RUNNER_TEMP}/automotive-ee-evidence-package"
+          python experiments/automotive-ee-architecture/profiled_evidence_package.py \
+            --repo-root . \
+            --probe-root "${RUNNER_TEMP}/pinned-evidence-task-probe" \
+            --evidence-profile experiments/automotive-ee-architecture/evidence-profile.json \
+            --output-root "$OUT" \
+            --source-ref experiment/automotive-ee-architecture-special \
+            --source-commit "${GITHUB_SHA}"
+          python -m json.tool "$OUT/evidence-execution-package.json" >/dev/null
+          test "$(find "$OUT/input/tasks" -type f -name '*.json' | wc -l)" -eq 45
+
+      - name: Build compact package digest
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          out = Path(os.environ["RUNNER_TEMP"]) / "automotive-ee-evidence-package"
+          package = json.loads((out / "evidence-execution-package.json").read_text(encoding="utf-8"))
+          digest = {
+              "schema_version": "1.0",
+              "issue_id": package["issue_id"],
+              "purpose": "EXPERIMENTAL_PROFILED_EVIDENCE_PACKAGE_DIGEST",
+              "workflow_run_id": int(os.environ["GITHUB_RUN_ID"]),
+              "workflow_run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+              "commit_sha": os.environ["GITHUB_SHA"],
+              "pinned_evidence_task_probe_run_id": 32144179268,
+              "task_count": package["evidence_tasks"]["task_count"],
+              "evidence_task_manifest_sha256": package["evidence_tasks"]["manifest_sha256"],
+              "evidence_task_index_sha256": package["evidence_tasks"]["index_sha256"],
+              "prompt_id": package["prompt"]["prompt_id"],
+              "prompt_sha256": package["prompt"]["sha256"],
+              "contract_profile_id": package["contracts"]["profile_id"],
+              "artifact_types": package["contracts"]["artifact_types"],
+              "evidence_run_schema_sha256": package["contracts"]["evidence_run"]["sha256"],
+              "evidence_card_schema_sha256": package["contracts"]["evidence_card"]["sha256"],
+              "production_ai_pipeline_modified": package["production_ai_pipeline_modified"],
+              "finding": package["finding"],
+          }
+          dest = Path("sources/SP-automotive-ee-architecture-2023-2026/imports/evidence-package/experiment-latest-digest.json")
+          dest.parent.mkdir(parents=True, exist_ok=True)
+          dest.write_text(json.dumps(digest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(digest, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Upload immutable Evidence package
+        uses: actions/upload-artifact@v4
+        with:
+          name: automotive-ee-evidence-package-${{ github.run_id }}
+          path: ${{ runner.temp }}/automotive-ee-evidence-package/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Commit compact package digest
+        run: |
+          set -euo pipefail
+          DIGEST="sources/SP-automotive-ee-architecture-2023-2026/imports/evidence-package/experiment-latest-digest.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$DIGEST"
+          if git diff --cached --quiet; then
+            echo "Digest unchanged"
+          else
+            git commit -m "experiment: record automotive E/E Evidence package [skip ci]"
+            git push origin HEAD:experiment/automotive-ee-architecture-special
+          fi
+
+      - name: Confirm production boundary
+        if: always()
+        run: |
+          echo "Production prepare_evidence_run.py intentionally untouched."
+          echo "Production AI Evidence prompt/schemas/lifecycle state intentionally untouched."
