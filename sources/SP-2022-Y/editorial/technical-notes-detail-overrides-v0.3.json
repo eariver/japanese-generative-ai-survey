@@ -5,30 +5,34 @@
   "screening_verification_queue_sha256": "055e93d1ebcecad4218a91f7c5b7aaf288d9597eb120cd15d0c9f97ae0c4a3b8",
   "entries": {
     "Chain-of-Thought Prompting": {
-      "source_urls": [
-        "http://arxiv.org/abs/2201.11903v6"
-      ],
+      "source_urls": ["http://arxiv.org/abs/2201.11903v6"],
       "technical_points": [
         "著者らは chain of thought を一連の中間的な推論ステップとして扱い、少数の chain-of-thought demonstrations を prompt 内の exemplar として与える prompting 手法を検証した。",
         "論文は3つの large language model を用い、算術・commonsense・symbolic reasoning の各タスクで chain-of-thought prompting を評価した。"
       ]
     },
     "Scaling Instruction-Finetuned Language Models (FLAN)": {
-      "source_urls": [
-        "http://arxiv.org/abs/2210.11416v5"
-      ],
+      "source_urls": ["http://arxiv.org/abs/2210.11416v5"],
       "technical_points": [
         "著者らは instruction finetuning を、instruction形式へ変換した複数datasetでlanguage modelをfinetuneする方法として扱い、task数・model size・chain-of-thought dataの3つのscale軸を検討した。",
         "評価範囲には PaLM・T5・U-PaLM の複数model class、zero-shot・few-shot・CoT のprompting setup、および MMLU・BBH・TyDiQA・MGSM・open-ended generation が含まれる。"
       ]
     },
     "Self-Instruct": {
-      "source_urls": [
-        "http://arxiv.org/abs/2212.10560v2"
-      ],
+      "source_urls": ["http://arxiv.org/abs/2212.10560v2"],
       "technical_points": [
         "著者らは pretrained language model 自身の生成を利用して instruction-following data を増やす Self-Instruct frameworkを提案した。",
         "pipelineは instruction・input・output sampleを生成し、invalidまたは類似したsampleをfilterした後、それらで元のmodelをfinetuneする。"
+      ]
+    },
+    "OPT-175B": {
+      "source_urls": [
+        "http://arxiv.org/abs/2205.01068v4",
+        "https://ai.meta.com/blog/democratizing-access-to-large-scale-language-models-with-opt-175b/"
+      ],
+      "technical_points": [
+        "OPTは125Mから175B parameterまでのdecoder-only pretrained Transformer群として提示され、研究者がlarge language modelのweightsを直接調査できるaccessを主眼の一つに置いた。",
+        "論文と同時期の公開では、model weightsだけでなく、学習時のinfrastructure上の課題を記録したlogbookと実験用codeも研究再現性のための構成要素として扱われた。"
       ]
     }
   }
