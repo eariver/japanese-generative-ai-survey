@@ -12,6 +12,7 @@ on:
       - "experiments/automotive-ee-architecture/evidence-profile.json"
       - "experiments/automotive-ee-architecture/primary-source-verification-v0.1.md"
       - "experiments/automotive-ee-architecture/profiled_evidence_contract.py"
+      - "experiments/automotive-ee-architecture/test_profiled_evidence_contract.py"
       - ".github/workflows/experiment-automotive-ee-source-intake.yml"
   workflow_dispatch:
 
@@ -32,6 +33,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Test profiled Evidence contract boundary
+        run: |
+          set -euo pipefail
+          python experiments/automotive-ee-architecture/test_profiled_evidence_contract.py
 
       - name: Run profiled Source Intake
         run: |
