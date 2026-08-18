@@ -1,17 +1,24 @@
 {
   "schema_version": "1.0",
   "issue_id": "SP-2022-Y",
-  "revision": "v0.3",
-  "reason": "Publication Preview visual inspection found that annual-chronology has zero Evidence records but still renders an empty Technical Notes scaffold, creating a nearly blank reader-facing page. Suppress only that empty scaffold; keep the chronology, accepted article text, Evidence, Technical Notes source file, and bibliography unchanged.",
+  "special_slug": "2022-Y",
+  "source_version": "v0.3",
+  "reason": "Publication Preview repair for Issues #139 and #191 before the ordered Annual review repair sequence. Replace generic Technical Notes fallbacks with source-specific, subject-bound detail from the already accepted selected Evidence graph only.",
+  "review_issues": [139, 191],
+  "layout_changes": {
+    "annual_source_specific_notes_v1": true,
+    "half_year_review_repairs_v3": true,
+    "technical_notes_only": true,
+    "preserve_annual_chronology_events": true,
+    "preserve_accepted_article_sections": true
+  },
   "constraints": {
     "new_external_evidence_allowed": false,
-    "reader_content_changed": false,
-    "selected_evidence_only": true
-  },
-  "layout_changes": {
-    "suppress_zero_evidence_technical_notes": true,
-    "package_ids": [
-      "annual-chronology"
-    ]
+    "selected_evidence_only": true,
+    "accepted_article_claims_changed": false,
+    "evidence_cards_mutated": false,
+    "approved_architecture_changed": false,
+    "chronology_events_changed": false,
+    "bibliography_data_changed": false
   }
 }
