@@ -17,7 +17,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: repair-sp-2022-y-publication-preview
+  group: repair-sp-2022-y-publication-preview-fast
   cancel-in-progress: false
 
 jobs:
@@ -37,7 +37,7 @@ jobs:
         with:
           ref: special/2022-Y-work
           path: worktree
-          fetch-depth: 0
+          fetch-depth: 1
 
       - uses: actions/setup-python@v5
         with:
