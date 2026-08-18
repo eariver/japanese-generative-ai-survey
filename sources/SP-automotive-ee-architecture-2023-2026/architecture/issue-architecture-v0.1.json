@@ -1,0 +1,204 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-automotive-ee-architecture-2023-2026",
+  "architecture_version": "v0.1",
+  "status": "PROPOSED",
+  "experimental": true,
+  "basis": {
+    "source_plan": "sources/SP-automotive-ee-architecture-2023-2026/coverage/supplemental-source-plan-v0.1.json",
+    "source_plan_commit": "d46ae61514c4576d0f18be98eb971b2cd1819bd9",
+    "planned_primary_sources": 18,
+    "research_mode": "MANUAL_PRIMARY_SOURCE_PROOF_OF_CONCEPT",
+    "canonical_pipeline_evidence_complete": false
+  },
+  "approval": {
+    "approved_by": null,
+    "approved_at": null,
+    "approval_reference": null
+  },
+  "editorial_thesis": "2023年後半から2026年夏までの車載E&Eアーキテクチャ変化は、単なるECU削減や『中央集権化』ではなく、物理配置をzonalへ寄せるI/O・電源側の再編、HPCへのcompute consolidation、mixed-criticality分離、Ethernet/TSNを軸とするdeterministic communication、AUTOSAR/COVESA等によるservice・data abstraction、さらにcloud-native開発とvirtual validationを同じライフサイクルへ接続する動きが収束したものとして捉えるべきである。中央HPCとzone/edgeは競合概念ではなく、機能配置と責務を再分割する相補的な層であり、SDV化の本質はhardware/software/network/development lifecycleのdecoupling境界を再設計する点にある。",
+  "architecture_goals": [
+    "distributed ECU → domain controller → zonal + central/HPC を一本道の世代論にせず、物理I/O配置・compute配置・software配置の三つの軸に分解する。",
+    "centralizationをECU統合率の競争として扱わず、busload、functional safety、compute、feature dependency、maintenance、fault containment、modularityのtrade-offとして整理する。",
+    "zonal controllerを単なるEthernet switchとして扱わず、I/O aggregation、power distribution、local control、diagnostics/security境界を含む設計点として扱う。",
+    "Automotive Ethernet/TSNの伸長とCAN/CAN XLの継続を対立構図にせず、帯域・determinism・cost・wiring・edge controlの役割分担として比較する。",
+    "AUTOSAR Adaptive、Classic、CAPI、SOME/IP/vSomeIP、VSS等を製品名列挙ではなく、runtime・service discovery・data semantics・interoperabilityの層として再分類する。",
+    "SOAFEEやEclipse S-COREを『OSS化』だけで説明せず、cloud-to-edge parity、virtual hardware、container/orchestration、mixed-criticality、certification-ready processという開発アーキテクチャの変化として扱う。",
+    "論文・標準・コンソーシアム資料のclaim強度を分離し、vendor/consortium blueprintは実装方向の一次資料ではあっても独立再現された性能証拠ではないことを本文で明示する。",
+    "最終章では『中央化が進む』ではなく、どこが中央化され、どこがzone/edgeに残り、どのinterfaceが標準化されつつあるかを層別にまとめる。"
+  ],
+  "page_budget": {
+    "target": 48,
+    "max": 64,
+    "planned": 48
+  },
+  "cover": {
+    "headline_deferred": true,
+    "headline": null,
+    "anchor_candidates": [
+      "from-ecu-count-to-placement",
+      "zonal-plus-central-not-zonal-versus-central",
+      "sdv-as-decoupling-boundaries"
+    ]
+  },
+  "packages": [
+    {
+      "package_id": "front",
+      "title": "車載E&Eを読むための5層モデル",
+      "package_type": "FRONTMATTER",
+      "primary_source_ids": [],
+      "supporting_source_ids": [],
+      "page_target": 4,
+      "editorial_angle": "E/E topology、compute、network、software/service、development lifecycleを分離し、同じ『SDV』という語で異なる変化を混同しないための読み方を先に定義する。",
+      "must_cover": [
+        "2023-08-18〜2026-08-18の対象期間",
+        "論文だけでなく標準・コンソーシアム・OSS foundationを一次資料レーンとする理由",
+        "zonalとcentral computeは同一軸ではないこと",
+        "primary factとproject/vendor claimの区別"
+      ],
+      "drafting_order": 1
+    },
+    {
+      "package_id": "topology",
+      "title": "ECUの数ではなく配置を変える — DomainからZonal + Central Computeへ",
+      "package_type": "LEAD",
+      "primary_source_ids": [
+        "supplemental-arxiv-centralization-potential-2024",
+        "supplemental-arxiv-zonal-architecture-2024",
+        "supplemental-arxiv-autoframe-2025"
+      ],
+      "supporting_source_ids": [
+        "supplemental-arxiv-sdv-survey-2026"
+      ],
+      "page_target": 8,
+      "editorial_angle": "domain/zonal/centralizedを世代名の羅列ではなく、sensor/actuator近傍のI/Oと計算資源をどこに置くかというplacement問題として整理する。",
+      "must_cover": [
+        "distributed/domain/zonal/centralの定義境界",
+        "zone controllerとcentral HPCの相補関係",
+        "wiring・power distribution・diagnosticsへの影響",
+        "monolithic centralizationを避ける設計論"
+      ],
+      "drafting_order": 2
+    },
+    {
+      "package_id": "hpc",
+      "title": "HPC統合の本当の難所 — Mixed Criticality・Isolation・Resource Governance",
+      "package_type": "DEEP_DIVE",
+      "primary_source_ids": [
+        "supplemental-arxiv-mixed-criticality-hpc-2025",
+        "supplemental-arxiv-autoframe-2025"
+      ],
+      "supporting_source_ids": [
+        "supplemental-soafee-denso-deterministic-2025",
+        "supplemental-eclipse-score-launch-2025"
+      ],
+      "page_target": 8,
+      "editorial_angle": "計算能力を一か所へ集めることより、異なるASIL/real-time要求を一つのSoC/HPC上で安全に共存させることを中心課題として扱う。",
+      "must_cover": [
+        "mixed-criticality workload",
+        "virtualization/partitioningとfault containment",
+        "deterministic executionとresource interference",
+        "hardware abstractionとdeployment portability"
+      ],
+      "drafting_order": 3
+    },
+    {
+      "package_id": "network",
+      "title": "車内ネットワークはEthernet一色になるのか — TSN・10BASE-T1S・CAN XLの役割分担",
+      "package_type": "COMPARISON",
+      "primary_source_ids": [
+        "supplemental-ieee-8021dg-2025",
+        "supplemental-open-alliance-tc9-2025",
+        "supplemental-cia-can-xl-2024",
+        "supplemental-ieee-10baset1s-plca-2025"
+      ],
+      "supporting_source_ids": [
+        "supplemental-autosar-r23-11"
+      ],
+      "page_target": 9,
+      "editorial_angle": "backbone帯域のEthernet化とedge/control networkの要件を分け、TSNによるbounded latency、10BASE-T1Sのmultidrop、CAN XLの拡張を同じ配線・cost・determinism問題の中で比較する。",
+      "must_cover": [
+        "IEEE 802.1DG-2025の意味",
+        "10BASE-T1SとPLCAの利点・残課題",
+        "CAN XLが残る技術的余地",
+        "security/time synchronizationをnetwork architectureの一部として扱うこと"
+      ],
+      "drafting_order": 4
+    },
+    {
+      "package_id": "services",
+      "title": "SignalからService/Data Contractへ — AUTOSAR・SOME/IP・VSSの抽象化境界",
+      "package_type": "FEATURE",
+      "primary_source_ids": [
+        "supplemental-autosar-r23-11",
+        "supplemental-autosar-r24-11",
+        "supplemental-autosar-r25-11",
+        "supplemental-covesa-vsomeip-2025"
+      ],
+      "supporting_source_ids": [
+        "supplemental-arxiv-cross-platform-soa-2025",
+        "supplemental-covesa-2024-highlights"
+      ],
+      "page_target": 8,
+      "editorial_angle": "Classic/Adaptiveの対立ではなく、runtime、service discovery、data semantics、API portabilityを別レイヤとして捉え、CAPIやSDV Allianceが仕様から共通実装へ踏み込む意味を読む。",
+      "must_cover": [
+        "Adaptive Platform stabilization",
+        "CAPIのcode-first方向",
+        "SOME/IP/vSomeIPの通信層",
+        "data model/API standardizationとruntime standardizationの違い"
+      ],
+      "drafting_order": 5
+    },
+    {
+      "package_id": "lifecycle",
+      "title": "車載ソフト開発環境そのものがE&Eの一部になる — Cloud-to-Edge・Virtual Validation・Open Core",
+      "package_type": "FEATURE",
+      "primary_source_ids": [
+        "supplemental-soafee-denso-deterministic-2025",
+        "supplemental-eclipse-score-launch-2025",
+        "supplemental-soafee-cloud-edge-validation-2026"
+      ],
+      "supporting_source_ids": [
+        "supplemental-covesa-2024-highlights",
+        "supplemental-autosar-r25-11"
+      ],
+      "page_target": 7,
+      "editorial_angle": "virtual hardwareやcloud parityを開発効率論に閉じず、hardware availabilityより前にsoftwareを統合・検証し、同じartifactを車載edgeへ運ぶためのarchitecture contractとして扱う。",
+      "must_cover": [
+        "cloud-nativeとautomotive real-time/safetyの緊張関係",
+        "virtual hardware / SIL / digital twin",
+        "S-COREのshared core stackという位置付け",
+        "certification/process要求がopen developmentへ与える制約"
+      ],
+      "drafting_order": 6
+    },
+    {
+      "package_id": "synthesis",
+      "title": "2026年夏の到達点 — Centralize Everythingではなく責務境界の再設計",
+      "package_type": "SECTION",
+      "primary_source_ids": [
+        "supplemental-arxiv-sdv-survey-2026"
+      ],
+      "supporting_source_ids": [
+        "supplemental-arxiv-centralization-potential-2024",
+        "supplemental-autosar-r25-11",
+        "supplemental-ieee-8021dg-2025",
+        "supplemental-eclipse-score-launch-2025"
+      ],
+      "page_target": 4,
+      "editorial_angle": "physical topology、compute placement、network determinism、software interface、development lifecycleの5層を再結合し、標準化が進んだ境界と未解決の境界を分けて示す。",
+      "must_cover": [
+        "中央化されたもの／zoneに残ったもの",
+        "標準化が進むinterface",
+        "mixed-criticalityとverificationの未解決課題",
+        "次の2〜3年で観測すべき指標"
+      ],
+      "drafting_order": 7
+    }
+  ],
+  "architecture_review_questions": [
+    "車載E&E SpecialをAI Specialと同じ公開シリーズ名の下に置くのか、パイプラインだけを共通化してシリーズ名は分離するのか。",
+    "標準・コンソーシアム資料をarXiv論文と同格のprimary source laneとして正式にモデル化するか。",
+    "OEM/Tier1の量産アーキテクチャ事例をどこまで入れるか。公開情報にはmarketing claimが多いため、採用する場合は独立したINDUSTRY_IMPLEMENTATION laneが必要か。"
+  ]
+}
