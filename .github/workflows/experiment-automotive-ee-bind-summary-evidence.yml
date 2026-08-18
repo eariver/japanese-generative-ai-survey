@@ -1,0 +1,190 @@
+name: Experiment - Bind Automotive E/E Summary Evidence
+
+on:
+  push:
+    branches:
+      - experiment/automotive-ee-architecture-special
+    paths:
+      - ".github/workflows/experiment-automotive-ee-bind-summary-evidence.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  bind-summary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download complete Evidence
+        uses: actions/download-artifact@v5
+        with:
+          name: automotive-ee-complete-evidence-32192057765
+          path: ${{ runner.temp }}/complete-evidence
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: eariver/japanese-generative-ai-survey
+          run-id: 32192057765
+
+      - name: Bind representative approved Evidence to P08
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          issue='SP-automotive-ee-architecture-2023-2026'
+          root=Path('sources')/issue
+          arch=root/'architecture'/'approved-v0.3'
+          plan_path=arch/'issue-architecture-v0.3.json'
+          input_path=arch/'architecture-input-v0.3.json'
+          plan=json.load(open(plan_path,encoding='utf-8'))
+          architecture_input=json.load(open(input_path,encoding='utf-8'))
+          assert plan['status']=='APPROVED' and plan['architecture_version']=='v0.3'
+
+          support_ids=[
+            'evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2409-10690v1-6f8ee796d3',
+            'evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-ieee-8021dg-automoti-52b21e32f1',
+            'evidence:SP-automotive-ee-architecture-2023-2026:series-covesa-vss-major-evolution-67e4b52d14',
+            'evidence:SP-automotive-ee-architecture-2023-2026:item-official-index-eclipse-score-projec-f643a9aa96',
+            'evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2507-19446v1-5be9173ad5',
+            'evidence:SP-automotive-ee-architecture-2023-2026:item-arxiv-2505-07881v1-86b88e7eff',
+          ]
+          by_id={}
+          for values in architecture_input['selected_by_role'].values():
+              for item in values:
+                  by_id[item['evidence_task_id']]=item
+          assert not (set(support_ids)-set(by_id)), set(support_ids)-set(by_id)
+          boundaries=[]
+          seen=set()
+          for task_id in support_ids:
+              for boundary in by_id[task_id].get('remaining_boundaries') or []:
+                  if boundary not in seen:
+                      seen.add(boundary); boundaries.append(boundary)
+
+          p08=next(p for p in plan['packages'] if p['package_id']=='P08')
+          assert p08['title'].startswith('総括')
+          p08['supporting_evidence_task_ids']=support_ids
+          p08['boundaries']=boundaries
+          plan['approval']['approval_reference'] = (
+              'ChatGPT Architecture Review approval: end-of-body synthesis required and reflected by P08 before References '
+              '(2026-08-19 JST); P08 evidence binding strengthened after approval without changing reader-visible architecture'
+          )
+          with open(plan_path,'w',encoding='utf-8') as f:
+              json.dump(plan,f,ensure_ascii=False,indent=2); f.write('\n')
+
+          profile_path=Path('experiments/automotive-ee-architecture/architecture-profile.json')
+          profile=json.load(open(profile_path,encoding='utf-8'))
+          profile_p08=next(p for p in profile['packages'] if p['package_id']=='P08')
+          profile_p08['supporting_evidence_task_ids']=support_ids
+          profile['summary_semantics'] += ' P08 is bound to a representative subset of already-selected Evidence so the normal Article Draft validator can preserve claim attribution and known limitations.'
+          profile['abstraction_probe']['summary_execution_finding'] = (
+              'Post-draft synthesis timing is currently conflated with FRONTMATTER placement in the production Special pipeline. '
+              'For this experiment, the reader-visible end-body synthesis remains a normal SECTION and reuses selected Evidence; '
+              'a future generic profile should separate synthesis execution timing from physical placement.'
+          )
+          with open(profile_path,'w',encoding='utf-8') as f:
+              json.dump(profile,f,ensure_ascii=False,indent=2); f.write('\n')
+          PY
+
+      - name: Revalidate approved Architecture unchanged in visible structure
+        run: |
+          set -euo pipefail
+          ISSUE="SP-automotive-ee-architecture-2023-2026"
+          ARCH="sources/${ISSUE}/architecture/approved-v0.3"
+          PYTHONPATH=. python scripts/validate_issue_architecture.py \
+            --architecture-input "$ARCH/architecture-input-v0.3.json" \
+            --plan "$ARCH/issue-architecture-v0.3.json" \
+            --require-approved \
+            --report "$ARCH/approved-validation.json"
+
+      - name: Rebuild immutable Draft Packages
+        run: |
+          set -euo pipefail
+          ISSUE="SP-automotive-ee-architecture-2023-2026"
+          ROOT="sources/${ISSUE}"
+          ARCH="${ROOT}/architecture/approved-v0.3"
+          OUT="${ROOT}/drafting/packages/v0.3"
+          rm -rf "$OUT"
+          PYTHONPATH=. python scripts/build_draft_packages.py \
+            --architecture-input "$ARCH/architecture-input-v0.3.json" \
+            --architecture-plan "$ARCH/issue-architecture-v0.3.json" \
+            --evidence-reviewed "${RUNNER_TEMP}/complete-evidence/evidence-reviewed.jsonl" \
+            --output-dir "$OUT" >/tmp/draft-package-build.json
+          python - "$OUT/P08.json" "$OUT/draft-package-manifest.json" <<'PY'
+          import json,sys
+          p08=json.load(open(sys.argv[1],encoding='utf-8'))
+          m=json.load(open(sys.argv[2],encoding='utf-8'))
+          assert len(p08['supporting_evidence'])==6
+          assert len(p08['package']['boundaries'])==11
+          assert m['passed'] is True and m['article_drafting_count']==8
+          PY
+
+      - name: Refresh experiment state provenance
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          issue='SP-automotive-ee-architecture-2023-2026'
+          root=Path('sources')/issue
+          state_path=root/'pipeline-state.json'
+          state=json.load(open(state_path,encoding='utf-8'))
+          plan=root/'architecture'/'approved-v0.3'/'issue-architecture-v0.3.json'
+          manifest=root/'drafting'/'packages'/'v0.3'/'draft-package-manifest.json'
+          assert state['lifecycle_state']=='ARCHITECTURE_ESTABLISHED'
+          state['provenance']['issue_architecture']['sha256']=hashlib.sha256(plan.read_bytes()).hexdigest()
+          state['provenance']['issue_architecture']['summary_evidence_binding']='P08 uses 6 already-selected Evidence items; visible approved architecture unchanged.'
+          state['provenance']['draft_packages']={
+            'path':str(manifest),
+            'sha256':hashlib.sha256(manifest.read_bytes()).hexdigest(),
+            'article_drafting_count':8,
+          }
+          state_path.write_text(json.dumps(state,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+
+      - name: Record summary-binding digest
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          root=Path('sources/SP-automotive-ee-architecture-2023-2026')
+          p08=root/'drafting/packages/v0.3/P08.json'
+          plan=root/'architecture/approved-v0.3/issue-architecture-v0.3.json'
+          value={
+            'schema_version':'1.0',
+            'issue_id':'SP-automotive-ee-architecture-2023-2026',
+            'purpose':'EXPERIMENTAL_END_BODY_SYNTHESIS_EVIDENCE_BINDING',
+            'workflow_run_id':int(os.environ['GITHUB_RUN_ID']),
+            'architecture_version':'v0.3',
+            'reader_visible_architecture_changed':False,
+            'p08_supporting_evidence_count':6,
+            'p08_boundary_count':11,
+            'architecture_sha256':hashlib.sha256(plan.read_bytes()).hexdigest(),
+            'p08_draft_package_sha256':hashlib.sha256(p08.read_bytes()).hexdigest(),
+            'production_ai_pipeline_modified':False,
+            'finding':'The end-of-body synthesis can remain inside the shared Article Draft contract when synthesis timing/placement is treated as domain context and P08 is explicitly bound to representative already-selected Evidence.'
+          }
+          dest=root/'imports/summary-evidence-binding/experiment-latest-digest.json'
+          dest.parent.mkdir(parents=True,exist_ok=True)
+          dest.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+
+      - name: Commit binding
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            experiments/automotive-ee-architecture/architecture-profile.json \
+            sources/SP-automotive-ee-architecture-2023-2026/architecture/approved-v0.3 \
+            sources/SP-automotive-ee-architecture-2023-2026/drafting/packages/v0.3 \
+            sources/SP-automotive-ee-architecture-2023-2026/pipeline-state.json \
+            sources/SP-automotive-ee-architecture-2023-2026/imports/summary-evidence-binding/experiment-latest-digest.json
+          git diff --cached --quiet || (git commit -m "experiment: bind evidence to automotive E/E end-body synthesis [skip ci]" && git push origin HEAD:experiment/automotive-ee-architecture-special)
