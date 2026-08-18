@@ -1,0 +1,102 @@
+name: Experiment - Automotive E/E Candidate Matrix
+
+on:
+  push:
+    branches:
+      - experiment/automotive-ee-architecture-special
+    paths:
+      - "experiments/automotive-ee-architecture/evidence-vertical-slice/**"
+      - "experiments/automotive-ee-architecture/profiled_candidate_matrix_probe.py"
+      - "sources/SP-automotive-ee-architecture-2023-2026/pipeline-state.json"
+      - ".github/workflows/experiment-automotive-ee-candidate-matrix.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  candidate-matrix-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout experiment branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run shared Candidate matrix probe
+        run: |
+          set -euo pipefail
+          OUT="${RUNNER_TEMP}/automotive-ee-candidate-matrix"
+          python experiments/automotive-ee-architecture/profiled_candidate_matrix_probe.py \
+            --manifest experiments/automotive-ee-architecture/evidence-vertical-slice/vertical-slice-manifest.json \
+            --pipeline-state sources/SP-automotive-ee-architecture-2023-2026/pipeline-state.json \
+            --output-dir "$OUT"
+          python -m json.tool "$OUT/candidate-matrix-probe-report.json" >/dev/null
+
+      - name: Build compact Candidate matrix digest
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          out = Path(os.environ["RUNNER_TEMP"]) / "automotive-ee-candidate-matrix"
+          report = json.loads((out / "candidate-matrix-probe-report.json").read_text(encoding="utf-8"))
+          digest = {
+              "schema_version": "1.0",
+              "issue_id": report["issue_id"],
+              "purpose": "EXPERIMENTAL_SHARED_CANDIDATE_MATRIX_DIGEST",
+              "workflow_run_id": int(os.environ["GITHUB_RUN_ID"]),
+              "workflow_run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+              "commit_sha": os.environ["GITHUB_SHA"],
+              "passed": report["passed"],
+              "row_count": report["row_count"],
+              "artifact_types": report["artifact_types"],
+              "timing_counts": report["timing_counts"],
+              "recommendation_counts": report["recommendation_counts"],
+              "readiness_counts": report["readiness_counts"],
+              "matrix_sha256": report["matrix_sha256"],
+              "shared_candidate_matrix_builder": report["shared_candidate_matrix_builder"],
+              "shared_candidate_matrix_builder_modified": report["shared_candidate_matrix_builder_modified"],
+              "production_ai_pipeline_modified": report["production_ai_pipeline_modified"],
+              "semantic_leaks_observed": report["semantic_leaks_observed"],
+              "finding": report["finding"],
+          }
+          dest = Path("sources/SP-automotive-ee-architecture-2023-2026/imports/candidate-matrix-probe/experiment-latest-digest.json")
+          dest.parent.mkdir(parents=True, exist_ok=True)
+          dest.write_text(json.dumps(digest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(digest, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Upload immutable Candidate matrix probe artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: automotive-ee-candidate-matrix-${{ github.run_id }}
+          path: ${{ runner.temp }}/automotive-ee-candidate-matrix/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Commit compact Candidate matrix digest
+        run: |
+          set -euo pipefail
+          DIGEST="sources/SP-automotive-ee-architecture-2023-2026/imports/candidate-matrix-probe/experiment-latest-digest.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$DIGEST"
+          if git diff --cached --quiet; then
+            echo "Digest unchanged"
+          else
+            git commit -m "experiment: record automotive E/E Candidate matrix probe [skip ci]"
+            git push origin HEAD:experiment/automotive-ee-architecture-special
+          fi
+
+      - name: Confirm production boundary
+        if: always()
+        run: |
+          echo "Reused unchanged: scripts/build_candidate_matrix.py"
+          echo "Candidate Selection and production AI lifecycle remain untouched."
