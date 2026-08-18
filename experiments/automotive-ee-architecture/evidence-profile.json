@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "profile_id": "automotive-ee-evidence-v0.1",
+  "status": "EXPERIMENTAL",
+  "issue_id": "SP-automotive-ee-architecture-2023-2026",
+  "prompt": "experiments/automotive-ee-architecture/primary-source-verification-v0.1.md",
+  "base_evidence_run_schema": "schemas/evidence-run.schema.json",
+  "base_evidence_card_schema": "schemas/evidence-card.schema.json",
+  "artifact_types": [
+    "STANDARD",
+    "SPECIFICATION",
+    "PLATFORM",
+    "MIDDLEWARE",
+    "REFERENCE_IMPLEMENTATION",
+    "PROTOCOL",
+    "ARCHITECTURE_PATTERN",
+    "CONSORTIUM_INITIATIVE",
+    "PAPER",
+    "FRAMEWORK",
+    "PRODUCT",
+    "OTHER"
+  ],
+  "evidence_policy": {
+    "primary_source_preference": true,
+    "preserve_existing_evidence_classes": true,
+    "preserve_existing_source_classes": true,
+    "retrospective_window": "2023-01-01T00:00:00Z/2026-08-18T00:00:00Z",
+    "why_now_semantics": "Confirm significance to the 2023-2026 E/E architecture transition, not weekly recency.",
+    "standards_policy": "Separate publication/existence facts from normative technical claims and from implementation or interoperability claims.",
+    "consortium_policy": "Treat consortium roadmap and adoption statements as organization claims unless independently established.",
+    "paper_policy": "Treat paper results as AUTHOR_CLAIM unless independently reproduced or established by another primary source.",
+    "implementation_policy": "Repository/release existence is PRIMARY_FACT; maintainers' performance, compatibility or maturity statements remain PROJECT_CLAIM."
+  },
+  "abstraction_probe": {
+    "production_prompt_modified": false,
+    "production_evidence_run_schema_modified": false,
+    "production_evidence_card_schema_modified": false,
+    "domain_specific_fields": [
+      "prompt",
+      "artifact_types",
+      "evidence_policy.why_now_semantics"
+    ],
+    "shared_fields_observed_reusable": [
+      "evidence classes",
+      "source classes",
+      "claim/metric/limitation provenance",
+      "temporal events",
+      "verification target statuses",
+      "editorial recommendation states"
+    ],
+    "finding": "Evidence provenance and verification structure are reusable across domains. The first schema-level AI assumption is the closed artifact_type enum; generate that enum from a domain profile rather than widening the production AI schema."
+  }
+}
