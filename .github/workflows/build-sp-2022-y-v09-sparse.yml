@@ -1,4 +1,4 @@
-name: Build SP-2022-Y v0.9 Sparse Preview
+name: Build SP-2022-Y v0.10 Sparse Preview
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: build-sp-2022-y-v09-sparse
+  group: build-sp-2022-y-v010-sparse
   cancel-in-progress: false
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
             templates/survey
           sparse-checkout-cone-mode: true
 
-      - name: Checkout SP-2022-Y v0.9 validated working set sparsely
+      - name: Checkout SP-2022-Y v0.10 validated working set sparsely
         uses: actions/checkout@v6
         with:
           ref: special/2022-Y-work
@@ -43,10 +43,10 @@ jobs:
             sources/SP-2022-Y/finalization
             sources/SP-2022-Y/editorial
             sources/SP-2022-Y/chronology
-            surveys/special/2022-Y/revisions/v0.9
+            surveys/special/2022-Y/revisions/v0.10
           sparse-checkout-cone-mode: false
 
-      - name: Resolve and verify state-pinned v0.9 source
+      - name: Resolve and verify state-pinned v0.10 source
         id: source
         shell: bash
         run: |
@@ -57,7 +57,7 @@ jobs:
           state=json.load(open(root/'sources/SP-2022-Y/pipeline-state.json',encoding='utf-8'))
           if state['lifecycle_state']=='RELEASE_CANDIDATE' and state['gates']['latex_build']=='passed':
               build=state.get('provenance',{}).get('latex_build',{})
-              assert build.get('source_version')=='v0.9', build
+              assert build.get('source_version')=='v0.10', build
               print('already_built=true')
               raise SystemExit(0)
           assert state['lifecycle_state']=='VALIDATED_DRAFT', state['lifecycle_state']
@@ -66,7 +66,7 @@ jobs:
           assert state['gates']['visual_review']=='pending' and state['gates']['freeze']=='pending'
           assert 'publication_preview' not in state.get('provenance',{})
           prov=state['provenance']['validated_issue_source']
-          assert prov['source_version']=='v0.9', prov
+          assert prov['source_version']=='v0.10', prov
           manifest=root/prov['path']
           assert manifest.is_file(), manifest
           digest=hashlib.sha256(manifest.read_bytes()).hexdigest()
@@ -79,7 +79,7 @@ jobs:
           print(f"source_manifest={manifest.as_posix()}")
           print(f"source_manifest_sha256={digest}")
           print(f"source_dir={source_dir.as_posix()}")
-          print('source_version=v0.9')
+          print('source_version=v0.10')
           PY
 
       - name: Preflight reader-facing language, period, and layout consistency
@@ -117,7 +117,7 @@ jobs:
         shell: bash
         run: echo 'SOURCE_DATE_EPOCH=1786406400' >> "$GITHUB_ENV"
 
-      - name: Compile SP-2022-Y v0.9 with LuaLaTeX
+      - name: Compile SP-2022-Y v0.10 with LuaLaTeX
         if: steps.source.outputs.already_built == 'false'
         uses: xu-cheng/latex-action@v4
         with:
@@ -157,7 +157,7 @@ jobs:
           pages,digest,clean,bad,control_commit,style_sha,source_manifest,source_sha=sys.argv[1:]
           page_count=int(pages)
           out={
-            'schema_version':'1.0','issue_id':'SP-2022-Y','special_slug':'2022-Y','source_version':'v0.9',
+            'schema_version':'1.0','issue_id':'SP-2022-Y','special_slug':'2022-Y','source_version':'v0.10',
             'source_manifest_path':source_manifest,'source_manifest_sha256':source_sha,
             'page_count':page_count,'pdf_sha256':digest,'log_clean':clean=='true',
             'log_gate_findings':bad.splitlines() if bad else [],
@@ -179,7 +179,7 @@ jobs:
         if: steps.source.outputs.already_built == 'false' && always()
         uses: actions/upload-artifact@v7
         with:
-          name: japanese-generative-ai-survey-special-2022-Y-v0.9-sparse
+          name: japanese-generative-ai-survey-special-2022-Y-v0.10-sparse
           path: |
             ${{ steps.source.outputs.source_dir }}/main.pdf
             ${{ steps.source.outputs.source_dir }}/main.log
@@ -228,7 +228,7 @@ jobs:
             'workflow_run_id':int(os.environ['RUN_ID']),
             'pdf_sha256':os.environ['PDF_SHA256'],
             'page_count':int(os.environ['PAGE_COUNT']),
-            'source_version':'v0.9',
+            'source_version':'v0.10',
             'validated_issue_source_path':os.environ['SOURCE_MANIFEST'],
             'validated_issue_source_sha256':os.environ['SOURCE_MANIFEST_SHA256'],
             'page_budget':{'soft_target':96,'hard_max':144,'below_soft_target':int(os.environ['PAGE_COUNT']) < 96,
@@ -241,5 +241,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add sources/SP-2022-Y/pipeline-state.json
-          git commit -m 'Record successful SP-2022-Y v0.9 PDF build'
+          git commit -m 'Record successful SP-2022-Y v0.10 PDF build'
           git push origin HEAD:special/2022-Y-work
