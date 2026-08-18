@@ -39,6 +39,16 @@ jobs:
             --output-root "$OUT" \
             --collector all
 
+      - name: Dry-run canonical Screening normalizer
+        run: |
+          set -euo pipefail
+          OUT="${RUNNER_TEMP}/automotive-ee-source-intake"
+          SCREEN="$OUT/sources/SP-automotive-ee-architecture-2023-2026/screening/base"
+          python scripts/build_screening_index.py \
+            --input-root "$OUT" \
+            --output-dir "$SCREEN" \
+            --issue-id SP-automotive-ee-architecture-2023-2026
+
       - name: Build compact intake digest
         if: always()
         run: |
@@ -52,6 +62,8 @@ jobs:
           issue = "SP-automotive-ee-architecture-2023-2026"
           report_path = out / "source-intake-report.json"
           report = json.loads(report_path.read_text(encoding="utf-8")) if report_path.exists() else None
+          screening_path = out / "sources" / issue / "screening" / "base" / "screening-manifest.json"
+          screening = json.loads(screening_path.read_text(encoding="utf-8")) if screening_path.exists() else None
 
           def newest_summary(collector: str):
               paths = sorted((out / "sources" / issue / "collectors" / collector / "runs").glob("*/summary.json"))
@@ -70,8 +82,15 @@ jobs:
               "workflow_run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
               "commit_sha": os.environ["GITHUB_SHA"],
               "raw_storage": "GITHUB_ACTIONS_ARTIFACT_ONLY",
+              "screening_storage": "GITHUB_ACTIONS_ARTIFACT_ONLY",
               "production_ai_pipeline_modified": False,
               "report": report,
+              "screening": None if screening is None else {
+                  "record_count": screening.get("record_count"),
+                  "counts_by_source_type": screening.get("counts_by_source_type"),
+                  "batch_count": screening.get("batch_count"),
+                  "screening_index_sha256": (screening.get("screening_index") or {}).get("sha256"),
+              },
               "counts": {
                   "arxiv_unique_entries": None if arxiv is None else arxiv.get("unique_entry_count"),
                   "arxiv_query_success_count": None if arxiv is None else len(arxiv.get("queries", [])),
@@ -128,5 +147,6 @@ jobs:
           echo "Production AI files intentionally untouched:"
           echo "  config/source-intake.json"
           echo "  scripts/source_intake.py"
+          echo "  scripts/build_screening_index.py"
           echo "  config/special-pipeline.json"
           echo "  scripts/special_pipeline.py"
