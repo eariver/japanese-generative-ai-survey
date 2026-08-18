@@ -1,0 +1,138 @@
+name: Experiment - Automotive E/E Evidence Batch 04
+
+on:
+  push:
+    branches:
+      - experiment/automotive-ee-architecture-special
+    paths:
+      - "experiments/automotive-ee-architecture/evidence-batches/batch-04/**"
+      - "experiments/automotive-ee-architecture/validate_evidence_vertical_slice.py"
+      - ".github/workflows/experiment-automotive-ee-evidence-batch-04.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  validate-batch-04:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout experiment branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install schema validator
+        run: python -m pip install --disable-pip-version-check "jsonschema>=4.23,<5"
+
+      - name: Download pinned Evidence execution package
+        uses: actions/download-artifact@v5
+        with:
+          name: automotive-ee-evidence-package-32144428137
+          path: ${{ runner.temp }}/pinned-evidence-package
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: eariver/japanese-generative-ai-survey
+          run-id: 32144428137
+
+      - name: Validate Evidence batch 04
+        id: validate
+        run: |
+          set +e
+          OUT="${RUNNER_TEMP}/automotive-ee-evidence-batch-04"
+          mkdir -p "$OUT"
+          python experiments/automotive-ee-architecture/validate_evidence_vertical_slice.py \
+            --repo-root . \
+            --package-root "${RUNNER_TEMP}/pinned-evidence-package" \
+            --manifest experiments/automotive-ee-architecture/evidence-batches/batch-04/batch-manifest.json \
+            --output "$OUT/validation-report.json" \
+            >"$OUT/stdout.log" 2>"$OUT/stderr.log"
+          status=$?
+          echo "$status" > "$OUT/exit-status.txt"
+          echo "exit_status=$status" >> "$GITHUB_OUTPUT"
+          cat "$OUT/stdout.log"
+          cat "$OUT/stderr.log" >&2
+          exit 0
+
+      - name: Build compact Evidence batch digest
+        if: always()
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from collections import Counter
+          from pathlib import Path
+
+          out = Path(os.environ["RUNNER_TEMP"]) / "automotive-ee-evidence-batch-04"
+          report_path = out / "validation-report.json"
+          report = json.loads(report_path.read_text(encoding="utf-8")) if report_path.exists() else None
+          stderr = (out / "stderr.log").read_text(encoding="utf-8", errors="replace") if (out / "stderr.log").exists() else ""
+          exit_status = int((out / "exit-status.txt").read_text().strip()) if (out / "exit-status.txt").exists() else 255
+          cases = [] if report is None else report.get("cases", [])
+          status_counts = Counter(case.get("status") for case in cases)
+          recommendation_counts = Counter(case.get("recommendation") for case in cases)
+          digest = {
+              "schema_version": "1.0",
+              "issue_id": "SP-automotive-ee-architecture-2023-2026",
+              "purpose": "EXPERIMENTAL_EVIDENCE_BATCH_04_DIGEST",
+              "workflow_run_id": int(os.environ["GITHUB_RUN_ID"]),
+              "workflow_run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+              "commit_sha": os.environ["GITHUB_SHA"],
+              "pinned_evidence_package_run_id": 32144428137,
+              "exit_status": exit_status,
+              "passed": bool(report and report.get("passed") is True and exit_status == 0),
+              "case_count": None if report is None else report.get("case_count"),
+              "artifact_types": None if report is None else report.get("artifact_types"),
+              "status_counts": dict(sorted((str(k), v) for k, v in status_counts.items())),
+              "recommendation_counts": dict(sorted((str(k), v) for k, v in recommendation_counts.items())),
+              "cases": cases,
+              "production_validator": None if report is None else report.get("production_validator"),
+              "production_validator_modified": None if report is None else report.get("production_validator_modified"),
+              "production_ai_pipeline_modified": False if report is None else report.get("production_ai_pipeline_modified"),
+              "finding": None if report is None else report.get("finding"),
+              "failure_stderr_tail": None if exit_status == 0 else stderr[-4000:],
+          }
+          dest = Path("sources/SP-automotive-ee-architecture-2023-2026/imports/evidence-batch-04/experiment-latest-digest.json")
+          dest.parent.mkdir(parents=True, exist_ok=True)
+          dest.write_text(json.dumps(digest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(digest, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Upload immutable Evidence batch artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: automotive-ee-evidence-batch-04-${{ github.run_id }}
+          path: ${{ runner.temp }}/automotive-ee-evidence-batch-04/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Commit compact Evidence batch digest
+        if: always()
+        run: |
+          set -euo pipefail
+          DIGEST="sources/SP-automotive-ee-architecture-2023-2026/imports/evidence-batch-04/experiment-latest-digest.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$DIGEST"
+          if git diff --cached --quiet; then
+            echo "Digest unchanged"
+          else
+            git commit -m "experiment: record automotive E/E Evidence batch 04 [skip ci]"
+            git push origin HEAD:experiment/automotive-ee-architecture-special
+          fi
+
+      - name: Confirm production boundary
+        if: always()
+        run: |
+          echo "Reused unchanged: scripts/validate_evidence_run.py"
+          echo "Production AI Evidence prompt/schema/lifecycle acceptance intentionally untouched."
+
+      - name: Fail if Evidence batch validation failed
+        if: always() && steps.validate.outputs.exit_status != '0'
+        run: exit 1
