@@ -183,7 +183,7 @@ def validate(*, repo_root: Path, package_root: Path, manifest_path: Path) -> dic
         "production_validator": "scripts/validate_evidence_run.py",
         "production_validator_modified": False,
         "production_ai_pipeline_modified": False,
-        "finding": "Three representative Automotive Evidence Runs validate against exact shared task/prompt provenance, the unchanged production invariant validator, and the generated strict domain schemas."
+        "finding": f"All {len(reports)} supplied Automotive Evidence Runs validate against exact shared task/prompt provenance, the unchanged production invariant validator, and the generated strict domain schemas."
     }
 
 
