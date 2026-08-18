@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-automotive-ee-architecture-2023-2026",
+  "purpose": "EXPERIMENTAL_SHARED_CANDIDATE_MATRIX_DIGEST",
+  "workflow_run_id": 32147472947,
+  "workflow_run_attempt": 1,
+  "commit_sha": "081a35062cf1a1949e6e0fd1edc5daf598f6f2cc",
+  "passed": true,
+  "row_count": 3,
+  "artifact_types": [
+    "PAPER",
+    "PLATFORM",
+    "STANDARD"
+  ],
+  "timing_counts": {
+    "MAIN_EVENT": 2,
+    "TIMING_UNRESOLVED": 1
+  },
+  "recommendation_counts": {
+    "CANDIDATE": 3
+  },
+  "readiness_counts": {
+    "READY_WITH_CAVEAT": 3
+  },
+  "matrix_sha256": "bc75f1246683010c84c4d3061e7eaadff6ca4ebaa7d1e7a422ae04e96e70101e",
+  "shared_candidate_matrix_builder": "scripts/build_candidate_matrix.py",
+  "shared_candidate_matrix_builder_modified": false,
+  "production_ai_pipeline_modified": false,
+  "semantic_leaks_observed": [
+    "build_candidate_matrix.py contains a fallback boundary string 'Weekly why-now relevance is not confirmed.' when why_now_confirmed=false; it was not emitted by this three-case slice because all three confirm retrospective relevance."
+  ],
+  "finding": "The production Candidate comparison mechanics accept Automotive STANDARD/PLATFORM/PAPER Evidence unchanged; remaining domain coupling is editorial wording/context rather than matrix structure."
+}
