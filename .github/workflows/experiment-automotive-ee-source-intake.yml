@@ -1,0 +1,68 @@
+name: Experiment - Automotive E/E Source Intake
+
+on:
+  push:
+    branches:
+      - experiment/automotive-ee-architecture-special
+    paths:
+      - "experiments/automotive-ee-architecture/**"
+      - ".github/workflows/experiment-automotive-ee-source-intake.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-intake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout experiment branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run profiled Source Intake
+        run: |
+          set -euo pipefail
+          OUT="${RUNNER_TEMP}/automotive-ee-source-intake"
+          mkdir -p "$OUT"
+          python experiments/automotive-ee-architecture/profiled_source_intake.py \
+            --repo-root . \
+            --profile experiments/automotive-ee-architecture/source-intake-profile.json \
+            --plan experiments/automotive-ee-architecture/source-intake-plan.json \
+            --output-root "$OUT" \
+            --collector all
+
+      - name: Summarize Source Intake
+        if: always()
+        run: |
+          OUT="${RUNNER_TEMP}/automotive-ee-source-intake"
+          if [[ -f "$OUT/source-intake-report.json" ]]; then
+            cat "$OUT/source-intake-report.json"
+          else
+            echo "source-intake-report.json was not produced"
+          fi
+
+      - name: Upload immutable experiment artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: automotive-ee-source-intake-${{ github.run_id }}
+          path: ${{ runner.temp }}/automotive-ee-source-intake/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Confirm production boundary
+        if: always()
+        run: |
+          echo "Production AI files intentionally untouched:"
+          echo "  config/source-intake.json"
+          echo "  scripts/source_intake.py"
+          echo "  config/special-pipeline.json"
+          echo "  scripts/special_pipeline.py"
