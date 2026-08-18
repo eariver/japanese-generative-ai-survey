@@ -1,0 +1,136 @@
+name: Experiment - Automotive E/E Selection Probe
+
+on:
+  push:
+    branches:
+      - experiment/automotive-ee-architecture-special
+    paths:
+      - "experiments/automotive-ee-architecture/selection-profile.json"
+      - "experiments/automotive-ee-architecture/profiled_selection_probe.py"
+      - ".github/workflows/experiment-automotive-ee-selection-probe.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  selection-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout experiment branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download complete Evidence artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: automotive-ee-complete-evidence-32192057765
+          path: ${{ runner.temp }}/complete-evidence
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: eariver/japanese-generative-ai-survey
+          run-id: 32192057765
+
+      - name: Run shared Selection and Architecture-input probe
+        id: probe
+        run: |
+          set +e
+          OUT="${RUNNER_TEMP}/automotive-ee-selection-probe"
+          mkdir -p "$OUT"
+          python experiments/automotive-ee-architecture/profiled_selection_probe.py \
+            --matrix "${RUNNER_TEMP}/complete-evidence/candidate-matrix.json" \
+            --profile experiments/automotive-ee-architecture/selection-profile.json \
+            --edition specials/automotive-ee-architecture-2023-2026/edition.json \
+            --output-root "$OUT" \
+            >"$OUT/stdout.log" 2>"$OUT/stderr.log"
+          status=$?
+          echo "$status" > "$OUT/exit-status.txt"
+          echo "exit_status=$status" >> "$GITHUB_OUTPUT"
+          cat "$OUT/stdout.log"
+          cat "$OUT/stderr.log" >&2
+          exit 0
+
+      - name: Build compact Selection probe digest
+        if: always()
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          out = Path(os.environ["RUNNER_TEMP"]) / "automotive-ee-selection-probe"
+          manifest_path = out / "selection-probe-manifest.json"
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.exists() else None
+          stderr = (out / "stderr.log").read_text(encoding="utf-8", errors="replace") if (out / "stderr.log").exists() else ""
+          exit_status = int((out / "exit-status.txt").read_text().strip()) if (out / "exit-status.txt").exists() else 255
+          digest = {
+              "schema_version": "1.0",
+              "issue_id": "SP-automotive-ee-architecture-2023-2026",
+              "purpose": "EXPERIMENTAL_SELECTION_PROBE_DIGEST",
+              "workflow_run_id": int(os.environ["GITHUB_RUN_ID"]),
+              "workflow_run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+              "commit_sha": os.environ["GITHUB_SHA"],
+              "complete_evidence_run_id": 32192057765,
+              "exit_status": exit_status,
+              "passed": bool(manifest and exit_status == 0),
+              "matrix_row_count": None if manifest is None else manifest.get("matrix_row_count"),
+              "candidate_row_count": None if manifest is None else manifest.get("candidate_row_count"),
+              "selection_proposal": None if manifest is None else manifest.get("selection_proposal"),
+              "theme_overlay": None if manifest is None else manifest.get("theme_overlay"),
+              "shared_architecture_input_dry_run": None if manifest is None else manifest.get("shared_architecture_input_dry_run"),
+              "shared_selection_gate": None if manifest is None else manifest.get("shared_selection_gate"),
+              "shared_production_files_modified": False if manifest is None else manifest.get("shared_production_files_modified"),
+              "production_lifecycle_advanced": False if manifest is None else manifest.get("production_lifecycle_advanced"),
+              "human_selection_approval_recorded": False if manifest is None else manifest.get("human_selection_approval_recorded"),
+              "architecture_human_gate_reached": False if manifest is None else manifest.get("architecture_human_gate_reached"),
+              "finding": None if manifest is None else manifest.get("finding"),
+              "failure_stderr_tail": None if exit_status == 0 else stderr[-5000:],
+          }
+          dest = Path("sources/SP-automotive-ee-architecture-2023-2026/imports/selection-probe/experiment-latest-digest.json")
+          dest.parent.mkdir(parents=True, exist_ok=True)
+          dest.write_text(json.dumps(digest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(digest, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Upload immutable Selection probe artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: automotive-ee-selection-probe-${{ github.run_id }}
+          path: ${{ runner.temp }}/automotive-ee-selection-probe/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Commit compact Selection probe digest
+        if: always()
+        run: |
+          set -euo pipefail
+          DIGEST="sources/SP-automotive-ee-architecture-2023-2026/imports/selection-probe/experiment-latest-digest.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$DIGEST"
+          if git diff --cached --quiet; then
+            echo "Digest unchanged"
+          else
+            git commit -m "experiment: record automotive E/E Selection probe [skip ci]"
+            git push origin HEAD:experiment/automotive-ee-architecture-special
+          fi
+
+      - name: Confirm production boundary
+        if: always()
+        run: |
+          echo "Reused unchanged: scripts/candidate_selection_gate.py"
+          echo "Reused unchanged: scripts/build_architecture_input.py"
+          echo "Persisted Selection remains PENDING_APPROVAL in the artifact only."
+          echo "Synthetic APPROVED Selection exists only inside the dry-run artifact."
+          echo "Production lifecycle state is not advanced."
+
+      - name: Fail if probe failed
+        if: always() && steps.probe.outputs.exit_status != '0'
+        run: exit 1
