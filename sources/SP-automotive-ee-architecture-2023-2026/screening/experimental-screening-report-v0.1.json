@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-automotive-ee-architecture-2023-2026",
+  "status": "EXPERIMENTAL_SCREENING_COMPLETE",
+  "source_artifact": {
+    "workflow_run_id": 32136725988,
+    "artifact_id": 9324322317,
+    "artifact_sha256": "989d29facf67fee624c878b54be0da04c9702219dfe2490643355de209d896d5",
+    "screening_index_sha256": "44434788d27e87cf553e17507365f7c4b4ba1f47ac3d505b7904cd1a4d5e357e"
+  },
+  "screening_profile": "experiments/automotive-ee-architecture/screening-profile.json",
+  "input_record_count": 112,
+  "decision_counts": {
+    "KEEP": 35,
+    "MAYBE": 15,
+    "INSPECT": 9,
+    "DROP": 53
+  },
+  "retained_ids": {
+    "KEEP": [
+      "arxiv:2403.04378v1",
+      "arxiv:2407.02491v2",
+      "arxiv:2407.17287v2",
+      "arxiv:2408.02127v1",
+      "arxiv:2409.05904v1",
+      "arxiv:2409.10690v1",
+      "arxiv:2411.10612v4",
+      "arxiv:2412.01840v1",
+      "arxiv:2412.09995v1",
+      "arxiv:2503.04928v1",
+      "arxiv:2504.05793v3",
+      "arxiv:2505.02734v2",
+      "arxiv:2505.07881v1",
+      "arxiv:2506.05822v1",
+      "arxiv:2506.13261v1",
+      "arxiv:2507.19446v1",
+      "arxiv:2508.13652v2",
+      "arxiv:2510.27344v1",
+      "arxiv:2511.17540v1",
+      "arxiv:2603.05279v1",
+      "arxiv:2604.16143v1",
+      "arxiv:2605.30001v2",
+      "arxiv:2607.05227v1",
+      "github-release:COVESA/vehicle_signal_specification@v4.1",
+      "github-release:COVESA/vehicle_signal_specification@v4.2",
+      "github-release:COVESA/vehicle_signal_specification@v5.1",
+      "github-release:COVESA/vehicle_signal_specification@v6.0",
+      "github-release:eclipse-score/score@v0.2.0",
+      "github-release:eclipse-score/score@v0.3.0",
+      "github-release:eclipse-score/score@v0.4.0",
+      "github-release:eclipse-score/score@v0.5.0",
+      "github-release:eclipse-score/score@v0.5.5",
+      "github-release:eclipse-score/score@v0.6.0",
+      "github-release:eclipse-score/score@v0.6.3",
+      "github-release:eclipse-score/score@v0.6.4"
+    ],
+    "MAYBE": [
+      "arxiv:2402.14862v1",
+      "arxiv:2404.12683v1",
+      "arxiv:2406.00182v1",
+      "arxiv:2410.11847v1",
+      "arxiv:2410.09839v1",
+      "arxiv:2504.11867v2",
+      "arxiv:2507.19403v1",
+      "arxiv:2601.16682v1",
+      "arxiv:2604.12297v2",
+      "arxiv:2607.07371v2",
+      "github-release:COVESA/vehicle_signal_specification@v5.0",
+      "github-release:COVESA/vsomeip@3.5.0",
+      "github-release:COVESA/vsomeip@3.6.0",
+      "github-release:COVESA/vsomeip@3.7.2",
+      "github-release:eclipse-score/score@v0.1.0"
+    ],
+    "INSPECT": [
+      "official-index:cia-can-xl",
+      "official-index:covesa-2024-highlights",
+      "official-index:covesa-vsomeip",
+      "official-index:eclipse-score-launch",
+      "official-index:eclipse-score-project",
+      "official-index:ieee-8021dg-automotive-tsn",
+      "official-index:open-alliance-10base-t1s",
+      "official-index:open-alliance-channel-components",
+      "official-index:soafee-denso-deterministic-middleware"
+    ]
+  },
+  "validation": {
+    "all_explicit_ids_exist_in_pinned_screening_index": true,
+    "existing_screening_batch_result_schema_reusable_without_modification": true,
+    "reserved_topic_lanes_G_through_L_used": false,
+    "production_ai_screening_prompt_modified": false,
+    "production_screening_schema_modified": false
+  },
+  "observations": [
+    "The normalized screening contract is structurally domain-neutral; editorial relevance and topic-lane semantics are the domain-specific layer.",
+    "All nine official-index snapshots require item-level inspection because the generic screening index intentionally preserves no page-level summary text.",
+    "High-frequency GitHub release streams require series-level grouping; release existence alone is not architectural significance.",
+    "The broad automotive-soa arXiv query intentionally produced non-E/E mobility/IoV noise that Screening can remove, supporting a high-recall Source Intake strategy.",
+    "The current arXiv normalized summary does not preserve which configured query matched each deduplicated record, so query-origin metadata is a useful future profile/provenance extension."
+  ],
+  "next_gate": "OFFICIAL_PAGE_GAP_RECOVERY_AND_EVIDENCE_TASK_DESIGN",
+  "canonical_pipeline_state_advanced": false
+}
