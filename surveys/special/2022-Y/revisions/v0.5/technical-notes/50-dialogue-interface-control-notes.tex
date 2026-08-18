@@ -1,0 +1,284 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{対話UIが統合点になり、制御が前景化した――ChatGPT、Whisper、Constitutional AI: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\smallskip
+\noindent{\small\textit{Technical Notesでは、一次資料から確認した公開・提供・研究上の事実を記載する。数値・能力評価や提供元・著者による比較表現は、独立再現済みの結果ではなく帰属claimとして扱う。}}\par
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+ChatGPT research preview & 主要資料 & 製品 & 2022-11-30 \\
+Whisper & 主要資料 & モデル & 2022-09-21, 2022-12-06 \\
+Constitutional AI & 主要資料 & 論文 & 2022-12-15 \\
+LaMDA & 補足資料 & 論文 & 2022-01-20 \\
+Training a Helpful and Harmless Assistant with RLHF & 補足資料 & 論文 & 2022-04-12 \\
+Sparrow & 補足資料 & 論文 & 2022-09-22 \\
+OpenAI alignment research approach & 補足資料 & 公式情報 & 2022-08-24 \\
+Reward-model overoptimization & 補足資料 & 論文 & 2022-10-19 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{ChatGPT research preview}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & 製品 \\
+時系列 & 2022-11-30 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIの選定済み一次資料では、OpenAIは2022年11月30日にChatGPTをconversational interactionを前面に出したresearch previewとして公開し、follow-up questionへの応答、誤りの認識、誤った前提への異議、不適切なrequestの拒否をdialogue format上の挙動として説明した。 この公開は後年の一般的なChatGPT製品状態を遡及させるものではなく、2022年末時点の対話UIとresearch-preview availabilityの境界として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/chatgpt}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Whisper}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & モデル \\
+時系列 & 2022-09-21, 2022-12-06 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIの選定済み一次資料では、Whisperは680,000時間のmultilingual・multitask supervisionで学習したspeech processing modelとして記述され、internet上のaudio transcriptを大規模weak supervisionとして利用する設計を採った。 OpenAIは2022年9月21日にWhisperを公開し、modelとinference codeをreleaseした。本稿ではspeech interfaceを広げるmodel releaseとして扱い、対話製品そのものとは区別する。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2212.04356v1}}
+\item {\scriptsize\url{https://openai.com/index/whisper}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Constitutional AI}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Anthropic / authors \\
+種別 & 論文 \\
+時系列 & 2022-12-15 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Anthropic / authorsの選定済み一次資料では、Constitutional AIはhuman-written harmful-output labelを直接用いず、rules/principlesの集合をhuman oversightとして、model自身のcritiqueとrevisionを使うsupervised phaseを構成する。 続くreinforcement-learning phaseではmodelがsample pairを評価してAI preference dataを作り、そのpreference modelをreward signalとしてRL from AI Feedbackを行う二段階構成を採る。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2212.08073v1}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{LaMDA}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Google / authors \\
+種別 & 論文 \\
+時系列 & 2022-01-20 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Google / authorsの選定済み一次資料では、LaMDAはdialogueに特化してpre-trainしたTransformer-based language model familyとして記述され、会話品質だけでなくsafetyとgroundednessを別の評価・fine-tuning軸として扱った。 研究はdialogue generationと外部情報へのgroundingを同一視せず、モデルの生成能力に加えて会話上の品質・安全性を扱う設計空間を示した。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2201.08239v3}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Training a Helpful and Harmless Assistant with RLHF}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Anthropic / authors \\
+種別 & 論文 \\
+時系列 & 2022-04-12 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Anthropic / authorsの選定済み一次資料では、著者らはhuman preference comparisonsからreward modelを学習し、そのrewardを使ってlanguage assistant policyをreinforcement learningでfine-tuneするRLHF pipelineを扱った。 helpfulnessとharmlessnessを単一の無条件な能力指標ではなく、人間の選好dataとoptimization procedureによって調整されるassistant behaviorの設計問題として検討した。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2204.05862v1}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Sparrow}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Google DeepMind \\
+種別 & 論文 \\
+時系列 & 2022-09-22 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Google DeepMindの選定済み一次資料では、DeepMindはSparrowをdialogue agentのresearch systemとして提示し、会話上のrule遵守を候補responseの選択へ組み込む制御と、必要に応じて外部情報を検索して回答をgroundする仕組みを扱った。 この記録は2022年時点のresearch-onlyなdialogue safety/retrieval研究として扱い、一般提供された製品controlへ読み替えない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://deepmind.google/blog/building-safer-dialogue-agents/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{OpenAI alignment research approach}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & 公式情報 \\
+時系列 & 2022-08-24 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIの選定済み一次資料では、OpenAIは2022年8月のalignment research方針で、人間からのfeedbackをAI systemがより良く学ぶことと、人間によるAI評価をAI自身が補助することを研究上の柱として示した。 これはalignmentのresearch agendaを記述する一次資料であり、同時点で個別製品へ実装済みのcontrol specificationを意味しない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/our-approach-to-alignment-research}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Reward-model overoptimization}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI / authors \\
+種別 & 論文 \\
+時系列 & 2022-10-19 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAI / authorsの選定済み一次資料では、著者らはhuman preferenceを近似するproxy reward modelを最適化し過ぎると、proxyが不完全なためgold-standard reward側の性能が悪化し得る現象を、synthetic setupで測定した。 比較ではreinforcement learningとbest-of-n samplingを用い、reward-model objectiveの改善とground-truth側の改善を同一視できないcontrol limitationとして扱った。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2210.10760v1}}
+\item {\scriptsize\url{https://openai.com/index/scaling-laws-for-reward-model-overoptimization}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
