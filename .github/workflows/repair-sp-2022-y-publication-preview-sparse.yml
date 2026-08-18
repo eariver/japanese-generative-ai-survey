@@ -79,6 +79,24 @@ jobs:
           assert chrono['event_count']==59 and chrono['unresolved_date_count']==0
           PY
 
+      - name: Merge incremental Technical Notes overrides
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,pathlib
+          root=pathlib.Path('worktree/sources/SP-2022-Y/editorial')
+          base=root/'technical-notes-detail-overrides-v0.3.json'
+          extra=root/'technical-notes-detail-overrides-extra-v0.3.json'
+          a=json.load(open(base,encoding='utf-8')); b=json.load(open(extra,encoding='utf-8'))
+          assert a['screening_verification_queue_sha256']==b['screening_verification_queue_sha256']
+          overlap=set(a['entries']) & set(b['entries'])
+          assert not overlap, f'duplicate override entries: {sorted(overlap)}'
+          a['entries'].update(b['entries'])
+          base.write_text(json.dumps(a,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps({'base_entries':len(a['entries'])-len(b['entries']),'extra_entries':len(b['entries']),'merged_entries':len(a['entries'])},ensure_ascii=False))
+          PY
+
       - name: Harden Annual Technical Notes
         shell: bash
         run: |
