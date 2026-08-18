@@ -1,0 +1,156 @@
+name: Repair SP-2022-Y Direct Entity Binding v0.9
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repair-sp-2022-y-direct-entity-binding-v09
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    if: github.event.pull_request.head.ref == 'special/2022-Y-work'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current validation control
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            config
+            specials/2022-Y
+          sparse-checkout-cone-mode: true
+
+      - name: Checkout SP-2022-Y repair working set
+        uses: actions/checkout@v6
+        with:
+          ref: special/2022-Y-work
+          path: worktree
+          fetch-depth: 1
+          sparse-checkout: |
+            specials/2022-Y
+            sources/SP-2022-Y/pipeline-state.json
+            sources/SP-2022-Y/editorial
+            sources/SP-2022-Y/architecture
+            sources/SP-2022-Y/drafting
+            sources/SP-2022-Y/finalization
+            sources/SP-2022-Y/chronology
+            surveys/special/2022-Y/revisions/v0.8
+            surveys/special/2022-Y/revisions/v0.9
+            scripts/revise_sp_2022_y_direct_entity_binding_v09.py
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Resolve whether repair is needed
+        id: boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import hashlib,json,pathlib
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources/SP-2022-Y/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT'
+          assert state['gates']['latex_build']=='pending'
+          assert state['gates']['visual_review']=='pending'
+          assert state['gates']['freeze']=='pending'
+          assert 'publication_preview' not in state.get('provenance',{})
+          src=state['provenance']['validated_issue_source']
+          if src.get('source_version')=='v0.9':
+              print('needed=false')
+              raise SystemExit(0)
+          assert src.get('source_version')=='v0.8', src
+          path=root/src['path']
+          assert path.is_file()
+          assert hashlib.sha256(path.read_bytes()).hexdigest()==src['sha256']
+          assert not (root/'surveys/special/2022-Y/revisions/v0.9').exists()
+          print('needed=true')
+          PY
+
+      - name: Create immutable v0.9 direct-binding revision
+        if: steps.boundary.outputs.needed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python worktree/scripts/revise_sp_2022_y_direct_entity_binding_v09.py --repo-root worktree \
+            > direct-entity-binding-v0.9.json
+          cat direct-entity-binding-v0.9.json
+
+      - name: Run current-main publication preflights
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python control-src/scripts/special_reader_notes_ja.py check \
+            --repo-root worktree --issue-id SP-2022-Y
+          PYTHONPATH=control-src python control-src/scripts/special_period_consistency.py check \
+            --repo-root worktree --special-slug 2022-Y --issue-id SP-2022-Y
+          PYTHONPATH=control-src python control-src/scripts/special_publication_layout_check.py \
+            --repo-root worktree --issue-id SP-2022-Y
+
+      - name: Verify v0.9 direct binding and gate boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,pathlib,re
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources/SP-2022-Y/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT'
+          assert state['gates']['latex_build']=='pending'
+          assert state['gates']['visual_review']=='pending' and state['gates']['freeze']=='pending'
+          assert 'publication_preview' not in state.get('provenance',{})
+          src=state['provenance']['validated_issue_source']
+          assert src['source_version']=='v0.9'
+          manifest_path=root/src['path']
+          assert hashlib.sha256(manifest_path.read_bytes()).hexdigest()==src['sha256']
+          manifest=json.load(open(manifest_path,encoding='utf-8'))
+          assert manifest['source_version']=='v0.9'
+          rev=manifest_path.parent
+          notes='\n'.join((rev/a['technical_notes_path']).read_text(encoding='utf-8') for a in manifest['articles'] if a.get('technical_notes_path') and (rev/a['technical_notes_path']).is_file())
+          assert '対象event近傍の一次資料から' not in notes
+          decision=json.load(open(root/'sources/SP-2022-Y/editorial/technical-notes-proximity-fallback-overrides-v0.9.json',encoding='utf-8'))
+          assert sum(notes.count(r'\item \textbf{一次情報で確認できる事実}: '+entry['fact']) for entry in decision['entries'].values())==11
+          reader=manifest['reader_facing_technical_notes']
+          assert reader['entity_binding_contract']=='SUBJECT_COMPONENT_VARIANT_PROPERTY_BINDING_V3'
+          assert reader['proximity_fallback_findings']==0
+          assert reader['proximity_fallback_override_count']==8
+          assert reader['proximity_fallback_rendered_occurrence_count']==11
+          audit=json.load(open(rev/reader['entity_binding_audit_path'],encoding='utf-8'))
+          assert audit['contract']=='SUBJECT_COMPONENT_VARIANT_PROPERTY_BINDING_V3'
+          assert audit['artifact_count']==8 and audit['direct_screening_rendered_occurrence_count']==11
+          assert state['provenance']['annual_chronology']['event_count']==59
+          print(json.dumps({'source_version':'v0.9','direct_binding_artifacts':8,'rendered_occurrences':11,'proximity_fallback_findings':0,'publication_preview_approval_recorded':False},ensure_ascii=False,indent=2))
+          PY
+
+      - name: Commit validated v0.9 revision
+        if: steps.boundary.outputs.needed == 'true'
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sources/SP-2022-Y/pipeline-state.json \
+            sources/SP-2022-Y/editorial/proximity-binding-repair-v0.9.json \
+            surveys/special/2022-Y/revisions/v0.9
+          git diff --cached --quiet && exit 0
+          git commit -m 'Repair SP-2022-Y Technical Note entity binding in v0.9'
+          git push origin HEAD:special/2022-Y-work
+
+      - name: Upload v0.9 repair audit
+        if: steps.boundary.outputs.needed == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: sp-2022-y-direct-entity-binding-v0.9
+          path: direct-entity-binding-v0.9.json
+          retention-days: 14
