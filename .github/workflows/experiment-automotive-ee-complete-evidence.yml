@@ -1,0 +1,143 @@
+name: Experiment - Automotive E/E Complete Evidence
+
+on:
+  push:
+    branches:
+      - experiment/automotive-ee-architecture-special
+    paths:
+      - "experiments/automotive-ee-architecture/evidence-vertical-slice/**"
+      - "experiments/automotive-ee-architecture/evidence-batches/**"
+      - "experiments/automotive-ee-architecture/assemble_complete_evidence.py"
+      - "experiments/automotive-ee-architecture/validate_evidence_vertical_slice.py"
+      - ".github/workflows/experiment-automotive-ee-complete-evidence.yml"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  complete-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout experiment branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install schema validator
+        run: python -m pip install --disable-pip-version-check "jsonschema>=4.23,<5"
+
+      - name: Download pinned Evidence execution package
+        uses: actions/download-artifact@v5
+        with:
+          name: automotive-ee-evidence-package-32144428137
+          path: ${{ runner.temp }}/pinned-evidence-package
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: eariver/japanese-generative-ai-survey
+          run-id: 32144428137
+
+      - name: Assemble and revalidate all 45 Evidence results
+        id: assemble
+        run: |
+          set +e
+          OUT="${RUNNER_TEMP}/automotive-ee-complete-evidence"
+          mkdir -p "$OUT"
+          python experiments/automotive-ee-architecture/assemble_complete_evidence.py \
+            --repo-root . \
+            --package-root "${RUNNER_TEMP}/pinned-evidence-package" \
+            --output-root "$OUT" \
+            >"$OUT/stdout.log" 2>"$OUT/stderr.log"
+          status=$?
+          echo "$status" > "$OUT/exit-status.txt"
+          echo "exit_status=$status" >> "$GITHUB_OUTPUT"
+          cat "$OUT/stdout.log"
+          cat "$OUT/stderr.log" >&2
+          exit 0
+
+      - name: Build compact complete-Evidence digest
+        if: always()
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          out = Path(os.environ["RUNNER_TEMP"]) / "automotive-ee-complete-evidence"
+          manifest_path = out / "complete-evidence-manifest.json"
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.exists() else None
+          stderr = (out / "stderr.log").read_text(encoding="utf-8", errors="replace") if (out / "stderr.log").exists() else ""
+          exit_status = int((out / "exit-status.txt").read_text().strip()) if (out / "exit-status.txt").exists() else 255
+          digest = {
+              "schema_version": "1.0",
+              "issue_id": "SP-automotive-ee-architecture-2023-2026",
+              "purpose": "EXPERIMENTAL_COMPLETE_EVIDENCE_DIGEST",
+              "workflow_run_id": int(os.environ["GITHUB_RUN_ID"]),
+              "workflow_run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+              "commit_sha": os.environ["GITHUB_SHA"],
+              "pinned_evidence_package_run_id": 32144428137,
+              "exit_status": exit_status,
+              "passed": bool(manifest and exit_status == 0 and manifest.get("expected_task_count") == manifest.get("result_count") == 45 and not manifest.get("missing_task_ids") and not manifest.get("unexpected_task_ids")),
+              "task_count": None if manifest is None else manifest.get("expected_task_count"),
+              "result_count": None if manifest is None else manifest.get("result_count"),
+              "missing_task_ids": None if manifest is None else manifest.get("missing_task_ids"),
+              "unexpected_task_ids": None if manifest is None else manifest.get("unexpected_task_ids"),
+              "status_counts": None if manifest is None else manifest.get("status_counts"),
+              "recommendation_counts": None if manifest is None else manifest.get("recommendation_counts"),
+              "artifact_type_counts": None if manifest is None else manifest.get("artifact_type_counts"),
+              "source_class_counts": None if manifest is None else manifest.get("source_class_counts"),
+              "evidence_class_counts": None if manifest is None else manifest.get("evidence_class_counts"),
+              "candidate_matrix": None if manifest is None else manifest.get("candidate_matrix"),
+              "shared_invariant_validator": None if manifest is None else manifest.get("shared_invariant_validator"),
+              "shared_candidate_matrix_builder": None if manifest is None else manifest.get("shared_candidate_matrix_builder"),
+              "shared_production_files_modified": False if manifest is None else manifest.get("shared_production_files_modified"),
+              "production_lifecycle_advanced": False if manifest is None else manifest.get("production_lifecycle_advanced"),
+              "candidate_selection_performed": False if manifest is None else manifest.get("candidate_selection_performed"),
+              "finding": None if manifest is None else manifest.get("finding"),
+              "failure_stderr_tail": None if exit_status == 0 else stderr[-5000:],
+          }
+          dest = Path("sources/SP-automotive-ee-architecture-2023-2026/imports/complete-evidence/experiment-latest-digest.json")
+          dest.parent.mkdir(parents=True, exist_ok=True)
+          dest.write_text(json.dumps(digest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(digest, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Upload immutable complete Evidence artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: automotive-ee-complete-evidence-${{ github.run_id }}
+          path: ${{ runner.temp }}/automotive-ee-complete-evidence/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Commit compact complete-Evidence digest
+        if: always()
+        run: |
+          set -euo pipefail
+          DIGEST="sources/SP-automotive-ee-architecture-2023-2026/imports/complete-evidence/experiment-latest-digest.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$DIGEST"
+          if git diff --cached --quiet; then
+            echo "Digest unchanged"
+          else
+            git commit -m "experiment: record complete automotive E/E Evidence set [skip ci]"
+            git push origin HEAD:experiment/automotive-ee-architecture-special
+          fi
+
+      - name: Confirm production boundary
+        if: always()
+        run: |
+          echo "Reused unchanged: scripts/validate_evidence_run.py"
+          echo "Reused unchanged: scripts/build_candidate_matrix.py"
+          echo "Production lifecycle acceptance and Candidate Selection intentionally untouched."
+
+      - name: Fail if complete Evidence assembly failed
+        if: always() && steps.assemble.outputs.exit_status != '0'
+        run: exit 1
