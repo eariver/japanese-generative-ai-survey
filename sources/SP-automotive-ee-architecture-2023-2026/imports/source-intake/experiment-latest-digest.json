@@ -2,25 +2,72 @@
   "schema_version": "1.0",
   "issue_id": "SP-automotive-ee-architecture-2023-2026",
   "purpose": "EXPERIMENTAL_SOURCE_INTAKE_DIGEST",
-  "workflow_run_id": 32136080915,
+  "workflow_run_id": 32136194738,
   "workflow_run_attempt": 1,
-  "commit_sha": "7a3efe707970e58400b7c5447f46129696a51155",
+  "commit_sha": "f555c937faaddf570e9b7e88a7c7ead577a7b6b0",
   "raw_storage": "GITHUB_ACTIONS_ARTIFACT_ONLY",
   "production_ai_pipeline_modified": false,
-  "report": null,
+  "report": {
+    "schema_version": "1.0",
+    "issue_id": "SP-automotive-ee-architecture-2023-2026",
+    "experiment": "PROFILED_SOURCE_INTAKE",
+    "profile": "experiments/automotive-ee-architecture/source-intake-profile.json",
+    "plan": "experiments/automotive-ee-architecture/source-intake-plan.json",
+    "collector_count": 3,
+    "runs": [
+      {
+        "run_id": "arxiv-api-SP-automotive-ee-architecture-2023-2026-20260818T121923Z",
+        "collector": "arxiv-api",
+        "status": "success"
+      },
+      {
+        "run_id": "github-releases-SP-automotive-ee-architecture-2023-2026-20260818T122106Z",
+        "collector": "github-releases",
+        "status": "success"
+      },
+      {
+        "run_id": "official-pages-SP-automotive-ee-architecture-2023-2026-20260818T122109Z",
+        "collector": "official-pages",
+        "status": "partial"
+      }
+    ],
+    "overall_status": "partial",
+    "production_files_modified": []
+  },
   "counts": {
-    "arxiv_unique_entries": null,
-    "arxiv_query_success_count": null,
-    "arxiv_error_count": null,
-    "github_repository_success_count": null,
-    "github_matching_release_count": null,
-    "github_error_count": null,
-    "official_page_success_count": null,
-    "official_error_count": null
+    "arxiv_unique_entries": 50,
+    "arxiv_query_success_count": 6,
+    "arxiv_error_count": 0,
+    "github_repository_success_count": 4,
+    "github_matching_release_count": 53,
+    "github_error_count": 0,
+    "official_page_success_count": 9,
+    "official_error_count": 4
   },
   "errors": {
     "arxiv": [],
     "github": [],
-    "official": []
+    "official": [
+      {
+        "id": "autosar-adaptive-platform",
+        "url": "https://www.autosar.org/standards/adaptive-platform/",
+        "error": "URLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)'))"
+      },
+      {
+        "id": "autosar-release-events",
+        "url": "https://www.autosar.org/news-events/release-event",
+        "error": "URLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)'))"
+      },
+      {
+        "id": "autosar-capi",
+        "url": "https://www.autosar.org/capi",
+        "error": "URLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)'))"
+      },
+      {
+        "id": "iso-11898-1-2024",
+        "url": "https://www.iso.org/standard/86384.html",
+        "error": "<HTTPError 403: 'Forbidden'>"
+      }
+    ]
   }
 }
