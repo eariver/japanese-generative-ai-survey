@@ -9,6 +9,9 @@ on:
       - "experiments/automotive-ee-architecture/source-intake-plan.json"
       - "experiments/automotive-ee-architecture/profiled_source_intake.py"
       - "experiments/automotive-ee-architecture/profiled_screening_index.py"
+      - "experiments/automotive-ee-architecture/evidence-profile.json"
+      - "experiments/automotive-ee-architecture/primary-source-verification-v0.1.md"
+      - "experiments/automotive-ee-architecture/profiled_evidence_contract.py"
       - ".github/workflows/experiment-automotive-ee-source-intake.yml"
   workflow_dispatch:
 
@@ -63,6 +66,18 @@ jobs:
             --issue-id SP-automotive-ee-architecture-2023-2026 \
             --profile experiments/automotive-ee-architecture/source-intake-profile.json
 
+      - name: Build profiled Evidence contract probe
+        run: |
+          set -euo pipefail
+          OUT="${RUNNER_TEMP}/automotive-ee-source-intake"
+          python experiments/automotive-ee-architecture/profiled_evidence_contract.py \
+            --repo-root . \
+            --profile experiments/automotive-ee-architecture/evidence-profile.json \
+            --output-root "$OUT/evidence-contract"
+          python -m json.tool "$OUT/evidence-contract/evidence-contract-manifest.json" >/dev/null
+          python -m json.tool "$OUT/evidence-contract/contract/evidence-run.schema.json" >/dev/null
+          python -m json.tool "$OUT/evidence-contract/contract/evidence-card.schema.json" >/dev/null
+
       - name: Build compact intake digest
         if: always()
         run: |
@@ -83,6 +98,8 @@ jobs:
 
           canonical_screening = screening_manifest("base")
           profiled_screening = screening_manifest("profiled")
+          evidence_contract_path = out / "evidence-contract" / "evidence-contract-manifest.json"
+          evidence_contract = json.loads(evidence_contract_path.read_text(encoding="utf-8")) if evidence_contract_path.exists() else None
 
           def newest_summary(collector: str):
               paths = sorted((out / "sources" / issue / "collectors" / collector / "runs").glob("*/summary.json"))
@@ -118,6 +135,12 @@ jobs:
               "screening": {
                   "canonical": screening_digest(canonical_screening),
                   "profiled": screening_digest(profiled_screening),
+              },
+              "evidence_contract": None if evidence_contract is None else {
+                  "profile_id": evidence_contract.get("profile_id"),
+                  "artifact_types": evidence_contract.get("artifact_types"),
+                  "production_files_modified": evidence_contract.get("production_files_modified"),
+                  "generated": evidence_contract.get("generated"),
               },
               "counts": {
                   "arxiv_unique_entries": None if arxiv is None else arxiv.get("unique_entry_count"),
@@ -174,7 +197,14 @@ jobs:
         run: |
           echo "Production AI files intentionally untouched:"
           echo "  config/source-intake.json"
+          echo "  config/prompts/screening/source-screening-v0.1.md"
+          echo "  config/prompts/evidence/primary-source-verification-v0.1.md"
           echo "  scripts/source_intake.py"
           echo "  scripts/build_screening_index.py"
+          echo "  scripts/build_evidence_tasks.py"
+          echo "  scripts/prepare_evidence_run.py"
+          echo "  schemas/screening-batch-result.schema.json"
+          echo "  schemas/evidence-run.schema.json"
+          echo "  schemas/evidence-card.schema.json"
           echo "  config/special-pipeline.json"
           echo "  scripts/special_pipeline.py"
