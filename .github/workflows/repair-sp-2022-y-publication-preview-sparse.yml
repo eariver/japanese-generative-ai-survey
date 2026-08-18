@@ -50,6 +50,7 @@ jobs:
             sources/SP-2022-Y/editorial
             sources/SP-2022-Y/chronology
             surveys/special/2022-Y
+            scripts/revise_special_annual_source_specific_notes_v6.py
             scripts/revise_special_annual_review_sequence_generic.py
           sparse-checkout-cone-mode: false
 
@@ -101,7 +102,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PYTHONPATH=control-src python control-src/scripts/revise_special_annual_source_specific_notes_v5.py \
+          PYTHONPATH=control-src python worktree/scripts/revise_special_annual_source_specific_notes_v6.py \
             --repo-root worktree --special-slug 2022-Y --issue-id SP-2022-Y --source-version v0.3 \
             > annual-source-specific-v0.3.json
 
