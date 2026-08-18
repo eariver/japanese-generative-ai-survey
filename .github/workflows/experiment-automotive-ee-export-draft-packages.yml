@@ -1,0 +1,27 @@
+name: Experiment - Export Automotive E/E Draft Packages
+
+on:
+  push:
+    branches:
+      - experiment/automotive-ee-architecture-special
+    paths:
+      - ".github/workflows/experiment-automotive-ee-export-draft-packages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: automotive-ee-draft-packages-v0.3-${{ github.run_id }}
+          path: |
+            sources/SP-automotive-ee-architecture-2023-2026/drafting/packages/v0.3
+            experiments/automotive-ee-architecture/article-drafting-v0.1.md
+            schemas/article-draft-result.schema.json
+          if-no-files-found: error
+          retention-days: 14
