@@ -10,6 +10,27 @@
         "Prefix-Tuningはpretrained language model本体のparameterをfreezeしたまま、task-specificな小さなcontinuous vector（prefix）だけを最適化し、後続tokenがそのprefixをvirtual tokenのように参照するparameter-efficient adaptationとして提案された。",
         "論文はGPT-2のtable-to-text generationとBARTのsummarizationを評価対象とし、著者らは全parameterの0.1%のみを学習する設定を含めてfull-data・low-data・unseen-topicへの一般化を比較した。"
       ]
+    },
+    "Prompt Tuning":{
+      "source_urls":["http://arxiv.org/abs/2104.08691v2"],
+      "technical_points":[
+        "Prompt Tuningはlanguage model本体をfreezeしたまま、backpropagationで学習するsoft promptによってdownstream taskへ条件付けするparameter-efficient adaptationとして提案された。",
+        "著者らはT5でmodel sizeを変えたablationを行い、modelがbillion-parameter規模を超えるにつれてprompt tuningがfull model tuningとの差を縮めること、およびdomain transferでのrobustnessを評価した。"
+      ]
+    },
+    "ZeRO-Infinity":{
+      "source_urls":["http://arxiv.org/abs/2104.07857v1"],
+      "technical_points":[
+        "ZeRO-InfinityはGPUだけでなくCPUとNVMe memoryまで利用するheterogeneous memory systemとして、large model trainingのmemory wallへ対処する設計を提案した。",
+        "論文はmodel codeのrefactoringを要求せずにmemoryを階層的に利用することを狙い、著者らは512 NVIDIA V100 GPUでのthroughput/scalabilityや、single DGX-2 nodeでtrillion-parameter modelをfine-tuneできる構成を報告した。"
+      ]
+    },
+    "Diffusion Models Beat GANs":{
+      "source_urls":["http://arxiv.org/abs/2105.05233v4"],
+      "technical_points":[
+        "著者らはunconditional image synthesis向けのdiffusion model architectureをablationで改善し、conditional generationではclassifier gradientを使ってdiversityとfidelityを調整するclassifier guidanceを導入した。",
+        "論文はImageNet 128×128・256×256・512×512でFIDを評価し、upsampling diffusion modelとclassifier guidanceの組み合わせも比較した。"
+      ]
     }
   }
 }
