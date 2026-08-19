@@ -176,7 +176,8 @@ def inspect_entity_binding(manifest: dict[str, Any], source_dir: Path) -> list[s
         errors.append("Technical Note entity-binding audit contract marker mismatch")
     artifacts = [item for item in (audit.get("artifacts") or []) if isinstance(item, dict)]
     audited_count = int(reader.get("entity_binding_audited_artifact_count") or 0)
-    if audited_count != len(artifacts) or int(audit.get("artifact_count") or -1) != len(artifacts):
+    audit_artifact_count = int(audit["artifact_count"]) if "artifact_count" in audit else -1
+    if audited_count != len(artifacts) or audit_artifact_count != len(artifacts):
         errors.append(
             "Technical Note entity-binding audit count mismatch: "
             f"manifest={audited_count} audit={audit.get('artifact_count')} actual={len(artifacts)}"
