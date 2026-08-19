@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "issue_id": "SP-2021-Y",
   "edition_kind": "RETROSPECTIVE_PERIOD",
-  "lifecycle_state": "RELEASE_CANDIDATE",
+  "lifecycle_state": "VALIDATED_DRAFT",
   "revision": "v0.1",
   "calendar": {
     "editorial_cutoff": "2021-12-31T23:59:59Z",
@@ -21,7 +21,7 @@
     "issue_architecture": "passed",
     "article_draft": "passed",
     "claim_and_chronology_validation": "passed",
-    "latex_build": "passed",
+    "latex_build": "pending",
     "visual_review": "pending",
     "freeze": "pending"
   },
@@ -77,10 +77,11 @@
       "sha256": "134c8dad4a5ab89ad78b406915c051d64231ca0db07ea6314f286c2d84786c71"
     },
     "validated_issue_source": {
-      "path": "surveys/special/2021-Y/revisions/v0.7/source-manifest.json",
-      "sha256": "e546e45903c9c0ca2b182568864567a9a9942bd639ea2570aa31e8859698f3a3",
-      "source_version": "v0.7",
-      "layout_mode": "annual-ordered-publication-preview-repair"
+      "path": "surveys/special/2021-Y/revisions/v0.8/source-manifest.json",
+      "sha256": "9b83dbf9f06aded9f0c13f064ebe3ba90589cf05d2d69cfe9f134345920e63b0",
+      "source_version": "v0.8",
+      "layout_mode": "section-level-compact-toc",
+      "layout_revision_sha256": "27a914ea331bd6515a71d9f470937fc6d364e7af7f62da3bee0544f4c51ffddc"
     },
     "annual_chronology": {
       "source_version": "v0.7",
@@ -90,32 +91,10 @@
       "unresolved_date_count": 0
     },
     "reader_layout_revision": {
-      "source_version": "v0.7",
-      "ordered_review_repair_path": "sources/SP-2021-Y/editorial/ordered-review-repair-v0.7.json",
-      "ordered_review_repair_sha256": "e9d8fb0c24cc76ac5a63f269da744b900694adbeccc4e1f80d48daad0b2142e5",
-      "issue_refs": [
-        122,
-        55
-      ]
-    },
-    "latex_build": {
-      "workflow_run_id": 32307636083,
-      "pdf_sha256": "d5024e3f9178e8c887a9539ade718a8c589585a51027ac8265138e673c82e50e",
-      "page_count": 37,
-      "source_version": "v0.7",
-      "validated_issue_source_path": "worktree/surveys/special/2021-Y/revisions/v0.7/source-manifest.json",
-      "validated_issue_source_sha256": "e546e45903c9c0ca2b182568864567a9a9942bd639ea2570aa31e8859698f3a3",
-      "page_budget": {
-        "soft_target": 96,
-        "hard_max": 144,
-        "below_soft_target": true,
-        "policy": "manifest-soft-target-hard-ceiling"
-      },
-      "build_style": {
-        "control_commit_sha": "ae9f84e89d4974615a25c461ccd7c220cc9b2557",
-        "path": "templates/survey/jgaisurvey.sty",
-        "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
-      }
+      "source_version": "v0.8",
+      "layout_revision_path": "sources/SP-2021-Y/editorial/layout-revision-v0.8.json",
+      "layout_revision_sha256": "27a914ea331bd6515a71d9f470937fc6d364e7af7f62da3bee0544f4c51ffddc",
+      "reason": "Render-first Publication Preview follow-up after v0.7: Issue #122 still leaves a two-entry low-density TOC continuation page, and Issue #55 still leaves the first Technical Notes tail plus LoRA card on a low-density page. Compact the printed section-level TOC and relax only the first later-chapter Needspace threshold, without changing reader wording or Evidence."
     }
   },
   "provenance_history": {
@@ -161,6 +140,12 @@
         "sha256": "1bcbbcd09662d258c14cd5290a3f15e8e6cd51d316b8a6a98857aaaa34a338c8",
         "source_version": "v0.6",
         "layout_mode": "annual-ordered-publication-preview-repair"
+      },
+      {
+        "path": "surveys/special/2021-Y/revisions/v0.7/source-manifest.json",
+        "sha256": "e546e45903c9c0ca2b182568864567a9a9942bd639ea2570aa31e8859698f3a3",
+        "source_version": "v0.7",
+        "layout_mode": "annual-ordered-publication-preview-repair"
       }
     ],
     "latex_build": [
@@ -179,6 +164,25 @@
         },
         "build_style": {
           "control_commit_sha": "454abe1968f90602578ad5230f1466ce6f62770a",
+          "path": "templates/survey/jgaisurvey.sty",
+          "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+        }
+      },
+      {
+        "workflow_run_id": 32307636083,
+        "pdf_sha256": "d5024e3f9178e8c887a9539ade718a8c589585a51027ac8265138e673c82e50e",
+        "page_count": 37,
+        "source_version": "v0.7",
+        "validated_issue_source_path": "worktree/surveys/special/2021-Y/revisions/v0.7/source-manifest.json",
+        "validated_issue_source_sha256": "e546e45903c9c0ca2b182568864567a9a9942bd639ea2570aa31e8859698f3a3",
+        "page_budget": {
+          "soft_target": 96,
+          "hard_max": 144,
+          "below_soft_target": true,
+          "policy": "manifest-soft-target-hard-ceiling"
+        },
+        "build_style": {
+          "control_commit_sha": "ae9f84e89d4974615a25c461ccd7c220cc9b2557",
           "path": "templates/survey/jgaisurvey.sty",
           "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
         }
