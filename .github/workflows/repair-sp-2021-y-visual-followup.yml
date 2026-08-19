@@ -1,0 +1,230 @@
+name: Repair SP-2021-Y visual follow-up
+
+on:
+  push:
+    branches:
+      - special/2021-Y-work
+    paths:
+      - sources/SP-2021-Y/editorial/layout-revision-v0.8.json
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repair-sp-2021-y-visual-followup
+  cancel-in-progress: false
+
+jobs:
+  revise:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+
+      - name: Checkout SP-2021-Y work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2021-Y-work
+          path: worktree
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Materialize immutable v0.8 layout-only follow-up
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import copy, hashlib, json, pathlib, shutil
+
+          root=pathlib.Path('worktree')
+          issue='SP-2021-Y'
+          slug='2021-Y'
+          version='v0.8'
+          state_path=root/'sources'/issue/'pipeline-state.json'
+          marker_path=root/'sources'/issue/'editorial'/f'layout-revision-{version}.json'
+
+          def load(path):
+              value=json.load(open(path,encoding='utf-8'))
+              if not isinstance(value,dict):
+                  raise ValueError(f'{path}: expected object')
+              return value
+          def write(path,value):
+              path.parent.mkdir(parents=True,exist_ok=True)
+              path.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          def sha(path):
+              return hashlib.sha256(path.read_bytes()).hexdigest()
+
+          state=load(state_path)
+          gates=state['gates']
+          assert state['lifecycle_state']=='RELEASE_CANDIDATE', state['lifecycle_state']
+          assert gates['latex_build']=='passed'
+          assert gates['visual_review']=='pending'
+          assert gates['freeze']=='pending'
+          assert 'publication_preview' not in state.get('provenance',{})
+          current=copy.deepcopy(state['provenance']['validated_issue_source'])
+          assert current['source_version']=='v0.7', current
+          current_manifest_path=root/current['path']
+          assert current_manifest_path.is_file()
+          assert sha(current_manifest_path)==current['sha256']
+          current_manifest=load(current_manifest_path)
+          assert current_manifest['source_version']=='v0.7'
+          marker=load(marker_path)
+          assert marker['issue_id']==issue and marker['revision']==version
+          assert marker['issue_refs']==[122,55]
+          constraints=marker['constraints']
+          assert constraints['new_external_evidence_allowed'] is False
+          assert constraints['reader_content_changed'] is False
+          assert constraints['accepted_article_claims_changed'] is False
+          assert constraints['evidence_cards_mutated'] is False
+
+          out=root/'surveys'/'special'/slug/'revisions'/version
+          if out.exists():
+              raise ValueError(f'revision already exists: {out}')
+          shutil.copytree(current_manifest_path.parent,out)
+          manifest=copy.deepcopy(current_manifest)
+
+          # #122: keep section-only hierarchy, but make the actual printed TOC compact
+          # enough to avoid a two-entry low-density continuation page.
+          front_rel=str((manifest.get('frontmatter') or {}).get('path') or 'sections/00-frontmatter.tex')
+          front=out/front_rel
+          front_text=front.read_text(encoding='utf-8')
+          anchor='\\setcounter{tocdepth}{1}\n\\tableofcontents'
+          replacement='\\setcounter{tocdepth}{1}\n\\begingroup\n\\footnotesize\n\\setlength{\\parskip}{0pt}\n\\tableofcontents\n\\endgroup'
+          if front_text.count(anchor)!=1:
+              raise ValueError('expected exactly one section-level TOC anchor')
+          front.write_text(front_text.replace(anchor,replacement,1),encoding='utf-8')
+
+          # #55 SP-2021-Y follow-up: v0.7 still left the first Technical Notes tail
+          # and LoRA card on a low-density page because chapter 2 required 45% of a page.
+          # Relax only this first later-chapter threshold; all other chapter guards stay at 45%.
+          main_rel=str((manifest.get('main_tex') or {}).get('path') or 'main.tex')
+          main=out/main_rel
+          main_text=main.read_text(encoding='utf-8')
+          token='\\Needspace{0.45\\textheight}'
+          if main_text.count(token)<1:
+              raise ValueError('expected later-chapter Needspace guards')
+          main_text=main_text.replace(token,'\\Needspace{0.30\\textheight}',1)
+          main.write_text(main_text,encoding='utf-8')
+
+          # Accepted narrative, Technical Notes wording and bibliography bytes must remain unchanged.
+          for article in manifest.get('articles') or []:
+              section=out/str(article['article_section_path'])
+              notes_rel=str(article.get('technical_notes_path') or '')
+              if sha(section)!=article['article_section_sha256']:
+                  raise ValueError(f"accepted article changed: {article['package_id']}")
+              if notes_rel:
+                  notes=out/notes_rel
+                  if sha(notes)!=article['technical_notes_sha256']:
+                      raise ValueError(f"Technical Notes changed: {article['package_id']}")
+          refs_info=dict(manifest.get('references') or {})
+          refs_rel=str(refs_info.get('path') or 'references.bib')
+          if sha(out/refs_rel)!=refs_info['sha256']:
+              raise ValueError('bibliography changed')
+
+          manifest['source_version']=version
+          manifest['status']='VALIDATED_ANNUAL_VISUAL_FOLLOWUP_REVISION'
+          manifest['derivation']=(
+              'Layout-only Publication Preview follow-up over SP-2021-Y v0.7. The section-level TOC is rendered '
+              'compactly to eliminate the low-density continuation page, and only the first later-chapter Needspace '
+              'threshold is relaxed from 0.45 to 0.30 textheight to avoid the LoRA-tail low-density page. Reader wording, '
+              'accepted Article Draft claims, selected Evidence, Technical Notes wording, chronology events and bibliography data are unchanged.'
+          )
+          manifest['basis']=dict(manifest.get('basis') or {})
+          manifest['basis']['previous_source_manifest_path']=current['path']
+          manifest['basis']['previous_source_manifest_sha256']=current['sha256']
+          manifest['frontmatter']={'path':front_rel,'sha256':sha(front)}
+          manifest['main_tex']={'path':main_rel,'sha256':sha(main)}
+          manifest['layout']=dict(manifest.get('layout') or {})
+          manifest['layout']['toc_depth']='section'
+          manifest['layout']['toc_render_size']='footnotesize'
+          manifest['layout']['chapter_start_policy']='first feature new page; chapter 2 Needspace(0.30 textheight); later chapters Needspace(0.45 textheight)'
+          manifest['layout_revision']={
+              'from_source_version':'v0.7',
+              'issue_refs':[122,55],
+              'reader_content_changed':False,
+              'new_external_evidence':False,
+              'accepted_article_claims_changed':False,
+              'evidence_cards_changed':False,
+              'technical_notes_wording_changed':False,
+              'chronology_events_changed':False,
+              'bibliography_data_changed':False,
+              'toc_depth':'section',
+              'toc_render_size':'footnotesize',
+              'first_later_chapter_needspace_textheight':0.30,
+              'remaining_later_chapter_needspace_textheight':0.45,
+              'requires_render_validation':True,
+          }
+          manifest_path=out/'source-manifest.json'
+          write(manifest_path,manifest)
+          manifest_sha=sha(manifest_path)
+
+          history=state.setdefault('provenance_history',{})
+          history.setdefault('validated_issue_source',[]).append(current)
+          prior_build=copy.deepcopy((state.get('provenance') or {}).get('latex_build') or {})
+          if prior_build:
+              history.setdefault('latex_build',[]).append(prior_build)
+          state['lifecycle_state']='VALIDATED_DRAFT'
+          state['gates']['latex_build']='pending'
+          state['gates']['visual_review']='pending'
+          state['gates']['freeze']='pending'
+          state['provenance']['validated_issue_source']={
+              'path':manifest_path.relative_to(root).as_posix(),
+              'sha256':manifest_sha,
+              'source_version':version,
+              'layout_mode':'annual-publication-preview-visual-followup',
+              'layout_revision_sha256':sha(marker_path),
+          }
+          state['provenance'].pop('latex_build',None)
+          state['provenance']['reader_layout_revision']={
+              'source_version':version,
+              'layout_revision_path':marker_path.relative_to(root).as_posix(),
+              'layout_revision_sha256':sha(marker_path),
+              'issue_refs':[122,55],
+              'reason':marker['reason'],
+          }
+          write(state_path,state)
+
+          audit={
+              'schema_version':'1.0','issue_id':issue,'source_version':version,
+              'previous_source_version':'v0.7','issue_refs':[122,55],
+              'source_manifest_sha256':manifest_sha,
+              'toc_depth':'section','toc_render_size':'footnotesize',
+              'first_later_chapter_needspace_textheight':0.30,
+              'remaining_later_chapter_needspace_textheight':0.45,
+              'new_external_evidence':False,'reader_content_changed':False,
+              'accepted_article_claims_changed':False,'technical_notes_wording_changed':False,
+              'chronology_events_changed':False,'bibliography_data_changed':False,
+              'render_validation_required':True,
+          }
+          write(root/'sources'/issue/'editorial'/'visual-followup-v0.8.json',audit)
+          print(json.dumps(audit,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Verify provenance and period consistency
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2021-Y check
+          python control-src/scripts/verify_special_period_consistency.py \
+            --repo-root worktree \
+            --issue-id SP-2021-Y \
+            --source-manifest surveys/special/2021-Y/revisions/v0.8/source-manifest.json
+
+      - name: Commit v0.8 follow-up
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sources/SP-2021-Y/pipeline-state.json sources/SP-2021-Y/editorial surveys/special/2021-Y/revisions/v0.8
+          git diff --cached --quiet && { echo 'No v0.8 changes to commit' >&2; exit 1; }
+          git commit -m 'Repair SP-2021-Y TOC and low-density card pagination (v0.8)'
+          git push origin HEAD:special/2021-Y-work
