@@ -1,0 +1,40 @@
+\section{車内ネットワークはEthernet一色にはならない}
+\noindent\textbf{TSN Ethernetがcentral/zonal E\&Eのbackboneへ近づく一方、10BASE-T1SやCAN XLは異なるcost・topology・edge要件を受け持つ。重要なのはbus統一ではなく、determinismとfailure責務の分配である。}\autocite{src-0b4e94520719,src-0d68a9a04e3d,src-4e0a35202b0f,src-b7cb6b22b2e4}
+
+\begin{center}
+\begin{tikzpicture}[
+ node distance=6mm and 10mm,
+ hpc/.style={draw=SurveyAccent,rounded corners=1.5mm,minimum width=35mm,minimum height=10mm,align=center,fill=SurveySoft,font=\small\bfseries},
+ zone/.style={draw=SurveyWarn,rounded corners=1.5mm,minimum width=31mm,minimum height=10mm,align=center,font=\small\bfseries},
+ edge/.style={draw=SurveyRule,rounded corners=1mm,minimum width=29mm,minimum height=8mm,align=center,font=\footnotesize},
+ link/.style={<->,>=Latex,thick,draw=SurveyMuted}
+]
+\node[hpc] (hpc) {Central / HPC compute};
+\node[zone,below left=of hpc] (z1) {Zonal controller};
+\node[zone,below right=of hpc] (z2) {Zonal controller};
+\draw[link] (hpc) -- node[left,font=\scriptsize]{TSN Ethernet backbone} (z1);
+\draw[link] (hpc) -- node[right,font=\scriptsize]{TSN Ethernet backbone} (z2);
+\node[edge,below=of z1] (e1) {Edge devices\\10BASE-T1S等};
+\node[edge,below=of z2] (e2) {Sub-backbone / legacy\\CAN XL等};
+\draw[link] (z1) -- (e1);
+\draw[link] (z2) -- (e2);
+\end{tikzpicture}
+\end{center}
+\surveyfigurecaption{図2：本号が比較に用いるnetwork-fabricの概念整理。TSN Ethernet、10BASE-T1S、CAN XLを排他的な勝者選びではなく、backbone / edge / sub-backboneの責務分担として読む。特定OEMの配線図やnormative topologyを示すものではない。}
+\begin{surveyarticlebody}
+\subsection{Ethernet中心化は、単一bus化ではない}
+
+IEEE 802.1DG-2025は、Automotive in-vehicle Ethernet向けのTSN profileとして2025年5月28日にBoard approval、6月6日にpublicationへ到達した。公開IEEE情報では、bridged IEEE 802.3 network上でdeterministic/bounded latencyを扱い、automotive用途で適用する802.1 TSN/security機能をprofileする標準として位置づけられている。central/HPCとzonal controllerを結ぶbackboneでEthernetが主役になるとは、単に帯域を増やすことではなく、latency、synchronization、bandwidthの扱いをnetwork contractへ引き上げることを意味する。\autocite{src-0d68a9a04e3d,src-4e0a35202b0f}
+
+一方、CAN系が消えるという結論にもならない。CiAの公開情報ではCAN XLは1〜2048 byteのdata fieldを持つ第三世代CAN data link layerで、backbone/sub-backbone用途やTCP/IP network systemとの統合を意図し、ISO 11898-1:2024で標準化されたとされる。optional PWM codingではphysical network designに依存しつつ20 Mbit/s以上も視野に入る。これはEthernetとCANを世代交代として並べるより、要求されるcost、topology、determinism、payload、legacy integrationに応じてfabricを階層化する方が実態に近いことを示す。\autocite{src-b7cb6b22b2e4}
+
+edge側のEthernetにも別の最適化がある。OPEN Alliance TC14は10BASE-T1Sをautomotiveで使うため、PLCA、topology discovery、sleep/wake、transceiver interface、conformance/interoperability/EMC testまで横断して整備している。TC9もcable、connector、assemblyを含むchannel/component要件を扱い、2025年6月には10BASE-T1S channel/component requirements v1.1をroadmapに載せている。つまり「Ethernet採用」はMAC/PHYの選択だけではなく、channel qualificationとECU implementationまで含む物理設計である。\autocite{src-470ecee4f411,src-4df5f45556b0}
+
+SDVでserviceが動的に追加・再配置されるなら、TSN設定も固定設計だけでは足りない。dynamic real-time serviceの研究では、service discovery時にapplication要求を中央TSN controllerへ伝え、network calculusでdelay budgetとresource reservationを決める方式を評価している。450 subscriptionを持つrealistic IVNで、著者らはper-queue delay-budget方式だけが検討した手法の中でhard latency constraintを一貫して満たしたと報告し、SOME/IP scatterを含むsetup/signalingは11.1 ms、flowあたりworst-case 1 ms deadlineを対象にした。ただし保証を厳しくするほど最大3倍のidle-slope provisioningも観測され、determinismにはresource costが伴う。\autocite{src-0b4e94520719}
+
+ここから見える2026年時点のnetwork像は、Ethernetがbackbone/fabricの中心へ寄りつつ、edgeやsub-backboneまで一種類のlinkへ統一する姿ではない。TSNは時間・帯域の契約を担い、10BASE-T1Sは低速edge Ethernetの設計空間を広げ、CAN XLはCANの運用資産と大きなpayload/IP連携を接続する。E\&E architectureの問題はbus名の勝敗ではなく、各linkにどのtiming・failure・cost責務を置くかである。\autocite{src-0d68a9a04e3d,src-470ecee4f411,src-4e0a35202b0f,src-b7cb6b22b2e4}
+\end{surveyarticlebody}
+
+\begin{claimboundary}
+確認できる範囲：IEEE 802.1DGについて本調査で確認したのは公開project/publication情報であり、full standardのmandatory/optional機能選択やparameter値は独立に検証していない。CAN XLもISO 11898-1:2024のnormative text自体ではなくCiAの公開説明とstandardization statusを根拠にしている。OPEN Allianceのcommittee/roadmapはspecification活動を示すが、特定PHY・ECU・harnessのconformanceや電気性能を証明しない。dynamic TSN QoS研究はsetup controllerがsingle point of failureになり得るうえ、hard deadline保証にはoverprovisioningが必要で、retransmissionやFRER等のreliabilityは別課題として残る。\autocite{src-0b4e94520719,src-0d68a9a04e3d,src-470ecee4f411,src-4df5f45556b0,src-4e0a35202b0f,src-b7cb6b22b2e4}
+\end{claimboundary}

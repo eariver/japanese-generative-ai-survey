@@ -1,0 +1,22 @@
+\section{S-COREが示す「仕様」から「共通実装」への移行}
+\noindent\textbf{SDV platformの共有対象はinterface specificationだけではなくなりつつある。S-COREのcode-first方針とrelease chronologyは、実行コード、test、CI、integration、safety artefactまで共通資産にしようとする動きを可視化する。}\autocite{src-315ed9fdbb11,src-5ae1a99f6a86,src-7aa0d4da204c,src-b89108e03021,src-d63061aaba8e,src-df5a66eed297,src-fa6bfa6f142c}
+
+\begin{surveyarticlebody}
+\subsection{仕様だけでなく、共通実装を共有する段階へ}
+
+Eclipse S-COREは、SDV向けの共通core stackをopen sourceで共有する試みとして2025年に立ち上がった。Eclipse FoundationはS-COREをOSとapplicationの間に位置するcore software、一般にmiddlewareと呼ばれる層として説明し、各社が重複して作るnon-differentiating platform workを減らす狙いを掲げる。この位置づけは、標準仕様だけを共有し各社が別々に実装するモデルから、実行コード・test・CIまで含む共通基盤を共有するモデルへの移行を示す。\autocite{src-2f548bd2c797,src-d63061aaba8e}
+
+S-CORE project pageは対象をSoC board-support packageより上、applicationより下のsoftware-platform layerとし、OS abstraction、middleware、application-level serviceを含める。projectはhardware/software decoupling、modularity、project-specific extensionを目標に掲げる。ここでのarchitecture上の意味は、vehicle functionをどのECU製品へ焼き付けるかではなく、hardwareとapplicationの間にどの共通contractとreference implementationを置くかへ設計単位が移ることである。\autocite{src-d63061aaba8e}
+
+release chronologyを見ると、共通実装は単なるrepository公開から徐々にengineering artifactを増やしている。v0.2.0以降のrelease noteにはsafety manual/component requirement、communication/persistency architecture、API/SOME-IP、platform test、safety artefact、reference integrationが積み上がり、v0.6.0ではreference integration repositoryとplatform integration test、persistency safety analysisが記録された。v0.6.4ではmodule maturityをRelease / Experimental / Previewに分けるdecision recordも入る。pinned project pageはさらにv0.8 release gateへ到達した状態を示す。\autocite{src-315ed9fdbb11,src-5ae1a99f6a86,src-7aa0d4da204c,src-b89108e03021,src-d63061aaba8e,src-df5a66eed297,src-fa6bfa6f142c}
+
+open core stackを車載へ持ち込むと、cloud-nativeな再利用性とsafety/real-time要求を同じ開発プロセスで扱う必要がある。S-CORE launch時点ではdevelopment processがcertification agencyのaudit下にあり、ISO 26262のようなsafety-critical standardに適したopen-source software productionを目標としていた。SOAFEE上のDENSO blueprintも、Lingua Francaによるtime-centric scheduling/runtime monitoringと、safety/non-safety workloadの並行実行を提案している。標準化の重心がinterface specificationだけでなく、実装・test・safety artefactへ広がっていることが共通する。\autocite{src-2f548bd2c797,src-eac8b3c725a2}
+
+この「仕様から共通実装へ」という移行はS-COREだけではない。AUTOSARはR25-11でCommon Adaptive Platform Implementation（CAPI）を主要topicとして扱い、CAPIをAdaptive Platform specificationの``what''に対するcode-firstな``how''として説明している。公式CAPIページではautomotive-grade / certification-ready、quarterly release、specificationとimplementationのfeedback loopを掲げ、2026年6月にはiSOFTからcentralized compute、service-oriented communication、modern development workflowを支えるproduction-oriented componentの寄与を発表した。S-COREとCAPIはgovernanceもscopeも同一ではないが、標準・interfaceだけでなく共有実装をpre-competitive assetにしようとする方向が複数ecosystemで並行している。\autocite{src-3679c0c0bec5,src-ec70559f8987,src-f1ba3a884bb8}
+
+一方、既存platformの開発体験に関するindustry-perspective研究は、AUTOSAR Adaptiveのpain pointがspecificationそのもの、vendor implementation、local organizational practiceの混合から生じると報告する。configuration-file managementやAdaptive application lifecycleの理解・trainingが課題として挙げられている。このEvidenceはabstractレベルであり限定的だが、共通platformが成功する条件が「仕様があること」から「実装・tooling・developer workflowまで共有可能であること」へ広がっていることを示唆する。\autocite{src-57d332ab5356}
+\end{surveyarticlebody}
+
+\begin{claimboundary}
+確認できる範囲：AUTOSARがCAPIについて使うautomotive-grade、certification-ready、interoperability等の表現はAUTOSAR自身のproject claimであり、個別実装の独立certificationやproduction deploymentを意味しない。S-COREのproduction-ready、安全性、予測可能性に関する表現はproject claimであり、独立したcertification/conformance/deployment evidenceとは分ける。launch時のrelease targetやsafety-process目標も、その後のdeliveryやcertificationを自動的に証明しない。release noteは実装の変化を追えるが、production deployment、interoperability、functional-safety certificationを単独では確立せず、v0.1.0の技術baselineもrelease pageだけでは詳細不明である。DENSO/SOAFEEのdeterminism・portability・safety benefitはvendor/project claimで、独立したlatency/jitterやcertification比較が不足する。AUTOSAR Adaptive研究も公開abstractではstudy detailが不足し、specification・vendor・組織要因を切り分けず『AUTOSAR固有の欠陥』へ一般化できない。\autocite{src-1857c9466d46,src-2f548bd2c797,src-315ed9fdbb11,src-57d332ab5356,src-5ae1a99f6a86,src-7aa0d4da204c,src-b89108e03021,src-d63061aaba8e,src-df5a66eed297,src-eac8b3c725a2,src-fa6bfa6f142c}
+\end{claimboundary}

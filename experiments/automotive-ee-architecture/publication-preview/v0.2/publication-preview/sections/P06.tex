@@ -1,0 +1,24 @@
+\section{CI/CD・診断・VILまで含めて、SDVのE\&Eを設計する}
+\noindent\textbf{hardware/software decouplingはvehicle内のruntime architectureだけでは維持できない。variant管理、deployment、automatic integration、digital twin/VIL、observability/diagnosticsまで含む継続的なcontrol loopが必要になる。}\autocite{src-425ad5d92966,src-8deb33ac8e08,src-e71ad506dc03}
+
+\begin{surveyarticlebody}
+\subsection{SDVでは、開発・統合・診断環境もE\&E Architectureになる}
+
+software-defined vehicleでhardware/softwareを切り離すと、同じsoftwareを異なるvehicle variant、ECU、HPC、backendへ安全に届ける仕組みがarchitectureの成立条件になる。variant-rich SDV向けopen-source CI/CD研究は、development、build/test、artifact storage、deploymentを一連のpipelineとして構成し、variant metadataからtarget-specific artifactを選ぶ。cloud/client OTA middlewareは互換versionを選択して配布・verify・rollback・telemetryを扱い、laboratoryでは2 vehicle variantのECU firmware update/rollbackや3 TurtleBotへのcontainerized AI deploymentを示した。\autocite{src-e71ad506dc03}
+
+AUTOFRAMEはintegration対象そのものをsoftware-drivenにする。hardware-abstraction layerがvehicle configurationからsensor/actuator adapterを生成し、application moduleは具体hardwareから独立したstandardized data/interfaceを消費する。connection handlingとcontainer-based deployment handlerを組み合わせ、CARLA環境と16-core・64 GBのcentral-car computerでlane detection、motion planning、controlを動かし、trajectory-visualization moduleの自動追加を示した。vehicle integrationを配線・手作業configurationから、machine-readable contractとdeploymentへ寄せる方向である。\autocite{src-9a94bfb0bd47}
+
+さらにAutomatic Platform Configuration研究は、platform configurationとsoftware integrationをruntimeへ押し込む。integration managerがmodel-based design-space exploration、code generation、ACRN VM、container orchestration、REST interfaceを束ね、8-core board上のService VM＋2 User VMで8 applicationを扱うPoCを構成した。central computeがupdate可能である以上、deploymentだけでなく「どのresourceへどう配置し、既存systemを壊さず追加するか」までvehicle runtimeの責務になる。\autocite{src-8deb33ac8e08}
+
+検証側でもcentral car serverを前提にした再編が進む。Vehicle-in-the-Loop / digital twin frameworkは、dynamometer上のphysical vehicleとsynchronized digital twinを結び、centralized E\&E上のautonomous-driving softwareをcentral-car-server hardwareで直接検証する枠組みを提案する。公開Evidenceはcase-studyの定量条件まで十分に確認できていないが、ECU単体ごとのprotocol testから、central compute上のsystem softwareとvirtual/physical environmentを連続させる検証へ重心が移る例として重要である。\autocite{src-d5734e70d075}
+
+運用時のdiagnosticsも同じ構図を持つ。SDVDiagはdistributed observability dataからdependency/causal graphを継続更新し、incident前後をsnapshotしてlikely root causeをrankする。graph processing、anomaly detection、incident analysisを交換可能なruntime moduleとして構成し、5G connected-vehicle test-fleetのsmart-charging/distributed-function scenarioでinjected faultの検出を評価した。機能が複数compute nodeとbackendへ跨るほど、故障診断もECU DTCの集約ではなくservice dependencyを追跡するarchitectureになる。\autocite{src-425ad5d92966}
+
+OEM側の量産signalとして、Mercedes-Benzは2025年6月、新CLAのRastatt量産でMB.OSを初めてseries productionへ導入したと発表した。同社はMB.OSをchip-to-cloud architectureと位置づけ、production側ではvehicle softwareを複数hardware moduleごとの個別処理ではなくMercedes-Benz Intelligent Cloudのcentral serverから扱う仕組みとして説明する。これは車両内のcompute topologyそのものを証明する資料ではないが、software delivery、production、cloudをvehicle platformの更新cycleへ結びつける実例として、lifecycleをE\&E architectureの外側に置けないことを補強する。\autocite{src-76ffc13a4115}
+
+以上をまとめると、SDVのE\&E architectureはvehicle runtimeだけで閉じない。variant definition、artifact provenance、deployment/rollback、automatic integration、digital twin/VIL、observability/diagnosticsが、hardware/software decouplingを実際に維持する外部ループになる。OTAやCI/CDは『開発効率化ツール』ではなく、中央化・service化されたvehicleを継続的に成立させるcontrol planeの一部として扱う必要がある。\autocite{src-425ad5d92966,src-8deb33ac8e08,src-e71ad506dc03}
+\end{surveyarticlebody}
+
+\begin{claimboundary}
+確認できる範囲：Mercedes-BenzのMB.OS production記述はOEM自身の公開説明であり、内部E\&E topology、update failure rate、functional-safety argumentを独立検証したものではない。CI/CD評価はTurtleBot、ESP32 ECU emulation、central backendのlaboratoryでありproduction fleet validationではなく、large connected-vehicle testbedやfeature-model統合はfuture workである。AUTOFRAMEもCARLA＋workstation-class hardwareで、production compute/bus上のreal-time・cybersecurityを確立していない。runtime integration PoCはsimulated SDVかつpredefined VMで、on-vehicle optimizationは小規模問題に制約される。VIL/digital twinの公開一次情報はscenario、hardware、同期誤差、定量的工数削減まで確認できず、autonomous-driving domain以外への一般化も未検証である。SDVDiagもcontrolled 5G test-fleetとinjected faultが中心で、root-cause rankingはgraph/anomaly modelの品質に依存する。\autocite{src-425ad5d92966,src-8deb33ac8e08,src-9a94bfb0bd47,src-d5734e70d075,src-e71ad506dc03}
+\end{claimboundary}

@@ -1,0 +1,24 @@
+\section{総括――「Centralize Everything」ではなく、責務を契約で結ぶ}
+\noindent\textbf{2026年夏のE\&Eは、zonal/central、Ethernet、service/data、open platform、CI/CDを別々の潮流として見る段階を越えた。物理・計算・通信・software・assuranceの責務を最適配置し、検証可能なcontractで接続することが共通課題になっている。}\autocite{src-0d68a9a04e3d,src-4e0a35202b0f,src-d5d5a7ec3f4c,src-d63061aaba8e}
+
+\begin{surveyarticlebody}
+\subsection{総括：2026年夏、E\&Eは「配置」から「契約」の設計へ}
+
+2023〜2026年の変化を一文で表すなら、E\&E architectureの最適化単位がECUそのものから責務境界へ移った、となる。中央化研究が示すbusload、functional safety、computing power、feature dependency、cost、error rate、modularity/flexibilityという評価軸は、中央化が単なるECU削減ではないことを端的に示す。物理I/Oは配線とsensor/actuatorへの近さを優先してzonalへ、重いcomputeと機能統合はcentral/HPCへ寄せる。「physically zonal / computationally centralized」は、2026年時点の矛盾ではなく、異なる責務を別の最適位置へ置く設計として理解できる。\autocite{src-6d738dbdfc39,src-d5d5a7ec3f4c}
+
+networkも同じく単一技術への置換ではない。IEEE 802.1DG-2025がautomotive in-vehicle Ethernet向けTSN profileとして成立したことは、Ethernet backboneへdeterministic/bounded latencyを明示的なcontractとして持ち込む動きを象徴する。しかし本文で見たCAN XLや10BASE-T1Sを含め、edge/sub-backboneには異なるcost、topology、payload、legacy要求が残る。したがって到達点は「Ethernet一色」ではなく、Ethernetを中心に複数linkが責務分担するheterogeneous fabricである。\autocite{src-0d68a9a04e3d,src-4e0a35202b0f}
+
+software側では、境界の基準がECU製品からservice/data/resource contractへ移る。VSSのv4.1〜v6.0 evolutionはvehicle-data modelとtoolingが独立して更新される姿を示し、S-COREはOS abstraction、middleware、application-level serviceを含むplatform layerをcode-firstで共有しようとしている。hardwareを交換してもdata semanticsやsoftware platform contractを保ち、softwareを更新しても物理I/O配置を全面的に作り直さない。このdecouplingこそ、SDVにおけるE\&E architectureの中心的な価値である。\autocite{src-1486b9718088,src-3ce752187789,src-971a21882f71,src-c89d0f167c6b,src-d63061aaba8e,src-e24ad9438abe}
+
+そのdecouplingを維持するには、vehicle内のruntimeだけでは足りない。variant-rich CI/CD研究がdevelopment、build/test、artifact storage、deploymentを一つのpipelineとして扱い、variant metadataからECU/HPC/backend向けartifactを管理するように、integration、OTA、rollback、diagnostics、digital twin/VILはE\&Eの外部工程ではなく、継続的にconfigurationを成立させるcontrol loopになる。software-definedであるほど、development/validation infrastructureまでarchitecture boundaryへ入ってくる。\autocite{src-e71ad506dc03}
+
+そしてcentralizationの実効上限を決めるのはcompute capacityだけではない。ASIL decompositionを含むresource-allocation研究が示すように、mixed-criticality workloadを共存させるにはmapping、scheduling、latency、cost、安全制約を同じ設計空間で扱う必要がある。本文で扱ったhardware isolation、service authentication、deterministic runtimeも同じ問題の別層である。中央へ集めるほど、failure containmentとtrust boundaryをより細かく、より検証可能に定義しなければならない。\autocite{src-f657aea94b5e}
+
+公開されたindustry implementation signalも、この統合像と大きく矛盾しない。BMWはNeue Klasseで4つのhigh-performance computerと4-zone wiringを同時に導入すると説明し、Volvo EX90はcore computingとOTAを製品機能として掲げ、Mercedes-Benzは新CLAのseries productionでMB.OSのchip-to-cloud lifecycleを導入した。これらはOEMごとに粒度もarchitectureも異なり、共通reference architectureの証明にはならない。しかし``computeを集約する''、``I/Oと配線をzoneへ寄せる''、``software lifecycleをcloudまで伸ばす''という責務分割が、研究・標準・OSSだけでなく製品側の公開説明にも現れていることは確認できる。\autocite{src-1096d739982f,src-76ffc13a4115,src-e08dbef62089}
+
+したがって2026年夏の到達点は「centralize everything」ではない。物理I/O、compute、network、service/data、development lifecycle、安全・セキュリティを、それぞれ最適な場所へ配置し、その間を検証可能なcontractで結ぶことが設計の中心になった。標準仕様、open-source implementation、OEM/Tier1固有実装の距離はなお大きく、公開Evidenceだけではconformance、production deployment、certificationまで一続きに証明できない領域も残る。次の競争軸は、中央化率そのものより、この複数層のcontractをどこまで再利用可能・検証可能にできるかにある。\autocite{src-0d68a9a04e3d,src-4e0a35202b0f,src-d63061aaba8e,src-e71ad506dc03}
+\end{surveyarticlebody}
+
+\begin{claimboundary}
+確認できる範囲：BMW、Volvo、Mercedes-Benz等の製品・architecture説明は各社のvendor claimを含み、OEM間の同一architectureや独立performance/safety validationを示さない。中央化研究はqualitative interviewを含み、Daimler Truck AGの文脈から普遍的な統計結論へ一般化できない。IEEE 802.1DGは公開project/publication情報までを検証しており、full normative textの詳細parameterは未確認である。VSSはdata taxonomy/modelで、transport/runtimeやOEM-wide adoptionの証明ではない。S-COREのproduction-ready・predictable・safeといった表現はproject claimで、独立certification/conformance/deploymentとは分ける。CI/CD評価はTurtleBot・ESP32 emulationを含むlaboratoryで、大規模connected-vehicle deploymentはfuture workである。ASIL最適化はfreedom-from-interference成立を簡略化して仮定し、固定4-ECU・生成task graphのcase studyであり、数値をproduction architectureへ直接移植できない。これらのgapは、標準仕様・OSS実装・OEM/Tier1実装の間に残る検証距離そのものである。\autocite{src-0d68a9a04e3d,src-1486b9718088,src-3ce752187789,src-4e0a35202b0f,src-971a21882f71,src-c89d0f167c6b,src-d5d5a7ec3f4c,src-d63061aaba8e,src-e24ad9438abe,src-e71ad506dc03,src-f657aea94b5e}
+\end{claimboundary}

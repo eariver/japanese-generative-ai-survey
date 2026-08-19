@@ -1,0 +1,20 @@
+\section{Safety / Security / Determinismは「後付け」ではない}
+\noindent\textbf{central/HPCへ機能を集約するほど、ASIL、hardware isolation、service identity、timing guaranteeが同じ計算基盤を分割するcontractになる。統合度の上限はcompute capacityよりtrust boundaryの検証可能性で決まる。}\autocite{src-85ca0561a52b,src-eac8b3c725a2,src-f657aea94b5e,src-fe402f610af7}
+
+\begin{surveyarticlebody}
+\subsection{中央集約の上限を決めるのは、Trust Boundaryである}
+
+mixed-criticality workloadを同じHPCへ載せるとき、ASILは単なるlabelではなくresource mappingの制約になる。ASIL decompositionを含む最適化研究は、software-to-hardware mapping、scheduling、development cost、critical-chain execution timeを一つのMILPとして扱う。case studyではcost優先で98 cost units / 74 ms、latency優先で109 / 68 msとなり、safety decompositionを使いながらもcostとtimingのtrade-offが残る。centralizationは安全要求を消すのではなく、配置決定の入力へ変換する。\autocite{src-f657aea94b5e}
+
+その配置を支えるhardware isolationも統合密度とともに変わる。RISC-Vのinitiator-side研究は、別ECUだった機能がlogical partitionとして同一MCUへ集約されると、CPU coreだけでなくDMA等のnon-CPU initiatorを含むidentity/isolationが必要になると論じる。WorldGuard/SPMPの拡張案では最大128 World IDsを想定し、高構成例では82 IDsを見積もる。E\&Eのtrust boundaryがPCB/ECU境界からSoC内部へ移る具体例である。\autocite{src-fe402f610af7}
+
+service化が進むとtrust boundaryはnetwork identityにも及ぶ。DNSSEC、DANE、DANCEを組み合わせる提案は、supplier側のsoftware/certificate生成とOEM-controlled deployment trustを分離し、OEM-signed DNSSEC TLSA recordを通じてservice discovery、authentication、authorizationを結び付ける。authorsはSOME/IP integrationを例示し、現実的IVN setupで約1000 DNSSEC records/zone、nodeあたり平均70 remote TLSA certificateを扱い、individual service setupが参照した200 ms requirementを下回ったと報告する。service contractにはinterfaceだけでなく「誰がそのserviceを名乗れるか」も含まれる。\autocite{src-85ca0561a52b}
+
+safetyとreal-timeをcloud-native runtimeへ持ち込む試みとして、DENSO/SOAFEE blueprintはLingua Francaを使うtime-centric scheduling/runtime monitoringと、safety/non-safety workloadの並行実行、application-level safety envelopeとviolation detectionを提案する。ここでdeterminismはperformance tuningではなく、shared compute上でcritical functionの時間的境界を保つ仕組みとして扱われる。\autocite{src-eac8b3c725a2}
+
+この4例に共通するのは、central/HPCへ寄せるほどassurance boundaryが多層化することだ。ASIL/resource allocationは機能配置、initiator isolationはSoC内access、DNSSEC/DANE/DANCEはservice identity、deterministic middlewareは時間的挙動を守る。したがって『中央化可能か』という問いは、compute capacityより先に、これらのboundaryを独立に検証しfailure containmentできるかという問いへ変わる。\autocite{src-85ca0561a52b,src-eac8b3c725a2,src-f657aea94b5e,src-fe402f610af7}
+\end{surveyarticlebody}
+
+\begin{claimboundary}
+確認できる範囲：ASIL最適化はmixed-criticality coexistence時のfreedom-from-interference成立を簡略化して仮定し、固定4-ECU・生成task graphのscalability studyとcase-specific solver結果である。RISC-V研究はinitiator-sideに限定され、QEMU/CPU/Bao PoCはroadmapとして提示されている。DNSSEC/DANE/DANCE評価はsingle-system parallel executionやMininet/Open vSwitch emulationによるjitterを含み、remote DNSSEC resolutionをmain service-setup pathへ含めず、secure build/OTA等も詳細scope外である。DENSO/SOAFEEのdeterminism・safety benefitはvendor/project claimで、独立したlatency/jitter測定やsafety certification evidenceは提示されていない。したがってimplementation claimとindependent assuranceを混同しない。\autocite{src-85ca0561a52b,src-eac8b3c725a2,src-f657aea94b5e,src-fe402f610af7}
+\end{claimboundary}

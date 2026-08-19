@@ -1,0 +1,22 @@
+\section{ECU境界から、service/data contractの境界へ}
+\noindent\textbf{SDVのservice orientationはAPI追加ではない。vehicle dataの意味、communication runtime、service location、platform間translationを別々の契約に分け、hardware配置とsoftware進化を切り離す設計である。}\autocite{src-1486b9718088,src-3ce752187789,src-971a21882f71,src-c89d0f167c6b,src-db0527589c91,src-e24ad9438abe,src-e48bb52ed24d}
+
+\begin{surveyarticlebody}
+\subsection{ECUを分ける代わりに、契約を分ける}
+
+service-oriented E\&Eで最初に分離したいのは、hardware topologyとvehicle meaningである。COVESA VSSのv4.1〜v6.0 release seriesを横断すると、共通vehicle-data modelとtoolingが継続的に更新され、DDS IDL向けstruct support、JSON Schema、identifier generation、overlay/profile、motion-managementやhealth signalといった変更がreleaseごとに段階的に現れる。v6.0ではOBD branch削除を含むbackward-incompatible cleanupも行った。ここで標準化しているのは通信路そのものではなく、「車両データを何と呼び、どの構造として扱うか」というsemantic contractである。\autocite{src-1486b9718088,src-3ce752187789,src-971a21882f71,src-c89d0f167c6b,src-e24ad9438abe}
+
+transport/runtime側ではvSomeIP 3.xが別の契約を担う。COVESAはvSomeIPをSOME/IP protocolの実装として位置づけ、structured vehicle dataを交換するcommunication mechanismと説明する。3.5.0〜3.7.5のrelease seriesではrouting/service discovery、endpoint architecture、concurrency、portability、test infrastructureが継続的に改修され、3.7.0ではclient/server endpoint reworkとatomic offer/stop-service、3.7.5ではmultiple major-version offeringやIPC/routing refactoringが入った。VSSとvSomeIPを並べると、data semanticsとcommunication runtimeを分離して進化させる設計が見える。\autocite{src-6e8a6e979101,src-879373aaf497,src-99e7f06f7d63,src-ca972b7a2898,src-db0527589c91,src-ddf9eb5e9b75,src-f81981d5bb3b}
+
+ただしmiddleware名だけで性能特性を固定することはできない。FastDDS、Zenoh、vSomeIPを比較したLinux testbedでは、D1-1のtime-to-first-messageはZenoh 11.631 ms、FastDDS 51.624 ms、vSomeIP median 98.443 ms、IMU best-effort latencyはそれぞれ0.487、3.170、7.817 msと報告された。しかし著者ら自身、topologyやdata rateで順位が反転し得ることを示している。service/data contractを抽象化しても、runtimeのdiscovery、kernel/network-stack cost、QoS設計はplatform architectureから消えない。\autocite{src-3679b299f3f3}
+
+HPCが複数に分かれると、service locationをapplicationから隠す層も必要になる。CARISMAはautomotive HPC群へservice-mesh patternを持ち込み、central Control Plane、HPCごとのproxy、node/service registryでlocation-transparent routingを行うvisionを提示する。cloud backendも同じnode/serviceとして扱える設計で、2 VMのPoCではserviceを別nodeへ移してもcaller側を再設定せず通信を継続した。これは「ECUに機能が所属する」という前提を、「serviceが契約を満たす場所へ配置される」前提へ変える例である。\autocite{src-e48bb52ed24d}
+
+AUTOSAR自身の公開資料を加えると、この境界はより明確になる。Adaptive PlatformはARA runtimeを実装し、interfaceをserviceとAPIに分け、functional clusterをserviceとAdaptive Platform Basisへ整理する。Basis側は各(virtual) machineに少なくとも1 instanceを持つ一方、serviceはin-car networkへ分散可能で、Classic Platformと異なりruntimeでserviceとclientをdynamic linkする。R24-11ではAutomotive API、Adaptive Platform stabilization、Machine Configuration、DDS in Foundation and Platformsが主要topicとして扱われた。つまりAUTOSARも2023〜2026年に、ECU固有実装を固定するよりservice/API、machine configuration、communication contractを明示する方向へ更新している。\autocite{src-f65f7dca2182,src-7d08f22a7fd1}
+
+ecosystem境界も同様にcontract化できる。AUTOSAR AdaptiveとROS 2のcollaboration frameworkは、ROS 2側bridgeでDDSとSOME/IPを変換し、service discoveryとtype conversionを跨いで接続する。FIDL/FDEPL設定を少数のservice/message identifierから自動生成し、custom ROS 2 messageのconversion specificationも導出する。評価はROS 2 Humble/Fast DDS/vsomeipと、QEMU上のAUTOSAR Adaptive R20-11/QNXを用いている。重要なのは、二つのplatformを一体化するのではなく、境界面を明示してtranslation可能にする発想である。\autocite{src-6eaa57440b57}
+\end{surveyarticlebody}
+
+\begin{claimboundary}
+確認できる範囲：AUTOSARについては公式公開ページとRelease Eventのtopic/scopeを確認したが、全specification documentのnormative requirementや特定vendor implementationのconformanceを再検証したわけではない。VSSはdata taxonomy/modelであってtransport/runtimeやOEM-wide adoptionを証明しない。vSomeIPのrelease noteはproject changesを示すが、independent SOME/IP conformance、production deployment scale、safety qualificationを示すものではなく、COVESA自身のadoption記述も独立検証していない。middleware比較値はLinux/configuration依存で、一部QoS条件は比較対象外となっており、普遍的rankingには使えない。CARISMAは2-VM PoCで、automotive HPC上のlatency/jitter、overhead、redundant proxy behaviorは未評価である。AUTOSAR/ROS 2 bridgeもQEMUと特定release組合せでの評価であり、target ECUや他versionへの互換性は別途検証が必要である。\autocite{src-1486b9718088,src-3679b299f3f3,src-3ce752187789,src-6e8a6e979101,src-6eaa57440b57,src-879373aaf497,src-971a21882f71,src-99e7f06f7d63,src-c89d0f167c6b,src-ca972b7a2898,src-db0527589c91,src-ddf9eb5e9b75,src-e24ad9438abe,src-e48bb52ed24d,src-f81981d5bb3b}
+\end{claimboundary}

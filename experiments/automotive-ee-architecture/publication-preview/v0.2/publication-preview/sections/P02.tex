@@ -1,0 +1,20 @@
+\section{HPC統合の本当の難所は、mixed criticalityを誰が統治するか}
+\noindent\textbf{ECUを減らしてもcriticalityは減らない。中央HPCへ集約するほど、partitioning、resource allocation、hardware isolation、runtime integrationを一つの安全・性能設計として扱う必要がある。}\autocite{src-6ad0c67eaab9,src-9f1d8b2b8944,src-f657aea94b5e}
+
+\begin{surveyarticlebody}
+\subsection{HPC統合で消えるのは筐体であって、criticalityではない}
+
+mixed-criticality software architectureのsystematic reviewは、中央集約・zonal化が進むほど、異なるcriticalityを同じ計算基盤へ載せる設計が中心課題になることを示している。レビューは97件の検索結果から21件を選定し、partitioning、virtualization、scheduling、communication、fault isolationなどを横断して整理する。ここで重要なのは、ECU consolidationが「安全要求の違い」を消すのではなく、それをsoftware/hypervisor/resource governanceの境界として再表現する点である。\autocite{src-9f1d8b2b8944}
+
+virtualizationやmicroservicesは、その境界を実装する有力な道具だが、無料ではない。評価研究では、container/VMのoverheadはCPU・memory・network・disk・startupで一様ではなく、hardware/runtime構成によって挙動も変わる。AMD64/ARM64間でstartup傾向が異なり、container数も「多ければよい」「少なければよい」という単純解にはならない。統合度を上げるほど、resource allocationを測定・設計する仕事が増える。\autocite{src-6ad0c67eaab9}
+
+ASIL decompositionをresource allocationへ組み込んだ研究は、この問題を最適化問題として具体化する。著者らのcase studyでは、development costを優先するとcost 98・最大実行時間74 ms、latencyを優先するとcost 109・68 msとなり、安全制約を含むmapping/schedulingには明示的なtrade-offがある。ここで得られるのは「最適な中央集約率」ではなく、criticality、cost、latencyを同じ設計空間で扱う必要性である。\autocite{src-f657aea94b5e}
+
+集約後のfault containmentはCPU coreだけの話でもない。RISC-Vのinitiator-side isolationを論じる研究は、従来別ECUだった機能が少数MCU上のlogical partitionへ統合されると、CPU以外のinitiatorを含むidentity/isolation空間が必要になると指摘する。著者らはWorldGuard/SPMPの拡張として最大128 World IDsを視野に入れ、高構成例で82 IDsを見積もる。これは特定ISAの提案であると同時に、中央化がhardware trust boundaryまで押し下げることの具体例でもある。\autocite{src-fe402f610af7}
+
+さらにsoftware integration自体をruntimeへ寄せる研究では、design-space exploration、code generation、hypervisor partition、container orchestrationをintegration managerが束ねる。PoCは8-coreのWhiskey Lake board上でService VMと2 User VM、8 applicationを用い、既存deploymentを保ちながらapplicationを追加する二段階integrationを示した。中央HPCを「固定した箱」ではなく再構成可能なplatformとして扱うなら、配置決定とisolation policyもruntime architectureの一部になる。\autocite{src-8deb33ac8e08}
+\end{surveyarticlebody}
+
+\begin{claimboundary}
+確認できる範囲：mixed-criticality reviewはsnowballingを行わず、アクセス不能・非英語資料や一部SAE資料を除外しており、industryの非公開実装を十分に代表しない。virtualization評価はplatform依存で、性能値からsafety isolationやdeterministic timingの成立を直接導けない。ASIL最適化はfreedom-from-interference成立を簡略化して仮定し、scalability評価も固定4-ECU・生成task graphのcase studyである。RISC-V提案はinitiator-sideに限定され、PoCはroadmap段階である。runtime integrationもsimulated SDVとpredefined VMに基づき、車載上のonline optimization規模には制約がある。したがって本章の結論は『HPCなら統合できる』ではなく、『統合するほど隔離・資源統治の証明責任が増える』である。\autocite{src-6ad0c67eaab9,src-8deb33ac8e08,src-9f1d8b2b8944,src-f657aea94b5e,src-fe402f610af7}
+\end{claimboundary}

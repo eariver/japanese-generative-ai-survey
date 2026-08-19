@@ -1,0 +1,35 @@
+\section*{このSpecialの読み方}
+\addcontentsline{toc}{section}{このSpecialの読み方}
+本号は、2023年8月18日から2026年8月18日までの車載E\&Eアーキテクチャ動向を、\textbf{「中央集約」ではなく責務境界の再配置}という観点で再構成する。対象はzonal/central compute、mixed criticality、in-vehicle networking、service/data architecture、open software platform、cloud-to-edge development/validation lifecycle、およびそれらを制約するsafety/securityである。
+
+\begin{claimboundary}[資料の読み方]
+公式の標準化・製品・project資料、repository release、研究論文を区別し、各章で「公開資料から確認できること」と「組織・project・著者が主張していること」を分けて扱う。公開landing pageしか確認できないstandardのnormative detail、production deployment、certification/conformance、非公開OEM/Tier1実装は推測で補わない。AUTOSARについては初回収集時に取得できなかったページを、今回の再確認で公式公開ページから補完した。一方、ISO 11898-1:2024の規格本文そのものは公開範囲で確認していないため、CAN XLのnormative detailはCiA等で確認できる公開範囲に限定する。
+\end{claimboundary}
+
+\subsection*{本号の結論を先に一行で}
+物理I/Oはzonalへ、computeはcentral/HPCへ寄り得る。しかしnetwork・service/data・resource・assuranceの契約が同時に成立しなければ、その集約はarchitectureとして完成しない。したがって、2026年夏の到達点は\textbf{Centralize Everythingではなく、責務を検証可能なcontractで結ぶこと}にある。
+
+\subsection*{本号で使う責務境界の見取り図}
+\begin{center}
+\begin{tikzpicture}[
+  node distance=3.5mm,
+  box/.style={draw=SurveyAccent,rounded corners=1.5mm,minimum height=9mm,text width=0.135\linewidth,align=center,fill=SurveySoft,font=\small\bfseries},
+  arrow/.style={-{Latex[length=2mm]},thick,draw=SurveyMuted}
+]
+\node[box] (io) {Physical\\I/O / Zonal};
+\node[box,right=of io] (compute) {Compute\\Central / HPC};
+\node[box,right=of compute] (network) {Network\\Fabric};
+\node[box,right=of network] (contract) {Service / Data\\Contract};
+\node[box,right=of contract] (life) {Lifecycle\\Validation};
+\node[box,right=of life] (assure) {Assurance\\Safety / Security};
+\draw[arrow] (io) -- (compute);
+\draw[arrow] (compute) -- (network);
+\draw[arrow] (network) -- (contract);
+\draw[arrow] (contract) -- (life);
+\draw[arrow] (life) -- (assure);
+\end{tikzpicture}
+\end{center}
+\surveyfigurecaption{図1：本号の編集上の整理。各層を一つの製品stackとして固定する図ではなく、「どの責務をどこに置き、何を境界として検証するか」を読むための概念図である。}
+
+\tableofcontents
+\bigskip

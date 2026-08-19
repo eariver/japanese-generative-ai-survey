@@ -1,0 +1,23 @@
+\section{中央集約ではなく、責務境界を組み替える}
+\noindent\textbf{zonalとcentral/HPCは競合する選択肢ではない。2023〜2026年のE\&E変化は、物理I/O、計算、通信、software contractを別々の最適位置へ再配置する動きとして読むと整合する。}\autocite{src-d5d5a7ec3f4c,src-e34d32d330e6}
+
+\begin{surveyarticlebody}
+\subsection{中央集約は、ECUの数を減らす話ではない}
+
+2023〜2026年の車載E\&Eを「分散ECUから中央コンピュータへ」という一本の矢印だけで捉えると、設計上の重要な変化を見落とす。Centralization potential of automotive E/E architectures の著者らは、中央集約の評価軸としてbusload、functional safety、computing power、feature dependencies、development/maintenance cost、error rate、modularity/flexibilityの7項目を挙げる。つまり中央化の可否はECU個数ではなく、通信負荷、安全要求、計算資源、機能依存、保守性をどこで引き受けるかという責務配分の問題である。\autocite{src-6d738dbdfc39}
+
+同じ期間の研究は、computeの中央集約とzone-based architectureを同時に描いている。Deterministic and Reliable Software-Defined Vehicles の著者らは、多数の分散ECUから中央寄りの計算へ移行しつつ、zone-based architectureを組み合わせる像を示し、critical serviceにはnetworkとcomputeのdeterministicな保証が必要だと論じる。ここから本稿では、配線とI/Oの近接性をzonal側へ寄せ、重い計算や機能統合をcentral/HPC側へ寄せる「physically zonal / computationally centralized」を、矛盾ではなく相補的な設計として読む。\autocite{src-e34d32d330e6}
+
+ただし、中央化は複雑さを消すわけではない。中央化研究の著者ら自身、厳しいfunctional-safety要求ではlocal embedded ECUが残り得ること、複雑さが別の層へ移ることを指摘する。さらにdeterministic SDV論文が提示するnetwork configurator、data-layer configurator、hypervisor configurator、vehicle abstraction layer、software orchestratorという5要素は、production deploymentを実証した完成アーキテクチャではなく、責務境界を整理するためのvisionである。\autocite{src-d5d5a7ec3f4c,src-e34d32d330e6}
+
+\subsection{集約後に残るのは、determinismと責務境界の設計}
+
+したがって後続章の焦点は「どこまで中央に置けるか」ではなく、「中央に置いたとき何を隔離し、何をnetwork contractとして保証し、何をservice/data contractとして固定するか」に移る。computeではmixed criticalityとresource governance、networkではTSNと異種busの役割分担、softwareではservice/data abstraction、開発ではintegrationとvalidationが、それぞれ同じ問題の別断面になる。determinismとreliabilityは、これらを再び一つのE\&E architectureとして接続する条件である。\autocite{src-e34d32d330e6}
+
+\subsection{公開された量産・実装signalでも、zonalとcentralは同時に現れる}
+研究だけでなくOEM/Tier1の公開資料にも、物理zonal化とcompute集約を同時に進める構図が現れている。BMWはNeue Klasseについて、主要機能のcomputeを4つのhigh-performance computer（``Superbrains''）へ集約する一方、配線をfront / center / rear / roofの4 zoneへ分け、小型zonal controllerが各zoneのelectronic data flowを束ねると説明している。BMWは従来世代比で配線600 m削減・30\%軽量化も掲げる。Volvo EX90も2台のcore computerとOTA更新を製品機能として説明している。Tier1側ではContinentalがHPCとZone Control Unitを組み合わせるserver-based architectureを提示し、ZCUがphysical zone内のelectrical/electronic connectionとservice/data managementを担うとしている。これらは各社の自己記述であり共通標準architectureの証明ではないが、``physically zonal / computationally centralized''が論文上だけの整理ではないことを示すindustry signalにはなる。\autocite{src-1096d739982f,src-725f5d05634d,src-e08dbef62089}
+\end{surveyarticlebody}
+
+\begin{claimboundary}
+確認できる範囲：BMW、Volvo、Continentalのarchitecture記述・数値・製品説明は各社の公式な自己記述であり、cross-OEM比較や独立測定、量産fleet全体の普遍的構成を証明するものではない。中央化研究のinterview analysisは統計的一般化を目的としたものではなく、Daimler Truck AGの実務文脈に依存する。deterministic SDVの5要素構成もsurvey-derived visionであり、production deploymentやend-to-end certificationの実証ではない。また、同論文のarchitecture-transition記述の多くは既存文献・industry materialのsynthesisである。本稿はこれらを普遍的な実測事実ではなく、2023〜2026年の設計方向を読むためのauthor claim / editorial synthesisとして扱う。\autocite{src-d5d5a7ec3f4c,src-e34d32d330e6}
+\end{claimboundary}

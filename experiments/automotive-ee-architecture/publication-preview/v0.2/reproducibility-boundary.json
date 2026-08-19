@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-automotive-ee-architecture-2023-2026",
+  "bundle_mode": "REPOSITORY_BOUND_WITH_SELF_CONTAINED_PUBLICATION_SOURCE",
+  "repository": "eariver/japanese-generative-ai-survey",
+  "required_ref": "experiment/automotive-ee-architecture-special",
+  "self_contained": [
+    "publication-preview/main.tex",
+    "publication-preview/autoeesurvey.sty",
+    "publication-preview/references.bib",
+    "publication-preview/sections/P00.tex..P09.tex",
+    "structured-drafts/P01.json..P08.json",
+    "validation/*",
+    "supplemental-source-audit-v0.2.json",
+    "semantic-claim-audit-v0.2.md"
+  ],
+  "repository_bound_dependencies": [
+    {"path":"sources/SP-automotive-ee-architecture-2023-2026/drafting/packages/v0.3/P01.json","sha256":"0d6cb064be3b4afa8ee3fbab968625a2db812df00d18d71a53991d507e01b0db"},
+    {"path":"sources/SP-automotive-ee-architecture-2023-2026/drafting/packages/v0.3/P02.json","sha256":"73548a8646d508c87afd9ad5ee034cd7ba8a24b764f5a6a22d1f2c26b19e3719"},
+    {"path":"sources/SP-automotive-ee-architecture-2023-2026/drafting/packages/v0.3/P03.json","sha256":"6f32adc9cfcd3494e45070fdfb831cf6f6379769cf8967b653e4bb1103d41b9f"},
+    {"path":"sources/SP-automotive-ee-architecture-2023-2026/drafting/packages/v0.3/P04.json","sha256":"b9dfc078d02ce144fcb1ddb39858602011c5a60e0c1ab306471cbc2f500da8ec"},
+    {"path":"sources/SP-automotive-ee-architecture-2023-2026/drafting/packages/v0.3/P05.json","sha256":"f68ac4ee838e6ef63069e2c2e697472e26eb89ec65b651237a4917b19ee89e1c"},
+    {"path":"sources/SP-automotive-ee-architecture-2023-2026/drafting/packages/v0.3/P06.json","sha256":"6c0734929d6bf0817dc42410be32332efe3c00d1e3658ae4b810efc45ca19b2d"},
+    {"path":"sources/SP-automotive-ee-architecture-2023-2026/drafting/packages/v0.3/P07.json","sha256":"578f9f2e0ee805b7407c35cdfb90e55a70d1ab87109457b5808555cc8a487741"},
+    {"path":"sources/SP-automotive-ee-architecture-2023-2026/drafting/packages/v0.3/P08.json","sha256":"4279d6da418d5ef5aa0e6a8d2e019543707212e401a29cbb5197cb3c596333f5"},
+    {"path":"experiments/automotive-ee-architecture/article-drafting-v0.1.md","sha256":"96881653754e5629c8320d169cd483bb023a515b4fc173dac4f41686f7bc73db"}
+  ],
+  "statement": "The reader-facing TeX/PDF is reproducible from this bundle. Re-running the unchanged baseline Article Draft validator additionally requires the exact repository-bound Draft Packages and prompt listed above. Supplemental post-Architecture claims are audited separately rather than misrepresented as baseline validator output.",
+  "deterministic_build": {
+    "source_date_epoch": 1787053800,
+    "force_source_date": 1,
+    "editorial_cutoff_utc": "2026-08-18T11:50:00Z",
+    "commands": [
+      "lualatex -interaction=nonstopmode -halt-on-error main.tex",
+      "biber main",
+      "lualatex -interaction=nonstopmode -halt-on-error main.tex",
+      "lualatex -interaction=nonstopmode -halt-on-error main.tex"
+    ],
+    "clean_build_repetition_count": 2,
+    "byte_identical": true,
+    "verified_pdf_sha256": "73e3389083282e583c5cfd8df75a3583bdb325f2c136adb1484303fe8edb2373"
+  }
+}

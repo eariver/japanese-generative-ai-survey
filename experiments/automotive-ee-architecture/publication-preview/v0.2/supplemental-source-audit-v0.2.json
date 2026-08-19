@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-automotive-ee-architecture-2023-2026",
+  "purpose": "POST_ARCHITECTURE_COVERAGE_GAP_FILL_V0.2",
+  "coverage_window": {"start":"2023-08-18","end":"2026-08-18"},
+  "architecture_effect": {
+    "thesis_changed": false,
+    "package_order_changed": false,
+    "primary_assignment_changed": false,
+    "supporting_surface_extended": ["P01","P04","P05","P06","P08"],
+    "reason": "Resolve self-review coverage gaps using official AUTOSAR and OEM/Tier1 public sources without changing the approved responsibility-boundary thesis."
+  },
+  "sources": [
+    {"source_id":"src-f65f7dca2182","organization":"AUTOSAR","source_class":"PRIMARY_OFFICIAL","evidence_class":"PRIMARY_FACT","url":"https://www.autosar.org/standards/adaptive-platform/","scope":"Adaptive Platform public architecture: ARA runtime, services/APIs, functional clusters, current/past release surface"},
+    {"source_id":"src-7d08f22a7fd1","organization":"AUTOSAR","source_class":"PRIMARY_OFFICIAL","evidence_class":"PRIMARY_FACT","date":"2024-12-05","url":"https://www.autosar.org/news-events/detail/autosar-release-event-r24-11-1","scope":"R24-11 release-event topics: Automotive API, AP stabilization, Machine Configuration, DDS"},
+    {"source_id":"src-ec70559f8987","organization":"AUTOSAR","source_class":"PRIMARY_OFFICIAL","evidence_class":"PRIMARY_FACT","date":"2025-12-18","url":"https://www.autosar.org/news-events/detail/autosar-release-event-r25-11","scope":"R25-11 release-event topics including Vehicle Data Protocol and CAPI"},
+    {"source_id":"src-3679c0c0bec5","organization":"AUTOSAR","source_class":"PRIMARY_OFFICIAL","evidence_class":"PROJECT_CLAIM","url":"https://www.autosar.org/capi","scope":"CAPI code-first implementation positioning; automotive-grade/certification-ready/interoperability language remains project claim"},
+    {"source_id":"src-f1ba3a884bb8","organization":"AUTOSAR","source_class":"PRIMARY_OFFICIAL","evidence_class":"PROJECT_CLAIM","date":"2026-06-10","url":"https://www.autosar.org/news-events/detail/autosar-and-isoft-announce-major-capi-contribution-to-accelerate-sdv-and-aidv-deployment","scope":"CAPI contribution supporting centralized compute/service-oriented communication; production-oriented wording remains project/partner claim"},
+    {"source_id":"src-1096d739982f","organization":"BMW Group","source_class":"PRIMARY_OFFICIAL","evidence_class":"VENDOR_CLAIM","date":"2025-03-11","url":"https://www.bmwgroup.com/en/news/general/2025/superbrains.html","scope":"Neue Klasse four HPCs/four zones/600 m wiring reduction/30% weight reduction as OEM self-description"},
+    {"source_id":"src-76ffc13a4115","organization":"Mercedes-Benz Group","source_class":"PRIMARY_OFFICIAL","evidence_class":"VENDOR_CLAIM","date":"2025-06-04","url":"https://group.mercedes-benz.com/innovations/digitalisation/industry-4-0/article.html","scope":"CLA series production with MB.OS and chip-to-cloud production/software-delivery description"},
+    {"source_id":"src-e08dbef62089","organization":"Volvo Cars","source_class":"PRIMARY_OFFICIAL","evidence_class":"VENDOR_CLAIM","url":"https://www.volvocars.com/us/cars/ex90-electric/features/","scope":"EX90 two core computers and OTA updates as OEM product description"},
+    {"source_id":"src-725f5d05634d","organization":"Continental","source_class":"PRIMARY_OFFICIAL","evidence_class":"VENDOR_CLAIM","date":"2024-04-18","url":"https://www.continental.com/en/press/press-releases/20240418-zonecontrolunits/","scope":"HPC/ZCU server-zone architecture and ZCU responsibilities as Tier1 self-description"}
+  ],
+  "unresolved": [{"topic":"ISO 11898-1:2024 normative text","disposition":"Remain unresolved; no access-control bypass or reconstruction."}],
+  "production_ai_pipeline_modified": false,
+  "reader_blocks": [
+    {"package_id":"P01","block_id":"supp-industry-central-zonal","attribution_mode":"MIXED","source_ids":["src-1096d739982f","src-e08dbef62089","src-725f5d05634d"],"claim_boundary":"OEM/Tier1 self-description; not a common reference architecture or independent fleet-wide validation."},
+    {"package_id":"P04","block_id":"supp-autosar-contract-surface","attribution_mode":"MIXED","source_ids":["src-f65f7dca2182","src-7d08f22a7fd1"],"claim_boundary":"Official public architecture/release surface only; not a revalidation of all normative documents or vendor conformance."},
+    {"package_id":"P05","block_id":"supp-autosar-capi","attribution_mode":"MIXED","source_ids":["src-3679c0c0bec5","src-ec70559f8987","src-f1ba3a884bb8"],"claim_boundary":"CAPI automotive-grade/certification-ready/interoperability/production-oriented wording remains AUTOSAR/partner project claim."},
+    {"package_id":"P06","block_id":"supp-mbos-production-lifecycle","attribution_mode":"ATTRIBUTED","source_ids":["src-76ffc13a4115"],"claim_boundary":"Mercedes-Benz first-party production description; does not independently establish internal E/E topology or safety/update performance."},
+    {"package_id":"P08","block_id":"supp-industry-synthesis","attribution_mode":"MIXED","source_ids":["src-1096d739982f","src-e08dbef62089","src-76ffc13a4115"],"claim_boundary":"Cross-OEM editorial synthesis; public descriptions differ in granularity and do not prove a single common architecture."}
+  ]
+}

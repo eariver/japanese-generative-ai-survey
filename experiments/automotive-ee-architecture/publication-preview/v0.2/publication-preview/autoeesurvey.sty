@@ -1,0 +1,95 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{autoeesurvey}[2026/08/19 Automotive E/E experimental survey style v0.2]
+\RequirePackage[haranoaji,deluxe,match,nfssonly]{luatexja-preset}
+\RequirePackage[margin=18mm,headsep=5mm,footskip=9mm]{geometry}
+\RequirePackage{xcolor}
+\RequirePackage{graphicx}
+\RequirePackage{booktabs}
+\RequirePackage{tabularx}
+\RequirePackage{array}
+\RequirePackage{enumitem}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{fancyhdr}
+\RequirePackage{xurl}
+\RequirePackage{hyperref}
+\RequirePackage{bookmark}
+\RequirePackage{etoolbox}
+\RequirePackage{multicol}
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,calc}
+\RequirePackage[backend=biber,style=numeric,sorting=none,giveninits=true,maxbibnames=99]{biblatex}
+\definecolor{SurveyInk}{HTML}{17202A}
+\definecolor{SurveyAccent}{HTML}{2457A6}
+\definecolor{SurveyMuted}{HTML}{5D6D7E}
+\definecolor{SurveyRule}{HTML}{D5D8DC}
+\definecolor{SurveySoft}{HTML}{F4F6F7}
+\definecolor{SurveyWarn}{HTML}{7D3C98}
+\definecolor{SurveyLate}{HTML}{922B21}
+\hypersetup{
+  unicode=true,
+  colorlinks=true,
+  linkcolor=SurveyAccent,
+  citecolor=SurveyAccent,
+  urlcolor=SurveyAccent,
+  pdfcreator={LuaLaTeX},
+  pdftitle={Automotive E/E Architecture Technical Survey Special -- 2023--2026},
+  pdfsubject={2023--2026年の車載E/Eアーキテクチャを責務境界の再配置として整理するRetrospective Thematic Survey},
+  pdfkeywords={Automotive E/E, SDV, zonal architecture, central compute, HPC, TSN, CAN XL, AUTOSAR, S-CORE}
+}
+\setlength{\headheight}{14pt}
+\setlength{\columnsep}{7mm}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0pt}
+\setlist{nosep,leftmargin=1.8em}
+\setcounter{tocdepth}{1}
+\renewcommand{\contentsname}{目次}
+\raggedbottom
+\hyphenpenalty=5000
+\exhyphenpenalty=5000
+\emergencystretch=1.4em
+\AtEveryBibitem{\clearfield{note}}
+\AtBeginBibliography{\small}
+\newcommand{\SurveyIssue}{SP-automotive-ee-architecture-2023-2026}
+\newcommand{\SurveyTitle}{Automotive E/E Architecture Technical Survey Special}
+\newcommand{\SurveyDate}{Coverage: 2023-08-18 -- 2026-08-18}
+\newcommand{\SurveyCutoff}{Retrospective as of 2026-08-18}
+\newcommand{\SurveyRepository}{eariver/japanese-generative-ai-survey}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{SurveyMuted}\SurveyTitle}
+\fancyhead[R]{\small\color{SurveyMuted}\SurveyIssue}
+\fancyfoot[C]{\small\color{SurveyMuted}\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0pt}
+\newcommand{\surveycover}{%
+  \thispagestyle{empty}%
+  \vspace*{15mm}%
+  \noindent{\color{SurveyAccent}\rule{\linewidth}{2.2pt}}\\[8mm]%
+  {\fontsize{21}{28}\selectfont\bfseries \SurveyTitle\par}%
+  \vspace{5mm}%
+  {\Large\bfseries 車載E\&Eアーキテクチャ 2023--2026\par}%
+  \vspace{3mm}%
+  {\large Retrospective Thematic Survey\par}%
+  \vspace{13mm}%
+  {\fontsize{21}{28}\selectfont\bfseries\color{SurveyInk}中央集約ではなく、責務境界の再設計\par}%
+  \vspace{4mm}%
+  {\large\color{SurveyMuted}Zonal / Central HPC / TSN / CAN XL / Service \& Data / Open Platform / Lifecycle\par}%
+  \vspace{8mm}%
+  {\footnotesize\bfseries\color{SurveyAccent}物理配置・計算・通信・software contract・assuranceを一つの設計問題として読む\par}%
+  \vfill%
+  \noindent\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.23\linewidth}X@{}}
+    Coverage & 2023-08-18 -- 2026-08-18 \\
+    Retrospective & 2026-08-18 時点 \\
+    Repository & \SurveyRepository \\
+    Build & LuaLaTeX / jlreq / LuaTeX-ja
+  \end{tabularx}%
+  \vspace{7mm}%
+  {\small\color{SurveyMuted}公開一次資料・標準化団体資料・OSS release・研究論文を区別し、確認できる事実、組織・著者による主張、未解決の境界を分けて編成した技術サーベイ。\par}%
+  \vspace*{8mm}%
+}
+\newcommand{\sectionkicker}[1]{{\small\bfseries\color{SurveyAccent}\MakeUppercase{#1}\par}\vspace{1mm}}
+\newtcolorbox{claimboundary}[1][確認できる範囲]{enhanced,breakable,colback=SurveySoft,colframe=SurveyWarn,boxrule=0.6pt,arc=1mm,title={#1},fonttitle=\bfseries,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm}
+\newtcolorbox{communitynote}[1][Community observation]{enhanced,breakable,colback=SurveySoft,colframe=SurveyAccent,boxrule=0.6pt,arc=1mm,title={#1},fonttitle=\bfseries,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm}
+\newtcolorbox{latebreaking}[1][Late Breaking]{enhanced,breakable,colback=SurveySoft,colframe=SurveyLate,boxrule=0.8pt,arc=1mm,title={#1},fonttitle=\bfseries,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm}
+\newenvironment{surveyarticlebody}{\begin{multicols}{2}}{\end{multicols}}
+\newcommand{\surveyfigurecaption}[1]{\par\smallskip{\footnotesize\color{SurveyMuted}#1\par}\medskip}
