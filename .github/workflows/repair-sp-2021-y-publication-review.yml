@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - special/2021-Y-work
-    paths:
-      - sources/SP-2021-Y/editorial/layout-revision-v0.3.json
 
 permissions:
   contents: write
@@ -101,7 +99,7 @@ jobs:
         run: |
           set -euo pipefail
           python - <<'PY'
-          import hashlib,json,pathlib,re
+          import hashlib,json,pathlib
           root=pathlib.Path('worktree')
           state=json.load(open(root/'sources/SP-2021-Y/pipeline-state.json',encoding='utf-8'))
           assert state['lifecycle_state']=='VALIDATED_DRAFT'
