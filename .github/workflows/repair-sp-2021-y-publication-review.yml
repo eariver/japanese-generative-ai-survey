@@ -1,0 +1,160 @@
+name: Repair SP-2021-Y Publication Preview findings
+
+on:
+  push:
+    branches:
+      - special/2021-Y-work
+    paths:
+      - sources/SP-2021-Y/editorial/layout-revision-v0.3.json
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repair-sp-2021-y-publication-preview
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+
+      - name: Checkout SP-2021-Y work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2021-Y-work
+          path: worktree
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify pre-Publication-Preview repair boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2021-Y check
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources/SP-2021-Y/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='RELEASE_CANDIDATE', state['lifecycle_state']
+          assert state['gates']['issue_architecture']=='passed'
+          assert state['gates']['article_draft']=='passed'
+          assert state['gates']['claim_and_chronology_validation']=='passed'
+          assert state['gates']['latex_build']=='passed'
+          assert state['gates']['visual_review']=='pending'
+          assert state['gates']['freeze']=='pending'
+          assert 'publication_preview' not in state.get('provenance',{})
+          source=state['provenance']['validated_issue_source']
+          assert source['source_version']=='v0.2', source
+          path=root/source['path']
+          assert path.is_file()
+          assert hashlib.sha256(path.read_bytes()).hexdigest()==source['sha256']
+          manifest=json.load(open(path,encoding='utf-8'))
+          assert manifest['evidence_record_count']==38
+          chronology=state['provenance']['annual_chronology']
+          assert chronology['event_count']==45
+          assert chronology['unresolved_date_count']==0
+          marker=json.load(open(root/'sources/SP-2021-Y/editorial/layout-revision-v0.3.json',encoding='utf-8'))
+          assert marker['review_issues']==[139,191]
+          changes=marker['layout_changes']
+          constraints=marker['constraints']
+          assert changes['annual_source_specific_notes_v1'] is True
+          assert changes['half_year_review_repairs_v3'] is True
+          assert constraints['new_external_evidence_allowed'] is False
+          assert constraints['selected_evidence_only'] is True
+          assert constraints['accepted_article_claims_changed'] is False
+          assert constraints['evidence_cards_mutated'] is False
+          PY
+
+      - name: Apply ordered review repairs
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python worktree/scripts/revise_sp_2021_y_publication_review.py \
+            --repo-root worktree \
+            --special-slug 2021-Y \
+            --issue-id SP-2021-Y \
+            > sp-2021-y-publication-review-repair.json
+          cat sp-2021-y-publication-review-repair.json
+
+      - name: Re-run canonical source and chronology checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2021-Y check
+          python control-src/scripts/verify_special_period_consistency.py \
+            --repo-root worktree \
+            --issue-id SP-2021-Y \
+            --source-manifest surveys/special/2021-Y/revisions/v0.7/source-manifest.json
+
+      - name: Verify final requested issue contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,pathlib,re
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources/SP-2021-Y/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT'
+          assert state['gates']['latex_build']=='pending'
+          assert state['gates']['visual_review']=='pending'
+          assert state['gates']['freeze']=='pending'
+          assert 'publication_preview' not in state.get('provenance',{})
+          source=state['provenance']['validated_issue_source']
+          assert source['source_version']=='v0.7'
+          path=root/source['path']
+          assert hashlib.sha256(path.read_bytes()).hexdigest()==source['sha256']
+          manifest=json.load(open(path,encoding='utf-8'))
+          assert manifest['evidence_record_count']==38
+          audit=json.load(open(root/'sources/SP-2021-Y/editorial/issues-139-54-153-272-78-140-122-55-v0.7.json',encoding='utf-8'))
+          assert audit['issue_refs']==[139,54,153,272,78,140,122,55]
+          assert audit['generic_fallback_findings']==0
+          assert audit['chronology_placeholder_findings']==0
+          assert audit['raw_product_findings']==0
+          assert audit['duplicate_chronology_cards_rendered']==0
+          assert audit['chronology_event_count']==45
+          assert audit['chronology_reference_mapping_count']==45
+          assert audit['generic_reference_title_findings']==0
+          assert audit['repeated_reference_boilerplate_findings']==0
+          assert audit['toc_depth']=='section'
+          assert audit['unprotected_technical_note_tail_findings']==0
+          assert audit['new_external_evidence'] is False
+          assert audit['accepted_article_claims_changed'] is False
+          PY
+
+      - name: Commit repaired immutable source chain
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            sources/SP-2021-Y/pipeline-state.json \
+            sources/SP-2021-Y/chronology \
+            sources/SP-2021-Y/editorial \
+            surveys/special/2021-Y/revisions/v0.3 \
+            surveys/special/2021-Y/revisions/v0.4 \
+            surveys/special/2021-Y/revisions/v0.5 \
+            surveys/special/2021-Y/revisions/v0.6 \
+            surveys/special/2021-Y/revisions/v0.7
+          git diff --cached --quiet && { echo 'No repair changes to commit' >&2; exit 1; }
+          git commit -m 'Repair SP-2021-Y Publication Preview findings'
+          git push origin HEAD:special/2021-Y-work
+
+      - name: Upload repair audit
+        uses: actions/upload-artifact@v7
+        with:
+          name: sp-2021-y-publication-review-repair-v0.7
+          path: sp-2021-y-publication-review-repair.json
+          if-no-files-found: error
+          retention-days: 14
