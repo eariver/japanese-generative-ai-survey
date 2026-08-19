@@ -17,16 +17,21 @@ from typing import Any
 
 
 ISSUE_RE = re.compile(r"^SP-(?P<year>\d{4})-Y$")
+# Annual backfill Evidence has used both "primary source" and
+# "primary-source" in otherwise identical, reviewed claim templates. Keep the
+# helper fail-closed for every other wording while accepting those two known
+# orthographic variants.
+PRIMARY_SOURCE = r"primary[- ]source"
 TECHNICAL_RE = re.compile(
-    r"^The reviewed primary source set documents (?P<name>.+) within (?P<year>\d{4}); "
+    rf"^The reviewed {PRIMARY_SOURCE} set documents (?P<name>.+) within (?P<year>\d{{4}}); "
     r"technical and evaluation results remain attributed to the originating authors\.$"
 )
 LIFECYCLE_RE = re.compile(
-    r"^The reviewed primary source set documents the (?P<year>\d{4}) release/publication lifecycle of (?P<name>.+); "
+    rf"^The reviewed {PRIMARY_SOURCE} set documents the (?P<year>\d{{4}}) release/publication lifecycle of (?P<name>.+); "
     r"capability and performance claims remain attributed to the originating vendor, project, or authors\.$"
 )
 GENERIC_RECORD_RE = re.compile(
-    r"^The reviewed primary source set documents (?P<name>.+) as part of the (?P<year>\d{4}) generative-AI technical record\. "
+    rf"^The reviewed {PRIMARY_SOURCE} set documents (?P<name>.+) as part of the (?P<year>\d{{4}}) generative-AI technical record\. "
     r"Technical, performance, access, and safety assertions remain attributed to the originating authors/projects "
     r"rather than treated as independent reproduction\.$"
 )
