@@ -1,0 +1,42 @@
+% WORKSPACE ENTRY POINT — NOT THE CANONICAL FROZEN RELEASE SOURCE. See CURRENT_RELEASE.md.
+\documentclass[lualatex,a4paper,10pt]{jlreq}
+\usepackage{../../../templates/survey/jgaisurvey}
+\addbibresource{references.bib}
+
+\surveysetup
+  {SP-2021-Y}
+  {Japanese Generative AI Technical Survey Special}
+  {Coverage: 2021-01-01 -- 2021-12-31 / Retrospective as of 2026-08-18}
+  {Coverage window: 2021-01-01 -- 2021-12-31 UTC}
+\surveyeditiondescriptor{Retrospective Technical Survey}
+
+\surveycoverstory
+  {巨大モデルから、再利用・接続される生成AI基盤へ}
+  {2021年、生成AIは巨大なpretrained modelそのものを競う段階から、その基盤をadaptし、steerし、scaleし、配布し、視覚やcodeや外部情報へ接続し、評価する多層systemへ移り始めた。各layerはまだ一つの製品へ統合されていない。その分離した設計空間こそが、2022年のinstruction following、open distribution、generative media、dialogue/controlの統合へつながる。}
+  {巨大モデルを作り直さずに変える――適応レイヤが独立した2021年 \quad / \quad 答えるモデルから接続するモデルへ――LaMDA、RETRO、WebGPT \quad / \quad 総括――分離したレイヤが2022年の統合へ向かうまで}
+
+\begin{document}
+
+\surveycover
+\clearpage
+\input{sections/00-frontmatter}
+
+\clearpage
+\twocolumn
+\input{sections/10-adaptation-efficient-tuning}
+\input{sections/20-instruction-human-feedback}
+\input{sections/30-scale-sparse-systems}
+\input{sections/40-access-distribution}
+\input{sections/50-multimodal-substrate}
+\input{sections/60-diffusion-media}
+\input{sections/70-code-developer-interface}
+\input{sections/80-dialogue-retrieval-grounding}
+\input{sections/90-evaluation-risk-foundation}
+\input{sections/100-annual-chronology}
+\input{sections/110-synthesis-transition-2022}
+
+\clearpage
+\onecolumn
+\printbibliography[title={References / Source Notes}]
+
+\end{document}

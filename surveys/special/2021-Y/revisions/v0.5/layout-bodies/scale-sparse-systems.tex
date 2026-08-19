@@ -1,0 +1,20 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+
+Switch Transformersが代表するsparse MoE scalingは、すべてのparameterを毎回同じように使うdense modelとは異なるscaleの作り方を研究対象にした。ここでの年次的な意味は、parameterを増やすこと自体よりも、計算経路をどう構成するかというarchitecture choiceが規模拡大の中心に入った点にある。著者が示した性能上の評価はそのまま著者主張として残し、本稿ではsparsityが独立したscale leverになったことを押さえる。\autocite{src-7fa5b597ba1f}
+
+
+ZeRO-Infinityは別の制約を可視化する。モデルが大きくなるほど、学習を成立させるにはmemory hierarchyとoffloadを含むsystem designが問題になる。scaleは数学的なmodel architectureだけで完結せず、限られた計算資源のどこへ状態を置き、どう移動させるかという実装上の設計と不可分になった。これは『大きいモデルを考案する』ことと『そのモデルを実際に訓練可能にする』ことを分離して見る必要を示す。\autocite{src-7b8be93e524d}
+
+
+Megatron-Turing NLG 530Bの一次資料は、frontier-scale modelを成立させるdistributed trainingとsystems engineeringが2021年の重要な境界だったことを補強する。ここでもモデル名や規模の順位表を作ることが目的ではない。frontier modelの訓練が、parallelismやmemory managementを含む大規模systemとして設計される局面に入っていたことが、同時代のscale競争を理解する上で重要である。\autocite{src-b307b4b82867}
+
+
+年末のGopherとGLaMを対置すると、scaleに一つの正解があったわけではないことが見える。Gopherはdense-scale analysisの系統、GLaMはsparse scalingの系統として記録されており、両者は『より大きい方が勝つ』という一本の軸ではなく、denseとsparseの異なる設計空間を示す。本稿では両者の性能比較を独立検証したとはみなさず、2021年末にscale architectureの選択肢が並立していたという構造を読む。\autocite{src-0028da50cfe5,src-7652e568e428,src-d15ca2441916}
+
+
+Switchのsparsity、ZeROのmemory/offload、MT-NLGのdistributed training、GopherとGLaMのdense/sparse framingを一つの年次trajectoryとして見ると、2021年のscaleはparameter countからsystems problemへ拡張されたと整理できる。計算量、memory、通信、active computation、model structureを別々のleverとして扱えるようになったことが重要であり、この多次元化は翌年のcompute/data allocationやefficient deploymentを議論する土台になる。\autocite{src-0028da50cfe5,src-7652e568e428,src-7b8be93e524d,src-7fa5b597ba1f,src-b307b4b82867,src-d15ca2441916}
+
+
+\begin{claimboundary}
+各論文・組織が示した性能、効率、規模に関する評価は、それぞれのauthor/vendor側の主張である。一次資料で存在と位置付けを確認したことは、benchmark結果やsystems efficiencyを独立再現したことを意味しない。\autocite{src-0028da50cfe5,src-7652e568e428,src-7b8be93e524d,src-7fa5b597ba1f,src-b307b4b82867,src-d15ca2441916}
+\end{claimboundary}
