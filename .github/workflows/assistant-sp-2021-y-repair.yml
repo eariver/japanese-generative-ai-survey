@@ -1,0 +1,170 @@
+name: Temporary SP-2021-Y Publication Preview repair control
+
+on:
+  push:
+    branches:
+      - automation-control
+    paths:
+      - automation/request.json
+
+permissions:
+  contents: write
+
+concurrency:
+  group: temporary-sp-2021-y-repair-control
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout automation control request
+        uses: actions/checkout@v6
+        with:
+          ref: automation-control
+          path: request-src
+          fetch-depth: 1
+
+      - name: Match dedicated repair request
+        id: request
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,os,pathlib
+          req=json.load(open('request-src/automation/request.json',encoding='utf-8'))
+          active=(req.get('schema_version')=='1.0' and req.get('workflow')=='repair-sp-2021-y-publication-review')
+          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:
+              f.write('active=' + ('true' if active else 'false') + '\n')
+          if active:
+              assert req.get('ref')=='main'
+              assert req.get('inputs')=={'special_slug':'2021-Y'}
+              nonce=req.get('nonce')
+              assert isinstance(nonce,str) and nonce
+          PY
+
+      - name: Checkout current main control code
+        if: steps.request.outputs.active == 'true'
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+
+      - name: Checkout SP-2021-Y work branch
+        if: steps.request.outputs.active == 'true'
+        uses: actions/checkout@v6
+        with:
+          ref: special/2021-Y-work
+          path: worktree
+          fetch-depth: 0
+
+      - name: Set up Python
+        if: steps.request.outputs.active == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify pre-Publication-Preview repair boundary
+        if: steps.request.outputs.active == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2021-Y check
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources/SP-2021-Y/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='RELEASE_CANDIDATE', state['lifecycle_state']
+          assert state['gates']['issue_architecture']=='passed'
+          assert state['gates']['article_draft']=='passed'
+          assert state['gates']['claim_and_chronology_validation']=='passed'
+          assert state['gates']['latex_build']=='passed'
+          assert state['gates']['visual_review']=='pending'
+          assert state['gates']['freeze']=='pending'
+          assert 'publication_preview' not in state.get('provenance',{})
+          source=state['provenance']['validated_issue_source']
+          assert source['source_version']=='v0.2', source
+          path=root/source['path']
+          assert path.is_file()
+          assert hashlib.sha256(path.read_bytes()).hexdigest()==source['sha256']
+          manifest=json.load(open(path,encoding='utf-8'))
+          assert manifest['evidence_record_count']==38
+          chrono=state['provenance']['annual_chronology']
+          assert chrono['event_count']==45 and chrono['unresolved_date_count']==0
+          assert (root/'scripts/revise_sp_2021_y_publication_review.py').is_file()
+          PY
+
+      - name: Apply requested ordered repair sequence
+        if: steps.request.outputs.active == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python worktree/scripts/revise_sp_2021_y_publication_review.py \
+            --repo-root worktree --special-slug 2021-Y --issue-id SP-2021-Y \
+            > sp-2021-y-publication-review-repair.json
+          cat sp-2021-y-publication-review-repair.json
+
+      - name: Re-run canonical invariants
+        if: steps.request.outputs.active == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2021-Y check
+          python control-src/scripts/verify_special_period_consistency.py \
+            --repo-root worktree --issue-id SP-2021-Y \
+            --source-manifest surveys/special/2021-Y/revisions/v0.7/source-manifest.json
+
+      - name: Commit repaired source chain
+        if: steps.request.outputs.active == 'true'
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            sources/SP-2021-Y/pipeline-state.json \
+            sources/SP-2021-Y/chronology \
+            sources/SP-2021-Y/editorial \
+            surveys/special/2021-Y/revisions/v0.3 \
+            surveys/special/2021-Y/revisions/v0.4 \
+            surveys/special/2021-Y/revisions/v0.5 \
+            surveys/special/2021-Y/revisions/v0.6 \
+            surveys/special/2021-Y/revisions/v0.7
+          git diff --cached --quiet && { echo 'No repair changes to commit' >&2; exit 1; }
+          git commit -m 'Repair SP-2021-Y Publication Preview findings'
+          git push origin HEAD:special/2021-Y-work
+
+      - name: Record dedicated repair result
+        if: always() && steps.request.outputs.active == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          TRIGGER_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64,datetime as dt,json,os,urllib.error,urllib.request
+          repo=os.environ['REPOSITORY']
+          path='automation/sp2021-last-result.json'
+          ref='automation-control'
+          api=f'https://api.github.com/repos/{repo}/contents/{path}'
+          headers={'Authorization':f"Bearer {os.environ['GH_TOKEN']}",'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','User-Agent':'sp2021-control'}
+          old=None
+          try:
+              with urllib.request.urlopen(urllib.request.Request(api+'?ref='+ref,headers=headers)) as r:
+                  old=json.load(r).get('sha')
+          except urllib.error.HTTPError as e:
+              if e.code != 404: raise
+          value={'schema_version':'1.0','workflow':'repair-sp-2021-y-publication-review','status':os.environ['JOB_STATUS'],'workflow_run_id':int(os.environ['RUN_ID']),'run_attempt':int(os.environ['RUN_ATTEMPT']),'trigger_sha':os.environ['TRIGGER_SHA'],'recorded_at':dt.datetime.now(dt.timezone.utc).isoformat()}
+          body={'message':'Record SP-2021-Y dedicated repair result','content':base64.b64encode((json.dumps(value,ensure_ascii=False,indent=2)+'\n').encode()).decode(),'branch':ref}
+          if old: body['sha']=old
+          req=urllib.request.Request(api,data=json.dumps(body).encode(),headers={**headers,'Content-Type':'application/json'},method='PUT')
+          with urllib.request.urlopen(req) as r: print(r.status)
+          print(json.dumps(value,ensure_ascii=False,indent=2))
+          PY
