@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -35,6 +36,7 @@ def main() -> int:
         raise SystemExit(f"unsupported issue id: {args.issue_id!r}")
     special_slug = args.issue_id.removeprefix("SP-")
     canonical = Path(__file__).with_name("special_period_consistency.py")
+    control_root = canonical.parent.parent
     command = [
         sys.executable,
         str(canonical),
@@ -46,7 +48,10 @@ def main() -> int:
         "--issue-id",
         args.issue_id,
     ]
-    return subprocess.call(command)
+    env = os.environ.copy()
+    existing = env.get("PYTHONPATH", "")
+    env["PYTHONPATH"] = str(control_root) if not existing else str(control_root) + os.pathsep + existing
+    return subprocess.call(command, env=env)
 
 
 if __name__ == "__main__":
