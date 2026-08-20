@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2020-Y",
+  "package_id": "dialogue-systems",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "headline": "会話はscaleだけでは解けない――MeenaとBlenderBot",
+  "deck": "2020年のopen-domain dialogueでは、large language modelを大きくすれば終わり、という単純な物語にはならなかった。Meenaはlarge-scale end-to-end dialogue modelとhuman evaluationを前面に置き、BlenderBot / Recipesはpersona、knowledge、empathyなど複数要素を組み合わせるsystem recipeとrelease boundaryを示した。会話品質はmodel sizeだけでなく、evaluationとsystem compositionの問題として扱われ始めた。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {"evidence_task_id":"evidence:SP-2020-Y:item-arxiv-2001-09977v3-a25c1d61e6","kind":"CLAIM","evidence_id":"claim-1"},
+    {"evidence_task_id":"evidence:SP-2020-Y:series-meta-blenderbot-2020-865ab3340a","kind":"CLAIM","evidence_id":"claim-1"}
+  ],
+  "blocks": [
+    {
+      "block_id": "meena-scale",
+      "block_type": "PARAGRAPH",
+      "text": "Meenaは2.6B parameterのmulti-turn open-domain chatbotとして提示され、public-domain social-media conversationから構成したdataでnext-token predictionを行うend-to-end modelとして記述された。年次的に重要なのは、dialogueをhand-crafted pipelineだけでなく、大規模pretrainingに近いscaleの問題として扱いながら、会話特有のqualityを別途測ろうとした点である。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id":"evidence:SP-2020-Y:item-arxiv-2001-09977v3-a25c1d61e6","kind":"CLAIM","evidence_id":"claim-1"}
+      ]
+    },
+    {
+      "block_id": "dialogue-evaluation",
+      "block_type": "PARAGRAPH",
+      "text": "Meenaの論文はSensibleness and Specificity Average（SSA）というhuman evaluation metricを導入し、perplexityだけでは捉えにくいmulti-turn responseのsensiblenessとspecificityを評価しようとした。ここで重要なのは特定のSSA値の優劣ではなく、open-domain dialogueではlanguage-model lossだけでなく、人間が会話としてどう受け取るかを測るevaluation layerが必要だと明示されたことである。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id":"evidence:SP-2020-Y:item-arxiv-2001-09977v3-a25c1d61e6","kind":"CLAIM","evidence_id":"claim-1"}
+      ]
+    },
+    {
+      "block_id": "blender-recipe",
+      "block_type": "PARAGRAPH",
+      "text": "BlenderBot / Recipes for building an open-domain chatbotは、engagingnessだけでなくknowledge、personality、empathyなど複数の会話能力をどう組み合わせるかというsystem recipeを中心に置いた。first-party release boundaryと合わせて見ると、dialogue researchが単一modelのbenchmarkから、複数要素を統合したinteractive systemを実際に公開・評価する方向へ進んでいたことが分かる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id":"evidence:SP-2020-Y:series-meta-blenderbot-2020-865ab3340a","kind":"CLAIM","evidence_id":"claim-1"}
+      ]
+    },
+    {
+      "block_id": "dialogue-synthesis",
+      "block_type": "PARAGRAPH",
+      "text": "MeenaとBlenderBotを並べる意味は、どちらが優れたchatbotだったかを決めることではない。前者はscaleとhuman evaluation、後者はcapability compositionとsystem recipeという別の設計焦点を示す。2020年のdialogue trajectoryは、large pretrained modelの能力を会話へ持ち込むだけでは足りず、conversation-specific evaluationとsystem integrationが独立した技術課題になることを示した。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id":"evidence:SP-2020-Y:item-arxiv-2001-09977v3-a25c1d61e6","kind":"CLAIM","evidence_id":"claim-1"},
+        {"evidence_task_id":"evidence:SP-2020-Y:series-meta-blenderbot-2020-865ab3340a","kind":"CLAIM","evidence_id":"claim-1"}
+      ]
+    },
+    {
+      "block_id": "claim-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "MeenaとBlenderBotのhuman evaluation、benchmark、会話品質に関する数値はauthor / project側の評価であり、本稿が独立再現したものではない。本号では、open-domain dialogueにscale、human evaluation、system recipeという別々の設計焦点が現れたことを一次資料に基づいて整理する。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {"evidence_task_id":"evidence:SP-2020-Y:item-arxiv-2001-09977v3-a25c1d61e6","kind":"LIMITATION","evidence_id":"limitation-1"},
+        {"evidence_task_id":"evidence:SP-2020-Y:series-meta-blenderbot-2020-865ab3340a","kind":"LIMITATION","evidence_id":"limitation-1"}
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {"requirement":"open-domain dialogue scaling","block_ids":["meena-scale"]},
+    {"requirement":"dialogue evaluation framing","block_ids":["dialogue-evaluation"]},
+    {"requirement":"system recipe and release boundary","block_ids":["blender-recipe"]}
+  ],
+  "boundary_coverage": [
+    {"requirement":"Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.","block_ids":["claim-boundary"]}
+  ],
+  "late_breaking_acknowledged": false
+}
