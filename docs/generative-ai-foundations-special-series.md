@@ -71,6 +71,14 @@ The series should therefore be understood as a **directed graph of research line
 
 Chronology remains important inside each lineage and when explaining cross-lineage influence, but chronology alone does not determine volume order. An arrow in a planning diagram means “useful technical or conceptual inheritance to investigate,” not automatically “direct historical ancestry.”
 
+A second series-level thesis is equally important:
+
+> **A dominant architecture may survive by absorbing many later ideas. Architectural continuity does not imply technical stasis.**
+
+The Transformer used in frontier AI of the mid-2020s should therefore not be treated as an unchanged 2017 block diagram. MoE routing, modified or sparse attention, long-context mechanisms, residual-path redesign, multimodal inputs, post-training, test-time reasoning, tools, memory, and agentic orchestration may produce systems that are functionally far removed from the original paper while still remaining Transformer-derived at the neural substrate.
+
+This distinction becomes especially important in the planned final volume.
+
 ---
 
 ## 3. Scope and inclusion rule
@@ -124,7 +132,9 @@ Do not include a field simply because it is important to AI history.
 
 For example, computer vision, game AI, reinforcement learning, robotics, knowledge representation, or expert systems should only receive detailed treatment where they clarify a lineage that reaches modern generative or multimodal AI, or where they provide a tightly bounded bridge into contemporary agentic, world-model, or Physical-AI systems.
 
-The downstream bridge topics must remain subordinate to the series' central question: **how today's generative and multimodal systems became technically possible.**
+The downstream bridge topics must remain subordinate to the series' central question:
+
+> **How did today's generative and multimodal systems become technically possible, and what assumptions are now being challenged at the frontier?**
 
 ---
 
@@ -180,6 +190,7 @@ Examples of claims that require care:
 - Vision Transformer should not be presented as a simple architectural descendant of CNNs; it is better understood as a convergence of Transformer architecture with a mature large-scale vision ecosystem.
 - Diffusion should not be presented as if it were merely the successor algorithm to VAE or GAN. These are distinct deep-generative approaches whose histories intersect but are not one simple chain.
 - World Models and Decision Transformer are useful bridges for explaining learned environments and action-as-sequence modeling, but modern VLA / embodied foundation models must not be given a direct genealogy from those papers without evidence.
+- A modern frontier model should not be called “post-Transformer” merely because it has heavily modified attention, MoE routing, very long context, or a sophisticated agentic stack. The neural substrate and the surrounding system architecture must be distinguished.
 
 ### 5.3 Explain both inheritance and abandonment
 
@@ -214,15 +225,26 @@ The current plan is:
 
 This avoids locking the overview to assumptions that later primary-source work may overturn.
 
+Here, “write Volume 1 last” means **last among the historical/foundational synthesis work**. It does not override the separate rule that the provisional frontier volume in Section 14 is the final scheduled publication of the series. The intended endgame is therefore:
+
+```text
+major Vol. 2+ foundational volumes substantially complete
+  -> final architecture pass on the series
+  -> write/finalize reader-facing Vol. 1 overview
+  -> refresh the contemporary endpoint volumes as needed
+  -> perform fresh frontier-wide Source Intake
+  -> publish the Section 14 frontier volume last
+```
+
 ### 6.2 Role of the draft
 
 The Volume 1 draft below is therefore **not publication prose and not the first manuscript**. It is a living synopsis of the story the series currently expects to tell.
 
 ---
 
-# 7. Volume 1 draft — series overview
+## 7. Volume 1 draft — series overview
 
-## Provisional title
+### Provisional title
 
 **生成AIの源流 — 探索・学習・表現・生成が合流するまで**
 
@@ -230,7 +252,7 @@ Alternative working title:
 
 **生成AIはどこから来たのか — 現代AIを形作った複数の研究系譜**
 
-## Draft purpose
+### Draft purpose
 
 Today's generative AI is often narrated as a recent sequence beginning with the Transformer and accelerating through large language models. That account is useful for current product history but insufficient as a technical history.
 
@@ -240,7 +262,7 @@ Some of those traditions competed with one another. Some appeared to fail and la
 
 Volume 1 should give the reader a map of those lineages before the later volumes examine them in detail.
 
-## Draft section 1 — Before “deep learning”: competing ideas of intelligence
+### Draft section 1 — Before “deep learning”: competing ideas of intelligence
 
 The opening should avoid pretending that early AI was simply an immature form of today's neural AI.
 
@@ -264,7 +286,7 @@ The reader-facing question for this section is:
 
 That question remains relevant even in modern systems through retrieval, tools, search, planning, external memory, and reinforcement learning.
 
-## Draft section 2 — The neural branch: from units to adaptive learning
+### Draft section 2 — The neural branch: from units to adaptive learning
 
 The neural lineage should begin with brief context on mathematical neuron models and then move quickly to the Perceptron and adaptive pattern classification.
 
@@ -274,7 +296,7 @@ Shun-ichi Amari's 1967 work on adaptive pattern classifiers belongs here as a ma
 
 The limitation story around perceptrons must also be handled carefully. `Perceptrons` by Minsky and Papert is historically important, but the series should avoid the simplistic legend that a single book “killed neural networks.” The more useful question is what classes of systems were being analyzed, what limitations were actually established, and why multilayer learning remained technically difficult.
 
-## Draft section 3 — Hidden representations become learnable
+### Draft section 3 — Hidden representations become learnable
 
 The next transition is not just “backpropagation was invented.”
 
@@ -284,7 +306,7 @@ The 1986 Rumelhart-Hinton-Williams paper is a major landmark because it clearly 
 
 In parallel, Hopfield networks and Boltzmann machines developed another neural tradition: collective dynamics, energy functions, stochastic units, and probabilistic modeling. This lineage later connects to restricted Boltzmann machines, deep belief networks, energy-based modeling, and the broader history of generative learning.
 
-## Draft section 4 — Vision and time create specialized architectures
+### Draft section 4 — Vision and time create specialized architectures
 
 General multilayer networks were not enough. Different data structures created different architectural pressures.
 
@@ -294,7 +316,7 @@ For sequences, recurrent networks represented time through internal state. LSTM 
 
 The point of this section is not to tell complete CNN or RNN history. It is to show that **representation was becoming structured around the modality and the dependency pattern of the data**.
 
-## Draft section 5 — Deep learning returns, then scales
+### Draft section 5 — Deep learning returns, then scales
 
 The 2000s revival should not begin at AlexNet alone.
 
@@ -306,7 +328,7 @@ Subsequent techniques such as improved initialization and activations, dropout, 
 
 Volume 1 should present “deep learning” not as one algorithm, but as the point at which representation learning, optimization, data scale, and compute scale became mutually reinforcing.
 
-## Draft section 6 — Language becomes representation learning at scale
+### Draft section 6 — Language becomes representation learning at scale
 
 Language provides another route into modern generative AI.
 
@@ -322,7 +344,7 @@ This distinction is central to the series:
 
 The later Transformer volume should show why removing recurrence mattered for dependency modeling and training parallelism, while avoiding a claim that all later Transformer advantages can be reduced to one property.
 
-## Draft section 7 — Generative modeling was developing on several branches
+### Draft section 7 — Generative modeling was developing on several branches
 
 Modern generative AI should not be narrated as an LLM-only history, nor should deep generative modeling be reduced to one succession in which VAE was replaced by GAN and GAN was replaced by Diffusion.
 
@@ -334,7 +356,7 @@ These branches influence one another and coexist in later systems, but the serie
 
 The series should therefore describe modern media generation as the convergence of multiple traditions rather than as a direct derivative of language models.
 
-## Draft section 8 — Large-scale pretraining and multimodal convergence
+### Draft section 8 — Large-scale pretraining and multimodal convergence
 
 Transformer-based generative pretraining made it possible to reuse one learned model across many language tasks. GPT-style generative pretraining, BERT-style bidirectional pretraining, ELMo-style contextual representation, and later text-to-text approaches should be treated as distinct answers to the same larger question: how much task-specific structure can be replaced by large-scale reusable pretraining?
 
@@ -346,7 +368,13 @@ In vision, ViT showed that image patches could be processed by a Transformer arc
 
 Instruction tuning and human-feedback methods form another required transition. A next-token model is not automatically a useful assistant; post-training changes the relationship between base-model capability and user-directed behavior.
 
-## Draft section 9 — Search returns; generation reaches action
+This section should also prepare the reader for a later distinction:
+
+> **A frontier AI product is increasingly a system around a foundation model, not merely a neural network considered in isolation.**
+
+Reasoning effort, context management, tool use, retrieval, code execution, memory, multi-agent decomposition, and external environments may change effective capability without constituting a new neural backbone. The final volume should treat this system layer separately from claims about post-Transformer architecture.
+
+### Draft section 9 — Search returns; generation reaches action
 
 The final part of the overview should reconnect modern AI to the classical AI ideas introduced at the beginning.
 
@@ -367,7 +395,7 @@ predict / generate text
 
 Physical AI should only be followed as far as this connection remains technically meaningful. The series is not intended to become a complete robotics history.
 
-## Draft conclusion
+### Draft conclusion
 
 The first volume should end by replacing the idea of a single “AI family tree” with a map of intersecting research rivers.
 
@@ -381,13 +409,18 @@ Modern generative and multimodal AI combines ideas that once belonged to separat
 - attention and Transformer architectures;
 - large-scale pretraining and scaling;
 - human-feedback post-training;
-- search, reinforcement learning, and world modeling.
+- search, reinforcement learning, and world modeling;
+- increasingly, system-level reasoning, tool use, memory, and test-time computation.
 
 The later volumes then revisit the turning points one by one, using original sources to distinguish what the work actually established from what later history made possible.
 
+The series should finally return to the same map at the frontier and ask a different question:
+
+> **Which of the assumptions inherited from the Transformer era are still structural foundations, which have become implementation details, and which are being replaced?**
+
 ---
 
-# 8. Provisional volume architecture
+## 8. Provisional volume architecture
 
 This allocation is intentionally provisional. During research and drafting, volumes may be merged, split, inserted, removed, or renumbered.
 
@@ -418,6 +451,7 @@ The table describes **current editorial units**, not final publication commitmen
 | **Vol. 21** | **Multimodal Foundation Models — 理解と生成の合流** | vision-language models; cross-attention/projector/Q-former style bridges as appropriate; image/audio/video integration; unified modeling | Follows the convergence of previously separate modality-specific representation and generation systems. Exact papers should be selected near production time because this area changes quickly. |
 | **Vol. 22** | **探索と学習の再会 — Deep RL、DQN、AlphaGo** | classical search context; Q-learning/RL context; DQN; AlphaGo/AlphaZero; neural-guided search | Bridge volume explaining why learning did not eliminate search and how selected ideas reconnect to modern reasoning/agent systems without claiming a universal direct ancestry. |
 | **Vol. 23** | **World ModelからPhysical AIへ — 予測から行動へ** | World Models; model-based learned environments; Decision Transformer; later multimodal / VLA anchors as appropriate | Explores conceptual and architectural bridges from learned environments and sequence-modeled action toward embodied systems. Direct genealogy must be established case by case. |
+| **Final (number TBD)** | **次のTransformer、その先へ — 現在の基盤パラダイムと次の転換** | first identify the actual practical substrate at series completion; reconstruct any already-established post-Transformer transition; then compare the strongest directions beyond it | Keeps the series open to the real frontier rather than freezing a 2026 forecast. This volume is always published last. |
 
 ### 8.1 Likely merge/split pressure
 
@@ -434,20 +468,21 @@ The following decisions should remain open until Source Intake / Architecture wo
 - Vol. 18 must explicitly distinguish the visual-representation lineage inherited from CNN-era research from the Transformer architecture imported into vision.
 - Vol. 20 may expand beyond speech into audio/music only if doing so remains technically coherent; otherwise music/audio generation can be handled in a later multimodal or media-generation Special.
 - Vol. 21 and Vol. 23 must be re-scoped near their production dates because their frontier reference points may change materially.
+- The final volume has no stable paper list or number. Its content is determined only after a fresh frontier-wide Source Intake near series completion.
 
 ---
 
-# 9. Cross-cutting Japanese research volume
+## 9. Cross-cutting Japanese research volume
 
-## Status
+### Status
 
 `SCOPED concept / volume number TBD`
 
-## Provisional title
+### Provisional title
 
 **日本から生成AIへ — 学習・視覚・音声の源流**
 
-## Editorial purpose
+### Editorial purpose
 
 This should not become a “great Japanese researchers” catalogue and should not isolate Japanese work from the main technical history.
 
@@ -496,11 +531,11 @@ This gives the series a concrete way to show that generative modeling of speech 
 
 Additional Japanese researchers or groups should only be added after evidence work establishes a meaningful path to the series scope. Nationality alone is not an inclusion criterion.
 
-The Japanese cross-cutting volume may be published after the relevant foundational volumes so that it can synthesize rather than prematurely duplicate them.
+The Japanese cross-cutting volume may be published after the relevant foundational volumes so that it can synthesize rather than prematurely duplicate them. If it remains part of the main series, the provisional final volume still follows it.
 
 ---
 
-# 10. Game AI and Physical AI boundary
+## 10. Game AI and Physical AI boundary
 
 Game AI and Physical AI are allowed only as **bridge themes** into current generative/multimodal systems.
 
@@ -537,11 +572,11 @@ World Models and Decision Transformer are currently useful bridge points, not pr
 
 ---
 
-# 11. Planning-level source anchors checked on 2026-08-20
+## 11. Planning-level source anchors
 
 This is **not** a completed Evidence inventory. These references were checked only to keep the present series architecture historically and technically plausible. Each production volume must perform its own complete Source Intake and Evidence work.
 
-## Classical / neural foundations
+### 11.1 Classical / neural foundations
 
 - Warren S. McCulloch, Walter Pitts, “A Logical Calculus of the Ideas Immanent in Nervous Activity” (1943), *Bulletin of Mathematical Biophysics* 5, 115–133.
 - Frank Rosenblatt, “The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain” (1958), *Psychological Review* 65(6), 386–408. DOI: `10.1037/h0042519`.
@@ -552,7 +587,7 @@ This is **not** a completed Evidence inventory. These references were checked on
 - David E. Rumelhart, Geoffrey E. Hinton, Ronald J. Williams, “Learning representations by back-propagating errors” (1986), *Nature* 323, 533–536. DOI: `10.1038/323533a0`.
 - Shun-ichi Amari, “Natural Gradient Works Efficiently in Learning” (1998), *Neural Computation* 10(2), 251–276. This is a later Japanese cross-cutting anchor, not evidence that natural gradient became the default optimizer for modern LLMs.
 
-## Vision and deep learning
+### 11.2 Vision and deep learning
 
 - Kunihiko Fukushima, “Neocognitron: A self-organizing neural network model for a mechanism of pattern recognition unaffected by shift in position” (1980), *Biological Cybernetics* 36, 193–202. DOI: `10.1007/BF00344251`. A Japanese precursor paper appeared in IEICE in 1979.
 - Yann LeCun et al., “Gradient-Based Learning Applied to Document Recognition” (1998), *Proceedings of the IEEE* 86(11), 2278–2324.
@@ -560,7 +595,7 @@ This is **not** a completed Evidence inventory. These references were checked on
 - Alex Krizhevsky, Ilya Sutskever, Geoffrey E. Hinton, “ImageNet Classification with Deep Convolutional Neural Networks” (2012), NeurIPS 25.
 - Kaiming He et al., “Deep Residual Learning for Image Recognition” (2015/2016), CVPR 2016 / arXiv:1512.03385.
 
-## Language / sequence / Transformer
+### 11.3 Language / sequence / Transformer
 
 - Sepp Hochreiter, Jürgen Schmidhuber, “Long Short-Term Memory” (1997), *Neural Computation* 9(8), 1735–1780.
 - Yoshua Bengio et al., “A Neural Probabilistic Language Model” (2003), *JMLR* 3, 1137–1155.
@@ -574,7 +609,7 @@ This is **not** a completed Evidence inventory. These references were checked on
 - Jared Kaplan et al., “Scaling Laws for Neural Language Models” (2020), arXiv:2001.08361.
 - Tom B. Brown et al., “Language Models are Few-Shot Learners” (2020), arXiv:2005.14165.
 
-## Deep generative modeling
+### 11.4 Deep generative modeling
 
 - Diederik P. Kingma, Max Welling, “Auto-Encoding Variational Bayes” (2013), arXiv:1312.6114 / ICLR 2014.
 - Ian Goodfellow et al., “Generative Adversarial Nets” (2014), NeurIPS 27.
@@ -582,7 +617,7 @@ This is **not** a completed Evidence inventory. These references were checked on
 - Jonathan Ho, Ajay Jain, Pieter Abbeel, “Denoising Diffusion Probabilistic Models” (2020), arXiv:2006.11239 / NeurIPS 2020.
 - Robin Rombach et al., “High-Resolution Image Synthesis with Latent Diffusion Models” (2021/2022), arXiv:2112.10752 / CVPR 2022.
 
-## Multimodal / alignment / action
+### 11.5 Multimodal / alignment / action
 
 - Alexey Dosovitskiy et al., “An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale” (2020/2021), arXiv:2010.11929 / ICLR 2021.
 - Alec Radford et al., “Learning Transferable Visual Models From Natural Language Supervision” (2021), arXiv:2103.00020.
@@ -593,20 +628,46 @@ This is **not** a completed Evidence inventory. These references were checked on
 - David Ha, Jürgen Schmidhuber, “World Models” (2018), arXiv:1803.10122.
 - Lili Chen et al., “Decision Transformer: Reinforcement Learning via Sequence Modeling” (2021), arXiv:2106.01345.
 
-## Japanese speech-generation anchor
+### 11.6 Japanese speech-generation anchor
 
 - Keiichi Tokuda et al., “Speech Parameter Generation Algorithms for HMM-Based Speech Synthesis” (2000), ICASSP 2000, vol. 3, pp. 1315–1318.
 - Related HMM-based speech-synthesis and audio-visual-synthesis publications should be collected from the authors' institutional publication lists during the eventual volume Source Intake.
 
-## Classical-AI context anchors
+### 11.7 Classical-AI context anchors
 
 - Claude Shannon, “Programming a Computer for Playing Chess” (1950), *Philosophical Magazine*.
 - Edward Feigenbaum, Bruce Buchanan, Georgia Sutherland and related Stanford Heuristic Programming Project work on DENDRAL (late 1960s / early 1970s).
 - The exact periodization and evidence for `first AI boom`, `AI winter`, and `second AI boom` will be selected during Volume 1 Source Intake rather than fixed from retrospective shorthand in this planning memo.
 
+### 11.8 2026 frontier baseline and final-volume watch anchors
+
+These are planning anchors for the provisional final volume, checked as of 2026-08-21. They are deliberately separated from the historical canon because their eventual significance is unresolved.
+
+#### Current Transformer-derived frontier baseline
+
+- Kimi Team, `Kimi K3: Open Frontier Intelligence` (2026), arXiv:2607.24653. Publicly described as a 2.8T-parameter / 104B-active MoE with native vision, 1M context, Kimi Delta Attention, Attention Residuals, and Stable LatentMoE.
+- DeepSeek-V4 (released 2026-04-24), official DeepSeek model card / technical report and release materials. The public report describes MoE models at 1.6T total / 49B active (Pro) and 284B total / 13B active (Flash), 1M context, a hybrid attention design combining Compressed Sparse Attention (CSA) and Heavily Compressed Attention (HCA), manifold-constrained hyper-connections (mHC), and Muon-based optimization.
+- GPT-5.6, Claude 5-family, and current Grok-family systems may be used as product/system-level comparison points, but their public model/system cards do not provide enough block-level architectural detail for this memo to classify them confidently as post-Transformer successors. Do not infer a regime change from capability gains alone.
+
+These models are useful because they show the elasticity of the Transformer era: major gains can come from heavily modified attention, MoE, residual-path changes, context scaling, post-training, reasoning effort, tools, and agentic infrastructure without public evidence of a clean architectural regime change.
+
+#### Current “assumption-breaking” watchlist
+
+- Yu Sun et al., `Learning to (Learn at Test Time): RNNs with Expressive Hidden States` (2024; ICML 2025), arXiv:2407.04620.
+- Ali Behrouz, Peilin Zhong, Vahab Mirrokni, `Titans: Learning to Memorize at Test Time` (2025), arXiv:2501.00663.
+- Ali Behrouz et al., `Nested Learning: The Illusion of Deep Learning Architectures` (2025), arXiv:2512.24695.
+- Shibo Hao et al., `Training Large Language Models to Reason in a Continuous Latent Space` / Coconut (2024), arXiv:2412.06769.
+- Jonas Geiping et al., `Scaling up Test-Time Compute with Latent Reasoning: A Recurrent Depth Approach` (NeurIPS 2025).
+- Albert Gu, Tri Dao and collaborators, Mamba / selective state-space modeling; Tri Dao, Albert Gu, `Transformers are SSMs: Generalized Models and Efficient Algorithms Through Structured State Space Duality` (2024), arXiv:2405.21060.
+- Shen Nie et al., `Large Language Diffusion Models` / LLaDA (2025), arXiv:2502.09992.
+- Shen Nie et al., `Improved Large Language Diffusion Models` / iLLaDA (2026), arXiv:2606.25331.
+- Artidoro Pagnoni et al., `Byte Latent Transformer: Patches Scale Better Than Tokens` (2024 / ACL 2025), arXiv:2412.09871.
+- Julie Kallini et al., `Fast Byte Latent Transformer` (2026), arXiv:2605.08044.
+- Mido Assran et al., `V-JEPA 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning` (2025), arXiv:2506.09985.
+
 ---
 
-# 12. Open editorial questions
+## 12. Open editorial questions
 
 These are intentionally unresolved and should be revisited during later work:
 
@@ -623,10 +684,13 @@ These are intentionally unresolved and should be revisited during later work:
 11. Which multimodal foundation-model papers will still represent the decisive transitions when Vol. 21 enters production?
 12. Which embodied/VLA papers will best connect multimodal foundation models to Physical AI when Vol. 23 enters production, and which apparent connections are merely retrospective analogy rather than documented lineage?
 13. When should the Japanese cross-cutting volume be published so that it synthesizes enough completed foundational volumes without becoming repetitive?
+14. At series completion, what is actually the dominant practical substrate: Transformer-derived neural architecture, a post-Transformer backbone, a hybrid architecture, or a system-level stack whose novelty can no longer be localized to one model block?
+15. Which current “Next Transformer” candidates have actually survived independent replication, scaling, deployment economics, and cross-modal use?
+16. If a post-Transformer successor is already mainstream by then, which ideas meaningfully point beyond that successor rather than merely optimizing it?
 
 ---
 
-# 13. Maintenance rule
+## 13. Maintenance rule
 
 This file is a **living series architecture document**.
 
@@ -636,22 +700,29 @@ During work on Volume 2 onward:
 - update volume boundaries when a theme proves too large or too small;
 - record newly discovered cross-lineage dependencies;
 - distinguish direct historical lineage, parallel invention, later convergence, and retrospective analogy rather than representing all relationships with the same kind of arrow;
+- distinguish neural-backbone changes from system-level changes such as tools, memory, routing, external search, multi-agent orchestration, and test-time compute;
 - do not preserve numbering merely for stability if a different grouping produces a more accurate history;
 - keep abandoned ideas visible in Git history rather than retaining weak volumes solely because they once appeared in this table.
 
+The dated frontier snapshots in this memo should be preserved as historical observations. If later frontier updates are added before final-volume production, add a new dated snapshot rather than silently rewriting the old one. The purpose is to make it possible to compare what looked promising at the time with what actually survived.
+
 When the core later volumes are substantially complete, perform a dedicated architecture pass over this document and only then begin the reader-facing manuscript of Volume 1.
+
+The provisional final volume is different: near series completion it must perform a **new frontier-wide Source Intake from scratch** rather than treating the accumulated watchlist as its evidence base.
 
 ---
 
-# 14. Provisional final volume — Beyond the current paradigm
+## 14. Provisional final volume — Beyond the current paradigm
 
-## Status
+### Status
 
 `PLANNED FINAL VOLUME / content deliberately deferred`
 
-This volume must remain the **last scheduled publication in this series**, even if additional foundational or cross-cutting volumes are inserted and all volume numbers are later changed. With the current table it would follow Vol. 23 and the Japanese cross-cutting volume if that volume is published within the main sequence, but its final number should not be fixed yet.
+This volume must remain the **last scheduled publication in this series**, even if additional foundational or cross-cutting volumes are inserted and all volume numbers are later changed.
 
-## Provisional title
+Its final number should therefore not be fixed yet.
+
+### Provisional title
 
 **次のTransformer、その先へ — 現在の基盤パラダイムと次の転換**
 
@@ -659,48 +730,164 @@ Alternative working title:
 
 **Beyond the Current Paradigm — 次の基盤モデルを探す**
 
-## Editorial purpose
+### 14.1 Editorial purpose
 
 The final volume should not freeze a 2026 prediction and later pretend that the prediction remained current. Its job is to stand at the **actual frontier when the series approaches completion**.
 
-The first step at production time is therefore not “which paper is the next Transformer?” but:
+The first question at production time is therefore:
 
-> **What architecture, learning paradigm, representation unit, inference process, or world-modeling approach has actually become the practical substrate of frontier AI by then?**
+> **What architecture, learning paradigm, representation unit, inference process, or system design has actually become the practical substrate of frontier AI by then?**
 
-If Transformer and Transformer-derived systems are still dominant, the volume asks what may succeed or fundamentally reshape them.
+Only after that question is answered should the issue ask what comes next.
 
-If a credible post-Transformer architecture or paradigm has already crossed into broad practical use, the volume should first reconstruct that transition as the current endpoint of the historical series and then ask what lies **beyond that successor**.
+Three outcomes are explicitly allowed:
 
-If no single successor has emerged, the volume is explicitly allowed to conclude that the next durable paradigm is a hybrid or a bundle of orthogonal changes rather than one replacement paper.
+1. **Transformer-derived substrate still dominant**  
+   The issue asks what may finally displace or fundamentally reshape it.
 
-This distinction matters because `next Transformer` is editorial shorthand for **a transition that changes the assumptions under which general-purpose AI systems are built**, not necessarily a new attention replacement with one famous paper.
+2. **A credible post-Transformer successor already established**  
+   The issue first reconstructs that transition as the current endpoint of the historical series, then asks what lies beyond the successor.
 
-## 14.1 Production-time classification
+3. **No single successor; hybrid or system-level convergence dominates**  
+   The issue explains why the next durable paradigm is better described as a composition of changes than as one replacement paper.
 
-At final-volume Source Intake, candidate directions should be classified into three groups:
+`Next Transformer` is therefore editorial shorthand for:
 
-- **Established successor / post-Transformer substrate** — already used broadly enough that the volume should treat it as history-in-the-making rather than speculation.
-- **Scaled contender** — has credible large-scale evidence, independent follow-up, and a plausible systems path, but has not yet become the default substrate.
-- **Exploratory frontier** — intellectually important and potentially transformative, but evidence is still too narrow, benchmark-specific, or implementation-dependent for a stronger claim.
+> **a transition that changes the assumptions under which general-purpose AI systems are built.**
 
-The final issue should distinguish these categories visibly. It should not reward novelty alone.
+It does not necessarily mean “a new attention replacement.”
 
-## 14.2 What counts as a Transformer-level transition
+### 14.2 The 2026 baseline — Transformer as substrate, not as frozen architecture
 
-A candidate becomes interesting for this final volume when it changes one or more foundational assumptions, for example:
+As of 2026-08-21, public frontier evidence supports a useful distinction.
 
-- whether model state is fixed during inference;
-- whether computational depth is fixed by architecture;
-- whether reasoning must be verbalized as generated tokens;
-- whether language generation must be left-to-right autoregressive;
-- whether full token-to-token attention is the principal sequence memory mechanism;
-- whether a fixed subword tokenizer defines the model's basic information unit;
-- whether predictive world models must reconstruct pixels/tokens rather than latent structure;
-- whether most useful scaling must be purchased during pretraining rather than dynamically at test time.
+Some leading open or openly documented systems remain recognizably **Transformer-derived**, while being heavily reconstructed internally.
 
-A paper need not replace every assumption at once. The key question is whether the change survives scaling and becomes reusable across tasks, modalities, and systems.
+Kimi K3 is a particularly clear example: its public report describes a 2.8T-parameter MoE with 104B activated parameters, native vision, 1M context, Kimi Delta Attention, Attention Residuals, Stable LatentMoE, large-scale agentic post-training, and substantial systems co-design.
 
-## 14.3 Evaluation criteria at series completion
+DeepSeek-V4 likewise remains a Transformer-family scaling story rather than a clean architectural break: its public report describes MoE scaling, 1M context, hybrid compressed/sparse attention (CSA + HCA), manifold-constrained hyper-connections, and Muon-based optimization.
+
+These are not “the 2017 Transformer with more parameters.” They demonstrate that the Transformer era has become an extensible **architectural substrate**.
+
+A useful working picture is:
+
+```text
+Transformer-era neural substrate
+  + modified / sparse / compressed attention
+  + MoE routing
+  + residual-path redesign
+  + long-context mechanisms
+  + multimodal representation
+  + large-scale pretraining
+  + instruction / preference / RL post-training
+  + test-time reasoning
+  + tools / search / code execution
+  + memory / context management
+  + agentic orchestration
+= modern frontier AI system
+```
+
+This is the “giant castle” problem in editorial terms: enormous technical change can accumulate without a clean replacement of the underlying substrate.
+
+For proprietary frontier systems such as current GPT, Claude, or Grok families, the public model/system cards do not expose enough block-level architecture to infer a regime change with confidence. Product-level capability, reasoning, tool use, or agentic gains must therefore **not** be treated as evidence that a post-Transformer neural architecture has already won.
+
+This baseline prevents two opposite mistakes:
+
+- calling every heavily modified Transformer “basically the same model”;
+- calling every frontier capability jump “post-Transformer” without architectural evidence.
+
+### 14.3 Separate the layers of possible transition
+
+The final volume should classify candidates by **which assumption they are actually changing**.
+
+#### Layer A — Sequence backbone / memory operator
+
+Question:
+
+> Must full token-to-token attention remain the principal sequence memory mechanism?
+
+Current examples: Mamba, Mamba-2 / SSD, recurrent-state-space hybrids.
+
+This is the closest category to a conventional “Transformer replacement.”
+
+#### Layer B — Inference-time model state / memory
+
+Question:
+
+> Must the model remain effectively fixed while it is being used?
+
+Current examples: TTT layers, Titans, Nested Learning / self-modifying or continuum-memory approaches.
+
+A successful transition here could make inference itself partly a learning process.
+
+#### Layer C — Computational depth and reasoning representation
+
+Question:
+
+> Must reasoning depth be fixed by architecture, or purchased by emitting more visible tokens?
+
+Current examples: Coconut-style latent reasoning and recurrent-depth models.
+
+A successful transition could decouple parameter count, nominal network depth, reasoning depth, and output length.
+
+#### Layer D — Generation factorization
+
+Question:
+
+> Must language generation proceed left-to-right autoregressively?
+
+Current examples: LLaDA / iLLaDA and other diffusion or parallel-refinement language models.
+
+Important distinction:
+
+> **Post-autoregressive does not automatically mean post-Transformer.**
+
+A diffusion language model may still use a Transformer-family backbone while changing the generative factorization.
+
+#### Layer E — Representation unit / tokenization
+
+Question:
+
+> Must a fixed subword tokenizer define the basic unit of computation?
+
+Current examples: BLT and Fast BLT.
+
+This is a representation and compute-allocation transition, not necessarily a backbone replacement.
+
+#### Layer F — Learning objective / world representation
+
+Question:
+
+> Must a predictive model reconstruct observable pixels or tokens, or can it learn the latent structure needed for understanding and action?
+
+Current example: V-JEPA 2 / latent predictive world models.
+
+This may matter more for multimodal and Physical AI than for language-model backbone replacement.
+
+#### Layer G — System architecture and test-time compute
+
+Question:
+
+> Is the next major transition located outside the neural block diagram altogether?
+
+Current frontier systems increasingly combine models with reasoning effort, search, tools, code execution, memory, context compression, routing, verifiers, environments, and multiple agents.
+
+A future “Transformer-level” change could therefore occur at the **architecture of the complete intelligent system**, while the neural core remains partly Transformer-derived.
+
+This possibility must be treated seriously without conflating system architecture with neural architecture.
+
+### 14.4 Production-time classification
+
+At final-volume Source Intake, each candidate direction should be classified into one of four states:
+
+- **Established substrate** — already broad enough in production or frontier research that it should be treated as history-in-the-making.
+- **Scaled contender** — credible large-scale evidence, independent follow-up, and a plausible systems path, but not yet the default substrate.
+- **Exploratory frontier** — intellectually important and potentially transformative, but evidence remains narrow, benchmark-specific, or implementation-dependent.
+- **Absorbed innovation** — did not replace the incumbent paradigm but became an important component inside it.
+
+The fourth category is essential. Many promising ideas may “lose” as independent architectures while still becoming part of the successor system.
+
+### 14.5 Evaluation criteria at series completion
 
 The final volume should prefer evidence that a candidate:
 
@@ -709,123 +896,137 @@ The final volume should prefer evidence that a candidate:
 3. has been reproduced or extended by independent groups;
 4. generalizes beyond one benchmark family or one modality;
 5. integrates with realistic pretraining, post-training, inference, and deployment stacks;
-6. creates a capability or efficiency frontier that incremental Transformer engineering does not easily recover;
-7. changes how later researchers design models, not merely how they tune one benchmark;
-8. remains technically meaningful after the initial publication cycle.
+6. creates a capability or efficiency frontier that incremental incumbent engineering does not easily recover;
+7. changes how later researchers design models or systems, not merely how they tune one benchmark;
+8. remains technically meaningful after the initial publication cycle;
+9. survives comparison against increasingly sophisticated Transformer-derived baselines rather than an obsolete vanilla Transformer;
+10. demonstrates whether it replaces, coexists with, or is absorbed into the incumbent substrate.
 
-The issue should also consider whether apparently competing ideas have converged into a hybrid design. A future architecture that combines attention, recurrent/state-space computation, test-time learning, adaptive depth, dynamic tokenization, and non-autoregressive generation would be a valid “next paradigm” even if no single component deserves sole credit.
+The issue should also consider whether apparently competing ideas have converged into a hybrid design.
 
-## 14.4 2026-08-21 watch map — current observations, not commitments
+A future architecture that combines attention, recurrent/state-space computation, test-time learning, adaptive depth, dynamic tokenization, and non-autoregressive generation would be a valid “next paradigm” even if no single component deserves sole credit.
 
-The following is a **time-stamped editorial watchlist**, not a promise that these papers will appear in the final issue. Its purpose is to preserve what currently looks structurally interesting so that the eventual final-volume research can compare early expectations with what actually survived.
+### 14.6 2026-08-21 watch map — current observations, not commitments
 
-### A. Fixed parameters at inference -> test-time learning and neural memory
+The following is a **time-stamped editorial watchlist**, not a promise that these papers will appear in the final issue.
 
-Current anchors:
+Its purpose is to preserve what currently looks structurally interesting so that later research can compare early expectations with what actually survived.
 
-- Yu Sun et al., `Learning to (Learn at Test Time): RNNs with Expressive Hidden States` (2024), arXiv:2407.04620.
-- Ali Behrouz, Peilin Zhong, Vahab Mirrokni, `Titans: Learning to Memorize at Test Time` (2025), arXiv:2501.00663.
-- Ali Behrouz et al., `Nested Learning: The Illusion of Deep Learning Architectures` (2025), arXiv:2512.24695.
-
-Why this matters:
-
-The conventional foundation-model picture separates training-time parameter updates from inference-time context use. TTT-style layers make a learned model itself part of recurrent hidden state; Titans adds a neural long-term memory that is updated from test-time context; Nested Learning generalizes the idea into nested optimization processes and explores self-modifying learning modules.
-
-If this line scales and becomes robust, the important transition would not merely be “longer context.” It would be a move from a largely fixed function at inference toward systems that **learn, memorize, or modify internal state while operating**.
-
-Current editorial assessment: **highest structural upside, but not yet an established successor**. Continual-learning stability, interference, systems cost, and broad production evidence remain decisive unknowns.
-
-### B. Fixed depth and verbalized reasoning -> latent recurrence and adaptive computation
+#### A. Test-time learning and neural memory
 
 Current anchors:
 
-- Shibo Hao et al., `Training Large Language Models to Reason in a Continuous Latent Space` / Coconut (2024), arXiv:2412.06769.
-- Jonas Geiping et al., `Scaling up Test-Time Compute with Latent Reasoning: A Recurrent Depth Approach` (NeurIPS 2025).
+- TTT (`Learning to (Learn at Test Time)`)
+- Titans
+- Nested Learning / Hope
 
 Why this matters:
 
-Current reasoning systems often buy more inference compute by generating longer visible chains of thought. These works explore another axis: repeat computation in latent state before emitting the next token. Geiping et al. scale a recurrent-depth model to billions of parameters and hundreds of billions of pretraining tokens, making this more than a toy architectural observation.
+The conventional foundation-model picture separates training-time parameter updates from inference-time context use. These approaches explore hidden states or memory modules that are themselves learned or updated while processing test-time data.
 
-The deeper question is whether **parameter count, architectural depth, reasoning depth, and output length need to remain tightly coupled**.
+Current assessment:
 
-Current editorial assessment: **one of the strongest candidates for a genuine inference-compute transition**, but the evidence is still early compared with conventional Transformer reasoning stacks.
+**Highest structural upside, but not an established successor.** Continual-learning stability, interference, systems cost, and broad production evidence remain decisive unknowns.
 
-### C. Left-to-right autoregression -> diffusion and other non-autoregressive language generation
+#### B. Latent recurrence and adaptive computation
 
 Current anchors:
 
-- Shen Nie et al., `Large Language Diffusion Models` / LLaDA (2025), arXiv:2502.09992.
-- Shen Nie et al., `Improved Large Language Diffusion Models` / iLLaDA (2026), arXiv:2606.25331.
+- Coconut
+- recurrent-depth latent reasoning
 
 Why this matters:
 
-This line challenges autoregressive factorization rather than necessarily replacing the Transformer backbone itself. LLaDA uses masked diffusion with Transformer-based modeling; iLLaDA scales the approach to an 8B model trained from scratch on 12T tokens with fully bidirectional attention and reports competitive results against similarly sized autoregressive models on multiple tasks.
+Current reasoning systems often buy more inference compute by generating longer visible chains of thought. These works explore repeated latent computation before emitting the next token.
 
-That distinction should be explicit in the final volume:
+Current assessment:
 
-> **Diffusion language modeling can be a post-autoregressive transition without being a post-Transformer architecture.**
+**One of the strongest candidates for a genuine inference-compute transition.** The important question is whether parameter count, architectural depth, reasoning depth, and output length can become substantially decoupled.
 
-Current editorial assessment: **the strongest current evidence that large-language-model capabilities need not be tied to left-to-right autoregression**, strengthened materially by 2026 scaling results. Whether decoding efficiency and broad deployment advantages justify a paradigm shift remains open.
-
-### D. Attention as the universal sequence core -> state-space / recurrent / hybrid sequence models
+#### C. Diffusion and non-autoregressive language modeling
 
 Current anchors:
 
-- Albert Gu, Tri Dao and collaborators, Mamba / selective state-space modeling.
-- Tri Dao, Albert Gu, `Transformers are SSMs: Generalized Models and Efficient Algorithms Through Structured State Space Duality` (2024), arXiv:2405.21060, including Mamba-2 / SSD.
+- LLaDA
+- iLLaDA
 
 Why this matters:
 
-The important idea may not be “Mamba replaces Transformer.” State Space Duality shows that attention and state-space sequence models can be understood through closely related structured operators. This opens a design space in which recurrence, attention, compressed state, and efficient kernels may be combined rather than treated as mutually exclusive camps.
+This line challenges autoregressive factorization rather than necessarily replacing the Transformer backbone. iLLaDA materially strengthens the case by scaling masked diffusion pretraining to an 8B model and 12T training tokens.
 
-Current editorial assessment: **the most mature architectural alternative / hybridization path among the present watch items**. A future winner may look less like a clean replacement and more like a unification of attention and recurrent state-space computation.
+Current assessment:
 
-### E. Fixed subword tokens -> byte-level and dynamically allocated computation
+**Strong evidence that capable large language models need not be tied to left-to-right autoregression.** Whether decoding economics and deployment advantages justify a broad paradigm shift remains open.
+
+#### D. State-space / recurrent / hybrid sequence models
 
 Current anchors:
 
-- Artidoro Pagnoni et al., `Byte Latent Transformer: Patches Scale Better Than Tokens` (2024), arXiv:2412.09871.
-- Julie Kallini et al., `Fast Byte Latent Transformer` (2026), arXiv:2605.08044.
+- Mamba
+- Mamba-2 / State Space Duality
 
 Why this matters:
 
-BLT removes the fixed subword vocabulary and processes raw bytes through dynamically sized patches, allocating more computation where the byte stream is less predictable. Fast BLT then attacks the practical generation bottleneck with block-wise diffusion and speculative-style techniques.
+The most important result may not be “Mamba beats Transformer,” but the possibility that attention and state-space approaches occupy a more unified design space than earlier rhetoric suggested.
 
-This does not by itself replace Transformer, but it challenges a surprisingly deep systems assumption: that a fixed tokenizer and fixed token granularity should define the interface between raw information and large-model computation.
+Current assessment:
 
-Current editorial assessment: **an underappreciated representation/computation-unit transition** that may combine naturally with non-autoregressive generation and adaptive compute.
+**The most mature backbone-alternative / hybridization path in the current watchlist.** A future winner may absorb attention rather than abolish it.
 
-### F. Reconstructing observations -> latent predictive world models
+#### E. Byte-level and dynamically allocated representation
+
+Current anchors:
+
+- BLT
+- Fast BLT
+
+Why this matters:
+
+These works challenge the assumption that a fixed subword vocabulary and fixed token granularity should define the interface between raw information and large-model computation.
+
+Current assessment:
+
+**An underappreciated representation/computation-unit transition** that may combine naturally with adaptive compute and non-autoregressive generation.
+
+#### F. Latent predictive world models
 
 Current anchor:
 
-- Mido Assran et al., `V-JEPA 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning` (2025), arXiv:2506.09985.
+- V-JEPA 2
 
 Why this matters:
 
-JEPA-style approaches ask whether useful world models need to generate every observable detail. V-JEPA 2 learns predictive latent representations from web-scale video and demonstrates an action-conditioned latent world model for robot planning with comparatively little robot interaction data.
+JEPA-style approaches ask whether a useful predictive model must reconstruct every visible detail, or whether predicting latent structure is enough for understanding and planning.
 
-This is less likely to be a universal language-model replacement than a **possible objective-level transition for multimodal and Physical AI**: predict the structure needed for understanding and action rather than reconstructing all pixels.
+Current assessment:
 
-Current editorial assessment: **high downstream importance if the series' multimodal/Physical-AI endpoint continues toward learned world models**, but it should not be conflated with a general-purpose sequence-backbone successor.
+**Potentially high downstream importance for multimodal and Physical AI**, but not a general-purpose sequence-backbone successor by itself.
 
-### G. Training-time scaling -> test-time compute as a first-class scaling axis
+#### G. Test-time compute and system composition
 
-This is a cross-cutting trend rather than one candidate architecture.
+This is a cross-cutting trend rather than one architecture.
 
-Long-chain reasoning, sampling and verification, search, recurrent latent depth, adaptive per-token computation, and test-time learning all shift part of the capability/compute tradeoff from pretraining into inference.
+Long-chain reasoning, sampling and verification, search, recurrent latent depth, adaptive per-token computation, test-time learning, tool use, memory, routing, and multi-agent decomposition all shift part of the capability/compute tradeoff from pretraining into inference and system execution.
 
-The final volume should therefore ask not only “what replaces Transformer?” but:
+The final volume should therefore ask not only:
 
-> **Where does the next generation of AI spend computation, and what internal state is allowed to change while it spends it?**
+> What replaces Transformer?
 
-This may turn out to be more consequential than a single new block diagram.
+but also:
 
-## 14.5 Current synthesis
+> **Where does the next generation of AI spend computation, what state is allowed to change while it spends it, and which parts of intelligence live outside the base model?**
+
+This may prove more consequential than a single new block diagram.
+
+### 14.7 Current synthesis
 
 As of 2026-08-21, the strongest editorial hypothesis is **not** that one already-known paper is certain to become `Attention Is All You Need` 2.0.
 
-The more interesting pattern is that several assumptions stabilized during the Transformer/LLM era are now being reopened at once:
+The stronger observation is twofold.
+
+First, Transformer-derived systems have shown extraordinary elasticity. They have absorbed increasingly large architectural and system-level modifications while remaining a practical frontier substrate.
+
+Second, several assumptions stabilized during the Transformer/LLM era are now being reopened at once:
 
 ```text
 fixed inference state
@@ -836,9 +1037,12 @@ attention-centric sequence memory
 fixed tokenization
 training-time-dominated scaling
 pixel/token reconstruction as the default predictive target
+model-only intelligence rather than system-level composition
 ```
 
-The eventual successor may therefore be compositional. For example, a future general-purpose model could plausibly combine:
+The eventual successor may therefore be compositional.
+
+For example:
 
 ```text
 dynamic byte / patch representation
@@ -847,21 +1051,28 @@ dynamic byte / patch representation
   + latent recurrent reasoning
   + adaptive inference compute
   + parallel / diffusion-style generation
-  + latent world modeling for multimodal action
+  + latent world modeling
+  + tool / search / environment integration
 ```
 
-The final volume should not force this forecast to come true. Its value will come from comparing this 2026 watch map with the evidence available when the series reaches its frontier.
+This would not mean Transformer “lost” in a clean historical battle. It could mean that Transformer became one component inside a more general architecture.
 
-## 14.6 Final-volume workflow
+The final volume should not force this forecast to come true.
+
+Its value will come from comparing this 2026 watch map with the evidence available when the series reaches its frontier.
+
+### 14.8 Final-volume workflow
 
 When the series approaches completion:
 
 1. perform a new frontier-wide Source Intake from scratch rather than merely updating this watchlist;
-2. identify what has already graduated into practical mainstream architecture or infrastructure;
-3. reconstruct any such transition with the same attribution discipline used in historical volumes;
-4. identify the strongest remaining contenders beyond the then-current paradigm;
-5. compare them using technical, scaling, systems, adoption, and cross-modal evidence;
-6. explicitly record which 2026 expectations succeeded, failed, merged with other ideas, or became irrelevant;
-7. publish this issue last, so the series ends not with a claim that AI history is complete, but with a disciplined map of the next unresolved transition.
+2. identify what has already graduated into the practical mainstream or frontier substrate;
+3. separate neural-backbone changes from system-level capability architecture;
+4. reconstruct any already-established post-Transformer transition with the same attribution discipline used in historical volumes;
+5. identify the strongest remaining contenders **beyond the then-current substrate**, even if that substrate is no longer Transformer;
+6. compare them using technical, scaling, systems, adoption, and cross-modal evidence;
+7. classify each major idea as established substrate, scaled contender, exploratory frontier, or absorbed innovation;
+8. explicitly record which 2026 expectations succeeded, failed, merged with other ideas, were absorbed into Transformer-derived systems, or became irrelevant;
+9. publish this issue last, so the series ends not with a claim that AI history is complete, but with a disciplined map of the next unresolved transition.
 
 The final volume is therefore both a conclusion and an intentionally time-sensitive handoff from **history** to **frontier research**.
