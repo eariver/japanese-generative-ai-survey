@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Annual Technical Notes repair with legacy Author-claim reset compatibility.
+"""Annual Technical Notes repair with legacy Author/Project-claim reset compatibility.
 
-SP-2023-Y v0.4 predates the Half-year reset convention and labels paper-card fact bullets as
-``Author claim`` rather than ``一次情報で確認できる事実``.  The hardened Half-year reset correctly
-requires one canonical fact line, so an Annual-only adapter normalizes that legacy label in the
-new revision copy before delegating to the unchanged reset/enrichment stack.  On failure the exact
-pre-normalization text is restored.  No accepted Evidence, source window, or #191 binding rule is
+Older Annual validated sources may label the single reader-facing fact bullet as ``Author claim``
+or ``Project claim`` rather than ``一次情報で確認できる事実``. The hardened Half-year reset
+correctly requires one canonical fact line, so this Annual-only adapter normalizes both known
+legacy labels in the new immutable revision copy before delegating to the unchanged
+reset/enrichment stack. On failure the exact pre-normalization text is restored.
+
+No accepted Evidence, source window, source URL identity, chronology, or #191 binding rule is
 changed.
 """
 from __future__ import annotations
@@ -19,14 +21,19 @@ from scripts import revise_special_annual_source_specific_notes_v4 as base
 from scripts import revise_special_half_year_review_repairs_v13 as reset_layer
 
 _ORIGINAL_RESET = reset_layer._reset_existing_fact_lines
-_CONTRACT = "ANNUAL_LEGACY_AUTHOR_CLAIM_RESET_V1"
-_AUTHOR_PREFIX = r"\item \textbf{Author claim}: "
+_CONTRACT = "ANNUAL_LEGACY_AUTHOR_PROJECT_CLAIM_RESET_V2"
+_LEGACY_PREFIXES = (
+    r"\item \textbf{Author claim}: ",
+    r"\item \textbf{Project claim}: ",
+)
 _CANONICAL_PREFIX = r"\item \textbf{一次情報で確認できる事実}: "
 
 
 def _annual_reset_existing_fact_lines(path: Path, evidence: dict[str, dict[str, Any]]) -> str:
     original = path.read_text(encoding="utf-8")
-    normalized = original.replace(_AUTHOR_PREFIX, _CANONICAL_PREFIX)
+    normalized = original
+    for prefix in _LEGACY_PREFIXES:
+        normalized = normalized.replace(prefix, _CANONICAL_PREFIX)
     if normalized != original:
         path.write_text(normalized, encoding="utf-8")
     try:
@@ -46,7 +53,8 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     finally:
         reset_layer._reset_existing_fact_lines = previous
     result = dict(result)
-    result["annual_legacy_author_claim_reset_contract"] = _CONTRACT
+    result["annual_legacy_author_project_claim_reset_contract"] = _CONTRACT
+    result["normalized_legacy_claim_labels"] = ["Author claim", "Project claim"]
     return result
 
 
