@@ -1,0 +1,148 @@
+\documentclass[lualatex,a4paper,11pt]{jlreq}
+\usepackage{jgaisurvey}
+\usepackage{multicol}
+\addbibresource{references.bib}
+
+% Special-local long-form presentation. Shared weekly source remains unchanged.
+\geometry{margin=22mm,headsep=5mm,footskip=10mm}
+\setlength{\headheight}{14.5pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1em}
+\newtcolorbox{technicalnote}[2]{
+  enhanced,breakable,colback=SurveySoft,colframe=SurveyAccent,
+  boxrule=0.65pt,arc=1mm,title={#1 \hfill \footnotesize #2},fonttitle=\bfseries,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=4mm,after skip=3mm
+}
+
+\surveysetup
+  {SP-2020-Y}
+  {Japanese Generative AI Technical Survey}
+  {Special / Coverage 2020-01-01 -- 2020-12-31 / Retrospective as of 2026-08-20}
+  {Coverage window: 2020-01-01 -- 2020-12-31 UTC}
+\surveyeditiondescriptor{Retrospective Survey}
+\surveycoverstory
+  {scaleから、接続される生成AIシステムへ}
+  {2020年、生成AIは『巨大なmodelを作る』だけの競争から外へ広がった。Scaling LawsとGPT-3がscaleとfew-shot capabilityを結び、APIがaccessを、retrievalが外部知識を、dialogueが会話固有のsystem designを、ZeROとGShardがtraining infrastructureを、diffusionとvisual-token系が新しい生成mediaを、human feedbackとtoxicity evaluationがsteering / risk layerを可視化した。これらはまだ一つのproductへ統合されていない。その分岐こそが2021年の多層system化への入口だった。}
+  {規模が設計原理になる――Scaling LawsからGPT-3へ \quad / \quad 知識を重みに閉じ込めない――REALMからRAGへ \quad / \quad 2021年への橋――モデルそのものから多層システムへ}
+
+\setlength{\columnsep}{6mm}
+\setlength{\multicolsep}{0.8em plus 0.2em minus 0.1em}
+
+\begin{document}
+\surveycover
+\clearpage
+\input{sections/00-frontmatter}
+
+\clearpage
+\section{規模が設計原理になる――Scaling LawsからGPT-3へ}
+\label{pkg:scale-laws-gpt3}
+\input{layout-standfirsts/scale-laws-gpt3}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/scale-laws-gpt3}
+\end{multicols}
+\input{technical-notes/10-scale-laws-gpt3-notes}
+
+\clearpage
+\section{モデルから入口へ――APIが変えたaccess boundary}
+\label{pkg:access-api}
+\input{layout-standfirsts/access-api}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/access-api}
+\end{multicols}
+\input{technical-notes/20-access-api-notes}
+
+\clearpage
+\section{巨大化を成立させる裏側――ZeROとGShard}
+\label{pkg:systems-scale}
+\input{layout-standfirsts/systems-scale}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/systems-scale}
+\end{multicols}
+\input{technical-notes/30-systems-scale-notes}
+
+\clearpage
+\section{知識を重みに閉じ込めない――REALMからRAGへ}
+\label{pkg:retrieval-grounding}
+\input{layout-standfirsts/retrieval-grounding}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/retrieval-grounding}
+\end{multicols}
+\input{technical-notes/40-retrieval-grounding-notes}
+
+\clearpage
+\section{会話はscaleだけでは解けない――MeenaとBlenderBot}
+\label{pkg:dialogue-systems}
+\input{layout-standfirsts/dialogue-systems}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/dialogue-systems}
+\end{multicols}
+\input{technical-notes/50-dialogue-systems-notes}
+
+\clearpage
+\section{言語の外へ――Image GPTと離散visual token}
+\label{pkg:media-autoregressive}
+\input{layout-standfirsts/media-autoregressive}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/media-autoregressive}
+\end{multicols}
+\input{technical-notes/60-media-autoregressive-notes}
+
+\clearpage
+\section{もう一つの生成系譜――DDPMからscore-SDEへ}
+\label{pkg:diffusion-score}
+\input{layout-standfirsts/diffusion-score}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/diffusion-score}
+\end{multicols}
+\input{technical-notes/70-diffusion-score-notes}
+
+\clearpage
+\section{振る舞いを人間から学ぶ――summarization feedback}
+\label{pkg:feedback-steering}
+\input{layout-standfirsts/feedback-steering}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/feedback-steering}
+\end{multicols}
+\input{technical-notes/80-feedback-steering-notes}
+
+\clearpage
+\section{能力の裏側を測る――toxicityとbiasの評価}
+\label{pkg:evaluation-risk}
+\input{layout-standfirsts/evaluation-risk}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/evaluation-risk}
+\end{multicols}
+\input{technical-notes/90-evaluation-risk-notes}
+
+\clearpage
+\section{Detailed Chronology――2020年の技術境界を時系列で追う}
+\label{pkg:annual-chronology}
+\input{layout-standfirsts/annual-chronology}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/annual-chronology}
+\end{multicols}
+\input{technical-notes/100-annual-chronology-notes}
+
+\clearpage
+\section{総括――scaleから多層システムへ：2021年への橋}
+\label{pkg:synthesis-transition-2021}
+\input{layout-standfirsts/synthesis-transition-2021}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/synthesis-transition-2021}
+\end{multicols}
+\input{technical-notes/110-synthesis-transition-2021-notes}
+
+\clearpage
+\printbibliography[title={References / Source Notes}]
+\end{document}
