@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "issue_id": "SP-2020-Y",
   "edition_kind": "RETROSPECTIVE_PERIOD",
-  "lifecycle_state": "RELEASE_CANDIDATE",
+  "lifecycle_state": "VALIDATED_DRAFT",
   "revision": "v0.1",
   "calendar": {
     "editorial_cutoff": "2020-12-31T23:59:59Z",
@@ -21,7 +21,7 @@
     "issue_architecture": "passed",
     "article_draft": "passed",
     "claim_and_chronology_validation": "passed",
-    "latex_build": "passed",
+    "latex_build": "pending",
     "visual_review": "pending",
     "freeze": "pending"
   },
@@ -77,16 +77,11 @@
       "sha256": "355fdca18c85f26e7964bafa1fbd516b31ab1c7056ff14cacf7cb7b379066d1d"
     },
     "validated_issue_source": {
-      "path": "surveys/special/2020-Y/revisions/v0.2/source-manifest.json",
-      "sha256": "f7818fdfa8a14a0a37e8d3e9aacf58a4c60a15511f4678ceef4abbb98fe29c29",
-      "source_version": "v0.2",
-      "expansion_basis": "selected Evidence cards only",
-      "typography_revision": "v0.4-reference-title-cleanup",
-      "layout_mode": "balanced-local-multicol-narrative-full-width-evidence",
-      "prebuild_layout": true,
-      "reader_facing_notes_language": "ja-reader-summary-v1",
-      "reader_facing_technical_notes": true,
-      "period_consistency": true
+      "path": "surveys/special/2020-Y/revisions/v0.3/source-manifest.json",
+      "sha256": "33ad1d1f62dec85943f3130bca96d4b920ef289dca312f009953d0a0717eb521",
+      "source_version": "v0.3",
+      "layout_mode": "balanced-local-multicol-visual-review-repair",
+      "layout_revision_sha256": "d5a73d13503241e0eaed026e0dce2b84da09564e854d77e403171a67f3ecd58b"
     },
     "annual_chronology": {
       "source_version": "v0.2",
@@ -95,24 +90,11 @@
       "event_count": 28,
       "unresolved_date_count": 0
     },
-    "latex_build": {
-      "workflow_run_id": 32393244086,
-      "pdf_sha256": "7150cd6968f6f47be489cb304f0eac2e6aa5d98ba01a2eded130e20a19c0e07b",
-      "page_count": 28,
-      "source_version": "v0.2",
-      "validated_issue_source_path": "worktree/surveys/special/2020-Y/revisions/v0.2/source-manifest.json",
-      "validated_issue_source_sha256": "f7818fdfa8a14a0a37e8d3e9aacf58a4c60a15511f4678ceef4abbb98fe29c29",
-      "page_budget": {
-        "soft_target": 96,
-        "hard_max": 144,
-        "below_soft_target": true,
-        "policy": "manifest-soft-target-hard-ceiling"
-      },
-      "build_style": {
-        "control_commit_sha": "c2f3d5b4da24032a0b82c995a7f63c199a94c684",
-        "path": "templates/survey/jgaisurvey.sty",
-        "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
-      }
+    "reader_layout_revision": {
+      "source_version": "v0.3",
+      "layout_revision_path": "sources/SP-2020-Y/editorial/layout-revision-v0.3.json",
+      "layout_revision_sha256": "d5a73d13503241e0eaed026e0dce2b84da09564e854d77e403171a67f3ecd58b",
+      "reason": "Render-first pre-Publication-Preview repair after v0.2: remove avoidable low-density pages at Technical Notes/chapter/reference boundaries while preserving reader claims, selected Evidence, accepted Drafts, Architecture, chronology events, and bibliography identities."
     }
   },
   "provenance_history": {
@@ -121,6 +103,39 @@
         "path": "surveys/special/2020-Y/source-manifest.json",
         "sha256": "b18d1accd51d30567f8d76e747bed17f2b7a43bbfb3861033e1a80a2d5e2c037",
         "period_consistency": true
+      },
+      {
+        "path": "surveys/special/2020-Y/revisions/v0.2/source-manifest.json",
+        "sha256": "f7818fdfa8a14a0a37e8d3e9aacf58a4c60a15511f4678ceef4abbb98fe29c29",
+        "source_version": "v0.2",
+        "expansion_basis": "selected Evidence cards only",
+        "typography_revision": "v0.4-reference-title-cleanup",
+        "layout_mode": "balanced-local-multicol-narrative-full-width-evidence",
+        "prebuild_layout": true,
+        "reader_facing_notes_language": "ja-reader-summary-v1",
+        "reader_facing_technical_notes": true,
+        "period_consistency": true
+      }
+    ],
+    "latex_build": [
+      {
+        "workflow_run_id": 32393244086,
+        "pdf_sha256": "7150cd6968f6f47be489cb304f0eac2e6aa5d98ba01a2eded130e20a19c0e07b",
+        "page_count": 28,
+        "source_version": "v0.2",
+        "validated_issue_source_path": "worktree/surveys/special/2020-Y/revisions/v0.2/source-manifest.json",
+        "validated_issue_source_sha256": "f7818fdfa8a14a0a37e8d3e9aacf58a4c60a15511f4678ceef4abbb98fe29c29",
+        "page_budget": {
+          "soft_target": 96,
+          "hard_max": 144,
+          "below_soft_target": true,
+          "policy": "manifest-soft-target-hard-ceiling"
+        },
+        "build_style": {
+          "control_commit_sha": "c2f3d5b4da24032a0b82c995a7f63c199a94c684",
+          "path": "templates/survey/jgaisurvey.sty",
+          "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+        }
       }
     ]
   }
