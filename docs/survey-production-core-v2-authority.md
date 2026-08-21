@@ -14,38 +14,57 @@ A continuation session working on Survey Production Core v2 must read this index
 
 Current `main` remains the production source of truth until a coherent v2 candidate is reviewed and merged. This index is authoritative only for work on the improvement branch.
 
-## 2. Precedence
+## 2. Authority responsibilities
 
-Use this order when documents conflict:
+Authority is split by responsibility. Do **not** interpret the work log as a higher semantic-policy authority than the contract documents.
+
+### 2.1 Repository reality
+
+Actual repository files, committed artifacts, hashes, tests, and branch state are the highest factual authority. If documentation disagrees with repository reality, correct the documentation first.
+
+### 2.2 Work-status authority
+
+`docs/checkpoints/survey-production-core-v2-worklog.md` is authoritative only for:
+
+- current phase / work-unit status;
+- start/stop state;
+- completed commits and validation notes;
+- unresolved work;
+- exact next action.
+
+It is a checkpoint ledger, not the normative semantic contract.
+
+### 2.3 Semantic/design authority
+
+For architecture, contracts, Pilot semantics, Profile/Core ownership, Human Gates, provenance requirements, and acceptance criteria, use this precedence:
 
 ```text
-1. docs/checkpoints/survey-production-core-v2-worklog.md
-2. this authority index
-3. second-audit amendments
-4. first-audit amendments
-5. base Phase 0/1/2/3 design documents
-6. historical/current-main implementation docs used as source evidence
+1. this authority index
+2. second-audit amendments
+3. first-audit amendments
+4. base Phase 0/1/2/3 design documents
+5. historical/current-main implementation docs used as source evidence
 ```
 
-Repository reality still wins if any document disagrees with actual files/state.
+The work log may summarize these rules but may not override them.
 
 ## 3. Document status map
 
 | Document | Current authority status | Notes |
 |---|---|---|
-| `docs/survey-production-core-v2-improvement-plan.md` | `ACTIVE BASE PLAN` | overall goal/phases remain valid; W33 section already states migration is not primary acceptance |
+| `docs/survey-production-core-v2-improvement-plan.md` | `ACTIVE BASE PLAN` | overall goal/phases remain valid; later amendments control where explicitly different |
 | `docs/survey-production-core-v2-component-inventory.md` | `SUPERSEDED IN PART` | process archaeology remains useful; semantic-neutrality conclusions are corrected by the audit amendment |
 | `docs/survey-production-core-v2-component-inventory-audit-amendment.md` | `AUTHORITATIVE FOR PHASE 0 CORRECTION` | controls profile-pollution classification through Synthesis |
 | `docs/survey-production-core-v2-contract-normalization.md` | `ACTIVE BASE CONTRACT / SUPERSEDED IN PART` | two-gate/temporal/release model remains; implementation identity and taxonomy are amended below |
 | `docs/survey-production-core-v2-contract-normalization-second-audit-amendment.md` | `AUTHORITATIVE PHASE 1 AMENDMENT` | implementation identity, Finding taxonomy, Pilot entry, optional W33 reuse, Thematic closure |
 | `docs/survey-production-core-v2-historical-invariants.md` | `ACTIVE INVARIANT CATALOG` | failure-driven durable invariants |
 | `docs/survey-production-core-v2-historical-production-pattern-matrix.md` | `SUPERSEDED AS PHASE 2 EXIT EVIDENCE` | useful first-pass pattern summary; insufficient edition-depth by itself |
-| `docs/survey-production-core-v2-historical-production-deep-audit.md` | `AUTHORITATIVE PHASE 2 EXIT EVIDENCE` | all 15 Specials audited at final-state production-lineage depth |
+| `docs/survey-production-core-v2-historical-production-deep-audit.md` | `AUTHORITATIVE PHASE 2 EXIT EVIDENCE` | all 15 Specials audited at final-state production-lineage depth; not a claim that every historical intermediate artifact was reread |
 | `docs/survey-production-core-v2-minimum-vertical-slice.md` | `SUPERSEDED IN PART` | base Phase 3 reasoning retained, but not sufficient as current implementation contract |
-| `docs/survey-production-core-v2-minimum-vertical-slice-audit-amendment.md` | `SUPERSEDED IN PART BY SECOND AUDIT` | first correction remains valid except where second amendment conflicts |
+| `docs/survey-production-core-v2-minimum-vertical-slice-audit-amendment.md` | `SUPERSEDED IN PART BY SECOND AUDIT` | first correction remains valid except where second amendment conflicts; legacy W33 compatibility wording inside it is superseded |
 | `docs/survey-production-core-v2-minimum-vertical-slice-second-audit-amendment.md` | `AUTHORITATIVE PHASE 3 IMPLEMENTATION AMENDMENT` | current Pilot/implementation boundary |
 | `docs/survey-production-core-v2-w33-artifact-disposition.md` | `ACTIVE SUPPORTING POLICY` | optional legacy benchmark/reuse policy; not a W33 acceptance contract |
-| `docs/checkpoints/survey-production-core-v2-worklog.md` | `CANONICAL WORK CHECKPOINT` | current status and next action |
+| `docs/checkpoints/survey-production-core-v2-worklog.md` | `CANONICAL WORK CHECKPOINT` | status/progress/next action only; does not override semantic contracts |
 
 ## 4. Critical corrected rules
 
@@ -80,9 +99,9 @@ Before starting or continuing a work unit:
 
 ```text
 read current main
--> read worklog
--> read this index
--> read the authoritative documents for the active WU
+-> read worklog for status/next action
+-> read this index for semantic authority
+-> read authoritative documents for the active WU
 -> verify repository reality
 -> update worklog IN_PROGRESS
 -> perform work
