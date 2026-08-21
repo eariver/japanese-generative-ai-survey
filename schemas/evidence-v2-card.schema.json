@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.invalid/schemas/evidence-v2-card.schema.json",
+  "$id": "https://github.com/eariver/japanese-generative-ai-survey/schemas/evidence-v2-card.schema.json",
   "title": "Survey Production Core v2 Factual Evidence Card",
   "type": "object",
   "additionalProperties": false,
@@ -59,12 +59,13 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["event_id", "event_type", "event_date", "subject_id", "source_ids"],
+            "required": ["event_id", "event_type", "event_date", "subject_id", "subject_role", "source_ids"],
             "properties": {
               "event_id": {"type": "string", "minLength": 1},
               "event_type": {"type": "string", "minLength": 1},
               "event_date": {"type": ["string", "null"]},
               "subject_id": {"type": "string", "minLength": 1},
+              "subject_role": {"$ref": "#/$defs/subject_role"},
               "source_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
             }
           }
@@ -98,7 +99,7 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["metric_id", "name", "value", "unit", "context", "subject_id", "comparison_subject_ids", "evidence_class", "source_ids"],
+        "required": ["metric_id", "name", "value", "unit", "context", "subject_id", "subject_role", "comparison_subject_ids", "evidence_class", "source_ids"],
         "properties": {
           "metric_id": {"type": "string", "minLength": 1},
           "name": {"type": "string", "minLength": 1},
@@ -106,6 +107,7 @@
           "unit": {"type": ["string", "null"]},
           "context": {"type": "string", "minLength": 1},
           "subject_id": {"type": "string", "minLength": 1},
+          "subject_role": {"$ref": "#/$defs/subject_role"},
           "comparison_subject_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
           "evidence_class": {"$ref": "#/$defs/evidence_class"},
           "source_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
@@ -144,14 +146,16 @@
   "$defs": {
     "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "evidence_class": {"enum": ["PRIMARY_FACT", "VENDOR_CLAIM", "PROJECT_CLAIM", "AUTHOR_CLAIM", "SOCIAL_OBSERVATION", "INFERENCE"]},
+    "subject_role": {"enum": ["PRIMARY_SUBJECT", "COMPARATOR", "RELATED"]},
     "bound_statement": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["statement_id", "text", "subject_id", "evidence_class", "source_ids", "context"],
+      "required": ["statement_id", "text", "subject_id", "subject_role", "evidence_class", "source_ids", "context"],
       "properties": {
         "statement_id": {"type": "string", "minLength": 1},
         "text": {"type": "string", "minLength": 1},
         "subject_id": {"type": "string", "minLength": 1},
+        "subject_role": {"$ref": "#/$defs/subject_role"},
         "evidence_class": {"$ref": "#/$defs/evidence_class"},
         "source_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
         "context": {"type": ["string", "null"]}
