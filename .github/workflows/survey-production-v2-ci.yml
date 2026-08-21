@@ -21,6 +21,7 @@ on:
       - "scripts/survey_completeness_v2.py"
       - "tests/test_survey_production_v2.py"
       - "tests/test_survey_screening_v2.py"
+      - "tests/test_survey_screening_archive_v2.py"
       - "tests/test_survey_evidence_v2.py"
       - "tests/test_survey_completeness_v2.py"
       - "docs/survey-production-core-v2-*.md"
@@ -44,6 +45,7 @@ on:
       - "scripts/survey_completeness_v2.py"
       - "tests/test_survey_production_v2.py"
       - "tests/test_survey_screening_v2.py"
+      - "tests/test_survey_screening_archive_v2.py"
       - "tests/test_survey_evidence_v2.py"
       - "tests/test_survey_completeness_v2.py"
       - "docs/survey-production-core-v2-*.md"
@@ -76,7 +78,7 @@ jobs:
       - name: Compile v2 implementation
         run: python -m py_compile scripts/survey_production_v2.py scripts/survey_screening_v2.py scripts/survey_evidence_v2.py scripts/survey_completeness_v2.py
       - name: Run v2 tests
-        run: python -m unittest tests.test_survey_production_v2 tests.test_survey_screening_v2 tests.test_survey_evidence_v2 tests.test_survey_completeness_v2 -v
+        run: python -m unittest tests.test_survey_production_v2 tests.test_survey_screening_v2 tests.test_survey_screening_archive_v2 tests.test_survey_evidence_v2 tests.test_survey_completeness_v2 -v
       - name: Parse v2 JSON contracts
         run: |
           python - <<'PY'
