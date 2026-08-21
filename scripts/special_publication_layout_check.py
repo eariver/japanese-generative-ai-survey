@@ -34,7 +34,14 @@ def _common_annual_reference_errors(lr: dict[str, Any]) -> list[str]:
     return errors
 
 
-def _three_column_errors(lr: dict[str, Any], main_text: str, *, generation: str, expected_font: str) -> list[str]:
+def _three_column_errors(
+    lr: dict[str, Any],
+    main_text: str,
+    *,
+    generation: str,
+    expected_font: str,
+    ragged_command: str = r"\raggedright",
+) -> list[str]:
     errors = _common_annual_reference_errors(lr)
     if lr.get("references_columns") != 3:
         errors.append(f"Annual References pagination {generation} must declare references_columns=3")
@@ -45,7 +52,7 @@ def _three_column_errors(lr: dict[str, Any], main_text: str, *, generation: str,
     required = (
         r"\section*{References / Source Notes}",
         r"\addcontentsline{toc}{section}{References / Source Notes}",
-        r"\begin{multicols}{3}" + "\n" + r"\raggedright" + "\n" + r"\printbibliography[heading=none]" + "\n" + r"\end{multicols}",
+        r"\begin{multicols}{3}" + "\n" + ragged_command + "\n" + r"\printbibliography[heading=none]" + "\n" + r"\end{multicols}",
     )
     for token in required:
         if token not in main_text:
@@ -68,11 +75,46 @@ def _annual_v4_errors(lr: dict[str, Any], main_text: str) -> list[str]:
     return errors
 
 
+def _annual_v5_errors(lr: dict[str, Any], main_text: str) -> list[str]:
+    errors = _three_column_errors(
+        lr,
+        main_text,
+        generation="v5",
+        expected_font="6.0pt/6.5pt",
+        ragged_command=r"\RaggedRight",
+    )
+    if lr.get("annual_reference_pagination_v4") is not True or lr.get("annual_reference_pagination_v3") is not True:
+        errors.append("Annual References pagination v5 must retain v3/v4 ancestry")
+    if lr.get("references_columnsep") != "6pt":
+        errors.append("Annual References pagination v5 must declare references_columnsep=6pt")
+    if lr.get("references_raggedright_command") != "RaggedRight":
+        errors.append("Annual References pagination v5 must declare RaggedRight")
+    if lr.get("references_url_label_compacted") is not True:
+        errors.append("Annual References pagination v5 must compact the URL label")
+    if lr.get("references_urldate_label_compacted") is not True:
+        errors.append("Annual References pagination v5 must compact the urldate label")
+    if lr.get("references_metadata_values_changed") is not False:
+        errors.append("Annual References pagination v5 must preserve reference metadata values")
+    required = (
+        r"\usepackage{ragged2e}",
+        r"\DeclareFieldFormat{url}{\url{#1}}",
+        r"\DeclareFieldFormat{urldate}{\mkbibparens{#1}}",
+        r"\setlength{\columnsep}{6pt}",
+    )
+    for token in required:
+        if token not in main_text:
+            errors.append(f"declared Annual References pagination v5 source marker missing: {token}")
+    return errors
+
+
 def declared_non_narrative_multicols(manifest: dict[str, Any], main_text: str) -> tuple[int, list[str]]:
     lr = manifest.get("layout_revision") or {}
     if lr.get("annual_final_reference_compaction") is not True:
         return _ORIGINAL_DECLARED_NON_NARRATIVE_MULTICOLS(manifest, main_text)
 
+    if lr.get("annual_reference_pagination_v5") is True:
+        errors = _annual_v5_errors(lr, main_text)
+        return (1 if not errors else 0), errors
     if lr.get("annual_reference_pagination_v4") is True:
         errors = _annual_v4_errors(lr, main_text)
         return (1 if not errors else 0), errors
@@ -97,7 +139,9 @@ def declared_non_narrative_multicols(manifest: dict[str, Any], main_text: str) -
 
 def inspect_layout(manifest: dict[str, Any], main_text: str, architecture: dict[str, Any]) -> list[str]:
     lr = manifest.get("layout_revision") or {}
-    if lr.get("annual_reference_pagination_v4") is True:
+    if lr.get("annual_reference_pagination_v5") is True:
+        errors = _annual_v5_errors(lr, main_text)
+    elif lr.get("annual_reference_pagination_v4") is True:
         errors = _annual_v4_errors(lr, main_text)
     elif lr.get("annual_reference_pagination_v3") is True:
         errors = _annual_v3_errors(lr, main_text)
@@ -108,10 +152,14 @@ def inspect_layout(manifest: dict[str, Any], main_text: str, architecture: dict[
 
     shim_manifest = copy.deepcopy(manifest)
     shim_lr = shim_manifest.setdefault("layout_revision", {})
+    shim_lr["annual_reference_pagination_v5"] = False
     shim_lr["annual_reference_pagination_v4"] = False
     shim_lr["annual_reference_pagination_v3"] = False
     shim_lr["references_columns"] = 2
+    shim_lr["references_columnsep"] = "8pt"
+    shim_lr["references_raggedright_command"] = "raggedright"
     shim_text = main_text.replace(r"\begin{multicols}{3}", r"\begin{multicols}{2}", 1)
+    shim_text = shim_text.replace(r"\RaggedRight", r"\raggedright", 1)
     return _ORIGINAL_INSPECT_LAYOUT(shim_manifest, shim_text, architecture)
 
 
@@ -121,6 +169,7 @@ _base.inspect_layout = inspect_layout
 
 def main() -> int:
     return _base.main()
+
 
 if __name__ == "__main__":
     raise SystemExit(main())
