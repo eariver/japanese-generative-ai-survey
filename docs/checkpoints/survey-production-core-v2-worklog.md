@@ -3,303 +3,184 @@
 Status: `ACTIVE / canonical improvement-work checkpoint`  
 Established: 2026-08-22 JST  
 Working branch: `refactor/survey-production-core-v2`  
+Draft implementation PR: `#310`  
 Plan: `docs/survey-production-core-v2-improvement-plan.md`  
-Authority index: `docs/survey-production-core-v2-authority.md`
+Semantic authority: `docs/survey-production-core-v2-authority.md`
 
-## 1. Purpose and update contract
+## 1. Ledger contract
 
-This is the persistent **work-status** ledger for the Survey Production Core v2 improvement program. Progress must be reconstructable from repository state alone. Every substantive work unit reads this file before changes and updates it before the unit is considered complete.
+This file is the persistent **work-status** authority for Survey Production Core v2. It owns current work-unit status, validation notes, commits, unresolved execution issues, and the exact next action. It does **not** override semantic/design contracts; those are governed by the authority index and current amendments.
 
-Edition-specific W33 / W34 / SP001 / SP002 / SP003 state stays in each edition's canonical production artifacts. This log records only compilation-system design, implementation, and returned findings evaluated as Core/Profile/Publication/regression work.
+Repository reality is the highest factual authority. Current `main` remains the production source of truth until a coherent v2 candidate is reviewed and explicitly merged.
 
-Status values: `PLANNED`, `IN_PROGRESS`, `PAUSED`, `BLOCKED`, `COMPLETE`, `SUPERSEDED`.
-
-For each unit: revalidate current `main` when relevant; mark the unit `IN_PROGRESS`; perform work and validation; record artifacts/commits, unresolved findings, and exact next action; do not mark `COMPLETE` before its intended validation is done.
-
-Semantic/design authority is defined by `docs/survey-production-core-v2-authority.md` and its referenced contracts/amendments. This work log may summarize those rules but does not override them.
+No frozen historical release may be rewritten by this improvement work.
 
 ## 2. Current snapshot
 
-Last updated: **2026-08-22 JST — WU-005 started after final pre-implementation audit hardening**
+Last updated: **2026-08-22 JST — WU-005 closed; WU-006 started**
 
 - Repository: `eariver/japanese-generative-ai-survey`
 - Improvement branch: `refactor/survey-production-core-v2`
-- Original base `main`: `2086b396d2f30103d9292b722891be436cd28db5`
-- Current `main` revalidated immediately before WU-005: `2086b396d2f30103d9292b722891be436cd28db5` — unchanged.
-- Production source of truth remains current `main` until coherent candidate changes are reviewed and merged.
-- No frozen historical release has been rewritten by this improvement work.
-
-### Program state
-
-- Overall status: `ACTIVE`
+- Current production `main`: `2086b396d2f30103d9292b722891be436cd28db5` — revalidated before WU-005 and unchanged.
+- Draft PR: `#310 Survey Production Core v2 implementation`; intentionally draft until WU-005–WU-011 form one coherent candidate.
 - Current phase: **Phase 3 — Core v2 Candidate Implementation**
-- Current phase status: `IN_PROGRESS`
-- Active work unit: **WU-005 — Foundation contracts, state, implementation identity and anti-divergence**
-- WU-005 status: **`IN_PROGRESS`**
-- Previous completed work: **WU-003C / WU-004B second-audit correction set**
+- Active work unit: **WU-006 — Research discovery expansion + Screening v2**
+- External W33/SP001 production: **NOT STARTED / NOT AUTHORIZED until full candidate is merged to main**.
 
-### Final pre-implementation documentation hardening
+## 3. Durable rollout rules
 
-The final audit returned `PASS WITH MINOR DOCUMENTATION OBSERVATIONS`. Before WU-005, the authority index was hardened so that:
+- W33 = **Weekly Profile First Production Validation**.
+- Legacy `weekly/2026-W33-work` = optional benchmark/provenance fixture only; migration/reuse is never a Pilot acceptance criterion.
+- SP001 = first true Thematic Profile production validation; no fabricated Weekly fields or fake bounded historical window.
+- W34 follows W33 finding consolidation.
+- SP002/SP003 follow SP001 finding consolidation.
+- Normal Human Gates: Architecture Review, then exact-byte Publication Preview. Candidate Selection is internal.
+- First external Pilots start only after a full production-capable v2 path through Publication Preview/Freeze/Release is merged to `main`.
 
-- repository reality is factual authority;
-- this work log owns status/progress/next action only;
-- semantic/design contracts are owned by the authority index and current amendments;
-- Phase 2C is explicitly an edition-level final-state production-lineage audit, not a claim that every historical intermediate artifact was reread;
-- legacy compatibility wording in the first Phase 3 amendment is explicitly superseded where it conflicts with the second amendment.
+## 4. Phase / work-unit status
 
-Hardening commit: `450e885ede830742f02fe64015f2dec8a579f94d`.
+| Work unit | Status | Exit / primary evidence |
+|---|---|---|
+| WU-000 | `COMPLETE_WITH_AUDIT_AMENDMENT` | improvement plan + persistent checkpoint |
+| WU-001 / WU-001A | `COMPLETE / AMENDED` | component inventory + profile-pollution audit through Synthesis |
+| WU-002 | `COMPLETE / AMENDED` | normalized Core/Profile/Human-Gate/temporal/release contracts |
+| WU-003 / WU-003B / WU-003C | `COMPLETE` | historical invariants + all-15 production deep audit |
+| WU-004 / WU-004B | `COMPLETE / SUPERSEDED IN PART` | authoritative second-audit vertical-slice amendment |
+| **WU-005** | **`COMPLETE`** | v2 Profile/State/contract identity/implementation identity/anti-divergence foundation |
+| **WU-006** | **`IN_PROGRESS`** | discovery-edge provenance + profile-neutral Screening v2 |
+| WU-007 | `PLANNED` | factual Evidence + Edition View + Materiality + Completeness |
+| WU-008 | `PLANNED` | Matrix + internal Selection + generic Architecture |
+| WU-009 | `PLANNED` | generic Drafting + Profile Synthesis |
+| WU-010 | `PLANNED` | executable orchestration + Finding/Repair Set |
+| WU-011 | `PLANNED` | P0 quality integration + full Pilot bootstrap |
 
-### Pilot state
+## 5. WU-005 completion record
 
-- **W33 primary role:** `Weekly Profile First Production Validation`.
-- The legacy `weekly/2026-W33-work` RC is an **optional benchmark/provenance fixture**, not a required migration or compatibility acceptance test.
-- Safe legacy artifact reuse is permitted only when it reduces work without weakening v2 correctness. A W33 run may regenerate artifacts from verified/fresh inputs when that is simpler or clearer.
-- SP001 — first Thematic Profile production validation. It requires true thematic research expansion and closure/saturation evidence and must not fabricate Weekly fields.
-- W34 — Weekly fix verification/generalization after W33 findings are incorporated.
-- SP002 / SP003 — Thematic fix verification/generalization after SP001 findings are incorporated.
+### Implemented
 
-## 3. Audit history
+- `config/survey-production-v2.json`
+  - contract/schema/orchestrator versions;
+  - research/publication Profile registry;
+  - only two normal Human Gates;
+  - v2 state authority and read-only legacy mode.
+- `schemas/survey-production-profile.schema.json`
+  - `ROLLING_WINDOW`, `BOUNDED_PERIOD`, `OPEN_HISTORY_AS_OF`, `CURRENT_STATE_AS_OF` separated;
+  - Thematic open-history modes require no fake start/end.
+- `schemas/survey-production-state.schema.json`
+  - profile SHA, semantic contract SHAs, executable repository SHA, orchestrator version;
+  - Human Gate state, lifecycle, machine checkpoints, read-only legacy reference/history.
+- `scripts/survey_production_v2.py`
+  - Weekly Profile resolver reuses tested `weekly_pipeline.latest_cutoff` / cutoff-to-cutoff window;
+  - Thematic Profile resolver;
+  - deterministic contract hashing;
+  - non-destructive initialization;
+  - one authoritative v2 transition API;
+  - profile/contract/implementation/legacy-byte anti-divergence checks.
+- `tests/test_survey_production_v2.py`
+  - W33 fixed-time cutoff resolution;
+  - future issue rejection;
+  - Thematic no-window fiction;
+  - non-destructive initialization;
+  - monotonic one-step transition;
+  - implementation/profile/contract/legacy drift rejection.
+- `.github/workflows/survey-production-v2-ci.yml`
+  - v2 compile/test/JSON-contract CI.
 
-### 3.1 First pre-implementation audit
+### Commits
 
-The first self-audit found seven material deficiencies:
+- documentation authority hardening: `450e885ede830742f02fe64015f2dec8a579f94d`
+- WU-005 start checkpoint: `8e767071b2902bf6661b6f6d7776a04b04c4d082`
+- v2 contract manifest: `7e081eb4bf69659150e1601397eb70b34fc84fd8`
+- Profile schema: `d7b335fd8ceb398db0fd50a4752a2727cf281b23`
+- State schema: `2c31558de7b0e81b2391492ce45d80eb3807847e`
+- Profile/state implementation: `591369bac56439883484db550ff3f683cc743c51`
+- WU-005 tests: `f5938e79c6fc4a8e824baa06dc9bb4b8de4b786a`
+- v2 CI: `b2e0d8e53c964cb90b781f83945fc89a777df0b6`
 
-1. WU-004 had been described conversationally as ready while this ledger still correctly showed `IN_PROGRESS`.
-2. Phase 0 overstated semantic neutrality: Weekly vocabulary persists through Screening, Evidence, Selection, Architecture, Draft Packages, Draft validation and Issue Synthesis.
-3. Phase 2 was failure-driven and lacked a corpus-wide positive/negative audit of all 15 completed Specials.
-4. Pilot-critical Thematic Research Expansion was omitted.
-5. Review Finding / Repair Set was described but not scheduled as a machine-readable deliverable.
-6. v2/legacy state compatibility lacked an anti-divergence contract.
-7. `advance-to-gate` was underspecified as a planner rather than planner + executable dispatch/control.
+### Validation
 
-That correction produced the Phase 0 amendment, first 15-edition pattern matrix, initial W33 artifact-disposition document, and corrected vertical-slice amendment.
+The first full repository `Pipeline contract tests` run compiled the new implementation and executed 455 discovered tests. **All nine WU-005 tests passed.** The sole suite error was an unrelated pre-existing baseline defect: `tests/test_prepare_annual_reader_notes_ja_overrides.py` imports `pytest`, while `main`'s `pipeline-contract-tests.yml` did not install pytest.
 
-### 3.2 Second pre-implementation audit
+The defect was verified directly on `main` and repaired independently on this branch:
 
-The second audit found eight additional issues:
+- baseline CI dependency repair: `de9b87fe13e50f74a9574bb347b2c0e302d3af16`
 
-A. W33 had drifted from `Weekly Profile First Production Validation` toward a compatibility-boundary test.
-B. The first 15-edition matrix had explicit rows but insufficient production-lineage depth.
-C. Optional W33 reuse work was assigned too late in the implementation sequence.
-D. Base design documents remained visually canonical despite amendments.
-E. Pilot entry was ambiguous between Architecture-only capability and a full production-capable candidate.
-F. Contract SHA did not bind executable implementation identity.
-G. Finding taxonomy mixed ownership with regression action.
-H. Thematic completeness lacked explicit saturation/closure evidence.
+The CI rerun remains a branch-wide regression check; it is not evidence of a WU-005 semantic failure. WU-005 exit criteria are satisfied by the executed tests and exact failure isolation.
 
-Second-audit corrections:
-- W33 restored to Weekly-first production validation; legacy reuse made optional;
-- all 15 Specials re-audited from final `pipeline-state.json` production lineage;
-- implementation identity added to target provenance;
-- Finding taxonomy normalized into orthogonal axes;
-- Thematic closure evidence defined;
-- optional W33 reuse assigned to discovery/Evidence/semantic stages rather than one late compatibility block;
-- first Pilot now requires a full production-capable v2 candidate merged to `main`;
-- live document authority is centralized in `docs/survey-production-core-v2-authority.md`.
+## 6. WU-006 active contract
 
-## 4. Phase checkpoint
+Implement while preserving the mature v1 mechanical guarantees below their valid semantic boundary:
 
-| Phase | Description | Status | Exit evidence |
-|---|---|---|---|
-| 0 | Cross-Pipeline Process Archaeology | `COMPLETE` after first audit amendment | original inventory + profile-pollution amendment through Synthesis |
-| 1 | Contract Normalization | `COMPLETE` after second-audit amendment | base contract map + implementation identity/taxonomy/Pilot-entry/closure amendment |
-| 2 | Historical Knowledge Distillation | `COMPLETE` after Phase 2C | invariant catalog + first matrix + all-15 edition-level production deep audit |
-| 3 | Core v2 Candidate Implementation | `IN_PROGRESS` | authoritative second-audit vertical-slice contract + WU-005–WU-011 implementation candidate |
-| 4 | First external production validation | `PLANNED` | W33 + SP001 findings |
-| 5 | Cross-Pilot evaluation / first consolidation | `PLANNED` | classified fixes + regressions + revised contract |
-| 6 | Second production validation | `PLANNED` | W34 + SP002 + SP003 findings |
-| 7 | Stabilization / consolidation | `PLANNED` | stable Core/Profile contracts and simplified hot path |
+### Reuse
 
-## 5. Work-unit index
+- immutable/hash-bound input packages;
+- exact prompt/result-contract/input hashes;
+- bounded deterministic batches;
+- one result per batch;
+- exactly one decision per discovered record;
+- no missing/extra/duplicate decisions;
+- content-addressed accepted result sets;
+- acceptance revalidation before lifecycle progress.
 
-| Work unit | Scope | Status | Primary artifact |
-|---|---|---|---|
-| WU-000 | Direction, branch, plan, checkpoint | `COMPLETE_WITH_AUDIT_AMENDMENT` | improvement plan / this log |
-| WU-001 | Initial Phase 0 component inventory | `COMPLETE / AMENDED` | component inventory |
-| WU-001A | Expand semantic/profile-pollution map through Architecture/Draft/Synthesis | `COMPLETE` | component inventory audit amendment |
-| WU-002 | Phase 1 contract normalization | `COMPLETE / AMENDED` | base contract + second-audit amendment |
-| WU-003 | Initial failure/invariant distillation | `COMPLETE / EXTENDED` | historical invariant catalog |
-| WU-003B | First all-15 positive/negative production-pattern matrix | `COMPLETE AS FIRST PASS / SUPERSEDED AS EXIT EVIDENCE` | historical production pattern matrix |
-| WU-003C | Edition-level production-lineage audit of all 15 Specials | `COMPLETE` | historical production deep audit |
-| WU-004 | First corrected minimum vertical slice | `COMPLETE AS FIRST PASS / SUPERSEDED IN PART` | base + first audit amendment |
-| WU-004B | Correct Pilot role/authority/identity/taxonomy/closure contract | `COMPLETE` | second-audit amendment + authority index + revised W33 policy |
-| **WU-005** | Foundation contracts, state, implementation identity and anti-divergence | **`IN_PROGRESS`** | config/schema/resolver/state transition implementation + tests |
-| WU-006 | Research discovery expansion + Screening v2 | `PLANNED` | implementation |
-| WU-007 | Factual Evidence + Edition View + Materiality + Completeness | `PLANNED` | implementation |
-| WU-008 | Matrix + internal Selection + Architecture | `PLANNED` | implementation |
-| WU-009 | Drafting + Synthesis semantic generalization | `PLANNED` | implementation |
-| WU-010 | Executable orchestration + Finding/Repair Set | `PLANNED` | implementation |
-| WU-011 | P0 quality integration + full Pilot bootstrap | `PLANNED` | merge-ready candidate |
+### Generalize
 
-## 6. WU-005 implementation contract
-
-Implement:
-
-- `config/survey-production-v2.json`;
-- `schemas/survey-production-profile.schema.json`;
-- `schemas/survey-production-state.schema.json`;
-- deterministic Production Profile resolver/validator;
-- Weekly `ROLLING_WINDOW` policy using the existing tested cutoff logic;
-- Thematic `OPEN_HISTORY_AS_OF` / `CURRENT_STATE_AS_OF` validation without fake bounded windows;
-- v2 Production State initializer and one authoritative transition API;
-- contract SHA-256 binding;
-- `implementation.repository_commit_sha` and orchestrator identity;
-- one-way/ephemeral legacy projection rules and divergence checks;
-- W33 and synthetic SP001 initialization fixtures/tests.
-
-WU-005 exit criteria:
-
-1. W33 can initialize under the Weekly Profile using the existing canonical Friday 18:00 `America/New_York` cutoff logic.
-2. A synthetic Thematic/SP001 profile can initialize without `coverage.start/end` fiction.
-3. Production State records semantic contract identity and executable implementation identity separately.
-4. State transitions reject profile/hash/implementation-basis drift unless explicitly reinitialized/rebased by a later authorized mechanism.
-5. Legacy `pipeline-state.json` cannot become v2 authority or silently overwrite v2 state.
-6. Tests cover temporal-policy exclusivity, non-destructive initialization, state transition monotonicity/anti-divergence, contract hashing, and both Pilot profile types.
-
-## 7. Durable design retained through both audits
-
-The target remains:
+Add common discovery provenance:
 
 ```text
-Survey Production Core v2
-  + Research / Editorial Profile
-  + Publication Profile
-  + optional Series Research Layer
+BASE
+CARRY_OVER
+REFERENCE_EXPANSION
+SUCCESSOR_EXPANSION
+PARALLEL_EXPANSION
+COMPETING_EXPANSION
+BRIDGE_EXPANSION
+GAP_FILL
 ```
 
-Retained invariants:
-- current `main` is production source of truth;
-- frozen historical releases remain immutable learning/regression corpus;
-- `shared file format != shared semantic Core`;
-- Weekly semantics must not be fabricated for Thematic production;
-- Architecture Review + Publication Preview are the normal Human Gates;
-- Candidate Selection is internal/auditable;
-- temporal policy is separate from research scope;
-- Materiality mechanism is Core while completeness meaning is Profile-owned;
-- issue-only public Release identity;
-- exact-byte Publication Preview authority;
-- reusable factual Evidence is separated from edition-specific significance;
-- Thematic research requires reference/lineage expansion plus explicit closure/saturation evidence;
-- semantic contract identity, executable implementation identity and artifact byte identity are all provenance;
-- Pilot Finding scope and regression need are orthogonal;
-- Pilot findings return to this design/evaluation stream rather than becoming automatic edition-specific repair chains.
+Thematic records may form traceable parent/edge graphs. Weekly may use `BASE` and `CARRY_OVER` without inheriting Thematic completeness semantics.
 
-## 8. Completed correction artifacts
-
-### Phase 0 correction
-
-- `docs/survey-production-core-v2-component-inventory-audit-amendment.md`
-- commit `b41d40da86c8335c07116bbedd20894045bf9491`
-
-Key rule: `shared file format != shared semantic Core`.
-
-### Phase 1 base + second amendment
-
-- base: `docs/survey-production-core-v2-contract-normalization.md`
-- second amendment: `docs/survey-production-core-v2-contract-normalization-second-audit-amendment.md`
-- second-amendment commit: `db0bffc6d84c13ec49b7eb7e22d17e32c3d4a87b`
-
-Added:
-- `implementation.repository_commit_sha` / orchestrator identity;
-- orthogonal Finding taxonomy;
-- full-production-capable pre-Pilot boundary;
-- optional W33 reuse rule;
-- Thematic closure evidence.
-
-### Phase 2 knowledge distillation
-
-- `docs/survey-production-core-v2-historical-invariants.md`
-- first matrix: `docs/survey-production-core-v2-historical-production-pattern-matrix.md`
-- deep audit: `docs/survey-production-core-v2-historical-production-deep-audit.md`
-- deep-audit commit: `29d8aceba064336a1fcf1cde4f4d48d4ca51dc5b`
-
-Phase 2C explicitly rechecked all fifteen final `pipeline-state.json` records and retained edition-specific Gate, Architecture, revision/repair, chronology/synthesis, control-commit and publication provenance. It is not a claim that every historical intermediate artifact was reread.
-
-New/strengthened cross-edition findings include:
-- M06 template semantic leakage proves reader scope labels must derive from canonical state/profile;
-- 2020-Y proves content enrichment can reintroduce layout regressions;
-- 2024-H1 proves a new entity repair can regress an earlier entity repair;
-- 2022-Y demonstrates a coupled long-form regression family across taxonomy, references, TOC, fallback, entity binding, empty wrappers, chronology mapping and layout;
-- 2025-H1 proves completeness and publication correctness are independent axes.
-
-### Phase 3 second correction
-
-- revised W33 policy: `docs/survey-production-core-v2-w33-artifact-disposition.md`
-  - commit `ca84d76768d92ee0f775da81bd5c2940424255ce`
-- second vertical-slice amendment: `docs/survey-production-core-v2-minimum-vertical-slice-second-audit-amendment.md`
-  - commit `fd6bb0e061f571b55bb4ec11742bf514d15a14bc`
-- authority index: `docs/survey-production-core-v2-authority.md`
-  - original commit `199a289052879857dbb63673502b0a43a1bb048e`
-  - responsibility-hardening commit `450e885ede830742f02fe64015f2dec8a579f94d`
-
-Authoritative W33 rule:
-
-```text
-W33 = Weekly Profile First Production Validation
-legacy W33 RC = optional benchmark/provenance fixture
-legacy reuse = permitted optimization, never acceptance criterion
-```
-
-## 9. Pilot rollout contract
-
-A **full production-capable** candidate must be merged to `main` before external W33/SP001 sessions start.
-
-This means the merged candidate must have one coherent path through Human Gate 2 / exact-byte release authorization even if a particular initial production request says “stop at Architecture Review”.
-
-Normal interaction remains:
-
-```text
-start
--> autonomous work
--> HUMAN GATE 1 Architecture Review
--> autonomous downstream work after approval
--> HUMAN GATE 2 Publication Preview
--> deterministic Visual Review / Freeze / merge / Release for approved bytes
-```
-
-## 10. Finding handoff contract
-
-WU-010 implements:
+Add profile-neutral Screening v2 decisions with fields conceptually:
 
 ```yaml
-classification:
-  scope: EDITION_LOCAL | WEEKLY_PROFILE | PERIOD_PROFILE | THEMATIC_PROFILE | CORE | PUBLICATION_PROFILE | QUALITY_CONTRACT | SERIES_LAYER | UNCLASSIFIED
-  defect_kind: CORRECTNESS | TRACEABILITY | COVERAGE | EDITORIAL | PUBLICATION | ORCHESTRATION | COMPATIBILITY | OTHER
-  confidence: low | medium | high
-requires_regression: true | false
+discovery_id:
+decision: KEEP | MAYBE | DROP | INSPECT
+reason:
+scope_tags: []
+duplicate_group:
+verification_targets: []
+confidence: low | medium | high
 ```
 
-A production workaround is evidence about a defect, not automatic authorization to promote it into Core.
+Core Screening must not require:
+- Weekly `why_now`;
+- fixed A–L topic lanes;
+- Weekly issue-id regex monkey-patching for Special/Thematic operation.
 
-## 11. Thematic closure contract
+### WU-006 exit criteria
 
-Thematic completeness is not source-count based.
+1. Weekly and Thematic discovery records share provenance mechanics but can use different origins/relations.
+2. Thematic successor/reference/parallel/competing/bridge/gap-fill records remain traceable to a parent/research reason where applicable.
+3. Screening v2 has no required Weekly `why_now` or A–L lane vocabulary.
+4. Every accepted discovery record receives exactly one Screening disposition; missing/extra/duplicate decisions fail closed.
+5. Screening packages bind exact Profile/State/prompt/result-contract/input hashes.
+6. Existing v1 Screening remains untouched for frozen/legacy replay.
+7. Tests demonstrate an SP001-like expansion and a Weekly carry-over path without issue-regex monkey-patching.
 
-Closure requires:
-- all named obligations disposed;
-- zero open material `NEEDS_RESEARCH` obligations;
-- targeted residual gap-fill completed;
-- latest expansion pass produces zero new material obligations, or all new obligations are explicitly disposed;
-- unresolved limitations remain visible.
+## 7. Cross-cutting validation issue currently tracked
 
-Exact schema is WU-007 work.
+`Pipeline contract tests` had a pre-existing missing-`pytest` dependency on current `main`. The improvement branch fixes this in one isolated CI commit. Until its rerun is green, branch-wide CI should be reported as **rerun pending**, not as fully green.
 
-## 12. Resume rule
+This is a baseline CI quality issue, not a v2 semantic exception and not a Human Gate.
 
-A continuation session must:
+## 8. Resume rule
 
 ```text
 read current main
 -> read this worklog for status/next action
 -> read docs/survey-production-core-v2-authority.md for semantic authority
--> read authoritative documents for the active WU
 -> verify repository reality
--> mark work unit IN_PROGRESS
--> perform work + validation
--> record commit and next action
+-> perform active WU + validation
+-> update this ledger before declaring the WU complete
 ```
 
-If documentation and repository reality disagree, repository reality wins and this log is corrected first.
-
-**Current action: execute and validate WU-005.**
+**Current action: implement and validate WU-006, while continuing to observe the repaired branch-wide CI rerun.**
