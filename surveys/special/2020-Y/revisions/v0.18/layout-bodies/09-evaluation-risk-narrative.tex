@@ -1,0 +1,12 @@
+RealToxicityPromptsは、web上のtextから抽出した自然なpromptを起点に、pretrained language modelがどのようなtoxic continuationを生成し得るかを評価する研究として提示された。重要なのは特定modelの順位ではなく、generation capabilityを測る通常benchmarkとは別に、undesirable behaviorの発生傾向をprompt-conditioned evaluationとして測るsurfaceが作られたことである。\autocite{src-308178e74f55}
+
+
+同じ2020年にはstereotypeやsocial biasを測るbenchmarkも複数現れていたが、本号はそれらをすべて選択Evidenceへ昇格させていない。StereoSetやCrowS-PairsはRaw / Evidence HOLDとして残し、ここでは『能力が上がるほど安全性も自動的に上がる』という単純な前提が成立せず、model behaviorを別軸で測るevaluation layerが必要になったという年次構造だけを扱う。\autocite{src-308178e74f55}
+
+
+toxicity、stereotype、biasは互いに同義ではなく、一つのbenchmarkで『model safety』全体を測れるわけでもない。RealToxicityPromptsが扱うのはpromptに続くtoxic degenerationという限定されたbehavior surfaceである。本号は2020年のrisk evaluationを網羅的taxonomyとして再構成せず、generationの負の挙動をsystematically evaluateする研究軸が独立したことを示す代表例として位置付ける。\autocite{src-308178e74f55}
+
+
+GPT-3のfew-shot capabilityやhuman-feedback steeringと並べると、2020年にはmodel behaviorを『できること』『望む方向へ変えること』『望ましくない挙動を測ること』に分けて考える必要が生まれていたと読める。後年のalignment / safety stackを当年へ投影するのではなく、evaluationとsteeringがmodel本体から分離し始めた段階として捉えるのが妥当である。\autocite{src-308178e74f55}
+
+
