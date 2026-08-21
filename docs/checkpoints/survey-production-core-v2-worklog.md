@@ -8,7 +8,7 @@ Authority index: `docs/survey-production-core-v2-authority.md`
 
 ## 1. Purpose and update contract
 
-This is the persistent work-status ledger for the Survey Production Core v2 improvement program. Progress must be reconstructable from repository state alone. Every substantive work unit reads this file before changes and updates it before the unit is considered complete.
+This is the persistent **work-status** ledger for the Survey Production Core v2 improvement program. Progress must be reconstructable from repository state alone. Every substantive work unit reads this file before changes and updates it before the unit is considered complete.
 
 Edition-specific W33 / W34 / SP001 / SP002 / SP003 state stays in each edition's canonical production artifacts. This log records only compilation-system design, implementation, and returned findings evaluated as Core/Profile/Publication/regression work.
 
@@ -16,15 +16,17 @@ Status values: `PLANNED`, `IN_PROGRESS`, `PAUSED`, `BLOCKED`, `COMPLETE`, `SUPER
 
 For each unit: revalidate current `main` when relevant; mark the unit `IN_PROGRESS`; perform work and validation; record artifacts/commits, unresolved findings, and exact next action; do not mark `COMPLETE` before its intended validation is done.
 
+Semantic/design authority is defined by `docs/survey-production-core-v2-authority.md` and its referenced contracts/amendments. This work log may summarize those rules but does not override them.
+
 ## 2. Current snapshot
 
-Last updated: **2026-08-22 JST — second audit correction set closed**
+Last updated: **2026-08-22 JST — WU-005 started after final pre-implementation audit hardening**
 
 - Repository: `eariver/japanese-generative-ai-survey`
 - Improvement branch: `refactor/survey-production-core-v2`
 - Original base `main`: `2086b396d2f30103d9292b722891be436cd28db5`
-- Current `main` revalidated at second-audit correction start: `2086b396d2f30103d9292b722891be436cd28db5` — unchanged.
-- Production source of truth remains current `main` after coherent candidate changes are reviewed and merged.
+- Current `main` revalidated immediately before WU-005: `2086b396d2f30103d9292b722891be436cd28db5` — unchanged.
+- Production source of truth remains current `main` until coherent candidate changes are reviewed and merged.
 - No frozen historical release has been rewritten by this improvement work.
 
 ### Program state
@@ -32,9 +34,21 @@ Last updated: **2026-08-22 JST — second audit correction set closed**
 - Overall status: `ACTIVE`
 - Current phase: **Phase 3 — Core v2 Candidate Implementation**
 - Current phase status: `IN_PROGRESS`
-- Latest completed work: **WU-003C / WU-004B second-audit correction set**
-- Next work unit: **WU-005 — Foundation contracts, state, implementation identity and anti-divergence**
-- WU-005 has **not started** as of this checkpoint.
+- Active work unit: **WU-005 — Foundation contracts, state, implementation identity and anti-divergence**
+- WU-005 status: **`IN_PROGRESS`**
+- Previous completed work: **WU-003C / WU-004B second-audit correction set**
+
+### Final pre-implementation documentation hardening
+
+The final audit returned `PASS WITH MINOR DOCUMENTATION OBSERVATIONS`. Before WU-005, the authority index was hardened so that:
+
+- repository reality is factual authority;
+- this work log owns status/progress/next action only;
+- semantic/design contracts are owned by the authority index and current amendments;
+- Phase 2C is explicitly an edition-level final-state production-lineage audit, not a claim that every historical intermediate artifact was reread;
+- legacy compatibility wording in the first Phase 3 amendment is explicitly superseded where it conflicts with the second amendment.
+
+Hardening commit: `450e885ede830742f02fe64015f2dec8a579f94d`.
 
 ### Pilot state
 
@@ -110,7 +124,7 @@ Second-audit corrections:
 | WU-003C | Edition-level production-lineage audit of all 15 Specials | `COMPLETE` | historical production deep audit |
 | WU-004 | First corrected minimum vertical slice | `COMPLETE AS FIRST PASS / SUPERSEDED IN PART` | base + first audit amendment |
 | WU-004B | Correct Pilot role/authority/identity/taxonomy/closure contract | `COMPLETE` | second-audit amendment + authority index + revised W33 policy |
-| WU-005 | Foundation contracts, state, implementation identity and anti-divergence | `PLANNED` | implementation next |
+| **WU-005** | Foundation contracts, state, implementation identity and anti-divergence | **`IN_PROGRESS`** | config/schema/resolver/state transition implementation + tests |
 | WU-006 | Research discovery expansion + Screening v2 | `PLANNED` | implementation |
 | WU-007 | Factual Evidence + Edition View + Materiality + Completeness | `PLANNED` | implementation |
 | WU-008 | Matrix + internal Selection + Architecture | `PLANNED` | implementation |
@@ -118,7 +132,32 @@ Second-audit corrections:
 | WU-010 | Executable orchestration + Finding/Repair Set | `PLANNED` | implementation |
 | WU-011 | P0 quality integration + full Pilot bootstrap | `PLANNED` | merge-ready candidate |
 
-## 6. Durable design retained through both audits
+## 6. WU-005 implementation contract
+
+Implement:
+
+- `config/survey-production-v2.json`;
+- `schemas/survey-production-profile.schema.json`;
+- `schemas/survey-production-state.schema.json`;
+- deterministic Production Profile resolver/validator;
+- Weekly `ROLLING_WINDOW` policy using the existing tested cutoff logic;
+- Thematic `OPEN_HISTORY_AS_OF` / `CURRENT_STATE_AS_OF` validation without fake bounded windows;
+- v2 Production State initializer and one authoritative transition API;
+- contract SHA-256 binding;
+- `implementation.repository_commit_sha` and orchestrator identity;
+- one-way/ephemeral legacy projection rules and divergence checks;
+- W33 and synthetic SP001 initialization fixtures/tests.
+
+WU-005 exit criteria:
+
+1. W33 can initialize under the Weekly Profile using the existing canonical Friday 18:00 `America/New_York` cutoff logic.
+2. A synthetic Thematic/SP001 profile can initialize without `coverage.start/end` fiction.
+3. Production State records semantic contract identity and executable implementation identity separately.
+4. State transitions reject profile/hash/implementation-basis drift unless explicitly reinitialized/rebased by a later authorized mechanism.
+5. Legacy `pipeline-state.json` cannot become v2 authority or silently overwrite v2 state.
+6. Tests cover temporal-policy exclusivity, non-destructive initialization, state transition monotonicity/anti-divergence, contract hashing, and both Pilot profile types.
+
+## 7. Durable design retained through both audits
 
 The target remains:
 
@@ -146,7 +185,7 @@ Retained invariants:
 - Pilot Finding scope and regression need are orthogonal;
 - Pilot findings return to this design/evaluation stream rather than becoming automatic edition-specific repair chains.
 
-## 7. Completed correction artifacts
+## 8. Completed correction artifacts
 
 ### Phase 0 correction
 
@@ -175,7 +214,7 @@ Added:
 - deep audit: `docs/survey-production-core-v2-historical-production-deep-audit.md`
 - deep-audit commit: `29d8aceba064336a1fcf1cde4f4d48d4ca51dc5b`
 
-Phase 2C explicitly rechecked all fifteen final `pipeline-state.json` records and retained edition-specific Gate, Architecture, revision/repair, chronology/synthesis, control-commit and publication provenance.
+Phase 2C explicitly rechecked all fifteen final `pipeline-state.json` records and retained edition-specific Gate, Architecture, revision/repair, chronology/synthesis, control-commit and publication provenance. It is not a claim that every historical intermediate artifact was reread.
 
 New/strengthened cross-edition findings include:
 - M06 template semantic leakage proves reader scope labels must derive from canonical state/profile;
@@ -191,7 +230,8 @@ New/strengthened cross-edition findings include:
 - second vertical-slice amendment: `docs/survey-production-core-v2-minimum-vertical-slice-second-audit-amendment.md`
   - commit `fd6bb0e061f571b55bb4ec11742bf514d15a14bc`
 - authority index: `docs/survey-production-core-v2-authority.md`
-  - commit `199a289052879857dbb63673502b0a43a1bb048e`
+  - original commit `199a289052879857dbb63673502b0a43a1bb048e`
+  - responsibility-hardening commit `450e885ede830742f02fe64015f2dec8a579f94d`
 
 Authoritative W33 rule:
 
@@ -201,7 +241,7 @@ legacy W33 RC = optional benchmark/provenance fixture
 legacy reuse = permitted optimization, never acceptance criterion
 ```
 
-## 8. Pilot rollout contract
+## 9. Pilot rollout contract
 
 A **full production-capable** candidate must be merged to `main` before external W33/SP001 sessions start.
 
@@ -218,7 +258,7 @@ start
 -> deterministic Visual Review / Freeze / merge / Release for approved bytes
 ```
 
-## 9. Finding handoff contract
+## 10. Finding handoff contract
 
 WU-010 implements:
 
@@ -232,7 +272,7 @@ requires_regression: true | false
 
 A production workaround is evidence about a defect, not automatic authorization to promote it into Core.
 
-## 10. Thematic closure contract
+## 11. Thematic closure contract
 
 Thematic completeness is not source-count based.
 
@@ -245,14 +285,14 @@ Closure requires:
 
 Exact schema is WU-007 work.
 
-## 11. Resume rule
+## 12. Resume rule
 
 A continuation session must:
 
 ```text
 read current main
--> read this worklog
--> read docs/survey-production-core-v2-authority.md
+-> read this worklog for status/next action
+-> read docs/survey-production-core-v2-authority.md for semantic authority
 -> read authoritative documents for the active WU
 -> verify repository reality
 -> mark work unit IN_PROGRESS
@@ -262,4 +302,4 @@ read current main
 
 If documentation and repository reality disagree, repository reality wins and this log is corrected first.
 
-**Next action: WU-005 — Foundation contracts, state, implementation identity and anti-divergence.**
+**Current action: execute and validate WU-005.**
