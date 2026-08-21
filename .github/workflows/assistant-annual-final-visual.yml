@@ -1,0 +1,82 @@
+name: Assistant Annual final visual dispatcher
+
+on:
+  push:
+    branches:
+      - automation-control
+    paths:
+      - 'automation/annual-final-visual-request.json'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: assistant-annual-final-visual-dispatch
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout automation control branch
+        uses: actions/checkout@v6
+        with:
+          ref: automation-control
+          fetch-depth: 1
+
+      - name: Validate and dispatch canonical workflow
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import datetime as dt
+          import json
+          import os
+          import pathlib
+          import urllib.request
+
+          path=pathlib.Path('automation/annual-final-visual-request.json')
+          req=json.loads(path.read_text(encoding='utf-8'))
+          assert req.get('schema_version')=='1.0'
+          assert req.get('special_slug')=='2020-Y'
+          assert req.get('source_version')=='v0.12'
+          nonce=req.get('nonce'); assert isinstance(nonce,str) and nonce
+          payload=json.dumps({'ref':'main','inputs':{'special_slug':'2020-Y','source_version':'v0.12'}}).encode('utf-8')
+          url=f"https://api.github.com/repos/{os.environ['REPOSITORY']}/actions/workflows/revise-special-annual-final-visual-compaction.yml/dispatches"
+          request=urllib.request.Request(url,data=payload,method='POST',headers={
+              'Accept':'application/vnd.github+json',
+              'Authorization':f"Bearer {os.environ['GH_TOKEN']}",
+              'X-GitHub-Api-Version':'2026-03-10',
+              'Content-Type':'application/json',
+              'User-Agent':'sp2020-annual-final-visual-dispatch',
+          })
+          with urllib.request.urlopen(request,timeout=30) as response:
+              body=response.read(); status=response.status
+          if status not in (200,204):
+              raise SystemExit(f'dispatch HTTP {status}: {body!r}')
+          data=json.loads(body.decode()) if body else {}
+          out={
+              'schema_version':'1.0','nonce':nonce,'http_status':status,
+              'workflow':'revise-special-annual-final-visual-compaction.yml',
+              'workflow_run_id':data.get('workflow_run_id'),
+              'html_url':data.get('html_url'),'run_url':data.get('run_url'),
+              'dispatched_at':dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds'),
+          }
+          pathlib.Path('automation/annual-final-visual-result.json').write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(out,indent=2))
+          PY
+
+      - name: Persist dispatch result
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add automation/annual-final-visual-result.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Record Annual final visual dispatch result'
+          git push origin HEAD:automation-control
