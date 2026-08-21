@@ -21,22 +21,16 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
     def make_sandbox(self) -> tuple[tempfile.TemporaryDirectory[str], Path]:
         temp = tempfile.TemporaryDirectory()
         root = Path(temp.name)
+        source_cfg = v2.load_json(self.repo_root / "config/survey-production-v2.json")
         required = [
             "config/survey-production-v2.json",
             "config/weekly-pipeline.json",
-            "config/prompts/source-screening-v2.md",
             "schemas/survey-production-profile.schema.json",
             "schemas/survey-production-state.schema.json",
-            "schemas/survey-discovery-record.schema.json",
-            "schemas/screening-v2-run-package.schema.json",
-            "schemas/screening-v2-batch-result.schema.json",
-            "docs/survey-production-core-v2-authority.md",
-            "docs/survey-production-core-v2-contract-normalization-second-audit-amendment.md",
-            "docs/survey-production-core-v2-minimum-vertical-slice-second-audit-amendment.md",
-            "docs/survey-production-core-v2-historical-invariants.md",
-            "docs/survey-production-core-v2-historical-production-deep-audit.md",
+            *source_cfg["contract_files"]["pipeline"],
+            *source_cfg["contract_files"]["quality"],
         ]
-        for rel in required:
+        for rel in dict.fromkeys(required):
             src = self.repo_root / rel
             dst = root / rel
             dst.parent.mkdir(parents=True, exist_ok=True)
