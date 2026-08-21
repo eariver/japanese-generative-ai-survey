@@ -7,13 +7,20 @@ on:
     paths:
       - "config/survey-production-v2.json"
       - "config/prompts/source-screening-v2.md"
+      - "config/prompts/evidence-verification-v2.md"
       - "schemas/survey-production-*.schema.json"
       - "schemas/survey-discovery-record.schema.json"
       - "schemas/screening-v2-*.schema.json"
+      - "schemas/evidence-v2-*.schema.json"
+      - "schemas/edition-evidence-view.schema.json"
+      - "schemas/materiality-ledger.schema.json"
+      - "schemas/profile-completeness-result.schema.json"
       - "scripts/survey_production_v2.py"
       - "scripts/survey_screening_v2.py"
+      - "scripts/survey_evidence_v2.py"
       - "tests/test_survey_production_v2.py"
       - "tests/test_survey_screening_v2.py"
+      - "tests/test_survey_evidence_v2.py"
       - "docs/survey-production-core-v2-*.md"
       - "docs/checkpoints/survey-production-core-v2-worklog.md"
       - ".github/workflows/survey-production-v2-ci.yml"
@@ -21,13 +28,20 @@ on:
     paths:
       - "config/survey-production-v2.json"
       - "config/prompts/source-screening-v2.md"
+      - "config/prompts/evidence-verification-v2.md"
       - "schemas/survey-production-*.schema.json"
       - "schemas/survey-discovery-record.schema.json"
       - "schemas/screening-v2-*.schema.json"
+      - "schemas/evidence-v2-*.schema.json"
+      - "schemas/edition-evidence-view.schema.json"
+      - "schemas/materiality-ledger.schema.json"
+      - "schemas/profile-completeness-result.schema.json"
       - "scripts/survey_production_v2.py"
       - "scripts/survey_screening_v2.py"
+      - "scripts/survey_evidence_v2.py"
       - "tests/test_survey_production_v2.py"
       - "tests/test_survey_screening_v2.py"
+      - "tests/test_survey_evidence_v2.py"
       - "docs/survey-production-core-v2-*.md"
       - ".github/workflows/survey-production-v2-ci.yml"
   workflow_dispatch:
@@ -56,9 +70,9 @@ jobs:
         with:
           python-version: "3.12"
       - name: Compile v2 implementation
-        run: python -m py_compile scripts/survey_production_v2.py scripts/survey_screening_v2.py
+        run: python -m py_compile scripts/survey_production_v2.py scripts/survey_screening_v2.py scripts/survey_evidence_v2.py
       - name: Run v2 tests
-        run: python -m unittest tests.test_survey_production_v2 tests.test_survey_screening_v2 -v
+        run: python -m unittest tests.test_survey_production_v2 tests.test_survey_screening_v2 tests.test_survey_evidence_v2 -v
       - name: Parse v2 JSON contracts
         run: |
           python - <<'PY'
@@ -71,6 +85,12 @@ jobs:
               Path('schemas/survey-discovery-record.schema.json'),
               Path('schemas/screening-v2-run-package.schema.json'),
               Path('schemas/screening-v2-batch-result.schema.json'),
+              Path('schemas/evidence-v2-run-package.schema.json'),
+              Path('schemas/evidence-v2-task.schema.json'),
+              Path('schemas/evidence-v2-card.schema.json'),
+              Path('schemas/edition-evidence-view.schema.json'),
+              Path('schemas/materiality-ledger.schema.json'),
+              Path('schemas/profile-completeness-result.schema.json'),
           ]:
               json.loads(path.read_text(encoding='utf-8'))
               print(f'OK {path}')
