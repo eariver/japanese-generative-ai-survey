@@ -24,8 +24,12 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         required = [
             "config/survey-production-v2.json",
             "config/weekly-pipeline.json",
+            "config/prompts/source-screening-v2.md",
             "schemas/survey-production-profile.schema.json",
             "schemas/survey-production-state.schema.json",
+            "schemas/survey-discovery-record.schema.json",
+            "schemas/screening-v2-run-package.schema.json",
+            "schemas/screening-v2-batch-result.schema.json",
             "docs/survey-production-core-v2-authority.md",
             "docs/survey-production-core-v2-contract-normalization-second-audit-amendment.md",
             "docs/survey-production-core-v2-minimum-vertical-slice-second-audit-amendment.md",
