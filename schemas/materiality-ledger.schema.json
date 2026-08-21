@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.invalid/schemas/materiality-ledger.schema.json",
+  "$id": "https://github.com/eariver/japanese-generative-ai-survey/schemas/materiality-ledger.schema.json",
   "title": "Survey Production Core v2 Materiality Ledger",
   "type": "object",
   "additionalProperties": false,
@@ -12,10 +12,13 @@
     "basis": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["discovery_sha256", "screening_acceptance_sha256", "evidence_set_sha256", "edition_view_set_sha256"],
+      "required": ["production_profile_sha256", "discovery_sha256", "screening_acceptance_sha256", "evidence_acceptance_sha256", "edition_views_acceptance_sha256", "evidence_set_sha256", "edition_view_set_sha256"],
       "properties": {
+        "production_profile_sha256": {"$ref": "#/$defs/sha256"},
         "discovery_sha256": {"$ref": "#/$defs/sha256"},
         "screening_acceptance_sha256": {"$ref": "#/$defs/sha256"},
+        "evidence_acceptance_sha256": {"$ref": "#/$defs/sha256"},
+        "edition_views_acceptance_sha256": {"$ref": "#/$defs/sha256"},
         "evidence_set_sha256": {"$ref": "#/$defs/sha256"},
         "edition_view_set_sha256": {"$ref": "#/$defs/sha256"}
       }
@@ -25,7 +28,7 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["discovery_id", "origin", "screening_decision", "downstream_disposition", "evidence_task_ids", "evidence_view_statuses", "duplicate_target", "rationale"],
+        "required": ["discovery_id", "origin", "screening_decision", "downstream_disposition", "evidence_task_ids", "evidence_view_statuses", "duplicate_group", "rationale"],
         "properties": {
           "discovery_id": {"type": "string", "minLength": 1},
           "origin": {"type": "string", "minLength": 1},
@@ -33,7 +36,7 @@
           "downstream_disposition": {"enum": ["EVIDENCE", "DUPLICATE", "EXCLUDED", "HOLD"]},
           "evidence_task_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
           "evidence_view_statuses": {"type": "array", "uniqueItems": true, "items": {"enum": ["MATERIAL", "CONTEXT", "NON_MATERIAL", "HOLD"]}},
-          "duplicate_target": {"type": ["string", "null"]},
+          "duplicate_group": {"type": ["string", "null"]},
           "rationale": {"type": "string", "minLength": 1}
         }
       }
