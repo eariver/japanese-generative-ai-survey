@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2020-Y",
+  "synthesis_version": "v0.1",
+  "status": "DRAFT",
+  "cover": {
+    "headline": "scaleから、接続される生成AIシステムへ",
+    "deck": "2020年、生成AIは『巨大なmodelを作る』だけの競争から外へ広がった。Scaling LawsとGPT-3がscaleとfew-shot capabilityを結び、APIがaccessを、retrievalが外部知識を、dialogueが会話固有のsystem designを、ZeROとGShardがtraining infrastructureを、diffusionとvisual-token系が新しい生成mediaを、human feedbackとtoxicity evaluationがsteering / risk layerを可視化した。これらはまだ一つのproductへ統合されていない。その分岐こそが2021年の多層system化への入口だった。",
+    "anchor_package_ids": [
+      "scale-laws-gpt3",
+      "retrieval-grounding",
+      "synthesis-transition-2021"
+    ]
+  },
+  "this_week_signals": [
+    {
+      "signal_id": "scale-capability",
+      "title": "scaleがparameter数から設計原理へ変わった",
+      "summary": "Scaling Lawsはcompute・data・model sizeの関係を設計対象として整理し、GPT-3はfrontier scaleをfew-shot / in-context behaviorへ接続した。2020年の中心は『最大model』という順位ではなく、scaleがtrainingとtask adaptationの双方を規定する軸になったことにある。",
+      "package_ids": ["scale-laws-gpt3", "systems-scale"],
+      "late_breaking": false
+    },
+    {
+      "signal_id": "access-retrieval",
+      "title": "modelの外側にaccessとexternal knowledgeが現れた",
+      "summary": "OpenAI APIはfrontier capabilityへのservice interfaceを、REALMとRAGはparameterだけに閉じないknowledge accessを示した。model本体・利用surface・外部corpusという別々のlayerが分離し始めた。",
+      "package_ids": ["access-api", "retrieval-grounding"],
+      "late_breaking": false
+    },
+    {
+      "signal_id": "dialogue-systems",
+      "title": "会話と巨大trainingは独立したsystem problemになった",
+      "summary": "MeenaとBlenderBotはconversation-specific evaluationとsystem recipeを、DeepSpeedとZeRO、GShardはmemory・sharding・conditional computationを前景化した。model architectureだけでは生成AIを説明できない領域が増えた。",
+      "package_ids": ["dialogue-systems", "systems-scale"],
+      "late_breaking": false
+    },
+    {
+      "signal_id": "media-branching",
+      "title": "generative mediaは一つの方式へ収束していなかった",
+      "summary": "Image GPTとTaming Transformersがautoregressive / discrete representation系を、DDPMとscore-SDEがdiffusion / score-based系を形成した。2020年末の重要点は後年の勝者を先取りすることではなく、複数の生成原理が並立していたことにある。",
+      "package_ids": ["media-autoregressive", "diffusion-score"],
+      "late_breaking": false
+    },
+    {
+      "signal_id": "steering-risk-transition",
+      "title": "人間の好みと望ましくない挙動がmodel外のlayerになった",
+      "summary": "human-feedback summarizationはhuman preferenceを使うsteeringの操作点を、RealToxicityPromptsはtoxic degenerationのevaluation surfaceを示した。総括では、2020年に分離したこれらのlayerが2021年のadaptation・distribution・groundingへどう接続するかを、hindsightを抑えて整理する。",
+      "package_ids": ["feedback-steering", "evaluation-risk", "synthesis-transition-2021"],
+      "late_breaking": false
+    }
+  ]
+}

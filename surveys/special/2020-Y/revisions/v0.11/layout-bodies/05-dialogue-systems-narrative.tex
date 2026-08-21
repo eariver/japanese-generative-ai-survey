@@ -1,0 +1,12 @@
+Meenaは2.6B parameterのmulti-turn open-domain chatbotとして提示され、public-domain social-media conversationから構成したdataでnext-token predictionを行うend-to-end modelとして記述された。年次的に重要なのは、dialogueをhand-crafted pipelineだけでなく、大規模pretrainingに近いscaleの問題として扱いながら、会話特有のqualityを別途測ろうとした点である。\autocite{src-8930f1933983}
+
+
+Meenaの論文はSensibleness and Specificity Average（SSA）というhuman evaluation metricを導入し、perplexityだけでは捉えにくいmulti-turn responseのsensiblenessとspecificityを評価しようとした。ここで重要なのは特定のSSA値の優劣ではなく、open-domain dialogueではlanguage-model lossだけでなく、人間が会話としてどう受け取るかを測るevaluation layerが必要だと明示されたことである。\autocite{src-8930f1933983}
+
+
+BlenderBot / Recipes for building an open-domain chatbotは、engagingnessだけでなくknowledge、personality、empathyなど複数の会話能力をどう組み合わせるかというsystem recipeを中心に置いた。first-party release boundaryと合わせて見ると、dialogue researchが単一modelのbenchmarkから、複数要素を統合したinteractive systemを実際に公開・評価する方向へ進んでいたことが分かる。\autocite{src-66cb10bf43ff,src-8260c320e205}
+
+
+MeenaとBlenderBotを並べる意味は、どちらが優れたchatbotだったかを決めることではない。前者はscaleとhuman evaluation、後者はcapability compositionとsystem recipeという別の設計焦点を示す。2020年のdialogue trajectoryは、large pretrained modelの能力を会話へ持ち込むだけでは足りず、conversation-specific evaluationとsystem integrationが独立した技術課題になることを示した。\autocite{src-66cb10bf43ff,src-8260c320e205,src-8930f1933983}
+
+

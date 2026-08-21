@@ -1,0 +1,127 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2020-Y",
+  "package_id": "scale-laws-gpt3",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "basis": {
+    "draft_package_sha256": "5ac34c7be95423d1165453b17203a37c99722e9c7c39cfecd1fec999e0782c9a",
+    "prompt_id": "article-drafting-v0.1",
+    "prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project drafting; no paid inference-provider API",
+    "generated_at": "2026-08-21T01:14:05+09:00",
+    "run_reference": "ChatGPT session 2026-08-21: after explicit Architecture approval, drafted all 11 ARTICLE_DRAFTING packages from the immutable Evidence-bound Draft Packages. The synthesis-transition package is reader-facing as '総括――scaleから多層システムへ：2021年への橋'."
+  },
+  "headline": "規模が設計原理になる――Scaling LawsからGPT-3へ",
+  "deck": "2020年の転換点は、単にparameter数が増えたことではない。Scaling Lawsはmodel size・dataset size・training computeの関係を経験則として整理し、GPT-3は巨大なautoregressive language modelをtask-specificなgradient updateなしでfew-shot / in-contextに評価した。両者を接続すると、scaleが『大きさ』ではなくcapabilityを設計・予測する軸として前景化したことが見える。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-2020-Y:item-arxiv-2001-08361v1-7b4284c583",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2020-Y:series-openai-gpt3-2020-38ff81374e",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "scaling-law-framing",
+      "block_type": "PARAGRAPH",
+      "text": "Scaling Laws for Neural Language Modelsが提示したのは、language-model lossとmodel size、dataset size、training computeの間に経験的なpower-law関係が観測されるという整理だった。重要なのは『大きければよい』という標語ではなく、固定computeをどうmodelとdataへ配分するかを議論できる設計空間を置いたことである。本号では、そのperformance評価を独立再現したとは扱わず、scaleを測定可能なdesign variableとして扱う研究上の転換を読む。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2020-Y:item-arxiv-2001-08361v1-7b4284c583",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "gpt3-few-shot",
+      "block_type": "PARAGRAPH",
+      "text": "GPT-3はこのscaleの議論を、taskへの適応方法という別の面へ押し広げた。論文とfirst-party publicationでは、175B parameterのautoregressive modelを、各taskごとのgradient updateを行わず、instructionや少数例をtext contextとして与えるzero/one/few-shot設定で評価している。ここでの年次的意味は、pretrained modelをtaskごとに作り替えることなく、prompt contextによって複数taskへ接続する発想がfrontier-scale modelの中心的評価軸になった点にある。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2020-Y:series-openai-gpt3-2020-38ff81374e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "connection",
+      "block_type": "PARAGRAPH",
+      "text": "Scaling LawsとGPT-3を一つの出来事に潰すべきではない。前者はloss、compute、data、model sizeの経験則を扱い、後者は大規模pretraining後のfew-shot / in-context behaviorを幅広いtaskで検証した。両者を年次trajectoryとして接続したとき初めて、2020年にはscaleがtraining側の設計変数とinference側のtask adaptationの双方へ影響する、より広いsystem propertyとして理解され始めたことが見える。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2020-Y:item-arxiv-2001-08361v1-7b4284c583",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2020-Y:series-openai-gpt3-2020-38ff81374e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "claim-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "Scaling LawsとGPT-3の論文・first-party資料が示したloss傾向、benchmark性能、few-shot能力や社会的影響に関する評価は著者・project側の主張である。本号が一次資料で確認したことは、2020年の技術記録としてそれらが提示された事実と設計上の位置付けであり、数値結果や一般化能力を独立再現したことを意味しない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2020-Y:item-arxiv-2001-08361v1-7b4284c583",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2020-Y:series-openai-gpt3-2020-38ff81374e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "empirical scaling-law framing",
+      "block_ids": [
+        "scaling-law-framing"
+      ]
+    },
+    {
+      "requirement": "GPT-3 few-shot/in-context evaluation framing",
+      "block_ids": [
+        "gpt3-few-shot"
+      ]
+    },
+    {
+      "requirement": "author-claimed results versus independent reproduction",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    }
+  ],
+  "boundary_coverage": [
+    {
+      "requirement": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    }
+  ],
+  "late_breaking_acknowledged": false
+}

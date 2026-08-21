@@ -1,0 +1,172 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2020-Y",
+  "review_version": "v0.1",
+  "status": "HUMAN_REVIEW_REQUIRED",
+  "architecture_plan": "sources/SP-2020-Y/architecture/issue-architecture-v0.1.json",
+  "architecture_status": "PROPOSED",
+  "coverage": {
+    "start": "2020-01-01T00:00:00Z",
+    "end": "2020-12-31T23:59:59Z",
+    "retrospective_as_of": "2026-08-20T13:28:52Z"
+  },
+  "source_intake": {
+    "base_normalized_records": 45112,
+    "supplemental_gap_fill_records": 4,
+    "normalized_total": 45116,
+    "raw_file_count": 105,
+    "coverage_audit_status": "COMPLETE_WITH_LIMITATIONS",
+    "coverage_audit": "sources/SP-2020-Y/coverage/source-intake-coverage-audit-v0.2.json",
+    "arxiv_query_slices": 72,
+    "arxiv_cap_hit_slices": 6,
+    "temporal_skew_assessment": "No catastrophic calendar interval hole was found; every month contains more than 2,500 unique arXiv papers. Six capped cs.LG month slices and present-day publisher-index archival limits remain the material completeness risks."
+  },
+  "screening_and_evidence": {
+    "screening_keep_records": 28,
+    "screening_result_set_sha256": "f754d133c23d3322462a3ff61a1c368c6d97dc521f7c496c5a2881c3fa5fe211",
+    "evidence_task_count": 23,
+    "evidence_candidate_recommendations": 15,
+    "evidence_hold_recommendations": 8,
+    "evidence_run_sha256": "c89361bf3aa37f8c0011c28bddfca034ab485ae2d1615220005ee0b7887686cf"
+  },
+  "selection": {
+    "status": "APPROVED_INTERNAL_CHECKPOINT",
+    "selected_candidate_count": 15,
+    "role_counts": {
+      "FEATURE_CORE": 5,
+      "SECTION_CORE": 8,
+      "SUPPORTING_EVIDENCE": 2
+    },
+    "hold_out_count": 8,
+    "selection_sha256": "dbc38ba4a81a267d2cd332aa9b418fd628beb338f0b30012456ad4594103f599",
+    "matrix_sha256": "dc57528e28cc380e8def58c6c34d8ba71c67c6caa88bbdb98a9a813d8e26cdaa",
+    "approval_authority": "special-editorial-pipeline",
+    "human_architecture_approval_implied": false
+  },
+  "annual_phase_candidates": [
+    {
+      "phase": "A",
+      "approximate_span": "January-March",
+      "interpretation": "Scaling Laws, Meena, REALM, Turing-NLG and DeepSpeed/ZeRO make scale, dialogue, external knowledge and large-model systems visible as separate design problems before GPT-3 dominates the year's public narrative."
+    },
+    {
+      "phase": "B",
+      "approximate_span": "April-June",
+      "interpretation": "DPR and BlenderBot are followed by Jukebox, RAG, GPT-3, the OpenAI API, Image GPT, DDPM and GShard, concentrating scale, access, retrieval, dialogue, media generation and systems design into the year's densest architectural transition."
+    },
+    {
+      "phase": "C",
+      "approximate_span": "July-September",
+      "interpretation": "The emphasis shifts from model demonstrations toward access, steering and evaluation boundaries: human-feedback summarization, toxicity evaluation, the RAG release boundary and Microsoft GPT-3 licensing clarify how models are used, controlled and assessed."
+    },
+    {
+      "phase": "D",
+      "approximate_span": "October-December",
+      "interpretation": "CrowS-Pairs, DDIM, score-SDE and Taming Transformers refine the evaluation and generative-media branches; the year closes with multiple viable generation paradigms rather than one settled architecture, forming the handoff into 2021."
+    }
+  ],
+  "annual_trajectories": [
+    "scale and in-context capability: empirical scaling laws and GPT-3 connect frontier scale to few-shot/in-context task behavior",
+    "access and distribution: API service boundaries and licensing separate model capability from who can use or integrate it",
+    "retrieval and external knowledge: REALM, DPR and RAG move knowledge access from parameters alone toward explicit retrieval",
+    "dialogue systems: Meena and BlenderBot expose scale, evaluation and system-recipe questions specific to open-domain conversation",
+    "systems scaling: DeepSpeed/ZeRO and GShard make memory partitioning, sharding and conditional computation first-class scale constraints",
+    "generative-media branching: autoregressive image/audio/discrete-token approaches coexist with diffusion and score-based generation",
+    "steering, evaluation and risk: human preference feedback and toxicity/bias benchmarks establish early post-training and model-behavior evaluation layers"
+  ],
+  "editorial_thesis": "2020年、生成AIは単なる『巨大モデル競争』から、scaleを設計原理として明示し、その能力をfew-shot/in-context behavior、API access、retrieval、human feedback、dialogue、distributed systems、image/audio/diffusion generationへ枝分かれさせ始めた。Scaling LawsとGPT-3はscaleからcapabilityへ向かう軸を、OpenAI APIはaccess/distribution境界を、REALMとRAGはmodel-external knowledgeを、MeenaとBlenderBotはdialogue system designを、DeepSpeed/ZeROとGShardはscaleを成立させるsystems layerを、DDPM・score-SDEとImage GPT・Taming Transformersは複数のgenerative-media系譜を、human-feedback summarizationとtoxicity/bias評価はsteering/evaluation/risk layerの萌芽を示した。2020年は、2021年の『同じ基盤を再利用・適応・接続する多層システム』への前段として読む。",
+  "comparison_and_reclassification": {
+    "comparison_dimensions": [
+      "scaling relation versus observed few-shot capability",
+      "model release versus API access versus technology license",
+      "retrieval pretraining versus dense retrieval infrastructure versus retrieval-conditioned generation",
+      "dialogue scaling/evaluation versus dialogue system recipe/release",
+      "parameter count versus memory/sharding/conditional-compute systems design",
+      "autoregressive/discrete media generation versus diffusion/score-based generation",
+      "human-feedback steering versus benchmark-based behavior/risk evaluation"
+    ],
+    "reclassification_decisions": [
+      "OpenAI API is treated as an access/interface boundary, not as a separate model family.",
+      "DeepSpeed/ZeRO is treated as systems infrastructure, not as a model capability event.",
+      "REALM and RealToxicityPrompts are selected as SUPPORTING_EVIDENCE because they strengthen retrieval and risk trajectories without needing independent primary package placement.",
+      "DDIM, StereoSet, CrowS-Pairs, Turing-NLG, Jukebox, DPR, the Microsoft GPT-3 license and the duplicate Scaling Laws publication boundary remain Evidence HOLD items.",
+      "The Pile remains a preserved year-boundary raw observation and is not promoted into the 2020 Evidence core.",
+      "Learning to Summarize from Human Feedback is framed as preference-feedback steering and not retroactively equated with the later full RLHF stack."
+    ]
+  },
+  "chronology_plan": {
+    "estimated_material_event_rows": "24-30",
+    "event_classes": ["paper first-publication", "first-party publication/release", "API access", "technology license", "open-source/system release"],
+    "rule": "Distinct paper, release, access and licensing boundaries remain separate chronology rows even when they belong to one Evidence series."
+  },
+  "architecture": {
+    "package_count": 13,
+    "substantive_trajectory_packages": 9,
+    "page_budget_target": 96,
+    "page_budget_max": 144,
+    "planned_pages": 96,
+    "packages": [
+      "frontmatter",
+      "scale-laws-gpt3",
+      "access-api",
+      "systems-scale",
+      "retrieval-grounding",
+      "dialogue-systems",
+      "media-autoregressive",
+      "diffusion-score",
+      "feedback-steering",
+      "evaluation-risk",
+      "annual-chronology",
+      "synthesis-transition-2021",
+      "references"
+    ],
+    "architecture_input_sha256": "1fd1b973655f1bddfc4b68394b03b7a617f16a69fae0d0ad5793dbea082dda4e",
+    "selection_sha256": "dbc38ba4a81a267d2cd332aa9b418fd628beb338f0b30012456ad4594103f599",
+    "matrix_sha256": "dc57528e28cc380e8def58c6c34d8ba71c67c6caa88bbdb98a9a813d8e26cdaa",
+    "architecture_plan_sha256": "8a384cf35d0e583e706133833229909e85613bc3730de031259419c3f6cecdd3",
+    "validator": {
+      "passed": true,
+      "selected_item_count": 15,
+      "primary_required_count": 13,
+      "primary_covered_count": 13,
+      "supporting_role_count": 2,
+      "missing_primary_items": [],
+      "duplicate_primary_items": [],
+      "planned_page_sum": 96
+    }
+  },
+  "notable_hold_outs": [
+    "Scaling Laws first-party publication duplicate boundary",
+    "Dense Passage Retrieval",
+    "StereoSet",
+    "CrowS-Pairs",
+    "Denoising Diffusion Implicit Models",
+    "Microsoft GPT-3 license boundary",
+    "Turing-NLG 17B",
+    "Jukebox"
+  ],
+  "screening_dropped_but_raw_preserved_examples": [
+    "The Pile year-boundary observation",
+    "the remainder of the 45,116 normalized discovery records not required to establish the selected annual trajectories"
+  ],
+  "residual_claim_boundaries": [
+    "Vendor, project and author performance/capability/safety evaluations remain attributed rather than treated as independently reproduced results.",
+    "Paper first-publication, first-party announcement/release, API availability and technology licensing remain distinct chronology states.",
+    "Six capped cs.LG query slices mean the broad arXiv intake cannot establish historical absence; exact-identity checks protect material selected anchors rather than proving a census.",
+    "Current publisher indexes cannot prove that every 2020 first-party page remains linked or byte-identical to its original publication state.",
+    "The configured GitHub Release watchlist yielded no normalized 2020 release records; commit-level ecosystem history is not reconstructed exhaustively.",
+    "Bias/toxicity benchmark coverage is representative of an emerging evaluation layer and is not an exhaustive safety taxonomy.",
+    "The 2020 human-feedback evidence is a steering precursor and must not be described as if the later end-to-end RLHF product stack were already established."
+  ],
+  "single_volume_coherence": {
+    "status": "SUPPORTED",
+    "exception_gate_required": false,
+    "assessment": "The seven annual trajectories interact strongly enough to support a single 2020 volume and create a coherent handoff into SP-2021-Y. No Evidence-backed need to split 2020 into H1/H2 was found."
+  },
+  "human_gate": {
+    "name": "Architecture Review",
+    "required": true,
+    "approval_recorded": false,
+    "reader_facing_drafting_started": false
+  }
+}
