@@ -1,156 +1,163 @@
-# Survey Production Core v2 — W33 Legacy Artifact Disposition
+# Survey Production Core v2 — W33 Legacy Artifact Reference Policy
 
-Status: `PHASE 3 CORRECTION / Pilot compatibility boundary`  
+Status: `PHASE 3 SUPPORTING POLICY / optional legacy fixture`  
 Established: 2026-08-22 JST  
+Revised after second audit: 2026-08-22 JST  
 Improvement branch: `refactor/survey-production-core-v2`  
 Legacy fixture branch: `weekly/2026-W33-work`
 
 ## 1. Purpose
 
-W33 already exists as a substantial legacy-pipeline production candidate. Its recorded state is `RELEASE_CANDIDATE`: Raw, candidate inventory, Evidence, Selection, Architecture, drafting, claim/chronology validation, LaTeX build and Visual Review are passed; Freeze remains pending. The legacy candidate PDF is 14 pages with SHA-256:
+W33 already has a substantial legacy-pipeline Release Candidate. Its existence is useful, but it must not redefine the purpose of the first Weekly v2 Pilot.
+
+The primary W33 Pilot objective is:
+
+> **Weekly Profile First Production Validation**
+
+The legacy W33 RC is therefore an **optional benchmark/provenance fixture**.
+
+It may be used to:
+- compare research breadth and editorial decisions;
+- reuse immutable factual inputs when independently safe;
+- provide regression examples;
+- explain differences between legacy and v2 output.
+
+It is **not** required to prove:
+- automatic v1 → v2 state migration;
+- seamless resume from legacy intermediate state;
+- artifact-by-artifact compatibility;
+- preservation of legacy editorial decisions;
+- reuse of any legacy artifact at all.
+
+If clean regeneration under v2 is simpler or produces clearer provenance, regeneration is preferred.
+
+## 2. Legacy fixture facts
+
+The legacy branch records:
+- `lifecycle_state = RELEASE_CANDIDATE`;
+- Raw, candidate inventory, Evidence, Selection, Architecture, Draft, validation, PDF build and Visual Review passed;
+- Freeze pending;
+- legacy candidate PDF page count: 14;
+- legacy candidate PDF SHA-256:
 
 ```text
 066cb28f2dd3401bdc79849a6e2fd2b05ce0137b939d24826481f740966f9017
 ```
 
-This makes W33 too valuable to discard as if no production work existed, but it does **not** justify making perfect automatic v1-state migration a generic Core v2 requirement.
+The branch also contains content-addressed collector Raw data and `raw-index.json`.
 
-The Pilot policy is therefore artifact-level compatibility:
+These facts make the branch valuable historical evidence. They do not create a v2 compatibility requirement.
 
-```text
-legacy W33 artifact
-  -> inspect exact provenance + semantic contract
-  -> REUSE | REVALIDATE | REGENERATE | REJECT
-  -> enter v2 only through an explicit recorded disposition
-```
+## 3. Decision vocabulary when reuse is considered
 
-## 2. Disposition vocabulary
+The following vocabulary applies **only when a Pilot or implementation explicitly considers reusing a legacy artifact**.
 
 ### REUSE
 
-The exact bytes are contract-neutral enough to enter v2 directly after identity/hash verification. No semantic reinterpretation is required.
+Exact bytes are contract-neutral and may enter v2 after identity/hash verification.
 
 ### REVALIDATE
 
-The artifact contains potentially reusable information, but it must pass v2 provenance and semantic validation before becoming an input to v2. If validation fails, regenerate or reject the affected unit.
+Potentially useful factual/provenance content must pass v2 validation before use.
 
 ### REGENERATE
 
-The underlying source facts/provenance may inform the new run, but the artifact itself encodes legacy semantics and must be reconstructed under the v2 contract.
+Underlying facts/provenance may inform the run, but the legacy artifact itself encodes obsolete semantics and is rebuilt under v2.
 
 ### REJECT
 
-The artifact cannot be an authoritative v2 input. It may remain an immutable comparison/regression fixture.
+Artifact must not become authoritative v2 input; it may remain a comparison fixture.
 
-## 3. W33 fixture facts
+These are safe-disposition choices, not mandatory steps in every W33 run.
 
-The legacy branch contains, among other surfaces:
+## 4. Optional safe-reuse table
 
-- immutable collector Raw trees and `raw-index.json`;
-- carry-over artifacts;
-- Screening results;
-- Evidence runs/cards;
-- candidate matrices;
-- Candidate Selection;
-- Architecture artifacts;
-- Draft/validation outputs;
-- final claim review;
-- final source/PDF build provenance;
-- Visual Review record;
-- legacy `pipeline-state.json`.
+| Artifact class | If reuse is attempted | Reason / boundary |
+|---|---|---|
+| Accepted collector Raw bytes | `REVALIDATE` | factual/provenance input; verify path/SHA/bytes/window/source provenance |
+| `raw-index.json` | `REVALIDATE` | useful content-addressed inventory but produced under legacy acceptance/state |
+| Collector run metadata | `REVALIDATE` | retain legacy contract identity as provenance; do not pretend v2 generated it |
+| Weekly carry-over artifacts | `REVALIDATE` | carry-over remains Weekly semantics but v2 completeness/materiality must re-evaluate obligations |
+| Grok/X trend Raw inputs | `REVALIDATE` | timing/currentness must be re-derived from v2 Weekly Profile |
+| Legacy Screening | `REGENERATE` | contains `why_now` and fixed Weekly lanes; no v2 Materiality basis |
+| Legacy Evidence factual fields | `REVALIDATE` | source/claim/metric/limitation facts may be reusable if v2 correctness checks pass |
+| Legacy Evidence `why_now`/editorial fields | `REJECT` as v2 authority | edition significance belongs to fresh Weekly Edition Evidence View |
+| Legacy Candidate Matrix / Selection | `REGENERATE` | legacy timing/role/Human Gate semantics differ |
+| Legacy Architecture | `REGENERATE` | not bound to v2 Materiality/Completeness/Architecture contract |
+| Legacy Architecture approval | `REJECT` as v2 approval | v2 Human Gate 1 must bind exact v2 basis |
+| Legacy Draft / Synthesis / final claim review | `REGENERATE` as canonical semantic artifacts | upstream semantic basis changes |
+| Legacy TeX/PDF/Visual Review | `REJECT` as v2 release authority; retain fixture | exact bytes authorize only the legacy semantic path |
+| Legacy `pipeline-state.json` | `REJECT` as v2 authority | state/gate contract differs |
 
-The Raw index itself is content-addressed and records SHA-256/byte size for accepted collector files. This is a strong candidate for reuse after v2 provenance/window validation.
+## 5. Stage ownership if optional reuse is implemented
 
-## 4. Artifact disposition table
+Reuse support must follow the production stage it belongs to. Do not concentrate all compatibility behavior in Selection/Architecture tooling.
 
-| Artifact class | Default v2 disposition | Reason | Required v2 action |
-|---|---|---|---|
-| Accepted collector Raw bytes | `REVALIDATE` | Raw bytes are factual/provenance inputs and should not depend on Weekly editorial semantics | verify every recorded path/SHA/byte count; verify collector acceptance and W33 window/source provenance; if valid, reference exact bytes from v2 provenance |
-| `raw-index.json` | `REVALIDATE` | good content-addressed inventory, but generated under legacy state/collector acceptance | regenerate or import a v2 provenance index that binds the exact verified legacy Raw bytes and source commit |
-| Collector run metadata/acceptance | `REVALIDATE` | operational provenance may be reusable if exact collector contract and window are acceptable | validate exact run metadata; record legacy contract identity as source provenance rather than pretending it was v2-generated |
-| Weekly carry-over source artifacts | `REVALIDATE` | carry-over is still a Weekly Profile obligation but v2 completeness/materiality rules differ | verify origin issue/state, re-evaluate each carry-over obligation under current W33 Weekly Profile, bind into v2 completeness/materiality |
-| Grok/X trend Raw inputs | `REVALIDATE` | potentially valid Raw current-context evidence, but timing/relevance semantics are Weekly Profile data | verify collection time/window/source; re-derive v2 Weekly relevance annotations |
-| Legacy Screening results | `REGENERATE` | v1 Screening mixes generic triage with `why_now` and fixed A–L lanes and has no v2 Materiality trace | run profile-neutral Screening v2 from verified discovery inputs; keep legacy Screening only for comparison |
-| Legacy verification queue | `REGENERATE` | derived from v1 Screening dispositions and prompt contract | build from accepted v2 Screening |
-| Legacy Evidence Cards | `REVALIDATE` factual subset | source/claim/metric/limitation facts may be reusable; Weekly relevance fields are not authoritative | validate source refs, exact task/input hashes where possible, identifier/entity binding and factual readiness; create fresh v2 Edition Evidence View; regenerate any card that fails new correctness checks |
-| Legacy Evidence editorial recommendation / `why_now` fields | `REJECT` as v2 authority | edition-specific meaning belongs to v2 Weekly Profile/Edition View | derive fresh Weekly relevance/materiality annotations |
-| Legacy Candidate Records/Matrix | `REGENERATE` | current matrix depends on legacy rolling-window/timing semantics and lacks v2 Materiality/Completeness basis | rebuild v2 candidate matrix from accepted v2 Evidence Views + ledger |
-| Legacy Candidate Selection | `REGENERATE` | old role vocabulary and standalone Human approval semantics conflict with v2 internal Selection contract | run internal v2 Selection and expose it inside Architecture Review Summary |
-| Legacy Architecture Input/Plan | `REGENERATE` | v1 Architecture contract contains Weekly-only publication fields and is not bound to v2 Completeness/Materiality summary | construct v2 Architecture from new matrix/Selection; legacy plan becomes comparison evidence only |
-| Legacy Architecture Human approval | `REJECT` as v2 approval | v2 Architecture Review must bind exact v2 Selection/Materiality/Completeness/Architecture hashes | request the normal v2 Architecture Review once the new proposal is ready; do not infer approval from legacy Selection/Architecture flags |
-| Legacy Draft Packages | `REGENERATE` | basis Architecture SHA changes and v1 packages contain Weekly-only `late_breaking`/`this_week` semantics | materialize v2 generic Draft Packages from approved v2 Architecture |
-| Legacy Article Draft Results | `REGENERATE` as canonical input | accepted text may be useful comparison, but v2 package/evidence/profile basis differs | use only as editorial comparison; redraft under v2 package/prompt or explicitly import text through a v2 reviewed-revision mechanism if such a mechanism is implemented and validates evidence use |
-| Legacy Issue Synthesis | `REGENERATE` | v1 synthesis is `this_week_signals` shaped and not bound to v2 synthesis/profile contract | generate Weekly Profile synthesis under v2 after approved drafts |
-| Legacy final claim review | `REGENERATE` | old review basis is legacy drafts/architecture | rerun v2 claim/attribution/materiality-use validation |
-| Legacy TeX/source tree | `REJECT` as v2 canonical source; retain fixture | derived from legacy Architecture/Draft/Synthesis and publication contract | keep for regression/comparison; build new v2 publication source from v2 semantic artifacts |
-| Legacy PDF + Visual Review | `REJECT` as v2 release candidate; retain fixture | exact bytes prove legacy result only and cannot authorize a semantically different v2 production path | use for visual/content comparison and regression only; v2 Publication Preview must bind the new exact PDF |
-| Legacy `pipeline-state.json` | `REJECT` as v2 authority | legacy Human Gate semantics and state contract differ | preserve immutable fixture; initialize independent v2 `production-state.json`; never infer v2 approval from legacy state |
+```text
+WU-006 / discovery + Screening
+  - Raw/provenance import or revalidation, if used
+  - carry-over/current-context revalidation, if used
 
-## 5. Why this is not a generic migration feature
+WU-007 / Evidence + Materiality
+  - factual Evidence revalidation, if used
+  - fresh Edition Evidence View regardless
 
-The table above is a **Pilot-specific compatibility audit** for a real issue that happens to have extensive legacy work. It does not create a requirement that Core v2 automatically translate every historical state or every old intermediate artifact.
+WU-008 / Matrix + Selection + Architecture
+  - semantic comparison report
+  - fresh v2 Matrix/Selection/Architecture
+```
 
-Core requirements remain narrower:
+A work unit may implement **zero** W33-specific reuse code if the general v2 path can simply consume/recollect the required factual inputs more safely.
 
-- frozen artifacts stay immutable/readable;
-- source provenance can be inspected;
-- reusable facts can be independently revalidated;
-- future editions start cleanly under v2;
-- no compatibility adapter may silently downgrade v2 correctness.
+## 6. W33 acceptance criteria do not include reuse
 
-A generic automatic migrator should be added only if later production evidence shows repeated operational value.
+W33 is accepted as the first Weekly Profile Pilot based on whether v2 can correctly produce the issue under the new contract.
 
-## 6. W33 validation value
+Required concerns include:
+- correct W33 editorial window and carry-over handling;
+- broad/current Source Intake with explicit completeness status;
+- one explicit disposition for material information;
+- correct factual Evidence and attribution;
+- internal Candidate Selection;
+- Architecture Review with visible research compression and limitations;
+- valid post-Architecture semantic/publication path;
+- normal two-Human-Gate mechanics.
 
-This disposition gives W33 a distinct role from W34.
+None of the following is a pass/fail criterion:
+- number of legacy artifacts reused;
+- successful legacy state translation;
+- identical Selection to legacy W33;
+- identical Architecture/PDF to legacy W33.
 
-### W33
+## 7. Comparison remains useful
 
-Tests compatibility boundaries:
-- can v2 reuse old immutable factual inputs without inheriting old editorial semantics?
-- can legacy Evidence facts be independently revalidated?
-- does v2 deliberately regenerate semantic artifacts whose contract changed?
-- does the new Materiality/Completeness/Architecture path discover differences from the legacy candidate?
-
-### W34
-
-Tests clean current Weekly production after W33 findings are repaired:
-- fresh window;
-- fresh collection/currentness;
-- no legacy artifact dependency;
-- fixes generalize.
-
-Thus W33 and W34 are complementary rather than duplicate tests.
-
-## 7. Required comparison report after W33 Pilot
-
-W33 Pilot should preserve a structured comparison between legacy and v2 results, at minimum:
-
-- Raw/source surfaces reused or newly collected;
-- Screening disposition differences;
-- Evidence facts reused/regenerated/rejected;
+After W33 v2 production, compare against the legacy fixture when useful:
+- source surfaces;
+- Screening differences;
+- factual Evidence differences;
 - material candidates gained/lost;
-- Selection role differences;
-- Architecture differences;
-- materiality/completeness limitations newly exposed;
-- article hierarchy/thesis differences;
-- final PDF length/structure differences;
-- regressions or improvements in claim boundaries, references and layout.
+- Selection/Architecture differences;
+- completeness limitations;
+- article hierarchy/thesis;
+- claim boundaries/references/layout;
+- final PDF structure.
 
-Differences are evidence, not automatically defects. The control session classifies whether each difference is expected profile evolution, a Core defect, a Weekly Profile defect, or an edition-local editorial choice.
+A difference is evidence, not automatically a defect.
 
 ## 8. Safety rule
 
-The legacy `weekly/2026-W33-work` branch must not be overwritten or repurposed as the v2 work branch.
+Do not overwrite or repurpose `weekly/2026-W33-work` as the v2 work branch.
 
-The Pilot implementation should use an explicitly separate v2 work branch/path strategy until stabilization. Any legacy bytes reused by v2 are referenced/imported through hash-verified provenance rather than mutated in place.
+Any legacy bytes used by v2 must be hash-verified and referenced/imported without mutating the fixture.
 
-## 9. Exit decision
+## 9. Authority
 
-W33 compatibility policy is now explicit enough for WU-004:
+This revised policy supersedes the earlier interpretation of W33 as a required compatibility-boundary Pilot.
 
-- no clean-slate discard of the existing RC by default;
-- no requirement for automatic full-state migration;
-- artifact classes have deterministic default dispositions;
-- factual/provenance reuse is separated from semantic regeneration;
-- the legacy PDF/state remains a valuable immutable comparison fixture.
+The authoritative rule is:
+
+```text
+W33 = Weekly Profile First Production Validation
+legacy W33 RC = optional benchmark/provenance fixture
+legacy reuse = permitted optimization, never acceptance criterion
+```
