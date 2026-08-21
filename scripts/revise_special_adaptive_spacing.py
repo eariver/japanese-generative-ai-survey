@@ -68,6 +68,9 @@ def build(repo_root: Path, special_slug: str, issue_id: str, source_version: str
     if changes.get("half_year_review_repairs") is True:
         from scripts.revise_special_half_year_review_repairs_v2 import build as half_year_build
         return half_year_build(repo_root, special_slug, issue_id, source_version)
+    if changes.get("generic_technical_note_tail_policy") is True:
+        from scripts.revise_special_technical_note_tail_policy import build as tail_policy_build
+        return tail_policy_build(repo_root, special_slug, issue_id, source_version)
     if changes.get("preserve_current_layout_visual_review_repairs") is True:
         from scripts.revise_special_preserve_preview_repairs_retrospective import build as preserve_build
         return preserve_build(repo_root, special_slug, issue_id, source_version)
