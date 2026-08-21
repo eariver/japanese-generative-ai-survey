@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "issue_id": "SP-2020-Y",
   "edition_kind": "RETROSPECTIVE_PERIOD",
-  "lifecycle_state": "RELEASE_CANDIDATE",
+  "lifecycle_state": "VALIDATED_DRAFT",
   "revision": "v0.1",
   "calendar": {
     "editorial_cutoff": "2020-12-31T23:59:59Z",
@@ -21,7 +21,7 @@
     "issue_architecture": "passed",
     "article_draft": "passed",
     "claim_and_chronology_validation": "passed",
-    "latex_build": "passed",
+    "latex_build": "pending",
     "visual_review": "pending",
     "freeze": "pending"
   },
@@ -77,10 +77,11 @@
       "sha256": "355fdca18c85f26e7964bafa1fbd516b31ab1c7056ff14cacf7cb7b379066d1d"
     },
     "validated_issue_source": {
-      "path": "surveys/special/2020-Y/revisions/v0.18/source-manifest.json",
-      "sha256": "eebd09790435af06007c64c1bb174e43bc633382651682201efaf679ea21df62",
-      "source_version": "v0.18",
-      "layout_mode": "annual-reference-pagination-v7"
+      "path": "surveys/special/2020-Y/revisions/v0.19/source-manifest.json",
+      "sha256": "b8dbccc8ec65082364fae8e2b303fab5680cbf85db10a0bbbaf2636b71fbd162",
+      "source_version": "v0.19",
+      "layout_mode": "balanced-local-multicol-generic-technical-note-tail-policy",
+      "layout_revision_sha256": "22da7294645fcf207ac6668e23c6ffd8c3879e15764f05c93f537166ab8a22f9"
     },
     "annual_chronology": {
       "source_version": "v0.10",
@@ -90,12 +91,10 @@
       "unresolved_date_count": 0
     },
     "reader_layout_revision": {
-      "source_version": "v0.10",
-      "ordered_review_repair_path": "sources/SP-2020-Y/editorial/ordered-review-repair-v0.10.json",
-      "ordered_review_repair_sha256": "2ecba8777ff1a9f3bbba3a2e05de4462994c5bf22581c390c7f866e5866aa427",
-      "issue_refs": [
-        122
-      ]
+      "source_version": "v0.19",
+      "layout_revision_path": "sources/SP-2020-Y/editorial/layout-revision-v0.19.json",
+      "layout_revision_sha256": "22da7294645fcf207ac6668e23c6ffd8c3879e15764f05c93f537166ab8a22f9",
+      "reason": "Human Visual Review of v0.18 found Issue #55 source-only/tiny Technical Notes continuations at REALM (p.10->11), BlenderBot (p.12->13), and Learning to Summarize from Human Feedback (p.18->19). Reapply the generic per-card tail invariant after the source-specific Annual Technical Notes enrichment, expanding compact one-fact annual tails to keep the technical point and primary-source block together without making the whole card unbreakable."
     },
     "annual_final_reference_compaction": {
       "source_version": "v0.11",
@@ -176,25 +175,6 @@
       "reference_metadata_values_changed": false,
       "visible_url_values_changed": false,
       "url_hyperlink_targets_changed": false
-    },
-    "latex_build": {
-      "workflow_run_id": 32479293142,
-      "pdf_sha256": "b300cc5de24fb42f41cf734d42ef9c0a78fd1375a36c6926dbac1503f4638c60",
-      "page_count": 26,
-      "source_version": "v0.18",
-      "validated_issue_source_path": "worktree/surveys/special/2020-Y/revisions/v0.18/source-manifest.json",
-      "validated_issue_source_sha256": "eebd09790435af06007c64c1bb174e43bc633382651682201efaf679ea21df62",
-      "page_budget": {
-        "soft_target": 96,
-        "hard_max": 144,
-        "below_soft_target": true,
-        "policy": "manifest-soft-target-hard-ceiling"
-      },
-      "build_style": {
-        "control_commit_sha": "c801357a27cc5c68237c6c0940b40a133a2bf4bc",
-        "path": "templates/survey/jgaisurvey.sty",
-        "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
-      }
     }
   },
   "provenance_history": {
@@ -308,6 +288,12 @@
         "sha256": "8285545a2adccdbba098fc5db169bd213f77616ab74a8c2d589df97f5976437e",
         "source_version": "v0.17",
         "layout_mode": "annual-reference-pagination-v6"
+      },
+      {
+        "path": "surveys/special/2020-Y/revisions/v0.18/source-manifest.json",
+        "sha256": "eebd09790435af06007c64c1bb174e43bc633382651682201efaf679ea21df62",
+        "source_version": "v0.18",
+        "layout_mode": "annual-reference-pagination-v7"
       }
     ],
     "latex_build": [
@@ -497,6 +483,25 @@
         },
         "build_style": {
           "control_commit_sha": "4001d8c627393c8d69a0e1e340bd7f8b90324fd6",
+          "path": "templates/survey/jgaisurvey.sty",
+          "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+        }
+      },
+      {
+        "workflow_run_id": 32479293142,
+        "pdf_sha256": "b300cc5de24fb42f41cf734d42ef9c0a78fd1375a36c6926dbac1503f4638c60",
+        "page_count": 26,
+        "source_version": "v0.18",
+        "validated_issue_source_path": "worktree/surveys/special/2020-Y/revisions/v0.18/source-manifest.json",
+        "validated_issue_source_sha256": "eebd09790435af06007c64c1bb174e43bc633382651682201efaf679ea21df62",
+        "page_budget": {
+          "soft_target": 96,
+          "hard_max": 144,
+          "below_soft_target": true,
+          "policy": "manifest-soft-target-hard-ceiling"
+        },
+        "build_style": {
+          "control_commit_sha": "c801357a27cc5c68237c6c0940b40a133a2bf4bc",
           "path": "templates/survey/jgaisurvey.sty",
           "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
         }
