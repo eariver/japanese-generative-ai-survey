@@ -76,13 +76,7 @@ def _annual_v4_errors(lr: dict[str, Any], main_text: str) -> list[str]:
 
 
 def _annual_v5_errors(lr: dict[str, Any], main_text: str) -> list[str]:
-    errors = _three_column_errors(
-        lr,
-        main_text,
-        generation="v5",
-        expected_font="6.0pt/6.5pt",
-        ragged_command=r"\RaggedRight",
-    )
+    errors = _three_column_errors(lr, main_text, generation="v5", expected_font="6.0pt/6.5pt", ragged_command=r"\RaggedRight")
     if lr.get("annual_reference_pagination_v4") is not True or lr.get("annual_reference_pagination_v3") is not True:
         errors.append("Annual References pagination v5 must retain v3/v4 ancestry")
     if lr.get("references_columnsep") != "6pt":
@@ -107,11 +101,37 @@ def _annual_v5_errors(lr: dict[str, Any], main_text: str) -> list[str]:
     return errors
 
 
+def _annual_v6_errors(lr: dict[str, Any], main_text: str) -> list[str]:
+    errors = _three_column_errors(lr, main_text, generation="v6", expected_font="6.0pt/6.5pt", ragged_command=r"\RaggedRight")
+    if lr.get("annual_reference_pagination_v5") is not True or lr.get("annual_reference_pagination_v4") is not True or lr.get("annual_reference_pagination_v3") is not True:
+        errors.append("Annual References pagination v6 must retain v3/v4/v5 ancestry")
+    if lr.get("references_columnsep") != "6pt":
+        errors.append("Annual References pagination v6 must declare references_columnsep=6pt")
+    if lr.get("references_raggedright_command") != "RaggedRight":
+        errors.append("Annual References pagination v6 must declare RaggedRight")
+    if lr.get("references_url_label_compacted") is not True or lr.get("references_urldate_label_compacted") is not True:
+        errors.append("Annual References pagination v6 must retain compact URL/urldate labels")
+    if lr.get("references_metadata_values_changed") is not False:
+        errors.append("Annual References pagination v6 must preserve reference metadata values")
+    if lr.get("references_url_style") != "same":
+        errors.append("Annual References pagination v6 must declare references_url_style=same")
+    if lr.get("references_url_visible_value_changed") is not False:
+        errors.append("Annual References pagination v6 must preserve visible URL values")
+    if lr.get("references_url_hyperlink_target_changed") is not False:
+        errors.append("Annual References pagination v6 must preserve URL hyperlink targets")
+    for token in (r"\urlstyle{same}", r"\DeclareFieldFormat{url}{\url{#1}}", r"\DeclareFieldFormat{urldate}{\mkbibparens{#1}}"):
+        if token not in main_text:
+            errors.append(f"declared Annual References pagination v6 source marker missing: {token}")
+    return errors
+
+
 def declared_non_narrative_multicols(manifest: dict[str, Any], main_text: str) -> tuple[int, list[str]]:
     lr = manifest.get("layout_revision") or {}
     if lr.get("annual_final_reference_compaction") is not True:
         return _ORIGINAL_DECLARED_NON_NARRATIVE_MULTICOLS(manifest, main_text)
-
+    if lr.get("annual_reference_pagination_v6") is True:
+        errors = _annual_v6_errors(lr, main_text)
+        return (1 if not errors else 0), errors
     if lr.get("annual_reference_pagination_v5") is True:
         errors = _annual_v5_errors(lr, main_text)
         return (1 if not errors else 0), errors
@@ -139,7 +159,9 @@ def declared_non_narrative_multicols(manifest: dict[str, Any], main_text: str) -
 
 def inspect_layout(manifest: dict[str, Any], main_text: str, architecture: dict[str, Any]) -> list[str]:
     lr = manifest.get("layout_revision") or {}
-    if lr.get("annual_reference_pagination_v5") is True:
+    if lr.get("annual_reference_pagination_v6") is True:
+        errors = _annual_v6_errors(lr, main_text)
+    elif lr.get("annual_reference_pagination_v5") is True:
         errors = _annual_v5_errors(lr, main_text)
     elif lr.get("annual_reference_pagination_v4") is True:
         errors = _annual_v4_errors(lr, main_text)
@@ -152,6 +174,7 @@ def inspect_layout(manifest: dict[str, Any], main_text: str, architecture: dict[
 
     shim_manifest = copy.deepcopy(manifest)
     shim_lr = shim_manifest.setdefault("layout_revision", {})
+    shim_lr["annual_reference_pagination_v6"] = False
     shim_lr["annual_reference_pagination_v5"] = False
     shim_lr["annual_reference_pagination_v4"] = False
     shim_lr["annual_reference_pagination_v3"] = False
