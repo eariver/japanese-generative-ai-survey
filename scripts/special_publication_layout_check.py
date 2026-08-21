@@ -125,10 +125,44 @@ def _annual_v6_errors(lr: dict[str, Any], main_text: str) -> list[str]:
     return errors
 
 
+def _annual_v7_errors(lr: dict[str, Any], main_text: str) -> list[str]:
+    errors = _annual_v6_errors(lr, main_text)
+    if lr.get("annual_reference_pagination_v7_issue_refs") != [140]:
+        errors.append("Annual References pagination v7 must be scoped to issue_refs=[140]")
+    if lr.get("annual_reference_pagination_v6") is not True:
+        errors.append("Annual References pagination v7 must retain pagination v6 ancestry")
+    expected = {
+        "annual_reference_heading_spacing_compacted": True,
+        "references_needspace": "0.12textheight",
+        "references_heading_preserved": True,
+        "references_heading_toc_navigation": True,
+        "references_heading_post_vspace": "-1.05baselineskip",
+        "references_intro_pre_section_vspace": "-0.35em",
+    }
+    for key, value in expected.items():
+        if lr.get(key) != value:
+            errors.append(f"Annual References pagination v7 contract mismatch: {key}={value}")
+    required = (
+        r"\Needspace{0.12\textheight}",
+        "% annual References compact final-heading spacing",
+        r"\vspace{-0.35em}",
+        r"\section*{References / Source Notes}",
+        r"\addcontentsline{toc}{section}{References / Source Notes}",
+        r"\vspace{-1.05\baselineskip}",
+    )
+    for token in required:
+        if token not in main_text:
+            errors.append(f"declared Annual References pagination v7 source marker missing: {token}")
+    return errors
+
+
 def declared_non_narrative_multicols(manifest: dict[str, Any], main_text: str) -> tuple[int, list[str]]:
     lr = manifest.get("layout_revision") or {}
     if lr.get("annual_final_reference_compaction") is not True:
         return _ORIGINAL_DECLARED_NON_NARRATIVE_MULTICOLS(manifest, main_text)
+    if lr.get("annual_reference_pagination_v7") is True:
+        errors = _annual_v7_errors(lr, main_text)
+        return (1 if not errors else 0), errors
     if lr.get("annual_reference_pagination_v6") is True:
         errors = _annual_v6_errors(lr, main_text)
         return (1 if not errors else 0), errors
@@ -159,7 +193,9 @@ def declared_non_narrative_multicols(manifest: dict[str, Any], main_text: str) -
 
 def inspect_layout(manifest: dict[str, Any], main_text: str, architecture: dict[str, Any]) -> list[str]:
     lr = manifest.get("layout_revision") or {}
-    if lr.get("annual_reference_pagination_v6") is True:
+    if lr.get("annual_reference_pagination_v7") is True:
+        errors = _annual_v7_errors(lr, main_text)
+    elif lr.get("annual_reference_pagination_v6") is True:
         errors = _annual_v6_errors(lr, main_text)
     elif lr.get("annual_reference_pagination_v5") is True:
         errors = _annual_v5_errors(lr, main_text)
@@ -174,6 +210,7 @@ def inspect_layout(manifest: dict[str, Any], main_text: str, architecture: dict[
 
     shim_manifest = copy.deepcopy(manifest)
     shim_lr = shim_manifest.setdefault("layout_revision", {})
+    shim_lr["annual_reference_pagination_v7"] = False
     shim_lr["annual_reference_pagination_v6"] = False
     shim_lr["annual_reference_pagination_v5"] = False
     shim_lr["annual_reference_pagination_v4"] = False
@@ -183,6 +220,11 @@ def inspect_layout(manifest: dict[str, Any], main_text: str, architecture: dict[
     shim_lr["references_raggedright_command"] = "raggedright"
     shim_text = main_text.replace(r"\begin{multicols}{3}", r"\begin{multicols}{2}", 1)
     shim_text = shim_text.replace(r"\RaggedRight", r"\raggedright", 1)
+    shim_text = shim_text.replace(
+        "% annual References compact final-heading spacing",
+        "% annual References two-column final compaction",
+        1,
+    )
     return _ORIGINAL_INSPECT_LAYOUT(shim_manifest, shim_text, architecture)
 
 
