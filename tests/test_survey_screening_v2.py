@@ -275,7 +275,7 @@ class SurveyScreeningV2Tests(unittest.TestCase):
         self._write_valid_results(root, package_path)
         extra = core.load_json(results_dir / "batch-001.json")
         core.write_json(results_dir / "batch-999.json", extra)
-        with self.assertRaisesRegex(ValueError, "result set incomplete"):
+        with self.assertRaisesRegex(ValueError, "complete and exact"):
             screening.accept_results(root, package_path, results_dir, root / "accepted-extra", IMPLEMENTATION_SHA)
 
     def test_package_basis_drift_fails_before_acceptance(self) -> None:
