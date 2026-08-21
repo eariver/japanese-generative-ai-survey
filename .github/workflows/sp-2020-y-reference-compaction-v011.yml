@@ -1,0 +1,98 @@
+name: SP-2020-Y Final References v0.11
+
+on:
+  push:
+    branches:
+      - special/2020-Y-work
+    paths:
+      - 'sources/SP-2020-Y/editorial/reference-compaction-trigger-v0.11.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sp-2020-y-reference-compaction-v011
+  cancel-in-progress: false
+
+jobs:
+  revise:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Checkout SP-2020-Y work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2020-Y-work
+          path: worktree
+          fetch-depth: 0
+      - name: Apply immutable References compaction
+        shell: bash
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2020-Y check
+          PYTHONPATH=control-src python control-src/scripts/revise_special_annual_reference_compaction.py \
+            --repo-root worktree --special-slug 2020-Y --issue-id SP-2020-Y --source-version v0.11 \
+            > annual-reference-compaction-audit.json
+          cat annual-reference-compaction-audit.json
+      - name: Verify v0.11 boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('worktree')
+          state=json.load(open(root/'sources/SP-2020-Y/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT'
+          assert state['gates']['latex_build']=='pending'
+          assert state['gates']['visual_review']=='pending'
+          assert state['gates']['freeze']=='pending'
+          assert 'publication_preview' not in state.get('provenance',{})
+          source=state['provenance']['validated_issue_source']
+          assert source['source_version']=='v0.11'
+          mp=root/source['path']; assert hashlib.sha256(mp.read_bytes()).hexdigest()==source['sha256']
+          manifest=json.load(open(mp,encoding='utf-8'))
+          lr=manifest['layout_revision']
+          assert lr['annual_final_reference_compaction'] is True
+          assert lr['bibliography_data_changed'] is False
+          assert lr['chronology_event_content_changed'] is False
+          assert lr['reader_semantic_content_changed'] is False
+          refs=mp.parent/manifest['references']['path']
+          assert hashlib.sha256(refs.read_bytes()).hexdigest()==lr['bibliography_sha256_before']==lr['bibliography_sha256_after']
+          main=(mp.parent/'main.tex').read_text(encoding='utf-8')
+          assert main.count('\\printbibliography')==1
+          assert main.count('\\section*{References / Source Notes}')==1
+          assert '\\begin{multicols}{2}' in main
+          assert '\\raggedright' in main
+          assert '\\printbibliography[heading=none]' in main
+          assert lr['duplicate_reference_needspace_pairs_removed']==1
+          chronology=state['provenance']['annual_chronology']; cp=root/chronology['path']
+          assert hashlib.sha256(cp.read_bytes()).hexdigest()==lr['chronology_sha256']
+          assert int(chronology['event_count'])==28
+          print(json.dumps({'passed':True,'source_version':'v0.11','references':lr['bibliography_entry_count']},ensure_ascii=False))
+          PY
+      - name: Commit v0.11
+        working-directory: worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A surveys/special/2020-Y sources/SP-2020-Y
+          git diff --cached --quiet && { echo 'No v0.11 changes' >&2; exit 1; }
+          git commit -m 'Compact SP-2020-Y final References'
+          git push origin HEAD:special/2020-Y-work
+      - name: Upload audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: sp-2020-y-reference-compaction-v0.11
+          path: annual-reference-compaction-audit.json
+          retention-days: 14
