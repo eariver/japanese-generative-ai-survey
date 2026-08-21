@@ -93,6 +93,23 @@ def write_jsonl(path: Path, records: Iterable[dict[str, Any]]) -> None:
             fh.write(canonical_line(record))
 
 
+def _exact_regular_files(directory: Path, expected: set[str], label: str) -> dict[str, Path]:
+    if not directory.is_dir():
+        raise ValueError(f"{label} directory missing: {directory}")
+    entries = list(directory.iterdir())
+    if any(path.is_symlink() for path in entries):
+        raise ValueError(f"{label} may not contain symlinks")
+    non_files = sorted(path.name for path in entries if not path.is_file())
+    if non_files:
+        raise ValueError(f"{label} may contain files only: {non_files}")
+    actual = {path.name for path in entries}
+    if actual != expected:
+        raise ValueError(
+            f"{label} must be complete and exact: missing={sorted(expected-actual)} extra={sorted(actual-expected)}"
+        )
+    return {path.name: path for path in entries}
+
+
 def validate_discovery(record: dict[str, Any], expected_issue_id: str | None = None) -> list[str]:
     errors: list[str] = []
     extra = sorted(set(record) - DISCOVERY_KEYS)
@@ -309,7 +326,6 @@ def validate_decision(decision: dict[str, Any]) -> list[str]:
 
 
 def expected_result_basis(repo_root: Path, package_path: Path, package: dict[str, Any], batch: dict[str, Any]) -> dict[str, str]:
-    package_dir = package_path.parent
     return {
         "package_sha256": core.sha256_file(package_path),
         "batch_sha256": batch["sha256"],
@@ -318,6 +334,29 @@ def expected_result_basis(repo_root: Path, package_path: Path, package: dict[str
         "prompt_sha256": package["prompt"]["sha256"],
         "result_contract_sha256": package["result_contract"]["sha256"],
     }
+
+
+def _validate_archived_screening_files(package_path: Path, package: dict[str, Any]) -> None:
+    acceptance_path = package_path.parent / "screening-accepted.json"
+    if not acceptance_path.is_file():
+        return
+    acceptance = core.load_json(acceptance_path)
+    if core.sha256_file(package_path) != acceptance.get("package_sha256"):
+        raise ValueError("accepted Screening package copy changed")
+    batch_meta = {row.get("batch_id"): row for row in acceptance.get("batches", []) if isinstance(row, dict)}
+    expected_inputs = {f"{batch['batch_id']}.jsonl" for batch in package["input"]["batches"]}
+    expected_results = {f"{batch['batch_id']}.json" for batch in package["input"]["batches"]}
+    input_files = _exact_regular_files(package_path.parent / "input/batches", expected_inputs, "accepted Screening input batches")
+    result_files = _exact_regular_files(package_path.parent / "results", expected_results, "accepted Screening result batches")
+    for batch in package["input"]["batches"]:
+        batch_id = batch["batch_id"]
+        if core.sha256_file(input_files[f"{batch_id}.jsonl"]) != batch["sha256"]:
+            raise ValueError(f"accepted Screening input batch changed: {batch_id}")
+        accepted_batch = batch_meta.get(batch_id)
+        if not isinstance(accepted_batch, dict):
+            raise ValueError(f"accepted Screening batch metadata missing: {batch_id}")
+        if core.sha256_file(result_files[f"{batch_id}.json"]) != accepted_batch.get("result_sha256"):
+            raise ValueError(f"accepted Screening result batch changed: {batch_id}")
 
 
 def validate_package_basis(repo_root: Path, package_path: Path, package: dict[str, Any], implementation_sha: str) -> None:
@@ -329,18 +368,117 @@ def validate_package_basis(repo_root: Path, package_path: Path, package: dict[st
         "discovery_sha256": repo_root / basis["discovery_path"],
     }
     for hash_key, path in checks.items():
-        if not path.is_file() or core.sha256_file(path) != basis[hash_key]:
+        if path.is_symlink() or not path.is_file() or core.sha256_file(path) != basis[hash_key]:
             raise ValueError(f"Screening package basis drift: {hash_key}")
     prompt_path = repo_root / package["prompt"]["path"]
     schema_path = repo_root / package["result_contract"]["path"]
-    if core.sha256_file(prompt_path) != package["prompt"]["sha256"]:
+    if prompt_path.is_symlink() or not prompt_path.is_file() or core.sha256_file(prompt_path) != package["prompt"]["sha256"]:
         raise ValueError("Screening prompt contract drift")
-    if core.sha256_file(schema_path) != package["result_contract"]["sha256"]:
+    if schema_path.is_symlink() or not schema_path.is_file() or core.sha256_file(schema_path) != package["result_contract"]["sha256"]:
         raise ValueError("Screening result contract drift")
     state = core.load_json(repo_root / basis["state_path"])
     core.verify_state_basis(repo_root, cfg, state, implementation_sha)
     if state["issue_id"] != package["issue_id"] or state["research_profile"] != package["research_profile"]:
         raise ValueError("Screening package/state profile identity divergence")
+    _validate_archived_screening_files(package_path, package)
+
+
+def _validate_result_batch(
+    package_path: Path,
+    package: dict[str, Any],
+    batch: dict[str, Any],
+    result_path: Path,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    batch_id = batch["batch_id"]
+    batch_path = package_path.parent / batch["path"]
+    if batch_path.is_symlink() or not batch_path.is_file() or core.sha256_file(batch_path) != batch["sha256"]:
+        raise ValueError(f"Screening batch bytes changed: {batch_id}")
+    inputs = read_jsonl(batch_path)
+    expected_ids = [row["discovery_id"] for row in inputs]
+    result = core.load_json(result_path)
+    if set(result) != {"schema_version", "issue_id", "batch_id", "basis", "decisions"}:
+        raise ValueError(f"{batch_id}: unexpected top-level result fields")
+    if result.get("schema_version") != "2.0-rc1" or result.get("issue_id") != package["issue_id"] or result.get("batch_id") != batch_id:
+        raise ValueError(f"{batch_id}: result identity mismatch")
+    if result.get("basis") != expected_result_basis(Path("."), package_path, package, batch):
+        raise ValueError(f"{batch_id}: result basis hashes do not match package")
+    decisions = result.get("decisions")
+    if not isinstance(decisions, list):
+        raise ValueError(f"{batch_id}: decisions must be an array")
+    decision_ids: list[str] = []
+    for decision in decisions:
+        if not isinstance(decision, dict):
+            raise ValueError(f"{batch_id}: every decision must be an object")
+        errors = validate_decision(decision)
+        if errors:
+            raise ValueError(f"{batch_id}/{decision.get('discovery_id')}: {'; '.join(errors)}")
+        discovery_id = decision["discovery_id"]
+        if discovery_id in decision_ids:
+            raise ValueError(f"{batch_id}: duplicate decision for {discovery_id}")
+        decision_ids.append(discovery_id)
+    if set(decision_ids) != set(expected_ids) or len(decision_ids) != len(expected_ids):
+        raise ValueError(f"{batch_id}: decisions must cover exactly the batch discovery IDs")
+    return decisions, {
+        "batch_id": batch_id,
+        "input_sha256": batch["sha256"],
+        "result_sha256": core.sha256_file(result_path),
+        "decision_count": len(decisions),
+    }
+
+
+def _result_set_digest(package_sha256: str, batches: list[dict[str, Any]], decisions: list[dict[str, Any]]) -> str:
+    return core.sha256_object(
+        {
+            "package_sha256": package_sha256,
+            "batches": batches,
+            "decisions": sorted(decisions, key=lambda row: row["discovery_id"]),
+        }
+    )
+
+
+def validate_acceptance(repo_root: Path, acceptance_path: Path, implementation_sha: str) -> dict[str, Any]:
+    acceptance = core.load_json(acceptance_path)
+    expected_keys = {
+        "schema_version", "issue_id", "research_profile", "result_set_sha256",
+        "package_sha256", "record_count", "batch_count", "batches", "decisions",
+    }
+    if set(acceptance) != expected_keys or acceptance.get("schema_version") != "2.0-rc1":
+        raise ValueError("Screening acceptance fields/schema_version invalid")
+    run_dir = acceptance_path.parent
+    package_path = run_dir / "package.json"
+    if not package_path.is_file() or core.sha256_file(package_path) != acceptance["package_sha256"]:
+        raise ValueError("accepted Screening package copy missing or changed")
+    package = core.load_json(package_path)
+    validate_package_basis(repo_root, package_path, package, implementation_sha)
+    if package["issue_id"] != acceptance["issue_id"] or package["research_profile"] != acceptance["research_profile"]:
+        raise ValueError("Screening package/acceptance identity mismatch")
+
+    expected_results = {f"{batch['batch_id']}.json" for batch in package["input"]["batches"]}
+    result_files = _exact_regular_files(run_dir / "results", expected_results, "accepted Screening result batches")
+    accepted_batches: list[dict[str, Any]] = []
+    flattened: list[dict[str, Any]] = []
+    all_seen: set[str] = set()
+    for batch in package["input"]["batches"]:
+        decisions, meta = _validate_result_batch(
+            package_path, package, batch, result_files[f"{batch['batch_id']}.json"]
+        )
+        overlap = all_seen.intersection(row["discovery_id"] for row in decisions)
+        if overlap:
+            raise ValueError(f"cross-batch duplicate decisions: {sorted(overlap)}")
+        all_seen.update(row["discovery_id"] for row in decisions)
+        flattened.extend(decisions)
+        accepted_batches.append(meta)
+    if acceptance["record_count"] != len(flattened) or acceptance["record_count"] != package["input"]["record_count"]:
+        raise ValueError("Screening acceptance record_count mismatch")
+    if acceptance["batch_count"] != len(accepted_batches) or acceptance["batches"] != accepted_batches:
+        raise ValueError("Screening acceptance batch metadata mismatch")
+    sorted_decisions = sorted(flattened, key=lambda row: row["discovery_id"])
+    if acceptance["decisions"] != sorted_decisions:
+        raise ValueError("Screening acceptance decisions differ from archived result bytes")
+    digest = _result_set_digest(acceptance["package_sha256"], accepted_batches, flattened)
+    if acceptance["result_set_sha256"] != digest or run_dir.name != digest:
+        raise ValueError("Screening acceptance content-addressed identity mismatch")
+    return acceptance
 
 
 def accept_results(
@@ -352,89 +490,58 @@ def accept_results(
 ) -> Path:
     package = core.load_json(package_path)
     validate_package_basis(repo_root, package_path, package, implementation_sha)
-    package_dir = package_path.parent
     expected_files = {f"{batch['batch_id']}.json" for batch in package["input"]["batches"]}
-    actual_files = {path.name for path in results_dir.glob("*.json") if path.is_file()}
-    if actual_files != expected_files:
-        missing = sorted(expected_files - actual_files)
-        extra = sorted(actual_files - expected_files)
-        raise ValueError(f"Screening result set incomplete: missing={missing}, extra={extra}")
+    result_files = _exact_regular_files(results_dir, expected_files, "Screening result set")
 
     accepted_batches: list[dict[str, Any]] = []
     flattened: list[dict[str, Any]] = []
     all_seen: set[str] = set()
     for batch in package["input"]["batches"]:
-        batch_id = batch["batch_id"]
-        batch_path = package_dir / batch["path"]
-        if core.sha256_file(batch_path) != batch["sha256"]:
-            raise ValueError(f"Screening batch bytes changed: {batch_id}")
-        inputs = read_jsonl(batch_path)
-        expected_ids = [row["discovery_id"] for row in inputs]
-        result_path = results_dir / f"{batch_id}.json"
-        result = core.load_json(result_path)
-        if set(result) != {"schema_version", "issue_id", "batch_id", "basis", "decisions"}:
-            raise ValueError(f"{batch_id}: unexpected top-level result fields")
-        if result.get("schema_version") != "2.0-rc1" or result.get("issue_id") != package["issue_id"] or result.get("batch_id") != batch_id:
-            raise ValueError(f"{batch_id}: result identity mismatch")
-        if result.get("basis") != expected_result_basis(repo_root, package_path, package, batch):
-            raise ValueError(f"{batch_id}: result basis hashes do not match package")
-        decisions = result.get("decisions")
-        if not isinstance(decisions, list):
-            raise ValueError(f"{batch_id}: decisions must be an array")
-        decision_ids: list[str] = []
-        for decision in decisions:
-            if not isinstance(decision, dict):
-                raise ValueError(f"{batch_id}: every decision must be an object")
-            errors = validate_decision(decision)
-            if errors:
-                raise ValueError(f"{batch_id}/{decision.get('discovery_id')}: {'; '.join(errors)}")
-            discovery_id = decision["discovery_id"]
-            if discovery_id in decision_ids:
-                raise ValueError(f"{batch_id}: duplicate decision for {discovery_id}")
-            decision_ids.append(discovery_id)
-        if set(decision_ids) != set(expected_ids) or len(decision_ids) != len(expected_ids):
-            raise ValueError(f"{batch_id}: decisions must cover exactly the batch discovery IDs")
+        decisions, meta = _validate_result_batch(
+            package_path, package, batch, result_files[f"{batch['batch_id']}.json"]
+        )
+        decision_ids = [row["discovery_id"] for row in decisions]
         overlap = all_seen.intersection(decision_ids)
         if overlap:
             raise ValueError(f"cross-batch duplicate decisions: {sorted(overlap)}")
         all_seen.update(decision_ids)
         flattened.extend(decisions)
-        accepted_batches.append(
-            {
-                "batch_id": batch_id,
-                "input_sha256": batch["sha256"],
-                "result_sha256": core.sha256_file(result_path),
-                "decision_count": len(decisions),
-            }
-        )
+        accepted_batches.append(meta)
 
     if len(flattened) != package["input"]["record_count"]:
         raise ValueError("accepted decision count does not equal discovery record count")
-    result_set_sha = core.sha256_object(
-        {
-            "package_sha256": core.sha256_file(package_path),
-            "batches": accepted_batches,
-            "decisions": sorted(flattened, key=lambda row: row["discovery_id"]),
-        }
-    )
+    package_sha = core.sha256_file(package_path)
+    result_set_sha = _result_set_digest(package_sha, accepted_batches, flattened)
     run_dir = accepted_root / result_set_sha
+    acceptance_path = run_dir / "screening-accepted.json"
     if run_dir.exists():
-        raise ValueError(f"accepted Screening result set already exists: {run_dir}")
-    run_dir.mkdir(parents=True)
+        if acceptance_path.is_file():
+            validate_acceptance(repo_root, acceptance_path, implementation_sha)
+            return acceptance_path
+        raise ValueError(f"incomplete pre-existing Screening acceptance directory: {run_dir}")
+
+    (run_dir / "input/batches").mkdir(parents=True)
+    (run_dir / "results").mkdir(parents=True)
     shutil.copy2(package_path, run_dir / "package.json")
+    for batch in package["input"]["batches"]:
+        batch_id = batch["batch_id"]
+        source_input = package_path.parent / batch["path"]
+        shutil.copy2(source_input, run_dir / "input/batches" / f"{batch_id}.jsonl")
+        shutil.copy2(result_files[f"{batch_id}.json"], run_dir / "results" / f"{batch_id}.json")
     accepted = {
         "schema_version": "2.0-rc1",
         "issue_id": package["issue_id"],
         "research_profile": package["research_profile"],
         "result_set_sha256": result_set_sha,
-        "package_sha256": core.sha256_file(package_path),
+        "package_sha256": package_sha,
         "record_count": package["input"]["record_count"],
         "batch_count": len(accepted_batches),
         "batches": accepted_batches,
         "decisions": sorted(flattened, key=lambda row: row["discovery_id"]),
     }
-    core.write_json(run_dir / "screening-accepted.json", accepted)
-    return run_dir / "screening-accepted.json"
+    core.write_json(acceptance_path, accepted)
+    validate_acceptance(repo_root, acceptance_path, implementation_sha)
+    return acceptance_path
 
 
 def cmd_validate_discovery(args: argparse.Namespace, repo_root: Path) -> int:
