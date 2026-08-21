@@ -36,8 +36,17 @@
     "contracts": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["task", "card"],
+      "required": ["run_package", "task", "card"],
       "properties": {
+        "run_package": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "sha256"],
+          "properties": {
+            "path": {"const": "schemas/evidence-v2-run-package.schema.json"},
+            "sha256": {"$ref": "#/$defs/sha256"}
+          }
+        },
         "task": {
           "type": "object",
           "additionalProperties": false,
