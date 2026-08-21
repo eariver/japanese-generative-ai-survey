@@ -1,0 +1,71 @@
+name: SP-2020-Y v0.13 References pagination
+
+on:
+  push:
+    branches:
+      - special/2020-Y-work
+    paths:
+      - 'sources/SP-2020-Y/editorial/v013-reference-pagination-trigger.json'
+
+permissions:
+  contents: write
+
+jobs:
+  revise:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main control code
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+      - name: Checkout work branch
+        uses: actions/checkout@v6
+        with:
+          ref: special/2020-Y-work
+          path: worktree
+          fetch-depth: 0
+      - name: Verify immutable boundary
+        run: |
+          set -euo pipefail
+          python control-src/scripts/raw_provenance.py --repo-root worktree --issue-id SP-2020-Y check
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('worktree'); state=json.load(open(root/'sources/SP-2020-Y/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='RELEASE_CANDIDATE'
+          assert state['gates']['latex_build']=='passed'
+          assert state['gates']['visual_review']=='pending'
+          assert state['gates']['freeze']=='pending'
+          assert 'publication_preview' not in state.get('provenance',{})
+          source=state['provenance']['validated_issue_source']; p=root/source['path']
+          assert source['source_version']=='v0.12'
+          assert p.is_file() and hashlib.sha256(p.read_bytes()).hexdigest()==source['sha256']
+          assert state['provenance']['latex_build']['source_version']=='v0.12'
+          PY
+      - name: Apply v0.13 bibliography pagination
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python control-src/scripts/revise_special_annual_reference_pagination_v2.py --repo-root worktree --special-slug 2020-Y --issue-id SP-2020-Y --source-version v0.13 > audit.json
+          cat audit.json
+      - name: Verify and commit
+        working-directory: worktree
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('.'); state=json.load(open(root/'sources/SP-2020-Y/pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='VALIDATED_DRAFT'
+          source=state['provenance']['validated_issue_source']; assert source['source_version']=='v0.13'
+          mp=root/source['path']; assert hashlib.sha256(mp.read_bytes()).hexdigest()==source['sha256']
+          m=json.load(open(mp,encoding='utf-8')); lr=m['layout_revision']
+          assert lr['annual_reference_pagination_v2'] is True
+          assert lr['bibliography_data_changed'] is False
+          assert lr['chronology_event_content_changed'] is False
+          assert lr['references_entry_font']=='6.2pt/6.8pt'
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A surveys/special/2020-Y sources/SP-2020-Y
+          git commit -m 'Tighten SP-2020-Y References pagination v0.13'
+          git push origin HEAD:special/2020-Y-work
