@@ -1,12 +1,10 @@
 from __future__ import annotations
 
 import unittest
-from pathlib import Path
 
 from scripts import survey_evidence_v2 as evidence
-from scripts import survey_production_v2 as core
 from scripts import survey_screening_v2 as screening
-from tests.test_survey_screening_v2 import SurveyScreeningV2Tests
+from tests import test_survey_screening_v2 as screening_tests
 
 
 IMPLEMENTATION_SHA = "3" * 40
@@ -14,7 +12,7 @@ IMPLEMENTATION_SHA = "3" * 40
 
 class SurveyScreeningV2ArchiveTests(unittest.TestCase):
     def fixture(self):
-        helper = SurveyScreeningV2Tests(methodName="test_discovery_set_rejects_duplicate_ids")
+        helper = screening_tests.SurveyScreeningV2Tests(methodName="test_discovery_set_rejects_duplicate_ids")
         helper.setUp()
         temp, root, cfg = helper.sandbox()
         self.addCleanup(temp.cleanup)
