@@ -1,0 +1,48 @@
+name: Assistant Annual References pagination v3 dispatcher
+
+on:
+  push:
+    branches:
+      - automation-control
+    paths:
+      - 'automation/annual-reference-pagination-v3-request.json'
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: automation-control
+      - name: Dispatch canonical workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import datetime as dt, json, os, pathlib, urllib.request
+          request=json.load(open('automation/annual-reference-pagination-v3-request.json',encoding='utf-8'))
+          assert request['schema_version']=='1.0'
+          payload=json.dumps({'ref':'main','inputs':{'special_slug':request['special_slug'],'source_version':request['source_version']}}).encode()
+          url=f"https://api.github.com/repos/{os.environ['GH_REPO']}/actions/workflows/revise-special-annual-reference-pagination-v3.yml/dispatches"
+          req=urllib.request.Request(url,data=payload,method='POST',headers={'Accept':'application/vnd.github+json','Authorization':f"Bearer {os.environ['GH_TOKEN']}",'X-GitHub-Api-Version':'2026-03-10','Content-Type':'application/json','User-Agent':'jgais-assistant'})
+          with urllib.request.urlopen(req,timeout=30) as r:
+              body=r.read(); status=r.status
+          data=json.loads(body.decode()) if body else {}
+          result={'schema_version':'1.0','nonce':request['nonce'],'http_status':status,'workflow':'revise-special-annual-reference-pagination-v3.yml','workflow_run_id':data.get('workflow_run_id'),'html_url':data.get('html_url'),'run_url':data.get('run_url'),'dispatched_at':dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')}
+          pathlib.Path('automation/annual-reference-pagination-v3-result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(result,ensure_ascii=False,indent=2))
+          PY
+      - name: Persist dispatch result
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add automation/annual-reference-pagination-v3-result.json
+          git commit -m 'Record Annual References pagination v3 dispatch'
+          git push origin HEAD:automation-control
