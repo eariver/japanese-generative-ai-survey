@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/survey-production-state.schema.json",
+  "title": "Survey Production Core v2 Production State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "issue_id",
+    "research_profile",
+    "publication_profile",
+    "lifecycle_state",
+    "profile",
+    "contract",
+    "implementation",
+    "human_gates",
+    "target_gate",
+    "next_action",
+    "terminal_reason",
+    "exception_gate",
+    "machine_checkpoints",
+    "legacy_compatibility",
+    "history"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "issue_id": {"type": "string", "minLength": 1},
+    "research_profile": {"enum": ["WEEKLY", "RETROSPECTIVE_PERIOD", "THEMATIC"]},
+    "publication_profile": {"enum": ["WEEKLY_MAGAZINE", "LONGFORM_SPECIAL"]},
+    "lifecycle_state": {"enum": [
+      "ISSUE_INITIALIZED",
+      "DISCOVERY_COLLECTED",
+      "CANDIDATES_NORMALIZED",
+      "EVIDENCE_REVIEWED",
+      "SELECTION_COMPLETE",
+      "ARCHITECTURE_ESTABLISHED",
+      "DRAFT_COMPLETE",
+      "VALIDATED_DRAFT",
+      "RELEASE_CANDIDATE",
+      "FROZEN"
+    ]},
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pipeline_contract_version",
+        "pipeline_contract_sha256",
+        "quality_contract_version",
+        "quality_contract_sha256",
+        "research_profile_version",
+        "research_profile_sha256",
+        "publication_profile_version",
+        "publication_profile_sha256"
+      ],
+      "properties": {
+        "pipeline_contract_version": {"type": "string"},
+        "pipeline_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "quality_contract_version": {"type": "string"},
+        "quality_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "research_profile_version": {"type": "string"},
+        "research_profile_sha256": {"$ref": "#/$defs/sha256"},
+        "publication_profile_version": {"type": "string"},
+        "publication_profile_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository_commit_sha", "orchestrator_version"],
+      "properties": {
+        "repository_commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "orchestrator_version": {"type": "string", "minLength": 1}
+      }
+    },
+    "human_gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["architecture_review", "publication_preview"],
+      "properties": {
+        "architecture_review": {"enum": ["pending", "approved", "rejected"]},
+        "publication_preview": {"enum": ["pending", "approved", "rejected"]}
+      }
+    },
+    "target_gate": {"enum": ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"]},
+    "next_action": {"type": ["string", "null"]},
+    "terminal_reason": {"enum": [null, "HUMAN_GATE_REACHED", "EXCEPTION_GATE_REQUIRED", "COMPLETE"]},
+    "exception_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reason"],
+      "properties": {
+        "status": {"enum": ["inactive", "required", "resolved"]},
+        "reason": {"type": ["string", "null"]}
+      }
+    },
+    "machine_checkpoints": {
+      "type": "object",
+      "additionalProperties": {"enum": ["pending", "passed", "failed"]}
+    },
+    "legacy_compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "legacy_state_path", "legacy_state_present", "legacy_state_sha256"],
+      "properties": {
+        "mode": {"const": "NON_AUTHORITATIVE_READ_ONLY"},
+        "legacy_state_path": {"type": "string"},
+        "legacy_state_present": {"type": "boolean"},
+        "legacy_state_sha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]}
+      }
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["from", "to", "recorded_at", "repository_commit_sha"],
+        "properties": {
+          "from": {"type": ["string", "null"]},
+          "to": {"type": "string"},
+          "recorded_at": {"type": "string", "format": "date-time"},
+          "repository_commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
