@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import shutil
 import tempfile
 import unittest
@@ -11,20 +10,11 @@ from scripts import survey_screening_v2 as screening
 
 
 IMPLEMENTATION_SHA = "3" * 40
-CONTRACT_FILES = [
+BASE_FILES = [
     "config/survey-production-v2.json",
     "config/weekly-pipeline.json",
-    "config/prompts/source-screening-v2.md",
     "schemas/survey-production-profile.schema.json",
     "schemas/survey-production-state.schema.json",
-    "schemas/survey-discovery-record.schema.json",
-    "schemas/screening-v2-run-package.schema.json",
-    "schemas/screening-v2-batch-result.schema.json",
-    "docs/survey-production-core-v2-authority.md",
-    "docs/survey-production-core-v2-contract-normalization-second-audit-amendment.md",
-    "docs/survey-production-core-v2-minimum-vertical-slice-second-audit-amendment.md",
-    "docs/survey-production-core-v2-historical-invariants.md",
-    "docs/survey-production-core-v2-historical-production-deep-audit.md",
 ]
 
 
@@ -35,7 +25,13 @@ class SurveyScreeningV2Tests(unittest.TestCase):
     def sandbox(self) -> tuple[tempfile.TemporaryDirectory[str], Path, dict]:
         temp = tempfile.TemporaryDirectory()
         root = Path(temp.name)
-        for rel in CONTRACT_FILES:
+        source_cfg = core.load_json(self.repo_root / "config/survey-production-v2.json")
+        required = [
+            *BASE_FILES,
+            *source_cfg["contract_files"]["pipeline"],
+            *source_cfg["contract_files"]["quality"],
+        ]
+        for rel in dict.fromkeys(required):
             src = self.repo_root / rel
             dst = root / rel
             dst.parent.mkdir(parents=True, exist_ok=True)
