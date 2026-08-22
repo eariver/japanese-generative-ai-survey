@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Compilation System Improvement Plan
 
-Status: `WU-012 POST-COMPLETION RE-AUDIT REPAIRS IMPLEMENTED / FINAL CANDIDATE CI + FIXED-HEAD AUDIT PENDING`  
+Status: `WU-012 REPAIRS IMPLEMENTED / AUDIT-STABLE PRE-AUDIT CANDIDATE`  
 Established: 2026-08-22 JST  
 Working branch: `refactor/survey-production-core-v2`  
 Production source of truth until merge: current `main`  
@@ -335,6 +335,7 @@ AUD-033 intentionally defers exhaustive hypothetical future-edition fixture matr
 - **AUD-042** exact Production Profile-bound Quality / Candidate consistency
 - **AUD-043** Retrospective public Special identity
 - **AUD-044** bounded Period completion guard
+- **AUD-045** audit-stable canonical status synchronization
 
 Intentional `DEFERRED`:
 
@@ -343,18 +344,18 @@ Intentional `DEFERRED`:
 
 `REPAIR-WU012-2026-08-22` remains `IMPLEMENTED`, not `VALIDATED/CLOSED`, until real W33/SP001 verification editions occur.
 
-The former synchronized head `2f3c9b10c031cf0d8e5cc114fb93e481e90fffac` and earlier closure PASS are not current approval evidence because the required post-completion audit found AUD-039–044.
+The former synchronized head `2f3c9b10c031cf0d8e5cc114fb93e481e90fffac` is not current approval evidence because its post-completion audit found AUD-039–044. The later fixed-head attempt `68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d` is likewise invalid as final evidence because AUD-045 required another candidate-tree repair.
 
 ## 17. Mandatory final candidate rule
 
-Owner-required review discipline is now canonical in `docs/survey-production-core-v2-final-audit-rule.md`.
+Owner-required review discipline is canonical in `docs/survey-production-core-v2-final-audit-rule.md`.
 
-Before Human full-candidate review:
+The candidate tree deliberately remains a stable pre-audit snapshot:
 
 ```text
-finish every code/config/schema/workflow/test/doc/Finding/Repair-Set change
--> obtain five-family cross-regression on the complete synchronized candidate
--> freeze exact candidate head SHA
+all repository-side repairs/synchronization complete
+-> obtain five-family cross-regression on one exact head
+-> freeze that exact head
 -> audit all five acceptance priorities from zero on that unchanged SHA
 ```
 
@@ -374,31 +375,36 @@ There is no “recheck only the failed point” after candidate mutation.
 
 The final PASS is recorded outside the candidate tree in PR/Human-review metadata, keyed to exact audited SHA and CI run identities. This prevents a post-audit PASS commit from invalidating its own audit.
 
-## 18. Current exit condition / rollout
+## 18. Stable pre-audit exit / rollout boundary
 
-Current state is **not yet Human Review Ready**.
+Repository-side candidate preparation is complete when Authority, Worklog, Repair Set, Bootstrap, implementation and tests agree on the pre-audit state. The candidate tree does **not** claim whether a later exact-head final audit has passed; that result is external PR/Human-review metadata.
 
-Before candidate freeze:
+Pre-audit properties that must remain true:
 
-- [x] ChatGPT-first operator/tool boundary is repository-owned.
-- [x] exactly two normal production Human Gates remain.
-- [x] compact local orchestration replaces mandatory Handoff ceremony.
-- [x] exact semantic `CORE_STAGE_CONTRACT` is required before checkpoint adoption.
-- [x] current reviewed toolchain can be integrated and recorded per checkpoint without rewriting initialization provenance.
-- [x] Source Intake/completeness remains substantive ChatGPT reasoning.
-- [x] Issue Prevention Checklist remains canonical.
-- [x] generic Period/Thematic bootstrap exists.
-- [x] bounded Period completion guard exists.
-- [x] Quality is exact Production Profile-bound.
-- [x] Retrospective public Special identity is Profile-derived.
-- [x] Foundations living series authority remains sufficient pre-merge.
-- [x] W33/SP001 remain unstarted.
-- [x] former closure/finding/Repair Set/authority/bootstrap/AGENTS status has been reopened/synchronized for AUD-039–044.
-- [ ] complete synchronized candidate passes all five cross-regression families.
-- [ ] exact head is frozen.
-- [ ] all five acceptance priorities are audited from zero on that unchanged head with no new finding requiring mutation.
+- ChatGPT-first operator/tool boundary is repository-owned.
+- exactly two normal production Human Gates remain.
+- compact local orchestration replaces mandatory Handoff ceremony.
+- exact semantic `CORE_STAGE_CONTRACT` is required before checkpoint adoption.
+- current reviewed toolchain can be integrated and recorded per checkpoint without rewriting initialization provenance.
+- Source Intake/completeness remains substantive ChatGPT reasoning.
+- Issue Prevention Checklist remains canonical.
+- generic Period/Thematic bootstrap exists.
+- bounded Period completion guard exists.
+- Quality is exact Production Profile-bound.
+- Retrospective public Special identity is Profile-derived.
+- Foundations living series authority remains sufficient pre-merge.
+- AUD-039 through AUD-045 are represented consistently as implemented generic repairs.
+- W33/SP001 remain unstarted.
 
-If and only if those last three conditions pass, present the exact SHA for Human full-candidate review. Do not mutate the candidate afterward merely to record PASS.
+External final-validation sequence:
+
+```text
+five-family CI PASS on exact head
+-> freeze exact head
+-> five acceptance priorities PASS from zero with no candidate mutation
+-> record exact SHA + CI run IDs + verdicts in PR/Human-review metadata
+-> present that exact candidate for Human full-candidate review
+```
 
 After explicit Human approval and merge:
 
