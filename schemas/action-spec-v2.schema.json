@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": [
     "schema_version", "action_id", "issue_id", "current_stage", "target_gate",
-    "action_kind", "handler", "validator", "validator_version", "basis",
+    "action_kind", "handler", "validator", "validator_version", "dispatch", "basis",
     "required_inputs", "expected_outputs", "retry_policy", "idempotency",
     "next_state", "next_terminal_reason"
   ],
@@ -20,6 +20,20 @@
     "handler": {"type": ["string", "null"]},
     "validator": {"type": ["string", "null"]},
     "validator_version": {"type": ["string", "null"]},
+    "dispatch": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["workflow", "ref"],
+          "properties": {
+            "workflow": {"type": "string", "pattern": "^[A-Za-z0-9._-]+\\.ya?ml$"},
+            "ref": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    },
     "basis": {
       "type": "object",
       "additionalProperties": false,
@@ -73,6 +87,13 @@
     "next_state": {"type": ["string", "null"]},
     "next_terminal_reason": {"enum": [null, "HUMAN_GATE_REACHED", "EXCEPTION_GATE_REQUIRED", "COMPLETE"]}
   },
+  "allOf": [
+    {
+      "if": {"properties": {"action_kind": {"const": "WORKFLOW_DISPATCH"}}},
+      "then": {"properties": {"dispatch": {"type": "object"}}},
+      "else": {"properties": {"dispatch": {"type": "null"}}}
+    }
+  ],
   "$defs": {
     "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "gitsha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
