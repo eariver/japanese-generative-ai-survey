@@ -51,6 +51,28 @@ class SurveyPublicationV2Tests(unittest.TestCase):
         )
         return bundle, candidate
 
+    def _actions_candidate(self) -> tuple[Path, Path, dict[str, object]]:
+        authority: dict[str, object] = {
+            "storage": "GITHUB_ACTIONS_ARTIFACT",
+            "path": "main.pdf",
+            "sha256": quality.core.sha256_file(self.pdf),
+            "byte_count": self.pdf.stat().st_size,
+            "actions_artifact": {
+                "repository": "eariver/japanese-generative-ai-survey",
+                "workflow_run_id": 32558585352,
+                "artifact_id": 123456789,
+                "artifact_name": "survey-SP001-v2",
+                "artifact_digest": "sha256:" + "a" * 64,
+            },
+        }
+        bundle = self.dir / "quality-regression-bundle-v2.json"
+        quality.build_bundle(self.root, "SP001", self.source, self.pdf, self._checks(), bundle, authority)
+        candidate = self.dir / "publication-candidate-v2.json"
+        publication.build_candidate(
+            self.root, "SP001", "LONGFORM_SPECIAL", self.source, self.pdf, 12, bundle, candidate
+        )
+        return bundle, candidate, authority
+
     def test_exact_pdf_chain_reaches_release_without_new_human_gate(self) -> None:
         _, candidate = self._candidate()
         now = datetime(2026, 8, 22, 5, 0, tzinfo=timezone.utc)
@@ -75,6 +97,36 @@ class SurveyPublicationV2Tests(unittest.TestCase):
         record = publication.validate_release_record(self.root, release)
         self.assertEqual(record["status"], "RELEASED")
         self.assertEqual(record["release_identity"], "special/SP001")
+
+    def test_actions_artifact_pdf_authority_reaches_release_after_local_pdf_is_removed(self) -> None:
+        _, candidate, authority = self._actions_candidate()
+        payload = publication.validate_candidate(self.root, candidate, issue_id="SP001")
+        self.assertEqual(
+            {key: payload["pdf"][key] for key in ("storage", "path", "sha256", "byte_count", "actions_artifact")},
+            authority,
+        )
+        self.pdf.unlink()
+
+        now = datetime(2026, 8, 22, 5, 0, tzinfo=timezone.utc)
+        approval = self.dir / "publication-preview-approval-v2.json"
+        publication.build_preview_approval(self.root, candidate, approval, "human-reviewer", now, "review:SP001:preview")
+        visual = self.dir / "visual-review-v2.json"
+        publication.build_visual_review(
+            self.root,
+            approval,
+            [{"check_id": "REHYDRATED_APPROVED_PDF", "status": "PASS", "detail": "Actions authority verified"}],
+            "artifact-rehydration-qa-v2",
+            now,
+            visual,
+        )
+        freeze = self.dir / "freeze-record-v2.json"
+        manifest = self.dir / "release-manifest-v2.json"
+        publication.build_freeze(self.root, candidate, approval, visual, now, freeze, manifest)
+        verification = self.dir / "merge-verification-v2.json"
+        publication.build_merge_verification(self.root, manifest, "a" * 40, now, verification)
+        release = self.dir / "release-record-v2.json"
+        publication.build_release_record(self.root, manifest, verification, now, "release:SP001", release)
+        self.assertEqual(publication.validate_release_record(self.root, release)["status"], "RELEASED")
 
     def test_pdf_change_after_human_preview_invalidates_every_downstream_step(self) -> None:
         _, candidate = self._candidate()
