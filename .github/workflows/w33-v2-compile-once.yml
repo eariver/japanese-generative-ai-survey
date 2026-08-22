@@ -4,8 +4,10 @@ on:
   push:
     branches:
       - weekly/2026-W33-v2-work
-
-permissions:
+  pull_request:
+    branches:
+      - main
+\permissions:
   contents: write
 
 concurrency:
@@ -29,7 +31,7 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          printf 'started_at=%s\nsource_sha=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$GITHUB_SHA" > automation/w33-v2-workflow-started.txt
+          printf 'started_at=%s\nsource_sha=%s\nevent=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$GITHUB_SHA" "$GITHUB_EVENT_NAME" > automation/w33-v2-workflow-started.txt
           git add automation/w33-v2-workflow-started.txt
           git commit -m 'Mark W33 v2 compile workflow start'
           git push origin HEAD:weekly/2026-W33-v2-work
