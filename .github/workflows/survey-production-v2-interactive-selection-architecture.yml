@@ -93,8 +93,7 @@ jobs:
         run: |
           set -euo pipefail
           PYTHONPATH=. python - <<'PY'
-          import json, pathlib, tempfile
-          from scripts import survey_agent_tool_v2 as agent_tool
+          import datetime, json, os, pathlib, tempfile
           from scripts import survey_architecture_v2 as architecture
           from scripts import survey_production_v2 as core
           from scripts import survey_review_attention_v2 as attention
@@ -102,7 +101,7 @@ jobs:
 
           root=pathlib.Path('.').resolve()
           out=json.load(open('selection-architecture-v2-output.json',encoding='utf-8'))
-          state_path=root/pathlib.Path('${STATE}')
+          state_path=root/pathlib.Path(os.environ['STATE'])
           current={
               'candidate-matrix': root/out['candidate_matrix'],
               'candidate-selection': root/out['candidate_selection'],
@@ -111,7 +110,7 @@ jobs:
               report=pathlib.Path(temp)/'selection-stage-validation.json'
               stage.validate_stage(
                   root, core.load_json(root/core.DEFAULT_CONFIG), state_path, current, report,
-                  __import__('datetime').datetime.now(__import__('datetime').timezone.utc)
+                  datetime.datetime.now(datetime.timezone.utc)
               )
           profile=core.load_json(state_path)['profile']['path']
           profile_path=root/profile
