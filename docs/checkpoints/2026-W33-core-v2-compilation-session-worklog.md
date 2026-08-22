@@ -5,6 +5,7 @@
 - Canonical work branch: `weekly/2026-W33-v2-work`
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Fresh restart ordered: 2026-08-23 JST
+- Current stop: **Exception Gate — fresh Grok/X result required before Discovery**
 
 ## Fresh-restart decision
 
@@ -12,31 +13,93 @@ The first v2 attempt reused Raw/Source Intake material from the legacy W33 work.
 
 From this point forward, legacy W33 Source Intake results are not inputs to the production run. All non-X sources must be collected in a fresh W33 Source Intake run. X must use a newly generated Core v2 Grok handoff and a newly returned Grok result; legacy Grok r3 is not accepted as Raw authority for this run.
 
-## Completed in fresh run
+## Fresh Core v2 initialization
 
-1. Canonical work branch reset to `main`.
-2. Core v2 Production Profile and Production State freshly initialized for W33.
-3. Initialization validated against the current Core v2 contracts.
+Completed.
 
-## Pending
+1. Canonical `weekly/2026-W33-v2-work` was reset to current `main`.
+2. The previous contaminated v2 attempt was preserved only at `backup/2026-W33-v2-legacy-contaminated-attempt`.
+3. Core v2 Production Profile and Production State were freshly initialized for W33.
+4. The fresh profile window is `2026-08-07T18:00:00-04:00` through `2026-08-14T18:00:00-04:00` with cutoff `2026-08-14T18:00:00-04:00`.
+5. The complete pre-initialization pipeline test suite passed before initialization.
+6. Execution-only PR #312 was closed without merge after the generated initialization commit was materialized on the canonical work branch.
 
-- Fresh reproducible non-X Source Intake (`arxiv`, `github`, `official`).
-- Fresh Grok/X Source Intake handoff and result import.
-- Discovery through Architecture regenerated only from the fresh intake set.
+Fresh initialization commit: `f03047773bb080b1f373f8a0240097210b0ebb3b`.
 
-This file will be updated as the fresh run advances.
+## Fresh non-X Source Intake execution
 
-## Fresh Source Intake execution
+Completed. Legacy W33 Source Intake input used: **no**.
 
-- Legacy W33 Source Intake input used: **no**.
-- Non-X collection window was derived directly from the fresh Core v2 Production Profile.
-- Non-X collector overall status: `success`.
-- Fresh collector `arxiv-api`: run `arxiv-api-2026-W33-20260822T154529Z`, status `success`.
-- Fresh collector `github-releases`: run `github-releases-2026-W33-20260822T154710Z`, status `success`.
-- Fresh collector `official-pages`: run `official-pages-2026-W33-20260822T154717Z`, status `success`.
-- Fresh Grok/X run created: `weekly-x-2026-W33-fresh-r1`.
-- Grok/X Drive target: `Grok_X_SourseIntake/Weekly/2026-W33/weekly-x-2026-W33-fresh-r1`.
-- X manifest status: `AWAITING_GROK` (fresh Grok result not yet imported at this point).
-- Legacy Grok r3 result is explicitly excluded from this fresh run.
+The collector plan was derived directly from the fresh Core v2 `production-profile.json`; the legacy W33 weekly plan was not reused. The run executed the current configured Source Intake adapters against the network and persisted new Raw observations under new run timestamps.
 
-The next production action is to place the newly generated instruction/prompt in the exact Google Drive handoff target, obtain a new Grok result, import those Raw bytes, and only then generate Core v2 Discovery.
+Fresh collector results:
+
+- `arxiv-api`: `arxiv-api-2026-W33-20260822T154529Z` — `success`
+- `github-releases`: `github-releases-2026-W33-20260822T154710Z` — `success`
+- `official-pages`: `official-pages-2026-W33-20260822T154717Z` — `success`
+- overall status: `success`
+
+The deterministic fresh screening seed contains **2665 records**:
+
+- paper: 2569
+- GitHub release: 60
+- official feed item: 15
+- official index snapshot: 21
+
+These records are fresh Source Intake observations only. They have not yet been promoted through Core v2 Discovery/Screening/Evidence. The configured base intake is `BROAD_SEED_NOT_EXHAUSTIVE`, so final coverage closure still requires downstream coverage audit/gap handling.
+
+Execution-only PR #314 ran the fresh collector and was closed without merge after generated artifacts were committed directly to the canonical work branch. The branch workflow file was restored to the exact `main` version before the generated artifact commit.
+
+Fresh Source Intake artifact commit: `bf096b316e5cf71c97830492130f8e829660f256`.
+
+## Fresh Grok/X Source Intake handoff
+
+Prepared; fresh Grok execution result is still pending.
+
+Core v2 created a new required X run:
+
+- run id: `weekly-x-2026-W33-fresh-r1`
+- policy: `REQUIRED_BY_PROFILE`
+- manifest status: `AWAITING_GROK`
+- Drive target: `Grok_X_SourseIntake/Weekly/2026-W33/weekly-x-2026-W33-fresh-r1`
+- expected result filename: `grok-x-result.md`
+
+The Google Drive hierarchy was created fresh under the existing `Grok_X_SourseIntake/Weekly` root. No legacy W33 Grok result was copied into the folder.
+
+The newly generated repository instruction/prompt were placed in the exact Drive run folder as real `text/markdown` files. The files were re-downloaded from Drive and SHA-256 checked against the repository manifest:
+
+- `grok-instruction.md`: 1030 bytes, SHA-256 `e9ccbcdbc97e74a903018170384e77f1cb99bf2b51827f51167b49ab6e12cf31`
+- `grok-prompt.md`: 8102 bytes, SHA-256 `aadde4341cd92bb104163f77e3a96d693c04c20068b39bd8f26b2b54ad25ca98`
+
+Therefore the external handoff input bytes exactly match the Core v2 repository authority.
+
+## Exception Gate
+
+Required.
+
+This ChatGPT session has connected GitHub and Google Drive access but no connected Grok/xAI execution capability. Plugin discovery also found no Grok/xAI/X execution connector. Consequently ChatGPT cannot truthfully execute the required X-native Grok observation itself.
+
+It would violate the user instruction and Core v2 evidence boundary to reuse the legacy W33 Grok r3 result, synthesize a fake Grok result, or substitute ordinary web search while claiming Grok/X Source Intake completion.
+
+The authoritative `production-state.json` was therefore changed without advancing lifecycle from `ISSUE_INITIALIZED`:
+
+- `exception_gate.status = required`
+- `next_action = EXCEPTION`
+- `terminal_reason = EXCEPTION_GATE_REQUIRED`
+- all machine checkpoints remain pending
+- Architecture Review remains pending
+
+Exception Gate state commit: `d234e066236555e383d217279d1e70cd0f3ded7d`.
+
+Exception reason: a newly executed `weekly-x-2026-W33-fresh-r1` Grok result must be returned to the prepared Drive folder and imported before Core v2 Discovery may advance. Legacy W33 Grok r3 is explicitly forbidden as fallback.
+
+## Resume procedure after Grok execution
+
+1. Read `Grok_X_SourseIntake/Weekly/2026-W33/weekly-x-2026-W33-fresh-r1/grok-x-result.md` from Google Drive. If Grok used a revision suffix, use the actual returned filename and record that fact.
+2. Verify the result front matter identifies `task_id: weekly-x-2026-W33-fresh-r1` and `issue_id: 2026-W33`, and record the actual `observed_at`.
+3. Import the exact returned bytes into `sources/2026-W33/external/x/weekly-x-2026-W33-fresh-r1/raw/` and bind SHA-256/byte provenance with `survey_x_intake_v2.py record-result`.
+4. Validate `x-source-intake-v2.json` as `COMPLETE`.
+5. Resolve the Exception Gate without changing lifecycle history; restore the derived next action to `stage:discovery`.
+6. Build Core v2 Discovery only from this fresh non-X Source Intake, the fresh Grok result, and legitimate prior-week W32 carry-over authority where required. Do not import any legacy W33 research artifact.
+7. Run coverage audit/gap expansion, Screening, Evidence, Materiality, Completeness, Selection and Architecture under current Core v2 validators.
+8. Stop at `ARCHITECTURE_ESTABLISHED` with `ARCHITECTURE_REVIEW` pending. Do not approve the Human Gate.
