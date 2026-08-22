@@ -169,3 +169,15 @@ Completed. Execution-only PR #356 revalidated the exact proposed Architecture, A
 - Draft, validation, publication preview, freeze, and release checkpoints remain pending.
 
 The requested autonomous compilation boundary has therefore been reached. The session intentionally stops here and does not begin drafting until the Architecture Review Human Gate is explicitly approved or revised by the user.
+
+
+## Architecture Review r1 — revision requested
+
+Human Review did not approve the first Architecture. The review identified a Weekly editorial-coverage defect rather than a Source Intake shortage.
+
+- Fresh Grok/X Raw explicitly reported abundant community signal; r1 compressed it into one generic CONTEXT claim and then HOLD, losing the required weekly community-movement section.
+- r1 selected seven MATERIAL candidates but left thirteen CONTEXT candidates out of the issue, making the three feature packages appear to be the whole week.
+- The revised issue must retain the three feature themes while adding recurring X Community Pulse, Research Watch, OSS/GitHub Watch / roundup coverage, and a final weekly synthesis/summary.
+- X remains SOCIAL_OBSERVATION only; no technical/model/benchmark claim is promoted without primary Evidence.
+- The complete r1 state and artifacts are preserved at `backup/2026-W33-v2-architecture-r1-rejected`.
+- Canonical lifecycle was logically returned to `CANDIDATES_NORMALIZED` for review revision. Fresh Source Intake, Discovery, and Screening remain authoritative; Evidence and downstream artifacts are regenerated as r2.
