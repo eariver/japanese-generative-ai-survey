@@ -68,7 +68,7 @@ jobs:
           REQUEST: ${{ steps.request.outputs.request }}
         run: |
           set -euo pipefail
-          PYTHONPATH=. python scripts/run_drafting_synthesis_v2_interactive.py --repo-root . --state "$STATE" --input "$REQUEST" | tee drafting-synthesis-v2-output.json
+          PYTHONPATH=. python scripts/run_drafting_synthesis_v2_agent.py --repo-root . --state "$STATE" --input "$REQUEST" | tee drafting-synthesis-v2-output.json
 
       - name: Revalidate exact Core v2 Draft stage contract
         shell: bash
