@@ -2,7 +2,7 @@
   "schema_version": "2.0-rc1",
   "pipeline_contract_version": "2.0-rc1",
   "quality_contract_version": "2.0-rc1",
-  "orchestrator_version": "survey-production-core-v2/0.2",
+  "orchestrator_version": "survey-production-core-v2/0.3",
   "contract_files": {
     "pipeline": [
       "docs/survey-production-core-v2-authority.md",
@@ -96,15 +96,15 @@
       "RELEASE_CANDIDATE": "PUBLICATION_PREVIEW"
     },
     "stage_plan": {
-      "ISSUE_INITIALIZED": {"handler": "stage:discovery", "next_state": "DISCOVERY_COLLECTED", "checkpoints": ["discovery"]},
-      "DISCOVERY_COLLECTED": {"handler": "stage:screening", "next_state": "CANDIDATES_NORMALIZED", "checkpoints": ["screening"]},
-      "CANDIDATES_NORMALIZED": {"handler": "stage:evidence-materiality-completeness", "next_state": "EVIDENCE_REVIEWED", "checkpoints": ["evidence", "materiality", "completeness"]},
-      "EVIDENCE_REVIEWED": {"handler": "stage:selection", "next_state": "SELECTION_COMPLETE", "checkpoints": ["selection"]},
-      "SELECTION_COMPLETE": {"handler": "stage:architecture", "next_state": "ARCHITECTURE_ESTABLISHED", "checkpoints": ["architecture"]},
-      "ARCHITECTURE_ESTABLISHED": {"handler": "stage:drafting-synthesis", "next_state": "DRAFT_COMPLETE", "checkpoints": ["draft"]},
-      "DRAFT_COMPLETE": {"handler": "stage:semantic-publication-validation", "next_state": "VALIDATED_DRAFT", "checkpoints": ["validation"]},
-      "VALIDATED_DRAFT": {"handler": "stage:publication-candidate", "next_state": "RELEASE_CANDIDATE", "checkpoints": []},
-      "RELEASE_CANDIDATE": {"handler": "stage:freeze-release", "next_state": "FROZEN", "checkpoints": ["freeze"]}
+      "ISSUE_INITIALIZED": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:discovery", "next_state": "DISCOVERY_COLLECTED", "checkpoints": ["discovery"]},
+      "DISCOVERY_COLLECTED": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:screening", "next_state": "CANDIDATES_NORMALIZED", "checkpoints": ["screening"]},
+      "CANDIDATES_NORMALIZED": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:evidence-materiality-completeness", "next_state": "EVIDENCE_REVIEWED", "checkpoints": ["evidence", "materiality", "completeness"]},
+      "EVIDENCE_REVIEWED": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:selection", "next_state": "SELECTION_COMPLETE", "checkpoints": ["selection"]},
+      "SELECTION_COMPLETE": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:architecture", "next_state": "ARCHITECTURE_ESTABLISHED", "checkpoints": ["architecture"]},
+      "ARCHITECTURE_ESTABLISHED": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:drafting-synthesis", "next_state": "DRAFT_COMPLETE", "checkpoints": ["draft"]},
+      "DRAFT_COMPLETE": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:semantic-publication-validation", "next_state": "VALIDATED_DRAFT", "checkpoints": ["validation"]},
+      "VALIDATED_DRAFT": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:publication-candidate", "next_state": "RELEASE_CANDIDATE", "checkpoints": []},
+      "RELEASE_CANDIDATE": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:freeze-release", "next_state": "FROZEN", "checkpoints": ["freeze"]}
     }
   },
   "state_authority": {
