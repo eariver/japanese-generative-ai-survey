@@ -1,0 +1,48 @@
+name: WU011 Gate PR patch
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/wu011-gate-pr-patch.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event.pull_request.head.ref == 'refactor/survey-production-core-v2'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/survey-production-core-v2
+          fetch-depth: 0
+      - name: Reuse exact WU011 Gate patch body
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import textwrap
+
+          workflow = Path('.github/workflows/wu011-gate-self-patch.yml').read_text(encoding='utf-8')
+          start_marker = "          python - <<'PY'\n"
+          end_marker = "\n          PY\n"
+          start = workflow.index(start_marker) + len(start_marker)
+          end = workflow.index(end_marker, start)
+          code = textwrap.dedent(workflow[start:end])
+          exec(compile(code, 'wu011-gate-self-patch', 'exec'), {})
+          PY
+          python -m py_compile scripts/survey_production_v2.py scripts/survey_drafting_v2.py scripts/survey_orchestrator_v2.py
+      - name: Commit exact Gate authority patch and remove one-shot workflows
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/wu011-gate-self-patch.yml .github/workflows/wu011-gate-pr-patch.yml
+          git add scripts/survey_production_v2.py scripts/survey_drafting_v2.py scripts/survey_orchestrator_v2.py
+          git commit -m 'core-v2: bind both Human Gates to exact review bytes'
+          git push origin HEAD:refactor/survey-production-core-v2
