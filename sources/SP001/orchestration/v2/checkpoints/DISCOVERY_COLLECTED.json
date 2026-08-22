@@ -1,0 +1,61 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "from_state": "DISCOVERY_COLLECTED",
+  "to_state": "CANDIDATES_NORMALIZED",
+  "checkpoints": [
+    "screening"
+  ],
+  "recorded_at": "2026-08-22T16:20:34Z",
+  "implementation": {
+    "repository_commit_sha": "5fd4a7b0361504f061541561b732b0989ea85db8",
+    "orchestrator_version": "survey-production-core-v2/0.8-agent-first"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "1814863bfe5661491b972eabaeaa6383b4018172fbfe765ce064a7202986abce",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "screening-acceptance",
+      "path": "sources/SP001/screening/v2/accepted/71e88c15dbbbad49576f45f81b952af2acf827b3048d35e92e42419897baad97/screening-accepted.json",
+      "sha256": "31c1b9a9d6038752d9248feae2f569aad1efa8342f6b7eb3422f76cb861b61d6"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "scripts/survey_stage_validation_v2.py",
+      "evidence": "Validate the exact content-addressed Core v2 Screening acceptance against the accepted Discovery authority, current Production State/Profile, current integrated Core v2 contract, exact archived package/input/results, and current implementation before adoption.",
+      "result": {
+        "path": "sources/SP001/orchestration/v2/validation/DISCOVERY_COLLECTED.json",
+        "sha256": "6e9507fc784df8a66698e7062f8736b1e324ddbbbbe4b571e80e6c85c9f7e73e"
+      }
+    },
+    {
+      "check_id": "THEMATIC_SCREENING_COVERAGE",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "All 24 accepted Discovery IDs received explicit Screening decisions. The four central family lineages and material primary technical transitions were retained; Yi and Baichuan remain MAYBE auxiliary branches; the weak early Kimi source and all X/community-only signals remain INSPECT so later Evidence must strengthen or limit them. No record was silently omitted or default-dropped.",
+      "result": null
+    },
+    {
+      "check_id": "SCREENING_EVIDENCE_BOUNDARY",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "Screening decisions express relevance and verification priority only. They do not promote vendor benchmark claims, X runtime numbers, Kimi infringement allegations, license interpretations, or enterprise-policy prevalence to verified factual Evidence.",
+      "result": null
+    }
+  ],
+  "summary": "SP001 Core v2 Screening is complete: all 24 accepted Discovery records have explicit reviewed dispositions (18 KEEP, 2 MAYBE, 4 INSPECT, 0 DROP), exact package/input/result bytes are content-addressed, and weak/community-only signals remain routed to Evidence verification rather than treated as facts. Execute through reviewed PR control."
+}
