@@ -12,19 +12,52 @@ class SurveyQualityV2Tests(unittest.TestCase):
     def sandbox(self) -> tuple[tempfile.TemporaryDirectory[str], Path]:
         temp = tempfile.TemporaryDirectory()
         root = Path(temp.name)
-        schema = root / quality.QUALITY_SCHEMA
-        schema.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(Path(quality.QUALITY_SCHEMA), schema)
+        for rel in (quality.QUALITY_SCHEMA, quality.core.DEFAULT_CONFIG):
+            dst = root / rel
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(Path(rel), dst)
         return temp, root
 
     @staticmethod
-    def complete_checks() -> list[dict[str, str]]:
-        return [
-            {"check_id": check_id, "status": "PASS", "evidence": f"fixture evidence for {check_id}"}
-            for check_id in sorted(quality.REQUIRED_CHECKS)
-        ]
+    def complete_checks(root: Path, research_profile: str, publication_profile: str) -> list[dict[str, object]]:
+        cfg = quality.core.load_json(root / quality.core.DEFAULT_CONFIG)
+        expected = quality.expected_checks(cfg, research_profile, publication_profile)
+        rows: list[dict[str, object]] = []
+        for check_id, kind in sorted(expected.items()):
+            result = None
+            if kind == "DETERMINISTIC":
+                result_path = root / "quality/results" / f"{check_id}.json"
+                quality.core.write_json(result_path, {"check_id": check_id, "status": "PASS"})
+                result = {
+                    "path": str(result_path.relative_to(root)),
+                    "sha256": quality.core.sha256_file(result_path),
+                }
+            rows.append({
+                "check_id": check_id,
+                "kind": kind,
+                "status": "PASS",
+                "executor": "fixture-tool" if kind == "DETERMINISTIC" else "ChatGPT",
+                "evidence": f"fixture evidence for {check_id}",
+                "recorded_at": "2026-08-22T09:00:00Z",
+                "result": result,
+            })
+        return rows
 
-    def test_complete_coupled_regression_bundle_binds_exact_source_and_pdf_bytes(self) -> None:
+    def test_profile_applicability_excludes_longform_and_period_checks_from_weekly(self) -> None:
+        temp, root = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        cfg = quality.core.load_json(root / quality.core.DEFAULT_CONFIG)
+        weekly = quality.expected_checks(cfg, "WEEKLY", "WEEKLY_MAGAZINE")
+        self.assertIn("WEEKLY_WHY_THIS_ISSUE", weekly)
+        self.assertIn("WEEKLY_RENDERED_PAGE_REVIEW", weekly)
+        self.assertNotIn("TECHNICAL_NOTES_TAIL_NEEDSPACE", weekly)
+        self.assertNotIn("CHRONOLOGY_SOURCE_MAPPING", weekly)
+        thematic = quality.expected_checks(cfg, "THEMATIC", "LONGFORM_SPECIAL")
+        self.assertIn("THEMATIC_RESEARCH_CLOSURE", thematic)
+        self.assertIn("TECHNICAL_NOTES_TAIL_NEEDSPACE", thematic)
+        self.assertNotIn("WEEKLY_WHY_THIS_ISSUE", thematic)
+
+    def test_complete_quality_bundle_binds_exact_source_and_pdf_bytes(self) -> None:
         temp, root = self.sandbox()
         self.addCleanup(temp.cleanup)
         source = root / "survey/main.tex"
@@ -33,16 +66,35 @@ class SurveyQualityV2Tests(unittest.TestCase):
         source.write_text("validated source\n", encoding="utf-8")
         pdf.write_bytes(b"%PDF-1.7\nfixture\n")
         output = root / "quality/regression.json"
+        checks = self.complete_checks(root, "THEMATIC", "LONGFORM_SPECIAL")
 
-        quality.build_bundle(root, "SP001", source, pdf, self.complete_checks(), output)
+        quality.build_bundle(
+            root, "SP001", source, pdf, checks, output,
+            research_profile="THEMATIC", publication_profile="LONGFORM_SPECIAL",
+        )
         payload = quality.validate_bundle(root, output, issue_id="SP001")
 
         self.assertEqual(payload["status"], "PASS")
-        self.assertEqual({row["check_id"] for row in payload["checks"]}, quality.REQUIRED_CHECKS)
+        self.assertEqual(payload["research_profile"], "THEMATIC")
+        self.assertEqual(payload["publication_profile"], "LONGFORM_SPECIAL")
         self.assertEqual(payload["source"]["path"], "survey/main.tex")
         self.assertEqual(payload["pdf"]["path"], "survey/main.pdf")
         self.assertEqual(payload["pdf"]["storage"], "REPOSITORY_FILE")
-        self.assertIsNone(payload["pdf"]["actions_artifact"])
+
+    def test_deterministic_requires_result_but_agent_review_does_not(self) -> None:
+        temp, root = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        checks = self.complete_checks(root, "WEEKLY", "WEEKLY_MAGAZINE")
+        deterministic = next(row for row in checks if row["kind"] == "DETERMINISTIC")
+        deterministic["result"] = None
+        cfg = quality.core.load_json(root / quality.core.DEFAULT_CONFIG)
+        with self.assertRaisesRegex(ValueError, "requires result authority"):
+            quality.validate_checks(root, cfg, "WEEKLY", "WEEKLY_MAGAZINE", checks)
+
+        checks = self.complete_checks(root, "WEEKLY", "WEEKLY_MAGAZINE")
+        agent = next(row for row in checks if row["kind"] == "AGENT_SEMANTIC")
+        self.assertIsNone(agent["result"])
+        quality.validate_checks(root, cfg, "WEEKLY", "WEEKLY_MAGAZINE", checks)
 
     def test_actions_artifact_authority_survives_ephemeral_materialization_removal(self) -> None:
         temp, root = self.sandbox()
@@ -67,9 +119,12 @@ class SurveyQualityV2Tests(unittest.TestCase):
             },
         }
         output = root / "quality/regression.json"
-        quality.build_bundle(root, "SP001", source, pdf, self.complete_checks(), output, authority)
+        checks = self.complete_checks(root, "THEMATIC", "LONGFORM_SPECIAL")
+        quality.build_bundle(
+            root, "SP001", source, pdf, checks, output, authority,
+            research_profile="THEMATIC", publication_profile="LONGFORM_SPECIAL",
+        )
         pdf.unlink()
-
         payload = quality.validate_bundle(root, output, issue_id="SP001")
         self.assertEqual(payload["pdf"], authority)
 
@@ -95,25 +150,26 @@ class SurveyQualityV2Tests(unittest.TestCase):
                 "artifact_digest": "sha256:" + "b" * 64,
             },
         }
+        checks = self.complete_checks(root, "THEMATIC", "LONGFORM_SPECIAL")
         with self.assertRaisesRegex(ValueError, "SHA does not match"):
-            quality.build_bundle(root, "SP001", source, pdf, self.complete_checks(), root / "quality/regression.json", authority)
+            quality.build_bundle(
+                root, "SP001", source, pdf, checks, root / "quality/regression.json", authority,
+                research_profile="THEMATIC", publication_profile="LONGFORM_SPECIAL",
+            )
 
-    def test_missing_member_of_coupled_family_fails_closed(self) -> None:
-        checks = self.complete_checks()
+    def test_missing_applicable_check_and_duplicate_are_rejected(self) -> None:
+        temp, root = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        cfg = quality.core.load_json(root / quality.core.DEFAULT_CONFIG)
+        checks = self.complete_checks(root, "WEEKLY", "WEEKLY_MAGAZINE")
         checks.pop()
-        with self.assertRaisesRegex(ValueError, "coupled quality regression family incomplete"):
-            quality.validate_checks(checks)
+        with self.assertRaisesRegex(ValueError, "applicable quality review family incomplete"):
+            quality.validate_checks(root, cfg, "WEEKLY", "WEEKLY_MAGAZINE", checks)
 
-    def test_failed_check_and_duplicate_check_are_rejected(self) -> None:
-        checks = self.complete_checks()
-        checks[0] = dict(checks[0], status="FAIL")
-        with self.assertRaisesRegex(ValueError, "quality check did not pass"):
-            quality.validate_checks(checks)
-
-        checks = self.complete_checks()
+        checks = self.complete_checks(root, "WEEKLY", "WEEKLY_MAGAZINE")
         checks.append(dict(checks[0]))
-        with self.assertRaisesRegex(ValueError, "quality check IDs must be unique"):
-            quality.validate_checks(checks)
+        with self.assertRaisesRegex(ValueError, "unique"):
+            quality.validate_checks(root, cfg, "WEEKLY", "WEEKLY_MAGAZINE", checks)
 
     def test_post_validation_artifact_drift_invalidates_bundle(self) -> None:
         temp, root = self.sandbox()
@@ -124,8 +180,11 @@ class SurveyQualityV2Tests(unittest.TestCase):
         source.write_text("validated source\n", encoding="utf-8")
         pdf.write_bytes(b"%PDF-1.7\nfixture\n")
         output = root / "quality/regression.json"
-        quality.build_bundle(root, "2026-W33", source, pdf, self.complete_checks(), output)
-
+        checks = self.complete_checks(root, "WEEKLY", "WEEKLY_MAGAZINE")
+        quality.build_bundle(
+            root, "2026-W33", source, pdf, checks, output,
+            research_profile="WEEKLY", publication_profile="WEEKLY_MAGAZINE",
+        )
         pdf.write_bytes(pdf.read_bytes() + b"changed")
         with self.assertRaisesRegex(ValueError, "pdf bytes drifted"):
             quality.validate_bundle(root, output, issue_id="2026-W33")
