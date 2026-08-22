@@ -65,19 +65,26 @@ class SurveyAgentControlV2Tests(unittest.TestCase):
         )
         return path
 
+    def artifact_map(self, base: Path, rows: dict[str, str]) -> dict[str, Path]:
+        result: dict[str, Path] = {}
+        for name, rel in rows.items():
+            path = base / rel
+            core.write_json(path, {"fixture": name})
+            result[name] = path
+        return result
+
     def test_stage_checkpoint_records_current_implementation_not_initialization_pin(self) -> None:
         temp, _, state_path, profile = self.initialize()
         self.addCleanup(temp.cleanup)
         base = self.root / profile["paths"]["source_root"]
-        discovery = base / "discovery/discovery-accepted-v2.json"
-        core.write_json(discovery, {"fixture": "accepted discovery"})
+        artifacts = self.artifact_map(base, {"discovery-acceptance": "discovery/discovery-accepted-v2.json"})
         reviews = self.review_file(base, "DISCOVERY_STAGE_REVIEW", kind="DETERMINISTIC")
 
         checkpoint = agent.build_stage_checkpoint(
             self.root,
             self.cfg,
             state_path,
-            {"discovery-acceptance": discovery},
+            artifacts,
             reviews,
             "Discovery research and deterministic intake checks are complete.",
             core.parse_instant("2026-08-22T09:10:00Z"),
@@ -98,12 +105,11 @@ class SurveyAgentControlV2Tests(unittest.TestCase):
         temp, profile_path, state_path, profile = self.initialize()
         self.addCleanup(temp.cleanup)
         base = self.root / profile["paths"]["source_root"]
-        discovery = base / "discovery/discovery-accepted-v2.json"
-        core.write_json(discovery, {"fixture": "accepted discovery"})
+        discovery = self.artifact_map(base, {"discovery-acceptance": "discovery/discovery-accepted-v2.json"})
         reviews = self.review_file(base, "DISCOVERY_STAGE_REVIEW", kind="DETERMINISTIC")
         first = agent.build_stage_checkpoint(
             self.root, self.cfg, state_path,
-            {"discovery-acceptance": discovery}, reviews,
+            discovery, reviews,
             "Discovery stage reviewed.", core.parse_instant("2026-08-22T09:10:00Z"),
         )
         agent.advance_with_checkpoint(self.root, self.cfg, state_path, first)
@@ -114,8 +120,9 @@ class SurveyAgentControlV2Tests(unittest.TestCase):
         self.assertEqual(core.load_json(profile_path)["contract"], core.load_json(state_path)["contract"])
 
         reviews2 = self.review_file(base, "SCREENING_STAGE_REVIEW", kind="AGENT_RESEARCH")
+        screening = self.artifact_map(base, {"screening-acceptance": "screening/v2/accepted-fixture/screening-accepted.json"})
         second = agent.build_stage_checkpoint(
-            self.root, upgraded, state_path, {}, reviews2,
+            self.root, upgraded, state_path, screening, reviews2,
             "Screening outputs were reviewed using the newer repository contract.",
             core.parse_instant("2026-08-22T09:20:00Z"),
         )
@@ -126,15 +133,56 @@ class SurveyAgentControlV2Tests(unittest.TestCase):
         self.assertEqual(state["contract"], core.load_json(profile_path)["contract"])
         self.assertEqual(agent.validate_agent_state(self.root, upgraded, state), [])
 
+    def test_compact_checkpoint_cannot_advance_on_review_only_without_stage_authority(self) -> None:
+        temp, _, state_path, profile = self.initialize()
+        self.addCleanup(temp.cleanup)
+        base = self.root / profile["paths"]["source_root"]
+        first = agent.build_stage_checkpoint(
+            self.root,
+            self.cfg,
+            state_path,
+            self.artifact_map(base, {"discovery-acceptance": "discovery/discovery-accepted-v2.json"}),
+            self.review_file(base, "DISCOVERY_STAGE_REVIEW", kind="DETERMINISTIC"),
+            "Discovery stage reviewed.",
+            core.parse_instant("2026-08-22T09:10:00Z"),
+        )
+        agent.advance_with_checkpoint(self.root, self.cfg, state_path, first)
+        reviews = self.review_file(base, "SCREENING_REVIEW_WITHOUT_ACCEPTANCE")
+        with self.assertRaises(ValueError):
+            agent.build_stage_checkpoint(
+                self.root,
+                self.cfg,
+                state_path,
+                {},
+                reviews,
+                "A review statement alone must not advance Screening.",
+                core.parse_instant("2026-08-22T09:20:00Z"),
+            )
+        self.assertEqual(core.load_json(state_path)["lifecycle_state"], "DISCOVERY_COLLECTED")
+
     def test_normal_progress_stops_at_architecture_human_gate_not_internal_stages(self) -> None:
         temp, _, state_path, profile = self.initialize()
         self.addCleanup(temp.cleanup)
         base = self.root / profile["paths"]["source_root"]
         stages = [
             ("discovery", {"discovery-acceptance": "discovery/discovery-accepted-v2.json"}),
-            ("screening", {}),
-            ("evidence", {}),
-            ("selection", {}),
+            ("screening", {"screening-acceptance": "screening/v2/accepted-fixture/screening-accepted.json"}),
+            (
+                "evidence",
+                {
+                    "evidence-acceptance": "evidence/v2/evidence-accepted.json",
+                    "edition-views-acceptance": "evidence/v2/edition-views-accepted.json",
+                    "materiality-ledger": "materiality-ledger-v2.json",
+                    "profile-completeness": "profile-completeness-v2.json",
+                },
+            ),
+            (
+                "selection",
+                {
+                    "candidate-matrix": "candidate-matrix-v2.json",
+                    "candidate-selection": "candidate-selection-v2.json",
+                },
+            ),
             (
                 "architecture",
                 {
@@ -144,12 +192,8 @@ class SurveyAgentControlV2Tests(unittest.TestCase):
                 },
             ),
         ]
-        for index, (name, artifact_map) in enumerate(stages, start=1):
-            artifacts: dict[str, Path] = {}
-            for artifact_name, rel in artifact_map.items():
-                path = base / rel
-                core.write_json(path, {"fixture": artifact_name})
-                artifacts[artifact_name] = path
+        for index, (name, rows) in enumerate(stages, start=1):
+            artifacts = self.artifact_map(base, rows)
             reviews = self.review_file(base, f"{name.upper()}_AGENT_REVIEW")
             checkpoint = agent.build_stage_checkpoint(
                 self.root, self.cfg, state_path, artifacts, reviews,
