@@ -1,6 +1,6 @@
 # Survey Production Core v2 — agent session bootstrap
 
-Status: `PRE-MERGE CANONICAL CANDIDATE / POST-COMPLETION RE-AUDIT REPAIR`  
+Status: `PRE-MERGE CANONICAL CANDIDATE / AUDIT-STABLE PRE-AUDIT`  
 Applies to: Weekly, Retrospective Period, standalone Thematic, and guided Special series work  
 Primary operator: **ChatGPT**
 
