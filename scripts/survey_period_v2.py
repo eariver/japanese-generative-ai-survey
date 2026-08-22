@@ -100,6 +100,8 @@ def period_profile(repo_root: Path, cfg: dict[str, Any], spec: dict[str, Any]) -
     as_of = core.parse_instant(str(spec["as_of"]))
     if end < start:
         raise ValueError("period end must not precede start")
+    if as_of < end:
+        raise ValueError("Retrospective Period cannot initialize before its bounded period has ended")
     profile = {
         "schema_version": cfg["schema_version"],
         "issue_id": issue_id,
