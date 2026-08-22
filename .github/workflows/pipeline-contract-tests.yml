@@ -93,6 +93,7 @@ jobs:
           print('Only the two expected W33 pre-initialization bootstrap assertions differ on the initialized W33 work branch.')
           PY
 
+      # Session-local W33 execution surface; do not retain as repository policy.
       - name: Compile W33 through Architecture Review gate
         if: github.ref_name == 'weekly/2026-W33-v2-work' || github.event.pull_request.head.ref == 'weekly/2026-W33-v2-work'
         shell: bash
