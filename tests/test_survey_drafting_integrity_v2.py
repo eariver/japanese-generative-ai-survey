@@ -5,12 +5,12 @@ import unittest
 
 from scripts import survey_drafting_v2 as drafting
 from scripts import survey_production_v2 as core
-from tests.test_survey_drafting_v2 import SurveyDraftingV2Tests
+from tests import test_survey_drafting_v2 as drafting_tests
 
 
 class SurveyDraftingIntegrityV2Tests(unittest.TestCase):
     def setUp(self) -> None:
-        self.helper = SurveyDraftingV2Tests(
+        self.helper = drafting_tests.SurveyDraftingV2Tests(
             methodName="test_weekly_and_thematic_share_generic_draft_contract_without_dummy_fields"
         )
         self.addCleanup(self.helper.doCleanups)
