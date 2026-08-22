@@ -112,3 +112,10 @@ Exception reason: a newly executed `weekly-x-2026-W33-fresh-r1` Grok result must
 - X discovery disposition: `DISCOVERY_RECORDED` as `x-weekly-signal-wave`; technical claims remain non-authoritative until primary-source verification.
 - Exception Gate cleared after fresh X result import; lifecycle remains `ISSUE_INITIALIZED`, next action `stage:discovery`.
 - Generated deterministic fresh candidate audit from all 2665 non-X screening-seed records; legacy W33 intake excluded.
+
+## Fresh Discovery construction
+
+- Built Core v2 Discovery from 30 fresh non-X candidates, one fresh Grok/X aggregate signal, and 6 W32 current-main HOLD_OUT re-check records.
+- Legacy W33 Source Intake, Screening, Evidence, Selection, and Architecture were not used.
+- Paper candidates were selected only after compact review of the fresh 2,569-paper seed across A-L technical lanes.
+- W32 carry-over uses the current-main W32 selection authority as a GAP_FILL research input; old W33 carry-over dispositions are excluded.
