@@ -65,7 +65,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m compileall -q scripts tests
+          python -m compileall -q scripts tests automation/w33_v2_compile_current.py
 
       - name: Run pipeline unit tests with W33 initialized-state exception audit
         shell: bash
@@ -99,18 +99,21 @@ jobs:
         run: |
           set -euo pipefail
           git fetch origin weekly/2026-W33-work:refs/remotes/origin/weekly/2026-W33-work
-          PYTHONPATH=. python automation/w33_v2_compile_once.py
-          PYTHONPATH=. python scripts/survey_agent_control_v2.py \
-            --repo-root . --config config/survey-production-v2.json \
-            validate-state --state sources/2026-W33/production-state.json
-          python - <<'PY'
-          import json
-          s=json.load(open('sources/2026-W33/production-state.json',encoding='utf-8'))
-          assert s['lifecycle_state']=='ARCHITECTURE_ESTABLISHED', s
-          assert s['next_action']=='ARCHITECTURE_REVIEW', s
-          assert s['terminal_reason']=='HUMAN_GATE_REACHED', s
-          assert s['human_gates']['architecture_review']=='pending', s
-          print('Architecture Review gate reached.')
+          PYTHONPATH=. python automation/w33_v2_compile_current.py
+          PYTHONPATH=. python - <<'PY'
+          from pathlib import Path
+          from scripts import survey_agent_control_v2 as agent
+          from scripts import survey_production_v2 as core
+          root = Path('.').resolve()
+          cfg = core.load_json(root / core.DEFAULT_CONFIG)
+          state = core.load_json(root / 'sources/2026-W33/production-state.json')
+          errors = agent.validate_agent_state(root, cfg, state)
+          assert not errors, errors
+          assert state['lifecycle_state'] == 'ARCHITECTURE_ESTABLISHED', state
+          assert state['next_action'] == 'ARCHITECTURE_REVIEW', state
+          assert state['terminal_reason'] == 'HUMAN_GATE_REACHED', state
+          assert state['human_gates']['architecture_review'] == 'pending', state
+          print('Architecture Review gate reached and resumable State validation passed.')
           PY
 
       - name: Commit W33 compiled artifacts back to work branch
