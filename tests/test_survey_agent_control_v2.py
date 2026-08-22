@@ -64,7 +64,7 @@ class SurveyAgentControlV2Tests(unittest.TestCase):
             }
             for name, path in sorted(self._last_artifacts.items())
         ]
-        core_result = base / "review-results" / "CORE_STAGE_CONTRACT.json"
+        core_result = base / "review-results" / f"CORE_STAGE_CONTRACT-{state['lifecycle_state']}.json"
         core.write_json(
             core_result,
             {
