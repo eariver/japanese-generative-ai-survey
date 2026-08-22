@@ -4,10 +4,11 @@
   "title": "Survey Production Core v2 Discovery Acceptance",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "issue_id", "discovery_path", "discovery_sha256", "record_count", "records", "graph_sha256"],
+  "required": ["schema_version", "issue_id", "x_source_intake", "discovery_path", "discovery_sha256", "record_count", "records", "graph_sha256"],
   "properties": {
     "schema_version": {"const": "2.0-rc1"},
     "issue_id": {"type": "string", "minLength": 1},
+    "x_source_intake": {"$ref": "#/$defs/authority"},
     "discovery_path": {"type": "string", "minLength": 1},
     "discovery_sha256": {"$ref": "#/$defs/sha256"},
     "record_count": {"type": "integer", "minimum": 1},
@@ -20,6 +21,15 @@
   },
   "$defs": {
     "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
     "artifactRef": {
       "type": "object",
       "additionalProperties": false,
