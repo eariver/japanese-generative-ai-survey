@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/publication-candidate-v2.schema.json",
+  "title": "Survey Production Core v2 Publication Candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "issue_id", "publication_profile", "status", "source", "pdf", "quality_bundle", "candidate_sha256"],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "issue_id": {"type": "string", "minLength": 1},
+    "publication_profile": {"enum": ["WEEKLY_MAGAZINE", "LONGFORM_SPECIAL"]},
+    "status": {"const": "READY_FOR_PUBLICATION_PREVIEW"},
+    "source": {"$ref": "#/$defs/artifact"},
+    "pdf": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "byte_count", "page_count"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "byte_count": {"type": "integer", "minimum": 1},
+        "page_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "quality_bundle": {"$ref": "#/$defs/artifact"},
+    "candidate_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "byte_count"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "byte_count": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}
