@@ -44,9 +44,35 @@ class SurveyCompletenessV2NamedObligationTests(unittest.TestCase):
         ledger_path = root / "ledger.json"
         dummy = root / "dummy.json"
         discoveries = screening.read_jsonl(discovery_path)
+        named_ids = sorted(
+            {
+                obligation_id
+                for row in discoveries
+                for obligation_id in row["provenance"]["obligation_ids"]
+            }
+        )
+        initial_obligations = [
+            {
+                "obligation_id": obligation_id,
+                "dimension": "lineage",
+                "description": f"fixture initial obligation {obligation_id}",
+            }
+            for obligation_id in named_ids
+        ] or [
+            {
+                "obligation_id": "initial:lineage",
+                "dimension": "lineage",
+                "description": "fixture initial lineage obligation",
+            }
+        ]
         core.write_json(
             profile_path,
-            {"research_scope": {"scope_dimensions": ["lineage"]}},
+            {
+                "research_scope": {
+                    "scope_dimensions": ["lineage"],
+                    "initial_obligations": initial_obligations,
+                }
+            },
         )
         core.write_json(
             ledger_path,
@@ -87,6 +113,7 @@ class SurveyCompletenessV2NamedObligationTests(unittest.TestCase):
             result = {"obligations": []}
             errors = self.call_guard(discovery_path, result)
             self.assertTrue(any("silently dropped named Discovery obligations" in error for error in errors))
+            self.assertTrue(any("silently dropped Profile initial obligation" in error for error in errors))
 
     def test_named_obligation_must_reference_every_declaring_discovery(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
