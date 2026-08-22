@@ -1,0 +1,122 @@
+name: Survey Production Core v2 assistant control
+
+on:
+  push:
+    branches:
+      - automation-control
+    paths:
+      - automation/v2-request.json
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: survey-production-v2-assistant-control
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout request branch
+        uses: actions/checkout@v6
+        with:
+          ref: automation-control
+          path: request-src
+          fetch-depth: 1
+
+      - name: Checkout canonical main control contract
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+
+      - name: Validate allowlisted Core v2 request
+        id: request
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, pathlib, re
+          request_path=pathlib.Path('request-src/automation/v2-request.json')
+          data=json.load(open(request_path,encoding='utf-8'))
+          if set(data) != {'schema_version','workflow','ref','inputs'} or data['schema_version'] != '2.0-rc1':
+              raise SystemExit('invalid Core v2 assistant request envelope')
+          if data['ref'] != 'main': raise SystemExit('Core v2 assistant dispatch ref must be main')
+          cfg=json.load(open('control-src/config/survey-production-v2.json',encoding='utf-8'))['workflow_control']
+          allowed={
+              'survey-production-v2-control': cfg['production_control_workflow'],
+              'survey-production-v2-release': cfg['release_workflow'],
+          }
+          workflow=data['workflow']
+          if workflow not in allowed: raise SystemExit('workflow not allowlisted by Core v2 assistant control')
+          inputs=data['inputs']
+          if not isinstance(inputs,dict): raise SystemExit('inputs must be an object')
+          issue=inputs.get('issue_id')
+          if not isinstance(issue,str) or not re.fullmatch(r'[A-Za-z0-9._-]+',issue): raise SystemExit('unsafe issue_id')
+          print(f'workflow_file={allowed[workflow]}')
+          print(f'workflow_key={workflow}')
+          print(f'issue_id={issue}')
+          if workflow == 'survey-production-v2-control':
+              required={'operation','issue_id','work_branch','request_sha256','reviewed_by','reviewed_at','review_reference','human_gate_authorized'}
+              if set(inputs) != required: raise SystemExit('control inputs do not match exact allowlist')
+              op=inputs['operation']
+              if op not in {'adopt-stage','approve-architecture','approve-publication-preview'}: raise SystemExit('invalid control operation')
+              branch=inputs['work_branch']
+              if not isinstance(branch,str) or not re.fullmatch(r'[A-Za-z0-9._/-]+',branch) or '..' in branch.split('/'):
+                  raise SystemExit('unsafe work_branch')
+              human=inputs['human_gate_authorized']
+              if not isinstance(human,bool): raise SystemExit('human_gate_authorized must be boolean')
+              request_sha=inputs['request_sha256']
+              if op == 'adopt-stage':
+                  if human: raise SystemExit('adopt-stage cannot claim Human Gate authorization')
+                  if not isinstance(request_sha,str) or not re.fullmatch(r'[0-9a-f]{64}',request_sha): raise SystemExit('adopt-stage requires request_sha256')
+              else:
+                  if human is not True: raise SystemExit('Human Gate operation requires explicit authorization')
+                  if request_sha not in {None,''}: raise SystemExit('Human Gate operation must not carry Stage Handoff Request SHA')
+                  for key in ('reviewed_by','reviewed_at','review_reference'):
+                      if not isinstance(inputs[key],str) or not inputs[key].strip(): raise SystemExit(f'{key} required for Human Gate')
+              print(f'operation={op}')
+              print(f'work_branch={branch}')
+              print(f'request_sha256={request_sha or ""}')
+              print(f'reviewed_by={inputs["reviewed_by"] or ""}')
+              print(f'reviewed_at={inputs["reviewed_at"] or ""}')
+              print(f'review_reference={inputs["review_reference"] or ""}')
+              print(f'human_gate_authorized={str(human).lower()}')
+          else:
+              if set(inputs) != {'issue_id','confirmation'}: raise SystemExit('release inputs do not match exact allowlist')
+              if inputs['confirmation'] != f'release:{issue}': raise SystemExit('release confirmation mismatch')
+              print(f'confirmation={inputs["confirmation"]}')
+          PY
+
+      - name: Dispatch one allowlisted production-control operation
+        if: steps.request.outputs.workflow_key == 'survey-production-v2-control'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          gh workflow run '${{ steps.request.outputs.workflow_file }}' --repo "$REPOSITORY" --ref main \
+            -f operation='${{ steps.request.outputs.operation }}' \
+            -f issue_id='${{ steps.request.outputs.issue_id }}' \
+            -f work_branch='${{ steps.request.outputs.work_branch }}' \
+            -f request_sha256='${{ steps.request.outputs.request_sha256 }}' \
+            -f reviewed_by='${{ steps.request.outputs.reviewed_by }}' \
+            -f reviewed_at='${{ steps.request.outputs.reviewed_at }}' \
+            -f review_reference='${{ steps.request.outputs.review_reference }}' \
+            -f human_gate_authorized='${{ steps.request.outputs.human_gate_authorized }}'
+
+      - name: Dispatch one allowlisted exact-byte release
+        if: steps.request.outputs.workflow_key == 'survey-production-v2-release'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          gh workflow run '${{ steps.request.outputs.workflow_file }}' --repo "$REPOSITORY" --ref main \
+            -f issue_id='${{ steps.request.outputs.issue_id }}' \
+            -f confirmation='${{ steps.request.outputs.confirmation }}'
