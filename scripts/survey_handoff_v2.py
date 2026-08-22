@@ -18,6 +18,8 @@ from scripts import survey_handlers_v2 as handlers
 from scripts import survey_production_v2 as core
 from scripts import survey_schema_v2 as schema_gate
 
+REQUEST_SCHEMA = Path("schemas/stage-handoff-request-v2.schema.json")
+
 
 def _rel(repo_root: Path, path: Path, label: str) -> str:
     root = repo_root.resolve()
@@ -126,6 +128,52 @@ def build_handoff(
     return target
 
 
+def canonical_request_path(repo_root: Path, state: dict[str, Any]) -> Path:
+    profile = core.load_json(core.repo_local_path(repo_root, state["profile"]["path"], "state.profile.path"))
+    source_root = core.repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
+    return source_root / "orchestration" / "v2" / "handoff-requests" / f"{state['lifecycle_state']}.json"
+
+
+def _paths_from_request(repo_root: Path, rows: Any, label: str) -> dict[str, Path]:
+    if not isinstance(rows, list):
+        raise ValueError(f"{label} must be an array")
+    result: dict[str, Path] = {}
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict) or set(row) != {"name", "path"}:
+            raise ValueError(f"{label}[{index}] fields invalid")
+        name = row.get("name")
+        path = row.get("path")
+        if not isinstance(name, str) or not name or name in result or not isinstance(path, str) or not path:
+            raise ValueError(f"{label}[{index}] name/path invalid or duplicated")
+        resolved = core.repo_local_path(repo_root, path, f"{label} {name}")
+        result[name] = resolved
+    return result
+
+
+def build_handoff_from_request(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    state_path: Path,
+    request_path: Path,
+) -> Path:
+    state = core.load_json(state_path)
+    canonical = canonical_request_path(repo_root, state)
+    if request_path.resolve() != canonical.resolve():
+        raise ValueError(f"Stage Handoff Request must use canonical path: {_rel(repo_root, canonical, 'Stage Handoff Request')}")
+    request = schema_gate.load_and_validate_json(
+        request_path, repo_root / REQUEST_SCHEMA, label="Stage Handoff Request"
+    )
+    if request["issue_id"] != state["issue_id"] or request["lifecycle_state"] != state["lifecycle_state"]:
+        raise ValueError("Stage Handoff Request identity does not match current Production State")
+    return build_handoff(
+        repo_root,
+        cfg,
+        state_path,
+        _paths_from_request(repo_root, request["inputs"], "Stage Handoff Request inputs"),
+        _paths_from_request(repo_root, request["outputs"], "Stage Handoff Request outputs"),
+    )
+
+
 def _parse_named_path(values: list[str], label: str) -> dict[str, Path]:
     result: dict[str, Path] = {}
     for value in values:
@@ -142,19 +190,26 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--state", required=True)
+    parser.add_argument("--request", help="Canonical Stage Handoff Request; mutually exclusive with explicit --input/--output")
     parser.add_argument("--input", action="append", default=[], help="NAME=PATH; explicit, repeatable")
     parser.add_argument("--output", action="append", default=[], help="NAME=PATH; explicit, repeatable")
     args = parser.parse_args()
     root = Path(args.repo_root).resolve()
     try:
         cfg = core.load_json(root / core.DEFAULT_CONFIG)
-        path = build_handoff(
-            root,
-            cfg,
-            (root / args.state).resolve(),
-            {name: (root / path).resolve() for name, path in _parse_named_path(args.input, "--input").items()},
-            {name: (root / path).resolve() for name, path in _parse_named_path(args.output, "--output").items()},
-        )
+        state_path = (root / args.state).resolve()
+        if args.request:
+            if args.input or args.output:
+                raise ValueError("--request may not be combined with --input/--output")
+            path = build_handoff_from_request(root, cfg, state_path, (root / args.request).resolve())
+        else:
+            path = build_handoff(
+                root,
+                cfg,
+                state_path,
+                {name: (root / path).resolve() for name, path in _parse_named_path(args.input, "--input").items()},
+                {name: (root / path).resolve() for name, path in _parse_named_path(args.output, "--output").items()},
+            )
         print(_rel(root, path, "Stage Handoff"))
         return 0
     except (OSError, ValueError, json.JSONDecodeError) as exc:
