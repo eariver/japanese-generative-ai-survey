@@ -1,0 +1,30 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-034",
+  "edition": "CORE-V2",
+  "stage": "WU-012_PRE_APPROVAL_AUDIT",
+  "observed_problem": "The historical audit has distilled many Human Review defects into prose invariants or quality-check names, but the candidate does not yet provide an explicit Issue-to-Guard ownership map proving which recurring defects are prevented by executable Core/Profile/Publication guards, exact quality attestations, or the existing Publication Preview checklist. Several publication concerns can therefore remain dependent on reviewer memory or a ceremonial PASS row.",
+  "expected_behavior": "Every material recurring Human Review issue must have one explicit primary prevention/inspection owner. Deterministic recurring defects require executable regression protection; inherently visual/editorial judgments may remain in the existing Publication Preview checklist when appropriate, without creating additional routine Human Gates.",
+  "actual_behavior": "The invariant/deep-audit corpus documents defects including Issue #9/#40/#49/#50/#54/#55/#78/#95/#122/#139/#140/#153/#166/#172/#191/#271/#272, but there is no single current matrix mapping each family to an implemented guard and distinguishing machine-checkable from intentionally Human visual/editorial review.",
+  "production_workaround": "Do not approve PR #310. WU-012H must create and validate an Issue-to-Guard matrix and remove redundant/inapplicable checks before final Human review.",
+  "classification": {
+    "scope": "QUALITY_CONTRACT",
+    "defect_kind": "CORRECTNESS",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "8beaf978793d983cc7608f4ca9c534511dd04d7a",
+    "relevant_artifacts": [
+      "docs/survey-production-core-v2-historical-invariants.md",
+      "docs/survey-production-core-v2-historical-production-deep-audit.md",
+      "scripts/survey_quality_v2.py",
+      "scripts/survey_publication_v2.py"
+    ],
+    "human_review_reference": "Pre-approval WU-001-WU-011 audit, 2026-08-22"
+  },
+  "improvement_action": "Implement WU-012H: create a material Issue-to-Guard matrix with exactly one primary owner per defect family, require deterministic recurrence protection where feasible, retain visual/editorial judgment in the existing Publication Preview instead of adding gates, and audit duplicate/inapplicable validation for removal.",
+  "regression_fixture": null,
+  "resolved_by_repair_set_id": null,
+  "status": "OPEN"
+}
