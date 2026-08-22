@@ -16,8 +16,6 @@ class SurveyPeriodV2Tests(unittest.TestCase):
 
     def test_configured_month_half_year_and_annual_resolve_to_one_generic_profile(self) -> None:
         now = core.parse_instant("2026-08-22T09:00:00Z")
-        # Profile instants are normalized by parse_instant; timezone retains the
-        # calendar interpretation authority used to construct each boundary.
         cases = [
             ("2026-M07", "monthly", "2026-06-30T15:00:00+00:00", "2026-07-31T14:59:59+00:00"),
             ("2025-H2", "half_year", "2025-06-30T15:00:00+00:00", "2025-12-31T14:59:59+00:00"),
@@ -57,6 +55,22 @@ class SurveyPeriodV2Tests(unittest.TestCase):
             self.assertEqual([row["dimension"] for row in profile["research_scope"]["initial_obligations"]], ["coverage", "trajectory"])
             plan = period.build_plan(self.root, self.cfg, spec)
             self.assertEqual(plan["next_operation"], "INITIALIZE")
+
+    def test_retrospective_period_cannot_initialize_before_period_end(self) -> None:
+        spec = {
+            "issue_id": "SP-FUTURE-PERIOD",
+            "start": "2026-08-01T00:00:00+09:00",
+            "end": "2026-08-31T23:59:59+09:00",
+            "as_of": "2026-08-22T09:00:00Z",
+            "timezone": "Asia/Tokyo",
+            "question": "What happened during the full month?",
+            "scope_dimensions": ["coverage"],
+            "source_root": "sources/SP-FUTURE-PERIOD",
+            "survey_root": "surveys/special/FUTURE-PERIOD",
+            "work_branch": "special/future-period-v2-work",
+        }
+        with self.assertRaisesRegex(ValueError, "cannot initialize before its bounded period has ended"):
+            period.period_profile(self.root, self.cfg, spec)
 
     def test_initialized_period_resumes_after_contract_tool_update_without_rematerializing_as_of(self) -> None:
         temp = tempfile.TemporaryDirectory(dir=self.root)
