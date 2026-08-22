@@ -1,0 +1,29 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-032",
+  "edition": "SP001",
+  "stage": "WU-012_PRE_APPROVAL_AUDIT",
+  "observed_problem": "The SP001 Pilot registry currently defines only lineage, distribution, reasoning and coding scope dimensions, which is narrower than the authoritative TS-001 backlog. Material planned concerns such as model-family/ecosystem breadth, open-weight/license/reuse boundaries, inference/serving efficiency, long-context and cloud/developer ecosystem coverage can therefore fall outside the Pilot's initial completeness obligations.",
+  "expected_behavior": "SP001 launch configuration must faithfully encode the scoped TS-001 research backlog while keeping China-specific/topic-specific semantics in edition configuration rather than generic Thematic Core code.",
+  "actual_behavior": "config/survey-production-v2-pilots.json permits SP001 completeness to be argued against four dimensions that do not represent the full TS-001 planning scope recorded in docs/thematic-special-backlog.md.",
+  "production_workaround": "Do not initialize SP001. WU-012F must align the Pilot registry/spec with TS-001 before external production begins.",
+  "classification": {
+    "scope": "EDITION_LOCAL",
+    "defect_kind": "COVERAGE",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "8beaf978793d983cc7608f4ca9c534511dd04d7a",
+    "relevant_artifacts": [
+      "config/survey-production-v2-pilots.json",
+      "docs/thematic-special-backlog.md",
+      "scripts/survey_pilot_bootstrap_v2.py"
+    ],
+    "human_review_reference": "Pre-approval WU-001-WU-011 audit, 2026-08-22"
+  },
+  "improvement_action": "Implement WU-012F: expand SP001 registry dimensions/initial obligations to match TS-001 planning authority, preserving generic Thematic Profile mechanisms and avoiding topic-specific Core branches.",
+  "regression_fixture": null,
+  "resolved_by_repair_set_id": null,
+  "status": "OPEN"
+}
