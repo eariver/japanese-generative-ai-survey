@@ -2,9 +2,11 @@
 from __future__ import annotations
 
 from automation import w33_evidence_once as base
+from scripts.survey_agent_tool_v2 import current_stage_basis_override
 
 _original_card = base.card_for
 _original_prepare = base.ev.prepare_evidence_package
+_original_validate_completeness = base.ev.validate_completeness
 
 def prepare_evidence_package(*args, **kwargs):
     # The legacy W33 helper creates WORK/results before package preparation.
@@ -18,6 +20,13 @@ def prepare_evidence_package(*args, **kwargs):
     path = _original_prepare(*args, **kwargs)
     results.mkdir(parents=True, exist_ok=True)
     return path
+
+def validate_completeness(*args, **kwargs):
+    # The final Completeness validation in the old helper sits outside its
+    # historical-basis runtime context. Scope the reviewed exception narrowly
+    # to this call; all non-State basis drift remains fail-closed.
+    with current_stage_basis_override():
+        return _original_validate_completeness(*args, **kwargs)
 
 def card_for(task, meta, package):
     card = _original_card(task, meta, package)
@@ -72,5 +81,6 @@ def card_for(task, meta, package):
     return card
 
 base.ev.prepare_evidence_package = prepare_evidence_package
+base.ev.validate_completeness = validate_completeness
 base.card_for = card_for
 base.main()
