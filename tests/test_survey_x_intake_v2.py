@@ -132,7 +132,8 @@ class SurveyXIntakeV2Tests(unittest.TestCase):
         )
         prompt = (self.root / run["prompt"]["path"]).read_text(encoding="utf-8")
         self.assertIn(run["run_folder"], prompt)
-        self.assertIn("not the final technical Evidence authority", prompt)
+        self.assertIn("final technical Evidence authority", prompt)
+        self.assertIn("You are **not**", prompt)
         self.assertIn("Coverage scan", prompt)
 
     def test_special_can_explicitly_record_not_required(self) -> None:
