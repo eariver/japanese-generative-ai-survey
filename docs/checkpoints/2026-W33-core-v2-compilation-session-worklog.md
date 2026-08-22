@@ -119,3 +119,10 @@ Exception reason: a newly executed `weekly-x-2026-W33-fresh-r1` Grok result must
 - Legacy W33 Source Intake, Screening, Evidence, Selection, and Architecture were not used.
 - Paper candidates were selected only after compact review of the fresh 2,569-paper seed across A-L technical lanes.
 - W32 carry-over uses the current-main W32 selection authority as a GAP_FILL research input; old W33 carry-over dispositions are excluded.
+
+## Fresh Screening
+
+- Screened all 37 accepted Discovery records under Core v2.
+- Decision counts: `{"DROP": 6, "INSPECT": 7, "KEEP": 18, "MAYBE": 6}`.
+- Fresh X aggregate retained only as community-signal Evidence input; candidate-specific technical claims require primary verification.
+- All six W32 current-main HOLD_OUT rechecks were explicitly DROP at Screening because fresh W33 intake did not independently justify carrying those unresolved old items as W33 stories; distinct fresh W33 events remain separate candidates.
