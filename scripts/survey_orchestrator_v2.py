@@ -4,7 +4,8 @@
 Action execution is fail-closed: the State-pinned implementation must match,
 Action Specs bind transitive immutable stage inputs, every executable stage has
 an implementation-controlled semantic validator, and machine checkpoints are
-advanced only after exact-byte validation attestations are written.
+advanced only after exact-byte validation attestations are written and pinned in
+Production State.
 """
 
 from __future__ import annotations
@@ -102,6 +103,14 @@ def _expected_output(name: str, checkpoint: str | None = None, path: str | None 
     return {"name": name, "checkpoint": checkpoint, "path": path, "required": required}
 
 
+def _authority_from_artifact_ref(ref: dict[str, Any]) -> dict[str, str]:
+    path = ref.get("path")
+    sha = ref.get("sha256")
+    if not isinstance(path, str) or not path or not isinstance(sha, str) or not sha:
+        raise ValueError("cannot derive State authority from pathless/unhashed artifact ref")
+    return {"path": path, "sha256": sha}
+
+
 def _expand_path_template(template: str, profile: dict[str, Any]) -> str:
     if not isinstance(template, str) or not template:
         raise ValueError("orchestration artifact path template must be non-empty")
@@ -159,26 +168,23 @@ def _prior_authority_inputs(repo_root: Path, cfg: dict[str, Any], state: dict[st
     for checkpoint in core.CHECKPOINTS:
         if state["machine_checkpoints"].get(checkpoint) != "passed":
             continue
-        if checkpoint == "publication_preview":
-            continue
-        path = _checkpoint_attestation_path(repo_root, cfg, profile, checkpoint)
-        if not path.is_file():
-            raise ValueError(f"passed checkpoint attestation missing while planning: {checkpoint}")
+        authority = state["checkpoint_provenance"].get(checkpoint)
+        if not isinstance(authority, dict):
+            raise ValueError(f"passed checkpoint lacks State-pinned provenance while planning: {checkpoint}")
+        path = core.repo_local_path(repo_root, authority["path"], f"checkpoint provenance {checkpoint}")
+        if not path.is_file() or core.sha256_file(path) != authority["sha256"]:
+            raise ValueError(f"State-pinned checkpoint provenance drift while planning: {checkpoint}")
         rows.append(_artifact_ref(
-            f"checkpoint-attestation:{checkpoint}",
-            str(path.resolve().relative_to(repo_root.resolve())),
-            core.sha256_file(path),
+            f"checkpoint-attestation:{checkpoint}", authority["path"], authority["sha256"]
         ))
     if state["human_gates"]["architecture_review"] == "approved":
-        source_root = core.repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
-        approval = source_root / cfg["state_authority"]["architecture_approval_path"]
-        if not approval.is_file():
-            raise ValueError("approved Architecture Review lacks canonical Approval Record while planning")
-        rows.append(_artifact_ref(
-            "architecture-approval-record",
-            str(approval.resolve().relative_to(repo_root.resolve())),
-            core.sha256_file(approval),
-        ))
+        authority = state["human_gate_provenance"].get("architecture_review")
+        if not isinstance(authority, dict):
+            raise ValueError("approved Architecture Review lacks State-pinned gate provenance while planning")
+        path = core.repo_local_path(repo_root, authority["path"], "Architecture Approval Record")
+        if not path.is_file() or core.sha256_file(path) != authority["sha256"]:
+            raise ValueError("State-pinned Architecture Approval Record drift while planning")
+        rows.append(_artifact_ref("architecture-approval-record", authority["path"], authority["sha256"]))
     return rows
 
 
@@ -561,8 +567,13 @@ def execute_action(repo_root: Path, cfg: dict[str, Any], state_path: Path, spec_
 
     attestations = _write_validation_attestations(repo_root, cfg, state, spec, spec_path, outputs, completed)
     checkpoint_updates = {name: "passed" for name in sorted({row["checkpoint"] for row in outputs if row.get("checkpoint") is not None})}
+    attestation_by_checkpoint = {
+        ref["name"].split(":", 1)[1]: _authority_from_artifact_ref(ref)
+        for ref in attestations
+    }
     updated = core.transition_state(
-        repo_root, cfg, state, spec["next_state"], pinned, completed, checkpoint_updates
+        repo_root, cfg, state, spec["next_state"], pinned, completed,
+        checkpoint_updates, attestation_by_checkpoint,
     )
     state_after_sha = core.sha256_bytes(core.json_bytes(updated))
     result = _result_payload(
@@ -591,6 +602,9 @@ def _required_input_by_name(spec: dict[str, Any], name: str) -> dict[str, Any]:
 
 def _validate_architecture_attestation(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any], spec: dict[str, Any], architecture_input: dict[str, Any], review_input: dict[str, Any]) -> None:
     attestation_input = _required_input_by_name(spec, "checkpoint-attestation:architecture")
+    authority = state["checkpoint_provenance"].get("architecture")
+    if not isinstance(authority, dict) or authority.get("path") != attestation_input.get("path") or authority.get("sha256") != attestation_input.get("sha256"):
+        raise ValueError("Architecture Human Gate does not use State-pinned checkpoint provenance")
     attestation_path = core.repo_local_path(repo_root, attestation_input["path"], "Architecture checkpoint attestation")
     if core.sha256_file(attestation_path) != attestation_input["sha256"]:
         raise ValueError("Architecture checkpoint attestation bytes differ from Human Gate Action Spec")
@@ -625,6 +639,12 @@ def apply_architecture_approval(repo_root: Path, cfg: dict[str, Any], state_path
         raise ValueError("Architecture approval requires passed Architecture machine checkpoint")
     if state["human_gates"]["architecture_review"] != "pending":
         raise ValueError("Architecture Review gate is not pending")
+
+    profile = core.load_json(core.repo_local_path(repo_root, state["profile"]["path"], "state.profile.path"))
+    source_root = core.repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
+    canonical_approval = (source_root / cfg["state_authority"]["architecture_approval_path"]).resolve()
+    if approval_path.resolve() != canonical_approval:
+        raise ValueError("Architecture Approval Record must use canonical configured path")
 
     architecture_rel = _relative_repo_path(repo_root, architecture_path, "Architecture")
     review_rel = _relative_repo_path(repo_root, review_summary_path, "Architecture Review Summary")
@@ -678,6 +698,10 @@ def apply_architecture_approval(repo_root: Path, cfg: dict[str, Any], state_path
     before_sha = core.sha256_file(state_path)
     updated = deepcopy(state)
     updated["human_gates"]["architecture_review"] = "approved"
+    updated["human_gate_provenance"]["architecture_review"] = {
+        "path": _relative_repo_path(repo_root, approval_path, "Architecture Approval Record"),
+        "sha256": core.sha256_file(approval_path),
+    }
     if updated["target_gate"] == "ARCHITECTURE_REVIEW":
         updated["target_gate"] = "PUBLICATION_PREVIEW"
     updated = core.refresh_state_control(updated, cfg)
