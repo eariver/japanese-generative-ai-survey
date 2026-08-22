@@ -1,0 +1,66 @@
+name: WU011 Foundation self patch
+
+on:
+  push:
+    branches:
+      - refactor/survey-production-core-v2
+    paths:
+      - '.github/workflows/wu011-foundation-self-patch.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/survey-production-core-v2
+          fetch-depth: 0
+      - name: Apply exact WU-011 lifecycle edits
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('scripts/survey_production_v2.py')
+          text = path.read_text(encoding='utf-8')
+          replacements = [
+              (
+                  '    "RELEASE_CANDIDATE",\n    "FROZEN",\n)\n\nCHECKPOINTS = (',
+                  '    "RELEASE_CANDIDATE",\n    "FROZEN",\n    "RELEASED",\n)\n\nCHECKPOINTS = (',
+              ),
+              (
+                  '    "publication_preview",\n    "freeze",\n)\n\nCONTRACT_KEYS = {',
+                  '    "publication_preview",\n    "freeze",\n    "release",\n)\n\nCONTRACT_KEYS = {',
+              ),
+              (
+                  '    if lifecycle == "FROZEN":\n        return None, "COMPLETE"',
+                  '    if lifecycle == "RELEASED":\n        return None, "COMPLETE"',
+              ),
+              (
+                  '        errors.append("FROZEN lifecycle requires approved Publication Preview")',
+                  '        errors.append("post-Publication Preview lifecycle requires approved Publication Preview")',
+              ),
+          ]
+          for old, new in replacements:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'exact replacement count {count} != 1 for {old!r}')
+              text = text.replace(old, new)
+          path.write_text(text, encoding='utf-8')
+          PY
+          python -m py_compile scripts/survey_production_v2.py
+          grep -n 'RELEASED\|"release"\|post-Publication' scripts/survey_production_v2.py
+      - name: Commit patch and remove one-shot workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/wu011-foundation-self-patch.yml
+          git add scripts/survey_production_v2.py
+          git commit -m 'core-v2: extend lifecycle through RELEASED'
+          git push origin HEAD:refactor/survey-production-core-v2
