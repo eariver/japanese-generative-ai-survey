@@ -189,3 +189,10 @@ Human Review did not approve the first Architecture. The review identified a Wee
 - Evidence is fail-closed to accepted Discovery locators: no candidate-specific first-party URL found later in web research was silently injected into Evidence.
 - arXiv items remain abstract-level PARTIAL and CONTEXT/HOLD; official-index records remain HOLD; X/Grok remains community context only.
 - Completeness is LIMITED with all three Weekly obligations SATISFIED and three explicit residual limitations.
+
+
+## W33 r2 Candidate Selection
+
+- Candidate Matrix derived from r2 Evidence: 31 candidates.
+- Selection r2: 20 SELECTED, 11 HOLD.
+- Coverage distinction: 7 MATERIAL feature/support candidates plus 13 CONTEXT candidates for X Community Pulse, Research Paper Watch, and OSS & GitHub Watch. Feature count is no longer treated as the total number of weekly topics.
