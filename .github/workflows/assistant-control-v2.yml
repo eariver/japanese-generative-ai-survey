@@ -86,8 +86,14 @@ jobs:
               print(f'review_reference={inputs["review_reference"] or ""}')
               print(f'human_gate_authorized={str(human).lower()}')
           else:
-              if set(inputs) != {'issue_id','confirmation'}: raise SystemExit('release inputs do not match exact allowlist')
+              required={'issue_id','production_state_sha256','release_manifest_sha256','confirmation'}
+              if set(inputs) != required: raise SystemExit('release inputs do not match exact allowlist')
               if inputs['confirmation'] != f'release:{issue}': raise SystemExit('release confirmation mismatch')
+              for key in ('production_state_sha256','release_manifest_sha256'):
+                  value=inputs[key]
+                  if not isinstance(value,str) or not re.fullmatch(r'[0-9a-f]{64}',value):
+                      raise SystemExit(f'{key} must be exact lowercase SHA-256')
+                  print(f'{key}={value}')
               print(f'confirmation={inputs["confirmation"]}')
           PY
 
@@ -119,4 +125,6 @@ jobs:
           set -euo pipefail
           gh workflow run '${{ steps.request.outputs.workflow_file }}' --repo "$REPOSITORY" --ref main \
             -f issue_id='${{ steps.request.outputs.issue_id }}' \
+            -f production_state_sha256='${{ steps.request.outputs.production_state_sha256 }}' \
+            -f release_manifest_sha256='${{ steps.request.outputs.release_manifest_sha256 }}' \
             -f confirmation='${{ steps.request.outputs.confirmation }}'
