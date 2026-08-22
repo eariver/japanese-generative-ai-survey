@@ -1,71 +1,179 @@
 name: Pipeline contract tests
 
 on:
-  workflow_dispatch:
   push:
     paths:
-      - 'scripts/**'
-      - 'tests/**'
-      - 'schemas/**'
-      - 'config/**'
-      - 'templates/survey/**'
-      - '.github/workflows/*.yml'
+      - '.github/workflows/pipeline-contract-tests.yml'
   pull_request:
     paths:
-      - 'scripts/**'
-      - 'tests/**'
-      - 'schemas/**'
-      - 'config/**'
-      - 'templates/survey/**'
-      - '.github/workflows/*.yml'
+      - '.github/workflows/pipeline-contract-tests.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
-  group: pipeline-contract-tests-${{ github.ref }}
+  group: w33-fresh-intake-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  test:
+  w33-fresh-intake:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout canonical W33 work branch
         uses: actions/checkout@v6
+        with:
+          ref: weekly/2026-W33-v2-work
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Install Survey Production Core v2 test dependencies
+      - name: Install Core v2 dependencies
         shell: bash
         run: |
           set -euo pipefail
           python -m pip install -r config/survey-production-v2-requirements.txt
 
-      - name: Validate JSON configuration and schemas
+      - name: Validate fresh initialized authority
         shell: bash
         run: |
           set -euo pipefail
-          while IFS= read -r -d '' path; do
-            echo "Validating JSON: ${path}"
-            python -m json.tool "$path" >/dev/null
-          done < <(find config schemas -type f -name '*.json' -print0 | sort -z)
+          PYTHONPATH=. python scripts/survey_production_v2.py validate-profile \
+            --profile sources/2026-W33/production-profile.json
+          PYTHONPATH=. python scripts/survey_production_v2.py validate-state \
+            --state sources/2026-W33/production-state.json \
+            --implementation-sha a009ad28c2c2ed61ab90022a93b23eb053cadb3b
+          test ! -e sources/2026-W33/collectors
+          test ! -e sources/2026-W33/external/x/x-source-intake-v2.json
 
-          while IFS= read -r -d '' manifest; do
-            echo "Validating release manifest: ${manifest}"
-            python -m json.tool "$manifest" >/dev/null
-          done < <(find sources -mindepth 2 -maxdepth 2 -type f -name 'release-manifest.json' -print0 | sort -z)
-
-      - name: Compile Python modules
+      - name: Build source plan directly from fresh Core v2 Profile
         shell: bash
         run: |
           set -euo pipefail
-          python -m compileall -q scripts tests
+          mkdir -p /tmp/w33-fresh-intake sources/2026-W33/source-intake-v2
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          profile = json.loads(Path('sources/2026-W33/production-profile.json').read_text(encoding='utf-8'))
+          temporal = profile['research_scope']['temporal_policy']
+          assert temporal['mode'] == 'ROLLING_WINDOW'
+          plan = {
+              'schema_version': '2.0-rc1-fresh-intake-plan',
+              'issue_id': profile['issue_id'],
+              'automation_mode': 'CORE_V2_FRESH_PROFILE_DERIVED',
+              'collection_window_start': temporal['window_start'],
+              'collection_window_end': temporal['window_end'],
+              'editorial_cutoff': temporal['cutoff'],
+              'timezone': temporal['timezone'],
+              'profile_path': 'sources/2026-W33/production-profile.json',
+              'legacy_w33_inputs_used': False,
+          }
+          Path('/tmp/w33-fresh-intake-plan.json').write_text(json.dumps(plan, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          Path('sources/2026-W33/source-intake-v2/fresh-non-x-plan.json').write_text(json.dumps(plan, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(plan, ensure_ascii=False, indent=2))
+          PY
 
-      - name: Run pipeline unit tests
+      - name: Run fresh reproducible non-X Source Intake
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python scripts/source_intake.py \
+            --plan /tmp/w33-fresh-intake-plan.json \
+            --collector all \
+            --output-root /tmp/w33-fresh-intake
+          cp -a /tmp/w33-fresh-intake/sources/2026-W33/collectors sources/2026-W33/
+          cp /tmp/w33-fresh-intake/source-intake-report.json sources/2026-W33/source-intake-v2/fresh-non-x-source-intake-report.json
+          PYTHONPATH=. python scripts/build_screening_index.py \
+            --input-root /tmp/w33-fresh-intake \
+            --output-dir sources/2026-W33/source-intake-v2/fresh-non-x-screening-seed \
+            --issue-id 2026-W33 \
+            --max-records 40 \
+            --max-json-chars 80000
+
+      - name: Generate fresh Core v2 Grok X handoff
         shell: bash
         run: |
           set -euo pipefail
-          python -m unittest discover -s tests -p 'test_*.py' -v
+          cat > /tmp/w33-fresh-x-spec.json <<'JSON'
+          {
+            "decision": "REQUIRED",
+            "rationale": "The WEEKLY research profile requires a fresh Grok/X Source Intake. This run is intentionally independent of all legacy W33 Grok and X results.",
+            "series_context": null,
+            "runs": [
+              {
+                "run_id": "weekly-x-2026-W33-fresh-r1",
+                "purpose": "Freshly observe X for material generative-AI technical signal relevant to the completed 2026-W33 editorial window, without consulting or reusing legacy W33 X collection results.",
+                "research_questions": [
+                  "Which generative-AI technical developments became materially salient on X during the completed 2026-W33 editorial window?",
+                  "What independent testing, deployment reports, integration evidence, practitioner findings, or corrections on X materially change how those developments should be screened?",
+                  "Which high-salience X claims require first-party reconciliation before they can enter technical Evidence?"
+                ],
+                "coverage_focus": [
+                  "technical salience",
+                  "independent testing",
+                  "deployment and integration",
+                  "practitioner findings",
+                  "corrections and false-positive detection"
+                ],
+                "time_scope": "Primary event window: 2026-08-07T18:00:00-04:00 through 2026-08-14T18:00:00-04:00. Immediate post-cutoff X discussion may be reported only as reception/context for in-window events; it must not promote post-cutoff events into W33.",
+                "expected_result_filename": "grok-x-result.md"
+              }
+            ]
+          }
+          JSON
+          PYTHONPATH=. python scripts/survey_x_intake_v2.py build \
+            --profile sources/2026-W33/production-profile.json \
+            --spec /tmp/w33-fresh-x-spec.json
+          PYTHONPATH=. python scripts/survey_x_intake_v2.py validate \
+            --manifest sources/2026-W33/external/x/x-source-intake-v2.json \
+            --allow-awaiting
+
+      - name: Append fresh-intake execution record
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('sources/2026-W33/source-intake-v2/fresh-non-x-source-intake-report.json').read_text(encoding='utf-8'))
+          x = json.loads(Path('sources/2026-W33/external/x/x-source-intake-v2.json').read_text(encoding='utf-8'))
+          log = Path('docs/checkpoints/2026-W33-core-v2-compilation-session-worklog.md')
+          lines = [
+              '',
+              '## Fresh Source Intake execution',
+              '',
+              '- Legacy W33 Source Intake input used: **no**.',
+              '- Non-X collection window was derived directly from the fresh Core v2 Production Profile.',
+              f"- Non-X collector overall status: `{report['overall_status']}`.",
+          ]
+          for row in report['runs']:
+              lines.append(f"- Fresh collector `{row['collector']}`: run `{row['run_id']}`, status `{row['status']}`.")
+          run = x['runs'][0]
+          lines.extend([
+              f"- Fresh Grok/X run created: `{run['run_id']}`.",
+              f"- Grok/X Drive target: `{run['run_folder']}`.",
+              f"- X manifest status: `{x['status']}` (fresh Grok result not yet imported at this point).",
+              '- Legacy Grok r3 result is explicitly excluded from this fresh run.',
+              '',
+              'The next production action is to place the newly generated instruction/prompt in the exact Google Drive handoff target, obtain a new Grok result, import those Raw bytes, and only then generate Core v2 Discovery.',
+          ])
+          with log.open('a', encoding='utf-8') as fh:
+              fh.write('\n'.join(lines) + '\n')
+          PY
+
+      - name: Restore main workflow and commit fresh intake artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main weekly/2026-W33-v2-work
+          git checkout origin/main -- .github/workflows/pipeline-contract-tests.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/pipeline-contract-tests.yml sources/2026-W33 docs/checkpoints/2026-W33-core-v2-compilation-session-worklog.md
+          git commit -m 'Run fresh 2026-W33 Source Intake and create Grok handoff'
+          git push origin HEAD:weekly/2026-W33-v2-work
