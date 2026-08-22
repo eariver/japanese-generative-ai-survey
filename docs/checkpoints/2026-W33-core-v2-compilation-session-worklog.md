@@ -181,3 +181,11 @@ Human Review did not approve the first Architecture. The review identified a Wee
 - X remains SOCIAL_OBSERVATION only; no technical/model/benchmark claim is promoted without primary Evidence.
 - The complete r1 state and artifacts are preserved at `backup/2026-W33-v2-architecture-r1-rejected`.
 - Canonical lifecycle was logically returned to `CANDIDATES_NORMALIZED` for review revision. Fresh Source Intake, Discovery, and Screening remain authoritative; Evidence and downstream artifacts are regenerated as r2.
+
+## Fresh Evidence / Materiality / Completeness
+
+- Accepted Evidence tasks: 31; statuses `{"PARTIAL": 21, "VERIFIED": 10}`.
+- Edition materiality counts: `{"CONTEXT": 13, "HOLD": 11, "MATERIAL": 7}`.
+- Evidence is fail-closed to accepted Discovery locators: no candidate-specific first-party URL found later in web research was silently injected into Evidence.
+- arXiv items remain abstract-level PARTIAL and CONTEXT/HOLD; official-index records remain HOLD; X/Grok remains community context only.
+- Completeness is LIMITED with all three Weekly obligations SATISFIED and three explicit residual limitations.
