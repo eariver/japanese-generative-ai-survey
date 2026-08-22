@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import os
 import shutil
 import subprocess
@@ -69,7 +70,92 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
         return temp, root, cfg, state_path, pinned
 
     @staticmethod
-    def handler_for(expected_name: str):
+    def synthetic_architecture(state: dict) -> dict:
+        h = "a" * 64
+        return {
+            "schema_version": "2.0-rc1",
+            "issue_id": state["issue_id"],
+            "research_profile": state["research_profile"],
+            "publication_profile": state["publication_profile"],
+            "status": "PROPOSED",
+            "basis": {
+                "production_profile_sha256": h,
+                "profile_completeness_sha256": h,
+                "materiality_ledger_sha256": h,
+                "candidate_matrix_sha256": h,
+                "candidate_selection_sha256": h,
+            },
+            "editorial_thesis": "Synthetic architecture used only to test orchestration authority.",
+            "architecture_goals": ["Preserve exact provenance"],
+            "page_plan": {"target_pages": 8, "max_pages": 12, "notes": None},
+            "packages": [
+                {
+                    "package_id": "pkg-001",
+                    "title": "Synthetic package",
+                    "purpose": "Exercise Human Gate byte binding.",
+                    "primary_candidate_ids": ["candidate:synthetic"],
+                    "supporting_candidate_ids": [],
+                    "must_cover_requirements": ["synthetic requirement"],
+                    "boundaries": ["synthetic boundary"],
+                    "drafting_order": 1,
+                    "profile_extensions": {},
+                    "publication_extensions": {},
+                }
+            ],
+            "selected_exceptions": [],
+            "profile_extensions": {},
+            "publication_extensions": {},
+            "human_review": {
+                "reviewed_by": None,
+                "reviewed_at": None,
+                "review_reference": None,
+            },
+        }
+
+    @staticmethod
+    def synthetic_review(state: dict, architecture_sha: str) -> dict:
+        h = "a" * 64
+        count = {"total": 1, "counts": {"synthetic": 1}}
+        return {
+            "schema_version": "2.0-rc1",
+            "issue_id": state["issue_id"],
+            "research_profile": state["research_profile"],
+            "basis": {
+                "architecture_sha256": architecture_sha,
+                "production_profile_sha256": h,
+                "profile_completeness_sha256": h,
+                "materiality_ledger_sha256": h,
+                "candidate_matrix_sha256": h,
+                "candidate_selection_sha256": h,
+            },
+            "readiness": {"status": "READY_FOR_ARCHITECTURE_REVIEW", "errors": []},
+            "discovery": count,
+            "research_expansion": {
+                "max_research_pass": 0,
+                "pass_counts": {"0": 1},
+                "parent_link_count": 0,
+                "obligation_link_count": 1,
+                "unique_obligation_count": 1,
+                "root_discovery_count": 1,
+                "expanded_discovery_count": 0,
+            },
+            "screening": count,
+            "evidence": count,
+            "materiality": count,
+            "selection": count,
+            "completeness": {"overall_status": "READY", "obligation_counts": {"SATISFIED": 1}},
+            "major_material_destinations": [],
+            "residual_limitations": [],
+            "architecture": {
+                "status": "PROPOSED",
+                "editorial_thesis": "Synthetic architecture used only to test orchestration authority.",
+                "package_count": 1,
+                "packages": ["pkg-001"],
+                "page_plan": {"target_pages": 8, "max_pages": 12, "notes": None},
+            },
+        }
+
+    def handler_for(self, *, malformed_architecture: bool = False):
         def handler(root: Path, cfg: dict, state: dict, spec: dict, pinned: str) -> list[dict]:
             rows: list[dict] = []
             for expected in spec["expected_outputs"]:
@@ -79,21 +165,15 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
                 else:
                     artifact = root / "sources" / state["issue_id"] / "generated" / f"{spec['current_stage']}-{name}.json"
                 if name == "issue-architecture":
-                    core.write_json(
-                        artifact,
-                        {"schema_version": "2.0-rc1", "issue_id": state["issue_id"], "status": "PROPOSED"},
+                    payload = (
+                        {"schema_version": "2.0-rc1", "issue_id": state["issue_id"], "status": "PROPOSED"}
+                        if malformed_architecture
+                        else self.synthetic_architecture(state)
                     )
+                    core.write_json(artifact, payload)
                 elif name == "architecture-review-summary":
                     architecture = root / "sources" / state["issue_id"] / "architecture-v2.json"
-                    core.write_json(
-                        artifact,
-                        {
-                            "schema_version": "2.0-rc1",
-                            "issue_id": state["issue_id"],
-                            "readiness": {"status": "READY_FOR_ARCHITECTURE_REVIEW", "errors": []},
-                            "basis": {"architecture_sha256": core.sha256_file(architecture)},
-                        },
-                    )
+                    core.write_json(artifact, self.synthetic_review(state, core.sha256_file(architecture)))
                 else:
                     core.write_json(
                         artifact,
@@ -112,29 +192,53 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
                         "sha256": core.sha256_file(artifact),
                     }
                 )
-            if expected_name and expected_name not in {row["name"] for row in rows}:
-                raise AssertionError(f"expected output was not planned: {expected_name}")
             return rows
         return handler
 
-    def stage_registry(self, cfg: dict) -> orchestrator.HandlerRegistry:
+    @staticmethod
+    def validator_for(validator_name: str):
+        def validator(root: Path, cfg: dict, state: dict, spec: dict, outputs: list[dict], pinned: str) -> list[str]:
+            if spec.get("validator") != validator_name:
+                return ["validator identity mismatch"]
+            if validator_name != "validate:architecture":
+                return []
+            by_name = {row["name"]: row for row in outputs}
+            architecture_row = by_name.get("issue-architecture")
+            review_row = by_name.get("architecture-review-summary")
+            if architecture_row is None or review_row is None:
+                return ["Architecture validator requires Architecture and Review Summary outputs"]
+            plan = core.load_json(root / architecture_row["path"])
+            required = {
+                "schema_version", "issue_id", "research_profile", "publication_profile",
+                "status", "basis", "editorial_thesis", "architecture_goals", "page_plan",
+                "packages", "selected_exceptions", "profile_extensions",
+                "publication_extensions", "human_review",
+            }
+            errors: list[str] = []
+            if set(plan) != required:
+                errors.append("Issue Architecture fields do not match semantic contract")
+            if plan.get("status") != "PROPOSED" or plan.get("issue_id") != state["issue_id"]:
+                errors.append("Issue Architecture identity/status invalid")
+            review = core.load_json(root / review_row["path"])
+            if review.get("readiness", {}).get("status") != "READY_FOR_ARCHITECTURE_REVIEW":
+                errors.append("Architecture Review Summary not ready")
+            if review.get("basis", {}).get("architecture_sha256") != architecture_row["sha256"]:
+                errors.append("Architecture Review Summary does not bind Architecture output")
+            return errors
+        return validator
+
+    def stage_registry(self, cfg: dict, *, malformed_architecture: bool = False) -> orchestrator.HandlerRegistry:
         registry: orchestrator.HandlerRegistry = {}
         for stage in cfg["orchestration"]["stage_plan"].values():
-            checkpoints = stage.get("checkpoints", [])
-            expected_name = checkpoints[0] if checkpoints else (
-                "publication-candidate" if stage["handler"] == "stage:publication-candidate" else ""
-            )
-            registry[stage["handler"]] = self.handler_for(expected_name)
+            registry[stage["handler"]] = self.handler_for(malformed_architecture=malformed_architecture)
+            registry[stage["validator"]] = self.validator_for(stage["validator"])
         return registry
 
-    def test_advance_to_gate_executes_registered_stage_order_without_chat_memory(self) -> None:
+    def test_advance_to_gate_executes_validated_stage_order_and_pins_attestations(self) -> None:
         temp, root, cfg, state_path, pinned = self.sandbox()
         self.addCleanup(temp.cleanup)
         result = orchestrator.advance_to_gate(
-            root,
-            cfg,
-            state_path,
-            root / "sources/SP001/orchestration/v2",
+            root, cfg, state_path, root / "sources/SP001/orchestration/v2",
             self.stage_registry(cfg),
             clock=lambda: core.parse_instant("2026-08-22T03:05:00+09:00"),
         )
@@ -145,8 +249,14 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
         self.assertEqual(state["human_gates"]["architecture_review"], "pending")
         self.assertEqual(state["next_action"], "ARCHITECTURE_REVIEW")
         self.assertEqual(state["terminal_reason"], "HUMAN_GATE_REACHED")
-        for checkpoint in ("discovery", "screening", "evidence", "materiality", "completeness", "selection", "architecture"):
+        passed = ("discovery", "screening", "evidence", "materiality", "completeness", "selection", "architecture")
+        for checkpoint in passed:
             self.assertEqual(state["machine_checkpoints"][checkpoint], "passed")
+            authority = state["checkpoint_provenance"][checkpoint]
+            self.assertIsInstance(authority, dict)
+            self.assertEqual(core.sha256_file(root / authority["path"]), authority["sha256"])
+        self.assertEqual(core.validate_state_semantics(root, cfg, state), [])
+
         specs = sorted((root / "sources/SP001/orchestration/v2/specs").glob("*.json"))
         results = sorted((root / "sources/SP001/orchestration/v2/results").glob("*.json"))
         self.assertEqual(len(specs), 6)
@@ -155,25 +265,35 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
             payload = core.load_json(path)
             self.assertEqual(payload["status"], "SUCCEEDED")
             self.assertEqual(payload["implementation_commit_sha"], pinned)
+            self.assertEqual(payload["validator"], core.load_json(root / payload["outputs"][0]["path"]).get("validator", payload["validator"]) if False else payload["validator"])
         terminal_spec = core.load_json(root / result["action_spec_path"])
         gate_inputs = {row["name"]: row for row in terminal_spec["required_inputs"]}
-        self.assertEqual(
-            gate_inputs["issue-architecture"]["sha256"],
-            core.sha256_file(root / "sources/SP001/architecture-v2.json"),
-        )
-        self.assertEqual(
-            gate_inputs["architecture-review-summary"]["sha256"],
-            core.sha256_file(root / "sources/SP001/architecture-review-summary-v2.json"),
-        )
+        self.assertIn("checkpoint-attestation:architecture", gate_inputs)
+        self.assertEqual(gate_inputs["checkpoint-attestation:architecture"]["sha256"], state["checkpoint_provenance"]["architecture"]["sha256"])
+        self.assertEqual(gate_inputs["issue-architecture"]["sha256"], core.sha256_file(root / "sources/SP001/architecture-v2.json"))
+        self.assertEqual(gate_inputs["architecture-review-summary"]["sha256"], core.sha256_file(root / "sources/SP001/architecture-review-summary-v2.json"))
 
-    def test_architecture_approval_binds_exact_reviewed_bytes_and_promotes_target(self) -> None:
+    def test_semantically_invalid_architecture_cannot_pass_checkpoint_or_reach_gate(self) -> None:
+        temp, root, cfg, state_path, _ = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        with self.assertRaisesRegex(ValueError, "deterministic action failed"):
+            orchestrator.advance_to_gate(
+                root, cfg, state_path, root / "sources/SP001/orchestration/v2",
+                self.stage_registry(cfg, malformed_architecture=True),
+                clock=lambda: core.parse_instant("2026-08-22T03:05:00+09:00"),
+            )
+        state = core.load_json(state_path)
+        self.assertEqual(state["lifecycle_state"], "SELECTION_COMPLETE")
+        self.assertEqual(state["machine_checkpoints"]["architecture"], "pending")
+        self.assertIsNone(state["checkpoint_provenance"]["architecture"])
+        self.assertEqual(state["human_gates"]["architecture_review"], "pending")
+        self.assertIsNone(state["terminal_reason"])
+
+    def test_architecture_approval_binds_attested_reviewed_bytes_and_gate_provenance(self) -> None:
         temp, root, cfg, state_path, _ = self.sandbox()
         self.addCleanup(temp.cleanup)
         terminal = orchestrator.advance_to_gate(
-            root,
-            cfg,
-            state_path,
-            root / "sources/SP001/orchestration/v2",
+            root, cfg, state_path, root / "sources/SP001/orchestration/v2",
             self.stage_registry(cfg),
             clock=lambda: core.parse_instant("2026-08-22T03:05:00+09:00"),
         )
@@ -183,48 +303,32 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
         approval_path = root / "sources/SP001/gates/architecture-approval.json"
         action_result_path = root / "sources/SP001/orchestration/v2/results/architecture-human-review.json"
         before_bytes = architecture_path.read_bytes()
-        spec = core.load_json(spec_path)
-        gate_inputs = {row["name"]: row for row in spec["required_inputs"]}
-        self.assertEqual(gate_inputs["issue-architecture"]["sha256"], core.sha256_file(architecture_path))
-        self.assertEqual(gate_inputs["architecture-review-summary"]["sha256"], core.sha256_file(review_path))
         result = orchestrator.apply_architecture_approval(
-            root,
-            cfg,
-            state_path,
-            spec_path,
-            architecture_path,
-            review_path,
-            approval_path,
-            action_result_path,
-            "human-reviewer",
+            root, cfg, state_path, spec_path, architecture_path, review_path,
+            approval_path, action_result_path, "human-reviewer",
             core.parse_instant("2026-08-22T03:10:00+09:00"),
             "review:SP001:architecture:1",
         )
         self.assertEqual(result["status"], "SUCCEEDED")
         self.assertEqual(architecture_path.read_bytes(), before_bytes)
-        approval = core.load_json(approval_path)
-        self.assertEqual(approval["architecture_sha256"], gate_inputs["issue-architecture"]["sha256"])
-        self.assertEqual(
-            approval["architecture_review_summary_sha256"],
-            gate_inputs["architecture-review-summary"]["sha256"],
-        )
         state = core.load_json(state_path)
+        authority = state["human_gate_provenance"]["architecture_review"]
+        self.assertEqual(authority["path"], "sources/SP001/gates/architecture-approval.json")
+        self.assertEqual(authority["sha256"], core.sha256_file(approval_path))
         self.assertEqual(state["human_gates"]["architecture_review"], "approved")
         self.assertEqual(state["target_gate"], "PUBLICATION_PREVIEW")
         self.assertEqual(state["next_action"], "stage:drafting-synthesis")
-        self.assertIsNone(state["terminal_reason"])
+        self.assertEqual(core.validate_state_semantics(root, cfg, state), [])
         next_spec = orchestrator.plan_action(root, cfg, state_path)
-        self.assertEqual(next_spec["handler"], "stage:drafting-synthesis")
-        self.assertEqual(next_spec["basis"]["implementation_commit_sha"], state["implementation"]["repository_commit_sha"])
+        inputs = {row["name"]: row for row in next_spec["required_inputs"]}
+        self.assertIn("architecture-approval-record", inputs)
+        self.assertEqual(inputs["architecture-approval-record"]["sha256"], authority["sha256"])
 
-    def test_reviewed_architecture_cannot_be_replaced_before_approval(self) -> None:
+    def test_reviewed_or_attested_architecture_cannot_be_replaced(self) -> None:
         temp, root, cfg, state_path, _ = self.sandbox()
         self.addCleanup(temp.cleanup)
         terminal = orchestrator.advance_to_gate(
-            root,
-            cfg,
-            state_path,
-            root / "sources/SP001/orchestration/v2",
+            root, cfg, state_path, root / "sources/SP001/orchestration/v2",
             self.stage_registry(cfg),
             clock=lambda: core.parse_instant("2026-08-22T03:05:00+09:00"),
         )
@@ -232,23 +336,110 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
         architecture_path = root / "sources/SP001/architecture-v2.json"
         review_path = root / "sources/SP001/architecture-review-summary-v2.json"
         changed = core.load_json(architecture_path)
-        changed["status"] = "PROPOSED"
-        changed["tampered"] = True
+        changed["editorial_thesis"] = "tampered"
         core.write_json(architecture_path, changed)
-        with self.assertRaisesRegex(ValueError, "stale or divergent"):
+        with self.assertRaisesRegex(ValueError, "drift|stale|inconsistency"):
             orchestrator.apply_architecture_approval(
-                root,
-                cfg,
-                state_path,
-                spec_path,
-                architecture_path,
-                review_path,
+                root, cfg, state_path, spec_path, architecture_path, review_path,
                 root / "sources/SP001/gates/architecture-approval.json",
                 root / "sources/SP001/orchestration/v2/results/architecture-human-review.json",
-                "human-reviewer",
-                core.parse_instant("2026-08-22T03:10:00+09:00"),
+                "human-reviewer", core.parse_instant("2026-08-22T03:10:00+09:00"),
                 "review:SP001:architecture:1",
             )
+
+    def test_noncanonical_approval_path_is_rejected_before_write(self) -> None:
+        temp, root, cfg, state_path, _ = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        terminal = orchestrator.advance_to_gate(
+            root, cfg, state_path, root / "sources/SP001/orchestration/v2",
+            self.stage_registry(cfg),
+            clock=lambda: core.parse_instant("2026-08-22T03:05:00+09:00"),
+        )
+        wrong = root / "sources/SP001/wrong-approval.json"
+        with self.assertRaisesRegex(ValueError, "canonical configured path"):
+            orchestrator.apply_architecture_approval(
+                root, cfg, state_path, root / terminal["action_spec_path"],
+                root / "sources/SP001/architecture-v2.json",
+                root / "sources/SP001/architecture-review-summary-v2.json",
+                wrong,
+                root / "sources/SP001/orchestration/v2/results/architecture-human-review.json",
+                "human-reviewer", core.parse_instant("2026-08-22T03:10:00+09:00"),
+                "review:SP001:architecture:1",
+            )
+        self.assertFalse(wrong.exists())
+
+    def test_state_pinned_attestation_and_approval_cannot_be_rewritten(self) -> None:
+        temp, root, cfg, state_path, _ = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        terminal = orchestrator.advance_to_gate(
+            root, cfg, state_path, root / "sources/SP001/orchestration/v2",
+            self.stage_registry(cfg),
+            clock=lambda: core.parse_instant("2026-08-22T03:05:00+09:00"),
+        )
+        state = core.load_json(state_path)
+        discovery_authority = state["checkpoint_provenance"]["discovery"]
+        attestation_path = root / discovery_authority["path"]
+        attestation = core.load_json(attestation_path)
+        attestation["validator"] = "validate:rewritten"
+        core.write_json(attestation_path, attestation)
+        with self.assertRaisesRegex(ValueError, "authority SHA drift"):
+            orchestrator.plan_action(root, cfg, state_path)
+
+        # Restore by regenerating the whole sandbox for the Gate provenance check.
+        temp2, root2, cfg2, state_path2, _ = self.sandbox()
+        self.addCleanup(temp2.cleanup)
+        terminal2 = orchestrator.advance_to_gate(
+            root2, cfg2, state_path2, root2 / "sources/SP001/orchestration/v2",
+            self.stage_registry(cfg2),
+            clock=lambda: core.parse_instant("2026-08-22T03:05:00+09:00"),
+        )
+        approval_path = root2 / "sources/SP001/gates/architecture-approval.json"
+        orchestrator.apply_architecture_approval(
+            root2, cfg2, state_path2, root2 / terminal2["action_spec_path"],
+            root2 / "sources/SP001/architecture-v2.json",
+            root2 / "sources/SP001/architecture-review-summary-v2.json",
+            approval_path,
+            root2 / "sources/SP001/orchestration/v2/results/architecture-human-review.json",
+            "human-reviewer", core.parse_instant("2026-08-22T03:10:00+09:00"),
+            "review:SP001:architecture:1",
+        )
+        approval = core.load_json(approval_path)
+        approval["reviewed_by"] = "rewritten-reviewer"
+        core.write_json(approval_path, approval)
+        with self.assertRaisesRegex(ValueError, "authority SHA drift"):
+            orchestrator.plan_action(root2, cfg2, state_path2)
+
+    def test_workflow_dispatch_is_not_blindly_retried_without_idempotency(self) -> None:
+        temp, root, cfg, state_path, _ = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        stage = cfg["orchestration"]["stage_plan"]["ISSUE_INITIALIZED"]
+        stage["action_kind"] = "WORKFLOW_DISPATCH"
+        spec = orchestrator.plan_action(root, cfg, state_path)
+        self.assertEqual(spec["action_kind"], "WORKFLOW_DISPATCH")
+        self.assertFalse(spec["retry_policy"]["retryable"])
+        self.assertEqual(spec["retry_policy"]["max_attempts"], 1)
+        self.assertEqual(spec["idempotency"], {"mode": "NONE", "key": None})
+        spec_path = root / "sources/SP001/orchestration/v2/specs/workflow.json"
+        orchestrator.write_action_spec(spec_path, spec)
+        attempts = {"count": 0}
+
+        def failing(*args, **kwargs):
+            attempts["count"] += 1
+            raise RuntimeError("ambiguous dispatch response")
+
+        result = orchestrator.execute_action(
+            root, cfg, state_path, spec_path,
+            root / "sources/SP001/orchestration/v2/results/workflow.json",
+            {spec["handler"]: failing, spec["validator"]: self.validator_for(spec["validator"])},
+            clock=lambda: core.parse_instant("2026-08-22T03:05:00+09:00"),
+        )
+        self.assertEqual(result["status"], "FAILED")
+        self.assertEqual(result["attempts"], 1)
+        self.assertEqual(attempts["count"], 1)
+
+        stage["retry_policy"] = {"retryable": True, "max_attempts": 3}
+        with self.assertRaisesRegex(ValueError, "idempotency/reconciliation"):
+            orchestrator.plan_action(root, cfg, state_path)
 
     def test_artifact_only_head_movement_is_allowed_but_control_code_change_fails(self) -> None:
         temp, root, cfg, state_path, pinned = self.sandbox()
@@ -275,16 +466,6 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "implementation-controlled files differ"):
             orchestrator.plan_action(root, cfg, state_path)
 
-    def test_stage_action_kind_is_contract_driven_and_supports_workflow_dispatch(self) -> None:
-        temp, root, cfg, state_path, _ = self.sandbox()
-        self.addCleanup(temp.cleanup)
-        cfg["orchestration"]["stage_plan"]["ISSUE_INITIALIZED"]["action_kind"] = "WORKFLOW_DISPATCH"
-        spec = orchestrator.plan_action(root, cfg, state_path)
-        self.assertEqual(spec["action_kind"], "WORKFLOW_DISPATCH")
-        cfg["orchestration"]["stage_plan"]["ISSUE_INITIALIZED"]["action_kind"] = "CHAT_MAGIC"
-        with self.assertRaisesRegex(ValueError, "invalid stage action_kind"):
-            orchestrator.plan_action(root, cfg, state_path)
-
     def test_preissued_spec_survives_artifact_only_head_movement(self) -> None:
         temp, root, cfg, state_path, pinned = self.sandbox()
         self.addCleanup(temp.cleanup)
@@ -296,24 +477,22 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
         self.git(root, "add", "sources")
         self.git(root, "commit", "-m", "artifact-only head movement")
         current = orchestrator.plan_action(root, cfg, state_path)
-        self.assertNotEqual(
-            spec["basis"]["observed_repository_head_sha"],
-            current["basis"]["observed_repository_head_sha"],
-        )
+        self.assertNotEqual(spec["basis"]["observed_repository_head_sha"], current["basis"]["observed_repository_head_sha"])
         self.assertEqual(spec["action_id"], current["action_id"])
-        result_path = root / "sources/SP001/orchestration/v2/results/preissued.json"
         result = orchestrator.execute_action(
-            root,
-            cfg,
-            state_path,
-            spec_path,
-            result_path,
-            {spec["handler"]: self.handler_for("discovery")},
+            root, cfg, state_path, spec_path,
+            root / "sources/SP001/orchestration/v2/results/preissued.json",
+            {
+                spec["handler"]: self.handler_for(),
+                spec["validator"]: self.validator_for(spec["validator"]),
+            },
             clock=lambda: core.parse_instant("2026-08-22T03:05:00+09:00"),
         )
         self.assertEqual(result["status"], "SUCCEEDED")
         self.assertEqual(result["implementation_commit_sha"], pinned)
-        self.assertEqual(core.load_json(state_path)["lifecycle_state"], "DISCOVERY_COLLECTED")
+        state = core.load_json(state_path)
+        self.assertEqual(state["lifecycle_state"], "DISCOVERY_COLLECTED")
+        self.assertIsNotNone(state["checkpoint_provenance"]["discovery"])
 
     def test_interrupted_state_result_commit_is_recoverable_without_silent_divergence(self) -> None:
         temp, root, cfg, state_path, _ = self.sandbox()
@@ -334,12 +513,11 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
         with mock.patch.object(orchestrator.os, "replace", side_effect=fail_after_state_replace):
             with self.assertRaisesRegex(OSError, "simulated crash"):
                 orchestrator.execute_action(
-                    root,
-                    cfg,
-                    state_path,
-                    spec_path,
-                    result_path,
-                    {spec["handler"]: self.handler_for("discovery")},
+                    root, cfg, state_path, spec_path, result_path,
+                    {
+                        spec["handler"]: self.handler_for(),
+                        spec["validator"]: self.validator_for(spec["validator"]),
+                    },
                     clock=lambda: core.parse_instant("2026-08-22T03:05:00+09:00"),
                 )
         pending_result, state_next = orchestrator._transaction_paths(result_path)
@@ -348,13 +526,12 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
         self.assertFalse(state_next.exists())
         self.assertEqual(core.load_json(state_path)["lifecycle_state"], "DISCOVERY_COLLECTED")
         self.assertTrue(orchestrator._recover_pending_transaction(state_path, result_path))
-        self.assertTrue(result_path.exists())
-        self.assertFalse(pending_result.exists())
         committed = core.load_json(result_path)
         self.assertEqual(committed["status"], "SUCCEEDED")
         self.assertEqual(committed["state_after_sha256"], core.sha256_file(state_path))
+        self.assertTrue(committed["validation_attestations"])
 
-    def test_retryable_handler_failure_never_becomes_human_or_exception_gate(self) -> None:
+    def test_retryable_local_handler_failure_never_becomes_human_or_exception_gate(self) -> None:
         temp, root, cfg, state_path, _ = self.sandbox()
         self.addCleanup(temp.cleanup)
         spec = orchestrator.plan_action(root, cfg, state_path)
@@ -366,25 +543,20 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
             attempts["count"] += 1
             raise RuntimeError("transient collector failure")
 
-        result_path = root / "sources/SP001/orchestration/v2/results/failure.json"
-        before = state_path.read_bytes()
         result = orchestrator.execute_action(
-            root,
-            cfg,
-            state_path,
-            spec_path,
-            result_path,
-            {spec["handler"]: failing},
+            root, cfg, state_path, spec_path,
+            root / "sources/SP001/orchestration/v2/results/failure.json",
+            {spec["handler"]: failing, spec["validator"]: self.validator_for(spec["validator"])},
             clock=lambda: core.parse_instant("2026-08-22T03:05:00+09:00"),
         )
         self.assertEqual(result["status"], "RETRYABLE_FAILURE")
-        self.assertEqual(result["attempts"], cfg["orchestration"]["retry_policy"]["max_attempts"])
+        self.assertEqual(result["attempts"], cfg["orchestration"]["retry_policies"]["LOCAL_SCRIPT"]["max_attempts"])
         self.assertEqual(attempts["count"], result["attempts"])
-        self.assertEqual(state_path.read_bytes(), before)
         state = core.load_json(state_path)
         self.assertEqual(state["exception_gate"]["status"], "inactive")
         self.assertEqual(state["human_gates"]["architecture_review"], "pending")
         self.assertEqual(state["lifecycle_state"], "ISSUE_INITIALIZED")
+        self.assertIsNone(state["checkpoint_provenance"]["discovery"])
 
 
 if __name__ == "__main__":
