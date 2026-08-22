@@ -79,14 +79,14 @@ jobs:
           set -euo pipefail
           test ! -e sources/2026-W33/production-profile.json
           test ! -e sources/2026-W33/production-state.json
-          python scripts/survey_production_v2.py init-weekly \
+          PYTHONPATH=. python scripts/survey_production_v2.py init-weekly \
             --issue-id 2026-W33 \
             --target-gate ARCHITECTURE_REVIEW \
             --implementation-sha a009ad28c2c2ed61ab90022a93b23eb053cadb3b \
             --now 2026-08-22T15:31:00Z
-          python scripts/survey_production_v2.py validate-profile \
+          PYTHONPATH=. python scripts/survey_production_v2.py validate-profile \
             --profile sources/2026-W33/production-profile.json
-          python scripts/survey_production_v2.py validate-state \
+          PYTHONPATH=. python scripts/survey_production_v2.py validate-state \
             --state sources/2026-W33/production-state.json \
             --implementation-sha a009ad28c2c2ed61ab90022a93b23eb053cadb3b
 
