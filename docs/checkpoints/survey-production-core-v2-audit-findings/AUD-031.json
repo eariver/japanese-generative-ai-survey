@@ -1,0 +1,30 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-031",
+  "edition": "CORE-V2",
+  "stage": "WU-012_PRE_APPROVAL_AUDIT",
+  "observed_problem": "The target architecture and Generative AI Foundations plan require a Series Research Layer for shared factual evidence, lineage graph, volume dependencies, research debt and resequencing, but no executable Series authority exists in the current v2 candidate. Current Evidence Cards are issue-scoped, so individual Thematic volumes do not by themselves provide canonical cross-volume factual reuse or series-architecture provenance.",
+  "expected_behavior": "Generative AI Foundations must be supportable as a multi-volume series through an outer, versioned Series Research Layer that pins shared factual evidence and lineage/dependency state while keeping edition-specific interpretation and Production State independent.",
+  "actual_behavior": "The Series Research Layer is currently described in planning documents only. No series manifest/schema/state/lineage/dependency/reusable-evidence implementation or dependent-volume regression fixture is present in the candidate.",
+  "production_workaround": "Do not claim Foundations Series readiness or approve PR #310. Individual Thematic volume support is insufficient until WU-012E implements the minimum non-gating Series authority.",
+  "classification": {
+    "scope": "SERIES_LAYER",
+    "defect_kind": "COVERAGE",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "8beaf978793d983cc7608f4ca9c534511dd04d7a",
+    "relevant_artifacts": [
+      "docs/generative-ai-foundations-special-series.md",
+      "docs/survey-production-core-v2-improvement-plan.md",
+      "schemas/evidence-v2-card.schema.json",
+      "scripts/survey_evidence_v2.py"
+    ],
+    "human_review_reference": "Pre-approval WU-001-WU-011 audit, 2026-08-22"
+  },
+  "improvement_action": "Implement WU-012E: add versioned series manifest/snapshot authority, lineage graph, volume dependencies, canonical reusable factual evidence references, cross-volume usage, research debt, and merge/split/resequence semantics without adding a routine third Human Gate to volume production.",
+  "regression_fixture": null,
+  "resolved_by_repair_set_id": null,
+  "status": "OPEN"
+}
