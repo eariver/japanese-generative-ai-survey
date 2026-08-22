@@ -2,11 +2,11 @@
   "schema_version": "2.0-rc1",
   "finding_id": "AUD-034",
   "edition": "CORE-V2",
-  "stage": "WU-012_PRE_APPROVAL_AUDIT",
-  "observed_problem": "The historical audit has distilled many Human Review defects into prose invariants or quality-check names, but the candidate does not yet provide an explicit Issue-to-Guard ownership map proving which recurring defects are prevented by executable Core/Profile/Publication guards, exact quality attestations, or the existing Publication Preview checklist. Several publication concerns can therefore remain dependent on reviewer memory or a ceremonial PASS row.",
-  "expected_behavior": "Every material recurring Human Review issue must have one explicit primary prevention/inspection owner. Deterministic recurring defects require executable regression protection; inherently visual/editorial judgments may remain in the existing Publication Preview checklist when appropriate, without creating additional routine Human Gates.",
-  "actual_behavior": "The invariant/deep-audit corpus documents defects including Issue #9/#40/#49/#50/#54/#55/#78/#95/#122/#139/#140/#153/#166/#172/#191/#271/#272, but there is no single current matrix mapping each family to an implemented guard and distinguishing machine-checkable from intentionally Human visual/editorial review.",
-  "production_workaround": "Do not approve PR #310. WU-012H must create and validate an Issue-to-Guard matrix and remove redundant/inapplicable checks before final Human review.",
+  "stage": "WU-012_AGENT_FIRST_REAUDIT",
+  "observed_problem": "The historical audit has distilled many Human Review defects into durable invariants, but Core v2 does not yet expose them as one concise stage/profile-aware prevention playbook that a new ChatGPT production session is required to apply. Without that mapping, deterministic defects can miss tooling protection and semantic/visual defects can depend on reviewer memory.",
+  "expected_behavior": "Every material recurring Human Review defect family should have one explicit primary prevention/inspection owner chosen from DETERMINISTIC_TOOL_CHECK, CHATGPT_RESEARCH_REVIEW, CHATGPT_EDITORIAL_REVIEW, CHATGPT_VISUAL_REVIEW, HUMAN_ARCHITECTURE_REVIEW, HUMAN_PUBLICATION_PREVIEW, or LEGACY_ONLY/NOT_APPLICABLE. Only crisp deterministic recurrence needs executable regression protection; semantic and visual judgment remains agent/Human-owned as appropriate.",
+  "actual_behavior": "The invariant/deep-audit corpus documents the relevant Issues, but production bootstrap does not yet require one compact checklist/matrix that tells ChatGPT which lessons apply at each stage and which items are handled by tools versus reasoning review.",
+  "production_workaround": "Keep PR #310 draft while WU-012D creates the agent-first Issue Prevention Checklist. Do not add validators solely to convert qualitative review into machine PASS rows.",
   "classification": {
     "scope": "QUALITY_CONTRACT",
     "defect_kind": "CORRECTNESS",
@@ -14,16 +14,16 @@
   },
   "requires_regression": true,
   "provenance": {
-    "source_commit": "8beaf978793d983cc7608f4ca9c534511dd04d7a",
+    "source_commit": "9349bd52641d3433cc219adea6565f44fe3dbf09",
     "relevant_artifacts": [
       "docs/survey-production-core-v2-historical-invariants.md",
       "docs/survey-production-core-v2-historical-production-deep-audit.md",
-      "scripts/survey_quality_v2.py",
-      "scripts/survey_publication_v2.py"
+      "docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md",
+      "AGENTS.md"
     ],
-    "human_review_reference": "Pre-approval WU-001-WU-011 audit, 2026-08-22"
+    "human_review_reference": "User premise correction and ChatGPT-first pre-approval re-audit, 2026-08-22"
   },
-  "improvement_action": "Implement WU-012H: create a material Issue-to-Guard matrix with exactly one primary owner per defect family, require deterministic recurrence protection where feasible, retain visual/editorial judgment in the existing Publication Preview instead of adding gates, and audit duplicate/inapplicable validation for removal.",
+  "improvement_action": "Implement WU-012D: create a concise Issue Prevention Checklist/ownership matrix for production agents, route crisp failure classes to deterministic helpers, route semantic/visual concerns to required ChatGPT review, and preserve the two Human Gates without adding reviewer-memory-only requirements.",
   "regression_fixture": null,
   "resolved_by_repair_set_id": null,
   "status": "OPEN"
