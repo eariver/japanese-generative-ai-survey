@@ -37,6 +37,18 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
             shutil.copy2(src, dst)
         return temp, root
 
+    @staticmethod
+    def thematic_spec(**overrides: object) -> dict:
+        spec = {
+            "issue_id": "SP001",
+            "question": "test thematic question",
+            "temporal_mode": "OPEN_HISTORY_AS_OF",
+            "as_of": "2026-08-22T02:00:00+09:00",
+            "scope_dimensions": ["lineage", "competition"],
+        }
+        spec.update(overrides)
+        return spec
+
     def test_contract_manifest_declares_two_human_gates_and_non_authoritative_legacy_state(self) -> None:
         self.assertEqual(self.cfg["human_gates"], ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"])
         self.assertEqual(self.cfg["state_authority"]["authoritative_filename"], "production-state.json")
@@ -54,22 +66,58 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         self.assertTrue(policy["window_start"].endswith("-04:00"))
         self.assertTrue(policy["window_end"].endswith("-04:00"))
         self.assertEqual(policy["window_end"], policy["cutoff"])
+        self.assertEqual(len(profile["research_scope"]["initial_obligations"]), 3)
+
+    def test_weekly_profile_can_initialize_w33_after_w34_cutoff_without_legacy_state(self) -> None:
+        temp, root = self.make_sandbox()
+        self.addCleanup(temp.cleanup)
+        cfg = v2.load_json(root / "config/survey-production-v2.json")
+        legacy = root / "sources/2026-W33/pipeline-state.json"
+        self.assertFalse(legacy.exists())
+        now = v2.parse_instant("2026-08-22T11:18:00+09:00")
+        profile = v2.weekly_profile(root, cfg, now, "2026-W33")
+        policy = profile["research_scope"]["temporal_policy"]
+        self.assertEqual(profile["issue_id"], "2026-W33")
+        self.assertEqual(policy["cutoff"], "2026-08-14T18:00:00-04:00")
+        self.assertEqual(policy["window_start"], "2026-08-07T18:00:00-04:00")
 
     def test_weekly_profile_refuses_future_issue_before_cutoff(self) -> None:
         now = v2.parse_instant("2026-08-22T02:00:00+09:00")
-        with self.assertRaisesRegex(ValueError, "does not match current completed cutoff"):
+        with self.assertRaisesRegex(ValueError, "has not completed its editorial cutoff"):
             v2.weekly_profile(self.repo_root, self.cfg, now, "2026-W34")
+        after_w34 = v2.parse_instant("2026-08-22T11:18:00+09:00")
+        with self.assertRaisesRegex(ValueError, "has not completed its editorial cutoff"):
+            v2.weekly_profile(self.repo_root, self.cfg, after_w34, "2026-W35")
 
-    def test_thematic_profile_has_no_fake_bounded_window(self) -> None:
-        spec = {
-            "issue_id": "SP001",
-            "question": "How did Chinese generative AI ecosystems emerge and differentiate?",
-            "temporal_mode": "OPEN_HISTORY_AS_OF",
-            "as_of": "2026-08-22T02:00:00+09:00",
-            "inclusion": ["major model and developer ecosystems"],
-            "exclusion": ["policy-only material without technical relevance"],
-            "scope_dimensions": ["lineage", "distribution", "reasoning", "coding"],
-        }
+    def test_thematic_profile_has_no_fake_bounded_window_and_has_initial_obligations(self) -> None:
+        spec = self.thematic_spec(
+            question="How did Chinese generative AI ecosystems emerge and differentiate?",
+            inclusion=["major model and developer ecosystems"],
+            exclusion=["policy-only material without technical relevance"],
+            scope_dimensions=["lineage", "distribution", "reasoning", "coding"],
+            initial_obligations=[
+                {
+                    "obligation_id": "initial:lineage",
+                    "dimension": "lineage",
+                    "description": "trace the core lineage",
+                },
+                {
+                    "obligation_id": "initial:distribution",
+                    "dimension": "distribution",
+                    "description": "cover distribution strategy",
+                },
+                {
+                    "obligation_id": "initial:reasoning",
+                    "dimension": "reasoning",
+                    "description": "cover reasoning systems",
+                },
+                {
+                    "obligation_id": "initial:coding",
+                    "dimension": "coding",
+                    "description": "cover coding systems",
+                },
+            ],
+        )
         profile = v2.thematic_profile(self.repo_root, self.cfg, spec)
         policy = profile["research_scope"]["temporal_policy"]
         self.assertEqual(profile["research_profile"], "THEMATIC")
@@ -79,28 +127,48 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         self.assertNotIn("end", policy)
         self.assertNotIn("window_start", policy)
         self.assertNotIn("window_end", policy)
+        self.assertEqual(profile["research_scope"]["initial_obligations"][0]["obligation_id"], "initial:lineage")
 
-    def test_thematic_profile_rejects_bounded_period_mode(self) -> None:
-        spec = {
-            "issue_id": "SP001",
-            "question": "test",
-            "temporal_mode": "BOUNDED_PERIOD",
-            "as_of": "2026-08-22T02:00:00+09:00",
-        }
+    def test_thematic_profile_rejects_bounded_period_mode_and_empty_scope(self) -> None:
         with self.assertRaisesRegex(ValueError, "OPEN_HISTORY_AS_OF or CURRENT_STATE_AS_OF"):
-            v2.thematic_profile(self.repo_root, self.cfg, spec)
+            v2.thematic_profile(
+                self.repo_root,
+                self.cfg,
+                self.thematic_spec(temporal_mode="BOUNDED_PERIOD"),
+            )
+        with self.assertRaisesRegex(ValueError, "scope_dimensions"):
+            v2.thematic_profile(
+                self.repo_root,
+                self.cfg,
+                self.thematic_spec(scope_dimensions=[]),
+            )
+
+    def test_thematic_profile_rejects_uncovered_initial_obligation_and_path_escape(self) -> None:
+        bad = self.thematic_spec(
+            initial_obligations=[
+                {
+                    "obligation_id": "bad",
+                    "dimension": "not-declared",
+                    "description": "invalid dimension",
+                }
+            ]
+        )
+        with self.assertRaisesRegex(ValueError, "declared scope dimension"):
+            v2.thematic_profile(self.repo_root, self.cfg, bad)
+
+        escaped = self.thematic_spec(source_root="../outside")
+        with self.assertRaisesRegex(ValueError, "repository-relative path"):
+            v2.thematic_profile(self.repo_root, self.cfg, escaped)
 
     def test_initialize_is_non_destructive_and_records_separate_identities(self) -> None:
         temp, root = self.make_sandbox()
         self.addCleanup(temp.cleanup)
         cfg = v2.load_json(root / "config/survey-production-v2.json")
-        spec = {
-            "issue_id": "SP001",
-            "question": "test thematic question",
-            "temporal_mode": "CURRENT_STATE_AS_OF",
-            "as_of": "2026-08-22T02:00:00+09:00",
-        }
-        profile = v2.thematic_profile(root, cfg, spec)
+        profile = v2.thematic_profile(
+            root,
+            cfg,
+            self.thematic_spec(temporal_mode="CURRENT_STATE_AS_OF"),
+        )
         profile_path, state_path = v2.initialize(
             root,
             cfg,
@@ -128,16 +196,7 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         temp, root = self.make_sandbox()
         self.addCleanup(temp.cleanup)
         cfg = v2.load_json(root / "config/survey-production-v2.json")
-        profile = v2.thematic_profile(
-            root,
-            cfg,
-            {
-                "issue_id": "SP001",
-                "question": "test",
-                "temporal_mode": "OPEN_HISTORY_AS_OF",
-                "as_of": "2026-08-22T02:00:00+09:00",
-            },
-        )
+        profile = v2.thematic_profile(root, cfg, self.thematic_spec())
         _, state_path = v2.initialize(
             root, cfg, profile, IMPLEMENTATION_SHA, "ARCHITECTURE_REVIEW", v2.parse_instant("2026-08-22T02:05:00+09:00")
         )
@@ -163,16 +222,7 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         source_root.mkdir(parents=True, exist_ok=True)
         legacy_path = source_root / "pipeline-state.json"
         legacy_path.write_text('{"legacy": 1}\n', encoding="utf-8")
-        profile = v2.thematic_profile(
-            root,
-            cfg,
-            {
-                "issue_id": "SP001",
-                "question": "test",
-                "temporal_mode": "OPEN_HISTORY_AS_OF",
-                "as_of": "2026-08-22T02:00:00+09:00",
-            },
-        )
+        profile = v2.thematic_profile(root, cfg, self.thematic_spec())
         profile_path, state_path = v2.initialize(
             root, cfg, profile, IMPLEMENTATION_SHA, "ARCHITECTURE_REVIEW", v2.parse_instant("2026-08-22T02:05:00+09:00")
         )
@@ -201,12 +251,7 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         profile = v2.thematic_profile(
             root,
             cfg,
-            {
-                "issue_id": "SP001",
-                "question": "test",
-                "temporal_mode": "CURRENT_STATE_AS_OF",
-                "as_of": "2026-08-22T02:00:00+09:00",
-            },
+            self.thematic_spec(temporal_mode="CURRENT_STATE_AS_OF"),
         )
         _, state_path = v2.initialize(
             root, cfg, profile, IMPLEMENTATION_SHA, "ARCHITECTURE_REVIEW", v2.parse_instant("2026-08-22T02:05:00+09:00")
