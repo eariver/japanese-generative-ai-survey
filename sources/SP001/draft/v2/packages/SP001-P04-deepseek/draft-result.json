@@ -1,0 +1,204 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "SP001-P04-deepseek",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "1b0e865873762732daa394f8692787d0795de23a540041a8e77d0a3494f602dc",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive-agent-drafting-synthesis",
+    "generated_at": "2026-08-23T02:41:00+09:00",
+    "run_reference": "SP001 Architecture-approved drafting continuation"
+  },
+  "headline": "DeepSeek：効率をarchitectureで作り、reasoning RLとagentic servingへ伸ばす",
+  "deck": "DeepSeekの転換は、V2のMLA/DeepSeekMoE、R1/R1-Zeroのreasoning RL、V4-Flash-0731のagentic servingという別々の節目で追える。benchmark順位ではなく、各versionで何が設計・学習・deploymentの焦点になったかを見る。",
+  "deck_attribution_mode": "ATTRIBUTED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "deepseek-v2",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP001:6d60bb1c725326d0",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "deepseek-r1",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP001:f1bb7e9947331b4c",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "deepseek-v4-flash-0731",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p04-v2",
+      "block_type": "PARAGRAPH",
+      "text": "DeepSeek-V2は236B total / 21B activeのMoEで、Multi-head Latent Attention（MLA）とDeepSeekMoEをfamily-definingな効率化として導入した。128K contextとともに、paperはKV-cacheやgeneration throughputの改善を報告する。ただし数値比較はpaperのsetupに依存する。ここで重要なのは、DeepSeekがfrontier competitionへ入る際、parameter countの増大だけでなくmemory/serving costをarchitectureの中心課題に置いたことである。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepseek-v2",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p04-r1",
+      "block_type": "PARAGRAPH",
+      "text": "DeepSeek-R1 paperは、R1-Zeroをpreliminary SFTなしのlarge-scale RLとして、R1をcold-start dataとmulti-stage trainingを加えた別の経路として説明する。またQwen/Llamaをbaseにしたdistilled variantsもreleaseされた。native R1/R1-Zeroとdistillを一つのmodel subjectとして扱わないことが重要であり、reasoningの成果をどのtraining pathとmodel lineageへ帰属させるかを分離する必要がある。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP001:6d60bb1c725326d0",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepseek-r1",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p04-v4",
+      "block_type": "PARAGRAPH",
+      "text": "V4-Flash-0731のofficial model cardから直接確認できるcurrent endpointは、agentic capabilityの強化とvLLM、DSpark speculative decodingを用いるdeployment supportである。一方、この0731 artifactだけではbroader V4 previewのarchitecture全体を再確定できない。したがって本号では、V2で確立した効率architecture、R1のreasoning post-training、V4-Flashのagentic servingという確認可能な線だけをつなぎ、別sourceのV4仕様を補完的に持ち込まない。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP001:f1bb7e9947331b4c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepseek-v4-flash-0731",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "SP001-P04-deepseek-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: Paper-reported efficiency comparisons are setup-bound and are not generalized across unrelated serving stacks. / The broader DeepSeek V4 architecture is not silently imported into the V4-Flash-0731 Evidence boundary. / Paper-reported efficiency comparisons must retain the stated comparison setup and must not be generalized across unrelated serving stacks. / Native R1/R1-Zero and distilled Qwen/Llama-based variants are different model subjects and must remain separately attributed. / The bound 0731 update is sufficient for agentic/serving endpoint evidence but does not independently restate every architecture detail of the broader V4 preview. / Verify V4-Flash-0731 context architecture, agentic positioning, and official vLLM/DSpark deployment support.: The official 0731 model card verifies agentic positioning and vLLM/DSpark deployment support; full context-architecture verification is retained as a bounded limitation rather than inferred from separate V4 sources.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseek-v2",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP001:6d60bb1c725326d0",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseek-r1",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP001:f1bb7e9947331b4c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseek-v4-flash-0731",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "DeepSeek-V2のKV-cache/throughput等の数値比較を論文の評価条件から切り離さない。",
+      "block_ids": [
+        "p04-v2",
+        "p04-r1",
+        "p04-v4",
+        "SP001-P04-deepseek-boundaries"
+      ]
+    },
+    {
+      "requirement": "R1-Zero、R1、distilled Qwen/Llama variantsを異なるmodel subjectsとして明確に分離する。",
+      "block_ids": [
+        "p04-v2",
+        "p04-r1",
+        "p04-v4",
+        "SP001-P04-deepseek-boundaries"
+      ]
+    },
+    {
+      "requirement": "V4-Flash-0731で直接確認できるagentic positioningとvLLM/DSpark supportのみをcurrent endpointとして用い、別sourceのV4 architectureを補完しない。",
+      "block_ids": [
+        "p04-v2",
+        "p04-r1",
+        "p04-v4",
+        "SP001-P04-deepseek-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "Paper-reported efficiency comparisons are setup-bound and are not generalized across unrelated serving stacks.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P04-deepseek-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "The broader DeepSeek V4 architecture is not silently imported into the V4-Flash-0731 Evidence boundary.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P04-deepseek-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Paper-reported efficiency comparisons must retain the stated comparison setup and must not be generalized across unrelated serving stacks.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P04-deepseek-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Native R1/R1-Zero and distilled Qwen/Llama-based variants are different model subjects and must remain separately attributed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P04-deepseek-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "The bound 0731 update is sufficient for agentic/serving endpoint evidence but does not independently restate every architecture detail of the broader V4 preview.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P04-deepseek-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Verify V4-Flash-0731 context architecture, agentic positioning, and official vLLM/DSpark deployment support.: The official 0731 model card verifies agentic positioning and vLLM/DSpark deployment support; full context-architecture verification is retained as a bounded limitation rather than inferred from separate V4 sources.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P04-deepseek-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}

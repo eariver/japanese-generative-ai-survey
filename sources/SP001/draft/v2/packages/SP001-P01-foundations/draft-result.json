@@ -1,0 +1,232 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "SP001-P01-foundations",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "ba5976b35cfaefe9c978e55cf25a7984a5c968951b3903ec0d7882fbf885f289",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive-agent-drafting-synthesis",
+    "generated_at": "2026-08-23T02:41:00+09:00",
+    "run_reference": "SP001 Architecture-approved drafting continuation"
+  },
+  "headline": "前史と分岐点：一つの『中国モデル』ではなく、複数の系譜が立ち上がった",
+  "deck": "GLM-130B、初期Qwen、DeepSeek LLMをそれぞれの一次資料が直接支える範囲で置くと、後年の中国発Frontier AIは単一戦略の派生ではなく、異なる設計・公開・用途の系譜が並走し始めた過程として見えてくる。",
+  "deck_attribution_mode": "ATTRIBUTED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP001:dcc22d5fb97ef241",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "glm-130b",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP001:dcc22d5fb97ef241",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "glm-130b",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP001:b4feee60c7b42d7e",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "qwen-report-2023",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP001:b4feee60c7b42d7e",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "qwen-report-2023",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP001:8049a13f677871c4",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "deepseek-llm",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p01-glm130b",
+      "block_type": "PARAGRAPH",
+      "text": "GLM系譜の初期座標として残るGLM-130Bは、論文上で英中バイリンガルの130Bモデルとして提示され、100B級モデルを開く試みとして位置付けられた。学習安定化やINT4 deploymentも論文の主要論点だが、ここから後年のChatGLMやGLM-4/5の設計を逆算してはいけない。重要なのは、後のGLM系譜につながる大規模モデルが、当時の一次資料でどこまで公開・運用可能性を意識していたかを、その時点の記述に限定して読むことである。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP001:dcc22d5fb97ef241",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "glm-130b",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP001:dcc22d5fb97ef241",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "glm-130b",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p01-qwen-seed",
+      "block_type": "PARAGRAPH",
+      "text": "Qwenの最初期の技術報告は、base/chatのfamily構成とRLHFによるchat alignmentに加えて、tool use、planning、code-interpreter型のagent応用までをすでに扱っていた。したがってQwenの後年のagentic codingを突然現れた能力として描くより、早い段階からfamily/platformとtool利用を組み合わせる志向があり、それがQwen2.5以降の広い製品・モデル群へ接続したと見る方が資料に忠実である。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP001:b4feee60c7b42d7e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "qwen-report-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP001:b4feee60c7b42d7e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "qwen-report-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p01-deepseek-seed",
+      "block_type": "PARAGRAPH",
+      "text": "DeepSeek LLMは、MLAやDeepSeekMoEがfamilyを特徴付ける以前のベースラインとして扱う。本Evidence passでは初期familyとrelease contextは確認できる一方、全model sizeやdistribution detailを再確定するところまでは踏み込んでいない。ここで必要なのはV2以降の効率化を過去へ投影することではなく、『後に大きく設計転換するfamilyの出発点』として明示的に分離しておくことである。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP001:8049a13f677871c4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepseek-llm",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "SP001-P01-foundations-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: Cross-family benchmark ranking is excluded where model versions, benchmark conditions, or evaluation methods are incompatible. / Kimi's October 2023 launch/context-window chronology remains secondary-source qualified and is not used as an unqualified foundation-date fact. / Do not project later ChatGLM or Z.ai architecture choices backward onto GLM-130B without version-specific evidence. / Later Qwen license and architecture regimes must be bound to later model versions rather than inferred from this report. / This retained evidence note does not restate every model-size or distribution detail requested by Screening; later efficiency claims are sourced to DeepSeek-V2 and subsequent artifacts. / Verify the DeepSeek LLM baseline, model sizes, release context, and open-weight distribution from primary material.: The bound primary paper verifies the early family baseline and release context, but this Evidence pass does not independently lock every requested size and distribution detail; those details are not needed for Architecture selection.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP001:dcc22d5fb97ef241",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "glm-130b",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP001:b4feee60c7b42d7e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "qwen-report-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP001:8049a13f677871c4",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseek-llm",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "初期modelの性質を後年のsuccessorから逆算せず、各primary sourceが直接支える範囲だけでchronologyを作る。",
+      "block_ids": [
+        "p01-glm130b",
+        "p01-qwen-seed",
+        "p01-deepseek-seed",
+        "SP001-P01-foundations-boundaries"
+      ]
+    },
+    {
+      "requirement": "GLM、Qwen、DeepSeekを最初から別familyとして示し、Kimiの2023年起点はsecondary-only limitationとして後段へ引き継ぐ。",
+      "block_ids": [
+        "p01-glm130b",
+        "p01-qwen-seed",
+        "p01-deepseek-seed",
+        "SP001-P01-foundations-boundaries"
+      ]
+    },
+    {
+      "requirement": "Open/model-distributionの語をversionごとの実際のartifactとrightsへ結び付け、時代横断の単一license概念を置かない。",
+      "block_ids": [
+        "p01-glm130b",
+        "p01-qwen-seed",
+        "p01-deepseek-seed",
+        "SP001-P01-foundations-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "Cross-family benchmark ranking is excluded where model versions, benchmark conditions, or evaluation methods are incompatible.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P01-foundations-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Kimi's October 2023 launch/context-window chronology remains secondary-source qualified and is not used as an unqualified foundation-date fact.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P01-foundations-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Do not project later ChatGLM or Z.ai architecture choices backward onto GLM-130B without version-specific evidence.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P01-foundations-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Later Qwen license and architecture regimes must be bound to later model versions rather than inferred from this report.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P01-foundations-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "This retained evidence note does not restate every model-size or distribution detail requested by Screening; later efficiency claims are sourced to DeepSeek-V2 and subsequent artifacts.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P01-foundations-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Verify the DeepSeek LLM baseline, model sizes, release context, and open-weight distribution from primary material.: The bound primary paper verifies the early family baseline and release context, but this Evidence pass does not independently lock every requested size and distribution detail; those details are not needed for Architecture selection.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P01-foundations-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}

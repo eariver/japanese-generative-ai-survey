@@ -1,0 +1,196 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "SP001-P03-qwen",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "35c3d3ca791ba2f3a93c190344fc4542f89f92c88007e0d3f2274e44d35211f0",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive-agent-drafting-synthesis",
+    "generated_at": "2026-08-23T02:41:00+09:00",
+    "run_reference": "SP001 Architecture-approved drafting continuation"
+  },
+  "headline": "Qwen：広いfamily/platformを、hybrid reasoningとagentic codingへ接続する",
+  "deck": "Qwenの強みは単一の旗艦モデルではなく、specialized branchを含む広いfamily/platformを継続的に更新し、Qwen3でthinking/non-thinkingを統合し、Qwen3.6でagentic codingへ比重を移してきた点にある。",
+  "deck_attribution_mode": "ATTRIBUTED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP001:65713fcea4fed72a",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "qwen2.5",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP001:e5f3947dfdbbb053",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "qwen3",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP001:96cc8062b7e657bf",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "qwen3.6-27b",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p03-qwen25",
+      "block_type": "PARAGRAPH",
+      "text": "Qwen2.5 technical reportは、training corpusを7Tから18T tokenへ拡大し、SFTとmulti-stage RLを組み合わせたと説明する。同時にMath、Coder、QwQ、multimodal系へつながる広いfamilyを形成しており、Qwenを一つのgeneral modelとして見るより、用途別branchを抱えるplatformとして読む根拠になる。後続のreasoning戦略は、このfamily breadthの上に構築された。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP001:65713fcea4fed72a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "qwen2.5",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p03-qwen3",
+      "block_type": "PARAGRAPH",
+      "text": "Qwen3は0.6Bから235Bまでdense/MoEを含むfamilyを展開し、thinkingとnon-thinkingを一つの系統で扱い、thinking budgetを制御する設計をtechnical reportで提示した。reportはQwen3をApache-2.0でpublicly accessibleと位置付ける。reasoningを別モデルへ切り分けるのではなく、同じfamily内で利用形態を切り替えることが、Qwen3のdistribution strategyと相性のよい特徴になった。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP001:e5f3947dfdbbb053",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "qwen3",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p03-qwen36",
+      "block_type": "PARAGRAPH",
+      "text": "current endpointとして扱うQwen3.6-27Bのofficial model cardは、agentic coding、repository-level reasoning、過去messageをまたぐthinking contextの保持、multimodal family scope、Apache-2.0 distributionを強調する。これらはvendor claimとして読む必要があるが、Qwenの軸足が『広いopen-weight family』から『長い作業履歴を扱うcoding/agent foundation』へ連続的に伸びていることは確認できる。hosted proprietary variantとopen-weight artifactは、rightsやdistributionを論じる際には別物のままである。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP001:96cc8062b7e657bf",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "qwen3.6-27b",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "SP001-P03-qwen-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: Qwen benchmark and capability statements remain tied to the named report/model card and are not normalized into a cross-family ranking. / Later Qwen architecture or licensing properties are not projected backward onto the 2023 initial Qwen release. / Hosted proprietary variants and open-weight variants must remain distinct artifacts when discussing distribution or rights. / Reported benchmark results remain evaluation-specific and are not normalized against other families. / Capability statements are vendor/model-card claims; architecture inheritance from Qwen3.5 should not be converted into independent benchmark superiority.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP001:65713fcea4fed72a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "qwen2.5",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP001:e5f3947dfdbbb053",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "qwen3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP001:96cc8062b7e657bf",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "qwen3.6-27b",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "Qwen2.5のplatform breadthとspecialized branchesをQwen3以降のreasoning戦略への橋として扱う。",
+      "block_ids": [
+        "p03-qwen25",
+        "p03-qwen3",
+        "p03-qwen36",
+        "SP001-P03-qwen-boundaries"
+      ]
+    },
+    {
+      "requirement": "Qwen3のdense/MoE familyとthinking-budget controlをversion-specificに説明する。",
+      "block_ids": [
+        "p03-qwen25",
+        "p03-qwen3",
+        "p03-qwen36",
+        "SP001-P03-qwen-boundaries"
+      ]
+    },
+    {
+      "requirement": "hosted proprietary variantsとopen-weight artifactsをdistribution/licensing上同一視しない。",
+      "block_ids": [
+        "p03-qwen25",
+        "p03-qwen3",
+        "p03-qwen36",
+        "SP001-P03-qwen-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "Qwen benchmark and capability statements remain tied to the named report/model card and are not normalized into a cross-family ranking.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P03-qwen-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Later Qwen architecture or licensing properties are not projected backward onto the 2023 initial Qwen release.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P03-qwen-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Hosted proprietary variants and open-weight variants must remain distinct artifacts when discussing distribution or rights.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P03-qwen-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Reported benchmark results remain evaluation-specific and are not normalized against other families.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P03-qwen-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Capability statements are vendor/model-card claims; architecture inheritance from Qwen3.5 should not be converted into independent benchmark superiority.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "SP001-P03-qwen-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}
