@@ -44,14 +44,14 @@ jobs:
         continue-on-error: true
         run: python -m unittest discover -s tests -p 'test_*.py' -v
 
-  w33-evidence:
-    if: github.event_name == 'pull_request' && github.head_ref == 'temp/w33-evidence-stage'
+  w33-selection:
+    if: github.event_name == 'pull_request' && github.head_ref == 'temp/w33-selection-stage'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout execution branch
+      - name: Checkout selection execution branch
         uses: actions/checkout@v6
         with:
-          ref: temp/w33-evidence-stage
+          ref: temp/w33-selection-stage
           fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -59,25 +59,20 @@ jobs:
           python-version: '3.12'
       - name: Install Core v2 dependencies
         run: python -m pip install -r config/survey-production-v2-requirements.txt
-      - name: Build fresh Evidence Materiality Completeness
-        run: PYTHONPATH=. python automation/w33_evidence_entry.py
-      - name: Validate exact stage artifacts under current implementation
+      - name: Derive Matrix and establish fresh W33 Selection
+        run: PYTHONPATH=. python automation/w33_selection_once.py
+      - name: Validate Selection stage exact artifacts
         run: |
-          set -euo pipefail
-          EACC=$(find sources/2026-W33/evidence/v2/accepted -name evidence-accepted.json -type f | head -1)
-          VACC=$(find sources/2026-W33/evidence/v2/edition-views/accepted -name edition-views-accepted.json -type f | head -1)
           PYTHONPATH=. python scripts/survey_stage_validation_v2.py --repo-root . --config config/survey-production-v2.json \
             --state sources/2026-W33/production-state.json \
-            --artifact evidence-acceptance="$EACC" \
-            --artifact edition-views-acceptance="$VACC" \
-            --artifact materiality-ledger=sources/2026-W33/materiality-ledger-v2.json \
-            --artifact profile-completeness=sources/2026-W33/profile-completeness-v2.json \
-            --output sources/2026-W33/orchestration/v2/reviews/evidence-core-stage-contract.json
-      - name: Persist generated production artifacts
+            --artifact candidate-matrix=sources/2026-W33/candidate-matrix-v2.json \
+            --artifact candidate-selection=sources/2026-W33/candidate-selection-v2.json \
+            --output sources/2026-W33/orchestration/v2/reviews/selection-core-stage-contract.json
+      - name: Persist fresh Selection artifacts
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add sources/2026-W33/evidence sources/2026-W33/materiality-ledger-v2.json sources/2026-W33/profile-completeness-v2.json sources/2026-W33/orchestration/v2/reviews docs/checkpoints/2026-W33-core-v2-compilation-session-worklog.md
-          git commit -m 'Build fresh 2026-W33 Evidence Materiality completeness'
-          git push origin HEAD:temp/w33-evidence-stage
+          git add sources/2026-W33/candidate-matrix-v2.json sources/2026-W33/candidate-selection-v2.json sources/2026-W33/orchestration/v2/reviews docs/checkpoints/2026-W33-core-v2-compilation-session-worklog.md
+          git commit -m 'Establish fresh 2026-W33 Candidate Selection'
+          git push origin HEAD:temp/w33-selection-stage
