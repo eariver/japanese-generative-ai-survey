@@ -35,6 +35,7 @@ on:
       - "schemas/action-*-v2.schema.json"
       - "schemas/stage-validation-attestation-v2.schema.json"
       - "schemas/stage-handoff-v2.schema.json"
+      - "schemas/stage-handoff-request-v2.schema.json"
       - "schemas/review-finding-v2.schema.json"
       - "schemas/repair-set-v2.schema.json"
       - "scripts/survey_*_v2.py"
@@ -75,6 +76,7 @@ on:
       - "schemas/action-*-v2.schema.json"
       - "schemas/stage-validation-attestation-v2.schema.json"
       - "schemas/stage-handoff-v2.schema.json"
+      - "schemas/stage-handoff-request-v2.schema.json"
       - "schemas/review-finding-v2.schema.json"
       - "schemas/repair-set-v2.schema.json"
       - "scripts/survey_*_v2.py"
@@ -156,6 +158,7 @@ jobs:
           tests.test_survey_orchestrator_v2
           tests.test_survey_orchestrator_provenance_v2
           tests.test_survey_handoff_v2
+          tests.test_survey_handoff_request_v2
           tests.test_survey_findings_v2
           -v
       - name: Parse v2 JSON contracts
@@ -199,6 +202,7 @@ jobs:
               Path('schemas/action-result-v2.schema.json'),
               Path('schemas/stage-validation-attestation-v2.schema.json'),
               Path('schemas/stage-handoff-v2.schema.json'),
+              Path('schemas/stage-handoff-request-v2.schema.json'),
               Path('schemas/review-finding-v2.schema.json'),
               Path('schemas/repair-set-v2.schema.json'),
           ]
