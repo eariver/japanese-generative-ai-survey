@@ -174,9 +174,18 @@ jobs:
           STATE: ${{ steps.request.outputs.state }}
         run: |
           set -euo pipefail
-          PYTHONPATH=. python scripts/survey_agent_control_v2.py \
-            --repo-root . --config config/survey-production-v2.json \
-            validate-state --state "$STATE"
+          PYTHONPATH=. python - <<'PY'
+          import os, pathlib
+          from scripts import survey_agent_control_v2 as agent
+          from scripts import survey_production_v2 as core
+          root=pathlib.Path('.').resolve()
+          state_path=(root/os.environ['STATE']).resolve()
+          state=core.load_json(state_path)
+          cfg=core.load_json(root/core.DEFAULT_CONFIG)
+          errors=agent.validate_agent_state(root,cfg,state)
+          if errors: raise SystemExit('; '.join(errors))
+          print('Production State validation PASS')
+          PY
 
       - name: Commit compact control records to execution branch
         shell: bash
