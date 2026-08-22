@@ -43,26 +43,34 @@ class SurveyAgentControlV2Tests(unittest.TestCase):
         return temp, profile_path, state_path, profile
 
     def review_file(self, base: Path, check_id: str, *, kind: str = "AGENT_RESEARCH") -> Path:
-        result_path = None
-        if kind == "DETERMINISTIC":
-            result = base / "review-results" / f"{check_id}.json"
-            core.write_json(result, {"check_id": check_id, "status": "PASS"})
-            result_path = str(result.relative_to(self.root))
-        path = base / "reviews" / f"{check_id}.json"
-        core.write_json(
-            path,
+        core_result = base / "review-results" / "CORE_STAGE_CONTRACT.json"
+        core.write_json(core_result, {"check_id": "CORE_STAGE_CONTRACT", "status": "PASS"})
+        rows = [
             {
-                "reviews": [
-                    {
-                        "check_id": check_id,
-                        "kind": kind,
-                        "executor": "ChatGPT" if kind != "DETERMINISTIC" else "fixture-validator",
-                        "evidence": "reviewed the exact stage outputs and found the stage ready to advance",
-                        **({"result_path": result_path} if result_path is not None else {}),
-                    }
-                ]
-            },
-        )
+                "check_id": "CORE_STAGE_CONTRACT",
+                "kind": "DETERMINISTIC",
+                "executor": "survey_stage_validation_v2 fixture",
+                "evidence": "fixture deterministic stage-contract validation",
+                "result_path": str(core_result.relative_to(self.root)),
+            }
+        ]
+        if check_id != "CORE_STAGE_CONTRACT":
+            result_path = None
+            if kind == "DETERMINISTIC":
+                result = base / "review-results" / f"{check_id}.json"
+                core.write_json(result, {"check_id": check_id, "status": "PASS"})
+                result_path = str(result.relative_to(self.root))
+            rows.append(
+                {
+                    "check_id": check_id,
+                    "kind": kind,
+                    "executor": "ChatGPT" if kind != "DETERMINISTIC" else "fixture-validator",
+                    "evidence": "reviewed the exact stage outputs and found the stage ready to advance",
+                    **({"result_path": result_path} if result_path is not None else {}),
+                }
+            )
+        path = base / "reviews" / f"{check_id}.json"
+        core.write_json(path, {"reviews": rows})
         return path
 
     def artifact_map(self, base: Path, rows: dict[str, str]) -> dict[str, Path]:
