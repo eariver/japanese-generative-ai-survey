@@ -703,7 +703,8 @@ def validate_state_semantics(repo_root: Path, cfg: dict[str, Any], state: dict[s
             errors.extend(authority_errors)
             architecture = source_root / "architecture-v2.json"
             review = source_root / "architecture-review-summary-v2.json"
-            if arch_status == "approved" and approval_path is not None and architecture.is_file() and review.is_file():
+            attention = source_root / "architecture-review-attention-v2.json"
+            if arch_status == "approved" and approval_path is not None and architecture.is_file() and review.is_file() and attention.is_file():
                 try:
                     record = load_json(approval_path)
                 except (OSError, ValueError, json.JSONDecodeError):
@@ -714,10 +715,11 @@ def validate_state_semantics(repo_root: Path, cfg: dict[str, Any], state: dict[s
                         or record.get("issue_id") != state.get("issue_id")
                         or record.get("architecture_sha256") != sha256_file(architecture)
                         or record.get("architecture_review_summary_sha256") != sha256_file(review)
+                        or record.get("architecture_review_attention_sha256") != sha256_file(attention)
                     ):
                         errors.append("Architecture Approval Record does not bind current canonical review bytes")
             elif arch_status == "approved":
-                errors.append("approved Architecture Review lacks canonical Architecture/Review bytes")
+                errors.append("approved Architecture Review lacks canonical Architecture/Review/Attention bytes")
 
     pub_index = LIFECYCLE.index("RELEASE_CANDIDATE")
     pub_status = state.get("human_gates", {}).get("publication_preview")
@@ -732,8 +734,48 @@ def validate_state_semantics(repo_root: Path, cfg: dict[str, Any], state: dict[s
     elif pub_authority is None:
         errors.append("resolved Publication Preview lacks pinned gate provenance")
     else:
-        auth_errors, _ = _validate_authority_ref(repo_root, pub_authority, None, "Publication Preview")
-        errors.extend(auth_errors)
+        if profile is None:
+            errors.append("Publication Preview authority cannot be validated without Production Profile")
+        else:
+            source_root = repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
+            approval = source_root / cfg["state_authority"]["publication_preview_approval_path"]
+            auth_errors, approval_path = _validate_authority_ref(repo_root, pub_authority, approval, "Publication Preview")
+            errors.extend(auth_errors)
+            candidate = source_root / "publication/v2/publication-candidate-v2.json"
+            if pub_status == "approved" and approval_path is not None and candidate.is_file():
+                try:
+                    record = load_json(approval_path)
+                    candidate_record = load_json(candidate)
+                except (OSError, ValueError, json.JSONDecodeError):
+                    errors.append("Publication Preview authority bytes unreadable")
+                else:
+                    candidate_rel = str(candidate.resolve().relative_to(repo_root.resolve()))
+                    pdf_ref = candidate_record.get("pdf") if isinstance(candidate_record.get("pdf"), dict) else {}
+                    pdf_path_value = pdf_ref.get("path")
+                    pdf_path = None
+                    if isinstance(pdf_path_value, str):
+                        try:
+                            pdf_path = repo_local_path(repo_root, pdf_path_value, "Publication Preview PDF")
+                        except ValueError:
+                            pdf_path = None
+                    if (
+                        record.get("decision") != "APPROVED"
+                        or record.get("gate") != "PUBLICATION_PREVIEW"
+                        or record.get("issue_id") != state.get("issue_id")
+                        or record.get("publication_candidate_path") != candidate_rel
+                        or record.get("publication_candidate_sha256") != sha256_file(candidate)
+                        or candidate_record.get("issue_id") != state.get("issue_id")
+                        or candidate_record.get("status") != "READY_FOR_PUBLICATION_PREVIEW"
+                        or record.get("pdf_path") != pdf_ref.get("path")
+                        or record.get("pdf_sha256") != pdf_ref.get("sha256")
+                        or record.get("page_count") != pdf_ref.get("page_count")
+                        or pdf_path is None
+                        or not pdf_path.is_file()
+                        or sha256_file(pdf_path) != pdf_ref.get("sha256")
+                    ):
+                        errors.append("Publication Preview Approval Record does not bind current canonical Candidate/PDF bytes")
+            elif pub_status == "approved":
+                errors.append("approved Publication Preview lacks canonical Candidate bytes")
 
     try:
         expected_action, expected_terminal = derive_control_fields(state, cfg)

@@ -43,7 +43,8 @@ DRAFT_RESULT_FIELDS = {
 }
 APPROVAL_FIELDS = {
     "schema_version", "approval_id", "issue_id", "gate", "decision",
-    "architecture_sha256", "architecture_review_summary_sha256", "reviewed_by",
+    "architecture_sha256", "architecture_review_summary_sha256",
+    "architecture_review_attention_sha256", "reviewed_by",
     "reviewed_at", "review_reference",
 }
 ATTRIBUTION_MODES = {"NONE", "FACTUAL", "ATTRIBUTED", "SOCIAL", "INFERENCE", "MIXED"}
@@ -119,6 +120,11 @@ def validate_architecture_approval(
         errors.append("Architecture Approval Record does not bind exact Architecture bytes")
     if approval.get("architecture_review_summary_sha256") != core.sha256_file(review_summary_path):
         errors.append("Architecture Approval Record does not bind exact Review Summary bytes")
+    attention_path = architecture_path.parent / "architecture-review-attention-v2.json"
+    if not attention_path.is_file():
+        errors.append("Architecture Approval Record requires canonical Review Attention bytes")
+    elif approval.get("architecture_review_attention_sha256") != core.sha256_file(attention_path):
+        errors.append("Architecture Approval Record does not bind exact Review Attention bytes")
     for key in ("approval_id", "reviewed_by", "review_reference"):
         if not _nonempty(approval.get(key)):
             errors.append(f"Architecture Approval Record {key} required")

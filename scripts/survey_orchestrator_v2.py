@@ -22,6 +22,8 @@ from pathlib import Path
 from typing import Any, Callable
 
 from scripts import survey_drafting_v2 as drafting
+from scripts import survey_publication_v2 as publication
+from scripts import survey_review_attention_v2 as review_attention
 from scripts import survey_production_v2 as core
 
 Handler = Callable[[Path, dict[str, Any], dict[str, Any], dict[str, Any], str], list[dict[str, Any]]]
@@ -289,10 +291,14 @@ def plan_action(repo_root: Path, cfg: dict[str, Any], state_path: Path, observed
         if not isinstance(handler, str) or not handler or not isinstance(validator, str) or not validator or not isinstance(validator_version, str) or not validator_version:
             raise ValueError(f"stage {lifecycle} requires handler + semantic validator identity")
         next_state = stage["next_state"]
+        if stage.get("handoff_required") is True:
+            handoff_rel = f"{profile['paths']['source_root']}/orchestration/v2/handoffs/{lifecycle}.json"
+            handoff_path = core.repo_local_path(repo_root, handoff_rel, f"Stage Handoff {lifecycle}")
+            if not handoff_path.is_file():
+                raise ValueError(f"required Stage Handoff missing for {lifecycle}: {handoff_rel}")
+            required_inputs.append(_artifact_ref("stage-handoff", handoff_rel, core.sha256_file(handoff_path)))
         expected_outputs = [_expected_output(checkpoint, checkpoint=checkpoint) for checkpoint in stage.get("checkpoints", [])]
         expected_outputs.extend(_configured_expected_artifacts(stage, profile))
-        if handler == "stage:publication-candidate":
-            expected_outputs.append(_expected_output("publication-candidate"))
 
     if action_kind in EXECUTABLE_KINDS:
         retry_policy, idempotency = _retry_and_idempotency(cfg, stage, action_kind)
@@ -600,7 +606,7 @@ def _required_input_by_name(spec: dict[str, Any], name: str) -> dict[str, Any]:
     return rows[0]
 
 
-def _validate_architecture_attestation(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any], spec: dict[str, Any], architecture_input: dict[str, Any], review_input: dict[str, Any]) -> None:
+def _validate_architecture_attestation(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any], spec: dict[str, Any], architecture_input: dict[str, Any], review_input: dict[str, Any], attention_input: dict[str, Any]) -> None:
     attestation_input = _required_input_by_name(spec, "checkpoint-attestation:architecture")
     authority = state["checkpoint_provenance"].get("architecture")
     if not isinstance(authority, dict) or authority.get("path") != attestation_input.get("path") or authority.get("sha256") != attestation_input.get("sha256"):
@@ -615,7 +621,7 @@ def _validate_architecture_attestation(repo_root: Path, cfg: dict[str, Any], sta
     if attestation.get("validator") != stage.get("validator") or attestation.get("validator_version") != stage.get("validator_version"):
         raise ValueError("Architecture checkpoint attestation validator identity drift")
     outputs = {row.get("name"): row for row in attestation.get("outputs", []) if isinstance(row, dict)}
-    for expected in (architecture_input, review_input):
+    for expected in (architecture_input, review_input, attention_input):
         actual = outputs.get(expected["name"])
         if actual is None or actual.get("path") != expected.get("path") or actual.get("sha256") != expected.get("sha256"):
             raise ValueError(f"Architecture validation attestation does not bind reviewed output: {expected['name']}")
@@ -648,13 +654,19 @@ def apply_architecture_approval(repo_root: Path, cfg: dict[str, Any], state_path
 
     architecture_rel = _relative_repo_path(repo_root, architecture_path, "Architecture")
     review_rel = _relative_repo_path(repo_root, review_summary_path, "Architecture Review Summary")
+    attention_path = source_root / "architecture-review-attention-v2.json"
+    attention_rel = _relative_repo_path(repo_root, attention_path, "Architecture Review Attention")
     architecture_input = _required_input_by_name(spec, "issue-architecture")
     review_input = _required_input_by_name(spec, "architecture-review-summary")
+    attention_input = _required_input_by_name(spec, "architecture-review-attention")
     if architecture_input.get("path") != architecture_rel or architecture_input.get("sha256") != core.sha256_file(architecture_path):
         raise ValueError("Architecture bytes differ from Human Gate Action Spec")
     if review_input.get("path") != review_rel or review_input.get("sha256") != core.sha256_file(review_summary_path):
         raise ValueError("Architecture Review Summary bytes differ from Human Gate Action Spec")
-    _validate_architecture_attestation(repo_root, cfg, state, spec, architecture_input, review_input)
+    if attention_input.get("path") != attention_rel or attention_input.get("sha256") != core.sha256_file(attention_path):
+        raise ValueError("Architecture Review Attention bytes differ from Human Gate Action Spec")
+    review_attention.validate_attention(repo_root, attention_path)
+    _validate_architecture_attestation(repo_root, cfg, state, spec, architecture_input, review_input, attention_input)
 
     plan = core.load_json(architecture_path)
     review = core.load_json(review_summary_path)
@@ -671,6 +683,7 @@ def apply_architecture_approval(repo_root: Path, cfg: dict[str, Any], state_path
         "issue_id": state["issue_id"],
         "architecture_sha256": architecture_input["sha256"],
         "review_summary_sha256": review_input["sha256"],
+        "review_attention_sha256": attention_input["sha256"],
         "reviewed_at": core.iso_utc(reviewed_at),
         "review_reference": review_reference,
     }
@@ -682,6 +695,7 @@ def apply_architecture_approval(repo_root: Path, cfg: dict[str, Any], state_path
         "decision": "APPROVED",
         "architecture_sha256": architecture_input["sha256"],
         "architecture_review_summary_sha256": review_input["sha256"],
+        "architecture_review_attention_sha256": attention_input["sha256"],
         "reviewed_by": reviewed_by,
         "reviewed_at": core.iso_utc(reviewed_at),
         "review_reference": review_reference,
@@ -714,6 +728,80 @@ def apply_architecture_approval(repo_root: Path, cfg: dict[str, Any], state_path
         "checkpoint": None,
         "path": _relative_repo_path(repo_root, approval_path, "Architecture Approval Record"),
         "sha256": core.sha256_file(approval_path),
+    }
+    result = _result_payload(
+        spec, spec_path, "SUCCEEDED", observed, 1, reviewed_at, reviewed_at,
+        before_sha, after_sha, [output], [], None,
+    )
+    _commit_state_and_result(state_path, updated, result_path, result)
+    return result
+
+
+def apply_publication_preview_approval(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    state_path: Path,
+    spec_path: Path,
+    candidate_path: Path,
+    approval_path: Path,
+    result_path: Path,
+    reviewed_by: str,
+    reviewed_at: datetime,
+    review_reference: str,
+) -> dict[str, Any]:
+    _recover_pending_transaction(state_path, result_path)
+    if result_path.exists():
+        raise ValueError(f"refusing to overwrite Publication Preview Action Result: {result_path}")
+    state = core.load_json(state_path)
+    observed = verify_runtime_implementation(repo_root, cfg, state)
+    expected = plan_action(repo_root, cfg, state_path, observed)
+    spec = core.load_json(spec_path)
+    if not _spec_matches_current_plan(spec, expected):
+        raise ValueError("Publication Preview Action Spec is stale or divergent")
+    if spec["action_kind"] != "HUMAN_GATE" or spec["handler"] != "human:publication-preview":
+        raise ValueError("current Action Spec is not Publication Preview")
+    if state["lifecycle_state"] != "RELEASE_CANDIDATE":
+        raise ValueError("Publication Preview approval requires RELEASE_CANDIDATE lifecycle")
+    if state["human_gates"]["publication_preview"] != "pending":
+        raise ValueError("Publication Preview gate is not pending")
+
+    profile = core.load_json(core.repo_local_path(repo_root, state["profile"]["path"], "state.profile.path"))
+    source_root = core.repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
+    canonical_approval = (source_root / cfg["state_authority"]["publication_preview_approval_path"]).resolve()
+    if approval_path.resolve() != canonical_approval:
+        raise ValueError("Publication Preview Approval Record must use canonical configured path")
+    candidate_rel = _relative_repo_path(repo_root, candidate_path, "Publication Candidate")
+    candidate_input = _required_input_by_name(spec, "publication-candidate")
+    if candidate_input.get("path") != candidate_rel or candidate_input.get("sha256") != core.sha256_file(candidate_path):
+        raise ValueError("Publication Candidate bytes differ from Human Gate Action Spec")
+    publication.validate_candidate(repo_root, candidate_path, issue_id=state["issue_id"])
+    publication.build_preview_approval(
+        repo_root, candidate_path, approval_path, reviewed_by, reviewed_at, review_reference
+    )
+    approval = publication.validate_preview_approval(repo_root, approval_path, issue_id=state["issue_id"])
+    if approval["publication_candidate_sha256"] != candidate_input["sha256"]:
+        raise ValueError("Publication Preview approval does not bind Human Gate Candidate bytes")
+
+    before_sha = core.sha256_file(state_path)
+    authority = {
+        "path": _relative_repo_path(repo_root, approval_path, "Publication Preview Approval Record"),
+        "sha256": core.sha256_file(approval_path),
+    }
+    updated = deepcopy(state)
+    updated["human_gates"]["publication_preview"] = "approved"
+    updated["human_gate_provenance"]["publication_preview"] = authority
+    updated["machine_checkpoints"]["publication_preview"] = "passed"
+    updated["checkpoint_provenance"]["publication_preview"] = authority
+    updated = core.refresh_state_control(updated, cfg)
+    semantic_errors = core.validate_state_semantics(repo_root, cfg, updated)
+    if semantic_errors:
+        raise ValueError("Publication Preview approval would create inconsistent Production State: " + "; ".join(semantic_errors))
+    after_sha = core.sha256_bytes(core.json_bytes(updated))
+    output = {
+        "name": "publication-preview-approval",
+        "checkpoint": None,
+        "path": authority["path"],
+        "sha256": authority["sha256"],
     }
     result = _result_payload(
         spec, spec_path, "SUCCEEDED", observed, 1, reviewed_at, reviewed_at,
@@ -784,6 +872,13 @@ def build_parser() -> argparse.ArgumentParser:
     approve.add_argument("--reviewed-by", required=True)
     approve.add_argument("--reviewed-at", required=True)
     approve.add_argument("--review-reference", required=True)
+
+    approve_pub = sub.add_parser("approve-publication-preview")
+    for key in ("state", "action-spec", "candidate", "approval", "result"):
+        approve_pub.add_argument(f"--{key}", required=True)
+    approve_pub.add_argument("--reviewed-by", required=True)
+    approve_pub.add_argument("--reviewed-at", required=True)
+    approve_pub.add_argument("--review-reference", required=True)
     return parser
 
 
@@ -815,6 +910,20 @@ def main() -> int:
                 _path(root, args.action_spec),
                 _path(root, args.architecture),
                 _path(root, args.review_summary),
+                _path(root, args.approval),
+                _path(root, args.result),
+                args.reviewed_by,
+                core.parse_instant(args.reviewed_at),
+                args.review_reference,
+            )
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+            return 0
+        if args.command == "approve-publication-preview":
+            result = apply_publication_preview_approval(
+                root, cfg,
+                _path(root, args.state),
+                _path(root, args.action_spec),
+                _path(root, args.candidate),
                 _path(root, args.approval),
                 _path(root, args.result),
                 args.reviewed_by,
