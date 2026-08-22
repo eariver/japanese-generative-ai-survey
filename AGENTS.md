@@ -16,6 +16,8 @@ From that instruction, ChatGPT is the primary research/editorial operator. It mu
 
 **Do not stop for ordinary internal work.** Source Intake, search expansion, Screening, Evidence work, Completeness/materiality review, Candidate Selection, Architecture preparation, drafting, synthesis, deterministic QA, semantic/editorial review, PDF build, agent visual review, Freeze preparation, retryable CI/tool failures, and generic repairs that do not change approved scope/bytes are not user decision points.
 
+The operating default is continuous progression toward the requested Gate. Do not ask the user to confirm routine next steps, approve internal transitions, choose among repository-resolvable mechanics, or authorize ordinary retries. A production session may pause only at a normal Human Gate, a genuine Owner-level Exception Gate, or an unavoidable manual Grok instruction/result transport when the external Grok execution itself cannot be performed directly. Once that Grok result is available, resume automatically without asking for another routine confirmation.
+
 X/Grok collection is a Source Intake subflow, not a third Human Gate. Read `docs/survey-production-core-v2-x-source-intake.md` whenever producing an edition. Weekly requires a Grok/X intake run. Retrospective Period and Thematic work require an explicit ChatGPT `REQUIRED` or `NOT_REQUIRED` decision with rationale; Generative AI Foundations uses the dedicated series Drive category when X is material. ChatGPT creates the run-specific Grok instruction/prompt and provisions the exact Google Drive target below `Grok_X_SourseIntake/<category>/<edition>/<run-id>/`. Grok writes the result only to that Drive run folder. ChatGPT then reads the Drive file, imports its exact bytes into repository Raw storage, and records either Discovery linkage or an explicit no-material-discovery disposition before Discovery Acceptance may pass. Waiting for an external Grok result is an operational dependency while State remains in Source Intake; it is not Human approval or an Exception Gate by itself.
 
 The only normal Human Gates are:
@@ -49,11 +51,13 @@ The mandatory sequence is:
 finish every intended candidate change
 -> finish all required regressions and repository synchronization
 -> freeze one candidate head SHA
--> audit all five acceptance priorities from zero on that exact head
+-> audit all six acceptance priorities from zero on that exact head
 -> do not mutate the candidate during the audit
 ```
 
-If any audit finding requires a repository change, **invalidate the entire audit**, complete all repairs, freeze a new candidate head, and rerun all five points from point 1. Never carry forward earlier PASS verdicts after changing the candidate.
+The sixth point independently verifies **autonomous progression / stop discipline**: normal production must not repeatedly stop for internally resolvable work. Only an actual Human Gate, genuine Owner-level Exception Gate, or unavoidable manual Grok transport may interrupt progress toward the requested Gate.
+
+If any audit finding requires a repository change, **invalidate the entire audit**, complete all repairs, freeze a new candidate head, and rerun all six points from point 1. Never carry forward earlier PASS verdicts after changing the candidate.
 
 The final audit result must bind the exact candidate SHA. Record it in PR/Human-review metadata rather than committing a post-audit PASS document that would itself change the audited SHA.
 
