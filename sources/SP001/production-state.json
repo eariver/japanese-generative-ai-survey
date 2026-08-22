@@ -3,7 +3,7 @@
   "issue_id": "SP001",
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
-  "lifecycle_state": "SELECTION_COMPLETE",
+  "lifecycle_state": "ARCHITECTURE_ESTABLISHED",
   "profile": {
     "path": "sources/SP001/production-profile.json",
     "sha256": "91836f2f255bec01887d85619da792c49a74bf9a7ccc1c861f81698e40642f44"
@@ -31,8 +31,8 @@
     "publication_preview": null
   },
   "target_gate": "ARCHITECTURE_REVIEW",
-  "next_action": "stage:architecture",
-  "terminal_reason": null,
+  "next_action": "ARCHITECTURE_REVIEW",
+  "terminal_reason": "HUMAN_GATE_REACHED",
   "exception_gate": {
     "status": "inactive",
     "reason": null
@@ -44,7 +44,7 @@
     "materiality": "passed",
     "completeness": "passed",
     "selection": "passed",
-    "architecture": "pending",
+    "architecture": "passed",
     "draft": "pending",
     "validation": "pending",
     "publication_preview": "pending",
@@ -76,7 +76,10 @@
       "path": "sources/SP001/orchestration/v2/checkpoints/EVIDENCE_REVIEWED.json",
       "sha256": "6b2ad68d58d9eb4871c5e407e57d2ed83843dd635f427968e6642857576bb763"
     },
-    "architecture": null,
+    "architecture": {
+      "path": "sources/SP001/orchestration/v2/checkpoints/SELECTION_COMPLETE.json",
+      "sha256": "3b0f1bc6e1cdc2b41e25c04282e0b3317659eb5cc2a0616de90891b7f2556e88"
+    },
     "draft": null,
     "validation": null,
     "publication_preview": null,
@@ -119,6 +122,12 @@
       "to": "SELECTION_COMPLETE",
       "recorded_at": "2026-08-22T17:12:05Z",
       "repository_commit_sha": "3638fa3431448d62b353afba0d961b21ae6dfa79"
+    },
+    {
+      "from": "SELECTION_COMPLETE",
+      "to": "ARCHITECTURE_ESTABLISHED",
+      "recorded_at": "2026-08-22T17:14:30Z",
+      "repository_commit_sha": "340fdf5bdd436c7859bd12163ff39b207b2ef932"
     }
   ]
 }
