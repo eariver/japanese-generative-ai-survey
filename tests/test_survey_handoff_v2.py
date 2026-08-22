@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import unittest
 from pathlib import Path
 
@@ -20,6 +21,18 @@ class SurveyHandoffV2Tests(unittest.TestCase):
         helper.setUp()
         temp, root, cfg, state_path, pinned = helper.sandbox()
         self.addCleanup(temp.cleanup)
+        # Handoff is a compatibility surface, not current contract authority. Keep
+        # its schemas local to the compatibility fixture rather than re-adding
+        # them to config.contract_files.pipeline.
+        repo_root = Path(".").resolve()
+        for rel in (
+            "schemas/stage-handoff-v2.schema.json",
+            "schemas/stage-handoff-request-v2.schema.json",
+        ):
+            src = repo_root / rel
+            dst = root / rel
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dst)
         cfg["orchestration"]["stage_plan"]["ISSUE_INITIALIZED"]["handoff_required"] = True
         return root, cfg, state_path, pinned
 
