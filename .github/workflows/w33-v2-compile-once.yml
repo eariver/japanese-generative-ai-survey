@@ -23,6 +23,17 @@ jobs:
           ref: weekly/2026-W33-v2-work
           fetch-depth: 0
 
+      - name: Record workflow start marker
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          printf 'started_at=%s\nsource_sha=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$GITHUB_SHA" > automation/w33-v2-workflow-started.txt
+          git add automation/w33-v2-workflow-started.txt
+          git commit -m 'Mark W33 v2 compile workflow start'
+          git push origin HEAD:weekly/2026-W33-v2-work
+
       - name: Fetch immutable legacy fixture branch
         run: git fetch origin weekly/2026-W33-work:refs/remotes/origin/weekly/2026-W33-work
 
@@ -60,8 +71,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add sources/2026-W33
           git commit -m 'Compile 2026-W33 to Architecture Review with Core v2'
           git push origin HEAD:weekly/2026-W33-v2-work
