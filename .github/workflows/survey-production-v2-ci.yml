@@ -34,6 +34,7 @@ on:
       - "schemas/merge-verification-v2.schema.json"
       - "schemas/action-*-v2.schema.json"
       - "schemas/stage-validation-attestation-v2.schema.json"
+      - "schemas/stage-handoff-v2.schema.json"
       - "schemas/review-finding-v2.schema.json"
       - "schemas/repair-set-v2.schema.json"
       - "scripts/survey_*_v2.py"
@@ -73,6 +74,7 @@ on:
       - "schemas/merge-verification-v2.schema.json"
       - "schemas/action-*-v2.schema.json"
       - "schemas/stage-validation-attestation-v2.schema.json"
+      - "schemas/stage-handoff-v2.schema.json"
       - "schemas/review-finding-v2.schema.json"
       - "schemas/repair-set-v2.schema.json"
       - "scripts/survey_*_v2.py"
@@ -129,6 +131,8 @@ jobs:
           scripts/survey_quality_v2.py
           scripts/survey_publication_v2.py
           scripts/survey_orchestrator_v2.py
+          scripts/survey_handlers_v2.py
+          scripts/survey_handoff_v2.py
           scripts/survey_findings_v2.py
       - name: Run v2 tests
         run: >-
@@ -151,6 +155,7 @@ jobs:
           tests.test_survey_publication_v2
           tests.test_survey_orchestrator_v2
           tests.test_survey_orchestrator_provenance_v2
+          tests.test_survey_handoff_v2
           tests.test_survey_findings_v2
           -v
       - name: Parse v2 JSON contracts
@@ -193,6 +198,7 @@ jobs:
               Path('schemas/action-spec-v2.schema.json'),
               Path('schemas/action-result-v2.schema.json'),
               Path('schemas/stage-validation-attestation-v2.schema.json'),
+              Path('schemas/stage-handoff-v2.schema.json'),
               Path('schemas/review-finding-v2.schema.json'),
               Path('schemas/repair-set-v2.schema.json'),
           ]
