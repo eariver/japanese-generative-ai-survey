@@ -1,0 +1,32 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-040",
+  "edition": "CORE-V2",
+  "stage": "WU-012_POST_CHANGE_FIVE_PERSPECTIVE_AUDIT",
+  "observed_problem": "WU-012C made compact checkpoints record the current implementation/contract, but canonical Screening/Evidence helpers still call the legacy verify_state_basis contract that requires the initialization contract and implementation commit. In addition, the control workflow executes tooling from the edition work branch. A generic fix merged to main therefore cannot actually be adopted later in the same edition until its code is integrated into the work branch, and the stage helpers can still reject the newer contract even after integration.",
+  "expected_behavior": "Initialization identity remains historical provenance. A later stage may use a newer reviewed generic toolchain after ChatGPT integrates the selected reviewed main change into the edition work branch and performs any required targeted revalidation. Stage preparation/validation must accept the current reviewed contract while leaving earlier checkpoint provenance unchanged. Integration conflicts that threaten accepted editorial or approved-byte authority fail closed; ordinary clean integration is not a Human Gate.",
+  "actual_behavior": "Pending repair.",
+  "production_workaround": null,
+  "classification": {
+    "scope": "CORE",
+    "defect_kind": "ORCHESTRATION",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "2f3c9b10c031cf0d8e5cc114fb93e481e90fffac",
+    "relevant_artifacts": [
+      "scripts/survey_production_v2.py",
+      "scripts/survey_screening_v2.py",
+      "scripts/survey_evidence_v2.py",
+      "scripts/survey_agent_control_v2.py",
+      ".github/workflows/survey-production-v2-control.yml",
+      "docs/survey-production-core-v2-session-bootstrap.md"
+    ],
+    "human_review_reference": "Post-change five-perspective audit requested by Owner, 2026-08-22"
+  },
+  "improvement_action": "Separate current-stage tool validation from legacy initialization pinning, use it in canonical stage helpers, document the clean main-to-work-branch integration step for adopting a reviewed generic fix, and add a regression showing a stage can be validated under a newer reviewed contract without rewriting initialization provenance.",
+  "regression_fixture": "tests/test_survey_stage_validation_v2.py",
+  "resolved_by_repair_set_id": null,
+  "status": "OPEN"
+}
