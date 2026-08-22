@@ -32,6 +32,17 @@ class SurveyPublicationV2Tests(unittest.TestCase):
             shutil.copy2(self.source_root / rel, dst)
         self.dir = self.root / "sources/SP001/publication"
         self.dir.mkdir(parents=True)
+        self.profile = self.root / "sources/SP001/production-profile.json"
+        quality.core.write_json(
+            self.profile,
+            {
+                "schema_version": "2.0-rc1",
+                "issue_id": "SP001",
+                "research_profile": "THEMATIC",
+                "publication_profile": "LONGFORM_SPECIAL",
+                "paths": {"survey_root": "surveys/special/SP001"},
+            },
+        )
         self.source = self.dir / "SP001.tex"
         self.pdf = self.dir / "SP001.pdf"
         self.source.write_text("validated source\n", encoding="utf-8")
@@ -64,8 +75,13 @@ class SurveyPublicationV2Tests(unittest.TestCase):
     def _candidate(self) -> tuple[Path, Path]:
         bundle = self.dir / "quality-regression-bundle-v2.json"
         quality.build_bundle(
-            self.root, "SP001", self.source, self.pdf, self._checks(), bundle,
-            research_profile="THEMATIC", publication_profile="LONGFORM_SPECIAL",
+            self.root,
+            "SP001",
+            self.source,
+            self.pdf,
+            self._checks(),
+            bundle,
+            production_profile_path=self.profile,
         )
         candidate = self.dir / "publication-candidate-v2.json"
         publication.build_candidate(
@@ -89,8 +105,14 @@ class SurveyPublicationV2Tests(unittest.TestCase):
         }
         bundle = self.dir / "quality-regression-bundle-v2.json"
         quality.build_bundle(
-            self.root, "SP001", self.source, self.pdf, self._checks(), bundle, authority,
-            research_profile="THEMATIC", publication_profile="LONGFORM_SPECIAL",
+            self.root,
+            "SP001",
+            self.source,
+            self.pdf,
+            self._checks(),
+            bundle,
+            authority,
+            production_profile_path=self.profile,
         )
         candidate = self.dir / "publication-candidate-v2.json"
         publication.build_candidate(
@@ -171,8 +193,7 @@ class SurveyPublicationV2Tests(unittest.TestCase):
                 self.pdf,
                 checks,
                 self.dir / "quality-regression-bundle-v2.json",
-                research_profile="THEMATIC",
-                publication_profile="LONGFORM_SPECIAL",
+                production_profile_path=self.profile,
             )
 
     def test_release_manifest_fails_if_frozen_source_changes(self) -> None:
