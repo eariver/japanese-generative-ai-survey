@@ -2,11 +2,11 @@
   "schema_version": "2.0-rc1",
   "finding_id": "AUD-029",
   "edition": "CORE-V2",
-  "stage": "WU-012_PRE_APPROVAL_AUDIT",
-  "observed_problem": "The current Quality Bundle accepts a fixed universal list of eleven free-text all-PASS check rows for every edition. A row does not prove which validator ran, which result artifact was produced, or that the check actually evaluated the exact source/PDF bytes. The same Long-form-specific checks are also required for Weekly even when semantically inapplicable.",
-  "expected_behavior": "Every applicable quality result must be machine-verifiable and bound to validator/check contract identity plus exact source/PDF authority. The expected check set must be derived from Core + Research Profile + Publication Profile so inapplicable checks are absent rather than ceremonially passed.",
-  "actual_behavior": "scripts/survey_quality_v2.py treats status=PASS and free-text evidence as sufficient once every globally required check_id is present; tests/test_survey_quality_v2.py demonstrates fixture PASS rows with descriptive evidence strings rather than executed-validator attestations.",
-  "production_workaround": "Do not approve or merge PR #310. WU-012C must replace self-attested universal rows with Profile-aware exact-byte check attestations before production validation.",
+  "stage": "WU-012_AGENT_FIRST_REAUDIT",
+  "observed_problem": "The current Quality Bundle uses one universal list of eleven all-PASS rows for every edition and does not distinguish deterministic checks from ChatGPT semantic/visual review. This over-applies Long-form concerns to Weekly and encourages treating agent-authored editorial judgments as if they must be executable validators.",
+  "expected_behavior": "Quality review must be Profile/Publication-aware and explicitly classify checks as DETERMINISTIC, AGENT_SEMANTIC or AGENT_VISUAL. Only deterministic checks require executable validator/result provenance. Agent semantic/visual checks are reasoned review records tied to the reviewed source/PDF revision. Inapplicable checks are absent rather than ceremonially passed.",
+  "actual_behavior": "scripts/survey_quality_v2.py requires the same check IDs for every publication and models every PASS row uniformly, even though some historical invariants are inherently editorial/visual while others are crisp deterministic validations.",
+  "production_workaround": "Keep PR #310 draft while WU-012F separates quality-review kinds and applicability. Do not build validator infrastructure solely to make semantic ChatGPT review look machine-proved.",
   "classification": {
     "scope": "QUALITY_CONTRACT",
     "defect_kind": "CORRECTNESS",
@@ -14,15 +14,16 @@
   },
   "requires_regression": true,
   "provenance": {
-    "source_commit": "8beaf978793d983cc7608f4ca9c534511dd04d7a",
+    "source_commit": "9349bd52641d3433cc219adea6565f44fe3dbf09",
     "relevant_artifacts": [
       "scripts/survey_quality_v2.py",
       "tests/test_survey_quality_v2.py",
-      "config/survey-production-v2.json"
+      "config/survey-production-v2.json",
+      "docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md"
     ],
-    "human_review_reference": "Pre-approval WU-001-WU-011 audit, 2026-08-22"
+    "human_review_reference": "User premise correction and ChatGPT-first pre-approval re-audit, 2026-08-22"
   },
-  "improvement_action": "Implement WU-012C: define Profile-aware expected quality checks and require each PASS to bind check contract/version, validator identity, exact source SHA-256, exact PDF SHA-256 when relevant, and a durable result artifact/digest. Preserve only two Human Gates.",
+  "improvement_action": "Implement WU-012F: introduce DETERMINISTIC/AGENT_SEMANTIC/AGENT_VISUAL review kinds, derive applicable checks from Research/Publication Profile, require executable evidence only for deterministic checks, and bind agent review records to the reviewed revision.",
   "regression_fixture": null,
   "resolved_by_repair_set_id": null,
   "status": "OPEN"
