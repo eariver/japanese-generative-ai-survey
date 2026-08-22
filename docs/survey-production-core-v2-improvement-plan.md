@@ -1,11 +1,12 @@
 # Survey Production Core v2 — Compilation System Improvement Plan
 
-Status: `ACTIVE CONSOLIDATED PLAN / ChatGPT-first`  
+Status: `WU-012 IMPLEMENTED / PRE-APPROVAL AUDIT GREEN / HUMAN REVIEW REQUIRED`  
 Established: 2026-08-22 JST  
 Consolidated after pre-approval re-audit: 2026-08-22 JST  
 Working branch: `refactor/survey-production-core-v2`  
 Production source of truth until merge: current `main`  
-Detailed pre-approval re-audit: `docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md`
+Detailed pre-approval re-audit: `docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md`  
+WU-012 closure: `docs/survey-production-core-v2-wu012-preapproval-closure.md`
 
 ## 1. Purpose
 
@@ -322,7 +323,7 @@ Do not create a validator solely because an Issue once existed.
 
 ## 11. Quality review model
 
-Replace one universal all-machine PASS list with three kinds:
+Use three review kinds:
 
 ```text
 DETERMINISTIC
@@ -354,21 +355,18 @@ Applicability is Research Profile + Publication Profile aware. A Long-form-speci
 
 ## 12. Weekly viability
 
-The architecture is expected to support W35 and later Weekly issues because:
+The pre-approval candidate now supports later Weekly issues because:
 
 - issue/cutoff derivation is generic;
 - current significance/carry-over/Late Breaking are Profile semantics, not W33 Core branches;
 - research/editorial judgment remains adaptable ChatGPT work;
-- deterministic provenance/identity tools are issue-agnostic.
+- deterministic provenance/identity tools are issue-agnostic;
+- Issue #9 is part of the canonical Weekly editorial review path;
+- local orchestration is compact rather than control-file dominated;
+- later reviewed generic tool fixes can be adopted per checkpoint;
+- the current-main Weekly production spine remains protected by cross-regression.
 
-Pre-merge work still required:
-
-- make Issue #9 part of the mandatory Weekly agent editorial checklist;
-- simplify local orchestration so routine Weekly compilation is not dominated by control-file production;
-- support controlled adoption of generic tool fixes during an edition;
-- retain small structural tests that arbitrary completed Weekly IDs resolve correctly.
-
-W33 remains the first real production validation; W34 validates the first repair set on a different week.
+W33 remains the first real production validation after approval/merge; it is not a design template.
 
 ---
 
@@ -376,7 +374,7 @@ W33 remains the first real production validation; W34 validates the first repair
 
 ### 13.1 Retrospective Period
 
-Add one lightweight generic bounded-Period profile/bootstrap helper supporting:
+A lightweight generic bounded-Period profile/bootstrap helper supports:
 
 - month;
 - half-year;
@@ -389,23 +387,21 @@ The helper handles deterministic dates/paths/profile construction and points Cha
 
 Thematic scope comes from an explicit research question and canonical planning guide/backlog.
 
-SP-001/TS-001, SP-002/TS-002 and SP-003/TS-003 must not require topic-specific Core branches.
-
-The Pilot/bootstrap layer should identify the canonical planning authority rather than copy a simplified editorial scope into another registry.
+SP-001/TS-001, SP-002/TS-002 and SP-003/TS-003 do not require topic-specific Core branches. SP001 bootstrap materializes the canonical TS-001 planning authority rather than treating a narrower Pilot registry copy as editorial truth.
 
 ### 13.3 Generative AI Foundations
 
 Use `docs/generative-ai-foundations-special-series.md` as the living outer architecture. Each volume runs normal Thematic production while the series memo evolves from discoveries.
 
-Do not implement a machine Series engine before actual production shows that a shared source/evidence index would reduce repeated work or drift.
+AUD-031 intentionally defers a machine Series engine until actual production shows that a shared source/evidence index would reduce repeated work or drift.
 
 ---
 
 ## 14. Generality strategy
 
-Pre-merge genericity should be demonstrated structurally, not by simulating every future edition.
+Pre-merge genericity is demonstrated structurally, not by simulating every future edition.
 
-Useful small tests include:
+Current structural coverage includes:
 
 - arbitrary valid completed Weekly ID;
 - arbitrary bounded Period spec;
@@ -413,7 +409,7 @@ Useful small tests include:
 - no production code branching on W33/SP001/TS-001 identifiers;
 - Publication Profile behavior selected by profile, not named edition.
 
-Real production remains the stronger test:
+AUD-033 deliberately defers an exhaustive hypothetical edition matrix. Real production remains the stronger test:
 
 ```text
 W33 + SP001
@@ -432,75 +428,84 @@ Future unknown Specials are expected to be handled by ChatGPT's reasoning under 
 - **WU-002:** contract normalization — retain two-gate/Profile architecture; lighten machine interpretation.
 - **WU-003/003B/003C:** historical invariant/deep-production audit — retain as key Issue-prevention knowledge.
 - **WU-004/004B:** minimum vertical slice — retain as first-slice design evidence.
-- **WU-005:** Profile/State — retain, but correct edition-wide implementation pinning.
-- **WU-006:** Discovery/Screening — retain as tools around ChatGPT research.
-- **WU-007:** Evidence/Materiality/Completeness — retain; Completeness is a structured reasoned judgment.
-- **WU-008/008A:** Matrix/Selection/Architecture — retain.
-- **WU-009:** structured Draft/Synthesis — retain.
+- **WU-005:** Profile/State — retained with per-checkpoint implementation provenance correction.
+- **WU-006:** Discovery/Screening — retained as tools around ChatGPT research.
+- **WU-007:** Evidence/Materiality/Completeness — retained; Completeness is a structured reasoned judgment.
+- **WU-008/008A:** Matrix/Selection/Architecture — retained.
+- **WU-009:** structured Draft/Synthesis — retained.
 - **WU-010/010R:** orchestration hardening — historical defect lessons retained; local control-plane implementation simplified in WU-012.
 - **WU-011:** exact publication/release/bootstrap hardening — publication/release authority retained; local stage/Pilot scope controls simplified in WU-012.
+- **WU-012:** ChatGPT-first simplification/guidance hardening — implementation and pre-approval whole-candidate audit complete; Human review required.
 
 Historical detail remains available in the worklog, authority index, audit documents and Git history.
 
 ---
 
-## 16. WU-012 — ChatGPT-first simplification and guidance hardening
+## 16. WU-012 — implementation result
 
-WU-012 is the current pre-merge work unit.
+WU-012 is implemented. Detailed closure is `docs/survey-production-core-v2-wu012-preapproval-closure.md`.
 
-### WU-012A — ChatGPT-first operating contract
+### WU-012A — ChatGPT-first operating contract — `COMPLETE`
 
-- make the operator/tool boundary explicit in canonical docs/bootstrap/future `AGENTS.md`;
-- ensure target + stopping gate remains sufficient user input;
-- classify stage work as agent reasoning, deterministic helper, Human Gate, or Exception Gate.
+- operator/tool boundary is explicit in canonical authority/bootstrap/AGENTS guidance;
+- target + stopping gate remains sufficient user input;
+- open-ended research/editorial judgment remains ChatGPT-owned.
 
-### WU-012B — simplify local orchestration
+### WU-012B — simplify local orchestration — `COMPLETE`
 
-- retain one Production State and canonical stage outputs;
-- replace mandatory local Action Spec/Handoff Request/Handoff/Result/Attestation chains with the minimum checkpoint record needed for resume/provenance;
-- retain richer control records only for external/irreversible operations where they have a distinct safety purpose;
-- keep exactly two Human approval records.
+- one Production State + canonical outputs + compact Stage Checkpoint is the normal local path;
+- legacy Action/Handoff machinery is not canonical production authority;
+- richer exact control remains at external/irreversible Release boundaries;
+- exactly two Human approval records remain.
 
-### WU-012C — controlled toolchain evolution
+### WU-012C — controlled toolchain evolution — `COMPLETE`
 
-- record implementation/tool commit per checkpoint/action;
-- allow later stages to use newer reviewed `main` tooling;
-- require targeted revalidation/migration only when changed contracts affect accepted artifacts;
-- Exception Gate only for unresolved compatibility decisions.
+- implementation/tool commit is recorded per checkpoint/action;
+- later stages may use newer reviewed tooling;
+- initialization provenance is not rewritten;
+- compatibility failures remain fail-closed.
 
-### WU-012D — Issue Prevention Checklist
+### WU-012D — Issue Prevention Checklist — `COMPLETE`
 
-Create a short stage/profile-aware checklist derived from historical invariants and Issues, mapping each recurring defect to deterministic tool, ChatGPT research/editorial/visual review, Human review or legacy-only handling.
+Historical recurring defects now have explicit deterministic/agent/Human ownership without converting every judgment into a validator.
 
-### WU-012E — small generic bootstrap/profile gaps
+### WU-012E — small generic bootstrap/profile gaps — `COMPLETE`
 
-- add generic bounded-Period bootstrap/profile helper;
-- make Thematic Pilot/bootstrap reference canonical backlog/series planning authority rather than duplicate detailed scope;
-- add only small structural genericity tests;
-- no pre-emptive machine Series engine.
+- generic bounded-Period bootstrap exists;
+- Thematic Pilot bootstrap references canonical planning authority;
+- small structural genericity tests exist;
+- no premature machine Series engine was added.
 
-### WU-012F — quality-review tiers
+### WU-012F — quality-review tiers — `COMPLETE`
 
-Implement `DETERMINISTIC / AGENT_SEMANTIC / AGENT_VISUAL` applicability and review records. Only deterministic items require executable validator proof.
+`DETERMINISTIC / AGENT_SEMANTIC / AGENT_VISUAL` applicability is Profile-aware. Only deterministic items require executable validator proof.
+
+### Whole-candidate repair — `COMPLETE`
+
+AUD-037 closed the compact-checkpoint provenance loophole by requiring lifecycle-specific existing canonical artifact authorities. A review-only stage transition is rejected.
 
 ---
 
 ## 17. WU-012 finding status
 
-Current findings:
+Repaired generically:
 
-- AUD-027 `OPEN` — substantive ChatGPT completeness-review guidance;
-- AUD-028 `OPEN` — Weekly Issue #9 agent editorial review;
-- AUD-029 `OPEN` — deterministic vs agent quality tiers/applicability;
-- AUD-030 `OPEN` — lightweight Period bootstrap helper;
+- AUD-027 `FIXED_GENERIC` — substantive ChatGPT completeness-review guidance;
+- AUD-028 `FIXED_GENERIC` — Weekly Issue #9 agent editorial review;
+- AUD-029 `FIXED_GENERIC` — deterministic vs agent quality tiers/applicability;
+- AUD-030 `FIXED_GENERIC` — lightweight Period bootstrap helper;
+- AUD-032 `FIXED_GENERIC` — SP001 planning-authority materialization;
+- AUD-034 `FIXED_GENERIC` — Issue Prevention Checklist;
+- AUD-035 `FIXED_GENERIC` — ChatGPT-first operator model / compact local orchestration;
+- AUD-036 `FIXED_GENERIC` — per-checkpoint toolchain provenance;
+- AUD-037 `FIXED_GENERIC` — lifecycle-specific canonical artifact binding.
+
+Deliberately deferred:
+
 - AUD-031 `DEFERRED` — full machine Series engine is premature;
-- AUD-032 `OPEN` — SP001 bootstrap duplicates/narrows TS-001 scope;
-- AUD-033 `DEFERRED` — exhaustive synthetic future-edition fixtures are unnecessary;
-- AUD-034 `OPEN` — Issue Prevention Checklist missing;
-- AUD-035 `OPEN` — ChatGPT operator model/local-stage over-serialization;
-- AUD-036 `OPEN` — edition-wide implementation commit lock-in.
+- AUD-033 `DEFERRED` — exhaustive synthetic future-edition fixture matrix is unnecessary before real Pilot evidence.
 
-No WU-012 Repair Set exists yet.
+Repair Set: `REPAIR-WU012-2026-08-22` is `IMPLEMENTED`. It is intentionally not `VALIDATED/CLOSED` before W33/SP001 production verification.
 
 ---
 
@@ -508,33 +513,36 @@ No WU-012 Repair Set exists yet.
 
 Before PR #310 returns to Human full-candidate review:
 
-- [ ] ChatGPT-first operator model is canonical and discoverable.
-- [ ] Local-stage orchestration is materially simpler while preserving resume/provenance.
-- [ ] Implementation provenance is per checkpoint/action and controlled toolchain upgrades are possible.
-- [ ] Historical Issue Prevention Checklist is canonical and practical.
-- [ ] Weekly Issue #9 concerns are part of the normal agent review path.
-- [ ] Generic Retrospective Period bootstrap/profile helper exists.
-- [ ] Thematic bootstrap references canonical planning authority rather than duplicated scope.
-- [ ] Quality distinguishes deterministic, agent semantic and agent visual review.
-- [ ] Only small structural genericity tests are required pre-merge.
-- [ ] Immutable Raw provenance and exact Publication Preview/Freeze/Release byte authority remain intact.
-- [ ] Normal Human Gate count remains exactly two.
-- [ ] W33/SP001 remain unstarted.
-- [ ] Whole-candidate re-audit finds no blocking contradiction against acceptance priorities 1–5.
+- [x] ChatGPT-first operator model is canonical and discoverable.
+- [x] Local-stage orchestration is materially simpler while preserving resume/provenance.
+- [x] Implementation provenance is per checkpoint/action and controlled toolchain upgrades are possible.
+- [x] Historical Issue Prevention Checklist is canonical and practical.
+- [x] Weekly Issue #9 concerns are part of the normal agent review path.
+- [x] Generic Retrospective Period bootstrap/profile helper exists.
+- [x] Thematic bootstrap references canonical planning authority rather than duplicated scope.
+- [x] Quality distinguishes deterministic, agent semantic and agent visual review.
+- [x] Only small structural genericity tests are required pre-merge.
+- [x] Immutable Raw provenance and exact Publication Preview/Freeze/Release byte authority remain intact.
+- [x] Normal Human Gate count remains exactly two.
+- [x] W33/SP001 remain unstarted.
+- [x] Whole-candidate re-audit finds no blocking non-deferred contradiction against acceptance priorities 1–5.
+- [x] Semantic implementation head `1d6e37f48cd24ce96ef7970df0e70697e546f2e3` passed all five required cross-regression families.
+
+The exit condition is therefore satisfied subject only to closure/authority metadata itself remaining CI-green.
 
 ---
 
 ## 19. Rollout after approval
 
-After corrected WU-012 is implemented, audited and explicitly approved:
+After explicit Human approval:
 
 1. merge PR #310 to current `main`;
-2. update canonical `AGENTS.md`/bootstrap to the merged Core v2 path;
+2. treat merged `main` as the new production source of truth;
 3. run W33 as first Weekly production validation;
 4. run SP001 as first Thematic production validation;
 5. classify actual findings and repair only the narrowest correct layer;
 6. run W34 and SP002/SP003 as second-round generalization validation;
-7. stabilize/consolidate docs and retire superseded hot-path machinery only after production evidence supports it.
+7. stabilize/consolidate docs and retire superseded legacy hot-path machinery only after production evidence supports it.
 
 A future Foundations volume may begin under the same Thematic production principles, using the living Foundations series plan as outer guidance.
 
@@ -549,6 +557,8 @@ Primary current authorities/supporting evidence:
 - `docs/survey-production-core-v2-authority.md`
 - `docs/checkpoints/survey-production-core-v2-worklog.md`
 - `docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md`
+- `docs/survey-production-core-v2-wu012-preapproval-closure.md`
+- `docs/survey-production-core-v2-issue-prevention-checklist.md`
 - `docs/survey-production-core-v2-historical-invariants.md`
 - `docs/survey-production-core-v2-historical-production-deep-audit.md`
 - `docs/thematic-special-backlog.md`
@@ -557,4 +567,4 @@ Primary current authorities/supporting evidence:
 - `docs/annual-retrospective-specials.md`
 - historical Human Review Issues recorded by the invariant/deep-audit corpus.
 
-This is a working implementation guide. Repository reality and the authority index control if later evidence requires another correction.
+Repository reality and the authority index control if later evidence requires another correction.
