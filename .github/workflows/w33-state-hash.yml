@@ -1,0 +1,28 @@
+name: W33 state hash probe
+on:
+  push:
+    branches:
+      - temp/w33-state-hash
+permissions:
+  contents: write
+jobs:
+  hash:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: weekly/2026-W33-v2-work
+          fetch-depth: 1
+      - name: Record exact state hash
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum sources/2026-W33/production-state.json | tee /tmp/state.sha256
+          HASH="$(cut -d' ' -f1 /tmp/state.sha256)"
+          git checkout temp/w33-state-hash
+          printf '%s\n' "$HASH" > automation/w33-state-sha256.txt
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add automation/w33-state-sha256.txt
+          git commit -m 'Record W33 Production State SHA-256'
+          git push origin HEAD:temp/w33-state-hash
