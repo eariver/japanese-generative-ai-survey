@@ -1,159 +1,170 @@
-# Survey Production Core v2 — Pilot session bootstrap
+# Survey Production Core v2 — agent session bootstrap
 
-Status: `PRE-PILOT CANONICAL BOOTSTRAP CANDIDATE`  
-Applies to: W33 and SP001 first production validation  
-Machine authority: `config/survey-production-v2-pilots.json` + `scripts/survey_pilot_bootstrap_v2.py`
+Status: `PRE-MERGE CANONICAL CANDIDATE`  
+Applies to: Weekly, Retrospective Period, standalone Thematic, and guided Special series work  
+Primary operator: **ChatGPT**
 
-## 1. Purpose and authority boundary
+## 1. Minimal user contract
 
-This document makes the first Core v2 production validations resumable across sessions without relying on chat history. Repository state is the authority for whether a Pilot is unstarted, resumable, at a Human Gate, at an Exception Gate, frozen, or released.
+A user may start or resume production with only a target and desired stopping Human Gate, for example:
 
-`docs/special-session-bootstrap.md` remains the bootstrap contract for the legacy Special pipeline. It does **not** define W33/SP001 Core v2 launch inputs or Core v2 lifecycle recovery.
+```text
+2026-W35をArchitecture Reviewまで編纂してください
+Generative AI Foundationsの次巻をArchitecture Reviewまで進めてください
+2025-H2をPublication Previewまで進めてください
+```
 
-The machine-readable W33/SP001 launch identities live in `config/survey-production-v2-pilots.json` and are schema-validated by `schemas/pilot-bootstrap-v2.schema.json`. Do not copy launch scope out of tests or prior conversations.
+That is sufficient instruction. ChatGPT must reconstruct everything else from current repository authority instead of asking the user to restate pipeline mechanics.
 
-## 2. Precondition: do not start from the improvement branch
+After receiving such a request, continue without stopping for ordinary internal work until one of these conditions is reached:
 
-W33/SP001 external production is prohibited until the coherent Survey Production Core v2 candidate has completed full-candidate Human review and has been explicitly merged to `main`.
+1. `ARCHITECTURE_REVIEW` Human Gate;
+2. exact-byte `PUBLICATION_PREVIEW` Human Gate;
+3. a genuine `EXCEPTION_GATE_REQUIRED` condition that cannot be resolved safely without Owner judgment;
+4. the explicitly requested earlier stopping point, if the user named one that is itself repository-supported.
 
-Before initialization, verify that current `main` contains:
+Initialization, Source Intake, Screening, Evidence work, Completeness/materiality reasoning, Selection, Architecture preparation, drafting, synthesis, deterministic QA, ChatGPT semantic/visual review, Freeze preparation, and retryable internal repairs are not Human Gates.
 
-- `config/survey-production-v2.json`;
-- `config/survey-production-v2-pilots.json`;
-- `scripts/survey_pilot_bootstrap_v2.py`;
-- `.github/workflows/survey-production-v2-control.yml`;
-- `.github/workflows/survey-production-v2-release.yml`;
-- `.github/workflows/assistant-control-v2.yml`.
+## 2. Authority order at session start
 
-If those authorities are not on current `main`, stop. Do not initialize a Pilot from `refactor/survey-production-core-v2` or another unmerged implementation branch.
+Before changing an edition, read current `main` and at minimum:
 
-## 3. Canonical session entry
+1. `AGENTS.md`;
+2. `docs/survey-production-core-v2-authority.md`;
+3. this file;
+4. `docs/survey-production-core-v2-issue-prevention-checklist.md`;
+5. the applicable Profile/period/thematic/series guide;
+6. existing canonical Production Profile/State and stage artifacts for the target, if any.
 
-Every W33/SP001 production or continuation session begins with a side-effect-free plan from the current repository checkout:
+Repository state outranks chat history. A new session must be able to resume from repository state alone.
+
+While PR #310 is unmerged, Core v2 production remains disabled: current `main` is still the production source of truth and W33/SP001 must not be initialized from the improvement branch.
+
+## 3. Resolve the target without user ceremony
+
+### Weekly
+
+For an explicit issue such as `2026-W35`, use the configured Weekly cutoff calendar. The issue must have completed its editorial cutoff. Initialize with the generic Weekly Profile; do not add issue-specific Core logic.
+
+```text
+python scripts/survey_production_v2.py init-weekly --issue-id 2026-W35 --target-gate ARCHITECTURE_REVIEW
+```
+
+If canonical Profile/State already exists, resume it rather than reinitializing.
+
+### Retrospective Period
+
+Monthly, half-year and annual configured Specials use the same `RETROSPECTIVE_PERIOD` Profile through `scripts/survey_period_v2.py`:
+
+```text
+python scripts/survey_period_v2.py plan --special-slug 2025-H2
+python scripts/survey_period_v2.py initialize --special-slug 2025-H2 --target-gate ARCHITECTURE_REVIEW
+```
+
+Custom bounded periods may be supplied through a repository-owned spec. Calendar boundaries retain their declared timezone authority while stored instants may be normalized.
+
+### Standalone Thematic
+
+Resolve the research question/scope from the canonical thematic planning authority. For the first Pilot, `SP001` points to `TS-001` in `docs/thematic-special-backlog.md`; the detailed scope is **not** duplicated in Pilot configuration.
+
+If a machine-readable scope file does not yet exist, ChatGPT reads the named planning-authority entry and materializes the question, inclusion/exclusion, dimensions and initial obligations. That is an internal agent action, not a Human Gate.
+
+For W33/SP001 Pilot validation, use the side-effect-free planner first:
 
 ```text
 python scripts/survey_pilot_bootstrap_v2.py plan --pilot W33
 python scripts/survey_pilot_bootstrap_v2.py plan --pilot SP001
 ```
 
-An offset-aware `--recorded-at` may be supplied for deterministic testing. For actual first initialization, omit it or pass the actual session time.
+`SP001` may return `MATERIALIZE_SCOPE`; ChatGPT performs that action and replans. `INITIALIZE`, `RESUME`, and genuinely inconsistent partial initialization have their ordinary meanings.
 
-The planner validates the Pilot registry and materializes the exact Production Profile without writing Production State. It returns one of three operations:
+### Guided series / Generative AI Foundations
 
-- `INITIALIZE`: neither canonical Production Profile nor Production State exists;
-- `RESUME`: both exist and their immutable Pilot identity is valid;
-- `EXCEPTION_GATE_REQUIRED`: only one of Profile/State exists, or another fail-closed inconsistency prevents safe continuation.
+For a request such as `Generative AI Foundationsの次巻`, read `docs/generative-ai-foundations-special-series.md`, inspect repository evidence for completed/in-progress volumes, resolve the next volume according to the living series architecture, and materialize that volume's Thematic scope from the series authority.
 
-A planning command must never create `sources/2026-W33/production-state.json` or `sources/SP001/production-state.json`.
+Do not ask the user to identify a volume number that the repository can determine. Do not create a parallel machine Series engine or duplicate the living series plan solely for bootstrap convenience.
 
-## 4. W33 identity
+If the series document permits multiple equally valid next volumes and repository state cannot resolve the choice, that is an Owner decision and may become an Exception Gate.
 
-W33 is the **Weekly Profile First Production Validation**.
+## 4. Initialization and resume semantics
 
-Its registry authority fixes:
+The start request authorizes deterministic initialization and canonical work-branch creation. Initialization is not a Human Gate.
 
-```text
-pilot_id: W33
-issue_id: 2026-W33
-research_profile: WEEKLY
-publication_profile: WEEKLY_MAGAZINE
-source_root: sources/2026-W33
-survey_root: surveys/weekly/2026-W33
-work_branch: weekly/2026-W33-v2-work
-editorial cutoff: 2026-08-14T18:00:00-04:00
-first requested Human Gate: ARCHITECTURE_REVIEW
-```
+Initialization writes immutable launch provenance:
 
-The issue ID determines the completed Weekly editorial window. A later session date must not silently move W33 to W34 or another cutoff.
+- Production Profile;
+- Production State;
+- issue/Profile/path identity;
+- initialization implementation/contract identity.
 
-Legacy W33 artifacts are comparison/provenance fixtures only. They are not a migration target and are not acceptance authority for Core v2.
+The initialization implementation commit is **historical provenance, not a permanent runtime pin**. Later stages may use newer reviewed `main` tooling. Each completed Stage Checkpoint records the implementation and current contract used for that stage.
 
-## 5. SP001 identity
-
-SP001 is the **Thematic Profile First Production Validation**.
-
-Its registry authority fixes:
+When resuming, validate with the agent-first validator:
 
 ```text
-pilot_id: SP001
-issue_id: SP001
-research_profile: THEMATIC
-publication_profile: LONGFORM_SPECIAL
-source_root: sources/SP001
-survey_root: surveys/special/SP001
-work_branch: special/SP001-v2-work
-temporal mode: OPEN_HISTORY_AS_OF
-as_of policy: SET_AT_INITIALIZATION
-first requested Human Gate: ARCHITECTURE_REVIEW
+python scripts/survey_agent_control_v2.py validate-state --state <source_root>/production-state.json
 ```
 
-The thematic question, dimensions and initial obligations are defined only by `config/survey-production-v2-pilots.json`.
+Do not use the legacy `survey_production_v2.py validate-state` command as the canonical resume decision, because that command intentionally retains the historical edition-wide pin semantics for compatibility testing.
 
-`SP001` `as_of` is set exactly once at first initialization. A later continuation session must read the existing Production Profile and preserve that original `as_of`; it must not rematerialize the thematic horizon from the new session time.
+If a newer tool/schema changes an already accepted artifact contract, revalidate or migrate the affected boundary before continuing. Do not replay unrelated completed stages. Use an Exception Gate only when compatibility cannot be established without changing approved editorial authority.
 
-## 6. Initialization
+## 5. Autonomous research/editorial loop
 
-When the planner returns `INITIALIZE`, create the exact `profile.paths.work_branch` from the reviewed Core v2 `main`, checkout that branch, and run:
+For each internal stage:
 
 ```text
-python scripts/survey_pilot_bootstrap_v2.py initialize --pilot <W33|SP001>
-python scripts/survey_production_v2.py validate-state --state <source_root>/production-state.json
+read Profile + State + applicable guide/checklist
+-> make the research/editorial plan appropriate to the actual edition
+-> produce/update canonical stage artifacts
+-> run deterministic checks that genuinely apply
+-> perform required ChatGPT research/editorial/visual reviews
+-> repair ordinary findings and re-check
+-> write one compact Stage Checkpoint
+-> advance Production State exactly one lifecycle step
+-> continue immediately unless a Human/Exception Gate is reached
 ```
 
-Initialization is deterministic control-state creation, not a Human Gate. A user request to start an authorized Pilot permits this initialization. It does not approve Architecture, Publication Preview, Freeze, or Release content.
-
-Commit the generated `production-profile.json` and `production-state.json` on the canonical work branch before doing research work. Never initialize the same Pilot twice. The Core initializer is destructive-write protected and the bootstrap driver refuses any state other than cleanly uninitialized.
-
-If branch or file state implies an ambiguous partial initialization, use an Exception Gate rather than deleting or recreating authority files ad hoc.
-
-## 7. Resume
-
-When the planner returns `RESUME`:
-
-1. read the returned existing Production Profile and Production State;
-2. use `profile.paths.work_branch` as the only production work branch;
-3. validate the existing State against its pinned implementation/contract before changing stage artifacts;
-4. inspect `lifecycle_state`, `next_action`, `terminal_reason`, checkpoint provenance, Human Gate provenance, and `orchestration/v2/` records;
-5. continue from the current state only. Never replay a completed stage merely because a prior chat session ended.
-
-For SP001, the existing Profile's initialization-time `as_of` is authoritative. For W33, the fixed completed issue window is authoritative.
-
-## 8. One-stage production adoption
-
-All executable Core v2 stages require a canonical Stage Handoff. The production session prepares the stage's explicit external/model outputs and a schema-valid canonical request at:
+The canonical local-stage record is `schemas/stage-checkpoint-v2.schema.json` under:
 
 ```text
-<source_root>/orchestration/v2/handoff-requests/<LIFECYCLE_STATE>.json
+<source_root>/orchestration/v2/checkpoints/<FROM_STATE>.json
 ```
 
-The request must name every explicit input/output path and must match `schemas/stage-handoff-request-v2.schema.json` and the current stage output contract. Do not use a "latest artifact" search or an unpinned external run.
+It binds:
 
-After committing the request and its referenced stage artifacts to the canonical work branch, compute the exact request SHA-256 and dispatch **the `main` copy** of `survey-production-v2-control.yml` with:
+- lifecycle transition;
+- canonical artifact hashes;
+- deterministic or reasoned ChatGPT review evidence;
+- implementation commit used at that boundary;
+- current contract identity;
+- a concise readiness summary.
+
+Legacy Action Spec / Handoff Request / Handoff / Action Result / Validation Attestation machinery remains repository compatibility/audit code. It is **not required by the agent-first production hot path**.
+
+## 6. Issue Prevention Checklist
+
+At relevant stages, apply `docs/survey-production-core-v2-issue-prevention-checklist.md`.
+
+Its ownership modes distinguish:
 
 ```text
-operation = adopt-stage
-issue_id = <Production State issue_id>
-work_branch = <Production Profile work_branch>
-request_sha256 = <exact canonical request SHA-256>
-human_gate_authorized = false
+DETERMINISTIC_TOOL_CHECK
+CHATGPT_RESEARCH_REVIEW
+CHATGPT_EDITORIAL_REVIEW
+CHATGPT_VISUAL_REVIEW
+HUMAN_ARCHITECTURE_REVIEW
+HUMAN_PUBLICATION_PREVIEW
+LEGACY_ONLY / NOT_APPLICABLE
 ```
 
-The workflow must:
+A semantic/visual finding is not a reason to stop. ChatGPT normally repairs it, reruns affected checks, records concise evidence, and continues. A deterministic failure likewise triggers local repair/retry when safe.
 
-- require the dispatched main workflow bytes to equal the State-pinned worktree workflow;
-- execute the worktree-pinned Core implementation;
-- build the exact canonical Stage Handoff from the request;
-- execute at most one deterministic stage;
-- run the implementation-controlled semantic validator;
-- create/pin Validation Attestations and State transition provenance;
-- if that one transition reaches a terminal Human/Exception/Complete plan, persist the exact terminal Action Spec without executing the next deterministic stage;
-- commit all resulting control records to the canonical work branch.
+Do not manufacture a validator for an open-ended editorial question, and do not rely on agent memory for a crisp invariant that has a reliable deterministic check.
 
-`FROZEN` is not adoptable through this generic operation. Release uses the dedicated release workflow.
+## 7. Architecture Review — Human Gate 1
 
-## 9. Architecture Review Human Gate
-
-After the Architecture stage is adopted, canonical control must leave State at:
+The first normal stop is reached when State is:
 
 ```text
 lifecycle_state = ARCHITECTURE_ESTABLISHED
@@ -162,92 +173,65 @@ next_action = ARCHITECTURE_REVIEW
 human_gates.architecture_review = pending
 ```
 
-The same control commit must contain the current `HUMAN_GATE` Action Spec bound to the exact reviewed inputs.
+Present the repository-backed Architecture, Review Summary, bounded Attention surface, research limitations and material unresolved questions. Never infer approval from silence or from the original compilation request.
 
-Present the repository-backed Architecture Review package to the human reviewer. Do not infer approval from silence, prior editions, or a previous chat.
+After explicit approval, record the exact Architecture approval through the agent-first control path. The approval binds the reviewed Architecture/Review/Attention bytes. Then continue autonomously toward Publication Preview unless the user explicitly asked to stop after Architecture approval.
 
-Only after explicit approval dispatch `survey-production-v2-control.yml` with:
+## 8. Drafting, quality and Publication Preview — Human Gate 2
 
-```text
-operation = approve-architecture
-issue_id = <issue>
-work_branch = <canonical work branch>
-human_gate_authorized = true
-reviewed_by = <explicit reviewer identity>
-reviewed_at = <offset-aware review time>
-review_reference = <durable review reference>
-```
+After Architecture approval, continue through drafting/synthesis, applicable deterministic validation, ChatGPT semantic review, rendering and ChatGPT visual review preparation.
 
-The workflow resolves and consumes the exact current Architecture Human Gate Action Spec and writes an independent Approval Record. Architecture proposal bytes remain immutable.
+Quality review has three kinds:
 
-## 10. Publication Preview Human Gate
+- `DETERMINISTIC` — executable result authority required;
+- `AGENT_SEMANTIC` — reasoned ChatGPT review tied to the exact source revision;
+- `AGENT_VISUAL` — reasoned ChatGPT review tied to the exact rendered PDF revision.
 
-After Architecture approval, continue one stage at a time through Drafting/Synthesis, semantic/quality validation, and Publication Candidate creation.
+Checks are Profile/Publication-aware. Weekly does not inherit every Long-form/Period-specific check merely because the Core supports those profiles.
 
-When State reaches `RELEASE_CANDIDATE`, the same rule applies: the control commit must persist the current `human:publication-preview` Action Spec. The exact Publication Candidate binds the PDF durable authority and source/quality identities.
+At `RELEASE_CANDIDATE`, stop for exact-byte Publication Preview approval. The human approves one specific Publication Candidate and PDF SHA/page count. A rebuilt or merely similar PDF is not approved.
 
-Do not approve a rebuilt or visually similar PDF. Publication Preview approval is exact-byte authority.
+## 9. Freeze and Release
 
-Only after explicit human approval dispatch:
+After Publication Preview approval, continue without adding another routine Human Gate:
 
-```text
-operation = approve-publication-preview
-issue_id = <issue>
-work_branch = <canonical work branch>
-human_gate_authorized = true
-reviewed_by = <explicit reviewer identity>
-reviewed_at = <offset-aware review time>
-review_reference = <durable review reference>
-```
+1. perform/record the exact approved-PDF visual review;
+2. build Freeze Record and Release Manifest against the same source/PDF bytes;
+3. transition to `FROZEN` with a compact Stage Checkpoint;
+4. merge the frozen production changes through the normal reviewed repository path;
+5. run the dedicated Release workflow against current `main`;
+6. create or reconcile the issue-only GitHub Release;
+7. download/recheck released asset SHA-256 and byte count;
+8. record Merge Verification, immutable Release Record and one compact `FROZEN -> RELEASED` Release Stage Checkpoint.
 
-## 11. Freeze, merge verification and Release
+External Release reconciliation remains fail-closed and idempotent. Existing tag/title/target/asset divergence is an error, not permission to overwrite history.
 
-After Publication Preview approval, prepare/adopt the Freeze stage through the canonical Stage Handoff path. The Freeze stage must produce the exact Visual Review Record, Freeze Record and Release Manifest and transition State to `FROZEN`.
+## 10. When an Exception Gate is justified
 
-Before public Release, the frozen production changes must be merged through the reviewed repository path so that current `main` contains the exact FROZEN Production State and Release Manifest. Do not dispatch Release against an unmerged work-branch-only freeze.
+Use an Exception Gate only when safe autonomous continuation genuinely needs Owner judgment, including cases such as:
 
-Then dispatch `survey-production-v2-release.yml` using the exact authorized values from current `main`:
+- target/series scope is materially ambiguous and repository authority does not decide it;
+- canonical Profile/State is partially initialized in a way that cannot be safely reconstructed;
+- accepted Raw/external artifact identity cannot be established;
+- a tool/schema upgrade would require changing accepted editorial meaning rather than merely revalidating it;
+- current bytes differ from already Human-approved Architecture or Publication Preview authority;
+- frozen/release identity diverges and automatic reconciliation would alter published history.
 
-```text
-issue_id = <issue>
-production_state_sha256 = <SHA-256 of current main Production State>
-release_manifest_sha256 = <SHA-256 of current main Release Manifest>
-confirmation = release:<issue>
-```
+Do **not** stop for an ordinary search refinement, weak-source replacement, local QA failure, CI retry, wording/layout repair, or generic defect that can be repaired without changing approved authority.
 
-The Release workflow revalidates State-pinned implementation identity, Publication Candidate authority, durable PDF bytes, merge identity and release identity before side effects.
+## 11. Session handoff rule
 
-If an issue-only GitHub Release with the same identity already exists after a partial prior attempt, reconciliation is allowed only when tag/title/target and released asset SHA-256/byte count exactly match the authorized Release Manifest/Candidate. Divergence fails closed.
-
-## 12. Exception Gate rules
-
-Use an Exception Gate instead of improvising when any of the following occurs:
-
-- Pilot registry target cannot be resolved;
-- only one of canonical Profile/State exists;
-- existing Profile differs from fixed registry identity;
-- State semantic/provenance validation fails;
-- State-pinned implementation differs from executable control roots;
-- canonical Stage Handoff Request cannot represent the actual stage inputs/outputs;
-- external artifact identity or accepted Raw byte identity cannot be proven;
-- Human Gate reviewed bytes differ from the current Action Spec;
-- frozen/release exact-byte identity diverges;
-- recovery would require changing editorial scope or manufacturing a Human approval.
-
-Deterministic CI/network/retry failures are not automatically Human Gates. Recover only within the action's configured retry/idempotency authority.
-
-## 13. Session handoff rule
-
-At the end of any production session, repository state must be enough for the next session. Commit all authoritative work-branch records before stopping and report the current:
+If the conversation ends before the requested Gate, commit enough repository state that a new ChatGPT session can continue. At minimum preserve/report:
 
 ```text
-Pilot / issue_id
+issue_id / resolved target
 work_branch
-Production State SHA-256
+Production State path + SHA-256
 lifecycle_state
 next_action / terminal_reason
-latest canonical Action Spec
+latest compact Stage Checkpoint
 open Human/Exception Gate, if any
+known unresolved research limitations
 ```
 
-A later session must start again with `survey_pilot_bootstrap_v2.py plan --pilot ...` and reconstruct continuation from repository state. Conversation history is supplementary context only.
+A later session starts from repository reality, validates the agent-first State, reads the current Issue Prevention Checklist and applicable guide, and continues. Conversation history is supplementary only.
