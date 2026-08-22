@@ -156,9 +156,13 @@ def _load_profile_authority(repo_root: Path, production_profile_path: Path, issu
     profile = core.load_json(path)
     if profile.get("issue_id") != issue_id:
         raise ValueError("Production Profile/quality issue_id mismatch")
+    cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
+    errors = core.validate_profile(profile, cfg)
+    if errors:
+        raise ValueError("Production Profile invalid for quality review: " + "; ".join(errors))
     research = profile.get("research_profile")
     publication = profile.get("publication_profile")
-    if research not in core.RESEARCH_PROFILES or publication not in core.PUBLICATION_PROFILES:
+    if research not in cfg.get("research_profiles", {}) or publication not in cfg.get("publication_profiles", {}):
         raise ValueError("Production Profile carries unsupported quality Profile identity")
     return path, profile
 
@@ -210,13 +214,16 @@ def validate_bundle(repo_root: Path, path: Path, *, issue_id: str | None = None)
     if profile_path.is_symlink() or not profile_path.is_file() or core.sha256_file(profile_path) != profile_ref["sha256"]:
         raise ValueError("quality review Production Profile authority drift")
     profile = core.load_json(profile_path)
+    cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
+    profile_errors = core.validate_profile(profile, cfg)
+    if profile_errors:
+        raise ValueError("quality review bound Production Profile invalid: " + "; ".join(profile_errors))
     if (
         profile.get("issue_id") != payload["issue_id"]
         or profile.get("research_profile") != payload["research_profile"]
         or profile.get("publication_profile") != payload["publication_profile"]
     ):
         raise ValueError("quality review Profile identity differs from bound Production Profile")
-    cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
     validate_checks(repo_root, cfg, payload["research_profile"], payload["publication_profile"], payload["checks"])
     basis = {key: payload[key] for key in (
         "schema_version", "issue_id", "production_profile", "research_profile", "publication_profile", "source", "pdf", "checks", "status"
