@@ -92,6 +92,7 @@
     "summary": {"type": "string", "minLength": 1}
   },
   "allOf": [
+    {"$ref": "#/$defs/localStageValidationReview"},
     {"$ref": "#/$defs/issueInitializedArtifacts"},
     {"$ref": "#/$defs/screeningArtifacts"},
     {"$ref": "#/$defs/evidenceArtifacts"},
@@ -131,9 +132,41 @@
         "sha256": {"$ref": "#/$defs/sha256"}
       }
     },
-    "containsName": {
-      "type": "object",
-      "required": ["name"]
+    "localStageValidationReview": {
+      "if": {
+        "properties": {
+          "from_state": {
+            "enum": [
+              "ISSUE_INITIALIZED",
+              "DISCOVERY_COLLECTED",
+              "CANDIDATES_NORMALIZED",
+              "EVIDENCE_REVIEWED",
+              "SELECTION_COMPLETE",
+              "ARCHITECTURE_ESTABLISHED",
+              "DRAFT_COMPLETE",
+              "VALIDATED_DRAFT",
+              "RELEASE_CANDIDATE"
+            ]
+          }
+        },
+        "required": ["from_state"]
+      },
+      "then": {
+        "properties": {
+          "reviews": {
+            "contains": {
+              "type": "object",
+              "properties": {
+                "check_id": {"const": "CORE_STAGE_CONTRACT"},
+                "kind": {"const": "DETERMINISTIC"},
+                "status": {"const": "PASS"},
+                "result": {"$ref": "#/$defs/artifactAuthority"}
+              },
+              "required": ["check_id", "kind", "status", "result"]
+            }
+          }
+        }
+      }
     },
     "issueInitializedArtifacts": {
       "if": {"properties": {"from_state": {"const": "ISSUE_INITIALIZED"}}, "required": ["from_state"]},
