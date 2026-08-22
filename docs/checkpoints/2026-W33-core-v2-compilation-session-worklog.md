@@ -126,3 +126,11 @@ Exception reason: a newly executed `weekly-x-2026-W33-fresh-r1` Grok result must
 - Decision counts: `{"DROP": 6, "INSPECT": 7, "KEEP": 18, "MAYBE": 6}`.
 - Fresh X aggregate retained only as community-signal Evidence input; candidate-specific technical claims require primary verification.
 - All six W32 current-main HOLD_OUT rechecks were explicitly DROP at Screening because fresh W33 intake did not independently justify carrying those unresolved old items as W33 stories; distinct fresh W33 events remain separate candidates.
+
+## Fresh Evidence / Materiality / Completeness
+
+- Accepted Evidence tasks: 31; statuses `{"PARTIAL": 21, "VERIFIED": 10}`.
+- Edition materiality counts: `{"CONTEXT": 13, "HOLD": 11, "MATERIAL": 7}`.
+- Evidence is fail-closed to accepted Discovery locators: no candidate-specific first-party URL found later in web research was silently injected into Evidence.
+- arXiv items remain abstract-level PARTIAL and CONTEXT/HOLD; official-index records remain HOLD; X/Grok remains community context only.
+- Completeness is LIMITED with all three Weekly obligations SATISFIED and three explicit residual limitations.
