@@ -83,6 +83,35 @@ class RunEvidenceV2AgentFirstTests(unittest.TestCase):
                     original, root, root / "acceptance.json"
                 )
 
+    def test_thematic_closure_includes_every_residual_limitation_without_duplicates(self) -> None:
+        original_result = {
+            "research_profile": "THEMATIC",
+            "residual_limitations": ["A", "B"],
+            "closure": {"limitations": ["A", "closure-only"]},
+        }
+
+        def original(*args, **kwargs) -> dict:
+            return original_result
+
+        result = adapter.completeness_with_preserved_residual_limitations(original)
+        self.assertEqual(result["closure"]["limitations"], ["A", "closure-only", "B"])
+        self.assertEqual(original_result["closure"]["limitations"], ["A", "closure-only"])
+
+    def test_non_thematic_completeness_is_unchanged(self) -> None:
+        original_result = {
+            "research_profile": "WEEKLY",
+            "residual_limitations": ["A"],
+            "closure": None,
+        }
+
+        def original(*args, **kwargs) -> dict:
+            return original_result
+
+        self.assertIs(
+            adapter.completeness_with_preserved_residual_limitations(original),
+            original_result,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
