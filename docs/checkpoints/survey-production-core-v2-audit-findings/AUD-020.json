@@ -6,7 +6,7 @@
   "observed_problem": "Survey Production Core v2 has a generic stage plan, Stage Handoff Request/Handoff contracts, one-stage adoption driver, and handler/validator registry, but the repository assistant-control allowlist still exposes only legacy Weekly/Special production workflows and the v2 WORKFLOW_DISPATCH stage does not name a settled external workflow authority.",
   "expected_behavior": "After the coherent candidate is merged to main, a fresh W33 or SP001 session must be able to use explicit allowlisted v2 production entrypoints, with external workflow dispatches named and bounded by the same State/Profile/Action Spec authority rather than relying on chat-history knowledge or an unregistered legacy path.",
   "actual_behavior": "assistant-control.yml contains no Core v2 production entrypoint. The FROZEN stage is classified WORKFLOW_DISPATCH but config/survey-production-v2.json records only handler stage:release, so the operational dispatcher has no canonical workflow identity to authorize.",
-  "production_workaround": "External W33/SP001 production remains blocked. Direct legacy workflow dispatch would bypass the intended v2 control boundary and is not accepted as a Pilot workaround.",
+  "production_workaround": "External W33/SP001 production remains blocked until the coherent Core v2 candidate is Human-reviewed and merged; canonical v2 control/release workflows and assistant-control allowlisting are implemented on this branch.",
   "classification": {
     "scope": "CORE",
     "defect_kind": "ORCHESTRATION",
@@ -27,5 +27,5 @@
   "improvement_action": "Define canonical v2 production workflow identities in the contract, add an allowlisted one-stage production/adoption workflow and a release workflow boundary, and add W33/SP001 bootstrap regressions proving both Profiles resolve the same complete stage/control graph without starting a Pilot.",
   "regression_fixture": "tests/test_survey_pilot_bootstrap_v2.py",
   "resolved_by_repair_set_id": null,
-  "status": "OPEN"
+  "status": "FIXED_GENERIC"
 }
