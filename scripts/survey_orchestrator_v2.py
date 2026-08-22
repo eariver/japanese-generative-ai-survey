@@ -811,6 +811,54 @@ def apply_publication_preview_approval(
     return result
 
 
+def execute_current(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    state_path: Path,
+    orchestration_dir: Path,
+    registry: HandlerRegistry,
+    clock: Callable[[], datetime] = _now,
+) -> dict[str, Any]:
+    """Execute at most one current action and persist its exact spec/result.
+
+    Production handoffs bind the current Production State SHA, so model-assisted
+    stages are intentionally advanced one adopted handoff at a time. Terminal
+    Human/Exception/Complete actions are planned and persisted but not executed.
+    """
+    specs_dir = orchestration_dir / "specs"
+    results_dir = orchestration_dir / "results"
+    specs_dir.mkdir(parents=True, exist_ok=True)
+    results_dir.mkdir(parents=True, exist_ok=True)
+    _recover_all_pending(state_path, results_dir)
+    spec = plan_action(repo_root, cfg, state_path)
+    sequence = len(list(specs_dir.glob("*.json"))) + 1
+    safe_id = spec["action_id"].replace(":", "-")
+    spec_path = specs_dir / f"{sequence:03d}-{safe_id}.json"
+    write_action_spec(spec_path, spec)
+    if spec["action_kind"] in TERMINAL_KINDS:
+        return {
+            "terminal_reason": spec["next_terminal_reason"],
+            "action_spec_path": _relative_repo_path(repo_root, spec_path, "terminal Action Spec"),
+            "action_result_path": None,
+            "executed_actions": 0,
+            "lifecycle_state": core.load_json(state_path)["lifecycle_state"],
+        }
+    result_path = results_dir / f"{sequence:03d}-{safe_id}.json"
+    result = execute_action(repo_root, cfg, state_path, spec_path, result_path, registry, clock)
+    if result["status"] != "SUCCEEDED":
+        raise ValueError(
+            f"current deterministic action failed without creating a Human Gate: {spec['action_id']} status={result['status']}"
+        )
+    state = core.load_json(state_path)
+    return {
+        "terminal_reason": state["terminal_reason"],
+        "action_spec_path": _relative_repo_path(repo_root, spec_path, "Action Spec"),
+        "action_result_path": _relative_repo_path(repo_root, result_path, "Action Result"),
+        "executed_actions": 1,
+        "lifecycle_state": state["lifecycle_state"],
+    }
+
+
 def advance_to_gate(repo_root: Path, cfg: dict[str, Any], state_path: Path, orchestration_dir: Path, registry: HandlerRegistry, clock: Callable[[], datetime] = _now, max_actions: int = 64) -> dict[str, Any]:
     specs_dir = orchestration_dir / "specs"
     results_dir = orchestration_dir / "results"
@@ -866,6 +914,11 @@ def build_parser() -> argparse.ArgumentParser:
     advance.add_argument("--orchestration-dir", required=True)
     advance.add_argument("--handler-module", action="append", default=[])
 
+    current = sub.add_parser("execute-current")
+    current.add_argument("--state", required=True)
+    current.add_argument("--orchestration-dir", required=True)
+    current.add_argument("--handler-module", action="append", default=[])
+
     approve = sub.add_parser("approve-architecture")
     for key in ("state", "action-spec", "architecture", "review-summary", "approval", "result"):
         approve.add_argument(f"--{key}", required=True)
@@ -896,11 +949,14 @@ def main() -> int:
             else:
                 print(json.dumps(spec, ensure_ascii=False, indent=2))
             return 0
-        if args.command == "advance-to-gate":
+        if args.command in {"advance-to-gate", "execute-current"}:
             registry: HandlerRegistry = {}
             for module_name in args.handler_module:
                 load_handler_module(module_name, registry)
-            result = advance_to_gate(root, cfg, _path(root, args.state), _path(root, args.orchestration_dir), registry)
+            if args.command == "advance-to-gate":
+                result = advance_to_gate(root, cfg, _path(root, args.state), _path(root, args.orchestration_dir), registry)
+            else:
+                result = execute_current(root, cfg, _path(root, args.state), _path(root, args.orchestration_dir), registry)
             print(json.dumps(result, ensure_ascii=False, indent=2))
             return 0
         if args.command == "approve-architecture":
