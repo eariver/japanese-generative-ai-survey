@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import os
 import shutil
 import subprocess
@@ -75,16 +74,36 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
             rows: list[dict] = []
             for expected in spec["expected_outputs"]:
                 name = expected["name"]
-                artifact = root / "sources" / state["issue_id"] / "generated" / f"{spec['current_stage']}-{name}.json"
-                core.write_json(
-                    artifact,
-                    {
-                        "issue_id": state["issue_id"],
-                        "stage": spec["current_stage"],
-                        "name": name,
-                        "implementation_commit_sha": pinned,
-                    },
-                )
+                if expected.get("path"):
+                    artifact = root / expected["path"]
+                else:
+                    artifact = root / "sources" / state["issue_id"] / "generated" / f"{spec['current_stage']}-{name}.json"
+                if name == "issue-architecture":
+                    core.write_json(
+                        artifact,
+                        {"schema_version": "2.0-rc1", "issue_id": state["issue_id"], "status": "PROPOSED"},
+                    )
+                elif name == "architecture-review-summary":
+                    architecture = root / "sources" / state["issue_id"] / "architecture-v2.json"
+                    core.write_json(
+                        artifact,
+                        {
+                            "schema_version": "2.0-rc1",
+                            "issue_id": state["issue_id"],
+                            "readiness": {"status": "READY_FOR_ARCHITECTURE_REVIEW", "errors": []},
+                            "basis": {"architecture_sha256": core.sha256_file(architecture)},
+                        },
+                    )
+                else:
+                    core.write_json(
+                        artifact,
+                        {
+                            "issue_id": state["issue_id"],
+                            "stage": spec["current_stage"],
+                            "name": name,
+                            "implementation_commit_sha": pinned,
+                        },
+                    )
                 rows.append(
                     {
                         "name": name,
@@ -136,6 +155,16 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
             payload = core.load_json(path)
             self.assertEqual(payload["status"], "SUCCEEDED")
             self.assertEqual(payload["implementation_commit_sha"], pinned)
+        terminal_spec = core.load_json(root / result["action_spec_path"])
+        gate_inputs = {row["name"]: row for row in terminal_spec["required_inputs"]}
+        self.assertEqual(
+            gate_inputs["issue-architecture"]["sha256"],
+            core.sha256_file(root / "sources/SP001/architecture-v2.json"),
+        )
+        self.assertEqual(
+            gate_inputs["architecture-review-summary"]["sha256"],
+            core.sha256_file(root / "sources/SP001/architecture-review-summary-v2.json"),
+        )
 
     def test_architecture_approval_binds_exact_reviewed_bytes_and_promotes_target(self) -> None:
         temp, root, cfg, state_path, _ = self.sandbox()
@@ -150,24 +179,14 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
         )
         spec_path = root / terminal["action_spec_path"]
         architecture_path = root / "sources/SP001/architecture-v2.json"
-        core.write_json(
-            architecture_path,
-            {"schema_version": "2.0-rc1", "issue_id": "SP001", "status": "PROPOSED"},
-        )
-        architecture_sha = core.sha256_file(architecture_path)
         review_path = root / "sources/SP001/architecture-review-summary-v2.json"
-        core.write_json(
-            review_path,
-            {
-                "schema_version": "2.0-rc1",
-                "issue_id": "SP001",
-                "readiness": {"status": "READY_FOR_ARCHITECTURE_REVIEW", "errors": []},
-                "basis": {"architecture_sha256": architecture_sha},
-            },
-        )
         approval_path = root / "sources/SP001/gates/architecture-approval.json"
         action_result_path = root / "sources/SP001/orchestration/v2/results/architecture-human-review.json"
         before_bytes = architecture_path.read_bytes()
+        spec = core.load_json(spec_path)
+        gate_inputs = {row["name"]: row for row in spec["required_inputs"]}
+        self.assertEqual(gate_inputs["issue-architecture"]["sha256"], core.sha256_file(architecture_path))
+        self.assertEqual(gate_inputs["architecture-review-summary"]["sha256"], core.sha256_file(review_path))
         result = orchestrator.apply_architecture_approval(
             root,
             cfg,
@@ -184,9 +203,10 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
         self.assertEqual(result["status"], "SUCCEEDED")
         self.assertEqual(architecture_path.read_bytes(), before_bytes)
         approval = core.load_json(approval_path)
-        self.assertEqual(approval["architecture_sha256"], architecture_sha)
+        self.assertEqual(approval["architecture_sha256"], gate_inputs["issue-architecture"]["sha256"])
         self.assertEqual(
-            approval["architecture_review_summary_sha256"], core.sha256_file(review_path)
+            approval["architecture_review_summary_sha256"],
+            gate_inputs["architecture-review-summary"]["sha256"],
         )
         state = core.load_json(state_path)
         self.assertEqual(state["human_gates"]["architecture_review"], "approved")
@@ -196,6 +216,39 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
         next_spec = orchestrator.plan_action(root, cfg, state_path)
         self.assertEqual(next_spec["handler"], "stage:drafting-synthesis")
         self.assertEqual(next_spec["basis"]["implementation_commit_sha"], state["implementation"]["repository_commit_sha"])
+
+    def test_reviewed_architecture_cannot_be_replaced_before_approval(self) -> None:
+        temp, root, cfg, state_path, _ = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        terminal = orchestrator.advance_to_gate(
+            root,
+            cfg,
+            state_path,
+            root / "sources/SP001/orchestration/v2",
+            self.stage_registry(cfg),
+            clock=lambda: core.parse_instant("2026-08-22T03:05:00+09:00"),
+        )
+        spec_path = root / terminal["action_spec_path"]
+        architecture_path = root / "sources/SP001/architecture-v2.json"
+        review_path = root / "sources/SP001/architecture-review-summary-v2.json"
+        changed = core.load_json(architecture_path)
+        changed["status"] = "PROPOSED"
+        changed["tampered"] = True
+        core.write_json(architecture_path, changed)
+        with self.assertRaisesRegex(ValueError, "stale or divergent"):
+            orchestrator.apply_architecture_approval(
+                root,
+                cfg,
+                state_path,
+                spec_path,
+                architecture_path,
+                review_path,
+                root / "sources/SP001/gates/architecture-approval.json",
+                root / "sources/SP001/orchestration/v2/results/architecture-human-review.json",
+                "human-reviewer",
+                core.parse_instant("2026-08-22T03:10:00+09:00"),
+                "review:SP001:architecture:1",
+            )
 
     def test_artifact_only_head_movement_is_allowed_but_control_code_change_fails(self) -> None:
         temp, root, cfg, state_path, pinned = self.sandbox()
@@ -207,7 +260,6 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
         spec = orchestrator.plan_action(root, cfg, state_path)
         self.assertEqual(spec["basis"]["implementation_commit_sha"], pinned)
         self.assertEqual(spec["basis"]["observed_repository_head_sha"], artifact_head)
-
         control_file = root / "scripts/runtime-change.py"
         control_file.write_text("print('changed implementation')\n", encoding="utf-8")
         self.git(root, "add", "scripts/runtime-change.py")
@@ -290,7 +342,6 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
                     {spec["handler"]: self.handler_for("discovery")},
                     clock=lambda: core.parse_instant("2026-08-22T03:05:00+09:00"),
                 )
-
         pending_result, state_next = orchestrator._transaction_paths(result_path)
         self.assertFalse(result_path.exists())
         self.assertTrue(pending_result.exists())
