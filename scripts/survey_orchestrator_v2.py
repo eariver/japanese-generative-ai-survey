@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Executable orchestration and Human Gate authority for Survey Production Core v2.
 
-production-state.json remains the sole lifecycle authority. Action Specs and
-Action Results are immutable execution provenance. Runtime execution always uses
-the implementation commit pinned in Production State; artifact-only HEAD motion
-is tolerated only when implementation-controlled paths are unchanged.
+Action execution is fail-closed: the State-pinned implementation must match,
+Action Specs bind transitive immutable stage inputs, every executable stage has
+an implementation-controlled semantic validator, and machine checkpoints are
+advanced only after exact-byte validation attestations are written.
 """
 
 from __future__ import annotations
@@ -24,7 +24,8 @@ from scripts import survey_drafting_v2 as drafting
 from scripts import survey_production_v2 as core
 
 Handler = Callable[[Path, dict[str, Any], dict[str, Any], dict[str, Any], str], list[dict[str, Any]]]
-HandlerRegistry = dict[str, Handler]
+Validator = Callable[[Path, dict[str, Any], dict[str, Any], dict[str, Any], list[dict[str, Any]], str], list[str]]
+HandlerRegistry = dict[str, Callable[..., Any]]
 
 GATE_KEYS = {
     "ARCHITECTURE_REVIEW": "architecture_review",
@@ -44,9 +45,7 @@ def _sha40(value: Any) -> bool:
 
 def _git(repo_root: Path, *args: str) -> str:
     try:
-        result = subprocess.run(
-            ["git", *args], cwd=repo_root, check=True, capture_output=True, text=True
-        )
+        result = subprocess.run(["git", *args], cwd=repo_root, check=True, capture_output=True, text=True)
     except (OSError, subprocess.CalledProcessError) as exc:
         stderr = getattr(exc, "stderr", "") or ""
         raise ValueError(f"git {' '.join(args)} failed: {stderr.strip()}") from exc
@@ -60,40 +59,20 @@ def observed_repository_head(repo_root: Path) -> str:
     return value
 
 
-def _changed_control_paths(
-    repo_root: Path,
-    cfg: dict[str, Any],
-    pinned_sha: str,
-    observed_sha: str,
-) -> list[str]:
+def _changed_control_paths(repo_root: Path, cfg: dict[str, Any], pinned_sha: str, observed_sha: str) -> list[str]:
     roots = cfg.get("implementation_control_roots")
     if not isinstance(roots, list) or not roots or any(not isinstance(value, str) or not value for value in roots):
         raise ValueError("implementation_control_roots contract missing or invalid")
     committed = [] if pinned_sha == observed_sha else [
-        line for line in _git(repo_root, "diff", "--name-only", f"{pinned_sha}..{observed_sha}", "--", *roots).splitlines()
-        if line.strip()
+        line for line in _git(repo_root, "diff", "--name-only", f"{pinned_sha}..{observed_sha}", "--", *roots).splitlines() if line.strip()
     ]
-    unstaged = [
-        line for line in _git(repo_root, "diff", "--name-only", "--", *roots).splitlines()
-        if line.strip()
-    ]
-    staged = [
-        line for line in _git(repo_root, "diff", "--cached", "--name-only", "--", *roots).splitlines()
-        if line.strip()
-    ]
-    untracked = [
-        line for line in _git(repo_root, "ls-files", "--others", "--exclude-standard", "--", *roots).splitlines()
-        if line.strip()
-    ]
+    unstaged = [line for line in _git(repo_root, "diff", "--name-only", "--", *roots).splitlines() if line.strip()]
+    staged = [line for line in _git(repo_root, "diff", "--cached", "--name-only", "--", *roots).splitlines() if line.strip()]
+    untracked = [line for line in _git(repo_root, "ls-files", "--others", "--exclude-standard", "--", *roots).splitlines() if line.strip()]
     return sorted(set(committed + unstaged + staged + untracked))
 
 
-def verify_runtime_implementation(
-    repo_root: Path,
-    cfg: dict[str, Any],
-    state: dict[str, Any],
-    observed_head_sha: str | None = None,
-) -> str:
+def verify_runtime_implementation(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any], observed_head_sha: str | None = None) -> str:
     pinned = state.get("implementation", {}).get("repository_commit_sha")
     if not _sha40(pinned):
         raise ValueError("Production State implementation commit is invalid")
@@ -103,39 +82,16 @@ def verify_runtime_implementation(
         raise ValueError("observed repository HEAD must be lowercase 40-hex")
     changed = _changed_control_paths(repo_root, cfg, pinned, observed)
     if changed:
-        raise ValueError(
-            "implementation-controlled files differ from State-pinned implementation: "
-            + ", ".join(changed)
-        )
+        raise ValueError("implementation-controlled files differ from State-pinned implementation: " + ", ".join(changed))
     return observed
 
 
 def _control_fields(state: dict[str, Any], cfg: dict[str, Any]) -> tuple[str | None, str | None]:
-    if state["exception_gate"]["status"] == "required":
-        return "EXCEPTION", "EXCEPTION_GATE_REQUIRED"
-    lifecycle = state["lifecycle_state"]
-    gate = cfg["orchestration"]["gate_at_state"].get(lifecycle)
-    if gate:
-        key = GATE_KEYS[gate]
-        gate_status = state["human_gates"][key]
-        if gate_status == "pending":
-            return gate, "HUMAN_GATE_REACHED"
-        if gate_status == "rejected":
-            return "EXCEPTION", "EXCEPTION_GATE_REQUIRED"
-    if lifecycle == "FROZEN":
-        return None, "COMPLETE"
-    stage = cfg["orchestration"]["stage_plan"].get(lifecycle)
-    if not isinstance(stage, dict):
-        raise ValueError(f"no orchestration stage registered for lifecycle state {lifecycle}")
-    return stage["handler"], None
+    return core.derive_control_fields(state, cfg)
 
 
 def refresh_state_control(state: dict[str, Any], cfg: dict[str, Any]) -> dict[str, Any]:
-    updated = deepcopy(state)
-    next_action, terminal = _control_fields(updated, cfg)
-    updated["next_action"] = next_action
-    updated["terminal_reason"] = terminal
-    return updated
+    return core.refresh_state_control(state, cfg)
 
 
 def _artifact_ref(name: str, path: str | None, sha256: str | None, required: bool = True) -> dict[str, Any]:
@@ -172,12 +128,7 @@ def _configured_expected_artifacts(stage: dict[str, Any], profile: dict[str, Any
     return rows
 
 
-def _configured_gate_inputs(
-    repo_root: Path,
-    cfg: dict[str, Any],
-    profile: dict[str, Any],
-    gate: str,
-) -> list[dict[str, Any]]:
+def _configured_gate_inputs(repo_root: Path, cfg: dict[str, Any], profile: dict[str, Any], gate: str) -> list[dict[str, Any]]:
     configured = cfg["orchestration"].get("gate_inputs", {}).get(gate, [])
     if not isinstance(configured, list):
         raise ValueError(f"gate_inputs.{gate} must be an array")
@@ -196,6 +147,66 @@ def _configured_gate_inputs(
             raise ValueError(f"Human Gate input missing: {rel}")
         rows.append(_artifact_ref(name, rel, core.sha256_file(path)))
     return rows
+
+
+def _checkpoint_attestation_path(repo_root: Path, cfg: dict[str, Any], profile: dict[str, Any], checkpoint: str) -> Path:
+    source_root = core.repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
+    return source_root / cfg["state_authority"]["checkpoint_attestation_dir"] / f"{checkpoint}.json"
+
+
+def _prior_authority_inputs(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any], profile: dict[str, Any]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for checkpoint in core.CHECKPOINTS:
+        if state["machine_checkpoints"].get(checkpoint) != "passed":
+            continue
+        if checkpoint == "publication_preview":
+            continue
+        path = _checkpoint_attestation_path(repo_root, cfg, profile, checkpoint)
+        if not path.is_file():
+            raise ValueError(f"passed checkpoint attestation missing while planning: {checkpoint}")
+        rows.append(_artifact_ref(
+            f"checkpoint-attestation:{checkpoint}",
+            str(path.resolve().relative_to(repo_root.resolve())),
+            core.sha256_file(path),
+        ))
+    if state["human_gates"]["architecture_review"] == "approved":
+        source_root = core.repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
+        approval = source_root / cfg["state_authority"]["architecture_approval_path"]
+        if not approval.is_file():
+            raise ValueError("approved Architecture Review lacks canonical Approval Record while planning")
+        rows.append(_artifact_ref(
+            "architecture-approval-record",
+            str(approval.resolve().relative_to(repo_root.resolve())),
+            core.sha256_file(approval),
+        ))
+    return rows
+
+
+def _retry_and_idempotency(cfg: dict[str, Any], stage: dict[str, Any], action_kind: str) -> tuple[dict[str, Any], dict[str, Any]]:
+    policies = cfg["orchestration"].get("retry_policies", {})
+    policy = deepcopy(stage.get("retry_policy", policies.get(action_kind)))
+    if not isinstance(policy, dict) or set(policy) != {"retryable", "max_attempts"}:
+        raise ValueError(f"retry policy missing/invalid for action kind {action_kind}")
+    if not isinstance(policy["retryable"], bool) or not isinstance(policy["max_attempts"], int) or policy["max_attempts"] < 1:
+        raise ValueError("retry policy values invalid")
+    configured = stage.get("idempotency")
+    if configured is None:
+        idempotency = {"mode": "ACTION_ID", "key": None} if action_kind == "LOCAL_SCRIPT" else {"mode": "NONE", "key": None}
+    else:
+        if not isinstance(configured, dict) or set(configured) != {"mode", "key"}:
+            raise ValueError("idempotency contract fields invalid")
+        idempotency = deepcopy(configured)
+    if idempotency["mode"] not in {"NONE", "ACTION_ID", "EXTERNAL_KEY"}:
+        raise ValueError("idempotency mode invalid")
+    if idempotency["mode"] == "EXTERNAL_KEY" and (not isinstance(idempotency.get("key"), str) or not idempotency["key"].strip()):
+        raise ValueError("EXTERNAL_KEY idempotency requires a non-empty key")
+    if idempotency["mode"] != "EXTERNAL_KEY" and idempotency.get("key") is not None:
+        raise ValueError("only EXTERNAL_KEY idempotency may carry an explicit key")
+    if action_kind == "WORKFLOW_DISPATCH" and policy["retryable"] and idempotency["mode"] == "NONE":
+        raise ValueError("retryable WORKFLOW_DISPATCH requires explicit idempotency/reconciliation authority")
+    if not policy["retryable"]:
+        policy["max_attempts"] = 1
+    return policy, idempotency
 
 
 def _action_identity_payload(payload: dict[str, Any]) -> dict[str, Any]:
@@ -225,12 +236,7 @@ def _spec_matches_current_plan(spec: dict[str, Any], expected: dict[str, Any]) -
     return left == right
 
 
-def plan_action(
-    repo_root: Path,
-    cfg: dict[str, Any],
-    state_path: Path,
-    observed_head_sha: str | None = None,
-) -> dict[str, Any]:
+def plan_action(repo_root: Path, cfg: dict[str, Any], state_path: Path, observed_head_sha: str | None = None) -> dict[str, Any]:
     state = core.load_json(state_path)
     observed = verify_runtime_implementation(repo_root, cfg, state, observed_head_sha)
     profile_path = core.repo_local_path(repo_root, state["profile"]["path"], "state.profile.path")
@@ -242,9 +248,13 @@ def plan_action(
         _artifact_ref("production-state", str(state_path.resolve().relative_to(repo_root.resolve())), core.sha256_file(state_path)),
         _artifact_ref("production-profile", state["profile"]["path"], core.sha256_file(profile_path)),
     ]
+    required_inputs.extend(_prior_authority_inputs(repo_root, cfg, state, profile))
     expected_outputs: list[dict[str, Any]] = []
     handler: str | None = None
+    validator: str | None = None
+    validator_version: str | None = None
     next_state: str | None = None
+    stage: dict[str, Any] = {}
 
     if terminal == "EXCEPTION_GATE_REQUIRED":
         action_kind = "EXCEPTION"
@@ -267,15 +277,22 @@ def plan_action(
         action_kind = stage.get("action_kind")
         if action_kind not in EXECUTABLE_KINDS:
             raise ValueError(f"invalid stage action_kind for {lifecycle}: {action_kind}")
-        handler = stage["handler"]
+        handler = stage.get("handler")
+        validator = stage.get("validator")
+        validator_version = stage.get("validator_version")
+        if not isinstance(handler, str) or not handler or not isinstance(validator, str) or not validator or not isinstance(validator_version, str) or not validator_version:
+            raise ValueError(f"stage {lifecycle} requires handler + semantic validator identity")
         next_state = stage["next_state"]
-        expected_outputs = [
-            _expected_output(checkpoint, checkpoint=checkpoint)
-            for checkpoint in stage.get("checkpoints", [])
-        ]
+        expected_outputs = [_expected_output(checkpoint, checkpoint=checkpoint) for checkpoint in stage.get("checkpoints", [])]
         expected_outputs.extend(_configured_expected_artifacts(stage, profile))
         if handler == "stage:publication-candidate":
             expected_outputs.append(_expected_output("publication-candidate"))
+
+    if action_kind in EXECUTABLE_KINDS:
+        retry_policy, idempotency = _retry_and_idempotency(cfg, stage, action_kind)
+    else:
+        retry_policy = {"retryable": False, "max_attempts": 1}
+        idempotency = {"mode": "NONE", "key": None}
 
     basis = {
         "production_state_sha256": core.sha256_file(state_path),
@@ -294,10 +311,13 @@ def plan_action(
         "target_gate": state["target_gate"],
         "action_kind": action_kind,
         "handler": handler,
+        "validator": validator,
+        "validator_version": validator_version,
         "basis": basis,
         "required_inputs": required_inputs,
         "expected_outputs": expected_outputs,
-        "retry_policy": dict(cfg["orchestration"]["retry_policy"]),
+        "retry_policy": retry_policy,
+        "idempotency": idempotency,
         "next_state": next_state,
         "next_terminal_reason": terminal,
     }
@@ -336,6 +356,8 @@ def _validate_handler_outputs(repo_root: Path, spec: dict[str, Any], outputs: An
             raise ValueError(f"handler output path mismatch: {name}")
         path_value = row.get("path")
         sha_value = row.get("sha256")
+        if row.get("checkpoint") is not None and (path_value is None or sha_value is None):
+            raise ValueError(f"checkpoint output must have concrete path + SHA: {name}")
         if path_value is not None:
             artifact_path = core.repo_local_path(repo_root, path_value, f"Action output {name}")
             if not artifact_path.is_file():
@@ -351,19 +373,58 @@ def _validate_handler_outputs(repo_root: Path, spec: dict[str, Any], outputs: An
     return [actual[name] for name in sorted(actual)]
 
 
-def _result_payload(
-    spec: dict[str, Any],
-    spec_path: Path,
-    status: str,
-    observed_head_sha: str,
-    attempts: int,
-    started_at: datetime,
-    completed_at: datetime,
-    state_before_sha: str,
-    state_after_sha: str | None,
-    outputs: list[dict[str, Any]],
-    error: dict[str, str] | None,
-) -> dict[str, Any]:
+def _attestation_output_ref(row: dict[str, Any]) -> dict[str, Any]:
+    return _artifact_ref(row["name"], row["path"], row["sha256"], True)
+
+
+def _attestation_binding_equal(existing: dict[str, Any], expected: dict[str, Any]) -> bool:
+    left = deepcopy(existing)
+    right = deepcopy(expected)
+    left.pop("validated_at", None)
+    right.pop("validated_at", None)
+    return left == right
+
+
+def _write_validation_attestations(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any], spec: dict[str, Any], spec_path: Path, outputs: list[dict[str, Any]], validated_at: datetime) -> list[dict[str, Any]]:
+    checkpoints = sorted({row["checkpoint"] for row in outputs if row.get("checkpoint") is not None})
+    if not checkpoints:
+        return []
+    profile_path = core.repo_local_path(repo_root, state["profile"]["path"], "state.profile.path")
+    profile = core.load_json(profile_path)
+    stable_inputs = [deepcopy(row) for row in spec["required_inputs"] if row.get("name") != "production-state"]
+    output_refs = [_attestation_output_ref(row) for row in outputs]
+    refs: list[dict[str, Any]] = []
+    for checkpoint in checkpoints:
+        path = _checkpoint_attestation_path(repo_root, cfg, profile, checkpoint)
+        payload = {
+            "schema_version": "2.0-rc1",
+            "issue_id": state["issue_id"],
+            "checkpoint": checkpoint,
+            "action_id": spec["action_id"],
+            "action_spec_sha256": core.sha256_file(spec_path),
+            "validator": spec["validator"],
+            "validator_version": spec["validator_version"],
+            "validated_at": core.iso_utc(validated_at),
+            "required_inputs": stable_inputs,
+            "outputs": output_refs,
+            "status": "PASSED",
+        }
+        if path.exists():
+            existing = core.load_json(path)
+            if not _attestation_binding_equal(existing, payload):
+                raise ValueError(f"refusing divergent checkpoint validation attestation: {checkpoint}")
+        else:
+            core.write_json(path, payload)
+        refs.append(_artifact_ref(
+            f"checkpoint-attestation:{checkpoint}",
+            str(path.resolve().relative_to(repo_root.resolve())),
+            core.sha256_file(path),
+            True,
+        ))
+    return refs
+
+
+def _result_payload(spec: dict[str, Any], spec_path: Path, status: str, observed_head_sha: str, attempts: int, started_at: datetime, completed_at: datetime, state_before_sha: str, state_after_sha: str | None, outputs: list[dict[str, Any]], attestations: list[dict[str, Any]], error: dict[str, str] | None) -> dict[str, Any]:
     return {
         "schema_version": "2.0-rc1",
         "action_id": spec["action_id"],
@@ -371,6 +432,7 @@ def _result_payload(
         "action_spec_sha256": core.sha256_file(spec_path),
         "status": status,
         "handler": spec["handler"],
+        "validator": spec.get("validator"),
         "implementation_commit_sha": spec["basis"]["implementation_commit_sha"],
         "observed_repository_head_sha": observed_head_sha,
         "attempts": attempts,
@@ -379,6 +441,7 @@ def _result_payload(
         "state_before_sha256": state_before_sha,
         "state_after_sha256": state_after_sha,
         "outputs": outputs,
+        "validation_attestations": attestations,
         "error": error,
     }
 
@@ -419,12 +482,7 @@ def _recover_pending_transaction(state_path: Path, result_path: Path) -> bool:
     return True
 
 
-def _commit_state_and_result(
-    state_path: Path,
-    updated_state: dict[str, Any],
-    result_path: Path,
-    result: dict[str, Any],
-) -> None:
+def _commit_state_and_result(state_path: Path, updated_state: dict[str, Any], result_path: Path, result: dict[str, Any]) -> None:
     if result_path.exists():
         raise ValueError(f"refusing to overwrite Action Result: {result_path}")
     pending_result, state_next = _transaction_paths(result_path)
@@ -448,15 +506,7 @@ def _recover_all_pending(state_path: Path, results_dir: Path) -> None:
         _recover_pending_transaction(state_path, Path(str(pending)[:-len(".pending")]))
 
 
-def execute_action(
-    repo_root: Path,
-    cfg: dict[str, Any],
-    state_path: Path,
-    spec_path: Path,
-    result_path: Path,
-    registry: HandlerRegistry,
-    clock: Callable[[], datetime] = _now,
-) -> dict[str, Any]:
+def execute_action(repo_root: Path, cfg: dict[str, Any], state_path: Path, spec_path: Path, result_path: Path, registry: HandlerRegistry, clock: Callable[[], datetime] = _now) -> dict[str, Any]:
     _recover_pending_transaction(state_path, result_path)
     if result_path.exists():
         raise ValueError(f"refusing to overwrite Action Result: {result_path}")
@@ -467,8 +517,11 @@ def execute_action(
     if spec["action_kind"] not in EXECUTABLE_KINDS:
         raise ValueError(f"Action kind {spec['action_kind']} is terminal/non-executable by deterministic dispatcher")
     handler = registry.get(spec["handler"])
-    if handler is None:
+    validator = registry.get(spec["validator"])
+    if not callable(handler):
         raise ValueError(f"registered handler unavailable: {spec['handler']}")
+    if not callable(validator):
+        raise ValueError(f"registered semantic validator unavailable: {spec['validator']}")
 
     state = core.load_json(state_path)
     pinned = state["implementation"]["repository_commit_sha"]
@@ -482,9 +535,12 @@ def execute_action(
     while attempts < max_attempts:
         attempts += 1
         try:
-            outputs = _validate_handler_outputs(
-                repo_root, spec, handler(repo_root, cfg, state, spec, pinned)
-            )
+            outputs = _validate_handler_outputs(repo_root, spec, handler(repo_root, cfg, state, spec, pinned))
+            validation_errors = validator(repo_root, cfg, state, spec, outputs, pinned)
+            if not isinstance(validation_errors, list) or any(not isinstance(value, str) for value in validation_errors):
+                raise ValueError("semantic validator must return list[str]")
+            if validation_errors:
+                raise ValueError("semantic validation failed: " + "; ".join(validation_errors))
             last_error = None
             break
         except Exception as exc:
@@ -497,24 +553,21 @@ def execute_action(
         status = "RETRYABLE_FAILURE" if retryable else "FAILED"
         result = _result_payload(
             spec, spec_path, status, observed_after, attempts, started, completed,
-            state_before_sha, None, [],
+            state_before_sha, None, [], [],
             {"kind": type(last_error).__name__, "message": str(last_error)},
         )
         core.write_json(result_path, result)
         return result
 
-    updated = core.transition_state(repo_root, cfg, state, spec["next_state"], pinned, completed)
-    for row in outputs:
-        checkpoint = row.get("checkpoint")
-        if checkpoint is not None:
-            if checkpoint not in updated["machine_checkpoints"]:
-                raise ValueError(f"Action output references unknown machine checkpoint: {checkpoint}")
-            updated["machine_checkpoints"][checkpoint] = "passed"
-    updated = refresh_state_control(updated, cfg)
+    attestations = _write_validation_attestations(repo_root, cfg, state, spec, spec_path, outputs, completed)
+    checkpoint_updates = {name: "passed" for name in sorted({row["checkpoint"] for row in outputs if row.get("checkpoint") is not None})}
+    updated = core.transition_state(
+        repo_root, cfg, state, spec["next_state"], pinned, completed, checkpoint_updates
+    )
     state_after_sha = core.sha256_bytes(core.json_bytes(updated))
     result = _result_payload(
         spec, spec_path, "SUCCEEDED", observed_after, attempts, started, completed,
-        state_before_sha, state_after_sha, outputs, None,
+        state_before_sha, state_after_sha, outputs, attestations, None,
     )
     _commit_state_and_result(state_path, updated, result_path, result)
     return result
@@ -536,19 +589,25 @@ def _required_input_by_name(spec: dict[str, Any], name: str) -> dict[str, Any]:
     return rows[0]
 
 
-def apply_architecture_approval(
-    repo_root: Path,
-    cfg: dict[str, Any],
-    state_path: Path,
-    spec_path: Path,
-    architecture_path: Path,
-    review_summary_path: Path,
-    approval_path: Path,
-    result_path: Path,
-    reviewed_by: str,
-    reviewed_at: datetime,
-    review_reference: str,
-) -> dict[str, Any]:
+def _validate_architecture_attestation(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any], spec: dict[str, Any], architecture_input: dict[str, Any], review_input: dict[str, Any]) -> None:
+    attestation_input = _required_input_by_name(spec, "checkpoint-attestation:architecture")
+    attestation_path = core.repo_local_path(repo_root, attestation_input["path"], "Architecture checkpoint attestation")
+    if core.sha256_file(attestation_path) != attestation_input["sha256"]:
+        raise ValueError("Architecture checkpoint attestation bytes differ from Human Gate Action Spec")
+    attestation = core.load_json(attestation_path)
+    stage = cfg["orchestration"]["stage_plan"]["SELECTION_COMPLETE"]
+    if attestation.get("status") != "PASSED" or attestation.get("checkpoint") != "architecture":
+        raise ValueError("Architecture checkpoint attestation is not PASSED")
+    if attestation.get("validator") != stage.get("validator") or attestation.get("validator_version") != stage.get("validator_version"):
+        raise ValueError("Architecture checkpoint attestation validator identity drift")
+    outputs = {row.get("name"): row for row in attestation.get("outputs", []) if isinstance(row, dict)}
+    for expected in (architecture_input, review_input):
+        actual = outputs.get(expected["name"])
+        if actual is None or actual.get("path") != expected.get("path") or actual.get("sha256") != expected.get("sha256"):
+            raise ValueError(f"Architecture validation attestation does not bind reviewed output: {expected['name']}")
+
+
+def apply_architecture_approval(repo_root: Path, cfg: dict[str, Any], state_path: Path, spec_path: Path, architecture_path: Path, review_summary_path: Path, approval_path: Path, result_path: Path, reviewed_by: str, reviewed_at: datetime, review_reference: str) -> dict[str, Any]:
     _recover_pending_transaction(state_path, result_path)
     if result_path.exists():
         raise ValueError(f"refusing to overwrite Architecture Review Action Result: {result_path}")
@@ -575,6 +634,7 @@ def apply_architecture_approval(
         raise ValueError("Architecture bytes differ from Human Gate Action Spec")
     if review_input.get("path") != review_rel or review_input.get("sha256") != core.sha256_file(review_summary_path):
         raise ValueError("Architecture Review Summary bytes differ from Human Gate Action Spec")
+    _validate_architecture_attestation(repo_root, cfg, state, spec, architecture_input, review_input)
 
     plan = core.load_json(architecture_path)
     review = core.load_json(review_summary_path)
@@ -606,9 +666,7 @@ def apply_architecture_approval(
         "reviewed_at": core.iso_utc(reviewed_at),
         "review_reference": review_reference,
     }
-    approval_errors = drafting.validate_architecture_approval(
-        approval, architecture_path, review_summary_path, state["issue_id"]
-    )
+    approval_errors = drafting.validate_architecture_approval(approval, architecture_path, review_summary_path, state["issue_id"])
     if approval_errors:
         raise ValueError("Architecture Approval Record invalid: " + "; ".join(approval_errors))
     if approval_path.exists():
@@ -622,7 +680,10 @@ def apply_architecture_approval(
     updated["human_gates"]["architecture_review"] = "approved"
     if updated["target_gate"] == "ARCHITECTURE_REVIEW":
         updated["target_gate"] = "PUBLICATION_PREVIEW"
-    updated = refresh_state_control(updated, cfg)
+    updated = core.refresh_state_control(updated, cfg)
+    semantic_errors = core.validate_state_semantics(repo_root, cfg, updated)
+    if semantic_errors:
+        raise ValueError("Architecture approval would create inconsistent Production State: " + "; ".join(semantic_errors))
     after_sha = core.sha256_bytes(core.json_bytes(updated))
     output = {
         "name": "architecture-approval-record",
@@ -632,21 +693,13 @@ def apply_architecture_approval(
     }
     result = _result_payload(
         spec, spec_path, "SUCCEEDED", observed, 1, reviewed_at, reviewed_at,
-        before_sha, after_sha, [output], None,
+        before_sha, after_sha, [output], [], None,
     )
     _commit_state_and_result(state_path, updated, result_path, result)
     return result
 
 
-def advance_to_gate(
-    repo_root: Path,
-    cfg: dict[str, Any],
-    state_path: Path,
-    orchestration_dir: Path,
-    registry: HandlerRegistry,
-    clock: Callable[[], datetime] = _now,
-    max_actions: int = 64,
-) -> dict[str, Any]:
+def advance_to_gate(repo_root: Path, cfg: dict[str, Any], state_path: Path, orchestration_dir: Path, registry: HandlerRegistry, clock: Callable[[], datetime] = _now, max_actions: int = 64) -> dict[str, Any]:
     specs_dir = orchestration_dir / "specs"
     results_dir = orchestration_dir / "results"
     specs_dir.mkdir(parents=True, exist_ok=True)
@@ -668,9 +721,7 @@ def advance_to_gate(
         result_path = results_dir / f"{sequence:03d}-{safe_id}.json"
         result = execute_action(repo_root, cfg, state_path, spec_path, result_path, registry, clock)
         if result["status"] != "SUCCEEDED":
-            raise ValueError(
-                f"deterministic action failed without creating a Human Gate: {spec['action_id']} status={result['status']}"
-            )
+            raise ValueError(f"deterministic action failed without creating a Human Gate: {spec['action_id']} status={result['status']}")
         executed += 1
     raise ValueError(f"advance-to-gate exceeded max_actions={max_actions}; orchestration cycle suspected")
 
@@ -730,15 +781,12 @@ def main() -> int:
             registry: HandlerRegistry = {}
             for module_name in args.handler_module:
                 load_handler_module(module_name, registry)
-            result = advance_to_gate(
-                root, cfg, _path(root, args.state), _path(root, args.orchestration_dir), registry
-            )
+            result = advance_to_gate(root, cfg, _path(root, args.state), _path(root, args.orchestration_dir), registry)
             print(json.dumps(result, ensure_ascii=False, indent=2))
             return 0
         if args.command == "approve-architecture":
             result = apply_architecture_approval(
-                root,
-                cfg,
+                root, cfg,
                 _path(root, args.state),
                 _path(root, args.action_spec),
                 _path(root, args.architecture),
