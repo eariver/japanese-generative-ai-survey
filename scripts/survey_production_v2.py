@@ -615,6 +615,46 @@ def _completed_stage_checkpoints(cfg: dict[str, Any], lifecycle: str) -> set[str
     return completed
 
 
+def _valid_durable_publication_pdf(repo_root: Path, pdf_ref: dict[str, Any]) -> bool:
+    storage = pdf_ref.get("storage")
+    path_value = pdf_ref.get("path")
+    sha_value = pdf_ref.get("sha256")
+    byte_count = pdf_ref.get("byte_count")
+    if not isinstance(sha_value, str) or len(sha_value) != 64 or any(c not in "0123456789abcdef" for c in sha_value):
+        return False
+    if not isinstance(byte_count, int) or isinstance(byte_count, bool) or byte_count < 1:
+        return False
+    if storage == "REPOSITORY_FILE":
+        if not isinstance(path_value, str):
+            return False
+        try:
+            path = repo_local_path(repo_root, path_value, "Publication Preview PDF")
+        except ValueError:
+            return False
+        return path.is_file() and path.stat().st_size == byte_count and sha256_file(path) == sha_value and pdf_ref.get("actions_artifact") is None
+    if storage == "GITHUB_ACTIONS_ARTIFACT":
+        if not _safe_relative_repo_path(path_value):
+            return False
+        artifact = pdf_ref.get("actions_artifact")
+        if not isinstance(artifact, dict) or set(artifact) != {"repository", "workflow_run_id", "artifact_id", "artifact_name", "artifact_digest"}:
+            return False
+        repository = artifact.get("repository")
+        run_id = artifact.get("workflow_run_id")
+        artifact_id = artifact.get("artifact_id")
+        name = artifact.get("artifact_name")
+        digest = artifact.get("artifact_digest")
+        return (
+            isinstance(repository, str)
+            and re.fullmatch(r"[^/]+/[^/]+", repository) is not None
+            and isinstance(run_id, int) and not isinstance(run_id, bool) and run_id >= 1
+            and isinstance(artifact_id, int) and not isinstance(artifact_id, bool) and artifact_id >= 1
+            and isinstance(name, str) and bool(name.strip())
+            and isinstance(digest, str)
+            and re.fullmatch(r"sha256:[0-9a-f]{64}", digest) is not None
+        )
+    return False
+
+
 def validate_state_semantics(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if state.get("lifecycle_state") not in LIFECYCLE:
@@ -751,13 +791,6 @@ def validate_state_semantics(repo_root: Path, cfg: dict[str, Any], state: dict[s
                 else:
                     candidate_rel = str(candidate.resolve().relative_to(repo_root.resolve()))
                     pdf_ref = candidate_record.get("pdf") if isinstance(candidate_record.get("pdf"), dict) else {}
-                    pdf_path_value = pdf_ref.get("path")
-                    pdf_path = None
-                    if isinstance(pdf_path_value, str):
-                        try:
-                            pdf_path = repo_local_path(repo_root, pdf_path_value, "Publication Preview PDF")
-                        except ValueError:
-                            pdf_path = None
                     if (
                         record.get("decision") != "APPROVED"
                         or record.get("gate") != "PUBLICATION_PREVIEW"
@@ -769,9 +802,7 @@ def validate_state_semantics(repo_root: Path, cfg: dict[str, Any], state: dict[s
                         or record.get("pdf_path") != pdf_ref.get("path")
                         or record.get("pdf_sha256") != pdf_ref.get("sha256")
                         or record.get("page_count") != pdf_ref.get("page_count")
-                        or pdf_path is None
-                        or not pdf_path.is_file()
-                        or sha256_file(pdf_path) != pdf_ref.get("sha256")
+                        or not _valid_durable_publication_pdf(repo_root, pdf_ref)
                     ):
                         errors.append("Publication Preview Approval Record does not bind current canonical Candidate/PDF bytes")
             elif pub_status == "approved":
