@@ -3,10 +3,24 @@ from __future__ import annotations
 
 from automation import w33_evidence_once as base
 
-_original = base.card_for
+_original_card = base.card_for
+_original_prepare = base.ev.prepare_evidence_package
+
+def prepare_evidence_package(*args, **kwargs):
+    # The legacy W33 helper creates WORK/results before package preparation.
+    # Core v2 correctly requires a completely empty output_dir at prepare time.
+    # Remove only that known empty child, prepare the package, then recreate it.
+    results = base.RESULTS
+    if results.exists():
+        if any(results.iterdir()):
+            raise ValueError('unexpected non-empty pre-created Evidence results directory')
+        results.rmdir()
+    path = _original_prepare(*args, **kwargs)
+    results.mkdir(parents=True, exist_ok=True)
+    return path
 
 def card_for(task, meta, package):
-    card = _original(task, meta, package)
+    card = _original_card(task, meta, package)
     src = task['source_records'][0]
     st = src['source_type'].lower()
     if not (st.startswith('x-') or 'grok' in st):
@@ -57,5 +71,6 @@ def card_for(task, meta, package):
     ]
     return card
 
+base.ev.prepare_evidence_package = prepare_evidence_package
 base.card_for = card_for
 base.main()
