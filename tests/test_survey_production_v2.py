@@ -51,7 +51,7 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         return spec
 
     @staticmethod
-    def write_checkpoint_attestation(root: Path, cfg: dict, state_path: Path, checkpoint: str) -> Path:
+    def write_checkpoint_attestation(root: Path, cfg: dict, state_path: Path, checkpoint: str) -> dict[str, str]:
         state = v2.load_json(state_path)
         profile_path = root / state["profile"]["path"]
         profile = v2.load_json(profile_path)
@@ -89,7 +89,7 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
                 "status": "PASSED",
             },
         )
-        return attestation
+        return {"path": str(attestation.relative_to(root)), "sha256": v2.sha256_file(attestation)}
 
     def test_contract_manifest_declares_two_human_gates_and_non_authoritative_legacy_state(self) -> None:
         self.assertEqual(self.cfg["human_gates"], ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"])
@@ -163,9 +163,7 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
 
     def test_thematic_profile_rejects_uncovered_initial_obligation_and_path_escape(self) -> None:
         bad = self.thematic_spec(
-            initial_obligations=[
-                {"obligation_id": "bad", "dimension": "not-declared", "description": "invalid dimension"}
-            ]
+            initial_obligations=[{"obligation_id": "bad", "dimension": "not-declared", "description": "invalid dimension"}]
         )
         with self.assertRaisesRegex(ValueError, "declared scope dimension"):
             v2.thematic_profile(self.repo_root, self.cfg, bad)
@@ -188,6 +186,8 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         self.assertEqual(state["contract"], profile["contract"])
         self.assertEqual(state["next_action"], "stage:discovery")
         self.assertIsNone(state["terminal_reason"])
+        self.assertTrue(all(value is None for value in state["checkpoint_provenance"].values()))
+        self.assertTrue(all(value is None for value in state["human_gate_provenance"].values()))
         self.assertEqual(v2.validate_state_semantics(root, cfg, state), [])
         with self.assertRaisesRegex(ValueError, "refusing destructive"):
             v2.initialize(
@@ -210,30 +210,33 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
                 root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA,
                 v2.parse_instant("2026-08-22T02:10:00+09:00"),
             )
-        with self.assertRaisesRegex(ValueError, "lacks validation attestation"):
+        with self.assertRaisesRegex(ValueError, "requires exact checkpoint provenance updates"):
             v2.transition_state(
                 root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA,
                 v2.parse_instant("2026-08-22T02:10:00+09:00"), {"discovery": "passed"},
             )
-        self.write_checkpoint_attestation(root, cfg, state_path, "discovery")
+        authority = self.write_checkpoint_attestation(root, cfg, state_path, "discovery")
         advanced = v2.transition_state(
             root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA,
-            v2.parse_instant("2026-08-22T02:10:00+09:00"), {"discovery": "passed"},
+            v2.parse_instant("2026-08-22T02:10:00+09:00"),
+            {"discovery": "passed"}, {"discovery": authority},
         )
         self.assertEqual(advanced["lifecycle_state"], "DISCOVERY_COLLECTED")
         self.assertEqual(advanced["machine_checkpoints"]["discovery"], "passed")
+        self.assertEqual(advanced["checkpoint_provenance"]["discovery"], authority)
         with self.assertRaisesRegex(ValueError, "exactly one forward step"):
             v2.transition_state(
                 root, cfg, state, "EVIDENCE_REVIEWED", IMPLEMENTATION_SHA,
-                v2.parse_instant("2026-08-22T02:11:00+09:00"), {},
+                v2.parse_instant("2026-08-22T02:11:00+09:00"), {}, {},
             )
         with self.assertRaisesRegex(ValueError, "implementation commit differs"):
             v2.transition_state(
                 root, cfg, state, "DISCOVERY_COLLECTED", OTHER_IMPLEMENTATION_SHA,
-                v2.parse_instant("2026-08-22T02:12:00+09:00"), {"discovery": "passed"},
+                v2.parse_instant("2026-08-22T02:12:00+09:00"),
+                {"discovery": "passed"}, {"discovery": authority},
             )
 
-    def test_state_semantic_validation_rejects_forged_lifecycle_checkpoint_history_and_controller(self) -> None:
+    def test_state_semantic_validation_rejects_forged_or_rewritten_authority(self) -> None:
         temp, root = self.make_sandbox()
         self.addCleanup(temp.cleanup)
         cfg = v2.load_json(root / "config/survey-production-v2.json")
@@ -264,6 +267,19 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         errors = v2.validate_state_semantics(root, cfg, forged)
         self.assertTrue(any("history[0]" in error for error in errors), errors)
 
+        authority = self.write_checkpoint_attestation(root, cfg, state_path, "discovery")
+        advanced = v2.transition_state(
+            root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA,
+            v2.parse_instant("2026-08-22T02:10:00+09:00"),
+            {"discovery": "passed"}, {"discovery": authority},
+        )
+        attestation_path = root / authority["path"]
+        tampered = v2.load_json(attestation_path)
+        tampered["validator"] = "validate:forged"
+        v2.write_json(attestation_path, tampered)
+        errors = v2.validate_state_semantics(root, cfg, advanced)
+        self.assertTrue(any("authority SHA drift" in error for error in errors), errors)
+
     def test_transition_rejects_profile_contract_and_legacy_drift(self) -> None:
         temp, root = self.make_sandbox()
         self.addCleanup(temp.cleanup)
@@ -284,7 +300,8 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "legacy compatibility artifact changed"):
             v2.transition_state(
                 root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA,
-                v2.parse_instant("2026-08-22T02:10:00+09:00"), {"discovery": "passed"},
+                v2.parse_instant("2026-08-22T02:10:00+09:00"),
+                {"discovery": "passed"}, {},
             )
 
         legacy_path.write_text('{"legacy": 1}\n', encoding="utf-8")
@@ -294,7 +311,8 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "profile bytes changed"):
             v2.transition_state(
                 root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA,
-                v2.parse_instant("2026-08-22T02:11:00+09:00"), {"discovery": "passed"},
+                v2.parse_instant("2026-08-22T02:11:00+09:00"),
+                {"discovery": "passed"}, {},
             )
 
     def test_transition_rejects_contract_file_drift(self) -> None:
@@ -312,7 +330,8 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "semantic contract files differ"):
             v2.transition_state(
                 root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA,
-                v2.parse_instant("2026-08-22T02:10:00+09:00"), {"discovery": "passed"},
+                v2.parse_instant("2026-08-22T02:10:00+09:00"),
+                {"discovery": "passed"}, {},
             )
 
 
