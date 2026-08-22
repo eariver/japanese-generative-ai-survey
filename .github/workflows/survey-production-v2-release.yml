@@ -1,0 +1,238 @@
+name: Survey Production Core v2 release
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_id:
+        required: true
+        type: string
+      confirmation:
+        description: Enter release:<issue_id>
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: survey-production-v2-release-${{ inputs.issue_id }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout frozen main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Core v2 validator dependency
+        run: python -m pip install -r config/survey-production-v2-requirements.txt
+
+      - name: Resolve exact frozen release authority
+        id: authority
+        shell: bash
+        env:
+          ISSUE_ID: ${{ inputs.issue_id }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          test "$CONFIRMATION" = "release:${ISSUE_ID}"
+          PYTHONPATH=. python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, pathlib, re
+          from scripts import survey_production_v2 as core
+          from scripts import survey_publication_v2 as publication
+          root=pathlib.Path('.').resolve(); issue=os.environ['ISSUE_ID']; repo=os.environ['REPOSITORY']
+          cfg=core.load_json(root/core.DEFAULT_CONFIG)
+          wc=cfg.get('workflow_control') or {}
+          if wc.get('dispatch_ref') != 'main' or wc.get('release_workflow') != 'survey-production-v2-release.yml':
+              raise SystemExit('Core v2 release workflow identity is not canonical')
+          if wc.get('handler_dispatch',{}).get('stage:release') != 'survey-production-v2-release.yml':
+              raise SystemExit('stage:release dispatch authority mismatch')
+          if not re.fullmatch(r'[A-Za-z0-9._-]+', issue): raise SystemExit('unsafe issue_id')
+          state_path=root/'sources'/issue/'production-state.json'
+          if not state_path.is_file(): raise SystemExit('canonical Production State missing on main')
+          state=core.load_json(state_path)
+          if state.get('issue_id') != issue or state.get('lifecycle_state') != 'FROZEN':
+              raise SystemExit('release workflow requires exact FROZEN issue state on main')
+          errors=core.validate_state_semantics(root,cfg,state)
+          if errors: raise SystemExit('; '.join(errors))
+          profile=core.load_json(root/state['profile']['path']); source=pathlib.Path(profile['paths']['source_root'])
+          manifest_path=root/source/'publication/v2/release-manifest-v2.json'
+          manifest=publication.validate_release_manifest(root,manifest_path)
+          freeze=core.load_json(root/manifest['freeze_record_path'])
+          candidate_path=root/freeze['publication_candidate_path']; candidate=publication.validate_candidate(root,candidate_path,issue_id=issue)
+          pdf=candidate['pdf']; pub=candidate['publication_profile']
+          if pub == 'WEEKLY_MAGAZINE':
+              title=f'Japanese Generative AI Technical Survey — {issue}'
+              asset=f'Japanese_Generative_AI_Technical_Survey_{issue}.pdf'
+          elif pub == 'LONGFORM_SPECIAL':
+              title=f'Japanese Generative AI Technical Survey Special — {issue}'
+              asset=f'Japanese_Generative_AI_Technical_Survey_Special_{issue}.pdf'
+          else: raise SystemExit('unsupported publication profile')
+          tag=manifest['release_identity']
+          if tag not in {f'weekly/{issue}',f'special/{issue}'}: raise SystemExit('non-canonical issue-only release identity')
+          values={
+              'state':str(state_path.relative_to(root)),'source_root':str(source),'manifest':str(manifest_path.relative_to(root)),
+              'candidate':str(candidate_path.relative_to(root)),'pdf_storage':pdf['storage'],'pdf_path':pdf['path'],
+              'pdf_sha256':pdf['sha256'],'pdf_byte_count':pdf['byte_count'],'tag':tag,'title':title,'asset_name':asset,
+          }
+          aa=pdf.get('actions_artifact') or {}
+          for key in ('workflow_run_id','artifact_id','artifact_name','artifact_digest'):
+              values[key]=aa.get(key,'')
+          if pdf['storage']=='GITHUB_ACTIONS_ARTIFACT' and aa.get('repository') != repo:
+              raise SystemExit('Actions artifact authority repository mismatch')
+          for k,v in values.items(): print(f'{k}={v}')
+          PY
+
+      - name: Rehydrate exact frozen PDF
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          STORAGE: ${{ steps.authority.outputs.pdf_storage }}
+          PDF_PATH: ${{ steps.authority.outputs.pdf_path }}
+          EXPECTED_SHA: ${{ steps.authority.outputs.pdf_sha256 }}
+          EXPECTED_BYTES: ${{ steps.authority.outputs.pdf_byte_count }}
+          RUN_ID: ${{ steps.authority.outputs.workflow_run_id }}
+          ARTIFACT_ID: ${{ steps.authority.outputs.artifact_id }}
+          ARTIFACT_NAME: ${{ steps.authority.outputs.artifact_name }}
+          ARTIFACT_DIGEST: ${{ steps.authority.outputs.artifact_digest }}
+          ASSET_NAME: ${{ steps.authority.outputs.asset_name }}
+        run: |
+          set -euo pipefail
+          if [ "$STORAGE" = 'REPOSITORY_FILE' ]; then
+            test -s "$PDF_PATH"
+            cp "$PDF_PATH" "$ASSET_NAME"
+          elif [ "$STORAGE" = 'GITHUB_ACTIONS_ARTIFACT' ]; then
+            meta="$(gh api "repos/${REPOSITORY}/actions/artifacts/${ARTIFACT_ID}")"
+            test "$(printf '%s' "$meta" | jq -r '.name')" = "$ARTIFACT_NAME"
+            test "$(printf '%s' "$meta" | jq -r '.workflow_run.id')" = "$RUN_ID"
+            test "$(printf '%s' "$meta" | jq -r '.expired')" = 'false'
+            test "$(printf '%s' "$meta" | jq -r '.digest')" = "$ARTIFACT_DIGEST"
+            gh api "repos/${REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" > frozen-artifact.zip
+            unzip -p frozen-artifact.zip "$PDF_PATH" > "$ASSET_NAME"
+          else
+            echo "Unsupported PDF storage: $STORAGE" >&2; exit 2
+          fi
+          test -s "$ASSET_NAME"
+          actual_sha="$(sha256sum "$ASSET_NAME" | awk '{print $1}')"
+          actual_bytes="$(wc -c < "$ASSET_NAME" | tr -d ' ')"
+          test "$actual_sha" = "$EXPECTED_SHA"
+          test "$actual_bytes" = "$EXPECTED_BYTES"
+
+      - name: Record merge verification against frozen main
+        shell: bash
+        env:
+          MANIFEST: ${{ steps.authority.outputs.manifest }}
+          SOURCE_ROOT: ${{ steps.authority.outputs.source_root }}
+          MERGED_COMMIT: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python - <<'PY'
+          import datetime as dt, os, pathlib
+          from scripts import survey_publication_v2 as publication
+          root=pathlib.Path('.').resolve(); source=pathlib.Path(os.environ['SOURCE_ROOT'])
+          publication.build_merge_verification(
+              root, root/os.environ['MANIFEST'], os.environ['MERGED_COMMIT'], dt.datetime.now(dt.timezone.utc),
+              root/source/'publication/v2/merge-verification-v2.json')
+          PY
+
+      - name: Publish exact-byte issue-only GitHub Release
+        id: publish
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          TAG: ${{ steps.authority.outputs.tag }}
+          TITLE: ${{ steps.authority.outputs.title }}
+          ASSET_NAME: ${{ steps.authority.outputs.asset_name }}
+          PDF_SHA: ${{ steps.authority.outputs.pdf_sha256 }}
+          TARGET: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" --repo "$REPOSITORY" >/dev/null 2>&1; then
+            echo "Release already exists: $TAG" >&2; exit 1
+          fi
+          cat > release-notes.md <<EOF
+          Frozen issue-only release of the Japanese Generative AI Technical Survey.
+
+          - PDF SHA-256: \`${PDF_SHA}\`
+          - Frozen merge commit: \`${TARGET}\`
+          EOF
+          gh release create "$TAG" "$ASSET_NAME" --repo "$REPOSITORY" --target "$TARGET" --title "$TITLE" --notes-file release-notes.md
+          url="$(gh release view "$TAG" --repo "$REPOSITORY" --json url --jq .url)"
+          echo "release_url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Build immutable Release Record and adopt FROZEN stage
+        shell: bash
+        env:
+          ISSUE_ID: ${{ inputs.issue_id }}
+          STATE: ${{ steps.authority.outputs.state }}
+          SOURCE_ROOT: ${{ steps.authority.outputs.source_root }}
+          MANIFEST: ${{ steps.authority.outputs.manifest }}
+          RELEASE_URL: ${{ steps.publish.outputs.release_url }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python - <<'PY'
+          import datetime as dt, json, os, pathlib
+          from scripts import survey_production_v2 as core
+          from scripts import survey_publication_v2 as publication
+          root=pathlib.Path('.').resolve(); source=pathlib.Path(os.environ['SOURCE_ROOT'])
+          manifest=root/os.environ['MANIFEST']; verification=root/source/'publication/v2/merge-verification-v2.json'
+          release=root/source/'publication/v2/release-record-v2.json'
+          publication.build_release_record(root,manifest,verification,dt.datetime.now(dt.timezone.utc),os.environ['RELEASE_URL'],release)
+          request=root/source/'orchestration/v2/handoff-requests/FROZEN.json'; request.parent.mkdir(parents=True,exist_ok=True)
+          core.write_json(request,{
+              'schema_version':'2.0-rc1','issue_id':os.environ['ISSUE_ID'],'lifecycle_state':'FROZEN',
+              'inputs':[
+                  {'name':'release-manifest','path':str(manifest.relative_to(root))},
+                  {'name':'merge-verification','path':str(verification.relative_to(root))},
+                  {'name':'release-record','path':str(release.relative_to(root))},
+              ],
+              'outputs':[
+                  {'name':'release','path':str(release.relative_to(root))},
+                  {'name':'merge-verification','path':str(verification.relative_to(root))},
+                  {'name':'release-record','path':str(release.relative_to(root))},
+              ],
+          })
+          PY
+          PYTHONPATH=. python scripts/survey_handoff_v2.py --repo-root . --state "$STATE" \
+            --request "${SOURCE_ROOT}/orchestration/v2/handoff-requests/FROZEN.json"
+          PYTHONPATH=. python scripts/survey_orchestrator_v2.py --repo-root . --config config/survey-production-v2.json \
+            execute-current --state "$STATE" --orchestration-dir "${SOURCE_ROOT}/orchestration/v2" \
+            --handler-module scripts.survey_handlers_v2
+
+      - name: Commit post-release provenance through a normal PR
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          ISSUE_ID: ${{ inputs.issue_id }}
+          SOURCE_ROOT: ${{ steps.authority.outputs.source_root }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          branch="release-record/${ISSUE_ID}-${RUN_ID}"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "$branch"
+          git add "$SOURCE_ROOT"
+          git commit -m "Record ${ISSUE_ID} release provenance"
+          git push origin "$branch"
+          pr_url="$(gh pr create --repo "$REPOSITORY" --base main --head "$branch" --title "Record ${ISSUE_ID} release provenance" --body "Records the exact-byte merge verification, public Release reference, Stage Handoff, validation attestation, and RELEASED Production State produced by the authorized Core v2 release workflow.")"
+          pr_number="${pr_url##*/}"
+          head_sha="$(git rev-parse HEAD)"
+          gh pr merge "$pr_number" --repo "$REPOSITORY" --merge --match-head-commit "$head_sha" || {
+            echo "Post-release provenance PR remains open for repository checks/reconciliation: $pr_url" >&2
+            exit 1
+          }
