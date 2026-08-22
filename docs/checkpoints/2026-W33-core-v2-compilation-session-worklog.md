@@ -141,3 +141,14 @@ Exception reason: a newly executed `weekly-x-2026-W33-fresh-r1` Grok result must
 - Selection: 7 SELECTED, 24 HOLD.
 - Selected primary roles: Daybreak/cyber lead, SGLang serving-stack lead, OpenAI Ultrafast serving-speed lead. Supporting roles: trusted-hands access policy, AWS Daybreak distribution, vLLM, FlashInfer.
 - Abstract-only papers, official-index model signals, non-material integrations, and Grok/X context are not promoted to fill pages.
+
+## Fresh Architecture stage after X/Grok remediation
+
+- Formal Selection checkpoint reached `SELECTION_COMPLETE` after exact Matrix/Selection validation.
+- Fresh Selection contains 31 assignments: 7 `SELECTED`, 24 `HOLD`; abstract-only papers, official-index signals, and Grok/X context were not promoted as filler.
+- Proposed Architecture rebuilt from the fresh selected authority only: (1) Daybreak/cyber governance and distribution, (2) SGLang/vLLM/FlashInfer serving-stack co-evolution, (3) OpenAI Ultrafast preview.
+- Architecture retains first-party/vendor and project-reported benchmark boundaries verbatim from Candidate Matrix remaining boundaries.
+- Page plan remains 12 target / 16 maximum, but explicitly forbids Paper Watch or unresolved-signal padding.
+- `architecture-v2.json` remains `PROPOSED`; Human Review metadata is null and no Architecture Review approval is written in this stage.
+- Architecture Review Summary and bounded Review Attention are regenerated from the fresh Core v2 chain.
+- Local production workaround for historical accepted Evidence State SHA uses the repository's pending fail-closed `fix/core-v2-historical-evidence-basis` logic plus regression tests; no non-State drift is relaxed.
