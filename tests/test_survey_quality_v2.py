@@ -19,6 +19,21 @@ class SurveyQualityV2Tests(unittest.TestCase):
         return temp, root
 
     @staticmethod
+    def profile(root: Path, issue_id: str, research_profile: str, publication_profile: str) -> Path:
+        path = root / "profiles" / issue_id / "production-profile.json"
+        quality.core.write_json(
+            path,
+            {
+                "schema_version": "2.0-rc1",
+                "issue_id": issue_id,
+                "research_profile": research_profile,
+                "publication_profile": publication_profile,
+                "paths": {"survey_root": f"surveys/{issue_id}"},
+            },
+        )
+        return path
+
+    @staticmethod
     def complete_checks(root: Path, research_profile: str, publication_profile: str) -> list[dict[str, object]]:
         cfg = quality.core.load_json(root / quality.core.DEFAULT_CONFIG)
         expected = quality.expected_checks(cfg, research_profile, publication_profile)
@@ -57,9 +72,10 @@ class SurveyQualityV2Tests(unittest.TestCase):
         self.assertIn("TECHNICAL_NOTES_TAIL_NEEDSPACE", thematic)
         self.assertNotIn("WEEKLY_WHY_THIS_ISSUE", thematic)
 
-    def test_complete_quality_bundle_binds_exact_source_and_pdf_bytes(self) -> None:
+    def test_complete_quality_bundle_binds_exact_profile_source_and_pdf_bytes(self) -> None:
         temp, root = self.sandbox()
         self.addCleanup(temp.cleanup)
+        profile = self.profile(root, "SP001", "THEMATIC", "LONGFORM_SPECIAL")
         source = root / "survey/main.tex"
         pdf = root / "survey/main.pdf"
         source.parent.mkdir(parents=True)
@@ -70,16 +86,64 @@ class SurveyQualityV2Tests(unittest.TestCase):
 
         quality.build_bundle(
             root, "SP001", source, pdf, checks, output,
-            research_profile="THEMATIC", publication_profile="LONGFORM_SPECIAL",
+            production_profile_path=profile,
         )
         payload = quality.validate_bundle(root, output, issue_id="SP001")
 
         self.assertEqual(payload["status"], "PASS")
         self.assertEqual(payload["research_profile"], "THEMATIC")
         self.assertEqual(payload["publication_profile"], "LONGFORM_SPECIAL")
+        self.assertEqual(payload["production_profile"]["path"], str(profile.relative_to(root)))
         self.assertEqual(payload["source"]["path"], "survey/main.tex")
         self.assertEqual(payload["pdf"]["path"], "survey/main.pdf")
         self.assertEqual(payload["pdf"]["storage"], "REPOSITORY_FILE")
+
+    def test_retrospective_period_quality_is_derived_from_bound_profile(self) -> None:
+        temp, root = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        profile = self.profile(root, "SP-2025-H2", "RETROSPECTIVE_PERIOD", "LONGFORM_SPECIAL")
+        source = root / "survey/period.tex"
+        pdf = root / "survey/period.pdf"
+        source.parent.mkdir(parents=True)
+        source.write_text("period source\n", encoding="utf-8")
+        pdf.write_bytes(b"%PDF-1.7\nperiod\n")
+        checks = self.complete_checks(root, "RETROSPECTIVE_PERIOD", "LONGFORM_SPECIAL")
+        output = root / "quality/period.json"
+        quality.build_bundle(
+            root, "SP-2025-H2", source, pdf, checks, output,
+            production_profile_path=profile,
+        )
+        payload = quality.validate_bundle(root, output, issue_id="SP-2025-H2")
+        ids = {row["check_id"] for row in payload["checks"]}
+        self.assertIn("PERIOD_SCOPE_LABEL_IDENTITY", ids)
+        self.assertIn("CHRONOLOGY_SOURCE_MAPPING", ids)
+        self.assertNotIn("THEMATIC_RESEARCH_CLOSURE", ids)
+        self.assertEqual(payload["research_profile"], "RETROSPECTIVE_PERIOD")
+
+    def test_profile_drift_invalidates_quality_bundle(self) -> None:
+        temp, root = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        profile = self.profile(root, "SP001", "THEMATIC", "LONGFORM_SPECIAL")
+        source = root / "survey/main.tex"
+        pdf = root / "survey/main.pdf"
+        source.parent.mkdir(parents=True)
+        source.write_text("validated source\n", encoding="utf-8")
+        pdf.write_bytes(b"%PDF-1.7\nfixture\n")
+        output = root / "quality/regression.json"
+        quality.build_bundle(
+            root,
+            "SP001",
+            source,
+            pdf,
+            self.complete_checks(root, "THEMATIC", "LONGFORM_SPECIAL"),
+            output,
+            production_profile_path=profile,
+        )
+        data = quality.core.load_json(profile)
+        data["research_profile"] = "RETROSPECTIVE_PERIOD"
+        quality.core.write_json(profile, data)
+        with self.assertRaisesRegex(ValueError, "Profile authority drift"):
+            quality.validate_bundle(root, output, issue_id="SP001")
 
     def test_deterministic_requires_result_but_agent_review_does_not(self) -> None:
         temp, root = self.sandbox()
@@ -99,6 +163,7 @@ class SurveyQualityV2Tests(unittest.TestCase):
     def test_actions_artifact_authority_survives_ephemeral_materialization_removal(self) -> None:
         temp, root = self.sandbox()
         self.addCleanup(temp.cleanup)
+        profile = self.profile(root, "SP001", "THEMATIC", "LONGFORM_SPECIAL")
         source = root / "survey/main.tex"
         pdf = root / "out/materialized/main.pdf"
         source.parent.mkdir(parents=True)
@@ -122,7 +187,7 @@ class SurveyQualityV2Tests(unittest.TestCase):
         checks = self.complete_checks(root, "THEMATIC", "LONGFORM_SPECIAL")
         quality.build_bundle(
             root, "SP001", source, pdf, checks, output, authority,
-            research_profile="THEMATIC", publication_profile="LONGFORM_SPECIAL",
+            production_profile_path=profile,
         )
         pdf.unlink()
         payload = quality.validate_bundle(root, output, issue_id="SP001")
@@ -131,6 +196,7 @@ class SurveyQualityV2Tests(unittest.TestCase):
     def test_actions_artifact_authority_must_match_inspected_pdf_bytes(self) -> None:
         temp, root = self.sandbox()
         self.addCleanup(temp.cleanup)
+        profile = self.profile(root, "SP001", "THEMATIC", "LONGFORM_SPECIAL")
         source = root / "survey/main.tex"
         pdf = root / "out/materialized/main.pdf"
         source.parent.mkdir(parents=True)
@@ -154,7 +220,7 @@ class SurveyQualityV2Tests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "SHA does not match"):
             quality.build_bundle(
                 root, "SP001", source, pdf, checks, root / "quality/regression.json", authority,
-                research_profile="THEMATIC", publication_profile="LONGFORM_SPECIAL",
+                production_profile_path=profile,
             )
 
     def test_missing_applicable_check_and_duplicate_are_rejected(self) -> None:
@@ -174,6 +240,7 @@ class SurveyQualityV2Tests(unittest.TestCase):
     def test_post_validation_artifact_drift_invalidates_bundle(self) -> None:
         temp, root = self.sandbox()
         self.addCleanup(temp.cleanup)
+        profile = self.profile(root, "2026-W33", "WEEKLY", "WEEKLY_MAGAZINE")
         source = root / "survey/main.tex"
         pdf = root / "survey/main.pdf"
         source.parent.mkdir(parents=True)
@@ -183,7 +250,7 @@ class SurveyQualityV2Tests(unittest.TestCase):
         checks = self.complete_checks(root, "WEEKLY", "WEEKLY_MAGAZINE")
         quality.build_bundle(
             root, "2026-W33", source, pdf, checks, output,
-            research_profile="WEEKLY", publication_profile="WEEKLY_MAGAZINE",
+            production_profile_path=profile,
         )
         pdf.write_bytes(pdf.read_bytes() + b"changed")
         with self.assertRaisesRegex(ValueError, "pdf bytes drifted"):
