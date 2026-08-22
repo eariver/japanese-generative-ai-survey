@@ -7,22 +7,29 @@ on:
       - 'special/*-v2-work'
     paths:
       - 'sources/**/orchestration/v2/control-request.json'
+  pull_request:
+    branches:
+      - 'weekly/*-v2-work'
+      - 'special/*-v2-work'
+    paths:
+      - 'sources/**/orchestration/v2/control-request.json'
 
 permissions:
   contents: write
 
 concurrency:
-  group: survey-production-v2-work-branch-control-${{ github.ref_name }}
+  group: survey-production-v2-work-branch-control-${{ github.event_name == 'pull_request' && github.base_ref || github.ref_name }}
   cancel-in-progress: false
 
 jobs:
   adopt:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout production work branch
+      - name: Checkout production control branch
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
           fetch-depth: 0
 
       - uses: actions/setup-python@v5
@@ -36,7 +43,7 @@ jobs:
         id: request
         shell: bash
         env:
-          WORK_BRANCH: ${{ github.ref_name }}
+          TARGET_WORK_BRANCH: ${{ github.event_name == 'pull_request' && github.base_ref || github.ref_name }}
         run: |
           set -euo pipefail
           PYTHONPATH=. python - <<'PY' >> "$GITHUB_OUTPUT"
@@ -69,8 +76,8 @@ jobs:
           state=core.load_json(state_path)
           if state.get('issue_id') != issue: raise SystemExit('Production State issue identity mismatch')
           profile_path=root/state['profile']['path']; profile=core.load_json(profile_path)
-          if profile.get('paths',{}).get('work_branch') != os.environ['WORK_BRANCH']:
-              raise SystemExit('pushed branch does not match Production Profile work_branch')
+          if profile.get('paths',{}).get('work_branch') != os.environ['TARGET_WORK_BRANCH']:
+              raise SystemExit('target branch does not match Production Profile work_branch')
           cfg=core.load_json(root/core.DEFAULT_CONFIG)
           errors=agent.validate_agent_state(root,cfg,state)
           if errors: raise SystemExit('; '.join(errors))
@@ -84,6 +91,7 @@ jobs:
           print(f'issue_id={issue}')
           print(f'state={state_path.relative_to(root)}')
           print(f'source_root={source_root}')
+          print(f'request_path={request_path.relative_to(root)}')
           print(f'artifacts_json={json.dumps(artifacts,separators=(",",":"),ensure_ascii=False)}')
           print(f'reviews_path={reviews}')
           print(f'summary={json.dumps(summary,ensure_ascii=False)}')
@@ -170,19 +178,22 @@ jobs:
             --repo-root . --config config/survey-production-v2.json \
             validate-state --state "$STATE"
 
-      - name: Commit compact control records to production branch
+      - name: Commit compact control records to execution branch
         shell: bash
         env:
           SOURCE_ROOT: ${{ steps.request.outputs.source_root }}
+          REQUEST_PATH: ${{ steps.request.outputs.request_path }}
           ISSUE_ID: ${{ steps.request.outputs.issue_id }}
+          PUSH_BRANCH: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm -f "$REQUEST_PATH"
           git add "$SOURCE_ROOT"
           if git diff --cached --quiet; then
             echo 'No control changes to commit.' >&2
             exit 1
           fi
           git commit -m "Advance ${ISSUE_ID} Survey Production Core v2"
-          git push origin "HEAD:${{ github.ref_name }}"
+          git push origin "HEAD:${PUSH_BRANCH}"
