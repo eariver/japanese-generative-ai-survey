@@ -9,6 +9,11 @@ repository control needed to make that work resumable and provenance-aware:
 - direct exact-byte Architecture Review and Publication Preview approvals;
 - no Action Spec / Handoff / Action Result ceremony on the normal local path.
 
+Every local Stage Checkpoint also carries one deterministic CORE_STAGE_CONTRACT
+result produced by the compact stage validator.  The controller independently
+checks that result against the exact State/Profile/contract/tool/artifact basis;
+a same-named or fabricated PASS file is not sufficient to advance lifecycle.
+
 Richer workflow/reconciliation authority remains appropriate at external and
 irreversible boundaries such as public Release.
 """
@@ -31,6 +36,7 @@ from scripts import survey_schema_v2 as schema_gate
 CHECKPOINT_SCHEMA = Path("schemas/stage-checkpoint-v2.schema.json")
 STATE_SCHEMA = Path("schemas/survey-production-state.schema.json")
 REVIEW_KINDS = {"DETERMINISTIC", "AGENT_RESEARCH", "AGENT_EDITORIAL", "AGENT_VISUAL"}
+CORE_STAGE_REVIEW_ID = "CORE_STAGE_CONTRACT"
 
 
 class AgentControlError(ValueError):
@@ -99,6 +105,94 @@ def _producer_for_checkpoint(cfg: dict[str, Any], checkpoint: str) -> tuple[str,
     return None
 
 
+def _artifact_map(rows: list[dict[str, Any]]) -> dict[str, dict[str, str]]:
+    result: dict[str, dict[str, str]] = {}
+    for row in rows:
+        name = row.get("name")
+        if not isinstance(name, str) or not name or name in result:
+            raise AgentControlError("Stage Checkpoint artifact names must be unique/non-empty")
+        result[name] = {"name": name, "path": row.get("path"), "sha256": row.get("sha256")}
+    return result
+
+
+def _validate_core_stage_report(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    state: dict[str, Any],
+    artifact_rows: list[dict[str, str]],
+    reviews: list[dict[str, Any]],
+    *,
+    state_path: Path | None = None,
+    expected_contract: dict[str, Any] | None = None,
+    expected_implementation_sha: str | None = None,
+) -> None:
+    matches = [row for row in reviews if row.get("check_id") == CORE_STAGE_REVIEW_ID]
+    if len(matches) != 1:
+        raise AgentControlError("local Stage Checkpoint requires exactly one CORE_STAGE_CONTRACT review")
+    review = matches[0]
+    if review.get("kind") != "DETERMINISTIC" or review.get("status") != "PASS":
+        raise AgentControlError("CORE_STAGE_CONTRACT must be a deterministic PASS review")
+    result_ref = review.get("result")
+    if not isinstance(result_ref, dict) or set(result_ref) != {"path", "sha256"}:
+        raise AgentControlError("CORE_STAGE_CONTRACT requires deterministic result authority")
+    result_path = core.repo_local_path(repo_root, result_ref["path"], "CORE_STAGE_CONTRACT result")
+    if result_path.is_symlink() or not result_path.is_file() or core.sha256_file(result_path) != result_ref["sha256"]:
+        raise AgentControlError("CORE_STAGE_CONTRACT result authority drift")
+    report = core.load_json(result_path)
+    required = {
+        "schema_version", "check_id", "status", "issue_id", "from_state", "to_state",
+        "production_state", "production_profile", "implementation_commit_sha", "contract",
+        "artifacts", "recorded_at",
+    }
+    if not isinstance(report, dict) or set(report) != required:
+        raise AgentControlError("CORE_STAGE_CONTRACT result fields invalid")
+    if report.get("schema_version") != "2.0-rc1" or report.get("check_id") != CORE_STAGE_REVIEW_ID or report.get("status") != "PASS":
+        raise AgentControlError("CORE_STAGE_CONTRACT result identity/status invalid")
+    stage = cfg["orchestration"]["stage_plan"].get(state["lifecycle_state"])
+    if not isinstance(stage, dict):
+        raise AgentControlError(f"no stage configured for {state['lifecycle_state']}")
+    if (
+        report.get("issue_id") != state.get("issue_id")
+        or report.get("from_state") != state.get("lifecycle_state")
+        or report.get("to_state") != stage.get("next_state")
+    ):
+        raise AgentControlError("CORE_STAGE_CONTRACT lifecycle/issue basis mismatch")
+    profile_path, _, _ = _profile_and_source(repo_root, cfg, state)
+    expected_profile = {"path": _rel(repo_root, profile_path, "Production Profile"), "sha256": core.sha256_file(profile_path)}
+    if report.get("production_profile") != expected_profile:
+        raise AgentControlError("CORE_STAGE_CONTRACT Production Profile authority mismatch")
+    report_state = report.get("production_state")
+    if not isinstance(report_state, dict) or set(report_state) != {"path", "sha256"}:
+        raise AgentControlError("CORE_STAGE_CONTRACT Production State authority fields invalid")
+    if state_path is not None:
+        expected_state = {"path": _rel(repo_root, state_path, "Production State"), "sha256": core.sha256_file(state_path)}
+        if report_state != expected_state:
+            raise AgentControlError("CORE_STAGE_CONTRACT Production State authority mismatch")
+    else:
+        path = core.repo_local_path(repo_root, report_state["path"], "historical CORE_STAGE_CONTRACT State")
+        if path.resolve() != core.repo_local_path(repo_root, expected_profile["path"], "Production Profile").parent.joinpath(cfg["state_authority"]["authoritative_filename"]).resolve():
+            raise AgentControlError("historical CORE_STAGE_CONTRACT State path is not canonical")
+    contract = expected_contract or core.contract_identity(
+        repo_root, cfg, state["research_profile"], state["publication_profile"]
+    )
+    if report.get("contract") != contract:
+        raise AgentControlError("CORE_STAGE_CONTRACT contract identity mismatch")
+    implementation = expected_implementation_sha
+    if implementation is None:
+        implementation = report.get("implementation_commit_sha")
+    if report.get("implementation_commit_sha") != implementation:
+        raise AgentControlError("CORE_STAGE_CONTRACT implementation identity mismatch")
+    try:
+        core.parse_instant(str(report.get("recorded_at", "")))
+    except ValueError as exc:
+        raise AgentControlError("CORE_STAGE_CONTRACT recorded_at invalid") from exc
+    report_artifacts = report.get("artifacts")
+    if not isinstance(report_artifacts, list):
+        raise AgentControlError("CORE_STAGE_CONTRACT artifacts must be an array")
+    if _artifact_map(report_artifacts) != _artifact_map(artifact_rows):
+        raise AgentControlError("CORE_STAGE_CONTRACT artifacts differ from Stage Checkpoint artifacts")
+
+
 def _validate_checkpoint_record(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any], checkpoint: str, authority: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if not isinstance(authority, dict) or set(authority) != {"path", "sha256"}:
@@ -146,6 +240,21 @@ def _validate_checkpoint_record(repo_root: Path, cfg: dict[str, Any], state: dic
                 continue
             if not result_path.is_file() or core.sha256_file(result_path) != result.get("sha256"):
                 errors.append(f"deterministic review result drift: {row.get('check_id')}")
+    if from_state != "FROZEN":
+        historical_state = dict(state)
+        historical_state["lifecycle_state"] = from_state
+        try:
+            _validate_core_stage_report(
+                repo_root,
+                cfg,
+                historical_state,
+                record.get("artifacts", []),
+                record.get("reviews", []),
+                expected_contract=record.get("contract"),
+                expected_implementation_sha=record.get("implementation", {}).get("repository_commit_sha"),
+            )
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            errors.append(str(exc))
     return errors
 
 
@@ -393,6 +502,17 @@ def build_stage_checkpoint(
     if not reviews:
         raise AgentControlError("Stage Checkpoint requires at least one deterministic or ChatGPT review row")
     impl = core.repository_commit_sha(repo_root, implementation_sha)
+    current_contract = core.contract_identity(repo_root, cfg, state["research_profile"], state["publication_profile"])
+    _validate_core_stage_report(
+        repo_root,
+        cfg,
+        state,
+        artifact_rows,
+        reviews,
+        state_path=state_path,
+        expected_contract=current_contract,
+        expected_implementation_sha=impl,
+    )
     payload = {
         "schema_version": "2.0-rc1",
         "issue_id": state["issue_id"],
@@ -404,7 +524,7 @@ def build_stage_checkpoint(
             "repository_commit_sha": impl,
             "orchestrator_version": cfg["orchestrator_version"],
         },
-        "contract": core.contract_identity(repo_root, cfg, state["research_profile"], state["publication_profile"]),
+        "contract": current_contract,
         "artifacts": artifact_rows,
         "reviews": reviews,
         "summary": summary,
@@ -441,6 +561,16 @@ def advance_with_checkpoint(repo_root: Path, cfg: dict[str, Any], state_path: Pa
         raise AgentControlError("Stage Checkpoint implementation identity differs from current executing tool")
     _, profile, _ = _profile_and_source(repo_root, cfg, state)
     _validate_stage_artifacts(repo_root, cfg, state, profile, record["artifacts"])
+    _validate_core_stage_report(
+        repo_root,
+        cfg,
+        state,
+        record["artifacts"],
+        record["reviews"],
+        state_path=state_path,
+        expected_contract=current_contract,
+        expected_implementation_sha=current_impl,
+    )
     authority = _authority(repo_root, checkpoint_path, "Stage Checkpoint")
     updated = deepcopy(state)
     for checkpoint in stage.get("checkpoints", []):
@@ -558,7 +688,7 @@ def approve_publication_preview(
     updated = deepcopy(state)
     updated["human_gates"]["publication_preview"] = "approved"
     approval_authority = _authority(repo_root, approval_path, "Publication Preview approval")
-    updated["human_gate_provenance"]["publication_preview"] = deepcopy(approval_authority)
+    updated["human_gate_provenance"]["publication_preview"] = approval_authority
     updated["machine_checkpoints"]["publication_preview"] = "passed"
     updated["checkpoint_provenance"]["publication_preview"] = deepcopy(approval_authority)
     updated = core.refresh_state_control(updated, cfg)
@@ -569,7 +699,14 @@ def approve_publication_preview(
     return updated
 
 
-def _parse_artifacts(repo_root: Path, values: list[str]) -> dict[str, Path]:
+def _path(root: Path, value: str | None) -> Path | None:
+    if value is None:
+        return None
+    path = Path(value)
+    return path if path.is_absolute() else root / path
+
+
+def _parse_artifacts(root: Path, values: list[str]) -> dict[str, Path]:
     result: dict[str, Path] = {}
     for value in values:
         if "=" not in value:
@@ -577,73 +714,85 @@ def _parse_artifacts(repo_root: Path, values: list[str]) -> dict[str, Path]:
         name, raw = value.split("=", 1)
         if not name or not raw or name in result:
             raise AgentControlError("--artifact names/paths must be unique and non-empty")
-        result[name] = core.repo_local_path(repo_root, raw, f"artifact {name}")
+        result[name] = _path(root, raw)
     return result
 
 
-def _path(repo_root: Path, value: str) -> Path:
-    path = Path(value)
-    return path.resolve() if path.is_absolute() else (repo_root / path).resolve()
-
-
-def build_parser() -> argparse.ArgumentParser:
+def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--config", default=str(core.DEFAULT_CONFIG))
     sub = parser.add_subparsers(dest="command", required=True)
 
-    validate = sub.add_parser("validate-state")
-    validate.add_argument("--state", required=True)
+    advance = sub.add_parser("advance-stage")
+    advance.add_argument("--state", required=True)
+    advance.add_argument("--artifact", action="append", default=[])
+    advance.add_argument("--reviews")
+    advance.add_argument("--summary", required=True)
+    advance.add_argument("--recorded-at")
+    advance.add_argument("--implementation-sha")
 
-    stage = sub.add_parser("advance-stage")
-    stage.add_argument("--state", required=True)
-    stage.add_argument("--artifact", action="append", default=[])
-    stage.add_argument("--reviews", required=True)
-    stage.add_argument("--summary", required=True)
-    stage.add_argument("--recorded-at")
-    stage.add_argument("--implementation-sha")
+    arch = sub.add_parser("approve-architecture")
+    arch.add_argument("--state", required=True)
+    arch.add_argument("--reviewed-by", required=True)
+    arch.add_argument("--reviewed-at", required=True)
+    arch.add_argument("--review-reference", required=True)
 
-    approve_a = sub.add_parser("approve-architecture")
-    approve_a.add_argument("--state", required=True)
-    approve_a.add_argument("--reviewed-by", required=True)
-    approve_a.add_argument("--reviewed-at", required=True)
-    approve_a.add_argument("--review-reference", required=True)
+    preview = sub.add_parser("approve-publication-preview")
+    preview.add_argument("--state", required=True)
+    preview.add_argument("--reviewed-by", required=True)
+    preview.add_argument("--reviewed-at", required=True)
+    preview.add_argument("--review-reference", required=True)
 
-    approve_p = sub.add_parser("approve-publication-preview")
-    approve_p.add_argument("--state", required=True)
-    approve_p.add_argument("--reviewed-by", required=True)
-    approve_p.add_argument("--reviewed-at", required=True)
-    approve_p.add_argument("--review-reference", required=True)
-    return parser
-
-
-def main() -> int:
-    args = build_parser().parse_args()
+    args = parser.parse_args()
     root = Path(args.repo_root).resolve()
-    cfg = core.load_json(_path(root, args.config))
-    state_path = _path(root, args.state)
+    config_path = _path(root, args.config)
     try:
-        if args.command == "validate-state":
-            errors = validate_agent_state(root, cfg, core.load_json(state_path))
-            print(json.dumps({"passed": not errors, "errors": errors}, ensure_ascii=False, indent=2))
-            return 0 if not errors else 1
+        cfg = core.load_json(config_path)
         if args.command == "advance-stage":
-            when = core.parse_instant(args.recorded_at) if args.recorded_at else _now()
+            state_path = _path(root, args.state)
             checkpoint = build_stage_checkpoint(
-                root, cfg, state_path,
+                root,
+                cfg,
+                state_path,
                 _parse_artifacts(root, args.artifact),
-                _path(root, args.reviews), args.summary, when, args.implementation_sha,
+                _path(root, args.reviews),
+                args.summary,
+                core.parse_instant(args.recorded_at) if args.recorded_at else _now(),
+                args.implementation_sha,
             )
             state = advance_with_checkpoint(root, cfg, state_path, checkpoint)
-            print(json.dumps({"checkpoint": _rel(root, checkpoint, "Stage Checkpoint"), "state": state}, ensure_ascii=False, indent=2))
+            print(json.dumps({
+                "state": str(state_path.relative_to(root)),
+                "checkpoint": str(checkpoint.relative_to(root)),
+                "lifecycle_state": state["lifecycle_state"],
+                "next_action": state["next_action"],
+                "terminal_reason": state["terminal_reason"],
+            }, indent=2))
             return 0
         if args.command == "approve-architecture":
-            state = approve_architecture(root, cfg, state_path, args.reviewed_by, core.parse_instant(args.reviewed_at), args.review_reference)
-            print(json.dumps(state, ensure_ascii=False, indent=2))
+            state_path = _path(root, args.state)
+            state = approve_architecture(
+                root,
+                cfg,
+                state_path,
+                args.reviewed_by,
+                core.parse_instant(args.reviewed_at),
+                args.review_reference,
+            )
+            print(json.dumps({"state": str(state_path.relative_to(root)), "next_action": state["next_action"], "terminal_reason": state["terminal_reason"]}, indent=2))
             return 0
         if args.command == "approve-publication-preview":
-            state = approve_publication_preview(root, cfg, state_path, args.reviewed_by, core.parse_instant(args.reviewed_at), args.review_reference)
-            print(json.dumps(state, ensure_ascii=False, indent=2))
+            state_path = _path(root, args.state)
+            state = approve_publication_preview(
+                root,
+                cfg,
+                state_path,
+                args.reviewed_by,
+                core.parse_instant(args.reviewed_at),
+                args.review_reference,
+            )
+            print(json.dumps({"state": str(state_path.relative_to(root)), "next_action": state["next_action"], "terminal_reason": state["terminal_reason"]}, indent=2))
             return 0
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         print(str(exc), file=sys.stderr)
