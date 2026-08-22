@@ -16,6 +16,7 @@ class SurveyAgentControlV2Tests(unittest.TestCase):
     def setUp(self) -> None:
         self.root = Path(".").resolve()
         self.cfg = core.load_json(self.root / core.DEFAULT_CONFIG)
+        self._last_artifacts: dict[str, Path] = {}
 
     def initialize(self) -> tuple[tempfile.TemporaryDirectory[str], Path, Path, dict]:
         temp = tempfile.TemporaryDirectory(dir=self.root)
@@ -42,15 +43,62 @@ class SurveyAgentControlV2Tests(unittest.TestCase):
         )
         return temp, profile_path, state_path, profile
 
-    def review_file(self, base: Path, check_id: str, *, kind: str = "AGENT_RESEARCH") -> Path:
+    def review_file(
+        self,
+        base: Path,
+        check_id: str,
+        *,
+        kind: str = "AGENT_RESEARCH",
+        cfg: dict | None = None,
+    ) -> Path:
+        active_cfg = cfg or self.cfg
+        state_path = base / active_cfg["state_authority"]["authoritative_filename"]
+        state = core.load_json(state_path)
+        profile_path = self.root / state["profile"]["path"]
+        stage = active_cfg["orchestration"]["stage_plan"][state["lifecycle_state"]]
+        artifacts = [
+            {
+                "name": name,
+                "path": str(path.relative_to(self.root)),
+                "sha256": core.sha256_file(path),
+            }
+            for name, path in sorted(self._last_artifacts.items())
+        ]
         core_result = base / "review-results" / "CORE_STAGE_CONTRACT.json"
-        core.write_json(core_result, {"check_id": "CORE_STAGE_CONTRACT", "status": "PASS"})
+        core.write_json(
+            core_result,
+            {
+                "schema_version": "2.0-rc1",
+                "check_id": "CORE_STAGE_CONTRACT",
+                "status": "PASS",
+                "issue_id": state["issue_id"],
+                "from_state": state["lifecycle_state"],
+                "to_state": stage["next_state"],
+                "production_state": {
+                    "path": str(state_path.relative_to(self.root)),
+                    "sha256": core.sha256_file(state_path),
+                },
+                "production_profile": {
+                    "path": str(profile_path.relative_to(self.root)),
+                    "sha256": core.sha256_file(profile_path),
+                },
+                "implementation_commit_sha": core.repository_commit_sha(self.root),
+                "contract": core.contract_identity(
+                    self.root,
+                    active_cfg,
+                    state["research_profile"],
+                    state["publication_profile"],
+                ),
+                "artifacts": artifacts,
+                "recorded_at": "2026-08-22T09:05:00Z",
+            },
+        )
         rows = [
             {
                 "check_id": "CORE_STAGE_CONTRACT",
                 "kind": "DETERMINISTIC",
                 "executor": "survey_stage_validation_v2 fixture",
-                "evidence": "fixture deterministic stage-contract validation",
+                "evidence": "fixture deterministic stage-contract validation bound to exact State/Profile/artifacts",
                 "result_path": str(core_result.relative_to(self.root)),
             }
         ]
@@ -79,6 +127,7 @@ class SurveyAgentControlV2Tests(unittest.TestCase):
             path = base / rel
             core.write_json(path, {"fixture": name})
             result[name] = path
+        self._last_artifacts = dict(result)
         return result
 
     def test_stage_checkpoint_records_current_implementation_not_initialization_pin(self) -> None:
@@ -127,8 +176,8 @@ class SurveyAgentControlV2Tests(unittest.TestCase):
         self.assertEqual(agent.validate_agent_state(self.root, upgraded, core.load_json(state_path)), [])
         self.assertEqual(core.load_json(profile_path)["contract"], core.load_json(state_path)["contract"])
 
-        reviews2 = self.review_file(base, "SCREENING_STAGE_REVIEW", kind="AGENT_RESEARCH")
         screening = self.artifact_map(base, {"screening-acceptance": "screening/v2/accepted-fixture/screening-accepted.json"})
+        reviews2 = self.review_file(base, "SCREENING_STAGE_REVIEW", kind="AGENT_RESEARCH", cfg=upgraded)
         second = agent.build_stage_checkpoint(
             self.root, upgraded, state_path, screening, reviews2,
             "Screening outputs were reviewed using the newer repository contract.",
@@ -155,6 +204,7 @@ class SurveyAgentControlV2Tests(unittest.TestCase):
             core.parse_instant("2026-08-22T09:10:00Z"),
         )
         agent.advance_with_checkpoint(self.root, self.cfg, state_path, first)
+        self._last_artifacts = {}
         reviews = self.review_file(base, "SCREENING_REVIEW_WITHOUT_ACCEPTANCE")
         with self.assertRaises(ValueError):
             agent.build_stage_checkpoint(
@@ -213,6 +263,7 @@ class SurveyAgentControlV2Tests(unittest.TestCase):
         self.assertEqual(state["lifecycle_state"], "ARCHITECTURE_ESTABLISHED")
         self.assertEqual(state["next_action"], "ARCHITECTURE_REVIEW")
         self.assertEqual(state["terminal_reason"], "HUMAN_GATE_REACHED")
+        self._last_artifacts = {}
         reviews = self.review_file(base, "MUST_NOT_DRAFT_BEFORE_OWNER_APPROVAL")
         with self.assertRaisesRegex(agent.AgentControlError, "cannot advance while State is terminal"):
             agent.build_stage_checkpoint(
