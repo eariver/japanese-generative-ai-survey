@@ -1,0 +1,61 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "from_state": "ISSUE_INITIALIZED",
+  "to_state": "DISCOVERY_COLLECTED",
+  "checkpoints": [
+    "discovery"
+  ],
+  "recorded_at": "2026-08-22T16:20:31Z",
+  "implementation": {
+    "repository_commit_sha": "a52e95c42ee09d46b3b0c89f0dfb99ed2bc988c8",
+    "orchestrator_version": "survey-production-core-v2/0.8-agent-first"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "1814863bfe5661491b972eabaeaa6383b4018172fbfe765ce064a7202986abce",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "discovery-acceptance",
+      "path": "sources/2026-W33/discovery/discovery-accepted-v2.json",
+      "sha256": "012b529e9ff7c9ce1581431a5f7be0de4b6a6a9d71a7aa8573795e9dec32abd3"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_stage_validation_v2.py",
+      "evidence": "Exact Core v2 Discovery acceptance, X integration, graph and Raw byte authority must validate before adoption.",
+      "result": {
+        "path": "sources/2026-W33/orchestration/v2/reviews/discovery-core-stage-contract.json",
+        "sha256": "f9e0a0543047174525531f7113f43231ebddea9dc5c4651f6c363c074c06f737"
+      }
+    },
+    {
+      "check_id": "FRESH_W33_DISCOVERY_COVERAGE",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT",
+      "evidence": "Reviewed all 96 fresh non-paper candidates via compact set and lexical-prioritized paper candidates across A-L lanes; accepted 30 fresh non-X records, one fresh X aggregate signal, and six W32 HOLD_OUT re-checks. No legacy W33 intake or shortlist used.",
+      "result": null
+    },
+    {
+      "check_id": "WEEKLY_CARRY_OVER_RECHECK",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT",
+      "evidence": "Carry-over input is current-main W32 HOLD_OUT authority only. Six unresolved W32 items are explicitly represented for fresh W33 disposal; no old W33 carry-over conclusions are reused.",
+      "result": null
+    }
+  ],
+  "summary": "Fresh W33 Discovery is accepted from 30 newly collected non-X candidates, one exact-byte fresh Grok/X aggregate signal, and six current-main W32 HOLD_OUT re-checks for carry-over. The 2,665-record fresh intake was compact-reviewed across technical lanes before narrowing; legacy W33 Source Intake and editorial results were not used."
+}
