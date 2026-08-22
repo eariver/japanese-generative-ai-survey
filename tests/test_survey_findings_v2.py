@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import copy
 import unittest
+from pathlib import Path
 
 from scripts import survey_findings_v2 as findings
+from scripts import survey_production_v2 as core
 
 
 class SurveyFindingsV2Tests(unittest.TestCase):
@@ -132,6 +134,17 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         validated = self.repair(status="VALIDATED")
         errors = findings.validate_repair_set(validated, [closed])
         self.assertTrue(any("non-CLOSED Repair Set" in error or "Repair Set validation context" in error for error in errors), errors)
+
+    def test_wu010r_audit_repair_set_is_machine_readable_and_not_prematurely_closed(self) -> None:
+        root = Path("docs/checkpoints/survey-production-core-v2-audit-findings")
+        finding_paths = [root / f"AUD-{number:03d}.json" for number in range(13, 19)]
+        audit_findings = [core.load_json(path) for path in finding_paths]
+        repair = core.load_json(root / "WU-010R-repair-set.json")
+        self.assertEqual(repair["status"], "IMPLEMENTED")
+        self.assertEqual(repair["verification_editions"], [])
+        self.assertEqual(findings.validate_repair_set(repair, audit_findings), [])
+        self.assertTrue(all(value["status"] == "FIXED_GENERIC" for value in audit_findings))
+        self.assertTrue(all(value["resolved_by_repair_set_id"] is None for value in audit_findings))
 
 
 if __name__ == "__main__":
