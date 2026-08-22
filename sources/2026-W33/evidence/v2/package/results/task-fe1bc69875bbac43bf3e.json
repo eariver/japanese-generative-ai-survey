@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "evidence_task_id": "evidence:2026-W33:3ddd7033621718c8",
+  "basis": {
+    "task_sha256": "8418b5f9d00565e65f3dca1808ec851038be09659d62527a8d3c4e47b15e6e10",
+    "screening_acceptance_sha256": "8bf5a49b2169fec1d151bc356746ffc453d90f37e9831ec3b1dd4a24ea6a0066",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "subject",
+      "canonical_name": "OpenAI GPT-5.6 Sol Ultrafast mode",
+      "entity_type": "API",
+      "organization": "OpenAI",
+      "canonical_url": "https://openai.com/index/previewing-ultrafast/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "subject",
+    "artifact_type": "API",
+    "canonical_name": "OpenAI GPT-5.6 Sol Ultrafast mode",
+    "canonical_url": "https://openai.com/index/previewing-ultrafast/"
+  },
+  "temporal": {
+    "observed_at": "2026-08-22T14:25:00Z",
+    "events": [
+      {
+        "event_id": "event:evidence:2026-W33:3ddd7033621718c8",
+        "event_type": "limited-preview",
+        "event_date": "2026-08-13T00:00:00Z",
+        "subject_id": "subject",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "source-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "source-1",
+      "url": "https://openai.com/index/previewing-ultrafast/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Previewing Ultrafast mode: GPT-5.6 Sol at up to 14X the speed",
+      "published_at": "2026-08-13T00:00:00Z",
+      "accessed_at": "2026-08-22T14:25:00Z",
+      "role": "canonical first-party verification source"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "OpenAI introduced Ultrafast as a new GPT-5.6 Sol service tier in a limited OpenAI API preview during W33, powered by Cerebras.",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "source-1"
+      ],
+      "context": "First-party product and availability chronology."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "OpenAI reports that Ultrafast can run GPT-5.6 Sol up to 14 times faster than Standard processing and generate up to 750 output tokens per second.",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "source-1"
+      ],
+      "context": "Speed figures are OpenAI-reported, not independently reproduced."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Ultrafast was a limited preview for selected customers, not general availability.",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "source-1"
+      ],
+      "context": "Availability boundary must travel with the speed claim."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "The up-to-14x and up-to-750-output-token/s figures are vendor-reported and should not be generalized to every workload.",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "source-1"
+      ],
+      "context": "No independent matched-workload reproduction in this issue."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "subject identity, W33 chronology, and source-bound technical claim",
+        "status": "VERIFIED",
+        "finding": "OpenAI first-party material establishes the Aug 13 limited-preview event, Cerebras deployment, and explicitly attributed speed claims.",
+        "subject_ids": [
+          "subject"
+        ],
+        "source_ids": [
+          "source-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

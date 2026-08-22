@@ -1,0 +1,53 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "from_state": "ISSUE_INITIALIZED",
+  "to_state": "DISCOVERY_COLLECTED",
+  "checkpoints": [
+    "discovery"
+  ],
+  "recorded_at": "2026-08-22T14:26:00Z",
+  "implementation": {
+    "repository_commit_sha": "dfb4158583541fafc4eff24e224fa3739a9d8df8",
+    "orchestrator_version": "survey-production-core-v2/0.8-agent-first"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "1814863bfe5661491b972eabaeaa6383b4018172fbfe765ce064a7202986abce",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "discovery-acceptance",
+      "path": "sources/2026-W33/discovery/discovery-accepted-v2.json",
+      "sha256": "3b50e4422532aab13e6bb743776a50d424d8d336d20eac11318fed3f3bb62742"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "scripts/survey_stage_validation_v2.py",
+      "evidence": "Deterministic Core v2 stage contract validation passed against exact current State/Profile/contract/tool/artifact bytes.",
+      "result": {
+        "path": "sources/2026-W33/reviews/v2/01-ISSUE_INITIALIZED-core-stage-contract.json",
+        "sha256": "7cfeec2c53e1db9b35c5f2f5f3345fe97316216e0bbf4010db71d583dc522eda"
+      }
+    },
+    {
+      "check_id": "W33_DISCOVERY_PROVENANCE_REVIEW",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "Discovery contains a broadened current-window primary-source corpus, one explicit carry-over ledger, and two representative X-only claims retained for rejection; Grok 4.6 is corrected to first-party cutoff-day inspection. X manifest is complete and all raw paths are hash-bound.",
+      "result": null
+    }
+  ],
+  "summary": "W33 Discovery accepted under the Weekly Profile with explicit X and carry-over provenance."
+}

@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "evidence_task_id": "evidence:2026-W33:372e553a9753740f",
+  "basis": {
+    "task_sha256": "50752dbea2d76fd9d12f1e6381cad5fc2f8ae48e0ca50c339c548f2caf94d755",
+    "screening_acceptance_sha256": "8bf5a49b2169fec1d151bc356746ffc453d90f37e9831ec3b1dd4a24ea6a0066",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "subject",
+      "canonical_name": "W32→W33 carry-over disposition ledger",
+      "entity_type": "OTHER",
+      "organization": "japanese-generative-ai-survey",
+      "canonical_url": "https://github.com/eariver/japanese-generative-ai-survey/blob/weekly/2026-W33-work/sources/2026-W33/carryover/carryover-ledger-v0.1.json"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "subject",
+    "artifact_type": "OTHER",
+    "canonical_name": "W32→W33 carry-over disposition ledger",
+    "canonical_url": "https://github.com/eariver/japanese-generative-ai-survey/blob/weekly/2026-W33-work/sources/2026-W33/carryover/carryover-ledger-v0.1.json"
+  },
+  "temporal": {
+    "observed_at": "2026-08-22T14:25:00Z",
+    "events": [
+      {
+        "event_id": "event:evidence:2026-W33:372e553a9753740f",
+        "event_type": "carry-over-disposition",
+        "event_date": null,
+        "subject_id": "subject",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "source-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "source-1",
+      "url": "https://github.com/eariver/japanese-generative-ai-survey/blob/weekly/2026-W33-work/sources/2026-W33/carryover/carryover-ledger-v0.1.json",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "W32→W33 carry-over disposition ledger",
+      "published_at": null,
+      "accessed_at": "2026-08-22T14:25:00Z",
+      "role": "canonical first-party verification source"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The W33 carry-over ledger explicitly disposes every inherited W32 item instead of silently dropping or redating unresolved material.",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "source-1"
+      ],
+      "context": "Pipeline provenance fact."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "The ledger is editorial provenance and does not itself constitute a new W33 technical development.",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "source-1"
+      ],
+      "context": "Do not allocate feature space to this record."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "subject identity, W33 chronology, and source-bound technical claim",
+        "status": "VERIFIED",
+        "finding": "The revalidated ledger is present, hash-pinned, and enumerates explicit dispositions for inherited W32 obligations.",
+        "subject_ids": [
+          "subject"
+        ],
+        "source_ids": [
+          "source-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

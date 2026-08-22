@@ -1,0 +1,63 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "production_profile": {
+    "path": "sources/2026-W33/production-profile.json",
+    "sha256": "b6676bf25d500327eb31b3f07b842b1767c3a2bf0bdef4d88aff12b6197785d3"
+  },
+  "research_profile": "WEEKLY",
+  "policy": "REQUIRED_BY_PROFILE",
+  "series_context": null,
+  "decision": "REQUIRED",
+  "rationale": "Weekly Profile requires X/Grok intake. The W33 legacy r3 Trend Sensor raw is independently hash-revalidated and imported only as discovery/community signal under the explicit W33 v2 disposition policy.",
+  "drive_handoff": {
+    "provider": "GOOGLE_DRIVE",
+    "root_folder_name": "Grok_X_SourseIntake",
+    "category": "Weekly",
+    "edition_folder": "2026-W33"
+  },
+  "runs": [
+    {
+      "run_id": "w33-r3-revalidated",
+      "purpose": "Observe material technical community signal and identify claims requiring primary-source reconciliation.",
+      "research_questions": [
+        "What became materially salient on X around the completed W33 window, and which claims require first-party reconciliation?"
+      ],
+      "coverage_focus": [
+        "technical salience",
+        "independent testing",
+        "integration/adoption",
+        "false-positive reconciliation"
+      ],
+      "time_scope": "2026-W33 completed editorial window plus immediate post-cutoff reconnaissance; no post-cutoff event is promoted solely by X timing.",
+      "expected_result_filename": "grok-x-result.md",
+      "run_folder": "Grok_X_SourseIntake/Weekly/2026-W33/w33-r3-revalidated",
+      "instruction": {
+        "path": "sources/2026-W33/external/x/w33-r3-revalidated/grok-instruction.md",
+        "sha256": "f57a786aa903fbea6cd0571ad83d55b0ae20188fad0851440c8a1ba196386b47"
+      },
+      "prompt": {
+        "path": "sources/2026-W33/external/x/w33-r3-revalidated/grok-prompt.md",
+        "sha256": "9c3488b8b6f3d03d8a140db939adf4e6b57e570273102d3c7a8dbe4b3fcab7d6"
+      },
+      "result": {
+        "status": "SUCCESS",
+        "drive_file_name": "grok-x-result.md",
+        "observed_at": "2026-08-15T10:00:00Z",
+        "imported_at": "2026-08-22T14:25:00Z",
+        "raw": {
+          "path": "sources/2026-W33/external/x/w33-r3-revalidated/raw/grok-x-result.md",
+          "sha256": "44c9058acfc6677d8ba33731784c9148dde1460d85d20545a95bf0021a26aa1b",
+          "byte_count": 18389
+        },
+        "discovery_disposition": "DISCOVERY_RECORDED",
+        "discovery_ids": [
+          "x-qwen38-unverified",
+          "x-anthropic-risk-report-unverified"
+        ],
+        "rationale": "Revalidated legacy r3 raw retained three representative high-salience claims for explicit primary-source rejection. X is not technical Evidence authority."
+      }
+    }
+  ],
+  "status": "COMPLETE"
+}

@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "evidence_task_id": "evidence:2026-W33:2511fd1fdd998d1e",
+  "basis": {
+    "task_sha256": "c5acdb81ab35430c52dacc2303d2a75f7ecb944e59a0f4c6cd8e8d784dc4113f",
+    "screening_acceptance_sha256": "8bf5a49b2169fec1d151bc356746ffc453d90f37e9831ec3b1dd4a24ea6a0066",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "subject",
+      "canonical_name": "Grok 4.6 in GitHub Copilot",
+      "entity_type": "MODEL",
+      "organization": "GitHub / xAI",
+      "canonical_url": "https://github.blog/changelog/2026-08-14-grok-4-6-is-now-available-in-github-copilot/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "subject",
+    "artifact_type": "INTEGRATION",
+    "canonical_name": "Grok 4.6 in GitHub Copilot",
+    "canonical_url": "https://github.blog/changelog/2026-08-14-grok-4-6-is-now-available-in-github-copilot/"
+  },
+  "temporal": {
+    "observed_at": "2026-08-22T14:25:00Z",
+    "events": [
+      {
+        "event_id": "event:evidence:2026-W33:2511fd1fdd998d1e",
+        "event_type": "rollout",
+        "event_date": "2026-08-14",
+        "subject_id": "subject",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "source-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "source-1",
+      "url": "https://github.blog/changelog/2026-08-14-grok-4-6-is-now-available-in-github-copilot/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Grok 4.6 is now available in GitHub Copilot",
+      "published_at": "2026-08-14",
+      "accessed_at": "2026-08-22T14:25:00Z",
+      "role": "canonical first-party verification source"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "GitHub announced a gradual Grok 4.6 rollout across multiple GitHub Copilot surfaces on August 14, 2026.",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "source-1"
+      ],
+      "context": "First-party GitHub integration event."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "GitHub describes Grok 4.6 as suited to agentic coding and complex multi-step workflows based on its internal testing.",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "source-1"
+      ],
+      "context": "Capability assessment is GitHub-reported."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "The GitHub page exposes the publication date but not a verified publication time, so this cutoff-day event cannot be safely classified as before or after the W33 18:00 EDT cutoff.",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "source-1"
+      ],
+      "context": "Timing uncertainty is the reason for HOLD/INSPECT, not lack of first-party identity."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "GitHub internal-testing claims are not independent benchmark evidence.",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "source-1"
+      ],
+      "context": "Keep capability wording attributed."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "subject identity, W33 chronology, and source-bound technical claim",
+        "status": "UNRESOLVED",
+        "finding": "First-party identity and rollout are established, correcting the earlier X-only rejection; exact cutoff relation remains unresolved.",
+        "subject_ids": [
+          "subject"
+        ],
+        "source_ids": [
+          "source-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "Was the GitHub changelog item published before or after the 2026-08-14 18:00 EDT W33 cutoff?"
+    ],
+    "contradictions": []
+  }
+}

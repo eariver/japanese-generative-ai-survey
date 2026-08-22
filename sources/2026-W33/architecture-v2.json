@@ -1,0 +1,183 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "status": "PROPOSED",
+  "basis": {
+    "production_profile_sha256": "b6676bf25d500327eb31b3f07b842b1767c3a2bf0bdef4d88aff12b6197785d3",
+    "profile_completeness_sha256": "19b16ce4d62dd75ae69cfbaa0ce5a9c100ac1f6b821a3a421ecf918b0ce4eb49",
+    "materiality_ledger_sha256": "a0a9dfd4f9055cef8e9636364f5219770dd4a20a350134236dbd6159f42c6261",
+    "candidate_matrix_sha256": "862c3808997a3b4fac58f83495c30d874374d0eaeaf6c6c55512c623fdf32b42",
+    "candidate_selection_sha256": "8593eea6f1d1f190821d2eedfae2ce4cd147890185af37f1cf3e80bbe7eb6f00"
+  },
+  "editorial_thesis": "2026-W33の重心は単一ベンチマークの更新ではなく、生成AIの専門能力が「運用可能な境界」とともに実装され始めた点にある。Daybreakはサイバー専門化を承認・配布設計と一体化し、SGLang/vLLM/FlashInferは新しいモデル群を支える実行基盤を同時進化させ、Agent Plugins 1.0はskillsとMCPを再利用可能な配布単位へまとめた。統合層のTransformers/ComfyUIは、この運用化がモデル周辺へ波及していることを補助的に示す。",
+  "architecture_goals": [
+    "能力向上そのものと、アクセス制御・配布・実行基盤・再利用可能な統合という運用化の変化を同じ号の一本の論旨にまとめる。",
+    "vendor/project claim と primary fact を混同せず、比較不能なベンチマーク数字を横並びにしない。",
+    "legacy W33 の選定を温存せず、v2で新たに発見した Agent Plugins 1.0 を含めて fresh selection を示す。",
+    "carry-over と X false-positive を明示的に disposition し、本文から落とす判断も Architecture Review で追跡可能にする。"
+  ],
+  "page_plan": {
+    "target_pages": 12,
+    "max_pages": 16,
+    "notes": "Lead 3–4p, serving systems 3p, agent infrastructure 2p, ecosystem brief 1–2p, watchlist 1p, front/back matter remainder. No Paper Watch filler."
+  },
+  "packages": [
+    {
+      "package_id": "pkg-01-cyber",
+      "title": "Controlled cyber capability becomes governed infrastructure",
+      "purpose": "Lead with the Daybreak event as a combined capability-and-governance change; use AWS only as supporting distribution evidence.",
+      "primary_candidate_ids": [
+        "candidate:2026-W33:cc08bb32ecef4756"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:2026-W33:2531d82dbd33dc06"
+      ],
+      "must_cover_requirements": [
+        "Separate first-party chronology from vendor capability claims.",
+        "Carry Blue/Red access and authorization boundaries with every capability description.",
+        "Explain why AWS distribution changes operational relevance without treating it as independent benchmark evidence."
+      ],
+      "boundaries": [
+        "Benchmark, vulnerability-discovery, reduced-refusal, and capability-threshold statements remain vendor-reported unless independently reproduced.",
+        "Daybreak Red is a controlled-access security capability and should not be described as unrestricted general availability.",
+        "AWS availability is deployment evidence, not independent evidence for Daybreak capability or benchmark claims."
+      ],
+      "drafting_order": 1,
+      "profile_extensions": {
+        "weekly_package_role": "LEAD"
+      },
+      "publication_extensions": {
+        "magazine_package_kind": "lead"
+      }
+    },
+    {
+      "package_id": "pkg-02-serving-stack",
+      "title": "Serving stack co-evolution: runtime, orchestration, and kernels move together",
+      "purpose": "Synthesize SGLang, vLLM, and FlashInfer as one systems movement instead of three release-note summaries.",
+      "primary_candidate_ids": [
+        "candidate:2026-W33:15862e02155d6df7",
+        "candidate:2026-W33:af27a8bd21cbb8ab",
+        "candidate:2026-W33:e0a98512fb97c38b"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:2026-W33:fe1bc69875bbac43"
+      ],
+      "must_cover_requirements": [
+        "Compare layers and responsibilities, not incomparable project benchmark numbers.",
+        "Make project/vendor-reported performance/resource claims explicitly attributed.",
+        "Use Ultrafast as a first-party service-tier counterpoint while retaining its limited-preview and vendor-speed boundaries.",
+        "Show why simultaneous runtime/kernel/service-tier adaptation matters for new model architectures."
+      ],
+      "boundaries": [
+        "Performance, resource-use, and hardware-specific improvements remain project-reported and are not treated as cross-framework apples-to-apples benchmarks.",
+        "Reported throughput or feature gains are project claims and must not be normalized against SGLang or FlashInfer without matched workloads and hardware.",
+        "Kernel-performance and production-readiness claims remain project-reported and workload/hardware dependent.",
+        "Ultrafast was a limited preview for selected customers, not general availability.",
+        "The up-to-14x and up-to-750-output-token/s figures are vendor-reported and should not be generalized to every workload."
+      ],
+      "drafting_order": 2,
+      "profile_extensions": {
+        "weekly_package_role": "FEATURE_OR_BRIEF"
+      },
+      "publication_extensions": {
+        "magazine_package_kind": "feature-or-brief"
+      }
+    },
+    {
+      "package_id": "pkg-03-agent-plugins",
+      "title": "Agent Plugins 1.0 packages skills and MCP connectivity for reuse",
+      "purpose": "Cover the W33 GitHub event as agent infrastructure: reusable distribution and governance of skills plus MCP servers across clients.",
+      "primary_candidate_ids": [
+        "candidate:2026-W33:c42e65fa0133b097"
+      ],
+      "supporting_candidate_ids": [],
+      "must_cover_requirements": [
+        "Distinguish packaging/reuse from claims of ecosystem-wide standardization.",
+        "Explain the operational significance of bundling skills and MCP connectivity without overclaiming security convergence."
+      ],
+      "boundaries": [
+        "This event demonstrates packaging and client support, not that all agent runtimes have converged on one plugin standard or security model."
+      ],
+      "drafting_order": 3,
+      "profile_extensions": {
+        "weekly_package_role": "FEATURE_OR_BRIEF"
+      },
+      "publication_extensions": {
+        "magazine_package_kind": "feature-or-brief"
+      }
+    },
+    {
+      "package_id": "pkg-04-model-ecosystem",
+      "title": "Integration layer brief: Transformers and Muse Glimmer",
+      "purpose": "Use the Hugging Face release as a concise integration-layer signal, not as proof of underlying model-launch chronology or quality.",
+      "primary_candidate_ids": [
+        "candidate:2026-W33:7de61cc22f5bd471"
+      ],
+      "supporting_candidate_ids": [],
+      "must_cover_requirements": [
+        "Keep model-origin and quality claims below the verified Hugging Face integration evidence."
+      ],
+      "boundaries": [
+        "The Hugging Face release does not by itself establish the exact original model-launch chronology, independent quality, or broad social momentum for Muse Glimmer."
+      ],
+      "drafting_order": 4,
+      "profile_extensions": {
+        "weekly_package_role": "FEATURE_OR_BRIEF"
+      },
+      "publication_extensions": {
+        "magazine_package_kind": "feature-or-brief"
+      }
+    },
+    {
+      "package_id": "pkg-05-watchlist",
+      "title": "Watchlist: ComfyUI media integrations",
+      "purpose": "Preserve a reader-useful watch item with explicit uncertainty and a concrete evidence threshold for future promotion.",
+      "primary_candidate_ids": [
+        "candidate:2026-W33:fd9ac0591576deed"
+      ],
+      "supporting_candidate_ids": [],
+      "must_cover_requirements": [
+        "State current observation: verified W33 integration/adoption.",
+        "State uncertainty: integration does not prove same-week underlying model launch, quality, or broad X momentum.",
+        "Future upgrade criterion: primary model chronology plus reproducible evaluation or sustained adoption evidence."
+      ],
+      "boundaries": [
+        "An integration release does not establish that the underlying model launched in the same week, that its quality improved, or that the topic was a broad X-wide trend."
+      ],
+      "drafting_order": 5,
+      "profile_extensions": {
+        "weekly_package_role": "WATCHLIST"
+      },
+      "publication_extensions": {
+        "magazine_package_kind": "watchlist"
+      }
+    }
+  ],
+  "selected_exceptions": [],
+  "profile_extensions": {
+    "weekly_window": {
+      "mode": "ROLLING_WINDOW",
+      "window_start": "2026-08-07T18:00:00-04:00",
+      "window_end": "2026-08-14T18:00:00-04:00",
+      "cutoff": "2026-08-14T18:00:00-04:00",
+      "timezone": "America/New_York"
+    },
+    "paper_watch": "OMITTED_NO_FULL_REVIEW_EVIDENCE"
+  },
+  "publication_extensions": {
+    "magazine_flow": [
+      "lead",
+      "systems-feature",
+      "agent-brief",
+      "ecosystem-brief",
+      "watchlist"
+    ]
+  },
+  "human_review": {
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "review_reference": null
+  }
+}
