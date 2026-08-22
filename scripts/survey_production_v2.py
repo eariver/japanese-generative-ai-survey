@@ -8,7 +8,9 @@ stages are registered by later work units.
 Key invariants enforced here:
 - research scope and temporal policy are separate;
 - Weekly reuses the tested cutoff-to-cutoff calendar implementation;
+- any named completed Weekly issue can be initialized without legacy state;
 - Thematic profiles do not fabricate bounded coverage windows;
+- Profile-defined initial research obligations are first-class;
 - production-state.json is the sole v2 state authority;
 - legacy pipeline-state.json is read-only compatibility evidence;
 - semantic contract identity, executable commit identity, and artifact identity
@@ -20,17 +22,21 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from scripts import weekly_pipeline
 
 DEFAULT_CONFIG = Path("config/survey-production-v2.json")
 PROFILE_SCHEMA = Path("schemas/survey-production-profile.schema.json")
 STATE_SCHEMA = Path("schemas/survey-production-state.schema.json")
+WEEKLY_ISSUE_RE = re.compile(r"^(?P<year>\d{4})-W(?P<week>\d{2})$")
+ISSUE_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 
 LIFECYCLE = (
     "ISSUE_INITIALIZED",
@@ -58,6 +64,17 @@ CHECKPOINTS = (
     "publication_preview",
     "freeze",
 )
+
+CONTRACT_KEYS = {
+    "pipeline_contract_version",
+    "pipeline_contract_sha256",
+    "quality_contract_version",
+    "quality_contract_sha256",
+    "research_profile_version",
+    "research_profile_sha256",
+    "publication_profile_version",
+    "publication_profile_sha256",
+}
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -193,15 +210,86 @@ def validate_temporal_policy(research_profile: str, policy: dict[str, Any], cfg:
     return errors
 
 
+def _nonempty_string_list(value: Any) -> bool:
+    return (
+        isinstance(value, list)
+        and len(value) == len(set(value))
+        and all(isinstance(item, str) and bool(item.strip()) for item in value)
+    )
+
+
+def _safe_relative_repo_path(value: Any) -> bool:
+    if not isinstance(value, str) or not value or "\\" in value:
+        return False
+    path = Path(value)
+    return not path.is_absolute() and ".." not in path.parts
+
+
+def repo_local_path(repo_root: Path, value: str, label: str) -> Path:
+    if not _safe_relative_repo_path(value):
+        raise ValueError(f"{label} must be a repository-relative path without traversal")
+    root = repo_root.resolve()
+    resolved = (root / value).resolve()
+    try:
+        resolved.relative_to(root)
+    except ValueError as exc:
+        raise ValueError(f"{label} escapes repository root") from exc
+    return resolved
+
+
+def _validate_initial_obligations(scope: dict[str, Any], errors: list[str]) -> None:
+    dimensions = scope.get("scope_dimensions")
+    if not _nonempty_string_list(dimensions) or not dimensions:
+        errors.append("research_scope.scope_dimensions must be a non-empty unique string array")
+        dimensions = []
+    allowed_dimensions = set(dimensions)
+    obligations = scope.get("initial_obligations")
+    if not isinstance(obligations, list) or not obligations:
+        errors.append("research_scope.initial_obligations must contain at least one obligation")
+        return
+    seen_ids: set[str] = set()
+    covered_dimensions: set[str] = set()
+    expected_fields = {"obligation_id", "dimension", "description"}
+    for index, obligation in enumerate(obligations):
+        prefix = f"research_scope.initial_obligations[{index}]"
+        if not isinstance(obligation, dict) or set(obligation) != expected_fields:
+            errors.append(f"{prefix} fields must exactly match the v2 Profile contract")
+            continue
+        obligation_id = obligation.get("obligation_id")
+        dimension = obligation.get("dimension")
+        description = obligation.get("description")
+        if not isinstance(obligation_id, str) or not obligation_id.strip():
+            errors.append(f"{prefix}.obligation_id must be non-empty")
+        elif obligation_id in seen_ids:
+            errors.append(f"duplicate initial obligation_id: {obligation_id}")
+        else:
+            seen_ids.add(obligation_id)
+        if dimension not in allowed_dimensions:
+            errors.append(f"{prefix}.dimension must reference a declared scope dimension")
+        else:
+            covered_dimensions.add(dimension)
+        if not isinstance(description, str) or not description.strip():
+            errors.append(f"{prefix}.description must be non-empty")
+    missing_dimensions = sorted(allowed_dimensions - covered_dimensions)
+    if missing_dimensions:
+        errors.append(f"initial obligations do not cover Profile dimensions: {missing_dimensions}")
+
+
 def validate_profile(profile: dict[str, Any], cfg: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     required = {"schema_version", "issue_id", "research_profile", "publication_profile", "research_scope", "paths", "contract"}
-    missing = sorted(required - set(profile))
-    if missing:
-        errors.append(f"profile missing required fields: {', '.join(missing)}")
+    if set(profile) != required:
+        missing = sorted(required - set(profile))
+        extra = sorted(set(profile) - required)
+        if missing:
+            errors.append(f"profile missing required fields: {', '.join(missing)}")
+        if extra:
+            errors.append(f"profile has unsupported fields: {', '.join(extra)}")
         return errors
     if profile["schema_version"] != cfg["schema_version"]:
         errors.append("profile schema_version does not match v2 contract manifest")
+    if not isinstance(profile.get("issue_id"), str) or not ISSUE_ID_RE.fullmatch(profile["issue_id"]):
+        errors.append("issue_id must be a path-safe identifier")
     research_profile = profile["research_profile"]
     publication_profile = profile["publication_profile"]
     if research_profile not in cfg["research_profiles"]:
@@ -214,27 +302,116 @@ def validate_profile(profile: dict[str, Any], cfg: dict[str, Any]) -> list[str]:
         errors.append(f"{research_profile} research profile requires LONGFORM_SPECIAL publication profile")
 
     scope = profile.get("research_scope")
+    scope_keys = {"question", "inclusion", "exclusion", "scope_dimensions", "initial_obligations", "temporal_policy"}
     if not isinstance(scope, dict):
         errors.append("research_scope must be an object")
+    elif set(scope) != scope_keys:
+        errors.append("research_scope fields must exactly match the v2 Profile contract")
     else:
-        for key in ("question", "inclusion", "exclusion", "scope_dimensions", "temporal_policy"):
-            if key not in scope:
-                errors.append(f"research_scope requires {key}")
+        if not isinstance(scope.get("question"), str) or not scope["question"].strip():
+            errors.append("research_scope.question must be non-empty")
+        for key in ("inclusion", "exclusion"):
+            value = scope.get(key)
+            if not isinstance(value, list) or any(not isinstance(item, str) or not item.strip() for item in value):
+                errors.append(f"research_scope.{key} must be an array of non-empty strings")
+        _validate_initial_obligations(scope, errors)
         policy = scope.get("temporal_policy")
         if isinstance(policy, dict) and research_profile in cfg["research_profiles"]:
             errors.extend(validate_temporal_policy(research_profile, policy, cfg))
         elif policy is not None:
             errors.append("research_scope.temporal_policy must be an object")
+
+    paths = profile.get("paths")
+    if not isinstance(paths, dict) or set(paths) != {"source_root", "survey_root", "work_branch"}:
+        errors.append("paths fields must exactly match the v2 Profile contract")
+    else:
+        for key in ("source_root", "survey_root"):
+            if not _safe_relative_repo_path(paths.get(key)):
+                errors.append(f"paths.{key} must be a repository-relative path without traversal")
+        branch = paths.get("work_branch")
+        if not isinstance(branch, str) or not branch.strip() or branch.startswith("/") or ".." in branch.split("/"):
+            errors.append("paths.work_branch must be a non-empty relative branch name without traversal segments")
+
+    contract = profile.get("contract")
+    if not isinstance(contract, dict) or set(contract) != CONTRACT_KEYS:
+        errors.append("contract fields must exactly match the v2 Profile contract")
+    else:
+        for key in (
+            "pipeline_contract_version",
+            "quality_contract_version",
+            "research_profile_version",
+            "publication_profile_version",
+        ):
+            if not isinstance(contract.get(key), str) or not contract[key]:
+                errors.append(f"contract.{key} must be non-empty")
+        for key in (
+            "pipeline_contract_sha256",
+            "quality_contract_sha256",
+            "research_profile_sha256",
+            "publication_profile_sha256",
+        ):
+            value = contract.get(key)
+            if not isinstance(value, str) or len(value) != 64 or any(ch not in "0123456789abcdef" for ch in value):
+                errors.append(f"contract.{key} must be a lowercase SHA-256")
     return errors
+
+
+def weekly_cutoff_for_issue(issue_id: str, weekly_cfg: dict[str, Any]) -> datetime:
+    match = WEEKLY_ISSUE_RE.fullmatch(issue_id)
+    if match is None:
+        raise ValueError(f"invalid Weekly issue id: {issue_id}; expected YYYY-Www")
+    year = int(match.group("year"))
+    week = int(match.group("week"))
+    editorial = weekly_cfg["editorial"]
+    iso_weekday = weekly_pipeline.weekday_number(editorial["cutoff_weekday"]) + 1
+    try:
+        day = datetime.fromisocalendar(year, week, iso_weekday)
+    except ValueError as exc:
+        raise ValueError(f"invalid Weekly issue id: {issue_id}") from exc
+    zone = ZoneInfo(editorial["cutoff_timezone"])
+    cutoff = datetime(
+        day.year,
+        day.month,
+        day.day,
+        int(editorial["cutoff_hour"]),
+        int(editorial.get("cutoff_minute", 0)),
+        tzinfo=zone,
+    )
+    if weekly_pipeline.issue_id_from_cutoff(cutoff) != issue_id:
+        raise ValueError(f"Weekly issue id does not map to configured cutoff calendar: {issue_id}")
+    return cutoff
 
 
 def weekly_profile(repo_root: Path, cfg: dict[str, Any], now: datetime, issue_id: str | None = None) -> dict[str, Any]:
     weekly_cfg = load_json(repo_root / "config/weekly-pipeline.json")
-    cutoff = weekly_pipeline.latest_cutoff(now.astimezone(timezone.utc), weekly_cfg)
-    resolved_issue = weekly_pipeline.issue_id_from_cutoff(cutoff)
-    if issue_id is not None and issue_id != resolved_issue:
-        raise ValueError(f"requested Weekly issue {issue_id} does not match current completed cutoff issue {resolved_issue}")
+    now_utc = now.astimezone(timezone.utc)
+    if issue_id is None:
+        cutoff = weekly_pipeline.latest_cutoff(now_utc, weekly_cfg)
+        resolved_issue = weekly_pipeline.issue_id_from_cutoff(cutoff)
+    else:
+        cutoff = weekly_cutoff_for_issue(issue_id, weekly_cfg)
+        if cutoff.astimezone(timezone.utc) > now_utc:
+            raise ValueError(f"requested Weekly issue {issue_id} has not completed its editorial cutoff yet")
+        resolved_issue = issue_id
     start, end = weekly_pipeline.editorial_window(cutoff, weekly_cfg)
+    dimensions = ["current relevance", "technical significance", "carry-over obligations"]
+    initial_obligations = [
+        {
+            "obligation_id": "weekly:current-relevance",
+            "dimension": "current relevance",
+            "description": "Establish which developments materially belong in this completed Weekly issue and why they matter to the issue.",
+        },
+        {
+            "obligation_id": "weekly:technical-significance",
+            "dimension": "technical significance",
+            "description": "Verify and prioritize the technical significance of candidate developments without relying on Weekly timing alone.",
+        },
+        {
+            "obligation_id": "weekly:carry-over",
+            "dimension": "carry-over obligations",
+            "description": "Explicitly dispose every carry-over obligation inherited from prior Weekly work.",
+        },
+    ]
     profile = {
         "schema_version": cfg["schema_version"],
         "issue_id": resolved_issue,
@@ -244,7 +421,8 @@ def weekly_profile(repo_root: Path, cfg: dict[str, Any], now: datetime, issue_id
             "question": f"What materially changed in generative AI for {resolved_issue}, and why does it matter now?",
             "inclusion": ["material generative-AI technical developments relevant to the issue window or explicit carry-over"],
             "exclusion": ["items without material technical/editorial relevance to the issue"],
-            "scope_dimensions": ["current relevance", "technical significance", "carry-over obligations"],
+            "scope_dimensions": dimensions,
+            "initial_obligations": initial_obligations,
             "temporal_policy": {
                 "mode": "ROLLING_WINDOW",
                 "window_start": start.isoformat(timespec="seconds"),
@@ -266,8 +444,24 @@ def weekly_profile(repo_root: Path, cfg: dict[str, Any], now: datetime, issue_id
     return profile
 
 
+def _thematic_initial_obligations(spec: dict[str, Any], dimensions: list[str]) -> list[dict[str, str]]:
+    supplied = spec.get("initial_obligations")
+    if supplied is not None:
+        if not isinstance(supplied, list):
+            raise ValueError("thematic initial_obligations must be an array")
+        return [dict(row) if isinstance(row, dict) else row for row in supplied]
+    return [
+        {
+            "obligation_id": f"scope:{index:02d}",
+            "dimension": dimension,
+            "description": f"Establish evidence-backed coverage for the thematic scope dimension: {dimension}.",
+        }
+        for index, dimension in enumerate(dimensions, start=1)
+    ]
+
+
 def thematic_profile(repo_root: Path, cfg: dict[str, Any], spec: dict[str, Any]) -> dict[str, Any]:
-    required = ("issue_id", "question", "temporal_mode", "as_of")
+    required = ("issue_id", "question", "temporal_mode", "as_of", "scope_dimensions")
     missing = [key for key in required if not spec.get(key)]
     if missing:
         raise ValueError("thematic spec missing required fields: " + ", ".join(missing))
@@ -276,6 +470,10 @@ def thematic_profile(repo_root: Path, cfg: dict[str, Any], spec: dict[str, Any])
         raise ValueError("Thematic temporal_mode must be OPEN_HISTORY_AS_OF or CURRENT_STATE_AS_OF")
     policy = {"mode": temporal_mode, "as_of": iso_utc(parse_instant(spec["as_of"]))}
     issue_id = spec["issue_id"]
+    dimensions = list(spec["scope_dimensions"])
+    if not dimensions:
+        raise ValueError("Thematic scope_dimensions must not be empty")
+    initial_obligations = _thematic_initial_obligations(spec, dimensions)
     profile = {
         "schema_version": cfg["schema_version"],
         "issue_id": issue_id,
@@ -285,7 +483,8 @@ def thematic_profile(repo_root: Path, cfg: dict[str, Any], spec: dict[str, Any])
             "question": spec["question"],
             "inclusion": list(spec.get("inclusion", [])),
             "exclusion": list(spec.get("exclusion", [])),
-            "scope_dimensions": list(spec.get("scope_dimensions", [])),
+            "scope_dimensions": dimensions,
+            "initial_obligations": initial_obligations,
             "temporal_policy": policy,
         },
         "paths": {
@@ -312,7 +511,7 @@ def initial_state(
 ) -> dict[str, Any]:
     if target_gate not in cfg["human_gates"]:
         raise ValueError(f"unsupported target Human Gate: {target_gate}")
-    source_root = repo_root / profile["paths"]["source_root"]
+    source_root = repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
     legacy_path = source_root / cfg["state_authority"]["legacy_filename"]
     legacy_present = legacy_path.is_file()
     legacy_sha = sha256_file(legacy_path) if legacy_present else None
@@ -324,7 +523,7 @@ def initial_state(
         "publication_profile": profile["publication_profile"],
         "lifecycle_state": "ISSUE_INITIALIZED",
         "profile": {
-            "path": str(profile_path.relative_to(repo_root)),
+            "path": str(profile_path.relative_to(repo_root.resolve())),
             "sha256": profile_sha,
         },
         "contract": dict(profile["contract"]),
@@ -343,7 +542,7 @@ def initial_state(
         "machine_checkpoints": {name: "pending" for name in CHECKPOINTS},
         "legacy_compatibility": {
             "mode": cfg["state_authority"]["legacy_mode"],
-            "legacy_state_path": str(legacy_path.relative_to(repo_root)),
+            "legacy_state_path": str(legacy_path.relative_to(repo_root.resolve())),
             "legacy_state_present": legacy_present,
             "legacy_state_sha256": legacy_sha,
         },
@@ -365,13 +564,16 @@ def verify_state_basis(
     state: dict[str, Any],
     implementation_sha: str,
 ) -> None:
-    profile_path = repo_root / state["profile"]["path"]
+    profile_path = repo_local_path(repo_root, state["profile"]["path"], "state.profile.path")
     if not profile_path.is_file():
         raise ValueError("production profile referenced by state does not exist")
     actual_profile_sha = sha256_file(profile_path)
     if actual_profile_sha != state["profile"]["sha256"]:
         raise ValueError("production profile bytes changed after state initialization")
     profile = load_json(profile_path)
+    profile_errors = validate_profile(profile, cfg)
+    if profile_errors:
+        raise ValueError("production profile no longer satisfies v2 contract: " + "; ".join(profile_errors))
     if profile.get("issue_id") != state.get("issue_id"):
         raise ValueError("production profile/state issue_id divergence")
     if profile.get("contract") != state.get("contract"):
@@ -386,7 +588,7 @@ def verify_state_basis(
         raise ValueError("orchestrator version differs from authoritative state")
 
     legacy = state["legacy_compatibility"]
-    legacy_path = repo_root / legacy["legacy_state_path"]
+    legacy_path = repo_local_path(repo_root, legacy["legacy_state_path"], "legacy_state_path")
     actual_present = legacy_path.is_file()
     actual_sha = sha256_file(legacy_path) if actual_present else None
     if actual_present != legacy["legacy_state_present"] or actual_sha != legacy["legacy_state_sha256"]:
@@ -431,7 +633,10 @@ def initialize(
     target_gate: str,
     recorded_at: datetime,
 ) -> tuple[Path, Path]:
-    source_root = repo_root / profile["paths"]["source_root"]
+    errors = validate_profile(profile, cfg)
+    if errors:
+        raise ValueError("invalid v2 Production Profile: " + "; ".join(errors))
+    source_root = repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
     profile_path = source_root / cfg["state_authority"]["profile_filename"]
     state_path = source_root / cfg["state_authority"]["authoritative_filename"]
     if profile_path.exists() or state_path.exists():
@@ -495,7 +700,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     weekly = sub.add_parser("init-weekly", help="initialize a v2 Weekly profile/state")
     weekly.add_argument("--now", help="offset-aware ISO-8601 instant")
-    weekly.add_argument("--issue-id", help="optional assertion of the current completed Weekly issue")
+    weekly.add_argument("--issue-id", help="optional named completed Weekly issue (YYYY-Www); defaults to latest completed cutoff")
     weekly.add_argument("--target-gate", choices=["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"], default="ARCHITECTURE_REVIEW")
     weekly.add_argument("--implementation-sha")
 
