@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Profile-neutral Draft Package/Result and Profile Synthesis for Core v2.
+"""Profile-neutral Drafting and Profile Synthesis for Survey Production Core v2.
 
-WU-009 deliberately consumes an *independent* Architecture Approval Record.
-WU-010 owns producing that record and advancing Human Gate state; this module
-only validates the exact reviewed-byte authorization before drafting.
+WU-009 consumes an independent Architecture Approval Record. WU-010 owns
+creating that record and advancing Human Gate state; this module validates the
+exact reviewed-byte authorization and preserves the Matrix/Evidence provenance
+chain through Drafting and Synthesis.
 """
 
 from __future__ import annotations
@@ -27,6 +28,12 @@ SYNTHESIS_RESULT_SCHEMA = Path("schemas/profile-synthesis-v2-result.schema.json"
 DRAFT_PROMPT = Path("config/prompts/article-drafting-v2.md")
 SYNTHESIS_PROMPT = Path("config/prompts/profile-synthesis-v2.md")
 
+DRAFT_PACKAGE_FIELDS = {
+    "schema_version", "issue_id", "research_profile", "publication_profile",
+    "package_id", "basis", "package", "candidate_matrix",
+    "evidence_acceptance", "evidence_inputs", "drafting_constraints",
+    "profile_extensions", "publication_extensions",
+}
 DRAFT_RESULT_FIELDS = {
     "schema_version", "issue_id", "research_profile", "publication_profile",
     "package_id", "draft_version", "status", "basis", "runner", "headline",
@@ -61,14 +68,22 @@ def _aware(value: Any) -> bool:
     return parsed.tzinfo is not None
 
 
-def _meaningful(value: Any) -> bool:
+def _payload_value_present(value: Any) -> bool:
+    """Require an explicit value without inventing cross-Profile emptiness rules.
+
+    Empty arrays can be semantically meaningful for Profile-owned fields such as
+    unresolved questions, so the generic Core only rejects null/blank strings.
+    """
+    if value is None:
+        return False
     if isinstance(value, str):
         return bool(value.strip())
-    if isinstance(value, list):
-        return bool(value) and all(_meaningful(item) for item in value)
-    if isinstance(value, dict):
-        return bool(value) and all(_meaningful(item) for item in value.values())
-    return value is not None
+    return True
+
+
+def _object_sha(value: Any) -> str:
+    """SHA of the canonical bytes produced by core.write_json/json_bytes."""
+    return core.sha256_bytes(core.json_bytes(value))
 
 
 def _require_contracts(repo_root: Path) -> None:
@@ -275,6 +290,8 @@ def derive_draft_package(
             "must_cover_requirements": list(plan_package["must_cover_requirements"]),
             "boundaries": list(plan_package["boundaries"]),
         },
+        "candidate_matrix": matrix,
+        "evidence_acceptance": evidence_acceptance,
         "evidence_inputs": inputs,
         "drafting_constraints": {
             "language": "ja",
@@ -293,6 +310,146 @@ def validate_draft_package(package: dict[str, Any], *derive_args: Any) -> list[s
     except ValueError as exc:
         return [str(exc)]
     return [] if package == expected else ["Draft Package does not exactly match authorized Architecture/Evidence derivation"]
+
+
+def validate_self_contained_draft_package(
+    package: dict[str, Any],
+    profile_path: Path,
+    architecture_path: Path,
+    review_summary_path: Path,
+    approval_path: Path,
+) -> list[str]:
+    """Reconstruct the Draft provenance chain without mutable upstream work dirs."""
+    errors: list[str] = []
+    if set(package) != DRAFT_PACKAGE_FIELDS:
+        return ["Draft Package fields must exactly match self-contained v2 contract"]
+    profile = core.load_json(profile_path)
+    plan = core.load_json(architecture_path)
+    approval = core.load_json(approval_path)
+    errors += validate_architecture_approval(
+        approval, architecture_path, review_summary_path, profile["issue_id"]
+    )
+    for key in ("issue_id", "research_profile", "publication_profile"):
+        if package.get(key) != profile.get(key):
+            errors.append(f"Draft Package {key} does not match Production Profile")
+    if package.get("schema_version") != "2.0-rc1":
+        errors.append("Draft Package schema_version mismatch")
+
+    basis = package.get("basis")
+    if not isinstance(basis, dict):
+        return errors + ["Draft Package basis must be an object"]
+    current_basis = {
+        "production_profile_sha256": core.sha256_file(profile_path),
+        "architecture_sha256": core.sha256_file(architecture_path),
+        "architecture_review_summary_sha256": core.sha256_file(review_summary_path),
+        "architecture_approval_sha256": core.sha256_file(approval_path),
+    }
+    for key, value in current_basis.items():
+        if basis.get(key) != value:
+            errors.append(f"Draft Package basis drift: {key}")
+
+    matrix = package.get("candidate_matrix")
+    acceptance = package.get("evidence_acceptance")
+    if not isinstance(matrix, dict) or not isinstance(acceptance, dict):
+        return errors + ["Draft Package embedded Matrix/Evidence acceptance must be objects"]
+    matrix_sha = _object_sha(matrix)
+    acceptance_sha = _object_sha(acceptance)
+    if basis.get("candidate_matrix_sha256") != matrix_sha:
+        errors.append("Draft Package embedded Candidate Matrix does not match basis SHA")
+    if basis.get("evidence_acceptance_sha256") != acceptance_sha:
+        errors.append("Draft Package embedded Evidence acceptance does not match basis SHA")
+    if plan.get("basis", {}).get("candidate_matrix_sha256") != matrix_sha:
+        errors.append("Draft Package Candidate Matrix is not the Matrix authorized by Architecture")
+    if plan.get("basis", {}).get("candidate_selection_sha256") != basis.get("candidate_selection_sha256"):
+        errors.append("Draft Package Candidate Selection SHA is not the Selection authorized by Architecture")
+    if matrix.get("basis", {}).get("evidence_acceptance_sha256") != acceptance_sha:
+        errors.append("Draft Package Evidence acceptance is not the acceptance bound by Candidate Matrix")
+    if matrix.get("issue_id") != profile["issue_id"] or matrix.get("research_profile") != profile["research_profile"]:
+        errors.append("Draft Package embedded Candidate Matrix identity mismatch")
+    if acceptance.get("issue_id") != profile["issue_id"] or acceptance.get("research_profile") != profile["research_profile"]:
+        errors.append("Draft Package embedded Evidence acceptance identity mismatch")
+
+    matching_packages = [row for row in plan.get("packages", []) if row.get("package_id") == package.get("package_id")]
+    if len(matching_packages) != 1:
+        return errors + ["Draft Package package_id does not resolve exactly once in Architecture"]
+    plan_package = matching_packages[0]
+    expected_package = {
+        "title": plan_package["title"],
+        "purpose": plan_package["purpose"],
+        "drafting_order": plan_package["drafting_order"],
+        "primary_candidate_ids": list(plan_package["primary_candidate_ids"]),
+        "supporting_candidate_ids": list(plan_package["supporting_candidate_ids"]),
+        "must_cover_requirements": list(plan_package["must_cover_requirements"]),
+        "boundaries": list(plan_package["boundaries"]),
+    }
+    if package.get("package") != expected_package:
+        errors.append("Draft Package editorial package does not exactly match authorized Architecture package")
+    if package.get("profile_extensions") != plan_package.get("profile_extensions"):
+        errors.append("Draft Package Profile extensions drift from Architecture")
+    if package.get("publication_extensions") != plan_package.get("publication_extensions"):
+        errors.append("Draft Package Publication extensions drift from Architecture")
+
+    matrix_rows = matrix.get("rows")
+    acceptance_results = acceptance.get("results")
+    inputs = package.get("evidence_inputs")
+    if not isinstance(matrix_rows, list) or not isinstance(acceptance_results, list) or not isinstance(inputs, list):
+        return errors + ["Draft Package Matrix rows/Evidence results/inputs must be arrays"]
+    matrix_by_id = {
+        row.get("candidate_id"): row for row in matrix_rows
+        if isinstance(row, dict) and _nonempty(row.get("candidate_id"))
+    }
+    evidence_by_task = {
+        row.get("evidence_task_id"): row for row in acceptance_results
+        if isinstance(row, dict) and _nonempty(row.get("evidence_task_id"))
+    }
+    expected_usage = {
+        **{cid: "PRIMARY" for cid in plan_package["primary_candidate_ids"]},
+        **{cid: "SUPPORTING" for cid in plan_package["supporting_candidate_ids"]},
+    }
+    seen: set[str] = set()
+    for offset, item in enumerate(inputs):
+        prefix = f"evidence_inputs[{offset}]"
+        if not isinstance(item, dict) or set(item) != {
+            "candidate_id", "architecture_usage", "evidence_task_id",
+            "evidence_sha256", "evidence_card",
+        }:
+            errors.append(f"{prefix} fields invalid")
+            continue
+        cid = item.get("candidate_id")
+        if cid in seen:
+            errors.append(f"Draft Package duplicates candidate Evidence input: {cid}")
+            continue
+        seen.add(cid)
+        row = matrix_by_id.get(cid)
+        if row is None or cid not in expected_usage:
+            errors.append(f"{prefix} references candidate outside authorized Architecture package: {cid}")
+            continue
+        if item.get("architecture_usage") != expected_usage[cid]:
+            errors.append(f"{prefix} Architecture usage mismatch")
+        task_id = item.get("evidence_task_id")
+        if task_id != row.get("evidence_task_id") or item.get("evidence_sha256") != row.get("evidence_sha256"):
+            errors.append(f"{prefix} Candidate Matrix Evidence binding mismatch")
+            continue
+        meta = evidence_by_task.get(task_id)
+        if meta is None or meta.get("sha256") != item.get("evidence_sha256"):
+            errors.append(f"{prefix} Evidence acceptance binding mismatch")
+        card = item.get("evidence_card")
+        if not isinstance(card, dict) or _object_sha(card) != item.get("evidence_sha256"):
+            errors.append(f"{prefix} embedded Evidence Card bytes do not match accepted Evidence SHA")
+        elif card.get("evidence_task_id") != task_id or card.get("issue_id") != profile["issue_id"]:
+            errors.append(f"{prefix} embedded Evidence Card identity mismatch")
+    if seen != set(expected_usage):
+        errors.append("Draft Package must contain exactly one Evidence input for every Architecture candidate placement")
+
+    constraints = package.get("drafting_constraints")
+    if constraints != {
+        "language": "ja",
+        "raw_sources_forbidden": True,
+        "unknowns_remain_unknown": True,
+        "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION",
+    }:
+        errors.append("Draft Package generic drafting constraints drift")
+    return errors
 
 
 def _card_ref_index(package: dict[str, Any]) -> dict[tuple[str, str, str], tuple[str, str, str | None]]:
@@ -314,7 +471,11 @@ def _card_ref_index(package: dict[str, Any]) -> dict[tuple[str, str, str], tuple
     return index
 
 
-def _validate_refs(refs: Any, index: dict[tuple[str, str, str], tuple[str, str, str | None]], label: str) -> tuple[list[str], list[str]]:
+def _validate_refs(
+    refs: Any,
+    index: dict[tuple[str, str, str], tuple[str, str, str | None]],
+    label: str,
+) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     classes: list[str] = []
     if not isinstance(refs, list):
@@ -322,7 +483,9 @@ def _validate_refs(refs: Any, index: dict[tuple[str, str, str], tuple[str, str, 
     seen: set[tuple[str, str, str, str, str]] = set()
     for offset, ref in enumerate(refs):
         prefix = f"{label}.evidence_refs[{offset}]"
-        if not isinstance(ref, dict) or set(ref) != {"evidence_task_id", "kind", "evidence_id", "subject_id", "subject_role"}:
+        if not isinstance(ref, dict) or set(ref) != {
+            "evidence_task_id", "kind", "evidence_id", "subject_id", "subject_role"
+        }:
             errors.append(f"{prefix} fields invalid")
             continue
         if ref.get("kind") not in REF_KINDS or ref.get("subject_role") not in SUBJECT_ROLES:
@@ -399,7 +562,10 @@ def validate_draft_result(
     deck_refs = result.get("deck_evidence_refs")
     ref_errors, classes = _validate_refs(deck_refs, ref_index, "deck")
     errors += ref_errors
-    errors += _validate_attribution(result.get("deck_attribution_mode"), deck_refs if isinstance(deck_refs, list) else [], classes, "deck")
+    errors += _validate_attribution(
+        result.get("deck_attribution_mode"),
+        deck_refs if isinstance(deck_refs, list) else [], classes, "deck"
+    )
 
     blocks = result.get("blocks")
     block_ids: list[str] = []
@@ -408,7 +574,9 @@ def validate_draft_result(
         blocks = []
     for offset, block in enumerate(blocks):
         prefix = f"blocks[{offset}]"
-        if not isinstance(block, dict) or set(block) != {"block_id", "block_type", "text", "attribution_mode", "evidence_refs"}:
+        if not isinstance(block, dict) or set(block) != {
+            "block_id", "block_type", "text", "attribution_mode", "evidence_refs"
+        }:
             errors.append(f"{prefix} fields invalid")
             continue
         if not _nonempty(block.get("block_id")) or not _nonempty(block.get("text")) or block.get("block_type") not in BLOCK_TYPES:
@@ -417,7 +585,12 @@ def validate_draft_result(
         block_ids.append(block["block_id"])
         ref_errors, classes = _validate_refs(block.get("evidence_refs"), ref_index, prefix)
         errors += ref_errors
-        errors += _validate_attribution(block.get("attribution_mode"), block.get("evidence_refs") if isinstance(block.get("evidence_refs"), list) else [], classes, prefix)
+        errors += _validate_attribution(
+            block.get("attribution_mode"),
+            block.get("evidence_refs") if isinstance(block.get("evidence_refs"), list) else [],
+            classes,
+            prefix,
+        )
     if len(block_ids) != len(set(block_ids)):
         errors.append("Draft Result block_id values must be unique")
     block_set = set(block_ids)
@@ -479,7 +652,9 @@ def build_synthesis_input(
     profile = core.load_json(profile_path)
     plan = core.load_json(architecture_path)
     approval = core.load_json(approval_path)
-    approval_errors = validate_architecture_approval(approval, architecture_path, review_summary_path, profile["issue_id"])
+    approval_errors = validate_architecture_approval(
+        approval, architecture_path, review_summary_path, profile["issue_id"]
+    )
     if approval_errors:
         raise ValueError("Synthesis Architecture authorization invalid: " + "; ".join(approval_errors))
     expected_packages = {row["package_id"]: row for row in plan["packages"]}
@@ -487,6 +662,11 @@ def build_synthesis_input(
     drafts: list[dict[str, Any]] = []
     for package_path, result_path in draft_pairs:
         package = core.load_json(package_path)
+        package_errors = validate_self_contained_draft_package(
+            package, profile_path, architecture_path, review_summary_path, approval_path
+        )
+        if package_errors:
+            raise ValueError("Draft Package invalid before Synthesis: " + "; ".join(package_errors))
         result = core.load_json(result_path)
         errors = validate_draft_result(result, package_path, repo_root / DRAFT_PROMPT)
         if errors:
@@ -494,8 +674,6 @@ def build_synthesis_input(
         package_id = package["package_id"]
         if package_id not in expected_packages or package_id in seen:
             raise ValueError(f"Synthesis Draft package set invalid: {package_id}")
-        if package["basis"]["production_profile_sha256"] != core.sha256_file(profile_path) or package["basis"]["architecture_sha256"] != core.sha256_file(architecture_path) or package["basis"]["architecture_approval_sha256"] != core.sha256_file(approval_path):
-            raise ValueError(f"Synthesis Draft package basis drift: {package_id}")
         if package["package"]["drafting_order"] != expected_packages[package_id]["drafting_order"]:
             raise ValueError(f"Synthesis drafting order drift: {package_id}")
         seen.add(package_id)
@@ -507,7 +685,10 @@ def build_synthesis_input(
             "draft_result": result,
         })
     if seen != set(expected_packages):
-        raise ValueError(f"Synthesis requires one validated Draft Result per Architecture package: missing={sorted(set(expected_packages)-seen)}")
+        raise ValueError(
+            "Synthesis requires one validated Draft Result per Architecture package: "
+            f"missing={sorted(set(expected_packages)-seen)}"
+        )
     drafts.sort(key=lambda row: (row["drafting_order"], row["package_id"]))
     cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
     research_contract = cfg["research_profiles"][profile["research_profile"]]
@@ -582,8 +763,8 @@ def validate_synthesis_result(
             errors.append(f"{label} synthesis payload keys must exactly match Profile-owned requirements")
             continue
         for key, value in payload.items():
-            if not _meaningful(value):
-                errors.append(f"{label} synthesis payload value is empty: {key}")
+            if not _payload_value_present(value):
+                errors.append(f"{label} synthesis payload value is absent: {key}")
     return errors
 
 
@@ -599,7 +780,11 @@ def build_parser() -> argparse.ArgumentParser:
     sub = parser.add_subparsers(dest="command", required=True)
 
     package = sub.add_parser("draft-package")
-    for key in ("profile", "discovery", "screening", "evidence", "views", "ledger", "completeness", "matrix", "selection", "architecture", "review-summary", "approval", "package-id", "output"):
+    for key in (
+        "profile", "discovery", "screening", "evidence", "views", "ledger",
+        "completeness", "matrix", "selection", "architecture", "review-summary",
+        "approval", "package-id", "output",
+    ):
         package.add_argument(f"--{key}", required=True)
 
     check = sub.add_parser("draft-check")
@@ -609,7 +794,10 @@ def build_parser() -> argparse.ArgumentParser:
     synthesis = sub.add_parser("synthesis-input")
     for key in ("profile", "architecture", "review-summary", "approval", "output"):
         synthesis.add_argument(f"--{key}", required=True)
-    synthesis.add_argument("--draft-pair", action="append", default=[], help="PACKAGE_PATH=RESULT_PATH; repeat for every Architecture package")
+    synthesis.add_argument(
+        "--draft-pair", action="append", default=[],
+        help="PACKAGE_PATH=RESULT_PATH; repeat for every Architecture package",
+    )
 
     synthesis_check = sub.add_parser("synthesis-check")
     synthesis_check.add_argument("--input", required=True)
@@ -625,10 +813,12 @@ def main() -> int:
             impl = args.implementation_sha or core.repository_commit_sha(root)
             payload = derive_draft_package(
                 root,
-                _path(root, args.profile), _path(root, args.discovery), _path(root, args.screening),
-                _path(root, args.evidence), _path(root, args.views), _path(root, args.ledger),
-                _path(root, args.completeness), _path(root, args.matrix), _path(root, args.selection),
-                _path(root, args.architecture), _path(root, args.review_summary), _path(root, args.approval),
+                _path(root, args.profile), _path(root, args.discovery),
+                _path(root, args.screening), _path(root, args.evidence),
+                _path(root, args.views), _path(root, args.ledger),
+                _path(root, args.completeness), _path(root, args.matrix),
+                _path(root, args.selection), _path(root, args.architecture),
+                _path(root, args.review_summary), _path(root, args.approval),
                 args.package_id, impl,
             )
             output = _path(root, args.output)
@@ -639,7 +829,9 @@ def main() -> int:
             return 0
         if args.command == "draft-check":
             package_path = _path(root, args.package)
-            errors = validate_draft_result(core.load_json(_path(root, args.result)), package_path, root / DRAFT_PROMPT)
+            errors = validate_draft_result(
+                core.load_json(_path(root, args.result)), package_path, root / DRAFT_PROMPT
+            )
             print(json.dumps({"passed": not errors, "errors": errors}, ensure_ascii=False, indent=2))
             return 0 if not errors else 1
         if args.command == "synthesis-input":
@@ -660,7 +852,10 @@ def main() -> int:
             print(output)
             return 0
         if args.command == "synthesis-check":
-            errors = validate_synthesis_result(core.load_json(_path(root, args.result)), _path(root, args.input), root / SYNTHESIS_PROMPT)
+            errors = validate_synthesis_result(
+                core.load_json(_path(root, args.result)), _path(root, args.input),
+                root / SYNTHESIS_PROMPT,
+            )
             print(json.dumps({"passed": not errors, "errors": errors}, ensure_ascii=False, indent=2))
             return 0 if not errors else 1
     except (OSError, ValueError, json.JSONDecodeError) as exc:
