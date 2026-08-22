@@ -39,8 +39,7 @@
       }
     },
     "implementation": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["repository_commit_sha", "orchestrator_version"],
       "properties": {
         "repository_commit_sha": {"$ref": "#/$defs/gitsha"},
@@ -48,8 +47,7 @@
       }
     },
     "human_gates": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["architecture_review", "publication_preview"],
       "properties": {
         "architecture_review": {"enum": ["pending", "approved", "rejected"]},
@@ -57,8 +55,7 @@
       }
     },
     "human_gate_provenance": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["architecture_review", "publication_preview"],
       "properties": {
         "architecture_review": {"$ref": "#/$defs/nullableAuthority"},
@@ -69,8 +66,7 @@
     "next_action": {"type": ["string", "null"]},
     "terminal_reason": {"enum": [null, "HUMAN_GATE_REACHED", "EXCEPTION_GATE_REQUIRED", "COMPLETE"]},
     "exception_gate": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["status", "reason"],
       "properties": {
         "status": {"enum": ["inactive", "required", "resolved"]},
@@ -80,8 +76,7 @@
     "machine_checkpoints": {"$ref": "#/$defs/checkpointStatusMap"},
     "checkpoint_provenance": {"$ref": "#/$defs/checkpointAuthorityMap"},
     "legacy_compatibility": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["mode", "legacy_state_path", "legacy_state_present", "legacy_state_sha256"],
       "properties": {
         "mode": {"const": "NON_AUTHORITATIVE_READ_ONLY"},
@@ -91,11 +86,9 @@
       }
     },
     "history": {
-      "type": "array",
-      "minItems": 1,
+      "type": "array", "minItems": 1,
       "items": {
-        "type": "object",
-        "additionalProperties": false,
+        "type": "object", "additionalProperties": false,
         "required": ["from", "to", "recorded_at", "repository_commit_sha"],
         "properties": {
           "from": {"oneOf": [{"$ref": "#/$defs/lifecycle"}, {"type": "null"}]},
@@ -110,28 +103,17 @@
     "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "gitsha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
     "artifactAuthority": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["path", "sha256"],
-      "properties": {
-        "path": {"type": "string", "minLength": 1},
-        "sha256": {"$ref": "#/$defs/sha256"}
-      }
+      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/sha256"}}
     },
-    "nullableAuthority": {
-      "oneOf": [
-        {"$ref": "#/$defs/artifactAuthority"},
-        {"type": "null"}
-      ]
-    },
+    "nullableAuthority": {"oneOf": [{"$ref": "#/$defs/artifactAuthority"}, {"type": "null"}]},
     "checkpointStatus": {"enum": ["pending", "passed", "failed"]},
     "checkpointStatusMap": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": [
         "discovery", "screening", "evidence", "materiality", "completeness",
-        "selection", "architecture", "draft", "validation",
-        "publication_preview", "freeze"
+        "selection", "architecture", "draft", "validation", "publication_preview", "freeze", "release"
       ],
       "properties": {
         "discovery": {"$ref": "#/$defs/checkpointStatus"},
@@ -144,16 +126,15 @@
         "draft": {"$ref": "#/$defs/checkpointStatus"},
         "validation": {"$ref": "#/$defs/checkpointStatus"},
         "publication_preview": {"$ref": "#/$defs/checkpointStatus"},
-        "freeze": {"$ref": "#/$defs/checkpointStatus"}
+        "freeze": {"$ref": "#/$defs/checkpointStatus"},
+        "release": {"$ref": "#/$defs/checkpointStatus"}
       }
     },
     "checkpointAuthorityMap": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": [
         "discovery", "screening", "evidence", "materiality", "completeness",
-        "selection", "architecture", "draft", "validation",
-        "publication_preview", "freeze"
+        "selection", "architecture", "draft", "validation", "publication_preview", "freeze", "release"
       ],
       "properties": {
         "discovery": {"$ref": "#/$defs/nullableAuthority"},
@@ -166,13 +147,14 @@
         "draft": {"$ref": "#/$defs/nullableAuthority"},
         "validation": {"$ref": "#/$defs/nullableAuthority"},
         "publication_preview": {"$ref": "#/$defs/nullableAuthority"},
-        "freeze": {"$ref": "#/$defs/nullableAuthority"}
+        "freeze": {"$ref": "#/$defs/nullableAuthority"},
+        "release": {"$ref": "#/$defs/nullableAuthority"}
       }
     },
     "lifecycle": {"enum": [
       "ISSUE_INITIALIZED", "DISCOVERY_COLLECTED", "CANDIDATES_NORMALIZED",
       "EVIDENCE_REVIEWED", "SELECTION_COMPLETE", "ARCHITECTURE_ESTABLISHED",
-      "DRAFT_COMPLETE", "VALIDATED_DRAFT", "RELEASE_CANDIDATE", "FROZEN"
+      "DRAFT_COMPLETE", "VALIDATED_DRAFT", "RELEASE_CANDIDATE", "FROZEN", "RELEASED"
     ]}
   }
 }
