@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/stage-checkpoint-v2.schema.json",
+  "title": "Survey Production Core v2 Agent Stage Checkpoint",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "issue_id",
+    "from_state",
+    "to_state",
+    "checkpoints",
+    "recorded_at",
+    "implementation",
+    "contract",
+    "artifacts",
+    "reviews",
+    "summary"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "issue_id": {"type": "string", "minLength": 1},
+    "from_state": {"$ref": "#/$defs/lifecycle"},
+    "to_state": {"$ref": "#/$defs/lifecycle"},
+    "checkpoints": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/checkpoint"}
+    },
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository_commit_sha", "orchestrator_version"],
+      "properties": {
+        "repository_commit_sha": {"$ref": "#/$defs/gitsha"},
+        "orchestrator_version": {"type": "string", "minLength": 1}
+      }
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pipeline_contract_version",
+        "pipeline_contract_sha256",
+        "quality_contract_version",
+        "quality_contract_sha256",
+        "research_profile_version",
+        "research_profile_sha256",
+        "publication_profile_version",
+        "publication_profile_sha256"
+      ],
+      "properties": {
+        "pipeline_contract_version": {"type": "string", "minLength": 1},
+        "pipeline_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "quality_contract_version": {"type": "string", "minLength": 1},
+        "quality_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "research_profile_version": {"type": "string", "minLength": 1},
+        "research_profile_sha256": {"$ref": "#/$defs/sha256"},
+        "publication_profile_version": {"type": "string", "minLength": 1},
+        "publication_profile_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/namedAuthority"}
+    },
+    "reviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["check_id", "kind", "status", "executor", "evidence", "result"],
+        "properties": {
+          "check_id": {"type": "string", "minLength": 1},
+          "kind": {"enum": ["DETERMINISTIC", "AGENT_RESEARCH", "AGENT_EDITORIAL", "AGENT_VISUAL"]},
+          "status": {"const": "PASS"},
+          "executor": {"type": "string", "minLength": 1},
+          "evidence": {"type": "string", "minLength": 1},
+          "result": {"$ref": "#/$defs/nullableAuthority"}
+        },
+        "allOf": [
+          {
+            "if": {"properties": {"kind": {"const": "DETERMINISTIC"}}},
+            "then": {"properties": {"result": {"$ref": "#/$defs/artifactAuthority"}}}
+          }
+        ]
+      }
+    },
+    "summary": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "gitsha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "artifactAuthority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "nullableAuthority": {
+      "oneOf": [
+        {"$ref": "#/$defs/artifactAuthority"},
+        {"type": "null"}
+      ]
+    },
+    "namedAuthority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "path", "sha256"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "checkpoint": {
+      "enum": [
+        "discovery",
+        "screening",
+        "evidence",
+        "materiality",
+        "completeness",
+        "selection",
+        "architecture",
+        "draft",
+        "validation",
+        "publication_preview",
+        "freeze",
+        "release"
+      ]
+    },
+    "lifecycle": {
+      "enum": [
+        "ISSUE_INITIALIZED",
+        "DISCOVERY_COLLECTED",
+        "CANDIDATES_NORMALIZED",
+        "EVIDENCE_REVIEWED",
+        "SELECTION_COMPLETE",
+        "ARCHITECTURE_ESTABLISHED",
+        "DRAFT_COMPLETE",
+        "VALIDATED_DRAFT",
+        "RELEASE_CANDIDATE",
+        "FROZEN",
+        "RELEASED"
+      ]
+    }
+  }
+}
