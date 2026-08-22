@@ -5,6 +5,7 @@ from pathlib import Path
 
 from scripts import survey_handlers_v2 as handlers
 from scripts import survey_production_v2 as core
+from tests.test_survey_state_publication_authority_v2 import SurveyStatePublicationAuthorityV2Tests
 
 
 class SurveyPilotBootstrapV2Tests(unittest.TestCase):
