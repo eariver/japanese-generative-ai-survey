@@ -24,7 +24,8 @@ Current `main` remains the production source of truth until PR #310 is explicitl
 - WU-010R: historical `COMPLETE / SECOND-AUDIT GREEN`.
 - WU-011: historical `COMPLETE / SECOND-AUDIT GREEN / 5-of-5 CROSS-REGRESSION GREEN` against its then-current scope.
 - WU-012: **`IMPLEMENTATION COMPLETE / PRE-APPROVAL WHOLE-CANDIDATE GREEN / HUMAN REVIEW REQUIRED`**.
-- WU-012 semantic implementation head: `1d6e37f48cd24ce96ef7970df0e70697e546f2e3`.
+- First fully green WU-012 semantic implementation head: `1d6e37f48cd24ce96ef7970df0e70697e546f2e3`.
+- Final synchronization added AUD-038 to align canonical `stage_plan` Handoff flags with the agent-first authority; final synchronized-head CI must be green before approval.
 - WU-012 Repair Set: `REPAIR-WU012-2026-08-22`, status `IMPLEMENTED`; Pilot validation intentionally pending.
 - W33, W34, SP001, SP002, SP003: **NOT STARTED / NOT AUTHORIZED BEFORE APPROVAL + MERGE**.
 
@@ -69,7 +70,7 @@ Candidate Selection remains internal. Visual Review, Freeze, merge and Release a
 | WU-009 | `COMPLETE` | structured Draft/Synthesis retained |
 | WU-010 / 010R | `HISTORICALLY COMPLETE` | legacy local control plane simplified by WU-012 |
 | WU-011 | `HISTORICALLY COMPLETE` | exact publication/release authority retained |
-| **WU-012** | **`IMPLEMENTATION COMPLETE / PRE-APPROVAL AUDIT GREEN`** | ChatGPT-first local path, tool evolution, Issue prevention, Period bootstrap, planning-authority scope, quality tiers, lifecycle artifact binding |
+| **WU-012** | **`IMPLEMENTATION COMPLETE / PRE-APPROVAL AUDIT GREEN`** | ChatGPT-first local path, tool evolution, Issue prevention, Period bootstrap, planning-authority scope, quality tiers, lifecycle artifact binding, canonical Handoff disablement |
 
 ## 5. WU-012 implemented scope
 
@@ -79,7 +80,7 @@ Complete. Operator/tool/Human/Exception responsibilities are explicit in authori
 
 ### B — compact local orchestration
 
-Complete. Canonical local hot path is Production State + canonical artifacts + compact Stage Checkpoint. Legacy Action/Handoff machinery remains historical/compatibility material rather than production authority.
+Complete. Canonical local hot path is Production State + canonical artifacts + compact Stage Checkpoint. All canonical `stage_plan` entries have `handoff_required=false`. Legacy Action/Handoff machinery remains historical/compatibility material rather than production authority.
 
 ### C — controlled toolchain evolution
 
@@ -97,9 +98,10 @@ Complete. Generic bounded Period bootstrap exists; Thematic Pilot scope material
 
 Complete. Quality is Profile-aware and distinguishes `DETERMINISTIC`, `AGENT_SEMANTIC`, and `AGENT_VISUAL`. Only deterministic reviews require executable result artifacts.
 
-### Whole-candidate repair
+### Whole-candidate repairs
 
-`AUD-037` was discovered during final audit and repaired: compact Stage Checkpoints now require lifecycle-specific existing canonical artifact authorities, preventing review-only advancement with no stage-output provenance.
+- `AUD-037`: compact Stage Checkpoints now require lifecycle-specific existing canonical artifact authorities, preventing review-only advancement with no stage-output provenance.
+- `AUD-038`: canonical configuration no longer advertises legacy Handoff requirements; compatibility fixtures opt in explicitly when exercising the old path.
 
 ## 6. Finding status
 
@@ -114,6 +116,7 @@ Generic repairs:
 - AUD-035 `FIXED_GENERIC`
 - AUD-036 `FIXED_GENERIC`
 - AUD-037 `FIXED_GENERIC`
+- AUD-038 `FIXED_GENERIC`
 
 Intentional deferrals:
 
@@ -122,7 +125,7 @@ Intentional deferrals:
 
 WU-012 Repair Set remains `IMPLEMENTED`, not `VALIDATED/CLOSED`, because W33/SP001 verification editions are still intentionally empty.
 
-## 7. Final semantic-candidate regression evidence
+## 7. Semantic-candidate regression evidence
 
 Head `1d6e37f48cd24ce96ef7970df0e70697e546f2e3` passed all five required families:
 
@@ -134,7 +137,7 @@ Head `1d6e37f48cd24ce96ef7970df0e70697e546f2e3` passed all five required familie
 | Pipeline contract tests | PASS | `32568620721` |
 | Weekly pipeline spine + committed Raw integrity | PASS | `32568620741` |
 
-Closure/authority metadata commits after that semantic head must remain green before the Human review package is treated as fully synchronized.
+Final config/docs/test synchronization after that head must also be 5/5 green before the Human review package is treated as fully synchronized.
 
 ## 8. Whole-candidate acceptance conclusion
 
@@ -150,7 +153,7 @@ Detailed reasoning: `docs/survey-production-core-v2-wu012-preapproval-closure.md
 
 ## 9. Current action / stop condition
 
-**CURRENT ACTION: Human full-candidate review of PR #310 after closure metadata CI is green.**
+**CURRENT ACTION: Human full-candidate review of PR #310 after final synchronized-head CI is green.**
 
 Do not:
 
