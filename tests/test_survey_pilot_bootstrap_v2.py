@@ -109,6 +109,10 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.assertNotIn("schemas/action-spec-v2.schema.json", pipeline_files)
         self.assertNotIn("schemas/stage-handoff-v2.schema.json", pipeline_files)
         self.assertNotIn("schemas/stage-validation-attestation-v2.schema.json", pipeline_files)
+        self.assertTrue(
+            all(stage.get("handoff_required") is False for stage in self.cfg["orchestration"]["stage_plan"].values()),
+            "canonical agent-first stage plan must not require legacy Stage Handoffs",
+        )
 
     def test_workflow_and_assistant_control_authority_uses_compact_agent_checkpoint(self) -> None:
         control = self.cfg["workflow_control"]
