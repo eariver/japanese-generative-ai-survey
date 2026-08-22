@@ -28,9 +28,9 @@ Status: `ACCEPTED DIRECTION / NOT YET IMPLEMENTED`
 
 ### Observation
 
-During real W33/SP001 operation, manual Grok transport is easier to understand when the Human/Grok working surface contains both the inputs and the returned result. The current design creates `grok-instruction.md` and `grok-prompt.md` under repository edition artifacts while Google Drive is primarily the result handoff location.
+During real W33/SP001 operation, the Human/Grok working surface is easier to understand when both the Grok inputs and the returned result live in one Google Drive run folder. The current design creates `grok-instruction.md` and `grok-prompt.md` under repository edition artifacts while Google Drive is primarily the result handoff location.
 
-For a Human who must manually pass the generated request to Grok, this splits one Grok run across two places and makes the operational mapping less obvious than necessary.
+This splits one Grok run across two places and makes the operational mapping less obvious than necessary.
 
 ### Improvement direction
 
@@ -46,16 +46,19 @@ Grok_X_SourseIntake/
         <result>.md
 ```
 
-ChatGPT should provision the exact run folder and place the run-specific instruction and prompt there **before** asking for manual Grok transport. Grok should be instructed to read/use those files and save its final Markdown result into the same run folder.
+ChatGPT should provision the exact run folder and place the run-specific instruction and prompt there before the Grok handoff. Grok should be instructed to read/use those files from that folder and save its final Markdown result into the same folder.
 
 The desired Human operation becomes:
 
 ```text
-open one run folder
--> give Grok the instruction/prompt from that folder
+ChatGPT prepares one Drive run folder
+-> Human gives Grok the Google Drive run-folder path/reference
+-> Grok opens that folder and reads grok-instruction.md + grok-prompt.md
 -> Grok writes the result back to the same folder
 -> ChatGPT reads the returned result and resumes automatically
 ```
+
+The Human should not need to copy/paste the instruction or prompt body between ChatGPT and Grok. The Drive run folder itself is the handoff interface.
 
 No additional Human approval is introduced.
 
@@ -91,19 +94,19 @@ Do **not** modify the currently running W33 or SP001 flows solely to introduce t
 
 After W33 and SP001 reach their intended review boundary, evaluate this item together with any additional production findings and implement the resulting improvement set as a batch.
 
-## Feedback item PFB-002 — Human owns Grok invocation; do not search for a Grok connector
+## Feedback item PFB-002 — Human passes the Drive run-folder path to Grok; do not search for a Grok connector
 
 Status: `ACCEPTED DIRECTION / NOT YET IMPLEMENTED`
 
 ### Observation
 
-During real W33/SP001 operation, ChatGPT attempted to look for a Grok connector/integration even though the intended operating model is simpler: the Human will manually give Grok the prepared instruction/prompt.
+During real W33/SP001 operation, ChatGPT attempted to look for a Grok connector/integration even though the intended operating model is simpler: Grok is invoked outside ChatGPT, and the Human only needs to tell Grok where the prepared Google Drive run folder is.
 
 Connector discovery adds unnecessary work and can make Source Intake look like an integration/debugging task instead of a survey-production task.
 
 ### Improvement direction
 
-Treat manual Grok invocation as the normal and deliberate operating boundary unless the Human explicitly changes that policy in the future.
+Treat Human-mediated **Drive-path handoff** as the normal and deliberate Grok invocation boundary unless the Human explicitly changes that policy in the future.
 
 The responsibility split should be:
 
@@ -112,14 +115,21 @@ ChatGPT
   -> decides the Grok/X research task
   -> prepares exact grok-instruction.md and grok-prompt.md
   -> provisions the Google Drive run folder
-  -> tells the Human exactly which run folder/files are ready
+  -> places the instruction/prompt files in that run folder
+  -> tells the Human the exact Google Drive run-folder path/reference
 
 Human
-  -> manually gives those instructions to Grok
-  -> causes Grok to write the result into the instructed Drive run folder
+  -> gives Grok that Google Drive run-folder path/reference
+  -> does not need to copy/paste the instruction/prompt contents
+
+Grok
+  -> opens the indicated Drive run folder
+  -> reads grok-instruction.md and grok-prompt.md
+  -> performs the requested X research
+  -> writes the result into the same Drive run folder
 
 ChatGPT
-  -> detects/reads the returned Drive result
+  -> reads the returned Drive result
   -> imports exact bytes into repository Raw
   -> evaluates/dispositions the result
   -> resumes production automatically
@@ -127,13 +137,15 @@ ChatGPT
 
 ChatGPT should **not** search for, install, discover, or attempt to configure a Grok connector merely because a Grok/X run is required. The absence of such a connector is not an error, missing dependency, Exception Gate, or reason to debug the production environment.
 
-If a future Human instruction explicitly introduces an automated Grok integration, that may be reviewed as a separate improvement. Until then, manual Human transport is the expected architecture.
+Likewise, the Human transport step should not be described as manually passing the instruction/prompt text. The intended Human action is only to communicate the already-prepared Google Drive run-folder path/reference to Grok.
+
+If a future Human instruction explicitly introduces an automated Grok integration, that may be reviewed as a separate improvement. Until then, Human-mediated Drive-path handoff is the expected architecture.
 
 ### Relationship to stop discipline
 
-The only expected interruption is the practical Human transport step after the exact Grok input package is ready.
+The only expected interruption is the practical Human step after the exact Grok input package is ready in Drive.
 
-ChatGPT should present that package and Drive location directly, without first spending time looking for automation/integration options and without asking for unrelated confirmation. Once the result appears in Drive, ChatGPT resumes toward the requested Human Gate without an additional routine approval step.
+ChatGPT should present the exact Drive run-folder location directly, without first spending time looking for automation/integration options and without asking for unrelated confirmation. Once the result appears in that folder, ChatGPT resumes toward the requested Human Gate without an additional routine approval step.
 
 ### Relationship to PFB-001
 
@@ -142,18 +154,20 @@ PFB-001 and PFB-002 should be implemented together where practical:
 ```text
 one Drive run folder contains Grok input + output
 +
-Human manually invokes Grok from that folder
+Human gives Grok only that run-folder path/reference
 +
-ChatGPT owns everything before and after that manual transport boundary
+Grok reads the prepared files and writes the result there
++
+ChatGPT owns everything before and after that path handoff
 ```
 
-This gives the manual Grok step a clear, stable operator interface while preserving repository-side provenance.
+This gives the Grok step a clear, stable operator interface while preserving repository-side provenance.
 
 ### Deferred implementation
 
-Do **not** alter the currently running W33/SP001 sessions solely to enforce this new policy. Their execution logs should preserve whether connector discovery occurred under the merged Core v2 behavior.
+Do **not** alter the currently running W33/SP001 sessions solely to enforce this new policy. Their execution logs should preserve whether connector discovery or text-copy handoff occurred under the merged Core v2 behavior.
 
-When W33 and SP001 are reviewed together, use those records to determine the exact documentation/bootstrap/tool changes needed to make manual Human Grok transport the unambiguous default.
+When W33 and SP001 are reviewed together, use those records to determine the exact documentation/bootstrap/tool changes needed to make Human-mediated Drive-path handoff the unambiguous default.
 
 ## Additional feedback items
 
