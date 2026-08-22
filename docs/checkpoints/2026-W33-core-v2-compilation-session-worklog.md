@@ -134,3 +134,10 @@ Exception reason: a newly executed `weekly-x-2026-W33-fresh-r1` Grok result must
 - Evidence is fail-closed to accepted Discovery locators: no candidate-specific first-party URL found later in web research was silently injected into Evidence.
 - arXiv items remain abstract-level PARTIAL and CONTEXT/HOLD; official-index records remain HOLD; X/Grok remains community context only.
 - Completeness is LIMITED with all three Weekly obligations SATISFIED and three explicit residual limitations.
+
+## Fresh Candidate Selection
+
+- Candidate Matrix derived mechanically from the accepted fresh W33 Evidence chain: 31 candidates; summary `{"candidate_count": 31, "evidence_status_counts": {"PARTIAL": 21, "VERIFIED": 10}, "materiality_counts": {"CONTEXT": 13, "HOLD": 11, "MATERIAL": 7}}`.
+- Selection: 7 SELECTED, 24 HOLD.
+- Selected primary roles: Daybreak/cyber lead, SGLang serving-stack lead, OpenAI Ultrafast serving-speed lead. Supporting roles: trusted-hands access policy, AWS Daybreak distribution, vLLM, FlashInfer.
+- Abstract-only papers, official-index model signals, non-material integrations, and Grok/X context are not promoted to fill pages.
