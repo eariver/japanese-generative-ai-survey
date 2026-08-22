@@ -44,6 +44,9 @@ on:
       - "docs/checkpoints/survey-production-core-v2-worklog.md"
       - "docs/checkpoints/survey-production-core-v2-audit-findings/**"
       - ".github/workflows/survey-production-v2-ci.yml"
+      - ".github/workflows/survey-production-v2-control.yml"
+      - ".github/workflows/survey-production-v2-release.yml"
+      - ".github/workflows/assistant-control-v2.yml"
   pull_request:
     paths:
       - "config/survey-production-v2.json"
@@ -85,6 +88,9 @@ on:
       - "docs/checkpoints/survey-production-core-v2-worklog.md"
       - "docs/checkpoints/survey-production-core-v2-audit-findings/**"
       - ".github/workflows/survey-production-v2-ci.yml"
+      - ".github/workflows/survey-production-v2-control.yml"
+      - ".github/workflows/survey-production-v2-release.yml"
+      - ".github/workflows/assistant-control-v2.yml"
   workflow_dispatch:
 
 permissions:
@@ -159,6 +165,7 @@ jobs:
           tests.test_survey_orchestrator_provenance_v2
           tests.test_survey_handoff_v2
           tests.test_survey_handoff_request_v2
+          tests.test_survey_pilot_bootstrap_v2
           tests.test_survey_findings_v2
           -v
       - name: Parse v2 JSON contracts
