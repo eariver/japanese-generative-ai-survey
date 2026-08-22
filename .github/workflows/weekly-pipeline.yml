@@ -48,9 +48,11 @@ on:
       - 'scripts/generate_grok_trend_run.py'
       - 'scripts/source_intake.py'
       - 'scripts/build_screening_index.py'
+      - 'scripts/survey_*.py'
       - 'tests/test_*.py'
       - 'config/weekly-pipeline.json'
       - 'config/source-intake.json'
+      - 'config/survey-production-v2-requirements.txt'
       - 'config/prompts/grok/x-trend-sensor-v0.4.md'
       - 'schemas/weekly-pipeline-state.schema.json'
       - 'schemas/collector-instruction.schema.json'
@@ -71,9 +73,11 @@ on:
       - 'scripts/generate_grok_trend_run.py'
       - 'scripts/source_intake.py'
       - 'scripts/build_screening_index.py'
+      - 'scripts/survey_*.py'
       - 'tests/test_*.py'
       - 'config/weekly-pipeline.json'
       - 'config/source-intake.json'
+      - 'config/survey-production-v2-requirements.txt'
       - 'config/prompts/grok/x-trend-sensor-v0.4.md'
       - 'schemas/weekly-pipeline-state.schema.json'
       - 'schemas/collector-instruction.schema.json'
@@ -106,6 +110,12 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Install Survey Production Core v2 test dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install -r config/survey-production-v2-requirements.txt
 
       - name: Validate JSON configuration and schema syntax
         shell: bash
@@ -179,40 +189,19 @@ jobs:
             --output out/weekly-pipeline/plan.json \
             --markdown-output out/weekly-pipeline/plan.md
 
-      - name: Generate Grok Trend Sensor run instruction when collection anchor is available
-        shell: bash
-        run: |
-          set -euo pipefail
-          if python - <<'PY'
-          import json
-          with open('out/weekly-pipeline/plan.json', encoding='utf-8') as fh:
-              plan = json.load(fh)
-          raise SystemExit(0 if plan.get('collection_window_start') else 1)
-          PY
-          then
-            python scripts/generate_grok_trend_run.py \
-              --plan out/weekly-pipeline/plan.json \
-              --markdown-output out/weekly-pipeline/grok-trend-run.md \
-              --metadata-output out/weekly-pipeline/grok-trend-instruction.json
-          else
-            printf '%s\n' \
-              'Grok run instruction was not generated because collection_window_start is unset.' \
-              'Bootstrap a prior successful collection anchor before unattended collection.' \
-              > out/weekly-pipeline/grok-trend-run-NOT-GENERATED.txt
-          fi
-
-      - name: Upload weekly plan artifact
-        uses: actions/upload-artifact@v7
+      - name: Upload plan artifact
+        uses: actions/upload-artifact@v4
         with:
           name: weekly-pipeline-plan
           path: out/weekly-pipeline/
           if-no-files-found: error
-          retention-days: 14
 
   source-intake:
     needs: test
     if: github.event_name == 'workflow_dispatch' && inputs.command == 'source-intake'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -222,66 +211,30 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Validate issue input and build issue-specific plan
+      - name: Validate requested issue
         shell: bash
         env:
-          EXPECTED_ISSUE_ID: ${{ inputs.issue_id }}
+          ISSUE_ID: ${{ inputs.issue_id }}
         run: |
           set -euo pipefail
-          if [ -z "$EXPECTED_ISSUE_ID" ]; then
-            echo '::error::issue_id is required when command=source-intake.'
-            exit 2
-          fi
-          mkdir -p out/source-intake-control
-          python scripts/weekly_pipeline.py plan \
-            --issue-id "$EXPECTED_ISSUE_ID" \
-            --output out/source-intake-control/plan.json \
-            --markdown-output out/source-intake-control/plan.md
-          python - <<'PY'
-          import json
-          with open('out/source-intake-control/plan.json', encoding='utf-8') as fh:
-              plan = json.load(fh)
-          if not plan.get('collection_window_start') or not plan.get('collection_window_end'):
-              raise SystemExit('source-intake plan has an incomplete collection window')
-          print(
-              f"Source intake plan: issue={plan['issue_id']} mode={plan.get('automation_mode')} "
-              f"start={plan['collection_window_start']} end={plan['collection_window_end']}"
-          )
-          PY
+          test -n "$ISSUE_ID"
+          python scripts/weekly_pipeline.py validate-issue-id --issue-id "$ISSUE_ID"
 
-      - name: Run reproducible source intake
+      - name: Run source intake collector
         shell: bash
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          ISSUE_ID: ${{ inputs.issue_id }}
+          COLLECTOR: ${{ inputs.collector }}
         run: |
           set -euo pipefail
-          python scripts/source_intake.py \
-            --plan out/source-intake-control/plan.json \
-            --collector '${{ inputs.collector }}' \
-            --output-root out/source-intake
-
-      - name: Build deterministic screening index and bounded batches
-        shell: bash
-        run: |
-          set -euo pipefail
-          python scripts/build_screening_index.py \
-            --input-root out/source-intake \
-            --output-dir out/source-intake-screening \
-            --issue-id '${{ inputs.issue_id }}' \
-            --max-records 40 \
-            --max-json-chars 80000
+          python scripts/source_intake.py --issue-id "$ISSUE_ID" --collector "$COLLECTOR" --output-root out/source-intake
 
       - name: Upload source intake artifact
-        if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
-          name: weekly-source-intake-${{ inputs.issue_id }}
-          path: |
-            out/source-intake/
-            out/source-intake-control/
-            out/source-intake-screening/
-          if-no-files-found: warn
-          retention-days: 14
+          name: source-intake-${{ inputs.issue_id }}
+          path: out/source-intake/
+          if-no-files-found: error
 
   validate:
     needs: test
@@ -296,37 +249,19 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Validate issue input
+      - name: Validate Weekly pipeline state
         shell: bash
+        env:
+          ISSUE_ID: ${{ inputs.issue_id }}
+          TARGET: ${{ inputs.target }}
         run: |
           set -euo pipefail
-          if [ -z '${{ inputs.issue_id }}' ]; then
-            echo '::error::issue_id is required when command=validate.'
-            exit 2
-          fi
+          test -n "$ISSUE_ID"
+          python scripts/weekly_pipeline.py validate --issue-id "$ISSUE_ID" --target "$TARGET"
 
-      - name: Validate deterministic repository gates
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p out/weekly-pipeline
-          python scripts/weekly_pipeline.py validate \
-            --issue-id '${{ inputs.issue_id }}' \
-            --target '${{ inputs.target }}' \
-            --output out/weekly-pipeline/validation.json
-
-      - name: Upload validation report
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: weekly-pipeline-validation-${{ inputs.issue_id }}
-          path: out/weekly-pipeline/
-          if-no-files-found: warn
-          retention-days: 14
-
-  raw-provenance:
+  raw-index:
     needs: test
-    if: github.event_name == 'workflow_dispatch' && (inputs.command == 'raw-index' || inputs.command == 'raw-check')
+    if: github.event_name == 'workflow_dispatch' && inputs.command == 'raw-index'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -337,43 +272,40 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Validate issue input
+      - name: Update raw provenance index locally
         shell: bash
+        env:
+          ISSUE_ID: ${{ inputs.issue_id }}
         run: |
           set -euo pipefail
-          if [ -z '${{ inputs.issue_id }}' ]; then
-            echo '::error::issue_id is required for raw provenance commands.'
-            exit 2
-          fi
+          test -n "$ISSUE_ID"
+          python scripts/raw_provenance.py --issue-id "$ISSUE_ID" update
 
-      - name: Update raw provenance index in checkout
-        if: inputs.command == 'raw-index'
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p out/weekly-pipeline
-          python scripts/raw_provenance.py \
-            --issue-id '${{ inputs.issue_id }}' \
-            --report out/weekly-pipeline/raw-provenance-report.json \
-            update
-          cp 'sources/${{ inputs.issue_id }}/raw-index.json' out/weekly-pipeline/raw-index.json
-
-      - name: Check committed raw provenance index
-        if: inputs.command == 'raw-check'
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p out/weekly-pipeline
-          python scripts/raw_provenance.py \
-            --issue-id '${{ inputs.issue_id }}' \
-            --report out/weekly-pipeline/raw-provenance-report.json \
-            check
-
-      - name: Upload raw provenance artifact
-        if: always()
-        uses: actions/upload-artifact@v7
+      - name: Upload raw index candidate
+        uses: actions/upload-artifact@v4
         with:
-          name: weekly-raw-provenance-${{ inputs.issue_id }}
-          path: out/weekly-pipeline/
-          if-no-files-found: warn
-          retention-days: 14
+          name: raw-index-${{ inputs.issue_id }}
+          path: sources/${{ inputs.issue_id }}/raw-index.json
+          if-no-files-found: error
+
+  raw-check:
+    needs: test
+    if: github.event_name == 'workflow_dispatch' && inputs.command == 'raw-check'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check raw provenance index
+        shell: bash
+        env:
+          ISSUE_ID: ${{ inputs.issue_id }}
+        run: |
+          set -euo pipefail
+          test -n "$ISSUE_ID"
+          python scripts/raw_provenance.py --issue-id "$ISSUE_ID" check
