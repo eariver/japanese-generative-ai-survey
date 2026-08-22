@@ -1,0 +1,86 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "from_state": "CANDIDATES_NORMALIZED",
+  "to_state": "EVIDENCE_REVIEWED",
+  "checkpoints": [
+    "evidence",
+    "materiality",
+    "completeness"
+  ],
+  "recorded_at": "2026-08-22T16:54:05Z",
+  "implementation": {
+    "repository_commit_sha": "0e271738e8c166ecdcedd8169d29e7e4d414fb17",
+    "orchestrator_version": "survey-production-core-v2/0.8-agent-first"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "1814863bfe5661491b972eabaeaa6383b4018172fbfe765ce064a7202986abce",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "edition-views-acceptance",
+      "path": "sources/SP001/evidence/v2/views/accepted/d6f8d704dd1baa8ea420229afe975bd335fad542f7641cf092ab96b5eee9312b/edition-views-accepted.json",
+      "sha256": "00d0ecf9ffa52728b5af1cf963073ff8fe3324b18683ace2cb46ee0a14f17f28"
+    },
+    {
+      "name": "evidence-acceptance",
+      "path": "sources/SP001/evidence/v2/accepted/6b730553a0d71201ed40303f5ed126aa47dca224cba63e1797931ce7cd2f63f2/evidence-accepted.json",
+      "sha256": "62b73f33040fce256979509687e13462844d7792f37a1d67d562b6a2b12b9fe1"
+    },
+    {
+      "name": "materiality-ledger",
+      "path": "sources/SP001/materiality-ledger-v2.json",
+      "sha256": "9ad5ff43187ab5c37aa8de677d99a6d6dc263156b7c4c02e9e344736d0c32ca5"
+    },
+    {
+      "name": "profile-completeness",
+      "path": "sources/SP001/profile-completeness-v2.json",
+      "sha256": "61c3f183c01dae15a81ffe6d0e2d682754b7304d8402643d57bbcc6e3a2bb61e"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "scripts/survey_stage_validation_v2.py",
+      "evidence": "Validate the exact content-addressed Core v2 Evidence acceptance, Edition Views acceptance, Materiality Ledger, and Profile Completeness against accepted Discovery/Screening authorities, current Production State/Profile, current Core v2 contracts, and current implementation before adoption.",
+      "result": {
+        "path": "sources/SP001/orchestration/v2/validation/CANDIDATES_NORMALIZED.json",
+        "sha256": "194ebb03e1e8f54cb6777fef58c88156eb01b299fb19dee97e5ce5afcbacd021"
+      }
+    },
+    {
+      "check_id": "THEMATIC_RESEARCH_CLOSURE",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "Thematic completeness closes LIMITED rather than READY: four expansion passes are provenance-derived; the final pass added three X/community signals tied to four material obligations but left zero open material obligations. O01 and O07 retain explicit limitations, while O02-O06 are satisfied. Early Kimi chronology, cross-family benchmark comparability, and uncorroborated runtime/license-friction/enterprise-policy signals remain bounded limitations rather than being silently promoted.",
+      "result": null
+    },
+    {
+      "check_id": "THEMATIC_HISTORICAL_ATTRIBUTION",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "Evidence remains version- and subject-bound across DeepSeek, Qwen, GLM, Kimi, MiniMax, Yi, and Baichuan. Native and distilled R1 variants, model weights versus repository code, Kimi K3 license conditions, and historical/current family properties are kept separate; later architecture or licensing properties are not projected backward.",
+      "result": null
+    },
+    {
+      "check_id": "X_EVIDENCE_BOUNDARY",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "SP001-D022, D023, and D024 remain NEEDS_MORE factual Evidence with HOLD Edition Views. X runtime performance numbers, legal/infringement conclusions, and enterprise-policy prevalence are not publication-grade facts and cannot be selected unless stronger non-X/primary authority is introduced through the governed pipeline.",
+      "result": null
+    }
+  ],
+  "summary": "SP001 Core v2 Evidence, Edition Views, Materiality, and Thematic Completeness are accepted and revalidated. All 24 non-DROP Discovery records have exact Evidence tasks; unresolved early-Kimi and X/community signals remain HOLD/NEEDS_MORE; completeness closes LIMITED with zero open material obligations and explicit residual boundaries."
+}
