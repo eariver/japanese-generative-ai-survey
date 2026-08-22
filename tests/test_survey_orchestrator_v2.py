@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from scripts import survey_orchestrator_v2 as orchestrator
 from scripts import survey_production_v2 as core
@@ -128,7 +130,7 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
             self.assertEqual(state["machine_checkpoints"][checkpoint], "passed")
         specs = sorted((root / "sources/SP001/orchestration/v2/specs").glob("*.json"))
         results = sorted((root / "sources/SP001/orchestration/v2/results").glob("*.json"))
-        self.assertEqual(len(specs), 6)  # five deterministic actions + terminal Human Gate spec
+        self.assertEqual(len(specs), 6)
         self.assertEqual(len(results), 5)
         for path in results:
             payload = core.load_json(path)
@@ -212,6 +214,94 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
         self.git(root, "commit", "-m", "change controlled implementation")
         with self.assertRaisesRegex(ValueError, "implementation-controlled files differ"):
             orchestrator.plan_action(root, cfg, state_path)
+
+    def test_untracked_control_file_is_implementation_drift(self) -> None:
+        temp, root, cfg, state_path, _ = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        control_file = root / "scripts/untracked-runtime.py"
+        control_file.write_text("print('untracked control code')\n", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "implementation-controlled files differ"):
+            orchestrator.plan_action(root, cfg, state_path)
+
+    def test_stage_action_kind_is_contract_driven_and_supports_workflow_dispatch(self) -> None:
+        temp, root, cfg, state_path, _ = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        cfg["orchestration"]["stage_plan"]["ISSUE_INITIALIZED"]["action_kind"] = "WORKFLOW_DISPATCH"
+        spec = orchestrator.plan_action(root, cfg, state_path)
+        self.assertEqual(spec["action_kind"], "WORKFLOW_DISPATCH")
+        cfg["orchestration"]["stage_plan"]["ISSUE_INITIALIZED"]["action_kind"] = "CHAT_MAGIC"
+        with self.assertRaisesRegex(ValueError, "invalid stage action_kind"):
+            orchestrator.plan_action(root, cfg, state_path)
+
+    def test_preissued_spec_survives_artifact_only_head_movement(self) -> None:
+        temp, root, cfg, state_path, pinned = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        spec = orchestrator.plan_action(root, cfg, state_path)
+        spec_path = root / "sources/SP001/orchestration/v2/specs/preissued.json"
+        orchestrator.write_action_spec(spec_path, spec)
+        artifact = root / "sources/SP001/external-checkpoint.txt"
+        artifact.write_text("artifact-only\n", encoding="utf-8")
+        self.git(root, "add", "sources")
+        self.git(root, "commit", "-m", "artifact-only head movement")
+        current = orchestrator.plan_action(root, cfg, state_path)
+        self.assertNotEqual(
+            spec["basis"]["observed_repository_head_sha"],
+            current["basis"]["observed_repository_head_sha"],
+        )
+        self.assertEqual(spec["action_id"], current["action_id"])
+        result_path = root / "sources/SP001/orchestration/v2/results/preissued.json"
+        result = orchestrator.execute_action(
+            root,
+            cfg,
+            state_path,
+            spec_path,
+            result_path,
+            {spec["handler"]: self.handler_for("discovery")},
+            clock=lambda: core.parse_instant("2026-08-22T03:05:00+09:00"),
+        )
+        self.assertEqual(result["status"], "SUCCEEDED")
+        self.assertEqual(result["implementation_commit_sha"], pinned)
+        self.assertEqual(core.load_json(state_path)["lifecycle_state"], "DISCOVERY_COLLECTED")
+
+    def test_interrupted_state_result_commit_is_recoverable_without_silent_divergence(self) -> None:
+        temp, root, cfg, state_path, _ = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        spec = orchestrator.plan_action(root, cfg, state_path)
+        spec_path = root / "sources/SP001/orchestration/v2/specs/transaction.json"
+        orchestrator.write_action_spec(spec_path, spec)
+        result_path = root / "sources/SP001/orchestration/v2/results/transaction.json"
+        original_replace = os.replace
+        calls = {"count": 0}
+
+        def fail_after_state_replace(src, dst):
+            calls["count"] += 1
+            if calls["count"] == 2:
+                raise OSError("simulated crash after State replacement")
+            return original_replace(src, dst)
+
+        with mock.patch.object(orchestrator.os, "replace", side_effect=fail_after_state_replace):
+            with self.assertRaisesRegex(OSError, "simulated crash"):
+                orchestrator.execute_action(
+                    root,
+                    cfg,
+                    state_path,
+                    spec_path,
+                    result_path,
+                    {spec["handler"]: self.handler_for("discovery")},
+                    clock=lambda: core.parse_instant("2026-08-22T03:05:00+09:00"),
+                )
+
+        pending_result, state_next = orchestrator._transaction_paths(result_path)
+        self.assertFalse(result_path.exists())
+        self.assertTrue(pending_result.exists())
+        self.assertFalse(state_next.exists())
+        self.assertEqual(core.load_json(state_path)["lifecycle_state"], "DISCOVERY_COLLECTED")
+        self.assertTrue(orchestrator._recover_pending_transaction(state_path, result_path))
+        self.assertTrue(result_path.exists())
+        self.assertFalse(pending_result.exists())
+        committed = core.load_json(result_path)
+        self.assertEqual(committed["status"], "SUCCEEDED")
+        self.assertEqual(committed["state_after_sha256"], core.sha256_file(state_path))
 
     def test_retryable_handler_failure_never_becomes_human_or_exception_gate(self) -> None:
         temp, root, cfg, state_path, _ = self.sandbox()
