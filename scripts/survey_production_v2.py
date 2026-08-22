@@ -3,7 +3,8 @@
 
 The Production State is the sole lifecycle/gate authority. State transitions are
 fail-closed: exact profile/contract/implementation identity, lifecycle history,
-machine-checkpoint evidence, gate evidence, and controller fields must agree.
+machine-checkpoint evidence, Human Gate evidence, and controller fields must
+agree. Passed checkpoints and resolved Human Gates pin exact provenance bytes.
 """
 
 from __future__ import annotations
@@ -517,6 +518,30 @@ def _checkpoint_attestation_path(repo_root: Path, cfg: dict[str, Any], profile: 
     return source_root / cfg["state_authority"]["checkpoint_attestation_dir"] / f"{checkpoint}.json"
 
 
+def _authority_ref(repo_root: Path, path: Path) -> dict[str, str]:
+    return {
+        "path": str(path.resolve().relative_to(repo_root.resolve())),
+        "sha256": sha256_file(path),
+    }
+
+
+def _validate_authority_ref(repo_root: Path, value: Any, expected_path: Path | None, label: str) -> tuple[list[str], Path | None]:
+    if not isinstance(value, dict) or set(value) != {"path", "sha256"}:
+        return [f"{label} authority fields invalid"], None
+    try:
+        path = repo_local_path(repo_root, value.get("path"), label)
+    except (TypeError, ValueError) as exc:
+        return [str(exc)], None
+    errors: list[str] = []
+    if expected_path is not None and path != expected_path.resolve():
+        errors.append(f"{label} authority path is not canonical")
+    if not path.is_file():
+        errors.append(f"{label} authority file missing")
+    elif value.get("sha256") != sha256_file(path):
+        errors.append(f"{label} authority SHA drift")
+    return errors, path
+
+
 def _validate_artifact_ref(repo_root: Path, ref: Any, label: str) -> list[str]:
     errors: list[str] = []
     if not isinstance(ref, dict) or set(ref) != {"name", "path", "sha256", "required"}:
@@ -533,7 +558,7 @@ def _validate_artifact_ref(repo_root: Path, ref: Any, label: str) -> list[str]:
     else:
         try:
             path = repo_local_path(repo_root, path_value, label)
-        except ValueError as exc:
+        except (TypeError, ValueError) as exc:
             errors.append(str(exc))
             return errors
         if not path.is_file():
@@ -543,10 +568,11 @@ def _validate_artifact_ref(repo_root: Path, ref: Any, label: str) -> list[str]:
     return errors
 
 
-def _validate_checkpoint_attestation(repo_root: Path, cfg: dict[str, Any], profile: dict[str, Any], checkpoint: str, issue_id: str) -> list[str]:
-    path = _checkpoint_attestation_path(repo_root, cfg, profile, checkpoint)
-    if not path.is_file():
-        return [f"passed checkpoint lacks validation attestation: {checkpoint}"]
+def _validate_checkpoint_attestation(repo_root: Path, cfg: dict[str, Any], profile: dict[str, Any], checkpoint: str, issue_id: str, authority: Any) -> list[str]:
+    canonical = _checkpoint_attestation_path(repo_root, cfg, profile, checkpoint)
+    authority_errors, path = _validate_authority_ref(repo_root, authority, canonical, f"checkpoint {checkpoint}")
+    if authority_errors or path is None:
+        return authority_errors
     value = load_json(path)
     required = {
         "schema_version", "issue_id", "checkpoint", "action_id",
@@ -592,30 +618,43 @@ def validate_state_semantics(repo_root: Path, cfg: dict[str, Any], state: dict[s
     if state.get("lifecycle_state") not in LIFECYCLE:
         return ["Production State lifecycle_state invalid"]
     checkpoint_value = state.get("machine_checkpoints")
+    provenance_value = state.get("checkpoint_provenance")
     if not isinstance(checkpoint_value, dict) or set(checkpoint_value) != set(CHECKPOINTS):
         errors.append("Production State machine_checkpoints must exactly match canonical checkpoint set")
         checkpoints = checkpoint_value if isinstance(checkpoint_value, dict) else {}
     else:
         checkpoints = checkpoint_value
+    if not isinstance(provenance_value, dict) or set(provenance_value) != set(CHECKPOINTS):
+        errors.append("Production State checkpoint_provenance must exactly match canonical checkpoint set")
+        checkpoint_provenance = provenance_value if isinstance(provenance_value, dict) else {}
+    else:
+        checkpoint_provenance = provenance_value
     expected_passed = _completed_stage_checkpoints(cfg, state["lifecycle_state"])
     if state.get("human_gates", {}).get("publication_preview") == "approved":
         expected_passed.add("publication_preview")
-    for name in CHECKPOINTS:
-        status = checkpoints.get(name)
-        expected = "passed" if name in expected_passed else "pending"
-        if status != expected:
-            errors.append(f"Production State checkpoint {name}={status!r}; expected {expected!r} for lifecycle {state['lifecycle_state']}")
     try:
         profile_path = repo_local_path(repo_root, state["profile"]["path"], "state.profile.path")
         profile = load_json(profile_path)
     except (KeyError, OSError, ValueError) as exc:
         errors.append(f"Production State profile unavailable for semantic validation: {exc}")
         profile = None
-    if profile is not None:
-        for name in expected_passed:
-            if name == "publication_preview":
-                continue
-            errors.extend(_validate_checkpoint_attestation(repo_root, cfg, profile, name, state.get("issue_id", "")))
+    for name in CHECKPOINTS:
+        status = checkpoints.get(name)
+        expected = "passed" if name in expected_passed else "pending"
+        if status != expected:
+            errors.append(f"Production State checkpoint {name}={status!r}; expected {expected!r} for lifecycle {state['lifecycle_state']}")
+        authority = checkpoint_provenance.get(name)
+        if expected == "passed":
+            if authority is None:
+                errors.append(f"passed checkpoint lacks pinned provenance: {name}")
+            elif profile is not None and name != "publication_preview":
+                errors.extend(_validate_checkpoint_attestation(repo_root, cfg, profile, name, state.get("issue_id", ""), authority))
+            elif name == "publication_preview":
+                auth_errors, _ = _validate_authority_ref(repo_root, authority, None, "Publication Preview checkpoint")
+                errors.extend(auth_errors)
+        elif authority is not None:
+            errors.append(f"pending checkpoint must not carry provenance: {name}")
+
     current_index = LIFECYCLE.index(state["lifecycle_state"])
     history = state.get("history")
     if not isinstance(history, list) or len(history) != current_index + 1:
@@ -637,38 +676,63 @@ def validate_state_semantics(repo_root: Path, cfg: dict[str, Any], state: dict[s
                 previous_time = instant
             except ValueError:
                 errors.append(f"Production State history[{index}].recorded_at invalid")
+
+    gate_provenance = state.get("human_gate_provenance")
+    if not isinstance(gate_provenance, dict) or set(gate_provenance) != {"architecture_review", "publication_preview"}:
+        errors.append("Production State human_gate_provenance fields invalid")
+        gate_provenance = {}
     arch_index = LIFECYCLE.index("ARCHITECTURE_ESTABLISHED")
     arch_status = state.get("human_gates", {}).get("architecture_review")
+    arch_authority = gate_provenance.get("architecture_review")
     if current_index < arch_index and arch_status != "pending":
         errors.append("Architecture Review cannot be resolved before ARCHITECTURE_ESTABLISHED")
     if current_index > arch_index and arch_status != "approved":
         errors.append("post-Architecture lifecycle requires approved Architecture Review")
-    if arch_status == "approved" and profile is not None:
-        source_root = repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
-        approval = source_root / cfg["state_authority"]["architecture_approval_path"]
-        architecture = source_root / "architecture-v2.json"
-        review = source_root / "architecture-review-summary-v2.json"
-        if not approval.is_file() or not architecture.is_file() or not review.is_file():
-            errors.append("approved Architecture Review lacks canonical approval/review artifacts")
-        else:
-            try:
-                record = load_json(approval)
-            except (OSError, ValueError, json.JSONDecodeError):
-                errors.append("Architecture Approval Record unreadable")
-            else:
-                if (
-                    record.get("decision") != "APPROVED"
-                    or record.get("issue_id") != state.get("issue_id")
-                    or record.get("architecture_sha256") != sha256_file(architecture)
-                    or record.get("architecture_review_summary_sha256") != sha256_file(review)
-                ):
-                    errors.append("Architecture Approval Record does not bind current canonical review bytes")
+    if arch_status == "pending":
+        if arch_authority is not None:
+            errors.append("pending Architecture Review must not carry gate provenance")
+    else:
+        if arch_authority is None:
+            errors.append("resolved Architecture Review lacks pinned gate provenance")
+        elif profile is not None:
+            source_root = repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
+            approval = source_root / cfg["state_authority"]["architecture_approval_path"]
+            authority_errors, approval_path = _validate_authority_ref(repo_root, arch_authority, approval, "Architecture Review")
+            errors.extend(authority_errors)
+            architecture = source_root / "architecture-v2.json"
+            review = source_root / "architecture-review-summary-v2.json"
+            if arch_status == "approved" and approval_path is not None and architecture.is_file() and review.is_file():
+                try:
+                    record = load_json(approval_path)
+                except (OSError, ValueError, json.JSONDecodeError):
+                    errors.append("Architecture Approval Record unreadable")
+                else:
+                    if (
+                        record.get("decision") != "APPROVED"
+                        or record.get("issue_id") != state.get("issue_id")
+                        or record.get("architecture_sha256") != sha256_file(architecture)
+                        or record.get("architecture_review_summary_sha256") != sha256_file(review)
+                    ):
+                        errors.append("Architecture Approval Record does not bind current canonical review bytes")
+            elif arch_status == "approved":
+                errors.append("approved Architecture Review lacks canonical Architecture/Review bytes")
+
     pub_index = LIFECYCLE.index("RELEASE_CANDIDATE")
     pub_status = state.get("human_gates", {}).get("publication_preview")
+    pub_authority = gate_provenance.get("publication_preview")
     if current_index < pub_index and pub_status != "pending":
         errors.append("Publication Preview cannot be resolved before RELEASE_CANDIDATE")
     if current_index > pub_index and pub_status != "approved":
         errors.append("FROZEN lifecycle requires approved Publication Preview")
+    if pub_status == "pending":
+        if pub_authority is not None:
+            errors.append("pending Publication Preview must not carry gate provenance")
+    elif pub_authority is None:
+        errors.append("resolved Publication Preview lacks pinned gate provenance")
+    else:
+        auth_errors, _ = _validate_authority_ref(repo_root, pub_authority, None, "Publication Preview")
+        errors.extend(auth_errors)
+
     try:
         expected_action, expected_terminal = derive_control_fields(state, cfg)
     except (KeyError, ValueError) as exc:
@@ -722,11 +786,16 @@ def initial_state(
             "architecture_review": "pending",
             "publication_preview": "pending",
         },
+        "human_gate_provenance": {
+            "architecture_review": None,
+            "publication_preview": None,
+        },
         "target_gate": target_gate,
         "next_action": None,
         "terminal_reason": None,
         "exception_gate": {"status": "inactive", "reason": None},
         "machine_checkpoints": {name: "pending" for name in CHECKPOINTS},
+        "checkpoint_provenance": {name: None for name in CHECKPOINTS},
         "legacy_compatibility": {
             "mode": cfg["state_authority"]["legacy_mode"],
             "legacy_state_path": str(legacy_path.relative_to(repo_root.resolve())),
@@ -796,6 +865,7 @@ def transition_state(
     implementation_sha: str,
     recorded_at: datetime,
     checkpoint_updates: dict[str, str] | None = None,
+    checkpoint_provenance_updates: dict[str, dict[str, str]] | None = None,
 ) -> dict[str, Any]:
     verify_state_basis(repo_root, cfg, state, implementation_sha)
     if to_state not in LIFECYCLE:
@@ -808,11 +878,22 @@ def transition_state(
     stage = cfg["orchestration"]["stage_plan"].get(current, {})
     required = set(stage.get("checkpoints", []))
     updates = checkpoint_updates or {}
+    provenance_updates = checkpoint_provenance_updates or {}
     if set(updates) != required or any(value != "passed" for value in updates.values()):
         raise ValueError(f"transition {current} -> {to_state} requires exact passed checkpoint updates: {sorted(required)}")
+    if set(provenance_updates) != required:
+        raise ValueError(f"transition {current} -> {to_state} requires exact checkpoint provenance updates: {sorted(required)}")
+    profile_path = repo_local_path(repo_root, state["profile"]["path"], "state.profile.path")
+    profile = load_json(profile_path)
+    for checkpoint in required:
+        canonical = _checkpoint_attestation_path(repo_root, cfg, profile, checkpoint)
+        authority_errors, _ = _validate_authority_ref(repo_root, provenance_updates[checkpoint], canonical, f"transition checkpoint {checkpoint}")
+        if authority_errors:
+            raise ValueError("invalid checkpoint provenance update: " + "; ".join(authority_errors))
     updated = deepcopy(state)
     for checkpoint in required:
         updated["machine_checkpoints"][checkpoint] = "passed"
+        updated["checkpoint_provenance"][checkpoint] = deepcopy(provenance_updates[checkpoint])
     updated["lifecycle_state"] = to_state
     updated["history"].append(
         {
@@ -906,7 +987,14 @@ def cmd_transition(args: argparse.Namespace, repo_root: Path, cfg: dict[str, Any
     impl = repository_commit_sha(repo_root, args.implementation_sha)
     now = parse_instant(args.recorded_at) if args.recorded_at else datetime.now(timezone.utc)
     updates = {name: "passed" for name in args.checkpoint}
-    updated = transition_state(repo_root, cfg, state, args.to_state, impl, now, updates)
+    provenance_updates: dict[str, dict[str, str]] = {}
+    profile = load_json(repo_local_path(repo_root, state["profile"]["path"], "state.profile.path"))
+    for name in args.checkpoint:
+        attestation = _checkpoint_attestation_path(repo_root, cfg, profile, name)
+        if not attestation.is_file():
+            raise ValueError(f"checkpoint attestation missing: {name}")
+        provenance_updates[name] = _authority_ref(repo_root, attestation)
+    updated = transition_state(repo_root, cfg, state, args.to_state, impl, now, updates, provenance_updates)
     write_json(state_path, updated)
     print(state_path)
     return 0
