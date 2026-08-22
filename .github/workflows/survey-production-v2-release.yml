@@ -6,6 +6,14 @@ on:
       issue_id:
         required: true
         type: string
+      production_state_sha256:
+        description: Exact FROZEN Production State SHA-256 authorized for dispatch
+        required: true
+        type: string
+      release_manifest_sha256:
+        description: Exact Release Manifest SHA-256 authorized for dispatch
+        required: true
+        type: string
       confirmation:
         description: Enter release:<issue_id>
         required: true
@@ -42,11 +50,15 @@ jobs:
         shell: bash
         env:
           ISSUE_ID: ${{ inputs.issue_id }}
+          EXPECTED_STATE_SHA: ${{ inputs.production_state_sha256 }}
+          EXPECTED_MANIFEST_SHA: ${{ inputs.release_manifest_sha256 }}
           CONFIRMATION: ${{ inputs.confirmation }}
           REPOSITORY: ${{ github.repository }}
         run: |
           set -euo pipefail
           test "$CONFIRMATION" = "release:${ISSUE_ID}"
+          test "$(printf '%s' "$EXPECTED_STATE_SHA" | grep -Ec '^[0-9a-f]{64}$')" -eq 1
+          test "$(printf '%s' "$EXPECTED_MANIFEST_SHA" | grep -Ec '^[0-9a-f]{64}$')" -eq 1
           PYTHONPATH=. python - <<'PY' >> "$GITHUB_OUTPUT"
           import json, os, pathlib, re
           from scripts import survey_production_v2 as core
@@ -61,6 +73,8 @@ jobs:
           if not re.fullmatch(r'[A-Za-z0-9._-]+', issue): raise SystemExit('unsafe issue_id')
           state_path=root/'sources'/issue/'production-state.json'
           if not state_path.is_file(): raise SystemExit('canonical Production State missing on main')
+          if core.sha256_file(state_path) != os.environ['EXPECTED_STATE_SHA']:
+              raise SystemExit('release dispatch Production State SHA drift')
           state=core.load_json(state_path)
           if state.get('issue_id') != issue or state.get('lifecycle_state') != 'FROZEN':
               raise SystemExit('release workflow requires exact FROZEN issue state on main')
@@ -68,6 +82,8 @@ jobs:
           if errors: raise SystemExit('; '.join(errors))
           profile=core.load_json(root/state['profile']['path']); source=pathlib.Path(profile['paths']['source_root'])
           manifest_path=root/source/'publication/v2/release-manifest-v2.json'
+          if core.sha256_file(manifest_path) != os.environ['EXPECTED_MANIFEST_SHA']:
+              raise SystemExit('release dispatch Release Manifest SHA drift')
           manifest=publication.validate_release_manifest(root,manifest_path)
           freeze=core.load_json(root/manifest['freeze_record_path'])
           candidate_path=root/freeze['publication_candidate_path']; candidate=publication.validate_candidate(root,candidate_path,issue_id=issue)
@@ -184,7 +200,7 @@ jobs:
         run: |
           set -euo pipefail
           PYTHONPATH=. python - <<'PY'
-          import datetime as dt, json, os, pathlib
+          import datetime as dt, os, pathlib
           from scripts import survey_production_v2 as core
           from scripts import survey_publication_v2 as publication
           root=pathlib.Path('.').resolve(); source=pathlib.Path(os.environ['SOURCE_ROOT'])
