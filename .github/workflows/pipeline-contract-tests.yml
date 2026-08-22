@@ -65,7 +65,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m compileall -q scripts tests automation/w33_v2_compile_current.py
+          python -m compileall -q scripts tests automation/w33_v2_compile_current.py automation/w33_v2_compile_final.py
 
       - name: Run pipeline unit tests with W33 initialized-state exception audit
         shell: bash
@@ -99,7 +99,7 @@ jobs:
         run: |
           set -euo pipefail
           git fetch origin weekly/2026-W33-work:refs/remotes/origin/weekly/2026-W33-work
-          PYTHONPATH=. python automation/w33_v2_compile_current.py
+          PYTHONPATH=. python automation/w33_v2_compile_final.py
           PYTHONPATH=. python - <<'PY'
           from pathlib import Path
           from scripts import survey_agent_control_v2 as agent
