@@ -47,7 +47,16 @@ class SurveyCompletenessClosureAuditV2Tests(unittest.TestCase):
         core.write_json(
             profile_path,
             {
-                "research_scope": {"scope_dimensions": ["lineage"]},
+                "research_scope": {
+                    "scope_dimensions": ["lineage"],
+                    "initial_obligations": [
+                        {
+                            "obligation_id": "gap:new-branch",
+                            "dimension": "lineage",
+                            "description": "dispose the branch discovered in the final pass",
+                        }
+                    ],
+                },
             },
         )
         core.write_json(
@@ -142,6 +151,13 @@ class SurveyCompletenessClosureAuditV2Tests(unittest.TestCase):
         }
         errors = self.call_guard(profile_path, ledger_path, discovery_path, wrong_dimension)
         self.assertTrue(any("dimension is not declared" in error for error in errors))
+
+    def test_profile_initial_obligation_cannot_disappear(self) -> None:
+        temp, profile_path, ledger_path, discovery_path, result = self.fixture()
+        self.addCleanup(temp.cleanup)
+        missing = {**result, "obligations": []}
+        errors = self.call_guard(profile_path, ledger_path, discovery_path, missing)
+        self.assertTrue(any("silently dropped Profile initial obligation" in error for error in errors))
 
 
 if __name__ == "__main__":
