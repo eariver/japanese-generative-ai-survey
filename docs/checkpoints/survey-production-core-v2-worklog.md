@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Work Log
 
-Status: `WU-012 REPAIRS IMPLEMENTED / PRE-AUDIT CANDIDATE / FINAL RESULT EXTERNAL`  
+Status: `WU-012 + AUD-046 REPAIRS IMPLEMENTED / PRE-AUDIT CANDIDATE / FINAL RESULT EXTERNAL`  
 Established: 2026-08-22 JST  
 Last updated: 2026-08-22 JST  
 Working branch: `refactor/survey-production-core-v2`  
@@ -18,7 +18,8 @@ The candidate tree intentionally stops at a stable PRE-AUDIT state. Exact-head c
 Historical audit attempts remain evidence only:
 
 - former synchronized head `2f3c9b10c031cf0d8e5cc114fb93e481e90fffac` was invalidated by AUD-039 through AUD-044;
-- fixed-head attempt `68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d` was invalidated by AUD-045 because the higher-precedence Authority still described already-implemented repairs as in progress.
+- fixed-head attempt `68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d` was invalidated by AUD-045 because the higher-precedence Authority still described already-implemented repairs as in progress;
+- fixed-head `705937af2eb45d5ba361fe748d7a622110bcb27c` completed five-point audit, but was later invalidated by AUD-046 after the Owner clarified the original requirement that X/Grok be a formal Weekly and applicable-Special Source Intake surface using Google Drive handoff.
 
 ## 2. Stable pre-audit snapshot
 
@@ -31,7 +32,7 @@ Historical audit attempts remain evidence only:
 - WU-012: `REPAIRS IMPLEMENTED / PRE-AUDIT CANDIDATE`.
 - WU-012 Repair Set: `REPAIR-WU012-2026-08-22`, status `IMPLEMENTED`; it remains not `VALIDATED/CLOSED` until real W33/SP001 verification editions exist.
 - AUD-031 / AUD-033 remain intentionally `DEFERRED`.
-- AUD-027–030, AUD-032, AUD-034–045 are `FIXED_GENERIC` and included in the WU-012 Repair Set where applicable.
+- AUD-027–030, AUD-032, AUD-034–046 are `FIXED_GENERIC` and included in the WU-012 Repair Set where applicable.
 - W33, W34, SP001, SP002, SP003: `NOT STARTED / NOT AUTHORIZED BEFORE APPROVAL + MERGE`.
 
 ## 3. Operating premise
@@ -42,12 +43,15 @@ Historical audit attempts remain evidence only:
 user target + requested stopping Human Gate
 -> ChatGPT reads repository authority/Profile/State
 -> ChatGPT performs research/editorial reasoning
+-> conventional/direct/Grok X Source Intake as applicable
 -> deterministic helpers protect crisp/repetitive/provenance invariants
 -> exact semantic stage artifacts are validated
 -> compact Stage Checkpoint records artifact/review/tool/contract provenance
 -> continue autonomously
 -> stop only at Architecture Review, Publication Preview, or genuine Exception Gate
 ```
+
+X/Grok collection is Source Intake, not a third Human Gate. Weekly requires it. Retrospective Period/Thematic explicitly decide applicability with rationale. Foundations uses the Thematic Profile with a dedicated Google Drive category when X is material. Grok writes Raw Observation to the prepared Drive run folder under `Grok_X_SourseIntake`; ChatGPT imports exact bytes, dispositions the result, and performs primary-source verification before technical claims enter Evidence.
 
 Normal production Human Gates remain exactly:
 
@@ -66,13 +70,13 @@ The Core-v2 five-point final audit is a change-management acceptance rule, not a
 | WU-003 / 003B / 003C | `COMPLETE` | historical invariant/deep-production corpus retained |
 | WU-004 / 004B | `COMPLETE` | minimum vertical-slice evidence retained |
 | WU-005 | `COMPLETE WITH WU-012 CORRECTION` | initialization provenance is not an edition-wide tool lock |
-| WU-006 | `COMPLETE` | Discovery/Screening/Raw provenance retained |
+| WU-006 | `COMPLETE WITH AUD-046 EXTENSION` | Discovery/Screening/Raw provenance retained; X/Grok external Raw is formally bound into Discovery Acceptance |
 | WU-007 | `COMPLETE` | Evidence/Materiality/Completeness retained with substantive ChatGPT completeness judgment |
 | WU-008 / 008A | `COMPLETE` | Matrix/internal Selection/Architecture retained |
 | WU-009 | `COMPLETE` | structured Draft/Synthesis retained |
 | WU-010 / 010R | `HISTORICALLY COMPLETE` | defect lessons retained; local control ceremony superseded |
 | WU-011 | `HISTORICALLY COMPLETE` | exact publication/release authority retained |
-| **WU-012** | **`REPAIRS IMPLEMENTED / PRE-AUDIT CANDIDATE`** | ChatGPT-first hot path plus all current generic audit repairs |
+| **WU-012** | **`REPAIRS IMPLEMENTED / PRE-AUDIT CANDIDATE`** | ChatGPT-first hot path plus all current generic audit repairs, including X/Grok Source Intake |
 
 ## 5. WU-012 implementation retained
 
@@ -90,7 +94,7 @@ Initialization implementation identity is historical provenance. A reviewed gene
 
 ### D — Issue Prevention Checklist
 
-Recurring Human Review defects have explicit deterministic / ChatGPT research / ChatGPT editorial / ChatGPT visual / Human / legacy ownership.
+Recurring Human Review defects and the clarified X/Grok intake boundary have explicit deterministic / ChatGPT research / ChatGPT editorial / ChatGPT visual / Human / legacy ownership.
 
 ### E — generic bootstrap/profile support
 
@@ -109,6 +113,7 @@ Quality review remains `DETERMINISTIC / AGENT_SEMANTIC / AGENT_VISUAL`. Applicab
 - **AUD-043:** internal Retrospective identity such as `SP-2025-H2` remains distinct from public `special/2025-H2` identity derived from Profile `survey_root`.
 - **AUD-044:** Retrospective Period cannot initialize before its bounded period end.
 - **AUD-045:** canonical status authority now agrees that repairs are implemented and uses audit-stable PRE-AUDIT wording; exact final result belongs to PR metadata, so no post-audit candidate mutation is required.
+- **AUD-046:** X/Grok is a formal Source Intake subflow. Weekly is required-by-Profile; Period/Thematic record an explicit ChatGPT applicability decision; Foundations gets a dedicated Drive category. Run-specific Grok instruction/prompt and returned Raw are bound to exact repository provenance, Discovery Acceptance requires every X result to be either used by Discovery or explicitly closed as no material discovery, and X remains a community-signal/Discovery surface rather than final technical Evidence authority.
 
 ## 7. Finding / Repair Set status
 
@@ -117,7 +122,7 @@ Quality review remains `DETERMINISTIC / AGENT_SEMANTIC / AGENT_VISUAL`. Applicab
 - AUD-027, AUD-028, AUD-029, AUD-030
 - AUD-032, AUD-034, AUD-035, AUD-036
 - AUD-037, AUD-038
-- AUD-039, AUD-040, AUD-041, AUD-042, AUD-043, AUD-044, AUD-045
+- AUD-039, AUD-040, AUD-041, AUD-042, AUD-043, AUD-044, AUD-045, AUD-046
 
 Intentional `DEFERRED`:
 
@@ -133,7 +138,7 @@ The candidate tree does not claim its own final PASS. When all candidate-tree sy
 ```text
 obtain five-family green CI on one exact head
 -> freeze that exact head
--> audit points 1–5 from zero on the unchanged head
+-> audit points 1–5 from zero on the unchanged head, including Grok/X/Drive Source Intake behavior
 -> any required candidate-tree change invalidates the whole audit
 -> after repair/synchronization/CI, rerun all five from point 1
 -> if unchanged all-PASS, record exact SHA + CI run IDs + five verdicts in PR/Human-review metadata
@@ -157,6 +162,8 @@ Do not:
 - mark the Repair Set `VALIDATED/CLOSED` before real verification editions;
 - add a machine Series engine or exhaustive synthetic matrix without production evidence;
 - add Human Gates beyond Architecture Review and Publication Preview;
+- treat Grok/X transport as Human editorial approval;
+- promote X claims directly to technical Evidence without authoritative verification;
 - restore legacy Handoff ceremony as the canonical local hot path;
 - reuse a partial verdict from an invalidated audit.
 
