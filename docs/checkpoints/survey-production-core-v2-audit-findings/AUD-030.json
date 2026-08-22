@@ -2,11 +2,11 @@
   "schema_version": "2.0-rc1",
   "finding_id": "AUD-030",
   "edition": "CORE-V2",
-  "stage": "WU-012_PRE_APPROVAL_AUDIT",
-  "observed_problem": "RETROSPECTIVE_PERIOD is declared as a first-class Research Profile with BOUNDED_PERIOD temporal semantics, but the current Core v2 CLI/profile implementation exposes only Weekly and Thematic canonical initializers. A new monthly, half-year, annual or custom bounded Special therefore lacks a first-class v2 startup path.",
-  "expected_behavior": "Every Research Profile advertised as first-class must have a typed canonical initializer/spec path that constructs a schema-valid Profile/State without depending on legacy edition-specific repair chains.",
-  "actual_behavior": "config/survey-production-v2.json declares RETROSPECTIVE_PERIOD, while scripts/survey_production_v2.py implements weekly_profile/init-weekly and thematic_profile/init-thematic but no equivalent period_profile/init-period entrypoint.",
-  "production_workaround": "Do not claim general Special readiness or approve PR #310. WU-012D must add bounded-Period startup and representative fixtures before merge.",
+  "stage": "WU-012_AGENT_FIRST_REAUDIT",
+  "observed_problem": "RETROSPECTIVE_PERIOD is declared as a first-class Research Profile with BOUNDED_PERIOD semantics, but ChatGPT has no simple canonical v2 helper equivalent to Weekly/Thematic initialization. A future month/half/year/custom retrospective would require reconstructing deterministic dates/paths/profile fields by hand or falling back to legacy bootstrap knowledge.",
+  "expected_behavior": "Provide a small generic Period bootstrap/profile helper that converts an explicit bounded-period specification into a schema-valid Production Profile/State and points ChatGPT to the applicable period guide. The helper exists for efficiency and consistency; it does not encode period-specific editorial judgment.",
+  "actual_behavior": "config/survey-production-v2.json declares RETROSPECTIVE_PERIOD while scripts/survey_production_v2.py exposes Weekly and Thematic profile constructors but no equivalent bounded-Period convenience entrypoint.",
+  "production_workaround": "Keep the candidate draft until the helper exists; do not build a separate Period workflow engine or revive edition-specific repair chains.",
   "classification": {
     "scope": "PERIOD_PROFILE",
     "defect_kind": "ORCHESTRATION",
@@ -14,16 +14,17 @@
   },
   "requires_regression": true,
   "provenance": {
-    "source_commit": "8beaf978793d983cc7608f4ca9c534511dd04d7a",
+    "source_commit": "9349bd52641d3433cc219adea6565f44fe3dbf09",
     "relevant_artifacts": [
       "config/survey-production-v2.json",
       "scripts/survey_production_v2.py",
       "docs/half-year-retrospective-specials.md",
-      "docs/annual-retrospective-specials.md"
+      "docs/annual-retrospective-specials.md",
+      "docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md"
     ],
-    "human_review_reference": "Pre-approval WU-001-WU-011 audit, 2026-08-22"
+    "human_review_reference": "User premise correction and ChatGPT-first pre-approval re-audit, 2026-08-22"
   },
-  "improvement_action": "Implement WU-012D: add a schema-backed canonical bounded Period spec/profile initializer supporting representative monthly, half-year, annual and custom bounded retrospectives, with reader-facing period identity derived from Profile coverage authority.",
+  "improvement_action": "Implement WU-012E: add a lightweight generic bounded-Period profile/bootstrap helper and a small structural test set for month/half/year/custom inputs, while leaving research/editorial decisions to ChatGPT and the period guides.",
   "regression_fixture": null,
   "resolved_by_repair_set_id": null,
   "status": "OPEN"
