@@ -164,12 +164,13 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         closure = Path("docs/survey-production-core-v2-wu011-second-audit-closure.md").read_text(encoding="utf-8")
         bootstrap = Path("docs/survey-production-core-v2-session-bootstrap.md").read_text(encoding="utf-8")
 
-        self.assertIn("WU-012 CHATGPT-FIRST REALIGNMENT", authority)
-        self.assertIn("AUD-013 through AUD-026 remain historical `FIXED_GENERIC`", authority)
+        # The repository, not a stale intermediate status phrase, owns the live
+        # pre-merge boundary. WU-011 remains historical while WU-012 may advance
+        # from realignment to implementation-complete Human review.
+        self.assertIn("WU-012 IMPLEMENTED", authority)
         self.assertIn("Human full-candidate review", authority)
         self.assertIn("WU-011: historical `COMPLETE", worklog)
-        self.assertIn("WU-012: `PLANNED / PRE-MERGE BLOCKER`", worklog)
-        self.assertIn("REPAIR-WU011-2026-08-22", worklog)
+        self.assertIn("WU-012: **`IMPLEMENTATION COMPLETE", worklog)
         self.assertIn("Human full-candidate review of PR #310", closure)
         self.assertIn("survey_pilot_bootstrap_v2.py plan --pilot", bootstrap)
         self.assertFalse(Path("sources/2026-W33/production-state.json").exists())
