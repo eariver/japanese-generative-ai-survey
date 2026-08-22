@@ -121,6 +121,23 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.assertIn("actual_bytes", release)
         self.assertIn("verify_runtime_implementation", release)
 
+    def test_core_v2_cross_regression_wiring_preserves_current_weekly_production_controls(self) -> None:
+        weekly = (self.root / ".github/workflows/weekly-pipeline.yml").read_text(encoding="utf-8")
+        # Core v2 additions are CI-only: broaden triggers and install jsonschema for
+        # discover-all tests. Current-main Weekly production controls must survive.
+        self.assertIn("scripts/survey_*_v2.py", weekly)
+        self.assertIn("config/survey-production-v2-requirements.txt", weekly)
+        self.assertIn("Install Survey Production Core v2 test dependencies", weekly)
+        self.assertIn("Generate Grok Trend Sensor run instruction when collection anchor is available", weekly)
+        self.assertIn("actions/upload-artifact@v7", weekly)
+        self.assertIn("retention-days: 14", weekly)
+        self.assertIn("--plan out/source-intake-control/plan.json", weekly)
+        self.assertIn("scripts/build_screening_index.py", weekly)
+        self.assertIn("out/weekly-pipeline/validation.json", weekly)
+        self.assertIn("raw-provenance-report.json", weekly)
+        self.assertIn("if: inputs.command == 'raw-index'", weekly)
+        self.assertIn("if: inputs.command == 'raw-check'", weekly)
+
 
 if __name__ == "__main__":
     unittest.main()
