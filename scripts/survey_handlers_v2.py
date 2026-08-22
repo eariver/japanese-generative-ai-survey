@@ -210,7 +210,7 @@ def _evidence_basis(repo_root: Path, state: dict[str, Any], handoff: dict[str, A
     ledger = core.load_json(ledger_path)
     evidence.validate_materiality_ledger(
         ledger, repo_root, profile_path, discovery_path, screening_path,
-        evidence_path, views_path, ledger_path, implementation_sha,
+        evidence_path, views_path, implementation_sha,
     )
     completeness_payload = schema_gate.load_and_validate_json(
         completeness_path, repo_root / Path("schemas/profile-completeness-result.schema.json"),
