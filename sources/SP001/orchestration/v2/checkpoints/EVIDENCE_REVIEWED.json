@@ -1,0 +1,74 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "from_state": "EVIDENCE_REVIEWED",
+  "to_state": "SELECTION_COMPLETE",
+  "checkpoints": [
+    "selection"
+  ],
+  "recorded_at": "2026-08-22T17:12:05Z",
+  "implementation": {
+    "repository_commit_sha": "3638fa3431448d62b353afba0d961b21ae6dfa79",
+    "orchestrator_version": "survey-production-core-v2/0.8-agent-first"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "1814863bfe5661491b972eabaeaa6383b4018172fbfe765ce064a7202986abce",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "candidate-matrix",
+      "path": "sources/SP001/candidate-matrix-v2.json",
+      "sha256": "d6ef2b299a8e007783a01cc3817418d19cdc9576aa0a3074988128cb7185b18a"
+    },
+    {
+      "name": "candidate-selection",
+      "path": "sources/SP001/candidate-selection-v2.json",
+      "sha256": "48af588ef8eae58d16189804b97bdb6af114cb0560df27f19bc2a9c8e81cdd3e"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "scripts/survey_stage_validation_v2.py",
+      "evidence": "Validate the exact deterministic Candidate Matrix and complete Candidate Selection against the accepted Discovery, Screening, Evidence, Edition Views, Materiality, LIMITED Completeness, current Production Profile/State, and current integrated Core v2 implementation before adopting Selection.",
+      "result": {
+        "path": "sources/SP001/orchestration/v2/validation/EVIDENCE_REVIEWED.json",
+        "sha256": "26e3b3dc42ed934d6e5317a22703173b5563fef9a0a68b14b4158e7e283393a3"
+      }
+    },
+    {
+      "check_id": "THEMATIC_SELECTION_COVERAGE",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "All 24 Matrix candidates receive exactly one Selection assignment. Twenty source-bounded candidates are SELECTED: the four central GLM/Qwen/DeepSeek/Kimi lineages, MiniMax as a competing frontier, Yi/Baichuan as supporting bridges, and the exact Kimi K3 License as a cross-cutting licensing boundary. No Matrix candidate is silently omitted.",
+      "result": null
+    },
+    {
+      "check_id": "SELECTION_HOLD_BOUNDARY",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "SP001-D004 remains HOLD because the 2023 Kimi chronology is secondary-source qualified. SP001-D022 through D024 remain HOLD because X/community observations do not establish runtime performance or prevalence, legal conclusions, or enterprise-policy prevalence. None of these four candidates receives an Architecture role or destination.",
+      "result": null
+    },
+    {
+      "check_id": "THEMATIC_FAMILY_DISTINCTION",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "Selection preserves GLM, Qwen, DeepSeek and Kimi as distinct technical lineages rather than a single China-model strategy. MiniMax remains a competing branch; Yi and Baichuan remain supporting context. This matches the Production Profile and LIMITED Completeness boundaries.",
+      "result": null
+    }
+  ],
+  "summary": "Adopt the exact Core v2 Candidate Matrix and Candidate Selection for SP001: all 24 candidates are assigned, 20 source-bounded candidates are selected for Architecture, and the secondary-only early Kimi chronology plus three X/community signals remain HOLD with no Architecture role."
+}
