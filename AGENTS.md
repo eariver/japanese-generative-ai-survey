@@ -4,7 +4,7 @@
 
 When a user asks to start, resume, or continue a Weekly or Special edition, treat the current `main` branch as the production source of truth and read `docs/survey-production-core-v2-session-bootstrap.md` plus the applicable Profile/series guide before doing editorial work.
 
-The user only needs to identify the target and, when relevant, the Human Gate at which to stop. Do **not** require the user to restate manifest paths, pipeline stages, search tactics, Human Gate rules, taxonomy policy, quality checks, or release mechanics that the repository already owns.
+The user only needs to identify the target and, when relevant, the Human Gate at which to stop. Do **not** require the user to restate manifest paths, pipeline stages, search tactics, Human Gate rules, taxonomy policy, quality checks, external-source mechanics, or release mechanics that the repository already owns.
 
 Examples of sufficient requests are:
 
@@ -15,6 +15,8 @@ Examples of sufficient requests are:
 From that instruction, ChatGPT is the primary research/editorial operator. It must resolve the target from repository authority, initialize or resume canonical Production Profile/State, read historical Issue-prevention guidance, construct an appropriate research plan, use deterministic tools only where they add real safety or efficiency, and continue autonomously.
 
 **Do not stop for ordinary internal work.** Source Intake, search expansion, Screening, Evidence work, Completeness/materiality review, Candidate Selection, Architecture preparation, drafting, synthesis, deterministic QA, semantic/editorial review, PDF build, agent visual review, Freeze preparation, retryable CI/tool failures, and generic repairs that do not change approved scope/bytes are not user decision points.
+
+X/Grok collection is a Source Intake subflow, not a third Human Gate. Read `docs/survey-production-core-v2-x-source-intake.md` whenever producing an edition. Weekly requires a Grok/X intake run. Retrospective Period and Thematic work require an explicit ChatGPT `REQUIRED` or `NOT_REQUIRED` decision with rationale; Generative AI Foundations uses the dedicated series Drive category when X is material. ChatGPT creates the run-specific Grok instruction/prompt and provisions the exact Google Drive target below `Grok_X_SourseIntake/<category>/<edition>/<run-id>/`. Grok writes the result only to that Drive run folder. ChatGPT then reads the Drive file, imports its exact bytes into repository Raw storage, and records either Discovery linkage or an explicit no-material-discovery disposition before Discovery Acceptance may pass. Waiting for an external Grok result is an operational dependency while State remains in Source Intake; it is not Human approval or an Exception Gate by itself.
 
 The only normal Human Gates are:
 
@@ -35,7 +37,7 @@ For thematic or series requests, resolve editorial scope from the canonical back
 
 Retrospective Period work uses the bounded Period Profile and must not initialize before the period end. Quality applicability must come from the exact bound Production Profile. Public Special release identity comes from that Profile's `survey_root` basename, allowing an internal source ID such as `SP-2025-H2` to retain the established public identity `special/2025-H2`.
 
-Cross-edition pipeline, validator, schema, workflow, or checklist improvements belong on `main` through the repository's normal review/CI process. Edition-specific Evidence, Architecture, drafts, provenance, and release artifacts remain scoped to that edition's canonical work branch and paths. Frozen historical releases remain immutable.
+Cross-edition pipeline, validator, schema, workflow, or checklist improvements belong on `main` through the repository's normal review/CI process. Edition-specific Evidence, Architecture, drafts, provenance, external-intake manifests/prompts/Raw, and release artifacts remain scoped to that edition's canonical work branch and paths. Frozen historical releases remain immutable.
 
 ## Core v2 change-management final audit
 
