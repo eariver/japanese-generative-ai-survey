@@ -1,0 +1,30 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-030",
+  "edition": "CORE-V2",
+  "stage": "WU-012_PRE_APPROVAL_AUDIT",
+  "observed_problem": "RETROSPECTIVE_PERIOD is declared as a first-class Research Profile with BOUNDED_PERIOD temporal semantics, but the current Core v2 CLI/profile implementation exposes only Weekly and Thematic canonical initializers. A new monthly, half-year, annual or custom bounded Special therefore lacks a first-class v2 startup path.",
+  "expected_behavior": "Every Research Profile advertised as first-class must have a typed canonical initializer/spec path that constructs a schema-valid Profile/State without depending on legacy edition-specific repair chains.",
+  "actual_behavior": "config/survey-production-v2.json declares RETROSPECTIVE_PERIOD, while scripts/survey_production_v2.py implements weekly_profile/init-weekly and thematic_profile/init-thematic but no equivalent period_profile/init-period entrypoint.",
+  "production_workaround": "Do not claim general Special readiness or approve PR #310. WU-012D must add bounded-Period startup and representative fixtures before merge.",
+  "classification": {
+    "scope": "PERIOD_PROFILE",
+    "defect_kind": "ORCHESTRATION",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "8beaf978793d983cc7608f4ca9c534511dd04d7a",
+    "relevant_artifacts": [
+      "config/survey-production-v2.json",
+      "scripts/survey_production_v2.py",
+      "docs/half-year-retrospective-specials.md",
+      "docs/annual-retrospective-specials.md"
+    ],
+    "human_review_reference": "Pre-approval WU-001-WU-011 audit, 2026-08-22"
+  },
+  "improvement_action": "Implement WU-012D: add a schema-backed canonical bounded Period spec/profile initializer supporting representative monthly, half-year, annual and custom bounded retrospectives, with reader-facing period identity derived from Profile coverage authority.",
+  "regression_fixture": null,
+  "resolved_by_repair_set_id": null,
+  "status": "OPEN"
+}
