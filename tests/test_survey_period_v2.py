@@ -16,10 +16,12 @@ class SurveyPeriodV2Tests(unittest.TestCase):
 
     def test_configured_month_half_year_and_annual_resolve_to_one_generic_profile(self) -> None:
         now = core.parse_instant("2026-08-22T09:00:00Z")
+        # Profile instants are normalized by parse_instant; timezone retains the
+        # calendar interpretation authority used to construct each boundary.
         cases = [
-            ("2026-M07", "monthly", "2026-07-01T00:00:00+09:00", "2026-07-31T23:59:59+09:00"),
-            ("2025-H2", "half_year", "2025-07-01T00:00:00+09:00", "2025-12-31T23:59:59+09:00"),
-            ("2023-Y", "annual", "2023-01-01T00:00:00+09:00", "2023-12-31T23:59:59+09:00"),
+            ("2026-M07", "monthly", "2026-06-30T15:00:00+00:00", "2026-07-31T14:59:59+00:00"),
+            ("2025-H2", "half_year", "2025-06-30T15:00:00+00:00", "2025-12-31T14:59:59+00:00"),
+            ("2023-Y", "annual", "2022-12-31T15:00:00+00:00", "2023-12-31T14:59:59+00:00"),
         ]
         for slug, granularity, start, end in cases:
             with self.subTest(slug=slug):
@@ -32,6 +34,7 @@ class SurveyPeriodV2Tests(unittest.TestCase):
                 self.assertEqual(policy["mode"], "BOUNDED_PERIOD")
                 self.assertEqual(policy["start"], start)
                 self.assertEqual(policy["end"], end)
+                self.assertEqual(policy["timezone"], "Asia/Tokyo")
                 self.assertEqual(len(profile["research_scope"]["initial_obligations"]), 4)
 
     def test_custom_bounded_period_is_first_class_without_edition_specific_code(self) -> None:
