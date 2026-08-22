@@ -100,7 +100,7 @@ repair the generic tool on main through normal review/CI
 -> use the integrated branch head as the actual execution toolchain
 -> revalidate/migrate only affected accepted boundaries
 -> record that actual implementation commit in the next Stage Checkpoint
--> continue automatically toward the requested Gate
+-> continue
 ```
 
 Do not treat the initialization implementation SHA as an edition-wide lock. Do not run an unintegrated second checkout of `main` against edition artifacts and then claim the work branch itself contained that toolchain. If the changed contract cannot be reconciled safely and requires Owner judgment, use an Exception Gate.
