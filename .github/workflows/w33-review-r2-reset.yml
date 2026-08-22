@@ -1,0 +1,32 @@
+name: W33 review r2 reset
+on:
+  pull_request:
+    paths:
+      - 'automation/w33_review_r2_reset.py'
+      - '.github/workflows/w33-review-r2-reset.yml'
+permissions:
+  contents: write
+jobs:
+  reset:
+    if: github.head_ref == 'temp/w33-review-r2-reset'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: temp/w33-review-r2-reset
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r config/survey-production-v2-requirements.txt
+      - name: Apply and validate Architecture Review revision reset
+        run: PYTHONPATH=. python automation/w33_review_r2_reset.py
+      - name: Persist reset and remove temporary runner
+        run: |
+          set -euo pipefail
+          rm automation/w33_review_r2_reset.py .github/workflows/w33-review-r2-reset.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A sources/2026-W33 docs/checkpoints/2026-W33-core-v2-compilation-session-worklog.md automation .github/workflows/w33-review-r2-reset.yml
+          git commit -m 'Reset W33 downstream stages for Architecture Review r2'
+          git push origin HEAD:temp/w33-review-r2-reset
