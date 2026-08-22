@@ -97,7 +97,18 @@ jobs:
         run: |
           set -euo pipefail
           PYTHONPATH=. python scripts/survey_x_intake_v2.py validate --manifest sources/2026-W33/external/x/x-source-intake-v2.json
-          PYTHONPATH=. python scripts/survey_agent_control_v2.py validate-state --state sources/2026-W33/production-state.json
+          PYTHONPATH=. python - <<'PY'
+          from pathlib import Path
+          from scripts import survey_production_v2 as core
+          from scripts import survey_agent_control_v2 as agent
+          root=Path('.').resolve()
+          cfg=core.load_json(root/core.DEFAULT_CONFIG)
+          state=core.load_json(root/'sources/2026-W33/production-state.json')
+          errors=agent.validate_agent_state(root,cfg,state)
+          if errors:
+              raise SystemExit('; '.join(errors))
+          print('Production State resumability validation: PASS')
+          PY
 
       - name: Restore implementation-control workflow and persist only production artifacts
         env:
