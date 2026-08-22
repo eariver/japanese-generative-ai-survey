@@ -18,7 +18,8 @@
     "AUD-042",
     "AUD-043",
     "AUD-044",
-    "AUD-045"
+    "AUD-045",
+    "AUD-046"
   ],
   "affected_components": [
     "ChatGPT-first production operator/session contract",
@@ -35,7 +36,10 @@
     "Thematic planning-authority scope materialization",
     "compact exact-byte Release checkpoint",
     "all-changes-first fixed-head five-point final audit rule",
-    "audit-stable pre-audit authority/status synchronization"
+    "audit-stable pre-audit authority/status synchronization",
+    "Profile-aware Grok/X Source Intake",
+    "Google Drive external collection handoff",
+    "X Raw import and Discovery/no-material disposition authority"
   ],
   "actual_layers_changed": [
     "CORE",
@@ -106,11 +110,17 @@
     "4533b8d641c0f2e0326b9186db20bba89b66d881",
     "f2baa225820ce1bc3425548f33038d6ed90a71e2",
     "b02566325b7173a1fbab07cdec812803799ba8cf",
-    "2fdde09e4fd8b8a99babb74cbf29343b0df708e2"
+    "2fdde09e4fd8b8a99babb74cbf29343b0df708e2",
+    "112b15edbe75de64655bb6c901a83c804a3eda79",
+    "1efd4bb85631ec9405625809f158155d645e8afd",
+    "75a4f4ecb534b5ee7f1ffd68ed70ae3e07523819",
+    "e2326ba9957dee1715ff8fd37b4ddbd2fa7422b6"
   ],
   "regression_fixtures": [
     "tests/test_survey_agent_control_v2.py",
     "tests/test_survey_stage_validation_v2.py",
+    "tests/test_survey_x_intake_v2.py",
+    "tests/test_survey_discovery_v2.py",
     "tests/test_survey_quality_v2.py",
     "tests/test_survey_publication_v2.py",
     "tests/test_survey_period_v2.py",
@@ -119,7 +129,7 @@
     "tests/test_survey_pilot_bootstrap_v2.py",
     "tests/test_survey_release_checkpoint_v2.py"
   ],
-  "compatibility_impact": "Core v2 improvement branch only. Legacy Action/Handoff/Attestation code remains available as historical/compatibility material but is not the canonical production hot path. Canonical local stages use compact Stage Checkpoints only after exact deterministic semantic stage validation. Initialization implementation identity remains historical provenance; a newer reviewed generic main repair must actually be integrated into the edition work branch before use, and only affected accepted boundaries are revalidated/migrated. Quality applicability binds the exact Production Profile. Retrospective Period cannot initialize before period end and retains established public Special slug identity independently of internal SP-prefixed source identity. Immutable Raw provenance and exact Publication Preview/Freeze/Release byte authority are retained. Candidate-tree status is intentionally audit-stable at pre-audit; the final exact-head CI/five-point result is external PR/Human-review metadata. Former candidate audits at 2f3c9b10c031cf0d8e5cc114fb93e481e90fffac and 68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d are invalidated as final evidence. Frozen historical releases are unchanged and W33/SP001 remain unstarted until Human approval and merge.",
+  "compatibility_impact": "Core v2 improvement branch only. Legacy Action/Handoff/Attestation code remains available as historical/compatibility material but is not the canonical production hot path. Canonical local stages use compact Stage Checkpoints only after exact deterministic semantic stage validation. Initialization implementation identity remains historical provenance; a newer reviewed generic main repair must actually be integrated into the edition work branch before use, and only affected accepted boundaries are revalidated/migrated. Quality applicability binds the exact Production Profile. Retrospective Period cannot initialize before period end and retains established public Special slug identity independently of internal SP-prefixed source identity. X/Grok is now a formal Source Intake surface: Weekly requires it, Period/Thematic explicitly decide applicability, Foundations may use its dedicated Drive category, returned files are transported through Google Drive Grok_X_SourseIntake, imported as exact Raw bytes, and dispositioned into Discovery/no-material outcome before Discovery Acceptance. Grok remains a Discovery/community-signal sensor rather than final technical Evidence authority. Immutable Raw provenance and exact Publication Preview/Freeze/Release byte authority are retained. Candidate-tree status is intentionally audit-stable at pre-audit; final exact-head CI/five-point results are external PR/Human-review metadata. Former candidate audits at 2f3c9b10c031cf0d8e5cc114fb93e481e90fffac, 68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d, and 705937af2eb45d5ba361fe748d7a622110bcb27c are invalidated as final evidence. Frozen historical releases are unchanged and W33/SP001 remain unstarted until Human approval and merge.",
   "validation_results": [
     {
       "check": "Earlier WU-012 semantic implementation cross-regression evidence",
@@ -135,6 +145,11 @@
       "check": "Former fixed-head candidate 68213aac five-point audit",
       "status": "FAIL",
       "reference": "AUD-045 found canonical status-authority synchronization drift; audit invalidated before completion"
+    },
+    {
+      "check": "Former fixed-head candidate 705937af five-point audit",
+      "status": "FAIL",
+      "reference": "AUD-046 captured the Owner-clarified original X/Grok Source Intake requirement that was absent from Core v2; the prior 5/5 result is invalidated as final approval evidence"
     },
     {
       "check": "Next fully synchronized candidate five-family cross-regression",
