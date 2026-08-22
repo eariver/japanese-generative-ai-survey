@@ -1,9 +1,9 @@
 name: SP001 preview transport
 
 on:
-  push:
+  pull_request:
     branches:
-      - transport/sp001-preview-export
+      - special/SP001-v2-work
 
 permissions:
   contents: read
@@ -19,7 +19,7 @@ jobs:
         run: |
           set -euo pipefail
           test -s surveys/special/SP001/main.pdf
-          sha256sum surveys/special/SP001/main.pdf
+          echo '2edff040ee1db2eb977d4216e5c1fbd42f2f629acd33bbbe73632a0791c29438  surveys/special/SP001/main.pdf' | sha256sum -c -
       - name: Upload exact preview PDF
         uses: actions/upload-artifact@v7
         with:
