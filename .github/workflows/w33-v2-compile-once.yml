@@ -1,0 +1,67 @@
+name: W33 Core v2 compile once
+
+on:
+  push:
+    branches:
+      - weekly/2026-W33-v2-work
+
+permissions:
+  contents: write
+
+concurrency:
+  group: w33-v2-compile-once
+  cancel-in-progress: false
+
+jobs:
+  compile:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout W33 v2 work branch
+        uses: actions/checkout@v6
+        with:
+          ref: weekly/2026-W33-v2-work
+          fetch-depth: 0
+
+      - name: Fetch immutable legacy fixture branch
+        run: git fetch origin weekly/2026-W33-work:refs/remotes/origin/weekly/2026-W33-work
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Core v2 dependencies
+        run: python -m pip install -r config/survey-production-v2-requirements.txt
+
+      - name: Compile W33 through Architecture Review gate
+        run: PYTHONPATH=. python automation/w33_v2_compile_once.py
+
+      - name: Validate resulting resumable Production State
+        run: |
+          PYTHONPATH=. python scripts/survey_agent_control_v2.py \
+            --repo-root . --config config/survey-production-v2.json \
+            validate-state --state sources/2026-W33/production-state.json
+
+      - name: Require Architecture Review Human Gate
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          p='sources/2026-W33/production-state.json'
+          s=json.load(open(p,encoding='utf-8'))
+          assert s['lifecycle_state']=='ARCHITECTURE_ESTABLISHED', s
+          assert s['next_action']=='ARCHITECTURE_REVIEW', s
+          assert s['terminal_reason']=='HUMAN_GATE_REACHED', s
+          assert s['human_gates']['architecture_review']=='pending', s
+          print('Architecture Review gate reached.')
+          PY
+
+      - name: Commit compiled W33 v2 artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sources/2026-W33
+          git commit -m 'Compile 2026-W33 to Architecture Review with Core v2'
+          git push origin HEAD:weekly/2026-W33-v2-work
