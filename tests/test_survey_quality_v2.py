@@ -21,6 +21,25 @@ class SurveyQualityV2Tests(unittest.TestCase):
     @staticmethod
     def profile(root: Path, issue_id: str, research_profile: str, publication_profile: str) -> Path:
         path = root / "profiles" / issue_id / "production-profile.json"
+        if research_profile == "WEEKLY":
+            temporal = {
+                "mode": "ROLLING_WINDOW",
+                "window_start": "2026-08-13T22:00:00Z",
+                "window_end": "2026-08-14T22:00:00Z",
+                "cutoff": "2026-08-14T22:00:00Z",
+                "timezone": "America/New_York",
+            }
+        elif research_profile == "RETROSPECTIVE_PERIOD":
+            temporal = {
+                "mode": "BOUNDED_PERIOD",
+                "start": "2025-07-01T00:00:00+09:00",
+                "end": "2025-12-31T23:59:59+09:00",
+                "as_of": "2026-08-22T09:00:00Z",
+                "timezone": "Asia/Tokyo",
+            }
+        else:
+            temporal = {"mode": "OPEN_HISTORY_AS_OF", "as_of": "2026-08-22T09:00:00Z"}
+        dummy_sha = "a" * 64
         quality.core.write_json(
             path,
             {
@@ -28,7 +47,35 @@ class SurveyQualityV2Tests(unittest.TestCase):
                 "issue_id": issue_id,
                 "research_profile": research_profile,
                 "publication_profile": publication_profile,
-                "paths": {"survey_root": f"surveys/{issue_id}"},
+                "research_scope": {
+                    "question": "Fixture research question",
+                    "inclusion": [],
+                    "exclusion": [],
+                    "scope_dimensions": ["fixture"],
+                    "initial_obligations": [
+                        {
+                            "obligation_id": "fixture:coverage",
+                            "dimension": "fixture",
+                            "description": "Exercise the exact Production Profile quality binding.",
+                        }
+                    ],
+                    "temporal_policy": temporal,
+                },
+                "paths": {
+                    "source_root": f"sources/{issue_id}",
+                    "survey_root": f"surveys/{issue_id}",
+                    "work_branch": f"test/{issue_id}",
+                },
+                "contract": {
+                    "pipeline_contract_version": "fixture",
+                    "pipeline_contract_sha256": dummy_sha,
+                    "quality_contract_version": "fixture",
+                    "quality_contract_sha256": dummy_sha,
+                    "research_profile_version": "fixture",
+                    "research_profile_sha256": dummy_sha,
+                    "publication_profile_version": "fixture",
+                    "publication_profile_sha256": dummy_sha,
+                },
             },
         )
         return path
