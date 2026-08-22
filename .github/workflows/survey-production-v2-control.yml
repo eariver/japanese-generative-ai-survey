@@ -141,6 +141,37 @@ jobs:
             --orchestration-dir "${SOURCE_ROOT}/orchestration/v2" \
             --handler-module scripts.survey_handlers_v2
 
+      - name: Persist terminal Action Spec reached by adopted stage
+        if: inputs.operation == 'adopt-stage'
+        shell: bash
+        env:
+          STATE: ${{ steps.identity.outputs.state }}
+          SOURCE_ROOT: ${{ steps.identity.outputs.source_root }}
+        run: |
+          set -euo pipefail
+          terminal="$(PYTHONPATH=worktree python - "$STATE" <<'PY'
+          import sys
+          from pathlib import Path
+          from scripts import survey_production_v2 as core
+          root=Path('worktree').resolve(); state=core.load_json(root/sys.argv[1])
+          print(state.get('terminal_reason') or '')
+          PY
+          )"
+          case "$terminal" in
+            HUMAN_GATE_REACHED|EXCEPTION_GATE_REQUIRED|COMPLETE)
+              PYTHONPATH=worktree python worktree/scripts/survey_orchestrator_v2.py \
+                --repo-root worktree --config config/survey-production-v2.json \
+                execute-current --state "$STATE" \
+                --orchestration-dir "${SOURCE_ROOT}/orchestration/v2" \
+                --handler-module scripts.survey_handlers_v2
+              ;;
+            '') ;;
+            *)
+              echo "unexpected terminal_reason after stage adoption: $terminal" >&2
+              exit 2
+              ;;
+          esac
+
       - name: Resolve current Architecture Review Action Spec
         if: inputs.operation == 'approve-architecture'
         id: architecture
