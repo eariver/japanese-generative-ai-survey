@@ -5,40 +5,17 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "schema_version",
-    "issue_id",
-    "research_profile",
-    "publication_profile",
-    "lifecycle_state",
-    "profile",
-    "contract",
-    "implementation",
-    "human_gates",
-    "target_gate",
-    "next_action",
-    "terminal_reason",
-    "exception_gate",
-    "machine_checkpoints",
-    "legacy_compatibility",
-    "history"
+    "schema_version", "issue_id", "research_profile", "publication_profile",
+    "lifecycle_state", "profile", "contract", "implementation", "human_gates",
+    "target_gate", "next_action", "terminal_reason", "exception_gate",
+    "machine_checkpoints", "legacy_compatibility", "history"
   ],
   "properties": {
     "schema_version": {"const": "2.0-rc1"},
     "issue_id": {"type": "string", "minLength": 1},
     "research_profile": {"enum": ["WEEKLY", "RETROSPECTIVE_PERIOD", "THEMATIC"]},
     "publication_profile": {"enum": ["WEEKLY_MAGAZINE", "LONGFORM_SPECIAL"]},
-    "lifecycle_state": {"enum": [
-      "ISSUE_INITIALIZED",
-      "DISCOVERY_COLLECTED",
-      "CANDIDATES_NORMALIZED",
-      "EVIDENCE_REVIEWED",
-      "SELECTION_COMPLETE",
-      "ARCHITECTURE_ESTABLISHED",
-      "DRAFT_COMPLETE",
-      "VALIDATED_DRAFT",
-      "RELEASE_CANDIDATE",
-      "FROZEN"
-    ]},
+    "lifecycle_state": {"$ref": "#/$defs/lifecycle"},
     "profile": {
       "type": "object",
       "additionalProperties": false,
@@ -52,23 +29,19 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "pipeline_contract_version",
-        "pipeline_contract_sha256",
-        "quality_contract_version",
-        "quality_contract_sha256",
-        "research_profile_version",
-        "research_profile_sha256",
-        "publication_profile_version",
-        "publication_profile_sha256"
+        "pipeline_contract_version", "pipeline_contract_sha256",
+        "quality_contract_version", "quality_contract_sha256",
+        "research_profile_version", "research_profile_sha256",
+        "publication_profile_version", "publication_profile_sha256"
       ],
       "properties": {
-        "pipeline_contract_version": {"type": "string"},
+        "pipeline_contract_version": {"type": "string", "minLength": 1},
         "pipeline_contract_sha256": {"$ref": "#/$defs/sha256"},
-        "quality_contract_version": {"type": "string"},
+        "quality_contract_version": {"type": "string", "minLength": 1},
         "quality_contract_sha256": {"$ref": "#/$defs/sha256"},
-        "research_profile_version": {"type": "string"},
+        "research_profile_version": {"type": "string", "minLength": 1},
         "research_profile_sha256": {"$ref": "#/$defs/sha256"},
-        "publication_profile_version": {"type": "string"},
+        "publication_profile_version": {"type": "string", "minLength": 1},
         "publication_profile_sha256": {"$ref": "#/$defs/sha256"}
       }
     },
@@ -77,7 +50,7 @@
       "additionalProperties": false,
       "required": ["repository_commit_sha", "orchestrator_version"],
       "properties": {
-        "repository_commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "repository_commit_sha": {"$ref": "#/$defs/gitsha"},
         "orchestrator_version": {"type": "string", "minLength": 1}
       }
     },
@@ -104,7 +77,25 @@
     },
     "machine_checkpoints": {
       "type": "object",
-      "additionalProperties": {"enum": ["pending", "passed", "failed"]}
+      "additionalProperties": false,
+      "required": [
+        "discovery", "screening", "evidence", "materiality", "completeness",
+        "selection", "architecture", "draft", "validation",
+        "publication_preview", "freeze"
+      ],
+      "properties": {
+        "discovery": {"$ref": "#/$defs/checkpointStatus"},
+        "screening": {"$ref": "#/$defs/checkpointStatus"},
+        "evidence": {"$ref": "#/$defs/checkpointStatus"},
+        "materiality": {"$ref": "#/$defs/checkpointStatus"},
+        "completeness": {"$ref": "#/$defs/checkpointStatus"},
+        "selection": {"$ref": "#/$defs/checkpointStatus"},
+        "architecture": {"$ref": "#/$defs/checkpointStatus"},
+        "draft": {"$ref": "#/$defs/checkpointStatus"},
+        "validation": {"$ref": "#/$defs/checkpointStatus"},
+        "publication_preview": {"$ref": "#/$defs/checkpointStatus"},
+        "freeze": {"$ref": "#/$defs/checkpointStatus"}
+      }
     },
     "legacy_compatibility": {
       "type": "object",
@@ -112,27 +103,35 @@
       "required": ["mode", "legacy_state_path", "legacy_state_present", "legacy_state_sha256"],
       "properties": {
         "mode": {"const": "NON_AUTHORITATIVE_READ_ONLY"},
-        "legacy_state_path": {"type": "string"},
+        "legacy_state_path": {"type": "string", "minLength": 1},
         "legacy_state_present": {"type": "boolean"},
         "legacy_state_sha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]}
       }
     },
     "history": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
         "additionalProperties": false,
         "required": ["from", "to", "recorded_at", "repository_commit_sha"],
         "properties": {
-          "from": {"type": ["string", "null"]},
-          "to": {"type": "string"},
+          "from": {"oneOf": [{"$ref": "#/$defs/lifecycle"}, {"type": "null"}]},
+          "to": {"$ref": "#/$defs/lifecycle"},
           "recorded_at": {"type": "string", "format": "date-time"},
-          "repository_commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+          "repository_commit_sha": {"$ref": "#/$defs/gitsha"}
         }
       }
     }
   },
   "$defs": {
-    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "gitsha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "checkpointStatus": {"enum": ["pending", "passed", "failed"]},
+    "lifecycle": {"enum": [
+      "ISSUE_INITIALIZED", "DISCOVERY_COLLECTED", "CANDIDATES_NORMALIZED",
+      "EVIDENCE_REVIEWED", "SELECTION_COMPLETE", "ARCHITECTURE_ESTABLISHED",
+      "DRAFT_COMPLETE", "VALIDATED_DRAFT", "RELEASE_CANDIDATE", "FROZEN"
+    ]}
   }
 }
