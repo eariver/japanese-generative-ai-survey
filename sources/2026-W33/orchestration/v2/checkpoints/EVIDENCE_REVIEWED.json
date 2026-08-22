@@ -1,0 +1,58 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "from_state": "EVIDENCE_REVIEWED",
+  "to_state": "SELECTION_COMPLETE",
+  "checkpoints": [
+    "selection"
+  ],
+  "recorded_at": "2026-08-22T17:43:46Z",
+  "implementation": {
+    "repository_commit_sha": "3c53fb904ae353a38b6052b916586990b7e743cb",
+    "orchestrator_version": "survey-production-core-v2/0.8-agent-first"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "1814863bfe5661491b972eabaeaa6383b4018172fbfe765ce064a7202986abce",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "candidate-matrix",
+      "path": "sources/2026-W33/candidate-matrix-v2.json",
+      "sha256": "65a7a052c55214b94a23cf391cb383938b765067962f2def17a453dd64e90db5"
+    },
+    {
+      "name": "candidate-selection",
+      "path": "sources/2026-W33/candidate-selection-v2.json",
+      "sha256": "f25150ee89c19eefccfb7477a728efd7388cb9b65a5db5d16b24ab20883b6ce6"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_stage_validation_v2.py",
+      "evidence": "Candidate Matrix must exactly derive from accepted r2 Evidence/View/Materiality/Completeness and Selection r2 must assign every Matrix candidate exactly once.",
+      "result": {
+        "path": "sources/2026-W33/orchestration/v2/reviews/selection-r2-adoption-core-stage-contract.json",
+        "sha256": "1d993ff0679da7de8e387bedadd07e6ee5e321ae5ba839c623f8a92ff737a84c"
+      }
+    },
+    {
+      "check_id": "WEEKLY_SELECTION_COVERAGE",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "ChatGPT",
+      "evidence": "W33 r2 intentionally selects 20 candidates: 7 MATERIAL candidates for three feature themes/support, plus 13 CONTEXT candidates for recurring X Community Pulse, Research Paper Watch, and OSS/GitHub Watch. The 11 HOLD candidates remain excluded because their candidate-specific facts are unresolved.",
+      "result": null
+    }
+  ],
+  "summary": "W33 Selection r2 is ready for formal adoption: 20 candidates are selected across feature and recurring weekly coverage sections, while 11 unresolved HOLD candidates remain non-selected."
+}
