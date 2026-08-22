@@ -1,20 +1,9 @@
 #!/usr/bin/env python3
-"""Foundation contracts and state authority for Survey Production Core v2.
+"""Foundation contracts and authoritative state for Survey Production Core v2.
 
-WU-005 deliberately implements only the profile/state foundation. It does not
-perform Source Intake, Screening, Evidence, drafting, or publication. Those
-stages are registered by later work units.
-
-Key invariants enforced here:
-- research scope and temporal policy are separate;
-- Weekly reuses the tested cutoff-to-cutoff calendar implementation;
-- any named completed Weekly issue can be initialized without legacy state;
-- Thematic profiles do not fabricate bounded coverage windows;
-- Profile-defined initial research obligations are first-class;
-- production-state.json is the sole v2 state authority;
-- legacy pipeline-state.json is read-only compatibility evidence;
-- semantic contract identity, executable commit identity, and artifact identity
-  are distinct and checked before state transitions.
+The Production State is the sole lifecycle/gate authority. State transitions are
+fail-closed: exact profile/contract/implementation identity, lifecycle history,
+machine-checkpoint evidence, gate evidence, and controller fields must agree.
 """
 
 from __future__ import annotations
@@ -25,6 +14,7 @@ import json
 import re
 import subprocess
 import sys
+from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -74,6 +64,11 @@ CONTRACT_KEYS = {
     "research_profile_sha256",
     "publication_profile_version",
     "publication_profile_sha256",
+}
+
+GATE_KEYS = {
+    "ARCHITECTURE_REVIEW": "architecture_review",
+    "PUBLICATION_PREVIEW": "publication_preview",
 }
 
 
@@ -144,8 +139,8 @@ def repository_commit_sha(repo_root: Path, override: str | None = None) -> str:
     except (OSError, subprocess.CalledProcessError) as exc:
         raise ValueError("cannot resolve implementation repository commit; pass --implementation-sha") from exc
     value = result.stdout.strip()
-    if len(value) != 40:
-        raise ValueError("git rev-parse HEAD did not return a 40-hex commit")
+    if len(value) != 40 or any(c not in "0123456789abcdef" for c in value):
+        raise ValueError("git rev-parse HEAD did not return a lowercase 40-hex commit")
     return value
 
 
@@ -156,7 +151,6 @@ def contract_identity(repo_root: Path, cfg: dict[str, Any], research_profile: st
         raise ValueError(f"unknown research profile: {research_profile}")
     if publication is None:
         raise ValueError(f"unknown publication profile: {publication_profile}")
-
     pipeline_files = list(cfg["contract_files"]["pipeline"])
     pipeline_files.extend([str(DEFAULT_CONFIG), str(PROFILE_SCHEMA), str(STATE_SCHEMA)])
     return {
@@ -176,8 +170,7 @@ def validate_temporal_policy(research_profile: str, policy: dict[str, Any], cfg:
     mode = policy.get("mode")
     allowed = cfg["research_profiles"].get(research_profile, {}).get("temporal_policies", [])
     if mode not in allowed:
-        errors.append(f"temporal policy {mode!r} is not allowed for research profile {research_profile}")
-        return errors
+        return [f"temporal policy {mode!r} is not allowed for research profile {research_profile}"]
 
     def required(*keys: str) -> None:
         for key in keys:
@@ -194,14 +187,12 @@ def validate_temporal_policy(research_profile: str, policy: dict[str, Any], cfg:
         required("as_of")
         forbidden = {"start", "end", "window_start", "window_end", "cutoff", "timezone"}
     else:
-        errors.append(f"unsupported temporal policy: {mode}")
-        return errors
-
+        return [f"unsupported temporal policy: {mode}"]
     for key in forbidden:
         if key in policy:
             errors.append(f"temporal policy {mode} forbids {key}")
     for key, value in policy.items():
-        if key == "mode" or key == "timezone":
+        if key in {"mode", "timezone"}:
             continue
         try:
             parse_instant(str(value))
@@ -337,18 +328,14 @@ def validate_profile(profile: dict[str, Any], cfg: dict[str, Any]) -> list[str]:
         errors.append("contract fields must exactly match the v2 Profile contract")
     else:
         for key in (
-            "pipeline_contract_version",
-            "quality_contract_version",
-            "research_profile_version",
-            "publication_profile_version",
+            "pipeline_contract_version", "quality_contract_version",
+            "research_profile_version", "publication_profile_version",
         ):
             if not isinstance(contract.get(key), str) or not contract[key]:
                 errors.append(f"contract.{key} must be non-empty")
         for key in (
-            "pipeline_contract_sha256",
-            "quality_contract_sha256",
-            "research_profile_sha256",
-            "publication_profile_sha256",
+            "pipeline_contract_sha256", "quality_contract_sha256",
+            "research_profile_sha256", "publication_profile_sha256",
         ):
             value = contract.get(key)
             if not isinstance(value, str) or len(value) != 64 or any(ch not in "0123456789abcdef" for ch in value):
@@ -370,9 +357,7 @@ def weekly_cutoff_for_issue(issue_id: str, weekly_cfg: dict[str, Any]) -> dateti
         raise ValueError(f"invalid Weekly issue id: {issue_id}") from exc
     zone = ZoneInfo(editorial["cutoff_timezone"])
     cutoff = datetime(
-        day.year,
-        day.month,
-        day.day,
+        day.year, day.month, day.day,
         int(editorial["cutoff_hour"]),
         int(editorial.get("cutoff_minute", 0)),
         tzinfo=zone,
@@ -473,7 +458,6 @@ def thematic_profile(repo_root: Path, cfg: dict[str, Any], spec: dict[str, Any])
     dimensions = list(spec["scope_dimensions"])
     if not dimensions:
         raise ValueError("Thematic scope_dimensions must not be empty")
-    initial_obligations = _thematic_initial_obligations(spec, dimensions)
     profile = {
         "schema_version": cfg["schema_version"],
         "issue_id": issue_id,
@@ -484,7 +468,7 @@ def thematic_profile(repo_root: Path, cfg: dict[str, Any], spec: dict[str, Any])
             "inclusion": list(spec.get("inclusion", [])),
             "exclusion": list(spec.get("exclusion", [])),
             "scope_dimensions": dimensions,
-            "initial_obligations": initial_obligations,
+            "initial_obligations": _thematic_initial_obligations(spec, dimensions),
             "temporal_policy": policy,
         },
         "paths": {
@@ -498,6 +482,210 @@ def thematic_profile(repo_root: Path, cfg: dict[str, Any], spec: dict[str, Any])
     if errors:
         raise ValueError("invalid generated Thematic profile: " + "; ".join(errors))
     return profile
+
+
+def derive_control_fields(state: dict[str, Any], cfg: dict[str, Any]) -> tuple[str | None, str | None]:
+    if state["exception_gate"]["status"] == "required":
+        return "EXCEPTION", "EXCEPTION_GATE_REQUIRED"
+    lifecycle = state["lifecycle_state"]
+    gate = cfg["orchestration"]["gate_at_state"].get(lifecycle)
+    if gate:
+        key = GATE_KEYS[gate]
+        status = state["human_gates"][key]
+        if status == "pending":
+            return gate, "HUMAN_GATE_REACHED"
+        if status == "rejected":
+            return "EXCEPTION", "EXCEPTION_GATE_REQUIRED"
+    if lifecycle == "FROZEN":
+        return None, "COMPLETE"
+    stage = cfg["orchestration"]["stage_plan"].get(lifecycle)
+    if not isinstance(stage, dict):
+        raise ValueError(f"no orchestration stage registered for lifecycle state {lifecycle}")
+    return stage["handler"], None
+
+
+def refresh_state_control(state: dict[str, Any], cfg: dict[str, Any]) -> dict[str, Any]:
+    updated = deepcopy(state)
+    action, terminal = derive_control_fields(updated, cfg)
+    updated["next_action"] = action
+    updated["terminal_reason"] = terminal
+    return updated
+
+
+def _checkpoint_attestation_path(repo_root: Path, cfg: dict[str, Any], profile: dict[str, Any], checkpoint: str) -> Path:
+    source_root = repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
+    return source_root / cfg["state_authority"]["checkpoint_attestation_dir"] / f"{checkpoint}.json"
+
+
+def _validate_artifact_ref(repo_root: Path, ref: Any, label: str) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(ref, dict) or set(ref) != {"name", "path", "sha256", "required"}:
+        return [f"{label} artifact ref fields invalid"]
+    if not isinstance(ref.get("name"), str) or not ref["name"]:
+        errors.append(f"{label} artifact ref name required")
+    if not isinstance(ref.get("required"), bool):
+        errors.append(f"{label} artifact ref required flag invalid")
+    path_value = ref.get("path")
+    sha_value = ref.get("sha256")
+    if path_value is None:
+        if sha_value is not None:
+            errors.append(f"{label} pathless artifact ref cannot claim SHA")
+    else:
+        try:
+            path = repo_local_path(repo_root, path_value, label)
+        except ValueError as exc:
+            errors.append(str(exc))
+            return errors
+        if not path.is_file():
+            errors.append(f"{label} artifact missing: {path_value}")
+        elif sha_value != sha256_file(path):
+            errors.append(f"{label} artifact SHA drift: {path_value}")
+    return errors
+
+
+def _validate_checkpoint_attestation(repo_root: Path, cfg: dict[str, Any], profile: dict[str, Any], checkpoint: str, issue_id: str) -> list[str]:
+    path = _checkpoint_attestation_path(repo_root, cfg, profile, checkpoint)
+    if not path.is_file():
+        return [f"passed checkpoint lacks validation attestation: {checkpoint}"]
+    value = load_json(path)
+    required = {
+        "schema_version", "issue_id", "checkpoint", "action_id",
+        "action_spec_sha256", "validator", "validator_version", "validated_at",
+        "required_inputs", "outputs", "status",
+    }
+    errors: list[str] = []
+    if set(value) != required:
+        return [f"checkpoint attestation fields invalid: {checkpoint}"]
+    if value.get("schema_version") != "2.0-rc1" or value.get("issue_id") != issue_id or value.get("checkpoint") != checkpoint or value.get("status") != "PASSED":
+        errors.append(f"checkpoint attestation identity/status invalid: {checkpoint}")
+    for key in ("action_id", "validator", "validator_version"):
+        if not isinstance(value.get(key), str) or not value[key].strip():
+            errors.append(f"checkpoint attestation {key} required: {checkpoint}")
+    sha_value = value.get("action_spec_sha256")
+    if not isinstance(sha_value, str) or len(sha_value) != 64 or any(c not in "0123456789abcdef" for c in sha_value):
+        errors.append(f"checkpoint attestation action_spec_sha256 invalid: {checkpoint}")
+    try:
+        parse_instant(str(value.get("validated_at", "")))
+    except ValueError:
+        errors.append(f"checkpoint attestation validated_at invalid: {checkpoint}")
+    for label, rows in (("input", value.get("required_inputs")), ("output", value.get("outputs"))):
+        if not isinstance(rows, list):
+            errors.append(f"checkpoint attestation {label}s must be array: {checkpoint}")
+            continue
+        for index, row in enumerate(rows):
+            errors.extend(_validate_artifact_ref(repo_root, row, f"{checkpoint} attestation {label}[{index}]"))
+    return errors
+
+
+def _completed_stage_checkpoints(cfg: dict[str, Any], lifecycle: str) -> set[str]:
+    current_index = LIFECYCLE.index(lifecycle)
+    completed: set[str] = set()
+    for state_name in LIFECYCLE[:current_index]:
+        stage = cfg["orchestration"]["stage_plan"].get(state_name)
+        if isinstance(stage, dict):
+            completed.update(stage.get("checkpoints", []))
+    return completed
+
+
+def validate_state_semantics(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    if state.get("lifecycle_state") not in LIFECYCLE:
+        return ["Production State lifecycle_state invalid"]
+    checkpoint_value = state.get("machine_checkpoints")
+    if not isinstance(checkpoint_value, dict) or set(checkpoint_value) != set(CHECKPOINTS):
+        errors.append("Production State machine_checkpoints must exactly match canonical checkpoint set")
+        checkpoints = checkpoint_value if isinstance(checkpoint_value, dict) else {}
+    else:
+        checkpoints = checkpoint_value
+    expected_passed = _completed_stage_checkpoints(cfg, state["lifecycle_state"])
+    if state.get("human_gates", {}).get("publication_preview") == "approved":
+        expected_passed.add("publication_preview")
+    for name in CHECKPOINTS:
+        status = checkpoints.get(name)
+        expected = "passed" if name in expected_passed else "pending"
+        if status != expected:
+            errors.append(f"Production State checkpoint {name}={status!r}; expected {expected!r} for lifecycle {state['lifecycle_state']}")
+    try:
+        profile_path = repo_local_path(repo_root, state["profile"]["path"], "state.profile.path")
+        profile = load_json(profile_path)
+    except (KeyError, OSError, ValueError) as exc:
+        errors.append(f"Production State profile unavailable for semantic validation: {exc}")
+        profile = None
+    if profile is not None:
+        for name in expected_passed:
+            if name == "publication_preview":
+                continue
+            errors.extend(_validate_checkpoint_attestation(repo_root, cfg, profile, name, state.get("issue_id", "")))
+    current_index = LIFECYCLE.index(state["lifecycle_state"])
+    history = state.get("history")
+    if not isinstance(history, list) or len(history) != current_index + 1:
+        errors.append("Production State history length must exactly match lifecycle position")
+    else:
+        previous_time: datetime | None = None
+        for index, row in enumerate(history):
+            expected_to = LIFECYCLE[index]
+            expected_from = None if index == 0 else LIFECYCLE[index - 1]
+            if not isinstance(row, dict) or row.get("from") != expected_from or row.get("to") != expected_to:
+                errors.append(f"Production State history[{index}] does not match canonical lifecycle path")
+                continue
+            if row.get("repository_commit_sha") != state.get("implementation", {}).get("repository_commit_sha"):
+                errors.append(f"Production State history[{index}] implementation SHA divergence")
+            try:
+                instant = parse_instant(str(row.get("recorded_at", "")))
+                if previous_time is not None and instant < previous_time:
+                    errors.append("Production State history timestamps must be monotonic")
+                previous_time = instant
+            except ValueError:
+                errors.append(f"Production State history[{index}].recorded_at invalid")
+    arch_index = LIFECYCLE.index("ARCHITECTURE_ESTABLISHED")
+    arch_status = state.get("human_gates", {}).get("architecture_review")
+    if current_index < arch_index and arch_status != "pending":
+        errors.append("Architecture Review cannot be resolved before ARCHITECTURE_ESTABLISHED")
+    if current_index > arch_index and arch_status != "approved":
+        errors.append("post-Architecture lifecycle requires approved Architecture Review")
+    if arch_status == "approved" and profile is not None:
+        source_root = repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
+        approval = source_root / cfg["state_authority"]["architecture_approval_path"]
+        architecture = source_root / "architecture-v2.json"
+        review = source_root / "architecture-review-summary-v2.json"
+        if not approval.is_file() or not architecture.is_file() or not review.is_file():
+            errors.append("approved Architecture Review lacks canonical approval/review artifacts")
+        else:
+            try:
+                record = load_json(approval)
+            except (OSError, ValueError, json.JSONDecodeError):
+                errors.append("Architecture Approval Record unreadable")
+            else:
+                if (
+                    record.get("decision") != "APPROVED"
+                    or record.get("issue_id") != state.get("issue_id")
+                    or record.get("architecture_sha256") != sha256_file(architecture)
+                    or record.get("architecture_review_summary_sha256") != sha256_file(review)
+                ):
+                    errors.append("Architecture Approval Record does not bind current canonical review bytes")
+    pub_index = LIFECYCLE.index("RELEASE_CANDIDATE")
+    pub_status = state.get("human_gates", {}).get("publication_preview")
+    if current_index < pub_index and pub_status != "pending":
+        errors.append("Publication Preview cannot be resolved before RELEASE_CANDIDATE")
+    if current_index > pub_index and pub_status != "approved":
+        errors.append("FROZEN lifecycle requires approved Publication Preview")
+    try:
+        expected_action, expected_terminal = derive_control_fields(state, cfg)
+    except (KeyError, ValueError) as exc:
+        errors.append(f"Production State controller fields cannot be derived: {exc}")
+    else:
+        if state.get("next_action") != expected_action:
+            errors.append(f"Production State next_action drift: {state.get('next_action')!r} != {expected_action!r}")
+        if state.get("terminal_reason") != expected_terminal:
+            errors.append(f"Production State terminal_reason drift: {state.get('terminal_reason')!r} != {expected_terminal!r}")
+    exception = state.get("exception_gate")
+    if not isinstance(exception, dict) or set(exception) != {"status", "reason"}:
+        errors.append("Production State exception_gate fields invalid")
+    elif exception.get("status") == "required" and not isinstance(exception.get("reason"), str):
+        errors.append("required Exception Gate needs reason")
+    elif exception.get("status") != "required" and exception.get("reason") is not None:
+        errors.append("inactive/resolved Exception Gate reason must be null")
+    return errors
 
 
 def initial_state(
@@ -515,7 +703,6 @@ def initial_state(
     legacy_path = source_root / cfg["state_authority"]["legacy_filename"]
     legacy_present = legacy_path.is_file()
     legacy_sha = sha256_file(legacy_path) if legacy_present else None
-    profile_sha = sha256_file(profile_path)
     state = {
         "schema_version": cfg["schema_version"],
         "issue_id": profile["issue_id"],
@@ -524,7 +711,7 @@ def initial_state(
         "lifecycle_state": "ISSUE_INITIALIZED",
         "profile": {
             "path": str(profile_path.relative_to(repo_root.resolve())),
-            "sha256": profile_sha,
+            "sha256": sha256_file(profile_path),
         },
         "contract": dict(profile["contract"]),
         "implementation": {
@@ -536,7 +723,7 @@ def initial_state(
             "publication_preview": "pending",
         },
         "target_gate": target_gate,
-        "next_action": "DISCOVERY",
+        "next_action": None,
         "terminal_reason": None,
         "exception_gate": {"status": "inactive", "reason": None},
         "machine_checkpoints": {name: "pending" for name in CHECKPOINTS},
@@ -555,6 +742,10 @@ def initial_state(
             }
         ],
     }
+    state = refresh_state_control(state, cfg)
+    errors = validate_state_semantics(repo_root, cfg, state)
+    if errors:
+        raise ValueError("generated Production State invalid: " + "; ".join(errors))
     return state
 
 
@@ -567,8 +758,7 @@ def verify_state_basis(
     profile_path = repo_local_path(repo_root, state["profile"]["path"], "state.profile.path")
     if not profile_path.is_file():
         raise ValueError("production profile referenced by state does not exist")
-    actual_profile_sha = sha256_file(profile_path)
-    if actual_profile_sha != state["profile"]["sha256"]:
+    if sha256_file(profile_path) != state["profile"]["sha256"]:
         raise ValueError("production profile bytes changed after state initialization")
     profile = load_json(profile_path)
     profile_errors = validate_profile(profile, cfg)
@@ -576,9 +766,10 @@ def verify_state_basis(
         raise ValueError("production profile no longer satisfies v2 contract: " + "; ".join(profile_errors))
     if profile.get("issue_id") != state.get("issue_id"):
         raise ValueError("production profile/state issue_id divergence")
+    if profile.get("research_profile") != state.get("research_profile") or profile.get("publication_profile") != state.get("publication_profile"):
+        raise ValueError("production profile/state Profile identity divergence")
     if profile.get("contract") != state.get("contract"):
         raise ValueError("production profile/state contract divergence")
-
     expected_contract = contract_identity(repo_root, cfg, state["research_profile"], state["publication_profile"])
     if expected_contract != state["contract"]:
         raise ValueError("current semantic contract files differ from state contract identity")
@@ -586,13 +777,15 @@ def verify_state_basis(
         raise ValueError("implementation commit differs from authoritative state; explicit rebase/reinitialization is required")
     if state["implementation"]["orchestrator_version"] != cfg["orchestrator_version"]:
         raise ValueError("orchestrator version differs from authoritative state")
-
     legacy = state["legacy_compatibility"]
     legacy_path = repo_local_path(repo_root, legacy["legacy_state_path"], "legacy_state_path")
     actual_present = legacy_path.is_file()
     actual_sha = sha256_file(legacy_path) if actual_present else None
     if actual_present != legacy["legacy_state_present"] or actual_sha != legacy["legacy_state_sha256"]:
         raise ValueError("legacy compatibility artifact changed after v2 initialization; it cannot silently affect v2 state")
+    semantic_errors = validate_state_semantics(repo_root, cfg, state)
+    if semantic_errors:
+        raise ValueError("Production State semantic inconsistency: " + "; ".join(semantic_errors))
 
 
 def transition_state(
@@ -602,6 +795,7 @@ def transition_state(
     to_state: str,
     implementation_sha: str,
     recorded_at: datetime,
+    checkpoint_updates: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     verify_state_basis(repo_root, cfg, state, implementation_sha)
     if to_state not in LIFECYCLE:
@@ -611,8 +805,14 @@ def transition_state(
     target_index = LIFECYCLE.index(to_state)
     if target_index != current_index + 1:
         raise ValueError(f"non-monotonic transition refused: {current} -> {to_state}; exactly one forward step is required")
-
-    updated = json.loads(json.dumps(state))
+    stage = cfg["orchestration"]["stage_plan"].get(current, {})
+    required = set(stage.get("checkpoints", []))
+    updates = checkpoint_updates or {}
+    if set(updates) != required or any(value != "passed" for value in updates.values()):
+        raise ValueError(f"transition {current} -> {to_state} requires exact passed checkpoint updates: {sorted(required)}")
+    updated = deepcopy(state)
+    for checkpoint in required:
+        updated["machine_checkpoints"][checkpoint] = "passed"
     updated["lifecycle_state"] = to_state
     updated["history"].append(
         {
@@ -622,6 +822,10 @@ def transition_state(
             "repository_commit_sha": implementation_sha,
         }
     )
+    updated = refresh_state_control(updated, cfg)
+    errors = validate_state_semantics(repo_root, cfg, updated)
+    if errors:
+        raise ValueError("refusing inconsistent Production State transition: " + "; ".join(errors))
     return updated
 
 
@@ -679,6 +883,21 @@ def cmd_validate_profile(args: argparse.Namespace, repo_root: Path, cfg: dict[st
     return 0 if not errors else 1
 
 
+def cmd_validate_state(args: argparse.Namespace, repo_root: Path, cfg: dict[str, Any]) -> int:
+    path = Path(args.state)
+    if not path.is_absolute():
+        path = repo_root / path
+    state = load_json(path)
+    impl = repository_commit_sha(repo_root, args.implementation_sha or state.get("implementation", {}).get("repository_commit_sha"))
+    try:
+        verify_state_basis(repo_root, cfg, state, impl)
+        errors: list[str] = []
+    except ValueError as exc:
+        errors = [str(exc)]
+    print(json.dumps({"passed": not errors, "errors": errors}, ensure_ascii=False, indent=2))
+    return 0 if not errors else 1
+
+
 def cmd_transition(args: argparse.Namespace, repo_root: Path, cfg: dict[str, Any]) -> int:
     state_path = Path(args.state)
     if not state_path.is_absolute():
@@ -686,7 +905,8 @@ def cmd_transition(args: argparse.Namespace, repo_root: Path, cfg: dict[str, Any
     state = load_json(state_path)
     impl = repository_commit_sha(repo_root, args.implementation_sha)
     now = parse_instant(args.recorded_at) if args.recorded_at else datetime.now(timezone.utc)
-    updated = transition_state(repo_root, cfg, state, args.to_state, impl, now)
+    updates = {name: "passed" for name in args.checkpoint}
+    updated = transition_state(repo_root, cfg, state, args.to_state, impl, now, updates)
     write_json(state_path, updated)
     print(state_path)
     return 0
@@ -698,32 +918,36 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--config", default=str(DEFAULT_CONFIG))
     sub = parser.add_subparsers(dest="command", required=True)
 
-    weekly = sub.add_parser("init-weekly", help="initialize a v2 Weekly profile/state")
-    weekly.add_argument("--now", help="offset-aware ISO-8601 instant")
-    weekly.add_argument("--issue-id", help="optional named completed Weekly issue (YYYY-Www); defaults to latest completed cutoff")
+    weekly = sub.add_parser("init-weekly")
+    weekly.add_argument("--now")
+    weekly.add_argument("--issue-id")
     weekly.add_argument("--target-gate", choices=["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"], default="ARCHITECTURE_REVIEW")
     weekly.add_argument("--implementation-sha")
 
-    thematic = sub.add_parser("init-thematic", help="initialize a v2 Thematic profile/state from a spec JSON")
+    thematic = sub.add_parser("init-thematic")
     thematic.add_argument("--spec", required=True)
-    thematic.add_argument("--recorded-at", help="offset-aware ISO-8601 state-record time")
+    thematic.add_argument("--recorded-at")
     thematic.add_argument("--target-gate", choices=["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"], default="ARCHITECTURE_REVIEW")
     thematic.add_argument("--implementation-sha")
 
-    validate_p = sub.add_parser("validate-profile", help="validate v2 profile semantics")
+    validate_p = sub.add_parser("validate-profile")
     validate_p.add_argument("--profile", required=True)
 
-    transition = sub.add_parser("transition", help="perform one monotonic v2 lifecycle transition")
+    validate_s = sub.add_parser("validate-state")
+    validate_s.add_argument("--state", required=True)
+    validate_s.add_argument("--implementation-sha")
+
+    transition = sub.add_parser("transition")
     transition.add_argument("--state", required=True)
     transition.add_argument("--to-state", choices=LIFECYCLE, required=True)
-    transition.add_argument("--recorded-at", help="offset-aware ISO-8601 transition time")
+    transition.add_argument("--checkpoint", action="append", default=[])
+    transition.add_argument("--recorded-at")
     transition.add_argument("--implementation-sha")
     return parser
 
 
 def main() -> int:
-    parser = build_parser()
-    args = parser.parse_args()
+    args = build_parser().parse_args()
     repo_root = Path(args.repo_root).resolve()
     config_path = Path(args.config)
     if not config_path.is_absolute():
@@ -736,12 +960,13 @@ def main() -> int:
             return cmd_init_thematic(args, repo_root, cfg)
         if args.command == "validate-profile":
             return cmd_validate_profile(args, repo_root, cfg)
+        if args.command == "validate-state":
+            return cmd_validate_state(args, repo_root, cfg)
         if args.command == "transition":
             return cmd_transition(args, repo_root, cfg)
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         print(str(exc), file=sys.stderr)
         return 2
-    parser.error("unknown command")
     return 2
 
 
