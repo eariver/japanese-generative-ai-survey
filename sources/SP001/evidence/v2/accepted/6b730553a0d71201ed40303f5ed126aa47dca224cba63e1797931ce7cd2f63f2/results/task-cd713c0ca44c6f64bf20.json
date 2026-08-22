@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "evidence_task_id": "evidence:SP001:dcc22d5fb97ef241",
+  "basis": {
+    "task_sha256": "41ecdb8a74a4e5c914604f5bb6bc40cb2f0f8effdcefe069c9dfeecfd36df0de",
+    "screening_acceptance_sha256": "31c1b9a9d6038752d9248feae2f569aad1efa8342f6b7eb3422f76cb861b61d6",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "glm-130b",
+      "canonical_name": "GLM-130B",
+      "entity_type": "MODEL",
+      "organization": "Tsinghua University / Zhipu AI",
+      "canonical_url": "https://arxiv.org/abs/2210.02414"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "glm-130b",
+    "artifact_type": "MODEL",
+    "canonical_name": "GLM-130B",
+    "canonical_url": "https://arxiv.org/abs/2210.02414"
+  },
+  "temporal": {
+    "observed_at": "2026-08-22T16:31:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-10-05",
+        "subject_id": "glm-130b",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2210.02414",
+      "source_class": "PRIMARY_PAPER",
+      "title": "GLM-130B",
+      "published_at": "2022-10-05",
+      "accessed_at": "2026-08-22T16:31:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The GLM-130B paper documents a 130B bilingual English/Chinese model and frames the project as opening a 100B-scale model.",
+      "subject_id": "glm-130b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Historical lineage and open-model milestone."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The paper reports training-stability engineering and INT4 deployment intended to make the model deployable on comparatively accessible multi-GPU systems.",
+      "subject_id": "glm-130b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Deployment claim remains paper-bound."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Do not project later ChatGLM or Z.ai architecture choices backward onto GLM-130B without version-specific evidence.",
+      "subject_id": "glm-130b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Verify GLM-130B architecture, release context, and accessible-deployment claims from the primary paper.",
+        "status": "VERIFIED",
+        "finding": "The primary paper directly establishes the 130B bilingual model, its release context, training-stability work, and paper-reported INT4 deployment path.",
+        "subject_ids": [
+          "glm-130b"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

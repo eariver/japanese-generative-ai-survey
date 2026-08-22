@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "evidence_task_id": "evidence:SP001:1785bf3f5c6f6444",
+  "basis": {
+    "task_sha256": "86855639d1a296df416237b8b24856782ac1d4cb6592d9350324d4d309520cbe",
+    "screening_acceptance_sha256": "31c1b9a9d6038752d9248feae2f569aad1efa8342f6b7eb3422f76cb861b61d6",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "chatglm-6b",
+      "canonical_name": "ChatGLM-6B",
+      "entity_type": "MODEL",
+      "organization": "THUDM / Zhipu AI",
+      "canonical_url": "https://github.com/zai-org/ChatGLM-6B/blob/main/README_en.md"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "chatglm-6b",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "ChatGLM-6B",
+    "canonical_url": "https://github.com/zai-org/ChatGLM-6B/blob/main/README_en.md"
+  },
+  "temporal": {
+    "observed_at": "2026-08-22T16:31:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-03",
+        "subject_id": "chatglm-6b",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/zai-org/ChatGLM-6B/blob/main/README_en.md",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "ChatGLM-6B",
+      "published_at": "2023-03",
+      "accessed_at": "2026-08-22T16:31:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The project documents ChatGLM-6B as a 6.2B bilingual dialogue model with an INT4 consumer-GPU deployment path reporting about 6GB of memory use.",
+      "subject_id": "chatglm-6b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Local-deployment evidence."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The historical model-use regime separated academic openness from an additional commercial-use permission path, while repository code licensing is a distinct subject.",
+      "subject_id": "chatglm-6b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "License-boundary evidence."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Model-weight/commercial permissions and repository-code licensing must not be collapsed into one license label.",
+      "subject_id": "chatglm-6b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Verify ChatGLM-6B local-deployment requirements and distinguish weight/commercial permissions from repository-code licensing.",
+        "status": "VERIFIED",
+        "finding": "The repository documents the INT4 local-deployment path and a model-use regime with additional commercial permission, distinct from repository code licensing.",
+        "subject_ids": [
+          "chatglm-6b"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
