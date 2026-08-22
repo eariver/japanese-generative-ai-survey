@@ -2,7 +2,7 @@
   "schema_version": "2.0-rc1",
   "pipeline_contract_version": "2.0-rc1",
   "quality_contract_version": "2.0-rc1",
-  "orchestrator_version": "survey-production-core-v2/0.4",
+  "orchestrator_version": "survey-production-core-v2/0.5",
   "contract_files": {
     "pipeline": [
       "docs/survey-production-core-v2-authority.md",
@@ -34,6 +34,7 @@
       "config/prompts/profile-synthesis-v2.md",
       "schemas/action-spec-v2.schema.json",
       "schemas/action-result-v2.schema.json",
+      "schemas/stage-validation-attestation-v2.schema.json",
       "schemas/review-finding-v2.schema.json",
       "schemas/repair-set-v2.schema.json"
     ],
@@ -90,7 +91,10 @@
     "FROZEN"
   ],
   "orchestration": {
-    "retry_policy": {"retryable": true, "max_attempts": 3},
+    "retry_policies": {
+      "LOCAL_SCRIPT": {"retryable": true, "max_attempts": 3},
+      "WORKFLOW_DISPATCH": {"retryable": false, "max_attempts": 1}
+    },
     "gate_at_state": {
       "ARCHITECTURE_ESTABLISHED": "ARCHITECTURE_REVIEW",
       "RELEASE_CANDIDATE": "PUBLICATION_PREVIEW"
@@ -103,13 +107,43 @@
       "PUBLICATION_PREVIEW": []
     },
     "stage_plan": {
-      "ISSUE_INITIALIZED": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:discovery", "next_state": "DISCOVERY_COLLECTED", "checkpoints": ["discovery"]},
-      "DISCOVERY_COLLECTED": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:screening", "next_state": "CANDIDATES_NORMALIZED", "checkpoints": ["screening"]},
-      "CANDIDATES_NORMALIZED": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:evidence-materiality-completeness", "next_state": "EVIDENCE_REVIEWED", "checkpoints": ["evidence", "materiality", "completeness"]},
-      "EVIDENCE_REVIEWED": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:selection", "next_state": "SELECTION_COMPLETE", "checkpoints": ["selection"]},
+      "ISSUE_INITIALIZED": {
+        "action_kind": "LOCAL_SCRIPT",
+        "handler": "stage:discovery",
+        "validator": "validate:discovery",
+        "validator_version": "2.0-rc1",
+        "next_state": "DISCOVERY_COLLECTED",
+        "checkpoints": ["discovery"]
+      },
+      "DISCOVERY_COLLECTED": {
+        "action_kind": "LOCAL_SCRIPT",
+        "handler": "stage:screening",
+        "validator": "validate:screening",
+        "validator_version": "2.0-rc1",
+        "next_state": "CANDIDATES_NORMALIZED",
+        "checkpoints": ["screening"]
+      },
+      "CANDIDATES_NORMALIZED": {
+        "action_kind": "LOCAL_SCRIPT",
+        "handler": "stage:evidence-materiality-completeness",
+        "validator": "validate:evidence-materiality-completeness",
+        "validator_version": "2.0-rc1",
+        "next_state": "EVIDENCE_REVIEWED",
+        "checkpoints": ["evidence", "materiality", "completeness"]
+      },
+      "EVIDENCE_REVIEWED": {
+        "action_kind": "LOCAL_SCRIPT",
+        "handler": "stage:selection",
+        "validator": "validate:selection",
+        "validator_version": "2.0-rc1",
+        "next_state": "SELECTION_COMPLETE",
+        "checkpoints": ["selection"]
+      },
       "SELECTION_COMPLETE": {
         "action_kind": "LOCAL_SCRIPT",
         "handler": "stage:architecture",
+        "validator": "validate:architecture",
+        "validator_version": "2.0-rc1",
         "next_state": "ARCHITECTURE_ESTABLISHED",
         "checkpoints": ["architecture"],
         "artifacts": [
@@ -117,16 +151,46 @@
           {"name": "architecture-review-summary", "path": "{source_root}/architecture-review-summary-v2.json"}
         ]
       },
-      "ARCHITECTURE_ESTABLISHED": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:drafting-synthesis", "next_state": "DRAFT_COMPLETE", "checkpoints": ["draft"]},
-      "DRAFT_COMPLETE": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:semantic-publication-validation", "next_state": "VALIDATED_DRAFT", "checkpoints": ["validation"]},
-      "VALIDATED_DRAFT": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:publication-candidate", "next_state": "RELEASE_CANDIDATE", "checkpoints": []},
-      "RELEASE_CANDIDATE": {"action_kind": "LOCAL_SCRIPT", "handler": "stage:freeze-release", "next_state": "FROZEN", "checkpoints": ["freeze"]}
+      "ARCHITECTURE_ESTABLISHED": {
+        "action_kind": "LOCAL_SCRIPT",
+        "handler": "stage:drafting-synthesis",
+        "validator": "validate:drafting-synthesis",
+        "validator_version": "2.0-rc1",
+        "next_state": "DRAFT_COMPLETE",
+        "checkpoints": ["draft"]
+      },
+      "DRAFT_COMPLETE": {
+        "action_kind": "LOCAL_SCRIPT",
+        "handler": "stage:semantic-publication-validation",
+        "validator": "validate:semantic-publication",
+        "validator_version": "2.0-rc1",
+        "next_state": "VALIDATED_DRAFT",
+        "checkpoints": ["validation"]
+      },
+      "VALIDATED_DRAFT": {
+        "action_kind": "LOCAL_SCRIPT",
+        "handler": "stage:publication-candidate",
+        "validator": "validate:publication-candidate",
+        "validator_version": "2.0-rc1",
+        "next_state": "RELEASE_CANDIDATE",
+        "checkpoints": []
+      },
+      "RELEASE_CANDIDATE": {
+        "action_kind": "LOCAL_SCRIPT",
+        "handler": "stage:freeze-release",
+        "validator": "validate:freeze-release",
+        "validator_version": "2.0-rc1",
+        "next_state": "FROZEN",
+        "checkpoints": ["freeze"]
+      }
     }
   },
   "state_authority": {
     "authoritative_filename": "production-state.json",
     "profile_filename": "production-profile.json",
     "legacy_filename": "pipeline-state.json",
-    "legacy_mode": "NON_AUTHORITATIVE_READ_ONLY"
+    "legacy_mode": "NON_AUTHORITATIVE_READ_ONLY",
+    "checkpoint_attestation_dir": "orchestration/v2/attestations",
+    "architecture_approval_path": "gates/architecture-approval.json"
   }
 }
