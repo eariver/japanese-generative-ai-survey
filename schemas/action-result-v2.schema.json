@@ -4,7 +4,7 @@
   "title": "Survey Production Core v2 Action Result",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "action_id", "issue_id", "action_spec_sha256", "status", "handler", "implementation_commit_sha", "observed_repository_head_sha", "started_at", "completed_at", "state_before_sha256", "state_after_sha256", "outputs", "error"],
+  "required": ["schema_version", "action_id", "issue_id", "action_spec_sha256", "status", "handler", "implementation_commit_sha", "observed_repository_head_sha", "attempts", "started_at", "completed_at", "state_before_sha256", "state_after_sha256", "outputs", "error"],
   "properties": {
     "schema_version": {"const": "2.0-rc1"},
     "action_id": {"type": "string", "minLength": 1},
@@ -14,6 +14,7 @@
     "handler": {"type": ["string", "null"]},
     "implementation_commit_sha": {"$ref": "#/$defs/gitsha"},
     "observed_repository_head_sha": {"$ref": "#/$defs/gitsha"},
+    "attempts": {"type": "integer", "minimum": 1},
     "started_at": {"type": "string", "format": "date-time"},
     "completed_at": {"type": "string", "format": "date-time"},
     "state_before_sha256": {"$ref": "#/$defs/sha256"},
