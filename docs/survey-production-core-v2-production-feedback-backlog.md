@@ -91,6 +91,70 @@ Do **not** modify the currently running W33 or SP001 flows solely to introduce t
 
 After W33 and SP001 reach their intended review boundary, evaluate this item together with any additional production findings and implement the resulting improvement set as a batch.
 
+## Feedback item PFB-002 — Human owns Grok invocation; do not search for a Grok connector
+
+Status: `ACCEPTED DIRECTION / NOT YET IMPLEMENTED`
+
+### Observation
+
+During real W33/SP001 operation, ChatGPT attempted to look for a Grok connector/integration even though the intended operating model is simpler: the Human will manually give Grok the prepared instruction/prompt.
+
+Connector discovery adds unnecessary work and can make Source Intake look like an integration/debugging task instead of a survey-production task.
+
+### Improvement direction
+
+Treat manual Grok invocation as the normal and deliberate operating boundary unless the Human explicitly changes that policy in the future.
+
+The responsibility split should be:
+
+```text
+ChatGPT
+  -> decides the Grok/X research task
+  -> prepares exact grok-instruction.md and grok-prompt.md
+  -> provisions the Google Drive run folder
+  -> tells the Human exactly which run folder/files are ready
+
+Human
+  -> manually gives those instructions to Grok
+  -> causes Grok to write the result into the instructed Drive run folder
+
+ChatGPT
+  -> detects/reads the returned Drive result
+  -> imports exact bytes into repository Raw
+  -> evaluates/dispositions the result
+  -> resumes production automatically
+```
+
+ChatGPT should **not** search for, install, discover, or attempt to configure a Grok connector merely because a Grok/X run is required. The absence of such a connector is not an error, missing dependency, Exception Gate, or reason to debug the production environment.
+
+If a future Human instruction explicitly introduces an automated Grok integration, that may be reviewed as a separate improvement. Until then, manual Human transport is the expected architecture.
+
+### Relationship to stop discipline
+
+The only expected interruption is the practical Human transport step after the exact Grok input package is ready.
+
+ChatGPT should present that package and Drive location directly, without first spending time looking for automation/integration options and without asking for unrelated confirmation. Once the result appears in Drive, ChatGPT resumes toward the requested Human Gate without an additional routine approval step.
+
+### Relationship to PFB-001
+
+PFB-001 and PFB-002 should be implemented together where practical:
+
+```text
+one Drive run folder contains Grok input + output
++
+Human manually invokes Grok from that folder
++
+ChatGPT owns everything before and after that manual transport boundary
+```
+
+This gives the manual Grok step a clear, stable operator interface while preserving repository-side provenance.
+
+### Deferred implementation
+
+Do **not** alter the currently running W33/SP001 sessions solely to enforce this new policy. Their execution logs should preserve whether connector discovery occurred under the merged Core v2 behavior.
+
+When W33 and SP001 are reviewed together, use those records to determine the exact documentation/bootstrap/tool changes needed to make manual Human Grok transport the unambiguous default.
+
 ## Additional feedback items
 
 Add later W33/SP001 findings below this section before starting the next maintenance pass. Each item should record:
