@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Work Log
 
-Status: `WU-012 POST-COMPLETION RE-AUDIT REPAIR IMPLEMENTED / FINAL CI + FIXED-HEAD AUDIT PENDING`  
+Status: `WU-012 REPAIRS IMPLEMENTED / PRE-AUDIT CANDIDATE / FINAL RESULT EXTERNAL`  
 Established: 2026-08-22 JST  
 Last updated: 2026-08-22 JST  
 Working branch: `refactor/survey-production-core-v2`  
@@ -11,29 +11,32 @@ Final-audit rule: `docs/survey-production-core-v2-final-audit-rule.md`
 
 ## 1. Ledger contract
 
-This file is the persistent work-status authority for Survey Production Core v2. Repository reality outranks this summary. Frozen historical releases remain immutable.
+This file is the persistent **pre-audit implementation-status snapshot** for Survey Production Core v2. Repository reality outranks this summary. Frozen historical releases remain immutable.
 
-The former WU-012 pre-approval closure and its final-PASS claim are historical only. The Owner required the five acceptance points to be audited **after all candidate changes are complete**. Re-auditing former synchronized head `2f3c9b10c031cf0d8e5cc114fb93e481e90fffac` from zero found AUD-039 through AUD-044, so Human full-candidate review was left and repair work resumed.
+The candidate tree intentionally stops at a stable PRE-AUDIT state. Exact-head cross-regression and the five-point final-audit verdict are recorded outside the audited candidate tree in PR/Human-review metadata. Therefore this file does not need a post-audit PASS edit that would change the audited SHA.
 
-## 2. Current snapshot
+Historical audit attempts remain evidence only:
+
+- former synchronized head `2f3c9b10c031cf0d8e5cc114fb93e481e90fffac` was invalidated by AUD-039 through AUD-044;
+- fixed-head attempt `68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d` was invalidated by AUD-045 because the higher-precedence Authority still described already-implemented repairs as in progress.
+
+## 2. Stable pre-audit snapshot
 
 - Repository: `eariver/japanese-generative-ai-survey`
 - Improvement branch: `refactor/survey-production-core-v2`
 - Production `main`: `2086b396d2f30103d9292b722891be436cd28db5` at the last verified production check.
-- PR #310: `draft / open / unmerged`.
+- PR #310: `draft / open / unmerged` until explicit Human approval.
 - WU-010R: historical `COMPLETE / SECOND-AUDIT GREEN`.
-- WU-011: historical `COMPLETE / SECOND-AUDIT GREEN` with its then-current cross-regression evidence retained.
-- WU-012: `POST-COMPLETION RE-AUDIT REPAIRS IMPLEMENTED / FINAL CANDIDATE NOT YET FROZEN`.
-- WU-012 Repair Set: `REPAIR-WU012-2026-08-22`, status `IMPLEMENTED`; real Pilot validation intentionally pending.
+- WU-011: historical `COMPLETE / SECOND-AUDIT GREEN`; its exact-byte/Raw safety evidence remains historical evidence for its then-current scope.
+- WU-012: `REPAIRS IMPLEMENTED / PRE-AUDIT CANDIDATE`.
+- WU-012 Repair Set: `REPAIR-WU012-2026-08-22`, status `IMPLEMENTED`; it remains not `VALIDATED/CLOSED` until real W33/SP001 verification editions exist.
 - AUD-031 / AUD-033 remain intentionally `DEFERRED`.
-- AUD-039 through AUD-044 are implemented as `FIXED_GENERIC` and included in the Repair Set; final candidate cross-regression/fixed-head audit is still required.
+- AUD-027–030, AUD-032, AUD-034–045 are `FIXED_GENERIC` and included in the WU-012 Repair Set where applicable.
 - W33, W34, SP001, SP002, SP003: `NOT STARTED / NOT AUTHORIZED BEFORE APPROVAL + MERGE`.
 
-## 3. Corrected operating premise
+## 3. Operating premise
 
 **ChatGPT is the primary research/editorial operator.**
-
-Normal edition work remains:
 
 ```text
 user target + requested stopping Human Gate
@@ -69,9 +72,9 @@ The Core-v2 five-point final audit is a change-management acceptance rule, not a
 | WU-009 | `COMPLETE` | structured Draft/Synthesis retained |
 | WU-010 / 010R | `HISTORICALLY COMPLETE` | defect lessons retained; local control ceremony superseded |
 | WU-011 | `HISTORICALLY COMPLETE` | exact publication/release authority retained |
-| **WU-012** | **`REPAIR IMPLEMENTED / FINAL CI + FIXED-HEAD AUDIT PENDING`** | ChatGPT-first hot path plus post-completion audit repairs |
+| **WU-012** | **`REPAIRS IMPLEMENTED / PRE-AUDIT CANDIDATE`** | ChatGPT-first hot path plus all current generic audit repairs |
 
-## 5. WU-012 baseline implementation retained
+## 5. WU-012 implementation retained
 
 ### A — ChatGPT-first operator contract
 
@@ -79,7 +82,7 @@ ChatGPT owns open-ended research/editorial reasoning. Scripts own deterministic/
 
 ### B — compact local orchestration
 
-Canonical local control is Production State + exact canonical stage artifacts + compact Stage Checkpoint. `stage_plan[*].handoff_required=false`. Legacy Action/Handoff machinery remains compatibility/audit code only.
+Canonical local control is Production State + exact canonical stage artifacts + deterministic `CORE_STAGE_CONTRACT` validation + one compact Stage Checkpoint. `stage_plan[*].handoff_required=false`. Legacy Action/Handoff machinery remains compatibility/audit code only.
 
 ### C — controlled toolchain evolution
 
@@ -91,82 +94,21 @@ Recurring Human Review defects have explicit deterministic / ChatGPT research / 
 
 ### E — generic bootstrap/profile support
 
-Weekly, bounded Retrospective Period and Thematic Profiles remain generic. Thematic Pilot scope comes from canonical planning authority. Foundations uses its living series memo rather than a premature machine Series engine.
+Weekly, bounded Retrospective Period and Thematic Profiles remain generic. Thematic scope comes from canonical planning authority. Foundations uses its living series memo rather than a premature machine Series engine.
 
 ### F — quality tiers
 
-Quality review remains `DETERMINISTIC / AGENT_SEMANTIC / AGENT_VISUAL`. Only deterministic checks require executable result authority.
+Quality review remains `DETERMINISTIC / AGENT_SEMANTIC / AGENT_VISUAL`. Applicability binds the exact Production Profile. Only deterministic checks require executable result authority.
 
-## 6. Post-completion audit findings and repairs
+## 6. Post-completion repairs
 
-The fixed old head `2f3c9b10...` audit found six blocking families. All have generic implementations and regressions in the current candidate tree:
-
-### AUD-039 — semantic stage authority
-
-Repair:
-
-- added `scripts/survey_stage_validation_v2.py`;
-- validates exact Discovery/Screening/Evidence/Selection/Architecture/Draft/Quality/Publication/Freeze authorities;
-- Draft requires paired `draft-package:<id>` / `draft-result:<id>`;
-- emits exact `CORE_STAGE_CONTRACT` result;
-- `survey_agent_control_v2.py` requires and independently reconciles that result before compact checkpoint adoption;
-- same-named fake files or fabricated PASS reports are insufficient.
-
-Regression: `tests/test_survey_stage_validation_v2.py` + `tests/test_survey_agent_control_v2.py`.
-
-### AUD-040 — actual current-tool adoption
-
-Repair:
-
-- generic main repair must be integrated into the edition work branch before use;
-- integrated work-branch head is checkpoint execution identity;
-- `scripts/survey_agent_tool_v2.py` provides a narrow allowlisted bridge for legacy Screening/Evidence helpers that still enforce historical pin semantics internally;
-- current-stage validation uses agent-first State/current contract while preserving initialization and earlier checkpoint provenance.
-
-Regression: `tests/test_survey_stage_validation_v2.py` and agent-control tool-evolution tests.
-
-### AUD-041 — all-changes-first final audit
-
-Repair:
-
-- added `docs/survey-production-core-v2-final-audit-rule.md`;
-- AGENTS/session bootstrap/authority reference it;
-- all candidate changes/CI/docs/Finding/Repair-Set synchronization must finish before candidate freeze;
-- any candidate mutation after audit starts invalidates the entire audit and all five points are rerun from point 1;
-- final PASS is recorded externally in PR/Human-review metadata keyed to the exact audited SHA.
-
-Regression: `tests/test_survey_final_audit_rule_v2.py`.
-
-### AUD-042 — exact Production Profile-bound Quality
-
-Repair:
-
-- Quality Bundle requires exact `production_profile_path` and hashes it;
-- research/publication applicability derives only from that Profile;
-- issue-ID fallback is removed;
-- Retrospective Period checks cannot silently become Thematic checks;
-- Publication Candidate build/validation rejects publication-profile divergence from its coupled Quality/Profile authority.
-
-Regressions: `tests/test_survey_quality_v2.py`, `tests/test_survey_publication_v2.py`, `tests/test_survey_profiled_freeze_v2.py`.
-
-### AUD-043 — internal vs public Special identity
-
-Repair:
-
-- `scripts/survey_profiled_freeze_v2.py` derives public slug from exact Profile `paths.survey_root` basename;
-- Retrospective internal `SP-2025-H2` retains public `special/2025-H2` and `2025-H2` title/asset identity;
-- Release workflow rederives and fail-closes on the same Profile authority;
-- SP001/Weekly public identities remain natural.
-
-Regression: `tests/test_survey_profiled_freeze_v2.py`.
-
-### AUD-044 — bounded Period completion guard
-
-Repair:
-
-- `scripts/survey_period_v2.py` requires `as_of >= end` before Retrospective Period Profile creation/initialization.
-
-Regression: `tests/test_survey_period_v2.py`.
+- **AUD-039:** exact semantic stage validation through `scripts/survey_stage_validation_v2.py` + mandatory `CORE_STAGE_CONTRACT`; same-name fake artifacts cannot advance State.
+- **AUD-040:** reviewed generic fixes must be integrated into the edition work branch before use; current-tool bridge is narrow and preserves initialization provenance.
+- **AUD-041:** `docs/survey-production-core-v2-final-audit-rule.md` owns all-changes-first, fixed-head, restart-from-point-1 semantics and external result recording.
+- **AUD-042:** Quality Bundle binds exact Production Profile; no issue-ID profile inference; Publication Candidate/Profile divergence fails closed.
+- **AUD-043:** internal Retrospective identity such as `SP-2025-H2` remains distinct from public `special/2025-H2` identity derived from Profile `survey_root`.
+- **AUD-044:** Retrospective Period cannot initialize before its bounded period end.
+- **AUD-045:** canonical status authority now agrees that repairs are implemented and uses audit-stable PRE-AUDIT wording; exact final result belongs to PR metadata, so no post-audit candidate mutation is required.
 
 ## 7. Finding / Repair Set status
 
@@ -175,68 +117,47 @@ Regression: `tests/test_survey_period_v2.py`.
 - AUD-027, AUD-028, AUD-029, AUD-030
 - AUD-032, AUD-034, AUD-035, AUD-036
 - AUD-037, AUD-038
-- AUD-039, AUD-040, AUD-041, AUD-042, AUD-043, AUD-044
+- AUD-039, AUD-040, AUD-041, AUD-042, AUD-043, AUD-044, AUD-045
 
 Intentional `DEFERRED`:
 
 - AUD-031 — machine Series engine; add only if real Foundations production demonstrates need.
 - AUD-033 — exhaustive hypothetical future-edition matrix; use small structural tests + real Pilots.
 
-`REPAIR-WU012-2026-08-22` remains `IMPLEMENTED`, not `VALIDATED/CLOSED`, because W33/SP001 real verification editions remain intentionally empty.
+`REPAIR-WU012-2026-08-22` remains `IMPLEMENTED`, not `VALIDATED/CLOSED`, because W33/SP001 production verification remains intentionally pending.
 
-## 8. Validation evidence status
+## 8. External final-validation handoff
 
-Earlier green heads and runs are historical evidence only. They do not prove the current repaired candidate.
-
-Former synchronized review head `2f3c9b10c031cf0d8e5cc114fb93e481e90fffac` is explicitly invalid as final-review evidence because its post-completion five-point audit discovered AUD-039 through AUD-044.
-
-Before final candidate freeze, the complete repaired/synchronized head must pass all five required cross-regression families:
-
-1. Survey Production Core v2 CI;
-2. Screening contract CI;
-3. Evidence contract CI;
-4. Pipeline contract tests;
-5. Weekly pipeline spine + committed Raw integrity.
-
-Current status: **PENDING on the fully synchronized repair candidate**.
-
-## 9. Mandatory final audit after all changes
-
-Only after code/config/schema/workflow/tests/Findings/Repair Set/authority/worklog/plan/closure/PR preparation are complete and cross-regression is green:
+The candidate tree does not claim its own final PASS. When all candidate-tree synchronization is complete:
 
 ```text
-freeze exact candidate head SHA
--> perform acceptance point 1 Weekly viability from zero
--> point 2 Special viability from zero
--> point 3 generality from zero
--> point 4 historical Issue recurrence prevention from zero
--> point 5 control proportionality from zero
--> make no candidate-tree change while auditing
+obtain five-family green CI on one exact head
+-> freeze that exact head
+-> audit points 1–5 from zero on the unchanged head
+-> any required candidate-tree change invalidates the whole audit
+-> after repair/synchronization/CI, rerun all five from point 1
+-> if unchanged all-PASS, record exact SHA + CI run IDs + five verdicts in PR/Human-review metadata
 ```
 
-If any point requires a repository change:
+Required CI families:
 
-```text
-current audit = INVALIDATED
--> repair/synchronize everything
--> rerun cross-regression
--> freeze new head
--> rerun all five points from point 1
-```
+1. Survey Production Core v2 CI
+2. Screening contract CI
+3. Evidence contract CI
+4. Pipeline contract tests
+5. Weekly pipeline spine + committed Raw integrity
 
-The final audit result is not committed into the audited candidate tree. It is recorded against the exact SHA in PR/Human-review metadata.
+The external PR/Human-review record, not this snapshot, is authoritative for whether a particular frozen head has completed those checks successfully.
 
-## 10. Current action / stop condition
-
-**CURRENT ACTION: finish synchronization and obtain five-family green CI. This is not yet the Human full-candidate review boundary.**
+## 9. Production boundary
 
 Do not:
 
 - start W33/SP001 before explicit approval + merge;
 - mark the Repair Set `VALIDATED/CLOSED` before real verification editions;
-- add a machine Series engine or exhaustive synthetic matrix without real evidence;
+- add a machine Series engine or exhaustive synthetic matrix without production evidence;
 - add Human Gates beyond Architecture Review and Publication Preview;
 - restore legacy Handoff ceremony as the canonical local hot path;
-- claim final five-point PASS from any audit that preceded later candidate changes.
+- reuse a partial verdict from an invalidated audit.
 
-After all synchronization and CI are complete, freeze one exact head and run the mandatory five-point final audit. Only an unchanged all-PASS head may be presented for Human full-candidate review.
+If an exact frozen head later receives five-family CI PASS and all five acceptance points PASS without candidate mutation, PR metadata may present that exact head for Human full-candidate review. The candidate tree itself remains this stable pre-audit snapshot.
