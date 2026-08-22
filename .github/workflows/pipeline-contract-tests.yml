@@ -20,7 +20,7 @@ on:
       - '.github/workflows/*.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: pipeline-contract-tests-${{ github.ref }}
@@ -69,57 +69,3 @@ jobs:
         run: |
           set -euo pipefail
           python -m unittest discover -s tests -p 'test_*.py' -v
-
-  w33-fresh-resume:
-    if: github.event_name == 'pull_request' && github.head_ref == 'temp/w33-x-import'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout execution branch
-        uses: actions/checkout@v6
-        with:
-          ref: temp/w33-x-import
-          fetch-depth: 0
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install Core v2 dependencies
-        run: python -m pip install -r config/survey-production-v2-requirements.txt
-
-      - name: Verify exact fresh Grok Raw, complete X intake, clear Exception Gate, build fresh audit
-        run: |
-          set -euo pipefail
-          PYTHONPATH=. python automation/w33_fresh_resume_once.py | tee /tmp/w33-fresh-resume.json
-
-      - name: Validate resumable State and complete X manifest
-        run: |
-          set -euo pipefail
-          PYTHONPATH=. python scripts/survey_x_intake_v2.py validate --manifest sources/2026-W33/external/x/x-source-intake-v2.json
-          PYTHONPATH=. python - <<'PY'
-          from pathlib import Path
-          from scripts import survey_production_v2 as core
-          from scripts import survey_agent_control_v2 as agent
-          root=Path('.').resolve()
-          cfg=core.load_json(root/core.DEFAULT_CONFIG)
-          state=core.load_json(root/'sources/2026-W33/production-state.json')
-          errors=agent.validate_agent_state(root,cfg,state)
-          if errors:
-              raise SystemExit('; '.join(errors))
-          print('Production State resumability validation: PASS')
-          PY
-
-      - name: Restore implementation-control workflow and persist only production artifacts
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          git fetch origin weekly/2026-W33-v2-work
-          git checkout origin/weekly/2026-W33-v2-work -- .github/workflows/pipeline-contract-tests.yml
-          git rm automation/w33_fresh_resume_once.py
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add sources/2026-W33 docs/checkpoints/2026-W33-core-v2-compilation-session-worklog.md .github/workflows/pipeline-contract-tests.yml
-          git commit -m 'Import fresh W33 Grok result and resume Core v2'
-          git push origin HEAD:temp/w33-x-import

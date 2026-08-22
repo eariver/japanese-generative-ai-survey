@@ -103,3 +103,12 @@ Exception reason: a newly executed `weekly-x-2026-W33-fresh-r1` Grok result must
 6. Build Core v2 Discovery only from this fresh non-X Source Intake, the fresh Grok result, and legitimate prior-week W32 carry-over authority where required. Do not import any legacy W33 research artifact.
 7. Run coverage audit/gap expansion, Screening, Evidence, Materiality, Completeness, Selection and Architecture under current Core v2 validators.
 8. Stop at `ARCHITECTURE_ESTABLISHED` with `ARCHITECTURE_REVIEW` pending. Do not approve the Human Gate.
+
+## Fresh Grok result import and Exception Gate resolution
+
+- Imported Drive result as exact repository Raw: `sources/2026-W33/external/x/weekly-x-2026-W33-fresh-r1/raw/grok-x-result.md`.
+- Raw authority: `11cc3fbb64aa6f7f467834e81022a0338fbb45d46e50d20b8d4a36ff5c81f930`, 15036 bytes.
+- X manifest changed from `AWAITING_GROK` to `COMPLETE`; result status `SUCCESS`.
+- X discovery disposition: `DISCOVERY_RECORDED` as `x-weekly-signal-wave`; technical claims remain non-authoritative until primary-source verification.
+- Exception Gate cleared after fresh X result import; lifecycle remains `ISSUE_INITIALIZED`, next action `stage:discovery`.
+- Generated deterministic fresh candidate audit from all 2665 non-X screening-seed records; legacy W33 intake excluded.
