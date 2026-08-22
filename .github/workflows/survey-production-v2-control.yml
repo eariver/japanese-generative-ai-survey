@@ -47,7 +47,7 @@ jobs:
   control:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout canonical control implementation
+      - name: Checkout currently dispatched main workflow
         uses: actions/checkout@v6
         with:
           ref: main
@@ -65,8 +65,20 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install Core v2 validator dependency
-        run: python -m pip install -r control-src/config/survey-production-v2-requirements.txt
+      - name: Require dispatched workflow to equal pinned worktree workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          active='control-src/.github/workflows/survey-production-v2-control.yml'
+          pinned='worktree/.github/workflows/survey-production-v2-control.yml'
+          test -s "$active" && test -s "$pinned"
+          if ! cmp -s "$active" "$pinned"; then
+            echo 'Current main production-control workflow differs from the State-pinned worktree workflow.' >&2
+            exit 2
+          fi
+
+      - name: Install State-pinned Core v2 validator dependency
+        run: python -m pip install -r worktree/config/survey-production-v2-requirements.txt
 
       - name: Resolve and validate production identity
         id: identity
@@ -76,22 +88,26 @@ jobs:
           WORK_BRANCH: ${{ inputs.work_branch }}
         run: |
           set -euo pipefail
-          python - <<'PY' >> "$GITHUB_OUTPUT"
-          import json, os, pathlib, re
-          issue=os.environ['ISSUE_ID']; branch=os.environ['WORK_BRANCH']; root=pathlib.Path('worktree')
+          PYTHONPATH=worktree python - <<'PY' >> "$GITHUB_OUTPUT"
+          import os, pathlib, re
+          from scripts import survey_orchestrator_v2 as orchestrator
+          from scripts import survey_production_v2 as core
+          issue=os.environ['ISSUE_ID']; branch=os.environ['WORK_BRANCH']; root=pathlib.Path('worktree').resolve()
           if not re.fullmatch(r'[A-Za-z0-9._/-]+', branch) or '..' in branch.split('/'):
               raise SystemExit('unsafe work_branch')
           state_path=root/'sources'/issue/'production-state.json'
           if not state_path.is_file():
               raise SystemExit(f'missing canonical Production State: {state_path}')
-          state=json.load(open(state_path,encoding='utf-8'))
+          state=core.load_json(state_path)
           if state.get('issue_id') != issue:
               raise SystemExit('Production State issue_id mismatch')
-          profile_path=root/state['profile']['path']; profile=json.load(open(profile_path,encoding='utf-8'))
+          profile_path=root/state['profile']['path']; profile=core.load_json(profile_path)
           if profile.get('issue_id') != issue:
               raise SystemExit('Production Profile issue_id mismatch')
           if profile.get('paths',{}).get('work_branch') != branch:
               raise SystemExit('workflow work_branch does not match Production Profile authority')
+          cfg=core.load_json(root/core.DEFAULT_CONFIG)
+          orchestrator.verify_runtime_implementation(root,cfg,state)
           source_root=profile['paths']['source_root']
           print(f'state={state_path.relative_to(root)}')
           print(f'source_root={source_root}')
@@ -117,9 +133,9 @@ jobs:
           test -s "worktree/${request}"
           actual="$(sha256sum "worktree/${request}" | awk '{print $1}')"
           test "$actual" = "$REQUEST_SHA256"
-          PYTHONPATH=control-src python control-src/scripts/survey_handoff_v2.py \
+          PYTHONPATH=worktree python worktree/scripts/survey_handoff_v2.py \
             --repo-root worktree --state "$STATE" --request "$request"
-          PYTHONPATH=control-src python control-src/scripts/survey_orchestrator_v2.py \
+          PYTHONPATH=worktree python worktree/scripts/survey_orchestrator_v2.py \
             --repo-root worktree --config config/survey-production-v2.json \
             execute-current --state "$STATE" \
             --orchestration-dir "${SOURCE_ROOT}/orchestration/v2" \
@@ -161,7 +177,7 @@ jobs:
         run: |
           set -euo pipefail
           test "$REVIEWED_BY" != '' && test "$REVIEWED_AT" != '' && test "$REVIEW_REFERENCE" != ''
-          PYTHONPATH=control-src python control-src/scripts/survey_orchestrator_v2.py \
+          PYTHONPATH=worktree python worktree/scripts/survey_orchestrator_v2.py \
             --repo-root worktree --config config/survey-production-v2.json \
             approve-architecture --state "$STATE" \
             --action-spec '${{ steps.architecture.outputs.action_spec }}' \
@@ -206,7 +222,7 @@ jobs:
         run: |
           set -euo pipefail
           test "$REVIEWED_BY" != '' && test "$REVIEWED_AT" != '' && test "$REVIEW_REFERENCE" != ''
-          PYTHONPATH=control-src python control-src/scripts/survey_orchestrator_v2.py \
+          PYTHONPATH=worktree python worktree/scripts/survey_orchestrator_v2.py \
             --repo-root worktree --config config/survey-production-v2.json \
             approve-publication-preview --state "$STATE" \
             --action-spec '${{ steps.publication.outputs.action_spec }}' \
@@ -221,7 +237,7 @@ jobs:
           STATE: ${{ steps.identity.outputs.state }}
         run: |
           set -euo pipefail
-          PYTHONPATH=control-src python - "$STATE" <<'PY'
+          PYTHONPATH=worktree python - "$STATE" <<'PY'
           import sys
           from pathlib import Path
           from scripts import survey_production_v2 as core
