@@ -47,19 +47,18 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
         evidence.write_materiality_ledger(ledger_path, ledger)
         profile = core.load_json(profile_path)
         evidence_row = core.load_json(evidence_acceptance)["results"][0]
-        obligations = []
-        for index, dimension in enumerate(profile["research_scope"]["scope_dimensions"], start=1):
-            obligations.append(
-                {
-                    "obligation_id": f"scope:{index}:{dimension}",
-                    "dimension": dimension,
-                    "description": f"cover {dimension}",
-                    "status": "SATISFIED",
-                    "discovery_ids": ["target-source"],
-                    "evidence_task_ids": [evidence_row["evidence_task_id"]],
-                    "rationale": "fixture evidence satisfies the dimension",
-                }
-            )
+        obligations = [
+            {
+                "obligation_id": initial["obligation_id"],
+                "dimension": initial["dimension"],
+                "description": initial["description"],
+                "status": "SATISFIED",
+                "discovery_ids": ["target-source"],
+                "evidence_task_ids": [evidence_row["evidence_task_id"]],
+                "rationale": "fixture evidence satisfies the Profile initial obligation",
+            }
+            for initial in profile["research_scope"]["initial_obligations"]
+        ]
         completeness_result = {
             "schema_version": "2.0-rc1",
             "issue_id": issue_id,
