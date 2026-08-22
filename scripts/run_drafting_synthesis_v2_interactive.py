@@ -200,7 +200,7 @@ def main() -> int:
         raise SystemExit('interactive Drafting must cover every Architecture package exactly once')
     spec_by_id={row['package_id']:row for row in specs}
     draft_root=up['source_root']/'draft/v2'; pairs=[]; outputs=[]
-    implementation_sha=state['implementation']['repository_commit_sha']
+    implementation_sha=core.repository_commit_sha(root)
     for plan_row in sorted(plan['packages'],key=lambda r:(r['drafting_order'],r['package_id'])):
         pid=plan_row['package_id']; spec=spec_by_id[pid]
         if set(spec) != {'package_id','headline','deck','deck_discovery_ids','blocks'}:
