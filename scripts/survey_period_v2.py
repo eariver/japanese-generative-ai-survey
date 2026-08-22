@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
 
+from scripts import survey_agent_control_v2 as agent_control
 from scripts import survey_production_v2 as core
 
 SPECIAL_CONFIG = Path("config/special-pipeline.json")
@@ -131,19 +132,51 @@ def period_profile(repo_root: Path, cfg: dict[str, Any], spec: dict[str, Any]) -
     return profile
 
 
+def _stable_period_identity(profile: dict[str, Any], spec: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    if profile.get("issue_id") != spec.get("issue_id"):
+        errors.append("issue_id")
+    if profile.get("research_profile") != "RETROSPECTIVE_PERIOD" or profile.get("publication_profile") != "LONGFORM_SPECIAL":
+        errors.append("Profile type")
+    policy = profile.get("research_scope", {}).get("temporal_policy", {})
+    for key in ("start", "end", "timezone"):
+        expected = spec.get(key)
+        if key in {"start", "end"} and expected:
+            expected = core.parse_instant(str(expected)).isoformat(timespec="seconds")
+        if policy.get(key) != expected:
+            errors.append(f"temporal_policy.{key}")
+    expected_paths = {
+        "source_root": spec.get("source_root", f"sources/{spec['issue_id']}"),
+        "survey_root": spec.get("survey_root", f"surveys/special/{spec['issue_id']}"),
+        "work_branch": spec.get("work_branch", f"special/{spec['issue_id']}-v2-work"),
+    }
+    if profile.get("paths") != expected_paths:
+        errors.append("paths")
+    return errors
+
+
 def build_plan(repo_root: Path, cfg: dict[str, Any], spec: dict[str, Any]) -> dict[str, Any]:
-    profile = period_profile(repo_root, cfg, spec)
-    source_root = core.repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
+    source_root = core.repo_local_path(repo_root, spec.get("source_root", f"sources/{spec['issue_id']}"), "period source_root")
     profile_path = source_root / cfg["state_authority"]["profile_filename"]
     state_path = source_root / cfg["state_authority"]["authoritative_filename"]
     if profile_path.is_file() != state_path.is_file():
         operation = "EXCEPTION_GATE_REQUIRED"
+        profile = None
     elif profile_path.is_file():
-        existing = core.load_json(profile_path)
-        if existing != profile:
-            raise ValueError("existing Retrospective Period Profile differs from requested bounded-period identity")
+        profile = core.load_json(profile_path)
+        profile_errors = core.validate_profile(profile, cfg)
+        if profile_errors:
+            raise ValueError("existing Retrospective Period Profile invalid: " + "; ".join(profile_errors))
+        drift = _stable_period_identity(profile, spec)
+        if drift:
+            raise ValueError("existing Retrospective Period identity differs from requested period: " + ", ".join(drift))
+        state = core.load_json(state_path)
+        if state.get("profile", {}).get("path") != str(profile_path.relative_to(repo_root)) or state.get("profile", {}).get("sha256") != core.sha256_file(profile_path):
+            raise ValueError("existing Retrospective Period State/Profile authority mismatch")
+        agent_control.verify_agent_state_basis(repo_root, cfg, state)
         operation = "RESUME"
     else:
+        profile = period_profile(repo_root, cfg, spec)
         operation = "INITIALIZE"
     return {
         "schema_version": "2.0-rc1",
