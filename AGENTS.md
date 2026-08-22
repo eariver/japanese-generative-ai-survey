@@ -25,11 +25,35 @@ Raise an Exception Gate only when safe continuation genuinely requires Owner jud
 
 The start request itself authorizes deterministic initialization and creation of the canonical work branch/state. Initialization is not a Human Gate. Never infer Human Gate approval from a request to start or continue compilation.
 
-Repository state must remain sufficient for another ChatGPT session to resume without prior conversation history. Each completed stage records compact checkpoint provenance, including the implementation/contract used at that boundary. The initialization implementation commit is historical provenance, not a permanent toolchain lock: a later stage may use newer reviewed `main` tooling, with targeted revalidation when an accepted artifact is affected.
+Repository state must remain sufficient for another ChatGPT session to resume without prior conversation history. Each completed stage records compact checkpoint provenance, including the implementation/contract used at that boundary. The initialization implementation commit is historical provenance, not a permanent toolchain lock.
+
+A later stage may use newer reviewed `main` tooling only after the reviewed repair is actually integrated into the edition work branch. Revalidate or migrate only accepted boundaries affected by the change, then record the actual integrated work-branch head in the next Stage Checkpoint. Do not run an unintegrated second checkout of `main` against edition artifacts and claim that the edition branch used those bytes.
+
+Before a compact local Stage Checkpoint is adopted, run the exact intended stage artifact set through `scripts/survey_stage_validation_v2.py` and include its exact `CORE_STAGE_CONTRACT` deterministic result. A canonical filename or a ChatGPT PASS statement is not a substitute for semantic stage validation. Legacy Screening/Evidence helpers that retain the historical pin internally may be invoked through the narrow allowlisted `scripts/survey_agent_tool_v2.py` bridge after current agent-first State/tool identity has been validated.
 
 For thematic or series requests, resolve editorial scope from the canonical backlog/series document rather than duplicating it in bootstrap configuration. In particular, `Generative AI Foundationsの次巻` is resolved from `docs/generative-ai-foundations-special-series.md` and repository evidence of completed/in-progress volumes; do not invent a parallel machine series plan unless real production later requires one.
 
+Retrospective Period work uses the bounded Period Profile and must not initialize before the period end. Quality applicability must come from the exact bound Production Profile. Public Special release identity comes from that Profile's `survey_root` basename, allowing an internal source ID such as `SP-2025-H2` to retain the established public identity `special/2025-H2`.
+
 Cross-edition pipeline, validator, schema, workflow, or checklist improvements belong on `main` through the repository's normal review/CI process. Edition-specific Evidence, Architecture, drafts, provenance, and release artifacts remain scoped to that edition's canonical work branch and paths. Frozen historical releases remain immutable.
+
+## Core v2 change-management final audit
+
+Before presenting a Survey Production Core v2 implementation candidate for Human full-candidate review, read and follow `docs/survey-production-core-v2-final-audit-rule.md`.
+
+The mandatory sequence is:
+
+```text
+finish every intended candidate change
+-> finish all required regressions and repository synchronization
+-> freeze one candidate head SHA
+-> audit all five acceptance priorities from zero on that exact head
+-> do not mutate the candidate during the audit
+```
+
+If any audit finding requires a repository change, **invalidate the entire audit**, complete all repairs, freeze a new candidate head, and rerun all five points from point 1. Never carry forward earlier PASS verdicts after changing the candidate.
+
+The final audit result must bind the exact candidate SHA. Record it in PR/Human-review metadata rather than committing a post-audit PASS document that would itself change the audited SHA.
 
 ## Pre-merge Core v2 development boundary
 
