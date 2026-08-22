@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from scripts import survey_handlers_v2 as handlers
+from scripts import survey_pilot_bootstrap_v2 as bootstrap
 from scripts import survey_production_v2 as core
 from tests.test_survey_state_publication_authority_v2 import SurveyStatePublicationAuthorityV2Tests
 
@@ -14,37 +16,48 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         cls.root = Path(".").resolve()
         cls.cfg = core.load_json(cls.root / core.DEFAULT_CONFIG)
 
-    def test_w33_and_sp001_profiles_bootstrap_without_starting_pilot_state(self) -> None:
-        w33 = core.weekly_profile(
-            self.root,
-            self.cfg,
-            core.parse_instant("2026-08-22T11:18:00+09:00"),
-            "2026-W33",
-        )
-        sp001 = core.thematic_profile(
-            self.root,
-            self.cfg,
-            {
-                "issue_id": "SP001",
-                "question": "How did Chinese generative AI ecosystems emerge and differentiate?",
-                "temporal_mode": "OPEN_HISTORY_AS_OF",
-                "as_of": "2026-08-22T11:18:00+09:00",
-                "scope_dimensions": ["lineage", "distribution", "reasoning", "coding"],
-                "initial_obligations": [
-                    {"obligation_id": "initial:lineage", "dimension": "lineage", "description": "trace core technical lineage"},
-                    {"obligation_id": "initial:distribution", "dimension": "distribution", "description": "cover distribution and open-weight strategy"},
-                    {"obligation_id": "initial:reasoning", "dimension": "reasoning", "description": "cover reasoning systems"},
-                    {"obligation_id": "initial:coding", "dimension": "coding", "description": "cover coding systems"},
-                ],
-            },
-        )
+    def test_w33_and_sp001_profiles_bootstrap_from_registry_without_starting_pilot_state(self) -> None:
+        recorded_at = core.parse_instant("2026-08-22T11:18:00+09:00")
+        w33 = bootstrap.build_plan(self.root, "W33", recorded_at)
+        sp001 = bootstrap.build_plan(self.root, "SP001", recorded_at)
 
-        self.assertEqual((w33["research_profile"], w33["publication_profile"]), ("WEEKLY", "WEEKLY_MAGAZINE"))
-        self.assertEqual((sp001["research_profile"], sp001["publication_profile"]), ("THEMATIC", "LONGFORM_SPECIAL"))
-        self.assertEqual(w33["research_scope"]["temporal_policy"]["cutoff"], "2026-08-14T18:00:00-04:00")
-        self.assertEqual(set(sp001["research_scope"]["temporal_policy"]), {"mode", "as_of"})
+        self.assertEqual(w33["next_operation"], "INITIALIZE")
+        self.assertEqual(sp001["next_operation"], "INITIALIZE")
+        self.assertEqual((w33["profile"]["research_profile"], w33["profile"]["publication_profile"]), ("WEEKLY", "WEEKLY_MAGAZINE"))
+        self.assertEqual((sp001["profile"]["research_profile"], sp001["profile"]["publication_profile"]), ("THEMATIC", "LONGFORM_SPECIAL"))
+        self.assertEqual(w33["profile"]["research_scope"]["temporal_policy"]["cutoff"], "2026-08-14T18:00:00-04:00")
+        self.assertEqual(
+            sp001["profile"]["research_scope"]["temporal_policy"],
+            {"mode": "OPEN_HISTORY_AS_OF", "as_of": "2026-08-22T02:18:00Z"},
+        )
+        self.assertEqual(w33["profile"]["paths"]["work_branch"], "weekly/2026-W33-v2-work")
+        self.assertEqual(sp001["profile"]["paths"]["work_branch"], "special/SP001-v2-work")
         self.assertFalse((self.root / "sources/2026-W33/production-state.json").exists())
         self.assertFalse((self.root / "sources/SP001/production-state.json").exists())
+
+    def test_sp001_resume_preserves_initialization_as_of_instead_of_rematerializing_now(self) -> None:
+        initial = bootstrap.build_plan(
+            self.root,
+            "SP001",
+            core.parse_instant("2026-08-22T11:18:00+09:00"),
+        )["profile"]
+        status = {
+            "status": "RESUME_EXISTING_STATE",
+            "profile_path": "sources/SP001/production-profile.json",
+            "state_path": "sources/SP001/production-state.json",
+            "profile_exists": True,
+            "state_exists": True,
+            "lifecycle_state": "DISCOVERY_COLLECTED",
+        }
+        with mock.patch.object(bootstrap, "_repository_status", return_value=(status, initial)):
+            resumed = bootstrap.build_plan(
+                self.root,
+                "SP001",
+                core.parse_instant("2026-08-25T19:00:00+09:00"),
+            )
+        self.assertEqual(resumed["next_operation"], "RESUME")
+        self.assertEqual(resumed["profile"]["research_scope"]["temporal_policy"]["as_of"], "2026-08-22T02:18:00Z")
+        self.assertEqual(resumed["recorded_at"], "2026-08-25T10:00:00Z")
 
     def test_all_stage_handlers_and_semantic_validators_have_one_settled_registry(self) -> None:
         registry: dict[str, object] = {}
