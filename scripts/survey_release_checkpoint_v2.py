@@ -34,10 +34,14 @@ def build_release_checkpoint(
     stage = cfg["orchestration"]["stage_plan"].get("FROZEN")
     if not isinstance(stage, dict) or stage.get("action_kind") != "WORKFLOW_DISPATCH" or stage.get("next_state") != "RELEASED":
         raise ValueError("FROZEN release stage contract is not canonical")
-    publication.validate_merge_verification(repo_root, merge_verification)
     release = publication.validate_release_record(repo_root, release_record)
     if release.get("issue_id") != state.get("issue_id"):
         raise ValueError("Release Record issue_id mismatch")
+    verification_ref = release.get("merge_verification_path")
+    if verification_ref != str(merge_verification.resolve().relative_to(repo_root.resolve())):
+        raise ValueError("Release Record does not bind supplied Merge Verification path")
+    if core.sha256_file(merge_verification) != release.get("merge_verification_sha256"):
+        raise ValueError("Release Record does not bind supplied Merge Verification bytes")
     _, profile, _ = agent._profile_and_source(repo_root, cfg, state)
     artifacts = [
         agent._named_authority(repo_root, "merge-verification", merge_verification),
