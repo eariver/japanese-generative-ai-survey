@@ -1037,3 +1037,312 @@ The following current repository surfaces are especially relevant and should be 
 - other historical editorial / pipeline issues discovered during Phase 0 and Phase 2
 
 This document is a working guide, not a substitute for re-reading current `main`. If repository policy changes while this branch is active, the change must be evaluated and this plan amended when it materially affects the target architecture.
+
+---
+
+## 16. Pre-approval WU-001–WU-011 audit amendment — 2026-08-22
+
+This amendment was added after the first coherent WU-011 candidate reached the Human full-candidate review boundary. It supersedes any earlier statement in this plan that would otherwise permit Phase 4 / Pilot production immediately after the then-current PR review.
+
+The candidate must **not** be approved or merged yet. W33, W34, SP001, SP002 and SP003 remain production-disabled until the pre-merge hardening work below is complete and receives a new Human full-candidate review.
+
+The audit evaluates the requested acceptance questions in strict priority order:
+
+```text
+1. Weekly production viability
+2. Special production viability
+3. Generality beyond named Pilots
+4. Recurrence prevention for existing Human Review Issues
+5. Avoidance of excessive gates / validation
+```
+
+When two requirements conflict, the lower ordinal number above wins.
+
+### 16.1 WU-001 through WU-011 coverage audit
+
+| Work-unit area | Audit disposition | Pre-approval conclusion |
+|---|---|---|
+| WU-001 / WU-001A — component inventory and ownership | sound | Core/Profile/Publication/Series ownership model is the right abstraction and remains the basis of the repairs below |
+| WU-002 — contract normalization | sound but incomplete at the Series/quality applicability edge | two normal Human Gates and independent Research/Publication Profiles should be retained |
+| WU-003 / WU-003B / WU-003C — historical invariant distillation | strong | the fifteen frozen Specials and Weekly Issue #9 provide enough defect history; the remaining problem is executable enforcement, not lack of historical analysis |
+| WU-004 / WU-004B — minimum vertical-slice architecture | sound for a first slice | W33/SP001 were appropriate first slice targets, but first-slice sufficiency must not be confused with general production readiness |
+| WU-005 — Production Profile / State | strong | arbitrary completed Weekly IDs and generic Thematic specs are representable, but Retrospective Period lacks a canonical initializer and Series state is not implemented |
+| WU-006 — Discovery / Screening | strong provenance, incomplete coverage authority | exact Raw identity and graph provenance are good; the current system cannot yet prove that the intake/search surface itself was adequately exercised |
+| WU-007 — Evidence / Materiality / Completeness | strong traceability, blocking completeness loophole | #166/#191 protections are materially improved, but an obligation may currently claim `SATISFIED` without non-empty Discovery/Evidence support, so a weak intake can self-attest readiness |
+| WU-008 / WU-008A — Matrix / Selection / Architecture / review attention | strong | complete material-candidate disposition and bounded Human attention are good; Profile-owned final semantics still need dedicated validators |
+| WU-009 — Drafting / Profile Synthesis | strong provenance, incomplete Profile semantics | exact Evidence references, subject roles, must-cover and boundary disposition are good; final Weekly/Period/Thematic reader semantics are not yet fully enforced |
+| WU-010 / WU-010R — orchestration / provenance hardening | strong | one-stage adoption, pinned implementation, action identity and repair governance should be retained |
+| WU-011 — publication / release / bootstrap / second audit | strong exact-byte authority, not yet general-production complete | release reconciliation and Pilot bootstrap are strong, but quality checks are currently self-attested and Pilot/bootstrap evidence is deliberately W33/SP001-centric |
+
+### 16.2 Acceptance question 1 — Weekly production viability
+
+**Disposition: BLOCKING REPAIR REQUIRED BEFORE APPROVAL.**
+
+Positive evidence:
+
+- Weekly issue/cutoff derivation is generic for arbitrary completed `YYYY-Www`, not W33-only.
+- Raw provenance, Screening completeness of discovered records, Evidence subject binding, Materiality disposition, Architecture assignment, exact-byte publication and orchestration are substantially stronger than the legacy baseline.
+- the normal Human interaction model is already reduced to Architecture Review and Publication Preview.
+
+Blocking gaps:
+
+1. **Source Intake coverage can be self-asserted after an incomplete search.** A successful Discovery set proves what was found, not that the relevant search surface was exercised. Profile Completeness currently allows a `SATISFIED` obligation with empty Discovery/Evidence references.
+2. **Weekly Issue #9 semantics are not enforced end-to-end.** `why_this_issue` exists in Edition Evidence View, but final drafting/publication does not yet machine-check reader-facing `why this week`, one substantive home for each Late Breaking event, reader-facing Watchlist semantics, or removal of pipeline-management jargon/TODOs.
+3. **The quality bundle is not sufficient evidence that its named checks actually ran.** A free-text all-`PASS` row can satisfy the current contract.
+4. **The universal quality-check list contains Long-form-specific concerns**, so Weekly can be rejected for checks that should not apply to it.
+
+The repair must preserve the ability for a weak week to contain fewer stories or pages. It must not introduce fixed article/source-count quotas.
+
+### 16.3 Acceptance question 2 — Special production viability
+
+**Disposition: BLOCKING REPAIR REQUIRED BEFORE APPROVAL.**
+
+Standalone Thematic production is structurally promising: open-history/current-state temporal policies, lineage-oriented Discovery origins, thematic Edition Views, gap-fill and closure semantics are present and generic enough for materially different topics.
+
+However:
+
+1. `RETROSPECTIVE_PERIOD` is declared as a first-class Research Profile but has no canonical `period_profile` / `init-period` production initializer. Therefore future monthly, half-year, annual or custom bounded retrospectives are not yet first-class operational modes.
+2. the SP001 registry currently encodes only `lineage`, `distribution`, `reasoning` and `coding`. That is narrower than the scoped TS-001 backlog, which also requires material treatment of model-family/ecosystem breadth, open-weight/licensing/reuse boundaries, inference/serving efficiency, long-context and cloud/developer ecosystem concerns where relevant. SP001 configuration must be made faithful to its planning authority without hard-coding those semantics into Core.
+3. SP002/TS-002 and SP003/TS-003 fit the generic Thematic abstraction in principle, but no independent fixture currently proves generated-media and vision/multimodal research structures against the same Core.
+4. `Generative AI Foundations` cannot yet be considered supported **as a series**. Individual volumes can be represented as Thematic Long-form Specials, but the required Series Research Layer—series manifest/version, shared reusable factual Evidence authority, lineage graph, volume dependencies, cross-volume usage, research debt and merge/split/resequence state—is not implemented. Current Evidence identity is edition-scoped and therefore does not by itself provide canonical cross-volume factual reuse.
+
+The Series repair must remain an outer research layer. It must not create a routine third Human Gate for each volume.
+
+### 16.4 Acceptance question 3 — generality beyond W33/W34/SP001–003
+
+**Disposition: ARCHITECTURE IS MOSTLY GENERIC; PROOF IS INSUFFICIENT.**
+
+The audit found no requirement to redesign the Core around W33 or SP001. W33/SP001-specific values are appropriately concentrated in the Pilot registry/bootstrap rather than in generic Screening, Evidence, Architecture or publication logic.
+
+The remaining risk is validation bias: most bootstrap/generalization evidence names the first Pilots. Before merge, side-effect-free regression fixtures must prove at least:
+
+- a later arbitrary completed Weekly issue such as W35+;
+- an ISO-year boundary Weekly case;
+- a TS-002-like generated-media Thematic spec;
+- a TS-003-like vision/multimodal Thematic spec;
+- an unrelated synthetic Thematic spec not present in the current backlog;
+- bounded monthly, half-year and annual Period specs;
+- at least two dependent Foundations-style volumes sharing Series research authority;
+- a Series merge/split/resequence change that does not invalidate unrelated per-volume production state.
+
+These are regression fixtures, not production Pilots and not Human Gates.
+
+### 16.5 Acceptance question 4 — preventing recurrence of existing Human Review Issues
+
+**Disposition: PARTIAL; BLOCKING REPAIR REQUIRED.**
+
+Strong executable protections already exist for important defect families such as:
+
+- #166 material-discovery disappearance after intake;
+- #191 subject/entity/property rebinding;
+- immutable Raw/source/provenance identity;
+- exact Publication Preview/PDF/Freeze/Release byte identity;
+- several orchestration/retry/provenance failures found during WU-010R/WU-011.
+
+The remaining weakness is that many historical reader/publication protections are either only described in the invariant corpus or represented by a quality check name whose `PASS` is not bound to an executed validator result. Examples include the families represented by #9, #40, #49, #50, #54, #55, #78, #95, #122, #139, #140, #153, #172, #271 and #272.
+
+Before merge, create one **Issue → Guard matrix** covering the material recurring Human Review corpus. Every row must identify exactly one primary prevention/inspection authority:
+
+```text
+CORE_MACHINE_GUARD
+RESEARCH_PROFILE_GUARD
+PUBLICATION_PROFILE_GUARD
+QUALITY_CHECK_ATTESTATION
+EXISTING_PUBLICATION_PREVIEW_CHECKLIST
+INTENTIONAL_EDITION_LOCAL_ONLY
+LEGACY_ONLY_NOT_APPLICABLE
+```
+
+A recurring deterministic defect may not be left with only a prose invariant. A genuinely visual/editorial judgment does not have to be converted into a brittle automatic test; it may remain in the existing Publication Preview checklist if the machine pipeline first exposes the relevant risk and no additional Human Gate is added.
+
+### 16.6 Acceptance question 5 — avoiding excessive gates and excessive validation
+
+**Disposition: HUMAN-GATE MODEL IS GOOD; MACHINE-VALIDATION APPLICABILITY NEEDS REPAIR.**
+
+Retain exactly two normal Human Gates:
+
+1. Architecture Review;
+2. exact-byte Publication Preview.
+
+Do not restore Candidate Selection, Visual Review, Freeze or Release as routine Human Gates. Exception Gate remains reserved for genuine ambiguity or a decision that cannot safely be derived from existing authority.
+
+The current quality contract is nevertheless over-broad because every edition is forced to claim the same eleven checks. Long-form concerns such as Technical Notes tail layout or period chronology must not become mandatory Weekly checks merely because they were historically important to Specials.
+
+The replacement rule is:
+
+> Apply fewer checks where a rule is genuinely inapplicable, but make every applicable check real, reproducible and exact-byte bound.
+
+The expected check set must be deterministically derived from Core + Research Profile + Publication Profile contracts. Non-applicable checks should normally be absent from the expected set rather than manufactured as ceremonial `PASS` rows.
+
+---
+
+## 17. WU-012 — Pre-merge generalization, coverage and quality-authority hardening
+
+WU-012 is now mandatory before Phase 4. It is a pre-approval repair unit, not a Pilot.
+
+### 17.1 WU-012A — Source Intake / completeness authority
+
+Implement a Profile-owned coverage authority that proves more than collector success without imposing arbitrary source-count quotas.
+
+Required properties:
+
+- every mandatory Profile coverage obligation has an explicit research/search disposition;
+- search/collector attempts that produced no usable Discovery can be recorded as negative coverage evidence instead of disappearing;
+- `SATISFIED` requires non-empty authoritative support appropriate to the obligation;
+- `NEEDS_RESEARCH` remains fail-closed;
+- `LIMITATION` preserves the unresolved boundary;
+- `NOT_APPLICABLE` is allowed only when the Profile contract explicitly permits it and records why;
+- a required initial obligation cannot be made READY merely by writing an empty `SATISFIED`/`NOT_APPLICABLE` row;
+- Profile Completeness remains capable of `LIMITED` where publication is responsible despite an explicit residual limitation.
+
+For Weekly, coverage should represent the relevant editorial/source search surface without demanding a story from every topic lane. `no material candidate found after an adequate search` is valid; `lane never searched and silently omitted` is not.
+
+### 17.2 WU-012B — Weekly Profile semantic guard
+
+Implement Profile-owned semantic validation for the Weekly concerns learned from Issue #9 and the Weekly specification.
+
+At minimum verify, against structured Draft/Publication output where machine-verifiable:
+
+- pre-window/background material used as a normal Weekly story has a reader-facing `why this issue` rationale;
+- each Late Breaking event has one substantive home, with other appearances reduced to references/brief connections;
+- Watchlist is reader-facing (`current state / unknown / what would change the assessment`) rather than Candidate Inventory or future-production TODO text;
+- known pipeline-management vocabulary does not leak into reader-facing prose by default;
+- chronology event time and current-week significance remain distinct;
+- carry-over obligations have explicit current-issue disposition.
+
+Keep this logic in the Weekly Profile / Weekly publication adapter, not in generic Core.
+
+### 17.3 WU-012C — Profile-aware, executable Quality Contract
+
+Replace free-text quality self-attestation with machine-verifiable check attestations.
+
+Each applicable quality check must bind at least:
+
+```text
+check_id
+check_contract/version
+validator identity
+exact source SHA-256
+exact PDF SHA-256 when PDF-relevant
+result artifact path or durable authority
+result artifact SHA-256/digest
+status
+```
+
+The semantic-publication stage must verify the attestation and its exact inputs, not merely the presence of a `PASS` string.
+
+Derive expected checks from three layers:
+
+```text
+Core checks
++ Research Profile checks
++ Publication Profile checks
+```
+
+Examples:
+
+- Core: subject/entity/property binding, identifier preservation, source-specific fail-closed boundaries, post-transform semantic revalidation;
+- Weekly: Weekly reader semantics from WU-012B;
+- Retrospective Period: period identity/label consistency, chronology/source mapping, required period synthesis;
+- Thematic: lineage/historical-attribution/closure requirements;
+- Long-form publication: TOC hierarchy, Technical Notes reader normalization and local tail/orphan checks, bibliography/reference layout, empty-wrapper suppression;
+- all publication profiles where applicable: build/PDF preflight and exact-byte authority.
+
+Prefer adapters around already-proven validators from the existing Weekly/Special codebase over rewriting equivalent logic.
+
+### 17.4 WU-012D — Retrospective Period operational support
+
+Add a canonical bounded-Period spec/schema and initializer (`period_profile` / `init-period` or an equivalent typed entrypoint).
+
+It must support at least representative:
+
+- monthly;
+- half-year;
+- annual;
+- explicitly bounded custom retrospective
+
+without depending on edition-specific revision scripts.
+
+Period reader labels must derive from Profile/coverage authority rather than copied prior-edition prose, closing the #49 family without globally forbidding legitimate neighboring-period chronology references.
+
+### 17.5 WU-012E — Minimal non-gating Series Research Layer
+
+Implement the minimum repository-owned Series authority needed to make the Foundations plan real rather than conceptual.
+
+Required capabilities:
+
+- series manifest and architecture version;
+- stable series/volume IDs;
+- lineage graph nodes/edges with evidence basis;
+- volume dependencies;
+- canonical reusable factual source/Evidence authority distinct from edition-specific Evidence Views;
+- cross-volume Evidence usage records;
+- unresolved lineage questions/research debt;
+- merge/split/resequence operations with explicit versioning;
+- dated frontier snapshots where required by the series plan.
+
+Per-volume Production State remains independent. A volume consumes a pinned Series snapshot/manifest but normal volume production still uses only Architecture Review and Publication Preview.
+
+A separate Series Architecture Review may be requested only for a genuine series-structure decision; it is not a mandatory stage in the normal volume lifecycle.
+
+### 17.6 WU-012F — Pilot scope fidelity without Core hard-coding
+
+Align `SP001` Pilot registry scope with the authoritative TS-001 backlog before any SP001 initialization.
+
+Do not solve this by adding China-specific fields to generic Thematic code. The registry/spec should carry the edition-specific dimensions and obligations, while Core only validates generic Thematic completeness/lineage mechanics.
+
+SP002/TS-002 and SP003/TS-003 must likewise be expressible as configuration/spec data, not new code branches.
+
+### 17.7 WU-012G — Generalization fixtures
+
+Add side-effect-free fixtures/tests for the cases listed in §16.4. The purpose is to prove that generic interfaces work beyond the Pilot identities, not to simulate full research output or create hidden production editions.
+
+No fixture may create real `sources/<pilot>/production-state.json` for W33/SP001 or begin external production.
+
+### 17.8 WU-012H — Issue → Guard matrix and anti-overvalidation audit
+
+Create the Issue → Guard matrix described in §16.5 and audit the resulting check set for redundancy.
+
+Rules:
+
+- one defect may have multiple defense layers, but exactly one layer must be named primary owner;
+- no deterministic recurring defect may rely only on Human memory;
+- no inherently visual/editorial concern should receive a brittle global validator merely to claim automation coverage;
+- existing Publication Preview should absorb residual visual judgment rather than creating another Human Gate;
+- duplicate validators that inspect the same invariant on the same immutable bytes should be consolidated unless the second check has a distinct threat model;
+- every retained validation must state what failure class it prevents.
+
+### 17.9 WU-012 exit condition
+
+WU-012 is complete only when all of the following are true:
+
+1. a weak/incomplete Source Intake cannot self-assert `READY` through empty completeness evidence;
+2. Weekly Issue #9 semantics are enforced at the appropriate Profile/publication boundary;
+3. quality PASS authority is executable/exact-byte bound and the required check set is Profile-aware;
+4. Retrospective Period has a canonical initializer and representative bounded-period fixtures;
+5. a minimal Foundations Series Research Layer exists and is exercised by dependent-volume fixtures;
+6. SP001 scope matches its TS-001 planning authority without Core specialization;
+7. later/unlisted Weekly/Thematic/Period/Series fixtures pass through the generic contracts;
+8. the material historical Human Review corpus has an explicit Issue → Guard ownership matrix;
+9. the normal lifecycle still has exactly two Human Gates;
+10. W33/SP001 production remains unstarted;
+11. the full candidate receives another whole-system audit and required cross-regression before Human approval is requested again.
+
+The existing WU-011 Repair Set remains historical evidence for the first coherent candidate. WU-012 findings/repairs must be recorded separately rather than retroactively pretending WU-011 had already satisfied these newly audited requirements.
+
+---
+
+## 18. Revised immediate next action
+
+Section 14 describes the original implementation sequence and is retained as historical planning context. **For the current branch state, this section is authoritative where it conflicts with §14 or the original Phase 4 entry condition.**
+
+Next actions are:
+
+1. keep PR #310 draft and unmerged;
+2. keep W33/SP001 production uninitialized;
+3. record the pre-approval audit findings in repository-owned Finding/Repair governance;
+4. execute WU-012A through WU-012H in priority order consistent with §16;
+5. run whole-system and cross-regression audits on the repaired candidate;
+6. update the worklog/Authority/PR review package;
+7. stop again at Human full-candidate review;
+8. only after explicit approval and merge to `main` may Phase 4 W33/SP001 production validation begin.
