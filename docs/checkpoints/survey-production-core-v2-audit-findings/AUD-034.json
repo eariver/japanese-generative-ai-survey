@@ -1,0 +1,32 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-034",
+  "edition": "CORE-V2",
+  "stage": "WU-012_AGENT_FIRST_REAUDIT",
+  "observed_problem": "The historical audit has distilled many Human Review defects into durable invariants, but Core v2 does not yet expose them as one concise stage/profile-aware prevention playbook that a new ChatGPT production session is required to apply. Without that mapping, deterministic defects can miss tooling protection and semantic/visual defects can depend on reviewer memory.",
+  "expected_behavior": "Every material recurring Human Review defect family should have one explicit primary prevention/inspection owner chosen from DETERMINISTIC_TOOL_CHECK, CHATGPT_RESEARCH_REVIEW, CHATGPT_EDITORIAL_REVIEW, CHATGPT_VISUAL_REVIEW, HUMAN_ARCHITECTURE_REVIEW, HUMAN_PUBLICATION_PREVIEW, or LEGACY_ONLY/NOT_APPLICABLE. Only crisp deterministic recurrence needs executable regression protection; semantic and visual judgment remains agent/Human-owned as appropriate.",
+  "actual_behavior": "docs/survey-production-core-v2-issue-prevention-checklist.md now provides the stage/profile-aware ownership map and required inspections, and AGENTS.md/session bootstrap require future ChatGPT production sessions to apply it while continuing autonomously after internally repairable findings.",
+  "production_workaround": null,
+  "classification": {
+    "scope": "QUALITY_CONTRACT",
+    "defect_kind": "CORRECTNESS",
+    "confidence": "high"
+  },
+  "requires_regression": false,
+  "provenance": {
+    "source_commit": "9349bd52641d3433cc219adea6565f44fe3dbf09",
+    "relevant_artifacts": [
+      "docs/survey-production-core-v2-historical-invariants.md",
+      "docs/survey-production-core-v2-historical-production-deep-audit.md",
+      "docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md",
+      "docs/survey-production-core-v2-issue-prevention-checklist.md",
+      "docs/survey-production-core-v2-session-bootstrap.md",
+      "AGENTS.md"
+    ],
+    "human_review_reference": "User premise correction and ChatGPT-first pre-approval re-audit, 2026-08-22"
+  },
+  "improvement_action": "Implemented by WU-012D as the canonical agent/tool/Human Issue Prevention Checklist without adding new Human Gates or brittle semantic validators.",
+  "regression_fixture": null,
+  "resolved_by_repair_set_id": null,
+  "status": "FIXED_GENERIC"
+}

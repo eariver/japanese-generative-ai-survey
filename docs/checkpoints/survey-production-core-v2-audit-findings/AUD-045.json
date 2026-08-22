@@ -1,0 +1,30 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-045",
+  "edition": "CORE-V2",
+  "stage": "WU-012_FIXED_HEAD_FINAL_AUDIT",
+  "observed_problem": "Fixed-head candidate 68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d had Worklog and Repair Set authority stating that AUD-039 through AUD-044 were implemented/FIXED_GENERIC, while the higher-precedence Design Authority still labeled the phase POST-COMPLETION RE-AUDIT REPAIR IN PROGRESS and described AUD-039 through AUD-044 as currently under repair/verification. A future session following authority precedence could therefore reconstruct the wrong readiness state even though the implementation tree itself was synchronized.",
+  "expected_behavior": "Before freezing a final-audit candidate, canonical status documents must agree on whether generic repairs are implemented. Because the final five-point PASS is intentionally recorded outside the candidate tree, candidate-tree status wording should be audit-stable: it may state that repairs are implemented and that exact-head CI/final-audit outcome is external/pending, but it must not claim repairs are still in progress after the Repair Set and Worklog already mark them implemented.",
+  "actual_behavior": "The Design Authority now uses an audit-stable WU-012 REPAIRS IMPLEMENTED / PRE-AUDIT CANDIDATE status, lists AUD-039 through AUD-045 as FIXED_GENERIC, and explicitly delegates exact-head CI/five-point PASS to PR/Human-review metadata rather than future candidate-tree edits. The former 68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d audit is recorded as invalidated by this finding, so its partial verdicts are not reused as final evidence.",
+  "production_workaround": null,
+  "classification": {
+    "scope": "CORE",
+    "defect_kind": "REVIEW_PROCESS",
+    "confidence": "high"
+  },
+  "requires_regression": false,
+  "provenance": {
+    "source_commit": "68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d",
+    "relevant_artifacts": [
+      "docs/survey-production-core-v2-authority.md",
+      "docs/checkpoints/survey-production-core-v2-worklog.md",
+      "docs/checkpoints/survey-production-core-v2-audit-findings/WU-012-repair-set.json",
+      "docs/survey-production-core-v2-final-audit-rule.md"
+    ],
+    "human_review_reference": "Owner-required all-changes-first fixed-head final audit, restarted 2026-08-22"
+  },
+  "improvement_action": "Synchronized the canonical Design Authority to the implemented-repair/pre-audit state, adopted audit-stable wording that delegates final exact-SHA PASS to PR/Human-review metadata, and invalidated the affected audit before restarting all five acceptance points on a later fully synchronized green head.",
+  "regression_fixture": null,
+  "resolved_by_repair_set_id": "REPAIR-WU012-2026-08-22",
+  "status": "FIXED_GENERIC"
+}

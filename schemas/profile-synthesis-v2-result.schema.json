@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/profile-synthesis-v2-result.schema.json",
+  "title": "Survey Production Core v2 Profile Synthesis Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "issue_id", "research_profile", "publication_profile", "synthesis_version", "status", "basis", "runner", "profile_payload", "publication_payload"],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "issue_id": {"type": "string", "minLength": 1},
+    "research_profile": {"enum": ["WEEKLY", "RETROSPECTIVE_PERIOD", "THEMATIC"]},
+    "publication_profile": {"type": "string", "minLength": 1},
+    "synthesis_version": {"type": "string", "pattern": "^v[0-9]+\\.[0-9]+$"},
+    "status": {"enum": ["DRAFT", "REVISED", "ESTABLISHED"]},
+    "basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["synthesis_input_sha256", "prompt_id", "prompt_sha256"],
+      "properties": {
+        "synthesis_input_sha256": {"$ref": "#/$defs/sha256"},
+        "prompt_id": {"const": "profile-synthesis-v2"},
+        "prompt_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "runner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "model", "invocation", "generated_at", "run_reference"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "model": {"type": "string", "minLength": 1},
+        "invocation": {"type": "string", "minLength": 1},
+        "generated_at": {"type": "string", "format": "date-time"},
+        "run_reference": {"type": ["string", "null"]}
+      }
+    },
+    "profile_payload": {"type": "object"},
+    "publication_payload": {"type": "object"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

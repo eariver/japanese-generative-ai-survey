@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/review-finding-v2.schema.json",
+  "title": "Survey Production Core v2 Review Finding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "finding_id", "edition", "stage", "observed_problem",
+    "expected_behavior", "actual_behavior", "production_workaround",
+    "classification", "requires_regression", "provenance", "improvement_action",
+    "regression_fixture", "resolved_by_repair_set_id", "status"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "finding_id": {"type": "string", "minLength": 1},
+    "edition": {"type": "string", "minLength": 1},
+    "stage": {"type": "string", "minLength": 1},
+    "observed_problem": {"type": "string", "minLength": 1},
+    "expected_behavior": {"type": "string", "minLength": 1},
+    "actual_behavior": {"type": "string", "minLength": 1},
+    "production_workaround": {"type": ["string", "null"]},
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "defect_kind", "confidence"],
+      "properties": {
+        "scope": {"enum": ["EDITION_LOCAL", "WEEKLY_PROFILE", "PERIOD_PROFILE", "THEMATIC_PROFILE", "CORE", "PUBLICATION_PROFILE", "QUALITY_CONTRACT", "SERIES_LAYER", "UNCLASSIFIED"]},
+        "defect_kind": {"enum": ["CORRECTNESS", "TRACEABILITY", "COVERAGE", "EDITORIAL", "PUBLICATION", "ORCHESTRATION", "COMPATIBILITY", "OTHER"]},
+        "confidence": {"enum": ["low", "medium", "high"]}
+      }
+    },
+    "requires_regression": {"type": "boolean"},
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_commit", "relevant_artifacts", "human_review_reference"],
+      "properties": {
+        "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "relevant_artifacts": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "human_review_reference": {"type": ["string", "null"]}
+      }
+    },
+    "improvement_action": {"type": ["string", "null"]},
+    "regression_fixture": {"type": ["string", "null"]},
+    "resolved_by_repair_set_id": {"type": ["string", "null"]},
+    "status": {"enum": ["OPEN", "CLASSIFIED", "FIXED_LOCAL", "FIXED_GENERIC", "DEFERRED", "CLOSED"]}
+  }
+}

@@ -1,0 +1,269 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/stage-checkpoint-v2.schema.json",
+  "title": "Survey Production Core v2 Agent Stage Checkpoint",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "issue_id",
+    "from_state",
+    "to_state",
+    "checkpoints",
+    "recorded_at",
+    "implementation",
+    "contract",
+    "artifacts",
+    "reviews",
+    "summary"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "issue_id": {"type": "string", "minLength": 1},
+    "from_state": {"$ref": "#/$defs/lifecycle"},
+    "to_state": {"$ref": "#/$defs/lifecycle"},
+    "checkpoints": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/checkpoint"}
+    },
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository_commit_sha", "orchestrator_version"],
+      "properties": {
+        "repository_commit_sha": {"$ref": "#/$defs/gitsha"},
+        "orchestrator_version": {"type": "string", "minLength": 1}
+      }
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pipeline_contract_version",
+        "pipeline_contract_sha256",
+        "quality_contract_version",
+        "quality_contract_sha256",
+        "research_profile_version",
+        "research_profile_sha256",
+        "publication_profile_version",
+        "publication_profile_sha256"
+      ],
+      "properties": {
+        "pipeline_contract_version": {"type": "string", "minLength": 1},
+        "pipeline_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "quality_contract_version": {"type": "string", "minLength": 1},
+        "quality_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "research_profile_version": {"type": "string", "minLength": 1},
+        "research_profile_sha256": {"$ref": "#/$defs/sha256"},
+        "publication_profile_version": {"type": "string", "minLength": 1},
+        "publication_profile_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/namedAuthority"}
+    },
+    "reviews": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["check_id", "kind", "status", "executor", "evidence", "result"],
+        "properties": {
+          "check_id": {"type": "string", "minLength": 1},
+          "kind": {"enum": ["DETERMINISTIC", "AGENT_RESEARCH", "AGENT_EDITORIAL", "AGENT_VISUAL"]},
+          "status": {"const": "PASS"},
+          "executor": {"type": "string", "minLength": 1},
+          "evidence": {"type": "string", "minLength": 1},
+          "result": {"$ref": "#/$defs/nullableAuthority"}
+        },
+        "allOf": [
+          {
+            "if": {"properties": {"kind": {"const": "DETERMINISTIC"}}, "required": ["kind"]},
+            "then": {"properties": {"result": {"$ref": "#/$defs/artifactAuthority"}}}
+          }
+        ]
+      }
+    },
+    "summary": {"type": "string", "minLength": 1}
+  },
+  "allOf": [
+    {"$ref": "#/$defs/localStageValidationReview"},
+    {"$ref": "#/$defs/issueInitializedArtifacts"},
+    {"$ref": "#/$defs/screeningArtifacts"},
+    {"$ref": "#/$defs/evidenceArtifacts"},
+    {"$ref": "#/$defs/selectionArtifacts"},
+    {"$ref": "#/$defs/architectureArtifacts"},
+    {"$ref": "#/$defs/draftArtifacts"},
+    {"$ref": "#/$defs/validationArtifacts"},
+    {"$ref": "#/$defs/publicationCandidateArtifacts"},
+    {"$ref": "#/$defs/freezeArtifacts"},
+    {"$ref": "#/$defs/releaseArtifacts"}
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "gitsha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "artifactAuthority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "nullableAuthority": {
+      "oneOf": [
+        {"$ref": "#/$defs/artifactAuthority"},
+        {"type": "null"}
+      ]
+    },
+    "namedAuthority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "path", "sha256"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "localStageValidationReview": {
+      "if": {
+        "properties": {
+          "from_state": {
+            "enum": [
+              "ISSUE_INITIALIZED",
+              "DISCOVERY_COLLECTED",
+              "CANDIDATES_NORMALIZED",
+              "EVIDENCE_REVIEWED",
+              "SELECTION_COMPLETE",
+              "ARCHITECTURE_ESTABLISHED",
+              "DRAFT_COMPLETE",
+              "VALIDATED_DRAFT",
+              "RELEASE_CANDIDATE"
+            ]
+          }
+        },
+        "required": ["from_state"]
+      },
+      "then": {
+        "properties": {
+          "reviews": {
+            "contains": {
+              "type": "object",
+              "properties": {
+                "check_id": {"const": "CORE_STAGE_CONTRACT"},
+                "kind": {"const": "DETERMINISTIC"},
+                "status": {"const": "PASS"},
+                "result": {"$ref": "#/$defs/artifactAuthority"}
+              },
+              "required": ["check_id", "kind", "status", "result"]
+            }
+          }
+        }
+      }
+    },
+    "issueInitializedArtifacts": {
+      "if": {"properties": {"from_state": {"const": "ISSUE_INITIALIZED"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"contains": {"type": "object", "properties": {"name": {"const": "discovery-acceptance"}}, "required": ["name"]}}}}
+    },
+    "screeningArtifacts": {
+      "if": {"properties": {"from_state": {"const": "DISCOVERY_COLLECTED"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"contains": {"type": "object", "properties": {"name": {"const": "screening-acceptance"}}, "required": ["name"]}}}}
+    },
+    "evidenceArtifacts": {
+      "if": {"properties": {"from_state": {"const": "CANDIDATES_NORMALIZED"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"allOf": [
+        {"contains": {"type": "object", "properties": {"name": {"const": "evidence-acceptance"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "edition-views-acceptance"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "materiality-ledger"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "profile-completeness"}}, "required": ["name"]}}
+      ]}}}
+    },
+    "selectionArtifacts": {
+      "if": {"properties": {"from_state": {"const": "EVIDENCE_REVIEWED"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"allOf": [
+        {"contains": {"type": "object", "properties": {"name": {"const": "candidate-matrix"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "candidate-selection"}}, "required": ["name"]}}
+      ]}}}
+    },
+    "architectureArtifacts": {
+      "if": {"properties": {"from_state": {"const": "SELECTION_COMPLETE"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"allOf": [
+        {"contains": {"type": "object", "properties": {"name": {"const": "issue-architecture"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "architecture-review-summary"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "architecture-review-attention"}}, "required": ["name"]}}
+      ]}}}
+    },
+    "draftArtifacts": {
+      "if": {"properties": {"from_state": {"const": "ARCHITECTURE_ESTABLISHED"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"allOf": [
+        {"contains": {"type": "object", "properties": {"name": {"const": "synthesis-input"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "synthesis-result"}}, "required": ["name"]}}
+      ]}}}
+    },
+    "validationArtifacts": {
+      "if": {"properties": {"from_state": {"const": "DRAFT_COMPLETE"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"allOf": [
+        {"contains": {"type": "object", "properties": {"name": {"const": "validated-source"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "publication-pdf"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "quality-regression-bundle"}}, "required": ["name"]}}
+      ]}}}
+    },
+    "publicationCandidateArtifacts": {
+      "if": {"properties": {"from_state": {"const": "VALIDATED_DRAFT"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"contains": {"type": "object", "properties": {"name": {"const": "publication-candidate"}}, "required": ["name"]}}}}
+    },
+    "freezeArtifacts": {
+      "if": {"properties": {"from_state": {"const": "RELEASE_CANDIDATE"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"allOf": [
+        {"contains": {"type": "object", "properties": {"name": {"const": "visual-review-record"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "freeze-record"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "release-manifest"}}, "required": ["name"]}}
+      ]}}}
+    },
+    "releaseArtifacts": {
+      "if": {"properties": {"from_state": {"const": "FROZEN"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"allOf": [
+        {"contains": {"type": "object", "properties": {"name": {"const": "merge-verification"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "release-record"}}, "required": ["name"]}}
+      ]}}}
+    },
+    "checkpoint": {
+      "enum": [
+        "discovery",
+        "screening",
+        "evidence",
+        "materiality",
+        "completeness",
+        "selection",
+        "architecture",
+        "draft",
+        "validation",
+        "publication_preview",
+        "freeze",
+        "release"
+      ]
+    },
+    "lifecycle": {
+      "enum": [
+        "ISSUE_INITIALIZED",
+        "DISCOVERY_COLLECTED",
+        "CANDIDATES_NORMALIZED",
+        "EVIDENCE_REVIEWED",
+        "SELECTION_COMPLETE",
+        "ARCHITECTURE_ESTABLISHED",
+        "DRAFT_COMPLETE",
+        "VALIDATED_DRAFT",
+        "RELEASE_CANDIDATE",
+        "FROZEN",
+        "RELEASED"
+      ]
+    }
+  }
+}

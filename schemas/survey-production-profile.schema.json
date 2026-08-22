@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/survey-production-profile.schema.json",
+  "title": "Survey Production Core v2 Production Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "issue_id",
+    "research_profile",
+    "publication_profile",
+    "research_scope",
+    "paths",
+    "contract"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "issue_id": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "research_profile": {"enum": ["WEEKLY", "RETROSPECTIVE_PERIOD", "THEMATIC"]},
+    "publication_profile": {"enum": ["WEEKLY_MAGAZINE", "LONGFORM_SPECIAL"]},
+    "research_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["question", "inclusion", "exclusion", "scope_dimensions", "initial_obligations", "temporal_policy"],
+      "properties": {
+        "question": {"type": "string", "minLength": 1},
+        "inclusion": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "exclusion": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "scope_dimensions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "initial_obligations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["obligation_id", "dimension", "description"],
+            "properties": {
+              "obligation_id": {"type": "string", "minLength": 1},
+              "dimension": {"type": "string", "minLength": 1},
+              "description": {"type": "string", "minLength": 1}
+            }
+          }
+        },
+        "temporal_policy": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["mode", "window_start", "window_end", "cutoff", "timezone"],
+              "properties": {
+                "mode": {"const": "ROLLING_WINDOW"},
+                "window_start": {"type": "string", "format": "date-time"},
+                "window_end": {"type": "string", "format": "date-time"},
+                "cutoff": {"type": "string", "format": "date-time"},
+                "timezone": {"type": "string", "minLength": 1}
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["mode", "start", "end", "as_of", "timezone"],
+              "properties": {
+                "mode": {"const": "BOUNDED_PERIOD"},
+                "start": {"type": "string", "format": "date-time"},
+                "end": {"type": "string", "format": "date-time"},
+                "as_of": {"type": "string", "format": "date-time"},
+                "timezone": {"type": "string", "minLength": 1}
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["mode", "as_of"],
+              "properties": {
+                "mode": {"const": "OPEN_HISTORY_AS_OF"},
+                "as_of": {"type": "string", "format": "date-time"}
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["mode", "as_of"],
+              "properties": {
+                "mode": {"const": "CURRENT_STATE_AS_OF"},
+                "as_of": {"type": "string", "format": "date-time"}
+              }
+            }
+          ]
+        }
+      }
+    },
+    "paths": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_root", "survey_root", "work_branch"],
+      "properties": {
+        "source_root": {"type": "string", "minLength": 1, "not": {"pattern": "(^/|(^|/)\\.\\.(/|$)|\\\\)"}},
+        "survey_root": {"type": "string", "minLength": 1, "not": {"pattern": "(^/|(^|/)\\.\\.(/|$)|\\\\)"}},
+        "work_branch": {"type": "string", "minLength": 1}
+      }
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pipeline_contract_version",
+        "pipeline_contract_sha256",
+        "quality_contract_version",
+        "quality_contract_sha256",
+        "research_profile_version",
+        "research_profile_sha256",
+        "publication_profile_version",
+        "publication_profile_sha256"
+      ],
+      "properties": {
+        "pipeline_contract_version": {"type": "string", "minLength": 1},
+        "pipeline_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "quality_contract_version": {"type": "string", "minLength": 1},
+        "quality_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "research_profile_version": {"type": "string", "minLength": 1},
+        "research_profile_sha256": {"$ref": "#/$defs/sha256"},
+        "publication_profile_version": {"type": "string", "minLength": 1},
+        "publication_profile_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

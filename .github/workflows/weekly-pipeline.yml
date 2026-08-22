@@ -48,9 +48,12 @@ on:
       - 'scripts/generate_grok_trend_run.py'
       - 'scripts/source_intake.py'
       - 'scripts/build_screening_index.py'
+      - 'scripts/survey_*_v2.py'
       - 'tests/test_*.py'
       - 'config/weekly-pipeline.json'
       - 'config/source-intake.json'
+      - 'config/survey-production-v2*.json'
+      - 'config/survey-production-v2-requirements.txt'
       - 'config/prompts/grok/x-trend-sensor-v0.4.md'
       - 'schemas/weekly-pipeline-state.schema.json'
       - 'schemas/collector-instruction.schema.json'
@@ -58,6 +61,9 @@ on:
       - 'schemas/raw-source-index.schema.json'
       - 'schemas/screening-record.schema.json'
       - 'schemas/weekly-release-manifest.schema.json'
+      - 'schemas/*-v2.schema.json'
+      - 'schemas/survey-production-*.schema.json'
+      - 'schemas/survey-discovery-record.schema.json'
       - 'sources/*/raw-index.json'
       - 'sources/*/release-manifest.json'
       - 'sources/**/raw/**'
@@ -71,9 +77,12 @@ on:
       - 'scripts/generate_grok_trend_run.py'
       - 'scripts/source_intake.py'
       - 'scripts/build_screening_index.py'
+      - 'scripts/survey_*_v2.py'
       - 'tests/test_*.py'
       - 'config/weekly-pipeline.json'
       - 'config/source-intake.json'
+      - 'config/survey-production-v2*.json'
+      - 'config/survey-production-v2-requirements.txt'
       - 'config/prompts/grok/x-trend-sensor-v0.4.md'
       - 'schemas/weekly-pipeline-state.schema.json'
       - 'schemas/collector-instruction.schema.json'
@@ -81,6 +90,9 @@ on:
       - 'schemas/raw-source-index.schema.json'
       - 'schemas/screening-record.schema.json'
       - 'schemas/weekly-release-manifest.schema.json'
+      - 'schemas/*-v2.schema.json'
+      - 'schemas/survey-production-*.schema.json'
+      - 'schemas/survey-discovery-record.schema.json'
       - 'sources/*/raw-index.json'
       - 'sources/*/release-manifest.json'
       - 'sources/**/raw/**'
@@ -106,6 +118,12 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Install Survey Production Core v2 test dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install -r config/survey-production-v2-requirements.txt
 
       - name: Validate JSON configuration and schema syntax
         shell: bash
