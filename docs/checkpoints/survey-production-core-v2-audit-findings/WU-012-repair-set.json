@@ -9,12 +9,14 @@
     "AUD-032",
     "AUD-034",
     "AUD-035",
-    "AUD-036"
+    "AUD-036",
+    "AUD-037"
   ],
   "affected_components": [
     "ChatGPT-first production operator/session contract",
     "compact local Stage Checkpoint orchestration",
     "per-stage implementation and contract provenance",
+    "lifecycle-specific canonical artifact binding",
     "Issue Prevention Checklist and Weekly editorial review ownership",
     "profile-aware deterministic/semantic/visual quality review",
     "generic Retrospective Period bootstrap",
@@ -54,7 +56,11 @@
     "961a6370bfe5ba45bf9e8e96ad7fc76ce5b7dac9",
     "bd20c22e55599359a5b250bb06a10f0c0213a1f2",
     "d0635c4ffb643cff9a102abd048502218030a94f",
-    "1027a926d7e623f7881131bff5290af351dbc374"
+    "1027a926d7e623f7881131bff5290af351dbc374",
+    "5223cc69a49c384ac9599484011e19acc7ee1b1f",
+    "391e02b744f823872f5d01b0463accf04bf8c3d3",
+    "7080b0173a0d54c9a145aef0a7ca0549a08bcf06",
+    "63fbe43c32cf5d798e1c27a3a55801efc869220d"
   ],
   "regression_fixtures": [
     "tests/test_survey_agent_control_v2.py",
@@ -63,7 +69,7 @@
     "tests/test_survey_pilot_bootstrap_v2.py",
     "tests/test_survey_release_checkpoint_v2.py"
   ],
-  "compatibility_impact": "Core v2 improvement branch only. Legacy Action/Handoff/Attestation code remains available for historical and compatibility testing but is no longer the canonical production hot path. Initialization implementation identity remains historical provenance while later stages may use newer reviewed tooling. Immutable Raw provenance and exact Publication Preview/Freeze/Release byte authority are retained. Frozen historical releases are unchanged and W33/SP001 remain unstarted until Human approval and merge.",
+  "compatibility_impact": "Core v2 improvement branch only. Legacy Action/Handoff/Attestation code remains available for historical and compatibility testing but is no longer the canonical production hot path. Initialization implementation identity remains historical provenance while later stages may use newer reviewed tooling. Every compact lifecycle checkpoint now binds the existing canonical logical artifacts for that stage. Immutable Raw provenance and exact Publication Preview/Freeze/Release byte authority are retained. Frozen historical releases are unchanged and W33/SP001 remain unstarted until Human approval and merge.",
   "validation_results": [
     {
       "check": "Survey Production Core v2 CI on final WU-012 semantic candidate",
