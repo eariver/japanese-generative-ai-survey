@@ -81,15 +81,18 @@ def build_candidate(
     bundle = quality.validate_bundle(repo_root, quality_bundle_path, issue_id=issue_id)
     if bundle["source"]["path"] != _rel(repo_root, source) or bundle["source"]["sha256"] != core.sha256_file(source):
         raise ValueError("quality bundle does not bind exact Publication Candidate source bytes")
-    if bundle["pdf"]["path"] != _rel(repo_root, pdf) or bundle["pdf"]["sha256"] != core.sha256_file(pdf):
+    pdf_authority = dict(bundle["pdf"])
+    if pdf_authority["sha256"] != core.sha256_file(pdf) or pdf_authority["byte_count"] != pdf.stat().st_size:
         raise ValueError("quality bundle does not bind exact Publication Candidate PDF bytes")
+    if pdf_authority["storage"] == "REPOSITORY_FILE" and pdf_authority["path"] != _rel(repo_root, pdf):
+        raise ValueError("quality bundle repository PDF path differs from Publication Candidate bytes")
     base = {
         "schema_version": "2.0-rc1",
         "issue_id": issue_id,
         "publication_profile": publication_profile,
         "status": "READY_FOR_PUBLICATION_PREVIEW",
         "source": _authority(repo_root, source),
-        "pdf": {**_authority(repo_root, pdf), "page_count": page_count},
+        "pdf": {**pdf_authority, "page_count": page_count},
         "quality_bundle": _authority(repo_root, quality_bundle_path),
     }
     payload = dict(base)
@@ -106,12 +109,15 @@ def validate_candidate(repo_root: Path, path: Path, *, issue_id: str | None = No
     base = {key: payload[key] for key in ("schema_version", "issue_id", "publication_profile", "status", "source", "pdf", "quality_bundle")}
     if payload["candidate_sha256"] != core.sha256_object(base):
         raise ValueError("Publication Candidate content digest mismatch")
-    for key in ("source", "pdf", "quality_bundle"):
+    for key in ("source", "quality_bundle"):
         ref = payload[key]
         artifact = _safe_file(repo_root, repo_root / ref["path"], f"Publication Candidate {key}")
         if core.sha256_file(artifact) != ref["sha256"] or artifact.stat().st_size != ref["byte_count"]:
             raise ValueError(f"Publication Candidate {key} bytes drifted")
-    quality.validate_bundle(repo_root, repo_root / payload["quality_bundle"]["path"], issue_id=payload["issue_id"])
+    bundle = quality.validate_bundle(repo_root, repo_root / payload["quality_bundle"]["path"], issue_id=payload["issue_id"])
+    candidate_pdf = {key: payload["pdf"][key] for key in ("storage", "path", "sha256", "byte_count", "actions_artifact")}
+    if candidate_pdf != bundle["pdf"]:
+        raise ValueError("Publication Candidate PDF authority diverges from coupled quality bundle")
     return payload
 
 
@@ -271,10 +277,19 @@ def validate_release_manifest(repo_root: Path, path: Path) -> dict[str, Any]:
     for field in ("source_path", "source_sha256", "pdf_path", "pdf_sha256", "page_count"):
         if manifest[field] != freeze[field]:
             raise ValueError(f"Release manifest diverges from Freeze record: {field}")
-    for path_field, sha_field in (("source_path", "source_sha256"), ("pdf_path", "pdf_sha256")):
-        artifact = _safe_file(repo_root, repo_root / manifest[path_field], path_field)
-        if core.sha256_file(artifact) != manifest[sha_field]:
-            raise ValueError(f"frozen artifact bytes drift before release: {path_field}")
+    source = _safe_file(repo_root, repo_root / manifest["source_path"], "source_path")
+    if core.sha256_file(source) != manifest["source_sha256"]:
+        raise ValueError("frozen artifact bytes drift before release: source_path")
+    candidate_path = _safe_file(repo_root, repo_root / freeze["publication_candidate_path"], "Publication Candidate")
+    if core.sha256_file(candidate_path) != freeze["publication_candidate_sha256"]:
+        raise ValueError("Freeze record Publication Candidate SHA drift")
+    candidate = validate_candidate(repo_root, candidate_path, issue_id=manifest["issue_id"])
+    if (
+        candidate["pdf"]["path"] != manifest["pdf_path"]
+        or candidate["pdf"]["sha256"] != manifest["pdf_sha256"]
+        or candidate["pdf"]["page_count"] != manifest["page_count"]
+    ):
+        raise ValueError("Release manifest diverges from durable Publication Candidate PDF authority")
     return manifest
 
 
