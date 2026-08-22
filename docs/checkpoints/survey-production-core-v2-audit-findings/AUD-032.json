@@ -5,8 +5,8 @@
   "stage": "WU-012_AGENT_FIRST_REAUDIT",
   "observed_problem": "The SP001 Pilot registry duplicates a reduced editorial scope (lineage, distribution, reasoning, coding) instead of referencing the authoritative TS-001 planning document. Because ChatGPT is the research operator, duplicating thematic scope into bootstrap configuration creates a stale second authority and can narrow research before the agent reads the backlog.",
   "expected_behavior": "Thematic bootstrap should identify the target planning authority and stable production identity, then require ChatGPT to read the canonical backlog/series guide to construct the Production Profile and initial research obligations. Edition-specific scope belongs in the planning document/Profile, not duplicated Pilot literals or generic Core code.",
-  "actual_behavior": "config/survey-production-v2-pilots.json currently embeds a four-dimension SP001 scope that is narrower than docs/thematic-special-backlog.md, and survey_pilot_bootstrap_v2.py treats those registry literals as immutable launch identity.",
-  "production_workaround": "Do not initialize SP001 until bootstrap authority is changed to reference TS-001 planning scope. Do not fix this by copying the entire backlog into another JSON registry.",
+  "actual_behavior": "The Pilot registry now fixes only stable SP001 identity/path/temporal mechanics and points to TS-001 in docs/thematic-special-backlog.md. survey_pilot_bootstrap_v2.py requires a schema-valid ChatGPT materialization bound to the exact current planning-authority bytes before deterministic initialization.",
+  "production_workaround": null,
   "classification": {
     "scope": "EDITION_LOCAL",
     "defect_kind": "COVERAGE",
@@ -18,13 +18,15 @@
     "relevant_artifacts": [
       "config/survey-production-v2-pilots.json",
       "docs/thematic-special-backlog.md",
+      "schemas/thematic-scope-spec-v2.schema.json",
       "scripts/survey_pilot_bootstrap_v2.py",
-      "docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md"
+      "tests/test_survey_pilot_bootstrap_v2.py",
+      "docs/survey-production-core-v2-session-bootstrap.md"
     ],
     "human_review_reference": "User premise correction and ChatGPT-first pre-approval re-audit, 2026-08-22"
   },
-  "improvement_action": "Implement WU-012E: make SP001 bootstrap reference the canonical TS-001 planning authority and let the agent materialize Profile obligations from that authority, while keeping only stable identity/path/as-of mechanics in bootstrap configuration.",
-  "regression_fixture": null,
+  "improvement_action": "Implemented by WU-012E: SP001 bootstrap references TS-001 canonical planning authority and treats scope materialization as an internal ChatGPT action rather than duplicated bootstrap truth.",
+  "regression_fixture": "tests/test_survey_pilot_bootstrap_v2.py",
   "resolved_by_repair_set_id": null,
-  "status": "OPEN"
+  "status": "FIXED_GENERIC"
 }
