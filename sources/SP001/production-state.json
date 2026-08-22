@@ -3,7 +3,7 @@
   "issue_id": "SP001",
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
-  "lifecycle_state": "DISCOVERY_COLLECTED",
+  "lifecycle_state": "CANDIDATES_NORMALIZED",
   "profile": {
     "path": "sources/SP001/production-profile.json",
     "sha256": "91836f2f255bec01887d85619da792c49a74bf9a7ccc1c861f81698e40642f44"
@@ -31,7 +31,7 @@
     "publication_preview": null
   },
   "target_gate": "ARCHITECTURE_REVIEW",
-  "next_action": "stage:screening",
+  "next_action": "stage:evidence-materiality-completeness",
   "terminal_reason": null,
   "exception_gate": {
     "status": "inactive",
@@ -39,7 +39,7 @@
   },
   "machine_checkpoints": {
     "discovery": "passed",
-    "screening": "pending",
+    "screening": "passed",
     "evidence": "pending",
     "materiality": "pending",
     "completeness": "pending",
@@ -56,7 +56,10 @@
       "path": "sources/SP001/orchestration/v2/checkpoints/ISSUE_INITIALIZED.json",
       "sha256": "f9892b0e1a8c4b4ba2bfadb46636af852dd9313de550d3481ffd24e9e217588e"
     },
-    "screening": null,
+    "screening": {
+      "path": "sources/SP001/orchestration/v2/checkpoints/DISCOVERY_COLLECTED.json",
+      "sha256": "65abc38cdf484d7065c879434c0ba423b3f08be6208ec7781162eafcb5820593"
+    },
     "evidence": null,
     "materiality": null,
     "completeness": null,
@@ -86,6 +89,12 @@
       "to": "DISCOVERY_COLLECTED",
       "recorded_at": "2026-08-22T16:11:17Z",
       "repository_commit_sha": "c6e58ab30c113cb25bf8b1b38919ade70b33e2b1"
+    },
+    {
+      "from": "DISCOVERY_COLLECTED",
+      "to": "CANDIDATES_NORMALIZED",
+      "recorded_at": "2026-08-22T16:20:06Z",
+      "repository_commit_sha": "881108ebeace224342e7a18128912450ea1f9078"
     }
   ]
 }
