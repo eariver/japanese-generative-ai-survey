@@ -41,6 +41,62 @@ class SurveyQualityV2Tests(unittest.TestCase):
         self.assertEqual({row["check_id"] for row in payload["checks"]}, quality.REQUIRED_CHECKS)
         self.assertEqual(payload["source"]["path"], "survey/main.tex")
         self.assertEqual(payload["pdf"]["path"], "survey/main.pdf")
+        self.assertEqual(payload["pdf"]["storage"], "REPOSITORY_FILE")
+        self.assertIsNone(payload["pdf"]["actions_artifact"])
+
+    def test_actions_artifact_authority_survives_ephemeral_materialization_removal(self) -> None:
+        temp, root = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        source = root / "survey/main.tex"
+        pdf = root / "out/materialized/main.pdf"
+        source.parent.mkdir(parents=True)
+        pdf.parent.mkdir(parents=True)
+        source.write_text("validated source\n", encoding="utf-8")
+        pdf.write_bytes(b"%PDF-1.7\nactions-fixture\n")
+        authority = {
+            "storage": "GITHUB_ACTIONS_ARTIFACT",
+            "path": "main.pdf",
+            "sha256": quality.core.sha256_file(pdf),
+            "byte_count": pdf.stat().st_size,
+            "actions_artifact": {
+                "repository": "eariver/japanese-generative-ai-survey",
+                "workflow_run_id": 32558585352,
+                "artifact_id": 123456789,
+                "artifact_name": "survey-SP001-v2",
+                "artifact_digest": "sha256:" + "a" * 64,
+            },
+        }
+        output = root / "quality/regression.json"
+        quality.build_bundle(root, "SP001", source, pdf, self.complete_checks(), output, authority)
+        pdf.unlink()
+
+        payload = quality.validate_bundle(root, output, issue_id="SP001")
+        self.assertEqual(payload["pdf"], authority)
+
+    def test_actions_artifact_authority_must_match_inspected_pdf_bytes(self) -> None:
+        temp, root = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        source = root / "survey/main.tex"
+        pdf = root / "out/materialized/main.pdf"
+        source.parent.mkdir(parents=True)
+        pdf.parent.mkdir(parents=True)
+        source.write_text("validated source\n", encoding="utf-8")
+        pdf.write_bytes(b"%PDF-1.7\nactions-fixture\n")
+        authority = {
+            "storage": "GITHUB_ACTIONS_ARTIFACT",
+            "path": "main.pdf",
+            "sha256": "0" * 64,
+            "byte_count": pdf.stat().st_size,
+            "actions_artifact": {
+                "repository": "eariver/japanese-generative-ai-survey",
+                "workflow_run_id": 1,
+                "artifact_id": 2,
+                "artifact_name": "fixture",
+                "artifact_digest": "sha256:" + "b" * 64,
+            },
+        }
+        with self.assertRaisesRegex(ValueError, "SHA does not match"):
+            quality.build_bundle(root, "SP001", source, pdf, self.complete_checks(), root / "quality/regression.json", authority)
 
     def test_missing_member_of_coupled_family_fails_closed(self) -> None:
         checks = self.complete_checks()
