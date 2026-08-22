@@ -33,7 +33,7 @@ short user request naming target + desired Human Gate
 -> stop only at Architecture Review, Publication Preview, or a genuine Exception Gate
 ```
 
-The normal local path no longer requires the full legacy control-plane ceremony of Action Spec → Handoff Request → Handoff → Action Result → Validation Attestation. Legacy code remains in the repository as historical/compatibility material, but it is not the canonical production hot path.
+The normal local path no longer requires the full legacy control-plane ceremony of Action Spec → Handoff Request → Handoff → Action Result → Validation Attestation. Legacy code remains in the repository as historical/compatibility material, but it is not the canonical production hot path. Canonical `stage_plan` entries explicitly set `handoff_required=false`; legacy compatibility fixtures may opt into the old requirement only when testing that historical path.
 
 The normal Human Gate count remains exactly two:
 
@@ -124,6 +124,7 @@ Removed from the canonical local hot path:
 - mandatory Action Spec per local stage;
 - mandatory Handoff Request / Handoff per local stage;
 - mandatory Action Result / Validation Attestation ceremony where no distinct external boundary exists;
+- canonical `stage_plan` Handoff requirements;
 - edition-wide implementation commit lock-in;
 - universal quality-check lists applied to unrelated Profiles;
 - proposed extra machine Series engine before demonstrated need;
@@ -141,13 +142,21 @@ Retained because they protect real failure modes:
 - exact Publication Candidate / Preview / Freeze / Release byte chain;
 - Release reconciliation/idempotency at the external irreversible boundary.
 
-## 8. Whole-candidate audit finding discovered during closure
+## 8. Whole-candidate findings discovered during closure
 
-The final audit found one new Core traceability defect, `AUD-037`:
+The final audit found and repaired two additional Core contradictions before Human review.
 
-> Several compact local stages could theoretically advance with a PASS review record while binding no canonical stage artifact because those lifecycle states had no required artifact set.
+### AUD-037 — review-only advancement provenance gap
 
-This was repaired before closure. The Stage Checkpoint schema is now lifecycle-aware and requires the existing canonical logical artifacts for every transition. A regression test rejects review-only Screening advancement. The repair preserves compact orchestration while restoring exact artifact authority.
+Several compact local stages could theoretically advance with a PASS review record while binding no canonical stage artifact because those lifecycle states had no required artifact set.
+
+The Stage Checkpoint schema is now lifecycle-aware and requires the existing canonical logical artifacts for every transition. A regression test rejects review-only Screening advancement. The repair preserves compact orchestration while restoring exact artifact authority.
+
+### AUD-038 — canonical config still advertised legacy Handoff requirements
+
+The authority/config already declared `COMPACT_AGENT_CHECKPOINT` as the canonical local control model, but every `stage_plan` entry still carried `handoff_required=true` from the legacy orchestrator path. The new agent controller ignored the field, yet a repository reader or legacy planner could reasonably interpret the canonical configuration as requiring the machinery that WU-012 explicitly removed from the hot path.
+
+All canonical stage entries now set `handoff_required=false`. The legacy Handoff compatibility fixture explicitly opts back into the old requirement only when testing that historical path, and a regression asserts that canonical stages do not require Handoffs.
 
 No unresolved non-deferred pre-merge finding remains from WU-012.
 
@@ -163,7 +172,7 @@ Semantic implementation head `1d6e37f48cd24ce96ef7970df0e70697e546f2e3` passed a
 | Pipeline contract tests | PASS | `32568620721` |
 | Weekly pipeline spine + committed Raw integrity | PASS | `32568620741` |
 
-Closure/authority metadata commits after this head must also remain CI-green before the Human review package is considered synchronized.
+Closure/authority/config synchronization after this head must also remain CI-green before the Human review package is considered synchronized.
 
 ## 10. Finding / Repair Set disposition
 
@@ -178,6 +187,7 @@ WU-012 repaired findings:
 - AUD-035 — `FIXED_GENERIC`
 - AUD-036 — `FIXED_GENERIC`
 - AUD-037 — `FIXED_GENERIC`
+- AUD-038 — `FIXED_GENERIC`
 
 Deliberately deferred:
 
@@ -198,9 +208,9 @@ At this closure point:
 
 ## 12. Stop condition
 
-After closure metadata itself passes the required cross-regression checks, the next action is **Human full-candidate review of PR #310**.
+After the final synchronized head passes the required cross-regression checks, the next action is **Human full-candidate review of PR #310**.
 
-Do not perform additional architectural expansion merely to make the candidate look more complete. New code before Human review is justified only if closure synchronization exposes a concrete defect.
+Do not perform additional architectural expansion merely to make the candidate look more complete. New code before Human review is justified only if final synchronization exposes a concrete defect.
 
 If the Human review approves the candidate:
 
