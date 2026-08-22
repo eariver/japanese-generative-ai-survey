@@ -57,6 +57,15 @@
     ]
   },
   "implementation_control_roots": ["config", "schemas", "scripts", ".github/workflows"],
+  "workflow_control": {
+    "dispatch_ref": "main",
+    "assistant_control_workflow": "assistant-control-v2.yml",
+    "production_control_workflow": "survey-production-v2-control.yml",
+    "release_workflow": "survey-production-v2-release.yml",
+    "handler_dispatch": {
+      "stage:release": "survey-production-v2-release.yml"
+    }
+  },
   "research_profiles": {
     "WEEKLY": {
       "version": "2.0-rc1",
