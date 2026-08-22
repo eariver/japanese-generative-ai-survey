@@ -6,6 +6,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from scripts import survey_completeness_v2 as completeness
+from scripts import survey_production_v2 as core
 from scripts import survey_screening_v2 as screening
 
 
@@ -38,17 +39,37 @@ class SurveyCompletenessV2NamedObligationTests(unittest.TestCase):
         }
 
     def call_guard(self, discovery_path: Path, result: dict) -> list[str]:
-        dummy = discovery_path.parent / "dummy.json"
+        root = discovery_path.parent
+        profile_path = root / "profile.json"
+        ledger_path = root / "ledger.json"
+        dummy = root / "dummy.json"
+        discoveries = screening.read_jsonl(discovery_path)
+        core.write_json(
+            profile_path,
+            {"research_scope": {"scope_dimensions": ["lineage"]}},
+        )
+        core.write_json(
+            ledger_path,
+            {
+                "rows": [
+                    {
+                        "discovery_id": row["discovery_id"],
+                        "evidence_task_ids": [],
+                    }
+                    for row in discoveries
+                ]
+            },
+        )
         with patch("scripts.survey_completeness_v2.evidence.validate_completeness", return_value=[]):
             return completeness.validate_profile_completeness(
                 result,
-                discovery_path.parent,
-                dummy,
+                root,
+                profile_path,
                 discovery_path,
                 dummy,
                 dummy,
                 dummy,
-                dummy,
+                ledger_path,
                 "4" * 40,
             )
 
@@ -82,7 +103,12 @@ class SurveyCompletenessV2NamedObligationTests(unittest.TestCase):
                 "obligations": [
                     {
                         "obligation_id": "gap:shared",
+                        "dimension": "lineage",
+                        "description": "dispose every Discovery declaring the shared obligation",
+                        "status": "SATISFIED",
                         "discovery_ids": ["gap-a"],
+                        "evidence_task_ids": [],
+                        "rationale": "fixture obligation",
                     }
                 ]
             }
