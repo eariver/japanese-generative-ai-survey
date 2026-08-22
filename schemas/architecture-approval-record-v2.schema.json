@@ -4,7 +4,7 @@
   "title": "Survey Production Core v2 Architecture Approval Record",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "approval_id", "issue_id", "gate", "decision", "architecture_sha256", "architecture_review_summary_sha256", "reviewed_by", "reviewed_at", "review_reference"],
+  "required": ["schema_version", "approval_id", "issue_id", "gate", "decision", "architecture_sha256", "architecture_review_summary_sha256", "architecture_review_attention_sha256", "reviewed_by", "reviewed_at", "review_reference"],
   "properties": {
     "schema_version": {"const": "2.0-rc1"},
     "approval_id": {"type": "string", "minLength": 1},
@@ -13,11 +13,10 @@
     "decision": {"const": "APPROVED"},
     "architecture_sha256": {"$ref": "#/$defs/sha256"},
     "architecture_review_summary_sha256": {"$ref": "#/$defs/sha256"},
+    "architecture_review_attention_sha256": {"$ref": "#/$defs/sha256"},
     "reviewed_by": {"type": "string", "minLength": 1},
     "reviewed_at": {"type": "string", "format": "date-time"},
     "review_reference": {"type": "string", "minLength": 1}
   },
-  "$defs": {
-    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
-  }
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
 }
