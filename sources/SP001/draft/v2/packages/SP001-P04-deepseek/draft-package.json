@@ -1,0 +1,1615 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "SP001-P04-deepseek",
+  "basis": {
+    "production_profile_sha256": "91836f2f255bec01887d85619da792c49a74bf9a7ccc1c861f81698e40642f44",
+    "architecture_sha256": "1b41953af694e896fe899c84d542e722e6169809cb1f9baf3cd56f14a2071aec",
+    "architecture_review_summary_sha256": "a2e28d374c18a10e91ac85ddfe51e2b8cb051b3b9a70d59e40d300cbfa4c9218",
+    "architecture_approval_sha256": "e68f24f5f9ec7a031fd73457c99fba76569a95e74a3c01b3c0623a9973e2eb9b",
+    "candidate_matrix_sha256": "d6ef2b299a8e007783a01cc3817418d19cdc9576aa0a3074988128cb7185b18a",
+    "candidate_selection_sha256": "48af588ef8eae58d16189804b97bdb6af114cb0560df27f19bc2a9c8e81cdd3e",
+    "evidence_acceptance_sha256": "62b73f33040fce256979509687e13462844d7792f37a1d67d562b6a2b12b9fe1"
+  },
+  "package": {
+    "title": "DeepSeek：MLA/MoE効率化からreasoning RLとagentic servingへ",
+    "purpose": "DeepSeek-V2のMLA/DeepSeekMoEをfamily-defining efficiency transitionとして置き、R1/R1-Zeroのreasoning RL、V4-Flash-0731のagentic/serving endpointへ接続する。",
+    "drafting_order": 4,
+    "primary_candidate_ids": [
+      "candidate:SP001:2d15e3527bd81c4a",
+      "candidate:SP001:d70d85d9062c65ce",
+      "candidate:SP001:8ffaa0ad625b0705"
+    ],
+    "supporting_candidate_ids": [],
+    "must_cover_requirements": [
+      "DeepSeek-V2のKV-cache/throughput等の数値比較を論文の評価条件から切り離さない。",
+      "R1-Zero、R1、distilled Qwen/Llama variantsを異なるmodel subjectsとして明確に分離する。",
+      "V4-Flash-0731で直接確認できるagentic positioningとvLLM/DSpark supportのみをcurrent endpointとして用い、別sourceのV4 architectureを補完しない。"
+    ],
+    "boundaries": [
+      "Paper-reported efficiency comparisons are setup-bound and are not generalized across unrelated serving stacks.",
+      "The broader DeepSeek V4 architecture is not silently imported into the V4-Flash-0731 Evidence boundary.",
+      "Paper-reported efficiency comparisons must retain the stated comparison setup and must not be generalized across unrelated serving stacks.",
+      "Native R1/R1-Zero and distilled Qwen/Llama-based variants are different model subjects and must remain separately attributed.",
+      "The bound 0731 update is sufficient for agentic/serving endpoint evidence but does not independently restate every architecture detail of the broader V4 preview.",
+      "Verify V4-Flash-0731 context architecture, agentic positioning, and official vLLM/DSpark deployment support.: The official 0731 model card verifies agentic positioning and vLLM/DSpark deployment support; full context-architecture verification is retained as a bounded limitation rather than inferred from separate V4 sources."
+    ]
+  },
+  "candidate_matrix": {
+    "schema_version": "2.0-rc1",
+    "issue_id": "SP001",
+    "research_profile": "THEMATIC",
+    "basis": {
+      "production_profile_sha256": "91836f2f255bec01887d85619da792c49a74bf9a7ccc1c861f81698e40642f44",
+      "profile_completeness_sha256": "61c3f183c01dae15a81ffe6d0e2d682754b7304d8402643d57bbcc6e3a2bb61e",
+      "materiality_ledger_sha256": "9ad5ff43187ab5c37aa8de677d99a6d6dc263156b7c4c02e9e344736d0c32ca5",
+      "evidence_acceptance_sha256": "62b73f33040fce256979509687e13462844d7792f37a1d67d562b6a2b12b9fe1",
+      "edition_views_acceptance_sha256": "00d0ecf9ffa52728b5af1cf963073ff8fe3324b18683ace2cb46ee0a14f17f28"
+    },
+    "rows": [
+      {
+        "candidate_id": "candidate:SP001:7c7f00b8518d5360",
+        "evidence_task_id": "evidence:SP001:11ce8f2212731f9d",
+        "discovery_ids": [
+          "SP001-D006"
+        ],
+        "evidence_sha256": "8512a86c5e8c99a280ca77ae54e6299f9c8b93cc40c01e4ff202140d23fe72ba",
+        "edition_view_sha256": "3e289139fb4e8c12b3051e084e41e40dd66ea9151f0fb5c140bae6ef7ccefeb2",
+        "title": "ChatGLM: A Family of Large Language Models from GLM-130B to GLM-4 All Tools",
+        "artifact_type": "PAPER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "historical_lineage",
+          "model_family_strategy",
+          "capability_evolution",
+          "developer_ecosystem_and_distribution"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Benchmark results in the paper are author evaluations and must not be merged into an incompatible cross-family ranking."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "glm"
+          ],
+          "transition_ids": [
+            "glm4-all-tools"
+          ],
+          "inheritance_note": "Establishes the GLM-4 agent/tool transition without relying on later retrospection.",
+          "historical_attribution_caveat": "All Tools behavior is attributed to the named GLM-4-era artifact."
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:32bfd3836736342e",
+        "evidence_task_id": "evidence:SP001:1336dced73cff5a4",
+        "discovery_ids": [
+          "SP001-D018"
+        ],
+        "evidence_sha256": "b15f05b35747f2c5b7d5a182a2436eea7905af840f2a935f2b065ed64d062481",
+        "edition_view_sha256": "16f5857570921a444784a4fdb3cd14cdbcc8f6c0dd59c8667cd6c38452d04372",
+        "title": "MiniMax M2.7",
+        "artifact_type": "MODEL",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "capability_evolution",
+          "developer_ecosystem_and_distribution",
+          "competition_and_boundaries"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "The bound news source does not itself establish every requested open-weight serving integration or exact license term; those were observed in a separate official model card during Discovery but are outside this one-source Evidence task.",
+          "Verify MiniMax M2.7 Agent Teams, skills/tool-search claims, model-assisted development positioning, open-weight distribution, serving support, and license from official sources.: The official announcement verifies Agent Teams, skills/tool search and model-assisted-development positioning; open-weight serving and license details are not promoted from a different source into this single-source card."
+        ],
+        "profile_extensions": {
+          "lineage_role": "COMPETING",
+          "branch_ids": [
+            "minimax"
+          ],
+          "transition_ids": [
+            "minimax-m27-parallel-frontier"
+          ],
+          "inheritance_note": "Parallel agentic strategy used to test whether the four central-family narrative is overly narrow.",
+          "historical_attribution_caveat": "TS-001 designates four central families; MiniMax remains a visible competing branch rather than a co-equal fifth chapter."
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:e135fb385817612d",
+        "evidence_task_id": "evidence:SP001:1785bf3f5c6f6444",
+        "discovery_ids": [
+          "SP001-D005"
+        ],
+        "evidence_sha256": "1230d7cd7a755c44c38fa365b31ada79267aa5ff552fdb20dca9c570472d27ca",
+        "edition_view_sha256": "97bacd31991678415d82d14d9645b174a41976757973136e95304d7abb393edc",
+        "title": "ChatGLM-6B",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "developer_ecosystem_and_distribution",
+          "open_weight_and_licensing"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Model-weight/commercial permissions and repository-code licensing must not be collapsed into one license label."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "glm"
+          ],
+          "transition_ids": [
+            "chatglm-consumer-open-model"
+          ],
+          "inheritance_note": "Bridges GLM-130B to the ChatGLM distribution ecosystem.",
+          "historical_attribution_caveat": "Use the historical license regime only for ChatGLM-6B, not later GLM artifacts."
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:b6378239fb902d6b",
+        "evidence_task_id": "evidence:SP001:1c44a6ef76242055",
+        "discovery_ids": [
+          "SP001-D019"
+        ],
+        "evidence_sha256": "a518cf8c801aad8d7d7fbd584ee61298864a0d32eb78fcf4a96967343035c16b",
+        "edition_view_sha256": "bdc0b39b01f1366541556c4084eb27c07ba6887fe878a7f6ac13ed39fc2fe97d",
+        "title": "Yi-1.5",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "historical_lineage",
+          "developer_ecosystem_and_distribution",
+          "open_weight_and_licensing"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "The Yi-1.5 repository alone cannot prove the absence of a later independent general Yi frontier endpoint; that negative conclusion remains a Discovery-level catalog observation.",
+          "Verify Yi-1.5 release, open/local deployment, fine-tuning integrations, licensing, and whether an official later general Yi endpoint exists within the as-of boundary.: The repository verifies Yi-1.5 release/deployment/fine-tuning/licensing; the absence of a later co-equal general endpoint is not established by this source alone and remains contextual."
+        ],
+        "profile_extensions": {
+          "lineage_role": "BRIDGE",
+          "branch_ids": [
+            "yi"
+          ],
+          "transition_ids": [
+            "yi15-open-distribution-bridge"
+          ],
+          "inheritance_note": "Represents the broad 2023-2024 Chinese open-weight wave outside the four central families.",
+          "historical_attribution_caveat": "Do not infer a 2026 frontier position from the 2024 Yi-1.5 repository."
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:f7a2b75bb68e4049",
+        "evidence_task_id": "evidence:SP001:255541abbbc51258",
+        "discovery_ids": [
+          "SP001-D016"
+        ],
+        "evidence_sha256": "185710268c3286d7ee649e410314545e89baec2fbfa4f8ca18c45f1f0cbb0814",
+        "edition_view_sha256": "de18e264ee57bc6409f002e54a1330f95e53f14052514f278d02d99b45881078",
+        "title": "Kimi K2",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "model_family_strategy",
+          "capability_evolution",
+          "efficiency_and_serving",
+          "developer_ecosystem_and_distribution"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Performance claims remain paper evaluations and should not be normalized against incompatible benchmarks from other families."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "kimi"
+          ],
+          "transition_ids": [
+            "kimi-k2-agentic-moe"
+          ],
+          "inheritance_note": "Builds from Kimi's long-context/RL research toward an open agentic MoE model family.",
+          "historical_attribution_caveat": null
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:6f37dfaaa5d88e15",
+        "evidence_task_id": "evidence:SP001:496f29432934fcf3",
+        "discovery_ids": [
+          "SP001-D015"
+        ],
+        "evidence_sha256": "83b27bebfb79fbcf7b5fecea73a00b12f43b9eef6055cf68cf4a6b27a17ee53c",
+        "edition_view_sha256": "105f72d5e31c8178a039b9a3e62d10cb1157155faf5d375212dec910f731b2a1",
+        "title": "Kimi k1.5",
+        "artifact_type": "PAPER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "capability_evolution",
+          "efficiency_and_serving"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "The contemporaneous k1.5 and DeepSeek-R1 papers use different disclosed techniques; priority or simple imitation claims are not supported."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "kimi"
+          ],
+          "transition_ids": [
+            "kimi-k15-long-context-rl"
+          ],
+          "inheritance_note": "Connects Kimi's long-context identity to a disclosed RL/reasoning research branch.",
+          "historical_attribution_caveat": "Do not claim k1.5 merely followed R1; publication chronology is contemporaneous."
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:8147c77bd95db4da",
+        "evidence_task_id": "evidence:SP001:65713fcea4fed72a",
+        "discovery_ids": [
+          "SP001-D009"
+        ],
+        "evidence_sha256": "3e68030cd38043d38eb85db2209b5e805c0ae56227f012feea63f52e14db9534",
+        "edition_view_sha256": "d07ff388dab8d35ff2cf8eb6c12fe9a145081da12f18bb72c405911128111703",
+        "title": "Qwen2.5",
+        "artifact_type": "PAPER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "model_family_strategy",
+          "capability_evolution",
+          "developer_ecosystem_and_distribution"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Hosted proprietary variants and open-weight variants must remain distinct artifacts when discussing distribution or rights."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "qwen"
+          ],
+          "transition_ids": [
+            "qwen25-platform-breadth"
+          ],
+          "inheritance_note": "Foundation for multiple specialized Qwen branches and the transition toward Qwen3.",
+          "historical_attribution_caveat": null
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:d70d85d9062c65ce",
+        "evidence_task_id": "evidence:SP001:6d60bb1c725326d0",
+        "discovery_ids": [
+          "SP001-D013"
+        ],
+        "evidence_sha256": "c32e6f8c57fc3dd3634b989ce837b71bd549488bfd8194c5688baab25aee4768",
+        "edition_view_sha256": "09e0680b8ca2fb532e29789259f1129b94d94ec7558161119ed06aa3ffe2a915",
+        "title": "DeepSeek-R1",
+        "artifact_type": "PAPER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "model_family_strategy",
+          "capability_evolution",
+          "competition_and_boundaries"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Native R1/R1-Zero and distilled Qwen/Llama-based variants are different model subjects and must remain separately attributed."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "deepseek"
+          ],
+          "transition_ids": [
+            "deepseek-r1-reasoning"
+          ],
+          "inheritance_note": "Reasoning/post-training branch layered on the DeepSeek frontier lineage; distills are not treated as native R1 architecture.",
+          "historical_attribution_caveat": "Do not transfer base-model or license properties between native and distilled variants."
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:361858bb9070e74d",
+        "evidence_task_id": "evidence:SP001:8049a13f677871c4",
+        "discovery_ids": [
+          "SP001-D003"
+        ],
+        "evidence_sha256": "af370ff1c89494441aa5a3acd01fc0b81418722ecb160c6e8b28f1437c47d694",
+        "edition_view_sha256": "9f95e1326a135ca1831f33e75e9f5ebd99fa3d6a582b7007d6219b4c7665cd13",
+        "title": "DeepSeek LLM",
+        "artifact_type": "PAPER",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "historical_lineage",
+          "model_family_strategy"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "This retained evidence note does not restate every model-size or distribution detail requested by Screening; later efficiency claims are sourced to DeepSeek-V2 and subsequent artifacts.",
+          "Verify the DeepSeek LLM baseline, model sizes, release context, and open-weight distribution from primary material.: The bound primary paper verifies the early family baseline and release context, but this Evidence pass does not independently lock every requested size and distribution detail; those details are not needed for Architecture selection."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "deepseek"
+          ],
+          "transition_ids": [
+            "deepseek-llm-baseline"
+          ],
+          "inheritance_note": "Baseline preceding the V2 efficiency-architecture transition.",
+          "historical_attribution_caveat": "No later MLA/MoE or reasoning properties are attributed to this baseline."
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:f2af1f5ea3a4dc43",
+        "evidence_task_id": "evidence:SP001:815652c418eda76e",
+        "discovery_ids": [
+          "SP001-D004"
+        ],
+        "evidence_sha256": "087cff2813b38e975e4d7c966be35666108f62ba6c34cd48059d4384613b25bb",
+        "edition_view_sha256": "df0d26bb164bbc053e5bd9743d0a61faa04a54d9cc21654e2d34585ac263c229",
+        "title": "Kimi Chat 2023 launch lead",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "NEEDS_MORE",
+        "materiality": "HOLD",
+        "scope_dimensions": [
+          "historical_lineage",
+          "capability_evolution",
+          "competition_and_boundaries"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "The source is not a Moonshot technical or first-party launch artifact.",
+          "It cannot by itself establish historical priority, token-equivalent context length, or implementation details.",
+          "Locate authoritative Moonshot/Kimi material for the 2023 launch date, product identity, and contemporaneous context-window claims.: No stronger first-party 2023 Moonshot artifact is present in the accepted Discovery set; the chronology remains explicitly source-qualified."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "kimi"
+          ],
+          "transition_ids": [
+            "kimi-early-long-context-lead"
+          ],
+          "inheritance_note": "Provisional early product differentiation preceding the primary-source k1.5/K2/K3 technical lineage.",
+          "historical_attribution_caveat": "Any 2023 launch/context statement must retain the secondary-source qualification."
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:925ba49ba35b7f39",
+        "evidence_task_id": "evidence:SP001:96cc8062b7e657bf",
+        "discovery_ids": [
+          "SP001-D011"
+        ],
+        "evidence_sha256": "868429b920e62d1f7b989d177aa1388d789e034f280fb733ac3a712fecccaef4",
+        "edition_view_sha256": "cb2768cf302faddf908b0beef35addee2fba9b15c315ec3f7d4c3e17c305c741",
+        "title": "Qwen3.6-27B",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "capability_evolution",
+          "efficiency_and_serving",
+          "developer_ecosystem_and_distribution",
+          "open_weight_and_licensing"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Capability statements are vendor/model-card claims; architecture inheritance from Qwen3.5 should not be converted into independent benchmark superiority."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "qwen"
+          ],
+          "transition_ids": [
+            "qwen36-current-endpoint"
+          ],
+          "inheritance_note": "Continues the Qwen3.5 architecture family and Qwen3 hybrid-reasoning lineage.",
+          "historical_attribution_caveat": null
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:629b37fcde98c0f8",
+        "evidence_task_id": "evidence:SP001:97de1405ebf786b8",
+        "discovery_ids": [
+          "SP001-D023"
+        ],
+        "evidence_sha256": "5fe3b64e32edd69cd096741c3f4593a3eb6ef64b256b7f43e939515a1fb94315",
+        "edition_view_sha256": "9f8f1e07376d24c39b8cd8159c044d5a72ca6121ccd4575720f47d8b2ff4ec0c",
+        "title": "X license-friction signal",
+        "artifact_type": "OTHER",
+        "evidence_status": "NEEDS_MORE",
+        "materiality": "HOLD",
+        "scope_dimensions": [
+          "open_weight_and_licensing"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "The post cannot establish infringement, derivative provenance, applicable version, or legal interpretation.",
+          "Exact Kimi K3 license conditions are handled separately by SP001-D021.",
+          "Identify the exact applicable Kimi license/version and any authoritative derivative-model provenance; retain unresolved legal conclusions as limitations.: The social post does not establish the applicable artifact/version or authoritative derivative provenance; legal conclusions remain explicitly unresolved."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CONTEXT",
+          "branch_ids": [
+            "licensing"
+          ],
+          "transition_ids": [
+            "community-license-friction-signal"
+          ],
+          "inheritance_note": "Separate from the exact Kimi K3 license artifact and not used to infer compliance outcomes.",
+          "historical_attribution_caveat": "No infringement or derivative-provenance claim is established."
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:c0a79d0b581f26e8",
+        "evidence_task_id": "evidence:SP001:9d8ccb18aec60525",
+        "discovery_ids": [
+          "SP001-D007"
+        ],
+        "evidence_sha256": "71978f51673d29c64a7052531b9931c54811ffe3a1dd9e0e67ab93dc4091a7d4",
+        "edition_view_sha256": "4898655ebffffaffc786f79514b792dee7b8e317911c9b6aba666e915fcad0af",
+        "title": "GLM-4.5",
+        "artifact_type": "MODEL",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "model_family_strategy",
+          "capability_evolution",
+          "efficiency_and_serving"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "The ARC framing and reported architecture are specific to GLM-4.5 and are not evidence of a shared Chinese-model training recipe."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "glm"
+          ],
+          "transition_ids": [
+            "glm45-arc-pivot"
+          ],
+          "inheritance_note": "Successor to the GLM-4 family with a more explicit ARC-centered strategy.",
+          "historical_attribution_caveat": null
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:3d51f9a9f7550287",
+        "evidence_task_id": "evidence:SP001:a8731a7bd0d0ad46",
+        "discovery_ids": [
+          "SP001-D024"
+        ],
+        "evidence_sha256": "8a67ef4bf498f9fc59a4006fde8f78b8368cbc8e6d178222b5f5d2e6bcee5486",
+        "edition_view_sha256": "464d5abfb41282ea3c023962dde4145c72b6d4c39d164633d57ac57aa44f010a",
+        "title": "X adoption-boundary signal",
+        "artifact_type": "OTHER",
+        "evidence_status": "NEEDS_MORE",
+        "materiality": "HOLD",
+        "scope_dimensions": [
+          "developer_ecosystem_and_distribution",
+          "competition_and_boundaries"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "A single X post cannot establish prevalence, sector scope, geography, or formal enterprise procurement policy.",
+          "Seek non-X enterprise policy, procurement, governance, or credible reporting that corroborates China-origin model restrictions and clearly bounds their prevalence.: No non-X corroboration is present in the accepted Discovery task, so the observation remains a bounded community signal and cannot support a generalized enterprise-adoption claim."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CONTEXT",
+          "branch_ids": [
+            "adoption-boundaries"
+          ],
+          "transition_ids": [
+            "enterprise-origin-policy-signal"
+          ],
+          "inheritance_note": "External boundary on adoption rather than a model-family technical transition.",
+          "historical_attribution_caveat": "No prevalence or general enterprise-policy conclusion is established."
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:daa40564c14ee29d",
+        "evidence_task_id": "evidence:SP001:afc0e0cae360c851",
+        "discovery_ids": [
+          "SP001-D008"
+        ],
+        "evidence_sha256": "6991b79e38cce4fb1cfd2a8e1a9f6fa272732f4e79d396337939f6bb452b07ed",
+        "edition_view_sha256": "f2d20a541a2a855146626d1c1acdfbfaf773131bb98d3f7407b196ae300f7dd9",
+        "title": "GLM-5.2",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "capability_evolution",
+          "efficiency_and_serving",
+          "developer_ecosystem_and_distribution",
+          "open_weight_and_licensing"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Efficiency numbers remain model-card/vendor claims and associated repository-code licensing may differ from model-artifact licensing."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "glm"
+          ],
+          "transition_ids": [
+            "glm52-current-endpoint"
+          ],
+          "inheritance_note": "Current endpoint after the GLM-4.5 ARC pivot, with additional long-context efficiency mechanisms.",
+          "historical_attribution_caveat": null
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:29ec17dd752f4f8b",
+        "evidence_task_id": "evidence:SP001:b4feee60c7b42d7e",
+        "discovery_ids": [
+          "SP001-D002"
+        ],
+        "evidence_sha256": "d9761332fc534bcfe12815286692dcee9c65de6397886138e44fee3025e0f63d",
+        "edition_view_sha256": "ec0b38958da8def39bb45b822475ba926b70b2243fa12f6484d91a63e1fa2406",
+        "title": "Qwen Technical Report",
+        "artifact_type": "PAPER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "historical_lineage",
+          "model_family_strategy",
+          "capability_evolution",
+          "developer_ecosystem_and_distribution"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Later Qwen license and architecture regimes must be bound to later model versions rather than inferred from this report."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "qwen"
+          ],
+          "transition_ids": [
+            "qwen-initial-family"
+          ],
+          "inheritance_note": "Establishes an early family/platform and tool-use orientation continued by later Qwen releases.",
+          "historical_attribution_caveat": "Do not describe later Qwen3 reasoning or licensing as properties of the 2023 release."
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:2d15e3527bd81c4a",
+        "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+        "discovery_ids": [
+          "SP001-D012"
+        ],
+        "evidence_sha256": "be4a40db4544d3159717614fd1d70fc104082e74011e58ce337b50ba718c902a",
+        "edition_view_sha256": "c5db8843d0417d28ff0918aa692e9f67f1a36b3540a79c60c2bac6fa43034e86",
+        "title": "DeepSeek-V2",
+        "artifact_type": "PAPER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "model_family_strategy",
+          "efficiency_and_serving"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Paper-reported efficiency comparisons must retain the stated comparison setup and must not be generalized across unrelated serving stacks."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "deepseek"
+          ],
+          "transition_ids": [
+            "deepseek-v2-mla-moe"
+          ],
+          "inheritance_note": "Architecture transition from the earlier DeepSeek LLM baseline toward MLA/MoE efficiency.",
+          "historical_attribution_caveat": null
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:175121c1f568f671",
+        "evidence_task_id": "evidence:SP001:cc88877c45c8690a",
+        "discovery_ids": [
+          "SP001-D020"
+        ],
+        "evidence_sha256": "0bc6b74f0d1f454117b174fbebe674f70996c24c3211b38529b84a6c225cf047",
+        "edition_view_sha256": "0fd666607fdcaf610e0e38dcdb8c9bb17370410d07fc3339aa3d0214449b230f",
+        "title": "Baichuan-M3-235B",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "historical_lineage",
+          "capability_evolution",
+          "developer_ecosystem_and_distribution",
+          "open_weight_and_licensing"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "The historical transition from the earlier independent Baichuan2 foundation-model line requires separate earlier evidence and is not established by the M3 model card alone.",
+          "Verify Baichuan M3 medical specialization, Qwen3-MoE ancestry, licensing/deployment, and the historical transition from the earlier independent Baichuan line.: The M3 model card verifies medical specialization, Qwen3-MoE ancestry/acknowledgement and Apache-2.0 licensing; the earlier-to-current historical transition is only partially represented by this source."
+        ],
+        "profile_extensions": {
+          "lineage_role": "BRIDGE",
+          "branch_ids": [
+            "baichuan"
+          ],
+          "transition_ids": [
+            "baichuan-specialization-derivative"
+          ],
+          "inheritance_note": "Current M3 trajectory is treated as specialized and Qwen-derived, not as a direct independent general-frontier continuation.",
+          "historical_attribution_caveat": "Earlier Baichuan2 independence is contextual and not inferred from the M3 card."
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:1059791c79b2408d",
+        "evidence_task_id": "evidence:SP001:d9d1170d9ff5047b",
+        "discovery_ids": [
+          "SP001-D022"
+        ],
+        "evidence_sha256": "f6919c9de71b4979134e870809b464b8d6b42935d599a7010da1ce9880716e50",
+        "edition_view_sha256": "58503b7446f6056e264507fbd8660d6cd48555c658fb23867bd48a69adc6cc7c",
+        "title": "X runtime-adoption signal",
+        "artifact_type": "OTHER",
+        "evidence_status": "NEEDS_MORE",
+        "materiality": "HOLD",
+        "scope_dimensions": [
+          "efficiency_and_serving",
+          "developer_ecosystem_and_distribution"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "X performance numbers, memory claims and ecosystem prevalence are not authoritative technical evidence.",
+          "Primary runtime repositories or papers are required before publication-grade support/integration claims can be made.",
+          "Corroborate model/runtime support and practical MoE serving or offload integration in FreeToken, vLLM, SGLang, llama.cpp, Ollama, MLX, or equivalent primary repositories; do not inherit X performance numbers.: The accepted task is bounded to the X post, so primary runtime corroboration is not present in this Evidence card; all performance numbers remain excluded."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CONTEXT",
+          "branch_ids": [
+            "runtime-ecosystem"
+          ],
+          "transition_ids": [
+            "community-runtime-signal"
+          ],
+          "inheritance_note": "Community signal informs future verification but is not part of the technical lineage itself.",
+          "historical_attribution_caveat": "No X performance or prevalence claim may be promoted as fact."
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:cd713c0ca44c6f64",
+        "evidence_task_id": "evidence:SP001:dcc22d5fb97ef241",
+        "discovery_ids": [
+          "SP001-D001"
+        ],
+        "evidence_sha256": "ddc6bb03526790211729c18866668d82d3d76d3a478db719a741967f74e3e8a8",
+        "edition_view_sha256": "5eaa52efd1117da99996b6cf5e1b4a20df504e875b0c7a8b1dd747b14bc0fcaf",
+        "title": "GLM-130B",
+        "artifact_type": "MODEL",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "historical_lineage",
+          "model_family_strategy",
+          "efficiency_and_serving",
+          "open_weight_and_licensing"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Do not project later ChatGLM or Z.ai architecture choices backward onto GLM-130B without version-specific evidence."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "glm"
+          ],
+          "transition_ids": [
+            "glm-130b-seed"
+          ],
+          "inheritance_note": "Technical ancestor for the later GLM/ChatGLM family; later design changes remain version-specific.",
+          "historical_attribution_caveat": "Open/deployment claims are limited to the paper's own framing and conditions."
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:a706c7c80a7e336a",
+        "evidence_task_id": "evidence:SP001:dd2ece2e3589b786",
+        "discovery_ids": [
+          "SP001-D017"
+        ],
+        "evidence_sha256": "9b5d8864b59b0fa7d67ab8f4cd640ef880555273ff632a85d3143e5646850b17",
+        "edition_view_sha256": "47e34c3e698f38101add83cab37cb2864d144298d51aeeed736787a93cdee3a1",
+        "title": "Kimi K3",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "model_family_strategy",
+          "capability_evolution",
+          "efficiency_and_serving",
+          "developer_ecosystem_and_distribution",
+          "open_weight_and_licensing",
+          "competition_and_boundaries"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Detailed commercial/license conditions are verified separately against the exact Kimi K3 LICENSE artifact in SP001-D021.",
+          "Verify Kimi K3 architecture, parameter structure, KDA/Gated MLA, multimodal/agentic claims, distribution, and applicable license boundary from official material.: The official model material verifies architecture, parameter structure, multimodal/agentic positioning and distribution; exact legal conditions are intentionally delegated to the separate exact-license Evidence card rather than inferred here."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "kimi"
+          ],
+          "transition_ids": [
+            "kimi-k3-current-endpoint"
+          ],
+          "inheritance_note": "Current endpoint after k1.5/K2 and the KDA long-context efficiency research branch.",
+          "historical_attribution_caveat": "License meaning is not inferred from the model card; use D021 for exact conditions."
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:37758de6e01e3b5a",
+        "evidence_task_id": "evidence:SP001:e5f3947dfdbbb053",
+        "discovery_ids": [
+          "SP001-D010"
+        ],
+        "evidence_sha256": "db8749ba1b3d9a0f1c2ae3b920d6c5ca8fa1817157f660a6eb235bac9552139b",
+        "edition_view_sha256": "1de9c5aa48a23f7aed17d6c4a71b97c6b98b531669f15b8399c33196cc3a78d3",
+        "title": "Qwen3",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "model_family_strategy",
+          "capability_evolution",
+          "open_weight_and_licensing"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Reported benchmark results remain evaluation-specific and are not normalized against other families."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "qwen"
+          ],
+          "transition_ids": [
+            "qwen3-hybrid-reasoning"
+          ],
+          "inheritance_note": "Builds on Qwen2.5 family breadth while unifying thinking and non-thinking operation.",
+          "historical_attribution_caveat": null
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:2f7f437f6fa3f01a",
+        "evidence_task_id": "evidence:SP001:efe14dc52bdc300e",
+        "discovery_ids": [
+          "SP001-D021"
+        ],
+        "evidence_sha256": "710e7d8b66517f447a9e6e8360efed7c73523d93dc44f1bd195871a1ad5ece1a",
+        "edition_view_sha256": "0e46368eee1f7cd27591c5e79fe8ea53d0a3de8d131132024a77109a2aa43575",
+        "title": "Kimi K3 License",
+        "artifact_type": "OTHER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "open_weight_and_licensing"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "This Evidence card summarizes the named 2026 Kimi K3 License only; it is not a legal opinion and does not establish infringement or compliance by third parties."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CONTEXT",
+          "branch_ids": [
+            "kimi",
+            "licensing"
+          ],
+          "transition_ids": [
+            "kimi-k3-license-boundary"
+          ],
+          "inheritance_note": "Legal/distribution boundary attached specifically to Kimi K3 rather than to the whole Kimi family.",
+          "historical_attribution_caveat": "Do not transfer Kimi K3 conditions to Kimi K2 or other Moonshot artifacts."
+        }
+      },
+      {
+        "candidate_id": "candidate:SP001:8ffaa0ad625b0705",
+        "evidence_task_id": "evidence:SP001:f1bb7e9947331b4c",
+        "discovery_ids": [
+          "SP001-D014"
+        ],
+        "evidence_sha256": "28e124a3d7aef5729bc582a8abd99307bd145cb0381efa52efebfd89834bf454",
+        "edition_view_sha256": "d271e574d4488910506c10014d8689907b995e4e988df6b6e91574838b5d9899",
+        "title": "DeepSeek-V4-Flash-0731",
+        "artifact_type": "OPEN_WEIGHT",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "model_family_strategy",
+          "capability_evolution",
+          "efficiency_and_serving",
+          "developer_ecosystem_and_distribution",
+          "competition_and_boundaries"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 1,
+          "metric_count": 0,
+          "limitation_count": 1,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "The bound 0731 update is sufficient for agentic/serving endpoint evidence but does not independently restate every architecture detail of the broader V4 preview.",
+          "Verify V4-Flash-0731 context architecture, agentic positioning, and official vLLM/DSpark deployment support.: The official 0731 model card verifies agentic positioning and vLLM/DSpark deployment support; full context-architecture verification is retained as a bounded limitation rather than inferred from separate V4 sources."
+        ],
+        "profile_extensions": {
+          "lineage_role": "CORE",
+          "branch_ids": [
+            "deepseek"
+          ],
+          "transition_ids": [
+            "deepseek-v4-0731-endpoint"
+          ],
+          "inheritance_note": "Current update on the V4-Flash branch; broader V4 architecture is not silently imported into this card.",
+          "historical_attribution_caveat": null
+        }
+      }
+    ],
+    "summary": {
+      "candidate_count": 24,
+      "materiality_counts": {
+        "CONTEXT": 2,
+        "HOLD": 4,
+        "MATERIAL": 18
+      },
+      "evidence_status_counts": {
+        "NEEDS_MORE": 4,
+        "PARTIAL": 6,
+        "VERIFIED": 14
+      }
+    }
+  },
+  "evidence_acceptance": {
+    "schema_version": "2.0-rc1",
+    "issue_id": "SP001",
+    "research_profile": "THEMATIC",
+    "result_set_sha256": "6b730553a0d71201ed40303f5ed126aa47dca224cba63e1797931ce7cd2f63f2",
+    "package_sha256": "d92677a26951863bd52f4adcea1ff5ffb2df7f64ac9b640dc357bfc21760eff2",
+    "screening_acceptance_sha256": "31c1b9a9d6038752d9248feae2f569aad1efa8342f6b7eb3422f76cb861b61d6",
+    "result_count": 24,
+    "results": [
+      {
+        "evidence_task_id": "evidence:SP001:11ce8f2212731f9d",
+        "discovery_ids": [
+          "SP001-D006"
+        ],
+        "sha256": "8512a86c5e8c99a280ca77ae54e6299f9c8b93cc40c01e4ff202140d23fe72ba",
+        "status": "VERIFIED",
+        "filename": "task-7c7f00b8518d53604d0f.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:1336dced73cff5a4",
+        "discovery_ids": [
+          "SP001-D018"
+        ],
+        "sha256": "b15f05b35747f2c5b7d5a182a2436eea7905af840f2a935f2b065ed64d062481",
+        "status": "PARTIAL",
+        "filename": "task-32bfd3836736342ef2b9.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:1785bf3f5c6f6444",
+        "discovery_ids": [
+          "SP001-D005"
+        ],
+        "sha256": "1230d7cd7a755c44c38fa365b31ada79267aa5ff552fdb20dca9c570472d27ca",
+        "status": "VERIFIED",
+        "filename": "task-e135fb385817612d1910.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:1c44a6ef76242055",
+        "discovery_ids": [
+          "SP001-D019"
+        ],
+        "sha256": "a518cf8c801aad8d7d7fbd584ee61298864a0d32eb78fcf4a96967343035c16b",
+        "status": "PARTIAL",
+        "filename": "task-b6378239fb902d6be449.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:255541abbbc51258",
+        "discovery_ids": [
+          "SP001-D016"
+        ],
+        "sha256": "185710268c3286d7ee649e410314545e89baec2fbfa4f8ca18c45f1f0cbb0814",
+        "status": "VERIFIED",
+        "filename": "task-f7a2b75bb68e4049eee0.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:496f29432934fcf3",
+        "discovery_ids": [
+          "SP001-D015"
+        ],
+        "sha256": "83b27bebfb79fbcf7b5fecea73a00b12f43b9eef6055cf68cf4a6b27a17ee53c",
+        "status": "VERIFIED",
+        "filename": "task-6f37dfaaa5d88e1599aa.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:65713fcea4fed72a",
+        "discovery_ids": [
+          "SP001-D009"
+        ],
+        "sha256": "3e68030cd38043d38eb85db2209b5e805c0ae56227f012feea63f52e14db9534",
+        "status": "VERIFIED",
+        "filename": "task-8147c77bd95db4dad422.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:6d60bb1c725326d0",
+        "discovery_ids": [
+          "SP001-D013"
+        ],
+        "sha256": "c32e6f8c57fc3dd3634b989ce837b71bd549488bfd8194c5688baab25aee4768",
+        "status": "VERIFIED",
+        "filename": "task-d70d85d9062c65ce2e0c.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:8049a13f677871c4",
+        "discovery_ids": [
+          "SP001-D003"
+        ],
+        "sha256": "af370ff1c89494441aa5a3acd01fc0b81418722ecb160c6e8b28f1437c47d694",
+        "status": "PARTIAL",
+        "filename": "task-361858bb9070e74db11b.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:815652c418eda76e",
+        "discovery_ids": [
+          "SP001-D004"
+        ],
+        "sha256": "087cff2813b38e975e4d7c966be35666108f62ba6c34cd48059d4384613b25bb",
+        "status": "NEEDS_MORE",
+        "filename": "task-f2af1f5ea3a4dc43fe91.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:96cc8062b7e657bf",
+        "discovery_ids": [
+          "SP001-D011"
+        ],
+        "sha256": "868429b920e62d1f7b989d177aa1388d789e034f280fb733ac3a712fecccaef4",
+        "status": "VERIFIED",
+        "filename": "task-925ba49ba35b7f394892.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:97de1405ebf786b8",
+        "discovery_ids": [
+          "SP001-D023"
+        ],
+        "sha256": "5fe3b64e32edd69cd096741c3f4593a3eb6ef64b256b7f43e939515a1fb94315",
+        "status": "NEEDS_MORE",
+        "filename": "task-629b37fcde98c0f862ee.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:9d8ccb18aec60525",
+        "discovery_ids": [
+          "SP001-D007"
+        ],
+        "sha256": "71978f51673d29c64a7052531b9931c54811ffe3a1dd9e0e67ab93dc4091a7d4",
+        "status": "VERIFIED",
+        "filename": "task-c0a79d0b581f26e83f87.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:a8731a7bd0d0ad46",
+        "discovery_ids": [
+          "SP001-D024"
+        ],
+        "sha256": "8a67ef4bf498f9fc59a4006fde8f78b8368cbc8e6d178222b5f5d2e6bcee5486",
+        "status": "NEEDS_MORE",
+        "filename": "task-3d51f9a9f755028773a0.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:afc0e0cae360c851",
+        "discovery_ids": [
+          "SP001-D008"
+        ],
+        "sha256": "6991b79e38cce4fb1cfd2a8e1a9f6fa272732f4e79d396337939f6bb452b07ed",
+        "status": "VERIFIED",
+        "filename": "task-daa40564c14ee29d4dd3.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:b4feee60c7b42d7e",
+        "discovery_ids": [
+          "SP001-D002"
+        ],
+        "sha256": "d9761332fc534bcfe12815286692dcee9c65de6397886138e44fee3025e0f63d",
+        "status": "VERIFIED",
+        "filename": "task-29ec17dd752f4f8b86f8.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+        "discovery_ids": [
+          "SP001-D012"
+        ],
+        "sha256": "be4a40db4544d3159717614fd1d70fc104082e74011e58ce337b50ba718c902a",
+        "status": "VERIFIED",
+        "filename": "task-2d15e3527bd81c4af285.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:cc88877c45c8690a",
+        "discovery_ids": [
+          "SP001-D020"
+        ],
+        "sha256": "0bc6b74f0d1f454117b174fbebe674f70996c24c3211b38529b84a6c225cf047",
+        "status": "PARTIAL",
+        "filename": "task-175121c1f568f671152e.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:d9d1170d9ff5047b",
+        "discovery_ids": [
+          "SP001-D022"
+        ],
+        "sha256": "f6919c9de71b4979134e870809b464b8d6b42935d599a7010da1ce9880716e50",
+        "status": "NEEDS_MORE",
+        "filename": "task-1059791c79b2408dcd8c.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:dcc22d5fb97ef241",
+        "discovery_ids": [
+          "SP001-D001"
+        ],
+        "sha256": "ddc6bb03526790211729c18866668d82d3d76d3a478db719a741967f74e3e8a8",
+        "status": "VERIFIED",
+        "filename": "task-cd713c0ca44c6f64bf20.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:dd2ece2e3589b786",
+        "discovery_ids": [
+          "SP001-D017"
+        ],
+        "sha256": "9b5d8864b59b0fa7d67ab8f4cd640ef880555273ff632a85d3143e5646850b17",
+        "status": "PARTIAL",
+        "filename": "task-a706c7c80a7e336a45ff.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:e5f3947dfdbbb053",
+        "discovery_ids": [
+          "SP001-D010"
+        ],
+        "sha256": "db8749ba1b3d9a0f1c2ae3b920d6c5ca8fa1817157f660a6eb235bac9552139b",
+        "status": "VERIFIED",
+        "filename": "task-37758de6e01e3b5a9f77.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:efe14dc52bdc300e",
+        "discovery_ids": [
+          "SP001-D021"
+        ],
+        "sha256": "710e7d8b66517f447a9e6e8360efed7c73523d93dc44f1bd195871a1ad5ece1a",
+        "status": "VERIFIED",
+        "filename": "task-2f7f437f6fa3f01af9d7.json"
+      },
+      {
+        "evidence_task_id": "evidence:SP001:f1bb7e9947331b4c",
+        "discovery_ids": [
+          "SP001-D014"
+        ],
+        "sha256": "28e124a3d7aef5729bc582a8abd99307bd145cb0381efa52efebfd89834bf454",
+        "status": "PARTIAL",
+        "filename": "task-8ffaa0ad625b0705b068.json"
+      }
+    ]
+  },
+  "evidence_inputs": [
+    {
+      "candidate_id": "candidate:SP001:2d15e3527bd81c4a",
+      "architecture_usage": "PRIMARY",
+      "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+      "evidence_sha256": "be4a40db4544d3159717614fd1d70fc104082e74011e58ce337b50ba718c902a",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "SP001",
+        "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+        "basis": {
+          "task_sha256": "19fec8aedae684dca9e08a11ac69266e6e7c444c4a42f140046b987c2ac5b9a2",
+          "screening_acceptance_sha256": "31c1b9a9d6038752d9248feae2f569aad1efa8342f6b7eb3422f76cb861b61d6",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "VERIFIED",
+        "entities": [
+          {
+            "entity_id": "deepseek-v2",
+            "canonical_name": "DeepSeek-V2",
+            "entity_type": "MODEL",
+            "organization": "DeepSeek",
+            "canonical_url": "https://arxiv.org/abs/2405.04434"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "deepseek-v2",
+          "artifact_type": "PAPER",
+          "canonical_name": "DeepSeek-V2",
+          "canonical_url": "https://arxiv.org/abs/2405.04434"
+        },
+        "temporal": {
+          "observed_at": "2026-08-22T16:31:00Z",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2024-05-07",
+              "subject_id": "deepseek-v2",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://arxiv.org/abs/2405.04434",
+            "source_class": "PRIMARY_PAPER",
+            "title": "DeepSeek-V2",
+            "published_at": "2024-05-07",
+            "accessed_at": "2026-08-22T16:31:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "The DeepSeek-V2 paper introduces Multi-head Latent Attention (MLA) and DeepSeekMoE in a 236B-total/21B-active MoE model with 128K context and reports substantial KV-cache and generation-throughput efficiency improvements under its evaluation setup.",
+            "subject_id": "deepseek-v2",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Family-defining efficiency transition; numerical comparisons remain condition-bound."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "Paper-reported efficiency comparisons must retain the stated comparison setup and must not be generalized across unrelated serving stacks.",
+            "subject_id": "deepseek-v2",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify MLA, DeepSeekMoE, training/serving efficiency claims, and the V2 release configuration from the primary paper.",
+              "status": "VERIFIED",
+              "finding": "The primary paper directly documents MLA, DeepSeekMoE, the V2 configuration, and paper-bound training/serving efficiency claims.",
+              "subject_ids": [
+                "deepseek-v2"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        }
+      }
+    },
+    {
+      "candidate_id": "candidate:SP001:d70d85d9062c65ce",
+      "architecture_usage": "PRIMARY",
+      "evidence_task_id": "evidence:SP001:6d60bb1c725326d0",
+      "evidence_sha256": "c32e6f8c57fc3dd3634b989ce837b71bd549488bfd8194c5688baab25aee4768",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "SP001",
+        "evidence_task_id": "evidence:SP001:6d60bb1c725326d0",
+        "basis": {
+          "task_sha256": "0b181cea90902f6cd96056c656f1cf4a188967fbe12ad2e609f122a5c30cfe8b",
+          "screening_acceptance_sha256": "31c1b9a9d6038752d9248feae2f569aad1efa8342f6b7eb3422f76cb861b61d6",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "VERIFIED",
+        "entities": [
+          {
+            "entity_id": "deepseek-r1",
+            "canonical_name": "DeepSeek-R1",
+            "entity_type": "MODEL_FAMILY",
+            "organization": "DeepSeek",
+            "canonical_url": "https://arxiv.org/abs/2501.12948"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "deepseek-r1",
+          "artifact_type": "PAPER",
+          "canonical_name": "DeepSeek-R1",
+          "canonical_url": "https://arxiv.org/abs/2501.12948"
+        },
+        "temporal": {
+          "observed_at": "2026-08-22T16:31:00Z",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2025-01-22",
+              "subject_id": "deepseek-r1",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://arxiv.org/abs/2501.12948",
+            "source_class": "PRIMARY_PAPER",
+            "title": "DeepSeek-R1",
+            "published_at": "2025-01-22",
+            "accessed_at": "2026-08-22T16:31:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "The DeepSeek-R1 paper describes R1-Zero as large-scale reinforcement learning without preliminary SFT and R1 as adding cold-start data and multi-stage training; the release also includes distilled Qwen/Llama-based variants.",
+            "subject_id": "deepseek-r1",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Reasoning-RL transition."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "Native R1/R1-Zero and distilled Qwen/Llama-based variants are different model subjects and must remain separately attributed.",
+            "subject_id": "deepseek-r1",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify R1/R1-Zero training stages, reinforcement-learning claims, and distinguish native from distilled model variants.",
+              "status": "VERIFIED",
+              "finding": "The paper directly distinguishes R1-Zero and R1 training paths and identifies the separate distilled variants.",
+              "subject_ids": [
+                "deepseek-r1"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        }
+      }
+    },
+    {
+      "candidate_id": "candidate:SP001:8ffaa0ad625b0705",
+      "architecture_usage": "PRIMARY",
+      "evidence_task_id": "evidence:SP001:f1bb7e9947331b4c",
+      "evidence_sha256": "28e124a3d7aef5729bc582a8abd99307bd145cb0381efa52efebfd89834bf454",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "SP001",
+        "evidence_task_id": "evidence:SP001:f1bb7e9947331b4c",
+        "basis": {
+          "task_sha256": "198042887dd7558cfa34496aaa59debc1d20a1f6e4968eb53366edb7e430f7d0",
+          "screening_acceptance_sha256": "31c1b9a9d6038752d9248feae2f569aad1efa8342f6b7eb3422f76cb861b61d6",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "PARTIAL",
+        "entities": [
+          {
+            "entity_id": "deepseek-v4-flash-0731",
+            "canonical_name": "DeepSeek-V4-Flash-0731",
+            "entity_type": "MODEL",
+            "organization": "DeepSeek",
+            "canonical_url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "deepseek-v4-flash-0731",
+          "artifact_type": "OPEN_WEIGHT",
+          "canonical_name": "DeepSeek-V4-Flash-0731",
+          "canonical_url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731"
+        },
+        "temporal": {
+          "observed_at": "2026-08-22T16:31:00Z",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2026-07-31",
+              "subject_id": "deepseek-v4-flash-0731",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "DeepSeek-V4-Flash-0731",
+            "published_at": "2026-07-31",
+            "accessed_at": "2026-08-22T16:31:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "The official V4-Flash-0731 model card emphasizes stronger agentic capability and documents vLLM deployment with DSpark speculative decoding.",
+            "subject_id": "deepseek-v4-flash-0731",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Current DeepSeek endpoint update."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "The bound 0731 update is sufficient for agentic/serving endpoint evidence but does not independently restate every architecture detail of the broader V4 preview.",
+            "subject_id": "deepseek-v4-flash-0731",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Verify V4-Flash-0731 context architecture, agentic positioning, and official vLLM/DSpark deployment support.",
+              "status": "UNRESOLVED",
+              "finding": "The official 0731 model card verifies agentic positioning and vLLM/DSpark deployment support; full context-architecture verification is retained as a bounded limitation rather than inferred from separate V4 sources.",
+              "subject_ids": [
+                "deepseek-v4-flash-0731"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "Verify V4-Flash-0731 context architecture, agentic positioning, and official vLLM/DSpark deployment support.: The official 0731 model card verifies agentic positioning and vLLM/DSpark deployment support; full context-architecture verification is retained as a bounded limitation rather than inferred from separate V4 sources."
+          ],
+          "contradictions": []
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION"
+  },
+  "profile_extensions": {},
+  "publication_extensions": {}
+}
