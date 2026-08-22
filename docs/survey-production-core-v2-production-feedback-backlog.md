@@ -168,6 +168,116 @@ Do **not** alter the currently running W33/SP001 sessions solely to enforce this
 
 When W33 and SP001 are reviewed together, use those records to determine the exact documentation/bootstrap/schema/tool changes needed to make the single-file Drive handoff the unambiguous default.
 
+## Feedback item PFB-003 — Require a concluding synthesis in every Weekly and Special
+
+Status: `ACCEPTED DIRECTION / NOT YET IMPLEMENTED`
+
+### Observation
+
+Human review of both the first Core-v2 Weekly and Special verification editions required the same editorial correction: add a final **総括** section.
+
+Because this requirement applies across edition types rather than to one issue/topic, relying on Human review to request it every time is a recurring-flow defect. The production guidance and review flow should make the conclusion an expected publication component.
+
+### Improvement direction
+
+Every reader-facing Weekly and Special should contain a final substantive section that synthesizes the edition as a whole. The default Japanese heading should be `総括` unless an edition-specific publication guide deliberately specifies an equivalent heading.
+
+The synthesis must do more than repeat the table of contents or individual story/section summaries. It should answer, at the appropriate scale for the edition:
+
+- what changed or what was established across the edition;
+- which developments/arguments matter most when viewed together;
+- what larger technical or ecosystem direction can reasonably be inferred;
+- what remains uncertain, unresolved, or worth watching next.
+
+For Weekly, the synthesis should connect the week's otherwise separate developments into a concise overall reading of the week.
+
+For Special, the synthesis should close the research question/period/theme by integrating the preceding chapters into a higher-level conclusion rather than merely recapping them.
+
+The `総括` should be the last **substantive reader-facing editorial section**. Bibliography, references, colophon, appendices, or other non-editorial back matter may follow when required by the publication format.
+
+### Flow/check requirement
+
+Later implementation should add an explicit editorial expectation and a pre-publication check so that omission is caught before Human review. This should be owned by the narrowest appropriate layer:
+
+- Profile/publication guidance defines the required concluding synthesis;
+- ChatGPT editorial review checks that it actually synthesizes rather than mechanically repeats;
+- a deterministic check may verify presence/order only where the document structure makes that reliable, but must not pretend to validate synthesis quality.
+
+This applies to all Weekly and Special variants, including Retrospective Period, standalone Thematic, and guided series volumes.
+
+### Deferred implementation
+
+Do not patch W33/SP001 Core mechanics solely for this feedback item while their verification records are still being collected. Preserve the Human correction in their execution records, then implement the generic prevention rule in the consolidated maintenance pass.
+
+## Feedback item PFB-004 — Weekly must always publish an explicit community-movement view informed by Grok/X
+
+Status: `ACCEPTED DIRECTION / NOT YET IMPLEMENTED`
+
+### Observation
+
+The merged Core v2 correctly made Grok/X collection mandatory for Weekly, but real W33 production showed that **mandatory collection does not guarantee meaningful editorial use**. Grok results can be imported, dispositioned, and technically satisfy Source Intake while still being largely ignored in the reader-facing Weekly.
+
+That defeats a primary reason for adding X/Grok to Weekly: the Weekly should capture not only official releases but also what the technical community is actually testing, adopting, reproducing, questioning, integrating, or reacting to during the week.
+
+### Improvement direction
+
+Every Weekly must include an explicit reader-facing **コミュニティの動き** component informed by the completed Grok/X intake for that issue.
+
+This is not merely another source-count obligation. Weekly editorial work must inspect the Grok/X result and deliberately synthesize material community signals such as:
+
+- independent testing/reproduction and discrepancies from vendor claims;
+- adoption or rapid integration into tools/workflows;
+- local/open-weight inference activity;
+- implementation discoveries, limitations, regressions, or workarounds;
+- notable technical debate or counter-signal;
+- unusual momentum around a model, framework, benchmark, modality, or serving stack;
+- community discoveries that lead to authoritative primary-source follow-up.
+
+Where a community signal materially belongs inside a main Weekly story, it may and should also be integrated there. The dedicated community component exists to ensure that the week's community layer is never silently discarded simply because the main stories can be written from official sources alone.
+
+### Quiet-week behavior
+
+The component must not disappear when X is quiet.
+
+If the required Grok/X run finds no sufficiently material community movement, the Weekly should still include the community component and state, concisely and accurately, that no major material movement was identified, together with the relevant scan scope or noteworthy low-level observations where useful.
+
+This makes `no material community movement` an explicit editorial finding rather than an invisible absence.
+
+### Evidence boundary
+
+Grok/X remains Discovery/community-signal authority, not final technical Evidence authority.
+
+Any technical fact promoted into a main claim still requires appropriate authoritative verification. However, this Evidence boundary must not be misused as a reason to suppress community observations entirely. The correct flow is:
+
+```text
+Grok/X community observation
+-> editorial relevance judgment
+-> primary-source/authoritative gap fill when a technical claim requires it
+-> main-story integration and/or コミュニティの動き synthesis
+```
+
+### Flow/check requirement
+
+Later implementation should strengthen Weekly production from **collection completeness** to **editorial disposition completeness**:
+
+- Weekly cannot complete editorial review without explicitly accounting for the completed Grok/X result;
+- the publication structure includes a `コミュニティの動き` component every issue;
+- material Grok observations must either be reflected in the reader-facing edition or carry an explicit reason for exclusion;
+- absence of material signals is represented as a reader-facing quiet-week finding rather than silently dropping the component;
+- ChatGPT editorial review evaluates whether Grok/X was genuinely used rather than only technically imported.
+
+A deterministic validator may check required structural/accounting fields, but materiality and whether the community synthesis is editorially adequate remain ChatGPT review responsibilities.
+
+### Scope
+
+This requirement is **Weekly-specific and mandatory every issue**.
+
+Specials continue to use X only when their Profile/research question marks it `REQUIRED`; PFB-004 does not force a community section into every Special. When a Special does use X, its results should still receive substantive editorial disposition under the existing X Source Intake principles.
+
+### Deferred implementation
+
+Do not alter the running W33/SP001 Core implementation solely for this item. Use W33's actual execution record and generated artifacts as the first regression example when implementing the consolidated improvement set.
+
 ## Additional feedback items
 
 Add later W33/SP001 findings below this section before starting the next maintenance pass. Each item should record:
