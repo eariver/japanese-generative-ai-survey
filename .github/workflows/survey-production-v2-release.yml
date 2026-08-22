@@ -61,6 +61,7 @@ jobs:
           test "$(printf '%s' "$EXPECTED_MANIFEST_SHA" | grep -Ec '^[0-9a-f]{64}$')" -eq 1
           PYTHONPATH=. python - <<'PY' >> "$GITHUB_OUTPUT"
           import os, pathlib, re
+          from scripts import survey_orchestrator_v2 as orchestrator
           from scripts import survey_production_v2 as core
           from scripts import survey_publication_v2 as publication
           root=pathlib.Path('.').resolve(); issue=os.environ['ISSUE_ID']; repo=os.environ['REPOSITORY']
@@ -86,6 +87,7 @@ jobs:
           state=core.load_json(state_path)
           if state.get('issue_id') != issue or state.get('lifecycle_state') != 'FROZEN':
               raise SystemExit('release workflow requires exact FROZEN issue state on main')
+          orchestrator.verify_runtime_implementation(root,cfg,state)
           errors=core.validate_state_semantics(root,cfg,state)
           if errors: raise SystemExit('; '.join(errors))
           profile=core.load_json(root/state['profile']['path']); source=pathlib.Path(profile['paths']['source_root'])
