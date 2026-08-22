@@ -18,6 +18,7 @@ class SurveyPublicationV2Tests(unittest.TestCase):
         self.root = Path(self.temp.name)
         for rel in [
             quality.QUALITY_SCHEMA,
+            quality.core.DEFAULT_CONFIG,
             publication.CANDIDATE_SCHEMA,
             publication.PREVIEW_APPROVAL_SCHEMA,
             publication.VISUAL_REVIEW_SCHEMA,
@@ -36,15 +37,36 @@ class SurveyPublicationV2Tests(unittest.TestCase):
         self.source.write_text("validated source\n", encoding="utf-8")
         self.pdf.write_bytes(b"%PDF-1.7\nfixture\n")
 
-    def _checks(self) -> list[dict[str, str]]:
-        return [
-            {"check_id": check_id, "status": "PASS", "evidence": f"fixture:{check_id}"}
-            for check_id in sorted(quality.REQUIRED_CHECKS)
-        ]
+    def _checks(self) -> list[dict[str, object]]:
+        cfg = quality.core.load_json(self.root / quality.core.DEFAULT_CONFIG)
+        expected = quality.expected_checks(cfg, "THEMATIC", "LONGFORM_SPECIAL")
+        rows: list[dict[str, object]] = []
+        for check_id, kind in sorted(expected.items()):
+            result = None
+            if kind == "DETERMINISTIC":
+                result_path = self.dir / "quality-results" / f"{check_id}.json"
+                quality.core.write_json(result_path, {"check_id": check_id, "status": "PASS"})
+                result = {
+                    "path": str(result_path.relative_to(self.root)),
+                    "sha256": quality.core.sha256_file(result_path),
+                }
+            rows.append({
+                "check_id": check_id,
+                "kind": kind,
+                "status": "PASS",
+                "executor": "fixture-tool" if kind == "DETERMINISTIC" else "ChatGPT",
+                "evidence": f"fixture:{check_id}",
+                "recorded_at": "2026-08-22T05:00:00Z",
+                "result": result,
+            })
+        return rows
 
     def _candidate(self) -> tuple[Path, Path]:
         bundle = self.dir / "quality-regression-bundle-v2.json"
-        quality.build_bundle(self.root, "SP001", self.source, self.pdf, self._checks(), bundle)
+        quality.build_bundle(
+            self.root, "SP001", self.source, self.pdf, self._checks(), bundle,
+            research_profile="THEMATIC", publication_profile="LONGFORM_SPECIAL",
+        )
         candidate = self.dir / "publication-candidate-v2.json"
         publication.build_candidate(
             self.root, "SP001", "LONGFORM_SPECIAL", self.source, self.pdf, 12, bundle, candidate
@@ -66,7 +88,10 @@ class SurveyPublicationV2Tests(unittest.TestCase):
             },
         }
         bundle = self.dir / "quality-regression-bundle-v2.json"
-        quality.build_bundle(self.root, "SP001", self.source, self.pdf, self._checks(), bundle, authority)
+        quality.build_bundle(
+            self.root, "SP001", self.source, self.pdf, self._checks(), bundle, authority,
+            research_profile="THEMATIC", publication_profile="LONGFORM_SPECIAL",
+        )
         candidate = self.dir / "publication-candidate-v2.json"
         publication.build_candidate(
             self.root, "SP001", "LONGFORM_SPECIAL", self.source, self.pdf, 12, bundle, candidate
@@ -106,7 +131,6 @@ class SurveyPublicationV2Tests(unittest.TestCase):
             authority,
         )
         self.pdf.unlink()
-
         now = datetime(2026, 8, 22, 5, 0, tzinfo=timezone.utc)
         approval = self.dir / "publication-preview-approval-v2.json"
         publication.build_preview_approval(self.root, candidate, approval, "human-reviewer", now, "review:SP001:preview")
@@ -137,9 +161,9 @@ class SurveyPublicationV2Tests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "bytes drifted"):
             publication.validate_preview_approval(self.root, approval)
 
-    def test_missing_coupled_regression_blocks_publication_candidate(self) -> None:
+    def test_missing_applicable_quality_review_blocks_publication_candidate(self) -> None:
         checks = self._checks()[:-1]
-        with self.assertRaisesRegex(ValueError, "regression family incomplete"):
+        with self.assertRaisesRegex(ValueError, "applicable quality review family incomplete"):
             quality.build_bundle(
                 self.root,
                 "SP001",
@@ -147,6 +171,8 @@ class SurveyPublicationV2Tests(unittest.TestCase):
                 self.pdf,
                 checks,
                 self.dir / "quality-regression-bundle-v2.json",
+                research_profile="THEMATIC",
+                publication_profile="LONGFORM_SPECIAL",
             )
 
     def test_release_manifest_fails_if_frozen_source_changes(self) -> None:
