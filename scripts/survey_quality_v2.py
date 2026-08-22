@@ -6,8 +6,10 @@ Quality review has three kinds:
 - AGENT_SEMANTIC: ChatGPT semantic/editorial review with reasoned evidence;
 - AGENT_VISUAL: ChatGPT rendered-PDF review with reasoned evidence.
 
-The bundle itself binds one exact source/PDF pair, so agent judgments are still
-revision-specific without pretending that qualitative judgment is a validator.
+The bundle binds the exact Production Profile plus one exact source/PDF pair, so
+applicability cannot drift to a different research/publication Profile and agent
+judgments remain revision-specific without pretending qualitative judgment is a
+validator.
 """
 from __future__ import annotations
 
@@ -149,10 +151,16 @@ def validate_checks(repo_root: Path, cfg: dict[str, Any], research_profile: str,
         raise ValueError("applicable quality review family incomplete: " + ", ".join(missing))
 
 
-def _infer_profiles(issue_id: str) -> tuple[str, str]:
-    if core.WEEKLY_ISSUE_RE.fullmatch(issue_id):
-        return "WEEKLY", "WEEKLY_MAGAZINE"
-    return "THEMATIC", "LONGFORM_SPECIAL"
+def _load_profile_authority(repo_root: Path, production_profile_path: Path, issue_id: str) -> tuple[Path, dict[str, Any]]:
+    path = _safe_file(repo_root, production_profile_path, "Production Profile")
+    profile = core.load_json(path)
+    if profile.get("issue_id") != issue_id:
+        raise ValueError("Production Profile/quality issue_id mismatch")
+    research = profile.get("research_profile")
+    publication = profile.get("publication_profile")
+    if research not in core.RESEARCH_PROFILES or publication not in core.PUBLICATION_PROFILES:
+        raise ValueError("Production Profile carries unsupported quality Profile identity")
+    return path, profile
 
 
 def build_bundle(
@@ -164,19 +172,19 @@ def build_bundle(
     output_path: Path,
     pdf_authority: dict[str, Any] | None = None,
     *,
-    research_profile: str | None = None,
-    publication_profile: str | None = None,
+    production_profile_path: Path,
 ) -> Path:
     source = _safe_file(repo_root, source_path, "validated publication source")
     pdf = _safe_file(repo_root, pdf_path, "publication PDF")
+    profile_path, profile = _load_profile_authority(repo_root, production_profile_path, issue_id)
+    research = profile["research_profile"]
+    publication = profile["publication_profile"]
     cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
-    inferred_research, inferred_publication = _infer_profiles(issue_id)
-    research = research_profile or inferred_research
-    publication = publication_profile or inferred_publication
     validate_checks(repo_root, cfg, research, publication, checks)
     basis = {
         "schema_version": "2.0-rc1",
         "issue_id": issue_id,
+        "production_profile": {"path": _rel(repo_root, profile_path), "sha256": core.sha256_file(profile_path)},
         "research_profile": research,
         "publication_profile": publication,
         "source": {"path": _rel(repo_root, source), "sha256": core.sha256_file(source)},
@@ -197,10 +205,21 @@ def validate_bundle(repo_root: Path, path: Path, *, issue_id: str | None = None)
     payload = schema_gate.load_and_validate_json(path, repo_root / QUALITY_SCHEMA, label="quality review bundle")
     if issue_id is not None and payload["issue_id"] != issue_id:
         raise ValueError("quality review bundle issue_id mismatch")
+    profile_ref = payload["production_profile"]
+    profile_path = core.repo_local_path(repo_root, profile_ref["path"], "Quality Production Profile")
+    if profile_path.is_symlink() or not profile_path.is_file() or core.sha256_file(profile_path) != profile_ref["sha256"]:
+        raise ValueError("quality review Production Profile authority drift")
+    profile = core.load_json(profile_path)
+    if (
+        profile.get("issue_id") != payload["issue_id"]
+        or profile.get("research_profile") != payload["research_profile"]
+        or profile.get("publication_profile") != payload["publication_profile"]
+    ):
+        raise ValueError("quality review Profile identity differs from bound Production Profile")
     cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
     validate_checks(repo_root, cfg, payload["research_profile"], payload["publication_profile"], payload["checks"])
     basis = {key: payload[key] for key in (
-        "schema_version", "issue_id", "research_profile", "publication_profile", "source", "pdf", "checks", "status"
+        "schema_version", "issue_id", "production_profile", "research_profile", "publication_profile", "source", "pdf", "checks", "status"
     )}
     if payload["bundle_sha256"] != core.sha256_object(basis):
         raise ValueError("quality review bundle content digest mismatch")
