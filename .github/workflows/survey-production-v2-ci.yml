@@ -29,6 +29,7 @@ on:
       - "tests/test_survey_screening_archive_v2.py"
       - "tests/test_survey_evidence_v2.py"
       - "tests/test_survey_completeness_v2.py"
+      - "tests/test_survey_completeness_closure_audit_v2.py"
       - "tests/test_survey_architecture_v2.py"
       - "tests/test_survey_architecture_review_expansion_v2.py"
       - "tests/test_survey_wu008_contract_identity.py"
@@ -61,6 +62,7 @@ on:
       - "tests/test_survey_screening_archive_v2.py"
       - "tests/test_survey_evidence_v2.py"
       - "tests/test_survey_completeness_v2.py"
+      - "tests/test_survey_completeness_closure_audit_v2.py"
       - "tests/test_survey_architecture_v2.py"
       - "tests/test_survey_architecture_review_expansion_v2.py"
       - "tests/test_survey_wu008_contract_identity.py"
@@ -94,7 +96,7 @@ jobs:
       - name: Compile v2 implementation
         run: python -m py_compile scripts/survey_production_v2.py scripts/survey_screening_v2.py scripts/survey_evidence_v2.py scripts/survey_completeness_v2.py scripts/survey_architecture_v2.py
       - name: Run v2 tests
-        run: python -m unittest tests.test_survey_production_v2 tests.test_survey_screening_v2 tests.test_survey_screening_archive_v2 tests.test_survey_evidence_v2 tests.test_survey_completeness_v2 tests.test_survey_architecture_v2 tests.test_survey_architecture_review_expansion_v2 tests.test_survey_wu008_contract_identity -v
+        run: python -m unittest tests.test_survey_production_v2 tests.test_survey_screening_v2 tests.test_survey_screening_archive_v2 tests.test_survey_evidence_v2 tests.test_survey_completeness_v2 tests.test_survey_completeness_closure_audit_v2 tests.test_survey_architecture_v2 tests.test_survey_architecture_review_expansion_v2 tests.test_survey_wu008_contract_identity -v
       - name: Parse v2 JSON contracts
         run: |
           python - <<'PY'
