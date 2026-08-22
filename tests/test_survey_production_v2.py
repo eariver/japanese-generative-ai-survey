@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import json
 import shutil
 import tempfile
@@ -49,6 +50,47 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         spec.update(overrides)
         return spec
 
+    @staticmethod
+    def write_checkpoint_attestation(root: Path, cfg: dict, state_path: Path, checkpoint: str) -> Path:
+        state = v2.load_json(state_path)
+        profile_path = root / state["profile"]["path"]
+        profile = v2.load_json(profile_path)
+        source_root = root / profile["paths"]["source_root"]
+        artifact = source_root / "generated" / f"{checkpoint}.json"
+        v2.write_json(artifact, {"checkpoint": checkpoint, "issue_id": state["issue_id"]})
+        attestation = source_root / cfg["state_authority"]["checkpoint_attestation_dir"] / f"{checkpoint}.json"
+        v2.write_json(
+            attestation,
+            {
+                "schema_version": "2.0-rc1",
+                "issue_id": state["issue_id"],
+                "checkpoint": checkpoint,
+                "action_id": f"action:test:{checkpoint}",
+                "action_spec_sha256": "a" * 64,
+                "validator": f"validate:{checkpoint}",
+                "validator_version": "2.0-rc1",
+                "validated_at": "2026-08-21T17:09:00Z",
+                "required_inputs": [
+                    {
+                        "name": "production-profile",
+                        "path": str(profile_path.relative_to(root)),
+                        "sha256": v2.sha256_file(profile_path),
+                        "required": True,
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": checkpoint,
+                        "path": str(artifact.relative_to(root)),
+                        "sha256": v2.sha256_file(artifact),
+                        "required": True,
+                    }
+                ],
+                "status": "PASSED",
+            },
+        )
+        return attestation
+
     def test_contract_manifest_declares_two_human_gates_and_non_authoritative_legacy_state(self) -> None:
         self.assertEqual(self.cfg["human_gates"], ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"])
         self.assertEqual(self.cfg["state_authority"]["authoritative_filename"], "production-state.json")
@@ -96,26 +138,10 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
             exclusion=["policy-only material without technical relevance"],
             scope_dimensions=["lineage", "distribution", "reasoning", "coding"],
             initial_obligations=[
-                {
-                    "obligation_id": "initial:lineage",
-                    "dimension": "lineage",
-                    "description": "trace the core lineage",
-                },
-                {
-                    "obligation_id": "initial:distribution",
-                    "dimension": "distribution",
-                    "description": "cover distribution strategy",
-                },
-                {
-                    "obligation_id": "initial:reasoning",
-                    "dimension": "reasoning",
-                    "description": "cover reasoning systems",
-                },
-                {
-                    "obligation_id": "initial:coding",
-                    "dimension": "coding",
-                    "description": "cover coding systems",
-                },
+                {"obligation_id": "initial:lineage", "dimension": "lineage", "description": "trace the core lineage"},
+                {"obligation_id": "initial:distribution", "dimension": "distribution", "description": "cover distribution strategy"},
+                {"obligation_id": "initial:reasoning", "dimension": "reasoning", "description": "cover reasoning systems"},
+                {"obligation_id": "initial:coding", "dimension": "coding", "description": "cover coding systems"},
             ],
         )
         profile = v2.thematic_profile(self.repo_root, self.cfg, spec)
@@ -131,31 +157,18 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
 
     def test_thematic_profile_rejects_bounded_period_mode_and_empty_scope(self) -> None:
         with self.assertRaisesRegex(ValueError, "OPEN_HISTORY_AS_OF or CURRENT_STATE_AS_OF"):
-            v2.thematic_profile(
-                self.repo_root,
-                self.cfg,
-                self.thematic_spec(temporal_mode="BOUNDED_PERIOD"),
-            )
+            v2.thematic_profile(self.repo_root, self.cfg, self.thematic_spec(temporal_mode="BOUNDED_PERIOD"))
         with self.assertRaisesRegex(ValueError, "scope_dimensions"):
-            v2.thematic_profile(
-                self.repo_root,
-                self.cfg,
-                self.thematic_spec(scope_dimensions=[]),
-            )
+            v2.thematic_profile(self.repo_root, self.cfg, self.thematic_spec(scope_dimensions=[]))
 
     def test_thematic_profile_rejects_uncovered_initial_obligation_and_path_escape(self) -> None:
         bad = self.thematic_spec(
             initial_obligations=[
-                {
-                    "obligation_id": "bad",
-                    "dimension": "not-declared",
-                    "description": "invalid dimension",
-                }
+                {"obligation_id": "bad", "dimension": "not-declared", "description": "invalid dimension"}
             ]
         )
         with self.assertRaisesRegex(ValueError, "declared scope dimension"):
             v2.thematic_profile(self.repo_root, self.cfg, bad)
-
         escaped = self.thematic_spec(source_root="../outside")
         with self.assertRaisesRegex(ValueError, "repository-relative path"):
             v2.thematic_profile(self.repo_root, self.cfg, escaped)
@@ -164,55 +177,92 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         temp, root = self.make_sandbox()
         self.addCleanup(temp.cleanup)
         cfg = v2.load_json(root / "config/survey-production-v2.json")
-        profile = v2.thematic_profile(
-            root,
-            cfg,
-            self.thematic_spec(temporal_mode="CURRENT_STATE_AS_OF"),
-        )
+        profile = v2.thematic_profile(root, cfg, self.thematic_spec(temporal_mode="CURRENT_STATE_AS_OF"))
         profile_path, state_path = v2.initialize(
-            root,
-            cfg,
-            profile,
-            IMPLEMENTATION_SHA,
-            "ARCHITECTURE_REVIEW",
+            root, cfg, profile, IMPLEMENTATION_SHA, "ARCHITECTURE_REVIEW",
             v2.parse_instant("2026-08-22T02:05:00+09:00"),
         )
         state = v2.load_json(state_path)
         self.assertEqual(state["profile"]["sha256"], v2.sha256_file(profile_path))
         self.assertEqual(state["implementation"]["repository_commit_sha"], IMPLEMENTATION_SHA)
         self.assertEqual(state["contract"], profile["contract"])
-        self.assertNotEqual(state["contract"]["pipeline_contract_sha256"], state["profile"]["sha256"])
+        self.assertEqual(state["next_action"], "stage:discovery")
+        self.assertIsNone(state["terminal_reason"])
+        self.assertEqual(v2.validate_state_semantics(root, cfg, state), [])
         with self.assertRaisesRegex(ValueError, "refusing destructive"):
             v2.initialize(
-                root,
-                cfg,
-                profile,
-                IMPLEMENTATION_SHA,
-                "ARCHITECTURE_REVIEW",
+                root, cfg, profile, IMPLEMENTATION_SHA, "ARCHITECTURE_REVIEW",
                 v2.parse_instant("2026-08-22T02:06:00+09:00"),
             )
 
-    def test_transition_is_exactly_one_step_and_rejects_implementation_drift(self) -> None:
+    def test_transition_requires_exact_checkpoint_attestation_and_is_one_step(self) -> None:
         temp, root = self.make_sandbox()
         self.addCleanup(temp.cleanup)
         cfg = v2.load_json(root / "config/survey-production-v2.json")
         profile = v2.thematic_profile(root, cfg, self.thematic_spec())
         _, state_path = v2.initialize(
-            root, cfg, profile, IMPLEMENTATION_SHA, "ARCHITECTURE_REVIEW", v2.parse_instant("2026-08-22T02:05:00+09:00")
+            root, cfg, profile, IMPLEMENTATION_SHA, "ARCHITECTURE_REVIEW",
+            v2.parse_instant("2026-08-22T02:05:00+09:00"),
         )
         state = v2.load_json(state_path)
+        with self.assertRaisesRegex(ValueError, "requires exact passed checkpoint updates"):
+            v2.transition_state(
+                root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA,
+                v2.parse_instant("2026-08-22T02:10:00+09:00"),
+            )
+        with self.assertRaisesRegex(ValueError, "lacks validation attestation"):
+            v2.transition_state(
+                root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA,
+                v2.parse_instant("2026-08-22T02:10:00+09:00"), {"discovery": "passed"},
+            )
+        self.write_checkpoint_attestation(root, cfg, state_path, "discovery")
         advanced = v2.transition_state(
-            root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA, v2.parse_instant("2026-08-22T02:10:00+09:00")
+            root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA,
+            v2.parse_instant("2026-08-22T02:10:00+09:00"), {"discovery": "passed"},
         )
         self.assertEqual(advanced["lifecycle_state"], "DISCOVERY_COLLECTED")
+        self.assertEqual(advanced["machine_checkpoints"]["discovery"], "passed")
         with self.assertRaisesRegex(ValueError, "exactly one forward step"):
             v2.transition_state(
-                root, cfg, state, "EVIDENCE_REVIEWED", IMPLEMENTATION_SHA, v2.parse_instant("2026-08-22T02:11:00+09:00")
+                root, cfg, state, "EVIDENCE_REVIEWED", IMPLEMENTATION_SHA,
+                v2.parse_instant("2026-08-22T02:11:00+09:00"), {},
             )
         with self.assertRaisesRegex(ValueError, "implementation commit differs"):
             v2.transition_state(
-                root, cfg, state, "DISCOVERY_COLLECTED", OTHER_IMPLEMENTATION_SHA, v2.parse_instant("2026-08-22T02:12:00+09:00")
+                root, cfg, state, "DISCOVERY_COLLECTED", OTHER_IMPLEMENTATION_SHA,
+                v2.parse_instant("2026-08-22T02:12:00+09:00"), {"discovery": "passed"},
             )
+
+    def test_state_semantic_validation_rejects_forged_lifecycle_checkpoint_history_and_controller(self) -> None:
+        temp, root = self.make_sandbox()
+        self.addCleanup(temp.cleanup)
+        cfg = v2.load_json(root / "config/survey-production-v2.json")
+        profile = v2.thematic_profile(root, cfg, self.thematic_spec())
+        _, state_path = v2.initialize(
+            root, cfg, profile, IMPLEMENTATION_SHA, "ARCHITECTURE_REVIEW",
+            v2.parse_instant("2026-08-22T02:05:00+09:00"),
+        )
+        state = v2.load_json(state_path)
+
+        forged = copy.deepcopy(state)
+        forged["lifecycle_state"] = "DISCOVERY_COLLECTED"
+        errors = v2.validate_state_semantics(root, cfg, forged)
+        self.assertTrue(any("checkpoint discovery" in error or "history length" in error for error in errors), errors)
+
+        forged = copy.deepcopy(state)
+        forged["machine_checkpoints"]["architecture"] = "passed"
+        errors = v2.validate_state_semantics(root, cfg, forged)
+        self.assertTrue(any("checkpoint architecture" in error for error in errors), errors)
+
+        forged = copy.deepcopy(state)
+        forged["next_action"] = "ARCHITECTURE_REVIEW"
+        errors = v2.validate_state_semantics(root, cfg, forged)
+        self.assertTrue(any("next_action drift" in error for error in errors), errors)
+
+        forged = copy.deepcopy(state)
+        forged["history"][0]["to"] = "DISCOVERY_COLLECTED"
+        errors = v2.validate_state_semantics(root, cfg, forged)
+        self.assertTrue(any("history[0]" in error for error in errors), errors)
 
     def test_transition_rejects_profile_contract_and_legacy_drift(self) -> None:
         temp, root = self.make_sandbox()
@@ -224,7 +274,8 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         legacy_path.write_text('{"legacy": 1}\n', encoding="utf-8")
         profile = v2.thematic_profile(root, cfg, self.thematic_spec())
         profile_path, state_path = v2.initialize(
-            root, cfg, profile, IMPLEMENTATION_SHA, "ARCHITECTURE_REVIEW", v2.parse_instant("2026-08-22T02:05:00+09:00")
+            root, cfg, profile, IMPLEMENTATION_SHA, "ARCHITECTURE_REVIEW",
+            v2.parse_instant("2026-08-22T02:05:00+09:00"),
         )
         state = v2.load_json(state_path)
         self.assertTrue(state["legacy_compatibility"]["legacy_state_present"])
@@ -232,7 +283,8 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         legacy_path.write_text('{"legacy": 2}\n', encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "legacy compatibility artifact changed"):
             v2.transition_state(
-                root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA, v2.parse_instant("2026-08-22T02:10:00+09:00")
+                root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA,
+                v2.parse_instant("2026-08-22T02:10:00+09:00"), {"discovery": "passed"},
             )
 
         legacy_path.write_text('{"legacy": 1}\n', encoding="utf-8")
@@ -241,27 +293,26 @@ class SurveyProductionV2FoundationTests(unittest.TestCase):
         profile_path.write_text(json.dumps(changed_profile, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "profile bytes changed"):
             v2.transition_state(
-                root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA, v2.parse_instant("2026-08-22T02:11:00+09:00")
+                root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA,
+                v2.parse_instant("2026-08-22T02:11:00+09:00"), {"discovery": "passed"},
             )
 
     def test_transition_rejects_contract_file_drift(self) -> None:
         temp, root = self.make_sandbox()
         self.addCleanup(temp.cleanup)
         cfg = v2.load_json(root / "config/survey-production-v2.json")
-        profile = v2.thematic_profile(
-            root,
-            cfg,
-            self.thematic_spec(temporal_mode="CURRENT_STATE_AS_OF"),
-        )
+        profile = v2.thematic_profile(root, cfg, self.thematic_spec(temporal_mode="CURRENT_STATE_AS_OF"))
         _, state_path = v2.initialize(
-            root, cfg, profile, IMPLEMENTATION_SHA, "ARCHITECTURE_REVIEW", v2.parse_instant("2026-08-22T02:05:00+09:00")
+            root, cfg, profile, IMPLEMENTATION_SHA, "ARCHITECTURE_REVIEW",
+            v2.parse_instant("2026-08-22T02:05:00+09:00"),
         )
         state = v2.load_json(state_path)
         contract_path = root / "docs/survey-production-core-v2-authority.md"
         contract_path.write_text(contract_path.read_text(encoding="utf-8") + "\nchanged\n", encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "semantic contract files differ"):
             v2.transition_state(
-                root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA, v2.parse_instant("2026-08-22T02:10:00+09:00")
+                root, cfg, state, "DISCOVERY_COLLECTED", IMPLEMENTATION_SHA,
+                v2.parse_instant("2026-08-22T02:10:00+09:00"), {"discovery": "passed"},
             )
 
 
