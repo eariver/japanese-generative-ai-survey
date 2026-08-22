@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Execution-only adapter: preserve Core v2 package append-only semantics.
+"""Execution-only adapter for the fresh W33 Core v2 Evidence run.
 
-The W33 runner creates an empty work/results directory before calling the
-canonical Evidence package builder. The builder correctly requires an empty
-output root. Remove only that empty child immediately before the canonical
-builder runs; all substantive validation remains in survey_evidence_v2.
+Two mechanical adaptations are required by the one-shot runner:
+- remove its empty ``work/results`` child immediately before the canonical
+  append-only package builder checks that the output root is empty;
+- run the final Completeness revalidation under the reviewed agent-first
+  historical-Screening-basis wrapper merged to main in PR #337.
+
+No Evidence Card, materiality, or editorial decision is changed here.
 """
 from __future__ import annotations
 
@@ -12,8 +15,10 @@ import runpy
 from pathlib import Path
 
 from scripts import survey_evidence_v2 as ev
+from scripts.survey_agent_tool_v2 import current_stage_basis_override
 
-_original = ev.prepare_evidence_package
+_original_prepare = ev.prepare_evidence_package
+_original_completeness = ev.validate_completeness
 
 
 def _prepare(*args, **kwargs):
@@ -24,8 +29,14 @@ def _prepare(*args, **kwargs):
     results = output_dir / "results"
     if results.is_dir() and not any(results.iterdir()):
         results.rmdir()
-    return _original(*args, **kwargs)
+    return _original_prepare(*args, **kwargs)
+
+
+def _validate_completeness(*args, **kwargs):
+    with current_stage_basis_override():
+        return _original_completeness(*args, **kwargs)
 
 
 ev.prepare_evidence_package = _prepare
+ev.validate_completeness = _validate_completeness
 runpy.run_path("automation/w33_evidence_once.py", run_name="__main__")
