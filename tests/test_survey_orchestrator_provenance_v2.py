@@ -52,7 +52,7 @@ class SurveyOrchestratorProvenanceV2Tests(unittest.TestCase):
 
         with self.assertRaisesRegex(
             ValueError,
-            "artifact ref SHA drift|checkpoint attestation|State semantic inconsistencies",
+            "artifact SHA drift|checkpoint attestation|Production State semantic inconsistency",
         ):
             orchestrator.plan_action(root, cfg, state_path)
 
