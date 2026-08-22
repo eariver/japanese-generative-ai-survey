@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from scripts import survey_orchestrator_v2 as orchestrator
 from scripts import survey_production_v2 as core
 from scripts import survey_schema_v2 as schema_gate
 
@@ -137,6 +138,7 @@ def _repository_status(
     semantic_errors = core.validate_state_semantics(repo_root, cfg, state)
     if semantic_errors:
         raise ValueError("existing Pilot Production State semantic inconsistency: " + "; ".join(semantic_errors))
+    orchestrator.verify_runtime_implementation(repo_root, cfg, state)
     return {**common, "status": "RESUME_EXISTING_STATE", "lifecycle_state": state["lifecycle_state"]}, existing_profile
 
 
