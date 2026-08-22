@@ -33,7 +33,7 @@ class SurveyFinalAuditRuleV2Tests(unittest.TestCase):
         self.assertIn("Do not stop for ordinary internal work", agents)
         self.assertIn("continue immediately unless a Human/Exception Gate is reached", bootstrap)
         self.assertIn("manual Grok", rule)
-        self.assertIn("resume the pipeline automatically", rule)
+        self.assertIn("resumes the pipeline automatically", rule)
 
     def test_final_result_is_external_metadata_not_post_audit_candidate_commit(self) -> None:
         rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
