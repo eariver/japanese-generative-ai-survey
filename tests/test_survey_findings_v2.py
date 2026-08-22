@@ -163,16 +163,18 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         worklog = Path("docs/checkpoints/survey-production-core-v2-worklog.md").read_text(encoding="utf-8")
         closure = Path("docs/survey-production-core-v2-wu011-second-audit-closure.md").read_text(encoding="utf-8")
         bootstrap = Path("docs/survey-production-core-v2-session-bootstrap.md").read_text(encoding="utf-8")
+        final_rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
 
-        # The repository, not a stale intermediate status phrase, owns the live
-        # pre-merge boundary. WU-011 remains historical while WU-012 may advance
-        # from realignment to implementation-complete Human review.
-        self.assertIn("WU-012 IMPLEMENTED", authority)
-        self.assertIn("Human full-candidate review", authority)
+        # WU-011 remains historical. The live pre-merge boundary is now the
+        # all-changes-first fixed-head WU-012 final audit, not a stale status phrase.
+        self.assertIn("POST-COMPLETION RE-AUDIT", authority)
+        self.assertIn("not current final-review evidence", authority)
         self.assertIn("WU-011: historical `COMPLETE", worklog)
-        self.assertIn("WU-012: **`IMPLEMENTATION COMPLETE", worklog)
+        self.assertIn("WU-012: `POST-COMPLETION RE-AUDIT", worklog)
         self.assertIn("Human full-candidate review of PR #310", closure)
         self.assertIn("survey_pilot_bootstrap_v2.py plan --pilot", bootstrap)
+        self.assertIn("run the complete five-point acceptance audit from zero", final_rule)
+        self.assertIn("rerun all five acceptance points from point 1", final_rule)
         self.assertFalse(Path("sources/2026-W33/production-state.json").exists())
         self.assertFalse(Path("sources/SP001/production-state.json").exists())
 
