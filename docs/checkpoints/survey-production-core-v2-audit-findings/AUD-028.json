@@ -1,0 +1,30 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-028",
+  "edition": "CORE-V2",
+  "stage": "WU-012_PRE_APPROVAL_AUDIT",
+  "observed_problem": "The Weekly Evidence View records why_this_issue and other Weekly-only semantics, but the current v2 Draft/Profile/Publicaton path only preserves generic extensions and does not enforce the final reader-facing acceptance criteria from Issue #9: why-this-week for pre-window material, one substantive home per Late Breaking event, reader-facing Watchlist semantics, and separation of pipeline-management vocabulary/TODOs from published prose.",
+  "expected_behavior": "Weekly Profile semantics must be validated at the Weekly drafting/publication boundary so Issue #9 concerns are enforced in the final reader-facing product while generic Core remains free of Weekly vocabulary.",
+  "actual_behavior": "scripts/survey_evidence_v2.py can carry Weekly semantic fields, but scripts/survey_draft_profile_v2.py primarily enforces extension preservation and the generic drafting contract does not prove the final Weekly reader semantics required by Issue #9.",
+  "production_workaround": "Do not approve or merge PR #310 and do not start W33. WU-012B must add a Weekly Profile semantic guard before first production validation.",
+  "classification": {
+    "scope": "WEEKLY_PROFILE",
+    "defect_kind": "EDITORIAL",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "8beaf978793d983cc7608f4ca9c534511dd04d7a",
+    "relevant_artifacts": [
+      "scripts/survey_evidence_v2.py",
+      "scripts/survey_draft_profile_v2.py",
+      "scripts/survey_drafting_v2.py",
+      "docs/editorial-specification.md"
+    ],
+    "human_review_reference": "Issue #9"
+  },
+  "improvement_action": "Implement WU-012B: add Weekly Profile-owned semantic validation for reader-facing why-this-issue, Late Breaking one-home semantics, Watchlist current-state/unknown/change-trigger structure, chronology/current-significance separation, carry-over disposition, and default suppression of known pipeline-management vocabulary/TODO language.",
+  "regression_fixture": null,
+  "resolved_by_repair_set_id": null,
+  "status": "OPEN"
+}
