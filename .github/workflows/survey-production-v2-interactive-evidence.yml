@@ -82,7 +82,7 @@ jobs:
           REQUEST: ${{ steps.request.outputs.request }}
         run: |
           set -euo pipefail
-          PYTHONPATH=. python scripts/run_evidence_v2_interactive.py \
+          PYTHONPATH=. python scripts/run_evidence_v2_agent_first.py \
             --repo-root . --state "$STATE" --input "$REQUEST" \
             | tee evidence-v2-output.json
 
