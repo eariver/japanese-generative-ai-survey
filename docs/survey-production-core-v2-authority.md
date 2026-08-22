@@ -66,9 +66,10 @@ A remediation status can change a finding from open to repaired only when implem
 | `docs/survey-production-core-v2-minimum-vertical-slice-audit-amendment.md` | `SUPERSEDED IN PART BY SECOND AUDIT` | first correction remains valid except where later authorities conflict |
 | `docs/survey-production-core-v2-minimum-vertical-slice-second-audit-amendment.md` | `AUTHORITATIVE PHASE 3 IMPLEMENTATION AMENDMENT` | current W33/SP001 Pilot implementation boundary |
 | `docs/survey-production-core-v2-whole-system-audit-2026-08-22.md` | `AUTHORITATIVE CROSS-CUTTING AUDIT` | originating integrated-audit requirements; finding status is normalized in this index |
-| `docs/survey-production-core-v2-whole-system-audit-remediation-closure.md` | `AUTHORITATIVE HISTORICAL REMEDIATION EVIDENCE` | records WU-008A remediation and WU-009 entry; later WU-010 re-audit status is controlled here |
+| `docs/survey-production-core-v2-whole-system-audit-remediation-closure.md` | `AUTHORITATIVE HISTORICAL REMEDIATION EVIDENCE` | records WU-008A remediation and WU-009 entry; later WU-010/WU-010R status is controlled here |
 | `docs/survey-production-core-v2-w33-artifact-disposition.md` | `ACTIVE SUPPORTING POLICY` | optional legacy benchmark/reuse policy; not a W33 acceptance contract |
 | `docs/checkpoints/survey-production-core-v2-worklog.md` | `CANONICAL WORK CHECKPOINT` | status/progress/next action only; does not override semantic contracts |
+| `docs/checkpoints/survey-production-core-v2-audit-findings/` | `ACTIVE MACHINE-READABLE AUDIT EVIDENCE` | WU-010R Findings and Repair Set; closure remains Repair-Set governed |
 
 ## 4. Critical corrected rules
 
@@ -102,16 +103,20 @@ Current rules are:
 - **AUD-001 / WU-010 — REPAIRED, then strengthened by WU-010R.** Architecture Review uses immutable proposed Architecture bytes plus independent Approval Record. WU-010R additionally requires semantic checkpoint attestation and State-pinned gate provenance so exact-byte approval cannot bless semantically unvalidated bytes.
 - **AUD-011 / WU-010 — REPAIRED.** State-pinned implementation identity survives artifact-only commits while committed/staged/unstaged/untracked implementation-control drift fails closed.
 
-### 5.2 Human re-audit remediation — WU-010R
+### 5.2 WU-010R Human re-audit remediation — implementation complete
 
-These findings were opened by the Human re-audit after the first WU-010 closure. They are mandatory before WU-011 starts. Work-status completion is recorded only in the worklog after focused and cross-regression validation.
+The Human re-audit findings AUD-013 through AUD-018 have been repaired at implementation/regression level. The machine-readable Repair Set is `REPAIR-WU010R-2026-08-22` under `docs/checkpoints/survey-production-core-v2-audit-findings/` and remains intentionally `IMPLEMENTED`, not `VALIDATED` or `CLOSED`, because W33/SP001 verification editions have not begun. Finding closure therefore remains pending Pilot verification, while the WU-010R implementation work unit itself is complete.
 
-- **AUD-013 / P0** — semantic checkpoint / Human Gate attestation. Required outcome: handler success alone never advances a checkpoint; exact semantic Validation Attestation is required and Gate approval consumes the attested/reviewed bytes.
-- **AUD-014 / P0** — Production State self-consistency/provenance. Required outcome: lifecycle/history/checkpoint/gate/controller semantics are fail-closed and State pins exact checkpoint/gate authority bytes.
-- **AUD-015 / P1, P0 before autonomous provenance reliance** — Action Spec stage-input provenance. Required outcome: the action basis includes State/Profile plus transitive exact State-pinned stage authorities so stage-input drift invalidates the action identity/plan.
-- **AUD-016 / P1, P0 before external dispatch wiring** — retry/idempotency. Required outcome: retry is action-kind/stage-specific; external dispatch is not blindly repeated after ambiguous failure.
-- **AUD-017 / P1 — REPAIRED BY THIS AUTHORITY UPDATE.** This index, not the worklog, now normalizes AUD-001/AUD-011 as repaired and records AUD-013–AUD-018 explicitly.
-- **AUD-018 / P2, P1 before Pilot feedback loop** — Finding/Repair closure governance. Required outcome: standalone Finding closure is invalid; a closed Repair Set with validation authority is required.
+The validated implementation head is `35dd8881ba83bf106ae6d934ad0212d2e0eafb47`. At that head all five cross-regression families passed: Survey Production Core v2 CI (71 tests plus contract parse and Repair Set dogfood), Screening contract CI, Evidence contract CI, Pipeline contract tests, and Weekly pipeline spine including committed Raw integrity.
+
+- **AUD-013 / P0 — FIXED_GENERIC / Repair Set IMPLEMENTED.** Handler success alone cannot advance a checkpoint; exact semantic Validation Attestation is required and Architecture Gate approval consumes State-pinned attested/reviewed bytes. Regression proves semantically invalid Architecture cannot become `architecture=passed` or reach approval.
+- **AUD-014 / P0 — FIXED_GENERIC / Repair Set IMPLEMENTED.** Production State validates lifecycle/history/checkpoint/gate/controller consistency and exact checkpoint/Human-Gate provenance fail-closed.
+- **AUD-015 / P1, P0 before autonomous provenance reliance — FIXED_GENERIC / Repair Set IMPLEMENTED.** Action planning consumes transitive State-pinned checkpoint/gate authorities, and a dedicated negative regression proves post-attestation upstream artifact drift invalidates the next action plan.
+- **AUD-016 / P1, P0 before external dispatch wiring — FIXED_GENERIC / Repair Set IMPLEMENTED.** Retry is action/stage-specific; `WORKFLOW_DISPATCH` is non-retryable by default and retry requires explicit idempotency authority.
+- **AUD-017 / P1 — FIXED_GENERIC.** This index directly normalizes repaired and open findings; no additional amendment-chain document is introduced.
+- **AUD-018 / P2, P1 before Pilot feedback loop — FIXED_GENERIC / Repair Set IMPLEMENTED.** Standalone Finding closure fails closed; only a closed Repair Set can provide Finding closure authority.
+
+No new WU-010R P0/P1 defect was found by the second remediation audit. The remaining pre-Pilot blockers are explicitly WU-011 responsibilities below.
 
 ### 5.3 Still open for WU-011 / pre-Pilot integration
 
@@ -121,7 +126,7 @@ These findings were opened by the Human re-audit after the first WU-010 closure.
 - **Publication Preview exact-byte authority / WU-011** — exact publication-candidate PDF bytes must remain bound through Publication Preview, Visual Review, Freeze, merge verification and Release.
 - **Pilot handler/bootstrap wiring / WU-011** — settled W33/SP001 stage handlers, workflow dispatches and assistant-control/allowlist integration.
 
-WU-011 must not start until WU-010R is marked complete after the required regression and re-audit sequence.
+WU-011 may begin only after the worklog records WU-010R complete. External W33/SP001 production remains prohibited until WU-011/full candidate review is complete and the coherent candidate is merged to `main`.
 
 ## 6. Negative-design rules that remain active
 
