@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Compilation System Improvement Plan
 
-Status: `WU-012 REPAIRS IMPLEMENTED / AUDIT-STABLE PRE-AUDIT CANDIDATE`  
+Status: `WU-012 + AUD-046 REPAIRS IMPLEMENTED / AUDIT-STABLE PRE-AUDIT CANDIDATE`  
 Established: 2026-08-22 JST  
 Working branch: `refactor/survey-production-core-v2`  
 Production source of truth until merge: current `main`  
@@ -11,11 +11,12 @@ Final-audit rule: `docs/survey-production-core-v2-final-audit-rule.md`
 
 Survey Production Core v2 exists to help an upper-tier ChatGPT reasoning model compile the Japanese Generative AI Technical Survey accurately, efficiently and reproducibly across sessions.
 
-It is **not** an external autonomous publishing engine. ChatGPT performs open-ended research/editorial reasoning; repository-owned guidance, schemas, scripts, tests and workflows support deterministic/repetitive/provenance-sensitive work.
+It is **not** an external autonomous publishing engine. ChatGPT performs open-ended research/editorial reasoning; repository-owned guidance, schemas, scripts, tests and workflows support deterministic/repetitive/provenance-sensitive work. External sensors such as Grok may contribute source discovery, but they do not replace ChatGPT's research judgment or the normal Evidence boundary.
 
 ```text
 user target + requested stopping Human Gate
 -> ChatGPT reads repository authority/Profile/State
+-> ChatGPT plans Source Intake, including required/appropriate Grok X collection
 -> ChatGPT researches, judges materiality/completeness, selects and drafts
 -> deterministic helpers protect crisp invariants
 -> exact stage artifacts + compact provenance checkpoint
@@ -35,10 +36,10 @@ But “traceability” does not justify ceremony whose cost exceeds its protecti
 
 Before merge, evaluate in this strict order:
 
-1. **Weekly viability** — future Weekly issues can be compiled reliably.
-2. **Special viability** — Retrospective Period, stand-alone Thematic, SP-001–003 style work and Generative AI Foundations can be compiled reliably.
+1. **Weekly viability** — future Weekly issues can be compiled reliably, including the required X/Grok intake lane.
+2. **Special viability** — Retrospective Period, stand-alone Thematic, SP-001–003 style work and Generative AI Foundations can be compiled reliably, including targeted X collection when material.
 3. **Generality** — no overfit to W33/W34/SP001–003; later Weekly and unforeseen Specials remain generic.
-4. **Historical Issue recurrence prevention** — known Human Review failures have durable prevention ownership.
+4. **Historical Issue recurrence prevention** — known Human Review failures and clarified production-boundary failures have durable prevention ownership.
 5. **Control proportionality** — only after 1–4, remove/avoid unnecessary gates, ceremony and brittle validators.
 
 Lower-numbered priorities win on conflict.
@@ -51,6 +52,10 @@ Survey Production Core v2
       WEEKLY
       RETROSPECTIVE_PERIOD
       THEMATIC
+  + External Source Intake surfaces
+      conventional collectors
+      ChatGPT direct research
+      Grok / X via Google Drive handoff
   + Publication Profile
       WEEKLY_MAGAZINE
       LONGFORM_SPECIAL
@@ -58,11 +63,12 @@ Survey Production Core v2
       Generative AI Foundations etc.
 ```
 
-Core owns reusable mechanisms. Research Profiles own edition semantics. Publication Profiles own reader-facing publication behavior. A living Series document may coordinate volumes without becoming another workflow engine.
+Core owns reusable mechanisms. Research Profiles own edition semantics and X applicability policy. Publication Profiles own reader-facing publication behavior. A living Series document may coordinate volumes without becoming another workflow engine.
 
 ### Weekly owns
 
 - current-window/cutoff significance;
+- required X/Grok coverage scan;
 - carry-over and Late Breaking;
 - Watchlist semantics;
 - `why this week`.
@@ -70,26 +76,32 @@ Core owns reusable mechanisms. Research Profiles own edition semantics. Publicat
 ### Retrospective Period owns
 
 - bounded completed-history scope;
+- explicit ChatGPT X applicability decision;
 - chronology/period labels;
 - retrospective coverage and synthesis.
 
 ### Thematic owns
 
 - explicit research question;
+- explicit ChatGPT X applicability decision;
 - open-history/current-state scope;
 - lineage/branch/competitor expansion;
 - thematic completeness.
 
 ### Foundations Series
 
-`docs/generative-ai-foundations-special-series.md` remains the living series architecture. A machine Series engine is intentionally deferred until real cross-volume work demonstrates repeated cost or drift that would justify it.
+`docs/generative-ai-foundations-special-series.md` remains the living series architecture. Each volume uses the Thematic Profile; when X is material, the run uses the dedicated `Generative_AI_Foundations` Drive category. Historical attribution remains primary/historical-source work. A machine Series engine is intentionally deferred until real cross-volume work demonstrates repeated cost or drift that would justify it.
 
 ## 4. Responsibility boundary
 
 ### ChatGPT owns
 
 - Source Intake/search strategy and expansion;
-- source quality and primary-source gap fill;
+- deciding X applicability where the Profile allows judgment;
+- designing Grok run-specific research questions, coverage focus and time scope;
+- rendering Grok instruction/prompt, provisioning the exact Google Drive run folder and reading the returned Markdown;
+- importing exact returned Grok bytes into repository Raw and recording Discovery/no-material disposition;
+- source quality and primary-source gap fill, especially for X-origin leads;
 - semantic Screening/Evidence interpretation;
 - completeness/materiality judgment;
 - Candidate Selection and Architecture;
@@ -99,10 +111,21 @@ Core owns reusable mechanisms. Research Profiles own edition semantics. Publicat
 - semantic and visual review;
 - classification/generalization of new findings.
 
+### Grok owns
+
+- X-native observation/search for the exact run-specific task;
+- reporting representative posts, community signal, counter-signal, independent testing/integration/reproduction leads and candidate primary sources;
+- writing the final Raw Observation Markdown only to the instructed Google Drive run folder.
+
+Grok is not publication-grade technical Evidence authority and does not write directly to GitHub.
+
 ### Deterministic tools own/assist
 
 - cutoffs/windows/date/profile bootstrap;
 - schemas/formats/paths/hashes;
+- X applicability policy enforcement where Profile-mandated;
+- Grok instruction/prompt authority and exact imported Raw hashes/byte counts;
+- required Grok run completion plus Discovery/no-material disposition accounting;
 - Raw immutability and provenance;
 - IDs/URLs/source refs;
 - duplicate/missing/disposition accounting;
@@ -113,6 +136,8 @@ Core owns reusable mechanisms. Research Profiles own edition semantics. Publicat
 - exact Production Profile-bound quality applicability;
 - exact Publication Preview/PDF/Freeze/Release identity;
 - release reconciliation/idempotency.
+
+GitHub Actions does not require access to the private Google Drive folder. ChatGPT uses the connected Drive capability for account-specific transfer; repository/CI validates stable path semantics and the exact imported bytes.
 
 A tool may validate an artifact created by ChatGPT. It does not replace qualitative judgment merely to produce a PASS field.
 
@@ -125,7 +150,9 @@ Normal production Human Gates remain exactly:
 
 Candidate Selection is internal. Visual Review, Freeze, merge and Release are not extra routine Human Gates.
 
-Exception Gate is reserved for unresolved editorial/publication/compatibility choices that repository authority cannot safely decide. Search refinement, ordinary QA failures, CI retry and clean reviewed-tool upgrades are not Human Gates.
+Grok/Drive collection is Source Intake. If a Grok result has not arrived yet, that is an operational wait while Source Intake remains incomplete, not a Human editorial Gate. If manual transport is necessary, the Human may pass the generated instruction/prompt to Grok without approving editorial content.
+
+Exception Gate is reserved for unresolved editorial/publication/compatibility choices that repository authority cannot safely decide. Search refinement, ordinary QA failures, CI retry, ordinary Grok transport and clean reviewed-tool upgrades are not Human Gates.
 
 The Core-v2 five-point final audit is a **change-management acceptance rule**, not a third production Human Gate.
 
@@ -136,6 +163,7 @@ Repository state, not chat history, must be sufficient for continuation. A new s
 - target/Profile/work branch;
 - Production State and lifecycle;
 - accepted stage artifacts;
+- X Source Intake manifest/status and pending Drive run path when Source Intake is active;
 - current Human/Exception Gate;
 - research limitations/findings;
 - implementation/contract used at each material checkpoint.
@@ -186,17 +214,43 @@ ChatGPT produces exact intended stage artifacts
 
 Canonical `stage_plan[*].handoff_required=false`. Legacy Handoff code remains compatibility/audit material only.
 
-`CORE_STAGE_CONTRACT` validates semantic/content-addressed authority, not just filenames. Draft stage additionally requires paired `draft-package:<id>` / `draft-result:<id>` authorities.
+`CORE_STAGE_CONTRACT` validates semantic/content-addressed authority, not just filenames. Draft stage additionally requires paired `draft-package:<id>` / `draft-result:<id>` authorities. Discovery Acceptance transitively binds the completed X Source Intake manifest and imported Grok Raw identity, so the compact checkpoint does not duplicate the external manifest as a second stage artifact.
 
-Richer request/receipt/reconciliation remains justified at external irreversible boundaries such as public Release.
+The Grok/Drive exchange is external collection transport, not a resurrection of the legacy local Handoff chain. Richer request/receipt/reconciliation remains justified at external irreversible boundaries such as public Release.
 
-## 9. Source Intake / Completeness / Materiality
+## 9. Source Intake / Grok X / Completeness / Materiality
 
-Issue #166 established that collector success or source count does not prove completeness, and material discoveries must not disappear downstream.
+Issue #166 established that collector success or source count does not prove completeness, and material discoveries must not disappear downstream. AUD-046 establishes that the originally intended X/Grok signal surface must also be explicit rather than living only in a legacy Weekly helper.
+
+### X applicability
+
+- `WEEKLY`: `REQUIRED_BY_PROFILE`; at least one completed Grok/X run is required.
+- `RETROSPECTIVE_PERIOD`: `CHATGPT_DECIDES`; record `REQUIRED` or `NOT_REQUIRED` with substantive rationale.
+- `THEMATIC`: `CHATGPT_DECIDES`; same.
+- Generative AI Foundations uses the Thematic Profile plus `GENERATIVE_AI_FOUNDATIONS` series context when X is material.
+
+The configured handoff root is `Grok_X_SourseIntake`, with stable categories:
+
+```text
+Weekly
+Retrospective_Special
+Thematic_Special
+Generative_AI_Foundations
+```
+
+Each run writes to:
+
+```text
+Grok_X_SourseIntake/<category>/<edition>/<run-id>/
+```
+
+ChatGPT creates the run-specific prompt/instruction and Drive folder. Grok writes Raw Observation there. ChatGPT imports exact returned bytes into repository Raw, then either names Discovery records that bind those Raw bytes or records `NO_MATERIAL_DISCOVERY` with rationale. Discovery Acceptance binds the completed X manifest SHA.
+
+X is suitable for discovery/community reaction/adoption/integration/reproduction signals. Specifications, benchmark values, release dates, license terms, historical priority and similar technical claims still require normal authoritative Evidence verification.
 
 ### ChatGPT completeness review records
 
-- what was searched/investigated;
+- what conventional/direct/X search surfaces were used or why X was not material;
 - material findings/branches;
 - targeted gap-fill;
 - negative search results where meaningful;
@@ -207,7 +261,9 @@ No universal source/story/page quota is introduced.
 
 ### Deterministic traceability retains
 
+- exact X manifest/instruction/prompt/imported Raw identity when applicable;
 - exact Discovery/Raw identity;
+- every X run disposition;
 - every material discovery disposition;
 - supplemental/gap-fill joining the same trace;
 - stable subject/entity binding.
@@ -229,6 +285,7 @@ LEGACY_ONLY / NOT_APPLICABLE
 Examples:
 
 - #166 material drop -> deterministic disposition accounting + ChatGPT completeness review;
+- AUD-046 X omission/result loss -> Profile applicability + exact Raw/import/disposition accounting + ChatGPT Evidence-boundary review;
 - #191 entity rebinding -> structured Evidence + deterministic entity/role checks;
 - #49 wrong period label -> designated deterministic Period check;
 - #9 why-this-week / Late Breaking / Watchlist/internal metadata -> Weekly ChatGPT editorial checklist plus reliable leakage checks;
@@ -262,11 +319,15 @@ Thus `RETROSPECTIVE_PERIOD` cannot silently receive Thematic checks.
 
 ## 12. Weekly viability design
 
-Weekly viability rests on generic issue/cutoff derivation, Profile-owned semantics, adaptable ChatGPT research, issue-agnostic provenance and the Issue Prevention Checklist.
+Weekly viability rests on generic issue/cutoff derivation, Profile-owned semantics, adaptable ChatGPT research, issue-agnostic provenance, required Grok/X coverage and the Issue Prevention Checklist.
+
+Every Weekly performs the common X policy plus Weekly coverage overlay, including independent technical lanes and a targeted media second pass when needed. A quiet X week may produce `NO_MATERIAL_DISCOVERY`; it may not skip X solely because conventional collectors found many records.
+
+Underlying event date and X momentum date remain separate. X-origin leads are primary-source verified before publication-grade technical claims enter Evidence.
 
 No Core behavior branches on W33. W33 remains a first **real post-merge validation edition**, not a template.
 
-The current-main Weekly production spine remains protected by the required cross-regression family before merge.
+The current-main Weekly production spine remains protected by the required cross-regression family before merge. Its historical `x-trend-sensor-v0.4` helper may remain compatibility/legacy evidence, while Core v2's canonical path is the generic Profile-aware X Source Intake contract.
 
 ## 13. Special viability design
 
@@ -282,13 +343,19 @@ as_of >= bounded period end
 
 before Profile creation/initialization, preventing incomplete future retrospectives.
 
+For X, ChatGPT explicitly decides whether community adoption/reproduction/integration or retrospective momentum evidence materially improves the period question. A NOT_REQUIRED result must say why authoritative/historical sources are sufficient.
+
 ### Stand-alone Thematic
 
 Thematic scope comes from an explicit research question and canonical planning authority. SP001 materializes TS-001 planning authority instead of duplicating narrow topic content in bootstrap config.
 
+X uses targeted question-specific Special runs rather than the generic Weekly Top-10 scan. ChatGPT may expand runs when a material ecosystem/competitor/integration branch is discovered.
+
 ### Generative AI Foundations
 
 Each volume uses normal Thematic production while `docs/generative-ai-foundations-special-series.md` remains outer living research architecture. AUD-031 intentionally defers a separate machine Series engine.
+
+When X is material to a volume, the Drive category is `Generative_AI_Foundations`. Older historical volumes may legitimately mark X NOT_REQUIRED. Contemporary/frontier volumes may use it for present-day implementation/reception signals, but X cannot establish historical ancestry or priority.
 
 ## 14. Publication / release identity
 
@@ -313,11 +380,13 @@ Exact Publication Preview / Visual / Freeze / Manifest / Merge Verification / Re
 
 Pre-merge genericity is structural rather than an exhaustive synthetic universe:
 
-- arbitrary valid completed Weekly ID;
-- arbitrary bounded Period spec;
-- arbitrary Thematic question/spec;
+- arbitrary valid completed Weekly ID with required X run;
+- arbitrary bounded Period spec with explicit X applicability decision;
+- arbitrary Thematic question/spec with explicit X applicability decision;
+- Foundations is a Thematic series context, not a parallel production engine;
 - no generic code branch on W33/SP001/TS-001;
 - Research/Publication behavior selected by Profile;
+- X behavior selected by Profile policy plus ChatGPT research judgment, not named edition;
 - living series guidance can resolve evolving Foundations volumes.
 
 AUD-033 intentionally defers exhaustive hypothetical future-edition fixture matrices. Real W33/SP001 followed by W34/SP002/SP003 provide stronger post-merge semantic evidence.
@@ -336,6 +405,7 @@ AUD-033 intentionally defers exhaustive hypothetical future-edition fixture matr
 - **AUD-043** Retrospective public Special identity
 - **AUD-044** bounded Period completion guard
 - **AUD-045** audit-stable canonical status synchronization
+- **AUD-046** Profile-aware Grok/X Source Intake, Google Drive handoff and Discovery disposition
 
 Intentional `DEFERRED`:
 
@@ -344,7 +414,11 @@ Intentional `DEFERRED`:
 
 `REPAIR-WU012-2026-08-22` remains `IMPLEMENTED`, not `VALIDATED/CLOSED`, until real W33/SP001 verification editions occur.
 
-The former synchronized head `2f3c9b10c031cf0d8e5cc114fb93e481e90fffac` is not current approval evidence because its post-completion audit found AUD-039–044. The later fixed-head attempt `68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d` is likewise invalid as final evidence because AUD-045 required another candidate-tree repair.
+Former approval candidates are historical evidence only:
+
+- `2f3c9b10c031cf0d8e5cc114fb93e481e90fffac` — invalidated by AUD-039–044;
+- `68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d` — invalidated by AUD-045;
+- `705937af2eb45d5ba361fe748d7a622110bcb27c` — its 5/5 audit is invalidated by AUD-046 because the clarified original X/Grok Source Intake requirement required candidate changes.
 
 ## 17. Mandatory final candidate rule
 
@@ -387,13 +461,17 @@ Pre-audit properties that must remain true:
 - exact semantic `CORE_STAGE_CONTRACT` is required before checkpoint adoption.
 - current reviewed toolchain can be integrated and recorded per checkpoint without rewriting initialization provenance.
 - Source Intake/completeness remains substantive ChatGPT reasoning.
+- Weekly Grok/X is mandatory and Special/Foundations X applicability is explicit.
+- Grok returns through the prepared `Grok_X_SourseIntake/<category>/<edition>/<run-id>/` Google Drive path.
+- returned X bytes are imported exactly and dispositioned before Discovery Acceptance.
+- X is not direct publication-grade technical Evidence authority.
 - Issue Prevention Checklist remains canonical.
 - generic Period/Thematic bootstrap exists.
 - bounded Period completion guard exists.
 - Quality is exact Production Profile-bound.
 - Retrospective public Special identity is Profile-derived.
 - Foundations living series authority remains sufficient pre-merge.
-- AUD-039 through AUD-045 are represented consistently as implemented generic repairs.
+- AUD-039 through AUD-046 are represented consistently as implemented generic repairs.
 - W33/SP001 remain unstarted.
 
 External final-validation sequence:
@@ -409,7 +487,7 @@ five-family CI PASS on exact head
 After explicit Human approval and merge:
 
 1. merged `main` becomes the production source of truth;
-2. run W33 and SP001 as first real verification editions;
+2. run W33 and SP001 as first real verification editions, including the new X applicability/Drive handoff path;
 3. classify concrete findings and repair only the narrowest correct layer;
 4. follow with W34 and SP002/SP003 as second-round generalization evidence;
 5. add deferred machinery only if real production demonstrates need.
@@ -420,6 +498,7 @@ After explicit Human approval and merge:
 - `docs/survey-production-core-v2-authority.md`
 - `docs/survey-production-core-v2-final-audit-rule.md`
 - `docs/survey-production-core-v2-session-bootstrap.md`
+- `docs/survey-production-core-v2-x-source-intake.md`
 - `docs/checkpoints/survey-production-core-v2-worklog.md`
 - `docs/checkpoints/survey-production-core-v2-audit-findings/WU-012-repair-set.json`
 - `docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md`
