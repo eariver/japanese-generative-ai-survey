@@ -168,15 +168,16 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         # WU-011 remains historical. The live candidate tree intentionally owns
         # a stable pre-audit state; exact final PASS belongs to PR metadata keyed
         # to the unchanged audited head, not to a later candidate-tree commit.
-        self.assertIn("WU-012 REPAIRS IMPLEMENTED / PRE-AUDIT CANDIDATE", authority)
+        self.assertIn("PRE-AUDIT CANDIDATE", authority)
+        self.assertIn("AUD-046", authority)
+        self.assertIn("AUD-047", authority)
         self.assertIn("68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d", authority)
-        self.assertIn("AUD-045", authority)
         self.assertIn("WU-011: historical `COMPLETE", worklog)
         self.assertIn("PRE-AUDIT", worklog)
         self.assertIn("Human full-candidate review of PR #310", closure)
         self.assertIn("survey_pilot_bootstrap_v2.py plan --pilot", bootstrap)
-        self.assertIn("run the complete five-point acceptance audit from zero", final_rule)
-        self.assertIn("rerun all five acceptance points from point 1", final_rule)
+        self.assertIn("run the complete six-point acceptance audit from zero", final_rule)
+        self.assertIn("rerun all six acceptance points from point 1", final_rule)
         self.assertFalse(Path("sources/2026-W33/production-state.json").exists())
         self.assertFalse(Path("sources/SP001/production-state.json").exists())
 
