@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 from scripts import survey_production_v2 as core
@@ -41,6 +41,56 @@ def _safe_file(repo_root: Path, path: Path, label: str) -> Path:
     return path.resolve()
 
 
+def _safe_artifact_member(value: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError("Actions artifact PDF member path must be non-empty")
+    member = PurePosixPath(value)
+    if member.is_absolute() or ".." in member.parts or "." in member.parts:
+        raise ValueError("Actions artifact PDF member path must be normalized and relative")
+    return member.as_posix()
+
+
+def _repository_pdf_authority(repo_root: Path, pdf: Path) -> dict[str, Any]:
+    return {
+        "storage": "REPOSITORY_FILE",
+        "path": _rel(repo_root, pdf),
+        "sha256": core.sha256_file(pdf),
+        "byte_count": pdf.stat().st_size,
+        "actions_artifact": None,
+    }
+
+
+def bind_pdf_authority(
+    repo_root: Path,
+    materialized_pdf_path: Path,
+    durable_authority: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Bind inspected PDF bytes to either repository or durable Actions authority.
+
+    `materialized_pdf_path` is the exact local file inspected by quality checks.
+    For Actions-backed production it is intentionally ephemeral; the returned
+    authority contains only durable workflow/artifact identity plus exact content
+    digest/size and the member path used for deterministic rehydration.
+    """
+    pdf = _safe_file(repo_root, materialized_pdf_path, "publication PDF")
+    if durable_authority is None:
+        return _repository_pdf_authority(repo_root, pdf)
+    if not isinstance(durable_authority, dict):
+        raise ValueError("durable PDF authority must be an object")
+    expected = {"storage", "path", "sha256", "byte_count", "actions_artifact"}
+    if set(durable_authority) != expected:
+        raise ValueError("durable PDF authority fields are invalid")
+    authority = dict(durable_authority)
+    if authority.get("storage") != "GITHUB_ACTIONS_ARTIFACT":
+        raise ValueError("explicit durable PDF authority currently supports GITHUB_ACTIONS_ARTIFACT only")
+    authority["path"] = _safe_artifact_member(authority.get("path"))
+    if authority.get("sha256") != core.sha256_file(pdf):
+        raise ValueError("durable PDF authority SHA does not match materialized quality bytes")
+    if authority.get("byte_count") != pdf.stat().st_size:
+        raise ValueError("durable PDF authority byte_count does not match materialized quality bytes")
+    return authority
+
+
 def validate_checks(checks: list[dict[str, Any]]) -> None:
     ids: list[str] = []
     for row in checks:
@@ -68,6 +118,7 @@ def build_bundle(
     pdf_path: Path,
     checks: list[dict[str, Any]],
     output_path: Path,
+    pdf_authority: dict[str, Any] | None = None,
 ) -> Path:
     source = _safe_file(repo_root, source_path, "validated publication source")
     pdf = _safe_file(repo_root, pdf_path, "publication PDF")
@@ -76,7 +127,7 @@ def build_bundle(
         "schema_version": "2.0-rc1",
         "issue_id": issue_id,
         "source": {"path": _rel(repo_root, source), "sha256": core.sha256_file(source)},
-        "pdf": {"path": _rel(repo_root, pdf), "sha256": core.sha256_file(pdf)},
+        "pdf": bind_pdf_authority(repo_root, pdf, pdf_authority),
         "checks": sorted(checks, key=lambda row: row["check_id"]),
         "status": "PASS",
     }
@@ -97,9 +148,15 @@ def validate_bundle(repo_root: Path, path: Path, *, issue_id: str | None = None)
     basis = {key: payload[key] for key in ("schema_version", "issue_id", "source", "pdf", "checks", "status")}
     if payload["bundle_sha256"] != core.sha256_object(basis):
         raise ValueError("quality regression bundle content digest mismatch")
-    for key in ("source", "pdf"):
-        ref = payload[key]
-        artifact = _safe_file(repo_root, repo_root / ref["path"], f"quality {key}")
-        if core.sha256_file(artifact) != ref["sha256"]:
-            raise ValueError(f"quality regression {key} bytes drifted after validation")
+    source_ref = payload["source"]
+    source = _safe_file(repo_root, repo_root / source_ref["path"], "quality source")
+    if core.sha256_file(source) != source_ref["sha256"]:
+        raise ValueError("quality regression source bytes drifted after validation")
+    pdf_ref = payload["pdf"]
+    if pdf_ref["storage"] == "REPOSITORY_FILE":
+        pdf = _safe_file(repo_root, repo_root / pdf_ref["path"], "quality pdf")
+        if core.sha256_file(pdf) != pdf_ref["sha256"] or pdf.stat().st_size != pdf_ref["byte_count"]:
+            raise ValueError("quality regression pdf bytes drifted after validation")
+    else:
+        _safe_artifact_member(pdf_ref["path"])
     return payload
