@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "evidence_task_id": "evidence:SP001:9d8ccb18aec60525",
+  "basis": {
+    "task_sha256": "627ded47fc899eb064b6d010c430343e7cd0fe6e3e9d4ae220c502776f54954b",
+    "screening_acceptance_sha256": "31c1b9a9d6038752d9248feae2f569aad1efa8342f6b7eb3422f76cb861b61d6",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "glm-4.5",
+      "canonical_name": "GLM-4.5",
+      "entity_type": "MODEL_FAMILY",
+      "organization": "Z.ai",
+      "canonical_url": "https://arxiv.org/abs/2508.06471"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "glm-4.5",
+    "artifact_type": "MODEL",
+    "canonical_name": "GLM-4.5",
+    "canonical_url": "https://arxiv.org/abs/2508.06471"
+  },
+  "temporal": {
+    "observed_at": "2026-08-22T16:31:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-08-08",
+        "subject_id": "glm-4.5",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2508.06471",
+      "source_class": "PRIMARY_PAPER",
+      "title": "GLM-4.5 ARC",
+      "published_at": "2025-08-08",
+      "accessed_at": "2026-08-22T16:31:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The GLM-4.5 paper describes a 355B-total/32B-active MoE model family with hybrid thinking/direct response and explicitly frames the foundation model around Agentic, Reasoning and Coding (ARC).",
+      "subject_id": "glm-4.5",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "2025 family-strategy pivot."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "The ARC framing and reported architecture are specific to GLM-4.5 and are not evidence of a shared Chinese-model training recipe.",
+      "subject_id": "glm-4.5",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Verify GLM-4.5 architecture, MoE design, and ARC positioning from the primary paper.",
+        "status": "VERIFIED",
+        "finding": "The paper directly describes the MoE design and explicit ARC positioning.",
+        "subject_ids": [
+          "glm-4.5"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

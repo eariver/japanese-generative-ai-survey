@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "evidence_task_id": "evidence:SP001:6d60bb1c725326d0",
+  "basis": {
+    "task_sha256": "0b181cea90902f6cd96056c656f1cf4a188967fbe12ad2e609f122a5c30cfe8b",
+    "screening_acceptance_sha256": "31c1b9a9d6038752d9248feae2f569aad1efa8342f6b7eb3422f76cb861b61d6",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "deepseek-r1",
+      "canonical_name": "DeepSeek-R1",
+      "entity_type": "MODEL_FAMILY",
+      "organization": "DeepSeek",
+      "canonical_url": "https://arxiv.org/abs/2501.12948"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "deepseek-r1",
+    "artifact_type": "PAPER",
+    "canonical_name": "DeepSeek-R1",
+    "canonical_url": "https://arxiv.org/abs/2501.12948"
+  },
+  "temporal": {
+    "observed_at": "2026-08-22T16:31:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-01-22",
+        "subject_id": "deepseek-r1",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2501.12948",
+      "source_class": "PRIMARY_PAPER",
+      "title": "DeepSeek-R1",
+      "published_at": "2025-01-22",
+      "accessed_at": "2026-08-22T16:31:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The DeepSeek-R1 paper describes R1-Zero as large-scale reinforcement learning without preliminary SFT and R1 as adding cold-start data and multi-stage training; the release also includes distilled Qwen/Llama-based variants.",
+      "subject_id": "deepseek-r1",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Reasoning-RL transition."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Native R1/R1-Zero and distilled Qwen/Llama-based variants are different model subjects and must remain separately attributed.",
+      "subject_id": "deepseek-r1",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Verify R1/R1-Zero training stages, reinforcement-learning claims, and distinguish native from distilled model variants.",
+        "status": "VERIFIED",
+        "finding": "The paper directly distinguishes R1-Zero and R1 training paths and identifies the separate distilled variants.",
+        "subject_ids": [
+          "deepseek-r1"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
