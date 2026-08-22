@@ -1,4 +1,4 @@
-name: WU011 Gate PR patch
+name: WU011 Runtime finalize
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 jobs:
-  patch:
+  finalize:
     if: github.event.pull_request.head.ref == 'refactor/survey-production-core-v2'
     runs-on: ubuntu-latest
     steps:
@@ -19,96 +19,29 @@ jobs:
         with:
           ref: refactor/survey-production-core-v2
           fetch-depth: 0
-      - name: Reuse exact WU011 Gate patch body
+      - name: Apply WU011 runtime integration
         shell: bash
         run: |
           set -euo pipefail
-          python - <<'PY'
-          from pathlib import Path
-
-          workflow = Path('.github/workflows/wu011-gate-self-patch.yml').read_text(encoding='utf-8')
-          start_marker = "          python - <<'PY'\n"
-          end_marker = "\n          PY\n"
-          start = workflow.index(start_marker) + len(start_marker)
-          end = workflow.index(end_marker, start)
-          lines = workflow[start:end].splitlines()
-          code = "\n".join(line[10:] if line.startswith("          ") else line for line in lines) + "\n"
-          exec(compile(code, 'wu011-gate-self-patch', 'exec'), {})
-
-          # The embedded replacement contains a raw multiline string whose YAML
-          # indentation is intentionally preserved. Normalize this one state block
-          # after applying the exact replacements so Python indentation is canonical.
-          path = Path('scripts/survey_production_v2.py')
-          text = path.read_text(encoding='utf-8')
-          block_start = text.index('    pub_index = LIFECYCLE.index("RELEASE_CANDIDATE")\n')
-          block_end = text.index('    try:\n        expected_action, expected_terminal = derive_control_fields(state, cfg)', block_start)
-          normalized = '''    pub_index = LIFECYCLE.index("RELEASE_CANDIDATE")
-    pub_status = state.get("human_gates", {}).get("publication_preview")
-    pub_authority = gate_provenance.get("publication_preview")
-    if current_index < pub_index and pub_status != "pending":
-        errors.append("Publication Preview cannot be resolved before RELEASE_CANDIDATE")
-    if current_index > pub_index and pub_status != "approved":
-        errors.append("post-Publication Preview lifecycle requires approved Publication Preview")
-    if pub_status == "pending":
-        if pub_authority is not None:
-            errors.append("pending Publication Preview must not carry gate provenance")
-    elif pub_authority is None:
-        errors.append("resolved Publication Preview lacks pinned gate provenance")
-    else:
-        if profile is None:
-            errors.append("Publication Preview authority cannot be validated without Production Profile")
-        else:
-            source_root = repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
-            approval = source_root / cfg["state_authority"]["publication_preview_approval_path"]
-            auth_errors, approval_path = _validate_authority_ref(repo_root, pub_authority, approval, "Publication Preview")
-            errors.extend(auth_errors)
-            candidate = source_root / "publication/v2/publication-candidate-v2.json"
-            if pub_status == "approved" and approval_path is not None and candidate.is_file():
-                try:
-                    record = load_json(approval_path)
-                    candidate_record = load_json(candidate)
-                except (OSError, ValueError, json.JSONDecodeError):
-                    errors.append("Publication Preview authority bytes unreadable")
-                else:
-                    candidate_rel = str(candidate.resolve().relative_to(repo_root.resolve()))
-                    pdf_ref = candidate_record.get("pdf") if isinstance(candidate_record.get("pdf"), dict) else {}
-                    pdf_path_value = pdf_ref.get("path")
-                    pdf_path = None
-                    if isinstance(pdf_path_value, str):
-                        try:
-                            pdf_path = repo_local_path(repo_root, pdf_path_value, "Publication Preview PDF")
-                        except ValueError:
-                            pdf_path = None
-                    if (
-                        record.get("decision") != "APPROVED"
-                        or record.get("gate") != "PUBLICATION_PREVIEW"
-                        or record.get("issue_id") != state.get("issue_id")
-                        or record.get("publication_candidate_path") != candidate_rel
-                        or record.get("publication_candidate_sha256") != sha256_file(candidate)
-                        or candidate_record.get("issue_id") != state.get("issue_id")
-                        or candidate_record.get("status") != "READY_FOR_PUBLICATION_PREVIEW"
-                        or record.get("pdf_path") != pdf_ref.get("path")
-                        or record.get("pdf_sha256") != pdf_ref.get("sha256")
-                        or record.get("page_count") != pdf_ref.get("page_count")
-                        or pdf_path is None
-                        or not pdf_path.is_file()
-                        or sha256_file(pdf_path) != pdf_ref.get("sha256")
-                    ):
-                        errors.append("Publication Preview Approval Record does not bind current canonical Candidate/PDF bytes")
-            elif pub_status == "approved":
-                errors.append("approved Publication Preview lacks canonical Candidate bytes")
-
-'''
-          path.write_text(text[:block_start] + normalized + text[block_end:], encoding='utf-8')
-          PY
-          python -m py_compile scripts/survey_production_v2.py scripts/survey_drafting_v2.py scripts/survey_orchestrator_v2.py
-      - name: Commit exact Gate authority patch and remove one-shot workflows
+          python scripts/wu011_finalize_runtime_patch.py
+          python -m py_compile \
+            scripts/survey_production_v2.py \
+            scripts/survey_drafting_v2.py \
+            scripts/survey_orchestrator_v2.py \
+            scripts/survey_handlers_v2.py
+      - name: Commit runtime integration and remove one-shot patch files
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git rm .github/workflows/wu011-gate-self-patch.yml .github/workflows/wu011-gate-pr-patch.yml
-          git add scripts/survey_production_v2.py scripts/survey_drafting_v2.py scripts/survey_orchestrator_v2.py
-          git commit -m 'core-v2: bind both Human Gates to exact review bytes'
+          git rm \
+            .github/workflows/wu011-gate-self-patch.yml \
+            .github/workflows/wu011-gate-pr-patch.yml \
+            scripts/wu011_finalize_runtime_patch.py
+          git add \
+            scripts/survey_production_v2.py \
+            scripts/survey_drafting_v2.py \
+            scripts/survey_orchestrator_v2.py
+          git commit -m 'core-v2: finalize exact Human Gate runtime authority'
           git push origin HEAD:refactor/survey-production-core-v2
