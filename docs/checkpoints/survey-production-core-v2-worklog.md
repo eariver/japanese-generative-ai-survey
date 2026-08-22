@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Work Log
 
-Status: `ACTIVE / WU-011 COMPLETE / HUMAN FULL-CANDIDATE REVIEW`  
+Status: `ACTIVE / WU-012 PRE-APPROVAL HARDENING REQUIRED`  
 Established: 2026-08-22 JST  
 Working branch: `refactor/survey-production-core-v2`  
 Draft implementation PR: `#310`  
@@ -17,30 +17,35 @@ Repository reality is the highest factual authority. Current `main` remains the 
 
 ## 2. Current snapshot
 
-Last updated: **2026-08-22 JST — WU-011 complete; stopped at Human full-candidate review boundary**
+Last updated: **2026-08-22 JST — pre-approval WU-001–WU-011 audit reopened the merge gate; WU-012 required before Human approval**
 
 - Repository: `eariver/japanese-generative-ai-survey`
 - Improvement branch: `refactor/survey-production-core-v2`
-- Production `main`: `2086b396d2f30103d9292b722891be436cd28db5`; unchanged through WU-011 closure.
+- Production `main`: `2086b396d2f30103d9292b722891be436cd28db5`; unchanged through this pre-approval audit.
 - Validated WU-011 implementation head: `6d82b0deff7e20adfedf95d2e139fd56867e5d40`.
-- Draft PR: `#310 Survey Production Core v2 implementation`; remains **draft** and must not be merged without Human full-candidate review.
-- Current phase: **Phase 3 — Core v2 Candidate Implementation / Human review boundary**.
+- WU-011 metadata/Human-review handoff head: `8beaf978793d983cc7608f4ca9c534511dd04d7a`; 5/5 green before the new audit amendment.
+- Pre-approval audit plan amendment: `5cfbfabb8e097d9fe369af04c0219cb213266415`.
+- Draft PR: `#310 Survey Production Core v2 implementation`; remains **draft / unmerged**. Its previous Human-approval boundary is superseded by WU-012.
+- Current phase: **Phase 3 — Core v2 Candidate Implementation / pre-merge hardening**.
 - **WU-010R: COMPLETE / SECOND-AUDIT GREEN.**
-- **WU-011: IMPLEMENTATION COMPLETE / WORK UNIT COMPLETE / SECOND-AUDIT GREEN / 5-of-5 CROSS-REGRESSION GREEN.**
+- **WU-011: IMPLEMENTATION COMPLETE / WORK UNIT COMPLETE / SECOND-AUDIT GREEN / 5-of-5 CROSS-REGRESSION GREEN.** WU-011 remains valid historical closure against its then-current exit condition.
+- **WU-012: PLANNED / BLOCKING / NOT YET IMPLEMENTED.** It was opened by the explicit pre-approval audit requested before PR approval.
 - WU-010R Repair Set: `REPAIR-WU010R-2026-08-22`; `IMPLEMENTED`, verification editions empty.
 - WU-011 Repair Set: `REPAIR-WU011-2026-08-22`; `IMPLEMENTED`, verification editions empty; all five pre-Pilot CI validation rows are PASS and real Pilot verification remains PENDING.
 - WU-011 machine findings AUD-019 through AUD-026: all `FIXED_GENERIC`; none may become `CLOSED` before Repair Set governance permits it.
-- External W33/SP001 production: **NOT STARTED / NOT AUTHORIZED** before Human review + merge.
-- Confirmed absent on both refactor branch and `main`: `sources/2026-W33/production-state.json`, `sources/SP001/production-state.json`.
+- WU-012 pre-approval findings AUD-027 through AUD-034: **OPEN**.
+- External W33/SP001 production: **NOT STARTED / NOT AUTHORIZED**. W34/SP002/SP003 are likewise not authorized.
+- Confirmed absent through WU-011 closure: `sources/2026-W33/production-state.json`, `sources/SP001/production-state.json`.
 
 ## 3. Durable rollout rules
 
 - W33 = **Weekly Profile First Production Validation**; legacy W33 state is comparison/provenance only, not a migration target.
 - SP001 = **Thematic Profile First Production Validation** with genuine expansion/closure and no fabricated bounded history window.
 - W34 follows W33 finding consolidation; SP002/SP003 follow SP001 finding consolidation.
-- Normal Human Gates: Architecture Review, then exact-byte Publication Preview. Candidate Selection remains internal.
-- First external Pilots start only after the full production-capable candidate is Human-reviewed and explicitly merged to `main`.
-- Pilot sessions start/resume only through `docs/survey-production-core-v2-session-bootstrap.md` and `scripts/survey_pilot_bootstrap_v2.py`; chat history is not launch authority.
+- Normal Human Gates remain exactly: Architecture Review, then exact-byte Publication Preview. Candidate Selection remains internal.
+- WU-012 must **not** add routine Human Gates to solve machine-validation problems.
+- First external Pilots start only after WU-012 repair, a new whole-candidate audit, Human full-candidate approval, and explicit merge to `main`.
+- Pilot sessions start/resume only through repository-owned Core v2 bootstrap authority; chat history is not launch authority.
 
 ## 4. Phase / work-unit status
 
@@ -53,13 +58,14 @@ Last updated: **2026-08-22 JST — WU-011 complete; stopped at Human full-candid
 | WU-004 / WU-004B | `COMPLETE / SUPERSEDED IN PART` | authoritative Phase 3 second-audit amendment |
 | WU-005 | `COMPLETE / AUDIT FINDING REPAIRED` | Profile/State/contract+implementation identity; AUD-014 hardened in WU-010R |
 | WU-006 | `COMPLETE / POST-AUDIT HARDENED` | Discovery/Screening v2; AUD-003 closure implemented in WU-011 |
-| WU-007 | `COMPLETE / POST-AUDIT HARDENED` | factual Evidence + Edition View + Materiality + Completeness |
+| WU-007 | `COMPLETE / POST-AUDIT HARDENED` | factual Evidence + Edition View + Materiality + Completeness; WU-012A now hardens coverage authority |
 | WU-008 | `COMPLETE / AUDITED` | Matrix + internal Selection + generic Architecture + Review Summary |
 | WU-008A | `COMPLETE / AUDITED` | whole-system audit remediation + 5/5 cross-regression green |
-| WU-009 | `COMPLETE / AUDITED` | generic Draft Package/Result + Profile Synthesis |
+| WU-009 | `COMPLETE / AUDITED` | generic Draft Package/Result + Profile Synthesis; WU-012B/C now harden final Profile/quality semantics |
 | WU-010 | `SUPERSEDED BY WU-010R REMEDIATION` | original orchestration baseline retained; Human re-audit reopened closure |
 | WU-010R | `COMPLETE / SECOND-AUDIT GREEN` | AUD-013–018 repaired; 5/5 cross-regression green; Repair Set IMPLEMENTED |
-| **WU-011** | **`COMPLETE / SECOND-AUDIT GREEN / HUMAN REVIEW BOUNDARY`** | AUD-003/004/005 + AUD-019–026 repaired; exact publication/release/bootstrap path; 5/5 final cross-regression green |
+| **WU-011** | **`COMPLETE / SECOND-AUDIT GREEN`** | AUD-003/004/005 + AUD-019–026 repaired; exact publication/release/bootstrap path; 5/5 final cross-regression green |
+| **WU-012** | **`PLANNED / PRE-MERGE BLOCKER`** | AUD-027–034; coverage authority, Weekly semantics, executable Profile-aware quality, Period initializer, Series layer, Pilot scope fidelity, generalization fixtures, Issue→Guard audit |
 
 ## 5. WU-010R durable closure
 
@@ -81,7 +87,7 @@ Closure validation:
 
 ## 6. WU-011 implemented scope
 
-WU-011 closed the remaining pre-Pilot implementation blockers and performed a full PR second audit.
+WU-011 closed its then-known pre-Pilot implementation blockers and performed a full PR second audit. The later pre-approval audit does not erase that work; it identified additional readiness requirements at a broader acceptance level.
 
 ### 6.1 Original integrated-audit blockers
 
@@ -91,12 +97,14 @@ WU-011 closed the remaining pre-Pilot implementation blockers and performed a fu
 
 ### 6.2 Exact publication and quality chain
 
-- quality binds one exact source/PDF pair and requires the full long-form regression family including post-transform semantic revalidation;
+- quality binds one exact source/PDF pair and requires configured checks;
 - PDF authority supports `REPOSITORY_FILE` and durable `GITHUB_ACTIONS_ARTIFACT` identity;
 - Candidate → Publication Preview → Visual Review → Freeze → Release Manifest → Merge Verification → Release Record carries the same exact PDF SHA-256/byte count;
 - Production State understands artifact-backed Publication Preview authority;
 - Release dispatch is bound to exact current-main Production State and Release Manifest SHA-256 inputs;
 - existing issue-only Release reconciliation is allowed only after tag/title/target and exact asset-byte verification.
+
+WU-012C now specifically hardens the **authority and applicability of individual quality-check PASS results**; it does not invalidate WU-011's exact publication-byte chain.
 
 ### 6.3 Orchestration / workflow authority
 
@@ -117,7 +125,7 @@ Added:
 - `scripts/survey_pilot_bootstrap_v2.py`;
 - `docs/survey-production-core-v2-session-bootstrap.md`.
 
-The planner is side-effect free and resolves W33/SP001 launch identity without chat history. It distinguishes clean initialization, safe resume and partial-initialization Exception Gate. W33 keeps its fixed completed issue window. SP001 sets `as_of` once at initialization and preserves it on resume. Resume validates Profile identity, State semantics and State-pinned executable implementation.
+The planner is side-effect free and resolves W33/SP001 launch identity without chat history. WU-012F must correct SP001 scope fidelity before actual initialization, and WU-012G must prove broader generic startup behavior beyond the named Pilots.
 
 ### 6.5 Full-candidate second-audit findings
 
@@ -146,35 +154,52 @@ All five required regression families passed on that exact head:
 
 | Validation family | Result | GitHub Actions run |
 |---|---|---|
-| Survey Production Core v2 CI | `PASS` — 106 tests + contract parse, including final authority/Repair Set/Pilot-stop regression | `32563066810` |
+| Survey Production Core v2 CI | `PASS` — 106 tests + contract parse | `32563066810` |
 | Screening contract CI | `PASS` | `32563066833` |
 | Evidence contract CI | `PASS` | `32563066808` |
 | Pipeline contract tests | `PASS` | `32563066856` |
 | Weekly pipeline spine + committed Raw integrity | `PASS` | `32563066801` |
 
-The final Core CI initially exposed two CI sparse-checkout omissions for the newly repository-owned worklog/closure/bootstrap authorities. Those were CI-harness defects only; after all four final authority documents were included, the exact head above passed the complete 106-test suite. No production semantic defect was introduced by those harness repairs.
+The metadata/Human-review handoff head `8beaf978793d983cc7608f4ca9c534511dd04d7a` was also 5/5 green. Those results remain historical evidence for WU-011, but they do **not** prove the newly opened WU-012 acceptance requirements.
 
-`REPAIR-WU011-2026-08-22` records these five runs as PASS while remaining `IMPLEMENTED`, not `VALIDATED/CLOSED`, because W33/SP001 verification editions are intentionally empty.
+`REPAIR-WU011-2026-08-22` remains `IMPLEMENTED`, not `VALIDATED/CLOSED`, because W33/SP001 verification editions are intentionally empty.
 
-## 8. Current action / stop condition
+## 8. Pre-approval audit findings / WU-012 scope
 
-**STOP: Human full-candidate review of PR #310 is now the required gate.**
+The user-requested approval audit evaluated the candidate in priority order: Weekly viability → Special viability → generality → recurrence prevention → excessive-gate/validation risk.
 
-Autonomous WU-011 implementation, second audit, cross-regression, Repair Set evidence synchronization and merge preparation are complete.
+New machine findings:
+
+| Finding | Blocking gap | WU-012 owner |
+|---|---|---|
+| AUD-027 | mandatory completeness can self-assert `SATISFIED` without Source Intake/search support | WU-012A |
+| AUD-028 | Weekly Issue #9 reader semantics not enforced through final Draft/Publication | WU-012B |
+| AUD-029 | quality checks are free-text self-attested and universally over-applied | WU-012C |
+| AUD-030 | first-class Retrospective Period has no canonical initializer | WU-012D |
+| AUD-031 | Foundations Series Research Layer is planned but not executable | WU-012E |
+| AUD-032 | SP001 registry scope is narrower than TS-001 backlog authority | WU-012F |
+| AUD-033 | generalization proof remains W33/SP001-centric | WU-012G |
+| AUD-034 | historical Human Review defects lack one explicit Issue→Guard ownership map | WU-012H |
+
+The authoritative detailed repair plan is `docs/survey-production-core-v2-improvement-plan.md` §§16–18.
+
+## 9. Current action / stop condition
+
+**CURRENT ACTION: implement WU-012 before asking for Human approval again.**
 
 Do not:
 
-- start W33 or SP001;
-- mark WU-011 Repair Set `VALIDATED` or `CLOSED`;
-- close AUD-019 through AUD-026;
-- merge PR #310 without explicit Human approval.
+- approve or merge PR #310 in its current form;
+- start W33, W34, SP001, SP002 or SP003;
+- mark WU-012 Findings fixed/closed before implementation/regression evidence exists;
+- add routine Human Gates to solve WU-012 machine-validation defects;
+- retroactively modify WU-011 Repair Set to pretend these newly discovered requirements were already included.
 
-If Human review approves the candidate:
+Required sequence:
 
-1. explicitly merge PR #310 to `main`;
-2. re-enter from `docs/survey-production-core-v2-session-bootstrap.md`;
-3. run side-effect-free W33/SP001 Pilot plans from the merged `main`;
-4. initialize only the authorized Pilot work branch;
-5. proceed under canonical Stage Handoff/control authority until the requested Human Gate or an Exception Gate.
-
-If Human review identifies a defect, create a new machine-readable Finding and Repair Set update before merge rather than handling the review comment as an informal side channel.
+1. implement WU-012A–H in priority order, with criterion 1 (Weekly viability) taking precedence on conflicts;
+2. create a separate WU-012 Repair Set after generic repairs exist;
+3. run whole-system and cross-regression audit including later/unlisted Weekly/Thematic/Period/Series fixtures;
+4. synchronize plan/worklog/Authority/PR evidence;
+5. stop again at **Human full-candidate review of PR #310**;
+6. only after explicit approval and merge may external W33/SP001 production begin.
