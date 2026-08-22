@@ -31,6 +31,7 @@ class SurveyFindingsV2Tests(unittest.TestCase):
             },
             "improvement_action": "Fail closed when material candidates disappear before Architecture.",
             "regression_fixture": "tests/test_sp001_materiality_traceability.py",
+            "resolved_by_repair_set_id": None,
             "status": "FIXED_GENERIC",
         }
         value.update(overrides)
@@ -101,6 +102,36 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         repair = self.repair(verification_editions=[])
         errors = findings.validate_repair_set(repair, [finding])
         self.assertTrue(any("verification_editions" in error for error in errors), errors)
+
+    def test_closed_finding_cannot_exist_without_repair_set_authority(self) -> None:
+        closed = self.finding(status="CLOSED", resolved_by_repair_set_id="R-SP001-001")
+        errors = findings.validate_finding(closed)
+        self.assertTrue(any("Repair Set validation context" in error for error in errors), errors)
+
+        unresolved = self.finding(status="CLOSED", resolved_by_repair_set_id=None)
+        errors = findings.validate_finding(unresolved)
+        self.assertTrue(any("Repair Set validation context" in error for error in errors), errors)
+
+        premature = self.finding(status="FIXED_GENERIC", resolved_by_repair_set_id="R-SP001-001")
+        errors = findings.validate_finding(premature)
+        self.assertTrue(any("only CLOSED" in error for error in errors), errors)
+
+    def test_closed_repair_set_is_the_only_valid_finding_closure_authority(self) -> None:
+        repair = self.repair(status="CLOSED")
+        closed = self.finding(status="CLOSED", resolved_by_repair_set_id=repair["repair_set_id"])
+        self.assertEqual(findings.validate_repair_set(repair, [closed]), [])
+
+        wrong_authority = self.finding(status="CLOSED", resolved_by_repair_set_id="R-OTHER")
+        errors = findings.validate_repair_set(repair, [wrong_authority])
+        self.assertTrue(any("resolved_by_repair_set_id" in error or "authority mismatch" in error for error in errors), errors)
+
+        not_closed = self.finding(status="FIXED_GENERIC")
+        errors = findings.validate_repair_set(repair, [not_closed])
+        self.assertTrue(any("requires CLOSED Finding" in error for error in errors), errors)
+
+        validated = self.repair(status="VALIDATED")
+        errors = findings.validate_repair_set(validated, [closed])
+        self.assertTrue(any("non-CLOSED Repair Set" in error or "Repair Set validation context" in error for error in errors), errors)
 
 
 if __name__ == "__main__":
