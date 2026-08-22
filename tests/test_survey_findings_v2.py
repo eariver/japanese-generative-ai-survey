@@ -146,7 +146,7 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         self.assertTrue(all(value["status"] == "FIXED_GENERIC" for value in audit_findings))
         self.assertTrue(all(value["resolved_by_repair_set_id"] is None for value in audit_findings))
 
-    def test_wu011_audit_repair_set_and_human_review_boundary_are_repository_owned(self) -> None:
+    def test_wu011_repair_set_remains_historical_and_current_premerge_boundary_is_repository_owned(self) -> None:
         audit_root = Path("docs/checkpoints/survey-production-core-v2-audit-findings")
         audit_findings = [core.load_json(audit_root / f"AUD-{number:03d}.json") for number in range(19, 27)]
         repair = core.load_json(audit_root / "WU-011-repair-set.json")
@@ -164,10 +164,11 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         closure = Path("docs/survey-production-core-v2-wu011-second-audit-closure.md").read_text(encoding="utf-8")
         bootstrap = Path("docs/survey-production-core-v2-session-bootstrap.md").read_text(encoding="utf-8")
 
-        self.assertIn("WU-011 IMPLEMENTATION COMPLETE", authority)
-        self.assertIn("AUD-026 — `FIXED_GENERIC`", authority)
-        self.assertIn("Human full-candidate review of PR #310", authority)
-        self.assertIn("WU-011: IMPLEMENTATION COMPLETE", worklog)
+        self.assertIn("WU-012 CHATGPT-FIRST REALIGNMENT", authority)
+        self.assertIn("AUD-013 through AUD-026 remain historical `FIXED_GENERIC`", authority)
+        self.assertIn("Human full-candidate review", authority)
+        self.assertIn("WU-011: historical `COMPLETE", worklog)
+        self.assertIn("WU-012: `PLANNED / PRE-MERGE BLOCKER`", worklog)
         self.assertIn("REPAIR-WU011-2026-08-22", worklog)
         self.assertIn("Human full-candidate review of PR #310", closure)
         self.assertIn("survey_pilot_bootstrap_v2.py plan --pilot", bootstrap)
