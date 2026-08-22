@@ -1,0 +1,246 @@
+name: Survey Production Core v2 control
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: Adopt one canonical stage handoff or record one Human Gate approval
+        required: true
+        type: choice
+        options:
+          - adopt-stage
+          - approve-architecture
+          - approve-publication-preview
+      issue_id:
+        required: true
+        type: string
+      work_branch:
+        required: true
+        type: string
+      request_sha256:
+        description: Required for adopt-stage; exact canonical Stage Handoff Request SHA-256
+        required: false
+        type: string
+      reviewed_by:
+        required: false
+        type: string
+      reviewed_at:
+        required: false
+        type: string
+      review_reference:
+        required: false
+        type: string
+      human_gate_authorized:
+        description: Must be true for either Human Gate operation
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: survey-production-v2-control-${{ inputs.issue_id }}
+  cancel-in-progress: false
+
+jobs:
+  control:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout canonical control implementation
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: control-src
+          fetch-depth: 1
+
+      - name: Checkout production work branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.work_branch }}
+          path: worktree
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Core v2 validator dependency
+        run: python -m pip install -r control-src/config/survey-production-v2-requirements.txt
+
+      - name: Resolve and validate production identity
+        id: identity
+        shell: bash
+        env:
+          ISSUE_ID: ${{ inputs.issue_id }}
+          WORK_BRANCH: ${{ inputs.work_branch }}
+        run: |
+          set -euo pipefail
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, pathlib, re
+          issue=os.environ['ISSUE_ID']; branch=os.environ['WORK_BRANCH']; root=pathlib.Path('worktree')
+          if not re.fullmatch(r'[A-Za-z0-9._/-]+', branch) or '..' in branch.split('/'):
+              raise SystemExit('unsafe work_branch')
+          state_path=root/'sources'/issue/'production-state.json'
+          if not state_path.is_file():
+              raise SystemExit(f'missing canonical Production State: {state_path}')
+          state=json.load(open(state_path,encoding='utf-8'))
+          if state.get('issue_id') != issue:
+              raise SystemExit('Production State issue_id mismatch')
+          profile_path=root/state['profile']['path']; profile=json.load(open(profile_path,encoding='utf-8'))
+          if profile.get('issue_id') != issue:
+              raise SystemExit('Production Profile issue_id mismatch')
+          if profile.get('paths',{}).get('work_branch') != branch:
+              raise SystemExit('workflow work_branch does not match Production Profile authority')
+          source_root=profile['paths']['source_root']
+          print(f'state={state_path.relative_to(root)}')
+          print(f'source_root={source_root}')
+          print(f'lifecycle={state["lifecycle_state"]}')
+          PY
+
+      - name: Adopt exactly one canonical Stage Handoff Request
+        if: inputs.operation == 'adopt-stage'
+        shell: bash
+        env:
+          REQUEST_SHA256: ${{ inputs.request_sha256 }}
+          STATE: ${{ steps.identity.outputs.state }}
+          SOURCE_ROOT: ${{ steps.identity.outputs.source_root }}
+          LIFECYCLE: ${{ steps.identity.outputs.lifecycle }}
+        run: |
+          set -euo pipefail
+          test "$REQUEST_SHA256" != ''
+          request="${SOURCE_ROOT}/orchestration/v2/handoff-requests/${LIFECYCLE}.json"
+          test -s "worktree/${request}"
+          actual="$(sha256sum "worktree/${request}" | awk '{print $1}')"
+          test "$actual" = "$REQUEST_SHA256"
+          PYTHONPATH=control-src python control-src/scripts/survey_handoff_v2.py \
+            --repo-root worktree --state "$STATE" --request "$request"
+          PYTHONPATH=control-src python control-src/scripts/survey_orchestrator_v2.py \
+            --repo-root worktree --config config/survey-production-v2.json \
+            execute-current --state "$STATE" \
+            --orchestration-dir "${SOURCE_ROOT}/orchestration/v2" \
+            --handler-module scripts.survey_handlers_v2
+
+      - name: Resolve current Architecture Review Action Spec
+        if: inputs.operation == 'approve-architecture'
+        id: architecture
+        shell: bash
+        env:
+          AUTHORIZED: ${{ inputs.human_gate_authorized }}
+          SOURCE_ROOT: ${{ steps.identity.outputs.source_root }}
+        run: |
+          set -euo pipefail
+          test "$AUTHORIZED" = 'true'
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, pathlib
+          root=pathlib.Path('worktree'); source=pathlib.Path(os.environ['SOURCE_ROOT'])
+          specs=sorted((root/source/'orchestration/v2/specs').glob('*.json'), reverse=True)
+          for p in specs:
+              d=json.load(open(p,encoding='utf-8'))
+              if d.get('action_kind')=='HUMAN_GATE' and d.get('handler')=='human:architecture-review':
+                  print(f'action_spec={p.relative_to(root)}'); break
+          else: raise SystemExit('current Architecture Review Action Spec not found')
+          print(f'architecture={source / "architecture-v2.json"}')
+          print(f'review_summary={source / "architecture-review-summary-v2.json"}')
+          print(f'approval={source / "gates/architecture-approval.json"}')
+          print(f'result={source / "orchestration/v2/results/human-architecture-review.json"}')
+          PY
+
+      - name: Record exact-byte Architecture Review approval
+        if: inputs.operation == 'approve-architecture'
+        shell: bash
+        env:
+          STATE: ${{ steps.identity.outputs.state }}
+          REVIEWED_BY: ${{ inputs.reviewed_by }}
+          REVIEWED_AT: ${{ inputs.reviewed_at }}
+          REVIEW_REFERENCE: ${{ inputs.review_reference }}
+        run: |
+          set -euo pipefail
+          test "$REVIEWED_BY" != '' && test "$REVIEWED_AT" != '' && test "$REVIEW_REFERENCE" != ''
+          PYTHONPATH=control-src python control-src/scripts/survey_orchestrator_v2.py \
+            --repo-root worktree --config config/survey-production-v2.json \
+            approve-architecture --state "$STATE" \
+            --action-spec '${{ steps.architecture.outputs.action_spec }}' \
+            --architecture '${{ steps.architecture.outputs.architecture }}' \
+            --review-summary '${{ steps.architecture.outputs.review_summary }}' \
+            --approval '${{ steps.architecture.outputs.approval }}' \
+            --result '${{ steps.architecture.outputs.result }}' \
+            --reviewed-by "$REVIEWED_BY" --reviewed-at "$REVIEWED_AT" --review-reference "$REVIEW_REFERENCE"
+
+      - name: Resolve current Publication Preview Action Spec
+        if: inputs.operation == 'approve-publication-preview'
+        id: publication
+        shell: bash
+        env:
+          AUTHORIZED: ${{ inputs.human_gate_authorized }}
+          SOURCE_ROOT: ${{ steps.identity.outputs.source_root }}
+        run: |
+          set -euo pipefail
+          test "$AUTHORIZED" = 'true'
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, pathlib
+          root=pathlib.Path('worktree'); source=pathlib.Path(os.environ['SOURCE_ROOT'])
+          specs=sorted((root/source/'orchestration/v2/specs').glob('*.json'), reverse=True)
+          for p in specs:
+              d=json.load(open(p,encoding='utf-8'))
+              if d.get('action_kind')=='HUMAN_GATE' and d.get('handler')=='human:publication-preview':
+                  print(f'action_spec={p.relative_to(root)}'); break
+          else: raise SystemExit('current Publication Preview Action Spec not found')
+          print(f'candidate={source / "publication/v2/publication-candidate-v2.json"}')
+          print(f'approval={source / "gates/publication-preview-approval.json"}')
+          print(f'result={source / "orchestration/v2/results/human-publication-preview.json"}')
+          PY
+
+      - name: Record exact-byte Publication Preview approval
+        if: inputs.operation == 'approve-publication-preview'
+        shell: bash
+        env:
+          STATE: ${{ steps.identity.outputs.state }}
+          REVIEWED_BY: ${{ inputs.reviewed_by }}
+          REVIEWED_AT: ${{ inputs.reviewed_at }}
+          REVIEW_REFERENCE: ${{ inputs.review_reference }}
+        run: |
+          set -euo pipefail
+          test "$REVIEWED_BY" != '' && test "$REVIEWED_AT" != '' && test "$REVIEW_REFERENCE" != ''
+          PYTHONPATH=control-src python control-src/scripts/survey_orchestrator_v2.py \
+            --repo-root worktree --config config/survey-production-v2.json \
+            approve-publication-preview --state "$STATE" \
+            --action-spec '${{ steps.publication.outputs.action_spec }}' \
+            --candidate '${{ steps.publication.outputs.candidate }}' \
+            --approval '${{ steps.publication.outputs.approval }}' \
+            --result '${{ steps.publication.outputs.result }}' \
+            --reviewed-by "$REVIEWED_BY" --reviewed-at "$REVIEWED_AT" --review-reference "$REVIEW_REFERENCE"
+
+      - name: Validate resulting Production State
+        shell: bash
+        env:
+          STATE: ${{ steps.identity.outputs.state }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=control-src python - "$STATE" <<'PY'
+          import sys
+          from pathlib import Path
+          from scripts import survey_production_v2 as core
+          root=Path('worktree').resolve(); cfg=core.load_json(root/core.DEFAULT_CONFIG); state=core.load_json(root/sys.argv[1])
+          errors=core.validate_state_semantics(root,cfg,state)
+          if errors: raise SystemExit('; '.join(errors))
+          PY
+
+      - name: Commit control records to production branch
+        working-directory: worktree
+        shell: bash
+        env:
+          WORK_BRANCH: ${{ inputs.work_branch }}
+          SOURCE_ROOT: ${{ steps.identity.outputs.source_root }}
+          ISSUE_ID: ${{ inputs.issue_id }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$SOURCE_ROOT"
+          if git diff --cached --quiet; then
+            echo 'No control changes to commit.' >&2
+            exit 1
+          fi
+          git commit -m "Advance ${ISSUE_ID} Survey Production Core v2 control"
+          git push origin "HEAD:${WORK_BRANCH}"
