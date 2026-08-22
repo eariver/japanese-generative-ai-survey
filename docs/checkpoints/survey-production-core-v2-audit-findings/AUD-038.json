@@ -1,0 +1,30 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-038",
+  "edition": "CORE-V2",
+  "stage": "WU-012_FINAL_AUTHORITY_AUDIT",
+  "observed_problem": "The canonical config declared operator_model.local_stage_control=COMPACT_AGENT_CHECKPOINT while every orchestration stage still carried handoff_required=true from the legacy Action/Handoff control path. The new agent controller ignored that field, but repository readers and the legacy orchestrator could interpret the same canonical stage plan as requiring Stage Handoffs.",
+  "expected_behavior": "Canonical configuration must express the same operating model as the authority documents and production workflows. Legacy Handoff machinery may remain for audit/compatibility, but canonical local stages must not advertise Handoff as required.",
+  "actual_behavior": "All canonical stage_plan entries now set handoff_required=false. The legacy Handoff compatibility fixture explicitly opts into the old requirement when testing that historical path, and the Pilot/bootstrap regression asserts that every canonical stage disables legacy Handoff requirements.",
+  "production_workaround": null,
+  "classification": {
+    "scope": "CORE",
+    "defect_kind": "ORCHESTRATION",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "5c69963a18c6bdb56b94967c124c7476cf6a2bd2",
+    "relevant_artifacts": [
+      "config/survey-production-v2.json",
+      "scripts/survey_agent_control_v2.py",
+      "scripts/survey_orchestrator_v2.py",
+      "tests/test_survey_pilot_bootstrap_v2.py"
+    ],
+    "human_review_reference": "WU-012 final closure synchronization audit, 2026-08-22"
+  },
+  "improvement_action": "Implemented by disabling legacy Handoff requirements in the canonical stage plan while leaving compatibility code available only through explicit legacy fixtures.",
+  "regression_fixture": "tests/test_survey_pilot_bootstrap_v2.py",
+  "resolved_by_repair_set_id": null,
+  "status": "FIXED_GENERIC"
+}
