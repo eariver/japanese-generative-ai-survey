@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import importlib
 import json
+import os
 import subprocess
 import sys
 from copy import deepcopy
@@ -34,6 +35,7 @@ GATE_KEYS = {
     "PUBLICATION_PREVIEW": "publication_preview",
 }
 TERMINAL_KINDS = {"HUMAN_GATE", "COMPLETE", "EXCEPTION"}
+EXECUTABLE_KINDS = {"LOCAL_SCRIPT", "WORKFLOW_DISPATCH"}
 
 
 def _now() -> datetime:
@@ -86,7 +88,11 @@ def _changed_control_paths(
         line for line in _git(repo_root, "diff", "--cached", "--name-only", "--", *roots).splitlines()
         if line.strip()
     ]
-    return sorted(set(committed + unstaged + staged))
+    untracked = [
+        line for line in _git(repo_root, "ls-files", "--others", "--exclude-standard", "--", *roots).splitlines()
+        if line.strip()
+    ]
+    return sorted(set(committed + unstaged + staged + untracked))
 
 
 def verify_runtime_implementation(
@@ -98,8 +104,6 @@ def verify_runtime_implementation(
     pinned = state.get("implementation", {}).get("repository_commit_sha")
     if not _sha40(pinned):
         raise ValueError("Production State implementation commit is invalid")
-    # Pass the State-pinned SHA into the existing anti-divergence layer. Never
-    # substitute current HEAD merely because generated artifacts were committed.
     core.verify_state_basis(repo_root, cfg, state, pinned)
     observed = observed_head_sha or observed_repository_head(repo_root)
     if not _sha40(observed):
@@ -149,9 +153,32 @@ def _expected_output(name: str, checkpoint: str | None = None, path: str | None 
     return {"name": name, "checkpoint": checkpoint, "path": path, "required": required}
 
 
+def _action_identity_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    identity = deepcopy(payload)
+    identity["action_id"] = ""
+    basis = identity.get("basis")
+    if isinstance(basis, dict):
+        basis.pop("observed_repository_head_sha", None)
+    return identity
+
+
 def _action_id(payload: dict[str, Any]) -> str:
-    digest = core.sha256_object(payload)[:20]
+    digest = core.sha256_object(_action_identity_payload(payload))[:20]
     return f"action:{payload['issue_id']}:{digest}"
+
+
+def _spec_matches_current_plan(spec: dict[str, Any], expected: dict[str, Any]) -> bool:
+    left = deepcopy(spec)
+    right = deepcopy(expected)
+    left_basis = left.get("basis")
+    right_basis = right.get("basis")
+    if not isinstance(left_basis, dict) or not isinstance(right_basis, dict):
+        return False
+    observed = left_basis.get("observed_repository_head_sha")
+    if not _sha40(observed):
+        return False
+    left_basis["observed_repository_head_sha"] = right_basis.get("observed_repository_head_sha")
+    return left == right
 
 
 def plan_action(
@@ -191,7 +218,9 @@ def plan_action(
         action_kind = "COMPLETE"
     else:
         stage = cfg["orchestration"]["stage_plan"][lifecycle]
-        action_kind = "LOCAL_SCRIPT"
+        action_kind = stage.get("action_kind")
+        if action_kind not in EXECUTABLE_KINDS:
+            raise ValueError(f"invalid stage action_kind for {lifecycle}: {action_kind}")
         handler = stage["handler"]
         next_state = stage["next_state"]
         expected_outputs = [
@@ -312,6 +341,74 @@ def _result_payload(
     }
 
 
+def _transaction_paths(result_path: Path) -> tuple[Path, Path]:
+    return Path(str(result_path) + ".pending"), Path(str(result_path) + ".state-next")
+
+
+def _recover_pending_transaction(state_path: Path, result_path: Path) -> bool:
+    pending_result, state_next = _transaction_paths(result_path)
+    if result_path.exists():
+        if pending_result.exists() or state_next.exists():
+            raise ValueError(f"committed Action Result has leftover transaction files: {result_path}")
+        return False
+    if not pending_result.exists():
+        if state_next.exists():
+            state_next.unlink()
+        return False
+
+    result = core.load_json(pending_result)
+    before_sha = result.get("state_before_sha256")
+    after_sha = result.get("state_after_sha256")
+    if not isinstance(before_sha, str) or not isinstance(after_sha, str):
+        raise ValueError("pending Action Result lacks committed state SHA pair")
+    current_sha = core.sha256_file(state_path)
+    if current_sha == before_sha:
+        if not state_next.is_file() or core.sha256_file(state_next) != after_sha:
+            raise ValueError("pending Action Result cannot recover missing/divergent next State")
+        os.replace(state_next, state_path)
+        current_sha = core.sha256_file(state_path)
+    elif current_sha == after_sha:
+        if state_next.exists():
+            state_next.unlink()
+    else:
+        raise ValueError("pending Action Result does not match current State before/after identity")
+    if current_sha != after_sha:
+        raise ValueError("State transaction did not reach expected after SHA")
+    os.replace(pending_result, result_path)
+    return True
+
+
+def _commit_state_and_result(
+    state_path: Path,
+    updated_state: dict[str, Any],
+    result_path: Path,
+    result: dict[str, Any],
+) -> None:
+    if result_path.exists():
+        raise ValueError(f"refusing to overwrite Action Result: {result_path}")
+    pending_result, state_next = _transaction_paths(result_path)
+    if pending_result.exists() or state_next.exists():
+        _recover_pending_transaction(state_path, result_path)
+        if result_path.exists():
+            raise ValueError(f"Action transaction already committed: {result_path}")
+    result_path.parent.mkdir(parents=True, exist_ok=True)
+    core.write_json(state_next, updated_state)
+    expected_after = result.get("state_after_sha256")
+    if core.sha256_file(state_next) != expected_after:
+        state_next.unlink(missing_ok=True)
+        raise ValueError("prepared State bytes do not match Action Result state_after_sha256")
+    core.write_json(pending_result, result)
+    _recover_pending_transaction(state_path, result_path)
+
+
+def _recover_all_pending(state_path: Path, results_dir: Path) -> None:
+    if not results_dir.exists():
+        return
+    for pending in sorted(results_dir.glob("*.json.pending")):
+        result_path = Path(str(pending)[:-len(".pending")])
+        _recover_pending_transaction(state_path, result_path)
+
+
 def execute_action(
     repo_root: Path,
     cfg: dict[str, Any],
@@ -321,18 +418,19 @@ def execute_action(
     registry: HandlerRegistry,
     clock: Callable[[], datetime] = _now,
 ) -> dict[str, Any]:
+    _recover_pending_transaction(state_path, result_path)
+    if result_path.exists():
+        raise ValueError(f"refusing to overwrite Action Result: {result_path}")
     spec = core.load_json(spec_path)
     expected = plan_action(repo_root, cfg, state_path)
-    if spec != expected:
-        raise ValueError("Action Spec is stale or does not exactly match current authoritative plan")
-    if spec["action_kind"] not in {"LOCAL_SCRIPT", "WORKFLOW_DISPATCH"}:
+    if not _spec_matches_current_plan(spec, expected):
+        raise ValueError("Action Spec is stale or does not match current authoritative plan")
+    if spec["action_kind"] not in EXECUTABLE_KINDS:
         raise ValueError(f"Action kind {spec['action_kind']} is terminal/non-executable by deterministic dispatcher")
     handler_name = spec["handler"]
     handler = registry.get(handler_name)
     if handler is None:
         raise ValueError(f"registered handler unavailable: {handler_name}")
-    if result_path.exists():
-        raise ValueError(f"refusing to overwrite Action Result: {result_path}")
 
     state = core.load_json(state_path)
     pinned = state["implementation"]["repository_commit_sha"]
@@ -351,7 +449,7 @@ def execute_action(
             )
             last_error = None
             break
-        except Exception as exc:  # handler failures are recorded, not promoted to Human Gate
+        except Exception as exc:
             last_error = exc
             if not retryable:
                 break
@@ -383,8 +481,7 @@ def execute_action(
         spec, spec_path, "SUCCEEDED", observed_after, attempts, started, completed,
         state_before_sha, state_after_sha, outputs, None,
     )
-    core.write_json(state_path, updated)
-    core.write_json(result_path, result)
+    _commit_state_and_result(state_path, updated, result_path, result)
     return result
 
 
@@ -410,11 +507,14 @@ def apply_architecture_approval(
     reviewed_at: datetime,
     review_reference: str,
 ) -> dict[str, Any]:
+    _recover_pending_transaction(state_path, result_path)
+    if result_path.exists():
+        raise ValueError(f"refusing to overwrite Architecture Review Action Result: {result_path}")
     state = core.load_json(state_path)
     observed = verify_runtime_implementation(repo_root, cfg, state)
     expected = plan_action(repo_root, cfg, state_path, observed)
     spec = core.load_json(spec_path)
-    if spec != expected:
+    if not _spec_matches_current_plan(spec, expected):
         raise ValueError("Architecture Review Action Spec is stale or divergent")
     if spec["action_kind"] != "HUMAN_GATE" or spec["handler"] != "human:architecture-review":
         raise ValueError("current Action Spec is not Architecture Review")
@@ -485,10 +585,7 @@ def apply_architecture_approval(
         spec, spec_path, "SUCCEEDED", observed, 1, reviewed_at, reviewed_at,
         before_sha, after_sha, [output], None,
     )
-    if result_path.exists():
-        raise ValueError(f"refusing to overwrite Architecture Review Action Result: {result_path}")
-    core.write_json(state_path, updated)
-    core.write_json(result_path, result)
+    _commit_state_and_result(state_path, updated, result_path, result)
     return result
 
 
@@ -505,6 +602,7 @@ def advance_to_gate(
     results_dir = orchestration_dir / "results"
     specs_dir.mkdir(parents=True, exist_ok=True)
     results_dir.mkdir(parents=True, exist_ok=True)
+    _recover_all_pending(state_path, results_dir)
     executed = 0
     while executed < max_actions:
         spec = plan_action(repo_root, cfg, state_path)
