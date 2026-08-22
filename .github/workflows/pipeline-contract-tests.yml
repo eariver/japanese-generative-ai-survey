@@ -1,114 +1,91 @@
 name: Pipeline contract tests
 
 on:
-  workflow_dispatch:
-  push:
-    paths:
-      - 'scripts/**'
-      - 'tests/**'
-      - 'schemas/**'
-      - 'config/**'
-      - 'templates/survey/**'
-      - '.github/workflows/*.yml'
   pull_request:
+    branches:
+      - 'weekly/*-v2-work'
     paths:
-      - 'scripts/**'
-      - 'tests/**'
-      - 'schemas/**'
-      - 'config/**'
-      - 'templates/survey/**'
-      - '.github/workflows/*.yml'
+      - 'sources/**/orchestration/v2/interactive-drafting-synthesis.json'
+      - '.github/workflows/pipeline-contract-tests.yml'
 
 permissions:
   contents: write
 
 concurrency:
-  group: pipeline-contract-tests-${{ github.ref }}
+  group: w33-drafting-synthesis-${{ github.head_ref }}
   cancel-in-progress: false
 
 jobs:
-  test:
+  w33-drafting-synthesis:
+    if: github.head_ref == 'temp/w33-drafting-synthesis-r1'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Install Survey Production Core v2 test dependencies
-        run: python -m pip install -r config/survey-production-v2-requirements.txt
-      - name: Compile Python modules
-        run: python -m compileall -q scripts tests
-      - name: Run pipeline unit tests
-        continue-on-error: true
-        run: python -m unittest discover -s tests -p 'test_*.py' -v
-
-  w33-selection:
-    if: github.event_name == 'pull_request' && github.head_ref == 'temp/w33-selection-stage'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout selection execution branch
+      - name: Checkout W33 execution branch
         uses: actions/checkout@v6
         with:
-          ref: temp/w33-selection-stage
+          ref: ${{ github.head_ref }}
           fetch-depth: 0
+
+      - name: Checkout current reviewed Core v2 from main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: tested-core
+          fetch-depth: 1
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install Core v2 dependencies
-        run: python -m pip install -r config/survey-production-v2-requirements.txt
-      - name: Derive Matrix and establish fresh W33 Selection
-        run: PYTHONPATH=. python automation/w33_selection_once.py
-      - name: Validate Selection stage exact artifacts
+
+      - name: Install current Core v2 dependencies
+        run: python -m pip install -r tested-core/config/survey-production-v2-requirements.txt
+
+      - name: Generate and validate W33 Draft Packages, Draft Results, and Profile Synthesis
+        shell: bash
         run: |
-          PYTHONPATH=. python scripts/survey_stage_validation_v2.py --repo-root . --config config/survey-production-v2.json \
+          set -euo pipefail
+          PYTHONPATH=tested-core python tested-core/scripts/run_drafting_synthesis_v2_agent.py \
+            --repo-root . \
             --state sources/2026-W33/production-state.json \
-            --artifact candidate-matrix=sources/2026-W33/candidate-matrix-v2.json \
-            --artifact candidate-selection=sources/2026-W33/candidate-selection-v2.json \
-            --output sources/2026-W33/orchestration/v2/reviews/selection-core-stage-contract.json
-      - name: Persist fresh Selection artifacts
+            --input sources/2026-W33/orchestration/v2/interactive-drafting-synthesis.json \
+            | tee drafting-synthesis-v2-output.json
+
+      - name: Revalidate exact Draft stage contract with current main
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t args < <(PYTHONPATH=tested-core python - <<'PY'
+          import json
+          out=json.load(open('drafting-synthesis-v2-output.json',encoding='utf-8'))
+          for row in out['packages']:
+              print('--artifact'); print(f"draft-package:{row['package_id']}={row['package']}")
+              print('--artifact'); print(f"draft-result:{row['package_id']}={row['result']}")
+          print('--artifact'); print('synthesis-input='+out['synthesis_input'])
+          print('--artifact'); print('synthesis-result='+out['synthesis_result'])
+          PY
+          )
+          PYTHONPATH=tested-core python tested-core/scripts/survey_stage_validation_v2.py \
+            --repo-root . --config config/survey-production-v2.json \
+            --state sources/2026-W33/production-state.json \
+            "${args[@]}" \
+            --output sources/2026-W33/orchestration/v2/reviews/drafting-r1-core-stage-contract.json
+
+      - name: Persist only W33 Drafting artifacts
+        shell: bash
+        env:
+          PUSH_BRANCH: ${{ github.head_ref }}
+          BASE_BRANCH: ${{ github.base_ref }}
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add sources/2026-W33/candidate-matrix-v2.json sources/2026-W33/candidate-selection-v2.json sources/2026-W33/orchestration/v2/reviews docs/checkpoints/2026-W33-core-v2-compilation-session-worklog.md
-          git commit -m 'Establish fresh 2026-W33 Candidate Selection'
-          git push origin HEAD:temp/w33-selection-stage
-
-  w33-architecture:
-    if: github.event_name == 'pull_request' && github.head_ref == 'temp/w33-architecture-stage'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Architecture execution branch
-        uses: actions/checkout@v6
-        with:
-          ref: temp/w33-architecture-stage
-          fetch-depth: 0
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Install Core v2 dependencies
-        run: python -m pip install -r config/survey-production-v2-requirements.txt
-      - name: Verify historical Evidence basis regressions fail closed
-        run: PYTHONPATH=. python -m unittest tests.test_survey_agent_tool_v2 -v
-      - name: Build fresh W33 Architecture Review package
-        run: PYTHONPATH=. python automation/w33_architecture_once.py
-      - name: Validate exact Architecture stage artifacts
-        run: |
-          PYTHONPATH=. python scripts/survey_stage_validation_v2.py --repo-root . --config config/survey-production-v2.json \
-            --state sources/2026-W33/production-state.json \
-            --artifact issue-architecture=sources/2026-W33/architecture-v2.json \
-            --artifact architecture-review-summary=sources/2026-W33/architecture-review-summary-v2.json \
-            --artifact architecture-review-attention=sources/2026-W33/architecture-review-attention-v2.json \
-            --output sources/2026-W33/orchestration/v2/reviews/architecture-core-stage-contract.json
-      - name: Persist fresh Architecture Review package
-        run: |
-          set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add sources/2026-W33/architecture-v2.json sources/2026-W33/architecture-review-summary-v2.json sources/2026-W33/architecture-review-attention-v2.json sources/2026-W33/orchestration/v2/reviews docs/checkpoints/2026-W33-core-v2-compilation-session-worklog.md
-          git commit -m 'Establish fresh 2026-W33 Architecture Review package'
-          git push origin HEAD:temp/w33-architecture-stage
+          rm -f sources/2026-W33/orchestration/v2/interactive-drafting-synthesis.json
+          git checkout "origin/${BASE_BRANCH}" -- .github/workflows/pipeline-contract-tests.yml
+          git add sources/2026-W33 .github/workflows/pipeline-contract-tests.yml
+          if git diff --cached --quiet; then
+            echo 'No Drafting changes to persist.' >&2
+            exit 1
+          fi
+          git commit -m 'Establish 2026-W33 Core v2 Drafting and Synthesis'
+          git push origin "HEAD:${PUSH_BRANCH}"
