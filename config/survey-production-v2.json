@@ -62,6 +62,10 @@
     "assistant_control_workflow": "assistant-control-v2.yml",
     "production_control_workflow": "survey-production-v2-control.yml",
     "release_workflow": "survey-production-v2-release.yml",
+    "release_reconciliation": {
+      "external_key": "release_identity",
+      "existing_release_policy": "VERIFY_EXACT_BYTES_THEN_RESUME"
+    },
     "handler_dispatch": {
       "stage:release": "survey-production-v2-release.yml"
     }
@@ -238,8 +242,8 @@
         "handoff_required": true,
         "next_state": "RELEASED",
         "checkpoints": ["release"],
-        "retry_policy": {"retryable": false, "max_attempts": 1},
-        "idempotency": {"mode": "ACTION_ID", "key": null},
+        "retry_policy": {"retryable": true, "max_attempts": 2},
+        "idempotency": {"mode": "EXTERNAL_KEY", "key": "release_identity"},
         "artifacts": [
           {"name": "merge-verification", "path": "{source_root}/publication/v2/merge-verification-v2.json"},
           {"name": "release-record", "path": "{source_root}/publication/v2/release-record-v2.json"}
