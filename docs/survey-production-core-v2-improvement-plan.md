@@ -249,6 +249,8 @@ ChatGPT reads Profile + State + applicable guide
 -> continues until Human/Exception Gate
 ```
 
+Canonical `stage_plan` entries therefore set `handoff_required=false`. The old Handoff machinery remains available only as historical/compatibility code and may be explicitly enabled by a compatibility fixture.
+
 Richer request/receipt authority remains appropriate for true external/asynchronous/irreversible boundaries such as durable build artifacts or public Release.
 
 The simplification must preserve resumability, immutable accepted artifacts, Human approval identity and exact publication/release provenance.
@@ -454,6 +456,7 @@ WU-012 is implemented. Detailed closure is `docs/survey-production-core-v2-wu012
 ### WU-012B — simplify local orchestration — `COMPLETE`
 
 - one Production State + canonical outputs + compact Stage Checkpoint is the normal local path;
+- canonical `stage_plan[*].handoff_required=false` aligns config with that path;
 - legacy Action/Handoff machinery is not canonical production authority;
 - richer exact control remains at external/irreversible Release boundaries;
 - exactly two Human approval records remain.
@@ -480,9 +483,10 @@ Historical recurring defects now have explicit deterministic/agent/Human ownersh
 
 `DETERMINISTIC / AGENT_SEMANTIC / AGENT_VISUAL` applicability is Profile-aware. Only deterministic items require executable validator proof.
 
-### Whole-candidate repair — `COMPLETE`
+### Whole-candidate repairs — `COMPLETE`
 
-AUD-037 closed the compact-checkpoint provenance loophole by requiring lifecycle-specific existing canonical artifact authorities. A review-only stage transition is rejected.
+- AUD-037 closed the compact-checkpoint provenance loophole by requiring lifecycle-specific existing canonical artifact authorities. A review-only stage transition is rejected.
+- AUD-038 removed the final config contradiction by disabling legacy Handoff requirements in the canonical stage plan and preserving old behavior only in explicit compatibility fixtures.
 
 ---
 
@@ -498,7 +502,8 @@ Repaired generically:
 - AUD-034 `FIXED_GENERIC` — Issue Prevention Checklist;
 - AUD-035 `FIXED_GENERIC` — ChatGPT-first operator model / compact local orchestration;
 - AUD-036 `FIXED_GENERIC` — per-checkpoint toolchain provenance;
-- AUD-037 `FIXED_GENERIC` — lifecycle-specific canonical artifact binding.
+- AUD-037 `FIXED_GENERIC` — lifecycle-specific canonical artifact binding;
+- AUD-038 `FIXED_GENERIC` — canonical stage-plan Handoff contradiction removed.
 
 Deliberately deferred:
 
@@ -515,6 +520,7 @@ Before PR #310 returns to Human full-candidate review:
 
 - [x] ChatGPT-first operator model is canonical and discoverable.
 - [x] Local-stage orchestration is materially simpler while preserving resume/provenance.
+- [x] Canonical stage configuration no longer requires legacy Handoffs.
 - [x] Implementation provenance is per checkpoint/action and controlled toolchain upgrades are possible.
 - [x] Historical Issue Prevention Checklist is canonical and practical.
 - [x] Weekly Issue #9 concerns are part of the normal agent review path.
@@ -528,7 +534,7 @@ Before PR #310 returns to Human full-candidate review:
 - [x] Whole-candidate re-audit finds no blocking non-deferred contradiction against acceptance priorities 1–5.
 - [x] Semantic implementation head `1d6e37f48cd24ce96ef7970df0e70697e546f2e3` passed all five required cross-regression families.
 
-The exit condition is therefore satisfied subject only to closure/authority metadata itself remaining CI-green.
+The exit condition is satisfied once the final synchronized config/docs/test head itself is 5/5 CI-green.
 
 ---
 
