@@ -156,7 +156,7 @@ Profile + Production State + applicable guidance
 -> State transition
 ```
 
-The legacy Action Spec / Handoff Request / Handoff / Action Result / Validation Attestation machinery remains historical/compatibility material, not canonical local production authority.
+Canonical `config/survey-production-v2.json` sets every `stage_plan[*].handoff_required=false`. The legacy Action Spec / Handoff Request / Handoff / Action Result / Validation Attestation machinery remains historical/compatibility material, not canonical local production authority. Compatibility fixtures may explicitly opt into Handoff behavior only when exercising that legacy path.
 
 Richer request/receipt/reconciliation machinery remains justified at external asynchronous or irreversible boundaries, especially public Release.
 
@@ -191,6 +191,7 @@ Generic repairs:
 - AUD-035 `FIXED_GENERIC`
 - AUD-036 `FIXED_GENERIC`
 - AUD-037 `FIXED_GENERIC`
+- AUD-038 `FIXED_GENERIC`
 
 Intentional deferrals:
 
@@ -211,13 +212,13 @@ Semantic implementation head `1d6e37f48cd24ce96ef7970df0e70697e546f2e3` passed a
 | Pipeline contract tests | PASS | `32568620721` |
 | Weekly pipeline spine + committed Raw integrity | PASS | `32568620741` |
 
-Closure/authority metadata after that head must also remain CI-green before the review package is considered synchronized.
+The final config/docs/test synchronization head must also remain CI-green before the review package is considered synchronized.
 
 ## 12. Current stop rule
 
 PR #310 remains draft and unmerged. W33, W34, SP001, SP002 and SP003 remain unstarted.
 
-**Current action: Human full-candidate review of PR #310 after final closure-metadata CI is green.**
+**Current action: Human full-candidate review of PR #310 after final synchronized-head CI is green.**
 
 Do not perform more architectural expansion before Human review unless synchronization reveals a concrete defect.
 
