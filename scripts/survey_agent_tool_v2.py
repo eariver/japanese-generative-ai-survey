@@ -8,13 +8,13 @@ WU-006/WU-007 helper functions still call the legacy ``core.verify_state_basis``
 function, whose semantics intentionally pin the old orchestration model.
 
 This wrapper replaces that verifier only for the lifetime of one helper process
-with the agent-first State validator. It also permits an *accepted, immutable*
-Screening package to retain the State SHA it was created from after Production
-State has legitimately advanced to a later lifecycle state. That historical
-exception is fail-closed: it is available only when the package is already
-content-addressed by a sibling ``screening-accepted.json`` whose package hash
-matches the exact archived package bytes; every other Screening basis check is
-rerun against the current repository and current agent-first State.
+with the agent-first State validator. It also permits accepted, immutable
+Screening and Evidence packages to retain the State SHA from the lifecycle
+boundary where they were created after canonical Production State legitimately
+advances. Each exception is fail-closed: the package must already be
+content-addressed by its sibling acceptance file and that acceptance must bind
+the exact archived package hash. All other package basis checks are rerun under
+the current repository and current agent-first State.
 
 It does not mutate Production State and it does not weaken legacy Action/Handoff
 compatibility when those tools are run directly.
@@ -29,6 +29,7 @@ from pathlib import Path
 from typing import Iterator
 
 from scripts import survey_agent_control_v2 as agent
+from scripts import survey_evidence_v2 as evidence
 from scripts import survey_production_v2 as core
 from scripts import survey_screening_v2 as screening
 
@@ -49,35 +50,30 @@ def verify_current_stage_basis(repo_root: Path, cfg: dict, state: dict, implemen
         raise ValueError("agent-first Production State invalid: " + "; ".join(errors))
 
 
-def _historical_screening_basis_wrapper(original):
-    """Return a strict wrapper that tolerates only archived historical State SHA drift.
+def _historical_state_basis_wrapper(
+    original,
+    *,
+    error_text: str,
+    acceptance_name: str,
+    changed_text: str,
+    label: str,
+):
+    """Allow only content-addressed historical State-SHA drift for an accepted package."""
 
-    Screening is prepared/accepted while Production State is at the Screening
-    boundary. Downstream Evidence runs after State advances, so the canonical
-    State path legitimately contains new bytes. The accepted Screening package
-    already cryptographically binds its historical ``state_sha256`` through its
-    own package hash and content-addressed acceptance. For that one case, rerun
-    the original validator with only the in-memory expected State SHA replaced by
-    the current State SHA; the archived package bytes themselves are never
-    changed. This preserves all Profile, Discovery, prompt, schema, archive and
-    current-State validation performed by the original function.
-    """
-
-    def validate(repo_root: Path, package_path: Path, package: dict, implementation_sha: str) -> None:
+    def validate(repo_root: Path, package_path: Path, package: dict, implementation_sha: str):
         try:
-            original(repo_root, package_path, package, implementation_sha)
-            return
+            return original(repo_root, package_path, package, implementation_sha)
         except ValueError as exc:
-            if str(exc) != "Screening package basis drift: state_sha256":
+            if str(exc) != error_text:
                 raise
             state_error = exc
 
-        acceptance_path = package_path.parent / "screening-accepted.json"
+        acceptance_path = package_path.parent / acceptance_name
         if acceptance_path.is_symlink() or not acceptance_path.is_file():
             raise state_error
         acceptance = core.load_json(acceptance_path)
         if core.sha256_file(package_path) != acceptance.get("package_sha256"):
-            raise ValueError("accepted Screening package copy changed")
+            raise ValueError(changed_text)
 
         basis = package.get("basis")
         if not isinstance(basis, dict):
@@ -89,30 +85,55 @@ def _historical_screening_basis_wrapper(original):
         try:
             state_path.relative_to(repo_root.resolve())
         except ValueError as exc:
-            raise ValueError("Screening package State path escapes repository") from exc
+            raise ValueError(f"{label} package State path escapes repository") from exc
         if state_path.is_symlink() or not state_path.is_file():
-            raise ValueError("Screening package basis drift: state_sha256")
+            raise state_error
 
         adjusted = dict(package)
         adjusted_basis = dict(basis)
         adjusted_basis["state_sha256"] = core.sha256_file(state_path)
         adjusted["basis"] = adjusted_basis
-        original(repo_root, package_path, adjusted, implementation_sha)
+        return original(repo_root, package_path, adjusted, implementation_sha)
 
     return validate
+
+
+def _historical_screening_basis_wrapper(original):
+    return _historical_state_basis_wrapper(
+        original,
+        error_text="Screening package basis drift: state_sha256",
+        acceptance_name="screening-accepted.json",
+        changed_text="accepted Screening package copy changed",
+        label="Screening",
+    )
+
+
+def _historical_evidence_basis_wrapper(original):
+    return _historical_state_basis_wrapper(
+        original,
+        error_text="Evidence package basis drift: state_sha256",
+        acceptance_name="evidence-accepted.json",
+        changed_text="accepted Evidence package copy changed",
+        label="Evidence",
+    )
 
 
 @contextmanager
 def current_stage_basis_override() -> Iterator[None]:
     original_state_verifier = core.verify_state_basis
     original_screening_verifier = screening.validate_package_basis
+    original_evidence_verifier = evidence.validate_evidence_package_basis
     core.verify_state_basis = verify_current_stage_basis
     screening.validate_package_basis = _historical_screening_basis_wrapper(
         original_screening_verifier
     )
+    evidence.validate_evidence_package_basis = _historical_evidence_basis_wrapper(
+        original_evidence_verifier
+    )
     try:
         yield
     finally:
+        evidence.validate_evidence_package_basis = original_evidence_verifier
         screening.validate_package_basis = original_screening_verifier
         core.verify_state_basis = original_state_verifier
 
