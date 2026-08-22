@@ -7,6 +7,7 @@ from unittest import mock
 from scripts import survey_handlers_v2 as handlers
 from scripts import survey_pilot_bootstrap_v2 as bootstrap
 from scripts import survey_production_v2 as core
+from tests.test_survey_control_gate_persistence_v2 import SurveyControlGatePersistenceV2Tests
 from tests.test_survey_state_publication_authority_v2 import SurveyStatePublicationAuthorityV2Tests
 
 
@@ -99,6 +100,8 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.assertIn("approve-architecture", production)
         self.assertIn("approve-publication-preview", production)
         self.assertIn("FROZEN is a WORKFLOW_DISPATCH stage", production)
+        self.assertIn("Persist terminal Action Spec reached by adopted stage", production)
+        self.assertIn("HUMAN_GATE_REACHED|EXCEPTION_GATE_REQUIRED|COMPLETE", production)
         self.assertIn("cmp -s \"$active\" \"$pinned\"", production)
         self.assertIn("PYTHONPATH=worktree", production)
         self.assertIn("worktree/scripts/survey_orchestrator_v2.py", production)
