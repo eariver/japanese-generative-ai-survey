@@ -26,6 +26,7 @@ class SurveyWU008ContractIdentityTests(unittest.TestCase):
                 "question": "explicit WU-008 contract identity fixture",
                 "temporal_mode": "OPEN_HISTORY_AS_OF",
                 "as_of": "2026-08-22T02:00:00+09:00",
+                "scope_dimensions": ["lineage"],
             },
         )
         _, state_path = core.initialize(
