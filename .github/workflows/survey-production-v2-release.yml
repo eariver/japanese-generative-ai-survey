@@ -60,6 +60,7 @@ jobs:
           import os, pathlib, re
           from scripts import survey_agent_control_v2 as agent
           from scripts import survey_production_v2 as core
+          from scripts import survey_profiled_freeze_v2 as profiled
           from scripts import survey_publication_v2 as publication
           root=pathlib.Path('.').resolve(); issue=os.environ['ISSUE_ID']; repo=os.environ['REPOSITORY']
           cfg=core.load_json(root/core.DEFAULT_CONFIG)
@@ -78,19 +79,23 @@ jobs:
           if state.get('issue_id') != issue or state.get('lifecycle_state') != 'FROZEN': raise SystemExit('release workflow requires exact FROZEN issue state on main')
           errors=agent.validate_agent_state(root,cfg,state)
           if errors: raise SystemExit('; '.join(errors))
-          profile=core.load_json(root/state['profile']['path']); source=pathlib.Path(profile['paths']['source_root'])
+          profile_path=root/state['profile']['path']; profile=core.load_json(profile_path)
+          if core.sha256_file(profile_path) != state['profile']['sha256']: raise SystemExit('release Production Profile SHA drift')
+          public_slug=profiled.public_issue_slug(profile); expected_tag=profiled.release_identity(profile)
+          source=pathlib.Path(profile['paths']['source_root'])
           manifest_path=root/source/'publication/v2/release-manifest-v2.json'
           if not manifest_path.is_file() or core.sha256_file(manifest_path) != os.environ['EXPECTED_MANIFEST_SHA']: raise SystemExit('release dispatch Release Manifest SHA drift')
           manifest=publication.validate_release_manifest(root,manifest_path)
           freeze=core.load_json(root/manifest['freeze_record_path'])
           candidate_path=root/freeze['publication_candidate_path']; candidate=publication.validate_candidate(root,candidate_path,issue_id=issue)
           pdf=candidate['pdf']; pub=candidate['publication_profile']
-          if pub == 'WEEKLY_MAGAZINE': title=f'Japanese Generative AI Technical Survey — {issue}'; asset=f'Japanese_Generative_AI_Technical_Survey_{issue}.pdf'
-          elif pub == 'LONGFORM_SPECIAL': title=f'Japanese Generative AI Technical Survey Special — {issue}'; asset=f'Japanese_Generative_AI_Technical_Survey_Special_{issue}.pdf'
+          if pub != profile.get('publication_profile'): raise SystemExit('Publication Candidate/Profile identity mismatch')
+          if pub == 'WEEKLY_MAGAZINE': title=f'Japanese Generative AI Technical Survey — {public_slug}'; asset=f'Japanese_Generative_AI_Technical_Survey_{public_slug}.pdf'
+          elif pub == 'LONGFORM_SPECIAL': title=f'Japanese Generative AI Technical Survey Special — {public_slug}'; asset=f'Japanese_Generative_AI_Technical_Survey_Special_{public_slug}.pdf'
           else: raise SystemExit('unsupported publication profile')
           tag=manifest['release_identity']
-          if tag not in {f'weekly/{issue}',f'special/{issue}'}: raise SystemExit('non-canonical issue-only release identity')
-          values={'state':str(state_path.relative_to(root)),'source_root':str(source),'manifest':str(manifest_path.relative_to(root)),'candidate':str(candidate_path.relative_to(root)),'pdf_storage':pdf['storage'],'pdf_path':pdf['path'],'pdf_sha256':pdf['sha256'],'pdf_byte_count':pdf['byte_count'],'tag':tag,'title':title,'asset_name':asset}
+          if tag != expected_tag: raise SystemExit(f'Release Manifest public identity mismatch: {tag} != {expected_tag}')
+          values={'state':str(state_path.relative_to(root)),'source_root':str(source),'manifest':str(manifest_path.relative_to(root)),'candidate':str(candidate_path.relative_to(root)),'pdf_storage':pdf['storage'],'pdf_path':pdf['path'],'pdf_sha256':pdf['sha256'],'pdf_byte_count':pdf['byte_count'],'tag':tag,'title':title,'asset_name':asset,'public_slug':public_slug}
           aa=pdf.get('actions_artifact') or {}
           for key in ('workflow_run_id','artifact_id','artifact_name','artifact_digest'): values[key]=aa.get(key,'')
           if pdf['storage']=='GITHUB_ACTIONS_ARTIFACT' and aa.get('repository') != repo: raise SystemExit('Actions artifact authority repository mismatch')
