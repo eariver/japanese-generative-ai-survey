@@ -4,7 +4,7 @@
   "title": "Survey Production Core v2 Architecture Review Summary",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "issue_id", "research_profile", "basis", "readiness", "discovery", "screening", "evidence", "materiality", "selection", "completeness", "major_material_destinations", "residual_limitations", "architecture"],
+  "required": ["schema_version", "issue_id", "research_profile", "basis", "readiness", "discovery", "research_expansion", "screening", "evidence", "materiality", "selection", "completeness", "major_material_destinations", "residual_limitations", "architecture"],
   "properties": {
     "schema_version": {"const": "2.0-rc1"},
     "issue_id": {"type": "string", "minLength": 1},
@@ -32,6 +32,20 @@
       }
     },
     "discovery": {"$ref": "#/$defs/count_summary"},
+    "research_expansion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_research_pass", "pass_counts", "parent_link_count", "obligation_link_count", "unique_obligation_count", "root_discovery_count", "expanded_discovery_count"],
+      "properties": {
+        "max_research_pass": {"type": "integer", "minimum": 0},
+        "pass_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "parent_link_count": {"type": "integer", "minimum": 0},
+        "obligation_link_count": {"type": "integer", "minimum": 0},
+        "unique_obligation_count": {"type": "integer", "minimum": 0},
+        "root_discovery_count": {"type": "integer", "minimum": 0},
+        "expanded_discovery_count": {"type": "integer", "minimum": 0}
+      }
+    },
     "screening": {"$ref": "#/$defs/count_summary"},
     "evidence": {"$ref": "#/$defs/count_summary"},
     "materiality": {"$ref": "#/$defs/count_summary"},
