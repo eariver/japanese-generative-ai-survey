@@ -4,6 +4,7 @@
 The base validator in survey_evidence_v2 checks Profile dimensions, exact
 Materiality basis, and the internal consistency of Thematic closure fields. This
 final guard additionally proves that:
+- every Profile-defined initial research obligation is retained;
 - every named research obligation emitted by Discovery is represented and
   traceable back to the Discovery records that created it;
 - Completeness obligation rows conform to the machine-readable contract instead
@@ -177,7 +178,8 @@ def validate_profile_completeness(
         for task_id in row.get("evidence_task_ids", [])
         if _nonempty(task_id)
     }
-    allowed_dimensions = set(profile.get("research_scope", {}).get("scope_dimensions", []))
+    research_scope = profile.get("research_scope", {})
+    allowed_dimensions = set(research_scope.get("scope_dimensions", []))
 
     obligations = result.get("obligations")
     if not isinstance(obligations, list):
@@ -201,6 +203,30 @@ def validate_profile_completeness(
             if obligation_id in obligations_by_id:
                 errors.append(f"Completeness obligation_id duplicated: {obligation_id}")
             obligations_by_id[obligation_id] = row
+
+    initial_obligations = research_scope.get("initial_obligations")
+    if not isinstance(initial_obligations, list) or not initial_obligations:
+        errors.append("Production Profile initial_obligations are missing")
+    else:
+        initial_ids: set[str] = set()
+        for initial in initial_obligations:
+            if not isinstance(initial, dict):
+                errors.append("Production Profile initial obligation must be an object")
+                continue
+            obligation_id = initial.get("obligation_id")
+            if not _nonempty(obligation_id):
+                errors.append("Production Profile initial obligation_id invalid")
+                continue
+            if obligation_id in initial_ids:
+                errors.append(f"Production Profile initial obligation duplicated: {obligation_id}")
+                continue
+            initial_ids.add(obligation_id)
+            actual = obligations_by_id.get(obligation_id)
+            if actual is None:
+                errors.append(f"Completeness silently dropped Profile initial obligation: {obligation_id}")
+                continue
+            if actual.get("dimension") != initial.get("dimension"):
+                errors.append(f"Completeness changed Profile initial obligation dimension: {obligation_id}")
 
     named: dict[str, set[str]] = {}
     for discovery in discoveries:
