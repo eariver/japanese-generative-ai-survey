@@ -168,7 +168,7 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         # WU-011 remains historical. The live pre-merge boundary is now the
         # all-changes-first fixed-head WU-012 final audit, not a stale status phrase.
         self.assertIn("POST-COMPLETION RE-AUDIT", authority)
-        self.assertIn("not current final-review evidence", authority)
+        self.assertIn("2f3c9b10c031cf0d8e5cc114fb93e481e90fffac", authority)
         self.assertIn("WU-011: historical `COMPLETE", worklog)
         self.assertIn("WU-012: `POST-COMPLETION RE-AUDIT", worklog)
         self.assertIn("Human full-candidate review of PR #310", closure)
