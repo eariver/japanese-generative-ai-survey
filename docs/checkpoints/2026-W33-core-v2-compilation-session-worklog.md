@@ -25,3 +25,18 @@ From this point forward, legacy W33 Source Intake results are not inputs to the 
 - Discovery through Architecture regenerated only from the fresh intake set.
 
 This file will be updated as the fresh run advances.
+
+## Fresh Source Intake execution
+
+- Legacy W33 Source Intake input used: **no**.
+- Non-X collection window was derived directly from the fresh Core v2 Production Profile.
+- Non-X collector overall status: `success`.
+- Fresh collector `arxiv-api`: run `arxiv-api-2026-W33-20260822T154529Z`, status `success`.
+- Fresh collector `github-releases`: run `github-releases-2026-W33-20260822T154710Z`, status `success`.
+- Fresh collector `official-pages`: run `official-pages-2026-W33-20260822T154717Z`, status `success`.
+- Fresh Grok/X run created: `weekly-x-2026-W33-fresh-r1`.
+- Grok/X Drive target: `Grok_X_SourseIntake/Weekly/2026-W33/weekly-x-2026-W33-fresh-r1`.
+- X manifest status: `AWAITING_GROK` (fresh Grok result not yet imported at this point).
+- Legacy Grok r3 result is explicitly excluded from this fresh run.
+
+The next production action is to place the newly generated instruction/prompt in the exact Google Drive handoff target, obtain a new Grok result, import those Raw bytes, and only then generate Core v2 Discovery.
