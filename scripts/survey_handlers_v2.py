@@ -140,6 +140,13 @@ def _same_authority(handoff: dict[str, Any], left_kind: str, left_name: str, rig
         raise StageContractError(f"Stage Handoff authority mismatch: {left_name} != {right_name}")
 
 
+def _materialized_pdf_matches(repo_root: Path, ref: dict[str, Any], pdf_path: Path, label: str) -> None:
+    if ref.get("sha256") != core.sha256_file(pdf_path) or ref.get("byte_count") != pdf_path.stat().st_size:
+        raise StageContractError(f"{label} does not bind exact materialized publication PDF bytes")
+    if ref.get("storage") == "REPOSITORY_FILE" and ref.get("path") != str(pdf_path.relative_to(repo_root)):
+        raise StageContractError(f"{label} repository PDF path differs from Stage Handoff materialization")
+
+
 def stage_handoff_handler(
     repo_root: Path,
     cfg: dict[str, Any],
@@ -184,7 +191,6 @@ def validate_screening(repo_root, cfg, state, spec, handoff, implementation_sha)
     if accepted["issue_id"] != state["issue_id"]:
         raise StageContractError("Screening acceptance issue identity mismatch")
     _same_authority(handoff, "inputs", "screening-acceptance", "outputs", "screening")
-    # Ensure the acceptance still binds this exact Discovery corpus.
     package = core.load_json(acceptance_path.parent / "package.json")
     if package.get("basis", {}).get("discovery_sha256") != core.sha256_file(discovery_path):
         raise StageContractError("Screening acceptance does not bind Stage Handoff Discovery bytes")
@@ -204,7 +210,7 @@ def _evidence_basis(repo_root: Path, state: dict[str, Any], handoff: dict[str, A
     ledger = core.load_json(ledger_path)
     evidence.validate_materiality_ledger(
         ledger, repo_root, profile_path, discovery_path, screening_path,
-        evidence_path, views_path, implementation_sha,
+        evidence_path, views_path, ledger_path, implementation_sha,
     )
     completeness_payload = schema_gate.load_and_validate_json(
         completeness_path, repo_root / Path("schemas/profile-completeness-result.schema.json"),
@@ -359,8 +365,7 @@ def validate_semantic_publication(repo_root, cfg, state, spec, handoff, implemen
     bundle = quality.validate_bundle(repo_root, bundle_path, issue_id=state["issue_id"])
     if bundle["source"]["path"] != str(source_path.relative_to(repo_root)) or bundle["source"]["sha256"] != core.sha256_file(source_path):
         raise StageContractError("Quality bundle does not bind exact validated source")
-    if bundle["pdf"]["path"] != str(pdf_path.relative_to(repo_root)) or bundle["pdf"]["sha256"] != core.sha256_file(pdf_path):
-        raise StageContractError("Quality bundle does not bind exact publication PDF")
+    _materialized_pdf_matches(repo_root, bundle["pdf"], pdf_path, "Quality bundle")
     _same_authority(handoff, "inputs", "quality-regression-bundle", "outputs", "validation")
 
 
@@ -372,15 +377,11 @@ def validate_publication_candidate(repo_root, cfg, state, spec, handoff, impleme
         inputs, "validated-source", "publication-pdf", "quality-regression-bundle", "publication-candidate"
     )
     candidate = publication.validate_candidate(repo_root, candidate_path, issue_id=state["issue_id"])
-    refs = {
-        "source": source_path,
-        "pdf": pdf_path,
-        "quality_bundle": bundle_path,
-    }
-    for key, path in refs.items():
+    for key, path in {"source": source_path, "quality_bundle": bundle_path}.items():
         ref = candidate[key]
         if ref["path"] != str(path.relative_to(repo_root)) or ref["sha256"] != core.sha256_file(path):
             raise StageContractError(f"Publication Candidate {key} does not match Stage Handoff authority")
+    _materialized_pdf_matches(repo_root, candidate["pdf"], pdf_path, "Publication Candidate")
     _same_authority(handoff, "inputs", "publication-candidate", "outputs", "publication-candidate")
 
 
