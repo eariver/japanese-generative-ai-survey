@@ -40,6 +40,7 @@ LIFECYCLE = (
     "VALIDATED_DRAFT",
     "RELEASE_CANDIDATE",
     "FROZEN",
+    "RELEASED",
 )
 
 CHECKPOINTS = (
@@ -54,6 +55,7 @@ CHECKPOINTS = (
     "validation",
     "publication_preview",
     "freeze",
+    "release",
 )
 
 CONTRACT_KEYS = {
@@ -497,7 +499,7 @@ def derive_control_fields(state: dict[str, Any], cfg: dict[str, Any]) -> tuple[s
             return gate, "HUMAN_GATE_REACHED"
         if status == "rejected":
             return "EXCEPTION", "EXCEPTION_GATE_REQUIRED"
-    if lifecycle == "FROZEN":
+    if lifecycle == "RELEASED":
         return None, "COMPLETE"
     stage = cfg["orchestration"]["stage_plan"].get(lifecycle)
     if not isinstance(stage, dict):
@@ -723,7 +725,7 @@ def validate_state_semantics(repo_root: Path, cfg: dict[str, Any], state: dict[s
     if current_index < pub_index and pub_status != "pending":
         errors.append("Publication Preview cannot be resolved before RELEASE_CANDIDATE")
     if current_index > pub_index and pub_status != "approved":
-        errors.append("FROZEN lifecycle requires approved Publication Preview")
+        errors.append("post-Publication Preview lifecycle requires approved Publication Preview")
     if pub_status == "pending":
         if pub_authority is not None:
             errors.append("pending Publication Preview must not carry gate provenance")
