@@ -1,0 +1,495 @@
+Japanese Generative AI Technical Survey Spe-
+cial
+  SP001
+  Thematic history / as of 2026-08-22 14:21:44 UTC
+
+
+
+
+    中国 Generative AI の台頭
+ DeepSeek・Qwen・GLM・Kimi を中心に、効率化、reasoning、agentic workload、long context、
+Open Weight がどのように別々の系譜から現在の競争軸へ接続したかを、2026 年 8 月 22 日
+時点の一次資料と検証済み Evidence から再構成する。
+
+ Four lineages / Reasoning / Agentic / Efficiency / Serving / Open Weight / License
+
+
+
+
+Editorial cutoff           As-of boundary: 2026-08-22 14:21:44 UTC
+Repository                 eariver/japanese-generative-ai-survey
+Build                      LuaLaTeX / jlreq / LuaTeX-ja
+一次情報・論文・OSS・X 上の技術反応を分離し、検証可能な Evidence chain として編成する Thematic Longform Special。
+Japanese Generative AI Technical Survey Special                                      SP001
+
+
+
+
+本号について
+
+    本号は、中国発の Generative AI を一つの技術潮流として平板化せず、GLM、Qwen、DeepSeek、Kimi の 4
+系統をそれぞれの version-specific な一次資料から追う Thematic Special である。MiniMax、Yi、Baichuan は、
+4 系統だけでは捉えきれない並行線・歴史的 bridge として扱い、Open Weight は技術仕様ではなく distribution
+と権利条件を分けて読む。
+
+    Evidence / scope boundary
+
+    調査・記述の as-of boundary は 2026 年 8 月 22 日。後発 version の性質を過去 version へ遡及して帰属し
+    ない。
+    vendor / project / author が報告する性能・効率値は、記載された artifact と条件に限定して帰属する。異
+    なる benchmark や serving stack を横断した勝敗表には再構成しない。
+    X / community 由来の観測は Discovery signal として保持するが、primary corroboration のない runtime 性
+    能、普及度、license 解釈を技術 Evidence へ昇格させない。
+    Open Source と Open Weight を同義語として扱わず、weights、code、license、commercial conditions、
+    Model-as-a-Service 条件を artifact 単位で区別する。
+
+
+
+
+目次
+
+本号について ・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・                           2
+1      前史と分岐点：一つの『中国モデル』ではなく、複数の系譜が立ち上がった ・・・・・・・・・・・・・                                   3
+2      GLM：ローカルで動く対話モデルから、All Tools、ARC、1M context へ ・・・・・・・・・・・・・・・                      4
+3      Qwen：広い family/platform を、hybrid reasoning と agentic coding へ接続する・・・・・・・・・・・・      5
+4      DeepSeek：効率を architecture で作り、reasoning RL と agentic serving へ伸ばす・・・・・・・・・・・       6
+5      Kimi：long context を起点に、reasoning RL、open agentic MoE、native multimodal へ・・・・・・・    7
+6      主要 4 系統の外側：MiniMax、Yi、Baichuan が示す競争と分化 ・・・・・・・・・・・・・・・・・・・・・                      8
+7      Open Weight は一枚岩ではない：配布されることと、同じ権利で使えることは別問題・・・・・・・・                               9
+8      この号の総括 ・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・                       10
+
+
+
+
+                                                  2
+Japanese Generative AI Technical Survey Special                                                                SP001
+
+
+
+
+1      前史と分岐点：一つの『中国モデル』ではなく、複数の系譜が立ち上がった
+
+    THEMATIC LINEAGE 1/7 — FOUNDATIONS
+
+GLM-130B、初期 Qwen、DeepSeek LLM をそれぞれの一次資料が直接支える範囲で置くと、後年の中国発
+Frontier AI は単一戦略の派生ではなく、異なる設計・公開・用途の系譜が並走し始めた過程として見えて
+くる。 [1, 2, 3]
+
+GLM 系譜の初期座標として残る GLM-130B は、論文上で英中バイリンガルの 130B モデルとして提示され、
+100B 級モデルを開く試みとして位置付けられた。学習安定化や INT4 deployment も論文の主要論点だが、ここ
+から後年の ChatGLM や GLM-4/5 の設計を逆算してはいけない。重要なのは、後の GLM 系譜につながる大規
+模モデルが、当時の一次資料でどこまで公開・運用可能性を意識していたかを、その時点の記述に限定して読
+むことである。 [1]
+
+Qwen の最初期の技術報告は、base/chat の family 構成と RLHF による chat alignment に加えて、tool use、
+planning、code-interpreter 型の agent 応用までをすでに扱っていた。したがって Qwen の後年の agentic coding
+を突然現れた能力として描くより、早い段階から family/platform と tool 利用を組み合わせる志向があり、それ
+が Qwen2.5 以降の広い製品・モデル群へ接続したと見る方が資料に忠実である。 [2]
+
+DeepSeek LLM は、MLA や DeepSeekMoE が family を特徴付ける以前のベースラインとして扱う。本 Evidence
+pass では初期 family と release context は確認できる一方、全 model size や distribution detail を再確定するとこ
+ろまでは踏み込んでいない。ここで必要なのは V2 以降の効率化を過去へ投影することではなく、『後に大きく
+設計転換する family の出発点』として明示的に分離しておくことである。 [3]
+
+
+    Claim boundary
+
+    この節の読解上の境界: Cross-family benchmark ranking is excluded where model versions, benchmark
+    conditions, or evaluation methods are incompatible. / Kimi’s October 2023 launch/context-window chronology
+    remains secondary-source qualified and is not used as an unqualified foundation-date fact. / Do not project
+    later ChatGLM or Z.ai architecture choices backward onto GLM-130B without version-specific evidence. /
+    Later Qwen license and architecture regimes must be bound to later model versions rather than inferred from
+    this report. / This retained evidence note does not restate every model-size or distribution detail requested
+    by Screening; later efficiency claims are sourced to DeepSeek-V2 and subsequent artifacts. / Verify the
+    DeepSeek LLM baseline, model sizes, release context, and open-weight distribution from primary material.:
+    The bound primary paper verifies the early family baseline and release context, but this Evidence pass does not
+    independently lock every requested size and distribution detail; those details are not needed for Architecture
+    selection.
+
+
+
+
+                                                          3
+Japanese Generative AI Technical Survey Special                                                              SP001
+
+
+
+
+2     GLM：ローカルで動く対話モデルから、All Tools、ARC、1M context へ
+
+    THEMATIC LINEAGE 2/7 — GLM
+
+GLM 系譜では、ChatGLM-6B の consumer deployment、GLM-4 All Tools、GLM-4.5 の ARC、
+GLM-5.2 の長文脈 serving が、それぞれ別 version の資料で確認できる。公開や license も含め、同じ family
+の中で戦略が段階的に変わった。 [4, 5, 6, 7]
+
+ChatGLM-6B は 6.2B の英中対話モデルとして、INT4 で約 6GB の memory を使う consumer-GPU 向け
+経 路 を project 側 が 示 し た。こ こ で 技 術 面 と 同 じ く ら い 重 要 な の が 権 利 の 分 解 で あ る。historical な
+model-use/commercial permission と repository code の license は同じものではなく、『公開モデル』という一語
+でまとめると実際の利用条件を失う。GLM の developer-facing な広がりは、動かせることと使える権利を別々
+に読む必要があった。 [4]
+
+GLM-4 family report は、GLM-4、GLM-4-Air、GLM-4-9B へ至る version-specific な橋を与える。報告では約
+10T token 規模の pretraining と multi-stage post-training が説明され、All Tools は web browsing、Python、
+text-to-image、user-defined function から必要な tool を選ぶ能力として記述された。これは GLM 系譜が単なる
+chat model から tool-using system へ軸を伸ばした転換点として読める。 [5]
+
+GLM-4.5 では、355B total / 32B active の MoE と hybrid thinking/direct response が論文で示され、Agentic・
+Reasoning・Coding をまとめた ARC が明示的な family strategy として前面に出た。この ARC framing は
+GLM-4.5 固有の一次資料に基づくため、他の中国モデルも同じ recipe へ収斂したと一般化すべきではない。む
+しろ各 family が agentic workload へ別経路で接近したことを示す一例である。 [6]
+
+GLM-5.2 の official model card では、1M context、thinking effort control、cross-layer で sparse-attention index
+を再利用する IndexShare、vLLM/SGLang deployment が説明される。1M context での 2.9 倍 per-token FLOP
+reduction という値も示されるが、これは vendor/model-card claim として条件付きで扱うべき数値である。こ
+こまで来ると GLM の競争軸は model quality だけでなく、長文脈を serving 可能にする設計と運用経路そのも
+のへ広がっている。 [7]
+
+
+    Claim boundary
+
+    こ の 節 の 読 解 上 の 境 界: GLM-4.5 ARC framing is family/version-specific and is not generalized into a
+    common Chinese-model training recipe. / Vendor efficiency figures remain source- and condition-bound rather
+    than independent cross-family performance facts. / Model-weight/commercial permissions and repository-
+    code licensing must not be collapsed into one license label. / Benchmark results in the paper are author
+    evaluations and must not be merged into an incompatible cross-family ranking. / The ARC framing and
+    reported architecture are specific to GLM-4.5 and are not evidence of a shared Chinese-model training recipe.
+    / Efficiency numbers remain model-card/vendor claims and associated repository-code licensing may differ
+    from model-artifact licensing.
+
+
+
+
+                                                         4
+Japanese Generative AI Technical Survey Special                                                            SP001
+
+
+
+3 Qwen：広い family/platform を、hybrid reasoning と agentic coding へ接続
+ する
+  THEMATIC LINEAGE 3/7 — QWEN
+
+Qwen の強みは単一の旗艦モデルではなく、specialized branch を含む広い family/platform を継続的に更
+新し、Qwen3 で thinking/non-thinking を統合し、Qwen3.6 で agentic coding へ比重を移してきた点に
+ある。 [8, 9, 10]
+
+Qwen2.5 technical report は、training corpus を 7T から 18T token へ拡大し、SFT と multi-stage RL を組み合
+わせたと説明する。同時に Math、Coder、QwQ、multimodal 系へつながる広い family を形成しており、Qwen
+を一つの general model として見るより、用途別 branch を抱える platform として読む根拠になる。後続の
+reasoning 戦略は、この family breadth の上に構築された。 [8]
+
+Qwen3 は 0.6B から 235B まで dense/MoE を含む family を展開し、thinking と non-thinking を一つの系統で扱
+い、thinking budget を制御する設計を technical report で提示した。report は Qwen3 を Apache-2.0 で publicly
+accessible と位置付ける。reasoning を別モデルへ切り分けるのではなく、同じ family 内で利用形態を切り替え
+ることが、Qwen3 の distribution strategy と相性のよい特徴になった。 [9]
+
+current endpoint として扱う Qwen3.6-27B の official model card は、agentic coding、repository-level reasoning、
+過去 message をまたぐ thinking context の保持、multimodal family scope、Apache-2.0 distribution を強調する。
+これらは vendor claim として読む必要があるが、Qwen の軸足が『広い open-weight family』から『長い作業
+履歴を扱う coding/agent foundation』へ連続的に伸びていることは確認できる。hosted proprietary variant と
+open-weight artifact は、rights や distribution を論じる際には別物のままである。 [10]
+
+
+  Claim boundary
+
+  この節の読解上の境界: Qwen benchmark and capability statements remain tied to the named report/model
+  card and are not normalized into a cross-family ranking. / Later Qwen architecture or licensing properties
+  are not projected backward onto the 2023 initial Qwen release. / Hosted proprietary variants and open-
+  weight variants must remain distinct artifacts when discussing distribution or rights. / Reported benchmark
+  results remain evaluation-specific and are not normalized against other families. / Capability statements are
+  vendor/model-card claims; architecture inheritance from Qwen3.5 should not be converted into independent
+  benchmark superiority.
+
+
+
+
+                                                       5
+Japanese Generative AI Technical Survey Special                                                             SP001
+
+
+
+4 DeepSeek：効率を architecture で作り、reasoning RL と agentic serving へ
+ 伸ばす
+  THEMATIC LINEAGE 4/7 — DEEPSEEK
+
+DeepSeek の転換は、V2 の MLA/DeepSeekMoE、R1/R1-Zero の reasoning RL、V4-Flash-0731 の
+agentic serving という別々の節目で追える。benchmark 順位ではなく、各 version で何が設計・学習・
+deployment の焦点になったかを見る。 [11, 12, 13]
+
+DeepSeek-V2 は 236B total / 21B active の MoE で、Multi-head Latent Attention（MLA）と DeepSeekMoE を
+family-defining な効率化として導入した。128K context とともに、paper は KV-cache や generation throughput
+の改善を報告する。ただし数値比較は paper の setup に依存する。ここで重要なのは、DeepSeek が frontier
+competition へ入る際、parameter count の増大だけでなく memory/serving cost を architecture の中心課題に置
+いたことである。 [11]
+
+DeepSeek-R1 paper は、R1-Zero を preliminary SFT なしの large-scale RL として、R1 を cold-start data と
+multi-stage training を加えた別の経路として説明する。また Qwen/Llama を base にした distilled variants
+も release された。native R1/R1-Zero と distill を一つの model subject として扱わないことが重要であり、
+reasoning の成果をどの training path と model lineage へ帰属させるかを分離する必要がある。 [12]
+
+V4-Flash-0731 の official model card から直接確認できる current endpoint は、agentic capability の強化と vLLM、
+DSpark speculative decoding を用いる deployment support である。一方、この 0731 artifact だけでは broader
+V4 preview の architecture 全体を再確定できない。したがって本号では、V2 で確立した効率 architecture、R1
+の reasoning post-training、V4-Flash の agentic serving という確認可能な線だけをつなぎ、別 source の V4 仕様
+を補完的に持ち込まない。 [13]
+
+
+  Claim boundary
+
+  この節の読解上の境界: Paper-reported efficiency comparisons are setup-bound and are not generalized
+  across unrelated serving stacks. / The broader DeepSeek V4 architecture is not silently imported into the
+  V4-Flash-0731 Evidence boundary. / Paper-reported efficiency comparisons must retain the stated compar-
+  ison setup and must not be generalized across unrelated serving stacks. / Native R1/R1-Zero and distilled
+  Qwen/Llama-based variants are different model subjects and must remain separately attributed. / The bound
+  0731 update is sufficient for agentic/serving endpoint evidence but does not independently restate every ar-
+  chitecture detail of the broader V4 preview. / Verify V4-Flash-0731 context architecture, agentic positioning,
+  and official vLLM/DSpark deployment support.: The official 0731 model card verifies agentic positioning and
+  vLLM/DSpark deployment support; full context-architecture verification is retained as a bounded limitation
+  rather than inferred from separate V4 sources.
+
+
+
+
+                                                        6
+Japanese Generative AI Technical Survey Special                                                             SP001
+
+
+
+5 Kimi：long context を起点に、reasoning RL、open agentic MoE、native
+ multimodal へ
+  THEMATIC LINEAGE 5/7 — KIMI
+
+Kimi の 2023 年 launch chronology は二次資料の制約を残す一方、2025 年以降は k1.5、K2、K3 の一次・
+official material によって、long-context research から agentic・multimodal frontier へ伸びる技術線を
+確認できる。 [14, 15, 16]
+
+Kimi k1.5 paper は、multimodal reasoning model を scaled reinforcement learning で訓練し、long-context scaling、
+policy optimization、infrastructure optimization、long-to-short transfer を主要要素として説明する。2025 年 1
+月の chronology は DeepSeek-R1 と近接するが、両 paper が開示する technique は同じではない。この近さから
+模倣や単純な先後関係を推論せず、Kimi 側の long-context RL 研究として独立に位置付ける。 [14]
+
+Kimi K2 では、1T total / 32B active の MoE、MuonClip optimization、15.5T-token pretraining が paper で説明
+され、agentic data synthesis と real/synthetic environment をまたぐ joint RL へ踏み込んだ。k1.5 が long-context
+reasoning の研究線を明確にしたのに対し、K2 はそれを open agentic model の distribution へ接続する節目とし
+て扱える。 [15]
+
+Kimi K3 の official material は、2.8T total / 104B active、native multimodal、1M context、KDA と gated MLA
+を備え、long-horizon coding や agentic knowledge work を狙う current endpoint として model を位置付ける。
+これらは official/vendor material に基づく記述であり、license 条件は model card から推測しない。K3 の
+commercial 条件は別の exact LICENSE artifact に委ねることで、技術仕様と権利条件を分離して扱う。 [16]
+
+
+  Claim boundary
+
+  この節の読解上の境界: Kimi’s October 2023 launch/context-window chronology remains secondary-source
+  qualified until a stronger first-party archival source is added. / Kimi k1.5 and DeepSeek-R1 are treated
+  through their disclosed techniques and chronology without unsupported imitation or priority claims. / The
+  contemporaneous k1.5 and DeepSeek-R1 papers use different disclosed techniques; priority or simple imitation
+  claims are not supported. / Performance claims remain paper evaluations and should not be normalized against
+  incompatible benchmarks from other families. / Detailed commercial/license conditions are verified separately
+  against the exact Kimi K3 LICENSE artifact in SP001-D021. / Verify Kimi K3 architecture, parameter
+  structure, KDA/Gated MLA, multimodal/agentic claims, distribution, and applicable license boundary from
+  official material.: The official model material verifies architecture, parameter structure, multimodal/agentic
+  positioning and distribution; exact legal conditions are intentionally delegated to the separate exact-license
+  Evidence card rather than inferred here.
+
+
+
+
+                                                        7
+Japanese Generative AI Technical Survey Special                                                                 SP001
+
+
+
+
+6     主要 4 系統の外側：MiniMax、Yi、Baichuan が示す競争と分化
+
+    THEMATIC LINEAGE 6/7 — PARALLEL
+
+中 国 発 AI の 競 争 史 を 主 要 4 系 統 だ け で 閉 じ る と、agentic frontier の 別 経 路、2023-24 年 の open-
+weight/local wave、domain specialization への分化を見落とす。MiniMax、Yi、Baichuan はその補助線
+になる。 [17, 18, 19]
+
+MiniMax M2.7 の official announcement は、Agent Teams、skills、dynamic tool search、さらに model が自身
+の development workflow の一部へ参加するという方向を打ち出す。これは 2026 年の agentic frontier を主要
+4family だけで説明できないことを示す material competing branch である。ただし、この announcement 単体か
+ら open-weight serving integration や exact license まで確定することはせず、確認できる agentic positioning に
+役割を限定する。 [17]
+
+Yi-1.5 repository は 34B/9B/6B variants、Ollama を含む local use、fine-tuning ecosystem integration、Apache-2.0
+code/weights を示す。これは 2023-24 年に、中国発 open-weight model が developer の local environment へ入り
+込む経路が複数存在したことを示す supporting bridge である。一方、この 2024 repository だけから 2026 年に
+も独立した general-frontier line が続いているとは結論しない。 [18]
+
+Baichuan-M3-235B の official model card は、medical-enhanced clinical inquiry への specialization、Qwen3-MoE
+ancestry/acknowledgement、Apache-2.0 license を示す。ここでは Baichuan を現在の co-equal general frontier と
+して数えるのではなく、初期の独立 brand が domain-specialized かつ他 family 由来の base を使う方向へ分化し
+うる ecosystem 例として置く。これは競争が『family の数』だけでなく、派生・専門化の形でも進むことを示し
+ている。 [19]
+
+
+    Claim boundary
+
+    こ の 節 の 読 解 上 の 境 界: MiniMax is a visible competing branch, not a fifth co-equal central family in
+    this thematic architecture. / X runtime-adoption and enterprise-origin-policy observations remain HOLD and
+    cannot support prevalence or performance claims. / The bound news source does not itself establish every
+    requested open-weight serving integration or exact license term; those were observed in a separate official
+    model card during Discovery but are outside this one-source Evidence task. / Verify MiniMax M2.7 Agent
+    Teams, skills/tool-search claims, model-assisted development positioning, open-weight distribution, serving
+    support, and license from official sources.: The official announcement verifies Agent Teams, skills/tool search
+    and model-assisted-development positioning; open-weight serving and license details are not promoted from
+    a different source into this single-source card. / The Yi-1.5 repository alone cannot prove the absence of a
+    later independent general Yi frontier endpoint; that negative conclusion remains a Discovery-level catalog ob-
+    servation. / Verify Yi-1.5 release, open/local deployment, fine-tuning integrations, licensing, and whether an
+    official later general Yi endpoint exists within the as-of boundary.: The repository verifies Yi-1.5 release/de-
+    ployment/fine-tuning/licensing; the absence of a later co-equal general endpoint is not established by this
+    source alone and remains contextual. / The historical transition from the earlier independent Baichuan2
+    foundation-model line requires separate earlier evidence and is not established by the M3 model card alone.
+    / Verify Baichuan M3 medical specialization, Qwen3-MoE ancestry, licensing/deployment, and the historical
+    transition from the earlier independent Baichuan line.: The M3 model card verifies medical specialization,
+    Qwen3-MoE ancestry/acknowledgement and Apache-2.0 licensing; the earlier-to-current historical transition
+    is only partially represented by this source.
+
+
+
+                                                           8
+Japanese Generative AI Technical Survey Special                                                             SP001
+
+
+
+7 Open Weight は一枚岩ではない：配布されることと、同じ権利で使えるこ
+ とは別問題
+  THEMATIC LINEAGE 7/7 — WEIGHT
+
+公開 weights は developer adoption を加速しうるが、code、weights、commercial use、attribution、Model-
+as-a-Service 条件は artifact ごとに異なる。Kimi K3 の exact license と Yi/Baichuan の Apache-2.0
+artifacts を並べると、その差が具体的になる。 [20, 18, 19]
+
+Kimi K3 License は、covered software/weights について use、copy、modify、distribute、sublicense、sell、deploy、
+fine-tune を含む広い grant を置く一方、定義された Model-as-a-Service business が連続 12 か月の aggregate
+revenue で 2000 万米ドルを超える場合には commercial use 前の separate agreement を求める。また対象となる
+大規模 commercial product/service には、100M MAU または月間 revenue 2000 万米ドル超を条件とする『Kimi
+K3』表示条項があり、license 本文には除外も記されている。これは K3 という特定 artifact の条件であり、Kimi
+family 全体へ遡及させない。 [20]
+
+比較対象として Yi-1.5 は repository 上で Apache-2.0 code/weights と local/fine-tuning integrations を示し、
+Baichuan-M3 も official model card 上で Apache-2.0 を掲げる。これらを Kimi K3 と並べる目的は『どれがより
+open か』を単純順位付けすることではない。公開 weights、repository code、商用条件、attribution、派生物の
+扱いを artifact 単位で分けて読む必要があることを示すためである。 [18, 19]
+
+本号での license 整理は technical distribution を理解するための境界整理であり、法的助言ではない。X 上の
+license-friction discussion は HOLD のままで、infringement、derivative provenance、適用 version、third-party
+compliance の判断根拠には用いない。『Open Source』と『Open Weight』も同義語として扱わず、確認できる
+weights/code/license 条件だけを個別に記述する。 [20]
+
+
+  Claim boundary
+
+  この節の読解上の境界: The Kimi K3 License summary is artifact-specific and is not a legal opinion. / X
+  license-friction discussion remains HOLD and cannot establish infringement, derivative provenance, applicable
+  version, or legal interpretation. / This Evidence card summarizes the named 2026 Kimi K3 License only; it
+  is not a legal opinion and does not establish infringement or compliance by third parties. / The Yi-1.5
+  repository alone cannot prove the absence of a later independent general Yi frontier endpoint; that negative
+  conclusion remains a Discovery-level catalog observation. / Verify Yi-1.5 release, open/local deployment,
+  fine-tuning integrations, licensing, and whether an official later general Yi endpoint exists within the as-of
+  boundary.: The repository verifies Yi-1.5 release/deployment/fine-tuning/licensing; the absence of a later
+  co-equal general endpoint is not established by this source alone and remains contextual. / The historical
+  transition from the earlier independent Baichuan2 foundation-model line requires separate earlier evidence
+  and is not established by the M3 model card alone. / Verify Baichuan M3 medical specialization, Qwen3-
+  MoE ancestry, licensing/deployment, and the historical transition from the earlier independent Baichuan line.:
+  The M3 model card verifies medical specialization, Qwen3-MoE ancestry/acknowledgement and Apache-2.0
+  licensing; the earlier-to-current historical transition is only partially represented by this source.
+
+
+
+
+                                                           9
+Japanese Generative AI Technical Survey Special                                           SP001
+
+
+
+
+8    この号の総括
+
+    ISSUE SYNTHESIS
+
+本号を通して見えるのは、『中国モデル』という単一の architecture や学習 recipe ではなく、異なる出発点を持
+つ複数の系譜である。GLM は公開・ローカル展開から tool use、ARC、長文脈 serving へ、Qwen は広い family
+/ platform から hybrid reasoning と agentic coding へ、DeepSeek は MLA / MoE による効率設計から reasoning
+RL と agentic serving へ、Kimi は long context を起点に reasoning RL、open agentic MoE、native multimodal
+へ進んだ。相互に近い課題へ向かっていても、その技術的な道筋を一つにまとめることはできない。
+
+一方で、2025 年から 2026 年にかけて競争課題そのものは重なってきた。reasoning をどのように利用形態へ組
+み込むか、coding や tool use を長時間の agentic workload へどう接続するか、long context を実際に serve でき
+る効率へ落とすか、そして weights を公開したモデルを developer がどの runtime や distribution 経路で使える
+ようにするかである。収斂しているのは一つの実装方法ではなく、frontier model に求められる問題設定の側だ
+と捉える方が、本号で確認した Evidence には整合的である。
+
+MiniMax、Yi、Baichuan を併記すると、4 主要系統だけで中国の open-weight 史を閉じることもできない。
+MiniMax は agentic frontier の並行線として、Yi は 2023〜2024 年の open distribution を示す bridge として、
+Baichuan は初期の独立系譜から現在の specialized / derivative な位置へ移る例として機能する。そして Open
+Weight という言葉も一つの制度ではない。weights の取得可能性、repository code、再配布、商用利用、表示義
+務、Model-as-a-Service 条件は artifact ごとに異なり、技術的な『開放性』と法的・商用上の条件を分離して確
+認する必要がある。
+
+なお、本号には意図的に残した境界がある。Kimi の 2023 年初期 chronology は一次資料で完全には閉じておら
+ず、二次資料としての資格を外していない。X / community の runtime 採用や license friction も、技術仕様や普
+及度を確定する Evidence には使っていない。また、各社・各論文の benchmark 値を異なる条件のまま横断順位
+へ変換していない。したがって本号が示すのは『どのモデルが絶対に最強か』ではなく、2026 年 8 月 22 日まで
+に各系譜が何を競争課題として選び、どの公開・serving・権利境界を伴って frontier へ到達したか、という技術
+史である。
+
+
+
+
+                                                  10
+Japanese Generative AI Technical Survey Special                                                     SP001
+
+
+
+References / Source Notes
+
+ [1]Tsinghua University / Zhipu AI. GLM-130B. Core v2 Evidence: VERIFIED; materiality: MATERIAL. url:
+   https://arxiv.org/abs/2210.02414 (visited on 08/22/2026).
+ [2]Alibaba Cloud. Qwen Technical Report. Core v2 Evidence: VERIFIED; materiality: MATERIAL. url: https:
+   //arxiv.org/abs/2309.16609 (visited on 08/22/2026).
+ [3]DeepSeek. DeepSeek LLM. Core v2 Evidence: PARTIAL; materiality: MATERIAL. url: https://arxiv.org/
+   abs/2401.02954 (visited on 08/22/2026).
+ [4]THUDM / Zhipu AI. ChatGLM-6B. Core v2 Evidence: VERIFIED; materiality: MATERIAL. url: https:
+   //github.com/zai-org/ChatGLM-6B/blob/main/README_en.md (visited on 08/22/2026).
+ [5]Zhipu AI / THUDM. ChatGLM: A Family of Large Language Models from GLM-130B to GLM-4 All Tools.
+   Core v2 Evidence: VERIFIED; materiality: MATERIAL. url: https://arxiv.org/abs/2406.12793 (visited
+   on 08/22/2026).
+ [6]Z.ai. GLM-4.5. Core v2 Evidence: VERIFIED; materiality: MATERIAL. url: https : / / arxiv . org / abs /
+   2508.06471 (visited on 08/22/2026).
+ [7]Z.ai. GLM-5.2. Core v2 Evidence: VERIFIED; materiality: MATERIAL. url: https://huggingface.co/zai-
+   org/GLM-5.2 (visited on 08/22/2026).
+ [8]Alibaba Cloud. Qwen2.5. Core v2 Evidence: VERIFIED; materiality: MATERIAL. url: https://arxiv.org/
+   abs/2412.15115 (visited on 08/22/2026).
+ [9]Alibaba Cloud. Qwen3. Core v2 Evidence: VERIFIED; materiality: MATERIAL. url: https://arxiv.org/
+   abs/2505.09388 (visited on 08/22/2026).
+[10]Qwen / Alibaba. Qwen3.6-27B. Core v2 Evidence: VERIFIED; materiality: MATERIAL. url: https : / /
+   huggingface.co/Qwen/Qwen3.6-27B (visited on 08/22/2026).
+[11]DeepSeek. DeepSeek-V2. Core v2 Evidence: VERIFIED; materiality: MATERIAL. url: https://arxiv.org/
+   abs/2405.04434 (visited on 08/22/2026).
+[12]DeepSeek. DeepSeek-R1. Core v2 Evidence: VERIFIED; materiality: MATERIAL. url: https://arxiv.org/
+   abs/2501.12948 (visited on 08/22/2026).
+[13]DeepSeek. DeepSeek-V4-Flash-0731. Core v2 Evidence: PARTIAL; materiality: MATERIAL. url: https :
+   //huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731 (visited on 08/22/2026).
+[14]Moonshot AI. Kimi k1.5. Core v2 Evidence: VERIFIED; materiality: MATERIAL. url: https://arxiv.org/
+   abs/2501.12599 (visited on 08/22/2026).
+[15]Moonshot AI. Kimi K2. Core v2 Evidence: VERIFIED; materiality: MATERIAL. url: https://arxiv.org/
+   abs/2507.20534 (visited on 08/22/2026).
+[16]Moonshot AI. Kimi K3. Core v2 Evidence: PARTIAL; materiality: MATERIAL. url: https://huggingface.
+   co/moonshotai/Kimi-K3 (visited on 08/22/2026).
+[17]MiniMax. MiniMax M2.7. Core v2 Evidence: PARTIAL; materiality: MATERIAL. url: https : / / www .
+   minimax.io/news/minimax-m27-en (visited on 08/22/2026).
+[18]01.AI. Yi-1.5. Core v2 Evidence: PARTIAL; materiality: CONTEXT. url: https://github.com/01-ai/Yi-
+   1.5 (visited on 08/22/2026).
+[19]Baichuan. Baichuan-M3-235B. Core v2 Evidence: PARTIAL; materiality: CONTEXT. url: https :
+   //huggingface.co/baichuan-inc/Baichuan-M3-235B (visited on 08/22/2026).
+[20]Moonshot AI. Kimi K3 License. Core v2 Evidence: VERIFIED; materiality: MATERIAL. url: https : / /
+   huggingface.co/moonshotai/Kimi-K3/blob/main/LICENSE (visited on 08/22/2026).
+
+                                                    11
+
