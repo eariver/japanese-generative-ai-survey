@@ -39,6 +39,42 @@ def _pilot(registry: dict[str, Any], pilot_id: str) -> dict[str, Any]:
     return value
 
 
+def _validate_profile_against_registry(profile: dict[str, Any], pilot: dict[str, Any]) -> None:
+    scope = pilot["research_scope"]
+    if profile.get("issue_id") != pilot["issue_id"]:
+        raise ValueError("Pilot Production Profile issue_id drift")
+    if profile.get("research_profile") != pilot["research_profile"]:
+        raise ValueError("Pilot Production Profile research_profile drift")
+    if profile.get("publication_profile") != pilot["publication_profile"]:
+        raise ValueError("Pilot Production Profile publication_profile drift")
+    if profile.get("paths") != pilot["expected_paths"]:
+        raise ValueError("Pilot Production Profile canonical path/work-branch drift")
+    research_scope = profile.get("research_scope")
+    if not isinstance(research_scope, dict):
+        raise ValueError("Pilot Production Profile research_scope missing")
+    temporal = research_scope.get("temporal_policy")
+    if not isinstance(temporal, dict) or temporal.get("mode") != scope["temporal_mode"]:
+        raise ValueError("Pilot Production Profile temporal mode drift")
+
+    if pilot["kind"] == "WEEKLY":
+        if temporal.get("cutoff") != scope["expected_cutoff"]:
+            raise ValueError("Pilot Weekly cutoff drift")
+    elif pilot["kind"] == "THEMATIC":
+        if scope.get("as_of_policy") != "SET_AT_INITIALIZATION":
+            raise ValueError("Thematic Pilot requires SET_AT_INITIALIZATION as_of policy")
+        if research_scope.get("question") != scope["question"]:
+            raise ValueError("Pilot Thematic question drift")
+        if research_scope.get("scope_dimensions") != scope["scope_dimensions"]:
+            raise ValueError("Pilot Thematic scope_dimensions drift")
+        if research_scope.get("initial_obligations") != scope["initial_obligations"]:
+            raise ValueError("Pilot Thematic initial_obligations drift")
+        if set(temporal) != {"mode", "as_of"}:
+            raise ValueError("Pilot Thematic temporal policy fields drift")
+        core.parse_instant(str(temporal["as_of"]))
+    else:
+        raise ValueError(f"unsupported Pilot kind: {pilot['kind']}")
+
+
 def _materialize_profile(
     repo_root: Path,
     cfg: dict[str, Any],
@@ -49,11 +85,6 @@ def _materialize_profile(
     scope = pilot["research_scope"]
     if kind == "WEEKLY":
         profile = core.weekly_profile(repo_root, cfg, recorded_at, pilot["issue_id"])
-        cutoff = profile["research_scope"]["temporal_policy"]["cutoff"]
-        if cutoff != scope["expected_cutoff"]:
-            raise ValueError(
-                f"Pilot {pilot['pilot_id']} Weekly cutoff drift: expected={scope['expected_cutoff']} actual={cutoff}"
-            )
     elif kind == "THEMATIC":
         if scope.get("as_of_policy") != "SET_AT_INITIALIZATION":
             raise ValueError("Thematic Pilot requires SET_AT_INITIALIZATION as_of policy")
@@ -68,72 +99,53 @@ def _materialize_profile(
         profile = core.thematic_profile(repo_root, cfg, spec)
     else:
         raise ValueError(f"unsupported Pilot kind: {kind}")
-
-    if profile["issue_id"] != pilot["issue_id"]:
-        raise ValueError("materialized Pilot Profile issue_id drift")
-    if profile["research_profile"] != pilot["research_profile"]:
-        raise ValueError("materialized Pilot research_profile drift")
-    if profile["publication_profile"] != pilot["publication_profile"]:
-        raise ValueError("materialized Pilot publication_profile drift")
-    if profile["paths"] != pilot["expected_paths"]:
-        raise ValueError("materialized Pilot canonical path/work-branch drift")
-    if profile["research_scope"]["temporal_policy"]["mode"] != scope["temporal_mode"]:
-        raise ValueError("materialized Pilot temporal mode drift")
+    _validate_profile_against_registry(profile, pilot)
     return profile
 
 
-def _existing_status(repo_root: Path, cfg: dict[str, Any], profile: dict[str, Any]) -> dict[str, Any]:
-    source_root = core.repo_local_path(repo_root, profile["paths"]["source_root"], "Pilot source_root")
+def _repository_status(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    pilot: dict[str, Any],
+) -> tuple[dict[str, Any], dict[str, Any] | None]:
+    source_root = core.repo_local_path(repo_root, pilot["expected_paths"]["source_root"], "Pilot source_root")
     profile_path = source_root / cfg["state_authority"]["profile_filename"]
     state_path = source_root / cfg["state_authority"]["authoritative_filename"]
     profile_exists = profile_path.is_file()
     state_exists = state_path.is_file()
+    common = {
+        "profile_path": str(profile_path.relative_to(repo_root)),
+        "state_path": str(state_path.relative_to(repo_root)),
+        "profile_exists": profile_exists,
+        "state_exists": state_exists,
+    }
     if profile_exists != state_exists:
-        return {
-            "status": "PARTIAL_INITIALIZATION_EXCEPTION",
-            "profile_path": str(profile_path.relative_to(repo_root)),
-            "state_path": str(state_path.relative_to(repo_root)),
-            "profile_exists": profile_exists,
-            "state_exists": state_exists,
-            "lifecycle_state": None,
-        }
+        return {**common, "status": "PARTIAL_INITIALIZATION_EXCEPTION", "lifecycle_state": None}, None
     if not profile_exists:
-        return {
-            "status": "READY_TO_INITIALIZE",
-            "profile_path": str(profile_path.relative_to(repo_root)),
-            "state_path": str(state_path.relative_to(repo_root)),
-            "profile_exists": False,
-            "state_exists": False,
-            "lifecycle_state": None,
-        }
+        return {**common, "status": "READY_TO_INITIALIZE", "lifecycle_state": None}, None
 
     existing_profile = core.load_json(profile_path)
-    if existing_profile != profile:
-        raise ValueError("existing Pilot Production Profile differs from registry/materialized Profile")
+    profile_errors = core.validate_profile(existing_profile, cfg)
+    if profile_errors:
+        raise ValueError("existing Pilot Production Profile invalid: " + "; ".join(profile_errors))
+    _validate_profile_against_registry(existing_profile, pilot)
     state = core.load_json(state_path)
-    if state.get("profile", {}).get("path") != str(profile_path.relative_to(repo_root)):
+    if state.get("profile", {}).get("path") != common["profile_path"]:
         raise ValueError("existing Pilot Production State points at a different Profile path")
     if state.get("profile", {}).get("sha256") != core.sha256_file(profile_path):
         raise ValueError("existing Pilot Production State/Profile SHA divergence")
     semantic_errors = core.validate_state_semantics(repo_root, cfg, state)
     if semantic_errors:
         raise ValueError("existing Pilot Production State semantic inconsistency: " + "; ".join(semantic_errors))
-    return {
-        "status": "RESUME_EXISTING_STATE",
-        "profile_path": str(profile_path.relative_to(repo_root)),
-        "state_path": str(state_path.relative_to(repo_root)),
-        "profile_exists": True,
-        "state_exists": True,
-        "lifecycle_state": state["lifecycle_state"],
-    }
+    return {**common, "status": "RESUME_EXISTING_STATE", "lifecycle_state": state["lifecycle_state"]}, existing_profile
 
 
 def build_plan(repo_root: Path, pilot_id: str, recorded_at: datetime) -> dict[str, Any]:
     cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
     registry = _load_registry(repo_root)
     pilot = _pilot(registry, pilot_id)
-    profile = _materialize_profile(repo_root, cfg, pilot, recorded_at)
-    existing = _existing_status(repo_root, cfg, profile)
+    existing, existing_profile = _repository_status(repo_root, cfg, pilot)
+    profile = existing_profile if existing_profile is not None else _materialize_profile(repo_root, cfg, pilot, recorded_at)
     return {
         "schema_version": "2.0-rc1",
         "pilot_id": pilot_id,
