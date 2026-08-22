@@ -8,6 +8,8 @@ on:
       - "config/survey-production-v2.json"
       - "config/prompts/source-screening-v2.md"
       - "config/prompts/evidence-verification-v2.md"
+      - "config/prompts/article-drafting-v2.md"
+      - "config/prompts/profile-synthesis-v2.md"
       - "schemas/survey-production-*.schema.json"
       - "schemas/survey-discovery-record.schema.json"
       - "schemas/screening-v2-*.schema.json"
@@ -19,11 +21,15 @@ on:
       - "schemas/candidate-selection-v2.schema.json"
       - "schemas/issue-architecture-v2.schema.json"
       - "schemas/architecture-review-summary-v2.schema.json"
+      - "schemas/architecture-approval-record-v2.schema.json"
+      - "schemas/draft-v2-*.schema.json"
+      - "schemas/profile-synthesis-v2-*.schema.json"
       - "scripts/survey_production_v2.py"
       - "scripts/survey_screening_v2.py"
       - "scripts/survey_evidence_v2.py"
       - "scripts/survey_completeness_v2.py"
       - "scripts/survey_architecture_v2.py"
+      - "scripts/survey_drafting_v2.py"
       - "tests/test_survey_production_v2.py"
       - "tests/test_survey_screening_v2.py"
       - "tests/test_survey_screening_archive_v2.py"
@@ -33,6 +39,7 @@ on:
       - "tests/test_survey_architecture_v2.py"
       - "tests/test_survey_architecture_review_expansion_v2.py"
       - "tests/test_survey_wu008_contract_identity.py"
+      - "tests/test_survey_drafting_v2.py"
       - "docs/survey-production-core-v2-*.md"
       - "docs/checkpoints/survey-production-core-v2-worklog.md"
       - ".github/workflows/survey-production-v2-ci.yml"
@@ -41,6 +48,8 @@ on:
       - "config/survey-production-v2.json"
       - "config/prompts/source-screening-v2.md"
       - "config/prompts/evidence-verification-v2.md"
+      - "config/prompts/article-drafting-v2.md"
+      - "config/prompts/profile-synthesis-v2.md"
       - "schemas/survey-production-*.schema.json"
       - "schemas/survey-discovery-record.schema.json"
       - "schemas/screening-v2-*.schema.json"
@@ -52,11 +61,15 @@ on:
       - "schemas/candidate-selection-v2.schema.json"
       - "schemas/issue-architecture-v2.schema.json"
       - "schemas/architecture-review-summary-v2.schema.json"
+      - "schemas/architecture-approval-record-v2.schema.json"
+      - "schemas/draft-v2-*.schema.json"
+      - "schemas/profile-synthesis-v2-*.schema.json"
       - "scripts/survey_production_v2.py"
       - "scripts/survey_screening_v2.py"
       - "scripts/survey_evidence_v2.py"
       - "scripts/survey_completeness_v2.py"
       - "scripts/survey_architecture_v2.py"
+      - "scripts/survey_drafting_v2.py"
       - "tests/test_survey_production_v2.py"
       - "tests/test_survey_screening_v2.py"
       - "tests/test_survey_screening_archive_v2.py"
@@ -66,7 +79,9 @@ on:
       - "tests/test_survey_architecture_v2.py"
       - "tests/test_survey_architecture_review_expansion_v2.py"
       - "tests/test_survey_wu008_contract_identity.py"
+      - "tests/test_survey_drafting_v2.py"
       - "docs/survey-production-core-v2-*.md"
+      - "docs/checkpoints/survey-production-core-v2-worklog.md"
       - ".github/workflows/survey-production-v2-ci.yml"
   workflow_dispatch:
 
@@ -87,6 +102,8 @@ jobs:
             docs/survey-production-core-v2-authority.md
             docs/survey-production-core-v2-contract-normalization-second-audit-amendment.md
             docs/survey-production-core-v2-minimum-vertical-slice-second-audit-amendment.md
+            docs/survey-production-core-v2-whole-system-audit-2026-08-22.md
+            docs/survey-production-core-v2-whole-system-audit-remediation-closure.md
             docs/survey-production-core-v2-historical-invariants.md
             docs/survey-production-core-v2-historical-production-deep-audit.md
           sparse-checkout-cone-mode: false
@@ -94,9 +111,9 @@ jobs:
         with:
           python-version: "3.12"
       - name: Compile v2 implementation
-        run: python -m py_compile scripts/survey_production_v2.py scripts/survey_screening_v2.py scripts/survey_evidence_v2.py scripts/survey_completeness_v2.py scripts/survey_architecture_v2.py
+        run: python -m py_compile scripts/survey_production_v2.py scripts/survey_screening_v2.py scripts/survey_evidence_v2.py scripts/survey_completeness_v2.py scripts/survey_architecture_v2.py scripts/survey_drafting_v2.py
       - name: Run v2 tests
-        run: python -m unittest tests.test_survey_production_v2 tests.test_survey_screening_v2 tests.test_survey_screening_archive_v2 tests.test_survey_evidence_v2 tests.test_survey_completeness_v2 tests.test_survey_completeness_closure_audit_v2 tests.test_survey_architecture_v2 tests.test_survey_architecture_review_expansion_v2 tests.test_survey_wu008_contract_identity -v
+        run: python -m unittest tests.test_survey_production_v2 tests.test_survey_screening_v2 tests.test_survey_screening_archive_v2 tests.test_survey_evidence_v2 tests.test_survey_completeness_v2 tests.test_survey_completeness_closure_audit_v2 tests.test_survey_architecture_v2 tests.test_survey_architecture_review_expansion_v2 tests.test_survey_wu008_contract_identity tests.test_survey_drafting_v2 -v
       - name: Parse v2 JSON contracts
         run: |
           python - <<'PY'
@@ -119,6 +136,11 @@ jobs:
               Path('schemas/candidate-selection-v2.schema.json'),
               Path('schemas/issue-architecture-v2.schema.json'),
               Path('schemas/architecture-review-summary-v2.schema.json'),
+              Path('schemas/architecture-approval-record-v2.schema.json'),
+              Path('schemas/draft-v2-package.schema.json'),
+              Path('schemas/draft-v2-result.schema.json'),
+              Path('schemas/profile-synthesis-v2-input.schema.json'),
+              Path('schemas/profile-synthesis-v2-result.schema.json'),
           ]:
               json.loads(path.read_text(encoding='utf-8'))
               print(f'OK {path}')
