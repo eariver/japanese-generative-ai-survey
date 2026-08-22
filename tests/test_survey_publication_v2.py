@@ -33,6 +33,7 @@ class SurveyPublicationV2Tests(unittest.TestCase):
         self.dir = self.root / "sources/SP001/publication"
         self.dir.mkdir(parents=True)
         self.profile = self.root / "sources/SP001/production-profile.json"
+        dummy_sha = "a" * 64
         quality.core.write_json(
             self.profile,
             {
@@ -40,7 +41,38 @@ class SurveyPublicationV2Tests(unittest.TestCase):
                 "issue_id": "SP001",
                 "research_profile": "THEMATIC",
                 "publication_profile": "LONGFORM_SPECIAL",
-                "paths": {"survey_root": "surveys/special/SP001"},
+                "research_scope": {
+                    "question": "Fixture thematic publication question",
+                    "inclusion": [],
+                    "exclusion": [],
+                    "scope_dimensions": ["fixture"],
+                    "initial_obligations": [
+                        {
+                            "obligation_id": "fixture:coverage",
+                            "dimension": "fixture",
+                            "description": "Exercise exact publication authority.",
+                        }
+                    ],
+                    "temporal_policy": {
+                        "mode": "OPEN_HISTORY_AS_OF",
+                        "as_of": "2026-08-22T05:00:00Z",
+                    },
+                },
+                "paths": {
+                    "source_root": "sources/SP001",
+                    "survey_root": "surveys/special/SP001",
+                    "work_branch": "test/SP001",
+                },
+                "contract": {
+                    "pipeline_contract_version": "fixture",
+                    "pipeline_contract_sha256": dummy_sha,
+                    "quality_contract_version": "fixture",
+                    "quality_contract_sha256": dummy_sha,
+                    "research_profile_version": "fixture",
+                    "research_profile_sha256": dummy_sha,
+                    "publication_profile_version": "fixture",
+                    "publication_profile_sha256": dummy_sha,
+                },
             },
         )
         self.source = self.dir / "SP001.tex"
