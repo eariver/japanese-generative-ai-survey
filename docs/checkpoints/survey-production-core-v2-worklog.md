@@ -26,7 +26,7 @@ Last updated: **2026-08-22 JST — WU-011 complete; stopped at Human full-candid
 - Draft PR: `#310 Survey Production Core v2 implementation`; remains **draft** and must not be merged without Human full-candidate review.
 - Current phase: **Phase 3 — Core v2 Candidate Implementation / Human review boundary**.
 - **WU-010R: COMPLETE / SECOND-AUDIT GREEN.**
-- **WU-011: COMPLETE / SECOND-AUDIT GREEN / 5-of-5 CROSS-REGRESSION GREEN.**
+- **WU-011: IMPLEMENTATION COMPLETE / WORK UNIT COMPLETE / SECOND-AUDIT GREEN / 5-of-5 CROSS-REGRESSION GREEN.**
 - WU-010R Repair Set: `REPAIR-WU010R-2026-08-22`; `IMPLEMENTED`, verification editions empty.
 - WU-011 Repair Set: `REPAIR-WU011-2026-08-22`; `IMPLEMENTED`, verification editions empty; all five pre-Pilot CI validation rows are PASS and real Pilot verification remains PENDING.
 - WU-011 machine findings AUD-019 through AUD-026: all `FIXED_GENERIC`; none may become `CLOSED` before Repair Set governance permits it.
