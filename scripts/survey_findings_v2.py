@@ -50,13 +50,20 @@ def _unique_strings(value: Any, *, nonempty: bool = False) -> bool:
     )
 
 
-def validate_finding(finding: dict[str, Any]) -> list[str]:
+def validate_finding(finding: dict[str, Any], *, repair_set_id: str | None = None) -> list[str]:
+    """Validate one Finding.
+
+    CLOSED is not a standalone state. A CLOSED Finding is valid only while it is
+    being validated as a member of the exact Repair Set named by
+    resolved_by_repair_set_id. This keeps closure authority in the Repair Set.
+    """
     errors: list[str] = []
     required = {
         "schema_version", "finding_id", "edition", "stage", "observed_problem",
         "expected_behavior", "actual_behavior", "production_workaround",
         "classification", "requires_regression", "provenance",
-        "improvement_action", "regression_fixture", "status",
+        "improvement_action", "regression_fixture", "resolved_by_repair_set_id",
+        "status",
     }
     if set(finding) != required:
         return ["Review Finding fields must exactly match v2 contract"]
@@ -65,7 +72,7 @@ def validate_finding(finding: dict[str, Any]) -> list[str]:
     for key in ("finding_id", "edition", "stage", "observed_problem", "expected_behavior", "actual_behavior"):
         if not _nonempty(finding.get(key)):
             errors.append(f"Review Finding {key} required")
-    for key in ("production_workaround", "improvement_action", "regression_fixture"):
+    for key in ("production_workaround", "improvement_action", "regression_fixture", "resolved_by_repair_set_id"):
         value = finding.get(key)
         if value is not None and not _nonempty(value):
             errors.append(f"Review Finding {key} must be non-empty or null")
@@ -106,6 +113,15 @@ def validate_finding(finding: dict[str, Any]) -> list[str]:
         errors.append(f"Review Finding status {status} requires improvement_action")
     if finding.get("requires_regression") and status in {"FIXED_LOCAL", "FIXED_GENERIC", "CLOSED"} and not _nonempty(finding.get("regression_fixture")):
         errors.append("fixed Review Finding requiring regression must name regression_fixture")
+
+    resolution = finding.get("resolved_by_repair_set_id")
+    if status == "CLOSED":
+        if repair_set_id is None:
+            errors.append("CLOSED Review Finding requires Repair Set validation context")
+        elif resolution != repair_set_id:
+            errors.append("CLOSED Review Finding resolved_by_repair_set_id must match validating Repair Set")
+    elif resolution is not None:
+        errors.append("only CLOSED Review Finding may name resolved_by_repair_set_id")
     return errors
 
 
@@ -121,7 +137,8 @@ def validate_repair_set(repair: dict[str, Any], findings: list[dict[str, Any]]) 
         return ["Repair Set fields must exactly match v2 contract"]
     if repair.get("schema_version") != "2.0-rc1":
         errors.append("Repair Set schema_version mismatch")
-    if not _nonempty(repair.get("repair_set_id")):
+    repair_id = repair.get("repair_set_id")
+    if not _nonempty(repair_id):
         errors.append("Repair Set repair_set_id required")
     for key in ("finding_ids", "affected_components", "actual_layers_changed"):
         if not _unique_strings(repair.get(key), nonempty=True):
@@ -171,8 +188,9 @@ def validate_repair_set(repair: dict[str, Any], findings: list[dict[str, Any]]) 
             errors.append(f"Repair Set status {status} requires verification_editions")
 
     finding_by_id: dict[str, dict[str, Any]] = {}
+    closure_context = repair_id if status == "CLOSED" and _nonempty(repair_id) else None
     for finding in findings:
-        finding_errors = validate_finding(finding)
+        finding_errors = validate_finding(finding, repair_set_id=closure_context)
         if finding_errors:
             errors.append("Repair Set input Finding invalid: " + "; ".join(finding_errors))
             continue
@@ -193,6 +211,16 @@ def validate_repair_set(repair: dict[str, Any], findings: list[dict[str, Any]]) 
                 fixture = finding.get("regression_fixture")
                 if not _nonempty(fixture) or fixture not in fixtures:
                     errors.append(f"Repair Set missing required regression fixture for {fid}")
+    if status == "CLOSED":
+        for fid, finding in finding_by_id.items():
+            if finding.get("status") != "CLOSED":
+                errors.append(f"CLOSED Repair Set requires CLOSED Finding: {fid}")
+            if finding.get("resolved_by_repair_set_id") != repair_id:
+                errors.append(f"CLOSED Repair Set Finding resolution authority mismatch: {fid}")
+    else:
+        for fid, finding in finding_by_id.items():
+            if finding.get("status") == "CLOSED":
+                errors.append(f"non-CLOSED Repair Set cannot authorize CLOSED Finding: {fid}")
     return errors
 
 
@@ -209,8 +237,9 @@ def main() -> int:
         if args.command == "finding-check":
             errors = validate_finding(core.load_json(Path(args.finding)))
         else:
+            repair_value = core.load_json(Path(args.repair))
             errors = validate_repair_set(
-                core.load_json(Path(args.repair)),
+                repair_value,
                 [core.load_json(Path(path)) for path in args.finding],
             )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
