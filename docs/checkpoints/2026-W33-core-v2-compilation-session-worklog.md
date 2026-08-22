@@ -5,7 +5,7 @@
 - Canonical work branch: `weekly/2026-W33-v2-work`
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Fresh restart ordered: 2026-08-23 JST
-- Current stop: **Exception Gate — fresh Grok/X result required before Discovery**
+- Current stop: **Architecture Review Human Gate — reached; approval pending**
 
 ## Fresh-restart decision
 
@@ -152,3 +152,20 @@ Exception reason: a newly executed `weekly-x-2026-W33-fresh-r1` Grok result must
 - `architecture-v2.json` remains `PROPOSED`; Human Review metadata is null and no Architecture Review approval is written in this stage.
 - Architecture Review Summary and bounded Review Attention are regenerated from the fresh Core v2 chain.
 - Local production workaround for historical accepted Evidence State SHA uses the repository's pending fail-closed `fix/core-v2-historical-evidence-basis` logic plus regression tests; no non-State drift is relaxed.
+
+## Formal Architecture checkpoint and Human Gate
+
+Completed. Execution-only PR #356 revalidated the exact proposed Architecture, Architecture Review Summary, and Architecture Review Attention through the reviewed Core v2 work-branch control.
+
+- Architecture build head adopted before formal checkpoint: `608a2bfce860914a2c343c5ea9660a2fc4386fbc`.
+- Formal Architecture checkpoint head: `b9c5331b2fbe1806877a77860b956322408865b2`.
+- Lifecycle transition: `SELECTION_COMPLETE` → `ARCHITECTURE_ESTABLISHED`.
+- `machine_checkpoints.architecture = passed`.
+- Architecture checkpoint authority: `sources/2026-W33/orchestration/v2/checkpoints/SELECTION_COMPLETE.json`, SHA-256 `6a59b57d5ada07690802ab276b69f5bdd46e4465b753670a91d632165493ba39`.
+- `human_gates.architecture_review = pending`; no Architecture Approval record or Human Review metadata was written.
+- `next_action = ARCHITECTURE_REVIEW`.
+- `terminal_reason = HUMAN_GATE_REACHED`.
+- `exception_gate.status = inactive`.
+- Draft, validation, publication preview, freeze, and release checkpoints remain pending.
+
+The requested autonomous compilation boundary has therefore been reached. The session intentionally stops here and does not begin drafting until the Architecture Review Human Gate is explicitly approved or revised by the user.
