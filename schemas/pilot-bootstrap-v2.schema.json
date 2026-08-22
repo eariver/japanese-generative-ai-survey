@@ -56,34 +56,22 @@
                 "required": [
                   "temporal_mode",
                   "as_of_policy",
-                  "question",
-                  "scope_dimensions",
-                  "initial_obligations"
+                  "planning_authority",
+                  "scope_spec_path"
                 ],
                 "properties": {
                   "temporal_mode": {"enum": ["OPEN_HISTORY_AS_OF", "CURRENT_STATE_AS_OF"]},
                   "as_of_policy": {"const": "SET_AT_INITIALIZATION"},
-                  "question": {"type": "string", "minLength": 1},
-                  "scope_dimensions": {
-                    "type": "array",
-                    "minItems": 1,
-                    "uniqueItems": true,
-                    "items": {"type": "string", "minLength": 1}
-                  },
-                  "initial_obligations": {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                      "type": "object",
-                      "additionalProperties": false,
-                      "required": ["obligation_id", "dimension", "description"],
-                      "properties": {
-                        "obligation_id": {"type": "string", "minLength": 1},
-                        "dimension": {"type": "string", "minLength": 1},
-                        "description": {"type": "string", "minLength": 1}
-                      }
+                  "planning_authority": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["path", "entry"],
+                    "properties": {
+                      "path": {"type": "string", "minLength": 1},
+                      "entry": {"type": "string", "minLength": 1}
                     }
-                  }
+                  },
+                  "scope_spec_path": {"type": "string", "minLength": 1}
                 }
               }
             ]
