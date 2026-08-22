@@ -60,7 +60,7 @@ jobs:
           test "$(printf '%s' "$EXPECTED_STATE_SHA" | grep -Ec '^[0-9a-f]{64}$')" -eq 1
           test "$(printf '%s' "$EXPECTED_MANIFEST_SHA" | grep -Ec '^[0-9a-f]{64}$')" -eq 1
           PYTHONPATH=. python - <<'PY' >> "$GITHUB_OUTPUT"
-          import json, os, pathlib, re
+          import os, pathlib, re
           from scripts import survey_production_v2 as core
           from scripts import survey_publication_v2 as publication
           root=pathlib.Path('.').resolve(); issue=os.environ['ISSUE_ID']; repo=os.environ['REPOSITORY']
@@ -70,6 +70,14 @@ jobs:
               raise SystemExit('Core v2 release workflow identity is not canonical')
           if wc.get('handler_dispatch',{}).get('stage:release') != 'survey-production-v2-release.yml':
               raise SystemExit('stage:release dispatch authority mismatch')
+          reconciliation=wc.get('release_reconciliation') or {}
+          if reconciliation != {'external_key':'release_identity','existing_release_policy':'VERIFY_EXACT_BYTES_THEN_RESUME'}:
+              raise SystemExit('Core v2 release reconciliation contract is not canonical')
+          stage=cfg['orchestration']['stage_plan']['FROZEN']
+          if stage.get('retry_policy') != {'retryable':True,'max_attempts':2}:
+              raise SystemExit('FROZEN release retry policy does not permit bounded reconciliation')
+          if stage.get('idempotency') != {'mode':'EXTERNAL_KEY','key':'release_identity'}:
+              raise SystemExit('FROZEN release idempotency authority is not release_identity')
           if not re.fullmatch(r'[A-Za-z0-9._-]+', issue): raise SystemExit('unsafe issue_id')
           state_path=root/'sources'/issue/'production-state.json'
           if not state_path.is_file(): raise SystemExit('canonical Production State missing on main')
@@ -163,7 +171,7 @@ jobs:
               root/source/'publication/v2/merge-verification-v2.json')
           PY
 
-      - name: Publish exact-byte issue-only GitHub Release
+      - name: Create or reconcile exact-byte issue-only GitHub Release
         id: publish
         shell: bash
         env:
@@ -173,21 +181,53 @@ jobs:
           TITLE: ${{ steps.authority.outputs.title }}
           ASSET_NAME: ${{ steps.authority.outputs.asset_name }}
           PDF_SHA: ${{ steps.authority.outputs.pdf_sha256 }}
+          PDF_BYTES: ${{ steps.authority.outputs.pdf_byte_count }}
           TARGET: ${{ github.sha }}
         run: |
           set -euo pipefail
-          if gh release view "$TAG" --repo "$REPOSITORY" >/dev/null 2>&1; then
-            echo "Release already exists: $TAG" >&2; exit 1
-          fi
           cat > release-notes.md <<EOF
           Frozen issue-only release of the Japanese Generative AI Technical Survey.
 
           - PDF SHA-256: \`${PDF_SHA}\`
           - Frozen merge commit: \`${TARGET}\`
           EOF
-          gh release create "$TAG" "$ASSET_NAME" --repo "$REPOSITORY" --target "$TARGET" --title "$TITLE" --notes-file release-notes.md
-          url="$(gh release view "$TAG" --repo "$REPOSITORY" --json url --jq .url)"
-          echo "release_url=$url" >> "$GITHUB_OUTPUT"
+
+          if gh release view "$TAG" --repo "$REPOSITORY" >/dev/null 2>&1; then
+            meta="$(gh release view "$TAG" --repo "$REPOSITORY" --json url,tagName,name,isDraft,isPrerelease,targetCommitish,assets)"
+            test "$(printf '%s' "$meta" | jq -r '.tagName')" = "$TAG"
+            test "$(printf '%s' "$meta" | jq -r '.name')" = "$TITLE"
+            test "$(printf '%s' "$meta" | jq -r '.isDraft')" = 'false'
+            test "$(printf '%s' "$meta" | jq -r '.isPrerelease')" = 'false'
+            test "$(printf '%s' "$meta" | jq -r '.targetCommitish')" = "$TARGET"
+            asset_count="$(printf '%s' "$meta" | jq --arg name "$ASSET_NAME" '[.assets[] | select(.name == $name)] | length')"
+            if [ "$asset_count" = '0' ]; then
+              gh release upload "$TAG" "$ASSET_NAME" --repo "$REPOSITORY"
+            elif [ "$asset_count" != '1' ]; then
+              echo "Release has ambiguous duplicate assets named ${ASSET_NAME}." >&2
+              exit 1
+            fi
+            disposition='reconciled-existing-release'
+          else
+            gh release create "$TAG" "$ASSET_NAME" --repo "$REPOSITORY" --target "$TARGET" --title "$TITLE" --notes-file release-notes.md
+            disposition='created-release'
+          fi
+
+          rm -rf release-verify
+          mkdir release-verify
+          gh release download "$TAG" --repo "$REPOSITORY" --dir release-verify --pattern "$ASSET_NAME"
+          test -s "release-verify/${ASSET_NAME}"
+          actual_sha="$(sha256sum "release-verify/${ASSET_NAME}" | awk '{print $1}')"
+          actual_bytes="$(wc -c < "release-verify/${ASSET_NAME}" | tr -d ' ')"
+          test "$actual_sha" = "$PDF_SHA"
+          test "$actual_bytes" = "$PDF_BYTES"
+          final="$(gh release view "$TAG" --repo "$REPOSITORY" --json url,tagName,name,isDraft,isPrerelease,targetCommitish)"
+          test "$(printf '%s' "$final" | jq -r '.tagName')" = "$TAG"
+          test "$(printf '%s' "$final" | jq -r '.name')" = "$TITLE"
+          test "$(printf '%s' "$final" | jq -r '.isDraft')" = 'false'
+          test "$(printf '%s' "$final" | jq -r '.isPrerelease')" = 'false'
+          test "$(printf '%s' "$final" | jq -r '.targetCommitish')" = "$TARGET"
+          echo "release_url=$(printf '%s' "$final" | jq -r '.url')" >> "$GITHUB_OUTPUT"
+          echo "release_disposition=$disposition" >> "$GITHUB_OUTPUT"
 
       - name: Build immutable Release Record and adopt FROZEN stage
         shell: bash
@@ -245,7 +285,7 @@ jobs:
           git add "$SOURCE_ROOT"
           git commit -m "Record ${ISSUE_ID} release provenance"
           git push origin "$branch"
-          pr_url="$(gh pr create --repo "$REPOSITORY" --base main --head "$branch" --title "Record ${ISSUE_ID} release provenance" --body "Records the exact-byte merge verification, public Release reference, Stage Handoff, validation attestation, and RELEASED Production State produced by the authorized Core v2 release workflow.")"
+          pr_url="$(gh pr create --repo "$REPOSITORY" --base main --head "$branch" --title "Record ${ISSUE_ID} release provenance" --body "Records the exact-byte merge verification, public Release reference, Stage Handoff, validation attestation, and RELEASED Production State produced by the authorized Core v2 release workflow. The release workflow is externally idempotent by issue-only release identity and can reconcile an exact pre-existing Release after a partial prior run.")"
           pr_number="${pr_url##*/}"
           head_sha="$(git rev-parse HEAD)"
           gh pr merge "$pr_number" --repo "$REPOSITORY" --merge --match-head-commit "$head_sha" || {
