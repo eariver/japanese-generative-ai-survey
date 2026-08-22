@@ -12,6 +12,7 @@ class SurveyOrchestratorProvenanceV2Tests(unittest.TestCase):
         helper = orchestrator_tests.SurveyOrchestratorV2Tests(
             methodName="test_advance_to_gate_executes_validated_stage_order_and_pins_attestations"
         )
+        helper.setUp()
         temp, root, cfg, state_path, _ = helper.sandbox()
         self.addCleanup(temp.cleanup)
 
