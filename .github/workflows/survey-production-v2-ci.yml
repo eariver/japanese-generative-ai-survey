@@ -12,10 +12,12 @@ on:
       - "config/prompts/evidence-verification-v2.md"
       - "config/prompts/article-drafting-v2.md"
       - "config/prompts/profile-synthesis-v2.md"
+      - "config/prompts/grok/x-source-intake-*.md"
       - "schemas/survey-production-*.schema.json"
       - "schemas/pilot-bootstrap-v2.schema.json"
       - "schemas/thematic-scope-spec-v2.schema.json"
       - "schemas/stage-checkpoint-v2.schema.json"
+      - "schemas/x-source-intake-v2.schema.json"
       - "schemas/survey-discovery-record.schema.json"
       - "schemas/discovery-acceptance-v2.schema.json"
       - "schemas/screening-v2-*.schema.json"
@@ -62,10 +64,12 @@ on:
       - "config/prompts/evidence-verification-v2.md"
       - "config/prompts/article-drafting-v2.md"
       - "config/prompts/profile-synthesis-v2.md"
+      - "config/prompts/grok/x-source-intake-*.md"
       - "schemas/survey-production-*.schema.json"
       - "schemas/pilot-bootstrap-v2.schema.json"
       - "schemas/thematic-scope-spec-v2.schema.json"
       - "schemas/stage-checkpoint-v2.schema.json"
+      - "schemas/x-source-intake-v2.schema.json"
       - "schemas/survey-discovery-record.schema.json"
       - "schemas/discovery-acceptance-v2.schema.json"
       - "schemas/screening-v2-*.schema.json"
@@ -128,6 +132,7 @@ jobs:
             docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md
             docs/survey-production-core-v2-final-audit-rule.md
             docs/survey-production-core-v2-issue-prevention-checklist.md
+            docs/survey-production-core-v2-x-source-intake.md
             docs/survey-production-core-v2-wu011-second-audit-closure.md
             docs/survey-production-core-v2-session-bootstrap.md
             docs/survey-production-core-v2-contract-normalization-second-audit-amendment.md
@@ -148,6 +153,7 @@ jobs:
           python -m py_compile
           scripts/survey_production_v2.py
           scripts/survey_schema_v2.py
+          scripts/survey_x_intake_v2.py
           scripts/survey_discovery_v2.py
           scripts/survey_screening_v2.py
           scripts/survey_evidence_v2.py
@@ -173,6 +179,7 @@ jobs:
         run: >-
           python -m unittest
           tests.test_survey_production_v2
+          tests.test_survey_x_intake_v2
           tests.test_survey_discovery_v2
           tests.test_survey_screening_v2
           tests.test_survey_screening_archive_v2
@@ -212,6 +219,7 @@ jobs:
               Path('schemas/pilot-bootstrap-v2.schema.json'),
               Path('schemas/thematic-scope-spec-v2.schema.json'),
               Path('schemas/stage-checkpoint-v2.schema.json'),
+              Path('schemas/x-source-intake-v2.schema.json'),
               Path('schemas/survey-production-profile.schema.json'),
               Path('schemas/survey-production-state.schema.json'),
               Path('schemas/survey-discovery-record.schema.json'),
