@@ -196,3 +196,12 @@ Human Review did not approve the first Architecture. The review identified a Wee
 - Candidate Matrix derived from r2 Evidence: 31 candidates.
 - Selection r2: 20 SELECTED, 11 HOLD.
 - Coverage distinction: 7 MATERIAL feature/support candidates plus 13 CONTEXT candidates for X Community Pulse, Research Paper Watch, and OSS & GitHub Watch. Feature count is no longer treated as the total number of weekly topics.
+
+
+## W33 Architecture Review r2
+
+- Revised Architecture contains six draftable packages: three Features plus X Community Pulse, Research Paper Watch, and OSS & GitHub Watch.
+- Selection r2 contains 20 selected candidates (7 MATERIAL + 13 CONTEXT) and 11 HOLD candidates.
+- X Community Pulse preserves concrete Grok/X weekly movement as SOCIAL_OBSERVATION only; underlying technical claims remain primary-source bounded.
+- Final publication must render `profile_synthesis.current_interpretation` under the heading `今週の総括` after body sections and before references.
+- Architecture remains PROPOSED with Human Review metadata null.
