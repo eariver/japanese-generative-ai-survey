@@ -1,0 +1,250 @@
+name: WU011 Gate self patch
+
+on:
+  push:
+    branches:
+      - refactor/survey-production-core-v2
+    paths:
+      - '.github/workflows/wu011-gate-self-patch.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/survey-production-core-v2
+          fetch-depth: 0
+      - name: Patch exact Gate authority locations
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path: str, old: str, new: str) -> None:
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{path}: exact replacement count {count} != 1 for {old[:100]!r}')
+              p.write_text(text.replace(old, new), encoding='utf-8')
+
+          replace_once(
+              'scripts/survey_drafting_v2.py',
+              '    "architecture_sha256", "architecture_review_summary_sha256", "reviewed_by",\n    "reviewed_at", "review_reference",\n}',
+              '    "architecture_sha256", "architecture_review_summary_sha256",\n    "architecture_review_attention_sha256", "reviewed_by",\n    "reviewed_at", "review_reference",\n}',
+          )
+          replace_once(
+              'scripts/survey_drafting_v2.py',
+              '    if approval.get("architecture_review_summary_sha256") != core.sha256_file(review_summary_path):\n        errors.append("Architecture Approval Record does not bind exact Review Summary bytes")\n',
+              '    if approval.get("architecture_review_summary_sha256") != core.sha256_file(review_summary_path):\n        errors.append("Architecture Approval Record does not bind exact Review Summary bytes")\n    attention_path = architecture_path.parent / "architecture-review-attention-v2.json"\n    if not attention_path.is_file():\n        errors.append("Architecture Approval Record requires canonical Review Attention bytes")\n    elif approval.get("architecture_review_attention_sha256") != core.sha256_file(attention_path):\n        errors.append("Architecture Approval Record does not bind exact Review Attention bytes")\n',
+          )
+
+          replace_once(
+              'scripts/survey_orchestrator_v2.py',
+              'from scripts import survey_drafting_v2 as drafting\nfrom scripts import survey_production_v2 as core\n',
+              'from scripts import survey_drafting_v2 as drafting\nfrom scripts import survey_publication_v2 as publication\nfrom scripts import survey_review_attention_v2 as review_attention\nfrom scripts import survey_production_v2 as core\n',
+          )
+          replace_once(
+              'scripts/survey_orchestrator_v2.py',
+              'def _validate_architecture_attestation(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any], spec: dict[str, Any], architecture_input: dict[str, Any], review_input: dict[str, Any]) -> None:',
+              'def _validate_architecture_attestation(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any], spec: dict[str, Any], architecture_input: dict[str, Any], review_input: dict[str, Any], attention_input: dict[str, Any]) -> None:',
+          )
+          replace_once(
+              'scripts/survey_orchestrator_v2.py',
+              '    for expected in (architecture_input, review_input):\n',
+              '    for expected in (architecture_input, review_input, attention_input):\n',
+          )
+          replace_once(
+              'scripts/survey_orchestrator_v2.py',
+              '    architecture_rel = _relative_repo_path(repo_root, architecture_path, "Architecture")\n    review_rel = _relative_repo_path(repo_root, review_summary_path, "Architecture Review Summary")\n    architecture_input = _required_input_by_name(spec, "issue-architecture")\n    review_input = _required_input_by_name(spec, "architecture-review-summary")\n',
+              '    architecture_rel = _relative_repo_path(repo_root, architecture_path, "Architecture")\n    review_rel = _relative_repo_path(repo_root, review_summary_path, "Architecture Review Summary")\n    attention_path = source_root / "architecture-review-attention-v2.json"\n    attention_rel = _relative_repo_path(repo_root, attention_path, "Architecture Review Attention")\n    architecture_input = _required_input_by_name(spec, "issue-architecture")\n    review_input = _required_input_by_name(spec, "architecture-review-summary")\n    attention_input = _required_input_by_name(spec, "architecture-review-attention")\n',
+          )
+          replace_once(
+              'scripts/survey_orchestrator_v2.py',
+              '    if review_input.get("path") != review_rel or review_input.get("sha256") != core.sha256_file(review_summary_path):\n        raise ValueError("Architecture Review Summary bytes differ from Human Gate Action Spec")\n    _validate_architecture_attestation(repo_root, cfg, state, spec, architecture_input, review_input)\n\n    plan = core.load_json(architecture_path)\n',
+              '    if review_input.get("path") != review_rel or review_input.get("sha256") != core.sha256_file(review_summary_path):\n        raise ValueError("Architecture Review Summary bytes differ from Human Gate Action Spec")\n    if attention_input.get("path") != attention_rel or attention_input.get("sha256") != core.sha256_file(attention_path):\n        raise ValueError("Architecture Review Attention bytes differ from Human Gate Action Spec")\n    review_attention.validate_attention(repo_root, attention_path)\n    _validate_architecture_attestation(repo_root, cfg, state, spec, architecture_input, review_input, attention_input)\n\n    plan = core.load_json(architecture_path)\n',
+          )
+          replace_once(
+              'scripts/survey_orchestrator_v2.py',
+              '        "review_summary_sha256": review_input["sha256"],\n        "reviewed_at": core.iso_utc(reviewed_at),\n',
+              '        "review_summary_sha256": review_input["sha256"],\n        "review_attention_sha256": attention_input["sha256"],\n        "reviewed_at": core.iso_utc(reviewed_at),\n',
+          )
+          replace_once(
+              'scripts/survey_orchestrator_v2.py',
+              '        "architecture_review_summary_sha256": review_input["sha256"],\n        "reviewed_by": reviewed_by,\n',
+              '        "architecture_review_summary_sha256": review_input["sha256"],\n        "architecture_review_attention_sha256": attention_input["sha256"],\n        "reviewed_by": reviewed_by,\n',
+          )
+
+          publication_function = r'''
+
+def apply_publication_preview_approval(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    state_path: Path,
+    spec_path: Path,
+    candidate_path: Path,
+    approval_path: Path,
+    result_path: Path,
+    reviewed_by: str,
+    reviewed_at: datetime,
+    review_reference: str,
+) -> dict[str, Any]:
+    _recover_pending_transaction(state_path, result_path)
+    if result_path.exists():
+        raise ValueError(f"refusing to overwrite Publication Preview Action Result: {result_path}")
+    state = core.load_json(state_path)
+    observed = verify_runtime_implementation(repo_root, cfg, state)
+    expected = plan_action(repo_root, cfg, state_path, observed)
+    spec = core.load_json(spec_path)
+    if not _spec_matches_current_plan(spec, expected):
+        raise ValueError("Publication Preview Action Spec is stale or divergent")
+    if spec["action_kind"] != "HUMAN_GATE" or spec["handler"] != "human:publication-preview":
+        raise ValueError("current Action Spec is not Publication Preview")
+    if state["lifecycle_state"] != "RELEASE_CANDIDATE":
+        raise ValueError("Publication Preview approval requires RELEASE_CANDIDATE lifecycle")
+    if state["human_gates"]["publication_preview"] != "pending":
+        raise ValueError("Publication Preview gate is not pending")
+
+    profile = core.load_json(core.repo_local_path(repo_root, state["profile"]["path"], "state.profile.path"))
+    source_root = core.repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
+    canonical_approval = (source_root / cfg["state_authority"]["publication_preview_approval_path"]).resolve()
+    if approval_path.resolve() != canonical_approval:
+        raise ValueError("Publication Preview Approval Record must use canonical configured path")
+    candidate_rel = _relative_repo_path(repo_root, candidate_path, "Publication Candidate")
+    candidate_input = _required_input_by_name(spec, "publication-candidate")
+    if candidate_input.get("path") != candidate_rel or candidate_input.get("sha256") != core.sha256_file(candidate_path):
+        raise ValueError("Publication Candidate bytes differ from Human Gate Action Spec")
+    candidate = publication.validate_candidate(repo_root, candidate_path, issue_id=state["issue_id"])
+    publication.build_preview_approval(
+        repo_root, candidate_path, approval_path, reviewed_by, reviewed_at, review_reference
+    )
+    approval = publication.validate_preview_approval(repo_root, approval_path, issue_id=state["issue_id"])
+    if approval["publication_candidate_sha256"] != candidate_input["sha256"]:
+        raise ValueError("Publication Preview approval does not bind Human Gate Candidate bytes")
+
+    before_sha = core.sha256_file(state_path)
+    authority = {
+        "path": _relative_repo_path(repo_root, approval_path, "Publication Preview Approval Record"),
+        "sha256": core.sha256_file(approval_path),
+    }
+    updated = deepcopy(state)
+    updated["human_gates"]["publication_preview"] = "approved"
+    updated["human_gate_provenance"]["publication_preview"] = authority
+    updated["machine_checkpoints"]["publication_preview"] = "passed"
+    updated["checkpoint_provenance"]["publication_preview"] = authority
+    updated = core.refresh_state_control(updated, cfg)
+    semantic_errors = core.validate_state_semantics(repo_root, cfg, updated)
+    if semantic_errors:
+        raise ValueError("Publication Preview approval would create inconsistent Production State: " + "; ".join(semantic_errors))
+    after_sha = core.sha256_bytes(core.json_bytes(updated))
+    output = {
+        "name": "publication-preview-approval",
+        "checkpoint": None,
+        "path": authority["path"],
+        "sha256": authority["sha256"],
+    }
+    result = _result_payload(
+        spec, spec_path, "SUCCEEDED", observed, 1, reviewed_at, reviewed_at,
+        before_sha, after_sha, [output], [], None,
+    )
+    _commit_state_and_result(state_path, updated, result_path, result)
+    return result
+'''
+          replace_once(
+              'scripts/survey_orchestrator_v2.py',
+              '\n\ndef advance_to_gate(repo_root: Path, cfg: dict[str, Any], state_path: Path, orchestration_dir: Path, registry: HandlerRegistry, clock: Callable[[], datetime] = _now, max_actions: int = 64) -> dict[str, Any]:',
+              publication_function + '\n\ndef advance_to_gate(repo_root: Path, cfg: dict[str, Any], state_path: Path, orchestration_dir: Path, registry: HandlerRegistry, clock: Callable[[], datetime] = _now, max_actions: int = 64) -> dict[str, Any]:',
+          )
+          replace_once(
+              'scripts/survey_orchestrator_v2.py',
+              '    approve.add_argument("--review-reference", required=True)\n    return parser\n',
+              '    approve.add_argument("--review-reference", required=True)\n\n    approve_pub = sub.add_parser("approve-publication-preview")\n    for key in ("state", "action-spec", "candidate", "approval", "result"):\n        approve_pub.add_argument(f"--{key}", required=True)\n    approve_pub.add_argument("--reviewed-by", required=True)\n    approve_pub.add_argument("--reviewed-at", required=True)\n    approve_pub.add_argument("--review-reference", required=True)\n    return parser\n',
+          )
+          replace_once(
+              'scripts/survey_orchestrator_v2.py',
+              '            print(json.dumps(result, ensure_ascii=False, indent=2))\n            return 0\n    except (OSError, ValueError, json.JSONDecodeError) as exc:',
+              '            print(json.dumps(result, ensure_ascii=False, indent=2))\n            return 0\n        if args.command == "approve-publication-preview":\n            result = apply_publication_preview_approval(\n                root, cfg,\n                _path(root, args.state),\n                _path(root, args.action_spec),\n                _path(root, args.candidate),\n                _path(root, args.approval),\n                _path(root, args.result),\n                args.reviewed_by,\n                core.parse_instant(args.reviewed_at),\n                args.review_reference,\n            )\n            print(json.dumps(result, ensure_ascii=False, indent=2))\n            return 0\n    except (OSError, ValueError, json.JSONDecodeError) as exc:',
+          )
+
+          replace_once(
+              'scripts/survey_production_v2.py',
+              '            architecture = source_root / "architecture-v2.json"\n            review = source_root / "architecture-review-summary-v2.json"\n            if arch_status == "approved" and approval_path is not None and architecture.is_file() and review.is_file():\n',
+              '            architecture = source_root / "architecture-v2.json"\n            review = source_root / "architecture-review-summary-v2.json"\n            attention = source_root / "architecture-review-attention-v2.json"\n            if arch_status == "approved" and approval_path is not None and architecture.is_file() and review.is_file() and attention.is_file():\n',
+          )
+          replace_once(
+              'scripts/survey_production_v2.py',
+              '                        or record.get("architecture_review_summary_sha256") != sha256_file(review)\n                    ):\n',
+              '                        or record.get("architecture_review_summary_sha256") != sha256_file(review)\n                        or record.get("architecture_review_attention_sha256") != sha256_file(attention)\n                    ):\n',
+          )
+          replace_once(
+              'scripts/survey_production_v2.py',
+              '                errors.append("approved Architecture Review lacks canonical Architecture/Review bytes")',
+              '                errors.append("approved Architecture Review lacks canonical Architecture/Review/Attention bytes")',
+          )
+          replace_once(
+              'scripts/survey_production_v2.py',
+              '    else:\n        auth_errors, _ = _validate_authority_ref(repo_root, pub_authority, None, "Publication Preview")\n        errors.extend(auth_errors)\n\n    try:\n        expected_action, expected_terminal = derive_control_fields(state, cfg)',
+              '''    else:
+        if profile is None:
+            errors.append("Publication Preview authority cannot be validated without Production Profile")
+        else:
+            source_root = repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
+            approval = source_root / cfg["state_authority"]["publication_preview_approval_path"]
+            auth_errors, approval_path = _validate_authority_ref(repo_root, pub_authority, approval, "Publication Preview")
+            errors.extend(auth_errors)
+            candidate = source_root / "publication/v2/publication-candidate-v2.json"
+            if pub_status == "approved" and approval_path is not None and candidate.is_file():
+                try:
+                    record = load_json(approval_path)
+                    candidate_record = load_json(candidate)
+                except (OSError, ValueError, json.JSONDecodeError):
+                    errors.append("Publication Preview authority bytes unreadable")
+                else:
+                    candidate_rel = str(candidate.resolve().relative_to(repo_root.resolve()))
+                    pdf_ref = candidate_record.get("pdf") if isinstance(candidate_record.get("pdf"), dict) else {}
+                    pdf_path_value = pdf_ref.get("path")
+                    pdf_path = None
+                    if isinstance(pdf_path_value, str):
+                        try:
+                            pdf_path = repo_local_path(repo_root, pdf_path_value, "Publication Preview PDF")
+                        except ValueError:
+                            pdf_path = None
+                    if (
+                        record.get("decision") != "APPROVED"
+                        or record.get("gate") != "PUBLICATION_PREVIEW"
+                        or record.get("issue_id") != state.get("issue_id")
+                        or record.get("publication_candidate_path") != candidate_rel
+                        or record.get("publication_candidate_sha256") != sha256_file(candidate)
+                        or candidate_record.get("issue_id") != state.get("issue_id")
+                        or candidate_record.get("status") != "READY_FOR_PUBLICATION_PREVIEW"
+                        or record.get("pdf_path") != pdf_ref.get("path")
+                        or record.get("pdf_sha256") != pdf_ref.get("sha256")
+                        or record.get("page_count") != pdf_ref.get("page_count")
+                        or pdf_path is None
+                        or not pdf_path.is_file()
+                        or sha256_file(pdf_path) != pdf_ref.get("sha256")
+                    ):
+                        errors.append("Publication Preview Approval Record does not bind current canonical Candidate/PDF bytes")
+            elif pub_status == "approved":
+                errors.append("approved Publication Preview lacks canonical Candidate bytes")
+
+    try:
+        expected_action, expected_terminal = derive_control_fields(state, cfg)''',
+          )
+          PY
+          python -m py_compile scripts/survey_production_v2.py scripts/survey_drafting_v2.py scripts/survey_orchestrator_v2.py
+      - name: Commit patch and remove one-shot workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/wu011-gate-self-patch.yml
+          git add scripts/survey_production_v2.py scripts/survey_drafting_v2.py scripts/survey_orchestrator_v2.py
+          git commit -m 'core-v2: bind both Human Gates to exact review bytes'
+          git push origin HEAD:refactor/survey-production-core-v2
