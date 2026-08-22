@@ -79,6 +79,8 @@ def build_candidate(
     source = _safe_file(repo_root, source_path, "validated publication source")
     pdf = _safe_file(repo_root, pdf_path, "publication PDF")
     bundle = quality.validate_bundle(repo_root, quality_bundle_path, issue_id=issue_id)
+    if bundle["publication_profile"] != publication_profile:
+        raise ValueError("Publication Candidate publication_profile differs from bound Quality Production Profile")
     if bundle["source"]["path"] != _rel(repo_root, source) or bundle["source"]["sha256"] != core.sha256_file(source):
         raise ValueError("quality bundle does not bind exact Publication Candidate source bytes")
     pdf_authority = dict(bundle["pdf"])
@@ -115,6 +117,8 @@ def validate_candidate(repo_root: Path, path: Path, *, issue_id: str | None = No
         if core.sha256_file(artifact) != ref["sha256"] or artifact.stat().st_size != ref["byte_count"]:
             raise ValueError(f"Publication Candidate {key} bytes drifted")
     bundle = quality.validate_bundle(repo_root, repo_root / payload["quality_bundle"]["path"], issue_id=payload["issue_id"])
+    if bundle["publication_profile"] != payload["publication_profile"]:
+        raise ValueError("Publication Candidate publication_profile diverges from coupled Quality Production Profile")
     candidate_pdf = {key: payload["pdf"][key] for key in ("storage", "path", "sha256", "byte_count", "actions_artifact")}
     if candidate_pdf != bundle["pdf"]:
         raise ValueError("Publication Candidate PDF authority diverges from coupled quality bundle")
