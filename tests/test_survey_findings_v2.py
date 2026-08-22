@@ -165,12 +165,14 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         bootstrap = Path("docs/survey-production-core-v2-session-bootstrap.md").read_text(encoding="utf-8")
         final_rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
 
-        # WU-011 remains historical. The live pre-merge boundary is now the
-        # all-changes-first fixed-head WU-012 final audit, not a stale status phrase.
-        self.assertIn("POST-COMPLETION RE-AUDIT", authority)
-        self.assertIn("2f3c9b10c031cf0d8e5cc114fb93e481e90fffac", authority)
+        # WU-011 remains historical. The live candidate tree intentionally owns
+        # a stable pre-audit state; exact final PASS belongs to PR metadata keyed
+        # to the unchanged audited head, not to a later candidate-tree commit.
+        self.assertIn("WU-012 REPAIRS IMPLEMENTED / PRE-AUDIT CANDIDATE", authority)
+        self.assertIn("68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d", authority)
+        self.assertIn("AUD-045", authority)
         self.assertIn("WU-011: historical `COMPLETE", worklog)
-        self.assertIn("WU-012: `POST-COMPLETION RE-AUDIT", worklog)
+        self.assertIn("PRE-AUDIT", worklog)
         self.assertIn("Human full-candidate review of PR #310", closure)
         self.assertIn("survey_pilot_bootstrap_v2.py plan --pilot", bootstrap)
         self.assertIn("run the complete five-point acceptance audit from zero", final_rule)
