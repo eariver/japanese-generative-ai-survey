@@ -1,6 +1,6 @@
 # Survey Production Core v2 — agent session bootstrap
 
-Status: `PRE-MERGE CANONICAL CANDIDATE`  
+Status: `PRE-MERGE CANONICAL CANDIDATE / POST-COMPLETION RE-AUDIT REPAIR`  
 Applies to: Weekly, Retrospective Period, standalone Thematic, and guided Special series work  
 Primary operator: **ChatGPT**
 
@@ -36,6 +36,8 @@ Before changing an edition, read current `main` and at minimum:
 5. the applicable Profile/period/thematic/series guide;
 6. existing canonical Production Profile/State and stage artifacts for the target, if any.
 
+For Core-v2 implementation/review work, also read `docs/survey-production-core-v2-final-audit-rule.md` before claiming Human full-candidate readiness.
+
 Repository state outranks chat history. A new session must be able to resume from repository state alone.
 
 While PR #310 is unmerged, Core v2 production remains disabled: current `main` is still the production source of truth and W33/SP001 must not be initialized from the improvement branch.
@@ -61,7 +63,7 @@ python scripts/survey_period_v2.py plan --special-slug 2025-H2
 python scripts/survey_period_v2.py initialize --special-slug 2025-H2 --target-gate ARCHITECTURE_REVIEW
 ```
 
-Custom bounded periods may be supplied through a repository-owned spec. Calendar boundaries retain their declared timezone authority while stored instants may be normalized.
+Custom bounded periods may be supplied through a repository-owned spec. Calendar boundaries retain their declared timezone authority while stored instants may be normalized. A bounded Period cannot initialize until its period end has passed; planning before that point fails closed rather than compiling an incomplete retrospective as if complete.
 
 ### Standalone Thematic
 
@@ -86,7 +88,7 @@ Do not ask the user to identify a volume number that the repository can determin
 
 If the series document permits multiple equally valid next volumes and repository state cannot resolve the choice, that is an Owner decision and may become an Exception Gate.
 
-## 4. Initialization and resume semantics
+## 4. Initialization, resume and reviewed tool upgrades
 
 The start request authorizes deterministic initialization and canonical work-branch creation. Initialization is not a Human Gate.
 
@@ -97,7 +99,20 @@ Initialization writes immutable launch provenance:
 - issue/Profile/path identity;
 - initialization implementation/contract identity.
 
-The initialization implementation commit is **historical provenance, not a permanent runtime pin**. Later stages may use newer reviewed `main` tooling. Each completed Stage Checkpoint records the implementation and current contract used for that stage.
+The initialization implementation commit is **historical provenance, not a permanent runtime pin**. Later stages may use newer reviewed generic tooling, but the edition branch must first actually contain that reviewed repair.
+
+Canonical upgrade procedure:
+
+```text
+generic repair reviewed/merged on main
+-> integrate that reviewed main repair commit into the edition work branch
+-> validate the edition State with the integrated branch toolchain
+-> revalidate/migrate only accepted boundaries affected by the change
+-> execute the next stage from that integrated branch head
+-> Stage Checkpoint records that actual head + current contract
+```
+
+Do not execute an unrelated second checkout of `main` against edition files and then claim the work branch contained those tools. If an accepted contract cannot be migrated or revalidated safely, use an Exception Gate.
 
 When resuming, validate with the agent-first validator:
 
@@ -107,7 +122,13 @@ python scripts/survey_agent_control_v2.py validate-state --state <source_root>/p
 
 Do not use the legacy `survey_production_v2.py validate-state` command as the canonical resume decision, because that command intentionally retains the historical edition-wide pin semantics for compatibility testing.
 
-If a newer tool/schema changes an already accepted artifact contract, revalidate or migrate the affected boundary before continuing. Do not replay unrelated completed stages. Use an Exception Gate only when compatibility cannot be established without changing approved editorial authority.
+For legacy Screening/Evidence helper entrypoints that still invoke the old pin check internally, run them through the narrow current-tool bridge:
+
+```text
+python scripts/survey_agent_tool_v2.py <allowlisted screening/evidence helper arguments>
+```
+
+The bridge does not make an arbitrary external tool authoritative; it verifies current agent-first State and the actual current work-branch implementation before delegating.
 
 ## 5. Autonomous research/editorial loop
 
@@ -120,6 +141,8 @@ read Profile + State + applicable guide/checklist
 -> run deterministic checks that genuinely apply
 -> perform required ChatGPT research/editorial/visual reviews
 -> repair ordinary findings and re-check
+-> validate the exact intended stage artifact set with scripts/survey_stage_validation_v2.py
+-> include its exact CORE_STAGE_CONTRACT result in the compact checkpoint review set
 -> write one compact Stage Checkpoint
 -> advance Production State exactly one lifecycle step
 -> continue immediately unless a Human/Exception Gate is reached
@@ -135,10 +158,13 @@ It binds:
 
 - lifecycle transition;
 - canonical artifact hashes;
-- deterministic or reasoned ChatGPT review evidence;
+- exact `CORE_STAGE_CONTRACT` deterministic validation of State/Profile/current tool/current contract/artifacts;
+- reasoned ChatGPT review evidence where required;
 - implementation commit used at that boundary;
 - current contract identity;
 - a concise readiness summary.
+
+A file with the expected artifact name is not enough. The semantic stage validator must accept the exact bytes that the checkpoint adopts.
 
 Legacy Action Spec / Handoff Request / Handoff / Action Result / Validation Attestation machinery remains repository compatibility/audit code. It is **not required by the agent-first production hot path**.
 
@@ -187,7 +213,7 @@ Quality review has three kinds:
 - `AGENT_SEMANTIC` — reasoned ChatGPT review tied to the exact source revision;
 - `AGENT_VISUAL` — reasoned ChatGPT review tied to the exact rendered PDF revision.
 
-Checks are Profile/Publication-aware. Weekly does not inherit every Long-form/Period-specific check merely because the Core supports those profiles.
+The Quality Bundle binds the exact Production Profile, source bytes and PDF bytes. Research/publication check applicability is derived from that Profile; it is not guessed from the issue ID. In particular, Retrospective Period checks cannot silently fall back to Thematic checks.
 
 At `RELEASE_CANDIDATE`, stop for exact-byte Publication Preview approval. The human approves one specific Publication Candidate and PDF SHA/page count. A rebuilt or merely similar PDF is not approved.
 
@@ -196,13 +222,15 @@ At `RELEASE_CANDIDATE`, stop for exact-byte Publication Preview approval. The hu
 After Publication Preview approval, continue without adding another routine Human Gate:
 
 1. perform/record the exact approved-PDF visual review;
-2. build Freeze Record and Release Manifest against the same source/PDF bytes;
-3. transition to `FROZEN` with a compact Stage Checkpoint;
+2. build the Freeze Record and Release Manifest with `scripts/survey_profiled_freeze_v2.py`, which revalidates Candidate/Quality/Profile/Preview/Visual authority;
+3. transition to `FROZEN` with a compact Stage Checkpoint after exact stage validation;
 4. merge the frozen production changes through the normal reviewed repository path;
 5. run the dedicated Release workflow against current `main`;
 6. create or reconcile the issue-only GitHub Release;
 7. download/recheck released asset SHA-256 and byte count;
 8. record Merge Verification, immutable Release Record and one compact `FROZEN -> RELEASED` Release Stage Checkpoint.
+
+Public release identity is derived from the exact Production Profile `paths.survey_root` basename. This preserves internal source IDs such as `SP-2025-H2` while publishing the existing reader-facing identity `special/2025-H2`. Weekly and ordinary Thematic slugs naturally remain `weekly/2026-W35` and `special/SP001`-style identities.
 
 External Release reconciliation remains fail-closed and idempotent. Existing tag/title/target/asset divergence is an error, not permission to overwrite history.
 
@@ -235,3 +263,19 @@ known unresolved research limitations
 ```
 
 A later session starts from repository reality, validates the agent-first State, reads the current Issue Prevention Checklist and applicable guide, and continues. Conversation history is supplementary only.
+
+## 12. Core-v2 candidate review rule
+
+For changes to Survey Production Core v2 itself, follow `docs/survey-production-core-v2-final-audit-rule.md` exactly:
+
+```text
+complete every code/config/schema/workflow/test/doc/Finding/Repair-Set change
+-> obtain complete cross-regression evidence
+-> freeze one candidate head SHA
+-> audit all five acceptance priorities from zero on that exact head
+-> make no candidate-tree changes during the audit
+```
+
+If any audit finding requires a repository change, the entire audit is invalidated. Complete all repairs, freeze a new head, and rerun all five points from point 1. Never recheck only the failed point after changing the candidate.
+
+The final PASS is recorded against the exact audited SHA in the PR/Human-review handoff rather than by committing a post-audit PASS document that would change the candidate SHA.
