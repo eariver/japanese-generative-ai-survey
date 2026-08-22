@@ -25,6 +25,8 @@ After receiving such a request, continue without stopping for ordinary internal 
 
 Initialization, Source Intake, Screening, Evidence work, Completeness/materiality reasoning, Selection, Architecture preparation, drafting, synthesis, deterministic QA, ChatGPT semantic/visual review, Freeze preparation, and retryable internal repairs are not Human Gates.
 
+An external Grok/X collection may create an **operational wait** inside Source Intake when no result is yet available. This is not Human approval and does not add a normal Human Gate. If a result already exists in the configured Google Drive run folder, read/import it and continue without stopping.
+
 ## 2. Authority order at session start
 
 Before changing an edition, read current `main` and at minimum:
@@ -33,8 +35,9 @@ Before changing an edition, read current `main` and at minimum:
 2. `docs/survey-production-core-v2-authority.md`;
 3. this file;
 4. `docs/survey-production-core-v2-issue-prevention-checklist.md`;
-5. the applicable Profile/period/thematic/series guide;
-6. existing canonical Production Profile/State and stage artifacts for the target, if any.
+5. `docs/survey-production-core-v2-x-source-intake.md`;
+6. the applicable Profile/period/thematic/series guide;
+7. existing canonical Production Profile/State and stage artifacts for the target, if any.
 
 For Core-v2 implementation/review work, also read `docs/survey-production-core-v2-final-audit-rule.md` before claiming Human full-candidate readiness.
 
@@ -54,6 +57,8 @@ python scripts/survey_production_v2.py init-weekly --issue-id 2026-W35 --target-
 
 If canonical Profile/State already exists, resume it rather than reinitializing.
 
+Weekly Grok/X intake is required by Profile. It cannot be skipped because conventional collectors produced many records.
+
 ### Retrospective Period
 
 Monthly, half-year and annual configured Specials use the same `RETROSPECTIVE_PERIOD` Profile through `scripts/survey_period_v2.py`:
@@ -64,6 +69,8 @@ python scripts/survey_period_v2.py initialize --special-slug 2025-H2 --target-ga
 ```
 
 Custom bounded periods may be supplied through a repository-owned spec. Calendar boundaries retain their declared timezone authority while stored instants may be normalized. A bounded Period cannot initialize until its period end has passed; planning before that point fails closed rather than compiling an incomplete retrospective as if complete.
+
+For X, ChatGPT makes an explicit `REQUIRED` / `NOT_REQUIRED` decision based on the retrospective research question and records the rationale.
 
 ### Standalone Thematic
 
@@ -80,6 +87,8 @@ python scripts/survey_pilot_bootstrap_v2.py plan --pilot SP001
 
 `SP001` may return `MATERIALIZE_SCOPE`; ChatGPT performs that action and replans. `INITIALIZE`, `RESUME`, and genuinely inconsistent partial initialization have their ordinary meanings.
 
+For X, ChatGPT explicitly decides whether X community/adoption/implementation signal is material to the thematic question.
+
 ### Guided series / Generative AI Foundations
 
 For a request such as `Generative AI Foundationsの次巻`, read `docs/generative-ai-foundations-special-series.md`, inspect repository evidence for completed/in-progress volumes, resolve the next volume according to the living series architecture, and materialize that volume's Thematic scope from the series authority.
@@ -87,6 +96,8 @@ For a request such as `Generative AI Foundationsの次巻`, read `docs/generativ
 Do not ask the user to identify a volume number that the repository can determine. Do not create a parallel machine Series engine or duplicate the living series plan solely for bootstrap convenience.
 
 If the series document permits multiple equally valid next volumes and repository state cannot resolve the choice, that is an Owner decision and may become an Exception Gate.
+
+Each Foundations volume still uses a normal `THEMATIC` Production Profile. If X is material, set the X Source Intake series context to `GENERATIVE_AI_FOUNDATIONS` so the Google Drive handoff uses the dedicated series category rather than the standalone Thematic folder.
 
 ## 4. Initialization, resume and reviewed tool upgrades
 
@@ -130,13 +141,126 @@ python scripts/survey_agent_tool_v2.py <allowlisted screening/evidence helper ar
 
 The bridge does not make an arbitrary external tool authoritative; it verifies current agent-first State and the actual current work-branch implementation before delegating.
 
-## 5. Autonomous research/editorial loop
+## 5. Source Intake and Grok/X Google Drive handoff
+
+Read `docs/survey-production-core-v2-x-source-intake.md` before accepting Discovery.
+
+### 5.1 Decide X applicability
+
+- `WEEKLY`: decision is always `REQUIRED`.
+- `RETROSPECTIVE_PERIOD`: ChatGPT chooses `REQUIRED` or `NOT_REQUIRED` with rationale.
+- `THEMATIC`: ChatGPT chooses `REQUIRED` or `NOT_REQUIRED` with rationale.
+- Foundations volumes use `THEMATIC` plus `series_context = GENERATIVE_AI_FOUNDATIONS` when X is required.
+
+A `NOT_REQUIRED` decision is a research judgment, not a shortcut. Record why X would not materially improve the current question.
+
+### 5.2 Prepare one or more Grok runs
+
+For every required run, ChatGPT defines:
+
+- purpose;
+- research questions;
+- coverage focus;
+- time scope;
+- stable run ID;
+- expected result filename.
+
+Create a small spec and render the run package with:
+
+```text
+python scripts/survey_x_intake_v2.py build \
+  --profile <source_root>/production-profile.json \
+  --spec <run-spec.json>
+```
+
+This writes:
+
+```text
+<source_root>/external/x/x-source-intake-v2.json
+<source_root>/external/x/<run-id>/grok-instruction.md
+<source_root>/external/x/<run-id>/grok-prompt.md
+```
+
+The generated prompt is self-contained and binds the intended Google Drive path.
+
+### 5.3 Provision the Google Drive target
+
+Use the connected Google Drive capability to resolve the exact root folder named:
+
+`Grok_X_SourseIntake`
+
+Persistent categories are:
+
+```text
+Weekly
+Retrospective_Special
+Thematic_Special
+Generative_AI_Foundations
+```
+
+Create the missing edition/run folders so the exact target exists before Grok runs:
+
+```text
+Grok_X_SourseIntake/<category>/<edition-folder>/<run-id>/
+```
+
+Do not commit the account-specific Drive folder ID/URL to the repository. Repository artifacts record the stable folder-name path; the connector resolves the actual account-specific ID at runtime.
+
+### 5.4 Execute / wait for external X collection
+
+Give Grok the generated instruction/prompt. Grok searches X and saves its final Markdown **only** in the exact Drive run folder. Grok must not push to GitHub.
+
+If the result is absent, keep the Production State at Source Intake and preserve the `AWAITING_GROK` manifest. Report the exact run folder and prompt/instruction to the Human if manual transport is needed. This is not a Human Gate.
+
+If the result is already present, continue immediately.
+
+### 5.5 Import and disposition the Drive result
+
+Use the connected Google Drive capability to read the returned Markdown. Copy the exact returned content into repository Raw storage, preferably:
+
+```text
+<source_root>/external/x/<run-id>/raw/<actual-drive-filename>.md
+```
+
+Do not paraphrase the Drive file before hashing/importing it.
+
+Evaluate the result as research input. Then record one of:
+
+```text
+DISCOVERY_RECORDED
+NO_MATERIAL_DISCOVERY
+```
+
+If material, the named Discovery record(s) must bind the exact imported Grok Raw path. If not material, record a non-empty rationale instead of fabricating a Discovery.
+
+Record the result into the manifest:
+
+```text
+python scripts/survey_x_intake_v2.py record-result ...
+```
+
+Grok output remains Discovery/community-signal material. Technical facts still require normal authoritative Evidence verification.
+
+### 5.6 Accept Discovery
+
+Discovery Acceptance binds the exact completed X Source Intake manifest SHA. Therefore `ISSUE_INITIALIZED -> DISCOVERY_COLLECTED` cannot pass when:
+
+- Weekly skipped X;
+- a required Grok run is still awaiting output;
+- imported Grok Raw bytes drifted;
+- the X result was collected but never given a Discovery/no-material disposition;
+- a `DISCOVERY_RECORDED` run names a Discovery that does not bind its imported Raw bytes.
+
+Conventional collectors, direct ChatGPT web research and X/Grok all remain Source Intake surfaces. Collector success/count alone is never research completeness.
+
+## 6. Autonomous research/editorial loop
 
 For each internal stage:
 
 ```text
 read Profile + State + applicable guide/checklist
 -> make the research/editorial plan appropriate to the actual edition
+-> perform applicable Source Intake, including X/Grok handoff above
 -> produce/update canonical stage artifacts
 -> run deterministic checks that genuinely apply
 -> perform required ChatGPT research/editorial/visual reviews
@@ -164,11 +288,11 @@ It binds:
 - current contract identity;
 - a concise readiness summary.
 
-A file with the expected artifact name is not enough. The semantic stage validator must accept the exact bytes that the checkpoint adopts.
+A file with the expected artifact name is not enough. The semantic stage validator must accept the exact bytes that the checkpoint adopts. For Discovery, the accepted Discovery artifact transitively binds the completed X Source Intake manifest and imported Raw bytes.
 
 Legacy Action Spec / Handoff Request / Handoff / Action Result / Validation Attestation machinery remains repository compatibility/audit code. It is **not required by the agent-first production hot path**.
 
-## 6. Issue Prevention Checklist
+## 7. Issue Prevention Checklist
 
 At relevant stages, apply `docs/survey-production-core-v2-issue-prevention-checklist.md`.
 
@@ -188,7 +312,7 @@ A semantic/visual finding is not a reason to stop. ChatGPT normally repairs it, 
 
 Do not manufacture a validator for an open-ended editorial question, and do not rely on agent memory for a crisp invariant that has a reliable deterministic check.
 
-## 7. Architecture Review — Human Gate 1
+## 8. Architecture Review — Human Gate 1
 
 The first normal stop is reached when State is:
 
@@ -203,7 +327,7 @@ Present the repository-backed Architecture, Review Summary, bounded Attention su
 
 After explicit approval, record the exact Architecture approval through the agent-first control path. The approval binds the reviewed Architecture/Review/Attention bytes. Then continue autonomously toward Publication Preview unless the user explicitly asked to stop after Architecture approval.
 
-## 8. Drafting, quality and Publication Preview — Human Gate 2
+## 9. Drafting, quality and Publication Preview — Human Gate 2
 
 After Architecture approval, continue through drafting/synthesis, applicable deterministic validation, ChatGPT semantic review, rendering and ChatGPT visual review preparation.
 
@@ -217,7 +341,7 @@ The Quality Bundle binds the exact Production Profile, source bytes and PDF byte
 
 At `RELEASE_CANDIDATE`, stop for exact-byte Publication Preview approval. The human approves one specific Publication Candidate and PDF SHA/page count. A rebuilt or merely similar PDF is not approved.
 
-## 9. Freeze and Release
+## 10. Freeze and Release
 
 After Publication Preview approval, continue without adding another routine Human Gate:
 
@@ -234,7 +358,7 @@ Public release identity is derived from the exact Production Profile `paths.surv
 
 External Release reconciliation remains fail-closed and idempotent. Existing tag/title/target/asset divergence is an error, not permission to overwrite history.
 
-## 10. When an Exception Gate is justified
+## 11. When an Exception Gate is justified
 
 Use an Exception Gate only when safe autonomous continuation genuinely needs Owner judgment, including cases such as:
 
@@ -245,9 +369,11 @@ Use an Exception Gate only when safe autonomous continuation genuinely needs Own
 - current bytes differ from already Human-approved Architecture or Publication Preview authority;
 - frozen/release identity diverges and automatic reconciliation would alter published history.
 
-Do **not** stop for an ordinary search refinement, weak-source replacement, local QA failure, CI retry, wording/layout repair, or generic defect that can be repaired without changing approved authority.
+Do **not** stop for an ordinary search refinement, weak-source replacement, local QA failure, CI retry, wording/layout repair, ordinary Grok result transport, or generic defect that can be repaired without changing approved authority.
 
-## 11. Session handoff rule
+A missing Grok result is not an Exception Gate if the task and Drive target are valid; it is incomplete Source Intake. A genuine inability to establish the returned external artifact's identity after reasonable recovery may become an Exception Gate because accepted Raw authority cannot be established safely.
+
+## 12. Session handoff rule
 
 If the conversation ends before the requested Gate, commit enough repository state that a new ChatGPT session can continue. At minimum preserve/report:
 
@@ -258,13 +384,15 @@ Production State path + SHA-256
 lifecycle_state
 next_action / terminal_reason
 latest compact Stage Checkpoint
+X Source Intake manifest path/status, if Source Intake is active
+pending Grok run-id + Google Drive folder-name path, if AWAITING_GROK
 open Human/Exception Gate, if any
 known unresolved research limitations
 ```
 
-A later session starts from repository reality, validates the agent-first State, reads the current Issue Prevention Checklist and applicable guide, and continues. Conversation history is supplementary only.
+A later session starts from repository reality, validates the agent-first State, reads the current Issue Prevention Checklist, X Source Intake authority and applicable guide, and continues. Conversation history is supplementary only.
 
-## 12. Core-v2 candidate review rule
+## 13. Core-v2 candidate review rule
 
 For changes to Survey Production Core v2 itself, follow `docs/survey-production-core-v2-final-audit-rule.md` exactly:
 
