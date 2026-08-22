@@ -109,6 +109,10 @@ jobs:
         run: |
           set -euo pipefail
           test "$REQUEST_SHA256" != ''
+          if [ "$LIFECYCLE" = 'FROZEN' ]; then
+            echo 'FROZEN is a WORKFLOW_DISPATCH stage and may only be adopted by survey-production-v2-release.yml.' >&2
+            exit 2
+          fi
           request="${SOURCE_ROOT}/orchestration/v2/handoff-requests/${LIFECYCLE}.json"
           test -s "worktree/${request}"
           actual="$(sha256sum "worktree/${request}" | awk '{print $1}')"
