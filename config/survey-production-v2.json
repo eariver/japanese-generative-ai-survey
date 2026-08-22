@@ -2,10 +2,11 @@
   "schema_version": "2.0-rc1",
   "pipeline_contract_version": "2.0-rc1",
   "quality_contract_version": "2.0-rc1",
-  "orchestrator_version": "survey-production-core-v2/0.7",
+  "orchestrator_version": "survey-production-core-v2/0.8-agent-first",
   "contract_files": {
     "pipeline": [
       "docs/survey-production-core-v2-authority.md",
+      "docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md",
       "docs/survey-production-core-v2-contract-normalization-second-audit-amendment.md",
       "docs/survey-production-core-v2-minimum-vertical-slice-second-audit-amendment.md",
       "docs/survey-production-core-v2-whole-system-audit-2026-08-22.md",
@@ -43,18 +44,23 @@
       "schemas/release-manifest-v2.schema.json",
       "schemas/merge-verification-v2.schema.json",
       "schemas/release-record-v2.schema.json",
-      "schemas/action-spec-v2.schema.json",
-      "schemas/action-result-v2.schema.json",
-      "schemas/stage-validation-attestation-v2.schema.json",
-      "schemas/stage-handoff-v2.schema.json",
-      "schemas/stage-handoff-request-v2.schema.json",
+      "schemas/stage-checkpoint-v2.schema.json",
       "schemas/review-finding-v2.schema.json",
       "schemas/repair-set-v2.schema.json"
     ],
     "quality": [
       "docs/survey-production-core-v2-historical-invariants.md",
-      "docs/survey-production-core-v2-historical-production-deep-audit.md"
+      "docs/survey-production-core-v2-historical-production-deep-audit.md",
+      "docs/survey-production-core-v2-issue-prevention-checklist.md"
     ]
+  },
+  "operator_model": {
+    "primary_operator": "CHATGPT",
+    "local_stage_control": "COMPACT_AGENT_CHECKPOINT",
+    "normal_human_gates": ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"],
+    "autonomous_until_gate": true,
+    "exception_gate_principle": "Use only when a genuine Owner/editorial/publication decision cannot be derived safely from repository authority.",
+    "deterministic_failure_principle": "Retry or repair autonomously when editorial scope and approved bytes do not change."
   },
   "implementation_control_roots": ["config", "schemas", "scripts", ".github/workflows"],
   "workflow_control": {
@@ -100,6 +106,44 @@
       "version": "2.0-rc1",
       "role_namespace": "LONGFORM_SPECIAL:",
       "synthesis_payload_required": []
+    }
+  },
+  "quality_review": {
+    "core": [
+      {"check_id": "SUBJECT_ENTITY_PROPERTY_BINDING", "kind": "DETERMINISTIC"},
+      {"check_id": "IDENTIFIER_PRESERVATION", "kind": "DETERMINISTIC"},
+      {"check_id": "SOURCE_SPECIFIC_FAIL_CLOSED_NOTES", "kind": "AGENT_SEMANTIC"},
+      {"check_id": "BIBLIOGRAPHY_METADATA", "kind": "AGENT_SEMANTIC"},
+      {"check_id": "POST_TRANSFORM_SEMANTIC_REVALIDATION", "kind": "AGENT_SEMANTIC"},
+      {"check_id": "PDF_PREFLIGHT", "kind": "DETERMINISTIC"}
+    ],
+    "research_profiles": {
+      "WEEKLY": [
+        {"check_id": "WEEKLY_WHY_THIS_ISSUE", "kind": "AGENT_SEMANTIC"},
+        {"check_id": "WEEKLY_LATE_BREAKING_SINGLE_HOME", "kind": "AGENT_SEMANTIC"},
+        {"check_id": "WEEKLY_WATCHLIST_READER_SEMANTICS", "kind": "AGENT_SEMANTIC"},
+        {"check_id": "WEEKLY_CARRY_OVER_DISPOSITION", "kind": "AGENT_SEMANTIC"}
+      ],
+      "RETROSPECTIVE_PERIOD": [
+        {"check_id": "PERIOD_SCOPE_LABEL_IDENTITY", "kind": "DETERMINISTIC"},
+        {"check_id": "CHRONOLOGY_SOURCE_MAPPING", "kind": "DETERMINISTIC"},
+        {"check_id": "REQUIRED_SYNTHESIS_SURVIVAL", "kind": "AGENT_SEMANTIC"}
+      ],
+      "THEMATIC": [
+        {"check_id": "THEMATIC_RESEARCH_CLOSURE", "kind": "AGENT_SEMANTIC"},
+        {"check_id": "THEMATIC_HISTORICAL_ATTRIBUTION", "kind": "AGENT_SEMANTIC"}
+      ]
+    },
+    "publication_profiles": {
+      "WEEKLY_MAGAZINE": [
+        {"check_id": "WEEKLY_RENDERED_PAGE_REVIEW", "kind": "AGENT_VISUAL"}
+      ],
+      "LONGFORM_SPECIAL": [
+        {"check_id": "EMPTY_WRAPPER_SUPPRESSION", "kind": "DETERMINISTIC"},
+        {"check_id": "TOC_HIERARCHY", "kind": "AGENT_VISUAL"},
+        {"check_id": "TECHNICAL_NOTES_TAIL_NEEDSPACE", "kind": "AGENT_VISUAL"},
+        {"check_id": "LONGFORM_PAGE_BALANCE", "kind": "AGENT_VISUAL"}
+      ]
     }
   },
   "human_gates": ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"],
@@ -257,6 +301,7 @@
     "legacy_filename": "pipeline-state.json",
     "legacy_mode": "NON_AUTHORITATIVE_READ_ONLY",
     "checkpoint_attestation_dir": "orchestration/v2/attestations",
+    "agent_checkpoint_dir": "orchestration/v2/checkpoints",
     "architecture_approval_path": "gates/architecture-approval.json",
     "publication_preview_approval_path": "gates/publication-preview-approval.json"
   }
