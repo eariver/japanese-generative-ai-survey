@@ -6,12 +6,14 @@ on:
       - refactor/survey-production-core-v2
     paths:
       - "config/survey-production-v2.json"
+      - "config/survey-production-v2-pilots.json"
       - "config/survey-production-v2-requirements.txt"
       - "config/prompts/source-screening-v2.md"
       - "config/prompts/evidence-verification-v2.md"
       - "config/prompts/article-drafting-v2.md"
       - "config/prompts/profile-synthesis-v2.md"
       - "schemas/survey-production-*.schema.json"
+      - "schemas/pilot-bootstrap-v2.schema.json"
       - "schemas/survey-discovery-record.schema.json"
       - "schemas/discovery-acceptance-v2.schema.json"
       - "schemas/screening-v2-*.schema.json"
@@ -50,12 +52,14 @@ on:
   pull_request:
     paths:
       - "config/survey-production-v2.json"
+      - "config/survey-production-v2-pilots.json"
       - "config/survey-production-v2-requirements.txt"
       - "config/prompts/source-screening-v2.md"
       - "config/prompts/evidence-verification-v2.md"
       - "config/prompts/article-drafting-v2.md"
       - "config/prompts/profile-synthesis-v2.md"
       - "schemas/survey-production-*.schema.json"
+      - "schemas/pilot-bootstrap-v2.schema.json"
       - "schemas/survey-discovery-record.schema.json"
       - "schemas/discovery-acceptance-v2.schema.json"
       - "schemas/screening-v2-*.schema.json"
@@ -141,6 +145,7 @@ jobs:
           scripts/survey_orchestrator_v2.py
           scripts/survey_handlers_v2.py
           scripts/survey_handoff_v2.py
+          scripts/survey_pilot_bootstrap_v2.py
           scripts/survey_findings_v2.py
       - name: Run v2 tests
         run: >-
@@ -175,6 +180,8 @@ jobs:
           from pathlib import Path
           paths = [
               Path('config/survey-production-v2.json'),
+              Path('config/survey-production-v2-pilots.json'),
+              Path('schemas/pilot-bootstrap-v2.schema.json'),
               Path('schemas/survey-production-profile.schema.json'),
               Path('schemas/survey-production-state.schema.json'),
               Path('schemas/survey-discovery-record.schema.json'),
