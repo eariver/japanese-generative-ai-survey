@@ -2,11 +2,11 @@
   "schema_version": "2.0-rc1",
   "finding_id": "AUD-032",
   "edition": "SP001",
-  "stage": "WU-012_PRE_APPROVAL_AUDIT",
-  "observed_problem": "The SP001 Pilot registry currently defines only lineage, distribution, reasoning and coding scope dimensions, which is narrower than the authoritative TS-001 backlog. Material planned concerns such as model-family/ecosystem breadth, open-weight/license/reuse boundaries, inference/serving efficiency, long-context and cloud/developer ecosystem coverage can therefore fall outside the Pilot's initial completeness obligations.",
-  "expected_behavior": "SP001 launch configuration must faithfully encode the scoped TS-001 research backlog while keeping China-specific/topic-specific semantics in edition configuration rather than generic Thematic Core code.",
-  "actual_behavior": "config/survey-production-v2-pilots.json permits SP001 completeness to be argued against four dimensions that do not represent the full TS-001 planning scope recorded in docs/thematic-special-backlog.md.",
-  "production_workaround": "Do not initialize SP001. WU-012F must align the Pilot registry/spec with TS-001 before external production begins.",
+  "stage": "WU-012_AGENT_FIRST_REAUDIT",
+  "observed_problem": "The SP001 Pilot registry duplicates a reduced editorial scope (lineage, distribution, reasoning, coding) instead of referencing the authoritative TS-001 planning document. Because ChatGPT is the research operator, duplicating thematic scope into bootstrap configuration creates a stale second authority and can narrow research before the agent reads the backlog.",
+  "expected_behavior": "Thematic bootstrap should identify the target planning authority and stable production identity, then require ChatGPT to read the canonical backlog/series guide to construct the Production Profile and initial research obligations. Edition-specific scope belongs in the planning document/Profile, not duplicated Pilot literals or generic Core code.",
+  "actual_behavior": "config/survey-production-v2-pilots.json currently embeds a four-dimension SP001 scope that is narrower than docs/thematic-special-backlog.md, and survey_pilot_bootstrap_v2.py treats those registry literals as immutable launch identity.",
+  "production_workaround": "Do not initialize SP001 until bootstrap authority is changed to reference TS-001 planning scope. Do not fix this by copying the entire backlog into another JSON registry.",
   "classification": {
     "scope": "EDITION_LOCAL",
     "defect_kind": "COVERAGE",
@@ -14,15 +14,16 @@
   },
   "requires_regression": true,
   "provenance": {
-    "source_commit": "8beaf978793d983cc7608f4ca9c534511dd04d7a",
+    "source_commit": "9349bd52641d3433cc219adea6565f44fe3dbf09",
     "relevant_artifacts": [
       "config/survey-production-v2-pilots.json",
       "docs/thematic-special-backlog.md",
-      "scripts/survey_pilot_bootstrap_v2.py"
+      "scripts/survey_pilot_bootstrap_v2.py",
+      "docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md"
     ],
-    "human_review_reference": "Pre-approval WU-001-WU-011 audit, 2026-08-22"
+    "human_review_reference": "User premise correction and ChatGPT-first pre-approval re-audit, 2026-08-22"
   },
-  "improvement_action": "Implement WU-012F: expand SP001 registry dimensions/initial obligations to match TS-001 planning authority, preserving generic Thematic Profile mechanisms and avoiding topic-specific Core branches.",
+  "improvement_action": "Implement WU-012E: make SP001 bootstrap reference the canonical TS-001 planning authority and let the agent materialize Profile obligations from that authority, while keeping only stable identity/path/as-of mechanics in bootstrap configuration.",
   "regression_fixture": null,
   "resolved_by_repair_set_id": null,
   "status": "OPEN"
