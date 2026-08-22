@@ -1,0 +1,31 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-036",
+  "edition": "CORE-V2",
+  "stage": "WU-012_AGENT_FIRST_REAUDIT",
+  "observed_problem": "Production State pins one repository implementation commit for the whole edition and verify_runtime_implementation rejects later changes under config/schemas/scripts/workflows. This makes it difficult to apply a reviewed generic pipeline fix discovered during the same edition, despite that iterative Issue-driven improvement being a normal and desirable production pattern.",
+  "expected_behavior": "Implementation provenance should be recorded per checkpoint/action. A later stage may use newer reviewed main tooling while preserving exact provenance of earlier accepted artifacts. When a tool/schema change affects an accepted artifact contract, the agent performs targeted revalidation or migration; only unresolved compatibility ambiguity requires an Exception Gate.",
+  "actual_behavior": "scripts/survey_orchestrator_v2.py verifies all implementation-control roots against state.implementation.repository_commit_sha and production-control/release workflows require current main workflow bytes to match the State-pinned worktree workflow.",
+  "production_workaround": "Keep external Pilots unstarted. WU-012C must replace edition-wide toolchain lock-in with per-checkpoint implementation provenance and controlled upgrade/revalidation semantics before merge.",
+  "classification": {
+    "scope": "CORE",
+    "defect_kind": "ORCHESTRATION",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "9349bd52641d3433cc219adea6565f44fe3dbf09",
+    "relevant_artifacts": [
+      "scripts/survey_orchestrator_v2.py",
+      "scripts/survey_production_v2.py",
+      ".github/workflows/survey-production-v2-control.yml",
+      ".github/workflows/survey-production-v2-release.yml",
+      "docs/survey-production-core-v2-contract-normalization-second-audit-amendment.md"
+    ],
+    "human_review_reference": "User premise correction and ChatGPT-first pre-approval re-audit, 2026-08-22"
+  },
+  "improvement_action": "Implement WU-012C from docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md: record implementation basis per checkpoint/action, permit reviewed toolchain evolution between stages, revalidate only affected accepted boundaries, and preserve exact-byte publication/release authority.",
+  "regression_fixture": null,
+  "resolved_by_repair_set_id": null,
+  "status": "OPEN"
+}
