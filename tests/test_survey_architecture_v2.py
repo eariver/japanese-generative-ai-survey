@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import copy
-import shutil
 import unittest
 from pathlib import Path
 
@@ -13,28 +12,16 @@ from tests import test_survey_evidence_v2 as evidence_tests
 
 
 IMPLEMENTATION_SHA = "4" * 40
-WU008_CONTRACTS = [
-    "schemas/candidate-matrix-v2.schema.json",
-    "schemas/candidate-selection-v2.schema.json",
-    "schemas/issue-architecture-v2.schema.json",
-    "schemas/architecture-review-summary-v2.schema.json",
-]
 
 
 class SurveyArchitectureV2Tests(unittest.TestCase):
-    def setUp(self) -> None:
-        self.repo_root = Path(".").resolve()
-
     def chain(self, research_profile: str):
-        helper = evidence_tests.SurveyEvidenceV2Tests(methodName="test_evidence_package_is_exact_and_preserves_task_bytes")
+        helper = evidence_tests.SurveyEvidenceV2Tests(
+            methodName="test_evidence_package_is_exact_and_preserves_task_bytes"
+        )
         helper.setUp()
         temp, root, cfg = helper.sandbox()
         self.addCleanup(temp.cleanup)
-        for rel in WU008_CONTRACTS:
-            src = self.repo_root / rel
-            dst = root / rel
-            dst.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(src, dst)
         profile_path, state_path = helper.init_profile(root, cfg, research_profile)
         issue_id = core.load_json(state_path)["issue_id"]
         discovery_path, screening_acceptance = helper.make_screening(
@@ -60,9 +47,9 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
         evidence.write_materiality_ledger(ledger_path, ledger)
         profile = core.load_json(profile_path)
         evidence_row = core.load_json(evidence_acceptance)["results"][0]
-        obligation_rows = []
+        obligations = []
         for index, dimension in enumerate(profile["research_scope"]["scope_dimensions"], start=1):
-            obligation_rows.append(
+            obligations.append(
                 {
                     "obligation_id": f"scope:{index}:{dimension}",
                     "dimension": dimension,
@@ -82,7 +69,7 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
                 "materiality_ledger_sha256": core.sha256_file(ledger_path),
             },
             "overall_status": "READY",
-            "obligations": obligation_rows,
+            "obligations": obligations,
             "residual_limitations": [],
             "closure": (
                 {
@@ -144,6 +131,7 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
     @staticmethod
     def selection_for(chain: dict, *, disposition: str = "SELECTED") -> dict:
         row = chain["matrix"]["rows"][0]
+        profile = core.load_json(chain["profile_path"])
         selected = disposition == "SELECTED"
         assignments = [
             {
@@ -151,8 +139,12 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
                 "disposition": disposition,
                 "rationale": "explicit editorial disposition for fixture",
                 "architecture_usage": "PRIMARY" if selected else "NONE",
-                "publication_role": "fixture-publication-role" if selected else None,
-                "architecture_role": "fixture-architecture-role" if selected else None,
+                "publication_role": (
+                    f"{profile['publication_profile']}:FIXTURE_ROLE" if selected else None
+                ),
+                "architecture_role": (
+                    f"{profile['research_profile']}:FIXTURE_ROLE" if selected else None
+                ),
                 "profile_extensions": {},
             }
         ]
@@ -160,9 +152,11 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
             "schema_version": "2.0-rc1",
             "issue_id": chain["matrix"]["issue_id"],
             "research_profile": chain["matrix"]["research_profile"],
+            "publication_profile": profile["publication_profile"],
             "selection_version": "v0.1",
             "status": "ESTABLISHED",
             "basis": {
+                "production_profile_sha256": core.sha256_file(chain["profile_path"]),
                 "candidate_matrix_sha256": core.sha256_file(chain["matrix_path"]),
                 "profile_completeness_sha256": core.sha256_file(chain["completeness_path"]),
                 "materiality_ledger_sha256": core.sha256_file(chain["ledger_path"]),
@@ -175,7 +169,8 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
             },
         }
 
-    def architecture_for(self, chain: dict, selection_path: Path, *, research_profile: str) -> dict:
+    @staticmethod
+    def architecture_for(chain: dict, selection_path: Path, *, research_profile: str) -> dict:
         cid = chain["matrix"]["rows"][0]["candidate_id"]
         profile = core.load_json(chain["profile_path"])
         package_profile_extensions = (
@@ -221,8 +216,33 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
             "selected_exceptions": [],
             "profile_extensions": {},
             "publication_extensions": {},
-            "human_review": {"reviewed_by": None, "reviewed_at": None, "review_reference": None},
+            "human_review": {
+                "reviewed_by": None,
+                "reviewed_at": None,
+                "review_reference": None,
+            },
         }
+
+    def validate_selection(self, chain: dict, selection: dict) -> list[str]:
+        return architecture.validate_selection(
+            chain["root"],
+            selection,
+            chain["profile_path"],
+            chain["matrix_path"],
+            chain["completeness_path"],
+            chain["ledger_path"],
+        )
+
+    def validate_architecture(self, chain: dict, plan: dict, selection_path: Path) -> list[str]:
+        return architecture.validate_architecture(
+            chain["root"],
+            plan,
+            chain["profile_path"],
+            chain["completeness_path"],
+            chain["ledger_path"],
+            chain["matrix_path"],
+            selection_path,
+        )
 
     def test_weekly_and_thematic_share_core_without_dummy_profile_fields(self) -> None:
         for research_profile in ("WEEKLY", "THEMATIC"):
@@ -230,7 +250,10 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
                 chain = self.chain(research_profile)
                 row = chain["matrix"]["rows"][0]
                 if research_profile == "WEEKLY":
-                    self.assertEqual(set(row["profile_extensions"]), {"why_this_issue", "window_relation", "carry_over"})
+                    self.assertEqual(
+                        set(row["profile_extensions"]),
+                        {"why_this_issue", "window_relation", "carry_over"},
+                    )
                     self.assertNotIn("lineage_role", row["profile_extensions"])
                 else:
                     self.assertIn("lineage_role", row["profile_extensions"])
@@ -239,26 +262,13 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
                 self.assertNotIn("why_now_confirmed", row)
 
                 selection = self.selection_for(chain)
-                self.assertEqual(
-                    architecture.validate_selection(
-                        selection, chain["matrix_path"], chain["completeness_path"], chain["ledger_path"]
-                    ),
-                    [],
-                )
+                self.assertEqual(self.validate_selection(chain, selection), [])
                 selection_path = chain["root"] / f"selection-{research_profile}.json"
                 core.write_json(selection_path, selection)
-                plan = self.architecture_for(chain, selection_path, research_profile=research_profile)
-                self.assertEqual(
-                    architecture.validate_architecture(
-                        plan,
-                        chain["profile_path"],
-                        chain["completeness_path"],
-                        chain["ledger_path"],
-                        chain["matrix_path"],
-                        selection_path,
-                    ),
-                    [],
+                plan = self.architecture_for(
+                    chain, selection_path, research_profile=research_profile
                 )
+                self.assertEqual(self.validate_architecture(chain, plan, selection_path), [])
                 plan_path = chain["root"] / f"architecture-{research_profile}.json"
                 core.write_json(plan_path, plan)
                 summary = architecture.build_architecture_review_summary(
@@ -275,8 +285,13 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
                     plan_path,
                     IMPLEMENTATION_SHA,
                 )
-                self.assertEqual(summary["readiness"]["status"], "READY_FOR_ARCHITECTURE_REVIEW")
-                self.assertEqual(summary["major_material_destinations"][0]["destination_kind"], "PRIMARY")
+                self.assertEqual(
+                    summary["readiness"]["status"], "READY_FOR_ARCHITECTURE_REVIEW"
+                )
+                self.assertEqual(
+                    summary["major_material_destinations"][0]["destination_kind"],
+                    "PRIMARY",
+                )
 
     def test_matrix_is_exact_derivation_and_cannot_silently_drop_material_candidate(self) -> None:
         chain = self.chain("THEMATIC")
@@ -297,7 +312,11 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
         )
         truncated = copy.deepcopy(chain["matrix"])
         truncated["rows"] = []
-        truncated["summary"] = {"candidate_count": 0, "materiality_counts": {}, "evidence_status_counts": {}}
+        truncated["summary"] = {
+            "candidate_count": 0,
+            "materiality_counts": {},
+            "evidence_status_counts": {},
+        }
         errors = architecture.validate_candidate_matrix(
             truncated,
             chain["root"],
@@ -317,37 +336,40 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
         chain = self.chain("WEEKLY")
         selection = self.selection_for(chain)
         selection["approval"] = {"approved_by": "human"}
-        self.assertIn(
-            "Human approval fields are forbidden",
-            "; ".join(
-                architecture.validate_selection(
-                    selection, chain["matrix_path"], chain["completeness_path"], chain["ledger_path"]
-                )
-            ),
-        )
+        self.assertIn("Human approval fields are forbidden", "; ".join(self.validate_selection(chain, selection)))
+
         selection = self.selection_for(chain)
         selection["assignments"] = []
-        selection["summary"] = {"candidate_count": 0, "disposition_counts": {}, "selected_count": 0}
+        selection["summary"] = {
+            "candidate_count": 0,
+            "disposition_counts": {},
+            "selected_count": 0,
+        }
         self.assertIn(
             "assign every Matrix candidate exactly once",
-            "; ".join(
-                architecture.validate_selection(
-                    selection, chain["matrix_path"], chain["completeness_path"], chain["ledger_path"]
-                )
-            ),
+            "; ".join(self.validate_selection(chain, selection)),
         )
 
-    def test_profile_owned_roles_are_free_form_but_nonmaterial_cannot_be_selected(self) -> None:
+    def test_profile_owned_roles_use_owned_namespace_without_global_enum(self) -> None:
         chain = self.chain("THEMATIC")
         selection = self.selection_for(chain)
-        selection["assignments"][0]["publication_role"] = "LONGFORM_CUSTOM_ROLE_NOT_A_WEEKLY_ENUM"
-        selection["assignments"][0]["architecture_role"] = "LINEAGE_BRANCH_ALPHA"
-        self.assertEqual(
-            architecture.validate_selection(
-                selection, chain["matrix_path"], chain["completeness_path"], chain["ledger_path"]
-            ),
-            [],
+        selection["assignments"][0]["publication_role"] = "LONGFORM_SPECIAL:CUSTOM_FUTURE_ROLE"
+        selection["assignments"][0]["architecture_role"] = "THEMATIC:LINEAGE_BRANCH_ALPHA"
+        self.assertEqual(self.validate_selection(chain, selection), [])
+
+        wrong_namespace = copy.deepcopy(selection)
+        wrong_namespace["assignments"][0]["publication_role"] = "WEEKLY_MAGAZINE:LATE_BREAKING"
+        self.assertIn(
+            "outside Publication Profile namespace LONGFORM_SPECIAL:",
+            "; ".join(self.validate_selection(chain, wrong_namespace)),
         )
+        wrong_namespace = copy.deepcopy(selection)
+        wrong_namespace["assignments"][0]["architecture_role"] = "WEEKLY:LATE_BREAKING"
+        self.assertIn(
+            "outside Research Profile namespace THEMATIC:",
+            "; ".join(self.validate_selection(chain, wrong_namespace)),
+        )
+
         changed_matrix = copy.deepcopy(chain["matrix"])
         changed_matrix["rows"][0]["materiality"] = "NON_MATERIAL"
         changed_matrix["summary"]["materiality_counts"] = {"NON_MATERIAL": 1}
@@ -355,7 +377,12 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
         core.write_json(changed_path, changed_matrix)
         selection["basis"]["candidate_matrix_sha256"] = core.sha256_file(changed_path)
         errors = architecture.validate_selection(
-            selection, changed_path, chain["completeness_path"], chain["ledger_path"]
+            chain["root"],
+            selection,
+            chain["profile_path"],
+            changed_path,
+            chain["completeness_path"],
+            chain["ledger_path"],
         )
         self.assertIn("NON_MATERIAL candidate cannot be SELECTED", "; ".join(errors))
 
@@ -366,30 +393,18 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
         core.write_json(selection_path, selection)
         plan = self.architecture_for(chain, selection_path, research_profile="THEMATIC")
         plan["packages"][0]["primary_candidate_ids"] = []
-        errors = architecture.validate_architecture(
-            plan,
-            chain["profile_path"],
-            chain["completeness_path"],
-            chain["ledger_path"],
-            chain["matrix_path"],
-            selection_path,
-        )
+        errors = self.validate_architecture(chain, plan, selection_path)
         self.assertIn("requires exactly one Architecture destination", "; ".join(errors))
+
         cid = selection["assignments"][0]["candidate_id"]
         plan["selected_exceptions"] = [
-            {"candidate_id": cid, "reason": "explicit structural deferral", "exception_kind": "DEFERRED"}
+            {
+                "candidate_id": cid,
+                "reason": "explicit structural deferral",
+                "exception_kind": "DEFERRED",
+            }
         ]
-        self.assertEqual(
-            architecture.validate_architecture(
-                plan,
-                chain["profile_path"],
-                chain["completeness_path"],
-                chain["ledger_path"],
-                chain["matrix_path"],
-                selection_path,
-            ),
-            [],
-        )
+        self.assertEqual(self.validate_architecture(chain, plan, selection_path), [])
 
     def test_review_summary_blocks_valid_but_incomplete_profile_completeness(self) -> None:
         chain = self.chain("THEMATIC")
@@ -434,7 +449,9 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
         selection = self.selection_for(altered_chain)
         selection_path = chain["root"] / "selection-incomplete.json"
         core.write_json(selection_path, selection)
-        plan = self.architecture_for(altered_chain, selection_path, research_profile="THEMATIC")
+        plan = self.architecture_for(
+            altered_chain, selection_path, research_profile="THEMATIC"
+        )
         plan_path = chain["root"] / "architecture-incomplete.json"
         core.write_json(plan_path, plan)
         summary = architecture.build_architecture_review_summary(
@@ -452,7 +469,10 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
             IMPLEMENTATION_SHA,
         )
         self.assertEqual(summary["readiness"]["status"], "BLOCKED")
-        self.assertIn("Completeness is INCOMPLETE", "; ".join(summary["readiness"]["errors"]))
+        self.assertIn(
+            "Completeness is INCOMPLETE",
+            "; ".join(summary["readiness"]["errors"]),
+        )
 
 
 if __name__ == "__main__":
