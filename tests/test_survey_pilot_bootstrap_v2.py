@@ -102,6 +102,7 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.assertIn("gh release download", release)
         self.assertIn("actual_sha", release)
         self.assertIn("actual_bytes", release)
+        self.assertIn("verify_runtime_implementation", release)
 
 
 if __name__ == "__main__":
