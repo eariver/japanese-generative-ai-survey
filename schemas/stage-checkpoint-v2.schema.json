@@ -63,10 +63,12 @@
     },
     "artifacts": {
       "type": "array",
+      "minItems": 1,
       "items": {"$ref": "#/$defs/namedAuthority"}
     },
     "reviews": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -81,7 +83,7 @@
         },
         "allOf": [
           {
-            "if": {"properties": {"kind": {"const": "DETERMINISTIC"}}},
+            "if": {"properties": {"kind": {"const": "DETERMINISTIC"}}, "required": ["kind"]},
             "then": {"properties": {"result": {"$ref": "#/$defs/artifactAuthority"}}}
           }
         ]
@@ -89,6 +91,18 @@
     },
     "summary": {"type": "string", "minLength": 1}
   },
+  "allOf": [
+    {"$ref": "#/$defs/issueInitializedArtifacts"},
+    {"$ref": "#/$defs/screeningArtifacts"},
+    {"$ref": "#/$defs/evidenceArtifacts"},
+    {"$ref": "#/$defs/selectionArtifacts"},
+    {"$ref": "#/$defs/architectureArtifacts"},
+    {"$ref": "#/$defs/draftArtifacts"},
+    {"$ref": "#/$defs/validationArtifacts"},
+    {"$ref": "#/$defs/publicationCandidateArtifacts"},
+    {"$ref": "#/$defs/freezeArtifacts"},
+    {"$ref": "#/$defs/releaseArtifacts"}
+  ],
   "$defs": {
     "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "gitsha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
@@ -116,6 +130,76 @@
         "path": {"type": "string", "minLength": 1},
         "sha256": {"$ref": "#/$defs/sha256"}
       }
+    },
+    "containsName": {
+      "type": "object",
+      "required": ["name"]
+    },
+    "issueInitializedArtifacts": {
+      "if": {"properties": {"from_state": {"const": "ISSUE_INITIALIZED"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"contains": {"type": "object", "properties": {"name": {"const": "discovery-acceptance"}}, "required": ["name"]}}}}
+    },
+    "screeningArtifacts": {
+      "if": {"properties": {"from_state": {"const": "DISCOVERY_COLLECTED"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"contains": {"type": "object", "properties": {"name": {"const": "screening-acceptance"}}, "required": ["name"]}}}}
+    },
+    "evidenceArtifacts": {
+      "if": {"properties": {"from_state": {"const": "CANDIDATES_NORMALIZED"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"allOf": [
+        {"contains": {"type": "object", "properties": {"name": {"const": "evidence-acceptance"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "edition-views-acceptance"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "materiality-ledger"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "profile-completeness"}}, "required": ["name"]}}
+      ]}}}
+    },
+    "selectionArtifacts": {
+      "if": {"properties": {"from_state": {"const": "EVIDENCE_REVIEWED"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"allOf": [
+        {"contains": {"type": "object", "properties": {"name": {"const": "candidate-matrix"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "candidate-selection"}}, "required": ["name"]}}
+      ]}}}
+    },
+    "architectureArtifacts": {
+      "if": {"properties": {"from_state": {"const": "SELECTION_COMPLETE"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"allOf": [
+        {"contains": {"type": "object", "properties": {"name": {"const": "issue-architecture"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "architecture-review-summary"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "architecture-review-attention"}}, "required": ["name"]}}
+      ]}}}
+    },
+    "draftArtifacts": {
+      "if": {"properties": {"from_state": {"const": "ARCHITECTURE_ESTABLISHED"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"allOf": [
+        {"contains": {"type": "object", "properties": {"name": {"const": "synthesis-input"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "synthesis-result"}}, "required": ["name"]}}
+      ]}}}
+    },
+    "validationArtifacts": {
+      "if": {"properties": {"from_state": {"const": "DRAFT_COMPLETE"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"allOf": [
+        {"contains": {"type": "object", "properties": {"name": {"const": "validated-source"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "publication-pdf"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "quality-regression-bundle"}}, "required": ["name"]}}
+      ]}}}
+    },
+    "publicationCandidateArtifacts": {
+      "if": {"properties": {"from_state": {"const": "VALIDATED_DRAFT"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"contains": {"type": "object", "properties": {"name": {"const": "publication-candidate"}}, "required": ["name"]}}}}
+    },
+    "freezeArtifacts": {
+      "if": {"properties": {"from_state": {"const": "RELEASE_CANDIDATE"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"allOf": [
+        {"contains": {"type": "object", "properties": {"name": {"const": "visual-review-record"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "freeze-record"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "release-manifest"}}, "required": ["name"]}}
+      ]}}}
+    },
+    "releaseArtifacts": {
+      "if": {"properties": {"from_state": {"const": "FROZEN"}}, "required": ["from_state"]},
+      "then": {"properties": {"artifacts": {"allOf": [
+        {"contains": {"type": "object", "properties": {"name": {"const": "merge-verification"}}, "required": ["name"]}},
+        {"contains": {"type": "object", "properties": {"name": {"const": "release-record"}}, "required": ["name"]}}
+      ]}}}
     },
     "checkpoint": {
       "enum": [
