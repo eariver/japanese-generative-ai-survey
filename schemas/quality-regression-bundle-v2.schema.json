@@ -7,6 +7,7 @@
   "required": [
     "schema_version",
     "issue_id",
+    "production_profile",
     "research_profile",
     "publication_profile",
     "source",
@@ -18,6 +19,7 @@
   "properties": {
     "schema_version": {"const": "2.0-rc1"},
     "issue_id": {"type": "string", "minLength": 1},
+    "production_profile": {"$ref": "#/$defs/artifact"},
     "research_profile": {"enum": ["WEEKLY", "RETROSPECTIVE_PERIOD", "THEMATIC"]},
     "publication_profile": {"enum": ["WEEKLY_MAGAZINE", "LONGFORM_SPECIAL"]},
     "source": {"$ref": "#/$defs/artifact"},
