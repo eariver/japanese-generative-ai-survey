@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Work Log
 
-Status: `ACTIVE / WU-011 IMPLEMENTATION COMPLETE / FINAL CI SYNC`  
+Status: `ACTIVE / WU-011 COMPLETE / HUMAN FULL-CANDIDATE REVIEW`  
 Established: 2026-08-22 JST  
 Working branch: `refactor/survey-production-core-v2`  
 Draft implementation PR: `#310`  
@@ -17,17 +17,18 @@ Repository reality is the highest factual authority. Current `main` remains the 
 
 ## 2. Current snapshot
 
-Last updated: **2026-08-22 JST — WU-011 second audit complete; final CI/PR metadata synchronization in progress**
+Last updated: **2026-08-22 JST — WU-011 complete; stopped at Human full-candidate review boundary**
 
 - Repository: `eariver/japanese-generative-ai-survey`
 - Improvement branch: `refactor/survey-production-core-v2`
-- Production `main`: `2086b396d2f30103d9292b722891be436cd28db5`; branch has not required rebasing during WU-011.
+- Production `main`: `2086b396d2f30103d9292b722891be436cd28db5`; unchanged through WU-011 closure.
+- Validated WU-011 implementation head: `6d82b0deff7e20adfedf95d2e139fd56867e5d40`.
 - Draft PR: `#310 Survey Production Core v2 implementation`; remains **draft** and must not be merged without Human full-candidate review.
 - Current phase: **Phase 3 — Core v2 Candidate Implementation / Human review boundary**.
 - **WU-010R: COMPLETE / SECOND-AUDIT GREEN.**
-- **WU-011: IMPLEMENTATION COMPLETE / SECOND-AUDIT GREEN / FINAL CI SYNC.**
+- **WU-011: COMPLETE / SECOND-AUDIT GREEN / 5-of-5 CROSS-REGRESSION GREEN.**
 - WU-010R Repair Set: `REPAIR-WU010R-2026-08-22`; `IMPLEMENTED`, verification editions empty.
-- WU-011 Repair Set: `REPAIR-WU011-2026-08-22`; `IMPLEMENTED`, verification editions empty; final synchronized cross-regression references are being populated before the Human review handoff.
+- WU-011 Repair Set: `REPAIR-WU011-2026-08-22`; `IMPLEMENTED`, verification editions empty; all five pre-Pilot CI validation rows are PASS and real Pilot verification remains PENDING.
 - WU-011 machine findings AUD-019 through AUD-026: all `FIXED_GENERIC`; none may become `CLOSED` before Repair Set governance permits it.
 - External W33/SP001 production: **NOT STARTED / NOT AUTHORIZED** before Human review + merge.
 - Confirmed absent on both refactor branch and `main`: `sources/2026-W33/production-state.json`, `sources/SP001/production-state.json`.
@@ -58,7 +59,7 @@ Last updated: **2026-08-22 JST — WU-011 second audit complete; final CI/PR met
 | WU-009 | `COMPLETE / AUDITED` | generic Draft Package/Result + Profile Synthesis |
 | WU-010 | `SUPERSEDED BY WU-010R REMEDIATION` | original orchestration baseline retained; Human re-audit reopened closure |
 | WU-010R | `COMPLETE / SECOND-AUDIT GREEN` | AUD-013–018 repaired; 5/5 cross-regression green; Repair Set IMPLEMENTED |
-| **WU-011** | **`IMPLEMENTATION COMPLETE / SECOND-AUDIT GREEN / FINAL CI SYNC`** | AUD-003/004/005 + AUD-019–026 repaired; full publication/release/bootstrap path present; Human review next |
+| **WU-011** | **`COMPLETE / SECOND-AUDIT GREEN / HUMAN REVIEW BOUNDARY`** | AUD-003/004/005 + AUD-019–026 repaired; exact publication/release/bootstrap path; 5/5 final cross-regression green |
 
 ## 5. WU-010R durable closure
 
@@ -133,24 +134,47 @@ The planner is side-effect free and resolves W33/SP001 launch identity without c
 
 All are `FIXED_GENERIC`. The machine Repair Set is `docs/checkpoints/survey-production-core-v2-audit-findings/WU-011-repair-set.json`, status `IMPLEMENTED`.
 
-## 7. Cross-regression evidence during WU-011
+## 7. WU-011 final cross-regression evidence
 
-A stable pre-bootstrap WU-011 head `52049ca3fd1e84dbaa04321f3be68aac56db2af6` passed all five cross-regression families after AUD-021–023 repair.
+Validated implementation head:
 
-Later Core v2 heads also passed the expanded suite with **104 tests**, including artifact-backed Publication State and terminal-gate/bootstrap coverage. WU-011 then found AUD-026 by PR-level changed-file audit despite green Weekly CI, proving that CI success alone was not treated as full-candidate correctness evidence.
+```text
+6d82b0deff7e20adfedf95d2e139fd56867e5d40
+```
 
-Final synchronized cross-regression run IDs are intentionally recorded only after Authority, Repair Set and work-status metadata settle. The final regression marker test reads those synchronized authorities and forces all five families to run on one final semantic head.
+All five required regression families passed on that exact head:
+
+| Validation family | Result | GitHub Actions run |
+|---|---|---|
+| Survey Production Core v2 CI | `PASS` — 106 tests + contract parse, including final authority/Repair Set/Pilot-stop regression | `32563066810` |
+| Screening contract CI | `PASS` | `32563066833` |
+| Evidence contract CI | `PASS` | `32563066808` |
+| Pipeline contract tests | `PASS` | `32563066856` |
+| Weekly pipeline spine + committed Raw integrity | `PASS` | `32563066801` |
+
+The final Core CI initially exposed two CI sparse-checkout omissions for the newly repository-owned worklog/closure/bootstrap authorities. Those were CI-harness defects only; after all four final authority documents were included, the exact head above passed the complete 106-test suite. No production semantic defect was introduced by those harness repairs.
+
+`REPAIR-WU011-2026-08-22` records these five runs as PASS while remaining `IMPLEMENTED`, not `VALIDATED/CLOSED`, because W33/SP001 verification editions are intentionally empty.
 
 ## 8. Current action / stop condition
 
-**Autonomous implementation work is complete except final synchronized CI and PR metadata update. Do not start W33/SP001. Do not merge PR #310.**
+**STOP: Human full-candidate review of PR #310 is now the required gate.**
 
-Exact remaining sequence:
+Autonomous WU-011 implementation, second audit, cross-regression, Repair Set evidence synchronization and merge preparation are complete.
 
-1. validate the synchronized Authority/Repair Set/worklog with the final regression marker;
-2. require green Survey Production Core v2 CI, Screening contract CI, Evidence contract CI, Pipeline contract tests, and Weekly pipeline spine + committed Raw integrity on that semantic head;
-3. replace `PENDING` WU-011 Repair Set validation rows with those run references while keeping Repair Set status `IMPLEMENTED` and verification editions empty;
-4. update this worklog and PR #310 body with the validated head/run IDs;
-5. stop at **Human full-candidate review of PR #310**.
+Do not:
 
-Only after explicit Human approval and merge to `main` may a later session enter `docs/survey-production-core-v2-session-bootstrap.md` and initialize an authorized W33/SP001 Pilot.
+- start W33 or SP001;
+- mark WU-011 Repair Set `VALIDATED` or `CLOSED`;
+- close AUD-019 through AUD-026;
+- merge PR #310 without explicit Human approval.
+
+If Human review approves the candidate:
+
+1. explicitly merge PR #310 to `main`;
+2. re-enter from `docs/survey-production-core-v2-session-bootstrap.md`;
+3. run side-effect-free W33/SP001 Pilot plans from the merged `main`;
+4. initialize only the authorized Pilot work branch;
+5. proceed under canonical Stage Handoff/control authority until the requested Human Gate or an Exception Gate.
+
+If Human review identifies a defect, create a new machine-readable Finding and Repair Set update before merge rather than handling the review comment as an informal side channel.
