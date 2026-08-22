@@ -2,30 +2,28 @@
   "schema_version": "2.0-rc1",
   "finding_id": "AUD-033",
   "edition": "CORE-V2",
-  "stage": "WU-012_PRE_APPROVAL_AUDIT",
-  "observed_problem": "The generic Core interfaces are mostly Profile-driven, but current regression/bootstrap proof is concentrated on W33 and SP001. There is no representative pre-merge evidence that later Weekly issues, ISO-year boundary issues, materially different Thematic structures, bounded Period editions, or dependent Series volumes traverse the same contracts without new edition-specific code.",
-  "expected_behavior": "Before merge, side-effect-free fixtures must demonstrate that the same generic Core/Profile interfaces accept representative future Weekly, Thematic, Period and Series cases beyond the named first Pilots.",
-  "actual_behavior": "The candidate has strong W33/SP001 bootstrap tests but lacks explicit W35+/year-boundary Weekly, TS-002-like, TS-003-like, unrelated Thematic, bounded Period, and dependent Foundations-style Series fixtures.",
-  "production_workaround": "Keep PR #310 draft and do not infer general production readiness from W33/SP001 bootstrap success. WU-012G must add generic non-production fixtures before review resumes.",
+  "stage": "WU-012_AGENT_FIRST_REAUDIT",
+  "observed_problem": "The first pre-approval audit treated absence of a large synthetic future-edition fixture matrix as a merge blocker. Under the corrected ChatGPT-first premise, that proof burden is excessive because the reasoning agent can adapt to new editorial subjects; the important pre-merge property is that deterministic helpers and schemas are generic and do not branch on named Pilot identities.",
+  "expected_behavior": "Use a small structural test set to prove arbitrary completed Weekly IDs, arbitrary bounded Period specs and arbitrary Thematic research questions can be represented without edition-specific Core code. Use real W33/SP001 then W34/SP002/SP003 production as the stronger generalization evidence. Do not pre-simulate every plausible future topic or Series evolution.",
+  "actual_behavior": "Existing Core/Profile code is largely generic already, while the earlier AUD-033 remediation would add substantial test scaffolding for hypothetical content structures that ChatGPT itself is expected to reason about during production.",
+  "production_workaround": "No exhaustive synthetic matrix is required. WU-012E should add only small structural genericity tests where a deterministic interface exists and leave semantic generalization to real production validation.",
   "classification": {
     "scope": "CORE",
     "defect_kind": "COMPATIBILITY",
     "confidence": "high"
   },
-  "requires_regression": true,
+  "requires_regression": false,
   "provenance": {
-    "source_commit": "8beaf978793d983cc7608f4ca9c534511dd04d7a",
+    "source_commit": "9349bd52641d3433cc219adea6565f44fe3dbf09",
     "relevant_artifacts": [
-      "tests/test_survey_pilot_bootstrap_v2.py",
-      "config/survey-production-v2-pilots.json",
       "scripts/survey_production_v2.py",
-      "docs/thematic-special-backlog.md",
-      "docs/generative-ai-foundations-special-series.md"
+      "tests/test_survey_pilot_bootstrap_v2.py",
+      "docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md"
     ],
-    "human_review_reference": "Pre-approval WU-001-WU-011 audit, 2026-08-22"
+    "human_review_reference": "User premise correction and ChatGPT-first pre-approval re-audit, 2026-08-22"
   },
-  "improvement_action": "Implement WU-012G: add side-effect-free fixtures for a later Weekly, ISO-year boundary Weekly, TS-002-like and TS-003-like Thematics, an unrelated synthetic Thematic, monthly/half-year/annual/custom Periods, and dependent/resequenced Series volumes. Do not initialize real Pilots.",
+  "improvement_action": "DEFER the exhaustive fixture matrix. Add only structural genericity tests for arbitrary Weekly/Period/Thematic inputs and verify no production semantics branch on W33/SP001/TS-001 identities; rely on the planned real Pilot sequence for semantic generalization.",
   "regression_fixture": null,
   "resolved_by_repair_set_id": null,
-  "status": "OPEN"
+  "status": "DEFERRED"
 }
