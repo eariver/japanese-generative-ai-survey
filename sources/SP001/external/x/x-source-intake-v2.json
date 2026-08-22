@@ -1,0 +1,54 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "production_profile": {
+    "path": "sources/SP001/production-profile.json",
+    "sha256": "91836f2f255bec01887d85619da792c49a74bf9a7ccc1c861f81698e40642f44"
+  },
+  "research_profile": "THEMATIC",
+  "policy": "CHATGPT_DECIDES",
+  "series_context": null,
+  "decision": "REQUIRED",
+  "rationale": "SP-001はdeveloper ecosystem、distribution、local inference、fine-tuning、Open Weight adoptionを主要論点として明示しており、公式release materialだけでは独立実装・runtime integration・失敗例・license運用上の摩擦を十分に観測できない。Xはこれらのcommunity/adoption signalとprimary-source候補の発見に限定して利用し、仕様・benchmark・release date・license等のtechnical factは後段で一次資料により検証する。",
+  "drive_handoff": {
+    "provider": "GOOGLE_DRIVE",
+    "root_folder_name": "Grok_X_SourseIntake",
+    "category": "Thematic_Special",
+    "edition_folder": "SP001"
+  },
+  "runs": [
+    {
+      "run_id": "open-weight-ecosystem-pass-01",
+      "purpose": "中国発Open Weightモデルの国際的developer adoption・runtime integration・local inference・fine-tuning実務を観測し、公式release materialだけでは見えにくいecosystem上の採用要因・制約・counter-signalを発見する。",
+      "research_questions": [
+        "DeepSeek、Qwen、GLM、KimiのOpen Weight公開は、2023年以降どのようなdeveloper adoption・local inference・fine-tuning・serving integrationを生んだか。",
+        "vLLM、SGLang、llama.cpp、Ollama、MLX、quantization ecosystem等で、各model familyの実装・運用上どのような利点・制約・失敗例が語られているか。",
+        "Open SourceとOpen Weight、license、redistribution、commercial useを巡って、実務上の混同・摩擦・再配布上の注意点は何か。",
+        "MiniMax、Yi、Baichuanその他の中国発model familyに、主要4系統の成長や競争構造を理解するうえで無視できないadoption / integration / counter-signalがあるか。"
+      ],
+      "coverage_focus": [
+        "DeepSeek / Qwen / GLM / Kimi を主対象とし、organization/model-family差を維持する",
+        "MiniMax / Yi / Baichuan は主要4系統を理解するために必要な場合のみ補助線として扱う",
+        "independent hands-on testing、reproduction、failed reproduction、quantization、local inference、fine-tuning",
+        "vLLM / SGLang / llama.cpp / Ollama / MLX 等のserving/runtime integration",
+        "coding / agent harness / tool-use integration と long-context 実運用",
+        "Hugging Face / GitHub / community toolingへのdistribution・porting・derivative model signal",
+        "license / redistribution / commercial-use に関する実務上の混同や注意点",
+        "benchmark値・release date・model specification・license条件はXだけで確定せずprimary-source候補を示す"
+      ],
+      "time_scope": "2023-01-01 から 2026-08-22 まで。特に各主要release直後の反応だけでなく、後続のruntime integration・local inference・fine-tuning・agent/coding利用へ波及した持続的signalを重視する。",
+      "run_folder": "Grok_X_SourseIntake/Thematic_Special/SP001/open-weight-ecosystem-pass-01",
+      "expected_result_filename": "sp001-open-weight-ecosystem-pass-01.md",
+      "instruction": {
+        "path": "sources/SP001/external/x/open-weight-ecosystem-pass-01/grok-instruction.md",
+        "sha256": "5bbef9af2e365069c9436e4340c37caf2fe245f69bd523a5d2f52a0760125f17"
+      },
+      "prompt": {
+        "path": "sources/SP001/external/x/open-weight-ecosystem-pass-01/grok-prompt.md",
+        "sha256": "85a140706311cf95b2f9e03532cc7ccaed96abb5ef472922fd42c0e2b200423b"
+      },
+      "result": null
+    }
+  ],
+  "status": "AWAITING_GROK"
+}
