@@ -50,6 +50,32 @@ def _aware_datetime(value: Any) -> bool:
     return parsed.tzinfo is not None
 
 
+def _research_expansion_summary(discoveries: list[dict[str, Any]]) -> dict[str, Any]:
+    passes = [row["provenance"]["research_pass"] for row in discoveries]
+    parent_links = sum(len(row["provenance"]["parent_refs"]) for row in discoveries)
+    obligation_links = sum(len(row["provenance"]["obligation_ids"]) for row in discoveries)
+    unique_obligations = {
+        obligation_id
+        for row in discoveries
+        for obligation_id in row["provenance"]["obligation_ids"]
+    }
+    roots = sum(1 for row in discoveries if not row["provenance"]["parent_refs"])
+    expanded = sum(
+        1
+        for row in discoveries
+        if row["provenance"]["origin"] not in {"BASE", "CARRY_OVER"}
+    )
+    return {
+        "max_research_pass": max(passes, default=0),
+        "pass_counts": _counter([str(value) for value in passes]),
+        "parent_link_count": parent_links,
+        "obligation_link_count": obligation_links,
+        "unique_obligation_count": len(unique_obligations),
+        "root_discovery_count": roots,
+        "expanded_discovery_count": expanded,
+    }
+
+
 def _require_contracts(repo_root: Path) -> None:
     for rel in (MATRIX_SCHEMA, SELECTION_SCHEMA, ARCHITECTURE_SCHEMA, REVIEW_SCHEMA):
         if not (repo_root / rel).is_file():
@@ -169,7 +195,9 @@ def derive_candidate_matrix(
     views_by_task = {row["evidence_task_id"]: row for row in views_acceptance["views"]}
 
     rows: list[dict[str, Any]] = []
-    for evidence_row in sorted(evidence_acceptance["results"], key=lambda value: value["evidence_task_id"]):
+    for evidence_row in sorted(
+        evidence_acceptance["results"], key=lambda value: value["evidence_task_id"]
+    ):
         task_id = evidence_row["evidence_task_id"]
         if task_id not in ledger_by_task or task_id not in views_by_task:
             raise ValueError(f"silent drop before Matrix: {task_id}")
@@ -207,7 +235,9 @@ def derive_candidate_matrix(
                     "claim_count": len(card["claims"]),
                     "metric_count": len(card["metrics"]),
                     "limitation_count": len(card["limitations"]),
-                    "unresolved_question_count": len(card["verification"]["unresolved_questions"]),
+                    "unresolved_question_count": len(
+                        card["verification"]["unresolved_questions"]
+                    ),
                     "contradiction_count": len(card["verification"]["contradictions"]),
                     "entity_count": len(card["entities"]),
                 },
@@ -232,7 +262,9 @@ def derive_candidate_matrix(
         "summary": {
             "candidate_count": len(rows),
             "materiality_counts": _counter([row["materiality"] for row in rows]),
-            "evidence_status_counts": _counter([row["evidence_status"] for row in rows]),
+            "evidence_status_counts": _counter(
+                [row["evidence_status"] for row in rows]
+            ),
         },
     }
 
@@ -243,7 +275,9 @@ def validate_candidate_matrix(matrix: dict[str, Any], *args: Any) -> list[str]:
     except ValueError as exc:
         return [str(exc)]
     if matrix != expected:
-        return ["Candidate Matrix does not exactly match validated upstream Evidence/View/Materiality derivation"]
+        return [
+            "Candidate Matrix does not exactly match validated upstream Evidence/View/Materiality derivation"
+        ]
     return []
 
 
@@ -280,7 +314,9 @@ def validate_selection(
         "summary",
     }
     if set(selection) != required:
-        return ["Candidate Selection fields must exactly match v2 contract; Human approval fields are forbidden"]
+        return [
+            "Candidate Selection fields must exactly match v2 contract; Human approval fields are forbidden"
+        ]
     if selection.get("schema_version") != "2.0-rc1" or selection.get("status") != "ESTABLISHED":
         errors.append("Candidate Selection schema/status invalid")
     if selection.get("issue_id") != profile.get("issue_id") or selection.get("issue_id") != matrix.get("issue_id"):
@@ -296,12 +332,16 @@ def validate_selection(
         "materiality_ledger_sha256": core.sha256_file(ledger_path),
     }
     if selection.get("basis") != expected_basis:
-        errors.append("Candidate Selection basis does not bind exact Profile/Matrix/Completeness/Materiality bytes")
+        errors.append(
+            "Candidate Selection basis does not bind exact Profile/Matrix/Completeness/Materiality bytes"
+        )
     if not _nonempty(selection.get("selection_version")):
         errors.append("selection_version must be non-empty")
 
     research_contract = cfg["research_profiles"].get(profile.get("research_profile"), {})
-    publication_contract = cfg["publication_profiles"].get(profile.get("publication_profile"), {})
+    publication_contract = cfg["publication_profiles"].get(
+        profile.get("publication_profile"), {}
+    )
     research_namespace = research_contract.get("role_namespace")
     publication_namespace = publication_contract.get("role_namespace")
     if not _nonempty(research_namespace) or not research_namespace.endswith(":"):
@@ -313,7 +353,9 @@ def validate_selection(
     assignments = selection.get("assignments")
     if not isinstance(rows, list) or not isinstance(assignments, list):
         return errors + ["Matrix rows and Selection assignments must be arrays"]
-    matrix_by_id = {row.get("candidate_id"): row for row in rows if isinstance(row, dict)}
+    matrix_by_id = {
+        row.get("candidate_id"): row for row in rows if isinstance(row, dict)
+    }
     assignment_ids: list[str] = []
     dispositions: list[str] = []
     assignment_fields = {
@@ -356,23 +398,37 @@ def validate_selection(
         row = matrix_by_id[cid]
         if disposition == "SELECTED":
             if usage not in {"PRIMARY", "SUPPORTING"}:
-                errors.append(f"{cid}: SELECTED candidate requires PRIMARY or SUPPORTING architecture_usage")
+                errors.append(
+                    f"{cid}: SELECTED candidate requires PRIMARY or SUPPORTING architecture_usage"
+                )
             if publication_role is None and architecture_role is None:
-                errors.append(f"{cid}: SELECTED candidate requires a Profile/Publication-owned proposed role")
+                errors.append(
+                    f"{cid}: SELECTED candidate requires a Profile/Publication-owned proposed role"
+                )
             if publication_role is not None and _nonempty(publication_namespace) and not publication_role.startswith(publication_namespace):
-                errors.append(f"{cid}: publication_role is outside Publication Profile namespace {publication_namespace}")
+                errors.append(
+                    f"{cid}: publication_role is outside Publication Profile namespace {publication_namespace}"
+                )
             if architecture_role is not None and _nonempty(research_namespace) and not architecture_role.startswith(research_namespace):
-                errors.append(f"{cid}: architecture_role is outside Research Profile namespace {research_namespace}")
+                errors.append(
+                    f"{cid}: architecture_role is outside Research Profile namespace {research_namespace}"
+                )
             if row["materiality"] in {"NON_MATERIAL", "HOLD"}:
                 errors.append(f"{cid}: {row['materiality']} candidate cannot be SELECTED")
             if row["evidence_status"] in {"REJECTED", "NEEDS_MORE"}:
-                errors.append(f"{cid}: unresolved/rejected Evidence cannot be SELECTED")
+                errors.append(
+                    f"{cid}: unresolved/rejected Evidence cannot be SELECTED"
+                )
         else:
             if usage != "NONE" or publication_role is not None or architecture_role is not None:
-                errors.append(f"{cid}: non-selected candidate must not carry publication/architecture assignment")
+                errors.append(
+                    f"{cid}: non-selected candidate must not carry publication/architecture assignment"
+                )
     if len(assignment_ids) != len(set(assignment_ids)):
         errors.append("Candidate Selection contains duplicate candidate assignments")
-    if set(assignment_ids) != set(matrix_by_id) or len(assignment_ids) != len(matrix_by_id):
+    if set(assignment_ids) != set(matrix_by_id) or len(assignment_ids) != len(
+        matrix_by_id
+    ):
         errors.append("Candidate Selection must assign every Matrix candidate exactly once")
     expected_summary = {
         "candidate_count": len(rows),
@@ -381,8 +437,13 @@ def validate_selection(
     }
     if selection.get("summary") != expected_summary:
         errors.append("Candidate Selection summary does not match assignments")
-    for payload, label in ((completeness_result, "Completeness"), (ledger, "Materiality")):
-        if payload.get("issue_id") != selection.get("issue_id") or payload.get("research_profile") != selection.get("research_profile"):
+    for payload, label in (
+        (completeness_result, "Completeness"),
+        (ledger, "Materiality"),
+    ):
+        if payload.get("issue_id") != selection.get("issue_id") or payload.get(
+            "research_profile"
+        ) != selection.get("research_profile"):
             errors.append(f"Candidate Selection {label} identity divergence")
     return errors
 
@@ -431,7 +492,9 @@ def validate_architecture(
         return ["Issue Architecture fields must exactly match generic v2 envelope"]
     if architecture.get("schema_version") != "2.0-rc1":
         errors.append("Issue Architecture schema_version mismatch")
-    if architecture.get("issue_id") != profile["issue_id"] or architecture.get("research_profile") != profile["research_profile"]:
+    if architecture.get("issue_id") != profile["issue_id"] or architecture.get(
+        "research_profile"
+    ) != profile["research_profile"]:
         errors.append("Issue Architecture Profile identity mismatch")
     if architecture.get("publication_profile") != profile["publication_profile"]:
         errors.append("Issue Architecture Publication Profile mismatch")
@@ -447,23 +510,39 @@ def validate_architecture(
     if not _nonempty(architecture.get("editorial_thesis")):
         errors.append("Issue Architecture editorial_thesis required")
     goals = architecture.get("architecture_goals")
-    if not isinstance(goals, list) or not goals or len(goals) != len(set(goals)) or any(not _nonempty(value) for value in goals):
+    if not isinstance(goals, list) or not goals or len(goals) != len(
+        set(goals)
+    ) or any(not _nonempty(value) for value in goals):
         errors.append("Issue Architecture architecture_goals invalid")
-    if not isinstance(architecture.get("profile_extensions"), dict) or not isinstance(architecture.get("publication_extensions"), dict):
+    if not isinstance(architecture.get("profile_extensions"), dict) or not isinstance(
+        architecture.get("publication_extensions"), dict
+    ):
         errors.append("Issue Architecture extensions must be objects")
 
     page_plan = architecture.get("page_plan")
-    if not isinstance(page_plan, dict) or set(page_plan) != {"target_pages", "max_pages", "notes"}:
+    if not isinstance(page_plan, dict) or set(page_plan) != {
+        "target_pages",
+        "max_pages",
+        "notes",
+    }:
         errors.append("Issue Architecture page_plan fields invalid")
     else:
         target = page_plan.get("target_pages")
         maximum = page_plan.get("max_pages")
         for key, value in (("target_pages", target), ("max_pages", maximum)):
-            if value is not None and (not isinstance(value, (int, float)) or isinstance(value, bool) or value <= 0):
+            if value is not None and (
+                not isinstance(value, (int, float))
+                or isinstance(value, bool)
+                or value <= 0
+            ):
                 errors.append(f"page_plan.{key} must be positive or null")
-        if isinstance(target, (int, float)) and isinstance(maximum, (int, float)) and maximum < target:
+        if isinstance(target, (int, float)) and isinstance(
+            maximum, (int, float)
+        ) and maximum < target:
             errors.append("page_plan.max_pages cannot be less than target_pages")
-        if page_plan.get("notes") is not None and not _nonempty(page_plan.get("notes")):
+        if page_plan.get("notes") is not None and not _nonempty(
+            page_plan.get("notes")
+        ):
             errors.append("page_plan.notes must be non-empty or null")
 
     matrix_by_id = {row["candidate_id"]: row for row in matrix["rows"]}
@@ -503,7 +582,9 @@ def validate_architecture(
             package_ids.append(package_id)
         else:
             errors.append(f"{prefix}.package_id required")
-        if not _nonempty(package.get("title")) or not _nonempty(package.get("purpose")):
+        if not _nonempty(package.get("title")) or not _nonempty(
+            package.get("purpose")
+        ):
             errors.append(f"{prefix} title/purpose required")
         order = package.get("drafting_order")
         if isinstance(order, int) and not isinstance(order, bool) and order > 0:
@@ -517,15 +598,29 @@ def validate_architecture(
             "boundaries",
         ):
             values = package.get(key)
-            if not isinstance(values, list) or len(values) != len(set(values)) or any(not _nonempty(value) for value in values):
+            if not isinstance(values, list) or len(values) != len(
+                set(values)
+            ) or any(not _nonempty(value) for value in values):
                 errors.append(f"{prefix}.{key} must be a unique string array")
-        if not isinstance(package.get("profile_extensions"), dict) or not isinstance(package.get("publication_extensions"), dict):
+        if not isinstance(package.get("profile_extensions"), dict) or not isinstance(
+            package.get("publication_extensions"), dict
+        ):
             errors.append(f"{prefix} extensions must be objects")
-        primaries = package.get("primary_candidate_ids") if isinstance(package.get("primary_candidate_ids"), list) else []
-        supports = package.get("supporting_candidate_ids") if isinstance(package.get("supporting_candidate_ids"), list) else []
+        primaries = (
+            package.get("primary_candidate_ids")
+            if isinstance(package.get("primary_candidate_ids"), list)
+            else []
+        )
+        supports = (
+            package.get("supporting_candidate_ids")
+            if isinstance(package.get("supporting_candidate_ids"), list)
+            else []
+        )
         if set(primaries) & set(supports):
             errors.append(f"{prefix}: same candidate cannot be primary and supporting")
-        placements = [(cid, "PRIMARY") for cid in primaries] + [(cid, "SUPPORTING") for cid in supports]
+        placements = [(cid, "PRIMARY") for cid in primaries] + [
+            (cid, "SUPPORTING") for cid in supports
+        ]
         for cid, kind in placements:
             if cid in nonselected:
                 errors.append(f"{prefix}: non-selected candidate used: {cid}")
@@ -534,16 +629,24 @@ def validate_architecture(
                 errors.append(f"{prefix}: unknown selected candidate: {cid}")
                 continue
             if selected[cid]["architecture_usage"] != kind:
-                errors.append(f"{prefix}: {kind} placement conflicts with Selection usage for {cid}")
+                errors.append(
+                    f"{prefix}: {kind} placement conflicts with Selection usage for {cid}"
+                )
                 continue
             if kind == "PRIMARY":
                 primary[cid].append(package_id or prefix)
             else:
                 supporting[cid].append(package_id or prefix)
             boundary_set = set(package.get("boundaries") or [])
-            missing = [value for value in matrix_by_id[cid]["remaining_boundaries"] if value not in boundary_set]
+            missing = [
+                value
+                for value in matrix_by_id[cid]["remaining_boundaries"]
+                if value not in boundary_set
+            ]
             if missing:
-                errors.append(f"{prefix}: missing Evidence boundaries for {cid}: {missing}")
+                errors.append(
+                    f"{prefix}: missing Evidence boundaries for {cid}: {missing}"
+                )
     if len(package_ids) != len(set(package_ids)):
         errors.append("Issue Architecture package_id values must be unique")
     if len(drafting_orders) != len(set(drafting_orders)):
@@ -555,7 +658,11 @@ def validate_architecture(
         errors.append("selected_exceptions must be an array")
         exceptions = []
     for item in exceptions:
-        if not isinstance(item, dict) or set(item) != {"candidate_id", "reason", "exception_kind"}:
+        if not isinstance(item, dict) or set(item) != {
+            "candidate_id",
+            "reason",
+            "exception_kind",
+        }:
             errors.append("selected exception fields invalid")
             continue
         cid = item.get("candidate_id")
@@ -574,32 +681,53 @@ def validate_architecture(
         }:
             errors.append(f"selected exception kind invalid: {cid}")
         if primary.get(cid) or supporting.get(cid):
-            errors.append(f"selected candidate cannot have placement and exception: {cid}")
+            errors.append(
+                f"selected candidate cannot have placement and exception: {cid}"
+            )
     for cid, assignment in selected.items():
         if cid in exception_by_id:
             continue
-        if assignment["architecture_usage"] == "PRIMARY" and len(primary.get(cid, [])) != 1:
+        if assignment["architecture_usage"] == "PRIMARY" and len(
+            primary.get(cid, [])
+        ) != 1:
             errors.append(
                 f"selected PRIMARY candidate requires exactly one Architecture destination: {cid} count={len(primary.get(cid, []))}"
             )
-        if assignment["architecture_usage"] == "SUPPORTING" and not supporting.get(cid):
-            errors.append(f"selected SUPPORTING candidate requires at least one Architecture destination: {cid}")
+        if assignment["architecture_usage"] == "SUPPORTING" and not supporting.get(
+            cid
+        ):
+            errors.append(
+                f"selected SUPPORTING candidate requires at least one Architecture destination: {cid}"
+            )
 
     status = architecture.get("status")
     review = architecture.get("human_review")
     if status not in {"PROPOSED", "APPROVED"}:
         errors.append("Issue Architecture status invalid")
-    if not isinstance(review, dict) or set(review) != {"reviewed_by", "reviewed_at", "review_reference"}:
+    if not isinstance(review, dict) or set(review) != {
+        "reviewed_by",
+        "reviewed_at",
+        "review_reference",
+    }:
         errors.append("Issue Architecture human_review fields invalid")
         review = {}
     if status == "APPROVED":
         for key in ("reviewed_by", "reviewed_at", "review_reference"):
             if not _nonempty(review.get(key)):
                 errors.append(f"APPROVED Architecture requires human_review.{key}")
-        if _nonempty(review.get("reviewed_at")) and not _aware_datetime(review["reviewed_at"]):
-            errors.append("human_review.reviewed_at must be timezone-aware ISO-8601")
-    elif any(review.get(key) is not None for key in ("reviewed_by", "reviewed_at", "review_reference")):
-        errors.append("PROPOSED Architecture must not contain completed Human Review metadata")
+        if _nonempty(review.get("reviewed_at")) and not _aware_datetime(
+            review["reviewed_at"]
+        ):
+            errors.append(
+                "human_review.reviewed_at must be timezone-aware ISO-8601"
+            )
+    elif any(
+        review.get(key) is not None
+        for key in ("reviewed_by", "reviewed_at", "review_reference")
+    ):
+        errors.append(
+            "PROPOSED Architecture must not contain completed Human Review metadata"
+        )
     if require_approved and status != "APPROVED":
         errors.append("Issue Architecture must be APPROVED after Architecture Review")
     return errors
@@ -663,7 +791,9 @@ def build_architecture_review_summary(
         selection_path,
     )
     if upstream["completeness"]["overall_status"] == "INCOMPLETE":
-        errors.append("Profile Completeness is INCOMPLETE; Architecture Review is not ready")
+        errors.append(
+            "Profile Completeness is INCOMPLETE; Architecture Review is not ready"
+        )
 
     matrix_by_id = {row["candidate_id"]: row for row in matrix.get("rows", [])}
     selection_by_id = {
@@ -707,7 +837,11 @@ def build_architecture_review_summary(
         else:
             destination_kind = "NOT_SELECTED"
             destinations = []
-            exception_reason = assignment.get("rationale") if assignment else "Selection assignment missing"
+            exception_reason = (
+                assignment.get("rationale")
+                if assignment
+                else "Selection assignment missing"
+            )
         major.append(
             {
                 "candidate_id": cid,
@@ -738,19 +872,28 @@ def build_architecture_review_summary(
         },
         "discovery": {
             "total": len(upstream["discoveries"]),
-            "counts": _counter([row["provenance"]["origin"] for row in upstream["discoveries"]]),
+            "counts": _counter(
+                [row["provenance"]["origin"] for row in upstream["discoveries"]]
+            ),
         },
+        "research_expansion": _research_expansion_summary(upstream["discoveries"]),
         "screening": {
             "total": len(upstream["screening"]["decisions"]),
-            "counts": _counter([row["decision"] for row in upstream["screening"]["decisions"]),
+            "counts": _counter(
+                [row["decision"] for row in upstream["screening"]["decisions"]]
+            ),
         },
         "evidence": {
             "total": len(upstream["evidence"]["results"]),
-            "counts": _counter([row["status"] for row in upstream["evidence"]["results"]),
+            "counts": _counter(
+                [row["status"] for row in upstream["evidence"]["results"]]
+            ),
         },
         "materiality": {
             "total": len(upstream["ledger"]["rows"]),
-            "counts": _counter([row["downstream_disposition"] for row in upstream["ledger"]["rows"]),
+            "counts": _counter(
+                [row["downstream_disposition"] for row in upstream["ledger"]["rows"]]
+            ),
         },
         "selection": {
             "total": len(selection.get("assignments", [])),
@@ -758,7 +901,8 @@ def build_architecture_review_summary(
                 [
                     row["disposition"]
                     for row in selection.get("assignments", [])
-                    if isinstance(row, dict) and row.get("disposition") in DISPOSITIONS
+                    if isinstance(row, dict)
+                    and row.get("disposition") in DISPOSITIONS
                 ]
             ),
         },
@@ -767,7 +911,9 @@ def build_architecture_review_summary(
             "obligation_counts": _counter([row["status"] for row in obligations]),
         },
         "major_material_destinations": major,
-        "residual_limitations": list(upstream["completeness"]["residual_limitations"]),
+        "residual_limitations": list(
+            upstream["completeness"]["residual_limitations"]
+        ),
         "architecture": {
             "status": architecture.get("status"),
             "editorial_thesis": architecture.get("editorial_thesis"),
@@ -794,7 +940,16 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     matrix = subparsers.add_parser("matrix")
-    for key in ("profile", "discovery", "screening", "evidence", "views", "ledger", "completeness", "output"):
+    for key in (
+        "profile",
+        "discovery",
+        "screening",
+        "evidence",
+        "views",
+        "ledger",
+        "completeness",
+        "output",
+    ):
         matrix.add_argument(f"--{key}", required=True)
 
     selection = subparsers.add_parser("selection-check")
@@ -802,7 +957,14 @@ def build_parser() -> argparse.ArgumentParser:
         selection.add_argument(f"--{key}", required=True)
 
     architecture = subparsers.add_parser("architecture-check")
-    for key in ("architecture", "profile", "completeness", "ledger", "matrix", "selection"):
+    for key in (
+        "architecture",
+        "profile",
+        "completeness",
+        "ledger",
+        "matrix",
+        "selection",
+    ):
         architecture.add_argument(f"--{key}", required=True)
     architecture.add_argument("--require-approved", action="store_true")
 
@@ -827,7 +989,9 @@ def build_parser() -> argparse.ArgumentParser:
 def main() -> int:
     args = build_parser().parse_args()
     repo_root = Path(args.repo_root).resolve()
-    implementation_sha = core.repository_commit_sha(repo_root, args.implementation_sha)
+    implementation_sha = core.repository_commit_sha(
+        repo_root, args.implementation_sha
+    )
     try:
         if args.command == "matrix":
             payload = derive_candidate_matrix(
@@ -854,7 +1018,13 @@ def main() -> int:
                 _path(repo_root, args.completeness),
                 _path(repo_root, args.ledger),
             )
-            print(json.dumps({"passed": not errors, "errors": errors}, ensure_ascii=False, indent=2))
+            print(
+                json.dumps(
+                    {"passed": not errors, "errors": errors},
+                    ensure_ascii=False,
+                    indent=2,
+                )
+            )
             return 0 if not errors else 1
         if args.command == "architecture-check":
             errors = validate_architecture(
@@ -867,7 +1037,13 @@ def main() -> int:
                 _path(repo_root, args.selection),
                 args.require_approved,
             )
-            print(json.dumps({"passed": not errors, "errors": errors}, ensure_ascii=False, indent=2))
+            print(
+                json.dumps(
+                    {"passed": not errors, "errors": errors},
+                    ensure_ascii=False,
+                    indent=2,
+                )
+            )
             return 0 if not errors else 1
         if args.command == "review-summary":
             payload = build_architecture_review_summary(
@@ -886,10 +1062,17 @@ def main() -> int:
             )
             output = _path(repo_root, args.output)
             if output.exists():
-                raise ValueError(f"refusing to overwrite Architecture Review Summary: {output}")
+                raise ValueError(
+                    f"refusing to overwrite Architecture Review Summary: {output}"
+                )
             core.write_json(output, payload)
             print(output)
-            return 0 if payload["readiness"]["status"] == "READY_FOR_ARCHITECTURE_REVIEW" else 1
+            return (
+                0
+                if payload["readiness"]["status"]
+                == "READY_FOR_ARCHITECTURE_REVIEW"
+                else 1
+            )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         print(str(exc), file=sys.stderr)
         return 2
