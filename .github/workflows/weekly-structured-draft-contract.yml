@@ -1,0 +1,46 @@
+name: Weekly structured draft contract
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'surveys/weekly/**'
+      - 'sources/*/selection/**'
+      - 'sources/*/architecture/**'
+      - 'scripts/validate_weekly_issue_draft.py'
+      - 'scripts/editorial_prose_guard.py'
+      - '.github/workflows/weekly-structured-draft-contract.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Resolve issue from changed survey path
+        id: issue
+        shell: bash
+        run: |
+          set -euo pipefail
+          issue="$(find surveys/weekly -mindepth 1 -maxdepth 1 -type d -name '2026-W*' -printf '%f\n' | sort | tail -1)"
+          test -n "$issue"
+          echo "issue_id=$issue" >> "$GITHUB_OUTPUT"
+      - name: Validate Human-approved structured draft
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=scripts python scripts/validate_weekly_issue_draft.py \
+            --issue-id '${{ steps.issue.outputs.issue_id }}' \
+            --report structured-draft-report.json
+      - name: Upload contract report
+        uses: actions/upload-artifact@v7
+        with:
+          name: weekly-structured-draft-${{ steps.issue.outputs.issue_id }}
+          path: structured-draft-report.json
+          if-no-files-found: error
+          retention-days: 14

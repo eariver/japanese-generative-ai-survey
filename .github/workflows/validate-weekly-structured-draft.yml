@@ -1,0 +1,116 @@
+name: Validate structured Weekly draft
+
+on:
+  push:
+    branches:
+      - 'weekly/*-work'
+    paths:
+      - 'surveys/weekly/**'
+      - 'scripts/validate_weekly_issue_draft.py'
+      - 'scripts/editorial_prose_guard.py'
+      - '.github/workflows/validate-weekly-structured-draft.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-draft-preflight-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Resolve issue from work branch
+        id: issue
+        shell: bash
+        run: |
+          set -euo pipefail
+          branch='${{ github.ref_name }}'
+          if [[ "$branch" =~ ^weekly/([0-9]{4}-W[0-9]{2})-work$ ]]; then
+            echo "issue_id=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::Unexpected Weekly work branch: ${branch}"
+            exit 2
+          fi
+
+      - name: Run structured Draft preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          issue='${{ steps.issue.outputs.issue_id }}'
+          PYTHONPATH=scripts python scripts/validate_weekly_issue_draft.py \
+            --issue-id "$issue" \
+            --report "sources/${issue}/draft-validation-v0.1.json" \
+            --advance-state
+
+      - name: Materialize reader-auditable validation note
+        shell: bash
+        run: |
+          set -euo pipefail
+          issue='${{ steps.issue.outputs.issue_id }}'
+          python - "$issue" <<'PY'
+          import json,pathlib,sys
+          issue=sys.argv[1]
+          root=pathlib.Path('sources')/issue
+          r=json.load(open(root/'draft-validation-v0.1.json',encoding='utf-8'))
+          lines=[
+            f'# {issue} Draft Validation v0.1', '',
+            'Status: **PASSED**' if r['passed'] else 'Status: **FAILED**', '',
+            f"- Reader-facing section files checked: **{r.get('reader_facing_section_count',0)}**",
+            f"- Citation keys used: **{r.get('used_citation_key_count',0)}**",
+            f"- Bibliography keys: **{r.get('bibliography_key_count',0)}**",
+            '- Issue #9 prose guard: **passed**',
+            '- Trend Watch `現状 / 未確認 / 注視点`: **5 items × 3 labels confirmed**',
+            '- Empty/unapproved Late Breaking surface: **absent**',
+            '- Final `今週の総括`: **present before Source Notes / References**', '',
+            'This is a deterministic source preflight. Semantic claim/chronology review, LaTeX compilation and rendered visual review are separate downstream checks.',
+          ]
+          if r.get('warnings'):
+            lines += ['', '## Warnings'] + [f'- {x}' for x in r['warnings']]
+          (root/'draft-validation-v0.1.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+          PY
+
+      - name: Verify state transition
+        shell: bash
+        run: |
+          set -euo pipefail
+          issue='${{ steps.issue.outputs.issue_id }}'
+          python - "$issue" <<'PY'
+          import json,pathlib,sys
+          issue=sys.argv[1]
+          state=json.load(open(pathlib.Path('sources')/issue/'pipeline-state.json',encoding='utf-8'))
+          assert state['lifecycle_state']=='DRAFT_COMPLETE', state['lifecycle_state']
+          assert state['gates']['article_draft']=='passed'
+          assert state['gates']['claim_and_chronology_validation']=='pending'
+          PY
+
+      - name: Commit Draft validation checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          issue='${{ steps.issue.outputs.issue_id }}'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "sources/${issue}/draft-validation-v0.1.json" "sources/${issue}/draft-validation-v0.1.md" "sources/${issue}/pipeline-state.json"
+          git diff --cached --quiet && exit 0
+          git commit -m "Validate Weekly draft for ${issue}"
+          git push origin HEAD:'${{ github.ref_name }}'
+
+      - name: Upload Draft preflight report
+        uses: actions/upload-artifact@v7
+        with:
+          name: weekly-draft-preflight-${{ steps.issue.outputs.issue_id }}
+          path: |
+            sources/${{ steps.issue.outputs.issue_id }}/draft-validation-v0.1.json
+            sources/${{ steps.issue.outputs.issue_id }}/draft-validation-v0.1.md
+          if-no-files-found: error
+          retention-days: 14

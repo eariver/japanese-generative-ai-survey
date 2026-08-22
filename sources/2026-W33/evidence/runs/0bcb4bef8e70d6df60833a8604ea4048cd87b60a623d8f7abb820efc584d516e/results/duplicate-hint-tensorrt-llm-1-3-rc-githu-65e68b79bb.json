@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "2026-W33",
+  "evidence_task_id": "evidence:2026-W33:duplicate-hint-tensorrt-llm-1-3-rc-githu-65e68b79bb",
+  "evidence_task_sha256": "d08cf5de62673599c0b317f96c42cb4871fe1171ad40006690674edd76114239",
+  "prompt_id": "primary-source-verification-v0.1",
+  "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive-primary-source-review-openai-carryover-correction",
+    "generated_at": "2026-08-15T22:15:00+09:00"
+  },
+  "card": {
+    "schema_version": "1.0",
+    "issue_id": "2026-W33",
+    "evidence_task_id": "evidence:2026-W33:duplicate-hint-tensorrt-llm-1-3-rc-githu-65e68b79bb",
+    "status": "PARTIAL",
+    "grouping_resolution": {
+      "accepted": false,
+      "split_recommended": false,
+      "note": "Single release retained as one verification unit."
+    },
+    "artifact": {
+      "canonical_name": "NVIDIA/TensorRT-LLM v1.3.0rc24",
+      "artifact_type": "FRAMEWORK",
+      "organization": "NVIDIA/TensorRT-LLM",
+      "canonical_url": "https://github.com/NVIDIA/TensorRT-LLM/releases/tag/v1.3.0rc24"
+    },
+    "temporal": {
+      "artifact_first_announced": "2026-08-12T07:07:24Z",
+      "events": [
+        {
+          "event_id": "event-1",
+          "event_type": "SOFTWARE_RELEASE",
+          "event_date": "2026-08-12T07:07:24Z",
+          "source_published_at": "2026-08-12T07:07:24Z",
+          "source_ids": [
+            "src-1"
+          ]
+        }
+      ],
+      "observed_at": "2026-08-15T22:15:00+09:00"
+    },
+    "sources": [
+      {
+        "source_id": "src-1",
+        "url": "https://github.com/NVIDIA/TensorRT-LLM/releases/tag/v1.3.0rc24",
+        "source_class": "PRIMARY_REPOSITORY",
+        "title": "Primary source 1: https://github.com/NVIDIA/TensorRT-LLM/releases/tag/v1.3.0rc24",
+        "published_at": null,
+        "accessed_at": "2026-08-15T22:15:00+09:00",
+        "role": "Primary source used for chronology and technical verification"
+      }
+    ],
+    "claims": [
+      {
+        "claim_id": "claim-1",
+        "text": "The cited GitHub release page(s) establish repository release activity in the W33 window.",
+        "evidence_class": "PRIMARY_FACT",
+        "source_ids": [
+          "src-1"
+        ],
+        "context": null
+      },
+      {
+        "claim_id": "claim-2",
+        "text": "Technical highlights in release notes are project-maintainer claims until the relevant changes/setup are reviewed.",
+        "evidence_class": "PROJECT_CLAIM",
+        "source_ids": [
+          "src-1"
+        ],
+        "context": null
+      }
+    ],
+    "metrics": [],
+    "limitations": [
+      {
+        "limitation_id": "limitation-1",
+        "text": "Default pass does not independently reproduce release-note performance or hardware-support claims.",
+        "evidence_class": "INFERENCE",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "verification": {
+      "targets": [
+        {
+          "target": "Verify primary source, weekly significance, and whether this is distinct or redundant.",
+          "status": "UNRESOLVED",
+          "finding": "Release chronology is present, but the task's technical significance/overlap target still requires targeted release-note review.",
+          "source_ids": []
+        }
+      ],
+      "unresolved_questions": [
+        "Which release-note changes are material enough to survive cross-candidate comparison?"
+      ],
+      "contradictions": []
+    },
+    "editorial": {
+      "why_now_confirmed": true,
+      "why_now_note": "The repository release record(s) fall in 2026-W33; significance and individual release-note claims still require targeted review.",
+      "candidate_recommendation": "HOLD",
+      "rationale": "Preserve repository chronology and defer promotion until technical significance is explicitly reviewed."
+    }
+  }
+}

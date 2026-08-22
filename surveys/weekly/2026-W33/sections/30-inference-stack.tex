@@ -1,0 +1,88 @@
+\section{Inference becomes a product surface}
+\label{sec:inference-stack}
+\sectionkicker{API / Serving Framework / Runtime / Kernel}
+
+\textbf{「速い推論」は一つの技術ではない。API service tier、scheduler、distributed serving、attention kernelまで、異なるlayerの改善が同じlatency / throughputとして利用者に見える。}
+W33では、OpenAIのGPT-5.6 Sol Ultrafast preview、SGLang v0.5.17、vLLM v0.27.0--v0.27.1、FlashInfer v0.6.17が同じ週に並んだ\cite{openai-ultrafast,sglang-0517-w33,vllm-0270,vllm-0271,flashinfer-0617}。これらをrelease noteの列として読むより、推論stack上の位置として整理した方が違いが見える。
+
+\begin{center}
+\small
+\begin{tabularx}{0.97\linewidth}{@{}>{\bfseries}p{0.27\linewidth}X@{}}
+Hosted/API surface & GPT-5.6 Sol Ultrafast --- 利用者がservice tierとして選ぶ速度・latency surface \\
+Serving framework & SGLang / vLLM --- request scheduling、model support、distributed execution、cache / engine management \\
+Kernel / runtime & FlashInfer --- attention、MoE、quantized executionなど下位execution primitive \\
+Hardware & GPU / accelerator --- memory bandwidth、compute、interconnectなど物理的な制約 \\
+\end{tabularx}
+\end{center}
+
+この表は実装依存関係を一意に表すものではない。frameworkは独自kernelを持つこともあり、hosted serviceの内部stackも公開情報だけでは分からない。それでも、\textbf{改善がどの抽象層から利用者へ届くか}を分けるための地図として役立つ。
+
+\subsection*{Hosted layer: GPT-5.6 Sol Ultrafast}
+
+OpenAIは8月13日、GPT-5.6 Sol向けの\textbf{Ultrafast mode}をAPI service tierとしてpreviewした\cite{openai-ultrafast}。発表では最大14倍のspeed、最大750 output tokens/sという数値が掲げられている。
+
+ここで見ているのはmodel architectureの変更そのものではなく、利用者に露出した\textbf{service-level performance option}である。developerはkernelやschedulerを選ぶ代わりに、API側で提供されるmodeを選ぶ。この構造では、内部のoptimization stackがどう組まれていても、利用者が受け取るinterfaceはlatency / throughput / cost / availabilityのproduct surfaceになる。
+
+\begin{claimboundary}[14× / 750 tokens/sはOpenAIのpreview条件に属する]
+最大14倍、最大750 output tokens/sという値はOpenAIがUltrafast announcementで示したvendor-reported figureである\cite{openai-ultrafast}。本稿では独立benchmarkとして再現しておらず、別モデル、別prompt、別concurrency、別service tierへ一般化しない。重要なのは絶対順位ではなく、推論性能そのものがAPI product optionとして前面に出たことである。
+\end{claimboundary}
+
+Hosted serviceでは内部実装が抽象化される。そのため、利用者側の評価ではtoken rateだけでなくtime-to-first-token、tail latency、concurrency、rate limit、cost、availability、output qualityの変化まで見る必要がある。headline throughputが高くても、workload全体の体感が同じ比率で改善するとは限らない。
+
+\subsection*{Framework layer: SGLang v0.5.17}
+
+SGLangは8月8日にv0.5.17を公開した\cite{sglang-0517-w33}。release notesではday-0 model support、server / frontend work、cache changes、MoE-serving changesなどが説明されている。W32ではcutoff近傍のfollow-upとして短く現れたが、W33では通常window内の正式なserving releaseとして扱える。
+
+SGLangのようなserving frameworkが担うのは、単一requestのmatrix multiplicationだけではない。複数requestをどうbatchするか、prefillとdecodeをどう進めるか、KV cacheをどう扱うか、どのmodel family / quantization / parallelismへ対応するかといったsystem-level decisionがperformanceとoperabilityを左右する。
+
+release noteにある個々の改善はproject-maintainerの説明として読む必要があるが、v0.5.17がW33のserving ecosystem更新であること自体は明確である。特にday-0 model supportは、前節のMuse Glimmerや後節のComfyUIと同じく、\textbf{model release後のintegration speed}が競争軸になっていることを示す。
+
+\subsection*{Framework layer: vLLM v0.27系}
+
+vLLMは8月10日にv0.27.0、翌11日にv0.27.1を公開した\cite{vllm-0270,vllm-0271}。v0.27.0のrelease notesはmodel support、engine、quantization、distributed serving、platform対応まで広い変更面を持ち、v0.27.1は直後のpatch continuationとして位置づけられる。
+
+SGLangとvLLMを同じ記事に置く理由は勝敗をつけるためではない。両者ともproduction servingの課題を扱うが、support matrix、scheduler、execution engine、distributed architecture、operational toolingの設計は異なる。さらにrelease cycleも速いため、ある一点のbenchmarkで「framework Aが常に速い」と固定するのは危険である。
+
+むしろW33で見るべきなのは、\textbf{serving framework自体が頻繁にmodel compatibilityとexecution pathを更新する独立したsoftware productになっている}ことだ。model providerのAPIを使う場合には見えにくいが、自前deploymentではこのlayerの選択がhardware utilization、latency、feature availabilityに直結する。
+
+\begin{claimboundary}[Framework release noteをbenchmark rankingへ変換しない]
+SGLangとvLLMのrelease notesは、各projectが実装したfeature / fix / optimizationを確認する一次repository sourceである\cite{sglang-0517-w33,vllm-0270,vllm-0271}。そこに含まれるperformance、compatibility、resource efficiencyの記述はsetup依存であり、本稿では共通harnessによる横並びbenchmarkへ変換しない。
+\end{claimboundary}
+
+\subsection*{Kernel / runtime layer: FlashInfer v0.6.17}
+
+さらに一段下では、FlashInferが8月11日にv0.6.17を公開した\cite{flashinfer-0617}。release notesではattention、MoE expert parallelism、quantized inference、serving integrationに関するkernel / runtime変更が説明されている。
+
+LLM inferenceでは、frameworkが優れたschedulerを持っていても、hot pathにあるattentionやMoE executionがhardwareを十分使えなければ性能は伸びない。逆に高速kernelがあっても、request mix、cache management、communication、batchingがボトルネックならend-to-end improvementは限定される。
+
+FlashInferの位置づけは、この分業を理解するのにちょうどよい。kernel libraryは「利用者が直接チャットするproduct」ではないが、上位frameworkのperformance envelopeを支える。W33の4件をstackとして並べると、\textbf{user-visible speedが下位layerの積み重ねでできている}ことが見える。
+
+\subsection*{同じtokens/sでも意味が違う}
+
+推論性能を読む際には、少なくとも次の指標を分けたい。
+
+\begin{itemize}
+  \item \textbf{TTFT (time to first token):} prefill、queue、networkを含む初動の待ち時間。
+  \item \textbf{Inter-token latency / output rate:} decode中のtoken生成速度。
+  \item \textbf{Throughput:} concurrent workload全体で処理できるtoken / request量。
+  \item \textbf{Tail latency:} p95 / p99など混雑時の遅いrequest。
+  \item \textbf{Resource efficiency:} 同じSLOを満たすためのGPU memory、compute、power、instance数。
+\end{itemize}
+
+Ultrafastのheadline値、frameworkのrelease-note optimization、kernel-level microbenchmarkは、これらの別々の部分を測っている可能性がある。測定対象が違う数字を一つのrankingへ混ぜると、技術的な違いを消してしまう。
+
+\subsection*{Inferenceがproduct surfaceになる理由}
+
+かつてLLMの差を語るとき、主役はparameter count、benchmark、context lengthだった。現在はmodel qualityが一定水準へ近づくほど、利用者の体験を決める要因としてlatency、throughput、availability、cost、tool compatibilityが前に出る。特にagent workloadでは、一回の長いgenerationだけでなく、多数の短いmodel call、tool call、retryが連鎖するため、1 callあたりの待ち時間がworkflow全体へ積み上がる。
+
+その結果、inference optimizationはbackend engineeringの話に留まらず、\textbf{product behaviorそのもの}になる。Hosted APIではservice tier、self-hostではframework choice、さらに下ではkernel / quantization / hardware mappingとして現れる。
+
+W33にUltrafast、SGLang、vLLM、FlashInferが同時に並んだのは偶然以上の編集上の意味を持つ。性能改善の競争がmodel architectureだけでなく、提供方法とexecution stack全体へ分散しているからである。
+
+\subsection*{今週の意味}
+
+今週の推論storyは「どれが最速か」ではない。\textbf{速度を作るlayerが増え、その改善が別々のproduct / projectとして可視化された}ことにある。
+
+API consumerはservice tierを選ぶ。Infrastructure engineerはserving frameworkを選ぶ。Framework developerはschedulerやcacheを設計する。Kernel engineerはattention / MoE / quantized executionを詰める。最終的なuser experienceは、それらの組み合わせとして現れる。
+
+今後のinference比較では、model名だけでなく\textbf{どのstack、どのworkload、どのSLO、どのhardware条件で得られた結果なのか}をセットで見る必要がある。W33はその読み方を要求するreleaseが集中した週だった。

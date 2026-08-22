@@ -1,0 +1,55 @@
+\section{X Trend Watch --- 見えたsignalと、まだ確定できないもの}
+\label{sec:x-trend-watch}
+\sectionkicker{Social Observation / Unconfirmed Signals}
+
+\textbf{早いsignalは、早いほど不確実性も大きい。} W33のX観測では複数のmodel / report名が目立ったが、公開時点の一次情報と照合するとexactなidentityやrelease chronologyを確定できないものが残った\cite{w33-grok-r3-observation,w33-grok-r3-review}。ここでは「話題になった」こと自体を消さず、technical factとは別のreader-facing Watchlistとして整理する。
+
+\subsection*{Grok 4.6}
+
+\textbf{現状:} X上では`Grok 4.6'という名称を伴う期待・言及が観測された\cite{w33-grok-r3-observation}。
+
+\textbf{未確認:} 公開時点で確認できるxAIのfirst-party newsから、exactな`Grok 4.6' releaseを確定できなかった。照合時に確認できたfirst-party model announcementはGrok 4.5であり、名称の近さだけから4.6の存在やrelease dateを補完することはできない\cite{xai-news-w33,w33-grok-r3-review}。
+
+\textbf{注視点:} xAIのmodel announcement、API / product documentation、model identifierを伴うfirst-party releaseが出れば、名称・chronologyを再評価できる。現時点ではcapability、pricing、architecture、benchmarkをGrok 4.6の確定情報として扱わない。
+
+\subsection*{Qwen3.8-27B}
+
+\textbf{現状:} X / community側では`Qwen3.8-27B'の名称とlocal / GGUF文脈のsignalが観測された\cite{w33-grok-r3-observation,w33-grok-r3-review}。
+
+\textbf{未確認:} exactな`Qwen3.8-27B'について、Qwenのfirst-party model card、official weights、release announcementを公開時点で確定できなかった。Community packagingが存在しても、それだけでofficial model identityやfirst-release chronologyは成立しない。
+
+\textbf{注視点:} Qwen / Alibaba側のmodel card、official repository、API catalog、release noteでexact identifierが確認できれば評価が変わる。Parameter数やbenchmark、license、local requirementはそのsource chainが揃うまで保留する。
+
+\subsection*{Nemotron 3.5 Lightning}
+
+\textbf{現状:} `Nemotron 3.5 Lightning'という名称がW33のsocial signalとして観測された\cite{w33-grok-r3-observation}。
+
+\textbf{未確認:} NVIDIAのfirst-party model page / blogから、r3で示されたexactなLightning modelとW33 releaseを確定できなかった。Nemotron familyに関するfirst-party materialが存在することと、このexact variantが存在することは同じではない\cite{w33-grok-r3-review}。
+
+\textbf{注視点:} NVIDIAのmodel card、NIM / catalog entry、technical blog、repositoryなどでexactなmodel identifierが現れるかを見る。Parameter count、active parameters、BF16 / NVFP4 artifact、release dateは、それ以前には確定情報として掲載しない。
+
+\subsection*{DeepSeek-V4-Pro-0813}
+
+\textbf{現状:} DeepSeek-V4-Pro自体はfirst-party model repositoryで確認できる実在artifactである\cite{deepseek-v4pro}。X上ではさらに`0813'を伴う名称・event signalが観測された\cite{w33-grok-r3-observation}。
+
+\textbf{未確認:} `DeepSeek-V4-Pro-0813'というdistinct model identity、または2026年8月13日の新しいGA / update eventは公開時点で確定できなかった\cite{w33-grok-r3-review}。したがって「DeepSeek-V4-Proは存在しない」のではなく、\textbf{W33固有の0813 eventが未確定}という状態である。
+
+\textbf{注視点:} DeepSeekのmodel card revision、tag、API update、official announcementに8月13日の変更内容が明示されれば、既存V4-Pro artifactとW33 eventを切り分けられる。
+
+\subsection*{Anthropic Risk Report --- August 2026}
+
+\textbf{現状:} AnthropicのResponsible Scaling PolicyではRisk Reportというreporting mechanism自体を確認できる\cite{anthropic-rsp-w33}。W33のX観測では、特定の`August 2026 Risk Report'を示すsignalが現れた\cite{w33-grok-r3-observation}。
+
+\textbf{未確認:} 公開時点のAnthropic first-party materialから、r3が示した特定のAugust 2026 report / publication eventを確定できなかった\cite{w33-grok-r3-review}。制度としてRisk Reportがあることから、特定月のreportが公開済みだと推論することはできない。
+
+\textbf{注視点:} Anthropic Newsroom、policy page、正式PDF / report archiveに該当documentが公開されるかを見る。Documentが確認できるまでは、report内容や内部model risk assessmentを具体的なW33 factとして扱わない。
+
+\begin{claimboundary}[Trend Watchの読み方]
+このページはreleaseの否定一覧ではない。X上で観測された名称や期待のうち、公開時点で一次情報によるexactなidentity / chronology確認が不足しているものを示している。新しいfirst-party sourceが出れば評価は変わり得るが、現時点の不確実性を埋めるためにcommunity packageや類似名称からtechnical factを逆算しない。
+\end{claimboundary}
+
+\subsection*{Signalを残す理由}
+
+一次情報で確定できなかったsignalをすべて誌面から消すと、読者には「今週どのような期待や混線が発生していたか」が見えなくなる。一方、未確認名称を通常newsと同じ見出しで扱えば、social momentumがfactへ格上げされる。
+
+そこで今号では、\textbf{現状 / 未確認 / 注視点}を明示する。これは「次に何を信じるか」を決めるための形式でもある。公式model cardが必要なのか、release tagが必要なのか、report PDFが必要なのかを具体化すれば、signalを残しながらclaim boundaryも保てる。
