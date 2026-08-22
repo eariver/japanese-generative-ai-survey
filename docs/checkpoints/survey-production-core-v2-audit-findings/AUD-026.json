@@ -5,8 +5,8 @@
   "stage": "WU-011_SECOND_AUDIT",
   "observed_problem": "PR #310 changes .github/workflows/weekly-pipeline.yml beyond the intended Core v2 cross-regression wiring: compared with current main it rolls back the reproducible source-intake plan, deterministic screening batch generation, validation report artifact, raw-provenance report/update/check flow, artifact action/retention behavior, and related production control details.",
   "expected_behavior": "Survey Production Core v2 integration may broaden Weekly spine triggers and install the Core v2 validation dependency so legacy cross-regressions run, but it must preserve the current main Weekly production workflow byte-for-byte outside those narrowly required CI additions.",
-  "actual_behavior": "The improvement branch contains an older Weekly workflow body. Merging the candidate as-is would regress unrelated production behavior even though the Weekly spine test job is green.",
-  "production_workaround": "Do not merge PR #310 until the Weekly workflow is restored from current main and only the minimum v2 cross-regression trigger/dependency additions remain.",
+  "actual_behavior": "The improvement branch contained an older Weekly workflow body. Merging that form would have regressed unrelated production behavior even though the Weekly spine test job was green.",
+  "production_workaround": "External W33/SP001 production remains blocked until Human review and merge. The candidate Weekly workflow is restored to current-main production behavior with only v2 CI trigger/dependency additions, and a regression fixture pins the current production-control features that had been rolled back.",
   "classification": {
     "scope": "CORE",
     "defect_kind": "CORRECTNESS",
@@ -21,8 +21,8 @@
     ],
     "human_review_reference": null
   },
-  "improvement_action": "Restore .github/workflows/weekly-pipeline.yml from current main and reapply only v2 cross-regression path triggers plus the test-job installation of config/survey-production-v2-requirements.txt. Add a regression guard that compares the candidate Weekly workflow against main or otherwise makes unrelated workflow rollback visible before merge.",
+  "improvement_action": "Restore .github/workflows/weekly-pipeline.yml from current main and reapply only v2 cross-regression path triggers plus the test-job installation of config/survey-production-v2-requirements.txt. Add a regression guard that makes rollback of the current reproducible source-intake, validation, Raw provenance and artifact-retention controls visible before merge.",
   "regression_fixture": "tests/test_survey_pilot_bootstrap_v2.py",
   "resolved_by_repair_set_id": null,
-  "status": "OPEN"
+  "status": "FIXED_GENERIC"
 }
