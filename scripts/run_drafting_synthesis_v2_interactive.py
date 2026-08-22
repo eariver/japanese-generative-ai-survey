@@ -62,6 +62,15 @@ def _upstream(root: Path, state_path: Path) -> dict[str, Path]:
     profile_path=root/state['profile']['path']
     profile=_load(profile_path)
     source_root=root/profile['paths']['source_root']
+    discovery_acceptance=source_root/'discovery/discovery-accepted-v2.json'
+    accepted=_load(discovery_acceptance)
+    raw_discovery=accepted.get('discovery_path')
+    if not isinstance(raw_discovery,str) or not raw_discovery:
+        raise ValueError('Discovery Acceptance missing discovery_path')
+    discovery_path=(root/raw_discovery).resolve()
+    discovery_path.relative_to(root)
+    if not discovery_path.is_file():
+        raise ValueError('accepted Discovery JSONL missing')
     matrix_path=source_root/'candidate-matrix-v2.json'
     matrix=_load(matrix_path)
     evidence_path=_find_sha(source_root/'evidence', matrix['basis']['evidence_acceptance_sha256'], 'Evidence acceptance')
@@ -74,7 +83,7 @@ def _upstream(root: Path, state_path: Path) -> dict[str, Path]:
         'state': state_path,
         'profile': profile_path,
         'source_root': source_root,
-        'discovery': source_root/'discovery/discovery-accepted-v2.json',
+        'discovery': discovery_path,
         'screening': _screening_path(root, source_root),
         'evidence': evidence_path,
         'views': views_path,
@@ -129,7 +138,7 @@ def _refs(package: dict[str,Any], discovery_ids: list[str], mode: str) -> list[d
 
 
 def _classes(package: dict[str,Any], refs: list[dict[str,Any]]) -> set[str]:
-    index=drafting._card_ref_index(package)  # canonical validator index
+    index=drafting._card_ref_index(package)
     values=set()
     for ref in refs:
         values.add(index[(ref['evidence_task_id'],ref['kind'],ref['evidence_id'])][2] or 'PRIMARY_FACT')
