@@ -1,0 +1,32 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-035",
+  "edition": "CORE-V2",
+  "stage": "WU-012_AGENT_FIRST_REAUDIT",
+  "observed_problem": "Core v2 authority does not state strongly enough that ChatGPT is the primary research/editorial operator. WU-010R/WU-011 orchestration consequently models each local editorial stage as an externally controlled action requiring Action Spec, Handoff Request, Handoff, Result and Validation Attestation ceremony even though ChatGPT itself prepares the authoritative stage artifacts.",
+  "expected_behavior": "Repository policy should make ChatGPT the reasoning/editorial operator and treat scripts/workflows as supporting tools. Local research/editorial stages should require only the canonical stage artifacts, applicable deterministic validation and the minimum checkpoint record necessary for resume/provenance. Rich request/receipt control is reserved for true external or irreversible boundaries.",
+  "actual_behavior": "config/survey-production-v2.json requires a handoff for every executable stage and scripts/survey_orchestrator_v2.py/survey_handlers_v2.py construct a workflow-engine-style control chain around every local stage.",
+  "production_workaround": "Keep PR #310 draft and external Pilots unstarted while WU-012 simplifies the local control plane and makes the ChatGPT-first operating contract canonical.",
+  "classification": {
+    "scope": "CORE",
+    "defect_kind": "ORCHESTRATION",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "9349bd52641d3433cc219adea6565f44fe3dbf09",
+    "relevant_artifacts": [
+      "AGENTS.md",
+      "docs/special-session-bootstrap.md",
+      "config/survey-production-v2.json",
+      "scripts/survey_orchestrator_v2.py",
+      "scripts/survey_handlers_v2.py",
+      "scripts/survey_handoff_v2.py"
+    ],
+    "human_review_reference": "User premise correction and ChatGPT-first pre-approval re-audit, 2026-08-22"
+  },
+  "improvement_action": "Implement WU-012A/B from docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md: codify ChatGPT as operator, simplify local-stage orchestration to canonical outputs plus compact checkpoint provenance, and retain richer request/receipt machinery only for external/irreversible operations where it adds real safety.",
+  "regression_fixture": null,
+  "resolved_by_repair_set_id": null,
+  "status": "OPEN"
+}
