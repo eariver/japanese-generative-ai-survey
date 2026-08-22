@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/profile-synthesis-v2-input.schema.json",
+  "title": "Survey Production Core v2 Profile Synthesis Input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "issue_id", "research_profile", "publication_profile", "basis", "editorial_thesis", "architecture_goals", "drafts", "profile_payload_requirements", "publication_payload_requirements"],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "issue_id": {"type": "string", "minLength": 1},
+    "research_profile": {"enum": ["WEEKLY", "RETROSPECTIVE_PERIOD", "THEMATIC"]},
+    "publication_profile": {"type": "string", "minLength": 1},
+    "basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["production_profile_sha256", "architecture_sha256", "architecture_approval_sha256"],
+      "properties": {
+        "production_profile_sha256": {"$ref": "#/$defs/sha256"},
+        "architecture_sha256": {"$ref": "#/$defs/sha256"},
+        "architecture_approval_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "editorial_thesis": {"type": "string", "minLength": 1},
+    "architecture_goals": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "drafts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["package_id", "drafting_order", "draft_package_sha256", "draft_result_sha256", "draft_result"],
+        "properties": {
+          "package_id": {"type": "string", "minLength": 1},
+          "drafting_order": {"type": "integer", "minimum": 1},
+          "draft_package_sha256": {"$ref": "#/$defs/sha256"},
+          "draft_result_sha256": {"$ref": "#/$defs/sha256"},
+          "draft_result": {"type": "object"}
+        }
+      }
+    },
+    "profile_payload_requirements": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "publication_payload_requirements": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
