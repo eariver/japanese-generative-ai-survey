@@ -76,6 +76,7 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.assertIn("execute-current", production)
         self.assertIn("approve-architecture", production)
         self.assertIn("approve-publication-preview", production)
+        self.assertIn("FROZEN is a WORKFLOW_DISPATCH stage", production)
         release = paths["release"].read_text(encoding="utf-8")
         self.assertIn("GITHUB_ACTIONS_ARTIFACT", release)
         self.assertIn("build_merge_verification", release)
