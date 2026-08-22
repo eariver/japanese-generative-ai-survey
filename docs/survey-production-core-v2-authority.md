@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Design Authority Index
 
-Status: `CANONICAL IMPROVEMENT-BRANCH AUTHORITY / POST-COMPLETION RE-AUDIT REPAIR IN PROGRESS`  
+Status: `CANONICAL IMPROVEMENT-BRANCH AUTHORITY / WU-012 REPAIRS IMPLEMENTED / PRE-AUDIT CANDIDATE`  
 Established: 2026-08-22 JST  
 Working branch: `refactor/survey-production-core-v2`  
 Draft implementation PR: `#310`  
@@ -12,9 +12,9 @@ This index identifies the live semantic authority for Survey Production Core v2 
 
 Current `main` remains the production source of truth until PR #310 is explicitly Human-reviewed and merged. This file is authoritative for work on the improvement branch only until that merge.
 
-The 2026-08-22 ChatGPT-first re-audit corrected a material premise mismatch in the first WU-012 audit. A later post-completion audit of the former review head `2f3c9b10c031cf0d8e5cc114fb93e481e90fffac` found AUD-039 through AUD-044. Therefore the earlier WU-012 closure/PASS claim is **diagnostic historical evidence, not current final-approval evidence**.
+The 2026-08-22 ChatGPT-first re-audit corrected a material premise mismatch in the first WU-012 audit. A later post-completion audit of former review head `2f3c9b10c031cf0d8e5cc114fb93e481e90fffac` found AUD-039 through AUD-044. The first subsequent fixed-head final-audit attempt at `68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d` found AUD-045: this Authority still described those repairs as in progress even though the Worklog and Repair Set already described them as implemented. That audit was therefore invalidated before completion.
 
-The candidate may return to Human full-candidate review only after all repair/synchronization work is complete, one head SHA is frozen, and all five acceptance points are rerun from zero on that unchanged head under `docs/survey-production-core-v2-final-audit-rule.md`.
+The candidate tree intentionally stops at an **audit-stable pre-audit state**. It records that generic repairs are implemented and that exact-head CI/five-point final-audit evidence must be recorded outside the candidate tree in PR/Human-review metadata. This avoids changing the audited SHA merely to commit a PASS result.
 
 ## 2. Fundamental operating model
 
@@ -45,26 +45,26 @@ For Survey Production Core v2 improvement work, use:
 2. this authority index
 3. docs/survey-production-core-v2-final-audit-rule.md
 4. docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md
-5. docs/checkpoints/survey-production-core-v2-worklog.md for current status/next action
+5. docs/checkpoints/survey-production-core-v2-worklog.md for pre-audit implementation status
 6. docs/survey-production-core-v2-improvement-plan.md
 7. whole-system audit + explicit remediation status
 8. WU-011 second-audit closure / earlier audit amendments
 9. historical/current-main implementation docs used as evidence
 ```
 
-`docs/survey-production-core-v2-wu012-preapproval-closure.md` remains historical evidence of the earlier candidate state, but its final-PASS conclusion is invalidated by later candidate changes and AUD-039 through AUD-044 until a new fixed-head final audit passes.
+`docs/survey-production-core-v2-wu012-preapproval-closure.md` remains historical evidence of an earlier candidate state. Its final-PASS conclusion is invalidated by later candidate changes/findings and is not current approval authority.
 
-Older machine-first WU-012 language is superseded where it conflicts with this index, the final-audit rule, or the ChatGPT-first re-audit.
+The **post-freeze final result** is not a candidate-tree document. Under `docs/survey-production-core-v2-final-audit-rule.md`, PR/Human-review metadata names the exact audited head SHA and CI runs. That external record may move the candidate from pre-audit to Human full-candidate review without mutating the audited tree.
 
 ## 4. Current document map
 
 | Document | Current status | Role |
 |---|---|---|
 | `docs/survey-production-core-v2-final-audit-rule.md` | `CANONICAL PRE-MERGE REVIEW RULE` | all-changes-first/fixed-head five-point audit and invalidation semantics |
-| `docs/survey-production-core-v2-wu012-preapproval-closure.md` | `HISTORICAL / PREVIOUS AUDIT INVALIDATED` | evidence for the former candidate; not current merge authority |
+| `docs/survey-production-core-v2-wu012-preapproval-closure.md` | `HISTORICAL / PREVIOUS AUDIT INVALIDATED` | evidence for a former candidate; not current merge authority |
 | `docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md` | `AUTHORITATIVE OPERATOR-MODEL RE-AUDIT` | corrected operator/tool boundary and WU-012 scope |
-| `docs/checkpoints/survey-production-core-v2-worklog.md` | `CANONICAL WORK STATUS` | current WU status, repair evidence and exact next action |
-| `docs/survey-production-core-v2-improvement-plan.md` | `ACTIVE CONSOLIDATED PLAN / WU-012 REPAIRING` | overall architecture, rationale and rollout |
+| `docs/checkpoints/survey-production-core-v2-worklog.md` | `CANONICAL PRE-AUDIT WORK STATUS` | implemented repairs and required external final-validation handoff |
+| `docs/survey-production-core-v2-improvement-plan.md` | `ACTIVE CONSOLIDATED PLAN / WU-012 REPAIRS IMPLEMENTED` | overall architecture, rationale and rollout |
 | `docs/survey-production-core-v2-issue-prevention-checklist.md` | `CANONICAL PRODUCTION PREVENTION CHECKLIST` | historical Issue recurrence ownership |
 | `docs/survey-production-core-v2-historical-invariants.md` | `ACTIVE INVARIANT CATALOG` | historical prevention source corpus |
 | `docs/survey-production-core-v2-historical-production-deep-audit.md` | `AUTHORITATIVE HISTORICAL CORPUS EVIDENCE` | completed Special corpus and repair interactions |
@@ -103,7 +103,7 @@ Structured records make these decisions resumable and reviewable; they do not tu
 - bibliography/render/build/preflight;
 - deterministic historical regression checks;
 - lifecycle-specific exact semantic artifact validation before compact checkpoint adoption;
-- exact Publication Profile/source/PDF quality binding;
+- exact Production Profile/source/PDF quality binding;
 - exact Publication Preview/PDF/Freeze/Release identity;
 - GitHub Release side effects/reconciliation.
 
@@ -198,7 +198,7 @@ Deterministic recurrent issues should not depend on reviewer memory when a small
 
 ## 10. WU-012 finding disposition
 
-Previously implemented generic repairs remain:
+Generic repairs implemented in the pre-audit candidate:
 
 - AUD-027 `FIXED_GENERIC`
 - AUD-028 `FIXED_GENERIC`
@@ -210,28 +210,34 @@ Previously implemented generic repairs remain:
 - AUD-036 `FIXED_GENERIC`
 - AUD-037 `FIXED_GENERIC`
 - AUD-038 `FIXED_GENERIC`
-
-Post-completion audit findings currently under repair/verification:
-
-- AUD-039 — compact checkpoint semantic stage authority
-- AUD-040 — practical current-tool adoption after initialization
-- AUD-041 — all-changes-first fixed-head final-audit rule
-- AUD-042 — Quality Bundle exact Production Profile applicability binding
-- AUD-043 — Retrospective Period public release identity
-- AUD-044 — bounded Period end-before-initialization guard
+- AUD-039 `FIXED_GENERIC` — compact checkpoint semantic stage authority
+- AUD-040 `FIXED_GENERIC` — practical reviewed-tool adoption after initialization
+- AUD-041 `FIXED_GENERIC` — all-changes-first fixed-head final-audit rule
+- AUD-042 `FIXED_GENERIC` — exact Production Profile-bound Quality applicability
+- AUD-043 `FIXED_GENERIC` — Retrospective Period public release identity
+- AUD-044 `FIXED_GENERIC` — bounded Period completion guard
+- AUD-045 `FIXED_GENERIC` — canonical pre-audit status synchronization and audit-stable result handoff wording
 
 Intentional deferrals remain:
 
 - AUD-031 `DEFERRED` — machine Series engine is premature; living Foundations authority is sufficient to start real work.
 - AUD-033 `DEFERRED` — exhaustive synthetic future-edition fixture matrix is unnecessary; small structural tests + real Pilots are the chosen evidence strategy.
 
-Repair Set `REPAIR-WU012-2026-08-22` remains `IMPLEMENTED`, not `VALIDATED/CLOSED`, until real W33/SP001 verification editions exist. AUD-039 through AUD-044 must not be marked fixed merely because code exists; their regression and repository synchronization must first be complete.
+Repair Set `REPAIR-WU012-2026-08-22` remains `IMPLEMENTED`, not `VALIDATED/CLOSED`, until real W33/SP001 verification editions exist.
 
-## 11. Pre-merge validation evidence
+## 11. Pre-audit validation boundary
 
-Earlier green heads remain historical evidence only. In particular, the former synchronized head `2f3c9b10c031cf0d8e5cc114fb93e481e90fffac` is **not** current final-review evidence because later post-completion audit found AUD-039 through AUD-044.
+Earlier green heads remain historical evidence only. In particular, former synchronized head `2f3c9b10c031cf0d8e5cc114fb93e481e90fffac` is not current final-review evidence, and fixed-head attempt `68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d` was invalidated by AUD-045.
 
-Before freezing the next candidate head, all five required cross-regression families must be green on the complete repaired candidate:
+This candidate tree deliberately does **not** commit a final exact-head PASS. The required external validation sequence is:
+
+1. all five cross-regression families pass on one unchanged candidate head;
+2. that exact head is frozen for review;
+3. Weekly viability, Special viability, generality, historical Issue recurrence prevention, and control proportionality are audited from zero in order;
+4. any candidate-tree mutation invalidates the entire audit;
+5. an unchanged all-PASS result is recorded in PR/Human-review metadata with exact head SHA and CI run IDs.
+
+The five required cross-regression families are:
 
 1. Survey Production Core v2 CI;
 2. Screening contract CI;
@@ -239,23 +245,23 @@ Before freezing the next candidate head, all five required cross-regression fami
 4. Pipeline contract tests;
 5. Weekly pipeline spine + committed Raw integrity.
 
-Green CI is necessary but not sufficient: after all candidate changes are complete, the fixed-head five-point audit must still run from zero.
-
-## 12. Current stop rule
+## 12. Pre-audit handoff and production boundary
 
 PR #310 remains draft and unmerged. W33, W34, SP001, SP002 and SP003 remain unstarted.
 
-**Current action is repair/synchronization of AUD-039 through AUD-044, followed by full cross-regression. This is not yet the Human full-candidate review boundary.**
+The repository-side pre-audit handoff is complete only when this Authority, Worklog, Repair Set, implementation and tests agree. Once they do, freeze the exact branch head, obtain five-family green CI, and run the mandatory five-point audit without changing the candidate.
 
-When all repairs, tests, Finding/Repair Set synchronization, guides and PR preparation are complete:
+If any audit point requires a repository change:
 
 ```text
-freeze exact candidate head SHA
--> rerun acceptance points 1 through 5 from zero without changing the candidate
--> if any repair is required, invalidate the entire audit and repeat after all repairs
--> only an unchanged all-PASS head may be presented for Human full-candidate review
+record/classify finding
+-> audit INVALIDATED
+-> repair + synchronize
+-> rerun five-family CI
+-> freeze new head
+-> rerun all five acceptance points from point 1
 ```
 
-The final audit result is recorded in the PR/Human-review handoff against the exact audited head, not by mutating the already audited candidate tree.
+If all five pass on an unchanged head, record that exact-SHA result in PR/Human-review metadata and present the candidate for Human full-candidate review. Do not commit a post-audit PASS document into the audited tree.
 
 Do not start any Pilot before explicit Human approval and merge.
