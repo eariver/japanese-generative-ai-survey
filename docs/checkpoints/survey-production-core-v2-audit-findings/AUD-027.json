@@ -1,0 +1,29 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-027",
+  "edition": "CORE-V2",
+  "stage": "WU-012_PRE_APPROVAL_AUDIT",
+  "observed_problem": "Profile Completeness can currently mark a mandatory initial obligation SATISFIED with empty discovery_ids and evidence_task_ids, and the Core has no separate authority proving that the Profile-owned Source Intake/search surface was adequately exercised. A weak or incomplete intake can therefore self-attest readiness even though collector success and discovered-record traceability do not prove coverage.",
+  "expected_behavior": "Every mandatory Profile coverage obligation must have evidence-backed research/search disposition. SATISFIED must require authoritative support appropriate to that obligation, NEEDS_RESEARCH must fail closed, LIMITATION must preserve residual uncertainty, and NOT_APPLICABLE must be explicitly permitted by the Profile. Adequate negative search results may prove coverage without imposing fixed source/story quotas.",
+  "actual_behavior": "schemas/profile-completeness-result.schema.json permits empty discovery/evidence arrays for every obligation status, and scripts/survey_completeness_v2.py does not require non-empty support for SATISFIED before overall READY can be accepted.",
+  "production_workaround": "Do not approve or merge PR #310 and do not start W33/SP001. WU-012A must add Profile-owned coverage/search authority and evidence requirements before production validation.",
+  "classification": {
+    "scope": "CORE",
+    "defect_kind": "COVERAGE",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "8beaf978793d983cc7608f4ca9c534511dd04d7a",
+    "relevant_artifacts": [
+      "scripts/survey_completeness_v2.py",
+      "schemas/profile-completeness-result.schema.json",
+      "scripts/survey_production_v2.py"
+    ],
+    "human_review_reference": "Pre-approval WU-001-WU-011 audit, 2026-08-22"
+  },
+  "improvement_action": "Implement WU-012A: add Profile-owned Source Intake/search coverage authority including negative-result evidence, require authoritative support for SATISFIED, constrain NOT_APPLICABLE to Profile policy, and add fail-closed regression fixtures without fixed source-count or article-count quotas.",
+  "regression_fixture": null,
+  "resolved_by_repair_set_id": null,
+  "status": "OPEN"
+}
