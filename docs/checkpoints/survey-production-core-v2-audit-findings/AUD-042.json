@@ -1,0 +1,31 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-042",
+  "edition": "CORE-V2",
+  "stage": "WU-012_POST_CHANGE_FIVE_PERSPECTIVE_AUDIT",
+  "observed_problem": "The Quality Review Bundle stores research_profile/publication_profile labels but is not bound to the authoritative Production Profile. build_bundle infers WEEKLY from a Weekly issue ID and otherwise defaults to THEMATIC/LONGFORM_SPECIAL when callers omit explicit profile arguments. A RETROSPECTIVE_PERIOD issue can therefore silently receive the Thematic quality family, omitting Period-specific checks; callers can also explicitly supply a profile pair that does not match the edition Profile. Publication Candidate validation does not currently reject a quality bundle whose publication_profile differs from the candidate's publication_profile.",
+  "expected_behavior": "Quality applicability must derive from and bind the exact Production Profile, never from issue-ID heuristics or caller-declared labels. The Quality Bundle must preserve the exact Profile authority and its research/publication identities. Publication Candidate validation must require the coupled Quality Bundle to match the Candidate/edition publication profile.",
+  "actual_behavior": "Pending repair.",
+  "production_workaround": null,
+  "classification": {
+    "scope": "CORE",
+    "defect_kind": "QUALITY_CONTRACT",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "2f3c9b10c031cf0d8e5cc114fb93e481e90fffac",
+    "relevant_artifacts": [
+      "scripts/survey_quality_v2.py",
+      "schemas/quality-regression-bundle-v2.schema.json",
+      "scripts/survey_publication_v2.py",
+      "tests/test_survey_quality_v2.py",
+      "tests/test_survey_publication_v2.py"
+    ],
+    "human_review_reference": "Post-change five-perspective audit requested by Owner, 2026-08-22"
+  },
+  "improvement_action": "Bind Quality Review Bundles to the exact Production Profile, derive applicable quality checks from that Profile, remove unsafe non-Weekly inference, require Publication Candidate/Profile consistency, and add Retrospective Period regressions.",
+  "regression_fixture": "tests/test_survey_quality_v2.py",
+  "resolved_by_repair_set_id": null,
+  "status": "OPEN"
+}
