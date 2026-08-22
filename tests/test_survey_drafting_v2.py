@@ -7,6 +7,7 @@ from pathlib import Path
 from scripts import survey_architecture_v2 as architecture
 from scripts import survey_drafting_v2 as drafting
 from scripts import survey_production_v2 as core
+from scripts import survey_review_attention_v2 as review_attention
 from tests import test_survey_architecture_v2 as architecture_tests
 
 
@@ -41,6 +42,10 @@ class SurveyDraftingV2Tests(unittest.TestCase):
         self.assertEqual(summary["readiness"]["status"], "READY_FOR_ARCHITECTURE_REVIEW")
         summary_path = chain["root"] / "architecture-review-summary-v2.json"
         core.write_json(summary_path, summary)
+        attention_path = chain["root"] / "architecture-review-attention-v2.json"
+        review_attention.build_attention(
+            chain["root"], chain["screening"], chain["ledger_path"], selection_path, attention_path
+        )
         approval = {
             "schema_version": "2.0-rc1",
             "approval_id": f"approval:{chain['matrix']['issue_id']}:architecture",
@@ -49,6 +54,7 @@ class SurveyDraftingV2Tests(unittest.TestCase):
             "decision": "APPROVED",
             "architecture_sha256": core.sha256_file(architecture_path),
             "architecture_review_summary_sha256": core.sha256_file(summary_path),
+            "architecture_review_attention_sha256": core.sha256_file(attention_path),
             "reviewed_by": "human-reviewer",
             "reviewed_at": "2026-08-22T03:00:00+09:00",
             "review_reference": "human-gate-fixture",
@@ -60,6 +66,7 @@ class SurveyDraftingV2Tests(unittest.TestCase):
                 "selection_path": selection_path,
                 "architecture_path": architecture_path,
                 "review_summary_path": summary_path,
+                "review_attention_path": attention_path,
                 "approval_path": approval_path,
             }
         )

@@ -11,6 +11,7 @@ from unittest import mock
 
 from scripts import survey_orchestrator_v2 as orchestrator
 from scripts import survey_production_v2 as core
+from scripts import survey_review_attention_v2 as review_attention
 
 
 class SurveyOrchestratorV2Tests(unittest.TestCase):
@@ -67,6 +68,8 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
             "ARCHITECTURE_REVIEW",
             core.parse_instant("2026-08-22T03:01:00+09:00"),
         )
+        for stage in cfg["orchestration"]["stage_plan"].values():
+            stage["handoff_required"] = False
         return temp, root, cfg, state_path, pinned
 
     @staticmethod
@@ -174,6 +177,15 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
                 elif name == "architecture-review-summary":
                     architecture = root / "sources" / state["issue_id"] / "architecture-v2.json"
                     core.write_json(artifact, self.synthetic_review(state, core.sha256_file(architecture)))
+                elif name == "architecture-review-attention":
+                    generated = root / "sources" / state["issue_id"] / "generated"
+                    review_attention.build_attention(
+                        root,
+                        generated / "DISCOVERY_COLLECTED-screening.json",
+                        generated / "CANDIDATES_NORMALIZED-materiality.json",
+                        generated / "EVIDENCE_REVIEWED-selection.json",
+                        artifact,
+                    )
                 else:
                     core.write_json(
                         artifact,
@@ -272,6 +284,7 @@ class SurveyOrchestratorV2Tests(unittest.TestCase):
         self.assertEqual(gate_inputs["checkpoint-attestation:architecture"]["sha256"], state["checkpoint_provenance"]["architecture"]["sha256"])
         self.assertEqual(gate_inputs["issue-architecture"]["sha256"], core.sha256_file(root / "sources/SP001/architecture-v2.json"))
         self.assertEqual(gate_inputs["architecture-review-summary"]["sha256"], core.sha256_file(root / "sources/SP001/architecture-review-summary-v2.json"))
+        self.assertEqual(gate_inputs["architecture-review-attention"]["sha256"], core.sha256_file(root / "sources/SP001/architecture-review-attention-v2.json"))
 
     def test_semantically_invalid_architecture_cannot_pass_checkpoint_or_reach_gate(self) -> None:
         temp, root, cfg, state_path, _ = self.sandbox()
