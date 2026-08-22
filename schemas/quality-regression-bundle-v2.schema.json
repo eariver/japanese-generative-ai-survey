@@ -1,13 +1,25 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/schemas/quality-regression-bundle-v2.schema.json",
-  "title": "Survey Production Core v2 Coupled Quality Regression Bundle",
+  "title": "Survey Production Core v2 Quality Review Bundle",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "issue_id", "source", "pdf", "checks", "status", "bundle_sha256"],
+  "required": [
+    "schema_version",
+    "issue_id",
+    "research_profile",
+    "publication_profile",
+    "source",
+    "pdf",
+    "checks",
+    "status",
+    "bundle_sha256"
+  ],
   "properties": {
     "schema_version": {"const": "2.0-rc1"},
     "issue_id": {"type": "string", "minLength": 1},
+    "research_profile": {"enum": ["WEEKLY", "RETROSPECTIVE_PERIOD", "THEMATIC"]},
+    "publication_profile": {"enum": ["WEEKLY_MAGAZINE", "LONGFORM_SPECIAL"]},
     "source": {"$ref": "#/$defs/artifact"},
     "pdf": {"$ref": "#/$defs/pdfAuthority"},
     "checks": {
@@ -16,12 +28,26 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["check_id", "status", "evidence"],
+        "required": ["check_id", "kind", "status", "executor", "evidence", "recorded_at", "result"],
         "properties": {
           "check_id": {"type": "string", "minLength": 1},
+          "kind": {"enum": ["DETERMINISTIC", "AGENT_SEMANTIC", "AGENT_VISUAL"]},
           "status": {"const": "PASS"},
-          "evidence": {"type": "string", "minLength": 1}
-        }
+          "executor": {"type": "string", "minLength": 1},
+          "evidence": {"type": "string", "minLength": 1},
+          "recorded_at": {"type": "string", "format": "date-time"},
+          "result": {"$ref": "#/$defs/nullableArtifact"}
+        },
+        "allOf": [
+          {
+            "if": {"properties": {"kind": {"const": "DETERMINISTIC"}}},
+            "then": {"properties": {"result": {"$ref": "#/$defs/artifact"}}}
+          },
+          {
+            "if": {"properties": {"kind": {"enum": ["AGENT_SEMANTIC", "AGENT_VISUAL"]}}},
+            "then": {"properties": {"result": {"type": "null"}}}
+          }
+        ]
       }
     },
     "status": {"const": "PASS"},
@@ -30,15 +56,18 @@
   "$defs": {
     "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "artifact": {
-      "type": "object", "additionalProperties": false,
+      "type": "object",
+      "additionalProperties": false,
       "required": ["path", "sha256"],
       "properties": {
         "path": {"type": "string", "minLength": 1},
         "sha256": {"$ref": "#/$defs/sha256"}
       }
     },
+    "nullableArtifact": {"oneOf": [{"$ref": "#/$defs/artifact"}, {"type": "null"}]},
     "actionsArtifact": {
-      "type": "object", "additionalProperties": false,
+      "type": "object",
+      "additionalProperties": false,
       "required": ["repository", "workflow_run_id", "artifact_id", "artifact_name", "artifact_digest"],
       "properties": {
         "repository": {"type": "string", "pattern": "^[^/]+/[^/]+$"},
@@ -49,7 +78,8 @@
       }
     },
     "pdfAuthority": {
-      "type": "object", "additionalProperties": false,
+      "type": "object",
+      "additionalProperties": false,
       "required": ["storage", "path", "sha256", "byte_count", "actions_artifact"],
       "properties": {
         "storage": {"enum": ["REPOSITORY_FILE", "GITHUB_ACTIONS_ARTIFACT"]},
