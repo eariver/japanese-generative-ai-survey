@@ -11,7 +11,12 @@
       "docs/survey-production-core-v2-minimum-vertical-slice-second-audit-amendment.md",
       "docs/survey-production-core-v2-whole-system-audit-2026-08-22.md",
       "docs/survey-production-core-v2-whole-system-audit-remediation-closure.md",
+      "docs/survey-production-core-v2-x-source-intake.md",
       "config/survey-production-v2-requirements.txt",
+      "config/prompts/grok/x-source-intake-base-v1.md",
+      "config/prompts/grok/x-source-intake-weekly-v1.md",
+      "config/prompts/grok/x-source-intake-special-v1.md",
+      "schemas/x-source-intake-v2.schema.json",
       "schemas/survey-discovery-record.schema.json",
       "schemas/discovery-acceptance-v2.schema.json",
       "schemas/screening-v2-run-package.schema.json",
@@ -74,6 +79,28 @@
     },
     "handler_dispatch": {
       "stage:release": "survey-production-v2-release.yml"
+    }
+  },
+  "external_source_intake": {
+    "x_grok": {
+      "provider": "xAI",
+      "transport": "GOOGLE_DRIVE",
+      "drive_root_name": "Grok_X_SourseIntake",
+      "drive_categories": {
+        "WEEKLY": "Weekly",
+        "RETROSPECTIVE_PERIOD": "Retrospective_Special",
+        "THEMATIC": "Thematic_Special"
+      },
+      "series_category": {
+        "GENERATIVE_AI_FOUNDATIONS": "Generative_AI_Foundations"
+      },
+      "profile_policy": {
+        "WEEKLY": "REQUIRED_BY_PROFILE",
+        "RETROSPECTIVE_PERIOD": "CHATGPT_DECIDES",
+        "THEMATIC": "CHATGPT_DECIDES"
+      },
+      "evidence_role": "DISCOVERY_AND_COMMUNITY_SIGNAL_ONLY",
+      "repository_write_authority": "CHATGPT_IMPORT_AFTER_GOOGLE_DRIVE_RECEIPT"
     }
   },
   "research_profiles": {
@@ -190,6 +217,7 @@
         "next_state": "DISCOVERY_COLLECTED",
         "checkpoints": ["discovery"],
         "artifacts": [
+          {"name": "x-source-intake-manifest", "path": "{source_root}/external/x/x-source-intake-v2.json"},
           {"name": "discovery-acceptance", "path": "{source_root}/discovery/discovery-accepted-v2.json"}
         ]
       },
