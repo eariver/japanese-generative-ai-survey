@@ -6,7 +6,6 @@ on:
       - 'sources/**/publication/v2/publication-candidate-v2.json'
       - 'surveys/weekly/**/main.pdf'
       - 'surveys/special/**/main.pdf'
-      - '.github/workflows/survey-production-v2-export-publication-preview.yml'
   workflow_dispatch:
     inputs:
       candidate_path:
@@ -43,7 +42,6 @@ jobs:
         id: preview
         shell: bash
         env:
-          EVENT_NAME: ${{ github.event_name }}
           BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
           REQUESTED_CANDIDATE: ${{ inputs.candidate_path || '' }}
         run: |
