@@ -14,7 +14,7 @@ Examples of sufficient requests are:
 
 ChatGPT is the primary research, editorial and publication operator. It resolves the target from repository authority, initializes or resumes canonical Production Profile/State, plans research, performs source/evidence work, authors the reader-facing manuscript, performs semantic/editorial review, reviews the exact rendered PDF visually, and proceeds autonomously toward the requested Gate.
 
-Deterministic scripts and GitHub Actions are support infrastructure. They protect exact identities, provenance, crisp invariants, reproducible builds, CI and release integrity. They do **not** replace ChatGPT research/editorial judgment and they are not the normal prose-authoring or semantic-revision loop.
+Deterministic scripts and GitHub Actions are support infrastructure. They protect exact identities, provenance, crisp invariants, reproducible builds, CI and release integrity. They do **not** replace ChatGPT research/editorial judgment and do not make Human Gate decisions.
 
 ## Continuous production progression
 
@@ -27,7 +27,9 @@ The only normal Human Gates are:
 1. `ARCHITECTURE_REVIEW`;
 2. exact-byte `PUBLICATION_PREVIEW`.
 
-Raise an Exception Gate only when safe continuation genuinely requires Owner judgment. Do not turn routine research refinement, edition-local QA repair, network/tool retry, or a missing-but-valid Grok result into a Human Gate.
+At either normal Gate, the Human may explicitly choose `APPROVED` or routine `REQUEST_CHANGES`. For `REQUEST_CHANGES`, the Human supplies the requested changes and an allowed regeneration boundary. Deterministic Core records the review revision and invalidates only affected downstream authority; ChatGPT then applies the requested edition-local repair and resumes automatically toward the same Gate as rN+1. Routine requested changes are **not** an Exception Gate.
+
+Raise an Exception Gate only when safe continuation genuinely requires Owner judgment. Do not turn routine research refinement, edition-local QA repair, network/tool retry, a normal Human revision, or a missing-but-valid Grok result into an Exception Gate.
 
 ## Production versus Core-maintenance responsibility
 
@@ -44,7 +46,7 @@ scripts/
 docs/survey-production-core-v2-*.md
 ```
 
-Edition production may write only edition-scoped source/research/publication/execution artifacts and normal branch/state metadata needed for that edition.
+Edition production may write only edition-scoped source/research/publication/execution/gate artifacts and normal branch/state metadata needed for that edition.
 
 If a likely shared-Core defect appears:
 
@@ -75,9 +77,11 @@ sources/<issue>/execution/
   defects/
 ```
 
+Machine Human-review authority is stored under the Profile-bound source root at `gates/reviews/*-rN.json` plus `gates/review-index.json`. Human-readable `execution/reviews/*-rN.md` summarizes/pointers that exact authority; it is not a second State machine.
+
 Create/update one concise session record for material actions and decisions. Do not log every tool call or chain-of-thought. Update `index.md` at Human Gate changes, candidate changes, shared-Core blocking changes, termination, and completion.
 
-Machine lifecycle/checkpoint/candidate artifacts remain authoritative for machine state; the execution tree is human-readable operational provenance.
+Machine lifecycle/checkpoint/candidate/gate artifacts remain authoritative for machine state; the execution tree is human-readable operational provenance.
 
 ## Grok / X Source Intake
 
@@ -103,13 +107,7 @@ Once the expected result exists, ChatGPT imports the exact bytes into repository
 
 Internal Architecture, Selection, Evidence, Draft Package/Result and Profile Synthesis artifacts are research/editorial authorities. They are not legal fallback prose for the publication.
 
-After Architecture approval, ChatGPT explicitly authors the canonical reader-facing source (`<survey_root>/main.tex` plus supporting files as applicable). The Reader Manuscript Manifest binds:
-
-- exact Production Profile;
-- exact approved Architecture;
-- exact reader-facing source/supporting files;
-- complete mapping of Architecture `must_cover_requirements` to reader-facing locations;
-- Profile-required reader requirements such as final synthesis and Weekly community movement.
+After Architecture approval, ChatGPT explicitly authors the canonical reader-facing source (`<survey_root>/main.tex` plus supporting files as applicable). The Reader Manuscript Manifest binds exact Production Profile, exact approved Architecture, exact reader-facing source/supporting files, complete mapping of Architecture `must_cover_requirements` to reader-facing locations, and Profile-required reader requirements such as final synthesis and Weekly community movement.
 
 Before a Publication Candidate may exist, one exact source/PDF revision must pass three distinct layers:
 
@@ -119,7 +117,7 @@ Before a Publication Candidate may exist, one exact source/PDF revision must pas
 
 The Publication Candidate atomically binds the Reader Manuscript, exact source, exact PDF, all three QA authorities and page count. `PUBLICATION_PREVIEW` reviews that exact candidate. A rebuilt or merely similar PDF is not the approved artifact.
 
-After Human approval, Freeze/Release re-use the already reviewed candidate bytes; do not add a second routine post-approval visual-quality gate.
+If Publication Preview returns `REQUEST_CHANGES`, invalidate affected validation/candidate authority according to the Human-supplied allowed regeneration boundary, perform the requested repair, rerun affected QA and return with a new candidate revision. After Human approval, Freeze/Release re-use the approved exact bytes; do not add a second routine post-approval visual-quality gate.
 
 ## Stage/checkpoint use
 
@@ -143,13 +141,13 @@ Mandatory sequence:
 finish every intended candidate change
 -> finish required regression/CI repair and repository synchronization
 -> freeze one candidate head SHA
--> run all six acceptance points from zero on that exact head
+-> run all seven acceptance points from zero on that exact head
 -> do not mutate the candidate during the audit
 -> present that exact passing SHA for Human full-candidate review
 ```
 
-The six points include Weekly viability, Special viability, generality, recurrence prevention, control proportionality, and autonomous progression/stop discipline.
+The seven points are Weekly viability, Special viability, generality, recurrence prevention, control proportionality, autonomous progression/stop discipline, and Human Gate round-trip viability.
 
-If any audit finding requires a repository change, **invalidate the entire audit**, repair in Core maintenance, freeze a new candidate head, and rerun all six points from point 1. Never carry forward earlier PASS verdicts after candidate mutation.
+If any audit finding requires a repository change, **invalidate the entire audit**, repair in Core maintenance, freeze a new candidate head, and rerun all seven points from point 1. Never carry forward earlier PASS verdicts after candidate mutation.
 
 The final audit result binds the exact candidate SHA and is recorded in PR/Human-review metadata rather than a post-audit candidate-tree commit.
