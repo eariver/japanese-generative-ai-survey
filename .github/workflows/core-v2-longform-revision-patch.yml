@@ -1,0 +1,127 @@
+name: Core v2 longform revision patch
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.head_ref == 'fix/core-v2-longform-publication-revision'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Patch generic LONGFORM_SPECIAL renderer
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/run_semantic_publication_v2_interactive.py')
+          s=p.read_text()
+          s=s.replace('from scripts import survey_production_v2 as core\n', 'from scripts import survey_production_v2 as core\nfrom scripts import survey_longform_publication_v2 as longform\n')
+          old='''    status=str(record.get("status") or "UNKNOWN")\n    materiality=str(record.get("materiality") or "UNKNOWN")\n    return (\n        f"@online{{{key},\\n"\n        f"  title = {{{{{title}}}}},\\n"\n        f"  author = {{{{{org}}}}},\\n"\n        f"  url = {{{url}}},\\n"\n        f"  urldate = {{{urldate}}},\\n"\n        f"  note = {{Core v2 Evidence: {status}; materiality: {materiality}}}\\n"\n        "}"\n    )'''
+          new='''    return (\n        f"@online{{{key},\\n"\n        f"  title = {{{{{title}}}}},\\n"\n        f"  author = {{{{{org}}}}},\\n"\n        f"  url = {{{url}}},\\n"\n        f"  urldate = {{{urldate}}}\\n"\n        "}"\n    )'''
+          if old not in s: raise SystemExit('bib patch anchor missing')
+          s=s.replace(old,new)
+          old='''    for ordinal,(spec,package,result) in enumerate(ordered,start=1):\n        pid=result["package_id"]\n        lines.extend([\n            f"% package:{pid} draft-result-sha256:{core.sha256_object(result)}",\n            f"\\\\section{{{tex_escape(result['headline'])}}}",\n            f"\\\\label{{pkg:{tex_escape(pid)}}}",\n            f"\\\\sectionkicker{{{tex_escape(_kicker(pid,ordinal,len(ordered)))}}}",\n        ])\n        deck_keys=[bib_key_by_did[did] for did in spec["deck_discovery_ids"]]\n        lines.append("\\\\noindent\\\\textbf{" + tex_escape(result["deck"]) + "}" + _cite(deck_keys) + "\\\\par\\\\medskip")\n        spec_blocks={row["block_id"]:row for row in spec["blocks"]}\n        for block in result["blocks"]:\n            bid=block["block_id"]\n            text=tex_escape(block["text"])\n            if block["block_type"]=="CLAIM_BOUNDARY":\n                lines.extend([\n                    "\\\\begin{claimboundary}[Claim boundary]",\n                    text,\n                    "\\\\end{claimboundary}",\n                ])\n                continue\n            source_spec=spec_blocks.get(bid)\n            if source_spec is None:\n                raise ValueError(f"non-boundary Draft block missing semantic source: {pid}/{bid}")\n            keys=[bib_key_by_did[did] for did in source_spec.get("discovery_ids",[])]\n            lines.extend([\n                f"% block:{bid} attribution:{block['attribution_mode']}",\n                "\\\\noindent " + text + _cite(keys) + "\\\\par\\\\medskip",\n            ])\n        lines.append("\\\\clearpage")\n\n    lines.extend([\n        f"\\\\section{{{tex_escape(summary['heading'])}}}",\n        "\\\\label{sec:issue-summary}",\n        "\\\\sectionkicker{ISSUE SYNTHESIS}",\n    ])\n    for paragraph in summary["paragraphs"]:\n        lines.extend(["\\\\noindent " + tex_escape(paragraph) + "\\\\par\\\\medskip"])\n    lines.extend([\n        "\\\\clearpage",\n        "\\\\printbibliography[title={References / Source Notes}]",\n        "\\\\end{document}",\n        "",\n    ])'''
+          new='''    revision=publication["longform_revision"]\n    revision_by_id={row["package_id"]:row for row in revision["packages"]}\n    for ordinal,(spec,package,result) in enumerate(ordered,start=1):\n        pid=result["package_id"]\n        lines.append(f"% package:{pid} draft-result-sha256:{core.sha256_object(result)}")\n        lines.extend(longform.render_package(spec,result,revision_by_id[pid],bib_key_by_did,_kicker(pid,ordinal,len(ordered))))\n\n    lines.extend(longform.render_cross_family(revision["cross_family_synthesis"],bib_key_by_did))\n    lines.extend([\n        "\\\\Needspace{0.28\\\\textheight}",\n        f"\\\\section{{{tex_escape(summary['heading'])}}}",\n        "\\\\label{sec:issue-summary}",\n        "\\\\sectionkicker{ISSUE SYNTHESIS}",\n        "\\\\begin{multicols}{2}",\n    ])\n    for paragraph in summary["paragraphs"]:\n        lines.extend(["\\\\noindent " + tex_escape(paragraph) + "\\\\par\\\\medskip"])\n    lines.extend([\n        "\\\\end{multicols}",\n        "\\\\medskip",\n        "\\\\printbibliography[title={References / Source Notes}]",\n        "\\\\end{document}",\n        "",\n    ])'''
+          if old not in s: raise SystemExit('render loop patch anchor missing')
+          s=s.replace(old,new)
+          s=s.replace('expected={"schema_version","issue_id","runner","cover","frontmatter","final_summary"}', 'expected={"schema_version","issue_id","runner","cover","frontmatter","final_summary","longform_revision"}')
+          old='''    if state.get("lifecycle_state")!="DRAFT_COMPLETE" or state.get("next_action")!="stage:semantic-publication-validation":\n        raise SystemExit("semantic publication requires DRAFT_COMPLETE State")'''
+          new='''    lifecycle=state.get("lifecycle_state")\n    initial=(lifecycle=="DRAFT_COMPLETE" and state.get("next_action")=="stage:semantic-publication-validation")\n    revision=(lifecycle=="RELEASE_CANDIDATE" and state.get("next_action")=="PUBLICATION_PREVIEW" and state.get("human_gates",{}).get("publication_preview")=="pending")\n    if not (initial or revision):\n        raise SystemExit("semantic publication requires DRAFT_COMPLETE or pending RELEASE_CANDIDATE Publication Preview State")'''
+          if old not in s: raise SystemExit('state patch anchor missing')
+          s=s.replace(old,new)
+          old='''    records={row["discovery_id"]:row for row in evidence_payload["records"]}\n    cited=[]'''
+          new='''    records={row["discovery_id"]:row for row in evidence_payload["records"]}\n    normalized_revision=longform.validate_revision(data.get("longform_revision"),architecture["packages"],records)\n    data["longform_revision"]=normalized_revision\n    cited=[]'''
+          if old not in s: raise SystemExit('revision validation anchor missing')
+          s=s.replace(old,new)
+          old='''    cited=list(dict.fromkeys(cited))\n    for did in cited:'''
+          new='''    cited.extend(longform.revision_discovery_ids(normalized_revision))\n    cited=list(dict.fromkeys(cited))\n    for did in cited:'''
+          if old not in s: raise SystemExit('cited patch anchor missing')
+          s=s.replace(old,new)
+          old='''    tex=_render_tex(issue_id,as_of,data,ordered,records,bib_key_by_did)\n    (survey_root/"main.tex").write_text(tex,encoding="utf-8")\n\n    archived_input=publication_root/"interactive-semantic-publication-input.json"'''
+          new='''    tex=_render_tex(issue_id,as_of,data,ordered,records,bib_key_by_did)\n    preflight=longform.preflight_tex(tex,bib,len(ordered))\n    if preflight["status"]!="PASS":\n        raise SystemExit("LONGFORM_SPECIAL source preflight failed: "+"; ".join(preflight["findings"]))\n    (survey_root/"main.tex").write_text(tex,encoding="utf-8")\n    preflight_payload={"schema_version":"2.0-rc1","check_id":"LONGFORM_SPECIAL_LAYOUT_AND_READER_SURFACE","issue_id":issue_id,**preflight}\n    _write_json(quality_root/"longform-special-preflight.json",preflight_payload)\n\n    archived_input=publication_root/"interactive-semantic-publication-input.json"'''
+          if old not in s: raise SystemExit('preflight patch anchor missing')
+          s=s.replace(old,new)
+          s=s.replace('"production_state_basis":{"path":_rel(root,state_path),"sha256":core.sha256_file(state_path),"lifecycle_state":"DRAFT_COMPLETE"},', '"production_state_basis":{"path":_rel(root,state_path),"sha256":core.sha256_file(state_path),"lifecycle_state":lifecycle},')
+          old='''        "final_summary":{"heading":data["final_summary"]["heading"],"placement":"END_OF_PUBLICATION_BEFORE_REFERENCES_OR_END_MATTER","paragraph_count":len(data["final_summary"]["paragraphs"])},'''
+          new='''        "longform_revision":{"review_reference":normalized_revision["review_reference"],"new_external_evidence":False,"package_count":len(normalized_revision["packages"]),"preflight":{"path":_rel(root,quality_root/"longform-special-preflight.json"),"sha256":core.sha256_file(quality_root/"longform-special-preflight.json")}},\n        "final_summary":{"heading":data["final_summary"]["heading"],"placement":"END_OF_PUBLICATION_BEFORE_REFERENCES_OR_END_MATTER","paragraph_count":len(data["final_summary"]["paragraphs"])},'''
+          if old not in s: raise SystemExit('manifest patch anchor missing')
+          s=s.replace(old,new)
+          s=s.replace('"claim_boundary_blocks":sum(1 for _,_,r in ordered for b in r["blocks"] if b["block_type"]=="CLAIM_BOUNDARY")', '"claim_boundary_blocks":len(ordered)+1')
+          s=s.replace('"subject_result":_rel(root,quality_root/"subject-entity-property-binding.json"),"empty_result":_rel(root,quality_root/"empty-wrapper-suppression.json"),', '"subject_result":_rel(root,quality_root/"subject-entity-property-binding.json"),"empty_result":_rel(root,quality_root/"empty-wrapper-suppression.json"),"longform_preflight":_rel(root,quality_root/"longform-special-preflight.json"),')
+          p.write_text(s)
+
+          # Patch style for balanced local narrative flow and reader-facing full-width panels.
+          sp=Path('templates/survey/jgaisurvey.sty'); st=sp.read_text()
+          st=st.replace('\\RequirePackage{array}\n', '\\RequirePackage{array}\n\\RequirePackage{multicol}\n\\RequirePackage{needspace}\n')
+          marker='''\\newtcolorbox{communitynote}[1][X / Community observation]{'''
+          insert='''\\newtcolorbox{themeoverview}[1][Theme at a glance]{\n  enhanced, breakable, colback=SurveySoft, colframe=SurveyAccent, boxrule=0.6pt, arc=1mm,\n  title={#1}, fonttitle=\\bfseries, left=2mm,right=2mm,top=1.5mm,bottom=1.5mm\n}\n\n\\newtcolorbox{technicalnote}[1][Source-backed Technical Note]{\n  enhanced, breakable, colback=white, colframe=SurveyRule, boxrule=0.6pt, arc=1mm,\n  title={#1}, fonttitle=\\bfseries, left=2mm,right=2mm,top=1.5mm,bottom=1.5mm\n}\n\n'''
+          if marker not in st: raise SystemExit('style marker missing')
+          st=st.replace(marker,insert+marker)
+          sp.write_text(st)
+
+          # Remove sideways figure dependency from module; use a full-width compact table instead.
+          mp=Path('scripts/survey_longform_publication_v2.py'); m=mp.read_text()
+          m=m.replace('''    lines.extend([\n        "\\\\begin{sidewaysfigure}",\n        "\\\\centering",\n        "\\\\small",\n        "\\\\begin{tabularx}{0.96\\\\textheight}{@{}>{\\\\bfseries}p{0.12\\\\textheight}XXXX@{}}",''','''    lines.extend([\n        "\\\\begin{themeoverview}[Cross-family comparison]",\n        "\\\\scriptsize",\n        "\\\\begin{tabularx}{\\\\linewidth}{@{}>{\\\\bfseries}p{0.13\\\\linewidth}XXXX@{}}",''')
+          m=m.replace('''    lines.extend(["\\\\bottomrule","\\\\end{tabularx}","\\\\caption{同一benchmark順位ではなく、各系譜がどの問題設定をどの層で解いたかを比較する。}","\\\\end{sidewaysfigure}"])''','''    lines.extend(["\\\\bottomrule","\\\\end{tabularx}","\\\\smallskip\\\\noindent 同一benchmark順位ではなく、各系譜がどの問題設定をどの層で解いたかを比較する。\\\\par","\\\\end{themeoverview}"])''')
+          # Avoid a backslash-containing string literal inside an f-string expression.
+          m=m.replace('''        findings.append(f"too many unconditional clearpage commands for LONGFORM_SPECIAL: {tex.count('\\\\\\\\clearpage')}")''','''        findings.append("too many unconditional clearpage commands for LONGFORM_SPECIAL: "+str(tex.count("\\\\\\\\clearpage")))''')
+          # Add deterministic revision-ID collector used by bibliography binding.
+          anchor='''def _cite(ids: list[str], bib_key_by_did: dict[str,str]) -> str:\n'''
+          collector='''def revision_discovery_ids(revision: dict[str,Any]) -> list[str]:\n    ids: list[str] = []\n    def add(values: list[str]) -> None:\n        for did in values:\n            if did not in ids: ids.append(did)\n    for package in revision["packages"]:\n        for row in package["theme_at_a_glance"]: add(row["discovery_ids"])\n        for section in package["narrative_sections"]:\n            for row in section["paragraphs"]: add(row["discovery_ids"])\n        for row in package["timeline"]: add(row["discovery_ids"])\n        for row in package["synthesis"]["paragraphs"]: add(row["discovery_ids"])\n        for row in package["reader_claim_boundary"]: add(row["discovery_ids"])\n        for note in package["technical_notes"]: add([note["discovery_id"]])\n    cross=revision["cross_family_synthesis"]\n    for row in cross["paragraphs"]: add(row["discovery_ids"])\n    for row in cross["comparison_rows"]: add(row["discovery_ids"])
+    return ids\n\n\n'''
+          if anchor not in m: raise SystemExit('module collector anchor missing')
+          m=m.replace(anchor,collector+anchor)
+          mp.write_text(m)
+          PY
+          python -m py_compile scripts/run_semantic_publication_v2_interactive.py scripts/survey_longform_publication_v2.py
+      - name: Add regression tests
+        shell: bash
+        run: |
+          cat > tests/test_longform_publication_v2.py <<'PY'
+          from scripts import survey_longform_publication_v2 as longform
+
+          def test_preflight_rejects_one_column_and_metadata_leak():
+              tex='\\\\section{A}\\n\\\\begin{technicalnote}x\\\\end{technicalnote}\\nCore v2 Evidence: VERIFIED'
+              result=longform.preflight_tex(tex,'',1)
+              assert result['status']=='FAIL'
+              assert any('two-column' in x for x in result['findings'])
+              assert any('production metadata' in x for x in result['findings'])
+
+          def test_preflight_accepts_balanced_mixed_layout_surface():
+              tex=('Theme at a glance\\nCROSS-FAMILY SYNTHESIS\\n'
+                   '\\\\begin{multicols}{2}a\\\\end{multicols}\\n'
+                   '\\\\begin{multicols}{2}summary\\\\end{multicols}\\n'
+                   '\\\\begin{technicalnote}x\\\\end{technicalnote}\\n'
+                   '\\\\clearpage\\n\\\\clearpage')
+              result=longform.preflight_tex(tex,'',1)
+              assert result['status']=='PASS', result
+          PY
+      - name: Run focused and Core v2 tests
+        run: |
+          python -m pip install -r config/survey-production-v2-requirements.txt
+          PYTHONPATH=. pytest -q tests/test_longform_publication_v2.py tests/test_survey_production_v2.py
+      - name: Persist reviewed generic patch
+        shell: bash
+        env:
+          PUSH_BRANCH: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/core-v2-longform-revision-patch.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts templates/survey/jgaisurvey.sty tests .github/workflows/core-v2-longform-revision-patch.yml
+          git commit -m 'Restore Core v2 longform Special publication contract'
+          git push origin "HEAD:${PUSH_BRANCH}"
