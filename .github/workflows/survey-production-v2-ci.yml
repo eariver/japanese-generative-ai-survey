@@ -7,6 +7,7 @@ on:
     paths:
       - "config/survey-production-v2.json"
       - "config/survey-production-v2-pilots.json"
+      - "config/publication-review-v2.json"
       - "config/survey-production-v2-requirements.txt"
       - "config/prompts/source-screening-v2.md"
       - "config/prompts/evidence-verification-v2.md"
@@ -33,6 +34,7 @@ on:
       - "schemas/draft-v2-*.schema.json"
       - "schemas/profile-synthesis-v2-*.schema.json"
       - "schemas/quality-regression-bundle-v2.schema.json"
+      - "schemas/reader-manuscript-v2.schema.json"
       - "schemas/publication-*.schema.json"
       - "schemas/visual-review-record-v2.schema.json"
       - "schemas/freeze-record-v2.schema.json"
@@ -49,7 +51,7 @@ on:
       - "AGENTS.md"
       - "docs/survey-production-core-v2-*.md"
       - "docs/thematic-special-backlog.md"
-      - "docs/checkpoints/survey-production-core-v2-worklog.md"
+      - "docs/checkpoints/survey-production-core-v2-*.md"
       - "docs/checkpoints/survey-production-core-v2-audit-findings/**"
       - ".github/workflows/survey-production-v2-ci.yml"
       - ".github/workflows/survey-production-v2-control.yml"
@@ -59,6 +61,7 @@ on:
     paths:
       - "config/survey-production-v2.json"
       - "config/survey-production-v2-pilots.json"
+      - "config/publication-review-v2.json"
       - "config/survey-production-v2-requirements.txt"
       - "config/prompts/source-screening-v2.md"
       - "config/prompts/evidence-verification-v2.md"
@@ -85,6 +88,7 @@ on:
       - "schemas/draft-v2-*.schema.json"
       - "schemas/profile-synthesis-v2-*.schema.json"
       - "schemas/quality-regression-bundle-v2.schema.json"
+      - "schemas/reader-manuscript-v2.schema.json"
       - "schemas/publication-*.schema.json"
       - "schemas/visual-review-record-v2.schema.json"
       - "schemas/freeze-record-v2.schema.json"
@@ -101,7 +105,7 @@ on:
       - "AGENTS.md"
       - "docs/survey-production-core-v2-*.md"
       - "docs/thematic-special-backlog.md"
-      - "docs/checkpoints/survey-production-core-v2-worklog.md"
+      - "docs/checkpoints/survey-production-core-v2-*.md"
       - "docs/checkpoints/survey-production-core-v2-audit-findings/**"
       - ".github/workflows/survey-production-v2-ci.yml"
       - ".github/workflows/survey-production-v2-control.yml"
@@ -126,22 +130,7 @@ jobs:
             scripts
             tests
             .github/workflows
-            docs/checkpoints/survey-production-core-v2-audit-findings
-            docs/checkpoints/survey-production-core-v2-worklog.md
-            docs/survey-production-core-v2-authority.md
-            docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md
-            docs/survey-production-core-v2-final-audit-rule.md
-            docs/survey-production-core-v2-issue-prevention-checklist.md
-            docs/survey-production-core-v2-x-source-intake.md
-            docs/survey-production-core-v2-wu011-second-audit-closure.md
-            docs/survey-production-core-v2-session-bootstrap.md
-            docs/survey-production-core-v2-contract-normalization-second-audit-amendment.md
-            docs/survey-production-core-v2-minimum-vertical-slice-second-audit-amendment.md
-            docs/survey-production-core-v2-whole-system-audit-2026-08-22.md
-            docs/survey-production-core-v2-whole-system-audit-remediation-closure.md
-            docs/survey-production-core-v2-historical-invariants.md
-            docs/survey-production-core-v2-historical-production-deep-audit.md
-            docs/thematic-special-backlog.md
+            docs
           sparse-checkout-cone-mode: false
       - uses: actions/setup-python@v5
         with:
@@ -163,6 +152,7 @@ jobs:
           scripts/survey_drafting_v2.py
           scripts/survey_draft_profile_v2.py
           scripts/survey_quality_v2.py
+          scripts/survey_reader_publication_v2.py
           scripts/survey_publication_v2.py
           scripts/survey_agent_tool_v2.py
           scripts/survey_stage_validation_v2.py
@@ -216,6 +206,7 @@ jobs:
           paths = [
               Path('config/survey-production-v2.json'),
               Path('config/survey-production-v2-pilots.json'),
+              Path('config/publication-review-v2.json'),
               Path('schemas/pilot-bootstrap-v2.schema.json'),
               Path('schemas/thematic-scope-spec-v2.schema.json'),
               Path('schemas/stage-checkpoint-v2.schema.json'),
@@ -243,6 +234,8 @@ jobs:
               Path('schemas/profile-synthesis-v2-input.schema.json'),
               Path('schemas/profile-synthesis-v2-result.schema.json'),
               Path('schemas/quality-regression-bundle-v2.schema.json'),
+              Path('schemas/reader-manuscript-v2.schema.json'),
+              Path('schemas/publication-review-record-v2.schema.json'),
               Path('schemas/publication-candidate-v2.schema.json'),
               Path('schemas/publication-preview-approval-v2.schema.json'),
               Path('schemas/visual-review-record-v2.schema.json'),
