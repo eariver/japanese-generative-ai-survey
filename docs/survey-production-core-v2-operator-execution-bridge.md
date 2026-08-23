@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Operator Execution Bridge
 
-Status: `MAINTENANCE CANDIDATE / POST-MERGE REVALIDATION FINDING`
+Status: `MAINTENANCE CANDIDATE / POST-MERGE REVALIDATION FINDING / REAUDIT PENDING`
 
 Established: 2026-08-23 JST
 
@@ -50,14 +50,14 @@ ChatGPT remains responsible for:
 
 The bridge may execute only deterministic Core mechanics already owned by repository code:
 
-1. canonical Weekly/Thematic Profile + Production State initialization;
+1. canonical Weekly/Thematic Profile + Production State initialization through existing Core builders;
 2. deterministic stage-contract validation over already-authored artifacts;
 3. compact Stage Checkpoint materialization;
 4. lifecycle State advancement after exact validation.
 
-Architecture approval and Publication Preview approval remain explicit Human decisions and are not bridge operations.
+The bridge does not invent Retrospective or series initialization semantics merely to broaden its API. If canonical Core later gains another generic Profile initializer, bridge support may be reviewed separately. Once canonical Profile/State exists, `ADVANCE_STAGE` is Profile-neutral.
 
-Release remains owned by the dedicated release workflow.
+Architecture approval and Publication Preview approval remain explicit Human decisions and are not bridge operations. Release remains owned by the dedicated release workflow.
 
 ## 3. Transport model
 
@@ -70,25 +70,27 @@ ChatGPT authors/researches edition artifacts
 -> GitHub Actions checks out that exact request commit
 -> bridge executes a whitelisted deterministic Core operation
 -> bridge verifies its outputs
--> workflow enforces edition-local write scope
+-> workflow enforces Profile-bound edition-local write scope
 -> github-actions[bot] commits only generated edition-local authorities
 -> no output commit retriggers the bridge
 -> ChatGPT resumes from the resulting canonical State
 ```
 
+The request explicitly binds `issue_id`, Profile-declared `source_root`, and `work_branch`.
+
 Canonical request location:
 
 ```text
-sources/<issue-id>/execution/requests/<request-id>.json
+{source_root}/execution/requests/<request-id>.json
 ```
 
 Canonical bridge-run receipt location:
 
 ```text
-sources/<issue-id>/execution/bridge-runs/<request-id>/
+{source_root}/execution/bridge-runs/<request-id>/
 ```
 
-The request filename stem and `request_id` must match exactly.
+`source_root` must remain repository-local under `sources/`. It is not inferred from `issue_id`; this preserves compatibility with valid Profile-specific/nested source-root layouts. The request filename stem and `request_id` must match exactly.
 
 ## 4. Why this still satisfies the GitHub Actions responsibility policy
 
@@ -117,15 +119,17 @@ This is materially different from the retired Actions-heavy authoring topology. 
 Allowed deterministic effect:
 
 - derive the exact Weekly Profile from issue id + recorded time under current Core contract;
-- create canonical `production-profile.json` and `production-state.json`;
+- require the generated Profile's `source_root` and `work_branch` to equal the request;
+- create canonical `production-profile.json` and `production-state.json` under that Profile-bound source root;
 - initialize the edition-local execution record tree.
 
 ### `INITIALIZE_THEMATIC`
 
 Allowed deterministic effect:
 
-- read one repository-local Thematic scope specification under the edition source root;
-- derive the exact Thematic/LONGFORM Profile;
+- read one repository-local Thematic scope specification under the requested/Profile-bound source root;
+- derive the exact Thematic/LONGFORM Profile using the existing canonical Core builder;
+- require generated Profile identity (`issue_id`, `source_root`, `work_branch`) to equal the request;
 - create canonical Profile/State;
 - initialize the execution record tree.
 
@@ -134,6 +138,7 @@ Allowed deterministic effect:
 Allowed deterministic effect:
 
 - require an exact expected current lifecycle state;
+- require current Production Profile identity to equal request `issue_id`, `source_root`, and `work_branch`;
 - validate the exact already-authored stage artifact set with `survey_stage_validation_v2.py` semantics;
 - generate `CORE_STAGE_CONTRACT` result authority;
 - wrap ChatGPT-authored research/editorial/visual review rows without changing their meaning;
@@ -146,20 +151,25 @@ The request cannot supply its own deterministic `CORE_STAGE_CONTRACT` result.
 
 The workflow and bridge must enforce all of the following:
 
-1. push trigger is limited to edition work-branch families and request paths;
+1. push trigger is limited to request paths under `sources/**/execution/requests/` and excludes `main`;
 2. the triggering commit adds exactly one request file and changes nothing else;
 3. request `work_branch` must equal the executing Git ref;
-4. request path must be canonical for its `issue_id` and `request_id`;
-5. event commit SHA must be exact lowercase 40-hex;
-6. operations are an enum, not arbitrary script/command execution;
-7. repository paths are traversal-safe;
-8. initialization refuses existing canonical Profile/State;
-9. stage advancement refuses stale `expected_from_state`;
-10. agent review rows cannot impersonate deterministic reviews;
-11. bridge-run ids are immutable and cannot be overwritten;
-12. workflow refuses generated writes outside the edition `source_root`;
-13. workflow refuses mutation of the immutable request file;
-14. bot output commits do not match the request-path trigger and therefore do not chain recursively.
+4. request `source_root` must be repository-local under `sources/`;
+5. request path must equal `{source_root}/execution/requests/<request-id>.json`;
+6. current/generated Production Profile must bind the same `issue_id`, `source_root`, and `work_branch`;
+7. event commit SHA must be exact lowercase 40-hex;
+8. operations are an enum, not arbitrary script/command execution;
+9. repository paths are traversal-safe;
+10. initialization refuses existing canonical Profile/State;
+11. stage advancement refuses stale `expected_from_state`;
+12. agent review rows cannot impersonate deterministic reviews;
+13. bridge-run ids are immutable and cannot be overwritten;
+14. workflow derives the write boundary from the validated bridge result rather than constructing it from `issue_id`;
+15. workflow refuses generated writes outside the Profile-bound `source_root`;
+16. workflow refuses mutation of immutable request authority;
+17. bot output commits do not add request files and are also excluded by actor guard, so they do not chain recursively.
+
+The trigger intentionally does not hardcode `weekly/**` or `special/**` branch naming. Exact branch authority comes from the request/Profile match, allowing valid future work-branch conventions without weakening the write boundary.
 
 ## 7. Validation consequence
 
