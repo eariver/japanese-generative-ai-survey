@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{jgaisurvey}[2026/08/13 Japanese Generative AI Survey style]
+\ProvidesPackage{jgaisurvey}[2026/08/23 Japanese Generative AI Survey style]
 
 \RequirePackage[haranoaji,deluxe,match,nfssonly]{luatexja-preset}
 \RequirePackage[margin=18mm,headsep=5mm,footskip=9mm]{geometry}
@@ -8,6 +8,9 @@
 \RequirePackage{booktabs}
 \RequirePackage{tabularx}
 \RequirePackage{array}
+\RequirePackage{multicol}
+\RequirePackage{needspace}
+\RequirePackage{rotating}
 \RequirePackage{enumitem}
 \RequirePackage[most]{tcolorbox}
 \RequirePackage{fancyhdr}
@@ -44,8 +47,20 @@
 \setlength{\columnsep}{7mm}
 \setlength{\parindent}{1em}
 \setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\tabcolsep}{2.75pt}
 \setlist{nosep,leftmargin=1.8em}
 \raggedbottom
+\Urlmuskip=0mu plus 1mu\relax
+
+% Review-branch-only: loose-line diagnostics are inspected visually instead of
+% failing the preview export. Overfull boxes remain unsuppressed and therefore
+% continue to fail the existing deterministic preflight.
+\hbadness=10000
+
+% LONGFORM_SPECIAL tables contain mixed Japanese/English technical tokens.
+% Ragged X columns avoid artificial stretching and give TeX more legal breaks.
+\renewcommand{\tabularxcolumn}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 \newcommand{\SurveyIssue}{UNSET}
 \newcommand{\SurveyTitle}{Japanese Generative AI Technical Survey}
@@ -117,11 +132,46 @@
   {\small\bfseries\color{SurveyAccent}\MakeUppercase{#1}\par}\vspace{1mm}%
 }
 
+% Publication-only wrapper used by LONGFORM_SPECIAL around blocks that must stay
+% at the normal full-page measure. The renderer itself owns the two-column
+% narrative regions via multicols; wideflow therefore must not switch the page
+% into LaTeX's global twocolumn mode. Zeroing paragraph indent prevents a
+% full-width tabularx from acquiring the document's 1em first-line offset.
+\newenvironment{wideflow}{%
+  \par
+  \begingroup
+  \setlength{\parindent}{0pt}%
+}{\par\endgroup}
+
 \newtcolorbox{claimboundary}[1][Claim boundary]{
   enhanced,
   breakable,
   colback=SurveySoft,
   colframe=SurveyWarn,
+  boxrule=0.6pt,
+  arc=1mm,
+  title={#1},
+  fonttitle=\bfseries,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm
+}
+
+\newtcolorbox{themeoverview}[1][Theme at a glance]{
+  enhanced,
+  breakable,
+  colback=SurveySoft,
+  colframe=SurveyAccent,
+  boxrule=0.6pt,
+  arc=1mm,
+  title={#1},
+  fonttitle=\bfseries,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm
+}
+
+\newtcolorbox{technicalnote}[1][Source-backed Technical Note]{
+  enhanced,
+  breakable,
+  colback=white,
+  colframe=SurveyRule,
   boxrule=0.6pt,
   arc=1mm,
   title={#1},

@@ -1,11 +1,11 @@
-% Generated from Core v2 validated Draft bytes. Do not hand-edit.
+% Generated from Core v2 validated Draft bytes plus reviewed Evidence-backed longform revision. Do not hand-edit.
 \documentclass[lualatex,a4paper,10pt]{jlreq}
 \usepackage{jgaisurvey}
 \addbibresource{references.bib}
 
 \surveysetup{SP001}{Japanese Generative AI Technical Survey Special}{Thematic history / as of 2026-08-22 14:21:44 UTC}{As-of boundary: 2026-08-22 14:21:44 UTC}
 \surveyeditiondescriptor{Thematic Longform Special}
-\surveycoverstory{中国Generative AIの台頭}{DeepSeek・Qwen・GLM・Kimiを中心に、効率化、reasoning、agentic workload、long context、Open Weightがどのように別々の系譜から現在の競争軸へ接続したかを、2026年8月22日時点の一次資料と検証済みEvidenceから再構成する。}{Four lineages / Reasoning / Agentic / Efficiency / Serving / Open Weight / License}
+\surveycoverstory{中国Generative AIの台頭}{DeepSeek・Qwen・GLM・Kimiを中心に、効率化、reasoning、agentic workload、long context、Open Weightがどのように別々の系譜から現在の競争軸へ接続したかを、2026年8月22日時点の一次資料と検証済み資料から再構成する。}{Four lineages / Reasoning / Agentic / Efficiency / Serving / Open Weight / License}
 
 \begin{document}
 \surveycover
@@ -14,129 +14,583 @@
 \addcontentsline{toc}{section}{本号について}
 本号は、中国発のGenerative AIを一つの技術潮流として平板化せず、GLM、Qwen、DeepSeek、Kimiの4系統をそれぞれのversion-specificな一次資料から追うThematic Specialである。MiniMax、Yi、Baichuanは、4系統だけでは捉えきれない並行線・歴史的bridgeとして扱い、Open Weightは技術仕様ではなくdistributionと権利条件を分けて読む。
 
-\begin{claimboundary}[Evidence / scope boundary]
+\begin{claimboundary}[Scope / attribution boundary]
 \noindent 調査・記述のas-of boundaryは2026年8月22日。後発versionの性質を過去versionへ遡及して帰属しない。\par
 \noindent vendor / project / authorが報告する性能・効率値は、記載されたartifactと条件に限定して帰属する。異なるbenchmarkやserving stackを横断した勝敗表には再構成しない。\par
-\noindent X / community由来の観測はDiscovery signalとして保持するが、primary corroborationのないruntime性能、普及度、license解釈を技術Evidenceへ昇格させない。\par
+\noindent community由来の観測は調査上の手掛かりとして保持するが、一次資料による裏付けのないruntime性能、普及度、license解釈を技術的事実へ昇格させない。\par
 \noindent Open SourceとOpen Weightを同義語として扱わず、weights、code、license、commercial conditions、Model-as-a-Service条件をartifact単位で区別する。\par
 \end{claimboundary}
 \medskip
 \tableofcontents
 \clearpage
 % package:SP001-P01-foundations draft-result-sha256:ae870d65136466a0ec74d8daae1098be576ab4a9cdd84ce44026d0998cce614d
+\Needspace{0.24\textheight}
 \section{前史と分岐点：一つの『中国モデル』ではなく、複数の系譜が立ち上がった}
 \label{pkg:SP001-P01-foundations}
 \sectionkicker{THEMATIC LINEAGE 1/7 — foundations}
 \noindent\textbf{GLM-130B、初期Qwen、DeepSeek LLMをそれぞれの一次資料が直接支える範囲で置くと、後年の中国発Frontier AIは単一戦略の派生ではなく、異なる設計・公開・用途の系譜が並走し始めた過程として見えてくる。} \cite{sp001sp001d001,sp001sp001d002,sp001sp001d003}\par\medskip
-% block:p01-glm130b attribution:ATTRIBUTED
-\noindent GLM系譜の初期座標として残るGLM-130Bは、論文上で英中バイリンガルの130Bモデルとして提示され、100B級モデルを開く試みとして位置付けられた。学習安定化やINT4 deploymentも論文の主要論点だが、ここから後年のChatGLMやGLM-4/5の設計を逆算してはいけない。重要なのは、後のGLM系譜につながる大規模モデルが、当時の一次資料でどこまで公開・運用可能性を意識していたかを、その時点の記述に限定して読むことである。 \cite{sp001sp001d001}\par\medskip
-% block:p01-qwen-seed attribution:ATTRIBUTED
-\noindent Qwenの最初期の技術報告は、base/chatのfamily構成とRLHFによるchat alignmentに加えて、tool use、planning、code-interpreter型のagent応用までをすでに扱っていた。したがってQwenの後年のagentic codingを突然現れた能力として描くより、早い段階からfamily/platformとtool利用を組み合わせる志向があり、それがQwen2.5以降の広い製品・モデル群へ接続したと見る方が資料に忠実である。 \cite{sp001sp001d002}\par\medskip
-% block:p01-deepseek-seed attribution:ATTRIBUTED
-\noindent DeepSeek LLMは、MLAやDeepSeekMoEがfamilyを特徴付ける以前のベースラインとして扱う。本Evidence passでは初期familyとrelease contextは確認できる一方、全model sizeやdistribution detailを再確定するところまでは踏み込んでいない。ここで必要なのはV2以降の効率化を過去へ投影することではなく、『後に大きく設計転換するfamilyの出発点』として明示的に分離しておくことである。 \cite{sp001sp001d003}\par\medskip
+\begin{themeoverview}[Theme at a glance]
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+GLMの初期座標 & 130B級の英中バイリンガルモデルを公開可能性とdeploymentまで含めて論じた。 \cite{sp001sp001d001} \\
+Qwenの初期座標 & base/chat familyとRLHFだけでなく、tool use・planning・code-interpreter型agentを早期から扱った。 \cite{sp001sp001d002} \\
+\end{tabularx}
+\end{themeoverview}
+\medskip
+\begin{multicols}{2}
+\subsection*{同じ『公開モデル』でも、出発点は同じではなかった}
+\noindent GLM-130Bの論文は、英中バイリンガルの130Bモデルを100B級モデルを開く試みとして位置付け、学習安定化とINT4 deploymentまでを主要論点に置いた。ここで見えるのは、後年のagentic機能ではなく、大規模モデルを研究成果として公開し、実際に動かすための条件を同時に考える初期の問題設定である。 \cite{sp001sp001d001}\par\medskip
+\subsection*{後年の特徴を過去へ投影しない}
+\noindent DeepSeek LLMは、V2以降のMLAやDeepSeekMoEを特徴とする系譜より前のbaselineである。初期familyの存在とrelease contextは一次論文で確認できるが、後年の効率architectureやreasoning RLをこの段階へ遡及させる根拠にはならない。 \cite{sp001sp001d003}\par\medskip
+\end{multicols}
+\medskip
+\begin{wideflow}
+\subsection*{Transition timeline}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.20\linewidth}X@{}}
+2022 & GLM-130Bが130B級英中モデルと学習・deployment上の課題を一次論文で提示。 \cite{sp001sp001d001} \\
+2023 & Qwen技術報告がfamily構成、RLHF、tool use・planningを一体の研究・応用線として提示。 \cite{sp001sp001d002} \\
+\end{tabularx}
+\end{wideflow}
+\medskip
+\begin{multicols}{2}
+\subsection*{前史から見える分岐}
+\noindent この3つのseedだけでも、後年の中国発frontier modelを単一recipeの競争として説明することはできない。公開規模とdeployment、family/platformとtool use、後にarchitectureを大きく変えるbaselineという異なる問題設定が並行していた。 \cite{sp001sp001d001,sp001sp001d002,sp001sp001d003}\par\medskip
+\end{multicols}
+\medskip
 \begin{claimboundary}[Claim boundary]
-この節の読解上の境界: Cross-family benchmark ranking is excluded where model versions, benchmark conditions, or evaluation methods are incompatible. / Kimi's October 2023 launch/context-window chronology remains secondary-source qualified and is not used as an unqualified foundation-date fact. / Do not project later ChatGLM or Z.ai architecture choices backward onto GLM-130B without version-specific evidence. / Later Qwen license and architecture regimes must be bound to later model versions rather than inferred from this report. / This retained evidence note does not restate every model-size or distribution detail requested by Screening; later efficiency claims are sourced to DeepSeek-V2 and subsequent artifacts. / Verify the DeepSeek LLM baseline, model sizes, release context, and open-weight distribution from primary material.: The bound primary paper verifies the early family baseline and release context, but this Evidence pass does not independently lock every requested size and distribution detail; those details are not needed for Architecture selection.
+\noindent GLM-130Bのdeployment記述は論文が報告した条件に限定する。初期Qwenから後年のQwen3のlicenseやreasoning設計を推論しない。DeepSeek LLMについても、V2以降のMLA・MoE・reasoning特性を初期baselineへ遡及させない。 \cite{sp001sp001d001,sp001sp001d002,sp001sp001d003}\par
 \end{claimboundary}
-\clearpage
+\medskip
+\subsection*{Source-backed Technical Notes}
+\begin{technicalnote}[GLM-130B]
+\noindent\textbf{Chronology:} 2022年のGLM系譜の初期技術座標。 \cite{sp001sp001d001}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item 英中バイリンガルの130Bモデルとして提示され、100B級モデルを開く試みとして位置付けられた。 \cite{sp001sp001d001}
+\item 学習安定化の工夫と、論文条件下でのINT4 deployment pathが報告された。 \cite{sp001sp001d001}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} deployment容易性は論文の条件に束縛し、後年のChatGLM/GLM-4/5の設計をここへ遡及させない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://arxiv.org/abs/2210.02414}\par
+\end{technicalnote}
+\smallskip
+\begin{technicalnote}[Qwen Technical Report]
+\noindent\textbf{Chronology:} 2023年の初期Qwen familyを定義する技術報告。 \cite{sp001sp001d002}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item base/chat familyとRLHFによるchat alignmentを説明する。 \cite{sp001sp001d002}
+\item tool use、planning、code-interpreter型agent applicationをすでに扱う。 \cite{sp001sp001d002}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} 後年のQwen3のthinking mode、architecture、license条件はこの初期報告からは導出しない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://arxiv.org/abs/2309.16609}\par
+\end{technicalnote}
+\smallskip
+\begin{technicalnote}[DeepSeek LLM]
+\noindent\textbf{Chronology:} 2024年初頭のDeepSeek初期family baseline。 \cite{sp001sp001d003}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item 後のMLA/DeepSeekMoE中心のV2系譜より前のlanguage-model familyを確認できる。 \cite{sp001sp001d003}
+\item 初期familyとrelease contextを置くためのhistorical baselineとして使う。 \cite{sp001sp001d003}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} 全model sizeやdistribution detailを本号では再確定していない。後年の効率・reasoning特性は別artifactへ帰属させる。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://arxiv.org/abs/2401.02954}\par
+\end{technicalnote}
+\smallskip
 % package:SP001-P02-glm draft-result-sha256:0d805e167acaa8eca0f2632b3431d7e3261fb8c1e338bcb3944d3f9c7486878e
+\Needspace{0.24\textheight}
 \section{GLM：ローカルで動く対話モデルから、All Tools、ARC、1M contextへ}
 \label{pkg:SP001-P02-glm}
 \sectionkicker{THEMATIC LINEAGE 2/7 — glm}
 \noindent\textbf{GLM系譜では、ChatGLM-6Bのconsumer deployment、GLM-4 All Tools、GLM-4.5のARC、GLM-5.2の長文脈servingが、それぞれ別versionの資料で確認できる。公開やlicenseも含め、同じfamilyの中で戦略が段階的に変わった。} \cite{sp001sp001d005,sp001sp001d006,sp001sp001d007,sp001sp001d008}\par\medskip
-% block:p02-chatglm6b attribution:ATTRIBUTED
-\noindent ChatGLM-6Bは6.2Bの英中対話モデルとして、INT4で約6GBのmemoryを使うconsumer-GPU向け経路をproject側が示した。ここで技術面と同じくらい重要なのが権利の分解である。historicalなmodel-use/commercial permissionとrepository codeのlicenseは同じものではなく、『公開モデル』という一語でまとめると実際の利用条件を失う。GLMのdeveloper-facingな広がりは、動かせることと使える権利を別々に読む必要があった。 \cite{sp001sp001d005}\par\medskip
-% block:p02-glm4 attribution:ATTRIBUTED
-\noindent GLM-4 family reportは、GLM-4、GLM-4-Air、GLM-4-9Bへ至るversion-specificな橋を与える。報告では約10T token規模のpretrainingとmulti-stage post-trainingが説明され、All Toolsはweb browsing、Python、text-to-image、user-defined functionから必要なtoolを選ぶ能力として記述された。これはGLM系譜が単なるchat modelからtool-using systemへ軸を伸ばした転換点として読める。 \cite{sp001sp001d006}\par\medskip
-% block:p02-glm45 attribution:ATTRIBUTED
-\noindent GLM-4.5では、355B total / 32B activeのMoEとhybrid thinking/direct responseが論文で示され、Agentic・Reasoning・CodingをまとめたARCが明示的なfamily strategyとして前面に出た。このARC framingはGLM-4.5固有の一次資料に基づくため、他の中国モデルも同じrecipeへ収斂したと一般化すべきではない。むしろ各familyがagentic workloadへ別経路で接近したことを示す一例である。 \cite{sp001sp001d007}\par\medskip
-% block:p02-glm52 attribution:ATTRIBUTED
-\noindent GLM-5.2のofficial model cardでは、1M context、thinking effort control、cross-layerでsparse-attention indexを再利用するIndexShare、vLLM/SGLang deploymentが説明される。1M contextでの2.9倍per-token FLOP reductionという値も示されるが、これはvendor/model-card claimとして条件付きで扱うべき数値である。ここまで来るとGLMの競争軸はmodel qualityだけでなく、長文脈をserving可能にする設計と運用経路そのものへ広がっている。 \cite{sp001sp001d008}\par\medskip
+\begin{themeoverview}[Theme at a glance]
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+Local deployment & ChatGLM-6BはINT4で約6GBというconsumer-GPU向け経路をproject側が示した。 \cite{sp001sp001d005} \\
+Tool-using system & GLM-4 All Toolsはweb、Python、画像生成、user-defined functionを選択して使う。 \cite{sp001sp001d006} \\
+\end{tabularx}
+\end{themeoverview}
+\medskip
+\begin{multicols}{2}
+\subsection*{動かせる対話モデルから、toolを選ぶsystemへ}
+\noindent ChatGLM-6Bは6.2Bの英中対話モデルとして、INT4で約6GBのmemoryを使うconsumer-GPU向け経路をrepositoryが示した。ここではモデル能力だけでなく、ローカル環境へ持ち込めるサイズと実装経路がdeveloper-facingな価値の一部になっている。 \cite{sp001sp001d005}\par\medskip
+\subsection*{ARCと長文脈servingは、同じ変化ではない}
+\noindent GLM-4.5では355B total / 32B activeのMoEとhybrid thinking/direct responseが示され、Agentic・Reasoning・CodingをまとめるARCが明示的な戦略語になった。これはcapabilityとpost-trainingを含むfamily positioningの変化であり、すべての中国モデルが同じrecipeへ収斂したことを意味しない。 \cite{sp001sp001d007}\par\medskip
+\end{multicols}
+\medskip
+\begin{wideflow}
+\subsection*{Transition timeline}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.20\linewidth}X@{}}
+ChatGLM-6B & consumer GPUへ届くINT4 local deploymentと、model-use権利の分離が重要になった。 \cite{sp001sp001d005} \\
+GLM-4 & All Toolsによってweb/Python/画像生成/function利用を統合するsystemへ拡張。 \cite{sp001sp001d006} \\
+\end{tabularx}
+\end{wideflow}
+\medskip
+\begin{multicols}{2}
+\subsection*{GLM系譜の技術的な重心移動}
+\noindent GLMの変化は『モデルが大きくなった』という一本線ではない。ChatGLM-6Bではlocal deployment、GLM-4ではtool orchestration、GLM-4.5ではARC、GLM-5.2ではlong-context serving efficiencyと、競争の層が順に増えている。 \cite{sp001sp001d005,sp001sp001d006,sp001sp001d007,sp001sp001d008}\par\medskip
+\end{multicols}
+\medskip
 \begin{claimboundary}[Claim boundary]
-この節の読解上の境界: GLM-4.5 ARC framing is family/version-specific and is not generalized into a common Chinese-model training recipe. / Vendor efficiency figures remain source- and condition-bound rather than independent cross-family performance facts. / Model-weight/commercial permissions and repository-code licensing must not be collapsed into one license label. / Benchmark results in the paper are author evaluations and must not be merged into an incompatible cross-family ranking. / The ARC framing and reported architecture are specific to GLM-4.5 and are not evidence of a shared Chinese-model training recipe. / Efficiency numbers remain model-card/vendor claims and associated repository-code licensing may differ from model-artifact licensing.
+\noindent GLM-4.5のARCは同version固有のframingであり、他familyの共通recipeとは扱わない。GLM-5.2の2.9倍という効率値はofficial model cardが報告する条件付き値で、独立再現結果とはみなさない。 \cite{sp001sp001d007,sp001sp001d008}\par
 \end{claimboundary}
-\clearpage
+\medskip
+\subsection*{Source-backed Technical Notes}
+\begin{technicalnote}[ChatGLM-6B]
+\noindent\textbf{Chronology:} GLM-130B後に広がったconsumer-facing対話モデル期。 \cite{sp001sp001d005}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item 6.2Bの英中対話モデルとしてprojectが説明する。 \cite{sp001sp001d005}
+\item INT4で約6GBのmemoryを使うlocal deployment pathをrepositoryが示す。 \cite{sp001sp001d005}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} historicalなmodel-use/commercial permissionとrepository codeのlicenseは別々に読む。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://github.com/zai-org/ChatGLM-6B/blob/main/README_en.md}\par
+\end{technicalnote}
+\smallskip
+\begin{technicalnote}[GLM-4 All Tools family report]
+\noindent\textbf{Chronology:} GLM-4世代でtool useをsystem capabilityへ拡張。 \cite{sp001sp001d006}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item 約10T token規模のpretrainingとmulti-stage post-trainingをfamily reportが説明する。 \cite{sp001sp001d006}
+\item All Toolsはweb browsing、Python、text-to-image、user-defined functionから必要なtoolを選ぶ。 \cite{sp001sp001d006}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} paper内benchmarkはauthor evaluationであり、他familyとの非互換な横断順位へ使わない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://arxiv.org/abs/2406.12793}\par
+\end{technicalnote}
+\smallskip
+\begin{technicalnote}[GLM-4.5]
+\noindent\textbf{Chronology:} 2025年のARC-centered family pivot。 \cite{sp001sp001d007}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item 355B total / 32B activeのMoE architectureをpaperが示す。 \cite{sp001sp001d007}
+\item hybrid thinking/direct responseとAgentic・Reasoning・CodingのARC framingを明示する。 \cite{sp001sp001d007}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} ARC framingはGLM-4.5固有であり、中国モデル一般の共通training recipeを意味しない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://arxiv.org/abs/2508.06471}\par
+\end{technicalnote}
+\smallskip
+\begin{technicalnote}[GLM-5.2]
+\noindent\textbf{Chronology:} 2026年as-of境界内のGLM current endpoint。 \cite{sp001sp001d008}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item 1M context、thinking effort control、IndexShareをofficial model cardが説明する。 \cite{sp001sp001d008}
+\item vLLM/SGLang deploymentを示し、IndexShareについて1M contextで2.9倍per-token FLOP reductionを報告する。 \cite{sp001sp001d008}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} 効率数値はvendor/model-card claim。model artifactと関連repository codeのlicenseは同一とは限らない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://huggingface.co/zai-org/GLM-5.2}\par
+\end{technicalnote}
+\smallskip
 % package:SP001-P03-qwen draft-result-sha256:0760db870f777c0deaef4d3998420e0115598401597a7cd0d2e010250ab5f6eb
+\Needspace{0.24\textheight}
 \section{Qwen：広いfamily/platformを、hybrid reasoningとagentic codingへ接続する}
 \label{pkg:SP001-P03-qwen}
 \sectionkicker{THEMATIC LINEAGE 3/7 — qwen}
 \noindent\textbf{Qwenの強みは単一の旗艦モデルではなく、specialized branchを含む広いfamily/platformを継続的に更新し、Qwen3でthinking/non-thinkingを統合し、Qwen3.6でagentic codingへ比重を移してきた点にある。} \cite{sp001sp001d009,sp001sp001d010,sp001sp001d011}\par\medskip
-% block:p03-qwen25 attribution:ATTRIBUTED
-\noindent Qwen2.5 technical reportは、training corpusを7Tから18T tokenへ拡大し、SFTとmulti-stage RLを組み合わせたと説明する。同時にMath、Coder、QwQ、multimodal系へつながる広いfamilyを形成しており、Qwenを一つのgeneral modelとして見るより、用途別branchを抱えるplatformとして読む根拠になる。後続のreasoning戦略は、このfamily breadthの上に構築された。 \cite{sp001sp001d009}\par\medskip
-% block:p03-qwen3 attribution:ATTRIBUTED
-\noindent Qwen3は0.6Bから235Bまでdense/MoEを含むfamilyを展開し、thinkingとnon-thinkingを一つの系統で扱い、thinking budgetを制御する設計をtechnical reportで提示した。reportはQwen3をApache-2.0でpublicly accessibleと位置付ける。reasoningを別モデルへ切り分けるのではなく、同じfamily内で利用形態を切り替えることが、Qwen3のdistribution strategyと相性のよい特徴になった。 \cite{sp001sp001d010}\par\medskip
-% block:p03-qwen36 attribution:ATTRIBUTED
-\noindent current endpointとして扱うQwen3.6-27Bのofficial model cardは、agentic coding、repository-level reasoning、過去messageをまたぐthinking contextの保持、multimodal family scope、Apache-2.0 distributionを強調する。これらはvendor claimとして読む必要があるが、Qwenの軸足が『広いopen-weight family』から『長い作業履歴を扱うcoding/agent foundation』へ連続的に伸びていることは確認できる。hosted proprietary variantとopen-weight artifactは、rightsやdistributionを論じる際には別物のままである。 \cite{sp001sp001d011}\par\medskip
+\begin{themeoverview}[Theme at a glance]
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+Platform breadth & Qwen2.5は18T token規模へcorpusを拡張し、Math・Coder・QwQ・multimodalへ広がるfamilyを形成。 \cite{sp001sp001d009} \\
+Hybrid reasoning & Qwen3はthinking/non-thinkingを一familyへ統合し、thinking budgetを制御可能にした。 \cite{sp001sp001d010} \\
+\end{tabularx}
+\end{themeoverview}
+\medskip
+\begin{multicols}{2}
+\subsection*{単一旗艦ではなく、用途別branchを持つplatform}
+\noindent Qwen2.5 technical reportはtraining corpusを7Tから18T tokenへ拡大し、SFTとmulti-stage RLを組み合わせたと説明する。重要なのは規模だけではなく、Math、Coder、QwQ、multimodal系へつながる広いfamilyを持つことで、general model一つを更新するより用途別branchを抱えるplatformとして発展した点にある。 \cite{sp001sp001d009}\par\medskip
+\subsection*{2026年のendpointは、長い作業履歴を扱うcoding foundationへ}
+\noindent Qwen3.6-27Bのofficial model cardは、agentic coding、repository-level reasoning、過去messageをまたぐthinking contextの保持、multimodal family scopeを強調する。ここでの変化は単発のcode benchmarkではなく、repositoryと会話履歴をまたぐ長い作業をagentに継続させる方向へfamilyの用途を伸ばしていることにある。 \cite{sp001sp001d011}\par\medskip
+\end{multicols}
+\medskip
+\begin{wideflow}
+\subsection*{Transition timeline}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.20\linewidth}X@{}}
+Qwen2.5 & 18T token規模のcorpus、SFT＋multi-stage RL、specialized branchを持つplatform breadth。 \cite{sp001sp001d009} \\
+Qwen3 & dense/MoE family全体でthinking/non-thinkingとthinking budgetを統合。 \cite{sp001sp001d010} \\
+\end{tabularx}
+\end{wideflow}
+\medskip
+\begin{multicols}{2}
+\subsection*{Qwenの強みはfamilyを更新し続けるdistribution設計にある}
+\noindent Qwenの技術線では、Qwen2.5のfamily breadth、Qwen3のhybrid reasoning、Qwen3.6のagentic codingが連続している。各段階で新しい用途を別productへ切り離すより、広いfamily/platformへ組み込みながら公開・deployment経路を維持する姿勢が見える。 \cite{sp001sp001d009,sp001sp001d010,sp001sp001d011}\par\medskip
+\end{multicols}
+\medskip
 \begin{claimboundary}[Claim boundary]
-この節の読解上の境界: Qwen benchmark and capability statements remain tied to the named report/model card and are not normalized into a cross-family ranking. / Later Qwen architecture or licensing properties are not projected backward onto the 2023 initial Qwen release. / Hosted proprietary variants and open-weight variants must remain distinct artifacts when discussing distribution or rights. / Reported benchmark results remain evaluation-specific and are not normalized against other families. / Capability statements are vendor/model-card claims; architecture inheritance from Qwen3.5 should not be converted into independent benchmark superiority.
+\noindent Qwen3.6のcapability記述はofficial model cardのvendor claimである。異なるversion・benchmark・evaluation条件を横断して他familyより優れるという順位付けには使わない。 \cite{sp001sp001d011}\par
 \end{claimboundary}
-\clearpage
+\medskip
+\subsection*{Source-backed Technical Notes}
+\begin{technicalnote}[Qwen2.5]
+\noindent\textbf{Chronology:} Qwenのplatform breadthを明確にした2024年末のfamily transition。 \cite{sp001sp001d009}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item technical reportはtraining corpusを7Tから18T tokenへ拡大し、SFTとmulti-stage RLを組み合わせたと説明する。 \cite{sp001sp001d009}
+\item Math、Coder、QwQ、multimodalを含むspecialized branchへ広がるfamily構成が、単一旗艦ではないplatform strategyを示す。 \cite{sp001sp001d009}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} hosted proprietary variantsとopen-weight variantsはdistributionとrightsを論じる際に別artifactとして扱う。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://arxiv.org/abs/2412.15115}\par
+\end{technicalnote}
+\smallskip
+\begin{technicalnote}[Qwen3]
+\noindent\textbf{Chronology:} 2025年にhybrid reasoningをfamily-levelの利用形態へ統合した節目。 \cite{sp001sp001d010}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item technical reportは0.6Bから235Bまでのdense/MoE familyを説明する。 \cite{sp001sp001d010}
+\item thinking/non-thinking modeとthinking-budget controlを一つのfamilyへ統合し、public distributionをApache-2.0として記載する。 \cite{sp001sp001d010}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} benchmark値はreport固有のevaluationとして扱い、異なるfamilyとの横断順位へ正規化しない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://arxiv.org/abs/2505.09388}\par
+\end{technicalnote}
+\smallskip
+\begin{technicalnote}[Qwen3.6-27B]
+\noindent\textbf{Chronology:} 2026年as-of境界内のQwen current endpoint。 \cite{sp001sp001d011}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item official model cardはagentic codingとrepository-level reasoningを主要用途として位置付ける。 \cite{sp001sp001d011}
+\item 過去messageをまたぐthinking contextの保持、multimodal family scope、Apache-2.0 distributionを説明する。 \cite{sp001sp001d011}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} capability記述はofficial model cardに帰属する。Qwen3.5からのarchitecture inheritanceを独立したcross-family superiorityへ変換しない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://huggingface.co/Qwen/Qwen3.6-27B}\par
+\end{technicalnote}
+\smallskip
 % package:SP001-P04-deepseek draft-result-sha256:35f64d8fd65fecb80bc2c531ce9f9c1a6d2f9371a246c5fd52085272385d70df
+\Needspace{0.24\textheight}
 \section{DeepSeek：効率をarchitectureで作り、reasoning RLとagentic servingへ伸ばす}
 \label{pkg:SP001-P04-deepseek}
 \sectionkicker{THEMATIC LINEAGE 4/7 — deepseek}
 \noindent\textbf{DeepSeekの転換は、V2のMLA/DeepSeekMoE、R1/R1-Zeroのreasoning RL、V4-Flash-0731のagentic servingという別々の節目で追える。benchmark順位ではなく、各versionで何が設計・学習・deploymentの焦点になったかを見る。} \cite{sp001sp001d012,sp001sp001d013,sp001sp001d014}\par\medskip
-% block:p04-v2 attribution:ATTRIBUTED
-\noindent DeepSeek-V2は236B total / 21B activeのMoEで、Multi-head Latent Attention（MLA）とDeepSeekMoEをfamily-definingな効率化として導入した。128K contextとともに、paperはKV-cacheやgeneration throughputの改善を報告する。ただし数値比較はpaperのsetupに依存する。ここで重要なのは、DeepSeekがfrontier competitionへ入る際、parameter countの増大だけでなくmemory/serving costをarchitectureの中心課題に置いたことである。 \cite{sp001sp001d012}\par\medskip
-% block:p04-r1 attribution:ATTRIBUTED
-\noindent DeepSeek-R1 paperは、R1-Zeroをpreliminary SFTなしのlarge-scale RLとして、R1をcold-start dataとmulti-stage trainingを加えた別の経路として説明する。またQwen/Llamaをbaseにしたdistilled variantsもreleaseされた。native R1/R1-Zeroとdistillを一つのmodel subjectとして扱わないことが重要であり、reasoningの成果をどのtraining pathとmodel lineageへ帰属させるかを分離する必要がある。 \cite{sp001sp001d013}\par\medskip
-% block:p04-v4 attribution:ATTRIBUTED
-\noindent V4-Flash-0731のofficial model cardから直接確認できるcurrent endpointは、agentic capabilityの強化とvLLM、DSpark speculative decodingを用いるdeployment supportである。一方、この0731 artifactだけではbroader V4 previewのarchitecture全体を再確定できない。したがって本号では、V2で確立した効率architecture、R1のreasoning post-training、V4-Flashのagentic servingという確認可能な線だけをつなぎ、別sourceのV4仕様を補完的に持ち込まない。 \cite{sp001sp001d014}\par\medskip
+\begin{themeoverview}[Theme at a glance]
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+Efficiency architecture & DeepSeek-V2は236B total / 21B activeのMoEでMLAとDeepSeekMoEを導入し、memoryとserving efficiencyをarchitecture課題として前面化した。 \cite{sp001sp001d012} \\
+Reasoning post-training & DeepSeek-R1はR1-Zeroのlarge-scale RLと、cold-start dataを加えたR1のmulti-stage pathを明確に分けた。 \cite{sp001sp001d013} \\
+Agentic serving endpoint & V4-Flash-0731はagentic positioningとvLLM＋DSpark deployment supportをofficial model cardで示す。 \cite{sp001sp001d014} \\
+\end{tabularx}
+\end{themeoverview}
+\medskip
+\begin{multicols}{2}
+\subsection*{MLAとMoEは、parameter増大とは別の競争軸を作った}
+\noindent DeepSeek-V2は236B total / 21B activeのMoEとして、Multi-head Latent Attention（MLA）とDeepSeekMoEを導入した。paperが報告するKV-cache削減やgeneration throughputの改善は評価setupに依存するが、frontier modelを成立させるためにmemoryとserving costをarchitectureの設計対象へ組み込んだこと自体が、初期DeepSeek LLMからの重要な分岐である。 \cite{sp001sp001d012}\par\medskip
+\noindent この効率化は単に『小さいモデル』を作る話ではない。多数のtotal parametersを持ちながらactive parametersを抑えるMoEと、attention側のstateを圧縮するMLAを組み合わせ、学習・推論の費用構造を変える方向にある。したがって後年のDeepSeekを理解する際も、benchmark scoreだけでなく、どのarchitectureがserving制約へ答えているかを分離して読む必要がある。 \cite{sp001sp001d012}\par\medskip
+\subsection*{R1では、reasoning capabilityの帰属先がpost-trainingへ移る}
+\noindent DeepSeek-R1 paperはR1-Zeroをpreliminary SFTなしのlarge-scale reinforcement learningとして説明し、R1ではcold-start dataとmulti-stage trainingを追加する。ここではreasoningを一つのopaqueな能力として扱うのではなく、どのtraining pathがどのmodel subjectに対応するかが技術史上の焦点になる。 \cite{sp001sp001d013}\par\medskip
+\noindent 同じreleaseにはQwen/Llama系baseを使うdistilled variantsも含まれるため、native R1/R1-Zeroとdistillを同一modelとして数えるとarchitectureとpost-trainingの帰属が崩れる。本号では、distillationがdistributionを広げた事実と、native modelのtraining pathを明示的に分離する。 \cite{sp001sp001d013}\par\medskip
+\subsection*{2026年のcurrent endpointは、確認できるserving面だけを接続する}
+\noindent DeepSeek-V4-Flash-0731のofficial model cardから直接確認できるのは、agentic capabilityの強化というpositioningと、vLLM deployment、DSpark speculative decodingを使うserving supportである。これによりDeepSeekの競争軸がreasoning model単体から、agentic workloadを実際にserveするruntime経路へ伸びていることは確認できる。 \cite{sp001sp001d014}\par\medskip
+\noindent 一方、この0731 artifactだけからbroader V4 previewのcontext architecture全体を再構成することはしない。V2のMLA/MoE、R1のreasoning RL、V4-Flash-0731のagentic servingという各sourceが直接支える節目だけをつなぐことで、version境界を越えたspecificationの混入を避ける。 \cite{sp001sp001d012,sp001sp001d013,sp001sp001d014}\par\medskip
+\end{multicols}
+\medskip
+\begin{wideflow}
+\subsection*{Transition timeline}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.20\linewidth}X@{}}
+DeepSeek-V2 & MLAとDeepSeekMoEをfamily-definingな効率architectureとして導入し、128K contextとpaper-bound serving efficiencyを提示。 \cite{sp001sp001d012} \\
+DeepSeek-R1 & R1-ZeroのRL-only pathと、cold-start＋multi-stage trainingを持つR1を分離してreasoning post-trainingを提示。 \cite{sp001sp001d013} \\
+V4-Flash-0731 & agentic positioningを強め、vLLMとDSpark speculative decodingを使うofficial deployment pathを示す。 \cite{sp001sp001d014} \\
+\end{tabularx}
+\end{wideflow}
+\medskip
+\begin{multicols}{2}
+\subsection*{DeepSeekの系譜は、効率・reasoning・servingを別レイヤとして積み上げる}
+\noindent DeepSeekの転換を一本の性能曲線で表すより、V2でarchitecture-level efficiency、R1でreasoning-oriented post-training、V4-Flash-0731でagentic servingというレイヤが順に追加されたと読む方がsource境界に忠実である。各段階のclaimは異なるartifactに属し、後続versionの仕様を前段へ逆算しない。 \cite{sp001sp001d012,sp001sp001d013,sp001sp001d014}\par\medskip
+\noindent この見方では、DeepSeekの競争力は単一benchmarkの首位ではなく、model architectureとpost-training、さらにruntime/deploymentまでを別々に最適化してきたことにある。ただし効率値やcapability値はそれぞれpaper/model cardの条件付き報告であり、他familyとの合成スコアには変換しない。 \cite{sp001sp001d012,sp001sp001d013,sp001sp001d014}\par\medskip
+\end{multicols}
+\medskip
 \begin{claimboundary}[Claim boundary]
-この節の読解上の境界: Paper-reported efficiency comparisons are setup-bound and are not generalized across unrelated serving stacks. / The broader DeepSeek V4 architecture is not silently imported into the V4-Flash-0731 Evidence boundary. / Paper-reported efficiency comparisons must retain the stated comparison setup and must not be generalized across unrelated serving stacks. / Native R1/R1-Zero and distilled Qwen/Llama-based variants are different model subjects and must remain separately attributed. / The bound 0731 update is sufficient for agentic/serving endpoint evidence but does not independently restate every architecture detail of the broader V4 preview. / Verify V4-Flash-0731 context architecture, agentic positioning, and official vLLM/DSpark deployment support.: The official 0731 model card verifies agentic positioning and vLLM/DSpark deployment support; full context-architecture verification is retained as a bounded limitation rather than inferred from separate V4 sources.
+\noindent DeepSeek-V2のKV-cacheやthroughput比較はpaperのsetupに限定する。R1-Zero、R1、distilled Qwen/Llama variantsは別model subjectとして帰属させ、V4-Flash-0731からbroader V4 architectureを補完しない。 \cite{sp001sp001d012,sp001sp001d013,sp001sp001d014}\par
 \end{claimboundary}
-\clearpage
+\medskip
+\subsection*{Source-backed Technical Notes}
+\begin{technicalnote}[DeepSeek-V2]
+\noindent\textbf{Chronology:} 2024年にDeepSeek系譜のefficiency architectureを定義した節目。 \cite{sp001sp001d012}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item 236B total / 21B activeのMoE構成と128K contextをpaperが説明する。 \cite{sp001sp001d012}
+\item Multi-head Latent Attention（MLA）とDeepSeekMoEを導入し、paper条件下でKV-cache・generation throughputの効率改善を報告する。 \cite{sp001sp001d012}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} 数値比較はpaperのcomparison setupに束縛し、別serving stackへ一般化しない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://arxiv.org/abs/2405.04434}\par
+\end{technicalnote}
+\smallskip
+\begin{technicalnote}[DeepSeek-R1]
+\noindent\textbf{Chronology:} 2025年のreasoning-RL transition。 \cite{sp001sp001d013}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item R1-Zeroはpreliminary SFTなしのlarge-scale RLとして説明される。 \cite{sp001sp001d013}
+\item R1はcold-start dataとmulti-stage trainingを追加し、releaseにはQwen/Llama-based distilled variantsも別subjectとして含まれる。 \cite{sp001sp001d013}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} native R1/R1-Zeroとdistilled variantsのbase-model・license・architecture属性を相互転記しない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://arxiv.org/abs/2501.12948}\par
+\end{technicalnote}
+\smallskip
+\begin{technicalnote}[DeepSeek-V4-Flash-0731]
+\noindent\textbf{Chronology:} 2026年as-of境界内のDeepSeek agentic-serving endpoint。 \cite{sp001sp001d014}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item official model cardはagentic capabilityの強化をpositioningとして示す。 \cite{sp001sp001d014}
+\item vLLM deploymentとDSpark speculative decodingのsupportをofficial materialが説明する。 \cite{sp001sp001d014}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} 0731 cardだけではbroader V4 previewのcontext architecture全体を再確定できないため、未確認部分を補完しない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731}\par
+\end{technicalnote}
+\smallskip
 % package:SP001-P05-kimi draft-result-sha256:73b3a6ad971550d2698af6be43d38b98f3d1ff23481e36af266c9dcc13b32e2f
+\Needspace{0.24\textheight}
 \section{Kimi：long contextを起点に、reasoning RL、open agentic MoE、native multimodalへ}
 \label{pkg:SP001-P05-kimi}
 \sectionkicker{THEMATIC LINEAGE 5/7 — kimi}
 \noindent\textbf{Kimiの2023年launch chronologyは二次資料の制約を残す一方、2025年以降はk1.5、K2、K3の一次・official materialによって、long-context researchからagentic・multimodal frontierへ伸びる技術線を確認できる。} \cite{sp001sp001d015,sp001sp001d016,sp001sp001d017}\par\medskip
-% block:p05-k15 attribution:ATTRIBUTED
-\noindent Kimi k1.5 paperは、multimodal reasoning modelをscaled reinforcement learningで訓練し、long-context scaling、policy optimization、infrastructure optimization、long-to-short transferを主要要素として説明する。2025年1月のchronologyはDeepSeek-R1と近接するが、両paperが開示するtechniqueは同じではない。この近さから模倣や単純な先後関係を推論せず、Kimi側のlong-context RL研究として独立に位置付ける。 \cite{sp001sp001d015}\par\medskip
-% block:p05-k2 attribution:ATTRIBUTED
-\noindent Kimi K2では、1T total / 32B activeのMoE、MuonClip optimization、15.5T-token pretrainingがpaperで説明され、agentic data synthesisとreal/synthetic environmentをまたぐjoint RLへ踏み込んだ。k1.5がlong-context reasoningの研究線を明確にしたのに対し、K2はそれをopen agentic modelのdistributionへ接続する節目として扱える。 \cite{sp001sp001d016}\par\medskip
-% block:p05-k3 attribution:ATTRIBUTED
-\noindent Kimi K3のofficial materialは、2.8T total / 104B active、native multimodal、1M context、KDAとgated MLAを備え、long-horizon codingやagentic knowledge workを狙うcurrent endpointとしてmodelを位置付ける。これらはofficial/vendor materialに基づく記述であり、license条件はmodel cardから推測しない。K3のcommercial条件は別のexact LICENSE artifactに委ねることで、技術仕様と権利条件を分離して扱う。 \cite{sp001sp001d017}\par\medskip
+\begin{themeoverview}[Theme at a glance]
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+Long-context reasoning & Kimi k1.5はmultimodal reasoningをscaled RLで扱い、long-context scalingとpolicy/infrastructure optimizationを結び付けた。 \cite{sp001sp001d015} \\
+Open agentic MoE & Kimi K2は1T total / 32B activeのMoE、MuonClip、15.5T-token pretrainingからagentic data synthesisとjoint RLへ進む。 \cite{sp001sp001d016} \\
+Native multimodal endpoint & Kimi K3は2.8T total / 104B active、1M context、KDA＋gated MLAを備えるnative-multimodal/agentic endpointとして公開される。 \cite{sp001sp001d017} \\
+\end{tabularx}
+\end{themeoverview}
+\medskip
+\begin{multicols}{2}
+\subsection*{Kimiの確実なtechnical lineageは、2025年のlong-context RLから組み立てる}
+\noindent Kimiの2023年launchと初期context-window chronologyにはsecondary-sourceの限界が残るため、本号はhistorical priorityをそこへ依存させない。一次paperで確実に追えるk1.5は、multimodal reasoning modelをscaled reinforcement learningで訓練し、long-context scaling、policy optimization、infrastructure optimization、long-to-short transferを一つの研穵線として提示する。 \cite{sp001sp001d015}\par\medskip
+\noindent k1.5 paperの公開時期はDeepSeek-R1と近接するが、開示されたtechniqueとtraining pathは同一ではない。chronologyの近さを模倣や単純な先後関係へ変換せず、Kimiがlong contextをreasoning RLの問題設定へ接続した独立の節目として扱う。 \cite{sp001sp001d015}\par\medskip
+\subsection*{K2でresearch branchがopen agentic MoEへ接続する}
+\noindent Kimi K2 paperは1T total / 32B activeのMoE、MuonClip optimization、15.5T-token pretrainingを説明し、さらにagentic data synthesisとreal/synthetic environmentsをまたぐjoint reinforcement learningを扱う。ここでlong-context reasoningの研究線が、tool-using workloadを意識したopen agentic modelへ接続する。 \cite{sp001sp001d016}\par\medskip
+\noindent この変化は『reasoning modelを大きくした』だけではない。pretraining optimization、sparse activation、agentic data generation、post-training environmentを同じreleaseで扱うことで、モデル能力とagent training infrastructureの境界が近づいている。performance claimはpaper評価に限定し、他familyのbenchmarkと直接順位付けしない。 \cite{sp001sp001d016}\par\medskip
+\subsection*{K3ではlong context、multimodal、agentic workloadが一つのcurrent endpointへ集約する}
+\noindent Kimi K3のofficial materialは2.8T total / 104B active、native multimodal、1M context、KDAとgated MLAを説明し、long-horizon codingやagentic knowledge workを想定したcurrent endpointとして位置付ける。K2のagentic MoEに対して、K3ではcontext lengthとmultimodal inputを長い作業へ組み込むarchitecture側の主張が強くなる。 \cite{sp001sp001d017}\par\medskip
+\noindent ただしmodel cardからlicenseの意味を推論しない。K3のdistributionとarchitectureはD017、commercial useやModel-as-a-Service条件などのexact legal textはD021へ分離する。この分離によって、技術的にdownload可能であることと、どの条件で事業利用できるかを同一の『open』ラベルで潰さない。 \cite{sp001sp001d017}\par\medskip
+\end{multicols}
+\medskip
+\begin{wideflow}
+\subsection*{Transition timeline}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.20\linewidth}X@{}}
+Kimi k1.5 & multimodal reasoningをscaled RLで扱い、long-context scalingとlong-to-short transferを一次paperで提示。 \cite{sp001sp001d015} \\
+Kimi K2 & 1T total / 32B active MoE、MuonClip、15.5T-token pretrainingからagentic data synthesisとjoint RLへ拡張。 \cite{sp001sp001d016} \\
+Kimi K3 & 2.8T total / 104B active、1M context、KDA＋gated MLA、native multimodal/agentic positioningへ到達。 \cite{sp001sp001d017} \\
+\end{tabularx}
+\end{wideflow}
+\medskip
+\begin{multicols}{2}
+\subsection*{Kimiではlong contextが、reasoning・agentic・multimodalをつなぐ持続的な軸になる}
+\noindent k1.5、K2、K3を並べると、Kimiはlong contextを単なる最大token数ではなく、reasoning RL、agentic environment、native multimodal、long-horizon workへ段階的に接続している。2023年のproduct chronologyが完全に一次資料で閉じていなくても、2025年以降のtechnical lineageはそれぞれのpaper/model materialからsource-boundedに追える。 \cite{sp001sp001d015,sp001sp001d016,sp001sp001d017}\par\medskip
+\noindent 同時にKimiはOpen Weightの境界問題を可視化するfamilyでもある。K2/K3のtechnical releaseと、K3固有のlicense textを分けて扱うことで、architectureの開放性とcommercial conditionが別レイヤであることが明確になる。 \cite{sp001sp001d016,sp001sp001d017}\par\medskip
+\end{multicols}
+\medskip
 \begin{claimboundary}[Claim boundary]
-この節の読解上の境界: Kimi's October 2023 launch/context-window chronology remains secondary-source qualified until a stronger first-party archival source is added. / Kimi k1.5 and DeepSeek-R1 are treated through their disclosed techniques and chronology without unsupported imitation or priority claims. / The contemporaneous k1.5 and DeepSeek-R1 papers use different disclosed techniques; priority or simple imitation claims are not supported. / Performance claims remain paper evaluations and should not be normalized against incompatible benchmarks from other families. / Detailed commercial/license conditions are verified separately against the exact Kimi K3 LICENSE artifact in SP001-D021. / Verify Kimi K3 architecture, parameter structure, KDA/Gated MLA, multimodal/agentic claims, distribution, and applicable license boundary from official material.: The official model material verifies architecture, parameter structure, multimodal/agentic positioning and distribution; exact legal conditions are intentionally delegated to the separate exact-license Evidence card rather than inferred here.
+\noindent 2023年Kimiの初期launch/context chronologyは本packageの一次資料として昇格させない。k1.5とDeepSeek-R1の近接chronologyから模倣・priorityを推論せず、K3のlicense意味はmodel materialではなくexact LICENSE artifactへ委ねる。 \cite{sp001sp001d015,sp001sp001d016,sp001sp001d017}\par
 \end{claimboundary}
-\clearpage
+\medskip
+\subsection*{Source-backed Technical Notes}
+\begin{technicalnote}[Kimi k1.5]
+\noindent\textbf{Chronology:} 2025年1月のlong-context reasoning / RL bridge。 \cite{sp001sp001d015}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item multimodal reasoning modelをscaled reinforcement learningで訓練したとpaperが説明する。 \cite{sp001sp001d015}
+\item long-context scaling、policy optimization、infrastructure optimization、long-to-short transferを主要要素として扱う。 \cite{sp001sp001d015}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} DeepSeek-R1との公開時期の近さだけからpriorityやsimple imitationを主張しない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://arxiv.org/abs/2501.12599}\par
+\end{technicalnote}
+\smallskip
+\begin{technicalnote}[Kimi K2]
+\noindent\textbf{Chronology:} 2025年のopen agentic MoE transition。 \cite{sp001sp001d016}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item 1T total / 32B activeのMoE、MuonClip、15.5T-token pretrainingをpaperが説明する。 \cite{sp001sp001d016}
+\item agentic data synthesisとreal/synthetic environmentsをまたぐjoint RLを扱う。 \cite{sp001sp001d016}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} performance値はpaper evaluationに限定し、他familyの非互換benchmarkへ正規化しない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://arxiv.org/abs/2507.20534}\par
+\end{technicalnote}
+\smallskip
+\begin{technicalnote}[Kimi K3]
+\noindent\textbf{Chronology:} 2026年as-of境界内のMoonshot current endpoint。 \cite{sp001sp001d017}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item 2.8T total / 104B active、native multimodal、1M contextをofficial materialが説明する。 \cite{sp001sp001d017}
+\item KDA＋gated MLAと、long-horizon coding / agentic knowledge workのpositioningを示す。 \cite{sp001sp001d017}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} exact commercial/license conditionsはこのmodel materialから推論せず、Kimi K3 LICENSEの別sourceへ委ねる。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://huggingface.co/moonshotai/Kimi-K3}\par
+\end{technicalnote}
+\smallskip
 % package:SP001-P06-parallel draft-result-sha256:d036ff68cf50cdc5615a282aab5182652c7530c5897b8ba0dd5fafffb34a25f3
+\Needspace{0.24\textheight}
 \section{主要4系統の外側：MiniMax、Yi、Baichuanが示す競争と分化}
 \label{pkg:SP001-P06-parallel}
 \sectionkicker{THEMATIC LINEAGE 6/7 — parallel}
 \noindent\textbf{中国発AIの競争史を主要4系統だけで閉じると、agentic frontierの別経路、2023-24年のopen-weight/local wave、domain specializationへの分化を見落とす。MiniMax、Yi、Baichuanはその補助線になる。} \cite{sp001sp001d018,sp001sp001d019,sp001sp001d020}\par\medskip
-% block:p06-minimax attribution:ATTRIBUTED
-\noindent MiniMax M2.7のofficial announcementは、Agent Teams、skills、dynamic tool search、さらにmodelが自身のdevelopment workflowの一部へ参加するという方向を打ち出す。これは2026年のagentic frontierを主要4familyだけで説明できないことを示すmaterial competing branchである。ただし、このannouncement単体からopen-weight serving integrationやexact licenseまで確定することはせず、確認できるagentic positioningに役割を限定する。 \cite{sp001sp001d018}\par\medskip
-% block:p06-yi attribution:ATTRIBUTED
-\noindent Yi-1.5 repositoryは34B/9B/6B variants、Ollamaを含むlocal use、fine-tuning ecosystem integration、Apache-2.0 code/weightsを示す。これは2023-24年に、中国発open-weight modelがdeveloperのlocal environmentへ入り込む経路が複数存在したことを示すsupporting bridgeである。一方、この2024 repositoryだけから2026年にも独立したgeneral-frontier lineが続いているとは結論しない。 \cite{sp001sp001d019}\par\medskip
-% block:p06-baichuan attribution:ATTRIBUTED
-\noindent Baichuan-M3-235Bのofficial model cardは、medical-enhanced clinical inquiryへのspecialization、Qwen3-MoE ancestry/acknowledgement、Apache-2.0 licenseを示す。ここではBaichuanを現在のco-equal general frontierとして数えるのではなく、初期の独立brandがdomain-specializedかつ他family由来のbaseを使う方向へ分化しうるecosystem例として置く。これは競争が『familyの数』だけでなく、派生・専門化の形でも進むことを示している。 \cite{sp001sp001d020}\par\medskip
+\begin{themeoverview}[Theme at a glance]
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+Parallel agentic frontier & MiniMax M2.7はAgent Teams、skills、dynamic tool searchを掲げ、主要4系統以外にもagentic frontierの競争線があることを示す。 \cite{sp001sp001d018} \\
+Open/local bridge & Yi-1.5は34B/9B/6B variants、Ollama local use、fine-tuning integrationsを通じて2023〜2024年のdeveloper-facing open-weight waveを示す。 \cite{sp001sp001d019} \\
+Specialization / derivation & Baichuan-M3-235Bはmedical specializationとQwen3-MoE ancestryを明示し、競争が独立familyだけでなく派生・専門化へ分化する例になる。 \cite{sp001sp001d020} \\
+\end{tabularx}
+\end{themeoverview}
+\medskip
+\begin{multicols}{2}
+\subsection*{MiniMaxは、2026年のagentic frontierを4familyだけで閉じないための対照線になる}
+\noindent MiniMax M2.7のofficial announcementはAgent Teams、skills、dynamic tool search、modelが自身のdevelopment workflowの一部へ参加するという方向を打ち出す。これはMiniMaxを5番目のcentral lineageへ機械的に格上げする根拠ではないが、2026年のagentic competitionがGLM/Qwen/DeepSeek/Kimiだけで完結していないことを示すmaterialなparallel branchである。 \cite{sp001sp001d018}\par\medskip
+\noindent このsourceから確定できるのはagentic positioningまでであり、別のofficial model cardで観測されたopen-weight servingやexact licenseをこの一sourceへ合成しない。parallel lineを残す目的はcoverageを広げることであって、source境界を弱めることではない。 \cite{sp001sp001d018}\par\medskip
+\subsection*{Yi-1.5はlocal deploymentとfine-tuning ecosystemを結ぶhistorical bridgeになる}
+\noindent Yi-1.5 repositoryは34B/9B/6B variants、Ollamaを含むlocal use、fine-tuning ecosystem integrations、Apache-2.0 code/weightsを示す。2023〜2024年のopen-weight waveでは、weightsを公開するだけでなく、developerがlocal runtimeやfine-tuning toolchainへ接続できることがdistributionの実効性を左右した。 \cite{sp001sp001d019}\par\medskip
+\noindent 一方、2024年のrepositoryから2026年にも同じbrandがgeneral frontierを継続していると推論することはできない。本号でYiを使うのは、主要4系統の前後に存在したopen/local deploymentの別経路を示すためであり、current frontier rankを与えるためではない。 \cite{sp001sp001d019}\par\medskip
+\subsection*{Baichuanは、独立familyからspecialized/derivative ecosystemへ分化する例を示す}
+\noindent Baichuan-M3-235Bのofficial model cardはmedical-enhanced clinical inquiryへのspecialization、Qwen3-MoE ancestry/acknowledgement、Apache-2.0 licensingを示す。これは中国発model competitionが独立したfoundation-model familyの数だけで進むのではなく、他familyのbaseを取り込み、domain-specific productへ派生する経路を持つことを可視化する。 \cite{sp001sp001d020}\par\medskip
+\noindent ただしM3 cardだけから、より初期のBaichuan2系統がどのように現在へ移行したかをhistorical factとして埋めない。current specializationとancestryは直接確認できるが、過去の独立lineageとの連続性は別sourceが必要な論点として残す。 \cite{sp001sp001d020}\par\medskip
+\end{multicols}
+\medskip
+\begin{wideflow}
+\subsection*{Transition timeline}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.20\linewidth}X@{}}
+Yi-1.5 / 2024 & 複数size、Ollama local use、fine-tuning integrations、Apache-2.0 code/weightsをrepositoryが示す。 \cite{sp001sp001d019} \\
+MiniMax M2.7 / 2026 & Agent Teams、skills、dynamic tool searchを前面に出すparallel agentic frontier。 \cite{sp001sp001d018} \\
+Baichuan-M3 & medical specializationとQwen3-MoE ancestryを明示するderivative/specialized endpoint。 \cite{sp001sp001d020} \\
+\end{tabularx}
+\end{wideflow}
+\medskip
+\begin{multicols}{2}
+\subsection*{競争は『独立familyの数』から、agentic branch・local ecosystem・specialized derivationへ広がる}
+\noindent MiniMax、Yi、Baichuanを補助線として置くと、中国発frontier AIの歴史は主要4familyのsuccess storyだけでは説明できない。parallelなagentic strategy、developer local ecosystem、domain specializationという異なる競争様式が同時に存在し、どの線をcentralに置くかはas-of時点とsource strengthに依存する。 \cite{sp001sp001d018,sp001sp001d019,sp001sp001d020}\par\medskip
+\noindent このため本号ではMiniMaxをcompeting frontier、Yi/Baichuanをbridge/contextとして役割分離する。各sourceが直接支える範囲を越えてcurrent frontier rankやhistorical continuityを補完せず、それでも主要4系統だけで閉じた物語を避ける。 \cite{sp001sp001d018,sp001sp001d019,sp001sp001d020}\par\medskip
+\end{multicols}
+\medskip
 \begin{claimboundary}[Claim boundary]
-この節の読解上の境界: MiniMax is a visible competing branch, not a fifth co-equal central family in this thematic architecture. / X runtime-adoption and enterprise-origin-policy observations remain HOLD and cannot support prevalence or performance claims. / The bound news source does not itself establish every requested open-weight serving integration or exact license term; those were observed in a separate official model card during Discovery but are outside this one-source Evidence task. / Verify MiniMax M2.7 Agent Teams, skills/tool-search claims, model-assisted development positioning, open-weight distribution, serving support, and license from official sources.: The official announcement verifies Agent Teams, skills/tool search and model-assisted-development positioning; open-weight serving and license details are not promoted from a different source into this single-source card. / The Yi-1.5 repository alone cannot prove the absence of a later independent general Yi frontier endpoint; that negative conclusion remains a Discovery-level catalog observation. / Verify Yi-1.5 release, open/local deployment, fine-tuning integrations, licensing, and whether an official later general Yi endpoint exists within the as-of boundary.: The repository verifies Yi-1.5 release/deployment/fine-tuning/licensing; the absence of a later co-equal general endpoint is not established by this source alone and remains contextual. / The historical transition from the earlier independent Baichuan2 foundation-model line requires separate earlier evidence and is not established by the M3 model card alone. / Verify Baichuan M3 medical specialization, Qwen3-MoE ancestry, licensing/deployment, and the historical transition from the earlier independent Baichuan line.: The M3 model card verifies medical specialization, Qwen3-MoE ancestry/acknowledgement and Apache-2.0 licensing; the earlier-to-current historical transition is only partially represented by this source.
+\noindent MiniMax M2.7 announcementからexact open-weight/license条件を補完しない。Yi-1.5 repositoryから2026年のcurrent frontier statusを推論せず、Baichuan-M3 cardから初期Baichuan familyとの完全なhistorical continuityを導出しない。 \cite{sp001sp001d018,sp001sp001d019,sp001sp001d020}\par
 \end{claimboundary}
-\clearpage
+\medskip
+\subsection*{Source-backed Technical Notes}
+\begin{technicalnote}[MiniMax M2.7]
+\noindent\textbf{Chronology:} 2026年のparallel agentic frontier branch。 \cite{sp001sp001d018}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item official announcementはAgent Teams、skills、dynamic tool searchを主要方向として説明する。 \cite{sp001sp001d018}
+\item modelが自身のdevelopment workflowの一部へ参加するというpositioningを打ち出す。 \cite{sp001sp001d018}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} このannouncement単体ではopen-weight serving integrationsやexact license termを確定しない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://www.minimax.io/news/minimax-m27-en}\par
+\end{technicalnote}
+\smallskip
+\begin{technicalnote}[Yi-1.5]
+\noindent\textbf{Chronology:} 2024年のopen-weight / local-deployment bridge。 \cite{sp001sp001d019}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item repositoryは34B/9B/6B variantsとOllamaを含むlocal useを案内する。 \cite{sp001sp001d019}
+\item fine-tuning ecosystem integrationsとApache-2.0 code/weightsをprojectが示す。 \cite{sp001sp001d019}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} このrepositoryだけでは2026年の独立general-frontier endpointの有無を確定しない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://github.com/01-ai/Yi-1.5}\par
+\end{technicalnote}
+\smallskip
+\begin{technicalnote}[Baichuan-M3-235B]
+\noindent\textbf{Chronology:} domain-specialized / derivative ecosystemを示すcurrent example。 \cite{sp001sp001d020}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item official model cardはmedical-enhanced clinical inquiryへのspecializationを説明する。 \cite{sp001sp001d020}
+\item Qwen3-MoE ancestry/acknowledgementとApache-2.0 licensingを示す。 \cite{sp001sp001d020}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} 初期Baichuan2から現在までのhistorical transition全体はこのM3 card単体では確定しない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://huggingface.co/baichuan-inc/Baichuan-M3-235B}\par
+\end{technicalnote}
+\smallskip
 % package:SP001-P07-open-weight draft-result-sha256:6999f0e7d1bd3616c110a54222e0aa1ff08273c82c34f326572e6d1f59915f9f
+\Needspace{0.24\textheight}
 \section{Open Weightは一枚岩ではない：配布されることと、同じ権利で使えることは別問題}
 \label{pkg:SP001-P07-open-weight}
 \sectionkicker{THEMATIC LINEAGE 7/7 — weight}
 \noindent\textbf{公開weightsはdeveloper adoptionを加速しうるが、code、weights、commercial use、attribution、Model-as-a-Service条件はartifactごとに異なる。Kimi K3のexact licenseとYi/BaichuanのApache-2.0 artifactsを並べると、その差が具体的になる。} \cite{sp001sp001d021,sp001sp001d019,sp001sp001d020}\par\medskip
-% block:p07-k3-license attribution:FACTUAL
-\noindent Kimi K3 Licenseは、covered software/weightsについてuse、copy、modify、distribute、sublicense、sell、deploy、fine-tuneを含む広いgrantを置く一方、定義されたModel-as-a-Service businessが連続12か月のaggregate revenueで2000万米ドルを超える場合にはcommercial use前のseparate agreementを求める。また対象となる大規模commercial product/serviceには、100M MAUまたは月間revenue 2000万米ドル超を条件とする『Kimi K3』表示条項があり、license本文には除外も記されている。これはK3という特定artifactの条件であり、Kimi family全体へ遡及させない。 \cite{sp001sp001d021}\par\medskip
-% block:p07-apache-comparison attribution:ATTRIBUTED
-\noindent 比較対象としてYi-1.5はrepository上でApache-2.0 code/weightsとlocal/fine-tuning integrationsを示し、Baichuan-M3もofficial model card上でApache-2.0を掲げる。これらをKimi K3と並べる目的は『どれがよりopenか』を単純順位付けすることではない。公開weights、repository code、商用条件、attribution、派生物の扱いをartifact単位で分けて読む必要があることを示すためである。 \cite{sp001sp001d019,sp001sp001d020}\par\medskip
-% block:p07-boundary attribution:MIXED
-\noindent 本号でのlicense整理はtechnical distributionを理解するための境界整理であり、法的助言ではない。X上のlicense-friction discussionはHOLDのままで、infringement、derivative provenance、適用version、third-party complianceの判断根拠には用いない。『Open Source』と『Open Weight』も同義語として扱わず、確認できるweights/code/license条件だけを個別に記述する。 \cite{sp001sp001d021}\par\medskip
+\begin{themeoverview}[Theme at a glance]
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+Artifact-specific rights & Kimi K3 Licenseは広いuse/modification/distribution grantと、特定のModel-as-a-Service・display条件を同じlicense本文に持つ。 \cite{sp001sp001d021} \\
+Apache-2.0 examples & Yi-1.5とBaichuan-M3はそれぞれのofficial repository/model cardでApache-2.0を示すが、model lineageやdistribution形態は同じではない。 \cite{sp001sp001d019,sp001sp001d020} \\
+\end{tabularx}
+\end{themeoverview}
+\medskip
+\begin{multicols}{2}
+\subsection*{download可能なweightsと、同じ権利で使えるweightsは別概念である}
+\noindent Open Weightを技術的なdistribution状態として読むだけでは、事業利用時の条件を説明できない。Kimi K3 Licenseはcovered software/weightsについてuse、copy、modify、distribute、sublicense、sell、deploy、fine-tuneを含む広いgrantを置きつつ、定義されたModel-as-a-Service businessに別条件を設けている。公開されていることと、無条件に同じ商用形態で使えることは同義ではない。 \cite{sp001sp001d021}\par\medskip
+\noindent license本文は、定義されたModel-as-a-Service businessが連続12か月のaggregate revenueで2000万米ドルを超える場合にcommercial use前のseparate agreementを求める。またcovered large commercial product/serviceについて100M MAUまたは月間revenue 2000万米ドル超を条件とする表示条項と、本文上のexclusionsを置く。ここで重要なのはthresholdの大小を評価することではなく、権利境界がartifact固有のtextで決まる点である。 \cite{sp001sp001d021}\par\medskip
+\subsection*{Apache-2.0という同じlabelでも、技術的な役割は同じではない}
+\noindent Yi-1.5はrepository上でApache-2.0 code/weightsとlocal/fine-tuning integrationsを示し、Baichuan-M3もofficial model cardでApache-2.0を掲げる。両者はlicense label上の共通点を持つが、Yiはhistorical open/local bridge、Baichuan-M3はmedical-specializedかつQwen3-MoE ancestryを持つcurrent artifactであり、同じdistribution strategyを意味しない。 \cite{sp001sp001d019,sp001sp001d020}\par\medskip
+\noindent したがってlicense comparisonは『どれが最もopenか』という一軸rankではなく、weights、repository code、commercial conditions、attribution/display、derivative use、Model-as-a-Serviceなどの項目をartifactごとに確認する必要がある。本号のOpen Weightという語は、権利条件を省略するshortcutではなく、むしろその分離を促すラベルとして使う。 \cite{sp001sp001d021,sp001sp001d019,sp001sp001d020}\par\medskip
+\subsection*{community上のlicense frictionは、法的結論へ昇格させない}
+\noindent community上ではlicense frictionやadoption boundaryを示すsignalが観測されても、本号では一次資料で裏付けられていないthird-party compliance、derivative provenance、infringement、適用versionを確定する材料には使わない。法的意味を論じる際は、対象versionのexact license textへ戻る。 \cite{sp001sp001d021}\par\medskip
+\noindent この制約はtechnical historyにも重要である。modelがdownloadできること、runtimeで動くこと、派生modelを作れること、商用serviceとして提供できることはそれぞれ別の問いであり、Open SourceとOpen Weightを無条件に同義語として使うとdistribution史そのものを誤って単純化する。 \cite{sp001sp001d021,sp001sp001d019,sp001sp001d020}\par\medskip
+\end{multicols}
+\medskip
+\begin{wideflow}
+\subsection*{Transition timeline}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.20\linewidth}X@{}}
+Yi-1.5 & Apache-2.0 code/weightsとlocal/fine-tuning integrationsをrepositoryが示すopen/local distribution example。 \cite{sp001sp001d019} \\
+Baichuan-M3 & Apache-2.0を掲げる一方、medical specializationとQwen3-MoE ancestryを持つderivative example。 \cite{sp001sp001d020} \\
+Kimi K3 License & broad grantに加えてModel-as-a-Service revenue conditionとlarge-product display conditionをexact textで定義。 \cite{sp001sp001d021} \\
+\end{tabularx}
+\end{wideflow}
+\medskip
+\begin{multicols}{2}
+\subsection*{Open Weightはarchitectureではなく、distributionとrightsを分離して読むための境界概念である}
+\noindent Kimi K3、Yi-1.5、Baichuan-M3を並べると、weightsが利用可能であるという技術的事実だけではrights regimeを一意に説明できない。license text、code repository、commercial service条件、attribution/display義務をversion/artifact単位で追う必要がある。 \cite{sp001sp001d021,sp001sp001d019,sp001sp001d020}\par\medskip
+\noindent この分離はdeveloper ecosystemの理解にもつながる。local runtimeやfine-tuning integrationはadoption経路を作る一方、business modelによって追加条件が生じるartifactもある。distributionの広さと法的・商用上の条件を一つの『openさ』scoreへ畳み込まないことが、本号のcross-cuttingな結論である。 \cite{sp001sp001d021,sp001sp001d019,sp001sp001d020}\par\medskip
+\end{multicols}
+\medskip
 \begin{claimboundary}[Claim boundary]
-この節の読解上の境界: The Kimi K3 License summary is artifact-specific and is not a legal opinion. / X license-friction discussion remains HOLD and cannot establish infringement, derivative provenance, applicable version, or legal interpretation. / This Evidence card summarizes the named 2026 Kimi K3 License only; it is not a legal opinion and does not establish infringement or compliance by third parties. / The Yi-1.5 repository alone cannot prove the absence of a later independent general Yi frontier endpoint; that negative conclusion remains a Discovery-level catalog observation. / Verify Yi-1.5 release, open/local deployment, fine-tuning integrations, licensing, and whether an official later general Yi endpoint exists within the as-of boundary.: The repository verifies Yi-1.5 release/deployment/fine-tuning/licensing; the absence of a later co-equal general endpoint is not established by this source alone and remains contextual. / The historical transition from the earlier independent Baichuan2 foundation-model line requires separate earlier evidence and is not established by the M3 model card alone. / Verify Baichuan M3 medical specialization, Qwen3-MoE ancestry, licensing/deployment, and the historical transition from the earlier independent Baichuan line.: The M3 model card verifies medical specialization, Qwen3-MoE ancestry/acknowledgement and Apache-2.0 licensing; the earlier-to-current historical transition is only partially represented by this source.
+\noindent 本packageはtechnical distributionを理解するためのlicense境界整理であり、法的助言ではない。Kimi K3の条件をK2やMoonshotの全artifactへ移さず、Yi/BaichuanのApache-2.0表記も各sourceが示す対象に限定する。 \cite{sp001sp001d021,sp001sp001d019,sp001sp001d020}\par
 \end{claimboundary}
-\clearpage
+\medskip
+\subsection*{Source-backed Technical Notes}
+\begin{technicalnote}[Kimi K3 License]
+\noindent\textbf{Chronology:} Kimi K3に適用される2026年のexact license boundary。 \cite{sp001sp001d021}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item use、copy、modify、distribute、sublicense、sell、deploy、fine-tuneを含むbroad grantを本文が定める。 \cite{sp001sp001d021}
+\item 定義されたModel-as-a-Service businessの12か月aggregate revenue条件と、100M MAUまたは月間revenue条件に結び付くdisplay clauseを本文が定める。 \cite{sp001sp001d021}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} Kimi K3というcovered artifactのtextを要約するもので、Kimi K2やthird partyのcomplianceへ一般化せず、法的助言とも扱わない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://huggingface.co/moonshotai/Kimi-K3/blob/main/LICENSE}\par
+\end{technicalnote}
+\smallskip
+\begin{technicalnote}[Yi-1.5 distribution]
+\noindent\textbf{Chronology:} 2024年のopen/local distribution example。 \cite{sp001sp001d019}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item repositoryはApache-2.0 code/weightsを示す。 \cite{sp001sp001d019}
+\item Ollama local useとfine-tuning ecosystem integrationsを案内し、weightsの配布とdeveloper toolchainを接続する。 \cite{sp001sp001d019}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} 2024 repositoryの条件をlater Yi artifactsへ自動的に継承させない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://github.com/01-ai/Yi-1.5}\par
+\end{technicalnote}
+\smallskip
+\begin{technicalnote}[Baichuan-M3 distribution]
+\noindent\textbf{Chronology:} current specialized / derivative distribution example。 \cite{sp001sp001d020}\par
+\smallskip\noindent\textbf{Technical points:}\par
+\begin{itemize}
+\item official model cardはApache-2.0 licensingを示す。 \cite{sp001sp001d020}
+\item medical specializationとQwen3-MoE ancestry/acknowledgementを同じartifactで示す。 \cite{sp001sp001d020}
+\end{itemize}
+\noindent\textbf{Limitation / attribution:} Apache-2.0というlabelからearlier Baichuan familyのlicense・architecture・continuityを推論しない。\par
+\smallskip\noindent\textbf{Primary URL:} \url{https://huggingface.co/baichuan-inc/Baichuan-M3-235B}\par
+\end{technicalnote}
+\smallskip
+\Needspace{0.30\textheight}
+\section{4系統は何に収斂し、どこで分岐したか}
+\sectionkicker{CROSS-FAMILY SYNTHESIS}
+\noindent GLM、Qwen、DeepSeek、Kimiは2026年までにreasoning、coding/tool use、agentic workload、long context、serving efficiencyという似た課題へ接近した。しかし収斂しているのはproblem setであって、implementation recipeではない。GLMはARCとlong-context serving、Qwenはfamily-wide hybrid reasoningとagentic coding、DeepSeekはMLA/MoE efficiencyとreasoning RL、Kimiはlong-context RLからagentic MoE・native multimodalへ進んでいる。 \cite{sp001sp001d007,sp001sp001d008,sp001sp001d010,sp001sp001d011,sp001sp001d012,sp001sp001d013,sp001sp001d015,sp001sp001d016,sp001sp001d017}\par\medskip
+\noindent distributionについても一様ではない。Qwen3/Qwen3.6はApache-2.0 public/open-weight distributionを明示し、GLMはversionごとにmodel-use/commercial permissionとrepository codeの境界を確認する必要がある。KimiはK2/K3のtechnical distributionとK3固有licenseを分離し、DeepSeekもnative/distilled model subjectを混同しないことが重要になる。 \cite{sp001sp001d005,sp001sp001d010,sp001sp001d011,sp001sp001d013,sp001sp001d016,sp001sp001d017,sp001sp001d021}\par\medskip
+\noindent したがってcross-family comparisonはbenchmark scoreを一枚の順位表へ畳み込むのではなく、各familyがどのlayerを競争軸へしたかを比べる方が再現可能である。architecture、post-training、serving、distribution/licenseを別dimensionとして見ることで、近いcapability vocabularyの背後にある技術経路の違いを保持できる。 \cite{sp001sp001d007,sp001sp001d010,sp001sp001d012,sp001sp001d013,sp001sp001d015,sp001sp001d016,sp001sp001d021}\par\medskip
+\begin{themeoverview}[Cross-family comparison]
+\scriptsize
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.12\linewidth}XXXX@{}}
+\toprule
+観点 & GLM & Qwen & DeepSeek & Kimi \\ 
+\midrule
+Architecture / efficiency & GLM-4.5のMoEとGLM-5.2のIndexShare・1M-context serving。 & Qwen3のdense/MoE familyを広いmodel portfolioとして展開。 & DeepSeek-V2のMLA＋DeepSeekMoEでmemory/serving efficiencyを設計課題化。 & K2の1T/32B-active MoEからK3の2.8T/104B-active、KDA＋gated MLAへ。 \cite{sp001sp001d007,sp001sp001d008,sp001sp001d010,sp001sp001d012,sp001sp001d016,sp001sp001d017} \\
+Reasoning / post-training & GLM-4.5がhybrid thinking/direct responseをARC framingへ統合。 & Qwen3がthinking/non-thinkingとthinking-budget controlをfamily-wideに統合。 & R1-Zeroのlarge-scale RLとR1のcold-start＋multi-stage pathを分離。 & k1.5のscaled RL / long-context reasoningからK2のagentic joint RLへ。 \cite{sp001sp001d007,sp001sp001d010,sp001sp001d013,sp001sp001d015,sp001sp001d016} \\
+Agentic / coding & All ToolsからARCへ、tool orchestrationとcoding/reasoningをfamily strategyへ接続。 & Qwen3.6でrepository-level reasoningとagentic coding、thinking-history retentionを強調。 & V4-Flash-0731でagentic positioningとvLLM/DSpark serving supportを確認。 & K2のagentic data/RLからK3のlong-horizon coding・knowledge workへ伸長。 \cite{sp001sp001d006,sp001sp001d007,sp001sp001d011,sp001sp001d014,sp001sp001d016,sp001sp001d017} \\
+Distribution / rights & ChatGLM-6Bではmodel-use/commercial permissionとrepository code licenseを分離して読む。 & Qwen3/Qwen3.6はApache-2.0 public/open-weight distributionを明示。 & native R1/R1-ZeroとQwen/Llama-based distillsを別model subjectとして扱う。 & technical model materialとK3 exact licenseを分離し、MaaS/display条件をartifact-specificに確認。 \cite{sp001sp001d005,sp001sp001d010,sp001sp001d011,sp001sp001d013,sp001sp001d017,sp001sp001d021} \\
+\bottomrule
+\end{tabularx}
+\end{themeoverview}
+\Needspace{0.28\textheight}
 \section{この号の総括}
 \label{sec:issue-summary}
 \sectionkicker{ISSUE SYNTHESIS}
+\begin{multicols}{2}
 \noindent 本号を通して見えるのは、『中国モデル』という単一のarchitectureや学習recipeではなく、異なる出発点を持つ複数の系譜である。GLMは公開・ローカル展開からtool use、ARC、長文脈servingへ、Qwenは広いfamily / platformからhybrid reasoningとagentic codingへ、DeepSeekはMLA / MoEによる効率設計からreasoning RLとagentic servingへ、Kimiはlong contextを起点にreasoning RL、open agentic MoE、native multimodalへ進んだ。相互に近い課題へ向かっていても、その技術的な道筋を一つにまとめることはできない。\par\medskip
-\noindent 一方で、2025年から2026年にかけて競争課題そのものは重なってきた。reasoningをどのように利用形態へ組み込むか、codingやtool useを長時間のagentic workloadへどう接続するか、long contextを実際にserveできる効率へ落とすか、そしてweightsを公開したモデルをdeveloperがどのruntimeやdistribution経路で使えるようにするかである。収斂しているのは一つの実装方法ではなく、frontier modelに求められる問題設定の側だと捉える方が、本号で確認したEvidenceには整合的である。\par\medskip
-\noindent MiniMax、Yi、Baichuanを併記すると、4主要系統だけで中国のopen-weight史を閉じることもできない。MiniMaxはagentic frontierの並行線として、Yiは2023〜2024年のopen distributionを示すbridgeとして、Baichuanは初期の独立系譜から現在のspecialized / derivativeな位置へ移る例として機能する。そしてOpen Weightという言葉も一つの制度ではない。weightsの取得可能性、repository code、再配布、商用利用、表示義務、Model-as-a-Service条件はartifactごとに異なり、技術的な『開放性』と法的・商用上の条件を分離して確認する必要がある。\par\medskip
-\noindent なお、本号には意図的に残した境界がある。Kimiの2023年初期chronologyは一次資料で完全には閉じておらず、二次資料としての資格を外していない。X / communityのruntime採用やlicense frictionも、技術仕様や普及度を確定するEvidenceには使っていない。また、各社・各論文のbenchmark値を異なる条件のまま横断順位へ変換していない。したがって本号が示すのは『どのモデルが絶対に最強か』ではなく、2026年8月22日までに各系譜が何を競争課題として選び、どの公開・serving・権利境界を伴ってfrontierへ到達したか、という技術史である。\par\medskip
-\clearpage
+\noindent 一方で、2025年から2026年にかけて競争課題そのものは重なってきた。reasoningをどのように利用形態へ組み込むか、codingやtool useを長時間のagentic workloadへどう接続するか、long contextを実際にserveできる効率へ落とすか、そしてweightsを公開したモデルをdeveloperがどのruntimeやdistribution経路で使えるようにするかである。収斂しているのは一つの実装方法ではなく、frontier modelに求められる問題設定の側だと捉える方が、本号で確認した資料には整合的である。\par\medskip
+\noindent MiniMax、Yi、Baichuanを併記すると、4主要系統だけで中国のopen-weight史を閉じることもできない。MiniMaxはagentic frontierの並行線として、Yiは2023〜2024年のopen distributionを示すbridgeとして、Baichuanは現在のspecialized / derivativeな位置を示す例として機能する。そしてOpen Weightという言葉も一つの制度ではない。weightsの取得可能性、repository code、再配布、商用利用、表示義務、Model-as-a-Service条件はartifactごとに異なり、技術的な『開放性』と法的・商用上の条件を分離して確認する必要がある。\par\medskip
+\noindent なお、本号には意図的に残した境界がある。Kimiの2023年初期chronologyは一次資料で完全には閉じておらず、確実なtechnical lineageは2025年以降を中心に構成した。communityのruntime採用やlicense frictionも、技術仕様や普及度を確定する根拠には使っていない。また、各社・各論文のbenchmark値を異なる条件のまま横断順位へ変換していない。したがって本号が示すのは『どのモデルが絶対に最強か』ではなく、2026年8月22日までに各系譜が何を競争課題として選び、どの公開・serving・権利境界を伴ってfrontierへ到達したか、という技術史である。\par\medskip
+\end{multicols}
+\medskip
 \printbibliography[title={References / Source Notes}]
 \end{document}
