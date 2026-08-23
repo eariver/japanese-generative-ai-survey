@@ -25,6 +25,16 @@ jobs:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
+      - name: Export committed SP001 preview for visual review
+        uses: actions/upload-artifact@v4
+        with:
+          name: sp001-publication-preview-review
+          path: |
+            sources/SP001/publication/v2/SP001-publication-preview.pdf
+            surveys/special/SP001/main.pdf
+            surveys/special/SP001/main.tex
+          if-no-files-found: error
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
