@@ -53,11 +53,6 @@
 \raggedbottom
 \Urlmuskip=0mu plus 1mu\relax
 
-% Review-branch-only: loose-line diagnostics are inspected visually instead of
-% failing the preview export. Overfull boxes remain unsuppressed and therefore
-% continue to fail the existing deterministic preflight.
-\hbadness=10000
-
 % LONGFORM_SPECIAL tables contain mixed Japanese/English technical tokens.
 % Ragged X columns avoid artificial stretching and give TeX more legal breaks.
 \renewcommand{\tabularxcolumn}[1]{>{\raggedright\arraybackslash}p{#1}}
@@ -132,11 +127,10 @@
   {\small\bfseries\color{SurveyAccent}\MakeUppercase{#1}\par}\vspace{1mm}%
 }
 
-% Publication-only wrapper used by LONGFORM_SPECIAL around blocks that must stay
-% at the normal full-page measure. The renderer itself owns the two-column
-% narrative regions via multicols; wideflow therefore must not switch the page
-% into LaTeX's global twocolumn mode. Zeroing paragraph indent prevents a
-% full-width tabularx from acquiring the document's 1em first-line offset.
+% LONGFORM_SPECIAL wraps full-page blocks in wideflow while its renderer owns
+% the two-column narrative regions via multicols. Keep the normal page measure
+% and suppress the document's 1em first-line offset so full-width tabularx
+% blocks do not become exactly 1em wider than \linewidth.
 \newenvironment{wideflow}{%
   \par
   \begingroup
