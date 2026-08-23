@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Operator Execution Bridge
 
-Status: `MAINTENANCE CANDIDATE / HUMAN-GATE ROUNDTRIP IMPLEMENTED / FIXED-HEAD REAUDIT PENDING`
+Status: `MAINTENANCE CANDIDATE / HUMAN-GATE ROUNDTRIP + REVIEW-COMMIT PROVENANCE IMPLEMENTED / FIXED-HEAD REAUDIT PENDING`
 
 Established: 2026-08-23 JST  
 Human-Gate synchronization: 2026-08-24 JST
@@ -26,6 +26,8 @@ The normal ChatGPT production runtime can read/write exact repository files thro
 This is an operator execution capability gap. Hand-authoring `production-state.json`, Stage Checkpoints, Architecture approvals, Publication Preview approvals, review-revision authority or other machine records is not an acceptable workaround.
 
 The later pre-approval full-system audit exposed the same gap after a normal Human Gate: connector-only operation could reach a gate but could not canonically record an already explicit Human approval or ordinary `REQUEST_CHANGES` decision. The bridge therefore covers those deterministic recording/invalidation mechanics as well as initialization/stage advancement.
+
+A subsequent fixed-head seven-point audit found a related provenance asymmetry after the bridge's request-parent binding was repaired: the preferred direct-local Human Gate path accepted a syntactically valid reviewed commit SHA without proving that the commit existed or contained the exact reviewed State/Gate-input bytes. The canonical `survey_human_gate_v2` helper now performs that Git commit-tree proof in both execution modes; Actions adds the connector-specific request-parent proof on top.
 
 ## 2. Governing boundary
 
@@ -68,6 +70,8 @@ ChatGPT reviews one exact main Core baseline
 -> GitHub Actions checks out that exact request commit
 -> workflow proves reviewed_repository_commit_sha == request-only commit parent
 -> workflow proves the branch's shared Core/contract tree still matches reviewed main
+-> canonical Human Gate helper proves that reviewed commit exists and its tree contains
+   the exact reviewed Production State + Gate-input bytes
 -> bridge executes one whitelisted deterministic Core operation
 -> bridge verifies its outputs
 -> workflow enforces Profile-bound edition-local write scope
@@ -96,7 +100,7 @@ Human Gate requests additionally carry explicit:
 - `review_reference`;
 - for revision requests, `requested_changes` and an enum-constrained `regeneration_boundary`.
 
-For connector-safe bridge execution, `reviewed_repository_commit_sha` must equal the parent of the immutable request-only commit. The request commit itself is execution transport and is **not** the reviewed edition commit.
+For connector-safe bridge execution, `reviewed_repository_commit_sha` must equal the parent of the immutable request-only commit. The request commit itself is execution transport and is **not** the reviewed edition commit. Independently of that transport rule, canonical Human Gate Core requires the named commit to exist and to contain regular-file bytes whose SHA-256 values equal the current reviewed State and all Gate inputs. Publication Preview includes the exact Candidate-bound PDF in that proof.
 
 Canonical request location:
 
@@ -186,7 +190,7 @@ The request cannot supply its own deterministic `CORE_STAGE_CONTRACT` PASS.
 
 ### Human Gate approval operations
 
-`RECORD_ARCHITECTURE_APPROVAL` and `RECORD_PUBLICATION_PREVIEW_APPROVAL` require a pending matching gate and exact reviewed-byte authority. They call `survey_human_gate_v2` which delegates to the existing canonical exact-byte approval mechanics, then writes the contiguous machine review revision record/index.
+`RECORD_ARCHITECTURE_APPROVAL` and `RECORD_PUBLICATION_PREVIEW_APPROVAL` require a pending matching gate and exact reviewed-byte authority. They call `survey_human_gate_v2`, which first proves reviewed-commit existence and exact tree-byte identity, then delegates to the existing canonical exact-byte approval mechanics and writes the contiguous machine review revision record/index.
 
 An approval request does not contain a generic `decision` field. The operation kind itself is a narrow recorder invoked only after the Human has explicitly approved.
 
@@ -203,12 +207,13 @@ An approval request does not contain a generic `decision` field. The operation k
 
 Core then:
 
-1. records exact reviewed State/artifact hashes plus the explicit reviewed repository commit;
-2. writes the immutable `REQUEST_CHANGES` review revision;
-3. returns State to the supplied allowed boundary;
-4. resets only machine checkpoints/gate provenance downstream of that boundary;
-5. removes superseded canonical Stage Checkpoint files that would block regeneration;
-6. preserves unaffected upstream authority, including approved Architecture when Publication Preview alone is revised.
+1. proves the named reviewed commit exists and contains the exact reviewed State/Gate-input bytes;
+2. records exact reviewed State/artifact hashes plus the explicit reviewed repository commit;
+3. writes the immutable `REQUEST_CHANGES` review revision;
+4. returns State to the supplied allowed boundary;
+5. resets only machine checkpoints/gate provenance downstream of that boundary;
+6. removes superseded canonical Stage Checkpoint files that would block regeneration;
+7. preserves unaffected upstream authority, including approved Architecture when Publication Preview alone is revised.
 
 ChatGPT then performs the requested editorial/research repair and re-runs normal validation to the same Human Gate. The next review must use the next contiguous revision number.
 
@@ -222,12 +227,12 @@ Each machine review revision records:
 - `APPROVED` or `REQUEST_CHANGES`;
 - exact reviewed Production State path/SHA;
 - exact reviewed gate artifacts and SHA-256 values;
-- exact reviewed repository commit SHA supplied by the Human Gate request;
+- exact reviewed repository commit SHA supplied by the Human Gate request/direct-local invocation;
 - Human identity/time/reference;
 - requested changes + regeneration boundary when applicable;
 - approval authority when applicable.
 
-For connector-safe bridge execution, the workflow verifies that this reviewed repository commit is exactly the request-only commit parent. The bridge-run receipt separately records the request/event commit and the Human-reviewed repository commit, preventing those two identities from being conflated.
+Canonical Human Gate Core verifies that the named reviewed repository commit is a real commit and that each recorded reviewed path is a regular file in that commit tree with bytes matching the exact current review SHA. For connector-safe bridge execution, the workflow additionally verifies that this reviewed repository commit is exactly the request-only commit parent. The bridge-run receipt separately records the request/event commit and the Human-reviewed repository commit, preventing those two identities from being conflated.
 
 After `REQUEST_CHANGES`, superseded artifact bytes may be replaced at their canonical paths during regeneration. Historical exact identity remains reconstructable from the review record's hashes and reviewed repository commit. Current Production State/checkpoint/gate provenance alone determines current authority.
 
@@ -256,26 +261,27 @@ The workflow/bridge/Core combination must enforce:
 2. one newly added request and request-only triggering commit;
 3. exact reviewed-main provenance and shared-Core byte equivalence;
 4. Human Gate request explicitly binds a reviewed repository SHA equal to the request-only parent, not the request/event commit;
-5. exact request branch/ref match;
-6. source root under `sources/` and canonical request path;
-7. generated/current Profile identity match;
-8. configured Retrospective slug resolution through existing `survey_period_v2` only;
-9. unconfigured Retrospective slug and pre-period-end initialization rejection;
-10. exact lowercase event commit SHA;
-11. eight-kind enum operation surface only;
-12. traversal-safe repository paths;
-13. initialization refusal when canonical Profile/State already exists;
-14. stale `expected_from_state` refusal;
-15. no agent impersonation of deterministic reviews;
-16. Human Gate operation requires pending matching gate/current State;
-17. stale/non-contiguous Human review revision refusal;
-18. gate-specific regeneration-boundary refusal;
-19. changed reviewed/checkpoint bytes fail before approval/revision recording;
-20. generic Human-decision/rejection command surfaces are absent;
-21. immutable/non-overwritable bridge-run ids;
-22. generated writes only below validated Profile `source_root`;
-23. no mutation of immutable request authority;
-24. bot output commits cannot recursively chain the bridge.
+5. canonical Human Gate Core rejects a nonexistent reviewed commit, a commit missing any reviewed path, a non-regular reviewed tree entry, or same-path bytes that do not match current reviewed authority;
+6. exact request branch/ref match;
+7. source root under `sources/` and canonical request path;
+8. generated/current Profile identity match;
+9. configured Retrospective slug resolution through existing `survey_period_v2` only;
+10. unconfigured Retrospective slug and pre-period-end initialization rejection;
+11. exact lowercase event commit SHA;
+12. eight-kind enum operation surface only;
+13. traversal-safe repository paths;
+14. initialization refusal when canonical Profile/State already exists;
+15. stale `expected_from_state` refusal;
+16. no agent impersonation of deterministic reviews;
+17. Human Gate operation requires pending matching gate/current State;
+18. stale/non-contiguous Human review revision refusal;
+19. gate-specific regeneration-boundary refusal;
+20. changed reviewed/checkpoint bytes fail before approval/revision recording;
+21. generic Human-decision/rejection command surfaces are absent;
+22. immutable/non-overwritable bridge-run ids;
+23. generated writes only below validated Profile `source_root`;
+24. no mutation of immutable request authority;
+25. bot output commits cannot recursively chain the bridge.
 
 The trigger intentionally does not hardcode cadence branch prefixes. Branch authority comes from request/Profile equality.
 
@@ -283,10 +289,12 @@ The trigger intentionally does not hardcode cadence branch prefixes. Branch auth
 
 The W33/SP001 clean revalidation attempts that exposed the operator gap remain non-PASS evidence. Adding the bridge and Human Gate round-trip mechanics changes shared Core implementation/contracts.
 
+The first seven-point fixed-head audit of `0a9e2d2c5bd9124ba626cdc7558e645d8021946c` is also historical/invalidated evidence: Points 1–6 passed, but Point 7 found the direct-local reviewed-commit provenance gap described above. No verdict from that audit may be carried into the next candidate.
+
 Acceptance sequence is:
 
 ```text
-finish bridge + Human Gate maintenance
+finish bridge + Human Gate + reviewed-commit provenance maintenance
 -> exact-head CI/regression
 -> complete fixed-head seven-point audit from zero
 -> Human full-candidate review
@@ -294,10 +302,10 @@ finish bridge + Human Gate maintenance
 -> clean Weekly + Thematic/SP001 + representative Retrospective + Foundations validation
 ```
 
-No pre-maintenance W33/SP001 lifecycle result and no earlier six-point maintenance audit may be relabeled as successful canonical validation.
+No pre-maintenance W33/SP001 lifecycle result and no earlier six/seven-point maintenance audit may be relabeled as successful canonical validation.
 
 ## 10. Direct-local CLI remains preferred
 
 The bridge is a fallback execution substrate. If ChatGPT/operator runtime has an exact local checkout, use canonical local helpers directly, including `scripts/survey_human_gate_v2.py` for deterministic Human-decision recording/revision consequence.
 
-Direct local and bridge modes must produce the same canonical artifact semantics; the bridge adds transport and execution receipts, not a parallel state machine.
+Direct local and bridge modes must produce the same canonical artifact semantics and the same reviewed-commit reconstructability guarantee. In direct-local mode, `survey_human_gate_v2` itself proves the named reviewed commit exists and contains the exact reviewed State/Gate-input bytes before recording a Human decision. In bridge mode, the same canonical proof runs and Actions additionally proves the reviewed commit is the immutable request-only parent. The bridge adds transport and execution receipts, not a parallel state machine.
