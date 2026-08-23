@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from scripts import survey_agent_control_v2 as agent_control
 from scripts import survey_production_v2 as core
 
 SESSION_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
@@ -88,7 +89,7 @@ def _load_state(repo_root: Path, cfg: dict[str, Any], state_path: Path, profile:
     if path.is_symlink() or not path.is_file():
         raise ExecutionRecordError(f"Production State missing or unsafe: {path}")
     state = core.load_json(path)
-    errors = core.validate_state_semantics(repo_root, cfg, state)
+    errors = agent_control.validate_agent_state(repo_root, cfg, state)
     if errors:
         raise ExecutionRecordError("Production State invalid: " + "; ".join(errors))
     if state.get("issue_id") != profile.get("issue_id"):
