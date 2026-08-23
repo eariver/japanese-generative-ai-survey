@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 from copy import deepcopy
 from datetime import datetime
@@ -296,8 +297,87 @@ def _validate_gate_pending(state: dict[str, Any], gate: str) -> None:
         raise HumanGateError(f"{gate} decision requires pending {expected_state} Human Gate")
 
 
-def _review_commit(repo_root: Path, override: str | None) -> str:
-    return core.repository_commit_sha(repo_root, override)
+def _require_review_commit(repo_root: Path, commit_sha: str) -> None:
+    try:
+        subprocess.run(
+            ["git", "cat-file", "-e", f"{commit_sha}^{{commit}}"],
+            cwd=repo_root,
+            check=True,
+            capture_output=True,
+        )
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise HumanGateError(
+            f"Human Gate reviewed repository commit does not exist: {commit_sha}"
+        ) from exc
+
+
+def _committed_file_bytes(repo_root: Path, commit_sha: str, rel: str) -> bytes:
+    try:
+        listing = subprocess.run(
+            ["git", "ls-tree", "-z", commit_sha, "--", rel],
+            cwd=repo_root,
+            check=True,
+            capture_output=True,
+        )
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise HumanGateError(
+            f"cannot inspect Human Gate reviewed repository commit path: {commit_sha}:{rel}"
+        ) from exc
+    entries = [entry for entry in listing.stdout.split(b"\0") if entry]
+    if len(entries) != 1:
+        raise HumanGateError(
+            f"Human Gate reviewed repository commit is missing reviewed path: {rel}"
+        )
+    try:
+        meta, encoded_path = entries[0].split(b"\t", 1)
+        mode, object_type, object_sha = meta.decode("ascii").split()
+        listed_path = encoded_path.decode("utf-8")
+    except (UnicodeDecodeError, ValueError) as exc:
+        raise HumanGateError(
+            f"Human Gate reviewed repository tree entry invalid for: {rel}"
+        ) from exc
+    if listed_path != rel or object_type != "blob" or mode not in {"100644", "100755"}:
+        raise HumanGateError(
+            f"Human Gate reviewed repository path is not a regular file: {rel}"
+        )
+    try:
+        blob = subprocess.run(
+            ["git", "cat-file", "blob", object_sha],
+            cwd=repo_root,
+            check=True,
+            capture_output=True,
+        )
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise HumanGateError(
+            f"cannot read Human Gate reviewed repository blob: {rel}"
+        ) from exc
+    return blob.stdout
+
+
+def _review_commit(
+    repo_root: Path,
+    override: str | None,
+    reviewed_state: dict[str, str],
+    reviewed_artifacts: list[dict[str, str]],
+) -> str:
+    commit_sha = core.repository_commit_sha(repo_root, override)
+    _require_review_commit(repo_root, commit_sha)
+    refs: list[tuple[str, dict[str, str]]] = [("Production State", reviewed_state)]
+    refs.extend(
+        (f"Human Gate artifact {row['name']}", row)
+        for row in reviewed_artifacts
+    )
+    for label, ref in refs:
+        rel = ref["path"]
+        current = core.repo_local_path(repo_root, rel, label)
+        if current.is_symlink() or not current.is_file():
+            raise HumanGateError(f"{label} missing or unsafe while verifying reviewed commit: {rel}")
+        committed = _committed_file_bytes(repo_root, commit_sha, rel)
+        if core.sha256_bytes(committed) != ref["sha256"]:
+            raise HumanGateError(
+                f"Human Gate reviewed repository commit bytes differ for {label}: {rel}"
+            )
+    return commit_sha
 
 
 def record_architecture_approval(
@@ -317,7 +397,7 @@ def record_architecture_approval(
     revision = _next_revision(index, "ARCHITECTURE_REVIEW", expected_revision)
     reviewed_state = _authority(repo_root, state_path)
     artifacts = _reviewed_artifacts(repo_root, cfg, state, profile, "ARCHITECTURE_REVIEW")
-    commit_sha = _review_commit(repo_root, reviewed_commit_sha)
+    commit_sha = _review_commit(repo_root, reviewed_commit_sha, reviewed_state, artifacts)
     updated = agent.approve_architecture(
         repo_root,
         cfg,
@@ -363,7 +443,7 @@ def record_publication_preview_approval(
     revision = _next_revision(index, "PUBLICATION_PREVIEW", expected_revision)
     reviewed_state = _authority(repo_root, state_path)
     artifacts = _reviewed_artifacts(repo_root, cfg, state, profile, "PUBLICATION_PREVIEW")
-    commit_sha = _review_commit(repo_root, reviewed_commit_sha)
+    commit_sha = _review_commit(repo_root, reviewed_commit_sha, reviewed_state, artifacts)
     updated = agent.approve_publication_preview(
         repo_root,
         cfg,
@@ -506,7 +586,7 @@ def request_changes(
     revision = _next_revision(index, gate, expected_revision)
     reviewed_state = _authority(repo_root, state_path)
     artifacts = _reviewed_artifacts(repo_root, cfg, state, profile, gate)
-    commit_sha = _review_commit(repo_root, reviewed_commit_sha)
+    commit_sha = _review_commit(repo_root, reviewed_commit_sha, reviewed_state, artifacts)
     updated = _revised_state(repo_root, cfg, state, gate, regeneration_boundary)
     superseded = _superseded_checkpoint_paths(
         repo_root, cfg, state, source_root, regeneration_boundary, gate
