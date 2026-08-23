@@ -61,9 +61,12 @@ Release remains owned by the dedicated release workflow.
 ChatGPT reviews one exact main Core baseline
 -> ChatGPT authors/researches edition artifacts
 -> ChatGPT commits those artifacts normally
--> when a Human Gate is reached, Human supplies APPROVED or REQUEST_CHANGES + feedback/boundary
+-> when a Human Gate is reached, Human reviews the exact current branch-parent commit
+-> Human supplies APPROVED or REQUEST_CHANGES + feedback/boundary
 -> ChatGPT commits ONE immutable operator request as a request-only commit
+   whose reviewed_repository_commit_sha names that reviewed parent commit
 -> GitHub Actions checks out that exact request commit
+-> workflow proves reviewed_repository_commit_sha == request-only commit parent
 -> workflow proves the branch's shared Core/contract tree still matches reviewed main
 -> bridge executes one whitelisted deterministic Core operation
 -> bridge verifies its outputs
@@ -87,10 +90,13 @@ Human Gate requests additionally carry explicit:
 
 - canonical `state_path`;
 - `expected_revision`;
+- exact lowercase 40-hex `reviewed_repository_commit_sha` identifying the commit whose edition bytes the Human actually reviewed;
 - `reviewed_by`;
 - `reviewed_at`;
 - `review_reference`;
 - for revision requests, `requested_changes` and an enum-constrained `regeneration_boundary`.
+
+For connector-safe bridge execution, `reviewed_repository_commit_sha` must equal the parent of the immutable request-only commit. The request commit itself is execution transport and is **not** the reviewed edition commit.
 
 Canonical request location:
 
@@ -191,13 +197,13 @@ An approval request does not contain a generic `decision` field. The operation k
 - pending matching Human Gate;
 - exact current reviewed State/gate inputs;
 - next contiguous `expected_revision`;
-- explicit Human provenance;
+- explicit Human provenance, including exact reviewed repository commit;
 - non-empty requested-changes summary;
 - a gate-specific enum-constrained regeneration boundary.
 
 Core then:
 
-1. records exact reviewed State/artifact hashes plus reviewed repository commit;
+1. records exact reviewed State/artifact hashes plus the explicit reviewed repository commit;
 2. writes the immutable `REQUEST_CHANGES` review revision;
 3. returns State to the supplied allowed boundary;
 4. resets only machine checkpoints/gate provenance downstream of that boundary;
@@ -216,10 +222,12 @@ Each machine review revision records:
 - `APPROVED` or `REQUEST_CHANGES`;
 - exact reviewed Production State path/SHA;
 - exact reviewed gate artifacts and SHA-256 values;
-- exact reviewed repository commit SHA;
+- exact reviewed repository commit SHA supplied by the Human Gate request;
 - Human identity/time/reference;
 - requested changes + regeneration boundary when applicable;
 - approval authority when applicable.
+
+For connector-safe bridge execution, the workflow verifies that this reviewed repository commit is exactly the request-only commit parent. The bridge-run receipt separately records the request/event commit and the Human-reviewed repository commit, preventing those two identities from being conflated.
 
 After `REQUEST_CHANGES`, superseded artifact bytes may be replaced at their canonical paths during regeneration. Historical exact identity remains reconstructable from the review record's hashes and reviewed repository commit. Current Production State/checkpoint/gate provenance alone determines current authority.
 
@@ -231,11 +239,12 @@ Before installing dependencies or invoking the bridge, the workflow must:
 
 1. validate request-level `reviewed_main_sha` shape;
 2. fetch current `main` and require the reviewed SHA to be an ancestor of current main;
-3. require the request commit parent to descend from the reviewed SHA;
-4. for any initialization operation, require execution-record reviewed-main SHA equality;
-5. protect at minimum `.github/workflows`, `config`, `schemas`, and `scripts`, plus configured `implementation_control_roots` and every pipeline/quality contract file;
-6. require those protected bytes at the request parent to equal the reviewed-main baseline;
-7. only then install dependencies and execute Core.
+3. resolve the exact request-only commit parent and require it to descend from the reviewed SHA;
+4. for any Human Gate operation, require `reviewed_repository_commit_sha` to equal that exact request parent;
+5. for any initialization operation, require execution-record reviewed-main SHA equality;
+6. protect at minimum `.github/workflows`, `config`, `schemas`, and `scripts`, plus configured `implementation_control_roots` and every pipeline/quality contract file;
+7. require those protected bytes at the request parent to equal the reviewed-main baseline;
+8. only then install dependencies and execute Core.
 
 Legitimate edition-local Raw/research/Evidence/manuscript/Human-review artifacts may differ from main.
 
@@ -246,26 +255,27 @@ The workflow/bridge/Core combination must enforce:
 1. trigger limited to `sources/**/execution/requests/*.json` and not `main`;
 2. one newly added request and request-only triggering commit;
 3. exact reviewed-main provenance and shared-Core byte equivalence;
-4. exact request branch/ref match;
-5. source root under `sources/` and canonical request path;
-6. generated/current Profile identity match;
-7. configured Retrospective slug resolution through existing `survey_period_v2` only;
-8. unconfigured Retrospective slug and pre-period-end initialization rejection;
-9. exact lowercase event commit SHA;
-10. eight-kind enum operation surface only;
-11. traversal-safe repository paths;
-12. initialization refusal when canonical Profile/State already exists;
-13. stale `expected_from_state` refusal;
-14. no agent impersonation of deterministic reviews;
-15. Human Gate operation requires pending matching gate/current State;
-16. stale/non-contiguous Human review revision refusal;
-17. gate-specific regeneration-boundary refusal;
-18. changed reviewed/checkpoint bytes fail before approval/revision recording;
-19. generic Human-decision/rejection command surfaces are absent;
-20. immutable/non-overwritable bridge-run ids;
-21. generated writes only below validated Profile `source_root`;
-22. no mutation of immutable request authority;
-23. bot output commits cannot recursively chain the bridge.
+4. Human Gate request explicitly binds a reviewed repository SHA equal to the request-only parent, not the request/event commit;
+5. exact request branch/ref match;
+6. source root under `sources/` and canonical request path;
+7. generated/current Profile identity match;
+8. configured Retrospective slug resolution through existing `survey_period_v2` only;
+9. unconfigured Retrospective slug and pre-period-end initialization rejection;
+10. exact lowercase event commit SHA;
+11. eight-kind enum operation surface only;
+12. traversal-safe repository paths;
+13. initialization refusal when canonical Profile/State already exists;
+14. stale `expected_from_state` refusal;
+15. no agent impersonation of deterministic reviews;
+16. Human Gate operation requires pending matching gate/current State;
+17. stale/non-contiguous Human review revision refusal;
+18. gate-specific regeneration-boundary refusal;
+19. changed reviewed/checkpoint bytes fail before approval/revision recording;
+20. generic Human-decision/rejection command surfaces are absent;
+21. immutable/non-overwritable bridge-run ids;
+22. generated writes only below validated Profile `source_root`;
+23. no mutation of immutable request authority;
+24. bot output commits cannot recursively chain the bridge.
 
 The trigger intentionally does not hardcode cadence branch prefixes. Branch authority comes from request/Profile equality.
 
