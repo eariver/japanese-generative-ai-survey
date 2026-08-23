@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
 """Run existing Core v2 stage helpers under the current reviewed agent-first toolchain.
 
-Initialization implementation identity is historical provenance.  Canonical
+Initialization implementation identity is historical provenance. Canonical
 agent-first work may integrate a reviewed generic main change into the edition
-work branch and then execute the stage helper from that new branch head.  Some
+work branch and then execute the stage helper from that new branch head. Some
 WU-006/WU-007 helper functions still call the legacy ``core.verify_state_basis``
 function, whose semantics intentionally pin the old orchestration model.
 
 This wrapper replaces that verifier only for the lifetime of one helper process
-with the agent-first State validator.  It does not mutate Production State and
-it does not weaken legacy Action/Handoff compatibility when those tools are run
-directly.
+with the agent-first State validator. It also permits accepted, immutable
+Screening and Evidence packages to retain the State SHA from the lifecycle
+boundary where they were created after canonical Production State legitimately
+advances. Each exception is fail-closed: the package must already be
+content-addressed by its sibling acceptance file and that acceptance must bind
+the exact archived package hash. All other package basis checks are rerun under
+the current repository and current agent-first State.
+
+It does not mutate Production State and it does not weaken legacy Action/Handoff
+compatibility when those tools are run directly.
 """
 from __future__ import annotations
 
@@ -22,7 +29,9 @@ from pathlib import Path
 from typing import Iterator
 
 from scripts import survey_agent_control_v2 as agent
+from scripts import survey_evidence_v2 as evidence
 from scripts import survey_production_v2 as core
+from scripts import survey_screening_v2 as screening
 
 ALLOWED_HELPERS = {
     "scripts/survey_screening_v2.py",
@@ -41,14 +50,92 @@ def verify_current_stage_basis(repo_root: Path, cfg: dict, state: dict, implemen
         raise ValueError("agent-first Production State invalid: " + "; ".join(errors))
 
 
+def _historical_state_basis_wrapper(
+    original,
+    *,
+    error_text: str,
+    acceptance_name: str,
+    changed_text: str,
+    label: str,
+):
+    """Allow only content-addressed historical State-SHA drift for an accepted package."""
+
+    def validate(repo_root: Path, package_path: Path, package: dict, implementation_sha: str):
+        try:
+            return original(repo_root, package_path, package, implementation_sha)
+        except ValueError as exc:
+            if str(exc) != error_text:
+                raise
+            state_error = exc
+
+        acceptance_path = package_path.parent / acceptance_name
+        if acceptance_path.is_symlink() or not acceptance_path.is_file():
+            raise state_error
+        acceptance = core.load_json(acceptance_path)
+        if core.sha256_file(package_path) != acceptance.get("package_sha256"):
+            raise ValueError(changed_text)
+
+        basis = package.get("basis")
+        if not isinstance(basis, dict):
+            raise state_error
+        state_rel = basis.get("state_path")
+        if not isinstance(state_rel, str) or not state_rel:
+            raise state_error
+        state_path = (repo_root / state_rel).resolve()
+        try:
+            state_path.relative_to(repo_root.resolve())
+        except ValueError as exc:
+            raise ValueError(f"{label} package State path escapes repository") from exc
+        if state_path.is_symlink() or not state_path.is_file():
+            raise state_error
+
+        adjusted = dict(package)
+        adjusted_basis = dict(basis)
+        adjusted_basis["state_sha256"] = core.sha256_file(state_path)
+        adjusted["basis"] = adjusted_basis
+        return original(repo_root, package_path, adjusted, implementation_sha)
+
+    return validate
+
+
+def _historical_screening_basis_wrapper(original):
+    return _historical_state_basis_wrapper(
+        original,
+        error_text="Screening package basis drift: state_sha256",
+        acceptance_name="screening-accepted.json",
+        changed_text="accepted Screening package copy changed",
+        label="Screening",
+    )
+
+
+def _historical_evidence_basis_wrapper(original):
+    return _historical_state_basis_wrapper(
+        original,
+        error_text="Evidence package basis drift: state_sha256",
+        acceptance_name="evidence-accepted.json",
+        changed_text="accepted Evidence package copy changed",
+        label="Evidence",
+    )
+
+
 @contextmanager
 def current_stage_basis_override() -> Iterator[None]:
-    original = core.verify_state_basis
+    original_state_verifier = core.verify_state_basis
+    original_screening_verifier = screening.validate_package_basis
+    original_evidence_verifier = evidence.validate_evidence_package_basis
     core.verify_state_basis = verify_current_stage_basis
+    screening.validate_package_basis = _historical_screening_basis_wrapper(
+        original_screening_verifier
+    )
+    evidence.validate_evidence_package_basis = _historical_evidence_basis_wrapper(
+        original_evidence_verifier
+    )
     try:
         yield
     finally:
-        core.verify_state_basis = original
+        evidence.validate_evidence_package_basis = original_evidence_verifier
+        screening.validate_package_basis = original_screening_verifier
+        core.verify_state_basis = original_state_verifier
 
 
 def run_helper(repo_root: Path, state_path: Path, helper: str, helper_args: list[str]) -> int:
