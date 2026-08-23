@@ -138,6 +138,7 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
             "build-special-pdf.yml",
             "survey-production-v2-export-publication-preview.yml",
             "survey-production-v2-release.yml",
+            "survey-production-v2-operator-bridge.yml",
         }
         self.assertEqual(present, retained)
 
@@ -146,6 +147,14 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
             self.assertIn("contents: read", text)
             self.assertNotIn("git push", text)
             self.assertNotIn("pipeline-state.json", text)
+
+        bridge = (workflow_root / "survey-production-v2-operator-bridge.yml").read_text(encoding="utf-8")
+        self.assertIn("sources/*/execution/requests/*.json", bridge)
+        self.assertIn("contents: write", bridge)
+        self.assertIn("survey_core_execution_bridge_v2.py", bridge)
+        self.assertIn("Operator request commit must contain only the immutable request file", bridge)
+        self.assertIn("Bridge attempted write outside edition source root", bridge)
+        self.assertNotIn("workflow_dispatch", bridge)
 
         preview = (workflow_root / "survey-production-v2-export-publication-preview.yml").read_text(encoding="utf-8")
         self.assertIn("publication-candidate-v2.json", preview)
