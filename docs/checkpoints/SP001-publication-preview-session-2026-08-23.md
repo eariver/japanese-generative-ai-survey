@@ -96,10 +96,6 @@ A complete Core + `THEMATIC` + `LONGFORM_SPECIAL` Quality Regression Bundle was 
 
 Canonical path:
 
-`source/SP001/publication/v2/quality-regression-bundle-v2.json`
-
-Actual repository path:
-
 `sources/SP001/publication/v2/quality-regression-bundle-v2.json`
 
 The bundle binds:
