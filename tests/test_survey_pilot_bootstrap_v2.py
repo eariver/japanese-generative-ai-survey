@@ -102,10 +102,14 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         operator = self.cfg["operator_model"]
         self.assertEqual(operator["primary_operator"], "CHATGPT")
         self.assertEqual(operator["local_stage_control"], "COMPACT_AGENT_CHECKPOINT")
+        self.assertEqual(operator["deterministic_execution_modes"], ["DIRECT_LOCAL_CLI", "GITHUB_ACTIONS_OPERATOR_BRIDGE"])
+        self.assertTrue(operator["direct_local_cli_preferred"])
         self.assertTrue(operator["autonomous_until_gate"])
         self.assertEqual(operator["normal_human_gates"], ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"])
         pipeline_files = set(self.cfg["contract_files"]["pipeline"])
         self.assertIn("schemas/stage-checkpoint-v2.schema.json", pipeline_files)
+        self.assertIn("schemas/operator-execution-request-v2.schema.json", pipeline_files)
+        self.assertIn("docs/survey-production-core-v2-operator-execution-bridge.md", pipeline_files)
         self.assertNotIn("schemas/action-spec-v2.schema.json", pipeline_files)
         self.assertNotIn("schemas/stage-handoff-v2.schema.json", pipeline_files)
         self.assertNotIn("schemas/stage-validation-attestation-v2.schema.json", pipeline_files)
@@ -121,6 +125,7 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.assertEqual(control["release_reconciliation"], {"external_key": "release_identity", "existing_release_policy": "VERIFY_EXACT_BYTES_THEN_RESUME"})
         self.assertNotIn("assistant_control_workflow", control)
         self.assertNotIn("production_control_workflow", control)
+        self.assertEqual(control["operator_execution_bridge_workflow"], "survey-production-v2-operator-bridge.yml")
         self.assertEqual(control["publication_preview_export_workflow"], "survey-production-v2-export-publication-preview.yml")
         self.assertEqual(control["release_workflow"], "survey-production-v2-release.yml")
         stage_plan = self.cfg["orchestration"]["stage_plan"]
@@ -149,7 +154,8 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
             self.assertNotIn("pipeline-state.json", text)
 
         bridge = (workflow_root / "survey-production-v2-operator-bridge.yml").read_text(encoding="utf-8")
-        self.assertIn("sources/*/execution/requests/*.json", bridge)
+        self.assertIn("sources/**/execution/requests/*.json", bridge)
+        self.assertIn("- '!main'", bridge)
         self.assertIn("contents: write", bridge)
         self.assertIn("survey_core_execution_bridge_v2.py", bridge)
         self.assertIn("Operator request commit must contain only the immutable request file", bridge)
