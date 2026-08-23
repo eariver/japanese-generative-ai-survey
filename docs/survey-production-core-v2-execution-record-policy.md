@@ -1,7 +1,8 @@
 # Survey Production Core v2 — Edition Execution Record Policy
 
-Status: `ACCEPTED REDESIGN DIRECTION / IMPLEMENTATION NOT STARTED`  
+Status: `IMPLEMENTED IN REDESIGN CANDIDATE / PENDING FIXED-HEAD AUDIT`  
 Established: 2026-08-23 JST  
+Implemented: 2026-08-23 JST  
 Working branch: `refactor/survey-production-core-v2`  
 Related redesign: `docs/survey-production-core-v2-redesign-plan-after-w33-sp001.md`
 
@@ -14,15 +15,13 @@ W33 and SP001 showed two opposite failure modes:
 - one long worklog can become stale as the lifecycle continues beyond its original stated stop;
 - multiple ad-hoc checkpoint files can preserve detail but become fragmented and difficult to review as one production run.
 
-The redesigned flow must therefore require a small, predictable execution-record tree for every edition.
+The redesigned flow therefore requires a small, predictable execution-record tree for every edition.
 
 Machine lifecycle/state artifacts remain authoritative for machine state. Execution records are human-readable operational provenance and must not duplicate every machine field.
 
 ## 2. Canonical location
 
 Store edition execution records under the edition's existing source root, not in the global `docs/checkpoints/` namespace.
-
-Target structure:
 
 ```text
 sources/<issue-id>/execution/
@@ -38,43 +37,73 @@ sources/<issue-id>/execution/
     <defect-id>.md
 ```
 
-Examples:
-
-```text
-sources/2026-W34/execution/...
-sources/SP002/execution/...
-```
-
-The exact filenames may be normalized during implementation, but the four responsibilities (`index`, `sessions`, `reviews`, `defects`) should remain distinct.
-
 Do not create date-stamped checkpoint files directly in `docs/checkpoints/` for normal edition production after this policy is implemented.
 
-## 3. `index.md` — one current run index per edition
+## 3. Deterministic helper boundary
 
-`index.md` is the first file a new ChatGPT session should read after `production-state.json`.
+`scripts/survey_execution_record_v2.py` implements only the structural part of this policy.
 
-It is a compact current-state navigation document, not a full diary.
+It may:
 
-Required fields:
+- create the canonical `execution/` tree for a newly initialized edition;
+- create the first `index.md` and session skeleton from exact Profile/State/commit inputs;
+- validate required directories/headings, Profile identity, canonical State pointer, and session-index continuity.
+
+It must not:
+
+- infer or write research/editorial judgments;
+- summarize a session from chat history;
+- invent Human review decisions;
+- decide whether a defect is shared Core;
+- change Production State;
+- replace ChatGPT's obligation to update the Markdown as production proceeds.
+
+Initialization example:
+
+```text
+python scripts/survey_execution_record_v2.py init \
+  --profile <source_root>/production-profile.json \
+  --state <source_root>/production-state.json \
+  --session-id <YYYY-MM-DDTHHMM-JST-purpose> \
+  --started-at <ISO-8601> \
+  --main-sha <reviewed-main-commit> \
+  --branch-head <edition-branch-head> \
+  --objective '<session objective>' \
+  --requested-stop ARCHITECTURE_REVIEW
+```
+
+Structural validation:
+
+```text
+python scripts/survey_execution_record_v2.py validate \
+  --profile <source_root>/production-profile.json \
+  --state <source_root>/production-state.json
+```
+
+## 4. `index.md` — one current run index per edition
+
+`index.md` is the first file a new ChatGPT session should read after `production-state.json`. It is a compact current-state navigation document, not a diary.
+
+Required content includes:
 
 - issue / edition ID;
-- research profile and publication profile;
+- Research Profile and Publication Profile;
 - canonical work branch;
-- source-of-truth `main` commit SHA used to start the run;
+- source-of-truth reviewed `main` commit SHA used to start the run;
 - run start date/time;
 - requested Human Gate / requested end state;
-- current lifecycle state and current stop reason, copied only as a convenience pointer from canonical State;
-- Human Gate status and links to relevant GitHub Issues/PRs;
-- current accepted/rejected Publication Candidate SHA/PDF SHA when applicable;
-- Grok/X applicability and latest Drive task-file path/result disposition when applicable;
+- current lifecycle and stop reason as convenience pointers from canonical State;
+- Human Gate status and relevant Issue/PR pointers;
+- current accepted/rejected Publication Candidate and PDF identity when applicable;
+- Grok/X applicability, latest Drive task-file path and result disposition when applicable;
 - known edition-local deviations;
-- known shared-Core defects encountered;
-- list of session logs in chronological order;
-- final disposition: `IN_PROGRESS`, `HUMAN_GATE`, `BLOCKED_CORE_DEFECT`, `TERMINATED_VALIDATION`, `COMPLETE`, or equivalent reviewed vocabulary.
+- known shared-Core defects;
+- session logs in chronological order;
+- final disposition: `IN_PROGRESS`, `HUMAN_GATE`, `BLOCKED_CORE_DEFECT`, `TERMINATED_VALIDATION`, or `COMPLETE`.
 
 ### Freshness rule
 
-The production session must update `index.md` whenever one of these changes:
+Update `index.md` whenever:
 
 - lifecycle crosses a Human Gate boundary;
 - a Human Gate is rejected/approved;
@@ -82,86 +111,55 @@ The production session must update `index.md` whenever one of these changes:
 - a new Publication Candidate becomes the Human review target;
 - the run is terminated or completed.
 
-This avoids the stale-header problem observed in the W33 worklog.
+This prevents the stale-header failure observed in W33.
 
-## 4. `sessions/<session-id>.md` — actions actually performed
+## 5. `sessions/<session-id>.md` — actions actually performed
 
 Create one session log per ChatGPT production conversation, or per materially separate continuation if one conversation is intentionally split into distinct execution phases.
 
-Recommended session ID:
+Recommended ID:
 
 ```text
 YYYY-MM-DDTHHMM-JST-<short-purpose>.md
 ```
 
-Example:
-
-```text
-2026-08-24T0830-JST-source-intake-to-architecture.md
-```
-
-A normal session log records only material production actions.
-
-Required sections:
+Required sections are:
 
 ### Starting authority
 
-- branch head / relevant commit SHA;
-- `production-state.json` lifecycle and SHA if available;
-- source-of-truth `main` SHA or integrated reviewed Core SHA;
-- session objective / requested stop;
-- prior session/index pointer.
+Record branch head, Production State path/SHA, reviewed Core/main SHA, session objective/requested stop and prior execution pointer.
 
 ### Actions actually performed
 
-Group by meaningful stage, not by tool call.
-
-For each stage, record:
-
-- what research/editorial/production action was actually performed;
-- significant quantitative summary where it helps interpretation (for example Discovery count, Screening decisions, Evidence status counts, selected candidates);
-- material judgment and the reason for it;
-- canonical artifact paths created/revised;
-- commit/PR/run reference only when it materially identifies the resulting state.
+Group by meaningful stage rather than tool call. Record material work, useful counts, important judgments, canonical artifact paths, and commit/PR/run identity only when it materially identifies resulting state.
 
 ### External handoff
 
 When Grok/X is used, record only:
 
-- exact Google Drive task-file path/reference given to the Human;
-- result file path/reference returned;
+- exact Google Drive `grok-task.md` path/reference given to the Human;
+- returned result path/reference;
 - imported repository Raw path;
 - result SHA/byte count or manifest identity;
 - editorial disposition (`DISCOVERY_RECORDED` / `NO_MATERIAL_DISCOVERY`).
 
-Do not duplicate the full Grok task/result contents in the session log.
+Do not duplicate the task/result body.
 
 ### Deviations / failures
 
-Record only failures that affected the run, for example:
-
-- a shared-Core defect;
-- a failed workflow that forced a different execution route;
-- an edition-local workaround;
-- authority drift or candidate invalidation;
-- a deliberate restart from an earlier boundary.
-
-For each, classify:
+Record only run-affecting failures and classify each as:
 
 - `EDITION_LOCAL`
 - `TRANSIENT_EXECUTION`
 - `SHARED_CORE_DEFECT`
 
-If `SHARED_CORE_DEFECT`, point to a file under `execution/defects/` and do not repair shared Core inside the production session under the redesigned responsibility rule.
+A `SHARED_CORE_DEFECT` points to `execution/defects/` and is not repaired in the production session.
 
 ### End state
 
-- lifecycle / Human Gate status;
-- exact candidate/PDF SHA if a review target exists;
-- next action;
-- whether the session ended normally, at manual Grok transport, at Human Gate, or because of a Core defect/termination.
+Record lifecycle/Human Gate status, exact candidate/PDF identity if applicable, next action and why the session ended.
 
-## 5. How much to record
+## 6. Recording granularity
 
 The record must be sufficient to answer:
 
@@ -172,74 +170,44 @@ The record must be sufficient to answer:
 5. Did the production session encounter or modify shared Core?
 6. Why did the session stop?
 
-It should **not** be a transcript.
+It must not be a transcript or chain-of-thought log.
 
-### Normal granularity
+A normal stage usually needs 3–10 concise bullets. Do not routinely list every connector invocation, workflow poll, successful command, file opened, repetitive PASS output, full Issue body, or full external-source content.
 
-For a normal stage:
+## 7. `reviews/` — compact Human Gate revision history
 
-- 3–10 concise bullets are usually sufficient;
-- include counts/paths/SHAs only where they identify an important boundary or make the result auditable;
-- one paragraph of rationale is enough for a material editorial decision.
+Every Human Gate decision/revision gets one short Markdown record even if detailed feedback lives in a GitHub Issue.
 
-A normal session log should usually stay to a few pages of Markdown. Longer records are justified only for an actual failure/restart/review-revision sequence.
+Required headings are:
 
-### Do not record routinely
+- `Reviewed authority`
+- `Human decision`
+- `Requested changes`
+- `Regeneration boundary`
+- `Shared-Core implication`
 
-Do not list:
+Record gate, revision, reviewed candidate identity, Human decision, detailed feedback pointer, concise defect families, earliest regeneration boundary and whether shared Core is implicated. Do not duplicate the full Human feedback body.
 
-- every connector/tool invocation;
-- every poll of a GitHub Actions run;
-- every successful command line;
-- every file opened during research;
-- repetitive PASS output already represented by one canonical validator/result artifact;
-- internal chain-of-thought/reasoning traces;
-- full Issue bodies or full external-source content already stored elsewhere.
+## 8. `defects/` — shared-Core observations from production
 
-Instead, record the outcome and point to the authoritative artifact/run/Issue.
+A Production session may observe but must not repair a shared-Core defect.
 
-## 6. `reviews/` — compact Human Gate revision history
+Required headings are:
 
-Every Human Gate decision/revision gets one short Markdown record even if the full feedback lives in a GitHub Issue.
+- `Observation`
+- `Reproduction boundary`
+- `Impact`
+- `Safe edition-local workaround`
+- `Core-maintenance pointer`
+- `Production disposition`
 
-Record:
+Record symptom, affected edition/profile, reproducing artifact/boundary, correctness/quality/autonomy impact, safe workaround availability, maintenance pointer, and `CONTINUE_WITH_SAFE_LOCAL_WORKAROUND` or `BLOCKED/TERMINATED` disposition.
 
-- gate (`ARCHITECTURE_REVIEW` / `PUBLICATION_PREVIEW`);
-- revision number;
-- reviewed candidate identity/SHA;
-- Human decision (`APPROVED` / `REVISION_REQUIRED` / `TRIAL_TERMINATED`);
-- GitHub Issue/comment link containing the detailed feedback;
-- concise defect families / requested changes;
-- earliest lifecycle boundary that must be regenerated;
-- whether any request implies a shared-Core defect.
+Do not put proposed generic implementation patches in the edition record.
 
-Do not duplicate the entire Human Issue text.
+## 9. Relationship to machine artifacts
 
-This makes it possible to see revision history locally without turning the repository into a second copy of GitHub discussions.
-
-## 7. `defects/` — shared-Core observations from production
-
-A Production session may observe but should not repair a shared-Core defect.
-
-Each material shared-Core defect gets a short record containing:
-
-- observed symptom;
-- affected edition/profile;
-- reproduction boundary/artifact;
-- impact on correctness/quality/autonomy;
-- whether a safe edition-local workaround exists;
-- linked Core-maintenance Issue/backlog item;
-- production disposition (`CONTINUE_WITH_SAFE_LOCAL_WORKAROUND` or `BLOCKED/TERMINATED`).
-
-Do not put proposed generic implementation patches in the edition record. Core repair design belongs on the Core-maintenance branch/session.
-
-## 8. Relationship to machine orchestration artifacts
-
-Keep machine-oriented artifacts such as stage checkpoints, validation JSON, candidate manifests and exact-byte hashes under their existing canonical machine paths.
-
-The human-readable execution tree should point to them rather than mirror them.
-
-Target separation:
+Keep machine-oriented artifacts under existing canonical paths and point to them from execution records:
 
 ```text
 sources/<issue>/production-state.json
@@ -248,33 +216,34 @@ sources/<issue>/execution/...         # human-readable actions / decisions / rev
 sources/<issue>/publication/...       # publication/candidate artifacts
 ```
 
-This prevents `orchestration/` from becoming a substitute for an understandable production record and prevents `execution/` from becoming another state machine.
+`execution/` is not a second state machine.
 
-## 9. Session bootstrap requirement
+## 10. Session bootstrap
 
-After implementation, every new edition production conversation must begin by reading, in this order:
+Every new edition production conversation reads, in this order:
 
-1. current `main` Core authority / session bootstrap;
-2. `sources/<issue>/production-state.json` if the run already exists;
-3. `sources/<issue>/execution/index.md` if the run already exists;
-4. the latest referenced session/review/defect record needed to continue.
+1. current reviewed `main` Core authority / session bootstrap;
+2. `sources/<issue>/production-state.json` if the run exists;
+3. `sources/<issue>/execution/index.md` if the run exists;
+4. latest referenced session/review/defect record needed to continue.
 
-A new chat should not need the Human to reconstruct the prior session manually when these records exist.
+For a new run, initialize the execution record after canonical Profile/State initialization. For an existing run, do not rerun `init`; create/update the next session record and list it in `index.md`.
 
-## 10. Session close requirement
+## 11. Session close
 
-Before a production conversation ends for any reason other than an abrupt tool/session failure, it must:
+Before a production conversation ends for any reason other than abrupt tool/session failure, it must:
 
 1. update/create its session log;
-2. update `execution/index.md` if current-state navigation changed;
+2. update `execution/index.md` when current-state navigation changed;
 3. ensure Human Gate/review/defect pointers are present;
-4. record the exact next action/stop reason;
-5. commit the record on the edition work branch.
+4. record exact next action/stop reason;
+5. run structural execution-record validation;
+6. commit the record on the edition work branch.
 
-This logging is part of the production workflow, but it is not a Human Gate and should not require routine approval.
+This logging is internal production work and never requires routine approval.
 
-## 11. Migration / compatibility
+## 12. Migration / compatibility
 
-Existing W33 and SP001 logs remain historical evidence in `docs/checkpoints/` and should not be rewritten merely to match the new layout.
+Existing W33 and SP001 logs remain historical evidence in `docs/checkpoints/` and are not rewritten merely to match the new layout.
 
-When W33/SP001 are rerun after redesign, the new attempts should use the new edition-local `sources/<issue>/execution/` structure from the beginning. Old records may be linked as prior failed-trial evidence.
+Clean post-redesign validation runs use `sources/<issue>/execution/` from the beginning. Old W33/SP001 trial records may be linked as failed-trial evidence.
