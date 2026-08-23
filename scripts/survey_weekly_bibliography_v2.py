@@ -19,6 +19,11 @@ from urllib.parse import urlparse
 from scripts import survey_production_v2 as core
 
 
+STATUS_CODES = {"VERIFIED": "V", "PARTIAL": "P"}
+MATERIALITY_CODES = {"MATERIAL": "M", "CONTEXT": "C"}
+EVIDENCE_TAG_LEGEND = "V=VERIFIED, P=PARTIAL; M=MATERIAL, C=CONTEXT"
+
+
 def _rel(root: Path, path: Path) -> str:
     return str(path.resolve().relative_to(root.resolve())).replace("\\", "/")
 
@@ -73,13 +78,19 @@ def _bib_key(issue_id: str, discovery_id: str) -> str:
     return "w" + issue_id.lower().replace("-", "").replace(".", "") + discovery_id.lower().replace("-", "")
 
 
+def _evidence_tag(status: str, materiality: str) -> str:
+    try:
+        return f"{STATUS_CODES[status]}/{MATERIALITY_CODES[materiality]}"
+    except KeyError as exc:
+        raise ValueError(f"unsupported Weekly bibliography evidence tag: {status}/{materiality}") from exc
+
+
 def _bib_text(key: str, record: dict[str, Any], urldate: str) -> str:
     title = _escape_bib(record["title"])
     organization = record.get("organization")
     published_date = record.get("published_date")
     url = record["url"]
-    status = record["status"]
-    materiality = record["materiality"]
+    evidence_tag = _evidence_tag(record["status"], record["materiality"])
     lines = [
         f"@online{{{key},",
         f"  title = {{{{{title}}}}},",
@@ -92,7 +103,7 @@ def _bib_text(key: str, record: dict[str, Any], urldate: str) -> str:
         [
             f"  url = {{{url}}},",
             f"  urldate = {{{urldate}}},",
-            f"  note = {{Core v2 Evidence: {status}; materiality: {materiality}}}",
+            f"  note = {{[{evidence_tag}]}}",
             "}",
         ]
     )
@@ -232,7 +243,10 @@ def rebuild_bibliography(root: Path, manifest_path: Path) -> dict[str, Any]:
             )
         )
 
-    rebuilt = "\n\n".join(_bib_text(_bib_key(issue_id, did), record, urldate) for did, record in records) + "\n"
+    header = f"% Core v2 evidence tags: {EVIDENCE_TAG_LEGEND}.\n\n"
+    rebuilt = header + "\n\n".join(
+        _bib_text(_bib_key(issue_id, did), record, urldate) for did, record in records
+    ) + "\n"
     if "Unknown" in rebuilt:
         raise ValueError("placeholder Unknown survived bibliography metadata transform")
     bib_path.write_text(rebuilt, encoding="utf-8")
@@ -257,14 +271,24 @@ def rebuild_bibliography(root: Path, manifest_path: Path) -> dict[str, Any]:
         "published_date_count": date_count,
         "organization_count": organization_count,
         "placeholder_author_count": 0,
+        "evidence_tag_legend": EVIDENCE_TAG_LEGEND,
         "manifest_path": _rel(root, manifest_path),
         "manifest_sha256_after": core.sha256_file(manifest_path),
         "finding": (
             "Cited Weekly references were rebuilt from exact accepted Evidence/source authority. "
-            "Known publication dates and deterministic source owners are retained; unsupported human authors are omitted instead of rendered as Unknown."
+            "Known publication dates and deterministic source owners are retained; unsupported human authors are omitted instead of rendered as Unknown. "
+            "Evidence status/materiality are encoded with a fail-closed compact tag legend; access dates remain in bibliography metadata."
         ),
     }
     core.write_json(result_path, result)
     result["result_path"] = _rel(root, result_path)
     result["result_sha256"] = core.sha256_file(result_path)
     return result
+
+
+def main() -> int:
+    raise SystemExit("survey_weekly_bibliography_v2.py is a library; invoke survey_weekly_layout_v2.py")
+
+
+if __name__ == "__main__":
+    main()

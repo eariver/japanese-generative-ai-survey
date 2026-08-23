@@ -3,8 +3,8 @@
 
 The semantic renderer intentionally owns wording and Evidence binding. This helper
 first re-establishes bibliography metadata from exact accepted authority, then may
-change only the page/column commands immediately before the approved Weekly
-closing summary. Both transformed artifact SHAs are rebound into the validated
+change only pagination/typographic commands around the approved Weekly closing
+summary and source notes. Transformed artifact SHAs are rebound into the validated
 source manifest and auditable deterministic transform results are written.
 """
 from __future__ import annotations
@@ -29,6 +29,21 @@ REFERENCE_MARKER = (
     "\\clearpage\n"
     "\\onecolumn\n"
     "\\printbibliography[title={References / Source Notes}]"
+)
+REFERENCE_REPLACEMENT = (
+    "\\clearpage\n"
+    "\\onecolumn\n"
+    "\\begingroup\n"
+    "\\footnotesize\n"
+    "\\setlength{\\bibitemsep}{0pt}\n"
+    "\\AtEveryBibitem{%\n"
+    "  \\clearfield{urlyear}%\n"
+    "  \\clearfield{urlmonth}%\n"
+    "  \\clearfield{urlday}%\n"
+    "}\n"
+    "\\defbibnote{corev2legend}{\\textit{Evidence tags: V = VERIFIED, P = PARTIAL; M = MATERIAL, C = CONTEXT. Access dates are retained in the source bibliography metadata.}}\n"
+    "\\printbibliography[title={References / Source Notes},prenote=corev2legend]\n"
+    "\\endgroup"
 )
 
 
@@ -81,20 +96,27 @@ def compact_closing_summary(
         raise ValueError("Weekly references boundary is not canonical")
 
     match = matches[0]
-    replacement = "\\newpage\n" + match.group("section")
-    transformed = text[: match.start()] + replacement + text[match.end() :]
+    summary_replacement = "\\newpage\n" + match.group("section")
+    transformed = text[: match.start()] + summary_replacement + text[match.end() :]
+    transformed = transformed.replace(REFERENCE_MARKER, REFERENCE_REPLACEMENT, 1)
     if transformed == text:
-        raise ValueError("Weekly closing summary layout transform made no change")
+        raise ValueError("Weekly layout transform made no change")
 
     summary_pos = transformed.index("\\label{sec:issue-summary}")
-    references_boundary_pos = transformed.index(REFERENCE_MARKER, summary_pos)
+    references_boundary_pos = transformed.index(REFERENCE_REPLACEMENT, summary_pos)
     if "\\onecolumn" in transformed[summary_pos:references_boundary_pos]:
         raise ValueError("Weekly closing summary must remain in two-column flow until references")
+    if transformed.count("\\footnotesize\n\\setlength{\\bibitemsep}{0pt}") != 1:
+        raise ValueError("Weekly references compact typography was not applied exactly once")
+    if transformed.count("prenote=corev2legend") != 1:
+        raise ValueError("Weekly Evidence-tag legend was not applied exactly once")
+    if transformed.count("\\clearfield{urlyear}") != 1:
+        raise ValueError("Weekly rendered access-date suppression was not applied exactly once")
 
     main_tex_path.write_text(transformed, encoding="utf-8")
     new_sha = core.sha256_file(main_tex_path)
     if new_sha == old_sha:
-        raise ValueError("Weekly closing summary layout transform did not change source SHA")
+        raise ValueError("Weekly layout transform did not change source SHA")
 
     manifest["rendered_source"]["sha256"] = new_sha
     core.write_json(manifest_path, manifest)
@@ -114,10 +136,16 @@ def compact_closing_summary(
         "source_sha256_after": new_sha,
         "manifest_path": _rel(root, manifest_path),
         "manifest_sha256_after": core.sha256_file(manifest_path),
-        "transformation": "FINAL_BODY_COLUMN_TO_WEEKLY_SYNTHESIS_COLUMN",
+        "transformations": [
+            "FINAL_BODY_COLUMN_TO_WEEKLY_SYNTHESIS_COLUMN",
+            "COMPACT_SINGLE_COLUMN_REFERENCE_NOTES",
+            "COMPACT_EVIDENCE_TAGS_WITH_SOURCE_METADATA_ACCESS_DATES",
+        ],
         "finding": (
-            "The approved Weekly closing summary now begins in the next two-column body column; "
-            "the one-column transition remains reserved for References / Source Notes."
+            "The approved Weekly closing summary begins in the next two-column body column. "
+            "References / Source Notes retain their one-column section and full canonical source identity, "
+            "while repetitive Evidence status/materiality wording is represented by an explicit compact tag legend. "
+            "Access dates remain in references.bib but are omitted from the rendered page to avoid low-information continuation pages."
         ),
     }
     core.write_json(result_path, result)

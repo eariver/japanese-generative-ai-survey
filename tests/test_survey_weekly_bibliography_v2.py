@@ -1,3 +1,5 @@
+import pytest
+
 from scripts import survey_weekly_bibliography_v2 as bib
 
 
@@ -17,6 +19,7 @@ def test_bibliography_metadata_never_degrades_to_unknown_placeholder():
     assert "organization = {{OpenAI}}" in rendered
     assert "date = {2026-08-10}" in rendered
     assert "urldate = {2026-08-14}" in rendered
+    assert "note = {[V/M]}" in rendered
     assert record["url"] in rendered
 
 
@@ -36,6 +39,16 @@ def test_unsupported_human_author_is_omitted_not_invented():
     assert "author =" not in rendered
     assert "organization =" not in rendered
     assert "date = {2026-08-09}" in rendered
+    assert "note = {[P/C]}" in rendered
+
+
+def test_evidence_tag_mapping_is_fail_closed_and_self_documented():
+    assert bib._evidence_tag("VERIFIED", "MATERIAL") == "V/M"
+    assert bib._evidence_tag("PARTIAL", "CONTEXT") == "P/C"
+    assert "V=VERIFIED" in bib.EVIDENCE_TAG_LEGEND
+    assert "C=CONTEXT" in bib.EVIDENCE_TAG_LEGEND
+    with pytest.raises(ValueError, match="unsupported Weekly bibliography evidence tag"):
+        bib._evidence_tag("UNKNOWN", "MATERIAL")
 
 
 def test_source_owner_fallbacks_are_deterministic():
