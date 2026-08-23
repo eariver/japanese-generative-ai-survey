@@ -1,131 +1,38 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/eariver/japanese-generative-ai-survey/schemas/operator-execution-request-v2.schema.json",
-  "title": "Survey Production Core v2 operator execution request",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "schema_version",
-    "request_id",
-    "issue_id",
-    "source_root",
-    "work_branch",
-    "reviewed_main_sha",
-    "recorded_at",
-    "operation"
-  ],
-  "properties": {
-    "schema_version": {"const": "2.0-rc1"},
-    "request_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
-    "issue_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
-    "source_root": {
-      "allOf": [
-        {"$ref": "#/$defs/repo_path"},
-        {"pattern": "^sources/.+"}
-      ]
-    },
-    "work_branch": {"type": "string", "minLength": 1, "pattern": "^[^\\s\\\\]+$"},
-    "reviewed_main_sha": {"$ref": "#/$defs/sha40"},
-    "recorded_at": {"type": "string", "minLength": 1},
-    "operation": {
-      "oneOf": [
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["kind", "target_gate", "execution_record"],
-          "properties": {
-            "kind": {"const": "INITIALIZE_WEEKLY"},
-            "target_gate": {"enum": ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"]},
-            "execution_record": {"$ref": "#/$defs/execution_record"}
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["kind", "target_gate", "special_slug", "execution_record"],
-          "properties": {
-            "kind": {"const": "INITIALIZE_RETROSPECTIVE"},
-            "target_gate": {"enum": ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"]},
-            "special_slug": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
-            "execution_record": {"$ref": "#/$defs/execution_record"}
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["kind", "target_gate", "spec_path", "execution_record"],
-          "properties": {
-            "kind": {"const": "INITIALIZE_THEMATIC"},
-            "target_gate": {"enum": ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"]},
-            "spec_path": {"$ref": "#/$defs/repo_path"},
-            "execution_record": {"$ref": "#/$defs/execution_record"}
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["kind", "expected_from_state", "state_path", "artifacts", "agent_reviews", "summary"],
-          "properties": {
-            "kind": {"const": "ADVANCE_STAGE"},
-            "expected_from_state": {
-              "enum": [
-                "ISSUE_INITIALIZED",
-                "DISCOVERY_COLLECTED",
-                "CANDIDATES_NORMALIZED",
-                "EVIDENCE_REVIEWED",
-                "SELECTION_COMPLETE",
-                "ARCHITECTURE_ESTABLISHED",
-                "DRAFT_COMPLETE",
-                "VALIDATED_DRAFT",
-                "RELEASE_CANDIDATE"
-              ]
-            },
-            "state_path": {"$ref": "#/$defs/repo_path"},
-            "artifacts": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/artifact"}},
-            "agent_reviews": {"type": "array", "items": {"$ref": "#/$defs/agent_review"}},
-            "summary": {"type": "string", "minLength": 1}
-          }
-        }
-      ]
-    }
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://github.com/eariver/japanese-generative-ai-survey/schemas/operator-execution-request-v2.schema.json",
+  "title":"Survey Production Core v2 operator execution request",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","request_id","issue_id","source_root","work_branch","reviewed_main_sha","recorded_at","operation"],
+  "properties":{
+    "schema_version":{"const":"2.0-rc1"},
+    "request_id":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
+    "issue_id":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "source_root":{"allOf":[{"$ref":"#/$defs/repo_path"},{"pattern":"^sources/.+"}]},
+    "work_branch":{"type":"string","minLength":1,"pattern":"^[^\\s\\\\]+$"},
+    "reviewed_main_sha":{"$ref":"#/$defs/sha40"},
+    "recorded_at":{"type":"string","minLength":1},
+    "operation":{"oneOf":[
+      {"type":"object","additionalProperties":false,"required":["kind","target_gate","execution_record"],"properties":{"kind":{"const":"INITIALIZE_WEEKLY"},"target_gate":{"enum":["ARCHITECTURE_REVIEW","PUBLICATION_PREVIEW"]},"execution_record":{"$ref":"#/$defs/execution_record"}}},
+      {"type":"object","additionalProperties":false,"required":["kind","target_gate","special_slug","execution_record"],"properties":{"kind":{"const":"INITIALIZE_RETROSPECTIVE"},"target_gate":{"enum":["ARCHITECTURE_REVIEW","PUBLICATION_PREVIEW"]},"special_slug":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]*$"},"execution_record":{"$ref":"#/$defs/execution_record"}}},
+      {"type":"object","additionalProperties":false,"required":["kind","target_gate","spec_path","execution_record"],"properties":{"kind":{"const":"INITIALIZE_THEMATIC"},"target_gate":{"enum":["ARCHITECTURE_REVIEW","PUBLICATION_PREVIEW"]},"spec_path":{"$ref":"#/$defs/repo_path"},"execution_record":{"$ref":"#/$defs/execution_record"}}},
+      {"type":"object","additionalProperties":false,"required":["kind","expected_from_state","state_path","artifacts","agent_reviews","summary"],"properties":{"kind":{"const":"ADVANCE_STAGE"},"expected_from_state":{"enum":["ISSUE_INITIALIZED","DISCOVERY_COLLECTED","CANDIDATES_NORMALIZED","EVIDENCE_REVIEWED","SELECTION_COMPLETE","ARCHITECTURE_ESTABLISHED","DRAFT_COMPLETE","VALIDATED_DRAFT","RELEASE_CANDIDATE"]},"state_path":{"$ref":"#/$defs/repo_path"},"artifacts":{"type":"array","minItems":1,"items":{"$ref":"#/$defs/artifact"}},"agent_reviews":{"type":"array","items":{"$ref":"#/$defs/agent_review"}},"summary":{"type":"string","minLength":1}}},
+      {"$ref":"#/$defs/architecture_approval"},
+      {"$ref":"#/$defs/architecture_revision"},
+      {"$ref":"#/$defs/publication_approval"},
+      {"$ref":"#/$defs/publication_revision"}
+    ]}
   },
-  "$defs": {
-    "repo_path": {
-      "type": "string",
-      "minLength": 1,
-      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)(?!.*//).+$"
-    },
-    "sha40": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
-    "execution_record": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["session_id", "reviewed_main_sha", "objective", "requested_stop"],
-      "properties": {
-        "session_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
-        "reviewed_main_sha": {"$ref": "#/$defs/sha40"},
-        "objective": {"type": "string", "minLength": 1},
-        "requested_stop": {"enum": ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW", "COMPLETE"]}
-      }
-    },
-    "artifact": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["name", "path"],
-      "properties": {
-        "name": {"type": "string", "minLength": 1},
-        "path": {"$ref": "#/$defs/repo_path"}
-      }
-    },
-    "agent_review": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["check_id", "kind", "executor", "evidence"],
-      "properties": {
-        "check_id": {"type": "string", "minLength": 1},
-        "kind": {"enum": ["AGENT_RESEARCH", "AGENT_EDITORIAL", "AGENT_VISUAL"]},
-        "executor": {"type": "string", "minLength": 1},
-        "evidence": {"type": "string", "minLength": 1}
-      }
-    }
+  "$defs":{
+    "repo_path":{"type":"string","minLength":1,"pattern":"^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)(?!.*//).+$"},
+    "sha40":{"type":"string","pattern":"^[0-9a-f]{40}$"},
+    "execution_record":{"type":"object","additionalProperties":false,"required":["session_id","reviewed_main_sha","objective","requested_stop"],"properties":{"session_id":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9._-]*$"},"reviewed_main_sha":{"$ref":"#/$defs/sha40"},"objective":{"type":"string","minLength":1},"requested_stop":{"enum":["ARCHITECTURE_REVIEW","PUBLICATION_PREVIEW","COMPLETE"]}}},
+    "artifact":{"type":"object","additionalProperties":false,"required":["name","path"],"properties":{"name":{"type":"string","minLength":1},"path":{"$ref":"#/$defs/repo_path"}}},
+    "agent_review":{"type":"object","additionalProperties":false,"required":["check_id","kind","executor","evidence"],"properties":{"check_id":{"type":"string","minLength":1},"kind":{"enum":["AGENT_RESEARCH","AGENT_EDITORIAL","AGENT_VISUAL"]},"executor":{"type":"string","minLength":1},"evidence":{"type":"string","minLength":1}}},
+    "approval_fields":{"type":"object","additionalProperties":false,"required":["kind","state_path","expected_revision","reviewed_by","reviewed_at","review_reference"],"properties":{"state_path":{"$ref":"#/$defs/repo_path"},"expected_revision":{"type":"integer","minimum":1},"reviewed_by":{"type":"string","minLength":1},"reviewed_at":{"type":"string","format":"date-time"},"review_reference":{"type":"string","minLength":1}}},
+    "architecture_approval":{"allOf":[{"$ref":"#/$defs/approval_fields"},{"properties":{"kind":{"const":"RECORD_ARCHITECTURE_APPROVAL"}}}]},
+    "publication_approval":{"allOf":[{"$ref":"#/$defs/approval_fields"},{"properties":{"kind":{"const":"RECORD_PUBLICATION_PREVIEW_APPROVAL"}}}]},
+    "architecture_revision":{"type":"object","additionalProperties":false,"required":["kind","state_path","expected_revision","regeneration_boundary","requested_changes","reviewed_by","reviewed_at","review_reference"],"properties":{"kind":{"const":"REQUEST_ARCHITECTURE_REVISION"},"state_path":{"$ref":"#/$defs/repo_path"},"expected_revision":{"type":"integer","minimum":1},"regeneration_boundary":{"enum":["ISSUE_INITIALIZED","DISCOVERY_COLLECTED","CANDIDATES_NORMALIZED","EVIDENCE_REVIEWED","SELECTION_COMPLETE"]},"requested_changes":{"type":"string","minLength":1},"reviewed_by":{"type":"string","minLength":1},"reviewed_at":{"type":"string","format":"date-time"},"review_reference":{"type":"string","minLength":1}}},
+    "publication_revision":{"type":"object","additionalProperties":false,"required":["kind","state_path","expected_revision","regeneration_boundary","requested_changes","reviewed_by","reviewed_at","review_reference"],"properties":{"kind":{"const":"REQUEST_PUBLICATION_PREVIEW_REVISION"},"state_path":{"$ref":"#/$defs/repo_path"},"expected_revision":{"type":"integer","minimum":1},"regeneration_boundary":{"enum":["ARCHITECTURE_ESTABLISHED","DRAFT_COMPLETE","VALIDATED_DRAFT"]},"requested_changes":{"type":"string","minLength":1},"reviewed_by":{"type":"string","minLength":1},"reviewed_at":{"type":"string","format":"date-time"},"review_reference":{"type":"string","minLength":1}}}
   }
 }
