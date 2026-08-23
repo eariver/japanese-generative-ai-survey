@@ -1,9 +1,10 @@
 # Survey Production Core v2 — Redesign Plan after W33 / SP001 Production Validation
 
-Status: `REDESIGN REQUIRED / IMPLEMENTATION NOT STARTED`  
+Status: `REDESIGN REQUIRED / DESIGN AUDITED / IMPLEMENTATION NOT STARTED`  
 Established: 2026-08-23 JST  
 Working branch: `refactor/survey-production-core-v2`  
-Primary production evidence: Issues #400, #433, #434 and the W33/SP001 execution records
+Primary production evidence: Issues #400, #433, #434 and the W33/SP001 execution records  
+Pre-implementation audit: `docs/survey-production-core-v2-redesign-preimplementation-audit.md`
 
 ## 1. Decision
 
@@ -16,6 +17,8 @@ The first real Core v2 production trials did not validate the merged pipeline.
 Both trials are therefore evidence for redesign, not successful Core v2 acceptance runs. The current W33/SP001 attempts must not be used to claim cold-start production validity. After redesign, both profiles require clean re-validation; SP001 should be rerun so the rejected 11-page version, Human-directed 19-page salvage version, and redesigned cold-start version can be compared.
 
 This plan consolidates and supersedes the earlier assumption that W33/SP001 should continue accumulating incremental Core repairs while still serving as validation runs.
+
+The redesign must **not** become a W33/SP001-specific repair. Its goal is a smaller and more general Core in which stable Profile/edition authority constrains ChatGPT reasoning while deterministic tooling protects only crisp invariants.
 
 ## 2. What the trials established
 
@@ -87,7 +90,7 @@ This created concrete operational failures:
 - source/PDF revision and candidate authority refresh became separate operations;
 - pipeline mechanics consumed significant production effort unrelated to researching/editing the issue.
 
-The existing `docs/survey-production-core-v2-github-actions-policy.md` is adopted as a redesign constraint: Actions should be retained only where Actions execution itself has a clear benefit or the task is genuinely mechanical and non-editorial.
+The existing `docs/survey-production-core-v2-github-actions-policy.md` is adopted as a hard redesign constraint: Actions should be retained only where Actions execution itself has a clear benefit or the task is genuinely mechanical and non-editorial.
 
 ### 2.6 Revision authority is not atomic
 
@@ -157,7 +160,67 @@ Examples:
 
 Actions should normally report PASS/FAIL and artifacts. They should not be the authoring/mutation loop for prose, synthesis, layout repair, or semantic quality.
 
-## 4. Redesigned publication boundary
+## 4. Generality model — Core, Profile and edition authority remain orthogonal
+
+The redesign deliberately reduces encoded production behavior, but it does **not** remove semantic constraints.
+
+The intended model is:
+
+```text
+shared invariant Core
++ Research Profile constraints
++ Publication Profile constraints
++ edition/series planning authority
++ ChatGPT reasoning/editorial judgment
++ narrow deterministic helpers
++ independent CI/build/release verification
+```
+
+### 4.1 Shared Core owns only cross-profile invariants
+
+Examples:
+
+- lifecycle and two normal Human Gates;
+- source/Evidence/provenance integrity;
+- internal-vs-reader-facing Publication Boundary;
+- deterministic / semantic / visual QA separation;
+- candidate revision invalidation and exact-byte authority;
+- execution-record requirements;
+- Production-vs-Core-maintenance responsibility boundary;
+- Grok/X evidence role and transport discipline.
+
+Shared Core must not contain W33/SP001 topic structure, family names, chapter counts, page counts, or one edition's Architecture vocabulary.
+
+### 4.2 Research Profile owns research semantics
+
+Keep the current semantic separation:
+
+- `WEEKLY` — rolling-window/current-week semantics, carry-over, Weekly community signal and issue-level weekly synthesis;
+- `RETROSPECTIVE_PERIOD` — bounded-period reconstruction, coverage audit, chronology/lifecycle identity, period normalization and period-scale synthesis;
+- `THEMATIC` — research-question closure, lineage/branch relationships, historical attribution and open-history/current-state boundaries.
+
+### 4.3 Publication Profile owns publication-format semantics
+
+Keep:
+
+- `WEEKLY_MAGAZINE` — compact magazine-scale publication and Weekly-specific reader structure;
+- `LONGFORM_SPECIAL` — longform Special publication identity, mixed-layout policy and profile-appropriate structured synthesis where useful.
+
+A Publication Profile does not replace the Research Profile. A Retrospective and a Thematic Special may both use `LONGFORM_SPECIAL` while requiring different research closure and synthesis logic.
+
+### 4.4 Edition/series authority remains free to specialize
+
+Monthly, half-year and annual retrospective guides may add scale-specific compression/chronology rules without new generic workflows.
+
+Generative AI Foundations remains a living outer-series authority layered on top of `THEMATIC + LONGFORM_SPECIAL`; it must not be replaced by a rigid machine series engine or SP001-style fixed package taxonomy.
+
+### 4.5 Generality comes from fewer encoded editorial decisions, not fewer constraints
+
+Moving reasoning from Actions/scripts back to ChatGPT is expected to improve generality only when the relevant Profile/edition authority is read and followed.
+
+Do not interpret this redesign as permission for unconstrained free-form production. Stable constraints remain for Profile identity, temporal semantics, source/evidence boundaries, Human Gates, required reader-facing components, candidate byte identity and execution records.
+
+## 5. Redesigned publication boundary
 
 The Core must explicitly separate at least these layers.
 
@@ -178,22 +241,24 @@ These fields are **not legal reader-facing inputs**.
 
 ### Reader-facing manuscript layer
 
-A distinct, explicitly authored artifact must contain publication-ready content such as:
+A distinct, explicitly authored artifact/surface must contain publication-ready content such as:
 
 - article/section thesis;
 - actual technical narrative;
 - reader-facing claim boundaries;
 - source-specific limitations;
 - chronology/comparison/synthesis;
-- Weekly community observations;
+- Weekly community observations where applicable;
 - concluding synthesis;
 - reader-facing bibliography metadata.
+
+The invariant is the semantic boundary, **not one mandatory universal JSON shape**. The reviewed reader-facing surface may be Markdown, TeX, structured content or another representation appropriate to the publication implementation, provided it is explicitly authored as reader-facing and exact provenance remains available.
 
 Publication assembly may consume this layer plus publication metadata. It must not fall back to internal Architecture/Profile/Evidence text when a reader-facing field is missing.
 
 If required reader-facing content is absent, publication assembly fails closed and returns control to ChatGPT authoring.
 
-## 5. Architecture fidelity must mean content fidelity
+## 6. Architecture fidelity must mean content fidelity
 
 A must-cover requirement is not fulfilled because the manuscript says that Architecture requires it.
 
@@ -219,7 +284,9 @@ Examples of actual fulfillment:
 - the Serving feature explains concrete release-level changes in each selected project;
 - a longform family chapter explains version-to-version transitions and their technical significance.
 
-## 6. Quality model: separate deterministic, semantic, and visual review
+Do **not** require one paragraph or one publication block per Evidence record. Supporting/context Evidence may be represented through chronology, Technical Notes, comparison, attribution or bibliography. The obligation is to fulfill the approved Architecture and research question with adequate reader-facing depth.
+
+## 7. Quality model: separate deterministic, semantic, and visual review
 
 The future candidate should require three different classes of evidence.
 
@@ -241,12 +308,13 @@ Required before Publication Preview:
 
 - internal-vs-reader boundary review;
 - Architecture must-cover content fulfillment;
-- technical depth appropriate to `WEEKLY_MAGAZINE` / `LONGFORM_SPECIAL`;
+- technical depth appropriate to the Publication Profile and Research Profile;
 - source-class-appropriate Claim Boundary wording;
 - `総括` quality;
-- Weekly Grok/X community disposition and published synthesis;
+- applicable Grok/X editorial disposition and reader-facing synthesis;
 - repetition / generic fallback / production-language review;
-- reader-facing bibliography review.
+- reader-facing bibliography review;
+- profile-specific chronology/historical/period/thematic requirements.
 
 Known-token lint is only defense-in-depth. It cannot replace this review: SP001's 19-page revision passed deterministic leakage checks while Human Review still found Evidence IDs and production-selection vocabulary.
 
@@ -264,29 +332,69 @@ Review the exact PDF intended for Human Preview:
 
 Actions may build the exact PDF; ChatGPT performs the editorial/visual judgment.
 
-## 7. Profile requirements strengthened from the trials
+## 8. Profile requirements preserved and strengthened
 
-### All Weekly and Special editions
+### 8.1 All Weekly and Special editions
 
 - final substantive reader-facing `総括` (or explicitly equivalent heading) is required;
 - internal production metadata must not be published;
 - Human-review rationale changes the structure/content requirements, not the prose by being serialized as a rebuttal to a rejected draft;
 - page targets remain soft; depth is judged against must-cover content, not page padding.
 
-### Weekly
+### 8.2 `WEEKLY` / `WEEKLY_MAGAZINE`
 
 - a reader-facing `コミュニティの動き` component is mandatory every issue;
 - completed Grok/X intake must be explicitly editorially dispositioned;
 - material community signals are published or have an internal exclusion reason;
-- a quiet week is represented as an explicit finding rather than omission.
+- a quiet week is represented as an explicit finding rather than omission;
+- existing Weekly carry-over / Watch / Late Breaking / why-this-issue semantics remain Profile-owned and must not be weakened by the redesign.
 
-### Longform Special
+### 8.3 `RETROSPECTIVE_PERIOD`
 
-- selected Evidence must be developed into longform technical narrative, not compressed into Architecture-summary prose;
-- profile-appropriate structured synthesis/chronology/comparison/Technical Notes must be used when they materially improve reader understanding;
+Existing bounded-period authority remains in force. The redesign must preserve, where applicable:
+
+- base Source Intake as broad discovery baseline rather than completeness proof;
+- period-specific coverage audit and supplemental primary-source gap fill;
+- exact bounded chronology and lifecycle identity;
+- period-wide normalization rather than inheriting lower-granularity Selection roles;
+- chronology resolution surviving narrative compression;
+- cross-period/half-year/annual synthesis;
+- annual within-year temporal-skew audit and evidence-derived phase/trajectory reasoning;
+- no back-projection of later outcomes into the historical period.
+
+The Core redesign must not replace these with W33/SP001-derived article structures.
+
+### 8.4 `THEMATIC`
+
+Preserve:
+
+- research-question closure rather than arbitrary source-count completion;
+- lineage/branch/parallel-competition reasoning where the topic requires it;
+- historical attribution boundaries and hindsight discipline;
+- open-history/current-state temporal semantics;
+- topic-specific Architecture derived from Evidence rather than generic family/chapter templates.
+
+### 8.5 `LONGFORM_SPECIAL`
+
+- Architecture-selected material/must-cover obligations must be developed into profile-appropriate longform reader-facing treatment rather than Architecture-summary prose;
+- supporting Evidence does not need one-to-one prose rendering;
+- structured synthesis/chronology/comparison/Technical Notes should be used when they materially improve understanding;
 - Special mixed-layout identity must be preserved, but layout choices remain editorial decisions assisted by policy/templates rather than Actions-authored repair loops.
 
-## 8. Revision lifecycle must be atomic
+### 8.6 Generative AI Foundations overlay
+
+Foundations remains:
+
+```text
+living series authority
++ THEMATIC research profile
++ LONGFORM_SPECIAL publication profile
++ per-volume Architecture
+```
+
+The living series memo may revise volume allocation, prerequisites and later understanding as detailed research proceeds. Do not create a rigid machine series engine merely to make the pipeline look uniform.
+
+## 9. Revision lifecycle must be atomic
 
 Any Publication Candidate revision invalidates all downstream authority bound to the superseded source/PDF.
 
@@ -310,14 +418,16 @@ ChatGPT edits reader-facing manuscript / publication source
 
 There must be no legal state where a new preview PDF coexists with a still-active candidate manifest for old bytes.
 
-## 9. Human Gate and repair discipline
+This smaller atomic deterministic boundary is retained even as Actions-based production mutation is reduced.
+
+## 10. Human Gate and repair discipline
 
 Normal Human Gates remain:
 
 1. `ARCHITECTURE_REVIEW`
 2. `PUBLICATION_PREVIEW`
 
-Manual Grok Drive task-file handoff remains an operational transport boundary, not a Human approval gate.
+Manual Grok Drive **task-file path/reference handoff** remains an operational transport boundary, not a Human approval gate.
 
 After a Human Gate rejection:
 
@@ -326,63 +436,115 @@ After a Human Gate rejection:
 - if a shared defect prevents a semantically valid candidate, terminate/pause the edition at a recorded Core dependency;
 - after Core redesign/repair, restart from the earliest boundary whose semantics may have been affected; do not pretend the old failed path validates the new Core.
 
-## 10. Core repair / production acceptance strategy
+For a formal Core acceptance trial, discovery of a shared-Core defect invalidates that trial as acceptance evidence. Repair Core separately and rerun the affected acceptance trial cleanly.
 
-Do not validate the redesign only with unit/contract fixtures.
+## 11. GitHub Actions generality guardrail
+
+The Actions policy is part of this redesign contract.
+
+Do not replace the existing production-mutation workflow set with separate W33/SP001/monthly/annual/Foundations authoring workflows.
+
+Where a crisp Profile-specific CI check is justified:
+
+- prefer one parameterized/shared verifier driven by Profile/config;
+- keep reasoning/editorial decisions in ChatGPT;
+- state the concrete advantage of Actions execution;
+- avoid bot-commit workflow chains and PR-as-execution-trigger patterns unless a genuine GitHub-side property makes them necessary.
+
+Actions reduction must **not** weaken reproducible build, exact-byte candidate identity, Freeze/Release identity, credential isolation or release reconciliation.
+
+## 12. Core repair / production acceptance strategy
+
+Do not validate the redesign only with unit/contract fixtures and do not narrow validation to the two failed trial shapes.
 
 After implementation and Core CI:
 
-1. run a clean Weekly profile trial from current `main` with no in-run Core changes;
-2. run a clean LONGFORM_SPECIAL trial (SP001 is the required regression case) with no in-run Core changes;
-3. compare cold-start outputs against #433 and #400 failure modes;
-4. verify that production sessions did not create/merge shared Core workflow/script/schema/style repairs;
-5. verify that Actions stayed within the adopted Actions policy;
-6. verify execution records are complete under the new record policy;
-7. only then consider the Core production repair validated.
+### 12.1 Real cold-start acceptance runs
 
-If a trial uncovers a shared Core defect, preserve the trial as failed evidence, repair Core separately, and restart the affected acceptance run cleanly.
+1. run a clean future Weekly profile trial from current `main` with no in-run shared-Core changes;
+2. run a clean standalone `THEMATIC + LONGFORM_SPECIAL` trial using SP001 as the required regression case, again with no in-run shared-Core changes;
+3. run/replay one representative `RETROSPECTIVE_PERIOD` edition through the requested Human Gate with no in-run shared-Core changes;
+4. run one Foundations-guided volume/scenario through at least Architecture Review to verify living-series authority integration without introducing a machine series engine.
 
-## 11. Implementation workstreams
+### 12.2 Structural/Profile compatibility audit
+
+In addition to the representative Retrospective trial:
+
+- inspect monthly, half-year and annual guidance against the redesigned Core;
+- verify bounded-period initialization, chronology, coverage-audit, temporal-skew and synthesis semantics remain expressible without cadence-specific production workflows;
+- verify standalone future Thematic work need not resemble SP001 topic/package structure;
+- verify no generic Core behavior keys off W33/SP001 or Foundations volume names/topics.
+
+This is a representative acceptance matrix, not an exhaustive synthetic future-edition matrix.
+
+### 12.3 Acceptance evidence
+
+For every real trial:
+
+- compare cold-start outputs against relevant historical failure modes;
+- verify production sessions did not create/merge shared Core workflow/script/schema/style repairs;
+- verify Actions stayed within the adopted Actions policy;
+- verify execution records are complete under the new record policy;
+- preserve a failed trial if a shared Core defect appears and rerun only after separate repair.
+
+Only after Weekly viability, Retrospective viability, Thematic/Longform viability and Foundations-guided viability are supported may the redesign claim restored Core generality.
+
+## 13. Implementation workstreams
 
 The implementation pass should be organized as a small number of coherent workstreams rather than per-Issue patch workflows.
 
+0. **Authority normalization before implementation**
+   - synchronize `survey-production-core-v2-authority.md`, final-audit rule, session bootstrap and prevention guidance with this audited redesign;
+   - remove old wording that allows Production sessions to author generic Core/tool repairs;
+   - replace old Grok instruction/prompt-copy wording with exact Drive task-file path/reference handoff;
+   - restore explicit Weekly/Retrospective/Thematic/Foundations generality acceptance.
+
 1. **Responsibility / orchestration simplification**
-   - Production vs Core-maintenance boundary
-   - remove PR-as-execution-trigger patterns where they add no value
-   - Actions workflow classification and reduction
+   - Production vs Core-maintenance boundary;
+   - remove PR-as-execution-trigger patterns where they add no value;
+   - Actions workflow classification and reduction.
 
 2. **Reader-facing publication boundary**
-   - explicit reader manuscript/publication payload
-   - no internal fallback
-   - source-class-aware claim boundaries
-   - reader-facing bibliography transform
+   - explicit reader manuscript/publication surface;
+   - no internal fallback;
+   - representation-agnostic boundary rather than one universal payload shape;
+   - source-class-aware claim boundaries;
+   - reader-facing bibliography transform.
 
 3. **Editorial fidelity / quality review**
-   - must-cover content review
-   - Weekly community requirement
-   - concluding synthesis requirement
-   - longform depth expectations
-   - semantic/editorial review artifact
+   - must-cover content review;
+   - Weekly community requirement;
+   - concluding synthesis requirement;
+   - Retrospective and Thematic profile-specific semantic review;
+   - longform depth expectations;
+   - semantic/editorial review artifact.
 
 4. **Publication / candidate atomicity**
-   - reproducible build
-   - deterministic QA
-   - exact candidate finalization/revision invalidation
+   - reproducible build;
+   - deterministic QA;
+   - exact candidate finalization/revision invalidation.
 
 5. **Execution record standardization**
-   - edition-local log folder
-   - rolling index and session logs
-   - defect/deviation records
-   - concise logging limits
+   - edition-local log folder under `{source_root}/execution/`;
+   - rolling index and session logs;
+   - defect/deviation records;
+   - concise logging limits.
 
-6. **Regression and cold-start acceptance**
-   - #400 / #433 / #434 fixtures where deterministic
-   - Weekly and Longform real production reruns
+6. **Regression and cross-profile cold-start acceptance**
+   - #400 / #433 / #434 fixtures where deterministic;
+   - Weekly and standalone Thematic real reruns;
+   - representative Retrospective run/replay;
+   - Foundations-guided Architecture trial;
+   - structural monthly/half-year/annual and unplanned-Thematic compatibility review.
 
-## 12. Explicit non-goals
+## 14. Explicit non-goals
 
 - Do not solve editorial quality by adding large numbers of new Actions checks.
 - Do not encode prose quality as arbitrary word/page quotas.
 - Do not make all semantic judgment into JSON schemas.
+- Do not replace one workflow-heavy design with cadence/topic-specific workflow proliferation.
+- Do not require one publication paragraph per Evidence record.
+- Do not force all reader-facing manuscripts into one universal schema when the semantic boundary can be preserved more generally.
 - Do not preserve legacy workflow complexity solely for compatibility if it is not on the new production hot path.
+- Do not create a rigid Foundations machine series engine.
 - Do not treat the salvaged SP001 revision as evidence that the current pipeline is production-ready.
