@@ -1,0 +1,53 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "from_state": "DISCOVERY_COLLECTED",
+  "to_state": "CANDIDATES_NORMALIZED",
+  "checkpoints": [
+    "screening"
+  ],
+  "recorded_at": "2026-08-22T16:29:34Z",
+  "implementation": {
+    "repository_commit_sha": "a5f32afa63016e01841bd5127766260ee0f96f99",
+    "orchestrator_version": "survey-production-core-v2/0.8-agent-first"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "1814863bfe5661491b972eabaeaa6383b4018172fbfe765ce064a7202986abce",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "screening-acceptance",
+      "path": "sources/2026-W33/screening/v2/accepted/a896f2347bc090e03f57faefe3a51e3caa40fc5f9f90f563d83a6d9daa916917/screening-accepted.json",
+      "sha256": "8d7cac2f809114608225bea517aba91c66105395f57f8333766da550eb16c3e0"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_stage_validation_v2.py",
+      "evidence": "Accepted Screening result set must bind exact Discovery, State, prompt, result schema and complete per-record decisions.",
+      "result": {
+        "path": "sources/2026-W33/orchestration/v2/reviews/screening-core-stage-contract.json",
+        "sha256": "fccfbaee8b059044cf94d9d1c0a55302b8bf37f7229efdfcef6170356e9f005b"
+      }
+    },
+    {
+      "check_id": "FRESH_W33_SCREENING",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT",
+      "evidence": "All 37 fresh Discovery records received explicit Screening decisions. X is retained only as community signal; official-index records require candidate-specific primary verification; all six W32 HOLD_OUT rechecks were explicitly disposed without old W33 conclusions. Decision counts: {'KEEP': 18, 'MAYBE': 6, 'DROP': 6, 'INSPECT': 7}.",
+      "result": null
+    }
+  ],
+  "summary": "Fresh W33 Screening covers all 37 accepted Discovery records with KEEP 18, MAYBE 6, INSPECT 7, DROP 6. The six DROP records are current-main W32 HOLD_OUT rechecks explicitly disposed from fresh W33 evidence. Fresh Grok/X remains community-signal only and all official-index INSPECT records require candidate-specific primary verification. No legacy W33 Screening result was used."
+}
