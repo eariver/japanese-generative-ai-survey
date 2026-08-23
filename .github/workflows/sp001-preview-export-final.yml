@@ -1,0 +1,29 @@
+name: SP001 final preview transport
+
+on:
+  pull_request:
+    branches:
+      - special/SP001-v2-work
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact preview branch
+        uses: actions/checkout@v6
+      - name: Verify final preview bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s surveys/special/SP001/main.pdf
+          echo '8a363a33db80f55a047a8d6cdfecedb196f380939a3d40e68e3c3d21aded2764  surveys/special/SP001/main.pdf' | sha256sum -c -
+      - name: Upload exact final preview PDF
+        uses: actions/upload-artifact@v7
+        with:
+          name: sp001-publication-preview-final-exact
+          path: surveys/special/SP001/main.pdf
+          if-no-files-found: error
+          retention-days: 1
