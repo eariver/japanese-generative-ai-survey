@@ -2,12 +2,13 @@
   "schema_version": "2.0-rc1",
   "pipeline_contract_version": "2.0-rc1",
   "quality_contract_version": "2.0-rc1",
-  "orchestrator_version": "survey-production-core-v2/0.10-agent-owned-production",
+  "orchestrator_version": "survey-production-core-v2/0.11-operator-bridge",
   "contract_files": {
     "pipeline": [
       "docs/survey-production-core-v2-redesign-authority.md",
       "docs/survey-production-core-v2-redesign-plan-after-w33-sp001.md",
       "docs/survey-production-core-v2-github-actions-policy.md",
+      "docs/survey-production-core-v2-operator-execution-bridge.md",
       "docs/survey-production-core-v2-workflow-responsibility-inventory.md",
       "docs/survey-production-core-v2-execution-record-policy.md",
       "docs/survey-production-core-v2-authority.md",
@@ -23,6 +24,7 @@
       "config/prompts/grok/x-source-intake-weekly-v1.md",
       "config/prompts/grok/x-source-intake-special-v1.md",
       "schemas/x-source-intake-v2.schema.json",
+      "schemas/operator-execution-request-v2.schema.json",
       "schemas/survey-discovery-record.schema.json",
       "schemas/discovery-acceptance-v2.schema.json",
       "schemas/screening-v2-run-package.schema.json",
@@ -70,6 +72,8 @@
   "operator_model": {
     "primary_operator": "CHATGPT",
     "local_stage_control": "COMPACT_AGENT_CHECKPOINT",
+    "deterministic_execution_modes": ["DIRECT_LOCAL_CLI", "GITHUB_ACTIONS_OPERATOR_BRIDGE"],
+    "direct_local_cli_preferred": true,
     "normal_human_gates": ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"],
     "autonomous_until_gate": true,
     "exception_gate_principle": "Use only when a genuine Owner/editorial/publication decision cannot be derived safely from repository authority.",
@@ -78,6 +82,7 @@
   "implementation_control_roots": ["config", "schemas", "scripts", ".github/workflows"],
   "workflow_control": {
     "dispatch_ref": "main",
+    "operator_execution_bridge_workflow": "survey-production-v2-operator-bridge.yml",
     "publication_preview_export_workflow": "survey-production-v2-export-publication-preview.yml",
     "release_workflow": "survey-production-v2-release.yml",
     "release_reconciliation": {
