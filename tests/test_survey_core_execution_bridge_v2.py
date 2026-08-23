@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from pathlib import Path
 
 from scripts import survey_core_execution_bridge_v2 as bridge
+from scripts import survey_discovery_v2 as discovery
+from scripts import survey_production_v2 as core
 from scripts import survey_schema_v2 as schema_gate
+from scripts import survey_x_intake_v2 as x_intake
 
 
 class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
@@ -201,6 +205,159 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
         self.assertIn("configured Retrospective Period", policy)
         self.assertIn("Thematic", policy)
         self.assertIn("representative configured `RETROSPECTIVE_PERIOD`", policy)
+
+    def test_bridge_executes_thematic_init_then_discovery_advance_end_to_end(self) -> None:
+        cfg = core.load_json(self.root / core.DEFAULT_CONFIG)
+        current_head = core.repository_commit_sha(self.root)
+        branch = "test/bridge-e2e"
+        issue_id = "BRIDGE-E2E"
+
+        with tempfile.TemporaryDirectory(dir=self.root / "sources") as raw_temp:
+            source_root = Path(raw_temp)
+            source_rel = source_root.relative_to(self.root).as_posix()
+            survey_rel = f"{source_rel}/survey"
+
+            spec_path = source_root / "research-scope-v2.json"
+            core.write_json(
+                spec_path,
+                {
+                    "issue_id": issue_id,
+                    "question": "Can the operator bridge execute canonical Core glue end to end?",
+                    "temporal_mode": "OPEN_HISTORY_AS_OF",
+                    "as_of": "2026-08-23T13:00:00Z",
+                    "scope_dimensions": ["bridge execution"],
+                    "source_root": source_rel,
+                    "survey_root": survey_rel,
+                    "work_branch": branch,
+                },
+            )
+
+            init_request = {
+                "schema_version": "2.0-rc1",
+                "request_id": "bridge-e2e-init",
+                "issue_id": issue_id,
+                "source_root": source_rel,
+                "work_branch": branch,
+                "reviewed_main_sha": current_head,
+                "recorded_at": "2026-08-23T14:00:00Z",
+                "operation": {
+                    "kind": "INITIALIZE_THEMATIC",
+                    "target_gate": "ARCHITECTURE_REVIEW",
+                    "spec_path": spec_path.relative_to(self.root).as_posix(),
+                    "execution_record": {
+                        "session_id": "bridge-e2e",
+                        "reviewed_main_sha": current_head,
+                        "objective": "Exercise bridge initialization and one lifecycle transition.",
+                        "requested_stop": "ARCHITECTURE_REVIEW",
+                    },
+                },
+            }
+            init_path = source_root / "execution/requests/bridge-e2e-init.json"
+            core.write_json(init_path, init_request)
+            init_result = bridge.execute_request(
+                self.root,
+                init_path,
+                event_sha=current_head,
+                ref_name=branch,
+            )
+            self.assertEqual(init_result["lifecycle_state"], "ISSUE_INITIALIZED")
+
+            profile_path = source_root / cfg["state_authority"]["profile_filename"]
+            state_path = source_root / cfg["state_authority"]["authoritative_filename"]
+            self.assertTrue(profile_path.is_file())
+            self.assertTrue(state_path.is_file())
+            self.assertTrue((source_root / "execution/index.md").is_file())
+            self.assertTrue((source_root / "execution/bridge-runs/bridge-e2e-init/receipt.json").is_file())
+
+            x_manifest = x_intake.build_manifest(
+                self.root,
+                cfg,
+                profile_path,
+                {
+                    "decision": "NOT_REQUIRED",
+                    "rationale": "The bridge glue fixture does not require community observation.",
+                    "series_context": None,
+                    "runs": [],
+                },
+            )
+            raw_path = source_root / "raw/fixture.txt"
+            raw_path.parent.mkdir(parents=True, exist_ok=True)
+            raw_path.write_text("bridge fixture raw\n", encoding="utf-8")
+            discovery_path = source_root / "discovery/discovery.jsonl"
+            discovery_path.parent.mkdir(parents=True, exist_ok=True)
+            discovery_record = {
+                "schema_version": "2.0-rc1",
+                "issue_id": issue_id,
+                "discovery_id": "bridge-source",
+                "provenance": {
+                    "origin": "BASE",
+                    "research_pass": 0,
+                    "parent_refs": [],
+                    "obligation_ids": ["scope:01"],
+                    "reason": "End-to-end bridge fixture.",
+                },
+                "source": {
+                    "source_type": "PRIMARY",
+                    "collector_id": "bridge-fixture",
+                    "collector_run_id": "bridge-fixture-r1",
+                    "observed_at": "2026-08-23T14:05:00Z",
+                    "title": "Bridge fixture",
+                    "locator": "https://example.invalid/bridge-fixture",
+                    "raw_paths": [raw_path.relative_to(self.root).as_posix()],
+                    "published_at": "2026-08-23T12:00:00Z",
+                    "summary_text": "Fixture source for deterministic bridge integration.",
+                    "metadata": {},
+                },
+            }
+            discovery_path.write_text(json.dumps(discovery_record) + "\n", encoding="utf-8")
+            acceptance_path = source_root / "discovery/discovery-accepted-v2.json"
+            discovery.build_acceptance(
+                self.root,
+                discovery_path,
+                x_manifest,
+                issue_id,
+                acceptance_path,
+            )
+
+            advance_request = {
+                "schema_version": "2.0-rc1",
+                "request_id": "bridge-e2e-discovery",
+                "issue_id": issue_id,
+                "source_root": source_rel,
+                "work_branch": branch,
+                "reviewed_main_sha": current_head,
+                "recorded_at": "2026-08-23T14:10:00Z",
+                "operation": {
+                    "kind": "ADVANCE_STAGE",
+                    "expected_from_state": "ISSUE_INITIALIZED",
+                    "state_path": state_path.relative_to(self.root).as_posix(),
+                    "artifacts": [
+                        {
+                            "name": "discovery-acceptance",
+                            "path": acceptance_path.relative_to(self.root).as_posix(),
+                        }
+                    ],
+                    "agent_reviews": [],
+                    "summary": "Adopt the validated Discovery fixture.",
+                },
+            }
+            advance_path = source_root / "execution/requests/bridge-e2e-discovery.json"
+            core.write_json(advance_path, advance_request)
+            advance_result = bridge.execute_request(
+                self.root,
+                advance_path,
+                event_sha=current_head,
+                ref_name=branch,
+            )
+            self.assertEqual(advance_result["lifecycle_state"], "DISCOVERY_COLLECTED")
+            self.assertIsNone(advance_result["terminal_reason"])
+
+            state = core.load_json(state_path)
+            self.assertEqual(state["lifecycle_state"], "DISCOVERY_COLLECTED")
+            self.assertEqual(state["machine_checkpoints"]["discovery"], "passed")
+            self.assertEqual(state["next_action"], "stage:screening")
+            self.assertTrue((source_root / "orchestration/v2/checkpoints/ISSUE_INITIALIZED.json").is_file())
+            self.assertTrue((source_root / "execution/bridge-runs/bridge-e2e-discovery/receipt.json").is_file())
 
 
 if __name__ == "__main__":
