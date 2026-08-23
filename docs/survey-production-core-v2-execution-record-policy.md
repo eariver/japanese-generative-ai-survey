@@ -1,9 +1,9 @@
 # Survey Production Core v2 — Edition Execution Record Policy
 
-Status: `IMPLEMENTED IN REDESIGN CANDIDATE / PENDING FIXED-HEAD AUDIT`  
+Status: `INTEGRATED BASE + OPERATOR BRIDGE MAINTENANCE CANDIDATE / REAUDIT PENDING`  
 Established: 2026-08-23 JST  
-Implemented: 2026-08-23 JST  
-Working branch: `refactor/survey-production-core-v2`  
+Bridge-maintenance update: 2026-08-23 JST  
+Working branch: `maintenance/core-v2-operator-execution-bridge`  
 Related redesign: `docs/survey-production-core-v2-redesign-plan-after-w33-sp001.md`
 
 ## 1. Purpose
@@ -21,10 +21,12 @@ Machine lifecycle/state artifacts remain authoritative for machine state. Execut
 
 ## 2. Canonical location
 
-Store edition execution records under the edition's existing source root, not in the global `docs/checkpoints/` namespace.
+Store edition execution records under the **Profile-declared source root**, not in the global `docs/checkpoints/` namespace.
+
+Base layout:
 
 ```text
-sources/<issue-id>/execution/
+{source_root}/execution/
   index.md
   sessions/
     <session-id>.md
@@ -37,17 +39,31 @@ sources/<issue-id>/execution/
     <defect-id>.md
 ```
 
+When the reviewed operator execution bridge is used, two optional transport/provenance directories may additionally exist:
+
+```text
+  requests/
+    <request-id>.json
+  bridge-runs/
+    <request-id>/
+      ... deterministic result / receipt authority ...
+```
+
+`requests/` and `bridge-runs/` are **not** a second lifecycle state machine. Direct-local CLI execution does not need them. Their only purpose is to bind an immutable remote-execution request to the exact deterministic Core result when the primary ChatGPT runtime lacks a local checkout/CLI substrate.
+
 Do not create date-stamped checkpoint files directly in `docs/checkpoints/` for normal edition production after this policy is implemented.
 
 ## 3. Deterministic helper boundary
 
-`scripts/survey_execution_record_v2.py` implements only the structural part of this policy.
+`scripts/survey_execution_record_v2.py` implements only the structural base of this policy.
 
 It may:
 
-- create the canonical `execution/` tree for a newly initialized edition;
+- create the base canonical `execution/` tree for a newly initialized edition;
 - create the first `index.md` and session skeleton from exact Profile/State/commit inputs;
-- validate required directories/headings, Profile identity, canonical State pointer, and session-index continuity.
+- validate required base directories/headings, Profile identity, canonical State pointer, and session-index continuity.
+
+It does not need to create `requests/` or `bridge-runs/`; those exist only when the optional operator bridge is actually used.
 
 It must not:
 
@@ -88,7 +104,7 @@ Required content includes:
 
 - issue / edition ID;
 - Research Profile and Publication Profile;
-- canonical work branch;
+- canonical work branch and Profile-declared source root;
 - source-of-truth reviewed `main` commit SHA used to start the run;
 - run start date/time;
 - requested Human Gate / requested end state;
@@ -96,6 +112,7 @@ Required content includes:
 - Human Gate status and relevant Issue/PR pointers;
 - current accepted/rejected Publication Candidate and PDF identity when applicable;
 - Grok/X applicability, latest Drive task-file path and result disposition when applicable;
+- execution mode (`DIRECT_LOCAL_CLI` or bridge when material to provenance);
 - known edition-local deviations;
 - known shared-Core defects;
 - session logs in chronological order;
@@ -145,6 +162,17 @@ When Grok/X is used, record only:
 
 Do not duplicate the task/result body.
 
+### Deterministic execution transport
+
+When the operator bridge is used, record only the request/receipt identity needed to reconstruct execution:
+
+- request id/path and exact request commit;
+- bridge-run receipt/result path;
+- resulting Production State path/SHA or lifecycle edge;
+- workflow/run pointer if useful for failure diagnosis.
+
+Do not duplicate request/result bodies in the session Markdown. The repository JSON authorities remain the detailed provenance.
+
 ### Deviations / failures
 
 Record only run-affecting failures and classify each as:
@@ -167,8 +195,9 @@ The record must be sufficient to answer:
 2. What material decisions were made and why?
 3. Which exact artifacts became authoritative?
 4. Where did Human/Grok interaction occur?
-5. Did the production session encounter or modify shared Core?
-6. Why did the session stop?
+5. Which deterministic execution substrate was used when relevant?
+6. Did the production session encounter or modify shared Core?
+7. Why did the session stop?
 
 It must not be a transcript or chain-of-thought log.
 
@@ -207,25 +236,25 @@ Do not put proposed generic implementation patches in the edition record.
 
 ## 9. Relationship to machine artifacts
 
-Keep machine-oriented artifacts under existing canonical paths and point to them from execution records:
+Keep machine-oriented artifacts under Profile/canonical paths and point to them from execution records:
 
 ```text
-sources/<issue>/production-state.json
-sources/<issue>/orchestration/...     # machine lifecycle / validator artifacts
-sources/<issue>/execution/...         # human-readable actions / decisions / review continuity
-sources/<issue>/publication/...       # publication/candidate artifacts
+{source_root}/production-state.json
+{source_root}/orchestration/...     # machine lifecycle / validator artifacts
+{source_root}/execution/...         # human-readable continuity + optional bridge provenance
+{source_root}/publication/...       # publication/candidate artifacts where Profile places them
 ```
 
-`execution/` is not a second state machine.
+`execution/` is not a second state machine. Bridge requests/receipts do not outrank canonical Production State or accepted stage artifacts.
 
 ## 10. Session bootstrap
 
 Every new edition production conversation reads, in this order:
 
 1. current reviewed `main` Core authority / session bootstrap;
-2. `sources/<issue>/production-state.json` if the run exists;
-3. `sources/<issue>/execution/index.md` if the run exists;
-4. latest referenced session/review/defect record needed to continue.
+2. `{source_root}/production-state.json` if the run exists;
+3. `{source_root}/execution/index.md` if the run exists;
+4. latest referenced session/review/defect/bridge receipt needed to continue.
 
 For a new run, initialize the execution record after canonical Profile/State initialization. For an existing run, do not rerun `init`; create/update the next session record and list it in `index.md`.
 
@@ -244,6 +273,6 @@ This logging is internal production work and never requires routine approval.
 
 ## 12. Migration / compatibility
 
-Existing W33 and SP001 logs remain historical evidence in `docs/checkpoints/` and are not rewritten merely to match the new layout.
+Existing W33 and SP001 pre-policy logs remain historical evidence and are not rewritten merely to match the new layout.
 
-Clean post-redesign validation runs use `sources/<issue>/execution/` from the beginning. Old W33/SP001 trial records may be linked as failed-trial evidence.
+Clean validation runs initialize `{source_root}/execution/` once canonical Profile/State exists. Any temporary human-readable resume files created before canonical initialization remain migration evidence only and should point forward to the canonical execution record after restart.
