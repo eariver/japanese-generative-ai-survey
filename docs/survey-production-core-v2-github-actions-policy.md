@@ -1,0 +1,217 @@
+# Survey Production Core v2 — GitHub Actions Responsibility Policy
+
+Status: `ACCEPTED IMPROVEMENT DIRECTION / IMPLEMENTATION DEFERRED`  
+Established: 2026-08-23 JST  
+Working branch: `refactor/survey-production-core-v2`  
+Related feedback: `PFB-006` in `docs/survey-production-core-v2-production-feedback-backlog.md`
+
+## 1. Purpose
+
+This memo records the responsibility rule to use when redesigning Survey Production Core v2 after the W33/SP001 production-validation review.
+
+The current repository has accumulated many GitHub Actions workflows that do more than CI: some generate Drafting/Synthesis artifacts, assemble publication content, perform semantic/publication mutations, revise layout/pagination/spacing, and commit generated results back to production branches.
+
+The redesign should reduce GitHub Actions to work for which running on Actions is clearly advantageous or which is genuinely mechanical and requires no editorial/research reasoning.
+
+The governing principle is:
+
+> **GitHub Actions is a deterministic executor / verifier, not a reasoning, editorial, or publication-authoring agent.**
+
+A task should not be placed in Actions merely because it can be scripted or automated.
+
+## 2. Admission rule for GitHub Actions
+
+Before retaining or adding any production-related GitHub Actions task, ask:
+
+1. **Is there a concrete advantage to running this task on GitHub Actions rather than having ChatGPT execute or invoke it directly?**
+2. **Is the task mechanical enough that the same valid input should lead to the same expected result without research/editorial judgment?**
+
+A task should normally run in Actions only when at least one of those conditions is strongly satisfied and the task does not transfer editorial/research judgment into CI.
+
+Useful Actions-specific advantages include:
+
+- reproducible, controlled build environments;
+- independent CI verification of committed artifacts;
+- branch-protection integration;
+- isolated release credentials / permissions;
+- immutable or independently generated build artifacts;
+- repeatable cross-regression test execution;
+- deterministic verification that should run on every relevant commit/PR;
+- release/freeze checks whose independence from the authoring session is valuable.
+
+`It is already a script`, `it can be automated`, or `we used a workflow before` are not sufficient reasons.
+
+## 3. Appropriate Actions responsibilities
+
+Typical work that belongs in GitHub Actions includes:
+
+### CI and contract validation
+
+- unit/regression tests;
+- schema validation;
+- format/path/invariant checks;
+- deterministic stage-contract verification;
+- duplicate/missing/disposition accounting where rules are crisp;
+- raw/provenance integrity checks;
+- SHA-256 / exact-byte verification;
+- identifier-preservation checks;
+- bibliography/reference integrity checks;
+- machine-detectable internal-metadata leakage checks where exact patterns are known.
+
+### Reproducible builds
+
+- compile the already-authored TeX/publication source with a pinned toolchain;
+- reproduce Weekly/Special PDFs in a controlled environment;
+- detect undefined citations/references, missing glyphs, or other deterministic compiler failures;
+- generate build logs and independently reproducible artifacts.
+
+The value here is not that Actions designs the publication. The value is that the source authored and reviewed elsewhere can be rebuilt independently under a known environment.
+
+### Freeze / release integrity
+
+- exact-byte Publication Preview / Freeze / Release identity checks;
+- release-manifest validation;
+- tag/release consistency;
+- controlled publication of already-approved immutable bytes;
+- verification that no unreviewed byte drift occurred between approved candidate and release.
+
+These are strong Actions use cases because independent execution and credential isolation materially improve reliability.
+
+## 4. Work that should normally remain with ChatGPT
+
+Tasks requiring interpretation, judgment, synthesis, prioritization, or visual/editorial taste should remain owned by ChatGPT even if helper scripts can assist.
+
+Examples include:
+
+- Source Intake/search strategy;
+- source-quality/materiality judgment;
+- Screening and Evidence interpretation;
+- Candidate Selection;
+- Architecture design;
+- deciding what a Weekly/Special must explain;
+- Drafting and Synthesis;
+- prose revision and proofreading/copyediting where meaning/style is involved;
+- deciding whether a draft is too shallow or repetitive;
+- deciding whether selected Evidence has been adequately represented to readers;
+- reader-facing Claim Boundary wording;
+- Theme Synthesis / final `総括`;
+- incorporation of Weekly community movement from Grok/X;
+- choosing article/chapter structure;
+- deciding where wide/full-width versus multi-column content is editorially appropriate;
+- evaluating page balance, whitespace, scanability, hierarchy, or magazine identity;
+- deciding how to repair a visually poor PDF;
+- deciding whether a publication is actually good enough for Human Publication Preview.
+
+A deterministic helper may transform or check artifacts after those decisions, but the helper must not silently become the editor.
+
+## 5. Important distinction: mechanical execution vs encoded editorial judgment
+
+A process can be deterministic while still containing editorial policy that should not be delegated to CI.
+
+For example, these operations are mechanically executable:
+
+- turn structured content into TeX;
+- insert page breaks;
+- switch one/two-column environments;
+- compact a table of contents;
+- shorten or rearrange generated blocks.
+
+But if the script decides, as a generic production rule, how much prose survives, where every chapter breaks, what information becomes reader-facing, or how an article should be laid out, then that script is effectively making editorial decisions even though its implementation is deterministic.
+
+Therefore the redesign must distinguish:
+
+> **mechanically executable**
+
+from
+
+> **mechanically appropriate to delegate**.
+
+`Can be scripted` does not imply `should be authored by CI`.
+
+## 6. Target responsibility model
+
+The desired model is:
+
+```text
+ChatGPT
+  research / reasoning / editorial judgment
+  architecture / drafting / synthesis
+  proofreading and reader-facing composition
+  publication-source authoring
+  PDF-informed semantic and visual repair
+          |
+          v
+Repository scripts
+  narrow deterministic transformation/checking only
+  schemas / hashes / provenance / references / preflight
+          |
+          v
+GitHub Actions
+  independent CI re-execution
+  reproducible build
+  deterministic PASS/FAIL verification
+  freeze/release integrity
+```
+
+Actions should normally consume a candidate authored by ChatGPT and answer:
+
+> **Does this committed candidate reproduce and satisfy the crisp machine-verifiable invariants?**
+
+Actions should not normally answer:
+
+> **What should the next article, paragraph, synthesis, layout, or visual revision be?**
+
+## 7. PDF / typesetting boundary
+
+Building a PDF in Actions is appropriate when it provides a reproducible toolchain, for example pinned LuaLaTeX/TeX Live/Python dependencies and deterministic build settings.
+
+However, the preferred loop is:
+
+```text
+ChatGPT authors/edits publication source
+-> ChatGPT reviews the resulting PDF and makes semantic/layout decisions
+-> candidate source is committed
+-> Actions independently rebuild the candidate
+-> deterministic build/preflight checks PASS or FAIL
+```
+
+Avoid the current anti-pattern:
+
+```text
+Actions builds
+-> Actions chooses a layout repair
+-> Actions mutates publication source
+-> another Action evaluates/mutates quality state
+-> bot commits become the production authoring loop
+```
+
+Actions may detect a machine-defined defect such as an undefined citation or forbidden exact token. It should report the failure. The production operator should normally decide the editorial/layout repair.
+
+## 8. Workflow review classification
+
+During the consolidated post-W33/SP001 redesign, every production-related workflow should be reviewed and assigned one of:
+
+- `KEEP_AS_CI` — Actions provides clear independent/reproducibility value and performs mechanical verification/build/release work only;
+- `SHRINK_TO_CI_ONLY` — keep the independent validator/build shell, remove production mutation/authoring;
+- `RETURN_TO_CHATGPT` — reasoning/editorial/publication generation or correction belongs to the ChatGPT production session;
+- `LEGACY_REMOVE_CANDIDATE` — obsolete, one-off, edition-specific, or superseded production workflows should be removed from the normal Core surface.
+
+For every workflow retained in Actions, the redesign record should state the specific benefit of Actions execution. If no meaningful benefit can be stated, direct execution by ChatGPT or a narrow repository helper is preferred.
+
+## 9. Relationship to SP001 Issue #400
+
+SP001 demonstrates why passing deterministic contracts is not sufficient evidence of publication quality. A candidate can compile successfully, preserve identifiers, satisfy schemas/hashes, and still be substantially unacceptable as a Longform Special because of shallow content, poor synthesis, layout regression, or internal production metadata leaking into reader-facing output.
+
+The redesign must therefore avoid strengthening the wrong layer by adding more machine gates for fundamentally editorial failures.
+
+Where an issue is semantic/editorial, strengthen ChatGPT guidance/review and the Architecture-to-Draft-to-Publication information-preservation responsibility.
+
+Where an issue is a crisp invariant, add or retain deterministic verification.
+
+Do not use GitHub Actions as a substitute for editorial judgment.
+
+## 10. Deferred implementation
+
+This memo records direction only.
+
+Do not restructure the workflow set while the current W33/SP001 correction attempts are still being evaluated. After both production records are available — or SP001 is terminated as a failed v2 production validation under PFB-007 — use those records to classify actual workflow usage and perform the consolidated Core redesign.
