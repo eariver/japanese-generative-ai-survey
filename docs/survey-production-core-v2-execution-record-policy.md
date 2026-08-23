@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Edition Execution Record Policy
 
-Status: `ACCEPTED REDESIGN DIRECTION / IMPLEMENTATION NOT STARTED`  
+Status: `ACCEPTED REDESIGN DIRECTION / DESIGN AUDITED / IMPLEMENTATION NOT STARTED`  
 Established: 2026-08-23 JST  
 Working branch: `refactor/survey-production-core-v2`  
 Related redesign: `docs/survey-production-core-v2-redesign-plan-after-w33-sp001.md`
@@ -20,12 +20,12 @@ Machine lifecycle/state artifacts remain authoritative for machine state. Execut
 
 ## 2. Canonical location
 
-Store edition execution records under the edition's existing source root, not in the global `docs/checkpoints/` namespace.
+Store edition execution records under the edition's **existing canonical source root**, not in the global `docs/checkpoints/` namespace and not under a newly invented naming convention.
 
-Target structure:
+Use the Profile/edition-resolved placeholder:
 
 ```text
-sources/<issue-id>/execution/
+{source_root}/execution/
   index.md
   sessions/
     <session-id>.md
@@ -38,12 +38,15 @@ sources/<issue-id>/execution/
     <defect-id>.md
 ```
 
-Examples:
+Examples may include:
 
 ```text
 sources/2026-W34/execution/...
 sources/SP002/execution/...
+sources/SP-2025-H2/execution/...
 ```
+
+depending on the canonical source identity already defined for that edition/Profile.
 
 The exact filenames may be normalized during implementation, but the four responsibilities (`index`, `sessions`, `reviews`, `defects`) should remain distinct.
 
@@ -51,13 +54,14 @@ Do not create date-stamped checkpoint files directly in `docs/checkpoints/` for 
 
 ## 3. `index.md` — one current run index per edition
 
-`index.md` is the first file a new ChatGPT session should read after `production-state.json`.
+`index.md` is the first edition-local human-readable file a new ChatGPT session should read after canonical Production State.
 
 It is a compact current-state navigation document, not a full diary.
 
 Required fields:
 
 - issue / edition ID;
+- resolved `{source_root}`;
 - research profile and publication profile;
 - canonical work branch;
 - source-of-truth `main` commit SHA used to start the run;
@@ -107,7 +111,8 @@ Required sections:
 ### Starting authority
 
 - branch head / relevant commit SHA;
-- `production-state.json` lifecycle and SHA if available;
+- Production State lifecycle and SHA if available;
+- resolved `{source_root}`;
 - source-of-truth `main` SHA or integrated reviewed Core SHA;
 - session objective / requested stop;
 - prior session/index pointer.
@@ -152,7 +157,7 @@ For each, classify:
 - `TRANSIENT_EXECUTION`
 - `SHARED_CORE_DEFECT`
 
-If `SHARED_CORE_DEFECT`, point to a file under `execution/defects/` and do not repair shared Core inside the production session under the redesigned responsibility rule.
+If `SHARED_CORE_DEFECT`, point to a file under `{source_root}/execution/defects/` and do not repair shared Core inside the production session under the redesigned responsibility rule.
 
 ### End state
 
@@ -242,10 +247,10 @@ The human-readable execution tree should point to them rather than mirror them.
 Target separation:
 
 ```text
-sources/<issue>/production-state.json
-sources/<issue>/orchestration/...     # machine lifecycle / validator artifacts
-sources/<issue>/execution/...         # human-readable actions / decisions / review continuity
-sources/<issue>/publication/...       # publication/candidate artifacts
+{source_root}/production-state.json
+{source_root}/orchestration/...     # machine lifecycle / validator artifacts
+{source_root}/execution/...         # human-readable actions / decisions / review continuity
+{source_root}/publication/...       # publication/candidate artifacts
 ```
 
 This prevents `orchestration/` from becoming a substitute for an understandable production record and prevents `execution/` from becoming another state machine.
@@ -255,9 +260,10 @@ This prevents `orchestration/` from becoming a substitute for an understandable 
 After implementation, every new edition production conversation must begin by reading, in this order:
 
 1. current `main` Core authority / session bootstrap;
-2. `sources/<issue>/production-state.json` if the run already exists;
-3. `sources/<issue>/execution/index.md` if the run already exists;
-4. the latest referenced session/review/defect record needed to continue.
+2. resolved edition Production State under `{source_root}` if the run already exists;
+3. `{source_root}/execution/index.md` if the run already exists;
+4. the latest referenced session/review/defect record needed to continue;
+5. Profile- and edition/series-specific guidance required for the target (`RETROSPECTIVE_PERIOD`, `THEMATIC`, Foundations, etc.).
 
 A new chat should not need the Human to reconstruct the prior session manually when these records exist.
 
@@ -266,7 +272,7 @@ A new chat should not need the Human to reconstruct the prior session manually w
 Before a production conversation ends for any reason other than an abrupt tool/session failure, it must:
 
 1. update/create its session log;
-2. update `execution/index.md` if current-state navigation changed;
+2. update `{source_root}/execution/index.md` if current-state navigation changed;
 3. ensure Human Gate/review/defect pointers are present;
 4. record the exact next action/stop reason;
 5. commit the record on the edition work branch.
@@ -277,4 +283,6 @@ This logging is part of the production workflow, but it is not a Human Gate and 
 
 Existing W33 and SP001 logs remain historical evidence in `docs/checkpoints/` and should not be rewritten merely to match the new layout.
 
-When W33/SP001 are rerun after redesign, the new attempts should use the new edition-local `sources/<issue>/execution/` structure from the beginning. Old records may be linked as prior failed-trial evidence.
+When W33/SP001 are rerun after redesign, the new attempts should use the new edition-local `{source_root}/execution/` structure from the beginning. Old records may be linked as prior failed-trial evidence.
+
+The same structure applies to Weekly, Retrospective Period, standalone Thematic and Foundations-guided volumes without assuming one source-root naming convention.
