@@ -10,6 +10,8 @@ from tests.test_survey_human_gate_v2 import SurveyHumanGateV2Tests
 
 
 class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
+    REVIEWED_COMMIT_SHA = "b" * 40
+
     @classmethod
     def setUpClass(cls) -> None:
         cls.root = Path(".").resolve()
@@ -32,6 +34,7 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
             "kind": kind,
             "state_path": "sources/SP001/production-state.json",
             "expected_revision": 1,
+            "reviewed_repository_commit_sha": self.REVIEWED_COMMIT_SHA,
             "reviewed_by": "human-reviewer",
             "reviewed_at": "2026-08-24T00:29:00Z",
             "review_reference": "chat:human-gate:r1",
@@ -61,6 +64,8 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
         *,
         recorded_at: str,
     ) -> dict:
+        operation = dict(operation)
+        operation.setdefault("reviewed_repository_commit_sha", self.REVIEWED_COMMIT_SHA)
         request = {
             "schema_version": "2.0-rc1",
             "request_id": request_id,
@@ -105,7 +110,13 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
                 )
 
     def test_schema_requires_explicit_human_provenance(self) -> None:
-        for key in ("expected_revision", "reviewed_by", "reviewed_at", "review_reference"):
+        for key in (
+            "expected_revision",
+            "reviewed_repository_commit_sha",
+            "reviewed_by",
+            "reviewed_at",
+            "review_reference",
+        ):
             operation = self.approval("RECORD_ARCHITECTURE_APPROVAL")
             del operation[key]
             with self.subTest(key=key), self.assertRaises(ValueError):
@@ -167,6 +178,7 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
         self.assertIn("human_gate.request_architecture_revision", text)
         self.assertIn("human_gate.record_publication_preview_approval", text)
         self.assertIn("human_gate.request_publication_preview_revision", text)
+        self.assertIn('operation["reviewed_repository_commit_sha"]', text)
         self.assertNotIn("import subprocess", text)
         self.assertNotIn("os.system", text)
         self.assertNotIn("shell=True", text)
@@ -176,7 +188,8 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
         text = (self.root / ".github/workflows/survey-production-v2-operator-bridge.yml").read_text(encoding="utf-8")
         self.assertIn("sources/**/execution/requests/*.json", text)
         self.assertIn("Operator request commit must contain only the immutable request file", text)
-        self.assertIn("Verify reviewed-main Core baseline", text)
+        self.assertIn("Verify reviewed-main Core baseline and Human reviewed commit", text)
+        self.assertIn("Human Gate request must bind reviewed_repository_commit_sha to the request-only commit parent", text)
         self.assertIn("Bridge attempted write outside edition source root", text)
         self.assertIn("Bridge must not mutate immutable request authority", text)
         self.assertIn("github.actor != 'github-actions[bot]'", text)
@@ -211,6 +224,24 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
         self.assertEqual(revised["lifecycle_state"], "SELECTION_COMPLETE")
         self.assertFalse(checkpoint.exists())
         self.assertIn(checkpoint.relative_to(fixture.root).as_posix(), revised["removed_paths"])
+        review_record = core.load_json(
+            fixture.source_root
+            / fixture.cfg["state_authority"]["human_review_dir"]
+            / "architecture-r1.json"
+        )
+        self.assertEqual(
+            review_record["reviewed_repository_commit_sha"],
+            self.REVIEWED_COMMIT_SHA,
+        )
+        receipt = core.load_json(
+            fixture.source_root
+            / "execution"
+            / "bridge-runs"
+            / "bridge-architecture-r1-revise"
+            / "receipt.json"
+        )
+        self.assertEqual(receipt["event_commit_sha"], fixture.impl)
+        self.assertEqual(receipt["reviewed_repository_commit_sha"], self.REVIEWED_COMMIT_SHA)
 
         fixture._reach_architecture_gate("Architecture bridge r2", "2026-08-24T00:07:00Z")
         approved = self._execute(
