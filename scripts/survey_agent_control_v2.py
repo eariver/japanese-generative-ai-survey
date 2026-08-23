@@ -405,7 +405,9 @@ def canonical_checkpoint_path(repo_root: Path, cfg: dict[str, Any], state: dict[
 
 
 def _expand_stage_path(template: str, profile: dict[str, Any]) -> str:
-    value = template.replace("{source_root}", profile["paths"]["source_root"])
+    value = template
+    for key, replacement in profile["paths"].items():
+        value = value.replace("{" + key + "}", replacement)
     if "{" in value or "}" in value:
         raise AgentControlError(f"unsupported stage path template: {template}")
     return value
