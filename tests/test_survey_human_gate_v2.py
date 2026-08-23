@@ -76,13 +76,22 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
                 check=True,
                 capture_output=True,
             )
-            subprocess.run(
-                ["git", "add", "-f", "--", self.source_rel],
-                cwd=self.root,
-                env=env,
-                check=True,
-                capture_output=True,
-            )
+            for path in sorted(candidate for candidate in self.source_root.rglob("*") if candidate.is_file()):
+                rel = path.relative_to(self.root).as_posix()
+                blob = subprocess.run(
+                    ["git", "hash-object", "-w", str(path)],
+                    cwd=self.root,
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                ).stdout.strip()
+                subprocess.run(
+                    ["git", "update-index", "--add", "--cacheinfo", f"100644,{blob},{rel}"],
+                    cwd=self.root,
+                    env=env,
+                    check=True,
+                    capture_output=True,
+                )
             tree = subprocess.run(
                 ["git", "write-tree"],
                 cwd=self.root,
