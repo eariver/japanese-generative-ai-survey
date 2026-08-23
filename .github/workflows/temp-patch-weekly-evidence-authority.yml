@@ -1,21 +1,22 @@
 name: Temporary Weekly evidence authority patch
 
 on:
-  push:
+  pull_request:
     branches:
-      - fix/core-v2-weekly-evidence-authority-join
+      - main
 
 permissions:
   contents: write
+  pull-requests: read
 
 jobs:
   patch:
-    if: github.event.head_commit.message != 'Apply Weekly evidence authority join'
+    if: github.head_ref == 'fix/core-v2-weekly-evidence-authority-join'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: fix/core-v2-weekly-evidence-authority-join
+          ref: ${{ github.head_ref }}
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
@@ -29,6 +30,9 @@ jobs:
 
           path = Path('scripts/survey_weekly_semantic_publication_v2.py')
           text = path.read_text(encoding='utf-8')
+          if '_records_from_authorities' in text:
+              print('renderer already patched')
+              raise SystemExit(0)
           marker = 'def _render_tex(\n'
           if marker not in text:
               raise SystemExit('render marker missing')
@@ -110,8 +114,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          if git diff --quiet -- scripts/survey_weekly_semantic_publication_v2.py; then
+            echo 'No renderer patch needed.'
+            exit 0
+          fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add scripts/survey_weekly_semantic_publication_v2.py
           git commit -m 'Apply Weekly evidence authority join'
-          git push origin HEAD:fix/core-v2-weekly-evidence-authority-join
+          git push origin HEAD:${{ github.head_ref }}
