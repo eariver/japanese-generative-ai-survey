@@ -36,7 +36,13 @@ REFERENCE_REPLACEMENT = (
     "\\begingroup\n"
     "\\footnotesize\n"
     "\\setlength{\\bibitemsep}{0pt}\n"
-    "\\printbibliography[title={References / Source Notes}]\n"
+    "\\AtEveryBibitem{%\n"
+    "  \\clearfield{urlyear}%\n"
+    "  \\clearfield{urlmonth}%\n"
+    "  \\clearfield{urlday}%\n"
+    "}\n"
+    "\\defbibnote{corev2legend}{\\textit{Evidence tags: V = VERIFIED, P = PARTIAL; M = MATERIAL, C = CONTEXT. Access dates are retained in the source bibliography metadata.}}\n"
+    "\\printbibliography[title={References / Source Notes},prenote=corev2legend]\n"
     "\\endgroup"
 )
 
@@ -102,6 +108,10 @@ def compact_closing_summary(
         raise ValueError("Weekly closing summary must remain in two-column flow until references")
     if transformed.count("\\footnotesize\n\\setlength{\\bibitemsep}{0pt}") != 1:
         raise ValueError("Weekly references compact typography was not applied exactly once")
+    if transformed.count("prenote=corev2legend") != 1:
+        raise ValueError("Weekly Evidence-tag legend was not applied exactly once")
+    if transformed.count("\\clearfield{urlyear}") != 1:
+        raise ValueError("Weekly rendered access-date suppression was not applied exactly once")
 
     main_tex_path.write_text(transformed, encoding="utf-8")
     new_sha = core.sha256_file(main_tex_path)
@@ -129,11 +139,13 @@ def compact_closing_summary(
         "transformations": [
             "FINAL_BODY_COLUMN_TO_WEEKLY_SYNTHESIS_COLUMN",
             "COMPACT_SINGLE_COLUMN_REFERENCE_NOTES",
+            "COMPACT_EVIDENCE_TAGS_WITH_SOURCE_METADATA_ACCESS_DATES",
         ],
         "finding": (
             "The approved Weekly closing summary begins in the next two-column body column. "
-            "References / Source Notes retain their one-column section but use footnote-size, zero-item-gap "
-            "typography to avoid a low-information continuation page without changing citation identity or wording."
+            "References / Source Notes retain their one-column section and full canonical source identity, "
+            "while repetitive Evidence status/materiality wording is represented by an explicit compact tag legend. "
+            "Access dates remain in references.bib but are omitted from the rendered page to avoid low-information continuation pages."
         ),
     }
     core.write_json(result_path, result)
