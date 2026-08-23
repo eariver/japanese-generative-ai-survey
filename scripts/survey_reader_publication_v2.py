@@ -20,6 +20,7 @@ MANUSCRIPT_SCHEMA = Path("schemas/reader-manuscript-v2.schema.json")
 REVIEW_SCHEMA = Path("schemas/publication-review-record-v2.schema.json")
 ARCHITECTURE_SCHEMA = Path("schemas/issue-architecture-v2.schema.json")
 ARCHITECTURE_APPROVAL_SCHEMA = Path("schemas/architecture-approval-record-v2.schema.json")
+REVIEW_CONTRACT = Path("config/publication-review-v2.json")
 
 
 def _rel(repo_root: Path, path: Path) -> str:
@@ -29,6 +30,11 @@ def _rel(repo_root: Path, path: Path) -> str:
         return str(resolved.relative_to(root)).replace("\\", "/")
     except ValueError as exc:
         raise ValueError(f"reader-publication artifact must be repository-local: {path}") from exc
+
+
+def _input_path(repo_root: Path, path: Path | str) -> Path:
+    value = Path(path)
+    return value if value.is_absolute() else repo_root / value
 
 
 def _safe_file(repo_root: Path, path: Path, label: str) -> Path:
@@ -46,11 +52,7 @@ def _artifact(repo_root: Path, path: Path) -> dict[str, str]:
 
 def _sized_artifact(repo_root: Path, path: Path) -> dict[str, Any]:
     value = _safe_file(repo_root, path, "sized artifact")
-    return {
-        "path": _rel(repo_root, value),
-        "sha256": core.sha256_file(value),
-        "byte_count": value.stat().st_size,
-    }
+    return {"path": _rel(repo_root, value), "sha256": core.sha256_file(value), "byte_count": value.stat().st_size}
 
 
 def _validate_artifact_ref(repo_root: Path, ref: dict[str, Any], label: str, *, sized: bool = False) -> Path:
@@ -85,9 +87,7 @@ def _architecture_authority(
     approval_path: Path,
 ) -> tuple[Path, dict[str, Any], Path]:
     architecture_file = _safe_file(repo_root, architecture_path, "Issue Architecture")
-    architecture = schema_gate.load_and_validate_json(
-        architecture_file, repo_root / ARCHITECTURE_SCHEMA, label="Issue Architecture"
-    )
+    architecture = schema_gate.load_and_validate_json(architecture_file, repo_root / ARCHITECTURE_SCHEMA, label="Issue Architecture")
     if (
         architecture.get("issue_id") != issue_id
         or architecture.get("research_profile") != profile.get("research_profile")
@@ -95,9 +95,7 @@ def _architecture_authority(
     ):
         raise ValueError("Issue Architecture/Profile identity mismatch")
     approval_file = _safe_file(repo_root, approval_path, "Architecture Approval")
-    approval = schema_gate.load_and_validate_json(
-        approval_file, repo_root / ARCHITECTURE_APPROVAL_SCHEMA, label="Architecture Approval"
-    )
+    approval = schema_gate.load_and_validate_json(approval_file, repo_root / ARCHITECTURE_APPROVAL_SCHEMA, label="Architecture Approval")
     if approval.get("issue_id") != issue_id or approval.get("decision") != "APPROVED":
         raise ValueError("Architecture Approval identity/decision invalid")
     if approval.get("architecture_sha256") != core.sha256_file(architecture_file):
@@ -128,22 +126,16 @@ def _validate_manifest_semantics(repo_root: Path, payload: dict[str, Any]) -> tu
     issue_id = payload["issue_id"]
     profile_path = _validate_artifact_ref(repo_root, payload["production_profile"], "Reader Production Profile")
     _, profile = _profile(repo_root, profile_path, issue_id)
-    if (
-        payload["research_profile"] != profile["research_profile"]
-        or payload["publication_profile"] != profile["publication_profile"]
-    ):
+    if payload["research_profile"] != profile["research_profile"] or payload["publication_profile"] != profile["publication_profile"]:
         raise ValueError("Reader Manifest Profile identity mismatch")
 
     architecture_path = _validate_artifact_ref(repo_root, payload["architecture"], "Reader Architecture")
     approval_path = _validate_artifact_ref(repo_root, payload["architecture_approval"], "Reader Architecture Approval")
-    _, architecture, _ = _architecture_authority(
-        repo_root, issue_id, profile, architecture_path, approval_path
-    )
+    _, architecture, _ = _architecture_authority(repo_root, issue_id, profile, architecture_path, approval_path)
 
     source_path = _validate_artifact_ref(repo_root, payload["primary_source"], "Reader primary source", sized=True)
     survey_root = core.repo_local_path(repo_root, profile["paths"]["survey_root"], "paths.survey_root")
-    expected_source = survey_root / "main.tex"
-    if source_path.resolve() != expected_source.resolve():
+    if source_path.resolve() != (survey_root / "main.tex").resolve():
         raise ValueError("Reader primary source must be the canonical survey_root/main.tex")
 
     seen_supporting: set[str] = set()
@@ -201,15 +193,13 @@ def build_manuscript_manifest(
     output_path: Path,
 ) -> Path:
     profile_path, profile = _profile(repo_root, production_profile_path, issue_id)
-    architecture_file, _, approval_file = _architecture_authority(
-        repo_root, issue_id, profile, architecture_path, architecture_approval_path
-    )
+    architecture_file, _, approval_file = _architecture_authority(repo_root, issue_id, profile, architecture_path, architecture_approval_path)
     source = _safe_file(repo_root, primary_source_path, "reader-facing primary source")
     support_rows: list[dict[str, Any]] = []
     for row in supporting_files:
         if not isinstance(row, dict) or set(row) != {"role", "path"}:
             raise ValueError("supporting_files inputs must contain role/path")
-        value = _sized_artifact(repo_root, Path(row["path"]))
+        value = _sized_artifact(repo_root, _input_path(repo_root, row["path"]))
         support_rows.append({"role": row["role"], **value})
     base = {
         "schema_version": "2.0-rc1",
@@ -252,11 +242,35 @@ def validate_manuscript_manifest(repo_root: Path, path: Path, *, issue_id: str |
     return payload
 
 
+def _extra_review_checks(repo_root: Path, profile: dict[str, Any], review_kind: str) -> set[str]:
+    contract = core.load_json(repo_root / REVIEW_CONTRACT)
+    if contract.get("schema_version") != "2.0-rc1":
+        raise ValueError("publication review contract schema_version invalid")
+    lane = "semantic" if review_kind == "SEMANTIC_EDITORIAL" else "visual"
+    result: set[str] = set()
+    for section in (
+        contract.get("core"),
+        contract.get("research_profiles", {}).get(profile["research_profile"]),
+        contract.get("publication_profiles", {}).get(profile["publication_profile"]),
+    ):
+        if not isinstance(section, dict) or not isinstance(section.get(lane), list):
+            raise ValueError(f"publication review contract missing {lane} Profile lane")
+        for check_id in section[lane]:
+            if not isinstance(check_id, str) or not check_id.strip() or check_id in result:
+                raise ValueError(f"publication review contract check invalid/duplicate: {check_id}")
+            result.add(check_id)
+    return result
+
+
 def _expected_review_checks(repo_root: Path, profile: dict[str, Any], review_kind: str) -> set[str]:
     cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
     expected = quality.expected_checks(cfg, profile["research_profile"], profile["publication_profile"])
     kind = "AGENT_SEMANTIC" if review_kind == "SEMANTIC_EDITORIAL" else "AGENT_VISUAL"
-    return {check_id for check_id, value in expected.items() if value == kind}
+    result = {check_id for check_id, value in expected.items() if value == kind}
+    extras = _extra_review_checks(repo_root, profile, review_kind)
+    if result & extras:
+        raise ValueError(f"publication review contract duplicates existing quality check IDs: {sorted(result & extras)}")
+    return result | extras
 
 
 def build_review_record(
@@ -283,9 +297,7 @@ def build_review_record(
     expected = _expected_review_checks(repo_root, profile, review_kind)
     actual = [row.get("check_id") for row in checks if isinstance(row, dict)]
     if set(actual) != expected or len(actual) != len(set(actual)):
-        raise ValueError(
-            f"{review_kind} review family incomplete: expected={sorted(expected)} actual={sorted(str(x) for x in actual)}"
-        )
+        raise ValueError(f"{review_kind} review family incomplete: expected={sorted(expected)} actual={sorted(str(x) for x in actual)}")
     if not reviewed_by.strip():
         raise ValueError("Publication Review reviewed_by required")
     base = {
