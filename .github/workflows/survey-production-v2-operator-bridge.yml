@@ -23,7 +23,7 @@ jobs:
       - name: Checkout exact request commit
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -54,6 +54,64 @@ jobs:
           fi
 
           printf '%s\n' "${added_requests[0]}" > "$RUNNER_TEMP/operator-request-path"
+
+      - name: Verify reviewed-main Core baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          request_path="$(cat "$RUNNER_TEMP/operator-request-path")"
+          reviewed_main_sha="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["reviewed_main_sha"])' "$request_path")"
+          operation_kind="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["kind"])' "$request_path")"
+
+          if [[ ! "$reviewed_main_sha" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "reviewed_main_sha must be exact lowercase 40-hex." >&2
+            exit 1
+          fi
+
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          git cat-file -e "$reviewed_main_sha^{commit}"
+          if ! git merge-base --is-ancestor "$reviewed_main_sha" refs/remotes/origin/main; then
+            echo "reviewed_main_sha is not an ancestor of current main." >&2
+            exit 1
+          fi
+
+          request_parent="$GITHUB_SHA^"
+          if ! git merge-base --is-ancestor "$reviewed_main_sha" "$request_parent"; then
+            echo "Operator work branch is not descended from reviewed_main_sha." >&2
+            exit 1
+          fi
+
+          if [[ "$operation_kind" == "INITIALIZE_WEEKLY" || "$operation_kind" == "INITIALIZE_THEMATIC" ]]; then
+            execution_main_sha="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["execution_record"]["reviewed_main_sha"])' "$request_path")"
+            if [[ "$execution_main_sha" != "$reviewed_main_sha" ]]; then
+              echo "Initialization execution record reviewed_main_sha must equal request reviewed_main_sha." >&2
+              exit 1
+            fi
+          fi
+
+          mapfile -t protected_paths < <(
+            python - <<'PY'
+          import json
+          from pathlib import Path
+
+          cfg = json.loads(Path("config/survey-production-v2.json").read_text(encoding="utf-8"))
+          paths = list(cfg.get("implementation_control_roots", []))
+          for group in cfg.get("contract_files", {}).values():
+              paths.extend(group)
+          for path in sorted(set(paths)):
+              print(path)
+          PY
+          )
+          if [[ "${#protected_paths[@]}" -eq 0 ]]; then
+            echo "No implementation/contract control paths configured." >&2
+            exit 1
+          fi
+
+          if ! git diff --quiet "$reviewed_main_sha" "$request_parent" -- "${protected_paths[@]}"; then
+            echo "Shared Core or contract authority drifted from reviewed_main_sha before operator execution." >&2
+            git diff --name-only "$reviewed_main_sha" "$request_parent" -- "${protected_paths[@]}" >&2
+            exit 1
+          fi
 
       - name: Execute canonical deterministic Core operation
         shell: bash
