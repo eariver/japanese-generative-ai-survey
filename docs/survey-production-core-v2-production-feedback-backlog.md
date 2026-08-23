@@ -1,20 +1,22 @@
 # Survey Production Core v2 — Post-Merge Production Feedback Backlog
 
-Status: `REDESIGN INTEGRATED / CLEAN REVALIDATION EXPOSED OPERATOR-RUNTIME GAP / PFB-014 MAINTENANCE IN PROGRESS`  
+Status: `REDESIGN INTEGRATED / PFB-014 HUMAN-GATE ROUNDTRIP IMPLEMENTATION CANDIDATE / REAUDIT PENDING`  
 Established: 2026-08-23 JST  
 Initial review closed: 2026-08-23 JST  
-Last updated: 2026-08-23 JST
+Last updated: 2026-08-24 JST
 
 Current maintenance branch: `maintenance/core-v2-operator-execution-bridge`
 
 ## Current authority
 
-The initial W33/SP001 production feedback drove the Core v2 redesign that was reviewed and integrated. Subsequent clean post-merge W33/SP001 revalidation exposed one additional dependency: the normal ChatGPT connector runtime can research/edit the repository but cannot necessarily mount the exact work branch and execute the canonical local Core CLI.
+The initial W33/SP001 production feedback drove the Core v2 redesign that was reviewed and integrated. Subsequent clean post-merge W33/SP001 revalidation exposed an additional dependency: the normal ChatGPT connector runtime can research/edit the repository but cannot necessarily mount the exact work branch and execute the canonical local Core CLI.
+
+A later pre-approval full-system audit found a second consequence of the same operator-runtime constraint: the first bridge could reach a normal Human Gate but could not canonically record an already explicit Human approval or ordinary requested-revision cycle. PFB-014 therefore now covers the complete connector-safe deterministic execution boundary, including Human Gate round trips.
 
 Cross-edition revalidation: `docs/checkpoints/survey-production-core-v2-postmerge-revalidation-worklog.md`  
 Operator-bridge design: `docs/survey-production-core-v2-operator-execution-bridge.md`
 
-PFB-001 through PFB-013 remain applicable. PFB-014 is the new post-integration finding.
+PFB-001 through PFB-013 remain applicable. PFB-014 is the open post-integration maintenance finding.
 
 ## PFB-001 — one self-contained Grok task file in Google Drive
 
@@ -22,7 +24,7 @@ Status: `IMPLEMENTED / REAL W33 OPERATION CONFIRMED`
 
 Use one run-specific Markdown task file. Repository provenance hash-binds exact task/result bytes.
 
-## PFB-002 — Human passes the exact Drive task-file path; do not search for a Grok connector
+## PFB-002 — Human passes exact Drive task-file path; do not search for a Grok connector
 
 Status: `IMPLEMENTED / REAL W33 OPERATION CONFIRMED`
 
@@ -53,17 +55,17 @@ Status: `IMPLEMENTED / REQUIRED CORE INVARIANT`
 
 > **A Production session repairs the edition. It does not repair shared Core v2.**
 
-PFB-014 follows this rule: W33/SP001 were paused and bridge work moved to separate Core maintenance.
+PFB-014 follows this rule: W33/SP001 remain paused while shared bridge/Human-Gate work is repaired in Core maintenance.
 
 ## PFB-006 — reduce Actions from production author to narrow deterministic infrastructure
 
 Status: `IMPLEMENTED / REQUIRED CORE INVARIANT / PFB-014 NARROW FALLBACK UNDER REVIEW`
 
-> **GitHub Actions is a deterministic executor / verifier, not a reasoning, editorial, or publication-authoring agent.**
+> **GitHub Actions is a deterministic executor / verifier, not a reasoning, editorial, Human-decision, or publication-authoring agent.**
 
-PFB-014 does not reverse the redesign. The operator bridge is admissible only as a constrained deterministic execution substrate because the connector runtime lacks an exact checked-out CLI environment.
+PFB-014 does not reverse the redesign. The operator bridge is admissible only as a constrained deterministic execution substrate because the connector runtime lacks an exact checked-out CLI environment. It may record an already explicit Human decision but may not choose one.
 
-If accepted, current Actions surface is seven workflows. The prior six-workflow audit is historical only.
+The current intended Actions surface remains exactly seven workflows. Earlier six-workflow/six-point evidence is historical only.
 
 ## PFB-007 — retain failed W33/SP001 trials as non-validating evidence
 
@@ -92,32 +94,27 @@ requirement
 
 Status: `IMPLEMENTED / REQUIRED CORE INVARIANT`
 
-Candidate readiness requires deterministic QA + ChatGPT semantic/editorial QA + exact-PDF visual QA. The bridge owns none of the agent/Human judgments.
+Candidate readiness requires deterministic QA + ChatGPT semantic/editorial QA + exact-PDF visual QA. The bridge owns none of these judgments.
 
 ## PFB-011 — atomic publication revision/candidate authority
 
-Status: `IMPLEMENTED / REQUIRED CORE INVARIANT`
+Status: `IMPLEMENTED / REQUIRED CORE INVARIANT / HUMAN-GATE REVISION PATH ADDED`
 
-Reader Manuscript, exact source/PDF, deterministic QA, semantic/editorial review and visual review bind atomically. Source/PDF revision invalidates downstream authority.
+Reader Manuscript, exact source/PDF, deterministic QA, semantic/editorial review and visual review bind atomically. Source/PDF revision invalidates downstream authority. Publication Preview `REQUEST_CHANGES` now also resets affected Validation/Candidate authority before a new candidate can return to the gate.
 
 ## PFB-012 — standardized edition-local execution records
 
-Status: `IMPLEMENTED / PFB-014 EXTENDS EXECUTION TRANSPORT`
+Status: `IMPLEMENTED / PFB-014 EXTENDS EXECUTION + HUMAN-REVIEW PROVENANCE`
 
-Canonical execution tree may add:
+Canonical execution tree may add `requests/` and `bridge-runs/` when bridge transport is used. Human-readable `execution/reviews/*-rN.md` points to exact machine Human-review authority under `{source_root}/gates/reviews/` and `gates/review-index.json`.
 
-```text
-requests/
-bridge-runs/
-```
-
-These are transport/provenance, not a second lifecycle state machine.
+These are provenance layers, not second lifecycle state machines.
 
 ## PFB-013 — real cold-start profile trials required after Core repair
 
 Status: `PARTIALLY EXERCISED / NOT PASSED`
 
-Required acceptance remains:
+Required post-integration acceptance remains:
 
 - clean Weekly;
 - clean Thematic/LONGFORM with SP001 regression;
@@ -125,94 +122,128 @@ Required acceptance remains:
 - Foundations-guided Thematic/Longform;
 - structural monthly/half-year/annual compatibility through one generic period Profile.
 
-The first post-merge attempts did real operator work but could not begin canonical lifecycle execution before bridge maintenance.
-
-A maintenance fixed-head audit also found that the initial bridge did not expose the existing Retrospective initializer. The candidate was invalidated rather than weakening the cross-profile validation requirement.
-
-PFB-013 remains open until reviewed integration and clean real-production validation.
+The first post-merge attempts did real operator work but could not begin canonical lifecycle execution before bridge maintenance. PFB-013 remains open until reviewed integration and clean real-production validation.
 
 ## PFB-014 — deterministic Core execution fallback for connector-only runtimes
 
-Status: `IMPLEMENTATION CANDIDATE / RETROSPECTIVE BRIDGE EXPOSURE REPAIRED / NOT VALIDATED`
+Status: `IMPLEMENTATION CANDIDATE / HUMAN-GATE ROUNDTRIP IMPLEMENTED / SEVEN-POINT REAUDIT PENDING`
 
 ### Observation
 
-The integrated redesign assumes ChatGPT can invoke local deterministic Core scripts. In the normal connector runtime, ChatGPT can read/write exact repository content but cannot necessarily obtain a mounted checkout or run the canonical Core CLI on the exact work branch.
+The integrated redesign assumes ChatGPT can invoke local deterministic Core scripts. In the normal connector runtime, ChatGPT can read/write exact repository content but cannot necessarily obtain a mounted checkout or run canonical Core CLI on the exact work branch.
 
-Manual creation of plausible Profile/State/checkpoint/acceptance artifacts is prohibited.
+Manual creation of plausible Profile/State/checkpoint/approval/review authority is prohibited.
 
-A later fixed-head audit established that the bridge also needed to expose Retrospective initialization for the required cross-profile matrix.
+The first bridge candidate addressed initialization and one-stage advancement but a pre-approval audit exposed two blocking continuation gaps:
 
-### Corrected Retrospective diagnosis
+- **HG-001:** connector-only operation could reach a Human Gate but could not canonically record the Human's explicit approval;
+- **HG-002:** routine Human `REQUEST_CHANGES` had no canonical selective invalidation/revision path, so ordinary correction risked becoming an inappropriate Exception Gate or causing pinned checkpoint drift.
 
-Deeper pre-freeze inspection established that Core **already contained** canonical generic Retrospective support on the maintenance base:
+### Retrospective diagnosis
+
+Core already contained canonical generic Retrospective support:
 
 - `scripts/survey_period_v2.py`
 - `tests/test_survey_period_v2.py`
 
-That helper already resolves configured monthly/half-year/annual periods and builds `RETROSPECTIVE_PERIOD + LONGFORM_SPECIAL`, including bounded-period and resume safeguards.
+The bridge therefore exposes that existing initializer; it does not create a second Retrospective builder, scope schema or monthly/half-year/annual engine.
 
-Therefore the true maintenance defect is:
-
-> **The operator bridge did not expose the existing `survey_period_v2` deterministic initializer.**
-
-Temporary duplicate Retrospective adapter/schema/tests created under the earlier diagnosis were removed before final candidate freeze.
-
-### Required behavior
+### Current required behavior
 
 ```text
 ChatGPT commits edition artifacts
 -> ChatGPT commits one immutable request-only commit
 -> runner checks out exact commit
 -> runner proves protected Core/contract bytes equal reviewed main
--> runner executes only allowlisted canonical Core mechanics
+-> runner executes only allowlisted canonical deterministic mechanics
 -> runner commits only edition-local authorities/receipts
 -> ChatGPT resumes from canonical State
 ```
 
-Configured Retrospective bridge path is now simply:
+At a Human Gate:
 
 ```text
-request special_slug
--> existing survey_period_v2.resolve_configured_period(...)
--> existing survey_period_v2.period_profile(...)
--> exact request/Profile identity check
--> canonical initialize(...)
+Human explicitly decides APPROVED
+  or REQUEST_CHANGES + requested changes + regeneration boundary
+-> ChatGPT encodes only that explicit decision/provenance in immutable request
+-> bridge/Core validates exact pending gate/current bytes/revision
+-> Core records approval or immutable rN review record
+-> APPROVED resumes lifecycle
+   OR REQUEST_CHANGES selectively invalidates downstream authority
+-> ChatGPT performs actual requested repair and revalidates to rN+1
 ```
 
-There is no new Retrospective scope schema, no second Profile builder and no separate monthly/half-year/annual bridge engine.
+Actions/Core never choose the Human decision, requested changes or regeneration boundary.
 
 ### Current implementation candidate
 
 Maintenance branch: `maintenance/core-v2-operator-execution-bridge`
 
-Candidate-specific files include:
+Key candidate files include:
 
 - `docs/survey-production-core-v2-operator-execution-bridge.md`
+- `docs/survey-production-core-v2-github-actions-policy.md`
+- `docs/survey-production-core-v2-final-audit-rule.md`
 - `schemas/operator-execution-request-v2.schema.json`
+- `schemas/human-gate-review-record-v2.schema.json`
+- `schemas/human-gate-review-index-v2.schema.json`
 - `scripts/survey_core_execution_bridge_v2.py`
+- `scripts/survey_human_gate_v2.py`
 - `.github/workflows/survey-production-v2-operator-bridge.yml`
 - `tests/test_survey_core_execution_bridge_v2.py`
+- `tests/test_survey_core_execution_bridge_human_gate_v2.py`
+- `tests/test_survey_human_gate_v2.py`
 - synchronized config/authority/policy/worklog files.
 
-Existing `scripts/survey_period_v2.py` and `tests/test_survey_period_v2.py` remain the canonical Retrospective Core implementation and are not duplicated by this PR.
+Existing `scripts/survey_period_v2.py` and `tests/test_survey_period_v2.py` remain canonical Retrospective implementation and are not duplicated.
 
-Current allowlist:
+Current bridge allowlist is exactly eight request kinds:
 
-- `INITIALIZE_WEEKLY`
-- `INITIALIZE_RETROSPECTIVE`
-- `INITIALIZE_THEMATIC`
-- `ADVANCE_STAGE`
+1. `INITIALIZE_WEEKLY`
+2. `INITIALIZE_RETROSPECTIVE`
+3. `INITIALIZE_THEMATIC`
+4. `ADVANCE_STAGE`
+5. `RECORD_ARCHITECTURE_APPROVAL`
+6. `REQUEST_ARCHITECTURE_REVISION`
+7. `RECORD_PUBLICATION_PREVIEW_APPROVAL`
+8. `REQUEST_PUBLICATION_PREVIEW_REVISION`
 
-Human Architecture approval, Publication Preview approval and Release are outside the bridge.
+Release remains outside the bridge and owned by the dedicated release workflow.
+
+### Human Gate machine authority
+
+The canonical machine review history is:
+
+```text
+{source_root}/gates/reviews/architecture-rN.json
+{source_root}/gates/reviews/publication-rN.json
+{source_root}/gates/review-index.json
+```
+
+Each rN binds exact reviewed State/artifact SHA-256 values, reviewed repository commit, Human provenance, decision, and requested revision boundary where applicable. Prior reviewed bytes remain reconstructable; current Production State/checkpoint/gate provenance determines current authority.
+
+### Regression evidence implemented before final freeze
+
+The candidate now includes positive/negative direct and bridge-backed Human Gate coverage:
+
+- Architecture r1 `REQUEST_CHANGES` -> selective invalidation -> r2 -> approval;
+- stale r1 approval after r2 refusal;
+- changed reviewed Architecture bytes refusal;
+- Publication Preview r1 `REQUEST_CHANGES` -> Validation/Candidate regeneration -> r2 -> approval;
+- invalid cross-gate regeneration boundary refusal;
+- current r2 approval binds current Candidate/PDF;
+- generic Human-decision/rejection operation surface absent;
+- request-only bridge transport, reviewed-main preflight, bot-recursion protection and no arbitrary execution remain protected.
+
+These are candidate regressions, not substitutes for post-integration real-production validation.
 
 ### Acceptance criteria
 
-PFB-014 cannot close until:
+PFB-014 cannot close until all conditions below hold:
 
 1. no arbitrary executable surface from request data;
 2. request path/id/branch/source-root exact and fail closed;
-3. exact reviewed-main SHA on every operation and equality with initialization execution record;
+3. exact reviewed-main SHA on every operation and initialization execution-record equality;
 4. protected shared Core/contract bytes match reviewed main before dependency installation/execution;
 5. triggering commit adds exactly one immutable request and nothing else;
 6. generated writes stay under Profile-bound source root;
@@ -224,29 +255,36 @@ PFB-014 cannot close until:
 12. exact request/event/State provenance is recorded;
 13. direct-local CLI remains preferred;
 14. Retrospective request reuses existing `survey_period_v2`, rejects unknown/pre-period-end targets through existing Core semantics, and adds no cadence-specific engine;
-15. bridge glue has an end-to-end init -> stage-advance regression;
-16. exact-head CI + complete six-point fixed-head audit pass;
-17. after reviewed unchanged integration, clean Weekly/SP001/Retrospective/Foundations trials reach required gates without in-run shared-Core repair.
+15. bridge glue has init -> stage-advance E2E coverage;
+16. HG-001: explicit Architecture and Publication Preview approval can be canonically recorded from connector-only operation without Actions/Core making the decision;
+17. HG-002: both normal gates support explicit `REQUEST_CHANGES`, contiguous rN history, allowed selective invalidation and return to the same gate;
+18. stale review revision, changed reviewed bytes and invalid regeneration boundaries fail closed;
+19. prior review revisions remain reconstructable while only current State/gate/checkpoint authority is active;
+20. direct canonical and bridge-backed Human Gate round-trip regressions pass;
+21. exact-head Core CI + Pipeline contract tests pass on the final unchanged candidate;
+22. complete **seven-point** fixed-head audit, including Point 7 Human Gate round-trip viability, passes from Point 1 on one unchanged candidate SHA;
+23. after reviewed unchanged integration, clean Weekly/SP001/Retrospective/Foundations trials reach required gates without in-run shared-Core repair.
 
 ### Classification
 
-This began as `TRANSIENT_EXECUTION / OPERATOR-RUNTIME CAPABILITY`. Because the production model must work in the actual ChatGPT runtime used by this project, the missing execution fallback is treated as a **shared operator/Core integration maintenance requirement**.
+The missing execution fallback began as `TRANSIENT_EXECUTION / OPERATOR-RUNTIME CAPABILITY`. Because the production model must work in the actual ChatGPT runtime used by this project, it is a **shared operator/Core integration maintenance requirement**.
 
-Retrospective exposure is part of that same integration requirement, not a new Retrospective subsystem.
+Retrospective exposure and Human Gate deterministic recording/revision are parts of that same integration boundary, not new editorial subsystems.
 
 ## Current next step
 
 Do not resume canonical W33/SP001 acceptance on a pre-PFB-014 baseline.
 
 ```text
-finish bridge documentation/implementation synchronization
--> exact-head Core CI + pipeline contract tests
+finish authority/worklog synchronization and pre-freeze consistency audit
+-> resolve any remaining shared-Core consistency finding
 -> freeze one exact maintenance candidate SHA
--> complete six-point audit from zero on unchanged SHA
+-> exact-head Core CI + Pipeline contract tests
+-> complete seven-point audit from Point 1 on unchanged SHA
 -> Human full-candidate review
 -> integrate unchanged accepted head
 -> reset clean validation branches from reviewed main
 -> execute Weekly / Thematic-SP001 / Retrospective / Foundations validation matrix
 ```
 
-Any candidate-tree change after freeze invalidates the fixed-head audit.
+Any candidate-tree change after freeze invalidates all seven fixed-head audit verdicts.
