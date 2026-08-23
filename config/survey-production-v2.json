@@ -2,7 +2,7 @@
   "schema_version": "2.0-rc1",
   "pipeline_contract_version": "2.0-rc1",
   "quality_contract_version": "2.0-rc1",
-  "orchestrator_version": "survey-production-core-v2/0.12-operator-bridge-retrospective",
+  "orchestrator_version": "survey-production-core-v2/0.13-human-gate-roundtrip",
   "contract_files": {
     "pipeline": [
       "docs/survey-production-core-v2-redesign-authority.md",
@@ -25,6 +25,8 @@
       "config/prompts/grok/x-source-intake-special-v1.md",
       "schemas/x-source-intake-v2.schema.json",
       "schemas/operator-execution-request-v2.schema.json",
+      "schemas/human-gate-review-record-v2.schema.json",
+      "schemas/human-gate-review-index-v2.schema.json",
       "schemas/survey-discovery-record.schema.json",
       "schemas/discovery-acceptance-v2.schema.json",
       "schemas/screening-v2-run-package.schema.json",
@@ -219,6 +221,20 @@
         {"name": "publication-candidate", "path": "{source_root}/publication/v2/publication-candidate-v2.json"}
       ]
     },
+    "human_gate_revision_boundaries": {
+      "ARCHITECTURE_REVIEW": [
+        "ISSUE_INITIALIZED",
+        "DISCOVERY_COLLECTED",
+        "CANDIDATES_NORMALIZED",
+        "EVIDENCE_REVIEWED",
+        "SELECTION_COMPLETE"
+      ],
+      "PUBLICATION_PREVIEW": [
+        "ARCHITECTURE_ESTABLISHED",
+        "DRAFT_COMPLETE",
+        "VALIDATED_DRAFT"
+      ]
+    },
     "stage_plan": {
       "ISSUE_INITIALIZED": {
         "action_kind": "LOCAL_SCRIPT",
@@ -349,6 +365,8 @@
     "checkpoint_attestation_dir": "orchestration/v2/attestations",
     "agent_checkpoint_dir": "orchestration/v2/checkpoints",
     "architecture_approval_path": "gates/architecture-approval.json",
-    "publication_preview_approval_path": "gates/publication-preview-approval.json"
+    "publication_preview_approval_path": "gates/publication-preview-approval.json",
+    "human_review_dir": "gates/reviews",
+    "human_review_index_path": "gates/review-index.json"
   }
 }
