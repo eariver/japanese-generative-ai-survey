@@ -30,9 +30,6 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install Core dependencies
-        run: python -m pip install -r config/survey-production-v2-requirements.txt
-
       - name: Resolve one immutable request-only commit
         shell: bash
         run: |
@@ -95,23 +92,23 @@ jobs:
           from pathlib import Path
 
           cfg = json.loads(Path("config/survey-production-v2.json").read_text(encoding="utf-8"))
-          paths = list(cfg.get("implementation_control_roots", []))
+          paths = [".github/workflows", "config", "schemas", "scripts"]
+          paths.extend(cfg.get("implementation_control_roots", []))
           for group in cfg.get("contract_files", {}).values():
               paths.extend(group)
           for path in sorted(set(paths)):
               print(path)
           PY
           )
-          if [[ "${#protected_paths[@]}" -eq 0 ]]; then
-            echo "No implementation/contract control paths configured." >&2
-            exit 1
-          fi
 
           if ! git diff --quiet "$reviewed_main_sha" "$request_parent" -- "${protected_paths[@]}"; then
             echo "Shared Core or contract authority drifted from reviewed_main_sha before operator execution." >&2
             git diff --name-only "$reviewed_main_sha" "$request_parent" -- "${protected_paths[@]}" >&2
             exit 1
           fi
+
+      - name: Install Core dependencies
+        run: python -m pip install -r config/survey-production-v2-requirements.txt
 
       - name: Execute canonical deterministic Core operation
         shell: bash
