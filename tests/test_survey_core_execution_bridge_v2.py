@@ -7,6 +7,7 @@ from pathlib import Path
 
 from scripts import survey_core_execution_bridge_v2 as bridge
 from scripts import survey_discovery_v2 as discovery
+from scripts import survey_period_v2 as period
 from scripts import survey_production_v2 as core
 from scripts import survey_schema_v2 as schema_gate
 from scripts import survey_x_intake_v2 as x_intake
@@ -85,6 +86,23 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
 
     def test_request_schema_accepts_configured_retrospective_initialization(self) -> None:
         schema_gate.validate_instance(self.retrospective_request(), self.schema, label="Operator request")
+
+    def test_retrospective_request_identity_matches_existing_period_builder(self) -> None:
+        request = self.retrospective_request()
+        cfg = core.load_json(self.root / core.DEFAULT_CONFIG)
+        recorded_at = core.parse_instant(request["recorded_at"])
+        spec = period.resolve_configured_period(
+            self.root,
+            request["operation"]["special_slug"],
+            recorded_at,
+        )
+        profile = period.period_profile(self.root, cfg, spec)
+
+        self.assertEqual(profile["research_profile"], "RETROSPECTIVE_PERIOD")
+        self.assertEqual(profile["publication_profile"], "LONGFORM_SPECIAL")
+        self.assertEqual(profile["issue_id"], request["issue_id"])
+        self.assertEqual(profile["paths"]["source_root"], request["source_root"])
+        self.assertEqual(profile["paths"]["work_branch"], request["work_branch"])
 
     def test_request_schema_requires_reviewed_main_for_every_operation(self) -> None:
         for payload in (self.weekly_request(), self.retrospective_request(), self.advance_request()):
