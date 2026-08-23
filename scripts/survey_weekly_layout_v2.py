@@ -3,8 +3,8 @@
 
 The semantic renderer intentionally owns wording and Evidence binding. This helper
 first re-establishes bibliography metadata from exact accepted authority, then may
-change only the page/column commands immediately before the approved Weekly
-closing summary. Both transformed artifact SHAs are rebound into the validated
+change only pagination/typographic commands around the approved Weekly closing
+summary and source notes. Transformed artifact SHAs are rebound into the validated
 source manifest and auditable deterministic transform results are written.
 """
 from __future__ import annotations
@@ -29,6 +29,15 @@ REFERENCE_MARKER = (
     "\\clearpage\n"
     "\\onecolumn\n"
     "\\printbibliography[title={References / Source Notes}]"
+)
+REFERENCE_REPLACEMENT = (
+    "\\clearpage\n"
+    "\\onecolumn\n"
+    "\\begingroup\n"
+    "\\footnotesize\n"
+    "\\setlength{\\bibitemsep}{0pt}\n"
+    "\\printbibliography[title={References / Source Notes}]\n"
+    "\\endgroup"
 )
 
 
@@ -81,20 +90,23 @@ def compact_closing_summary(
         raise ValueError("Weekly references boundary is not canonical")
 
     match = matches[0]
-    replacement = "\\newpage\n" + match.group("section")
-    transformed = text[: match.start()] + replacement + text[match.end() :]
+    summary_replacement = "\\newpage\n" + match.group("section")
+    transformed = text[: match.start()] + summary_replacement + text[match.end() :]
+    transformed = transformed.replace(REFERENCE_MARKER, REFERENCE_REPLACEMENT, 1)
     if transformed == text:
-        raise ValueError("Weekly closing summary layout transform made no change")
+        raise ValueError("Weekly layout transform made no change")
 
     summary_pos = transformed.index("\\label{sec:issue-summary}")
-    references_boundary_pos = transformed.index(REFERENCE_MARKER, summary_pos)
+    references_boundary_pos = transformed.index(REFERENCE_REPLACEMENT, summary_pos)
     if "\\onecolumn" in transformed[summary_pos:references_boundary_pos]:
         raise ValueError("Weekly closing summary must remain in two-column flow until references")
+    if transformed.count("\\footnotesize\n\\setlength{\\bibitemsep}{0pt}") != 1:
+        raise ValueError("Weekly references compact typography was not applied exactly once")
 
     main_tex_path.write_text(transformed, encoding="utf-8")
     new_sha = core.sha256_file(main_tex_path)
     if new_sha == old_sha:
-        raise ValueError("Weekly closing summary layout transform did not change source SHA")
+        raise ValueError("Weekly layout transform did not change source SHA")
 
     manifest["rendered_source"]["sha256"] = new_sha
     core.write_json(manifest_path, manifest)
@@ -114,10 +126,14 @@ def compact_closing_summary(
         "source_sha256_after": new_sha,
         "manifest_path": _rel(root, manifest_path),
         "manifest_sha256_after": core.sha256_file(manifest_path),
-        "transformation": "FINAL_BODY_COLUMN_TO_WEEKLY_SYNTHESIS_COLUMN",
+        "transformations": [
+            "FINAL_BODY_COLUMN_TO_WEEKLY_SYNTHESIS_COLUMN",
+            "COMPACT_SINGLE_COLUMN_REFERENCE_NOTES",
+        ],
         "finding": (
-            "The approved Weekly closing summary now begins in the next two-column body column; "
-            "the one-column transition remains reserved for References / Source Notes."
+            "The approved Weekly closing summary begins in the next two-column body column. "
+            "References / Source Notes retain their one-column section but use footnote-size, zero-item-gap "
+            "typography to avoid a low-information continuation page without changing citation identity or wording."
         ),
     }
     core.write_json(result_path, result)
