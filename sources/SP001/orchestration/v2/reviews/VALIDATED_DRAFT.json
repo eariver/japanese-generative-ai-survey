@@ -1,0 +1,17 @@
+{
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "executor": "scripts/survey_stage_validation_v2.py",
+      "evidence": "Validate the exact SP001 Publication Candidate against the accepted validated-source manifest, exact publication PDF, complete Quality Regression Bundle, and VALIDATED_DRAFT Production State before entering RELEASE_CANDIDATE / PUBLICATION_PREVIEW.",
+      "result_path": "sources/SP001/orchestration/v2/validation/VALIDATED_DRAFT.json"
+    },
+    {
+      "check_id": "SP001_PUBLICATION_CANDIDATE_EXACT_BYTE_BINDING",
+      "kind": "AGENT_EDITORIAL",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "The candidate must bind the same source manifest, PDF SHA-256 8a363a33db80f55a047a8d6cdfecedb196f380939a3d40e68e3c3d21aded2764, 11-page count, and Quality Regression Bundle already reviewed at DRAFT_COMPLETE. No semantic or rendered-byte change is permitted between validated draft and Publication Preview."
+    }
+  ]
+}
