@@ -68,9 +68,13 @@ When direct exact local Core CLI execution is unavailable to the ChatGPT runtime
 
 - check out one exact immutable request commit;
 - execute only a schema-enumerated allowlist of existing deterministic Core operations;
-- generate deterministic Profile/State/checkpoint/result authority already defined by canonical Core code;
+- initialize canonical Weekly, configured Retrospective Period, or Thematic Profile/State only through repository-owned builders/authority;
+- generate deterministic checkpoint/result authority already defined by canonical Core code;
+- enforce reviewed-main shared-Core equivalence before dependency installation/execution;
 - enforce Profile-bound edition-local write scope;
 - commit exact deterministic outputs and receipts back to the same work branch.
+
+Configured Retrospective initialization must reuse `config/special-pipeline.json` + `special_pipeline.bootstrap_plan` and one generic `RETROSPECTIVE_PERIOD` adapter. It must not encode separate monthly, half-year, or annual workflow semantics.
 
 The bridge must not accept request-supplied shell, Python, module, script, workflow or arbitrary executable identifiers. Its current authority is `docs/survey-production-core-v2-operator-execution-bridge.md`.
 
@@ -200,11 +204,13 @@ Retained/introduced workflows should fit one of these justified classes:
 
 Every retained workflow must state the concrete Actions-specific benefit and remain narrow enough that no editorial ownership is transferred.
 
-## 11. Evidence from W33 / SP001
+## 11. Evidence from W33 / SP001 and fixed-head audit
 
 The failed pre-redesign SP001/W33 runs showed that Actions-heavy authoring and mutation did not guarantee publication quality and created authority-rebinding/workflow-chaining problems.
 
 The first clean post-redesign W33/SP001 attempts then showed the opposite operational edge: once authoring/mutation workflows were correctly removed, the normal connector-only ChatGPT runtime lacked a way to execute canonical deterministic local Core mechanics over the exact branch checkout. That evidence motivates the narrow fallback bridge, not restoration of the old production topology.
+
+Fresh fixed-head maintenance audit then exposed that a bridge able to cold-start only Weekly/Thematic was insufficient for the mandated cross-profile real-production matrix. The repair added one configured-period Retrospective adapter without adding another workflow or cadence-specific editorial logic.
 
 ## 12. Relationship to publication quality
 
@@ -220,6 +226,14 @@ Actions must never issue a semantic-quality PASS merely because schemas or known
 
 The integrated redesign remains authoritative. The operator bridge is a shared-Core maintenance candidate and changes the audited Actions surface from six to seven workflows if accepted.
 
-Therefore the prior six-workflow fixed-head audit is historical evidence only. The bridge candidate must receive fresh exact-head CI and the full changed-scope six-point fixed-head audit. If that audit requires any tree change, the entire fixed-head audit restarts from point 1.
+Therefore the prior six-workflow fixed-head audit is historical evidence only. The bridge candidate must receive fresh exact-head CI and the complete six-point fixed-head audit. If that audit requires any tree change, the entire fixed-head audit restarts from point 1.
 
-After Human-reviewed integration, clean W33 and SP001 validation must restart from reviewed `main` and prove the bridge in real production before PFB-013/PFB-014 can close.
+After Human-reviewed unchanged integration, the clean post-integration matrix must include:
+
+- Weekly cold start;
+- standalone `THEMATIC + LONGFORM_SPECIAL` with SP001 as the required regression case;
+- representative configured `RETROSPECTIVE_PERIOD` production/replay;
+- Foundations-guided Thematic/Longform scenario;
+- structural monthly/half-year/annual and unplanned-Thematic compatibility.
+
+Only after that real-production evidence may PFB-013/PFB-014 be closed.
