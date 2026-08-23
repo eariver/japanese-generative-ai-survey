@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Apply deterministic post-render layout repair for Core v2 WEEKLY_MAGAZINE.
+"""Apply deterministic post-render repairs for Core v2 WEEKLY_MAGAZINE.
 
 The semantic renderer intentionally owns wording and Evidence binding. This helper
-may change only the page/column commands immediately before the approved Weekly
-closing summary. It re-binds the transformed main.tex SHA into the validated
-source manifest and writes an auditable deterministic transform result.
+first re-establishes bibliography metadata from exact accepted authority, then may
+change only the page/column commands immediately before the approved Weekly
+closing summary. Both transformed artifact SHAs are rebound into the validated
+source manifest and auditable deterministic transform results are written.
 """
 from __future__ import annotations
 
@@ -15,6 +16,7 @@ from pathlib import Path
 from typing import Any
 
 from scripts import survey_production_v2 as core
+from scripts import survey_weekly_bibliography_v2 as bibliography
 
 
 SUMMARY_PATTERN = re.compile(
@@ -134,7 +136,12 @@ def main() -> int:
     root = Path(args.repo_root).resolve()
     main_tex = _safe_file(root, args.main_tex, "validated source")
     manifest = _safe_file(root, args.source_manifest, "validated source manifest")
+    bibliography_result = bibliography.rebuild_bibliography(root, manifest)
     result = compact_closing_summary(root, main_tex, manifest)
+    result["bibliography_metadata"] = {
+        "result_path": bibliography_result["result_path"],
+        "result_sha256": bibliography_result["result_sha256"],
+    }
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
 
