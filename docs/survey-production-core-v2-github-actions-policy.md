@@ -1,17 +1,20 @@
 # Survey Production Core v2 — GitHub Actions Responsibility Policy
 
-Status: `ACCEPTED IMPROVEMENT DIRECTION / IMPLEMENTATION DEFERRED`  
+Status: `CONFIRMED BY W33 + SP001 / REDESIGN INVARIANT`  
 Established: 2026-08-23 JST  
+Confirmed: 2026-08-23 JST  
 Working branch: `refactor/survey-production-core-v2`  
 Related feedback: `PFB-006` in `docs/survey-production-core-v2-production-feedback-backlog.md`
 
 ## 1. Purpose
 
-This memo records the responsibility rule to use when redesigning Survey Production Core v2 after the W33/SP001 production-validation review.
+This memo defines the responsibility rule for Survey Production Core v2 redesign after the W33/SP001 production-validation review.
 
-The current repository has accumulated many GitHub Actions workflows that do more than CI: some generate Drafting/Synthesis artifacts, assemble publication content, perform semantic/publication mutations, revise layout/pagination/spacing, and commit generated results back to production branches.
+The current repository has accumulated many GitHub Actions workflows that do more than CI: some generate Drafting/Synthesis artifacts, assemble publication content, perform semantic/publication mutations, revise layout/pagination/spacing, mutate stage/candidate authority, and commit generated results back to production branches.
 
-The redesign should reduce GitHub Actions to work for which running on Actions is clearly advantageous or which is genuinely mechanical and requires no editorial/research reasoning.
+The W33/SP001 trials confirmed that this is not merely theoretical complexity. Production work became coupled to temporary PRs, bot commits, workflow chaining, generic Core repairs, publication rebuilds and authority rebinding.
+
+The redesign must reduce GitHub Actions to work for which running on Actions is clearly advantageous or which is genuinely mechanical and requires no editorial/research reasoning.
 
 The governing principle is:
 
@@ -189,29 +192,65 @@ Actions may detect a machine-defined defect such as an undefined citation or for
 
 ## 8. Workflow review classification
 
-During the consolidated post-W33/SP001 redesign, every production-related workflow should be reviewed and assigned one of:
+During the consolidated post-W33/SP001 redesign, every production-related workflow must be reviewed and assigned one of:
 
 - `KEEP_AS_CI` — Actions provides clear independent/reproducibility value and performs mechanical verification/build/release work only;
 - `SHRINK_TO_CI_ONLY` — keep the independent validator/build shell, remove production mutation/authoring;
 - `RETURN_TO_CHATGPT` — reasoning/editorial/publication generation or correction belongs to the ChatGPT production session;
 - `LEGACY_REMOVE_CANDIDATE` — obsolete, one-off, edition-specific, or superseded production workflows should be removed from the normal Core surface.
 
-For every workflow retained in Actions, the redesign record should state the specific benefit of Actions execution. If no meaningful benefit can be stated, direct execution by ChatGPT or a narrow repository helper is preferred.
+For every workflow retained in Actions, the redesign record must state the specific benefit of Actions execution. If no meaningful benefit can be stated, direct execution by ChatGPT or a narrow repository helper is preferred.
 
-## 9. Relationship to SP001 Issue #400
+High-priority review targets include:
 
-SP001 demonstrates why passing deterministic contracts is not sufficient evidence of publication quality. A candidate can compile successfully, preserve identifiers, satisfy schemas/hashes, and still be substantially unacceptable as a Longform Special because of shallow content, poor synthesis, layout regression, or internal production metadata leaking into reader-facing output.
+- Core-v2 interactive Drafting/Synthesis;
+- Selection/Architecture authoring/adoption surfaces;
+- Semantic Publication;
+- Semantic Quality;
+- production-state/candidate mutation through write-capable workflow chains;
+- accumulated `prepare-*`, `apply-*`, `revise-special-*` mutation workflows;
+- execution-only PRs whose main purpose is to cause Actions to run.
 
-The redesign must therefore avoid strengthening the wrong layer by adding more machine gates for fundamentally editorial failures.
+## 9. Evidence from W33 / SP001
 
-Where an issue is semantic/editorial, strengthen ChatGPT guidance/review and the Architecture-to-Draft-to-Publication information-preservation responsibility.
+### SP001
 
-Where an issue is a crisp invariant, add or retain deterministic verification.
+The rejected 11-page candidate passed multiple deterministic/semantic Core checks but failed Human review for depth, layout, synthesis and reader-facing metadata leakage.
 
-Do not use GitHub Actions as a substitute for editorial judgment.
+The 19-page salvage revision then required:
 
-## 10. Deferred implementation
+- generic semantic publication renderer repair on `main`;
+- shared longform style repair on `main`;
+- reintegration of those shared repairs into the edition branch;
+- rerouting around a write-capable workflow chain that stopped after a `github-actions[bot]` authored commit;
+- a separate authority-rebind operation because the new 19-page PDF initially coexisted with a candidate/quality bundle for the old 11-page bytes.
 
-This memo records direction only.
+This is direct evidence that the workflow topology itself became part of the production problem.
 
-Do not restructure the workflow set while the current W33/SP001 correction attempts are still being evaluated. After both production records are available — or SP001 is terminated as a failed v2 production validation under PFB-007 — use those records to classify actual workflow usage and perform the consolidated Core redesign.
+### W33
+
+The Weekly trial accumulated repeated execution-only rebuild/export PRs while still producing a 6-page Human-rejected candidate whose main failures were semantic/editorial, not compiler defects.
+
+The correct response is not to add another mutation workflow. It is to return publication authorship/review to ChatGPT and keep Actions as independent build/verification infrastructure.
+
+## 10. Relationship to publication quality
+
+Machine checks are necessary but not sufficient.
+
+The redesign must separate:
+
+- deterministic QA proved by scripts/Actions;
+- semantic/editorial QA performed by ChatGPT;
+- exact-PDF visual QA performed by ChatGPT.
+
+Actions must not issue a semantic-quality PASS merely because a set of schema fields or known-token checks passed.
+
+Known internal-metadata patterns can and should be linted in CI, but the SP001 19-page re-review demonstrates that semantic production language can survive even when known-token lint reports no finding.
+
+## 11. Implementation rule
+
+This policy is no longer waiting for additional W33/SP001 evidence. The production review is complete and the policy is a required redesign invariant.
+
+Implementation proceeds through `docs/survey-production-core-v2-redesign-plan-after-w33-sp001.md`.
+
+Do not resume W33/SP001 production using the current Actions-heavy mutation path and count that as validation. After workflow reduction and publication-boundary redesign, run clean profile acceptance trials with no in-run shared-Core repair.
