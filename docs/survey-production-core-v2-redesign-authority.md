@@ -179,6 +179,8 @@ Retain Actions only where:
 
 The operator bridge is admitted only because it supplies the exact checked-out execution substrate that the normal connector-only ChatGPT runtime lacks. It may execute only an enum allowlist of canonical deterministic Core operations from an immutable edition-local request. It must not accept arbitrary commands or take ownership of research, Selection, Architecture, drafting, semantic/visual review, Human approval, layout repair or Release.
 
+Retrospective initialization is admissible in that allowlist only as a deterministic binding operation: configured period identity/window/paths come from the pre-existing `config/special-pipeline.json` + `special_pipeline.bootstrap_plan` authority, while ChatGPT authors the edition-local research scope under the applicable period guide. The bridge/Core adapter must not create separate monthly, half-year, or annual editorial engines.
+
 Direct local CLI execution remains preferred when available.
 
 Do not replace the old workflow set with cadence/topic-specific authoring workflows.
@@ -246,7 +248,9 @@ A shared-Core implementation defect is a maintenance dependency, not a reason fo
 
 ### Retrospective Period
 
-Preserve existing period coverage-audit, chronology/lifecycle, period-normalization and period-synthesis authority, including annual temporal-skew/trajectory rules where applicable.
+Preserve existing configured-period authority plus period coverage-audit, chronology/lifecycle, period-normalization and period-synthesis authority, including annual temporal-skew/trajectory rules where applicable.
+
+Core initialization may deterministically bind a configured slug to its exact tier/window/identity/paths, but the research scope remains ChatGPT-authored under the required guides. Monthly, half-year and annual distinctions remain guide/edition semantics rather than separate shared-Core workflow families.
 
 ### Thematic
 
@@ -310,18 +314,19 @@ Final acceptance must include representative evidence for:
 - Foundations-guided series work;
 - structural monthly/half-year/annual and unplanned-Thematic compatibility.
 
-The operator bridge must remain Profile/path driven. It must not hardcode W33/SP001 topic structure, fixed edition source-root depth, or `weekly/**` / `special/**` branch naming. It may expose only initialization operations already owned by canonical Core builders; it must not invent Retrospective/series semantics merely to broaden its API. Once a canonical Profile/State exists, `ADVANCE_STAGE` is Profile-neutral and must bind the exact Profile-declared `source_root` and `work_branch`.
+The operator bridge must remain Profile/path driven. It must not hardcode W33/SP001 topic structure, fixed edition source-root depth, or `weekly/**` / `special/**` branch naming. Allowed cold-start operations correspond to canonical Profile construction paths: Weekly, configured Retrospective Period, and Thematic. The Retrospective adapter must derive exact objective period identity/window/paths from the existing configured-period authority and leave research dimensions/obligations to ChatGPT; it must not encode three cadence taxonomies. Foundations remains a Thematic/Longform series authority, not a fourth initialization engine. Once a canonical Profile/State exists, `ADVANCE_STAGE` is Profile-neutral and must bind the exact Profile-declared `source_root` and `work_branch`.
 
 Use a small representative matrix plus structural audits rather than an exhaustive synthetic future-edition matrix.
 
 ## 16. Implementation and acceptance status
 
-The original redesign is integrated. The connector-only clean revalidation exposed the operator-runtime execution gap, and the current maintenance candidate adds the narrow fallback described above.
+The original redesign is integrated. The connector-only clean revalidation exposed the operator-runtime execution gap, and fixed-head maintenance audit then exposed missing executable Retrospective cold-start coverage. The current maintenance candidate addresses both with one narrow bridge plus one configured-period Profile adapter.
 
 Current intended boundaries include:
 
 - ChatGPT-owned ordinary lifecycle stages with Release as the only lifecycle workflow-dispatched stage;
 - direct local deterministic execution when available, with an optional deterministic operator bridge when an exact local checkout is unavailable;
+- canonical cold-start Profile construction for Weekly, configured Retrospective Period, and Thematic work without cadence-specific authoring workflows;
 - explicit Reader Manuscript and reader-facing Publication Boundary;
 - deterministic Quality Bundle separated from semantic/editorial and exact-PDF visual review;
 - atomic Publication Candidate identity and revision invalidation;
@@ -329,7 +334,7 @@ Current intended boundaries include:
 - one-file Grok/X Drive handoff;
 - **seven-workflow Actions surface**: two CI/contract workflows, two reproducible build workflows, exact-byte Preview transport, Release, and one narrowly constrained deterministic operator bridge.
 
-`tests/test_survey_pilot_bootstrap_v2.py` requires exact equality with that seven-workflow set. A new eighth workflow is prima facie architectural regression unless deliberately reviewed against the Actions admission rule.
+`tests/test_survey_pilot_bootstrap_v2.py` requires exact equality with that seven-workflow set. Retrospective regression tests require one builder to resolve representative monthly, half-year and annual configured periods. A new eighth workflow is prima facie architectural regression unless deliberately reviewed against the Actions admission rule.
 
 This maintenance implementation is **not** final Core acceptance. Before Human full-candidate review, the repository must:
 
@@ -342,4 +347,4 @@ finish regression/CI repair
 -> present only the unchanged passing SHA for Human full-candidate review
 ```
 
-Cold-start production re-validation remains required after the bridge maintenance is reviewed/integrated; the prior W33/SP001 attempts remain non-PASS evidence and are not converted into PASS by this maintenance.
+Cold-start production re-validation remains required after the bridge maintenance is reviewed/integrated; the prior W33/SP001 attempts and invalidated maintenance candidate audits remain non-PASS evidence and are not converted into PASS by this maintenance.
