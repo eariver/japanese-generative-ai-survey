@@ -40,6 +40,7 @@ The bridge does **not** change the primary-operator model.
 ChatGPT remains responsible for:
 
 - Source Intake and research strategy;
+- period/topic research-scope materialization where a Profile requires editorial scope;
 - Evidence interpretation and materiality/completeness judgment;
 - Candidate Selection;
 - Architecture;
@@ -50,12 +51,16 @@ ChatGPT remains responsible for:
 
 The bridge may execute only deterministic Core mechanics already owned by repository code:
 
-1. canonical Weekly/Thematic Profile + Production State initialization through existing Core builders;
-2. deterministic stage-contract validation over already-authored artifacts;
-3. compact Stage Checkpoint materialization;
-4. lifecycle State advancement after exact validation.
+1. canonical Weekly Profile + Production State initialization;
+2. canonical Retrospective Period Profile + Production State initialization by binding ChatGPT-authored period scope to the existing configured-period authority in `config/special-pipeline.json` / `special_pipeline.bootstrap_plan`;
+3. canonical Thematic Profile + Production State initialization;
+4. deterministic stage-contract validation over already-authored artifacts;
+5. compact Stage Checkpoint materialization;
+6. lifecycle State advancement after exact validation.
 
-The bridge does not invent Retrospective or series initialization semantics merely to broaden its API. If canonical Core later gains another generic Profile initializer, bridge support may be reviewed separately. Once canonical Profile/State exists, `ADVANCE_STAGE` is Profile-neutral.
+Retrospective support does **not** create separate monthly, half-year, or annual engines. One `RETROSPECTIVE_PERIOD` adapter resolves the configured slug through existing Special authority and preserves its exact tier, coverage window, identity and paths. ChatGPT reads the required period guides and materializes the research question, inclusion/exclusion, scope dimensions and initial obligations. The adapter does not choose story units, chronology interpretation, Architecture, or synthesis.
+
+Foundations remains a series authority layered over Thematic/LONGFORM rather than a new bridge operation. Once canonical Profile/State exists, `ADVANCE_STAGE` is Profile-neutral.
 
 Architecture approval and Publication Preview approval remain explicit Human decisions and are not bridge operations. Release remains owned by the dedicated release workflow.
 
@@ -65,7 +70,7 @@ The fallback path is:
 
 ```text
 ChatGPT reviews one exact main Core baseline
--> ChatGPT authors/researches edition artifacts
+-> ChatGPT authors/researches edition artifacts and any required scope materialization
 -> ChatGPT commits those artifacts normally
 -> ChatGPT commits ONE immutable operator request as a request-only commit
 -> GitHub Actions checks out that exact request commit
@@ -115,6 +120,7 @@ The operator bridge satisfies both conditions:
 This is materially different from the retired Actions-heavy authoring topology. The bridge must not:
 
 - search the web or choose sources;
+- author Retrospective/Thematic research questions or scope dimensions;
 - write Evidence/Selection/Architecture prose or decisions;
 - generate reader-facing prose;
 - make semantic or visual PASS judgments;
@@ -133,6 +139,20 @@ Allowed deterministic effect:
 - require the generated Profile's `source_root` and `work_branch` to equal the request;
 - create canonical `production-profile.json` and `production-state.json` under that Profile-bound source root;
 - initialize the edition-local execution record tree.
+
+### `INITIALIZE_RETROSPECTIVE`
+
+Allowed deterministic effect:
+
+- read one repository-local `retrospective-scope-spec-v2` under the requested source root;
+- verify that its planning authority binds the current exact `config/special-pipeline.json` bytes and configured slug;
+- resolve that slug through the existing `special_pipeline.bootstrap_plan` authority;
+- preserve the configured `SP-<slug>` identity, exact bounded period, tier, survey/source paths and work branch;
+- use the actual initialization instant as `BOUNDED_PERIOD.as_of`, refusing initialization before period end;
+- combine those deterministic fields with ChatGPT-authored question/inclusion/exclusion/dimensions/initial obligations;
+- derive one `RETROSPECTIVE_PERIOD + LONGFORM_SPECIAL` Profile and initialize canonical Profile/State and execution records.
+
+The same operation covers configured `MONTHLY`, `HALF_YEAR`, and `ANNUAL` periods. Tier-specific research semantics remain in their period guides and ChatGPT-authored scope, not in separate executable paths.
 
 ### `INITIALIZE_THEMATIC`
 
@@ -167,7 +187,7 @@ Before installing Core dependencies or invoking the bridge, the workflow must:
 1. parse and validate the request-level `reviewed_main_sha` shape;
 2. fetch current `main` history and require `reviewed_main_sha` to be an ancestor of current `main`;
 3. require the request commit's parent to descend from `reviewed_main_sha`;
-4. for initialization, require the execution-record reviewed-main SHA to equal the request-level SHA;
+4. for any initialization operation, require the execution-record reviewed-main SHA to equal the request-level SHA;
 5. construct the protected comparison set from:
    - fixed minimum shared implementation roots `.github/workflows`, `config`, `schemas`, and `scripts`;
    - `config/survey-production-v2.json -> implementation_control_roots`; and
@@ -179,7 +199,7 @@ The fixed minimum roots prevent a drifted branch-side config from weakening the 
 
 This catches production-branch repair or silent drift in shared scripts, schemas, config, workflows and Core contract authority before any dependency installation or write-capable deterministic execution occurs.
 
-The comparison deliberately does **not** require the entire edition branch tree to equal `main`: legitimate edition-local research, Raw, Evidence, manuscript and other production artifacts must be allowed to differ. The protected set is the shared-Core/contract boundary, not an invented whole-repository lock.
+The comparison deliberately does **not** require the entire edition branch tree to equal `main`: legitimate edition-local research, Raw, Evidence, scope materialization, manuscript and other production artifacts must be allowed to differ. The protected set is the shared-Core/contract boundary, not an invented whole-repository lock.
 
 ## 7. Fail-closed controls
 
@@ -195,34 +215,36 @@ The workflow and bridge must enforce all of the following:
 8. request `source_root` must be repository-local under `sources/`;
 9. request path must equal `{source_root}/execution/requests/<request-id>.json`;
 10. current/generated Production Profile must bind the same `issue_id`, `source_root`, and `work_branch`;
-11. event commit SHA must be exact lowercase 40-hex;
-12. operations are an enum, not arbitrary script/command execution;
-13. repository paths are traversal-safe;
-14. initialization refuses existing canonical Profile/State;
-15. stage advancement refuses stale `expected_from_state`;
-16. agent review rows cannot impersonate deterministic reviews;
-17. bridge-run ids are immutable and cannot be overwritten;
-18. workflow derives the write boundary from the validated bridge result rather than constructing it from `issue_id`;
-19. workflow refuses generated writes outside the Profile-bound `source_root`;
-20. workflow refuses mutation of immutable request authority;
-21. bot output commits do not add request files and are also excluded by actor guard, so they do not chain recursively.
+11. Retrospective scope must bind the current configured-period authority bytes and configured identity;
+12. unconfigured Retrospective slugs and pre-period-end initialization are rejected rather than inferred;
+13. event commit SHA must be exact lowercase 40-hex;
+14. operations are an enum, not arbitrary script/command execution;
+15. repository paths are traversal-safe;
+16. initialization refuses existing canonical Profile/State;
+17. stage advancement refuses stale `expected_from_state`;
+18. agent review rows cannot impersonate deterministic reviews;
+19. bridge-run ids are immutable and cannot be overwritten;
+20. workflow derives the write boundary from the validated bridge result rather than constructing it from `issue_id`;
+21. workflow refuses generated writes outside the Profile-bound `source_root`;
+22. workflow refuses mutation of immutable request authority;
+23. bot output commits do not add request files and are also excluded by actor guard, so they do not chain recursively.
 
 The trigger intentionally does not hardcode `weekly/**` or `special/**` branch naming. Exact branch authority comes from the request/Profile match, allowing valid future work-branch conventions without weakening the write boundary.
 
 ## 8. Validation consequence
 
-The W33/SP001 clean revalidation attempts that exposed this gap remain non-PASS evidence. Adding the bridge changes shared Core implementation and the Actions surface.
+The W33/SP001 clean revalidation attempts that exposed this gap remain non-PASS evidence. Adding the bridge changes shared Core implementation and the Actions surface. Fixed-head audit also exposed that connector-only Retrospective cold start was impossible until the configured-period Profile adapter was added; candidates preceding that repair are likewise non-PASS maintenance evidence.
 
 Therefore:
 
 ```text
-bridge maintenance implementation
+bridge + Retrospective adapter maintenance implementation
 -> exact-head CI/regression
 -> fixed-head Core audit from zero for the changed candidate
 -> Human review/integration
 -> reset/rebase clean W33/SP001 validation branches from reviewed main
 -> reapply only legitimate edition-local preparation/Raw evidence
--> run canonical cold-start validation through the bridge
+-> run canonical Weekly + Thematic/SP001 + representative Retrospective + Foundations-guided validation
 ```
 
 No pre-bridge W33/SP001 lifecycle result may be relabeled as a successful canonical run.
@@ -231,4 +253,4 @@ No pre-bridge W33/SP001 lifecycle result may be relabeled as a successful canoni
 
 The bridge is a fallback execution substrate, not a requirement that all production use Actions.
 
-If the ChatGPT/operator runtime has an exact local checkout and can run the canonical Core CLI directly, the compact local path remains preferred. Both execution modes must produce the same canonical artifact semantics; the bridge adds transport and execution receipts, not a parallel state machine.
+If the ChatGPT/operator runtime has an exact local checkout and can run the canonical Core CLI directly, the compact local path remains preferred. `scripts/survey_retrospective_profile_v2.py` exposes the same configured-period planning/materialization path for direct-local execution. Both execution modes must produce the same canonical artifact semantics; the bridge adds transport and execution receipts, not a parallel state machine.
