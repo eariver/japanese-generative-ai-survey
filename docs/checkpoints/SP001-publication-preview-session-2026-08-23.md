@@ -189,22 +189,184 @@ Production State advanced:
 - `human_gates.publication_preview`: `pending`
 - exception gate: inactive
 
-This is the intended stopping point for autonomous work.
+This was the first arrival at the intended stopping point for autonomous work. The 11-page candidate was subsequently rejected by Human Publication Preview and is superseded by the Issue #400 revision recorded below.
 
-## Current Human Gate input
+## Issue #400 Publication Preview revision trial
 
-The Publication Preview reviewer should evaluate the immutable Publication Candidate and exact PDF:
+Human Publication Preview of the 11-page candidate opened Issue #400: `[Publication][SP001] Previewがmixed layoutから回帰し、LONGFORM_SPECIALとして著しく内容不足`.
+
+The requested correction had four independent dimensions:
+
+1. restore the Special mixed-layout contract: full-width headings/standfirsts, balanced two-column narrative, full-width synthesis/comparisons and Claim Boundary/Technical Notes, one-column References;
+2. restore LONGFORM_SPECIAL technical depth from already accepted Evidence rather than mechanically padding to the architecture page target;
+3. restore reader-facing synthesis / source-backed Technical Notes / chronology and comparison layers;
+4. remove internal Core v2 / Evidence / materiality / verification-task language from the reader-facing PDF.
+
+The revision explicitly preserved accepted Architecture, Draft Results, Profile Synthesis and Evidence authority. No new external Evidence was admitted.
+
+### Generic renderer hardening before the rerun
+
+Issue #400 exposed generic LONGFORM_SPECIAL renderer gaps rather than only SP001-local prose defects.
+
+- PR #431 `Core v2: finalize longform Publication Preview revisions` merged to `main` as `891091ed1446ef614f1c8b7775e64368dee40498`.
+  - reader-facing longform prose is assembled from reviewed Evidence-backed publication content rather than raw production Draft blocks;
+  - cross-family comparison returns to normal full-width layout;
+  - internal review/Evidence-pass wording is rejected from reader-facing output;
+  - pending, unapproved Publication Preview revisions may replace renderer-owned generated source without editing accepted Draft/Evidence bytes.
+- PR #432 integrated the reviewed renderer into `special/SP001-v2-work` as `284d1b19e6e00b262445ea010238a40f2b35a3c8`.
+
+The reconstructed semantic-publication request was separately checked before execution:
+
+- byte count: `49038`
+- SHA-256: `dcb2e6138e0ac3c9a69f4894b7886e07b655c2076fe145b068b487e007027896`
+- all seven publication packages present exactly once;
+- accepted Evidence only; HOLD / NEEDS_MORE records not used as factual authority;
+- Technical Notes covered assigned Evidence and canonical URLs;
+- cross-family comparison remained non-ranking and architecture-consistent;
+- no new external Evidence was introduced.
+
+### Workflow-chain failure and rerun route
+
+PR #437 `SP001: regenerate longform Publication Preview for Issue #400` was the first revision execution route. Its semantic-publication workflow reached `action_required` because an earlier commit in the chain was authored by `github-actions[bot]`; GitHub would not use that bot-generated commit to trigger the next write-capable workflow.
+
+This was treated as an execution-chain limitation, not a semantic or Evidence failure. PR #437 was therefore not used as the final execution route.
+
+A fresh human-authored execution branch was opened as PR #440 `SP001: rerun Issue #400 Publication Preview`. This successfully triggered the existing semantic-publication workflow without changing Architecture, Draft or Evidence authority.
+
+### Layout/style defects found during the rerun
+
+The rerun exposed further generic style assumptions:
+
+- generated `main.tex` used `wideflow`, but the shared style did not yet define the environment;
+- initial repair experiments used a review-branch-only `wideflow` wrapper;
+- deterministic preflight then exposed loose-line / overfull behavior in dense mixed Japanese/English longform material and full-width tables;
+- a temporary review-only `\hbadness=10000` was used only during diagnosis and was intentionally excluded from the final shared style; Overfull diagnostics were never intentionally suppressed in the final generic repair;
+- the exact 1em full-width table overflow was traced to paragraph indentation interacting with `tabularx{\linewidth}` inside the full-width wrapper.
+
+The durable generic fix was extracted from the SP001 branch rather than left as a review-only patch:
+
+- PR #441 `Core v2: harden LONGFORM_SPECIAL full-width style` merged to `main` as `198c69703dba7b4f2f7b1d914d88f72bf7d7d887`;
+- it defines `wideflow` as a normal full-page-measure wrapper while renderer-owned `multicols` handles narrative columns;
+- it zeroes paragraph indent inside `wideflow` and adds conservative table/URL line-breaking behavior;
+- it does not include the temporary `\hbadness` suppression;
+- PR #442 integrated exactly this one-file shared-style change into `special/SP001-v2-work` as `91fdf25711775ab02524c542462afb441546807e`.
+
+During PR #441/#442 validation, the repository's `Pipeline contract tests` workflow failed because `config/survey-production-v2-requirements.txt` installed `jsonschema` but an existing test module directly imported `pytest`. The Special post-draft contract and real weekly LuaLaTeX build passed. This dependency mismatch was observed but deliberately not repaired as part of SP001 publication work.
+
+## Revised 19-page Publication Preview
+
+PR #440 ultimately persisted and merged the Issue #400 publication artifacts to `special/SP001-v2-work` as merge commit `b3bc51fc1ba6439dde9ee0d2c44a7828e920c88f`.
+
+Final revised publication bytes:
+
+- PDF path: `sources/SP001/publication/v2/SP001-publication-preview.pdf`
+- page count: `19`
+- PDF byte count: `390572`
+- PDF SHA-256: `305ced9bba08604bff52a85b3fd223bf0a32e60b5ec0c14126bd39debc069a90`
+- validated-source manifest SHA-256: `06e2588672742a3bca317a0605f93de10ee793bc621cea98e585b96b5ebaa6c4`
+
+The LONGFORM_SPECIAL deterministic layout preflight reported:
+
+- package count: `7`
+- `multicol` flow count: `15`
+- `wideflow` count: `15`
+- Technical Note count: `22`
+- `clearpage` count: `2`
+- findings: none
+
+The exact revised PDF was inspected across all 19 pages. The review confirmed:
+
+- normal narrative body uses balanced two-column flow;
+- timeline, synthesis and wide comparison layers are full-width;
+- Claim Boundary and Source-backed Technical Note blocks are full-width and visually attached to their sections;
+- References remain one-column;
+- no clipping, overlap, broken glyphs, abnormal page holes or unusable URL wrapping;
+- all required family/model identifiers survive PDF extraction;
+- forbidden reader-facing production metadata patterns are absent;
+- the seven package families have materially greater version-specific lineage / architecture / post-training / serving / distribution / license depth than the rejected 11-page candidate.
+
+The deterministic PDF preflight for these bytes is PASS and records no log-gate or reader-surface leakage findings.
+
+## Authority drift found after successful PDF regeneration
+
+After the 19-page PDF/source artifacts had been merged, a final authority check found a critical post-revision inconsistency:
+
+- `production-state.json` correctly remained `RELEASE_CANDIDATE` with `PUBLICATION_PREVIEW` pending;
+- the repository PDF and deterministic preflight described the new 19-page SHA `305ced9b...`;
+- however `quality-regression-bundle-v2.json` and `publication-candidate-v2.json` still bound the superseded 11-page SHA `8a363a33...`.
+
+Therefore the repository had a valid revised PDF but **did not yet have a valid Human Gate input for that revised PDF**. The semantic-publication revision workflow regenerated source/PDF/preflight bytes but did not automatically rebuild the immutable Quality Regression Bundle and Publication Candidate authority.
+
+This was corrected without changing Production State or Human Gate approval:
+
+- PR #444 `SP001: bind revised Publication Candidate to 19-page preview` changed only:
+  - `sources/SP001/publication/v2/quality-regression-bundle-v2.json`
+  - `sources/SP001/publication/v2/publication-candidate-v2.json`
+- PR #444 merged to `special/SP001-v2-work` as `6d019ec552ebb1977092fb7093d8982a09c76767`.
+
+Final candidate authority:
+
+- status: `READY_FOR_PUBLICATION_PREVIEW`
+- source SHA-256: `06e2588672742a3bca317a0605f93de10ee793bc621cea98e585b96b5ebaa6c4`
+- PDF SHA-256: `305ced9bba08604bff52a85b3fd223bf0a32e60b5ec0c14126bd39debc069a90`
+- PDF byte count: `390572`
+- page count: `19`
+- Quality Bundle file SHA-256: `24889dbe7d35b89701c0b4b0b58454115b881d15606e38e3da2155fdc9595c12`
+- Quality Bundle content digest (`bundle_sha256`): `a772a4f92f2d86e460f45d9b29fdeabf685dde740d032ef9d3e32eee17ebce0b`
+- Candidate content digest (`candidate_sha256`): `12cc2e574916919c78dcdf17bcac0881bc002480f5e603d57703853bdbbfe3cf`
+
+All twelve applicable Core + THEMATIC + LONGFORM_SPECIAL quality checks were re-bound or re-reviewed for the exact 19-page bytes.
+
+One accidental draft PR (#443) was created while preparing the short-lived authority-rebind branch and was immediately closed without making or merging changes.
+
+## Final Human Gate state at trial termination
+
+At the end of the SP001 trial:
+
+- branch: `special/SP001-v2-work`
+- lifecycle state: `RELEASE_CANDIDATE`
+- `next_action`: `PUBLICATION_PREVIEW`
+- `terminal_reason`: `HUMAN_GATE_REACHED`
+- Architecture Review: approved
+- Publication Preview: pending
+- `human_gate_provenance.publication_preview`: `null`
+- exception gate: inactive
+- Publication Preview approval record: absent
+- Freeze: not performed
+- Release: not performed
+
+The canonical Human Preview input at termination is therefore:
 
 - Candidate: `sources/SP001/publication/v2/publication-candidate-v2.json`
 - PDF: `sources/SP001/publication/v2/SP001-publication-preview.pdf`
-- exact PDF SHA-256: `8a363a33db80f55a047a8d6cdfecedb196f380939a3d40e68e3c3d21aded2764`
-- page count: `11`
+- exact PDF SHA-256: `305ced9bba08604bff52a85b3fd223bf0a32e60b5ec0c14126bd39debc069a90`
+- page count: `19`
 
-The reviewer may approve this exact candidate/PDF or request publication changes. Any change that alters the PDF bytes requires a new validated candidate before approval.
+## Observations retained for later flow review
+
+These are recorded as SP001 trial facts only. No flow/pipeline redesign is performed by this checkpoint update.
+
+- write-capable workflow chaining through `github-actions[bot]` commits can stop with `action_required`, even when the semantic payload is valid;
+- Publication Preview revision currently has a split authority lifecycle: source/PDF/preflight regeneration can succeed without refreshing the Quality Regression Bundle and Publication Candidate, so exact-byte Human Gate authority must be checked explicitly after revision;
+- LONGFORM_SPECIAL renderer assumptions and shared style capabilities must evolve together (`multicols`, `wideflow`, table measure, URL/token breaking); otherwise semantic generation can be correct while publication compilation/preflight fails;
+- review-only diagnostic suppression must not leak into durable shared style; the temporary `\hbadness` setting was successfully excluded before integration;
+- the existing Pipeline contract test environment has a `pytest` dependency mismatch independent of SP001 content and should be handled in the separate flow-maintenance effort.
+
+## Trial termination decision
+
+On 2026-08-23, the owner decided to stop SP001 compilation at this point and return to the separate survey-production flow review.
+
+Accordingly, this session updates only this SP001-specific checkpoint. It intentionally does **not** update:
+
+- the survey-production flow/design documents;
+- `docs/checkpoints/survey-production-core-v2-worklog.md`;
+- any other flow-review work record.
+
+SP001 remains an unapproved 19-page `RELEASE_CANDIDATE` retained as a concrete trial artifact and regression case for that later review.
 
 ## Explicitly not performed
 
-Because `PUBLICATION_PREVIEW` is a normal Human Gate, this session did **not**:
+Because `PUBLICATION_PREVIEW` is a normal Human Gate and the trial is terminated here, this session did **not**:
 
 - fabricate or infer Publication Preview approval
 - create `publication-preview-approval-v2.json`
@@ -214,4 +376,4 @@ Because `PUBLICATION_PREVIEW` is a normal Human Gate, this session did **not**:
 - merge/release SP001 to `main`
 - create or reconcile a GitHub Release
 
-Those steps are downstream of explicit Publication Preview approval.
+Those steps remain downstream of an explicit future Publication Preview approval if SP001 compilation is ever resumed.
