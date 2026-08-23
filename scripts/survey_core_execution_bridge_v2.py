@@ -28,6 +28,7 @@ from typing import Any
 from scripts import survey_agent_control_v2 as agent
 from scripts import survey_execution_record_v2 as execution_record
 from scripts import survey_production_v2 as core
+from scripts import survey_retrospective_profile_v2 as retrospective
 from scripts import survey_schema_v2 as schema_gate
 from scripts import survey_stage_validation_v2 as stage_validation
 
@@ -134,6 +135,19 @@ def _validate_profile_identity(profile: dict[str, Any], request: dict[str, Any])
         raise OperatorBridgeError("generated/current Production Profile work_branch differs from request")
 
 
+def _load_scoped_spec(
+    repo_root: Path,
+    source_root: Path,
+    value: str,
+    label: str,
+) -> Path:
+    spec_path = core.repo_local_path(repo_root, value, label)
+    _ensure_under(repo_root, spec_path, source_root, label)
+    if spec_path.is_symlink() or not spec_path.is_file():
+        raise OperatorBridgeError(f"{label} missing or unsafe")
+    return spec_path
+
+
 def _initialize(
     repo_root: Path,
     cfg: dict[str, Any],
@@ -150,11 +164,26 @@ def _initialize(
     kind = operation["kind"]
     if kind == "INITIALIZE_WEEKLY":
         profile = core.weekly_profile(repo_root, cfg, recorded_at, request["issue_id"])
+    elif kind == "INITIALIZE_RETROSPECTIVE":
+        spec_path = _load_scoped_spec(
+            repo_root,
+            source_root,
+            operation["spec_path"],
+            "retrospective scope spec",
+        )
+        profile = retrospective.build_profile(
+            repo_root,
+            cfg,
+            retrospective.load_scope(repo_root, spec_path),
+            recorded_at,
+        )
     elif kind == "INITIALIZE_THEMATIC":
-        spec_path = core.repo_local_path(repo_root, operation["spec_path"], "thematic scope spec")
-        _ensure_under(repo_root, spec_path, source_root, "thematic scope spec")
-        if spec_path.is_symlink() or not spec_path.is_file():
-            raise OperatorBridgeError("thematic scope spec missing or unsafe")
+        spec_path = _load_scoped_spec(
+            repo_root,
+            source_root,
+            operation["spec_path"],
+            "thematic scope spec",
+        )
         profile = core.thematic_profile(repo_root, cfg, core.load_json(spec_path))
     else:
         raise OperatorBridgeError(f"unsupported initialization operation: {kind}")
@@ -310,7 +339,7 @@ def execute_request(
     request_authority = _authority(repo_root, request_path)
     operation = request["operation"]
     generated: list[str] = []
-    if operation["kind"] in {"INITIALIZE_WEEKLY", "INITIALIZE_THEMATIC"}:
+    if operation["kind"] in {"INITIALIZE_WEEKLY", "INITIALIZE_RETROSPECTIVE", "INITIALIZE_THEMATIC"}:
         profile_path, state_path, record_paths = _initialize(repo_root, cfg, request, event_sha)
         generated.extend([_rel(repo_root, profile_path), _rel(repo_root, state_path), *record_paths])
         state = core.load_json(state_path)
