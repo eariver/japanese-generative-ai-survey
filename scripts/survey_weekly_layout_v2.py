@@ -85,8 +85,8 @@ def compact_closing_summary(
         raise ValueError("Weekly closing summary layout transform made no change")
 
     summary_pos = transformed.index("\\label{sec:issue-summary}")
-    references_pos = transformed.index("\\printbibliography[title={References / Source Notes}]", summary_pos)
-    if "\\onecolumn" in transformed[summary_pos:references_pos]:
+    references_boundary_pos = transformed.index(REFERENCE_MARKER, summary_pos)
+    if "\\onecolumn" in transformed[summary_pos:references_boundary_pos]:
         raise ValueError("Weekly closing summary must remain in two-column flow until references")
 
     main_tex_path.write_text(transformed, encoding="utf-8")
