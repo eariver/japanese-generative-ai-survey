@@ -25,7 +25,7 @@ jobs:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
-      - name: Reassemble and validate exact semantic publication request
+      - name: Reassemble available semantic publication request bytes
         shell: bash
         run: |
           set -euo pipefail
@@ -35,6 +35,21 @@ jobs:
           mapfile -t parts < <(find "$parts_dir" -maxdepth 1 -type f -name 'part-*.b64' | sort)
           test "${#parts[@]}" -eq 7
           cat "${parts[@]}" | tr -d '\r\n' | base64 --decode > "$out"
+          sha256sum "$out"
+          wc -c "$out"
+
+      - name: Upload reconstructed bytes for interrupted-transport diagnosis
+        uses: actions/upload-artifact@v4
+        with:
+          name: sp001-issue400-partial-semantic-publication-request
+          path: sources/SP001/orchestration/v2/interactive-semantic-publication.json
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Validate complete semantic publication request
+        shell: bash
+        run: |
+          set -euo pipefail
           python - <<'PY'
           import hashlib, json, pathlib
           path = pathlib.Path('sources/SP001/orchestration/v2/interactive-semantic-publication.json')
