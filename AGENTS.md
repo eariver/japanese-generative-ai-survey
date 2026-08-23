@@ -27,6 +27,8 @@ The only normal Human Gates are:
 1. `ARCHITECTURE_REVIEW`;
 2. exact-byte `PUBLICATION_PREVIEW`.
 
+Before presenting either Human Gate, commit the exact current Production State and every Gate input that the Human will review, and retain that exact repository commit SHA as the review surface. `ARCHITECTURE_REVIEW` therefore reviews committed Architecture gate inputs; `PUBLICATION_PREVIEW` reviews the committed Publication Candidate and its exact Candidate-bound PDF. Do not ask the Human to approve an uncommitted working-tree state. Canonical Human Gate Core will require `reviewed_repository_commit_sha` to exist and contain those exact bytes before recording either decision; connector-safe bridge execution additionally binds that SHA to the request-only commit parent.
+
 At either normal Gate, the Human may explicitly choose `APPROVED` or routine `REQUEST_CHANGES`. For `REQUEST_CHANGES`, the Human supplies the requested changes and an allowed regeneration boundary. Deterministic Core records the review revision and invalidates only affected downstream authority; ChatGPT then applies the requested edition-local repair and resumes automatically toward the same Gate as rN+1. Routine requested changes are **not** an Exception Gate.
 
 Raise an Exception Gate only when safe continuation genuinely requires Owner judgment. Do not turn routine research refinement, edition-local QA repair, network/tool retry, a normal Human revision, or a missing-but-valid Grok result into an Exception Gate.
@@ -79,7 +81,7 @@ sources/<issue>/execution/
 
 Machine Human-review authority is stored under the Profile-bound source root at `gates/reviews/*-rN.json` plus `gates/review-index.json`. Human-readable `execution/reviews/*-rN.md` summarizes/pointers that exact authority; it is not a second State machine.
 
-Create/update one concise session record for material actions and decisions. Do not log every tool call or chain-of-thought. Update `index.md` at Human Gate changes, candidate changes, shared-Core blocking changes, termination, and completion.
+Create/update one concise session record for material actions and decisions. Do not log every tool call or chain-of-thought. Update `index.md` at Human Gate changes, candidate changes, shared-Core blocking changes, termination, and completion. Human Gate records must preserve the exact committed review-surface SHA separately from any later bridge request/event commit.
 
 Machine lifecycle/checkpoint/candidate/gate artifacts remain authoritative for machine state; the execution tree is human-readable operational provenance.
 
@@ -115,7 +117,7 @@ Before a Publication Candidate may exist, one exact source/PDF revision must pas
 2. ChatGPT Semantic/Editorial Review for publication boundary, factual/editorial fidelity and Profile-specific semantics;
 3. ChatGPT Visual Review of the exact rendered PDF.
 
-The Publication Candidate atomically binds the Reader Manuscript, exact source, exact PDF, all three QA authorities and page count. `PUBLICATION_PREVIEW` reviews that exact candidate. A rebuilt or merely similar PDF is not the approved artifact.
+The Publication Candidate atomically binds the Reader Manuscript, exact source, exact PDF, all three QA authorities and page count. `PUBLICATION_PREVIEW` reviews that exact candidate. A rebuilt or merely similar PDF is not the approved artifact. Commit the Candidate/PDF review surface before presenting the Gate so the Human decision can bind a reconstructable repository commit.
 
 If Publication Preview returns `REQUEST_CHANGES`, invalidate affected validation/candidate authority according to the Human-supplied allowed regeneration boundary, perform the requested repair, rerun affected QA and return with a new candidate revision. After Human approval, Freeze/Release re-use the approved exact bytes; do not add a second routine post-approval visual-quality gate.
 
