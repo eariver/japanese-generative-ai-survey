@@ -27,17 +27,7 @@ Before retaining or adding any production-related Actions task, ask both:
 1. **Does Actions provide a concrete execution/reproducibility/security advantage that the primary operator path lacks?**
 2. **Is the task mechanical enough that no research/editorial/visual/Human judgment is transferred into CI?**
 
-Useful Actions-specific advantages include:
-
-- reproducible controlled build environments;
-- independent CI verification of committed artifacts;
-- branch-protection integration;
-- isolated release credentials / permissions;
-- immutable or independently generated build artifacts;
-- repeatable cross-regression execution;
-- deterministic verification on relevant commits/PRs;
-- release/freeze independence from the authoring session;
-- an exact checked-out deterministic execution environment unavailable to a connector-only ChatGPT runtime.
+Useful Actions-specific advantages include reproducible build environments, independent CI, branch-protection integration, credential isolation, immutable artifacts, deterministic verification and an exact checked-out Core execution environment unavailable to a connector-only ChatGPT runtime.
 
 `It is already a script`, `it can be automated`, or `we used a workflow before` are not sufficient reasons.
 
@@ -45,14 +35,7 @@ Useful Actions-specific advantages include:
 
 ### CI and contract validation
 
-Appropriate examples:
-
-- unit/regression tests;
-- schema/path/invariant checks;
-- raw/provenance and exact-byte integrity;
-- identifier/reference integrity;
-- deterministic stage-contract verification;
-- reproducible compiler/preflight checks.
+Appropriate examples include unit/regression tests, schema/path/invariant checks, provenance/exact-byte integrity, identifier/reference integrity, deterministic stage-contract verification and reproducible compiler/preflight checks.
 
 ### Reproducible builds
 
@@ -74,47 +57,21 @@ When direct exact local Core CLI execution is unavailable to the ChatGPT runtime
 - enforce Profile-bound edition-local write scope;
 - commit exact deterministic outputs and receipts back to the same work branch.
 
-Configured Retrospective initialization must reuse `config/special-pipeline.json` + `special_pipeline.bootstrap_plan` and one generic `RETROSPECTIVE_PERIOD` adapter. It must not encode separate monthly, half-year, or annual workflow semantics.
+Configured Retrospective initialization reuses the **existing `survey_period_v2` Core helper**. The bridge passes the configured `special_slug` to `survey_period_v2.resolve_configured_period()` and then uses `survey_period_v2.period_profile()`. Monthly, half-year and annual semantics therefore remain the existing generic Retrospective Period path; the maintenance candidate adds no second period builder, scope schema or cadence-specific workflow logic.
 
 The bridge must not accept request-supplied shell, Python, module, script, workflow or arbitrary executable identifiers. Its current authority is `docs/survey-production-core-v2-operator-execution-bridge.md`.
 
 ## 4. Work that remains with ChatGPT
 
-Tasks requiring interpretation, synthesis, prioritization, semantic judgment, visual taste or Human decision remain owned by ChatGPT:
-
-- Source Intake/search strategy;
-- source-quality/materiality judgment;
-- Screening/Evidence interpretation;
-- Candidate Selection;
-- Architecture;
-- Drafting/Synthesis and `総括`;
-- reader-facing manuscript/source authorship;
-- Claim Boundary wording;
-- Grok/X community disposition;
-- retrospective trajectory/period interpretation;
-- thematic lineage/historical attribution;
-- semantic/editorial QA;
-- exact-PDF visual QA;
-- layout/content repair;
-- preparation and recording of actual Human Gate decisions.
+Tasks requiring interpretation, synthesis, prioritization, semantic judgment, visual taste or Human decision remain owned by ChatGPT, including Source Intake/search strategy, source-quality/materiality judgment, Screening/Evidence interpretation, Selection, Architecture, Drafting/Synthesis, reader-facing authorship, Grok/X disposition, retrospective trajectory/period interpretation, thematic lineage/historical attribution, semantic/editorial QA, exact-PDF visual QA and actual Human Gate handling.
 
 A deterministic helper or operator bridge may validate or advance already-authored artifacts; it must not silently become the editor.
 
 ## 5. Mechanical execution vs encoded editorial judgment
 
-A process can be deterministic while still encoding editorial policy that should not be delegated.
+A process can be deterministic while still encoding editorial policy that should not be delegated. Turning authored source into TeX or validating a schema can be mechanically appropriate. A generic script deciding how much prose survives, what information becomes reader-facing, where every chapter breaks, or which material is selected is editorial even if deterministic.
 
-Turning authored source into TeX or validating a schema can be mechanically appropriate. A generic script deciding how much prose survives, what information becomes reader-facing, where every chapter breaks, or which material is selected is editorial even if deterministic.
-
-Therefore distinguish:
-
-> **mechanically executable**
-
-from
-
-> **mechanically appropriate to delegate**.
-
-The operator bridge is admitted because its allowlist is limited to Core mechanics whose semantics already exist independently of the workflow.
+Therefore distinguish **mechanically executable** from **mechanically appropriate to delegate**. The operator bridge is admitted because its allowlist is limited to Core mechanics whose semantics already exist independently of the workflow.
 
 ## 6. Generality rule
 
@@ -131,9 +88,9 @@ Profile/config/edition authority
 -> shared CI/build/preview/release verification
 ```
 
-The operator bridge must be Profile/path driven and must not encode W33/SP001 topic names, fixed package taxonomies, fixed source-root depth, fixed `weekly/**` / `special/**` branch naming, Foundations volume structure, or annual trajectory choices.
+The operator bridge must be Profile/path driven and must not encode W33/SP001 topic names, fixed package taxonomies, fixed source-root depth, fixed branch-family names, Foundations volume structure, or annual trajectory choices.
 
-Profile-specific Actions checks are acceptable only for crisp invariants and should prefer parameterized/shared verification over separate mutation workflows.
+For Retrospective work, existing `survey_period_v2` remains the generic Core builder. The bridge only makes that existing deterministic path executable from the connector-only runtime.
 
 ## 7. Target responsibility model
 
@@ -148,7 +105,7 @@ ChatGPT
 Canonical repository scripts
   narrow deterministic transformation/checking
   Profile/State/checkpoint mechanics
-  schemas / hashes / provenance / references / preflight
+  existing Weekly / Period / Thematic profile builders
           |
           +----------------------------+
           |                            |
@@ -162,8 +119,6 @@ GitHub Actions independent surfaces
   CI / reproducible build / Preview transport / Release integrity
 ```
 
-Actions should answer crisp questions such as whether committed bytes reproduce and satisfy machine-verifiable invariants. They should not answer what the next article, paragraph, synthesis, Architecture choice, layout revision or Human decision should be.
-
 ## 8. PDF / typesetting boundary
 
 Preferred publication loop:
@@ -176,31 +131,24 @@ ChatGPT authors/edits publication source
 -> deterministic build/preflight PASS or FAIL
 ```
 
-Avoid the retired anti-pattern where Actions builds, chooses a layout repair, mutates publication source, mutates quality state, and bot commits become the authoring loop.
+Avoid the retired anti-pattern where Actions chooses layout repairs or becomes the publication authoring loop.
 
 ## 9. Exact-byte/candidate/release guarantees
 
-Reducing Actions-authored production logic does not weaken:
+Reducing Actions-authored production logic does not weaken exact source/PDF/Candidate binding, invalidation on byte changes, reproducible build, Freeze/Release exact-byte identity, release credential isolation or idempotent Release reconciliation.
 
-- exact source/PDF/Candidate binding;
-- invalidation when source/PDF bytes change;
-- reproducible build;
-- Freeze/Release exact-byte identity;
-- release credential isolation;
-- idempotent Release reconciliation.
-
-The bridge likewise must bind exact request/event/Profile/State authority and may not bypass these controls.
+The bridge likewise binds exact request/event/Profile/State authority and may not bypass these controls.
 
 ## 10. Workflow review classification
 
 Retained/introduced workflows should fit one of these justified classes:
 
-- `KEEP_AS_CI` — independent mechanical verification;
-- `KEEP_AS_REPRODUCIBLE_BUILD` — controlled read-only build;
-- `KEEP_AS_EXACT_BYTE_TRANSPORT_OR_RELEASE` — Preview/release integrity;
-- `KEEP_AS_DETERMINISTIC_EXECUTION_SUBSTRATE` — exact checked-out Core mechanics unavailable to the primary runtime;
-- `RETURN_TO_CHATGPT` — research/editorial/publication generation/correction;
-- `LEGACY_REMOVE_CANDIDATE` — obsolete, one-off, edition-specific or superseded topology.
+- `KEEP_AS_CI`
+- `KEEP_AS_REPRODUCIBLE_BUILD`
+- `KEEP_AS_EXACT_BYTE_TRANSPORT_OR_RELEASE`
+- `KEEP_AS_DETERMINISTIC_EXECUTION_SUBSTRATE`
+- `RETURN_TO_CHATGPT`
+- `LEGACY_REMOVE_CANDIDATE`
 
 Every retained workflow must state the concrete Actions-specific benefit and remain narrow enough that no editorial ownership is transferred.
 
@@ -210,15 +158,11 @@ The failed pre-redesign SP001/W33 runs showed that Actions-heavy authoring and m
 
 The first clean post-redesign W33/SP001 attempts then showed the opposite operational edge: once authoring/mutation workflows were correctly removed, the normal connector-only ChatGPT runtime lacked a way to execute canonical deterministic local Core mechanics over the exact branch checkout. That evidence motivates the narrow fallback bridge, not restoration of the old production topology.
 
-Fresh fixed-head maintenance audit then exposed that a bridge able to cold-start only Weekly/Thematic was insufficient for the mandated cross-profile real-production matrix. The repair added one configured-period Retrospective adapter without adding another workflow or cadence-specific editorial logic.
+A fresh maintenance audit then showed that a bridge exposing only Weekly/Thematic could not execute the mandated connector-runtime Retrospective validation. Deeper pre-freeze inspection established that Core already contained the canonical generic Retrospective builder in `scripts/survey_period_v2.py`; the maintenance defect was **bridge exposure**, not missing Retrospective semantics. Temporary duplicate adapter work was removed before candidate freeze.
 
 ## 12. Relationship to publication quality
 
-Machine checks are necessary but not sufficient. Keep separate:
-
-- deterministic QA proved by scripts/Actions;
-- semantic/editorial QA performed by ChatGPT;
-- exact-PDF visual QA performed by ChatGPT.
+Machine checks are necessary but not sufficient. Keep separate deterministic QA proved by scripts/Actions, semantic/editorial QA performed by ChatGPT, and exact-PDF visual QA performed by ChatGPT.
 
 Actions must never issue a semantic-quality PASS merely because schemas or known-token checks pass. Likewise the operator bridge may transport ChatGPT-authored agent review evidence but cannot create or reinterpret the underlying semantic/visual judgment.
 
@@ -232,7 +176,7 @@ After Human-reviewed unchanged integration, the clean post-integration matrix mu
 
 - Weekly cold start;
 - standalone `THEMATIC + LONGFORM_SPECIAL` with SP001 as the required regression case;
-- representative configured `RETROSPECTIVE_PERIOD` production/replay;
+- representative configured `RETROSPECTIVE_PERIOD` production/replay through existing `survey_period_v2` semantics;
 - Foundations-guided Thematic/Longform scenario;
 - structural monthly/half-year/annual and unplanned-Thematic compatibility.
 
