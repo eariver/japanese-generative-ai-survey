@@ -1,13 +1,13 @@
 # Survey Production Core v2 — Audited Redesign Authority Overlay
 
-Status: `INTEGRATED REDESIGN + OPERATOR BRIDGE/HUMAN-GATE MAINTENANCE CANDIDATE / SEVEN-POINT REAUDIT PENDING`  
+Status: `INTEGRATED REDESIGN + OPERATOR BRIDGE/HUMAN-GATE MAINTENANCE CANDIDATE / REVIEW-COMMIT PROVENANCE SYNCHRONIZED / SEVEN-POINT REAUDIT PENDING`  
 Established: 2026-08-23 JST  
 Human-Gate synchronization: 2026-08-24 JST  
 Working branch: `maintenance/core-v2-operator-execution-bridge`
 
 ## 1. Purpose
 
-This document is the authority overlay for the redesign that followed the failed W33/SP001 real-production validation and for the narrow operator-runtime/Human-Gate maintenance exposed by later clean revalidation and pre-approval audit.
+This document is the authority overlay for the redesign that followed the failed W33/SP001 real-production validation and for the narrow operator-runtime/Human-Gate maintenance exposed by later clean revalidation and pre-approval/fixed-head audit.
 
 It does not erase earlier Core v2 design history. `docs/survey-production-core-v2-authority.md` and earlier audit/remediation documents remain historical evidence. Where earlier authority conflicts with post-production evidence or this audited redesign direction, this overlay wins.
 
@@ -56,6 +56,8 @@ Profile + edition/series authority + Production State
 
 Deterministic helpers may execute through a direct exact local checkout/CLI or, when unavailable to the ChatGPT runtime, through the reviewed operator execution bridge. The bridge is execution transport for the same canonical Core mechanics, not a parallel state machine, editorial agent, or Human decision-maker.
 
+Human decisions must bind a committed review surface rather than merely the current working tree. Canonical Human Gate Core proves that the named reviewed repository commit exists and contains the exact reviewed Production State/Gate-input bytes before recording the decision. Connector-safe transport adds a request-parent proof but does not replace this Core invariant.
+
 ## 4. Core / Profile / edition layering
 
 ### Shared Core
@@ -64,6 +66,7 @@ Owns cross-profile invariants only:
 
 - lifecycle and the two normal Human Gates;
 - explicit Human Gate decision recording and revision/selective-invalidation mechanics;
+- exact reviewed-commit provenance for Human Gate decisions;
 - provenance and Evidence boundaries;
 - internal-vs-reader-facing Publication Boundary;
 - deterministic / semantic / visual QA separation;
@@ -112,7 +115,7 @@ Architecture fidelity means approved `must-cover` obligations and materially sel
 
 ### Deterministic
 
-Scripts/CI may prove schemas, paths/hashes, source/PDF/candidate identity, identifiers, citation/reference integrity, structural completeness of author-declared Architecture coverage, reproducible build/preflight, known exact-token leakage, Human Gate revision/state consistency, and Freeze/Release identity.
+Scripts/CI may prove schemas, paths/hashes, source/PDF/candidate identity, identifiers, citation/reference integrity, structural completeness of author-declared Architecture coverage, reproducible build/preflight, known exact-token leakage, Human Gate revision/state/review-commit consistency, and Freeze/Release identity.
 
 ### ChatGPT semantic/editorial
 
@@ -133,6 +136,8 @@ GitHub Actions is a deterministic executor/verifier, not an editorial, publicati
 The operator bridge is admitted only because it supplies the exact checked-out execution substrate that the connector-only ChatGPT runtime lacks. It may execute only the schema-enumerated canonical deterministic operations from an immutable edition-local request. It must not accept arbitrary commands or take ownership of research, Selection, Architecture, drafting, semantic/visual review, layout repair, Release, or the Human decision itself.
 
 The bridge **may record an already explicit Human `APPROVED` or `REQUEST_CHANGES` decision and apply its deterministic lifecycle consequence**. Such requests require explicit Human provenance, exact pending gate/current State and the next contiguous review revision; revision requests additionally require Human-supplied requested changes and a gate-specific enum-constrained regeneration boundary. Core validates these inputs but does not choose or reinterpret them.
+
+Human Gate recording uses one canonical reviewed-commit invariant in both execution modes. `survey_human_gate_v2` requires `reviewed_repository_commit_sha` to name a real Git commit whose tree contains exact reviewed State/Gate-input bytes. The connector-safe workflow additionally requires that SHA to equal the immutable request-only commit parent, keeping the request/event commit as separate execution provenance. Direct-local execution remains preferred and relies on the same canonical commit-tree proof without an Actions wrapper.
 
 Retrospective initialization is admissible only by exposing the pre-existing generic `scripts/survey_period_v2.py` configured-period Profile path. The bridge must not introduce a second Retrospective scope schema, Profile builder, or monthly/half-year/annual execution engines.
 
@@ -176,6 +181,8 @@ At either normal gate, the Human may explicitly choose:
 - `APPROVED`; or
 - routine `REQUEST_CHANGES` with requested changes and a regeneration boundary allowed by the current Core contract.
 
+The Human reviews an exact committed edition state. Before deterministic Core records either decision, it must require a real `reviewed_repository_commit_sha` and prove from that commit tree that the exact reviewed Production State and every Gate input match the current SHA-256 review authority. Publication Preview includes the exact Candidate-bound PDF. A syntactically valid SHA, an uncommitted working-tree surface or a commit with missing/different reviewed bytes is insufficient.
+
 `REQUEST_CHANGES` is not an Owner-level Exception Gate. Deterministic Core records an immutable rN review authority, resets only downstream machine/gate provenance required by the Human-supplied boundary, removes superseded canonical Stage Checkpoints that would prevent clean regeneration, and returns control to ChatGPT. ChatGPT performs the actual research/editorial/visual repair and revalidates to the same gate as rN+1.
 
 Machine review authority is retained under:
@@ -186,7 +193,7 @@ Machine review authority is retained under:
 {source_root}/gates/review-index.json
 ```
 
-Prior review revisions remain reconstructable through exact SHA-256 values and reviewed repository commit provenance while only current Production State/checkpoint/gate authority is active.
+Prior review revisions remain reconstructable through exact SHA-256 values and a validated reviewed repository commit whose tree contains those exact bytes, while only current Production State/checkpoint/gate authority is active.
 
 A genuine Exception Gate remains only for an unresolved Owner decision that cannot safely be expressed as a normal revision. A shared-Core implementation defect is a maintenance dependency, not a reason for routine Human confirmation.
 
@@ -251,11 +258,15 @@ The redesign cannot be validated only by W33/SP001-shaped tests.
 
 Final acceptance must include representative evidence for Weekly, standalone Thematic/LONGFORM (SP001 regression), Retrospective Period, Foundations-guided series work, structural monthly/half-year/annual compatibility, unplanned Thematic work, and profile-neutral Human Gate round trips.
 
+The Human Gate round-trip acceptance is transport-neutral at the canonical Core layer: direct-local and connector-safe execution must both prove that each review record names a real repository commit containing the exact reviewed State/Gate-input bytes. Connector-safe execution additionally binds that reviewed commit to the request-only parent. Tests must reject nonexistent reviewed commits, commits missing reviewed paths and commits with same-path/different reviewed bytes, as well as stale revisions, changed current bytes and invalid regeneration boundaries.
+
 The operator bridge must remain Profile/path driven and must not hardcode W33/SP001 topic structure, source-root depth or `weekly/**` / `special/**` branch naming. Allowed cold-start operations correspond to Weekly, configured Retrospective Period and Thematic Profile construction. Foundations remains a Thematic/Longform series authority, not a fourth initialization engine. Once canonical Profile/State exists, `ADVANCE_STAGE` and Human Gate recording/revision mechanics bind exact Profile-declared `source_root` and `work_branch`.
 
 ## 16. Implementation and acceptance status
 
-The original redesign is integrated. Clean connector-only revalidation exposed the deterministic execution gap; pre-approval full-system audit then exposed missing Human Gate continuation/revision semantics. The current maintenance candidate addresses both with:
+The original redesign is integrated. Clean connector-only revalidation exposed the deterministic execution gap; pre-approval full-system audit then exposed missing Human Gate continuation/revision semantics. A later fixed-head seven-point audit of candidate `0a9e2d2c5bd9124ba626cdc7558e645d8021946c` passed Points 1–6 but failed Point 7 because direct-local reviewed-commit provenance was not fail-closed. That freeze and all its PASS verdicts are invalidated.
+
+The current maintenance candidate addresses the accumulated findings with:
 
 - direct local deterministic execution when available and one optional reviewed operator bridge otherwise;
 - canonical Weekly/configured-Retrospective/Thematic cold start;
@@ -264,13 +275,15 @@ The original redesign is integrated. Clean connector-only revalidation exposed t
 - deterministic Quality Bundle separated from semantic/editorial and exact-PDF visual review;
 - atomic Publication Candidate identity;
 - canonical Human Gate rN review records, approval recording and `REQUEST_CHANGES` selective invalidation for both normal gates;
+- canonical Git commit existence/tree-byte validation for every Human-reviewed State/Gate-input set, shared by direct-local and bridge-backed execution;
+- connector-only request-parent binding layered above that canonical proof;
 - standardized edition execution records;
 - one-file Grok/X Drive handoff;
 - exactly seven workflows: two CI/contract workflows, two reproducible builds, exact-byte Preview transport, Release, and one deterministic operator bridge.
 
 The bridge request allowlist is exactly eight kinds: three initializers, `ADVANCE_STAGE`, and four explicit Human Gate recording/revision operations. A generic Human-decision command surface is prohibited.
 
-`tests/test_survey_human_gate_v2.py` exercises direct Architecture/Publication approve/revise round trips and negative boundaries. `tests/test_survey_core_execution_bridge_human_gate_v2.py` exercises the same connector-safe bridge path. `tests/test_survey_period_v2.py` protects generic configured monthly/half-year/annual Retrospective construction. `tests/test_survey_pilot_bootstrap_v2.py` protects the seven-workflow surface.
+`tests/test_survey_human_gate_v2.py` exercises direct Architecture/Publication approve/revise round trips, negative boundaries and real synthetic reviewed-commit snapshots including nonexistent/missing/mismatched commit cases. `tests/test_survey_core_execution_bridge_human_gate_v2.py` exercises the same connector-safe bridge path while preserving separate event/request and Human-reviewed commit identities. `tests/test_survey_period_v2.py` protects generic configured monthly/half-year/annual Retrospective construction. `tests/test_survey_pilot_bootstrap_v2.py` protects the seven-workflow surface.
 
 This maintenance implementation is **not** final Core acceptance. Before Human full-candidate review, the repository must:
 
@@ -285,4 +298,4 @@ finish regression/CI repair
 -> present only the unchanged 7/7 passing SHA for Human full-candidate review
 ```
 
-Cold-start production re-validation remains required after the maintenance is reviewed/integrated. Prior W33/SP001 attempts and all earlier six-point candidate audits remain non-PASS/historical evidence.
+Cold-start production re-validation remains required after the maintenance is reviewed/integrated. Prior W33/SP001 attempts, all earlier six-point candidate audits and the invalidated `0a9e2d2c...` seven-point audit remain non-PASS/historical evidence.
