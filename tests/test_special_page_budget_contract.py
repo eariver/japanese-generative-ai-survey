@@ -11,27 +11,27 @@ HALF_YEAR_MANIFEST = ROOT / "specials" / "2025-H2" / "edition.json"
 
 
 class SpecialPageBudgetContractTests(unittest.TestCase):
-    def test_workflow_uses_manifest_soft_target_not_hard_floor(self):
+    def test_reproducible_build_does_not_enforce_editorial_page_budget(self):
         text = WORKFLOW.read_text(encoding="utf-8")
+        self.assertNotIn("['page_budget']['target']", text)
+        self.assertNotIn("['page_budget']['max']", text)
         self.assertNotIn('test "$PAGE_COUNT" -ge "$PAGE_TARGET"', text)
-        self.assertIn("['page_budget']['target']", text)
-        self.assertIn("'page_target_soft':soft_target", text)
-        self.assertIn("'below_soft_target':page_count < soft_target", text)
-        self.assertIn("'page_budget_policy':'manifest-soft-target-hard-ceiling'", text)
-        self.assertIn("::warning title=Special page target::", text)
+        self.assertNotIn('test "$PAGE_COUNT" -le "$PAGE_MAX"', text)
+        self.assertNotIn("::warning title=Special page target::", text)
+        self.assertIn("page_count", text)
+        self.assertIn("layout_log_findings", text)
 
-    def test_workflow_uses_manifest_hard_ceiling(self):
+    def test_reproducible_build_is_read_only_and_reports_exact_build_evidence(self):
         text = WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn("['page_budget']['max']", text)
-        self.assertIn('test "$PAGE_COUNT" -le "$PAGE_MAX"', text)
-        self.assertIn("'hard_max':hard_max", text)
-
-    def test_successful_build_provenance_records_resolved_budget(self):
-        text = WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn("'page_budget':{", text)
-        self.assertIn("'soft_target':soft_target", text)
-        self.assertIn("'below_soft_target':page_count < soft_target", text)
-        self.assertIn("'policy':'manifest-soft-target-hard-ceiling'", text)
+        self.assertIn("permissions:\n  contents: read", text)
+        self.assertNotIn("pipeline-state.json", text)
+        self.assertNotIn("git push", text)
+        self.assertNotIn("github-actions[bot]", text)
+        self.assertIn("profile_sha256", text)
+        self.assertIn("source_sha256", text)
+        self.assertIn("pdf_sha256", text)
+        self.assertIn("byte_count", text)
+        self.assertIn("special-pdf-build-audit.json", text)
 
     def test_monthly_manifest_preserves_default_32_40_budget(self):
         data = json.loads(MONTHLY_MANIFEST.read_text(encoding="utf-8"))
@@ -43,7 +43,7 @@ class SpecialPageBudgetContractTests(unittest.TestCase):
         self.assertEqual(data["page_budget"]["target"], 64)
         self.assertEqual(data["page_budget"]["max"], 96)
 
-    def test_layout_policy_forbids_padding_to_reach_soft_target(self):
+    def test_layout_policy_keeps_page_budget_as_editorial_authority(self):
         text = LAYOUT_POLICY.read_text(encoding="utf-8")
         self.assertIn("32 pages as the default soft editorial target", text)
         self.assertIn("40 pages as the default hard ceiling", text)
