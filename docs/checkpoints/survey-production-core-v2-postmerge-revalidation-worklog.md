@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Post-merge W33/SP001 revalidation worklog
 
-Status: `OPERATOR BRIDGE MAINTENANCE / FINAL CANDIDATE PREPARATION / W33 + SP001 COLD REVALIDATION PAUSED UNTIL REVIEWED INTEGRATION`
+Status: `OPERATOR BRIDGE MAINTENANCE / PRE-FREEZE CROSS-CHECK COMPLETE / FINAL CANDIDATE READY`
 
 Established: 2026-08-23 JST  
 Last updated: 2026-08-23 JST
@@ -177,7 +177,7 @@ The first diagnostic CI attempt exposed only a sparse-checkout fixture assumptio
 
 ### RVF-012 — final authority text synchronized to repository reality before freeze
 
-Status: `REPAIRED / PRE-FREEZE CROSS-CHECK IN PROGRESS`
+Status: `REPAIRED / CROSS-CHECK COMPLETE`
 
 After the duplicate Retrospective implementation was removed, two top-level authority documents still contained wording from the incorrect diagnosis: they described connector Retrospective cold start as binding a ChatGPT-authored scope through a new adapter.
 
@@ -186,7 +186,7 @@ Before final freeze, the following were synchronized to the actual implementatio
 - `docs/survey-production-core-v2-final-audit-rule.md` — commit `34d5583f8760c82bc709b3138b856f5b29fcce2e`;
 - `docs/survey-production-core-v2-redesign-authority.md` — commit `b4dfec73a21b2deeadad6daa66d07881bc69c9e2`.
 
-Current authority now states that configured Retrospective cold start reuses the pre-existing `survey_period_v2.resolve_configured_period()` + `period_profile()` path and that the operator bridge must not create a second Retrospective schema/builder or cadence engine.
+Current authority states that configured Retrospective cold start reuses the pre-existing `survey_period_v2.resolve_configured_period()` + `period_profile()` path and that the operator bridge must not create a second Retrospective schema/builder or cadence engine.
 
 These document changes are intentionally **pre-freeze**. Any audit result from an earlier SHA remains invalidated; no prior PASS is reused.
 
@@ -197,6 +197,25 @@ Status: `IMPLEMENTED / FINAL EXACT-HEAD CI PENDING`
 Commit `3a680764ab7c1b29f6e785a39cef64796c839fd6` adds a regression that resolves configured `2024-H1` through `survey_period_v2.resolve_configured_period()` and `period_profile()`, then requires the resulting `RETROSPECTIVE_PERIOD + LONGFORM_SPECIAL` Profile's `issue_id`, `source_root`, and `work_branch` to equal the operator request fixture exactly.
 
 This complements the pre-existing monthly/half-year/annual Period tests and the Thematic init→Discovery bridge E2E test. It specifically protects the bridge/configured-period identity join without introducing a duplicate Retrospective execution path.
+
+### RVF-014 — pre-freeze PR-wide candidate cross-check completed
+
+Status: `PASS / RESULTING WORKLOG COMMIT IS THE INTENDED FROZEN CANDIDATE`
+
+The final pre-freeze cross-check examined the complete PR scope and current authority vocabulary.
+
+Results:
+
+- PR #447 changes exactly 14 files;
+- no `sources/` or `surveys/` edition output is part of the maintenance diff;
+- current implementation exposes four operations: Weekly init, configured Retrospective init, Thematic init, and one-stage advance;
+- configured Retrospective init uses only existing `survey_period_v2` semantics plus the new generic bridge exposure;
+- removed duplicate Retrospective adapter/schema/test names remain only where this worklog records the invalidated diagnosis;
+- current authority consistently describes seven workflows, not the superseded six-workflow maintenance surface;
+- current tests bind the seven-workflow set, reviewed-main preflight, no-arbitrary-command boundary, existing Period builder join, and Thematic init→Discovery E2E glue;
+- PR body metadata remains pre-audit/stale in its operation list, but PR metadata is outside the candidate tree and will be synchronized only after fixed-head audit results are known.
+
+No further candidate-tree change is currently identified. The commit produced by this worklog synchronization is therefore intended to be the exact frozen candidate head. Its exact SHA is recorded externally after commit creation; the candidate tree must not be changed during the final audit.
 
 ## Current maintenance design
 
@@ -253,16 +272,15 @@ Acceptance requires no arbitrary executable surface, exact request identity, rev
 
 Do not close PFB-014 merely because unit tests pass.
 
-## Next actions
+## Next actions after freeze
 
 ```text
-finish remaining PR-wide stale-authority / implementation cross-check
--> synchronize this worklog for any further pre-freeze finding
--> freeze exact maintenance candidate SHA
+record exact resulting candidate head SHA outside the candidate tree
 -> exact-head Core CI + pipeline contract tests
 -> complete six-point audit from point 1 on unchanged SHA
 -> any required tree change invalidates and restarts audit
 -> 6/6 PASS: record result outside candidate tree in PR #447
+-> synchronize PR body to exact audited reality
 -> mark PR #447 ready for Human full-candidate review
 ```
 
