@@ -2,9 +2,13 @@
   "schema_version": "2.0-rc1",
   "pipeline_contract_version": "2.0-rc1",
   "quality_contract_version": "2.0-rc1",
-  "orchestrator_version": "survey-production-core-v2/0.8-agent-first",
+  "orchestrator_version": "survey-production-core-v2/0.9-reader-boundary",
   "contract_files": {
     "pipeline": [
+      "docs/survey-production-core-v2-redesign-authority.md",
+      "docs/survey-production-core-v2-redesign-plan-after-w33-sp001.md",
+      "docs/survey-production-core-v2-github-actions-policy.md",
+      "docs/survey-production-core-v2-execution-record-policy.md",
       "docs/survey-production-core-v2-authority.md",
       "docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md",
       "docs/survey-production-core-v2-contract-normalization-second-audit-amendment.md",
@@ -13,6 +17,7 @@
       "docs/survey-production-core-v2-whole-system-audit-remediation-closure.md",
       "docs/survey-production-core-v2-x-source-intake.md",
       "config/survey-production-v2-requirements.txt",
+      "config/publication-review-v2.json",
       "config/prompts/grok/x-source-intake-base-v1.md",
       "config/prompts/grok/x-source-intake-weekly-v1.md",
       "config/prompts/grok/x-source-intake-special-v1.md",
@@ -41,6 +46,8 @@
       "schemas/profile-synthesis-v2-result.schema.json",
       "config/prompts/article-drafting-v2.md",
       "config/prompts/profile-synthesis-v2.md",
+      "schemas/reader-manuscript-v2.schema.json",
+      "schemas/publication-review-record-v2.schema.json",
       "schemas/quality-regression-bundle-v2.schema.json",
       "schemas/publication-candidate-v2.schema.json",
       "schemas/publication-preview-approval-v2.schema.json",
@@ -65,7 +72,7 @@
     "normal_human_gates": ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"],
     "autonomous_until_gate": true,
     "exception_gate_principle": "Use only when a genuine Owner/editorial/publication decision cannot be derived safely from repository authority.",
-    "deterministic_failure_principle": "Retry or repair autonomously when editorial scope and approved bytes do not change."
+    "deterministic_failure_principle": "Retry or repair edition-local/transient failures autonomously when editorial scope and approved bytes do not change; shared Core defects return to Core maintenance."
   },
   "implementation_control_roots": ["config", "schemas", "scripts", ".github/workflows"],
   "workflow_control": {
@@ -272,12 +279,20 @@
       },
       "DRAFT_COMPLETE": {
         "action_kind": "LOCAL_SCRIPT",
-        "handler": "stage:semantic-publication-validation",
-        "validator": "validate:semantic-publication",
+        "handler": "stage:reader-publication-validation",
+        "validator": "validate:reader-publication",
         "validator_version": "2.0-rc1",
         "handoff_required": false,
         "next_state": "VALIDATED_DRAFT",
-        "checkpoints": ["validation"]
+        "checkpoints": ["validation"],
+        "artifacts": [
+          {"name": "reader-manuscript", "path": "{source_root}/publication/v2/reader-manuscript-v2.json"},
+          {"name": "validated-source", "path": "{survey_root}/main.tex"},
+          {"name": "publication-pdf", "path": "{survey_root}/main.pdf"},
+          {"name": "quality-regression-bundle", "path": "{source_root}/publication/v2/quality-regression-bundle-v2.json"},
+          {"name": "semantic-review", "path": "{source_root}/publication/v2/semantic-editorial-review-v2.json"},
+          {"name": "visual-review", "path": "{source_root}/publication/v2/visual-review-v2.json"}
+        ]
       },
       "VALIDATED_DRAFT": {
         "action_kind": "LOCAL_SCRIPT",
@@ -300,7 +315,6 @@
         "next_state": "FROZEN",
         "checkpoints": ["freeze"],
         "artifacts": [
-          {"name": "visual-review-record", "path": "{source_root}/publication/v2/visual-review-v2.json"},
           {"name": "freeze-record", "path": "{source_root}/publication/v2/freeze-record-v2.json"},
           {"name": "release-manifest", "path": "{source_root}/publication/v2/release-manifest-v2.json"}
         ]
