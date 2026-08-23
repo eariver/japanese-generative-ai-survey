@@ -1,0 +1,51 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "from_state": "VALIDATED_DRAFT",
+  "to_state": "RELEASE_CANDIDATE",
+  "checkpoints": [],
+  "recorded_at": "2026-08-23T01:25:09Z",
+  "implementation": {
+    "repository_commit_sha": "ee778b828826b9f3316e9c5072e2ef06da07bf10",
+    "orchestrator_version": "survey-production-core-v2/0.8-agent-first"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "1814863bfe5661491b972eabaeaa6383b4018172fbfe765ce064a7202986abce",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "publication-candidate",
+      "path": "sources/SP001/publication/v2/publication-candidate-v2.json",
+      "sha256": "1e049f6ffa97aec0a1557d52996524441fe04de189a4b54fd4f671367d72ebe1"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "scripts/survey_stage_validation_v2.py",
+      "evidence": "Validate the exact SP001 Publication Candidate against the accepted validated-source manifest, exact publication PDF, complete Quality Regression Bundle, and VALIDATED_DRAFT Production State before entering RELEASE_CANDIDATE / PUBLICATION_PREVIEW.",
+      "result": {
+        "path": "sources/SP001/orchestration/v2/validation/VALIDATED_DRAFT.json",
+        "sha256": "af2ddb43cbab57bc5d24518007e72c83a50682922389f610cf7274b1d3222127"
+      }
+    },
+    {
+      "check_id": "SP001_PUBLICATION_CANDIDATE_EXACT_BYTE_BINDING",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "The candidate must bind the same source manifest, PDF SHA-256 8a363a33db80f55a047a8d6cdfecedb196f380939a3d40e68e3c3d21aded2764, 11-page count, and Quality Regression Bundle already reviewed at DRAFT_COMPLETE. No semantic or rendered-byte change is permitted between validated draft and Publication Preview.",
+      "result": null
+    }
+  ],
+  "summary": "Established the immutable SP001 Publication Candidate binding the exact validated-source manifest, 11-page PDF SHA-256 8a363a33db80f55a047a8d6cdfecedb196f380939a3d40e68e3c3d21aded2764, and complete Quality Regression Bundle; ready to enter the PUBLICATION_PREVIEW Human Gate."
+}
