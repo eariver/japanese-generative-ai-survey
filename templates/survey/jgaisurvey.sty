@@ -47,8 +47,15 @@
 \setlength{\columnsep}{7mm}
 \setlength{\parindent}{1em}
 \setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\tabcolsep}{2.75pt}
 \setlist{nosep,leftmargin=1.8em}
 \raggedbottom
+\Urlmuskip=0mu plus 1mu\relax
+
+% LONGFORM_SPECIAL tables contain mixed Japanese/English technical tokens.
+% Ragged X columns avoid artificial stretching and give TeX more legal breaks.
+\renewcommand{\tabularxcolumn}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 \newcommand{\SurveyIssue}{UNSET}
 \newcommand{\SurveyTitle}{Japanese Generative AI Technical Survey}
@@ -119,6 +126,16 @@
 \newcommand{\sectionkicker}[1]{%
   {\small\bfseries\color{SurveyAccent}\MakeUppercase{#1}\par}\vspace{1mm}%
 }
+
+% LONGFORM_SPECIAL wraps full-page blocks in wideflow while its renderer owns
+% the two-column narrative regions via multicols. Keep the normal page measure
+% and suppress the document's 1em first-line offset so full-width tabularx
+% blocks do not become exactly 1em wider than \linewidth.
+\newenvironment{wideflow}{%
+  \par
+  \begingroup
+  \setlength{\parindent}{0pt}%
+}{\par\endgroup}
 
 \newtcolorbox{claimboundary}[1][Claim boundary]{
   enhanced,
