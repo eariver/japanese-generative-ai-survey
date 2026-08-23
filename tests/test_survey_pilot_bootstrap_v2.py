@@ -179,6 +179,12 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.assertIn("test_survey_*_v2.py", core_ci)
         self.assertIn("unittest discover", core_ci)
 
+        final_audit = (self.root / "docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
+        self.assertIn("exactly **seven workflows**", final_audit)
+        self.assertIn("survey-production-v2-operator-bridge.yml", final_audit)
+        self.assertIn("six-workflow wording records the pre-PFB-014 integrated surface", final_audit)
+        self.assertNotIn("intended redesign surface is exactly six workflows", final_audit)
+
     def test_retired_weekly_post_render_authoring_helpers_are_absent(self) -> None:
         retired = (
             "scripts/survey_weekly_bibliography_v2.py",
