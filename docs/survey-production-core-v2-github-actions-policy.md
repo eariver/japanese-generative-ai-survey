@@ -1,10 +1,11 @@
 # Survey Production Core v2 — GitHub Actions Responsibility Policy
 
-Status: `CONFIRMED BY W33 + SP001 / REDESIGN INVARIANT`  
+Status: `CONFIRMED BY W33 + SP001 / AUDITED REDESIGN INVARIANT`  
 Established: 2026-08-23 JST  
 Confirmed: 2026-08-23 JST  
 Working branch: `refactor/survey-production-core-v2`  
-Related feedback: `PFB-006` in `docs/survey-production-core-v2-production-feedback-backlog.md`
+Related feedback: `PFB-006` in `docs/survey-production-core-v2-production-feedback-backlog.md`  
+Related audit: `docs/survey-production-core-v2-redesign-preimplementation-audit.md`
 
 ## 1. Purpose
 
@@ -99,6 +100,8 @@ Examples include:
 - reader-facing Claim Boundary wording;
 - Theme Synthesis / final `総括`;
 - incorporation of Weekly community movement from Grok/X;
+- retrospective period normalization/trajectory interpretation;
+- thematic lineage/historical-attribution interpretation;
 - choosing article/chapter structure;
 - deciding where wide/full-width versus multi-column content is editorially appropriate;
 - evaluating page balance, whitespace, scanability, hierarchy, or magazine identity;
@@ -131,7 +134,35 @@ from
 
 `Can be scripted` does not imply `should be authored by CI`.
 
-## 6. Target responsibility model
+## 6. Generality rule — do not replace workflow rigidity with profile-specific workflow proliferation
+
+Reducing Actions-authored production logic is expected to improve generality because fewer editorial assumptions are frozen into executable workflows.
+
+That benefit is lost if the redesign creates separate authoring/mutation workflows for every cadence or Special type.
+
+Do **not** solve generality by creating parallel workflow families such as:
+
+- Weekly authoring workflow;
+- monthly retrospective authoring workflow;
+- half-year authoring workflow;
+- annual authoring workflow;
+- standalone Thematic authoring workflow;
+- Foundations authoring workflow.
+
+The preferred model is:
+
+```text
+Profile/config/edition authority
+-> ChatGPT reasoning and authorship
+-> narrow common deterministic helpers
+-> parameterized/shared CI/build verification where appropriate
+```
+
+A Profile-specific Actions check is acceptable only when the invariant itself is crisp. Prefer a shared verifier parameterized by Profile/config over a separate production-mutation workflow.
+
+Actions must not encode W33/SP001 topic names, package taxonomy, Foundations volume structure, annual trajectory choices, or other editorial outputs.
+
+## 7. Target responsibility model
 
 The desired model is:
 
@@ -164,7 +195,7 @@ Actions should not normally answer:
 
 > **What should the next article, paragraph, synthesis, layout, or visual revision be?**
 
-## 7. PDF / typesetting boundary
+## 8. PDF / typesetting boundary
 
 Building a PDF in Actions is appropriate when it provides a reproducible toolchain, for example pinned LuaLaTeX/TeX Live/Python dependencies and deterministic build settings.
 
@@ -190,7 +221,22 @@ Actions builds
 
 Actions may detect a machine-defined defect such as an undefined citation or forbidden exact token. It should report the failure. The production operator should normally decide the editorial/layout repair.
 
-## 8. Workflow review classification
+## 9. Exact-byte/candidate/release guarantees are retained
+
+Reducing Actions does not mean weakening controls that benefit from independent deterministic execution.
+
+The redesign must retain or replace equivalently:
+
+- exact source/PDF/candidate binding;
+- candidate invalidation when source/PDF bytes change;
+- reproducible build;
+- Freeze/Release exact-byte identity;
+- release credential isolation;
+- idempotent Release reconciliation.
+
+SP001's 19-page authority drift is evidence for a smaller **atomic** deterministic candidate-finalization boundary, not evidence that exact-byte authority should be removed.
+
+## 10. Workflow review classification
 
 During the consolidated post-W33/SP001 redesign, every production-related workflow must be reviewed and assigned one of:
 
@@ -211,7 +257,7 @@ High-priority review targets include:
 - accumulated `prepare-*`, `apply-*`, `revise-special-*` mutation workflows;
 - execution-only PRs whose main purpose is to cause Actions to run.
 
-## 9. Evidence from W33 / SP001
+## 11. Evidence from W33 / SP001
 
 ### SP001
 
@@ -233,7 +279,7 @@ The Weekly trial accumulated repeated execution-only rebuild/export PRs while st
 
 The correct response is not to add another mutation workflow. It is to return publication authorship/review to ChatGPT and keep Actions as independent build/verification infrastructure.
 
-## 10. Relationship to publication quality
+## 12. Relationship to publication quality
 
 Machine checks are necessary but not sufficient.
 
@@ -247,10 +293,10 @@ Actions must not issue a semantic-quality PASS merely because a set of schema fi
 
 Known internal-metadata patterns can and should be linted in CI, but the SP001 19-page re-review demonstrates that semantic production language can survive even when known-token lint reports no finding.
 
-## 11. Implementation rule
+## 13. Implementation rule
 
-This policy is no longer waiting for additional W33/SP001 evidence. The production review is complete and the policy is a required redesign invariant.
+This policy is no longer waiting for additional W33/SP001 evidence. The production review and pre-implementation audit are complete and this policy is a required redesign invariant.
 
-Implementation proceeds through `docs/survey-production-core-v2-redesign-plan-after-w33-sp001.md`.
+Actual workflow classification/removal begins only after the redesign authority documents are mutually consistent.
 
-Do not resume W33/SP001 production using the current Actions-heavy mutation path and count that as validation. After workflow reduction and publication-boundary redesign, run clean profile acceptance trials with no in-run shared-Core repair.
+Do not resume W33/SP001 production using the current Actions-heavy mutation path and count that as validation. After workflow reduction and publication-boundary redesign, run the cross-profile acceptance matrix defined in `docs/survey-production-core-v2-redesign-plan-after-w33-sp001.md` with no in-run shared-Core repair.
