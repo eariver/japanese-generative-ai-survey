@@ -1,0 +1,117 @@
+name: Temporary Weekly evidence authority patch
+
+on:
+  push:
+    branches:
+      - fix/core-v2-weekly-evidence-authority-join
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event.head_commit.message != 'Apply Weekly evidence authority join'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: fix/core-v2-weekly-evidence-authority-join
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Patch Weekly renderer
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('scripts/survey_weekly_semantic_publication_v2.py')
+          text = path.read_text(encoding='utf-8')
+          marker = 'def _render_tex(\n'
+          if marker not in text:
+              raise SystemExit('render marker missing')
+          helper = r'''def _records_from_authorities(source_root: Path, evidence_acceptance_sha: str) -> dict[str, dict[str, Any]]:
+              acceptance_path = _find_sha(source_root / "evidence", evidence_acceptance_sha, "evidence-accepted.json")
+              acceptance = _load(acceptance_path)
+              accepted_status: dict[str, str] = {}
+              for result in acceptance.get("results", []):
+                  status = result.get("status")
+                  for did in result.get("discovery_ids", []):
+                      if did in accepted_status:
+                          raise ValueError(f"Discovery ID appears more than once in Evidence acceptance: {did}")
+                      accepted_status[did] = status
+
+              matrix_path = source_root / "candidate-matrix-v2.json"
+              matrix = _load(matrix_path)
+              if matrix.get("basis", {}).get("evidence_acceptance_sha256") != evidence_acceptance_sha:
+                  raise ValueError("Candidate Matrix does not bind Draft Evidence acceptance authority")
+
+              ledger_path = source_root / "materiality-ledger-v2.json"
+              ledger = _load(ledger_path)
+              expected_ledger_sha = matrix.get("basis", {}).get("materiality_ledger_sha256")
+              if expected_ledger_sha != core.sha256_file(ledger_path):
+                  raise ValueError("Candidate Matrix materiality authority drifted")
+              materiality = {row["discovery_id"]: row["downstream_disposition"] for row in ledger.get("rows", [])}
+
+              discovery_path = source_root / "discovery" / "discovery-accepted-v2.json"
+              discovery = _load(discovery_path)
+              discovery_rows = {row["discovery_id"]: row for row in discovery.get("records", [])}
+
+              records: dict[str, dict[str, Any]] = {}
+              for row in matrix.get("rows", []):
+                  title = row.get("title")
+                  matrix_status = row.get("evidence_status")
+                  matrix_materiality = row.get("materiality")
+                  if not isinstance(title, str) or not title.strip():
+                      raise ValueError(f"Candidate Matrix row lacks title: {row.get('candidate_id')}")
+                  for did in row.get("discovery_ids", []):
+                      if did in records:
+                          raise ValueError(f"Candidate Matrix duplicates Discovery ID: {did}")
+                      if accepted_status.get(did) != matrix_status:
+                          raise ValueError(f"Evidence status authority mismatch for {did}")
+                      if materiality.get(did) != matrix_materiality:
+                          raise ValueError(f"Materiality authority mismatch for {did}")
+                      discovery_row = discovery_rows.get(did)
+                      if discovery_row is None:
+                          raise ValueError(f"Candidate Matrix Discovery ID missing from accepted Discovery: {did}")
+                      locator = discovery_row.get("source_locator")
+                      if not isinstance(locator, str) or not locator.strip():
+                          raise ValueError(f"accepted Discovery lacks source locator: {did}")
+                      records[did] = {
+                          "entity": {
+                              "canonical_name": title.strip(),
+                              "canonical_url": locator.strip(),
+                              "organization": None,
+                          },
+                          "status": matrix_status,
+                          "materiality": matrix_materiality,
+                      }
+              return records
+
+
+'''
+          text = text.replace(marker, helper + marker, 1)
+          old = '''    acceptance = _find_sha(source_root / "evidence", evidence_acceptance_sha, "evidence-accepted.json")
+              interactive_evidence = acceptance.parent / "interactive-evidence.json"
+              evidence_payload = _load(interactive_evidence)
+              records = {row["discovery_id"]: row for row in evidence_payload["records"]}
+          '''
+          new = '''    records = _records_from_authorities(source_root, evidence_acceptance_sha)
+          '''
+          if old not in text:
+              raise SystemExit('legacy interactive Evidence block missing')
+          text = text.replace(old, new, 1)
+          path.write_text(text, encoding='utf-8')
+          PY
+          python -m py_compile scripts/survey_weekly_semantic_publication_v2.py
+      - name: Commit patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/survey_weekly_semantic_publication_v2.py
+          git commit -m 'Apply Weekly evidence authority join'
+          git push origin HEAD:fix/core-v2-weekly-evidence-authority-join
