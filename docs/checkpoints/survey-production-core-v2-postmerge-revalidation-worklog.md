@@ -175,6 +175,21 @@ immutable INITIALIZE_THEMATIC request
 
 The first diagnostic CI attempt exposed only a sparse-checkout fixture assumption (`sources/` directory absent); the fixture was corrected before final freeze.
 
+### RVF-012 — final authority text synchronized to repository reality before freeze
+
+Status: `REPAIRED / PRE-FREEZE CROSS-CHECK IN PROGRESS`
+
+After the duplicate Retrospective implementation was removed, two top-level authority documents still contained wording from the incorrect diagnosis: they described connector Retrospective cold start as binding a ChatGPT-authored scope through a new adapter.
+
+Before final freeze, the following were synchronized to the actual implementation:
+
+- `docs/survey-production-core-v2-final-audit-rule.md` — commit `34d5583f8760c82bc709b3138b856f5b29fcce2e`;
+- `docs/survey-production-core-v2-redesign-authority.md` — commit `b4dfec73a21b2deeadad6daa66d07881bc69c9e2`.
+
+Current authority now states that configured Retrospective cold start reuses the pre-existing `survey_period_v2.resolve_configured_period()` + `period_profile()` path and that the operator bridge must not create a second Retrospective schema/builder or cadence engine.
+
+These document changes are intentionally **pre-freeze**. Any audit result from an earlier SHA remains invalidated; no prior PASS is reused.
+
 ## Current maintenance design
 
 Candidate scope contains bridge/authority changes, not a duplicate Retrospective implementation:
@@ -233,7 +248,8 @@ Do not close PFB-014 merely because unit tests pass.
 ## Next actions
 
 ```text
-finish authority/implementation cross-check
+finish remaining PR-wide stale-authority / implementation cross-check
+-> synchronize this worklog for any further pre-freeze finding
 -> freeze exact maintenance candidate SHA
 -> exact-head Core CI + pipeline contract tests
 -> complete six-point audit from point 1 on unchanged SHA
