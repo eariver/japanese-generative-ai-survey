@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 """Assemble a Core v2 WEEKLY_MAGAZINE DRAFT_COMPLETE issue into exact publication source.
 
-This runner is the Weekly counterpart of run_semantic_publication_v2_interactive.py.
-It consumes only accepted Draft Package/Result bytes, Weekly Profile Synthesis,
-the approved Architecture, and a compact reviewed semantic publication input.
-It does not advance Production State and it does not approve Publication Preview.
-
-The validated-source manifest binds the exact TeX source, bibliography, copied
-style, Draft Results, Draft synthesis, Architecture closing-summary authority,
-and publication semantic input.
+This renderer consumes only accepted Core v2 authorities: approved Architecture,
+accepted Draft Package/Result bytes, Profile Synthesis, Evidence acceptance,
+Candidate Matrix, Materiality Ledger, accepted Discovery, and a compact reviewed
+semantic publication input. It does not advance Production State or approve the
+Publication Preview Human Gate.
 """
 from __future__ import annotations
 
@@ -46,7 +43,7 @@ def _safe(root: Path, raw: str, label: str) -> Path:
 
 
 def _find_sha(root: Path, expected_sha: str, name: str) -> Path:
-    matches = []
+    matches: list[Path] = []
     for path in root.rglob(name):
         if path.is_file() and not path.is_symlink() and core.sha256_file(path) == expected_sha:
             matches.append(path)
@@ -162,6 +159,94 @@ def _section_label(plan: dict[str, Any]) -> str:
     return label.strip()
 
 
+def _records_from_authorities(
+    source_root: Path,
+    evidence_acceptance_sha: str,
+) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, str]]]:
+    acceptance_path = _find_sha(source_root / "evidence", evidence_acceptance_sha, "evidence-accepted.json")
+    acceptance = _load(acceptance_path)
+    accepted_status: dict[str, str] = {}
+    for result in acceptance.get("results", []):
+        status = result.get("status")
+        if not isinstance(status, str) or not status:
+            raise ValueError("Evidence acceptance result status missing")
+        for did in result.get("discovery_ids", []):
+            if did in accepted_status:
+                raise ValueError(f"Discovery ID appears more than once in Evidence acceptance: {did}")
+            accepted_status[did] = status
+
+    matrix_path = source_root / "candidate-matrix-v2.json"
+    matrix = _load(matrix_path)
+    if matrix.get("basis", {}).get("evidence_acceptance_sha256") != evidence_acceptance_sha:
+        raise ValueError("Candidate Matrix does not bind Draft Evidence acceptance authority")
+
+    ledger_path = source_root / "materiality-ledger-v2.json"
+    ledger = _load(ledger_path)
+    expected_ledger_sha = matrix.get("basis", {}).get("materiality_ledger_sha256")
+    if expected_ledger_sha != core.sha256_file(ledger_path):
+        raise ValueError("Candidate Matrix materiality authority drifted")
+    materiality: dict[str, str] = {}
+    for row in ledger.get("rows", []):
+        did = row.get("discovery_id")
+        disposition = row.get("downstream_disposition")
+        if not isinstance(did, str) or not isinstance(disposition, str):
+            raise ValueError("Materiality Ledger row invalid")
+        if did in materiality:
+            raise ValueError(f"Materiality Ledger duplicates Discovery ID: {did}")
+        materiality[did] = disposition
+
+    discovery_path = source_root / "discovery" / "discovery-accepted-v2.json"
+    discovery = _load(discovery_path)
+    discovery_rows: dict[str, dict[str, Any]] = {}
+    for row in discovery.get("records", []):
+        did = row.get("discovery_id")
+        if not isinstance(did, str) or not did:
+            raise ValueError("accepted Discovery row lacks discovery_id")
+        if did in discovery_rows:
+            raise ValueError(f"accepted Discovery duplicates Discovery ID: {did}")
+        discovery_rows[did] = row
+
+    records: dict[str, dict[str, Any]] = {}
+    for row in matrix.get("rows", []):
+        title = row.get("title")
+        matrix_status = row.get("evidence_status")
+        matrix_materiality = row.get("materiality")
+        if not isinstance(title, str) or not title.strip():
+            raise ValueError(f"Candidate Matrix row lacks title: {row.get('candidate_id')}")
+        if not isinstance(matrix_status, str) or not isinstance(matrix_materiality, str):
+            raise ValueError(f"Candidate Matrix authority fields invalid: {row.get('candidate_id')}")
+        for did in row.get("discovery_ids", []):
+            if did in records:
+                raise ValueError(f"Candidate Matrix duplicates Discovery ID: {did}")
+            if accepted_status.get(did) != matrix_status:
+                raise ValueError(f"Evidence status authority mismatch for {did}")
+            if materiality.get(did) != matrix_materiality:
+                raise ValueError(f"Materiality authority mismatch for {did}")
+            discovery_row = discovery_rows.get(did)
+            if discovery_row is None:
+                raise ValueError(f"Candidate Matrix Discovery ID missing from accepted Discovery: {did}")
+            locator = discovery_row.get("source_locator")
+            if not isinstance(locator, str) or not locator.strip():
+                raise ValueError(f"accepted Discovery lacks source locator: {did}")
+            records[did] = {
+                "entity": {
+                    "canonical_name": title.strip(),
+                    "canonical_url": locator.strip(),
+                    "organization": None,
+                },
+                "status": matrix_status,
+                "materiality": matrix_materiality,
+            }
+
+    authority = {
+        "evidence_acceptance": {"path": str(acceptance_path), "sha256": core.sha256_file(acceptance_path)},
+        "candidate_matrix": {"path": str(matrix_path), "sha256": core.sha256_file(matrix_path)},
+        "materiality_ledger": {"path": str(ledger_path), "sha256": core.sha256_file(ledger_path)},
+        "discovery_acceptance": {"path": str(discovery_path), "sha256": core.sha256_file(discovery_path)},
+    }
+    return records, authority
+
+
 def _render_tex(
     issue_id: str,
     display_date: str,
@@ -192,11 +277,7 @@ def _render_tex(
     ]
     for note in front["scope_notes"]:
         lines.append("\\noindent " + tex_escape(note) + "\\par")
-    lines.extend([
-        "\\end{claimboundary}",
-        "\\clearpage",
-        "\\twocolumn",
-    ])
+    lines.extend(["\\end{claimboundary}", "\\clearpage", "\\twocolumn"])
 
     for plan, spec, package, result in ordered:
         del package
@@ -208,19 +289,13 @@ def _render_tex(
             f"\\sectionkicker{{{tex_escape(_section_label(plan))}}}",
         ])
         deck_keys = [bib_key_by_did[did] for did in spec["deck_discovery_ids"]]
-        lines.append(
-            "\\noindent\\textbf{" + tex_escape(result["deck"]) + "}" + _cite(deck_keys) + "\\par\\medskip"
-        )
+        lines.append("\\noindent\\textbf{" + tex_escape(result["deck"]) + "}" + _cite(deck_keys) + "\\par\\medskip")
         spec_blocks = {row["block_id"]: row for row in spec["blocks"]}
         for block in result["blocks"]:
             bid = block["block_id"]
             text = tex_escape(block["text"])
             if block["block_type"] == "CLAIM_BOUNDARY":
-                lines.extend([
-                    "\\begin{claimboundary}[Claim boundary]",
-                    text,
-                    "\\end{claimboundary}",
-                ])
+                lines.extend(["\\begin{claimboundary}[Claim boundary]", text, "\\end{claimboundary}"])
                 continue
             source_spec = spec_blocks.get(bid)
             if source_spec is None:
@@ -250,11 +325,7 @@ def _render_tex(
     return "\n".join(lines)
 
 
-def _identifier_tokens(
-    issue_id: str,
-    records: dict[str, dict[str, Any]],
-    cited: list[str],
-) -> list[str]:
+def _identifier_tokens(issue_id: str, records: dict[str, dict[str, Any]], cited: list[str]) -> list[str]:
     tokens = [issue_id]
     for did in cited:
         row = records[did]
@@ -305,18 +376,12 @@ def main() -> int:
     synthesis_input_path = source_root / "draft/v2/profile-synthesis-input.json"
     synthesis_result_path = source_root / "draft/v2/profile-synthesis-result.json"
     synthesis_result = _load(synthesis_result_path)
-    syn_errors = drafting.validate_synthesis_result(
-        synthesis_result, synthesis_input_path, root / drafting.SYNTHESIS_PROMPT
-    )
+    syn_errors = drafting.validate_synthesis_result(synthesis_result, synthesis_input_path, root / drafting.SYNTHESIS_PROMPT)
     if syn_errors:
         raise SystemExit("upstream Profile Synthesis invalid: " + "; ".join(syn_errors))
 
     profile_payload = synthesis_result.get("profile_payload")
-    current_interpretation = (
-        profile_payload.get("current_interpretation")
-        if isinstance(profile_payload, dict)
-        else None
-    )
+    current_interpretation = profile_payload.get("current_interpretation") if isinstance(profile_payload, dict) else None
     if not isinstance(current_interpretation, str) or not current_interpretation.strip():
         raise SystemExit("Weekly Profile Synthesis lacks profile_payload.current_interpretation required by Architecture")
     if current_interpretation not in data["final_summary"]["paragraphs"]:
@@ -326,7 +391,7 @@ def main() -> int:
     spec_by_id = {row["package_id"]: row for row in semantic_archive["packages"]}
 
     ordered: list[tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]] = []
-    evidence_acceptance_sha = None
+    evidence_acceptance_sha: str | None = None
     for plan in sorted(architecture["packages"], key=lambda r: (r["drafting_order"], r["package_id"])):
         pid = plan["package_id"]
         _section_label(plan)
@@ -352,10 +417,9 @@ def main() -> int:
             raise SystemExit("Draft packages disagree on Evidence acceptance authority")
         ordered.append((plan, spec, package, result))
 
-    acceptance = _find_sha(source_root / "evidence", evidence_acceptance_sha, "evidence-accepted.json")
-    interactive_evidence = acceptance.parent / "interactive-evidence.json"
-    evidence_payload = _load(interactive_evidence)
-    records = {row["discovery_id"]: row for row in evidence_payload["records"]}
+    if evidence_acceptance_sha is None:
+        raise SystemExit("Weekly Architecture contains no draftable packages")
+    records, authority = _records_from_authorities(source_root, evidence_acceptance_sha)
 
     cited: list[str] = []
     for _, spec, _, _ in ordered:
@@ -366,12 +430,12 @@ def main() -> int:
     for did in cited:
         row = records.get(did)
         if row is None:
-            raise SystemExit(f"cited Discovery ID missing from accepted Evidence: {did}")
+            raise SystemExit(f"cited Discovery ID missing from accepted Core authorities: {did}")
         if row.get("materiality") == "HOLD" or row.get("status") == "NEEDS_MORE":
             raise SystemExit(f"publication cannot cite HOLD/NEEDS_MORE Evidence as factual support: {did}")
         entity = row.get("entity") or {}
         if not entity.get("canonical_name") or not entity.get("canonical_url"):
-            raise SystemExit(f"cited Evidence lacks canonical bibliography metadata: {did}")
+            raise SystemExit(f"cited authority lacks canonical bibliography metadata: {did}")
 
     survey_root.mkdir(parents=True, exist_ok=True)
     publication_root = source_root / "publication/v2"
@@ -406,10 +470,12 @@ def main() -> int:
     draft_refs = []
     for _, _, _, result in ordered:
         path = source_root / "draft/v2/packages" / result["package_id"] / "draft-result.json"
-        draft_refs.append(
-            {"package_id": result["package_id"], "path": _rel(root, path), "sha256": core.sha256_file(path)}
-        )
+        draft_refs.append({"package_id": result["package_id"], "path": _rel(root, path), "sha256": core.sha256_file(path)})
 
+    evidence_binding = {
+        key: {"path": _rel(root, Path(value["path"])), "sha256": value["sha256"]}
+        for key, value in authority.items()
+    }
     manifest = {
         "schema_version": "2.0-rc1",
         "issue_id": issue_id,
@@ -420,10 +486,7 @@ def main() -> int:
             "sha256": core.sha256_file(state_path),
             "lifecycle_state": "DRAFT_COMPLETE",
         },
-        "publication_semantic_input": {
-            "path": _rel(root, archived_input),
-            "sha256": core.sha256_file(archived_input),
-        },
+        "publication_semantic_input": {"path": _rel(root, archived_input), "sha256": core.sha256_file(archived_input)},
         "architecture_closing_summary": {
             "path": _rel(root, architecture_path),
             "sha256": core.sha256_file(architecture_path),
@@ -435,11 +498,9 @@ def main() -> int:
             "input": {"path": _rel(root, synthesis_input_path), "sha256": core.sha256_file(synthesis_input_path)},
             "result": {"path": _rel(root, synthesis_result_path), "sha256": core.sha256_file(synthesis_result_path)},
         },
+        "evidence_binding": evidence_binding,
         "draft_results": draft_refs,
-        "rendered_source": {
-            "path": _rel(root, survey_root / "main.tex"),
-            "sha256": core.sha256_file(survey_root / "main.tex"),
-        },
+        "rendered_source": {"path": _rel(root, survey_root / "main.tex"), "sha256": core.sha256_file(survey_root / "main.tex")},
         "bibliography": {
             "path": _rel(root, survey_root / "references.bib"),
             "sha256": core.sha256_file(survey_root / "references.bib"),
@@ -478,23 +539,17 @@ def main() -> int:
     }
     _write_json(quality_root / "subject-entity-property-binding.json", subject_result)
 
-    print(
-        json.dumps(
-            {
-                "issue_id": issue_id,
-                "source_root": _rel(root, source_root),
-                "survey_root": _rel(root, survey_root),
-                "source_manifest": _rel(root, publication_root / "validated-source-manifest.json"),
-                "main_tex": _rel(root, survey_root / "main.tex"),
-                "bibliography": _rel(root, survey_root / "references.bib"),
-                "style": _rel(root, survey_root / "jgaisurvey.sty"),
-                "subject_result": _rel(root, quality_root / "subject-entity-property-binding.json"),
-                "identifier_tokens": _identifier_tokens(issue_id, records, cited),
-            },
-            ensure_ascii=False,
-            indent=2,
-        )
-    )
+    print(json.dumps({
+        "issue_id": issue_id,
+        "source_root": _rel(root, source_root),
+        "survey_root": _rel(root, survey_root),
+        "source_manifest": _rel(root, publication_root / "validated-source-manifest.json"),
+        "main_tex": _rel(root, survey_root / "main.tex"),
+        "bibliography": _rel(root, survey_root / "references.bib"),
+        "style": _rel(root, survey_root / "jgaisurvey.sty"),
+        "subject_result": _rel(root, quality_root / "subject-entity-property-binding.json"),
+        "identifier_tokens": _identifier_tokens(issue_id, records, cited),
+    }, ensure_ascii=False, indent=2))
     return 0
 
 
