@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import os
+import subprocess
 import tempfile
 import unittest
 from datetime import datetime, timezone
@@ -58,6 +60,61 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
         path = self.source_root / rel
         core.write_json(path, payload)
         return path
+
+    def _snapshot_review_commit(self) -> str:
+        fd, index_name = tempfile.mkstemp(prefix="survey-human-review-index-")
+        os.close(fd)
+        index_path = Path(index_name)
+        index_path.unlink()
+        env = os.environ.copy()
+        env["GIT_INDEX_FILE"] = str(index_path)
+        try:
+            subprocess.run(
+                ["git", "read-tree", self.impl],
+                cwd=self.root,
+                env=env,
+                check=True,
+                capture_output=True,
+            )
+            subprocess.run(
+                ["git", "add", "-f", "--", self.source_rel],
+                cwd=self.root,
+                env=env,
+                check=True,
+                capture_output=True,
+            )
+            tree = subprocess.run(
+                ["git", "write-tree"],
+                cwd=self.root,
+                env=env,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            commit = subprocess.run(
+                [
+                    "git",
+                    "-c",
+                    "user.name=Survey Human Gate Fixture",
+                    "-c",
+                    "user.email=survey-human-gate@example.invalid",
+                    "commit-tree",
+                    tree,
+                    "-p",
+                    self.impl,
+                    "-m",
+                    "Human Gate reviewed fixture snapshot",
+                ],
+                cwd=self.root,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+        finally:
+            index_path.unlink(missing_ok=True)
+        if len(commit) != 40 or any(char not in "0123456789abcdef" for char in commit):
+            raise AssertionError(f"invalid fixture review commit SHA: {commit}")
+        return commit
 
     def _artifacts(self, rows: dict[str, str]) -> dict[str, Path]:
         result: dict[str, Path] = {}
@@ -449,7 +506,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
             core.parse_instant("2026-08-24T00:06:00Z"),
             "review:architecture:r1",
             expected_revision=1,
-            reviewed_commit_sha=self.impl,
+            reviewed_commit_sha=self._snapshot_review_commit(),
         )
         self.assertEqual(state["lifecycle_state"], "SELECTION_COMPLETE")
         self.assertEqual(state["machine_checkpoints"]["architecture"], "pending")
@@ -469,7 +526,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
                 core.parse_instant("2026-08-24T00:08:00Z"),
                 "review:architecture:stale-r1",
                 expected_revision=1,
-                reviewed_commit_sha=self.impl,
+                reviewed_commit_sha=self._snapshot_review_commit(),
             )
 
         state, record_r2, index = human_gate.record_architecture_approval(
@@ -480,7 +537,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
             core.parse_instant("2026-08-24T00:09:00Z"),
             "review:architecture:r2",
             expected_revision=2,
-            reviewed_commit_sha=self.impl,
+            reviewed_commit_sha=self._snapshot_review_commit(),
         )
         self.assertEqual(state["human_gates"]["architecture_review"], "approved")
         self.assertEqual(state["next_action"], "stage:drafting-synthesis")
@@ -488,6 +545,71 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
         reviews = core.load_json(index)["reviews"]
         self.assertEqual([(r["revision"], r["decision"]) for r in reviews], [(1, "REQUEST_CHANGES"), (2, "APPROVED")])
         self.assertEqual(core.load_json(record_r2)["decision"], "APPROVED")
+
+    def test_review_commit_must_exist_and_bind_current_gate_bytes(self) -> None:
+        self._advance_to_selection()
+        self._reach_architecture_gate("Architecture provenance", "2026-08-24T00:05:00Z")
+
+        with self.assertRaisesRegex(ValueError, "reviewed repository commit does not exist"):
+            human_gate.record_architecture_approval(
+                self.root,
+                self.cfg,
+                self.state_path,
+                "human-reviewer",
+                core.parse_instant("2026-08-24T00:06:00Z"),
+                "review:architecture:missing-commit",
+                expected_revision=1,
+                reviewed_commit_sha="0" * 40,
+            )
+
+        with self.assertRaisesRegex(ValueError, "missing reviewed path"):
+            human_gate.record_architecture_approval(
+                self.root,
+                self.cfg,
+                self.state_path,
+                "human-reviewer",
+                core.parse_instant("2026-08-24T00:06:30Z"),
+                "review:architecture:missing-bytes",
+                expected_revision=1,
+                reviewed_commit_sha=self.impl,
+            )
+
+        architecture = self.source_root / "architecture-v2.json"
+        original = architecture.read_bytes()
+        payload = core.load_json(architecture)
+        payload["editorial_thesis"] = "Different bytes in the claimed reviewed commit"
+        core.write_json(architecture, payload)
+        mismatched_commit = self._snapshot_review_commit()
+        architecture.write_bytes(original)
+
+        with self.assertRaisesRegex(ValueError, "reviewed repository commit bytes differ"):
+            human_gate.record_architecture_approval(
+                self.root,
+                self.cfg,
+                self.state_path,
+                "human-reviewer",
+                core.parse_instant("2026-08-24T00:07:00Z"),
+                "review:architecture:mismatched-commit",
+                expected_revision=1,
+                reviewed_commit_sha=mismatched_commit,
+            )
+
+        reviewed_commit = self._snapshot_review_commit()
+        state, record_path, _ = human_gate.record_architecture_approval(
+            self.root,
+            self.cfg,
+            self.state_path,
+            "human-reviewer",
+            core.parse_instant("2026-08-24T00:08:00Z"),
+            "review:architecture:committed-bytes",
+            expected_revision=1,
+            reviewed_commit_sha=reviewed_commit,
+        )
+        self.assertEqual(state["human_gates"]["architecture_review"], "approved")
+        self.assertEqual(
+            core.load_json(record_path)["reviewed_repository_commit_sha"],
+            reviewed_commit,
+        )
 
     def test_architecture_revision_rejects_invalid_boundary_and_changed_review_bytes(self) -> None:
         self._advance_to_selection()
@@ -504,7 +626,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
                 core.parse_instant("2026-08-24T00:06:00Z"),
                 "review:architecture:bad-boundary",
                 expected_revision=1,
-                reviewed_commit_sha=self.impl,
+                reviewed_commit_sha=self._snapshot_review_commit(),
             )
         self.assertEqual(core.load_json(self.state_path), before)
 
@@ -521,7 +643,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
                 core.parse_instant("2026-08-24T00:07:00Z"),
                 "review:architecture:changed-bytes",
                 expected_revision=1,
-                reviewed_commit_sha=self.impl,
+                reviewed_commit_sha=self._snapshot_review_commit(),
             )
 
     def test_publication_preview_request_changes_regenerates_r2_then_approves(self) -> None:
@@ -535,7 +657,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
             core.parse_instant("2026-08-24T00:06:00Z"),
             "review:architecture:r1",
             expected_revision=1,
-            reviewed_commit_sha=self.impl,
+            reviewed_commit_sha=self._snapshot_review_commit(),
         )
         candidate_r1 = self._reach_publication_gate(1, 10)
         validation_checkpoint = self.source_root / self.cfg["state_authority"]["agent_checkpoint_dir"] / "DRAFT_COMPLETE.json"
@@ -554,7 +676,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
                 core.parse_instant("2026-08-24T00:14:00Z"),
                 "review:publication:changed-bytes",
                 expected_revision=1,
-                reviewed_commit_sha=self.impl,
+                reviewed_commit_sha=self._snapshot_review_commit(),
             )
         candidate_r1["pdf"].write_bytes(original_pdf)
 
@@ -568,7 +690,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
             core.parse_instant("2026-08-24T00:15:00Z"),
             "review:publication:r1",
             expected_revision=1,
-            reviewed_commit_sha=self.impl,
+            reviewed_commit_sha=self._snapshot_review_commit(),
         )
         self.assertEqual(state["lifecycle_state"], "DRAFT_COMPLETE")
         self.assertEqual(state["human_gates"]["architecture_review"], "approved")
@@ -609,7 +731,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
                 core.parse_instant("2026-08-24T00:18:00Z"),
                 "review:publication:stale-r1",
                 expected_revision=1,
-                reviewed_commit_sha=self.impl,
+                reviewed_commit_sha=self._snapshot_review_commit(),
             )
 
         state, record_r2, index = human_gate.record_publication_preview_approval(
@@ -620,7 +742,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
             core.parse_instant("2026-08-24T00:19:00Z"),
             "review:publication:r2",
             expected_revision=2,
-            reviewed_commit_sha=self.impl,
+            reviewed_commit_sha=self._snapshot_review_commit(),
         )
         self.assertEqual(state["human_gates"]["publication_preview"], "approved")
         self.assertEqual(state["machine_checkpoints"]["publication_preview"], "passed")
@@ -644,7 +766,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
             core.parse_instant("2026-08-24T00:06:00Z"),
             "review:architecture:r1",
             expected_revision=1,
-            reviewed_commit_sha=self.impl,
+            reviewed_commit_sha=self._snapshot_review_commit(),
         )
         self._reach_publication_gate(1, 10)
         with self.assertRaisesRegex(ValueError, "not allowed for PUBLICATION_PREVIEW"):
@@ -658,7 +780,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
                 core.parse_instant("2026-08-24T00:15:00Z"),
                 "review:publication:bad-boundary",
                 expected_revision=1,
-                reviewed_commit_sha=self.impl,
+                reviewed_commit_sha=self._snapshot_review_commit(),
             )
 
 
