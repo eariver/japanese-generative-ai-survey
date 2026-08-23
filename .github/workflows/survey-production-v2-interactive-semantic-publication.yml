@@ -54,8 +54,10 @@ jobs:
           data=json.load(open(request,encoding='utf-8'))
           if data.get('schema_version')!='2.0-rc1' or data.get('issue_id')!=issue: raise SystemExit('semantic publication request identity mismatch')
           state_path=root/'sources'/issue/'production-state.json'; state=core.load_json(state_path)
-          if state.get('lifecycle_state')!='DRAFT_COMPLETE' or state.get('next_action')!='stage:semantic-publication-validation':
-              raise SystemExit('semantic publication requires DRAFT_COMPLETE State')
+          initial=state.get('lifecycle_state')=='DRAFT_COMPLETE' and state.get('next_action')=='stage:semantic-publication-validation'
+          revision=(state.get('lifecycle_state')=='RELEASE_CANDIDATE' and state.get('next_action')=='PUBLICATION_PREVIEW' and state.get('human_gates',{}).get('publication_preview')=='pending' and state.get('human_gate_provenance',{}).get('publication_preview') is None)
+          if not (initial or revision):
+              raise SystemExit('semantic publication requires DRAFT_COMPLETE or pending unapproved RELEASE_CANDIDATE Publication Preview State')
           cfg=core.load_json(root/core.DEFAULT_CONFIG); errors=agent.validate_agent_state(root,cfg,state)
           if errors: raise SystemExit('; '.join(errors))
           profile=core.load_json(root/state['profile']['path'])
@@ -66,6 +68,7 @@ jobs:
           print(f'request={request.relative_to(root)}')
           print(f'source_root={profile["paths"]["source_root"]}')
           print(f'survey_root={profile["paths"]["survey_root"]}')
+          print(f'mode={"revision" if revision else "initial"}')
           PY
 
       - name: Assemble exact validated publication source
@@ -80,7 +83,7 @@ jobs:
           python - <<'PY' >> "$GITHUB_OUTPUT"
           import json
           data=json.load(open('semantic-publication-v2-output.json',encoding='utf-8'))
-          for key in ('source_root','survey_root','source_manifest','main_tex','bibliography','style','subject_result','empty_result'):
+          for key in ('source_root','survey_root','source_manifest','main_tex','bibliography','style','subject_result','empty_result','longform_preflight'):
               print(f'{key}={data[key]}')
           print('identifier_tokens_json='+json.dumps(data['identifier_tokens'],ensure_ascii=False,separators=(',',':')))
           PY
@@ -92,11 +95,10 @@ jobs:
         run: |
           set -euo pipefail
           epoch=$(PYTHONPATH=. python - <<'PY'
-          import json, pathlib, datetime
+          import json,datetime
           state=json.load(open('${{ steps.request.outputs.state }}',encoding='utf-8'))
           profile=json.load(open(state['profile']['path'],encoding='utf-8'))
-          raw=profile['research_scope']['temporal_policy']['as_of']
-          dt=datetime.datetime.fromisoformat(raw.replace('Z','+00:00'))
+          dt=datetime.datetime.fromisoformat(profile['research_scope']['temporal_policy']['as_of'].replace('Z','+00:00'))
           print(int(dt.timestamp()))
           PY
           )
@@ -110,7 +112,7 @@ jobs:
           texlive_version: 2026
           latexmk_use_lualatex: true
 
-      - name: Run deterministic PDF and identifier preflight
+      - name: Run deterministic PDF, reader-surface and identifier preflight
         id: preflight
         shell: bash
         env:
@@ -121,15 +123,13 @@ jobs:
           IDENTIFIER_TOKENS_JSON: ${{ steps.assemble.outputs.identifier_tokens_json }}
         run: |
           set -euo pipefail
-          pdf="$SURVEY_ROOT/main.pdf"
-          log="$SURVEY_ROOT/main.log"
+          pdf="$SURVEY_ROOT/main.pdf"; log="$SURVEY_ROOT/main.log"
           test -s "$pdf" && test -s "$log"
           bad=$(grep -E -n 'LaTeX Warning: (There were undefined references|Citation .* undefined)|Package biblatex Warning: Please (re)?run|Overfull \\hbox|Underfull \\hbox|Missing character:' "$log" || true)
           if [ -n "$bad" ]; then printf '%s\n' "$bad" >&2; exit 1; fi
           pages=$(python - "$log" <<'PY'
           import re,sys
-          text=open(sys.argv[1],encoding='utf-8',errors='replace').read()
-          found=re.findall(r'Output written on .*?\((\d+) pages?',text,re.S)
+          text=open(sys.argv[1],encoding='utf-8',errors='replace').read(); found=re.findall(r'Output written on .*?\((\d+) pages?',text,re.S)
           if not found: raise SystemExit('could not determine PDF page count')
           print(found[-1])
           PY
@@ -141,15 +141,16 @@ jobs:
           PYTHONPATH=. python - "$ISSUE_ID" "$SOURCE_ROOT" "$SURVEY_ROOT" "$SOURCE_MANIFEST" "$pages" "$IDENTIFIER_TOKENS_JSON" <<'PY'
           import hashlib,json,pathlib,re,sys
           issue,source_root_raw,survey_root_raw,manifest_raw,pages_raw,tokens_raw=sys.argv[1:]
-          root=pathlib.Path('.').resolve(); source_root=(root/source_root_raw).resolve(); survey_root=(root/survey_root_raw).resolve()
-          pub=source_root/'publication/v2'; quality=pub/'quality'; pdf=pub/f'{issue}-publication-preview.pdf'; text_path=pub/f'{issue}-publication-preview.txt'; log=pub/f'{issue}-publication-preview.log'
-          sha=lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
-          text=' '.join(text_path.read_text(encoding='utf-8',errors='replace').split())
-          tokens=json.loads(tokens_raw); missing=[token for token in tokens if token not in text]
+          root=pathlib.Path('.').resolve(); source_root=(root/source_root_raw).resolve(); pub=source_root/'publication/v2'; quality=pub/'quality'
+          pdf=pub/f'{issue}-publication-preview.pdf'; text_path=pub/f'{issue}-publication-preview.txt'; log=pub/f'{issue}-publication-preview.log'; sha=lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+          raw=text_path.read_text(encoding='utf-8',errors='replace'); text=' '.join(raw.split()); tokens=json.loads(tokens_raw); missing=[t for t in tokens if t not in text]
           if missing: raise SystemExit('PDF identifier preservation failed: '+', '.join(missing))
-          identifier={'schema_version':'2.0-rc1','check_id':'IDENTIFIER_PRESERVATION','status':'PASS','issue_id':issue,'tokens':tokens,'pdf_sha256':sha(pdf),'finding':'All required model/family and Open Weight identifiers survive PDF text extraction.'}
+          forbidden=[r'\bVerify\b',r'Core v2 Evidence',r'materiality\s*:',r'This retained evidence note',r'\bSP[A-Za-z0-9._-]*-D\d{3,}\b']
+          leaked=[p for p in forbidden if re.search(p,raw,re.I)]
+          if leaked: raise SystemExit('reader-facing production metadata leakage: '+', '.join(leaked))
+          identifier={'schema_version':'2.0-rc1','check_id':'IDENTIFIER_PRESERVATION','status':'PASS','issue_id':issue,'tokens':tokens,'pdf_sha256':sha(pdf),'finding':'All required model/family and Open Weight identifiers survive PDF text extraction; production metadata leakage patterns are absent.'}
           (quality/'identifier-preservation.json').write_text(json.dumps(identifier,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          preflight={'schema_version':'2.0-rc1','check_id':'PDF_PREFLIGHT','status':'PASS','issue_id':issue,'page_count':int(pages_raw),'pdf_sha256':sha(pdf),'byte_count':pdf.stat().st_size,'log_sha256':sha(log),'source_manifest_path':manifest_raw,'source_manifest_sha256':sha(root/manifest_raw),'log_gate_findings':[],'finding':'LuaLaTeX/biber completed with no undefined references/citations, rerun requests, overfull/underfull boxes, or missing characters under the enforced log gate.'}
+          preflight={'schema_version':'2.0-rc1','check_id':'PDF_PREFLIGHT','status':'PASS','issue_id':issue,'page_count':int(pages_raw),'pdf_sha256':sha(pdf),'byte_count':pdf.stat().st_size,'log_sha256':sha(log),'source_manifest_path':manifest_raw,'source_manifest_sha256':sha(root/manifest_raw),'log_gate_findings':[],'reader_surface_leak_findings':[],'finding':'LuaLaTeX/biber completed with no undefined references/citations, rerun requests, overfull/underfull boxes, missing characters, or forbidden reader-facing production metadata.'}
           (quality/'pdf-preflight.json').write_text(json.dumps(preflight,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           print(json.dumps({'page_count':int(pages_raw),'pdf_sha256':sha(pdf),'pdf_path':str(pdf.relative_to(root)),'text_path':str(text_path.relative_to(root))},ensure_ascii=False))
           PY
@@ -166,8 +167,7 @@ jobs:
           PUSH_BRANCH: ${{ github.head_ref }}
         run: |
           set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           rm -f "$REQUEST"
           git add "$SOURCE_ROOT" "$SURVEY_ROOT"
           if git diff --cached --quiet; then echo 'No semantic publication changes to commit.' >&2; exit 1; fi
