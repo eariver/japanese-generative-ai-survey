@@ -266,6 +266,12 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
         self.assertIsNone(architecture_approved["terminal_reason"])
 
         fixture._reach_publication_gate(1, 10)
+        candidate_checkpoint = (
+            fixture.source_root
+            / fixture.cfg["state_authority"]["agent_checkpoint_dir"]
+            / "VALIDATED_DRAFT.json"
+        )
+        self.assertTrue(candidate_checkpoint.is_file())
         revised = self._execute(
             fixture,
             "bridge-publication-r1-revise",
@@ -286,7 +292,8 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
         self.assertEqual(state["human_gates"]["architecture_review"], "approved")
         self.assertEqual(state["human_gates"]["publication_preview"], "pending")
         self.assertEqual(state["machine_checkpoints"]["validation"], "pending")
-        self.assertEqual(state["machine_checkpoints"]["publication_candidate"], "pending")
+        self.assertFalse(candidate_checkpoint.exists())
+        self.assertIn(candidate_checkpoint.relative_to(fixture.root).as_posix(), revised["removed_paths"])
 
         candidate_r2 = fixture._build_publication_candidate(2)
         fixture._advance(
