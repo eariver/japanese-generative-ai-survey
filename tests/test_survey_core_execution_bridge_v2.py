@@ -35,14 +35,33 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
             },
         }
 
+    def advance_request(self) -> dict:
+        payload = self.weekly_request()
+        payload["request_id"] = "w33-discovery-r2"
+        payload["recorded_at"] = "2026-08-23T13:40:00Z"
+        payload["operation"] = {
+            "kind": "ADVANCE_STAGE",
+            "expected_from_state": "ISSUE_INITIALIZED",
+            "state_path": "sources/2026-W33/production-state.json",
+            "artifacts": [
+                {
+                    "name": "discovery-acceptance",
+                    "path": "sources/2026-W33/discovery/discovery-accepted-v2.json",
+                }
+            ],
+            "agent_reviews": [],
+            "summary": "Adopt validated Discovery.",
+        }
+        return payload
+
     def test_request_schema_accepts_bounded_weekly_initialization(self) -> None:
         schema_gate.validate_instance(self.weekly_request(), self.schema, label="Operator request")
 
     def test_request_schema_requires_reviewed_main_for_every_operation(self) -> None:
-        payload = self.weekly_request()
-        del payload["reviewed_main_sha"]
-        with self.assertRaises(ValueError):
-            schema_gate.validate_instance(payload, self.schema, label="Operator request")
+        for payload in (self.weekly_request(), self.advance_request()):
+            del payload["reviewed_main_sha"]
+            with self.assertRaises(ValueError):
+                schema_gate.validate_instance(payload, self.schema, label="Operator request")
 
         payload = self.weekly_request()
         payload["reviewed_main_sha"] = "not-a-sha"
@@ -91,29 +110,15 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
             schema_gate.validate_instance(payload, self.schema, label="Operator request")
 
     def test_advance_request_cannot_claim_deterministic_agent_review(self) -> None:
-        payload = self.weekly_request()
-        payload["request_id"] = "w33-discovery-r2"
-        payload["recorded_at"] = "2026-08-23T13:40:00Z"
-        payload["operation"] = {
-            "kind": "ADVANCE_STAGE",
-            "expected_from_state": "ISSUE_INITIALIZED",
-            "state_path": "sources/2026-W33/production-state.json",
-            "artifacts": [
-                {
-                    "name": "discovery-acceptance",
-                    "path": "sources/2026-W33/discovery/discovery-accepted-v2.json",
-                }
-            ],
-            "agent_reviews": [
-                {
-                    "check_id": "FAKE_DETERMINISTIC_PASS",
-                    "kind": "DETERMINISTIC",
-                    "executor": "ChatGPT",
-                    "evidence": "not allowed",
-                }
-            ],
-            "summary": "Adopt validated Discovery.",
-        }
+        payload = self.advance_request()
+        payload["operation"]["agent_reviews"] = [
+            {
+                "check_id": "FAKE_DETERMINISTIC_PASS",
+                "kind": "DETERMINISTIC",
+                "executor": "ChatGPT",
+                "evidence": "not allowed",
+            }
+        ]
         with self.assertRaises(ValueError):
             schema_gate.validate_instance(payload, self.schema, label="Operator request")
 
@@ -127,12 +132,14 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
         self.assertIn("--diff-filter=A", text)
         self.assertIn("Operator request commit must contain only the immutable request file", text)
         self.assertIn("Verify reviewed-main Core baseline", text)
-        self.assertIn('reviewed_main_sha', text)
+        self.assertIn("reviewed_main_sha", text)
         self.assertIn("git merge-base --is-ancestor", text)
+        self.assertIn('paths = [".github/workflows", "config", "schemas", "scripts"]', text)
         self.assertIn("implementation_control_roots", text)
         self.assertIn("contract_files", text)
         self.assertIn("Shared Core or contract authority drifted from reviewed_main_sha", text)
         self.assertIn("Initialization execution record reviewed_main_sha must equal request reviewed_main_sha", text)
+        self.assertLess(text.index("Verify reviewed-main Core baseline"), text.index("Install Core dependencies"))
         self.assertIn("operator-bridge-result.json", text)
         self.assertIn("Bridge attempted write outside edition source root", text)
         self.assertIn("Bridge must not mutate immutable request authority", text)
