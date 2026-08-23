@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Post-Merge Production Feedback Backlog
 
-Status: `REDESIGN INTEGRATED / PFB-014 HUMAN-GATE ROUNDTRIP IMPLEMENTATION CANDIDATE / REAUDIT PENDING`  
+Status: `REDESIGN INTEGRATED / PFB-014 HUMAN-GATE ROUNDTRIP + DIRECT-LOCAL REVIEW PROVENANCE CANDIDATE / REAUDIT PENDING`  
 Established: 2026-08-23 JST  
 Initial review closed: 2026-08-23 JST  
 Last updated: 2026-08-24 JST
@@ -12,6 +12,8 @@ Current maintenance branch: `maintenance/core-v2-operator-execution-bridge`
 The initial W33/SP001 production feedback drove the Core v2 redesign that was reviewed and integrated. Subsequent clean post-merge W33/SP001 revalidation exposed an additional dependency: the normal ChatGPT connector runtime can research/edit the repository but cannot necessarily mount the exact work branch and execute the canonical local Core CLI.
 
 A later pre-approval full-system audit found a second consequence of the same operator-runtime constraint: the first bridge could reach a normal Human Gate but could not canonically record an already explicit Human approval or ordinary requested-revision cycle. PFB-014 therefore now covers the complete connector-safe deterministic execution boundary, including Human Gate round trips.
+
+The first seven-point fixed-head audit then found a transport-symmetry provenance defect after connector-safe parent binding had already been repaired: direct-local Human Gate recording accepted a syntactically valid 40-hex `reviewed_repository_commit_sha` without proving that the commit existed or contained the exact reviewed State/Gate-input bytes. PFB-014 therefore also requires the same reviewed-commit reconstructability invariant in the preferred direct-local path.
 
 Cross-edition revalidation: `docs/checkpoints/survey-production-core-v2-postmerge-revalidation-worklog.md`  
 Operator-bridge design: `docs/survey-production-core-v2-operator-execution-bridge.md`
@@ -126,7 +128,7 @@ The first post-merge attempts did real operator work but could not begin canonic
 
 ## PFB-014 — deterministic Core execution fallback for connector-only runtimes
 
-Status: `IMPLEMENTATION CANDIDATE / HUMAN-GATE ROUNDTRIP IMPLEMENTED / SEVEN-POINT REAUDIT PENDING`
+Status: `IMPLEMENTATION CANDIDATE / HUMAN-GATE ROUNDTRIP + DIRECT-LOCAL REVIEW PROVENANCE REPAIRED / SEVEN-POINT REAUDIT PENDING`
 
 ### Observation
 
@@ -141,6 +143,12 @@ The first bridge candidate addressed initialization and one-stage advancement bu
 
 A later freeze-preparation audit also found a provenance precision defect: the bridge originally recorded the request/event commit as `reviewed_repository_commit_sha`, although the Human had actually reviewed the edition bytes in the request-only commit's parent. The candidate now requires an explicit Human-reviewed commit SHA and the workflow proves it equals the request parent before execution.
 
+The first seven-point fixed-head audit of candidate `0a9e2d2c5bd9124ba626cdc7558e645d8021946c` passed Points 1–6 but failed Point 7 with a new independent finding:
+
+- **HG-003:** direct-local `survey_human_gate_v2` accepted a lowercase 40-hex reviewed commit override without proving the commit existed or that its tree contained the exact reviewed Production State and Gate-input bytes. Connector-safe execution had stronger provenance than the preferred direct-local path.
+
+That freeze was invalidated. The repair is Human-Gate-specific rather than a global tightening of implementation-SHA fixtures: direct-local Human Gate recording now resolves the reviewed commit as a real Git commit, reads each reviewed path from that commit tree, requires regular-file entries, and compares the committed bytes to the exact current State/Gate-input SHA-256 authority before any approval or revision consequence is recorded.
+
 ### Retrospective diagnosis
 
 Core already contained canonical generic Retrospective support:
@@ -152,6 +160,8 @@ The bridge therefore exposes that existing initializer; it does not create a sec
 
 ### Current required behavior
 
+Connector-safe execution:
+
 ```text
 ChatGPT commits edition artifacts
 -> Human reviews the exact current edition commit when a Human Gate is reached
@@ -159,9 +169,21 @@ ChatGPT commits edition artifacts
 -> runner checks out exact request commit
 -> runner proves reviewed_repository_commit_sha == request-only commit parent
 -> runner proves protected Core/contract bytes equal reviewed main
+-> canonical Human Gate helper independently proves the named commit contains exact reviewed State/Gate-input bytes
 -> runner executes only allowlisted canonical deterministic mechanics
 -> runner commits only edition-local authorities/receipts
 -> ChatGPT resumes from canonical State
+```
+
+Direct-local execution:
+
+```text
+ChatGPT commits the exact edition State/Gate-input bytes presented for Human review
+-> Human reviews that exact repository commit
+-> direct canonical Human Gate helper resolves the named commit object
+-> helper reads reviewed State/Gate-input paths from the commit tree
+-> helper requires committed bytes == current exact review authority bytes
+-> only then record APPROVED / REQUEST_CHANGES deterministic consequence
 ```
 
 At a Human Gate:
@@ -169,9 +191,9 @@ At a Human Gate:
 ```text
 Human explicitly decides APPROVED
   or REQUEST_CHANGES + requested changes + regeneration boundary
--> ChatGPT encodes only that explicit decision/provenance in immutable request
--> bridge/Core validates exact pending gate/current bytes/revision
--> workflow binds Human-reviewed commit to request parent
+-> ChatGPT encodes only that explicit decision/provenance
+-> canonical Core validates exact pending gate/current bytes/revision
+-> execution transport proves the named review commit is the actual committed review surface
 -> Core records approval or immutable rN review record
 -> APPROVED resumes lifecycle
    OR REQUEST_CHANGES selectively invalidates downstream authority
@@ -225,7 +247,7 @@ The canonical machine review history is:
 {source_root}/gates/review-index.json
 ```
 
-Each rN binds exact reviewed State/artifact SHA-256 values, the exact Human-reviewed repository commit, Human provenance, decision, and requested revision boundary where applicable. In connector-safe execution that reviewed commit is exactly the request-only commit parent; the bridge receipt separately retains the request/event commit. Prior reviewed bytes remain reconstructable; current Production State/checkpoint/gate provenance determines current authority.
+Each rN binds exact reviewed State/artifact SHA-256 values, the exact Human-reviewed repository commit, Human provenance, decision, and requested revision boundary where applicable. In connector-safe execution that reviewed commit is exactly the request-only commit parent; in direct-local execution the Human Gate helper proves the commit exists and contains the same reviewed State/Gate-input bytes before recording the decision. Prior reviewed bytes therefore remain reconstructable; current Production State/checkpoint/gate provenance determines current authority.
 
 ### Regression evidence implemented before final freeze
 
@@ -240,6 +262,8 @@ The candidate now includes positive/negative direct and bridge-backed Human Gate
 - generic Human-decision/rejection operation surface absent;
 - request/event SHA and Human-reviewed commit SHA are intentionally distinct in bridge E2E and remain distinct in the review record/receipt;
 - workflow refuses a Human Gate request unless its reviewed commit is the exact request-only parent;
+- direct-local Human Gate E2E uses actual synthetic Git commit snapshots without moving HEAD;
+- nonexistent reviewed commit, reviewed commit missing the Gate paths, and same-path/different-byte reviewed commits fail closed before a decision is recorded;
 - request-only bridge transport, reviewed-main preflight, bot-recursion protection and no arbitrary execution remain protected.
 
 These are candidate regressions, not substitutes for post-integration real-production validation.
@@ -259,15 +283,15 @@ PFB-014 cannot close until all conditions below hold:
 9. deterministic `CORE_STAGE_CONTRACT` is generated by Core;
 10. ChatGPT reviews cannot impersonate deterministic results;
 11. bot output cannot recursively retrigger;
-12. exact request/event/State provenance is recorded, and Human Gate provenance separately binds the exact reviewed parent commit rather than conflating it with the request/event commit;
-13. direct-local CLI remains preferred;
+12. exact request/event/State provenance is recorded, and Human Gate provenance binds a real repository commit containing the exact reviewed State/Gate-input bytes; connector transport additionally proves that commit is the request-only parent rather than conflating it with the request/event commit;
+13. direct-local CLI remains preferred and applies the same reviewed-commit byte-binding invariant without relying on Actions preflight;
 14. Retrospective request reuses existing `survey_period_v2`, rejects unknown/pre-period-end targets through existing Core semantics, and adds no cadence-specific engine;
 15. bridge glue has init -> stage-advance E2E coverage;
 16. HG-001: explicit Architecture and Publication Preview approval can be canonically recorded from connector-only operation without Actions/Core making the decision;
 17. HG-002: both normal gates support explicit `REQUEST_CHANGES`, contiguous rN history, allowed selective invalidation and return to the same gate;
-18. stale review revision, changed reviewed bytes, invalid regeneration boundaries and reviewed-parent mismatch fail closed;
+18. stale review revision, changed reviewed bytes, invalid regeneration boundaries, nonexistent/missing/mismatched direct-local review commits and connector reviewed-parent mismatch fail closed;
 19. prior review revisions remain reconstructable while only current State/gate/checkpoint authority is active;
-20. direct canonical and bridge-backed Human Gate round-trip regressions pass;
+20. direct canonical and bridge-backed Human Gate round-trip regressions pass with equivalent reviewed-commit provenance strength;
 21. exact-head Core CI + Pipeline contract tests pass on the final unchanged candidate;
 22. complete **seven-point** fixed-head audit, including Point 7 Human Gate round-trip viability, passes from Point 1 on one unchanged candidate SHA;
 23. after reviewed unchanged integration, clean Weekly/SP001/Retrospective/Foundations trials reach required gates without in-run shared-Core repair.
@@ -276,16 +300,16 @@ PFB-014 cannot close until all conditions below hold:
 
 The missing execution fallback began as `TRANSIENT_EXECUTION / OPERATOR-RUNTIME CAPABILITY`. Because the production model must work in the actual ChatGPT runtime used by this project, it is a **shared operator/Core integration maintenance requirement**.
 
-Retrospective exposure and Human Gate deterministic recording/revision are parts of that same integration boundary, not new editorial subsystems.
+Retrospective exposure and Human Gate deterministic recording/revision are parts of that same integration boundary, not new editorial subsystems. HG-003 is a provenance-symmetry repair within the same Human Gate protocol, not a new Gate or workflow.
 
 ## Current next step
 
 Do not resume canonical W33/SP001 acceptance on a pre-PFB-014 baseline.
 
 ```text
-finish authority/worklog synchronization and pre-freeze consistency audit
--> resolve any remaining shared-Core consistency finding
--> freeze one exact maintenance candidate SHA
+finish HG-003 regression/authority synchronization
+-> obtain green diagnostic CI
+-> freeze a new exact maintenance candidate SHA
 -> exact-head Core CI + Pipeline contract tests
 -> complete seven-point audit from Point 1 on unchanged SHA
 -> Human full-candidate review
