@@ -1,245 +1,287 @@
 # Survey Production Core v2 — Post-merge W33/SP001 revalidation worklog
 
-Status: `REAL-PRODUCTION REVALIDATION PARTIALLY EXERCISED / CANONICAL CLI EXECUTION BLOCKED BY OPERATOR RUNTIME`
+Status: `OPERATOR BRIDGE MAINTENANCE IN PROGRESS / W33 + SP001 COLD REVALIDATION PAUSED UNTIL REVIEWED INTEGRATION`
 
-Established: 2026-08-23 JST
+Established: 2026-08-23 JST  
+Last updated: 2026-08-23 JST
 
-Integrated Core baseline: `2cb52dc293484a5c2ddd3caf9c909f18f4699c49`
+Integrated Core baseline that exposed the gap: `2cb52dc293484a5c2ddd3caf9c909f18f4699c49`
 
-Validation editions:
+Current `main` at maintenance start: `2bcaa7d1df1826ab8848c25de8bf2373d85a8e75`
+
+Current shared-Core maintenance branch:
+
+`maintenance/core-v2-operator-execution-bridge`
+
+Validation editions retained as non-PASS evidence while maintenance is in progress:
 
 - Weekly: `weekly/2026-W33-v2-work`
 - Thematic/LONGFORM regression: `special/SP001-v2-work`
 
-Historical failed pre-redesign editions remain archived separately and are not acceptance evidence for this run.
+Historical failed pre-redesign editions remain archived separately and are not acceptance evidence.
 
-## Purpose
+## Resume checkpoint — read this first
 
-This file is the cross-edition resume and feedback record for the **post-merge clean production revalidation** required after the Core v2 redesign.
+The post-merge clean W33/SP001 trials successfully exercised real ChatGPT research/editorial work, including the actual Human-mediated Grok/Google Drive boundary for W33, but could not begin canonical Core lifecycle execution because the ChatGPT connector runtime had no exact repository checkout/CLI bridge.
 
-It is not a Production State, Human Gate record, or substitute for edition-local canonical artifacts. Its purpose is to preserve what the W33/SP001 trial actually exercised, what remains unexecuted, and which findings should be considered for future Core/operator-flow maintenance.
+That blocker is now being handled as **shared operator/Core maintenance**, not by fabricating machine artifacts and not by adding edition-specific temporary workflows.
 
-Edition-local resume authorities:
+Current position:
 
-- W33: `weekly/2026-W33-v2-work` / `sources/2026-W33/postmerge-validation-status.md`
-- SP001: `special/SP001-v2-work` / `sources/SP001/postmerge-validation-status.md`
+1. W33 and SP001 production branches are intentionally paused.
+2. A generic deterministic operator bridge is being implemented on `maintenance/core-v2-operator-execution-bridge`.
+3. The bridge is intended to execute only canonical deterministic Core mechanics from one immutable edition-local request commit.
+4. After bridge exact-head CI/audit and Human-reviewed integration, W33/SP001 must be cleanly restarted/rebased from the reviewed `main` and rerun canonically.
+5. Neither existing trial may be relabeled as PASS.
 
-## Current overall position
-
-The redesigned Core was merged after exact-head CI and fixed-head review. Clean W33 and SP001 work branches were reset to that integrated baseline while preserving the failed pre-redesign branches as archives.
-
-The revalidation has exercised substantial **real operator work**, but has not completed the canonical lifecycle:
-
-### W33 exercised successfully
-
-- current Weekly time-window resolution;
-- self-contained `grok-task.md` creation and Human-mediated Drive handoff;
-- Grok execution against the exact task path;
-- result return into the exact Drive run folder;
-- exact result-byte retrieval and repository Raw import;
-- X/community disposition discipline;
-- ChatGPT primary-source follow-up;
-- fresh editorial Architecture preparation.
-
-W33 is currently blocked before canonical Profile/State/X-manifest/Discovery lifecycle execution.
-
-### SP001 exercised successfully
-
-- current backlog/scope authority lookup and clean scope materialization;
-- Thematic X applicability reasoning (`NOT_REQUIRED` prepared);
-- broad primary-source intake across DeepSeek/Qwen/GLM/Kimi and supporting families;
-- explicit licensing/open-weight/runtime-distribution boundaries;
-- complete seven-obligation editorial coverage plan;
-- fresh six-package Architecture preparation.
-
-SP001 is currently blocked before canonical Profile/State/Discovery lifecycle execution.
-
-Neither edition may be counted as a post-integration production PASS until the integrated Core validators actually advance authoritative State to `ARCHITECTURE_ESTABLISHED` and stop at pending `ARCHITECTURE_REVIEW` without shared-Core repair.
-
-## Revalidation finding RVF-001 — Human-mediated Grok/Drive transport works in real operation
-
-Status: `CONFIRMED BY W33`
-
-The redesigned single-task-file shape worked as intended:
-
-```text
-ChatGPT prepares exact Drive grok-task.md
--> Human gives Grok only that path/reference
--> Grok reads the exact task
--> Grok writes the result into the instructed run folder
--> ChatGPT retrieves exact result bytes
--> ChatGPT imports Raw and continues research
-```
-
-This validates the operational direction of PFB-001/PFB-002. No Grok connector is required for the normal boundary.
-
-W33 exact task:
-
-`Grok_X_SourseIntake/Weekly/2026-W33/weekly-x-2026-W33-postmerge-r1/grok-task.md`
-
-Returned Raw repository authority:
-
-`sources/2026-W33/external/x/weekly-x-2026-W33-postmerge-r1/raw/grok-x-result.md`
-
-Raw SHA-256: `93fe6b8c2eeea4e3186868f79927108edacebc26d8ff23f1bcc38ac1080e1f06`
-
-## Revalidation finding RVF-002 — X/community versus technical Evidence boundary works editorially
-
-Status: `CONFIRMED EDITORIALLY / CANONICAL MANIFEST VALIDATION STILL PENDING`
-
-The W33 Grok result contained a mixture of official announcements, hands-on tests, pricing narratives, benchmark commentary, local-inference reports and rumors. ChatGPT was able to treat this as **observation/discovery signal**, then re-verify material claims against first-party sources rather than promoting X assertions directly into technical Evidence.
-
-This division should remain a Core/operator invariant:
-
-- Grok/X answers what is salient, tested, discussed, disputed or practically constrained in the community;
-- primary/authoritative sources establish technical facts;
-- unsupported X details remain community observation or HOLD.
-
-## Revalidation finding RVF-003 — fresh X can materially change Weekly Architecture
-
-Status: `CONFIRMED BY W33`
-
-The post-merge W33 X observation surfaced a concentrated Aug. 12–14 frontier/open-model release wave. Primary-source follow-up confirmed that Grok 4.6, Qwen3.8, Gemini 3.7 Flash and GLM-5.3 were all materially in-window.
-
-This changed the editorial interpretation from an older three-feature-centered shape toward a broader system-level week involving:
-
-- model release velocity;
-- agentic/coding evaluation;
-- local/open-weight deployment;
-- serving/runtime co-evolution;
-- governed high-risk capability;
-- cost/pricing pressure.
-
-Therefore Weekly X intake is not merely a decorative community section; it can change package selection and issue synthesis while still remaining outside technical fact authority.
-
-## Revalidation finding RVF-004 — Thematic X applicability can legitimately be NOT_REQUIRED
-
-Status: `CONFIRMED EDITORIALLY BY SP001 / CANONICAL RECORD PENDING`
-
-For SP001, the technical-history question can be closed through technical reports, official repositories/model cards, API/distribution documentation and license/model artifacts. X is unlikely to change the core technical lineage/strategy Architecture enough to justify mandatory Grok transport.
-
-This supports the current policy distinction:
-
-- Weekly: X required by Profile;
-- Thematic/Retrospective: ChatGPT decides applicability with rationale;
-- Foundations-guided Thematic: dedicated category when X is materially useful.
-
-The remaining requirement is to prove the `NOT_REQUIRED` decision through the canonical X manifest/profile path once CLI execution is available.
-
-## Revalidation finding RVF-005 — operator runtime bridge is now the blocking production dependency
-
-Status: `NEW / UNRESOLVED`
-
-The redesign intentionally removed research/editorial lifecycle mutation from GitHub Actions. That responsibility correctly returned to ChatGPT + local deterministic Core scripts.
-
-However, the current ChatGPT runtime has the following split capability:
-
-- GitHub connector can read/write files and inspect commits, trees, blobs and Actions;
-- the local shell/container is not backed by a mounted checkout of the connected repository;
-- the local container cannot directly fetch the repository from GitHub network access;
-- connector-returned repository bytes cannot currently be bridged into the shell as a working tree;
-- retained Actions intentionally do not provide a research/editorial lifecycle runner.
-
-Result: ChatGPT can perform research and repository mutation through the connector, but cannot legally execute the canonical local Core CLI over the edition branch.
-
-Classification for these trials: `TRANSIENT_EXECUTION / OPERATOR-RUNTIME CAPABILITY`, not yet a shared-Core defect.
-
-### Flow implication
-
-The redesigned architecture needs an **operator execution path**, but that does not imply restoring Actions as a production authoring worker.
-
-Future maintenance should evaluate a minimal, generic bridge such as one of these categories:
-
-1. a supported repository checkout/mount available to the ChatGPT execution runtime;
-2. a connector operation that materializes an exact branch/commit into the local execution filesystem;
-3. another reviewed deterministic remote-execution bridge that runs the existing canonical CLI without adding editorial/reasoning responsibility to Actions.
-
-The solution must preserve:
-
-- exact commit/branch identity;
-- local Core script authority;
-- no hidden authoring logic in CI;
-- no edition-specific temporary workflow;
-- reproducible output/provenance;
-- fail-closed handling of shared-Core defects.
-
-This should become a Core/operator-platform maintenance item before PFB-013 can be closed as real-production PASS.
-
-## Revalidation finding RVF-006 — do not fabricate machine acceptance when execution is unavailable
-
-Status: `CONFIRMED OPERATIONAL RULE`
-
-During both editions, sufficient information existed to manually compose plausible `production-profile.json`, `production-state.json`, X manifests and downstream artifacts. Doing so would have made the trial appear successful while bypassing the exact validators being tested.
-
-Therefore the revalidation deliberately stopped at the execution boundary.
-
-Future production sessions should retain this rule:
-
-> If the canonical machine path cannot be executed, preserve preparation and provenance, classify the blocker, and stop short of machine acceptance rather than manually imitating validator output.
-
-## Revalidation finding RVF-007 — edition-local resume records remain useful even before canonical execution records exist
-
-Status: `CONFIRMED / TEMPORARY COMPATIBILITY PRACTICE`
-
-The redesigned Core defines canonical execution records under:
-
-```text
-sources/<issue>/execution/
-  index.md
-  sessions/
-  reviews/
-  defects/
-```
-
-Because canonical Profile/State initialization could not run, those records have not yet been legally bootstrapped for the clean editions. To avoid losing resume state, each branch now has an explicit human-readable checkpoint:
-
-- W33: `sources/2026-W33/postmerge-validation-status.md`
-- SP001: `sources/SP001/postmerge-validation-status.md`
-
-Once canonical execution-record initialization becomes possible, future edition work should use the standard `execution/` tree and treat these postmerge status files as migration/resume evidence rather than the long-term preferred layout.
-
-## Revalidation finding RVF-008 — old failed edition artifacts must remain visibly non-authoritative
-
-Status: `CONFIRMED`
-
-W33 demonstrates the compatibility case directly: integrated `main` already contains historical `sources/2026-W33/pipeline-state.json` and older Grok material. The redesigned Core declares that legacy state `NON_AUTHORITATIVE_READ_ONLY`.
-
-A clean validation can therefore coexist with historical files only if:
-
-- canonical `production-state.json` is initialized independently;
-- legacy bytes are pinned as compatibility evidence only;
-- no old Candidate/Architecture/acceptance state is silently adopted.
-
-SP001 takes the stronger clean-start path: failed pre-redesign canonical artifacts were not copied into the new branch.
-
-## PFB-013 status after this trial
-
-Existing acceptance requirement: real cold-start Weekly + SP001/LONGFORM validation after reviewed Core integration.
-
-Current verdict: `PARTIALLY EXERCISED / NOT PASSED`.
-
-Reason:
-
-- W33 and SP001 both exercised real research/editorial operator flows without shared-Core mutation;
-- W33 also exercised the actual Human-mediated Grok transport path;
-- canonical lifecycle execution could not start because the operator runtime lacked a repository execution bridge.
-
-Therefore PFB-013 must remain open until the same integrated Core can be executed canonically and both editions reach the requested Human Gate without shared-Core repair.
-
-## Resume plan for the validation program
+## Edition-local resume authorities
 
 ### W33
 
-Read first:
+Branch:
 
-`weekly/2026-W33-v2-work:sources/2026-W33/postmerge-validation-status.md`
+`weekly/2026-W33-v2-work`
 
-Resume at:
+Primary resume file:
+
+`sources/2026-W33/postmerge-validation-status.md`
+
+Completed preparation:
+
+- canonical Weekly window resolved;
+- one self-contained Drive `grok-task.md` created and executed by Grok;
+- exact returned Raw bytes imported;
+- X/community signal disposition performed;
+- primary-source follow-up performed;
+- fresh editorial Architecture preparation written.
+
+Important exact Raw authority:
+
+`sources/2026-W33/external/x/weekly-x-2026-W33-postmerge-r1/raw/grok-x-result.md`
+
+SHA-256:
+
+`93fe6b8c2eeea4e3186868f79927108edacebc26d8ff23f1bcc38ac1080e1f06`
+
+Do not rerun Grok unless the exact existing Raw is later proven unusable by canonical validation.
+
+### SP001
+
+Branch:
+
+`special/SP001-v2-work`
+
+Primary resume file:
+
+`sources/SP001/postmerge-validation-status.md`
+
+Completed preparation:
+
+- current Thematic backlog scope materialized;
+- X/Grok applicability prepared as `NOT_REQUIRED`;
+- primary-source research across the major Chinese model families completed to Architecture-preparation depth;
+- licensing/open-weight/runtime boundaries explicitly separated;
+- seven scope obligations mapped;
+- six-package editorial Architecture preparation written.
+
+Prepared files:
+
+- `sources/SP001/research-scope-v2.json`
+- `sources/SP001/intake/postmerge-primary-source-intake.md`
+- `sources/SP001/architecture-preparation.md`
+
+Do not copy failed pre-redesign accepted artifacts into the clean rerun.
+
+## Revalidation findings retained
+
+### RVF-001 — Human-mediated Grok/Drive transport works
+
+Status: `CONFIRMED BY REAL W33 OPERATION`
+
+The single-task-file boundary worked:
 
 ```text
-canonical Profile/State initialization
--> canonical X manifest generation
--> bind existing imported Grok Raw
+ChatGPT prepares exact grok-task.md
+-> Human passes only that Drive path/reference to Grok
+-> Grok writes result in instructed run folder
+-> ChatGPT retrieves exact bytes
+-> ChatGPT imports Raw and resumes
+```
+
+No Grok connector is required for the normal boundary.
+
+### RVF-002 — X/community and technical Evidence separation works editorially
+
+Status: `CONFIRMED EDITORIALLY / CANONICAL MANIFEST VALIDATION STILL PENDING`
+
+Grok/X is useful for salience, hands-on behavior, disagreement, practical friction and community movement. Technical facts still require authoritative verification before entering Evidence.
+
+### RVF-003 — fresh X can materially change Weekly Architecture
+
+Status: `CONFIRMED BY W33`
+
+The Aug. 12–14 model-release wave materially changed W33 package selection and synthesis after primary-source follow-up. Weekly X intake is therefore not merely decorative.
+
+### RVF-004 — Thematic X applicability can legitimately be `NOT_REQUIRED`
+
+Status: `CONFIRMED EDITORIALLY BY SP001 / CANONICAL RECORD PENDING`
+
+SP001's technical-history question can be closed with first-party technical/distribution/license authorities without mandatory X transport.
+
+### RVF-005 — operator execution path was the blocking dependency
+
+Status: `CONFIRMED / MAINTENANCE IMPLEMENTATION UNDERWAY`
+
+The connector runtime can research and mutate GitHub but cannot necessarily mount the exact repository branch and execute the canonical local Core CLI. Manually imitating Profile/State/checkpoint output is prohibited.
+
+The accepted maintenance direction is a generic **deterministic operator execution bridge** that preserves ChatGPT authorship and uses Actions only as the missing checked-out execution substrate.
+
+### RVF-006 — do not fabricate machine acceptance
+
+Status: `CONFIRMED OPERATIONAL RULE`
+
+If canonical deterministic execution is unavailable, preserve research/provenance and stop before machine acceptance rather than hand-authoring plausible validator output.
+
+### RVF-007 — edition-local human-readable resume records remain useful
+
+Status: `CONFIRMED / MIGRATION PRACTICE`
+
+Before canonical `execution/` bootstrap is available, concise edition-local resume files are acceptable migration evidence. Once canonical Profile/State is initialized, `sources/<issue>/execution/` becomes the preferred operational record.
+
+### RVF-008 — old failed artifacts remain visibly non-authoritative
+
+Status: `CONFIRMED`
+
+W33's historical `pipeline-state.json` remains `NON_AUTHORITATIVE_READ_ONLY`; SP001 failed accepted artifacts remain on the archived branch only.
+
+## Current maintenance design
+
+Authority/plan document:
+
+`docs/survey-production-core-v2-operator-execution-bridge.md`
+
+Maintenance branch:
+
+`maintenance/core-v2-operator-execution-bridge`
+
+Current implementation candidate adds:
+
+- `schemas/operator-execution-request-v2.schema.json`
+- `scripts/survey_core_execution_bridge_v2.py`
+- `.github/workflows/survey-production-v2-operator-bridge.yml`
+- `tests/test_survey_core_execution_bridge_v2.py`
+- regression update to `tests/test_survey_pilot_bootstrap_v2.py`
+
+### Bridge responsibility boundary
+
+ChatGPT still owns:
+
+- research/source strategy;
+- Evidence/materiality/completeness judgment;
+- Selection;
+- Architecture;
+- drafting/synthesis;
+- semantic/editorial review;
+- exact-PDF visual review;
+- Human-Gate preparation.
+
+The bridge may execute only:
+
+1. `INITIALIZE_WEEKLY`;
+2. `INITIALIZE_THEMATIC`;
+3. `ADVANCE_STAGE` over already-authored exact artifacts.
+
+The bridge does not expose arbitrary commands, shell snippets, module names, Architecture approval, Publication Preview approval or Release.
+
+### Request/receipt shape
+
+Request authority:
+
+```text
+sources/<issue-id>/execution/requests/<request-id>.json
+```
+
+Bridge result/receipt authority:
+
+```text
+sources/<issue-id>/execution/bridge-runs/<request-id>/
+```
+
+Workflow trigger rules currently require:
+
+- one newly added request;
+- request-only triggering commit;
+- edition work branch (`weekly/**` or `special/**`);
+- non-bot actor;
+- generated writes only under the target edition source root;
+- no mutation of immutable request authority.
+
+The bot output commit does not change a request file and therefore does not recursively retrigger the bridge.
+
+## Why this is not a return to the old Actions-heavy pipeline
+
+The failed pre-redesign topology used Actions to author/mutate editorial and publication content, choose repairs, chain state changes and create bot-driven production loops.
+
+The bridge instead supplies one missing execution property: an exact repository checkout capable of running already-existing deterministic Core code. It neither selects content nor creates semantic judgments.
+
+This is consistent with the Actions admission principle only if the implementation remains narrow and fail-closed.
+
+## PFB-013 status
+
+Existing requirement: real cold-start Weekly + SP001/LONGFORM validation after reviewed Core integration.
+
+Current verdict:
+
+`PARTIALLY EXERCISED / NOT PASSED`
+
+PFB-013 cannot close until the bridge (or another equivalent execution path) is reviewed/integrated and new clean W33/SP001 runs reach pending `ARCHITECTURE_REVIEW` with canonical State and no in-run shared-Core repair.
+
+## PFB-014 candidate
+
+Proposed new maintenance feedback item:
+
+**Operator runtime requires a generic deterministic Core execution fallback when direct local checkout/CLI execution is unavailable.**
+
+Acceptance criteria:
+
+- no arbitrary command surface;
+- exact request commit identity;
+- immutable one-request trigger;
+- edition-local write scope;
+- canonical Core code, not duplicated semantics;
+- no research/editorial/visual/Human decision ownership in Actions;
+- no bot recursion;
+- stage/state provenance binds exact implementation commit;
+- direct-local CLI remains preferred when available;
+- bridge path is proven by clean W33 and SP001 production revalidation.
+
+Do not mark PFB-014 closed merely because unit tests pass; real edition use is required.
+
+## Next actions
+
+### Shared Core maintenance
+
+```text
+finish operator bridge implementation
+-> update affected policy/feedback docs
+-> open maintenance PR
+-> run exact-head Core CI + pipeline contract tests
+-> inspect failures and repair generically
+-> freeze one exact maintenance head
+-> rerun the six-point Core audit from zero for changed scope
+-> Human review/integration
+```
+
+Any maintenance-tree change after a frozen audit invalidates that audit and requires a fresh exact-head rerun.
+
+### W33 after reviewed integration
+
+```text
+reset/rebase clean W33 validation branch from reviewed main
+-> restore only legitimate exact Raw + editorial preparation
+-> commit INITIALIZE_WEEKLY bridge request
+-> verify canonical Profile/State/execution record
+-> canonical X manifest binding of existing Raw
 -> Discovery
 -> Screening
 -> Evidence / Materiality / Completeness
@@ -248,20 +290,15 @@ canonical Profile/State initialization
 -> ARCHITECTURE_REVIEW
 ```
 
-Do not rerun Grok unless the exact existing result fails canonical validation.
-
-### SP001
-
-Read first:
-
-`special/SP001-v2-work:sources/SP001/postmerge-validation-status.md`
-
-Resume at:
+### SP001 after reviewed integration
 
 ```text
-canonical Profile/State initialization from current scope
--> canonical X NOT_REQUIRED record
--> materialize prepared primary sources as Discovery/Raw
+reset/rebase clean SP001 validation branch from reviewed main
+-> restore current scope + legitimate research/Architecture preparation only
+-> commit INITIALIZE_THEMATIC bridge request
+-> verify canonical Profile/State/execution record
+-> canonical X NOT_REQUIRED disposition
+-> Discovery
 -> Screening
 -> Evidence / Materiality / Completeness
 -> Candidate Matrix / Selection
@@ -269,22 +306,12 @@ canonical Profile/State initialization from current scope
 -> ARCHITECTURE_REVIEW
 ```
 
-Do not copy failed pre-redesign accepted artifacts into the clean run.
-
-## Planned maintenance disposition
-
-Before changing Core, distinguish three classes:
-
-1. **Confirmed existing design behavior** — keep and eventually mark PFB items validated by real production (for example the Grok task-file transport).
-2. **Operator/platform capability gap** — solve through a generic execution bridge if possible; do not reintroduce Actions editorial ownership.
-3. **Shared-Core semantic defect** — if later discovered during canonical execution, fail the affected validation run, repair Core separately, then restart from a clean boundary.
-
-No shared-Core semantic defect has yet been established by the post-merge W33/SP001 trial.
-
 ## Files to use when resuming
 
 | Purpose | Branch | File |
 |---|---|---|
+| Shared bridge maintenance current position | `maintenance/core-v2-operator-execution-bridge` | `docs/checkpoints/survey-production-core-v2-postmerge-revalidation-worklog.md` |
+| Bridge design/boundary | `maintenance/core-v2-operator-execution-bridge` | `docs/survey-production-core-v2-operator-execution-bridge.md` |
 | W33 current position / plan | `weekly/2026-W33-v2-work` | `sources/2026-W33/postmerge-validation-status.md` |
 | W33 research / Architecture preparation | `weekly/2026-W33-v2-work` | `sources/2026-W33/postmerge-research-intake.md` |
 | W33 exact Grok Raw | `weekly/2026-W33-v2-work` | `sources/2026-W33/external/x/weekly-x-2026-W33-postmerge-r1/raw/grok-x-result.md` |
@@ -292,8 +319,6 @@ No shared-Core semantic defect has yet been established by the post-merge W33/SP
 | SP001 research scope | `special/SP001-v2-work` | `sources/SP001/research-scope-v2.json` |
 | SP001 research intake | `special/SP001-v2-work` | `sources/SP001/intake/postmerge-primary-source-intake.md` |
 | SP001 Architecture preparation | `special/SP001-v2-work` | `sources/SP001/architecture-preparation.md` |
-| Cross-edition post-merge findings / future-flow plan | `main` | `docs/checkpoints/survey-production-core-v2-postmerge-revalidation-worklog.md` |
-| Pre-existing production feedback backlog | `main` | `docs/survey-production-core-v2-production-feedback-backlog.md` |
-| Redesign implementation history | `main` | `docs/checkpoints/survey-production-core-v2-redesign-worklog.md` |
+| Pre-bridge feedback backlog | `main` | `docs/survey-production-core-v2-production-feedback-backlog.md` |
 
 Repository reality and canonical Production State, once created, outrank this human-readable summary.
