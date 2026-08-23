@@ -21,6 +21,7 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
             "issue_id": "2026-W33",
             "source_root": "sources/2026-W33",
             "work_branch": "weekly/2026-W33-v2-work",
+            "reviewed_main_sha": "a" * 40,
             "recorded_at": "2026-08-23T13:30:00Z",
             "operation": {
                 "kind": "INITIALIZE_WEEKLY",
@@ -37,12 +38,24 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
     def test_request_schema_accepts_bounded_weekly_initialization(self) -> None:
         schema_gate.validate_instance(self.weekly_request(), self.schema, label="Operator request")
 
+    def test_request_schema_requires_reviewed_main_for_every_operation(self) -> None:
+        payload = self.weekly_request()
+        del payload["reviewed_main_sha"]
+        with self.assertRaises(ValueError):
+            schema_gate.validate_instance(payload, self.schema, label="Operator request")
+
+        payload = self.weekly_request()
+        payload["reviewed_main_sha"] = "not-a-sha"
+        with self.assertRaises(ValueError):
+            schema_gate.validate_instance(payload, self.schema, label="Operator request")
+
     def test_request_schema_accepts_profile_bound_nested_source_root(self) -> None:
         payload = self.weekly_request()
         payload["request_id"] = "thematic-init-r2"
         payload["issue_id"] = "SP001"
         payload["source_root"] = "sources/specials/SP001"
         payload["work_branch"] = "production/thematic/SP001"
+        payload["reviewed_main_sha"] = "b" * 40
         payload["operation"] = {
             "kind": "INITIALIZE_THEMATIC",
             "target_gate": "ARCHITECTURE_REVIEW",
@@ -104,14 +117,22 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
         with self.assertRaises(ValueError):
             schema_gate.validate_instance(payload, self.schema, label="Operator request")
 
-    def test_workflow_requires_request_only_commit_and_profile_bound_writes(self) -> None:
+    def test_workflow_requires_request_only_commit_profile_bound_writes_and_reviewed_main_preflight(self) -> None:
         text = (self.root / ".github/workflows/survey-production-v2-operator-bridge.yml").read_text(encoding="utf-8")
         self.assertIn("sources/**/execution/requests/*.json", text)
         self.assertIn("- '!main'", text)
+        self.assertIn("fetch-depth: 0", text)
         self.assertIn("contents: write", text)
         self.assertIn("github.actor != 'github-actions[bot]'", text)
         self.assertIn("--diff-filter=A", text)
         self.assertIn("Operator request commit must contain only the immutable request file", text)
+        self.assertIn("Verify reviewed-main Core baseline", text)
+        self.assertIn('reviewed_main_sha', text)
+        self.assertIn("git merge-base --is-ancestor", text)
+        self.assertIn("implementation_control_roots", text)
+        self.assertIn("contract_files", text)
+        self.assertIn("Shared Core or contract authority drifted from reviewed_main_sha", text)
+        self.assertIn("Initialization execution record reviewed_main_sha must equal request reviewed_main_sha", text)
         self.assertIn("operator-bridge-result.json", text)
         self.assertIn("Bridge attempted write outside edition source root", text)
         self.assertIn("Bridge must not mutate immutable request authority", text)
