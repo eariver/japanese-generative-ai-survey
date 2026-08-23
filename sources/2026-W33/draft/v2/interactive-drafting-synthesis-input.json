@@ -1,0 +1,249 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "draft_version": "v1.0",
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "ChatGPT interactive Core v2 Drafting/Synthesis after approved W33 Architecture r2",
+    "generated_at": "2026-08-22T23:45:00Z",
+    "run_reference": "ChatGPT continuation after 2026-W33 Architecture r2 approval"
+  },
+  "packages": [
+    {
+      "package_id": "pkg-01-cyber",
+      "headline": "Daybreakが示す「能力・統制・配布」の一体化",
+      "deck": "W33ではDaybreakをめぐる一次情報が連続して現れた。ここでは、能力そのもの、より信頼できる利用者へのアクセス、AWSでの提供という三つの更新を、一つの運用・ガバナンス上の動きとして読む。ただし能力や性能についてはOpenAI自身の主張を超えて一般化しない。",
+      "deck_discovery_ids": [
+        "base-official-feed-081601c279be28d3ef5a",
+        "base-official-feed-29b0e61ec6cd1ed38342",
+        "base-official-feed-5d3aff0aba5d0b8a3f2e"
+      ],
+      "blocks": [
+        {
+          "block_id": "cyber-1",
+          "block_type": "PARAGRAPH",
+          "text": "OpenAIはW33の一次情報として「Expanding Daybreak as the Cyber Defense Window Narrows」を公開した。正式Evidenceが確立しているのは、この一次ページの存在とW33における時系列、そして技術的な能力・性能記述をベンダー主張として扱うべきことまでである。",
+          "discovery_ids": [
+            "base-official-feed-081601c279be28d3ef5a"
+          ]
+        },
+        {
+          "block_id": "cyber-2",
+          "block_type": "PARAGRAPH",
+          "text": "同じ週には「Putting frontier cyber models in more trusted hands」と題する更新も公開された。したがって本稿では、Daybreakを単なる能力更新としてではなく、誰に高度な能力を届けるかという統制の論点と並べて扱う。ただし、アクセス制度の詳細は今回のEvidence Cardが確立した範囲を超えて断定しない。",
+          "discovery_ids": [
+            "base-official-feed-29b0e61ec6cd1ed38342"
+          ]
+        },
+        {
+          "block_id": "cyber-3",
+          "block_type": "PARAGRAPH",
+          "text": "さらに「Daybreak models are now available on AWS」という一次更新が続いた。W33の読者向けには、能力、統制、配布が近接して動いたこと自体を重要な構造として示し、AWSでの提供を独立した性能検証とは扱わない。",
+          "discovery_ids": [
+            "base-official-feed-5d3aff0aba5d0b8a3f2e"
+          ]
+        }
+      ]
+    },
+    {
+      "package_id": "pkg-02-serving-stack",
+      "headline": "推論基盤は一層では動かない――SGLang、vLLM、FlashInferの同時進行",
+      "deck": "W33ではSGLang v0.5.17、vLLM v0.27.0、FlashInfer v0.6.17が相次いでリリースされた。個別の性能数字を横並びにせず、ランタイム、オーケストレーション、カーネル層が同時に更新される serving stack 全体の動きとして整理する。",
+      "deck_discovery_ids": [
+        "base-github-release-sgl-project-sglang-v0_5_17",
+        "base-github-release-vllm-project-vllm-v0_27_0",
+        "base-github-release-flashinfer-ai-flashinfer-v0_6_17"
+      ],
+      "blocks": [
+        {
+          "block_id": "serving-1",
+          "block_type": "PARAGRAPH",
+          "text": "SGLang v0.5.17、vLLM v0.27.0、FlashInfer v0.6.17はいずれもW33の一次リポジトリReleaseとして確認された。三件を別々のリリースノートとして消費するより、推論基盤を構成する複数層が同じ週に動いたことを一つのシグナルとして読む方が実務上は有用である。",
+          "discovery_ids": [
+            "base-github-release-sgl-project-sglang-v0_5_17",
+            "base-github-release-vllm-project-vllm-v0_27_0",
+            "base-github-release-flashinfer-ai-flashinfer-v0_6_17"
+          ]
+        },
+        {
+          "block_id": "serving-2",
+          "block_type": "NOTE",
+          "text": "今回のEvidenceは各プロジェクトの一次Releaseを確立する一方、異なるハードウェア、ワークロード、計測条件にまたがる性能比較を認めていない。そのため、プロジェクトが掲げる性能・資源効率の数値を相互ランキングへ変換しない。",
+          "discovery_ids": [
+            "base-github-release-sgl-project-sglang-v0_5_17",
+            "base-github-release-vllm-project-vllm-v0_27_0",
+            "base-github-release-flashinfer-ai-flashinfer-v0_6_17"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS"
+        }
+      ]
+    },
+    {
+      "package_id": "pkg-03-ultrafast",
+      "headline": "「速さ」を別モードとして売る――Ultrafast previewの意味",
+      "deck": "OpenAIはW33に「Previewing Ultrafast mode: GPT-5.6 Sol at up to 14X the speed」を公開した。重要なのは、速度を独立したプロダクトモードとして提示した点であり、14Xという表現はあくまで一次情報上のベンダー主張として扱う。",
+      "deck_discovery_ids": [
+        "base-official-feed-c0986f6628d189a1ac37"
+      ],
+      "blocks": [
+        {
+          "block_id": "ultrafast-1",
+          "block_type": "PARAGRAPH",
+          "text": "一次情報のタイトル自体が「Previewing Ultrafast mode」と明示しており、本稿でもpreviewであることを外さない。W33のシグナルは、推論速度が単なる裏側の最適化ではなく、利用者が選択する提供モードとして前面に出たことである。",
+          "discovery_ids": [
+            "base-official-feed-c0986f6628d189a1ac37"
+          ]
+        },
+        {
+          "block_id": "ultrafast-2",
+          "block_type": "NOTE",
+          "text": "「up to 14X the speed」はOpenAIの一次情報に含まれる表現であり、今回のEvidenceは独立ベンチマークによる再現を確立していない。したがって本稿は、この数字を一般的な速度優位の証明には用いない。",
+          "discovery_ids": [
+            "base-official-feed-c0986f6628d189a1ac37"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS"
+        }
+      ]
+    },
+    {
+      "package_id": "pkg-04-community-pulse",
+      "headline": "X Community Pulse――リリース波をめぐる議論は活発、技術的真偽は別レイヤー",
+      "deck": "Fresh Grok/X intakeはW33に複数テーマをまたぐ強いコミュニティ・サリエンスがあったことを記録した。Community Pulseは、その『何が話題になったか』だけを扱い、個別モデル、ベンチマーク、価格、日付、性能の真偽をXから確定しない。",
+      "deck_discovery_ids": [
+        "x-weekly-signal-wave"
+      ],
+      "blocks": [
+        {
+          "block_id": "community-1",
+          "block_type": "PARAGRAPH",
+          "text": "W33のX観測層では、複数テーマにまたがるコミュニティ・サリエンスが確認された。承認済みArchitectureは、同週のモデル・製品リリース比較、agent/coding、成功あたりコスト、local/open-weight、harness/IDE統合、早期の実機検証と訂正シグナルを観察軸としている。",
+          "discovery_ids": [
+            "x-weekly-signal-wave"
+          ]
+        },
+        {
+          "block_id": "community-2",
+          "block_type": "NOTE",
+          "text": "ただし正式Evidenceが確立しているのは『W33にcross-topic community salienceがあった』というSOCIAL_OBSERVATIONまでである。上記の個別論点について、X上の議論をそのまま技術的事実へ昇格させない。一次Evidenceで別途確立していないモデル名、ベンチマーク、価格、日付、性能値は、ここでは真偽を断定しない。",
+          "discovery_ids": [
+            "x-weekly-signal-wave"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS"
+        }
+      ]
+    },
+    {
+      "package_id": "pkg-05-research-watch",
+      "headline": "Research Paper Watch――エージェント評価、安全性、KV cache、マルチモーダルへ",
+      "deck": "W33のPaper Watchは、コーディングエージェントの評価とscaffolding、拡張機構の安全性、KV-cache系システム、マルチモーダル評価へ広がった。ここで扱う九件はすべてarXivのabstract/metadataレベルのauthor claimであり、全文の独立レビュー済みとはみなさない。",
+      "deck_discovery_ids": [
+        "base-arxiv-2608_08654v1",
+        "base-arxiv-2608_09072v1",
+        "base-arxiv-2608_08700v1",
+        "base-arxiv-2608_11888v1",
+        "base-arxiv-2608_13263v1",
+        "base-arxiv-2608_09666v1",
+        "base-arxiv-2608_08097v1",
+        "base-arxiv-2608_10669v1",
+        "base-arxiv-2608_14718v1"
+      ],
+      "blocks": [
+        {
+          "block_id": "research-1",
+          "block_type": "PARAGRAPH",
+          "text": "エージェント評価では「A Unified Issue Resolution Benchmark for Requirement Clarification, Planning, and Code Generation for Coding Agents」と「The Scaffolding Matters More Than the Interface: A Controlled Comparison of MCP and CLI Tool Use...」が並んだ。PluginEvalとOpen Evaluation Agentも含め、最終出力だけでなく評価設計や実行scaffoldingそのものへ視線が向いていることが、少なくとも論文タイトルとabstract-level author claimから読み取れる。",
+          "discovery_ids": [
+            "base-arxiv-2608_09072v1",
+            "base-arxiv-2608_08654v1",
+            "base-arxiv-2608_08700v1",
+            "base-arxiv-2608_09666v1"
+          ]
+        },
+        {
+          "block_id": "research-2",
+          "block_type": "PARAGRAPH",
+          "text": "安全性・堅牢性側では「Agent Skills Can Be Harmful」とREDAgentBenchが候補に入った。前者はagent skill、後者はred-team系benchmarkを扱う研究として分類できるが、本稿はabstractを超える方法論・実験結果を独自に確認したとは主張しない。",
+          "discovery_ids": [
+            "base-arxiv-2608_11888v1",
+            "base-arxiv-2608_10669v1"
+          ]
+        },
+        {
+          "block_id": "research-3",
+          "block_type": "PARAGRAPH",
+          "text": "システム／マルチモーダル側ではOasisKV、vToken、VideoGAIAが残った。KV cacheやtoken表現、video-agent evaluationといった方向の広がりを示すwatch項目として配置し、数値的な優位や詳細な手法比較は行わない。",
+          "discovery_ids": [
+            "base-arxiv-2608_08097v1",
+            "base-arxiv-2608_13263v1",
+            "base-arxiv-2608_14718v1"
+          ]
+        },
+        {
+          "block_id": "research-4",
+          "block_type": "NOTE",
+          "text": "Research Paper Watchの全項目はabstract/metadata-levelのAUTHOR_CLAIMとして扱う。本文、付録、再現実験を独立に検証したという意味ではない。",
+          "discovery_ids": [
+            "base-arxiv-2608_08654v1",
+            "base-arxiv-2608_09072v1",
+            "base-arxiv-2608_08700v1",
+            "base-arxiv-2608_11888v1",
+            "base-arxiv-2608_13263v1",
+            "base-arxiv-2608_09666v1",
+            "base-arxiv-2608_08097v1",
+            "base-arxiv-2608_10669v1",
+            "base-arxiv-2608_14718v1"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS"
+        }
+      ]
+    },
+    {
+      "package_id": "pkg-06-oss-watch",
+      "headline": "OSS & GitHub Watch――ComfyUI、llama.cpp、Transformersの更新を短く追う",
+      "deck": "Feature級ではないが実務上見落としたくないOSS更新として、ComfyUI v0.31.0、llama.cpp b10369、Transformers v5.15.0をまとめる。いずれも一次リポジトリReleaseを根拠とし、プロジェクト固有の性能値を横断比較しない。",
+      "deck_discovery_ids": [
+        "base-github-release-Comfy-Org-ComfyUI-v0_31_0",
+        "base-github-release-ggml-org-llama_cpp-b10369",
+        "base-github-release-huggingface-transformers-v5_15_0"
+      ],
+      "blocks": [
+        {
+          "block_id": "oss-1",
+          "block_type": "BULLET_LIST",
+          "text": "ComfyUI v0.31.0／llama.cpp b10369／Transformers v5.15.0はいずれもW33に確認された一次GitHub Releaseである。ここでは各Releaseの存在と週次のエコシステム更新としての位置づけを簡潔に追う。",
+          "discovery_ids": [
+            "base-github-release-Comfy-Org-ComfyUI-v0_31_0",
+            "base-github-release-ggml-org-llama_cpp-b10369",
+            "base-github-release-huggingface-transformers-v5_15_0"
+          ]
+        },
+        {
+          "block_id": "oss-2",
+          "block_type": "NOTE",
+          "text": "リリースノート内の性能・資源効率に関する数値は、各プロジェクト固有の条件に依存する。本Watchは、それらを統一条件のベンチマークとして比較しない。",
+          "discovery_ids": [
+            "base-github-release-Comfy-Org-ComfyUI-v0_31_0",
+            "base-github-release-ggml-org-llama_cpp-b10369",
+            "base-github-release-huggingface-transformers-v5_15_0"
+          ],
+          "ref_mode": "CLAIMS_AND_LIMITATIONS"
+        }
+      ]
+    }
+  ],
+  "synthesis": {
+    "profile_payload": {
+      "signals": [
+        "Daybreak関連では、能力・アクセス統制・AWS配布を一つの運用上の動きとして読む必要がある。",
+        "推論基盤ではSGLang、vLLM、FlashInferのReleaseが同じ週に重なり、stack-wideな更新が続いている。",
+        "Ultrafast previewは速度を独立した提供モードとして前面に出したが、速度倍率はベンダー主張として境界づける。",
+        "Xではcross-topic community salienceが強かった一方、技術的真偽は一次Evidenceと分離する。",
+        "研究ではagent evaluation/scaffolding、安全性、KV-cache、multimodal evaluationが並び、OSS側でも複数の継続更新があった。"
+      ],
+      "current_interpretation": "W33は三つのFeatureだけで説明できる週ではなかった。Daybreakの能力・統制・配布、serving stackの同時進行、Ultrafastという速度モードがFeature層を形成する一方、Xのコミュニティ観測、agent評価を中心とする研究、OSSの継続更新が周囲を埋めた。共通して見えるのは、モデル単体の能力競争だけでなく、『どう届けるか』『どう動かすか』『どう評価するか』へ競争軸が広がっていることだ。ただしW33の正式Evidenceは意図的に保守的であり、個別の性能値やX由来の技術的主張、論文の全文レベルの結論までは確定していない。",
+      "carry_over_summary": "W32から再確認したHOLD_OUT六件はFresh W33 ScreeningでDROPとなり、W33のFeatureまたはWatchへcarry-over採用された項目はない。"
+    },
+    "publication_payload": {}
+  }
+}
