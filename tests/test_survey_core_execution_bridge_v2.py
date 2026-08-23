@@ -35,6 +35,28 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
             },
         }
 
+    def retrospective_request(self) -> dict:
+        return {
+            "schema_version": "2.0-rc1",
+            "request_id": "period-init-r1",
+            "issue_id": "SP-2024-H1",
+            "source_root": "sources/SP-2024-H1",
+            "work_branch": "special/2024-H1-work",
+            "reviewed_main_sha": "c" * 40,
+            "recorded_at": "2026-08-23T14:00:00Z",
+            "operation": {
+                "kind": "INITIALIZE_RETROSPECTIVE",
+                "target_gate": "ARCHITECTURE_REVIEW",
+                "spec_path": "sources/SP-2024-H1/retrospective-scope-v2.json",
+                "execution_record": {
+                    "session_id": "period-postmerge-r1",
+                    "reviewed_main_sha": "c" * 40,
+                    "objective": "Run configured Retrospective Period production to Architecture Review.",
+                    "requested_stop": "ARCHITECTURE_REVIEW",
+                },
+            },
+        }
+
     def advance_request(self) -> dict:
         payload = self.weekly_request()
         payload["request_id"] = "w33-discovery-r2"
@@ -57,8 +79,11 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
     def test_request_schema_accepts_bounded_weekly_initialization(self) -> None:
         schema_gate.validate_instance(self.weekly_request(), self.schema, label="Operator request")
 
+    def test_request_schema_accepts_configured_retrospective_initialization(self) -> None:
+        schema_gate.validate_instance(self.retrospective_request(), self.schema, label="Operator request")
+
     def test_request_schema_requires_reviewed_main_for_every_operation(self) -> None:
-        for payload in (self.weekly_request(), self.advance_request()):
+        for payload in (self.weekly_request(), self.retrospective_request(), self.advance_request()):
             del payload["reviewed_main_sha"]
             with self.assertRaises(ValueError):
                 schema_gate.validate_instance(payload, self.schema, label="Operator request")
@@ -138,6 +163,7 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
         self.assertIn("implementation_control_roots", text)
         self.assertIn("contract_files", text)
         self.assertIn("Shared Core or contract authority drifted from reviewed_main_sha", text)
+        self.assertIn("INITIALIZE_WEEKLY|INITIALIZE_RETROSPECTIVE|INITIALIZE_THEMATIC", text)
         self.assertIn("Initialization execution record reviewed_main_sha must equal request reviewed_main_sha", text)
         self.assertLess(text.index("Verify reviewed-main Core baseline"), text.index("Install Core dependencies"))
         self.assertIn("operator-bridge-result.json", text)
@@ -153,8 +179,10 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
         self.assertNotIn("os.system", text)
         self.assertNotIn("shell=True", text)
         self.assertIn('"INITIALIZE_WEEKLY"', text)
+        self.assertIn('"INITIALIZE_RETROSPECTIVE"', text)
         self.assertIn('"INITIALIZE_THEMATIC"', text)
         self.assertIn('"ADVANCE_STAGE"', text)
+        self.assertIn("retrospective.build_profile", text)
         self.assertIn('ref_name == "main"', text)
         self.assertIn('paths.get("source_root") != request["source_root"]', text)
         self.assertNotIn("approve_architecture(", text)
