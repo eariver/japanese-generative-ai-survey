@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Redesign implementation worklog
 
-Status: `IMPLEMENTATION SUBSTANTIALLY COMPLETE / REGRESSION REPAIR + FIXED-HEAD AUDIT PENDING`  
+Status: `CANDIDATE TREE COMPLETE / EXACT-HEAD CI + FIXED-HEAD AUDIT PENDING`  
 Started: 2026-08-23 JST  
 Working branch: `refactor/survey-production-core-v2`  
 Draft PR: `#446`  
@@ -117,7 +117,7 @@ The intended final Actions surface is six workflows only:
 5. `survey-production-v2-export-publication-preview.yml`
 6. `survey-production-v2-release.yml`
 
-`tests/test_survey_pilot_bootstrap_v2.py` now treats that six-workflow set as a Core invariant.
+`tests/test_survey_pilot_bootstrap_v2.py` treats that six-workflow set as a Core invariant.
 
 ## 2026-08-23 — reproducible build and preview transport boundaries simplified
 
@@ -170,7 +170,7 @@ sources/<issue>/execution/
 
 It initializes the standard tree from exact Profile/State/commit inputs and validates headings, Profile identity, canonical State pointer, and session-index continuity. It does not infer research/editorial content, Human decisions or defect classification and does not mutate Production State.
 
-`docs/survey-production-core-v2-execution-record-policy.md` is now marked implemented in the redesign candidate.
+`docs/survey-production-core-v2-execution-record-policy.md` is marked implemented in the redesign candidate.
 
 ## 2026-08-23 — regression repair during implementation
 
@@ -184,14 +184,84 @@ Implementation CI caught and corrected several redesign-process regressions with
 - old Special page-budget tests expected Actions to enforce editorial page budgets; they were rewritten to require read-only reporting instead.
 - the execution-record helper initially referenced a non-canonical State validator; it was corrected to use `survey_agent_control_v2.validate_agent_state`.
 
-At redesign head `1bd3c45b975a0ffea7bd09352624bd18cf4b488f`, both `Pipeline contract tests` and `Survey Production Core v2 CI` were observed PASS before the final legacy workflow reduction. The post-reduction tree must be revalidated from its later exact head; the earlier PASS is implementation evidence, not final-audit evidence.
+At redesign head `1bd3c45b975a0ffea7bd09352624bd18cf4b488f`, both `Pipeline contract tests` and `Survey Production Core v2 CI` were observed PASS before the final legacy workflow reduction. That PASS remains intermediate evidence only.
 
-## Remaining work before candidate freeze
+## 2026-08-23 — post-reduction regression repair resumed
 
-1. Run full regression after the six-workflow reduction and repair only genuine stale expectations/invariants.
-2. Synchronize redesign authority/plan/backlog wording with implemented behavior where still marked proposed/deferred.
-3. Inspect the complete PR diff for accidental compatibility or scope regressions.
-4. Freeze one candidate head SHA only after all intended candidate changes and CI repair are complete.
-5. Run the complete six-point acceptance audit from zero on that exact unchanged SHA.
-6. If any audit point requires a tree change, invalidate the audit, repair, freeze a new SHA and rerun all six points.
-7. Only after unchanged six-point PASS present that exact candidate SHA for Human full-candidate review of Draft PR #446.
+After the six-workflow reduction, exact head `b4830f3824d5049fce2786576ec05f48b764b650` showed:
+
+- `Survey Production Core v2 CI`: PASS;
+- `Pipeline contract tests`: FAIL with five stale expectations.
+
+All five failures attempted to read workflows that had intentionally been removed by the redesign. No failure indicated that the new Reader Manuscript, Quality, Candidate, Preview or Release implementation was broken.
+
+While this work was being resumed, the branch contained two additional changes not yet reflected in the older worklog:
+
+- `edd8614d49f52157619d97bf72d7f1b86a82f0b2` — align Special Human-Gate tests with the redesigned Actions surface;
+- `4b1d85a1d573be054e968cd7502491f463464b92` — retire the legacy annual repair-workflow expectation.
+
+Those changes reduced the stale failures from five to two. The remaining two tests still expected fictional/retired preview/release helper names rather than the implemented exact-byte workflows.
+
+Commit `28dea542f71400c44c50e4c1c64a2403ec975e69` rewrote those regressions to assert the actual safety boundary:
+
+- Preview export is read-only exact Candidate transport;
+- Candidate validation requires `READY_FOR_PUBLICATION_PREVIEW` and repository-resident exact PDF bytes;
+- Preview export cannot push or publish;
+- release requires explicit `release:<issue_id>` confirmation;
+- exact FROZEN Production State and Release Manifest hashes are inputs;
+- release validates canonical state/profile/candidate authority and exact-byte reconciliation;
+- post-release provenance is committed through a normal PR.
+
+At exact head `28dea542f71400c44c50e4c1c64a2403ec975e69`, both `Pipeline contract tests` and `Survey Production Core v2 CI` passed. This proves the six-workflow reduction plus regression repair before the final documentation synchronization. The final candidate head still requires its own exact-head CI evidence.
+
+## 2026-08-23 — authority/documentation synchronization completed
+
+The implementation review found several documents whose design content was correct but whose status/future-tense wording still described an unimplemented redesign.
+
+The candidate tree was synchronized before freeze:
+
+- `docs/survey-production-core-v2-redesign-authority.md` now identifies an implemented redesign candidate and distinguishes implementation completion from fixed-head audit and later real-production validation.
+- `docs/survey-production-core-v2-production-feedback-backlog.md` records PFB-001–PFB-012 as implemented/resolved where appropriate and keeps PFB-013 real cold-start validation pending after reviewed integration.
+- `docs/survey-production-core-v2-redesign-plan-after-w33-sp001.md` now records workstreams 0–5 as implemented and separates deterministic/general structural regression from later clean production re-validation.
+- `docs/survey-production-core-v2-final-audit-rule.md` now removes its stale `IMPLEMENTATION NOT STARTED` status and explicitly separates the immutable pre-Human-review fixed-head Core audit from post-integration real-production cold-start validation.
+
+The six acceptance points themselves remain unchanged in intent: Weekly viability, Special viability, generality, recurrence prevention, control proportionality and autonomous progression/stop discipline.
+
+## 2026-08-23 — complete PR scope/diff audit before freeze
+
+PR #446 was re-enumerated after implementation and regression repair.
+
+Observed scope:
+
+- changed files are confined to `.github/workflows/`, `AGENTS.md`, Core config, Core redesign/operation docs, publication/X schemas, shared Core scripts and regression tests;
+- no `sources/` edition artifact was modified;
+- no `surveys/` reader publication or PDF was modified;
+- no existing frozen/released edition output was rewritten;
+- the workflow removals correspond to the retired production-authoring/mutation/control topology;
+- retained workflow modifications correspond to read-only reproducible build, Core CI, exact-byte Preview transport and controlled release;
+- key code diff inspection confirmed the intended chain: Reader Manuscript -> deterministic QA + semantic/editorial review + exact-PDF visual review -> atomic Publication Candidate -> exact-byte Publication Preview -> deterministic Freeze/Release;
+- X intake now uses exactly one hash-bound `grok-task.md` plus exact Drive task path;
+- Stage validation requires the new reader/QA authorities before Candidate creation and no longer inserts a post-Preview visual-quality gate.
+
+No accidental edition-content mutation or obvious scope regression was found in the PR-wide inspection.
+
+## Candidate freeze boundary
+
+This worklog synchronization is intended to be the **last candidate-tree mutation before the fixed-head audit**.
+
+The commit produced by this update becomes the candidate head to freeze, provided exact-head CI/regression completes successfully. After this point:
+
+- do not edit the branch during the audit;
+- use CI only as evidence, not as a mutation mechanism;
+- run all six acceptance points afresh on the exact unchanged candidate SHA;
+- if any point requires a repository change, invalidate the entire audit and create a new candidate head;
+- record the final audit result outside the candidate tree in PR/Human-review metadata.
+
+## Remaining work after this candidate-tree commit
+
+1. Capture the exact resulting candidate head SHA.
+2. Verify both `Pipeline contract tests` and `Survey Production Core v2 CI` PASS for that exact head/unchanged PR merge candidate.
+3. Run all six final-audit points from zero against that exact immutable SHA.
+4. If all six PASS without mutation, record the exact SHA, CI identities and six verdicts in PR #446 Human-review metadata.
+5. Present that exact SHA for Human full-candidate review; do not merge automatically.
+6. After reviewed integration into `main`, perform the separately required clean real-production validation matrix described by the redesign authority/plan/final-audit rule.
