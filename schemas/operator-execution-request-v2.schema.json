@@ -8,6 +8,7 @@
     "schema_version",
     "request_id",
     "issue_id",
+    "source_root",
     "work_branch",
     "recorded_at",
     "operation"
@@ -24,6 +25,7 @@
       "type": "string",
       "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
     },
+    "source_root": {"$ref": "#/$defs/repo_path"},
     "work_branch": {
       "type": "string",
       "minLength": 1,
@@ -109,7 +111,7 @@
     "repo_path": {
       "type": "string",
       "minLength": 1,
-      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)(?!.*//).+$"
     },
     "sha40": {
       "type": "string",
