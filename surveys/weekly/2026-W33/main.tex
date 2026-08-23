@@ -1,0 +1,112 @@
+% Generated from Core v2 validated Draft bytes. Do not hand-edit.
+\documentclass[lualatex,a4paper,10pt]{jlreq}
+\usepackage{jgaisurvey}
+\addbibresource{references.bib}
+
+\surveysetup{2026-W33}{Japanese Generative AI Technical Survey}{2026-08-14}{Window: 2026-08-07 18:00 - 2026-08-14 18:00 America/New\_York}
+\surveycoverstory{競争軸は「どう届け、どう動かし、どう評価するか」へ}{Daybreakの能力・統制・配布、SGLang・vLLM・FlashInferの同週更新、Ultrafast previewをFeatureに据え、X・研究・OSSは権威境界を分けて追う。W33は、モデル単体の能力競争から運用・提供・評価へ競争軸が広がった週だった。}{FEATURE: Daybreak / FEATURE: Serving Stack / FEATURE: Ultrafast / WATCH: X / Research / OSS}
+
+\begin{document}
+\surveycover
+\clearpage
+\section*{W33 Executive Brief}
+W33の中心は三つのFeatureだけではない。Daybreakでは能力・アクセス統制・AWS配布が近接して動き、serving stackではSGLang・vLLM・FlashInferの一次Releaseが同じ週に重なった。Ultrafast previewは速度を独立した提供モードとして前面に出した。その周囲でXのcommunity salience、agent評価を中心とする研究、OSSの継続更新が並び、「どう届けるか」「どう動かすか」「どう評価するか」が共通軸として浮かぶ。
+
+\begin{claimboundary}[Evidence / scope boundary]
+\noindent OpenAIおよび各OSSプロジェクトの能力・性能・資源効率に関する記述は、今回の正式Evidenceが確立した一次情報上の主張として扱い、独立ベンチマークによる一般的な優位へ拡張しない。\par
+\noindent SGLang・vLLM・FlashInferの性能値は異なるハードウェア、ワークロード、計測条件をまたぐため、cross-framework leaderboardへ変換しない。\par
+\noindent X/Grok intakeはW33のcommunity salienceを示す発見・観測層であり、個別モデル、ベンチマーク、価格、日付、性能の技術的真偽を確定する権威には用いない。\par
+\noindent Research Paper WatchはarXiv abstract/metadata-levelのauthor claimとして扱い、本文、付録、方法論、表、ablation、限界を独立レビュー済みとはみなさない。\par
+\noindent OSS \& GitHub Watchは一次Releaseで確認できる運用・統合上の変化を扱い、モデルや生成物の性能向上そのものをReleaseの存在だけから推定しない。\par
+\end{claimboundary}
+\clearpage
+\twocolumn
+% package:pkg-01-cyber draft-result-sha256:51fe718f59760e342fd6f9b15413ea17b2b8e8727935fc266c01a180a0674728
+\section{Daybreakが示す「能力・統制・配布」の一体化}
+\label{pkg:pkg-01-cyber}
+\sectionkicker{Feature}
+\noindent\textbf{W33ではDaybreakをめぐる一次情報が連続して現れた。ここでは、能力そのもの、より信頼できる利用者へのアクセス、AWSでの提供という三つの更新を、一つの運用・ガバナンス上の動きとして読む。ただし能力や性能についてはOpenAI自身の主張を超えて一般化しない。} \cite{w2026w33baseofficialfeed081601c279be28d3ef5a,w2026w33baseofficialfeed29b0e61ec6cd1ed38342,w2026w33baseofficialfeed5d3aff0aba5d0b8a3f2e}\par\medskip
+% block:cyber-1 attribution:ATTRIBUTED
+\noindent OpenAIはW33の一次情報として「Expanding Daybreak as the Cyber Defense Window Narrows」を公開した。正式Evidenceが確立しているのは、この一次ページの存在とW33における時系列、そして技術的な能力・性能記述をベンダー主張として扱うべきことまでである。 \cite{w2026w33baseofficialfeed081601c279be28d3ef5a}\par\medskip
+% block:cyber-2 attribution:ATTRIBUTED
+\noindent 同じ週には「Putting frontier cyber models in more trusted hands」と題する更新も公開された。したがって本稿では、Daybreakを単なる能力更新としてではなく、誰に高度な能力を届けるかという統制の論点と並べて扱う。ただし、アクセス制度の詳細は今回のEvidence Cardが確立した範囲を超えて断定しない。 \cite{w2026w33baseofficialfeed29b0e61ec6cd1ed38342}\par\medskip
+% block:cyber-3 attribution:ATTRIBUTED
+\noindent さらに「Daybreak models are now available on AWS」という一次更新が続いた。W33の読者向けには、能力、統制、配布が近接して動いたこと自体を重要な構造として示し、AWSでの提供を独立した性能検証とは扱わない。 \cite{w2026w33baseofficialfeed5d3aff0aba5d0b8a3f2e}\par\medskip
+\begin{claimboundary}[Claim boundary]
+この節の読解上の境界: Capability/performance statements are first-party vendor claims unless separately supported by independent evidence.
+\end{claimboundary}
+% package:pkg-02-serving-stack draft-result-sha256:51003e4366f1a06b7c8ac68192491deb0d5e7e905cf46bc8dc155edc229fc739
+\section{推論基盤は一層では動かない――SGLang、vLLM、FlashInferの同時進行}
+\label{pkg:pkg-02-serving-stack}
+\sectionkicker{Feature}
+\noindent\textbf{W33ではSGLang v0.5.17、vLLM v0.27.0、FlashInfer v0.6.17が相次いでリリースされた。個別の性能数字を横並びにせず、ランタイム、オーケストレーション、カーネル層が同時に更新される serving stack 全体の動きとして整理する。} \cite{w2026w33basegithubreleasesglprojectsglangv0_5_17,w2026w33basegithubreleasevllmprojectvllmv0_27_0,w2026w33basegithubreleaseflashinferaiflashinferv0_6_17}\par\medskip
+% block:serving-1 attribution:ATTRIBUTED
+\noindent SGLang v0.5.17、vLLM v0.27.0、FlashInfer v0.6.17はいずれもW33の一次リポジトリReleaseとして確認された。三件を別々のリリースノートとして消費するより、推論基盤を構成する複数層が同じ週に動いたことを一つのシグナルとして読む方が実務上は有用である。 \cite{w2026w33basegithubreleasesglprojectsglangv0_5_17,w2026w33basegithubreleasevllmprojectvllmv0_27_0,w2026w33basegithubreleaseflashinferaiflashinferv0_6_17}\par\medskip
+% block:serving-2 attribution:ATTRIBUTED
+\noindent 今回のEvidenceは各プロジェクトの一次Releaseを確立する一方、異なるハードウェア、ワークロード、計測条件にまたがる性能比較を認めていない。そのため、プロジェクトが掲げる性能・資源効率の数値を相互ランキングへ変換しない。 \cite{w2026w33basegithubreleasesglprojectsglangv0_5_17,w2026w33basegithubreleasevllmprojectvllmv0_27_0,w2026w33basegithubreleaseflashinferaiflashinferv0_6_17}\par\medskip
+\begin{claimboundary}[Claim boundary]
+この節の読解上の境界: Performance and resource numbers in release notes are project-reported and are not a cross-framework controlled benchmark.
+\end{claimboundary}
+% package:pkg-03-ultrafast draft-result-sha256:cd5f1497f0eda37f879ae0fec5c5160cc3bb8b915b0e1ee9bb51be0b2bb74640
+\section{「速さ」を別モードとして売る――Ultrafast previewの意味}
+\label{pkg:pkg-03-ultrafast}
+\sectionkicker{Feature}
+\noindent\textbf{OpenAIはW33に「Previewing Ultrafast mode: GPT-5.6 Sol at up to 14X the speed」を公開した。重要なのは、速度を独立したプロダクトモードとして提示した点であり、14Xという表現はあくまで一次情報上のベンダー主張として扱う。} \cite{w2026w33baseofficialfeedc0986f6628d189a1ac37}\par\medskip
+% block:ultrafast-1 attribution:ATTRIBUTED
+\noindent 一次情報のタイトル自体が「Previewing Ultrafast mode」と明示しており、本稿でもpreviewであることを外さない。W33のシグナルは、推論速度が単なる裏側の最適化ではなく、利用者が選択する提供モードとして前面に出たことである。 \cite{w2026w33baseofficialfeedc0986f6628d189a1ac37}\par\medskip
+% block:ultrafast-2 attribution:ATTRIBUTED
+\noindent 「up to 14X the speed」はOpenAIの一次情報に含まれる表現であり、今回のEvidenceは独立ベンチマークによる再現を確立していない。したがって本稿は、この数字を一般的な速度優位の証明には用いない。 \cite{w2026w33baseofficialfeedc0986f6628d189a1ac37}\par\medskip
+\begin{claimboundary}[Claim boundary]
+この節の読解上の境界: Capability/performance statements are first-party vendor claims unless separately supported by independent evidence.
+\end{claimboundary}
+% package:pkg-04-community-pulse draft-result-sha256:5152af44dc6ec4a658f78606ab764cfd4012ff0a972915a9e68e31695ff02abc
+\section{X Community Pulse――リリース波をめぐる議論は活発、技術的真偽は別レイヤー}
+\label{pkg:pkg-04-community-pulse}
+\sectionkicker{X Community Watch}
+\noindent\textbf{Fresh Grok/X intakeはW33に複数テーマをまたぐ強いコミュニティ・サリエンスがあったことを記録した。Community Pulseは、その『何が話題になったか』だけを扱い、個別モデル、ベンチマーク、価格、日付、性能の真偽をXから確定しない。} \cite{w2026w33xweeklysignalwave}\par\medskip
+% block:community-1 attribution:SOCIAL
+\noindent W33のX観測層では、複数テーマにまたがるコミュニティ・サリエンスが確認された。承認済みArchitectureは、同週のモデル・製品リリース比較、agent/coding、成功あたりコスト、local/open-weight、harness/IDE統合、早期の実機検証と訂正シグナルを観察軸としている。 \cite{w2026w33xweeklysignalwave}\par\medskip
+% block:community-2 attribution:SOCIAL
+\noindent ただし正式Evidenceが確立しているのは『W33にcross-topic community salienceがあった』というSOCIAL\_OBSERVATIONまでである。上記の個別論点について、X上の議論をそのまま技術的事実へ昇格させない。一次Evidenceで別途確立していないモデル名、ベンチマーク、価格、日付、性能値は、ここでは真偽を断定しない。 \cite{w2026w33xweeklysignalwave}\par\medskip
+\begin{claimboundary}[Claim boundary]
+この節の読解上の境界: X/Grok is discovery/community signal only and is not technical Evidence authority under the Core v2 contract. / Named models, integrations, benchmark labels, prices, dates, and performance figures in the community observations identify what was discussed on X; their underlying technical truth requires separately accepted primary Evidence before factual publication. / Individual technical/release/benchmark/pricing claims require separately accepted primary Discovery sources; Community Pulse may report only that these topics were salient on X unless reconciled elsewhere.
+\end{claimboundary}
+% package:pkg-05-research-watch draft-result-sha256:42103a5b8cb73bc55abdd0bc6405c22f61174cf6152f8c731d3b79bb31c6b658
+\section{Research Paper Watch――エージェント評価、安全性、KV cache、マルチモーダルへ}
+\label{pkg:pkg-05-research-watch}
+\sectionkicker{Research Paper Watch}
+\noindent\textbf{W33のPaper Watchは、コーディングエージェントの評価とscaffolding、拡張機構の安全性、KV-cache系システム、マルチモーダル評価へ広がった。ここで扱う九件はすべてarXivのabstract/metadataレベルのauthor claimであり、全文の独立レビュー済みとはみなさない。} \cite{w2026w33basearxiv2608_08654v1,w2026w33basearxiv2608_09072v1,w2026w33basearxiv2608_08700v1,w2026w33basearxiv2608_11888v1,w2026w33basearxiv2608_13263v1,w2026w33basearxiv2608_09666v1,w2026w33basearxiv2608_08097v1,w2026w33basearxiv2608_10669v1,w2026w33basearxiv2608_14718v1}\par\medskip
+% block:research-1 attribution:FACTUAL
+\noindent エージェント評価では「A Unified Issue Resolution Benchmark for Requirement Clarification, Planning, and Code Generation for Coding Agents」と「The Scaffolding Matters More Than the Interface: A Controlled Comparison of MCP and CLI Tool Use...」が並んだ。PluginEvalとOpen Evaluation Agentも含め、最終出力だけでなく評価設計や実行scaffoldingそのものへ視線が向いていることが、少なくとも論文タイトルとabstract-level author claimから読み取れる。 \cite{w2026w33basearxiv2608_09072v1,w2026w33basearxiv2608_08654v1,w2026w33basearxiv2608_08700v1,w2026w33basearxiv2608_09666v1}\par\medskip
+% block:research-2 attribution:FACTUAL
+\noindent 安全性・堅牢性側では「Agent Skills Can Be Harmful」とREDAgentBenchが候補に入った。前者はagent skill、後者はred-team系benchmarkを扱う研究として分類できるが、本稿はabstractを超える方法論・実験結果を独自に確認したとは主張しない。 \cite{w2026w33basearxiv2608_11888v1,w2026w33basearxiv2608_10669v1}\par\medskip
+% block:research-3 attribution:FACTUAL
+\noindent システム／マルチモーダル側ではOasisKV、vToken、VideoGAIAが残った。KV cacheやtoken表現、video-agent evaluationといった方向の広がりを示すwatch項目として配置し、数値的な優位や詳細な手法比較は行わない。 \cite{w2026w33basearxiv2608_08097v1,w2026w33basearxiv2608_13263v1,w2026w33basearxiv2608_14718v1}\par\medskip
+% block:research-4 attribution:FACTUAL
+\noindent Research Paper Watchの全項目はabstract/metadata-levelのAUTHOR\_CLAIMとして扱う。本文、付録、再現実験を独立に検証したという意味ではない。 \cite{w2026w33basearxiv2608_08654v1,w2026w33basearxiv2608_09072v1,w2026w33basearxiv2608_08700v1,w2026w33basearxiv2608_11888v1,w2026w33basearxiv2608_13263v1,w2026w33basearxiv2608_09666v1,w2026w33basearxiv2608_08097v1,w2026w33basearxiv2608_10669v1,w2026w33basearxiv2608_14718v1}\par\medskip
+\begin{claimboundary}[Claim boundary]
+この節の読解上の境界: Capability/performance statements are first-party vendor claims unless separately supported by independent evidence.
+\end{claimboundary}
+% package:pkg-06-oss-watch draft-result-sha256:4fec9e824537fec832d7eb2ebd8c37087477274bf76e9219b07d1c46e366283b
+\section{OSS \& GitHub Watch――ComfyUI、llama.cpp、Transformersの更新を短く追う}
+\label{pkg:pkg-06-oss-watch}
+\sectionkicker{OSS \& GitHub Watch}
+\noindent\textbf{Feature級ではないが実務上見落としたくないOSS更新として、ComfyUI v0.31.0、llama.cpp b10369、Transformers v5.15.0をまとめる。いずれも一次リポジトリReleaseを根拠とし、プロジェクト固有の性能値を横断比較しない。} \cite{w2026w33basegithubreleasecomfyorgcomfyuiv0_31_0,w2026w33basegithubreleaseggmlorgllama_cppb10369,w2026w33basegithubreleasehuggingfacetransformersv5_15_0}\par\medskip
+% block:oss-1 attribution:ATTRIBUTED
+\noindent ComfyUI v0.31.0／llama.cpp b10369／Transformers v5.15.0はいずれもW33に確認された一次GitHub Releaseである。ここでは各Releaseの存在と週次のエコシステム更新としての位置づけを簡潔に追う。 \cite{w2026w33basegithubreleasecomfyorgcomfyuiv0_31_0,w2026w33basegithubreleaseggmlorgllama_cppb10369,w2026w33basegithubreleasehuggingfacetransformersv5_15_0}\par\medskip
+% block:oss-2 attribution:ATTRIBUTED
+\noindent リリースノート内の性能・資源効率に関する数値は、各プロジェクト固有の条件に依存する。本Watchは、それらを統一条件のベンチマークとして比較しない。 \cite{w2026w33basegithubreleasecomfyorgcomfyuiv0_31_0,w2026w33basegithubreleaseggmlorgllama_cppb10369,w2026w33basegithubreleasehuggingfacetransformersv5_15_0}\par\medskip
+\begin{claimboundary}[Claim boundary]
+この節の読解上の境界: Performance and resource numbers in release notes are project-reported and are not a cross-framework controlled benchmark.
+\end{claimboundary}
+\newpage
+\section{今週の総括}
+\label{sec:issue-summary}
+\sectionkicker{WEEKLY SYNTHESIS}
+\noindent W33は三つのFeatureだけで説明できる週ではなかった。Daybreakの能力・統制・配布、serving stackの同時進行、Ultrafastという速度モードがFeature層を形成する一方、Xのコミュニティ観測、agent評価を中心とする研究、OSSの継続更新が周囲を埋めた。共通して見えるのは、モデル単体の能力競争だけでなく、『どう届けるか』『どう動かすか』『どう評価するか』へ競争軸が広がっていることだ。ただしW33の正式Evidenceは意図的に保守的であり、個別の性能値やX由来の技術的主張、論文の全文レベルの結論までは確定していない。\par\medskip
+\noindent W32から再確認したHOLD\_OUT六件はFresh W33 ScreeningでDROPとなり、W33のFeatureまたはWatchへcarry-over採用された項目はない。\par\medskip
+\noindent したがって本号の読み方は、話題量をそのまま確度へ変換しないことにある。Featureはfirst-party materialityを軸に置き、Xはcommunity observation、論文はabstract/metadata-levelのauthor claim、OSSは一次Releaseで確認できる運用上の変化として分離する。この境界を保つことで、週次の速度を維持しながら、次号以降に再検証すべき論点を過剰主張なしに残す。\par\medskip
+\clearpage
+\onecolumn
+\printbibliography[title={References / Source Notes}]
+\end{document}
