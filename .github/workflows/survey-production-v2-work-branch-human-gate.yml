@@ -1,0 +1,157 @@
+name: Survey Production Core v2 work-branch Human Gate
+
+on:
+  pull_request:
+    branches:
+      - 'weekly/*-v2-work'
+      - 'special/*-v2-work'
+    paths:
+      - 'sources/**/orchestration/v2/human-gate-request.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: survey-production-v2-work-branch-human-gate-${{ github.base_ref }}
+  cancel-in-progress: false
+
+jobs:
+  approve:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Human Gate request branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install current reviewed Core v2 dependencies
+        run: python -m pip install -r config/survey-production-v2-requirements.txt
+
+      - name: Resolve and validate Human Gate request
+        id: request
+        shell: bash
+        env:
+          TARGET_WORK_BRANCH: ${{ github.base_ref }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, pathlib, re
+          from scripts import survey_agent_control_v2 as agent
+          from scripts import survey_production_v2 as core
+
+          root=pathlib.Path('.').resolve()
+          requests=sorted(root.glob('sources/*/orchestration/v2/human-gate-request.json'))
+          if len(requests) != 1:
+              raise SystemExit(f'exactly one Human Gate request required, found {len(requests)}')
+          request=requests[0]
+          issue=request.parts[-4]
+          if not re.fullmatch(r'[A-Za-z0-9._-]+', issue): raise SystemExit('unsafe issue_id')
+          data=json.load(open(request,encoding='utf-8'))
+          required={'schema_version','operation','issue_id','reviewed_by','reviewed_at','review_reference','human_gate_authorized'}
+          if set(data) != required or data.get('schema_version') != '2.0-rc1' or data.get('issue_id') != issue:
+              raise SystemExit('invalid Human Gate request envelope')
+          if data.get('operation') not in {'approve-architecture','approve-publication-preview'}:
+              raise SystemExit('invalid Human Gate operation')
+          if data.get('human_gate_authorized') is not True:
+              raise SystemExit('Human Gate request requires explicit authorization')
+          for key in ('reviewed_by','reviewed_at','review_reference'):
+              if not isinstance(data.get(key),str) or not data[key].strip():
+                  raise SystemExit(f'{key} required')
+          core.parse_instant(data['reviewed_at'])
+          state_path=root/'sources'/issue/'production-state.json'
+          if not state_path.is_file(): raise SystemExit('missing canonical Production State')
+          state=core.load_json(state_path)
+          cfg=core.load_json(root/core.DEFAULT_CONFIG)
+          errors=agent.validate_agent_state(root,cfg,state)
+          if errors: raise SystemExit('; '.join(errors))
+          profile=core.load_json(root/state['profile']['path'])
+          if profile.get('paths',{}).get('work_branch') != os.environ['TARGET_WORK_BRANCH']:
+              raise SystemExit('PR base does not match Production Profile work_branch')
+          operation=data['operation']
+          if operation == 'approve-architecture':
+              if state.get('lifecycle_state') != 'ARCHITECTURE_ESTABLISHED' or state.get('human_gates',{}).get('architecture_review') != 'pending':
+                  raise SystemExit('Architecture approval request does not match pending Architecture Review gate')
+          else:
+              if state.get('lifecycle_state') != 'RELEASE_CANDIDATE' or state.get('human_gates',{}).get('publication_preview') != 'pending':
+                  raise SystemExit('Publication Preview request does not match pending gate')
+          print(f'issue_id={issue}')
+          print(f'state={state_path.relative_to(root)}')
+          print(f'source_root={profile["paths"]["source_root"]}')
+          print(f'request={request.relative_to(root)}')
+          print(f'operation={operation}')
+          print(f'reviewed_by={data["reviewed_by"]}')
+          print(f'reviewed_at={data["reviewed_at"]}')
+          print(f'review_reference={json.dumps(data["review_reference"],ensure_ascii=False)}')
+          PY
+
+      - name: Apply exact Human Gate approval
+        shell: bash
+        env:
+          STATE: ${{ steps.request.outputs.state }}
+          OPERATION: ${{ steps.request.outputs.operation }}
+          REVIEWED_BY: ${{ steps.request.outputs.reviewed_by }}
+          REVIEWED_AT: ${{ steps.request.outputs.reviewed_at }}
+          REVIEW_REFERENCE_JSON: ${{ steps.request.outputs.review_reference }}
+        run: |
+          set -euo pipefail
+          review_reference="$(PYTHONPATH=. python - <<'PY'
+          import json, os
+          print(json.loads(os.environ['REVIEW_REFERENCE_JSON']))
+          PY
+          )"
+          if [[ "$OPERATION" == 'approve-architecture' ]]; then
+            command='approve-architecture'
+          else
+            command='approve-publication-preview'
+          fi
+          PYTHONPATH=. python scripts/survey_agent_control_v2.py \
+            --repo-root . --config config/survey-production-v2.json \
+            "$command" --state "$STATE" \
+            --reviewed-by "$REVIEWED_BY" \
+            --reviewed-at "$REVIEWED_AT" \
+            --review-reference "$review_reference"
+
+      - name: Validate resulting resumable Production State
+        shell: bash
+        env:
+          STATE: ${{ steps.request.outputs.state }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python - <<'PY'
+          import os, pathlib
+          from scripts import survey_agent_control_v2 as agent
+          from scripts import survey_production_v2 as core
+          root=pathlib.Path('.').resolve()
+          state_path=(root/os.environ['STATE']).resolve()
+          state=core.load_json(state_path)
+          cfg=core.load_json(root/core.DEFAULT_CONFIG)
+          errors=agent.validate_agent_state(root,cfg,state)
+          if errors: raise SystemExit('; '.join(errors))
+          print('Production State validation PASS')
+          PY
+
+      - name: Persist Human Gate approval to execution branch
+        shell: bash
+        env:
+          SOURCE_ROOT: ${{ steps.request.outputs.source_root }}
+          REQUEST: ${{ steps.request.outputs.request }}
+          ISSUE_ID: ${{ steps.request.outputs.issue_id }}
+          PUSH_BRANCH: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm -f "$REQUEST"
+          git add "$SOURCE_ROOT"
+          if git diff --cached --quiet; then
+            echo 'No Human Gate changes to commit.' >&2
+            exit 1
+          fi
+          git commit -m "Record ${ISSUE_ID} Core v2 Human Gate approval"
+          git push origin "HEAD:${PUSH_BRANCH}"

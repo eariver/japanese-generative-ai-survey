@@ -1,0 +1,138 @@
+name: Survey Production Core v2 interactive Evidence
+
+on:
+  pull_request:
+    branches:
+      - 'weekly/*-v2-work'
+      - 'special/*-v2-work'
+    paths:
+      - 'sources/**/evidence/v2/interactive-evidence.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: survey-production-v2-interactive-evidence-${{ github.base_ref }}
+  cancel-in-progress: false
+
+jobs:
+  evidence:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout interactive Evidence branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Core v2 dependencies
+        run: python -m pip install -r config/survey-production-v2-requirements.txt
+
+      - name: Resolve and validate Evidence request identity
+        id: request
+        shell: bash
+        env:
+          TARGET_WORK_BRANCH: ${{ github.base_ref }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, pathlib, re
+          from scripts import survey_agent_control_v2 as agent
+          from scripts import survey_production_v2 as core
+
+          root=pathlib.Path('.').resolve()
+          requests=sorted(root.glob('sources/*/evidence/v2/interactive-evidence.json'))
+          if len(requests) != 1:
+              raise SystemExit(f'exactly one interactive Evidence request required, found {len(requests)}')
+          request=requests[0]
+          issue=request.parts[-4]
+          if not re.fullmatch(r'[A-Za-z0-9._-]+', issue): raise SystemExit('unsafe issue_id')
+          payload=json.load(open(request,encoding='utf-8'))
+          if payload.get('schema_version') != '2.0-rc1' or payload.get('issue_id') != issue:
+              raise SystemExit('interactive Evidence request identity mismatch')
+          state_path=root/'sources'/issue/'production-state.json'
+          if not state_path.is_file(): raise SystemExit('missing canonical Production State')
+          state=core.load_json(state_path)
+          if state.get('lifecycle_state') != 'CANDIDATES_NORMALIZED':
+              raise SystemExit('interactive Evidence requires CANDIDATES_NORMALIZED State')
+          cfg=core.load_json(root/core.DEFAULT_CONFIG)
+          errors=agent.validate_agent_state(root,cfg,state)
+          if errors: raise SystemExit('; '.join(errors))
+          profile=core.load_json(root/state['profile']['path'])
+          if profile.get('paths',{}).get('work_branch') != os.environ['TARGET_WORK_BRANCH']:
+              raise SystemExit('PR base does not match Production Profile work_branch')
+          source_root=profile['paths']['source_root']
+          expected=(root/source_root/'evidence/v2/interactive-evidence.json').resolve()
+          if request.resolve() != expected: raise SystemExit('interactive Evidence request path is not canonical')
+          print(f'issue_id={issue}')
+          print(f'state={state_path.relative_to(root)}')
+          print(f'request={request.relative_to(root)}')
+          print(f'source_root={source_root}')
+          PY
+
+      - name: Generate exact Evidence, Views, Materiality, and Completeness
+        shell: bash
+        env:
+          STATE: ${{ steps.request.outputs.state }}
+          REQUEST: ${{ steps.request.outputs.request }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python scripts/run_evidence_v2_agent_first.py \
+            --repo-root . --state "$STATE" --input "$REQUEST" \
+            | tee evidence-v2-output.json
+
+      - name: Revalidate exact Core v2 Evidence stage artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python - <<'PY'
+          import json, pathlib
+          from scripts import survey_agent_tool_v2 as agent_tool
+          from scripts import survey_completeness_v2 as completeness
+          from scripts import survey_evidence_v2 as evidence
+          from scripts import survey_production_v2 as core
+
+          root=pathlib.Path('.').resolve()
+          out=json.load(open('evidence-v2-output.json',encoding='utf-8'))
+          evidence_path=root/out['evidence_acceptance']
+          views_path=root/out['edition_views_acceptance']
+          ledger_path=root/out['materiality_ledger']
+          complete_path=root/out['profile_completeness']
+          evidence_acceptance, package=core.load_json(evidence_path), core.load_json(evidence_path.parent/'package.json')
+          profile_path=root/package['basis']['profile_path']
+          discovery_path=root/package['basis']['discovery_path']
+          screening_path=root/package['basis']['screening_acceptance_path']
+          impl=core.repository_commit_sha(root)
+          with agent_tool.current_stage_basis_override():
+              evidence.validate_evidence_acceptance(root,evidence_path,impl)
+              evidence.validate_edition_views_acceptance(root,profile_path,evidence_path,views_path,impl)
+              evidence.validate_materiality_ledger(core.load_json(ledger_path),root,profile_path,discovery_path,screening_path,evidence_path,views_path,impl)
+              errors=completeness.validate_profile_completeness(core.load_json(complete_path),root,profile_path,discovery_path,screening_path,evidence_path,views_path,ledger_path,impl)
+          if errors: raise SystemExit('; '.join(errors))
+          print('Core v2 Evidence/Views/Materiality/Completeness PASS')
+          PY
+
+      - name: Persist accepted Evidence stage artifacts to execution branch
+        shell: bash
+        env:
+          SOURCE_ROOT: ${{ steps.request.outputs.source_root }}
+          REQUEST: ${{ steps.request.outputs.request }}
+          ISSUE_ID: ${{ steps.request.outputs.issue_id }}
+          PUSH_BRANCH: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm -f "$REQUEST"
+          git add "$SOURCE_ROOT"
+          if git diff --cached --quiet; then
+            echo 'No Evidence changes to commit.' >&2
+            exit 1
+          fi
+          git commit -m "Accept ${ISSUE_ID} Core v2 Evidence"
+          git push origin "HEAD:${PUSH_BRANCH}"
