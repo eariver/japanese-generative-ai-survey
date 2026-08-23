@@ -32,7 +32,7 @@ It does **not** retroactively convert W33/SP001 into successful production trial
 Every final audit evaluates all six points in this priority order:
 
 1. **Weekly viability** — a normal future Weekly edition is supported through the requested Human Gate without edition-specific rescue architecture: required Grok/X Source Intake, exact Google Drive task-file path handoff, returned-result import, mandatory Weekly community treatment, Reader Manuscript/QA/Candidate boundaries, and no permission for in-run shared-Core repair are all present and mutually consistent.
-2. **Special viability** — the redesigned Core remains structurally and executably viable for configured `RETROSPECTIVE_PERIOD`, standalone `THEMATIC`, `LONGFORM_SPECIAL`, SP-001–003-style work, and Generative AI Foundations guided-series work. Evidence must cover bounded-period cold-start Profile materialization from existing configured-period authority, standalone Thematic/Longform publication, and the Foundations living-series boundary rather than inferring all Special viability from SP001 alone. One Retrospective adapter must cover monthly/half-year/annual configured periods without becoming three editorial engines.
+2. **Special viability** — the redesigned Core remains structurally and executably viable for configured `RETROSPECTIVE_PERIOD`, standalone `THEMATIC`, `LONGFORM_SPECIAL`, SP-001–003-style work, and Generative AI Foundations guided-series work. Evidence must cover bounded-period cold-start Profile materialization through the pre-existing generic `scripts/survey_period_v2.py` builder and configured Special authority, standalone Thematic/Longform publication, and the Foundations living-series boundary rather than inferring all Special viability from SP001 alone. The same existing Retrospective builder must cover monthly/half-year/annual configured periods without becoming three editorial engines, and the operator bridge must expose that existing path rather than implementing a second period engine.
 3. **Generality** — the Core/Profile design is not overfit to W33/W34/SP001–003, one cadence, one topic taxonomy, or one publication shape. Shared Core, Research Profile, Publication Profile and edition/series authority remain orthogonal. Later Weekly issues and previously unplanned Specials can use generic Profile/planning authority without new authoring workflows.
 4. **Historical and clarified requirement recurrence prevention** — known Human Review defect families and later clarified requirements have an appropriate owner: narrow deterministic protection for crisp invariants, ChatGPT research/editorial/visual review for semantic judgment, Human review at the two normal Gates, or explicit legacy-only disposition. Publication Boundary defects from #400/#433/#434 are included here.
 5. **Control proportionality** — after 1–4 are satisfied, routine work is not burdened with unnecessary Human Gates, workflow ceremony, profile-specific authoring workflows, or validators that pretend to replace qualitative judgment. GitHub Actions satisfy the adopted Actions responsibility policy.
@@ -61,7 +61,7 @@ After the candidate passes this fixed-head audit, receives Human full-candidate 
 
 - one clean future Weekly cold-start run;
 - one clean standalone `THEMATIC + LONGFORM_SPECIAL` cold-start run, with SP001 as a required regression case;
-- one representative configured `RETROSPECTIVE_PERIOD` cold-start production/replay through the requested Human Gate using the same canonical Profile adapter available to connector-only and direct-local execution;
+- one representative configured `RETROSPECTIVE_PERIOD` cold-start production/replay through the requested Human Gate using the existing canonical `survey_period_v2` Profile path, whether deterministic execution occurs through direct local CLI or the operator bridge;
 - one Foundations-guided volume/scenario through at least Architecture Review;
 - structural confirmation against monthly, half-year and annual Retrospective guidance and unplanned future Thematic work.
 
@@ -164,7 +164,7 @@ The current maintenance candidate may retain Actions only where there is clear i
 - credential-isolated publication/reconciliation;
 - the narrowly constrained operator execution bridge when the normal ChatGPT runtime lacks an exact local checkout/CLI execution substrate.
 
-The operator bridge is admissible only when it remains an execution substrate for canonical deterministic Core mechanics. It must not accept arbitrary commands, own research/editorial/publication decisions, approve Human Gates, repair layout, or mutate shared Core during production. Retrospective cold start may use the bridge only to bind existing configured-period identity/window/paths to a ChatGPT-authored scope and Core contract; it may not synthesize period editorial taxonomy. Direct exact-local CLI execution remains preferred when available.
+The operator bridge is admissible only when it remains an execution substrate for canonical deterministic Core mechanics. It must not accept arbitrary commands, own research/editorial/publication decisions, approve Human Gates, repair layout, or mutate shared Core during production. Retrospective cold start may use the bridge only to invoke the pre-existing generic `survey_period_v2` configured-period Profile path from an exact configured slug; it must not create a second period builder or synthesize cadence-specific editorial taxonomy. Direct exact-local CLI execution remains preferred when available.
 
 Do not count workflow automation itself as a virtue. Actions must not be the reasoning/editorial/publication-authoring loop, and the redesign must not replace the old workflow set with cadence/topic-specific authoring workflows.
 
@@ -209,10 +209,11 @@ The fixed-head audit must explicitly inspect representative support for:
 
 ### Retrospective Period
 
-- configured slug is resolved from existing Special planning authority rather than invented by the bridge;
-- one generic `BOUNDED_PERIOD` Profile builder covers representative monthly/half-year/annual periods;
-- exact tier/window/identity/paths are deterministic while research question/dimensions/obligations remain ChatGPT-authored under required guides;
-- coverage audit and supplemental primary-source gap fill remain Profile/guide-owned;
+- configured slug is resolved by the existing `survey_period_v2.resolve_configured_period()` path from configured Special authority rather than invented by the bridge;
+- the existing generic `survey_period_v2.period_profile()` builder covers representative monthly/half-year/annual periods;
+- exact bounded period identity/window/paths and generic initial obligations are deterministically derived by that existing Core path;
+- bridge execution adds no second Retrospective scope schema, Profile builder or cadence engine;
+- coverage audit and supplemental primary-source gap fill remain Profile/guide/editorial work after initialization;
 - chronology/lifecycle/normalization/synthesis semantics remain expressible;
 - annual temporal-skew/trajectory guidance is not flattened into generic Core.
 
