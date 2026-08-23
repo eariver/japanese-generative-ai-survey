@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Post-merge W33/SP001 revalidation worklog
 
-Status: `OPERATOR BRIDGE + HUMAN-GATE ROUNDTRIP IMPLEMENTED / PRE-FREEZE CONSISTENCY AUDIT IN PROGRESS`
+Status: `OPERATOR BRIDGE + HUMAN-GATE ROUNDTRIP IMPLEMENTED / FREEZE PREPARATION`
 
 Established: 2026-08-23 JST  
 Last updated: 2026-08-24 JST
@@ -284,7 +284,7 @@ Status: `IMPLEMENTED / DIAGNOSTIC PASS`
 
 ### RVF-021 — bridge-backed Human Gate round-trip E2E implemented
 
-Status: `IMPLEMENTED / LATEST TEST CORRECTION AWAITING NEW EXACT-HEAD DIAGNOSTIC CI`
+Status: `IMPLEMENTED / FINAL EXACT-HEAD CI PENDING`
 
 `tests/test_survey_core_execution_bridge_human_gate_v2.py` executes:
 
@@ -301,24 +301,43 @@ The test was corrected to verify deletion of superseded `VALIDATED_DRAFT.json` a
 
 ### RVF-022 — current authority synchronized to seven-point/Human Gate model
 
-Status: `IN PROGRESS / MAJOR CURRENT AUTHORITIES UPDATED`
+Status: `COMPLETE BEFORE FREEZE`
 
 Synchronized current operational authority includes:
 
 - `docs/survey-production-core-v2-final-audit-rule.md` — six -> seven points, Point 7 `Human Gate round-trip viability`;
-- `docs/survey-production-core-v2-operator-execution-bridge.md` — exactly eight request kinds and Human decision-vs-recording boundary;
+- `docs/survey-production-core-v2-operator-execution-bridge.md` — exactly eight request kinds, Human decision-vs-recording boundary and reviewed-parent provenance;
 - `docs/survey-production-core-v2-github-actions-policy.md` — bridge may record already explicit Human decision but never choose it;
 - `docs/survey-production-core-v2-workflow-responsibility-inventory.md` — seven workflows unchanged, Human Gate mechanics remain inside existing bridge;
 - `docs/survey-production-core-v2-redesign-authority.md` — round-trip semantics and seven-point re-audit;
 - `docs/survey-production-core-v2-execution-record-policy.md` — Markdown rN summaries bind exact machine review JSON;
-- `docs/survey-production-core-v2-production-feedback-backlog.md` — PFB-014 includes HG-001/HG-002 and seven-point acceptance;
+- `docs/survey-production-core-v2-production-feedback-backlog.md` — PFB-014 includes HG-001/HG-002, reviewed-parent provenance and seven-point acceptance;
 - `AGENTS.md` and `docs/survey-production-core-v2-session-bootstrap.md` — operational sessions use seven-point final audit and routine `REQUEST_CHANGES` continuation.
+
+### RVF-023 — Human-reviewed commit provenance was distinct from request/event commit
+
+Status: `FOUND DURING FREEZE PREPARATION / REPAIRED / FINAL EXACT-HEAD CI PENDING`
+
+Freeze-preparation inspection found that `survey_core_execution_bridge_v2.py` passed the immutable request/event commit SHA into `survey_human_gate_v2` as `reviewed_repository_commit_sha`. The exact reviewed State/artifact hashes were correct, but the named repository provenance was one commit too late: the Human had reviewed the edition bytes before ChatGPT added the request-only commit.
+
+Repair:
+
+- Human Gate operator requests now require exact lowercase 40-hex `reviewed_repository_commit_sha`;
+- the bridge forwards that explicit reviewed SHA instead of `event_sha`;
+- the workflow resolves the request-only commit parent and refuses execution unless the request's reviewed SHA equals that parent exactly;
+- bridge receipt records both `event_commit_sha` and `reviewed_repository_commit_sha` separately;
+- bridge E2E intentionally uses different values for those two identities and asserts the review record/receipt preserve the distinction;
+- PFB-014 and bridge authority now make parent binding an explicit acceptance condition.
+
+This repair closes the currently known provenance defect. It does not itself constitute final acceptance; exact-head CI and the independent seven-point audit remain required.
 
 ## Current maintenance design
 
 ### Reviewed-main preflight
 
 Every request binds exact lowercase 40-hex `reviewed_main_sha`. Before dependency installation/Core execution, the workflow requires reviewed SHA on current `main` history, request-parent descent, initialization execution-record baseline equality and byte equality for fixed shared implementation roots plus configured contract files.
+
+For Human Gate operations, the immutable request additionally binds exact `reviewed_repository_commit_sha`, and Actions requires it to equal the request-only commit parent. The request/event commit remains separate execution provenance.
 
 ### Request/receipt
 
@@ -372,22 +391,26 @@ Real cold-start Weekly, SP001/LONGFORM, representative Retrospective and Foundat
 
 ## PFB-014 status
 
-`IMPLEMENTATION CANDIDATE / HUMAN-GATE ROUNDTRIP IMPLEMENTED / SEVEN-POINT REAUDIT PENDING`
+`IMPLEMENTATION CANDIDATE / HUMAN-GATE ROUNDTRIP + REVIEWED-PARENT PROVENANCE IMPLEMENTED / SEVEN-POINT REAUDIT PENDING`
 
 Do not close PFB-014 and do not merge PR #447 until the completion criteria in RVF-016 are satisfied.
+
+## Freeze boundary
+
+The repository-owned implementation/authority synchronization is now complete for all currently known findings through RVF-023. The next unchanged branch head that passes both required CI workflows is the candidate to freeze for independent audit.
+
+After freeze, do **not** modify code, schemas, config, workflows, tests, docs, findings, worklogs or other candidate-tree content while auditing. Any newly discovered defect requiring a change invalidates that freeze and returns work to Core maintenance.
 
 ## Next actions
 
 ```text
-finish current-authority/stale-vocabulary cross-check
--> obtain green diagnostic CI on current synchronized tree
--> inspect full PR diff for unintended scope/semantic drift
--> if any defect requires change: repair before freeze
--> update this worklog one final time before freeze
--> freeze one exact candidate SHA
--> exact-head Core CI + Pipeline contract tests
+obtain green CI on the current synchronized tree
+-> inspect exact PR scope/head one final time without mutation
+-> declare that exact SHA frozen
+-> rerun/confirm exact-head Core CI + Pipeline contract tests on that unchanged SHA
+-> switch from implementer role to independent auditor role
 -> audit Points 1–7 from Point 1 on unchanged SHA
--> any tree change invalidates all seven verdicts
+-> if any point needs repository change: invalidate freeze and return to implementation
 -> only after unchanged 7/7 PASS: record result outside candidate tree and mark PR #447 Ready for Human full-candidate review
 ```
 
