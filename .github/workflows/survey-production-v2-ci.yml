@@ -54,9 +54,10 @@ on:
       - "docs/checkpoints/survey-production-core-v2-*.md"
       - "docs/checkpoints/survey-production-core-v2-audit-findings/**"
       - ".github/workflows/survey-production-v2-ci.yml"
-      - ".github/workflows/survey-production-v2-control.yml"
       - ".github/workflows/survey-production-v2-release.yml"
-      - ".github/workflows/assistant-control-v2.yml"
+      - ".github/workflows/survey-production-v2-export-publication-preview.yml"
+      - ".github/workflows/build-weekly-survey.yml"
+      - ".github/workflows/build-special-pdf.yml"
   pull_request:
     paths:
       - "config/survey-production-v2.json"
@@ -108,9 +109,10 @@ on:
       - "docs/checkpoints/survey-production-core-v2-*.md"
       - "docs/checkpoints/survey-production-core-v2-audit-findings/**"
       - ".github/workflows/survey-production-v2-ci.yml"
-      - ".github/workflows/survey-production-v2-control.yml"
       - ".github/workflows/survey-production-v2-release.yml"
-      - ".github/workflows/assistant-control-v2.yml"
+      - ".github/workflows/survey-production-v2-export-publication-preview.yml"
+      - ".github/workflows/build-weekly-survey.yml"
+      - ".github/workflows/build-special-pdf.yml"
   workflow_dispatch:
 
 permissions:
@@ -143,6 +145,7 @@ jobs:
           scripts/survey_production_v2.py
           scripts/survey_schema_v2.py
           scripts/survey_x_intake_v2.py
+          scripts/survey_execution_record_v2.py
           scripts/survey_discovery_v2.py
           scripts/survey_screening_v2.py
           scripts/survey_evidence_v2.py
@@ -170,6 +173,7 @@ jobs:
           python -m unittest
           tests.test_survey_production_v2
           tests.test_survey_x_intake_v2
+          tests.test_survey_execution_record_v2
           tests.test_survey_discovery_v2
           tests.test_survey_screening_v2
           tests.test_survey_screening_archive_v2
