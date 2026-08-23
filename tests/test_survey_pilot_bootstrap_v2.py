@@ -114,39 +114,32 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
             "canonical agent-first stage plan must not require legacy Stage Handoffs",
         )
 
-    def test_workflow_and_assistant_control_authority_uses_compact_agent_checkpoint(self) -> None:
+    def test_workflow_authority_is_mechanical_and_release_is_the_only_stage_dispatch(self) -> None:
         control = self.cfg["workflow_control"]
         self.assertEqual(control["dispatch_ref"], "main")
         self.assertEqual(control["handler_dispatch"], {"stage:release": "survey-production-v2-release.yml"})
         self.assertEqual(control["release_reconciliation"], {"external_key": "release_identity", "existing_release_policy": "VERIFY_EXACT_BYTES_THEN_RESUME"})
-        paths = {
-            "assistant": self.root / ".github/workflows" / control["assistant_control_workflow"],
-            "control": self.root / ".github/workflows" / control["production_control_workflow"],
-            "release": self.root / ".github/workflows" / control["release_workflow"],
-        }
-        for label, path in paths.items():
-            self.assertTrue(path.is_file(), f"missing {label} workflow: {path}")
-        assistant = paths["assistant"].read_text(encoding="utf-8")
-        self.assertIn("production_state_sha256", assistant)
-        self.assertIn("stage_artifacts_json", assistant)
-        self.assertIn("stage_reviews_path", assistant)
-        self.assertNotIn("request_sha256", assistant)
-        production = paths["control"].read_text(encoding="utf-8")
-        self.assertIn("survey_agent_control_v2.py", production)
-        self.assertIn("advance-stage", production)
-        self.assertIn("approve-architecture", production)
-        self.assertIn("approve-publication-preview", production)
-        self.assertNotIn("survey_handoff_v2.py", production)
-        self.assertNotIn("survey_orchestrator_v2.py", production)
-        self.assertNotIn("cmp -s", production)
-        release = paths["release"].read_text(encoding="utf-8")
+        self.assertNotIn("assistant_control_workflow", control)
+        self.assertNotIn("production_control_workflow", control)
+        self.assertEqual(
+            control["publication_preview_export_workflow"],
+            "survey-production-v2-export-publication-preview.yml",
+        )
+        release_path = self.root / ".github/workflows" / control["release_workflow"]
+        preview_path = self.root / ".github/workflows" / control["publication_preview_export_workflow"]
+        self.assertTrue(release_path.is_file())
+        self.assertTrue(preview_path.is_file())
+        release = release_path.read_text(encoding="utf-8")
         self.assertIn("GITHUB_ACTIONS_ARTIFACT", release)
         self.assertIn("VERIFY_EXACT_BYTES_THEN_RESUME", release)
         self.assertIn("gh release download", release)
         self.assertIn("survey_release_checkpoint_v2.py", release)
-        self.assertIn("survey_agent_control_v2.py", release)
         self.assertNotIn("survey_handoff_v2.py", release)
         self.assertNotIn("survey_orchestrator_v2.py", release)
+        stage_plan = self.cfg["orchestration"]["stage_plan"]
+        workflow_stages = [name for name, stage in stage_plan.items() if stage["action_kind"] == "WORKFLOW_DISPATCH"]
+        self.assertEqual(workflow_stages, ["FROZEN"])
+        self.assertEqual(stage_plan["FROZEN"]["handler"], "stage:release")
 
     def test_core_v2_cross_regression_wiring_preserves_current_weekly_production_controls(self) -> None:
         weekly = (self.root / ".github/workflows/weekly-pipeline.yml").read_text(encoding="utf-8")
