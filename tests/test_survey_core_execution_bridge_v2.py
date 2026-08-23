@@ -45,13 +45,13 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
             "request_id": "period-init-r1",
             "issue_id": "SP-2024-H1",
             "source_root": "sources/SP-2024-H1",
-            "work_branch": "special/2024-H1-work",
+            "work_branch": "special/2024-H1-v2-work",
             "reviewed_main_sha": "c" * 40,
             "recorded_at": "2026-08-23T14:00:00Z",
             "operation": {
                 "kind": "INITIALIZE_RETROSPECTIVE",
                 "target_gate": "ARCHITECTURE_REVIEW",
-                "spec_path": "sources/SP-2024-H1/retrospective-scope-v2.json",
+                "special_slug": "2024-H1",
                 "execution_record": {
                     "session_id": "period-postmerge-r1",
                     "reviewed_main_sha": "c" * 40,
@@ -186,7 +186,8 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
         self.assertIn('"INITIALIZE_RETROSPECTIVE"', text)
         self.assertIn('"INITIALIZE_THEMATIC"', text)
         self.assertIn('"ADVANCE_STAGE"', text)
-        self.assertIn("retrospective.build_profile", text)
+        self.assertIn("period.resolve_configured_period", text)
+        self.assertIn("period.period_profile", text)
         self.assertIn('ref_name == "main"', text)
         self.assertIn('paths.get("source_root") != request["source_root"]', text)
         self.assertNotIn("approve_architecture(", text)
@@ -199,12 +200,12 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
         self.assertIn("INITIALIZE_WEEKLY", inventory)
         self.assertIn("INITIALIZE_RETROSPECTIVE", inventory)
         self.assertIn("INITIALIZE_THEMATIC", inventory)
-        self.assertIn("one generic `RETROSPECTIVE_PERIOD` adapter", inventory)
+        self.assertIn("existing `survey_period_v2`", inventory)
 
         self.assertIn("Weekly", policy)
         self.assertIn("configured Retrospective Period", policy)
         self.assertIn("Thematic", policy)
-        self.assertIn("representative configured `RETROSPECTIVE_PERIOD`", policy)
+        self.assertIn("existing `survey_period_v2`", policy)
 
     def test_bridge_executes_thematic_init_then_discovery_advance_end_to_end(self) -> None:
         cfg = core.load_json(self.root / core.DEFAULT_CONFIG)
