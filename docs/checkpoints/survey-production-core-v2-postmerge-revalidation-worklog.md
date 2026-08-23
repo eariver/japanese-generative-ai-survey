@@ -5,441 +5,243 @@ Status: `OPERATOR BRIDGE MAINTENANCE / FINAL CANDIDATE PREPARATION / W33 + SP001
 Established: 2026-08-23 JST  
 Last updated: 2026-08-23 JST
 
-Integrated Core baseline that exposed the operator gap: `2cb52dc293484a5c2ddd3caf9c909f18f4699c49`
+Integrated Core baseline that exposed the operator gap: `2cb52dc293484a5c2ddd3caf9c909f18f4699c49`  
+Maintenance-start `main`: `2bcaa7d1df1826ab8848c25de8bf2373d85a8e75`  
+Maintenance branch: `maintenance/core-v2-operator-execution-bridge`  
+Maintenance PR: `#447 Core v2: add deterministic operator execution bridge`
 
-Current `main` at maintenance start: `2bcaa7d1df1826ab8848c25de8bf2373d85a8e75`
+W33/SP001 remain paused non-PASS production-validation evidence until reviewed unchanged bridge integration.
 
-Current shared-Core maintenance branch:
+## Resume checkpoint
 
-`maintenance/core-v2-operator-execution-bridge`
+The post-merge clean W33/SP001 trials exercised real ChatGPT research/editorial work and the real W33 Human-mediated Grok/Drive handoff, but could not begin canonical Core lifecycle execution because the connector runtime had no exact checkout/CLI execution substrate.
 
-Maintenance PR:
+The response is shared operator/Core maintenance, not fabricated Profile/State/checkpoint authority and not an edition-specific temporary workflow.
 
-`#447 Core v2: add deterministic operator execution bridge`
+Current bridge allowlist:
 
-Validation editions retained as non-PASS evidence while maintenance is in progress:
+1. `INITIALIZE_WEEKLY`
+2. `INITIALIZE_RETROSPECTIVE`
+3. `INITIALIZE_THEMATIC`
+4. `ADVANCE_STAGE`
 
-- Weekly: `weekly/2026-W33-v2-work`
-- Thematic/LONGFORM regression: `special/SP001-v2-work`
+Configured Retrospective initialization reuses the **existing `scripts/survey_period_v2.py`** Core helper. No second Retrospective builder survives in the candidate.
 
-Historical failed pre-redesign editions remain archived separately and are not acceptance evidence.
-
-## Resume checkpoint — read this first
-
-The post-merge clean W33/SP001 trials successfully exercised real ChatGPT research/editorial work, including the actual Human-mediated Grok/Google Drive boundary for W33, but could not begin canonical Core lifecycle execution because the ChatGPT connector runtime had no exact repository checkout/CLI bridge.
-
-That blocker is handled as **shared operator/Core maintenance**, not by fabricating machine artifacts and not by adding edition-specific temporary workflows.
-
-Current position:
-
-1. W33 and SP001 production branches remain intentionally paused.
-2. A generic deterministic operator bridge is implemented on `maintenance/core-v2-operator-execution-bridge`.
-3. The bridge executes only canonical deterministic Core mechanics from one immutable edition-local request-only commit.
-4. The bridge now supports canonical cold-start initialization for all three Research Profile families that have repository-owned initialization authority:
-   - `WEEKLY`;
-   - configured `RETROSPECTIVE_PERIOD`;
-   - `THEMATIC`.
-5. After exact-head CI, fixed-head six-point audit, Human review, and unchanged integration, W33/SP001 must be cleanly restarted/rebased from reviewed `main` and rerun canonically.
-6. Neither existing production trial may be relabeled as PASS.
-
-## Edition-local resume authorities
+## Edition-local resume authority
 
 ### W33
 
-Branch:
+Branch: `weekly/2026-W33-v2-work`  
+Resume file: `sources/2026-W33/postmerge-validation-status.md`
 
-`weekly/2026-W33-v2-work`
+Completed preparation includes canonical Weekly window resolution, real one-file Grok/Drive execution, exact Raw import, X/community disposition, primary-source follow-up and editorial Architecture preparation.
 
-Primary resume file:
-
-`sources/2026-W33/postmerge-validation-status.md`
-
-Completed preparation:
-
-- canonical Weekly window resolved;
-- one self-contained Drive `grok-task.md` created and executed by Grok;
-- exact returned Raw bytes imported;
-- X/community signal disposition performed;
-- primary-source follow-up performed;
-- fresh editorial Architecture preparation written.
-
-Important exact Raw authority:
+Exact Raw:
 
 `sources/2026-W33/external/x/weekly-x-2026-W33-postmerge-r1/raw/grok-x-result.md`
 
-SHA-256:
+SHA-256: `93fe6b8c2eeea4e3186868f79927108edacebc26d8ff23f1bcc38ac1080e1f06`
 
-`93fe6b8c2eeea4e3186868f79927108edacebc26d8ff23f1bcc38ac1080e1f06`
-
-Do not rerun Grok unless the exact existing Raw is later proven unusable by canonical validation.
+Do not rerun Grok unless canonical validation later proves those exact bytes unusable.
 
 ### SP001
 
-Branch:
+Branch: `special/SP001-v2-work`  
+Resume file: `sources/SP001/postmerge-validation-status.md`
 
-`special/SP001-v2-work`
-
-Primary resume file:
-
-`sources/SP001/postmerge-validation-status.md`
-
-Completed preparation:
-
-- current Thematic backlog scope materialized;
-- X/Grok applicability prepared as `NOT_REQUIRED`;
-- primary-source research across the major Chinese model families completed to Architecture-preparation depth;
-- licensing/open-weight/runtime boundaries explicitly separated;
-- seven scope obligations mapped;
-- six-package editorial Architecture preparation written.
-
-Prepared files:
+Prepared authority/research:
 
 - `sources/SP001/research-scope-v2.json`
 - `sources/SP001/intake/postmerge-primary-source-intake.md`
 - `sources/SP001/architecture-preparation.md`
 
-Do not copy failed pre-redesign accepted artifacts into the clean rerun.
+X/Grok applicability is prepared as `NOT_REQUIRED`. Do not copy failed pre-redesign accepted artifacts into the clean rerun.
 
-## Revalidation findings retained
+## Revalidation findings
 
 ### RVF-001 — Human-mediated Grok/Drive transport works
 
 Status: `CONFIRMED BY REAL W33 OPERATION`
 
-The single-task-file boundary worked:
-
 ```text
 ChatGPT prepares exact grok-task.md
 -> Human passes only that Drive path/reference to Grok
 -> Grok writes result in instructed run folder
--> ChatGPT retrieves exact bytes
--> ChatGPT imports Raw and resumes
+-> ChatGPT retrieves/imports exact Raw
+-> ChatGPT resumes
 ```
 
-No Grok connector is required for the normal boundary.
+No Grok connector is required.
 
-### RVF-002 — X/community and technical Evidence separation works editorially
+### RVF-002 — X/community and technical Evidence separation works
 
-Status: `CONFIRMED EDITORIALLY / CANONICAL MANIFEST VALIDATION STILL PENDING`
+Status: `CONFIRMED EDITORIALLY / CANONICAL MANIFEST VALIDATION PENDING`
 
-Grok/X is useful for salience, hands-on behavior, disagreement, practical friction and community movement. Technical facts still require authoritative verification before entering Evidence.
+Grok/X supplies salience/community signal. Technical claims still require authoritative verification before Evidence acceptance.
 
 ### RVF-003 — fresh X can materially change Weekly Architecture
 
 Status: `CONFIRMED BY W33`
 
-The Aug. 12–14 model-release wave materially changed W33 package selection and synthesis after primary-source follow-up. Weekly X intake is therefore not merely decorative.
+W33's Aug. 12–14 model-release wave materially changed package selection and synthesis after primary-source verification.
 
-### RVF-004 — Thematic X applicability can legitimately be `NOT_REQUIRED`
+### RVF-004 — Thematic X may legitimately be `NOT_REQUIRED`
 
 Status: `CONFIRMED EDITORIALLY BY SP001 / CANONICAL RECORD PENDING`
-
-SP001's technical-history question can be closed with first-party technical/distribution/license authorities without mandatory X transport.
 
 ### RVF-005 — operator execution path was the blocking dependency
 
 Status: `CONFIRMED / BRIDGE IMPLEMENTED / FINAL AUDIT PENDING`
 
-The connector runtime can research and mutate GitHub but cannot necessarily mount the exact repository branch and execute the canonical local Core CLI. Manually imitating Profile/State/checkpoint output is prohibited.
-
-The maintenance direction is a generic **deterministic operator execution bridge** that preserves ChatGPT authorship and uses Actions only as the missing checked-out execution substrate.
+The connector runtime can research/edit GitHub but cannot necessarily execute canonical local Core over the exact branch. Manual imitation of machine authority is prohibited.
 
 ### RVF-006 — do not fabricate machine acceptance
 
 Status: `CONFIRMED OPERATIONAL RULE`
 
-If canonical deterministic execution is unavailable, preserve research/provenance and stop before machine acceptance rather than hand-authoring plausible validator output.
+If canonical deterministic execution is unavailable, preserve preparation/provenance and stop before machine acceptance.
 
 ### RVF-007 — edition-local human-readable resume records remain useful
 
 Status: `CONFIRMED / MIGRATION PRACTICE`
 
-Before canonical `execution/` bootstrap is available, concise edition-local resume files are acceptable migration evidence. Once canonical Profile/State is initialized, `{source_root}/execution/` becomes the preferred operational record.
+Once canonical Profile/State exists, `{source_root}/execution/` becomes the preferred operational record.
 
-### RVF-008 — old failed artifacts remain visibly non-authoritative
+### RVF-008 — old failed artifacts remain non-authoritative
 
 Status: `CONFIRMED`
 
-W33's historical `pipeline-state.json` remains `NON_AUTHORITATIVE_READ_ONLY`; SP001 failed accepted artifacts remain on the archived branch only.
+W33 historical `pipeline-state.json` remains `NON_AUTHORITATIVE_READ_ONLY`; SP001 failed accepted artifacts remain archived only.
 
-### RVF-009 — fixed-head audit itself found stale workflow-count authority
+### RVF-009 — first fixed-head audit found stale workflow-count authority
 
-Status: `FOUND / REPAIRED / ORIGINAL AUDIT INVALIDATED`
+Status: `FOUND / REPAIRED / AUDIT INVALIDATED`
 
-First frozen maintenance candidate:
+Candidate: `89b0a02c8699c957dc8ca09d0228e9d8b4ce7287`
 
-`89b0a02c8699c957dc8ca09d0228e9d8b4ce7287`
+The current audit rule still said six workflows while PFB-014 correctly introduced a seventh operator-bridge workflow. The candidate changed, so the complete audit was invalidated. No PASS from that audit is reusable.
 
-Fresh six-point audit discovered that `docs/survey-production-core-v2-final-audit-rule.md` still required the pre-PFB-014 six-workflow surface, while the current redesign authority correctly admitted seven workflows including the operator bridge.
+### RVF-010 — second fixed-head audit found Retrospective bridge exposure missing
 
-Per the fixed-head invalidation rule:
+Status: `FOUND / REPAIRED / AUDIT INVALIDATED / DIAGNOSIS CORRECTED BEFORE FINAL FREEZE`
+
+Candidate: `0caa2c4f9ed87a32e50cf7813990b916489581bc`
+
+Point 2 (`Special viability`) correctly established that a bridge exposing only Weekly/Thematic could not execute the mandated connector-runtime Retrospective validation.
+
+Initial diagnosis incorrectly concluded that Core v2 lacked a canonical configured-period Profile adapter. Deeper pre-freeze inspection later found that the maintenance base already contained:
+
+- `scripts/survey_period_v2.py`
+- `tests/test_survey_period_v2.py`
+
+That existing Core helper already supports generic configured monthly/half-year/annual `RETROSPECTIVE_PERIOD + LONGFORM_SPECIAL`, custom bounded periods, pre-period-end rejection, unknown-slug rejection and resume semantics.
+
+Therefore the true defect was narrower:
+
+> **The operator bridge did not expose the already-existing canonical `survey_period_v2` initializer.**
+
+Temporary duplicate files created under the incorrect diagnosis were removed before final candidate freeze:
+
+- `scripts/survey_retrospective_profile_v2.py`
+- `schemas/retrospective-scope-spec-v2.schema.json`
+- `tests/test_survey_retrospective_profile_v2.py`
+
+Final Retrospective bridge semantics are:
 
 ```text
-finding requires repository change
--> candidate audit invalidated
--> authority synchronized to seven workflows
--> regression added
--> freeze a new candidate and restart from point 1
+request special_slug
+-> survey_period_v2.resolve_configured_period(...)
+-> survey_period_v2.period_profile(...)
+-> exact request/Profile identity check
+-> canonical Core initialize(...)
 ```
-
-No PASS from the `89b0a02c...` audit is reusable.
-
-### RVF-010 — Retrospective cold-start path was missing from the bridge/Core-v2 adapter surface
-
-Status: `FOUND / REPAIRED / SECOND AUDIT INVALIDATED`
-
-Second frozen maintenance candidate:
-
-`0caa2c4f9ed87a32e50cf7813990b916489581bc`
-
-Fresh Point 2 (`Special viability`) inspection established:
-
-- Core v2 already declared `RETROSPECTIVE_PERIOD + LONGFORM_SPECIAL + BOUNDED_PERIOD` as a canonical profile family;
-- existing Special authority already provided configured monthly/half-year/annual slugs, exact coverage windows, canonical identities, required guides and canonical paths through `config/special-pipeline.json` + `scripts/special_pipeline.py bootstrap-plan`;
-- but Core v2 had no canonical adapter that materialized those configured-period authorities into a v2 Production Profile;
-- therefore the connector-only runtime could not start the required post-integration Retrospective validation through the bridge.
-
-The candidate audit was invalidated rather than weakening Point 2.
-
-Repair deliberately did **not** add separate monthly/half-year/annual engines. It added one configured-period adapter:
-
-- `schemas/retrospective-scope-spec-v2.schema.json`
-- `scripts/survey_retrospective_profile_v2.py`
-- bridge operation `INITIALIZE_RETROSPECTIVE`
-- contract registration and regression coverage.
-
-Configured period identity, tier, coverage, required guides and paths remain owned by existing `special_pipeline.bootstrap_plan`. ChatGPT materializes only the edition-local research question, inclusion/exclusion, dimensions and initial obligations after reading the required period guides.
-
-Representative regression covers the same builder across:
-
-- monthly `2026-M07`;
-- half-year `2024-H1`;
-- annual `2023-Y`.
-
-The adapter fail-closes on unconfigured slugs, planning-authority SHA drift, issue-id drift, scope materialized after initialization, and initialization before period end.
 
 No PASS from the `0caa2c4f...` audit is reusable.
 
+### RVF-011 — bridge glue has an end-to-end regression
+
+Status: `IMPLEMENTED / FINAL EXACT-HEAD CI PENDING`
+
+`tests/test_survey_core_execution_bridge_v2.py` exercises a temporary Thematic edition through:
+
+```text
+immutable INITIALIZE_THEMATIC request
+-> canonical Profile/State/execution record
+-> X NOT_REQUIRED manifest
+-> Discovery acceptance
+-> second immutable ADVANCE_STAGE request
+-> DISCOVERY_COLLECTED + next_action=stage:screening
+```
+
+The first diagnostic CI attempt exposed only a sparse-checkout fixture assumption (`sources/` directory absent); the fixture was corrected before final freeze.
+
 ## Current maintenance design
 
-Authority/plan document:
+Candidate scope contains bridge/authority changes, not a duplicate Retrospective implementation:
 
-`docs/survey-production-core-v2-operator-execution-bridge.md`
-
-Maintenance branch:
-
-`maintenance/core-v2-operator-execution-bridge`
-
-Current implementation candidate includes:
-
-- `schemas/operator-execution-request-v2.schema.json`
-- `schemas/retrospective-scope-spec-v2.schema.json`
-- `scripts/survey_core_execution_bridge_v2.py`
-- `scripts/survey_retrospective_profile_v2.py`
 - `.github/workflows/survey-production-v2-operator-bridge.yml`
+- `schemas/operator-execution-request-v2.schema.json`
+- `scripts/survey_core_execution_bridge_v2.py`
 - `tests/test_survey_core_execution_bridge_v2.py`
-- `tests/test_survey_retrospective_profile_v2.py`
-- regression updates to `tests/test_survey_pilot_bootstrap_v2.py`
-- synchronized Core authority/policy/worklog/config documents.
+- workflow/config/authority/regression synchronization.
 
-### Bridge responsibility boundary
-
-ChatGPT still owns:
-
-- research/source strategy;
-- Evidence/materiality/completeness judgment;
-- Selection;
-- Architecture;
-- drafting/synthesis;
-- semantic/editorial review;
-- exact-PDF visual review;
-- Human-Gate preparation.
-
-The bridge may execute only:
-
-1. `INITIALIZE_WEEKLY`;
-2. `INITIALIZE_RETROSPECTIVE` using the existing configured-period Special authority plus a ChatGPT-authored edition-local scope spec;
-3. `INITIALIZE_THEMATIC`;
-4. `ADVANCE_STAGE` over already-authored exact artifacts.
-
-The bridge does not expose arbitrary commands, shell snippets, module names, Architecture approval, Publication Preview approval or Release.
+Existing `scripts/survey_period_v2.py` remains the Retrospective builder and is unchanged by the maintenance PR.
 
 ### Reviewed-main preflight
 
-Every request binds one exact lowercase 40-hex `reviewed_main_sha`.
+Every request binds exact lowercase 40-hex `reviewed_main_sha`. Before dependency installation/Core execution, the workflow requires reviewed SHA on current `main` history, request-parent descent, initialization execution-record baseline equality, and byte equality for fixed shared implementation roots plus configured contract files.
 
-Before dependency installation or Core execution, the workflow requires:
-
-- the SHA to exist on current `main` history;
-- the request parent to descend from it;
-- initialization execution-record SHA to match it;
-- fixed minimum shared roots `.github/workflows`, `config`, `schemas`, `scripts` plus configured contract paths to be byte-identical between the reviewed-main baseline and request parent.
-
-This prevents an edition branch from silently running drifted/shared-Core code while claiming reviewed-main provenance.
-
-### Request/receipt shape
-
-Request authority:
+### Request/receipt
 
 ```text
 {source_root}/execution/requests/<request-id>.json
-```
-
-Bridge result/receipt authority:
-
-```text
 {source_root}/execution/bridge-runs/<request-id>/
 ```
 
-Workflow trigger rules require:
+Trigger is request-only; generated writes are Profile-source-root-bound; immutable requests cannot be mutated; bot output cannot recursively retrigger.
 
-- one newly added request;
-- request-only triggering commit;
-- exact request work-branch/ref match rather than hardcoded cadence branch prefixes;
-- non-bot actor;
-- reviewed-main Core preflight;
-- generated writes only under the Profile-bound source root;
-- no mutation of immutable request authority.
+## Why this is not a return to Actions-heavy production
 
-The bot output commit does not add a request file and is also actor-guarded, so it cannot recursively chain bridge execution.
+The bridge supplies only the missing exact checked-out deterministic execution substrate. It neither chooses content nor creates research/editorial/visual/Human judgments.
 
-## Why this is not a return to the old Actions-heavy pipeline
-
-The failed pre-redesign topology used Actions to author/mutate editorial and publication content, choose repairs, chain state changes and create bot-driven production loops.
-
-The bridge instead supplies one missing execution property: an exact repository checkout capable of running already-existing deterministic Core code. It neither selects content nor creates semantic judgments.
-
-This remains consistent with the Actions admission principle only while the implementation stays narrow and fail-closed.
-
-Current Actions surface is exactly seven workflows. A new eighth workflow is prima facie architectural regression unless separately reviewed against the same admission rule.
+Current Actions surface is exactly seven workflows. A new eighth workflow requires separate Actions-policy review.
 
 ## Diagnostic CI evidence before final freeze
 
-These runs are useful diagnostics but are **not final fixed-head acceptance evidence** if the branch changes afterward.
+Diagnostic runs are not final acceptance evidence if the candidate tree changes afterward.
 
-At maintenance head `6ba6748a4e06e63a24ddac34173a7a2534b7e370`:
+- head `6ba6748a4e06e63a24ddac34173a7a2534b7e370`: Core v2 CI PASS and Pipeline contract tests PASS;
+- head `4088bcfc63aafa440f1966c5393f6aae912eee30`: E2E fixture FAIL before bridge execution because sparse checkout lacked `sources/`;
+- head `08328d8babcb60b00be22d87a69289fd0e751ace`: Core v2 CI PASS after fixture correction.
 
-- Survey Production Core v2 CI run `32644491998`: PASS;
-- Pipeline contract tests run `32644492001`: PASS.
-
-Subsequent candidate-preparation changes include only the planned Retrospective CLI fail-closed timestamp handling, its regression test, and this worklog/authority synchronization. Exact-head CI must be rerun after the final candidate SHA is frozen.
+All are pre-freeze diagnostics only.
 
 ## PFB-013 status
 
-Existing requirement: real cold-start Weekly + SP001/LONGFORM validation after reviewed Core integration, plus representative Retrospective and Foundations-guided validation under the current final-audit rule.
-
-Current verdict:
-
 `PARTIALLY EXERCISED / NOT PASSED`
 
-The first post-merge clean attempts performed substantial real operator work, and W33 successfully exercised the actual Grok/Drive handoff. They did not reach canonical Profile/State lifecycle execution because the operator runtime lacked an execution bridge.
-
-PFB-013 remains open until reviewed integration and clean post-integration runs.
+Real cold-start Weekly, SP001/LONGFORM, representative Retrospective and Foundations-guided validation remain required after reviewed unchanged integration.
 
 ## PFB-014 status
 
-Feedback item:
-
-**Operator runtime requires a generic deterministic Core execution fallback when direct local checkout/CLI execution is unavailable.**
-
-Status:
-
 `IMPLEMENTED CANDIDATE / EXACT-HEAD REAUDIT PENDING`
 
-Acceptance criteria include:
+Acceptance requires no arbitrary executable surface, exact request identity, reviewed-main preflight, Profile-bound writes, immutable requests, stale-state refusal, deterministic result ownership by Core, no deterministic-review impersonation, no recursive bot chain, exact provenance, direct local CLI preference, Weekly/configured Retrospective/Thematic exposure through existing Core builders, exact-head CI, complete six-point audit, and clean post-integration trials.
 
-1. no arbitrary command/module/script surface from request data;
-2. request path/id/branch are exact and fail closed;
-3. triggering commit adds exactly one immutable request and changes nothing else;
-4. reviewed-main shared-Core preflight runs before dependency installation/execution;
-5. generated writes are constrained to the Profile-bound edition source root;
-6. immutable request bytes are never mutated by the runner;
-7. `ADVANCE_STAGE` requires an exact expected current lifecycle state;
-8. deterministic `CORE_STAGE_CONTRACT` is generated by canonical Core code, not supplied by ChatGPT;
-9. ChatGPT agent review rows cannot impersonate deterministic results;
-10. output commits do not recursively retrigger the workflow;
-11. exact implementation/request/State provenance is recorded;
-12. direct-local CLI remains preferred when available;
-13. canonical cold-start initialization is structurally available for Weekly, configured Retrospective Period and Thematic without cadence/topic-specific authoring workflows;
-14. bridge exact-head CI and complete six-point fixed-head audit pass;
-15. after reviewed integration, fresh representative production trials reach their requested Human Gate without in-run shared-Core repair.
-
-Do not mark PFB-014 closed merely because unit tests pass; real edition use is still required.
+Do not close PFB-014 merely because unit tests pass.
 
 ## Next actions
 
-### Shared Core maintenance
-
 ```text
-finish final authority/implementation cross-check
--> freeze one exact maintenance candidate SHA
--> run exact-head Core CI + pipeline contract tests
--> rerun the complete six-point Core audit from point 1 on that exact unchanged SHA
--> if any repository change is required, invalidate and restart
--> if 6/6 PASS, record the result outside the candidate tree in PR #447
+finish authority/implementation cross-check
+-> freeze exact maintenance candidate SHA
+-> exact-head Core CI + pipeline contract tests
+-> complete six-point audit from point 1 on unchanged SHA
+-> any required tree change invalidates and restarts audit
+-> 6/6 PASS: record result outside candidate tree in PR #447
 -> mark PR #447 ready for Human full-candidate review
 ```
 
-### After reviewed unchanged integration
-
-```text
-reset/rebase clean validation branches from reviewed main
--> restore only legitimate edition-local Raw/research preparation
--> execute canonical cold-start matrix through the bridge/direct local Core as available:
-   Weekly
-   standalone Thematic/LONGFORM (SP001 regression)
-   representative Retrospective Period
-   Foundations-guided scenario
--> stop at the requested Human Gates
--> preserve any shared-Core defect as failed evidence and repair separately
-```
-
-### W33 after reviewed integration
-
-```text
-reset/rebase clean W33 validation branch from reviewed main
--> restore only legitimate exact Raw + editorial preparation
--> commit INITIALIZE_WEEKLY bridge request
--> verify canonical Profile/State/execution record
--> canonical X manifest binding of existing Raw
--> Discovery
--> Screening
--> Evidence / Materiality / Completeness
--> Candidate Matrix / Selection
--> Architecture
--> ARCHITECTURE_REVIEW
-```
-
-### SP001 after reviewed integration
-
-```text
-reset/rebase clean SP001 validation branch from reviewed main
--> restore current scope + legitimate research/Architecture preparation only
--> commit INITIALIZE_THEMATIC bridge request
--> verify canonical Profile/State/execution record
--> canonical X NOT_REQUIRED disposition
--> Discovery
--> Screening
--> Evidence / Materiality / Completeness
--> Candidate Matrix / Selection
--> Architecture
--> ARCHITECTURE_REVIEW
-```
-
-## Files to use when resuming
-
-| Purpose | Branch | File |
-|---|---|---|
-| Shared bridge maintenance current position | `maintenance/core-v2-operator-execution-bridge` | `docs/checkpoints/survey-production-core-v2-postmerge-revalidation-worklog.md` |
-| Bridge design/boundary | `maintenance/core-v2-operator-execution-bridge` | `docs/survey-production-core-v2-operator-execution-bridge.md` |
-| Current redesign authority overlay | `maintenance/core-v2-operator-execution-bridge` | `docs/survey-production-core-v2-redesign-authority.md` |
-| Current final audit rule | `maintenance/core-v2-operator-execution-bridge` | `docs/survey-production-core-v2-final-audit-rule.md` |
-| W33 current position / plan | `weekly/2026-W33-v2-work` | `sources/2026-W33/postmerge-validation-status.md` |
-| W33 research / Architecture preparation | `weekly/2026-W33-v2-work` | `sources/2026-W33/postmerge-research-intake.md` |
-| W33 exact Grok Raw | `weekly/2026-W33-v2-work` | `sources/2026-W33/external/x/weekly-x-2026-W33-postmerge-r1/raw/grok-x-result.md` |
-| SP001 current position / plan | `special/SP001-v2-work` | `sources/SP001/postmerge-validation-status.md` |
-| SP001 research scope | `special/SP001-v2-work` | `sources/SP001/research-scope-v2.json` |
-| SP001 research intake | `special/SP001-v2-work` | `sources/SP001/intake/postmerge-primary-source-intake.md` |
-| SP001 Architecture preparation | `special/SP001-v2-work` | `sources/SP001/architecture-preparation.md` |
+After Human-reviewed unchanged integration, reset/rebase clean W33/SP001 validation branches from reviewed main, restore only legitimate Raw/research preparation, then run the canonical Weekly / SP001 / representative Retrospective / Foundations validation matrix.
 
 Repository reality and canonical Production State, once created, outrank this human-readable summary.
