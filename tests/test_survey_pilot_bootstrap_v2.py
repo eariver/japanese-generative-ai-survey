@@ -121,61 +121,48 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.assertEqual(control["release_reconciliation"], {"external_key": "release_identity", "existing_release_policy": "VERIFY_EXACT_BYTES_THEN_RESUME"})
         self.assertNotIn("assistant_control_workflow", control)
         self.assertNotIn("production_control_workflow", control)
-        self.assertEqual(
-            control["publication_preview_export_workflow"],
-            "survey-production-v2-export-publication-preview.yml",
-        )
-        release_path = self.root / ".github/workflows" / control["release_workflow"]
-        preview_path = self.root / ".github/workflows" / control["publication_preview_export_workflow"]
-        self.assertTrue(release_path.is_file())
-        self.assertTrue(preview_path.is_file())
-        release = release_path.read_text(encoding="utf-8")
-        self.assertIn("GITHUB_ACTIONS_ARTIFACT", release)
-        self.assertIn("VERIFY_EXACT_BYTES_THEN_RESUME", release)
-        self.assertIn("gh release download", release)
-        self.assertIn("survey_release_checkpoint_v2.py", release)
-        self.assertNotIn("survey_handoff_v2.py", release)
-        self.assertNotIn("survey_orchestrator_v2.py", release)
+        self.assertEqual(control["publication_preview_export_workflow"], "survey-production-v2-export-publication-preview.yml")
+        self.assertEqual(control["release_workflow"], "survey-production-v2-release.yml")
         stage_plan = self.cfg["orchestration"]["stage_plan"]
         workflow_stages = [name for name, stage in stage_plan.items() if stage["action_kind"] == "WORKFLOW_DISPATCH"]
         self.assertEqual(workflow_stages, ["FROZEN"])
         self.assertEqual(stage_plan["FROZEN"]["handler"], "stage:release")
 
-    def test_retired_core_v2_mutation_workflows_are_absent(self) -> None:
-        retired = {
-            "survey-production-v2-control.yml",
-            "assistant-control-v2.yml",
-            "survey-production-v2-work-branch-control.yml",
-            "survey-production-v2-work-branch-human-gate.yml",
-            "survey-production-v2-interactive-screening.yml",
-            "survey-production-v2-interactive-evidence.yml",
-            "survey-production-v2-interactive-selection-architecture.yml",
-            "survey-production-v2-interactive-drafting-synthesis.yml",
-            "survey-production-v2-interactive-semantic-publication.yml",
-            "survey-production-v2-interactive-weekly-semantic-publication.yml",
-            "survey-production-v2-interactive-semantic-quality.yml",
-        }
+    def test_actions_surface_contains_only_current_mechanical_roles(self) -> None:
         workflow_root = self.root / ".github/workflows"
         present = {path.name for path in workflow_root.glob("*.yml")}
-        self.assertTrue(retired.isdisjoint(present), sorted(retired & present))
-        contract_text = (self.root / "config/survey-production-v2.json").read_text(encoding="utf-8")
-        for filename in retired:
-            self.assertNotIn(filename, contract_text)
+        retained = {
+            "pipeline-contract-tests.yml",
+            "survey-production-v2-ci.yml",
+            "build-weekly-survey.yml",
+            "build-special-pdf.yml",
+            "survey-production-v2-export-publication-preview.yml",
+            "survey-production-v2-release.yml",
+        }
+        self.assertEqual(present, retained)
 
-    def test_core_v2_cross_regression_wiring_preserves_current_weekly_production_controls(self) -> None:
-        weekly = (self.root / ".github/workflows/weekly-pipeline.yml").read_text(encoding="utf-8")
-        self.assertIn("scripts/survey_*_v2.py", weekly)
-        self.assertIn("config/survey-production-v2-requirements.txt", weekly)
-        self.assertIn("Install Survey Production Core v2 test dependencies", weekly)
-        self.assertIn("Generate Grok Trend Sensor run instruction when collection anchor is available", weekly)
-        self.assertIn("actions/upload-artifact@v7", weekly)
-        self.assertIn("retention-days: 14", weekly)
-        self.assertIn("--plan out/source-intake-control/plan.json", weekly)
-        self.assertIn("scripts/build_screening_index.py", weekly)
-        self.assertIn("out/weekly-pipeline/validation.json", weekly)
-        self.assertIn("raw-provenance-report.json", weekly)
-        self.assertIn("if: inputs.command == 'raw-index'", weekly)
-        self.assertIn("if: inputs.command == 'raw-check'", weekly)
+        for filename in ("build-weekly-survey.yml", "build-special-pdf.yml"):
+            text = (workflow_root / filename).read_text(encoding="utf-8")
+            self.assertIn("contents: read", text)
+            self.assertNotIn("git push", text)
+            self.assertNotIn("pipeline-state.json", text)
+
+        preview = (workflow_root / "survey-production-v2-export-publication-preview.yml").read_text(encoding="utf-8")
+        self.assertIn("publication-candidate-v2.json", preview)
+        self.assertIn("READY_FOR_PUBLICATION_PREVIEW", preview)
+        self.assertNotIn("interactive-preview-export.json", preview)
+
+        release = (workflow_root / "survey-production-v2-release.yml").read_text(encoding="utf-8")
+        self.assertIn("VERIFY_EXACT_BYTES_THEN_RESUME", release)
+        self.assertIn("gh release download", release)
+        self.assertIn("survey_release_checkpoint_v2.py", release)
+        self.assertNotIn("survey_handoff_v2.py", release)
+        self.assertNotIn("survey_orchestrator_v2.py", release)
+
+        core_ci = (workflow_root / "survey-production-v2-ci.yml").read_text(encoding="utf-8")
+        self.assertIn("- main", core_ci)
+        self.assertIn("test_survey_*_v2.py", core_ci)
+        self.assertIn("unittest discover", core_ci)
 
 
 if __name__ == "__main__":
