@@ -52,7 +52,7 @@ jobs:
 
           printf '%s\n' "${added_requests[0]}" > "$RUNNER_TEMP/operator-request-path"
 
-      - name: Verify reviewed-main Core baseline
+      - name: Verify reviewed-main Core baseline and Human reviewed commit
         shell: bash
         run: |
           set -euo pipefail
@@ -73,6 +73,7 @@ jobs:
           fi
 
           request_parent="$GITHUB_SHA^"
+          request_parent_sha="$(git rev-parse "$request_parent")"
           if ! git merge-base --is-ancestor "$reviewed_main_sha" "$request_parent"; then
             echo "Operator work branch is not descended from reviewed_main_sha." >&2
             exit 1
@@ -83,6 +84,19 @@ jobs:
               execution_main_sha="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["execution_record"]["reviewed_main_sha"])' "$request_path")"
               if [[ "$execution_main_sha" != "$reviewed_main_sha" ]]; then
                 echo "Initialization execution record reviewed_main_sha must equal request reviewed_main_sha." >&2
+                exit 1
+              fi
+              ;;
+            RECORD_ARCHITECTURE_APPROVAL|REQUEST_ARCHITECTURE_REVISION|RECORD_PUBLICATION_PREVIEW_APPROVAL|REQUEST_PUBLICATION_PREVIEW_REVISION)
+              human_reviewed_sha="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["reviewed_repository_commit_sha"])' "$request_path")"
+              if [[ ! "$human_reviewed_sha" =~ ^[0-9a-f]{40}$ ]]; then
+                echo "reviewed_repository_commit_sha must be exact lowercase 40-hex." >&2
+                exit 1
+              fi
+              if [[ "$human_reviewed_sha" != "$request_parent_sha" ]]; then
+                echo "Human Gate request must bind reviewed_repository_commit_sha to the request-only commit parent." >&2
+                echo "request parent: $request_parent_sha" >&2
+                echo "request value:  $human_reviewed_sha" >&2
                 exit 1
               fi
               ;;
