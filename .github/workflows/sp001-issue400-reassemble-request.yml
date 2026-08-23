@@ -33,7 +33,18 @@ jobs:
           out='sources/SP001/orchestration/v2/interactive-semantic-publication.json'
           test -d "$parts_dir"
           mapfile -t parts < <(find "$parts_dir" -maxdepth 1 -type f -name 'part-*.b64' | sort)
-          test "${#parts[@]}" -eq 7
+          test "${#parts[@]}" -ge 7
+          python - "${parts[@]}" <<'PY'
+          import pathlib, re, sys
+          parts=[pathlib.Path(p) for p in sys.argv[1:]]
+          nums=[]
+          for p in parts:
+              m=re.fullmatch(r'part-(\d+)\.b64',p.name)
+              if not m: raise SystemExit(f'unexpected chunk name: {p.name}')
+              nums.append(int(m.group(1)))
+          if nums != list(range(len(parts))):
+              raise SystemExit(f'non-contiguous request chunks: {nums}')
+          PY
           cat "${parts[@]}" | tr -d '\r\n' | base64 --decode > "$out"
           sha256sum "$out"
           wc -c "$out"
@@ -43,6 +54,19 @@ jobs:
         with:
           name: sp001-issue400-partial-semantic-publication-request
           path: sources/SP001/orchestration/v2/interactive-semantic-publication.json
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Upload immutable source authorities for request recovery
+        uses: actions/upload-artifact@v4
+        with:
+          name: sp001-issue400-request-recovery-authorities
+          path: |
+            sources/SP001/architecture-v2.json
+            sources/SP001/draft/v2/interactive-drafting-synthesis-input.json
+            sources/SP001/draft/v2/profile-synthesis-result.json
+            sources/SP001/evidence/v2/accepted/6b730553a0d71201ed40303f5ed126aa47dca224cba63e1797931ce7cd2f63f2/interactive-evidence.json
+            sources/SP001/evidence/v2/accepted/6b730553a0d71201ed40303f5ed126aa47dca224cba63e1797931ce7cd2f63f2/evidence-accepted.json
           if-no-files-found: error
           retention-days: 1
 
