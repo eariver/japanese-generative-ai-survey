@@ -25,6 +25,15 @@ SUMMARY_PATTERN = re.compile(
     r"\\label\{sec:issue-summary\}\n"
     r"\\sectionkicker\{WEEKLY SYNTHESIS\})"
 )
+BIBRESOURCE_MARKER = "\\addbibresource{references.bib}\n"
+BIBRESOURCE_REPLACEMENT = (
+    "\\addbibresource{references.bib}\n"
+    "\\AtEveryBibitem{%\n"
+    "  \\clearfield{urlyear}%\n"
+    "  \\clearfield{urlmonth}%\n"
+    "  \\clearfield{urlday}%\n"
+    "}\n"
+)
 REFERENCE_MARKER = (
     "\\clearpage\n"
     "\\onecolumn\n"
@@ -36,11 +45,6 @@ REFERENCE_REPLACEMENT = (
     "\\begingroup\n"
     "\\footnotesize\n"
     "\\setlength{\\bibitemsep}{0pt}\n"
-    "\\AtEveryBibitem{%\n"
-    "  \\clearfield{urlyear}%\n"
-    "  \\clearfield{urlmonth}%\n"
-    "  \\clearfield{urlday}%\n"
-    "}\n"
     "\\defbibnote{corev2legend}{\\textit{Evidence tags: V = VERIFIED, P = PARTIAL; M = MATERIAL, C = CONTEXT. Access dates are retained in the source bibliography metadata.}}\n"
     "\\printbibliography[title={References / Source Notes},prenote=corev2legend]\n"
     "\\endgroup"
@@ -92,16 +96,23 @@ def compact_closing_summary(
             "Weekly closing summary layout transform requires exactly one canonical summary boundary: "
             f"found {len(matches)}"
         )
+    if text.count(BIBRESOURCE_MARKER) != 1:
+        raise ValueError("Weekly bibliography resource preamble boundary is not canonical")
     if text.count(REFERENCE_MARKER) != 1:
         raise ValueError("Weekly references boundary is not canonical")
 
     match = matches[0]
     summary_replacement = "\\newpage\n" + match.group("section")
     transformed = text[: match.start()] + summary_replacement + text[match.end() :]
+    transformed = transformed.replace(BIBRESOURCE_MARKER, BIBRESOURCE_REPLACEMENT, 1)
     transformed = transformed.replace(REFERENCE_MARKER, REFERENCE_REPLACEMENT, 1)
     if transformed == text:
         raise ValueError("Weekly layout transform made no change")
 
+    begin_document_pos = transformed.index("\\begin{document}")
+    access_hook_pos = transformed.index("\\AtEveryBibitem")
+    if access_hook_pos >= begin_document_pos:
+        raise ValueError("Weekly rendered access-date suppression hook must remain in the preamble")
     summary_pos = transformed.index("\\label{sec:issue-summary}")
     references_boundary_pos = transformed.index(REFERENCE_REPLACEMENT, summary_pos)
     if "\\onecolumn" in transformed[summary_pos:references_boundary_pos]:
@@ -145,7 +156,7 @@ def compact_closing_summary(
             "The approved Weekly closing summary begins in the next two-column body column. "
             "References / Source Notes retain their one-column section and full canonical source identity, "
             "while repetitive Evidence status/materiality wording is represented by an explicit compact tag legend. "
-            "Access dates remain in references.bib but are omitted from the rendered page to avoid low-information continuation pages."
+            "Access dates remain in references.bib but are omitted from rendered entries by a preamble-safe biblatex hook."
         ),
     }
     core.write_json(result_path, result)
