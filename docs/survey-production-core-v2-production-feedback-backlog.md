@@ -278,6 +278,183 @@ Specials continue to use X only when their Profile/research question marks it `R
 
 Do not alter the running W33/SP001 Core implementation solely for this item. Use W33's actual execution record and generated artifacts as the first regression example when implementing the consolidated improvement set.
 
+## Feedback item PFB-005 — Production sessions repair editions, not shared Core v2
+
+Status: `ACCEPTED DIRECTION / NOT YET IMPLEMENTED`
+
+### Observation
+
+While watching W33 production, the session appeared to be debugging Core v2 rather than simply compiling the edition. The current stop-discipline wording allows retryable tool/CI failures and generic repairs to be handled autonomously, which can be read too broadly and blur the boundary between edition production and Core maintenance.
+
+This weakens the value of a real production verification run: if the edition session silently modifies or repairs the shared pipeline until it passes, it becomes difficult to tell whether Core v2 worked as designed or whether the production operator debugged it in place.
+
+### Improvement direction
+
+Adopt an explicit responsibility rule:
+
+> **A Production session repairs the edition. It does not repair shared Core v2.**
+
+Edition-local work that may be repaired autonomously includes research expansion, source replacement, Evidence correction, Candidate Selection revision, Architecture artifacts, draft/prose correction, edition-local publication source, layout correction, and transient invocation/configuration failures that do not change shared Core behavior.
+
+Shared Core changes are outside the normal edition-production responsibility, including changes to reusable pipeline scripts, schemas, generic validators, GitHub Actions workflows, shared Core configuration, reusable publication renderer behavior, or cross-edition policy/checklists.
+
+When a production session encounters a likely shared Core defect, it should:
+
+```text
+identify and record the symptom/reproduction/impact
+-> classify it as likely edition-local or shared-Core
+-> if a safe edition-local workaround preserves the intended publication semantics, use that workaround and continue
+-> do not patch shared Core merely to keep the edition moving
+-> preserve the evidence for the Core-maintenance review
+```
+
+If no safe edition-local workaround exists and correct production cannot continue without changing shared Core semantics, the edition may stop with a clearly recorded Core-maintenance dependency. Such a stop is not a routine request for Human confirmation; it is evidence that the production pipeline itself requires maintenance.
+
+### Relationship to autonomous progression
+
+Autonomy remains the default, but its scope is narrowed correctly:
+
+- retry/research/editorial repair inside the edition: autonomous;
+- transient tool invocation failure: autonomous retry where safe;
+- shared Core implementation redesign/repair: not part of the production session.
+
+This distinction should replace the current overly broad reading of `generic repairs` in the production bootstrap.
+
+### Validation value
+
+W33/SP001 are production verification editions. Their logs should make it possible to distinguish:
+
+- Core behavior as merged;
+- edition-local repair;
+- shared-Core defect discovery;
+- any accidental shared-Core debugging performed by the edition session.
+
+Later Core validation should treat production sessions that require repeated shared-Core repair as a pipeline failure signal, even if they eventually produce an acceptable publication.
+
+## Feedback item PFB-006 — Reduce GitHub Actions from production worker to CI/build verifier
+
+Status: `ACCEPTED DIRECTION / NOT YET IMPLEMENTED`
+
+### Observation
+
+Real W33/SP001 operation and inspection of the current workflow set show that GitHub Actions are used not only for deterministic checks and reproducible builds, but also for substantial production mutation: Drafting/Synthesis generation, publication-source assembly, semantic-quality bundle generation, layout revision, pagination/spacing repair, and bot commits back to edition branches.
+
+This has shifted Actions from **verification infrastructure** toward a **remote production worker**. The distinction matters because editorial judgment, prose quality, information density, document architecture, and visual composition are primarily ChatGPT/editorial responsibilities, not CI responsibilities.
+
+Issue #400 is a strong warning signal: a publication candidate can satisfy numerous machine contracts and still be poor as a reader-facing Special. More automation does not compensate for missing editorial judgment.
+
+### Improvement direction
+
+Re-establish a simpler responsibility split:
+
+```text
+ChatGPT
+  -> research and editorial judgment
+  -> Screening/Evidence interpretation
+  -> Architecture
+  -> Drafting and Synthesis
+  -> proofreading/copyediting
+  -> reader-facing structure
+  -> TeX/publication-source editing
+  -> PDF-informed layout correction
+  -> semantic/editorial/visual review
+
+Repository scripts
+  -> narrow deterministic transformations
+  -> schema/format/path validation
+  -> hashes and provenance
+  -> citation/reference/identifier checks
+  -> bibliography consistency
+  -> deterministic PDF/preflight checks
+
+GitHub Actions
+  -> rerun CI/contract tests
+  -> reproduce the build in a controlled environment
+  -> run deterministic validators
+  -> verify freeze/release identity and integrity
+  -> report PASS/FAIL rather than authoring the publication
+```
+
+A reproducible PDF build in Actions remains valuable. The target change is not to eliminate CI, but to stop using CI as the place where editorial/publication content is created or repaired.
+
+### Workflow review requirement
+
+During the consolidated redesign, classify existing production-related workflows into at least:
+
+- `KEEP_AS_CI` — deterministic test/build/integrity checks worth retaining;
+- `SHRINK_TO_CI_ONLY` — workflow may remain, but production mutation moves back to ChatGPT/local scripts;
+- `RETURN_TO_CHATGPT` — editorial/publication generation or correction should be performed directly by the production operator;
+- `LEGACY_REMOVE_CANDIDATE` — obsolete or edition-specific repair workflows that should not remain part of the normal Core surface.
+
+High-priority review targets include the Core-v2 interactive Drafting/Synthesis, Selection/Architecture, Semantic Publication, Semantic Quality workflows, and the accumulated `prepare-*`, `apply-*`, and `revise-special-*` production-mutation workflows.
+
+### Design principle
+
+Use deterministic tooling where crisp invariants exist, but do not confuse:
+
+> `can be scripted`
+
+with:
+
+> `should be authored by CI`.
+
+The expected production model is **ChatGPT creates and judges; scripts check/transform narrowly; Actions independently verify/reproduce**.
+
+## Feedback item PFB-007 — SP001 v2 may be terminated as a failed production validation before further pipeline repair
+
+Status: `CONDITIONAL DECISION / WAITING FOR SP001 ISSUE #400 REVISION`
+
+### Observation
+
+The first SP001 Publication Preview was not merely imperfect; Human review in Issue #400 identified severe Longform Special failures including mixed-layout regression, extreme loss of longform technical depth, loss of reader-facing synthesis/Technical Notes, and leakage of internal production metadata.
+
+The SP001 compilation session has been instructed to address those findings. The revised publication should be evaluated before deciding whether continued repair inside the current v2 production attempt is worthwhile.
+
+### Decision rule
+
+Wait for the SP001 revision produced in response to Issue #400. Evaluate the actual reader-facing result, not only whether the issue checklist is mechanically marked complete.
+
+If the revision materially restores Longform Special quality, preserve the complete execution record and continue collecting evidence until W33 and SP001 review work is complete.
+
+If the revision remains substantially poor — for example, if it still shows major content-depth loss, weak synthesis, broken magazine layout, machine-contract success without reader quality, or repeated need to debug/modify shared Core just to produce an acceptable edition — then **stop the current SP001 v2 production attempt rather than continuing indefinite patching**.
+
+The stopped attempt should be retained as a failed production-validation artifact, including:
+
+- initial and revised generated publications;
+- Issue #400 and its resolution attempts;
+- execution/work logs;
+- edition-local workarounds;
+- any shared-Core changes or debugging the session attempted;
+- machine checks that passed despite poor reader-facing quality.
+
+### Restart rule
+
+If SP001 v2 is stopped, do not resume from the same compromised production path after ad-hoc repair. Instead:
+
+```text
+freeze the failed SP001 v2 trial as evidence
+-> complete W33/SP001 cross-edition pipeline review
+-> redesign Core responsibility boundaries and publication/editorial checks
+-> reduce inappropriate GitHub Actions production mutation
+-> implement and review the consolidated pipeline repair
+-> re-run required regression/acceptance validation
+-> restart SP001 from the appropriate clean beginning under the redesigned pipeline
+```
+
+The purpose is not to discard SP001 research knowledge unnecessarily; reusable sources/Evidence may inform the redesign or later re-run where provenance remains valid. But the new production run must not pretend that the failed publication path itself validated the redesigned Core.
+
+### Relationship to W33
+
+Do not redesign the pipeline from SP001 alone if W33 evidence is still pending. Once both W33 and SP001 have completed their current Human-review correction attempts — or SP001 is deliberately terminated under this rule — review the two production records together to distinguish:
+
+- generic Core defects;
+- Weekly-specific defects;
+- Special/LONGFORM-specific defects;
+- edition-local mistakes;
+- responsibility/automation defects shared across both profiles.
+
+Only after that cross-edition review should the next consolidated Core maintenance pass begin.
+
 ## Additional feedback items
 
 Add later W33/SP001 findings below this section before starting the next maintenance pass. Each item should record:
