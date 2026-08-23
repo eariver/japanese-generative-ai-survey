@@ -1,9 +1,9 @@
 # Survey Production Core v2 — post-completion final audit rule
 
-Status: `CANONICAL REDESIGN-CANDIDATE FINAL AUDIT RULE / READY FOR FIXED-HEAD EXECUTION`  
+Status: `CANONICAL REDESIGN-CANDIDATE FINAL AUDIT RULE / OPERATOR-BRIDGE MAINTENANCE SYNCHRONIZED / READY FOR FIXED-HEAD EXECUTION`  
 Established: 2026-08-22 JST  
 Redesign alignment: 2026-08-23 JST  
-Implementation synchronization: 2026-08-23 JST  
+Operator-bridge maintenance synchronization: 2026-08-23 JST  
 Related audit: `docs/survey-production-core-v2-redesign-preimplementation-audit.md`
 
 ## 1. Principle
@@ -154,18 +154,31 @@ For ordinary later production after Core is already accepted, a separately revie
 
 The final audit must verify the adopted GitHub Actions responsibility policy.
 
-The redesign candidate may retain Actions where there is clear independent/reproducibility/security value, including:
+The current maintenance candidate may retain Actions only where there is clear independent/reproducibility/security value, including:
 
 - CI/regression execution;
 - pinned reproducible build;
 - deterministic validation;
 - exact-byte Publication Preview transport;
 - exact-byte Freeze/Release integrity;
-- credential-isolated publication/reconciliation.
+- credential-isolated publication/reconciliation;
+- the narrowly constrained operator execution bridge when the normal ChatGPT runtime lacks an exact local checkout/CLI execution substrate.
+
+The operator bridge is admissible only when it remains an execution substrate for canonical deterministic Core mechanics. It must not accept arbitrary commands, own research/editorial/publication decisions, approve Human Gates, repair layout, or mutate shared Core during production. Direct exact-local CLI execution remains preferred when available.
 
 Do not count workflow automation itself as a virtue. Actions must not be the reasoning/editorial/publication-authoring loop, and the redesign must not replace the old workflow set with cadence/topic-specific authoring workflows.
 
-The intended redesign surface is exactly six workflows unless a later separately reviewed Core change explicitly revises that invariant.
+The current intended Actions surface is exactly **seven workflows**:
+
+1. `pipeline-contract-tests.yml`
+2. `survey-production-v2-ci.yml`
+3. `build-weekly-survey.yml`
+4. `build-special-pdf.yml`
+5. `survey-production-v2-export-publication-preview.yml`
+6. `survey-production-v2-release.yml`
+7. `survey-production-v2-operator-bridge.yml`
+
+The original redesign plan's six-workflow wording records the pre-PFB-014 integrated surface and is superseded for current maintenance by `docs/survey-production-core-v2-redesign-authority.md` and `docs/survey-production-core-v2-operator-execution-bridge.md`. A new eighth workflow is prima facie architectural regression unless a later separately reviewed Core change explicitly revises this invariant under the same Actions admission rule.
 
 ## 11. Reader-facing publication implication
 
