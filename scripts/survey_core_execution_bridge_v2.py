@@ -27,8 +27,8 @@ from typing import Any
 
 from scripts import survey_agent_control_v2 as agent
 from scripts import survey_execution_record_v2 as execution_record
+from scripts import survey_period_v2 as period
 from scripts import survey_production_v2 as core
-from scripts import survey_retrospective_profile_v2 as retrospective
 from scripts import survey_schema_v2 as schema_gate
 from scripts import survey_stage_validation_v2 as stage_validation
 
@@ -165,18 +165,8 @@ def _initialize(
     if kind == "INITIALIZE_WEEKLY":
         profile = core.weekly_profile(repo_root, cfg, recorded_at, request["issue_id"])
     elif kind == "INITIALIZE_RETROSPECTIVE":
-        spec_path = _load_scoped_spec(
-            repo_root,
-            source_root,
-            operation["spec_path"],
-            "retrospective scope spec",
-        )
-        profile = retrospective.build_profile(
-            repo_root,
-            cfg,
-            retrospective.load_scope(repo_root, spec_path),
-            recorded_at,
-        )
+        spec = period.resolve_configured_period(repo_root, operation["special_slug"], recorded_at)
+        profile = period.period_profile(repo_root, cfg, spec)
     elif kind == "INITIALIZE_THEMATIC":
         spec_path = _load_scoped_spec(
             repo_root,
