@@ -1,0 +1,74 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "evidence_task_id": "evidence:2026-W33:9ce38eb6f5c6bf91",
+  "discovery_ids": [
+    "base-arxiv-2608_08097v1"
+  ],
+  "source_records": [
+    {
+      "source_type": "paper",
+      "collector_id": "arxiv-api",
+      "collector_run_id": "arxiv-api-2026-W33-20260822T154529Z",
+      "observed_at": "2026-08-22T15:45:29Z",
+      "title": "OasisKV: Scaling In-Decode KV Cache Beyond HBM with Lookahead Sparse Prefetching",
+      "locator": "http://arxiv.org/abs/2608.08097v1",
+      "raw_paths": [
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-ai.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-cl.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-lg.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-cv.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-dc.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-cr.atom"
+      ],
+      "published_at": "2026-08-08T12:27:03Z",
+      "summary_text": "Large language model (LLM) inference serving is increasingly constrained by memory rather than compute. As long-context and long-form reasoning workloads become more prevalent, the key-value (KV) cache dominates both memory footprint and memory traffic during LLM token generation, i.e., decode. In particular, HBM capacity has become a scarce and costly resource that heavily limits inference batch size and system throughput. This paper presents OasisKV, a memory-centric LLM inference system design that alleviates HBM capacity pressure by decoupling full KV-cache storage from HBM during LLM decoding. Because decode-time attention is naturally sparse, OasisKV keeps only the KV entries of the most relevant tokens in HBMs for attention computation. We observe that future important tokens can be predicted accurately in advance using lookahead tokens drafted by speculative decoding (SD). OasisKV employs an efficient attention background pipeline to identify important KV blocks. They are then prefetched from higher-capacity memory tiers (e.g., host or remote memory) and staged in HBMs before being used in the next decode step. We implement OasisKV based on vLLM. The lookahead prediction is accurate enough to keep accuracy within 0.7 points of full attention under a 2,048-token KV budget. This lets OasisKV turn sparsity into throughput gain: $1.69\\times$ over dense vLLM on the reasoning workload at 0.1 points of accuracy loss, and up to $2.1\\times$ on multi-GPU long-context serving. Under prefill--decode disaggregation, OasisKV reaches about $2\\times$ dense throughput while admitting each request with $6.5$--$9.7\\times$ less KV and holding $2.2$-$2.6$ less decode-node host memory than full KV transfer.",
+      "metadata": {
+        "authors": [
+          "Can Xiao",
+          "Sukmin Cho",
+          "Junbong We",
+          "Zhixiong Niu",
+          "Jianyi Cheng",
+          "Yiren Zhao",
+          "Youngjin Kwon",
+          "Yongqiang Xiong",
+          "Rui Ma",
+          "Junyi Liu"
+        ],
+        "categories": [
+          "cs.DC"
+        ],
+        "primary_category": "cs.DC",
+        "updated": "2026-08-08T12:27:03Z",
+        "links": [
+          {
+            "href": "https://arxiv.org/abs/2608.08097v1",
+            "rel": "alternate",
+            "type": "text/html"
+          },
+          {
+            "href": "https://arxiv.org/pdf/2608.08097v1",
+            "rel": "related",
+            "type": "application/pdf"
+          }
+        ]
+      }
+    }
+  ],
+  "verification_targets": [
+    "Review full paper/method/results/limitations before promotion; abstract alone is insufficient for strong claims."
+  ],
+  "screening_basis": {
+    "screening_acceptance_sha256": "8d7cac2f809114608225bea517aba91c66105395f57f8333766da550eb16c3e0",
+    "decisions": [
+      {
+        "discovery_id": "base-arxiv-2608_08097v1",
+        "decision": "KEEP",
+        "scope_tags": [
+          "paper-candidate"
+        ]
+      }
+    ]
+  }
+}
