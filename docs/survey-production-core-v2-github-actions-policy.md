@@ -1,130 +1,108 @@
 # Survey Production Core v2 — GitHub Actions Responsibility Policy
 
-Status: `CONFIRMED BY W33 + SP001 / AUDITED REDESIGN INVARIANT`  
+Status: `INTEGRATED REDESIGN INVARIANT / OPERATOR-BRIDGE MAINTENANCE SYNCHRONIZED`  
 Established: 2026-08-23 JST  
-Confirmed: 2026-08-23 JST  
-Working branch: `refactor/survey-production-core-v2`  
-Related feedback: `PFB-006` in `docs/survey-production-core-v2-production-feedback-backlog.md`  
-Related audit: `docs/survey-production-core-v2-redesign-preimplementation-audit.md`
+Bridge-maintenance update: 2026-08-23 JST  
+Working branch: `maintenance/core-v2-operator-execution-bridge`  
+Related feedback: `PFB-006` and `PFB-014` in `docs/survey-production-core-v2-production-feedback-backlog.md`
 
 ## 1. Purpose
 
-This memo defines the responsibility rule for Survey Production Core v2 redesign after the W33/SP001 production-validation review.
+This memo defines the responsibility rule for GitHub Actions in Survey Production Core v2 after the W33/SP001 production review and the later clean post-merge revalidation.
 
-The current repository has accumulated many GitHub Actions workflows that do more than CI: some generate Drafting/Synthesis artifacts, assemble publication content, perform semantic/publication mutations, revise layout/pagination/spacing, mutate stage/candidate authority, and commit generated results back to production branches.
+The old production topology used Actions for Drafting/Synthesis, semantic/publication mutation, layout repair, stage/candidate mutation and bot-driven production chaining. W33/SP001 demonstrated that this made the workflow topology itself part of the production problem.
 
-The W33/SP001 trials confirmed that this is not merely theoretical complexity. Production work became coupled to temporary PRs, bot commits, workflow chaining, generic Core repairs, publication rebuilds and authority rebinding.
-
-The redesign must reduce GitHub Actions to work for which running on Actions is clearly advantageous or which is genuinely mechanical and requires no editorial/research reasoning.
-
-The governing principle is:
+The redesign therefore keeps the governing principle:
 
 > **GitHub Actions is a deterministic executor / verifier, not a reasoning, editorial, or publication-authoring agent.**
 
-A task should not be placed in Actions merely because it can be scripted or automated.
+A task must not be placed in Actions merely because it can be scripted.
+
+The clean post-merge revalidation added one important qualification: when the primary ChatGPT connector runtime can edit the exact repository branch but cannot mount that branch and invoke the canonical local Core CLI, Actions may supply that **missing deterministic execution substrate** through a narrowly constrained operator bridge. This does not transfer editorial ownership to Actions.
 
 ## 2. Admission rule for GitHub Actions
 
-Before retaining or adding any production-related GitHub Actions task, ask:
+Before retaining or adding any production-related Actions task, ask both:
 
-1. **Is there a concrete advantage to running this task on GitHub Actions rather than having ChatGPT execute or invoke it directly?**
-2. **Is the task mechanical enough that the same valid input should lead to the same expected result without research/editorial judgment?**
-
-A task should normally run in Actions only when at least one of those conditions is strongly satisfied and the task does not transfer editorial/research judgment into CI.
+1. **Does Actions provide a concrete execution/reproducibility/security advantage that the primary operator path lacks?**
+2. **Is the task mechanical enough that no research/editorial/visual/Human judgment is transferred into CI?**
 
 Useful Actions-specific advantages include:
 
-- reproducible, controlled build environments;
+- reproducible controlled build environments;
 - independent CI verification of committed artifacts;
 - branch-protection integration;
 - isolated release credentials / permissions;
 - immutable or independently generated build artifacts;
-- repeatable cross-regression test execution;
-- deterministic verification that should run on every relevant commit/PR;
-- release/freeze checks whose independence from the authoring session is valuable.
+- repeatable cross-regression execution;
+- deterministic verification on relevant commits/PRs;
+- release/freeze independence from the authoring session;
+- an exact checked-out deterministic execution environment unavailable to a connector-only ChatGPT runtime.
 
 `It is already a script`, `it can be automated`, or `we used a workflow before` are not sufficient reasons.
 
 ## 3. Appropriate Actions responsibilities
 
-Typical work that belongs in GitHub Actions includes:
-
 ### CI and contract validation
 
+Appropriate examples:
+
 - unit/regression tests;
-- schema validation;
-- format/path/invariant checks;
+- schema/path/invariant checks;
+- raw/provenance and exact-byte integrity;
+- identifier/reference integrity;
 - deterministic stage-contract verification;
-- duplicate/missing/disposition accounting where rules are crisp;
-- raw/provenance integrity checks;
-- SHA-256 / exact-byte verification;
-- identifier-preservation checks;
-- bibliography/reference integrity checks;
-- machine-detectable internal-metadata leakage checks where exact patterns are known.
+- reproducible compiler/preflight checks.
 
 ### Reproducible builds
 
-- compile the already-authored TeX/publication source with a pinned toolchain;
-- reproduce Weekly/Special PDFs in a controlled environment;
-- detect undefined citations/references, missing glyphs, or other deterministic compiler failures;
-- generate build logs and independently reproducible artifacts.
-
-The value here is not that Actions designs the publication. The value is that the source authored and reviewed elsewhere can be rebuilt independently under a known environment.
+Actions may compile already-authored Weekly/Special publication source in a controlled toolchain, report deterministic findings/hashes/page counts and expose independently reproducible artifacts. It must not design or repair the publication.
 
 ### Freeze / release integrity
 
-- exact-byte Publication Preview / Freeze / Release identity checks;
-- release-manifest validation;
-- tag/release consistency;
-- controlled publication of already-approved immutable bytes;
-- verification that no unreviewed byte drift occurred between approved candidate and release.
+Actions may perform exact-byte Candidate/Preview/Freeze/Release checks, release-manifest validation, credential-isolated publishing and idempotent release reconciliation.
 
-These are strong Actions use cases because independent execution and credential isolation materially improve reliability.
+### Optional operator execution bridge
 
-## 4. Work that should normally remain with ChatGPT
+When direct exact local Core CLI execution is unavailable to the ChatGPT runtime, Actions may:
 
-Tasks requiring interpretation, judgment, synthesis, prioritization, or visual/editorial taste should remain owned by ChatGPT even if helper scripts can assist.
+- check out one exact immutable request commit;
+- execute only a schema-enumerated allowlist of existing deterministic Core operations;
+- generate deterministic Profile/State/checkpoint/result authority already defined by canonical Core code;
+- enforce Profile-bound edition-local write scope;
+- commit exact deterministic outputs and receipts back to the same work branch.
 
-Examples include:
+The bridge must not accept request-supplied shell, Python, module, script, workflow or arbitrary executable identifiers. Its current authority is `docs/survey-production-core-v2-operator-execution-bridge.md`.
+
+## 4. Work that remains with ChatGPT
+
+Tasks requiring interpretation, synthesis, prioritization, semantic judgment, visual taste or Human decision remain owned by ChatGPT:
 
 - Source Intake/search strategy;
 - source-quality/materiality judgment;
-- Screening and Evidence interpretation;
+- Screening/Evidence interpretation;
 - Candidate Selection;
-- Architecture design;
-- deciding what a Weekly/Special must explain;
-- Drafting and Synthesis;
-- prose revision and proofreading/copyediting where meaning/style is involved;
-- deciding whether a draft is too shallow or repetitive;
-- deciding whether selected Evidence has been adequately represented to readers;
-- reader-facing Claim Boundary wording;
-- Theme Synthesis / final `総括`;
-- incorporation of Weekly community movement from Grok/X;
-- retrospective period normalization/trajectory interpretation;
-- thematic lineage/historical-attribution interpretation;
-- choosing article/chapter structure;
-- deciding where wide/full-width versus multi-column content is editorially appropriate;
-- evaluating page balance, whitespace, scanability, hierarchy, or magazine identity;
-- deciding how to repair a visually poor PDF;
-- deciding whether a publication is actually good enough for Human Publication Preview.
+- Architecture;
+- Drafting/Synthesis and `総括`;
+- reader-facing manuscript/source authorship;
+- Claim Boundary wording;
+- Grok/X community disposition;
+- retrospective trajectory/period interpretation;
+- thematic lineage/historical attribution;
+- semantic/editorial QA;
+- exact-PDF visual QA;
+- layout/content repair;
+- preparation and recording of actual Human Gate decisions.
 
-A deterministic helper may transform or check artifacts after those decisions, but the helper must not silently become the editor.
+A deterministic helper or operator bridge may validate or advance already-authored artifacts; it must not silently become the editor.
 
-## 5. Important distinction: mechanical execution vs encoded editorial judgment
+## 5. Mechanical execution vs encoded editorial judgment
 
-A process can be deterministic while still containing editorial policy that should not be delegated to CI.
+A process can be deterministic while still encoding editorial policy that should not be delegated.
 
-For example, these operations are mechanically executable:
+Turning authored source into TeX or validating a schema can be mechanically appropriate. A generic script deciding how much prose survives, what information becomes reader-facing, where every chapter breaks, or which material is selected is editorial even if deterministic.
 
-- turn structured content into TeX;
-- insert page breaks;
-- switch one/two-column environments;
-- compact a table of contents;
-- shorten or rearrange generated blocks.
-
-But if the script decides, as a generic production rule, how much prose survives, where every chapter breaks, what information becomes reader-facing, or how an article should be laid out, then that script is effectively making editorial decisions even though its implementation is deterministic.
-
-Therefore the redesign must distinguish:
+Therefore distinguish:
 
 > **mechanically executable**
 
@@ -132,171 +110,116 @@ from
 
 > **mechanically appropriate to delegate**.
 
-`Can be scripted` does not imply `should be authored by CI`.
+The operator bridge is admitted because its allowlist is limited to Core mechanics whose semantics already exist independently of the workflow.
 
-## 6. Generality rule — do not replace workflow rigidity with profile-specific workflow proliferation
+## 6. Generality rule
 
-Reducing Actions-authored production logic is expected to improve generality because fewer editorial assumptions are frozen into executable workflows.
+Do not solve generality by creating separate authoring/mutation workflow families for Weekly, monthly/half-year/annual retrospectives, standalone Thematic, Foundations or other topic/cadence variants.
 
-That benefit is lost if the redesign creates separate authoring/mutation workflows for every cadence or Special type.
-
-Do **not** solve generality by creating parallel workflow families such as:
-
-- Weekly authoring workflow;
-- monthly retrospective authoring workflow;
-- half-year authoring workflow;
-- annual authoring workflow;
-- standalone Thematic authoring workflow;
-- Foundations authoring workflow.
-
-The preferred model is:
+Preferred model:
 
 ```text
 Profile/config/edition authority
 -> ChatGPT reasoning and authorship
 -> narrow common deterministic helpers
--> parameterized/shared CI/build verification where appropriate
+-> direct local execution when available
+-> optional shared operator bridge when local execution is unavailable
+-> shared CI/build/preview/release verification
 ```
 
-A Profile-specific Actions check is acceptable only when the invariant itself is crisp. Prefer a shared verifier parameterized by Profile/config over a separate production-mutation workflow.
+The operator bridge must be Profile/path driven and must not encode W33/SP001 topic names, fixed package taxonomies, fixed source-root depth, fixed `weekly/**` / `special/**` branch naming, Foundations volume structure, or annual trajectory choices.
 
-Actions must not encode W33/SP001 topic names, package taxonomy, Foundations volume structure, annual trajectory choices, or other editorial outputs.
+Profile-specific Actions checks are acceptable only for crisp invariants and should prefer parameterized/shared verification over separate mutation workflows.
 
 ## 7. Target responsibility model
-
-The desired model is:
 
 ```text
 ChatGPT
   research / reasoning / editorial judgment
   architecture / drafting / synthesis
-  proofreading and reader-facing composition
   publication-source authoring
-  PDF-informed semantic and visual repair
+  semantic and exact-PDF visual review/repair
           |
           v
-Repository scripts
-  narrow deterministic transformation/checking only
+Canonical repository scripts
+  narrow deterministic transformation/checking
+  Profile/State/checkpoint mechanics
   schemas / hashes / provenance / references / preflight
           |
-          v
-GitHub Actions
-  independent CI re-execution
-  reproducible build
-  deterministic PASS/FAIL verification
-  freeze/release integrity
+          +----------------------------+
+          |                            |
+          v                            v
+Direct exact local CLI          Operator bridge (fallback)
+preferred when available        exact checked-out deterministic execution only
+          |                            |
+          +-------------+--------------+
+                        v
+GitHub Actions independent surfaces
+  CI / reproducible build / Preview transport / Release integrity
 ```
 
-Actions should normally consume a candidate authored by ChatGPT and answer:
-
-> **Does this committed candidate reproduce and satisfy the crisp machine-verifiable invariants?**
-
-Actions should not normally answer:
-
-> **What should the next article, paragraph, synthesis, layout, or visual revision be?**
+Actions should answer crisp questions such as whether committed bytes reproduce and satisfy machine-verifiable invariants. They should not answer what the next article, paragraph, synthesis, Architecture choice, layout revision or Human decision should be.
 
 ## 8. PDF / typesetting boundary
 
-Building a PDF in Actions is appropriate when it provides a reproducible toolchain, for example pinned LuaLaTeX/TeX Live/Python dependencies and deterministic build settings.
-
-However, the preferred loop is:
+Preferred publication loop:
 
 ```text
 ChatGPT authors/edits publication source
--> ChatGPT reviews the resulting PDF and makes semantic/layout decisions
+-> ChatGPT reviews rendered PDF and makes semantic/layout decisions
 -> candidate source is committed
--> Actions independently rebuild the candidate
--> deterministic build/preflight checks PASS or FAIL
+-> Actions independently rebuilds/verifies
+-> deterministic build/preflight PASS or FAIL
 ```
 
-Avoid the current anti-pattern:
+Avoid the retired anti-pattern where Actions builds, chooses a layout repair, mutates publication source, mutates quality state, and bot commits become the authoring loop.
 
-```text
-Actions builds
--> Actions chooses a layout repair
--> Actions mutates publication source
--> another Action evaluates/mutates quality state
--> bot commits become the production authoring loop
-```
+## 9. Exact-byte/candidate/release guarantees
 
-Actions may detect a machine-defined defect such as an undefined citation or forbidden exact token. It should report the failure. The production operator should normally decide the editorial/layout repair.
+Reducing Actions-authored production logic does not weaken:
 
-## 9. Exact-byte/candidate/release guarantees are retained
-
-Reducing Actions does not mean weakening controls that benefit from independent deterministic execution.
-
-The redesign must retain or replace equivalently:
-
-- exact source/PDF/candidate binding;
-- candidate invalidation when source/PDF bytes change;
+- exact source/PDF/Candidate binding;
+- invalidation when source/PDF bytes change;
 - reproducible build;
 - Freeze/Release exact-byte identity;
 - release credential isolation;
 - idempotent Release reconciliation.
 
-SP001's 19-page authority drift is evidence for a smaller **atomic** deterministic candidate-finalization boundary, not evidence that exact-byte authority should be removed.
+The bridge likewise must bind exact request/event/Profile/State authority and may not bypass these controls.
 
 ## 10. Workflow review classification
 
-During the consolidated post-W33/SP001 redesign, every production-related workflow must be reviewed and assigned one of:
+Retained/introduced workflows should fit one of these justified classes:
 
-- `KEEP_AS_CI` — Actions provides clear independent/reproducibility value and performs mechanical verification/build/release work only;
-- `SHRINK_TO_CI_ONLY` — keep the independent validator/build shell, remove production mutation/authoring;
-- `RETURN_TO_CHATGPT` — reasoning/editorial/publication generation or correction belongs to the ChatGPT production session;
-- `LEGACY_REMOVE_CANDIDATE` — obsolete, one-off, edition-specific, or superseded production workflows should be removed from the normal Core surface.
+- `KEEP_AS_CI` — independent mechanical verification;
+- `KEEP_AS_REPRODUCIBLE_BUILD` — controlled read-only build;
+- `KEEP_AS_EXACT_BYTE_TRANSPORT_OR_RELEASE` — Preview/release integrity;
+- `KEEP_AS_DETERMINISTIC_EXECUTION_SUBSTRATE` — exact checked-out Core mechanics unavailable to the primary runtime;
+- `RETURN_TO_CHATGPT` — research/editorial/publication generation/correction;
+- `LEGACY_REMOVE_CANDIDATE` — obsolete, one-off, edition-specific or superseded topology.
 
-For every workflow retained in Actions, the redesign record must state the specific benefit of Actions execution. If no meaningful benefit can be stated, direct execution by ChatGPT or a narrow repository helper is preferred.
-
-High-priority review targets include:
-
-- Core-v2 interactive Drafting/Synthesis;
-- Selection/Architecture authoring/adoption surfaces;
-- Semantic Publication;
-- Semantic Quality;
-- production-state/candidate mutation through write-capable workflow chains;
-- accumulated `prepare-*`, `apply-*`, `revise-special-*` mutation workflows;
-- execution-only PRs whose main purpose is to cause Actions to run.
+Every retained workflow must state the concrete Actions-specific benefit and remain narrow enough that no editorial ownership is transferred.
 
 ## 11. Evidence from W33 / SP001
 
-### SP001
+The failed pre-redesign SP001/W33 runs showed that Actions-heavy authoring and mutation did not guarantee publication quality and created authority-rebinding/workflow-chaining problems.
 
-The rejected 11-page candidate passed multiple deterministic/semantic Core checks but failed Human review for depth, layout, synthesis and reader-facing metadata leakage.
-
-The 19-page salvage revision then required:
-
-- generic semantic publication renderer repair on `main`;
-- shared longform style repair on `main`;
-- reintegration of those shared repairs into the edition branch;
-- rerouting around a write-capable workflow chain that stopped after a `github-actions[bot]` authored commit;
-- a separate authority-rebind operation because the new 19-page PDF initially coexisted with a candidate/quality bundle for the old 11-page bytes.
-
-This is direct evidence that the workflow topology itself became part of the production problem.
-
-### W33
-
-The Weekly trial accumulated repeated execution-only rebuild/export PRs while still producing a 6-page Human-rejected candidate whose main failures were semantic/editorial, not compiler defects.
-
-The correct response is not to add another mutation workflow. It is to return publication authorship/review to ChatGPT and keep Actions as independent build/verification infrastructure.
+The first clean post-redesign W33/SP001 attempts then showed the opposite operational edge: once authoring/mutation workflows were correctly removed, the normal connector-only ChatGPT runtime lacked a way to execute canonical deterministic local Core mechanics over the exact branch checkout. That evidence motivates the narrow fallback bridge, not restoration of the old production topology.
 
 ## 12. Relationship to publication quality
 
-Machine checks are necessary but not sufficient.
-
-The redesign must separate:
+Machine checks are necessary but not sufficient. Keep separate:
 
 - deterministic QA proved by scripts/Actions;
 - semantic/editorial QA performed by ChatGPT;
 - exact-PDF visual QA performed by ChatGPT.
 
-Actions must not issue a semantic-quality PASS merely because a set of schema fields or known-token checks passed.
+Actions must never issue a semantic-quality PASS merely because schemas or known-token checks pass. Likewise the operator bridge may transport ChatGPT-authored agent review evidence but cannot create or reinterpret the underlying semantic/visual judgment.
 
-Known internal-metadata patterns can and should be linted in CI, but the SP001 19-page re-review demonstrates that semantic production language can survive even when known-token lint reports no finding.
+## 13. Current implementation rule
 
-## 13. Implementation rule
+The integrated redesign remains authoritative. The operator bridge is a shared-Core maintenance candidate and changes the audited Actions surface from six to seven workflows if accepted.
 
-This policy is no longer waiting for additional W33/SP001 evidence. The production review and pre-implementation audit are complete and this policy is a required redesign invariant.
+Therefore the prior six-workflow fixed-head audit is historical evidence only. The bridge candidate must receive fresh exact-head CI and the full changed-scope six-point fixed-head audit. If that audit requires any tree change, the entire fixed-head audit restarts from point 1.
 
-Actual workflow classification/removal begins only after the redesign authority documents are mutually consistent.
-
-Do not resume W33/SP001 production using the current Actions-heavy mutation path and count that as validation. After workflow reduction and publication-boundary redesign, run the cross-profile acceptance matrix defined in `docs/survey-production-core-v2-redesign-plan-after-w33-sp001.md` with no in-run shared-Core repair.
+After Human-reviewed integration, clean W33 and SP001 validation must restart from reviewed `main` and prove the bridge in real production before PFB-013/PFB-014 can close.
