@@ -338,7 +338,7 @@ def _human_gate_operation(
     reviewed_at = core.parse_instant(operation["reviewed_at"])
     common = {
         "expected_revision": operation["expected_revision"],
-        "reviewed_commit_sha": event_sha,
+        "reviewed_commit_sha": operation["reviewed_repository_commit_sha"],
     }
     kind = operation["kind"]
     removed: list[str] = []
@@ -457,6 +457,8 @@ def execute_request(
         "removed_paths": sorted(set(removed)),
         "status": "PASS",
     }
+    if operation["kind"] in HUMAN_GATE_KINDS:
+        receipt["reviewed_repository_commit_sha"] = operation["reviewed_repository_commit_sha"]
     core.write_json(receipt_path, receipt)
     generated.append(_rel(repo_root, receipt_path))
 
