@@ -68,9 +68,14 @@ class WeeklyLayoutTransformTests(unittest.TestCase):
         self.assertIn("\\AtEveryBibitem", text)
         self.assertLess(text.index("\\AtEveryBibitem"), text.index("\\begin{document}"))
         self.assertIn("\\clearfield{urlyear}", text)
-        self.assertIn("\\footnotesize\n\\setlength{\\bibitemsep}{0pt}", text)
+        self.assertIn(
+            f"\\footnotesize\n\\linespread{{{layout.REFERENCE_LINE_SPREAD}}}\\selectfont\n"
+            "\\setlength{\\bibitemsep}{0pt}",
+            text,
+        )
         self.assertIn("prenote=corev2legend", text)
         self.assertIn("References / Source Notes", text)
+        self.assertIn("TIGHT_REFERENCE_LEADING_094", result["transformations"])
         self.assertEqual(updated["rendered_source"]["sha256"], core.sha256_file(main))
         result_path = root / result["result_path"]
         self.assertTrue(result_path.is_file())
@@ -80,6 +85,13 @@ class WeeklyLayoutTransformTests(unittest.TestCase):
         self.assertIn("\\AtEveryBibitem", layout.BIBRESOURCE_REPLACEMENT)
         self.assertNotIn("\\AtEveryBibitem", layout.REFERENCE_REPLACEMENT)
         self.assertTrue(layout.BIBRESOURCE_REPLACEMENT.startswith("\\addbibresource{references.bib}\n"))
+
+    def test_reference_density_preserves_font_size_and_uses_modest_leading(self):
+        self.assertEqual(layout.REFERENCE_LINE_SPREAD, "0.94")
+        self.assertIn("\\footnotesize", layout.REFERENCE_REPLACEMENT)
+        self.assertIn("\\linespread{0.94}\\selectfont", layout.REFERENCE_REPLACEMENT)
+        self.assertNotIn("\\scriptsize", layout.REFERENCE_REPLACEMENT)
+        self.assertNotIn("\\tiny", layout.REFERENCE_REPLACEMENT)
 
     def test_rejects_manifest_source_sha_drift(self):
         td, root, main, manifest = self._fixture()
