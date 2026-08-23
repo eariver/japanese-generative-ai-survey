@@ -1,0 +1,279 @@
+Japanese Generative AI Technical Survey
+  2026-W33
+  2026-08-14
+
+
+
+
+ 競争軸は「どう届け、どう動かし、どう評価す
+るか」へ
+ Daybreak の能力・統制・配布、SGLang・vLLM・FlashInfer の同週更新、Ultrafast preview
+を Feature に据え、X・研究・OSS は権威境界を分けて追う。W33 は、モデル単体の能力競
+争から運用・提供・評価へ競争軸が広がった週だった。
+
+ FEATURE: Daybreak / FEATURE: Serving Stack / FEATURE: Ultrafast / WATCH: X / Research / OSS
+
+
+
+
+Editorial cutoff       Window: 2026-08-07 18:00 - 2026-08-14 18:00 America/New_York
+Repository             eariver/japanese-generative-ai-survey
+Build                  LuaLaTeX / jlreq / LuaTeX-ja
+一次情報・論文・OSS・X 上の技術反応を分離し、検証可能な Evidence chain として編成する週刊 Technical Survey。
+Japanese Generative AI Technical Survey                                         2026-W33
+
+
+
+
+W33 Executive Brief
+
+  W33 の中心は三つの Feature だけではない。Daybreak では能力・アクセス統制・AWS 配布が近接して動き、
+serving stack では SGLang・vLLM・FlashInfer の一次 Release が同じ週に重なった。Ultrafast preview は速度を
+独立した提供モードとして前面に出した。その周囲で X の community salience、agent 評価を中心とする研究、
+OSS の継続更新が並び、
+            「どう届けるか」「どう動かすか」「どう評価するか」が共通軸として浮かぶ。
+
+  Evidence / scope boundary
+
+  OpenAI および各 OSS プロジェクトの能力・性能・資源効率に関する記述は、今回の正式 Evidence が確立
+  した一次情報上の主張として扱い、独立ベンチマークによる一般的な優位へ拡張しない。
+  SGLang・vLLM・FlashInfer の性能値は異なるハードウェア、ワークロード、計測条件をまたぐため、
+  cross-framework leaderboard へ変換しない。
+  X/Grok intake は W33 の community salience を示す発見・観測層であり、個別モデル、ベンチマーク、価
+  格、日付、性能の技術的真偽を確定する権威には用いない。
+  Research Paper Watch は arXiv abstract/metadata-level の author claim として扱い、本文、付録、方法論、
+  表、ablation、限界を独立レビュー済みとはみなさない。
+  OSS & GitHub Watch は一次 Release で確認できる運用・統合上の変化を扱い、モデルや生成物の性能向上
+  そのものを Release の存在だけから推定しない。
+
+
+
+
+                                           2
+Japanese Generative AI Technical Survey                                                                      2026-W33
+
+
+                                                             SGLang v0.5.17、vLLM v0.27.0、FlashInfer v0.6.17 は
+1 Daybreak が示す「能力・統制・配
+                                                             いずれも W33 の一次リポジトリ Release として確認
+ 布」の一体化                                                      された。三件を別々のリリースノートとして消費す
+  FEATURE                                                    るより、推論基盤を構成する複数層が同じ週に動い
+W33 では Daybreak をめぐる一次情報が連続して                                たことを一つのシグナルとして読む方が実務上は有
+現れた。ここでは、能力そのもの、より信頼できる                                      用である。 [4, 5, 6]
+利用者へのアクセス、AWS での提供という三つの更
+                                                             今回の Evidence は各プロジェクトの一次 Release を
+新を、一つの運用・ガバナンス上の動きとして読む。
+                                                             確立する一方、異なるハードウェア、ワークロード、
+ただし能力や性能については OpenAI 自身の主張を
+                                                             計測条件にまたがる性能比較を認めていない。その
+超えて一般化しない。 [1, 2, 3]
+                                                             ため、プロジェクトが掲げる性能・資源効率の数値
+OpenAI は W33 の一次情報として「Expanding Day-                         を相互ランキングへ変換しない。 [4, 5, 6]
+break as the Cyber Defense Window Narrows」を公開
+した。正式 Evidence が確立しているのは、この一次                                    Claim boundary
+ページの存在と W33 における時系列、そして技術的                                       この節の読解上の境界: Performance and resource
+な能力・性能記述をベンダー主張として扱うべきこ                                          numbers in release notes are project-reported and
+とまでである。 [1]                                                      are not a cross-framework controlled benchmark.
+
+同じ週には「Putting frontier cyber models in more
+trusted hands」と題する更新も公開された。したがっ                              3     「速さ」を別モードとして売る―
+て本稿では、Daybreak を単なる能力更新としてで                                    ―Ultrafast preview の意味
+はなく、誰に高度な能力を届けるかという統制の論                                          FEATURE
+点と並べて扱う。ただし、アクセス制度の詳細は今
+                                                             OpenAI は W33 に「Previewing Ultrafast mode:
+回の Evidence Card が確立した範囲を超えて断定し
+                                                             GPT-5.6 Sol at up to 14X the speed」を公開し
+ない。 [2]
+                                                             た。重要なのは、速度を独立したプロダクトモード
+さらに「Daybreak models are now available on AWS」                として提示した点であり、14X という表現はあくま
+という一次更新が続いた。W33 の読者向けには、能                                    で一次情報上のベンダー主張として扱う。 [7]
+力、統制、配布が近接して動いたこと自体を重要な
+                                                             一 次 情 報 の タ イ ト ル 自 体 が「Previewing Ultrafast
+構造として示し、AWS での提供を独立した性能検証
+                                                             mode」と明示しており、本稿でも preview であるこ
+とは扱わない。 [3]
+                                                             とを外さない。W33 のシグナルは、推論速度が単
+                                                             なる裏側の最適化ではなく、利用者が選択する提供
+  Claim boundary
+                                                             モードとして前面に出たことである。 [7]
+  この節の読解上の境界: Capability/performance
+                                                             「up to 14X the speed」は OpenAI の一次情報に含ま
+  statements are first-party vendor claims unless sep-
+                                                             れる表現であり、今回の Evidence は独立ベンチマー
+  arately supported by independent evidence.
+                                                             クによる再現を確立していない。したがって本稿は、
+2 推論基盤は一層では動かない――                                            この数字を一般的な速度優位の証明には用いない。
+
+ SGLang、vLLM、FlashInfer の 同 時                                [7]
+
+ 進行                                                              Claim boundary
+  FEATURE
+
+W33 では SGLang v0.5.17、vLLM v0.27.0、Flash-                        この節の読解上の境界: Capability/performance
+Infer v0.6.17 が相次いでリリースされた。個別の                                   statements are first-party vendor claims unless sep-
+性能数字を横並びにせず、ランタイム、オーケスト                                          arately supported by independent evidence.
+レーション、カーネル層が同時に更新される serving
+stack 全体の動きとして整理する。 [4, 5, 6]
+
+
+                                                         3
+Japanese Generative AI Technical Survey                                                                    2026-W33
+
+4 X Community Pulse――リリース                                    系システム、マルチモーダル評価へ広がった。ここ
+ 波をめぐる議論は活発、技術的真偽                                            で扱う九件はすべて arXiv の abstract/metadata
+                                                             レベルの author claim であり、全文の独立レビュー
+ は別レイヤー
+  X COMMUNITY WATCH                                          済みとはみなさない。 [9, 10, 11, 12, 13, 14, 15, 16,
+Fresh Grok/X intake は W33 に複数テーマをまた                          17]
+ぐ強いコミュニティ・サリエンスがあったことを記
+                                                             エ ー ジ ェ ン ト 評 価 で は「A Unified Issue Resolu-
+録した。Community Pulse は、その『何が話題に
+                                                             tion Benchmark for Requirement Clarification, Plan-
+なったか』だけを扱い、個別モデル、ベンチマーク、
+                                                             ning, and Code Generation for Coding Agents」と「The
+価格、日付、性能の真偽を X から確定しない。 [8]
+                                                             Scaffolding Matters More Than the Interface: A Con-
+W33 の X 観 測 層 で は、複 数 テ ー マ に ま た が る コ                      trolled Comparison of MCP and CLI Tool Use...」が並
+ミ ュ ニ テ ィ・サ リ エ ン ス が 確 認 さ れ た。承 認 済 み                      んだ。PluginEval と Open Evaluation Agent も含め、
+Architecture は、同週のモデル・製品リリース比較、                              最終出力だけでなく評価設計や実行 scaffolding その
+agent/coding、成功あたりコスト、local/open-weight、                     ものへ視線が向いていることが、少なくとも論文タ
+harness/IDE 統合、早期の実機検証と訂正シグナルを                               イトルと abstract-level author claim から読み取れる。
+観察軸としている。 [8]                                                [10, 9, 11, 14]
+
+た だ し 正 式 Evidence が 確 立 し て い る の は『W33                     安全性・堅牢性側では「Agent Skills Can Be Harmful」
+に cross-topic community salience があった』という                    と REDAgentBench が候補に入った。前者は agent
+SOCIAL_OBSERVATION までである。上記の個別                               skill、後者は red-team 系 benchmark を扱う研究とし
+論点について、X 上の議論をそのまま技術的事実へ                                     て分類できるが、本稿は abstract を超える方法論・
+昇格させない。一次 Evidence で別途確立していない                                実験結果を独自に確認したとは主張しない。 [12, 16]
+モデル名、ベンチマーク、価格、日付、性能値は、こ
+                                                             システム／マルチモーダル側では OasisKV、vToken、
+こでは真偽を断定しない。 [8]
+                                                             VideoGAIA が残った。KV cache や token 表現、video-
+
+  Claim boundary                                             agent evaluation といった方向の広がりを示す watch
+                                                             項目として配置し、数値的な優位や詳細な手法比較
+  こ の 節 の 読 解 上 の 境 界: X/Grok is discov-
+                                                             は行わない。 [15, 13, 17]
+  ery/community signal only and is not technical
+  Evidence authority under the Core v2 contract.             Research Paper Watch の全項目は abstract/metadata-
+  / Named models, integrations, benchmark labels,            level の AUTHOR_CLAIM として扱う。本文、付録、
+  prices, dates, and performance figures in the com-         再現実験を独立に検証したという意味ではない。 [9,
+  munity observations identify what was discussed            10, 11, 12, 13, 14, 15, 16, 17]
+  on X; their underlying technical truth requires sep-
+                                                               Claim boundary
+  arately accepted primary Evidence before factual
+  publication. / Individual technical/release/bench-           この節の読解上の境界: Capability/performance
+  mark/pricing claims require separately accepted              statements are first-party vendor claims unless sep-
+  primary Discovery sources; Community Pulse may               arately supported by independent evidence.
+  report only that these topics were salient on X un-
+                                                             6 OSS & GitHub Watch― ―Com-
+  less reconciled elsewhere.
+                                                              fyUI、llama.cpp、Transformers の更
+5 Research Paper Watch― ― エ ー
+                                                              新を短く追う
+ ジェント評価、安全性、KV cache、                                          OSS & GITHUB WATCH
+
+                                                             Feature 級 で は な い が 実 務 上 見 落 と し た く な い
+ マルチモーダルへ
+  RESEARCH PAPER WATCH                                       OSS 更 新 と し て、ComfyUI v0.31.0、llama.cpp
+W33 の Paper Watch は、
+                   コーディングエージェント                              b10369、Transformers v5.15.0 をまとめる。いず
+の評価と scaffolding、拡張機構の安全性、KV-cache                           れも一次リポジトリ Release を根拠とし、プロジェ
+
+                                                         4
+Japanese Generative AI Technical Survey                                                         2026-W33
+
+
+クト固有の性能値を横断比較しない。 [18, 19, 20]
+
+ComfyUI v0.31.0 ／ llama.cpp b10369 ／ Transformers         7    今週の総括
+v5.15.0 はいずれも W33 に確認された一次 GitHub
+                                                              WEEKLY SYNTHESIS
+Release である。ここでは各 Release の存在と週次の
+                                                          W33 は三つの Feature だけで説明できる週ではな
+エコシステム更新としての位置づけを簡潔に追う。
+                                                          かった。Daybreak の能力・統制・配布、serving stack
+[18, 19, 20]
+                                                          の同時進行、Ultrafast という速度モードが Feature 層
+リリースノート内の性能・資源効率に関する数値は、                                  を形成する一方、X のコミュニティ観測、agent 評価
+各プロジェクト固有の条件に依存する。本 Watch は、                              を中心とする研究、OSS の継続更新が周囲を埋めた。
+それらを統一条件のベンチマークとして比較しない。                                  共通して見えるのは、モデル単体の能力競争だけで
+[18, 19, 20]                                              なく、『どう届けるか』『どう動かすか』『どう評価す
+                                                          るか』へ競争軸が広がっていることだ。ただし W33
+  Claim boundary
+                                                          の正式 Evidence は意図的に保守的であり、個別の性
+  この節の読解上の境界: Performance and resource                    能値や X 由来の技術的主張、論文の全文レベルの結
+  numbers in release notes are project-reported and       論までは確定していない。
+  are not a cross-framework controlled benchmark.
+                                                          W32 から再確認した HOLD_OUT 六件は Fresh W33
+                                                          Screening で DROP となり、W33 の Feature または
+                                                          Watch へ carry-over 採用された項目はない。
+
+                                                          したがって本号の読み方は、話題量をそのまま確
+                                                          度へ変換しないことにある。Feature は first-party
+                                                          materiality を軸に置き、X は community observation、
+                                                          論文は abstract/metadata-level の author claim、OSS
+                                                          は一次 Release で確認できる運用上の変化として分離
+                                                          する。この境界を保つことで、週次の速度を維持し
+                                                          ながら、次号以降に再検証すべき論点を過剰主張な
+                                                          しに残す。
+
+
+
+
+                                                      5
+Japanese Generative AI Technical Survey                                                                2026-W33
+
+
+
+References / Source Notes
+Evidence tags: V = VERIFIED, P = PARTIAL; M = MATERIAL, C = CONTEXT. Access dates are retained in the source
+bibliography metadata.
+
+ [1]Expanding Daybreak as the Cyber Defense Window Narrows. [V/M]. OpenAI. Aug. 10, 2026. url: https:
+   //openai.com/index/expanding-daybreak-as-the-cyber-defense-window-narrows.
+ [2]Putting frontier cyber models in more trusted hands. [V/M]. OpenAI. Aug. 10, 2026. url: https://openai.
+   com/index/putting-frontier-cyber-models-in-more-trusted-hands.
+ [3]Daybreak models are now available on AWS. [V/M]. OpenAI. Aug. 11, 2026. url: https://openai.com/
+   index/daybreak-models-are-now-available-on-aws.
+ [4]v0.5.17. [V/M]. sgl-project/sglang. Aug. 8, 2026. url: https://github.com/sgl-project/sglang/releases/
+   tag/v0.5.17.
+ [5]v0.27.0. [V/M]. vllm-project/vllm. Aug. 10, 2026. url: https://github.com/vllm-project/vllm/releases/
+   tag/v0.27.0.
+ [6]Release v0.6.17. [V/M]. flashinfer-ai/flashinfer. Aug. 11, 2026. url: https : / / github . com / flashinfer -
+   ai/flashinfer/releases/tag/v0.6.17.
+ [7]Previewing Ultrafast mode: GPT-5.6 Sol at up to 14X the speed. [V/M]. OpenAI. Aug. 13, 2026. url: https:
+   //openai.com/index/previewing-ultrafast.
+ [8]Fresh W33 X community signal wave. [P/C]. Grok/X Source Intake. url: Grok_X_SourseIntake/Weekly/
+   2026-W33/weekly-x-2026-W33-fresh-r1/grok-x-result.md.
+ [9]The Scaffolding Matters More Than the Interface: A Controlled Comparison of MCP and CLI Tool Use Across
+   Seven Agent Scaffoldings, Five Language Models, and One Software Task. [P/C]. arXiv. Aug. 9, 2026. url:
+   http://arxiv.org/abs/2608.08654v1.
+[10]A Unified Issue Resolution Benchmark for Requirement Clarification, Planning, and Code Generation for
+   Coding Agents. [P/C]. arXiv. Aug. 10, 2026. url: http://arxiv.org/abs/2608.09072v1.
+[11]PluginEval: A Diagnostic Benchmark for Fine-Grained Error Attribution in Function Calling. [P/C]. arXiv.
+   Aug. 9, 2026. url: http://arxiv.org/abs/2608.08700v1.
+[12]Agent Skills Can Be Harmful: An Empirical Study of Skill-Induced Failures in LLM Agents. [P/C]. arXiv.
+   Aug. 12, 2026. url: http://arxiv.org/abs/2608.11888v1.
+[13]vToken: Token-Level Virtualization for Reclaimable KV Caches. [P/C]. arXiv. Aug. 13, 2026. url: http :
+   //arxiv.org/abs/2608.13263v1.
+[14]Open Evaluation Agent: Efficient and Promptable Evaluation of Visual Generative Models. [P/C]. arXiv.
+   Aug. 10, 2026. url: http://arxiv.org/abs/2608.09666v1.
+[15]OasisKV: Scaling In-Decode KV Cache Beyond HBM with Lookahead Sparse Prefetching. [P/C]. arXiv. Aug. 8,
+   2026. url: http://arxiv.org/abs/2608.08097v1.
+[16]REDAgentBench: Executable Red Teaming and Faithful Measurement of LLM Agent Systems. [P/C]. arXiv.
+   Aug. 11, 2026. url: http://arxiv.org/abs/2608.10669v1.
+[17]VideoGAIA: A Benchmark for General AI Assistants on Agentic Video Understanding. [P/C]. arXiv. Aug. 12,
+   2026. url: http://arxiv.org/abs/2608.14718v1.
+[18]v0.31.0. [V/C]. Comfy-Org/ComfyUI. Aug. 8, 2026. url: https : / / github . com / Comfy - Org / ComfyUI /
+   releases/tag/v0.31.0.
+[19]b10369. [V/C]. ggml-org/llama.cpp. Aug. 12, 2026. url: https : / / github . com / ggml - org / llama . cpp /
+   releases/tag/b10369.
+[20]Release: v5.15.0. [V/C]. huggingface/transformers. Aug. 10, 2026. url: https://github.com/huggingface/
+   transformers/releases/tag/v5.15.0.
+
+
+
+
+                                                       6
+
