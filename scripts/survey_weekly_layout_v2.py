@@ -45,7 +45,7 @@ REFERENCE_REPLACEMENT = (
     "\\begingroup\n"
     "\\footnotesize\n"
     "\\setlength{\\bibitemsep}{0pt}\n"
-    "\\defbibnote{corev2legend}{\\textit{Evidence tags: V = VERIFIED, P = PARTIAL; M = MATERIAL, C = CONTEXT. Access dates are retained in the source bibliography metadata.}}\n"
+    "\\defbibnote{corev2legend}{\\textit{Evidence tags: V = VERIFIED, P = PARTIAL; M = MATERIAL, C = CONTEXT.}}\n"
     "\\printbibliography[title={References / Source Notes},prenote=corev2legend]\n"
     "\\endgroup"
 )
