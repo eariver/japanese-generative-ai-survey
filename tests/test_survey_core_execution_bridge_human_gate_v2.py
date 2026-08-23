@@ -65,6 +65,7 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
         recorded_at: str,
     ) -> dict:
         operation = dict(operation)
+        self.REVIEWED_COMMIT_SHA = fixture._snapshot_review_commit()
         operation.setdefault("reviewed_repository_commit_sha", self.REVIEWED_COMMIT_SHA)
         request = {
             "schema_version": "2.0-rc1",
