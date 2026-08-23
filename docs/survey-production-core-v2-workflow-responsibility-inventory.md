@@ -67,10 +67,15 @@ The bridge exists because the normal connector-only ChatGPT runtime can edit the
 Allowed bridge operations are currently:
 
 - `INITIALIZE_WEEKLY`;
+- `INITIALIZE_RETROSPECTIVE` using the existing configured-period Special authority plus a ChatGPT-authored edition-local scope materialization;
 - `INITIALIZE_THEMATIC`;
 - `ADVANCE_STAGE` over already-authored exact artifacts.
 
+The Retrospective operation is one generic `RETROSPECTIVE_PERIOD` adapter over existing `config/special-pipeline.json` + `special_pipeline.bootstrap_plan` authority. It does not create separate monthly, half-year or annual workflow logic.
+
 The request contains no arbitrary command, script, module, expression or workflow name. Profile identity must bind the exact `issue_id`, Profile-declared `source_root`, and `work_branch`. Request-only commits and generated edition-local writes are enforced fail-closed.
+
+Every request also binds one exact reviewed `main` SHA. Before dependency installation or Core execution, the workflow verifies that the request parent descends from that reviewed baseline and that protected shared Core/contract bytes match the baseline exactly.
 
 The bridge must not approve Architecture, approve Publication Preview, Release, research, author content, perform semantic/visual judgment, or mutate shared Core during edition production.
 
@@ -98,7 +103,9 @@ Both retained build workflows are read-only. They may checkout authored source, 
 
 ## 10. Regression authority
 
-`tests/test_survey_pilot_bootstrap_v2.py` requires `.github/workflows/` to equal the seven-workflow set in section 1. `tests/test_survey_core_execution_bridge_v2.py` additionally protects the bridge's request-only trigger, Profile-bound write scope, no-arbitrary-command surface, and deterministic-vs-agent responsibility split.
+`tests/test_survey_pilot_bootstrap_v2.py` requires `.github/workflows/` to equal the seven-workflow set in section 1. `tests/test_survey_core_execution_bridge_v2.py` additionally protects the bridge's request-only trigger, reviewed-main preflight, Profile-bound write scope, no-arbitrary-command surface, full initialization allowlist, and deterministic-vs-agent responsibility split.
+
+`tests/test_survey_retrospective_profile_v2.py` protects one configured-period builder across representative monthly, half-year and annual periods and verifies fail-closed period/provenance boundaries.
 
 A new **eighth** workflow is prima facie architectural regression unless it is deliberately reviewed against the admission rule below.
 
