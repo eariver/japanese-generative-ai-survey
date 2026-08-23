@@ -164,6 +164,17 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.assertIn("test_survey_*_v2.py", core_ci)
         self.assertIn("unittest discover", core_ci)
 
+    def test_retired_weekly_post_render_authoring_helpers_are_absent(self) -> None:
+        retired = (
+            "scripts/survey_weekly_bibliography_v2.py",
+            "scripts/survey_weekly_layout_v2.py",
+        )
+        for rel in retired:
+            self.assertFalse(
+                (self.root / rel).exists(),
+                f"{rel} must remain retired: reader-facing bibliography/source-note wording and layout are ChatGPT publication-authoring responsibility",
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

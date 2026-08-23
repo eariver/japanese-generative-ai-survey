@@ -46,6 +46,7 @@
       }
     },
     "architecture_coverage": {
+      "description": "ChatGPT-authored accountability/traceability map from every approved Architecture must-cover requirement to reader-facing locations. Deterministic validation proves mapping completeness and exact manifest identity only; substantive fulfillment is judged separately by the required ARCHITECTURE_CONTENT_FIDELITY semantic/editorial review.",
       "type": "array",
       "items": {
         "type": "object",
@@ -54,14 +55,22 @@
         "properties": {
           "package_id": {"type": "string", "minLength": 1},
           "requirement": {"type": "string", "minLength": 1},
-          "status": {"const": "FULFILLED"},
+          "status": {
+            "const": "FULFILLED",
+            "description": "Author assertion used for fail-closed coverage accounting; this value is not machine proof that the prose substantively satisfies the requirement."
+          },
           "reader_locations": {
+            "description": "Reader-facing locations claimed by the author to implement this Architecture requirement; locations are traceability evidence for later semantic/editorial review.",
             "type": "array",
             "minItems": 1,
             "uniqueItems": true,
             "items": {"type": "string", "minLength": 1}
           },
-          "detail": {"type": "string", "minLength": 1}
+          "detail": {
+            "description": "Author explanation of how the cited reader-facing locations address the Architecture requirement; substantive adequacy is reviewed by ChatGPT semantic/editorial QA.",
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     },

@@ -112,6 +112,8 @@ The exact representation is implementation-dependent. It does **not** need to be
 
 If required reader-facing content is missing, fail closed to ChatGPT authoring. Never fall back to internal fields.
 
+Cadence-specific or post-render helpers must not synthesize reader-facing bibliography notes, Evidence/materiality labels, provenance legends, production-language annotations, or other prose from internal production artifacts. Deterministic tooling may validate or build exact authored publication bytes, but reader-facing wording and source-note presentation remain publication-authoring responsibility.
+
 ## 6. Content-fidelity invariant
 
 Architecture fidelity means that approved `must-cover` obligations and materially selected story/lineage questions are actually explained to the reader.
@@ -125,6 +127,8 @@ It does not mean:
 
 Supporting Evidence may appear through narrative, chronology, Technical Notes, comparison, attribution or bibliography as appropriate.
 
+`architecture_coverage` in the Reader Manuscript manifest is an **author-declared accountability and traceability map**. Deterministic validation must prove that every approved `must_cover_requirement` has exactly the required non-empty mapping and that the manifest remains bound to exact artifacts. It does **not** machine-prove that the cited reader prose substantively satisfies the requirement. That substantive judgment belongs to ChatGPT semantic/editorial QA through the required `ARCHITECTURE_CONTENT_FIDELITY` review; a claimed `FULFILLED` mapping must be rejected or revised when the prose is materially inadequate.
+
 ## 7. Quality ownership
 
 ### Deterministic
@@ -136,6 +140,7 @@ Scripts/CI may prove crisp properties such as:
 - source/PDF/candidate identity;
 - identifiers;
 - citation/reference integrity;
+- completeness of the author-declared Architecture coverage map, without treating it as substantive content proof;
 - reproducible build/preflight;
 - known exact-token leakage;
 - Freeze/Release identity.
@@ -145,7 +150,7 @@ Scripts/CI may prove crisp properties such as:
 ChatGPT must review:
 
 - Publication Boundary;
-- content fidelity to approved Architecture;
+- content fidelity to approved Architecture, including whether every claimed `architecture_coverage` location materially satisfies its requirement;
 - technical depth;
 - profile-specific synthesis/chronology/historical semantics;
 - claim-boundary wording;

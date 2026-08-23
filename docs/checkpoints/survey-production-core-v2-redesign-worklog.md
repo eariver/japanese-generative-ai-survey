@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Redesign implementation worklog
 
-Status: `CANDIDATE TREE COMPLETE / EXACT-HEAD CI + FIXED-HEAD AUDIT PENDING`  
+Status: `REVIEW FEEDBACK REPAIR COMPLETE / NEW EXACT-HEAD CI + FIXED-HEAD AUDIT PENDING`  
 Started: 2026-08-23 JST  
 Working branch: `refactor/survey-production-core-v2`  
 Draft PR: `#446`  
@@ -227,7 +227,7 @@ The candidate tree was synchronized before freeze:
 
 The six acceptance points themselves remain unchanged in intent: Weekly viability, Special viability, generality, recurrence prevention, control proportionality and autonomous progression/stop discipline.
 
-## 2026-08-23 — complete PR scope/diff audit before freeze
+## 2026-08-23 — complete PR scope/diff audit before first freeze
 
 PR #446 was re-enumerated after implementation and regression repair.
 
@@ -245,23 +245,46 @@ Observed scope:
 
 No accidental edition-content mutation or obvious scope regression was found in the PR-wide inspection.
 
-## Candidate freeze boundary
+## 2026-08-23 — first candidate freeze and audit (superseded)
 
-This worklog synchronization is intended to be the **last candidate-tree mutation before the fixed-head audit**.
+Commit `391ff19597a1a0e2edc25725db1de30216aa9911` was frozen and passed both exact-head CI workflows and the six-point fixed-head audit. That audit was valid for those exact bytes only.
 
-The commit produced by this update becomes the candidate head to freeze, provided exact-head CI/regression completes successfully. After this point:
+Human full-candidate review then identified a Publication Boundary defect in PR review comment `5385871729`. Because correcting the defect requires repository changes, the `391ff195...` fixed-head audit is **invalidated as current candidate evidence**. It remains historical evidence for that superseded candidate only.
+
+## 2026-08-23 — review comment 5385871729 repair
+
+The review found that `scripts/survey_weekly_bibliography_v2.py` could generate reader-facing bibliography/source-note metadata from internal Evidence/materiality state, including compact `V/P` and `M/C` tags. Inspection also found that `scripts/survey_weekly_layout_v2.py` directly invoked that helper and injected the same Evidence-tag legend into rendered reader output.
+
+Those helpers were already outside the redesigned canonical hot path after the old Weekly publication/layout workflow topology was removed. Patching only the displayed strings would therefore preserve an obsolete architectural owner. The repair retires the obsolete surface instead:
+
+- remove `scripts/survey_weekly_bibliography_v2.py`;
+- remove `scripts/survey_weekly_layout_v2.py`;
+- remove their two dedicated regression files;
+- add a canonical regression in `tests/test_survey_pilot_bootstrap_v2.py` that requires both post-render authoring helpers to remain absent;
+- strengthen the Publication Boundary authority so deterministic/cadence-specific helpers cannot synthesize reader-facing Evidence/provenance annotations;
+- clarify `architecture_coverage` in both authority and schema as an author-declared accountability/traceability map rather than machine semantic proof;
+- retain `ARCHITECTURE_CONTENT_FIDELITY` as the mandatory ChatGPT semantic/editorial judgment for substantive fulfillment.
+
+This repair changes the candidate tree, so a new exact candidate SHA must be frozen and both CI workflows plus all six final-audit points must be rerun from zero. No old `391ff195...` audit verdict may be carried forward by assumption.
+
+## New candidate freeze boundary
+
+The commit containing this review-feedback repair is intended to be the **last candidate-tree mutation before the replacement fixed-head audit**.
+
+After this point:
 
 - do not edit the branch during the audit;
 - use CI only as evidence, not as a mutation mechanism;
 - run all six acceptance points afresh on the exact unchanged candidate SHA;
-- if any point requires a repository change, invalidate the entire audit and create a new candidate head;
-- record the final audit result outside the candidate tree in PR/Human-review metadata.
+- if any point requires a repository change, invalidate the entire audit and create another candidate head;
+- record the replacement final-audit result outside the candidate tree in PR/Human-review metadata.
 
-## Remaining work after this candidate-tree commit
+## Remaining work after this repair commit
 
 1. Capture the exact resulting candidate head SHA.
 2. Verify both `Pipeline contract tests` and `Survey Production Core v2 CI` PASS for that exact head/unchanged PR merge candidate.
-3. Run all six final-audit points from zero against that exact immutable SHA.
-4. If all six PASS without mutation, record the exact SHA, CI identities and six verdicts in PR #446 Human-review metadata.
-5. Present that exact SHA for Human full-candidate review; do not merge automatically.
-6. After reviewed integration into `main`, perform the separately required clean real-production validation matrix described by the redesign authority/plan/final-audit rule.
+3. Run all six final-audit points from zero against that exact immutable SHA, including explicit recurrence inspection for reader-facing internal Evidence/provenance leakage.
+4. If all six PASS without mutation, replace the superseded `391ff195...` audit metadata in PR #446 with the new exact SHA, CI identities and six verdicts.
+5. Reply to review comment `5385871729` with the repair boundary and exact passing candidate SHA.
+6. Present only that exact SHA for renewed Human full-candidate review; do not merge automatically.
+7. After reviewed integration into `main`, perform the separately required clean real-production validation matrix described by the redesign authority/plan/final-audit rule.
