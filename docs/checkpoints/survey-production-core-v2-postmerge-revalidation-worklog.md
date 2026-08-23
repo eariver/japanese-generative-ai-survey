@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Post-merge W33/SP001 revalidation worklog
 
-Status: `OPERATOR BRIDGE MAINTENANCE / HUMAN-GATE ROUND-TRIP REPAIR PLANNED / IMPLEMENTATION IN PROGRESS`
+Status: `OPERATOR BRIDGE + HUMAN-GATE ROUNDTRIP IMPLEMENTED / PRE-FREEZE CONSISTENCY AUDIT IN PROGRESS`
 
 Established: 2026-08-23 JST  
 Last updated: 2026-08-24 JST
@@ -10,24 +10,28 @@ Maintenance-start `main`: `2bcaa7d1df1826ab8848c25de8bf2373d85a8e75`
 Maintenance branch: `maintenance/core-v2-operator-execution-bridge`  
 Maintenance PR: `#447 Core v2: add deterministic operator execution bridge`
 
-W33/SP001 remain paused non-PASS production-validation evidence until reviewed unchanged bridge integration.
+W33/SP001 remain paused non-PASS production-validation evidence until reviewed unchanged maintenance integration.
 
 ## Resume checkpoint
 
 The post-merge clean W33/SP001 trials exercised real ChatGPT research/editorial work and the real W33 Human-mediated Grok/Drive handoff, but could not begin canonical Core lifecycle execution because the connector runtime had no exact checkout/CLI execution substrate.
 
-The response is shared operator/Core maintenance, not fabricated Profile/State/checkpoint authority and not an edition-specific temporary workflow.
+Shared-Core maintenance first added a narrow deterministic operator bridge. A later independent pre-approval audit proved that reaching a Human Gate was insufficient: connector-only production also needed canonical deterministic recording of explicit Human approval and ordinary requested-revision cycles.
 
-Current bridge allowlist before the pre-approval audit repair is:
+The current maintenance candidate therefore covers:
 
 1. `INITIALIZE_WEEKLY`
 2. `INITIALIZE_RETROSPECTIVE`
 3. `INITIALIZE_THEMATIC`
 4. `ADVANCE_STAGE`
+5. `RECORD_ARCHITECTURE_APPROVAL`
+6. `REQUEST_ARCHITECTURE_REVISION`
+7. `RECORD_PUBLICATION_PREVIEW_APPROVAL`
+8. `REQUEST_PUBLICATION_PREVIEW_REVISION`
 
-Configured Retrospective initialization reuses the **existing `scripts/survey_period_v2.py`** Core helper. No second Retrospective builder survives in the candidate.
+The Human remains the sole decision authority. Actions/Core only validate and record explicit input and deterministic lifecycle consequences.
 
-The pre-approval full-system audit later established that this four-operation bridge is incomplete for connector-only production after a Human Gate is reached. See `RVF-015` below. Do not treat the earlier fixed-head `6/6 PASS` as current acceptance evidence.
+Configured Retrospective initialization reuses existing `scripts/survey_period_v2.py`; no second Retrospective builder survives.
 
 ## Edition-local resume authority
 
@@ -36,15 +40,16 @@ The pre-approval full-system audit later established that this four-operation br
 Branch: `weekly/2026-W33-v2-work`  
 Resume file: `sources/2026-W33/postmerge-validation-status.md`
 
-Completed preparation includes canonical Weekly window resolution, real one-file Grok/Drive execution, exact Raw import, X/community disposition, primary-source follow-up and editorial Architecture preparation.
+Prepared work includes canonical Weekly window resolution, real one-file Grok/Drive execution, exact Raw import, X/community disposition, primary-source follow-up and editorial Architecture preparation.
 
 Exact Raw:
 
 `sources/2026-W33/external/x/weekly-x-2026-W33-postmerge-r1/raw/grok-x-result.md`
 
-SHA-256: `93fe6b8c2eeea4e3186868f79927108edacebc26d8ff23f1bcc38ac1080e1f06`
+SHA-256:
+`93fe6b8c2eeea4e3186868f79927108edacebc26d8ff23f1bcc38ac1080e1f06`
 
-Do not rerun Grok unless canonical validation later proves those exact bytes unusable.
+Do not rerun Grok unless canonical validation later proves these exact bytes unusable.
 
 ### SP001
 
@@ -67,7 +72,7 @@ Status: `CONFIRMED BY REAL W33 OPERATION`
 
 ```text
 ChatGPT prepares exact grok-task.md
--> Human passes only that Drive path/reference to Grok
+-> Human passes exact Drive path/reference to Grok
 -> Grok writes result in instructed run folder
 -> ChatGPT retrieves/imports exact Raw
 -> ChatGPT resumes
@@ -77,7 +82,7 @@ No Grok connector is required.
 
 ### RVF-002 — X/community and technical Evidence separation works
 
-Status: `CONFIRMED EDITORIALLY / CANONICAL MANIFEST VALIDATION PENDING`
+Status: `CONFIRMED EDITORIALLY / CANONICAL MANIFEST VALIDATION PENDING POST-INTEGRATION`
 
 Grok/X supplies salience/community signal. Technical claims still require authoritative verification before Evidence acceptance.
 
@@ -85,19 +90,17 @@ Grok/X supplies salience/community signal. Technical claims still require author
 
 Status: `CONFIRMED BY W33`
 
-W33's Aug. 12–14 model-release wave materially changed package selection and synthesis after primary-source verification.
+W33's Aug. 12–14 release wave materially changed package selection and synthesis after primary-source verification.
 
 ### RVF-004 — Thematic X may legitimately be `NOT_REQUIRED`
 
-Status: `CONFIRMED EDITORIALLY BY SP001 / CANONICAL RECORD PENDING`
+Status: `CONFIRMED EDITORIALLY BY SP001 / CANONICAL RECORD PENDING POST-INTEGRATION`
 
-### RVF-005 — operator execution path was the blocking dependency
+### RVF-005 — operator execution path was a blocking dependency
 
-Status: `CONFIRMED / BRIDGE PARTIAL / HUMAN-GATE RECORDING GAP FOUND`
+Status: `CONFIRMED / BRIDGE IMPLEMENTED / FINAL REAUDIT PENDING`
 
-The connector runtime can research/edit GitHub but cannot necessarily execute canonical local Core over the exact branch. Manual imitation of machine authority is prohibited.
-
-The pre-approval full-system audit confirmed that the same constraint also applies to deterministic recording of an explicit Human Gate decision. The current bridge reaches gates but does not yet expose canonical Human Gate recording mechanics.
+Connector runtime can research/edit GitHub but cannot necessarily invoke exact-branch Core CLI. Manual imitation of machine authority is prohibited.
 
 ### RVF-006 — do not fabricate machine acceptance
 
@@ -105,11 +108,11 @@ Status: `CONFIRMED OPERATIONAL RULE`
 
 If canonical deterministic execution is unavailable, preserve preparation/provenance and stop before machine acceptance.
 
-### RVF-007 — edition-local human-readable resume records remain useful
+### RVF-007 — edition-local execution records remain required
 
-Status: `CONFIRMED / MIGRATION PRACTICE`
+Status: `CONFIRMED / POLICY SYNCHRONIZED`
 
-Once canonical Profile/State exists, `{source_root}/execution/` becomes the preferred operational record.
+Once canonical Profile/State exists, `{source_root}/execution/` is the operational continuity record. Human-readable review Markdown points to exact machine review JSON under `{source_root}/gates/`.
 
 ### RVF-008 — old failed artifacts remain non-authoritative
 
@@ -117,287 +120,205 @@ Status: `CONFIRMED`
 
 W33 historical `pipeline-state.json` remains `NON_AUTHORITATIVE_READ_ONLY`; SP001 failed accepted artifacts remain archived only.
 
-### RVF-009 — first fixed-head audit found stale workflow-count authority
+### RVF-009 — first maintenance audit found stale workflow-count authority
 
 Status: `FOUND / REPAIRED / AUDIT INVALIDATED`
 
-Candidate: `89b0a02c8699c957dc8ca09d0228e9d8b4ce7287`
+Candidate `89b0a02c8699c957dc8ca09d0228e9d8b4ce7287` still described six workflows while the operator bridge made seven. Any PASS from that audit is non-reusable.
 
-The current audit rule still said six workflows while PFB-014 correctly introduced a seventh operator-bridge workflow. The candidate changed, so the complete audit was invalidated. No PASS from that audit is reusable.
+### RVF-010 — second maintenance audit found missing Retrospective bridge exposure
 
-### RVF-010 — second fixed-head audit found Retrospective bridge exposure missing
+Status: `FOUND / REPAIRED / AUDIT INVALIDATED / DIAGNOSIS CORRECTED`
 
-Status: `FOUND / REPAIRED / AUDIT INVALIDATED / DIAGNOSIS CORRECTED BEFORE FINAL FREEZE`
+Candidate `0caa2c4f9ed87a32e50cf7813990b916489581bc` could not cold-start required Retrospective validation. Deeper review found existing generic `survey_period_v2.resolve_configured_period()` + `period_profile()` support, so the repair was bridge exposure only. Temporary duplicate Retrospective adapter/schema/tests were removed.
 
-Candidate: `0caa2c4f9ed87a32e50cf7813990b916489581bc`
+### RVF-011 — bridge glue init -> Discovery E2E exists
 
-Point 2 (`Special viability`) correctly established that a bridge exposing only Weekly/Thematic could not execute the mandated connector-runtime Retrospective validation.
+Status: `IMPLEMENTED / REGRESSION RETAINED`
 
-Initial diagnosis incorrectly concluded that Core v2 lacked a canonical configured-period Profile adapter. Deeper pre-freeze inspection later found that the maintenance base already contained:
+`tests/test_survey_core_execution_bridge_v2.py` exercises immutable Thematic initialization, canonical Profile/State/execution record, X `NOT_REQUIRED`, Discovery acceptance and one bridge-backed `ADVANCE_STAGE` to `DISCOVERY_COLLECTED`.
 
-- `scripts/survey_period_v2.py`
-- `tests/test_survey_period_v2.py`
+### RVF-012 — Retrospective authority text was synchronized before the earlier freeze
 
-That existing Core helper already supports generic configured monthly/half-year/annual `RETROSPECTIVE_PERIOD + LONGFORM_SPECIAL`, custom bounded periods, pre-period-end rejection, unknown-slug rejection and resume semantics.
+Status: `HISTORICAL REPAIR RETAINED`
 
-Therefore the true defect was narrower:
+Current authority consistently reuses existing `survey_period_v2` and prohibits a second Retrospective cadence engine.
 
-> **The operator bridge did not expose the already-existing canonical `survey_period_v2` initializer.**
+### RVF-013 — Retrospective request fixture binds existing Period builder
 
-Temporary duplicate files created under the incorrect diagnosis were removed before final candidate freeze:
+Status: `IMPLEMENTED / REGRESSION RETAINED`
 
-- `scripts/survey_retrospective_profile_v2.py`
-- `schemas/retrospective-scope-spec-v2.schema.json`
-- `tests/test_survey_retrospective_profile_v2.py`
+Representative configured `2024-H1` request identity must equal Profile `issue_id`, `source_root` and `work_branch`. Existing Period tests cover representative monthly/half-year/annual periods.
 
-Final Retrospective bridge semantics are:
+### RVF-014 — earlier frozen candidate cross-check
 
-```text
-request special_slug
--> survey_period_v2.resolve_configured_period(...)
--> survey_period_v2.period_profile(...)
--> exact request/Profile identity check
--> canonical Core initialize(...)
-```
+Status: `HISTORICAL PASS FOR a65e714b... / INVALIDATED BY RVF-015`
 
-No PASS from the `0caa2c4f...` audit is reusable.
+Earlier candidate:
+`a65e714b711e76006318a14b252aa0a4e9727b4f`
 
-### RVF-011 — bridge glue has an end-to-end regression
-
-Status: `IMPLEMENTED / PREVIOUS FIXED-HEAD CI PASSED / CURRENT CANDIDATE INVALIDATED BY RVF-015`
-
-`tests/test_survey_core_execution_bridge_v2.py` exercises a temporary Thematic edition through:
-
-```text
-immutable INITIALIZE_THEMATIC request
--> canonical Profile/State/execution record
--> X NOT_REQUIRED manifest
--> Discovery acceptance
--> second immutable ADVANCE_STAGE request
--> DISCOVERY_COLLECTED + next_action=stage:screening
-```
-
-The first diagnostic CI attempt exposed only a sparse-checkout fixture assumption (`sources/` directory absent); the fixture was corrected before the earlier freeze.
-
-### RVF-012 — final authority text synchronized to repository reality before the earlier freeze
-
-Status: `REPAIRED / CROSS-CHECK COMPLETE / SUPERSEDED AS ACCEPTANCE EVIDENCE BY RVF-015`
-
-After the duplicate Retrospective implementation was removed, two top-level authority documents still contained wording from the incorrect diagnosis: they described connector Retrospective cold start as binding a ChatGPT-authored scope through a new adapter.
-
-Before the earlier freeze, the following were synchronized to the actual implementation:
-
-- `docs/survey-production-core-v2-final-audit-rule.md` — commit `34d5583f8760c82bc709b3138b856f5b29fcce2e`;
-- `docs/survey-production-core-v2-redesign-authority.md` — commit `b4dfec73a21b2deeadad6daa66d07881bc69c9e2`.
-
-Current authority states that configured Retrospective cold start reuses the pre-existing `survey_period_v2.resolve_configured_period()` + `period_profile()` path and that the operator bridge must not create a second Retrospective schema/builder or cadence engine.
-
-### RVF-013 — Retrospective request fixture is bound to the existing Period builder
-
-Status: `IMPLEMENTED / PREVIOUS FIXED-HEAD CI PASSED / CURRENT CANDIDATE INVALIDATED BY RVF-015`
-
-Commit `3a680764ab7c1b29f6e785a39cef64796c839fd6` adds a regression that resolves configured `2024-H1` through `survey_period_v2.resolve_configured_period()` and `period_profile()`, then requires the resulting `RETROSPECTIVE_PERIOD + LONGFORM_SPECIAL` Profile's `issue_id`, `source_root`, and `work_branch` to equal the operator request fixture exactly.
-
-This complements the pre-existing monthly/half-year/annual Period tests and the Thematic init→Discovery bridge E2E test. It specifically protects the bridge/configured-period identity join without introducing a duplicate Retrospective execution path.
-
-### RVF-014 — pre-freeze PR-wide candidate cross-check completed
-
-Status: `HISTORICAL PASS FOR a65e714b... / INVALIDATED AS CURRENT ACCEPTANCE EVIDENCE BY RVF-015`
-
-The earlier pre-freeze cross-check examined the complete PR scope and current authority vocabulary.
-
-Results at that time:
-
-- PR #447 changed exactly 14 files;
-- no `sources/` or `surveys/` edition output was part of the maintenance diff;
-- implementation exposed four operations: Weekly init, configured Retrospective init, Thematic init, and one-stage advance;
-- configured Retrospective init used only existing `survey_period_v2` semantics plus the new generic bridge exposure;
-- removed duplicate Retrospective adapter/schema/test names remained only where this worklog recorded the invalidated diagnosis;
-- current authority consistently described seven workflows, not the superseded six-workflow maintenance surface;
-- current tests bound the seven-workflow set, reviewed-main preflight, no-arbitrary-command boundary, existing Period builder join, and Thematic init→Discovery E2E glue.
-
-The resulting frozen candidate was `a65e714b711e76006318a14b252aa0a4e9727b4f`. Its exact-head/PR-merge-candidate CI subsequently passed and a six-point audit reported 6/6 PASS. The pre-approval full-system audit in RVF-015 found material lifecycle gaps outside that audit's effective scope, so that PASS must not be used as final approval evidence.
+It passed then-current Core CI, Pipeline contract tests and six audit points. That evidence is historical only because the subsequent full-system audit exposed missing Human Gate continuation semantics.
 
 ### RVF-015 — pre-approval full-system audit found Human Gate control gaps
 
-Status: `BLOCKING / a65e714b... CANDIDATE INVALIDATED / PR MUST RETURN TO DRAFT`
+Status: `BLOCKERS IDENTIFIED / REPAIR IMPLEMENTED / REAUDIT PENDING`
 
-After the user requested an independent whole-system audit before approving PR #447, the review was expanded beyond the six fixed-head points' pre-gate focus to include **what happens after a real Human Gate is reached**.
+Two blocking gaps invalidated the earlier candidate:
 
-The earlier candidate remains valuable regression evidence: its exact tree passed Core v2 CI and pipeline contract tests, and its bridge preflight/allowlist/generalization design is largely sound. However, two material gaps make the candidate incomplete as the connector-only production execution substrate it claims to provide.
+- **HG-001:** connector-only operation could reach a Human Gate but not canonically record an explicit Human approval;
+- **HG-002:** ordinary Human `REQUEST_CHANGES` had no coherent revision/selective-invalidation path, so changed reviewed bytes caused pinned checkpoint drift or an inappropriate Exception Gate.
 
-#### HG-001 — explicit Human approval cannot be canonically recorded through the bridge
-
-Existing Core already has deterministic, exact-byte functions:
-
-- `survey_agent_control_v2.approve_architecture(...)`
-- `survey_agent_control_v2.approve_publication_preview(...)`
-
-They validate the pending gate, exact reviewed bytes, write the canonical approval record, bind provenance into Production State, and refresh lifecycle control. The Human decision remains external; these functions only **record** that explicit decision.
-
-The current operator request schema exposes only:
-
-- `INITIALIZE_WEEKLY`
-- `INITIALIZE_RETROSPECTIVE`
-- `INITIALIZE_THEMATIC`
-- `ADVANCE_STAGE`
-
-and the bridge design explicitly excludes Architecture/Publication Preview approval operations.
-
-That distinction is too coarse for the connector-only runtime. It is correct that Actions must never *decide* Human approval, but after the Human explicitly approves, ChatGPT still needs an exact checkout/CLI substrate to run the deterministic approval recorder. Manually hand-authoring approval JSON or mutating State through the GitHub connector would violate RVF-006 and bypass canonical validators.
-
-Therefore the bridge can reach `ARCHITECTURE_REVIEW` but cannot, in the same runtime model, resume normal production after an approval.
-
-Required repair direction: expose only deterministic **Human-decision recording** operations that call the existing canonical approval functions and require explicit Human decision provenance. Do not let Actions infer or create the decision.
-
-#### HG-002 — ordinary Human revision/rejection has no coherent canonical lifecycle path
-
-The Production State schema permits `pending`, `approved`, and `rejected` for both normal Human Gates. Core control maps a rejected Human Gate to `EXCEPTION_GATE_REQUIRED`.
-
-However:
-
-- `architecture-approval-record-v2.schema.json` accepts only `decision: APPROVED`;
-- `publication-preview-approval-v2.schema.json` accepts only `decision: APPROVED`;
-- no canonical rejection/revision recorder was found in `survey_agent_control_v2.py` or the retained orchestration path;
-- edition execution-record policy explicitly expects `architecture-r1.md`, `architecture-r2.md`, `publication-r1.md`, `publication-r2.md` and requires `Requested changes` plus a `Regeneration boundary`, so routine Human revision is clearly part of the intended operating model;
-- completed Stage Checkpoints pin exact artifact SHA-256 values, and `validate_agent_state()` fails closed on `Stage Checkpoint artifact drift`.
-
-Consequently, after the Human requests changes at Architecture Review, editing `architecture-v2.json` in place would invalidate the already-passed Architecture checkpoint, while no reverse/invalidation/revision transition exists to return safely to Selection/Architecture generation. Publication Preview has the same structural issue: changing reader source/PDF after validation invalidates pinned Stage Checkpoint bytes, but no canonical lifecycle path returns to drafting/validation and establishes a new candidate revision.
-
-A Human review that requests ordinary corrections must not be forced into an Owner-level Exception Gate merely because the machine lifecycle lacks revision semantics.
-
-Required repair direction: define an explicit fail-closed Human revision path that records the reviewed revision and requested regeneration boundary, invalidates only downstream authority, returns to the correct lifecycle boundary, and permits a new exact candidate to reach the same Human Gate again. Architecture and Publication Preview need equivalent semantics appropriate to their different downstream authorities.
-
-#### Audit consequence
-
-The prior fixed candidate `a65e714b711e76006318a14b252aa0a4e9727b4f` is **not approved for integration**.
-
-The previous `6/6 PASS` was not fabricated: it was valid for the six checks as they were then applied and for the unchanged candidate tree. The failure was **audit-scope incompleteness**: it established that the system could reach the requested Human Gate and preserve role boundaries, but did not prove that the connector-only operator path could record an explicit Human decision or execute a normal Human-requested revision cycle afterward.
-
-Any repair changes the candidate tree. Therefore:
-
-1. PR #447 returns to Draft;
-2. update bridge/Core authority and tests for HG-001/HG-002;
-3. add end-to-end regression for at least:
-   - reach Architecture Review → explicit Human approval record → resume drafting;
-   - reach Architecture Review → requested revision → regenerate/revalidate → Architecture Review r2;
-   - reach Publication Preview → explicit approval record → freeze path;
-   - reach Publication Preview → requested revision → regenerate/revalidate → Publication Preview r2;
-4. freeze a new exact head;
-5. rerun Core CI + pipeline contracts;
-6. rerun the complete six-point audit **plus explicit Human Gate continuation/revision coverage** from zero;
-7. only then return PR #447 to Human full-candidate review.
+The audit consequence was to return PR #447 to Draft, change the final audit from six-only coverage to seven points, and require both direct and connector-safe approve/revise E2E before review readiness.
 
 ### RVF-016 — Human Gate round-trip repair work plan and completion contract
 
-Status: `PLAN LOCKED / IMPLEMENTATION AUTHORIZED`
-
-This section is the controlling work plan for continuing PR #447 after RVF-015. It is written before implementation so that the work, goal and completion decision cannot drift with the implementation.
+Status: `PLAN LOCKED / IMPLEMENTATION SUBSTANTIALLY COMPLETE / FREEZE NOT YET DECLARED`
 
 #### Work goal
 
-The goal of the current maintenance phase is:
+> **Make both normal Human Gates round-trip capable in canonical Core v2 — reach gate → record explicit Human APPROVED or REQUEST_CHANGES → resume or selectively invalidate/regenerate → reach the same gate again when needed — and expose only those deterministic mechanics through the connector-safe operator bridge.**
 
-> **Make both normal Human Gates round-trip capable in canonical Core v2 — reach gate → record explicit Human APPROVED or REQUEST_CHANGES decision → resume or selectively invalidate/regenerate → reach the same gate again when needed — and expose only those deterministic mechanics through the connector-safe operator bridge.**
+The goal does not permit GitHub Actions/Core to decide Human approval, infer requested changes, choose a regeneration boundary, author editorial content or replace ChatGPT/Human judgment.
 
-The goal is **not** to let GitHub Actions decide Human approval, infer requested changes, choose a regeneration boundary, write editorial content, or replace ChatGPT/Human judgment.
+#### Locked required work
 
-The immediate phase ends when PR #447 is technically eligible to be returned to Human full-candidate review. It does not by itself close PFB-013/PFB-014: real post-integration Weekly/Thematic/Retrospective/Foundations validation remains required after Human-approved unchanged integration.
+1. define Human Gate decision/revision protocol;
+2. implement exact-byte approval and dependency-aware `REQUEST_CHANGES` mechanics;
+3. expose only four narrow Human Gate operations through existing bridge;
+4. synchronize Core/Actions/bridge/execution-record/final-audit authority;
+5. add positive/negative direct and bridge E2E;
+6. freeze only after all repairs/authority synchronization finish;
+7. exact-head CI + Pipeline contracts + seven-point fixed-head audit from zero;
+8. any tree mutation after freeze invalidates all seven verdicts.
 
-#### Required work
+#### Completion decision criteria
 
-1. **Define the Human Gate decision protocol.**
-   - distinguish `APPROVED`, routine `REQUEST_CHANGES`, and true terminal/exception rejection semantics;
-   - define revision numbering and immutable review-decision provenance;
-   - define allowed regeneration boundaries for Architecture Review and Publication Preview;
-   - define which machine checkpoints/provenance and gate authority are invalidated at each boundary;
-   - preserve previous r1/r2 review evidence without treating superseded bytes as current authority.
+PR #447 may return to Ready only when all are true simultaneously:
 
-2. **Implement Core round-trip mechanics.**
-   - reuse existing exact-byte approval functions where possible;
-   - add canonical REQUEST_CHANGES/revision mechanics rather than mutating State or artifacts ad hoc;
-   - perform dependency-aware selective invalidation instead of simply assigning an earlier lifecycle string;
-   - keep State schema/validation fail-closed for stale approvals, stale checkpoints, invalid rollback boundaries and provenance drift.
+- HG-001 closed;
+- HG-002 closed;
+- Actions/Core infer no Human decision;
+- prior review revisions reconstructable while only current bytes are authoritative;
+- required positive/negative direct and bridge E2E pass;
+- authority/schema exactly match implementation;
+- exact-head Core CI PASS;
+- exact-head Pipeline contract tests PASS;
+- Points 1–7 PASS on one unchanged candidate SHA;
+- PR metadata binds that exact SHA and does not present earlier invalidated PASS as current evidence.
 
-3. **Expose deterministic Human-decision recording through the existing operator bridge.**
-   - add narrow enum-constrained operations for Architecture approval, Architecture revision, Publication Preview approval and Publication Preview revision;
-   - require explicit Human provenance (`reviewed_by`, `reviewed_at`, `review_reference`) and exact current State/gate identity;
-   - let ChatGPT/Human supply the decision and regeneration boundary; bridge/Core only validate and record/execute the deterministic consequence;
-   - do not add a new workflow unless a concrete mechanical advantage requires it; prefer the existing seventh bridge workflow.
+If any condition is false, PR remains Draft.
 
-4. **Synchronize authority and execution records.**
-   - update Human Gate/Core authority, operator-bridge design, Actions responsibility policy, execution-record policy and final-audit rule;
-   - map machine review revisions to `execution/reviews/architecture-rN.md` and `publication-rN.md` without making Markdown a second State machine;
-   - change the final audit from six-point-only coverage to an explicit seventh point: `Human Gate round-trip viability`.
+### RVF-017 — canonical Human Gate review authority implemented
 
-5. **Add positive and negative regression coverage.**
-   Positive minimum:
-   - Architecture r1 → explicit approval → drafting can resume;
-   - Architecture r1 → REQUEST_CHANGES → required authority invalidated → regenerate/revalidate → Architecture r2;
-   - Architecture r2 → approval while r1 evidence remains historical;
-   - Publication Preview r1 → approval → freeze path can resume;
-   - Publication Preview r1 → REQUEST_CHANGES → regenerate/revalidate/new candidate → Publication Preview r2;
-   - Publication Preview r2 → approval binds only r2 candidate/PDF bytes.
+Status: `IMPLEMENTED / DIAGNOSTIC REGRESSION PASS / FINAL FIXED-HEAD EVIDENCE PENDING`
 
-   Negative minimum:
-   - stale r1 approval request after r2 exists fails;
-   - approval request after reviewed bytes change fails;
-   - invalid or over-broad regeneration boundary fails;
-   - revision cannot preserve downstream checkpoint authority that depends on changed bytes;
-   - ChatGPT cannot supply deterministic PASS artifacts;
-   - request mutation / bot recursion / arbitrary execution remain rejected.
+Added:
 
-6. **Freeze and re-audit from zero.**
-   - record all implementation findings in this worklog before freeze;
-   - freeze one exact candidate SHA;
-   - run Core v2 CI and Pipeline contract tests on the unchanged candidate/merge-candidate tree;
-   - rerun Points 1–6 from zero; no historical PASS is reusable;
-   - run Point 7 `Human Gate round-trip viability` over both gates and approve/revise paths;
-   - any candidate-tree change invalidates the complete audit and restarts from Point 1.
+- `schemas/human-gate-review-record-v2.schema.json`
+- `schemas/human-gate-review-index-v2.schema.json`
+- `scripts/survey_human_gate_v2.py`
 
-#### Completion decision criteria for this maintenance phase
+Canonical machine review history:
 
-PR #447 may return to `Ready for review` **only if all conditions below are true simultaneously**:
+```text
+{source_root}/gates/reviews/architecture-rN.json
+{source_root}/gates/reviews/publication-rN.json
+{source_root}/gates/review-index.json
+```
 
-- HG-001 is closed by a canonical deterministic approval-recording path usable from connector-only operation;
-- HG-002 is closed by a canonical REQUEST_CHANGES/selective-invalidation/revision path for both normal Human Gates;
-- no Human decision is inferred or made by Actions/Core;
-- prior review revisions remain reconstructable while only current bytes are authoritative;
-- all required positive and negative E2E/regression tests pass;
-- current authority documents and schemas describe exactly the implemented semantics;
-- exact-head Core CI passes;
-- exact-head Pipeline contract tests pass;
-- fixed-head audit Points 1–7 all PASS on one unchanged candidate SHA;
-- PR metadata is synchronized to that exact candidate and no earlier invalidated PASS is presented as current evidence.
+Each rN binds exact reviewed State/artifact SHA-256, reviewed repository commit, Human identity/time/reference, decision and—when applicable—requested changes + regeneration boundary.
 
-If any item is false, the maintenance phase is **not complete** and PR #447 remains Draft.
+Approval delegates to canonical exact-byte approval functions. `REQUEST_CHANGES` validates a gate-specific boundary, trims State/history/checkpoint provenance to that boundary, preserves unaffected upstream authority, removes superseded canonical Stage Checkpoints and returns control to ChatGPT for actual repair.
 
-#### Overall program completion after this maintenance phase
+### RVF-018 — operator bridge expanded from four to eight request kinds
 
-Even after PR #447 becomes reviewable and is Human-approved/merged, Core v2 production revalidation is not complete until clean post-integration trials pass without shared-Core repair for:
+Status: `IMPLEMENTED / DIRECT + BRIDGE REGRESSION COVERAGE PRESENT`
 
-1. one Weekly cold start;
-2. standalone `THEMATIC + LONGFORM_SPECIAL` with SP001 as regression;
-3. one representative configured `RETROSPECTIVE_PERIOD` run;
-4. one Foundations-guided Thematic/Longform scenario.
+Added exactly:
 
-A shared-Core defect found in those trials is failed validation evidence, must be repaired separately, and requires a clean rerun.
+- `RECORD_ARCHITECTURE_APPROVAL`
+- `REQUEST_ARCHITECTURE_REVISION`
+- `RECORD_PUBLICATION_PREVIEW_APPROVAL`
+- `REQUEST_PUBLICATION_PREVIEW_REVISION`
+
+Every Human Gate request requires canonical State path, next `expected_revision`, Human provenance; revision additionally requires non-empty requested changes and enum-constrained gate-specific regeneration boundary.
+
+Generic `EXECUTE_HUMAN_DECISION`, generic rejection, arbitrary command/module/script/workflow surfaces remain absent.
+
+### RVF-019 — full Publication Preview E2E exposed latent `{survey_root}` Stage Checkpoint defect
+
+Status: `FOUND BY NEW E2E / SHARED CORE FIXED / DIAGNOSTIC CI PASS`
+
+The new Publication Preview round-trip E2E reached a previously under-exercised agent-first path and failed because `survey_agent_control_v2._expand_stage_path()` expanded only `{source_root}` while canonical DRAFT_COMPLETE artifacts include `{survey_root}/main.tex` and `{survey_root}/main.pdf`.
+
+Observed error:
+
+```text
+unsupported stage path template: {survey_root}/main.tex
+```
+
+Repair commit:
+`5ffc942537eae1b9b3f40c8b344773725b72ca2f`
+
+The helper now expands Profile path tokens generically. Diagnostic evidence on that tree:
+
+- Survey Production Core v2 CI run `32650031572` — PASS;
+- Pipeline contract tests run `32650031520` — PASS.
+
+These are diagnostic only because the candidate changed afterward.
+
+### RVF-020 — direct Human Gate approve/revise E2E implemented
+
+Status: `IMPLEMENTED / DIAGNOSTIC PASS`
+
+`tests/test_survey_human_gate_v2.py` covers:
+
+- Architecture r1 `REQUEST_CHANGES` -> selective invalidation -> r2 -> approval;
+- stale r1 approval after r2 refusal;
+- changed reviewed Architecture bytes refusal;
+- invalid Architecture boundary refusal;
+- Publication Preview r1 `REQUEST_CHANGES` -> Validation/Candidate regeneration -> r2 -> approval;
+- Publication revision cannot cross Architecture boundary;
+- final r2 approval binds current Candidate/PDF;
+- Publication Preview approval sets its special machine checkpoint and resumes Freeze.
+
+### RVF-021 — bridge-backed Human Gate round-trip E2E implemented
+
+Status: `IMPLEMENTED / LATEST TEST CORRECTION AWAITING NEW EXACT-HEAD DIAGNOSTIC CI`
+
+`tests/test_survey_core_execution_bridge_human_gate_v2.py` executes:
+
+- bridge Architecture r1 revision -> r2 approval;
+- bridge Publication r1 revision -> revalidation/new candidate -> r2 approval;
+- explicit Human provenance schema requirements;
+- invalid cross-gate boundary refusal;
+- no generic Human-decision/rejection operation;
+- existing one-request-only workflow transport.
+
+First bridge E2E head `cdf5b858d0b162c16efa2b118eed4b27293d2cf1` produced one test-only error: the fixture incorrectly expected a nonexistent `machine_checkpoints["publication_candidate"]` key. Canonical `VALIDATED_DRAFT -> RELEASE_CANDIDATE` uses a Stage Checkpoint file but has `checkpoints: []`.
+
+The test was corrected to verify deletion of superseded `VALIDATED_DRAFT.json` and pending `validation` checkpoint instead. No Core implementation change was required for this correction.
+
+### RVF-022 — current authority synchronized to seven-point/Human Gate model
+
+Status: `IN PROGRESS / MAJOR CURRENT AUTHORITIES UPDATED`
+
+Synchronized current operational authority includes:
+
+- `docs/survey-production-core-v2-final-audit-rule.md` — six -> seven points, Point 7 `Human Gate round-trip viability`;
+- `docs/survey-production-core-v2-operator-execution-bridge.md` — exactly eight request kinds and Human decision-vs-recording boundary;
+- `docs/survey-production-core-v2-github-actions-policy.md` — bridge may record already explicit Human decision but never choose it;
+- `docs/survey-production-core-v2-workflow-responsibility-inventory.md` — seven workflows unchanged, Human Gate mechanics remain inside existing bridge;
+- `docs/survey-production-core-v2-redesign-authority.md` — round-trip semantics and seven-point re-audit;
+- `docs/survey-production-core-v2-execution-record-policy.md` — Markdown rN summaries bind exact machine review JSON;
+- `docs/survey-production-core-v2-production-feedback-backlog.md` — PFB-014 includes HG-001/HG-002 and seven-point acceptance;
+- `AGENTS.md` and `docs/survey-production-core-v2-session-bootstrap.md` — operational sessions use seven-point final audit and routine `REQUEST_CHANGES` continuation.
 
 ## Current maintenance design
 
-The pre-RVF-015 bridge candidate scope contains bridge/authority changes, not a duplicate Retrospective implementation:
-
-- `.github/workflows/survey-production-v2-operator-bridge.yml`
-- `schemas/operator-execution-request-v2.schema.json`
-- `scripts/survey_core_execution_bridge_v2.py`
-- `tests/test_survey_core_execution_bridge_v2.py`
-- workflow/config/authority/regression synchronization.
-
-Existing `scripts/survey_period_v2.py` remains the Retrospective builder and is unchanged by the maintenance PR.
-
 ### Reviewed-main preflight
 
-Every request binds exact lowercase 40-hex `reviewed_main_sha`. Before dependency installation/Core execution, the workflow requires reviewed SHA on current `main` history, request-parent descent, initialization execution-record baseline equality, and byte equality for fixed shared implementation roots plus configured contract files.
+Every request binds exact lowercase 40-hex `reviewed_main_sha`. Before dependency installation/Core execution, the workflow requires reviewed SHA on current `main` history, request-parent descent, initialization execution-record baseline equality and byte equality for fixed shared implementation roots plus configured contract files.
 
 ### Request/receipt
 
@@ -406,24 +327,42 @@ Every request binds exact lowercase 40-hex `reviewed_main_sha`. Before dependenc
 {source_root}/execution/bridge-runs/<request-id>/
 ```
 
-Trigger is request-only; generated writes are Profile-source-root-bound; immutable requests cannot be mutated; bot output cannot recursively retrigger.
+Trigger is request-only; generated writes are Profile-source-root-bound; immutable request bytes cannot be mutated; bot output cannot recursively retrigger.
 
-## Why this is not a return to Actions-heavy production
+### Why this is not Actions-heavy production
 
-The bridge supplies only the missing exact checked-out deterministic execution substrate. It neither chooses content nor creates research/editorial/visual/Human judgments.
+The bridge supplies only missing exact checked-out deterministic execution. Human decides the two normal Gate outcomes; ChatGPT owns research/editorial/visual judgment and actual requested repair. Actions/Core validate and record deterministic authority only.
 
-Current pre-repair Actions surface is exactly seven workflows. A new workflow is not required merely to solve HG-001/HG-002: prefer extending the existing enum-constrained bridge with deterministic recording/revision mechanics unless a separate Actions-specific advantage is demonstrated.
+Actions surface remains exactly seven workflows. Human Gate round-trip support extends the existing seventh bridge; no eighth workflow is introduced.
 
-## Diagnostic CI evidence before the invalidated freeze
+### Interruption / transaction review
 
-Diagnostic runs are not final acceptance evidence if the candidate tree changes afterward.
+Connector-only bridge execution is fail-closed at repository publication boundary: workflow commits/pushes edition-local output only after the bridge process succeeds. Partial runner filesystem writes are not published after a failed process.
 
-- head `6ba6748a4e06e63a24ddac34173a7a2534b7e370`: Core v2 CI PASS and Pipeline contract tests PASS;
-- head `4088bcfc63aafa440f1966c5393f6aae912eee30`: E2E fixture FAIL before bridge execution because sparse checkout lacked `sources/`;
-- head `08328d8babcb60b00be22d87a69289fd0e751ace`: Core v2 CI PASS after fixture correction;
-- frozen head `a65e714b711e76006318a14b252aa0a4e9727b4f`: Core v2 CI PASS and Pipeline contract tests PASS; PR merge-candidate tree matched the exact frozen head tree.
+Direct-local CLI, like other multi-file local Core operations, can leave an uncommitted working tree if the local process is forcibly interrupted between file writes. This is not treated as a new distributed state transaction requirement for this maintenance: such partial local work must not be committed and is restored/retried from Git authority. The current acceptance scope proves successful deterministic semantics plus fail-closed stale/byte/boundary validation; it does not introduce a generic multi-file transaction engine.
 
-All are now historical/diagnostic evidence because RVF-015 requires a new candidate tree.
+## Current PR scope check
+
+PR #447 currently changes only shared Core/authority/test files. It contains **no `sources/` or `surveys/` edition output**. Current changed-file families are:
+
+- one operator bridge workflow;
+- shared config + AGENTS;
+- Core authority/policy/worklog docs;
+- Human Gate/operator request schemas;
+- shared Core/bridge/Human Gate scripts;
+- Core regression tests.
+
+This preserves the Production-vs-Core-maintenance boundary.
+
+## Diagnostic CI evidence
+
+Diagnostic runs are not final acceptance evidence after later candidate changes.
+
+Retained useful evidence:
+
+- `5ffc942537eae1b9b3f40c8b344773725b72ca2f`: Core CI run `32650031572` PASS; Pipeline contract `32650031520` PASS after generic Profile path expansion repair;
+- `cdf5b858d0b162c16efa2b118eed4b27293d2cf1`: Core CI `32650222383` / Pipeline `32650222392` failed only on the subsequently corrected test expectation for nonexistent `publication_candidate` machine checkpoint; direct Human Gate suite and Architecture bridge E2E were already passing;
+- earlier frozen `a65e714b711e76006318a14b252aa0a4e9727b4f`: historical six-point/CI PASS, invalidated by RVF-015 and never reusable as current acceptance.
 
 ## PFB-013 status
 
@@ -433,25 +372,23 @@ Real cold-start Weekly, SP001/LONGFORM, representative Retrospective and Foundat
 
 ## PFB-014 status
 
-`IMPLEMENTED PARTIALLY / PRE-APPROVAL FULL-SYSTEM AUDIT FAILED / REPAIR REQUIRED`
+`IMPLEMENTATION CANDIDATE / HUMAN-GATE ROUNDTRIP IMPLEMENTED / SEVEN-POINT REAUDIT PENDING`
 
-The current bridge successfully addresses initialization and ordinary stage execution, with reviewed-main preflight, Profile-bound writes, immutable requests, no arbitrary executable surface, stale-state refusal, deterministic result ownership by Core, no deterministic-review impersonation, no recursive bot chain, exact provenance, direct-local preference, and Weekly/configured-Retrospective/Thematic support.
+Do not close PFB-014 and do not merge PR #447 until the completion criteria in RVF-016 are satisfied.
 
-It does **not** yet close the connector-only execution gap across Human Gate approval/revision boundaries. Do not close PFB-014 and do not merge PR #447 until RVF-015 is repaired and reaudited.
-
-## Next actions after the pre-approval full-system audit
+## Next actions
 
 ```text
-execute RVF-016 work plan
--> define/implement Human Gate approve + REQUEST_CHANGES round-trip semantics
--> expose only deterministic recording/invalidation mechanics through existing bridge
--> update Core authority + execution-record policy + bridge request contract + regression tests
--> record each material repair/finding in this worklog
--> freeze a new candidate head only after implementation/authority cross-check
--> exact-head Core CI + pipeline contract tests
--> complete audit Points 1–7 from Point 1 on unchanged SHA
--> any required tree change invalidates and restarts audit
--> only after 7/7 PASS: record result outside candidate tree and mark PR #447 ready for Human full-candidate review
+finish current-authority/stale-vocabulary cross-check
+-> obtain green diagnostic CI on current synchronized tree
+-> inspect full PR diff for unintended scope/semantic drift
+-> if any defect requires change: repair before freeze
+-> update this worklog one final time before freeze
+-> freeze one exact candidate SHA
+-> exact-head Core CI + Pipeline contract tests
+-> audit Points 1–7 from Point 1 on unchanged SHA
+-> any tree change invalidates all seven verdicts
+-> only after unchanged 7/7 PASS: record result outside candidate tree and mark PR #447 Ready for Human full-candidate review
 ```
 
 W33/SP001 production validation remains paused. Do not restart those editions until the shared Core maintenance candidate is reviewed and integrated unchanged.
