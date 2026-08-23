@@ -1,170 +1,131 @@
 # Survey Production Core v2 — Redesign Plan after W33 / SP001 Production Validation
 
-Status: `REDESIGN REQUIRED / DESIGN AUDITED / IMPLEMENTATION NOT STARTED`  
+Status: `REDESIGN IMPLEMENTED / FIXED-HEAD AUDIT PENDING`  
 Established: 2026-08-23 JST  
+Implementation synchronized: 2026-08-23 JST  
 Working branch: `refactor/survey-production-core-v2`  
 Primary production evidence: Issues #400, #433, #434 and the W33/SP001 execution records  
-Pre-implementation audit: `docs/survey-production-core-v2-redesign-preimplementation-audit.md`
+Pre-implementation audit: `docs/survey-production-core-v2-redesign-preimplementation-audit.md`  
+Implementation worklog: `docs/checkpoints/survey-production-core-v2-redesign-worklog.md`
 
 ## 1. Decision
 
 The first real Core v2 production trials did not validate the merged pipeline.
 
 - `2026-W33` reached Publication Preview but was rejected in Issue #433.
-- `SP001` reached Publication Preview, was rejected in Issue #400, and a 19-page Human-directed revision substantially improved the artifact but still retained reader-facing production/editorial leakage.
-- Issue #434 demonstrates that the central failure is shared across `WEEKLY_MAGAZINE` and `LONGFORM_SPECIAL`: internal Architecture / Review / Selection / Evidence state can flow into reader-facing publication prose without an adequate semantic publication boundary.
+- `SP001` reached Publication Preview, was rejected in Issue #400, and a Human-directed 19-page salvage revision materially improved the artifact but still retained reader-facing production/editorial leakage.
+- Issue #434 established the shared defect across `WEEKLY_MAGAZINE` and `LONGFORM_SPECIAL`: internal Architecture / Review / Selection / Evidence state could flow into reader-facing publication prose without an adequate semantic Publication Boundary.
 
-Both trials are therefore evidence for redesign, not successful Core v2 acceptance runs. The current W33/SP001 attempts must not be used to claim cold-start production validity. After redesign, both profiles require clean re-validation; SP001 should be rerun so the rejected 11-page version, Human-directed 19-page salvage version, and redesigned cold-start version can be compared.
+Those trials remain failed/non-validating production evidence. They must not be rewritten as successful runs merely because the redesign has now been implemented.
 
-This plan consolidates and supersedes the earlier assumption that W33/SP001 should continue accumulating incremental Core repairs while still serving as validation runs.
-
-The redesign must **not** become a W33/SP001-specific repair. Its goal is a smaller and more general Core in which stable Profile/edition authority constrains ChatGPT reasoning while deterministic tooling protects only crisp invariants.
+The redesign objective is a smaller and more general Core in which stable Core/Profile/edition authority constrains ChatGPT reasoning while deterministic tooling protects only crisp invariants. The implementation must not become a W33/SP001-specific repair.
 
 ## 2. What the trials established
 
 ### 2.1 Machine PASS did not imply publication quality
 
-SP001's rejected 11-page candidate reached `READY_FOR_PUBLICATION_PREVIEW` after Core deterministic and semantic quality checks passed. It nevertheless had:
+SP001's rejected candidate and W33's rejected Preview demonstrated that deterministic and workflow-level PASS states could coexist with:
 
-- severe LONGFORM_SPECIAL underdevelopment;
-- mixed-layout regression;
-- missing reader-facing synthesis / Technical Notes depth;
-- internal Evidence / materiality / verification language in the PDF.
+- inadequate longform or issue-level development;
+- missing or weak reader-facing synthesis;
+- internal Evidence/materiality/selection language in the publication;
+- Architecture requirements being referenced rather than actually fulfilled;
+- layout/profile regressions not adequately represented by machine checks.
 
-W33 likewise reached `RELEASE_CANDIDATE` with machine checkpoints through validation marked passed, while the 6-page Preview still exposed internal Architecture / Screening / Evidence language and underfulfilled Architecture must-cover content.
+The redesign therefore separates deterministic QA from ChatGPT semantic/editorial review and exact-PDF visual review.
 
-The quality model therefore over-credited properties that were machine-checkable and underrepresented properties that require editorial judgment.
+### 2.2 The Publication Boundary had to become structural
 
-### 2.2 The Publication Boundary is structurally missing
+Internal research/editorial artifacts are not reader manuscript authority. Screening, Selection, Evidence, Architecture rationale, Human-review rationale, internal IDs, obligations, package/coverage/promotion vocabulary and raw internal paths must not become publication prose merely because a reader-facing field is absent.
 
-W33 provides a direct example:
-
-- internal `profile_payload.current_interpretation` contains review-reactive language;
-- `carry_over_summary` contains `HOLD_OUT`, `Screening`, and `DROP` production state;
-- `publication_payload` is empty;
-- publication assembly still produced reader-facing prose by falling back to internal fields.
-
-SP001 showed the same defect with different vocabulary (`Verify ...`, Evidence pass notes, Evidence IDs, `本 package`, selection/coverage language).
-
-The redesign must make internal editorial/provenance artifacts non-renderable by default. Reader-facing publication content must exist as a distinct artifact/surface and must not silently fall back to internal fields.
+The implemented design introduces an explicit Reader Manuscript / reader-facing source boundary and fails closed when required reader content is missing.
 
 ### 2.3 Human-directed salvage is not cold-start validation
 
-The 19-page SP001 revision proves that the selected Evidence and Architecture contained enough material to produce a substantially better Special after detailed Human criticism. It does **not** prove that Core v2 could produce that quality autonomously.
+The improved SP001 salvage proved that the underlying research material was capable of supporting a better publication. It did not prove that the pre-redesign Core could produce that quality autonomously. The salvage depended on detailed Human criticism, shared renderer/style repair and later authority rebinding.
 
-The salvage required, among other things:
+Future production acceptance must therefore be measured from a clean start with no in-run shared-Core repair.
 
-- generic renderer hardening merged to `main` and reintegrated into the edition branch;
-- shared style changes for longform full-width/multicolumn behavior;
-- workflow rerouting around GitHub bot-trigger limitations;
-- a second authority repair because revised PDF bytes initially did not update the Quality Regression Bundle and Publication Candidate;
-- detailed Human identification of remaining semantic leakage after deterministic reader-surface checks reported no findings.
+### 2.4 Production sessions had become Core-maintenance sessions
 
-A future acceptance run must therefore be evaluated from a clean start without in-run shared-Core repair.
+The W33/SP001 trials blurred the difference between:
 
-### 2.4 Production sessions became Core-maintenance/debug sessions
+- `the production system worked`; and
+- `the edition session repaired the production system until it worked`.
 
-SP001's Architecture-stage worklog records generic Core control workflow creation/repair while the edition was being compiled. Its Publication-stage log records additional generic renderer/style changes to `main`, then reintegration into the work branch.
-
-W33 similarly created repeated execution-only PRs/rebuild loops and used pending generic Core repair logic during the production run.
-
-This destroys the distinction between:
-
-- `the pipeline worked`, and
-- `the production session repaired the pipeline until it worked`.
-
-The rule remains:
+The implemented invariant is:
 
 > **Production sessions repair editions; Core-maintenance sessions repair shared Core.**
 
-If a shared Core defect blocks correct production, record it and stop or use only a semantically safe edition-local workaround. Do not author a generic Core repair from the edition session.
+A likely shared-Core defect is recorded under the edition execution record. A semantically safe edition-local workaround may be used without altering the shared contract; otherwise the production run blocks and Core repair proceeds separately.
 
-### 2.5 GitHub Actions became a production orchestrator rather than an independent verifier
+### 2.5 GitHub Actions had become a production orchestrator
 
-The trials used Actions for stage adoption, Drafting/Synthesis generation, semantic publication assembly, publication mutation, quality-bundle creation, candidate/state mutation, bot commits, export/rebuild transport, and release-candidate authority handling.
+Actions were used for editorial stage control, Drafting/Synthesis, publication mutation, layout repair, candidate/state mutation, bot commits and execution-trigger PRs. This created operational coupling without adding independent editorial value.
 
-This created concrete operational failures:
+The redesign adopts `docs/survey-production-core-v2-github-actions-policy.md` as a hard constraint:
 
-- write-capable workflow chaining stopped when a previous commit was authored by `github-actions[bot]`;
-- temporary PRs were needed primarily as execution triggers;
-- source/PDF revision and candidate authority refresh became separate operations;
-- pipeline mechanics consumed significant production effort unrelated to researching/editing the issue.
+> **GitHub Actions is a deterministic executor / verifier, not a reasoning, editorial, or publication-authoring agent.**
 
-The existing `docs/survey-production-core-v2-github-actions-policy.md` is adopted as a hard redesign constraint: Actions should be retained only where Actions execution itself has a clear benefit or the task is genuinely mechanical and non-editorial.
+### 2.6 Publication revision authority was not atomic
 
-### 2.6 Revision authority is not atomic
+SP001 produced a concrete failure in which revised PDF bytes and old Quality/Candidate authority coexisted. The redesign therefore requires one exact Publication Candidate to bind the current Reader Manuscript, source, PDF and all QA/review authorities. Source/PDF drift invalidates downstream Candidate/Preview/Freeze identity.
 
-After the successful SP001 19-page rebuild, the repository contained:
+### 2.7 Execution records were useful but inconsistent
 
-- new PDF/preflight bytes for the 19-page revision;
-- old Quality Regression Bundle / Publication Candidate authority still bound to the superseded 11-page PDF.
+W33 and SP001 both demonstrated the value of session provenance, but their logs were fragmented or became stale. The redesign standardizes edition-local execution records under `{source_root}/execution/`.
 
-A separate repair PR was required to rebind the Human Gate input.
-
-A Publication revision must invalidate and recreate the complete candidate authority atomically. A state in which the visible PDF and candidate manifest refer to different bytes must be structurally impossible or fail closed immediately.
-
-### 2.7 Existing execution records are useful but inconsistent
-
-W33 produced a long issue-specific worklog plus distributed state/orchestration artifacts. The worklog header became stale relative to later lifecycle progress.
-
-SP001 produced multiple date/session-specific checkpoint files with valuable detail, but the records are fragmented and use ad-hoc naming.
-
-The next flow must standardize where the production narrative is stored, how sessions append to it, and how much detail is required. See `docs/survey-production-core-v2-execution-record-policy.md`.
-
-## 3. Target responsibility model
+## 3. Implemented responsibility model
 
 ### 3.1 ChatGPT owns reasoning and publication authorship
 
-ChatGPT is responsible for:
+ChatGPT owns:
 
 - research strategy and gap closure;
-- Screening / Evidence interpretation;
+- Screening/Evidence interpretation;
 - materiality and Candidate Selection;
 - Architecture;
 - Drafting and Synthesis;
 - reader-facing claim/limitation wording;
-- Weekly community-movement synthesis from Grok/X;
-- final `総括`;
-- prose quality, depth, repetition and coherence;
-- publication-source authoring;
-- layout/composition decisions;
-- semantic review of the reader-facing candidate;
-- rendered-PDF visual review and editorial/layout repair.
+- Weekly Grok/X community synthesis;
+- final `総括` or equivalent synthesis;
+- prose quality, technical depth, repetition and coherence;
+- publication-source authoring and layout/composition decisions;
+- semantic/editorial review;
+- exact rendered-PDF visual review and edition-local repair.
 
-Helper scripts may support these tasks, but may not substitute a generic rule for editorial judgment.
+Helper scripts may support these tasks but do not substitute deterministic proxies for editorial judgment.
 
 ### 3.2 Repository scripts own narrow deterministic operations
 
-Examples:
+Examples include:
 
 - schema/path validation;
-- hashing and provenance;
-- exact source-to-artifact accounting;
+- hashing/provenance and exact authority binding;
 - deterministic bibliography/identifier checks;
 - known-token leakage lint;
-- exact-byte candidate manifest generation;
-- reproducible transformation only after editorial decisions are explicit.
+- exact source/PDF/candidate accounting;
+- reproducible transformation after editorial decisions are explicit;
+- execution-record structure validation.
 
-Scripts must not silently choose what content survives, how much technical detail a chapter receives, or whether a reader-facing explanation is editorially adequate.
+Scripts must not silently decide what material survives, how much technical detail a section receives or whether reader-facing explanation is adequate.
 
 ### 3.3 GitHub Actions owns independent/reproducible execution
 
-Examples:
+The canonical redesign surface contains six workflows only:
 
-- CI/regression tests;
-- schema/contract verification;
-- reproducible TeX/PDF build under a pinned environment;
-- deterministic compiler/preflight checks;
-- independent exact-byte verification;
-- freeze/release integrity and controlled publication of already-approved bytes.
+1. `pipeline-contract-tests.yml`
+2. `survey-production-v2-ci.yml`
+3. `build-weekly-survey.yml`
+4. `build-special-pdf.yml`
+5. `survey-production-v2-export-publication-preview.yml`
+6. `survey-production-v2-release.yml`
 
-Actions should normally report PASS/FAIL and artifacts. They should not be the authoring/mutation loop for prose, synthesis, layout repair, or semantic quality.
+These cover CI/regression, reproducible build verification, exact-byte Preview transport and controlled release. Ordinary research/editorial/publication lifecycle stages are not workflow-dispatched; release is the only lifecycle stage dispatched to Actions.
 
 ## 4. Generality model — Core, Profile and edition authority remain orthogonal
 
-The redesign deliberately reduces encoded production behavior, but it does **not** remove semantic constraints.
-
-The intended model is:
+The implemented model is:
 
 ```text
 shared invariant Core
@@ -176,11 +137,11 @@ shared invariant Core
 + independent CI/build/release verification
 ```
 
-### 4.1 Shared Core owns only cross-profile invariants
+### 4.1 Shared Core
 
-Examples:
+Shared Core owns only cross-profile invariants such as:
 
-- lifecycle and two normal Human Gates;
+- lifecycle and the two normal Human Gates;
 - source/Evidence/provenance integrity;
 - internal-vs-reader-facing Publication Boundary;
 - deterministic / semantic / visual QA separation;
@@ -189,199 +150,122 @@ Examples:
 - Production-vs-Core-maintenance responsibility boundary;
 - Grok/X evidence role and transport discipline.
 
-Shared Core must not contain W33/SP001 topic structure, family names, chapter counts, page counts, or one edition's Architecture vocabulary.
+Shared Core must not encode W33/SP001 topic structure, edition-specific family names, fixed chapter counts or one issue's Architecture vocabulary.
 
-### 4.2 Research Profile owns research semantics
+### 4.2 Research Profiles
 
-Keep the current semantic separation:
+- `WEEKLY` owns rolling-window/current-week semantics, carry-over, Weekly community signal and issue-level synthesis.
+- `RETROSPECTIVE_PERIOD` owns bounded-period reconstruction, coverage audit, chronology/lifecycle identity, normalization and period-scale synthesis.
+- `THEMATIC` owns research-question closure, lineage/branch relationships, historical attribution and open-history/current-state boundaries.
 
-- `WEEKLY` — rolling-window/current-week semantics, carry-over, Weekly community signal and issue-level weekly synthesis;
-- `RETROSPECTIVE_PERIOD` — bounded-period reconstruction, coverage audit, chronology/lifecycle identity, period normalization and period-scale synthesis;
-- `THEMATIC` — research-question closure, lineage/branch relationships, historical attribution and open-history/current-state boundaries.
+### 4.3 Publication Profiles
 
-### 4.3 Publication Profile owns publication-format semantics
+- `WEEKLY_MAGAZINE` owns compact magazine publication semantics.
+- `LONGFORM_SPECIAL` owns longform Special publication identity and profile-appropriate mixed-layout semantics.
 
-Keep:
+Publication Profile does not replace Research Profile. Retrospective and Thematic Specials may both use `LONGFORM_SPECIAL` while retaining different research closure and synthesis requirements.
 
-- `WEEKLY_MAGAZINE` — compact magazine-scale publication and Weekly-specific reader structure;
-- `LONGFORM_SPECIAL` — longform Special publication identity, mixed-layout policy and profile-appropriate structured synthesis where useful.
+### 4.4 Edition and series authority
 
-A Publication Profile does not replace the Research Profile. A Retrospective and a Thematic Special may both use `LONGFORM_SPECIAL` while requiring different research closure and synthesis logic.
+Monthly, half-year and annual guidance may add scale-specific chronology/compression rules without creating cadence-specific Core workflows. Generative AI Foundations remains a living series authority layered over `THEMATIC + LONGFORM_SPECIAL`, not a rigid generic machine series engine.
 
-### 4.4 Edition/series authority remains free to specialize
+## 5. Implemented reader-facing Publication Boundary
 
-Monthly, half-year and annual retrospective guides may add scale-specific compression/chronology rules without new generic workflows.
+The Core explicitly separates internal research/editorial/provenance material from reader-facing publication authority.
 
-Generative AI Foundations remains a living outer-series authority layered on top of `THEMATIC + LONGFORM_SPECIAL`; it must not be replaced by a rigid machine series engine or SP001-style fixed package taxonomy.
+The Reader Manuscript binds:
 
-### 4.5 Generality comes from fewer encoded editorial decisions, not fewer constraints
+- exact Production Profile;
+- exact approved Architecture;
+- exact reader-facing source/supporting files;
+- mapping of Architecture `must_cover_requirements` to reader-facing locations;
+- Profile-required reader obligations, including concluding synthesis and Weekly community movement where applicable.
 
-Moving reasoning from Actions/scripts back to ChatGPT is expected to improve generality only when the relevant Profile/edition authority is read and followed.
+Internal Draft/Profile/Evidence/Selection/Architecture fields are not legal fallback prose. Missing required reader-facing content fails closed to ChatGPT authoring.
 
-Do not interpret this redesign as permission for unconstrained free-form production. Stable constraints remain for Profile identity, temporal semantics, source/evidence boundaries, Human Gates, required reader-facing components, candidate byte identity and execution records.
+## 6. Architecture fidelity means content fidelity
 
-## 5. Redesigned publication boundary
+A must-cover requirement is not fulfilled because the publication mentions that Architecture requested it.
 
-The Core must explicitly separate at least these layers.
-
-### Internal research/editorial/provenance layer
-
-Repository-only material such as:
-
-- Candidate/Screening/Evidence disposition;
-- Architecture rationale;
-- Human Review rationale and rejected alternatives;
-- internal Evidence IDs;
-- materiality/status enums;
-- obligation/TODO language;
-- raw Core contract terms;
-- internal source paths and processing state.
-
-These fields are **not legal reader-facing inputs**.
-
-### Reader-facing manuscript layer
-
-A distinct, explicitly authored artifact/surface must contain publication-ready content such as:
-
-- article/section thesis;
-- actual technical narrative;
-- reader-facing claim boundaries;
-- source-specific limitations;
-- chronology/comparison/synthesis;
-- Weekly community observations where applicable;
-- concluding synthesis;
-- reader-facing bibliography metadata.
-
-The invariant is the semantic boundary, **not one mandatory universal JSON shape**. The reviewed reader-facing surface may be Markdown, TeX, structured content or another representation appropriate to the publication implementation, provided it is explicitly authored as reader-facing and exact provenance remains available.
-
-Publication assembly may consume this layer plus publication metadata. It must not fall back to internal Architecture/Profile/Evidence text when a reader-facing field is missing.
-
-If required reader-facing content is absent, publication assembly fails closed and returns control to ChatGPT authoring.
-
-## 6. Architecture fidelity must mean content fidelity
-
-A must-cover requirement is not fulfilled because the manuscript says that Architecture requires it.
-
-For each Architecture package, the production session must perform a lightweight coverage review:
+The required traceability is:
 
 ```text
 must-cover requirement
--> supporting accepted Evidence / Observation
--> reader-facing section/block that actually explains it
+-> accepted supporting Evidence / Observation
+-> actual reader-facing section/block
 -> ChatGPT fulfillment judgment
 ```
 
-This mapping is traceability, not a machine substitute for editorial review.
+This is traceability, not a machine substitute for editorial review. Supporting/context Evidence may be expressed through narrative, chronology, Technical Notes, comparison, attribution or bibliography; one paragraph per Evidence record is not required.
 
-Examples of unacceptable fulfillment:
+## 7. Implemented quality model
 
-- `承認済みArchitectureはXを観察軸としている`
-- `このpackageではYをcoverする`
+Candidate readiness uses three distinct authorities.
 
-Examples of actual fulfillment:
+### 7.1 Deterministic Quality Bundle
 
-- reader-facing prose explains the observed X/community movement;
-- the Serving feature explains concrete release-level changes in each selected project;
-- a longform family chapter explains version-to-version transitions and their technical significance.
+Machine-verifiable properties only, such as:
 
-Do **not** require one paragraph or one publication block per Evidence record. Supporting/context Evidence may be represented through chronology, Technical Notes, comparison, attribution or bibliography. The obligation is to fulfill the approved Architecture and research question with adequate reader-facing depth.
-
-## 7. Quality model: separate deterministic, semantic, and visual review
-
-The future candidate should require three different classes of evidence.
-
-### Deterministic QA
-
-Machine-verifiable only:
-
-- schema/invariants;
+- schemas/invariants;
 - exact bytes/hashes;
-- citations/references;
-- required identifiers;
-- build/preflight;
-- known forbidden exact tokens/patterns;
-- candidate/source/PDF identity.
+- citation/reference integrity;
+- identifiers;
+- reproducible build/preflight;
+- known forbidden exact patterns;
+- source/PDF/candidate identity.
 
-### ChatGPT semantic/editorial QA
+Agent semantic/visual PASS rows cannot impersonate deterministic results.
 
-Required before Publication Preview:
+### 7.2 ChatGPT semantic/editorial review
 
-- internal-vs-reader boundary review;
-- Architecture must-cover content fulfillment;
-- technical depth appropriate to the Publication Profile and Research Profile;
-- source-class-appropriate Claim Boundary wording;
-- `総括` quality;
-- applicable Grok/X editorial disposition and reader-facing synthesis;
-- repetition / generic fallback / production-language review;
-- reader-facing bibliography review;
-- profile-specific chronology/historical/period/thematic requirements.
+Required before Publication Preview and bound to exact reader source bytes. It covers:
 
-Known-token lint is only defense-in-depth. It cannot replace this review: SP001's 19-page revision passed deterministic leakage checks while Human Review still found Evidence IDs and production-selection vocabulary.
+- Publication Boundary;
+- Architecture must-cover fulfillment;
+- technical depth;
+- source-class-appropriate claim boundaries;
+- concluding synthesis quality;
+- applicable Grok/X editorial disposition;
+- repetition/generic fallback/production-language leakage;
+- reader-facing bibliography surface;
+- Profile-specific chronology/historical/period/thematic semantics.
 
-### ChatGPT visual QA
+Known-token lint remains defense-in-depth only.
 
-Review the exact PDF intended for Human Preview:
+### 7.3 ChatGPT visual review
 
-- all pages rendered/inspected;
-- layout identity appropriate to profile;
-- whitespace/page balance;
-- hierarchy/scanability;
-- tables/boxes/URLs;
-- clipping/overlap/glyphs;
-- visually obvious content-thin pages.
-
-Actions may build the exact PDF; ChatGPT performs the editorial/visual judgment.
+Required against the exact rendered PDF intended for Human Preview. It covers layout identity, hierarchy, whitespace/page balance, tables/boxes/URLs, clipping/overlap/glyph problems and visually obvious content-thin pages.
 
 ## 8. Profile requirements preserved and strengthened
 
-### 8.1 All Weekly and Special editions
+### 8.1 Every Weekly/Special
 
-- final substantive reader-facing `総括` (or explicitly equivalent heading) is required;
-- internal production metadata must not be published;
-- Human-review rationale changes the structure/content requirements, not the prose by being serialized as a rebuttal to a rejected draft;
-- page targets remain soft; depth is judged against must-cover content, not page padding.
+- final substantive `総括` or explicitly equivalent synthesis;
+- no internal production-state leakage;
+- Human-review rationale is applied to content/structure rather than serialized as rebuttal prose;
+- page targets remain planning envelopes rather than padding quotas.
 
-### 8.2 `WEEKLY` / `WEEKLY_MAGAZINE`
+### 8.2 Weekly
 
-- a reader-facing `コミュニティの動き` component is mandatory every issue;
-- completed Grok/X intake must be explicitly editorially dispositioned;
-- material community signals are published or have an internal exclusion reason;
-- a quiet week is represented as an explicit finding rather than omission;
-- existing Weekly carry-over / Watch / Late Breaking / why-this-issue semantics remain Profile-owned and must not be weakened by the redesign.
+- reader-facing `コミュニティの動き` is mandatory;
+- Grok/X intake receives explicit editorial disposition;
+- material signals are published or have an internal exclusion reason;
+- a quiet week is an explicit finding rather than silent omission;
+- carry-over / Watch / Late Breaking / why-this-issue semantics remain Profile-owned.
 
-### 8.3 `RETROSPECTIVE_PERIOD`
+### 8.3 Retrospective Period
 
-Existing bounded-period authority remains in force. The redesign must preserve, where applicable:
+The redesign preserves bounded-period coverage audit, supplemental primary-source gap fill, chronology/lifecycle identity, period normalization and synthesis, including annual temporal-skew/trajectory rules where applicable. Later outcomes must not be back-projected into the historical period.
 
-- base Source Intake as broad discovery baseline rather than completeness proof;
-- period-specific coverage audit and supplemental primary-source gap fill;
-- exact bounded chronology and lifecycle identity;
-- period-wide normalization rather than inheriting lower-granularity Selection roles;
-- chronology resolution surviving narrative compression;
-- cross-period/half-year/annual synthesis;
-- annual within-year temporal-skew audit and evidence-derived phase/trajectory reasoning;
-- no back-projection of later outcomes into the historical period.
+### 8.4 Thematic
 
-The Core redesign must not replace these with W33/SP001-derived article structures.
+The redesign preserves research-question closure, lineage/parallel-branch reasoning where relevant, historical attribution and hindsight boundaries, and topic-specific Architecture derived from Evidence rather than generic family templates.
 
-### 8.4 `THEMATIC`
+### 8.5 Longform Special
 
-Preserve:
+Architecture-selected material must receive profile-appropriate longform treatment. Supporting Evidence need not map one-to-one to prose. Structured chronology/comparison/Technical Notes may be used where useful. Mixed-layout identity remains an editorial/profile concern, not an Actions repair loop.
 
-- research-question closure rather than arbitrary source-count completion;
-- lineage/branch/parallel-competition reasoning where the topic requires it;
-- historical attribution boundaries and hindsight discipline;
-- open-history/current-state temporal semantics;
-- topic-specific Architecture derived from Evidence rather than generic family/chapter templates.
-
-### 8.5 `LONGFORM_SPECIAL`
-
-- Architecture-selected material/must-cover obligations must be developed into profile-appropriate longform reader-facing treatment rather than Architecture-summary prose;
-- supporting Evidence does not need one-to-one prose rendering;
-- structured synthesis/chronology/comparison/Technical Notes should be used when they materially improve understanding;
-- Special mixed-layout identity must be preserved, but layout choices remain editorial decisions assisted by policy/templates rather than Actions-authored repair loops.
-
-### 8.6 Generative AI Foundations overlay
+### 8.6 Generative AI Foundations
 
 Foundations remains:
 
@@ -392,159 +276,145 @@ living series authority
 + per-volume Architecture
 ```
 
-The living series memo may revise volume allocation, prerequisites and later understanding as detailed research proceeds. Do not create a rigid machine series engine merely to make the pipeline look uniform.
+The living series memo may evolve as detailed research proceeds.
 
-## 9. Revision lifecycle must be atomic
+## 9. Atomic revision lifecycle
 
-Any Publication Candidate revision invalidates all downstream authority bound to the superseded source/PDF.
-
-Target operation:
+The implemented publication sequence is:
 
 ```text
-ChatGPT edits reader-facing manuscript / publication source
+ChatGPT authors/edits reader-facing source
 -> exact reproducible PDF build
 -> deterministic QA
--> ChatGPT semantic QA
--> ChatGPT visual QA
--> one candidate-finalization operation creates/rebinds:
-     validated source identity
-     exact PDF identity
-     deterministic QA references
-     semantic review reference
-     visual review reference
-     Publication Candidate
--> only this complete candidate may be presented at PUBLICATION_PREVIEW
+-> ChatGPT semantic/editorial review
+-> ChatGPT exact-PDF visual review
+-> Publication Candidate finalization binds all exact authorities
+-> PUBLICATION_PREVIEW reviews that exact candidate
+-> Human approval authorizes deterministic Freeze
+-> Release reuses the already reviewed exact bytes
 ```
 
-There must be no legal state where a new preview PDF coexists with a still-active candidate manifest for old bytes.
-
-This smaller atomic deterministic boundary is retained even as Actions-based production mutation is reduced.
+Any source/PDF change invalidates downstream candidate/approval/freeze identity. There is no legal active Candidate for superseded PDF bytes.
 
 ## 10. Human Gate and repair discipline
 
 Normal Human Gates remain:
 
 1. `ARCHITECTURE_REVIEW`
-2. `PUBLICATION_PREVIEW`
+2. exact-byte `PUBLICATION_PREVIEW`
 
-Manual Grok Drive **task-file path/reference handoff** remains an operational transport boundary, not a Human approval gate.
+Manual Grok Drive task-file path/reference handoff is transport, not a Human approval Gate.
 
-After a Human Gate rejection:
-
-- edition-local editorial/prose/layout repair may continue autonomously;
-- shared Core defects are recorded and returned to Core maintenance rather than repaired inside the edition run;
-- if a shared defect prevents a semantically valid candidate, terminate/pause the edition at a recorded Core dependency;
-- after Core redesign/repair, restart from the earliest boundary whose semantics may have been affected; do not pretend the old failed path validates the new Core.
-
-For a formal Core acceptance trial, discovery of a shared-Core defect invalidates that trial as acceptance evidence. Repair Core separately and rerun the affected acceptance trial cleanly.
+After Human rejection, edition-local editorial/prose/layout repair may continue autonomously. A shared-Core defect is recorded and returned to Core maintenance. Formal acceptance evidence is invalidated if a shared-Core defect is discovered and repaired inside the same production validation run.
 
 ## 11. GitHub Actions generality guardrail
 
-The Actions policy is part of this redesign contract.
+Do not reintroduce cadence/topic-specific authoring workflows. Where a crisp Profile-specific CI check is justified:
 
-Do not replace the existing production-mutation workflow set with separate W33/SP001/monthly/annual/Foundations authoring workflows.
+- prefer parameterized/shared verification driven by Profile/config;
+- keep editorial decisions in ChatGPT;
+- retain Actions only when GitHub-side execution has concrete independent, reproducibility or security value;
+- avoid bot-commit workflow chains and PR-as-execution-trigger patterns unless a genuine GitHub-side property requires them.
 
-Where a crisp Profile-specific CI check is justified:
+Actions reduction must not weaken reproducible build, exact candidate identity, Freeze/Release integrity, credential isolation or release reconciliation.
 
-- prefer one parameterized/shared verifier driven by Profile/config;
-- keep reasoning/editorial decisions in ChatGPT;
-- state the concrete advantage of Actions execution;
-- avoid bot-commit workflow chains and PR-as-execution-trigger patterns unless a genuine GitHub-side property makes them necessary.
+## 12. Production re-validation strategy after reviewed integration
 
-Actions reduction must **not** weaken reproducible build, exact-byte candidate identity, Freeze/Release identity, credential isolation or release reconciliation.
+Unit/contract regression is necessary but not sufficient. After the redesign candidate passes fixed-head audit, receives Human full-candidate review and is integrated into `main`, perform clean real production validation.
 
-## 12. Core repair / production acceptance strategy
+### 12.1 Real cold-start trials
 
-Do not validate the redesign only with unit/contract fixtures and do not narrow validation to the two failed trial shapes.
+At minimum:
 
-After implementation and Core CI:
+1. one clean future Weekly profile trial with no in-run shared-Core changes;
+2. one clean standalone `THEMATIC + LONGFORM_SPECIAL` trial using SP001 as the required regression case, with no in-run shared-Core changes;
+3. one representative `RETROSPECTIVE_PERIOD` run/replay through the requested Human Gate;
+4. one Foundations-guided volume/scenario through at least Architecture Review.
 
-### 12.1 Real cold-start acceptance runs
+### 12.2 Structural/Profile compatibility
 
-1. run a clean future Weekly profile trial from current `main` with no in-run shared-Core changes;
-2. run a clean standalone `THEMATIC + LONGFORM_SPECIAL` trial using SP001 as the required regression case, again with no in-run shared-Core changes;
-3. run/replay one representative `RETROSPECTIVE_PERIOD` edition through the requested Human Gate with no in-run shared-Core changes;
-4. run one Foundations-guided volume/scenario through at least Architecture Review to verify living-series authority integration without introducing a machine series engine.
+Also verify that:
 
-### 12.2 Structural/Profile compatibility audit
+- monthly, half-year and annual guidance remains expressible through the generic bounded Period Profile;
+- chronology, coverage-audit, temporal-skew and synthesis semantics remain available without cadence-specific production workflows;
+- standalone future Thematic work need not resemble SP001;
+- no generic Core behavior keys off W33/SP001 or Foundations volume names/topics.
 
-In addition to the representative Retrospective trial:
-
-- inspect monthly, half-year and annual guidance against the redesigned Core;
-- verify bounded-period initialization, chronology, coverage-audit, temporal-skew and synthesis semantics remain expressible without cadence-specific production workflows;
-- verify standalone future Thematic work need not resemble SP001 topic/package structure;
-- verify no generic Core behavior keys off W33/SP001 or Foundations volume names/topics.
-
-This is a representative acceptance matrix, not an exhaustive synthetic future-edition matrix.
-
-### 12.3 Acceptance evidence
+### 12.3 Acceptance evidence discipline
 
 For every real trial:
 
 - compare cold-start outputs against relevant historical failure modes;
-- verify production sessions did not create/merge shared Core workflow/script/schema/style repairs;
-- verify Actions stayed within the adopted Actions policy;
-- verify execution records are complete under the new record policy;
-- preserve a failed trial if a shared Core defect appears and rerun only after separate repair.
+- verify production did not create/merge shared Core repairs;
+- verify Actions stayed within policy;
+- verify execution records are complete;
+- preserve any failed trial and rerun only after separate reviewed Core repair.
 
-Only after Weekly viability, Retrospective viability, Thematic/Longform viability and Foundations-guided viability are supported may the redesign claim restored Core generality.
+W33/SP001 historical trials remain failed evidence; redesign implementation does not retroactively convert them into PASS.
 
-## 13. Implementation workstreams
+## 13. Implementation workstreams and disposition
 
-The implementation pass should be organized as a small number of coherent workstreams rather than per-Issue patch workflows.
+The redesign was implemented as coherent workstreams rather than per-Issue patch workflows.
 
-0. **Authority normalization before implementation**
-   - synchronize `survey-production-core-v2-authority.md`, final-audit rule, session bootstrap and prevention guidance with this audited redesign;
-   - remove old wording that allows Production sessions to author generic Core/tool repairs;
-   - replace old Grok instruction/prompt-copy wording with exact Drive task-file path/reference handoff;
-   - restore explicit Weekly/Retrospective/Thematic/Foundations generality acceptance.
+0. **Authority normalization — IMPLEMENTED**
+   - Production/Core responsibility boundary normalized;
+   - Grok task-path handoff normalized;
+   - final-audit and bootstrap authority synchronized;
+   - cross-profile generality retained.
 
-1. **Responsibility / orchestration simplification**
-   - Production vs Core-maintenance boundary;
-   - remove PR-as-execution-trigger patterns where they add no value;
-   - Actions workflow classification and reduction.
+1. **Responsibility / orchestration simplification — IMPLEMENTED**
+   - ordinary lifecycle returned to ChatGPT + deterministic scripts;
+   - Actions reduced to six mechanical/reproducible/security-relevant workflows;
+   - release is the only workflow-dispatched lifecycle stage.
 
-2. **Reader-facing publication boundary**
-   - explicit reader manuscript/publication surface;
+2. **Reader-facing publication boundary — IMPLEMENTED**
+   - explicit Reader Manuscript authority;
    - no internal fallback;
-   - representation-agnostic boundary rather than one universal payload shape;
-   - source-class-aware claim boundaries;
-   - reader-facing bibliography transform.
+   - exact Architecture/Profile/source traceability.
 
-3. **Editorial fidelity / quality review**
-   - must-cover content review;
-   - Weekly community requirement;
-   - concluding synthesis requirement;
-   - Retrospective and Thematic profile-specific semantic review;
-   - longform depth expectations;
-   - semantic/editorial review artifact.
+3. **Editorial fidelity / quality review — IMPLEMENTED**
+   - must-cover fulfillment review;
+   - Weekly community and concluding synthesis requirements;
+   - separate semantic/editorial and exact-PDF visual review authorities.
 
-4. **Publication / candidate atomicity**
-   - reproducible build;
-   - deterministic QA;
-   - exact candidate finalization/revision invalidation.
+4. **Publication / candidate atomicity — IMPLEMENTED**
+   - exact source/PDF/QA/review binding;
+   - candidate revision invalidation;
+   - exact-byte Preview/Freeze/Release chain.
 
-5. **Execution record standardization**
-   - edition-local log folder under `{source_root}/execution/`;
-   - rolling index and session logs;
-   - defect/deviation records;
-   - concise logging limits.
+5. **Execution record standardization — IMPLEMENTED**
+   - canonical `{source_root}/execution/` tree;
+   - helper and regression coverage for index/session/review/defect structure.
 
-6. **Regression and cross-profile cold-start acceptance**
-   - #400 / #433 / #434 fixtures where deterministic;
-   - Weekly and standalone Thematic real reruns;
-   - representative Retrospective run/replay;
-   - Foundations-guided Architecture trial;
-   - structural monthly/half-year/annual and unplanned-Thematic compatibility review.
+6. **Regression / generality acceptance — PARTIALLY COMPLETE**
+   - deterministic regressions for the redesigned boundaries and six-workflow topology are implemented;
+   - cross-profile contracts remain covered by Core tests;
+   - complete fixed-head six-point audit is pending;
+   - real cold-start Weekly, standalone Thematic/Longform, representative Retrospective and Foundations-guided validation remain post-integration requirements.
 
 ## 14. Explicit non-goals
 
-- Do not solve editorial quality by adding large numbers of new Actions checks.
+- Do not solve editorial quality by adding large numbers of Actions checks.
 - Do not encode prose quality as arbitrary word/page quotas.
 - Do not make all semantic judgment into JSON schemas.
 - Do not replace one workflow-heavy design with cadence/topic-specific workflow proliferation.
 - Do not require one publication paragraph per Evidence record.
-- Do not force all reader-facing manuscripts into one universal schema when the semantic boundary can be preserved more generally.
-- Do not preserve legacy workflow complexity solely for compatibility if it is not on the new production hot path.
+- Do not force all reader-facing manuscripts into one universal content schema beyond the provenance/coverage manifest needed for the structural boundary.
+- Do not preserve legacy workflow complexity solely for compatibility if it is not on the production hot path.
 - Do not create a rigid Foundations machine series engine.
-- Do not treat the salvaged SP001 revision as evidence that the current pipeline is production-ready.
+- Do not treat the salvaged SP001 revision as evidence that the redesigned pipeline is production-ready.
+
+## 15. Immediate maintenance sequence
+
+Before Human full-candidate review of PR #446:
+
+```text
+finish all intended candidate-tree changes
+-> complete regression/CI repair
+-> inspect the entire PR diff for accidental scope/compatibility regressions
+-> synchronize the implementation worklog
+-> freeze one exact candidate head SHA
+-> run all six final-audit points from zero on that unchanged SHA
+-> if any audit finding requires a tree change, invalidate the audit and restart from a new SHA
+-> present only the unchanged passing SHA for Human full-candidate review
+```
