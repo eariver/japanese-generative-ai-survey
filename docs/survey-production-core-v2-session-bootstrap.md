@@ -1,6 +1,6 @@
 # Survey Production Core v2 — agent session bootstrap
 
-Status: `REDESIGN + HUMAN-GATE ROUNDTRIP MAINTENANCE CANDIDATE`  
+Status: `REDESIGN + HUMAN-GATE ROUNDTRIP + REVIEW-COMMIT PROVENANCE MAINTENANCE CANDIDATE`  
 Applies to: Weekly, Retrospective Period, standalone Thematic, and guided Special series work  
 Primary operator: **ChatGPT**
 
@@ -23,6 +23,8 @@ After the request, **continue autonomously without routine confirmation prompts*
 3. a genuine `EXCEPTION_GATE_REQUIRED` condition requiring Owner judgment;
 4. the permitted Human-mediated Grok Drive task-file path handoff;
 5. a recorded shared-Core defect that makes correct production impossible under reviewed Core.
+
+Before presenting either normal Human Gate, commit the exact current Production State and every configured Gate input that the Human will review. The Human decision binds that exact repository commit, not an uncommitted working-tree view. Canonical `survey_human_gate_v2` proves the named reviewed commit exists and contains those exact State/Gate-input bytes before recording either `APPROVED` or `REQUEST_CHANGES`. When connector-safe bridge execution is used, the immutable request additionally binds the same reviewed commit as its request-only parent; the later request/event commit is separate execution provenance.
 
 At either normal Human Gate, the Human may explicitly choose `APPROVED` or routine `REQUEST_CHANGES`. `REQUEST_CHANGES` is not an Exception Gate: record the Human decision/review provenance, validate the Human-supplied allowed regeneration boundary, selectively invalidate affected downstream machine authority, apply the requested edition-local repair, and resume automatically toward the same Gate as the next revision.
 
@@ -114,6 +116,8 @@ The bridge is a deterministic execution substrate, not an editorial agent. Its c
 
 Human Gate operations only record an already explicit Human decision and deterministic consequence; Actions/Core never choose the decision, requested changes or regeneration boundary.
 
+For Human Gate operations, direct-local and bridge-backed execution share the same canonical review-commit check: `reviewed_repository_commit_sha` must resolve to a real Git commit and its tree must contain exact current reviewed Production State and Gate-input bytes. Connector-safe execution additionally requires that reviewed commit to equal the immutable request-only commit parent. Do not substitute the request/event commit for the Human-reviewed commit.
+
 After State, read or create `<source_root>/execution/index.md` and a concise session record. If Human review history exists, read `<source_root>/gates/review-index.json` and the latest referenced rN record before continuing.
 
 ## 6. Source Intake and Grok/X Google Drive handoff
@@ -170,11 +174,11 @@ terminal_reason = HUMAN_GATE_REACHED
 next_action = ARCHITECTURE_REVIEW
 ```
 
-Present exact Architecture package, research limitations and material unresolved questions. Never infer approval from silence.
+Before presenting the Gate, commit the exact canonical Production State and all configured Architecture Review inputs, including the current Architecture, review summary and review-attention authority. Record that exact commit SHA as the Human review surface. Present the exact Architecture package, research limitations and material unresolved questions from that committed state. Never infer approval from silence and never record approval against an uncommitted or different commit.
 
-If Human says `APPROVED`, record exact approval plus machine review rN and continue to drafting unless the user explicitly requested to stop after approval.
+If Human says `APPROVED`, use that reviewed commit SHA when recording exact approval plus machine review rN and continue to drafting unless the user explicitly requested to stop after approval.
 
-If Human says `REQUEST_CHANGES`, require explicit requested changes and one allowed Architecture regeneration boundary. Canonical Core records `gates/reviews/architecture-rN.json`, updates `gates/review-index.json`, resets only downstream State/checkpoint/gate authority, and removes superseded canonical Stage Checkpoints. ChatGPT then performs the requested edition-local repair and revalidates to Architecture Review rN+1. A stale rN approval must fail.
+If Human says `REQUEST_CHANGES`, use the same reviewed commit SHA and require explicit requested changes plus one allowed Architecture regeneration boundary. Canonical Core first proves that commit still reconstructs the exact reviewed State/Gate inputs, then records `gates/reviews/architecture-rN.json`, updates `gates/review-index.json`, resets only downstream State/checkpoint/gate authority, and removes superseded canonical Stage Checkpoints. ChatGPT then performs the requested edition-local repair and revalidates to Architecture Review rN+1. A stale rN approval must fail.
 
 ## 9. Reader-facing authorship and QA
 
@@ -194,11 +198,11 @@ Normal edition-local findings cause source revision, rebuild, stale QA invalidat
 
 Finalize one Publication Candidate only after all three QA layers pass on the same source/PDF bytes. The Candidate atomically binds Reader Manuscript, exact source, exact PDF/page count, deterministic bundle, Semantic/Editorial Review and Visual Review.
 
-At `RELEASE_CANDIDATE`, stop for Human review of that exact Candidate/PDF identity.
+At `RELEASE_CANDIDATE`, first commit the exact canonical Production State, Publication Candidate and Candidate-bound PDF that will be presented. Record that exact repository commit SHA as the Human review surface, then stop for Human review of that exact committed Candidate/PDF identity. A rebuilt, changed or merely similar PDF is not the reviewed artifact.
 
-If Human says `APPROVED`, record exact Publication Preview approval plus machine review rN and continue to Freeze.
+If Human says `APPROVED`, use that reviewed commit SHA to record exact Publication Preview approval plus machine review rN and continue to Freeze.
 
-If Human says `REQUEST_CHANGES`, require explicit requested changes and one allowed Publication Preview regeneration boundary. Canonical Core records `gates/reviews/publication-rN.json`, preserves approved Architecture when valid, resets affected downstream Validation/Candidate/gate authority and removes superseded Stage Checkpoints. ChatGPT repairs/rebuilds/reviews exact bytes and returns with Publication Preview rN+1. Rebuilt or changed bytes cannot reuse old approval.
+If Human says `REQUEST_CHANGES`, use the same reviewed commit SHA and require explicit requested changes plus one allowed Publication Preview regeneration boundary. Canonical Core first proves the reviewed commit contains the exact current reviewed State, Candidate and Candidate-bound PDF, then records `gates/reviews/publication-rN.json`, preserves approved Architecture when valid, resets affected downstream Validation/Candidate/gate authority and removes superseded Stage Checkpoints. ChatGPT repairs/rebuilds/reviews exact bytes and returns with Publication Preview rN+1. Rebuilt or changed bytes cannot reuse old approval.
 
 ## 11. Freeze and Release
 
@@ -231,7 +235,7 @@ A shared-Core defect that makes production impossible is `BLOCKED_CORE_DEFECT`; 
 
 ## 14. Session handoff
 
-If the conversation ends before the requested Gate, update edition execution records with issue/target, work branch, Production State path/SHA, lifecycle, next action/stop reason, latest Stage Checkpoint, latest Human-review rN/index when applicable, X task/result disposition, shared-Core defect pointer and exact candidate/PDF SHA where applicable.
+If the conversation ends before the requested Gate, update edition execution records with issue/target, work branch, Production State path/SHA, lifecycle, next action/stop reason, latest Stage Checkpoint, latest Human-review rN/index when applicable, exact `reviewed_repository_commit_sha` for any presented/recorded Human Gate, X task/result disposition, shared-Core defect pointer and exact candidate/PDF SHA where applicable. When bridge transport was used, keep the Human-reviewed commit distinct from the later request/event commit.
 
 A later session validates repository state and continues rather than replaying completed work or asking the user to reconstruct it.
 
@@ -248,6 +252,6 @@ complete every intended code/config/schema/workflow/test/doc/Finding/Repair-Set 
 -> make no candidate-tree changes during the audit
 ```
 
-The seventh priority is `Human Gate round-trip viability` and explicitly covers approve/revise continuation for both normal gates, including connector-safe bridge execution where required.
+The seventh priority is `Human Gate round-trip viability` and explicitly covers approve/revise continuation for both normal gates, direct-local reviewed-commit tree-byte proof, and connector-safe request-parent binding where required.
 
 If any finding requires repository mutation, invalidate the entire audit, repair Core, freeze a new head and rerun all seven points from point 1. Final PASS is PR/Human-review metadata bound to the exact audited SHA.
