@@ -141,6 +141,27 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.assertEqual(workflow_stages, ["FROZEN"])
         self.assertEqual(stage_plan["FROZEN"]["handler"], "stage:release")
 
+    def test_retired_core_v2_mutation_workflows_are_absent(self) -> None:
+        retired = {
+            "survey-production-v2-control.yml",
+            "assistant-control-v2.yml",
+            "survey-production-v2-work-branch-control.yml",
+            "survey-production-v2-work-branch-human-gate.yml",
+            "survey-production-v2-interactive-screening.yml",
+            "survey-production-v2-interactive-evidence.yml",
+            "survey-production-v2-interactive-selection-architecture.yml",
+            "survey-production-v2-interactive-drafting-synthesis.yml",
+            "survey-production-v2-interactive-semantic-publication.yml",
+            "survey-production-v2-interactive-weekly-semantic-publication.yml",
+            "survey-production-v2-interactive-semantic-quality.yml",
+        }
+        workflow_root = self.root / ".github/workflows"
+        present = {path.name for path in workflow_root.glob("*.yml")}
+        self.assertTrue(retired.isdisjoint(present), sorted(retired & present))
+        contract_text = (self.root / "config/survey-production-v2.json").read_text(encoding="utf-8")
+        for filename in retired:
+            self.assertNotIn(filename, contract_text)
+
     def test_core_v2_cross_regression_wiring_preserves_current_weekly_production_controls(self) -> None:
         weekly = (self.root / ".github/workflows/weekly-pipeline.yml").read_text(encoding="utf-8")
         self.assertIn("scripts/survey_*_v2.py", weekly)
