@@ -42,11 +42,11 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["kind", "target_gate", "spec_path", "execution_record"],
+          "required": ["kind", "target_gate", "special_slug", "execution_record"],
           "properties": {
             "kind": {"const": "INITIALIZE_RETROSPECTIVE"},
             "target_gate": {"enum": ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"]},
-            "spec_path": {"$ref": "#/$defs/repo_path"},
+            "special_slug": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
             "execution_record": {"$ref": "#/$defs/execution_record"}
           }
         },
