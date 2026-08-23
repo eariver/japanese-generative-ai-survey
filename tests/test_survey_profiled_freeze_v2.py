@@ -6,7 +6,6 @@ import unittest
 from pathlib import Path
 
 from scripts import survey_profiled_freeze_v2 as profiled
-from scripts import survey_publication_v2 as publication
 from scripts import survey_quality_v2 as quality
 
 
@@ -42,18 +41,16 @@ class SurveyProfiledFreezeV2Tests(unittest.TestCase):
         self.assertIn("Technical_Survey_Special_{public_slug}.pdf", text)
         self.assertNotIn("if tag not in {f'weekly/{issue}',f'special/{issue}'}", text)
 
-    def test_publication_candidate_cannot_override_bound_quality_publication_profile(self) -> None:
+    def test_quality_authority_remains_bound_to_profile_publication_identity(self) -> None:
+        """The redesigned Quality Bundle owns deterministic QA only, but still cannot drift Profile identity."""
         source_root = Path(".").resolve()
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
-            for rel in (
-                quality.QUALITY_SCHEMA,
-                quality.core.DEFAULT_CONFIG,
-                publication.CANDIDATE_SCHEMA,
-            ):
+            for rel in (quality.QUALITY_SCHEMA, quality.core.DEFAULT_CONFIG):
                 dst = root / rel
                 dst.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(source_root / rel, dst)
+
             profile_path = root / "sources/SP001/production-profile.json"
             dummy_sha = "a" * 64
             quality.core.write_json(
@@ -72,7 +69,7 @@ class SurveyProfiledFreezeV2Tests(unittest.TestCase):
                             {
                                 "obligation_id": "fixture:1",
                                 "dimension": "fixture",
-                                "description": "Bind Quality and Candidate publication Profile.",
+                                "description": "Bind deterministic QA to the Production Profile.",
                             }
                         ],
                         "temporal_policy": {
@@ -97,33 +94,35 @@ class SurveyProfiledFreezeV2Tests(unittest.TestCase):
                     },
                 },
             )
-            source = root / "survey/main.tex"
-            pdf = root / "survey/main.pdf"
+
+            source = root / "surveys/special/SP001/main.tex"
+            pdf = root / "surveys/special/SP001/main.pdf"
             source.parent.mkdir(parents=True)
-            source.write_text("source\n", encoding="utf-8")
+            source.write_text("reader-facing source\n", encoding="utf-8")
             pdf.write_bytes(b"%PDF-1.7\nfixture\n")
+
             cfg = quality.core.load_json(root / quality.core.DEFAULT_CONFIG)
             checks = []
-            for check_id, kind in sorted(quality.expected_checks(cfg, "THEMATIC", "LONGFORM_SPECIAL").items()):
-                result = None
-                if kind == "DETERMINISTIC":
-                    result_path = root / "quality/results" / f"{check_id}.json"
-                    quality.core.write_json(result_path, {"status": "PASS"})
-                    result = {
-                        "path": str(result_path.relative_to(root)),
-                        "sha256": quality.core.sha256_file(result_path),
-                    }
+            for check_id in sorted(
+                quality.expected_checks_by_kind(cfg, "THEMATIC", "LONGFORM_SPECIAL", {"DETERMINISTIC"})
+            ):
+                result_path = root / "quality/results" / f"{check_id}.json"
+                quality.core.write_json(result_path, {"check_id": check_id, "status": "PASS"})
                 checks.append(
                     {
                         "check_id": check_id,
-                        "kind": kind,
+                        "kind": "DETERMINISTIC",
                         "status": "PASS",
-                        "executor": "fixture",
-                        "evidence": "fixture",
+                        "executor": "fixture-tool",
+                        "evidence": "fixture deterministic evidence",
                         "recorded_at": "2026-08-22T09:00:00Z",
-                        "result": result,
+                        "result": {
+                            "path": str(result_path.relative_to(root)),
+                            "sha256": quality.core.sha256_file(result_path),
+                        },
                     }
                 )
+
             bundle = root / "quality/bundle.json"
             quality.build_bundle(
                 root,
@@ -134,17 +133,15 @@ class SurveyProfiledFreezeV2Tests(unittest.TestCase):
                 bundle,
                 production_profile_path=profile_path,
             )
-            with self.assertRaisesRegex(ValueError, "differs from bound Quality Production Profile"):
-                publication.build_candidate(
-                    root,
-                    "SP001",
-                    "WEEKLY_MAGAZINE",
-                    source,
-                    pdf,
-                    1,
-                    bundle,
-                    root / "candidate.json",
-                )
+            payload = quality.validate_bundle(root, bundle, issue_id="SP001")
+            self.assertEqual(payload["publication_profile"], "LONGFORM_SPECIAL")
+            self.assertTrue(all(row["kind"] == "DETERMINISTIC" for row in payload["checks"]))
+
+            mutated_profile = quality.core.load_json(profile_path)
+            mutated_profile["publication_profile"] = "WEEKLY_MAGAZINE"
+            quality.core.write_json(profile_path, mutated_profile)
+            with self.assertRaisesRegex(ValueError, "Profile authority drift"):
+                quality.validate_bundle(root, bundle, issue_id="SP001")
 
 
 if __name__ == "__main__":
