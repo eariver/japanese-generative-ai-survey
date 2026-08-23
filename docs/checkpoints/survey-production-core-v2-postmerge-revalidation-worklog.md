@@ -190,6 +190,14 @@ Current authority now states that configured Retrospective cold start reuses the
 
 These document changes are intentionally **pre-freeze**. Any audit result from an earlier SHA remains invalidated; no prior PASS is reused.
 
+### RVF-013 — Retrospective request fixture is bound to the existing Period builder
+
+Status: `IMPLEMENTED / FINAL EXACT-HEAD CI PENDING`
+
+Commit `3a680764ab7c1b29f6e785a39cef64796c839fd6` adds a regression that resolves configured `2024-H1` through `survey_period_v2.resolve_configured_period()` and `period_profile()`, then requires the resulting `RETROSPECTIVE_PERIOD + LONGFORM_SPECIAL` Profile's `issue_id`, `source_root`, and `work_branch` to equal the operator request fixture exactly.
+
+This complements the pre-existing monthly/half-year/annual Period tests and the Thematic init→Discovery bridge E2E test. It specifically protects the bridge/configured-period identity join without introducing a duplicate Retrospective execution path.
+
 ## Current maintenance design
 
 Candidate scope contains bridge/authority changes, not a duplicate Retrospective implementation:
