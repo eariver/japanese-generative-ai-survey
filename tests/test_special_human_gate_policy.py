@@ -22,6 +22,13 @@ class SpecialHumanGatePolicyTests(unittest.TestCase):
             ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"],
         )
         self.assertTrue(operator["autonomous_until_gate"])
+        self.assertEqual(
+            self.config["orchestration"]["gate_at_state"],
+            {
+                "ARCHITECTURE_ESTABLISHED": "ARCHITECTURE_REVIEW",
+                "RELEASE_CANDIDATE": "PUBLICATION_PREVIEW",
+            },
+        )
 
     def test_retired_special_human_gate_workflows_are_absent(self) -> None:
         retired = {
@@ -36,24 +43,33 @@ class SpecialHumanGatePolicyTests(unittest.TestCase):
         present = {path.name for path in WORKFLOW_ROOT.glob("*.yml")}
         self.assertTrue(retired.isdisjoint(present))
 
-    def test_publication_preview_export_is_read_only_candidate_transport(self) -> None:
+    def test_publication_preview_export_is_read_only_exact_candidate_transport(self) -> None:
         text = (WORKFLOW_ROOT / "survey-production-v2-export-publication-preview.yml").read_text(
             encoding="utf-8"
         )
         self.assertIn("contents: read", text)
         self.assertIn("publication-candidate-v2.json", text)
+        self.assertIn("publication.validate_candidate", text)
         self.assertIn("READY_FOR_PUBLICATION_PREVIEW", text)
-        self.assertIn("validate_survey_preflight_guard_v2.py", text)
-        self.assertNotIn("release_frozen_publication_v2.py", text)
+        self.assertIn("REPOSITORY_FILE", text)
+        self.assertIn("Publication Candidate PDF authority drift", text)
+        self.assertIn("EXACT_PUBLICATION_CANDIDATE_BYTES", text)
+        self.assertIn("actions/upload-artifact@v7", text)
         self.assertNotIn("git push", text)
-        self.assertNotIn("--stage released", text)
+        self.assertNotIn("gh release create", text)
 
-    def test_release_requires_explicit_confirmation_and_frozen_only_policy(self) -> None:
+    def test_release_requires_exact_frozen_authority_and_explicit_confirmation(self) -> None:
         text = (WORKFLOW_ROOT / "survey-production-v2-release.yml").read_text(encoding="utf-8")
-        self.assertIn("confirmed", text)
-        self.assertIn("validate_survey_preflight_guard_v2.py", text)
-        self.assertIn("release_frozen_publication_v2.py", text)
-        self.assertIn("--release-policy frozen_only", text)
+        self.assertIn("confirmation:", text)
+        self.assertIn('test "$CONFIRMATION" = "release:${ISSUE_ID}"', text)
+        self.assertIn("production_state_sha256", text)
+        self.assertIn("release_manifest_sha256", text)
+        self.assertIn("lifecycle_state') != 'FROZEN", text)
+        self.assertIn("validate_agent_state", text)
+        self.assertIn("VERIFY_EXACT_BYTES_THEN_RESUME", text)
+        self.assertIn("gh release download", text)
+        self.assertIn("survey_release_checkpoint_v2.py", text)
+        self.assertIn("Commit post-release provenance through a normal PR", text)
 
 
 if __name__ == "__main__":
