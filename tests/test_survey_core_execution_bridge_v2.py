@@ -188,6 +188,18 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
         self.assertNotIn("approve_architecture(", text)
         self.assertNotIn("approve_publication_preview(", text)
 
+    def test_current_bridge_authority_names_all_initialization_profiles(self) -> None:
+        inventory = (self.root / "docs/survey-production-core-v2-workflow-responsibility-inventory.md").read_text(encoding="utf-8")
+        policy = (self.root / "docs/survey-production-core-v2-github-actions-policy.md").read_text(encoding="utf-8")
+        for text in (inventory, policy):
+            self.assertIn("INITIALIZE_WEEKLY" if text is inventory else "Weekly", text)
+            self.assertIn("Retrospective", text)
+            self.assertIn("Thematic", text)
+        self.assertIn("INITIALIZE_RETROSPECTIVE", inventory)
+        self.assertIn("INITIALIZE_THEMATIC", inventory)
+        self.assertIn("one generic `RETROSPECTIVE_PERIOD` adapter", inventory)
+        self.assertIn("configured `RETROSPECTIVE_PERIOD`", policy)
+
 
 if __name__ == "__main__":
     unittest.main()
