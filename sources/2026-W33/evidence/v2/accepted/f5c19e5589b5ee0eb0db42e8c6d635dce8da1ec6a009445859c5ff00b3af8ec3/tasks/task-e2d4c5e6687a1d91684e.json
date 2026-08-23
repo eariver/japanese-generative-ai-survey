@@ -1,0 +1,47 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "evidence_task_id": "evidence:2026-W33:6e624289e3689101",
+  "discovery_ids": [
+    "base-github-release-ggml-org-llama_cpp-b10369"
+  ],
+  "source_records": [
+    {
+      "source_type": "github-release",
+      "collector_id": "github-releases",
+      "collector_run_id": "github-releases-2026-W33-20260822T154710Z",
+      "observed_at": "2026-08-22T15:47:10Z",
+      "title": "b10369",
+      "locator": "https://github.com/ggml-org/llama.cpp/releases/tag/b10369",
+      "raw_paths": [
+        "sources/2026-W33/collectors/github-releases/runs/20260822T154710Z/raw/ggml-org__llama.cpp.json"
+      ],
+      "published_at": "2026-08-12T04:52:57Z",
+      "summary_text": "<details open> mtmd: support pocket-tts (#26871) * adapt the api * text model ok * working impl, need verify and clean up * mtmd: build the pocket-tts transposed convolutions as GEMM + col2im ggml_conv_transpose_1d has no grouped mode, so the depthwise upsample was built as one convolution and one concat per channel, which floods the graph with small nodes and makes kernel launches dominate the decoder. Fold both cases into the column form the seanet decoder already needs: the general case reshapes the kernel to [IC, K * OC] and matmuls it with the input, the depthwise case batches a matmul over the channels so a step scales its own kernel. A single col2im_1d then scatter-adds the columns back to the signal, with the same shape as before, so the overlap-add tail, the streaming state and the bias are untouched. Generation time per frame drops by 80% on CUDA and by 50% on CPU. The output matches the previous implementation sample for sample, with a correlation of 0.999994 and identical frame counts. * flow_temp + frames_after_eos * chunking * mtmd: carry the remaining pocket-tts per-pack settings The language packs also tune the end-of-speech padding and the padding of short prompts, next to the temperature already carried in the mmproj: french_24l asks for 8 tail frames instead of the guessed 3, english_2026-01 asks for short prompts to be padded with spaces. Write both in the mmproj as clip.gen.audio.frames_after_eos and clip.gen.audio.pad_short_text, keyed on the pack in the conversion script like the temperature. The loader keeps them optional, so a mmproj without them behaves as before. Map semicolons to commas for every pack instead, the reference only asks for it on three of them and it costs nothing elsewhere. Existing mmproj files must be converted again to carry the two keys. On a long french text the port now lands within 2% of the reference: 22.96s against 23.44s, with the same peak level and the same amount of silence. * clip.gen.audio.model_variant * clean up code comments * nit: drop the dead flow_temp hparam, the pack table holds the default * update docs * address security problems * less invasive base.py * lint * add mtmd_gen_inp_default * add docs * rm gen_flow_temp --------- Co-authored-by: Pascal <admin@serveurperso.com> </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiAI enabled) [DISABLED](https://github.com/ggml-org/llama.cpp/pull/23780) - [macOS Intel (x64)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-macos-x64.tar.gz) - [iOS XCFramework](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-xcframework.zip) **Linux:** - [Ubuntu x64 (CPU)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-ubuntu-x64.tar.gz) - [Ubuntu arm64 (CPU)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-ubuntu-arm64.tar.gz) - [Ubuntu s390x (CPU)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-ubuntu-s390x.tar.gz) - [Ubuntu x64 (Vulkan)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-ubuntu-vulkan-x64.tar.gz) - [Ubuntu arm64 (Vulkan)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-ubuntu-vulkan-arm64.tar.gz) - [Ubuntu x64 (ROCm 7.14)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-ubuntu-rocm-7.14-x64.tar.gz) - [Ubuntu x64 (OpenVINO)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-ubuntu-openvino-2026.2.1-x64.tar.gz) - [Ubuntu x64 (SYCL FP32)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-ubuntu-sycl-fp32-x64.tar.gz) - [Ubuntu x64 (SYCL FP16)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-ubuntu-sycl-fp16-x64.tar.gz) **Android:** - [Android arm64 (CPU)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-android-arm64.tar.gz) **Windows:** - [Windows x64 (CPU)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-win-cpu-x64.zip) - [Windows arm64 (CPU)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-win-cpu-arm64.zip) - [Windows arm64 (OpenCL Adreno)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-win-opencl-adreno-arm64.zip) - [Windows x64 (CUDA 12)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-win-cuda-12.4-x64.zip) - [CUDA 12.4 DLLs](https://github.com/ggml-org/llama.cpp/releases/download/b10369/cudart-llama-bin-win-cuda-12.4-x64.zip) - [Windows x64 (CUDA 13)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-win-cuda-13.3-x64.zip) - [CUDA 13.3 DLLs](https://github.com/ggml-org/llama.cpp/releases/download/b10369/cudart-llama-bin-win-cuda-13.3-x64.zip) - [Windows arm64 (CUDA 13) (preview)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-win-cuda-13.4-arm64.zip) - [CUDA 13.4 DLLs](https://github.com/ggml-org/llama.cpp/releases/download/b10369/cudart-llama-bin-win-cuda-13.4-arm64.zip) - [Windows x64 (Vulkan)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-win-vulkan-x64.zip) - [Windows x64 (OpenVINO)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-win-openvino-2026.2.1-x64.zip) - [Windows x64 (SYCL)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-win-sycl-x64.zip) - [Windows x64 (ROCm 7.14)](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-bin-win-rocm-7.14-x64.zip) **openEuler:** - [DISABLED](https://github.com/ggml-org/llama.cpp/pull/23705) - openEuler x86 (310p) - openEuler x86 (910b, ACL Graph) - openEuler aarch64 (310p) - openEuler aarch64 (910b, ACL Graph) **UI:** - [UI](https://github.com/ggml-org/llama.cpp/releases/download/b10369/llama-b10369-ui.tar.gz)",
+      "metadata": {
+        "repository": "ggml-org/llama.cpp",
+        "release_id": 369000402,
+        "tag_name": "b10369",
+        "prerelease": false,
+        "created_at": "2026-08-11T12:18:30Z",
+        "body_truncated": false,
+        "body_original_chars": 6167
+      }
+    }
+  ],
+  "verification_targets": [
+    "Verify technical novelty and whether it adds orthogonal W33 value beyond stronger selected themes."
+  ],
+  "screening_basis": {
+    "screening_acceptance_sha256": "8d7cac2f809114608225bea517aba91c66105395f57f8333766da550eb16c3e0",
+    "decisions": [
+      {
+        "discovery_id": "base-github-release-ggml-org-llama_cpp-b10369",
+        "decision": "MAYBE",
+        "scope_tags": [
+          "watchlist-or-paper"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,968 @@
+# 2026-W33 fresh Discovery review
+
+- fresh records: 2665
+- non-paper: 96
+- papers: 2569
+- legacy W33 intake used: **no**
+
+## Non-paper candidates
+- **v0.5.17** | github-release | 2026-08-08T00:19:16Z | github-release:sgl-project/sglang@v0.5.17
+  - https://github.com/sgl-project/sglang/releases/tag/v0.5.17
+  - # Highlights *582 PRs from 194 contributors.* **Kimi K3 day-0 support**: A 2.8T-parameter multimodal LatentMoE (896 experts, top-16, routed in a 3584-dim latent space) with a 1M-token context, 69 KDA linear-attention layers interleaved with 24 MLA layers, and a MoonViT3d vision tower, shipping as a native MXFP4 checkpoint. SGLang serves it from day
+- **Release v0.6.17rc5** | github-release | 2026-08-08T00:45:43Z | github-release:flashinfer-ai/flashinfer@v0.6.17rc5
+  - https://github.com/flashinfer-ai/flashinfer/releases/tag/v0.6.17rc5
+  - ## What's Changed * fix(test): repair MoEFinalizeConfig call site in b12x unified MoE tests (#4395) by @aleozlx in https://github.com/flashinfer-ai/flashinfer/pull/4408 * revert(moe): revert #3738 SM90 CUTLASS MoE backend (+ dependents #4025, #4080) on release-v0.6.17 by @aleozlx in https://github.com/flashinfer-ai/flashinfer/pull/4411 **Full Chang
+- **Release v0.6.16.post3** | github-release | 2026-08-08T00:53:40Z | github-release:flashinfer-ai/flashinfer@v0.6.16.post3
+  - https://github.com/flashinfer-ai/flashinfer/releases/tag/v0.6.16.post3
+  - ## What's Changed * revert(moe): revert #3738 SM90 CUTLASS MoE backend (+ dependents #4025, #4080) on release-v0.6.16 by @bkryu in https://github.com/flashinfer-ai/flashinfer/pull/4412 **Full Changelog**: https://github.com/flashinfer-ai/flashinfer/compare/v0.6.16.post2...v0.6.16.post3
+- **v0.31.0** | github-release | 2026-08-08T03:10:59Z | github-release:Comfy-Org/ComfyUI@v0.31.0
+  - https://github.com/Comfy-Org/ComfyUI/releases/tag/v0.31.0
+  - ## What's Changed * Bump comfyui-frontend-package to 1.47.12 by @comfy-pr-bot in https://github.com/Comfy-Org/ComfyUI/pull/15244 * Don't pin too much memory on Linux systems with no swap partition. by @comfyanonymous in https://github.com/Comfy-Org/ComfyUI/pull/15266 * fix(minimax): cast raw parameters to input device in H3 VAEs by @rivadart in htt
+- **Nightly Release v0.6.18-20260808** | github-release | 2026-08-08T03:45:25Z | github-release:flashinfer-ai/flashinfer@nightly-v0.6.18-20260808
+  - https://github.com/flashinfer-ai/flashinfer/releases/tag/nightly-v0.6.18-20260808
+  - Automated nightly build for version 0.6.18 (dev20260808)
+- **b10333** | github-release | 2026-08-09T11:21:50Z | github-release:ggml-org/llama.cpp@b10333
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10333
+  - <details open> ggml-cpu : fix missing Q5_0 dispatch in SpaceMiT backend (#26792) </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10333/llama-b10333-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiAI enabled) [DISABLED](https://github.co
+- **Nightly Release v0.6.18-20260810** | github-release | 2026-08-10T04:02:53Z | github-release:flashinfer-ai/flashinfer@nightly-v0.6.18-20260810
+  - https://github.com/flashinfer-ai/flashinfer/releases/tag/nightly-v0.6.18-20260810
+  - Automated nightly build for version 0.6.18 (dev20260810)
+- **b10336** | github-release | 2026-08-10T08:18:17Z | github-release:ggml-org/llama.cpp@b10336
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10336
+  - <details open> ggml-webgpu : refactor several wgsl files and simplify flash_attn wgsl. (#26134) </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10336/llama-b10336-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiAI enabled) [DISABLED](ht
+- **Release: v5.15.0** | github-release | 2026-08-10T10:28:13Z | github-release:huggingface/transformers@v5.15.0
+  - https://github.com/huggingface/transformers/releases/tag/v5.15.0
+  - # Release v5.15.0 ## New Model additions ### Meta Muse Glimmer Muse Glimmer, released today, is Meta’s new multimodal model, especially designed for agentic use cases. Distilled from Muse to 30B parameters, and released under the Apache 2.0 license, it can be deployed to local setups for privacy-aware applications such as coding, document analysis,
+- **b10338** | github-release | 2026-08-10T10:51:18Z | github-release:ggml-org/llama.cpp@b10338
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10338
+  - <details open> model-saver : fix expert shared/chunk FFN length key clobber (#26693) The saver called add_kv with LLM_KV_EXPERT_SHARED_FEED_FORWARD_LENGTH twice, the second time passing n_ff_chexp. gguf_set_val_u32 removes-then-appends, so the second call clobbers the first: the saved shared_feed_forward_length ends up as n_ff_chexp (0 for every ar
+- **b10342** | github-release | 2026-08-10T12:47:43Z | github-release:ggml-org/llama.cpp@b10342
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10342
+  - <details open> model : Granite-Switch Architecture (#25107) * granite-switch: add llama.cpp backend (POC, CPU) New "granite-switch" architecture: a dense, all-attention Granite-4.1 model with N embedded LoRA adapters selected per-token by control tokens. - gguf-py schema (arch, KV keys, stacked LoRA tensor names) + writer helpers - conversion/grani
+- **b10343** | github-release | 2026-08-10T15:18:04Z | github-release:ggml-org/llama.cpp@b10343
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10343
+  - <details open> vendor : update cpp-httplib to 0.53.0 (#26821) </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10343/llama-b10343-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiAI enabled) [DISABLED](https://github.com/ggml-org/llama.cp
+- **b10344** | github-release | 2026-08-10T16:24:12Z | github-release:ggml-org/llama.cpp@b10344
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10344
+  - <details open> model: add MTP support for Nemotron model (#26725) * model: add MTP support for Nemotron Nano model * model: add mtp_flags for nemotron model * address review comments </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10344/llama-b1034
+- **v0.27.0** | github-release | 2026-08-10T21:18:11Z | github-release:vllm-project/vllm@v0.27.0
+  - https://github.com/vllm-project/vllm/releases/tag/v0.27.0
+  - # vLLM v0.27.0 Release Notes ## Highlights This release features 561 commits from 242 contributors (64 new)! * **Kimi K3 support** with a full stack landing in one release: core model files and kernels (#50089, #50000), Python (#50093) and Rust (#50104) frontends, AttnRes kernels (#50090), DeepGEMM support (#50458), compressed-tensors quantized che
+- **b10353** | github-release | 2026-08-10T22:00:50Z | github-release:ggml-org/llama.cpp@b10353
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10353
+  - <details open> ggml : require contiguous src for ROLL on CUDA and Metal (#25928) ggml_roll only asserts nb[0] == ggml_type_size, so a permuted src is a valid input, but the CUDA and Metal roll kernels index by ne alone and never read the nb strides. A non-contiguous src therefore produced silently wrong results. Neither backend declared a contiguit
+- **Release v0.6.16.post4** | github-release | 2026-08-10T22:15:43Z | github-release:flashinfer-ai/flashinfer@v0.6.16.post4
+  - https://github.com/flashinfer-ai/flashinfer/releases/tag/v0.6.16.post4
+  - ### v0.6.16.post4 Restores `import flashinfer.comm` on Python 3.10 and 3.11. A type annotation in `flashinfer/comm/fd_exchange.py` evaluated only on Python 3.12+, and `flashinfer.comm` imports that module at import time, so the package failed to import on interpreters inside the supported range. Downstream packages that touch `flashinfer.comm` duri
+- **b10354** | github-release | 2026-08-10T22:38:07Z | github-release:ggml-org/llama.cpp@b10354
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10354
+  - <details open> ggml-cpu : fix CPU affinity mask being ignored on Android (#26838) </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10354/llama-b10354-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiAI enabled) [DISABLED](https://github.c
+- **b10355** | github-release | 2026-08-10T23:15:19Z | github-release:ggml-org/llama.cpp@b10355
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10355
+  - <details open> llama : support multi-output backend sampling (#25532) * Enable backend sampling with token speculation * Clamp the mask sum before converting it into the sampled index * Add a numeric context parameter declaring the maximum outputs one sequence * More fixes * Don't reuse memory for output views. * Match dist between CPU and GPU * Fi
+- **b10356** | github-release | 2026-08-11T02:46:08Z | github-release:ggml-org/llama.cpp@b10356
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10356
+  - <details open> ci : target ROCm 7.14 for build and release (#25775) * Switch ROCm from 7.2.1 to 7.14 ROCm 7.14 is the first production release using TheRock build system. It can be installed using multi-arch deliverables from wheels, debs, rpms, tarballs or runfiles. Adjust ROCm targets for Linux and Windows to use this instead. * ci: switch all ot
+- **Nightly Release v0.6.18-20260811** | github-release | 2026-08-11T03:53:39Z | github-release:flashinfer-ai/flashinfer@nightly-v0.6.18-20260811
+  - https://github.com/flashinfer-ai/flashinfer/releases/tag/nightly-v0.6.18-20260811
+  - Automated nightly build for version 0.6.18 (dev20260811)
+- **Release v0.6.17** | github-release | 2026-08-11T05:09:14Z | github-release:flashinfer-ai/flashinfer@v0.6.17
+  - https://github.com/flashinfer-ai/flashinfer/releases/tag/v0.6.17
+  - _These highlights are also published at [flashinfer.ai/releases](https://flashinfer.ai/releases/#v0-6-17)._ ### v0.6.17 Highlights This release brings MoE expert parallelism into serving engines, refreshes the Blackwell SM12x fused-MoE kernels with an FP4 accuracy fix, extends the unified MoE API to MXFP4 W4A8/W4A16 and shared experts, and adds dec
+- **b10357** | github-release | 2026-08-11T05:17:49Z | github-release:ggml-org/llama.cpp@b10357
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10357
+  - <details open> opencl: transpose the K tile in local memory for FA prefill kernels (#26428) </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10357/llama-b10357-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiAI enabled) [DISABLED](https:
+- **b10358** | github-release | 2026-08-11T09:04:42Z | github-release:ggml-org/llama.cpp@b10358
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10358
+  - <details open> Address review comment of PR 25532 (#26852) </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10358/llama-b10358-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiAI enabled) [DISABLED](https://github.com/ggml-org/llama.cpp/p
+- **v0.27.1** | github-release | 2026-08-11T10:47:49Z | github-release:vllm-project/vllm@v0.27.1
+  - https://github.com/vllm-project/vllm/releases/tag/v0.27.1
+  - This is a patch release on top of v0.27.0. - Support quantized DSpark Markov heads (#50424)
+- **b10359** | github-release | 2026-08-11T10:48:48Z | github-release:ggml-org/llama.cpp@b10359
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10359
+  - <details open> ggml-webgpu: fix CI errors from #25025 and #25262 (#26566) * test new flash_attn test * rebase and fix to disable subgrou matrices when max_kv_tile == 0 * delete log output * Add i32 support to cpy and enables the all ops test * restore the non target ci tests * comment out of TODO of build-cpu.yml * fix format </details> **Website:*
+- **b10360** | github-release | 2026-08-11T13:17:39Z | github-release:ggml-org/llama.cpp@b10360
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10360
+  - <details open> common/peg : suppress incomplete escape sequences (#26780) </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10360/llama-b10360-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiAI enabled) [DISABLED](https://github.com/ggml-
+- **b10361** | github-release | 2026-08-11T17:12:37Z | github-release:ggml-org/llama.cpp@b10361
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10361
+  - <details open> model : fix SWA not being enabled for EXAONE 4.5 (#26848) * model : fix SWA not being enabled for EXAONE 4.5 load_arch_hparams tests `hparams.n_layer() == 64` before LLM_KV_NEXTN_PREDICT_LAYERS has been read. n_layer() returns n_layer_all - n_layer_nextn and n_layer_nextn defaults to 0, so a GGUF carrying the MTP head (block_count=65
+- **v0.32.0** | github-release | 2026-08-11T21:56:20Z | github-release:Comfy-Org/ComfyUI@v0.32.0
+  - https://github.com/Comfy-Org/ComfyUI/releases/tag/v0.32.0
+  - ## What's Changed * Make it easier to debug nested tensors. by @comfyanonymous in https://github.com/Comfy-Org/ComfyUI/pull/15383 * Update workflow templates to v0.11.37 by @comfyui-wiki in https://github.com/Comfy-Org/ComfyUI/pull/15415 * Minimum officially supported pytorch is now 2.7 by @comfyanonymous in https://github.com/Comfy-Org/ComfyUI/pul
+- **b10362** | github-release | 2026-08-11T22:57:51Z | github-release:ggml-org/llama.cpp@b10362
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10362
+  - <details open> tests : disable backend sampler hip multi output (#26878) * test-backend-sampler: skip multi_output_sampling_chain on HIP The new multi_output_sampling_chain test uses top_k, whose backend probs path needs CUB (unavailable on HIP), so sampled_probs is null and the test aborts. Add it to the existing HIP skip list alongside the other 
+- **b10369** | github-release | 2026-08-12T04:52:57Z | github-release:ggml-org/llama.cpp@b10369
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10369
+  - <details open> mtmd: support pocket-tts (#26871) * adapt the api * text model ok * working impl, need verify and clean up * mtmd: build the pocket-tts transposed convolutions as GEMM + col2im ggml_conv_transpose_1d has no grouped mode, so the depthwise upsample was built as one convolution and one concat per channel, which floods the graph with sma
+- **v1.3.0rc24** | github-release | 2026-08-12T07:07:24Z | github-release:NVIDIA/TensorRT-LLM@v1.3.0rc24
+  - https://github.com/NVIDIA/TensorRT-LLM/releases/tag/v1.3.0rc24
+  - - Known Issues - Workloads combining `torch.compile` with CUDA graphs can fail during initialization or inference with allocator assertions, missing outputs, or illegal memory accesses. - MLA models using MTP with multi-stream or piecewise CUDA graphs on SM120 can asynchronously crash with an illegal memory access. - Workloads using KVCacheManagerV
+- **b10373** | github-release | 2026-08-12T09:23:01Z | github-release:ggml-org/llama.cpp@b10373
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10373
+  - <details open> imatrix.cpp: Move finite check and only check touched experts (#26861) </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10373/llama-b10373-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiAI enabled) [DISABLED](https://gith
+- **b10375** | github-release | 2026-08-12T12:18:24Z | github-release:ggml-org/llama.cpp@b10375
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10375
+  - <details open> chat : tighten bare function parsing for Qwen models (#26793) </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10375/llama-b10375-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiAI enabled) [DISABLED](https://github.com/gg
+- **b10400** | github-release | 2026-08-13T06:03:55Z | github-release:ggml-org/llama.cpp@b10400
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10400
+  - <details open> ggml : fix arm builds, unused var (#26991) </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10400/llama-b10400-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiAI enabled) [DISABLED](https://github.com/ggml-org/llama.cpp/pu
+- **b10405** | github-release | 2026-08-13T07:32:37Z | github-release:ggml-org/llama.cpp@b10405
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10405
+  - <details open> ggml-hip : remove -funsafe-math-optimizations (#26696) It enables -fassociative-math, which reassociates FP reductions and can flip greedy argmax on RDNA3.5 (e.g. MTP speculative decode diverging from the non-speculative baseline). Drop it so HIP builds are IEEE-conformant. Co-authored-by: Jim Wu <ywu@xilinx.com> </details> **Website
+- **b10408** | github-release | 2026-08-13T14:30:05Z | github-release:ggml-org/llama.cpp@b10408
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10408
+  - <details open> sycl : Add DMMV ESIMD Q3_K kernel (#26251) * Add DMMV Q4_K and Q6_K ESIMD kernels Configure cmake build with -DGGML_SYCL_ESIMD=ON to enable. Signed-off-by: Todd Malsbary <todd.malsbary@intel.com> * Refactor ESIMD kernels to share common code Signed-off-by: Todd Malsbary <todd.malsbary@intel.com> * Move control of ESIMD from compile t
+- **b10410** | github-release | 2026-08-13T15:52:34Z | github-release:ggml-org/llama.cpp@b10410
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10410
+  - <details open> sycl: remove separate fp32 type promotion in gemm non-oneDNN path (#26372) * sycl: use automatic fp16 promotion in gemm * sycl: remove redundant comment </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10410/llama-b10410-bin-macos-arm
+- **Nightly Release v0.6.18-20260813** | github-release | 2026-08-13T16:28:41Z | github-release:flashinfer-ai/flashinfer@nightly-v0.6.18-20260813
+  - https://github.com/flashinfer-ai/flashinfer/releases/tag/nightly-v0.6.18-20260813
+  - Automated nightly build for version 0.6.18 (dev20260813)
+- **b10411** | github-release | 2026-08-13T16:36:03Z | github-release:ggml-org/llama.cpp@b10411
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10411
+  - <details open> ggml-cpu/ops: vectorize flash-attention V-cache F16 to F32 conversion (#26947) Co-authored-by: jinzihao <jinzihao.jzh@alibaba-inc.com> </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10411/llama-b10411-bin-macos-arm64.tar.gz) - macOS
+- **b10412** | github-release | 2026-08-13T17:17:01Z | github-release:ggml-org/llama.cpp@b10412
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10412
+  - <details open> spec: enable backend sampling for both dflash & dspark (#26958) * dflash: enable backend sampling for both dflash & dspark * enable p_min > 0 in backend sampling and add guard * cont : add TODO --------- Co-authored-by: Georgi Gerganov <ggerganov@gmail.com> </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple S
+- **b10413** | github-release | 2026-08-13T17:58:50Z | github-release:ggml-org/llama.cpp@b10413
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10413
+  - <details open> common : auto-detect spec type from draft GGUF metadata (#26814) * common : auto-detect spec type from draft GGUF metadata When -md loads a local draft model without --spec-type, the sidecar inference in common_models_handler_apply only checks HF repo sidecars and misses local files. The draft model loads into VRAM but speculative de
+- **b10414** | github-release | 2026-08-13T18:40:34Z | github-release:ggml-org/llama.cpp@b10414
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10414
+  - <details open> metal : add TQ2_0 support (#26980) * metal: add TQ2_0 support Add support for the GGML_TYPE_TQ2_0 (ternary, 2 bits per element) type in the Metal backend. Assisted-by: llama.cpp:DeepSeek-v4-Flash-0731 * cont : optimize mul_mv kernel - float ops over integer ops - precalculate sums - hoist coef out of the inner loop - contiguous y loa
+- **b10415** | github-release | 2026-08-13T19:29:10Z | github-release:ggml-org/llama.cpp@b10415
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10415
+  - <details open> spec : auto-detect mtp draft model type (#27005) </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10415/llama-b10415-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiAI enabled) [DISABLED](https://github.com/ggml-org/llama.
+- **b10416** | github-release | 2026-08-13T20:05:56Z | github-release:ggml-org/llama.cpp@b10416
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10416
+  - <details open> server : serve index.html with no-cache (#27006) index.html was served with `max-age=31536000, immutable` like the hashed assets, but its name is stable while its contents change every build, so a cached copy pins the UI to an old build. It now revalidates via its existing ETag, which keeps the 304 for unchanged builds. </details> **
+- **b10417** | github-release | 2026-08-13T20:49:34Z | github-release:ggml-org/llama.cpp@b10417
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10417
+  - <details open> chat : fix LFM2 tool call arg name prefix ambiguity (#26960) Assisted-by: Claude Opus 5 </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10417/llama-b10417-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiAI enabled) [DISAB
+- **b10418** | github-release | 2026-08-13T21:36:06Z | github-release:ggml-org/llama.cpp@b10418
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10418
+  - <details open> [SYCL] Support host pinned mem to improve SYCL Host-to-Device Memory Access (#26789) * support host pinned mem, ggml_backend_sycl_host_buffer_type_get_max_size, * fix the thread-safe issue </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/downlo
+- **b10419** | github-release | 2026-08-13T22:11:34Z | github-release:ggml-org/llama.cpp@b10419
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10419
+  - <details open> OpenVINO: Qwen3.5, memory optimization, and test-recurrent-state-rollback (#26952) * OpenVINO backend: 1) enable gpt-oss moe on OV bk; 2) enable mxfp4 support * OpenVINO backend: disable TOPK_MOE op test * OpenVINO Backend: Add op FILL support * OpenVINO backend: enable set rows with multi dims * fix the name missmatch in setrow + vi
+- **v0.33.1** | github-release | 2026-08-13T22:18:34Z | github-release:Comfy-Org/ComfyUI@v0.33.1
+  - https://github.com/Comfy-Org/ComfyUI/releases/tag/v0.33.1
+  - ## What's Changed * Fix KSamplerAdvanced with add_noise disabled on nested latents by @kijai in https://github.com/Comfy-Org/ComfyUI/pull/15447 * Update workflow templates to v0.11.40 by @comfyui-wiki in https://github.com/Comfy-Org/ComfyUI/pull/15522 * chore: replace api nodes -> partner nodes in README by @robinjhuang in https://github.com/Comfy-
+- **b10423** | github-release | 2026-08-13T22:44:06Z | github-release:ggml-org/llama.cpp@b10423
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10423
+  - <details open> common: apply CPU parameters across tools (#27026) </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10423/llama-b10423-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiAI enabled) [DISABLED](https://github.com/ggml-org/llam
+- **Nightly Release v0.6.18-20260814** | github-release | 2026-08-14T05:02:11Z | github-release:flashinfer-ai/flashinfer@nightly-v0.6.18-20260814
+  - https://github.com/flashinfer-ai/flashinfer/releases/tag/nightly-v0.6.18-20260814
+  - Automated nightly build for version 0.6.18 (dev20260814)
+- **b10424** | github-release | 2026-08-14T05:44:30Z | github-release:ggml-org/llama.cpp@b10424
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10424
+  - <details open> dflash : clarify output logging of target_layer_ids (#27013) This commit tries to make the logging of target_layer_ids a bit clearer and easier to read. Currently the output generated looks like this: ```console 0.00.468.624 D load_arch_hparams: DFlash extract_layers = [0.00.468.626 D 2, 0.00.468.626 D 6, 0.00.468.626 D 20, 0.00.468.
+- **b10425** | github-release | 2026-08-14T06:50:50Z | github-release:ggml-org/llama.cpp@b10425
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10425
+  - <details open> sycl: fuse the gated-delta-net state writeback cpy (#26643) Port of https://github.com/ggml-org/llama.cpp/pull/23940. Arc Pro B70, Qwen 3.6 27B Q4_K - Medium (48 of its 64 blocks run gated_delta_net), -ngl 99 -fa 1 -ctk f16 -ctv f16 -b 2048 -ub 2048, interleaved A/B passes of r=3: tg128 23.91 / 23.90 / 23.90 -> 24.19 / 24.17 / 24.20 
+- **b10426** | github-release | 2026-08-14T07:29:04Z | github-release:ggml-org/llama.cpp@b10426
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10426
+  - <details open> ggml: force single thread on wasi (#25686) </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10426/llama-b10426-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiAI enabled) [DISABLED](https://github.com/ggml-org/llama.cpp/pu
+- **b10427** | github-release | 2026-08-14T08:14:14Z | github-release:ggml-org/llama.cpp@b10427
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10427
+  - <details open> sycl: fuse mul_mat(gate) + mul_mat(up) + GLU for q4_K dense FFN (#26779) Measured on Arc Pro B70 (Battlemage, Level Zero), llama-bench -r 20, two interleaved rounds, tg128: qwen2.5-3B-Instruct Q4_K_M 154.18 -> 158.53 t/s +2.8% gemma-2-2b-it Q4_K_M 162.45 -> 165.62 t/s +2.0% llama-batched-bench on qwen2.5-3B, S_TG by batch size: B=1 1
+- **b10428** | github-release | 2026-08-14T09:05:43Z | github-release:ggml-org/llama.cpp@b10428
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10428
+  - <details open> tests : replace personal home directory paths with generic placeholders (#27043) Scrub developer-specific /home/<user>/ paths from example docs and test fixtures so they don't leak into the tree. - examples/test-cmake/README.md: /home/danbev/... -> /path/to/llama.cpp/... - tests/test-chat.cpp: /home/jarvis/... -> /home/user/... (inpu
+- **b10429** | github-release | 2026-08-14T12:13:37Z | github-release:ggml-org/llama.cpp@b10429
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10429
+  - <details open> server: allow accessing /metrics and /slots during llama_decode() (#27041) * server_queue::worker * call llama_decode inside yield_to_queue * also handle process_mtmd_chunk * clean up * nits * rm test </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/rel
+- **b10430** | github-release | 2026-08-14T12:58:04Z | github-release:ggml-org/llama.cpp@b10430
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10430
+  - <details open> llama : allow virtual igpu devices (#26953) * llama : allow virtual igpu devices * cont : better comment </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10430/llama-b10430-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiA
+- **b10431** | github-release | 2026-08-14T17:42:44Z | github-release:ggml-org/llama.cpp@b10431
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10431
+  - <details open> ggml : recurrent state rollback for ggml_ssm_scan (#26623) * Initial changes for Recurrent state rollback for nemotron for cpu and cuda * Removing CPU RS rollback. Will enable it in subsequent PRs * addition of test case * Removing assert and calling runtime API to check if op is supported * removing extra API and updating the call s
+- **b10433** | github-release | 2026-08-14T18:19:57Z | github-release:ggml-org/llama.cpp@b10433
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10433
+  - <details open> sync : ggml </details> **Website:** - <https://llama.app> **macOS/iOS:** - [macOS Apple Silicon (arm64)](https://github.com/ggml-org/llama.cpp/releases/download/b10433/llama-b10433-bin-macos-arm64.tar.gz) - macOS Apple Silicon (arm64, KleidiAI enabled) [DISABLED](https://github.com/ggml-org/llama.cpp/pull/23780) - [macOS Intel (x64)]
+- **b10434** | github-release | 2026-08-14T19:22:14Z | github-release:ggml-org/llama.cpp@b10434
+  - https://github.com/ggml-org/llama.cpp/releases/tag/b10434
+  - <details open> chat : pass reasoning_effort to template * chat: add reasoning_effort to common_chat_templates_inputs Store OpenAI Chat Completions reasoning_effort and make it available to jinja templates (with model specific translations where required). Assisted-by: llama.cpp:Muse-Glimmer-30B * server : fixup reading reasoning effort from body se
+- **Virgin Atlantic sharpens customer journeys with ChatGPT Work** | official-feed-item | Mon, 10 Aug 2026 00:00:00 GMT | official-feed:0e82d8998833621ad9c9
+  - https://openai.com/index/virgin-atlantic/chatgpt-work
+  - Virgin Atlantic is accelerating research, product planning, and decision-making with ChatGPT Work, helping teams connect signals across the customer journey.
+- **Premium seats are coming to ChatGPT Business** | official-feed-item | Mon, 10 Aug 2026 00:00:00 GMT | official-feed:2a5c0cad5d8b2f9d8e4a
+  - https://openai.com/index/premium-seats-chatgpt-business
+  - Premium seats are coming to ChatGPT Business. Sign up by August 20 to get $100 in workspace credits and unlock higher usage for your team's most demanding work.
+- **How Zapier transformed core marketing processes with ChatGPT Work** | official-feed-item | Mon, 10 Aug 2026 00:00:00 GMT | official-feed:6476741ad7bd8e8e5ea0
+  - https://openai.com/index/zapier
+  - The enterprise marketing team at Zapier uses ChatGPT Work to reduce the number of drop-offs in its lead funnel, build campaign assets, and automate reporting.
+- **Expanding Daybreak as the Cyber Defense Window Narrows** | official-feed-item | Mon, 10 Aug 2026 10:00:00 GMT | official-feed:081601c279be28d3ef5a
+  - https://openai.com/index/expanding-daybreak-as-the-cyber-defense-window-narrows
+  - Meet GPT-5.6-Cyber, OpenAI’s cybersecurity-specific model available through Daybreak Red for authorized vulnerability research, exploit validation, and security testing.
+- **Putting frontier cyber models in more trusted hands** | official-feed-item | Mon, 10 Aug 2026 10:00:00 GMT | official-feed:29b0e61ec6cd1ed38342
+  - https://openai.com/index/putting-frontier-cyber-models-in-more-trusted-hands
+  - Approved Daybreak partners can use OpenAI’s frontier cyber models to deliver authorized, governed cybersecurity services to customers.
+- **Model ML completes finance work more efficiently with GPT-5.6 Sol** | official-feed-item | Mon, 10 Aug 2026 12:00:00 GMT | official-feed:95f74aeac90a93bb12ce
+  - https://openai.com/index/model-ml
+  - Model ML uses GPT-5.6 Sol to carry finance work from research and analysis through editable, traceable PowerPoint decks and Excel workbooks.
+- **OpenAI’s letter to Governor Abbott on responsible AI infrastructure in Texas** | official-feed-item | Mon, 10 Aug 2026 14:00:00 GMT | official-feed:3d196224ab27a2df369c
+  - https://openai.com/index/responsible-ai-infrastructure-texas
+  - OpenAI sent Governor Greg Abbott a letter outlining its commitment to responsible AI infrastructure in Texas. The letter supports reliable, transparent growth that benefits Texans.
+- **What building an AI-native finance function taught me** | official-feed-item | Mon, 10 Aug 2026 17:00:00 GMT | official-feed:5367cc95a8fd98172eb1
+  - https://openai.com/index/building-an-ai-native-finance-function
+  - OpenAI CFO Sarah Friar shares five lessons for building an AI-native finance function, from automated forecasting to stronger controls and AI ROI.
+- **OpenAI appoints Dali Rajic as Chief Revenue Officer** | official-feed-item | Thu, 13 Aug 2026 09:00:00 GMT | official-feed:6eaab463a55def8752bc
+  - https://openai.com/index/dali-rajic-chief-revenue-officer
+  - OpenAI appoints Dali Rajic as Chief Revenue Officer to lead its global revenue organization and help businesses realize the full value of AI.
+- **Previewing Ultrafast mode: GPT-5.6 Sol at up to 14X the speed** | official-feed-item | Thu, 13 Aug 2026 10:00:00 GMT | official-feed:c0986f6628d189a1ac37
+  - https://openai.com/index/previewing-ultrafast
+  - Preview Ultrafast, a new OpenAI API service tier that runs GPT-5.6 Sol up to 14× faster. Powered by Cerebras, it delivers up to 750 output tokens per second.
+- **The builder’s guide to GPT‑5.6** | official-feed-item | Thu, 13 Aug 2026 11:00:00 GMT | official-feed:6f8368ac763b73731923
+  - https://openai.com/index/builders-guide-to-gpt-5-6
+  - Learn how startups use GPT-5.6 to build faster, more cost-efficient AI agents with smarter model selection and new Responses API capabilities.
+- **Daybreak models are now available on AWS** | official-feed-item | Tue, 11 Aug 2026 10:00:00 GMT | official-feed:5d3aff0aba5d0b8a3f2e
+  - https://openai.com/index/daybreak-models-are-now-available-on-aws
+  - OpenAI and AWS are making Daybreak cybersecurity capabilities available through Amazon Bedrock to support enterprise security workflows.
+- **Testing ads in ChatGPT** | official-feed-item | Tue, 11 Aug 2026 10:00:00 GMT | official-feed:b19ec562c455e753267b
+  - https://openai.com/index/testing-ads-in-chatgpt
+  - OpenAI begins testing ads in ChatGPT to support free access, with clear labeling, answer independence, strong privacy protections, and user control.
+- **How RingCentral builds AI-native work from engineering to ops** | official-feed-item | Wed, 12 Aug 2026 00:00:00 GMT | official-feed:9bafa93fe08b847d5d92
+  - https://openai.com/index/ringcentral
+  - See how RingCentral uses ChatGPT Work and Codex to accelerate AI product development and centralize operational intelligence across engineering and operations.
+- **From assistance to execution: How enterprises put AI to work** | official-feed-item | Wed, 12 Aug 2026 06:00:00 GMT | official-feed:e063daae6225e1569539
+  - https://openai.com/index/how-enterprises-put-ai-to-work
+  - OpenAI research reveals how enterprises are adopting agentic AI, using ChatGPT and Codex, and how frontier firms are pulling ahead in AI adoption.
+- **ai2-blog** | official-index-snapshot | None | official-index:ai2-blog
+  - https://allenai.org/blog
+  - 
+- **alibaba-model-studio-model-lifecycle** | official-index-snapshot | None | official-index:alibaba-model-studio-model-lifecycle
+  - https://www.alibabacloud.com/help/en/model-studio/newly-released-models
+  - 
+- **anthropic-news** | official-index-snapshot | None | official-index:anthropic-news
+  - https://www.anthropic.com/news
+  - 
+- **apple-ml-research** | official-index-snapshot | None | official-index:apple-ml-research
+  - https://machinelearning.apple.com/research
+  - 
+- **aws-machine-learning-blog** | official-index-snapshot | None | official-index:aws-machine-learning-blog
+  - https://aws.amazon.com/blogs/machine-learning/
+  - 
+- **cohere-blog** | official-index-snapshot | None | official-index:cohere-blog
+  - https://cohere.com/blog
+  - 
+- **deepseek-api-updates** | official-index-snapshot | None | official-index:deepseek-api-updates
+  - https://api-docs.deepseek.com/updates/
+  - 
+- **google-deepmind-blog** | official-index-snapshot | None | official-index:google-deepmind-blog
+  - https://deepmind.google/blog/
+  - 
+- **google-gemini-api-release-notes** | official-index-snapshot | None | official-index:google-gemini-api-release-notes
+  - https://ai.google.dev/gemini-api/docs/changelog
+  - 
+- **ibm-ai-announcements** | official-index-snapshot | None | official-index:ibm-ai-announcements
+  - https://www.ibm.com/new/announcements
+  - 
+- **kimi-code-whats-new** | official-index-snapshot | None | official-index:kimi-code-whats-new
+  - https://www.kimi.com/code/docs/en/kimi-code/whats-new.html
+  - 
+- **meta-ai-blog** | official-index-snapshot | None | official-index:meta-ai-blog
+  - https://ai.meta.com/blog/
+  - 
+- **microsoft-azure-ai-blog** | official-index-snapshot | None | official-index:microsoft-azure-ai-blog
+  - https://azure.microsoft.com/en-us/blog/category/ai-machine-learning/
+  - 
+- **minimax-news** | official-index-snapshot | None | official-index:minimax-news
+  - https://www.minimax.io/news
+  - 
+- **mistral-news** | official-index-snapshot | None | official-index:mistral-news
+  - https://mistral.ai/news/
+  - 
+- **nvidia-generative-ai-blog** | official-index-snapshot | None | official-index:nvidia-generative-ai-blog
+  - https://blogs.nvidia.com/blog/tag/generative-ai/
+  - 
+- **qwen-blog** | official-index-snapshot | None | official-index:qwen-blog
+  - https://qwenlm.github.io/blog/
+  - 
+- **runway-news** | official-index-snapshot | None | official-index:runway-news
+  - https://runwayml.com/news
+  - 
+- **stability-ai-news** | official-index-snapshot | None | official-index:stability-ai-news
+  - https://stability.ai/news-updates
+  - 
+- **xai-news** | official-index-snapshot | None | official-index:xai-news
+  - https://x.ai/news
+  - 
+- **zai-release-notes** | official-index-snapshot | None | official-index:zai-release-notes
+  - https://docs.z.ai/release-notes/new-released
+  - 
+
+## Paper lane A
+- [47] **Can Language Models Understand mmWave Data? Benchmarking Large Language Models for mmWave Radar-Based Human Understanding** | 2026-08-14T10:49:39Z | arxiv:2608.14179v1
+  - http://arxiv.org/abs/2608.14179v1
+  - Large language models (LLMs) have shown remarkable reasoning and generative capabilities, motivating their use as universal reasoning engines for perception. While modern approaches such as vision-language models (VLMs) have attempted to incorporate reasoning capabilities into visual sensing, the integration of LLMs wi
+- [40] **From Reasoning Depth to Reasoning Breadth: Evaluating Multi-Point Associative Reasoning in Large Language Models** | 2026-08-11T03:58:23Z | arxiv:2608.10444v2
+  - http://arxiv.org/abs/2608.10444v2
+  - Large language models (LLMs) have made substantial progress on reasoning tasks that require increasingly long and complex inferential chains. This progress primarily reflects reasoning depth. A complementary and comparatively unexamined capability is reasoning breadth: exploring multiple semantic directions in parallel
+- [37] **MedPixel: A Unified Pixel-Language Model for Medical Reasoning and Segmentation** | 2026-08-10T16:37:24Z | arxiv:2608.09818v1
+  - http://arxiv.org/abs/2608.09818v1
+  - Reliable medical image understanding requires models to connect clinical language and visual reasoning with pixel-level grounding. Yet medical vision-language models often lack precise localization, whereas medical segmenters typically rely on explicit target categories or precise spatial prompts. This divide is reinfo
+- [35] **Listen, See and Track: Spatio-Temporal Audio-Visual Sound Event Reasoning for Omni-Modal Language Models** | 2026-08-10T11:06:28Z | arxiv:2608.09435v1
+  - http://arxiv.org/abs/2608.09435v1
+  - Understanding dynamic sound sources requires jointly determining what produces a sound, where the source is located, and how it moves over time. Yet existing audio-language models often represent clips as global acoustic events, while vision-language models lack the spatial audio cues needed to localize and track indiv
+- [35] **TELLME: Test-Enhanced Learning for Language Model Enrichment** | 2026-08-12T08:28:44Z | arxiv:2608.11788v1
+  - http://arxiv.org/abs/2608.11788v1
+  - Continual pre-training (CPT) has been widely adopted as a method for domain adaptation in large language models. However, CPT has consistently been accompanied by challenges, such as the difficulty of acquiring large-scale domain-specific datasets and high computational costs. In this study, we propose a novel method c
+- [34] **CORDA: A Benchmark for Hierarchical Harm-Centric Moral Reasoning in Large Language Models** | 2026-08-08T10:56:30Z | arxiv:2608.08061v1
+  - http://arxiv.org/abs/2608.08061v1
+  - The key question in moral judgement is not simply whether someone chooses the "right" answer, but how they decide what matters most when moral principles conflict. Current evaluations of large language models (LLMs) remain limited: most test whether models give morally acceptable answers, match human preferences, or av
+- [34] **Motion-as-Prompt: Enhancing Motion Reasoning in Multimodal Large Language Models via Motion-Guided Cross-Frame Visual Prompting** | 2026-08-12T04:54:32Z | arxiv:2608.11655v1
+  - http://arxiv.org/abs/2608.11655v1
+  - Motion-centric video reasoning is fundamental to interactive applications such as robotic manipulation and autonomous navigation. However, multimodal large language models (MLLMs) typically process videos through sparse uniform sampling to control visual-token and attention costs. This strategy may discard critical tra
+- [33] **Ripple-Pivot Search: Active Parallel Decoding for Diffusion Large Language Models** | 2026-08-12T07:32:29Z | arxiv:2608.11742v1
+  - http://arxiv.org/abs/2608.11742v1
+  - Diffusion Large Language Models (dLLMs) have emerged as a competitive alternative to autoregressive language models, offering the potential for substantially faster inference through parallel decoding. Existing parallel decoding schedulers typically commit positions only after they meet a per-position criterion, overlo
+- [33] **Numeracy in Large Language Models: Fundamental Limitations and Paths to Improvement** | 2026-08-13T12:01:58Z | arxiv:2608.13129v1
+  - http://arxiv.org/abs/2608.13129v1
+  - Large language models (LLMs) achieve strong results on mathematical reasoning benchmarks yet remain unreliable on elementary numerical tasks, including magnitude comparison, large-integer arithmetic, fractions, and scientific notation. This survey examines basic numerical understanding as a capability distinct from hig
+- [32] **Thinking vs. NoThinking: Towards Interpreting Reasoning Mechanisms of Large Language Models via Sparse Autoencoders** | 2026-08-08T14:54:13Z | arxiv:2608.08168v1
+  - http://arxiv.org/abs/2608.08168v1
+  - While Large Language Models (LLMs) employing Chain-of-Thought (CoT) exhibit superior reasoning capabilities, the neural mechanisms distinguishing this explicit Thinking mode from direct answer generation (NoThinking mode) remain poorly understood. To deconstruct this cognitive process, we apply Top-K Sparse Autoencoder
+- [32] **An Agentic Generative Large Language Model for Treatment Planning of Colorectal Cancer** | 2026-08-10T05:42:03Z | arxiv:2608.09142v1
+  - http://arxiv.org/abs/2608.09142v1
+  - Treatment planning in precision oncology requires synthesizing heterogeneous patient information with rapidly evolving clinical guidelines to ensure guideline-concordant care. While large language models (LLMs) show promise in many diagnostic tasks, their adoption for high-stakes treatment planning is hindered by compl
+- [32] **DIVE: Unlocking Self-Improvement in Frozen Language Models Through Diversity-Driven Skill Evolution** | 2026-08-12T18:06:41Z | arxiv:2608.12486v1
+  - http://arxiv.org/abs/2608.12486v1
+  - Large language models (LLMs) cannot retain post-deployment experience without parameter updates. We introduce DIVE, a diversity-driven framework that enables frozen LLMs to improve by evolving persistent natural-language skills from task experience and verifier feedback. These skills encode reusable reasoning procedure
+- [32] **Interpretable Cross-Lingual Alignment in Small Language Models: Probing Cultural and Pragmatic Reasoning in Japanese-English Bilingual LLMs** | 2026-08-14T21:04:21Z | arxiv:2608.14896v1
+  - http://arxiv.org/abs/2608.14896v1
+  - Large language models work well on English and behave in poorly understood ways on languages typologically far from it. Japanese is a clean example, where evaluation still leans on translation quality and JGLUE-style benchmarks, which roll lexical, syntactic and pragmatic competence into a single score. The phenomena o
+- [31] **Reducing Pretraining-Generation Mismatch in Diffusion Language Models** | 2026-08-10T10:52:20Z | arxiv:2608.09424v1
+  - http://arxiv.org/abs/2608.09424v1
+  - Autoregressive language models align training and use: generation conditions on a clean prompt, and training predicts future tokens from clean left context. Diffusion language models offer parallel denoising, but native dLLM pretraining can randomly corrupt prompt and continuation tokens together, weakening the clean-p
+- [31] **Chain of Spatial Thoughts: Modality-Agnostic Spatial Grounding for Vision Language Models** | 2026-08-10T22:20:07Z | arxiv:2608.10278v1
+  - http://arxiv.org/abs/2608.10278v1
+  - Spatial understanding is fundamental to embodied intelligence, underpinning applications such as robotic manipulation, embodied navigation, and autonomous driving. Although recent vision-language models (VLMs) have achieved impressive performance on spatial reasoning benchmarks, state-of-the-art approaches typically re
+- [31] **Beyond Tokens: A Survey on Decoding Methods for Large Language and Vision-Language Models** | 2026-08-14T18:08:03Z | arxiv:2608.14797v1
+  - http://arxiv.org/abs/2608.14797v1
+  - Large language models (LLMs) and large vision-language models (LVLMs) have demonstrated impressive generative capabilities, yet ensuring their outputs align with user intent is still challenging. While most existing approaches address this issue at the training stage, inference-time approaches like decoding methods off
+- [30] **VectraYX-Vision-1B: A Sub-2B Spanish/LATAM Cybersecurity Vision-Language Model with Structured Visual Reasoning and Native Tool Use** | 2026-08-09T04:46:58Z | arxiv:2608.08477v1
+  - http://arxiv.org/abs/2608.08477v1
+  - We present VectraYX-Vision-1B, a sub-2B vision-language model (VLM) for Spanish/LATAM cybersecurity imagery, coupling a frozen SigLIP-so400m encoder to a 1.04B Spanish/LATAM security decoder via an MLP. To our knowledge, it is the first sub-2B VLM specialized for cyber UI (IDA, Ghidra, Wireshark, Nmap, Metasploit, Vola
+- [30] **How Do Large Language Models Judge Social Attraction? Evidence from Theory-Grounded Persona Ratings Across Multiple LLMs and Humans** | 2026-08-10T15:19:42Z | arxiv:2608.09717v1
+  - http://arxiv.org/abs/2608.09717v1
+  - Large language models (LLMs) are increasingly used to perform subjective evaluations traditionally made by humans, yet their validity as social judges remains unclear. This paper examines whether LLMs can assess social attraction from theory-grounded persona profiles constructed from ten psychological and relational co
+
+## Paper lane B
+- [46] **A Unified Issue Resolution Benchmark for Requirement Clarification, Planning, and Code Generation for Coding Agents** | 2026-08-10T03:22:04Z | arxiv:2608.09072v1
+  - http://arxiv.org/abs/2608.09072v1
+  - Large language model-powered coding agents are increasingly used to modify existing code repositories, for example, by adding features or fixing bugs. Yet existing repository-level benchmarks typically evaluate only whether the final patch passes tests. Satisfying a user request requires a long chain of interdependent 
+- [37] **The Scaffolding Matters More Than the Interface: A Controlled Comparison of MCP and CLI Tool Use Across Seven Agent Scaffoldings, Five Language Models, and One Software Task** | 2026-08-09T11:54:09Z | arxiv:2608.08654v1
+  - http://arxiv.org/abs/2608.08654v1
+  - How much an AI coding agent costs to run can depend more on the agent scaffolding that drives it than on the interface through which it reaches its tools. We set out to measure the cost of tool use over the Model Context Protocol (MCP) against tool use over an ordinary command-line interface (CLI), a difference on whic
+- [30] **SeqFeed: Improving Agentic RTL Code Generation with Sequential Behavior Feedback** | 2026-08-09T15:15:33Z | arxiv:2608.16934v2
+  - http://arxiv.org/abs/2608.16934v2
+  - RTL code generation is a critical stage in hardware design, and the emergence of agentic systems offers new opportunities to automate this process. To generate correct RTL code, agents must understand sequential behavior, including how signals evolve and propagate over multiple clock cycles. However, effectively convey
+- [29] **Beyond Pass@k: Measuring Reliability and Security of Agentic Code Generation** | 2026-08-11T16:01:15Z | arxiv:2608.14711v1
+  - http://arxiv.org/abs/2608.14711v1
+  - AI coding agent benchmarks rank agents with the Chen et al. (2021) pass@k estimator, but current implementations misapply it: they set n to the number of unit tests in a single submission rather than the number of independent rollout attempts, conflating test-suite size with attempt independence. We diagnose this opera
+- [27] **P$^{3}$: Joint Program-and-Proof Planning for Verified Code Generation** | 2026-08-10T08:33:18Z | arxiv:2608.09277v1
+  - http://arxiv.org/abs/2608.09277v1
+  - Verified code generation asks a large language model (LLM) to generate both an executable program and a machine-checkable proof that the program meets a formal specification, promising software that is correct by construction. The de facto workflow decouples the two halves of the problem: first synthesize a program, th
+- [24] **SWE-Bench ProMax: Benchmarking Agents on Large-Scale Multilingual Code Refactoring** | 2026-08-10T16:23:19Z | arxiv:2608.09802v1
+  - http://arxiv.org/abs/2608.09802v1
+  - As AI coding agents take on increasingly complex, long-horizon software engineering tasks, existing benchmarks are rapidly saturating and their evaluation quality has come under serious scrutiny: a recent audit found that nearly 60% of unsolved SWE-bench Verified instances contain flawed tests -- either overly narrow t
+- [24] **Do Influence Tactics Matter? Investigating Prompt Framing Effects in LLM Code Generation** | 2026-08-11T23:57:06Z | arxiv:2608.11513v1
+  - http://arxiv.org/abs/2608.11513v1
+  - Large Language Models (LLMs) are increasingly integrated into software engineering workflows, helping developers write, debug, test, and maintain code. While prompt wording and structure are known to influence model performance, the impact of psychologically inspired prompt framings remains unexplored. This study inves
+- [24] **Agentic Transaction: Towards ACID-Compliant Agent Systems** | 2026-08-14T03:13:54Z | arxiv:2608.13900v1
+  - http://arxiv.org/abs/2608.13900v1
+  - Large language model (LLM) agents are evolving from conversational assistants into autonomous systems that execute long-horizon tasks through reasoning, tool use, code generation, and workspace manipulation. As agents increasingly operate over persistent environments and multi-step workflows, they face challenges analo
+- [23] **DSAgentBench: Can Agents Automate End-to-End Data-Science Workflows in Real Computer Environments?** | 2026-08-11T01:45:56Z | arxiv:2608.10366v1
+  - http://arxiv.org/abs/2608.10366v1
+  - Real-world data science involves long-horizon workflows that span data wrangling, exploration, modeling, visualization, and validation, and require coordinated use of tools such as notebooks, IDEs, terminals, browsers, and databases within real operating environments. Yet existing benchmarks lack real-computer interact
+- [22] **Evidence-Calibrated Runtime Reconstruction for Agent Skills Across Heterogeneous Coding Agents** | 2026-08-09T16:18:13Z | arxiv:2608.08793v1
+  - http://arxiv.org/abs/2608.08793v1
+  - Agent Skills package reusable instructions and assets for tool-using language-model agents. Progressive loading creates failure boundaries poorly represented by session-, model-, or tool-centric traces: a Skill can be discovered but not activated, activated without instructions, or appear successful without an independ
+- [22] **Can Coding Agents Solve Repository-Level Issues with Rendered Code? An Exploratory Study of Visual Representations** | 2026-08-10T08:24:19Z | arxiv:2608.09268v1
+  - http://arxiv.org/abs/2608.09268v1
+  - Visual modality has recently been explored as a way to compress textual tokens, including rendering code as images for static code understanding. We study whether this representation can serve as operational context for agentic coding, where an agent must navigate repositories, edit source files, and verify executable 
+- [22] **Ontology-Grounded Project Memory for Coding Agents** | 2026-08-13T18:03:00Z | arxiv:2608.13662v1
+  - http://arxiv.org/abs/2608.13662v1
+  - Coding agents have become the primary means of generating new code in many software projects, and the resulting velocity of changes makes keeping track of the reasons behind those changes challenging. This paper introduces MOOSEDev, a system designed to give coding agents structured, ontology-grounded project memory. T
+- [22] **Does ISO-Grounded NFR Specification Improve LLM Code Generation? A Comparison of Rich and Structured Interventions against a Natural-Language Baseline** | 2026-08-13T19:58:01Z | arxiv:2608.13742v1
+  - http://arxiv.org/abs/2608.13742v1
+  - In LLM-based code generation, Non-Functional Requirements (NFRs) are often specified as terse one-line phrases. We ask whether grounding those specifications in ISO/IEC 25010 Quality Model, either as rich natural-language prose (NL-rich) or as structured JSON (Structured), improves code generated on HumanEval/HumanEval
+- [22] **Engineering Signals of Human-AI Collaboration in the Agentic Coding Era: A Longitudinal Analysis of 33,228 Pull Requests from vLLM and SGLang with Implications for Biomedical AI Agents and Bioinformatics Pipeline Developmen** | 2026-08-14T02:22:28Z | arxiv:2608.13884v1
+  - http://arxiv.org/abs/2608.13884v1
+  - The rapid adoption of AI coding assistants and autonomous agentic development systems has coincided with major changes in the pace and structure of open-source software engineering. Yet empirical longitudinal evidence of these changes at the team level remains limited. We present a descriptive longitudinal analysis of 
+- [21] **Agent Skills Can Be Harmful: An Empirical Study of Skill-Induced Failures in LLM Agents** | 2026-08-12T10:15:19Z | arxiv:2608.11888v1
+  - http://arxiv.org/abs/2608.11888v1
+  - Agent skills are the de facto mechanism for extending LLM agents with reusable guidance. A skill can shape the agent's task execution, including planning, tool use, problem-solving, and validation. Prior work reported mixed results of agent skills: some skills improve task success rates, while others have no effect, in
+- [20] **CAP: A Scalable Benchmark for Evaluating Cross-Site Browser Agents with Complex Actions and Perception** | 2026-08-09T01:08:19Z | arxiv:2608.08392v1
+  - http://arxiv.org/abs/2608.08392v1
+  - Large language models are increasingly deployed as autonomous agents that interact with the web through browsers. While recent progress has been driven by benchmarks that evaluate end-to-end task success, these evaluations largely overlook two fundamental sources of difficulty in real web browsing: complex actions over
+- [20] **OpenVisTool: An Open Recipe for Synthesizing Instructive Visual Tool-Use Trajectories** | 2026-08-09T08:01:05Z | arxiv:2608.08557v2
+  - http://arxiv.org/abs/2608.08557v2
+  - Visual tool use has emerged as a fundamental capability for multimodal agents to actively acquire evidence beyond a fixed image encoding. The prevailing recipe learns this capability from teacher-generated trajectories filtered for answer correctness, implicitly assuming that every successful demonstration provides eff
+- [20] **The Signal Rail: A Deterministic Motion Grammar for Communicating Conversational Agent State in Terminal Interfaces** | 2026-08-11T09:13:22Z | arxiv:2608.10689v1
+  - http://arxiv.org/abs/2608.10689v1
+  - Terminal interfaces to conversational agents report rich internal state (listening, thinking, executing tools, awaiting input, failing) almost entirely through text, while the motion channel beside it, the one peripheral vision monitors without reading, carries a single bit: alive. We present the Signal Rail, a one-row
+
+## Paper lane C
+- [29] **VideoGAIA: A Benchmark for General AI Assistants on Agentic Video Understanding** | 2026-08-12T03:24:44Z | arxiv:2608.14718v1
+  - http://arxiv.org/abs/2608.14718v1
+  - Video understanding is a fundamental task for evaluating the capabilities of multimodal large language models (MLLMs). However, existing leading models have already achieved approximately 90% accuracy on the Video-MME leaderboard, suggesting that conventional single-turn video understanding tasks are becoming increasin
+- [27] **StreamFlow: Dynamic Memory Flows for Streaming Video Understanding** | 2026-08-11T14:19:03Z | arxiv:2608.10949v1
+  - http://arxiv.org/abs/2608.10949v1
+  - Streaming video understanding requires multimodal large language models (MLLMs) to preserve relevant evidence from continuously evolving streams under strict causality and bounded memory. Yet existing paradigms remain limited: model-based methods require intrusive backbone updates, while memory-based methods expend sub
+- [27] **Advancing MLLM-based UAV Image Understanding and Reasoning: A Benchmark and a Training-Free Multi-Agent System** | 2026-08-12T07:25:32Z | arxiv:2608.11738v1
+  - http://arxiv.org/abs/2608.11738v1
+  - Multimodal Large Language Model (MLLM)-based UAV aerial image understanding and reasoning is essential for aerial intelligence yet poses distinct challenges arising from extreme scale variation, arbitrary camera orientations, and high object density. Despite growing interest, existing evaluations remain fragmented acro
+- [26] **Seeing Red, Thinking Bad: Color Bias in Vision Language Models** | 2026-08-14T13:14:58Z | arxiv:2608.14286v1
+  - http://arxiv.org/abs/2608.14286v1
+  - Vision language models (VLMs) are increasingly used in industrial decision-making systems, such as recruitment support and recommendation. This motivates careful analysis of how VLMs process visual and textual information. In this work, we study how VLMs interpret text rendered as an image, and investigate the influenc
+- [25] **Chain of Spatial Thoughts: Modality-Agnostic Spatial Grounding for Vision Language Models** | 2026-08-10T22:20:07Z | arxiv:2608.10278v1
+  - http://arxiv.org/abs/2608.10278v1
+  - Spatial understanding is fundamental to embodied intelligence, underpinning applications such as robotic manipulation, embodied navigation, and autonomous driving. Although recent vision-language models (VLMs) have achieved impressive performance on spatial reasoning benchmarks, state-of-the-art approaches typically re
+- [25] **FADE: From Passive Verification to Active Discovery in Counterfactual Video Understanding** | 2026-08-11T10:22:08Z | arxiv:2608.10764v1
+  - http://arxiv.org/abs/2608.10764v1
+  - Counterfactual video understanding evaluates whether models grasp physical and commonsense regularities. However, existing multiple-choice question (MCQ) benchmarks inadvertently leak target events through their questions and candidate options. This reduces the core challenge from active discovery to text-guided verifi
+- [21] **Content Based Video Narration of Gameplay with Vision Language Models** | 2026-08-14T07:03:30Z | arxiv:2608.14016v1
+  - http://arxiv.org/abs/2608.14016v1
+  - Live game commentary is scarce: it exists for professional esports broadcasts and almost nowhere else. We present a content-based video narration system that produces spoken, esports-style commentary for arbitrary gameplay recordings using a general-purpose vision-language model (VLM) and a text-to-speech back end, wit
+- [21] **On the Robustness of Temporal Vision-Language Models for Surgical Endoscopy Videos** | 2026-08-14T12:37:48Z | arxiv:2608.14262v1
+  - http://arxiv.org/abs/2608.14262v1
+  - Temporal vision-language models (TVLMs) offer a reusable, prompt-based interface for surgical video understanding, yet, their robustness under clinically realistic acquisition artifacts in endoscopy remains insufficiently characterized. In practice, degradations such as defocus, haze, motion blur, noise, cautery smoke,
+- [21] **Rollplex: Cross-Phase GPU Spatial Sharing for Vision Language Model Post-Training** | 2026-08-14T17:13:34Z | arxiv:2608.14498v1
+  - http://arxiv.org/abs/2608.14498v1
+  - Vision-language models (VLMs) enable embodied agents to reason and act from visual observations and language instructions. Reinforcement learning (RL) post-training enhances these capabilities using task feedback, but current on-policy RL runtimes execute rollout, reference scoring, and actor training in strict serial 
+- [20] **PragMatch: Separating Pragmatic Incongruity from Cross-Modal Mismatch in Large Vision-Language Models** | 2026-08-10T16:00:04Z | arxiv:2608.09772v1
+  - http://arxiv.org/abs/2608.09772v1
+  - Large Vision-Language Models (LVLMs) have demonstrated strong performance on multimodal benchmarks, yet it remains unclear whether they genuinely reason about relationships between images and text or rely on superficial correlations, known as shortcut learning. This question is particularly important for multimodal sar
+- [20] **VisEditBench: Can Vision-Language Models Edit Visualization Code from Multimodal Feedback?** | 2026-08-11T02:52:23Z | arxiv:2608.10408v1
+  - http://arxiv.org/abs/2608.10408v1
+  - Vision-language models (VLMs) have shown strong capabilities in generating visualization code from textual or visual specifications. However, real-world visualization authoring is inherently iterative: users frequently revise existing visualizations to repair flawed charts or adapt them to desired styles. Existing benc
+- [19] **Multi-View Relational Distillation for Spatial Reasoning with Vision-Language Models** | 2026-08-11T12:34:41Z | arxiv:2608.10864v1
+  - http://arxiv.org/abs/2608.10864v1
+  - Vision-language models (VLMs) have achieved strong image and video understanding, yet their visual-spatial representations remain geometrically fragile, leading to failures in spatial reasoning needed for embodied AI, robotics, and autonomous driving. Prior approaches to geometry grounding either fine-tune VLMs on spat
+- [19] **Mr3D-VL: A generalist vision language foundation model for Multiparametric 3D Magnetic Resonance Imaging** | 2026-08-13T01:12:34Z | arxiv:2608.12689v1
+  - http://arxiv.org/abs/2608.12689v1
+  - Multi-parametric magnetic resonance imaging (mpMRI) is a cornerstone for brain tumor diagnosis and treatment, yet current AI models face critical limitations: their lack of natural language interaction and interpretability impedes spatial information integration and cross-modal reasoning required clinically. Key challe
+- [17] **LookBack: Where and How to Score LVLM Responses via Visual Reference Usage** | 2026-08-12T09:40:21Z | arxiv:2608.11847v1
+  - http://arxiv.org/abs/2608.11847v1
+  - Large Vision-Language Models (LVLMs) integrate visual perception with language generation, enabling responses that span image understanding and complex reasoning. However, LVLMs do not just inherit the text-level hallucinations; they also hallucinate against the image, producing fluent responses ungrounded in what they
+- [16] **Forged Peer Judgments Mislead Multimodal LLM Judge Panels: Source-Blind Anchoring and Panel-Consensus Verification** | 2026-08-08T04:55:45Z | arxiv:2608.07920v1
+  - http://arxiv.org/abs/2608.07920v1
+  - Multimodal LLM judge panels can cross-reference peers, but a quoted peer judgment may itself be untrusted. We expose source-blind anchoring as a text-level attack surface in vision-language model (VLM) panels. Quoting independent visual judgments creates large anchoring gaps (19--26 percentage points) under both self a
+- [16] **Beyond Global Editing: Per-Instance Disentangled Subspaces for Training-Free Hallucination Mitigation in LVLMs** | 2026-08-10T09:21:12Z | arxiv:2608.09344v1
+  - http://arxiv.org/abs/2608.09344v1
+  - Recent advances in large vision-language models (LVLMs) have enabled powerful multimodal reasoning by integrating visual encoders with large language models (LLMs). However, their reliability is frequently undermined by hallucinations, where generated text inaccurately describes the visual input. Although fine-tuning c
+- [16] **SafeCap: Improving LVLM Safety with Image Captioning Reinforcement Learning** | 2026-08-11T05:37:59Z | arxiv:2608.10513v1
+  - http://arxiv.org/abs/2608.10513v1
+  - Large vision-language models (LVLMs) remain vulnerable to jailbreak attacks that exploit visual inputs to bypass safety alignment inherited from their language backbones. We propose SafeCap, a reinforcement-learning framework that aligns LVLMs through learned self-captioning. SafeCap trains a policy model to first gene
+- [16] **How Do VLMs Behave When Blind or Misled? Behavioral Evaluation of VLMs on Scientific Figures** | 2026-08-13T14:06:35Z | arxiv:2608.13267v1
+  - http://arxiv.org/abs/2608.13267v1
+  - Existing vision-language model (VLM) benchmarks emphasize perception and reasoning accuracy (how well VLMs describe and reason about what they see in an image), with limited attention to behavioral reliability under uncertainty (how they behave when visual evidence is missing or misleading). We introduce SciFigBench, a
+
+## Paper lane D
+- [41] **In-Loop Model Adaptation with Coupled Latent-Noise Guidance for High-Fidelity Subject-Driven Text-to-Image Generation** | 2026-08-10T08:07:28Z | arxiv:2608.09244v1
+  - http://arxiv.org/abs/2608.09244v1
+  - Text-to-image diffusion models have achieved remarkable success in generating high-quality images from a given text prompt. Subject-driven generation aims to synthesize customized images to mimic the appearance of subjects in given reference images within different visual contexts specified by the text prompts. The cen
+- [35] **High-Quality Exposure Correction with Diffusion-Based Image Generation Priors** | 2026-08-09T14:05:08Z | arxiv:2608.08720v1
+  - http://arxiv.org/abs/2608.08720v1
+  - Although most existing exposure correction methods achieve high fidelity, they often place excessive focus on overall pixel-wise accuracy, making it challenging to effectively model extreme exposure regions, which results in suboptimal perceptual quality. Recently, diffusion models have received significant attention d
+- [28] **Diffusion Image Editing via Asynchronous Token Decoding** | 2026-08-10T09:02:13Z | arxiv:2608.09322v1
+  - http://arxiv.org/abs/2608.09322v1
+  - Text-guided diffusion image editing aims to modify semantic attributes of an image while preserving its identity, layout, and background. However, naïvely switching the text condition during sampling often causes global drift, as denoising dynamics propagate changes across tokens and can disrupt unedited regions. To ad
+- [27] **Towards Expressive and Faithful Audio-to-Image Generation: A Unified Multimodal Dataset and Synthesis Framework** | 2026-08-10T12:31:16Z | arxiv:2608.09529v1
+  - http://arxiv.org/abs/2608.09529v1
+  - As an important subfield of cross-modal generation, synthesizing static visual content in the form of images from audio, namely audio-to-image (A2I) generation, has attracted increasing research attention in recent years. Nevertheless, despite the remarkable visual quality of modern text-to-image (T2I) models, the perf
+- [27] **Evaluation of Clinically Steerable Retinal Image Generation from Foundation Model Latent Spaces** | 2026-08-13T16:40:26Z | arxiv:2608.13455v1
+  - http://arxiv.org/abs/2608.13455v1
+  - Medical foundation models learn latent representations of clinically meaningful phenotypes, yet their ability to support controllable image generation remains largely unexplored. We evaluate four retinal foundation models within the representation tokenizer framework and examine whether demographic and clinical informa
+- [27] **Qwen-Video-Edit: Instruction-Based Video Editing by Repurposing an Image Editing Model** | 2026-08-14T18:01:29Z | arxiv:2608.14790v2
+  - http://arxiv.org/abs/2608.14790v2
+  - Instruction-based video editing is commonly built on video-pretrained generative backbones: a video diffusion transformer is adapted, at considerable cost, to condition on a source video and an editing instruction. In this report we explore a different route and show that a strong instruction-based image editing model 
+- [25] **SI-Edit: Toward Sketch-Instruction Guided Local Image Editing with Pixel-Level Precision** | 2026-08-10T03:50:48Z | arxiv:2608.09097v1
+  - http://arxiv.org/abs/2608.09097v1
+  - Despite rapid advances in generative models, achieving pixel-level precision in sketch-based image editing remains a persistent challenge, particularly for fine-grained local deformations. This gap stems primarily from the critical shortage of high-quality, publicly available benchmark datasets that jointly provide geo
+- [25] **Unveiling the Secret of AdaLN-Zero in Diffusion Transformer** | 2026-08-10T11:12:17Z | arxiv:2608.09438v1
+  - http://arxiv.org/abs/2608.09438v1
+  - Diffusion transformer (DiT), a rapidly emerging architecture for image generation, has gained much attention. However, despite ongoing efforts to improve its performance, the understanding of DiT remains superficial. In this work, we delve into and investigate a critical conditioning mechanism within DiT, adaLN-Zero, w
+- [25] **CoQui: A Coordinate-Conditioned Quantum Implicit Generative Adversarial Network for End-to-End Image Generation** | 2026-08-12T10:10:22Z | arxiv:2608.11884v1
+  - http://arxiv.org/abs/2608.11884v1
+  - Quantum generative adversarial networks (QGANs) have attracted increasing attention for image generation using parameterized quantum circuits. Existing amplitude-based approaches face two key limitations: pixel locations are typically encoded by computational-basis indices or address qubits, causing quantum resources t
+- [25] **Concept Guidance: Precise, Training-Free Latent Control for Text-to-Image Generation** | 2026-08-14T10:35:34Z | arxiv:2608.14172v1
+  - http://arxiv.org/abs/2608.14172v1
+  - Text-to-image diffusion models have two major drawbacks that severely limit their practical utility: (1) standard models lack an intrinsic mechanism for continuous, concept-specific guidance (e.g., for precisely controlling how aesthetically pleasing an image looks), and (2) they lack reliability for tasks requiring hi
+- [25] **CPI-Bench: A Comprehensive, Practical and Intelligent Benchmark for Real-World Image Editing** | 2026-08-14T17:59:01Z | arxiv:2608.14546v2
+  - http://arxiv.org/abs/2608.14546v2
+  - With the rapid advancement of image editing models and their widespread application across various domains, there is an increasingly urgent need to deploy these model capabilities directly into real-world scenarios. However, existing benchmarks remain confined to simple single-image tasks, suffering from limited covera
+- [24] **RL-Native Distillation: Exploiting Scored Trajectories for Few-Step Image Generation** | 2026-08-10T07:49:05Z | arxiv:2608.09226v1
+  - http://arxiv.org/abs/2608.09226v1
+  - Efficient text-to-image generation requires both reinforcement-learning (RL)-based reward alignment and few-step distillation, yet these procedures are typically performed sequentially, increasing training cost and risking the loss of reward gains during compression. We instead take an RL-native perspective: diffusion 
+- [24] **FlowLOB: Efficient and Controllable Limit Order Book Generation with Flow Matching** | 2026-08-13T11:01:56Z | arxiv:2608.13096v1
+  - http://arxiv.org/abs/2608.13096v1
+  - Limit order book (LOB) simulators are most useful to practitioners when they combine realistic market dynamics, computationally efficient sampling, controllable scenario generation, and the ability to generalize beyond the instruments seen during training---properties that existing agent-based and deep generative simul
+- [23] **On the Limitations of Cross-Lingual Consistency in Multilingual Text-to-image Generation** | 2026-08-11T14:49:23Z | arxiv:2608.11002v1
+  - http://arxiv.org/abs/2608.11002v1
+  - Text-to-image (T2I) generation has achieved remarkable progress in recent years. However, existing research has largely focused on English-only settings, leaving cross-lingual performance gaps and language-specific effects insufficiently explored. To fill this gap, we introduce LingT2I, a benchmark covering 10 widely u
+- [22] **UniSpace: Unified Visual Representation and Scalable Multimodal Modeling** | 2026-08-09T12:46:56Z | arxiv:2608.08676v1
+  - http://arxiv.org/abs/2608.08676v1
+  - Semantic vision encoders have become a central visual interface for multimodal understanding and semantic conditioning in image generation. However, their final tokens discard fine-grained visual details, leading to poor pixel reconstruction and limiting their use in reconstruction-sensitive tasks such as image generat
+- [22] **Through Van Gogh's Eyes: Global Style Transfer with Diffusion Model** | 2026-08-12T01:29:43Z | arxiv:2608.11546v2
+  - http://arxiv.org/abs/2608.11546v2
+  - Artistic image synthesis aims to recreate the expressive visual identity of a target artist, yet existing methods often fail to capture an artist's global style. Conventional style transfer methods transfer the style of one or a few reference artworks to a content image in a One-to-One manner, making them effective for
+- [22] **RankT2I: A Submodular Framework for Discovering Interpretable and Diverse Semantics in Text-to-Image Models** | 2026-08-14T11:59:34Z | arxiv:2608.14226v1
+  - http://arxiv.org/abs/2608.14226v1
+  - Recent advances in text-to-image (T2I) models have revolutionized the field of image generation and editing. However, identifying semantics that a T2I model can successfully edit in an image continues to be a challenging task. Most existing approaches require users to manually specify semantics to modify a particular i
+- [20] **Flow Straight to Reality: Perceptually Consistent Flow Matching for Efficient Image Restoration** | 2026-08-11T06:37:10Z | arxiv:2608.10544v1
+  - http://arxiv.org/abs/2608.10544v1
+  - Image restoration is fundamentally constrained by the tradeoff between distortion and perception: minimizing pixel-wise error yields over-smoothed results, whereas optimizing for perceptual realism often introduces structural deviations. Recent approaches attempt to balance this tradeoff via posterior sampling or multi
+
+## Paper lane E
+- [50] **H2R-Bench: Benchmarking Human-to-Robot Manipulation Video Generation in World Models** | 2026-08-13T10:14:33Z | arxiv:2608.13049v1
+  - http://arxiv.org/abs/2608.13049v1
+  - Large-scale manipulation data is essential for robot learning, yet collecting robot demonstrations remains expensive and difficult to scale. Meanwhile, abundant egocentric human manipulation videos provide rich behavioral experiences, but transferring them across embodiments remains challenging due to differences betwe
+- [35] **ForgeWM: Progressive Causal Training for Few-Step Action-Conditioned Video World Models** | 2026-08-14T07:13:34Z | arxiv:2608.14022v1
+  - http://arxiv.org/abs/2608.14022v1
+  - Action-conditioned video world models require low-latency causal generation and reliable responses to game-native controls. Although causal distillation enables one- or few-step video synthesis, extending it to interactive world models remains challenging, as discrete keyboard states and continuous mouse motion must re
+- [30] **Sekai2: From World Exploration to Interactive World Modeling** | 2026-08-10T11:23:01Z | arxiv:2608.09449v2
+  - http://arxiv.org/abs/2608.09449v2
+  - Video world models must capture how scenes evolve over time and across viewpoints. Training them for long-horizon generation and camera control therefore benefits from long videos paired with camera trajectories and temporally grounded semantics. Existing corpora rarely offer the three together: large-scale web video p
+- [30] **Stream Forcing: Constructing Unified Training Trajectory for Robust Streaming Video Generation** | 2026-08-11T03:39:05Z | arxiv:2608.10439v1
+  - http://arxiv.org/abs/2608.10439v1
+  - Streaming video generation holds strong potential for world modeling, where future frames must be inferred online sequentially to form a continuous video stream. However, streaming video diffusion models introduce a fundamental train-inference mismatch: inference follows a specialized denoising order, whereas advanced 
+- [29] **RAVEN-Eval: Rubric-Guided Automatic Evaluation for AI Video Generation Models Based on LMM Preference Judgement** | 2026-08-10T04:38:15Z | arxiv:2608.09111v1
+  - http://arxiv.org/abs/2608.09111v1
+  - AI video generation has advanced rapidly and entered widespread commercial use. As a result, quality differences among videos produced by state-of-the-art AI video generation models~(AIVGMs) have become increasingly difficult to discern using conventional evaluation criteria, such as visual fidelity and semantic instru
+- [28] **Spatially-Grounded Text-to-Video Generation via Inference-Time Gradient-Free Optimization** | 2026-08-13T10:05:16Z | arxiv:2608.13037v2
+  - http://arxiv.org/abs/2608.13037v2
+  - Diffusion Transformer Text-to-Video models have achieved remarkable synthesis quality, yet fine-grained spatial controllability remains a significant challenge. While existing training-free methods produce solid overall results in spatially grounded generation, \ie, placing a specific object in a designated location, t
+- [27] **Beyond Text Conditioning: A Systematic Study of MLLM-DiT Fusion for Video Generation** | 2026-08-14T07:40:41Z | arxiv:2608.14043v1
+  - http://arxiv.org/abs/2608.14043v1
+  - Diffusion Transformers (DiTs) have become the dominant paradigm for high-fidelity video generation, yet their ability to perform high-level semantic planning remains limited. While hybrid architectures integrating MLLMs with diffusion backbones have shown strong advantages in image synthesis, such designs remain undere
+- [25] **CausalNav: Reliability-Certified Causal World Models for Control under Physical-Parameter Shift** | 2026-08-07T23:16:57Z | arxiv:2608.07809v1
+  - http://arxiv.org/abs/2608.07809v1
+  - A world model is only useful for physical AI if it changes what the agent does, and only safe if it declines to do so when it is wrong. We study both halves of that requirement with CausalNav, a controller built around a signed, action-conditioned transition graph over identified state coordinates. At deployment Causal
+- [25] **Distilling Physical Priors into Streaming World Models** | 2026-08-08T07:35:10Z | arxiv:2608.07981v1
+  - http://arxiv.org/abs/2608.07981v1
+  - Streaming world models predict future visual states online while maintaining physically coherent dynamics over long horizons. However, their rollouts often violate basic physical constraints. A common approach distills pretrained bidirectional DiTs into few-step causal generators. However, this paradigm suffers from tw
+- [25] **Population-Scalable Multi-Agent World Modeling** | 2026-08-09T09:26:15Z | arxiv:2608.08600v2
+  - http://arxiv.org/abs/2608.08600v2
+  - World models have recently achieved impressive progress in visual prediction and interactive generation, but extending them to multi-agent environments introduces a fundamental scalability challenge. Existing methods generally assume a fixed number of agents during training and inference, which ties the model to a pre-
+- [25] **verdi: retrieval is not transfer for continual world model optimization** | 2026-08-10T12:35:59Z | arxiv:2608.09537v1
+  - http://arxiv.org/abs/2608.09537v1
+  - Foundation world models have made remarkable progress in planning, simulation, and embodied intelligence. However, optimizing a pretrained world model toward a user-specified objective remains difficult: each campaign typically rediscovers optimization strategies from scratch, and the resulting knowledge rarely transfe
+- [25] **DUET: A Diversity-Quality Duet of Distillation Experts for Two-Step Video Generation** | 2026-08-10T14:17:52Z | arxiv:2608.09637v1
+  - http://arxiv.org/abs/2608.09637v1
+  - Diffusion models have enabled high-quality video generation in recent years, but the high cost of iterative sampling hinders their practical deployment. Few-step distillation alleviates this cost, yet exposes a quality--diversity trade-off between its two dominant paradigms: trajectory-level distillation (e.g., sCM) fa
+- [25] **World Tokens: Enhancing Embodied Policies with Training-Time World Modeling** | 2026-08-10T15:30:38Z | arxiv:2608.09730v1
+  - http://arxiv.org/abs/2608.09730v1
+  - Vision-language-action (VLA) models are a widely adopted paradigm for embodied policies. They excel at efficient closed-loop control but do not explicitly model how physical scenes evolve as a task unfolds. Recently emerging world-action models (WAMs) leverage pretrained video world models to capture spatiotemporal evo
+- [25] **Energy-Structured Latent World Models with Neural Time Fields for Physically Constistent Open-World Motion Planning** | 2026-08-10T17:31:18Z | arxiv:2608.09876v1
+  - http://arxiv.org/abs/2608.09876v1
+  - Physically consistent motion planning remains a fundamental challenge in embodied AI, as generated trajectories must strictly conform to real-world execution dynamics. While latent world models offer a promising approach by predicting these dynamics, existing methods learn unconstrained future representations where abs
+- [25] **Equilibrium Forcing: Adaptive Video Generation Without Noise Conditioning** | 2026-08-11T00:02:32Z | arxiv:2608.14706v1
+  - http://arxiv.org/abs/2608.14706v1
+  - Standard autoregressive video generation algorithms based on Diffusion and Flow Matching rely on rigid training objectives and static sampling schedules, limiting inference procedures from adapting to the data. We introduce Equilibrium Forcing (EqF), a simplified framework for video denoising generative models without 
+- [25] **Dreamer-SAC: Off-Policy Learning in Latent World Models for Sample-Efficient Autonomous Driving** | 2026-08-11T02:27:26Z | arxiv:2608.10386v1
+  - http://arxiv.org/abs/2608.10386v1
+  - Sample-efficient reinforcement learning for autonomous driving is often limited by the trade-off between data efficiency and model bias. While world models reduce the reliance on costly environment interactions, policy optimization over learned dynamics remains sensitive to prediction errors. This paper proposes the Dr
+- [25] **How Can Driving World Models Do Counterfactual Prediction?** | 2026-08-12T03:19:59Z | arxiv:2608.11601v1
+  - http://arxiv.org/abs/2608.11601v1
+  - Driving world models are often interpreted as counterfactual simulators for observed driving episodes: given a factual driving log, they are asked what would have happened under an alternative ego action. In this paper, we identify a fundamental mismatch between this goal and direct action-conditioned prediction. The d
+- [25] **Better Slots, Better Worlds: Representation Quality & Robustness in Object-Centric World Models** | 2026-08-12T14:02:36Z | arxiv:2608.12078v1
+  - http://arxiv.org/abs/2608.12078v1
+  - Learning world models from offline trajectories enables agents to accomplish different tasks through planning. Object-centric (OC) representations, which decompose a scene into a set of slots that bind to its objects, have been proposed as an inductive bias for world models that are more sample-efficient and generalize
+
+## Paper lane F
+- [32] **Confucius4-TTS: Transcript-Free Cross-Lingual Zero-Shot TTS with a Learnable Speaker Encoder** | 2026-08-12T04:48:29Z | arxiv:2608.11650v1
+  - http://arxiv.org/abs/2608.11650v1
+  - Recent advances in zero-shot text-to-speech (TTS) have substantially improved speech quality and voice cloning fidelity. However, many zero-shot TTS systems still depend on audio prompt transcripts at inference time. This dependency limits cross-lingual voice cloning, since in-the-wild reference audio is often untransc
+- [32] **VoiceChat-TTS: A Low-Latency Continuous Speech Synthesis Model for Interactive Agents** | 2026-08-13T23:37:07Z | arxiv:2608.13831v1
+  - http://arxiv.org/abs/2608.13831v1
+  - Spoken dialogue is a natural form of human--computer interaction, yet most speech language models remain limited to turn-based operation and lack real-time adaptability, such as user barge-in. Recent duplex speech-to-speech and speech-to-text models reduce latency by replacing multi-stage pipelines, but often compromis
+- [30] **Beyond Naturalness: Probing Automated Text-To-Speech Evaluators on Linguistically Grounded Dimensions** | 2026-08-10T17:59:51Z | arxiv:2608.09930v1
+  - http://arxiv.org/abs/2608.09930v1
+  - Automated Text-to-Speech (TTS) evaluation methods (Mean Opinion Score (MOS) predictors and Audio Large Language Models (Audio-LLM) judges) are expected to reflect human perception, yet it is unclear how well they capture the distinct aspects of speech that listeners actually perceive. We deconstruct "naturalness" into 
+- [26] **CuteTTS: Efficient and High-Quality Speech Synthesis via Autoregressive Modeling of Continuous Latents** | 2026-08-09T11:10:20Z | arxiv:2608.08638v1
+  - http://arxiv.org/abs/2608.08638v1
+  - Zero-shot text-to-speech (TTS) now supports interactive assistants, personalized media, and accessibility tools. All TTS systems require faithful linguistic rendering, consistent speaker identity, and low-latency response. Yet compact streaming systems must preserve sufficient acoustic detail in a predictable low-rate 
+- [26] **Qwen-MusicAVQA-7B: A Multimodal Model for Music Audio-Visual QA** | 2026-08-11T18:28:30Z | arxiv:2608.11329v1
+  - http://arxiv.org/abs/2608.11329v1
+  - A common approach to adding audio to a vision-language model is to train or adapt a large omni-modal system. We show that a lightweight alternative can be highly effective for music audio-visual question answering (AVQA). Qwen-MusicAVQA-7B connects a frozen Whisper encoder to Qwen2-VL-7B-Instruct through learned linear
+- [24] **CookVoice: Unified Framework for Style Controllable Multi-Modal Human Voice Generation** | 2026-08-12T02:58:45Z | arxiv:2608.11590v2
+  - http://arxiv.org/abs/2608.11590v2
+  - Human voice generation has made rapid progress in speech generation, singing voice generation, voice cloning, and voice editing. However, most existing systems are designed for specific tasks and often rely on task-dependent architectures, control signals, or autoregressive decoding, limiting fine-grained controllabili
+- [22] **Dramarrator: Object-Based Audio Editing for Audio Drama Production from Books** | 2026-08-08T22:09:52Z | arxiv:2608.08349v1
+  - http://arxiv.org/abs/2608.08349v1
+  - Audio dramas weave dialogue, sound effects, and music into immersive stories. Creators often adapt books into audio dramas, but this process remains labor-intensive, requiring them to interpret source material, author scripts, generate audio assets, and assemble them on a timeline. Because story elements like character
+- [22] **FastThaiG2P: Lightning-fast Thai Grapheme-to-phoneme Conversion for Voice Agent Pipelines** | 2026-08-13T04:46:01Z | arxiv:2608.12814v1
+  - http://arxiv.org/abs/2608.12814v1
+  - FastThaiG2P provides sub-millisecond Thai grapheme-to-phoneme conversion for text-to-speech pipelines (International Phonetic Alphabet and Kokoro-TTS conventions) using a PyThaiNLP-tokenized, extensible dictionary and normalization rules for common Central Thai speech. The approach achieves an average latency of 0.15 m
+- [20] **MusicLayout: Explicit Structural Planning for Controllable Text-to-Music Generation** | 2026-08-10T02:38:42Z | arxiv:2608.09035v2
+  - http://arxiv.org/abs/2608.09035v2
+  - Text-to-music generation has advanced rapidly, but current systems still rely primarily on global text prompts, leaving the structural organization of generated music implicit and difficult to inspect, control, or revise before audio generation. To address this issue, we introduce MusicLayout, an explicit intermediate 
+- [20] **DAVE: A Decoupled Audio-Visual Enhancement Framework for Real-World Speech Separation** | 2026-08-10T08:41:28Z | arxiv:2608.09288v1
+  - http://arxiv.org/abs/2608.09288v1
+  - Audio-visual speech enhancement under real-world conditions remains challenging due to unreliable visual inputs and the lack of large-scale training data with realistic acoustic conditions. Existing approaches usually fuse visual features directly into the separation network, making them vulnerable to degraded visual s
+- [20] **Structured Phonological Representations for Audio-Articulatory rtMRI Speech Classification** | 2026-08-10T15:58:07Z | arxiv:2608.09767v1
+  - http://arxiv.org/abs/2608.09767v1
+  - Real-time MRI makes it possible to observe vocal-tract articulation during speech, but mapping these articulatory patterns to phonetic and phonological categories remains challenging. We investigate whether PhonoQ, an audio-based model trained to recognize structured phonological features, provides useful information f
+- [20] **ASR-Roundtrip Evaluation Can Mask Context- and Convention-Dependent Reading Errors in Chinese News TTS** | 2026-08-11T07:49:37Z | arxiv:2608.10606v1
+  - http://arxiv.org/abs/2608.10606v1
+  - ASR-roundtrip evaluation is widely used as a scalable proxy for text-to-speech (TTS) intelligibility, but it can produce false negatives for reading errors perceived by listeners. We study Chinese news TTS spans whose correct reading depends on context or domain conventions, such as sports scores, aircraft models, tech
+- [20] **Drive-to-Music: Context-Aware Generative Audio for In-Vehicle Experiences** | 2026-08-12T21:54:18Z | arxiv:2608.12615v1
+  - http://arxiv.org/abs/2608.12615v1
+  - In-vehicle music can serve as an adaptive interface to enhance driver experience, attention, and well-being. We present Drive-to-Music, a context-aware system that generates music in real time from multimodal driving signals. Using dashcam imagery and vehicle telemetry, the system extracts scene semantics and driving c
+- [18] **The Voiceprint Fallacy: Why Voices Are Not Unique Biometric Imprints** | 2026-08-08T07:33:44Z | arxiv:2608.07980v1
+  - http://arxiv.org/abs/2608.07980v1
+  - In recent years, the term voiceprint has regained attention, particularly in technological applications and policy-making contexts, often carrying the assumption that a person's voice constitutes a stable and unique biometric trace analogous to a fingerprint. Yet this conception has been repeatedly criticized and rejec
+- [18] **VoiceDesigner: Text-to-Voice Generation and Editing via Unified Diffusion Modeling and Data Augmentation** | 2026-08-12T18:04:18Z | arxiv:2608.13613v1
+  - http://arxiv.org/abs/2608.13613v1
+  - Recent breakthroughs in generative models have made text-to-voice generation (TTV) possible, enabling the synthesis of speech directly from textual voice descriptions. However, existing systems face two key challenges. First, they struggle to generate a diverse range of voices, spanning real-world human speakers and fi
+- [16] **From Speech to Interaction: Analyzing Multimodal Systems in Cocktail-Party Scenarios** | 2026-08-09T06:11:38Z | arxiv:2608.08510v1
+  - http://arxiv.org/abs/2608.08510v1
+  - Humans have the remarkable ability to engage in spontaneous informal conversations and selectively attend to individual speakers while filtering out competing speech from nearby conversations. This "cocktail party" scenario still presents severe challenges to speech recognition systems. The CHiME-9 MCoRec task provides
+- [16] **VoxZip: Semantic-Anchored Temporal KV Cache Compression for Long-Context Audio Inference** | 2026-08-09T08:17:18Z | arxiv:2608.08569v1
+  - http://arxiv.org/abs/2608.08569v1
+  - Recent advancements in Speech Large Language Models have demonstrated remarkable capabilities in understanding complex audio tasks. Despite this progress, their long-context inference remains severely bottlenecked by prohibitive KV cache memory demands. Existing text-centric compression methods struggle here, often dis
+- [16] **RAG-Audio: Retrieval-Augmented Generation for Faithful Brain-to-Audio Reconstruction** | 2026-08-10T09:10:15Z | arxiv:2608.09331v1
+  - http://arxiv.org/abs/2608.09331v1
+  - Brain-to-audio reconstruction is limited by \emph{prior domination}: when a pretrained generator is conditioned on a weak neural signal, it produces realistic but stimulus-inaccurate audio. We introduce RAG-Audio, which decodes fMRI into a semantic audio embedding, retrieves a matching real-audio exemplar, and initiali
+
+## Paper lane G
+- [16] **SQuaT: Self-Supervised Knowledge Distillation via Student-Aware Quantized Teacher Features** | 2026-08-11T09:29:30Z | arxiv:2608.10709v1
+  - http://arxiv.org/abs/2608.10709v1
+  - Quantization-Aware Training (QAT) enables the deployment of quantized models with minimal accuracy degradation. However, in practical scenarios, training labels are often unavailable due to privacy, copyright, or cost constraints. Knowledge Distillation (KD) is a common approach to address this challenge, but we observ
+- [16] **ReRound: Reconstructive Rounding to Resolve Midpoint Ambiguity in Calibration-Free LLM Quantization** | 2026-08-11T15:18:07Z | arxiv:2608.11045v1
+  - http://arxiv.org/abs/2608.11045v1
+  - ReRound (Reconstructive Rounding) is a post-training quantization method that addresses the midpoint ambiguity inherent in standard round-to-nearest (RTN) schemes when quantizing weights near the centers of quantization intervals. Starting from a pretrained LLM, ReRound trains a conditional diffusion model to produce c
+- [16] **Language-Conditional Dequantization: Recovering What Quantization Steals from Non-English Languages** | 2026-08-12T08:28:03Z | arxiv:2608.11786v1
+  - http://arxiv.org/abs/2608.11786v1
+  - Aggressive quantization disproportionately harms multilingual capability: in the sub-4B INT3 GPTQ regime, we measure 2-4x larger perplexity degradation on non-English languages than on English. We propose Language-Conditional Dequantization (LCD), a post-hoc method that attaches per-language rank-2 LoRA corrections to 
+- [15] **LipCache: A Local Inference Proxy with Certified Caching for Edge Image Classification Service** | 2026-08-13T12:16:58Z | arxiv:2608.13144v1
+  - http://arxiv.org/abs/2608.13144v1
+  - As edge-side vision services continue to expand toward low-latency, high-throughput scenarios, reducing the inference cost of vision models without sacrificing reliability has become a central concern. Existing semantic caching methods largely rely on empirical similarity thresholds; while such thresholds improve hit r
+- [14] **SoftWater: Class-Aware Rate Allocation for Softmax Quantization** | 2026-08-12T13:06:50Z | arxiv:2608.12026v1
+  - http://arxiv.org/abs/2608.12026v1
+  - Post-training quantization pipelines routinely leave the softmax output layer in high precision. Yet in small LLMs with modern vocabularies, the head holds 15--30\% of all parameters, so a nominal ``2-bit'' model with an fp16 head can store several times as many bits per weight. We pose softmax-layer quantization as a 
+- [12] **Quantization Degradation in Large Language Models: A Signal-Noise Perspective** | 2026-08-08T15:28:45Z | arxiv:2608.08188v1
+  - http://arxiv.org/abs/2608.08188v1
+  - Post-training quantization reduces the deployment cost of large language models, yet how severely a quantized model degrades is not determined by bit-width alone. We systematically study weight-only post-training quantization across bit-widths, quantization methods, model scales and downstream tasks on multiple model f
+- [12] **Entropy-Constrained Adaptive Stochastic Quantization** | 2026-08-10T17:32:40Z | arxiv:2608.18147v1
+  - http://arxiv.org/abs/2608.18147v1
+  - Adaptive stochastic quantization (ASQ) is a recently introduced quantization approach that optimizes the Mean Squared Error (MSE) for a given input while preserving unbiasedness. It is designed to alleviate the communication and memory bottlenecks of modern data and machine learning workloads, including model, gradient
+- [12] **FQTree: Fine-grained Quantization and Hardware Generation of Boosted Decision Trees** | 2026-08-12T14:56:13Z | arxiv:2608.12140v1
+  - http://arxiv.org/abs/2608.12140v1
+  - Boosted decision trees (BDTs) are widely used in latency-critical applications, but efficient hardware deployment remains challenging. Existing designs often rely on uniform or manually tuned fixed-point formats, which can introduce unnecessary hardware cost or accuracy loss. This work presents the FQTree algorithm{htt
+- [12] **NAS-Driven Hardware Accelerator Exploration for Edge AI and Quantization Effects on the Pareto Space** | 2026-08-13T14:26:08Z | arxiv:2608.13293v1
+  - http://arxiv.org/abs/2608.13293v1
+  - Edge AI deployment demands neural architectures that are simultaneously accurate, computationally efficient, and hardware-deployable - a challenge addressed by hardware-aware Neural Architecture Search (NAS). While recent works incorporate quantization directly into the NAS loop, these approaches expand search complexi
+- [12] **QUASAR: Lowering the Loss Floor of Quantization-Aware Training with Loss-Aware Reconstruction** | 2026-08-14T05:29:58Z | arxiv:2608.13966v1
+  - http://arxiv.org/abs/2608.13966v1
+  - As large language model inference shifts toward lower precision, post-training quantization (PTQ) becomes increasingly brittle, making quantization-aware training (QAT) essential for preserving model quality. However, QAT computes the loss and surrogate gradients using a lossy reconstruction of latent full-precision we
+- [10] **Can Open-Weight Models Compete on Financial Text Comprehension?** | 2026-08-09T10:51:52Z | arxiv:2608.08634v1
+  - http://arxiv.org/abs/2608.08634v1
+  - Open-weight language models from Chinese AI labs caught up on benchmarks relative to proprietary frontier models in recent months. Yet their reliability on real-world financial tasks remains largely untested. We updated the Financial Touchstone benchmark, which now has 2,967 question context-answer triplets across 495 
+- [10] **From Sweep to Seam: Interleaved Cross-Block Post-Training Quantization** | 2026-08-10T13:28:23Z | arxiv:2608.09595v1
+  - http://arxiv.org/abs/2608.09595v1
+  - Compressing large language models to two bits or fewer is increasingly feasible through block-wise post-training quantization; cross-block variants reconstruct neighboring Transformer blocks within a moving window. In the fixed two-block setting studied here, the matched sequential baseline moves this window through th
+- [10] **Gromov-Wasserstein Quantization and Clustering: Structure, Rates, and Algorithms** | 2026-08-11T14:58:31Z | arxiv:2608.11016v1
+  - http://arxiv.org/abs/2608.11016v1
+  - Clustering is a fundamental class of data analysis techniques with the most important representatives being centroid-based methods like $k$-means. Such methods are strongly connected to quantization problems, which aim to approximate general probability measures with discrete ones. For example, $k$-means corresponds to
+- [10] **HAMP-LIC: Hessian-Aware Mixed-Precision Post-Training Quantization for Learned Image Compression** | 2026-08-12T16:41:33Z | arxiv:2608.12239v1
+  - http://arxiv.org/abs/2608.12239v1
+  - Use this plain-text version for the arXiv abstract field: Learned image compression (LIC) models achieve strong rate-distortion performance but are hindered by high computational complexity and encoding-decoding mismatches across heterogeneous hardware platforms. Uniform fixed-precision quantization alleviates these is
+- [10] **Calibration Bets on the Past: Post-Training Quantization for Financial Time-Series Forecasting** | 2026-08-12T17:02:06Z | arxiv:2608.12259v1
+  - http://arxiv.org/abs/2608.12259v1
+  - Financial forecasting models are typically developed in full precision, yet production deployment often requires low-precision inference to reduce memory and computational cost. Post-training quantization (PTQ) enables such deployment without retraining. However, reliable activation quantization requires calibration: a
+- [10] **Joint Optimization of Memory and Computing Frequency for Energy-Efficient DNN Inference** | 2026-08-14T01:25:00Z | arxiv:2608.13863v1
+  - http://arxiv.org/abs/2608.13863v1
+  - Deep neural network (DNN) inference on mobile devices often incurs high latency and energy consumption due to limited computing and memory resources. To enable energy-efficient DNN inference, most existing studies focus on dynamic voltage and frequency scaling (DVFS) for adjusting the computing frequency, while the imp
+- [10] **Post-training Quantization for Hybrid Iterative Generative Models** | 2026-08-14T04:07:14Z | arxiv:2608.13932v1
+  - http://arxiv.org/abs/2608.13932v1
+  - Iterative Generative Models (IGMs) span autoregressive and diffusion paradigms, and hybrid variants that couple them can achieve remarkable image-generation fidelity. However, their iterative inference incurs substantial computational overhead, making Post-training Quantization (PTQ) appealing for acceleration, while d
+- [10] **QuaSAR: Quantization Compensation via Stable Activation-Aware Rank Truncation** | 2026-08-14T10:00:36Z | arxiv:2608.14149v1
+  - http://arxiv.org/abs/2608.14149v1
+  - Recent training-free post-training quantization methods restore model accuracy through closed-form residual compensation. To constrain additional model storage overhead, several existing methods gate layer selection by goodness-of-fit, retaining only those layers whose compensation yields a positive residual fit score 
+
+## Paper lane H
+- [38] **SPADE: Speculative Decoding for Precise and Low Cost Distributed Edge Cloud Inference** | 2026-08-13T10:43:57Z | arxiv:2608.13076v1
+  - http://arxiv.org/abs/2608.13076v1
+  - Large Language Models (LLMs) have achieved remarkable success in natural language understanding and generation, but their deployment is constrained by high computational demands. Deploying smaller LLMs directly on the edge can circumvent this, but with degraded accuracy. Deploying smaller cloud-based big LLMs preserves
+- [37] **VoxZip: Semantic-Anchored Temporal KV Cache Compression for Long-Context Audio Inference** | 2026-08-09T08:17:18Z | arxiv:2608.08569v1
+  - http://arxiv.org/abs/2608.08569v1
+  - Recent advancements in Speech Large Language Models have demonstrated remarkable capabilities in understanding complex audio tasks. Despite this progress, their long-context inference remains severely bottlenecked by prohibitive KV cache memory demands. Existing text-centric compression methods struggle here, often dis
+- [36] **OasisKV: Scaling In-Decode KV Cache Beyond HBM with Lookahead Sparse Prefetching** | 2026-08-08T12:27:03Z | arxiv:2608.08097v1
+  - http://arxiv.org/abs/2608.08097v1
+  - Large language model (LLM) inference serving is increasingly constrained by memory rather than compute. As long-context and long-form reasoning workloads become more prevalent, the key-value (KV) cache dominates both memory footprint and memory traffic during LLM token generation, i.e., decode. In particular, HBM capac
+- [31] **MemSpec: Memory-Aware Runtime for Adaptive Draft Scheduling in Speculative Decoding on Edge Devices** | 2026-08-11T01:41:37Z | arxiv:2608.10362v1
+  - http://arxiv.org/abs/2608.10362v1
+  - Speculative decoding accelerates autoregressive large language model (LLM) inference by using a lightweight draft model to speculate multiple tokens, reducing expensive target model decoding steps. Its effectiveness depends heavily on draft selection, motivating adaptive methods that exploit variation across inputs and
+- [29] **CommitKV: Lifecycle-Aware KV Cache Compression via Commit Transitions for Multi-Turn Agents** | 2026-08-08T01:50:55Z | arxiv:2608.07855v1
+  - http://arxiv.org/abs/2608.07855v1
+  - Multi-turn Reasoning-and-Acting (ReAct) agents accumulate growing trajectories of reasoning, tool calls, and observations. Their key-value (KV) caches grow accordingly, increasing memory use and attention cost during model inference. Existing KV cache compression methods reduce these costs by evicting states with low a
+- [28] **vToken: Token-Level Virtualization for Reclaimable KV Caches** | 2026-08-13T14:01:21Z | arxiv:2608.13263v1
+  - http://arxiv.org/abs/2608.13263v1
+  - Large language model serving faces a critical memory bottleneck: the KV cache grows with sequence length and batch size. PagedAttention uses fixed-size memory blocks to reduce allocator-level fragmentation, but recent KV eviction algorithms operate at a token granularity finer than block-level management. This mismatch
+- [27] **RippleKV: Cross-Layer KV Cache Allocation via Perturbation Propagation** | 2026-08-09T13:01:11Z | arxiv:2608.08684v1
+  - http://arxiv.org/abs/2608.08684v1
+  - Long-context LLM inference is bottlenecked by KV cache memory, yet distributing a limited cache budget across layers remains challenging. Existing methods rely on proxies such as layer depth, attention statistics, or representation change. These proxies do not measure how perturbations at each layer propagate to the ou
+- [27] **LibraSpec: Dynamic Diffusion-Based Speculative Decoding via Marginal-Gain-Driven Optimization** | 2026-08-09T14:15:14Z | arxiv:2608.08721v1
+  - http://arxiv.org/abs/2608.08721v1
+  - Speculative decoding accelerates large language model inference by drafting multiple tokens for parallel verification, with efficiency critically determined by the speculative length selected at each decoding round. Existing dynamic speculation methods select the speculation length by estimating how many tokens will be
+- [27] **Governing the KV Cache: Preventing Timing Side-Channel Leakage in Multi-Tenant LLM Inference** | 2026-08-10T07:47:57Z | arxiv:2608.09225v1
+  - http://arxiv.org/abs/2608.09225v1
+  - The key-value (KV) cache is the primary throughput optimization in modern large language model (LLM) inference, enabling prefix reuse across requests. In multi-tenant deployments this cache is shared across tenants, creating a timing side channel: an adversarial tenant can reconstruct another tenant's private prompt by
+- [24] **User-Assisted Collaborative Distributed Inference for Efficient QoS-Aware Autoscaling** | 2026-08-12T09:28:43Z | arxiv:2608.11840v1
+  - http://arxiv.org/abs/2608.11840v1
+  - Growing demand for artificial intelligence (AI) inference services requires scalable infrastructure, yet centralized serving costs rise with demand. We propose a collaborative distributed inference system combining dedicated infrastructure with resources contributed by service users. Dedicated resources provide baselin
+- [22] **SPECTRA: Pushing the KV Cache Beyond the 2-Bit Cliff via Spectral Transform Coding** | 2026-08-08T04:43:22Z | arxiv:2608.07915v1
+  - http://arxiv.org/abs/2608.07915v1
+  - Large language models (LLMs) increasingly read long inputs in the agentic era, from whole documents and codebases to conversations across many turns. Their inference memory is then dominated by the key-value (KV) cache, the stored attention keys and values of every token the model has read and generated. Because the ca
+- [22] **LLMVisor: A Real-Time Latency Attribution Model for Multi-Tenant LLM Serving** | 2026-08-09T00:28:05Z | arxiv:2608.08382v1
+  - http://arxiv.org/abs/2608.08382v1
+  - As LLM inference shifts to multi-tenant GPU clusters, co-batching improves throughput but obscures per-tenant usage and limits control. Enabling fractional sharing of the inference engine requires a real-time, per-request attribution primitive that is accurate and light enough to run inside the scheduling loop. We pres
+- [22] **ImpactHO: Importance-Aware KV Cache Transfer for Multi-User Edge LLM Handover** | 2026-08-11T06:37:10Z | arxiv:2608.10545v1
+  - http://arxiv.org/abs/2608.10545v1
+  - Edge LLMs must preserve inference continuity when a user hands over between edge nodes, requiring key-value (KV) cache transfer to the target node. However, simultaneous handovers saturate the backhaul, preventing full cache delivery within the mobility-imposed transfer window. Rather than allocating bandwidth as if al
+- [22] **InFactPlanner: Planning Sustainable Geo-Distributed LLM Data Centers** | 2026-08-13T07:57:22Z | arxiv:2608.12915v1
+  - http://arxiv.org/abs/2608.12915v1
+  - The rapid growth of LLM inference is shifting sustainability concerns from one-time training to continuous serving, where infrastructure decisions shape energy use, carbon emissions, water consumption, and service quality. Yet operators often need to compare deployment alternatives before large-scale infrastructure is 
+- [22] **KV Cache Compression Through the Lens of Transform Coding** | 2026-08-14T11:08:01Z | arxiv:2608.14191v1
+  - http://arxiv.org/abs/2608.14191v1
+  - The key-value (KV) cache stores information from past tokens and is a major memory bottleneck in long-context inference. Existing quantization methods address this bottleneck by representing the KV cache uniformly with lower-precision data types and designing quantization schemes to minimize reconstruction error in the
+- [21] **Aero Realtime: Fully Aligned Input-Output Streams for Low-Latency Streaming Multimodal Generation** | 2026-08-09T04:22:57Z | arxiv:2608.08469v1
+  - http://arxiv.org/abs/2608.08469v1
+  - Existing streaming multimodal models process observations incrementally but still follow a turn-based prefill-then-decode pattern, making them non-duplex: new observations cannot naturally enter an active generation stream. Proactive alternatives use micro-turn polling or external response gates, which fragment continu
+- [20] **EasyBalance: Cross-Layer Load Balancing in Distributed MoE Inference** | 2026-08-08T06:59:09Z | arxiv:2608.07964v1
+  - http://arxiv.org/abs/2608.07964v1
+  - Load Balancing has emerged as a critical problem in expert-parallel distributed inference of Mixture-of-Experts (MoE) models. As routing distributions are typically skewed across experts, devices hosting lighter-loaded experts must idle to wait for the heaviest during expert computing, leading to inefficiency. Existing
+- [20] **From Positionwise Confidence to Prefix Scheduling: Verifier Skipping in Speculative Decoding** | 2026-08-14T18:00:08Z | arxiv:2608.14787v1
+  - http://arxiv.org/abs/2608.14787v1
+  - Speculative decoding is a leading technique to reduce the cost of autoregressive generation by using a small drafter to propose several tokens, which are then verified in parallel by a larger target model. Speculative diffusion decoding (SDD) further removes sequential drafting by generating every position in a draft b
+
+## Paper lane I
+- [26] **MemoryLake on MemoryArena: A Matched Study of Agent Memory Backends** | 2026-08-14T02:19:26Z | arxiv:2608.13883v1
+  - http://arxiv.org/abs/2608.13883v1
+  - Most agent-memory benchmarks test post-hoc recall, whereas MemoryArena evaluates whether memory supports interdependent, multi-session task completion. We compare MemoryLake, a structured multi-track memory backend, with Mem0, text-embedding-3-small vector RAG, and a long-context control across all five MemoryArena dom
+- [24] **OpRAG: A Resource-Deterministic Runtime for GPU-Backed Multi-Stage RAG Workflows** | 2026-08-08T21:24:34Z | arxiv:2608.08340v1
+  - http://arxiv.org/abs/2608.08340v1
+  - Agentic retrieval-augmented generation (RAG) systems combine preprocessing, embedding, retrieval, memory access, context construction, generation, and vector-index updates. Although LLM decoding is GPU-bound, the surrounding orchestration layer can still limit end-to-end performance through serialization overhead, frag
+- [22] **SuperLocalMemory 4.0: The Governed Memory Operating System for AI Agents** | 2026-08-08T17:26:58Z | arxiv:2608.08253v1
+  - http://arxiv.org/abs/2608.08253v1
+  - AI agents are becoming shared infrastructure, yet durable memory is commonly assembled from separate retrieval, governance, and operational components. We present SuperLocalMemory 4.0, a governed, local-first memory operating system for AI agents. The system combines dense semantic, BM25 lexical, temporal, Hopfield-ass
+- [22] **EgoCITE: Context-Augmented Indexing and Time-Aware Retrieval for Long-Horizon Egocentric Memory** | 2026-08-12T22:20:29Z | arxiv:2608.12627v3
+  - http://arxiv.org/abs/2608.12627v3
+  - Long-horizon egocentric memory transforms continuous first-person video and audio into a searchable record of past experiences. We demonstrate two bottlenecks in existing systems: indices built from context-poor captions are unreliable for agentic search, while retrieval ignores a question's temporal intent. To address
+- [22] **ERSkill: Evolving for Skill-Guided Adaptive Memory Retrieval** | 2026-08-13T02:06:01Z | arxiv:2608.12720v1
+  - http://arxiv.org/abs/2608.12720v1
+  - While Large Language Model (LLM) agents increasingly rely on long-term memory for persistent interactions, the retrieval mechanisms governing this memory are rarely treated as evolvable components. This static approach limits performance on heterogeneous memory queries, which often demand diverse evidence construction 
+- [20] **TRACE-Memory: Public-Conditioned Retrieval and Utility-Aware Evidence Admission for Personalized Generation** | 2026-08-09T03:30:02Z | arxiv:2608.08446v1
+  - http://arxiv.org/abs/2608.08446v1
+  - Personalized generation systems retrieve user history by request--memory relevance and inject it into the model context. Yet relevant history may concern the wrong preference aspect, duplicate public information, or provide insufficient support. We argue that personal memory should be used only when it adds utility bey
+- [20] **TRACE: TRajectory Attribution for Automated Context Engineering** | 2026-08-10T06:01:03Z | arxiv:2608.09153v1
+  - http://arxiv.org/abs/2608.09153v1
+  - Production AI agents fail when their context sources -- system prompts, knowledge bases, tool descriptions, and procedural skills -- contain errors or gaps. Current maintenance relies on manual log review and ad-hoc debugging, creating a scalability bottleneck as interaction volume grows. We present TRACE (TRajectory A
+- [20] **RAG-Audio: Retrieval-Augmented Generation for Faithful Brain-to-Audio Reconstruction** | 2026-08-10T09:10:15Z | arxiv:2608.09331v1
+  - http://arxiv.org/abs/2608.09331v1
+  - Brain-to-audio reconstruction is limited by \emph{prior domination}: when a pretrained generator is conditioned on a weak neural signal, it produces realistic but stimulus-inaccurate audio. We introduce RAG-Audio, which decodes fMRI into a semantic audio embedding, retrieves a matching real-audio exemplar, and initiali
+- [20] **EnterpriseRAG: Benchmarking LLM Instruction Adherence and Robustness under Non-Ideal Enterprise Retrieval** | 2026-08-12T02:51:04Z | arxiv:2608.11584v1
+  - http://arxiv.org/abs/2608.11584v1
+  - Enterprise RAG deployments face a critical reliability gap: while LLMs satisfy 80% of individual constraints, only 26.8% of responses meet all requirements simultaneously, revealing a 57-point orchestration gap. Existing benchmarks assume clean retrieval with simple queries, failing to capture production conditions whe
+- [20] **Towards a Formal Definition of Agent Memory: Basis, Span, Optimality, and the Sequential Memory Problem** | 2026-08-12T04:54:26Z | arxiv:2608.11654v1
+  - http://arxiv.org/abs/2608.11654v1
+  - Despite the wide deployment of memory in large-model agents, there is no unified formal account of what a memory is or when it is optimal. This paper takes a first step toward this account. The central idea is that memory is a basis, knowledge is its span, and answerability is a coverage problem: an agent stores events
+- [20] **RAGSieve: Self-Referenced Local Contrast for Knowledge-Poison Detection in Retrieval-Augmented Generation** | 2026-08-13T09:29:48Z | arxiv:2608.13010v1
+  - http://arxiv.org/abs/2608.13010v1
+  - Retrieval-augmented generation treats an external corpus as inference evidence, allowing injected documents to promote attacker-chosen claims. Existing detectors depend on trusted references, specific attack artifacts, or global thresholds sensitive to corpus topology. We present RAGSieve, a self-referenced detection f
+- [20] **When Should Multi-Round RAG Stop? Structured Stopping Judgments and Retrieval Reduction in Search-R1** | 2026-08-13T13:42:48Z | arxiv:2608.13237v1
+  - http://arxiv.org/abs/2608.13237v1
+  - Multi-round retrieval-augmented generation (RAG) must decide when to stop searching as evidence accumulates. Because the deployed policy is determined by the first STOP on each trajectory, this is a sequential selection problem rather than an independent state-classification task. We adapt S2G-RAG's structured sufficie
+- [20] **RippleMem: From Isolated Retrieval to Associative Recollection for Long-Term Agent Memory** | 2026-08-13T15:05:01Z | arxiv:2608.13334v1
+  - http://arxiv.org/abs/2608.13334v1
+  - LLM-based agents increasingly rely on external memory to support long-horizon reasoning and interaction. However, the main bottleneck is not simply storing past experience, but recovering the right set of evidence when relevant information is distributed across many interactions. Existing approaches struggle with this 
+- [20] **TeachMateGPT: A Multi-Agent Knowledge-Grounded Framework for Pedagogical Assessment Generation from Science Curriculum Materials** | 2026-08-13T19:06:37Z | arxiv:2608.13708v1
+  - http://arxiv.org/abs/2608.13708v1
+  - Automatically generating textbook-grounded assessment items can reduce science teachers' workload, but existing retrieval-augmented generation (RAG) systems rely on flat retrieval, support only single-question generation, lack safeguards against weak evidence, and are ill-suited to low-resource, board-exam-structured c
+- [20] **Where Does Retrieval Fail? Evaluating RAG Architectures for Agricultural Advisory** | 2026-08-14T20:50:24Z | arxiv:2608.14886v1
+  - http://arxiv.org/abs/2608.14886v1
+  - Retrieval quality in RAG systems is commonly reported as a single aggregate score, which can hide large differences across query types and language conditions. We study this problem in Bengali agricultural advisory, where farmer queries are often colloquial while official advisory documents use formal scientific termin
+- [19] **Polaris : Multi Agentic System for Conversational Enterprise Analytics** | 2026-08-14T12:26:41Z | arxiv:2608.14246v1
+  - http://arxiv.org/abs/2608.14246v1
+  - In today's fast-paced environment, the ability to swiftly access, understand, and act on data is no longer optional; it is essential. Yet most organizations remain data-rich but insight-poor, constrained by the complexity of querying, interpreting, and explaining enterprise-scale information. We present Polaris, a supe
+- [18] **EvoTrustRAG: Evolution-Aware Conflict Attribution and Evidence Handling for Reliable Retrieval-Augmented Generation** | 2026-08-08T05:40:03Z | arxiv:2608.07933v1
+  - http://arxiv.org/abs/2608.07933v1
+  - Retrieval-Augmented Generation (RAG) improves the factuality of large language models with external knowledge, yet conflicting evidence remains a fundamental challenge in dynamic and adversarial environments. Existing approaches often treat conflicts as static inconsistencies and select more reliable knowledge, overloo
+- [18] **Search over the Visual World: Persistent Visual Memory, Layered Indexes, and Source-Grounded Evidence** | 2026-08-08T11:46:54Z | arxiv:2608.08075v1
+  - http://arxiv.org/abs/2608.08075v1
+  - Most video-retrieval systems assume a bounded corpus and return ranked files or timestamps. Agents operating over cameras, screens, streams, and archives face a different systems problem: observations arrive continuously; models interpret them at different temporal granularities; context must be selected without replay
+
+## Paper lane J
+- [34] **Benchmark-Based Comparative Assessment of Publicly Benchmarked Indian Foundation Models: A Capability and Evaluation-Maturity Framework** | 2026-08-12T10:19:14Z | arxiv:2608.11891v2
+  - http://arxiv.org/abs/2608.11891v2
+  - Purpose: Governments increasingly fund indigenous foundation models to strengthen national AI capability, digital sovereignty, and multilingual computing. This paper assesses India's foundation-model ecosystem and examines whether apparent capability gaps in public benchmark evidence may also reflect gaps in evaluation
+- [32] **Open Evaluation Agent: Efficient and Promptable Evaluation of Visual Generative Models** | 2026-08-10T14:42:10Z | arxiv:2608.09666v1
+  - http://arxiv.org/abs/2608.09666v1
+  - Recent advances in visual generative models have enabled high-quality image and video generation, but evaluating these models often demands sampling hundreds or thousands of images or videos, which is computationally expensive. Existing evaluation methods also rely on rigid pipelines that overlook specific user needs a
+- [28] **Benchmarking LLM Judges for Mobile Agent Evaluation** | 2026-08-11T21:00:46Z | arxiv:2608.11434v1
+  - http://arxiv.org/abs/2608.11434v1
+  - Mobile agent benchmarks increasingly rely on LLM-based judges to evaluate task completion, yet the reliability of these judges on mobile agent trajectories remains largely unexamined. We introduce MobileJudgeBench, a benchmark for systematically evaluating LLM-as-judge methods on mobile agent trajectories. Our benchmar
+- [28] **When Can You Trust Offline Evaluation of Equal-Cost Top-k Allocation? A Controlled, Reproducible Benchmark and Practitioner's Guide** | 2026-08-12T18:10:10Z | arxiv:2608.12489v1
+  - http://arxiv.org/abs/2608.12489v1
+  - Organizations decide whom to treat under a budget and want to know what a targeting rule would have earned before deploying it. Off-policy evaluation promises this from logged data, but the deployable rule is a deterministic top-k policy: it removes all averaging over actions, so weak overlap hits the estimate directly
+- [26] **RAVEN-Eval: Rubric-Guided Automatic Evaluation for AI Video Generation Models Based on LMM Preference Judgement** | 2026-08-10T04:38:15Z | arxiv:2608.09111v1
+  - http://arxiv.org/abs/2608.09111v1
+  - AI video generation has advanced rapidly and entered widespread commercial use. As a result, quality differences among videos produced by state-of-the-art AI video generation models~(AIVGMs) have become increasingly difficult to discern using conventional evaluation criteria, such as visual fidelity and semantic instru
+- [24] **SurakshaEval: An Indic Safety Benchmark for Multilingual LLMs** | 2026-08-08T02:03:33Z | arxiv:2608.07862v1
+  - http://arxiv.org/abs/2608.07862v1
+  - Existing safety evaluation datasets for large language models (LLMs) predominantly focus on English and Western contexts, often overlooking the linguistic diversity and culturally grounded safety risks present in other languages. To address this gap, we introduce SurakshaEval, a novel safety benchmark composed of human
+- [24] **MRBench: A Comprehensive Benchmark for Human Motion-Text Retrieval** | 2026-08-08T08:02:37Z | arxiv:2608.07993v1
+  - http://arxiv.org/abs/2608.07993v1
+  - Human motion-text retrieval provides a rigorous means of assessing cross-modal alignment. Prevailing benchmarks are dominated by homogeneous indoor motions, imbalanced motion distributions, and oversimplified, repetitive texts, which hinder the reliable measurement of cross-domain and cross-granularity alignment. We th
+- [24] **Janus: An Algorithm-Evaluator Co-Evolution Framework for LLM-Driven Discovery under Expensive Evaluation Budgets** | 2026-08-08T15:31:12Z | arxiv:2608.08189v1
+  - http://arxiv.org/abs/2608.08189v1
+  - LLM-driven program discovery relies on rapid evaluator feedback, but many scientific and engineering tasks require high-fidelity simulations, hardware execution, or physical experiments, making each evaluation expensive. Cheap surrogate evaluators can reduce this cost, yet fixed surrogates are vulnerable to search-indu
+- [24] **CAP: A Scalable Benchmark for Evaluating Cross-Site Browser Agents with Complex Actions and Perception** | 2026-08-09T01:08:19Z | arxiv:2608.08392v1
+  - http://arxiv.org/abs/2608.08392v1
+  - Large language models are increasingly deployed as autonomous agents that interact with the web through browsers. While recent progress has been driven by benchmarks that evaluate end-to-end task success, these evaluations largely overlook two fundamental sources of difficulty in real web browsing: complex actions over
+- [24] **PluginEval: A Diagnostic Benchmark for Fine-Grained Error Attribution in Function Calling** | 2026-08-09T13:25:54Z | arxiv:2608.08700v1
+  - http://arxiv.org/abs/2608.08700v1
+  - Reliable evaluation of tool routing is critical as Large Language Models increasingly operate as autonomous agents. Current benchmarks face three structural limitations: data distributions that follow a power law leave rare scenarios underrepresented; the absence of adversarial hard negatives obscures performance diffe
+- [24] **Math-Vision Diagrams: A Comprehensive Benchmark for Evaluating LLM Mathematical Diagram Generation Capabilities** | 2026-08-09T23:58:01Z | arxiv:2608.08964v1
+  - http://arxiv.org/abs/2608.08964v1
+  - The generation of mathematically precise diagrams from tex- tual prompts has emerged as a critical yet underexplored capability of Large Language Models (LLMs). This has been of interest to researchers in the areas of curriculum preparation, automated ranking of problem sets, and scientific publishing. For LLMs to achi
+- [24] **From Values to Benchmarks: Evaluating Large Language Models for Governmental Use in Dutch** | 2026-08-10T17:59:05Z | arxiv:2608.09925v1
+  - http://arxiv.org/abs/2608.09925v1
+  - Large language models are increasingly being deployed in governmental settings, yet few existing evaluation frameworks jointly reflect the values of public administration and the linguistic requirements of non-English contexts. We present the "Grip on LLMs" framework, a systematic evaluation suite for Dutch governmenta
+- [24] **EnterpriseRAG: Benchmarking LLM Instruction Adherence and Robustness under Non-Ideal Enterprise Retrieval** | 2026-08-12T02:51:04Z | arxiv:2608.11584v1
+  - http://arxiv.org/abs/2608.11584v1
+  - Enterprise RAG deployments face a critical reliability gap: while LLMs satisfy 80% of individual constraints, only 26.8% of responses meet all requirements simultaneously, revealing a 57-point orchestration gap. Existing benchmarks assume clean retrieval with simple queries, failing to capture production conditions whe
+- [24] **Who Thinks Best Depends on How Long You Let Them: Budget-Dependent Rankings in LLM Evaluation** | 2026-08-12T15:11:35Z | arxiv:2608.12150v1
+  - http://arxiv.org/abs/2608.12150v1
+  - Standard evaluation of large language models assumes stable model rankings across inference conditions. We challenge this assumption by varying the token generation budget, i.e., the maximum tokens a model may produce, across seven levels (64--4,096), evaluating four models on three reasoning benchmarks (56,476 inferen
+- [24] **How Do VLMs Behave When Blind or Misled? Behavioral Evaluation of VLMs on Scientific Figures** | 2026-08-13T14:06:35Z | arxiv:2608.13267v1
+  - http://arxiv.org/abs/2608.13267v1
+  - Existing vision-language model (VLM) benchmarks emphasize perception and reasoning accuracy (how well VLMs describe and reason about what they see in an image), with limited attention to behavioral reliability under uncertainty (how they behave when visual evidence is missing or misleading). We introduce SciFigBench, a
+- [24] **CPI-Bench: A Comprehensive, Practical and Intelligent Benchmark for Real-World Image Editing** | 2026-08-14T17:59:01Z | arxiv:2608.14546v2
+  - http://arxiv.org/abs/2608.14546v2
+  - With the rapid advancement of image editing models and their widespread application across various domains, there is an increasingly urgent need to deploy these model capabilities directly into real-world scenarios. However, existing benchmarks remain confined to simple single-image tasks, suffering from limited covera
+- [22] **ForestBench: A Unified Graph Framework for Evaluating Multi-Agent Collaboration** | 2026-08-09T09:38:52Z | arxiv:2608.08605v2
+  - http://arxiv.org/abs/2608.08605v2
+  - Multi-agent systems (MAS) built on Large Language Models (LLMs) are proliferating rapidly, but their heterogeneous execution traces provide no common basis for evaluation across methods. Outcome-only benchmarks discard collaborations, whereas LLM-as-Judge evaluation requires additional, model-dependent inference and ca
+- [22] **AI Evaluation Should Measure Verification Cost, Not Correctness Alone** | 2026-08-09T13:44:26Z | arxiv:2608.08709v1
+  - http://arxiv.org/abs/2608.08709v1
+  - The reliability of AI generative models is typically measured by output correctness, yet in practice it depends on the effort required to verify those outputs. We argue that current evaluation metrics overlook a critical failure mode: Verification-Cost Errors (VCEs), defined as incorrect input-output pairs that a decla
+
+## Paper lane K
+- [28] **CyberAGENTS: Structured Autonomy for Agentic Gamified Learning in Cybersecurity** | 2026-08-08T06:59:45Z | arxiv:2608.07965v1
+  - http://arxiv.org/abs/2608.07965v1
+  - Gamification is especially effective in learning domains requiring active problem-solving and iterative skill-building, such as cybersecurity education. Generative AI agents offer a path to delivering such experiences adaptively at scale, but introduce well-documented risks in educational settings: inconsistent behavio
+- [26] **Dual-Adversarial Safety Alignment: Cultivating Intrinsic Threat Comprehension in LRMs** | 2026-08-10T12:40:02Z | arxiv:2608.09542v1
+  - http://arxiv.org/abs/2608.09542v1
+  - Large reasoning models (LRMs) achieve remarkable success on complex tasks but remain vulnerable to harmful prompts that induce unsafe outputs. Recent methods align LRMs using direct refusals or safety rationales, yet often focus on prompt patterns rather than intrinsic attack mechanisms. As a result, these pattern-cent
+- [21] **REDAgentBench: Executable Red Teaming and Faithful Measurement of LLM Agent Systems** | 2026-08-11T08:48:54Z | arxiv:2608.10669v1
+  - http://arxiv.org/abs/2608.10669v1
+  - Large language model (LLM) agents combine language-based reasoning with external tools to perform complex tasks. Adversarial inputs can exploit interactions between the agent and its environment, causing the agent to violate safety policies during execution. Yet existing evaluations often reduce agent safety to a singl
+- [20] **A Blueprint for Collaborative Cybersecurity Operations Centres with Capacity for Shared Situational Awareness, Coordinated Response, and Joint Preparedness** | 2026-08-08T08:41:37Z | arxiv:2608.08011v1
+  - http://arxiv.org/abs/2608.08011v1
+  - With digital technologies now being part of the fabric of our societies, identifying and managing cybersecurity threats becomes imperative. Within the European Union, several initiatives are underway, aiming to motivate, regulate and eventually orchestrate the establishment of capacity and enhancement of situational aw
+- [20] **VectraYX-Vision-1B: A Sub-2B Spanish/LATAM Cybersecurity Vision-Language Model with Structured Visual Reasoning and Native Tool Use** | 2026-08-09T04:46:58Z | arxiv:2608.08477v1
+  - http://arxiv.org/abs/2608.08477v1
+  - We present VectraYX-Vision-1B, a sub-2B vision-language model (VLM) for Spanish/LATAM cybersecurity imagery, coupling a frozen SigLIP-so400m encoder to a 1.04B Spanish/LATAM security decoder via an MLP. To our knowledge, it is the first sub-2B VLM specialized for cyber UI (IDA, Ghidra, Wireshark, Nmap, Metasploit, Vola
+- [20] **When Skills Meet Safety: Benchmarking and Characterizing the Adaptive Jailbreak Robustness of Skill-Merged LLMs** | 2026-08-09T07:41:06Z | arxiv:2608.08542v1
+  - http://arxiv.org/abs/2608.08542v1
+  - Model merging has become the default way to give an aligned language model new skills without retraining: a practitioner folds task vectors from math, code, or domain specialists into a safety-aligned base using task arithmetic, TIES, or DARE. This convenience is known to carry a safety cost, but almost all of that evi
+- [20] **The Next Challenge for Agentic Cybersecurity: A Realistic, Contamination-Free Reverse Engineering Benchmark** | 2026-08-11T22:14:57Z | arxiv:2608.11469v1
+  - http://arxiv.org/abs/2608.11469v1
+  - AI agents are rapidly improving in cybersecurity capabilities when the source code is available for analysis, yet much of the software most consequential to cybersecurity, including malware, firmware, and proprietary applications, is available only as binaries. Analyzing such software requires reverse engineering(RE): 
+- [20] **Localizing Safety Alignment: MLP Layers and Mid-Network Blocks Encode Refusal Behavior in Large Language Models** | 2026-08-12T02:44:30Z | arxiv:2608.11583v1
+  - http://arxiv.org/abs/2608.11583v1
+  - Safety alignment in large language models is often treated as a distributed property of the entire network, yet its practical brittleness suggests that refusal behavior may be concentrated in a smaller set of parameters. This work addresses where safety-aligned refusal is encoded by transplanting weights from aligned m
+- [20] **HiRoute: Hierarchical Routed Prompt Tuning for Safety Alignment of Large Language Models** | 2026-08-13T04:49:51Z | arxiv:2608.12821v1
+  - http://arxiv.org/abs/2608.12821v1
+  - Large language models (LLMs) remain vulnerable to harmful requests and jailbreak attacks. Parameter-efficient safety alignment methods based on prompt tuning typically rely on a single global prompt or externally selected prompt modules. Such static designs struggle to maintain a cross-category safety boundary while ge
+- [19] **Generating Attacks for LLMs with GFlowNets** | 2026-08-10T19:39:10Z | arxiv:2608.10171v1
+  - http://arxiv.org/abs/2608.10171v1
+  - The rapid advancement of Large Language Models (LLMs) has facilitated their ubiquitous integration into various domains, leading to widespread adoption. However, this escalating trend has introduced significant security vulnerabilities, necessitating the identification and mitigation of flaws arising from malicious exp
+- [18] **ToolHazard: Scaling Adversarial Environments for Security Evaluation and Alignment of LLM-based Agents** | 2026-08-12T10:05:09Z | arxiv:2608.11878v1
+  - http://arxiv.org/abs/2608.11878v1
+  - Large language model (LLM) agents integrated with external tools are vulnerable to indirect prompt injections embedded in environmental states. However, existing studies largely rely on manually implemented or reused environments, stochastic LLM-based tool simulation, and predefined injection locations, limiting scalab
+- [16] **Who Bridges Safety? Identifying and Targeting Cross-Lingual Shared Safety Pathways** | 2026-08-10T03:48:47Z | arxiv:2608.09095v1
+  - http://arxiv.org/abs/2608.09095v1
+  - Uncovering the internal mechanisms underlying the safety capabilities of large language models (LLMs) is crucial for developing trustworthy artificial intelligence. Currently, mechanistic interpretability studies on multilingual safety are largely confined to local components, such as isolated neurons. However, this st
+- [16] **RangeFactory: Scalable Construction of Multi-Hop Cyber Ranges** | 2026-08-10T12:25:49Z | arxiv:2608.09526v1
+  - http://arxiv.org/abs/2608.09526v1
+  - Real-world cyberattacks often require sustained progress across multiple hosts and network segments, making multi-hop cyber ranges essential infrastructure for studying and improving LLM agents' ability to sustain complete attack chains. Prior work has scaled isolated vulnerability tasks and constructed multi-host scen
+- [16] **SafeCap: Improving LVLM Safety with Image Captioning Reinforcement Learning** | 2026-08-11T05:37:59Z | arxiv:2608.10513v1
+  - http://arxiv.org/abs/2608.10513v1
+  - Large vision-language models (LVLMs) remain vulnerable to jailbreak attacks that exploit visual inputs to bypass safety alignment inherited from their language backbones. We propose SafeCap, a reinforcement-learning framework that aligns LVLMs through learned self-captioning. SafeCap trains a policy model to first gene
+- [16] **The Illusion of Cross-Lingual Safety in Low-Resource Languages** | 2026-08-11T17:05:26Z | arxiv:2608.11146v1
+  - http://arxiv.org/abs/2608.11146v1
+  - Safety alignment in large language models (LLMs) is largely developed in English, assuming these safeguards generalize across multilingual settings. However, this assumption remains underexplored and exposes a vulnerability in low-resource languages. We investigate cross-lingual safety transfer in four African language
+- [16] **Towards Model-based Run-time Cybersecurity: On Control-Flow Anomaly Detection, Attack Identification, and Hardware Monitoring** | 2026-08-12T08:44:17Z | arxiv:2608.11802v1
+  - http://arxiv.org/abs/2608.11802v1
+  - Methods to increase the resilience of systems to cyber-attacks become increasingly important. Control-flow monitoring provides a principled basis to ensure integrity and detect possible anomalies at run-time. Once anomalies have been detected, so-called attack trees can be used to identify possible types of attacks. Ho
+- [16] **Sovereign by necessity? Frontier AI export controls, cyber security, and the limits of national AI capability** | 2026-08-13T14:09:45Z | arxiv:2608.13272v1
+  - http://arxiv.org/abs/2608.13272v1
+  - A small number of firms based in two states produce the most capable frontier AI models. The governments of those states have shown both the legal power and the political will to decide which other countries may use these systems. In June 2026 the United States required a leading developer to obtain licences before rel
+- [14] **Capability-Routed Guard: Defending Large Reasoning Models Against Reasoning-Centric Jailbreaks** | 2026-08-08T03:40:06Z | arxiv:2608.07892v1
+  - http://arxiv.org/abs/2608.07892v1
+  - Large reasoning models (LRMs) expose a new safety failure mode: adversarial prompts can manipulate reasoning context, task decomposition, or capability interpretation so that harmful objectives are processed as legitimate reasoning steps. Existing safeguards, including safety reminders, external classifiers, and self-c
+
+## Paper lane L
+- [20] **View-Adaptive Renderer for View-Consistent 2D-to-3D Generation** | 2026-08-10T04:28:08Z | arxiv:2608.09110v1
+  - http://arxiv.org/abs/2608.09110v1
+  - Reconstructing 3D shapes from a single image remains a fundamental yet challenging problem in computer vision. Traditional monocular 3D generation pipelines typically synthesize multiple views from a single input image before applying Neural Radiance Field (NeRF)-based reconstruction. However, inherent projective ambig
+- [20] **ScienceFlow: A long-horizon agent for ML research, scientific discovery and beyond** | 2026-08-14T14:54:01Z | arxiv:2608.14354v1
+  - http://arxiv.org/abs/2608.14354v1
+  - Enabling LLM agents to sustain productive, stable, and goal-aligned research over extended horizons is a central challenge for autonomous machine learning and scientific discovery, as progress hinges on continuously managing evolving state, exploration decisions, and computational resources. Pioneering autoresearch age
+- [15] **MegaParts: Scaling Part-Aware 3D Object Generation to 300 Parts via Token-Efficient Autoregressive Modeling** | 2026-08-14T18:00:02Z | arxiv:2608.14783v1
+  - http://arxiv.org/abs/2608.14783v1
+  - Part-aware 3D object generation is essential for graphics applications such as controllable modeling, editing, and articulation, where objects are represented as coherent assemblies of semantic parts. However, existing part-aware generation methods, do not scale well to highly complex objects. As the number of parts in
+- [10] **PhysX-CoT: Structured Physical Reasoning from a Single Image to Simulation-Ready 3D Assets** | 2026-08-08T10:39:09Z | arxiv:2608.08053v1
+  - http://arxiv.org/abs/2608.08053v1
+  - Simulation-ready 3D assets are central to robotics and embodied AI. Generating them from a single image is usually framed as a vision-language model that emits a serialized asset for a decoder to turn into geometry and physical fields, leaving the image-to-3D reasoning implicit. We argue the limiting factor is this out
+- [10] **Agentic AI-driven Immersive Simulation: A Knowledge-Aware Virtual Training Platform forHigh Dose Rate (HDR) Brachytherapy** | 2026-08-08T14:46:08Z | arxiv:2608.08163v1
+  - http://arxiv.org/abs/2608.08163v1
+  - The convergence of the Metaverse and Large Language Model (LLM)-based AI agent is catalyzing a shift toward autonomous, immersive, and personalized pedagogical frameworks in medical education. This paper presents a novel agentic AI-driven immersive simulation specifically designed for High Dose Rate (HDR) vaginal cylin
+- [10] **Differentiate the Solver, Not the Equation: Reverse-Sweep Adjoints for Block Implicit Simulation** | 2026-08-09T08:03:02Z | arxiv:2608.08559v1
+  - http://arxiv.org/abs/2608.08559v1
+  - Differentiable simulation is a key component in learning, control, and inverse problems, where gradients through nonlinear implicit solvers are required. Existing approaches either rely on unrolled automatic differentiation, whose memory grows with solver depth, or on equation-level implicit differentiation, which asse
+- [10] **Multi-agent discovery of practical quantum LDPC codes** | 2026-08-10T01:32:34Z | arxiv:2608.08996v1
+  - http://arxiv.org/abs/2608.08996v1
+  - Quantum low-density parity-check (qLDPC) codes can encode multiple logical qubits using sparse parity checks, yet searching for useful finite-length instances remains a challenging design problem because code performance must be optimized while satisfying practical constraints. Motivated by recent advances in artificia
+- [10] **LLM-Guided Heuristic Design from Simulation Traces: A Case Study in Dynamic Production and AGV Scheduling** | 2026-08-10T09:20:56Z | arxiv:2608.09343v1
+  - http://arxiv.org/abs/2608.09343v1
+  - Simulation-based optimization (SBO) evaluates executable policies under stochastic dynamics, but most methods treat the simulator as a black box: aggregate scores rank candidates without revealing why they fail or which policy logic should change. We present an LLM-guided heuristic design framework that uses repeated s
+- [10] **Intent Speaks Louder: Controllable User Simulation Beyond Response Imitation** | 2026-08-10T10:48:40Z | arxiv:2608.09420v1
+  - http://arxiv.org/abs/2608.09420v1
+  - User simulators are widely used as scalable environments for training and evaluating interactive assistants. Generating the next user turn is inherently one-to-many: the same profile and dialogue context may support multiple plausible continuations with different local interaction intents. A fluent response may therefo
+- [10] **RoadWeaver: Large-Scale Lane-Level HD Map Generation from Scratch for Autonomous Driving Simulation** | 2026-08-12T02:39:14Z | arxiv:2608.11580v1
+  - http://arxiv.org/abs/2608.11580v1
+  - Autonomous driving simulation requires diverse and scalable lane-level HD maps to support long-horizon evaluation across complex road networks. Existing approaches either rely on handcrafted or reconstructed real-world maps, which limits scalability, or generate only local road structures rather than complete HD maps. 
+- [10] **PatientAct: Theory-Grounded Mental Health Client Simulation** | 2026-08-13T03:01:15Z | arxiv:2608.12750v1
+  - http://arxiv.org/abs/2608.12750v1
+  - LLM-based simulated clients are increasingly used to train novice counselors, evaluate LLM therapists, and generate synthetic data. However, current simulators produce overly cooperative clients that disclose too readily, accept therapeutic reframes without resistance, and resolve core issues within a single session. W
+- [10] **PixSDS: Why Latent SDS Makes Noisy Pixels** | 2026-08-13T09:20:58Z | arxiv:2608.12997v1
+  - http://arxiv.org/abs/2608.12997v1
+  - Score Distillation Sampling (SDS) enables text-to-3D generation by optimizing rendered images with a pretrained diffusion prior, but latent SDS often produces structured color artifacts and high-frequency texture noise. We identify a failure mode of latent SDS caused by VAE-induced pixel drift: the optimized image can 
+- [10] **Validation-Centric AI-Assisted GPU Porting of a 250,000+ Line Legacy Weather Simulation Code** | 2026-08-13T11:52:51Z | arxiv:2608.13122v1
+  - http://arxiv.org/abs/2608.13122v1
+  - Recent advances in large language models have made CLI-based AI agents a practical tool for accelerating GPU porting of large legacy scientific applications. Such applications, however, are not merely old code bases; they are scientific assets whose credibility has been accumulated through long-term development, compar
+- [10] **OmniScientist: An Omni-Modal Omni-Discipline AI Scientist** | 2026-08-13T17:59:52Z | arxiv:2608.13558v1
+  - http://arxiv.org/abs/2608.13558v1
+  - Recent advances in foundation models have enabled AI scientists to automate increasingly complete research workflows, from hypothesis generation and code execution to manuscript preparation. Yet workflow coverage alone does not provide access to the full evidence on which scientific discovery depends. Existing systems 
+- [10] **Simulation-Aware In-Context Policy Improvement for LLM-Aided Analog Layout Refinement** | 2026-08-13T20:46:17Z | arxiv:2608.13767v1
+  - http://arxiv.org/abs/2608.13767v1
+  - Analog IC layout design remains a labor-intensive iterative process dominated by simulation-driven refinement. Although end-to-end layout generators accelerate initial placement and routing, they still require experts to manually tune layout optimization parameters with repeated post-layout simulations for stringent de
+- [10] **MicroPython and CircuitPython: Pythons Quiet Takeover of IoT and Robotics** | 2026-08-14T16:43:43Z | arxiv:2608.18160v1
+  - http://arxiv.org/abs/2608.18160v1
+  - Background: Python has become the dominant language in software and data science, yet embedded systems have remained tied to C/C++ due to performance and memory constraints. MicroPython and CircuitPython are changing this by bringing Python to microcontrollers, lowering barriers for IoT and robotics development. Aim: T
+- [8] **Lingjing: A Simulation Testbed for Multi-Agent Embodied Tasks in Open-Ended Cities** | 2026-08-08T10:18:58Z | arxiv:2608.08045v1
+  - http://arxiv.org/abs/2608.08045v1
+  - Urban embodied intelligence requires coordination among heterogeneous agents (e.g., UAVs, ground robots, and autonomous vehicles) in dynamic cities. Simulators therefore provide a scalable foundation for developing and evaluating such coordination. Existing platforms nevertheless isolate different embodiments and decou
+- [8] **DeepFreqMark: End-To-End Learnable Frequency-Domain Watermarking with Spherical Attack Simulation for Latent Diffusion Models** | 2026-08-10T01:36:22Z | arxiv:2608.08999v1
+  - http://arxiv.org/abs/2608.08999v1
+  - The proliferation of AI-generated images produced by Latent Diffusion Models (LDMs) has raised critical concerns regarding copyright infringement and misinformation. Although existing frequency-domain watermarking methods embed handcrafted geometric patterns into the initial latent noise prior to generation, they suffe
