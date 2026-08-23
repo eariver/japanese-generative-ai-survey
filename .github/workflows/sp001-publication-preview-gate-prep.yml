@@ -1,0 +1,57 @@
+name: SP001 publication preview gate prep
+
+on:
+  pull_request:
+    branches:
+      - special/SP001-v2-work
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout gate branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Build exact-State-locked Publication Preview control request
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json, pathlib
+          state=pathlib.Path('sources/SP001/production-state.json')
+          payload=json.loads(state.read_text(encoding='utf-8'))
+          if payload.get('lifecycle_state')!='VALIDATED_DRAFT' or payload.get('next_action')!='stage:publication-candidate':
+              raise SystemExit('Publication Preview prep requires VALIDATED_DRAFT State')
+          digest=hashlib.sha256(state.read_bytes()).hexdigest()
+          request={
+            'schema_version':'2.0-rc1',
+            'operation':'adopt-stage',
+            'issue_id':'SP001',
+            'production_state_sha256':digest,
+            'stage_artifacts':{
+              'publication-candidate':'sources/SP001/publication/v2/publication-candidate-v2.json'
+            },
+            'stage_reviews_path':'sources/SP001/orchestration/v2/reviews/VALIDATED_DRAFT.json',
+            'stage_summary':'Established the immutable SP001 Publication Candidate binding the exact validated-source manifest, 11-page PDF SHA-256 8a363a33db80f55a047a8d6cdfecedb196f380939a3d40e68e3c3d21aded2764, and complete Quality Regression Bundle; ready to enter the PUBLICATION_PREVIEW Human Gate.'
+          }
+          path=pathlib.Path('sources/SP001/orchestration/v2/control-request.json')
+          path.write_text(json.dumps(request,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print('production_state_sha256='+digest)
+          PY
+      - name: Persist request and remove prep workflow
+        shell: bash
+        env:
+          PUSH_BRANCH: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/sp001-publication-preview-gate-prep.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sources/SP001/orchestration/v2/control-request.json .github/workflows/sp001-publication-preview-gate-prep.yml
+          git commit -m 'Prepare SP001 Publication Preview gate adoption'
+          git push origin "HEAD:${PUSH_BRANCH}"
