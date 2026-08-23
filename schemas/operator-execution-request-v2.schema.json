@@ -44,6 +44,17 @@
           "additionalProperties": false,
           "required": ["kind", "target_gate", "spec_path", "execution_record"],
           "properties": {
+            "kind": {"const": "INITIALIZE_RETROSPECTIVE"},
+            "target_gate": {"enum": ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"]},
+            "spec_path": {"$ref": "#/$defs/repo_path"},
+            "execution_record": {"$ref": "#/$defs/execution_record"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "target_gate", "spec_path", "execution_record"],
+          "properties": {
             "kind": {"const": "INITIALIZE_THEMATIC"},
             "target_gate": {"enum": ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"]},
             "spec_path": {"$ref": "#/$defs/repo_path"},
