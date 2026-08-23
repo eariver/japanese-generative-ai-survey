@@ -8,6 +8,7 @@ from scripts import survey_weekly_layout_v2 as layout
 
 
 OLD_TEX = r"""\documentclass{jlreq}
+\addbibresource{references.bib}
 \begin{document}
 \twocolumn
 \section{OSS Watch}
@@ -45,7 +46,7 @@ class WeeklyLayoutTransformTests(unittest.TestCase):
         core.write_json(manifest, payload)
         return td, root, main, manifest
 
-    def test_compacts_summary_into_two_column_flow_and_rebinds_manifest(self):
+    def test_compacts_summary_and_source_notes_and_rebinds_manifest(self):
         td, root, main, manifest = self._fixture()
         self.addCleanup(td.cleanup)
 
@@ -64,14 +65,21 @@ class WeeklyLayoutTransformTests(unittest.TestCase):
             "\\clearpage\n\\onecolumn\n\\section{今週の総括}",
             text,
         )
-        self.assertIn(
-            "\\clearpage\n\\onecolumn\n\\printbibliography[title={References / Source Notes}]",
-            text,
-        )
+        self.assertIn("\\AtEveryBibitem", text)
+        self.assertLess(text.index("\\AtEveryBibitem"), text.index("\\begin{document}"))
+        self.assertIn("\\clearfield{urlyear}", text)
+        self.assertIn("\\footnotesize\n\\setlength{\\bibitemsep}{0pt}", text)
+        self.assertIn("prenote=corev2legend", text)
+        self.assertIn("References / Source Notes", text)
         self.assertEqual(updated["rendered_source"]["sha256"], core.sha256_file(main))
         result_path = root / result["result_path"]
         self.assertTrue(result_path.is_file())
         self.assertEqual(core.sha256_file(result_path), result["result_sha256"])
+
+    def test_biblatex_entry_hook_is_defined_by_preamble_transform(self):
+        self.assertIn("\\AtEveryBibitem", layout.BIBRESOURCE_REPLACEMENT)
+        self.assertNotIn("\\AtEveryBibitem", layout.REFERENCE_REPLACEMENT)
+        self.assertTrue(layout.BIBRESOURCE_REPLACEMENT.startswith("\\addbibresource{references.bib}\n"))
 
     def test_rejects_manifest_source_sha_drift(self):
         td, root, main, manifest = self._fixture()
