@@ -3,249 +3,168 @@ name: Build Special survey PDF
 on:
   workflow_dispatch:
     inputs:
-      special_slug:
+      production_profile_path:
+        description: Repository path to the Special Production Profile
         required: true
         type: string
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: special-pdf-${{ inputs.special_slug }}
+  group: special-pdf-${{ inputs.production_profile_path }}-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout current control code
+      - name: Checkout exact source revision
         uses: actions/checkout@v6
         with:
-          ref: main
-          path: control-src
-          fetch-depth: 1
-      - name: Resolve Special edition
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Core v2 validation dependencies
+        run: python -m pip install -r config/survey-production-v2-requirements.txt
+
+      - name: Resolve Profile-bound Special source
         id: edition
         shell: bash
         env:
-          SPECIAL_SLUG: ${{ inputs.special_slug }}
+          PROFILE_PATH: ${{ inputs.production_profile_path }}
         run: |
           set -euo pipefail
-          manifest="control-src/specials/${SPECIAL_SLUG}/edition.json"
-          test -s "$manifest"
-          python control-src/scripts/special_pipeline.py --config control-src/config/special-pipeline.json validate --manifest "$manifest"
-          echo "special_id=$(python -c "import json; print(json.load(open('$manifest'))['special_id'])")" >> "$GITHUB_OUTPUT"
-          echo "work_branch=$(python -c "import json; print(json.load(open('$manifest'))['paths']['work_branch'])")" >> "$GITHUB_OUTPUT"
-          echo "page_target=$(python -c "import json; print(int(json.load(open('$manifest'))['page_budget']['target']))")" >> "$GITHUB_OUTPUT"
-          echo "page_max=$(python -c "import json; print(int(json.load(open('$manifest'))['page_budget']['max']))")" >> "$GITHUB_OUTPUT"
-      - name: Checkout Special work branch
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ steps.edition.outputs.work_branch }}
-          path: worktree
-          fetch-depth: 0
-      - name: Resolve and verify state-pinned PDF source
-        id: source
-        shell: bash
-        env:
-          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
-        run: |
-          set -euo pipefail
-          python - "$SPECIAL_ID" >> "$GITHUB_OUTPUT" <<'PY'
-          import hashlib,json,sys,pathlib
-          issue=sys.argv[1]
-          root=pathlib.Path('worktree')
-          state=json.load(open(root/'sources'/issue/'pipeline-state.json',encoding='utf-8'))
-          assert state['lifecycle_state']=='VALIDATED_DRAFT', state['lifecycle_state']
-          assert state['gates']['claim_and_chronology_validation']=='passed'
-          assert state['gates']['latex_build']=='pending'
-          prov=state['provenance']['validated_issue_source']
-          manifest=root/prov['path']
-          assert manifest.is_file(), manifest
-          digest=hashlib.sha256(manifest.read_bytes()).hexdigest()
-          assert digest==prov['sha256'], (digest,prov['sha256'])
-          data=json.load(open(manifest,encoding='utf-8'))
-          source_dir=manifest.parent
-          main=source_dir/data['main_tex']['path']
-          assert main.is_file(), main
-          print(f"source_manifest={manifest.as_posix()}")
-          print(f"source_manifest_sha256={digest}")
-          print(f"source_dir={source_dir.as_posix()}")
-          print(f"source_version={data.get('source_version','v0.1')}")
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import pathlib
+          import os
+          from scripts import survey_production_v2 as core
+
+          root = pathlib.Path('.').resolve()
+          rel = pathlib.PurePosixPath(os.environ['PROFILE_PATH'])
+          if rel.is_absolute() or '..' in rel.parts:
+              raise SystemExit('unsafe Production Profile path')
+          profile_path = (root / rel).resolve()
+          try:
+              profile_path.relative_to(root)
+          except ValueError as exc:
+              raise SystemExit('Production Profile escapes repository') from exc
+          if profile_path.is_symlink() or not profile_path.is_file():
+              raise SystemExit('Production Profile missing or unsafe')
+
+          cfg = core.load_json(root / core.DEFAULT_CONFIG)
+          profile = core.load_json(profile_path)
+          errors = core.validate_profile(profile, cfg)
+          if errors:
+              raise SystemExit('Production Profile invalid: ' + '; '.join(errors))
+          if profile.get('publication_profile') != 'LONGFORM_SPECIAL':
+              raise SystemExit('build-special-pdf requires LONGFORM_SPECIAL publication profile')
+
+          survey_root = core.repo_local_path(root, profile['paths']['survey_root'], 'paths.survey_root')
+          main_tex = survey_root / 'main.tex'
+          if main_tex.is_symlink() or not main_tex.is_file():
+              raise SystemExit('canonical reader-facing main.tex missing or unsafe')
+          print(f'issue_id={profile["issue_id"]}')
+          print(f'survey_root={survey_root.relative_to(root).as_posix()}')
+          print(f'main_tex={main_tex.relative_to(root).as_posix()}')
+          print(f'profile_path={profile_path.relative_to(root).as_posix()}')
+          print(f'profile_sha256={core.sha256_file(profile_path)}')
+          print(f'source_sha256={core.sha256_file(main_tex)}')
           PY
-      - name: Preflight reader-facing language, period, and layout consistency
+
+      - name: Set revision-derived reproducible PDF timestamp
         shell: bash
-        env:
-          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
-          SPECIAL_SLUG: ${{ inputs.special_slug }}
-        run: |
-          set -euo pipefail
-          PYTHONPATH=control-src python control-src/scripts/special_reader_notes_ja.py check \
-            --repo-root worktree \
-            --issue-id "$SPECIAL_ID"
-          PYTHONPATH=control-src python control-src/scripts/special_period_consistency.py check \
-            --repo-root worktree \
-            --special-slug "$SPECIAL_SLUG" \
-            --issue-id "$SPECIAL_ID"
-          PYTHONPATH=control-src python control-src/scripts/special_publication_layout_check.py \
-            --repo-root worktree \
-            --issue-id "$SPECIAL_ID"
-      - name: Pin current main survey style into ephemeral source directory
-        id: build_style
-        shell: bash
-        env:
-          SOURCE_DIR: ${{ steps.source.outputs.source_dir }}
-        run: |
-          set -euo pipefail
-          source_style="control-src/templates/survey/jgaisurvey.sty"
-          target_style="${SOURCE_DIR}/jgaisurvey.sty"
-          test -s "$source_style"
-          cp "$source_style" "$target_style"
-          control_commit=$(git -C control-src rev-parse HEAD)
-          style_sha=$(sha256sum "$source_style" | awk '{print $1}')
-          copied_sha=$(sha256sum "$target_style" | awk '{print $1}')
-          test "$style_sha" = "$copied_sha"
-          echo "control_commit=$control_commit" >> "$GITHUB_OUTPUT"
-          echo "style_sha256=$style_sha" >> "$GITHUB_OUTPUT"
-      - name: Set reproducible PDF timestamp
-        shell: bash
-        run: echo 'SOURCE_DATE_EPOCH=1786406400' >> "$GITHUB_ENV"
+        run: echo "SOURCE_DATE_EPOCH=$(git show -s --format=%ct HEAD)" >> "$GITHUB_ENV"
+
       - name: Compile Special issue with LuaLaTeX
         uses: xu-cheng/latex-action@v4
         with:
           root_file: main.tex
-          working_directory: ${{ steps.source.outputs.source_dir }}
+          working_directory: ${{ steps.edition.outputs.survey_root }}
           texlive_version: 2026
           latexmk_use_lualatex: true
-      - name: Analyze final TeX log and page count
+
+      - name: Analyze exact build output
         id: analyze
         shell: bash
         env:
-          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
-          SPECIAL_SLUG: ${{ inputs.special_slug }}
-          PAGE_TARGET: ${{ steps.edition.outputs.page_target }}
-          PAGE_MAX: ${{ steps.edition.outputs.page_max }}
-          SOURCE_DIR: ${{ steps.source.outputs.source_dir }}
-          SOURCE_MANIFEST: ${{ steps.source.outputs.source_manifest }}
-          SOURCE_MANIFEST_SHA256: ${{ steps.source.outputs.source_manifest_sha256 }}
-          SOURCE_VERSION: ${{ steps.source.outputs.source_version }}
-          CONTROL_COMMIT: ${{ steps.build_style.outputs.control_commit }}
-          STYLE_SHA256: ${{ steps.build_style.outputs.style_sha256 }}
+          ISSUE_ID: ${{ steps.edition.outputs.issue_id }}
+          SURVEY_ROOT: ${{ steps.edition.outputs.survey_root }}
+          PROFILE_PATH: ${{ steps.edition.outputs.profile_path }}
+          PROFILE_SHA256: ${{ steps.edition.outputs.profile_sha256 }}
+          SOURCE_SHA256: ${{ steps.edition.outputs.source_sha256 }}
         run: |
           set -euo pipefail
-          pdf="$SOURCE_DIR/main.pdf"
-          log="$SOURCE_DIR/main.log"
+          pdf="$SURVEY_ROOT/main.pdf"
+          log="$SURVEY_ROOT/main.log"
           test -s "$pdf" && test -s "$log"
-          bad=$(grep -E -n 'LaTeX Warning: (There were undefined references|Citation .* undefined)|Package biblatex Warning: Please (re)?run|Overfull \\hbox|Underfull \\hbox|Missing character:' "$log" || true)
+          blocking=$(grep -E -n 'LaTeX Warning: (There were undefined references|Citation .* undefined)|Package biblatex Warning: Please (re)?run|Missing character:' "$log" || true)
+          layout=$(grep -E -n 'Overfull \\hbox|Underfull \\hbox' "$log" || true)
           pages=$(python - "$log" <<'PY'
           import re,sys
           text=open(sys.argv[1],encoding='utf-8',errors='replace').read()
           matches=re.findall(r'Output written on .*?\((\d+) pages?',text,re.S)
-          if not matches: raise SystemExit('could not determine PDF page count from TeX log')
+          if not matches:
+              raise SystemExit('could not determine PDF page count from TeX log')
           print(matches[-1])
           PY
           )
           digest=$(sha256sum "$pdf" | awk '{print $1}')
-          if [ -z "$bad" ]; then clean=true; else clean=false; fi
-          python - "$SPECIAL_ID" "$SPECIAL_SLUG" "$pages" "$digest" "$clean" "$bad" "$CONTROL_COMMIT" "$STYLE_SHA256" "$SOURCE_MANIFEST" "$SOURCE_MANIFEST_SHA256" "$SOURCE_VERSION" "$PAGE_TARGET" "$PAGE_MAX" <<'PY'
-          import json,sys
-          issue,slug,pages,digest,clean,bad,control_commit,style_sha,source_manifest,source_sha,source_version,page_target,page_max=sys.argv[1:]
-          page_count=int(pages)
-          soft_target=int(page_target)
-          hard_max=int(page_max)
-          out={'schema_version':'1.0','issue_id':issue,'special_slug':slug,
-               'source_version':source_version,'source_manifest_path':source_manifest,
-               'source_manifest_sha256':source_sha,
-               'page_count':page_count,'pdf_sha256':digest,'log_clean':clean=='true',
-               'log_gate_findings':bad.splitlines() if bad else [],
-               'page_target_soft':soft_target,'page_target_max':hard_max,
-               'below_soft_target':page_count < soft_target,
-               'page_target_status':'below-soft-target' if page_count < soft_target else 'at-or-above-soft-target',
-               'page_budget_policy':'manifest-soft-target-hard-ceiling',
-               'build_style':{
-                   'source_ref':'main','control_commit_sha':control_commit,
-                   'path':'templates/survey/jgaisurvey.sty','sha256':style_sha,
-                   'application':'copied byte-for-byte into ephemeral state-pinned source directory'
-               }}
-          open('special-pdf-build-audit.json','w',encoding='utf-8').write(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
-          print(json.dumps(out,ensure_ascii=False,indent=2))
+          byte_count=$(stat -c '%s' "$pdf")
+          export PDF_PATH="$pdf" LOG_PATH="$log" PAGE_COUNT="$pages" PDF_SHA256="$digest" BYTE_COUNT="$byte_count" BLOCKING="$blocking" LAYOUT="$layout"
+          python - <<'PY'
+          import json,os,pathlib,subprocess
+          payload={
+              'schema_version':'2.0-rc1',
+              'issue_id':os.environ['ISSUE_ID'],
+              'production_profile':{
+                  'path':os.environ['PROFILE_PATH'],
+                  'sha256':os.environ['PROFILE_SHA256'],
+              },
+              'source':{
+                  'path':f"{os.environ['SURVEY_ROOT']}/main.tex",
+                  'sha256':os.environ['SOURCE_SHA256'],
+              },
+              'pdf':{
+                  'path':os.environ['PDF_PATH'],
+                  'sha256':os.environ['PDF_SHA256'],
+                  'byte_count':int(os.environ['BYTE_COUNT']),
+                  'page_count':int(os.environ['PAGE_COUNT']),
+              },
+              'build':{
+                  'commit_sha':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+                  'source_date_epoch':int(os.environ['SOURCE_DATE_EPOCH']),
+                  'texlive_version':'2026',
+                  'engine':'LuaLaTeX/latexmk',
+              },
+              'blocking_log_findings':os.environ['BLOCKING'].splitlines() if os.environ['BLOCKING'] else [],
+              'layout_log_findings':os.environ['LAYOUT'].splitlines() if os.environ['LAYOUT'] else [],
+              'status':'PASS' if not os.environ['BLOCKING'] else 'FAIL',
+          }
+          pathlib.Path('special-pdf-build-audit.json').write_text(
+              json.dumps(payload,ensure_ascii=False,indent=2)+'\n',encoding='utf-8'
+          )
+          print(json.dumps(payload,ensure_ascii=False,indent=2))
           PY
-          if [ "$pages" -lt "$PAGE_TARGET" ]; then below_soft_target=true; else below_soft_target=false; fi
           echo "page_count=$pages" >> "$GITHUB_OUTPUT"
           echo "pdf_sha256=$digest" >> "$GITHUB_OUTPUT"
-          echo "log_clean=$clean" >> "$GITHUB_OUTPUT"
-          echo "below_soft_target=$below_soft_target" >> "$GITHUB_OUTPUT"
-      - name: Upload PDF preview artifact
+          echo "byte_count=$byte_count" >> "$GITHUB_OUTPUT"
+          if [ -n "$blocking" ]; then
+            printf '%s\n' "$blocking"
+            exit 1
+          fi
+
+      - name: Upload reproducible Special build evidence
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: japanese-generative-ai-survey-special-${{ inputs.special_slug }}-${{ steps.source.outputs.source_version }}
+          name: special-build-${{ steps.edition.outputs.issue_id }}-${{ steps.analyze.outputs.pdf_sha256 || github.run_id }}
           path: |
-            ${{ steps.source.outputs.source_dir }}/main.pdf
-            ${{ steps.source.outputs.source_dir }}/main.log
+            ${{ steps.edition.outputs.survey_root }}/main.pdf
+            ${{ steps.edition.outputs.survey_root }}/main.log
             special-pdf-build-audit.json
           if-no-files-found: error
           retention-days: 14
-      - name: Enforce TeX log and Special page ceiling
-        shell: bash
-        env:
-          PAGE_COUNT: ${{ steps.analyze.outputs.page_count }}
-          LOG_CLEAN: ${{ steps.analyze.outputs.log_clean }}
-          PAGE_TARGET: ${{ steps.edition.outputs.page_target }}
-          PAGE_MAX: ${{ steps.edition.outputs.page_max }}
-        run: |
-          set -euo pipefail
-          test "$LOG_CLEAN" = true
-          if [ "$PAGE_COUNT" -lt "$PAGE_TARGET" ]; then
-            echo "::warning title=Special page target::${PAGE_COUNT} pages is below the ${PAGE_TARGET}-page soft editorial target. Review Evidence/editorial completeness; do not add layout padding solely to reach the target."
-          fi
-          test "$PAGE_COUNT" -le "$PAGE_MAX"
-      - name: Record successful PDF build gate
-        working-directory: worktree
-        shell: bash
-        env:
-          SPECIAL_ID: ${{ steps.edition.outputs.special_id }}
-          WORK_BRANCH: ${{ steps.edition.outputs.work_branch }}
-          PAGE_COUNT: ${{ steps.analyze.outputs.page_count }}
-          PAGE_TARGET: ${{ steps.edition.outputs.page_target }}
-          PAGE_MAX: ${{ steps.edition.outputs.page_max }}
-          PDF_SHA256: ${{ steps.analyze.outputs.pdf_sha256 }}
-          RUN_ID: ${{ github.run_id }}
-          CONTROL_COMMIT: ${{ steps.build_style.outputs.control_commit }}
-          STYLE_SHA256: ${{ steps.build_style.outputs.style_sha256 }}
-          SOURCE_MANIFEST: ${{ steps.source.outputs.source_manifest }}
-          SOURCE_MANIFEST_SHA256: ${{ steps.source.outputs.source_manifest_sha256 }}
-          SOURCE_VERSION: ${{ steps.source.outputs.source_version }}
-        run: |
-          set -euo pipefail
-          python - "$SPECIAL_ID" "$PAGE_COUNT" "$PDF_SHA256" "$RUN_ID" "$CONTROL_COMMIT" "$STYLE_SHA256" "$SOURCE_MANIFEST" "$SOURCE_MANIFEST_SHA256" "$SOURCE_VERSION" "$PAGE_TARGET" "$PAGE_MAX" <<'PY'
-          import json,sys,pathlib
-          issue,pages,pdf_sha,run_id,control_commit,style_sha,source_manifest,source_sha,source_version,page_target,page_max=sys.argv[1:]
-          page_count=int(pages)
-          soft_target=int(page_target)
-          hard_max=int(page_max)
-          path=pathlib.Path('sources')/issue/'pipeline-state.json'
-          state=json.load(open(path,encoding='utf-8'))
-          assert state['lifecycle_state']=='VALIDATED_DRAFT'
-          state['lifecycle_state']='RELEASE_CANDIDATE'
-          state['gates']['latex_build']='passed'
-          state.setdefault('provenance',{})['latex_build']={
-              'workflow_run_id':int(run_id),'pdf_sha256':pdf_sha,'page_count':page_count,
-              'source_version':source_version,
-              'validated_issue_source_path':source_manifest,
-              'validated_issue_source_sha256':source_sha,
-              'page_budget':{
-                  'soft_target':soft_target,
-                  'hard_max':hard_max,
-                  'below_soft_target':page_count < soft_target,
-                  'policy':'manifest-soft-target-hard-ceiling',
-              },
-              'build_style':{'control_commit_sha':control_commit,'path':'templates/survey/jgaisurvey.sty','sha256':style_sha},
-          }
-          path.write_text(json.dumps(state,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          PY
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add "sources/${SPECIAL_ID}/pipeline-state.json"
-          git commit -m "Record successful PDF build for ${SPECIAL_ID}"
-          git push origin "HEAD:${WORK_BRANCH}"

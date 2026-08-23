@@ -106,7 +106,7 @@ class SurveyXIntakeV2Tests(unittest.TestCase):
             ],
         }
 
-    def test_weekly_requires_x_intake_and_renders_google_drive_target(self) -> None:
+    def test_weekly_requires_x_intake_and_renders_one_self_contained_drive_task(self) -> None:
         profile = self.write_profile("2026-W35", "WEEKLY", "WEEKLY_MAGAZINE", "surveys/weekly/2026-W35")
         with self.assertRaisesRegex(ValueError, "requires Grok/X Source Intake"):
             xintake.build_manifest(
@@ -130,11 +130,37 @@ class SurveyXIntakeV2Tests(unittest.TestCase):
             run["run_folder"],
             "Grok_X_SourseIntake/Weekly/2026-W35/weekly-x-2026-W35",
         )
-        prompt = (self.root / run["prompt"]["path"]).read_text(encoding="utf-8")
-        self.assertIn(run["run_folder"], prompt)
-        self.assertIn("final technical Evidence authority", prompt)
-        self.assertIn("You are **not**", prompt)
-        self.assertIn("Coverage scan", prompt)
+        self.assertEqual(run["task_file_name"], "grok-task.md")
+        self.assertEqual(run["drive_task_path"], run["run_folder"] + "/grok-task.md")
+        self.assertNotIn("instruction", run)
+        self.assertNotIn("prompt", run)
+        task_path = self.root / run["task"]["path"]
+        self.assertEqual(task_path.name, "grok-task.md")
+        task = task_path.read_text(encoding="utf-8")
+        self.assertIn(run["drive_task_path"], task)
+        self.assertIn(run["run_folder"], task)
+        self.assertIn("Human handoff consists only", task)
+        self.assertIn("final technical Evidence authority", task)
+        self.assertIn("You are **not**", task)
+        self.assertIn("Coverage scan", task)
+        self.assertFalse((task_path.parent / "grok-instruction.md").exists())
+        self.assertFalse((task_path.parent / "grok-prompt.md").exists())
+
+    def test_task_authority_drift_fails_closed(self) -> None:
+        profile = self.write_profile("2026-W35", "WEEKLY", "WEEKLY_MAGAZINE", "surveys/weekly/2026-W35")
+        manifest_path = xintake.build_manifest(self.root, self.cfg, profile, self.required_spec("weekly-x-2026-W35"))
+        payload = core.load_json(manifest_path)
+        task_path = self.root / payload["runs"][0]["task"]["path"]
+        task_path.write_text(task_path.read_text(encoding="utf-8") + "\nDRIFT\n", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "task authority drift"):
+            xintake.validate_manifest(self.root, self.cfg, manifest_path, require_complete=False)
+
+    def test_result_filename_cannot_overwrite_task_file(self) -> None:
+        profile = self.write_profile("SP001", "THEMATIC", "LONGFORM_SPECIAL", "surveys/special/SP001")
+        spec = self.required_spec()
+        spec["runs"][0]["expected_result_filename"] = "grok-task.md"
+        with self.assertRaisesRegex(ValueError, "expected_result_filename invalid"):
+            xintake.build_manifest(self.root, self.cfg, profile, spec)
 
     def test_special_can_explicitly_record_not_required(self) -> None:
         profile = self.write_profile(
@@ -176,6 +202,7 @@ class SurveyXIntakeV2Tests(unittest.TestCase):
         payload = xintake.validate_manifest(self.root, self.cfg, manifest_path, require_complete=False)
         self.assertEqual(payload["drive_handoff"]["category"], "Generative_AI_Foundations")
         self.assertTrue(payload["runs"][0]["run_folder"].startswith("Grok_X_SourseIntake/Generative_AI_Foundations/"))
+        self.assertTrue(payload["runs"][0]["drive_task_path"].endswith("/grok-task.md"))
 
     def test_record_result_binds_imported_raw_and_completes_manifest(self) -> None:
         profile = self.write_profile("SP001", "THEMATIC", "LONGFORM_SPECIAL", "surveys/special/SP001")

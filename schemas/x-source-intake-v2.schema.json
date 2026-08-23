@@ -117,9 +117,10 @@
         "coverage_focus",
         "time_scope",
         "run_folder",
+        "task_file_name",
+        "drive_task_path",
         "expected_result_filename",
-        "instruction",
-        "prompt",
+        "task",
         "result"
       ],
       "properties": {
@@ -137,9 +138,10 @@
         },
         "time_scope": {"type": "string", "minLength": 1},
         "run_folder": {"type": "string", "minLength": 1},
+        "task_file_name": {"const": "grok-task.md"},
+        "drive_task_path": {"type": "string", "minLength": 1},
         "expected_result_filename": {"type": "string", "minLength": 1},
-        "instruction": {"$ref": "#/$defs/authority"},
-        "prompt": {"$ref": "#/$defs/authority"},
+        "task": {"$ref": "#/$defs/authority"},
         "result": {
           "oneOf": [
             {"type": "null"},

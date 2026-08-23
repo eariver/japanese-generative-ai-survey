@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Generic Grok/X Source Intake handoff for Survey Production Core v2.
 
-ChatGPT owns the research decision and task specification. This helper renders a
-self-contained Grok instruction/prompt, binds the Google Drive handoff path, and
+ChatGPT owns the research decision and task specification. This helper renders one
+self-contained Grok task file, binds the exact Google Drive task-file path, and
 records the exact Raw bytes after ChatGPT imports the returned Markdown from
 Drive. It never calls Grok or Google Drive itself.
 """
@@ -23,6 +23,7 @@ BASE_PROMPT = Path("config/prompts/grok/x-source-intake-base-v1.md")
 WEEKLY_PROMPT = Path("config/prompts/grok/x-source-intake-weekly-v1.md")
 SPECIAL_PROMPT = Path("config/prompts/grok/x-source-intake-special-v1.md")
 DEFAULT_RELATIVE_MANIFEST = Path("external/x/x-source-intake-v2.json")
+TASK_FILENAME = "grok-task.md"
 RUN_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 
 
@@ -121,6 +122,7 @@ def _validate_spec(spec: dict[str, Any]) -> dict[str, Any]:
             or "/" in filename
             or "\\" in filename
             or filename in {".", ".."}
+            or filename == TASK_FILENAME
         ):
             raise XIntakeError(f"X intake expected_result_filename invalid: {run_id}")
         normalized.append(
@@ -170,21 +172,23 @@ def _render_run(
     root_name: str,
     run: dict[str, Any],
     run_dir: Path,
-) -> tuple[Path, Path, str]:
+) -> tuple[Path, str, str]:
     run_dir.mkdir(parents=True, exist_ok=True)
-    instruction_path = run_dir / "grok-instruction.md"
-    prompt_path = run_dir / "grok-prompt.md"
-    if instruction_path.exists() or prompt_path.exists():
-        raise XIntakeError(f"refusing to overwrite existing Grok instruction/prompt: {run['run_id']}")
+    task_path = run_dir / TASK_FILENAME
+    if task_path.exists():
+        raise XIntakeError(f"refusing to overwrite existing Grok task: {run['run_id']}")
     edition = Path(profile["paths"]["survey_root"]).name
     drive_path = f"{root_name}/{category}/{edition}/{run['run_id']}"
+    drive_task_path = f"{drive_path}/{TASK_FILENAME}"
     overlay_path = WEEKLY_PROMPT if profile["research_profile"] == "WEEKLY" else SPECIAL_PROMPT
     base = (repo_root / BASE_PROMPT).read_text(encoding="utf-8")
     overlay = (repo_root / overlay_path).read_text(encoding="utf-8")
     base = base.replace("<TASK_ID>", run["run_id"]).replace("<ISSUE_ID>", profile["issue_id"])
     questions = "\n".join(f"- {value}" for value in run["research_questions"])
     focus = "\n".join(f"- {value}" for value in run["coverage_focus"])
-    prompt = f"""# Grok X Source Intake Run — {run['run_id']}
+    task = f"""# Grok X Source Intake Task — {run['run_id']}
+
+This file is the complete execution authority for this Grok/X run. The Human handoff consists only of giving Grok the exact Google Drive path/reference to this file. Do not ask the Human to copy or restate the task body.
 
 Issue: `{profile['issue_id']}`  
 Research Profile: `{profile['research_profile']}`  
@@ -199,17 +203,30 @@ Time scope: {run['time_scope']}
 
 {focus}
 
-## Required Google Drive output
+## Google Drive handoff
 
-Target folder:
+Task file path:
+
+`{drive_task_path}`
+
+Result folder:
 
 `{drive_path}`
 
-Expected filename:
+Expected result filename:
 
 `{run['expected_result_filename']}`
 
-The target folder is prepared by ChatGPT before this run. Save the final Markdown there and nowhere else.
+The run folder and this task file are prepared by ChatGPT before handoff. Read this exact task file, perform the requested X research, and save the final Markdown result into the result folder above and nowhere else.
+
+Operational rules:
+
+1. Use X as the observation/search surface described below.
+2. Do not write to GitHub.
+3. If this exact task file or result folder is unavailable, stop and report that condition instead of choosing another location.
+4. Do not overwrite an existing result; use a revision suffix and report the actual filename.
+5. The result remains Raw Observation. Downstream ChatGPT performs primary-source verification, repository import, and Discovery disposition.
+6. Do not treat a missing ChatGPT-side Grok connector as relevant; this run is intentionally invoked by Human-mediated Drive task-file handoff.
 
 ---
 
@@ -219,36 +236,8 @@ The target folder is prepared by ChatGPT before this run. Save the final Markdow
 
 {overlay.rstrip()}
 """
-    instruction = f"""# Grok execution instruction — {run['run_id']}
-
-Execute the accompanying repository prompt exactly:
-
-`{_rel(repo_root, prompt_path)}`
-
-Purpose:
-
-{run['purpose']}
-
-Google Drive handoff target:
-
-`{drive_path}`
-
-Expected result filename:
-
-`{run['expected_result_filename']}`
-
-Operational rules:
-
-1. Use X as the observation/search surface described by the prompt.
-2. Do not write to GitHub.
-3. Save the result Markdown only in the exact Google Drive run folder above.
-4. If the target folder is unavailable, stop and report that condition instead of choosing another folder.
-5. Do not overwrite an existing result; use a revision suffix and report the actual filename.
-6. The result remains Raw Observation. Downstream ChatGPT performs primary-source verification and repository import.
-"""
-    prompt_path.write_text(prompt, encoding="utf-8")
-    instruction_path.write_text(instruction, encoding="utf-8")
-    return instruction_path, prompt_path, drive_path
+    task_path.write_text(task, encoding="utf-8")
+    return task_path, drive_path, drive_task_path
 
 
 def build_manifest(
@@ -277,15 +266,16 @@ def build_manifest(
     runs: list[dict[str, Any]] = []
     for run in normalized["runs"]:
         run_dir = manifest_path.parent / run["run_id"]
-        instruction_path, prompt_path, drive_path = _render_run(
+        task_path, drive_path, drive_task_path = _render_run(
             repo_root, profile, category, root_name, run, run_dir
         )
         runs.append(
             {
                 **run,
                 "run_folder": drive_path,
-                "instruction": _authority(repo_root, instruction_path),
-                "prompt": _authority(repo_root, prompt_path),
+                "task_file_name": TASK_FILENAME,
+                "drive_task_path": drive_task_path,
+                "task": _authority(repo_root, task_path),
                 "result": None,
             }
         )
@@ -374,11 +364,13 @@ def validate_manifest(
             raise XIntakeError("X intake/Discovery issue identity mismatch")
         accepted_by_id = {row["discovery_id"]: row for row in accepted["records"]}
     for run in payload["runs"]:
-        for field in ("instruction", "prompt"):
-            ref = run[field]
-            path = core.repo_local_path(repo_root, ref["path"], f"X intake {field} {run['run_id']}")
-            if path.is_symlink() or not path.is_file() or core.sha256_file(path) != ref["sha256"]:
-                raise XIntakeError(f"X intake {field} authority drift: {run['run_id']}")
+        task_ref = run["task"]
+        task_path = core.repo_local_path(repo_root, task_ref["path"], f"X intake task {run['run_id']}")
+        if task_path.is_symlink() or not task_path.is_file() or core.sha256_file(task_path) != task_ref["sha256"]:
+            raise XIntakeError(f"X intake task authority drift: {run['run_id']}")
+        expected_drive_task = f"{run['run_folder']}/{run['task_file_name']}"
+        if run["task_file_name"] != TASK_FILENAME or run["drive_task_path"] != expected_drive_task:
+            raise XIntakeError(f"X intake Drive task-file identity drift: {run['run_id']}")
         result = run["result"]
         if result is None:
             if require_complete:
@@ -430,6 +422,8 @@ def record_result(
         raise XIntakeError("invalid X intake discovery disposition")
     if not isinstance(drive_file_name, str) or not drive_file_name.strip() or "/" in drive_file_name or "\\" in drive_file_name:
         raise XIntakeError("drive_file_name must be one plain filename")
+    if drive_file_name == TASK_FILENAME:
+        raise XIntakeError("Grok result filename must not overwrite the task file")
     if not isinstance(rationale, str) or not rationale.strip():
         raise XIntakeError("X intake result rationale must be non-empty")
     core.parse_instant(observed_at)

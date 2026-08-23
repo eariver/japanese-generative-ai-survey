@@ -165,9 +165,9 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         bootstrap = Path("docs/survey-production-core-v2-session-bootstrap.md").read_text(encoding="utf-8")
         final_rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
 
-        # WU-011 remains historical. The live candidate tree intentionally owns
-        # a stable pre-audit state; exact final PASS belongs to PR metadata keyed
-        # to the unchanged audited head, not to a later candidate-tree commit.
+        # WU-011 remains historical. The redesigned live bootstrap must not be
+        # forced to preserve the W33/SP001 pilot-only CLI surface that existed
+        # during the pre-merge validation campaign.
         self.assertIn("PRE-AUDIT CANDIDATE", authority)
         self.assertIn("AUD-046", authority)
         self.assertIn("AUD-047", authority)
@@ -175,7 +175,9 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         self.assertIn("WU-011: historical `COMPLETE", worklog)
         self.assertIn("PRE-AUDIT", worklog)
         self.assertIn("Human full-candidate review of PR #310", closure)
-        self.assertIn("survey_pilot_bootstrap_v2.py plan --pilot", bootstrap)
+        self.assertIn("Production versus Core-maintenance boundary", bootstrap)
+        self.assertIn("Resolve targets without user ceremony", bootstrap)
+        self.assertNotIn("survey_pilot_bootstrap_v2.py plan --pilot", bootstrap)
         self.assertIn("run the complete six-point acceptance audit from zero", final_rule)
         self.assertIn("rerun all six acceptance points from point 1", final_rule)
         self.assertFalse(Path("sources/2026-W33/production-state.json").exists())

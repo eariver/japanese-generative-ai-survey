@@ -1,6 +1,6 @@
 # Survey Production Core v2 — agent session bootstrap
 
-Status: `PRE-MERGE CANONICAL CANDIDATE / AUDIT-STABLE PRE-AUDIT`  
+Status: `REDESIGN IMPLEMENTATION CANDIDATE`  
 Applies to: Weekly, Retrospective Period, standalone Thematic, and guided Special series work  
 Primary operator: **ChatGPT**
 
@@ -14,38 +14,68 @@ Generative AI Foundationsの次巻をArchitecture Reviewまで進めてくださ
 2025-H2をPublication Previewまで進めてください
 ```
 
-That instruction is sufficient. ChatGPT reconstructs pipeline mechanics from repository authority instead of asking the user to restate manifest paths, search tactics, stage order, quality rules or release mechanics.
+That instruction is sufficient. ChatGPT reconstructs production mechanics from repository authority instead of asking the user to restate manifest paths, search tactics, stage order, quality rules or release mechanics.
 
 After the request, **continue autonomously without routine confirmation prompts**. A production session may pause only for:
 
 1. `ARCHITECTURE_REVIEW` Human Gate;
 2. exact-byte `PUBLICATION_PREVIEW` Human Gate;
 3. a genuine `EXCEPTION_GATE_REQUIRED` condition requiring Owner judgment;
-4. unavoidable manual Grok instruction/result transport when the external Grok execution cannot be performed directly.
+4. the permitted Human-mediated Grok Drive task-file path handoff;
+5. a recorded shared-Core defect that makes correct production impossible under the reviewed Core.
 
-The fourth case is an operational transport boundary, not editorial approval and not a third Human Gate. Once the expected Grok result is present in the configured Google Drive run folder, import it and resume automatically.
+Grok handoff is operational transport, not editorial approval or a third Human Gate. Once the expected Grok result is present, import it and resume automatically.
 
-Initialization, Source Intake, search expansion, Screening, Evidence, Completeness/materiality, Candidate Selection, Architecture preparation, drafting, synthesis, deterministic QA, ChatGPT semantic/visual review, Freeze preparation, CI retry and internally repairable defects are **not stop points**. Do not ask “continue?” between those stages.
+Initialization, Source Intake, search expansion, Screening, Evidence, Completeness/materiality, Candidate Selection, Architecture preparation, reader-facing authorship, deterministic QA, ChatGPT semantic/editorial review, PDF build, ChatGPT visual review, Freeze preparation, transient retry and edition-local repair are **not stop points**. Continue immediately unless a Human/Exception Gate or blocking shared-Core defect is reached.
 
 ## 2. Authority order at session start
 
-Before changing an edition, read current `main` and at minimum:
+Before changing an edition, read current reviewed `main` and at minimum:
 
 1. `AGENTS.md`;
 2. `docs/survey-production-core-v2-authority.md`;
 3. this file;
 4. `docs/survey-production-core-v2-issue-prevention-checklist.md`;
 5. `docs/survey-production-core-v2-x-source-intake.md`;
-6. the applicable Profile/period/thematic/series guide;
-7. existing canonical Production Profile/State and stage artifacts, if any.
+6. `docs/survey-production-core-v2-execution-record-policy.md`;
+7. the applicable Profile/period/thematic/series guide;
+8. existing canonical Production Profile/State and edition execution index, if any.
 
-For Core-v2 implementation/review work, also read `docs/survey-production-core-v2-final-audit-rule.md`.
+For Core-maintenance implementation/review work, also read the redesign authority and `docs/survey-production-core-v2-final-audit-rule.md`.
 
-Repository state outranks chat history. A new session must be able to resume from repository state alone.
+Repository state outranks chat history. A new production conversation must be able to resume from repository state alone.
 
-While PR #310 is unmerged, Core v2 production remains disabled: current `main` is still production source of truth and W33/SP001 must not be initialized from the improvement branch.
+## 3. Production versus Core-maintenance boundary
 
-## 3. Resolve targets without user ceremony
+Production sessions own edition-local work. Core-maintenance sessions own shared implementation.
+
+During an edition run, do not author generic changes under:
+
+```text
+AGENTS.md
+config/
+schemas/
+scripts/
+.github/workflows/
+docs/survey-production-core-v2-*.md
+```
+
+If a shared-Core defect is observed:
+
+```text
+record symptom / reproduction / impact
+-> classify SHARED_CORE_DEFECT
+-> record sources/<issue>/execution/defects/<id>.md
+-> continue only if a semantically safe edition-local workaround exists
+-> otherwise mark BLOCKED_CORE_DEFECT and stop the edition
+-> repair Core separately through normal review/CI
+```
+
+A production run that edits shared Core to make itself pass is not valid evidence that the reviewed Core worked.
+
+A newer Core revision may be consumed only after it is separately reviewed and integrated. Revalidate affected accepted boundaries and record the new integrated revision; do not author the generic repair in the edition conversation.
+
+## 4. Resolve targets without user ceremony
 
 ### Weekly
 
@@ -66,56 +96,25 @@ python scripts/survey_period_v2.py plan --special-slug 2025-H2
 python scripts/survey_period_v2.py initialize --special-slug 2025-H2 --target-gate ARCHITECTURE_REVIEW
 ```
 
-Custom bounded periods may use a repository-owned spec. A bounded Period cannot initialize until its period end has passed.
-
-For X, ChatGPT records an explicit `REQUIRED` / `NOT_REQUIRED` decision with rationale.
+Custom bounded periods may use a repository-owned spec. A bounded Period cannot initialize until its period end has passed. ChatGPT records an explicit X `REQUIRED` / `NOT_REQUIRED` decision with rationale.
 
 ### Standalone Thematic
 
-Resolve research scope from canonical thematic planning authority. For SP001, the Pilot points to TS-001 in `docs/thematic-special-backlog.md`; detailed scope is not duplicated into Pilot configuration.
+Resolve research scope from canonical thematic planning authority. If a machine-readable scope file is absent, ChatGPT materializes it from that authority; this is internal work, not a Human Gate.
 
-If a machine-readable scope file is absent, ChatGPT materializes it from planning authority. That is an internal action, not a Human Gate.
-
-For Pilot planning:
-
-```text
-python scripts/survey_pilot_bootstrap_v2.py plan --pilot W33
-python scripts/survey_pilot_bootstrap_v2.py plan --pilot SP001
-```
-
-`SP001` may return `MATERIALIZE_SCOPE`; perform that action and replan automatically.
-
-For X, ChatGPT explicitly decides whether community/adoption/implementation signal is material to the thematic question.
+Thematic X applicability is a ChatGPT research judgment based on whether community/adoption/implementation signal is material to the question.
 
 ### Guided series / Generative AI Foundations
 
 For `Generative AI Foundationsの次巻`, read `docs/generative-ai-foundations-special-series.md`, inspect completed/in-progress repository evidence, resolve the next volume, and materialize that volume's Thematic scope from the living series authority.
 
-Do not ask the user for a volume number that repository authority can determine. Do not create a parallel machine Series engine solely for bootstrap convenience.
+Do not ask for a volume number that repository authority can determine. Do not build a parallel machine Series engine solely for bootstrap convenience.
 
-If multiple next volumes are genuinely equally valid and repository authority cannot decide, use an Exception Gate.
+Each volume uses normal `THEMATIC` + applicable Publication Profile contracts. When X is material, use the dedicated Foundations Drive category.
 
-Each Foundations volume uses a normal `THEMATIC` Production Profile. If X is material, use `series_context = GENERATIVE_AI_FOUNDATIONS` so Drive handoff uses the dedicated category.
+## 5. Initialization, resume and execution record
 
-## 4. Initialization, resume and reviewed tool upgrades
-
-The start request authorizes deterministic initialization and canonical work-branch creation. Initialization is not a Human Gate.
-
-Initialization writes immutable launch provenance: Profile, State, issue/path identity and initialization implementation/contract identity.
-
-Initialization implementation identity is historical provenance, not a permanent runtime pin. Later stages may use newer reviewed generic tooling only after the repair is actually integrated into the edition work branch.
-
-Canonical upgrade loop:
-
-```text
-generic repair reviewed/merged on main
--> integrate it into edition work branch
--> validate State with integrated toolchain
--> revalidate/migrate only affected accepted boundaries
--> execute next stage from integrated branch head
--> record actual head + current contract in next Stage Checkpoint
--> continue automatically
-```
+The start request authorizes deterministic initialization and canonical work-branch/state creation. Initialization is not a Human Gate.
 
 Canonical resume validation:
 
@@ -123,69 +122,51 @@ Canonical resume validation:
 python scripts/survey_agent_control_v2.py validate-state --state <source_root>/production-state.json
 ```
 
-Do not use legacy `survey_production_v2.py validate-state` as the canonical resume decision. Legacy Screening/Evidence helpers that retain historical pin checks may run through:
+After State, read or create:
 
 ```text
-python scripts/survey_agent_tool_v2.py <allowlisted screening/evidence helper arguments>
+<source_root>/execution/index.md
+<source_root>/execution/sessions/<session-id>.md
 ```
 
-## 5. Source Intake and Grok/X Google Drive handoff
+Follow `docs/survey-production-core-v2-execution-record-policy.md`. Log material actions/decisions and authority pointers, not every tool invocation.
 
-Read `docs/survey-production-core-v2-x-source-intake.md` before accepting Discovery.
+At session close, persist the exact end state, next action, relevant candidate/Grok/Human Gate identity, and any defect/deviation. This logging is internal production work and never requires routine approval.
 
-### 5.1 Applicability
+## 6. Source Intake and Grok/X Google Drive handoff
+
+Read `docs/survey-production-core-v2-x-source-intake.md` before Discovery Acceptance.
+
+### 6.1 Applicability
 
 - `WEEKLY`: `REQUIRED`.
 - `RETROSPECTIVE_PERIOD`: ChatGPT chooses `REQUIRED` or `NOT_REQUIRED` with rationale.
 - `THEMATIC`: ChatGPT chooses `REQUIRED` or `NOT_REQUIRED` with rationale.
-- Foundations: `THEMATIC` plus `series_context = GENERATIVE_AI_FOUNDATIONS` when required.
+- Foundations: use the dedicated series Drive category when required.
 
 `NOT_REQUIRED` is a substantive research judgment, not a shortcut.
 
-### 5.2 Build Grok run package
+### 6.2 One self-contained Drive task
 
-For each required run define purpose, research questions, coverage focus, time scope, stable run ID and expected result filename, then build:
-
-```text
-python scripts/survey_x_intake_v2.py build \
-  --profile <source_root>/production-profile.json \
-  --spec <run-spec.json>
-```
-
-This creates the X manifest plus exact Grok instruction/prompt under `<source_root>/external/x/<run-id>/`.
-
-### 5.3 Provision Google Drive target
-
-Resolve the connected Drive root named exactly:
-
-`Grok_X_SourseIntake`
-
-Persistent categories:
+For each required run, define purpose, research questions, time/scope constraints, expected output format, stable run ID and expected result filename. Prepare one self-contained task file:
 
 ```text
-Weekly
-Retrospective_Special
-Thematic_Special
-Generative_AI_Foundations
+Grok_X_SourseIntake/<category>/<edition>/<run-id>/grok-task.md
 ```
 
-Create the exact run folder before Grok runs:
+The repository-side X manifest must bind the exact task bytes/hash and expected Drive location. Account-specific Drive IDs/URLs are operational metadata and must not be committed when they contain private identity.
 
-```text
-Grok_X_SourseIntake/<category>/<edition-folder>/<run-id>/
-```
+### 6.3 Human-mediated path handoff
 
-Do not commit account-specific Drive IDs/URLs.
+Give the Human only the exact Google Drive **task-file path/reference**. The Human gives that path/reference to Grok. The Human is not expected to copy/paste instruction or prompt contents.
 
-### 5.4 External collection boundary
+Do **not** search for, install, discover or configure a Grok connector. Connector absence is not a missing dependency or Exception Gate.
 
-If Grok can be invoked directly, execute the collection and continue. If not, give the Human the exact generated instruction/prompt and Drive path for manual transport. **Do not ask for any additional approval or unrelated confirmation.**
+Grok reads `grok-task.md` and writes the instructed result into the same run folder. If the result is not present yet, Source Intake is incomplete; do not reinterpret that as Human approval or Core failure.
 
-If the result is absent, keep State in Source Intake with `AWAITING_GROK`. This is not a Human Gate. If the result already exists, continue immediately.
+### 6.4 Import and disposition
 
-### 5.5 Import and disposition
-
-Read the returned Drive Markdown and copy the **exact bytes** into repository Raw, preferably:
+Read the returned Markdown and import its **exact bytes** into repository Raw, for example:
 
 ```text
 <source_root>/external/x/<run-id>/raw/<actual-drive-filename>.md
@@ -198,50 +179,38 @@ DISCOVERY_RECORDED
 NO_MATERIAL_DISCOVERY
 ```
 
-Material results must name Discovery record(s) that bind the imported Raw. Non-material results need a non-empty rationale. Technical facts still require normal authoritative Evidence verification.
+Material results link Discovery records to imported Raw. Non-material results require rationale. X remains discovery/community signal; technical claims still require normal authoritative Evidence verification.
 
-### 5.6 Discovery Acceptance
+After import/disposition, resume automatically toward the requested Gate.
 
-Discovery Acceptance binds the completed X Source Intake manifest SHA. `ISSUE_INITIALIZED -> DISCOVERY_COLLECTED` cannot pass when Weekly skipped X, a required run is still awaiting output, imported Raw drifted, a result lacks disposition, or a named Discovery does not bind the imported Raw.
+## 7. Research and Architecture loop
 
-Conventional collectors, direct ChatGPT web research and Grok/X are all Source Intake surfaces. Collector success/count never proves completeness.
+ChatGPT owns research/editorial judgment. Deterministic helpers validate exact structures/invariants; they do not decide what the edition should say.
 
-## 6. Autonomous research/editorial loop
-
-For each internal stage:
+Normal internal progression:
 
 ```text
-read Profile + State + applicable guide/checklist
--> plan work appropriate to the actual edition
--> perform applicable Source Intake
--> produce/update canonical artifacts
--> run genuinely applicable deterministic checks
--> perform required ChatGPT research/editorial/visual reviews
--> repair ordinary findings and re-check
--> validate exact intended stage artifacts with scripts/survey_stage_validation_v2.py
--> include exact CORE_STAGE_CONTRACT in checkpoint review set
--> write one compact Stage Checkpoint
--> advance Production State exactly one lifecycle step
--> continue immediately unless a Human/Exception Gate is reached
+Profile + State + guide/checklist
+-> Source Intake and research expansion
+-> Screening
+-> Evidence verification
+-> materiality/completeness closure
+-> Candidate Selection
+-> Architecture
+-> exact stage validation
+-> compact Stage Checkpoint
+-> next lifecycle state
 ```
 
-The compact checkpoint lives under:
+Repair edition-local research/evidence/architecture findings autonomously. If the required repair would change shared Core, use the responsibility rule in §3 instead.
 
-```text
-<source_root>/orchestration/v2/checkpoints/<FROM_STATE>.json
-```
+Before a Stage Checkpoint is adopted, run the exact intended artifact set through `scripts/survey_stage_validation_v2.py` and include the exact `CORE_STAGE_CONTRACT` result.
 
-It binds lifecycle transition, canonical artifact hashes, exact semantic validation, applicable ChatGPT review, implementation commit, current contract identity and readiness summary.
+Legacy Action Spec / Handoff Request / Handoff / Action Result / Validation Attestation machinery is compatibility/audit code, not the canonical hot path.
 
-A canonical filename or ChatGPT PASS statement is not enough. Legacy Action Spec / Handoff Request / Handoff / Action Result / Validation Attestation machinery remains compatibility/audit code, not the hot path.
+## 8. Human Gate 1 — Architecture Review
 
-A semantic/visual or deterministic finding is normally repaired and re-run autonomously. Do not stop merely because a check failed when a safe local repair exists.
-
-## 7. Human Gates
-
-### Human Gate 1 — Architecture Review
-
-The first normal stop is at:
+The first normal stop is:
 
 ```text
 lifecycle_state = ARCHITECTURE_ESTABLISHED
@@ -253,68 +222,112 @@ Present the exact Architecture package, research limitations and material unreso
 
 After explicit approval, record exact Architecture approval and continue autonomously toward Publication Preview unless the user explicitly requested to stop after Architecture approval.
 
-### Human Gate 2 — Publication Preview
+## 9. Reader-facing authorship and QA
 
-After Architecture approval, continue through drafting/synthesis, deterministic validation, semantic review, rendering and agent visual review.
+After Architecture approval, internal Draft Package/Result and Synthesis artifacts may support ChatGPT's work, but they are not publication prose and are never a legal fallback source for publication assembly.
 
-Quality rows are `DETERMINISTIC`, `AGENT_SEMANTIC` or `AGENT_VISUAL`; applicability derives from the exact Production Profile.
+ChatGPT explicitly authors canonical reader-facing files under the bound `survey_root`, normally:
 
-At `RELEASE_CANDIDATE`, stop for approval of one exact Publication Candidate/PDF byte identity. A rebuilt or similar PDF is not the approved artifact.
+```text
+<survey_root>/main.tex
+<survey_root>/references.bib
+```
 
-## 8. Freeze and Release
+Create a Reader Manuscript Manifest binding the exact reader source and complete Architecture must-cover mapping.
+
+For one exact source/PDF revision, complete these separate QA layers:
+
+1. **Deterministic QA** — Quality Bundle containing only applicable deterministic checks and exact build/source/PDF authority.
+2. **Semantic/Editorial QA** — ChatGPT review record of the exact manuscript/source/PDF, including Publication Boundary, Architecture content fidelity and Profile-specific semantics.
+3. **Visual QA** — ChatGPT visual review record of the exact rendered PDF and applicable Publication Profile visual checks.
+
+If any layer finds a normal edition-local issue, revise the reader-facing source, rebuild the PDF, invalidate stale QA records and rerun all affected layers. Do not patch shared renderer/Core code in the production session.
+
+## 10. Human Gate 2 — Publication Preview
+
+Finalize one Publication Candidate only after the three QA layers pass on the same source/PDF bytes.
+
+The Candidate atomically binds:
+
+- Reader Manuscript;
+- exact source;
+- exact PDF + page count;
+- deterministic Quality Bundle;
+- Semantic/Editorial Review;
+- Visual Review.
+
+At `RELEASE_CANDIDATE`, stop for Human approval of that exact Candidate/PDF identity. Rebuilt or changed bytes require a new candidate and new review.
+
+## 11. Freeze and Release
 
 After Publication Preview approval, continue without another routine Human Gate:
 
-1. record exact approved-PDF visual review;
-2. build Freeze Record and Release Manifest with `scripts/survey_profiled_freeze_v2.py`;
+1. verify the approval binds the exact already-reviewed Candidate/PDF;
+2. build Freeze Record and Release Manifest from that Candidate and approval;
 3. transition to `FROZEN` after exact stage validation;
 4. merge frozen production changes through the normal reviewed repository path;
-5. run dedicated Release workflow against current `main`;
-6. create/reconcile issue-only GitHub Release;
-7. recheck released asset SHA-256/byte count;
+5. use the dedicated mechanical Release workflow against current `main`;
+6. create/reconcile the issue-only GitHub Release;
+7. verify released asset SHA-256/byte count;
 8. record Merge Verification, Release Record and compact `FROZEN -> RELEASED` checkpoint.
 
-Public identity derives from exact Production Profile `paths.survey_root` basename. Release reconciliation remains fail-closed and idempotent.
+Do **not** insert a second post-approval semantic/visual quality gate. Human approval is followed by exact-byte integrity work, not new editorial judgment.
 
-## 9. Exception Gate
+Public identity derives from the exact Production Profile `paths.survey_root` basename. Release reconciliation remains fail-closed and idempotent.
 
-Use an Exception Gate only when safe continuation genuinely needs Owner judgment, including unresolved scope ambiguity, irreconstructible partial initialization, inability to establish accepted Raw/external artifact identity, incompatible accepted-contract migration, changed already-approved bytes, or frozen/release identity divergence.
+## 12. GitHub Actions responsibility
 
-Do **not** stop for ordinary search refinement, weak-source replacement, local QA failure, CI retry, wording/layout repair, ordinary Grok result transport, or a generic defect that can be repaired safely.
+GitHub Actions are retained where they add independent mechanical value:
 
-A missing Grok result is not an Exception Gate when task and Drive target are valid; it is incomplete Source Intake.
+- CI/regression;
+- reproducible/pinned PDF build;
+- deterministic checks that benefit from clean-environment execution;
+- exact-byte preview export where needed;
+- credential-isolated Freeze/Release/reconciliation.
 
-## 10. Session handoff
+Do not use Actions as the normal Screening/Evidence/Selection/Drafting/Semantic Revision/Visual Repair author. ChatGPT performs those decisions directly and records the resulting edition artifacts.
 
-If the conversation ends before the requested Gate, persist enough repository state for another session to resume:
+If a legacy production-mutation workflow still exists in the repository, its existence does not make it canonical. Follow the current Core contract and workflow responsibility inventory.
+
+## 13. Exception Gate
+
+Use an Exception Gate only when safe continuation genuinely needs Owner judgment, including unresolved scope ambiguity, irreconstructible accepted authority, incompatible accepted-contract migration, changed already-approved bytes, or frozen/release identity divergence.
+
+Do not stop for ordinary search refinement, weak-source replacement, local QA failure, wording/layout repair, CI retry, Grok path handoff, or a defect that is clearly edition-local.
+
+A shared-Core defect that makes production impossible is recorded as `BLOCKED_CORE_DEFECT`; repair occurs in the separate Core-maintenance flow. Use an Owner Exception Gate only when Owner judgment—not merely Core engineering—is actually required.
+
+## 14. Session handoff
+
+If the conversation ends before the requested Gate, update the edition execution record with:
 
 ```text
 issue_id / resolved target
 work_branch
 Production State path + SHA-256
 lifecycle_state
-next_action / terminal_reason
+next_action / stop reason
 latest Stage Checkpoint
-X Source Intake manifest/status if active
-pending Grok run-id + Drive path if AWAITING_GROK
+latest execution session record
+X task-file path/result disposition if active
 open Human/Exception Gate if any
-known research limitations
+shared-Core defect pointer if any
+exact candidate/PDF SHA if applicable
 ```
 
-A later session validates repository state and **continues**, rather than replaying already completed work or asking the user to restate it.
+A later session validates repository state and continues rather than replaying completed work or asking the user to reconstruct it.
 
-## 11. Core-v2 candidate review rule
+## 15. Core-v2 candidate review rule
 
-For Survey Production Core v2 changes, follow `docs/survey-production-core-v2-final-audit-rule.md`:
+Core-maintenance candidates follow `docs/survey-production-core-v2-final-audit-rule.md`:
 
 ```text
-complete every code/config/schema/workflow/test/doc/Finding/Repair-Set change
--> obtain all five CI cross-regression families green on one head
+complete every intended code/config/schema/workflow/test/doc/Finding/Repair-Set change
+-> obtain required regression/CI evidence on one head
+-> synchronize all Core authority/docs
 -> freeze that candidate head SHA
 -> audit all six acceptance priorities from zero on that exact head
 -> make no candidate-tree changes during the audit
 ```
 
-The six points are Weekly viability, Special viability, generality, recurrence prevention, control proportionality, and **autonomous progression / stop discipline**.
-
-If any finding requires a repository change, invalidate the entire audit, complete repairs, freeze a new head and rerun **all six points from point 1**. The final PASS is recorded against the exact audited SHA in PR/Human-review metadata rather than committed into the audited tree.
+If any finding requires repository mutation, invalidate the audit, repair Core, freeze a new head and rerun all six points from point 1. Final PASS is PR/Human-review metadata bound to the exact audited SHA.

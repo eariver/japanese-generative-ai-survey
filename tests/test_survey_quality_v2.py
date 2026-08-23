@@ -105,6 +105,10 @@ class SurveyQualityV2Tests(unittest.TestCase):
             })
         return rows
 
+    @classmethod
+    def deterministic_checks(cls, root: Path, research_profile: str, publication_profile: str) -> list[dict[str, object]]:
+        return [row for row in cls.complete_checks(root, research_profile, publication_profile) if row["kind"] == "DETERMINISTIC"]
+
     def test_profile_applicability_excludes_longform_and_period_checks_from_weekly(self) -> None:
         temp, root = self.sandbox()
         self.addCleanup(temp.cleanup)
@@ -119,7 +123,7 @@ class SurveyQualityV2Tests(unittest.TestCase):
         self.assertIn("TECHNICAL_NOTES_TAIL_NEEDSPACE", thematic)
         self.assertNotIn("WEEKLY_WHY_THIS_ISSUE", thematic)
 
-    def test_complete_quality_bundle_binds_exact_profile_source_and_pdf_bytes(self) -> None:
+    def test_deterministic_bundle_binds_exact_profile_source_and_pdf_bytes(self) -> None:
         temp, root = self.sandbox()
         self.addCleanup(temp.cleanup)
         profile = self.profile(root, "SP001", "THEMATIC", "LONGFORM_SPECIAL")
@@ -129,15 +133,16 @@ class SurveyQualityV2Tests(unittest.TestCase):
         source.write_text("validated source\n", encoding="utf-8")
         pdf.write_bytes(b"%PDF-1.7\nfixture\n")
         output = root / "quality/regression.json"
-        checks = self.complete_checks(root, "THEMATIC", "LONGFORM_SPECIAL")
 
         quality.build_bundle(
-            root, "SP001", source, pdf, checks, output,
+            root, "SP001", source, pdf,
+            self.deterministic_checks(root, "THEMATIC", "LONGFORM_SPECIAL"),
+            output,
             production_profile_path=profile,
         )
         payload = quality.validate_bundle(root, output, issue_id="SP001")
-
         self.assertEqual(payload["status"], "PASS")
+        self.assertTrue(all(row["kind"] == "DETERMINISTIC" for row in payload["checks"]))
         self.assertEqual(payload["research_profile"], "THEMATIC")
         self.assertEqual(payload["publication_profile"], "LONGFORM_SPECIAL")
         self.assertEqual(payload["production_profile"]["path"], str(profile.relative_to(root)))
@@ -145,7 +150,25 @@ class SurveyQualityV2Tests(unittest.TestCase):
         self.assertEqual(payload["pdf"]["path"], "survey/main.pdf")
         self.assertEqual(payload["pdf"]["storage"], "REPOSITORY_FILE")
 
-    def test_retrospective_period_quality_is_derived_from_bound_profile(self) -> None:
+    def test_agent_quality_row_is_rejected_from_deterministic_bundle(self) -> None:
+        temp, root = self.sandbox()
+        self.addCleanup(temp.cleanup)
+        profile = self.profile(root, "SP001", "THEMATIC", "LONGFORM_SPECIAL")
+        source = root / "survey/main.tex"
+        pdf = root / "survey/main.pdf"
+        source.parent.mkdir(parents=True)
+        source.write_text("validated source\n", encoding="utf-8")
+        pdf.write_bytes(b"%PDF-1.7\nfixture\n")
+        checks = self.deterministic_checks(root, "THEMATIC", "LONGFORM_SPECIAL")
+        semantic = next(row for row in self.complete_checks(root, "THEMATIC", "LONGFORM_SPECIAL") if row["kind"] == "AGENT_SEMANTIC")
+        checks.append(semantic)
+        with self.assertRaisesRegex(ValueError, "not applicable to this quality authority"):
+            quality.build_bundle(
+                root, "SP001", source, pdf, checks, root / "quality/regression.json",
+                production_profile_path=profile,
+            )
+
+    def test_retrospective_period_deterministic_quality_is_derived_from_bound_profile(self) -> None:
         temp, root = self.sandbox()
         self.addCleanup(temp.cleanup)
         profile = self.profile(root, "SP-2025-H2", "RETROSPECTIVE_PERIOD", "LONGFORM_SPECIAL")
@@ -154,10 +177,11 @@ class SurveyQualityV2Tests(unittest.TestCase):
         source.parent.mkdir(parents=True)
         source.write_text("period source\n", encoding="utf-8")
         pdf.write_bytes(b"%PDF-1.7\nperiod\n")
-        checks = self.complete_checks(root, "RETROSPECTIVE_PERIOD", "LONGFORM_SPECIAL")
         output = root / "quality/period.json"
         quality.build_bundle(
-            root, "SP-2025-H2", source, pdf, checks, output,
+            root, "SP-2025-H2", source, pdf,
+            self.deterministic_checks(root, "RETROSPECTIVE_PERIOD", "LONGFORM_SPECIAL"),
+            output,
             production_profile_path=profile,
         )
         payload = quality.validate_bundle(root, output, issue_id="SP-2025-H2")
@@ -165,6 +189,7 @@ class SurveyQualityV2Tests(unittest.TestCase):
         self.assertIn("PERIOD_SCOPE_LABEL_IDENTITY", ids)
         self.assertIn("CHRONOLOGY_SOURCE_MAPPING", ids)
         self.assertNotIn("THEMATIC_RESEARCH_CLOSURE", ids)
+        self.assertNotIn("REQUIRED_SYNTHESIS_SURVIVAL", ids)
         self.assertEqual(payload["research_profile"], "RETROSPECTIVE_PERIOD")
 
     def test_profile_drift_invalidates_quality_bundle(self) -> None:
@@ -178,11 +203,8 @@ class SurveyQualityV2Tests(unittest.TestCase):
         pdf.write_bytes(b"%PDF-1.7\nfixture\n")
         output = root / "quality/regression.json"
         quality.build_bundle(
-            root,
-            "SP001",
-            source,
-            pdf,
-            self.complete_checks(root, "THEMATIC", "LONGFORM_SPECIAL"),
+            root, "SP001", source, pdf,
+            self.deterministic_checks(root, "THEMATIC", "LONGFORM_SPECIAL"),
             output,
             production_profile_path=profile,
         )
@@ -192,7 +214,7 @@ class SurveyQualityV2Tests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Profile authority drift"):
             quality.validate_bundle(root, output, issue_id="SP001")
 
-    def test_deterministic_requires_result_but_agent_review_does_not(self) -> None:
+    def test_deterministic_requires_result_and_full_family_validation_can_still_inspect_agent_contract(self) -> None:
         temp, root = self.sandbox()
         self.addCleanup(temp.cleanup)
         checks = self.complete_checks(root, "WEEKLY", "WEEKLY_MAGAZINE")
@@ -207,7 +229,7 @@ class SurveyQualityV2Tests(unittest.TestCase):
         self.assertIsNone(agent["result"])
         quality.validate_checks(root, cfg, "WEEKLY", "WEEKLY_MAGAZINE", checks)
 
-    def test_actions_artifact_authority_survives_ephemeral_materialization_removal(self) -> None:
+    def test_actions_artifact_authority_remains_valid_for_deterministic_build_evidence(self) -> None:
         temp, root = self.sandbox()
         self.addCleanup(temp.cleanup)
         profile = self.profile(root, "SP001", "THEMATIC", "LONGFORM_SPECIAL")
@@ -231,9 +253,10 @@ class SurveyQualityV2Tests(unittest.TestCase):
             },
         }
         output = root / "quality/regression.json"
-        checks = self.complete_checks(root, "THEMATIC", "LONGFORM_SPECIAL")
         quality.build_bundle(
-            root, "SP001", source, pdf, checks, output, authority,
+            root, "SP001", source, pdf,
+            self.deterministic_checks(root, "THEMATIC", "LONGFORM_SPECIAL"),
+            output, authority,
             production_profile_path=profile,
         )
         pdf.unlink()
@@ -263,26 +286,31 @@ class SurveyQualityV2Tests(unittest.TestCase):
                 "artifact_digest": "sha256:" + "b" * 64,
             },
         }
-        checks = self.complete_checks(root, "THEMATIC", "LONGFORM_SPECIAL")
         with self.assertRaisesRegex(ValueError, "SHA does not match"):
             quality.build_bundle(
-                root, "SP001", source, pdf, checks, root / "quality/regression.json", authority,
+                root, "SP001", source, pdf,
+                self.deterministic_checks(root, "THEMATIC", "LONGFORM_SPECIAL"),
+                root / "quality/regression.json", authority,
                 production_profile_path=profile,
             )
 
-    def test_missing_applicable_check_and_duplicate_are_rejected(self) -> None:
+    def test_missing_deterministic_check_and_duplicate_are_rejected(self) -> None:
         temp, root = self.sandbox()
         self.addCleanup(temp.cleanup)
         cfg = quality.core.load_json(root / quality.core.DEFAULT_CONFIG)
-        checks = self.complete_checks(root, "WEEKLY", "WEEKLY_MAGAZINE")
+        checks = self.deterministic_checks(root, "WEEKLY", "WEEKLY_MAGAZINE")
         checks.pop()
         with self.assertRaisesRegex(ValueError, "applicable quality review family incomplete"):
-            quality.validate_checks(root, cfg, "WEEKLY", "WEEKLY_MAGAZINE", checks)
+            quality.validate_checks(
+                root, cfg, "WEEKLY", "WEEKLY_MAGAZINE", checks, required_kinds={"DETERMINISTIC"}
+            )
 
-        checks = self.complete_checks(root, "WEEKLY", "WEEKLY_MAGAZINE")
+        checks = self.deterministic_checks(root, "WEEKLY", "WEEKLY_MAGAZINE")
         checks.append(dict(checks[0]))
         with self.assertRaisesRegex(ValueError, "unique"):
-            quality.validate_checks(root, cfg, "WEEKLY", "WEEKLY_MAGAZINE", checks)
+            quality.validate_checks(
+                root, cfg, "WEEKLY", "WEEKLY_MAGAZINE", checks, required_kinds={"DETERMINISTIC"}
+            )
 
     def test_post_validation_artifact_drift_invalidates_bundle(self) -> None:
         temp, root = self.sandbox()
@@ -294,9 +322,10 @@ class SurveyQualityV2Tests(unittest.TestCase):
         source.write_text("validated source\n", encoding="utf-8")
         pdf.write_bytes(b"%PDF-1.7\nfixture\n")
         output = root / "quality/regression.json"
-        checks = self.complete_checks(root, "WEEKLY", "WEEKLY_MAGAZINE")
         quality.build_bundle(
-            root, "2026-W33", source, pdf, checks, output,
+            root, "2026-W33", source, pdf,
+            self.deterministic_checks(root, "WEEKLY", "WEEKLY_MAGAZINE"),
+            output,
             production_profile_path=profile,
         )
         pdf.write_bytes(pdf.read_bytes() + b"changed")

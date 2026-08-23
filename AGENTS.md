@@ -2,7 +2,7 @@
 
 ## Survey Production Core v2 bootstrap
 
-When a user asks to start, resume, or continue a Weekly or Special edition, treat the current `main` branch as the production source of truth and read `docs/survey-production-core-v2-session-bootstrap.md` plus the applicable Profile/series guide before doing editorial work.
+When a user asks to start, resume, or continue a Weekly or Special edition, treat the current reviewed `main` branch as the production source of truth and read `docs/survey-production-core-v2-session-bootstrap.md` plus the applicable Profile/period/thematic/series guide before editorial work.
 
 The user only needs to identify the target and, when relevant, the Human Gate at which to stop. Do **not** require the user to restate manifest paths, pipeline stages, search tactics, Human Gate rules, taxonomy policy, quality checks, external-source mechanics, or release mechanics that the repository already owns.
 
@@ -12,55 +12,144 @@ Examples of sufficient requests are:
 
 > `Generative AI Foundationsの次巻をArchitecture Reviewまで進めてください。`
 
-From that instruction, ChatGPT is the primary research/editorial operator. It must resolve the target from repository authority, initialize or resume canonical Production Profile/State, read historical Issue-prevention guidance, construct an appropriate research plan, use deterministic tools only where they add real safety or efficiency, and continue autonomously.
+ChatGPT is the primary research, editorial and publication operator. It resolves the target from repository authority, initializes or resumes canonical Production Profile/State, plans research, performs source/evidence work, authors the reader-facing manuscript, performs semantic/editorial review, reviews the exact rendered PDF visually, and proceeds autonomously toward the requested Gate.
 
-**Do not stop for ordinary internal work.** Source Intake, search expansion, Screening, Evidence work, Completeness/materiality review, Candidate Selection, Architecture preparation, drafting, synthesis, deterministic QA, semantic/editorial review, PDF build, agent visual review, Freeze preparation, retryable CI/tool failures, and generic repairs that do not change approved scope/bytes are not user decision points.
+Deterministic scripts and GitHub Actions are support infrastructure. They protect exact identities, provenance, crisp invariants, reproducible builds, CI and release integrity. They do **not** replace ChatGPT research/editorial judgment and they are not the normal prose-authoring or semantic-revision loop.
 
-The operating default is continuous progression toward the requested Gate. Do not ask the user to confirm routine next steps, approve internal transitions, choose among repository-resolvable mechanics, or authorize ordinary retries. A production session may pause only at a normal Human Gate, a genuine Owner-level Exception Gate, or an unavoidable manual Grok instruction/result transport when the external Grok execution itself cannot be performed directly. Once that Grok result is available, resume automatically without asking for another routine confirmation.
+## Continuous production progression
 
-X/Grok collection is a Source Intake subflow, not a third Human Gate. Read `docs/survey-production-core-v2-x-source-intake.md` whenever producing an edition. Weekly requires a Grok/X intake run. Retrospective Period and Thematic work require an explicit ChatGPT `REQUIRED` or `NOT_REQUIRED` decision with rationale; Generative AI Foundations uses the dedicated series Drive category when X is material. ChatGPT creates the run-specific Grok instruction/prompt and provisions the exact Google Drive target below `Grok_X_SourseIntake/<category>/<edition>/<run-id>/`. Grok writes the result only to that Drive run folder. ChatGPT then reads the Drive file, imports its exact bytes into repository Raw storage, and records either Discovery linkage or an explicit no-material-discovery disposition before Discovery Acceptance may pass. Waiting for an external Grok result is an operational dependency while State remains in Source Intake; it is not Human approval or an Exception Gate by itself.
+**Do not stop for ordinary internal work.** Source Intake, search expansion, Screening, Evidence work, Completeness/materiality review, Candidate Selection, Architecture preparation, reader-facing authorship, synthesis, deterministic QA, semantic/editorial review, PDF build, ChatGPT visual review, Freeze preparation, retryable transient tool/CI failures, and edition-local repairs that do not alter approved authority are not user decision points.
+
+The operating default is continuous progression toward the requested Gate. Do not ask the user to confirm routine next steps, approve internal transitions, choose repository-resolvable mechanics, or authorize ordinary retries.
 
 The only normal Human Gates are:
 
 1. `ARCHITECTURE_REVIEW`;
 2. exact-byte `PUBLICATION_PREVIEW`.
 
-Raise an Exception Gate only when safe continuation genuinely requires Owner judgment, such as unresolved scope ambiguity, incompatible accepted-artifact migration, or a conflict that would require changing already approved authority. Never convert a routine tool/network failure or an internally repairable defect into a Human Gate.
+Raise an Exception Gate only when safe continuation genuinely requires Owner judgment. Do not turn routine research refinement, edition-local QA repair, network/tool retry, or a missing-but-valid Grok result into a Human Gate.
 
-The start request itself authorizes deterministic initialization and creation of the canonical work branch/state. Initialization is not a Human Gate. Never infer Human Gate approval from a request to start or continue compilation.
+## Production versus Core-maintenance responsibility
 
-Repository state must remain sufficient for another ChatGPT session to resume without prior conversation history. Each completed stage records compact checkpoint provenance, including the implementation/contract used at that boundary. The initialization implementation commit is historical provenance, not a permanent toolchain lock.
+A production session repairs the **edition**, not shared Core.
 
-A later stage may use newer reviewed `main` tooling only after the reviewed repair is actually integrated into the edition work branch. Revalidate or migrate only accepted boundaries affected by the change, then record the actual integrated work-branch head in the next Stage Checkpoint. Do not run an unintegrated second checkout of `main` against edition artifacts and claim that the edition branch used those bytes.
+During a Weekly/Special production run, shared implementation roots are read-only except for consuming an already reviewed Core revision:
 
-Before a compact local Stage Checkpoint is adopted, run the exact intended stage artifact set through `scripts/survey_stage_validation_v2.py` and include its exact `CORE_STAGE_CONTRACT` deterministic result. A canonical filename or a ChatGPT PASS statement is not a substitute for semantic stage validation. Legacy Screening/Evidence helpers that retain the historical pin internally may be invoked through the narrow allowlisted `scripts/survey_agent_tool_v2.py` bridge after current agent-first State/tool identity has been validated.
+```text
+AGENTS.md
+config/
+schemas/
+scripts/
+.github/workflows/
+docs/survey-production-core-v2-*.md
+```
 
-For thematic or series requests, resolve editorial scope from the canonical backlog/series document rather than duplicating it in bootstrap configuration. In particular, `Generative AI Foundationsの次巻` is resolved from `docs/generative-ai-foundations-special-series.md` and repository evidence of completed/in-progress volumes; do not invent a parallel machine series plan unless real production later requires one.
+Edition production may write only edition-scoped source/research/publication/execution artifacts and normal branch/state metadata needed for that edition.
 
-Retrospective Period work uses the bounded Period Profile and must not initialize before the period end. Quality applicability must come from the exact bound Production Profile. Public Special release identity comes from that Profile's `survey_root` basename, allowing an internal source ID such as `SP-2025-H2` to retain the established public identity `special/2025-H2`.
+If a likely shared-Core defect appears:
 
-Cross-edition pipeline, validator, schema, workflow, or checklist improvements belong on `main` through the repository's normal review/CI process. Edition-specific Evidence, Architecture, drafts, provenance, external-intake manifests/prompts/Raw, and release artifacts remain scoped to that edition's canonical work branch and paths. Frozen historical releases remain immutable.
+```text
+record symptom / reproduction / impact
+-> classify SHARED_CORE_DEFECT
+-> write/update sources/<issue>/execution/defects/<id>.md
+-> if a semantically safe edition-local workaround exists, use it without changing the shared contract
+-> otherwise stop the edition as BLOCKED_CORE_DEFECT
+-> repair shared Core in a separate Core-maintenance session/branch
+```
+
+A production session must not edit a generic validator, renderer, schema, workflow, checklist or Core contract merely to keep the current edition moving. This preserves the distinction between real production validation and debugging Core into a passing state.
+
+A later production stage may consume a newer reviewed Core only after that repair has passed the normal Core review/CI path and is integrated into the edition branch. Revalidate only affected accepted boundaries, record the integrated revision, and continue. The production session does not author that repair.
+
+## Edition execution record
+
+Repository state must be sufficient for another ChatGPT session to resume without prior chat history. Follow `docs/survey-production-core-v2-execution-record-policy.md`.
+
+Normal edition production owns:
+
+```text
+sources/<issue>/execution/
+  index.md
+  sessions/
+  reviews/
+  defects/
+```
+
+Create/update one concise session record for material actions and decisions. Do not log every tool call or chain-of-thought. Update `index.md` at Human Gate changes, candidate changes, shared-Core blocking changes, termination, and completion.
+
+Machine lifecycle/checkpoint/candidate artifacts remain authoritative for machine state; the execution tree is human-readable operational provenance.
+
+## Grok / X Source Intake
+
+X/Grok collection is a Source Intake subflow, not a third Human Gate. Read `docs/survey-production-core-v2-x-source-intake.md` for every edition.
+
+- Weekly: X intake is required.
+- Retrospective Period/Thematic: ChatGPT records an explicit `REQUIRED` or `NOT_REQUIRED` decision with rationale.
+- Generative AI Foundations: when X is material, use the dedicated Drive category.
+
+For a required run, ChatGPT prepares one self-contained Drive task file under:
+
+```text
+Grok_X_SourseIntake/<category>/<edition>/<run-id>/grok-task.md
+```
+
+The task file contains all instructions Grok needs and names the expected result file in the same run folder. ChatGPT gives the Human the exact Google Drive **task-file path/reference**. The Human gives that path/reference to Grok; the Human does not copy/paste the task body. Grok reads the task and writes the result into the same run folder.
+
+**Do not search for, install, discover, or configure a Grok connector merely because X intake is required.** Absence of a Grok connector is not an error, missing dependency, Exception Gate, or reason to debug the production environment.
+
+Once the expected result exists, ChatGPT imports the exact bytes into repository Raw storage, records `DISCOVERY_RECORDED` or `NO_MATERIAL_DISCOVERY`, and resumes automatically without a routine confirmation.
+
+## Reader-facing publication boundary
+
+Internal Architecture, Selection, Evidence, Draft Package/Result and Profile Synthesis artifacts are research/editorial authorities. They are not legal fallback prose for the publication.
+
+After Architecture approval, ChatGPT explicitly authors the canonical reader-facing source (`<survey_root>/main.tex` plus supporting files as applicable). The Reader Manuscript Manifest binds:
+
+- exact Production Profile;
+- exact approved Architecture;
+- exact reader-facing source/supporting files;
+- complete mapping of Architecture `must_cover_requirements` to reader-facing locations;
+- Profile-required reader requirements such as final synthesis and Weekly community movement.
+
+Before a Publication Candidate may exist, one exact source/PDF revision must pass three distinct layers:
+
+1. deterministic Quality Bundle for crisp machine-checkable invariants;
+2. ChatGPT Semantic/Editorial Review for publication boundary, factual/editorial fidelity and Profile-specific semantics;
+3. ChatGPT Visual Review of the exact rendered PDF.
+
+The Publication Candidate atomically binds the Reader Manuscript, exact source, exact PDF, all three QA authorities and page count. `PUBLICATION_PREVIEW` reviews that exact candidate. A rebuilt or merely similar PDF is not the approved artifact.
+
+After Human approval, Freeze/Release re-use the already reviewed candidate bytes; do not add a second routine post-approval visual-quality gate.
+
+## Stage/checkpoint use
+
+Before adopting a compact local Stage Checkpoint, validate the exact intended artifact set with `scripts/survey_stage_validation_v2.py` and include its exact `CORE_STAGE_CONTRACT` deterministic result. A canonical filename or ChatGPT PASS statement is not a substitute for exact stage authority validation.
+
+Legacy Action Spec / Handoff Request / Handoff / Action Result / Validation Attestation machinery is compatibility/audit code, not the canonical production hot path.
+
+For thematic or series requests, resolve scope from canonical planning/series authority rather than duplicating topic logic in Core configuration. `Generative AI Foundationsの次巻` is resolved from `docs/generative-ai-foundations-special-series.md` and repository evidence, not a parallel machine series engine.
+
+Retrospective Period work uses the generic bounded Period Profile. Monthly, half-year, annual and custom bounded periods must not become separate authoring engines. Public Special release identity derives from the bound Profile's `survey_root` basename.
+
+Frozen historical releases remain immutable.
 
 ## Core v2 change-management final audit
 
-Before presenting a Survey Production Core v2 implementation candidate for Human full-candidate review, read and follow `docs/survey-production-core-v2-final-audit-rule.md`.
+Core-maintenance work follows `docs/survey-production-core-v2-final-audit-rule.md`.
 
-The mandatory sequence is:
+Mandatory sequence:
 
 ```text
 finish every intended candidate change
--> finish all required regressions and repository synchronization
+-> finish required regression/CI repair and repository synchronization
 -> freeze one candidate head SHA
--> audit all six acceptance priorities from zero on that exact head
+-> run all six acceptance points from zero on that exact head
 -> do not mutate the candidate during the audit
+-> present that exact passing SHA for Human full-candidate review
 ```
 
-The sixth point independently verifies **autonomous progression / stop discipline**: normal production must not repeatedly stop for internally resolvable work. Only an actual Human Gate, genuine Owner-level Exception Gate, or unavoidable manual Grok transport may interrupt progress toward the requested Gate.
+The six points include Weekly viability, Special viability, generality, recurrence prevention, control proportionality, and autonomous progression/stop discipline.
 
-If any audit finding requires a repository change, **invalidate the entire audit**, complete all repairs, freeze a new candidate head, and rerun all six points from point 1. Never carry forward earlier PASS verdicts after changing the candidate.
+If any audit finding requires a repository change, **invalidate the entire audit**, repair in Core maintenance, freeze a new candidate head, and rerun all six points from point 1. Never carry forward earlier PASS verdicts after candidate mutation.
 
-The final audit result must bind the exact candidate SHA. Record it in PR/Human-review metadata rather than committing a post-audit PASS document that would itself change the audited SHA.
-
-## Pre-merge Core v2 development boundary
-
-While PR #310 remains unmerged, current `main` is still the production authority. Do not initialize W33/SP001 or another Core v2 production edition from the improvement branch. Core v2 development may change only the improvement branch until explicit Human full-candidate approval and merge.
+The final audit result binds the exact candidate SHA and is recorded in PR/Human-review metadata rather than a post-audit candidate-tree commit.

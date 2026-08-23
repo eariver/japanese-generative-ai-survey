@@ -2,10 +2,13 @@
 """Deterministic stage-contract validation for the compact agent-first hot path.
 
 This module validates the exact artifacts ChatGPT intends to adopt at the next
-local lifecycle transition.  It deliberately does not create Action Specs,
-Handoffs, Action Results, or Validation Attestations.  The output is one small
-PASS report that is referenced by the Stage Checkpoint's required
-CORE_STAGE_CONTRACT deterministic review.
+local lifecycle transition. It deliberately does not create Action Specs,
+Handoffs, Action Results, or Validation Attestations. The output is one small
+PASS report referenced by the Stage Checkpoint's CORE_STAGE_CONTRACT review.
+
+Post-W33/SP001 redesign note: DRAFT_COMPLETE now validates an explicitly
+reader-facing manuscript plus deterministic, semantic/editorial, and exact-PDF
+visual authority before VALIDATED_DRAFT. Shared Core does not author that prose.
 """
 from __future__ import annotations
 
@@ -26,6 +29,7 @@ from scripts import survey_evidence_v2 as evidence
 from scripts import survey_production_v2 as core
 from scripts import survey_publication_v2 as publication
 from scripts import survey_quality_v2 as quality
+from scripts import survey_reader_publication_v2 as reader
 from scripts import survey_review_attention_v2 as review_attention
 from scripts import survey_schema_v2 as schema_gate
 from scripts import survey_screening_v2 as screening
@@ -58,9 +62,16 @@ REQUIRED_CURRENT = {
         "architecture-review-attention",
     },
     "ARCHITECTURE_ESTABLISHED": {"synthesis-input", "synthesis-result"},
-    "DRAFT_COMPLETE": {"validated-source", "publication-pdf", "quality-regression-bundle"},
+    "DRAFT_COMPLETE": {
+        "reader-manuscript",
+        "validated-source",
+        "publication-pdf",
+        "quality-regression-bundle",
+        "semantic-review",
+        "visual-review",
+    },
     "VALIDATED_DRAFT": {"publication-candidate"},
-    "RELEASE_CANDIDATE": {"visual-review-record", "freeze-record", "release-manifest"},
+    "RELEASE_CANDIDATE": {"freeze-record", "release-manifest"},
 }
 
 
@@ -72,7 +83,7 @@ def _rel(repo_root: Path, path: Path) -> str:
     root = repo_root.resolve()
     resolved = path.resolve()
     try:
-        return str(resolved.relative_to(root))
+        return str(resolved.relative_to(root)).replace("\\", "/")
     except ValueError as exc:
         raise StageValidationError(f"stage artifact must be repository-local: {path}") from exc
 
@@ -121,9 +132,7 @@ def _prior_artifacts(repo_root: Path, state: dict[str, Any]) -> dict[str, Path]:
         if rel in seen_checkpoint_paths:
             continue
         seen_checkpoint_paths.add(rel)
-        record = schema_gate.load_and_validate_json(
-            path, repo_root / agent.CHECKPOINT_SCHEMA, label="prior Stage Checkpoint"
-        )
+        record = schema_gate.load_and_validate_json(path, repo_root / agent.CHECKPOINT_SCHEMA, label="prior Stage Checkpoint")
         if record.get("issue_id") != state.get("issue_id"):
             raise StageValidationError("prior Stage Checkpoint issue identity mismatch")
         for row in record.get("artifacts", []):
@@ -150,8 +159,7 @@ def _current_artifacts(repo_root: Path, state: dict[str, Any], values: dict[str,
         if extra:
             raise StageValidationError("unexpected current stage artifacts: " + ", ".join(extra))
     else:
-        allowed_fixed = set(required)
-        extras = set(values) - allowed_fixed
+        extras = set(values) - set(required)
         if any(not (name.startswith("draft-package:") or name.startswith("draft-result:")) for name in extras):
             raise StageValidationError("Draft stage extras must use draft-package:<id> or draft-result:<id>")
         packages = {name.split(":", 1)[1] for name in extras if name.startswith("draft-package:")}
@@ -204,13 +212,9 @@ def _evidence_basis(
         "materiality-ledger",
         "profile-completeness",
     )
-    evidence.validate_screening_acceptance(
-        repo_root, screening_path, discovery_path, state["issue_id"], implementation_sha
-    )
+    evidence.validate_screening_acceptance(repo_root, screening_path, discovery_path, state["issue_id"], implementation_sha)
     evidence.validate_evidence_acceptance(repo_root, evidence_path, implementation_sha)
-    evidence.validate_edition_views_acceptance(
-        repo_root, profile_path, evidence_path, views_path, implementation_sha
-    )
+    evidence.validate_edition_views_acceptance(repo_root, profile_path, evidence_path, views_path, implementation_sha)
     ledger = core.load_json(ledger_path)
     evidence.validate_materiality_ledger(
         ledger,
@@ -259,9 +263,7 @@ def _selection_basis(
 ) -> dict[str, Path]:
     basis = _evidence_basis(repo_root, state, profile_path, artifacts, implementation_sha)
     matrix_path, selection_path = _require(artifacts, "candidate-matrix", "candidate-selection")
-    matrix = schema_gate.load_and_validate_json(
-        matrix_path, repo_root / Path("schemas/candidate-matrix-v2.schema.json"), label="Candidate Matrix"
-    )
+    matrix = schema_gate.load_and_validate_json(matrix_path, repo_root / Path("schemas/candidate-matrix-v2.schema.json"), label="Candidate Matrix")
     errors = architecture.validate_candidate_matrix(
         matrix,
         repo_root,
@@ -277,13 +279,9 @@ def _selection_basis(
     if errors:
         raise StageValidationError("Candidate Matrix invalid: " + "; ".join(errors))
     selection = schema_gate.load_and_validate_json(
-        selection_path,
-        repo_root / Path("schemas/candidate-selection-v2.schema.json"),
-        label="Candidate Selection",
+        selection_path, repo_root / Path("schemas/candidate-selection-v2.schema.json"), label="Candidate Selection"
     )
-    errors = architecture.validate_selection(
-        repo_root, selection, profile_path, matrix_path, basis["completeness"], basis["ledger"]
-    )
+    errors = architecture.validate_selection(repo_root, selection, profile_path, matrix_path, basis["completeness"], basis["ledger"])
     if errors:
         raise StageValidationError("Candidate Selection invalid: " + "; ".join(errors))
     return {**basis, "matrix": matrix_path, "selection": selection_path}
@@ -331,11 +329,7 @@ def _validate_stage_semantics(
         architecture_path, review_path, attention_path = _require(
             current, "issue-architecture", "architecture-review-summary", "architecture-review-attention"
         )
-        plan = schema_gate.load_and_validate_json(
-            architecture_path,
-            repo_root / Path("schemas/issue-architecture-v2.schema.json"),
-            label="Issue Architecture",
-        )
+        plan = schema_gate.load_and_validate_json(architecture_path, repo_root / Path("schemas/issue-architecture-v2.schema.json"), label="Issue Architecture")
         errors = architecture.validate_architecture(
             repo_root,
             plan,
@@ -377,14 +371,10 @@ def _validate_stage_semantics(
         approval_ref = state.get("human_gate_provenance", {}).get("architecture_review")
         approval_path = _authority_ref_path(repo_root, approval_ref, "Architecture Approval")
         approval = core.load_json(approval_path)
-        errors = drafting.validate_architecture_approval(
-            approval, architecture_path, review_path, state["issue_id"]
-        )
+        errors = drafting.validate_architecture_approval(approval, architecture_path, review_path, state["issue_id"])
         if errors:
             raise StageValidationError("Architecture Approval invalid: " + "; ".join(errors))
-        package_ids = sorted(
-            name.split(":", 1)[1] for name in current if name.startswith("draft-package:")
-        )
+        package_ids = sorted(name.split(":", 1)[1] for name in current if name.startswith("draft-package:"))
         draft_pairs: list[tuple[Path, Path]] = []
         for package_id in package_ids:
             package_path = current[f"draft-package:{package_id}"]
@@ -393,83 +383,110 @@ def _validate_stage_semantics(
             result = core.load_json(result_path)
             errors = draft_profile.validate_extension_propagation(result, package)
             if errors:
-                raise StageValidationError(
-                    f"Draft extension propagation invalid for {package_id}: " + "; ".join(errors)
-                )
+                raise StageValidationError(f"Draft extension propagation invalid for {package_id}: " + "; ".join(errors))
             draft_pairs.append((package_path, result_path))
-        expected_input = drafting.build_synthesis_input(
-            repo_root,
-            profile_path,
-            architecture_path,
-            review_path,
-            approval_path,
-            draft_pairs,
-        )
+        expected_input = drafting.build_synthesis_input(repo_root, profile_path, architecture_path, review_path, approval_path, draft_pairs)
         synthesis_input_path, synthesis_result_path = _require(current, "synthesis-input", "synthesis-result")
         if core.load_json(synthesis_input_path) != expected_input:
             raise StageValidationError("Profile Synthesis Input differs from validated Draft Package/Result set")
         synthesis_result = schema_gate.load_and_validate_json(
             synthesis_result_path, repo_root / drafting.SYNTHESIS_RESULT_SCHEMA, label="Profile Synthesis Result"
         )
-        errors = drafting.validate_synthesis_result(
-            synthesis_result, synthesis_input_path, repo_root / drafting.SYNTHESIS_PROMPT
-        )
+        errors = drafting.validate_synthesis_result(synthesis_result, synthesis_input_path, repo_root / drafting.SYNTHESIS_PROMPT)
         if errors:
             raise StageValidationError("Profile Synthesis Result invalid: " + "; ".join(errors))
         return
 
     if lifecycle == "DRAFT_COMPLETE":
-        source_path, pdf_path, bundle_path = _require(
-            current, "validated-source", "publication-pdf", "quality-regression-bundle"
+        manuscript_path, source_path, pdf_path, bundle_path, semantic_path, visual_path = _require(
+            current,
+            "reader-manuscript",
+            "validated-source",
+            "publication-pdf",
+            "quality-regression-bundle",
+            "semantic-review",
+            "visual-review",
         )
+        manuscript = reader.validate_manuscript_manifest(repo_root, manuscript_path, issue_id=state["issue_id"])
+        if manuscript["research_profile"] != profile["research_profile"] or manuscript["publication_profile"] != profile["publication_profile"]:
+            raise StageValidationError("Reader Manuscript Profile identity differs from Production Profile")
+        if manuscript["primary_source"]["path"] != _rel(repo_root, source_path) or manuscript["primary_source"]["sha256"] != core.sha256_file(source_path):
+            raise StageValidationError("Reader Manuscript does not bind exact validated source")
         bundle = quality.validate_bundle(repo_root, bundle_path, issue_id=state["issue_id"])
         if bundle["research_profile"] != profile["research_profile"] or bundle["publication_profile"] != profile["publication_profile"]:
             raise StageValidationError("Quality Bundle Profile identity differs from Production Profile")
         if bundle["source"]["path"] != _rel(repo_root, source_path) or bundle["source"]["sha256"] != core.sha256_file(source_path):
             raise StageValidationError("Quality Bundle does not bind exact validated source")
-        if bundle["pdf"]["sha256"] != core.sha256_file(pdf_path) or bundle["pdf"]["byte_count"] != pdf_path.stat().st_size:
+        if bundle["pdf"]["storage"] != "REPOSITORY_FILE":
+            raise StageValidationError("validated draft requires repository-resident exact PDF bytes for ChatGPT/Human review")
+        if (
+            bundle["pdf"]["path"] != _rel(repo_root, pdf_path)
+            or bundle["pdf"]["sha256"] != core.sha256_file(pdf_path)
+            or bundle["pdf"]["byte_count"] != pdf_path.stat().st_size
+        ):
             raise StageValidationError("Quality Bundle does not bind exact publication PDF bytes")
+        semantic = reader.validate_review_record(repo_root, semantic_path, issue_id=state["issue_id"], expected_kind="SEMANTIC_EDITORIAL")
+        visual = reader.validate_review_record(repo_root, visual_path, issue_id=state["issue_id"], expected_kind="VISUAL")
+        for label, review in (("Semantic", semantic), ("Visual", visual)):
+            if review["reader_manuscript"]["path"] != _rel(repo_root, manuscript_path) or review["reader_manuscript"]["sha256"] != core.sha256_file(manuscript_path):
+                raise StageValidationError(f"{label} review does not bind exact Reader Manuscript")
+            if review["source"]["path"] != _rel(repo_root, source_path) or review["source"]["sha256"] != core.sha256_file(source_path):
+                raise StageValidationError(f"{label} review does not bind exact validated source")
+            if review["pdf"]["path"] != _rel(repo_root, pdf_path) or review["pdf"]["sha256"] != core.sha256_file(pdf_path):
+                raise StageValidationError(f"{label} review does not bind exact publication PDF")
         return
 
     if lifecycle == "VALIDATED_DRAFT":
         (candidate_path,) = _require(current, "publication-candidate")
-        source_path, pdf_path, bundle_path = _require(
-            artifacts, "validated-source", "publication-pdf", "quality-regression-bundle"
+        manuscript_path, source_path, pdf_path, bundle_path, semantic_path, visual_path = _require(
+            artifacts,
+            "reader-manuscript",
+            "validated-source",
+            "publication-pdf",
+            "quality-regression-bundle",
+            "semantic-review",
+            "visual-review",
         )
         candidate = publication.validate_candidate(repo_root, candidate_path, issue_id=state["issue_id"])
-        bundle = quality.validate_bundle(repo_root, bundle_path, issue_id=state["issue_id"])
-        if candidate["publication_profile"] != profile["publication_profile"] or bundle["publication_profile"] != profile["publication_profile"]:
-            raise StageValidationError("Publication Candidate/Quality Bundle publication Profile mismatch")
-        if candidate["source"]["path"] != _rel(repo_root, source_path) or candidate["source"]["sha256"] != core.sha256_file(source_path):
-            raise StageValidationError("Publication Candidate does not bind exact validated source")
-        if candidate["quality_bundle"]["path"] != _rel(repo_root, bundle_path) or candidate["quality_bundle"]["sha256"] != core.sha256_file(bundle_path):
-            raise StageValidationError("Publication Candidate does not bind exact Quality Bundle")
-        if candidate["pdf"]["sha256"] != core.sha256_file(pdf_path) or candidate["pdf"]["byte_count"] != pdf_path.stat().st_size:
+        if candidate["publication_profile"] != profile["publication_profile"]:
+            raise StageValidationError("Publication Candidate publication Profile mismatch")
+        expected_refs = {
+            "reader_manuscript": manuscript_path,
+            "source": source_path,
+            "quality_bundle": bundle_path,
+            "semantic_review": semantic_path,
+            "visual_review": visual_path,
+        }
+        for key, expected_path in expected_refs.items():
+            if candidate[key]["path"] != _rel(repo_root, expected_path) or candidate[key]["sha256"] != core.sha256_file(expected_path):
+                raise StageValidationError(f"Publication Candidate does not bind exact {key}")
+        if (
+            candidate["pdf"]["path"] != _rel(repo_root, pdf_path)
+            or candidate["pdf"]["sha256"] != core.sha256_file(pdf_path)
+            or candidate["pdf"]["byte_count"] != pdf_path.stat().st_size
+        ):
             raise StageValidationError("Publication Candidate does not bind exact publication PDF bytes")
         return
 
     if lifecycle == "RELEASE_CANDIDATE":
         (candidate_path,) = _require(artifacts, "publication-candidate")
-        visual_path, freeze_path, manifest_path = _require(
-            current, "visual-review-record", "freeze-record", "release-manifest"
-        )
+        freeze_path, manifest_path = _require(current, "freeze-record", "release-manifest")
         approval_ref = state.get("human_gate_provenance", {}).get("publication_preview")
         approval_path = _authority_ref_path(repo_root, approval_ref, "Publication Preview Approval")
         approval = publication.validate_preview_approval(repo_root, approval_path, issue_id=state["issue_id"])
         candidate = publication.validate_candidate(repo_root, candidate_path, issue_id=state["issue_id"])
-        visual = publication.validate_visual_review(repo_root, visual_path, approval_path)
-        freeze = schema_gate.load_and_validate_json(
-            freeze_path, repo_root / publication.FREEZE_SCHEMA, label="Freeze record"
-        )
+        candidate_visual_path = core.repo_local_path(repo_root, candidate["visual_review"]["path"], "Candidate Visual Review")
+        visual = reader.validate_review_record(repo_root, candidate_visual_path, issue_id=state["issue_id"], expected_kind="VISUAL")
+        freeze = schema_gate.load_and_validate_json(freeze_path, repo_root / publication.FREEZE_SCHEMA, label="Freeze record")
         manifest = publication.validate_release_manifest(repo_root, manifest_path)
         if freeze.get("publication_candidate_path") != _rel(repo_root, candidate_path) or freeze.get("publication_candidate_sha256") != core.sha256_file(candidate_path):
             raise StageValidationError("Freeze record does not bind exact Publication Candidate")
         if freeze.get("publication_preview_approval_path") != _rel(repo_root, approval_path) or freeze.get("publication_preview_approval_sha256") != core.sha256_file(approval_path):
             raise StageValidationError("Freeze record does not bind exact Publication Preview approval")
-        if freeze.get("visual_review_path") != _rel(repo_root, visual_path) or freeze.get("visual_review_sha256") != core.sha256_file(visual_path):
-            raise StageValidationError("Freeze record does not bind exact Visual Review")
-        if candidate["pdf"]["sha256"] != approval["pdf_sha256"] or visual["pdf_sha256"] != approval["pdf_sha256"] or manifest["pdf_sha256"] != approval["pdf_sha256"]:
-            raise StageValidationError("Publication Preview/Visual/Freeze/Manifest PDF authority diverged")
+        if freeze.get("visual_review_path") != _rel(repo_root, candidate_visual_path) or freeze.get("visual_review_sha256") != core.sha256_file(candidate_visual_path):
+            raise StageValidationError("Freeze record does not bind Candidate pre-preview Visual Review")
+        if candidate["pdf"]["sha256"] != approval["pdf_sha256"] or visual["pdf"]["sha256"] != approval["pdf_sha256"] or manifest["pdf_sha256"] != approval["pdf_sha256"]:
+            raise StageValidationError("Publication Preview/Candidate Visual/Freeze/Manifest PDF authority diverged")
         return
 
     raise StageValidationError(f"unsupported local lifecycle: {lifecycle}")
@@ -501,13 +518,9 @@ def validate_stage(
     current_impl = core.repository_commit_sha(repo_root)
 
     with runtime_tool.current_stage_basis_override():
-        _validate_stage_semantics(
-            repo_root, cfg, state, profile_path, profile, artifacts, current, current_impl
-        )
+        _validate_stage_semantics(repo_root, cfg, state, profile_path, profile, artifacts, current, current_impl)
 
-    current_contract = core.contract_identity(
-        repo_root, cfg, state["research_profile"], state["publication_profile"]
-    )
+    current_contract = core.contract_identity(repo_root, cfg, state["research_profile"], state["publication_profile"])
     report = {
         "schema_version": "2.0-rc1",
         "check_id": "CORE_STAGE_CONTRACT",
@@ -515,20 +528,11 @@ def validate_stage(
         "issue_id": state["issue_id"],
         "from_state": state["lifecycle_state"],
         "to_state": cfg["orchestration"]["stage_plan"][state["lifecycle_state"]]["next_state"],
-        "production_state": {
-            "path": _rel(repo_root, state_path),
-            "sha256": core.sha256_file(state_path),
-        },
-        "production_profile": {
-            "path": _rel(repo_root, profile_path),
-            "sha256": core.sha256_file(profile_path),
-        },
+        "production_state": {"path": _rel(repo_root, state_path), "sha256": core.sha256_file(state_path)},
+        "production_profile": {"path": _rel(repo_root, profile_path), "sha256": core.sha256_file(profile_path)},
         "implementation_commit_sha": current_impl,
         "contract": current_contract,
-        "artifacts": sorted(
-            (_authority(repo_root, name, path) for name, path in current.items()),
-            key=lambda row: row["name"],
-        ),
+        "artifacts": sorted((_authority(repo_root, name, path) for name, path in current.items()), key=lambda row: row["name"]),
         "recorded_at": core.iso_utc(recorded_at),
     }
     if output_path.exists():
@@ -568,10 +572,7 @@ def main() -> int:
     output = Path(args.output)
     if not output.is_absolute():
         output = root / output
-    artifacts = {
-        name: (path if path.is_absolute() else root / path)
-        for name, path in _parse_artifacts(args.artifact).items()
-    }
+    artifacts = {name: (path if path.is_absolute() else root / path) for name, path in _parse_artifacts(args.artifact).items()}
     now = core.parse_instant(args.recorded_at) if args.recorded_at else datetime.now(timezone.utc)
     try:
         path = validate_stage(root, core.load_json(cfg_path), state_path, artifacts, output, now)

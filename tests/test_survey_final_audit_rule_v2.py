@@ -31,9 +31,15 @@ class SurveyFinalAuditRuleV2Tests(unittest.TestCase):
         self.assertIn("invalidate the entire audit", agents)
         self.assertIn("rerun all six points from point 1", agents)
         self.assertIn("Do not stop for ordinary internal work", agents)
-        self.assertIn("continue immediately unless a Human/Exception Gate is reached", bootstrap)
+        self.assertIn(
+            "Continue immediately unless a Human/Exception Gate or blocking shared-Core defect is reached",
+            bootstrap,
+        )
+        self.assertIn("Production sessions own edition-local work", bootstrap)
+        self.assertIn("A production run that edits shared Core to make itself pass is not valid evidence", bootstrap)
         self.assertIn("manual Grok", rule)
-        self.assertIn("resumes the pipeline automatically", rule)
+        self.assertIn("resumes automatically toward the requested Gate", rule)
+        self.assertIn("must not search for a Grok connector", rule)
 
     def test_final_result_is_external_metadata_not_post_audit_candidate_commit(self) -> None:
         rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
