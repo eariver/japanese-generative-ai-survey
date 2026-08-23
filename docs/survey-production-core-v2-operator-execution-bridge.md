@@ -1,8 +1,9 @@
 # Survey Production Core v2 — Operator Execution Bridge
 
-Status: `MAINTENANCE CANDIDATE / POST-MERGE REVALIDATION FINDING / REAUDIT PENDING`
+Status: `MAINTENANCE CANDIDATE / HUMAN-GATE ROUNDTRIP IMPLEMENTED / FIXED-HEAD REAUDIT PENDING`
 
-Established: 2026-08-23 JST
+Established: 2026-08-23 JST  
+Human-Gate synchronization: 2026-08-24 JST
 
 Related evidence:
 
@@ -14,6 +15,7 @@ Related policy:
 
 - `docs/survey-production-core-v2-github-actions-policy.md`
 - `docs/survey-production-core-v2-execution-record-policy.md`
+- `docs/survey-production-core-v2-final-audit-rule.md`
 
 ## 1. Problem statement
 
@@ -21,28 +23,37 @@ The post-merge W33/SP001 clean revalidation established that the redesigned resp
 
 The normal ChatGPT production runtime can read/write exact repository files through the GitHub connector, inspect commits/trees/blobs/Actions, perform open-ended research/editorial work, and perform the Human-mediated Google Drive Grok/X handoff. It cannot necessarily mount the exact GitHub work branch and invoke the repository's canonical local Core CLI over that exact tree.
 
-This is an operator execution capability gap. Hand-authoring `production-state.json`, checkpoint attestations, Architecture acceptance, or other machine authorities is not an acceptable workaround.
+This is an operator execution capability gap. Hand-authoring `production-state.json`, Stage Checkpoints, Architecture approvals, Publication Preview approvals, review-revision authority or other machine records is not an acceptable workaround.
+
+The later pre-approval full-system audit exposed the same gap after a normal Human Gate: connector-only operation could reach a gate but could not canonically record an already explicit Human approval or ordinary `REQUEST_CHANGES` decision. The bridge therefore covers those deterministic recording/invalidation mechanics as well as initialization/stage advancement.
 
 ## 2. Governing boundary
 
 The bridge does **not** change the primary-operator model.
 
-ChatGPT remains responsible for Source Intake/research strategy, Evidence interpretation, materiality/completeness, Selection, Architecture, drafting/synthesis, semantic/editorial review, exact-PDF visual review and deciding when a genuine Owner-level Exception Gate is necessary.
+ChatGPT remains responsible for Source Intake/research strategy, Evidence interpretation, materiality/completeness, Selection, Architecture, drafting/synthesis, semantic/editorial review, exact-PDF visual review, applying requested revisions and deciding when a genuine Owner-level Exception Gate is necessary.
 
-The bridge may execute only deterministic Core mechanics already owned by repository code:
+The Human remains the sole authority for the actual Human Gate decision. The bridge/Core may not infer approval, invent requested changes or choose a regeneration boundary.
+
+The bridge may execute only deterministic Core mechanics already defined by repository authority:
 
 1. canonical Weekly Profile + Production State initialization through existing Core logic;
 2. canonical configured Retrospective Period Profile + Production State initialization through existing `scripts/survey_period_v2.py`;
 3. canonical Thematic Profile + Production State initialization through existing Core logic;
 4. deterministic stage-contract validation over already-authored artifacts;
-5. compact Stage Checkpoint materialization;
-6. lifecycle State advancement after exact validation.
+5. compact Stage Checkpoint materialization and one-edge lifecycle advancement;
+6. deterministic recording of an explicitly supplied Architecture approval;
+7. deterministic recording of an explicitly supplied Architecture `REQUEST_CHANGES` decision plus allowed selective invalidation;
+8. deterministic recording of an explicitly supplied Publication Preview approval;
+9. deterministic recording of an explicitly supplied Publication Preview `REQUEST_CHANGES` decision plus allowed selective invalidation.
 
-For Retrospective Period work, **no new profile builder was added by this maintenance**. Core already contained `survey_period_v2.resolve_configured_period()` and `survey_period_v2.period_profile()`, covering generic monthly, half-year and annual configured periods. The bridge merely exposes that existing deterministic path to connector-only runtimes. Tier-specific research interpretation, coverage audit, chronology, trajectory and synthesis remain Profile/guide + ChatGPT responsibilities.
+Items 6–9 do not create Human judgment. They require explicit Human provenance and call canonical `scripts/survey_human_gate_v2.py` mechanics.
 
-Foundations remains a living series authority layered over Thematic/LONGFORM rather than a bridge operation. Once canonical Profile/State exists, `ADVANCE_STAGE` is Profile-neutral.
+For Retrospective Period work, **no new profile builder was added by this maintenance**. Core already contained `survey_period_v2.resolve_configured_period()` and `survey_period_v2.period_profile()`, covering generic monthly, half-year and annual configured periods. The bridge merely exposes that existing deterministic path to connector-only runtimes.
 
-Architecture approval and Publication Preview approval remain explicit Human decisions and are not bridge operations. Release remains owned by the dedicated release workflow.
+Foundations remains a living series authority layered over Thematic/LONGFORM rather than a bridge initialization operation. Once canonical Profile/State exists, stage and Human Gate mechanics are Profile/path driven.
+
+Release remains owned by the dedicated release workflow.
 
 ## 3. Transport model
 
@@ -50,6 +61,7 @@ Architecture approval and Publication Preview approval remain explicit Human dec
 ChatGPT reviews one exact main Core baseline
 -> ChatGPT authors/researches edition artifacts
 -> ChatGPT commits those artifacts normally
+-> when a Human Gate is reached, Human supplies APPROVED or REQUEST_CHANGES + feedback/boundary
 -> ChatGPT commits ONE immutable operator request as a request-only commit
 -> GitHub Actions checks out that exact request commit
 -> workflow proves the branch's shared Core/contract tree still matches reviewed main
@@ -58,7 +70,7 @@ ChatGPT reviews one exact main Core baseline
 -> workflow enforces Profile-bound edition-local write scope
 -> github-actions[bot] commits only generated edition-local authorities
 -> no output commit retriggers the bridge
--> ChatGPT resumes from canonical State
+-> ChatGPT resumes from canonical State and applies any requested editorial repair
 ```
 
 Every request explicitly binds:
@@ -66,9 +78,19 @@ Every request explicitly binds:
 - `issue_id`;
 - Profile-declared `source_root`;
 - `work_branch`;
-- one exact lowercase 40-hex `reviewed_main_sha`.
+- one exact lowercase 40-hex `reviewed_main_sha`;
+- one operation from the schema enum.
 
 Initialization requests also carry `operation.execution_record.reviewed_main_sha`; the workflow requires it to equal the top-level baseline.
+
+Human Gate requests additionally carry explicit:
+
+- canonical `state_path`;
+- `expected_revision`;
+- `reviewed_by`;
+- `reviewed_at`;
+- `review_reference`;
+- for revision requests, `requested_changes` and an enum-constrained `regeneration_boundary`.
 
 Canonical request location:
 
@@ -82,9 +104,15 @@ Canonical bridge-run receipt location:
 {source_root}/execution/bridge-runs/<request-id>/
 ```
 
-`source_root` must remain repository-local under `sources/`. It is not inferred by the workflow from `issue_id`. The request filename stem and `request_id` must match exactly.
+Canonical machine Human-review history:
 
-`reviewed_main_sha` is per-operation provenance rather than a run-global lock. A later stage may use a newer explicitly reviewed main baseline only if the edition branch descends from it and the protected shared-Core/contract bytes match that baseline exactly.
+```text
+{source_root}/gates/reviews/architecture-rN.json
+{source_root}/gates/reviews/publication-rN.json
+{source_root}/gates/review-index.json
+```
+
+`source_root` must remain repository-local under `sources/`. It is not inferred by the workflow from `issue_id`. The request filename stem and `request_id` must match exactly.
 
 ## 4. Why this still satisfies the Actions responsibility policy
 
@@ -100,44 +128,41 @@ The bridge must not:
 - write Evidence/Selection/Architecture prose or decisions;
 - generate reader-facing prose;
 - make semantic or visual PASS judgments;
+- decide Human approval or rejection;
+- invent requested changes or select a regeneration boundary;
 - perform layout repair;
 - mutate shared Core/config/schema/workflow paths during edition production;
 - accept shell snippets, Python expressions, module names, executable paths, workflow names or other arbitrary command surfaces.
 
+Recording an already explicit Human decision is mechanical execution, not delegation of the decision itself.
+
 ## 5. Request operations
 
-### `INITIALIZE_WEEKLY`
+The allowlist is exactly eight request kinds:
 
-Allowed deterministic effect:
+1. `INITIALIZE_WEEKLY`
+2. `INITIALIZE_RETROSPECTIVE`
+3. `INITIALIZE_THEMATIC`
+4. `ADVANCE_STAGE`
+5. `RECORD_ARCHITECTURE_APPROVAL`
+6. `REQUEST_ARCHITECTURE_REVISION`
+7. `RECORD_PUBLICATION_PREVIEW_APPROVAL`
+8. `REQUEST_PUBLICATION_PREVIEW_REVISION`
 
-- derive the exact Weekly Profile from issue id + recorded time under current Core contract;
-- require generated Profile `issue_id`, `source_root` and `work_branch` to match the request;
-- create canonical `production-profile.json` / `production-state.json`;
-- initialize edition-local execution records.
+### Initialization operations
 
-### `INITIALIZE_RETROSPECTIVE`
+Weekly, configured Retrospective Period and Thematic initialization use only their existing canonical Profile builders, require generated Profile `issue_id` / `source_root` / `work_branch` identity to equal the request, and create canonical Profile/State/execution records.
 
-Request-specific input is only the configured `special_slug` in addition to common identity/provenance fields.
+Configured Retrospective initialization accepts only the configured `special_slug` and delegates to:
 
-Allowed deterministic effect:
+```text
+survey_period_v2.resolve_configured_period(...)
+-> survey_period_v2.period_profile(...)
+-> exact request/Profile identity check
+-> canonical Core initialize(...)
+```
 
-1. call `survey_period_v2.resolve_configured_period(repo_root, special_slug, recorded_at)`;
-2. let the existing Core helper resolve configured period identity, calendar bounds, generic initial obligations, guide, source/survey roots and canonical work branch;
-3. call `survey_period_v2.period_profile(repo_root, cfg, spec)`;
-4. rely on the existing Core helper to reject an unknown configured slug or initialization before the bounded period ends;
-5. require generated Profile `issue_id`, `source_root` and `work_branch` to equal the immutable request;
-6. create canonical Profile/State and execution records.
-
-No Retrospective scope file, second Profile builder, or cadence-specific bridge path is introduced. Monthly, half-year and annual coverage remain one existing `RETROSPECTIVE_PERIOD` implementation.
-
-### `INITIALIZE_THEMATIC`
-
-Allowed deterministic effect:
-
-- read one repository-local Thematic scope specification under the requested source root;
-- derive the exact Thematic/LONGFORM Profile using the existing canonical builder;
-- require generated Profile identity to equal the request;
-- create canonical Profile/State and execution records.
+No cadence-specific bridge engine or second Retrospective scope schema is introduced.
 
 ### `ADVANCE_STAGE`
 
@@ -145,7 +170,7 @@ Allowed deterministic effect:
 
 - require exact current `expected_from_state`;
 - require current Production Profile identity to equal request identity;
-- validate the exact already-authored stage artifact set with canonical stage-validation semantics;
+- validate exact already-authored stage artifacts with canonical stage-validation semantics;
 - generate `CORE_STAGE_CONTRACT` deterministic result authority;
 - wrap ChatGPT-authored research/editorial/visual review rows without changing their meaning;
 - create the compact Stage Checkpoint;
@@ -153,7 +178,54 @@ Allowed deterministic effect:
 
 The request cannot supply its own deterministic `CORE_STAGE_CONTRACT` PASS.
 
-## 6. Reviewed-main Core preflight
+### Human Gate approval operations
+
+`RECORD_ARCHITECTURE_APPROVAL` and `RECORD_PUBLICATION_PREVIEW_APPROVAL` require a pending matching gate and exact reviewed-byte authority. They call `survey_human_gate_v2` which delegates to the existing canonical exact-byte approval mechanics, then writes the contiguous machine review revision record/index.
+
+An approval request does not contain a generic `decision` field. The operation kind itself is a narrow recorder invoked only after the Human has explicitly approved.
+
+### Human Gate revision operations
+
+`REQUEST_ARCHITECTURE_REVISION` and `REQUEST_PUBLICATION_PREVIEW_REVISION` require:
+
+- pending matching Human Gate;
+- exact current reviewed State/gate inputs;
+- next contiguous `expected_revision`;
+- explicit Human provenance;
+- non-empty requested-changes summary;
+- a gate-specific enum-constrained regeneration boundary.
+
+Core then:
+
+1. records exact reviewed State/artifact hashes plus reviewed repository commit;
+2. writes the immutable `REQUEST_CHANGES` review revision;
+3. returns State to the supplied allowed boundary;
+4. resets only machine checkpoints/gate provenance downstream of that boundary;
+5. removes superseded canonical Stage Checkpoint files that would block regeneration;
+6. preserves unaffected upstream authority, including approved Architecture when Publication Preview alone is revised.
+
+ChatGPT then performs the requested editorial/research repair and re-runs normal validation to the same Human Gate. The next review must use the next contiguous revision number.
+
+## 6. Human review provenance and historical/current authority
+
+Machine review JSON is the durable exact provenance layer. Human-readable `execution/reviews/architecture-rN.md` and `publication-rN.md` remain operational summaries and pointers, not a second State machine.
+
+Each machine review revision records:
+
+- gate + contiguous revision;
+- `APPROVED` or `REQUEST_CHANGES`;
+- exact reviewed Production State path/SHA;
+- exact reviewed gate artifacts and SHA-256 values;
+- exact reviewed repository commit SHA;
+- Human identity/time/reference;
+- requested changes + regeneration boundary when applicable;
+- approval authority when applicable.
+
+After `REQUEST_CHANGES`, superseded artifact bytes may be replaced at their canonical paths during regeneration. Historical exact identity remains reconstructable from the review record's hashes and reviewed repository commit. Current Production State/checkpoint/gate provenance alone determines current authority.
+
+A stale request for r1 after r1 has already been recorded fails because the next revision is r2. Once a gate revision is `APPROVED`, no later review revision for that gate is accepted.
+
+## 7. Reviewed-main Core preflight
 
 Before installing dependencies or invoking the bridge, the workflow must:
 
@@ -165,11 +237,11 @@ Before installing dependencies or invoking the bridge, the workflow must:
 6. require those protected bytes at the request parent to equal the reviewed-main baseline;
 7. only then install dependencies and execute Core.
 
-The fixed minimum roots prevent a drifted branch-side config from weakening its own comparison boundary. Legitimate edition-local Raw/research/Evidence/manuscript artifacts may differ from main.
+Legitimate edition-local Raw/research/Evidence/manuscript/Human-review artifacts may differ from main.
 
-## 7. Fail-closed controls
+## 8. Fail-closed controls
 
-The workflow/bridge must enforce:
+The workflow/bridge/Core combination must enforce:
 
 1. trigger limited to `sources/**/execution/requests/*.json` and not `main`;
 2. one newly added request and request-only triggering commit;
@@ -180,39 +252,42 @@ The workflow/bridge must enforce:
 7. configured Retrospective slug resolution through existing `survey_period_v2` only;
 8. unconfigured Retrospective slug and pre-period-end initialization rejection;
 9. exact lowercase event commit SHA;
-10. enum operation surface only;
+10. eight-kind enum operation surface only;
 11. traversal-safe repository paths;
 12. initialization refusal when canonical Profile/State already exists;
 13. stale `expected_from_state` refusal;
 14. no agent impersonation of deterministic reviews;
-15. immutable/non-overwritable bridge-run ids;
-16. generated writes only below validated Profile `source_root`;
-17. no mutation of immutable request authority;
-18. bot output commits cannot recursively chain the bridge.
+15. Human Gate operation requires pending matching gate/current State;
+16. stale/non-contiguous Human review revision refusal;
+17. gate-specific regeneration-boundary refusal;
+18. changed reviewed/checkpoint bytes fail before approval/revision recording;
+19. generic Human-decision/rejection command surfaces are absent;
+20. immutable/non-overwritable bridge-run ids;
+21. generated writes only below validated Profile `source_root`;
+22. no mutation of immutable request authority;
+23. bot output commits cannot recursively chain the bridge.
 
 The trigger intentionally does not hardcode cadence branch prefixes. Branch authority comes from request/Profile equality.
 
-## 8. Validation consequence
+## 9. Validation consequence
 
-The W33/SP001 clean revalidation attempts that exposed the operator gap remain non-PASS evidence. Adding the bridge changes shared Core implementation and the Actions surface.
+The W33/SP001 clean revalidation attempts that exposed the operator gap remain non-PASS evidence. Adding the bridge and Human Gate round-trip mechanics changes shared Core implementation/contracts.
 
-During maintenance fixed-head preparation, a Special-viability audit correctly noticed that the bridge could not cold-start the required Retrospective validation. Deeper pre-freeze inspection found the canonical generic Period builder already existed on the reviewed base in `survey_period_v2`; the actual defect was only missing bridge exposure. A temporary duplicate Retrospective adapter/schema/test path was removed before candidate freeze.
-
-Therefore acceptance sequence remains:
+Acceptance sequence is:
 
 ```text
-finish bridge maintenance
+finish bridge + Human Gate maintenance
 -> exact-head CI/regression
--> complete fixed-head six-point audit from zero
+-> complete fixed-head seven-point audit from zero
 -> Human full-candidate review
 -> unchanged integration
 -> clean Weekly + Thematic/SP001 + representative Retrospective + Foundations validation
 ```
 
-No pre-bridge W33/SP001 lifecycle result may be relabeled as successful canonical validation.
+No pre-maintenance W33/SP001 lifecycle result and no earlier six-point maintenance audit may be relabeled as successful canonical validation.
 
-## 9. Direct-local CLI remains preferred
+## 10. Direct-local CLI remains preferred
 
-The bridge is a fallback execution substrate. If ChatGPT/operator runtime has an exact local checkout, use canonical local helpers directly. For configured Retrospective work that helper is the already-existing `scripts/survey_period_v2.py`.
+The bridge is a fallback execution substrate. If ChatGPT/operator runtime has an exact local checkout, use canonical local helpers directly, including `scripts/survey_human_gate_v2.py` for deterministic Human-decision recording/revision consequence.
 
 Direct local and bridge modes must produce the same canonical artifact semantics; the bridge adds transport and execution receipts, not a parallel state machine.
