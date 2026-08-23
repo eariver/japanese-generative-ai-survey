@@ -4,17 +4,20 @@
 This helper exists for operator runtimes that can edit the repository but cannot
 mount a checkout and invoke the canonical Core CLI directly. It does not perform
 research, editorial judgment, source selection, Architecture design, drafting,
-semantic review, visual review, or Human approval.
+semantic review, visual review, or Human decision-making.
 
 A ChatGPT production session commits one immutable request under
 ``<source_root>/execution/requests/``. The bridge validates that request,
 executes only a small allowlist of canonical deterministic Core operations, and
 writes only edition-local generated authorities under the Profile-bound source
-root.
+root. Human Gate operations only record an explicit Human APPROVED or
+REQUEST_CHANGES decision and execute its already-specified deterministic
+consequence; they never infer the decision or regeneration boundary.
 
 The GitHub Actions wrapper is transport/execution infrastructure. The semantic
-content supplied in artifacts, agent review evidence, and stage summaries remains
-ChatGPT-authored repository input.
+content supplied in artifacts, agent review evidence, stage summaries, requested
+changes, and regeneration boundaries remains ChatGPT/Human-authored repository
+input.
 """
 from __future__ import annotations
 
@@ -27,6 +30,7 @@ from typing import Any
 
 from scripts import survey_agent_control_v2 as agent
 from scripts import survey_execution_record_v2 as execution_record
+from scripts import survey_human_gate_v2 as human_gate
 from scripts import survey_period_v2 as period
 from scripts import survey_production_v2 as core
 from scripts import survey_schema_v2 as schema_gate
@@ -35,6 +39,13 @@ from scripts import survey_stage_validation_v2 as stage_validation
 REQUEST_SCHEMA = Path("schemas/operator-execution-request-v2.schema.json")
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 SHA40_RE = re.compile(r"^[0-9a-f]{40}$")
+INITIALIZE_KINDS = {"INITIALIZE_WEEKLY", "INITIALIZE_RETROSPECTIVE", "INITIALIZE_THEMATIC"}
+HUMAN_GATE_KINDS = {
+    "RECORD_ARCHITECTURE_APPROVAL",
+    "REQUEST_ARCHITECTURE_REVISION",
+    "RECORD_PUBLICATION_PREVIEW_APPROVAL",
+    "REQUEST_PUBLICATION_PREVIEW_REVISION",
+}
 
 
 class OperatorBridgeError(ValueError):
@@ -248,34 +259,41 @@ def _write_reviews(
     core.write_json(reviews_path, {"reviews": rows})
 
 
+def _canonical_existing_state(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    request: dict[str, Any],
+) -> tuple[Path, dict[str, Any]]:
+    source_root = _source_root(repo_root, request)
+    operation = request["operation"]
+    state_path = core.repo_local_path(repo_root, operation["state_path"], "operator bridge Production State")
+    _, expected_state = _canonical_profile_state(source_root, cfg)
+    if state_path.resolve() != expected_state.resolve():
+        raise OperatorBridgeError("operator state_path is not the canonical edition Production State")
+    if state_path.is_symlink() or not state_path.is_file():
+        raise OperatorBridgeError("canonical Production State missing or unsafe")
+    state = core.load_json(state_path)
+    errors = agent.validate_agent_state(repo_root, cfg, state)
+    if errors:
+        raise OperatorBridgeError("Production State is not resumable: " + "; ".join(errors))
+    profile_path = core.repo_local_path(repo_root, state["profile"]["path"], "Production Profile")
+    _validate_profile_identity(core.load_json(profile_path), request)
+    return state_path, state
+
+
 def _advance_stage(
     repo_root: Path,
     cfg: dict[str, Any],
     request: dict[str, Any],
     event_sha: str,
     run_root: Path,
-) -> tuple[Path, list[str], str, str | None]:
+) -> tuple[Path, list[str], list[str], str, str | None]:
     operation = request["operation"]
-    source_root = _source_root(repo_root, request)
-    state_path = core.repo_local_path(repo_root, operation["state_path"], "operator bridge Production State")
-    _, expected_state = _canonical_profile_state(source_root, cfg)
-    if state_path.resolve() != expected_state.resolve():
-        raise OperatorBridgeError("ADVANCE_STAGE state_path is not the canonical edition Production State")
-    if state_path.is_symlink() or not state_path.is_file():
-        raise OperatorBridgeError("canonical Production State missing or unsafe")
-
-    state = core.load_json(state_path)
-    errors = agent.validate_agent_state(repo_root, cfg, state)
-    if errors:
-        raise OperatorBridgeError("Production State is not resumable: " + "; ".join(errors))
+    state_path, state = _canonical_existing_state(repo_root, cfg, request)
     if state.get("lifecycle_state") != operation["expected_from_state"]:
         raise OperatorBridgeError(
             f"stale bridge request: expected {operation['expected_from_state']}, current {state.get('lifecycle_state')}"
         )
-    profile_path = core.repo_local_path(repo_root, state["profile"]["path"], "Production Profile")
-    profile = core.load_json(profile_path)
-    _validate_profile_identity(profile, request)
-
     artifacts = _artifact_map(repo_root, operation["artifacts"])
     recorded_at = core.parse_instant(request["recorded_at"])
     result_path = run_root / "core-stage-contract.json"
@@ -289,7 +307,6 @@ def _advance_stage(
         recorded_at,
     )
     _write_reviews(repo_root, request, result_path, reviews_path)
-
     checkpoint_path = agent.build_stage_checkpoint(
         repo_root,
         cfg,
@@ -304,9 +321,82 @@ def _advance_stage(
     return (
         state_path,
         [_rel(repo_root, result_path), _rel(repo_root, reviews_path), _rel(repo_root, checkpoint_path)],
+        [],
         updated["lifecycle_state"],
         updated.get("terminal_reason"),
     )
+
+
+def _human_gate_operation(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    request: dict[str, Any],
+    event_sha: str,
+) -> tuple[Path, list[str], list[str], str, str | None]:
+    operation = request["operation"]
+    state_path, _ = _canonical_existing_state(repo_root, cfg, request)
+    reviewed_at = core.parse_instant(operation["reviewed_at"])
+    common = {
+        "expected_revision": operation["expected_revision"],
+        "reviewed_commit_sha": event_sha,
+    }
+    kind = operation["kind"]
+    removed: list[str] = []
+    if kind == "RECORD_ARCHITECTURE_APPROVAL":
+        updated, record_path, index_path = human_gate.record_architecture_approval(
+            repo_root,
+            cfg,
+            state_path,
+            operation["reviewed_by"],
+            reviewed_at,
+            operation["review_reference"],
+            **common,
+        )
+        source_root = _source_root(repo_root, request)
+        approval_path = source_root / cfg["state_authority"]["architecture_approval_path"]
+        generated = [_rel(repo_root, approval_path), _rel(repo_root, record_path), _rel(repo_root, index_path)]
+    elif kind == "REQUEST_ARCHITECTURE_REVISION":
+        updated, record_path, index_path, removed = human_gate.request_architecture_revision(
+            repo_root,
+            cfg,
+            state_path,
+            operation["regeneration_boundary"],
+            operation["requested_changes"],
+            operation["reviewed_by"],
+            reviewed_at,
+            operation["review_reference"],
+            **common,
+        )
+        generated = [_rel(repo_root, record_path), _rel(repo_root, index_path)]
+    elif kind == "RECORD_PUBLICATION_PREVIEW_APPROVAL":
+        updated, record_path, index_path = human_gate.record_publication_preview_approval(
+            repo_root,
+            cfg,
+            state_path,
+            operation["reviewed_by"],
+            reviewed_at,
+            operation["review_reference"],
+            **common,
+        )
+        source_root = _source_root(repo_root, request)
+        approval_path = source_root / cfg["state_authority"]["publication_preview_approval_path"]
+        generated = [_rel(repo_root, approval_path), _rel(repo_root, record_path), _rel(repo_root, index_path)]
+    elif kind == "REQUEST_PUBLICATION_PREVIEW_REVISION":
+        updated, record_path, index_path, removed = human_gate.request_publication_preview_revision(
+            repo_root,
+            cfg,
+            state_path,
+            operation["regeneration_boundary"],
+            operation["requested_changes"],
+            operation["reviewed_by"],
+            reviewed_at,
+            operation["review_reference"],
+            **common,
+        )
+        generated = [_rel(repo_root, record_path), _rel(repo_root, index_path)]
+    else:
+        raise OperatorBridgeError(f"unsupported Human Gate bridge operation: {kind}")
+    return state_path, generated, removed, updated["lifecycle_state"], updated.get("terminal_reason")
 
 
 def execute_request(
@@ -329,17 +419,23 @@ def execute_request(
     request_authority = _authority(repo_root, request_path)
     operation = request["operation"]
     generated: list[str] = []
-    if operation["kind"] in {"INITIALIZE_WEEKLY", "INITIALIZE_RETROSPECTIVE", "INITIALIZE_THEMATIC"}:
+    removed: list[str] = []
+    if operation["kind"] in INITIALIZE_KINDS:
         profile_path, state_path, record_paths = _initialize(repo_root, cfg, request, event_sha)
         generated.extend([_rel(repo_root, profile_path), _rel(repo_root, state_path), *record_paths])
         state = core.load_json(state_path)
         lifecycle = state["lifecycle_state"]
         terminal_reason = state.get("terminal_reason")
     elif operation["kind"] == "ADVANCE_STAGE":
-        state_path, stage_paths, lifecycle, terminal_reason = _advance_stage(
+        state_path, stage_paths, removed, lifecycle, terminal_reason = _advance_stage(
             repo_root, cfg, request, event_sha, run_root
         )
         generated.extend(stage_paths)
+    elif operation["kind"] in HUMAN_GATE_KINDS:
+        state_path, gate_paths, removed, lifecycle, terminal_reason = _human_gate_operation(
+            repo_root, cfg, request, event_sha
+        )
+        generated.extend(gate_paths)
     else:
         raise OperatorBridgeError(f"unsupported operator bridge operation: {operation['kind']}")
 
@@ -358,6 +454,7 @@ def execute_request(
         "lifecycle_state": lifecycle,
         "terminal_reason": terminal_reason,
         "generated_paths": sorted(set(generated)),
+        "removed_paths": sorted(set(removed)),
         "status": "PASS",
     }
     core.write_json(receipt_path, receipt)
@@ -371,6 +468,7 @@ def execute_request(
         "lifecycle_state": lifecycle,
         "terminal_reason": terminal_reason,
         "generated_paths": sorted(set(generated)),
+        "removed_paths": sorted(set(removed)),
     }
 
 
