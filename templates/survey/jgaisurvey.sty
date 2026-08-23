@@ -62,6 +62,16 @@
 % Ragged X columns avoid artificial stretching and give TeX more legal breaks.
 \renewcommand{\tabularxcolumn}[1]{>{\raggedright\arraybackslash}p{#1}}
 
+% SP001 publication-review compatibility. Existing accepted Specials enter
+% two-column body flow after front matter. Core v2 owns the semantic source, so
+% this review branch restores that publication transition in the stylesheet.
+% A legal break before numeric citations also prevents citation clusters from
+% forcing otherwise valid Japanese standfirst lines 10pt beyond the measure.
+\AtBeginDocument{%
+  \pretocmd{\cite}{\allowbreak}{}{}%
+  \apptocmd{\tableofcontents}{\clearpage\if@twocolumn\else\twocolumn\fi}{}{}%
+}
+
 \newcommand{\SurveyIssue}{UNSET}
 \newcommand{\SurveyTitle}{Japanese Generative AI Technical Survey}
 \newcommand{\SurveyDate}{UNSET}
@@ -132,10 +142,14 @@
   {\small\bfseries\color{SurveyAccent}\MakeUppercase{#1}\par}\vspace{1mm}%
 }
 
-% Publication-only wrapper used by LONGFORM_SPECIAL after leaving multicols.
-% The surrounding document is already single-column here; this environment
-% makes the full-width intent explicit without altering accepted content.
-\newenvironment{wideflow}{\par\begingroup}{\par\endgroup}
+% Publication-only wrapper used by LONGFORM_SPECIAL to mark the point where
+% synthesis / technical notes return to full-width flow. The switch is guarded
+% so repeated wideflow regions do not create extra page breaks.
+\newenvironment{wideflow}{%
+  \par
+  \if@twocolumn\onecolumn\fi
+  \begingroup
+}{\par\endgroup}
 
 \newtcolorbox{claimboundary}[1][Claim boundary]{
   enhanced,
