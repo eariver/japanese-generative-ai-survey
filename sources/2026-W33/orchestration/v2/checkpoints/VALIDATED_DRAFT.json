@@ -1,0 +1,51 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "from_state": "VALIDATED_DRAFT",
+  "to_state": "RELEASE_CANDIDATE",
+  "checkpoints": [],
+  "recorded_at": "2026-08-23T05:33:35Z",
+  "implementation": {
+    "repository_commit_sha": "5cb8e7c0989d0a25f27029fc861c72fb86307774",
+    "orchestrator_version": "survey-production-core-v2/0.8-agent-first"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "1814863bfe5661491b972eabaeaa6383b4018172fbfe765ce064a7202986abce",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "publication-candidate",
+      "path": "sources/2026-W33/publication/v2/publication-candidate-v2.json",
+      "sha256": "fb8f630b5031546a23b9153838719f3113123e997de92e652bd06d1d6c7b8262"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "scripts/survey_stage_validation_v2.py",
+      "evidence": "Validate the exact 2026-W33 Publication Candidate against the accepted r7 validated source, exact six-page publication PDF, complete Quality Regression Bundle, and VALIDATED_DRAFT Production State before entering RELEASE_CANDIDATE / PUBLICATION_PREVIEW.",
+      "result": {
+        "path": "sources/2026-W33/orchestration/v2/validation/VALIDATED_DRAFT.json",
+        "sha256": "9c48b39d5f9311bc7ae0456ab3def59b89df50fd583f46f7f855dd73cad91e81"
+      }
+    },
+    {
+      "check_id": "WEEKLY_PUBLICATION_CANDIDATE_EXACT_BYTE_BINDING",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "The candidate binds the same validated Weekly main.tex SHA-256 18f8eab1251bcc8e5c18630fa8d84f1bc1ea5930982d9fbb5aab1133fbb959d2, exact six-page PDF SHA-256 67465915b48aaf4b7335ace2a78f2daddb1de28787ea7f399b9a1e64ee69164f, and PASS Quality Regression Bundle already accepted at DRAFT_COMPLETE. No semantic or rendered-byte change is permitted between VALIDATED_DRAFT and Publication Preview.",
+      "result": null
+    }
+  ],
+  "summary": "Established the immutable 2026-W33 Weekly Publication Candidate binding validated main.tex SHA-256 18f8eab1251bcc8e5c18630fa8d84f1bc1ea5930982d9fbb5aab1133fbb959d2, exact six-page PDF SHA-256 67465915b48aaf4b7335ace2a78f2daddb1de28787ea7f399b9a1e64ee69164f, and complete PASS Quality Regression Bundle; ready to enter the PUBLICATION_PREVIEW Human Gate."
+}
