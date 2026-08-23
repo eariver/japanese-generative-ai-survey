@@ -1,38 +1,33 @@
 # Survey Production Core v2 — Post-Merge Production Feedback Backlog
 
-Status: `FEEDBACK INCORPORATED / REDESIGN IMPLEMENTED / COLD-START REVALIDATION PENDING`  
+Status: `REDESIGN INTEGRATED / CLEAN REVALIDATION EXPOSED OPERATOR-RUNTIME GAP / PFB-014 MAINTENANCE IN PROGRESS`  
 Established: 2026-08-23 JST  
-Review closed: 2026-08-23 JST  
-Implementation synchronized: 2026-08-23 JST  
-Working branch: `refactor/survey-production-core-v2`
+Initial review closed: 2026-08-23 JST  
+Last updated: 2026-08-23 JST
+
+Current maintenance branch for the new finding:
+
+`maintenance/core-v2-operator-execution-bridge`
 
 ## Current authority
 
-The initial feedback-collection phase is complete and the accepted redesign feedback has been implemented on the redesign branch.
+The initial W33/SP001 production feedback drove the Core v2 redesign that was reviewed and integrated. Subsequent clean post-merge W33/SP001 revalidation then exposed one additional operational dependency: the normal ChatGPT connector runtime can research and edit the repository but cannot necessarily mount the exact work branch and execute the canonical local Core CLI.
 
-The consolidated redesign authority is now:
+The cross-edition revalidation record is:
 
-- `docs/survey-production-core-v2-redesign-authority.md`
-- `docs/survey-production-core-v2-redesign-plan-after-w33-sp001.md`
-- `docs/survey-production-core-v2-github-actions-policy.md`
-- `docs/survey-production-core-v2-execution-record-policy.md`
-- `docs/survey-production-core-v2-final-audit-rule.md`
+`docs/checkpoints/survey-production-core-v2-postmerge-revalidation-worklog.md`
 
-The W33 and SP001 Core v2 attempts are retained as failed / non-validating production trials. Their outcomes must not be interpreted as proof that either the pre-redesign Core or the redesign candidate can produce acceptable Weekly or LONGFORM_SPECIAL publications from a clean start. The redesign candidate still requires fixed-head acceptance audit and later clean production re-validation.
+The operator-bridge maintenance design is:
 
-Primary review evidence:
+`docs/survey-production-core-v2-operator-execution-bridge.md`
 
-- Issue #400 — SP001 first Publication Preview plus Human re-review of the 19-page salvage revision;
-- Issue #433 — W33 Publication Preview rejection;
-- Issue #434 — shared Core v2 Publication Boundary defect across both profiles;
-- W33 work branch: `weekly/2026-W33-v2-work`;
-- SP001 work branch: `special/SP001-v2-work`.
+The original feedback items PFB-001 through PFB-013 remain applicable. PFB-014 is the new post-integration finding.
 
 ## Feedback item PFB-001 — Use one self-contained Grok task file in Google Drive
 
-Status: `IMPLEMENTED`
+Status: `IMPLEMENTED / REAL W33 OPERATION CONFIRMED`
 
-Use one run-specific Markdown file in Google Drive containing the complete Grok/X task: role, scope, research questions, evidence boundary, output format, and result destination. A separate `grok-prompt.md` authority is not required.
+Use one run-specific Markdown file in Google Drive containing the complete Grok/X task: role, scope, research questions, evidence boundary, output format, and result destination.
 
 Operational shape:
 
@@ -45,9 +40,11 @@ Grok_X_SourseIntake/
 
 Repository provenance hash-binds the exact task bytes and imported result bytes.
 
+The clean W33 revalidation successfully exercised this exact Human-mediated boundary.
+
 ## Feedback item PFB-002 — Human passes the exact Drive task-file path to Grok; do not search for a Grok connector
 
-Status: `IMPLEMENTED`
+Status: `IMPLEMENTED / REAL W33 OPERATION CONFIRMED`
 
 Normal boundary:
 
@@ -59,7 +56,7 @@ ChatGPT prepares one self-contained task file in Drive
 -> ChatGPT imports/dispositions the result and resumes automatically
 ```
 
-Do not search for/install/configure a Grok connector merely because an X run is required. Absence of a Grok connector is not an Exception Gate or dependency failure.
+Absence of a Grok connector is not an Exception Gate or dependency failure.
 
 ## Feedback item PFB-003 — Require a concluding synthesis in every Weekly and Special
 
@@ -69,53 +66,49 @@ Every reader-facing Weekly and Special requires a final substantive `総括` or 
 
 ## Feedback item PFB-004 — Weekly must always publish an explicit community-movement view informed by Grok/X
 
-Status: `IMPLEMENTED`
+Status: `IMPLEMENTED / CLEAN W33 EDITORIAL VALUE CONFIRMED`
 
 Every Weekly requires a reader-facing `コミュニティの動き` component. The completed Grok/X result receives editorial disposition, not merely technical import/disposition. Material observations are reflected in the issue or carry an internal exclusion reason; a quiet week is an explicit reader-facing finding rather than silent omission.
 
 Grok/X remains Discovery/community-signal authority, not final technical Evidence authority.
 
+The clean W33 trial additionally confirmed that fresh X signal can materially change Weekly package selection and synthesis after primary-source verification.
+
 ## Feedback item PFB-005 — Production sessions repair editions, not shared Core v2
 
 Status: `IMPLEMENTED / REQUIRED CORE INVARIANT`
 
-The W33/SP001 trials confirmed this concern rather than merely suggesting it.
-
-SP001 production created/repaired generic Core work-branch control workflows, semantic publication behavior, and shared longform style on `main`, then reintegrated those repairs into the edition branch. W33 likewise consumed pending/generic repair logic during the trial.
-
-Implemented invariant:
-
 > **A Production session repairs the edition. It does not repair shared Core v2.**
 
-A shared Core defect is recorded and returned to Core maintenance. If there is no semantically safe edition-local workaround, the production attempt is blocked/terminated and later restarted from the appropriate clean boundary after reviewed Core repair.
+A shared Core defect or operator/Core infrastructure gap is recorded and returned to Core maintenance. If there is no semantically safe edition-local workaround, the acceptance production attempt remains failed/non-validating and is later restarted from the appropriate clean boundary after reviewed Core repair.
 
-## Feedback item PFB-006 — Reduce GitHub Actions from production worker to CI/build verifier
+The current PFB-014 work follows this rule: W33/SP001 were paused, and the execution bridge is being implemented on a separate shared-Core maintenance branch.
 
-Status: `IMPLEMENTED / REQUIRED CORE INVARIANT`
+## Feedback item PFB-006 — Reduce GitHub Actions from production author to narrow deterministic infrastructure
 
-The trials confirmed excessive Actions orchestration. Actions had been used for stage adoption, Drafting/Synthesis, publication generation/mutation, quality/candidate state, bot commits, rebuild/export transport and other production work. SP001 additionally hit write-capable workflow chaining limits after `github-actions[bot]` commits.
+Status: `IMPLEMENTED / REQUIRED CORE INVARIANT / PFB-014 NARROW FALLBACK UNDER REVIEW`
 
-`docs/survey-production-core-v2-github-actions-policy.md` remains governing authority:
+The governing principle remains:
 
 > **GitHub Actions is a deterministic executor / verifier, not a reasoning, editorial, or publication-authoring agent.**
 
-The canonical redesign candidate retains six workflows only: contract tests, Core v2 CI, Weekly reproducible build, Special reproducible build, exact-byte Publication Preview transport, and release.
+The integrated redesign reduced the normal Actions surface to contract/Core CI, reproducible Weekly/Special builds, exact-byte Publication Preview transport, and release.
 
-## Feedback item PFB-007 — Terminate the current W33/SP001 v2 trials as non-validating production attempts
+PFB-014 does **not** reverse that direction. The proposed operator bridge is admissible only as a narrowly scoped deterministic execution substrate because the normal ChatGPT connector runtime lacks an exact checked-out CLI environment. The bridge must not perform research, Evidence/Selection/Architecture authorship, drafting, semantic/visual judgment, layout repair, Human approval, or arbitrary request-driven command execution.
 
-Status: `RESOLVED / BOTH TRIALS RETAINED AS FAILED EVIDENCE`
+If PFB-014 is reviewed and integrated, the Actions surface gains one additional constrained operator-bridge workflow. That change requires a fresh exact-head audit; the prior six-workflow audit cannot be reused as current evidence.
 
-W33 must not receive further #433 salvage work under the failed pre-redesign production path.
+## Feedback item PFB-007 — Retain failed W33/SP001 trials as non-validating evidence
 
-SP001's #400 19-page revision materially improved layout, depth, Technical Notes and synthesis, but Human re-review still found Publication Boundary leakage (`D017` / `D021`, `本 package`, source-promotion/coverage language). The revision also required shared-Core renderer/style repairs and an authority-rebind repair after the new PDF and old Publication Candidate diverged.
+Status: `RESOLVED / HISTORICAL FAILED EVIDENCE PRESERVED`
 
-Therefore the 19-page revision remains useful salvage evidence, not cold-start validation. SP001 remains historical failed evidence and is a required regression case for later redesigned-Core production re-validation.
+The pre-redesign W33/SP001 runs and SP001 salvage revision remain useful failure evidence but not cold-start validation. Archived failed branches must not be copied into later clean accepted State.
+
+The first post-merge clean attempts also remain non-PASS because canonical lifecycle execution could not begin before PFB-014 maintenance.
 
 ## Feedback item PFB-008 — Make the reader-facing Publication Boundary structural, not stylistic
 
 Status: `IMPLEMENTED / REQUIRED CORE INVARIANT`
-
-Issue #434 established a cross-profile defect: internal Architecture / Review / Selection / Evidence material could become reader-facing prose.
 
 Implemented direction:
 
@@ -125,13 +118,11 @@ Implemented direction:
 - no fallback from missing reader-facing fields to Architecture/Profile/Evidence text;
 - missing required publication content fails closed back to ChatGPT authoring.
 
-Known-token lint remains defense-in-depth only. SP001's 19-page revision passed deterministic leakage checks yet Human review still found semantically internal wording.
+Known-token lint remains defense-in-depth only.
 
 ## Feedback item PFB-009 — Architecture fidelity means reader-facing content fulfillment
 
 Status: `IMPLEMENTED / REQUIRED CORE INVARIANT`
-
-W33 demonstrated that a must-cover item could effectively be represented by prose saying that Architecture intended to cover it. That is not content fulfillment.
 
 The Reader Manuscript and semantic/editorial review retain lightweight traceability:
 
@@ -142,39 +133,31 @@ requirement
 -> ChatGPT fulfillment judgment
 ```
 
-Page quotas or string-presence checks do not substitute for this editorial judgment.
+Page quotas or string-presence checks do not substitute for editorial fulfillment judgment.
 
 ## Feedback item PFB-010 — Separate deterministic QA from semantic/editorial and visual QA
 
 Status: `IMPLEMENTED / REQUIRED CORE INVARIANT`
 
-Machine PASS no longer represents publication-quality PASS.
-
 Candidate readiness requires separate evidence for:
 
-1. deterministic QA — schemas, hashes, citations, identifiers, compiler/preflight and other crisp invariants;
-2. ChatGPT semantic/editorial QA — must-cover fulfillment, technical depth, reader-facing boundary, source-class wording, `総括`, Weekly community use, repetition/generic fallback, bibliography surface and Profile semantics;
-3. ChatGPT visual QA — exact rendered PDF review for layout, hierarchy, whitespace, tables/boxes/URLs and visually obvious content-thin pages.
+1. deterministic QA;
+2. ChatGPT semantic/editorial QA;
+3. ChatGPT exact-PDF visual QA.
 
-The Quality Regression Bundle owns deterministic QA only; semantic/editorial and visual authorities are separate exact-byte review records.
+The operator bridge belongs only to deterministic Core mechanics. It cannot manufacture AGENT_SEMANTIC/AGENT_EDITORIAL/AGENT_VISUAL judgments or Human decisions.
 
 ## Feedback item PFB-011 — Publication revision/candidate authority must be atomic
 
 Status: `IMPLEMENTED / REQUIRED CORE INVARIANT`
 
-SP001's revised 19-page PDF initially coexisted with Quality Regression Bundle / Publication Candidate authority still bound to the old 11-page PDF.
-
-The redesign candidate binds Reader Manuscript, exact source, exact repository-resident PDF, deterministic QA, semantic/editorial review and visual review into one Publication Candidate. Source/PDF revision invalidates downstream Candidate/Preview/Freeze identity rather than permitting old candidate authority to survive beside new bytes.
+Reader Manuscript, exact source, exact repository-resident PDF, deterministic QA, semantic/editorial review and visual review bind atomically into one Publication Candidate. Source/PDF revision invalidates downstream Candidate/Preview/Freeze identity.
 
 ## Feedback item PFB-012 — Standardize edition-local execution records
 
-Status: `IMPLEMENTED`
+Status: `IMPLEMENTED / PFB-014 EXTENDS EXECUTION TRANSPORT`
 
-The W33 and SP001 logs were valuable but inconsistent: W33 used a long worklog whose header became stale, while SP001 used multiple ad-hoc date/session checkpoint files.
-
-The redesign implements `docs/survey-production-core-v2-execution-record-policy.md` and `scripts/survey_execution_record_v2.py`.
-
-Canonical location:
+Canonical location remains:
 
 ```text
 sources/<issue-id>/execution/
@@ -184,35 +167,114 @@ sources/<issue-id>/execution/
   defects/
 ```
 
-The record is concise operational provenance, not a transcript or duplicate state machine.
+PFB-014 adds transport/provenance subpaths for immutable deterministic execution requests and receipts:
+
+```text
+  requests/
+  bridge-runs/
+```
+
+These additions are execution provenance, not a second lifecycle state machine.
 
 ## Feedback item PFB-013 — Real cold-start profile trials are required after Core repair
 
-Status: `PENDING POST-REVIEW / REQUIRED ACCEPTANCE RULE`
+Status: `PARTIALLY EXERCISED / NOT PASSED`
 
-After redesign implementation, fixed-head Core audit and Human review/integration, validate with clean real production runs rather than only synthetic fixtures.
+Required acceptance remains:
 
-At minimum:
+- one clean Weekly trial with no in-run shared-Core repair;
+- one clean LONGFORM_SPECIAL/SP001 regression trial with no in-run shared-Core repair;
+- representative Retrospective and Foundations-guided viability retained through generality audit/subsequent evidence.
 
-- one Weekly trial from clean current `main` with no in-run shared-Core repair;
-- one LONGFORM_SPECIAL trial, using SP001 as the required regression case, with no in-run shared-Core repair.
+The first post-merge clean attempts performed substantial real operator work, and W33 successfully exercised the actual Grok/Drive handoff. They did not reach canonical Profile/State lifecycle execution because the operator runtime lacked an execution bridge.
 
-Representative Retrospective and Foundations-guided viability must also remain covered by the final Core generality audit and subsequent production evidence.
+Therefore PFB-013 remains open.
 
-If a shared-Core defect is discovered, retain the run as failed evidence, repair Core separately, and restart the affected acceptance run cleanly. Do not debug the pipeline inside the acceptance edition and then count that same run as PASS.
+## Feedback item PFB-014 — Provide a generic deterministic Core execution fallback for connector-only operator runtimes
 
-## Next step
+Status: `IMPLEMENTATION CANDIDATE / NOT VALIDATED`
 
-Do not resume W33 or SP001 publication work under the failed pre-redesign production path.
+### Observation
 
-The redesign implementation workstreams are substantially complete. The maintenance sequence is now:
+The integrated redesign assumes ChatGPT can invoke local deterministic Core scripts. In the normal connector runtime used for clean W33/SP001 revalidation, ChatGPT can read/write exact repository content through GitHub but cannot necessarily obtain a mounted checkout or execute the canonical Core CLI on the exact work branch.
+
+Manual creation of plausible `production-profile.json`, `production-state.json`, checkpoint or acceptance artifacts is prohibited because it bypasses the validators being tested.
+
+### Required behavior
+
+When direct local CLI execution is unavailable, Core may provide a generic fallback that:
 
 ```text
-finish all candidate-tree synchronization and regression repair
--> freeze one exact redesign candidate SHA
--> run the complete six-point final audit from zero without mutating that SHA
--> present only the unchanged passing SHA for Human full-candidate review
--> after reviewed integration, run clean production re-validation under the redesigned Core
+ChatGPT commits already-authored edition artifacts
+-> ChatGPT commits one immutable request-only commit
+-> deterministic remote runner checks out that exact commit
+-> runner executes only allowlisted canonical Core mechanics
+-> runner commits only edition-local generated authorities/receipts
+-> ChatGPT resumes from canonical State
 ```
 
-Any tree change required by the final audit invalidates that audit and requires a new candidate SHA plus a complete rerun.
+### Current implementation candidate
+
+Maintenance branch:
+
+`maintenance/core-v2-operator-execution-bridge`
+
+Candidate files:
+
+- `docs/survey-production-core-v2-operator-execution-bridge.md`
+- `schemas/operator-execution-request-v2.schema.json`
+- `scripts/survey_core_execution_bridge_v2.py`
+- `.github/workflows/survey-production-v2-operator-bridge.yml`
+- `tests/test_survey_core_execution_bridge_v2.py`
+
+Current allowlisted operations:
+
+- `INITIALIZE_WEEKLY`
+- `INITIALIZE_THEMATIC`
+- `ADVANCE_STAGE`
+
+Human Architecture approval, Publication Preview approval and Release are deliberately outside this bridge operation set.
+
+### Acceptance criteria
+
+PFB-014 cannot close until all of the following hold:
+
+1. no arbitrary command/module/script surface from request data;
+2. request path/id/branch are exact and fail closed;
+3. triggering commit adds exactly one immutable request and changes nothing else;
+4. generated writes are constrained to the edition source root;
+5. immutable request bytes are never mutated by the runner;
+6. `ADVANCE_STAGE` requires an exact expected current lifecycle state;
+7. deterministic `CORE_STAGE_CONTRACT` is generated by canonical Core code, not supplied by ChatGPT;
+8. ChatGPT agent review rows cannot impersonate deterministic results;
+9. output commits do not recursively retrigger the workflow;
+10. exact implementation/request/State provenance is recorded;
+11. direct-local CLI remains preferred when available;
+12. bridge exact-head CI and changed-scope six-point audit pass;
+13. after reviewed integration, fresh W33 and SP001 clean production trials reach pending `ARCHITECTURE_REVIEW` without shared-Core repair.
+
+### Classification
+
+This began as `TRANSIENT_EXECUTION / OPERATOR-RUNTIME CAPABILITY`. Because the repository's production model must work in the actual ChatGPT operator runtime used for this project, the missing generic execution fallback is now being treated as a **shared operator/Core integration maintenance requirement** rather than an edition-local defect.
+
+## Current next step
+
+Do not resume W33/SP001 canonical acceptance execution on the pre-PFB-014 integrated baseline.
+
+Maintenance sequence:
+
+```text
+finish PFB-014 bridge implementation and documentation
+-> open maintenance PR
+-> run exact-head Core CI + pipeline contract tests
+-> repair generic regressions only
+-> freeze one exact maintenance candidate SHA
+-> rerun changed-scope six-point Core audit from zero
+-> Human full-candidate review
+-> integrate unchanged accepted head
+-> recreate/reset clean W33/SP001 revalidation branches from reviewed main
+-> reapply only legitimate Raw/research preparation
+-> execute PFB-013 cold-start validation canonically
+```
+
+Any maintenance-tree change after a frozen audit invalidates that audit and requires a new exact head plus a complete rerun.
