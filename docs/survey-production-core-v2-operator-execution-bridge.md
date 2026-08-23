@@ -64,10 +64,12 @@ Architecture approval and Publication Preview approval remain explicit Human dec
 The fallback path is:
 
 ```text
-ChatGPT authors/researches edition artifacts
+ChatGPT reviews one exact main Core baseline
+-> ChatGPT authors/researches edition artifacts
 -> ChatGPT commits those artifacts normally
 -> ChatGPT commits ONE immutable operator request as a request-only commit
 -> GitHub Actions checks out that exact request commit
+-> workflow proves the branch's shared Core/contract tree still matches reviewed main
 -> bridge executes a whitelisted deterministic Core operation
 -> bridge verifies its outputs
 -> workflow enforces Profile-bound edition-local write scope
@@ -76,7 +78,14 @@ ChatGPT authors/researches edition artifacts
 -> ChatGPT resumes from the resulting canonical State
 ```
 
-The request explicitly binds `issue_id`, Profile-declared `source_root`, and `work_branch`.
+Every request explicitly binds:
+
+- `issue_id`;
+- Profile-declared `source_root`;
+- `work_branch`;
+- one exact lowercase 40-hex `reviewed_main_sha`.
+
+For initialization, `operation.execution_record.reviewed_main_sha` must equal the request-level `reviewed_main_sha`. The duplicated initialization field is retained because the execution-record helper already records start-of-run reviewed-main provenance; the workflow fail-closes if the two identities differ.
 
 Canonical request location:
 
@@ -91,6 +100,8 @@ Canonical bridge-run receipt location:
 ```
 
 `source_root` must remain repository-local under `sources/`. It is not inferred from `issue_id`; this preserves compatibility with valid Profile-specific/nested source-root layouts. The request filename stem and `request_id` must match exactly.
+
+`reviewed_main_sha` is per-operation provenance rather than a run-global lock. This is intentional: Core already supports explicitly reviewed tool/contract upgrades between stages through per-stage checkpoint provenance. A later request may bind a newer reviewed `main`, but only if the edition branch descends from that commit and its protected shared-Core/contract bytes are exactly equal to that reviewed baseline.
 
 ## 4. Why this still satisfies the GitHub Actions responsibility policy
 
@@ -147,31 +158,54 @@ Allowed deterministic effect:
 
 The request cannot supply its own deterministic `CORE_STAGE_CONTRACT` result.
 
-## 6. Fail-closed controls
+## 6. Reviewed-main Core preflight
+
+The bridge workflow must not execute arbitrary work-branch copies of Core just because the request file itself is valid.
+
+Before invoking the bridge, the workflow must:
+
+1. parse and validate the request-level `reviewed_main_sha` shape;
+2. fetch current `main` history and require `reviewed_main_sha` to be an ancestor of current `main`;
+3. require the request commit's parent to descend from `reviewed_main_sha`;
+4. for initialization, require the execution-record reviewed-main SHA to equal the request-level SHA;
+5. construct the protected comparison set from:
+   - `config/survey-production-v2.json -> implementation_control_roots`; and
+   - every path in `contract_files.pipeline` and `contract_files.quality`;
+6. require those protected bytes at the request parent to be exactly equal to the reviewed-main baseline.
+
+This catches production-branch repair or silent drift in shared scripts, schemas, config, workflows and Core contract authority before any write-capable deterministic execution occurs.
+
+The comparison deliberately does **not** require the entire edition branch tree to equal `main`: legitimate edition-local research, Raw, Evidence, manuscript and other production artifacts must be allowed to differ. The protected set is the existing shared-Core/contract boundary, not an invented whole-repository lock.
+
+## 7. Fail-closed controls
 
 The workflow and bridge must enforce all of the following:
 
 1. push trigger is limited to request paths under `sources/**/execution/requests/` and excludes `main`;
 2. the triggering commit adds exactly one request file and changes nothing else;
-3. request `work_branch` must equal the executing Git ref;
-4. request `source_root` must be repository-local under `sources/`;
-5. request path must equal `{source_root}/execution/requests/<request-id>.json`;
-6. current/generated Production Profile must bind the same `issue_id`, `source_root`, and `work_branch`;
-7. event commit SHA must be exact lowercase 40-hex;
-8. operations are an enum, not arbitrary script/command execution;
-9. repository paths are traversal-safe;
-10. initialization refuses existing canonical Profile/State;
-11. stage advancement refuses stale `expected_from_state`;
-12. agent review rows cannot impersonate deterministic reviews;
-13. bridge-run ids are immutable and cannot be overwritten;
-14. workflow derives the write boundary from the validated bridge result rather than constructing it from `issue_id`;
-15. workflow refuses generated writes outside the Profile-bound `source_root`;
-16. workflow refuses mutation of immutable request authority;
-17. bot output commits do not add request files and are also excluded by actor guard, so they do not chain recursively.
+3. every request carries exact `reviewed_main_sha` provenance;
+4. reviewed-main SHA must be on current `main` history and an ancestor of the request parent;
+5. protected shared-Core and contract bytes must equal the reviewed-main baseline before execution;
+6. initialization execution-record reviewed-main SHA must equal request reviewed-main SHA;
+7. request `work_branch` must equal the executing Git ref;
+8. request `source_root` must be repository-local under `sources/`;
+9. request path must equal `{source_root}/execution/requests/<request-id>.json`;
+10. current/generated Production Profile must bind the same `issue_id`, `source_root`, and `work_branch`;
+11. event commit SHA must be exact lowercase 40-hex;
+12. operations are an enum, not arbitrary script/command execution;
+13. repository paths are traversal-safe;
+14. initialization refuses existing canonical Profile/State;
+15. stage advancement refuses stale `expected_from_state`;
+16. agent review rows cannot impersonate deterministic reviews;
+17. bridge-run ids are immutable and cannot be overwritten;
+18. workflow derives the write boundary from the validated bridge result rather than constructing it from `issue_id`;
+19. workflow refuses generated writes outside the Profile-bound `source_root`;
+20. workflow refuses mutation of immutable request authority;
+21. bot output commits do not add request files and are also excluded by actor guard, so they do not chain recursively.
 
 The trigger intentionally does not hardcode `weekly/**` or `special/**` branch naming. Exact branch authority comes from the request/Profile match, allowing valid future work-branch conventions without weakening the write boundary.
 
-## 7. Validation consequence
+## 8. Validation consequence
 
 The W33/SP001 clean revalidation attempts that exposed this gap remain non-PASS evidence. Adding the bridge changes shared Core implementation and the Actions surface.
 
@@ -189,7 +223,7 @@ bridge maintenance implementation
 
 No pre-bridge W33/SP001 lifecycle result may be relabeled as a successful canonical run.
 
-## 8. Direct-local CLI remains preferred when available
+## 9. Direct-local CLI remains preferred when available
 
 The bridge is a fallback execution substrate, not a requirement that all production use Actions.
 
