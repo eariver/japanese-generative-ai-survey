@@ -34,6 +34,7 @@ BIBRESOURCE_REPLACEMENT = (
     "  \\clearfield{urlday}%\n"
     "}\n"
 )
+REFERENCE_LINE_SPREAD = "0.94"
 REFERENCE_MARKER = (
     "\\clearpage\n"
     "\\onecolumn\n"
@@ -44,6 +45,7 @@ REFERENCE_REPLACEMENT = (
     "\\onecolumn\n"
     "\\begingroup\n"
     "\\footnotesize\n"
+    f"\\linespread{{{REFERENCE_LINE_SPREAD}}}\\selectfont\n"
     "\\setlength{\\bibitemsep}{0pt}\n"
     "\\defbibnote{corev2legend}{\\textit{Evidence tags: V = VERIFIED, P = PARTIAL; M = MATERIAL, C = CONTEXT. Access dates are retained in the source bibliography metadata.}}\n"
     "\\printbibliography[title={References / Source Notes},prenote=corev2legend]\n"
@@ -117,7 +119,11 @@ def compact_closing_summary(
     references_boundary_pos = transformed.index(REFERENCE_REPLACEMENT, summary_pos)
     if "\\onecolumn" in transformed[summary_pos:references_boundary_pos]:
         raise ValueError("Weekly closing summary must remain in two-column flow until references")
-    if transformed.count("\\footnotesize\n\\setlength{\\bibitemsep}{0pt}") != 1:
+    compact_reference_marker = (
+        f"\\footnotesize\n\\linespread{{{REFERENCE_LINE_SPREAD}}}\\selectfont\n"
+        "\\setlength{\\bibitemsep}{0pt}"
+    )
+    if transformed.count(compact_reference_marker) != 1:
         raise ValueError("Weekly references compact typography was not applied exactly once")
     if transformed.count("prenote=corev2legend") != 1:
         raise ValueError("Weekly Evidence-tag legend was not applied exactly once")
@@ -151,12 +157,14 @@ def compact_closing_summary(
             "FINAL_BODY_COLUMN_TO_WEEKLY_SYNTHESIS_COLUMN",
             "COMPACT_SINGLE_COLUMN_REFERENCE_NOTES",
             "COMPACT_EVIDENCE_TAGS_WITH_SOURCE_METADATA_ACCESS_DATES",
+            "TIGHT_REFERENCE_LEADING_094",
         ],
         "finding": (
             "The approved Weekly closing summary begins in the next two-column body column. "
             "References / Source Notes retain their one-column section and full canonical source identity, "
             "while repetitive Evidence status/materiality wording is represented by an explicit compact tag legend. "
-            "Access dates remain in references.bib but are omitted from rendered entries by a preamble-safe biblatex hook."
+            "Access dates remain in references.bib but are omitted from rendered entries by a preamble-safe biblatex hook. "
+            "Reference leading is tightened by six percent within the source-note group to avoid a singleton continuation page without reducing font size."
         ),
     }
     core.write_json(result_path, result)
