@@ -1,0 +1,70 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "evidence_task_id": "evidence:2026-W33:ead88c2a97a882f2",
+  "discovery_ids": [
+    "base-arxiv-2608_11888v1"
+  ],
+  "source_records": [
+    {
+      "source_type": "paper",
+      "collector_id": "arxiv-api",
+      "collector_run_id": "arxiv-api-2026-W33-20260822T154529Z",
+      "observed_at": "2026-08-22T15:45:29Z",
+      "title": "Agent Skills Can Be Harmful: An Empirical Study of Skill-Induced Failures in LLM Agents",
+      "locator": "http://arxiv.org/abs/2608.11888v1",
+      "raw_paths": [
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-ai.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-cl.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-lg.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-cv.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-dc.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-cr.atom"
+      ],
+      "published_at": "2026-08-12T10:15:19Z",
+      "summary_text": "Agent skills are the de facto mechanism for extending LLM agents with reusable guidance. A skill can shape the agent's task execution, including planning, tool use, problem-solving, and validation. Prior work reported mixed results of agent skills: some skills improve task success rates, while others have no effect, increase token use and execution time, and even reduce success rates. This paper presents a comprehensive analysis of skill-induced agent failures by attributing task failures and cost regressions to specific loaded skills. We introduce a differential analysis framework that attributes a failure or regression to a skill by comparing a target skill-guided run against a no-skill or semantically matched skill reference run that solves the same task, or solves it more cheaply. We instantiate this framework on SkillsBench and SWE-Skills-Bench, yielding 307 skill-induced failures, including 125 functional failures and 182 efficiency regressions. We also build SkillTriage, a taxonomy-guided attribution tool that normalizes paired cases, extracts differential evidence, and produces triage reports. Our major findings include: (1) Skill induced functional failures are rarely caused by obviously irrelevant skills; instead, seemingly relevant skills often make the agent incorrectly implement or omit task-required implementation elements. (2) Skill-induced efficiency regressions are not explained by prompt length alone. (3) The largest sources within Excessive Procedure are excessive verification and heavy implementation pipelines, contributing 67 and 30 cases, respectively. This shows that skills often turn validation checklists and construction recipes into mandatory work. Based on our findings, we propose research topics and tooling improvements for safer and more cost-aware skill reuse.",
+      "metadata": {
+        "authors": [
+          "Gen Dong",
+          "Yanjie Gao",
+          "Liqun Li",
+          "Tianyin Xu",
+          "Yu Hua",
+          "Fan Yang"
+        ],
+        "categories": [
+          "cs.AI"
+        ],
+        "primary_category": "cs.AI",
+        "updated": "2026-08-12T10:15:19Z",
+        "links": [
+          {
+            "href": "https://arxiv.org/abs/2608.11888v1",
+            "rel": "alternate",
+            "type": "text/html"
+          },
+          {
+            "href": "https://arxiv.org/pdf/2608.11888v1",
+            "rel": "related",
+            "type": "application/pdf"
+          }
+        ]
+      }
+    }
+  ],
+  "verification_targets": [
+    "Review full paper/method/results/limitations before promotion; abstract alone is insufficient for strong claims."
+  ],
+  "screening_basis": {
+    "screening_acceptance_sha256": "8d7cac2f809114608225bea517aba91c66105395f57f8333766da550eb16c3e0",
+    "decisions": [
+      {
+        "discovery_id": "base-arxiv-2608_11888v1",
+        "decision": "KEEP",
+        "scope_tags": [
+          "paper-candidate"
+        ]
+      }
+    ]
+  }
+}
