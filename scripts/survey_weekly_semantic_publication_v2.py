@@ -18,13 +18,71 @@ import shutil
 from pathlib import Path
 from typing import Any
 
-from scripts import run_semantic_publication_v2_interactive as base
 from scripts import survey_drafting_v2 as drafting
 from scripts import survey_production_v2 as core
 from scripts.render_article_draft_tex import tex_escape
 
 
-STYLE_PATH = base.STYLE_PATH
+STYLE_PATH = Path("templates/survey/jgaisurvey.sty")
+
+
+def _load(path: Path) -> dict[str, Any]:
+    return core.load_json(path)
+
+
+def _rel(root: Path, path: Path) -> str:
+    return str(path.resolve().relative_to(root.resolve())).replace("\\", "/")
+
+
+def _safe(root: Path, raw: str, label: str) -> Path:
+    path = (root / raw).resolve()
+    try:
+        path.relative_to(root.resolve())
+    except ValueError as exc:
+        raise ValueError(f"{label} escapes repository: {raw}") from exc
+    if path.is_symlink() or not path.is_file():
+        raise ValueError(f"{label} missing or unsafe: {raw}")
+    return path
+
+
+def _find_sha(root: Path, expected_sha: str, name: str) -> Path:
+    matches = []
+    for path in root.rglob(name):
+        if path.is_file() and not path.is_symlink() and core.sha256_file(path) == expected_sha:
+            matches.append(path)
+    if len(matches) != 1:
+        raise ValueError(f"{name} SHA must resolve exactly once: {expected_sha} -> {matches}")
+    return matches[0]
+
+
+def _write_json(path: Path, value: Any) -> None:
+    if path.exists():
+        raise ValueError(f"refusing to overwrite publication artifact: {path}")
+    core.write_json(path, value)
+
+
+def _bib_text(key: str, record: dict[str, Any], urldate: str) -> str:
+    entity = record["entity"]
+    title = str(entity["canonical_name"]).replace("{", "\\{").replace("}", "\\}")
+    org = str(entity.get("organization") or "Unknown").replace("{", "\\{").replace("}", "\\}")
+    url = str(entity["canonical_url"])
+    status = str(record.get("status") or "UNKNOWN")
+    materiality = str(record.get("materiality") or "UNKNOWN")
+    return (
+        f"@online{{{key},\n"
+        f"  title = {{{{{title}}}}},\n"
+        f"  author = {{{{{org}}}}},\n"
+        f"  url = {{{url}}},\n"
+        f"  urldate = {{{urldate}}},\n"
+        f"  note = {{Core v2 Evidence: {status}; materiality: {materiality}}}\n"
+        "}"
+    )
+
+
+def _cite(keys: list[str]) -> str:
+    if not keys:
+        return ""
+    return " \\cite{" + ",".join(keys) + "}"
 
 
 def _window(profile: dict[str, Any]) -> tuple[str, str, str]:
@@ -151,7 +209,7 @@ def _render_tex(
         ])
         deck_keys = [bib_key_by_did[did] for did in spec["deck_discovery_ids"]]
         lines.append(
-            "\\noindent\\textbf{" + tex_escape(result["deck"]) + "}" + base._cite(deck_keys) + "\\par\\medskip"
+            "\\noindent\\textbf{" + tex_escape(result["deck"]) + "}" + _cite(deck_keys) + "\\par\\medskip"
         )
         spec_blocks = {row["block_id"]: row for row in spec["blocks"]}
         for block in result["blocks"]:
@@ -170,7 +228,7 @@ def _render_tex(
             keys = [bib_key_by_did[did] for did in source_spec.get("discovery_ids", [])]
             lines.extend([
                 f"% block:{bid} attribution:{block['attribution_mode']}",
-                "\\noindent " + text + base._cite(keys) + "\\par\\medskip",
+                "\\noindent " + text + _cite(keys) + "\\par\\medskip",
             ])
 
     lines.extend([
@@ -218,15 +276,15 @@ def main() -> int:
     args = ap.parse_args()
 
     root = Path(args.repo_root).resolve()
-    state_path = base._safe(root, args.state, "Production State")
-    input_path = base._safe(root, args.input, "semantic publication input")
-    state = base._load(state_path)
+    state_path = _safe(root, args.state, "Production State")
+    input_path = _safe(root, args.input, "semantic publication input")
+    state = _load(state_path)
     if state.get("lifecycle_state") != "DRAFT_COMPLETE" or state.get("next_action") != "stage:semantic-publication-validation":
         raise SystemExit("semantic publication requires DRAFT_COMPLETE State")
 
     issue_id = state["issue_id"]
-    profile_path = base._safe(root, state["profile"]["path"], "Production Profile")
-    profile = base._load(profile_path)
+    profile_path = _safe(root, state["profile"]["path"], "Production Profile")
+    profile = _load(profile_path)
     if profile.get("research_profile") != "WEEKLY" or profile.get("publication_profile") != "WEEKLY_MAGAZINE":
         raise SystemExit("this renderer requires WEEKLY / WEEKLY_MAGAZINE")
 
@@ -236,17 +294,17 @@ def main() -> int:
     survey_root.relative_to(root)
 
     architecture_path = source_root / "architecture-v2.json"
-    architecture = base._load(architecture_path)
+    architecture = _load(architecture_path)
     if architecture.get("issue_id") != issue_id or architecture.get("publication_profile") != "WEEKLY_MAGAZINE":
         raise SystemExit("Weekly Architecture identity mismatch")
     expected_heading, summary_placement = _closing_summary(architecture)
 
-    data = base._load(input_path)
+    data = _load(input_path)
     _validate_input(data, issue_id, expected_heading)
 
     synthesis_input_path = source_root / "draft/v2/profile-synthesis-input.json"
     synthesis_result_path = source_root / "draft/v2/profile-synthesis-result.json"
-    synthesis_result = base._load(synthesis_result_path)
+    synthesis_result = _load(synthesis_result_path)
     syn_errors = drafting.validate_synthesis_result(
         synthesis_result, synthesis_input_path, root / drafting.SYNTHESIS_PROMPT
     )
@@ -264,7 +322,7 @@ def main() -> int:
     if current_interpretation not in data["final_summary"]["paragraphs"]:
         raise SystemExit("Weekly final summary must preserve exact profile_synthesis.current_interpretation as an approved source paragraph")
 
-    semantic_archive = base._load(source_root / "draft/v2/interactive-drafting-synthesis-input.json")
+    semantic_archive = _load(source_root / "draft/v2/interactive-drafting-synthesis-input.json")
     spec_by_id = {row["package_id"]: row for row in semantic_archive["packages"]}
 
     ordered: list[tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]] = []
@@ -274,8 +332,8 @@ def main() -> int:
         _section_label(plan)
         package_path = source_root / "draft/v2/packages" / pid / "draft-package.json"
         result_path = source_root / "draft/v2/packages" / pid / "draft-result.json"
-        package = base._load(package_path)
-        result = base._load(result_path)
+        package = _load(package_path)
+        result = _load(result_path)
         errors = drafting.validate_draft_result(result, package_path, root / drafting.DRAFT_PROMPT)
         if errors:
             raise SystemExit(f"upstream Draft Result invalid for {pid}: " + "; ".join(errors))
@@ -294,9 +352,9 @@ def main() -> int:
             raise SystemExit("Draft packages disagree on Evidence acceptance authority")
         ordered.append((plan, spec, package, result))
 
-    acceptance = base._find_sha(source_root / "evidence", evidence_acceptance_sha, "evidence-accepted.json")
+    acceptance = _find_sha(source_root / "evidence", evidence_acceptance_sha, "evidence-accepted.json")
     interactive_evidence = acceptance.parent / "interactive-evidence.json"
-    evidence_payload = base._load(interactive_evidence)
+    evidence_payload = _load(interactive_evidence)
     records = {row["discovery_id"]: row for row in evidence_payload["records"]}
 
     cited: list[str] = []
@@ -337,60 +395,60 @@ def main() -> int:
         did: "w" + issue_id.lower().replace("-", "").replace(".", "") + did.lower().replace("-", "")
         for did in cited
     }
-    bib = "\n\n".join(base._bib_text(bib_key_by_did[did], records[did], urldate) for did in cited) + "\n"
+    bib = "\n\n".join(_bib_text(bib_key_by_did[did], records[did], urldate) for did in cited) + "\n"
     (survey_root / "references.bib").write_text(bib, encoding="utf-8")
     tex = _render_tex(issue_id, display_date, boundary, data, ordered, bib_key_by_did)
     (survey_root / "main.tex").write_text(tex, encoding="utf-8")
 
     archived_input = publication_root / "interactive-semantic-publication-input.json"
-    base._write_json(archived_input, data)
+    _write_json(archived_input, data)
 
     draft_refs = []
     for _, _, _, result in ordered:
         path = source_root / "draft/v2/packages" / result["package_id"] / "draft-result.json"
         draft_refs.append(
-            {"package_id": result["package_id"], "path": base._rel(root, path), "sha256": core.sha256_file(path)}
+            {"package_id": result["package_id"], "path": _rel(root, path), "sha256": core.sha256_file(path)}
         )
 
     manifest = {
         "schema_version": "2.0-rc1",
         "issue_id": issue_id,
         "status": "ESTABLISHED",
-        "production_profile": {"path": base._rel(root, profile_path), "sha256": core.sha256_file(profile_path)},
+        "production_profile": {"path": _rel(root, profile_path), "sha256": core.sha256_file(profile_path)},
         "production_state_basis": {
-            "path": base._rel(root, state_path),
+            "path": _rel(root, state_path),
             "sha256": core.sha256_file(state_path),
             "lifecycle_state": "DRAFT_COMPLETE",
         },
         "publication_semantic_input": {
-            "path": base._rel(root, archived_input),
+            "path": _rel(root, archived_input),
             "sha256": core.sha256_file(archived_input),
         },
         "architecture_closing_summary": {
-            "path": base._rel(root, architecture_path),
+            "path": _rel(root, architecture_path),
             "sha256": core.sha256_file(architecture_path),
             "heading": expected_heading,
             "placement": summary_placement,
             "source": "profile_synthesis.current_interpretation",
         },
         "profile_synthesis": {
-            "input": {"path": base._rel(root, synthesis_input_path), "sha256": core.sha256_file(synthesis_input_path)},
-            "result": {"path": base._rel(root, synthesis_result_path), "sha256": core.sha256_file(synthesis_result_path)},
+            "input": {"path": _rel(root, synthesis_input_path), "sha256": core.sha256_file(synthesis_input_path)},
+            "result": {"path": _rel(root, synthesis_result_path), "sha256": core.sha256_file(synthesis_result_path)},
         },
         "draft_results": draft_refs,
         "rendered_source": {
-            "path": base._rel(root, survey_root / "main.tex"),
+            "path": _rel(root, survey_root / "main.tex"),
             "sha256": core.sha256_file(survey_root / "main.tex"),
         },
         "bibliography": {
-            "path": base._rel(root, survey_root / "references.bib"),
+            "path": _rel(root, survey_root / "references.bib"),
             "sha256": core.sha256_file(survey_root / "references.bib"),
             "cited_discovery_ids": cited,
         },
         "style": {
             "source_path": str(STYLE_PATH),
             "source_sha256": core.sha256_file(style_source),
-            "copied_path": base._rel(root, survey_root / "jgaisurvey.sty"),
+            "copied_path": _rel(root, survey_root / "jgaisurvey.sty"),
             "copied_sha256": core.sha256_file(survey_root / "jgaisurvey.sty"),
         },
         "final_summary": {
@@ -399,7 +457,7 @@ def main() -> int:
             "paragraph_count": len(data["final_summary"]["paragraphs"]),
         },
     }
-    base._write_json(publication_root / "validated-source-manifest.json", manifest)
+    _write_json(publication_root / "validated-source-manifest.json", manifest)
 
     subject_result = {
         "schema_version": "2.0-rc1",
@@ -418,19 +476,19 @@ def main() -> int:
             for did in cited
         ],
     }
-    base._write_json(quality_root / "subject-entity-property-binding.json", subject_result)
+    _write_json(quality_root / "subject-entity-property-binding.json", subject_result)
 
     print(
         json.dumps(
             {
                 "issue_id": issue_id,
-                "source_root": base._rel(root, source_root),
-                "survey_root": base._rel(root, survey_root),
-                "source_manifest": base._rel(root, publication_root / "validated-source-manifest.json"),
-                "main_tex": base._rel(root, survey_root / "main.tex"),
-                "bibliography": base._rel(root, survey_root / "references.bib"),
-                "style": base._rel(root, survey_root / "jgaisurvey.sty"),
-                "subject_result": base._rel(root, quality_root / "subject-entity-property-binding.json"),
+                "source_root": _rel(root, source_root),
+                "survey_root": _rel(root, survey_root),
+                "source_manifest": _rel(root, publication_root / "validated-source-manifest.json"),
+                "main_tex": _rel(root, survey_root / "main.tex"),
+                "bibliography": _rel(root, survey_root / "references.bib"),
+                "style": _rel(root, survey_root / "jgaisurvey.sty"),
+                "subject_result": _rel(root, quality_root / "subject-entity-property-binding.json"),
                 "identifier_tokens": _identifier_tokens(issue_id, records, cited),
             },
             ensure_ascii=False,
