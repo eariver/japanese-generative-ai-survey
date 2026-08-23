@@ -109,6 +109,8 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         pipeline_files = set(self.cfg["contract_files"]["pipeline"])
         self.assertIn("schemas/stage-checkpoint-v2.schema.json", pipeline_files)
         self.assertIn("schemas/operator-execution-request-v2.schema.json", pipeline_files)
+        self.assertIn("schemas/human-gate-review-record-v2.schema.json", pipeline_files)
+        self.assertIn("schemas/human-gate-review-index-v2.schema.json", pipeline_files)
         self.assertIn("docs/survey-production-core-v2-operator-execution-bridge.md", pipeline_files)
         self.assertNotIn("schemas/action-spec-v2.schema.json", pipeline_files)
         self.assertNotIn("schemas/stage-handoff-v2.schema.json", pipeline_files)
@@ -182,7 +184,8 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         final_audit = (self.root / "docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
         self.assertIn("exactly **seven workflows**", final_audit)
         self.assertIn("survey-production-v2-operator-bridge.yml", final_audit)
-        self.assertIn("six-workflow wording records the pre-PFB-014 integrated surface", final_audit)
+        self.assertIn("Human Gate round-trip viability", final_audit)
+        self.assertIn("run the complete seven-point acceptance audit from zero", final_audit)
         self.assertNotIn("intended redesign surface is exactly six workflows", final_audit)
 
     def test_retired_weekly_post_render_authoring_helpers_are_absent(self) -> None:
