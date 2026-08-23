@@ -1,9 +1,9 @@
 # Survey Production Core v2 — Post-merge W33/SP001 revalidation worklog
 
-Status: `OPERATOR BRIDGE MAINTENANCE / PRE-APPROVAL FULL-SYSTEM AUDIT BLOCKED / HUMAN-GATE CONTROL DEFECTS FOUND`
+Status: `OPERATOR BRIDGE MAINTENANCE / HUMAN-GATE ROUND-TRIP REPAIR PLANNED / IMPLEMENTATION IN PROGRESS`
 
 Established: 2026-08-23 JST  
-Last updated: 2026-08-23 JST
+Last updated: 2026-08-24 JST
 
 Integrated Core baseline that exposed the operator gap: `2cb52dc293484a5c2ddd3caf9c909f18f4699c49`  
 Maintenance-start `main`: `2bcaa7d1df1826ab8848c25de8bf2373d85a8e75`  
@@ -288,6 +288,101 @@ Any repair changes the candidate tree. Therefore:
 6. rerun the complete six-point audit **plus explicit Human Gate continuation/revision coverage** from zero;
 7. only then return PR #447 to Human full-candidate review.
 
+### RVF-016 — Human Gate round-trip repair work plan and completion contract
+
+Status: `PLAN LOCKED / IMPLEMENTATION AUTHORIZED`
+
+This section is the controlling work plan for continuing PR #447 after RVF-015. It is written before implementation so that the work, goal and completion decision cannot drift with the implementation.
+
+#### Work goal
+
+The goal of the current maintenance phase is:
+
+> **Make both normal Human Gates round-trip capable in canonical Core v2 — reach gate → record explicit Human APPROVED or REQUEST_CHANGES decision → resume or selectively invalidate/regenerate → reach the same gate again when needed — and expose only those deterministic mechanics through the connector-safe operator bridge.**
+
+The goal is **not** to let GitHub Actions decide Human approval, infer requested changes, choose a regeneration boundary, write editorial content, or replace ChatGPT/Human judgment.
+
+The immediate phase ends when PR #447 is technically eligible to be returned to Human full-candidate review. It does not by itself close PFB-013/PFB-014: real post-integration Weekly/Thematic/Retrospective/Foundations validation remains required after Human-approved unchanged integration.
+
+#### Required work
+
+1. **Define the Human Gate decision protocol.**
+   - distinguish `APPROVED`, routine `REQUEST_CHANGES`, and true terminal/exception rejection semantics;
+   - define revision numbering and immutable review-decision provenance;
+   - define allowed regeneration boundaries for Architecture Review and Publication Preview;
+   - define which machine checkpoints/provenance and gate authority are invalidated at each boundary;
+   - preserve previous r1/r2 review evidence without treating superseded bytes as current authority.
+
+2. **Implement Core round-trip mechanics.**
+   - reuse existing exact-byte approval functions where possible;
+   - add canonical REQUEST_CHANGES/revision mechanics rather than mutating State or artifacts ad hoc;
+   - perform dependency-aware selective invalidation instead of simply assigning an earlier lifecycle string;
+   - keep State schema/validation fail-closed for stale approvals, stale checkpoints, invalid rollback boundaries and provenance drift.
+
+3. **Expose deterministic Human-decision recording through the existing operator bridge.**
+   - add narrow enum-constrained operations for Architecture approval, Architecture revision, Publication Preview approval and Publication Preview revision;
+   - require explicit Human provenance (`reviewed_by`, `reviewed_at`, `review_reference`) and exact current State/gate identity;
+   - let ChatGPT/Human supply the decision and regeneration boundary; bridge/Core only validate and record/execute the deterministic consequence;
+   - do not add a new workflow unless a concrete mechanical advantage requires it; prefer the existing seventh bridge workflow.
+
+4. **Synchronize authority and execution records.**
+   - update Human Gate/Core authority, operator-bridge design, Actions responsibility policy, execution-record policy and final-audit rule;
+   - map machine review revisions to `execution/reviews/architecture-rN.md` and `publication-rN.md` without making Markdown a second State machine;
+   - change the final audit from six-point-only coverage to an explicit seventh point: `Human Gate round-trip viability`.
+
+5. **Add positive and negative regression coverage.**
+   Positive minimum:
+   - Architecture r1 → explicit approval → drafting can resume;
+   - Architecture r1 → REQUEST_CHANGES → required authority invalidated → regenerate/revalidate → Architecture r2;
+   - Architecture r2 → approval while r1 evidence remains historical;
+   - Publication Preview r1 → approval → freeze path can resume;
+   - Publication Preview r1 → REQUEST_CHANGES → regenerate/revalidate/new candidate → Publication Preview r2;
+   - Publication Preview r2 → approval binds only r2 candidate/PDF bytes.
+
+   Negative minimum:
+   - stale r1 approval request after r2 exists fails;
+   - approval request after reviewed bytes change fails;
+   - invalid or over-broad regeneration boundary fails;
+   - revision cannot preserve downstream checkpoint authority that depends on changed bytes;
+   - ChatGPT cannot supply deterministic PASS artifacts;
+   - request mutation / bot recursion / arbitrary execution remain rejected.
+
+6. **Freeze and re-audit from zero.**
+   - record all implementation findings in this worklog before freeze;
+   - freeze one exact candidate SHA;
+   - run Core v2 CI and Pipeline contract tests on the unchanged candidate/merge-candidate tree;
+   - rerun Points 1–6 from zero; no historical PASS is reusable;
+   - run Point 7 `Human Gate round-trip viability` over both gates and approve/revise paths;
+   - any candidate-tree change invalidates the complete audit and restarts from Point 1.
+
+#### Completion decision criteria for this maintenance phase
+
+PR #447 may return to `Ready for review` **only if all conditions below are true simultaneously**:
+
+- HG-001 is closed by a canonical deterministic approval-recording path usable from connector-only operation;
+- HG-002 is closed by a canonical REQUEST_CHANGES/selective-invalidation/revision path for both normal Human Gates;
+- no Human decision is inferred or made by Actions/Core;
+- prior review revisions remain reconstructable while only current bytes are authoritative;
+- all required positive and negative E2E/regression tests pass;
+- current authority documents and schemas describe exactly the implemented semantics;
+- exact-head Core CI passes;
+- exact-head Pipeline contract tests pass;
+- fixed-head audit Points 1–7 all PASS on one unchanged candidate SHA;
+- PR metadata is synchronized to that exact candidate and no earlier invalidated PASS is presented as current evidence.
+
+If any item is false, the maintenance phase is **not complete** and PR #447 remains Draft.
+
+#### Overall program completion after this maintenance phase
+
+Even after PR #447 becomes reviewable and is Human-approved/merged, Core v2 production revalidation is not complete until clean post-integration trials pass without shared-Core repair for:
+
+1. one Weekly cold start;
+2. standalone `THEMATIC + LONGFORM_SPECIAL` with SP001 as regression;
+3. one representative configured `RETROSPECTIVE_PERIOD` run;
+4. one Foundations-guided Thematic/Longform scenario.
+
+A shared-Core defect found in those trials is failed validation evidence, must be repaired separately, and requires a clean rerun.
+
 ## Current maintenance design
 
 The pre-RVF-015 bridge candidate scope contains bridge/authority changes, not a duplicate Retrospective implementation:
@@ -347,17 +442,16 @@ It does **not** yet close the connector-only execution gap across Human Gate app
 ## Next actions after the pre-approval full-system audit
 
 ```text
-keep PR #447 in Draft
--> design the narrow HG-001 Human-decision recording bridge operations using existing canonical approval functions
--> design HG-002 fail-closed revision/invalidation semantics for Architecture Review and Publication Preview
+execute RVF-016 work plan
+-> define/implement Human Gate approve + REQUEST_CHANGES round-trip semantics
+-> expose only deterministic recording/invalidation mechanics through existing bridge
 -> update Core authority + execution-record policy + bridge request contract + regression tests
--> record repair in this worklog
--> freeze a new candidate head
+-> record each material repair/finding in this worklog
+-> freeze a new candidate head only after implementation/authority cross-check
 -> exact-head Core CI + pipeline contract tests
--> complete six-point audit from point 1
--> explicitly audit Human Gate approve + revise/r2 paths
+-> complete audit Points 1–7 from Point 1 on unchanged SHA
 -> any required tree change invalidates and restarts audit
--> only after PASS: record result outside candidate tree and mark PR #447 ready for Human full-candidate review
+-> only after 7/7 PASS: record result outside candidate tree and mark PR #447 ready for Human full-candidate review
 ```
 
 W33/SP001 production validation remains paused. Do not restart those editions until the shared Core maintenance candidate is reviewed and integrated unchanged.
