@@ -2,12 +2,13 @@
   "schema_version": "2.0-rc1",
   "pipeline_contract_version": "2.0-rc1",
   "quality_contract_version": "2.0-rc1",
-  "orchestrator_version": "survey-production-core-v2/0.9-reader-boundary",
+  "orchestrator_version": "survey-production-core-v2/0.10-agent-owned-production",
   "contract_files": {
     "pipeline": [
       "docs/survey-production-core-v2-redesign-authority.md",
       "docs/survey-production-core-v2-redesign-plan-after-w33-sp001.md",
       "docs/survey-production-core-v2-github-actions-policy.md",
+      "docs/survey-production-core-v2-workflow-responsibility-inventory.md",
       "docs/survey-production-core-v2-execution-record-policy.md",
       "docs/survey-production-core-v2-authority.md",
       "docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md",
@@ -77,8 +78,7 @@
   "implementation_control_roots": ["config", "schemas", "scripts", ".github/workflows"],
   "workflow_control": {
     "dispatch_ref": "main",
-    "assistant_control_workflow": "assistant-control-v2.yml",
-    "production_control_workflow": "survey-production-v2-control.yml",
+    "publication_preview_export_workflow": "survey-production-v2-export-publication-preview.yml",
     "release_workflow": "survey-production-v2-release.yml",
     "release_reconciliation": {
       "external_key": "release_identity",
