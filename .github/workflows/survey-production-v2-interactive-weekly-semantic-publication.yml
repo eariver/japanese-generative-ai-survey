@@ -88,6 +88,19 @@ jobs:
           print('identifier_tokens_json='+json.dumps(data['identifier_tokens'],ensure_ascii=False,separators=(',',':')))
           PY
 
+      - name: Compact Weekly closing-summary layout
+        shell: bash
+        env:
+          MAIN_TEX: ${{ steps.assemble.outputs.main_tex }}
+          SOURCE_MANIFEST: ${{ steps.assemble.outputs.source_manifest }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python scripts/survey_weekly_layout_v2.py \
+            --repo-root . \
+            --main-tex "$MAIN_TEX" \
+            --source-manifest "$SOURCE_MANIFEST" \
+            | tee weekly-layout-v2-output.json
+
       - name: Set reproducible PDF timestamp
         shell: bash
         env:
