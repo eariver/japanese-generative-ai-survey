@@ -1,7 +1,8 @@
 # Survey Production Core v2 — Audited Redesign Authority Overlay
 
-Status: `CANONICAL FOR POST-W33/SP001 REDESIGN / IMPLEMENTATION NOT STARTED`  
+Status: `IMPLEMENTED REDESIGN CANDIDATE / FIXED-HEAD AUDIT PENDING`  
 Established: 2026-08-23 JST  
+Implementation synchronized: 2026-08-23 JST  
 Working branch: `refactor/survey-production-core-v2`
 
 ## 1. Purpose
@@ -10,7 +11,7 @@ This document is the authority overlay for the redesign that follows the failed 
 
 It does not erase the earlier Core v2 design history. `docs/survey-production-core-v2-authority.md` and earlier audit/remediation documents remain historical evidence of how the merged Core was designed and why it behaved as it did.
 
-For the **next redesign implementation**, where earlier authority conflicts with the post-production evidence or the audited redesign, this overlay wins.
+For the **implemented redesign candidate**, where earlier authority conflicts with the post-production evidence or the audited redesign, this overlay wins.
 
 ## 2. Redesign authority precedence
 
@@ -291,16 +292,29 @@ Final acceptance must include representative evidence for:
 
 Use a small representative matrix plus structural audits rather than an exhaustive synthetic future-edition matrix.
 
-## 16. Implementation start condition
+## 16. Implementation and acceptance status
 
-Implementation may begin only after:
+The audited prerequisites are mutually consistent and the redesign implementation is present on `refactor/survey-production-core-v2`.
 
-- this overlay;
-- the audited redesign plan;
-- Actions policy;
-- execution-record policy;
-- final-audit rule
+Implemented boundaries include:
 
-are mutually consistent.
+- ChatGPT-owned ordinary lifecycle stages with release as the only workflow-dispatched stage;
+- explicit Reader Manuscript and reader-facing Publication Boundary;
+- deterministic Quality Bundle separated from semantic/editorial and exact-PDF visual review;
+- atomic Publication Candidate identity and revision invalidation;
+- standardized edition execution records;
+- one-file Grok/X Drive handoff;
+- six-workflow Actions surface limited to CI, reproducible build, exact-byte preview transport and release.
 
-The pre-implementation audit has identified and corrected the principal design-level inconsistencies. Actual scripts/schemas/workflows/config changes are a subsequent phase.
+Implementation completion is **not** final Core acceptance. Before Human full-candidate review, the repository must:
+
+```text
+finish regression/CI repair
+-> synchronize all intended candidate wording and contracts
+-> freeze one candidate head SHA
+-> run the complete six-point final audit from zero on that exact unchanged SHA
+-> invalidate the audit if any tree change is required
+-> present only the unchanged passing SHA for Human full-candidate review
+```
+
+Cold-start production re-validation remains required after the redesigned Core is reviewed/integrated; W33/SP001 historical failed trials are not converted into PASS evidence by this implementation.
