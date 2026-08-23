@@ -1,16 +1,11 @@
 #!/usr/bin/env python3
-"""Assemble a Core v2 DRAFT_COMPLETE issue into an exact longform publication source.
+"""Assemble Core v2 Draft bytes into an exact LONGFORM_SPECIAL publication source.
 
-This runner is intentionally publication-profile neutral at the Core boundary but
-currently renders LONGFORM_SPECIAL through the repository's jgaisurvey TeX style.
-It consumes only established Draft Package/Result bytes plus a compact reviewed
-semantic publication input. It does not advance Production State and it does not
-build or approve a PDF.
-
-The validated-source authority is a manifest that binds the exact TeX source,
-bibliography, copied style, Draft Results, Draft synthesis, publication semantic
-input, and post-Architecture editorial directive. This prevents an include/style
-change from hiding behind one main.tex hash.
+The renderer keeps accepted Draft Package/Result bytes immutable. For LONGFORM_SPECIAL,
+reader-facing depth added after Human Publication Preview review is represented by a
+reviewed Evidence-backed supplemental-synthesis input. Supplemental text may only cite
+Evidence already assigned to the approved Architecture package and may not introduce
+new external Evidence.
 """
 from __future__ import annotations
 
@@ -21,9 +16,9 @@ from pathlib import Path
 from typing import Any
 
 from scripts import survey_drafting_v2 as drafting
+from scripts import survey_longform_publication_v2 as longform
 from scripts import survey_production_v2 as core
 from scripts.render_article_draft_tex import tex_escape
-
 
 STYLE_PATH = Path("templates/survey/jgaisurvey.sty")
 
@@ -68,15 +63,12 @@ def _bib_text(key: str, record: dict[str,Any], urldate: str) -> str:
     title=str(entity["canonical_name"]).replace("{","\\{").replace("}","\\}")
     org=str(entity.get("organization") or "Unknown").replace("{","\\{").replace("}","\\}")
     url=str(entity["canonical_url"])
-    status=str(record.get("status") or "UNKNOWN")
-    materiality=str(record.get("materiality") or "UNKNOWN")
     return (
         f"@online{{{key},\n"
         f"  title = {{{{{title}}}}},\n"
         f"  author = {{{{{org}}}}},\n"
         f"  url = {{{url}}},\n"
-        f"  urldate = {{{urldate}}},\n"
-        f"  note = {{Core v2 Evidence: {status}; materiality: {materiality}}}\n"
+        f"  urldate = {{{urldate}}}\n"
         "}"
     )
 
@@ -92,19 +84,40 @@ def _kicker(package_id: str, ordinal: int, total: int) -> str:
     return f"THEMATIC LINEAGE {ordinal}/{total} — {short}"
 
 
+def _revision_ids(revision: dict[str,Any]) -> list[str]:
+    values=[]
+    def add(ids: list[str]) -> None:
+        for did in ids:
+            if did not in values:
+                values.append(did)
+    for package in revision["packages"]:
+        for row in package["theme_at_a_glance"]: add(row["discovery_ids"])
+        for section in package["narrative_sections"]:
+            for row in section["paragraphs"]: add(row["discovery_ids"])
+        for row in package["timeline"]: add(row["discovery_ids"])
+        for row in package["synthesis"]["paragraphs"]: add(row["discovery_ids"])
+        for row in package["reader_claim_boundary"]: add(row["discovery_ids"])
+        for note in package["technical_notes"]: add([note["discovery_id"]])
+    cross=revision["cross_family_synthesis"]
+    for row in cross["paragraphs"]: add(row["discovery_ids"])
+    for row in cross["comparison_rows"]: add(row["discovery_ids"])
+    return values
+
+
 def _render_tex(
     issue_id: str,
     as_of: str,
     publication: dict[str,Any],
     ordered: list[tuple[dict[str,Any],dict[str,Any],dict[str,Any]]],
-    discovery_records: dict[str,dict[str,Any]],
     bib_key_by_did: dict[str,str],
 ) -> str:
     cover=publication["cover"]
     front=publication["frontmatter"]
     summary=publication["final_summary"]
+    revision=publication["longform_revision"]
+    revision_by_id={row["package_id"]:row for row in revision["packages"]}
     lines=[
-        "% Generated from Core v2 validated Draft bytes. Do not hand-edit.",
+        "% Generated from Core v2 validated Draft bytes plus reviewed Evidence-backed longform revision. Do not hand-edit.",
         "\\documentclass[lualatex,a4paper,10pt]{jlreq}",
         "\\usepackage{jgaisurvey}",
         "\\addbibresource{references.bib}",
@@ -120,7 +133,7 @@ def _render_tex(
         f"\\addcontentsline{{toc}}{{section}}{{{tex_escape(front['heading'])}}}",
         tex_escape(front["lede"]),
         "",
-        "\\begin{claimboundary}[Evidence / scope boundary]",
+        "\\begin{claimboundary}[Scope / attribution boundary]",
     ]
     for note in front["scope_notes"]:
         lines.append("\\noindent " + tex_escape(note) + "\\par")
@@ -130,47 +143,25 @@ def _render_tex(
         "\\tableofcontents",
         "\\clearpage",
     ])
-
     for ordinal,(spec,package,result) in enumerate(ordered,start=1):
         pid=result["package_id"]
-        lines.extend([
-            f"% package:{pid} draft-result-sha256:{core.sha256_object(result)}",
-            f"\\section{{{tex_escape(result['headline'])}}}",
-            f"\\label{{pkg:{tex_escape(pid)}}}",
-            f"\\sectionkicker{{{tex_escape(_kicker(pid,ordinal,len(ordered)))}}}",
-        ])
-        deck_keys=[bib_key_by_did[did] for did in spec["deck_discovery_ids"]]
-        lines.append("\\noindent\\textbf{" + tex_escape(result["deck"]) + "}" + _cite(deck_keys) + "\\par\\medskip")
-        spec_blocks={row["block_id"]:row for row in spec["blocks"]}
-        for block in result["blocks"]:
-            bid=block["block_id"]
-            text=tex_escape(block["text"])
-            if block["block_type"]=="CLAIM_BOUNDARY":
-                lines.extend([
-                    "\\begin{claimboundary}[Claim boundary]",
-                    text,
-                    "\\end{claimboundary}",
-                ])
-                continue
-            source_spec=spec_blocks.get(bid)
-            if source_spec is None:
-                raise ValueError(f"non-boundary Draft block missing semantic source: {pid}/{bid}")
-            keys=[bib_key_by_did[did] for did in source_spec.get("discovery_ids",[])]
-            lines.extend([
-                f"% block:{bid} attribution:{block['attribution_mode']}",
-                "\\noindent " + text + _cite(keys) + "\\par\\medskip",
-            ])
-        lines.append("\\clearpage")
-
+        lines.append(f"% package:{pid} draft-result-sha256:{core.sha256_object(result)}")
+        lines.extend(longform.render_package(
+            spec,result,revision_by_id[pid],bib_key_by_did,_kicker(pid,ordinal,len(ordered))
+        ))
+    lines.extend(longform.render_cross_family(revision["cross_family_synthesis"],bib_key_by_did))
     lines.extend([
+        "\\Needspace{0.28\\textheight}",
         f"\\section{{{tex_escape(summary['heading'])}}}",
         "\\label{sec:issue-summary}",
         "\\sectionkicker{ISSUE SYNTHESIS}",
+        "\\begin{multicols}{2}",
     ])
     for paragraph in summary["paragraphs"]:
-        lines.extend(["\\noindent " + tex_escape(paragraph) + "\\par\\medskip"])
+        lines.append("\\noindent " + tex_escape(paragraph) + "\\par\\medskip")
     lines.extend([
-        "\\clearpage",
+        "\\end{multicols}",
+        "\\medskip",
         "\\printbibliography[title={References / Source Notes}]",
         "\\end{document}",
         "",
@@ -179,7 +170,7 @@ def _render_tex(
 
 
 def _validate_input(data: dict[str,Any], issue_id: str) -> None:
-    expected={"schema_version","issue_id","runner","cover","frontmatter","final_summary"}
+    expected={"schema_version","issue_id","runner","cover","frontmatter","final_summary","longform_revision"}
     if set(data)!=expected or data.get("schema_version")!="2.0-rc1" or data.get("issue_id")!=issue_id:
         raise ValueError("semantic publication input envelope invalid")
     cover=data["cover"]
@@ -207,8 +198,11 @@ def main() -> int:
     state_path=_safe(root,args.state,"Production State")
     input_path=_safe(root,args.input,"semantic publication input")
     state=_load(state_path)
-    if state.get("lifecycle_state")!="DRAFT_COMPLETE" or state.get("next_action")!="stage:semantic-publication-validation":
-        raise SystemExit("semantic publication requires DRAFT_COMPLETE State")
+    lifecycle=state.get("lifecycle_state")
+    initial=(lifecycle=="DRAFT_COMPLETE" and state.get("next_action")=="stage:semantic-publication-validation")
+    revision=(lifecycle=="RELEASE_CANDIDATE" and state.get("next_action")=="PUBLICATION_PREVIEW" and state.get("human_gates",{}).get("publication_preview")=="pending")
+    if not (initial or revision):
+        raise SystemExit("semantic publication requires DRAFT_COMPLETE or pending RELEASE_CANDIDATE Publication Preview State")
     issue_id=state["issue_id"]
     profile_path=_safe(root,state["profile"]["path"],"Production Profile")
     profile=_load(profile_path)
@@ -262,10 +256,14 @@ def main() -> int:
     interactive_evidence=acceptance.parent/"interactive-evidence.json"
     evidence_payload=_load(interactive_evidence)
     records={row["discovery_id"]:row for row in evidence_payload["records"]}
+    normalized_revision=longform.validate_revision(data.get("longform_revision"),architecture["packages"],records)
+    data["longform_revision"]=normalized_revision
+
     cited=[]
     for spec,_,_ in ordered:
         cited.extend(spec["deck_discovery_ids"])
         for block in spec["blocks"]: cited.extend(block.get("discovery_ids",[]))
+    cited.extend(_revision_ids(normalized_revision))
     cited=list(dict.fromkeys(cited))
     for did in cited:
         row=records.get(did)
@@ -279,7 +277,7 @@ def main() -> int:
     survey_root.mkdir(parents=True,exist_ok=True)
     publication_root=source_root/"publication/v2"; publication_root.mkdir(parents=True,exist_ok=True)
     quality_root=publication_root/"quality"; quality_root.mkdir(parents=True,exist_ok=True)
-    for path in (survey_root/"main.tex",survey_root/"references.bib",survey_root/"jgaisurvey.sty",publication_root/"validated-source-manifest.json"):
+    for path in (survey_root/"main.tex",survey_root/"references.bib",survey_root/"jgaisurvey.sty",publication_root/"validated-source-manifest.json",quality_root/"longform-special-preflight.json"):
         if path.exists(): raise SystemExit(f"refusing existing semantic publication artifact: {path}")
     style_source=root/STYLE_PATH
     shutil.copyfile(style_source,survey_root/"jgaisurvey.sty")
@@ -289,8 +287,13 @@ def main() -> int:
     bib_key_by_did={did:"sp001"+did.lower().replace("-","") for did in cited}
     bib="\n\n".join(_bib_text(bib_key_by_did[did],records[did],urldate) for did in cited)+"\n"
     (survey_root/"references.bib").write_text(bib,encoding="utf-8")
-    tex=_render_tex(issue_id,as_of,data,ordered,records,bib_key_by_did)
+    tex=_render_tex(issue_id,as_of,data,ordered,bib_key_by_did)
+    preflight=longform.preflight_tex(tex,bib,len(ordered))
+    if preflight["status"]!="PASS":
+        raise SystemExit("LONGFORM_SPECIAL source preflight failed: "+"; ".join(preflight["findings"]))
     (survey_root/"main.tex").write_text(tex,encoding="utf-8")
+    preflight_payload={"schema_version":"2.0-rc1","check_id":"LONGFORM_SPECIAL_LAYOUT_AND_READER_SURFACE","issue_id":issue_id,**preflight}
+    _write_json(quality_root/"longform-special-preflight.json",preflight_payload)
 
     archived_input=publication_root/"interactive-semantic-publication-input.json"
     _write_json(archived_input,data)
@@ -302,7 +305,7 @@ def main() -> int:
     manifest={
         "schema_version":"2.0-rc1","issue_id":issue_id,"status":"ESTABLISHED",
         "production_profile":{"path":_rel(root,profile_path),"sha256":core.sha256_file(profile_path)},
-        "production_state_basis":{"path":_rel(root,state_path),"sha256":core.sha256_file(state_path),"lifecycle_state":"DRAFT_COMPLETE"},
+        "production_state_basis":{"path":_rel(root,state_path),"sha256":core.sha256_file(state_path),"lifecycle_state":lifecycle},
         "publication_semantic_input":{"path":_rel(root,archived_input),"sha256":core.sha256_file(archived_input)},
         "post_architecture_directive":{"path":_rel(root,directive_path),"sha256":core.sha256_file(directive_path),"directive_id":final_rows[0]["directive_id"]},
         "profile_synthesis":{"input":{"path":_rel(root,synthesis_input_path),"sha256":core.sha256_file(synthesis_input_path)},"result":{"path":_rel(root,synthesis_result_path),"sha256":core.sha256_file(synthesis_result_path)}},
@@ -310,19 +313,20 @@ def main() -> int:
         "rendered_source":{"path":_rel(root,survey_root/"main.tex"),"sha256":core.sha256_file(survey_root/"main.tex")},
         "bibliography":{"path":_rel(root,survey_root/"references.bib"),"sha256":core.sha256_file(survey_root/"references.bib"),"cited_discovery_ids":cited},
         "style":{"source_path":str(STYLE_PATH),"source_sha256":core.sha256_file(style_source),"copied_path":_rel(root,survey_root/"jgaisurvey.sty"),"copied_sha256":core.sha256_file(survey_root/"jgaisurvey.sty")},
+        "longform_revision":{"review_reference":normalized_revision["review_reference"],"new_external_evidence":False,"package_count":len(normalized_revision["packages"]),"preflight":{"path":_rel(root,quality_root/"longform-special-preflight.json"),"sha256":core.sha256_file(quality_root/"longform-special-preflight.json")}},
         "final_summary":{"heading":data["final_summary"]["heading"],"placement":"END_OF_PUBLICATION_BEFORE_REFERENCES_OR_END_MATTER","paragraph_count":len(data["final_summary"]["paragraphs"])},
     }
     _write_json(publication_root/"validated-source-manifest.json",manifest)
 
     subject_result={"schema_version":"2.0-rc1","check_id":"SUBJECT_ENTITY_PROPERTY_BINDING","status":"PASS","issue_id":issue_id,"cited_discovery_count":len(cited),"bindings":[{"discovery_id":did,"canonical_name":records[did]["entity"]["canonical_name"],"canonical_url":records[did]["entity"]["canonical_url"],"materiality":records[did]["materiality"],"status":records[did]["status"]} for did in cited]}
     _write_json(quality_root/"subject-entity-property-binding.json",subject_result)
-    empty_result={"schema_version":"2.0-rc1","check_id":"EMPTY_WRAPPER_SUPPRESSION","status":"PASS","issue_id":issue_id,"sections":len(ordered)+2,"claim_boundary_blocks":sum(1 for _,_,r in ordered for b in r["blocks"] if b["block_type"]=="CLAIM_BOUNDARY"),"finding":"All rendered sections, leads, body blocks, claim-boundary wrappers, frontmatter, and the required final issue summary are non-empty."}
+    empty_result={"schema_version":"2.0-rc1","check_id":"EMPTY_WRAPPER_SUPPRESSION","status":"PASS","issue_id":issue_id,"sections":len(ordered)+3,"claim_boundary_blocks":len(ordered)+1,"technical_note_blocks":sum(len(r["technical_notes"]) for r in normalized_revision["packages"]),"finding":"All rendered sections, narrative flows, synthesis layers, reader-facing Claim Boundaries, Technical Notes, frontmatter, and final issue summary are non-empty."}
     _write_json(quality_root/"empty-wrapper-suppression.json",empty_result)
 
     print(json.dumps({
         "issue_id":issue_id,"source_root":_rel(root,source_root),"survey_root":_rel(root,survey_root),
         "source_manifest":_rel(root,publication_root/"validated-source-manifest.json"),"main_tex":_rel(root,survey_root/"main.tex"),"bibliography":_rel(root,survey_root/"references.bib"),"style":_rel(root,survey_root/"jgaisurvey.sty"),
-        "subject_result":_rel(root,quality_root/"subject-entity-property-binding.json"),"empty_result":_rel(root,quality_root/"empty-wrapper-suppression.json"),
+        "subject_result":_rel(root,quality_root/"subject-entity-property-binding.json"),"empty_result":_rel(root,quality_root/"empty-wrapper-suppression.json"),"longform_preflight":_rel(root,quality_root/"longform-special-preflight.json"),
         "identifier_tokens":["GLM","Qwen","DeepSeek","Kimi","MiniMax","Yi","Baichuan","Open Weight","Kimi K3"],
     },ensure_ascii=False,indent=2))
     return 0
