@@ -162,20 +162,24 @@ The request cannot supply its own deterministic `CORE_STAGE_CONTRACT` result.
 
 The bridge workflow must not execute arbitrary work-branch copies of Core just because the request file itself is valid.
 
-Before invoking the bridge, the workflow must:
+Before installing Core dependencies or invoking the bridge, the workflow must:
 
 1. parse and validate the request-level `reviewed_main_sha` shape;
 2. fetch current `main` history and require `reviewed_main_sha` to be an ancestor of current `main`;
 3. require the request commit's parent to descend from `reviewed_main_sha`;
 4. for initialization, require the execution-record reviewed-main SHA to equal the request-level SHA;
 5. construct the protected comparison set from:
+   - fixed minimum shared implementation roots `.github/workflows`, `config`, `schemas`, and `scripts`;
    - `config/survey-production-v2.json -> implementation_control_roots`; and
    - every path in `contract_files.pipeline` and `contract_files.quality`;
-6. require those protected bytes at the request parent to be exactly equal to the reviewed-main baseline.
+6. require those protected bytes at the request parent to be exactly equal to the reviewed-main baseline;
+7. only after that check passes, install dependencies and execute Core.
 
-This catches production-branch repair or silent drift in shared scripts, schemas, config, workflows and Core contract authority before any write-capable deterministic execution occurs.
+The fixed minimum roots prevent a drifted branch-side config from weakening the very comparison intended to detect that drift. The config-declared roots and contract files then extend the protected set without becoming its only source.
 
-The comparison deliberately does **not** require the entire edition branch tree to equal `main`: legitimate edition-local research, Raw, Evidence, manuscript and other production artifacts must be allowed to differ. The protected set is the existing shared-Core/contract boundary, not an invented whole-repository lock.
+This catches production-branch repair or silent drift in shared scripts, schemas, config, workflows and Core contract authority before any dependency installation or write-capable deterministic execution occurs.
+
+The comparison deliberately does **not** require the entire edition branch tree to equal `main`: legitimate edition-local research, Raw, Evidence, manuscript and other production artifacts must be allowed to differ. The protected set is the shared-Core/contract boundary, not an invented whole-repository lock.
 
 ## 7. Fail-closed controls
 
@@ -185,7 +189,7 @@ The workflow and bridge must enforce all of the following:
 2. the triggering commit adds exactly one request file and changes nothing else;
 3. every request carries exact `reviewed_main_sha` provenance;
 4. reviewed-main SHA must be on current `main` history and an ancestor of the request parent;
-5. protected shared-Core and contract bytes must equal the reviewed-main baseline before execution;
+5. protected shared-Core and contract bytes must equal the reviewed-main baseline before dependency installation/execution;
 6. initialization execution-record reviewed-main SHA must equal request reviewed-main SHA;
 7. request `work_branch` must equal the executing Git ref;
 8. request `source_root` must be repository-local under `sources/`;
