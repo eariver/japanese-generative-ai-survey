@@ -78,13 +78,15 @@ jobs:
             exit 1
           fi
 
-          if [[ "$operation_kind" == "INITIALIZE_WEEKLY" || "$operation_kind" == "INITIALIZE_THEMATIC" ]]; then
-            execution_main_sha="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["execution_record"]["reviewed_main_sha"])' "$request_path")"
-            if [[ "$execution_main_sha" != "$reviewed_main_sha" ]]; then
-              echo "Initialization execution record reviewed_main_sha must equal request reviewed_main_sha." >&2
-              exit 1
-            fi
-          fi
+          case "$operation_kind" in
+            INITIALIZE_WEEKLY|INITIALIZE_RETROSPECTIVE|INITIALIZE_THEMATIC)
+              execution_main_sha="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["execution_record"]["reviewed_main_sha"])' "$request_path")"
+              if [[ "$execution_main_sha" != "$reviewed_main_sha" ]]; then
+                echo "Initialization execution record reviewed_main_sha must equal request reviewed_main_sha." >&2
+                exit 1
+              fi
+              ;;
+          esac
 
           mapfile -t protected_paths < <(
             python - <<'PY'
