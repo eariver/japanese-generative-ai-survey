@@ -1,0 +1,73 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "evidence_task_id": "evidence:2026-W33:3d2faf889cc9e270",
+  "discovery_ids": [
+    "base-arxiv-2608_13263v1"
+  ],
+  "source_records": [
+    {
+      "source_type": "paper",
+      "collector_id": "arxiv-api",
+      "collector_run_id": "arxiv-api-2026-W33-20260822T154529Z",
+      "observed_at": "2026-08-22T15:45:29Z",
+      "title": "vToken: Token-Level Virtualization for Reclaimable KV Caches",
+      "locator": "http://arxiv.org/abs/2608.13263v1",
+      "raw_paths": [
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-ai.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-cl.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-lg.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-cv.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-dc.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-cr.atom"
+      ],
+      "published_at": "2026-08-13T14:01:21Z",
+      "summary_text": "Large language model serving faces a critical memory bottleneck: the KV cache grows with sequence length and batch size. PagedAttention uses fixed-size memory blocks to reduce allocator-level fragmentation, but recent KV eviction algorithms operate at a token granularity finer than block-level management. This mismatch causes intra-block fragmentation, leaving a large fraction of allocated KV memory unreclaimable. We present vToken, a lightweight token-level virtualization layer that decouples logical token liveness from physical block placement. vToken maintains a stable logical token view through token-table indirection and realizes physical reclamation by repacking live tokens asynchronously. The design preserves PagedAttention kernels and CUDA Graph compatibility. We implement vToken in vLLM and evaluate it with H2O, Random, and Scissorhands across models. Compared with a paired Naive-Evict baseline, vToken reduces retained KV blocks per request by 27.2\\%--72.3\\% and improves SLA-constrained throughput by up to 1.37$\\times$. Under a constrained active-KV budget, it extends the maximum feasible concurrency by up to 2$\\times$, while reducing the per-policy integration footprint from 500+ lines to under 50.",
+      "metadata": {
+        "authors": [
+          "Yuanhang Gao",
+          "Xiangrui Yang",
+          "Yuanfeng Chen",
+          "Hongjia Chen",
+          "Qianru Lv",
+          "Wenfei Wu",
+          "Dongsheng Li"
+        ],
+        "categories": [
+          "cs.AI",
+          "cs.DC",
+          "cs.OS"
+        ],
+        "primary_category": "cs.AI",
+        "updated": "2026-08-13T14:01:21Z",
+        "links": [
+          {
+            "href": "https://arxiv.org/abs/2608.13263v1",
+            "rel": "alternate",
+            "type": "text/html"
+          },
+          {
+            "href": "https://arxiv.org/pdf/2608.13263v1",
+            "rel": "related",
+            "type": "application/pdf"
+          }
+        ]
+      }
+    }
+  ],
+  "verification_targets": [
+    "Review full paper/method/results/limitations before promotion; abstract alone is insufficient for strong claims."
+  ],
+  "screening_basis": {
+    "screening_acceptance_sha256": "8d7cac2f809114608225bea517aba91c66105395f57f8333766da550eb16c3e0",
+    "decisions": [
+      {
+        "discovery_id": "base-arxiv-2608_13263v1",
+        "decision": "KEEP",
+        "scope_tags": [
+          "paper-candidate"
+        ]
+      }
+    ]
+  }
+}

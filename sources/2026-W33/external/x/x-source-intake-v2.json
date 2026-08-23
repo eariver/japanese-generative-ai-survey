@@ -1,0 +1,65 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "production_profile": {
+    "path": "sources/2026-W33/production-profile.json",
+    "sha256": "b6676bf25d500327eb31b3f07b842b1767c3a2bf0bdef4d88aff12b6197785d3"
+  },
+  "research_profile": "WEEKLY",
+  "policy": "REQUIRED_BY_PROFILE",
+  "series_context": null,
+  "decision": "REQUIRED",
+  "rationale": "The WEEKLY research profile requires a fresh Grok/X Source Intake. This run is intentionally independent of all legacy W33 Grok and X results.",
+  "drive_handoff": {
+    "provider": "GOOGLE_DRIVE",
+    "root_folder_name": "Grok_X_SourseIntake",
+    "category": "Weekly",
+    "edition_folder": "2026-W33"
+  },
+  "runs": [
+    {
+      "run_id": "weekly-x-2026-W33-fresh-r1",
+      "purpose": "Freshly observe X for material generative-AI technical signal relevant to the completed 2026-W33 editorial window, without consulting or reusing legacy W33 X collection results.",
+      "research_questions": [
+        "Which generative-AI technical developments became materially salient on X during the completed 2026-W33 editorial window?",
+        "What independent testing, deployment reports, integration evidence, practitioner findings, or corrections on X materially change how those developments should be screened?",
+        "Which high-salience X claims require first-party reconciliation before they can enter technical Evidence?"
+      ],
+      "coverage_focus": [
+        "technical salience",
+        "independent testing",
+        "deployment and integration",
+        "practitioner findings",
+        "corrections and false-positive detection"
+      ],
+      "time_scope": "Primary event window: 2026-08-07T18:00:00-04:00 through 2026-08-14T18:00:00-04:00. Immediate post-cutoff X discussion may be reported only as reception/context for in-window events; it must not promote post-cutoff events into W33.",
+      "expected_result_filename": "grok-x-result.md",
+      "run_folder": "Grok_X_SourseIntake/Weekly/2026-W33/weekly-x-2026-W33-fresh-r1",
+      "instruction": {
+        "path": "sources/2026-W33/external/x/weekly-x-2026-W33-fresh-r1/grok-instruction.md",
+        "sha256": "e9ccbcdbc97e74a903018170384e77f1cb99bf2b51827f51167b49ab6e12cf31"
+      },
+      "prompt": {
+        "path": "sources/2026-W33/external/x/weekly-x-2026-W33-fresh-r1/grok-prompt.md",
+        "sha256": "aadde4341cd92bb104163f77e3a96d693c04c20068b39bd8f26b2b54ad25ca98"
+      },
+      "result": {
+        "status": "SUCCESS",
+        "drive_file_name": "grok-x-result.md",
+        "observed_at": "2026-08-22T15:59:41Z",
+        "imported_at": "2026-08-22T16:10:27Z",
+        "raw": {
+          "path": "sources/2026-W33/external/x/weekly-x-2026-W33-fresh-r1/raw/grok-x-result.md",
+          "sha256": "11cc3fbb64aa6f7f467834e81022a0338fbb45d46e50d20b8d4a36ff5c81f930",
+          "byte_count": 15036
+        },
+        "discovery_disposition": "DISCOVERY_RECORDED",
+        "discovery_ids": [
+          "x-weekly-signal-wave"
+        ],
+        "rationale": "Fresh Grok/X pass completed the required Weekly coverage scan and returned material community signal. The Raw remains discovery/community-signal only; all technical claims require downstream primary-source verification."
+      }
+    }
+  ],
+  "status": "COMPLETE"
+}

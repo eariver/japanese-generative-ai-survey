@@ -1,0 +1,432 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "pkg-05-research-watch",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "fbcc26b458e805cb8a3236d35d5b080b26b397e3139b349d0b23a3dd618274c3",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "ChatGPT interactive Core v2 Drafting/Synthesis after approved W33 Architecture r2",
+    "generated_at": "2026-08-22T23:45:00Z",
+    "run_reference": "ChatGPT continuation after 2026-W33 Architecture r2 approval"
+  },
+  "headline": "Research Paper Watch――エージェント評価、安全性、KV cache、マルチモーダルへ",
+  "deck": "W33のPaper Watchは、コーディングエージェントの評価とscaffolding、拡張機構の安全性、KV-cache系システム、マルチモーダル評価へ広がった。ここで扱う九件はすべてarXivのabstract/metadataレベルのauthor claimであり、全文の独立レビュー済みとはみなさない。",
+  "deck_attribution_mode": "FACTUAL",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:2026-W33:64191daff18f36c9",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W33:a1192a0a6d7d06e9",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W33:bd686d9ba78445cc",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W33:ead88c2a97a882f2",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W33:3d2faf889cc9e270",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W33:6368dfff7e6dfe69",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W33:9ce38eb6f5c6bf91",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W33:d0dc6e9e7a558958",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W33:723ad2cf7a6aa896",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "subject",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "research-1",
+      "block_type": "PARAGRAPH",
+      "text": "エージェント評価では「A Unified Issue Resolution Benchmark for Requirement Clarification, Planning, and Code Generation for Coding Agents」と「The Scaffolding Matters More Than the Interface: A Controlled Comparison of MCP and CLI Tool Use...」が並んだ。PluginEvalとOpen Evaluation Agentも含め、最終出力だけでなく評価設計や実行scaffoldingそのものへ視線が向いていることが、少なくとも論文タイトルとabstract-level author claimから読み取れる。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W33:a1192a0a6d7d06e9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:64191daff18f36c9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:bd686d9ba78445cc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:6368dfff7e6dfe69",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "research-2",
+      "block_type": "PARAGRAPH",
+      "text": "安全性・堅牢性側では「Agent Skills Can Be Harmful」とREDAgentBenchが候補に入った。前者はagent skill、後者はred-team系benchmarkを扱う研究として分類できるが、本稿はabstractを超える方法論・実験結果を独自に確認したとは主張しない。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W33:ead88c2a97a882f2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:d0dc6e9e7a558958",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "research-3",
+      "block_type": "PARAGRAPH",
+      "text": "システム／マルチモーダル側ではOasisKV、vToken、VideoGAIAが残った。KV cacheやtoken表現、video-agent evaluationといった方向の広がりを示すwatch項目として配置し、数値的な優位や詳細な手法比較は行わない。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W33:9ce38eb6f5c6bf91",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:3d2faf889cc9e270",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:723ad2cf7a6aa896",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "research-4",
+      "block_type": "NOTE",
+      "text": "Research Paper Watchの全項目はabstract/metadata-levelのAUTHOR_CLAIMとして扱う。本文、付録、再現実験を独立に検証したという意味ではない。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W33:64191daff18f36c9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:64191daff18f36c9",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:a1192a0a6d7d06e9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:a1192a0a6d7d06e9",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:bd686d9ba78445cc",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:bd686d9ba78445cc",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:ead88c2a97a882f2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:ead88c2a97a882f2",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:3d2faf889cc9e270",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:3d2faf889cc9e270",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:6368dfff7e6dfe69",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:6368dfff7e6dfe69",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:9ce38eb6f5c6bf91",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:9ce38eb6f5c6bf91",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:d0dc6e9e7a558958",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:d0dc6e9e7a558958",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:723ad2cf7a6aa896",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:723ad2cf7a6aa896",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "pkg-05-research-watch-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: Capability/performance statements are first-party vendor claims unless separately supported by independent evidence.",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W33:64191daff18f36c9",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:a1192a0a6d7d06e9",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:bd686d9ba78445cc",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:ead88c2a97a882f2",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:3d2faf889cc9e270",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:6368dfff7e6dfe69",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:9ce38eb6f5c6bf91",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:d0dc6e9e7a558958",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W33:723ad2cf7a6aa896",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-1",
+          "subject_id": "subject",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "Treat every item as abstract/metadata-level author-claim context; do not imply full-paper methods or results were independently reviewed.",
+      "block_ids": [
+        "research-1",
+        "research-2",
+        "research-3",
+        "research-4",
+        "pkg-05-research-watch-boundaries"
+      ]
+    },
+    {
+      "requirement": "Group papers by reader-useful theme rather than giving nine equal mini-articles.",
+      "block_ids": [
+        "research-1",
+        "research-2",
+        "research-3",
+        "research-4",
+        "pkg-05-research-watch-boundaries"
+      ]
+    },
+    {
+      "requirement": "Keep claims concise and explicitly bounded by the accepted abstract-level Evidence limitation.",
+      "block_ids": [
+        "research-1",
+        "research-2",
+        "research-3",
+        "research-4",
+        "pkg-05-research-watch-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "Capability/performance statements are first-party vendor claims unless separately supported by independent evidence.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "pkg-05-research-watch-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {
+    "section_kind": "RESEARCH_WATCH"
+  },
+  "publication_extensions": {
+    "section_label": "Research Paper Watch",
+    "recurring": true
+  }
+}
