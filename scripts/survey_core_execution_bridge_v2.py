@@ -7,9 +7,10 @@ research, editorial judgment, source selection, Architecture design, drafting,
 semantic review, visual review, or Human approval.
 
 A ChatGPT production session commits one immutable request under
-``sources/<issue>/execution/requests/``. The bridge validates that request,
+``<source_root>/execution/requests/``. The bridge validates that request,
 executes only a small allowlist of canonical deterministic Core operations, and
-writes only edition-local generated authorities under the issue source root.
+writes only edition-local generated authorities under the Profile-bound source
+root.
 
 The GitHub Actions wrapper is transport/execution infrastructure. The semantic
 content supplied in artifacts, agent review evidence, and stage summaries remains
@@ -60,16 +61,23 @@ def _validate_sha(value: str, label: str) -> str:
     return value
 
 
-def _source_root(repo_root: Path, issue_id: str) -> Path:
-    return core.repo_local_path(repo_root, f"sources/{issue_id}", "operator bridge source root")
+def _source_root(repo_root: Path, request: dict[str, Any]) -> Path:
+    source_root = core.repo_local_path(
+        repo_root,
+        request["source_root"],
+        "operator bridge source root",
+    )
+    rel = _rel(repo_root, source_root)
+    if rel == "sources" or not rel.startswith("sources/"):
+        raise OperatorBridgeError("operator bridge source_root must be under sources/")
+    return source_root
 
 
 def _request_path(repo_root: Path, request: dict[str, Any], request_path: Path) -> Path:
     request_id = request["request_id"]
-    issue_id = request["issue_id"]
     if not REQUEST_ID_RE.fullmatch(request_id):
         raise OperatorBridgeError("request_id is not a safe filename stem")
-    expected = _source_root(repo_root, issue_id) / "execution" / "requests" / f"{request_id}.json"
+    expected = _source_root(repo_root, request) / "execution" / "requests" / f"{request_id}.json"
     actual = request_path.resolve()
     if actual != expected.resolve():
         raise OperatorBridgeError(
@@ -91,6 +99,8 @@ def _load_request(repo_root: Path, request_path: Path, ref_name: str) -> dict[st
         core.parse_instant(payload["recorded_at"])
     except ValueError as exc:
         raise OperatorBridgeError("recorded_at must be an offset-aware ISO-8601 instant") from exc
+    if ref_name == "main":
+        raise OperatorBridgeError("operator bridge must not execute edition requests on main")
     if payload["work_branch"] != ref_name:
         raise OperatorBridgeError(
             f"request work_branch {payload['work_branch']!r} does not match executing ref {ref_name!r}"
@@ -98,11 +108,13 @@ def _load_request(repo_root: Path, request_path: Path, ref_name: str) -> dict[st
     return payload
 
 
-def _ensure_under(path: Path, parent: Path, label: str) -> None:
+def _ensure_under(repo_root: Path, path: Path, parent: Path, label: str) -> None:
     try:
         path.resolve().relative_to(parent.resolve())
     except ValueError as exc:
-        raise OperatorBridgeError(f"{label} must stay under {_rel(parent.parent, parent) if parent.parent else parent}") from exc
+        raise OperatorBridgeError(
+            f"{label} must stay under {_rel(repo_root, parent)}"
+        ) from exc
 
 
 def _canonical_profile_state(source_root: Path, cfg: dict[str, Any]) -> tuple[Path, Path]:
@@ -112,10 +124,13 @@ def _canonical_profile_state(source_root: Path, cfg: dict[str, Any]) -> tuple[Pa
     )
 
 
-def _validate_profile_branch(profile: dict[str, Any], request: dict[str, Any]) -> None:
+def _validate_profile_identity(profile: dict[str, Any], request: dict[str, Any]) -> None:
     if profile.get("issue_id") != request["issue_id"]:
         raise OperatorBridgeError("generated/current Production Profile issue_id differs from request")
-    if profile.get("paths", {}).get("work_branch") != request["work_branch"]:
+    paths = profile.get("paths", {})
+    if paths.get("source_root") != request["source_root"]:
+        raise OperatorBridgeError("generated/current Production Profile source_root differs from request")
+    if paths.get("work_branch") != request["work_branch"]:
         raise OperatorBridgeError("generated/current Production Profile work_branch differs from request")
 
 
@@ -125,7 +140,7 @@ def _initialize(
     request: dict[str, Any],
     event_sha: str,
 ) -> tuple[Path, Path, list[str]]:
-    source_root = _source_root(repo_root, request["issue_id"])
+    source_root = _source_root(repo_root, request)
     profile_path, state_path = _canonical_profile_state(source_root, cfg)
     if profile_path.exists() or state_path.exists():
         raise OperatorBridgeError("operator initialization requires absent canonical Profile/State")
@@ -137,14 +152,14 @@ def _initialize(
         profile = core.weekly_profile(repo_root, cfg, recorded_at, request["issue_id"])
     elif kind == "INITIALIZE_THEMATIC":
         spec_path = core.repo_local_path(repo_root, operation["spec_path"], "thematic scope spec")
-        _ensure_under(spec_path, source_root, "thematic scope spec")
+        _ensure_under(repo_root, spec_path, source_root, "thematic scope spec")
         if spec_path.is_symlink() or not spec_path.is_file():
             raise OperatorBridgeError("thematic scope spec missing or unsafe")
         profile = core.thematic_profile(repo_root, cfg, core.load_json(spec_path))
     else:
         raise OperatorBridgeError(f"unsupported initialization operation: {kind}")
 
-    _validate_profile_branch(profile, request)
+    _validate_profile_identity(profile, request)
     core.initialize(
         repo_root,
         cfg,
@@ -222,7 +237,7 @@ def _advance_stage(
     run_root: Path,
 ) -> tuple[Path, list[str], str, str | None]:
     operation = request["operation"]
-    source_root = _source_root(repo_root, request["issue_id"])
+    source_root = _source_root(repo_root, request)
     state_path = core.repo_local_path(repo_root, operation["state_path"], "operator bridge Production State")
     _, expected_state = _canonical_profile_state(source_root, cfg)
     if state_path.resolve() != expected_state.resolve():
@@ -240,7 +255,7 @@ def _advance_stage(
         )
     profile_path = core.repo_local_path(repo_root, state["profile"]["path"], "Production Profile")
     profile = core.load_json(profile_path)
-    _validate_profile_branch(profile, request)
+    _validate_profile_identity(profile, request)
 
     artifacts = _artifact_map(repo_root, operation["artifacts"])
     recorded_at = core.parse_instant(request["recorded_at"])
@@ -286,7 +301,7 @@ def execute_request(
     event_sha = _validate_sha(event_sha, "event_sha")
     cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
     request = _load_request(repo_root, request_path, ref_name)
-    source_root = _source_root(repo_root, request["issue_id"])
+    source_root = _source_root(repo_root, request)
     run_root = source_root / "execution" / "bridge-runs" / request["request_id"]
     if run_root.exists():
         raise OperatorBridgeError(f"bridge request_id already executed: {request['request_id']}")
@@ -314,6 +329,7 @@ def execute_request(
         "schema_version": "2.0-rc1",
         "request_id": request["request_id"],
         "issue_id": request["issue_id"],
+        "source_root": request["source_root"],
         "work_branch": request["work_branch"],
         "operation": operation["kind"],
         "request": request_authority,
