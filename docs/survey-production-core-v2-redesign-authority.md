@@ -1,35 +1,36 @@
 # Survey Production Core v2 — Audited Redesign Authority Overlay
 
-Status: `IMPLEMENTED REDESIGN CANDIDATE / FIXED-HEAD AUDIT PENDING`  
+Status: `INTEGRATED REDESIGN + OPERATOR BRIDGE MAINTENANCE CANDIDATE / FIXED-HEAD REAUDIT PENDING`  
 Established: 2026-08-23 JST  
-Implementation synchronized: 2026-08-23 JST  
-Working branch: `refactor/survey-production-core-v2`
+Bridge-maintenance synchronization: 2026-08-23 JST  
+Working branch: `maintenance/core-v2-operator-execution-bridge`
 
 ## 1. Purpose
 
-This document is the authority overlay for the redesign that follows the failed W33/SP001 real-production validation.
+This document is the authority overlay for the redesign that followed the failed W33/SP001 real-production validation and for the narrow operator-runtime maintenance exposed by the later clean post-merge revalidation.
 
 It does not erase the earlier Core v2 design history. `docs/survey-production-core-v2-authority.md` and earlier audit/remediation documents remain historical evidence of how the merged Core was designed and why it behaved as it did.
 
-For the **implemented redesign candidate**, where earlier authority conflicts with the post-production evidence or the audited redesign, this overlay wins.
+For the current redesigned Core and this maintenance candidate, where earlier authority conflicts with post-production evidence or this audited redesign direction, this overlay wins.
 
 ## 2. Redesign authority precedence
 
-For the redesign work, use:
+For current redesign/maintenance work, use:
 
 ```text
-1. repository reality + Issues #400/#433/#434 + W33/SP001 execution evidence
+1. repository reality + Issues #400/#433/#434 + W33/SP001 execution/revalidation evidence
 2. this redesign authority overlay
-3. docs/survey-production-core-v2-redesign-preimplementation-audit.md
-4. docs/survey-production-core-v2-redesign-plan-after-w33-sp001.md
-5. docs/survey-production-core-v2-github-actions-policy.md
-6. docs/survey-production-core-v2-execution-record-policy.md
-7. docs/survey-production-core-v2-final-audit-rule.md
-8. profile/edition/series editorial authorities
-9. earlier Core v2 authority/audit documents as historical evidence where not superseded
+3. docs/survey-production-core-v2-operator-execution-bridge.md
+4. docs/survey-production-core-v2-redesign-preimplementation-audit.md
+5. docs/survey-production-core-v2-redesign-plan-after-w33-sp001.md
+6. docs/survey-production-core-v2-github-actions-policy.md
+7. docs/survey-production-core-v2-execution-record-policy.md
+8. docs/survey-production-core-v2-final-audit-rule.md
+9. profile/edition/series editorial authorities
+10. earlier Core v2 authority/audit documents as historical evidence where not superseded
 ```
 
-The redesign must not implement a clause from earlier authority when this overlay explicitly supersedes it.
+Do not implement a clause from earlier authority when this overlay explicitly supersedes it.
 
 ## 3. Fundamental operator model
 
@@ -51,7 +52,7 @@ Profile + edition/series authority + Production State
 -> exact-byte Freeze / Release integrity
 ```
 
-The redesign reduces workflow-encoded publication logic. It does not reduce research/Evidence rigor or exact-byte release authority.
+Deterministic helpers may execute either through a direct exact local checkout/CLI or, when that substrate is unavailable to the ChatGPT operator runtime, through the reviewed operator execution bridge. The bridge is an execution transport for the same canonical Core mechanics, not a parallel state machine or an editorial agent.
 
 ## 4. Core / Profile / edition layering
 
@@ -66,7 +67,8 @@ Owns cross-profile invariants only:
 - exact candidate identity and atomic revision invalidation;
 - execution-record requirements;
 - Production-vs-Core-maintenance boundary;
-- Grok/X transport/evidence-role invariants.
+- Grok/X transport/evidence-role invariants;
+- safe deterministic execution semantics, including the optional operator bridge.
 
 ### Research Profiles
 
@@ -175,6 +177,10 @@ Retain Actions only where:
 - Actions execution has concrete independent/reproducibility/security value; or
 - the task is genuinely mechanical and no research/editorial judgment is transferred into CI.
 
+The operator bridge is admitted only because it supplies the exact checked-out execution substrate that the normal connector-only ChatGPT runtime lacks. It may execute only an enum allowlist of canonical deterministic Core operations from an immutable edition-local request. It must not accept arbitrary commands or take ownership of research, Selection, Architecture, drafting, semantic/visual review, Human approval, layout repair or Release.
+
+Direct local CLI execution remains preferred when available.
+
 Do not replace the old workflow set with cadence/topic-specific authoring workflows.
 
 ## 9. Production vs Core-maintenance invariant
@@ -256,7 +262,7 @@ Remain a living series authority layered over `THEMATIC + LONGFORM_SPECIAL`; do 
 
 ## 13. Execution records
 
-Every new production run uses the canonical edition source root:
+Every new production run uses the Profile-declared canonical edition source root:
 
 ```text
 {source_root}/execution/
@@ -265,6 +271,15 @@ Every new production run uses the canonical edition source root:
   reviews/
   defects/
 ```
+
+When the operator execution bridge is used, it may additionally create:
+
+```text
+  requests/
+  bridge-runs/
+```
+
+Those optional directories contain immutable execution requests and exact deterministic execution receipts. They are transport/provenance, not a second Production State. Direct-local CLI runs need not create them.
 
 Follow `docs/survey-production-core-v2-execution-record-policy.md` for content and granularity.
 
@@ -295,23 +310,28 @@ Final acceptance must include representative evidence for:
 - Foundations-guided series work;
 - structural monthly/half-year/annual and unplanned-Thematic compatibility.
 
+The operator bridge must remain Profile/path driven. It must not hardcode W33/SP001 topic structure, fixed edition source-root depth, or `weekly/**` / `special/**` branch naming. It may expose only initialization operations already owned by canonical Core builders; it must not invent Retrospective/series semantics merely to broaden its API. Once a canonical Profile/State exists, `ADVANCE_STAGE` is Profile-neutral and must bind the exact Profile-declared `source_root` and `work_branch`.
+
 Use a small representative matrix plus structural audits rather than an exhaustive synthetic future-edition matrix.
 
 ## 16. Implementation and acceptance status
 
-The audited prerequisites are mutually consistent and the redesign implementation is present on `refactor/survey-production-core-v2`.
+The original redesign is integrated. The connector-only clean revalidation exposed the operator-runtime execution gap, and the current maintenance candidate adds the narrow fallback described above.
 
-Implemented boundaries include:
+Current intended boundaries include:
 
-- ChatGPT-owned ordinary lifecycle stages with release as the only workflow-dispatched stage;
+- ChatGPT-owned ordinary lifecycle stages with Release as the only lifecycle workflow-dispatched stage;
+- direct local deterministic execution when available, with an optional deterministic operator bridge when an exact local checkout is unavailable;
 - explicit Reader Manuscript and reader-facing Publication Boundary;
 - deterministic Quality Bundle separated from semantic/editorial and exact-PDF visual review;
 - atomic Publication Candidate identity and revision invalidation;
 - standardized edition execution records;
 - one-file Grok/X Drive handoff;
-- six-workflow Actions surface limited to CI, reproducible build, exact-byte preview transport and release.
+- **seven-workflow Actions surface**: two CI/contract workflows, two reproducible build workflows, exact-byte Preview transport, Release, and one narrowly constrained deterministic operator bridge.
 
-Implementation completion is **not** final Core acceptance. Before Human full-candidate review, the repository must:
+`tests/test_survey_pilot_bootstrap_v2.py` requires exact equality with that seven-workflow set. A new eighth workflow is prima facie architectural regression unless deliberately reviewed against the Actions admission rule.
+
+This maintenance implementation is **not** final Core acceptance. Before Human full-candidate review, the repository must:
 
 ```text
 finish regression/CI repair
@@ -322,4 +342,4 @@ finish regression/CI repair
 -> present only the unchanged passing SHA for Human full-candidate review
 ```
 
-Cold-start production re-validation remains required after the redesigned Core is reviewed/integrated; W33/SP001 historical failed trials are not converted into PASS evidence by this implementation.
+Cold-start production re-validation remains required after the bridge maintenance is reviewed/integrated; the prior W33/SP001 attempts remain non-PASS evidence and are not converted into PASS by this maintenance.
