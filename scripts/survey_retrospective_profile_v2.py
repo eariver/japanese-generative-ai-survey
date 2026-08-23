@@ -152,8 +152,8 @@ def main() -> int:
 
     args = parser.parse_args()
     repo_root = Path(args.repo_root).resolve()
-    recorded_at = core.parse_instant(args.recorded_at) if args.recorded_at else datetime.now(timezone.utc)
     try:
+        recorded_at = core.parse_instant(args.recorded_at) if args.recorded_at else datetime.now(timezone.utc)
         if args.command == "plan":
             print(json.dumps(plan_scope(repo_root, args.special_slug, recorded_at), ensure_ascii=False, indent=2))
             return 0
