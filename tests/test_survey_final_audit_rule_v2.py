@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 class SurveyFinalAuditRuleV2Tests(unittest.TestCase):
-    def test_repository_owns_all_changes_first_fixed_head_six_point_audit(self) -> None:
+    def test_repository_owns_all_changes_first_fixed_head_seven_point_audit(self) -> None:
         rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
         authority = Path("docs/survey-production-core-v2-authority.md").read_text(encoding="utf-8")
         agents = Path("AGENTS.md").read_text(encoding="utf-8")
@@ -14,12 +14,18 @@ class SurveyFinalAuditRuleV2Tests(unittest.TestCase):
         for phrase in (
             "finish every intended candidate change",
             "freeze one candidate branch head SHA",
-            "run the complete six-point acceptance audit from zero",
+            "run the complete seven-point acceptance audit from zero",
             "Autonomous progression / stop discipline",
+            "Human Gate round-trip viability",
             "mark the current final audit INVALIDATED",
-            "rerun all six acceptance points from point 1",
+            "rerun all seven acceptance points from point 1",
         ):
             self.assertIn(phrase, rule)
+
+        self.assertIn("Architecture r1 `REQUEST_CHANGES`", rule)
+        self.assertIn("Publication Preview r1 `REQUEST_CHANGES`", rule)
+        self.assertIn("must not accept arbitrary commands", rule)
+        self.assertIn("record an already explicit Human `APPROVED` or `REQUEST_CHANGES` decision", rule)
 
         self.assertIn("survey-production-core-v2-final-audit-rule.md", authority)
         self.assertIn("2f3c9b10c031cf0d8e5cc114fb93e481e90fffac", authority)
@@ -29,7 +35,6 @@ class SurveyFinalAuditRuleV2Tests(unittest.TestCase):
         self.assertIn("audit-stable pre-audit state", authority)
         self.assertIn("PR/Human-review metadata", authority)
         self.assertIn("invalidate the entire audit", agents)
-        self.assertIn("rerun all six points from point 1", agents)
         self.assertIn("Do not stop for ordinary internal work", agents)
         self.assertIn(
             "Continue immediately unless a Human/Exception Gate or blocking shared-Core defect is reached",
@@ -41,11 +46,18 @@ class SurveyFinalAuditRuleV2Tests(unittest.TestCase):
         self.assertIn("resumes automatically toward the requested Gate", rule)
         self.assertIn("must not search for a Grok connector", rule)
 
+    def test_current_rule_does_not_retain_six_point_acceptance_language(self) -> None:
+        rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
+        self.assertNotIn("complete six-point acceptance audit", rule)
+        self.assertNotIn("rerun all six acceptance points", rule)
+        self.assertNotIn("six fresh verdicts", rule)
+
     def test_final_result_is_external_metadata_not_post_audit_candidate_commit(self) -> None:
         rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
         self.assertIn("recorded outside the candidate tree", rule)
         self.assertIn("PR/Human-review handoff", rule)
         self.assertIn("candidate SHA changes", rule)
+        self.assertIn("seven fresh verdicts", rule)
 
 
 if __name__ == "__main__":
