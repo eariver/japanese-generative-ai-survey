@@ -46,6 +46,19 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
+      - name: Upload immutable source authorities for request recovery
+        uses: actions/upload-artifact@v4
+        with:
+          name: sp001-issue400-request-recovery-authorities
+          path: |
+            sources/SP001/architecture-v2.json
+            sources/SP001/draft/v2/interactive-drafting-synthesis-input.json
+            sources/SP001/draft/v2/profile-synthesis-result.json
+            sources/SP001/evidence/v2/accepted/6b730553a0d71201ed40303f5ed126aa47dca224cba63e1797931ce7cd2f63f2/interactive-evidence.json
+            sources/SP001/evidence/v2/accepted/6b730553a0d71201ed40303f5ed126aa47dca224cba63e1797931ce7cd2f63f2/evidence-accepted.json
+          if-no-files-found: error
+          retention-days: 1
+
       - name: Validate complete semantic publication request
         shell: bash
         run: |
