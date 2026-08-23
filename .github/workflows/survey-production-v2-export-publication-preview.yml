@@ -1,0 +1,98 @@
+name: Survey Production Core v2 exact Publication Preview export
+
+on:
+  pull_request:
+    paths:
+      - 'sources/**/orchestration/v2/interactive-preview-export.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: survey-production-v2-preview-export-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  export:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout preview branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 1
+
+      - name: Validate exact Publication Preview request
+        id: preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import hashlib,json,pathlib,re
+          root=pathlib.Path('.').resolve()
+          requests=sorted(root.glob('sources/*/orchestration/v2/interactive-preview-export.json'))
+          if len(requests)!=1:
+              raise SystemExit(f'exactly one preview export request required, found {len(requests)}')
+          req_path=requests[0]
+          issue=req_path.parts[-4]
+          if not re.fullmatch(r'[A-Za-z0-9._-]+',issue):
+              raise SystemExit('unsafe issue_id')
+          req=json.load(open(req_path,encoding='utf-8'))
+          if set(req)!={'schema_version','issue_id','pdf_path','pdf_sha256'}:
+              raise SystemExit('preview export request fields invalid')
+          if req['schema_version']!='2.0-rc1' or req['issue_id']!=issue:
+              raise SystemExit('preview export request identity mismatch')
+          pdf=(root/req['pdf_path']).resolve()
+          try: pdf.relative_to(root)
+          except ValueError: raise SystemExit('preview PDF escapes repository')
+          if pdf.is_symlink() or not pdf.is_file():
+              raise SystemExit('preview PDF missing or unsafe')
+          sha=lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+          if sha(pdf)!=req['pdf_sha256']:
+              raise SystemExit('preview PDF SHA mismatch')
+          preflight=root/'sources'/issue/'publication/v2/quality/pdf-preflight.json'
+          if not preflight.is_file():
+              raise SystemExit('PDF preflight missing')
+          pf=json.load(open(preflight,encoding='utf-8'))
+          if pf.get('status')!='PASS' or pf.get('issue_id')!=issue or pf.get('pdf_sha256')!=req['pdf_sha256']:
+              raise SystemExit('PDF preflight does not bind requested exact bytes')
+          print(f'issue_id={issue}')
+          print(f'pdf_path={pdf.relative_to(root)}')
+          print(f'pdf_sha256={req["pdf_sha256"]}')
+          print(f'page_count={pf["page_count"]}')
+          PY
+
+      - name: Write exact-byte audit sidecar
+        shell: bash
+        env:
+          ISSUE_ID: ${{ steps.preview.outputs.issue_id }}
+          PDF_PATH: ${{ steps.preview.outputs.pdf_path }}
+          PDF_SHA256: ${{ steps.preview.outputs.pdf_sha256 }}
+          PAGE_COUNT: ${{ steps.preview.outputs.page_count }}
+        run: |
+          set -euo pipefail
+          mkdir -p preview-export
+          cp "$PDF_PATH" "preview-export/${ISSUE_ID}-publication-preview.pdf"
+          python - <<'PY'
+          import json,os,pathlib
+          payload={
+              'schema_version':'2.0-rc1',
+              'issue_id':os.environ['ISSUE_ID'],
+              'pdf_sha256':os.environ['PDF_SHA256'],
+              'page_count':int(os.environ['PAGE_COUNT']),
+              'source_path':os.environ['PDF_PATH'],
+              'export_mode':'EXACT_REPOSITORY_BYTES',
+          }
+          pathlib.Path('preview-export/exact-byte-audit.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+          actual=$(sha256sum "preview-export/${ISSUE_ID}-publication-preview.pdf" | awk '{print $1}')
+          test "$actual" = "$PDF_SHA256"
+
+      - name: Upload exact Publication Preview bytes
+        uses: actions/upload-artifact@v7
+        with:
+          name: core-v2-publication-preview-${{ steps.preview.outputs.issue_id }}-${{ steps.preview.outputs.pdf_sha256 }}
+          path: preview-export
+          if-no-files-found: error
+          retention-days: 14
