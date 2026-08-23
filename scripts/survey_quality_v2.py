@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-"""Profile-aware exact-byte quality authority for Survey Production Core v2.
+"""Profile-aware deterministic quality authority for Survey Production Core v2.
 
-Quality review has three kinds:
-- DETERMINISTIC: crisp machine-checkable invariant with a result artifact;
-- AGENT_SEMANTIC: ChatGPT semantic/editorial review with reasoned evidence;
-- AGENT_VISUAL: ChatGPT rendered-PDF review with reasoned evidence.
+The redesign separates three responsibilities:
+- DETERMINISTIC checks live in the Quality Regression Bundle and carry result authority;
+- AGENT_SEMANTIC checks live in exact-source Publication Review records;
+- AGENT_VISUAL checks live in exact-PDF Publication Review records.
 
-The bundle binds the exact Production Profile plus one exact source/PDF pair, so
-applicability cannot drift to a different research/publication Profile and agent
-judgments remain revision-specific without pretending qualitative judgment is a
-validator.
+The Profile configuration still defines applicability for all three kinds. This
+module deliberately persists only deterministic PASS evidence so machine state
+cannot masquerade as editorial or visual judgment.
 """
 from __future__ import annotations
 
@@ -27,7 +26,7 @@ def _rel(repo_root: Path, path: Path) -> str:
     root = repo_root.resolve()
     resolved = path.resolve()
     try:
-        return str(resolved.relative_to(root))
+        return str(resolved.relative_to(root)).replace("\\", "/")
     except ValueError as exc:
         raise ValueError(f"quality artifact must be repository-local: {path}") from exc
 
@@ -106,6 +105,18 @@ def expected_checks(cfg: dict[str, Any], research_profile: str, publication_prof
     return result
 
 
+def expected_checks_by_kind(
+    cfg: dict[str, Any], research_profile: str, publication_profile: str, kinds: set[str]
+) -> dict[str, str]:
+    if not kinds or not kinds <= VALID_KINDS:
+        raise ValueError("quality check kind filter invalid")
+    return {
+        check_id: kind
+        for check_id, kind in expected_checks(cfg, research_profile, publication_profile).items()
+        if kind in kinds
+    }
+
+
 def _validate_result_ref(repo_root: Path, row: dict[str, Any]) -> None:
     result = row.get("result")
     if row["kind"] == "DETERMINISTIC":
@@ -118,8 +129,20 @@ def _validate_result_ref(repo_root: Path, row: dict[str, Any]) -> None:
         raise ValueError(f"agent quality check must not claim deterministic result authority: {row['check_id']}")
 
 
-def validate_checks(repo_root: Path, cfg: dict[str, Any], research_profile: str, publication_profile: str, checks: list[dict[str, Any]]) -> None:
-    expected = expected_checks(cfg, research_profile, publication_profile)
+def validate_checks(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    research_profile: str,
+    publication_profile: str,
+    checks: list[dict[str, Any]],
+    *,
+    required_kinds: set[str] | None = None,
+) -> None:
+    expected = (
+        expected_checks(cfg, research_profile, publication_profile)
+        if required_kinds is None
+        else expected_checks_by_kind(cfg, research_profile, publication_profile, required_kinds)
+    )
     ids: list[str] = []
     for row in checks:
         required_fields = {"check_id", "kind", "status", "executor", "evidence", "recorded_at", "result"}
@@ -129,7 +152,7 @@ def validate_checks(repo_root: Path, cfg: dict[str, Any], research_profile: str,
         if not isinstance(check_id, str) or not check_id:
             raise ValueError("quality check_id must be non-empty")
         if check_id not in expected:
-            raise ValueError(f"quality check is not applicable to this Profile combination: {check_id}")
+            raise ValueError(f"quality check is not applicable to this quality authority: {check_id}")
         if row.get("kind") != expected[check_id]:
             raise ValueError(f"quality check kind differs from Profile contract: {check_id}")
         if row.get("status") != "PASS":
@@ -178,13 +201,14 @@ def build_bundle(
     *,
     production_profile_path: Path,
 ) -> Path:
+    """Build deterministic QA authority for one exact reader source/PDF pair."""
     source = _safe_file(repo_root, source_path, "validated publication source")
     pdf = _safe_file(repo_root, pdf_path, "publication PDF")
     profile_path, profile = _load_profile_authority(repo_root, production_profile_path, issue_id)
     research = profile["research_profile"]
     publication = profile["publication_profile"]
     cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
-    validate_checks(repo_root, cfg, research, publication, checks)
+    validate_checks(repo_root, cfg, research, publication, checks, required_kinds={"DETERMINISTIC"})
     basis = {
         "schema_version": "2.0-rc1",
         "issue_id": issue_id,
@@ -224,7 +248,14 @@ def validate_bundle(repo_root: Path, path: Path, *, issue_id: str | None = None)
         or profile.get("publication_profile") != payload["publication_profile"]
     ):
         raise ValueError("quality review Profile identity differs from bound Production Profile")
-    validate_checks(repo_root, cfg, payload["research_profile"], payload["publication_profile"], payload["checks"])
+    validate_checks(
+        repo_root,
+        cfg,
+        payload["research_profile"],
+        payload["publication_profile"],
+        payload["checks"],
+        required_kinds={"DETERMINISTIC"},
+    )
     basis = {key: payload[key] for key in (
         "schema_version", "issue_id", "production_profile", "research_profile", "publication_profile", "source", "pdf", "checks", "status"
     )}
