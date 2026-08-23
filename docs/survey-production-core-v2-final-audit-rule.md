@@ -1,6 +1,6 @@
 # Survey Production Core v2 — post-completion final audit rule
 
-Status: `CANONICAL REDESIGN-CANDIDATE FINAL AUDIT RULE / HUMAN-GATE ROUNDTRIP SYNCHRONIZED / REAUDIT PENDING`  
+Status: `CANONICAL REDESIGN-CANDIDATE FINAL AUDIT RULE / HUMAN-GATE ROUNDTRIP + DIRECT-LOCAL REVIEW PROVENANCE SYNCHRONIZED / REAUDIT PENDING`  
 Established: 2026-08-22 JST  
 Redesign alignment: 2026-08-23 JST  
 Human-Gate round-trip synchronization: 2026-08-24 JST  
@@ -37,7 +37,7 @@ Every final audit evaluates all seven points in this priority order:
 4. **Historical and clarified requirement recurrence prevention** — known Human Review defect families and later clarified requirements have an appropriate owner: narrow deterministic protection for crisp invariants, ChatGPT research/editorial/visual review for semantic judgment, Human review at the two normal Gates, or explicit legacy-only disposition. Publication Boundary defects from #400/#433/#434 are included here.
 5. **Control proportionality** — after 1–4 are satisfied, routine work is not burdened with unnecessary Human Gates, workflow ceremony, profile-specific authoring workflows, or validators that pretend to replace qualitative judgment. GitHub Actions satisfy the adopted Actions responsibility policy.
 6. **Autonomous progression / stop discipline** — after the user supplies the target and requested stopping Gate, ChatGPT proceeds through ordinary edition-local research/editorial work and transient retries without repeatedly stopping for confirmation. A production session may stop only for an actual normal Human Gate, a genuine Owner-level Exception Gate, the permitted manual Grok task-file path handoff, or a recorded shared-Core defect that makes correct production impossible under the current reviewed Core. A production session does not author or debug shared Core merely to keep the edition moving.
-7. **Human Gate round-trip viability** — both `ARCHITECTURE_REVIEW` and exact-byte `PUBLICATION_PREVIEW` must support the complete normal decision cycle under direct-local and connector-safe deterministic execution semantics: reach pending gate; record an explicitly Human-supplied `APPROVED` decision and resume; or record `REQUEST_CHANGES` with explicit requested changes and an allowed regeneration boundary; selectively invalidate downstream State/checkpoint authority; regenerate/revalidate; return to the same gate at the next contiguous revision; and bind final approval only to the current reviewed bytes. Prior review revisions remain historical/reconstructable, stale approval requests fail closed, and neither Actions nor Core chooses the Human decision or editorial repair.
+7. **Human Gate round-trip viability** — both `ARCHITECTURE_REVIEW` and exact-byte `PUBLICATION_PREVIEW` must support the complete normal decision cycle under direct-local and connector-safe deterministic execution semantics: reach pending gate; record an explicitly Human-supplied `APPROVED` decision and resume; or record `REQUEST_CHANGES` with explicit requested changes and an allowed regeneration boundary; selectively invalidate downstream State/checkpoint authority; regenerate/revalidate; return to the same gate at the next contiguous revision; and bind final approval only to the current reviewed bytes. Prior review revisions remain historical/reconstructable, stale approval requests fail closed, and neither Actions nor Core chooses the Human decision or editorial repair. `reviewed_repository_commit_sha` must name a real Git commit whose tree contains the exact reviewed Production State and all Gate-input bytes. Direct-local Core must prove this itself; connector-safe execution must additionally bind the same reviewed commit to the immutable request-only parent rather than the later request/event commit.
 
 Lower-numbered points win if priorities conflict, but points 6 and 7 are explicit acceptance conditions rather than usability preferences.
 
@@ -49,6 +49,7 @@ The fixed-head audit must be performed afresh on one immutable candidate SHA and
 - schema/config/script/workflow inspection;
 - representative cross-profile unit/contract fixtures;
 - Human Gate positive/negative round-trip E2E for Architecture and Publication Preview, including operator-bridge execution where connector-only operation depends on it;
+- direct-local reviewed-commit provenance regressions proving real-commit existence and exact reviewed State/Gate-input tree-byte binding;
 - historical W33/SP001 failure evidence as regression targets, never as PASS runs;
 - Retrospective monthly/half-year/annual configured-period Profile fixtures plus guidance compatibility inspection;
 - standalone Thematic and Foundations-series authority compatibility inspection;
@@ -65,7 +66,10 @@ For Point 7, static existence of approval functions is insufficient. Evidence mu
 - Publication Preview r1 approval can resume Freeze;
 - Publication Preview r1 `REQUEST_CHANGES` can invalidate affected Validation/Candidate authority and reach Publication Preview r2;
 - r2 approval binds only the r2 Candidate/PDF bytes;
-- changed reviewed bytes, invalid regeneration boundaries and arbitrary/generic Human-decision execution surfaces fail closed.
+- changed reviewed bytes and invalid regeneration boundaries fail closed;
+- direct-local review recording rejects a nonexistent reviewed commit, a commit missing reviewed paths, and a commit containing different bytes for a reviewed path;
+- connector-safe review recording rejects a reviewed-commit/request-parent mismatch;
+- arbitrary/generic Human-decision execution surfaces fail closed.
 
 ## 4. Post-integration real-production re-validation
 
@@ -140,6 +144,8 @@ The two normal production Human Gates remain:
 
 At either gate the Human may explicitly approve or request ordinary changes. `REQUEST_CHANGES` is not an Owner-level Exception Gate. The Human supplies the requested changes and regeneration boundary; deterministic Core validates the allowed boundary, records revision provenance and resets only affected downstream authority. A terminal/exception rejection remains reserved for a genuine Owner decision that cannot be safely expressed as normal revision.
 
+The Human decision must refer to committed review bytes. The machine review record's `reviewed_repository_commit_sha` is not decorative metadata: it must reconstruct the exact reviewed State/Gate inputs. Direct-local Core verifies this from the Git commit tree; connector-safe Actions also proves the named reviewed commit is exactly the request-only parent.
+
 When Grok execution requires Human mediation, ChatGPT prepares one self-contained task file in the configured Google Drive location and gives the Human the exact Drive **task-file path/reference**. The Human gives that path/reference to Grok. Grok reads the file and writes the instructed result. This manual Grok handoff is operational transport, not editorial approval and not another Human Gate. ChatGPT **must not search for a Grok connector** merely because the run is required.
 
 Once the returned result exists, ChatGPT imports it and **resumes automatically toward the requested Gate**.
@@ -174,7 +180,7 @@ The current maintenance candidate may retain Actions only where there is clear i
 - credential-isolated publication/reconciliation;
 - the narrowly constrained operator execution bridge when the normal ChatGPT runtime lacks an exact local checkout/CLI execution substrate.
 
-The operator bridge is admissible only when it remains an execution substrate for canonical deterministic Core mechanics. It must not accept arbitrary commands, own research/editorial/publication decisions, infer Human approval, repair layout, or mutate shared Core during production. It **may** record an already explicit Human `APPROVED` or `REQUEST_CHANGES` decision and apply the deterministic lifecycle consequence because those operations do not create the decision. Such requests must carry explicit Human provenance, exact gate/current-State identity and enum-constrained regeneration boundaries.
+The operator bridge is admissible only when it remains an execution substrate for canonical deterministic Core mechanics. It must not accept arbitrary commands, own research/editorial/publication decisions, infer Human approval, repair layout, or mutate shared Core during production. It **may** record an already explicit Human `APPROVED` or `REQUEST_CHANGES` decision and apply the deterministic lifecycle consequence because those operations do not create the decision. Such requests must carry explicit Human provenance, exact gate/current-State identity and enum-constrained regeneration boundaries. The workflow must bind `reviewed_repository_commit_sha` to the request parent, while canonical `survey_human_gate_v2` validates that the named commit actually contains the exact reviewed State/Gate-input bytes.
 
 Retrospective cold start may use the bridge only to invoke the pre-existing generic `survey_period_v2` configured-period Profile path from an exact configured slug; it must not create a second period builder or synthesize cadence-specific editorial taxonomy. Direct exact-local CLI execution remains preferred when available.
 
@@ -239,7 +245,7 @@ A machine PASS without reader-facing quality does not satisfy points 1, 2, 4 or 
 - Core does not create a rigid generic series engine;
 - per-volume Architecture remains research-derived.
 
-Point 7 is profile-neutral: the same Human Gate protocol and bridge operations must bind the Profile-declared source root/work branch and work across these Profile combinations without topic-specific Human-decision code.
+Point 7 is profile-neutral: the same Human Gate protocol and reviewed-commit byte-binding invariant must bind the Profile-declared source root/work branch and work across these Profile combinations without topic-specific Human-decision code. Connector transport may add request-parent proof but may not weaken or replace the canonical direct-local commit-tree proof.
 
 ## 13. Scope of this rule
 
