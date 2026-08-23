@@ -18,45 +18,20 @@ The redesigned Actions surface contains seven mechanical workflows:
 | `build-weekly-survey.yml` | read-only reproducible Weekly LuaLaTeX build | controlled TeX environment and independent build artifact/log |
 | `build-special-pdf.yml` | read-only reproducible Special LuaLaTeX build | controlled TeX environment and independent build artifact/log |
 | `survey-production-v2-export-publication-preview.yml` | exact Publication Candidate PDF transport | independently validates Candidate-bound exact bytes before Human review export |
-| `survey-production-v2-release.yml` | exact-byte release/reconciliation | release credentials, immutable-byte verification and idempotent reconciliation are appropriately isolated in Actions |
+| `survey-production-v2-release.yml` | exact-byte release/reconciliation | release credentials, immutable-byte verification and idempotent reconciliation are isolated in Actions |
 | `survey-production-v2-operator-bridge.yml` | immutable-request execution of allowlisted deterministic Core mechanics | supplies an exact checked-out execution substrate when the ChatGPT connector runtime cannot invoke the canonical local CLI |
 
 No workflow owns Source Intake, Screening/Evidence judgment, Candidate Selection, Architecture, Drafting, Synthesis, reader-facing authorship, semantic QA, visual QA/repair, or Human approval.
 
 ## 2. Canonical contract
 
-`config/survey-production-v2.json` records the mechanical workflow authorities:
-
-```text
-workflow_control
-  dispatch_ref = main
-  operator_execution_bridge_workflow = survey-production-v2-operator-bridge.yml
-  publication_preview_export_workflow = survey-production-v2-export-publication-preview.yml
-  release_workflow = survey-production-v2-release.yml
-  handler_dispatch
-    stage:release = survey-production-v2-release.yml
-```
-
-Ordinary lifecycle stages remain `LOCAL_SCRIPT`. `FROZEN -> RELEASED` remains the only lifecycle `WORKFLOW_DISPATCH` stage.
+`config/survey-production-v2.json` records the mechanical workflow authorities. Ordinary lifecycle stages remain `LOCAL_SCRIPT`; `FROZEN -> RELEASED` remains the only lifecycle `WORKFLOW_DISPATCH` stage.
 
 The operator bridge is **not** a lifecycle handler. It is an optional execution substrate for the same local deterministic Core mechanics. Direct local CLI execution remains preferred when available.
 
 ## 3. Production work remains owned by ChatGPT
 
-ChatGPT owns:
-
-- Source Intake/search strategy and source-materiality judgment;
-- Grok/X applicability and task definition;
-- Screening interpretation;
-- Evidence interpretation and gap-fill;
-- Candidate Selection;
-- Architecture design;
-- Drafting and Profile synthesis;
-- reader-facing manuscript/source authoring;
-- semantic/editorial QA;
-- exact-PDF visual QA and visual/layout repair;
-- agent judgment rows supplied to a deterministic stage transition;
-- exact Human Gate decision recording after the Human actually decides.
+ChatGPT owns Source Intake/search strategy, Grok/X applicability, Screening/Evidence interpretation, gap-fill, Selection, Architecture, Drafting/Synthesis, reader-facing authorship, semantic/editorial QA, exact-PDF visual QA/repair, agent judgment rows, and actual Human Gate decision recording.
 
 Repository scripts may validate or mechanically transform narrow artifacts. The operator bridge may only invoke the allowlisted deterministic mechanics described in `docs/survey-production-core-v2-operator-execution-bridge.md`.
 
@@ -67,23 +42,19 @@ The bridge exists because the normal connector-only ChatGPT runtime can edit the
 Allowed bridge operations are currently:
 
 - `INITIALIZE_WEEKLY`;
-- `INITIALIZE_RETROSPECTIVE` using the existing configured-period Special authority plus a ChatGPT-authored edition-local scope materialization;
+- `INITIALIZE_RETROSPECTIVE`;
 - `INITIALIZE_THEMATIC`;
 - `ADVANCE_STAGE` over already-authored exact artifacts.
 
-The Retrospective operation is one generic `RETROSPECTIVE_PERIOD` adapter over existing `config/special-pipeline.json` + `special_pipeline.bootstrap_plan` authority. It does not create separate monthly, half-year or annual workflow logic.
+`INITIALIZE_RETROSPECTIVE` exposes the **existing `survey_period_v2` Core path**. The request supplies a configured `special_slug`; the bridge calls `survey_period_v2.resolve_configured_period()` and `survey_period_v2.period_profile()`, then requires the generated Profile identity and paths to match the request exactly. Existing `tests/test_survey_period_v2.py` already protects the generic monthly/half-year/annual Retrospective semantics. The bridge adds no second period builder, no new Retrospective scope schema and no cadence-specific workflow logic.
 
-The request contains no arbitrary command, script, module, expression or workflow name. Profile identity must bind the exact `issue_id`, Profile-declared `source_root`, and `work_branch`. Request-only commits and generated edition-local writes are enforced fail-closed.
-
-Every request also binds one exact reviewed `main` SHA. Before dependency installation or Core execution, the workflow verifies that the request parent descends from that reviewed baseline and that protected shared Core/contract bytes match the baseline exactly.
+The request contains no arbitrary command, script, module, expression or workflow name. Every request also binds one exact reviewed `main` SHA. Before dependency installation or Core execution, the workflow verifies that the request parent descends from that reviewed baseline and that protected shared Core/contract bytes match it exactly.
 
 The bridge must not approve Architecture, approve Publication Preview, Release, research, author content, perform semantic/visual judgment, or mutate shared Core during edition production.
 
 ## 5. Retired Core v2 mutation workflows
 
-The redesign removed the old request/dispatch/mutation and interactive authoring surface, including control, work-branch control, interactive Screening/Evidence/Selection/Architecture/Drafting/Synthesis/publication/semantic-quality workflows.
-
-The operator bridge does not restore that topology: it has no editorial handlers, no arbitrary command surface, no workflow-chaining stage machine, and no cadence/topic authoring logic.
+The redesign removed the old request/dispatch/mutation and interactive authoring surface. The operator bridge does not restore that topology: it has no editorial handlers, no arbitrary command surface, no workflow-chaining stage machine, and no cadence/topic authoring logic.
 
 ## 6. Retired focused/historical production topology
 
@@ -103,21 +74,16 @@ Both retained build workflows are read-only. They may checkout authored source, 
 
 ## 10. Regression authority
 
-`tests/test_survey_pilot_bootstrap_v2.py` requires `.github/workflows/` to equal the seven-workflow set in section 1. `tests/test_survey_core_execution_bridge_v2.py` additionally protects the bridge's request-only trigger, reviewed-main preflight, Profile-bound write scope, no-arbitrary-command surface, full initialization allowlist, and deterministic-vs-agent responsibility split.
+`tests/test_survey_pilot_bootstrap_v2.py` requires `.github/workflows/` to equal the seven-workflow set in section 1.
 
-`tests/test_survey_retrospective_profile_v2.py` protects one configured-period builder across representative monthly, half-year and annual periods and verifies fail-closed period/provenance boundaries.
+`tests/test_survey_core_execution_bridge_v2.py` protects the bridge's request-only trigger, reviewed-main preflight, Profile-bound write scope, no-arbitrary-command surface, full initialization allowlist, deterministic-vs-agent responsibility split, direct use of the existing `survey_period_v2` Retrospective builder, and an end-to-end deterministic init -> Discovery transition fixture.
+
+Existing `tests/test_survey_period_v2.py` protects one generic configured-period builder across representative monthly, half-year and annual periods, custom bounded periods, pre-period-end rejection and resume semantics.
 
 A new **eighth** workflow is prima facie architectural regression unless it is deliberately reviewed against the admission rule below.
 
 ## 11. Admission rule for future workflows
 
-A workflow is not justified merely because a task can be automated. It needs a concrete Actions-specific advantage, such as:
-
-- independent clean-environment CI;
-- controlled reproducible build environment;
-- credential isolation;
-- exact-byte artifact/release verification;
-- branch-protection integration;
-- supplying an exact checked-out deterministic execution substrate that the primary operator runtime demonstrably lacks.
+A workflow is not justified merely because a task can be automated. It needs a concrete Actions-specific advantage such as independent CI, controlled reproducible build, credential isolation, exact-byte verification, branch-protection integration, or supplying an exact checked-out deterministic execution substrate that the primary operator runtime demonstrably lacks.
 
 The operation must also remain mechanical. If it requires research interpretation, editorial judgment, semantic repair, visual taste, Human approval, or publication authorship, it belongs to ChatGPT plus narrow deterministic helpers instead.
