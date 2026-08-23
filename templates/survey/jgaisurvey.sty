@@ -120,6 +120,11 @@
   {\small\bfseries\color{SurveyAccent}\MakeUppercase{#1}\par}\vspace{1mm}%
 }
 
+% Publication-only wrapper used by LONGFORM_SPECIAL after leaving multicols.
+% The surrounding document is already single-column here; this environment
+% makes the full-width intent explicit without altering accepted content.
+\newenvironment{wideflow}{\par\begingroup}{\par\endgroup}
+
 \newtcolorbox{claimboundary}[1][Claim boundary]{
   enhanced,
   breakable,
