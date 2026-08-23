@@ -212,7 +212,9 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
         branch = "test/bridge-e2e"
         issue_id = "BRIDGE-E2E"
 
-        with tempfile.TemporaryDirectory(dir=self.root / "sources") as raw_temp:
+        sources_root = self.root / "sources"
+        sources_root.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=sources_root) as raw_temp:
             source_root = Path(raw_temp)
             source_rel = source_root.relative_to(self.root).as_posix()
             survey_rel = f"{source_rel}/survey"
