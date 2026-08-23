@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-import copy
+import io
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from scripts import survey_production_v2 as core
 from scripts import survey_retrospective_profile_v2 as retrospective
@@ -134,6 +135,24 @@ class SurveyRetrospectiveProfileV2Tests(unittest.TestCase):
     def test_unconfigured_period_is_not_invented(self) -> None:
         with self.assertRaisesRegex(ValueError, "not configured"):
             retrospective.plan_scope(self.root, "2099-Y", core.parse_instant("2099-12-31T23:59:59Z"))
+
+    def test_cli_invalid_recorded_at_fails_closed_without_traceback(self) -> None:
+        stderr = io.StringIO()
+        with mock.patch.object(
+            retrospective.sys,
+            "argv",
+            [
+                "survey_retrospective_profile_v2.py",
+                "plan",
+                "--special-slug",
+                "2024-H1",
+                "--recorded-at",
+                "not-a-timestamp",
+            ],
+        ), mock.patch.object(retrospective.sys, "stderr", stderr):
+            self.assertEqual(retrospective.main(), 2)
+        self.assertTrue(stderr.getvalue().strip())
+        self.assertNotIn("Traceback", stderr.getvalue())
 
 
 if __name__ == "__main__":
