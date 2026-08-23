@@ -71,6 +71,9 @@ class WeeklyLayoutTransformTests(unittest.TestCase):
         self.assertIn("\\footnotesize\n\\setlength{\\bibitemsep}{0pt}", text)
         self.assertIn("prenote=corev2legend", text)
         self.assertIn("References / Source Notes", text)
+        self.assertIn("Evidence tags: V = VERIFIED, P = PARTIAL; M = MATERIAL, C = CONTEXT.", text)
+        self.assertNotIn("Access dates are retained in the source bibliography metadata", text)
+        self.assertIn("Access dates remain in references.bib", result["finding"])
         self.assertEqual(updated["rendered_source"]["sha256"], core.sha256_file(main))
         result_path = root / result["result_path"]
         self.assertTrue(result_path.is_file())
