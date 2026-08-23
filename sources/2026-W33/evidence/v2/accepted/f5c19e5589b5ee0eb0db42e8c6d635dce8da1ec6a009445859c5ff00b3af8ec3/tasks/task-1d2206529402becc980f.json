@@ -1,0 +1,73 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "evidence_task_id": "evidence:2026-W33:bd686d9ba78445cc",
+  "discovery_ids": [
+    "base-arxiv-2608_08700v1"
+  ],
+  "source_records": [
+    {
+      "source_type": "paper",
+      "collector_id": "arxiv-api",
+      "collector_run_id": "arxiv-api-2026-W33-20260822T154529Z",
+      "observed_at": "2026-08-22T15:45:29Z",
+      "title": "PluginEval: A Diagnostic Benchmark for Fine-Grained Error Attribution in Function Calling",
+      "locator": "http://arxiv.org/abs/2608.08700v1",
+      "raw_paths": [
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-ai.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-cl.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-lg.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-cv.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-dc.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-cr.atom"
+      ],
+      "published_at": "2026-08-09T13:25:54Z",
+      "summary_text": "Reliable evaluation of tool routing is critical as Large Language Models increasingly operate as autonomous agents. Current benchmarks face three structural limitations: data distributions that follow a power law leave rare scenarios underrepresented; the absence of adversarial hard negatives obscures performance differences across models; and annotation pipelines depend on LLM judgments that have not been validated through execution. In this paper, we introduce PluginEval, a benchmark constructed through a two-stage framework that systematically mitigates these limitations. First, we formulate tool routing as a sequence of three decisions and separate generation from verification. LLMs propose candidate calls, while deterministic validation and real API execution provide reliable quality signals. Second, we decompose each plugin by capability, intent, and boundary to identify trigger and exclusion scenarios. We then generate queries at different difficulty levels to fill coverage gaps, including adversarial negatives targeting three failure modes, and return them to the first stage for annotation. This process creates a closed loop that iterates until coverage converges. For evaluation, we move beyond aggregate accuracy. An LLM judge anchored to gold annotations classifies failures as missed calls, spurious calls, or parameter errors, producing a detailed error profile for each model. We evaluate five model families, including proprietary models and models with open weights, analyze their performance across difficulty levels and error categories, and validate the judge through agreement with human annotations.",
+      "metadata": {
+        "authors": [
+          "Dongjie Xu",
+          "Julius",
+          "Hanchi Dong",
+          "Minghua Tang",
+          "Yuxuan Sun",
+          "Ziwei Nie",
+          "Zicheng Liu",
+          "Dujun Qing",
+          "Jiajie Xu"
+        ],
+        "categories": [
+          "cs.AI"
+        ],
+        "primary_category": "cs.AI",
+        "updated": "2026-08-09T13:25:54Z",
+        "links": [
+          {
+            "href": "https://arxiv.org/abs/2608.08700v1",
+            "rel": "alternate",
+            "type": "text/html"
+          },
+          {
+            "href": "https://arxiv.org/pdf/2608.08700v1",
+            "rel": "related",
+            "type": "application/pdf"
+          }
+        ]
+      }
+    }
+  ],
+  "verification_targets": [
+    "Review full paper/method/results/limitations before promotion; abstract alone is insufficient for strong claims."
+  ],
+  "screening_basis": {
+    "screening_acceptance_sha256": "8d7cac2f809114608225bea517aba91c66105395f57f8333766da550eb16c3e0",
+    "decisions": [
+      {
+        "discovery_id": "base-arxiv-2608_08700v1",
+        "decision": "KEEP",
+        "scope_tags": [
+          "paper-candidate"
+        ]
+      }
+    ]
+  }
+}

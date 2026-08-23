@@ -1,0 +1,86 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "from_state": "CANDIDATES_NORMALIZED",
+  "to_state": "EVIDENCE_REVIEWED",
+  "checkpoints": [
+    "evidence",
+    "materiality",
+    "completeness"
+  ],
+  "recorded_at": "2026-08-22T17:39:40Z",
+  "implementation": {
+    "repository_commit_sha": "80e370a0b5538db9d282ef0d45870c073a7f99b3",
+    "orchestrator_version": "survey-production-core-v2/0.8-agent-first"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "1814863bfe5661491b972eabaeaa6383b4018172fbfe765ce064a7202986abce",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "edition-views-acceptance",
+      "path": "sources/2026-W33/evidence/v2/edition-views/accepted/7ed8209758a5dfe105da573feb805010bd3ce5f5be406bda3172bcb40f9e088e/edition-views-accepted.json",
+      "sha256": "b54a9292c96ae2421909c4af69ea40956c26efa8f94496a2d6a3995dc3f09346"
+    },
+    {
+      "name": "evidence-acceptance",
+      "path": "sources/2026-W33/evidence/v2/accepted/48e9709c64f871dc2e5356984e0aee1073c7234f2976e656475cd82b3da16093/evidence-accepted.json",
+      "sha256": "1eaf0f76fab2567dfc9a344a533b8b68bb1997b210e485433c33790ba2dd224c"
+    },
+    {
+      "name": "materiality-ledger",
+      "path": "sources/2026-W33/materiality-ledger-v2.json",
+      "sha256": "0566812ebb54760fe70fa772032ed3d468811c363461589744c004a00db7a855"
+    },
+    {
+      "name": "profile-completeness",
+      "path": "sources/2026-W33/profile-completeness-v2.json",
+      "sha256": "d3c0183e4004896ec997fb62db2be9856ac82fbaec6908e09dcbb5825248f507"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_stage_validation_v2.py",
+      "evidence": "Revalidate the exact W33 r2 Evidence acceptance, Edition Views, Materiality Ledger, and Profile Completeness together with accepted upstream Discovery/Screening authorities.",
+      "result": {
+        "path": "sources/2026-W33/orchestration/v2/reviews/evidence-r2-adoption-core-stage-contract.json",
+        "sha256": "bd90cc9f98d907f0f7c464e45cf4e9577659ba67b66034b49892196eae09a683"
+      }
+    },
+    {
+      "check_id": "SOURCE_SPECIFIC_FAIL_CLOSED_NOTES",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT",
+      "evidence": "W33 r2 remains bounded to accepted Discovery locators: GitHub and official-feed claims are source-owner attributed; arXiv remains abstract-level PARTIAL; official-index remains HOLD; Grok/X claims are SOCIAL_OBSERVATION describing community salience and do not establish underlying model, benchmark, pricing, or release facts.",
+      "result": null
+    },
+    {
+      "check_id": "WEEKLY_COMMUNITY_SIGNAL_RETENTION",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "ChatGPT",
+      "evidence": "The fresh Grok/X Evidence Card now preserves the observed W33 release-wave, agent/coding comparison axis, local/open-weight narrative, harness/IDE integration speed, rapid practitioner testing, and correction/counter-signal patterns for a recurring Community Pulse section.",
+      "result": null
+    },
+    {
+      "check_id": "WEEKLY_CARRY_OVER_DISPOSITION",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "ChatGPT",
+      "evidence": "All six W32 HOLD_OUT rechecks remain explicitly Screening DROP and Materiality EXCLUDED; none is silently redated into W33.",
+      "result": null
+    }
+  ],
+  "summary": "W33 Architecture Review r2 Evidence is ready for formal adoption: exact-source Evidence remains fail-closed, while the Grok/X card now preserves concrete weekly community movement as SOCIAL_OBSERVATION for recurring Community Pulse coverage. All Weekly obligations remain satisfied with explicit residual limitations."
+}
