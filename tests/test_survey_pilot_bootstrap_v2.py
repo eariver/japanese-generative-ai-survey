@@ -156,13 +156,26 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
             self.assertNotIn("pipeline-state.json", text)
 
         bridge = (workflow_root / "survey-production-v2-operator-bridge.yml").read_text(encoding="utf-8")
-        self.assertIn("sources/**/execution/requests/*.json", bridge)
-        self.assertIn("- '!main'", bridge)
+        self.assertIn("issue_comment:", bridge)
+        self.assertIn("OPERATOR_QUEUE_ISSUE: '448'", bridge)
+        self.assertIn("/survey-core-execute ", bridge)
+        self.assertIn("Operator request commit must contain only the immutable request file", bridge)
+        self.assertIn("Operator request commit must be the exact current canonical work-branch head", bridge)
+        self.assertIn("Human Gate request must bind reviewed_repository_commit_sha to the request-only commit parent", bridge)
+        self.assertIn("needs: operator-preflight", bridge)
         self.assertIn("contents: write", bridge)
         self.assertIn("survey_core_execution_bridge_v2.py", bridge)
-        self.assertIn("Operator request commit must contain only the immutable request file", bridge)
         self.assertIn("Bridge attempted write outside edition source root", bridge)
+        self.assertIn("--force-with-lease", bridge)
         self.assertNotIn("workflow_dispatch", bridge)
+        self.assertNotIn("workflow_run:", bridge)
+        self.assertNotIn("sources/**/execution/requests/*.json", bridge)
+
+        pipeline_ci = (workflow_root / "pipeline-contract-tests.yml").read_text(encoding="utf-8")
+        self.assertIn("contents: read", pipeline_ci)
+        self.assertNotIn("contents: write", pipeline_ci)
+        self.assertNotIn("operator-preflight", pipeline_ci)
+        self.assertNotIn("workflow_run:", pipeline_ci)
 
         preview = (workflow_root / "survey-production-v2-export-publication-preview.yml").read_text(encoding="utf-8")
         self.assertIn("publication-candidate-v2.json", preview)
@@ -182,10 +195,11 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.assertIn("unittest discover", core_ci)
 
         final_audit = (self.root / "docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
-        self.assertIn("exactly **seven workflows**", final_audit)
+        self.assertIn("intended workflow set remains exactly seven", final_audit)
         self.assertIn("survey-production-v2-operator-bridge.yml", final_audit)
         self.assertIn("Human Gate round-trip viability", final_audit)
-        self.assertIn("run the complete seven-point acceptance audit from zero", final_audit)
+        self.assertIn("run all seven acceptance points from zero", final_audit)
+        self.assertIn("default-branch `issue_comment` authority", final_audit)
         self.assertNotIn("intended redesign surface is exactly six workflows", final_audit)
 
     def test_retired_weekly_post_render_authoring_helpers_are_absent(self) -> None:
