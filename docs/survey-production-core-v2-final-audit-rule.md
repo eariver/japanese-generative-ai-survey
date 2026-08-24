@@ -75,15 +75,18 @@ A valid reviewed commit must be reachable from canonical `work_branch` and conta
 
 The audit must not merely inspect the bridge helper. It must prove the root of trust:
 
-- work-branch `survey-production-v2-operator-bridge.yml` is read-only/unprivileged signal only;
-- it has no repository-write permission, Core execution, or trusted admission logic;
-- trusted operator admission/execution is owned by `pipeline-contract-tests.yml` through `workflow_run` default-branch authority;
-- the read-only preflight checks exact `workflow_run.head_sha` as data;
-- request-only commit, request/head-branch identity, reviewed-main ancestry, Human reviewed-commit/request-parent binding, and protected-Core equality all pass before a write-capable job exists;
+- operator execution is initiated only through `survey-production-v2-operator-bridge.yml` loaded from default-branch `issue_comment` authority;
+- the persistent transport surface is Issue `#448`, which is not a Human Gate or editorial authority;
+- only exact `/survey-core-execute <lowercase-40-hex-request-commit>` comments from an authorized repository association are actionable;
+- supplied request SHA/work branch are treated as untrusted data until preflight completes;
+- the request SHA must be the exact current canonical work-branch head;
+- request-only commit, reviewed-main ancestry, Human reviewed-commit/request-parent binding, and protected-Core equality all pass before a write-capable job exists;
 - protected-path configuration is read from the named reviewed-main commit, not the untrusted work branch;
 - only a dependent post-preflight job receives `contents: write`;
+- the canonical work branch is rechecked after preflight and output push is lease-bound to the admitted request head;
 - generated writes remain Profile-bound and immutable request authority is not mutated;
-- generic/arbitrary Human-decision or executable surfaces remain absent.
+- generic/arbitrary Human-decision or executable surfaces remain absent;
+- there is no work-branch signal workflow and no `workflow_run` trust hop.
 
 A write-capable verifier loaded from the work branch under review is a Point-7 failure even if its script text appears to perform the right checks.
 
@@ -114,8 +117,8 @@ The intended workflow set remains exactly seven:
 
 Responsibilities matter as much as filenames:
 
-- operator-bridge workflow = read-only work-branch signal;
-- pipeline-contract workflow = normal CI plus trusted default-branch workflow_run operator preflight/execution;
+- `pipeline-contract-tests.yml` = independent read-only CI only;
+- `survey-production-v2-operator-bridge.yml` = trusted default-branch Issue `#448` admission/preflight plus dependent deterministic executor;
 - Release remains the only lifecycle `WORKFLOW_DISPATCH` edge.
 
 An eighth workflow is prima facie regression unless separately reviewed under the Actions admission rule.
@@ -144,7 +147,7 @@ After fixed-head 7/7 PASS, Human approval, and unchanged integration into `main`
 - one Foundations-guided scenario through at least Architecture Review;
 - structural monthly/half-year/annual and unplanned-Thematic compatibility confirmation.
 
-The connector-safe matrix must also prove the trusted default-branch operator path in real branch execution after integration; static PR tests cannot by themselves prove the default-branch `workflow_run` transport is operational.
+The connector-safe matrix must also exercise the trusted default-branch Issue `#448` operator path in real branch execution after integration; static PR tests cannot by themselves prove the default-branch transport is operational.
 
 ## 9. Invalidation rule
 
@@ -169,5 +172,7 @@ The candidate `9932c8b7a14f1c3bdcc775df88056681b2841514` and its former 7/7 resu
 - untrusted work-branch trust bootstrap;
 - insufficient reviewed-commit durability;
 - missing Publication Preview upstream correction/reopen path.
+
+An intermediate read-only branch signal + `workflow_run` design was also rejected during repair because it still depended on work-branch workflow definition for signaling. It must not be treated as current authority.
 
 Those findings must be fully repaired and audited on a later exact SHA before PR #447 can return to Ready for Human review.
