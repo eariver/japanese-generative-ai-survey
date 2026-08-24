@@ -54,7 +54,7 @@ jobs:
       request_head_branch: ${{ steps.preflight.outputs.request_head_branch }}
       reviewed_main_sha: ${{ steps.preflight.outputs.reviewed_main_sha }}
     steps:
-      - name: Resolve exact operator request commit
+      - name: Parse exact operator command or trusted PR head
         id: command
         shell: bash
         env:
@@ -155,7 +155,7 @@ jobs:
           git check-ref-format --branch "$request_work_branch" >/dev/null
           if [[ "$EVENT_NAME" == "pull_request_target" && "$request_work_branch" != "$PR_HEAD_REF" ]]; then
             echo "Operator transport PR head branch must equal request work_branch." >&2
-            echo "PR head:       $PR_HEAD_REF" >&2
+            echo "PR head:        $PR_HEAD_REF" >&2
             echo "request branch: $request_work_branch" >&2
             exit 1
           fi
