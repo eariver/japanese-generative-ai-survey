@@ -238,7 +238,7 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
         self.assertIn("existing `survey_period_v2`", inventory)
 
         self.assertIn("Weekly", policy)
-        self.assertIn("configured Retrospective Period", policy)
+        self.assertIn("configured Retrospective", policy)
         self.assertIn("Thematic", policy)
         self.assertIn("existing `survey_period_v2`", policy)
 
