@@ -22,9 +22,7 @@ No workflow owns Source Intake, Evidence interpretation, Selection, Architecture
 
 ## 2. Trust-root invariant
 
-The work branch must supply data only; it must not supply the workflow that decides whether the branch is trusted.
-
-The execution chain is:
+The work branch supplies data only; it must not supply the workflow that decides whether the branch is trusted.
 
 ```text
 ChatGPT pushes one request-only commit as exact current work-branch head
@@ -39,7 +37,7 @@ ChatGPT pushes one request-only commit as exact current work-branch head
 
 There is no work-branch operator signal workflow and no `workflow_run` trust hop. `pipeline-contract-tests.yml` remains CI-only.
 
-Trusted preflight derives protected-path authority from the request's named `reviewed_main_sha`, not from untrusted work-branch config. It also requires the supplied request SHA to equal the exact current canonical work-branch head and rechecks branch movement before execution/push.
+Trusted preflight derives protected-path authority from the request's named `reviewed_main_sha`, not from untrusted work-branch config. It requires the supplied request SHA to equal the exact current canonical work-branch head and rechecks branch movement before execution/push.
 
 Issue #448 is operational transport only, not a Human Gate or editorial authority. Only the exact `/survey-core-execute <40-hex>` trigger syntax is executable; the immutable request JSON remains operation authority.
 
@@ -70,7 +68,7 @@ This is still one of the same two normal Human Gates, not a new workflow or Gate
 
 ## 5. Why seven remains proportional
 
-The trust repair does not add an eighth workflow. The existing operator workflow itself becomes the trusted default-branch `issue_comment` executor. `pipeline-contract-tests.yml` remains a normal CI workflow rather than accumulating production execution responsibility.
+The trust repair does not add an eighth workflow. The existing operator workflow itself is the trusted default-branch `issue_comment` executor. `pipeline-contract-tests.yml` remains normal CI rather than accumulating production execution responsibility.
 
 Ordinary lifecycle stages remain local Core mechanics. `FROZEN -> RELEASED` remains the only lifecycle `WORKFLOW_DISPATCH` stage.
 
