@@ -1,72 +1,66 @@
 # Survey Production Core v2 — Audited Redesign Authority Overlay
 
-Status: `IMPLEMENTED REDESIGN CANDIDATE / FIXED-HEAD AUDIT PENDING`  
+Status: `INTEGRATED REDESIGN + OPERATOR/HUMAN-GATE FOLLOW-UP REPAIR CANDIDATE / SEVEN-POINT REAUDIT PENDING`  
 Established: 2026-08-23 JST  
-Implementation synchronized: 2026-08-23 JST  
-Working branch: `refactor/survey-production-core-v2`
+Updated: 2026-08-24 JST  
+Working branch: `maintenance/core-v2-operator-execution-bridge`
 
-## 1. Purpose
+## 1. Purpose and precedence
 
-This document is the authority overlay for the redesign that follows the failed W33/SP001 real-production validation.
+This overlay governs the redesign after W33/SP001 production evidence and the later operator/Human-Gate maintenance. It does not erase historical Core v2 design documents; where they conflict with this overlay or later production evidence, this overlay wins.
 
-It does not erase the earlier Core v2 design history. `docs/survey-production-core-v2-authority.md` and earlier audit/remediation documents remain historical evidence of how the merged Core was designed and why it behaved as it did.
-
-For the **implemented redesign candidate**, where earlier authority conflicts with the post-production evidence or the audited redesign, this overlay wins.
-
-## 2. Redesign authority precedence
-
-For the redesign work, use:
+Current precedence:
 
 ```text
-1. repository reality + Issues #400/#433/#434 + W33/SP001 execution evidence
+1. repository reality + production/review evidence
 2. this redesign authority overlay
-3. docs/survey-production-core-v2-redesign-preimplementation-audit.md
-4. docs/survey-production-core-v2-redesign-plan-after-w33-sp001.md
-5. docs/survey-production-core-v2-github-actions-policy.md
-6. docs/survey-production-core-v2-execution-record-policy.md
-7. docs/survey-production-core-v2-final-audit-rule.md
-8. profile/edition/series editorial authorities
-9. earlier Core v2 authority/audit documents as historical evidence where not superseded
+3. docs/survey-production-core-v2-operator-execution-bridge.md
+4. docs/survey-production-core-v2-github-actions-policy.md
+5. docs/survey-production-core-v2-execution-record-policy.md
+6. docs/survey-production-core-v2-final-audit-rule.md
+7. current Profile/edition/series authority
+8. older redesign/audit documents where not superseded
 ```
 
-The redesign must not implement a clause from earlier authority when this overlay explicitly supersedes it.
+## 2. Fundamental operator model
 
-## 3. Fundamental operator model
-
-**ChatGPT remains the primary research/editorial/publication operator.**
-
-The target production model is:
+**ChatGPT remains the primary research/editorial/publication operator. The Human remains the authority for the two normal Human Gate decisions.**
 
 ```text
 Profile + edition/series authority + Production State
 -> ChatGPT research/editorial work
--> narrow deterministic provenance/validation helpers
--> Architecture Review Human Gate
--> ChatGPT reader-facing manuscript / publication authorship
--> ChatGPT semantic/editorial QA
--> reproducible build + deterministic QA
--> ChatGPT exact-PDF visual QA
--> atomic Publication Candidate finalization
--> Publication Preview Human Gate
+-> narrow deterministic validation/provenance helpers
+-> ARCHITECTURE_REVIEW
+   -> APPROVED: record -> drafting
+   -> REQUEST_CHANGES: record/invalidate -> ChatGPT repair -> Architecture rN+1
+-> ChatGPT reader-facing authorship + semantic/editorial QA + exact-PDF visual QA
+-> atomic Publication Candidate
+-> PUBLICATION_PREVIEW
+   -> APPROVED: record -> Freeze
+   -> REQUEST_CHANGES publication-local: invalidate downstream -> repair -> Publication rN+1
+   -> REQUEST_CHANGES upstream: reopen dependency boundary -> Architecture rN+1 -> redraft -> Publication rN+1
 -> exact-byte Freeze / Release integrity
 ```
 
-The redesign reduces workflow-encoded publication logic. It does not reduce research/Evidence rigor or exact-byte release authority.
+Deterministic execution may use direct exact local CLI or the connector-safe operator bridge. The bridge is transport/execution for the same canonical mechanics, never a parallel editorial state machine.
 
-## 4. Core / Profile / edition layering
+## 3. Core / Profile / edition layering
 
 ### Shared Core
 
-Owns cross-profile invariants only:
+Shared Core owns only cross-profile invariants:
 
-- lifecycle and Human Gates;
-- provenance and Evidence boundaries;
+- lifecycle and exactly two normal Human Gates;
+- Human decision recording, contiguous review revisions, dependency-aware invalidation and cross-gate reopening;
+- durable exact reviewed-commit provenance;
+- Evidence/provenance boundaries;
 - internal-vs-reader-facing Publication Boundary;
-- deterministic / semantic / visual QA separation;
-- exact candidate identity and atomic revision invalidation;
-- execution-record requirements;
-- Production-vs-Core-maintenance boundary;
-- Grok/X transport/evidence-role invariants.
+- deterministic vs semantic/editorial vs visual QA separation;
+- exact Candidate/Preview/Freeze identity;
+- execution records;
+- Production-vs-Core-maintenance separation;
+- Grok/X transport/evidence-role invariants;
+- optional safe deterministic operator execution.
 
 ### Research Profiles
 
@@ -74,252 +68,180 @@ Owns cross-profile invariants only:
 - `RETROSPECTIVE_PERIOD`
 - `THEMATIC`
 
-Research Profile guidance owns temporal/research semantics and must not be flattened into Publication Profile logic.
-
 ### Publication Profiles
 
 - `WEEKLY_MAGAZINE`
 - `LONGFORM_SPECIAL`
 
-Publication Profile guidance owns publication-format semantics but does not replace Research Profile requirements.
-
 ### Edition / series authority
 
-Scale/topic/series-specific guidance remains available without creating new generic workflow families.
+Monthly/half-year/annual guidance, standalone Thematic planning, and Generative AI Foundations remain editorial authorities layered over generic Core/Profile mechanics. They do not justify cadence/topic-specific engines.
 
-Examples:
+## 4. Retrospective invariant
 
-- monthly / half-year / annual retrospective guidance;
-- standalone Thematic planning authority;
-- Generative AI Foundations living series memo.
+Configured Retrospective cold start uses the **existing** generic:
 
-## 5. Publication Boundary invariant
+```text
+survey_period_v2.resolve_configured_period(...)
+-> survey_period_v2.period_profile(...)
+```
 
-Internal research/editorial/provenance material is not a legal fallback source for reader-facing prose.
+Monthly, half-year, annual and custom bounded periods remain one generic `RETROSPECTIVE_PERIOD + LONGFORM_SPECIAL` Profile path. Do not introduce a second Retrospective adapter/schema/engine in the operator bridge.
 
-Internal-only examples include:
+## 5. Publication Boundary and fidelity
 
-- Screening/Selection/Evidence/materiality state;
-- Architecture rationale and Human Review response rationale;
-- internal IDs and obligations;
-- Core contract vocabulary;
-- package/coverage/promotion language used to manage production;
-- raw internal paths.
+Internal Screening/Selection/Evidence/materiality/Architecture/Human-review state is not legal fallback reader prose. ChatGPT explicitly authors canonical reader-facing source. Missing reader content fails closed to authoring.
 
-Before publication assembly, ChatGPT must have explicitly authored a reader-facing manuscript/publication surface.
+Architecture fidelity means approved `must_cover` obligations and materially selected story/lineage questions are actually explained to the reader. Deterministic validation may prove structural mapping; substantive fulfillment remains ChatGPT judgment.
 
-The exact representation is implementation-dependent. It does **not** need to be one universal JSON payload. The invariant is semantic separation and exact provenance.
+Candidate readiness requires three distinct layers:
 
-If required reader-facing content is missing, fail closed to ChatGPT authoring. Never fall back to internal fields.
+1. deterministic Quality Bundle for crisp invariants;
+2. ChatGPT semantic/editorial review;
+3. ChatGPT exact-PDF visual review.
 
-Cadence-specific or post-render helpers must not synthesize reader-facing bibliography notes, Evidence/materiality labels, provenance legends, production-language annotations, or other prose from internal production artifacts. Deterministic tooling may validate or build exact authored publication bytes, but reader-facing wording and source-note presentation remain publication-authoring responsibility.
+Machine PASS alone is never publication-quality PASS.
 
-## 6. Content-fidelity invariant
+## 6. GitHub Actions / trust-root invariant
 
-Architecture fidelity means that approved `must-cover` obligations and materially selected story/lineage questions are actually explained to the reader.
+GitHub Actions is a deterministic executor/verifier, not a reasoning, editorial, publication-authoring or Human-decision agent.
 
-It does not mean:
+The operator bridge is admitted only because the connector runtime lacks a guaranteed exact local checkout/CLI. Its request surface remains eight explicit operations: three initializers, `ADVANCE_STAGE`, and four Human Gate approval/revision recorders. Arbitrary command/module/script/workflow and generic Human-decision surfaces are prohibited.
 
-- mentioning the Architecture;
-- reproducing review rationale;
-- rendering one paragraph per Evidence record;
-- meeting a page/word quota.
+**The untrusted work branch must never supply the workflow that decides whether that branch is trusted.** Connector-safe execution therefore starts only from the default-branch `issue_comment` authority of `.github/workflows/survey-production-v2-operator-bridge.yml`:
 
-Supporting Evidence may appear through narrative, chronology, Technical Notes, comparison, attribution or bibliography as appropriate.
+```text
+request-only commit pushed as exact current Profile work-branch head
+-> ChatGPT comments on operator queue Issue #448:
+     /survey-core-execute <exact-request-commit-sha>
+-> default-branch workflow parses supplied SHA as untrusted data
+-> read-only preflight proves exact work-head/request-only/reviewed-main/protected-Core invariants
+-> only dependent post-PASS executor receives contents: write
+-> branch head rechecked
+-> exact Core operation executed
+-> Profile-bound outputs pushed with force-with-lease
+```
 
-`architecture_coverage` in the Reader Manuscript manifest is an **author-declared accountability and traceability map**. Deterministic validation must prove that every approved `must_cover_requirement` has exactly the required non-empty mapping and that the manifest remains bound to exact artifacts. It does **not** machine-prove that the cited reader prose substantively satisfies the requirement. That substantive judgment belongs to ChatGPT semantic/editorial QA through the required `ARCHITECTURE_CONTENT_FIDELITY` review; a claimed `FULFILLED` mapping must be rejected or revised when the prose is materially inadequate.
+There is no work-branch signal workflow and no `workflow_run` trust hop. `pipeline-contract-tests.yml` remains CI-only.
 
-## 7. Quality ownership
+Protected-path configuration comes from the named reviewed-main commit, not untrusted branch config. Issue #448 is transport only, not a Human Gate or editorial authority.
 
-### Deterministic
+## 7. Human review provenance invariant
 
-Scripts/CI may prove crisp properties such as:
+Before either normal Human Gate is presented, ChatGPT must commit **and push/retain** the exact current Production State and all Gate inputs on the Profile-bound canonical work branch. The Human reviews that exact durable commit.
 
-- schemas;
-- paths/hashes;
-- source/PDF/candidate identity;
-- identifiers;
-- citation/reference integrity;
-- completeness of the author-declared Architecture coverage map, without treating it as substantive content proof;
-- reproducible build/preflight;
-- known exact-token leakage;
-- Freeze/Release identity.
+Canonical `survey_human_gate_v2` requires `reviewed_repository_commit_sha` to:
 
-### ChatGPT semantic/editorial
+- name a real Git commit;
+- be reachable from canonical `work_branch`;
+- contain exact current reviewed State and every configured Gate-input byte;
+- for Publication Preview, contain the exact Candidate-bound PDF.
 
-ChatGPT must review:
+Connector-safe Human Gate requests additionally require that reviewed commit to be the exact request-only parent. The later request/event commit remains separate execution provenance.
 
-- Publication Boundary;
-- content fidelity to approved Architecture, including whether every claimed `architecture_coverage` location materially satisfies its requirement;
-- technical depth;
-- profile-specific synthesis/chronology/historical semantics;
-- claim-boundary wording;
-- `総括` quality;
-- applicable Grok/X editorial disposition;
-- repetition/generic fallback/production-language leakage.
+A dangling commit object is insufficient historical authority even if its bytes temporarily exist in the local object database.
 
-### ChatGPT visual
+## 8. Human review history and cross-gate revision
 
-ChatGPT reviews the exact PDF for layout identity, whitespace, hierarchy, tables/boxes/URLs, clipping/glyphs and visually obvious content-thin output.
+Machine review authority remains:
 
-Machine PASS alone is never equivalent to publication-quality PASS.
+```text
+{source_root}/gates/reviews/architecture-rN.json
+{source_root}/gates/reviews/publication-rN.json
+{source_root}/gates/review-index.json
+```
 
-## 8. GitHub Actions invariant
+Each successful approval also stores an immutable snapshot:
 
-Adopt `docs/survey-production-core-v2-github-actions-policy.md` as a hard design constraint.
+```text
+{source_root}/gates/reviews/approvals/architecture-rN.json
+{source_root}/gates/reviews/approvals/publication-rN.json
+```
 
-GitHub Actions is a deterministic executor/verifier, not an editorial or publication-authoring agent.
+The canonical approval files remain current active authority and may later be superseded; historical rN snapshots remain immutable evidence.
 
-Retain Actions only where:
+At `PUBLICATION_PREVIEW`, the Human chooses the regeneration boundary. If the boundary is at/after `ARCHITECTURE_ESTABLISHED`, valid Architecture approval is preserved. If the boundary is earlier because review found an upstream defect, Core:
 
-- Actions execution has concrete independent/reproducibility/security value; or
-- the task is genuinely mechanical and no research/editorial judgment is transferred into CI.
+1. records Publication `REQUEST_CHANGES` against exact Candidate/PDF review bytes;
+2. verifies active Architecture approval provenance;
+3. preserves old Architecture review + immutable approval snapshot;
+4. removes/supersedes active canonical Architecture approval;
+5. marks `ARCHITECTURE_REVIEW` pending again;
+6. returns lifecycle/checkpoints to the Human-selected boundary;
+7. requires Architecture rN+1 before publication continues.
 
-Do not replace the old workflow set with cadence/topic-specific authoring workflows.
+This is a normal revision path, not a third Human Gate and not an Owner Exception Gate. Core never chooses the repair boundary.
 
-## 9. Production vs Core-maintenance invariant
+## 9. Production vs Core maintenance
 
 > **Production sessions repair editions; Core-maintenance sessions repair shared Core.**
 
-Production sessions may autonomously repair:
+Production may autonomously repair research gaps, edition-local Evidence/Selection/Architecture/draft errors, reader-facing prose/layout, and transient execution failures where the shared contract does not change.
 
-- research gaps;
-- edition-local Evidence/Selection/Architecture/draft errors;
-- reader-facing prose/layout;
-- transient execution failures where shared behavior does not change.
+A shared-Core defect is recorded and repaired separately. A formal production-validation run discovering such a defect is failed evidence and must be rerun cleanly after reviewed Core repair.
 
-Production sessions must not author changes to reusable Core scripts/schemas/workflows/config/shared renderer/shared style merely to keep the edition moving.
-
-A shared-Core defect is recorded under the edition execution record and returned to Core maintenance.
-
-For a formal Core acceptance run, discovering a shared-Core defect invalidates that run as acceptance evidence. Repair separately and rerun cleanly.
-
-## 10. Grok/X handoff invariant
-
-Normal manual mediation is:
+## 10. Grok/X invariant
 
 ```text
-ChatGPT creates one self-contained Grok task file in Google Drive
--> ChatGPT gives Human the exact Drive task-file path/reference
--> Human gives that path/reference to Grok
--> Grok reads the file and writes the instructed result
--> ChatGPT imports/dispositions the result and resumes automatically
+ChatGPT writes one self-contained Drive task file
+-> Human passes exact task-file path/reference to Grok
+-> Grok writes result
+-> ChatGPT imports/dispositions exact bytes
+-> ChatGPT resumes automatically
 ```
 
-Do not search for or configure a Grok connector merely because X Source Intake is required.
+This is transport, not a third Human Gate. Do not search for/configure a Grok connector merely because X intake is required.
 
-The handoff is transport, not a Human approval Gate.
+Weekly requires X/Grok and reader-facing `コミュニティの動き`; Retrospective/Thematic applicability remains explicit ChatGPT judgment under Profile/series policy.
 
-## 11. Human Gates
+## 11. Candidate/revision invariant
 
-The two normal Human Gates remain:
+Any reader source/PDF change invalidates superseded Candidate authority. Candidate finalization atomically binds exact reader source, exact PDF, deterministic QA, semantic/editorial QA and visual QA. No Human Gate may point to old Candidate bytes while presenting new preview bytes.
 
-1. `ARCHITECTURE_REVIEW`
-2. exact-byte `PUBLICATION_PREVIEW`
+## 12. Generality invariant
 
-Do not add a third routine Human Gate to compensate for inadequate autonomous editorial QA.
+The redesign cannot be accepted only by W33/SP001-shaped tests. It must support:
 
-A genuine Exception Gate remains only for an unresolved Owner decision that cannot be safely derived from authority.
+- future Weekly;
+- configured Retrospective monthly/half-year/annual/custom periods;
+- standalone Thematic/LONGFORM including SP001 regression;
+- Generative AI Foundations as a living outer authority;
+- unplanned future Thematic topics;
+- profile-neutral Human Gate round trips.
 
-A shared-Core implementation defect is a maintenance dependency, not a reason for repeated routine Human confirmation.
+The operator bridge must remain Profile/path driven and must not hardcode topic names, source-root depth, branch-family prefixes, or Foundations volume structure.
 
-## 12. Universal/profile-specific reader requirements
+## 13. Actions surface
 
-### Every Weekly/Special
+The intended Actions surface remains exactly seven workflows:
 
-- final substantive `総括` or explicitly equivalent reader-facing synthesis;
-- no internal production-state leakage;
-- Human Review rationale is applied to the artifact, not serialized as reader-facing rebuttal;
-- page targets remain planning envelopes, not padding quotas.
+1. `pipeline-contract-tests.yml` — CI only
+2. `survey-production-v2-ci.yml` — focused Core CI
+3. `build-weekly-survey.yml` — read-only build
+4. `build-special-pdf.yml` — read-only build
+5. `survey-production-v2-export-publication-preview.yml` — exact Preview transport
+6. `survey-production-v2-release.yml` — exact-byte Release
+7. `survey-production-v2-operator-bridge.yml` — trusted default-branch Issue #448 deterministic operator execution
 
-### Weekly
+Release remains the only lifecycle `WORKFLOW_DISPATCH` edge.
 
-- mandatory reader-facing `コミュニティの動き` every issue;
-- Grok/X result receives explicit editorial disposition;
-- quiet week remains an explicit finding rather than silent omission.
+## 14. Acceptance status
 
-### Retrospective Period
+Historical maintenance candidates and PASS results are non-reusable after mutation. In particular:
 
-Preserve existing period coverage-audit, chronology/lifecycle, period-normalization and period-synthesis authority, including annual temporal-skew/trajectory rules where applicable.
+- `0a9e2d2c5bd9124ba626cdc7558e645d8021946c`: CI PASS, seven-point audit failed Point 7 on direct-local reviewed-commit provenance.
+- `9932c8b7a14f1c3bdcc775df88056681b2841514`: fresh 7/7 PASS, then follow-up PR review invalidated the freeze with trust-bootstrap, review-durability and Publication-upstream-correction findings.
+- an intermediate read-only work-branch signal + default-branch `workflow_run` design was considered and rejected because the signal workflow definition itself remained branch-supplied.
 
-### Thematic
-
-Preserve research closure, lineage/parallel-branch reasoning where relevant, historical attribution and hindsight boundaries.
-
-### Longform Special
-
-Preserve longform depth and mixed-layout identity without forcing one topic taxonomy or one-to-one Evidence rendering.
-
-### Foundations
-
-Remain a living series authority layered over `THEMATIC + LONGFORM_SPECIAL`; do not build a rigid generic series engine unless later real production demonstrates repeated need.
-
-## 13. Execution records
-
-Every new production run uses the canonical edition source root:
+Before PR #447 may return to Human full-candidate review:
 
 ```text
-{source_root}/execution/
-  index.md
-  sessions/
-  reviews/
-  defects/
+finish implementation/test/doc/worklog synchronization
+-> exact-head Core CI + Pipeline contract PASS
+-> pre-freeze full-scope/stale-text cross-check
+-> freeze one exact SHA
+-> run all seven final-audit points from Point 1 on unchanged SHA
+-> only unchanged 7/7 PASS may be recorded outside tree and presented
 ```
 
-Follow `docs/survey-production-core-v2-execution-record-policy.md` for content and granularity.
-
-## 14. Candidate/revision invariant
-
-Any source/PDF change invalidates the superseded Publication Candidate authority.
-
-Candidate finalization must atomically bind:
-
-- exact reader-facing source identity;
-- exact PDF identity;
-- deterministic QA;
-- ChatGPT semantic/editorial QA;
-- ChatGPT visual QA;
-- Publication Candidate identity.
-
-No legal Human Gate state may point to old candidate bytes while displaying new preview bytes.
-
-## 15. Acceptance/generalization invariant
-
-The redesign cannot be validated only by W33/SP001-shaped tests.
-
-Final acceptance must include representative evidence for:
-
-- Weekly;
-- standalone Thematic/LONGFORM (SP001 regression);
-- Retrospective Period;
-- Foundations-guided series work;
-- structural monthly/half-year/annual and unplanned-Thematic compatibility.
-
-Use a small representative matrix plus structural audits rather than an exhaustive synthetic future-edition matrix.
-
-## 16. Implementation and acceptance status
-
-The audited prerequisites are mutually consistent and the redesign implementation is present on `refactor/survey-production-core-v2`.
-
-Implemented boundaries include:
-
-- ChatGPT-owned ordinary lifecycle stages with release as the only workflow-dispatched stage;
-- explicit Reader Manuscript and reader-facing Publication Boundary;
-- deterministic Quality Bundle separated from semantic/editorial and exact-PDF visual review;
-- atomic Publication Candidate identity and revision invalidation;
-- standardized edition execution records;
-- one-file Grok/X Drive handoff;
-- six-workflow Actions surface limited to CI, reproducible build, exact-byte preview transport and release.
-
-Implementation completion is **not** final Core acceptance. Before Human full-candidate review, the repository must:
-
-```text
-finish regression/CI repair
--> synchronize all intended candidate wording and contracts
--> freeze one candidate head SHA
--> run the complete six-point final audit from zero on that exact unchanged SHA
--> invalidate the audit if any tree change is required
--> present only the unchanged passing SHA for Human full-candidate review
-```
-
-Cold-start production re-validation remains required after the redesigned Core is reviewed/integrated; W33/SP001 historical failed trials are not converted into PASS evidence by this implementation.
+Post-integration real-production validation remains required for Weekly, SP001/Thematic, configured Retrospective, Foundations and structural cadence/generalization coverage.
