@@ -37,6 +37,7 @@ from scripts import survey_schema_v2 as schema_gate
 from scripts import survey_stage_validation_v2 as stage_validation
 
 REQUEST_SCHEMA = Path("schemas/operator-execution-request-v2.schema.json")
+THEMATIC_SCOPE_SCHEMA = Path("schemas/thematic-scope-spec-v2.schema.json")
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 SHA40_RE = re.compile(r"^[0-9a-f]{40}$")
 INITIALIZE_KINDS = {"INITIALIZE_WEEKLY", "INITIALIZE_RETROSPECTIVE", "INITIALIZE_THEMATIC"}
@@ -159,6 +160,76 @@ def _load_scoped_spec(
     return spec_path
 
 
+def _thematic_profile_from_spec(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    request: dict[str, Any],
+    spec_path: Path,
+    recorded_at,
+) -> dict[str, Any]:
+    """Accept either a raw Core thematic spec or canonical scope materialization.
+
+    Canonical ``thematic-scope-spec-v2`` deliberately owns editorial scope but
+    not temporal execution identity. The operator request supplies temporal mode
+    and the immutable request timestamp supplies ``as_of``. This mirrors the
+    repository-owned pilot bootstrap without introducing an SP001-specific path.
+    """
+    raw = core.load_json(spec_path)
+    operation = request["operation"]
+
+    # Historical/generic raw Core specs remain supported. When the request also
+    # carries a temporal mode, require it to agree rather than silently override.
+    if "planning_authority" not in raw:
+        requested_mode = operation.get("temporal_mode")
+        if requested_mode is not None and raw.get("temporal_mode") != requested_mode:
+            raise OperatorBridgeError("raw Thematic spec temporal_mode differs from operator request")
+        return core.thematic_profile(repo_root, cfg, raw)
+
+    materialized = schema_gate.load_and_validate_json(
+        spec_path,
+        repo_root / THEMATIC_SCOPE_SCHEMA,
+        label="Thematic scope materialization",
+    )
+    if materialized["issue_id"] != request["issue_id"]:
+        raise OperatorBridgeError("Thematic scope materialization issue_id differs from operator request")
+
+    authority = materialized["planning_authority"]
+    authority_path = core.repo_local_path(
+        repo_root,
+        authority["path"],
+        "Thematic planning authority",
+    )
+    if authority_path.is_symlink() or not authority_path.is_file():
+        raise OperatorBridgeError("Thematic planning authority missing or unsafe")
+    authority_text = authority_path.read_text(encoding="utf-8")
+    if authority["entry"] not in authority_text:
+        raise OperatorBridgeError("Thematic planning authority entry is not present in current authority bytes")
+    if core.sha256_file(authority_path) != authority["sha256"]:
+        raise OperatorBridgeError("Thematic scope materialization planning-authority SHA drift")
+
+    temporal_mode = operation.get("temporal_mode")
+    if temporal_mode not in {"OPEN_HISTORY_AS_OF", "CURRENT_STATE_AS_OF"}:
+        raise OperatorBridgeError(
+            "canonical Thematic scope materialization requires operation.temporal_mode"
+        )
+
+    spec: dict[str, Any] = {
+        "issue_id": request["issue_id"],
+        "question": materialized["question"],
+        "temporal_mode": temporal_mode,
+        "as_of": core.iso_utc(recorded_at),
+        "inclusion": list(materialized["inclusion"]),
+        "exclusion": list(materialized["exclusion"]),
+        "scope_dimensions": list(materialized["scope_dimensions"]),
+        "initial_obligations": [dict(row) for row in materialized["initial_obligations"]],
+        "source_root": request["source_root"],
+        "work_branch": request["work_branch"],
+    }
+    if operation.get("survey_root"):
+        spec["survey_root"] = operation["survey_root"]
+    return core.thematic_profile(repo_root, cfg, spec)
+
+
 def _initialize(
     repo_root: Path,
     cfg: dict[str, Any],
@@ -185,7 +256,13 @@ def _initialize(
             operation["spec_path"],
             "thematic scope spec",
         )
-        profile = core.thematic_profile(repo_root, cfg, core.load_json(spec_path))
+        profile = _thematic_profile_from_spec(
+            repo_root,
+            cfg,
+            request,
+            spec_path,
+            recorded_at,
+        )
     else:
         raise OperatorBridgeError(f"unsupported initialization operation: {kind}")
 
