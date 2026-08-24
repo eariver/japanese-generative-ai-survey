@@ -159,6 +159,7 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.assertIn("issue_comment:", bridge)
         self.assertIn("OPERATOR_QUEUE_ISSUE: '448'", bridge)
         self.assertIn("/survey-core-execute ", bridge)
+        self.assertIn("sources/**/execution/requests/*.json", bridge)
         self.assertIn("Operator request commit must contain only the immutable request file", bridge)
         self.assertIn("Operator request commit must be the exact current canonical work-branch head", bridge)
         self.assertIn("Human Gate request must bind reviewed_repository_commit_sha to the request-only commit parent", bridge)
@@ -169,7 +170,7 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.assertIn("--force-with-lease", bridge)
         self.assertNotIn("workflow_dispatch", bridge)
         self.assertNotIn("workflow_run:", bridge)
-        self.assertNotIn("sources/**/execution/requests/*.json", bridge)
+        self.assertNotIn("on:\n  push:", bridge)
 
         pipeline_ci = (workflow_root / "pipeline-contract-tests.yml").read_text(encoding="utf-8")
         self.assertIn("contents: read", pipeline_ci)
