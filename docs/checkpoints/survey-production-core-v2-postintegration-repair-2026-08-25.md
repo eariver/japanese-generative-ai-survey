@@ -45,14 +45,16 @@ Repair:
 - use the same generic `core.thematic_profile()` path;
 - add canonical-materialization positive and fail-closed regressions.
 
+A prefreeze review of the first repair candidate then found one narrower PI-002 identity ambiguity: for a legacy raw Thematic spec, an operation-level `survey_root` could be schema-valid but silently ignored. The first freeze candidate `f76161aeae2ebffd473a2b1414a516162faa4253` was therefore invalidated before final audit. Profile identity validation now requires any request-owned `survey_root` to match the generated Profile exactly, and a negative raw-spec regression proves disagreement fails closed.
+
 ## Candidate scope at prefreeze
 
 Intended PR #452 candidate scope is limited to:
 
 1. existing operator workflow dual default-branch activation (`issue_comment` + constrained same-repository `pull_request_target`) with one common preflight/executor;
 2. canonical Thematic materialization translation in the generic bridge while preserving raw-spec compatibility;
-3. the two optional Thematic request fields needed by that generic translation (`temporal_mode`, `survey_root`);
-4. regressions for canonical materialization and dual transport;
+3. the two optional Thematic request fields needed by that generic translation (`temporal_mode`, `survey_root`) with explicit Profile identity validation;
+4. regressions for canonical materialization, raw-spec path disagreement, and dual transport;
 5. current final-audit, agent bootstrap, session bootstrap, and narrow post-integration authority documentation.
 
 No eighth workflow, no new lifecycle state, no new Human Gate, no arbitrary executable request surface, no SP001/W33 topic hardcoding, and no parallel Retrospective/Thematic engine is intended.
@@ -61,9 +63,11 @@ No eighth workflow, no new lifecycle state, no new Human Gate, no arbitrary exec
 
 ## Diagnostic CI history
 
-The first repair head `f2b8599b47c45c2f2164cf9c8c4d3902e14f1f6e` exercised the new canonical-Thematic regressions successfully but failed the full suite on one stale static assertion that required the workflow step-name substring `Parse exact operator command`. That compatibility assertion was restored without weakening transport semantics. No PASS from that diagnostic head may be reused for the final candidate.
+The first repair head `f2b8599b47c45c2f2164cf9c8c4d3902e14f1f6e` exercised the new canonical-Thematic regressions successfully but failed the full suite on one stale static assertion that required the workflow step-name substring `Parse exact operator command`. That compatibility assertion was restored without weakening transport semantics.
 
-The authoritative CI evidence must be the later exact prefreeze head after all authority/bootstrap synchronization. Exact run IDs and final seven-point verdicts are recorded outside the candidate tree so recording them cannot mutate the audited SHA.
+The later `f76161ae...` candidate reached prefreeze but was invalidated by the raw-spec `survey_root` identity finding above before any final seven-point verdict could be issued. No CI or audit verdict from either diagnostic candidate may be reused for the final candidate.
+
+The authoritative CI evidence must be the exact later prefreeze head after this final identity hardening and all authority/bootstrap synchronization. Exact run IDs and final seven-point verdicts are recorded outside the candidate tree so recording them cannot mutate the audited SHA.
 
 ## Acceptance boundary
 
@@ -72,7 +76,7 @@ This branch must not be merged merely because unit CI is green. Required before 
 1. Core CI and Pipeline contract tests PASS on the exact immutable repair head;
 2. workflow count remains seven;
 3. default-branch trust/root and isolated-runtime protections remain intact for both transports;
-4. canonical Thematic materialization regression PASS;
+4. canonical Thematic materialization and request-owned path identity regressions PASS;
 5. docs/authority and operational bootstrap remain synchronized with the actual dual-transport contract;
 6. full PR-scope/stale-text cross-check finds no unintended candidate change;
 7. freeze one exact SHA and rerun all seven final-audit points from Point 1 without candidate mutation;
