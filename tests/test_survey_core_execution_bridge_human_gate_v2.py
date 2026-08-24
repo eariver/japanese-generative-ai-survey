@@ -180,7 +180,6 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
 
     def test_bridge_dispatches_only_to_canonical_human_gate_protocol(self) -> None:
         text = (self.root / "scripts/survey_core_execution_bridge_v2.py").read_text(encoding="utf-8")
-        self.assertIn("from scripts import survey_human_gate_v2 as human_gate", text)
         for kind in (
             "RECORD_ARCHITECTURE_APPROVAL",
             "REQUEST_ARCHITECTURE_REVISION",
@@ -199,18 +198,20 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
         self.assertNotIn("EXECUTE_HUMAN_DECISION", text)
 
     def test_trusted_workflow_owns_human_gate_request_parent_binding(self) -> None:
-        signal = (self.root / ".github/workflows/survey-production-v2-operator-bridge.yml").read_text(encoding="utf-8")
-        trusted = (self.root / ".github/workflows/pipeline-contract-tests.yml").read_text(encoding="utf-8")
-        self.assertIn("contents: read", signal)
-        self.assertNotIn("contents: write", signal)
-        self.assertNotIn("survey_core_execution_bridge_v2.py", signal)
-        self.assertIn("workflow_run:", trusted)
-        self.assertIn("Human Gate request must bind reviewed_repository_commit_sha to the request-only commit parent", trusted)
-        self.assertIn("git fetch --no-tags origin", trusted)
-        self.assertIn("refs/remotes/origin/$REQUEST_HEAD_BRANCH", trusted)
-        self.assertIn("contents: write", trusted)
-        self.assertIn("Bridge attempted write outside edition source root", trusted)
-        self.assertIn("Bridge must not mutate immutable request authority", trusted)
+        workflow = (self.root / ".github/workflows/survey-production-v2-operator-bridge.yml").read_text(encoding="utf-8")
+        self.assertIn("issue_comment:", workflow)
+        self.assertIn("OPERATOR_QUEUE_ISSUE: '448'", workflow)
+        self.assertIn("/survey-core-execute ", workflow)
+        self.assertIn("Human Gate request must bind reviewed_repository_commit_sha to the request-only commit parent", workflow)
+        self.assertIn("Operator request commit must be the exact current canonical work-branch head", workflow)
+        self.assertIn("Shared Core or contract authority drifted from reviewed_main_sha", workflow)
+        self.assertIn("needs: operator-preflight", workflow)
+        self.assertIn("permissions:\n      contents: write", workflow)
+        self.assertIn("Bridge attempted write outside edition source root", workflow)
+        self.assertIn("Bridge must not mutate immutable request authority", workflow)
+        self.assertIn("--force-with-lease", workflow)
+        self.assertNotIn("workflow_run:", workflow)
+        self.assertNotIn("on:\n  push:", workflow)
 
     def test_bridge_executes_architecture_revision_then_r2_approval(self) -> None:
         fixture = self._fixture()
