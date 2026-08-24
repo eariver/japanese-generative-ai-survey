@@ -170,41 +170,47 @@ class SurveyCoreExecutionBridgeV2Tests(unittest.TestCase):
             schema_gate.validate_instance(payload, self.schema, label="Operator request")
 
     def test_operator_transport_has_default_branch_trust_root(self) -> None:
-        signal = (self.root / ".github/workflows/survey-production-v2-operator-bridge.yml").read_text(encoding="utf-8")
-        trusted = (self.root / ".github/workflows/pipeline-contract-tests.yml").read_text(encoding="utf-8")
+        workflow = (self.root / ".github/workflows/survey-production-v2-operator-bridge.yml").read_text(encoding="utf-8")
+        contract_ci = (self.root / ".github/workflows/pipeline-contract-tests.yml").read_text(encoding="utf-8")
 
-        # Work-branch YAML is only an unprivileged signal. It must never be the
-        # write-capable verifier/executor that decides whether its own branch is trusted.
-        self.assertIn("Survey Production Core v2 operator bridge signal", signal)
-        self.assertIn("sources/**/execution/requests/*.json", signal)
-        self.assertIn("- '!main'", signal)
-        self.assertIn("contents: read", signal)
-        self.assertIn("github.actor != 'github-actions[bot]'", signal)
-        self.assertIn("Trusted preflight and execution run only from default-branch workflow_run authority", signal)
-        self.assertNotIn("contents: write", signal)
-        self.assertNotIn("survey_core_execution_bridge_v2.py", signal)
-        self.assertNotIn("git push", signal)
+        # issue_comment is a default-branch event. No work-branch workflow is
+        # needed to bootstrap trust, so untrusted branch YAML cannot grant
+        # itself write authority before admission.
+        self.assertIn("issue_comment:", workflow)
+        self.assertIn("types:\n      - created", workflow)
+        self.assertIn("OPERATOR_QUEUE_ISSUE: '448'", workflow)
+        self.assertIn("/survey-core-execute ", workflow)
+        self.assertIn("github.event.issue.number == 448", workflow)
+        self.assertIn("author_association", workflow)
+        self.assertNotIn("workflow_run:", workflow)
+        self.assertNotIn("on:\n  push:", workflow)
 
-        # The workflow_run consumer is loaded from default-branch workflow authority.
-        self.assertIn("workflow_run:", trusted)
-        self.assertIn("Survey Production Core v2 operator bridge signal", trusted)
-        self.assertIn("operator-preflight:", trusted)
-        self.assertIn("operator-execute:", trusted)
-        self.assertIn("github.event.workflow_run.head_sha", trusted)
-        self.assertIn("github.event.workflow_run.head_branch", trusted)
-        self.assertIn("Operator request commit must contain only the immutable request file", trusted)
-        self.assertIn("Operator request work_branch does not match workflow_run head branch", trusted)
-        self.assertIn("reviewed_main_sha is not an ancestor of current main", trusted)
-        self.assertIn("Human Gate request must bind reviewed_repository_commit_sha to the request-only commit parent", trusted)
-        self.assertIn('git", "show", f"{reviewed}:config/survey-production-v2.json"', trusted)
-        self.assertIn("Shared Core or contract authority drifted from reviewed_main_sha", trusted)
-        self.assertIn("needs: operator-preflight", trusted)
-        self.assertIn("contents: write", trusted)
-        self.assertIn("survey_core_execution_bridge_v2.py", trusted)
-        self.assertIn("Bridge attempted write outside edition source root", trusted)
-        self.assertIn("Bridge must not mutate immutable request authority", trusted)
-        self.assertIn('git push origin "HEAD:$REQUEST_HEAD_BRANCH"', trusted)
-        self.assertLess(trusted.index("operator-preflight:"), trusted.index("operator-execute:"))
+        # Trusted preflight treats the supplied work-branch head as data,
+        # proves it is the exact current branch head and a request-only commit,
+        # resolves protected paths from reviewed main, and only then admits a
+        # write-capable dependent job.
+        self.assertIn("Parse exact operator command", workflow)
+        self.assertIn("Operator request commit must contain only the immutable request file", workflow)
+        self.assertIn("Operator request commit must be the exact current canonical work-branch head", workflow)
+        self.assertIn("reviewed_main_sha is not an ancestor of current main", workflow)
+        self.assertIn("Human Gate request must bind reviewed_repository_commit_sha to the request-only commit parent", workflow)
+        self.assertIn('git", "show", f"{reviewed}:config/survey-production-v2.json"', workflow)
+        self.assertIn("Shared Core or contract authority drifted from reviewed_main_sha", workflow)
+        self.assertIn("needs: operator-preflight", workflow)
+        self.assertIn("permissions:\n      contents: write", workflow)
+        self.assertIn("Canonical work branch moved after trusted preflight", workflow)
+        self.assertIn("survey_core_execution_bridge_v2.py", workflow)
+        self.assertIn("Bridge attempted write outside edition source root", workflow)
+        self.assertIn("Bridge must not mutate immutable request authority", workflow)
+        self.assertIn("--force-with-lease", workflow)
+        self.assertLess(workflow.index("operator-preflight:"), workflow.index("operator-execute:"))
+
+        # Pipeline contract CI remains independent validation and is not the
+        # production trust bootstrap or write-capable executor.
+        self.assertNotIn("workflow_run:", contract_ci)
+        self.assertNotIn("operator-preflight:", contract_ci)
+        self.assertNotIn("operator-execute:", contract_ci)
+        self.assertNotIn("contents: write", contract_ci)
 
     def test_bridge_has_no_request_driven_shell_or_subprocess_surface(self) -> None:
         text = (self.root / "scripts/survey_core_execution_bridge_v2.py").read_text(encoding="utf-8")
