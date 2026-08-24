@@ -1,4 +1,4 @@
-name: Survey Production Core v2 operator bridge
+name: Survey Production Core v2 operator bridge signal
 
 on:
   push:
@@ -8,176 +8,27 @@ on:
     paths:
       - 'sources/**/execution/requests/*.json'
 
+# This work-branch workflow is intentionally unprivileged. It is only a signal
+# source for the trusted default-branch workflow_run executor owned by
+# pipeline-contract-tests.yml. A drifted work branch may suppress or alter this
+# signal (denial of service), but it cannot obtain repository write authority.
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: survey-production-v2-operator-bridge-${{ github.ref }}
+  group: survey-production-v2-operator-bridge-signal-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  execute-request:
+  signal:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout exact request commit
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Resolve one immutable request-only commit
+      - name: Emit untrusted operator-request signal
         shell: bash
         run: |
           set -euo pipefail
-          mapfile -t added_requests < <(
-            git diff-tree --diff-filter=A --no-commit-id --name-only -r "$GITHUB_SHA" -- \
-              ':(glob)sources/**/execution/requests/*.json'
-          )
-          if [[ "${#added_requests[@]}" -ne 1 ]]; then
-            echo "Expected exactly one newly added operator request; found ${#added_requests[@]}" >&2
-            exit 1
-          fi
-
-          mapfile -t changed < <(git diff-tree --no-commit-id --name-only -r "$GITHUB_SHA")
-          if [[ "${#changed[@]}" -ne 1 || "${changed[0]}" != "${added_requests[0]}" ]]; then
-            echo "Operator request commit must contain only the immutable request file." >&2
-            printf 'Changed: %s\n' "${changed[@]}" >&2
-            exit 1
-          fi
-
-          printf '%s\n' "${added_requests[0]}" > "$RUNNER_TEMP/operator-request-path"
-
-      - name: Verify reviewed-main Core baseline and Human reviewed commit
-        shell: bash
-        run: |
-          set -euo pipefail
-          request_path="$(cat "$RUNNER_TEMP/operator-request-path")"
-          reviewed_main_sha="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["reviewed_main_sha"])' "$request_path")"
-          operation_kind="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["kind"])' "$request_path")"
-
-          if [[ ! "$reviewed_main_sha" =~ ^[0-9a-f]{40}$ ]]; then
-            echo "reviewed_main_sha must be exact lowercase 40-hex." >&2
-            exit 1
-          fi
-
-          git fetch --no-tags origin main:refs/remotes/origin/main
-          git cat-file -e "$reviewed_main_sha^{commit}"
-          if ! git merge-base --is-ancestor "$reviewed_main_sha" refs/remotes/origin/main; then
-            echo "reviewed_main_sha is not an ancestor of current main." >&2
-            exit 1
-          fi
-
-          request_parent="$GITHUB_SHA^"
-          request_parent_sha="$(git rev-parse "$request_parent")"
-          if ! git merge-base --is-ancestor "$reviewed_main_sha" "$request_parent"; then
-            echo "Operator work branch is not descended from reviewed_main_sha." >&2
-            exit 1
-          fi
-
-          case "$operation_kind" in
-            INITIALIZE_WEEKLY|INITIALIZE_RETROSPECTIVE|INITIALIZE_THEMATIC)
-              execution_main_sha="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["execution_record"]["reviewed_main_sha"])' "$request_path")"
-              if [[ "$execution_main_sha" != "$reviewed_main_sha" ]]; then
-                echo "Initialization execution record reviewed_main_sha must equal request reviewed_main_sha." >&2
-                exit 1
-              fi
-              ;;
-            RECORD_ARCHITECTURE_APPROVAL|REQUEST_ARCHITECTURE_REVISION|RECORD_PUBLICATION_PREVIEW_APPROVAL|REQUEST_PUBLICATION_PREVIEW_REVISION)
-              human_reviewed_sha="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["reviewed_repository_commit_sha"])' "$request_path")"
-              if [[ ! "$human_reviewed_sha" =~ ^[0-9a-f]{40}$ ]]; then
-                echo "reviewed_repository_commit_sha must be exact lowercase 40-hex." >&2
-                exit 1
-              fi
-              if [[ "$human_reviewed_sha" != "$request_parent_sha" ]]; then
-                echo "Human Gate request must bind reviewed_repository_commit_sha to the request-only commit parent." >&2
-                echo "request parent: $request_parent_sha" >&2
-                echo "request value:  $human_reviewed_sha" >&2
-                exit 1
-              fi
-              ;;
-          esac
-
-          mapfile -t protected_paths < <(
-            python - <<'PY'
-          import json
-          from pathlib import Path
-
-          cfg = json.loads(Path("config/survey-production-v2.json").read_text(encoding="utf-8"))
-          paths = [".github/workflows", "config", "schemas", "scripts"]
-          paths.extend(cfg.get("implementation_control_roots", []))
-          for group in cfg.get("contract_files", {}).values():
-              paths.extend(group)
-          for path in sorted(set(paths)):
-              print(path)
-          PY
-          )
-
-          if ! git diff --quiet "$reviewed_main_sha" "$request_parent" -- "${protected_paths[@]}"; then
-            echo "Shared Core or contract authority drifted from reviewed_main_sha before operator execution." >&2
-            git diff --name-only "$reviewed_main_sha" "$request_parent" -- "${protected_paths[@]}" >&2
-            exit 1
-          fi
-
-      - name: Install Core dependencies
-        run: python -m pip install -r config/survey-production-v2-requirements.txt
-
-      - name: Execute canonical deterministic Core operation
-        shell: bash
-        run: |
-          set -euo pipefail
-          request_path="$(cat "$RUNNER_TEMP/operator-request-path")"
-          python scripts/survey_core_execution_bridge_v2.py \
-            --request "$request_path" \
-            --event-sha "$GITHUB_SHA" \
-            --ref-name "$GITHUB_REF_NAME" \
-            > "$RUNNER_TEMP/operator-bridge-result.json"
-          cat "$RUNNER_TEMP/operator-bridge-result.json"
-
-      - name: Enforce edition-local write boundary
-        shell: bash
-        run: |
-          set -euo pipefail
-          source_root="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["source_root"])' "$RUNNER_TEMP/operator-bridge-result.json")"
-          request_root="$source_root/execution/requests/"
-          mapfile -t dirty < <(
-            {
-              git diff --name-only
-              git ls-files --others --exclude-standard
-            } | sed '/^$/d' | sort -u
-          )
-          if [[ "${#dirty[@]}" -eq 0 ]]; then
-            echo "Bridge produced no repository changes." >&2
-            exit 1
-          fi
-          for path in "${dirty[@]}"; do
-            case "$path" in
-              "$source_root"/*) ;;
-              *)
-                echo "Bridge attempted write outside edition source root: $path" >&2
-                exit 1
-                ;;
-            esac
-            case "$path" in
-              "$request_root"*)
-                echo "Bridge must not mutate immutable request authority: $path" >&2
-                exit 1
-                ;;
-            esac
-          done
-
-      - name: Commit deterministic edition-local outputs
-        shell: bash
-        run: |
-          set -euo pipefail
-          source_root="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["source_root"])' "$RUNNER_TEMP/operator-bridge-result.json")"
-          request_id="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["request_id"])' "$RUNNER_TEMP/operator-bridge-result.json")"
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- "$source_root"
-          git commit -m "Execute Core operator request $request_id"
-          git push origin "HEAD:$GITHUB_REF_NAME"
+          echo "Operator request signal only."
+          echo "request_commit=$GITHUB_SHA"
+          echo "request_ref=$GITHUB_REF_NAME"
+          echo "Trusted preflight and execution run only from default-branch workflow_run authority."
