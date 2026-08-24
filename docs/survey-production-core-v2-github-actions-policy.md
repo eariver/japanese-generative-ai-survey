@@ -1,6 +1,6 @@
 # Survey Production Core v2 — GitHub Actions Responsibility Policy
 
-Status: `FOLLOW-UP REVIEW TRUST-BOOTSTRAP REPAIR / DEFAULT-BRANCH ISSUE-COMMENT AUTHORITY / REAUDIT PENDING`  
+Status: `FOLLOW-UP REVIEW TRUST-BOOTSTRAP + RUNTIME-IMPORT REPAIR / DEFAULT-BRANCH ISSUE-COMMENT AUTHORITY / REAUDIT PENDING`  
 Established: 2026-08-23 JST  
 Updated: 2026-08-24 JST
 
@@ -22,12 +22,16 @@ ChatGPT pushes one request-only commit as exact work-branch head
      /survey-core-execute <exact-request-commit-sha>
 -> survey-production-v2-operator-bridge.yml loaded from default-branch issue_comment authority
    -> read-only trusted operator-preflight treats request SHA/branch as data
+   -> all pre-admission Python parsing is isolated from repository-local imports
    -> dependent write-capable operator-execute only after PASS
+   -> executor runs reviewed-main Core from a separate trusted runtime
 ```
 
 There is no work-branch signal workflow and no `workflow_run` trust hop. `pipeline-contract-tests.yml` remains independent CI only.
 
 Trusted preflight obtains protected-path authority from the named `reviewed_main_sha` config, never from the untrusted branch config being admitted. It requires the supplied SHA to be the exact current canonical work-branch head and rechecks that head before execution; output push uses `force-with-lease` against the admitted SHA.
+
+The Python startup/import environment is itself part of the trust boundary. Before admission, request/config inspection must use isolated startup that excludes the checkout from module search. After admission, the write-capable executor materializes canonical `scripts/` bytes from `reviewed_main_sha` into runner-temporary trusted storage and executes the bridge package from there. The admitted checkout is passed only as explicit repository/data/write target, never as the Core Python import root. Later JSON-only helpers remain isolated as well.
 
 Issue #448 is deterministic transport only. It is not a Human Gate and free-form issue comments are not executable authority. Only the exact machine trigger syntax `/survey-core-execute <lowercase-40-hex-request-commit>` is recognized; the immutable request JSON remains the operation authority.
 
@@ -39,7 +43,7 @@ Actions may perform:
 - reproducible Weekly/Special build;
 - exact Candidate PDF Preview transport;
 - frozen-byte release and reconciliation;
-- trusted execution of one schema-enumerated deterministic operator request after default-branch preflight.
+- trusted execution of one schema-enumerated deterministic operator request after default-branch preflight and reviewed-main runtime materialization.
 
 Operator execution may initialize generic Weekly/configured Retrospective/Thematic State, adopt one validated lifecycle stage, or record an already explicit Human Gate decision and its deterministic lifecycle consequence.
 
@@ -104,9 +108,9 @@ Routine cross-gate correction is not a third Human Gate and not an Owner Excepti
 4. `build-special-pdf.yml` — read-only reproducible build.
 5. `survey-production-v2-export-publication-preview.yml` — exact Preview transport.
 6. `survey-production-v2-release.yml` — exact-byte Release.
-7. `survey-production-v2-operator-bridge.yml` — trusted default-branch `issue_comment` operator preflight/execution.
+7. `survey-production-v2-operator-bridge.yml` — trusted default-branch `issue_comment` operator preflight/execution with isolated pre-admission parsing and reviewed-main runtime execution.
 
-No eighth workflow is introduced by the trust fix.
+No eighth workflow is introduced by the trust fixes.
 
 ## 9. Lifecycle boundary
 
@@ -116,13 +120,16 @@ The trusted operator executor is an execution substrate for local mechanics, not
 
 ## 10. Acceptance
 
-The earlier candidate `9932c8b7a14f1c3bdcc775df88056681b2841514` and its 7/7 audit are invalidated by follow-up review.
+The earlier candidates `9932c8b7a14f1c3bdcc775df88056681b2841514` and `109579e0f9b2988b62074165b28f144ac3b1ad55`, including their historical 7/7 audits, are invalidated by later follow-up review. `109579e0...` was specifically invalidated by RVF-026 because trusted workflow authority alone was insufficient while ordinary Python startup could still import repository-local work-branch code before admission.
 
 An intermediate read-only work-branch signal + default-branch `workflow_run` design is superseded historical diagnosis, not current authority.
 
 The repaired candidate must pass exact-head Core CI + pipeline contracts and a fresh seven-point audit from Point 1. That audit must explicitly inspect:
 
 - default-branch `issue_comment` trust bootstrap and Issue #448 trigger scope;
+- isolated pre-admission Python parsing with no repository-local import path;
+- reviewed-main-only Core runtime materialization in the write-capable executor;
+- exact package-module subprocess startup regression matching the Actions command form;
 - exact current work-branch-head/race fail-closed behavior;
 - reviewed-commit branch reachability/durability;
 - Publication Preview upstream revision reopening Architecture;
