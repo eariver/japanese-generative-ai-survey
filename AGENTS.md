@@ -98,7 +98,7 @@ Machine Human-review authority lives under:
 {source_root}/gates/review-index.json
 ```
 
-Keep Human-reviewed commit, request commit, trusted executor run, and bot output commit distinct.
+Keep Human-reviewed commit, request commit, operator queue trigger, trusted executor run, and bot output commit distinct.
 
 ## Grok / X Source Intake
 
@@ -126,19 +126,24 @@ Candidate atomically binds exact reader source/PDF/reviews. Rebuilt/different PD
 
 Use direct exact local CLI when available.
 
-Connector-safe operator execution uses:
+Connector-safe operator execution uses only default-branch workflow authority:
 
 ```text
-request-only work-branch commit
+add one immutable request-only commit
+-> push it as exact current Profile-bound work-branch head
+-> comment on GitHub Issue #448:
+     /survey-core-execute <exact-request-commit-sha>
 -> .github/workflows/survey-production-v2-operator-bridge.yml
-   read-only signal only, no trusted execution
--> workflow_run
--> .github/workflows/pipeline-contract-tests.yml loaded from default branch
-   read-only trusted preflight
+   loaded from default-branch issue_comment authority
+   read-only trusted preflight treats supplied SHA/branch as untrusted data
    -> write-capable executor only after PASS
 ```
 
-The work branch may not prove its own trust. Trusted preflight derives protected-path authority from the named reviewed-main commit, not the work-branch config under review.
+There is no work-branch signal workflow and no `workflow_run` trust hop. `pipeline-contract-tests.yml` remains CI-only.
+
+The work branch may not prove its own trust. Trusted preflight derives protected-path authority from the named reviewed-main commit, requires the supplied SHA to be the exact current work-branch head, and rechecks branch movement before execution. Output push is lease-bound to the admitted request head.
+
+Issue #448 is deterministic execution transport only, not a Human Gate. Only the exact `/survey-core-execute <40-hex>` syntax is actionable; the immutable request JSON remains operation authority.
 
 The bridge request surface is exactly:
 
@@ -183,6 +188,6 @@ Point 7 must include:
 - exact review bytes;
 - immutable approval history;
 - Publication→Architecture cross-gate reopen;
-- default-branch trusted operator bootstrap.
+- default-branch Issue #448 operator trust bootstrap.
 
 Any candidate-tree change invalidates the entire audit; never carry forward prior PASS verdicts.
