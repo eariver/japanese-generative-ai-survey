@@ -1,6 +1,6 @@
 # Survey Production Core v2 — agent session bootstrap
 
-Status: `FOLLOW-UP REVIEW HARDENED MAINTENANCE CANDIDATE / REAUDIT PENDING`  
+Status: `POST-INTEGRATION OPERATOR/THEMATIC AMENDMENT SYNCHRONIZED / REAUDIT PENDING`  
 Applies to: Weekly, Retrospective Period, standalone Thematic, and guided Special series work  
 Primary operator: **ChatGPT**
 
@@ -31,7 +31,7 @@ Routine search refinement, Source Intake, Screening, Evidence, Selection, drafti
 Read current reviewed `main`, then at minimum:
 
 1. `AGENTS.md`;
-2. Core authority/redesign authority;
+2. Core authority/redesign authority and any current narrow amendment;
 3. this bootstrap;
 4. issue-prevention checklist;
 5. X/Grok intake policy;
@@ -68,7 +68,7 @@ Configured monthly/half-year/annual Specials use the single pre-existing `script
 
 ### Thematic
 
-Resolve topic scope from canonical planning authority. Materializing a machine-readable scope is internal work, not a Human Gate.
+Resolve topic scope from canonical planning authority. Materializing a machine-readable `thematic-scope-spec-v2` scope is internal work, not a Human Gate. Connector initialization revalidates that planning authority, takes explicit temporal mode from the immutable request, and derives `as_of` from request `recorded_at` before using generic `core.thematic_profile()`.
 
 ### Generative AI Foundations
 
@@ -78,20 +78,35 @@ Use the living series memo as outer authority and materialize each volume as The
 
 Use exact local CLI when available.
 
-When connector-only ChatGPT cannot execute local Core, use the operator bridge through the persistent default-branch transport queue:
+When connector-only ChatGPT cannot execute local Core, use the single default-branch operator workflow through one supported bounded transport:
 
 ```text
 ChatGPT adds one immutable request-only commit
 -> push it as the exact current Profile-bound work-branch head
--> comment on GitHub Issue #448:
+-> activate transport A or B
+
+A. persistent Issue queue
+   comment on GitHub Issue #448:
      /survey-core-execute <exact-request-commit-sha>
--> default-branch issue_comment workflow performs read-only trusted preflight
+
+B. connector-native PR transport
+   open same-repository PR targeting main
+   title begins: Survey Core operator transport:
+   PR head branch == immutable request work_branch
+
+-> default-branch survey-production-v2-operator-bridge.yml
+   issue_comment or pull_request_target activation only
+-> common read-only trusted preflight
 -> write-capable deterministic executor exists only after preflight PASS
 ```
 
-The work branch supplies request data only; it does not supply the trust-deciding workflow. `pipeline-contract-tests.yml` remains CI-only. Issue #448 is transport, not a Human Gate.
+Prefer Issue #448 when the active environment produces an observable workflow run. If connector-created Issue comments do not activate Actions, use the connector-native PR path. A transport PR is execution transport only and must not be merged as production/integration authority; close it after successful writeback or after the failed attempt is recorded.
 
-Before posting the trigger, the request-only commit must be the current canonical work-branch head. If the branch moves during admission/execution, the workflow fails closed rather than overwriting newer work.
+The PR path is valid only for a same-repository PR targeting `main`, an authorized repository association, the reserved title prefix, and exact PR-head/request-`work_branch` equality. Forks, branch mismatch, malformed request commits, or unauthorized actors fail closed.
+
+The work branch supplies request data only; it does not supply the trust-deciding workflow. `pipeline-contract-tests.yml` remains CI-only. Both transports are transport, not Human Gates, and the workflow set remains exactly seven.
+
+Before activating either transport, the request-only commit must be the current canonical work-branch head. If the branch moves during admission/execution, the workflow fails closed rather than overwriting newer work. Pre-admission parsing is isolated from repository-local imports; the write-capable executor runs Core from reviewed-main runtime bytes, not the admitted worktree import root.
 
 The bridge request surface remains exactly:
 
@@ -232,7 +247,7 @@ Keep distinct:
 - reviewed main baseline;
 - Human-reviewed edition commit;
 - request-only commit;
-- Issue #448 trigger comment;
+- operator transport event (Issue comment or transport PR);
 - trusted default-branch operator workflow run;
 - bot output commit.
 
@@ -251,6 +266,6 @@ finish all candidate changes
 -> only 7/7 PASS -> Human full-candidate review
 ```
 
-Point 7 explicitly includes default-branch Issue #448 trust bootstrap, durable work-branch review commits, immutable approval history, and Publication→Architecture cross-gate reopen.
+Point 7 explicitly includes dual default-branch operator transport trust bootstrap, durable work-branch review commits, isolated reviewed-main execution, immutable approval history, canonical Thematic materialization, and Publication→Architecture cross-gate reopen.
 
 Any mutation after freeze invalidates the whole audit.

@@ -1,7 +1,7 @@
 name: Survey Production Core v2 operator bridge
 
-# Security boundary: issue_comment workflows are loaded from the repository's
-# default branch. The work-branch request commit is data only until this trusted
+# Security boundary: both accepted transports are loaded from default-branch
+# authority. The work-branch request commit is data only until this trusted
 # workflow proves reviewed-main, request-only, and protected-authority invariants.
 # Before admission, every Python helper runs in isolated mode so repository-local
 # modules from the untrusted checkout cannot influence parsing or trust decisions.
@@ -9,25 +9,42 @@ on:
   issue_comment:
     types:
       - created
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 permissions:
   contents: read
 
 concurrency:
-  group: survey-production-v2-operator-bridge-${{ github.event.comment.id }}
+  group: >-
+    survey-production-v2-operator-bridge-${{ github.event_name }}-${{ github.event.comment.id }}-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
   cancel-in-progress: false
 
 env:
   OPERATOR_QUEUE_ISSUE: '448'
   OPERATOR_COMMAND_PREFIX: '/survey-core-execute '
+  OPERATOR_PR_TITLE_PREFIX: 'Survey Core operator transport:'
 
 jobs:
   operator-preflight:
     if: >-
-      github.event.issue.number == 448 &&
-      startsWith(github.event.comment.body, '/survey-core-execute ') &&
-      github.actor != 'github-actions[bot]' &&
-      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+      (
+        github.event_name == 'issue_comment' &&
+        github.event.issue.number == 448 &&
+        startsWith(github.event.comment.body, '/survey-core-execute ') &&
+        github.actor != 'github-actions[bot]' &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+      ) || (
+        github.event_name == 'pull_request_target' &&
+        github.event.pull_request.base.ref == 'main' &&
+        github.event.pull_request.head.repo.full_name == github.repository &&
+        startsWith(github.event.pull_request.title, 'Survey Core operator transport:') &&
+        github.actor != 'github-actions[bot]' &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.pull_request.author_association)
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -37,18 +54,49 @@ jobs:
       request_head_branch: ${{ steps.preflight.outputs.request_head_branch }}
       reviewed_main_sha: ${{ steps.preflight.outputs.reviewed_main_sha }}
     steps:
-      - name: Parse exact operator command
+      - name: Parse exact operator command or trusted PR head
         id: command
         shell: bash
         env:
+          EVENT_NAME: ${{ github.event_name }}
           COMMENT_BODY: ${{ github.event.comment.body }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          PR_HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
           set -euo pipefail
-          if [[ ! "$COMMENT_BODY" =~ ^/survey-core-execute\ ([0-9a-f]{40})$ ]]; then
-            echo "Operator command must be exactly: /survey-core-execute <lowercase-40-hex-request-commit>" >&2
-            exit 1
-          fi
-          echo "request_head_sha=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
+          case "$EVENT_NAME" in
+            issue_comment)
+              if [[ ! "$COMMENT_BODY" =~ ^/survey-core-execute\ ([0-9a-f]{40})$ ]]; then
+                echo "Operator command must be exactly: /survey-core-execute <lowercase-40-hex-request-commit>" >&2
+                exit 1
+              fi
+              request_head_sha="${BASH_REMATCH[1]}"
+              ;;
+            pull_request_target)
+              if [[ "$PR_BASE_REF" != "main" || "$PR_HEAD_REPO" != "$GITHUB_REPOSITORY" ]]; then
+                echo "Operator transport PR must be same-repository and target main." >&2
+                exit 1
+              fi
+              if [[ "$PR_TITLE" != "$OPERATOR_PR_TITLE_PREFIX"* ]]; then
+                echo "Operator transport PR title does not use the reserved prefix." >&2
+                exit 1
+              fi
+              if [[ ! "$PR_HEAD_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+                echo "Operator transport PR head must be exact lowercase 40-hex." >&2
+                exit 1
+              fi
+              git check-ref-format --branch "$PR_HEAD_REF" >/dev/null
+              request_head_sha="$PR_HEAD_SHA"
+              ;;
+            *)
+              echo "Unsupported operator transport event: $EVENT_NAME" >&2
+              exit 1
+              ;;
+          esac
+          echo "request_head_sha=$request_head_sha" >> "$GITHUB_OUTPUT"
 
       - name: Checkout exact untrusted request commit as data
         uses: actions/checkout@v6
@@ -60,6 +108,8 @@ jobs:
         id: preflight
         shell: bash
         env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
           REQUEST_HEAD_SHA: ${{ steps.command.outputs.request_head_sha }}
         run: |
           set -euo pipefail
@@ -103,6 +153,12 @@ jobs:
           )"
 
           git check-ref-format --branch "$request_work_branch" >/dev/null
+          if [[ "$EVENT_NAME" == "pull_request_target" && "$request_work_branch" != "$PR_HEAD_REF" ]]; then
+            echo "Operator transport PR head branch must equal request work_branch." >&2
+            echo "PR head:        $PR_HEAD_REF" >&2
+            echo "request branch: $request_work_branch" >&2
+            exit 1
+          fi
           if [[ ! "$reviewed_main_sha" =~ ^[0-9a-f]{40}$ ]]; then
             echo "reviewed_main_sha must be exact lowercase 40-hex." >&2
             exit 1
