@@ -27,9 +27,9 @@ ChatGPT pushes one request-only commit as exact work-branch head
 
 There is no work-branch signal workflow and no `workflow_run` trust hop. `pipeline-contract-tests.yml` remains independent CI only.
 
-Trusted preflight obtains the protected-path authority from the named `reviewed_main_sha` config, never from the untrusted branch config being admitted. It also requires the supplied SHA to be the exact current canonical work-branch head and rechecks that head before execution; output push uses `force-with-lease` against the admitted SHA.
+Trusted preflight obtains protected-path authority from the named `reviewed_main_sha` config, never from the untrusted branch config being admitted. It requires the supplied SHA to be the exact current canonical work-branch head and rechecks that head before execution; output push uses `force-with-lease` against the admitted SHA.
 
-Issue #448 is deterministic transport only. It is not a Human Gate and free-form issue comments are not executable authority. Only the exact machine trigger syntax is recognized; the immutable request JSON remains the operation authority.
+Issue #448 is deterministic transport only. It is not a Human Gate and free-form issue comments are not executable authority. Only the exact machine trigger syntax `/survey-core-execute <lowercase-40-hex-request-commit>` is recognized; the immutable request JSON remains the operation authority.
 
 ## 3. Appropriate Actions responsibilities
 
@@ -118,7 +118,7 @@ The trusted operator executor is an execution substrate for local mechanics, not
 
 The earlier candidate `9932c8b7a14f1c3bdcc775df88056681b2841514` and its 7/7 audit are invalidated by follow-up review.
 
-An intermediate read-only work-branch signal + default-branch `workflow_run` design is also superseded historical diagnosis, not current authority.
+An intermediate read-only work-branch signal + default-branch `workflow_run` design is superseded historical diagnosis, not current authority.
 
 The repaired candidate must pass exact-head Core CI + pipeline contracts and a fresh seven-point audit from Point 1. That audit must explicitly inspect:
 
