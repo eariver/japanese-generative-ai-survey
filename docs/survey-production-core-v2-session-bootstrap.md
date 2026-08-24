@@ -78,16 +78,20 @@ Use the living series memo as outer authority and materialize each volume as The
 
 Use exact local CLI when available.
 
-When connector-only ChatGPT cannot execute local Core, use the operator bridge with this trust topology:
+When connector-only ChatGPT cannot execute local Core, use the operator bridge through the persistent default-branch transport queue:
 
 ```text
-request-only work-branch commit
--> read-only operator signal workflow
--> default-branch workflow_run trusted preflight
--> write-capable executor only after preflight PASS
+ChatGPT adds one immutable request-only commit
+-> push it as the exact current Profile-bound work-branch head
+-> comment on GitHub Issue #448:
+     /survey-core-execute <exact-request-commit-sha>
+-> default-branch issue_comment workflow performs read-only trusted preflight
+-> write-capable deterministic executor exists only after preflight PASS
 ```
 
-The work-branch signal workflow has no write authority and does not execute Core. Trusted admission lives in default-branch `pipeline-contract-tests.yml`; the work-branch commit is data only until admitted.
+The work branch supplies request data only; it does not supply the trust-deciding workflow. `pipeline-contract-tests.yml` remains CI-only. Issue #448 is transport, not a Human Gate.
+
+Before posting the trigger, the request-only commit must be the current canonical work-branch head. If the branch moves during admission/execution, the workflow fails closed rather than overwriting newer work.
 
 The bridge request surface remains exactly:
 
@@ -228,8 +232,8 @@ Keep distinct:
 - reviewed main baseline;
 - Human-reviewed edition commit;
 - request-only commit;
-- read-only signal workflow run;
-- trusted default-branch executor run;
+- Issue #448 trigger comment;
+- trusted default-branch operator workflow run;
 - bot output commit.
 
 ## 14. Core candidate audit rule
@@ -247,6 +251,6 @@ finish all candidate changes
 -> only 7/7 PASS -> Human full-candidate review
 ```
 
-Point 7 explicitly includes default-branch trust bootstrap, durable work-branch review commits, immutable approval history, and Publication→Architecture cross-gate reopen.
+Point 7 explicitly includes default-branch Issue #448 trust bootstrap, durable work-branch review commits, immutable approval history, and Publication→Architecture cross-gate reopen.
 
 Any mutation after freeze invalidates the whole audit.
