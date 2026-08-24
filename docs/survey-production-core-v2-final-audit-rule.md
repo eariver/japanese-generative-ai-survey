@@ -1,8 +1,8 @@
 # Survey Production Core v2 — post-completion final audit rule
 
-Status: `CANONICAL SEVEN-POINT FIXED-HEAD AUDIT RULE / RVF-026 RUNTIME-IMPORT HARDENING SYNCHRONIZED`  
+Status: `CANONICAL SEVEN-POINT FIXED-HEAD AUDIT RULE / POST-INTEGRATION TRANSPORT + THEMATIC AMENDMENT SYNCHRONIZED`  
 Established: 2026-08-22 JST  
-Updated: 2026-08-24 JST
+Updated: 2026-08-25 JST
 
 ## 1. Mandatory order
 
@@ -23,10 +23,12 @@ Any candidate-tree mutation invalidates the entire audit. No PASS verdict may be
 
 The final result is recorded outside the candidate tree, normally in PR/Human-review metadata, so recording PASS does not change the audited SHA.
 
+The narrow post-integration PI-001/PI-002 amendment is defined in `docs/survey-production-core-v2-postintegration-amendment.md`. For operator-transport and canonical-Thematic-initialization wording, that amendment supersedes older Issue-only/raw-spec-only descriptions while leaving the rest of this seven-point rule intact.
+
 ## 2. Seven acceptance points
 
 1. **Weekly viability** — generic Weekly Profile, required X/Grok intake, exact Drive handoff/result disposition, reader-facing Weekly requirements, no edition-specific rescue Core.
-2. **Special viability** — configured Retrospective through the pre-existing generic `survey_period_v2`, standalone Thematic/LONGFORM, and Foundations living-series compatibility without parallel cadence/series engines.
+2. **Special viability** — configured Retrospective through the pre-existing generic `survey_period_v2`, standalone Thematic/LONGFORM including canonical `thematic-scope-spec-v2` materialization, and Foundations living-series compatibility without parallel cadence/series engines.
 3. **Generality** — no W33/SP001/topic/cadence/source-depth/branch-family overfit; Profile/Publication/edition authority remain orthogonal.
 4. **Historical/clarified recurrence prevention** — crisp invariants are deterministic; semantic/editorial/visual judgment remains ChatGPT-owned; Human decision remains at the two normal Gates.
 5. **Control proportionality** — no unnecessary workflow/Human ceremony or machine impersonation of qualitative judgment; Actions policy is satisfied.
@@ -73,11 +75,13 @@ A valid reviewed commit must be reachable from canonical `work_branch` and conta
 
 ### Connector-safe trust bootstrap and runtime isolation
 
-The audit must not merely inspect the bridge helper. It must prove the complete root of trust, including process startup/import behavior:
+The audit must not merely inspect the bridge helper. It must prove the complete root of trust, including both supported activation transports and process startup/import behavior:
 
-- operator execution is initiated only through `survey-production-v2-operator-bridge.yml` loaded from default-branch `issue_comment` authority;
-- the persistent transport surface is Issue `#448`, which is not a Human Gate or editorial authority;
-- only exact `/survey-core-execute <lowercase-40-hex-request-commit>` comments from an authorized repository association are actionable;
+- operator execution is implemented by the single `survey-production-v2-operator-bridge.yml` workflow loaded from default-branch authority;
+- Issue transport remains the persistent Issue `#448` surface and accepts only exact `/survey-core-execute <lowercase-40-hex-request-commit>` comments from an authorized repository association;
+- connector-native PR transport uses default-branch `pull_request_target` only for same-repository PRs targeting `main`, authorized repository associations, the reserved `Survey Core operator transport:` title prefix, and a PR head branch exactly equal to immutable request `work_branch`;
+- an operator transport PR is execution transport only and is not an integration/Human-Gate/editorial authority;
+- both transports converge on the same read-only preflight before any write-capable job exists;
 - supplied request SHA/work branch are treated as untrusted data until preflight completes;
 - every Python helper that inspects untrusted request/config data before admission uses isolated Python startup and cannot import repository-local work-branch code;
 - the request SHA must be the exact current canonical work-branch head;
@@ -90,9 +94,22 @@ The audit must not merely inspect the bridge helper. It must prove the complete 
 - the canonical work branch is rechecked after preflight and output push is lease-bound to the admitted request head;
 - generated writes remain Profile-bound and immutable request authority is not mutated;
 - generic/arbitrary Human-decision or executable surfaces remain absent;
-- there is no work-branch signal workflow and no `workflow_run` trust hop.
+- there is no work-branch signal workflow and no `workflow_run` trust hop;
+- the repository still owns exactly seven workflows: dual transport must not be implemented by adding an eighth workflow.
 
-A write-capable verifier loaded from the work branch under review is a Point-7 failure even if its script text appears to perform the right checks. Likewise, a default-branch workflow that executes/imports untrusted checkout Python before admission, or a write-capable executor that uses the admitted worktree as its Core Python import root, is a Point-7 failure.
+A write-capable verifier loaded from the work branch under review is a Point-7 failure even if its script text appears to perform the right checks. Likewise, a `pull_request_target` path that permits fork execution, checks out/executes work-branch Python before admission, or grants write authority before the common preflight is a Point-7 failure. A default-branch workflow that uses the admitted worktree as its Core Python import root is also a Point-7 failure.
+
+### Canonical Thematic initialization
+
+Special viability and Point 7 connector execution together must also prove that `INITIALIZE_THEMATIC` accepts the repository's canonical `thematic-scope-spec-v2` materialization without an SP001-specific adapter:
+
+- scope materialization schema validation succeeds;
+- planning-authority entry and SHA-256 are revalidated;
+- request `issue_id`, `source_root`, and `work_branch` remain authoritative;
+- explicit allowed Thematic `temporal_mode` is required for canonical materialization;
+- `as_of` is derived from immutable request `recorded_at`;
+- explicit `survey_root` can bind the publication path;
+- raw Core thematic-spec compatibility remains available and temporal disagreement fails closed.
 
 ## 4. CI evidence
 
@@ -102,7 +119,8 @@ The final audit requires exact-head evidence from:
 - Pipeline contract tests;
 - schema/config parse/compile checks included by those suites;
 - positive/negative Human Gate direct and bridge regressions;
-- workflow trust-bootstrap static contract regressions;
+- workflow trust-bootstrap static contract regressions for both default-branch transports;
+- canonical Thematic materialization initialization regression;
 - RVF-026 import-poisoning regression and exact package-module subprocess startup smoke matching the Actions command form;
 - cross-profile fixtures.
 
@@ -123,7 +141,7 @@ The intended workflow set remains exactly seven:
 Responsibilities matter as much as filenames:
 
 - `pipeline-contract-tests.yml` = independent read-only CI only;
-- `survey-production-v2-operator-bridge.yml` = trusted default-branch Issue `#448` admission/preflight plus dependent deterministic executor using isolated pre-admission parsing and reviewed-main runtime execution;
+- `survey-production-v2-operator-bridge.yml` = trusted default-branch dual activation (`issue_comment` Issue #448 or constrained same-repository `pull_request_target`) feeding one common admission/preflight and dependent deterministic executor using isolated pre-admission parsing and reviewed-main runtime execution;
 - Release remains the only lifecycle `WORKFLOW_DISPATCH` edge.
 
 An eighth workflow is prima facie regression unless separately reviewed under the Actions admission rule.
@@ -147,12 +165,12 @@ A formal post-integration production validation run that discovers a shared-Core
 After fixed-head 7/7 PASS, Human approval, and unchanged integration into `main`, run:
 
 - one future Weekly cold start;
-- standalone Thematic/LONGFORM with SP001 regression;
+- standalone Thematic/LONGFORM with SP001 regression from canonical `thematic-scope-spec-v2` materialization;
 - representative configured Retrospective Period through existing `survey_period_v2`;
 - one Foundations-guided scenario through at least Architecture Review;
 - structural monthly/half-year/annual and unplanned-Thematic compatibility confirmation.
 
-The connector-safe matrix must also exercise the trusted default-branch Issue `#448` operator path in real branch execution after integration; static PR tests cannot by themselves prove the default-branch transport is operational.
+The connector-safe matrix must exercise the connector-native default-branch `pull_request_target` operator path in real branch execution and verify trusted bot writeback/receipt. Issue #448 remains a supported/manual transport and must remain statically trust-audited; where the active connector can generate an observable Issue-triggered run, exercise it as an additional transport check rather than blocking the connector-native production path on platform event-delivery behavior.
 
 ## 9. Invalidation rule
 
@@ -172,15 +190,15 @@ There is no partial-audit resume after candidate mutation.
 
 ## 10. Current historical warning
 
-The candidates `9932c8b7a14f1c3bdcc775df88056681b2841514` and `109579e0f9b2988b62074165b28f144ac3b1ad55` and their former 7/7 results are historical/invalidated evidence.
+The candidates `9932c8b7a14f1c3bdcc775df88056681b2841514`, `109579e0f9b2988b62074165b28f144ac3b1ad55`, and the integrated PR #447 candidate are historical evidence for later maintenance once PI-001/PI-002 were discovered; no earlier 7/7 verdict may be reused for PR #452.
 
-Follow-up review findings across those candidates established four trust/lifecycle requirements:
+Follow-up review and post-integration findings established these trust/lifecycle requirements:
 
 - operator trust bootstrap must originate from default-branch authority, not a work-branch workflow;
 - reviewed Human commits must be durable/reachable and exact-bind reviewed bytes;
 - Publication Preview must support dependency-aware upstream correction/reopening of Architecture;
-- default-branch workflow authority is still insufficient if Python startup/import behavior can execute repository-local work-branch code before admission or if the write-capable executor imports Core from the admitted worktree. RVF-026 therefore requires isolated pre-admission parsing, reviewed-main runtime execution, and exact CLI startup regression.
+- default-branch workflow authority is insufficient if Python startup/import behavior can execute repository-local work-branch code before admission or if the write-capable executor imports Core from the admitted worktree;
+- connector-safe activation must have an actually usable transport for the active connector environment without creating a second executor or weakening the default-branch trust root;
+- canonical Thematic scope materialization must initialize through the same generic Core path used by pilot bootstrap rather than relying on a raw-spec-only regression.
 
-An intermediate read-only branch signal + `workflow_run` design was also rejected during repair because it still depended on work-branch workflow definition for signaling. It must not be treated as current authority.
-
-Those findings must be fully repaired and audited on a later exact SHA before PR #447 can return to Ready for Human review.
+An intermediate read-only branch signal + `workflow_run` design remains rejected historical diagnosis because it depended on work-branch workflow definition for signaling. It must not be treated as current authority.
