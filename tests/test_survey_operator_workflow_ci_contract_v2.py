@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import unittest
 from pathlib import Path
 
@@ -29,6 +30,25 @@ class SurveyOperatorWorkflowCIContractV2Tests(unittest.TestCase):
         self.assertIn(".github/workflows/*.yml", pipeline_ci)
         self.assertNotIn("workflow_run:", pipeline_ci)
         self.assertNotIn("contents: write", pipeline_ci)
+
+    def test_config_names_default_branch_operator_workflow_as_trusted_executor(self) -> None:
+        cfg = json.loads(
+            Path("config/survey-production-v2.json").read_text(encoding="utf-8")
+        )
+        control = cfg["workflow_control"]
+
+        self.assertEqual(
+            control["operator_execution_bridge_workflow"],
+            "survey-production-v2-operator-bridge.yml",
+        )
+        self.assertEqual(
+            control["operator_execution_trusted_workflow"],
+            "survey-production-v2-operator-bridge.yml",
+        )
+        self.assertNotEqual(
+            control["operator_execution_trusted_workflow"],
+            "pipeline-contract-tests.yml",
+        )
 
 
 if __name__ == "__main__":
