@@ -68,9 +68,13 @@ No eighth workflow, no new lifecycle state, no new Human Gate, no arbitrary exec
 
 The first repair head `f2b8599b47c45c2f2164cf9c8c4d3902e14f1f6e` exercised the new canonical-Thematic regressions successfully but failed the full suite on one stale static assertion that required the workflow step-name substring `Parse exact operator command`. That compatibility assertion was restored without weakening transport semantics.
 
-`f76161ae...` was invalidated by the raw-spec `survey_root` identity finding. `a3d37c20...` was invalidated by the amendment contract-binding finding. Neither reached a reusable final seven-point verdict. No CI or audit verdict from any diagnostic/prefreeze candidate may be reused for the final candidate.
+`f76161ae...` was invalidated by the raw-spec `survey_root` identity finding. `a3d37c20...` was invalidated by the amendment contract-binding finding. Neither reached a reusable final seven-point verdict.
 
-The authoritative CI evidence must be the exact later prefreeze head after all identity, contract, authority and bootstrap synchronization. Exact run IDs and final seven-point verdicts are recorded outside the candidate tree so recording them cannot mutate the audited SHA.
+The later frozen candidate `363f14bfe430ace51d6cbfeafb3c1624c38aec18` ran the full Pipeline suite and all functional, Human-Gate, runtime-isolation, canonical-Thematic, findings, profile, and post-integration regressions passed except one static final-audit wording assertion. The rule contained `Issue #448` while `test_survey_final_audit_rule_v2` requires the stable explicit marker `Issue `#448``. Because the fixed-head rule forbids carrying a candidate through any tree mutation, that freeze was invalidated rather than treating the lexical mismatch as ignorable. The current rule restores the exact marker without changing dual-transport semantics.
+
+No CI or audit verdict from any diagnostic/prefreeze/invalidated candidate may be reused for the final candidate.
+
+The authoritative CI evidence must be the exact later prefreeze head after all identity, contract, authority, bootstrap, and audit-vocabulary synchronization. Exact run IDs and final seven-point verdicts are recorded outside the candidate tree so recording them cannot mutate the audited SHA.
 
 ## Acceptance boundary
 
