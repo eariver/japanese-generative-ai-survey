@@ -44,7 +44,7 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
         return {
             **self.approval(kind),
             "regeneration_boundary": boundary,
-            "requested_changes": "Revise the reviewed candidate and present r2.",
+            "requested_changes": "Revise the reviewed candidate and present the next required Gate revision.",
         }
 
     def _fixture(self) -> SurveyHumanGateV2Tests:
@@ -101,9 +101,13 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
                 "publication-revise",
                 self.revision("REQUEST_PUBLICATION_PREVIEW_REVISION", "DRAFT_COMPLETE"),
             ),
+            (
+                "publication-reopen-architecture",
+                self.revision("REQUEST_PUBLICATION_PREVIEW_REVISION", "SELECTION_COMPLETE"),
+            ),
         ]
         for request_id, operation in operations:
-            with self.subTest(operation=operation["kind"]):
+            with self.subTest(operation=operation["kind"], boundary=operation.get("regeneration_boundary")):
                 schema_gate.validate_instance(
                     self.request(operation, request_id),
                     self.schema,
@@ -127,7 +131,7 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
                     label="Human Gate operator request",
                 )
 
-    def test_schema_rejects_cross_gate_regeneration_boundaries(self) -> None:
+    def test_schema_keeps_gate_specific_regeneration_boundaries(self) -> None:
         bad_arch = self.revision("REQUEST_ARCHITECTURE_REVISION", "DRAFT_COMPLETE")
         with self.assertRaises(ValueError):
             schema_gate.validate_instance(
@@ -135,7 +139,16 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
                 self.schema,
                 label="Human Gate operator request",
             )
-        bad_pub = self.revision("REQUEST_PUBLICATION_PREVIEW_REVISION", "SELECTION_COMPLETE")
+
+        # Publication Preview may explicitly reopen upstream Architecture work.
+        upstream_pub = self.revision("REQUEST_PUBLICATION_PREVIEW_REVISION", "SELECTION_COMPLETE")
+        schema_gate.validate_instance(
+            self.request(upstream_pub, "publication-upstream-boundary"),
+            self.schema,
+            label="Human Gate operator request",
+        )
+
+        bad_pub = self.revision("REQUEST_PUBLICATION_PREVIEW_REVISION", "RELEASE_CANDIDATE")
         with self.assertRaises(ValueError):
             schema_gate.validate_instance(
                 self.request(bad_pub, "bad-publication-boundary"),
@@ -185,16 +198,19 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
         self.assertNotIn("shell=True", text)
         self.assertNotIn("EXECUTE_HUMAN_DECISION", text)
 
-    def test_existing_workflow_remains_single_request_only_transport(self) -> None:
-        text = (self.root / ".github/workflows/survey-production-v2-operator-bridge.yml").read_text(encoding="utf-8")
-        self.assertIn("sources/**/execution/requests/*.json", text)
-        self.assertIn("Operator request commit must contain only the immutable request file", text)
-        self.assertIn("Verify reviewed-main Core baseline and Human reviewed commit", text)
-        self.assertIn("Human Gate request must bind reviewed_repository_commit_sha to the request-only commit parent", text)
-        self.assertIn("Bridge attempted write outside edition source root", text)
-        self.assertIn("Bridge must not mutate immutable request authority", text)
-        self.assertIn("github.actor != 'github-actions[bot]'", text)
-        self.assertNotIn("workflow_dispatch", text)
+    def test_trusted_workflow_owns_human_gate_request_parent_binding(self) -> None:
+        signal = (self.root / ".github/workflows/survey-production-v2-operator-bridge.yml").read_text(encoding="utf-8")
+        trusted = (self.root / ".github/workflows/pipeline-contract-tests.yml").read_text(encoding="utf-8")
+        self.assertIn("contents: read", signal)
+        self.assertNotIn("contents: write", signal)
+        self.assertNotIn("survey_core_execution_bridge_v2.py", signal)
+        self.assertIn("workflow_run:", trusted)
+        self.assertIn("Human Gate request must bind reviewed_repository_commit_sha to the request-only commit parent", trusted)
+        self.assertIn("git fetch --no-tags origin", trusted)
+        self.assertIn("refs/remotes/origin/$REQUEST_HEAD_BRANCH", trusted)
+        self.assertIn("contents: write", trusted)
+        self.assertIn("Bridge attempted write outside edition source root", trusted)
+        self.assertIn("Bridge must not mutate immutable request authority", trusted)
 
     def test_bridge_executes_architecture_revision_then_r2_approval(self) -> None:
         fixture = self._fixture()
@@ -276,6 +292,14 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
                 ("ARCHITECTURE_REVIEW", 1, "REQUEST_CHANGES"),
                 ("ARCHITECTURE_REVIEW", 2, "APPROVED"),
             ],
+        )
+        approval_record = core.load_json(
+            fixture.source_root
+            / fixture.cfg["state_authority"]["human_review_dir"]
+            / "architecture-r2.json"
+        )
+        self.assertTrue(
+            core.repo_local_path(fixture.root, approval_record["approval"]["path"], "approval snapshot").is_file()
         )
 
     def test_bridge_executes_publication_revision_then_r2_approval(self) -> None:
@@ -376,6 +400,78 @@ class SurveyCoreExecutionBridgeHumanGateV2Tests(unittest.TestCase):
             if row["gate"] == "PUBLICATION_PREVIEW"
         ]
         self.assertEqual(publication_rows, [(1, "REQUEST_CHANGES"), (2, "APPROVED")])
+
+    def test_bridge_publication_revision_can_reopen_architecture(self) -> None:
+        fixture = self._fixture()
+        fixture._advance_to_selection()
+        fixture._reach_architecture_gate("Architecture bridge approved r1", "2026-08-24T00:05:00Z")
+        self._execute(
+            fixture,
+            "bridge-cross-gate-architecture-r1-approve",
+            {
+                "kind": "RECORD_ARCHITECTURE_APPROVAL",
+                "state_path": fixture.state_path.relative_to(fixture.root).as_posix(),
+                "expected_revision": 1,
+                "reviewed_by": "human-reviewer",
+                "reviewed_at": "2026-08-24T00:06:00Z",
+                "review_reference": "bridge:cross-gate:architecture-r1",
+            },
+            recorded_at="2026-08-24T00:06:30Z",
+        )
+        fixture._reach_publication_gate(1, 10)
+        canonical_arch = fixture.source_root / fixture.cfg["state_authority"]["architecture_approval_path"]
+        self.assertTrue(canonical_arch.is_file())
+
+        revised = self._execute(
+            fixture,
+            "bridge-cross-gate-publication-r1-revise",
+            {
+                "kind": "REQUEST_PUBLICATION_PREVIEW_REVISION",
+                "state_path": fixture.state_path.relative_to(fixture.root).as_posix(),
+                "expected_revision": 1,
+                "regeneration_boundary": "SELECTION_COMPLETE",
+                "requested_changes": "Publication review exposed an upstream Selection/Architecture defect.",
+                "reviewed_by": "human-reviewer",
+                "reviewed_at": "2026-08-24T00:14:00Z",
+                "review_reference": "bridge:cross-gate:publication-r1",
+            },
+            recorded_at="2026-08-24T00:14:30Z",
+        )
+        self.assertEqual(revised["lifecycle_state"], "SELECTION_COMPLETE")
+        state = core.load_json(fixture.state_path)
+        self.assertEqual(state["human_gates"]["architecture_review"], "pending")
+        self.assertFalse(canonical_arch.exists())
+
+        fixture._reach_architecture_gate("Architecture bridge reopened r2", "2026-08-24T00:15:00Z")
+        self._execute(
+            fixture,
+            "bridge-cross-gate-architecture-r2-approve",
+            {
+                "kind": "RECORD_ARCHITECTURE_APPROVAL",
+                "state_path": fixture.state_path.relative_to(fixture.root).as_posix(),
+                "expected_revision": 2,
+                "reviewed_by": "human-reviewer",
+                "reviewed_at": "2026-08-24T00:16:00Z",
+                "review_reference": "bridge:cross-gate:architecture-r2",
+            },
+            recorded_at="2026-08-24T00:16:30Z",
+        )
+        fixture._reach_publication_gate(2, 20)
+        approved = self._execute(
+            fixture,
+            "bridge-cross-gate-publication-r2-approve",
+            {
+                "kind": "RECORD_PUBLICATION_PREVIEW_APPROVAL",
+                "state_path": fixture.state_path.relative_to(fixture.root).as_posix(),
+                "expected_revision": 2,
+                "reviewed_by": "human-reviewer",
+                "reviewed_at": "2026-08-24T00:23:00Z",
+                "review_reference": "bridge:cross-gate:publication-r2",
+            },
+            recorded_at="2026-08-24T00:23:30Z",
+        )
+        self.assertIsNone(approved["terminal_reason"])
+        self.assertEqual(core.load_json(fixture.state_path)["next_action"], "stage:freeze")
 
 
 if __name__ == "__main__":
