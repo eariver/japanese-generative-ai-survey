@@ -1,16 +1,16 @@
 # Survey Production Core v2 — Edition Execution Record Policy
 
-Status: `OPERATOR/HUMAN-GATE FOLLOW-UP REVIEW REPAIR / REAUDIT PENDING`  
+Status: `FOLLOW-UP REVIEW HARDENED MAINTENANCE CANDIDATE / REAUDIT PENDING`  
 Established: 2026-08-23 JST  
 Updated: 2026-08-24 JST
 
 ## 1. Purpose
 
-Every edition must be resumable from repository state without prior chat history. Machine lifecycle/state artifacts remain authoritative for machine state; `execution/` is concise human-readable operational provenance.
+Every Weekly/Special production conversation must leave enough repository authority for another session to reconstruct what happened without chat history. Machine lifecycle/state artifacts remain authoritative for machine state; execution records provide concise operational provenance.
 
-Human Gate round-trip authority is machine-readable under `{source_root}/gates/` and is summarized, not duplicated, under `execution/reviews/`.
+Human Gate machine history under `{source_root}/gates/` is exact authority. Markdown under `execution/` summarizes and points to it rather than becoming a second State machine.
 
-## 2. Canonical layout
+## 2. Canonical execution tree
 
 ```text
 {source_root}/execution/
@@ -19,129 +19,111 @@ Human Gate round-trip authority is machine-readable under `{source_root}/gates/`
   reviews/architecture-rN.md
   reviews/publication-rN.md
   defects/<defect-id>.md
-  requests/<request-id>.json            # connector-safe bridge only
-  bridge-runs/<request-id>/...          # connector-safe bridge only
-
-{source_root}/gates/
-  architecture-approval.json             # current active canonical approval
-  publication-preview-approval.json      # current active canonical approval
-  review-index.json
-  reviews/architecture-rN.json
-  reviews/publication-rN.json
-  reviews/approvals/architecture-rN.json # immutable approval snapshot
-  reviews/approvals/publication-rN.json  # immutable approval snapshot
 ```
 
-The review index + rN JSON records + immutable approval snapshots are the durable Human-review history. Current Production State and current canonical approvals determine active authority.
+When connector-safe operator execution is used:
 
-## 3. Human review surface must be durable
+```text
+  requests/<request-id>.json
+  bridge-runs/<request-id>/...
+```
 
-Before presenting either normal Human Gate:
+Machine Human-review authority:
 
-1. commit the exact current Production State and every configured Gate input;
-2. push/retain that commit on the Profile-bound canonical work branch;
-3. record that exact SHA as `reviewed_repository_commit_sha`;
-4. present only those committed bytes to the Human.
+```text
+{source_root}/gates/reviews/architecture-rN.json
+{source_root}/gates/reviews/publication-rN.json
+{source_root}/gates/reviews/approvals/architecture-rN.json
+{source_root}/gates/reviews/approvals/publication-rN.json
+{source_root}/gates/review-index.json
+```
 
-Canonical `survey_human_gate_v2` must reject a reviewed commit unless it:
+The active canonical approval paths remain separate current authority and may later be superseded by dependency-aware revision; immutable rN snapshots preserve historical approval evidence.
 
-- exists;
-- remains reachable from canonical `work_branch` (`origin/<work_branch>` when an origin exists; otherwise the local branch);
-- contains the exact current reviewed State/Gate-input bytes;
-- for Publication Preview, also contains the exact Candidate-bound PDF bytes.
+## 3. Deterministic helper boundary
 
-A dangling `commit-tree` object, uncommitted working tree, different branch commit, missing path, or same-path/different-byte commit is not acceptable review provenance.
+`scripts/survey_execution_record_v2.py` owns only structural execution-record initialization/validation.
 
-Connector-safe bridge mode adds the invariant that this durable reviewed commit equals the immutable request-only commit parent. The later request/event commit is separate execution provenance.
+`scripts/survey_human_gate_v2.py` owns deterministic machine review records for the two normal Human Gates. It may record an already explicit Human `APPROVED` or `REQUEST_CHANGES` decision and apply the Human-selected allowed lifecycle consequence. It must not choose the decision, requested changes, or regeneration boundary.
 
-## 4. Review decisions and approval snapshots
+Before direct-local or bridge-backed Human Gate recording, canonical Core must prove that `reviewed_repository_commit_sha`:
 
-Normal Gate decisions are:
+- names a real Git commit;
+- remains reachable from the Profile-bound canonical work branch;
+- contains exact current reviewed Production State and every Gate-input byte;
+- for Publication Preview, contains the exact Candidate-bound PDF.
 
-- `APPROVED`
-- `REQUEST_CHANGES`
+A dangling commit, uncommitted working tree, missing reviewed path, or same-path/different-byte commit is insufficient provenance.
 
-Every APPROVED decision creates an immutable approval snapshot under `gates/reviews/approvals/<gate>-rN.json`. The rN review record points to that snapshot rather than relying on a canonical approval filename that may later be superseded.
+Connector-safe execution adds the transport proof that the reviewed commit is exactly the immutable request-only commit parent.
 
-This distinction is essential:
+## 4. `index.md`
 
-- **current canonical approval** = active State-machine authority;
-- **immutable rN approval snapshot** = historical decision evidence.
+`index.md` is the first human-readable navigation file after `production-state.json`. Keep it concise and current.
 
-Old historical review evidence must remain reconstructable even when a later dependency correction reopens Architecture.
+Record:
 
-## 5. Architecture review revision
-
-Architecture `REQUEST_CHANGES` may return to an allowed pre-Architecture boundary. Record:
-
-- exact reviewed repository commit;
-- exact reviewed State/Gate hashes;
-- requested changes;
-- Human-selected regeneration boundary;
-- rN machine review record + index update.
-
-Then invalidate only downstream active authority and resume automatically to Architecture Review rN+1.
-
-## 6. Publication Preview revision
-
-Publication Preview feedback may be publication-local or upstream.
-
-### Publication-local
-
-If regeneration starts at `ARCHITECTURE_ESTABLISHED` or later, the approved Architecture remains active. Invalidate affected drafting/validation/candidate authority and return to Publication Preview rN+1.
-
-### Upstream / cross-gate
-
-If the Human selects a boundary before `ARCHITECTURE_ESTABLISHED` because Publication review exposed an Evidence/Selection/Architecture defect:
-
-1. record Publication `REQUEST_CHANGES` rN against exact reviewed Candidate/PDF bytes;
-2. preserve prior Architecture rN review record and immutable approval snapshot;
-3. verify current canonical Architecture approval matches State provenance;
-4. supersede/remove only that active canonical Architecture approval;
-5. set Architecture Review back to pending and clear active Architecture provenance;
-6. invalidate checkpoints downstream of the selected boundary;
-7. resume through normal research/Selection/Architecture work;
-8. stop again at Architecture Review rN+1 before any new Draft/Publication continuation.
-
-This is routine dependency-aware correction, not an Owner Exception Gate.
-
-## 7. `index.md`
-
-`execution/index.md` is the first human-readable navigation file after Production State. Record only current navigation and material provenance:
-
-- issue/Profile/source root/work branch;
+- issue/Profile identity and canonical work branch/source root;
 - reviewed main baseline;
+- run start/objective/requested stop;
 - current lifecycle/stop reason;
-- requested end Gate;
-- latest Human-review rN pointers;
-- exact reviewed commit for any currently presented/recorded Gate;
-- current Candidate/PDF identity when applicable;
-- X/Grok task/result disposition;
+- current Human Gate status and latest rN pointer;
+- current Candidate/PDF when applicable;
+- Grok/X task/result disposition when applicable;
 - execution mode;
-- shared-Core defect pointers;
-- session list;
+- known edition-local deviations/shared-Core defects;
+- session log pointers;
 - final disposition.
 
-Update it when a Gate decision/revision changes, Architecture is reopened, Candidate changes, a shared-Core blocker appears, or the run terminates/completes.
+Update it when Gate/revision/candidate/blocking/final state changes.
 
-## 8. `sessions/`
+## 5. Session records
 
-A session record should contain concise sections for:
+Create one concise session log per production conversation or material continuation.
 
-- Starting authority
-- Actions actually performed
-- External handoff
-- Deterministic execution transport
-- Deviations / failures
-- End state
+Required sections:
 
-When bridge transport is used, record request id/path + request commit, trusted workflow/run pointer when useful, bridge receipt, resulting State, and Human review authority if applicable. Do not duplicate request/result bodies.
+- `Starting authority`
+- `Actions actually performed`
+- `External handoff`
+- `Deterministic execution transport`
+- `Deviations / failures`
+- `End state`
 
-When a Human Gate is involved, preserve the Human-reviewed commit separately from request/event execution commit.
+Record meaningful stages and material decisions, not every tool call or private reasoning.
 
-## 9. `execution/reviews/`
+### Connector-safe deterministic execution provenance
 
-Each Human Gate revision gets one concise Markdown summary with headings:
+When the bridge is used, retain:
+
+- request id/path;
+- request-only commit SHA;
+- Profile work branch;
+- operator queue Issue `#448` trigger reference/comment if useful;
+- trusted default-branch operator workflow run;
+- bridge receipt/result path;
+- resulting State/lifecycle edge;
+- Human Gate review record/index when applicable;
+- bot output commit.
+
+Keep these identities distinct:
+
+```text
+reviewed main baseline
+Human-reviewed durable work-branch commit
+request-only work-branch commit
+Issue #448 trigger comment
+trusted default-branch executor run
+bot output commit
+```
+
+Issue #448 is transport only, not a Human Gate or editorial record.
+
+## 6. Human Gate review Markdown
+
+Every Human Gate review gets a short `execution/reviews/*-rN.md` even when detailed feedback lives in GitHub.
+
+Required headings:
 
 - `Reviewed authority`
 - `Human decision`
@@ -149,42 +131,63 @@ Each Human Gate revision gets one concise Markdown summary with headings:
 - `Regeneration boundary`
 - `Shared-Core implication`
 
-Point to the exact machine rN JSON and review index. For APPROVED rows also point to the immutable approval snapshot.
+Point to the exact machine rN record/index; do not duplicate full Human feedback.
 
-A Publication cross-gate revision must explicitly note that active Architecture authority was reopened/superseded and identify the new required Architecture revision.
+Decision vocabulary for normal gates is only:
 
-## 10. Shared-Core defects
+- `APPROVED`
+- `REQUEST_CHANGES`
 
-Production may observe but not repair shared Core. Record symptom/reproduction/impact/workaround/maintenance pointer and either continue with a semantically safe edition-local workaround or stop as `BLOCKED_CORE_DEFECT`.
+A genuine Owner Exception is recorded separately.
 
-Core maintenance remains separate from production evidence.
+## 7. Revision history and cross-gate reopening
 
-## 11. Trusted operator execution provenance
+Review revisions are contiguous independently per Gate.
 
-The work-branch operator workflow is a read-only signal only. Trusted request admission/execution is owned by default-branch `pipeline-contract-tests.yml` through `workflow_run`.
+After `REQUEST_CHANGES`, old canonical artifact paths may later hold regenerated bytes. Historical review identity remains exact through recorded SHA-256 values, durable reviewed repository commit, machine rN record, and immutable approval snapshot when the revision was approved.
 
-A session record may therefore distinguish:
+Publication-local revision preserves valid active Architecture approval.
 
-```text
-Human-reviewed edition commit
-request-only work-branch commit
-read-only signal workflow run
-trusted default-branch preflight/executor run
-bot output commit
-```
+When Publication Preview explicitly returns to a boundary before `ARCHITECTURE_ESTABLISHED`, prior Architecture APPROVED evidence remains in its immutable rN record/snapshot while the active canonical Architecture approval is superseded and Architecture Review becomes pending for rN+1.
 
-Do not collapse those identities.
+Current State/checkpoint/gate provenance determines current authority; old rN records remain historical evidence only.
 
-## 12. Session close
+## 8. Shared-Core defects
 
-Before a normal conversation ends, ensure:
+A production session observes but does not repair shared Core.
 
-- session log exists;
-- `index.md` current navigation is correct;
-- Human rN/current approval pointers are correct;
-- any cross-gate reopen is visible;
-- exact next action/stop reason is recorded;
-- structural execution-record validation passes;
-- records are committed to the edition work branch.
+Record under `execution/defects/`:
 
-This logging is internal work and does not require routine Human confirmation.
+- observation;
+- reproduction boundary;
+- impact;
+- safe edition-local workaround, if any;
+- Core-maintenance pointer;
+- production disposition.
+
+A formal production-validation run that exposes a shared-Core defect is failed evidence even if a local workaround exists.
+
+## 9. Session bootstrap / close
+
+At resume, read:
+
+1. current reviewed main/bootstrap;
+2. canonical Production State;
+3. execution index;
+4. latest machine Human-review record/index if applicable;
+5. referenced session/review/defect/bridge receipt needed to continue.
+
+Before normal session close:
+
+1. update session log;
+2. update execution index if navigation changed;
+3. ensure Gate/review/defect/transport pointers exist;
+4. record exact next action/stop reason;
+5. validate execution-record structure;
+6. commit the record on the edition work branch.
+
+This logging is internal production work and never requires routine approval.
+
+## 10. Compatibility
+
+Existing W33/SP001 pre-policy logs remain historical evidence and are not rewritten merely to match this layout. Clean post-integration validation creates canonical execution records after Profile/State initialization.
