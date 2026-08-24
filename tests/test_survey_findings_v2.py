@@ -178,9 +178,10 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         self.assertIn("Production versus Core-maintenance boundary", bootstrap)
         self.assertIn("Resolve targets without user ceremony", bootstrap)
         self.assertNotIn("survey_pilot_bootstrap_v2.py plan --pilot", bootstrap)
-        self.assertIn("run the complete seven-point acceptance audit from zero", final_rule)
-        self.assertIn("rerun all seven acceptance points from point 1", final_rule)
+        self.assertIn("run all seven acceptance points from zero", final_rule)
+        self.assertIn("rerun Points 1–7 from Point 1", final_rule)
         self.assertIn("Human Gate round-trip viability", final_rule)
+        self.assertIn("default-branch `issue_comment` authority", final_rule)
         self.assertFalse(Path("sources/2026-W33/production-state.json").exists())
         self.assertFalse(Path("sources/SP001/production-state.json").exists())
 
