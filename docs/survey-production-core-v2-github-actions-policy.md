@@ -1,208 +1,127 @@
 # Survey Production Core v2 — GitHub Actions Responsibility Policy
 
-Status: `INTEGRATED REDESIGN INVARIANT / HUMAN-GATE ROUNDTRIP MAINTENANCE SYNCHRONIZED`  
+Status: `FOLLOW-UP REVIEW TRUST-BOOTSTRAP REPAIR / REAUDIT PENDING`  
 Established: 2026-08-23 JST  
-Human-Gate update: 2026-08-24 JST  
-Working branch: `maintenance/core-v2-operator-execution-bridge`  
-Related feedback: `PFB-006` and `PFB-014` in `docs/survey-production-core-v2-production-feedback-backlog.md`
+Updated: 2026-08-24 JST
 
-## 1. Purpose
+## 1. Governing principle
 
-This memo defines the responsibility rule for GitHub Actions in Survey Production Core v2 after W33/SP001 production review, clean post-merge revalidation, and the later Human Gate round-trip audit.
+> **GitHub Actions is a deterministic executor/verifier, not a research, editorial, visual, or Human-decision agent.**
 
-The old production topology used Actions for Drafting/Synthesis, semantic/publication mutation, layout repair, stage/candidate mutation and bot-driven production chaining. W33/SP001 demonstrated that this made workflow topology itself part of the production problem.
+Actions is justified only where it supplies concrete mechanical value unavailable or better isolated there: independent CI, reproducible build, exact-byte transport, credential-isolated release, or a trusted exact-checkout Core execution substrate.
 
-The governing principle remains:
+## 2. Trust-root requirement
 
-> **GitHub Actions is a deterministic executor / verifier, not a reasoning, editorial, Human-decision, or publication-authoring agent.**
+A work branch is untrusted until admitted. Therefore no write-capable workflow loaded from the work branch may decide that the same work branch's Core/workflow/config bytes are acceptable.
 
-A task must not be placed in Actions merely because it can be scripted.
+For operator execution:
 
-The post-merge revalidation adds one qualification: when the primary ChatGPT connector runtime can edit the exact repository branch but cannot mount that branch and invoke canonical local Core CLI, Actions may supply that **missing deterministic execution substrate** through one narrowly constrained operator bridge. This does not transfer editorial or Human authority to Actions.
+```text
+work-branch request push
+-> survey-production-v2-operator-bridge.yml
+   read-only signal only
+-> workflow_run
+-> pipeline-contract-tests.yml loaded from default branch
+   -> read-only trusted operator-preflight
+   -> dependent write-capable operator-execute only after PASS
+```
 
-## 2. Admission rule for GitHub Actions
+The trusted preflight treats the work-branch commit purely as data. It obtains the protected-path authority from the named `reviewed_main_sha` config, never from the untrusted branch config being admitted.
 
-Before retaining or adding any production-related Actions task, ask both:
-
-1. **Does Actions provide a concrete execution/reproducibility/security advantage that the primary operator path lacks?**
-2. **Is the task mechanical enough that no research/editorial/visual/Human judgment is transferred into CI?**
-
-Useful Actions-specific advantages include reproducible build environments, independent CI, branch-protection integration, credential isolation, immutable artifacts, deterministic verification and an exact checked-out Core execution environment unavailable to a connector-only ChatGPT runtime.
-
-`It is already a script`, `it can be automated`, or `we used a workflow before` are not sufficient reasons.
+A drifted signal workflow can cause denial of service by failing to signal, but cannot gain write authority or weaken the trusted verifier.
 
 ## 3. Appropriate Actions responsibilities
 
-### CI and contract validation
+Actions may perform:
 
-Appropriate examples include unit/regression tests, schema/path/invariant checks, provenance/exact-byte integrity, identifier/reference integrity, deterministic stage-contract verification and reproducible compiler/preflight checks.
+- Core/schema/regression CI;
+- reproducible Weekly/Special build;
+- exact Candidate PDF Preview transport;
+- frozen-byte release and reconciliation;
+- trusted execution of one schema-enumerated deterministic operator request after default-branch preflight.
 
-### Reproducible builds
+Operator execution may initialize generic Weekly/configured Retrospective/Thematic State, adopt one validated lifecycle stage, or record an already explicit Human Gate decision and its deterministic lifecycle consequence.
 
-Actions may compile already-authored Weekly/Special publication source in a controlled toolchain, report deterministic findings/hashes/page counts and expose independently reproducible artifacts. It must not design or repair the publication.
+Configured Retrospective initialization reuses the **existing `survey_period_v2`** builder. It does not create cadence-specific engines.
 
-### Freeze / release integrity
+## 4. Work that remains outside Actions
 
-Actions may perform exact-byte Candidate/Preview/Freeze/Release checks, release-manifest validation, credential-isolated publishing and idempotent release reconciliation.
+ChatGPT owns research strategy, source quality/materiality judgment, Evidence interpretation, Selection, Architecture, drafting/synthesis, reader-facing authorship, semantic/editorial QA, exact-PDF visual QA, requested repair implementation, and Exception-Gate judgment.
 
-### Optional operator execution bridge
+The Human owns `APPROVED` vs `REQUEST_CHANGES`, requested changes, and regeneration boundary.
 
-When direct exact local Core CLI execution is unavailable to ChatGPT, Actions may:
+Actions/Core may validate and record that explicit input. They may not choose or reinterpret it.
 
-- check out one exact immutable request commit;
-- verify the work branch's protected shared Core/contract bytes against one reviewed `main` baseline before execution;
-- execute only schema-enumerated existing deterministic Core operations;
-- initialize canonical Weekly, configured Retrospective Period, or Thematic Profile/State through repository-owned builders;
-- validate already-authored stage artifacts, generate deterministic Stage Checkpoint/result authority, and advance one lifecycle edge;
-- after a Human has explicitly decided, record Architecture/Publication Preview approval or `REQUEST_CHANGES` and apply the deterministic validated lifecycle consequence;
-- enforce Profile-bound edition-local write scope;
-- commit exact deterministic outputs and receipts back to the same work branch.
+## 5. Operator request surface
 
-Configured Retrospective initialization reuses the **existing `survey_period_v2` Core helper**. Monthly, half-year and annual semantics remain one generic Retrospective Period path; maintenance adds no second period builder, scope schema or cadence-specific workflow logic.
+Exactly eight operation kinds are allowed:
 
-Human Gate recording reuses canonical `survey_human_gate_v2`. The Human supplies the decision, review provenance, requested changes and regeneration boundary. Actions/Core only validate and record that explicit decision and invalidate the dependency range defined by repository contract.
-
-The bridge must not accept request-supplied shell, Python, module, script, workflow or arbitrary executable identifiers. Its authority is `docs/survey-production-core-v2-operator-execution-bridge.md`.
-
-## 4. Work that remains with ChatGPT and Human
-
-Tasks requiring interpretation, synthesis, prioritization, semantic judgment, visual taste or actual Human decision remain outside Actions.
-
-ChatGPT owns Source Intake/search strategy, source-quality/materiality judgment, Screening/Evidence interpretation, Selection, Architecture, Drafting/Synthesis, reader-facing authorship, Grok/X disposition, retrospective trajectory/period interpretation, thematic lineage/historical attribution, semantic/editorial QA, exact-PDF visual QA, applying requested revisions, and deciding whether a true Exception Gate is needed.
-
-The Human owns the actual normal Human Gate decision:
-
-- `APPROVED`; or
-- routine `REQUEST_CHANGES` with feedback and a regeneration boundary.
-
-The bridge may persist that already explicit decision. It must never choose it.
-
-## 5. Mechanical execution vs encoded editorial judgment
-
-A process can be deterministic while still encode editorial policy that should not be delegated. Turning authored source into TeX or validating a schema can be mechanically appropriate. A generic script deciding how much prose survives, what information becomes reader-facing, where every chapter breaks, which material is selected, or what the Human “must have meant” is editorial.
-
-Therefore distinguish **mechanically executable** from **mechanically appropriate to delegate**.
-
-Human Gate recording is mechanically appropriate only because the decision and regeneration boundary arrive as explicit Human input. The mechanical layer may reject invalid/stale input; it may not reinterpret it.
-
-## 6. Generality rule
-
-Do not solve generality by creating separate authoring/mutation workflow families for Weekly, monthly/half-year/annual retrospectives, standalone Thematic, Foundations or other topic/cadence variants.
-
-Preferred model:
-
-```text
-Profile/config/edition authority
--> ChatGPT reasoning and authorship
--> Human decision at the two normal Gates
--> narrow common deterministic helpers
--> direct local execution when available
--> optional shared operator bridge when local execution is unavailable
--> shared CI/build/preview/release verification
-```
-
-The operator bridge must be Profile/path driven and must not encode W33/SP001 topic names, fixed package taxonomies, fixed source-root depth, fixed branch-family names, Foundations volume structure, annual trajectory choices, or topic-specific Human revision logic.
-
-## 7. Target responsibility model
-
-```text
-ChatGPT
-  research / reasoning / editorial judgment
-  architecture / drafting / synthesis
-  publication-source authoring
-  semantic and exact-PDF visual review/repair
-          |
-Human     |  APPROVED / REQUEST_CHANGES + feedback/boundary
-          v
-Canonical repository scripts
-  narrow deterministic transformation/checking
-  Profile/State/checkpoint mechanics
-  Human-decision recording / selective invalidation
-  existing Weekly / Period / Thematic profile builders
-          |
-          +----------------------------+
-          |                            |
-          v                            v
-Direct exact local CLI          Operator bridge (fallback)
-preferred when available        exact checked-out deterministic execution only
-          |                            |
-          +-------------+--------------+
-                        v
-GitHub Actions independent surfaces
-  CI / reproducible build / Preview transport / Release integrity
-```
-
-## 8. Human Gate operator-boundary rule
-
-The bridge's Human Gate surface is deliberately not a generic `decision` interpreter. Its request schema exposes four narrow operation kinds:
-
+- `INITIALIZE_WEEKLY`
+- `INITIALIZE_RETROSPECTIVE`
+- `INITIALIZE_THEMATIC`
+- `ADVANCE_STAGE`
 - `RECORD_ARCHITECTURE_APPROVAL`
 - `REQUEST_ARCHITECTURE_REVISION`
 - `RECORD_PUBLICATION_PREVIEW_APPROVAL`
 - `REQUEST_PUBLICATION_PREVIEW_REVISION`
 
-Every request requires exact current State, next contiguous review revision, Human identity/time/reference and—when revising—explicit requested changes plus an enum-constrained gate-specific regeneration boundary.
+Arbitrary command, script, module, workflow, generic decision, or rejection surfaces are prohibited.
 
-A generic `EXECUTE_HUMAN_DECISION`, arbitrary rejection operation, command string or free-form executable target is prohibited.
+## 6. Human review provenance
 
-## 9. PDF / typesetting boundary
+Before either normal Human Gate is presented, the exact review surface must be committed **and retained on the canonical Profile work branch**.
 
-Preferred publication loop:
+Canonical Human Gate Core requires the reviewed commit to:
 
-```text
-ChatGPT authors/edits publication source
--> ChatGPT reviews rendered PDF and makes semantic/layout decisions
--> candidate source is committed
--> Actions independently rebuilds/verifies
--> deterministic build/preflight PASS or FAIL
-```
+- exist;
+- remain reachable from the canonical work branch;
+- exact-bind current reviewed State and Gate inputs;
+- for Publication Preview, exact-bind the Candidate-bound PDF.
 
-Avoid the retired anti-pattern where Actions chooses layout repairs or becomes the publication authoring loop.
+Connector-safe execution additionally requires the reviewed commit to equal the request-only commit parent.
 
-## 10. Exact-byte/candidate/revision/release guarantees
+Every approval writes an immutable rN approval snapshot under `gates/reviews/approvals/`, so later dependency-aware reopening can supersede active canonical approval without destroying historical decision evidence.
 
-Reducing Actions-authored production logic does not weaken exact source/PDF/Candidate binding, invalidation on byte changes, reproducible build, Freeze/Release exact-byte identity, release credential isolation or idempotent Release reconciliation.
+## 7. Dependency-aware Human revision
 
-Normal Human revision must strengthen these guarantees:
+Architecture Review may return to any allowed pre-Architecture boundary.
 
-- r1 reviewed bytes are recorded by SHA and reviewed repository commit;
-- selected downstream checkpoint/gate authority becomes pending after `REQUEST_CHANGES`;
-- superseded Stage Checkpoints are removed so regeneration cannot silently reuse old acceptance;
-- r2 must be revalidated to the same gate;
-- stale r1 approval fails;
-- final approval binds only the current rN bytes.
+Publication Preview may return to:
 
-## 11. Workflow review classification
+- publication-local boundaries while preserving active Architecture approval; or
+- an upstream Evidence/Selection/etc. boundary when Human feedback reveals an upstream defect.
 
-Retained/introduced workflows should fit one of these justified classes:
+If Publication Preview returns before `ARCHITECTURE_ESTABLISHED`, Core must supersede the active canonical Architecture approval after verifying its provenance, keep the immutable historical approval snapshot, mark Architecture Review pending, and require a new Architecture revision before publication continues.
 
-- `KEEP_AS_CI`
-- `KEEP_AS_REPRODUCIBLE_BUILD`
-- `KEEP_AS_EXACT_BYTE_TRANSPORT_OR_RELEASE`
-- `KEEP_AS_DETERMINISTIC_EXECUTION_SUBSTRATE`
-- `RETURN_TO_CHATGPT`
-- `LEGACY_REMOVE_CANDIDATE`
+Routine cross-gate correction is not a third Human Gate and not an Owner Exception Gate.
 
-Every retained workflow must state the concrete Actions-specific benefit and remain narrow enough that no editorial/Human decision ownership is transferred.
+## 8. Current seven-workflow surface
 
-## 12. Current Actions surface
+1. `pipeline-contract-tests.yml` — normal CI plus trusted default-branch `workflow_run` operator preflight/execution.
+2. `survey-production-v2-ci.yml` — focused Core regression.
+3. `build-weekly-survey.yml` — read-only reproducible build.
+4. `build-special-pdf.yml` — read-only reproducible build.
+5. `survey-production-v2-export-publication-preview.yml` — exact Preview transport.
+6. `survey-production-v2-release.yml` — exact-byte Release.
+7. `survey-production-v2-operator-bridge.yml` — read-only work-branch operator signal.
 
-The maintenance candidate keeps exactly seven workflows:
+No eighth workflow is introduced by the trust fix.
 
-1. `pipeline-contract-tests.yml`
-2. `survey-production-v2-ci.yml`
-3. `build-weekly-survey.yml`
-4. `build-special-pdf.yml`
-5. `survey-production-v2-export-publication-preview.yml`
-6. `survey-production-v2-release.yml`
-7. `survey-production-v2-operator-bridge.yml`
+## 9. Lifecycle boundary
 
-Human Gate round-trip support extends the existing seventh bridge; it does not justify an eighth workflow.
+Ordinary lifecycle stages remain local deterministic Core mechanics. `FROZEN -> RELEASED` remains the only lifecycle `WORKFLOW_DISPATCH` edge.
 
-## 13. Evidence and acceptance
+The trusted operator executor is an execution substrate for local mechanics, not a new lifecycle handler.
 
-Earlier bridge work proved immutable requests, reviewed-main preflight, Profile-bound writes, no arbitrary executable surface, configured Retrospective reuse and init -> Discovery execution. The later full-system audit found that approval/revision continuation was missing.
+## 10. Acceptance
 
-Current maintenance therefore requires fresh positive/negative Human Gate round-trip regressions, bridge-backed execution tests, exact-head CI/contract tests and the complete **seven-point** fixed-head audit. Historical six-point PASS evidence remains diagnostic only.
+The earlier candidate `9932c8b7a14f1c3bdcc775df88056681b2841514` and its 7/7 audit are invalidated by follow-up review.
 
-After Human-reviewed unchanged integration, clean Weekly, SP001/Thematic, representative Retrospective and Foundations-guided production validation is still required before PFB-013/PFB-014 can be closed.
+The repaired candidate must pass exact-head Core CI + pipeline contracts and a fresh seven-point audit from Point 1. That audit must explicitly inspect:
+
+- default-branch trust bootstrap;
+- reviewed-commit branch reachability/durability;
+- Publication Preview upstream revision reopening Architecture;
+- preservation of immutable historical approval evidence.
+
+Only a fresh 7/7 fixed-head PASS may return PR #447 to Human full-candidate review.
