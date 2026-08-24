@@ -8,9 +8,10 @@ the deterministic lifecycle consequence.
 APPROVED delegates to the existing exact-byte approval recorders. A routine
 REQUEST_CHANGES decision records immutable review provenance, selectively
 invalidates downstream checkpoint authority, removes only superseded canonical
-Stage Checkpoint files that would block regeneration, and returns Production
-State to an allowed regeneration boundary. It never chooses the decision or the
-boundary.
+authority that would block regeneration, and returns Production State to an
+allowed regeneration boundary. Publication Preview corrections may explicitly
+reopen Architecture Review when the Human-selected boundary is upstream of the
+approved Architecture. This module never chooses the decision or boundary.
 """
 from __future__ import annotations
 
@@ -100,6 +101,21 @@ def review_record_path(
     return _review_dir(source_root, cfg) / f"{GATE_SLUGS[gate]}-r{revision}.json"
 
 
+def approval_snapshot_path(
+    source_root: Path,
+    cfg: dict[str, Any],
+    gate: str,
+    revision: int,
+) -> Path:
+    return _review_dir(source_root, cfg) / "approvals" / f"{GATE_SLUGS[gate]}-r{revision}.json"
+
+
+def _reopens_architecture(regeneration_boundary: str | None) -> bool:
+    if regeneration_boundary is None:
+        return False
+    return core.LIFECYCLE.index(regeneration_boundary) < core.LIFECYCLE.index("ARCHITECTURE_ESTABLISHED")
+
+
 def _validate_review_index_semantics(
     repo_root: Path,
     payload: dict[str, Any],
@@ -108,12 +124,12 @@ def _validate_review_index_semantics(
     if payload.get("issue_id") != expected_issue_id:
         raise HumanGateError("Human Gate review index issue identity mismatch")
     expected_revision = {gate: 1 for gate in GATE_KEYS}
-    approved_seen = {gate: False for gate in GATE_KEYS}
+    approved_active = {gate: False for gate in GATE_KEYS}
     for row in payload.get("reviews", []):
         gate = row["gate"]
         revision = row["revision"]
-        if approved_seen[gate]:
-            raise HumanGateError(f"Human Gate review index has review after APPROVED decision: {gate}")
+        if approved_active[gate]:
+            raise HumanGateError(f"Human Gate review index has review after active APPROVED decision: {gate}")
         if revision != expected_revision[gate]:
             raise HumanGateError(
                 f"Human Gate review revisions must be contiguous for {gate}: expected {expected_revision[gate]}, got {revision}"
@@ -138,7 +154,23 @@ def _validate_review_index_semantics(
         ):
             raise HumanGateError("Human Gate review index/record identity mismatch")
         if row["decision"] == "APPROVED":
-            approved_seen[gate] = True
+            approval = record.get("approval")
+            if not isinstance(approval, dict):
+                raise HumanGateError("APPROVED Human Gate review lacks immutable approval snapshot")
+            approval_path = core.repo_local_path(repo_root, approval["path"], "Human Gate approval snapshot")
+            if approval_path.is_symlink() or not approval_path.is_file():
+                raise HumanGateError(f"Human Gate approval snapshot missing: {approval['path']}")
+            if core.sha256_file(approval_path) != approval["sha256"]:
+                raise HumanGateError(f"Human Gate approval snapshot SHA drift: {approval['path']}")
+            approved_active[gate] = True
+        elif (
+            gate == "PUBLICATION_PREVIEW"
+            and row["decision"] == "REQUEST_CHANGES"
+            and _reopens_architecture(record.get("regeneration_boundary"))
+        ):
+            if not approved_active["ARCHITECTURE_REVIEW"]:
+                raise HumanGateError("Publication cross-gate revision has no active approved Architecture to reopen")
+            approved_active["ARCHITECTURE_REVIEW"] = False
 
 
 def _load_review_index(
@@ -311,6 +343,47 @@ def _require_review_commit(repo_root: Path, commit_sha: str) -> None:
         ) from exc
 
 
+def _require_review_commit_reachable(repo_root: Path, commit_sha: str, work_branch: str) -> None:
+    try:
+        subprocess.run(
+            ["git", "check-ref-format", "--branch", work_branch],
+            cwd=repo_root,
+            check=True,
+            capture_output=True,
+        )
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise HumanGateError(f"invalid Human Gate work branch: {work_branch}") from exc
+
+    origin = subprocess.run(
+        ["git", "config", "--get", "remote.origin.url"],
+        cwd=repo_root,
+        capture_output=True,
+    )
+    if origin.returncode == 0:
+        ref = f"refs/remotes/origin/{work_branch}"
+        label = f"origin/{work_branch}"
+    else:
+        ref = f"refs/heads/{work_branch}"
+        label = work_branch
+
+    present = subprocess.run(
+        ["git", "show-ref", "--verify", "--quiet", ref],
+        cwd=repo_root,
+    )
+    if present.returncode != 0:
+        raise HumanGateError(
+            f"Human Gate reviewed repository commit is not retained on canonical work branch {label}; push/fetch the review surface first"
+        )
+    reachable = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", commit_sha, ref],
+        cwd=repo_root,
+    )
+    if reachable.returncode != 0:
+        raise HumanGateError(
+            f"Human Gate reviewed repository commit is not reachable from canonical work branch {label}: {commit_sha}"
+        )
+
+
 def _committed_file_bytes(repo_root: Path, commit_sha: str, rel: str) -> bytes:
     try:
         listing = subprocess.run(
@@ -357,11 +430,13 @@ def _committed_file_bytes(repo_root: Path, commit_sha: str, rel: str) -> bytes:
 def _review_commit(
     repo_root: Path,
     override: str | None,
+    work_branch: str,
     reviewed_state: dict[str, str],
     reviewed_artifacts: list[dict[str, str]],
 ) -> str:
     commit_sha = core.repository_commit_sha(repo_root, override)
     _require_review_commit(repo_root, commit_sha)
+    _require_review_commit_reachable(repo_root, commit_sha, work_branch)
     refs: list[tuple[str, dict[str, str]]] = [("Production State", reviewed_state)]
     refs.extend(
         (f"Human Gate artifact {row['name']}", row)
@@ -378,6 +453,29 @@ def _review_commit(
                 f"Human Gate reviewed repository commit bytes differ for {label}: {rel}"
             )
     return commit_sha
+
+
+def _snapshot_approval(
+    repo_root: Path,
+    source_root: Path,
+    cfg: dict[str, Any],
+    gate: str,
+    revision: int,
+    canonical_approval: Path,
+) -> dict[str, str]:
+    canonical = _authority(repo_root, canonical_approval)
+    snapshot = approval_snapshot_path(source_root, cfg, gate, revision)
+    if snapshot.exists():
+        existing = _authority(repo_root, snapshot)
+        if existing["sha256"] != canonical["sha256"]:
+            raise HumanGateError(f"Human Gate approval snapshot collision: {_rel(repo_root, snapshot)}")
+        return existing
+    snapshot.parent.mkdir(parents=True, exist_ok=True)
+    snapshot.write_bytes(canonical_approval.read_bytes())
+    snap = _authority(repo_root, snapshot)
+    if snap["sha256"] != canonical["sha256"]:
+        raise HumanGateError("Human Gate approval snapshot byte mismatch")
+    return snap
 
 
 def record_architecture_approval(
@@ -397,7 +495,13 @@ def record_architecture_approval(
     revision = _next_revision(index, "ARCHITECTURE_REVIEW", expected_revision)
     reviewed_state = _authority(repo_root, state_path)
     artifacts = _reviewed_artifacts(repo_root, cfg, state, profile, "ARCHITECTURE_REVIEW")
-    commit_sha = _review_commit(repo_root, reviewed_commit_sha, reviewed_state, artifacts)
+    commit_sha = _review_commit(
+        repo_root,
+        reviewed_commit_sha,
+        profile["paths"]["work_branch"],
+        reviewed_state,
+        artifacts,
+    )
     updated = agent.approve_architecture(
         repo_root,
         cfg,
@@ -407,6 +511,9 @@ def record_architecture_approval(
         review_reference,
     )
     approval_path = source_root / cfg["state_authority"]["architecture_approval_path"]
+    approval_snapshot = _snapshot_approval(
+        repo_root, source_root, cfg, "ARCHITECTURE_REVIEW", revision, approval_path
+    )
     record = _review_record_payload(
         issue_id=state["issue_id"],
         gate="ARCHITECTURE_REVIEW",
@@ -420,7 +527,7 @@ def record_architecture_approval(
         review_reference=review_reference,
         requested_changes=None,
         regeneration_boundary=None,
-        approval=_authority(repo_root, approval_path),
+        approval=approval_snapshot,
     )
     record_path, index_path = _write_review_record(repo_root, cfg, source_root, index, record)
     return updated, record_path, index_path
@@ -443,7 +550,13 @@ def record_publication_preview_approval(
     revision = _next_revision(index, "PUBLICATION_PREVIEW", expected_revision)
     reviewed_state = _authority(repo_root, state_path)
     artifacts = _reviewed_artifacts(repo_root, cfg, state, profile, "PUBLICATION_PREVIEW")
-    commit_sha = _review_commit(repo_root, reviewed_commit_sha, reviewed_state, artifacts)
+    commit_sha = _review_commit(
+        repo_root,
+        reviewed_commit_sha,
+        profile["paths"]["work_branch"],
+        reviewed_state,
+        artifacts,
+    )
     updated = agent.approve_publication_preview(
         repo_root,
         cfg,
@@ -453,6 +566,9 @@ def record_publication_preview_approval(
         review_reference,
     )
     approval_path = source_root / cfg["state_authority"]["publication_preview_approval_path"]
+    approval_snapshot = _snapshot_approval(
+        repo_root, source_root, cfg, "PUBLICATION_PREVIEW", revision, approval_path
+    )
     record = _review_record_payload(
         issue_id=state["issue_id"],
         gate="PUBLICATION_PREVIEW",
@@ -466,7 +582,7 @@ def record_publication_preview_approval(
         review_reference=review_reference,
         requested_changes=None,
         regeneration_boundary=None,
-        approval=_authority(repo_root, approval_path),
+        approval=approval_snapshot,
     )
     record_path, index_path = _write_review_record(repo_root, cfg, source_root, index, record)
     return updated, record_path, index_path
@@ -514,6 +630,26 @@ def _superseded_checkpoint_paths(
     return [paths[key] for key in sorted(paths)]
 
 
+def _superseded_gate_authority_paths(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    state: dict[str, Any],
+    source_root: Path,
+    gate: str,
+    regeneration_boundary: str,
+) -> list[Path]:
+    if gate != "PUBLICATION_PREVIEW" or not _reopens_architecture(regeneration_boundary):
+        return []
+    if state["human_gates"]["architecture_review"] != "approved":
+        raise HumanGateError("Publication cross-gate revision requires active approved Architecture Review")
+    path = source_root / cfg["state_authority"]["architecture_approval_path"]
+    authority = _authority(repo_root, path)
+    provenance = state.get("human_gate_provenance", {}).get("architecture_review")
+    if not isinstance(provenance, dict) or provenance.get("path") != authority["path"] or provenance.get("sha256") != authority["sha256"]:
+        raise HumanGateError("active Architecture approval provenance does not match canonical approval bytes")
+    return [path]
+
+
 def _revised_state(
     repo_root: Path,
     cfg: dict[str, Any],
@@ -548,7 +684,10 @@ def _revised_state(
         updated["human_gate_provenance"]["publication_preview"] = None
     else:
         if updated["human_gates"]["architecture_review"] != "approved":
-            raise HumanGateError("Publication Preview revision requires preserved approved Architecture Review")
+            raise HumanGateError("Publication Preview revision requires active approved Architecture Review")
+        if _reopens_architecture(regeneration_boundary):
+            updated["human_gates"]["architecture_review"] = "pending"
+            updated["human_gate_provenance"]["architecture_review"] = None
         updated["human_gates"]["publication_preview"] = "pending"
         updated["human_gate_provenance"]["publication_preview"] = None
 
@@ -586,10 +725,21 @@ def request_changes(
     revision = _next_revision(index, gate, expected_revision)
     reviewed_state = _authority(repo_root, state_path)
     artifacts = _reviewed_artifacts(repo_root, cfg, state, profile, gate)
-    commit_sha = _review_commit(repo_root, reviewed_commit_sha, reviewed_state, artifacts)
+    commit_sha = _review_commit(
+        repo_root,
+        reviewed_commit_sha,
+        profile["paths"]["work_branch"],
+        reviewed_state,
+        artifacts,
+    )
     updated = _revised_state(repo_root, cfg, state, gate, regeneration_boundary)
     superseded = _superseded_checkpoint_paths(
         repo_root, cfg, state, source_root, regeneration_boundary, gate
+    )
+    superseded.extend(
+        _superseded_gate_authority_paths(
+            repo_root, cfg, state, source_root, gate, regeneration_boundary
+        )
     )
     record = _review_record_payload(
         issue_id=state["issue_id"],
@@ -608,7 +758,7 @@ def request_changes(
     )
     record_path, index_path = _write_review_record(repo_root, cfg, source_root, index, record)
     removed: list[str] = []
-    for path in superseded:
+    for path in sorted(set(superseded), key=lambda item: _rel(repo_root, item)):
         if path.exists():
             path.unlink()
             removed.append(_rel(repo_root, path))
