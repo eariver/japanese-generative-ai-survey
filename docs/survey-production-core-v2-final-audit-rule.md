@@ -78,7 +78,7 @@ A valid reviewed commit must be reachable from canonical `work_branch` and conta
 The audit must not merely inspect the bridge helper. It must prove the complete root of trust, including both supported activation transports and process startup/import behavior:
 
 - operator execution is implemented by the single `survey-production-v2-operator-bridge.yml` workflow loaded from default-branch authority;
-- Issue transport remains the persistent Issue `#448` surface and accepts only exact `/survey-core-execute <lowercase-40-hex-request-commit>` comments from an authorized repository association;
+- Issue #448 transport retains default-branch `issue_comment` authority and accepts only exact `/survey-core-execute <lowercase-40-hex-request-commit>` comments from an authorized repository association;
 - connector-native PR transport uses default-branch `pull_request_target` only for same-repository PRs targeting `main`, authorized repository associations, the reserved `Survey Core operator transport:` title prefix, and a PR head branch exactly equal to immutable request `work_branch`;
 - an operator transport PR is execution transport only and is not an integration/Human-Gate/editorial authority;
 - both transports converge on the same read-only preflight before any write-capable job exists;
