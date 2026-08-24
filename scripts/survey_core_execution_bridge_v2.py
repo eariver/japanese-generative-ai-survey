@@ -145,6 +145,9 @@ def _validate_profile_identity(profile: dict[str, Any], request: dict[str, Any])
         raise OperatorBridgeError("generated/current Production Profile source_root differs from request")
     if paths.get("work_branch") != request["work_branch"]:
         raise OperatorBridgeError("generated/current Production Profile work_branch differs from request")
+    requested_survey_root = request.get("operation", {}).get("survey_root")
+    if requested_survey_root is not None and paths.get("survey_root") != requested_survey_root:
+        raise OperatorBridgeError("generated/current Production Profile survey_root differs from request")
 
 
 def _load_scoped_spec(
@@ -178,7 +181,8 @@ def _thematic_profile_from_spec(
     operation = request["operation"]
 
     # Historical/generic raw Core specs remain supported. When the request also
-    # carries a temporal mode, require it to agree rather than silently override.
+    # carries request-owned path/temporal identity, final Profile validation
+    # requires exact agreement rather than silently ignoring the request fields.
     if "planning_authority" not in raw:
         requested_mode = operation.get("temporal_mode")
         if requested_mode is not None and raw.get("temporal_mode") != requested_mode:
