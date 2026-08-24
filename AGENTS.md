@@ -98,7 +98,7 @@ Machine Human-review authority lives under:
 {source_root}/gates/review-index.json
 ```
 
-Keep Human-reviewed commit, request commit, operator queue trigger, trusted executor run, and bot output commit distinct.
+Keep Human-reviewed commit, request commit, operator transport trigger, trusted executor run, and bot output commit distinct.
 
 ## Grok / X Source Intake
 
@@ -126,24 +126,32 @@ Candidate atomically binds exact reader source/PDF/reviews. Rebuilt/different PD
 
 Use direct exact local CLI when available.
 
-Connector-safe operator execution uses only default-branch workflow authority:
+Connector-safe operator execution uses only default-branch workflow authority. The single operator workflow has two bounded activation transports that converge on the same preflight/executor:
 
 ```text
 add one immutable request-only commit
 -> push it as exact current Profile-bound work-branch head
--> comment on GitHub Issue #448:
-     /survey-core-execute <exact-request-commit-sha>
+-> activate one supported default-branch transport:
+   A. Issue #448 comment:
+        /survey-core-execute <exact-request-commit-sha>
+   B. connector-native same-repository PR targeting main:
+        title prefix: Survey Core operator transport:
+        PR head branch == immutable request work_branch
 -> .github/workflows/survey-production-v2-operator-bridge.yml
-   loaded from default-branch issue_comment authority
+   loaded from default-branch issue_comment or pull_request_target authority
    read-only trusted preflight treats supplied SHA/branch as untrusted data
    -> write-capable executor only after PASS
 ```
 
-There is no work-branch signal workflow and no `workflow_run` trust hop. `pipeline-contract-tests.yml` remains CI-only.
+Use the Issue #448 path when the active environment produces an observable workflow run. If connector-created Issue comments do not trigger Actions, use the connector-native PR transport. An operator transport PR is execution transport only: do not merge it as production/integration authority. Close it after successful bridge writeback or after recording a failed transport attempt.
+
+The PR transport is valid only for same-repository PRs targeting `main`, authorized repository associations, the reserved `Survey Core operator transport:` title prefix, and PR head exactly matching request `work_branch`. Fork PRs, branch mismatch, malformed request commits, or unauthorized associations fail closed.
+
+There is no work-branch signal workflow and no `workflow_run` trust hop. `pipeline-contract-tests.yml` remains CI-only. The workflow count remains exactly seven.
 
 The work branch may not prove its own trust. Trusted preflight derives protected-path authority from the named reviewed-main commit, requires the supplied SHA to be the exact current work-branch head, and rechecks branch movement before execution. Output push is lease-bound to the admitted request head.
 
-Issue #448 is deterministic execution transport only, not a Human Gate. Only the exact `/survey-core-execute <40-hex>` syntax is actionable; the immutable request JSON remains operation authority.
+Both transport paths are deterministic execution transport only, not Human Gates. The immutable request JSON remains operation authority; neither an Issue comment nor a PR title carries editorial/lifecycle authority beyond selecting the bounded transport event.
 
 The bridge request surface is exactly:
 
@@ -158,6 +166,8 @@ The bridge request surface is exactly:
 
 No arbitrary command or generic Human-decision surface is allowed.
 
+For canonical Thematic scope materialization (`thematic-scope-spec-v2`), `INITIALIZE_THEMATIC` revalidates planning-authority bytes, takes temporal mode from the immutable request, derives `as_of` from request `recorded_at`, and uses the same generic `core.thematic_profile()` path. Do not introduce SP001/topic-specific adapters.
+
 ## Profile generality
 
 - Weekly uses generic `WEEKLY + WEEKLY_MAGAZINE`.
@@ -169,7 +179,7 @@ Frozen historical releases remain immutable.
 
 ## Core v2 change-management final audit
 
-Follow `docs/survey-production-core-v2-final-audit-rule.md`:
+Follow `docs/survey-production-core-v2-final-audit-rule.md` and the current narrow post-integration amendment where applicable:
 
 ```text
 finish all candidate changes
@@ -188,6 +198,8 @@ Point 7 must include:
 - exact review bytes;
 - immutable approval history;
 - Publication→Architecture cross-gate reopen;
-- default-branch Issue #448 operator trust bootstrap.
+- default-branch dual operator transport trust bootstrap;
+- isolated pre-admission parsing and reviewed-main runtime execution;
+- canonical Thematic materialization regression.
 
 Any candidate-tree change invalidates the entire audit; never carry forward prior PASS verdicts.
