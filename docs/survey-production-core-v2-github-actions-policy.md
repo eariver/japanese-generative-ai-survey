@@ -1,6 +1,6 @@
 # Survey Production Core v2 — GitHub Actions Responsibility Policy
 
-Status: `FOLLOW-UP REVIEW TRUST-BOOTSTRAP REPAIR / REAUDIT PENDING`  
+Status: `FOLLOW-UP REVIEW TRUST-BOOTSTRAP REPAIR / DEFAULT-BRANCH ISSUE-COMMENT AUTHORITY / REAUDIT PENDING`  
 Established: 2026-08-23 JST  
 Updated: 2026-08-24 JST
 
@@ -12,23 +12,24 @@ Actions is justified only where it supplies concrete mechanical value unavailabl
 
 ## 2. Trust-root requirement
 
-A work branch is untrusted until admitted. Therefore no write-capable workflow loaded from the work branch may decide that the same work branch's Core/workflow/config bytes are acceptable.
+A work branch is untrusted until admitted. Therefore no workflow definition supplied by that work branch may decide that the same branch's Core/workflow/config bytes are acceptable or acquire write authority as part of that decision.
 
-For operator execution:
+For operator execution the trusted initiation path is:
 
 ```text
-work-branch request push
--> survey-production-v2-operator-bridge.yml
-   read-only signal only
--> workflow_run
--> pipeline-contract-tests.yml loaded from default branch
-   -> read-only trusted operator-preflight
+ChatGPT pushes one request-only commit as exact work-branch head
+-> ChatGPT comments on operator queue Issue #448:
+     /survey-core-execute <exact-request-commit-sha>
+-> survey-production-v2-operator-bridge.yml loaded from default-branch issue_comment authority
+   -> read-only trusted operator-preflight treats request SHA/branch as data
    -> dependent write-capable operator-execute only after PASS
 ```
 
-The trusted preflight treats the work-branch commit purely as data. It obtains the protected-path authority from the named `reviewed_main_sha` config, never from the untrusted branch config being admitted.
+There is no work-branch signal workflow and no `workflow_run` trust hop. `pipeline-contract-tests.yml` remains independent CI only.
 
-A drifted signal workflow can cause denial of service by failing to signal, but cannot gain write authority or weaken the trusted verifier.
+Trusted preflight obtains the protected-path authority from the named `reviewed_main_sha` config, never from the untrusted branch config being admitted. It also requires the supplied SHA to be the exact current canonical work-branch head and rechecks that head before execution; output push uses `force-with-lease` against the admitted SHA.
+
+Issue #448 is deterministic transport only. It is not a Human Gate and free-form issue comments are not executable authority. Only the exact machine trigger syntax is recognized; the immutable request JSON remains the operation authority.
 
 ## 3. Appropriate Actions responsibilities
 
@@ -97,13 +98,13 @@ Routine cross-gate correction is not a third Human Gate and not an Owner Excepti
 
 ## 8. Current seven-workflow surface
 
-1. `pipeline-contract-tests.yml` — normal CI plus trusted default-branch `workflow_run` operator preflight/execution.
+1. `pipeline-contract-tests.yml` — read-only full repository regression CI.
 2. `survey-production-v2-ci.yml` — focused Core regression.
 3. `build-weekly-survey.yml` — read-only reproducible build.
 4. `build-special-pdf.yml` — read-only reproducible build.
 5. `survey-production-v2-export-publication-preview.yml` — exact Preview transport.
 6. `survey-production-v2-release.yml` — exact-byte Release.
-7. `survey-production-v2-operator-bridge.yml` — read-only work-branch operator signal.
+7. `survey-production-v2-operator-bridge.yml` — trusted default-branch `issue_comment` operator preflight/execution.
 
 No eighth workflow is introduced by the trust fix.
 
@@ -117,9 +118,12 @@ The trusted operator executor is an execution substrate for local mechanics, not
 
 The earlier candidate `9932c8b7a14f1c3bdcc775df88056681b2841514` and its 7/7 audit are invalidated by follow-up review.
 
+An intermediate read-only work-branch signal + default-branch `workflow_run` design is also superseded historical diagnosis, not current authority.
+
 The repaired candidate must pass exact-head Core CI + pipeline contracts and a fresh seven-point audit from Point 1. That audit must explicitly inspect:
 
-- default-branch trust bootstrap;
+- default-branch `issue_comment` trust bootstrap and Issue #448 trigger scope;
+- exact current work-branch-head/race fail-closed behavior;
 - reviewed-commit branch reachability/durability;
 - Publication Preview upstream revision reopening Architecture;
 - preservation of immutable historical approval evidence.
