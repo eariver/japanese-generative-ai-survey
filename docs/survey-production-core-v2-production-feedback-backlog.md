@@ -1,218 +1,297 @@
 # Survey Production Core v2 — Post-Merge Production Feedback Backlog
 
-Status: `FEEDBACK INCORPORATED / REDESIGN IMPLEMENTED / COLD-START REVALIDATION PENDING`  
+Status: `REDESIGN INTEGRATED / PFB-014 FOLLOW-UP REVIEW REPAIRS IMPLEMENTED / REAUDIT PENDING`  
 Established: 2026-08-23 JST  
-Review closed: 2026-08-23 JST  
-Implementation synchronized: 2026-08-23 JST  
-Working branch: `refactor/survey-production-core-v2`
+Initial review closed: 2026-08-23 JST  
+Last updated: 2026-08-24 JST
+
+Current maintenance branch: `maintenance/core-v2-operator-execution-bridge`
 
 ## Current authority
 
-The initial feedback-collection phase is complete and the accepted redesign feedback has been implemented on the redesign branch.
+The initial W33/SP001 feedback drove the integrated Core v2 redesign. Clean post-merge revalidation then exposed the connector-only deterministic execution gap. Later audits and follow-up review expanded PFB-014 from simple bridge bootstrap into the complete safe operator/Human-Gate integration boundary.
 
-The consolidated redesign authority is now:
+Current authority:
 
-- `docs/survey-production-core-v2-redesign-authority.md`
-- `docs/survey-production-core-v2-redesign-plan-after-w33-sp001.md`
-- `docs/survey-production-core-v2-github-actions-policy.md`
-- `docs/survey-production-core-v2-execution-record-policy.md`
-- `docs/survey-production-core-v2-final-audit-rule.md`
+- cross-edition worklog: `docs/checkpoints/survey-production-core-v2-postmerge-revalidation-worklog.md`
+- operator bridge: `docs/survey-production-core-v2-operator-execution-bridge.md`
+- Actions policy: `docs/survey-production-core-v2-github-actions-policy.md`
+- final audit rule: `docs/survey-production-core-v2-final-audit-rule.md`
+- connector transport queue: GitHub Issue `#448`
 
-The W33 and SP001 Core v2 attempts are retained as failed / non-validating production trials. Their outcomes must not be interpreted as proof that either the pre-redesign Core or the redesign candidate can produce acceptable Weekly or LONGFORM_SPECIAL publications from a clean start. The redesign candidate still requires fixed-head acceptance audit and later clean production re-validation.
+PFB-001 through PFB-013 remain applicable. PFB-014 is the open maintenance finding until fixed-head acceptance and post-integration real-production validation complete.
 
-Primary review evidence:
+## PFB-001 — one self-contained Grok task file in Google Drive
 
-- Issue #400 — SP001 first Publication Preview plus Human re-review of the 19-page salvage revision;
-- Issue #433 — W33 Publication Preview rejection;
-- Issue #434 — shared Core v2 Publication Boundary defect across both profiles;
-- W33 work branch: `weekly/2026-W33-v2-work`;
-- SP001 work branch: `special/SP001-v2-work`.
+Status: `IMPLEMENTED / REAL W33 OPERATION CONFIRMED`
 
-## Feedback item PFB-001 — Use one self-contained Grok task file in Google Drive
+Use one run-specific Markdown task file. Repository provenance hash-binds exact task/result bytes.
 
-Status: `IMPLEMENTED`
+## PFB-002 — Human passes exact Drive task-file path; do not search for a Grok connector
 
-Use one run-specific Markdown file in Google Drive containing the complete Grok/X task: role, scope, research questions, evidence boundary, output format, and result destination. A separate `grok-prompt.md` authority is not required.
-
-Operational shape:
+Status: `IMPLEMENTED / REAL W33 OPERATION CONFIRMED`
 
 ```text
-Grok_X_SourseIntake/
-  <category>/<edition>/<run-id>/
-    grok-task.md
-    <result>.md
+ChatGPT prepares one self-contained task file
+-> Human passes exact Drive path/reference to Grok
+-> Grok reads/writes instructed result
+-> ChatGPT imports/dispositions result and resumes
 ```
 
-Repository provenance hash-binds the exact task bytes and imported result bytes.
+Absence of a Grok connector is not an Exception Gate.
 
-## Feedback item PFB-002 — Human passes the exact Drive task-file path to Grok; do not search for a Grok connector
-
-Status: `IMPLEMENTED`
-
-Normal boundary:
-
-```text
-ChatGPT prepares one self-contained task file in Drive
--> ChatGPT gives Human the exact Drive file path/reference
--> Human gives that file path/reference to Grok
--> Grok reads it and writes the instructed result
--> ChatGPT imports/dispositions the result and resumes automatically
-```
-
-Do not search for/install/configure a Grok connector merely because an X run is required. Absence of a Grok connector is not an Exception Gate or dependency failure.
-
-## Feedback item PFB-003 — Require a concluding synthesis in every Weekly and Special
+## PFB-003 — concluding synthesis in every Weekly and Special
 
 Status: `IMPLEMENTED`
 
-Every reader-facing Weekly and Special requires a final substantive `総括` or explicitly equivalent section before non-editorial back matter. ChatGPT judges synthesis quality; deterministic checks may verify only reliable structural presence/order.
+Every reader-facing Weekly/Special requires substantive `総括` or equivalent. ChatGPT judges quality; deterministic checks only protect crisp structure.
 
-## Feedback item PFB-004 — Weekly must always publish an explicit community-movement view informed by Grok/X
+## PFB-004 — Weekly always has explicit community movement informed by Grok/X
 
-Status: `IMPLEMENTED`
+Status: `IMPLEMENTED / CLEAN W33 EDITORIAL VALUE CONFIRMED`
 
-Every Weekly requires a reader-facing `コミュニティの動き` component. The completed Grok/X result receives editorial disposition, not merely technical import/disposition. Material observations are reflected in the issue or carry an internal exclusion reason; a quiet week is an explicit reader-facing finding rather than silent omission.
+Every Weekly requires reader-facing `コミュニティの動き`; Grok/X remains Discovery/community-signal rather than final technical Evidence authority.
 
-Grok/X remains Discovery/community-signal authority, not final technical Evidence authority.
-
-## Feedback item PFB-005 — Production sessions repair editions, not shared Core v2
+## PFB-005 — Production sessions repair editions, not shared Core
 
 Status: `IMPLEMENTED / REQUIRED CORE INVARIANT`
-
-The W33/SP001 trials confirmed this concern rather than merely suggesting it.
-
-SP001 production created/repaired generic Core work-branch control workflows, semantic publication behavior, and shared longform style on `main`, then reintegrated those repairs into the edition branch. W33 likewise consumed pending/generic repair logic during the trial.
-
-Implemented invariant:
 
 > **A Production session repairs the edition. It does not repair shared Core v2.**
 
-A shared Core defect is recorded and returned to Core maintenance. If there is no semantically safe edition-local workaround, the production attempt is blocked/terminated and later restarted from the appropriate clean boundary after reviewed Core repair.
+W33/SP001 remain paused while PFB-014 is repaired in Core maintenance.
 
-## Feedback item PFB-006 — Reduce GitHub Actions from production worker to CI/build verifier
+## PFB-006 — reduce Actions from production author to narrow deterministic infrastructure
 
-Status: `IMPLEMENTED / REQUIRED CORE INVARIANT`
+Status: `IMPLEMENTED / REQUIRED CORE INVARIANT / PFB-014 TRUST ROOT UNDER FINAL VALIDATION`
 
-The trials confirmed excessive Actions orchestration. Actions had been used for stage adoption, Drafting/Synthesis, publication generation/mutation, quality/candidate state, bot commits, rebuild/export transport and other production work. SP001 additionally hit write-capable workflow chaining limits after `github-actions[bot]` commits.
+> **GitHub Actions is a deterministic executor / verifier, not a reasoning, editorial, Human-decision, or publication-authoring agent.**
 
-`docs/survey-production-core-v2-github-actions-policy.md` remains governing authority:
+The operator bridge is admissible only as a constrained deterministic execution substrate because the connector runtime lacks an exact checked-out CLI environment. It may record an already explicit Human decision but may not choose one.
 
-> **GitHub Actions is a deterministic executor / verifier, not a reasoning, editorial, or publication-authoring agent.**
+The intended Actions surface remains exactly seven workflows.
 
-The canonical redesign candidate retains six workflows only: contract tests, Core v2 CI, Weekly reproducible build, Special reproducible build, exact-byte Publication Preview transport, and release.
+## PFB-007 — retain failed W33/SP001 trials as non-validating evidence
 
-## Feedback item PFB-007 — Terminate the current W33/SP001 v2 trials as non-validating production attempts
+Status: `RESOLVED / HISTORICAL FAILED EVIDENCE PRESERVED`
 
-Status: `RESOLVED / BOTH TRIALS RETAINED AS FAILED EVIDENCE`
+Pre-redesign failures and post-merge blocked attempts remain non-PASS evidence.
 
-W33 must not receive further #433 salvage work under the failed pre-redesign production path.
-
-SP001's #400 19-page revision materially improved layout, depth, Technical Notes and synthesis, but Human re-review still found Publication Boundary leakage (`D017` / `D021`, `本 package`, source-promotion/coverage language). The revision also required shared-Core renderer/style repairs and an authority-rebind repair after the new PDF and old Publication Candidate diverged.
-
-Therefore the 19-page revision remains useful salvage evidence, not cold-start validation. SP001 remains historical failed evidence and is a required regression case for later redesigned-Core production re-validation.
-
-## Feedback item PFB-008 — Make the reader-facing Publication Boundary structural, not stylistic
+## PFB-008 — structural reader-facing Publication Boundary
 
 Status: `IMPLEMENTED / REQUIRED CORE INVARIANT`
 
-Issue #434 established a cross-profile defect: internal Architecture / Review / Selection / Evidence material could become reader-facing prose.
+Internal editorial/provenance state is not legal fallback reader prose. Missing reader content fails closed to ChatGPT authoring.
 
-Implemented direction:
-
-- explicit internal editorial/provenance layer;
-- explicit Reader Manuscript / reader-facing publication layer;
-- internal fields are not legal fallback render inputs;
-- no fallback from missing reader-facing fields to Architecture/Profile/Evidence text;
-- missing required publication content fails closed back to ChatGPT authoring.
-
-Known-token lint remains defense-in-depth only. SP001's 19-page revision passed deterministic leakage checks yet Human review still found semantically internal wording.
-
-## Feedback item PFB-009 — Architecture fidelity means reader-facing content fulfillment
+## PFB-009 — Architecture fidelity means reader-facing content fulfillment
 
 Status: `IMPLEMENTED / REQUIRED CORE INVARIANT`
-
-W33 demonstrated that a must-cover item could effectively be represented by prose saying that Architecture intended to cover it. That is not content fulfillment.
-
-The Reader Manuscript and semantic/editorial review retain lightweight traceability:
 
 ```text
 requirement
 -> accepted Evidence/Observation
--> actual reader-facing section/block
+-> actual reader-facing location
 -> ChatGPT fulfillment judgment
 ```
 
-Page quotas or string-presence checks do not substitute for this editorial judgment.
-
-## Feedback item PFB-010 — Separate deterministic QA from semantic/editorial and visual QA
+## PFB-010 — separate deterministic QA from semantic/editorial and visual QA
 
 Status: `IMPLEMENTED / REQUIRED CORE INVARIANT`
 
-Machine PASS no longer represents publication-quality PASS.
+Candidate readiness requires deterministic QA + ChatGPT semantic/editorial QA + exact-PDF visual QA. The bridge owns none of these judgments.
 
-Candidate readiness requires separate evidence for:
+## PFB-011 — atomic publication revision/candidate authority
 
-1. deterministic QA — schemas, hashes, citations, identifiers, compiler/preflight and other crisp invariants;
-2. ChatGPT semantic/editorial QA — must-cover fulfillment, technical depth, reader-facing boundary, source-class wording, `総括`, Weekly community use, repetition/generic fallback, bibliography surface and Profile semantics;
-3. ChatGPT visual QA — exact rendered PDF review for layout, hierarchy, whitespace, tables/boxes/URLs and visually obvious content-thin pages.
+Status: `IMPLEMENTED / REQUIRED CORE INVARIANT / DEPENDENCY-AWARE HUMAN REVISION ADDED`
 
-The Quality Regression Bundle owns deterministic QA only; semantic/editorial and visual authorities are separate exact-byte review records.
+Reader Manuscript, exact source/PDF, deterministic QA, semantic/editorial review and visual review bind atomically. Source/PDF revision invalidates downstream authority. Publication Preview revision now supports both publication-local repair and an explicit upstream Human-selected boundary that reopens Architecture when required.
 
-## Feedback item PFB-011 — Publication revision/candidate authority must be atomic
+## PFB-012 — standardized edition-local execution records
 
-Status: `IMPLEMENTED / REQUIRED CORE INVARIANT`
+Status: `IMPLEMENTED / PFB-014 EXTENDS EXECUTION + HUMAN-REVIEW PROVENANCE`
 
-SP001's revised 19-page PDF initially coexisted with Quality Regression Bundle / Publication Candidate authority still bound to the old 11-page PDF.
+Canonical execution tree may add `requests/` and `bridge-runs/`. Human-readable review records point to exact machine Human-review authority under `{source_root}/gates/reviews/`; these are provenance, not a second State machine.
 
-The redesign candidate binds Reader Manuscript, exact source, exact repository-resident PDF, deterministic QA, semantic/editorial review and visual review into one Publication Candidate. Source/PDF revision invalidates downstream Candidate/Preview/Freeze identity rather than permitting old candidate authority to survive beside new bytes.
+## PFB-013 — real cold-start profile trials required after Core repair
 
-## Feedback item PFB-012 — Standardize edition-local execution records
+Status: `PARTIALLY EXERCISED / NOT PASSED`
 
-Status: `IMPLEMENTED`
+Required post-integration acceptance remains:
 
-The W33 and SP001 logs were valuable but inconsistent: W33 used a long worklog whose header became stale, while SP001 used multiple ad-hoc date/session checkpoint files.
+- clean Weekly;
+- clean Thematic/LONGFORM with SP001 regression;
+- representative configured `RETROSPECTIVE_PERIOD`;
+- Foundations-guided Thematic/Longform;
+- structural monthly/half-year/annual compatibility through one generic Period Profile.
 
-The redesign implements `docs/survey-production-core-v2-execution-record-policy.md` and `scripts/survey_execution_record_v2.py`.
+## PFB-014 — deterministic Core execution fallback for connector-only runtimes
 
-Canonical location:
+Status: `IMPLEMENTATION CANDIDATE / TRUST ROOT + DURABLE REVIEW + CROSS-GATE REOPEN REPAIRED / SEVEN-POINT REAUDIT PENDING`
 
-```text
-sources/<issue-id>/execution/
-  index.md
-  sessions/
-  reviews/
-  defects/
-```
+### Accumulated findings
 
-The record is concise operational provenance, not a transcript or duplicate state machine.
+The maintenance accumulated the following defects and follow-up findings:
 
-## Feedback item PFB-013 — Real cold-start profile trials are required after Core repair
+- **HG-001:** connector-only operation could reach a Human Gate but could not canonically record explicit Human approval.
+- **HG-002:** routine Human `REQUEST_CHANGES` lacked canonical selective invalidation/rN continuation.
+- **RVF-023:** connector transport originally conflated the Human-reviewed parent commit with the later request/event commit.
+- **HG-003:** direct-local Human Gate recording did not prove that the named reviewed commit existed and exact-bound reviewed bytes.
+- **Follow-up F1 — trust bootstrap:** a write-capable verifier must not be supplied by the untrusted work branch it is admitting.
+- **Follow-up F2 — durability:** a dangling synthetic reviewed commit is not durable historical authority even when its bytes currently exist locally.
+- **Follow-up F3 — upstream Publication correction:** Publication Preview feedback can legitimately require Evidence/Selection/Architecture repair and needs one canonical non-Exception path.
 
-Status: `PENDING POST-REVIEW / REQUIRED ACCEPTANCE RULE`
+The former candidate `9932c8b7a14f1c3bdcc775df88056681b2841514` and its 7/7 audit are invalidated by the three follow-up findings. No earlier PASS result is reusable.
 
-After redesign implementation, fixed-head Core audit and Human review/integration, validate with clean real production runs rather than only synthetic fixtures.
+### Retrospective diagnosis
 
-At minimum:
+Core already contains canonical generic Retrospective support:
 
-- one Weekly trial from clean current `main` with no in-run shared-Core repair;
-- one LONGFORM_SPECIAL trial, using SP001 as the required regression case, with no in-run shared-Core repair.
+- `scripts/survey_period_v2.py`
+- `tests/test_survey_period_v2.py`
 
-Representative Retrospective and Foundations-guided viability must also remain covered by the final Core generality audit and subsequent production evidence.
+The bridge exposes that existing initializer only; it does not create a second Retrospective builder, scope schema, or monthly/half-year/annual engine.
 
-If a shared-Core defect is discovered, retain the run as failed evidence, repair Core separately, and restart the affected acceptance run cleanly. Do not debug the pipeline inside the acceptance edition and then count that same run as PASS.
-
-## Next step
-
-Do not resume W33 or SP001 publication work under the failed pre-redesign production path.
-
-The redesign implementation workstreams are substantially complete. The maintenance sequence is now:
+### Current connector-safe execution contract
 
 ```text
-finish all candidate-tree synchronization and regression repair
--> freeze one exact redesign candidate SHA
--> run the complete six-point final audit from zero without mutating that SHA
--> present only the unchanged passing SHA for Human full-candidate review
--> after reviewed integration, run clean production re-validation under the redesigned Core
+ChatGPT authors edition work
+-> commit/push exact canonical work branch
+-> when deterministic connector execution is needed, add exactly one immutable request-only commit
+-> that request commit is the exact current canonical work-branch head
+-> ChatGPT comments on persistent transport Issue #448:
+     /survey-core-execute <exact-request-commit-sha>
+-> default-branch issue_comment workflow treats supplied SHA/branch as untrusted data
+-> read-only preflight proves:
+     exact command / authorized association
+     exact current work-branch head
+     request-only commit
+     reviewed-main ancestry
+     protected-Core equality using reviewed-main config
+     Human reviewed-commit == request parent where applicable
+-> dependent job receives contents: write only after PASS
+-> branch head is rechecked
+-> canonical bridge executes only allowlisted deterministic mechanics
+-> edition-local write boundary is enforced
+-> output push is lease-bound to admitted request head
+-> ChatGPT resumes from canonical State
 ```
 
-Any tree change required by the final audit invalidates that audit and requires a new candidate SHA plus a complete rerun.
+There is no work-branch workflow trust bootstrap and no `workflow_run` trust hop. An intermediate signal/`workflow_run` design was considered during repair and rejected because the work-branch signal workflow definition itself remained branch-supplied.
+
+Issue #448 is transport only, not a third Human Gate or editorial control surface.
+
+### Current direct-local / Human-review contract
+
+Before either Human Gate is presented:
+
+```text
+commit exact Production State + Gate inputs
+-> push/retain that commit on Profile work_branch
+-> Human reviews that exact durable commit
+```
+
+Canonical `survey_human_gate_v2` then requires the reviewed commit to:
+
+- be a real Git commit;
+- be reachable from the canonical Profile work branch;
+- exact-bind current reviewed State and Gate input bytes;
+- for Publication Preview, exact-bind the Candidate-bound PDF.
+
+Connector-safe Human Gate execution additionally requires that reviewed commit to equal the immutable request-only commit parent.
+
+Every approval writes an immutable historical snapshot under `gates/reviews/approvals/*-rN.json`, separate from the active canonical approval path.
+
+### Publication Preview dependency-aware correction
+
+If the Human chooses a publication-local boundary (`ARCHITECTURE_ESTABLISHED` or later), active Architecture approval is preserved and only downstream publication authority is regenerated.
+
+If the Human chooses a boundary before `ARCHITECTURE_ESTABLISHED` because Publication review found an upstream defect, Core:
+
+1. records Publication `REQUEST_CHANGES` rN against exact Candidate/PDF review bytes;
+2. validates active Architecture approval provenance;
+3. preserves the prior Architecture review record and immutable rN approval snapshot;
+4. removes the active canonical Architecture approval;
+5. marks Architecture Review pending again;
+6. invalidates dependent checkpoints from the Human-selected boundary;
+7. requires a new Architecture rN+1 before drafting/publication continues;
+8. eventually returns to Publication Preview rN+1.
+
+Core never chooses the repair boundary. Cross-gate reopen is normal Human revision, not an Owner Exception Gate and not a third Human Gate.
+
+### Operator request surface
+
+Exactly eight operations remain allowed:
+
+1. `INITIALIZE_WEEKLY`
+2. `INITIALIZE_RETROSPECTIVE`
+3. `INITIALIZE_THEMATIC`
+4. `ADVANCE_STAGE`
+5. `RECORD_ARCHITECTURE_APPROVAL`
+6. `REQUEST_ARCHITECTURE_REVISION`
+7. `RECORD_PUBLICATION_PREVIEW_APPROVAL`
+8. `REQUEST_PUBLICATION_PREVIEW_REVISION`
+
+Release remains outside the bridge.
+
+### Regression evidence required before freeze
+
+The candidate must cover:
+
+- generic Thematic init → Discovery bridge E2E;
+- configured Retrospective reuse of existing Period builder;
+- no arbitrary execution/deterministic-review impersonation;
+- static default-branch `issue_comment` trust-root contract;
+- exact work-branch-current-head requirement and branch-movement/lease protection;
+- Architecture r1 `REQUEST_CHANGES` → r2 → approval, direct and bridge-backed;
+- Publication-local r1 revision → r2 approval;
+- Publication r1 upstream revision → Architecture r2 → Publication r2 approval, direct and bridge-backed;
+- nonexistent/dangling/missing-path/mismatched reviewed commit rejection;
+- immutable approval snapshot preservation;
+- stale review revision/changed reviewed bytes/invalid boundary failure;
+- connector Human reviewed-parent mismatch failure;
+- exactly seven workflow filenames.
+
+These regressions do not replace post-integration real branch validation of Issue #448 transport.
+
+### Acceptance criteria
+
+PFB-014 cannot close until all conditions below hold:
+
+1. no arbitrary executable surface from request data;
+2. exact request path/id/branch/source-root and eight-kind schema;
+3. every operation binds reviewed main; initialization record agrees;
+4. connector operator trust root is default-branch `issue_comment` authority, not work-branch workflow code;
+5. only authorized exact Issue #448 trigger syntax is actionable;
+6. request commit is exactly one new request, changes nothing else, and equals current canonical work-branch head;
+7. protected Core/contract bytes match reviewed main before write-capable execution;
+8. branch movement between admission and output push fails closed;
+9. generated writes stay under Profile-bound source root and request bytes remain immutable;
+10. `ADVANCE_STAGE` requires exact lifecycle State and Core owns deterministic stage result;
+11. Human Gate decisions remain Human-supplied only;
+12. Human review commit is real, reachable from canonical work branch, and exact-binds current reviewed bytes;
+13. connector Human Gate request additionally binds reviewed commit == request-only parent;
+14. direct-local remains preferred and has equivalent Human-review provenance strength;
+15. prior approval revisions remain reconstructable through immutable approval snapshots/review records;
+16. Publication upstream correction can reopen Architecture and return through Architecture rN+1 / Publication rN+1;
+17. Retrospective reuses existing `survey_period_v2` only;
+18. positive/negative direct and bridge regressions pass;
+19. exact-head Core CI + Pipeline contract tests PASS on final synchronized candidate;
+20. complete seven-point fixed-head audit passes from Point 1 without tree mutation;
+21. after unchanged reviewed integration, clean Weekly/SP001/Retrospective/Foundations production matrix passes without in-run shared-Core repair.
+
+## Current next step
+
+Do not resume W33/SP001 acceptance before PFB-014 is reviewed and integrated.
+
+```text
+finish follow-up test/authority/worklog synchronization
+-> obtain green diagnostic CI
+-> pre-freeze cross-check current PR
+-> require exact-head Core CI + Pipeline contract PASS
+-> freeze one exact candidate SHA
+-> fresh seven-point audit from Point 1
+-> only 7/7 PASS: Human full-candidate review
+-> unchanged integration
+-> clean Weekly / Thematic-SP001 / Retrospective / Foundations validation matrix
+```
+
+Any candidate-tree change after freeze invalidates all seven verdicts.

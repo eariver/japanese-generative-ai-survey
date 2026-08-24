@@ -1,168 +1,89 @@
 # Survey Production Core v2 — GitHub Actions workflow responsibility inventory
 
-Status: `IMPLEMENTED IN REDESIGN CANDIDATE / PENDING FIXED-HEAD AUDIT`  
+Status: `SEVEN-WORKFLOW MAINTENANCE CANDIDATE / DEFAULT-BRANCH ISSUE-COMMENT TRUST ROOT / REAUDIT PENDING`  
 Established: 2026-08-23 JST  
-Implemented: 2026-08-23 JST  
-Working branch: `refactor/survey-production-core-v2`  
-Draft PR: `#446`  
-Governing policy: `docs/survey-production-core-v2-github-actions-policy.md`
+Updated: 2026-08-24 JST  
+Working branch: `maintenance/core-v2-operator-execution-bridge`  
+Draft PR: `#447`
 
-## 1. Result
+## 1. Current seven-workflow surface
 
-The post-W33/SP001 redesign has reduced `.github/workflows/` to six mechanical workflows:
-
-| Workflow | Responsibility | Why Actions is justified |
+| Workflow | Responsibility | Authority model |
 |---|---|---|
-| `pipeline-contract-tests.yml` | full repository script/schema/unit regression | independent clean-environment regression on every relevant PR/push |
-| `survey-production-v2-ci.yml` | focused Core v2 compile/contract/regression suite | independent Core contract validation and branch-protection evidence |
-| `build-weekly-survey.yml` | read-only reproducible Weekly LuaLaTeX build | controlled TeX environment and independent build artifact/log |
-| `build-special-pdf.yml` | read-only reproducible Special LuaLaTeX build | controlled TeX environment and independent build artifact/log |
-| `survey-production-v2-export-publication-preview.yml` | exact Publication Candidate PDF transport | independently validates Candidate-bound exact bytes before Human review export |
-| `survey-production-v2-release.yml` | exact-byte release/reconciliation | release credentials, immutable byte verification and idempotent reconciliation are appropriately isolated in Actions |
+| `pipeline-contract-tests.yml` | full repository script/schema/unit regression | CI only; read-only |
+| `survey-production-v2-ci.yml` | focused Core v2 compile/contract/regression suite | independent CI |
+| `build-weekly-survey.yml` | read-only Weekly LuaLaTeX build | controlled build environment |
+| `build-special-pdf.yml` | read-only Special LuaLaTeX build | controlled build environment |
+| `survey-production-v2-export-publication-preview.yml` | exact Publication Candidate PDF transport | exact-byte verification/transport only |
+| `survey-production-v2-release.yml` | exact-byte release/reconciliation | credentials + frozen-byte verification |
+| `survey-production-v2-operator-bridge.yml` | trusted default-branch operator request admission and deterministic execution | `issue_comment` authority from default branch; read-only preflight, dependent write-capable executor only after PASS |
 
-No remaining workflow owns Source Intake, Screening, Evidence judgment, Candidate Selection, Architecture, Drafting, Synthesis, semantic publication authoring, semantic QA, visual repair, ordinary stage adoption, or Human Gate state recording.
+No workflow owns Source Intake, Evidence interpretation, Selection, Architecture, Drafting/Synthesis, reader-facing authorship, semantic QA, visual repair, requested editorial repair, or the Human decision itself.
 
-## 2. Canonical contract
+## 2. Trust-root invariant
 
-The current `config/survey-production-v2.json` workflow authority is intentionally smaller than the workflow directory:
+The work branch supplies data only; it must not supply the workflow that decides whether the branch is trusted.
 
 ```text
-workflow_control
-  dispatch_ref = main
-  publication_preview_export_workflow = survey-production-v2-export-publication-preview.yml
-  release_workflow = survey-production-v2-release.yml
-  handler_dispatch
-    stage:release = survey-production-v2-release.yml
+ChatGPT pushes one request-only commit as exact current work-branch head
+-> ChatGPT comments on persistent operator queue Issue #448:
+     /survey-core-execute <exact-request-commit-sha>
+-> survey-production-v2-operator-bridge.yml is loaded from default-branch issue_comment authority
+-> read-only operator-preflight treats supplied SHA/work branch as untrusted data
+-> exact work-head + request-only + reviewed-main + protected-Core checks PASS
+-> only then dependent operator-execute receives contents: write
+-> canonical bridge executes and pushes edition-local outputs with force-with-lease
 ```
 
-Ordinary lifecycle stages are `LOCAL_SCRIPT`. `FROZEN -> RELEASED` is the only `WORKFLOW_DISPATCH` stage.
+There is no work-branch operator signal workflow and no `workflow_run` trust hop. `pipeline-contract-tests.yml` remains CI-only.
 
-The two build workflows and CI workflows are verification infrastructure, not lifecycle dispatch handlers.
+Trusted preflight derives protected-path authority from the request's named `reviewed_main_sha`, not from untrusted work-branch config. It requires the supplied request SHA to equal the exact current canonical work-branch head and rechecks branch movement before execution/push.
 
-## 3. Production work returned to ChatGPT
+Issue #448 is operational transport only, not a Human Gate or editorial authority. Only the exact `/survey-core-execute <40-hex>` trigger syntax is executable; the immutable request JSON remains operation authority.
 
-The redesign explicitly returns the following responsibilities to the ChatGPT production session:
+## 3. Operator request surface
 
-- Source Intake/search strategy and source-materiality judgment;
-- Grok/X applicability and task definition;
-- Screening interpretation;
-- Evidence interpretation and gap-fill;
-- Candidate Selection;
-- Architecture design;
-- Drafting and Profile synthesis;
-- reader-facing manuscript/source authoring;
-- semantic/editorial QA;
-- exact-PDF visual QA;
-- semantic/layout repair after inspecting the rendered PDF;
-- ordinary local stage transition/checkpoint recording after deterministic validation;
-- exact Human Gate decision recording after the Human actually decides.
+Allowed request kinds remain exactly eight:
 
-Repository scripts may validate or mechanically transform narrow artifacts. They do not become publication authors merely because the operation is deterministic.
+1. `INITIALIZE_WEEKLY`
+2. `INITIALIZE_RETROSPECTIVE`
+3. `INITIALIZE_THEMATIC`
+4. `ADVANCE_STAGE`
+5. `RECORD_ARCHITECTURE_APPROVAL`
+6. `REQUEST_ARCHITECTURE_REVISION`
+7. `RECORD_PUBLICATION_PREVIEW_APPROVAL`
+8. `REQUEST_PUBLICATION_PREVIEW_REVISION`
 
-## 4. Retired Core v2 mutation workflows
+Retrospective initialization uses the existing `survey_period_v2` path. No second period builder or cadence-specific workflow is introduced.
 
-Commit `53f73386b86b2cb08ea1d03572787c9352f31205` removed the Core-v2 request/dispatch/mutation surface:
+The four Human Gate operations only record already explicit Human input. Actions/Core may not choose approval, requested changes, or regeneration boundary.
 
-- `survey-production-v2-control.yml`
-- `assistant-control-v2.yml`
-- `survey-production-v2-work-branch-control.yml`
-- `survey-production-v2-work-branch-human-gate.yml`
-- `survey-production-v2-interactive-screening.yml`
-- `survey-production-v2-interactive-evidence.yml`
-- `survey-production-v2-interactive-selection-architecture.yml`
-- `survey-production-v2-interactive-drafting-synthesis.yml`
-- `survey-production-v2-interactive-semantic-publication.yml`
-- `survey-production-v2-interactive-weekly-semantic-publication.yml`
-- `survey-production-v2-interactive-semantic-quality.yml`
+## 4. Human review / cross-gate semantics
 
-This removes execution-only PR/request-file hops from the canonical production path.
+Human-reviewed commits must be durable on the Profile-bound canonical work branch and exact-bind current reviewed State/Gate bytes.
 
-## 5. Retired obsolete focused contract workflows
+Publication Preview `REQUEST_CHANGES` may choose an upstream boundary when feedback reveals an Evidence/Selection/Architecture defect. If the boundary is before `ARCHITECTURE_ESTABLISHED`, Core preserves old immutable approval/review history but supersedes the active canonical Architecture approval and reopens Architecture Review before publication can continue.
 
-Commit `1bd3c45b975a0ffea7bd09352624bd18cf4b488f` removed six contract workflows that either duplicated the full unit suite or encoded obsolete production-mutation topology:
+This is still one of the same two normal Human Gates, not a new workflow or Gate.
 
-- `special-interactive-draft-contract.yml`
-- `special-interactive-evidence-contract.yml`
-- `special-selection-architecture-contract.yml`
-- `special-post-draft-finalization-contract.yml`
-- `special-source-expansion-contract.yml`
-- `special-visual-review-contract.yml`
+## 5. Why seven remains proportional
 
-The useful invariants are now owned by ordinary unit/Core regression tests rather than by preserving those workflow files.
+The trust repair does not add an eighth workflow. The existing operator workflow itself is the trusted default-branch `issue_comment` executor. `pipeline-contract-tests.yml` remains normal CI rather than accumulating production execution responsibility.
 
-## 6. Retired historical production topology
+Ordinary lifecycle stages remain local Core mechanics. `FROZEN -> RELEASED` remains the only lifecycle `WORKFLOW_DISPATCH` stage.
 
-Commit `46818916547d91602fdbf42a293509fa1def49fd` removes the remaining historical Actions production topology, including:
+## 6. Regression ownership
 
-- legacy `apply-*`, `prepare-*`, `revise-*`, import/expansion/finalization and supplemental-source workflows;
-- legacy `assistant-control.yml`;
-- old Special visual/freeze/publication-preview acceptance workflows;
-- old Special/Weekly issue-only and versioned release workflows;
-- old `special-pipeline.yml`, `weekly-pipeline.yml`, and `weekly-work-pr.yml`;
-- edition-specific annual/layout repair workflows;
-- focused Screening/Evidence/Architecture/Freeze/issue-only-release contract workflows that added no invariant beyond the full unit/Core suites or explicitly asserted obsolete workflow topology.
+- `tests/test_survey_core_execution_bridge_v2.py`: initialization/general bridge surface, no arbitrary execution, default-branch `issue_comment` trust root, exact work-head/request-only/protected-Core admission, Thematic init→Discovery E2E.
+- `tests/test_survey_core_execution_bridge_human_gate_v2.py`: explicit Human Gate request schemas, bridge round trips, trusted request-parent binding, upstream Publication→Architecture reopen.
+- `tests/test_survey_human_gate_v2.py`: direct canonical round trips, durable reviewed-commit reachability, exact byte proof, immutable approval snapshots, cross-gate reopen.
+- `tests/test_survey_period_v2.py`: one generic monthly/half-year/annual/custom bounded Retrospective builder.
+- `tests/test_survey_pilot_bootstrap_v2.py`: exactly seven workflow filenames.
 
-Historical tags, releases, commits and released bytes remain immutable and recoverable from Git history. Deleting a workflow entrypoint does not rewrite history.
+A new eighth workflow remains prima facie architectural regression unless deliberately reviewed against the Actions admission rule.
 
-## 7. Build boundary
+## 7. Admission rule
 
-Both retained build workflows are read-only.
+A workflow is justified only by concrete Actions-specific mechanical value: independent CI, reproducible build, exact-byte transport, credential isolation, release reconciliation, or a trusted exact-checkout execution substrate that the primary ChatGPT runtime lacks.
 
-They may:
-
-- checkout already-authored source;
-- compile with a controlled TeX toolchain;
-- report deterministic compiler/log findings;
-- compute SHA/page-count/byte evidence;
-- upload build artifacts.
-
-They must not:
-
-- mutate `production-state.json` or legacy `pipeline-state.json`;
-- write editorial page-budget decisions into lifecycle state;
-- rewrite publication source;
-- choose layout repairs;
-- commit or push generated production changes.
-
-Page budgets remain editorial authority. A build may report page count but does not make content decisions to satisfy a target.
-
-## 8. Publication Preview transport boundary
-
-`s​​urvey-production-v2-export-publication-preview.yml` is transport/verification only.
-
-It resolves one exact `publication-candidate-v2.json`, validates `READY_FOR_PUBLICATION_PREVIEW`, requires repository-resident exact PDF bytes, verifies Candidate path/hash/byte-count authority, and exports those bytes with an audit sidecar.
-
-There is no `interactive-preview-export.json` production request artifact and no new semantic/preflight decision in the export workflow.
-
-## 9. Release boundary
-
-`s​​urvey-production-v2-release.yml` remains because Actions materially improves this operation:
-
-- isolated release credentials;
-- exact frozen authority verification;
-- exact PDF rehydration/verification;
-- idempotent existing-release reconciliation;
-- public GitHub Release creation/download verification;
-- post-release provenance record creation.
-
-The workflow publishes already-approved immutable bytes. It does not author or repair the publication.
-
-## 10. Regression authority
-
-`tests/test_survey_pilot_bootstrap_v2.py` now requires the workflow directory to contain exactly the six workflows listed in section 1. This makes workflow reduction a tested Core property rather than a documentation preference.
-
-`pipeline-contract-tests.yml` continues to run the complete `tests/test_*.py` suite and validate JSON contracts. `survey-production-v2-ci.yml` independently compiles all `scripts/survey_*_v2.py` modules, runs all `tests/test_survey_*_v2.py` tests, and parses Core JSON contracts. Core CI is enabled for both the redesign branch and `main`.
-
-## 11. Admission rule for future workflows
-
-A new workflow must not be added merely because a task can be automated.
-
-Before adding one, document a concrete Actions-specific advantage such as:
-
-- independent clean-environment CI;
-- controlled reproducible build environment;
-- credential isolation;
-- exact-byte artifact/release verification;
-- branch-protection integration.
-
-If the operation requires research interpretation, editorial judgment, semantic repair, visual taste, or ordinary repository-local state mutation, it belongs to ChatGPT plus narrow deterministic helpers instead.
+Research interpretation, editorial judgment, Human decision-making, semantic repair, and visual repair remain outside Actions.
