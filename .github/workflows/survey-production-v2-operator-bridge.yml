@@ -1,8 +1,10 @@
 name: Survey Production Core v2 operator bridge
 
 # Security boundary: issue_comment workflows are loaded from the repository's
-# default branch. The work-branch request commit is therefore data only until
-# this trusted workflow proves its reviewed-main and request-only invariants.
+# default branch. The work-branch request commit is data only until this trusted
+# workflow proves reviewed-main, request-only, and protected-authority invariants.
+# Before admission, every Python helper runs in isolated mode so repository-local
+# modules from the untrusted checkout cannot influence parsing or trust decisions.
 on:
   issue_comment:
     types:
@@ -33,6 +35,7 @@ jobs:
       request_path: ${{ steps.preflight.outputs.request_path }}
       request_head_sha: ${{ steps.command.outputs.request_head_sha }}
       request_head_branch: ${{ steps.preflight.outputs.request_head_branch }}
+      reviewed_main_sha: ${{ steps.preflight.outputs.reviewed_main_sha }}
     steps:
       - name: Parse exact operator command
         id: command
@@ -83,9 +86,21 @@ jobs:
           fi
 
           request_path="${added_requests[0]}"
-          reviewed_main_sha="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["reviewed_main_sha"])' "$request_path")"
-          request_work_branch="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["work_branch"])' "$request_path")"
-          operation_kind="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["kind"])' "$request_path")"
+
+          # The checkout is still untrusted here. Isolated mode (-I) prevents
+          # repository-local json.py/sitecustomize/etc. from entering sys.path.
+          reviewed_main_sha="$(
+            python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["reviewed_main_sha"])' \
+              "$request_path"
+          )"
+          request_work_branch="$(
+            python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["work_branch"])' \
+              "$request_path"
+          )"
+          operation_kind="$(
+            python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["kind"])' \
+              "$request_path"
+          )"
 
           git check-ref-format --branch "$request_work_branch" >/dev/null
           if [[ ! "$reviewed_main_sha" =~ ^[0-9a-f]{40}$ ]]; then
@@ -121,14 +136,20 @@ jobs:
 
           case "$operation_kind" in
             INITIALIZE_WEEKLY|INITIALIZE_RETROSPECTIVE|INITIALIZE_THEMATIC)
-              execution_main_sha="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["execution_record"]["reviewed_main_sha"])' "$request_path")"
+              execution_main_sha="$(
+                python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["execution_record"]["reviewed_main_sha"])' \
+                  "$request_path"
+              )"
               if [[ "$execution_main_sha" != "$reviewed_main_sha" ]]; then
                 echo "Initialization execution record reviewed_main_sha must equal request reviewed_main_sha." >&2
                 exit 1
               fi
               ;;
             RECORD_ARCHITECTURE_APPROVAL|REQUEST_ARCHITECTURE_REVISION|RECORD_PUBLICATION_PREVIEW_APPROVAL|REQUEST_PUBLICATION_PREVIEW_REVISION)
-              human_reviewed_sha="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["reviewed_repository_commit_sha"])' "$request_path")"
+              human_reviewed_sha="$(
+                python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["reviewed_repository_commit_sha"])' \
+                  "$request_path"
+              )"
               if [[ ! "$human_reviewed_sha" =~ ^[0-9a-f]{40}$ ]]; then
                 echo "reviewed_repository_commit_sha must be exact lowercase 40-hex." >&2
                 exit 1
@@ -142,10 +163,10 @@ jobs:
               ;;
           esac
 
-          # Resolve the protected-path set from reviewed main authority, never
-          # from the untrusted work-branch config being admitted.
+          # Resolve protected paths from reviewed-main authority, never from
+          # untrusted work-branch config. The helper itself is also isolated.
           mapfile -t protected_paths < <(
-            python - "$reviewed_main_sha" <<'PY'
+            python3 -I - "$reviewed_main_sha" <<'PY'
           import json
           import subprocess
           import sys
@@ -174,6 +195,7 @@ jobs:
           {
             echo "request_path=$request_path"
             echo "request_head_branch=$request_work_branch"
+            echo "reviewed_main_sha=$reviewed_main_sha"
           } >> "$GITHUB_OUTPUT"
 
   operator-execute:
@@ -186,6 +208,7 @@ jobs:
       REQUEST_PATH: ${{ needs.operator-preflight.outputs.request_path }}
       REQUEST_HEAD_SHA: ${{ needs.operator-preflight.outputs.request_head_sha }}
       REQUEST_HEAD_BRANCH: ${{ needs.operator-preflight.outputs.request_head_branch }}
+      REVIEWED_MAIN_SHA: ${{ needs.operator-preflight.outputs.reviewed_main_sha }}
     steps:
       - name: Checkout exact admitted request commit
         uses: actions/checkout@v6
@@ -193,7 +216,7 @@ jobs:
           ref: ${{ needs.operator-preflight.outputs.request_head_sha }}
           fetch-depth: 0
 
-      - name: Confirm canonical work branch has not moved
+      - name: Confirm canonical work branch and reviewed main have not moved out of authority
         shell: bash
         run: |
           set -euo pipefail
@@ -206,30 +229,59 @@ jobs:
             exit 1
           fi
 
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          git cat-file -e "$REVIEWED_MAIN_SHA^{commit}"
+          if ! git merge-base --is-ancestor "$REVIEWED_MAIN_SHA" refs/remotes/origin/main; then
+            echo "reviewed_main_sha ceased to be an ancestor of current main." >&2
+            exit 1
+          fi
+
+      - name: Materialize reviewed-main trusted Core runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          trusted_runtime="$RUNNER_TEMP/survey-core-reviewed-main-runtime"
+          rm -rf "$trusted_runtime"
+          mkdir -p "$trusted_runtime"
+          git cat-file -e "$REVIEWED_MAIN_SHA:scripts/survey_core_execution_bridge_v2.py"
+          git archive "$REVIEWED_MAIN_SHA" scripts | tar -x -C "$trusted_runtime"
+          test -f "$trusted_runtime/scripts/survey_core_execution_bridge_v2.py"
+          echo "TRUSTED_CORE_RUNTIME=$trusted_runtime" >> "$GITHUB_ENV"
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
       - name: Install Core dependencies
-        run: python -m pip install -r config/survey-production-v2-requirements.txt
+        run: python -I -m pip install -r "$GITHUB_WORKSPACE/config/survey-production-v2-requirements.txt"
 
       - name: Execute canonical deterministic Core operation
         shell: bash
         run: |
           set -euo pipefail
-          python scripts/survey_core_execution_bridge_v2.py \
-            --request "$REQUEST_PATH" \
-            --event-sha "$REQUEST_HEAD_SHA" \
-            --ref-name "$REQUEST_HEAD_BRANCH" \
-            > "$RUNNER_TEMP/operator-bridge-result.json"
+          # Canonical source: scripts/survey_core_execution_bridge_v2.py.
+          # Import/startup occurs from the reviewed-main-only trusted runtime;
+          # the admitted checkout is passed only as repository data/write target.
+          (
+            cd "$TRUSTED_CORE_RUNTIME"
+            env -u PYTHONPATH -u PYTHONHOME \
+              python -m scripts.survey_core_execution_bridge_v2 \
+                --repo-root "$GITHUB_WORKSPACE" \
+                --request "$GITHUB_WORKSPACE/$REQUEST_PATH" \
+                --event-sha "$REQUEST_HEAD_SHA" \
+                --ref-name "$REQUEST_HEAD_BRANCH"
+          ) > "$RUNNER_TEMP/operator-bridge-result.json"
           cat "$RUNNER_TEMP/operator-bridge-result.json"
 
       - name: Enforce edition-local write boundary
         shell: bash
         run: |
           set -euo pipefail
-          source_root="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["source_root"])' "$RUNNER_TEMP/operator-bridge-result.json")"
+          source_root="$(
+            python -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["source_root"])' \
+              "$RUNNER_TEMP/operator-bridge-result.json"
+          )"
           request_root="$source_root/execution/requests/"
           mapfile -t dirty < <(
             {
@@ -261,8 +313,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          source_root="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["source_root"])' "$RUNNER_TEMP/operator-bridge-result.json")"
-          request_id="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["request_id"])' "$RUNNER_TEMP/operator-bridge-result.json")"
+          source_root="$(
+            python -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["source_root"])' \
+              "$RUNNER_TEMP/operator-bridge-result.json"
+          )"
+          request_id="$(
+            python -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["request_id"])' \
+              "$RUNNER_TEMP/operator-bridge-result.json"
+          )"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- "$source_root"
