@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Operator Execution Bridge
 
-Status: `FOLLOW-UP REVIEW REPAIR / TRUST BOOTSTRAP + DURABLE HUMAN REVIEW + CROSS-GATE REOPEN IMPLEMENTED / REAUDIT PENDING`
+Status: `FOLLOW-UP REVIEW REPAIR / DEFAULT-BRANCH TRUST ROOT + DURABLE HUMAN REVIEW + CROSS-GATE REOPEN IMPLEMENTED / REAUDIT PENDING`
 
 Established: 2026-08-23 JST  
 Follow-up review repair: 2026-08-24 JST
@@ -11,6 +11,7 @@ Related authority:
 - `docs/survey-production-core-v2-execution-record-policy.md`
 - `docs/survey-production-core-v2-final-audit-rule.md`
 - `docs/checkpoints/survey-production-core-v2-postmerge-revalidation-worklog.md`
+- operator transport queue: GitHub Issue `#448`
 
 ## 1. Purpose
 
@@ -24,38 +25,37 @@ The bridge covers three deterministic classes:
 
 Human judgment remains external. ChatGPT owns research/editorial/visual work; the Human owns the two normal Human Gate decisions.
 
-## 2. Trust bootstrap — default-branch authority first
+## 2. Trust bootstrap — default-branch authority only
 
 A work branch must never be allowed to prove its own trusted Core state with a write-capable workflow loaded from that same untrusted branch.
 
-The connector-safe execution topology is therefore intentionally split while keeping the repository at seven workflows:
+The connector-safe execution topology therefore uses the existing operator workflow only from GitHub's default-branch `issue_comment` event authority. There is no work-branch signal workflow and no `workflow_run` trust hop.
 
 ```text
-work-branch request-only commit
+ChatGPT commits one immutable request-only commit
+  -> request commit is pushed as the exact current Profile-bound work-branch head
+  -> ChatGPT posts on persistent transport Issue #448:
+       /survey-core-execute <exact-request-commit-sha>
   -> survey-production-v2-operator-bridge.yml
-       read-only / unprivileged signal only
-       no checkout-based trust decision
-       no Core execution
-       no repository write
-  -> workflow_run
-       pipeline-contract-tests.yml loaded from default-branch authority
+       loaded from default-branch issue_comment authority
   -> operator-preflight (contents: read)
-       checkout exact workflow_run.head_sha as untrusted data
-       request-only commit proof
-       branch/request identity proof
-       reviewed_main ancestor proof
-       Human reviewed-commit/request-parent proof where applicable
-       protected-Core equality proof using protected-path configuration read
-       from the named reviewed_main commit, not the untrusted branch config
+       parse exact command; supplied SHA is untrusted data
+       checkout that exact request SHA
+       prove it is the exact current canonical work-branch head
+       prove request-only commit / branch / reviewed-main identity
+       prove Human reviewed-commit == request parent where applicable
+       derive protected paths from reviewed-main config
+       prove protected Core/contract bytes equal reviewed main
   -> operator-execute (contents: write only after preflight PASS)
-       checkout exact admitted request SHA
-       fetch canonical work branch
+       recheck the work branch has not moved
        run canonical bridge helper
        enforce Profile-bound edition-local writes
-       push deterministic output commit
+       push with force-with-lease against the admitted request head
 ```
 
-A malicious or drifted work branch may suppress or alter its read-only signal and thereby cause denial of service, but it cannot obtain repository write authority or weaken the trusted preflight. The trust decision and write-capable execution job come from default-branch workflow authority.
+GitHub's `issue_comment` event requires the workflow file to exist on the default branch, so the untrusted work branch is data rather than workflow authority. A work branch can neither replace the preflight logic nor grant itself repository write permission before admission.
+
+Issue `#448` is transport only. It is not a Human Gate, does not contain editorial authority, and does not create a generic comment-driven command surface. Only the exact command form `/survey-core-execute <lowercase-40-hex-request-commit>` is actionable, and the immutable repository request remains the operation authority.
 
 ## 3. Request surface
 
@@ -74,21 +74,26 @@ There is no arbitrary command/module/script/workflow surface and no generic `EXE
 
 Retrospective initialization reuses the pre-existing `survey_period_v2.resolve_configured_period()` + `period_profile()` path. It does not introduce a second cadence engine.
 
-## 4. Reviewed-main preflight
+## 4. Trusted request preflight
 
-Trusted preflight must, before a write-capable job exists:
+Before a write-capable job exists, the default-branch workflow must:
 
-1. use the exact `workflow_run.head_sha` as the request commit;
-2. require exactly one newly added operator request and no other file change in that commit;
-3. require request `work_branch` == `workflow_run.head_branch`;
-4. validate `reviewed_main_sha` as an existing current-main ancestor;
-5. require request parent to descend from that reviewed baseline;
-6. for initialization, require execution-record reviewed-main equality;
-7. for Human Gate operations, require `reviewed_repository_commit_sha` == exact request parent;
-8. derive the protected-path set from `reviewed_main_sha:config/survey-production-v2.json`, seeded at minimum with `.github/workflows`, `config`, `schemas`, and `scripts`;
-9. require protected bytes at request parent to equal reviewed main exactly.
+1. accept only Issue `#448` comments from an authorized repository association and reject bot comments;
+2. require the exact trigger syntax `/survey-core-execute <lowercase-40-hex-request-commit>`;
+3. checkout the supplied SHA only as untrusted request data;
+4. require exactly one newly added operator request and no other file change in that commit;
+5. parse and validate the request `work_branch` and fetch that exact branch;
+6. require the supplied request SHA to equal the current canonical work-branch head exactly;
+7. validate `reviewed_main_sha` as an existing current-main ancestor;
+8. require request parent to descend from that reviewed baseline;
+9. for initialization, require execution-record reviewed-main equality;
+10. for Human Gate operations, require `reviewed_repository_commit_sha` == exact request parent;
+11. derive the protected-path set from `reviewed_main_sha:config/survey-production-v2.json`, seeded at minimum with `.github/workflows`, `config`, `schemas`, and `scripts`;
+12. require protected bytes at request parent to equal reviewed main exactly.
 
 Only after those checks may the dependent executor receive `contents: write`.
+
+Immediately before execution it re-fetches the canonical work branch and requires the head to remain the admitted request SHA. Output push uses `force-with-lease` against that SHA, so a concurrent branch movement fails rather than overwriting later work.
 
 ## 5. Human review surface durability
 
@@ -182,19 +187,21 @@ This is a normal Human revision path, not an Owner Exception Gate.
 
 The bridge/Human-Gate system must reject:
 
-- work-branch write-capable self-verification;
+- any work-branch workflow as trust bootstrap for operator execution;
+- unauthorized or malformed Issue `#448` trigger comments;
+- request SHA that is not the exact current canonical work-branch head;
 - request commits that change anything besides one new request;
 - reviewed-main or protected-Core drift;
 - Human Gate request whose reviewed commit is not its exact request parent;
 - nonexistent or dangling/unreachable review commits;
 - review commits missing reviewed paths or containing different bytes;
+- branch movement between admission and execution/push;
 - stale lifecycle or Human-review revisions;
 - invalid Gate-specific regeneration boundaries;
 - cross-gate reopen without an active canonical Architecture approval whose bytes match State provenance;
 - arbitrary command or generic Human-decision surfaces;
 - writes outside Profile-bound `source_root`;
-- mutation of immutable request authority;
-- recursive bot-trigger execution.
+- mutation of immutable request authority.
 
 ## 10. Direct local and connector-safe parity
 
@@ -203,11 +210,13 @@ Direct-local CLI remains preferred when available. Both modes call the same cano
 Differences are transport-only:
 
 - direct local: canonical work-branch reachability + exact commit-tree byte proof;
-- connector-safe: the same proof plus trusted default-branch request-parent/preflight execution and bridge receipts.
+- connector-safe: the same proof plus default-branch Issue `#448` request admission, request-parent/protected-Core checks, branch-head/race checks, and bridge receipts.
 
 ## 11. Acceptance consequence
 
 The former fixed candidate `9932c8b7a14f1c3bdcc775df88056681b2841514` and its 7/7 audit were invalidated by follow-up review findings on trust bootstrap, reviewed-commit durability, and Publication upstream revision handling.
+
+An intermediate read-only work-branch signal + default-branch `workflow_run` design was also discarded during repair because the work-branch signal workflow definition itself remained work-branch supplied. It is historical diagnostic design only.
 
 No earlier PASS may be carried forward. The next candidate requires:
 
