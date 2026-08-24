@@ -94,10 +94,11 @@ jobs:
           fi
 
           git fetch --no-tags origin main:refs/remotes/origin/main
+          canonical_work_ref="refs/remotes/origin/$request_work_branch"
           git fetch --no-tags origin \
-            "refs/heads/$request_work_branch:refs/remotes/origin/operator-work"
+            "refs/heads/$request_work_branch:$canonical_work_ref"
 
-          remote_work_head="$(git rev-parse refs/remotes/origin/operator-work)"
+          remote_work_head="$(git rev-parse "$canonical_work_ref")"
           if [[ "$remote_work_head" != "$REQUEST_HEAD_SHA" ]]; then
             echo "Operator request commit must be the exact current canonical work-branch head." >&2
             echo "requested: $REQUEST_HEAD_SHA" >&2
@@ -196,9 +197,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          canonical_work_ref="refs/remotes/origin/$REQUEST_HEAD_BRANCH"
           git fetch --no-tags origin \
-            "refs/heads/$REQUEST_HEAD_BRANCH:refs/remotes/origin/operator-work"
-          remote_work_head="$(git rev-parse refs/remotes/origin/operator-work)"
+            "refs/heads/$REQUEST_HEAD_BRANCH:$canonical_work_ref"
+          remote_work_head="$(git rev-parse "$canonical_work_ref")"
           if [[ "$remote_work_head" != "$REQUEST_HEAD_SHA" ]]; then
             echo "Canonical work branch moved after trusted preflight; refusing stale execution." >&2
             exit 1
