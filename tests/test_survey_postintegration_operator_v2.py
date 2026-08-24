@@ -130,6 +130,56 @@ class SurveyPostIntegrationOperatorRegressionV2Tests(unittest.TestCase):
                 bridge.execute_request(self.root, request_path, event_sha=current_head, ref_name=branch)
             self.assertFalse((source_root / cfg["state_authority"]["profile_filename"]).exists())
 
+    def test_raw_thematic_spec_cannot_silently_ignore_request_survey_root(self) -> None:
+        cfg = core.load_json(self.root / core.DEFAULT_CONFIG)
+        current_head = core.repository_commit_sha(self.root)
+        sources = self.root / "sources"
+        sources.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=sources, prefix="postintegration-raw-root-") as temp:
+            source_root = Path(temp)
+            source_rel = source_root.relative_to(self.root).as_posix()
+            issue_id = "POSTINT-RAW-ROOT"
+            branch = "test/postintegration-raw-root"
+            raw_spec = source_root / "raw-thematic-spec.json"
+            core.write_json(raw_spec, {
+                "issue_id": issue_id,
+                "question": "Can raw thematic request identity fail closed?",
+                "temporal_mode": "OPEN_HISTORY_AS_OF",
+                "as_of": "2026-08-25T00:30:00+09:00",
+                "scope_dimensions": ["identity"],
+                "source_root": source_rel,
+                "survey_root": f"surveys/special/{issue_id}",
+                "work_branch": branch,
+            })
+            request = {
+                "schema_version": "2.0-rc1",
+                "request_id": "raw-thematic-root-drift",
+                "issue_id": issue_id,
+                "source_root": source_rel,
+                "work_branch": branch,
+                "reviewed_main_sha": current_head,
+                "recorded_at": "2026-08-25T00:30:00+09:00",
+                "operation": {
+                    "kind": "INITIALIZE_THEMATIC",
+                    "target_gate": "ARCHITECTURE_REVIEW",
+                    "spec_path": raw_spec.relative_to(self.root).as_posix(),
+                    "temporal_mode": "OPEN_HISTORY_AS_OF",
+                    "survey_root": "surveys/special/DIFFERENT",
+                    "execution_record": {
+                        "session_id": "postintegration-raw-root",
+                        "reviewed_main_sha": current_head,
+                        "objective": "Reject request/raw survey-root disagreement.",
+                        "requested_stop": "ARCHITECTURE_REVIEW",
+                    },
+                },
+            }
+            schema_gate.validate_instance(request, self.request_schema, label="Operator request")
+            request_path = source_root / "execution/requests/raw-thematic-root-drift.json"
+            core.write_json(request_path, request)
+            with self.assertRaisesRegex(ValueError, "survey_root differs from request"):
+                bridge.execute_request(self.root, request_path, event_sha=current_head, ref_name=branch)
+            self.assertFalse((source_root / cfg["state_authority"]["profile_filename"]).exists())
+
     def test_default_branch_operator_workflow_has_connector_native_pr_transport_without_new_workflow(self) -> None:
         workflow = (self.root / ".github/workflows/survey-production-v2-operator-bridge.yml").read_text(encoding="utf-8")
         self.assertIn("issue_comment:", workflow)
