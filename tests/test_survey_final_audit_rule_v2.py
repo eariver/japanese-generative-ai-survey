@@ -48,15 +48,19 @@ class SurveyFinalAuditRuleV2Tests(unittest.TestCase):
         self.assertIn("Architecture rN+1", rule)
         self.assertIn("cross-gate reopen is normal revision", rule)
 
-        # Connector trust must originate in default-branch issue_comment authority.
-        self.assertIn("default-branch `issue_comment` authority", rule)
+        # Connector trust remains default-branch authority with two bounded transports.
+        self.assertIn("single `survey-production-v2-operator-bridge.yml` workflow loaded from default-branch authority", rule)
         self.assertIn("Issue `#448`", rule)
         self.assertIn("/survey-core-execute <lowercase-40-hex-request-commit>", rule)
+        self.assertIn("`pull_request_target`", rule)
+        self.assertIn("same-repository PRs targeting `main`", rule)
+        self.assertIn("Survey Core operator transport:", rule)
         self.assertIn("exact current canonical work-branch head", rule)
         self.assertIn("protected-path configuration is read from the named reviewed-main commit", rule)
         self.assertIn("only a dependent post-preflight job receives `contents: write`", rule)
         self.assertIn("lease-bound", rule)
         self.assertIn("there is no work-branch signal workflow and no `workflow_run` trust hop", rule)
+        self.assertIn("exactly seven workflows", rule)
 
         # RVF-026 extends the trust root through Python startup/import behavior.
         self.assertIn("isolated Python startup", rule)
@@ -66,6 +70,12 @@ class SurveyFinalAuditRuleV2Tests(unittest.TestCase):
         self.assertIn("poisoning top-level `json.py`", rule)
         self.assertIn("exact package-module subprocess startup smoke", rule)
         self.assertIn("RVF-026 import-poisoning regression", rule)
+
+        # Canonical Thematic materialization is part of current special viability.
+        self.assertIn("Canonical Thematic initialization", rule)
+        self.assertIn("thematic-scope-spec-v2", rule)
+        self.assertIn("planning-authority entry and SHA-256 are revalidated", rule)
+        self.assertIn("`as_of` is derived from immutable request `recorded_at`", rule)
 
     def test_actions_surface_remains_seven_and_pipeline_ci_only(self) -> None:
         rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
@@ -80,7 +90,7 @@ class SurveyFinalAuditRuleV2Tests(unittest.TestCase):
         ):
             self.assertIn(workflow, rule)
         self.assertIn("`pipeline-contract-tests.yml` = independent read-only CI only", rule)
-        self.assertIn("trusted default-branch Issue `#448`", rule)
+        self.assertIn("trusted default-branch dual activation", rule)
         self.assertIn("An eighth workflow is prima facie regression", rule)
 
     def test_current_rule_does_not_retain_superseded_acceptance_or_transport(self) -> None:
@@ -91,7 +101,8 @@ class SurveyFinalAuditRuleV2Tests(unittest.TestCase):
         self.assertNotIn("operator-bridge workflow = read-only work-branch signal", rule)
         self.assertNotIn("pipeline-contract workflow = normal CI plus trusted", rule)
         self.assertIn("109579e0f9b2988b62074165b28f144ac3b1ad55", rule)
-        self.assertIn("historical/invalidated evidence", rule)
+        self.assertIn("historical evidence", rule)
+        self.assertIn("no earlier 7/7 verdict may be reused", rule)
 
 
 if __name__ == "__main__":
