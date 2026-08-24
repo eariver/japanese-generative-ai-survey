@@ -33,6 +33,18 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
         self.source_rel = self.source_root.relative_to(self.root).as_posix()
         self.issue_id = "HG-ROUNDTRIP"
         self.branch = "test/human-gate-roundtrip"
+        self.remote_ref = f"refs/remotes/origin/{self.branch}"
+        subprocess.run(["git", "update-ref", "-d", self.remote_ref], cwd=self.root, check=False, capture_output=True)
+        subprocess.run(["git", "update-ref", self.remote_ref, self.impl], cwd=self.root, check=True, capture_output=True)
+        self.addCleanup(
+            lambda: subprocess.run(
+                ["git", "update-ref", "-d", self.remote_ref],
+                cwd=self.root,
+                check=False,
+                capture_output=True,
+            )
+        )
+        self._review_tip = self.impl
         self.survey_root = self.source_root / "survey"
         self.survey_rel = self.survey_root.relative_to(self.root).as_posix()
         spec = {
@@ -61,7 +73,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
         core.write_json(path, payload)
         return path
 
-    def _snapshot_review_commit(self) -> str:
+    def _snapshot_review_commit(self, *, publish: bool = True) -> str:
         fd, index_name = tempfile.mkstemp(prefix="survey-human-review-index-")
         os.close(fd)
         index_path = Path(index_name)
@@ -69,6 +81,9 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
         env = os.environ.copy()
         env["GIT_INDEX_FILE"] = str(index_path)
         try:
+            # Build each synthetic review tree from the implementation baseline,
+            # while chaining commit parents so earlier reviewed revisions remain
+            # ancestors of the durable work-branch tip.
             subprocess.run(
                 ["git", "read-tree", self.impl],
                 cwd=self.root,
@@ -110,7 +125,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
                     "commit-tree",
                     tree,
                     "-p",
-                    self.impl,
+                    self._review_tip,
                     "-m",
                     "Human Gate reviewed fixture snapshot",
                 ],
@@ -123,6 +138,14 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
             index_path.unlink(missing_ok=True)
         if len(commit) != 40 or any(char not in "0123456789abcdef" for char in commit):
             raise AssertionError(f"invalid fixture review commit SHA: {commit}")
+        if publish:
+            subprocess.run(
+                ["git", "update-ref", self.remote_ref, commit],
+                cwd=self.root,
+                check=True,
+                capture_output=True,
+            )
+            self._review_tip = commit
         return commit
 
     def _artifacts(self, rows: dict[str, str]) -> dict[str, Path]:
@@ -553,9 +576,12 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
         self.assertIsNone(state["terminal_reason"])
         reviews = core.load_json(index)["reviews"]
         self.assertEqual([(r["revision"], r["decision"]) for r in reviews], [(1, "REQUEST_CHANGES"), (2, "APPROVED")])
-        self.assertEqual(core.load_json(record_r2)["decision"], "APPROVED")
+        record = core.load_json(record_r2)
+        self.assertEqual(record["decision"], "APPROVED")
+        self.assertIn("gates/reviews/approvals/architecture-r2.json", record["approval"]["path"])
+        self.assertTrue(core.repo_local_path(self.root, record["approval"]["path"], "approval snapshot").is_file())
 
-    def test_review_commit_must_exist_and_bind_current_gate_bytes(self) -> None:
+    def test_review_commit_must_exist_reachable_and_bind_current_gate_bytes(self) -> None:
         self._advance_to_selection()
         self._reach_architecture_gate("Architecture provenance", "2026-08-24T00:05:00Z")
 
@@ -569,6 +595,19 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
                 "review:architecture:missing-commit",
                 expected_revision=1,
                 reviewed_commit_sha="0" * 40,
+            )
+
+        dangling = self._snapshot_review_commit(publish=False)
+        with self.assertRaisesRegex(ValueError, "not reachable from canonical work branch"):
+            human_gate.record_architecture_approval(
+                self.root,
+                self.cfg,
+                self.state_path,
+                "human-reviewer",
+                core.parse_instant("2026-08-24T00:06:15Z"),
+                "review:architecture:dangling-commit",
+                expected_revision=1,
+                reviewed_commit_sha=dangling,
             )
 
         with self.assertRaisesRegex(ValueError, "missing reviewed path"):
@@ -615,10 +654,9 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
             reviewed_commit_sha=reviewed_commit,
         )
         self.assertEqual(state["human_gates"]["architecture_review"], "approved")
-        self.assertEqual(
-            core.load_json(record_path)["reviewed_repository_commit_sha"],
-            reviewed_commit,
-        )
+        record = core.load_json(record_path)
+        self.assertEqual(record["reviewed_repository_commit_sha"], reviewed_commit)
+        self.assertTrue(core.repo_local_path(self.root, record["approval"]["path"], "approval snapshot").is_file())
 
     def test_architecture_revision_rejects_invalid_boundary_and_changed_review_bytes(self) -> None:
         self._advance_to_selection()
@@ -763,11 +801,12 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
         self.assertEqual(record["decision"], "APPROVED")
         candidate_authority = next(row for row in record["reviewed_artifacts"] if row["name"] == "publication-candidate")
         self.assertEqual(candidate_authority["sha256"], core.sha256_file(candidate_r2["candidate"]))
+        self.assertIn("gates/reviews/approvals/publication-r2.json", record["approval"]["path"])
 
-    def test_publication_revision_cannot_cross_architecture_boundary(self) -> None:
+    def test_publication_revision_reopens_architecture_and_preserves_approval_history(self) -> None:
         self._advance_to_selection()
-        self._reach_architecture_gate("Approved Architecture", "2026-08-24T00:05:00Z")
-        human_gate.record_architecture_approval(
+        self._reach_architecture_gate("Approved Architecture r1", "2026-08-24T00:05:00Z")
+        _, architecture_record_r1, _ = human_gate.record_architecture_approval(
             self.root,
             self.cfg,
             self.state_path,
@@ -777,20 +816,76 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
             expected_revision=1,
             reviewed_commit_sha=self._snapshot_review_commit(),
         )
+        architecture_record = core.load_json(architecture_record_r1)
+        architecture_snapshot = core.repo_local_path(
+            self.root, architecture_record["approval"]["path"], "Architecture approval snapshot"
+        )
+        canonical_architecture_approval = self.source_root / self.cfg["state_authority"]["architecture_approval_path"]
+        self.assertTrue(architecture_snapshot.is_file())
+        self.assertTrue(canonical_architecture_approval.is_file())
+
         self._reach_publication_gate(1, 10)
-        with self.assertRaisesRegex(ValueError, "not allowed for PUBLICATION_PREVIEW"):
-            human_gate.request_publication_preview_revision(
-                self.root,
-                self.cfg,
-                self.state_path,
-                "SELECTION_COMPLETE",
-                "This boundary would improperly reopen Architecture.",
-                "human-reviewer",
-                core.parse_instant("2026-08-24T00:15:00Z"),
-                "review:publication:bad-boundary",
-                expected_revision=1,
-                reviewed_commit_sha=self._snapshot_review_commit(),
-            )
+        architecture_checkpoint = self.source_root / self.cfg["state_authority"]["agent_checkpoint_dir"] / "SELECTION_COMPLETE.json"
+        self.assertTrue(architecture_checkpoint.is_file())
+
+        state, publication_record_r1, index, removed = human_gate.request_publication_preview_revision(
+            self.root,
+            self.cfg,
+            self.state_path,
+            "SELECTION_COMPLETE",
+            "The Publication Preview exposed an Architecture-level defect; rebuild Selection/Architecture before redrafting.",
+            "human-reviewer",
+            core.parse_instant("2026-08-24T00:15:00Z"),
+            "review:publication:r1-upstream",
+            expected_revision=1,
+            reviewed_commit_sha=self._snapshot_review_commit(),
+        )
+        self.assertEqual(state["lifecycle_state"], "SELECTION_COMPLETE")
+        self.assertEqual(state["human_gates"]["architecture_review"], "pending")
+        self.assertEqual(state["human_gates"]["publication_preview"], "pending")
+        self.assertIsNone(state["human_gate_provenance"]["architecture_review"])
+        self.assertFalse(canonical_architecture_approval.exists())
+        self.assertTrue(architecture_snapshot.is_file())
+        self.assertFalse(architecture_checkpoint.exists())
+        self.assertIn(canonical_architecture_approval.relative_to(self.root).as_posix(), removed)
+        self.assertIn(architecture_checkpoint.relative_to(self.root).as_posix(), removed)
+        self.assertEqual(core.load_json(publication_record_r1)["regeneration_boundary"], "SELECTION_COMPLETE")
+
+        self._reach_architecture_gate("Reopened Architecture r2", "2026-08-24T00:16:00Z")
+        state, architecture_record_r2, index = human_gate.record_architecture_approval(
+            self.root,
+            self.cfg,
+            self.state_path,
+            "human-reviewer",
+            core.parse_instant("2026-08-24T00:17:00Z"),
+            "review:architecture:r2-after-publication",
+            expected_revision=2,
+            reviewed_commit_sha=self._snapshot_review_commit(),
+        )
+        self.assertEqual(state["human_gates"]["architecture_review"], "approved")
+        self.assertTrue(canonical_architecture_approval.is_file())
+        self.assertTrue(architecture_snapshot.is_file())
+        self.assertIn("architecture-r2.json", core.load_json(architecture_record_r2)["approval"]["path"])
+
+        self._reach_publication_gate(2, 20)
+        state, publication_record_r2, index = human_gate.record_publication_preview_approval(
+            self.root,
+            self.cfg,
+            self.state_path,
+            "human-reviewer",
+            core.parse_instant("2026-08-24T00:23:00Z"),
+            "review:publication:r2-after-architecture",
+            expected_revision=2,
+            reviewed_commit_sha=self._snapshot_review_commit(),
+        )
+        self.assertEqual(state["human_gates"]["publication_preview"], "approved")
+        self.assertEqual(state["next_action"], "stage:freeze")
+        reviews = core.load_json(index)["reviews"]
+        architecture_rows = [(r["revision"], r["decision"]) for r in reviews if r["gate"] == "ARCHITECTURE_REVIEW"]
+        publication_rows = [(r["revision"], r["decision"]) for r in reviews if r["gate"] == "PUBLICATION_PREVIEW"]
+        self.assertEqual(architecture_rows, [(1, "APPROVED"), (2, "APPROVED")])
+        self.assertEqual(publication_rows, [(1, "REQUEST_CHANGES"), (2, "APPROVED")])
+        self.assertEqual(core.load_json(publication_record_r2)["decision"], "APPROVED")
 
 
 if __name__ == "__main__":
