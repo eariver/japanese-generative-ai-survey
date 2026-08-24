@@ -195,6 +195,17 @@ class SurveyPostIntegrationOperatorRegressionV2Tests(unittest.TestCase):
         workflows = sorted((self.root / ".github/workflows").glob("*.yml"))
         self.assertEqual(len(workflows), 7)
 
+    def test_postintegration_amendment_is_bound_into_pipeline_contract(self) -> None:
+        cfg = core.load_json(self.root / core.DEFAULT_CONFIG)
+        self.assertEqual(
+            cfg["orchestrator_version"],
+            "survey-production-core-v2/0.15-postintegration-transport-thematic",
+        )
+        self.assertIn(
+            "docs/survey-production-core-v2-postintegration-amendment.md",
+            cfg["contract_files"]["pipeline"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
