@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/eariver/japanese-generative-ai-survey/schemas/human-gate-review-index-v2.schema.json",
+  "title": "Survey Production Core v2 Human Gate Review Index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "issue_id", "reviews"],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "issue_id": {"type": "string", "minLength": 1},
+    "reviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["gate", "revision", "decision", "record"],
+        "properties": {
+          "gate": {"enum": ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"]},
+          "revision": {"type": "integer", "minimum": 1},
+          "decision": {"enum": ["APPROVED", "REQUEST_CHANGES"]},
+          "record": {"$ref": "#/$defs/authority"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}

@@ -102,10 +102,16 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         operator = self.cfg["operator_model"]
         self.assertEqual(operator["primary_operator"], "CHATGPT")
         self.assertEqual(operator["local_stage_control"], "COMPACT_AGENT_CHECKPOINT")
+        self.assertEqual(operator["deterministic_execution_modes"], ["DIRECT_LOCAL_CLI", "GITHUB_ACTIONS_OPERATOR_BRIDGE"])
+        self.assertTrue(operator["direct_local_cli_preferred"])
         self.assertTrue(operator["autonomous_until_gate"])
         self.assertEqual(operator["normal_human_gates"], ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"])
         pipeline_files = set(self.cfg["contract_files"]["pipeline"])
         self.assertIn("schemas/stage-checkpoint-v2.schema.json", pipeline_files)
+        self.assertIn("schemas/operator-execution-request-v2.schema.json", pipeline_files)
+        self.assertIn("schemas/human-gate-review-record-v2.schema.json", pipeline_files)
+        self.assertIn("schemas/human-gate-review-index-v2.schema.json", pipeline_files)
+        self.assertIn("docs/survey-production-core-v2-operator-execution-bridge.md", pipeline_files)
         self.assertNotIn("schemas/action-spec-v2.schema.json", pipeline_files)
         self.assertNotIn("schemas/stage-handoff-v2.schema.json", pipeline_files)
         self.assertNotIn("schemas/stage-validation-attestation-v2.schema.json", pipeline_files)
@@ -121,6 +127,7 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.assertEqual(control["release_reconciliation"], {"external_key": "release_identity", "existing_release_policy": "VERIFY_EXACT_BYTES_THEN_RESUME"})
         self.assertNotIn("assistant_control_workflow", control)
         self.assertNotIn("production_control_workflow", control)
+        self.assertEqual(control["operator_execution_bridge_workflow"], "survey-production-v2-operator-bridge.yml")
         self.assertEqual(control["publication_preview_export_workflow"], "survey-production-v2-export-publication-preview.yml")
         self.assertEqual(control["release_workflow"], "survey-production-v2-release.yml")
         stage_plan = self.cfg["orchestration"]["stage_plan"]
@@ -138,6 +145,7 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
             "build-special-pdf.yml",
             "survey-production-v2-export-publication-preview.yml",
             "survey-production-v2-release.yml",
+            "survey-production-v2-operator-bridge.yml",
         }
         self.assertEqual(present, retained)
 
@@ -146,6 +154,29 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
             self.assertIn("contents: read", text)
             self.assertNotIn("git push", text)
             self.assertNotIn("pipeline-state.json", text)
+
+        bridge = (workflow_root / "survey-production-v2-operator-bridge.yml").read_text(encoding="utf-8")
+        self.assertIn("issue_comment:", bridge)
+        self.assertIn("OPERATOR_QUEUE_ISSUE: '448'", bridge)
+        self.assertIn("/survey-core-execute ", bridge)
+        self.assertIn("sources/**/execution/requests/*.json", bridge)
+        self.assertIn("Operator request commit must contain only the immutable request file", bridge)
+        self.assertIn("Operator request commit must be the exact current canonical work-branch head", bridge)
+        self.assertIn("Human Gate request must bind reviewed_repository_commit_sha to the request-only commit parent", bridge)
+        self.assertIn("needs: operator-preflight", bridge)
+        self.assertIn("contents: write", bridge)
+        self.assertIn("survey_core_execution_bridge_v2.py", bridge)
+        self.assertIn("Bridge attempted write outside edition source root", bridge)
+        self.assertIn("--force-with-lease", bridge)
+        self.assertNotIn("workflow_dispatch", bridge)
+        self.assertNotIn("workflow_run:", bridge)
+        self.assertNotIn("on:\n  push:", bridge)
+
+        pipeline_ci = (workflow_root / "pipeline-contract-tests.yml").read_text(encoding="utf-8")
+        self.assertIn("contents: read", pipeline_ci)
+        self.assertNotIn("contents: write", pipeline_ci)
+        self.assertNotIn("operator-preflight", pipeline_ci)
+        self.assertNotIn("workflow_run:", pipeline_ci)
 
         preview = (workflow_root / "survey-production-v2-export-publication-preview.yml").read_text(encoding="utf-8")
         self.assertIn("publication-candidate-v2.json", preview)
@@ -163,6 +194,14 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.assertIn("- main", core_ci)
         self.assertIn("test_survey_*_v2.py", core_ci)
         self.assertIn("unittest discover", core_ci)
+
+        final_audit = (self.root / "docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
+        self.assertIn("intended workflow set remains exactly seven", final_audit)
+        self.assertIn("survey-production-v2-operator-bridge.yml", final_audit)
+        self.assertIn("Human Gate round-trip viability", final_audit)
+        self.assertIn("run all seven acceptance points from zero", final_audit)
+        self.assertIn("default-branch `issue_comment` authority", final_audit)
+        self.assertNotIn("intended redesign surface is exactly six workflows", final_audit)
 
     def test_retired_weekly_post_render_authoring_helpers_are_absent(self) -> None:
         retired = (

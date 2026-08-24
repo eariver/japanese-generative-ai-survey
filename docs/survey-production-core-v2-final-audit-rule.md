@@ -1,220 +1,186 @@
 # Survey Production Core v2 — post-completion final audit rule
 
-Status: `CANONICAL REDESIGN-CANDIDATE FINAL AUDIT RULE / READY FOR FIXED-HEAD EXECUTION`  
+Status: `CANONICAL SEVEN-POINT FIXED-HEAD AUDIT RULE / RVF-026 RUNTIME-IMPORT HARDENING SYNCHRONIZED`  
 Established: 2026-08-22 JST  
-Redesign alignment: 2026-08-23 JST  
-Implementation synchronization: 2026-08-23 JST  
-Related audit: `docs/survey-production-core-v2-redesign-preimplementation-audit.md`
+Updated: 2026-08-24 JST
 
-## 1. Principle
+## 1. Mandatory order
 
-A full-candidate audit is meaningful only after implementation, repair, regression, documentation and review-package synchronization are complete.
-
-Therefore the mandatory order is:
+A final audit is valid only after every intended implementation/test/doc/worklog change is complete.
 
 ```text
-finish every intended candidate change
--> finish regression/CI repair
--> synchronize repository-owned authority/docs/findings/Repair Set
--> freeze one candidate branch head SHA
--> run the complete six-point acceptance audit from zero on that exact SHA
--> if and only if all six pass without changing the candidate, present that exact SHA for Human full-candidate review
+finish all candidate changes
+-> finish diagnostic regression/CI repair
+-> synchronize repository authority
+-> pre-freeze cross-check full PR scope
+-> freeze one candidate head SHA
+-> run all seven acceptance points from zero on that exact SHA
+-> do not mutate candidate during audit
+-> only 7/7 PASS may be presented for Human full-candidate review
 ```
 
-A partial audit performed while the candidate is still changing is diagnostic evidence only. It is never final approval evidence.
+Any candidate-tree mutation invalidates the entire audit. No PASS verdict may be carried forward after mutation.
 
-This fixed-head audit is the **Core change-management boundary before Human review**. It establishes that the redesign candidate is coherent, regression-covered, cross-profile-capable by contract/structural evidence, and safe to present as one immutable candidate.
+The final result is recorded outside the candidate tree, normally in PR/Human-review metadata, so recording PASS does not change the audited SHA.
 
-It does **not** retroactively convert W33/SP001 into successful production trials, and it does not replace the clean real-production re-validation required after the redesigned Core is reviewed/integrated into `main`.
+## 2. Seven acceptance points
 
-## 2. Six acceptance points
+1. **Weekly viability** — generic Weekly Profile, required X/Grok intake, exact Drive handoff/result disposition, reader-facing Weekly requirements, no edition-specific rescue Core.
+2. **Special viability** — configured Retrospective through the pre-existing generic `survey_period_v2`, standalone Thematic/LONGFORM, and Foundations living-series compatibility without parallel cadence/series engines.
+3. **Generality** — no W33/SP001/topic/cadence/source-depth/branch-family overfit; Profile/Publication/edition authority remain orthogonal.
+4. **Historical/clarified recurrence prevention** — crisp invariants are deterministic; semantic/editorial/visual judgment remains ChatGPT-owned; Human decision remains at the two normal Gates.
+5. **Control proportionality** — no unnecessary workflow/Human ceremony or machine impersonation of qualitative judgment; Actions policy is satisfied.
+6. **Autonomous progression / stop discipline** — after target+requested Gate, ordinary research/editorial/QA/retry work proceeds without routine Human confirmation; production does not debug shared Core in place.
+7. **Human Gate round-trip viability** — both normal Gates support exact committed review, `APPROVED`, `REQUEST_CHANGES`, dependency-aware invalidation, rN continuation, stale/byte-drift rejection, durable review provenance, and connector-safe execution without delegating Human judgment.
 
-Every final audit evaluates all six points in this priority order:
+## 3. Point 7 mandatory evidence
 
-1. **Weekly viability** — a normal future Weekly edition is supported through the requested Human Gate without edition-specific rescue architecture: required Grok/X Source Intake, exact Google Drive task-file path handoff, returned-result import, mandatory Weekly community treatment, Reader Manuscript/QA/Candidate boundaries, and no permission for in-run shared-Core repair are all present and mutually consistent.
-2. **Special viability** — the redesigned Core remains structurally viable for `RETROSPECTIVE_PERIOD`, standalone `THEMATIC`, `LONGFORM_SPECIAL`, SP-001–003-style work, and Generative AI Foundations guided-series work. Evidence must cover bounded-period semantics, standalone Thematic/Longform publication, and the Foundations living-series boundary rather than inferring all Special viability from SP001 alone.
-3. **Generality** — the Core/Profile design is not overfit to W33/W34/SP001–003, one cadence, one topic taxonomy, or one publication shape. Shared Core, Research Profile, Publication Profile and edition/series authority remain orthogonal. Later Weekly issues and previously unplanned Specials can use generic Profile/planning authority without new authoring workflows.
-4. **Historical and clarified requirement recurrence prevention** — known Human Review defect families and later clarified requirements have an appropriate owner: narrow deterministic protection for crisp invariants, ChatGPT research/editorial/visual review for semantic judgment, Human review at the two normal Gates, or explicit legacy-only disposition. Publication Boundary defects from #400/#433/#434 are included here.
-5. **Control proportionality** — after 1–4 are satisfied, routine work is not burdened with unnecessary Human Gates, workflow ceremony, profile-specific authoring workflows, or validators that pretend to replace qualitative judgment. GitHub Actions satisfy the adopted Actions responsibility policy.
-6. **Autonomous progression / stop discipline** — after the user supplies the target and requested stopping Gate, ChatGPT proceeds through ordinary edition-local research/editorial work and transient retries without repeatedly stopping for confirmation. A production session may stop only for an actual normal Human Gate, a genuine Owner-level Exception Gate, the permitted manual Grok task-file path handoff, or a recorded shared-Core defect that makes correct production impossible under the current reviewed Core. A production session does **not** author or debug shared Core merely to keep the edition moving.
+Point 7 must explicitly prove all of the following.
 
-Lower-numbered points win if priorities conflict, but point 6 is an explicit acceptance condition rather than an optional usability preference.
+### Architecture
 
-## 3. Evidence model for the fixed-head audit
+- Architecture r1 `APPROVED` resumes drafting.
+- Architecture r1 `REQUEST_CHANGES` can return to every allowed pre-Architecture dependency class and return as Architecture r2.
+- stale r1 approval after r2 fails.
+- changed reviewed bytes and invalid boundaries fail closed.
 
-The fixed-head audit must be performed afresh on one immutable candidate SHA and uses the strongest evidence available before Human merge review:
+### Publication Preview — publication-local repair
 
-- exact-head CI/regression results;
-- schema/config/script/workflow inspection;
-- representative cross-profile unit/contract fixtures;
-- historical W33/SP001 failure evidence as regression targets, never as PASS runs;
-- Retrospective monthly/half-year/annual guidance compatibility inspection;
-- standalone Thematic and Foundations-series authority compatibility inspection;
-- PR-scope inspection proving that the redesign did not silently mutate edition outputs or frozen historical releases;
-- explicit review of the Actions surface, Human Gate model, Reader Publication Boundary and Production/Core responsibility boundary.
+- Publication r1 `APPROVED` resumes Freeze.
+- Publication r1 `REQUEST_CHANGES` to drafting/validation boundaries invalidates only affected publication authority and preserves valid active Architecture approval.
+- r2 approval binds only r2 Candidate/PDF bytes.
 
-The fixed-head audit must not fabricate a synthetic claim that a clean real production run has occurred when it has not.
+### Publication Preview — upstream/cross-gate repair
 
-## 4. Post-integration real-production re-validation
+- Publication r1 `REQUEST_CHANGES` may select an allowed boundary before `ARCHITECTURE_ESTABLISHED` when feedback reveals an upstream defect.
+- active canonical Architecture approval is verified, superseded, and removed from current authority.
+- prior Architecture rN review record and immutable approval snapshot remain hash-verifiable historical evidence.
+- Architecture Review becomes pending and the run must pass through Architecture rN+1 before publication may continue.
+- a later Publication rN+1 can be approved and resume Freeze.
+- cross-gate reopen is normal revision, not an Owner Exception Gate.
 
-After the candidate passes this fixed-head audit, receives Human full-candidate review, and the reviewed Core is integrated into `main`, run a small representative real-production matrix:
+### Reviewed-commit durability
 
-- one clean future Weekly cold-start run;
-- one clean standalone `THEMATIC + LONGFORM_SPECIAL` cold-start run, with SP001 as a required regression case;
-- one representative `RETROSPECTIVE_PERIOD` production/replay through the requested Human Gate;
-- one Foundations-guided volume/scenario through at least Architecture Review;
-- structural confirmation against monthly, half-year and annual Retrospective guidance and unplanned future Thematic work.
+Direct-local Core must reject:
 
-A real production validation run that discovers a shared-Core defect is preserved as failed evidence. Repair Core in a separate Core-maintenance flow, then rerun the affected validation cleanly. Do not debug the production-validation edition in place and count the salvaged run as proof of cold-start viability.
+- nonexistent reviewed commit;
+- dangling/unreachable reviewed commit not retained on canonical Profile work branch;
+- commit missing a reviewed path;
+- non-regular reviewed path;
+- same-path/different-byte reviewed commit.
 
-The post-integration matrix is required to claim **real-production validation** of the redesigned Core. The pre-review fixed-head audit is required to decide whether one exact implementation candidate is coherent enough to present for Human full-candidate review.
+A valid reviewed commit must be reachable from canonical `work_branch` and contain exact reviewed State/Gate bytes. Publication includes exact Candidate-bound PDF.
 
-## 5. Candidate immutability during the final audit
+### Connector-safe trust bootstrap and runtime isolation
 
-Once the audit candidate SHA is frozen:
+The audit must not merely inspect the bridge helper. It must prove the complete root of trust, including process startup/import behavior:
 
-- do not change code, config, schemas, workflows, tests, guides, Findings, Repair Sets, closure documents, worklogs or other candidate-tree content during the audit;
-- do not silently reinterpret a failure as an acceptable exception merely to preserve the frozen SHA;
-- CI evidence used for the final audit must apply to that exact candidate SHA or to the pull-request merge candidate that contains exactly that head plus the unchanged target base, as appropriate to the workflow;
-- the audit may read historical evidence and current repository state, but must reach its six verdicts afresh rather than carrying forward an earlier PASS.
+- operator execution is initiated only through `survey-production-v2-operator-bridge.yml` loaded from default-branch `issue_comment` authority;
+- the persistent transport surface is Issue `#448`, which is not a Human Gate or editorial authority;
+- only exact `/survey-core-execute <lowercase-40-hex-request-commit>` comments from an authorized repository association are actionable;
+- supplied request SHA/work branch are treated as untrusted data until preflight completes;
+- every Python helper that inspects untrusted request/config data before admission uses isolated Python startup and cannot import repository-local work-branch code;
+- the request SHA must be the exact current canonical work-branch head;
+- request-only commit, reviewed-main ancestry, Human reviewed-commit/request-parent binding, and protected-Core equality all pass before a write-capable job exists;
+- protected-path configuration is read from the named reviewed-main commit, not the untrusted work branch, using an isolated parser environment;
+- only a dependent post-preflight job receives `contents: write`;
+- the write-capable executor rechecks work-branch/reviewed-main authority and executes Core Python from a separately materialized reviewed-main runtime, not from the admitted worktree import root;
+- the actual package-module subprocess startup form used by Actions is regression-tested in a clean trusted runtime while a poisoning top-level `json.py` exists in the admitted repository root, and the poison is not imported;
+- JSON-only helper parsing after execution remains isolated from repository-local imports;
+- the canonical work branch is rechecked after preflight and output push is lease-bound to the admitted request head;
+- generated writes remain Profile-bound and immutable request authority is not mutated;
+- generic/arbitrary Human-decision or executable surfaces remain absent;
+- there is no work-branch signal workflow and no `workflow_run` trust hop.
 
-## 6. Invalidation rule
+A write-capable verifier loaded from the work branch under review is a Point-7 failure even if its script text appears to perform the right checks. Likewise, a default-branch workflow that executes/imports untrusted checkout Python before admission, or a write-capable executor that uses the admitted worktree as its Core Python import root, is a Point-7 failure.
 
-If any of the six points reveals a defect that requires a repository change:
+## 4. CI evidence
+
+The final audit requires exact-head evidence from:
+
+- Survey Production Core v2 CI;
+- Pipeline contract tests;
+- schema/config parse/compile checks included by those suites;
+- positive/negative Human Gate direct and bridge regressions;
+- workflow trust-bootstrap static contract regressions;
+- RVF-026 import-poisoning regression and exact package-module subprocess startup smoke matching the Actions command form;
+- cross-profile fixtures.
+
+CI may run on the PR merge candidate only when it consists of the exact frozen head plus the unchanged audited base.
+
+## 5. Actions surface
+
+The intended workflow set remains exactly seven:
+
+1. `pipeline-contract-tests.yml`
+2. `survey-production-v2-ci.yml`
+3. `build-weekly-survey.yml`
+4. `build-special-pdf.yml`
+5. `survey-production-v2-export-publication-preview.yml`
+6. `survey-production-v2-release.yml`
+7. `survey-production-v2-operator-bridge.yml`
+
+Responsibilities matter as much as filenames:
+
+- `pipeline-contract-tests.yml` = independent read-only CI only;
+- `survey-production-v2-operator-bridge.yml` = trusted default-branch Issue `#448` admission/preflight plus dependent deterministic executor using isolated pre-admission parsing and reviewed-main runtime execution;
+- Release remains the only lifecycle `WORKFLOW_DISPATCH` edge.
+
+An eighth workflow is prima facie regression unless separately reviewed under the Actions admission rule.
+
+## 6. Reader/publication boundary
+
+The audit must confirm:
+
+- internal Selection/Evidence/Architecture/Draft artifacts are not legal fallback publication prose;
+- ChatGPT authors canonical reader-facing source;
+- deterministic QA, semantic/editorial QA, and exact-PDF visual QA remain distinct;
+- Candidate atomically binds exact source/PDF/review authority;
+- changed source/PDF invalidates Candidate/Preview/Freeze identity.
+
+## 7. Production/Core boundary
+
+A formal post-integration production validation run that discovers a shared-Core defect is failed evidence. Repair Core separately and rerun the affected scenario cleanly. Do not salvage the same edition in place and call it cold-start PASS.
+
+## 8. Post-integration validation matrix
+
+After fixed-head 7/7 PASS, Human approval, and unchanged integration into `main`, run:
+
+- one future Weekly cold start;
+- standalone Thematic/LONGFORM with SP001 regression;
+- representative configured Retrospective Period through existing `survey_period_v2`;
+- one Foundations-guided scenario through at least Architecture Review;
+- structural monthly/half-year/annual and unplanned-Thematic compatibility confirmation.
+
+The connector-safe matrix must also exercise the trusted default-branch Issue `#448` operator path in real branch execution after integration; static PR tests cannot by themselves prove the default-branch transport is operational.
+
+## 9. Invalidation rule
+
+If any point reveals a defect requiring repository mutation:
 
 ```text
-record/classify the finding
--> mark the current final audit INVALIDATED
--> leave the Human full-candidate review boundary
--> complete all required repairs in Core maintenance
--> complete regression and documentation synchronization
--> freeze a new SHA
--> rerun all six acceptance points from point 1
+record/classify finding
+-> audit INVALID
+-> leave Human full-candidate review boundary
+-> repair Core
+-> rerun CI/synchronization
+-> freeze new SHA
+-> rerun Points 1–7 from Point 1
 ```
 
-There is no “resume from point 4” or “recheck only the failed point” path after candidate mutation.
+There is no partial-audit resume after candidate mutation.
 
-Even a documentation-only change made to the candidate after the audit invalidates that audit, because the reviewed candidate SHA changed.
+## 10. Current historical warning
 
-## 7. Recording the final result without mutating the candidate
+The candidates `9932c8b7a14f1c3bdcc775df88056681b2841514` and `109579e0f9b2988b62074165b28f144ac3b1ad55` and their former 7/7 results are historical/invalidated evidence.
 
-The repository stores this rule before the candidate is frozen. The final audit result itself is **recorded outside the candidate tree** — normally in the PR/Human-review handoff — and must name:
+Follow-up review findings across those candidates established four trust/lifecycle requirements:
 
-- the exact audited candidate head SHA;
-- the unchanged base SHA/PR identity where relevant;
-- exact-head CI/regression evidence;
-- the six fresh verdicts and concise supporting evidence;
-- any post-integration real-production validation still pending.
+- operator trust bootstrap must originate from default-branch authority, not a work-branch workflow;
+- reviewed Human commits must be durable/reachable and exact-bind reviewed bytes;
+- Publication Preview must support dependency-aware upstream correction/reopening of Architecture;
+- default-branch workflow authority is still insufficient if Python startup/import behavior can execute repository-local work-branch code before admission or if the write-capable executor imports Core from the admitted worktree. RVF-026 therefore requires isolated pre-admission parsing, reviewed-main runtime execution, and exact CLI startup regression.
 
-This avoids the self-invalidating pattern:
+An intermediate read-only branch signal + `workflow_run` design was also rejected during repair because it still depended on work-branch workflow definition for signaling. It must not be treated as current authority.
 
-```text
-finish audit
--> commit an audit PASS document
--> candidate SHA changes
--> the committed PASS no longer describes the current candidate
-```
-
-Historical diagnostic audits may remain in Git history, but they must be labeled invalidated/superseded when later candidate changes occurred.
-
-## 8. Relation to Human Gates and Grok transport
-
-This rule does **not** add a third publication/editorial Human Gate.
-
-The two normal production Human Gates remain:
-
-1. `ARCHITECTURE_REVIEW`
-2. exact-byte `PUBLICATION_PREVIEW`
-
-A genuine Exception Gate remains reserved for an Owner decision that repository authority cannot safely resolve. It must not be used for routine uncertainty, ordinary research refinement, edition-local QA repair or transient execution retry.
-
-When Grok execution requires Human mediation, ChatGPT prepares one self-contained task file in the configured Google Drive location and gives the Human the exact Drive **task-file path/reference**. The Human gives that path/reference to Grok. Grok reads the file and writes the instructed result. This manual Grok handoff is operational transport, not editorial approval and not another Human Gate. ChatGPT **must not search for a Grok connector** merely because the run is required.
-
-Once the returned result exists, ChatGPT imports it and **resumes automatically toward the requested Gate**.
-
-## 9. Production vs Core-maintenance rule
-
-A production session owns edition-local work and transient execution recovery. It does not author shared-Core repairs.
-
-If a likely shared-Core defect appears:
-
-```text
-record symptom / reproduction / impact
--> classify as shared Core
--> if a semantically safe edition-local workaround exists, use it only when doing so does not alter the shared contract
--> otherwise stop/pause the edition at a recorded Core dependency
--> repair shared Core separately
-```
-
-For a formal post-integration Core production-validation run, any shared-Core defect invalidates that run as acceptance evidence even if a local workaround could make the publication look acceptable. The repaired Core must be tested by a clean rerun.
-
-For ordinary later production after Core is already accepted, a separately reviewed Core repair may be integrated according to repository maintenance policy, but affected semantic boundaries must be revalidated and the edition record must not imply that the pre-repair path validated the new Core.
-
-## 10. Actions / deterministic-tool implication
-
-The final audit must verify the adopted GitHub Actions responsibility policy.
-
-The redesign candidate may retain Actions where there is clear independent/reproducibility/security value, including:
-
-- CI/regression execution;
-- pinned reproducible build;
-- deterministic validation;
-- exact-byte Publication Preview transport;
-- exact-byte Freeze/Release integrity;
-- credential-isolated publication/reconciliation.
-
-Do not count workflow automation itself as a virtue. Actions must not be the reasoning/editorial/publication-authoring loop, and the redesign must not replace the old workflow set with cadence/topic-specific authoring workflows.
-
-The intended redesign surface is exactly six workflows unless a later separately reviewed Core change explicitly revises that invariant.
-
-## 11. Reader-facing publication implication
-
-The final audit must explicitly check that:
-
-- internal Architecture/Review/Selection/Evidence state is not a legal fallback source for reader-facing prose;
-- a distinct Reader Manuscript / reader-facing publication surface exists before candidate assembly;
-- known-token lint is defense-in-depth only;
-- ChatGPT semantic/editorial QA checks Publication Boundary and Architecture content fidelity;
-- ChatGPT reviews the exact rendered PDF visually;
-- deterministic Quality Bundle contains deterministic authority only;
-- Publication Candidate atomically binds exact Reader Manuscript/source/PDF/deterministic QA/semantic review/visual review;
-- source/PDF change invalidates downstream Candidate/Preview/Freeze identity.
-
-A machine PASS without reader-facing quality does not satisfy points 1, 2 or 4.
-
-## 12. Cross-profile generality checklist
-
-The fixed-head audit must explicitly inspect representative support for:
-
-### Weekly
-
-- `WEEKLY + WEEKLY_MAGAZINE` Profile composition;
-- rolling-window semantics;
-- required Grok/X task-file flow;
-- mandatory `コミュニティの動き` and final synthesis;
-- no cadence-specific authoring workflow.
-
-### Retrospective Period
-
-- generic bounded-period Profile rather than separate monthly/half-year/annual engines;
-- coverage audit and supplemental primary-source gap fill remain Profile/guide-owned;
-- chronology/lifecycle/normalization/synthesis semantics remain expressible;
-- annual temporal-skew/trajectory guidance is not flattened into generic Core.
-
-### Standalone Thematic / Longform
-
-- topic-specific research closure and Architecture remain possible without SP001 fixed taxonomy;
-- `THEMATIC + LONGFORM_SPECIAL` preserves historical attribution and longform/mixed-layout semantic requirements;
-- no shared Core keys off SP001 family/package names.
-
-### Foundations-guided work
-
-- the living series memo remains an outer authority;
-- Core does not create a rigid generic series engine;
-- per-volume Architecture remains research-derived.
-
-## 13. Scope of this rule
-
-This post-completion six-point audit is a **Core-v2 change-management acceptance rule** for deciding whether an implementation candidate is ready to be presented for Human full-candidate review/merge.
-
-It does not run for every Weekly/Special lifecycle stage, and it is not itself proof of a successful cold-start production run. Real production validation is separately recorded after reviewed Core integration as described above.
+Those findings must be fully repaired and audited on a later exact SHA before PR #447 can return to Ready for Human review.
