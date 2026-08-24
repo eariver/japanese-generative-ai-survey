@@ -66,7 +66,7 @@ For a canonical materialization the bridge must:
 
 This is not an SP001 adapter. No topic name, branch-family prefix, source-root depth, or Special-series identity may be hardcoded.
 
-Raw Core thematic specs remain backward compatible. If a raw spec and request both name a temporal mode, disagreement fails closed rather than being silently overwritten.
+Raw Core thematic specs remain backward compatible. If a raw spec and request both name a temporal mode, disagreement fails closed rather than being silently overwritten. If the request explicitly names `survey_root`, the generated Profile must match it exactly; a raw spec cannot silently override or ignore that request-owned path identity.
 
 ## 4. Production-validation consequence
 
