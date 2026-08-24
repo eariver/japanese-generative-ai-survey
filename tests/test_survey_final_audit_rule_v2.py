@@ -5,59 +5,81 @@ from pathlib import Path
 
 
 class SurveyFinalAuditRuleV2Tests(unittest.TestCase):
-    def test_repository_owns_all_changes_first_fixed_head_seven_point_audit(self) -> None:
+    def test_repository_owns_fixed_head_seven_point_audit_contract(self) -> None:
         rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
-        authority = Path("docs/survey-production-core-v2-authority.md").read_text(encoding="utf-8")
         agents = Path("AGENTS.md").read_text(encoding="utf-8")
         bootstrap = Path("docs/survey-production-core-v2-session-bootstrap.md").read_text(encoding="utf-8")
 
         for phrase in (
-            "finish every intended candidate change",
-            "freeze one candidate branch head SHA",
-            "run the complete seven-point acceptance audit from zero",
+            "finish all candidate changes",
+            "freeze one candidate head SHA",
+            "run all seven acceptance points from zero",
+            "Weekly viability",
+            "Special viability",
+            "Generality",
+            "Historical/clarified recurrence prevention",
+            "Control proportionality",
             "Autonomous progression / stop discipline",
             "Human Gate round-trip viability",
-            "mark the current final audit INVALIDATED",
-            "rerun all seven acceptance points from point 1",
+            "No PASS verdict may be carried forward after mutation",
         ):
             self.assertIn(phrase, rule)
 
-        self.assertIn("Architecture r1 `REQUEST_CHANGES`", rule)
-        self.assertIn("Publication Preview r1 `REQUEST_CHANGES`", rule)
-        self.assertIn("must not accept arbitrary commands", rule)
-        self.assertIn("record an already explicit Human `APPROVED` or `REQUEST_CHANGES` decision", rule)
-
-        self.assertIn("survey-production-core-v2-final-audit-rule.md", authority)
-        self.assertIn("2f3c9b10c031cf0d8e5cc114fb93e481e90fffac", authority)
-        self.assertIn("68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d", authority)
-        self.assertIn("705937af2eb45d5ba361fe748d7a622110bcb27c", authority)
-        self.assertIn("AUD-047", authority)
-        self.assertIn("audit-stable pre-audit state", authority)
-        self.assertIn("PR/Human-review metadata", authority)
+        self.assertIn("recorded outside the candidate tree", rule)
+        self.assertIn("rerun Points 1–7 from Point 1", rule)
+        self.assertIn("invalidate", rule.lower())
         self.assertIn("invalidate the entire audit", agents)
         self.assertIn("Do not stop for ordinary internal work", agents)
-        self.assertIn(
-            "Continue immediately unless a Human/Exception Gate or blocking shared-Core defect is reached",
-            bootstrap,
-        )
-        self.assertIn("Production sessions own edition-local work", bootstrap)
+        self.assertIn("Continue immediately unless a Human/Exception Gate or blocking shared-Core defect is reached", bootstrap)
         self.assertIn("A production run that edits shared Core to make itself pass is not valid evidence", bootstrap)
-        self.assertIn("manual Grok", rule)
-        self.assertIn("resumes automatically toward the requested Gate", rule)
-        self.assertIn("must not search for a Grok connector", rule)
 
-    def test_current_rule_does_not_retain_six_point_acceptance_language(self) -> None:
+    def test_point7_owns_trust_durability_and_cross_gate_reopen(self) -> None:
+        rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
+
+        # Direct-local durable review provenance.
+        self.assertIn("dangling/unreachable reviewed commit", rule)
+        self.assertIn("canonical `work_branch`", rule)
+        self.assertIn("Candidate-bound PDF", rule)
+
+        # Publication feedback may legitimately reopen Architecture.
+        self.assertIn("Publication Preview — upstream/cross-gate repair", rule)
+        self.assertIn("Architecture Review becomes pending", rule)
+        self.assertIn("Architecture rN+1", rule)
+        self.assertIn("cross-gate reopen is normal revision", rule)
+
+        # Connector trust must originate in default-branch issue_comment authority.
+        self.assertIn("default-branch `issue_comment` authority", rule)
+        self.assertIn("Issue `#448`", rule)
+        self.assertIn("/survey-core-execute <lowercase-40-hex-request-commit>", rule)
+        self.assertIn("exact current canonical work-branch head", rule)
+        self.assertIn("protected-path configuration is read from the named reviewed-main commit", rule)
+        self.assertIn("only a dependent post-preflight job receives `contents: write`", rule)
+        self.assertIn("lease-bound", rule)
+        self.assertIn("there is no work-branch signal workflow and no `workflow_run` trust hop", rule)
+
+    def test_actions_surface_remains_seven_and_pipeline_ci_only(self) -> None:
+        rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
+        for workflow in (
+            "pipeline-contract-tests.yml",
+            "survey-production-v2-ci.yml",
+            "build-weekly-survey.yml",
+            "build-special-pdf.yml",
+            "survey-production-v2-export-publication-preview.yml",
+            "survey-production-v2-release.yml",
+            "survey-production-v2-operator-bridge.yml",
+        ):
+            self.assertIn(workflow, rule)
+        self.assertIn("`pipeline-contract-tests.yml` = independent read-only CI only", rule)
+        self.assertIn("trusted default-branch Issue `#448`", rule)
+        self.assertIn("An eighth workflow is prima facie regression", rule)
+
+    def test_current_rule_does_not_retain_superseded_acceptance_or_transport(self) -> None:
         rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
         self.assertNotIn("complete six-point acceptance audit", rule)
         self.assertNotIn("rerun all six acceptance points", rule)
         self.assertNotIn("six fresh verdicts", rule)
-
-    def test_final_result_is_external_metadata_not_post_audit_candidate_commit(self) -> None:
-        rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
-        self.assertIn("recorded outside the candidate tree", rule)
-        self.assertIn("PR/Human-review handoff", rule)
-        self.assertIn("candidate SHA changes", rule)
-        self.assertIn("seven fresh verdicts", rule)
+        self.assertNotIn("operator-bridge workflow = read-only work-branch signal", rule)
+        self.assertNotIn("pipeline-contract workflow = normal CI plus trusted", rule)
 
 
 if __name__ == "__main__":
