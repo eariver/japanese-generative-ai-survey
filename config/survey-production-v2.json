@@ -2,7 +2,7 @@
   "schema_version": "2.0-rc1",
   "pipeline_contract_version": "2.0-rc1",
   "quality_contract_version": "2.0-rc1",
-  "orchestrator_version": "survey-production-core-v2/0.13-human-gate-roundtrip",
+  "orchestrator_version": "survey-production-core-v2/0.14-trusted-bridge-cross-gate",
   "contract_files": {
     "pipeline": [
       "docs/survey-production-core-v2-redesign-authority.md",
@@ -85,6 +85,7 @@
   "workflow_control": {
     "dispatch_ref": "main",
     "operator_execution_bridge_workflow": "survey-production-v2-operator-bridge.yml",
+    "operator_execution_trusted_workflow": "pipeline-contract-tests.yml",
     "publication_preview_export_workflow": "survey-production-v2-export-publication-preview.yml",
     "release_workflow": "survey-production-v2-release.yml",
     "release_reconciliation": {
@@ -230,6 +231,11 @@
         "SELECTION_COMPLETE"
       ],
       "PUBLICATION_PREVIEW": [
+        "ISSUE_INITIALIZED",
+        "DISCOVERY_COLLECTED",
+        "CANDIDATES_NORMALIZED",
+        "EVIDENCE_REVIEWED",
+        "SELECTION_COMPLETE",
         "ARCHITECTURE_ESTABLISHED",
         "DRAFT_COMPLETE",
         "VALIDATED_DRAFT"
