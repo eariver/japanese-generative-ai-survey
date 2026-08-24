@@ -1,6 +1,6 @@
 # Survey Production Core v2 — post-completion final audit rule
 
-Status: `CANONICAL SEVEN-POINT FIXED-HEAD AUDIT RULE / FOLLOW-UP REVIEW HARDENING SYNCHRONIZED`  
+Status: `CANONICAL SEVEN-POINT FIXED-HEAD AUDIT RULE / RVF-026 RUNTIME-IMPORT HARDENING SYNCHRONIZED`  
 Established: 2026-08-22 JST  
 Updated: 2026-08-24 JST
 
@@ -71,24 +71,28 @@ Direct-local Core must reject:
 
 A valid reviewed commit must be reachable from canonical `work_branch` and contain exact reviewed State/Gate bytes. Publication includes exact Candidate-bound PDF.
 
-### Connector-safe trust bootstrap
+### Connector-safe trust bootstrap and runtime isolation
 
-The audit must not merely inspect the bridge helper. It must prove the root of trust:
+The audit must not merely inspect the bridge helper. It must prove the complete root of trust, including process startup/import behavior:
 
 - operator execution is initiated only through `survey-production-v2-operator-bridge.yml` loaded from default-branch `issue_comment` authority;
 - the persistent transport surface is Issue `#448`, which is not a Human Gate or editorial authority;
 - only exact `/survey-core-execute <lowercase-40-hex-request-commit>` comments from an authorized repository association are actionable;
 - supplied request SHA/work branch are treated as untrusted data until preflight completes;
+- every Python helper that inspects untrusted request/config data before admission uses isolated Python startup and cannot import repository-local work-branch code;
 - the request SHA must be the exact current canonical work-branch head;
 - request-only commit, reviewed-main ancestry, Human reviewed-commit/request-parent binding, and protected-Core equality all pass before a write-capable job exists;
-- protected-path configuration is read from the named reviewed-main commit, not the untrusted work branch;
+- protected-path configuration is read from the named reviewed-main commit, not the untrusted work branch, using an isolated parser environment;
 - only a dependent post-preflight job receives `contents: write`;
+- the write-capable executor rechecks work-branch/reviewed-main authority and executes Core Python from a separately materialized reviewed-main runtime, not from the admitted worktree import root;
+- the actual package-module subprocess startup form used by Actions is regression-tested in a clean trusted runtime while a poisoning top-level `json.py` exists in the admitted repository root, and the poison is not imported;
+- JSON-only helper parsing after execution remains isolated from repository-local imports;
 - the canonical work branch is rechecked after preflight and output push is lease-bound to the admitted request head;
 - generated writes remain Profile-bound and immutable request authority is not mutated;
 - generic/arbitrary Human-decision or executable surfaces remain absent;
 - there is no work-branch signal workflow and no `workflow_run` trust hop.
 
-A write-capable verifier loaded from the work branch under review is a Point-7 failure even if its script text appears to perform the right checks.
+A write-capable verifier loaded from the work branch under review is a Point-7 failure even if its script text appears to perform the right checks. Likewise, a default-branch workflow that executes/imports untrusted checkout Python before admission, or a write-capable executor that uses the admitted worktree as its Core Python import root, is a Point-7 failure.
 
 ## 4. CI evidence
 
@@ -99,6 +103,7 @@ The final audit requires exact-head evidence from:
 - schema/config parse/compile checks included by those suites;
 - positive/negative Human Gate direct and bridge regressions;
 - workflow trust-bootstrap static contract regressions;
+- RVF-026 import-poisoning regression and exact package-module subprocess startup smoke matching the Actions command form;
 - cross-profile fixtures.
 
 CI may run on the PR merge candidate only when it consists of the exact frozen head plus the unchanged audited base.
@@ -118,7 +123,7 @@ The intended workflow set remains exactly seven:
 Responsibilities matter as much as filenames:
 
 - `pipeline-contract-tests.yml` = independent read-only CI only;
-- `survey-production-v2-operator-bridge.yml` = trusted default-branch Issue `#448` admission/preflight plus dependent deterministic executor;
+- `survey-production-v2-operator-bridge.yml` = trusted default-branch Issue `#448` admission/preflight plus dependent deterministic executor using isolated pre-admission parsing and reviewed-main runtime execution;
 - Release remains the only lifecycle `WORKFLOW_DISPATCH` edge.
 
 An eighth workflow is prima facie regression unless separately reviewed under the Actions admission rule.
@@ -167,11 +172,14 @@ There is no partial-audit resume after candidate mutation.
 
 ## 10. Current historical warning
 
-The candidate `9932c8b7a14f1c3bdcc775df88056681b2841514` and its former 7/7 result are historical/invalidated evidence. Follow-up review found:
+The candidates `9932c8b7a14f1c3bdcc775df88056681b2841514` and `109579e0f9b2988b62074165b28f144ac3b1ad55` and their former 7/7 results are historical/invalidated evidence.
 
-- untrusted work-branch trust bootstrap;
-- insufficient reviewed-commit durability;
-- missing Publication Preview upstream correction/reopen path.
+Follow-up review findings across those candidates established four trust/lifecycle requirements:
+
+- operator trust bootstrap must originate from default-branch authority, not a work-branch workflow;
+- reviewed Human commits must be durable/reachable and exact-bind reviewed bytes;
+- Publication Preview must support dependency-aware upstream correction/reopening of Architecture;
+- default-branch workflow authority is still insufficient if Python startup/import behavior can execute repository-local work-branch code before admission or if the write-capable executor imports Core from the admitted worktree. RVF-026 therefore requires isolated pre-admission parsing, reviewed-main runtime execution, and exact CLI startup regression.
 
 An intermediate read-only branch signal + `workflow_run` design was also rejected during repair because it still depended on work-branch workflow definition for signaling. It must not be treated as current authority.
 

@@ -34,7 +34,7 @@ class SurveyFinalAuditRuleV2Tests(unittest.TestCase):
         self.assertIn("are not extra Human Gates", bootstrap)
         self.assertIn("A formal production-validation run that hits a shared-Core defect is failed evidence", bootstrap)
 
-    def test_point7_owns_trust_durability_and_cross_gate_reopen(self) -> None:
+    def test_point7_owns_trust_durability_cross_gate_and_runtime_isolation(self) -> None:
         rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
 
         # Direct-local durable review provenance.
@@ -57,6 +57,15 @@ class SurveyFinalAuditRuleV2Tests(unittest.TestCase):
         self.assertIn("only a dependent post-preflight job receives `contents: write`", rule)
         self.assertIn("lease-bound", rule)
         self.assertIn("there is no work-branch signal workflow and no `workflow_run` trust hop", rule)
+
+        # RVF-026 extends the trust root through Python startup/import behavior.
+        self.assertIn("isolated Python startup", rule)
+        self.assertIn("cannot import repository-local work-branch code", rule)
+        self.assertIn("separately materialized reviewed-main runtime", rule)
+        self.assertIn("not from the admitted worktree import root", rule)
+        self.assertIn("poisoning top-level `json.py`", rule)
+        self.assertIn("exact package-module subprocess startup smoke", rule)
+        self.assertIn("RVF-026 import-poisoning regression", rule)
 
     def test_actions_surface_remains_seven_and_pipeline_ci_only(self) -> None:
         rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
@@ -81,6 +90,8 @@ class SurveyFinalAuditRuleV2Tests(unittest.TestCase):
         self.assertNotIn("six fresh verdicts", rule)
         self.assertNotIn("operator-bridge workflow = read-only work-branch signal", rule)
         self.assertNotIn("pipeline-contract workflow = normal CI plus trusted", rule)
+        self.assertIn("109579e0f9b2988b62074165b28f144ac3b1ad55", rule)
+        self.assertIn("historical/invalidated evidence", rule)
 
 
 if __name__ == "__main__":

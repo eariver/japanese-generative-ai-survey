@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Post-merge W33/SP001 revalidation worklog
 
-Status: `RVF-025 FOLLOW-UP REVIEW REPAIRS SYNCHRONIZED / PRE-FREEZE DIAGNOSTIC CI`
+Status: `RVF-026 RUNTIME IMPORT-BOUNDARY REPAIR + AUDIT AUTHORITY SYNCHRONIZED / FINAL EXACT-HEAD CI REQUIRED`
 
 Established: 2026-08-23 JST  
 Last updated: 2026-08-24 JST
@@ -141,7 +141,7 @@ Status: `IMPLEMENTED / EXTENDED BY RVF-025`
 Status: `IMPLEMENTED / EXTENDED BY RVF-025`
 
 ### RVF-022 — seven-point/Human Gate authority sync
-Status: `SUPERSEDED BY RVF-024/RVF-025`
+Status: `SUPERSEDED BY RVF-024/RVF-025/RVF-026`
 
 ### RVF-023 — Human-reviewed commit differs from request/event commit
 Status: `FOUND / REPAIRED / RETAINED`
@@ -156,7 +156,7 @@ Candidate `0a9e2d2c5bd9124ba626cdc7558e645d8021946c` had Core CI `32652165318` P
 A later candidate `9932c8b7a14f1c3bdcc775df88056681b2841514` then passed fresh 7/7, but follow-up PR review invalidated that freeze under RVF-025.
 
 ### RVF-025 — follow-up PR review found three post-7/7 gaps
-Status: `FOUND / 9932 FREEZE INVALIDATED / REPAIRS SYNCHRONIZED / NEW FREEZE PENDING`
+Status: `FOUND / 9932 FREEZE INVALIDATED / REPAIRS SYNCHRONIZED / SUPERSEDED BY RVF-026 FINALIZATION`
 
 Follow-up review comment on PR #447 examined fixed candidate `9932c8b7a14f1c3bdcc775df88056681b2841514`. Its former 7/7 PASS is **INVALIDATED**.
 
@@ -166,7 +166,7 @@ Problem: the verifier/executor was loaded from the same work-branch event commit
 
 An intermediate read-only work-branch signal + default-branch `workflow_run` design was implemented temporarily, then rejected during independent pre-freeze analysis because the signal workflow definition itself still came from the untrusted branch.
 
-Final design:
+Final topology retained by RVF-026:
 
 ```text
 request-only commit pushed as exact current work-branch head
@@ -179,7 +179,7 @@ request-only commit pushed as exact current work-branch head
 -> prove Human reviewed-parent binding where applicable
 -> only then dependent executor receives contents: write
 -> recheck branch head
--> execute canonical bridge
+-> execute reviewed Core
 -> push edition-local output with force-with-lease against admitted head
 ```
 
@@ -215,11 +215,48 @@ Repair:
 
 This adds no third Human Gate.
 
-## Current maintenance design after RVF-025
+### RVF-026 — trusted workflow Python runtime/import boundary
+Status: `FOUND / 109579e0 FREEZE + 7/7 INVALIDATED / REPAIR IMPLEMENTED / AUTHORITY SYNCHRONIZED / FINAL EXACT-HEAD CI REQUIRED`
+
+Follow-up review on frozen candidate `109579e0f9b2988b62074165b28f144ac3b1ad55` accepted the RVF-025 topology but found that trusted preflight still invoked ordinary Python after checking out untrusted branch data and before protected-Core admission. A parent work commit could add a top-level `json.py` or similar import hook outside protected roots, then an otherwise request-only child commit could influence `python -c` / `python -` before trust was established.
+
+The same review identified that Actions used script-path startup:
+
+```text
+python scripts/survey_core_execution_bridge_v2.py ...
+```
+
+while the bridge imports sibling modules through the `scripts` package. Existing E2E called `execute_request()` in-process and did not prove that exact subprocess startup form.
+
+Repair:
+
+- every pre-admission Python request/config helper now uses isolated startup (`-I`);
+- protected-path derivation also uses isolated Python;
+- preflight exports admitted `reviewed_main_sha` to the dependent executor;
+- executor rechecks canonical work branch and reviewed-main ancestry;
+- executor materializes only `scripts/` from `reviewed_main_sha` into runner-temporary trusted storage;
+- bridge executes as `python -m scripts.survey_core_execution_bridge_v2` from that reviewed-main runtime;
+- admitted checkout is passed only through explicit `--repo-root` / request arguments and is not the Core Python import root;
+- dependency/result JSON helpers are isolated from repository-local imports;
+- poisoning regression creates a checkout-local `json.py` and proves isolated preflight parsing does not import it;
+- exact CLI smoke launches the package-module command from a separate trusted runtime while a malicious top-level `json.py` exists in the admitted repo root.
+
+Implementation repair head `0748c363aea8c6f895d5031f7a345421fcab3391` received diagnostic green evidence:
+
+- Survey Production Core v2 CI `32740786755`: PASS
+- Pipeline contract tests `32740786751`: PASS
+
+Those runs are diagnostic only because authority synchronization followed. `docs/survey-production-core-v2-operator-execution-bridge.md`, `docs/survey-production-core-v2-github-actions-policy.md`, and the canonical final-audit rule now make Python startup/import isolation, reviewed-main runtime materialization, and exact package-module subprocess smoke mandatory trust evidence.
+
+## Current maintenance design after RVF-026
 
 ### Connector trust
 
-Only default-branch `issue_comment` workflow authority can admit operator execution. The request SHA must equal the exact current canonical work-branch head. Work-branch movement before execution/push fails closed.
+Only default-branch `issue_comment` workflow authority can admit operator execution. The request SHA must equal the exact current canonical work-branch head. Work-branch movement before execution/push fails closed. Before admission, untrusted request/config parsing is isolated from repository-local Python imports.
+
+### Trusted execution runtime
+
+The write-capable job does not import Core from the admitted checkout. It materializes canonical `scripts/` bytes from the named reviewed-main commit into runner-temporary trusted storage and runs the bridge package there, while the admitted checkout is only the explicit repository/data/write target.
 
 ### Human review provenance
 
@@ -231,7 +268,7 @@ Publication-local corrections preserve active Architecture. Upstream corrections
 
 ### Actions surface
 
-Exactly seven workflows. `pipeline-contract-tests.yml` is CI-only; `survey-production-v2-operator-bridge.yml` is trusted default-branch Issue #448 operator execution.
+Exactly seven workflows. `pipeline-contract-tests.yml` is CI-only; `survey-production-v2-operator-bridge.yml` is trusted default-branch Issue #448 operator execution with isolated preflight and reviewed-main runtime execution.
 
 ## Historical diagnostic evidence
 
@@ -240,6 +277,8 @@ Earlier runs/audits are diagnostic only after later tree changes. Notable exampl
 - `5ffc942...`: Core `32650031572` PASS; Pipeline `32650031520` PASS after path expansion repair.
 - `0a9e2d2...`: Core `32652165318` PASS; Pipeline `32652165338` PASS; seven-point audit failed Point 7.
 - `9932c8b7...`: exact-head CI + fresh 7/7 PASS, later invalidated by RVF-025.
+- `109579e0...`: Core `32735493697` PASS + Pipeline `32735493721` PASS + fresh 7/7 PASS, later invalidated by RVF-026.
+- `0748c363...`: Core `32740786755` PASS + Pipeline `32740786751` PASS after runtime/import repair; diagnostic only because authority synchronization followed.
 
 No historical PASS may be reused for the next candidate.
 
@@ -254,7 +293,7 @@ PR #447 must contain only shared Core/authority/schema/workflow/test files. No e
 Before a new freeze:
 
 ```text
-finish RVF-025 diagnostic CI repair
+finish RVF-026 implementation/regression/authority synchronization
 -> current-authority stale-text cross-check
 -> exact PR scope/head inspection
 -> require Core CI + Pipeline contract PASS on final synchronized head
@@ -266,13 +305,13 @@ After freeze, do not change candidate-tree content during audit. Any defect requ
 ## Next actions
 
 ```text
-obtain green diagnostic CI
--> final stale-text + PR-scope cross-check
--> exact-head Core CI + Pipeline contract PASS
--> declare exact SHA frozen
+commit final RVF-026 audit-authority/worklog synchronization
+-> exact-head Core CI + Pipeline contract PASS on that synchronized head
+-> final stale-text + PR-scope + seven-workflow cross-check
+-> declare exact SHA frozen outside candidate tree
 -> switch to independent auditor role
 -> audit Points 1–7 from Point 1; reuse no earlier verdict
--> Point 7 explicitly audits default-branch Issue #448 trust root, durable review reachability, and Publication→Architecture cross-gate round trip
+-> Point 7 explicitly audits default-branch Issue #448 trust root, isolated pre-admission Python, reviewed-main execution runtime, exact CLI poisoning smoke, durable review reachability, and Publication→Architecture cross-gate round trip
 -> if any point needs change: invalidate freeze and return to implementation
 -> only unchanged 7/7 PASS: record audit outside candidate tree and mark PR #447 Ready for Human full-candidate review
 ```
