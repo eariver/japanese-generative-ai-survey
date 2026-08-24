@@ -28,10 +28,11 @@ class SurveyFinalAuditRuleV2Tests(unittest.TestCase):
         self.assertIn("recorded outside the candidate tree", rule)
         self.assertIn("rerun Points 1–7 from Point 1", rule)
         self.assertIn("invalidate", rule.lower())
-        self.assertIn("invalidate the entire audit", agents)
+        self.assertIn("invalidates the entire audit", agents)
         self.assertIn("Do not stop for ordinary internal work", agents)
-        self.assertIn("Continue immediately unless a Human/Exception Gate or blocking shared-Core defect is reached", bootstrap)
-        self.assertIn("A production run that edits shared Core to make itself pass is not valid evidence", bootstrap)
+        self.assertIn("Routine search refinement", bootstrap)
+        self.assertIn("are not extra Human Gates", bootstrap)
+        self.assertIn("A formal production-validation run that hits a shared-Core defect is failed evidence", bootstrap)
 
     def test_point7_owns_trust_durability_and_cross_gate_reopen(self) -> None:
         rule = Path("docs/survey-production-core-v2-final-audit-rule.md").read_text(encoding="utf-8")
