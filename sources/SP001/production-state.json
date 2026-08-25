@@ -3,7 +3,7 @@
   "issue_id": "SP001",
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
-  "lifecycle_state": "CANDIDATES_NORMALIZED",
+  "lifecycle_state": "EVIDENCE_REVIEWED",
   "profile": {
     "path": "sources/SP001/production-profile.json",
     "sha256": "18ebde4c2893cd804b375bf5a724973f9dea7b936238625dee810c26549091bf"
@@ -31,7 +31,7 @@
     "publication_preview": null
   },
   "target_gate": "ARCHITECTURE_REVIEW",
-  "next_action": "stage:evidence-materiality-completeness",
+  "next_action": "stage:selection",
   "terminal_reason": null,
   "exception_gate": {
     "status": "inactive",
@@ -40,9 +40,9 @@
   "machine_checkpoints": {
     "discovery": "passed",
     "screening": "passed",
-    "evidence": "pending",
-    "materiality": "pending",
-    "completeness": "pending",
+    "evidence": "passed",
+    "materiality": "passed",
+    "completeness": "passed",
     "selection": "pending",
     "architecture": "pending",
     "draft": "pending",
@@ -60,9 +60,18 @@
       "path": "sources/SP001/orchestration/v2/checkpoints/DISCOVERY_COLLECTED.json",
       "sha256": "8a565b6f9dd237dec400a7e1d2ab1d26719b0ae91876e91dad82841b3186b22d"
     },
-    "evidence": null,
-    "materiality": null,
-    "completeness": null,
+    "evidence": {
+      "path": "sources/SP001/orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json",
+      "sha256": "5bc5c83adebc5265ff72fbcb93089dd56e65828622cab677fbb5c97a10ced99c"
+    },
+    "materiality": {
+      "path": "sources/SP001/orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json",
+      "sha256": "5bc5c83adebc5265ff72fbcb93089dd56e65828622cab677fbb5c97a10ced99c"
+    },
+    "completeness": {
+      "path": "sources/SP001/orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json",
+      "sha256": "5bc5c83adebc5265ff72fbcb93089dd56e65828622cab677fbb5c97a10ced99c"
+    },
     "selection": null,
     "architecture": null,
     "draft": null,
@@ -95,6 +104,12 @@
       "to": "CANDIDATES_NORMALIZED",
       "recorded_at": "2026-08-24T23:55:00Z",
       "repository_commit_sha": "1aab68a030558372f319f326adbbbe77a73ba5b8"
+    },
+    {
+      "from": "CANDIDATES_NORMALIZED",
+      "to": "EVIDENCE_REVIEWED",
+      "recorded_at": "2026-08-25T00:25:00Z",
+      "repository_commit_sha": "0f7b0f95c91889f8c087dc361b9b6079e7271ece"
     }
   ]
 }
