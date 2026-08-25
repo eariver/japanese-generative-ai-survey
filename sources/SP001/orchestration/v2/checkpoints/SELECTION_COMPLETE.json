@@ -1,0 +1,63 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "from_state": "SELECTION_COMPLETE",
+  "to_state": "ARCHITECTURE_ESTABLISHED",
+  "checkpoints": [
+    "architecture"
+  ],
+  "recorded_at": "2026-08-25T00:58:00Z",
+  "implementation": {
+    "repository_commit_sha": "2382b3eefdcbebe9c59b62c079b340e0a1f83f2f",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "e12fcc83ec0b9771b9c8ba43bbf867f418ecb695b74d25e7fcb6daf699ab04ac",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "architecture-review-attention",
+      "path": "sources/SP001/architecture-review-attention-v2.json",
+      "sha256": "c38f0b73adc0541bb6c0f18f9308b0d5d79f58125fa81f2bbc0be570c74dd89c"
+    },
+    {
+      "name": "architecture-review-summary",
+      "path": "sources/SP001/architecture-review-summary-v2.json",
+      "sha256": "9126915f0055377befcf7198d26695027126070bebabae087e3ed7f77e77079a"
+    },
+    {
+      "name": "issue-architecture",
+      "path": "sources/SP001/architecture-v2.json",
+      "sha256": "34a5e76e1cf992967b8b5200ad1eddbf4fae9ff8dbfeb9da05360cc5985c3972"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request postintegration-sp001-architecture-r3.",
+      "result": {
+        "path": "sources/SP001/execution/bridge-runs/postintegration-sp001-architecture-r3/core-stage-contract.json",
+        "sha256": "2e5e79cc796807cafbdc6eb21958cedbfafb52746ad4ddccd6189d7c7de19da8"
+      }
+    },
+    {
+      "check_id": "SP001_ARCHITECTURE_EDITORIAL_STRUCTURE_R3",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "Human-requested Architecture revision is bounded to one added final synthesis package. The existing five packages retain their prior candidate placements, purposes and evidence boundaries. PKG-6 explicitly synthesizes 2026 frontier convergence versus family-specific differences, preserves artifact-specific license and non-comparable benchmark boundaries, and answers why the Chinese open-weight ecosystem became a durable part of frontier competition without introducing new unverified claims.",
+      "result": null
+    }
+  ],
+  "summary": "Validate the Human-requested six-package SP001 Architecture revision and return to ARCHITECTURE_REVIEW."
+}
