@@ -104,6 +104,48 @@ class DraftHistoricalJsonBindingV2Tests(unittest.TestCase):
         self.assertEqual(observed, [accepted_sha])
         self.assertNotEqual(drafting._base._object_sha(card), accepted_sha)
 
+    def test_partial_authority_missing_matrix_fails_closed(self) -> None:
+        profile_path, package, _ = self._fixture()
+        (profile_path.parent / "candidate-matrix-v2.json").unlink()
+
+        errors, raw_hashes = drafting._historical_raw_authority_hashes(
+            package, profile_path
+        )
+
+        self.assertEqual(
+            errors,
+            ["Draft Package canonical Candidate Matrix is missing"],
+        )
+        self.assertEqual(raw_hashes, {})
+
+    def test_partial_authority_missing_accepted_tree_fails_closed(self) -> None:
+        profile_path, package, _ = self._fixture()
+        accepted_root = profile_path.parent / "evidence/v2/accepted"
+        accepted_root.rename(profile_path.parent / "evidence/v2/accepted-missing")
+
+        errors, raw_hashes = drafting._historical_raw_authority_hashes(
+            package, profile_path
+        )
+
+        self.assertEqual(
+            errors,
+            ["Draft Package canonical accepted Evidence authority is missing"],
+        )
+        self.assertEqual(raw_hashes, {})
+
+    def test_no_canonical_authority_preserves_isolated_fixture_fallback(self) -> None:
+        profile_path, package, _ = self._fixture()
+        (profile_path.parent / "candidate-matrix-v2.json").unlink()
+        accepted_root = profile_path.parent / "evidence/v2/accepted"
+        accepted_root.rename(profile_path.parent / "evidence/v2/accepted-missing")
+
+        errors, raw_hashes = drafting._historical_raw_authority_hashes(
+            package, profile_path
+        )
+
+        self.assertEqual(errors, [])
+        self.assertEqual(raw_hashes, {})
+
     def test_embedded_card_drift_fails_even_when_claimed_raw_sha_is_unchanged(self) -> None:
         profile_path, package, _ = self._fixture()
         altered = copy.deepcopy(package)
