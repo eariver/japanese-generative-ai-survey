@@ -129,11 +129,16 @@ def _historical_raw_authority_hashes(
     source_root = profile_path.parent
     matrix_path = source_root / "candidate-matrix-v2.json"
     accepted_root = source_root / "evidence" / "v2" / "accepted"
-    if not matrix_path.is_file() or not accepted_root.is_dir():
-        # Compatibility for isolated legacy/unit fixtures that never
-        # materialized canonical production authority. Production editions
-        # reaching Drafting have both paths, after which drift fails closed.
+    matrix_exists = matrix_path.is_file()
+    accepted_root_exists = accepted_root.is_dir()
+    if not matrix_exists and not accepted_root_exists:
+        # Compatibility is limited to isolated legacy/unit fixtures that never
+        # materialized either canonical production authority component.
         return errors, raw_hashes
+    if not matrix_exists:
+        return ["Draft Package canonical Candidate Matrix is missing"], {}
+    if not accepted_root_exists:
+        return ["Draft Package canonical accepted Evidence authority is missing"], {}
 
     matrix_sha = basis.get("candidate_matrix_sha256")
     if not isinstance(matrix_sha, str) or core.sha256_file(matrix_path) != matrix_sha:
