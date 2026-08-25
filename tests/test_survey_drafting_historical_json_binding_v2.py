@@ -85,6 +85,15 @@ class DraftHistoricalJsonBindingV2Tests(unittest.TestCase):
         }
         return profile_path, package, card
 
+    @staticmethod
+    def _unused_validation_paths(profile_path: Path) -> tuple[Path, Path, Path]:
+        source_root = profile_path.parent
+        return (
+            source_root / "unused-architecture.json",
+            source_root / "unused-review-summary.json",
+            source_root / "unused-approval.json",
+        )
+
     def test_compact_historical_bytes_bind_without_current_reserialization(self) -> None:
         profile_path, package, card = self._fixture()
         errors, raw_hashes = drafting._historical_raw_authority_hashes(
@@ -107,31 +116,43 @@ class DraftHistoricalJsonBindingV2Tests(unittest.TestCase):
     def test_partial_authority_missing_matrix_fails_closed(self) -> None:
         profile_path, package, _ = self._fixture()
         (profile_path.parent / "candidate-matrix-v2.json").unlink()
+        architecture_path, review_summary_path, approval_path = self._unused_validation_paths(
+            profile_path
+        )
 
-        errors, raw_hashes = drafting._historical_raw_authority_hashes(
-            package, profile_path
+        errors = drafting.validate_self_contained_draft_package(
+            package,
+            profile_path,
+            architecture_path,
+            review_summary_path,
+            approval_path,
         )
 
         self.assertEqual(
             errors,
             ["Draft Package canonical Candidate Matrix is missing"],
         )
-        self.assertEqual(raw_hashes, {})
 
     def test_partial_authority_missing_accepted_tree_fails_closed(self) -> None:
         profile_path, package, _ = self._fixture()
         accepted_root = profile_path.parent / "evidence/v2/accepted"
         accepted_root.rename(profile_path.parent / "evidence/v2/accepted-missing")
+        architecture_path, review_summary_path, approval_path = self._unused_validation_paths(
+            profile_path
+        )
 
-        errors, raw_hashes = drafting._historical_raw_authority_hashes(
-            package, profile_path
+        errors = drafting.validate_self_contained_draft_package(
+            package,
+            profile_path,
+            architecture_path,
+            review_summary_path,
+            approval_path,
         )
 
         self.assertEqual(
             errors,
             ["Draft Package canonical accepted Evidence authority is missing"],
         )
-        self.assertEqual(raw_hashes, {})
 
     def test_no_canonical_authority_preserves_isolated_fixture_fallback(self) -> None:
         profile_path, package, _ = self._fixture()
