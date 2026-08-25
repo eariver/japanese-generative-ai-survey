@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
+from unittest.mock import patch
 
 from scripts import survey_drafting_v2 as drafting
 
@@ -23,6 +25,26 @@ class CrossPackageSynthesisReferenceTests(unittest.TestCase):
             "primary_candidate_ids": list(primary or []),
             "supporting_candidate_ids": list(supporting or []),
         }
+
+    @staticmethod
+    def derive_args(package_id: str) -> tuple:
+        return (
+            Path("."),
+            Path("profile.json"),
+            Path("discovery.json"),
+            Path("screening.json"),
+            Path("evidence/acceptance.json"),
+            Path("views.json"),
+            Path("ledger.json"),
+            Path("completeness.json"),
+            Path("matrix.json"),
+            Path("selection.json"),
+            Path("architecture.json"),
+            Path("review-summary.json"),
+            Path("approval.json"),
+            package_id,
+            "implementation-sha",
+        )
 
     def test_final_empty_package_references_all_existing_placements_once(self) -> None:
         conclusion = self.package("PKG-3-SYNTHESIS", 3)
@@ -44,6 +66,99 @@ class CrossPackageSynthesisReferenceTests(unittest.TestCase):
             drafting._cross_package_reference_ids({"packages": [direct]}, direct),
             [],
         )
+
+    def test_direct_package_delegates_to_frozen_implementation(self) -> None:
+        direct = self.package("PKG-1", 1, primary=["c1"])
+        sentinel = {"delegated": True}
+        with (
+            patch.object(drafting.core, "load_json", return_value={"packages": [direct]}),
+            patch.object(
+                drafting,
+                "_ORIGINAL_DERIVE_DRAFT_PACKAGE",
+                return_value=sentinel,
+            ) as original,
+        ):
+            result = drafting.derive_draft_package(*self.derive_args("PKG-1"))
+        self.assertIs(result, sentinel)
+        original.assert_called_once_with(*self.derive_args("PKG-1"))
+
+    def test_empty_package_materializes_supporting_cross_package_inputs(self) -> None:
+        source = self.package("PKG-1", 1, primary=["c1"], supporting=["c2"])
+        conclusion = self.package("PKG-2-SYNTHESIS", 2)
+        conclusion.update(
+            {
+                "title": "Synthesis",
+                "purpose": "Synthesize prior Evidence.",
+                "must_cover_requirements": ["Compare established differences."],
+                "boundaries": ["Do not create a new benchmark ranking."],
+                "profile_extensions": {},
+                "publication_extensions": {},
+            }
+        )
+        source.update(
+            {
+                "title": "Source",
+                "purpose": "Source article.",
+                "must_cover_requirements": [],
+                "boundaries": [],
+                "profile_extensions": {},
+                "publication_extensions": {},
+            }
+        )
+        plan = {"packages": [source, conclusion]}
+        evidence_sha = "a" * 64
+        cards = {
+            "t1": {"issue_id": "ISSUE", "evidence_task_id": "t1"},
+            "t2": {"issue_id": "ISSUE", "evidence_task_id": "t2"},
+        }
+        matrix = {
+            "rows": [
+                {"candidate_id": "c1", "evidence_task_id": "t1", "evidence_sha256": evidence_sha},
+                {"candidate_id": "c2", "evidence_task_id": "t2", "evidence_sha256": evidence_sha},
+            ]
+        }
+        acceptance = {
+            "results": [
+                {"evidence_task_id": "t1", "sha256": evidence_sha, "filename": "t1.json"},
+                {"evidence_task_id": "t2", "sha256": evidence_sha, "filename": "t2.json"},
+            ]
+        }
+        upstream = {
+            "profile": {
+                "issue_id": "ISSUE",
+                "research_profile": "THEMATIC",
+                "publication_profile": "LONGFORM_SPECIAL",
+            },
+            "matrix": matrix,
+            "architecture": plan,
+            "evidence": acceptance,
+        }
+        architecture_path = self.derive_args("PKG-2-SYNTHESIS")[10]
+
+        def fake_load_json(path: Path) -> dict:
+            if path == architecture_path:
+                return plan
+            return cards[path.stem]
+
+        with (
+            patch.object(drafting.core, "load_json", side_effect=fake_load_json),
+            patch.object(drafting._base, "_load_drafting_basis", return_value=upstream),
+            patch.object(drafting.core, "sha256_file", return_value=evidence_sha),
+        ):
+            package = drafting.derive_draft_package(
+                *self.derive_args("PKG-2-SYNTHESIS")
+            )
+
+        self.assertEqual(
+            [item["candidate_id"] for item in package["evidence_inputs"]],
+            ["c1", "c2"],
+        )
+        self.assertEqual(
+            {item["architecture_usage"] for item in package["evidence_inputs"]},
+            {"SUPPORTING"},
+        )
+        self.assertEqual(package["package"]["primary_candidate_ids"], [])
+        self.assertEqual(package["package"]["supporting_candidate_ids"], [])
 
     def test_empty_package_must_be_unique(self) -> None:
         first = self.package("PKG-2-A", 2)
