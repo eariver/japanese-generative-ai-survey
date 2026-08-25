@@ -111,8 +111,9 @@ def _historical_raw_authority_hashes(
     ``core.json_bytes``. When canonical authority is present, validate exact raw
     SHA-256 first and require parsed-object equality with the Draft Package.
 
-    Lightweight isolated unit fixtures that do not materialize canonical source
-    authority retain the frozen validator's historical behavior.
+    Lightweight isolated unit fixtures that do not materialize the canonical
+    accepted-Evidence tree retain the frozen validator's historical behavior.
+    Once that tree exists, missing/drifted canonical files fail closed.
     """
     errors: list[str] = []
     raw_hashes: dict[str, str] = {}
@@ -127,9 +128,11 @@ def _historical_raw_authority_hashes(
 
     source_root = profile_path.parent
     matrix_path = source_root / "candidate-matrix-v2.json"
-    if not matrix_path.is_file():
-        # Compatibility for isolated legacy tests that never materialized the
-        # canonical edition source tree. Canonical production always has it.
+    accepted_root = source_root / "evidence" / "v2" / "accepted"
+    if not matrix_path.is_file() or not accepted_root.is_dir():
+        # Compatibility for isolated legacy/unit fixtures that never
+        # materialized canonical production authority. Production editions
+        # reaching Drafting have both paths, after which drift fails closed.
         return errors, raw_hashes
 
     matrix_sha = basis.get("candidate_matrix_sha256")
@@ -146,9 +149,7 @@ def _historical_raw_authority_hashes(
     if not isinstance(result_set, str) or not result_set:
         errors.append("Draft Package embedded Evidence acceptance lacks result_set_sha256")
         return errors, raw_hashes
-    acceptance_path = (
-        source_root / "evidence" / "v2" / "accepted" / result_set / "evidence-accepted.json"
-    )
+    acceptance_path = accepted_root / result_set / "evidence-accepted.json"
     acceptance_sha = basis.get("evidence_acceptance_sha256")
     if (
         not acceptance_path.is_file()
@@ -424,9 +425,12 @@ def validate_self_contained_draft_package(
         if meta is None or meta.get("sha256") != item.get("evidence_sha256"):
             errors.append(f"{prefix} Evidence acceptance binding mismatch")
         card = item.get("evidence_card")
-        authoritative_sha = (
-            raw_hashes.get(core.sha256_object(card)) if isinstance(card, dict) else None
-        )
+        if isinstance(card, dict) and raw_hashes:
+            authoritative_sha = raw_hashes.get(core.sha256_object(card))
+        elif isinstance(card, dict):
+            authoritative_sha = _base._object_sha(card)
+        else:
+            authoritative_sha = None
         if authoritative_sha != item.get("evidence_sha256"):
             errors.append(f"{prefix} embedded Evidence Card does not match exact accepted raw authority")
         elif card.get("evidence_task_id") != task_id or card.get("issue_id") != package.get("issue_id"):
