@@ -2,14 +2,15 @@
 """Compatibility wrapper enforcing bounded cross-package synthesis at Architecture.
 
 The original v2 Architecture validator permitted packages with no direct
-PRIMARY/SUPPORTING candidate placements. Drafting now gives that shape one
-bounded meaning: a cross-package synthesis package may reuse Evidence already
-placed elsewhere, but only when exactly one such package exists, it is final in
-drafting order, and at least one prior package owns factual candidate placement.
+PRIMARY/SUPPORTING candidate placements. Drafting gives that shape one bounded
+cross-package meaning when factual placements exist elsewhere: at most one such
+package may exist and it must be final in drafting order.
 
-This wrapper enforces the same admissible set before Architecture Review. The
-previous Architecture implementation remains byte-for-byte in
+This wrapper enforces those shared structural invariants before Architecture
+Review. The previous Architecture implementation remains byte-for-byte in
 ``survey_architecture_v2_base.py`` and all unrelated behavior delegates to it.
+Explicit ``selected_exceptions`` semantics remain owned by the frozen validator;
+this wrapper does not reinterpret an exception-only Architecture as synthesis.
 """
 
 from __future__ import annotations
@@ -20,14 +21,6 @@ from typing import Any
 from scripts import survey_architecture_v2_base as _base
 
 _ORIGINAL_VALIDATE_ARCHITECTURE = _base.validate_architecture
-
-
-def _candidate_ids(package: dict[str, Any]) -> list[str]:
-    primary = package.get("primary_candidate_ids")
-    supporting = package.get("supporting_candidate_ids")
-    if not isinstance(primary, list) or not isinstance(supporting, list):
-        return []
-    return [*primary, *supporting]
 
 
 def _is_empty_placement_package(package: Any) -> bool:
@@ -44,7 +37,7 @@ def _is_empty_placement_package(package: Any) -> bool:
 
 
 def _empty_placement_contract_errors(architecture: dict[str, Any]) -> list[str]:
-    """Validate the Architecture-side half of the Draft synthesis contract."""
+    """Enforce the Architecture-side structural half of the Draft contract."""
     packages = architecture.get("packages")
     if not isinstance(packages, list) or not packages:
         return []
@@ -58,7 +51,6 @@ def _empty_placement_contract_errors(architecture: dict[str, Any]) -> list[str]:
         return []
 
     synthesis = empty[0]
-    errors: list[str] = []
     order = synthesis.get("drafting_order")
     valid_orders = [
         package.get("drafting_order")
@@ -75,21 +67,10 @@ def _empty_placement_contract_errors(architecture: dict[str, Any]) -> list[str]:
         and valid_orders
         and order != max(valid_orders)
     ):
-        errors.append(
+        return [
             "empty-placement cross-package synthesis package must be last in drafting order"
-        )
-
-    factual_placements = [
-        candidate_id
-        for package in packages
-        if package is not synthesis and isinstance(package, dict)
-        for candidate_id in _candidate_ids(package)
-    ]
-    if not factual_placements:
-        errors.append(
-            "empty-placement cross-package synthesis package requires prior factual candidate placements"
-        )
-    return errors
+        ]
+    return []
 
 
 def validate_architecture(
