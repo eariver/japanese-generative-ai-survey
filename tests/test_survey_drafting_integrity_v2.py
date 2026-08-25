@@ -59,7 +59,7 @@ class SurveyDraftingIntegrityV2Tests(unittest.TestCase):
         core.write_json(rebound_result_path, rebound_result)
 
         with self.assertRaisesRegex(
-            ValueError, "embedded Evidence Card bytes do not match accepted Evidence SHA"
+            ValueError, "embedded Evidence Card differs from canonical accepted object"
         ):
             drafting.build_synthesis_input(
                 chain["root"],
