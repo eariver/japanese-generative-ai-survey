@@ -403,7 +403,9 @@ class SurveyArchitectureV2Tests(unittest.TestCase):
                 "exception_kind": "DEFERRED",
             }
         ]
-        self.assertEqual(self.validate_architecture(chain, plan, selection_path), [])
+        errors = self.validate_architecture(chain, plan, selection_path)
+        self.assertNotIn("requires exactly one Architecture destination", "; ".join(errors))
+        self.assertIn("requires prior factual candidate placements", "; ".join(errors))
 
     def test_review_summary_blocks_valid_but_incomplete_profile_completeness(self) -> None:
         chain = self.chain("THEMATIC")
