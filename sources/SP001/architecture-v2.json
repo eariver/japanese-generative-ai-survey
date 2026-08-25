@@ -1,0 +1,175 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "status": "PROPOSED",
+  "basis": {
+    "production_profile_sha256": "18ebde4c2893cd804b375bf5a724973f9dea7b936238625dee810c26549091bf",
+    "profile_completeness_sha256": "86d7c3f4ea462f4b1d5f24ac33f9b0b451cd0cf9305d598abb5360c8d6be31cd",
+    "materiality_ledger_sha256": "1f8f7b611ea661aac4c7ff70c28efddeb8d95f19a0d53ee3f63e8b35780b1618",
+    "candidate_matrix_sha256": "a6955cc16d7aa1d28be3369fb36c5abe4b5c6a1bec69da6df51efb9e17f554d2",
+    "candidate_selection_sha256": "026491fc35db6ad47a958a3692d57f4f189734f6075e78f784db9fdc3801b5c9"
+  },
+  "editorial_thesis": "中国発Generative AIの台頭を単一の「Chinese LLM」系譜としてではなく、2022–2026年にDeepSeek、Qwen、GLM、Kimiを中心とする複数familyが、効率化・reasoning/post-training・long context・multimodality・agentic execution・open-weight distributionを別々に発達させ、相互参照と技術再利用を伴いながらfrontier systemへ収束した過程として描く。",
+  "architecture_goals": [
+    "2022–2026のchronologyを一次資料で固定し、時系列の近さから直接の技術系譜を推定しない。",
+    "DeepSeek、Qwen、GLM、Kimiを個別familyとして扱い、architecture・post-training・distribution戦略の差を維持する。",
+    "reasoning、coding、long-context、agentic化をbenchmark順位ではなくtraining/post-training/runtimeの変化として説明する。",
+    "sparsity、attention、serving技術を計算資源とdeploymentの問題としてreader-facingに説明する。",
+    "Open Source、Open Weight、code license、model/weight license、redistribution、commercial use、reproducibilityを区別する。",
+    "Hugging Face、ModelScope、API互換性、vLLM/SGLang/KTransformers等のdistribution/runtimeを競争力の一部として扱う。",
+    "異なるevaluation条件の2026 frontier結果を横断league tableへ正規化せず、source-local reported positionとして扱う。"
+  ],
+  "page_plan": {
+    "target_pages": 18,
+    "max_pages": 24,
+    "notes": "5 package構成。主要4familyの技術系譜を中核とし、前史・plural ecosystemを導入として統合する。18頁を目安とし、24頁を上限としてcatalog化を避ける。"
+  },
+  "packages": [
+    {
+      "package_id": "PKG-1-PLURAL-FOUNDATIONS",
+      "title": "単一の系譜ではなかった：中国open-model ecosystemの基盤形成",
+      "purpose": "2022–2024年の複数familyの存在を示し、後年のDeepSeek/Qwen/GLM/Kimi convergenceを勝者史観で遡及しないための前史を構築する。",
+      "primary_candidate_ids": [],
+      "supporting_candidate_ids": [
+        "candidate:SP001:b6378239fb902d6b",
+        "candidate:SP001:8147c77bd95db4da",
+        "candidate:SP001:cd713c0ca44c6f64"
+      ],
+      "must_cover_requirements": [
+        "SP001-O01",
+        "SP001-O02",
+        "SP001-O06"
+      ],
+      "boundaries": [
+        "publication dateの近さだけで直接影響関係を主張しない。",
+        "Baichuan 2、GLM-130B、DeepSeek LLMはplural ecosystemと各family anchorのためのsupporting evidenceとして扱い、2026 frontier性能を代表させない。"
+      ],
+      "drafting_order": 1,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "PKG-2-DEEPSEEK",
+      "title": "DeepSeek：foundationから効率化、reasoning、agentic frontierへ",
+      "purpose": "DeepSeek LLMをanchorに、V2のMLA/DeepSeekMoE、R1のreasoning/post-training、V4のlong-context/agentic endpointまでを一つのfamily内の転換として追う。",
+      "primary_candidate_ids": [
+        "candidate:SP001:29ec17dd752f4f8b",
+        "candidate:SP001:f2af1f5ea3a4dc43",
+        "candidate:SP001:e135fb385817612d"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:SP001:cd713c0ca44c6f64"
+      ],
+      "must_cover_requirements": [
+        "SP001-O02",
+        "SP001-O03",
+        "SP001-O04",
+        "SP001-O05",
+        "SP001-O06",
+        "SP001-O07"
+      ],
+      "boundaries": [
+        "Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source.",
+        "benchmark claims only under source-local conditions",
+        "DeepSeek V4のlicense・benchmark・current release detailはartifact-specific authorityを超えて一般化しない。",
+        "R1 primary weightsとdistilled derivativesのupstream licenseを混同しない。"
+      ],
+      "drafting_order": 2,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "PKG-3-QWEN",
+      "title": "Qwen：model breadthとdistributionを競争力にする",
+      "purpose": "Qwen2からQwen3.8まで、dense/MoEの幅、multilingual/coding/reasoning、model hubとruntime distributionをfamily戦略として説明する。",
+      "primary_candidate_ids": [
+        "candidate:SP001:7c7f00b8518d5360",
+        "candidate:SP001:daa40564c14ee29d"
+      ],
+      "supporting_candidate_ids": [],
+      "must_cover_requirements": [
+        "SP001-O01",
+        "SP001-O02",
+        "SP001-O03",
+        "SP001-O05",
+        "SP001-O06",
+        "SP001-O07"
+      ],
+      "boundaries": [
+        "Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source.",
+        "release dates and checkpoint identities",
+        "repository versus weight-license distinction",
+        "source-local performance conditions",
+        "Qwen repository licenseと各checkpointのweight/model licenseを同一視しない。"
+      ],
+      "drafting_order": 3,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "PKG-4-GLM",
+      "title": "GLM：bilingual research lineageからagentic systems engineeringへ",
+      "purpose": "GLM-130Bを初期anchorとしてGLM-5までを結び、long context、sparse attention、RL infrastructure、local servingをagentic systems engineeringのtrajectoryとして整理する。",
+      "primary_candidate_ids": [
+        "candidate:SP001:2d15e3527bd81c4a"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:SP001:8147c77bd95db4da"
+      ],
+      "must_cover_requirements": [
+        "SP001-O01",
+        "SP001-O02",
+        "SP001-O03",
+        "SP001-O04",
+        "SP001-O05",
+        "SP001-O06"
+      ],
+      "boundaries": [
+        "Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source.",
+        "repository/model license terms",
+        "GLM-5における他family由来技術の利用はfirst-party evidenceが明示する範囲に限定し、institutional ancestryへ拡張しない。"
+      ],
+      "drafting_order": 4,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "PKG-5-KIMI",
+      "title": "Kimi：long context、multimodal reasoning、open-weight agentへ",
+      "purpose": "k1.5のlong-context multimodal reasoning/RLをbridgeとして、K3のsparse open-weight native multimodal agentic systemまでの変化を追う。",
+      "primary_candidate_ids": [
+        "candidate:SP001:f7a2b75bb68e4049"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:SP001:d70d85d9062c65ce"
+      ],
+      "must_cover_requirements": [
+        "SP001-O02",
+        "SP001-O03",
+        "SP001-O04",
+        "SP001-O05",
+        "SP001-O06",
+        "SP001-O07"
+      ],
+      "boundaries": [
+        "Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source.",
+        "artifact-specific license terms",
+        "source-local benchmark conditions",
+        "Kimi K3のlicense、reported performance、release detailはartifact-specific evidenceに限定する。"
+      ],
+      "drafting_order": 5,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    }
+  ],
+  "selected_exceptions": [],
+  "profile_extensions": {},
+  "publication_extensions": {},
+  "human_review": {
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "review_reference": null
+  }
+}
