@@ -3,22 +3,28 @@
 
 The canonical v2 Architecture permits a package with no direct PRIMARY or
 SUPPORTING candidate destinations, while the original Draft builder rejected
-all such packages.  A single final empty-placement package is now interpreted
-as an explicit cross-package synthesis package: it may cite the Evidence that
-is already authorized by candidate placements in the other Architecture
-packages without creating a second Architecture destination for those
-candidates.
+all such packages. A single final empty-placement package is interpreted as an
+explicit cross-package synthesis package: it may cite Evidence already
+authorized by candidate placements in the other Architecture packages without
+creating a second Architecture destination for those candidates.
 
-All ordinary evidence-owning packages delegate unchanged to the frozen base
-implementation.  Cross-package references are Draft-time SUPPORTING inputs
-only; they do not mutate Selection or Architecture destination semantics.
+Draft Package validation also remains upgrade-safe across reviewed Core JSON
+serializer changes. Historical Matrix / Evidence Acceptance / Evidence Card
+SHA-256 values bind their exact accepted raw bytes; the validator verifies those
+raw files first and then compares their parsed objects to the embedded package
+objects. It never attempts to reconstruct historical bytes by reserializing an
+old parsed object with the current serializer.
+
+All ordinary evidence-owning packages otherwise delegate unchanged to the
+frozen base implementation. Cross-package references are Draft-time SUPPORTING
+inputs only; they do not mutate Selection or Architecture destination semantics.
 """
 
 from __future__ import annotations
 
 from copy import deepcopy
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from scripts import survey_drafting_v2_base as _base
 from scripts import survey_production_v2 as core
@@ -41,9 +47,9 @@ def _cross_package_reference_ids(
     """Return ordered Evidence references for one final synthesis-only package.
 
     Empty placement is intentionally narrow: exactly one Architecture package
-    may have no direct candidates, and it must be last in drafting order.  Its
+    may have no direct candidates, and it must be last in drafting order. Its
     references are the de-duplicated candidates already placed in all other
-    packages.  These references do not count as Architecture destinations.
+    packages. These references do not count as Architecture destinations.
     """
     if _direct_candidate_ids(plan_package):
         return []
@@ -76,6 +82,150 @@ def _cross_package_reference_ids(
     if not references:
         raise ValueError("cross-package synthesis package has no authorized Evidence references")
     return references
+
+
+def _record_raw_hash(
+    raw_hashes: dict[str, str],
+    value: dict[str, Any],
+    raw_sha256: str,
+    label: str,
+    errors: list[str],
+) -> None:
+    semantic = core.sha256_object(value)
+    previous = raw_hashes.get(semantic)
+    if previous is not None and previous != raw_sha256:
+        errors.append(f"{label} semantic object maps to divergent accepted raw hashes")
+        return
+    raw_hashes[semantic] = raw_sha256
+
+
+def _historical_raw_authority_hashes(
+    package: dict[str, Any],
+    profile_path: Path,
+) -> tuple[list[str], dict[str, str]]:
+    """Verify exact canonical upstream bytes and map parsed objects to raw hashes.
+
+    Core v2 production keeps the Candidate Matrix at the edition source root and
+    accepted Evidence in its content-addressed ``evidence/v2/accepted`` tree.
+    Older accepted JSON may use a serializer different from current
+    ``core.json_bytes``. When canonical authority is present, validate exact raw
+    SHA-256 first and require parsed-object equality with the Draft Package.
+
+    Lightweight isolated unit fixtures that do not materialize canonical source
+    authority retain the frozen validator's historical behavior.
+    """
+    errors: list[str] = []
+    raw_hashes: dict[str, str] = {}
+    basis = package.get("basis")
+    matrix = package.get("candidate_matrix")
+    acceptance = package.get("evidence_acceptance")
+    inputs = package.get("evidence_inputs")
+    if not isinstance(basis, dict) or not isinstance(matrix, dict) or not isinstance(acceptance, dict):
+        return errors, raw_hashes
+    if not isinstance(inputs, list):
+        return errors, raw_hashes
+
+    source_root = profile_path.parent
+    matrix_path = source_root / "candidate-matrix-v2.json"
+    if not matrix_path.is_file():
+        # Compatibility for isolated legacy tests that never materialized the
+        # canonical edition source tree. Canonical production always has it.
+        return errors, raw_hashes
+
+    matrix_sha = basis.get("candidate_matrix_sha256")
+    if not isinstance(matrix_sha, str) or core.sha256_file(matrix_path) != matrix_sha:
+        errors.append("Draft Package canonical Candidate Matrix raw bytes drifted")
+    else:
+        raw_matrix = core.load_json(matrix_path)
+        if raw_matrix != matrix:
+            errors.append("Draft Package embedded Candidate Matrix differs from canonical accepted object")
+        else:
+            _record_raw_hash(raw_hashes, matrix, matrix_sha, "Candidate Matrix", errors)
+
+    result_set = acceptance.get("result_set_sha256")
+    if not isinstance(result_set, str) or not result_set:
+        errors.append("Draft Package embedded Evidence acceptance lacks result_set_sha256")
+        return errors, raw_hashes
+    acceptance_path = (
+        source_root / "evidence" / "v2" / "accepted" / result_set / "evidence-accepted.json"
+    )
+    acceptance_sha = basis.get("evidence_acceptance_sha256")
+    if (
+        not acceptance_path.is_file()
+        or not isinstance(acceptance_sha, str)
+        or core.sha256_file(acceptance_path) != acceptance_sha
+    ):
+        errors.append("Draft Package canonical Evidence Acceptance raw bytes drifted or are missing")
+        return errors, raw_hashes
+    raw_acceptance = core.load_json(acceptance_path)
+    if raw_acceptance != acceptance:
+        errors.append("Draft Package embedded Evidence Acceptance differs from canonical accepted object")
+        return errors, raw_hashes
+    _record_raw_hash(raw_hashes, acceptance, acceptance_sha, "Evidence Acceptance", errors)
+
+    results = acceptance.get("results")
+    if not isinstance(results, list):
+        errors.append("Draft Package embedded Evidence Acceptance results must be an array")
+        return errors, raw_hashes
+    by_task = {
+        row.get("evidence_task_id"): row
+        for row in results
+        if isinstance(row, dict) and isinstance(row.get("evidence_task_id"), str)
+    }
+    for offset, item in enumerate(inputs):
+        prefix = f"evidence_inputs[{offset}]"
+        if not isinstance(item, dict):
+            errors.append(f"{prefix} must be an object")
+            continue
+        task_id = item.get("evidence_task_id")
+        meta = by_task.get(task_id)
+        if meta is None:
+            errors.append(f"{prefix} has no canonical Evidence Acceptance result")
+            continue
+        filename = meta.get("filename")
+        expected_sha = item.get("evidence_sha256")
+        if (
+            not isinstance(filename, str)
+            or not filename
+            or not isinstance(expected_sha, str)
+            or meta.get("sha256") != expected_sha
+        ):
+            errors.append(f"{prefix} Evidence Acceptance metadata mismatch")
+            continue
+        card_path = acceptance_path.parent / "results" / filename
+        if not card_path.is_file() or core.sha256_file(card_path) != expected_sha:
+            errors.append(f"{prefix} canonical Evidence Card raw bytes drifted or are missing")
+            continue
+        raw_card = core.load_json(card_path)
+        embedded_card = item.get("evidence_card")
+        if not isinstance(embedded_card, dict) or raw_card != embedded_card:
+            errors.append(f"{prefix} embedded Evidence Card differs from canonical accepted object")
+            continue
+        _record_raw_hash(raw_hashes, embedded_card, expected_sha, prefix, errors)
+    return errors, raw_hashes
+
+
+def _run_with_authoritative_raw_hashes(
+    callback: Callable[[], list[str]],
+    raw_hashes: dict[str, str],
+) -> list[str]:
+    """Let the frozen semantic validator consume verified historical raw hashes."""
+    if not raw_hashes:
+        return callback()
+    original = _base._object_sha
+
+    def authority_aware_object_sha(value: Any) -> str:
+        if isinstance(value, dict):
+            accepted = raw_hashes.get(core.sha256_object(value))
+            if accepted is not None:
+                return accepted
+        return original(value)
+
+    _base._object_sha = authority_aware_object_sha
+    try:
+        return callback()
+    finally:
+        _base._object_sha = original
 
 
 def derive_draft_package(
@@ -189,6 +339,10 @@ def validate_self_contained_draft_package(
     review_summary_path: Path,
     approval_path: Path,
 ) -> list[str]:
+    raw_errors, raw_hashes = _historical_raw_authority_hashes(package, profile_path)
+    if raw_errors:
+        return raw_errors
+
     plan = core.load_json(architecture_path)
     matching = [
         row for row in plan.get("packages", [])
@@ -198,8 +352,11 @@ def validate_self_contained_draft_package(
         return ["Draft Package package_id does not resolve exactly once in Architecture"]
     plan_package = matching[0]
     if _direct_candidate_ids(plan_package):
-        return _ORIGINAL_VALIDATE_SELF_CONTAINED(
-            package, profile_path, architecture_path, review_summary_path, approval_path
+        return _run_with_authoritative_raw_hashes(
+            lambda: _ORIGINAL_VALIDATE_SELF_CONTAINED(
+                package, profile_path, architecture_path, review_summary_path, approval_path
+            ),
+            raw_hashes,
         )
 
     try:
@@ -207,14 +364,16 @@ def validate_self_contained_draft_package(
     except ValueError as exc:
         return [str(exc)]
 
-    # Let the frozen validator verify the entire ordinary envelope/editorial
-    # package with the reference list removed; empty direct placement is valid
-    # at the Architecture layer.  Then validate the cross-package Evidence
-    # references below against the embedded Matrix and accepted Evidence bytes.
+    # Let the frozen validator verify the ordinary envelope/editorial package
+    # with the cross-package reference list removed, while historical raw
+    # Matrix/Acceptance SHA values are supplied from already verified authority.
     stripped = deepcopy(package)
     stripped["evidence_inputs"] = []
-    errors = _ORIGINAL_VALIDATE_SELF_CONTAINED(
-        stripped, profile_path, architecture_path, review_summary_path, approval_path
+    errors = _run_with_authoritative_raw_hashes(
+        lambda: _ORIGINAL_VALIDATE_SELF_CONTAINED(
+            stripped, profile_path, architecture_path, review_summary_path, approval_path
+        ),
+        raw_hashes,
     )
 
     matrix = package.get("candidate_matrix")
@@ -265,8 +424,11 @@ def validate_self_contained_draft_package(
         if meta is None or meta.get("sha256") != item.get("evidence_sha256"):
             errors.append(f"{prefix} Evidence acceptance binding mismatch")
         card = item.get("evidence_card")
-        if not isinstance(card, dict) or _base._object_sha(card) != item.get("evidence_sha256"):
-            errors.append(f"{prefix} embedded Evidence Card bytes do not match accepted Evidence SHA")
+        authoritative_sha = (
+            raw_hashes.get(core.sha256_object(card)) if isinstance(card, dict) else None
+        )
+        if authoritative_sha != item.get("evidence_sha256"):
+            errors.append(f"{prefix} embedded Evidence Card does not match exact accepted raw authority")
         elif card.get("evidence_task_id") != task_id or card.get("issue_id") != package.get("issue_id"):
             errors.append(f"{prefix} embedded Evidence Card identity mismatch")
     if seen != expected:
