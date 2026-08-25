@@ -3,7 +3,7 @@
   "issue_id": "SP001",
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
-  "lifecycle_state": "EVIDENCE_REVIEWED",
+  "lifecycle_state": "SELECTION_COMPLETE",
   "profile": {
     "path": "sources/SP001/production-profile.json",
     "sha256": "18ebde4c2893cd804b375bf5a724973f9dea7b936238625dee810c26549091bf"
@@ -31,7 +31,7 @@
     "publication_preview": null
   },
   "target_gate": "ARCHITECTURE_REVIEW",
-  "next_action": "stage:selection",
+  "next_action": "stage:architecture",
   "terminal_reason": null,
   "exception_gate": {
     "status": "inactive",
@@ -43,7 +43,7 @@
     "evidence": "passed",
     "materiality": "passed",
     "completeness": "passed",
-    "selection": "pending",
+    "selection": "passed",
     "architecture": "pending",
     "draft": "pending",
     "validation": "pending",
@@ -72,7 +72,10 @@
       "path": "sources/SP001/orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json",
       "sha256": "5bc5c83adebc5265ff72fbcb93089dd56e65828622cab677fbb5c97a10ced99c"
     },
-    "selection": null,
+    "selection": {
+      "path": "sources/SP001/orchestration/v2/checkpoints/EVIDENCE_REVIEWED.json",
+      "sha256": "a84b91fc83dcb4483ccc0f17ad4d0c2ac8e3dc819f62bdf93831f97e2e4688ab"
+    },
     "architecture": null,
     "draft": null,
     "validation": null,
@@ -110,6 +113,12 @@
       "to": "EVIDENCE_REVIEWED",
       "recorded_at": "2026-08-25T00:25:00Z",
       "repository_commit_sha": "0f7b0f95c91889f8c087dc361b9b6079e7271ece"
+    },
+    {
+      "from": "EVIDENCE_REVIEWED",
+      "to": "SELECTION_COMPLETE",
+      "recorded_at": "2026-08-25T00:30:00Z",
+      "repository_commit_sha": "c94f86ecf23bf3e6ea5788bf129a56c4415660ed"
     }
   ]
 }
