@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import shutil
 import unittest
 from pathlib import Path
 
@@ -17,6 +18,22 @@ IMPLEMENTATION_SHA = "4" * 40
 class SurveyDraftingV2Tests(unittest.TestCase):
     def build_authorized_chain(self, research_profile: str) -> dict:
         chain = architecture_tests.SurveyArchitectureV2Tests.chain(self, research_profile)
+
+        # Drafting production consumes the content-addressed canonical accepted
+        # Evidence tree, not only the earlier per-run acceptance. Preserve the
+        # exact accepted bytes while making this Draft fixture match that
+        # production authority shape.
+        evidence_acceptance = core.load_json(chain["evidence"])
+        accepted_dir = (
+            chain["profile_path"].parent
+            / "evidence"
+            / "v2"
+            / "accepted"
+            / evidence_acceptance["result_set_sha256"]
+        )
+        accepted_dir.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copytree(chain["evidence"].parent, accepted_dir)
+
         selection = architecture_tests.SurveyArchitectureV2Tests.selection_for(chain)
         selection_path = chain["root"] / "selection-v2.json"
         core.write_json(selection_path, selection)
