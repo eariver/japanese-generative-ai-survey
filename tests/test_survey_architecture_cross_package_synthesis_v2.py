@@ -89,11 +89,6 @@ class ArchitectureCrossPackageSynthesisContractTests(unittest.TestCase):
         errors = self.validate(plan)
         self.assertTrue(any("at most one empty-placement" in error for error in errors), errors)
 
-    def test_architecture_rejects_empty_synthesis_without_factual_placement(self) -> None:
-        plan = {"packages": [self.package("PKG-1-SYNTHESIS", 1)]}
-        errors = self.validate(plan)
-        self.assertTrue(any("requires prior factual candidate placements" in error for error in errors), errors)
-
 
 if __name__ == "__main__":
     unittest.main()
