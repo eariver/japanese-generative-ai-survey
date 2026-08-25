@@ -1,0 +1,63 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "from_state": "SELECTION_COMPLETE",
+  "to_state": "ARCHITECTURE_ESTABLISHED",
+  "checkpoints": [
+    "architecture"
+  ],
+  "recorded_at": "2026-08-25T00:40:00Z",
+  "implementation": {
+    "repository_commit_sha": "f0f61345ca8b0043aa3129facba779d79c12cd16",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "e12fcc83ec0b9771b9c8ba43bbf867f418ecb695b74d25e7fcb6daf699ab04ac",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "architecture-review-attention",
+      "path": "sources/SP001/architecture-review-attention-v2.json",
+      "sha256": "c38f0b73adc0541bb6c0f18f9308b0d5d79f58125fa81f2bbc0be570c74dd89c"
+    },
+    {
+      "name": "architecture-review-summary",
+      "path": "sources/SP001/architecture-review-summary-v2.json",
+      "sha256": "a288a4942aac503404d7ca9f7aafbaa5b7b9ec32bb40b50018dfe7c4a2570795"
+    },
+    {
+      "name": "issue-architecture",
+      "path": "sources/SP001/architecture-v2.json",
+      "sha256": "28b5922b0ad93c33074c7c9acc6e7b35779df88ae707e526283d78e00556bfd7"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request postintegration-sp001-architecture-r2.",
+      "result": {
+        "path": "sources/SP001/execution/bridge-runs/postintegration-sp001-architecture-r2/core-stage-contract.json",
+        "sha256": "bc1c2e7ec627a4c5f22426a3313b4790c2b8406a6841f5e5f1cfd475e0aaf64a"
+      }
+    },
+    {
+      "check_id": "SP001_ARCHITECTURE_EDITORIAL_STRUCTURE_R2",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "Five-package Longform Special Architecture preserves the plural 2022–2024 ecosystem context and separate DeepSeek, Qwen, GLM, and Kimi family trajectories. All seven PRIMARY candidates have exactly one Architecture destination; all four SUPPORTING candidates have explicit destinations. Four PARTIAL current-endpoint candidates retain every Evidence remaining_boundary. Profile Completeness is LIMITED with seven SATISFIED obligations, zero open material obligations, and two explicit residual limitations.",
+      "result": null
+    }
+  ],
+  "summary": "Validate the fresh SP001 five-package Architecture, exact derived Review Summary, bounded Review Attention, and advance to ARCHITECTURE_ESTABLISHED for Human Architecture Review."
+}
