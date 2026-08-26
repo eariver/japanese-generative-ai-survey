@@ -81,9 +81,6 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
         env = os.environ.copy()
         env["GIT_INDEX_FILE"] = str(index_path)
         try:
-            # Build each synthetic review tree from the implementation baseline,
-            # while chaining commit parents so earlier reviewed revisions remain
-            # ancestors of the durable work-branch tip.
             subprocess.run(
                 ["git", "read-tree", self.impl],
                 cwd=self.root,
@@ -373,12 +370,17 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
     def _review_checks(self, kind: str) -> list[dict[str, object]]:
         profile = core.load_json(self.profile_path)
         rows: list[dict[str, object]] = []
+        exact_block = "Subsection 1.1 — Round-trip result"
+        final_block = "Section 1 — Final synthesis"
         for check_id in sorted(reader._expected_review_checks(self.root, profile, kind)):
             locations = ["main.tex:fixture"]
-            if kind == "SEMANTIC_EDITORIAL" and check_id == "ARCHITECTURE_CONTENT_FIDELITY":
-                locations.append("package:PKG-1")
+            if kind == "SEMANTIC_EDITORIAL" and check_id in {
+                "ARCHITECTURE_CONTENT_FIDELITY",
+                "LONGFORM_TECHNICAL_DEPTH",
+            }:
+                locations.extend(["package:PKG-1", exact_block])
             if kind == "SEMANTIC_EDITORIAL" and check_id == "FINAL_SYNTHESIS_QUALITY":
-                locations.extend(["package:PKG-1", "reader-role:final-synthesis"])
+                locations.extend(["package:PKG-1", "reader-role:final-synthesis", final_block])
             rows.append(
                 {
                     "check_id": check_id,
