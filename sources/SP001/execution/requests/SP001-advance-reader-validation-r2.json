@@ -1,0 +1,38 @@
+{
+  "schema_version": "2.0-rc1",
+  "request_id": "SP001-advance-reader-validation-r2",
+  "issue_id": "SP001",
+  "source_root": "sources/SP001",
+  "work_branch": "special/SP001-v2-work",
+  "reviewed_main_sha": "94168050ae1161f92b594e13706c692c533c4139",
+  "recorded_at": "2026-08-26T14:12:00Z",
+  "operation": {
+    "kind": "ADVANCE_STAGE",
+    "expected_from_state": "DRAFT_COMPLETE",
+    "state_path": "sources/SP001/production-state.json",
+    "artifacts": [
+      {"name":"reader-manuscript","path":"sources/SP001/publication/v2/reader-manuscript-v2.json"},
+      {"name":"validated-source","path":"surveys/special/SP001/main.tex"},
+      {"name":"publication-pdf","path":"surveys/special/SP001/main.pdf"},
+      {"name":"quality-regression-bundle","path":"sources/SP001/publication/v2/quality-regression-bundle-v2.json"},
+      {"name":"semantic-review","path":"sources/SP001/publication/v2/semantic-review-v2.json"},
+      {"name":"visual-review","path":"sources/SP001/publication/v2/visual-review-v2.json"}
+    ],
+    "agent_reviews": [
+      {"check_id":"SOURCE_SPECIFIC_FAIL_CLOSED_NOTES","kind":"AGENT_EDITORIAL","executor":"OpenAI GPT-5.6 Sol","evidence":"Family-specific uncertainty is preserved: V4, Qwen3.8, GLM-5 and Kimi K3 license/release/benchmark claims remain artifact- or source-local, and R1 primary versus distilled derivatives are not collapsed."},
+      {"check_id":"BIBLIOGRAPHY_METADATA","kind":"AGENT_EDITORIAL","executor":"OpenAI GPT-5.6 Sol","evidence":"The exact reader bibliography contains eleven accepted primary-source records with family/model identity and canonical source metadata; reader citations resolve to those records."},
+      {"check_id":"POST_TRANSFORM_SEMANTIC_REVALIDATION","kind":"AGENT_EDITORIAL","executor":"OpenAI GPT-5.6 Sol","evidence":"After the TOC-only pagination repair, the exact corrected source was re-reviewed; only section-level tocdepth changed and factual prose, citations, boundaries and synthesis remained unchanged."},
+      {"check_id":"THEMATIC_RESEARCH_CLOSURE","kind":"AGENT_RESEARCH","executor":"OpenAI GPT-5.6 Sol","evidence":"The publication answers the thematic question across plural foundations, four family trajectories and the cross-family 2026 synthesis, while retaining artifact-specific unresolved areas as explicit boundaries."},
+      {"check_id":"THEMATIC_HISTORICAL_ATTRIBUTION","kind":"AGENT_RESEARCH","executor":"OpenAI GPT-5.6 Sol","evidence":"Chronology is attributed to primary sources and explicitly separated from claims of direct technical influence, organizational ancestry or institutional lineage."},
+      {"check_id":"PUBLICATION_BOUNDARY","kind":"AGENT_EDITORIAL","executor":"OpenAI GPT-5.6 Sol","evidence":"The publication is bounded as of 2026-08-24 and keeps licenses, benchmark conditions, parameter/compute accounting and current endpoint details source-local rather than generalizing them across families."},
+      {"check_id":"ARCHITECTURE_CONTENT_FIDELITY","kind":"AGENT_EDITORIAL","executor":"OpenAI GPT-5.6 Sol","evidence":"All six approved Architecture packages are present as reader-facing sections; the Reader Manuscript maps every approved package/requirement pair and the prose preserves family differentiation, efficiency/serving, distribution, licensing and comparison boundaries."},
+      {"check_id":"FINAL_SYNTHESIS_QUALITY","kind":"AGENT_EDITORIAL","executor":"OpenAI GPT-5.6 Sol","evidence":"The final section performs cross-family synthesis by identifying shared design pressures, distinguishing convergence from homogenization, explaining durable frontier competition and retaining unresolved boundaries without creating an unsupported league table."},
+      {"check_id":"LONGFORM_TECHNICAL_DEPTH","kind":"AGENT_EDITORIAL","executor":"OpenAI GPT-5.6 Sol","evidence":"The article explains active versus total parameters, MoE/MLA, RL/post-training, sparse attention, long-context system properties, serving paths, distribution/runtime and license semantics in family-specific context rather than acting as a release catalog."},
+      {"check_id":"TOC_HIERARCHY","kind":"AGENT_VISUAL","executor":"OpenAI GPT-5.6 Sol","evidence":"The corrected TOC is section-level, contains the six approved package sections on page 2, and no longer spills orphan entries onto an almost-empty page."},
+      {"check_id":"TECHNICAL_NOTES_TAIL_NEEDSPACE","kind":"AGENT_VISUAL","executor":"OpenAI GPT-5.6 Sol","evidence":"Technical Notes begin as a coherent tail block on page 7 and flow directly into References without a stranded heading, clipping or malformed column transition."},
+      {"check_id":"LONGFORM_PAGE_BALANCE","kind":"AGENT_VISUAL","executor":"OpenAI GPT-5.6 Sol","evidence":"The seven-page composition has a deliberate cover, frontmatter/TOC, dense two-column body pages and balanced end matter; no near-empty internal page remains."},
+      {"check_id":"EXACT_PDF_VISUAL_REVIEW","kind":"AGENT_VISUAL","executor":"OpenAI GPT-5.6 Sol","evidence":"All seven pages of the exact repository PDF SHA-256 6b95ab34a2ba56cee399f989470d439bea62df2cb36113ee96a211abc030d0d3 were rendered and visually inspected; no clipping, overlap, broken glyph, black block, orphan page or grotesque whitespace defect remains."}
+    ],
+    "summary": "Advance SP001 from DRAFT_COMPLETE after exact reader-manuscript, source, seven-page PDF, deterministic quality bundle, semantic/editorial review and full exact-PDF visual review all passed current Core validation."
+  }
+}
