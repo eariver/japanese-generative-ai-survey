@@ -2,9 +2,10 @@
 """Reader-facing manuscript and pre-candidate review authority for Core v2.
 
 This module does not write publication prose. ChatGPT authors the reader-facing
-source directly. The module only binds those exact bytes to the approved
-Architecture/Profile and records explicit semantic/editorial and visual reviews
-of the exact source/PDF pair.
+source directly. The module binds those exact bytes to the approved
+Architecture/Profile and records semantic/editorial and visual reviews of the
+exact source/PDF pair. Reader-manuscript validation also enforces deterministic
+substantive Architecture fidelity for profiles that require it.
 """
 from __future__ import annotations
 
@@ -14,6 +15,7 @@ from typing import Any
 
 from scripts import survey_production_v2 as core
 from scripts import survey_quality_v2 as quality
+from scripts import survey_reader_fidelity_v2 as fidelity
 from scripts import survey_schema_v2 as schema_gate
 
 MANUSCRIPT_SCHEMA = Path("schemas/reader-manuscript-v2.schema.json")
@@ -52,10 +54,20 @@ def _artifact(repo_root: Path, path: Path) -> dict[str, str]:
 
 def _sized_artifact(repo_root: Path, path: Path) -> dict[str, Any]:
     value = _safe_file(repo_root, path, "sized artifact")
-    return {"path": _rel(repo_root, value), "sha256": core.sha256_file(value), "byte_count": value.stat().st_size}
+    return {
+        "path": _rel(repo_root, value),
+        "sha256": core.sha256_file(value),
+        "byte_count": value.stat().st_size,
+    }
 
 
-def _validate_artifact_ref(repo_root: Path, ref: dict[str, Any], label: str, *, sized: bool = False) -> Path:
+def _validate_artifact_ref(
+    repo_root: Path,
+    ref: dict[str, Any],
+    label: str,
+    *,
+    sized: bool = False,
+) -> Path:
     expected = {"path", "sha256", "byte_count"} if sized else {"path", "sha256"}
     if not isinstance(ref, dict) or set(ref) != expected:
         raise ValueError(f"{label} authority fields invalid")
@@ -87,7 +99,11 @@ def _architecture_authority(
     approval_path: Path,
 ) -> tuple[Path, dict[str, Any], Path]:
     architecture_file = _safe_file(repo_root, architecture_path, "Issue Architecture")
-    architecture = schema_gate.load_and_validate_json(architecture_file, repo_root / ARCHITECTURE_SCHEMA, label="Issue Architecture")
+    architecture = schema_gate.load_and_validate_json(
+        architecture_file,
+        repo_root / ARCHITECTURE_SCHEMA,
+        label="Issue Architecture",
+    )
     if (
         architecture.get("issue_id") != issue_id
         or architecture.get("research_profile") != profile.get("research_profile")
@@ -95,7 +111,11 @@ def _architecture_authority(
     ):
         raise ValueError("Issue Architecture/Profile identity mismatch")
     approval_file = _safe_file(repo_root, approval_path, "Architecture Approval")
-    approval = schema_gate.load_and_validate_json(approval_file, repo_root / ARCHITECTURE_APPROVAL_SCHEMA, label="Architecture Approval")
+    approval = schema_gate.load_and_validate_json(
+        approval_file,
+        repo_root / ARCHITECTURE_APPROVAL_SCHEMA,
+        label="Architecture Approval",
+    )
     if approval.get("issue_id") != issue_id or approval.get("decision") != "APPROVED":
         raise ValueError("Architecture Approval identity/decision invalid")
     if approval.get("architecture_sha256") != core.sha256_file(architecture_file):
@@ -122,19 +142,52 @@ def _required_reader_requirements(profile: dict[str, Any]) -> set[str]:
     return required
 
 
-def _validate_manifest_semantics(repo_root: Path, payload: dict[str, Any]) -> tuple[Path, dict[str, Any], Path]:
+def _validate_manifest_semantics(
+    repo_root: Path,
+    payload: dict[str, Any],
+) -> tuple[Path, dict[str, Any], Path]:
     issue_id = payload["issue_id"]
-    profile_path = _validate_artifact_ref(repo_root, payload["production_profile"], "Reader Production Profile")
+    profile_path = _validate_artifact_ref(
+        repo_root,
+        payload["production_profile"],
+        "Reader Production Profile",
+    )
     _, profile = _profile(repo_root, profile_path, issue_id)
-    if payload["research_profile"] != profile["research_profile"] or payload["publication_profile"] != profile["publication_profile"]:
+    if (
+        payload["research_profile"] != profile["research_profile"]
+        or payload["publication_profile"] != profile["publication_profile"]
+    ):
         raise ValueError("Reader Manifest Profile identity mismatch")
 
-    architecture_path = _validate_artifact_ref(repo_root, payload["architecture"], "Reader Architecture")
-    approval_path = _validate_artifact_ref(repo_root, payload["architecture_approval"], "Reader Architecture Approval")
-    _, architecture, _ = _architecture_authority(repo_root, issue_id, profile, architecture_path, approval_path)
+    architecture_path = _validate_artifact_ref(
+        repo_root,
+        payload["architecture"],
+        "Reader Architecture",
+    )
+    approval_path = _validate_artifact_ref(
+        repo_root,
+        payload["architecture_approval"],
+        "Reader Architecture Approval",
+    )
+    _, architecture, _ = _architecture_authority(
+        repo_root,
+        issue_id,
+        profile,
+        architecture_path,
+        approval_path,
+    )
 
-    source_path = _validate_artifact_ref(repo_root, payload["primary_source"], "Reader primary source", sized=True)
-    survey_root = core.repo_local_path(repo_root, profile["paths"]["survey_root"], "paths.survey_root")
+    source_path = _validate_artifact_ref(
+        repo_root,
+        payload["primary_source"],
+        "Reader primary source",
+        sized=True,
+    )
+    survey_root = core.repo_local_path(
+        repo_root,
+        profile["paths"]["survey_root"],
+        "paths.survey_root",
+    )
     if source_path.resolve() != (survey_root / "main.tex").resolve():
         raise ValueError("Reader primary source must be the canonical survey_root/main.tex")
 
@@ -142,7 +195,11 @@ def _validate_manifest_semantics(repo_root: Path, payload: dict[str, Any]) -> tu
     for row in payload["supporting_files"]:
         path = _validate_artifact_ref(
             repo_root,
-            {"path": row["path"], "sha256": row["sha256"], "byte_count": row["byte_count"]},
+            {
+                "path": row["path"],
+                "sha256": row["sha256"],
+                "byte_count": row["byte_count"],
+            },
             f"Reader supporting file {row['role']}",
             sized=True,
         )
@@ -175,6 +232,17 @@ def _validate_manifest_semantics(repo_root: Path, payload: dict[str, Any]) -> tu
     if not isinstance(payload.get("authored_by"), str) or not payload["authored_by"].strip():
         raise ValueError("Reader Manifest authored_by required")
     core.parse_instant(payload["recorded_at"])
+
+    # #434: a FULFILLED author assertion is not sufficient. Resolve the
+    # accountability map against exact reader-facing TeX blocks and prove that
+    # approved requirements have substantive, source-backed treatment.
+    fidelity.validate_reader_fidelity(
+        source_path.read_text(encoding="utf-8"),
+        architecture,
+        payload["architecture_coverage"],
+        payload["reader_requirements"],
+        profile["publication_profile"],
+    )
     return source_path, profile, architecture_path
 
 
@@ -193,7 +261,13 @@ def build_manuscript_manifest(
     output_path: Path,
 ) -> Path:
     profile_path, profile = _profile(repo_root, production_profile_path, issue_id)
-    architecture_file, _, approval_file = _architecture_authority(repo_root, issue_id, profile, architecture_path, architecture_approval_path)
+    architecture_file, _, approval_file = _architecture_authority(
+        repo_root,
+        issue_id,
+        profile,
+        architecture_path,
+        architecture_approval_path,
+    )
     source = _safe_file(repo_root, primary_source_path, "reader-facing primary source")
     support_rows: list[dict[str, Any]] = []
     for row in supporting_files:
@@ -219,7 +293,11 @@ def build_manuscript_manifest(
     }
     payload = dict(base)
     payload["manifest_sha256"] = core.sha256_object(base)
-    schema_gate.validate_instance(payload, repo_root / MANUSCRIPT_SCHEMA, label="Reader Manuscript Manifest")
+    schema_gate.validate_instance(
+        payload,
+        repo_root / MANUSCRIPT_SCHEMA,
+        label="Reader Manuscript Manifest",
+    )
     _validate_manifest_semantics(repo_root, payload)
     if output_path.exists():
         raise ValueError(f"refusing to overwrite Reader Manuscript Manifest: {output_path}")
@@ -227,22 +305,49 @@ def build_manuscript_manifest(
     return output_path
 
 
-def validate_manuscript_manifest(repo_root: Path, path: Path, *, issue_id: str | None = None) -> dict[str, Any]:
-    payload = schema_gate.load_and_validate_json(path, repo_root / MANUSCRIPT_SCHEMA, label="Reader Manuscript Manifest")
+def validate_manuscript_manifest(
+    repo_root: Path,
+    path: Path,
+    *,
+    issue_id: str | None = None,
+) -> dict[str, Any]:
+    payload = schema_gate.load_and_validate_json(
+        path,
+        repo_root / MANUSCRIPT_SCHEMA,
+        label="Reader Manuscript Manifest",
+    )
     if issue_id is not None and payload["issue_id"] != issue_id:
         raise ValueError("Reader Manuscript issue_id mismatch")
-    base = {key: payload[key] for key in (
-        "schema_version", "issue_id", "research_profile", "publication_profile", "status",
-        "production_profile", "architecture", "architecture_approval", "primary_source",
-        "supporting_files", "architecture_coverage", "reader_requirements", "authored_by", "recorded_at"
-    )}
+    base = {
+        key: payload[key]
+        for key in (
+            "schema_version",
+            "issue_id",
+            "research_profile",
+            "publication_profile",
+            "status",
+            "production_profile",
+            "architecture",
+            "architecture_approval",
+            "primary_source",
+            "supporting_files",
+            "architecture_coverage",
+            "reader_requirements",
+            "authored_by",
+            "recorded_at",
+        )
+    }
     if payload["manifest_sha256"] != core.sha256_object(base):
         raise ValueError("Reader Manuscript content digest mismatch")
     _validate_manifest_semantics(repo_root, payload)
     return payload
 
 
-def _extra_review_checks(repo_root: Path, profile: dict[str, Any], review_kind: str) -> set[str]:
+def _extra_review_checks(
+    repo_root: Path,
+    profile: dict[str, Any],
+    review_kind: str,
+) -> set[str]:
     contract = core.load_json(repo_root / REVIEW_CONTRACT)
     if contract.get("schema_version") != "2.0-rc1":
         raise ValueError("publication review contract schema_version invalid")
@@ -262,15 +367,41 @@ def _extra_review_checks(repo_root: Path, profile: dict[str, Any], review_kind: 
     return result
 
 
-def _expected_review_checks(repo_root: Path, profile: dict[str, Any], review_kind: str) -> set[str]:
+def _expected_review_checks(
+    repo_root: Path,
+    profile: dict[str, Any],
+    review_kind: str,
+) -> set[str]:
     cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
-    expected = quality.expected_checks(cfg, profile["research_profile"], profile["publication_profile"])
+    expected = quality.expected_checks(
+        cfg,
+        profile["research_profile"],
+        profile["publication_profile"],
+    )
     kind = "AGENT_SEMANTIC" if review_kind == "SEMANTIC_EDITORIAL" else "AGENT_VISUAL"
     result = {check_id for check_id, value in expected.items() if value == kind}
     extras = _extra_review_checks(repo_root, profile, review_kind)
     if result & extras:
-        raise ValueError(f"publication review contract duplicates existing quality check IDs: {sorted(result & extras)}")
+        raise ValueError(
+            f"publication review contract duplicates existing quality check IDs: {sorted(result & extras)}"
+        )
     return result | extras
+
+
+def _bound_architecture_for_review(
+    repo_root: Path,
+    manuscript: dict[str, Any],
+) -> dict[str, Any]:
+    architecture_path = _validate_artifact_ref(
+        repo_root,
+        manuscript["architecture"],
+        "Review Architecture",
+    )
+    return schema_gate.load_and_validate_json(
+        architecture_path,
+        repo_root / ARCHITECTURE_SCHEMA,
+        label="Review Architecture",
+    )
 
 
 def build_review_record(
@@ -290,16 +421,38 @@ def build_review_record(
         raise ValueError("Publication Review page_count must be positive")
     manuscript_file = _safe_file(repo_root, manuscript_path, "Reader Manuscript Manifest")
     manuscript = validate_manuscript_manifest(repo_root, manuscript_file)
-    profile_path = _validate_artifact_ref(repo_root, manuscript["production_profile"], "Review Production Profile")
+    profile_path = _validate_artifact_ref(
+        repo_root,
+        manuscript["production_profile"],
+        "Review Production Profile",
+    )
     _, profile = _profile(repo_root, profile_path, manuscript["issue_id"])
-    source = _validate_artifact_ref(repo_root, manuscript["primary_source"], "Review reader source", sized=True)
+    source = _validate_artifact_ref(
+        repo_root,
+        manuscript["primary_source"],
+        "Review reader source",
+        sized=True,
+    )
     pdf = _safe_file(repo_root, pdf_path, "reviewed publication PDF")
     expected = _expected_review_checks(repo_root, profile, review_kind)
     actual = [row.get("check_id") for row in checks if isinstance(row, dict)]
     if set(actual) != expected or len(actual) != len(set(actual)):
-        raise ValueError(f"{review_kind} review family incomplete: expected={sorted(expected)} actual={sorted(str(x) for x in actual)}")
+        raise ValueError(
+            f"{review_kind} review family incomplete: expected={sorted(expected)} "
+            f"actual={sorted(str(x) for x in actual)}"
+        )
     if not reviewed_by.strip():
         raise ValueError("Publication Review reviewed_by required")
+
+    architecture = _bound_architecture_for_review(repo_root, manuscript)
+    fidelity.validate_review_depth(
+        profile,
+        architecture,
+        page_count,
+        checks,
+        review_kind,
+    )
+
     base = {
         "schema_version": "2.0-rc1",
         "issue_id": manuscript["issue_id"],
@@ -318,7 +471,11 @@ def build_review_record(
     }
     payload = dict(base)
     payload["review_sha256"] = core.sha256_object(base)
-    schema_gate.validate_instance(payload, repo_root / REVIEW_SCHEMA, label="Publication Review Record")
+    schema_gate.validate_instance(
+        payload,
+        repo_root / REVIEW_SCHEMA,
+        label="Publication Review Record",
+    )
     if output_path.exists():
         raise ValueError(f"refusing to overwrite Publication Review Record: {output_path}")
     core.write_json(output_path, payload)
@@ -333,20 +490,51 @@ def validate_review_record(
     issue_id: str | None = None,
     expected_kind: str | None = None,
 ) -> dict[str, Any]:
-    payload = schema_gate.load_and_validate_json(path, repo_root / REVIEW_SCHEMA, label="Publication Review Record")
+    payload = schema_gate.load_and_validate_json(
+        path,
+        repo_root / REVIEW_SCHEMA,
+        label="Publication Review Record",
+    )
     if issue_id is not None and payload["issue_id"] != issue_id:
         raise ValueError("Publication Review issue_id mismatch")
     if expected_kind is not None and payload["review_kind"] != expected_kind:
         raise ValueError("Publication Review kind mismatch")
-    base = {key: payload[key] for key in (
-        "schema_version", "issue_id", "research_profile", "publication_profile", "review_kind", "status",
-        "production_profile", "reader_manuscript", "source", "pdf", "page_count", "checks", "reviewed_by", "recorded_at"
-    )}
+    base = {
+        key: payload[key]
+        for key in (
+            "schema_version",
+            "issue_id",
+            "research_profile",
+            "publication_profile",
+            "review_kind",
+            "status",
+            "production_profile",
+            "reader_manuscript",
+            "source",
+            "pdf",
+            "page_count",
+            "checks",
+            "reviewed_by",
+            "recorded_at",
+        )
+    }
     if payload["review_sha256"] != core.sha256_object(base):
         raise ValueError("Publication Review content digest mismatch")
-    manuscript_path = _validate_artifact_ref(repo_root, payload["reader_manuscript"], "Review Reader Manuscript")
-    manuscript = validate_manuscript_manifest(repo_root, manuscript_path, issue_id=payload["issue_id"])
-    profile_path = _validate_artifact_ref(repo_root, payload["production_profile"], "Review Production Profile")
+    manuscript_path = _validate_artifact_ref(
+        repo_root,
+        payload["reader_manuscript"],
+        "Review Reader Manuscript",
+    )
+    manuscript = validate_manuscript_manifest(
+        repo_root,
+        manuscript_path,
+        issue_id=payload["issue_id"],
+    )
+    profile_path = _validate_artifact_ref(
+        repo_root,
+        payload["production_profile"],
+        "Review Production Profile",
+    )
     _, profile = _profile(repo_root, profile_path, payload["issue_id"])
     if (
         payload["research_profile"] != profile["research_profile"]
@@ -356,7 +544,12 @@ def validate_review_record(
     ):
         raise ValueError("Publication Review Profile identity mismatch")
     source = _validate_artifact_ref(repo_root, payload["source"], "Review source", sized=True)
-    manuscript_source = _validate_artifact_ref(repo_root, manuscript["primary_source"], "Manifest source", sized=True)
+    manuscript_source = _validate_artifact_ref(
+        repo_root,
+        manuscript["primary_source"],
+        "Manifest source",
+        sized=True,
+    )
     if source.resolve() != manuscript_source.resolve() or payload["source"] != manuscript["primary_source"]:
         raise ValueError("Publication Review does not bind exact Reader Manuscript source")
     _validate_artifact_ref(repo_root, payload["pdf"], "Review PDF", sized=True)
@@ -364,5 +557,14 @@ def validate_review_record(
     actual = [row["check_id"] for row in payload["checks"]]
     if set(actual) != expected or len(actual) != len(set(actual)):
         raise ValueError("Publication Review check family differs from bound Profile")
+
+    architecture = _bound_architecture_for_review(repo_root, manuscript)
+    fidelity.validate_review_depth(
+        profile,
+        architecture,
+        payload["page_count"],
+        payload["checks"],
+        payload["review_kind"],
+    )
     core.parse_instant(payload["recorded_at"])
     return payload
