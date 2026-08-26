@@ -4,8 +4,9 @@
 This module does not write publication prose. ChatGPT authors the reader-facing
 source directly. The module binds those exact bytes to the approved
 Architecture/Profile and records semantic/editorial and visual reviews of the
-exact source/PDF pair. Reader-manuscript validation also enforces deterministic
-substantive Architecture fidelity for profiles that require it.
+exact source/PDF pair. Reader-manuscript validation resolves claimed LONGFORM
+coverage to exact reader blocks; substantive adequacy remains semantic-review
+responsibility and is recorded against those exact blocks.
 """
 from __future__ import annotations
 
@@ -233,9 +234,10 @@ def _validate_manifest_semantics(
         raise ValueError("Reader Manifest authored_by required")
     core.parse_instant(payload["recorded_at"])
 
-    # #434: a FULFILLED author assertion is not sufficient. Resolve the
-    # accountability map against exact reader-facing TeX blocks and prove that
-    # approved requirements have substantive, source-backed treatment.
+    # #434: a FULFILLED author assertion is only an accountability claim.
+    # Deterministically prove that every claimed LONGFORM location resolves to
+    # an exact, non-empty reader-facing TeX block. Editorial adequacy is then
+    # judged by the required semantic review against those same exact blocks.
     fidelity.validate_reader_fidelity(
         source_path.read_text(encoding="utf-8"),
         architecture,
@@ -448,6 +450,7 @@ def build_review_record(
     fidelity.validate_review_depth(
         profile,
         architecture,
+        manuscript,
         page_count,
         checks,
         review_kind,
@@ -562,6 +565,7 @@ def validate_review_record(
     fidelity.validate_review_depth(
         profile,
         architecture,
+        manuscript,
         payload["page_count"],
         payload["checks"],
         payload["review_kind"],
