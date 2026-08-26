@@ -73,6 +73,31 @@ class SurveyReaderFidelityV2Tests(unittest.TestCase):
         self.assertGreaterEqual(result["package_metrics"][0]["mapped_block_count"], 2)
         self.assertGreaterEqual(result["package_metrics"][0]["citation_key_count"], 2)
 
+    def test_single_requirement_may_use_one_authoritative_source(self) -> None:
+        source = (
+            "\\section{Final synthesis}\n"
+            "\\subsection{Single authoritative transition}\n"
+            + self._body("単一の一次資料で確認できる転換")
+            + "\\autocite{authoritativeSource}\n"
+        )
+        result = fidelity.validate_reader_fidelity(
+            source,
+            self._architecture(["R1"]),
+            [
+                {
+                    "package_id": "PKG-1",
+                    "requirement": "R1",
+                    "status": "FULFILLED",
+                    "reader_locations": ["Subsection 1.1 — Single authoritative transition"],
+                }
+            ],
+            self._reader_requirements("Final synthesis"),
+            "LONGFORM_SPECIAL",
+        )
+        self.assertEqual(result["status"], "PASS")
+        self.assertEqual(result["package_metrics"][0]["mapped_block_count"], 1)
+        self.assertEqual(result["package_metrics"][0]["citation_key_count"], 1)
+
     def test_longform_rejects_topic_presence_collapsed_into_one_section(self) -> None:
         architecture = self._architecture(["R1", "R2", "R3"])
         coverage = [
