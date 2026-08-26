@@ -1,0 +1,65 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "review_kind": "VISUAL",
+  "status": "PASSED",
+  "production_profile": {
+    "path": "sources/SP001/production-profile.json",
+    "sha256": "18ebde4c2893cd804b375bf5a724973f9dea7b936238625dee810c26549091bf"
+  },
+  "reader_manuscript": {
+    "path": "sources/SP001/publication/v2/reader-manuscript-v2.json",
+    "sha256": "97aa714d3be206c2db4f21725d2aff9e509f0820f9a186b95346eb70e6c938b8"
+  },
+  "source": {
+    "path": "surveys/special/SP001/main.tex",
+    "sha256": "64973b3d53edd56d5b6b5d82d6463042189b79224e2136548ebbfd46d3faeece",
+    "byte_count": 21723
+  },
+  "pdf": {
+    "path": "surveys/special/SP001/main.pdf",
+    "sha256": "6b95ab34a2ba56cee399f989470d439bea62df2cb36113ee96a211abc030d0d3",
+    "byte_count": 241198
+  },
+  "page_count": 7,
+  "checks": [
+    {
+      "check_id": "TOC_HIERARCHY",
+      "status": "PASS",
+      "detail": "The corrected TOC is section-level, contains the six approved package sections on page 2, and no longer spills a few orphan entries onto an almost-empty page.",
+      "evidence_locations": [
+        "main.pdf :: page 2"
+      ]
+    },
+    {
+      "check_id": "TECHNICAL_NOTES_TAIL_NEEDSPACE",
+      "status": "PASS",
+      "detail": "Technical Notes begin as a coherent tail block on page 7 and flow directly into References without a stranded heading, clipping or malformed column transition.",
+      "evidence_locations": [
+        "main.pdf :: page 7"
+      ]
+    },
+    {
+      "check_id": "LONGFORM_PAGE_BALANCE",
+      "status": "PASS",
+      "detail": "The seven-page composition has a deliberate cover, frontmatter/TOC, dense two-column body pages 3–6 and a balanced end-matter page; no near-empty internal page remains.",
+      "evidence_locations": [
+        "main.pdf :: pages 1–7"
+      ]
+    },
+    {
+      "check_id": "EXACT_PDF_VISUAL_REVIEW",
+      "status": "PASS",
+      "detail": "All seven pages of the exact repository PDF SHA-256 6b95ab34…030d0d3 were rendered and visually inspected; no clipping, overlap, broken glyph, black block, orphan page or grotesque whitespace defect remains.",
+      "evidence_locations": [
+        "main.pdf :: pages 1–7",
+        "Actions visual render r2 :: artifact sp001-reader-visual-renders-r2"
+      ]
+    }
+  ],
+  "reviewed_by": "OpenAI GPT-5.6 Sol",
+  "recorded_at": "2026-08-26T13:42:00Z",
+  "review_sha256": "3926a9e54a0f9757508635410cfd48a213520f971c676a4137bccbca53020bb3"
+}
