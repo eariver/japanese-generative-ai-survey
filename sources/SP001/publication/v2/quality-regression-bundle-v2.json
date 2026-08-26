@@ -1,0 +1,73 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "production_profile": {
+    "path": "sources/SP001/production-profile.json",
+    "sha256": "18ebde4c2893cd804b375bf5a724973f9dea7b936238625dee810c26549091bf"
+  },
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "source": {
+    "path": "surveys/special/SP001/main.tex",
+    "sha256": "64973b3d53edd56d5b6b5d82d6463042189b79224e2136548ebbfd46d3faeece"
+  },
+  "pdf": {
+    "storage": "REPOSITORY_FILE",
+    "path": "surveys/special/SP001/main.pdf",
+    "sha256": "6b95ab34a2ba56cee399f989470d439bea62df2cb36113ee96a211abc030d0d3",
+    "byte_count": 241198,
+    "actions_artifact": null
+  },
+  "checks": [
+    {
+      "check_id": "EMPTY_WRAPPER_SUPPRESSION",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "GitHub Actions / SP001 reader authority r1",
+      "evidence": "Deterministic TeX heading/wrapper scan confirms six non-empty numbered package sections and no empty section/subsection wrappers.",
+      "recorded_at": "2026-08-26T13:42:00Z",
+      "result": {
+        "path": "sources/SP001/publication/v2/quality/results/empty-wrapper-suppression.json",
+        "sha256": "d167c32b6bb1cca8bd4445f1b90aa9cdbe695077847e113966474656a7afb6c1"
+      }
+    },
+    {
+      "check_id": "IDENTIFIER_PRESERVATION",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "GitHub Actions / SP001 reader authority r1",
+      "evidence": "Deterministic preservation of issue/model/date identifiers across exact source and 11-record bibliography.",
+      "recorded_at": "2026-08-26T13:42:00Z",
+      "result": {
+        "path": "sources/SP001/publication/v2/quality/results/identifier-preservation.json",
+        "sha256": "3b625d2a750fe9905c9f12457f8ac59c0801f86b636c595a2d7664713e412be3"
+      }
+    },
+    {
+      "check_id": "PDF_PREFLIGHT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "GitHub Actions / SP001 reader authority r1",
+      "evidence": "Deterministic PyMuPDF parse of exact repository PDF: SHA/size/page count/text occupancy/page geometry.",
+      "recorded_at": "2026-08-26T13:42:00Z",
+      "result": {
+        "path": "sources/SP001/publication/v2/quality/results/pdf-preflight.json",
+        "sha256": "cec0784cbcaf17ca2aad43263161b19b3aecdf7a1afa4857d8c9628f3a1bbb78"
+      }
+    },
+    {
+      "check_id": "SUBJECT_ENTITY_PROPERTY_BINDING",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "GitHub Actions / SP001 reader authority r1",
+      "evidence": "Deterministic exact-source entity/property token associations for every primary family endpoint used in reader prose.",
+      "recorded_at": "2026-08-26T13:42:00Z",
+      "result": {
+        "path": "sources/SP001/publication/v2/quality/results/subject-entity-property-binding.json",
+        "sha256": "73695f165450ca4044c12203032d0bcec452b546f4b21e37723f78ce93f51acb"
+      }
+    }
+  ],
+  "status": "PASS",
+  "bundle_sha256": "5b8ec381406f8d919232e60d2d2441ed202f4b392d55fdcd3819f6cf6874dc87"
+}

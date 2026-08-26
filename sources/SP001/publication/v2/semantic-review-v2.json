@@ -1,0 +1,115 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "review_kind": "SEMANTIC_EDITORIAL",
+  "status": "PASSED",
+  "production_profile": {
+    "path": "sources/SP001/production-profile.json",
+    "sha256": "18ebde4c2893cd804b375bf5a724973f9dea7b936238625dee810c26549091bf"
+  },
+  "reader_manuscript": {
+    "path": "sources/SP001/publication/v2/reader-manuscript-v2.json",
+    "sha256": "97aa714d3be206c2db4f21725d2aff9e509f0820f9a186b95346eb70e6c938b8"
+  },
+  "source": {
+    "path": "surveys/special/SP001/main.tex",
+    "sha256": "64973b3d53edd56d5b6b5d82d6463042189b79224e2136548ebbfd46d3faeece",
+    "byte_count": 21723
+  },
+  "pdf": {
+    "path": "surveys/special/SP001/main.pdf",
+    "sha256": "6b95ab34a2ba56cee399f989470d439bea62df2cb36113ee96a211abc030d0d3",
+    "byte_count": 241198
+  },
+  "page_count": 7,
+  "checks": [
+    {
+      "check_id": "SOURCE_SPECIFIC_FAIL_CLOSED_NOTES",
+      "status": "PASS",
+      "detail": "Family-specific uncertainty is preserved: V4/Qwen3.8/GLM-5/Kimi K3 license, release and benchmark claims remain artifact/source-local; R1 primary versus distilled derivatives are not collapsed.",
+      "evidence_locations": [
+        "main.tex :: Sections 2.2–2.4, 3.2, 4.2–4.3, 5.2",
+        "main.tex :: Technical Notes / 検証上の境界"
+      ]
+    },
+    {
+      "check_id": "BIBLIOGRAPHY_METADATA",
+      "status": "PASS",
+      "detail": "The bibliography contains eleven accepted primary-source records with family/model identity, source title, date and canonical URL; reader citations resolve to those records.",
+      "evidence_locations": [
+        "references.bib :: 11 records",
+        "main.pdf :: page 7 References / Source Notes"
+      ]
+    },
+    {
+      "check_id": "POST_TRANSFORM_SEMANTIC_REVALIDATION",
+      "status": "PASS",
+      "detail": "After the TOC-only pagination repair, the exact corrected source was re-reviewed; the change only adds section-level tocdepth control and leaves factual prose, citations, boundaries and synthesis unchanged.",
+      "evidence_locations": [
+        "main.tex :: \\setcounter{tocdepth}{1}",
+        "main.pdf :: pages 2–7"
+      ]
+    },
+    {
+      "check_id": "THEMATIC_RESEARCH_CLOSURE",
+      "status": "PASS",
+      "detail": "The publication answers the thematic question across plural foundations, four family trajectories and the cross-family 2026 synthesis, while explicitly leaving artifact-specific unresolved areas open.",
+      "evidence_locations": [
+        "main.tex :: 本巻の問いと読み方",
+        "main.tex :: Sections 1–6",
+        "main.tex :: Section 6.4"
+      ]
+    },
+    {
+      "check_id": "THEMATIC_HISTORICAL_ATTRIBUTION",
+      "status": "PASS",
+      "detail": "Chronology is attributed to primary sources and is explicitly separated from direct technical influence, organizational ancestry and institutional lineage inference.",
+      "evidence_locations": [
+        "main.tex :: Evidence boundary",
+        "main.tex :: Sections 1.3, 2.4, 4.1",
+        "main.tex :: Technical Note 1"
+      ]
+    },
+    {
+      "check_id": "PUBLICATION_BOUNDARY",
+      "status": "PASS",
+      "detail": "The publication is bounded as of 2026-08-24 and keeps licenses, benchmark conditions, parameter/compute accounting and current endpoint details source-local rather than generalizing them across families.",
+      "evidence_locations": [
+        "main.tex :: 本巻の問いと読み方",
+        "main.tex :: Section 6.4",
+        "main.tex :: Technical Notes 2–5"
+      ]
+    },
+    {
+      "check_id": "ARCHITECTURE_CONTENT_FIDELITY",
+      "status": "PASS",
+      "detail": "All six approved Architecture packages are present as reader-facing sections and every package/requirement pair is traceably mapped in the Reader Manuscript; the prose preserves family differentiation, efficiency/serving, distribution, licensing and comparison boundaries.",
+      "evidence_locations": [
+        "reader-manuscript-v2.json :: architecture_coverage",
+        "main.tex :: Sections 1–6"
+      ]
+    },
+    {
+      "check_id": "FINAL_SYNTHESIS_QUALITY",
+      "status": "PASS",
+      "detail": "Section 6 performs genuine cross-family synthesis: it identifies shared design pressures, distinguishes convergence from homogenization, explains persistence of frontier competition, and retains unresolved boundaries without adding a new unsupported league table.",
+      "evidence_locations": [
+        "main.tex :: Sections 6.1–6.4",
+        "main.pdf :: page 6"
+      ]
+    },
+    {
+      "check_id": "LONGFORM_TECHNICAL_DEPTH",
+      "status": "PASS",
+      "detail": "The article goes beyond a release catalog by explaining active versus total parameters, MoE/MLA, RL/post-training, sparse attention, long-context system properties, serving paths, distribution/runtime and license semantics in their family-specific contexts.",
+      "evidence_locations": [
+        "main.tex :: Sections 2.1–2.3, 3.1–3.3, 4.2–4.3, 5.1–5.3, 6.1–6.3"
+      ]
+    }
+  ],
+  "reviewed_by": "OpenAI GPT-5.6 Sol",
+  "recorded_at": "2026-08-26T13:42:00Z",
+  "review_sha256": "f90b12d5943fda1d01943276058bf3240526706c1be611a13c32368c74ac956b"
+}
