@@ -30,24 +30,31 @@ jobs:
           doc=fitz.open(pdf)
           thumbs=[]
           for i,page in enumerate(doc):
-              pix=page.get_pixmap(matrix=fitz.Matrix(0.50,0.50), alpha=False)
+              pix=page.get_pixmap(matrix=fitz.Matrix(1.25,1.25), alpha=False)
               img=Image.frombytes('RGB',[pix.width,pix.height],pix.samples)
-              page_path=out/f'page-small-{i+1:02d}.jpg'
-              img.save(page_path,'JPEG',quality=35,optimize=True)
+              page_path=out/f'page-{i+1:02d}.jpg'
+              img.save(page_path,'JPEG',quality=60,optimize=True)
               thumb=img.copy()
-              thumb.thumbnail((120,170))
-              canvas=Image.new('RGB',(130,190),'white')
-              canvas.paste(thumb,((130-thumb.width)//2,4))
-              ImageDraw.Draw(canvas).text((5,174),f'Page {i+1}',fill='black')
+              thumb.thumbnail((220,320))
+              canvas=Image.new('RGB',(240,350),'white')
+              canvas.paste(thumb,((240-thumb.width)//2,10))
+              ImageDraw.Draw(canvas).text((10,330),f'Page {i+1}',fill='black')
               thumbs.append(canvas)
           cols=4
           rows=(len(thumbs)+cols-1)//cols
-          sheet=Image.new('RGB',(cols*130,rows*190),(235,235,235))
+          sheet=Image.new('RGB',(cols*240,rows*350),(235,235,235))
           for i,im in enumerate(thumbs):
-              sheet.paste(im,((i%cols)*130,(i//cols)*190))
-          sheet.save(out/'contact-tiny.jpg','JPEG',quality=30,optimize=True)
-          print(f'pages={len(doc)} contact={out/"contact-tiny.jpg"} bytes={(out/"contact-tiny.jpg").stat().st_size}')
+              sheet.paste(im,((i%cols)*240,(i//cols)*350))
+          sheet.save(out/'contact-sheet.jpg','JPEG',quality=55,optimize=True)
+          print(f'pages={len(doc)} contact={out/"contact-sheet.jpg"}')
           PY
+      - name: Upload exact-PDF review renders
+        uses: actions/upload-artifact@v4
+        with:
+          name: sp001-reader-visual-renders
+          path: /tmp/sp001-visual/*.jpg
+          if-no-files-found: error
+          retention-days: 1
       - name: Commit rendered review aids
         shell: bash
         run: |
@@ -57,5 +64,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add sources/SP001/publication/v2/visual-review-render
-          git commit -m 'Transport: render compact SP001 PDF review images'
+          git commit -m 'Transport: render SP001 PDF review images with artifact'
           git push origin HEAD:transport/sp001-reader-visual-r1
