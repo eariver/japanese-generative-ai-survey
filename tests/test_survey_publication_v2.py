@@ -183,15 +183,40 @@ class SurveyPublicationV2Tests(unittest.TestCase):
     def _review_checks(self, profile_path: Path, kind: str) -> list[dict[str, object]]:
         profile = quality.core.load_json(profile_path)
         ids = reader._expected_review_checks(self.root, profile, kind)
-        return [
-            {
-                "check_id": check_id,
-                "status": "PASS",
-                "detail": f"Explicit ChatGPT review passed {check_id}",
-                "evidence_locations": ["main.tex:fixture"],
-            }
-            for check_id in sorted(ids)
-        ]
+        rows: list[dict[str, object]] = []
+        for check_id in sorted(ids):
+            evidence_locations = ["main.tex:fixture"]
+            if profile["publication_profile"] == "LONGFORM_SPECIAL" and kind == "SEMANTIC_EDITORIAL":
+                evidence_locations.extend(["package:PKG-1", "reader-role:final-synthesis", "page-plan:12/12"])
+            rows.append(
+                {
+                    "check_id": check_id,
+                    "status": "PASS",
+                    "detail": f"Explicit ChatGPT review passed {check_id}",
+                    "evidence_locations": evidence_locations,
+                }
+            )
+        return rows
+
+    @staticmethod
+    def _longform_fixture_source() -> str:
+        transition = (
+            "This reader-facing block explains a concrete technical transition, its source-bounded significance, "
+            "deployment implications, and the distinction between measured facts and interpretation. " * 12
+        )
+        boundary = (
+            "This reader-facing block explains the remaining claim boundary, source-specific limitations, "
+            "distribution conditions, and why unlike measurements are not collapsed into a ranking. " * 12
+        )
+        return (
+            "\\section{Final synthesis}\n"
+            "\\subsection{Concrete transition}\n"
+            + transition
+            + "\\autocite{fixtureA}\n"
+            "\\subsection{Remaining boundary}\n"
+            + boundary
+            + "\\autocite{fixtureB}\n"
+        )
 
     def _candidate(self, issue_id: str = "SP001", research_profile: str = "THEMATIC", publication_profile: str = "LONGFORM_SPECIAL") -> dict[str, Path]:
         profile = self._profile(issue_id, research_profile, publication_profile)
@@ -203,15 +228,50 @@ class SurveyPublicationV2Tests(unittest.TestCase):
         source = survey_root / "main.tex"
         bibliography = survey_root / "references.bib"
         pdf = survey_root / "main.pdf"
-        source.write_text("reader-facing source with final synthesis\n", encoding="utf-8")
-        bibliography.write_text("@misc{fixture,title={Fixture}}\n", encoding="utf-8")
+        if publication_profile == "LONGFORM_SPECIAL":
+            source.write_text(self._longform_fixture_source(), encoding="utf-8")
+            bibliography.write_text(
+                "@misc{fixtureA,title={Fixture A}}\n@misc{fixtureB,title={Fixture B}}\n",
+                encoding="utf-8",
+            )
+            architecture_coverage = [
+                {
+                    "package_id": "PKG-1",
+                    "requirement": "Explain concrete transition",
+                    "status": "FULFILLED",
+                    "reader_locations": ["Subsection 1.1 — Concrete transition"],
+                    "detail": "Reader prose explains the transition in a distinct substantive block",
+                },
+                {
+                    "package_id": "PKG-1",
+                    "requirement": "Explain remaining boundary",
+                    "status": "FULFILLED",
+                    "reader_locations": ["Subsection 1.2 — Remaining boundary"],
+                    "detail": "Reader prose explains the remaining boundary in a distinct substantive block",
+                },
+            ]
+            requirements = [
+                {
+                    "requirement_id": "FINAL_SYNTHESIS",
+                    "status": "FULFILLED",
+                    "reader_locations": ["Section 1 — Final synthesis"],
+                    "detail": "Final synthesis remains reader-visible and substantive",
+                }
+            ]
+        else:
+            source.write_text("reader-facing source with final synthesis\n", encoding="utf-8")
+            bibliography.write_text("@misc{fixture,title={Fixture}}\n", encoding="utf-8")
+            architecture_coverage = [
+                {"package_id": "PKG-1", "requirement": "Explain concrete transition", "status": "FULFILLED", "reader_locations": ["main.tex:transition"], "detail": "Reader prose explains transition"},
+                {"package_id": "PKG-1", "requirement": "Explain remaining boundary", "status": "FULFILLED", "reader_locations": ["main.tex:boundary"], "detail": "Reader prose explains boundary"},
+            ]
+            requirements = [
+                {"requirement_id": "FINAL_SYNTHESIS", "status": "FULFILLED", "reader_locations": ["main.tex:summary"], "detail": "Final synthesis authored"}
+            ]
         pdf.write_bytes(b"%PDF-1.7\nfixture\n")
         publication_dir = self.root / f"sources/{issue_id}/publication/v2"
         publication_dir.mkdir(parents=True, exist_ok=True)
         manifest = publication_dir / "reader-manuscript-v2.json"
-        requirements = [
-            {"requirement_id": "FINAL_SYNTHESIS", "status": "FULFILLED", "reader_locations": ["main.tex:summary"], "detail": "Final synthesis authored"}
-        ]
         if research_profile == "WEEKLY":
             requirements.append({"requirement_id": "WEEKLY_COMMUNITY_MOVEMENT", "status": "FULFILLED", "reader_locations": ["main.tex:community"], "detail": "Weekly community movement authored"})
         reader.build_manuscript_manifest(
@@ -222,10 +282,7 @@ class SurveyPublicationV2Tests(unittest.TestCase):
             architecture_approval,
             source,
             [{"role": "BIBLIOGRAPHY", "path": bibliography}],
-            [
-                {"package_id": "PKG-1", "requirement": "Explain concrete transition", "status": "FULFILLED", "reader_locations": ["main.tex:transition"], "detail": "Reader prose explains transition"},
-                {"package_id": "PKG-1", "requirement": "Explain remaining boundary", "status": "FULFILLED", "reader_locations": ["main.tex:boundary"], "detail": "Reader prose explains boundary"},
-            ],
+            architecture_coverage,
             requirements,
             "ChatGPT",
             self.now,
