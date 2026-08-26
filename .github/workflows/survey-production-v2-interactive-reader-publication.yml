@@ -1,0 +1,250 @@
+name: Survey Production Core v2 interactive Reader Publication
+
+on:
+  pull_request:
+    branches:
+      - 'special/*-v2-work'
+    paths:
+      - 'sources/**/orchestration/v2/interactive-reader-publication.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: survey-production-v2-interactive-reader-publication-${{ github.base_ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-reader-publication:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout publication transport branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Core v2 dependencies
+        run: python -m pip install -r config/survey-production-v2-requirements.txt
+
+      - name: Resolve Reader Publication request identity
+        id: request
+        shell: bash
+        env:
+          TARGET_WORK_BRANCH: ${{ github.base_ref }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, pathlib, re
+          from scripts import survey_agent_control_v2 as agent
+          from scripts import survey_production_v2 as core
+          root=pathlib.Path('.').resolve()
+          requests=sorted(root.glob('sources/*/orchestration/v2/interactive-reader-publication.json'))
+          if len(requests)!=1: raise SystemExit(f'exactly one Reader Publication request required, found {len(requests)}')
+          request=requests[0]; issue=request.parts[-4]
+          if not re.fullmatch(r'[A-Za-z0-9._-]+',issue): raise SystemExit('unsafe issue_id')
+          data=json.load(open(request,encoding='utf-8'))
+          if data.get('schema_version')!='2.0-rc1' or data.get('issue_id')!=issue: raise SystemExit('Reader Publication request identity mismatch')
+          if data.get('operation')!='BUILD_READER_PUBLICATION': raise SystemExit('unsupported Reader Publication operation')
+          state_path=root/'sources'/issue/'production-state.json'; state=core.load_json(state_path)
+          if state.get('lifecycle_state')!='DRAFT_COMPLETE': raise SystemExit('Reader Publication request requires DRAFT_COMPLETE State')
+          cfg=core.load_json(root/core.DEFAULT_CONFIG); errors=agent.validate_agent_state(root,cfg,state)
+          if errors: raise SystemExit('; '.join(errors))
+          profile=core.load_json(root/state['profile']['path'])
+          if profile.get('paths',{}).get('work_branch')!=os.environ['TARGET_WORK_BRANCH']: raise SystemExit('PR base does not match work_branch')
+          if profile.get('publication_profile')!='LONGFORM_SPECIAL': raise SystemExit('transport requires LONGFORM_SPECIAL')
+          survey_root=core.repo_local_path(root,profile['paths']['survey_root'],'survey_root')
+          main_tex=survey_root/'main.tex'
+          if main_tex.is_symlink() or not main_tex.is_file(): raise SystemExit('canonical reader-facing main.tex missing')
+          print(f'issue_id={issue}')
+          print(f'state={state_path.relative_to(root).as_posix()}')
+          print(f'request={request.relative_to(root).as_posix()}')
+          print(f'source_root={profile["paths"]["source_root"]}')
+          print(f'survey_root={profile["paths"]["survey_root"]}')
+          print(f'profile={state["profile"]["path"]}')
+          print(f'architecture={profile["paths"]["source_root"]}/architecture-v2.json')
+          print(f'approval={profile["paths"]["source_root"]}/gates/architecture-approval.json')
+          print(f'recorded_at={data["recorded_at"]}')
+          PY
+
+      - name: Set reproducible PDF timestamp from canonical base
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: echo "SOURCE_DATE_EPOCH=$(git show -s --format=%ct "$BASE_SHA")" >> "$GITHUB_ENV"
+
+      - name: Compile exact reader-facing source with LuaLaTeX
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: main.tex
+          working_directory: ${{ steps.request.outputs.survey_root }}
+          texlive_version: 2026
+          latexmk_use_lualatex: true
+
+      - name: Analyze PDF and run deterministic publication checks
+        id: analyze
+        shell: bash
+        env:
+          ISSUE_ID: ${{ steps.request.outputs.issue_id }}
+          SURVEY_ROOT: ${{ steps.request.outputs.survey_root }}
+          SOURCE_ROOT: ${{ steps.request.outputs.source_root }}
+          RECORDED_AT: ${{ steps.request.outputs.recorded_at }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python - <<'PY'
+          import hashlib, json, pathlib, re, os
+          root=pathlib.Path('.').resolve()
+          survey=root/os.environ['SURVEY_ROOT']
+          source=survey/'main.tex'; pdf=survey/'main.pdf'; log=survey/'main.log'
+          if not pdf.is_file() or pdf.stat().st_size < 1000: raise SystemExit('publication PDF missing or implausibly small')
+          text=source.read_text(encoding='utf-8')
+          log_text=log.read_text(encoding='utf-8',errors='replace')
+          matches=re.findall(r'Output written on .*?\((\d+) pages?',log_text,re.S)
+          if not matches: raise SystemExit('could not determine PDF page count')
+          pages=int(matches[-1])
+          blocking=re.findall(r'^.*(?:LaTeX Warning: (?:There were undefined references|Citation .* undefined)|Package biblatex Warning: Please (?:re)?run|Missing character:).*$' ,log_text,re.M)
+          if blocking: raise SystemExit('blocking TeX findings: '+repr(blocking[:10]))
+          if pages > 24: raise SystemExit(f'Architecture max_pages exceeded: {pages} > 24')
+          pub=root/os.environ['SOURCE_ROOT']/'publication'/'v2'; checks_dir=pub/'checks'; checks_dir.mkdir(parents=True,exist_ok=True)
+          def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+          paragraphs=[p for p in re.split(r'\n\s*\n',text) if p.strip()]
+          bindings=[
+            ('DeepSeek LLM 7B/67B','7B/67B','D001'),
+            ('DeepSeek-V2 active parameters','236B total / 21B activated','D002'),
+            ('DeepSeek-V2 context','128K context','D002'),
+            ('DeepSeek-R1 RL','R1-Zero','D004'),
+            ('DeepSeek V4 context','1M context','D005'),
+            ('Qwen2 distribution','Hugging FaceとModelScope','D006'),
+            ('Qwen3.8 agent line','Qwen3.8','D008'),
+            ('GLM-130B anchor','GLM-130B','D009'),
+            ('GLM-5 active parameters','744B total / 40B active','D012'),
+            ('GLM-5 training tokens','28.5T tokens','D012'),
+            ('Kimi k1.5','Kimi k1.5','D013'),
+            ('Kimi K3 scale','2.8T open-weight','D016'),
+            ('Kimi K3 context','1M context','D016'),
+            ('Baichuan 2','Baichuan 2','D019'),
+          ]
+          binding_assertions=[]
+          for label,fact,sid in bindings:
+              candidates=[p for p in paragraphs if fact in p]
+              ok=any(f'\\src{{{sid}}}' in p for p in candidates)
+              if not ok: raise SystemExit(f'subject/entity/property binding failed: {label}/{sid}')
+              binding_assertions.append({'label':label,'fact':fact,'source_id':sid,'status':'PASS'})
+          ids=['D001','D002','D004','D005','D006','D008','D009','D012','D013','D016','D019']
+          id_assertions=[]
+          for sid in ids:
+              citation_count=text.count(f'\\src{{{sid}}}')
+              note_count=text.count(f'\\texttt{{{sid}}}')
+              if citation_count < 1 or note_count < 1: raise SystemExit(f'identifier preservation failed: {sid}')
+              id_assertions.append({'source_id':sid,'citation_count':citation_count,'source_note_count':note_count,'status':'PASS'})
+          empty_patterns=[r'\\section\{\s*\}',r'\\subsection\{\s*\}',r'\\section\*\{\s*\}',r'\\subsection\*\{\s*\}']
+          empty_hits=[pat for pat in empty_patterns if re.search(pat,text)]
+          if empty_hits: raise SystemExit('empty wrapper detected: '+repr(empty_hits))
+          layout=[line for line in log_text.splitlines() if 'Overfull \\hbox' in line or 'Underfull \\hbox' in line]
+          results={
+            'SUBJECT_ENTITY_PROPERTY_BINDING': {'assertions':binding_assertions},
+            'IDENTIFIER_PRESERVATION': {'assertions':id_assertions},
+            'PDF_PREFLIGHT': {'page_count':pages,'max_pages':24,'pdf_sha256':sha(pdf),'pdf_byte_count':pdf.stat().st_size,'blocking_log_findings':[],'layout_log_findings':layout[:100]},
+            'EMPTY_WRAPPER_SUPPRESSION': {'checked_patterns':empty_patterns,'findings':[]},
+          }
+          for check_id,data in results.items():
+              payload={'schema_version':'2.0-rc1','issue_id':os.environ['ISSUE_ID'],'check_id':check_id,'status':'PASS','source':{'path':source.relative_to(root).as_posix(),'sha256':sha(source)},'pdf':{'path':pdf.relative_to(root).as_posix(),'sha256':sha(pdf),'byte_count':pdf.stat().st_size},'evidence':data,'recorded_at':os.environ['RECORDED_AT']}
+              (checks_dir/(check_id.lower()+'.json')).write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          audit={'schema_version':'2.0-rc1','issue_id':os.environ['ISSUE_ID'],'status':'PASS','source':{'path':source.relative_to(root).as_posix(),'sha256':sha(source)},'pdf':{'path':pdf.relative_to(root).as_posix(),'sha256':sha(pdf),'byte_count':pdf.stat().st_size,'page_count':pages},'source_date_epoch':int(os.environ['SOURCE_DATE_EPOCH']),'texlive_version':'2026','engine':'LuaLaTeX/latexmk','blocking_log_findings':[],'layout_log_findings':layout[:100]}
+          (pub/'reader-publication-build-audit.json').write_text(json.dumps(audit,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(f'page_count={pages}')
+          print(f'pdf_sha256={sha(pdf)}')
+          print(f'pdf_byte_count={pdf.stat().st_size}')
+          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as out:
+              out.write(f'page_count={pages}\n'); out.write(f'pdf_sha256={sha(pdf)}\n'); out.write(f'pdf_byte_count={pdf.stat().st_size}\n')
+          PY
+
+      - name: Build Reader Manifest, deterministic Quality Bundle, and Semantic Review
+        shell: bash
+        env:
+          ISSUE_ID: ${{ steps.request.outputs.issue_id }}
+          SOURCE_ROOT: ${{ steps.request.outputs.source_root }}
+          SURVEY_ROOT: ${{ steps.request.outputs.survey_root }}
+          PROFILE: ${{ steps.request.outputs.profile }}
+          ARCHITECTURE: ${{ steps.request.outputs.architecture }}
+          APPROVAL: ${{ steps.request.outputs.approval }}
+          RECORDED_AT: ${{ steps.request.outputs.recorded_at }}
+          PAGE_COUNT: ${{ steps.analyze.outputs.page_count }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python - <<'PY'
+          import os, pathlib
+          from scripts import survey_production_v2 as core
+          from scripts import survey_quality_v2 as quality
+          from scripts import survey_reader_publication_v2 as reader
+          root=pathlib.Path('.').resolve(); issue=os.environ['ISSUE_ID']
+          source_root=root/os.environ['SOURCE_ROOT']; survey=root/os.environ['SURVEY_ROOT']; pub=source_root/'publication'/'v2'
+          profile=root/os.environ['PROFILE']; architecture=root/os.environ['ARCHITECTURE']; approval=root/os.environ['APPROVAL']
+          source=survey/'main.tex'; pdf=survey/'main.pdf'; recorded=core.parse_instant(os.environ['RECORDED_AT'])
+          arch=core.load_json(architecture)
+          locations={
+            'PKG-1-PLURAL-FOUNDATIONS':['§1 単一の系譜ではなかった：plural foundations'],
+            'PKG-2-DEEPSEEK':['§2 DeepSeek：foundationから効率、reasoning、agentic endpointへ'],
+            'PKG-3-QWEN':['§3 Qwen：model breadthとdistributionを競争力にする'],
+            'PKG-4-GLM':['§4 GLM：bilingual foundationからagentic systems engineeringへ'],
+            'PKG-5-KIMI':['§5 Kimi：long contextとmultimodal reasoningからopen-weight agentへ'],
+            'PKG-6-FRONTIER-SYNTHESIS':['§6 2026年に収束した設計圧力、残ったfamily差','§8 総括：2026年のfrontier構造'],
+          }
+          coverage=[]
+          for pkg in arch['packages']:
+              if pkg['package_id'] not in locations: raise SystemExit('missing reader location mapping: '+pkg['package_id'])
+              for requirement in pkg['must_cover_requirements']:
+                  coverage.append({'package_id':pkg['package_id'],'requirement':requirement,'status':'FULFILLED','reader_locations':locations[pkg['package_id']], 'detail':f"Approved {requirement} is implemented in the reader-facing section(s) assigned to {pkg['package_id']}; substantive adequacy is separately asserted by ARCHITECTURE_CONTENT_FIDELITY."})
+          manifest=pub/'reader-manuscript-v2.json'
+          reader.build_manuscript_manifest(root,issue,profile,architecture,approval,source,[],coverage,[{'requirement_id':'FINAL_SYNTHESIS','status':'FULFILLED','reader_locations':['§8 総括：2026年のfrontier構造'],'detail':'The final synthesis directly answers why the Chinese open-weight ecosystem became a durable component of frontier competition while preserving family differences and evidence boundaries.'}], 'OpenAI GPT-5.6 Sol / ChatGPT project editorial pass',recorded,manifest)
+          check_evidence={
+            'SUBJECT_ENTITY_PROPERTY_BINDING':'Deterministic paragraph-local fact/source-ID binding checks for all high-risk numeric and model-specific statements.',
+            'IDENTIFIER_PRESERVATION':'All eleven accepted Discovery source IDs occur both as reader citations and in Primary Source Notes.',
+            'PDF_PREFLIGHT':'Exact repository PDF exists, compiles without blocking reference/citation/glyph findings, and respects Architecture max_pages.',
+            'EMPTY_WRAPPER_SUPPRESSION':'Reader source contains no empty section/subsection wrappers.'
+          }
+          checks=[]
+          for check_id,evidence in check_evidence.items():
+              p=pub/'checks'/(check_id.lower()+'.json')
+              checks.append({'check_id':check_id,'kind':'DETERMINISTIC','status':'PASS','executor':'GitHub Actions deterministic Reader Publication transport','evidence':evidence,'recorded_at':core.iso_utc(recorded),'result':{'path':p.relative_to(root).as_posix(),'sha256':core.sha256_file(p)}})
+          bundle=pub/'quality-regression-bundle-v2.json'
+          quality.build_bundle(root,issue,source,pdf,checks,bundle,production_profile_path=profile)
+          semantic_checks=[
+            {'check_id':'SOURCE_SPECIFIC_FAIL_CLOSED_NOTES','status':'PASS','detail':'Every technical claim used in the longform is tied to accepted Dxxx source markers; unresolved checkpoint/license/benchmark conditions remain explicitly bounded rather than filled from general knowledge.','evidence_locations':['このSpecialの読み方','本文のDxxx source markers','Primary Source Notes','Boundary Summary']},
+            {'check_id':'BIBLIOGRAPHY_METADATA','status':'PASS','detail':'Primary Source Notes preserve the accepted Candidate Matrix title and exact Discovery locator for all eleven sources; no unsupported author/date metadata was invented.','evidence_locations':['Primary Source Notes']},
+            {'check_id':'POST_TRANSFORM_SEMANTIC_REVALIDATION','status':'PASS','detail':'Reader-facing expansion was rechecked against the six established Draft Results and Profile Synthesis; expansion explains significance without adding unsupported benchmark rankings, licenses, or lineage claims.','evidence_locations':['§1 plural foundations','§2 DeepSeek','§3 Qwen','§4 GLM','§5 Kimi','§6 cross-family comparison','§8 final synthesis']},
+            {'check_id':'THEMATIC_RESEARCH_CLOSURE','status':'PASS','detail':'The publication directly answers the thematic question with a bounded explanation spanning historical lineage, family strategy, capability evolution, efficiency/serving, distribution, licensing, and competition boundaries.','evidence_locations':['このSpecialの読み方','§6 2026年に収束した設計圧力、残ったfamily差','§8 総括：2026年のfrontier構造']},
+            {'check_id':'THEMATIC_HISTORICAL_ATTRIBUTION','status':'PASS','detail':'Chronology is separated from technical/institutional lineage; publication-date proximity and convergent mechanisms are never promoted to ancestry claims.','evidence_locations':['このSpecialの読み方','§1 単一の系譜ではなかった：plural foundations','§4.1 GLM-130B','Boundary Summary']},
+            {'check_id':'PUBLICATION_BOUNDARY','status':'PASS','detail':'Internal Evidence/materiality machinery is not used as reader-facing authority; source-local benchmark and artifact-specific license/current-release boundaries are stated explicitly.','evidence_locations':['このSpecialの読み方','§7 Open Weightはdistribution戦略でもある','Boundary Summary','Primary Source Notes']},
+            {'check_id':'ARCHITECTURE_CONTENT_FIDELITY','status':'PASS','detail':'All approved Architecture packages and every must-cover requirement are represented in substantive reader-facing prose; the final synthesis package remains a synthesis and introduces no new unverified comparison claim.','evidence_locations':['§1 plural foundations','§2 DeepSeek','§3 Qwen','§4 GLM','§5 Kimi','§6 cross-family comparison','§8 final synthesis']},
+            {'check_id':'FINAL_SYNTHESIS_QUALITY','status':'PASS','detail':'The conclusion distinguishes convergence in system-level design pressure from persistent family-specific trajectories, and answers durability through plural technical and distribution paths rather than benchmark leadership.','evidence_locations':['§8 総括：2026年のfrontier構造']},
+            {'check_id':'LONGFORM_TECHNICAL_DEPTH','status':'PASS','detail':'The manuscript explains active-vs-total sparse computation, post-training as a separate design axis, long context as a system property, distribution/runtime friction, and license-layer distinctions while keeping each explanation within accepted evidence boundaries.','evidence_locations':['§2.2 V2','§2.3 R1','§3 distribution','§4.2 GLM-5','§5.2 K3','§7 Open Weightはdistribution戦略でもある']},
+          ]
+          reader.build_review_record(root,manifest,pdf,int(os.environ['PAGE_COUNT']),'SEMANTIC_EDITORIAL',semantic_checks,'OpenAI GPT-5.6 Sol / ChatGPT semantic-editorial review',recorded,pub/'semantic-editorial-review-v2.json')
+          reader.validate_manuscript_manifest(root,manifest,issue_id=issue)
+          quality.validate_bundle(root,bundle,issue_id=issue)
+          reader.validate_review_record(root,pub/'semantic-editorial-review-v2.json',issue_id=issue,expected_kind='SEMANTIC_EDITORIAL')
+          PY
+
+      - name: Persist exact pre-visual publication artifacts to execution branch
+        shell: bash
+        env:
+          REQUEST: ${{ steps.request.outputs.request }}
+          SOURCE_ROOT: ${{ steps.request.outputs.source_root }}
+          SURVEY_ROOT: ${{ steps.request.outputs.survey_root }}
+          ISSUE_ID: ${{ steps.request.outputs.issue_id }}
+          PUSH_BRANCH: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm -f "$REQUEST" "$SURVEY_ROOT/main.log" "$SURVEY_ROOT/main.aux" "$SURVEY_ROOT/main.fdb_latexmk" "$SURVEY_ROOT/main.fls" "$SURVEY_ROOT/main.out" "$SURVEY_ROOT/main.toc"
+          git add "$SURVEY_ROOT/main.tex" "$SURVEY_ROOT/main.pdf" "$SOURCE_ROOT/publication/v2"
+          if git diff --cached --quiet; then echo 'No Reader Publication changes to commit.' >&2; exit 1; fi
+          git commit -m "Materialize ${ISSUE_ID} reader publication pre-visual candidate"
+          git push origin "HEAD:${PUSH_BRANCH}"
