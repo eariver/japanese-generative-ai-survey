@@ -1,0 +1,321 @@
+\documentclass[lualatex,a4paper,10pt]{jlreq}
+\usepackage{../../../templates/survey/jgaisurvey}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+
+\newcommand{\src}[1]{\textsuperscript{\texttt{[#1]}}}
+\newcommand{\term}[1]{\textbf{#1}}
+
+\surveysetup
+  {SP001}
+  {Japanese Generative AI Technical Survey Special}
+  {Thematic Longform / Chinese Open-Weight AI Ecosystem / As of 2026-08-24}
+  {Research as of 2026-08-24 UTC}
+\surveyeditiondescriptor{Thematic Longform Technical Survey}
+
+\surveycoverstory
+  {「中国モデル」ではなく、複数のfrontier systemへ}
+  {2022年から2026年までを一次資料で追うと、中国発Generative AIの台頭は一つの系譜や単一benchmarkの勝敗では説明できない。DeepSeek、Qwen、GLM、Kimiは、効率化、reasoning、long context、multimodality、agentic execution、distributionを異なる順序と実装戦略で積み上げ、2026年にはmodel単体を越えたsystem-levelの競争へ収束した。}
+  {複数の前史から始まった \quad / \quad familyごとに違う技術戦略 \quad / \quad open weightはdistribution戦略でもある}
+
+\begin{document}
+
+\surveycover
+\clearpage
+
+\section*{このSpecialの読み方}
+\addcontentsline{toc}{section}{このSpecialの読み方}
+
+本稿が問うのは、「中国のAIは米国のAIより強いか」という国家単位の順位ではない。問いは、\term{中国発のGenerative AIが、どのような技術的・ecosystem上の発展を経て、frontier competitionの恒常的な構成要素になったのか}である。対象はDeepSeek、Qwen、GLM、Kimiを中心とするmodel familyであり、2022年の初期anchorから2026年8月24日時点までを追う。
+
+ここで最も重要な読み方は、\term{chronologyとlineageを分ける}ことである。公開時期が近い、同じsparsityやattention、RL、agentic codingを扱っている、といった事実は、それだけでは直接の技術継承やinstitutional ancestryの証拠にならない。本稿では、一次資料が確立する時系列とfamily内の変化を軸にし、family間については「同じ設計圧力に応答した」「類似するsystem requirementへ収束した」という水準を越えて推測しない。
+
+また、\term{benchmarkは横断league tableにしない}。本稿で扱う2026年endpointには、異なるversion、evaluation harness、task selection、sampling条件が混在する。したがって「frontier」という語は、source-localに報告された競争位置と、architecture・post-training・runtime・distributionが高度に統合されたsystemとしての位置づけを示す。異なるsourceの数字を正規化して一列に並べることはしない。
+
+さらに、\term{Open SourceとOpen Weightを同義にしない}。repositoryのcode license、checkpointのweight/model license、redistribution、commercial use、training recipeの公開、再現可能性は別々のauthorityである。accepted evidenceが個別checkpointの条件を確定していない場合、本稿もfamily全体へ一般化しない。この境界は、単なる法務上の注意ではなく、modelを取得し、改変し、配布し、運用できる範囲を左右するdistribution上の技術条件として扱う。
+
+本文中の\texttt{[D001]}のような記号は、末尾の\textbf{Primary Source Notes}に対応する。本稿は11件のaccepted primary-source locatorだけをreader-facingな根拠として使用し、内部Evidence statusやmateriality labelを読者向けの権威づけには使わない。
+
+\medskip
+\noindent\textbf{結論を先に要約すると：} 中国発open-weight ecosystemがfrontier competitionへ定着した理由は、単一modelが一度だけ首位になったからではない。複数familyが、(1) active computationとattentionを含む効率設計、(2) RLを中心とするpost-training、(3) long contextとmultimodality、(4) codingを含むagentic workload、(5) model hub・API・local servingまでのdistributionを、異なる強みとして継続的に組み合わせ、利用可能なartifactとして外部へ出し続けたためである。この主張を以下の6章で分解する。
+
+\tableofcontents
+
+\clearpage
+\twocolumn
+
+\section{単一の系譜ではなかった：plural foundations}
+\label{sec:foundations}
+
+\subsection{2022--2024年を「勝者の前史」にしない}
+
+2026年のfrontierだけを見て過去へ遡ると、DeepSeek、Qwen、GLM、Kimiが初めから一つの「中国open-model路線」を共有していたように見えやすい。しかし、一次資料から固定できる初期anchorはもっと複数的である。GLM-130Bは2022年のlarge bilingual pre-trained modelとして現れた。\src{D009} Baichuan 2は2023年のopen large-scale language modelとして、当時の選択肢が単一familyに収束していなかったことを示す。\src{D019} DeepSeek LLMは2024年に7B/67B、2T-tokenの中国語・英語pretrainingを掲げ、scaling-law、SFT、DPOを含むfoundation baselineを提示した。\src{D001}
+
+この3点を並べる意味は、直接の祖先関係を作ることではない。むしろ逆である。\term{2022--2024年の中国発open-model環境には、別組織・別研究文脈のfoundationが並存していた}という事実を先に置くことで、後年のfrontierを一つの直系進化へ還元しないための基準線を作る。
+
+GLM-130Bは後のGLM familyを読む歴史的anchorにはなるが、その公開時期だけから後続組織・個別技術へのinstitutional ancestryを確定することはできない。Baichuan 2は2026年のfrontier endpointを代表するためではなく、2023年時点のplural ecosystemを示す補助線である。DeepSeek LLMも、V2やR1、V4の能力を先取りしていたと読むのではなく、後続の変化を測るfoundation baselineとして扱う。
+
+\subsection{「open」が意味するものを分解する}
+
+この初期段階から、modelが公開されているという事実と、そのmodelを何に使えるかは別問題だった。本稿では便宜上「open-model ecosystem」という表現を使うが、それは各artifactが同じOpen Source定義、同じweight license、同じcommercial-use条件を共有するという意味ではない。
+
+最低でも四つを分ける必要がある。第一は\term{weightsへのアクセス}、第二は\term{codeへのアクセスとlicense}、第三は\term{redistribution/commercial useの条件}、第四は\term{training recipeやdataを含むreproducibility}である。weightsが取得できてもtraining processを再現できるとは限らず、repositoryが寛容なlicenseでも個別checkpointが同条件とは限らない。逆に、この細分化があるからこそ、後述するQwenのhub distributionやGLMのlocal servingを単なる「公開済み」という一語で潰さずに評価できる。
+
+\subsection{frontier化の前提はmodel数ではなく選択肢の多様性だった}
+
+plural foundationsの重要性は、model数が多かったことそのものではない。異なるfamilyが残ったことで、後年の競争軸が一つに固定されなかった点にある。DeepSeekはactive computationとpost-training、Qwenはmodel breadthとdistribution、GLMはRL/servingを含むsystems engineering、Kimiはlong contextとmultimodal reasoningという異なる強調点を持つ。この差が2026年まで維持されたからこそ、ecosystem全体としては一つの設計が失速しても別の経路からfrontier requirementへ接近できる構造になった、と本稿では読む。
+
+これは「多様性が必ず性能を上げた」という因果主張ではない。確認できるのは、複数familyが独立に存続し、それぞれ異なる技術・distribution strategyを前面へ出したということまでである。以下ではfamilyごとに、何が変わり、何が一貫していたのかを追う。
+
+\section{DeepSeek：foundationから効率、reasoning、agentic endpointへ}
+\label{sec:deepseek}
+
+\subsection{foundation baseline：何を変化の起点にするか}
+
+DeepSeek LLMは7B/67Bと2T-tokenの中国語・英語pretrainingを掲げ、scaling-law、SFT、DPOを含むfoundation modelとして記述された。\src{D001} ここで重要なのは、後続modelの全特徴をこの時点へ投影しないことである。DeepSeekのfamily trajectoryは、このbaselineから\term{どの計算を節約し、どのpost-trainingへ資源を振り、どのruntime workloadを取り込んだか}という変化として読む方が明確になる。
+
+foundation段階では、大規模pretrainingとinstruction alignmentが中心にある。一方、2024年以降のDeepSeekは、総parameter数を増やすだけではなく、推論時にどれだけのparameterをactiveにするか、attentionをどう扱うか、reasoning能力をどのpost-trainingで引き出すかへ焦点を移していく。この軸移動が、familyの技術史を理解する第一の鍵である。
+
+\subsection{V2：parameter scaleからactive computationへ}
+
+DeepSeek-V2はMoE、MLA、DeepSeekMoEを前面に置き、236B total / 21B activated、128K contextを報告する。\src{D002} ここでtotal parameterとactivated parameterを分けて示すこと自体が、競争軸の変化を象徴している。dense modelではparameter scaleと1 tokenあたりの計算量が強く結びつきやすいのに対し、MoEでは多数のparameterを保持しつつ、入力ごとに一部をactiveにする設計が可能になる。
+
+本稿がV2から読み取るのは、特定のFLOP値やcost advantageの横断比較ではない。accepted sourceが確立するのは、DeepSeekがMoE/MLAを使い、\term{active computationとattention/serving efficiencyをmodel architectureの中心課題に置いた}という方向性である。異なるhardware、batching、precision、serving stackをまたいで「何倍安い」と一般化することはしない。
+
+この変化は後のagentic workloadにとっても重要な背景になる。agentは単発completionより長いinteraction、tool call、context保持を要求しやすいため、model能力だけでなくruntime costとlatencyがsystem feasibilityを左右す。V2の効率設計を、後のagentic systemを直接生んだ原因と断定はできないが、family内で\term{性能と計算効率を同じ設計問題として扱う}方向が明確になったとは言える。
+
+\subsection{R1：reasoningをpost-trainingの競争軸にする}
+
+DeepSeek-R1では、reasoning能力の拡張がpretraining scaleだけでなくpost-training designの問題として明示される。R1-Zeroでlarge-scale reinforcement learningを用い、続いてcold-start dataを含むmulti-stage trainingへ進む構成が示された。\src{D004}
+
+この転換の技術的意味は、foundation modelの能力を「学習済みweightsに内在する固定性能」とだけ見ない点にある。どのbehaviorをrewardし、どの段階でdataを与え、どの順序でtrainingを重ねるかが、reasoning endpointを形成する独立した設計面になる。2025年以降のfrontier競争でreasoning modeが製品上のvisible featureになっていく流れを理解するうえで、R1はDeepSeek family内の明確な転換点である。
+
+ただし、R1 primary weightsとdistilled derivativeを同じlicense authorityで扱うことはできない。本稿はR1の技術的positionをpost-training trajectoryとして扱い、個々のderivativeの利用条件をfamily全体へ拡張しない。
+
+\subsection{V4：modelからsystem endpointへ}
+
+2026年のDeepSeek V4に関するaccepted first-party materialは、1M context、sparse/token-compression、thinking/non-thinking、agentic coding、API deploymentを同じcurrent endpointの特徴として提示する。\src{D005} ここで注目すべきなのは、一つひとつのfeatureの新規性を競うことではない。\term{long context、効率、reasoning mode、agentic execution、deploymentが一つのsystem設計へ同居した}点である。
+
+これはV2やR1からV4への完全な技術継承図を意味しない。sourceが許す範囲でfamily内のtrajectoryを読むと、V2で計算効率、R1でreasoning post-training、V4でagentic workloadと長文脈を含むdeployment endpointが前面に出た、という連続性が見える。一方、V4のexact checkpoint license、benchmark comparability、current release detailにはartifact-specificな境界が残るため、本稿はsource-localな記述を越えて確定しない。
+
+DeepSeekの特徴を一文でまとめるなら、\term{foundation scaleの競争から、active computation、RL post-training、agentic runtimeを束ねる方向へ競争軸を移したfamily}である。これは他familyより「優れている」という順位ではなく、何をsystem bottleneckとして解いてきたかの違いである。
+
+\section{Qwen：model breadthとdistributionを競争力にする}
+\label{sec:qwen}
+
+\subsection{Qwen2：一つの旗艦だけでfamilyを定義しない}
+
+Qwen2 Technical ReportはdenseとMoEを含む広いmodel rangeを扱い、multilingual、coding、math、reasoningを横断する。同時にHugging FaceとModelScopeでのdistribution、quantization、fine-tuning、deployment resourcesが一次資料の一部として位置づけられている。\src{D006}
+
+この構成から見えるQwenの特徴は、単一の最大checkpointをfamilyの代表にするより、\term{用途・規模・実行環境の異なるmodelを広く供給し、それを利用する経路まで含めてfamilyを作る}ことにある。model breadthはcatalogの多さだけではない。small/large、dense/MoEといった選択肢があることで、developerはhardware budget、latency、fine-tuning、deployment方式に合わせて入口を選べる。
+
+この点は「frontier modelとは最大modelだけである」という見方と相性が悪い。Qwenのecosystem上の競争力を測るには、flagshipの性能だけでなく、\term{modelを取得し、量子化し、fine-tuneし、runtimeへ載せるまでの摩擦}を含める必要がある。Qwen2でhubとdeployment resourcesが一次資料へ組み込まれていることは、そのdistribution面が後付けではなくfamily strategyの一部であることを示す。
+
+\subsection{Qwen3.8：agent/coding/researchへdistributionを接続する}
+
+2026年のQwen3.8 accepted repositoryは、open-weight agent/coding/research lineとHugging Face/ModelScope distributionを前面に置く。\src{D008} ここでの変化は能力項目が増えたことだけではない。developerがmodelを取得してから、codingやresearchを含むagentic workloadへ接続するまでの経路そのものがfrontier competitionの一部になった点にある。
+
+agentic systemでは、modelが単独で完結しない。tool、runtime、context、deployment environmentと接続して初めて一連のtaskを実行できる。したがって、hub distributionとagentic positioningが同時に強調されることは、model releaseの競争が\term{artifact availabilityからsystem integration timeへ広がった}ことを示唆する。本稿ではこれをQwenのdistribution-first trajectoryとして読む。
+
+ただし、Qwen3.8についてaccepted evidenceにはrelease identity、checkpoint license、performance conditionの未解決点が残る。repository licenseを個々のweight/model licenseと同一視せず、source-localなperformance statementを他familyの異なるharnessと直接比較しない。この制約を保つことで、distributionの強さを語るためにlicenseやbenchmarkを過剰に確定する必要がなくなる。
+
+\subsection{distributionは「性能の外側」ではない}
+
+model hub、quantization、fine-tuning、deployment resourceは、従来ならモデル本体とは別の周辺toolingと見なされやすかった。しかしlocal inferenceやagentic workloadでは、それらが利用可能性を直接決める。weightsが存在しても、対応runtimeが限られ、memory footprintが大きく、fine-tuning pathが不明なら、developer adoptionのcostは高い。
+
+Qwenのtrajectoryが示すのは、\term{distribution layerをmodel familyの技術設計と切り離さない}戦略である。これはDeepSeekがactive computationとpost-trainingを強い転換点にするのとは異なる。両者は2026年にagentic endpointへ接近していても、そこへ至る競争力の作り方は同じではない。
+
+\section{GLM：bilingual foundationからagentic systems engineeringへ}
+\label{sec:glm}
+
+\subsection{GLM-130B：歴史的anchorと系譜推定の境界}
+
+GLM-130Bは2022年のlarge bilingual pre-trained modelとして、中国発large-model研究の早いanchorを与える。\src{D009} その意味は、後のGLM familyを説明するときに「2026年から突然現れた」としないことにある。一方で、公開年と名称の連続性だけから、後のGLM-5へ至るすべての技術要素やorganizational continuityを自動的に確定することはできない。
+
+本稿ではGLM-130Bを\term{bilingual foundation researchのhistorical anchor}として扱い、後年のsystem engineeringとの間には、一次資料で確認できるfeatureの変化だけを置く。この慎重さは、family史を書く際の一般原則でもある。chronologyは必要だが、chronologyだけでinfluence graphを作らない。
+
+\subsection{GLM-5：architecture、RL、servingを一つの問題として扱う}
+
+GLM-5のaccepted official repository/technical materialは、744B total / 40B active、28.5T tokens、sparse-attention reuse、asynchronous RL infrastructure、long-horizon agentic engineering、複数のlocal-serving recipeをまとめて提示する。\src{D012}
+
+この組合せで重要なのは、model architectureの説明だけでreleaseが終わっていない点である。total/active parameterの分離はsparse computationを示し、sparse attentionは長いcontextやruntime efficiencyと関係する設計面を前面に出す。さらにasynchronous RL infrastructureがpost-training側のthroughputとiterationを扱い、local-serving recipeがdeployment側の実装経路を与える。つまり、\term{architecture、post-training infrastructure、deploymentが同じagentic systemのengineering problemとして並ぶ}。
+
+特にlong-horizon agentic workloadでは、一回の推論品質だけでなく、複数stepを回すruntime cost、context維持、tool executionとの往復が効く。そのためmodelのparameter countだけではsystem behaviorを説明しきれない。GLM-5を本稿で「agentic systems engineering」と呼ぶのは、sourceに列挙された複数layerを一つのrelease lineとして読むためであり、他familyよりagentが強いというbenchmark順位を意味しない。
+
+\subsection{他familyの技術名が出てもancestryにしない}
+
+現代のmodel researchでは、attention、MoE、RL infrastructure、serving implementationなどが組織を越えて参照される。GLM-5に他family由来の技術への言及がある場合でも、本稿はfirst-party evidenceが明示する利用・参照の範囲を越えてinstitutional ancestryへ拡張しない。
+
+また、GLM-5のrepository/model license termsやbenchmark comparabilityにはartifact-specificな境界が残る。したがって、744B/40B activeや28.5T tokensといったsourceで明示されたsystem factsは扱う一方、別modelのparameter countやbenchmarkへ機械的に換算して優劣を作らない。
+
+GLMのtrajectoryをまとめると、\term{bilingual foundationの研究anchorから、sparse architecture、RL infrastructure、local servingを束ねるagentic system engineeringへ射程を広げたfamily}と整理できる。
+
+\section{Kimi：long contextとmultimodal reasoningからopen-weight agentへ}
+\label{sec:kimi}
+
+\subsection{k1.5：long-context multimodal reasoningをbridgeにする}
+
+Kimi k1.5はlong-context multimodal reasoningとreinforcement learningを結びつけた段階として位置づく。\src{D013} ここで重要なのは、long contextを単なる「最大token数」の競争として読まないことだ。multimodal inputとreasoningを長いcontext上で扱うという問題設定は、後のagentic workloadで必要になるstate保持、長いtask history、複数modal sourceの統合に接続しやすいsystem requirementを示す。
+
+ただし、k1.5から後のK2/K3への直接的な技術継承を、このsourceだけで証明することはできない。本稿ではk1.5を、Kimi familyがlong contextとreasoningを早期から主要テーマに置いていたことを示す\term{bridge}として扱う。
+
+\subsection{K3：long contextをsystem propertyへ広げる}
+
+Kimi K3のaccepted official repositoryは、2.8T open-weight native multimodal model、efficient-attention/residual mechanisms、1M context、sparse MoE、long-horizon coding/agentic focusを同じrelease lineに置く。\src{D016}
+
+ここでも1Mというcontext lengthだけを切り出すと、本質を見落とす。native multimodality、sparse computation、agentic codingと一緒に現れることで、long contextは\term{systemが長いtaskを保持し、異なるmodal inputを扱い、複数stepのexecutionを続けるためのproperty}へ変わる。本稿がK3をfrontier endpointとして扱う理由は、単一benchmarkの値ではなく、このsystem-level integrationにある。
+
+KimiのtrajectoryはDeepSeekやGLMとも一部の設計圧力を共有する。sparsity、long context、agentic workloadは共通して見える。しかし、それを直接の技術継承とみなさない。Kimi側の特徴は、k1.5でlong-context multimodal reasoning/RLを明示し、K3でnative multimodalityとlong-horizon agentへ拡張している点にある。
+
+K3のcheckpoint license、reported performance、release detailはartifact-specific authorityを越えて一般化しない。特にsource-local benchmarkを、Qwen、GLM、DeepSeekの異なるversionやharnessと横断順位へ変換しない。
+
+\section{2026年に収束した設計圧力、残ったfamily差}
+\label{sec:comparison}
+
+\subsection{収束は同一化ではない}
+
+2026年のendpointを横断すると、似た語が繰り返し現れる。DeepSeek V4は1M context、sparse/token-compression、reasoning mode、agentic codingとAPI deploymentをまとめる。\src{D005} Qwen3.8はopen-weight agent/coding/researchとhub distributionを前面に置く。\src{D008} GLM-5はsparse attention、asynchronous RL、long-horizon agentic engineering、local servingを束ねる。\src{D012} Kimi K3は1M context、sparse MoE、native multimodality、long-horizon coding/agentic focusを組み合わせる。\src{D016}
+
+共通しているのは、\term{model単体の静的なscoreより、長いcontext、sparse/efficient computation、post-training、agentic execution、deploymentを一つのsystemとして成立させる圧力}である。これを本稿ではarchitecture convergenceと呼ぶ。ただし、同じ圧力に応答することと、同じ設計・同じ組織系譜になることは別である。
+
+\subsection{familyごとの「主語」は何か}
+
+DeepSeekの主語は\term{計算効率とpost-trainingの転換}である。V2でMoE/MLAとactive computation、R1でRL reasoning、V4でagentic endpointへ進む。Qwenの主語は\term{model breadthとdistribution}であり、多様なmodel rangeとhub/deployment pathをagentic lineへつなぐ。GLMの主語は\term{systems engineering}で、sparse architecture、RL infrastructure、local servingを同じrelease lineに置く。Kimiの主語は\term{long-context multimodal reasoning}から始まり、native multimodal long-horizon agentへ広がる。
+
+この差を保ったまま比較すると、「中国勢はMoEを採用した」「中国勢はagent化した」という一括りの説明より情報量が増える。同じMoEでも、DeepSeekではactive computationとeconomyを読む文脈、GLMではagentic systems engineeringを支えるsparse designの文脈、Kimiでは1M context/native multimodality/agentic workloadと同居する文脈に置かれている。Qwenはmodel architectureの一点よりdistribution breadthが前に出る。
+
+\subsection{比較表：同じ圧力への異なる応答}
+
+\begin{center}
+\small
+\begin{tabularx}{\columnwidth}{>{\raggedright\arraybackslash}p{0.18\columnwidth}>{\raggedright\arraybackslash}X}
+\toprule
+Family & 本稿で確認できるtrajectory \\
+\midrule
+DeepSeek & foundation \(\rightarrow\) MoE/MLA efficiency \(\rightarrow\) RL reasoning \(\rightarrow\) 1M-context agentic/API endpoint \src{D001}\src{D002}\src{D004}\src{D005} \\
+Qwen & broad dense/MoE family \(\rightarrow\) hub/runtime distribution \(\rightarrow\) open-weight agent/coding/research line \src{D006}\src{D008} \\
+GLM & bilingual foundation anchor \(\rightarrow\) sparse attention + asynchronous RL + local servingを束ねるagentic systems endpoint \src{D009}\src{D012} \\
+Kimi & long-context multimodal RL \(\rightarrow\) 1M-context sparse native-multimodal long-horizon agentic endpoint \src{D013}\src{D016} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+この表は性能順位ではなく、accepted evidenceから再構成したfamily内の変化である。特に矢印は「前modelの全技術が後modelへ直接継承された」ことを意味しない。sourceで確認できる時系列とfocusの移動をreader-facingに表したものにすぎない。
+
+\subsection{なぜagentic workloadが共通endpointになったのか}
+
+本稿のevidenceだけから世界全体の因果を断定することはできないが、4familyが2026年にagent/coding/research/long-horizon executionを前面へ出していることは確認できる。agentic workloadでは、一回の回答品質だけでなく、contextを保持し、toolやruntimeと接続し、複数stepを低latency・許容costで繰り返す必要がある。そのためlong context、sparsity、attention efficiency、post-training、servingが相互依存しやすい。
+
+このsystem requirementを介して見ると、2024--2025年に別々に見えた設計軸が2026年に同じendpointへ現れる理由を説明しやすい。DeepSeekのefficiency、GLMのRL/serving、Kimiのlong context/multimodality、Qwenのdistributionは、すべてagentic systemを実際に使える形へする際の異なるbottleneckに対応する。本稿はこれを\term{共通の設計圧力への収束}と表現する。
+
+\section{Open Weightはdistribution戦略でもある}
+\label{sec:openweight}
+
+\subsection{公開はbinaryではない}
+
+「openかclosedか」という二値分類だけでは、このecosystemの競争力を説明できない。developerから見れば、重要なのはweightsが取得できるかだけではなく、どのlicenseで、どのruntimeで、どのhardware classで、どのfine-tuning pathを使い、どの形で再配布・商用利用できるかである。
+
+Qwen2がHugging Face/ModelScope、quantization、fine-tuning、deployment resourcesを含めること\src{D006}、Qwen3.8がagent/coding/research lineとhub distributionを結ぶこと\src{D008}、GLM-5が複数のlocal-serving recipeを提示すること\src{D012}、DeepSeek V4がAPI deploymentを含むこと\src{D005}、Kimi K3がopen-weight native multimodal modelとして配布されること\src{D016}は、それぞれ異なる形で\term{modelを利用可能なartifactへ変換する経路}を構成している。
+
+したがってopen weightは、理念上の公開性だけでなくdistribution strategyとしても読む必要がある。modelがdeveloperの手元へ届き、既存toolchainへ入り、local/cloudのruntimeで動くまでの距離が短いほど、研究成果はecosystem上の選択肢になりやすい。ただし本稿はadoption数や市場shareを直接測定していないため、「公開したから普及した」という定量因果は主張しない。
+
+\subsection{license境界を曖昧にすると技術比較も壊れる}
+
+repository codeが使えることとcheckpoint weightsを再配布できることは別である。primary weightsとdistilled derivativeが同じlicenseとも限らない。commercial useが可能でもtraining recipeが十分に公開されているとは限らない。このため「open-source model」という一語でfamilyを比較すると、実際には異なる権利・再現性・運用条件を同じものとして扱ってしまう。
+
+本稿では、accepted evidenceで条件を確定できないQwen3.8、GLM-5、Kimi K3、DeepSeek V4のlicense/current-release detailをartifact-specificな未解決境界として残す。これは欠点を隠すためではなく、\term{不明なものを不明のまま保つことが、再現可能なtechnical surveyの条件}だからである。
+
+\subsection{local servingとhub distributionがfrontierの定義を変える}
+
+frontierを「最大modelの最高score」とだけ定義するなら、hub、quantization、local servingは二次的に見える。しかし実際のagentic/coding workloadでは、deploymentの容易さ、latency、context処理、hardware適合性がsystem designに入る。QwenとGLMのsourceがdistribution/servingを明示し、DeepSeekとKimiのcurrent endpointがagentic deploymentを含むことは、frontier competitionがmodel artifactからruntime ecosystemへ広がったことを示している。
+
+この観点では、中国発open-weight ecosystemの強さは一つのmodel familyに集中していない。複数familyが異なるdistribution pathを提供することで、developerは用途や制約に応じて別の入口を選べる。この\term{選択可能性そのもの}が、ecosystemを一過性のreleaseから継続的な競争構造へ変える条件になった、と本稿では結論づける。
+
+\section{総括：2026年のfrontier構造}
+\label{sec:synthesis}
+
+\subsection{収束したもの}
+
+2022--2024年のGLM-130B、Baichuan 2、DeepSeek LLM、Qwen2は、後年のfrontier competitionが単一の起源から伸びたのではなく、複数familyとdistribution経路の並存から形成されたことを示す。\src{D009}\src{D019}\src{D001}\src{D006}
+
+2026年のendpointで収束したのは、一つの「中国モデル」ではなく\term{設計圧力}である。長いcontextを扱うこと、sparse/efficient computationでruntime costを抑えること、RLを含むpost-trainingでreasoning/behaviorを作ること、coding/researchを含むagentic executionへ接続すること、weightsをhub/API/local servingから利用できるようにすること。これらがmodel単体の外側で結びつき、frontier systemの要件になった。
+
+\subsection{残った差}
+
+同時にfamily差は消えていない。DeepSeekはV2の効率設計とR1のRL post-trainingを強い転換点に持つ。\src{D002}\src{D004} Qwenはmodel breadthとhub/deployment distributionを一貫した強みにする。\src{D006}\src{D008} GLMはsparse attention、RL infrastructure、local servingをagentic system engineeringとして束ねる。\src{D012} Kimiはlong-context multimodal reasoningからnative multimodal long-horizon agentへ進む。\src{D013}\src{D016}
+
+したがって「中国勢」という集合名は地理的な説明には使えても、technical strategyの主語としては粗すぎる。本稿の比較単位は最後までfamilyである。
+
+\subsection{なぜ恒常的なfrontier構成要素になったのか}
+
+本稿の最終回答は次の通りである。
+
+\medskip
+\noindent\textbf{中国発open-weight ecosystemがfrontier competitionの恒常的な構成要素になった理由は、単一benchmarkの首位や一つのbreakthroughではなく、複数familyがarchitecture、post-training、long context、multimodality、agentic workload、hub/API/local servingを別々の強みとして積み上げ、それらを外部が利用できるartifactとして継続的にdistributionする競争構造を形成したからである。}
+\medskip
+
+この構造には二つの耐久性がある。第一に、技術的な耐久性である。あるfamilyがefficiencyを強く進め、別familyがdistributionやmultimodalityを進めることで、frontier requirementの複数軸が並列に探索される。第二にecosystem上の耐久性である。weights、hub、API、local servingといった異なる利用経路が存在することで、frontier研究が一つのclosed endpointに閉じず、developer-facing artifactとして残る。
+
+もちろん、本稿は「どのfamilyが最終的に勝つか」を予言しない。2026年8月24日時点のcheckpoint licenseやbenchmark conditionには未解決境界があり、異なるevaluationを横断順位へ変換できない。policy/geopoliticsも、accepted technical evidenceが直接支える範囲を越えて因果説明へ持ち込んでいない。
+
+それでも技術史として確定できることはある。2022年のbilingual foundation、2023年のplural open-model environment、2024年のfoundation/efficiency/distributionの分岐、2025年のreasoning/long-context post-training、そして2026年のagentic system convergenceは、一つのlineageではなく\term{複数のfamily strategyが並走した結果}として読む方が一次資料に忠実である。このpluralityこそが、本Specialでいう「主要勢力」の実体である。
+
+\section*{Boundary Summary}
+\addcontentsline{toc}{section}{Boundary Summary}
+
+\begin{itemize}
+  \item chronologyは一次資料で固定するが、publication dateの近さだけで直接の技術継承・institutional ancestryを主張しない。
+  \item 2026年のfrontier性能はsource-local reported positionとして扱い、異なるversion/harness/evaluation conditionを横断league tableへ正規化しない。
+  \item repository license、code license、weight/model license、redistribution、commercial use、training recipe、reproducibilityを分け、未確認条件をfamily全体へ一般化しない。
+  \item DeepSeek V4、Qwen3.8、GLM-5、Kimi K3のcurrent-release detailはaccepted artifact-specific authorityの範囲に限定する。
+  \item 最終総括は前章で確立したevidence-bound claimsを再構成するsynthesisであり、新しい未検証の比較主張を導入しない。
+\end{itemize}
+
+\clearpage
+\onecolumn
+\section*{Primary Source Notes}
+\addcontentsline{toc}{section}{Primary Source Notes}
+
+以下は本稿で使用したaccepted primary-source locatorである。タイトルはCandidate Matrixで確立したreader-facing source identityを使用し、URLはDiscovery Acceptanceに保存されたlocatorをそのまま示す。内部Evidence statusやmateriality classificationは読者向けラベルとして露出させない。
+
+\begin{description}
+  \item[\texttt{D001}] \textit{DeepSeek LLM: Scaling Open-Source Language Models with Longtermism}.\\
+  \url{https://arxiv.org/abs/2401.02954}
+
+  \item[\texttt{D002}] \textit{DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model}.\\
+  \url{https://arxiv.org/abs/2405.04434}
+
+  \item[\texttt{D004}] \textit{DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning}.\\
+  \url{https://arxiv.org/abs/2501.12948}
+
+  \item[\texttt{D005}] \textit{DeepSeek V4 official release/transparency material}.\\
+  \url{https://www.deepseek.com/en/transparency/}
+
+  \item[\texttt{D006}] \textit{Qwen2 Technical Report}.\\
+  \url{https://arxiv.org/abs/2407.10671}
+
+  \item[\texttt{D008}] \textit{Qwen3.8 official repository}.\\
+  \url{https://github.com/QwenLM/Qwen3.8}
+
+  \item[\texttt{D009}] \textit{GLM-130B: An Open Bilingual Pre-trained Model}.\\
+  \url{https://arxiv.org/abs/2210.02414}
+
+  \item[\texttt{D012}] \textit{GLM-5 official repository and technical report}.\\
+  \url{https://github.com/zai-org/GLM-5}
+
+  \item[\texttt{D013}] \textit{Kimi k1.5: Scaling Reinforcement Learning with LLMs}.\\
+  \url{https://arxiv.org/abs/2501.12599}
+
+  \item[\texttt{D016}] \textit{Kimi K3 official repository}.\\
+  \url{https://github.com/MoonshotAI/Kimi-K3}
+
+  \item[\texttt{D019}] \textit{Baichuan 2: Open Large-scale Language Models}.\\
+  \url{https://arxiv.org/abs/2309.10305}
+\end{description}
+
+\section*{Survey Scope and Provenance Note}
+本稿はTHEMATIC / LONGFORM\_SPECIALとして、2026-08-24T17:24:00Zをas-of boundaryとする。本文はapproved Architectureの6 packageと、それらから確立したDraft Result / Profile Synthesisをreader-facingに再編集したものである。Source Intake、Evidence Card、Candidate Matrix等の内部production artifactはprovenance authorityとして保持されるが、reader-facingな論証は上記Primary Source Notesへ接続している。
+
+\end{document}
