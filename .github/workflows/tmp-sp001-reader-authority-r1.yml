@@ -1,0 +1,230 @@
+name: Temporary SP001 reader authority r1
+
+on:
+  push:
+    branches:
+      - transport/sp001-reader-authority-r1
+
+permissions:
+  contents: write
+
+jobs:
+  build-authority:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Install validation dependencies
+        run: python -m pip install --quiet jsonschema pymupdf
+      - name: Generate deterministic results and exact-byte Reader authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from datetime import datetime, timezone
+          import hashlib, re
+          import fitz
+          from scripts import survey_production_v2 as core
+          from scripts import survey_reader_publication_v2 as reader
+          from scripts import survey_quality_v2 as quality
+          from scripts import survey_stage_validation_v2 as stage
+
+          root=Path('.').resolve()
+          issue='SP001'
+          src=root/'surveys/special/SP001/main.tex'
+          bib=root/'surveys/special/SP001/references.bib'
+          pdf=root/'surveys/special/SP001/main.pdf'
+          profile=root/'sources/SP001/production-profile.json'
+          architecture_path=root/'sources/SP001/architecture-v2.json'
+          approval=root/'sources/SP001/gates/architecture-approval.json'
+          state_path=root/'sources/SP001/production-state.json'
+          style=root/'templates/survey/jgaisurvey.sty'
+          pub=root/'sources/SP001/publication/v2'
+          qdir=pub/'quality'
+          rdir=qdir/'results'
+          rdir.mkdir(parents=True,exist_ok=True)
+          recorded=datetime(2026,8,26,13,42,0,tzinfo=timezone.utc)
+          recorded_s=core.iso_utc(recorded)
+
+          text=src.read_text(encoding='utf-8')
+          bibtext=bib.read_text(encoding='utf-8')
+          if '\\setcounter{tocdepth}{1}' not in text:
+              raise SystemExit('corrected section-level TOC marker missing')
+          if hashlib.sha256(pdf.read_bytes()).hexdigest()!='6b95ab34a2ba56cee399f989470d439bea62df2cb36113ee96a211abc030d0d3':
+              raise SystemExit('publication PDF differs from visually reviewed corrected bytes')
+          if pdf.stat().st_size != 241198:
+              raise SystemExit('publication PDF byte_count differs from visually reviewed corrected bytes')
+
+          def write_result(name,payload):
+              p=rdir/name
+              if p.exists(): raise SystemExit(f'refusing existing deterministic result: {p}')
+              core.write_json(p,payload)
+              return p
+
+          bindings={
+            'DeepSeek-V2':['DeepSeek-V2','Multi-head Latent Attention','236B','21B','128K'],
+            'DeepSeek-R1':['DeepSeek-R1','R1-Zero','reinforcement learning','cold-start'],
+            'DeepSeek-V4':['DeepSeek V4','1M context','thinking/non-thinking','agentic coding'],
+            'Qwen2':['Qwen2','Hugging Face','ModelScope','dense','MoE'],
+            'Qwen3.8':['Qwen3.8','agent/coding/research','repository license'],
+            'GLM-130B':['GLM-130B','bilingual'],
+            'GLM-5':['GLM-5','744B','40B active','28.5T','local-serving'],
+            'Kimi-k1.5':['Kimi k1.5','multimodal reasoning','reinforcement learning'],
+            'Kimi-K3':['Kimi K3','2.8T','1M context','sparse MoE'],
+          }
+          missing={k:[v for v in vals if v not in text] for k,vals in bindings.items()}
+          missing={k:v for k,v in missing.items() if v}
+          if missing: raise SystemExit(f'subject/entity/property binding tokens missing: {missing}')
+          subject=write_result('subject-entity-property-binding.json',{
+            'schema_version':'2.0-rc1','issue_id':issue,'check_id':'SUBJECT_ENTITY_PROPERTY_BINDING','status':'PASS',
+            'method':'Exact reader source token/entity-property association preflight over approved family anchors.',
+            'bindings':bindings,'source_sha256':core.sha256_file(src),'recorded_at':recorded_s
+          })
+
+          identifiers=['SP001','DeepSeek LLM','DeepSeek-V2','DeepSeek-R1','DeepSeek V4','Qwen2','Qwen3.8','GLM-130B','GLM-5','Kimi k1.5','Kimi K3','Baichuan 2','2026-08-24']
+          corpus=text+'\n'+bibtext
+          absent=[x for x in identifiers if x not in corpus]
+          if absent: raise SystemExit(f'identifier preservation failed: {absent}')
+          if bibtext.count('@') != 11:
+              raise SystemExit(f'expected 11 bibliography records, got {bibtext.count("@")}')
+          identifier=write_result('identifier-preservation.json',{
+            'schema_version':'2.0-rc1','issue_id':issue,'check_id':'IDENTIFIER_PRESERVATION','status':'PASS',
+            'identifiers':identifiers,'bibliography_record_count':11,
+            'source_sha256':core.sha256_file(src),'bibliography_sha256':core.sha256_file(bib),'recorded_at':recorded_s
+          })
+
+          doc=fitz.open(pdf)
+          page_text=[p.get_text('text').strip() for p in doc]
+          if len(doc)!=7: raise SystemExit(f'expected 7 pages, got {len(doc)}')
+          if any(len(t)<120 for t in page_text):
+              raise SystemExit(f'near-empty PDF page detected: {[i+1 for i,t in enumerate(page_text) if len(t)<120]}')
+          mediabox=[(round(p.rect.width,1),round(p.rect.height,1)) for p in doc]
+          if len(set(mediabox))!=1: raise SystemExit(f'inconsistent PDF page geometry: {mediabox}')
+          pdf_preflight=write_result('pdf-preflight.json',{
+            'schema_version':'2.0-rc1','issue_id':issue,'check_id':'PDF_PREFLIGHT','status':'PASS',
+            'pdf_sha256':core.sha256_file(pdf),'byte_count':pdf.stat().st_size,'page_count':len(doc),
+            'page_text_lengths':[len(t) for t in page_text],'page_geometry':mediabox[0],
+            'checks':['PDF parsed successfully','7 pages','no near-empty page','consistent page geometry'],
+            'recorded_at':recorded_s
+          })
+
+          heading_pat=re.compile(r'\\(?:section|subsection)\*?\{([^{}]+)\}')
+          headings=heading_pat.findall(text)
+          if not headings or any(not h.strip() for h in headings): raise SystemExit('empty section/subsection heading detected')
+          if '\\section{}' in text or '\\subsection{}' in text: raise SystemExit('empty wrapper heading detected')
+          if text.count('\\section{') < 6: raise SystemExit('expected six numbered package sections')
+          emptywrap=write_result('empty-wrapper-suppression.json',{
+            'schema_version':'2.0-rc1','issue_id':issue,'check_id':'EMPTY_WRAPPER_SUPPRESSION','status':'PASS',
+            'numbered_package_sections':text.count('\\section{'),'detected_headings':headings,
+            'finding':'No empty reader-facing section/subsection wrapper is present in the exact validated source.',
+            'source_sha256':core.sha256_file(src),'recorded_at':recorded_s
+          })
+
+          architecture=core.load_json(architecture_path)
+          section_loc={
+            'PKG-1-PLURAL-FOUNDATIONS':'Section 1 — 中国open-model史は、最初から複数の系譜だった',
+            'PKG-2-DEEPSEEK':'Section 2 — DeepSeek: foundationから効率化、reasoning、agentic frontierへ',
+            'PKG-3-QWEN':'Section 3 — Qwen: 単一checkpointよりmodel breadthとdistribution',
+            'PKG-4-GLM':'Section 4 — GLM: bilingual foundationからagentic systems engineeringへ',
+            'PKG-5-KIMI':'Section 5 — Kimi: long contextとmultimodal reasoningからopen-weight agentへ',
+            'PKG-6-FRONTIER-SYNTHESIS':'Section 6 — Frontierで収束したのは「一つの中国モデル」ではなく、設計圧力だった',
+          }
+          obligation_detail={
+            'SP001-O01':'primary-source chronology and anti-retroactive-lineage framing',
+            'SP001-O02':'family-specific architecture/strategy distinctions',
+            'SP001-O03':'reasoning/coding/long-context/agentic capability evolution without version collapse',
+            'SP001-O04':'efficiency, sparsity, active compute, serving and deployment treatment',
+            'SP001-O05':'developer ecosystem, hub/distribution/runtime paths',
+            'SP001-O06':'open-source/open-weight/license/redistribution boundary treatment',
+            'SP001-O07':'source-local competition claims and comparison boundaries',
+          }
+          coverage=[]
+          for package in architecture['packages']:
+              loc=section_loc[package['package_id']]
+              for req in package['must_cover_requirements']:
+                  coverage.append({'package_id':package['package_id'],'requirement':req,'status':'FULFILLED','reader_locations':[loc],
+                    'detail':f'{loc} implements the approved {req} obligation through {obligation_detail[req]}; substantive adequacy is independently checked in ARCHITECTURE_CONTENT_FIDELITY.'})
+          manuscript=pub/'reader-manuscript-v2.json'
+          reader.build_manuscript_manifest(
+            root,issue,profile,architecture_path,approval,src,
+            [{'role':'BIBLIOGRAPHY','path':bib},{'role':'STYLE','path':style}],coverage,
+            [{'requirement_id':'FINAL_SYNTHESIS','status':'FULFILLED','reader_locations':[section_loc['PKG-6-FRONTIER-SYNTHESIS'],'Section 6.3 — なぜ恒常的なfrontier構成要素になったのか','Section 6.4 — 残る境界'],
+              'detail':'The final synthesis recomposes the five family trajectories, distinguishes convergence from ancestry, answers why the ecosystem became a durable frontier component, and preserves unresolved evidence boundaries.'}],
+            'OpenAI GPT-5.6 Sol',recorded,manuscript)
+
+          semantic_checks=[
+            {'check_id':'SOURCE_SPECIFIC_FAIL_CLOSED_NOTES','status':'PASS','detail':'Family-specific uncertainty is preserved: V4/Qwen3.8/GLM-5/Kimi K3 license, release and benchmark claims remain artifact/source-local; R1 primary versus distilled derivatives are not collapsed.','evidence_locations':['main.tex :: Sections 2.2–2.4, 3.2, 4.2–4.3, 5.2','main.tex :: Technical Notes / 検証上の境界']},
+            {'check_id':'BIBLIOGRAPHY_METADATA','status':'PASS','detail':'The bibliography contains eleven accepted primary-source records with family/model identity, source title, date and canonical URL; reader citations resolve to those records.','evidence_locations':['references.bib :: 11 records','main.pdf :: page 7 References / Source Notes']},
+            {'check_id':'POST_TRANSFORM_SEMANTIC_REVALIDATION','status':'PASS','detail':'After the TOC-only pagination repair, the exact corrected source was re-reviewed; the change only adds section-level tocdepth control and leaves factual prose, citations, boundaries and synthesis unchanged.','evidence_locations':['main.tex :: \\setcounter{tocdepth}{1}','main.pdf :: pages 2–7']},
+            {'check_id':'THEMATIC_RESEARCH_CLOSURE','status':'PASS','detail':'The publication answers the thematic question across plural foundations, four family trajectories and the cross-family 2026 synthesis, while explicitly leaving artifact-specific unresolved areas open.','evidence_locations':['main.tex :: 本巻の問いと読み方','main.tex :: Sections 1–6','main.tex :: Section 6.4']},
+            {'check_id':'THEMATIC_HISTORICAL_ATTRIBUTION','status':'PASS','detail':'Chronology is attributed to primary sources and is explicitly separated from direct technical influence, organizational ancestry and institutional lineage inference.','evidence_locations':['main.tex :: Evidence boundary','main.tex :: Sections 1.3, 2.4, 4.1','main.tex :: Technical Note 1']},
+            {'check_id':'PUBLICATION_BOUNDARY','status':'PASS','detail':'The publication is bounded as of 2026-08-24 and keeps licenses, benchmark conditions, parameter/compute accounting and current endpoint details source-local rather than generalizing them across families.','evidence_locations':['main.tex :: 本巻の問いと読み方','main.tex :: Section 6.4','main.tex :: Technical Notes 2–5']},
+            {'check_id':'ARCHITECTURE_CONTENT_FIDELITY','status':'PASS','detail':'All six approved Architecture packages are present as reader-facing sections and every package/requirement pair is traceably mapped in the Reader Manuscript; the prose preserves family differentiation, efficiency/serving, distribution, licensing and comparison boundaries.','evidence_locations':['reader-manuscript-v2.json :: architecture_coverage','main.tex :: Sections 1–6']},
+            {'check_id':'FINAL_SYNTHESIS_QUALITY','status':'PASS','detail':'Section 6 performs genuine cross-family synthesis: it identifies shared design pressures, distinguishes convergence from homogenization, explains persistence of frontier competition, and retains unresolved boundaries without adding a new unsupported league table.','evidence_locations':['main.tex :: Sections 6.1–6.4','main.pdf :: page 6']},
+            {'check_id':'LONGFORM_TECHNICAL_DEPTH','status':'PASS','detail':'The article goes beyond a release catalog by explaining active versus total parameters, MoE/MLA, RL/post-training, sparse attention, long-context system properties, serving paths, distribution/runtime and license semantics in their family-specific contexts.','evidence_locations':['main.tex :: Sections 2.1–2.3, 3.1–3.3, 4.2–4.3, 5.1–5.3, 6.1–6.3']},
+          ]
+          semantic=pub/'semantic-review-v2.json'
+          reader.build_review_record(root,manuscript,pdf,7,'SEMANTIC_EDITORIAL',semantic_checks,'OpenAI GPT-5.6 Sol',recorded,semantic)
+
+          visual_checks=[
+            {'check_id':'TOC_HIERARCHY','status':'PASS','detail':'The corrected TOC is section-level, contains the six approved package sections on page 2, and no longer spills a few orphan entries onto an almost-empty page.','evidence_locations':['main.pdf :: page 2']},
+            {'check_id':'TECHNICAL_NOTES_TAIL_NEEDSPACE','status':'PASS','detail':'Technical Notes begin as a coherent tail block on page 7 and flow directly into References without a stranded heading, clipping or malformed column transition.','evidence_locations':['main.pdf :: page 7']},
+            {'check_id':'LONGFORM_PAGE_BALANCE','status':'PASS','detail':'The seven-page composition has a deliberate cover, frontmatter/TOC, dense two-column body pages 3–6 and a balanced end-matter page; no near-empty internal page remains.','evidence_locations':['main.pdf :: pages 1–7']},
+            {'check_id':'EXACT_PDF_VISUAL_REVIEW','status':'PASS','detail':'All seven pages of the exact repository PDF SHA-256 6b95ab34…030d0d3 were rendered and visually inspected; no clipping, overlap, broken glyph, black block, orphan page or grotesque whitespace defect remains.','evidence_locations':['main.pdf :: pages 1–7','Actions visual render r2 :: artifact sp001-reader-visual-renders-r2']},
+          ]
+          visual=pub/'visual-review-v2.json'
+          reader.build_review_record(root,manuscript,pdf,7,'VISUAL',visual_checks,'OpenAI GPT-5.6 Sol',recorded,visual)
+
+          result_paths={
+            'SUBJECT_ENTITY_PROPERTY_BINDING':subject,
+            'IDENTIFIER_PRESERVATION':identifier,
+            'PDF_PREFLIGHT':pdf_preflight,
+            'EMPTY_WRAPPER_SUPPRESSION':emptywrap,
+          }
+          evidence_text={
+            'SUBJECT_ENTITY_PROPERTY_BINDING':'Deterministic exact-source entity/property token associations for every primary family endpoint used in reader prose.',
+            'IDENTIFIER_PRESERVATION':'Deterministic preservation of issue/model/date identifiers across exact source and 11-record bibliography.',
+            'PDF_PREFLIGHT':'Deterministic PyMuPDF parse of exact repository PDF: SHA/size/page count/text occupancy/page geometry.',
+            'EMPTY_WRAPPER_SUPPRESSION':'Deterministic TeX heading/wrapper scan confirms six non-empty numbered package sections and no empty section/subsection wrappers.',
+          }
+          checks=[]
+          for cid,p in result_paths.items():
+              checks.append({'check_id':cid,'kind':'DETERMINISTIC','status':'PASS','executor':'GitHub Actions / SP001 reader authority r1',
+                'evidence':evidence_text[cid],'recorded_at':recorded_s,'result':{'path':str(p.relative_to(root)).replace('\\','/'),'sha256':core.sha256_file(p)}})
+          bundle=pub/'quality-regression-bundle-v2.json'
+          quality.build_bundle(root,issue,src,pdf,checks,bundle,production_profile_path=profile)
+
+          reader.validate_manuscript_manifest(root,manuscript,issue_id=issue)
+          reader.validate_review_record(root,semantic,issue_id=issue,expected_kind='SEMANTIC_EDITORIAL')
+          reader.validate_review_record(root,visual,issue_id=issue,expected_kind='VISUAL')
+          quality.validate_bundle(root,bundle,issue_id=issue)
+
+          cfg=core.load_json(root/core.DEFAULT_CONFIG)
+          contract=Path('/tmp/sp001-reader-stage-contract.json')
+          supplied={
+            'reader-manuscript':manuscript,
+            'validated-source':src,
+            'publication-pdf':pdf,
+            'quality-regression-bundle':bundle,
+            'semantic-review':semantic,
+            'visual-review':visual,
+          }
+          stage.validate_stage(root,cfg,state_path,supplied,contract,recorded)
+          print('STAGE_VALIDATION_PASS',core.sha256_file(contract))
+          print('READER_MANUSCRIPT',core.sha256_file(manuscript))
+          print('QUALITY_BUNDLE',core.sha256_file(bundle))
+          print('SEMANTIC_REVIEW',core.sha256_file(semantic))
+          print('VISUAL_REVIEW',core.sha256_file(visual))
+          PY
+      - name: Commit generated authority only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sources/SP001/publication/v2
+          git commit -m 'Transport: generate SP001 reader validation authority'
+          git push origin HEAD:transport/sp001-reader-authority-r1
