@@ -1,0 +1,1426 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "basis": {
+    "production_profile_sha256": "18ebde4c2893cd804b375bf5a724973f9dea7b936238625dee810c26549091bf",
+    "architecture_sha256": "34a5e76e1cf992967b8b5200ad1eddbf4fae9ff8dbfeb9da05360cc5985c3972",
+    "architecture_approval_sha256": "311ee3a97829b4f7885286fe648e5a41877ba99946ae0e44a2f10fcf489d85d2"
+  },
+  "editorial_thesis": "中国発Generative AIの台頭を単一の「Chinese LLM」系譜としてではなく、2022–2026年にDeepSeek、Qwen、GLM、Kimiを中心とする複数familyが、効率化・reasoning/post-training・long context・multimodality・agentic execution・open-weight distributionを別々に発達させ、相互参照と技術再利用を伴いながらfrontier systemへ収束した過程として描く。",
+  "architecture_goals": [
+    "2022–2026のchronologyを一次資料で固定し、時系列の近さから直接の技術系譜を推定しない。",
+    "DeepSeek、Qwen、GLM、Kimiを個別familyとして扱い、architecture・post-training・distribution戦略の差を維持する。",
+    "reasoning、coding、long-context、agentic化をbenchmark順位ではなくtraining/post-training/runtimeの変化として説明する。",
+    "sparsity、attention、serving技術を計算資源とdeploymentの問題としてreader-facingに説明する。",
+    "Open Source、Open Weight、code license、model/weight license、redistribution、commercial use、reproducibilityを区別する。",
+    "Hugging Face、ModelScope、API互換性、vLLM/SGLang/KTransformers等のdistribution/runtimeを競争力の一部として扱う。",
+    "異なるevaluation条件の2026 frontier結果を横断league tableへ正規化せず、source-local reported positionとして扱う。"
+  ],
+  "drafts": [
+    {
+      "package_id": "PKG-1-PLURAL-FOUNDATIONS",
+      "drafting_order": 1,
+      "draft_package_sha256": "0c5d4dd3671a020d0e8e83ad93051bf05df221d32ee9d8b406f7987db2f42cfc",
+      "draft_result_sha256": "599f7b8c79b11a946e4cac4539e1f6085bb6b5c64c7df4cd8b6c37b7b4645c21",
+      "draft_result": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "SP001",
+        "research_profile": "THEMATIC",
+        "publication_profile": "LONGFORM_SPECIAL",
+        "package_id": "PKG-1-PLURAL-FOUNDATIONS",
+        "draft_version": "v1.0",
+        "status": "ESTABLISHED",
+        "basis": {
+          "draft_package_sha256": "0c5d4dd3671a020d0e8e83ad93051bf05df221d32ee9d8b406f7987db2f42cfc",
+          "prompt_id": "article-drafting-v2",
+          "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+        },
+        "runner": {
+          "provider": "OpenAI",
+          "model": "GPT-5.6 Sol",
+          "invocation": "interactive ChatGPT project drafting; exact accepted Evidence/Architecture constrained",
+          "generated_at": "2026-08-26T09:45:00Z",
+          "run_reference": "SP001 Core v2 clean post-Architecture drafting r1"
+        },
+        "headline": "中国open-model史は、最初から複数の系譜だった",
+        "deck": "GLM-130B、Baichuan 2、DeepSeek LLMという異なる初期anchorを並べると、2026年のfrontierを後から単一系譜へ還元できないことが見えてくる。",
+        "deck_attribution_mode": "ATTRIBUTED",
+        "deck_evidence_refs": [
+          {
+            "evidence_task_id": "evidence:SP001:65713fcea4fed72a",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d009-01",
+            "subject_id": "glm-130b",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:SP001:1c44a6ef76242055",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d019-01",
+            "subject_id": "baichuan-2",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:SP001:dcc22d5fb97ef241",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d001-01",
+            "subject_id": "deepseek-llm",
+            "subject_role": "PRIMARY_SUBJECT"
+          }
+        ],
+        "blocks": [
+          {
+            "block_id": "p1-chronology",
+            "block_type": "PARAGRAPH",
+            "text": "2022年のGLM-130B、2023年のBaichuan 2、2024年のDeepSeek LLMは、それぞれ別の組織・設計文脈に属する初期anchorである。ここではこの並存を、中国発open-model ecosystemが後年の主要4familyだけで始まったのではないことを示す前史として読む。",
+            "attribution_mode": "ATTRIBUTED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:65713fcea4fed72a",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d009-01",
+                "subject_id": "glm-130b",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:1c44a6ef76242055",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d019-01",
+                "subject_id": "baichuan-2",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:dcc22d5fb97ef241",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d001-01",
+                "subject_id": "deepseek-llm",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p1-plural",
+            "block_type": "PARAGRAPH",
+            "text": "GLM-130Bは大規模bilingual modelの早期anchor、Baichuan 2は2023年のpluralなopen-model環境を示す補助線、DeepSeek LLMは7B/67B・中英2T-token pretrainingを掲げたfoundation baselineとして位置づく。重要なのは、これらを一つの直系祖先へ束ねないことである。",
+            "attribution_mode": "ATTRIBUTED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:65713fcea4fed72a",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d009-01",
+                "subject_id": "glm-130b",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:1c44a6ef76242055",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d019-01",
+                "subject_id": "baichuan-2",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:dcc22d5fb97ef241",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d001-01",
+                "subject_id": "deepseek-llm",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p1-open",
+            "block_type": "PARAGRAPH",
+            "text": "この時期の「open」という語は、モデル公開の存在を示すためには使えても、artifactごとのweight license、再配布、商用利用、recipe再現性まで同一条件だったことを意味しない。本巻では公開形態とライセンス条件を別問題として扱う。",
+            "attribution_mode": "NONE",
+            "evidence_refs": []
+          },
+          {
+            "block_id": "PKG-1-PLURAL-FOUNDATIONS-boundaries",
+            "block_type": "CLAIM_BOUNDARY",
+            "text": "この節の読解上の境界: publication dateの近さだけで直接影響関係を主張しない。 / Baichuan 2、GLM-130B、DeepSeek LLMはplural ecosystemと各family anchorのためのsupporting evidenceとして扱い、2026 frontier性能を代表させない。",
+            "attribution_mode": "NONE",
+            "evidence_refs": []
+          }
+        ],
+        "must_cover_coverage": [
+          {
+            "requirement": "SP001-O01",
+            "block_ids": [
+              "p1-chronology",
+              "p1-plural",
+              "p1-open",
+              "PKG-1-PLURAL-FOUNDATIONS-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O02",
+            "block_ids": [
+              "p1-chronology",
+              "p1-plural",
+              "p1-open",
+              "PKG-1-PLURAL-FOUNDATIONS-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O06",
+            "block_ids": [
+              "p1-chronology",
+              "p1-plural",
+              "p1-open",
+              "PKG-1-PLURAL-FOUNDATIONS-boundaries"
+            ]
+          }
+        ],
+        "boundary_dispositions": [
+          {
+            "boundary": "publication dateの近さだけで直接影響関係を主張しない。",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-1-PLURAL-FOUNDATIONS-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Baichuan 2、GLM-130B、DeepSeek LLMはplural ecosystemと各family anchorのためのsupporting evidenceとして扱い、2026 frontier性能を代表させない。",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-1-PLURAL-FOUNDATIONS-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          }
+        ],
+        "profile_extensions": {},
+        "publication_extensions": {}
+      }
+    },
+    {
+      "package_id": "PKG-2-DEEPSEEK",
+      "drafting_order": 2,
+      "draft_package_sha256": "9fbf2d711e3ad9567a65b2a642ce1108f521997f7a662f9779d380fdd935181d",
+      "draft_result_sha256": "4a3fed046eb1aa47c8f078a190e6ee532d8d25ea49c1a79f69e7a2b96d3855ef",
+      "draft_result": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "SP001",
+        "research_profile": "THEMATIC",
+        "publication_profile": "LONGFORM_SPECIAL",
+        "package_id": "PKG-2-DEEPSEEK",
+        "draft_version": "v1.0",
+        "status": "ESTABLISHED",
+        "basis": {
+          "draft_package_sha256": "9fbf2d711e3ad9567a65b2a642ce1108f521997f7a662f9779d380fdd935181d",
+          "prompt_id": "article-drafting-v2",
+          "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+        },
+        "runner": {
+          "provider": "OpenAI",
+          "model": "GPT-5.6 Sol",
+          "invocation": "interactive ChatGPT project drafting; exact accepted Evidence/Architecture constrained",
+          "generated_at": "2026-08-26T09:45:00Z",
+          "run_reference": "SP001 Core v2 clean post-Architecture drafting r1"
+        },
+        "headline": "DeepSeekは、foundationから効率・reasoning・agentic systemへ軸を移した",
+        "deck": "DeepSeek LLMのfoundation baseline、V2のMoE/MLA、R1のRL中心post-training、V4の1M contextとagentic deploymentを連続したfamily内の転換として追う。",
+        "deck_attribution_mode": "ATTRIBUTED",
+        "deck_evidence_refs": [
+          {
+            "evidence_task_id": "evidence:SP001:dcc22d5fb97ef241",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d001-01",
+            "subject_id": "deepseek-llm",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:SP001:b4feee60c7b42d7e",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d002-01",
+            "subject_id": "deepseek-v2",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:SP001:815652c418eda76e",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d004-01",
+            "subject_id": "deepseek-r1",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:SP001:1785bf3f5c6f6444",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d005-01",
+            "subject_id": "deepseek-v4",
+            "subject_role": "PRIMARY_SUBJECT"
+          }
+        ],
+        "blocks": [
+          {
+            "block_id": "p2-foundation",
+            "block_type": "PARAGRAPH",
+            "text": "DeepSeek LLMは7B/67B、2T-tokenの中国語・英語pretraining、scaling-lawとSFT/DPOを含むfoundation baselineを示した。後続の変化は、このbaselineを起点に何へ計算資源とpost-trainingを振り向けたかとして読むと整理しやすい。",
+            "attribution_mode": "ATTRIBUTED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:dcc22d5fb97ef241",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d001-01",
+                "subject_id": "deepseek-llm",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p2-efficiency",
+            "block_type": "PARAGRAPH",
+            "text": "DeepSeek-V2ではMoE、MLA、DeepSeekMoEが前面に出た。一次資料は236B total / 21B activated、128K contextを報告しており、単純なparameter増大ではなくactive computationやattention/serving効率を設計軸に置いたことが分かる。",
+            "attribution_mode": "ATTRIBUTED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:b4feee60c7b42d7e",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d002-01",
+                "subject_id": "deepseek-v2",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p2-reasoning",
+            "block_type": "PARAGRAPH",
+            "text": "DeepSeek-R1はreasoning/post-trainingを独立した競争軸へ押し上げた。R1-Zeroのlarge-scale RLから、cold-start dataを含むmulti-stage trainingへ進む構成が示され、foundation能力の拡張をpost-training設計の問題として明示した。",
+            "attribution_mode": "ATTRIBUTED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:815652c418eda76e",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d004-01",
+                "subject_id": "deepseek-r1",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p2-frontier",
+            "block_type": "PARAGRAPH",
+            "text": "2026年のDeepSeek V4は、1M context、sparse/token-compression、thinking/non-thinking、agentic codingとAPI deploymentを同じendpointに集約する。ここでは性能順位ではなく、長文脈・効率・reasoning mode・agentic executionが一つのsystem designへ収束した点を読む。",
+            "attribution_mode": "ATTRIBUTED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:1785bf3f5c6f6444",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d005-01",
+                "subject_id": "deepseek-v4",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "PKG-2-DEEPSEEK-boundaries",
+            "block_type": "CLAIM_BOUNDARY",
+            "text": "この節の読解上の境界: Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source. / benchmark claims only under source-local conditions / DeepSeek V4のlicense・benchmark・current release detailはartifact-specific authorityを超えて一般化しない。 / R1 primary weightsとdistilled derivativesのupstream licenseを混同しない。",
+            "attribution_mode": "INFERENCE",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:1785bf3f5c6f6444",
+                "kind": "LIMITATION",
+                "evidence_id": "lim-sp001-d005-01",
+                "subject_id": "deepseek-v4",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          }
+        ],
+        "must_cover_coverage": [
+          {
+            "requirement": "SP001-O02",
+            "block_ids": [
+              "p2-foundation",
+              "p2-efficiency",
+              "p2-reasoning",
+              "p2-frontier",
+              "PKG-2-DEEPSEEK-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O03",
+            "block_ids": [
+              "p2-foundation",
+              "p2-efficiency",
+              "p2-reasoning",
+              "p2-frontier",
+              "PKG-2-DEEPSEEK-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O04",
+            "block_ids": [
+              "p2-foundation",
+              "p2-efficiency",
+              "p2-reasoning",
+              "p2-frontier",
+              "PKG-2-DEEPSEEK-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O05",
+            "block_ids": [
+              "p2-foundation",
+              "p2-efficiency",
+              "p2-reasoning",
+              "p2-frontier",
+              "PKG-2-DEEPSEEK-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O06",
+            "block_ids": [
+              "p2-foundation",
+              "p2-efficiency",
+              "p2-reasoning",
+              "p2-frontier",
+              "PKG-2-DEEPSEEK-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O07",
+            "block_ids": [
+              "p2-foundation",
+              "p2-efficiency",
+              "p2-reasoning",
+              "p2-frontier",
+              "PKG-2-DEEPSEEK-boundaries"
+            ]
+          }
+        ],
+        "boundary_dispositions": [
+          {
+            "boundary": "Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-2-DEEPSEEK-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "benchmark claims only under source-local conditions",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-2-DEEPSEEK-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "DeepSeek V4のlicense・benchmark・current release detailはartifact-specific authorityを超えて一般化しない。",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-2-DEEPSEEK-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "R1 primary weightsとdistilled derivativesのupstream licenseを混同しない。",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-2-DEEPSEEK-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          }
+        ],
+        "profile_extensions": {},
+        "publication_extensions": {}
+      }
+    },
+    {
+      "package_id": "PKG-3-QWEN",
+      "drafting_order": 3,
+      "draft_package_sha256": "eed0393d0c850c861a4dbae583951e55460644c916f2972890ed90d6dcce015b",
+      "draft_result_sha256": "b3c2825fcf29d1df5d0f2ee44deac3d0a14e852ed2712960a47f34379b451bda",
+      "draft_result": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "SP001",
+        "research_profile": "THEMATIC",
+        "publication_profile": "LONGFORM_SPECIAL",
+        "package_id": "PKG-3-QWEN",
+        "draft_version": "v1.0",
+        "status": "ESTABLISHED",
+        "basis": {
+          "draft_package_sha256": "eed0393d0c850c861a4dbae583951e55460644c916f2972890ed90d6dcce015b",
+          "prompt_id": "article-drafting-v2",
+          "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+        },
+        "runner": {
+          "provider": "OpenAI",
+          "model": "GPT-5.6 Sol",
+          "invocation": "interactive ChatGPT project drafting; exact accepted Evidence/Architecture constrained",
+          "generated_at": "2026-08-26T09:45:00Z",
+          "run_reference": "SP001 Core v2 clean post-Architecture drafting r1"
+        },
+        "headline": "Qwenの強みは、単一checkpointよりmodel breadthとdistributionにある",
+        "deck": "Qwen2のdense/MoE・多サイズ展開とHugging Face/ModelScope・deployment資源は、Qwen3.8のagent/coding/research lineへつながるdistribution-firstの競争軸を形づくる。",
+        "deck_attribution_mode": "ATTRIBUTED",
+        "deck_evidence_refs": [
+          {
+            "evidence_task_id": "evidence:SP001:11ce8f2212731f9d",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d006-01",
+            "subject_id": "qwen2",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:SP001:afc0e0cae360c851",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d008-01",
+            "subject_id": "qwen3-8",
+            "subject_role": "PRIMARY_SUBJECT"
+          }
+        ],
+        "blocks": [
+          {
+            "block_id": "p3-qwen2",
+            "block_type": "PARAGRAPH",
+            "text": "Qwen2はdenseとMoEを含む広いmodel rangeを持ち、multilingual、coding、math、reasoningを横断して展開された。同時にHugging FaceとModelScopeへの配布、quantization、fine-tuning、deployment資源が一次資料に組み込まれており、model breadthと利用経路を一体のfamily strategyとして捉えられる。",
+            "attribution_mode": "ATTRIBUTED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:11ce8f2212731f9d",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d006-01",
+                "subject_id": "qwen2",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p3-qwen38",
+            "block_type": "PARAGRAPH",
+            "text": "Qwen3.8では2026年のopen-weight agent/coding/research lineとHugging Face/ModelScope distributionが前面に出る。ここでの変化は、単に能力項目が増えたことではなく、開発者がmodelを取得し、agentic workloadへ接続するまでの経路そのものが競争力になった点にある。",
+            "attribution_mode": "ATTRIBUTED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:afc0e0cae360c851",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d008-01",
+                "subject_id": "qwen3-8",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p3-license",
+            "block_type": "PARAGRAPH",
+            "text": "ただしrepository licenseとcheckpoint固有のweight/model licenseは別authorityである。Qwen3.8についてrelease identity、license、performance条件に未解決項目が残る以上、family全体へ同一条件を一般化しない。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:afc0e0cae360c851",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d008-01",
+                "subject_id": "qwen3-8",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:afc0e0cae360c851",
+                "kind": "LIMITATION",
+                "evidence_id": "lim-sp001-d008-01",
+                "subject_id": "qwen3-8",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "PKG-3-QWEN-boundaries",
+            "block_type": "CLAIM_BOUNDARY",
+            "text": "この節の読解上の境界: Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source. / release dates and checkpoint identities / repository versus weight-license distinction / source-local performance conditions / Qwen repository licenseと各checkpointのweight/model licenseを同一視しない。",
+            "attribution_mode": "INFERENCE",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:afc0e0cae360c851",
+                "kind": "LIMITATION",
+                "evidence_id": "lim-sp001-d008-01",
+                "subject_id": "qwen3-8",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          }
+        ],
+        "must_cover_coverage": [
+          {
+            "requirement": "SP001-O01",
+            "block_ids": [
+              "p3-qwen2",
+              "p3-qwen38",
+              "p3-license",
+              "PKG-3-QWEN-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O02",
+            "block_ids": [
+              "p3-qwen2",
+              "p3-qwen38",
+              "p3-license",
+              "PKG-3-QWEN-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O03",
+            "block_ids": [
+              "p3-qwen2",
+              "p3-qwen38",
+              "p3-license",
+              "PKG-3-QWEN-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O05",
+            "block_ids": [
+              "p3-qwen2",
+              "p3-qwen38",
+              "p3-license",
+              "PKG-3-QWEN-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O06",
+            "block_ids": [
+              "p3-qwen2",
+              "p3-qwen38",
+              "p3-license",
+              "PKG-3-QWEN-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O07",
+            "block_ids": [
+              "p3-qwen2",
+              "p3-qwen38",
+              "p3-license",
+              "PKG-3-QWEN-boundaries"
+            ]
+          }
+        ],
+        "boundary_dispositions": [
+          {
+            "boundary": "Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-3-QWEN-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "release dates and checkpoint identities",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-3-QWEN-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "repository versus weight-license distinction",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-3-QWEN-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "source-local performance conditions",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-3-QWEN-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Qwen repository licenseと各checkpointのweight/model licenseを同一視しない。",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-3-QWEN-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          }
+        ],
+        "profile_extensions": {},
+        "publication_extensions": {}
+      }
+    },
+    {
+      "package_id": "PKG-4-GLM",
+      "drafting_order": 4,
+      "draft_package_sha256": "1ee2b46861035859269b90d5410f2b7dcb809a1e158bce02e1a8d838fd08737a",
+      "draft_result_sha256": "acfa42b1ad5459bd330b2fa47866290cce802680697cf2a921bb82d6b74f4dfc",
+      "draft_result": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "SP001",
+        "research_profile": "THEMATIC",
+        "publication_profile": "LONGFORM_SPECIAL",
+        "package_id": "PKG-4-GLM",
+        "draft_version": "v1.0",
+        "status": "ESTABLISHED",
+        "basis": {
+          "draft_package_sha256": "1ee2b46861035859269b90d5410f2b7dcb809a1e158bce02e1a8d838fd08737a",
+          "prompt_id": "article-drafting-v2",
+          "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+        },
+        "runner": {
+          "provider": "OpenAI",
+          "model": "GPT-5.6 Sol",
+          "invocation": "interactive ChatGPT project drafting; exact accepted Evidence/Architecture constrained",
+          "generated_at": "2026-08-26T09:45:00Z",
+          "run_reference": "SP001 Core v2 clean post-Architecture drafting r1"
+        },
+        "headline": "GLMは、bilingual foundationからagentic systems engineeringへ射程を広げた",
+        "deck": "GLM-130Bのbilingual foundationを初期anchorに置き、GLM-5のsparse attention、asynchronous RL、local servingまでをsystem engineeringの拡張として読む。",
+        "deck_attribution_mode": "ATTRIBUTED",
+        "deck_evidence_refs": [
+          {
+            "evidence_task_id": "evidence:SP001:65713fcea4fed72a",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d009-01",
+            "subject_id": "glm-130b",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d012-01",
+            "subject_id": "glm-5",
+            "subject_role": "PRIMARY_SUBJECT"
+          }
+        ],
+        "blocks": [
+          {
+            "block_id": "p4-anchor",
+            "block_type": "PARAGRAPH",
+            "text": "GLM-130Bは2022年のlarge bilingual pre-trained modelとして、後年のGLM familyを読むための歴史的anchorになる。ただし、ここで確立できるのは時系列と公開された研究対象であり、後続組織や個別技術への直接的なinstitutional ancestryまでではない。",
+            "attribution_mode": "ATTRIBUTED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:65713fcea4fed72a",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d009-01",
+                "subject_id": "glm-130b",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p4-glm5",
+            "block_type": "PARAGRAPH",
+            "text": "GLM-5の一次資料は744B total / 40B active、28.5T tokens、sparse-attention reuse、asynchronous RL infrastructure、long-horizon agentic engineering、複数のlocal-serving recipeをまとめて提示する。model architecture、post-training infrastructure、deploymentが同じsystem設計の問題になっている。",
+            "attribution_mode": "ATTRIBUTED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d012-01",
+                "subject_id": "glm-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p4-boundary",
+            "block_type": "PARAGRAPH",
+            "text": "GLM-5のcheckpoint licenseやbenchmark comparabilityはartifact-specificな未解決境界として残る。また他family由来技術への言及があっても、それを組織的系譜や包括的な技術継承へ拡張しない。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d012-01",
+                "subject_id": "glm-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+                "kind": "LIMITATION",
+                "evidence_id": "lim-sp001-d012-01",
+                "subject_id": "glm-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "PKG-4-GLM-boundaries",
+            "block_type": "CLAIM_BOUNDARY",
+            "text": "この節の読解上の境界: Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source. / repository/model license terms / GLM-5における他family由来技術の利用はfirst-party evidenceが明示する範囲に限定し、institutional ancestryへ拡張しない。",
+            "attribution_mode": "INFERENCE",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+                "kind": "LIMITATION",
+                "evidence_id": "lim-sp001-d012-01",
+                "subject_id": "glm-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          }
+        ],
+        "must_cover_coverage": [
+          {
+            "requirement": "SP001-O01",
+            "block_ids": [
+              "p4-anchor",
+              "p4-glm5",
+              "p4-boundary",
+              "PKG-4-GLM-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O02",
+            "block_ids": [
+              "p4-anchor",
+              "p4-glm5",
+              "p4-boundary",
+              "PKG-4-GLM-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O03",
+            "block_ids": [
+              "p4-anchor",
+              "p4-glm5",
+              "p4-boundary",
+              "PKG-4-GLM-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O04",
+            "block_ids": [
+              "p4-anchor",
+              "p4-glm5",
+              "p4-boundary",
+              "PKG-4-GLM-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O05",
+            "block_ids": [
+              "p4-anchor",
+              "p4-glm5",
+              "p4-boundary",
+              "PKG-4-GLM-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O06",
+            "block_ids": [
+              "p4-anchor",
+              "p4-glm5",
+              "p4-boundary",
+              "PKG-4-GLM-boundaries"
+            ]
+          }
+        ],
+        "boundary_dispositions": [
+          {
+            "boundary": "Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-4-GLM-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "repository/model license terms",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-4-GLM-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "GLM-5における他family由来技術の利用はfirst-party evidenceが明示する範囲に限定し、institutional ancestryへ拡張しない。",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-4-GLM-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          }
+        ],
+        "profile_extensions": {},
+        "publication_extensions": {}
+      }
+    },
+    {
+      "package_id": "PKG-5-KIMI",
+      "drafting_order": 5,
+      "draft_package_sha256": "4fa70320b38ff9b5605dbda7d400aa7752cfd9b7ff950063cd40528585566df7",
+      "draft_result_sha256": "7db27e2ac87a93860a0532af23afb0f9e836302a41c6bb75df48e4feb8a0e47a",
+      "draft_result": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "SP001",
+        "research_profile": "THEMATIC",
+        "publication_profile": "LONGFORM_SPECIAL",
+        "package_id": "PKG-5-KIMI",
+        "draft_version": "v1.0",
+        "status": "ESTABLISHED",
+        "basis": {
+          "draft_package_sha256": "4fa70320b38ff9b5605dbda7d400aa7752cfd9b7ff950063cd40528585566df7",
+          "prompt_id": "article-drafting-v2",
+          "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+        },
+        "runner": {
+          "provider": "OpenAI",
+          "model": "GPT-5.6 Sol",
+          "invocation": "interactive ChatGPT project drafting; exact accepted Evidence/Architecture constrained",
+          "generated_at": "2026-08-26T09:45:00Z",
+          "run_reference": "SP001 Core v2 clean post-Architecture drafting r1"
+        },
+        "headline": "Kimiは、long contextとmultimodal reasoningからopen-weight agentへ進んだ",
+        "deck": "k1.5のlong-context multimodal reasoning/RLをbridgeとし、K3の1M context・sparse MoE・native multimodality・long-horizon agentic focusへ至る変化を追う。",
+        "deck_attribution_mode": "ATTRIBUTED",
+        "deck_evidence_refs": [
+          {
+            "evidence_task_id": "evidence:SP001:6d60bb1c725326d0",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d013-01",
+            "subject_id": "kimi-k1-5",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:SP001:255541abbbc51258",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d016-01",
+            "subject_id": "kimi-k3",
+            "subject_role": "PRIMARY_SUBJECT"
+          }
+        ],
+        "blocks": [
+          {
+            "block_id": "p5-k15",
+            "block_type": "PARAGRAPH",
+            "text": "Kimi k1.5はlong-context multimodal reasoningとRLを結びつけた段階として位置づく。これは後続K2/K3への直接的な技術継承を証明するものではないが、Kimi familyが長文脈とreasoningを早期から主要テーマに置いていたことを示すbridgeになる。",
+            "attribution_mode": "ATTRIBUTED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:6d60bb1c725326d0",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d013-01",
+                "subject_id": "kimi-k1-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p5-k3",
+            "block_type": "PARAGRAPH",
+            "text": "Kimi K3では2.8T open-weight native multimodal model、efficient-attention/residual mechanisms、1M context、sparse MoE、long-horizon coding/agentic focusが同じrelease lineに集約される。long contextは単独機能ではなく、multimodalityとagentic executionを支えるsystem propertyへ変わっている。",
+            "attribution_mode": "ATTRIBUTED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:255541abbbc51258",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d016-01",
+                "subject_id": "kimi-k3",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p5-boundary",
+            "block_type": "PARAGRAPH",
+            "text": "K3のcheckpoint license、reported performance、release detailはartifact-specific evidenceを超えて一般化しない。特にsource-local benchmarkを他familyの異なるharnessやversionと横断順位へ変換しない。",
+            "attribution_mode": "MIXED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:255541abbbc51258",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d016-01",
+                "subject_id": "kimi-k3",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:255541abbbc51258",
+                "kind": "LIMITATION",
+                "evidence_id": "lim-sp001-d016-01",
+                "subject_id": "kimi-k3",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "PKG-5-KIMI-boundaries",
+            "block_type": "CLAIM_BOUNDARY",
+            "text": "この節の読解上の境界: Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source. / artifact-specific license terms / source-local benchmark conditions / Kimi K3のlicense、reported performance、release detailはartifact-specific evidenceに限定する。",
+            "attribution_mode": "INFERENCE",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:255541abbbc51258",
+                "kind": "LIMITATION",
+                "evidence_id": "lim-sp001-d016-01",
+                "subject_id": "kimi-k3",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          }
+        ],
+        "must_cover_coverage": [
+          {
+            "requirement": "SP001-O02",
+            "block_ids": [
+              "p5-k15",
+              "p5-k3",
+              "p5-boundary",
+              "PKG-5-KIMI-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O03",
+            "block_ids": [
+              "p5-k15",
+              "p5-k3",
+              "p5-boundary",
+              "PKG-5-KIMI-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O04",
+            "block_ids": [
+              "p5-k15",
+              "p5-k3",
+              "p5-boundary",
+              "PKG-5-KIMI-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O05",
+            "block_ids": [
+              "p5-k15",
+              "p5-k3",
+              "p5-boundary",
+              "PKG-5-KIMI-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O06",
+            "block_ids": [
+              "p5-k15",
+              "p5-k3",
+              "p5-boundary",
+              "PKG-5-KIMI-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O07",
+            "block_ids": [
+              "p5-k15",
+              "p5-k3",
+              "p5-boundary",
+              "PKG-5-KIMI-boundaries"
+            ]
+          }
+        ],
+        "boundary_dispositions": [
+          {
+            "boundary": "Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source.",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-5-KIMI-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "artifact-specific license terms",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-5-KIMI-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "source-local benchmark conditions",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-5-KIMI-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "Kimi K3のlicense、reported performance、release detailはartifact-specific evidenceに限定する。",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-5-KIMI-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          }
+        ],
+        "profile_extensions": {},
+        "publication_extensions": {}
+      }
+    },
+    {
+      "package_id": "PKG-6-FRONTIER-SYNTHESIS",
+      "drafting_order": 6,
+      "draft_package_sha256": "1df731001667487e8d4e6eb65d8f5cdf15709386db934100d02451ec9caac460",
+      "draft_result_sha256": "6f9f5e0a74303fbf184ba98ecf4ccbf7d69668e7fdd6e427bb6f3e8745a5434c",
+      "draft_result": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "SP001",
+        "research_profile": "THEMATIC",
+        "publication_profile": "LONGFORM_SPECIAL",
+        "package_id": "PKG-6-FRONTIER-SYNTHESIS",
+        "draft_version": "v1.0",
+        "status": "ESTABLISHED",
+        "basis": {
+          "draft_package_sha256": "1df731001667487e8d4e6eb65d8f5cdf15709386db934100d02451ec9caac460",
+          "prompt_id": "article-drafting-v2",
+          "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+        },
+        "runner": {
+          "provider": "OpenAI",
+          "model": "GPT-5.6 Sol",
+          "invocation": "interactive ChatGPT project drafting; exact accepted Evidence/Architecture constrained",
+          "generated_at": "2026-08-26T09:45:00Z",
+          "run_reference": "SP001 Core v2 clean post-Architecture drafting r1"
+        },
+        "headline": "2026年のfrontierで収束したのは「一つの中国モデル」ではなく、設計圧力だった",
+        "deck": "DeepSeek、Qwen、GLM、Kimiは同じ系譜へ統合されたのではない。長文脈、sparsity、reasoning/post-training、agentic execution、distribution/runtimeという共通圧力へ、異なるfamily strategyのまま応答した。",
+        "deck_attribution_mode": "ATTRIBUTED",
+        "deck_evidence_refs": [
+          {
+            "evidence_task_id": "evidence:SP001:1785bf3f5c6f6444",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d005-01",
+            "subject_id": "deepseek-v4",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:SP001:afc0e0cae360c851",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d008-01",
+            "subject_id": "qwen3-8",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d012-01",
+            "subject_id": "glm-5",
+            "subject_role": "PRIMARY_SUBJECT"
+          },
+          {
+            "evidence_task_id": "evidence:SP001:255541abbbc51258",
+            "kind": "CLAIM",
+            "evidence_id": "claim-sp001-d016-01",
+            "subject_id": "kimi-k3",
+            "subject_role": "PRIMARY_SUBJECT"
+          }
+        ],
+        "blocks": [
+          {
+            "block_id": "p6-history",
+            "block_type": "PARAGRAPH",
+            "text": "2022–2024年のGLM-130B、Baichuan 2、DeepSeek LLM、Qwen2が示すのは、後のfrontier competitionが単一の起源から伸びたのではなく、複数familyとdistribution経路の並存から形成されたということだ。",
+            "attribution_mode": "ATTRIBUTED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:65713fcea4fed72a",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d009-01",
+                "subject_id": "glm-130b",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:1c44a6ef76242055",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d019-01",
+                "subject_id": "baichuan-2",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:dcc22d5fb97ef241",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d001-01",
+                "subject_id": "deepseek-llm",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:11ce8f2212731f9d",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d006-01",
+                "subject_id": "qwen2",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p6-convergence",
+            "block_type": "PARAGRAPH",
+            "text": "2026年のendpointを見ると、DeepSeek V4は1M contextとsparse/token-compression・agentic coding、Qwen3.8はopen-weight agent/coding/researchとdistribution、GLM-5はsparse attention・asynchronous RL・local serving、Kimi K3は1M context・sparse MoE・native multimodality・long-horizon agentic focusを掲げる。共通しているのは、model単体のスコアではなくsystem-levelの実行効率とagentic deploymentへ競争軸が広がったことだ。",
+            "attribution_mode": "ATTRIBUTED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:1785bf3f5c6f6444",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d005-01",
+                "subject_id": "deepseek-v4",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:afc0e0cae360c851",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d008-01",
+                "subject_id": "qwen3-8",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d012-01",
+                "subject_id": "glm-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:255541abbbc51258",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d016-01",
+                "subject_id": "kimi-k3",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p6-differences",
+            "block_type": "PARAGRAPH",
+            "text": "収束は同一化ではない。DeepSeekはV2の効率設計とR1のRL post-trainingを強い転換点に持ち、Qwenはmodel breadthとhub/deployment distribution、GLMはRL/serving infrastructure、Kimiはlong-context multimodal reasoningからagentic systemへ至る軸が目立つ。これらは互いに似た技術圧力へ応答しつつも、familyごとの履歴とdeveloper-facing strategyを残している。",
+            "attribution_mode": "ATTRIBUTED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:b4feee60c7b42d7e",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d002-01",
+                "subject_id": "deepseek-v2",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:815652c418eda76e",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d004-01",
+                "subject_id": "deepseek-r1",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:11ce8f2212731f9d",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d006-01",
+                "subject_id": "qwen2",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d012-01",
+                "subject_id": "glm-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:6d60bb1c725326d0",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d013-01",
+                "subject_id": "kimi-k1-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "p6-answer",
+            "block_type": "PARAGRAPH",
+            "text": "中国発open-weight ecosystemがfrontier competitionの恒常的な構成要素になった理由は、単一benchmarkの首位ではなく、複数familyがarchitecture、post-training、long context、agentic workload、model hubとservingを別々の強みとして積み上げ、それらを利用可能なartifactとして継続的に配布する競争構造を形成した点にある。",
+            "attribution_mode": "ATTRIBUTED",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:11ce8f2212731f9d",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d006-01",
+                "subject_id": "qwen2",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:afc0e0cae360c851",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d008-01",
+                "subject_id": "qwen3-8",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d012-01",
+                "subject_id": "glm-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:255541abbbc51258",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d016-01",
+                "subject_id": "kimi-k3",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:1785bf3f5c6f6444",
+                "kind": "CLAIM",
+                "evidence_id": "claim-sp001-d005-01",
+                "subject_id": "deepseek-v4",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          },
+          {
+            "block_id": "PKG-6-FRONTIER-SYNTHESIS-boundaries",
+            "block_type": "CLAIM_BOUNDARY",
+            "text": "この節の読解上の境界: 各familyの共通点をarchitecture convergenceとして整理しても、organizationやinstitutional ancestryの同一化を主張しない。 / 2026年時点の各checkpointのlicense条件はartifact固有であり、repository licenseからweight licenseを一般化しない。 / 2026 frontier性能比較はevaluation条件・harness・versionが一致しないためsource-local reported positionとしてのみ扱い、横断ランキングへ正規化しない。 / 総括は前5 packageで確立したevidence-bound claimsを再構成するsynthesisであり、新たな未検証の比較主張を導入しない。",
+            "attribution_mode": "INFERENCE",
+            "evidence_refs": [
+              {
+                "evidence_task_id": "evidence:SP001:1785bf3f5c6f6444",
+                "kind": "LIMITATION",
+                "evidence_id": "lim-sp001-d005-01",
+                "subject_id": "deepseek-v4",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:afc0e0cae360c851",
+                "kind": "LIMITATION",
+                "evidence_id": "lim-sp001-d008-01",
+                "subject_id": "qwen3-8",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:ca3b54b826e87f12",
+                "kind": "LIMITATION",
+                "evidence_id": "lim-sp001-d012-01",
+                "subject_id": "glm-5",
+                "subject_role": "PRIMARY_SUBJECT"
+              },
+              {
+                "evidence_task_id": "evidence:SP001:255541abbbc51258",
+                "kind": "LIMITATION",
+                "evidence_id": "lim-sp001-d016-01",
+                "subject_id": "kimi-k3",
+                "subject_role": "PRIMARY_SUBJECT"
+              }
+            ]
+          }
+        ],
+        "must_cover_coverage": [
+          {
+            "requirement": "SP001-O01",
+            "block_ids": [
+              "p6-history",
+              "p6-convergence",
+              "p6-differences",
+              "p6-answer",
+              "PKG-6-FRONTIER-SYNTHESIS-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O02",
+            "block_ids": [
+              "p6-history",
+              "p6-convergence",
+              "p6-differences",
+              "p6-answer",
+              "PKG-6-FRONTIER-SYNTHESIS-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O03",
+            "block_ids": [
+              "p6-history",
+              "p6-convergence",
+              "p6-differences",
+              "p6-answer",
+              "PKG-6-FRONTIER-SYNTHESIS-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O04",
+            "block_ids": [
+              "p6-history",
+              "p6-convergence",
+              "p6-differences",
+              "p6-answer",
+              "PKG-6-FRONTIER-SYNTHESIS-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O05",
+            "block_ids": [
+              "p6-history",
+              "p6-convergence",
+              "p6-differences",
+              "p6-answer",
+              "PKG-6-FRONTIER-SYNTHESIS-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O06",
+            "block_ids": [
+              "p6-history",
+              "p6-convergence",
+              "p6-differences",
+              "p6-answer",
+              "PKG-6-FRONTIER-SYNTHESIS-boundaries"
+            ]
+          },
+          {
+            "requirement": "SP001-O07",
+            "block_ids": [
+              "p6-history",
+              "p6-convergence",
+              "p6-differences",
+              "p6-answer",
+              "PKG-6-FRONTIER-SYNTHESIS-boundaries"
+            ]
+          }
+        ],
+        "boundary_dispositions": [
+          {
+            "boundary": "各familyの共通点をarchitecture convergenceとして整理しても、organizationやinstitutional ancestryの同一化を主張しない。",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-6-FRONTIER-SYNTHESIS-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "2026年時点の各checkpointのlicense条件はartifact固有であり、repository licenseからweight licenseを一般化しない。",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-6-FRONTIER-SYNTHESIS-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "2026 frontier性能比較はevaluation条件・harness・versionが一致しないためsource-local reported positionとしてのみ扱い、横断ランキングへ正規化しない。",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-6-FRONTIER-SYNTHESIS-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          },
+          {
+            "boundary": "総括は前5 packageで確立したevidence-bound claimsを再構成するsynthesisであり、新たな未検証の比較主張を導入しない。",
+            "handling": "EXPLICITLY_STATED",
+            "block_ids": [
+              "PKG-6-FRONTIER-SYNTHESIS-boundaries"
+            ],
+            "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+          }
+        ],
+        "profile_extensions": {},
+        "publication_extensions": {}
+      }
+    }
+  ],
+  "profile_payload_requirements": [
+    "branch_transition_synthesis",
+    "parallel_competing_relations",
+    "unresolved_lineage_questions",
+    "historical_attribution_boundaries"
+  ],
+  "publication_payload_requirements": []
+}
