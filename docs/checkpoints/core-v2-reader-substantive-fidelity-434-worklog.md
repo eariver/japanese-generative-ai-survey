@@ -3,6 +3,7 @@
 Date: 2026-08-27
 Branch: `fix/core-v2-reader-substantive-fidelity-434`
 Base reviewed `main`: `079dac9605e4cf55a239de6f03e37a93f756a918`
+Maintenance PR: `#473` — `Core v2: enforce reader substantive Architecture fidelity`
 
 ## Trigger
 
@@ -35,9 +36,16 @@ Implemented so far:
 
 The current SP001 Reader Manifest maps several package must-cover requirements to the same whole-section location. Under the new gate this cannot establish substantive fidelity. A regenerated candidate must provide distinct reader-facing subsection/section treatment, sufficient source-backed depth, and explicit final-synthesis role before Reader Manuscript / semantic review authority can pass.
 
+## Current validation state
+
+- PR #473 is open as Draft against `main`.
+- The operator-bridge `pull_request_target` run correctly skipped because this is not an operator transport PR.
+- The normal `pipeline-contract-tests` workflow did not appear on the initial connector-created PR event. A subsequent branch update is being used to force a PR synchronize event; the exact-head check suite must be inspected before treating CI as evidence.
+- No Core merge has been performed.
+
 ## Remaining steps
 
-1. Open maintenance PR against current `main` and run exact-head CI.
+1. Obtain exact-head diagnostic CI for PR #473.
 2. Repair any regressions until diagnostic CI is green.
 3. Execute the repository Core v2 final-audit rule on one frozen maintenance SHA; any mutation invalidates prior audit results.
 4. Human-review and merge the Core maintenance only after the required audit surface is complete.
