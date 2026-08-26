@@ -1,0 +1,209 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "PKG-3-QWEN",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "eed0393d0c850c861a4dbae583951e55460644c916f2972890ed90d6dcce015b",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project drafting; exact accepted Evidence/Architecture constrained",
+    "generated_at": "2026-08-26T09:45:00Z",
+    "run_reference": "SP001 Core v2 clean post-Architecture drafting r1"
+  },
+  "headline": "Qwenの強みは、単一checkpointよりmodel breadthとdistributionにある",
+  "deck": "Qwen2のdense/MoE・多サイズ展開とHugging Face/ModelScope・deployment資源は、Qwen3.8のagent/coding/research lineへつながるdistribution-firstの競争軸を形づくる。",
+  "deck_attribution_mode": "ATTRIBUTED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP001:11ce8f2212731f9d",
+      "kind": "CLAIM",
+      "evidence_id": "claim-sp001-d006-01",
+      "subject_id": "qwen2",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP001:afc0e0cae360c851",
+      "kind": "CLAIM",
+      "evidence_id": "claim-sp001-d008-01",
+      "subject_id": "qwen3-8",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p3-qwen2",
+      "block_type": "PARAGRAPH",
+      "text": "Qwen2はdenseとMoEを含む広いmodel rangeを持ち、multilingual、coding、math、reasoningを横断して展開された。同時にHugging FaceとModelScopeへの配布、quantization、fine-tuning、deployment資源が一次資料に組み込まれており、model breadthと利用経路を一体のfamily strategyとして捉えられる。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP001:11ce8f2212731f9d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-sp001-d006-01",
+          "subject_id": "qwen2",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-qwen38",
+      "block_type": "PARAGRAPH",
+      "text": "Qwen3.8では2026年のopen-weight agent/coding/research lineとHugging Face/ModelScope distributionが前面に出る。ここでの変化は、単に能力項目が増えたことではなく、開発者がmodelを取得し、agentic workloadへ接続するまでの経路そのものが競争力になった点にある。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP001:afc0e0cae360c851",
+          "kind": "CLAIM",
+          "evidence_id": "claim-sp001-d008-01",
+          "subject_id": "qwen3-8",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-license",
+      "block_type": "PARAGRAPH",
+      "text": "ただしrepository licenseとcheckpoint固有のweight/model licenseは別authorityである。Qwen3.8についてrelease identity、license、performance条件に未解決項目が残る以上、family全体へ同一条件を一般化しない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP001:afc0e0cae360c851",
+          "kind": "CLAIM",
+          "evidence_id": "claim-sp001-d008-01",
+          "subject_id": "qwen3-8",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP001:afc0e0cae360c851",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-sp001-d008-01",
+          "subject_id": "qwen3-8",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "PKG-3-QWEN-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source. / release dates and checkpoint identities / repository versus weight-license distinction / source-local performance conditions / Qwen repository licenseと各checkpointのweight/model licenseを同一視しない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP001:afc0e0cae360c851",
+          "kind": "LIMITATION",
+          "evidence_id": "lim-sp001-d008-01",
+          "subject_id": "qwen3-8",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "SP001-O01",
+      "block_ids": [
+        "p3-qwen2",
+        "p3-qwen38",
+        "p3-license",
+        "PKG-3-QWEN-boundaries"
+      ]
+    },
+    {
+      "requirement": "SP001-O02",
+      "block_ids": [
+        "p3-qwen2",
+        "p3-qwen38",
+        "p3-license",
+        "PKG-3-QWEN-boundaries"
+      ]
+    },
+    {
+      "requirement": "SP001-O03",
+      "block_ids": [
+        "p3-qwen2",
+        "p3-qwen38",
+        "p3-license",
+        "PKG-3-QWEN-boundaries"
+      ]
+    },
+    {
+      "requirement": "SP001-O05",
+      "block_ids": [
+        "p3-qwen2",
+        "p3-qwen38",
+        "p3-license",
+        "PKG-3-QWEN-boundaries"
+      ]
+    },
+    {
+      "requirement": "SP001-O06",
+      "block_ids": [
+        "p3-qwen2",
+        "p3-qwen38",
+        "p3-license",
+        "PKG-3-QWEN-boundaries"
+      ]
+    },
+    {
+      "requirement": "SP001-O07",
+      "block_ids": [
+        "p3-qwen2",
+        "p3-qwen38",
+        "p3-license",
+        "PKG-3-QWEN-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "PKG-3-QWEN-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "release dates and checkpoint identities",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "PKG-3-QWEN-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "repository versus weight-license distinction",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "PKG-3-QWEN-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "source-local performance conditions",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "PKG-3-QWEN-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Qwen repository licenseと各checkpointのweight/model licenseを同一視しない。",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "PKG-3-QWEN-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}
