@@ -1,0 +1,85 @@
+name: Temporary SP001 reader TOC fix build
+
+on:
+  push:
+    branches:
+      - transport/sp001-reader-fix-toc-r1
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact transport revision
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Reduce TOC to section level only
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('surveys/special/SP001/main.tex')
+          text=p.read_text(encoding='utf-8')
+          needle='\\tableofcontents\n'
+          repl='\\setcounter{tocdepth}{1}\n\\tableofcontents\n'
+          if text.count(needle) != 1:
+              raise SystemExit('expected exactly one tableofcontents')
+          if '\\setcounter{tocdepth}{1}' in text:
+              raise SystemExit('tocdepth already set')
+          p.write_text(text.replace(needle,repl),encoding='utf-8')
+          PY
+
+      - name: Set reproducible PDF timestamp
+        shell: bash
+        run: echo "SOURCE_DATE_EPOCH=$(git show -s --format=%ct HEAD)" >> "$GITHUB_ENV"
+
+      - name: Compile SP001 with LuaLaTeX
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: main.tex
+          working_directory: surveys/special/SP001
+          texlive_version: 2026
+          latexmk_use_lualatex: true
+
+      - name: Validate build log and record PDF metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          pdf="surveys/special/SP001/main.pdf"
+          log="surveys/special/SP001/main.log"
+          test -s "$pdf" && test -s "$log"
+          blocking=$(grep -E -n 'LaTeX Warning: (There were undefined references|Citation .* undefined)|Package biblatex Warning: Please (re)?run|Missing character:' "$log" || true)
+          if [ -n "$blocking" ]; then
+            printf '%s\n' "$blocking"
+            exit 1
+          fi
+          pages=$(python - "$log" <<'PY'
+          import re,sys
+          text=open(sys.argv[1],encoding='utf-8',errors='replace').read()
+          matches=re.findall(r'Output written on .*?\((\d+) pages?',text,re.S)
+          if not matches:
+              raise SystemExit('could not determine PDF page count')
+          print(matches[-1])
+          PY
+          )
+          sha=$(sha256sum "$pdf" | awk '{print $1}')
+          bytes=$(stat -c '%s' "$pdf")
+          printf '{"page_count":%s,"sha256":"%s","byte_count":%s}\n' "$pages" "$sha" "$bytes" > /tmp/sp001-pdf-metadata.json
+          cat /tmp/sp001-pdf-metadata.json
+
+      - name: Commit corrected source and exact PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add surveys/special/SP001/main.tex
+          git add -f surveys/special/SP001/main.pdf
+          git commit -m 'Transport: fix SP001 TOC pagination and rebuild PDF'
+          git push origin HEAD:transport/sp001-reader-fix-toc-r1
