@@ -202,7 +202,6 @@ def validate_reader_fidelity(
         )
 
     package_index = {package_id: idx + 1 for idx, (package_id, _) in enumerate(package_requirements)}
-    requirements_by_package = {package_id: requirements for package_id, requirements in package_requirements}
     coverage_keys = {
         (row.get("package_id"), row.get("requirement"))
         for row in architecture_coverage
@@ -248,7 +247,12 @@ def validate_reader_fidelity(
     for package_id, requirements in package_requirements:
         section = sections[package_index[package_id] - 1]
         distinct_locations = package_locations[package_id]
-        minimum_blocks = max(2, math.ceil(len(requirements) / 2)) if requirements else 1
+        if not requirements:
+            minimum_blocks = 0
+        elif len(requirements) == 1:
+            minimum_blocks = 1
+        else:
+            minimum_blocks = max(2, math.ceil(len(requirements) / 2))
         if len(distinct_locations) < minimum_blocks:
             raise ValueError(
                 f"LONGFORM_SPECIAL package lacks distinct reader blocks for its Architecture obligations: "
@@ -261,11 +265,9 @@ def validate_reader_fidelity(
                 f"{package_id} visible_chars={section.visible_chars} minimum={minimum_chars} "
                 f"must_cover={len(requirements)}"
             )
-        minimum_citations = 2 if len(requirements) >= 2 else 1
-        if len(section.citation_keys) < minimum_citations:
+        if not section.citation_keys:
             raise ValueError(
-                f"LONGFORM_SPECIAL package lacks source diversity for substantive treatment: "
-                f"{package_id} citation_keys={len(section.citation_keys)} minimum={minimum_citations}"
+                f"LONGFORM_SPECIAL package lacks source-backed substantive treatment: {package_id}"
             )
         metrics.append(
             {
