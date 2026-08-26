@@ -7,61 +7,102 @@ from scripts import survey_reader_fidelity_v2 as fidelity
 
 class SurveyReaderFidelityV2Tests(unittest.TestCase):
     @staticmethod
-    def _architecture(requirements: list[str] | None = None, target_pages: int = 18) -> dict[str, object]:
+    def _architecture(target_pages: int = 18) -> dict[str, object]:
         return {
             "page_plan": {"target_pages": target_pages, "max_pages": 24},
             "packages": [
                 {
                     "package_id": "PKG-1",
-                    "title": "Approved final synthesis package",
-                    "must_cover_requirements": requirements or ["R1", "R2"],
-                }
+                    "title": "Family trajectory",
+                    "must_cover_requirements": ["R1", "R2"],
+                },
+                {
+                    "package_id": "PKG-2",
+                    "title": "Cross-family synthesis",
+                    "must_cover_requirements": [],
+                },
             ],
         }
 
     @staticmethod
-    def _body(seed: str) -> str:
-        return (seed + "は一次資料に基づいて技術的転換、実装上の意味、残る境界を読者向けに説明する。") * 45
-
-    def _source(self, title: str = "総括：Frontier構造") -> str:
+    def _source() -> str:
         return (
-            f"\\section{{{title}}}\n"
-            "\\subsection{技術的転換}\n"
-            + self._body("転換A")
-            + "\\autocite{sourceA}\n"
-            "\\subsection{残る境界}\n"
-            + self._body("境界B")
-            + "\\autocite{sourceB}\n"
+            "\\section{Family trajectory}\n"
+            "\\subsection{Transition}\n"
+            "A concrete reader-facing transition is explained here.\\autocite{sourceA}\n"
+            "\\subsection{Boundary}\n"
+            "A distinct reader-facing limitation is explained here.\\autocite{sourceB}\n"
+            "\\section{What converged and what remained different}\n"
+            "The closing section synthesizes the two technical paths without a ranking.\\autocite{sourceA,sourceB}\n"
         )
 
     @staticmethod
-    def _coverage(title: str = "総括：Frontier構造") -> list[dict[str, object]]:
+    def _coverage(shared: bool = False) -> list[dict[str, object]]:
+        second = "Subsection 1.1 — Transition" if shared else "Subsection 1.2 — Boundary"
         return [
             {
                 "package_id": "PKG-1",
                 "requirement": "R1",
                 "status": "FULFILLED",
-                "reader_locations": ["Subsection 1.1 — 技術的転換"],
+                "reader_locations": ["Subsection 1.1 — Transition"],
             },
             {
                 "package_id": "PKG-1",
                 "requirement": "R2",
                 "status": "FULFILLED",
-                "reader_locations": ["Subsection 1.2 — 残る境界"],
+                "reader_locations": [second],
             },
         ]
 
     @staticmethod
-    def _reader_requirements(title: str = "総括：Frontier構造") -> list[dict[str, object]]:
+    def _reader_requirements() -> list[dict[str, object]]:
         return [
             {
                 "requirement_id": "FINAL_SYNTHESIS",
                 "status": "FULFILLED",
-                "reader_locations": [f"Section 1 — {title}"],
+                "reader_locations": ["Section 2 — What converged and what remained different"],
             }
         ]
 
-    def test_longform_accepts_distinct_substantive_source_backed_blocks(self) -> None:
+    @staticmethod
+    def _manuscript(shared: bool = False) -> dict[str, object]:
+        return {
+            "architecture_coverage": SurveyReaderFidelityV2Tests._coverage(shared),
+            "reader_requirements": SurveyReaderFidelityV2Tests._reader_requirements(),
+        }
+
+    @staticmethod
+    def _semantic_checks(shared: bool = False) -> list[dict[str, object]]:
+        coverage_locations = {"Subsection 1.1 — Transition"}
+        if not shared:
+            coverage_locations.add("Subsection 1.2 — Boundary")
+        packages = {"package:PKG-1", "package:PKG-2"}
+        return [
+            {
+                "check_id": "ARCHITECTURE_CONTENT_FIDELITY",
+                "status": "PASS",
+                "detail": "The exact reader blocks were semantically reviewed against both approved packages.",
+                "evidence_locations": sorted(packages | coverage_locations),
+            },
+            {
+                "check_id": "FINAL_SYNTHESIS_QUALITY",
+                "status": "PASS",
+                "detail": "The closing section performs a reader-visible synthesis rather than restating internal Architecture.",
+                "evidence_locations": [
+                    "package:PKG-2",
+                    "reader-role:final-synthesis",
+                    "Section 2 — What converged and what remained different",
+                ],
+            },
+            {
+                "check_id": "LONGFORM_TECHNICAL_DEPTH",
+                "status": "PASS",
+                "detail": "Technical depth was reviewed package by package and at each exact coverage block.",
+                "evidence_locations": sorted(packages | coverage_locations),
+            },
+        ]
+
+    def test_longform_traceability_resolves_exact_reader_blocks(self) -> None:
         result = fidelity.validate_reader_fidelity(
             self._source(),
             self._architecture(),
@@ -70,63 +111,58 @@ class SurveyReaderFidelityV2Tests(unittest.TestCase):
             "LONGFORM_SPECIAL",
         )
         self.assertEqual(result["status"], "PASS")
-        self.assertGreaterEqual(result["package_metrics"][0]["mapped_block_count"], 2)
-        self.assertGreaterEqual(result["package_metrics"][0]["citation_key_count"], 2)
-
-    def test_single_requirement_may_use_one_authoritative_source(self) -> None:
-        source = (
-            "\\section{Final synthesis}\n"
-            "\\subsection{Single authoritative transition}\n"
-            + self._body("単一の一次資料で確認できる転換")
-            + "\\autocite{authoritativeSource}\n"
+        self.assertEqual(
+            result["coverage_locations"],
+            ["Subsection 1.1 — Transition", "Subsection 1.2 — Boundary"],
         )
+        self.assertEqual(
+            result["final_synthesis_locations"],
+            ["Section 2 — What converged and what remained different"],
+        )
+
+    def test_deterministic_traceability_does_not_impose_one_package_one_section_or_block_quota(self) -> None:
         result = fidelity.validate_reader_fidelity(
-            source,
-            self._architecture(["R1"]),
-            [
-                {
-                    "package_id": "PKG-1",
-                    "requirement": "R1",
-                    "status": "FULFILLED",
-                    "reader_locations": ["Subsection 1.1 — Single authoritative transition"],
-                }
-            ],
-            self._reader_requirements("Final synthesis"),
+            self._source(),
+            self._architecture(),
+            self._coverage(shared=True),
+            self._reader_requirements(),
             "LONGFORM_SPECIAL",
         )
         self.assertEqual(result["status"], "PASS")
-        self.assertEqual(result["package_metrics"][0]["mapped_block_count"], 1)
-        self.assertEqual(result["package_metrics"][0]["citation_key_count"], 1)
+        self.assertEqual(result["package_locations"]["PKG-1"], ["Subsection 1.1 — Transition"])
+        self.assertEqual(result["package_locations"]["PKG-2"], [])
 
-    def test_longform_rejects_topic_presence_collapsed_into_one_section(self) -> None:
-        architecture = self._architecture(["R1", "R2", "R3"])
-        coverage = [
-            {
-                "package_id": "PKG-1",
-                "requirement": requirement,
-                "status": "FULFILLED",
-                "reader_locations": ["Section 1 — 総括：Frontier構造"],
-            }
-            for requirement in ["R1", "R2", "R3"]
-        ]
-        with self.assertRaisesRegex(ValueError, "at most two Architecture requirements"):
+    def test_longform_rejects_abstract_or_nonexistent_location(self) -> None:
+        bad = self._coverage()
+        bad[0]["reader_locations"] = ["main.tex :: Sections 1-2"]
+        with self.assertRaisesRegex(ValueError, "exact TeX content block"):
             fidelity.validate_reader_fidelity(
                 self._source(),
-                architecture,
-                coverage,
+                self._architecture(),
+                bad,
                 self._reader_requirements(),
                 "LONGFORM_SPECIAL",
             )
 
-    def test_longform_rejects_thin_reader_block_even_when_requirement_is_named(self) -> None:
+        bad = self._coverage()
+        bad[0]["reader_locations"] = ["Subsection 1.1 — Wrong title"]
+        with self.assertRaisesRegex(ValueError, "title does not match"):
+            fidelity.validate_reader_fidelity(
+                self._source(),
+                self._architecture(),
+                bad,
+                self._reader_requirements(),
+                "LONGFORM_SPECIAL",
+            )
+
+    def test_longform_rejects_empty_exact_block(self) -> None:
         source = (
-            "\\section{総括：Frontier構造}\n"
-            "\\subsection{技術的転換}\n短い説明。\\autocite{sourceA}\n"
-            "\\subsection{残る境界}\n"
-            + self._body("境界B")
-            + "\\autocite{sourceB}\n"
+            "\\section{Family trajectory}\n"
+            "\\subsection{Transition}\n"
+            "\\subsection{Boundary}\nSome content.\n"
+            "\\section{What converged and what remained different}\nClosing content.\n"
         )
-        with self.assertRaisesRegex(ValueError, "too thin for substantive Architecture coverage"):
+        with self.assertRaisesRegex(ValueError, "empty TeX content block"):
             fidelity.validate_reader_fidelity(
                 source,
                 self._architecture(),
@@ -135,47 +171,73 @@ class SurveyReaderFidelityV2Tests(unittest.TestCase):
                 "LONGFORM_SPECIAL",
             )
 
-    def test_final_architecture_package_keeps_reader_visible_synthesis_role(self) -> None:
-        title = "2026年のFrontier構造"
-        with self.assertRaisesRegex(ValueError, "reader-visible as a synthesis/conclusion role"):
-            fidelity.validate_reader_fidelity(
-                self._source(title),
-                self._architecture(),
-                self._coverage(title),
-                self._reader_requirements(title),
-                "LONGFORM_SPECIAL",
+    def test_semantic_review_requires_package_and_exact_block_evidence(self) -> None:
+        profile = {"publication_profile": "LONGFORM_SPECIAL"}
+        checks = self._semantic_checks()
+        fidelity.validate_review_depth(
+            profile,
+            self._architecture(target_pages=7),
+            self._manuscript(),
+            7,
+            checks,
+            "SEMANTIC_EDITORIAL",
+        )
+
+        checks = self._semantic_checks()
+        architecture_row = next(row for row in checks if row["check_id"] == "ARCHITECTURE_CONTENT_FIDELITY")
+        architecture_row["evidence_locations"].remove("Subsection 1.2 — Boundary")
+        with self.assertRaisesRegex(ValueError, "ARCHITECTURE_CONTENT_FIDELITY"):
+            fidelity.validate_review_depth(
+                profile,
+                self._architecture(target_pages=7),
+                self._manuscript(),
+                7,
+                checks,
+                "SEMANTIC_EDITORIAL",
             )
 
-    def test_severely_below_target_review_requires_exact_density_observation(self) -> None:
+    def test_below_target_longform_requires_explicit_density_disposition(self) -> None:
         profile = {"publication_profile": "LONGFORM_SPECIAL"}
-        architecture = self._architecture(target_pages=18)
-        checks = [
-            {
-                "check_id": "ARCHITECTURE_CONTENT_FIDELITY",
-                "status": "PASS",
-                "detail": "Package treatment was reviewed.",
-                "evidence_locations": ["package:PKG-1"],
-            },
-            {
-                "check_id": "FINAL_SYNTHESIS_QUALITY",
-                "status": "PASS",
-                "detail": "Final synthesis role was reviewed.",
-                "evidence_locations": ["package:PKG-1", "reader-role:final-synthesis"],
-            },
-            {
-                "check_id": "LONGFORM_TECHNICAL_DEPTH",
-                "status": "PASS",
-                "detail": "各packageの技術的転換と一次資料の結び付きを個別に確認し、ページ数の少なさが単なるtopic presenceへの圧縮ではないかを検証した。" * 3,
-                "evidence_locations": ["package:PKG-1"],
-            },
-        ]
+        checks = self._semantic_checks()
         with self.assertRaisesRegex(ValueError, "page-plan:7/18"):
-            fidelity.validate_review_depth(profile, architecture, 7, checks, "SEMANTIC_EDITORIAL")
+            fidelity.validate_review_depth(
+                profile,
+                self._architecture(target_pages=18),
+                self._manuscript(),
+                7,
+                checks,
+                "SEMANTIC_EDITORIAL",
+            )
 
-        checks[-1]["evidence_locations"].append("page-plan:7/18")
-        fidelity.validate_review_depth(profile, architecture, 7, checks, "SEMANTIC_EDITORIAL")
+        depth = next(row for row in checks if row["check_id"] == "LONGFORM_TECHNICAL_DEPTH")
+        depth["evidence_locations"].extend(
+            ["page-plan:7/18", "density-review:below-target-substantive"]
+        )
+        fidelity.validate_review_depth(
+            profile,
+            self._architecture(target_pages=18),
+            self._manuscript(),
+            7,
+            checks,
+            "SEMANTIC_EDITORIAL",
+        )
 
-    def test_weekly_profile_is_not_subject_to_longform_block_accounting(self) -> None:
+    def test_final_synthesis_review_requires_exact_location_and_reader_role(self) -> None:
+        profile = {"publication_profile": "LONGFORM_SPECIAL"}
+        checks = self._semantic_checks()
+        final = next(row for row in checks if row["check_id"] == "FINAL_SYNTHESIS_QUALITY")
+        final["evidence_locations"].remove("reader-role:final-synthesis")
+        with self.assertRaisesRegex(ValueError, "FINAL_SYNTHESIS_QUALITY"):
+            fidelity.validate_review_depth(
+                profile,
+                self._architecture(target_pages=7),
+                self._manuscript(),
+                7,
+                checks,
+                "SEMANTIC_EDITORIAL",
+            )
+
+    def test_weekly_profile_is_not_subject_to_longform_traceability(self) -> None:
         result = fidelity.validate_reader_fidelity(
             "weekly reader source",
             {"packages": []},
@@ -184,6 +246,14 @@ class SurveyReaderFidelityV2Tests(unittest.TestCase):
             "WEEKLY_MAGAZINE",
         )
         self.assertEqual(result["status"], "NOT_APPLICABLE")
+        fidelity.validate_review_depth(
+            {"publication_profile": "WEEKLY_MAGAZINE"},
+            {"packages": []},
+            {},
+            6,
+            [],
+            "SEMANTIC_EDITORIAL",
+        )
 
 
 if __name__ == "__main__":
