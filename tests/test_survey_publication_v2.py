@@ -184,10 +184,19 @@ class SurveyPublicationV2Tests(unittest.TestCase):
         profile = quality.core.load_json(profile_path)
         ids = reader._expected_review_checks(self.root, profile, kind)
         rows: list[dict[str, object]] = []
+        exact_blocks = {
+            "Subsection 1.1 — Concrete transition",
+            "Subsection 1.2 — Remaining boundary",
+        }
         for check_id in sorted(ids):
             evidence_locations = ["main.tex:fixture"]
             if profile["publication_profile"] == "LONGFORM_SPECIAL" and kind == "SEMANTIC_EDITORIAL":
-                evidence_locations.extend(["package:PKG-1", "reader-role:final-synthesis", "page-plan:12/12"])
+                if check_id in {"ARCHITECTURE_CONTENT_FIDELITY", "LONGFORM_TECHNICAL_DEPTH"}:
+                    evidence_locations.extend(sorted({"package:PKG-1"} | exact_blocks))
+                if check_id == "FINAL_SYNTHESIS_QUALITY":
+                    evidence_locations.extend(
+                        ["package:PKG-1", "reader-role:final-synthesis", "Section 1 — Final synthesis"]
+                    )
             rows.append(
                 {
                     "check_id": check_id,
