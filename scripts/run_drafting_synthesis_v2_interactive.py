@@ -116,9 +116,21 @@ def _refs(package: dict[str,Any], discovery_ids: list[str], mode: str) -> list[d
         if discovery_ids:
             raise ValueError('ref_mode NONE cannot carry discovery_ids')
         return []
-    authorized={cid for cid in package['package']['primary_candidate_ids']+package['package']['supporting_candidate_ids']}
+    evidence_inputs=package.get('evidence_inputs')
+    if not isinstance(evidence_inputs,list) or not evidence_inputs:
+        raise ValueError(f'Draft Package has no authorized Evidence inputs: {package.get("package_id")}')
+    input_by_candidate={}
+    for offset,row in enumerate(evidence_inputs):
+        if not isinstance(row,dict):
+            raise ValueError(f'Draft Package Evidence input must be an object: index={offset}')
+        candidate_id=row.get('candidate_id')
+        if not isinstance(candidate_id,str) or not candidate_id:
+            raise ValueError(f'Draft Package Evidence input candidate_id invalid: index={offset}')
+        if candidate_id in input_by_candidate:
+            raise ValueError(f'Draft Package Evidence inputs duplicate candidate_id: {candidate_id}')
+        input_by_candidate[candidate_id]=row
+    authorized=set(input_by_candidate)
     matrix_rows=package['candidate_matrix']['rows']
-    input_by_candidate={row['candidate_id']:row for row in package['evidence_inputs']}
     refs=[]
     for did in discovery_ids:
         hits=[row for row in matrix_rows if row['candidate_id'] in authorized and did in row.get('discovery_ids',[])]
