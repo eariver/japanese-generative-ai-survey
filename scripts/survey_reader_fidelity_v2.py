@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-"""Deterministic reader-facing substantive-fidelity checks for Core v2.
+"""Reader-facing Architecture fidelity support for Core v2.
 
-The Reader Manuscript manifest is an accountability map, not evidence that an
-Architecture requirement was substantively fulfilled.  This module resolves
-that map against the exact TeX source and rejects LONGFORM_SPECIAL manuscripts
-that only prove structural/topic presence.
+The Reader Manuscript manifest is an accountability map, not machine proof of
+editorial quality. This module therefore keeps deterministic responsibility
+narrow: LONGFORM_SPECIAL coverage locations must resolve to real, non-empty TeX
+content blocks. Substantive adequacy remains ChatGPT-owned semantic/editorial
+review, but that review must explicitly bind every approved package and every
+exact reader block it claims to have assessed.
 
-The checks deliberately do not turn page targets into quotas.  They measure
-reader-facing content blocks derived from the authored section/subsection
-structure, require Architecture requirements to map to real blocks, and force
-an explicit package-by-package semantic depth review when the rendered result
-is severely below the soft Architecture page target.
+A soft Architecture page target is never a quota. When a LONGFORM_SPECIAL is
+rendered below that target, however, LONGFORM_TECHNICAL_DEPTH must explicitly
+record the actual/target observation and a semantic disposition showing that
+the below-target density was consciously reviewed rather than auto-passed.
 """
 from __future__ import annotations
 
-import math
 import re
 from dataclasses import dataclass
 from typing import Any
@@ -25,7 +25,6 @@ _LOCATION = re.compile(
     r"^(?P<kind>Section|Subsection)\s+(?P<number>\d+(?:\.\d+)?)\s*(?:—|–|-|:)\s*(?P<title>.+)$",
     re.IGNORECASE,
 )
-_FINAL_ROLE = re.compile(r"(?:総括|まとめ|結論|synthesis|conclusion|final)", re.IGNORECASE)
 
 
 @dataclass(frozen=True)
@@ -67,7 +66,11 @@ def _citation_keys(text: str) -> frozenset[str]:
 def parse_longform_blocks(source_text: str) -> tuple[list[ReaderBlock], dict[str, ReaderBlock]]:
     """Parse numbered sections and their subsections into stable reader blocks."""
     matches = list(_HEADING.finditer(source_text))
-    numbered_sections = [m for m in matches if m.group("kind") == "section" and not m.group("star")]
+    numbered_sections = [
+        match
+        for match in matches
+        if match.group("kind") == "section" and not match.group("star")
+    ]
     blocks: list[ReaderBlock] = []
     by_location: dict[str, ReaderBlock] = {}
 
@@ -95,9 +98,10 @@ def parse_longform_blocks(source_text: str) -> tuple[list[ReaderBlock], dict[str
         by_location[section_location] = section_block
 
         subsection_matches = [
-            m for m in matches
-            if m.group("kind") == "subsection"
-            and section_body_start <= m.start() < section_end
+            match
+            for match in matches
+            if match.group("kind") == "subsection"
+            and section_body_start <= match.start() < section_end
         ]
         for subsection_index, subsection_match in enumerate(subsection_matches, start=1):
             subsection_end = (
@@ -130,7 +134,7 @@ def _resolve_location(raw: Any, blocks: list[ReaderBlock]) -> ReaderBlock:
     match = _LOCATION.fullmatch(raw.strip())
     if not match:
         raise ValueError(
-            "reader location must identify an exact TeX content block as "
+            "LONGFORM_SPECIAL reader location must identify an exact TeX content block as "
             "'Section N — title' or 'Subsection N.M — title'"
         )
     kind = match.group("kind").casefold()
@@ -140,13 +144,15 @@ def _resolve_location(raw: Any, blocks: list[ReaderBlock]) -> ReaderBlock:
     if kind == "section" and "." not in number:
         section_number = int(number)
         candidates = [
-            block for block in blocks
+            block
+            for block in blocks
             if block.kind == "SECTION" and block.section_number == section_number
         ]
     elif kind == "subsection" and "." in number:
         first, second = number.split(".", 1)
         candidates = [
-            block for block in blocks
+            block
+            for block in blocks
             if block.kind == "SUBSECTION"
             and block.section_number == int(first)
             and block.subsection_number == int(second)
@@ -158,6 +164,8 @@ def _resolve_location(raw: Any, blocks: list[ReaderBlock]) -> ReaderBlock:
         raise ValueError(
             f"reader location title does not match exact TeX heading: {raw!r} != {block.canonical_location!r}"
         )
+    if block.visible_chars < 1:
+        raise ValueError(f"reader location resolves to an empty TeX content block: {block.canonical_location}")
     return block
 
 
@@ -168,7 +176,9 @@ def _package_requirements(architecture: dict[str, Any]) -> list[tuple[str, list[
         requirements = package.get("must_cover_requirements", [])
         if not isinstance(package_id, str) or not package_id:
             raise ValueError("Architecture package_id invalid")
-        if not isinstance(requirements, list) or not all(isinstance(v, str) and v.strip() for v in requirements):
+        if not isinstance(requirements, list) or not all(
+            isinstance(value, str) and value.strip() for value in requirements
+        ):
             raise ValueError(f"Architecture must-cover requirements invalid: {package_id}")
         out.append((package_id, requirements))
     if not out:
@@ -183,25 +193,22 @@ def validate_reader_fidelity(
     reader_requirements: list[dict[str, Any]],
     publication_profile: str,
 ) -> dict[str, Any]:
-    """Validate exact reader blocks against approved Architecture requirements.
+    """Validate deterministic traceability for LONGFORM_SPECIAL reader claims.
 
-    WEEKLY_MAGAZINE remains governed by its existing publication-boundary and
-    semantic checks.  The stricter quantitative block accounting here targets
-    the remaining #434 LONGFORM_SPECIAL failure observed after the redesign.
+    This intentionally does not infer editorial quality from character counts,
+    page counts, section counts, source counts, or one-package/one-section
+    layout. Those are semantic/editorial questions. The deterministic invariant
+    is that every claimed coverage location is an exact, extant, non-empty
+    reader-facing content block whose bytes are already bound by the manifest.
     """
     if publication_profile != "LONGFORM_SPECIAL":
         return {"status": "NOT_APPLICABLE", "publication_profile": publication_profile}
 
     package_requirements = _package_requirements(architecture)
     blocks, _ = parse_longform_blocks(source_text)
-    sections = [block for block in blocks if block.kind == "SECTION"]
-    if len(sections) != len(package_requirements):
-        raise ValueError(
-            "LONGFORM_SPECIAL reader source must expose exactly one numbered section per approved "
-            f"Architecture package: expected={len(package_requirements)} actual={len(sections)}"
-        )
+    if not blocks:
+        raise ValueError("LONGFORM_SPECIAL reader source exposes no numbered TeX content blocks")
 
-    package_index = {package_id: idx + 1 for idx, (package_id, _) in enumerate(package_requirements)}
     coverage_keys = {
         (row.get("package_id"), row.get("requirement"))
         for row in architecture_coverage
@@ -213,164 +220,146 @@ def validate_reader_fidelity(
         for requirement in requirements
     }
     if coverage_keys != expected_keys:
-        raise ValueError("Architecture coverage must exactly match approved must-cover requirements before fidelity review")
+        raise ValueError(
+            "Architecture coverage must exactly match approved must-cover requirements before fidelity review"
+        )
 
-    location_use: dict[str, int] = {}
-    package_locations: dict[str, set[str]] = {package_id: set() for package_id, _ in package_requirements}
+    package_locations: dict[str, set[str]] = {
+        package_id: set() for package_id, _ in package_requirements
+    }
+    coverage_locations: set[str] = set()
     for row in architecture_coverage:
         package_id = row["package_id"]
         locations = row.get("reader_locations")
         if not isinstance(locations, list) or not locations:
-            raise ValueError(f"Architecture coverage requires reader locations: {package_id}/{row['requirement']}")
+            raise ValueError(
+                f"Architecture coverage requires reader locations: {package_id}/{row['requirement']}"
+            )
         for raw_location in locations:
             block = _resolve_location(raw_location, blocks)
-            if block.section_number != package_index[package_id]:
-                raise ValueError(
-                    f"Architecture requirement maps outside its package reader section: "
-                    f"{package_id}/{row['requirement']} -> {block.canonical_location}"
-                )
-            minimum = 500 if block.kind == "SECTION" else 220
-            if block.visible_chars < minimum:
-                raise ValueError(
-                    f"reader content block is too thin for substantive Architecture coverage: "
-                    f"{block.canonical_location} visible_chars={block.visible_chars} minimum={minimum}"
-                )
-            location_use[block.canonical_location] = location_use.get(block.canonical_location, 0) + 1
-            if location_use[block.canonical_location] > 2:
-                raise ValueError(
-                    "one reader content block may satisfy at most two Architecture requirements; "
-                    f"overloaded={block.canonical_location}"
-                )
             package_locations[package_id].add(block.canonical_location)
+            coverage_locations.add(block.canonical_location)
 
-    metrics: list[dict[str, Any]] = []
-    for package_id, requirements in package_requirements:
-        section = sections[package_index[package_id] - 1]
-        distinct_locations = package_locations[package_id]
-        if not requirements:
-            minimum_blocks = 0
-        elif len(requirements) == 1:
-            minimum_blocks = 1
-        else:
-            minimum_blocks = max(2, math.ceil(len(requirements) / 2))
-        if len(distinct_locations) < minimum_blocks:
-            raise ValueError(
-                f"LONGFORM_SPECIAL package lacks distinct reader blocks for its Architecture obligations: "
-                f"{package_id} blocks={len(distinct_locations)} minimum={minimum_blocks}"
-            )
-        minimum_chars = max(1600, 600 * max(1, len(requirements)))
-        if section.visible_chars < minimum_chars:
-            raise ValueError(
-                "LONGFORM_SPECIAL package is structurally present but lacks substantive reader-facing depth: "
-                f"{package_id} visible_chars={section.visible_chars} minimum={minimum_chars} "
-                f"must_cover={len(requirements)}"
-            )
-        if not section.citation_keys:
-            raise ValueError(
-                f"LONGFORM_SPECIAL package lacks source-backed substantive treatment: {package_id}"
-            )
-        metrics.append(
-            {
-                "package_id": package_id,
-                "visible_chars": section.visible_chars,
-                "citation_key_count": len(section.citation_keys),
-                "mapped_block_count": len(distinct_locations),
-                "must_cover_count": len(requirements),
-            }
-        )
-
-    final_rows = [row for row in reader_requirements if row.get("requirement_id") == "FINAL_SYNTHESIS"]
+    final_rows = [
+        row
+        for row in reader_requirements
+        if isinstance(row, dict) and row.get("requirement_id") == "FINAL_SYNTHESIS"
+    ]
     if len(final_rows) != 1:
         raise ValueError("LONGFORM_SPECIAL Reader Manifest requires exactly one FINAL_SYNTHESIS requirement")
-    final_section = sections[-1]
     final_locations = final_rows[0].get("reader_locations")
     if not isinstance(final_locations, list) or not final_locations:
         raise ValueError("FINAL_SYNTHESIS requires exact reader locations")
     resolved_final = [_resolve_location(value, blocks) for value in final_locations]
-    if not any(block.section_number == final_section.section_number for block in resolved_final):
-        raise ValueError("FINAL_SYNTHESIS must resolve inside the final Architecture package section")
-    if not _FINAL_ROLE.search(final_section.title):
-        raise ValueError(
-            "final Architecture package must remain reader-visible as a synthesis/conclusion role; "
-            f"heading={final_section.title!r}"
-        )
-    final_package_id, final_requirements = package_requirements[-1]
-    final_minimum = max(1800, 600 * max(1, len(final_requirements)))
-    if final_section.visible_chars < final_minimum:
-        raise ValueError(
-            f"final synthesis is too thin for approved Architecture intent: {final_package_id} "
-            f"visible_chars={final_section.visible_chars} minimum={final_minimum}"
-        )
 
     return {
         "status": "PASS",
         "publication_profile": publication_profile,
-        "package_metrics": metrics,
-        "total_visible_chars": sum(section.visible_chars for section in sections),
-        "total_must_cover": sum(len(requirements) for _, requirements in package_requirements),
-        "final_synthesis_location": final_section.canonical_location,
+        "package_locations": {
+            package_id: sorted(locations)
+            for package_id, locations in package_locations.items()
+        },
+        "coverage_locations": sorted(coverage_locations),
+        "final_synthesis_locations": sorted(
+            block.canonical_location for block in resolved_final
+        ),
     }
 
 
 def _check_row(checks: list[dict[str, Any]], check_id: str) -> dict[str, Any]:
-    rows = [row for row in checks if isinstance(row, dict) and row.get("check_id") == check_id]
+    rows = [
+        row
+        for row in checks
+        if isinstance(row, dict) and row.get("check_id") == check_id
+    ]
     if len(rows) != 1:
         raise ValueError(f"semantic review requires exactly one {check_id} check")
     return rows[0]
 
 
+def _locations_from_manifest(manuscript: dict[str, Any]) -> tuple[set[str], set[str]]:
+    coverage_locations = {
+        location
+        for row in manuscript.get("architecture_coverage", [])
+        if isinstance(row, dict)
+        for location in row.get("reader_locations", [])
+        if isinstance(location, str) and location
+    }
+    final_locations = {
+        location
+        for row in manuscript.get("reader_requirements", [])
+        if isinstance(row, dict) and row.get("requirement_id") == "FINAL_SYNTHESIS"
+        for location in row.get("reader_locations", [])
+        if isinstance(location, str) and location
+    }
+    return coverage_locations, final_locations
+
+
+def _require_evidence(
+    check: dict[str, Any],
+    required: set[str],
+    label: str,
+) -> None:
+    actual = set(check.get("evidence_locations", []))
+    if not required.issubset(actual):
+        missing = sorted(required - actual)
+        raise ValueError(f"{label} must bind exact semantic-review evidence; missing={missing}")
+
+
 def validate_review_depth(
     profile: dict[str, Any],
     architecture: dict[str, Any],
+    manuscript: dict[str, Any],
     page_count: int,
     checks: list[dict[str, Any]],
     review_kind: str,
 ) -> None:
-    """Harden the existing semantic checks when a longform result is compressed."""
-    if review_kind != "SEMANTIC_EDITORIAL" or profile.get("publication_profile") != "LONGFORM_SPECIAL":
+    """Require explicit package/block-level semantic review for LONGFORM_SPECIAL."""
+    if (
+        review_kind != "SEMANTIC_EDITORIAL"
+        or profile.get("publication_profile") != "LONGFORM_SPECIAL"
+    ):
         return
-    packages = architecture.get("packages", [])
-    package_ids = [row.get("package_id") for row in packages if isinstance(row, dict)]
-    expected_locations = {f"package:{package_id}" for package_id in package_ids if package_id}
 
-    fidelity = _check_row(checks, "ARCHITECTURE_CONTENT_FIDELITY")
-    fidelity_locations = set(fidelity.get("evidence_locations", []))
-    if not expected_locations.issubset(fidelity_locations):
-        missing = sorted(expected_locations - fidelity_locations)
-        raise ValueError(
-            "ARCHITECTURE_CONTENT_FIDELITY must record package-by-package substantive review evidence; "
-            f"missing={missing}"
-        )
+    package_ids = [
+        row.get("package_id")
+        for row in architecture.get("packages", [])
+        if isinstance(row, dict) and isinstance(row.get("package_id"), str)
+    ]
+    package_markers = {f"package:{package_id}" for package_id in package_ids}
+    coverage_locations, final_locations = _locations_from_manifest(manuscript)
+
+    architecture_fidelity = _check_row(checks, "ARCHITECTURE_CONTENT_FIDELITY")
+    _require_evidence(
+        architecture_fidelity,
+        package_markers | coverage_locations,
+        "ARCHITECTURE_CONTENT_FIDELITY",
+    )
+
+    longform_depth = _check_row(checks, "LONGFORM_TECHNICAL_DEPTH")
+    _require_evidence(
+        longform_depth,
+        package_markers | coverage_locations,
+        "LONGFORM_TECHNICAL_DEPTH",
+    )
 
     final = _check_row(checks, "FINAL_SYNTHESIS_QUALITY")
-    final_locations = set(final.get("evidence_locations", []))
-    if package_ids and f"package:{package_ids[-1]}" not in final_locations:
-        raise ValueError("FINAL_SYNTHESIS_QUALITY must bind the final Architecture package explicitly")
-    if "reader-role:final-synthesis" not in final_locations:
-        raise ValueError("FINAL_SYNTHESIS_QUALITY must confirm the reader-visible final-synthesis role")
+    final_required = set(final_locations) | {"reader-role:final-synthesis"}
+    if package_ids:
+        final_required.add(f"package:{package_ids[-1]}")
+    _require_evidence(final, final_required, "FINAL_SYNTHESIS_QUALITY")
 
     page_plan = architecture.get("page_plan") or {}
     target = page_plan.get("target_pages") if isinstance(page_plan, dict) else None
-    if not isinstance(target, int) or target < 1:
-        return
-    if page_count * 3 >= target * 2:
+    if not isinstance(target, int) or target < 1 or page_count >= target:
         return
 
-    depth = _check_row(checks, "LONGFORM_TECHNICAL_DEPTH")
-    depth_locations = set(depth.get("evidence_locations", []))
-    if not expected_locations.issubset(depth_locations):
-        missing = sorted(expected_locations - depth_locations)
-        raise ValueError(
-            "severely below-target LONGFORM_SPECIAL requires package-by-package depth review; "
-            f"actual_pages={page_count} target_pages={target} missing={missing}"
-        )
-    if f"page-plan:{page_count}/{target}" not in depth_locations:
-        raise ValueError(
-            "severely below-target LONGFORM_SPECIAL must record the exact actual/target page-plan observation "
-            f"as page-plan:{page_count}/{target}"
-        )
-    detail = depth.get("detail")
-    if not isinstance(detail, str) or len(re.sub(r"\s+", "", detail)) < 120:
-        raise ValueError(
-            "severely below-target LONGFORM_SPECIAL requires an explicit substantive density/depth justification"
-        )
+    density_required = {
+        f"page-plan:{page_count}/{target}",
+        "density-review:below-target-substantive",
+    }
+    _require_evidence(
+        longform_depth,
+        density_required,
+        "below-target LONGFORM_TECHNICAL_DEPTH",
+    )
