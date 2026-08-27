@@ -405,6 +405,18 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
             + "\\autocite{fixture}\n"
         )
 
+    @staticmethod
+    def _fixture_pdf(page_count: int) -> bytes:
+        chunks = [
+            b"%PDF-1.7\n",
+            f"1 0 obj\n<< /Type /Pages /Count {page_count} >>\nendobj\n".encode(),
+        ]
+        for index in range(page_count):
+            chunks.append(
+                f"{index + 2} 0 obj\n<< /Type /Page /Parent 1 0 R >>\nendobj\n".encode()
+            )
+        return b"".join(chunks)
+
     def _build_publication_candidate(self, revision: int) -> dict[str, Path]:
         publication_dir = self.source_root / "publication/v2"
         publication_dir.mkdir(parents=True, exist_ok=True)
@@ -414,7 +426,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
         pdf = self.survey_root / "main.pdf"
         source.write_text(self._longform_fixture_source(revision), encoding="utf-8")
         bibliography.write_text("@misc{fixture,title={Fixture}}\n", encoding="utf-8")
-        pdf.write_bytes(f"%PDF-1.7\nfixture-r{revision}\n".encode("utf-8"))
+        pdf.write_bytes(self._fixture_pdf(8))
 
         paths = {
             "manifest": publication_dir / "reader-manuscript-v2.json",
