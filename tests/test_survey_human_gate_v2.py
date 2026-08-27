@@ -81,9 +81,6 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
         env = os.environ.copy()
         env["GIT_INDEX_FILE"] = str(index_path)
         try:
-            # Build each synthetic review tree from the implementation baseline,
-            # while chaining commit parents so earlier reviewed revisions remain
-            # ancestors of the durable work-branch tip.
             subprocess.run(
                 ["git", "read-tree", self.impl],
                 cwd=self.root,
@@ -372,15 +369,54 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
 
     def _review_checks(self, kind: str) -> list[dict[str, object]]:
         profile = core.load_json(self.profile_path)
-        return [
-            {
-                "check_id": check_id,
-                "status": "PASS",
-                "detail": f"Fixture {kind} review passed {check_id}",
-                "evidence_locations": ["main.tex:fixture"],
-            }
-            for check_id in sorted(reader._expected_review_checks(self.root, profile, kind))
-        ]
+        rows: list[dict[str, object]] = []
+        exact_block = "Subsection 1.1 — Round-trip result"
+        final_block = "Section 1 — Final synthesis"
+        for check_id in sorted(reader._expected_review_checks(self.root, profile, kind)):
+            locations = ["main.tex:fixture"]
+            if kind == "SEMANTIC_EDITORIAL" and check_id in {
+                "ARCHITECTURE_CONTENT_FIDELITY",
+                "LONGFORM_TECHNICAL_DEPTH",
+            }:
+                locations.extend(["package:PKG-1", exact_block])
+            if kind == "SEMANTIC_EDITORIAL" and check_id == "FINAL_SYNTHESIS_QUALITY":
+                locations.extend(["package:PKG-1", "reader-role:final-synthesis", final_block])
+            rows.append(
+                {
+                    "check_id": check_id,
+                    "status": "PASS",
+                    "detail": f"Fixture {kind} review passed {check_id}",
+                    "evidence_locations": locations,
+                }
+            )
+        return rows
+
+    @staticmethod
+    def _longform_fixture_source(revision: int) -> str:
+        body = (
+            f"Revision {revision} records the reader-facing round-trip result using a source-bounded technical narrative. "
+            "It explains what changed, why the transition matters, how the reviewed authority is preserved, "
+            "and which limitations remain rather than merely naming the approved Architecture requirement. "
+        ) * 24
+        return (
+            "\\section{Final synthesis}\n"
+            "\\subsection{Round-trip result}\n"
+            + body
+            + "\\autocite{fixture}\n"
+        )
+
+    @staticmethod
+    def _fixture_pdf(page_count: int) -> bytes:
+        from io import BytesIO
+
+        from pypdf import PdfWriter
+
+        stream = BytesIO()
+        writer = PdfWriter()
+        for _ in range(page_count):
+            writer.add_blank_page(width=612, height=792)
+        writer.write(stream)
+        return stream.getvalue()
 
     def _build_publication_candidate(self, revision: int) -> dict[str, Path]:
         publication_dir = self.source_root / "publication/v2"
@@ -389,9 +425,9 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
         source = self.survey_root / "main.tex"
         bibliography = self.survey_root / "references.bib"
         pdf = self.survey_root / "main.pdf"
-        source.write_text(f"reader-facing source revision {revision} with final synthesis\n", encoding="utf-8")
+        source.write_text(self._longform_fixture_source(revision), encoding="utf-8")
         bibliography.write_text("@misc{fixture,title={Fixture}}\n", encoding="utf-8")
-        pdf.write_bytes(f"%PDF-1.7\nfixture-r{revision}\n".encode("utf-8"))
+        pdf.write_bytes(self._fixture_pdf(8))
 
         paths = {
             "manifest": publication_dir / "reader-manuscript-v2.json",
@@ -423,16 +459,16 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
                     "package_id": "PKG-1",
                     "requirement": "Explain the round-trip result",
                     "status": "FULFILLED",
-                    "reader_locations": ["main.tex:fixture"],
-                    "detail": "Fixture covers the Architecture requirement.",
+                    "reader_locations": ["Subsection 1.1 — Round-trip result"],
+                    "detail": "Fixture covers the Architecture requirement in a substantive exact reader block.",
                 }
             ],
             [
                 {
                     "requirement_id": "FINAL_SYNTHESIS",
                     "status": "FULFILLED",
-                    "reader_locations": ["main.tex:fixture"],
-                    "detail": "Fixture final synthesis present.",
+                    "reader_locations": ["Section 1 — Final synthesis"],
+                    "detail": "Fixture final synthesis remains explicitly reader-visible.",
                 }
             ],
             "ChatGPT",
