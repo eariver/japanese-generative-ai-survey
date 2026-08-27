@@ -40,15 +40,16 @@ class SurveyPublicationV2Tests(unittest.TestCase):
 
     @staticmethod
     def _fixture_pdf(page_count: int = 12) -> bytes:
-        chunks = [
-            b"%PDF-1.7\n",
-            f"1 0 obj\n<< /Type /Pages /Count {page_count} >>\nendobj\n".encode(),
-        ]
-        for index in range(page_count):
-            chunks.append(
-                f"{index + 2} 0 obj\n<< /Type /Page /Parent 1 0 R >>\nendobj\n".encode()
-            )
-        return b"".join(chunks)
+        from io import BytesIO
+
+        from pypdf import PdfWriter
+
+        stream = BytesIO()
+        writer = PdfWriter()
+        for _ in range(page_count):
+            writer.add_blank_page(width=612, height=792)
+        writer.write(stream)
+        return stream.getvalue()
 
     def _profile(self, issue_id: str, research_profile: str, publication_profile: str) -> Path:
         if research_profile == "WEEKLY":
