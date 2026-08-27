@@ -15,6 +15,7 @@ the below-target density was consciously reviewed rather than auto-passed.
 """
 from __future__ import annotations
 
+import math
 import re
 from dataclasses import dataclass
 from typing import Any
@@ -306,6 +307,34 @@ def _require_evidence(
         raise ValueError(f"{label} must bind exact semantic-review evidence; missing={missing}")
 
 
+def _final_package_id(architecture: dict[str, Any]) -> str | None:
+    ordered: list[tuple[int, str]] = []
+    for package in architecture.get("packages", []):
+        if not isinstance(package, dict):
+            continue
+        package_id = package.get("package_id")
+        drafting_order = package.get("drafting_order")
+        if not isinstance(package_id, str) or not package_id:
+            raise ValueError("Architecture package_id invalid for final-synthesis review")
+        if isinstance(drafting_order, bool) or not isinstance(drafting_order, int):
+            raise ValueError(f"Architecture drafting_order invalid for {package_id}")
+        ordered.append((drafting_order, package_id))
+    if not ordered:
+        return None
+    max_order = max(order for order, _ in ordered)
+    finalists = [package_id for order, package_id in ordered if order == max_order]
+    if len(finalists) != 1:
+        raise ValueError("Architecture final package is ambiguous by drafting_order")
+    return finalists[0]
+
+
+def _page_target_marker(target: int | float) -> str:
+    numeric = float(target)
+    if numeric.is_integer():
+        return str(int(numeric))
+    return format(numeric, ".15g")
+
+
 def validate_review_depth(
     profile: dict[str, Any],
     architecture: dict[str, Any],
@@ -345,17 +374,24 @@ def validate_review_depth(
 
     final = _check_row(checks, "FINAL_SYNTHESIS_QUALITY")
     final_required = set(final_locations) | {"reader-role:final-synthesis"}
-    if package_ids:
-        final_required.add(f"package:{package_ids[-1]}")
+    final_package_id = _final_package_id(architecture)
+    if final_package_id is not None:
+        final_required.add(f"package:{final_package_id}")
     _require_evidence(final, final_required, "FINAL_SYNTHESIS_QUALITY")
 
     page_plan = architecture.get("page_plan") or {}
     target = page_plan.get("target_pages") if isinstance(page_plan, dict) else None
-    if not isinstance(target, int) or target < 1 or page_count >= target:
+    if (
+        isinstance(target, bool)
+        or not isinstance(target, (int, float))
+        or not math.isfinite(float(target))
+        or target < 1
+        or page_count >= target
+    ):
         return
 
     density_required = {
-        f"page-plan:{page_count}/{target}",
+        f"page-plan:{page_count}/{_page_target_marker(target)}",
         "density-review:below-target-substantive",
     }
     _require_evidence(
