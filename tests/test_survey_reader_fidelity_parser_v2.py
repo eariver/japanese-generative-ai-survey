@@ -64,6 +64,17 @@ class SurveyReaderFidelityParserV2Tests(unittest.TestCase):
         self.assertEqual(by_location["Section 1 — Main"].visible_chars, 0)
         self.assertEqual(by_location["Subsection 1.1 — Empty child"].visible_chars, 0)
 
+    def test_cross_reference_label_alone_is_not_reader_prose(self) -> None:
+        source = (
+            "\\section{Metadata only}\n"
+            "\\label{sec:metadata-only}\n"
+            "\\section{Next}\n"
+            "Next prose.\n"
+        )
+        _, by_location = fidelity.parse_longform_blocks(source)
+        self.assertEqual(by_location["Section 1 — Metadata only"].visible_chars, 0)
+        self.assertGreater(by_location["Section 2 — Next"].visible_chars, 0)
+
     def test_commented_headings_never_become_authorities_or_boundaries(self) -> None:
         source = (
             "% \\section{Commented section}\n"
