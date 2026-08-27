@@ -44,8 +44,39 @@ def _normal_title(value: str) -> str:
     return re.sub(r"\s+", " ", value.strip()).casefold()
 
 
+def _mask_tex_comments(text: str) -> str:
+    """Mask ordinary TeX comments while preserving source offsets/newlines.
+
+    Reader-location parsing is position based, so deleting comment text would
+    make heading offsets unusable for slicing the exact original source bytes.
+    An unescaped percent starts a TeX comment; an odd run of preceding
+    backslashes escapes the percent. Comment bytes are replaced with spaces and
+    line endings are retained.
+    """
+    masked = list(text)
+    index = 0
+    while index < len(text):
+        if text[index] != "%":
+            index += 1
+            continue
+        backslashes = 0
+        cursor = index - 1
+        while cursor >= 0 and text[cursor] == "\\":
+            backslashes += 1
+            cursor -= 1
+        if backslashes % 2 == 1:
+            index += 1
+            continue
+        cursor = index
+        while cursor < len(text) and text[cursor] not in "\r\n":
+            masked[cursor] = " "
+            cursor += 1
+        index = cursor
+    return "".join(masked)
+
+
 def _visible_chars(text: str) -> int:
-    value = re.sub(r"(?m)%.*$", " ", text)
+    value = _mask_tex_comments(text)
     # Heading labels are navigation, not substantive reader prose. Remove the
     # entire matched heading before generic command stripping so title text
     # alone cannot make an otherwise empty block appear non-empty.
@@ -60,7 +91,7 @@ def _visible_chars(text: str) -> int:
 
 def _citation_keys(text: str) -> frozenset[str]:
     keys: set[str] = set()
-    for match in _CITATION.finditer(text):
+    for match in _CITATION.finditer(_mask_tex_comments(text)):
         for key in match.group(1).split(","):
             key = key.strip()
             if key:
@@ -74,9 +105,12 @@ def parse_longform_blocks(source_text: str) -> tuple[list[ReaderBlock], dict[str
     Starred headings are not reader-location authorities because LaTeX does not
     assign them section numbers. They still terminate the preceding numbered
     block, however, so unnumbered appendices/notes/references cannot be silently
-    attributed to the preceding numbered reader location.
+    attributed to the preceding numbered reader location. Commented headings
+    are masked before parsing and therefore never become reader authorities or
+    block boundaries.
     """
-    matches = list(_HEADING.finditer(source_text))
+    parsed_source = _mask_tex_comments(source_text)
+    matches = list(_HEADING.finditer(parsed_source))
     section_matches = [match for match in matches if match.group("kind") == "section"]
     numbered_sections = [match for match in section_matches if not match.group("star")]
     section_end_by_start = {
