@@ -81,6 +81,9 @@ def _visible_chars(text: str) -> int:
     # entire matched heading before generic command stripping so title text
     # alone cannot make an otherwise empty block appear non-empty.
     value = _HEADING.sub(" ", value)
+    # Cross-reference labels are structural metadata and do not render reader
+    # prose at their declaration site.
+    value = re.sub(r"\\label\{[^{}]*\}", " ", value)
     value = _CITATION.sub(" ", value)
     value = re.sub(r"\\(?:begin|end)\{[^{}]+\}", " ", value)
     value = re.sub(r"\\[A-Za-z@]+\*?(?:\[[^\]]*\])?", " ", value)
