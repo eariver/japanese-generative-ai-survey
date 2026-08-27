@@ -15,7 +15,7 @@ This branch changes shared Core only. It does not edit SP001 generated publicati
 
 ## Responsibility split
 
-The implementation follows the existing Reader Manifest authority: deterministic helpers protect exact identity and traceability; substantive/editorial adequacy remains ChatGPT-owned semantic review.
+The implementation follows the Reader Manifest authority: deterministic helpers protect exact identity and traceability; substantive/editorial adequacy remains ChatGPT-owned semantic review.
 
 Accordingly, this repair does **not** make page targets into quotas and does not infer quality from fixed character counts, citation counts, source diversity, package-to-section ratios, or one-block-per-requirement rules.
 
@@ -30,6 +30,16 @@ The same applies to `FINAL_SYNTHESIS`. Abstract locations such as `main.tex :: S
 
 The deterministic layer only proves that the author-accountability map points at exact reader-facing bytes already bound by the Reader Manifest. It does not declare those bytes editorially sufficient.
 
+The parser is deliberately bounded to the repository's numbered `section` / `subsection` LONGFORM authoring surface. During pre-freeze review it was hardened so that:
+
+- `section*` / `subsection*` do not consume numbered reader-location identities;
+- starred headings still terminate a preceding numbered block, so unnumbered notes/references cannot be attributed to it;
+- headings inside ordinary TeX comments are ignored while source offsets are preserved;
+- escaped `\%` remains ordinary reader-visible content rather than starting a comment;
+- heading text and structural `\label{...}` metadata alone cannot make a block appear to contain reader prose.
+
+`schemas/reader-manuscript-v2.schema.json` description authority is synchronized with this responsibility: LONGFORM deterministic validation proves exact extant non-empty numbered block traceability, while substantive fulfillment remains semantic/editorial judgment.
+
 ### Semantic/editorial substantive fidelity
 
 For LONGFORM `SEMANTIC_EDITORIAL` review:
@@ -37,17 +47,24 @@ For LONGFORM `SEMANTIC_EDITORIAL` review:
 - `ARCHITECTURE_CONTENT_FIDELITY` must explicitly bind every approved `package:<id>` and every exact Reader Manifest coverage block;
 - `LONGFORM_TECHNICAL_DEPTH` must explicitly bind every approved package and every exact coverage block, preventing generic topic-presence review from standing in for package/content review;
 - `FINAL_SYNTHESIS_QUALITY` must bind the final Architecture package, the exact `FINAL_SYNTHESIS` reader location, and `reader-role:final-synthesis`;
+- the final package is the unique package with maximum canonical `drafting_order`, not the last JSON array element;
 - when actual pages are below the soft Architecture `target_pages`, `LONGFORM_TECHNICAL_DEPTH` must additionally record the exact `page-plan:<actual>/<target>` observation and the explicit semantic disposition `density-review:below-target-substantive`.
 
 This makes a below-target result reviewable rather than automatically invalid: ChatGPT may still judge a compact result substantive, but must do so consciously and against exact package/block evidence.
 
+### Exact PDF page authority
+
+Publication Review does not trust mutually consistent caller metadata for the actual page count. `scripts/survey_reader_publication_v2.py` derives page count from the exact repository-resident PDF bytes with pinned `pypdf==6.16.2`, rejects encrypted/unreadable/zero-page PDFs, rejects asserted or recorded page-count mismatch, and passes only the derived count into the LONGFORM density review.
+
+The parser choice is covered by a static two-page LuaLaTeX fixture whose Page dictionaries are stored in an `/ObjStm`; the fixture intentionally has zero raw `/Type /Page` tokens. This proves the exact-page authority against the production PDF encoding that defeated the earlier raw-byte scanner.
+
 ### Integration and regression coverage
 
-- `scripts/survey_reader_publication_v2.py` validates exact LONGFORM traceability when Reader Manuscript authority is built/revalidated, then validates the package/block-bound semantic review when publication review records are built/revalidated.
-- exact Publication Review page count is derived from the repository-resident PDF bytes using pinned `pypdf`, not caller metadata or raw PDF token scanning;
-- `tests/test_survey_reader_fidelity_v2.py` covers exact traceability, abstract/nonexistent/empty location rejection, non-overfit layout freedom, package/block semantic evidence, final-synthesis evidence, below-target density disposition, and WEEKLY non-applicability;
-- `tests/test_survey_pdf_page_inspection_v2.py` carries a real two-page LuaLaTeX object-stream PDF fixture and proves exact page inspection works on the production encoding while malformed PDF fails closed;
-- `tests/test_survey_publication_v2.py` and `tests/test_survey_human_gate_v2.py` exercise the integrated Publication Candidate and Human Gate round-trip paths with exact reader blocks and package-bound semantic review evidence.
+- `scripts/survey_reader_publication_v2.py` validates exact LONGFORM traceability when Reader Manuscript authority is built/revalidated, then validates package/block-bound semantic review when publication review records are built/revalidated.
+- `tests/test_survey_reader_fidelity_v2.py` covers exact traceability, abstract/nonexistent/empty location rejection, non-overfit layout freedom, package/block semantic evidence, canonical final-synthesis ordering, JSON-number page targets, below-target density disposition, and WEEKLY non-applicability.
+- `tests/test_survey_reader_fidelity_parser_v2.py` covers starred heading numbering/boundaries, commented headings, escaped percent, heading-only blocks, and label-only blocks.
+- `tests/test_survey_pdf_page_inspection_v2.py` carries the real LuaLaTeX object-stream PDF fixture and proves exact page inspection works while malformed PDF fails closed.
+- `tests/test_survey_publication_v2.py` and `tests/test_survey_human_gate_v2.py` exercise integrated Publication Candidate and Human Gate round-trip paths using valid PDFs, exact reader blocks, and package-bound semantic-review evidence.
 
 ## Human review of the first frozen candidate
 
@@ -71,7 +88,20 @@ Post-review head `59e9e8e13565acca309b476ff97fb117ec1eb783` reached green exact-
 
 That is a generalization/control-proportionality defect. Consequently `59e9e8e1...` is **not** a valid frozen 7/7 candidate and no audit PASS may be recorded for it.
 
-The repair replaces ad-hoc raw PDF parsing with pinned `pypdf==6.16.2`, a pure-Python PDF parser installed through the existing Core requirements path. `_exact_pdf_page_count()` now parses the exact repository PDF bytes with `PdfReader`, rejects encrypted/unreadable/zero-page PDFs, and returns the parsed page count. A static regression fixture is the exact byte output of a two-page LuaLaTeX build containing an `/ObjStm`; this directly covers the encoding that invalidated the interim parser.
+The repair replaces ad-hoc raw PDF parsing with pinned `pypdf`, installed through the existing Core requirements path. The default-branch operator workflow already installs `config/survey-production-v2-requirements.txt` after protected-authority preflight, so the dependency follows the same trusted runtime path as the rest of Core after integration.
+
+## Pre-freeze parser/authority hardening
+
+After the PDF repair, static full-PR review deliberately tested the exact-block parser against supported TeX authoring shapes rather than stopping at green fixtures. It found and repaired four generic traceability edge classes before freeze:
+
+1. starred subsections could affect numbering or leak unnumbered prose into a numbered block;
+2. a starred section such as References could be included in the preceding numbered section body;
+3. commented-out headings could be mistaken for live reader locations;
+4. heading labels or `\label{...}` metadata could make an otherwise empty block appear non-empty.
+
+Negative regressions were added for all four classes, including escaped-percent handling. These repairs remain deterministic traceability only; they do not score prose depth or quality.
+
+The Reader Manifest schema descriptions were also synchronized so repository authority no longer describes LONGFORM deterministic validation as manifest identity-only while the implementation enforces exact reader-block traceability.
 
 ## SP001 expected effect
 
@@ -84,20 +114,36 @@ A regenerated SP001 candidate must supply an exact accountability map and a fres
 ## Diagnostic history
 
 - Initial diagnostic Core CI on old head `1ac49d00...` exposed nine failures sharing one cause: the Human Gate fixture still generated LONGFORM reader source with no numbered sections / abstract locations. The production gate implementation itself compiled, and the new direct fidelity tests passed on that head.
-- The Human Gate and Publication fixtures were migrated to exact reader locations and semantic package/block evidence.
+- The Human Gate and Publication fixtures were migrated to exact reader locations, valid PDFs, and semantic package/block evidence.
 - Frozen head `b42c1f38...` reached exact-head green CI and 7/7 audit, but PR review `5036108178` found the three accepted-input gaps above. Its audit is superseded.
 - Post-review repairs added direct regressions for float page targets, exact-PDF page-count mismatch, and array-order-vs-drafting-order final synthesis.
-- Head `59e9e8e1...` reached green CI but fresh audit found its raw PDF page scanner incompatible with real LuaLaTeX object-stream output. That candidate is invalidated before any 7/7 result was recorded.
-- PDF inspection was then moved to pinned `pypdf` with a real LuaLaTeX object-stream regression fixture.
+- Head `59e9e8e1...` reached green CI but fresh audit found its raw PDF page scanner incompatible with real LuaLaTeX object-stream output. That candidate is invalidated before any reusable 7/7 result.
+- PDF inspection was moved to pinned `pypdf` with a real LuaLaTeX object-stream regression fixture.
+- Diagnostic head `f15f9d20391c8f2e1cd0733c6cea2ca8ac298b1c` completed both exact-head workflows successfully: `Survey Production Core v2 CI` #1209 (`33084238758`) and `Pipeline contract tests` #3466 (`33084239916`). Those runs prove the PDF/Human-Gate fixture repair but are not final-audit authority because later parser/schema hardening changed the tree.
+- Pre-worklog-sync head `f8a5969545f5a0728cfae92d6d0f8aa44c58ef21` completed `Pipeline contract tests` #3478 (`33086055027`) successfully with the starred/comment/label parser regressions. Its Core run was queued when the final worklog synchronization began, so the final docs-only candidate must obtain fresh exact-head evidence from both workflows.
 - Several intermediate heads are diagnostic only; none is final-audit authority.
 - No Core merge has been performed.
 
+## Pre-freeze scope observations
+
+Before final worklog synchronization:
+
+- reviewed `main` remained `079dac9605e4cf55a239de6f03e37a93f756a918`;
+- the maintenance branch was ahead of that base and not behind it;
+- changes were limited to Core requirements, Reader Manifest schema description authority, reader fidelity/publication code, regressions, and this worklog;
+- no `sources/`, `surveys/`, generated SP001 bytes, or workflow files were modified;
+- PR #473 remained open, Draft, unmerged, and mergeable;
+- the only prior blocking PR review was the three-item review on `b42c1f38...`, and those three items now have direct regressions;
+- operator dependency installation remains behind reviewed-main/protected-Core trust checks and uses the same pinned Core requirements file.
+
+These observations are diagnostic. They must be repeated against the final post-worklog head before that SHA is frozen.
+
 ## Remaining steps
 
-1. Obtain green exact-head diagnostic `Survey Production Core v2 CI` and `Pipeline contract tests` after the `pypdf`/LuaLaTeX regression repair.
-2. Repair any remaining regressions before freezing a candidate.
-3. Perform the pre-freeze full-PR scope/stale-authority cross-check required by `docs/survey-production-core-v2-final-audit-rule.md`.
-4. Freeze one new maintenance SHA and execute all seven final-audit points from Point 1 on that exact unchanged SHA. Neither `b42c1f38...` nor `59e9e8e1...` is reusable audit authority.
+1. Treat the commit containing this synchronized worklog as the new final-candidate **candidate**, not yet as a frozen audit authority.
+2. Reconfirm current `main`, PR head/state, changed-file scope, stale review surface, and absence of edition-local artifact contamination on that exact head.
+3. Obtain exact-head SUCCESS from both `Survey Production Core v2 CI` and `Pipeline contract tests` after this final tree mutation; any further mutation invalidates those results.
+4. Freeze that unchanged SHA and execute all seven points in `docs/survey-production-core-v2-final-audit-rule.md` from Point 1. Neither `b42c1f38...`, `59e9e8e1...`, `f15f9d20...`, nor `f8a59695...` is reusable final-audit authority.
 5. Record any fresh 7/7 result outside the audited tree and present the candidate for Human Core-maintenance review; do not merge without explicit Human approval.
 6. After approved Core repair is merged to `main`, resume SP001 through the canonical revision path, regenerate Publication Candidate, perform fresh exact-byte semantic/visual review, and return to Publication Preview Human Gate.
 7. Do not Freeze/Release SP001 before explicit Human Publication Preview approval.
