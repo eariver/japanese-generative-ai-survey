@@ -839,6 +839,77 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
         self.assertEqual(candidate_authority["sha256"], core.sha256_file(candidate_r2["candidate"]))
         self.assertIn("gates/reviews/approvals/publication-r2.json", record["approval"]["path"])
 
+
+    def test_publication_rejection_records_historical_candidate_rejected_by_current_validator(self) -> None:
+        self._advance_to_selection()
+        self._reach_architecture_gate("Approved Architecture for historical rejection", "2026-08-24T00:05:00Z")
+        human_gate.record_architecture_approval(
+            self.root,
+            self.cfg,
+            self.state_path,
+            "human-reviewer",
+            core.parse_instant("2026-08-24T00:06:00Z"),
+            "review:architecture:historical-rejection",
+            expected_revision=1,
+            reviewed_commit_sha=self._snapshot_review_commit(),
+        )
+        candidate = self._reach_publication_gate(1, 10)
+        reviewed_commit = self._snapshot_review_commit()
+
+        original_validate_candidate = publication.validate_candidate
+
+        def reject_under_current_validator(*args, **kwargs):
+            raise ValueError("current validator rejects reviewed historical candidate")
+
+        publication.validate_candidate = reject_under_current_validator
+        try:
+            with self.assertRaisesRegex(ValueError, "current validator rejects reviewed historical candidate"):
+                human_gate.record_publication_preview_approval(
+                    self.root,
+                    self.cfg,
+                    self.state_path,
+                    "human-reviewer",
+                    core.parse_instant("2026-08-24T00:14:00Z"),
+                    "review:publication:historical-invalid-approval",
+                    expected_revision=1,
+                    reviewed_commit_sha=reviewed_commit,
+                )
+
+            state, record_path, index_path, _ = human_gate.request_publication_preview_revision(
+                self.root,
+                self.cfg,
+                self.state_path,
+                "DRAFT_COMPLETE",
+                "The reviewed historical candidate fails the current validator and must be regenerated.",
+                "human-reviewer",
+                core.parse_instant("2026-08-24T00:15:00Z"),
+                "review:publication:historical-invalid-rejection",
+                expected_revision=1,
+                reviewed_commit_sha=reviewed_commit,
+            )
+        finally:
+            publication.validate_candidate = original_validate_candidate
+
+        self.assertEqual(state["lifecycle_state"], "DRAFT_COMPLETE")
+        self.assertEqual(state["human_gates"]["architecture_review"], "approved")
+        self.assertEqual(state["human_gates"]["publication_preview"], "pending")
+        record = core.load_json(record_path)
+        self.assertEqual(record["decision"], "REQUEST_CHANGES")
+        self.assertEqual(record["reviewed_repository_commit_sha"], reviewed_commit)
+        candidate_ref = next(
+            row for row in record["reviewed_artifacts"] if row["name"] == "publication-candidate"
+        )
+        pdf_ref = next(
+            row for row in record["reviewed_artifacts"] if row["name"] == "publication-pdf"
+        )
+        self.assertEqual(candidate_ref["sha256"], core.sha256_file(candidate["candidate"]))
+        self.assertEqual(pdf_ref["sha256"], core.sha256_file(candidate["pdf"]))
+        publication_rows = [
+            row for row in core.load_json(index_path)["reviews"]
+            if row["gate"] == "PUBLICATION_PREVIEW"
+        ]
+        self.assertEqual([(row["revision"], row["decision"]) for row in publication_rows], [(1, "REQUEST_CHANGES")])
+
     def test_publication_revision_reopens_architecture_and_preserves_approval_history(self) -> None:
         self._advance_to_selection()
         self._reach_architecture_gate("Approved Architecture r1", "2026-08-24T00:05:00Z")
