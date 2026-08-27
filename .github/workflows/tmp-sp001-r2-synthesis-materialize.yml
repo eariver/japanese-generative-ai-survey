@@ -1,0 +1,118 @@
+name: Temporary SP001 r2 synthesis materialization
+
+on:
+  push:
+    branches:
+      - tmp/sp001-r2-synthesis-materialize
+    paths:
+      - .github/workflows/tmp-sp001-r2-synthesis-materialize.yml
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact scratch branch
+        uses: actions/checkout@v4
+        with:
+          ref: tmp/sp001-r2-synthesis-materialize
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Core dependencies
+        run: python -m pip install -r config/survey-production-v2-requirements.txt
+
+      - name: Materialize canonical synthesis input
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f sources/SP001/draft/v2/profile-synthesis-input.json
+          rm -f sources/SP001/draft/v2/profile-synthesis-result.json
+          python scripts/survey_drafting_v2.py \
+            --repo-root . \
+            synthesis-input \
+            --profile sources/SP001/production-profile.json \
+            --architecture sources/SP001/architecture-v2.json \
+            --review-summary sources/SP001/architecture-review-summary-v2.json \
+            --approval sources/SP001/gates/architecture-approval.json \
+            --draft-pair sources/SP001/draft/v2/packages/PKG-1-PLURAL-FOUNDATIONS/draft-package.json=sources/SP001/draft/v2/packages/PKG-1-PLURAL-FOUNDATIONS/draft-result.json \
+            --draft-pair sources/SP001/draft/v2/packages/PKG-2-DEEPSEEK/draft-package.json=sources/SP001/draft/v2/packages/PKG-2-DEEPSEEK/draft-result.json \
+            --draft-pair sources/SP001/draft/v2/packages/PKG-3-QWEN/draft-package.json=sources/SP001/draft/v2/packages/PKG-3-QWEN/draft-result.json \
+            --draft-pair sources/SP001/draft/v2/packages/PKG-4-GLM/draft-package.json=sources/SP001/draft/v2/packages/PKG-4-GLM/draft-result.json \
+            --draft-pair sources/SP001/draft/v2/packages/PKG-5-KIMI/draft-package.json=sources/SP001/draft/v2/packages/PKG-5-KIMI/draft-result.json \
+            --draft-pair sources/SP001/draft/v2/packages/PKG-6-FRONTIER-SYNTHESIS/draft-package.json=sources/SP001/draft/v2/packages/PKG-6-FRONTIER-SYNTHESIS/draft-result.json \
+            --output sources/SP001/draft/v2/profile-synthesis-input.json
+
+      - name: Materialize ChatGPT-authored thematic synthesis result
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from scripts import survey_production_v2 as core
+
+          root = Path('.').resolve()
+          input_path = root / 'sources/SP001/draft/v2/profile-synthesis-input.json'
+          prompt_path = root / 'config/prompts/profile-synthesis-v2.md'
+          payload = {
+              'schema_version': '2.0-rc1',
+              'issue_id': 'SP001',
+              'research_profile': 'THEMATIC',
+              'publication_profile': 'LONGFORM_SPECIAL',
+              'synthesis_version': 'v2.0',
+              'status': 'REVISED',
+              'basis': {
+                  'synthesis_input_sha256': core.sha256_file(input_path),
+                  'prompt_id': 'profile-synthesis-v2',
+                  'prompt_sha256': core.sha256_file(prompt_path),
+              },
+              'runner': {
+                  'provider': 'OpenAI',
+                  'model': 'GPT-5.6 Sol',
+                  'invocation': 'interactive ChatGPT synthesis after Publication Preview r1 REQUEST_CHANGES; deterministic canonicalization on scratch Actions runner',
+                  'generated_at': '2026-08-27T23:44:00Z',
+                  'run_reference': 'SP001 Publication Preview revision r2 synthesis',
+              },
+              'profile_payload': {
+                  'branch_transition_synthesis': '2022–2024年のpluralなfoundation期を単一系譜へ畳み込まずに追うと、DeepSeekはfoundationからactive-compute/attention効率、RL reasoning、long-context agentic endpointへ、Qwenはdense/MoEのmodel breadthからhub・quantization・fine-tuning・deploymentを含むdistribution surfaceへ、GLMはbilingual foundationからsparse attention・asynchronous RL・local servingを束ねるsystems engineeringへ、Kimiはlong-context multimodal reasoning/RLから1M-context sparse multimodal agentへ進んだ。2026年に共通化したのは組織的な祖先関係ではなく、長文脈、sparsity、reasoning/post-training、agentic execution、配布とservingを同時に解く必要があるというsystem-levelの設計圧力である。',
+                  'parallel_competing_relations': [
+                      'DeepSeek: 7B/67B・2T-token foundation baseline → V2のMoE/MLA/DeepSeekMoEによる236B total / 21B activatedと128K contextの効率設計 → R1-Zeroとcold-start/multi-stage R1によるreasoning post-training → V4の1M context・thinking mode・agentic coding/API endpoint。',
+                      'Qwen: Qwen2のdense/MoE model breadth・multilingual/coding/math/reasoning → Hugging Face/ModelScope、quantization、fine-tuning、deployment資源を含むdistribution strategy → Qwen3.8のopen-weight agent/coding/research line。',
+                      'GLM: GLM-130Bというearly bilingual foundation anchor → GLM-5の744B total / 40B active、28.5T tokens、sparse attention、asynchronous RL、long-horizon agentic engineering、複数local-serving recipeを統合するsystems endpoint。',
+                      'Kimi: k1.5のlong-context multimodal reasoning/RL → K3の2.8T open-weight native multimodal、sparse MoE、efficient-attention/residual mechanisms、1M context、long-horizon coding/agentic focus。'
+                  ],
+                  'unresolved_lineage_questions': [
+                      '類似するsparsity、attention、agentic技術の並存からfamily間の直接的技術継承やinstitutional ancestryは推定しない。',
+                      'DeepSeek V4、Qwen3.8、GLM-5、Kimi K3のexact checkpoint licenseや一部current release detailはartifact-specific authorityを超えて一般化しない。',
+                      '2026 frontierのbenchmarkはevaluation condition、harness、versionが一致しないためsource-local reported positionに留め、横断league tableへ正規化しない。'
+                  ],
+                  'historical_attribution_boundaries': 'chronologyはartifactごとの一次資料で固定するがpublication dateの近さを直接影響の証拠にしない。repository code license、checkpointのweight/model license、再配布・商用利用、recipe再現性は別authorityとして扱う。最終総括は前5 packageで受理されたEvidenceの再構成に限定し、新規の未検証cross-family性能主張を導入しない。',
+              },
+              'publication_payload': {},
+          }
+          core.write_json(root / 'sources/SP001/draft/v2/profile-synthesis-result.json', payload)
+          PY
+
+      - name: Validate canonical synthesis result
+        run: |
+          python scripts/survey_drafting_v2.py \
+            --repo-root . \
+            synthesis-check \
+            --input sources/SP001/draft/v2/profile-synthesis-input.json \
+            --result sources/SP001/draft/v2/profile-synthesis-result.json
+
+      - name: Commit exact generated synthesis bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sources/SP001/draft/v2/profile-synthesis-input.json sources/SP001/draft/v2/profile-synthesis-result.json
+          git commit -m 'Materialize SP001 Publication r2 synthesis bytes'
+          git push origin HEAD:tmp/sp001-r2-synthesis-materialize
