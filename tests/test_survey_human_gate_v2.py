@@ -857,11 +857,18 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
         reviewed_commit = self._snapshot_review_commit()
 
         original_validate_candidate = publication.validate_candidate
+        original_schema_loader = human_gate.schema_gate.load_and_validate_json
 
         def reject_under_current_validator(*args, **kwargs):
             raise ValueError("current validator rejects reviewed historical candidate")
 
+        def reject_under_current_candidate_schema(path, schema_path, *args, **kwargs):
+            if Path(path).resolve() == candidate["candidate"].resolve():
+                raise ValueError("current schema rejects reviewed historical candidate")
+            return original_schema_loader(path, schema_path, *args, **kwargs)
+
         publication.validate_candidate = reject_under_current_validator
+        human_gate.schema_gate.load_and_validate_json = reject_under_current_candidate_schema
         try:
             with self.assertRaisesRegex(ValueError, "current validator rejects reviewed historical candidate"):
                 human_gate.record_publication_preview_approval(
@@ -889,6 +896,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
             )
         finally:
             publication.validate_candidate = original_validate_candidate
+            human_gate.schema_gate.load_and_validate_json = original_schema_loader
 
         self.assertEqual(state["lifecycle_state"], "DRAFT_COMPLETE")
         self.assertEqual(state["human_gates"]["architecture_review"], "approved")

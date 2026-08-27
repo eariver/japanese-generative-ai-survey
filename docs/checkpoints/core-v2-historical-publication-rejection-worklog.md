@@ -21,13 +21,13 @@ Branch: `fix/core-v2-historical-publication-rejection`
 The Human Gate reviewed-artifact collector now has an explicit `require_current_candidate_validity` control.
 
 - Normal approval paths keep the default `True` behavior and still require full current `publication.validate_candidate()` success.
-- `REQUEST_CHANGES` uses `False` so an exact historical candidate can be rejected after validator evolution.
-- The rejection path still validates the Publication Candidate against the current envelope schema, requires exact issue/profile identity, requires a durable PDF authority, verifies exact PDF SHA-256, and then relies on the existing reviewed-commit durability check to prove exact reviewed State/Candidate/PDF bytes are committed and reachable from the canonical work branch.
+- `REQUEST_CHANGES` uses `False` so an exact historical candidate can be rejected after validator or Candidate-schema evolution.
+- The rejection path requires a parseable JSON object, exact issue/profile identity, a durable PDF authority, and exact PDF SHA-256, then relies on the existing reviewed-commit durability check to prove exact reviewed State/Candidate/PDF bytes are committed and reachable from the canonical work branch. It deliberately does not require current Candidate schema or substantive-validation success because either may be the reason the historical bytes are being rejected.
 - Regeneration-boundary validation, immutable review records/indexes, stale-revision protection, selective invalidation, and all approval semantics remain unchanged.
 
 ## Regression coverage
 
-A Human Gate round-trip regression test now simulates a historical Publication Candidate that the current `publication.validate_candidate()` rejects.
+A Human Gate round-trip regression test now simulates a historical Publication Candidate that both the current `publication.validate_candidate()` path and the current Candidate schema would reject.
 
 The test proves both sides of the responsibility split:
 

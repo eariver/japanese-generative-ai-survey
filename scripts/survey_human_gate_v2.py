@@ -237,11 +237,11 @@ def _reviewed_artifacts(
                 repo_root, candidate_path, issue_id=state["issue_id"]
             )
         else:
-            candidate = schema_gate.load_and_validate_json(
-                candidate_path,
-                repo_root / publication.CANDIDATE_SCHEMA,
-                label="Publication Candidate historical review surface",
-            )
+            # REQUEST_CHANGES records the exact historical review surface. A
+            # newer Candidate schema or substantive validator may be the reason
+            # the Human is rejecting these bytes, so rejection must not require
+            # the historical artifact to satisfy current acceptance contracts.
+            candidate = core.load_json(candidate_path)
             if candidate.get("issue_id") != state["issue_id"]:
                 raise HumanGateError("Publication Candidate historical review issue identity mismatch")
             if candidate.get("publication_profile") != profile.get("publication_profile"):
