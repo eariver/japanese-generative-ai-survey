@@ -4,225 +4,46 @@
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
   "package_id": "PKG-2-DEEPSEEK",
-  "draft_version": "v1.0",
-  "status": "ESTABLISHED",
-  "basis": {
-    "draft_package_sha256": "9fbf2d711e3ad9567a65b2a642ce1108f521997f7a662f9779d380fdd935181d",
-    "prompt_id": "article-drafting-v2",
-    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
-  },
-  "runner": {
-    "provider": "OpenAI",
-    "model": "GPT-5.6 Sol",
-    "invocation": "interactive ChatGPT project drafting; exact accepted Evidence/Architecture constrained",
-    "generated_at": "2026-08-26T09:45:00Z",
-    "run_reference": "SP001 Core v2 clean post-Architecture drafting r1"
-  },
-  "headline": "DeepSeekは、foundationから効率・reasoning・agentic systemへ軸を移した",
-  "deck": "DeepSeek LLMのfoundation baseline、V2のMoE/MLA、R1のRL中心post-training、V4の1M contextとagentic deploymentを連続したfamily内の転換として追う。",
+  "draft_version": "v2.0",
+  "status": "REVISED",
+  "basis": {"draft_package_sha256":"9fbf2d711e3ad9567a65b2a642ce1108f521997f7a662f9779d380fdd935181d","prompt_id":"article-drafting-v2","prompt_sha256":"b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"},
+  "runner": {"provider":"OpenAI","model":"GPT-5.6 Sol","invocation":"interactive ChatGPT project drafting; Issue #400 Publication Preview revision; exact accepted Evidence/Architecture constrained","generated_at":"2026-08-27T17:20:00Z","run_reference":"SP001 Publication Preview revision r2 after Human REQUEST_CHANGES"},
+  "headline": "DeepSeekは、foundation・効率・reasoningを段階分離し、agentic systemへ再統合した",
+  "deck": "DeepSeek LLMからV2、R1、V4までを追うと、frontier化はparameter規模の直線成長ではなく、active-compute/attention効率、RL post-training、long-context deploymentを段階的に設計し直す過程として見える。",
   "deck_attribution_mode": "ATTRIBUTED",
   "deck_evidence_refs": [
-    {
-      "evidence_task_id": "evidence:SP001:dcc22d5fb97ef241",
-      "kind": "CLAIM",
-      "evidence_id": "claim-sp001-d001-01",
-      "subject_id": "deepseek-llm",
-      "subject_role": "PRIMARY_SUBJECT"
-    },
-    {
-      "evidence_task_id": "evidence:SP001:b4feee60c7b42d7e",
-      "kind": "CLAIM",
-      "evidence_id": "claim-sp001-d002-01",
-      "subject_id": "deepseek-v2",
-      "subject_role": "PRIMARY_SUBJECT"
-    },
-    {
-      "evidence_task_id": "evidence:SP001:815652c418eda76e",
-      "kind": "CLAIM",
-      "evidence_id": "claim-sp001-d004-01",
-      "subject_id": "deepseek-r1",
-      "subject_role": "PRIMARY_SUBJECT"
-    },
-    {
-      "evidence_task_id": "evidence:SP001:1785bf3f5c6f6444",
-      "kind": "CLAIM",
-      "evidence_id": "claim-sp001-d005-01",
-      "subject_id": "deepseek-v4",
-      "subject_role": "PRIMARY_SUBJECT"
-    }
+    {"evidence_task_id":"evidence:SP001:dcc22d5fb97ef241","kind":"CLAIM","evidence_id":"claim-sp001-d001-01","subject_id":"deepseek-llm","subject_role":"PRIMARY_SUBJECT"},
+    {"evidence_task_id":"evidence:SP001:b4feee60c7b42d7e","kind":"CLAIM","evidence_id":"claim-sp001-d002-01","subject_id":"deepseek-v2","subject_role":"PRIMARY_SUBJECT"},
+    {"evidence_task_id":"evidence:SP001:815652c418eda76e","kind":"CLAIM","evidence_id":"claim-sp001-d004-01","subject_id":"deepseek-r1","subject_role":"PRIMARY_SUBJECT"},
+    {"evidence_task_id":"evidence:SP001:1785bf3f5c6f6444","kind":"CLAIM","evidence_id":"claim-sp001-d005-01","subject_id":"deepseek-v4","subject_role":"PRIMARY_SUBJECT"}
   ],
   "blocks": [
-    {
-      "block_id": "p2-foundation",
-      "block_type": "PARAGRAPH",
-      "text": "DeepSeek LLMは7B/67B、2T-tokenの中国語・英語pretraining、scaling-lawとSFT/DPOを含むfoundation baselineを示した。後続の変化は、このbaselineを起点に何へ計算資源とpost-trainingを振り向けたかとして読むと整理しやすい。",
-      "attribution_mode": "ATTRIBUTED",
-      "evidence_refs": [
-        {
-          "evidence_task_id": "evidence:SP001:dcc22d5fb97ef241",
-          "kind": "CLAIM",
-          "evidence_id": "claim-sp001-d001-01",
-          "subject_id": "deepseek-llm",
-          "subject_role": "PRIMARY_SUBJECT"
-        }
-      ]
-    },
-    {
-      "block_id": "p2-efficiency",
-      "block_type": "PARAGRAPH",
-      "text": "DeepSeek-V2ではMoE、MLA、DeepSeekMoEが前面に出た。一次資料は236B total / 21B activated、128K contextを報告しており、単純なparameter増大ではなくactive computationやattention/serving効率を設計軸に置いたことが分かる。",
-      "attribution_mode": "ATTRIBUTED",
-      "evidence_refs": [
-        {
-          "evidence_task_id": "evidence:SP001:b4feee60c7b42d7e",
-          "kind": "CLAIM",
-          "evidence_id": "claim-sp001-d002-01",
-          "subject_id": "deepseek-v2",
-          "subject_role": "PRIMARY_SUBJECT"
-        }
-      ]
-    },
-    {
-      "block_id": "p2-reasoning",
-      "block_type": "PARAGRAPH",
-      "text": "DeepSeek-R1はreasoning/post-trainingを独立した競争軸へ押し上げた。R1-Zeroのlarge-scale RLから、cold-start dataを含むmulti-stage trainingへ進む構成が示され、foundation能力の拡張をpost-training設計の問題として明示した。",
-      "attribution_mode": "ATTRIBUTED",
-      "evidence_refs": [
-        {
-          "evidence_task_id": "evidence:SP001:815652c418eda76e",
-          "kind": "CLAIM",
-          "evidence_id": "claim-sp001-d004-01",
-          "subject_id": "deepseek-r1",
-          "subject_role": "PRIMARY_SUBJECT"
-        }
-      ]
-    },
-    {
-      "block_id": "p2-frontier",
-      "block_type": "PARAGRAPH",
-      "text": "2026年のDeepSeek V4は、1M context、sparse/token-compression、thinking/non-thinking、agentic codingとAPI deploymentを同じendpointに集約する。ここでは性能順位ではなく、長文脈・効率・reasoning mode・agentic executionが一つのsystem designへ収束した点を読む。",
-      "attribution_mode": "ATTRIBUTED",
-      "evidence_refs": [
-        {
-          "evidence_task_id": "evidence:SP001:1785bf3f5c6f6444",
-          "kind": "CLAIM",
-          "evidence_id": "claim-sp001-d005-01",
-          "subject_id": "deepseek-v4",
-          "subject_role": "PRIMARY_SUBJECT"
-        }
-      ]
-    },
-    {
-      "block_id": "PKG-2-DEEPSEEK-boundaries",
-      "block_type": "CLAIM_BOUNDARY",
-      "text": "この節の読解上の境界: Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source. / benchmark claims only under source-local conditions / DeepSeek V4のlicense・benchmark・current release detailはartifact-specific authorityを超えて一般化しない。 / R1 primary weightsとdistilled derivativesのupstream licenseを混同しない。",
-      "attribution_mode": "INFERENCE",
-      "evidence_refs": [
-        {
-          "evidence_task_id": "evidence:SP001:1785bf3f5c6f6444",
-          "kind": "LIMITATION",
-          "evidence_id": "lim-sp001-d005-01",
-          "subject_id": "deepseek-v4",
-          "subject_role": "PRIMARY_SUBJECT"
-        }
-      ]
-    }
+    {"block_id":"p2-h-trajectory","block_type":"HEADING","text":"foundationからsystem designへ：DeepSeekの4段階","attribution_mode":"NONE","evidence_refs":[]},
+    {"block_id":"p2-chronology","block_type":"TABLE","text":"source-specific chronology: DeepSeek LLM（2024-01-05）→DeepSeek-V2（2024-05-07）→DeepSeek-R1（2025-01-22）→DeepSeek V4（2026-04-24）。この順序はfamily内の観察可能な変化を整理するために使い、各段階の因果関係は一次資料が支える範囲に限定する。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP001:dcc22d5fb97ef241","kind":"EVENT","evidence_id":"event-sp001-d001","subject_id":"deepseek-llm","subject_role":"PRIMARY_SUBJECT"},{"evidence_task_id":"evidence:SP001:b4feee60c7b42d7e","kind":"EVENT","evidence_id":"event-sp001-d002","subject_id":"deepseek-v2","subject_role":"PRIMARY_SUBJECT"},{"evidence_task_id":"evidence:SP001:815652c418eda76e","kind":"EVENT","evidence_id":"event-sp001-d004","subject_id":"deepseek-r1","subject_role":"PRIMARY_SUBJECT"},{"evidence_task_id":"evidence:SP001:1785bf3f5c6f6444","kind":"EVENT","evidence_id":"event-sp001-d005","subject_id":"deepseek-v4","subject_role":"PRIMARY_SUBJECT"}]},
+    {"block_id":"p2-foundation","block_type":"PARAGRAPH","text":"DeepSeek LLMは7B/67B、2T-token中国語・英語pretraining、scaling-law、SFT/DPOを含むfoundation baselineだった。ここでは大きなfoundation modelを作ること自体が主題であり、後のDeepSeekを特徴づけるactive-compute削減やRL reasoningはまだ別の設計軸として前景化していない。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP001:dcc22d5fb97ef241","kind":"CLAIM","evidence_id":"claim-sp001-d001-01","subject_id":"deepseek-llm","subject_role":"PRIMARY_SUBJECT"}]},
+    {"block_id":"p2-efficiency-architecture","block_type":"PARAGRAPH","text":"DeepSeek-V2で転換点になるのは、単にparameter数が増えたことではなく、MoE、MLA、DeepSeekMoEを通じて「総parameter」と「1 tokenあたりに実際に使う計算」を分離したことだ。一次資料は236B total / 21B activated、128K contextを報告しており、capacityを増やしながらactive computationとattention costを抑える方向が明示された。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP001:b4feee60c7b42d7e","kind":"CLAIM","evidence_id":"claim-sp001-d002-01","subject_id":"deepseek-v2","subject_role":"PRIMARY_SUBJECT"}]},
+    {"block_id":"p2-efficiency-serving","block_type":"PARAGRAPH","text":"このV2の設計はarchitectureだけの話ではない。accepted EvidenceではMLA/DeepSeekMoEのmechanism descriptionに加え、training/inference efficiency framingも検証されている。したがってsparsityやattention圧縮は、モデル内部の新規性であると同時に、長いcontextを扱い、より大きなcapacityをdeployment可能にするserving economicsの問題として読むべきである。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP001:b4feee60c7b42d7e","kind":"CLAIM","evidence_id":"claim-sp001-d002-01","subject_id":"deepseek-v2","subject_role":"PRIMARY_SUBJECT"}]},
+    {"block_id":"p2-r1-zero","block_type":"PARAGRAPH","text":"DeepSeek-R1は競争軸をpost-trainingへ移す。R1-Zeroではpreliminary SFTを置かずlarge-scale RLからreasoning behaviorを引き出す実験を前面に出し、reasoning能力をpretraining規模の副産物ではなく、独立に設計・観察できるtraining objectiveとして扱った。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP001:815652c418eda76e","kind":"CLAIM","evidence_id":"claim-sp001-d004-01","subject_id":"deepseek-r1","subject_role":"PRIMARY_SUBJECT"}]},
+    {"block_id":"p2-r1-multistage","block_type":"PARAGRAPH","text":"一方、最終R1はR1-Zeroをそのまま製品化したものではない。cold-start dataを導入し、その後にmulti-stage trainingを組み合わせる構成が一次資料で検証されている。ここから見えるのは「RLだけ」という単純な物語ではなく、reasoningの探索、可読性やgeneral capabilityの回復、最終model形成を段階化するpost-training engineeringである。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP001:815652c418eda76e","kind":"CLAIM","evidence_id":"claim-sp001-d004-01","subject_id":"deepseek-r1","subject_role":"PRIMARY_SUBJECT"}]},
+    {"block_id":"p2-r1-license","block_type":"NOTE","text":"Technical Notes — R1 primary weightsとdistilled derivativesは同じlicense authorityとして扱わない。accepted Evidenceはprimary versus distilled model license boundaryを確認しており、distilled modelについてはupstream modelの条件を別に追う必要がある。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP001:815652c418eda76e","kind":"CLAIM","evidence_id":"claim-sp001-d004-01","subject_id":"deepseek-r1","subject_role":"PRIMARY_SUBJECT"}]},
+    {"block_id":"p2-v4-system","block_type":"PARAGRAPH","text":"2026年のDeepSeek V4では、1M context、sparse/token-compression mechanisms、thinking/non-thinking operation、agentic coding、API/deploymentが同じfrontier endpointに並ぶ。V2でarchitectureとserving efficiency、R1でreasoning post-trainingを独立に強化した後、それらがlong-context agentic workloadを支えるsystem propertyとして再結合している。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP001:1785bf3f5c6f6444","kind":"CLAIM","evidence_id":"claim-sp001-d005-01","subject_id":"deepseek-v4","subject_role":"PRIMARY_SUBJECT"}]},
+    {"block_id":"p2-v4-deployment","block_type":"PARAGRAPH","text":"V4をbenchmark順位だけで読むと、この統合を見落とす。重要なのはthinking modeを切り替えながら1M contextを扱い、agentic codingをAPI経由の実行形態へ接続するというdeveloper-facing deploymentである。frontier化とはmodel capabilityだけでなく、推論mode・context・tool-oriented workload・serving endpointを一つの運用面へ束ねることでもある。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP001:1785bf3f5c6f6444","kind":"CLAIM","evidence_id":"claim-sp001-d005-01","subject_id":"deepseek-v4","subject_role":"PRIMARY_SUBJECT"}]},
+    {"block_id":"p2-tech-notes","block_type":"NOTE","text":"Technical Notes — V2: 236B total / 21B activated、128K context、MLA/DeepSeekMoE、training/inference efficiency framingを検証。R1: R1-Zeroのno-preliminary-SFT description、cold-start + multi-stage sequence、license boundaryを検証。V4: official release identity/date、1M context、sparse/token-compression、thinking/non-thinking、agentic coding、API/deploymentを検証。ただしbenchmark横断比較は未解決。","attribution_mode":"MIXED","evidence_refs":[{"evidence_task_id":"evidence:SP001:b4feee60c7b42d7e","kind":"CLAIM","evidence_id":"claim-sp001-d002-01","subject_id":"deepseek-v2","subject_role":"PRIMARY_SUBJECT"},{"evidence_task_id":"evidence:SP001:815652c418eda76e","kind":"CLAIM","evidence_id":"claim-sp001-d004-01","subject_id":"deepseek-r1","subject_role":"PRIMARY_SUBJECT"},{"evidence_task_id":"evidence:SP001:1785bf3f5c6f6444","kind":"CLAIM","evidence_id":"claim-sp001-d005-01","subject_id":"deepseek-v4","subject_role":"PRIMARY_SUBJECT"},{"evidence_task_id":"evidence:SP001:1785bf3f5c6f6444","kind":"LIMITATION","evidence_id":"lim-sp001-d005-01","subject_id":"deepseek-v4","subject_role":"PRIMARY_SUBJECT"}]},
+    {"block_id":"PKG-2-DEEPSEEK-boundaries","block_type":"CLAIM_BOUNDARY","text":"読解上の境界: current release detail、checkpoint license、benchmark comparabilityはartifact-specific authorityを超えて一般化しない。benchmarkはsource-local条件に限定し、DeepSeek V4の未解決項目を他familyとのleague tableへ正規化しない。R1 primary weightsとdistilled derivativesのupstream licenseも混同しない。","attribution_mode":"INFERENCE","evidence_refs":[{"evidence_task_id":"evidence:SP001:1785bf3f5c6f6444","kind":"LIMITATION","evidence_id":"lim-sp001-d005-01","subject_id":"deepseek-v4","subject_role":"PRIMARY_SUBJECT"}]}
   ],
   "must_cover_coverage": [
-    {
-      "requirement": "SP001-O02",
-      "block_ids": [
-        "p2-foundation",
-        "p2-efficiency",
-        "p2-reasoning",
-        "p2-frontier",
-        "PKG-2-DEEPSEEK-boundaries"
-      ]
-    },
-    {
-      "requirement": "SP001-O03",
-      "block_ids": [
-        "p2-foundation",
-        "p2-efficiency",
-        "p2-reasoning",
-        "p2-frontier",
-        "PKG-2-DEEPSEEK-boundaries"
-      ]
-    },
-    {
-      "requirement": "SP001-O04",
-      "block_ids": [
-        "p2-foundation",
-        "p2-efficiency",
-        "p2-reasoning",
-        "p2-frontier",
-        "PKG-2-DEEPSEEK-boundaries"
-      ]
-    },
-    {
-      "requirement": "SP001-O05",
-      "block_ids": [
-        "p2-foundation",
-        "p2-efficiency",
-        "p2-reasoning",
-        "p2-frontier",
-        "PKG-2-DEEPSEEK-boundaries"
-      ]
-    },
-    {
-      "requirement": "SP001-O06",
-      "block_ids": [
-        "p2-foundation",
-        "p2-efficiency",
-        "p2-reasoning",
-        "p2-frontier",
-        "PKG-2-DEEPSEEK-boundaries"
-      ]
-    },
-    {
-      "requirement": "SP001-O07",
-      "block_ids": [
-        "p2-foundation",
-        "p2-efficiency",
-        "p2-reasoning",
-        "p2-frontier",
-        "PKG-2-DEEPSEEK-boundaries"
-      ]
-    }
+    {"requirement":"SP001-O02","block_ids":["p2-h-trajectory","p2-chronology","p2-foundation","p2-efficiency-architecture","p2-efficiency-serving","p2-r1-zero","p2-r1-multistage","p2-r1-license","p2-v4-system","p2-v4-deployment","p2-tech-notes","PKG-2-DEEPSEEK-boundaries"]},
+    {"requirement":"SP001-O03","block_ids":["p2-h-trajectory","p2-chronology","p2-foundation","p2-efficiency-architecture","p2-efficiency-serving","p2-r1-zero","p2-r1-multistage","p2-r1-license","p2-v4-system","p2-v4-deployment","p2-tech-notes","PKG-2-DEEPSEEK-boundaries"]},
+    {"requirement":"SP001-O04","block_ids":["p2-h-trajectory","p2-chronology","p2-foundation","p2-efficiency-architecture","p2-efficiency-serving","p2-r1-zero","p2-r1-multistage","p2-r1-license","p2-v4-system","p2-v4-deployment","p2-tech-notes","PKG-2-DEEPSEEK-boundaries"]},
+    {"requirement":"SP001-O05","block_ids":["p2-h-trajectory","p2-chronology","p2-foundation","p2-efficiency-architecture","p2-efficiency-serving","p2-r1-zero","p2-r1-multistage","p2-r1-license","p2-v4-system","p2-v4-deployment","p2-tech-notes","PKG-2-DEEPSEEK-boundaries"]},
+    {"requirement":"SP001-O06","block_ids":["p2-h-trajectory","p2-chronology","p2-foundation","p2-efficiency-architecture","p2-efficiency-serving","p2-r1-zero","p2-r1-multistage","p2-r1-license","p2-v4-system","p2-v4-deployment","p2-tech-notes","PKG-2-DEEPSEEK-boundaries"]},
+    {"requirement":"SP001-O07","block_ids":["p2-h-trajectory","p2-chronology","p2-foundation","p2-efficiency-architecture","p2-efficiency-serving","p2-r1-zero","p2-r1-multistage","p2-r1-license","p2-v4-system","p2-v4-deployment","p2-tech-notes","PKG-2-DEEPSEEK-boundaries"]}
   ],
   "boundary_dispositions": [
-    {
-      "boundary": "Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source.",
-      "handling": "EXPLICITLY_STATED",
-      "block_ids": [
-        "PKG-2-DEEPSEEK-boundaries"
-      ],
-      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
-    },
-    {
-      "boundary": "benchmark claims only under source-local conditions",
-      "handling": "EXPLICITLY_STATED",
-      "block_ids": [
-        "PKG-2-DEEPSEEK-boundaries"
-      ],
-      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
-    },
-    {
-      "boundary": "DeepSeek V4のlicense・benchmark・current release detailはartifact-specific authorityを超えて一般化しない。",
-      "handling": "EXPLICITLY_STATED",
-      "block_ids": [
-        "PKG-2-DEEPSEEK-boundaries"
-      ],
-      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
-    },
-    {
-      "boundary": "R1 primary weightsとdistilled derivativesのupstream licenseを混同しない。",
-      "handling": "EXPLICITLY_STATED",
-      "block_ids": [
-        "PKG-2-DEEPSEEK-boundaries"
-      ],
-      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
-    }
+    {"boundary":"Exact checkpoint license, benchmark comparability, or current release-detail claims remain bounded to artifact-specific verification and are not generalized beyond this source.","handling":"EXPLICITLY_STATED","block_ids":["PKG-2-DEEPSEEK-boundaries"],"rationale":"Approved Architecture boundary is preserved explicitly in the revised reader-facing Draft Result."},
+    {"boundary":"benchmark claims only under source-local conditions","handling":"EXPLICITLY_STATED","block_ids":["PKG-2-DEEPSEEK-boundaries"],"rationale":"Approved Architecture boundary is preserved explicitly in the revised reader-facing Draft Result."},
+    {"boundary":"DeepSeek V4のlicense・benchmark・current release detailはartifact-specific authorityを超えて一般化しない。","handling":"EXPLICITLY_STATED","block_ids":["PKG-2-DEEPSEEK-boundaries"],"rationale":"Approved Architecture boundary is preserved explicitly in the revised reader-facing Draft Result."},
+    {"boundary":"R1 primary weightsとdistilled derivativesのupstream licenseを混同しない。","handling":"EXPLICITLY_STATED","block_ids":["PKG-2-DEEPSEEK-boundaries"],"rationale":"Approved Architecture boundary is preserved explicitly in the revised reader-facing Draft Result."}
   ],
   "profile_extensions": {},
   "publication_extensions": {}
