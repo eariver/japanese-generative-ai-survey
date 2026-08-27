@@ -102,6 +102,7 @@ def parse_longform_blocks(source_text: str) -> tuple[list[ReaderBlock], dict[str
             match
             for match in matches
             if match.group("kind") == "subsection"
+            and not match.group("star")
             and section_body_start <= match.start() < section_end
         ]
         for subsection_index, subsection_match in enumerate(subsection_matches, start=1):
