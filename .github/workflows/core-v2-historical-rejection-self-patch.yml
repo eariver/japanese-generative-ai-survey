@@ -1,0 +1,139 @@
+name: Core v2 historical publication rejection self patch
+
+on:
+  push:
+    branches:
+      - fix/core-v2-historical-publication-rejection
+    paths:
+      - '.github/workflows/core-v2-historical-rejection-self-patch.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/core-v2-historical-publication-rejection
+          fetch-depth: 0
+
+      - name: Apply exact Human Gate patch and regression test
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path: str, old: str, new: str) -> None:
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{path}: exact replacement count {count} != 1 for {old[:120]!r}')
+              p.write_text(text.replace(old, new), encoding='utf-8')
+
+          replace_once(
+              'scripts/survey_human_gate_v2.py',
+              '''def _reviewed_artifacts(\n    repo_root: Path,\n    cfg: dict[str, Any],\n    state: dict[str, Any],\n    profile: dict[str, Any],\n    gate: str,\n) -> list[dict[str, str]]:\n''',
+              '''def _reviewed_artifacts(\n    repo_root: Path,\n    cfg: dict[str, Any],\n    state: dict[str, Any],\n    profile: dict[str, Any],\n    gate: str,\n    *,\n    require_current_candidate_validity: bool = True,\n) -> list[dict[str, str]]:\n''',
+          )
+
+          replace_once(
+              'scripts/survey_human_gate_v2.py',
+              '''        publication.validate_candidate(repo_root, candidate_path, issue_id=state["issue_id"])\n        candidate = core.load_json(candidate_path)\n        pdf = candidate.get("pdf")\n''',
+              '''        if require_current_candidate_validity:\n            candidate = publication.validate_candidate(\n                repo_root, candidate_path, issue_id=state["issue_id"]\n            )\n        else:\n            candidate = schema_gate.load_and_validate_json(\n                candidate_path,\n                repo_root / publication.CANDIDATE_SCHEMA,\n                label="Publication Candidate historical review surface",\n            )\n            if candidate.get("issue_id") != state["issue_id"]:\n                raise HumanGateError("Publication Candidate historical review issue identity mismatch")\n            if candidate.get("publication_profile") != profile.get("publication_profile"):\n                raise HumanGateError("Publication Candidate historical review profile identity mismatch")\n        pdf = candidate.get("pdf")\n''',
+          )
+
+          replace_once(
+              'scripts/survey_human_gate_v2.py',
+              '''    artifacts = _reviewed_artifacts(repo_root, cfg, state, profile, gate)\n    commit_sha = _review_commit(\n        repo_root,\n        reviewed_commit_sha,\n        profile["paths"]["work_branch"],\n        reviewed_state,\n        artifacts,\n    )\n    updated = _revised_state(repo_root, cfg, state, gate, regeneration_boundary)\n''',
+              '''    artifacts = _reviewed_artifacts(\n        repo_root,\n        cfg,\n        state,\n        profile,\n        gate,\n        require_current_candidate_validity=False,\n    )\n    commit_sha = _review_commit(\n        repo_root,\n        reviewed_commit_sha,\n        profile["paths"]["work_branch"],\n        reviewed_state,\n        artifacts,\n    )\n    updated = _revised_state(repo_root, cfg, state, gate, regeneration_boundary)\n''',
+          )
+
+          test_method = r'''
+    def test_publication_rejection_records_historical_candidate_rejected_by_current_validator(self) -> None:
+        self._advance_to_selection()
+        self._reach_architecture_gate("Approved Architecture for historical rejection", "2026-08-24T00:05:00Z")
+        human_gate.record_architecture_approval(
+            self.root,
+            self.cfg,
+            self.state_path,
+            "human-reviewer",
+            core.parse_instant("2026-08-24T00:06:00Z"),
+            "review:architecture:historical-rejection",
+            expected_revision=1,
+            reviewed_commit_sha=self._snapshot_review_commit(),
+        )
+        candidate = self._reach_publication_gate(1, 10)
+        reviewed_commit = self._snapshot_review_commit()
+
+        original_validate_candidate = publication.validate_candidate
+
+        def reject_under_current_validator(*args, **kwargs):
+            raise ValueError("current validator rejects reviewed historical candidate")
+
+        publication.validate_candidate = reject_under_current_validator
+        try:
+            with self.assertRaisesRegex(ValueError, "current validator rejects reviewed historical candidate"):
+                human_gate.record_publication_preview_approval(
+                    self.root,
+                    self.cfg,
+                    self.state_path,
+                    "human-reviewer",
+                    core.parse_instant("2026-08-24T00:14:00Z"),
+                    "review:publication:historical-invalid-approval",
+                    expected_revision=1,
+                    reviewed_commit_sha=reviewed_commit,
+                )
+
+            state, record_path, index_path, _ = human_gate.request_publication_preview_revision(
+                self.root,
+                self.cfg,
+                self.state_path,
+                "DRAFT_COMPLETE",
+                "The reviewed historical candidate fails the current validator and must be regenerated.",
+                "human-reviewer",
+                core.parse_instant("2026-08-24T00:15:00Z"),
+                "review:publication:historical-invalid-rejection",
+                expected_revision=1,
+                reviewed_commit_sha=reviewed_commit,
+            )
+        finally:
+            publication.validate_candidate = original_validate_candidate
+
+        self.assertEqual(state["lifecycle_state"], "DRAFT_COMPLETE")
+        self.assertEqual(state["human_gates"]["architecture_review"], "approved")
+        self.assertEqual(state["human_gates"]["publication_preview"], "pending")
+        record = core.load_json(record_path)
+        self.assertEqual(record["decision"], "REQUEST_CHANGES")
+        self.assertEqual(record["reviewed_repository_commit_sha"], reviewed_commit)
+        candidate_ref = next(
+            row for row in record["reviewed_artifacts"] if row["name"] == "publication-candidate"
+        )
+        pdf_ref = next(
+            row for row in record["reviewed_artifacts"] if row["name"] == "publication-pdf"
+        )
+        self.assertEqual(candidate_ref["sha256"], core.sha256_file(candidate["candidate"]))
+        self.assertEqual(pdf_ref["sha256"], core.sha256_file(candidate["pdf"]))
+        publication_rows = [
+            row for row in core.load_json(index_path)["reviews"]
+            if row["gate"] == "PUBLICATION_PREVIEW"
+        ]
+        self.assertEqual([(row["revision"], row["decision"]) for row in publication_rows], [(1, "REQUEST_CHANGES")])
+
+'''
+          replace_once(
+              'tests/test_survey_human_gate_v2.py',
+              '    def test_publication_revision_reopens_architecture_and_preserves_approval_history(self) -> None:\n',
+              test_method + '    def test_publication_revision_reopens_architecture_and_preserves_approval_history(self) -> None:\n',
+          )
+          PY
+
+          git rm .github/workflows/core-v2-historical-rejection-self-patch.yml
+          git add scripts/survey_human_gate_v2.py tests/test_survey_human_gate_v2.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Fix historical Publication Preview rejection recording'
+          git push origin HEAD:fix/core-v2-historical-publication-rejection
