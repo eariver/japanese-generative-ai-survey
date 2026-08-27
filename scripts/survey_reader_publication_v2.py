@@ -10,6 +10,7 @@ responsibility and is recorded against those exact blocks.
 """
 from __future__ import annotations
 
+import re
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -24,6 +25,11 @@ REVIEW_SCHEMA = Path("schemas/publication-review-record-v2.schema.json")
 ARCHITECTURE_SCHEMA = Path("schemas/issue-architecture-v2.schema.json")
 ARCHITECTURE_APPROVAL_SCHEMA = Path("schemas/architecture-approval-record-v2.schema.json")
 REVIEW_CONTRACT = Path("config/publication-review-v2.json")
+
+_PDF_OBJECT = re.compile(rb"(?ms)(?:^|\s)\d+\s+\d+\s+obj\b(?P<body>.*?)endobj")
+_PDF_PAGE_TYPE = re.compile(rb"/Type\s*/Page(?!s)\b")
+_PDF_PAGES_TYPE = re.compile(rb"/Type\s*/Pages\b")
+_PDF_COUNT = re.compile(rb"/Count\s+(\d+)\b")
 
 
 def _rel(repo_root: Path, path: Path) -> str:
@@ -60,6 +66,36 @@ def _sized_artifact(repo_root: Path, path: Path) -> dict[str, Any]:
         "sha256": core.sha256_file(value),
         "byte_count": value.stat().st_size,
     }
+
+
+def _exact_pdf_page_count(path: Path) -> int:
+    """Derive page count from the exact reviewed PDF bytes, fail-closed.
+
+    Core publication PDFs are repository-resident build outputs. Their page tree
+    must expose ordinary indirect Page/Pages dictionaries. Counting leaf Page
+    objects and cross-checking the largest Pages /Count avoids trusting caller
+    metadata while rejecting unsupported/ambiguous PDF structures rather than
+    silently falling back to an asserted count.
+    """
+    data = path.read_bytes()
+    if not data.startswith(b"%PDF-"):
+        raise ValueError("reviewed publication PDF has no PDF header")
+    bodies = [match.group("body") for match in _PDF_OBJECT.finditer(data)]
+    page_count = sum(1 for body in bodies if _PDF_PAGE_TYPE.search(body))
+    if page_count < 1:
+        raise ValueError("reviewed publication PDF page tree is not deterministically inspectable")
+    tree_counts: list[int] = []
+    for body in bodies:
+        if not _PDF_PAGES_TYPE.search(body):
+            continue
+        count_match = _PDF_COUNT.search(body)
+        if count_match is not None:
+            tree_counts.append(int(count_match.group(1)))
+    if not tree_counts or max(tree_counts) != page_count:
+        raise ValueError(
+            "reviewed publication PDF page-tree count disagrees with exact Page objects"
+        )
+    return page_count
 
 
 def _validate_artifact_ref(
@@ -436,6 +472,12 @@ def build_review_record(
         sized=True,
     )
     pdf = _safe_file(repo_root, pdf_path, "reviewed publication PDF")
+    actual_page_count = _exact_pdf_page_count(pdf)
+    if page_count != actual_page_count:
+        raise ValueError(
+            f"Publication Review page_count does not match exact PDF bytes: "
+            f"asserted={page_count} actual={actual_page_count}"
+        )
     expected = _expected_review_checks(repo_root, profile, review_kind)
     actual = [row.get("check_id") for row in checks if isinstance(row, dict)]
     if set(actual) != expected or len(actual) != len(set(actual)):
@@ -451,7 +493,7 @@ def build_review_record(
         profile,
         architecture,
         manuscript,
-        page_count,
+        actual_page_count,
         checks,
         review_kind,
     )
@@ -467,7 +509,7 @@ def build_review_record(
         "reader_manuscript": _artifact(repo_root, manuscript_file),
         "source": _sized_artifact(repo_root, source),
         "pdf": _sized_artifact(repo_root, pdf),
-        "page_count": page_count,
+        "page_count": actual_page_count,
         "checks": checks,
         "reviewed_by": reviewed_by,
         "recorded_at": core.iso_utc(recorded_at),
@@ -555,7 +597,13 @@ def validate_review_record(
     )
     if source.resolve() != manuscript_source.resolve() or payload["source"] != manuscript["primary_source"]:
         raise ValueError("Publication Review does not bind exact Reader Manuscript source")
-    _validate_artifact_ref(repo_root, payload["pdf"], "Review PDF", sized=True)
+    pdf = _validate_artifact_ref(repo_root, payload["pdf"], "Review PDF", sized=True)
+    actual_page_count = _exact_pdf_page_count(pdf)
+    if payload["page_count"] != actual_page_count:
+        raise ValueError(
+            f"Publication Review page_count does not match exact PDF bytes: "
+            f"recorded={payload['page_count']} actual={actual_page_count}"
+        )
     expected = _expected_review_checks(repo_root, profile, payload["review_kind"])
     actual = [row["check_id"] for row in payload["checks"]]
     if set(actual) != expected or len(actual) != len(set(actual)):
@@ -566,7 +614,7 @@ def validate_review_record(
         profile,
         architecture,
         manuscript,
-        payload["page_count"],
+        actual_page_count,
         payload["checks"],
         payload["review_kind"],
     )
