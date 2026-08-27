@@ -7,21 +7,26 @@ from scripts import survey_reader_fidelity_v2 as fidelity
 
 class SurveyReaderFidelityV2Tests(unittest.TestCase):
     @staticmethod
-    def _architecture(target_pages: int = 18) -> dict[str, object]:
+    def _architecture(target_pages: int | float = 18, *, array_order_reversed: bool = False) -> dict[str, object]:
+        packages = [
+            {
+                "package_id": "PKG-1",
+                "title": "Family trajectory",
+                "must_cover_requirements": ["R1", "R2"],
+                "drafting_order": 1,
+            },
+            {
+                "package_id": "PKG-2",
+                "title": "Cross-family synthesis",
+                "must_cover_requirements": [],
+                "drafting_order": 2,
+            },
+        ]
+        if array_order_reversed:
+            packages.reverse()
         return {
             "page_plan": {"target_pages": target_pages, "max_pages": 24},
-            "packages": [
-                {
-                    "package_id": "PKG-1",
-                    "title": "Family trajectory",
-                    "must_cover_requirements": ["R1", "R2"],
-                },
-                {
-                    "package_id": "PKG-2",
-                    "title": "Cross-family synthesis",
-                    "must_cover_requirements": [],
-                },
-            ],
+            "packages": packages,
         }
 
     @staticmethod
@@ -222,6 +227,32 @@ class SurveyReaderFidelityV2Tests(unittest.TestCase):
             "SEMANTIC_EDITORIAL",
         )
 
+    def test_float_target_pages_still_requires_below_target_density_review(self) -> None:
+        profile = {"publication_profile": "LONGFORM_SPECIAL"}
+        checks = self._semantic_checks()
+        with self.assertRaisesRegex(ValueError, "page-plan:7/18"):
+            fidelity.validate_review_depth(
+                profile,
+                self._architecture(target_pages=18.0),
+                self._manuscript(),
+                7,
+                checks,
+                "SEMANTIC_EDITORIAL",
+            )
+
+        depth = next(row for row in checks if row["check_id"] == "LONGFORM_TECHNICAL_DEPTH")
+        depth["evidence_locations"].extend(
+            ["page-plan:7/18", "density-review:below-target-substantive"]
+        )
+        fidelity.validate_review_depth(
+            profile,
+            self._architecture(target_pages=18.0),
+            self._manuscript(),
+            7,
+            checks,
+            "SEMANTIC_EDITORIAL",
+        )
+
     def test_final_synthesis_review_requires_exact_location_and_reader_role(self) -> None:
         profile = {"publication_profile": "LONGFORM_SPECIAL"}
         checks = self._semantic_checks()
@@ -231,6 +262,31 @@ class SurveyReaderFidelityV2Tests(unittest.TestCase):
             fidelity.validate_review_depth(
                 profile,
                 self._architecture(target_pages=7),
+                self._manuscript(),
+                7,
+                checks,
+                "SEMANTIC_EDITORIAL",
+            )
+
+    def test_final_synthesis_package_uses_drafting_order_not_array_position(self) -> None:
+        profile = {"publication_profile": "LONGFORM_SPECIAL"}
+        checks = self._semantic_checks()
+        fidelity.validate_review_depth(
+            profile,
+            self._architecture(target_pages=7, array_order_reversed=True),
+            self._manuscript(),
+            7,
+            checks,
+            "SEMANTIC_EDITORIAL",
+        )
+
+        final = next(row for row in checks if row["check_id"] == "FINAL_SYNTHESIS_QUALITY")
+        final["evidence_locations"].remove("package:PKG-2")
+        final["evidence_locations"].append("package:PKG-1")
+        with self.assertRaisesRegex(ValueError, "package:PKG-2"):
+            fidelity.validate_review_depth(
+                profile,
+                self._architecture(target_pages=7, array_order_reversed=True),
                 self._manuscript(),
                 7,
                 checks,
