@@ -46,6 +46,10 @@ def _normal_title(value: str) -> str:
 
 def _visible_chars(text: str) -> int:
     value = re.sub(r"(?m)%.*$", " ", text)
+    # Heading labels are navigation, not substantive reader prose. Remove the
+    # entire matched heading before generic command stripping so title text
+    # alone cannot make an otherwise empty block appear non-empty.
+    value = _HEADING.sub(" ", value)
     value = _CITATION.sub(" ", value)
     value = re.sub(r"\\(?:begin|end)\{[^{}]+\}", " ", value)
     value = re.sub(r"\\[A-Za-z@]+\*?(?:\[[^\]]*\])?", " ", value)
@@ -65,22 +69,29 @@ def _citation_keys(text: str) -> frozenset[str]:
 
 
 def parse_longform_blocks(source_text: str) -> tuple[list[ReaderBlock], dict[str, ReaderBlock]]:
-    """Parse numbered sections and their subsections into stable reader blocks."""
+    """Parse numbered sections and their subsections into stable reader blocks.
+
+    Starred headings are not reader-location authorities because LaTeX does not
+    assign them section numbers. They still terminate the preceding numbered
+    block, however, so unnumbered appendices/notes/references cannot be silently
+    attributed to the preceding numbered reader location.
+    """
     matches = list(_HEADING.finditer(source_text))
-    numbered_sections = [
-        match
-        for match in matches
-        if match.group("kind") == "section" and not match.group("star")
-    ]
+    section_matches = [match for match in matches if match.group("kind") == "section"]
+    numbered_sections = [match for match in section_matches if not match.group("star")]
+    section_end_by_start = {
+        match.start(): (
+            section_matches[index + 1].start()
+            if index + 1 < len(section_matches)
+            else len(source_text)
+        )
+        for index, match in enumerate(section_matches)
+    }
     blocks: list[ReaderBlock] = []
     by_location: dict[str, ReaderBlock] = {}
 
     for section_index, section_match in enumerate(numbered_sections, start=1):
-        section_end = (
-            numbered_sections[section_index].start()
-            if section_index < len(numbered_sections)
-            else len(source_text)
-        )
+        section_end = section_end_by_start[section_match.start()]
         section_body_start = section_match.end()
         section_body = source_text[section_body_start:section_end]
         section_title = section_match.group("title").strip()
@@ -98,19 +109,25 @@ def parse_longform_blocks(source_text: str) -> tuple[list[ReaderBlock], dict[str
         blocks.append(section_block)
         by_location[section_location] = section_block
 
-        subsection_matches = [
+        all_subsection_matches = [
             match
             for match in matches
             if match.group("kind") == "subsection"
-            and not match.group("star")
             and section_body_start <= match.start() < section_end
         ]
-        for subsection_index, subsection_match in enumerate(subsection_matches, start=1):
-            subsection_end = (
-                subsection_matches[subsection_index].start()
-                if subsection_index < len(subsection_matches)
+        subsection_end_by_start = {
+            match.start(): (
+                all_subsection_matches[index + 1].start()
+                if index + 1 < len(all_subsection_matches)
                 else section_end
             )
+            for index, match in enumerate(all_subsection_matches)
+        }
+        numbered_subsection_matches = [
+            match for match in all_subsection_matches if not match.group("star")
+        ]
+        for subsection_index, subsection_match in enumerate(numbered_subsection_matches, start=1):
+            subsection_end = subsection_end_by_start[subsection_match.start()]
             body = source_text[subsection_match.end():subsection_end]
             title = subsection_match.group("title").strip()
             location = f"Subsection {section_index}.{subsection_index} — {title}"
