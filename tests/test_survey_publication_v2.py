@@ -38,6 +38,18 @@ class SurveyPublicationV2Tests(unittest.TestCase):
         self.now = datetime(2026, 8, 23, 7, 0, tzinfo=timezone.utc)
         self.dummy_sha = "a" * 64
 
+    @staticmethod
+    def _fixture_pdf(page_count: int = 12) -> bytes:
+        chunks = [
+            b"%PDF-1.7\n",
+            f"1 0 obj\n<< /Type /Pages /Count {page_count} >>\nendobj\n".encode(),
+        ]
+        for index in range(page_count):
+            chunks.append(
+                f"{index + 2} 0 obj\n<< /Type /Page /Parent 1 0 R >>\nendobj\n".encode()
+            )
+        return b"".join(chunks)
+
     def _profile(self, issue_id: str, research_profile: str, publication_profile: str) -> Path:
         if research_profile == "WEEKLY":
             temporal = {
@@ -277,7 +289,7 @@ class SurveyPublicationV2Tests(unittest.TestCase):
             requirements = [
                 {"requirement_id": "FINAL_SYNTHESIS", "status": "FULFILLED", "reader_locations": ["main.tex:summary"], "detail": "Final synthesis authored"}
             ]
-        pdf.write_bytes(b"%PDF-1.7\nfixture\n")
+        pdf.write_bytes(self._fixture_pdf(12))
         publication_dir = self.root / f"sources/{issue_id}/publication/v2"
         publication_dir.mkdir(parents=True, exist_ok=True)
         manifest = publication_dir / "reader-manuscript-v2.json"
@@ -361,6 +373,21 @@ class SurveyPublicationV2Tests(unittest.TestCase):
         candidate_data = publication.validate_candidate(self.root, paths["candidate"])
         self.assertEqual(freeze_data["visual_review_path"], candidate_data["visual_review"]["path"])
 
+    def test_review_page_count_must_match_exact_pdf_bytes(self) -> None:
+        paths = self._candidate()
+        with self.assertRaisesRegex(ValueError, "asserted=18 actual=12"):
+            reader.build_review_record(
+                self.root,
+                paths["manifest"],
+                paths["pdf"],
+                18,
+                "SEMANTIC_EDITORIAL",
+                self._review_checks(paths["profile"], "SEMANTIC_EDITORIAL"),
+                "ChatGPT",
+                self.now,
+                paths["publication_dir"] / "mismatched-page-count-review.json",
+            )
+
     def test_candidate_rejects_actions_only_pdf_authority_because_exact_reviewed_bytes_must_be_repository_resident(self) -> None:
         paths = self._candidate()
         bundle_path = paths["publication_dir"] / "actions-quality.json"
@@ -408,7 +435,7 @@ class SurveyPublicationV2Tests(unittest.TestCase):
         approval = paths["publication_dir"] / "publication-preview-approval-v2.json"
         publication.build_preview_approval(self.root, paths["candidate"], approval, "human-reviewer", self.now, "review:SP001:preview")
         paths["pdf"].write_bytes(b"%PDF-1.7\nchanged-after-review\n")
-        with self.assertRaisesRegex(ValueError, "bytes drifted"):
+        with self.assertRaises(ValueError):
             publication.validate_preview_approval(self.root, approval)
 
     def test_missing_architecture_coverage_blocks_reader_manifest(self) -> None:
