@@ -215,6 +215,8 @@ def _reviewed_artifacts(
     state: dict[str, Any],
     profile: dict[str, Any],
     gate: str,
+    *,
+    require_current_candidate_validity: bool = True,
 ) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
     for item in cfg["orchestration"]["gate_inputs"][gate]:
@@ -230,8 +232,20 @@ def _reviewed_artifacts(
             for row in rows
             if row["name"] == "publication-candidate"
         )
-        publication.validate_candidate(repo_root, candidate_path, issue_id=state["issue_id"])
-        candidate = core.load_json(candidate_path)
+        if require_current_candidate_validity:
+            candidate = publication.validate_candidate(
+                repo_root, candidate_path, issue_id=state["issue_id"]
+            )
+        else:
+            # REQUEST_CHANGES records the exact historical review surface. A
+            # newer Candidate schema or substantive validator may be the reason
+            # the Human is rejecting these bytes, so rejection must not require
+            # the historical artifact to satisfy current acceptance contracts.
+            candidate = core.load_json(candidate_path)
+            if candidate.get("issue_id") != state["issue_id"]:
+                raise HumanGateError("Publication Candidate historical review issue identity mismatch")
+            if candidate.get("publication_profile") != profile.get("publication_profile"):
+                raise HumanGateError("Publication Candidate historical review profile identity mismatch")
         pdf = candidate.get("pdf")
         if not isinstance(pdf, dict) or not isinstance(pdf.get("path"), str):
             raise HumanGateError("Publication Candidate lacks durable PDF authority")
@@ -724,7 +738,14 @@ def request_changes(
     index = _load_review_index(repo_root, cfg, source_root, state["issue_id"])
     revision = _next_revision(index, gate, expected_revision)
     reviewed_state = _authority(repo_root, state_path)
-    artifacts = _reviewed_artifacts(repo_root, cfg, state, profile, gate)
+    artifacts = _reviewed_artifacts(
+        repo_root,
+        cfg,
+        state,
+        profile,
+        gate,
+        require_current_candidate_validity=False,
+    )
     commit_sha = _review_commit(
         repo_root,
         reviewed_commit_sha,
