@@ -3,33 +3,34 @@
   "issue_id": "SP001",
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
-  "synthesis_version": "v1.0",
-  "status": "ESTABLISHED",
+  "synthesis_version": "v2.0",
+  "status": "REVISED",
   "basis": {
-    "synthesis_input_sha256": "1acff3e62c9ee04f1a751844e0595481b32da5d38778d2844a244539800a6691",
+    "synthesis_input_sha256": "2c7dfe108acc69b6f6e23b74c7461014585ea5ad315e3483c750557c18210a42",
     "prompt_id": "profile-synthesis-v2",
     "prompt_sha256": "05b8e3bb5f8553581de0141506b8608c72936d16304114c7b3d7fc35d3687080"
   },
   "runner": {
     "provider": "OpenAI",
     "model": "GPT-5.6 Sol",
-    "invocation": "interactive ChatGPT project drafting; exact accepted Evidence/Architecture constrained",
-    "generated_at": "2026-08-26T09:45:00Z",
-    "run_reference": "SP001 Core v2 clean post-Architecture drafting r1"
+    "invocation": "interactive ChatGPT synthesis after Publication Preview r1 REQUEST_CHANGES; deterministic canonicalization on scratch Actions runner",
+    "generated_at": "2026-08-27T23:44:00Z",
+    "run_reference": "SP001 Publication Preview revision r2 synthesis"
   },
   "profile_payload": {
-    "branch_transition_synthesis": "2022–2024年のpluralなfoundation期から、DeepSeekは効率設計とRL post-training、Qwenはmodel breadthとdistribution、GLMはagentic systems engineering、Kimiはlong-context multimodal reasoningをそれぞれ発達させ、2026年にはlong context・sparsity・reasoning・agentic executionが各familyのsystem設計へ収束した。",
+    "branch_transition_synthesis": "2022–2024年のpluralなfoundation期を単一系譜へ畳み込まずに追うと、DeepSeekはfoundationからactive-compute/attention効率、RL reasoning、long-context agentic endpointへ、Qwenはdense/MoEのmodel breadthからhub・quantization・fine-tuning・deploymentを含むdistribution surfaceへ、GLMはbilingual foundationからsparse attention・asynchronous RL・local servingを束ねるsystems engineeringへ、Kimiはlong-context multimodal reasoning/RLから1M-context sparse multimodal agentへ進んだ。2026年に共通化したのは組織的な祖先関係ではなく、長文脈、sparsity、reasoning/post-training、agentic execution、配布とservingを同時に解く必要があるというsystem-levelの設計圧力である。",
     "parallel_competing_relations": [
-      "DeepSeek: foundation→MoE/MLA efficiency→RL reasoning→1M-context agentic endpoint",
-      "Qwen: broad dense/MoE family→hub/runtime distribution→open-weight agent/coding/research endpoint",
-      "GLM: bilingual foundation anchor→sparse-attention/RL/servingを束ねるagentic systems endpoint",
-      "Kimi: long-context multimodal RL→1M-context sparse multimodal agentic endpoint"
+      "DeepSeek: 7B/67B・2T-token foundation baseline → V2のMoE/MLA/DeepSeekMoEによる236B total / 21B activatedと128K contextの効率設計 → R1-Zeroとcold-start/multi-stage R1によるreasoning post-training → V4の1M context・thinking mode・agentic coding/API endpoint。",
+      "Qwen: Qwen2のdense/MoE model breadth・multilingual/coding/math/reasoning → Hugging Face/ModelScope、quantization、fine-tuning、deployment資源を含むdistribution strategy → Qwen3.8のopen-weight agent/coding/research line。",
+      "GLM: GLM-130Bというearly bilingual foundation anchor → GLM-5の744B total / 40B active、28.5T tokens、sparse attention、asynchronous RL、long-horizon agentic engineering、複数local-serving recipeを統合するsystems endpoint。",
+      "Kimi: k1.5のlong-context multimodal reasoning/RL → K3の2.8T open-weight native multimodal、sparse MoE、efficient-attention/residual mechanisms、1M context、long-horizon coding/agentic focus。"
     ],
     "unresolved_lineage_questions": [
-      "類似するsparsity/attention/agentic技術の存在からfamily間の直接的技術継承やinstitutional ancestryは推定しない。",
-      "2026 checkpointごとのlicenseとbenchmark comparabilityはartifact-specific authorityの範囲に残る。"
+      "類似するsparsity、attention、agentic技術の並存からfamily間の直接的技術継承やinstitutional ancestryは推定しない。",
+      "DeepSeek V4、Qwen3.8、GLM-5、Kimi K3のexact checkpoint licenseや一部current release detailはartifact-specific authorityを超えて一般化しない。",
+      "2026 frontierのbenchmarkはevaluation condition、harness、versionが一致しないためsource-local reported positionに留め、横断league tableへ正規化しない。"
     ],
-    "historical_attribution_boundaries": "chronologyは一次資料で固定するが、publication dateの近さを直接影響の証拠にせず、benchmarkはsource-local reported positionに限定し、repository licenseからweight/model licenseを一般化しない。"
+    "historical_attribution_boundaries": "chronologyはartifactごとの一次資料で固定するがpublication dateの近さを直接影響の証拠にしない。repository code license、checkpointのweight/model license、再配布・商用利用、recipe再現性は別authorityとして扱う。最終総括は前5 packageで受理されたEvidenceの再構成に限定し、新規の未検証cross-family性能主張を導入しない。"
   },
   "publication_payload": {}
 }
