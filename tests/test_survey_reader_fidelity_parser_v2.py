@@ -64,6 +64,42 @@ class SurveyReaderFidelityParserV2Tests(unittest.TestCase):
         self.assertEqual(by_location["Section 1 — Main"].visible_chars, 0)
         self.assertEqual(by_location["Subsection 1.1 — Empty child"].visible_chars, 0)
 
+    def test_commented_headings_never_become_authorities_or_boundaries(self) -> None:
+        source = (
+            "% \\section{Commented section}\n"
+            "\\section{Main}\n"
+            "Main prose before an inline comment. % \\subsection{Commented child}\n"
+            "% \\section*{Commented appendix}\n"
+            "\\subsection{Real child}\n"
+            "Real child prose.\n"
+            "% \\section{Commented second section}\n"
+            "\\section{Next}\n"
+            "Next prose.\n"
+        )
+        blocks, by_location = fidelity.parse_longform_blocks(source)
+        locations = {block.canonical_location for block in blocks}
+        self.assertEqual(
+            locations,
+            {
+                "Section 1 — Main",
+                "Subsection 1.1 — Real child",
+                "Section 2 — Next",
+            },
+        )
+        self.assertIn("Real child prose.", by_location["Section 1 — Main"].body)
+        self.assertEqual(by_location["Subsection 1.1 — Real child"].body.strip().splitlines()[0], "Real child prose.")
+
+    def test_escaped_percent_remains_visible_reader_prose(self) -> None:
+        source = (
+            "\\section{Main}\n"
+            "\\subsection{Progress}\n"
+            "The migration is 100\\% complete.\n"
+        )
+        _, by_location = fidelity.parse_longform_blocks(source)
+        block = by_location["Subsection 1.1 — Progress"]
+        self.assertGreater(block.visible_chars, 0)
+        self.assertIn("100\\% complete", block.body)
+
 
 if __name__ == "__main__":
     unittest.main()
