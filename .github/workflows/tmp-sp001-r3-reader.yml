@@ -1,5 +1,6 @@
 name: Temporary SP001 r3 reader regeneration
 
+# retry-2: structural section-label wrapping
 on:
   push:
     branches:
@@ -25,7 +26,7 @@ jobs:
           python-version: '3.12'
 
       - name: Regenerate r3 reader source
-        run: python scripts/tmp_sp001_r3_reader.py
+        run: python scripts/tmp_sp001_r3_reader_v2.py
 
       - name: Commit exact reader source basis locally
         id: source
@@ -143,7 +144,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -f .github/workflows/tmp-sp001-r3-reader.yml scripts/tmp_sp001_r3_reader.py
-          git add -A surveys/special/SP001/main.pdf sources/SP001/publication/v2/pdf-build-audit-r3.json .github/workflows/tmp-sp001-r3-reader.yml scripts/tmp_sp001_r3_reader.py
+          rm -f .github/workflows/tmp-sp001-r3-reader.yml scripts/tmp_sp001_r3_reader.py scripts/tmp_sp001_r3_reader_v2.py
+          git add -A surveys/special/SP001/main.pdf sources/SP001/publication/v2/pdf-build-audit-r3.json .github/workflows/tmp-sp001-r3-reader.yml scripts/tmp_sp001_r3_reader.py scripts/tmp_sp001_r3_reader_v2.py
           git commit -m 'Build SP001 Publication r3 exact reader PDF'
           git push origin HEAD:special/SP001-v2-work
