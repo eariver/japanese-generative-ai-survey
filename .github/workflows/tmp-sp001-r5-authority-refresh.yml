@@ -1,0 +1,93 @@
+name: Temporary SP001 r5 authority refresh
+
+on:
+  push:
+    branches: [special/SP001-v2-work]
+    paths:
+      - 'sources/SP001/publication/v2/tmp-r5-authority-refresh-trigger.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sparse clone exact trigger head
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git clone --depth 20 --filter=blob:none --sparse --branch special/SP001-v2-work "$url" repo
+          cd repo
+          git sparse-checkout set \
+            .github/workflows \
+            config \
+            schemas \
+            scripts \
+            tests \
+            sources/SP001 \
+            surveys/special/SP001 \
+            templates/survey \
+            docs
+          actual=$(git rev-parse HEAD)
+          test "$actual" = "$GITHUB_SHA" || { echo "branch moved trigger=$GITHUB_SHA cloned=$actual"; exit 78; }
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Core v2 validation dependencies
+        working-directory: repo
+        run: python -m pip install -r config/survey-production-v2-requirements.txt
+
+      - name: Refresh exact r5 Publication Preview authority
+        working-directory: repo
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python scripts/tmp_sp001_r5_authority_refresh.py
+
+      - name: Validate refreshed Publication Candidate
+        working-directory: repo
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest tests.test_survey_publication_v2 tests.test_survey_quality_v2 tests.test_survey_reader_fidelity_v2 -v
+          PYTHONPATH=. python - <<'PY'
+          from pathlib import Path
+          from scripts import survey_publication_v2 as publication
+          root=Path('.').resolve()
+          c=publication.validate_candidate(root,root/'sources/SP001/publication/v2/publication-candidate-v2.json',issue_id='SP001')
+          assert c['status']=='READY_FOR_PUBLICATION_PREVIEW'
+          assert c['source']['sha256']=='d6a44373c35cff6d67b47bc383c05333ebc33c829628d1b529ffa0f1cc23bf99'
+          assert c['pdf']['sha256']=='9f6bef98d15bfaec1ea2aec3972005487c28e44ec84762e4fbaa51639d7fe1b2'
+          assert c['pdf']['byte_count']==322250 and c['pdf']['page_count']==14
+          print('SP001 r5 refreshed Publication Candidate validation PASS')
+          print('candidate_digest='+c['candidate_sha256'])
+          PY
+
+      - name: Commit canonical r5 authority and remove build/refresh transport
+        working-directory: repo
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm -f .github/workflows/tmp-sp001-r5-final-cleanup-build*.yml
+          rm -f .github/workflows/tmp-sp001-r5-authority-refresh.yml
+          rm -f sources/SP001/publication/v2/tmp-r5-final-cleanup-build*.txt
+          rm -f sources/SP001/publication/v2/tmp-r5-authority-refresh-trigger.txt
+          rm -f scripts/tmp_sp001_r5_authority_refresh.py
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          find . -name '*.pyc' -delete
+          git add -A
+          git status --short
+          git diff --cached --check
+          git commit -m 'Refresh SP001 r5 exact Publication Preview authority'
+          git fetch --depth 1 origin special/SP001-v2-work
+          remote_head=$(git rev-parse FETCH_HEAD)
+          test "$remote_head" = "$GITHUB_SHA" || { echo "remote moved trigger=$GITHUB_SHA remote=$remote_head"; exit 78; }
+          git push origin HEAD:special/SP001-v2-work
