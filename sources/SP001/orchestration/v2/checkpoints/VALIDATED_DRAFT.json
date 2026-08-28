@@ -4,9 +4,9 @@
   "from_state": "VALIDATED_DRAFT",
   "to_state": "RELEASE_CANDIDATE",
   "checkpoints": [],
-  "recorded_at": "2026-08-29T13:00:00Z",
+  "recorded_at": "2026-08-28T19:02:21Z",
   "implementation": {
-    "repository_commit_sha": "27e346e43776972eff8a5864caafa55370f54215",
+    "repository_commit_sha": "06ada66c556d58911cfc8008223992c824563c9e",
     "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
   },
   "contract": {
@@ -23,7 +23,7 @@
     {
       "name": "publication-candidate",
       "path": "sources/SP001/publication/v2/publication-candidate-v2.json",
-      "sha256": "d9b563c37ce6de4af11b6c18ca5527f9f2d05a9b46272557f41a3b527507b15c"
+      "sha256": "ad2c446e7cbe05b3acb7237a99252429bc7638d3197647c3acc1fa9069916d74"
     }
   ],
   "reviews": [
@@ -31,21 +31,21 @@
       "check_id": "CORE_STAGE_CONTRACT",
       "kind": "DETERMINISTIC",
       "status": "PASS",
-      "executor": "survey_core_execution_bridge_v2",
-      "evidence": "Canonical Core stage contract validated for immutable request SP001-advance-publication-candidate-r4.",
+      "executor": "survey_stage_validation_v2",
+      "evidence": "Canonical Core stage contract validated for SP001 r4 deterministic state reconciliation.",
       "result": {
-        "path": "sources/SP001/execution/bridge-runs/SP001-advance-publication-candidate-r4/core-stage-contract.json",
-        "sha256": "29e8f0ae5554ff0bd997b08f702189d3baad79d301bb154845dc1115b8621b5e"
+        "path": "sources/SP001/execution/bridge-runs/SP001-r4-state-reconcile-candidate/core-stage-contract.json",
+        "sha256": "010382fb6b113ff85290116198de6958c0c88fc96af64fedab2a6d618cf05b29"
       }
     },
     {
-      "check_id": "SP001_PUBLICATION_R3_CANDIDATE_EXACT_BINDING_RETRY",
+      "check_id": "SP001_PUBLICATION_R4_CANDIDATE_EXACT_BINDING",
       "kind": "AGENT_EDITORIAL",
       "status": "PASS",
-      "executor": "ChatGPT GPT-5.6 Sol",
-      "evidence": "Transport retry only after GitHub Actions run #164 remained stuck for about one day during operator-execute checkout. The previously Core-validated Publication r3 candidate remains unchanged and binds exact source SHA-256 838d1fbb5618b447b7f13334c5e67bc55cfca7613dbf7f492e6ae29fe128026a plus exact 14-page PDF SHA-256 ef68866d51c7e552813c995b1b47745cfa125cfcf8dd71d3b6f54997a62e0f38. This request does not alter publication artifacts or assert Human approval.",
+      "executor": "OpenAI GPT-5.6 Sol",
+      "evidence": "Core-validated r4 Publication Candidate binds exact source SHA-256 ddb5cf7aea900e13a434db98251084d376e30eec238595941e4e17730e1b9150, exact PDF SHA-256 7b11545cc1138ecc97771b0debfaf7772971f9e93b9195d28cc30bdc099bf419, 322271 bytes and 14 pages. Publication Preview remains pending; this machine transition does not approve, Freeze, Release, or merge.",
       "result": null
     }
   ],
-  "summary": "Retry only the stalled transport for adopting the unchanged exact SP001 Publication r3 candidate, advancing VALIDATED_DRAFT to RELEASE_CANDIDATE and stopping at the Publication Preview Human Gate without approval, Freeze, Release, or merge."
+  "summary": "Adopt the exact SP001 r4 Publication Candidate and return to RELEASE_CANDIDATE / pending Publication Preview Human Gate."
 }
