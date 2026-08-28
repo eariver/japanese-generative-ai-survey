@@ -1,16 +1,19 @@
 {
   "schema_version": "2.0-rc1",
+  "check_id": "CORE_STAGE_CONTRACT",
+  "status": "PASS",
   "issue_id": "SP001",
   "from_state": "DRAFT_COMPLETE",
   "to_state": "VALIDATED_DRAFT",
-  "checkpoints": [
-    "validation"
-  ],
-  "recorded_at": "2026-08-28T23:45:09Z",
-  "implementation": {
-    "repository_commit_sha": "21e050ed7f0db825ba8914b757de8b534433bc30",
-    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  "production_state": {
+    "path": "sources/SP001/production-state.json",
+    "sha256": "67d1dffdf6bf6de19e1797a67e1e8e56585eef9472505a7d33e232708d66827c"
   },
+  "production_profile": {
+    "path": "sources/SP001/production-profile.json",
+    "sha256": "18ebde4c2893cd804b375bf5a724973f9dea7b936238625dee810c26549091bf"
+  },
+  "implementation_commit_sha": "21e050ed7f0db825ba8914b757de8b534433bc30",
   "contract": {
     "pipeline_contract_version": "2.0-rc1",
     "pipeline_contract_sha256": "e6ae2637fe2ecb41351193075c79b5829d83d12884cd011a78f593ff77c1c8d1",
@@ -53,26 +56,5 @@
       "sha256": "d9564c42a2e7fb0ef7a65dfe4d8485f1fd3f9904c757fb3b8f65ae3cac84f1e3"
     }
   ],
-  "reviews": [
-    {
-      "check_id": "CORE_STAGE_CONTRACT",
-      "kind": "DETERMINISTIC",
-      "status": "PASS",
-      "executor": "survey_stage_validation_v2",
-      "evidence": "Canonical Core stage contract validated for SP001 r5 deterministic state reconciliation.",
-      "result": {
-        "path": "sources/SP001/execution/bridge-runs/SP001-r5-state-reconcile-validation/core-stage-contract.json",
-        "sha256": "3c17a58894ac87d89df911c9109de5de1778fb27ee5962e5e64243d1abe17346"
-      }
-    },
-    {
-      "check_id": "SP001_READER_PUBLICATION_R5_EXACT_AUTHORITY",
-      "kind": "AGENT_EDITORIAL",
-      "status": "PASS",
-      "executor": "OpenAI GPT-5.6 Sol",
-      "evidence": "Exact r5 publication authority binds source SHA-256 d6a44373c35cff6d67b47bc383c05333ebc33c829628d1b529ffa0f1cc23bf99 and exact 14-page PDF SHA-256 9f6bef98d15bfaec1ea2aec3972005487c28e44ec84762e4fbaa51639d7fe1b2. Issue #400 final two-phrase cleanup is applied, Publication Boundary audit is PASS with zero known meta-language matches, focused Core publication validation passed, and all 14 exact PDF pages were independently rendered and visually reviewed without clipping, overlap, glyph, pagination, whitespace, or mixed-layout regression.",
-      "result": null
-    }
-  ],
-  "summary": "Revalidate and adopt exact SP001 r5 reader/publication authority after bounded Issue #400 final wording cleanup, without changing Human review history or asserting approval."
+  "recorded_at": "2026-08-28T23:45:09Z"
 }
