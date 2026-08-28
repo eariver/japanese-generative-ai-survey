@@ -1,0 +1,174 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "from_state": "DRAFT_COMPLETE",
+  "to_state": "VALIDATED_DRAFT",
+  "checkpoints": [
+    "validation"
+  ],
+  "recorded_at": "2026-08-28T01:16:00Z",
+  "implementation": {
+    "repository_commit_sha": "f0a0688bb0905689f7ba9e080e853ed944278561",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "b881cb7da14c1f1be865cc59265533a6a8fa939fcf298bb9d5da4eeb108d5ca9",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "publication-pdf",
+      "path": "surveys/special/SP001/main.pdf",
+      "sha256": "590a53e11934ae25176050e5105b59a2bb09eda4b045e9b211b486e5be90ba2b"
+    },
+    {
+      "name": "quality-regression-bundle",
+      "path": "sources/SP001/publication/v2/quality-regression-bundle-v2.json",
+      "sha256": "f5381e9adba5e45cb327064a77aff97afa6e8ee25ff3855a3195c32a6947dc54"
+    },
+    {
+      "name": "reader-manuscript",
+      "path": "sources/SP001/publication/v2/reader-manuscript-v2.json",
+      "sha256": "e79b541b111555570478fb1cef497bd409b0d66dcf67f97cfe253d773376e599"
+    },
+    {
+      "name": "semantic-review",
+      "path": "sources/SP001/publication/v2/semantic-editorial-review-v2.json",
+      "sha256": "b5a5fa272249ec6eb731d7a91e59380250316c381bab8b4ca49715ba65f6b484"
+    },
+    {
+      "name": "validated-source",
+      "path": "surveys/special/SP001/main.tex",
+      "sha256": "c45482b7adf409824d2a5cad6d7ad232a01fe6fa06285dc35f0160a6e54201f6"
+    },
+    {
+      "name": "visual-review",
+      "path": "sources/SP001/publication/v2/visual-review-v2.json",
+      "sha256": "c6c0fe2c28126c1fe3777e12580b7409a5ee1f98da0b673624e54c6cfcabd06a"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request SP001-advance-reader-validation-r4.",
+      "result": {
+        "path": "sources/SP001/execution/bridge-runs/SP001-advance-reader-validation-r4/core-stage-contract.json",
+        "sha256": "83962a6ff27c9d38dc3ea9d2f58819fa2712bd717cc84b38897ba13508cdf95b"
+      }
+    },
+    {
+      "check_id": "SOURCE_SPECIFIC_FAIL_CLOSED_NOTES",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "OpenAI GPT-5.6 Sol",
+      "evidence": "Current-endpoint uncertainty remains artifact-local for DeepSeek V4, Qwen3.8, GLM-5 and Kimi K3, while R1 primary and distilled derivatives remain distinct.",
+      "result": null
+    },
+    {
+      "check_id": "BIBLIOGRAPHY_METADATA",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "OpenAI GPT-5.6 Sol",
+      "evidence": "The exact reader bibliography contains eleven accepted primary-source records with identity, date and canonical source metadata; reader citations resolve to those records.",
+      "result": null
+    },
+    {
+      "check_id": "POST_TRANSFORM_SEMANTIC_REVALIDATION",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "OpenAI GPT-5.6 Sol",
+      "evidence": "After two layout-only forced-page-break removals, the exact corrected source was semantically re-reviewed; factual prose, citations, chronology, boundaries and synthesis remain unchanged.",
+      "result": null
+    },
+    {
+      "check_id": "THEMATIC_RESEARCH_CLOSURE",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "OpenAI GPT-5.6 Sol",
+      "evidence": "The reader answers the thematic question through plural foundations, four independent family trajectories, structured cross-family comparison and an explicit explanation of persistent frontier participation, while retaining unresolved artifact-specific boundaries.",
+      "result": null
+    },
+    {
+      "check_id": "THEMATIC_HISTORICAL_ATTRIBUTION",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "OpenAI GPT-5.6 Sol",
+      "evidence": "Chronology is anchored to primary artifacts and explicitly separated from direct influence, mechanism inheritance, organizational ancestry and institutional lineage.",
+      "result": null
+    },
+    {
+      "check_id": "PUBLICATION_BOUNDARY",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "OpenAI GPT-5.6 Sol",
+      "evidence": "The reader is bounded to evidence observed through 2026-08-24 and keeps license, benchmark, parameter accounting, serving and current-endpoint claims source-local.",
+      "result": null
+    },
+    {
+      "check_id": "ARCHITECTURE_CONTENT_FIDELITY",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "OpenAI GPT-5.6 Sol",
+      "evidence": "All six approved packages and every must-cover O01–O07 pair are bound to exact non-empty reader subsections; chronology, family differentiation, post-training/agentic evolution, efficiency/serving, distribution and license/comparison boundaries are substantively fulfilled.",
+      "result": null
+    },
+    {
+      "check_id": "FINAL_SYNTHESIS_QUALITY",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "OpenAI GPT-5.6 Sol",
+      "evidence": "Section 6 identifies shared system-level pressures, provides structured family comparison, preserves durable differences, explains persistent frontier participation and closes with unresolved boundaries without creating a cross-harness league table.",
+      "result": null
+    },
+    {
+      "check_id": "LONGFORM_TECHNICAL_DEPTH",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "OpenAI GPT-5.6 Sol",
+      "evidence": "The exact 13-page reader is below the soft 18-page target but substantively dense across all six packages, with source-specific chronology, mechanisms, post-training/runtime distinctions, distribution/license treatment, structured synthesis, ten Technical Notes and a verification matrix; padding to 18 pages solely for quota would reduce editorial quality.",
+      "result": null
+    },
+    {
+      "check_id": "TOC_HIERARCHY",
+      "kind": "AGENT_VISUAL",
+      "status": "PASS",
+      "executor": "OpenAI GPT-5.6 Sol",
+      "evidence": "The exact 13-page PDF uses a coherent two-page TOC listing all six package sections and numbered subsections without orphan spill or malformed hierarchy.",
+      "result": null
+    },
+    {
+      "check_id": "TECHNICAL_NOTES_TAIL_NEEDSPACE",
+      "kind": "AGENT_VISUAL",
+      "status": "PASS",
+      "executor": "OpenAI GPT-5.6 Sol",
+      "evidence": "Technical Notes begin on page 12 after final synthesis and continue coherently into the page-13 verification matrix and References without a stranded heading or forced near-empty page.",
+      "result": null
+    },
+    {
+      "check_id": "LONGFORM_PAGE_BALANCE",
+      "kind": "AGENT_VISUAL",
+      "status": "PASS",
+      "executor": "OpenAI GPT-5.6 Sol",
+      "evidence": "The exact composition has a deliberate cover, two-page frontmatter/TOC, continuous technical body on pages 4–12, and balanced matrix/references on page 13; both previously observed near-empty internal-page defects are eliminated.",
+      "result": null
+    },
+    {
+      "check_id": "EXACT_PDF_VISUAL_REVIEW",
+      "kind": "AGENT_VISUAL",
+      "status": "PASS",
+      "executor": "OpenAI GPT-5.6 Sol",
+      "evidence": "All 13 pages of exact repository PDF SHA-256 590a53e11934ae25176050e5105b59a2bb09eda4b045e9b211b486e5be90ba2b were rendered from repository bytes in Actions run 33131767467 and visually inspected; no clipping, overlap, broken glyph, black block, orphan/near-empty internal page or grotesque whitespace defect remains.",
+      "result": null
+    }
+  ],
+  "summary": "Advance SP001 from DRAFT_COMPLETE after the Publication r2 reader manuscript, exact 13-page repository PDF, deterministic Quality Regression Bundle, granular Architecture-content fidelity review, below-target substantive density disposition, and full exact-PDF visual review all passed current Core validation."
+}
