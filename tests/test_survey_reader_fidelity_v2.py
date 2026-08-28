@@ -7,7 +7,12 @@ from scripts import survey_reader_fidelity_v2 as fidelity
 
 class SurveyReaderFidelityV2Tests(unittest.TestCase):
     @staticmethod
-    def _architecture(target_pages: int | float = 18, *, array_order_reversed: bool = False) -> dict[str, object]:
+    def _architecture(
+        target_pages: int | float = 18,
+        *,
+        array_order_reversed: bool = False,
+        allow_narrative_layout_exception: bool = False,
+    ) -> dict[str, object]:
         packages = [
             {
                 "package_id": "PKG-1",
@@ -24,9 +29,15 @@ class SurveyReaderFidelityV2Tests(unittest.TestCase):
         ]
         if array_order_reversed:
             packages.reverse()
+        publication_extensions: dict[str, object] = {}
+        if allow_narrative_layout_exception:
+            publication_extensions["longform_layout"] = {
+                "allow_nonstandard_narrative_columns": True
+            }
         return {
             "page_plan": {"target_pages": target_pages, "max_pages": 24},
             "packages": packages,
+            "publication_extensions": publication_extensions,
         }
 
     @staticmethod
@@ -321,6 +332,49 @@ class SurveyReaderFidelityV2Tests(unittest.TestCase):
             fidelity.validate_review_depth(
                 profile,
                 self._architecture(target_pages=18),
+                self._manuscript(),
+                13,
+                checks,
+                "VISUAL",
+            )
+
+        # A visual marker cannot self-authorize an exception: the approved
+        # Architecture must carry the machine-readable publication extension.
+        checks[0]["evidence_locations"].append(
+            "reader-layout:architecture-approved-narrative-exception"
+        )
+        with self.assertRaisesRegex(ValueError, "balanced-two-column-narrative"):
+            fidelity.validate_review_depth(
+                profile,
+                self._architecture(target_pages=18),
+                self._manuscript(),
+                13,
+                checks,
+                "VISUAL",
+            )
+
+        fidelity.validate_review_depth(
+            profile,
+            self._architecture(
+                target_pages=18,
+                allow_narrative_layout_exception=True,
+            ),
+            self._manuscript(),
+            13,
+            checks,
+            "VISUAL",
+        )
+
+        # The narrative exception is deliberately narrow; it cannot bypass the
+        # stable full-width wide-surface or one-column References checks.
+        checks[0]["evidence_locations"].remove("reader-layout:wide-surfaces-full-width")
+        with self.assertRaisesRegex(ValueError, "wide-surfaces-full-width"):
+            fidelity.validate_review_depth(
+                profile,
+                self._architecture(
+                    target_pages=18,
+                    allow_narrative_layout_exception=True,
+                ),
                 self._manuscript(),
                 13,
                 checks,
