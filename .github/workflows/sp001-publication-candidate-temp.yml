@@ -1,0 +1,79 @@
+name: Temporary SP001 Publication r2 candidate build
+
+on:
+  push:
+    branches:
+      - special/SP001-v2-work
+    paths:
+      - '.github/workflows/sp001-publication-candidate-temp.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact validated draft
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Core v2 validation dependencies
+        run: python -m pip install -r config/survey-production-v2-requirements.txt
+
+      - name: Build and validate exact Publication Candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from scripts import survey_production_v2 as core
+          from scripts import survey_publication_v2 as publication
+          root=Path('.').resolve()
+          pub=root/'sources/SP001/publication/v2'
+          pdf=root/'surveys/special/SP001/main.pdf'
+          source=root/'surveys/special/SP001/main.tex'
+          out=pub/'publication-candidate-v2.json'
+          assert core.sha256_file(pdf)=='590a53e11934ae25176050e5105b59a2bb09eda4b045e9b211b486e5be90ba2b'
+          assert pdf.stat().st_size==300377
+          assert core.sha256_file(source)=='c45482b7adf409824d2a5cad6d7ad232a01fe6fa06285dc35f0160a6e54201f6'
+          if out.exists():
+              raise SystemExit('Publication Candidate unexpectedly already exists')
+          publication.build_candidate(
+              root,
+              'SP001',
+              'LONGFORM_SPECIAL',
+              pub/'reader-manuscript-v2.json',
+              source,
+              pdf,
+              13,
+              pub/'quality-regression-bundle-v2.json',
+              pub/'semantic-editorial-review-v2.json',
+              pub/'visual-review-v2.json',
+              out,
+          )
+          candidate=publication.validate_candidate(root,out,issue_id='SP001')
+          assert candidate['status']=='READY_FOR_PUBLICATION_PREVIEW'
+          assert candidate['pdf']['sha256']=='590a53e11934ae25176050e5105b59a2bb09eda4b045e9b211b486e5be90ba2b'
+          assert candidate['pdf']['page_count']==13
+          print('candidate_file_sha256='+core.sha256_file(out))
+          print('candidate_content_sha256='+candidate['candidate_sha256'])
+          print('pdf_sha256='+candidate['pdf']['sha256'])
+          print('page_count='+str(candidate['pdf']['page_count']))
+          PY
+
+      - name: Commit candidate and remove temporary workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/sp001-publication-candidate-temp.yml
+          git add sources/SP001/publication/v2/publication-candidate-v2.json
+          git commit -m 'Build SP001 Publication r2 candidate'
+          git push origin HEAD:special/SP001-v2-work
