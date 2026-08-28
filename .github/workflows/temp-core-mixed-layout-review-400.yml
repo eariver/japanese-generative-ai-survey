@@ -1,0 +1,36 @@
+name: Temporary Core mixed-layout review patch
+
+on:
+  push:
+    branches:
+      - fix/core-v2-longform-mixed-layout-review-400
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Apply patch
+        run: python scripts/_temp_patch_longform_mixed_layout_400.py
+      - name: Run targeted regressions
+        run: |
+          python -m unittest \
+            tests.test_survey_reader_fidelity_v2 \
+            tests.test_survey_publication_v2
+      - name: Remove temporary transport and commit final candidate
+        run: |
+          set -euo pipefail
+          git rm .github/workflows/temp-core-mixed-layout-review-400.yml
+          git rm scripts/_temp_patch_longform_mixed_layout_400.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add config/publication-review-v2.json scripts/survey_reader_fidelity_v2.py tests/test_survey_reader_fidelity_v2.py tests/test_survey_publication_v2.py docs/checkpoints/core-v2-longform-mixed-layout-review-400-worklog.md
+          git commit -m 'Core v2: require LONGFORM mixed-layout visual review'
+          git push origin HEAD:fix/core-v2-longform-mixed-layout-review-400
