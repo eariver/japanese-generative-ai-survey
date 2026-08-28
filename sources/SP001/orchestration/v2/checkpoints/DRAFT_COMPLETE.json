@@ -1,0 +1,78 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "from_state": "DRAFT_COMPLETE",
+  "to_state": "VALIDATED_DRAFT",
+  "checkpoints": [
+    "validation"
+  ],
+  "recorded_at": "2026-08-28T16:10:56Z",
+  "implementation": {
+    "repository_commit_sha": "04283688d9a354523e8945fa1e6a280668458f10",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "e6ae2637fe2ecb41351193075c79b5829d83d12884cd011a78f593ff77c1c8d1",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "publication-pdf",
+      "path": "surveys/special/SP001/main.pdf",
+      "sha256": "ef68866d51c7e552813c995b1b47745cfa125cfcf8dd71d3b6f54997a62e0f38"
+    },
+    {
+      "name": "quality-regression-bundle",
+      "path": "sources/SP001/publication/v2/quality-regression-bundle-v2.json",
+      "sha256": "5ef4640d36388fe9a019b85fc2f77781a112b795c2613cafed1db13569429e04"
+    },
+    {
+      "name": "reader-manuscript",
+      "path": "sources/SP001/publication/v2/reader-manuscript-v2.json",
+      "sha256": "b780abec92ae84112bf6e98f6c5a05ed2fcb25ff53b52e10b06a997e66d73dc3"
+    },
+    {
+      "name": "semantic-review",
+      "path": "sources/SP001/publication/v2/semantic-editorial-review-v2.json",
+      "sha256": "8fb60be5e9f0fc2b53975e7e35f9674b8b46df641d4f56e7002b44e6594f2914"
+    },
+    {
+      "name": "validated-source",
+      "path": "surveys/special/SP001/main.tex",
+      "sha256": "838d1fbb5618b447b7f13334c5e67bc55cfca7613dbf7f492e6ae29fe128026a"
+    },
+    {
+      "name": "visual-review",
+      "path": "sources/SP001/publication/v2/visual-review-v2.json",
+      "sha256": "754fa1adf98a3c61a1bd4e28f4ed6b6d407a5bf27dc84011452979f7a27a330a"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request SP001-advance-reader-validation-r5.",
+      "result": {
+        "path": "sources/SP001/execution/bridge-runs/SP001-advance-reader-validation-r5/core-stage-contract.json",
+        "sha256": "9a313ac9b16253aa2828d8a8df81484fc652b8fd78a3f2cc703dffb95f0300c6"
+      }
+    },
+    {
+      "check_id": "SP001_READER_PUBLICATION_R3_EXACT_AUTHORITY",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "Fresh Publication r3 authority binds exact source SHA-256 838d1fbb5618b447b7f13334c5e67bc55cfca7613dbf7f492e6ae29fe128026a and exact 14-page PDF SHA-256 ef68866d51c7e552813c995b1b47745cfa125cfcf8dd71d3b6f54997a62e0f38. Semantic review retains all six Architecture packages, all current reader-block depth bindings, independent final synthesis, and explicit below-target disposition page-plan:14/18 + density-review:below-target-substantive. Visual review records exact-PDF PASS and the PR #475 normal LONGFORM mixed-layout evidence markers for balanced two-column narrative, full-width wide surfaces, and one-column references.",
+      "result": null
+    }
+  ],
+  "summary": "Validate and adopt the fresh SP001 Publication r3 reader/publication authority chain against the exact 14-page PDF and exact r3 source under current main, advancing DRAFT_COMPLETE to VALIDATED_DRAFT without changing research, evidence, selection, Architecture, Draft prose, source bytes, or PDF bytes."
+}
