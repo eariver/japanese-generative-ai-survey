@@ -1,0 +1,59 @@
+name: Temporary SP001 exact Publication r2 visual render
+
+on:
+  push:
+    branches:
+      - special/SP001-v2-work
+    paths:
+      - '.github/workflows/sp001-visual-render-temp.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact PDF revision
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Verify exact repository PDF authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          pdf=surveys/special/SP001/main.pdf
+          test "$(sha256sum "$pdf" | awk '{print $1}')" = "590a53e11934ae25176050e5105b59a2bb09eda4b045e9b211b486e5be90ba2b"
+          test "$(stat -c '%s' "$pdf")" = "300377"
+
+      - name: Render all 13 exact-PDF pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq poppler-utils imagemagick
+          mkdir -p sp001-exact-visual-r2/pages
+          pdftoppm -png -r 110 surveys/special/SP001/main.pdf sp001-exact-visual-r2/pages/page >/dev/null 2>&1
+          test "$(find sp001-exact-visual-r2/pages -name 'page-*.png' | wc -l)" = "13"
+          montage sp001-exact-visual-r2/pages/page-*.png -thumbnail 420x594 -tile 4x -geometry +8+8 sp001-exact-visual-r2/contact-sheet.png
+          cp surveys/special/SP001/main.pdf sp001-exact-visual-r2/SP001-publication-r2-exact.pdf
+          sha256sum sp001-exact-visual-r2/SP001-publication-r2-exact.pdf > sp001-exact-visual-r2/pdf.sha256
+
+      - name: Upload exact visual review artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: sp001-publication-r2-exact-visual-590a53e1
+          path: sp001-exact-visual-r2
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Remove temporary workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/sp001-visual-render-temp.yml
+          git commit -m 'Remove temporary SP001 exact visual render workflow'
+          git push origin HEAD:special/SP001-v2-work
