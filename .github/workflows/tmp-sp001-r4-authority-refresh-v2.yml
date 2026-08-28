@@ -1,0 +1,72 @@
+name: Temporary SP001 r4 authority refresh v2
+
+on:
+  push:
+    branches: [special/SP001-v2-work]
+    paths:
+      - 'sources/SP001/publication/v2/tmp-r4-authority-refresh-v2-trigger.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: special/SP001-v2-work
+          fetch-depth: 1
+          sparse-checkout: |
+            config
+            schemas
+            scripts
+            tests
+            sources/SP001
+            surveys/special/SP001
+            templates/survey
+            .github/workflows/tmp-sp001-r4-*
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Core v2 validation dependencies
+        run: python -m pip install -r config/survey-production-v2-requirements.txt
+
+      - name: Refresh exact r4 Publication Preview authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/tmp_sp001_r4_authority_refresh.py
+
+      - name: Validate refreshed Publication Candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest tests.test_survey_publication_v2 tests.test_survey_quality_v2 tests.test_survey_reader_fidelity_v2 -v
+          python - <<'PY'
+          from pathlib import Path
+          from scripts import survey_publication_v2 as publication
+          c=publication.validate_candidate(Path('.').resolve(),Path('sources/SP001/publication/v2/publication-candidate-v2.json'),issue_id='SP001')
+          assert c['status']=='READY_FOR_PUBLICATION_PREVIEW'
+          assert c['pdf']['sha256']=='7b11545cc1138ecc97771b0debfaf7772971f9e93b9195d28cc30bdc099bf419'
+          assert c['pdf']['byte_count']==322271 and c['pdf']['page_count']==14
+          print('refreshed Publication Candidate validation PASS')
+          print('candidate_digest='+c['candidate_sha256'])
+          PY
+
+      - name: Commit canonical r4 authority and remove all temporary transport
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm -f .github/workflows/tmp-sp001-r4-*.yml
+          rm -f sources/SP001/publication/v2/tmp-r4-*.txt
+          rm -f scripts/tmp_sp001_r4_authority_refresh.py
+          git add -A
+          git status --short
+          git commit -m 'Refresh SP001 r4 exact Publication Preview authority'
+          git push origin HEAD:special/SP001-v2-work
