@@ -19,3 +19,11 @@ An exact-PDF visual review for `LONGFORM_SPECIAL` cannot be recorded as valid un
 ## Human Gate
 
 This shared-Core maintenance must complete exact-head CI and the canonical seven-point final audit before Human maintenance review. It must not be merged without explicit Human approval. SP001 remains paused after canonical Publication Preview r2 `REQUEST_CHANGES` rollback until this Core maintenance is approved and merged.
+
+## Diagnostic regression history
+
+- The first temporary targeted run failed before publication tests because the temporary transport had not installed `config/survey-production-v2-requirements.txt`; `pypdf` was missing. The transport was corrected rather than weakening the production parser.
+- The corrected targeted run passed `test_survey_reader_fidelity_v2` and `test_survey_publication_v2`, proving the new direct mixed-layout negative regression and publication-chain fixture.
+- Diagnostic full Pipeline run #3510 (`33171970760`) then ran 722 tests and found 12 errors, all from the shared Human-Gate LONGFORM fixture omitting the newly required mixed-layout evidence. No production implementation failure was observed. The shared fixture is updated in this candidate so Architecture/Publication round-trip tests exercise the new visual contract instead of bypassing it.
+
+The diagnostic heads/runs above are not final audit evidence because this fixture repair mutates the candidate tree.

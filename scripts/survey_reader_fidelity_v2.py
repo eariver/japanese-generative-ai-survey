@@ -359,7 +359,7 @@ def _require_evidence(
     actual = set(check.get("evidence_locations", []))
     if not required.issubset(actual):
         missing = sorted(required - actual)
-        raise ValueError(f"{label} must bind exact semantic-review evidence; missing={missing}")
+        raise ValueError(f"{label} must bind exact review evidence; missing={missing}")
 
 
 def _final_package_id(architecture: dict[str, Any]) -> str | None:
