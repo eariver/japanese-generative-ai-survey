@@ -233,7 +233,7 @@ GLM-5 official repository/technical reportは744B total / 40B active、28.5T tok
 \subsection{Asynchronous RL: post-trainingをinfrastructureとして見る}
 GLM-5ではasynchronous RL infrastructure claimが独立に検証されている。ここでpost-trainingは単なるrecipeではなく、長時間のagentic behaviorを改善するための実行infrastructureとしてsystem designへ組み込まれている。DeepSeek-R1がreasoning training sequenceを前面に出したのに対し、GLM-5ではRL infrastructureとservingまで同じtechnical endpointの構成要素として現れる。\autocite{glm5,deepseekr1}
 
-この比較は「どちらが優れているか」ではなく、同じpost-training領域でもfamilyがどこをreader-facing technical surfaceとして強調しているかを見るためのものである。
+この比較は「どちらが優れているか」ではなく、同じpost-training領域でもfamilyが一次資料で技術的にどこを強調しているかを見るためのものである。
 
 \subsection{Local serving: frontierの内側へ}
 GLM-5で複数のlocal-serving recipeがtechnical materialに含まれることは、frontier capabilityをAPI上のmodel scoreだけで理解できなくなっていることを示す。実際にどのruntimeで、どのhardware条件で、どのprecisionやparallelismを使うかはmodelを利用可能にするengineering layerである。確認済みの一次資料はserving recipeの存在を支えるが、異なるhardwareでのcost advantageまでは確定しない。\autocite{glm5}
@@ -313,7 +313,7 @@ License / benchmark & 技術仕様を記述する一次資料と、checkpoint固
 \section{最終総括: 2026年のfrontierで収束したもの、残った差}
 \label{sec:synthesis}
 
-この最終節では、前5節で一次資料に結び付けて確認した内容だけを再構成する。新しいcross-family benchmark順位や未検証の技術系譜を追加するのではなく、何が共通の設計圧力になり、何がfamily固有のまま残ったかをreader-facingに答える。
+この最終節では、前5節で一次資料に結び付けて確認した内容だけを再構成する。新しいcross-family benchmark順位や未検証の技術系譜を追加するのではなく、何が共通の設計圧力になり、何がfamily固有のまま残ったかを読者に明確に示す。
 
 \subsection{収束したのはmodel familyではなくsystem-levelの設計圧力}
 2026年のendpointを見ると、DeepSeek V4は1M contextとsparse/token-compression、thinking/non-thinking、agentic coding/API deploymentをまとめる。Qwen3.8はopen-weight agent/coding/researchとhub distributionを接続する。GLM-5は744B total / 40B active、sparse attention、asynchronous RL、local servingを一つのsystems endpointへ束ね、Kimi K3は2.8T open-weight native multimodal、sparse MoE、1M context、long-horizon coding/agentic focusをまとめる。\autocite{deepseekv4,qwen38,glm5,kimik3}
