@@ -4,12 +4,12 @@ path = Path('scripts/tmp_sp001_r3_reader_v2.py')
 text = path.read_text(encoding='utf-8')
 replacements = [
     (
-        "r'\\\\raggedcolumns' + text[after:].lstrip('\\\\n')",
-        "r'\\\\raggedcolumns' + '\\n' + text[after:].lstrip('\\\\n')",
+        "r'\\raggedcolumns' + text[after:].lstrip('\\n')",
+        "r'\\raggedcolumns' + '\\n' + text[after:].lstrip('\\n')",
     ),
     (
-        "r'\\\\raggedcolumns' + text[cite_end:].lstrip('\\\\n')",
-        "r'\\\\raggedcolumns' + '\\n' + text[cite_end:].lstrip('\\\\n')",
+        "r'\\raggedcolumns' + text[cite_end:].lstrip('\\n')",
+        "r'\\raggedcolumns' + '\\n' + text[cite_end:].lstrip('\\n')",
     ),
 ]
 changed = 0
