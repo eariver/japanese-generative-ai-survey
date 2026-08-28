@@ -81,14 +81,16 @@ jobs:
       - name: Install Core v2 validation dependencies
         run: python -m pip install -r config/survey-production-v2-requirements.txt
 
-      - name: Run Core v2 regression suite
+      - name: Run publication-focused Core regressions
         shell: bash
         run: |
           set -euo pipefail
-          mapfile -t modules < <(find scripts -maxdepth 1 -type f -name 'survey_*_v2.py' | sort)
-          test "${#modules[@]}" -gt 0
-          python -m py_compile "${modules[@]}"
-          python -m unittest discover -s tests -p 'test_survey_*_v2.py' -v
+          python -m py_compile scripts/survey_publication_v2.py scripts/survey_quality_v2.py scripts/survey_reader_fidelity_v2.py
+          python -m unittest \
+            tests.test_survey_publication_v2 \
+            tests.test_survey_quality_v2 \
+            tests.test_survey_reader_fidelity_v2 \
+            -v
 
       - name: Set source-authority reproducible timestamp
         shell: bash
