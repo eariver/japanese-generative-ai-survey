@@ -293,6 +293,40 @@ class SurveyReaderFidelityV2Tests(unittest.TestCase):
                 "SEMANTIC_EDITORIAL",
             )
 
+    def test_longform_visual_review_requires_explicit_mixed_layout_evidence(self) -> None:
+        profile = {"publication_profile": "LONGFORM_SPECIAL"}
+        checks = [
+            {
+                "check_id": "LONGFORM_MIXED_LAYOUT",
+                "status": "PASS",
+                "detail": "The exact PDF was reviewed against the Special mixed-layout policy.",
+                "evidence_locations": [
+                    "reader-layout:balanced-two-column-narrative",
+                    "reader-layout:wide-surfaces-full-width",
+                    "reader-layout:references-one-column",
+                ],
+            }
+        ]
+        fidelity.validate_review_depth(
+            profile,
+            self._architecture(target_pages=18),
+            self._manuscript(),
+            13,
+            checks,
+            "VISUAL",
+        )
+
+        checks[0]["evidence_locations"].remove("reader-layout:balanced-two-column-narrative")
+        with self.assertRaisesRegex(ValueError, "balanced-two-column-narrative"):
+            fidelity.validate_review_depth(
+                profile,
+                self._architecture(target_pages=18),
+                self._manuscript(),
+                13,
+                checks,
+                "VISUAL",
+            )
+
     def test_weekly_profile_is_not_subject_to_longform_traceability(self) -> None:
         result = fidelity.validate_reader_fidelity(
             "weekly reader source",

@@ -329,7 +329,7 @@ def _check_row(checks: list[dict[str, Any]], check_id: str) -> dict[str, Any]:
         if isinstance(row, dict) and row.get("check_id") == check_id
     ]
     if len(rows) != 1:
-        raise ValueError(f"semantic review requires exactly one {check_id} check")
+        raise ValueError(f"publication review requires exactly one {check_id} check")
     return rows[0]
 
 
@@ -398,11 +398,24 @@ def validate_review_depth(
     checks: list[dict[str, Any]],
     review_kind: str,
 ) -> None:
-    """Require explicit package/block-level semantic review for LONGFORM_SPECIAL."""
-    if (
-        review_kind != "SEMANTIC_EDITORIAL"
-        or profile.get("publication_profile") != "LONGFORM_SPECIAL"
-    ):
+    """Require explicit LONGFORM semantic depth and visual-layout review."""
+    if profile.get("publication_profile") != "LONGFORM_SPECIAL":
+        return
+
+    if review_kind == "VISUAL":
+        mixed_layout = _check_row(checks, "LONGFORM_MIXED_LAYOUT")
+        _require_evidence(
+            mixed_layout,
+            {
+                "reader-layout:balanced-two-column-narrative",
+                "reader-layout:wide-surfaces-full-width",
+                "reader-layout:references-one-column",
+            },
+            "LONGFORM_MIXED_LAYOUT",
+        )
+        return
+
+    if review_kind != "SEMANTIC_EDITORIAL":
         return
 
     package_ids = [

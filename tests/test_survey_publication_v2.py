@@ -210,6 +210,18 @@ class SurveyPublicationV2Tests(unittest.TestCase):
                     evidence_locations.extend(
                         ["package:PKG-1", "reader-role:final-synthesis", "Section 1 — Final synthesis"]
                     )
+            if (
+                profile["publication_profile"] == "LONGFORM_SPECIAL"
+                and kind == "VISUAL"
+                and check_id == "LONGFORM_MIXED_LAYOUT"
+            ):
+                evidence_locations.extend(
+                    [
+                        "reader-layout:balanced-two-column-narrative",
+                        "reader-layout:wide-surfaces-full-width",
+                        "reader-layout:references-one-column",
+                    ]
+                )
             rows.append(
                 {
                     "check_id": check_id,
