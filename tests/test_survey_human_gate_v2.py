@@ -381,6 +381,14 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
                 locations.extend(["package:PKG-1", exact_block])
             if kind == "SEMANTIC_EDITORIAL" and check_id == "FINAL_SYNTHESIS_QUALITY":
                 locations.extend(["package:PKG-1", "reader-role:final-synthesis", final_block])
+            if kind == "VISUAL" and check_id == "LONGFORM_MIXED_LAYOUT":
+                locations.extend(
+                    [
+                        "reader-layout:balanced-two-column-narrative",
+                        "reader-layout:wide-surfaces-full-width",
+                        "reader-layout:references-one-column",
+                    ]
+                )
             rows.append(
                 {
                     "check_id": check_id,

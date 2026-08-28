@@ -329,7 +329,7 @@ def _check_row(checks: list[dict[str, Any]], check_id: str) -> dict[str, Any]:
         if isinstance(row, dict) and row.get("check_id") == check_id
     ]
     if len(rows) != 1:
-        raise ValueError(f"semantic review requires exactly one {check_id} check")
+        raise ValueError(f"publication review requires exactly one {check_id} check")
     return rows[0]
 
 
@@ -359,7 +359,24 @@ def _require_evidence(
     actual = set(check.get("evidence_locations", []))
     if not required.issubset(actual):
         missing = sorted(required - actual)
-        raise ValueError(f"{label} must bind exact semantic-review evidence; missing={missing}")
+        raise ValueError(f"{label} must bind exact review evidence; missing={missing}")
+
+
+def _architecture_allows_narrative_layout_exception(architecture: dict[str, Any]) -> bool:
+    """Return the explicit Architecture-owned opt-out for normal two-column narrative.
+
+    The Special house style is the default. A nonstandard narrative column mode is
+    allowed only when the Human-reviewed Architecture carries a machine-readable
+    publication extension. The visual reviewer must still record the matching
+    evidence marker; the extension alone does not make a layout pass.
+    """
+    publication_extensions = architecture.get("publication_extensions", {})
+    if not isinstance(publication_extensions, dict):
+        return False
+    longform_layout = publication_extensions.get("longform_layout", {})
+    if not isinstance(longform_layout, dict):
+        return False
+    return longform_layout.get("allow_nonstandard_narrative_columns") is True
 
 
 def _final_package_id(architecture: dict[str, Any]) -> str | None:
@@ -398,11 +415,37 @@ def validate_review_depth(
     checks: list[dict[str, Any]],
     review_kind: str,
 ) -> None:
-    """Require explicit package/block-level semantic review for LONGFORM_SPECIAL."""
-    if (
-        review_kind != "SEMANTIC_EDITORIAL"
-        or profile.get("publication_profile") != "LONGFORM_SPECIAL"
-    ):
+    """Require explicit LONGFORM semantic depth and visual-layout review."""
+    if profile.get("publication_profile") != "LONGFORM_SPECIAL":
+        return
+
+    if review_kind == "VISUAL":
+        mixed_layout = _check_row(checks, "LONGFORM_MIXED_LAYOUT")
+        _require_evidence(
+            mixed_layout,
+            {
+                "reader-layout:wide-surfaces-full-width",
+                "reader-layout:references-one-column",
+            },
+            "LONGFORM_MIXED_LAYOUT",
+        )
+        evidence = set(mixed_layout.get("evidence_locations", []))
+        normal_narrative = "reader-layout:balanced-two-column-narrative"
+        architecture_exception = "reader-layout:architecture-approved-narrative-exception"
+        if normal_narrative not in evidence:
+            if not _architecture_allows_narrative_layout_exception(architecture):
+                raise ValueError(
+                    "LONGFORM_MIXED_LAYOUT requires reader-layout:balanced-two-column-narrative "
+                    "unless the approved Architecture explicitly allows nonstandard narrative columns"
+                )
+            if architecture_exception not in evidence:
+                raise ValueError(
+                    "LONGFORM_MIXED_LAYOUT Architecture exception requires "
+                    "reader-layout:architecture-approved-narrative-exception evidence"
+                )
+        return
+
+    if review_kind != "SEMANTIC_EDITORIAL":
         return
 
     package_ids = [
