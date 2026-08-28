@@ -1,0 +1,51 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "from_state": "VALIDATED_DRAFT",
+  "to_state": "RELEASE_CANDIDATE",
+  "checkpoints": [],
+  "recorded_at": "2026-08-29T13:00:00Z",
+  "implementation": {
+    "repository_commit_sha": "27e346e43776972eff8a5864caafa55370f54215",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "e6ae2637fe2ecb41351193075c79b5829d83d12884cd011a78f593ff77c1c8d1",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "publication-candidate",
+      "path": "sources/SP001/publication/v2/publication-candidate-v2.json",
+      "sha256": "d9b563c37ce6de4af11b6c18ca5527f9f2d05a9b46272557f41a3b527507b15c"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request SP001-advance-publication-candidate-r4.",
+      "result": {
+        "path": "sources/SP001/execution/bridge-runs/SP001-advance-publication-candidate-r4/core-stage-contract.json",
+        "sha256": "29e8f0ae5554ff0bd997b08f702189d3baad79d301bb154845dc1115b8621b5e"
+      }
+    },
+    {
+      "check_id": "SP001_PUBLICATION_R3_CANDIDATE_EXACT_BINDING_RETRY",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "Transport retry only after GitHub Actions run #164 remained stuck for about one day during operator-execute checkout. The previously Core-validated Publication r3 candidate remains unchanged and binds exact source SHA-256 838d1fbb5618b447b7f13334c5e67bc55cfca7613dbf7f492e6ae29fe128026a plus exact 14-page PDF SHA-256 ef68866d51c7e552813c995b1b47745cfa125cfcf8dd71d3b6f54997a62e0f38. This request does not alter publication artifacts or assert Human approval.",
+      "result": null
+    }
+  ],
+  "summary": "Retry only the stalled transport for adopting the unchanged exact SP001 Publication r3 candidate, advancing VALIDATED_DRAFT to RELEASE_CANDIDATE and stopping at the Publication Preview Human Gate without approval, Freeze, Release, or merge."
+}
