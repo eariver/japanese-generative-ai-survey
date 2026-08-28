@@ -1,0 +1,247 @@
+name: Temporary SP001 r4 boundary rebuild
+
+on:
+  push:
+    branches: [special/SP001-v2-work]
+    paths:
+      - 'sources/SP001/publication/v2/tmp-r4-boundary-build-trigger.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: special/SP001-v2-work
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify bounded source authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='e860a48e6f252e91bc2b5279e6c76f35ff5692e6'
+          git merge-base --is-ancestor "$base" HEAD
+          test -z "$(git diff --name-only "$base"..HEAD -- surveys/special/SP001/main.tex surveys/special/SP001/references.bib)"
+          python - <<'PY'
+          from pathlib import Path
+          files = [
+              Path('surveys/special/SP001/main.tex'),
+              Path('surveys/special/SP001/references.bib'),
+          ]
+          patterns = [
+              'SP001 accepted Evidence source',
+              'accepted Evidence',
+              '受理されたEvidence',
+              '受理された Evidence',
+              'Evidence上の未解決境界',
+              'D017',
+              'D021',
+              '本 package',
+              '一次資料として昇格させない',
+              'coverage を広げる',
+              'Core v2 Evidence:',
+              'materiality:',
+              'Evidence pass',
+              'Candidate Selection',
+              'HOLD_OUT',
+              'Discovery sources',
+          ]
+          failures=[]
+          for path in files:
+              text=path.read_text(encoding='utf-8')
+              for pattern in patterns:
+                  if pattern in text:
+                      failures.append(f'{path}: {pattern}')
+          required = {
+              'surveys/special/SP001/main.tex': [
+                  '一次資料だけでは確定できない利用条件として残る',
+                  '前5節で一次資料に基づいて確認した内容を再構成し',
+              ],
+              'surveys/special/SP001/references.bib': [
+                  'Primary paper used in this survey.',
+              ],
+          }
+          for name, snippets in required.items():
+              text=Path(name).read_text(encoding='utf-8')
+              for snippet in snippets:
+                  if snippet not in text:
+                      failures.append(f'{name}: missing expected reader-facing replacement: {snippet}')
+          if failures:
+              raise SystemExit('\n'.join(failures))
+          print('reader-facing source boundary preflight PASS')
+          PY
+
+      - name: Install Core v2 validation dependencies
+        run: python -m pip install -r config/survey-production-v2-requirements.txt
+
+      - name: Run Core v2 regression suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t modules < <(find scripts -maxdepth 1 -type f -name 'survey_*_v2.py' | sort)
+          test "${#modules[@]}" -gt 0
+          python -m py_compile "${modules[@]}"
+          python -m unittest discover -s tests -p 'test_survey_*_v2.py' -v
+
+      - name: Set source-authority reproducible timestamp
+        shell: bash
+        run: echo "SOURCE_DATE_EPOCH=$(git show -s --format=%ct e860a48e6f252e91bc2b5279e6c76f35ff5692e6)" >> "$GITHUB_ENV"
+
+      - name: Compile exact SP001 PDF
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: main.tex
+          working_directory: surveys/special/SP001
+          texlive_version: 2026
+          latexmk_use_lualatex: true
+
+      - name: Install render/text tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq poppler-utils imagemagick
+
+      - name: Analyze exact build and Publication Boundary
+        id: analyze
+        shell: bash
+        run: |
+          set -euo pipefail
+          pdf='surveys/special/SP001/main.pdf'
+          log='surveys/special/SP001/main.log'
+          test -s "$pdf" && test -s "$log"
+          blocking=$(grep -E -n 'LaTeX Warning: (There were undefined references|Citation .* undefined)|Package biblatex Warning: Please (re)?run|Missing character:' "$log" || true)
+          layout=$(grep -E -n 'Overfull \\hbox|Underfull \\hbox' "$log" || true)
+          pages=$(python - "$log" <<'PY'
+          import re,sys
+          text=open(sys.argv[1],encoding='utf-8',errors='replace').read()
+          matches=re.findall(r'Output written on .*?\((\d+) pages?', text, re.S)
+          if not matches:
+              raise SystemExit('page count unavailable')
+          print(matches[-1])
+          PY
+          )
+          digest=$(sha256sum "$pdf" | awk '{print $1}')
+          bytes=$(stat -c '%s' "$pdf")
+          source_sha=$(sha256sum surveys/special/SP001/main.tex | awk '{print $1}')
+          bib_sha=$(sha256sum surveys/special/SP001/references.bib | awk '{print $1}')
+          pdftotext -layout "$pdf" sp001-r4-reader.txt
+          export PDF_SHA256="$digest" PAGE_COUNT="$pages" BYTE_COUNT="$bytes" SOURCE_SHA256="$source_sha" BIB_SHA256="$bib_sha" BLOCKING="$blocking" LAYOUT="$layout"
+          python - <<'PY'
+          import json, os, pathlib
+          patterns = [
+              'SP001 accepted Evidence source', 'accepted Evidence', '受理されたEvidence', '受理された Evidence',
+              'Evidence上の未解決境界', 'D017', 'D021', '本 package', '一次資料として昇格させない',
+              'coverage を広げる', 'Core v2 Evidence:', 'materiality:', 'Evidence pass',
+              'Candidate Selection', 'HOLD_OUT', 'Discovery sources',
+          ]
+          surfaces = {
+              'main_tex': pathlib.Path('surveys/special/SP001/main.tex').read_text(encoding='utf-8'),
+              'references_bib': pathlib.Path('surveys/special/SP001/references.bib').read_text(encoding='utf-8'),
+              'pdf_text': pathlib.Path('sp001-r4-reader.txt').read_text(encoding='utf-8', errors='replace'),
+          }
+          matches=[]
+          for surface, text in surfaces.items():
+              for pattern in patterns:
+                  if pattern in text:
+                      matches.append({'surface':surface,'pattern':pattern})
+          boundary={
+              'schema_version':'2.0-rc1',
+              'issue_id':'SP001',
+              'publication_revision':'r4',
+              'scope':'reader-facing semantic/process-language regression scan',
+              'patterns_checked':patterns,
+              'matches':matches,
+              'status':'PASS' if not matches else 'FAIL',
+          }
+          pathlib.Path('sources/SP001/publication/v2/publication-boundary-audit-r4.json').write_text(
+              json.dumps(boundary, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+          build={
+              'schema_version':'2.0-rc1',
+              'issue_id':'SP001',
+              'publication_revision':'r4',
+              'source_authority_commit_sha':'e860a48e6f252e91bc2b5279e6c76f35ff5692e6',
+              'source':{
+                  'path':'surveys/special/SP001/main.tex',
+                  'sha256':os.environ['SOURCE_SHA256'],
+              },
+              'bibliography':{
+                  'path':'surveys/special/SP001/references.bib',
+                  'sha256':os.environ['BIB_SHA256'],
+              },
+              'pdf':{
+                  'path':'surveys/special/SP001/main.pdf',
+                  'sha256':os.environ['PDF_SHA256'],
+                  'byte_count':int(os.environ['BYTE_COUNT']),
+                  'page_count':int(os.environ['PAGE_COUNT']),
+              },
+              'build':{
+                  'source_date_epoch':int(os.environ['SOURCE_DATE_EPOCH']),
+                  'texlive_version':'2026',
+                  'engine':'LuaLaTeX/latexmk',
+                  'change_scope':'Publication Boundary wording only; no layout/depth reconstruction',
+              },
+              'blocking_log_findings':os.environ['BLOCKING'].splitlines() if os.environ['BLOCKING'] else [],
+              'layout_log_findings':os.environ['LAYOUT'].splitlines() if os.environ['LAYOUT'] else [],
+              'status':'PASS' if (not os.environ['BLOCKING'] and not matches) else 'FAIL',
+          }
+          pathlib.Path('sources/SP001/publication/v2/pdf-build-audit-r4.json').write_text(
+              json.dumps(build, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+          print(json.dumps(build, ensure_ascii=False, indent=2))
+          print(json.dumps(boundary, ensure_ascii=False, indent=2))
+          if matches:
+              raise SystemExit('Publication Boundary scan failed')
+          PY
+          [ -z "$blocking" ]
+          [ "$pages" -ge 13 ]
+          [ "$pages" -le 15 ]
+          echo "page_count=$pages" >> "$GITHUB_OUTPUT"
+          echo "pdf_sha256=$digest" >> "$GITHUB_OUTPUT"
+          echo "byte_count=$bytes" >> "$GITHUB_OUTPUT"
+
+      - name: Render every exact PDF page
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r4-render
+          pdftoppm -png -r 130 surveys/special/SP001/main.pdf r4-render/page >/dev/null
+          rendered=$(find r4-render -maxdepth 1 -name 'page-*.png' | wc -l)
+          test "$rendered" -eq "${{ steps.analyze.outputs.page_count }}"
+          montage r4-render/page-*.png -thumbnail 24% -tile 3x -geometry +8+8 r4-render/contact-sheet.png
+          pdfinfo surveys/special/SP001/main.pdf > r4-render/pdfinfo.txt
+          sha256sum surveys/special/SP001/main.pdf > r4-render/pdf.sha256
+          cp sp001-r4-reader.txt r4-render/pdf-text.txt
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: SP001-publication-r4-boundary-${{ steps.analyze.outputs.pdf_sha256 }}
+          path: |
+            surveys/special/SP001/main.pdf
+            surveys/special/SP001/main.log
+            sources/SP001/publication/v2/pdf-build-audit-r4.json
+            sources/SP001/publication/v2/publication-boundary-audit-r4.json
+            r4-render/
+          retention-days: 14
+
+      - name: Commit canonical PDF and remove temporary transport
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm -f .github/workflows/tmp-sp001-r4-boundary-build.yml
+          rm -f sources/SP001/publication/v2/tmp-r4-boundary-build-trigger.txt
+          git add -A .github/workflows/tmp-sp001-r4-boundary-build.yml \
+            sources/SP001/publication/v2/tmp-r4-boundary-build-trigger.txt \
+            surveys/special/SP001/main.pdf \
+            sources/SP001/publication/v2/pdf-build-audit-r4.json \
+            sources/SP001/publication/v2/publication-boundary-audit-r4.json
+          git commit -m 'Build SP001 r4 exact Publication Boundary candidate'
+          git push origin HEAD:special/SP001-v2-work
