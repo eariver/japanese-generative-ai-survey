@@ -11,24 +11,24 @@
   },
   "reader_manuscript": {
     "path": "sources/SP001/publication/v2/reader-manuscript-v2.json",
-    "sha256": "93504b2797972e94b08fe3cf045c10ab4218847bd8089da5e6e5dbeb71ae48e0"
+    "sha256": "1ee9d3995c9ded73b43b977b8fffd3b2606a92546a11d28341275ccd18414813"
   },
   "source": {
     "path": "surveys/special/SP001/main.tex",
-    "sha256": "ddb5cf7aea900e13a434db98251084d376e30eec238595941e4e17730e1b9150",
-    "byte_count": 46375
+    "sha256": "d6a44373c35cff6d67b47bc383c05333ebc33c829628d1b529ffa0f1cc23bf99",
+    "byte_count": 46361
   },
   "pdf": {
     "path": "surveys/special/SP001/main.pdf",
-    "sha256": "7b11545cc1138ecc97771b0debfaf7772971f9e93b9195d28cc30bdc099bf419",
-    "byte_count": 322271
+    "sha256": "9f6bef98d15bfaec1ea2aec3972005487c28e44ec84762e4fbaa51639d7fe1b2",
+    "byte_count": 322250
   },
   "page_count": 14,
   "checks": [
     {
       "check_id": "TOC_HIERARCHY",
       "status": "PASS",
-      "detail": "The exact 14-page r3 PDF preserves the six-package hierarchy and numbered subsection structure without malformed hierarchy or orphaned TOC content.",
+      "detail": "The exact 14-page r5 PDF preserves the six-package hierarchy and numbered subsection structure without malformed hierarchy or orphaned TOC content.",
       "evidence_locations": [
         "main.pdf :: TOC/frontmatter pages 2–3",
         "main.pdf :: six numbered package sections"
@@ -37,36 +37,36 @@
     {
       "check_id": "TECHNICAL_NOTES_TAIL_NEEDSPACE",
       "status": "PASS",
-      "detail": "Source-backed Technical Notes remain attached to their family sections and the final Technical Notes / Reader verification / References tail contains no stranded heading or near-empty final page after the bounded bibliography compaction.",
+      "detail": "Source-backed Technical Notes remain attached to their family sections; final Technical Notes, Reader verification matrix and one-column References have no stranded heading, clipping or near-empty final page in the exact r5 PDF.",
       "evidence_locations": [
         "main.pdf :: source-backed Technical Notes throughout body",
         "main.pdf :: final Technical Notes / Reader verification matrix / References",
-        "sources/SP001/publication/v2/pdf-build-audit-r4.json :: bounded one-column bibliography compaction"
+        "sources/SP001/publication/v2/pdf-build-audit-r5.json :: PASS"
       ]
     },
     {
       "check_id": "LONGFORM_PAGE_BALANCE",
       "status": "PASS",
-      "detail": "All 14 exact r4 PDF pages were visually reviewed. Cover/frontmatter, balanced two-column technical narrative, wide comparison/synthesis surfaces, Technical Notes, Reader verification matrix and one-column References retain the accepted page balance with no new pagination hole.",
+      "detail": "All 14 exact r5 PDF pages were independently re-rendered and visually reviewed after the two-phrase cleanup. Cover/frontmatter, balanced two-column technical body, full-width Technical Notes/comparison surfaces, final synthesis, verification matrix and one-column References remain coherent without abnormal whitespace or orphan pages.",
       "evidence_locations": [
         "main.pdf :: pages 1–14",
-        "sources/SP001/publication/v2/pdf-build-audit-r4.json :: page_count 14 / PASS"
+        "sources/SP001/publication/v2/pdf-build-audit-r5.json :: page_count 14 / PASS"
       ]
     },
     {
       "check_id": "EXACT_PDF_VISUAL_REVIEW",
       "status": "PASS",
-      "detail": "All 14 pages of exact r4 repository PDF SHA-256 7b11545cc1138ecc97771b0debfaf7772971f9e93b9195d28cc30bdc099bf419 were visually inspected from the GitHub Actions 130-dpi page renders after the wording-only boundary repair. No clipping, overlap, broken glyph, unreadable overflow, black block, near-empty internal/final page, orphan bibliography page, or mixed-layout regression is visible.",
+      "detail": "All 14 pages of exact repository PDF SHA-256 9f6bef98d15bfaec1ea2aec3972005487c28e44ec84762e4fbaa51639d7fe1b2 were independently rendered at 140 DPI and visually inspected for r5 by OpenAI GPT-5.6 Sol. No clipping, overlap, broken glyph, unreadable overflow, black block, abnormal blank area, near-empty internal/final page, orphan bibliography page or wording-cleanup line-break regression was observed.",
       "evidence_locations": [
         "main.pdf :: pages 1–14",
-        "pdf-sha256:7b11545cc1138ecc97771b0debfaf7772971f9e93b9195d28cc30bdc099bf419",
-        "sources/SP001/publication/v2/pdf-build-audit-r4.json :: PASS"
+        "pdf-sha256:9f6bef98d15bfaec1ea2aec3972005487c28e44ec84762e4fbaa51639d7fe1b2",
+        "sources/SP001/publication/v2/pdf-build-audit-r5.json :: PASS"
       ]
     },
     {
       "check_id": "LONGFORM_MIXED_LAYOUT",
       "status": "PASS",
-      "detail": "The exact r4 LONGFORM_SPECIAL preserves the accepted house mixed layout: balanced two-column ordinary narrative, full-width technical/wide surfaces where required, and one-column References; the wording-only repair introduced no layout-mode change.",
+      "detail": "The exact r5 LONGFORM_SPECIAL retains the Human-reviewed mixed layout: ordinary narrative is balanced two-column; source-backed Technical Notes and wide comparison/synthesis surfaces use full width where needed; References remain one column. The two-phrase wording cleanup introduced no layout regression.",
       "evidence_locations": [
         "reader-layout:balanced-two-column-narrative",
         "reader-layout:wide-surfaces-full-width",
@@ -76,6 +76,6 @@
     }
   ],
   "reviewed_by": "OpenAI GPT-5.6 Sol",
-  "recorded_at": "2026-08-28T18:57:42Z",
-  "review_sha256": "6e53bda0c02d4e97b5947d94467b2baa1b1e8b14d1e5c423e3acf166f0de4dab"
+  "recorded_at": "2026-08-28T23:43:33Z",
+  "review_sha256": "62c0f7e9764fdedf672d14f5c81d5e89f1e260cb6ed638fbb7a99d1b0c51af45"
 }
