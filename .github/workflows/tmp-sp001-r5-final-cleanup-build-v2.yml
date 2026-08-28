@@ -114,6 +114,14 @@ jobs:
           print((pub/'r5-build-summary.txt').read_text())
           PY
 
+      - name: Install PDF renderer
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq poppler-utils
+          command -v pdftoppm
+
       - name: Render all exact PDF pages for visual review
         working-directory: repo
         shell: bash
