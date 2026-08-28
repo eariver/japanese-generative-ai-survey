@@ -17,6 +17,12 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Core dependencies
+        run: python -I -m pip install -r config/survey-production-v2-requirements.txt
       - name: Apply patch
         run: python scripts/_temp_patch_longform_mixed_layout_400.py
       - name: Run targeted regressions
