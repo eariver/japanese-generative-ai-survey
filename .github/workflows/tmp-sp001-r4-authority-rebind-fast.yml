@@ -61,7 +61,7 @@ jobs:
           code = textwrap.dedent(workflow[start:end]) + "\n"
           Path('/tmp/sp001-r4-rebind.py').write_text(code, encoding='utf-8')
           PY
-          python /tmp/sp001-r4-rebind.py
+          PYTHONPATH="$PWD" python /tmp/sp001-r4-rebind.py
 
       - name: Validate focused publication stack
         working-directory: repo
