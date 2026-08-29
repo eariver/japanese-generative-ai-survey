@@ -178,11 +178,17 @@ Decision:
 
 ## Current Selection authority
 
-Current phase-specific Sol handoff:
+Selection base handoff:
 
 `sources/2026-W33/execution/handoffs/w33-selection-luna-r1.md`
 
-Status:
+Corrective runtime overlay:
+
+`sources/2026-W33/execution/handoffs/w33-selection-luna-r2.md`
+
+**r2 wins on conflicts.** The correction is narrow: Candidate Matrix derivation must run through `scripts.survey_agent_tool_v2.current_stage_basis_override()` with the actual current work-branch implementation SHA. Do not use r1's direct Matrix CLI with reviewed-main SHA as runtime implementation identity.
+
+Current combined status:
 
 `READY_FOR_LUNA / SELECTION_PROPOSAL_ONLY / STOP_FOR_SOL_REVIEW`
 
@@ -264,7 +270,8 @@ On a new session, read in order:
 6. `sources/2026-W33/execution/sessions/w33-luna-evidence-materiality-completeness-advance-20260830-r1.md`
 7. `sources/2026-W33/execution/reviews/w33-evidence-materiality-completeness-advance-sol-review-20260830-r1.md`
 8. `sources/2026-W33/execution/handoffs/w33-selection-luna-r1.md`
-9. latest Luna Selection session, if any
-10. latest Sol Selection review, if any
+9. `sources/2026-W33/execution/handoffs/w33-selection-luna-r2.md`
+10. latest Luna Selection session, if any
+11. latest Sol Selection review, if any
 
 Resume from the first uncompleted Selection proposal/review/advancement step. Do not repeat Discovery, Screening, Evidence research, the Edition View repair, or E/M/C advancement merely because chat history was lost.
