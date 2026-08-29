@@ -21,7 +21,8 @@ Recorded: `2026-08-29 JST`
 
 ## External handoff
 
-- The first Luna task remains `handoffs/w33-discovery-rebuild-luna-r1.md` starting from `78ad4289deac13c22f67d3ec8c7c0f68a55af6eb`.
+- The first Luna task remains `handoffs/w33-discovery-rebuild-luna-r1.md`.
+- Its handoff authority was authored at `78ad4289deac13c22f67d3ec8c7c0f68a55af6eb`; because this continuity-policy record advances the canonical branch, Luna must use the **new exact worker start SHA supplied by Sol after this record**, not the older handoff-authoring SHA.
 - After Luna returns that candidate commit, subsequent Luna work should normally be sent into the same Work chat session rather than opening a fresh session.
 - Each subsequent Luna task must still state the exact repository start SHA and task authority path so repository continuity does not depend on chat memory.
 
@@ -32,7 +33,7 @@ Recorded: `2026-08-29 JST`
 
 ## Deviations / failures
 
-- None.
+- The original continuity-policy record temporarily repeated the handoff-authoring SHA as the Luna worker start SHA. This was corrected because recording the policy itself advanced the canonical branch.
 
 ## End state
 
