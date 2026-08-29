@@ -10,7 +10,7 @@ This file is the crash-recovery entry point for the current W33 production run. 
 - Current lifecycle: `CANDIDATES_NORMALIZED`
 - Current machine action: `stage:evidence-materiality-completeness`
 - Target Human Gate: `ARCHITECTURE_REVIEW`
-- Core implementation authority recorded by Production State: `02ba8323c80ac52ab407ff3199ed344907a170b2`
+- Core implementation authority recorded by Production State initialization: `02ba8323c80ac52ab407ff3199ed344907a170b2`
 - Orchestrator: `survey-production-core-v2/0.15-postintegration-transport-thematic`
 
 Screening advancement has been executed and Sol-verified. Evidence / Materiality / Completeness is now the active candidate phase, but lifecycle advancement to `EVIDENCE_REVIEWED` is **not authorized** until the Luna candidate passes Sol review.
@@ -56,23 +56,36 @@ Sol Screening materialization review:
 Canonical remote advancement chain:
 
 - exact start: `0c4ac45a69279ed35dd0ef81f605649a23394dd2`
-- request commit: `fa83972e7f44bf90af51ef8b49837c6914ca1c5f`
+- request commit: `fa83972e887d506d69b19a450a1f3858747c7db5`
 - deterministic execution commit: `5b433d494a46cba7fad2503b23b35372b3c3240b`
 - final Luna remote head: `e9221c0915e2b0e79411903479a056699612062a`
+
+Worker-local transport identities retained in the Luna session:
+
+- local request commit: `0e93d080257389b57e160be0fffb4bda6311e13e`
+- local execution-result commit: `fa8018c00c6ab44dd19bed6caeffa866fe886cc7`
+
+The local/GitHub commit-object SHAs differ because the worker reconstructed commits through the authenticated GitHub API after ordinary shell Git credentials were unavailable. Request tree `67b78089278f039647d91079acb2e21dc81f65ca` and execution-result tree `991b6d399a84c30331d2cb248e282d07f9279258` were preserved across transport.
+
+The deterministic Core artifacts correctly bind the **GitHub canonical request/event SHA** `fa83972e887d506d69b19a450a1f3858747c7db5`. This exact SHA appears in bridge receipt, Stage Checkpoint implementation provenance, and Production State history. No internal Core provenance repair is required.
 
 Canonical advancement artifacts:
 
 - request: `sources/2026-W33/execution/requests/w33-screening-advance-20260830-r1.json`
+- request SHA-256: `cdd19b25fab78af7a3795c66d199b943b75fd900b139bdb99753d7e69d5b6d17`
 - bridge run: `sources/2026-W33/execution/bridge-runs/w33-screening-advance-20260830-r1/`
+- Core stage contract SHA-256: `1cca146b694554114f653e43073f4bd90687a49ef10b89f8982b01bdba60fdca`
+- bridge reviews SHA-256: `1c275e653aba13b48830ec3141ccf2882cc83d6a0b53f2b4fe6a66952f9f16cb`
+- bridge receipt SHA-256: `8f77838a7d37cac942ecfe918dab03bb2234d19fe871b42d2ae0a8e2e31c06e6`
 - Screening checkpoint: `sources/2026-W33/orchestration/v2/checkpoints/DISCOVERY_COLLECTED.json`
+- Screening checkpoint SHA-256: `4d0939a6352786787e01b05881b540aa259640e67d7a0e20429db6aa17cf1ec0`
 - Luna advancement session: `sources/2026-W33/execution/sessions/w33-luna-screening-advance-20260830-r1.md`
 - Sol advancement verification: `sources/2026-W33/execution/reviews/w33-screening-advance-sol-review-20260830-r1.md`
 - Sol decision: `ACCEPT / STATE_TRANSITION_VERIFIED / READY_FOR_EVIDENCE_POLICY`
 
-The Luna session preserves worker-local request/result commit SHAs that differ from the remote GitHub commit objects because authenticated ordinary Git push was unavailable and GitHub API reconstruction was used. Those local identities are historical transport provenance only. Repository recovery must use the canonical GitHub chain above and the Sol advancement review as reconciliation authority.
+The authoritative Production State after advancement is:
 
-The authoritative Production State now records:
-
+- SHA-256: `bc7d2cad5a2a53634b3eeaab12336dfd4a3c56e1db8677534c8dc5b03f60ba6f`
 - lifecycle `CANDIDATES_NORMALIZED`
 - next action `stage:evidence-materiality-completeness`
 - Screening checkpoint `passed`
@@ -100,7 +113,7 @@ Key policy:
 - INSPECT/MAYBE and carry-over records should be resolved as far as the bound source permits;
 - duplicate groups are not collapsed during Evidence;
 - the Materiality Ledger must be current-Core deterministic derivation, not hand-edited;
-- Profile Completeness status must be preserved as Core derives it; do not force READY;
+- Profile Completeness status must be preserved as Core derives it; do not force `READY`;
 - Luna must stop before checkpoint/`ADVANCE_STAGE` for Sol semantic review.
 
 ## Latest semantic/work records
