@@ -13,23 +13,25 @@ This file is the crash-recovery entry point for the current W33 production run. 
 - Core implementation authority recorded by Production State initialization: `02ba8323c80ac52ab407ff3199ed344907a170b2`
 - Orchestrator: `survey-production-core-v2/0.15-postintegration-transport-thematic`
 
-Screening is complete and advanced. The first Evidence / Materiality / Completeness candidate has been materialized and Sol-reviewed. The factual Evidence layer is frozen as the basis for a bounded **Edition Evidence View semantic repair**. Lifecycle advancement to `EVIDENCE_REVIEWED` is not authorized until that repair passes Sol re-review.
+Screening is complete and advanced. Evidence / Materiality / Completeness has been materialized, received one bounded semantic repair, and passed Sol re-review. Its exact semantic artifacts are now frozen and **approved for deterministic Core advancement**. Production State itself has not yet advanced; the next bounded task is Luna execution of the dedicated E/M/C advancement handoff.
 
 ## Current Production State
 
-Authoritative State remains unchanged from the completed Screening advancement:
+Authoritative State remains unchanged from completed Screening advancement:
 
 - SHA-256: `bc7d2cad5a2a53634b3eeaab12336dfd4a3c56e1db8677534c8dc5b03f60ba6f`
 - lifecycle: `CANDIDATES_NORMALIZED`
 - next action: `stage:evidence-materiality-completeness`
 - Discovery checkpoint: `passed`
 - Screening checkpoint: `passed`
-- Evidence / Materiality / Completeness: `pending`
+- Evidence checkpoint: `pending`
+- Materiality checkpoint: `pending`
+- Completeness checkpoint: `pending`
 - Selection / Architecture: `pending`
 - Architecture Review: `pending`
 - terminal reason: null
 
-The current repair task must leave these bytes unchanged.
+The next task is allowed to change State only through the canonical operator bridge and only to `EVIDENCE_REVIEWED`.
 
 ## Discovery authority
 
@@ -68,45 +70,56 @@ Screening advancement verification:
 - `sources/2026-W33/execution/reviews/w33-screening-advance-sol-review-20260830-r1.md`
 - decision: `ACCEPT / STATE_TRANSITION_VERIFIED / READY_FOR_EVIDENCE_POLICY`
 
-Canonical advancement chain:
+Canonical Screening advancement chain:
 
 `0c4ac45a69279ed35dd0ef81f605649a23394dd2 -> fa83972e887d506d69b19a450a1f3858747c7db5 -> 5b433d494a46cba7fad2503b23b35372b3c3240b -> e9221c0915e2b0e79411903479a056699612062a`
 
 ## E/M/C policy authority
 
-The original candidate task used both of the following, with r2 winning on conflicts:
+The original E/M/C candidate task used both of the following, with r2 winning on conflicts:
 
 1. `sources/2026-W33/execution/handoffs/w33-evidence-materiality-completeness-luna-r1.md`
 2. `sources/2026-W33/execution/handoffs/w33-evidence-materiality-completeness-luna-r2.md`
 
-Exact W33 Profile dimensions remain:
+Exact W33 Profile dimensions:
 
 - `current relevance`
 - `technical significance`
 - `carry-over obligations`
 
-Exact W33 initial obligations remain:
+Exact W33 initial obligations:
 
 - `weekly:current-relevance`
 - `weekly:technical-significance`
 - `weekly:carry-over`
 
-## First Luna E/M/C candidate
+## First Luna E/M/C candidate and rejected View proposal
 
 Canonical remote chain:
 
 `75d4cd6d14a73eee548fc52d3a460a7887e9c855 -> 8734705209cc14f79cb09c2f016f421d44a1df17 -> 164e1f2bfbd33cbda8b5dd6f0a0d9a3c12129538`
 
 - candidate-artifact commit: `8734705209cc14f79cb09c2f016f421d44a1df17`
-- candidate-artifact tree: `03db1583cd8532bdc2a7fee09e11fdb6fa14e6d2`
-- final Luna remote head: `164e1f2bfbd33cbda8b5dd6f0a0d9a3c12129538`
-- final Luna remote tree: `d80c198323801102cb2bc72ec5d334fb9c052e2c`
+- final Luna candidate head: `164e1f2bfbd33cbda8b5dd6f0a0d9a3c12129538`
 - Luna session: `sources/2026-W33/execution/sessions/w33-luna-evidence-materiality-completeness-20260830-r1.md`
-- Luna stop status: `COMPLETENESS_INCOMPLETE_NEEDS_SOL_REVIEW`
+- first stop status: `COMPLETENESS_INCOMPLETE_NEEDS_SOL_REVIEW`
 
-The reported local commit identities (`3bb7eb09...`, `ee332534...`) are worker transport provenance only; GitHub SHAs above are canonical for repository recovery.
+The first View run remains immutable historical provenance:
 
-### Frozen accepted Evidence repair basis
+`sources/2026-W33/evidence/v2/views/accepted/b6c6057fe9237cf45cf3d7245c9a7c8eb0c6d56a885300e718ca8d9f43b6bea6/`
+
+It is **not** semantic authority because Sol rejected its generic `materiality.rationale` / `why_this_issue` treatment.
+
+Sol repair-required review:
+
+- `sources/2026-W33/execution/reviews/w33-evidence-materiality-completeness-sol-review-20260830-r1.md`
+- decision: `REPAIR_REQUIRED / EVIDENCE_LAYER_ACCEPTED_AS_REPAIR_BASIS / EDITION_VIEW_SEMANTIC_REPAIR_REQUIRED / NO_UPSTREAM_SOURCE_EXPANSION`
+
+Repair handoff:
+
+- `sources/2026-W33/execution/handoffs/w33-evidence-view-semantic-repair-luna-r1.md`
+
+## Frozen accepted Evidence authority
 
 Accepted Evidence root:
 
@@ -114,91 +127,120 @@ Accepted Evidence root:
 
 - result-set identity: `c86f49f8cb9a627fe45ebc9ae49826bdec83de5ab9061c0ee7236f1a2a0ba524`
 - package SHA-256: `2655553661ebb6c2b0d2710403d2f8d0492f2d3e248ad3f71ffd06a561b7f39d`
-- acceptance SHA-256: `b76be501746c814f0f646050706e92b21143be7046c745a35b6ec2ad03b8bdef`
-- exact task count: 37
-- Evidence statuses: VERIFIED 20 / PARTIAL 11 / NEEDS_MORE 6 / REJECTED 0
+- Evidence acceptance SHA-256: `b76be501746c814f0f646050706e92b21143be7046c745a35b6ec2ad03b8bdef`
+- task/result count: 37
+- statuses: VERIFIED 20 / PARTIAL 11 / NEEDS_MORE 6 / REJECTED 0
 
-Sol review freezes this Evidence accepted run byte-for-byte as the repair input. Do not redo factual research or add sources in the current repair.
+This Evidence run is frozen byte-for-byte. No new Evidence acquisition is authorized for the current advancement.
 
-### Rejected historical View candidate
+## Accepted repaired Edition View authority
 
-Historical View run:
+Luna repair canonical chain:
 
-`sources/2026-W33/evidence/v2/views/accepted/b6c6057fe9237cf45cf3d7245c9a7c8eb0c6d56a885300e718ca8d9f43b6bea6/`
+`f9b87c035d35bbe62e0ff03adc7d050b624311f2 -> 02c1029dcf09adc5486b0fc74098edd5e1d764ee -> cd73a7ebac64f31d15a49f20ac9dbc62217a76c5`
 
-- view-set identity: `b6c6057fe9237cf45cf3d7245c9a7c8eb0c6d56a885300e718ca8d9f43b6bea6`
-- proposal distribution: MATERIAL 25 / CONTEXT 6 / HOLD 6 / NON_MATERIAL 0
+- repair artifact commit: `02c1029dcf09adc5486b0fc74098edd5e1d764ee`
+- repair artifact tree: `b307b98d84f140e358e05bb460b126113d0ad2a8`
+- final Luna repair head: `cd73a7ebac64f31d15a49f20ac9dbc62217a76c5`
+- Luna repair session: `sources/2026-W33/execution/sessions/w33-luna-evidence-view-semantic-repair-20260830-r1.md`
+- Luna stop status: `READY_FOR_SOL_REREVIEW`
 
-This run is immutable historical candidate provenance, but it is **not accepted semantic authority**. Sol found systemic generic boilerplate in `materiality.rationale` and Weekly `profile_annotations.why_this_issue` across heterogeneous candidates.
+Worker-local artifact commit `84e13cd2fec5fd606bb269b80da02d10c3e7f51b` has the same tree as canonical GitHub `02c1029...`; it is transport provenance only.
 
-### Candidate derived artifacts
+Accepted repaired View root:
 
-The current root files are derived from the rejected View candidate and must be regenerated after repair:
+`sources/2026-W33/evidence/v2/views/accepted/51f4dda8e565a67ea514c02aa5bff22f60d8f22237a6040bd3916cdf121b194f/`
 
-- `sources/2026-W33/materiality-ledger-v2.json`
-  - candidate SHA-256: `1e092842633c90f3f2d1d1a9fd0fc3e497f2aea300b41bd63ec419ee0cad0a0b`
-- `sources/2026-W33/profile-completeness-v2.json`
-  - candidate SHA-256: `4f670dbc75997084826f6a1cd6851a9afcb53bb2a4d2aa86e394c9d289c95463`
-  - status: `INCOMPLETE`
+- View-set identity: `51f4dda8e565a67ea514c02aa5bff22f60d8f22237a6040bd3916cdf121b194f`
+- acceptance SHA-256: `6c94ede36420b1fe4b283481d141bb7dc8b6dcd1d7b5266060cebfd64e1a8632`
+- View count: 37
+- Materiality: MATERIAL 25 / CONTEXT 6 / HOLD 6 / NON_MATERIAL 0
 
-Current `INCOMPLETE` status is a legitimate explicit limitation, not a deterministic failure. It is driven primarily by five active W32 carry-over rechecks that remain NEEDS_MORE/HOLD under frozen source authority. Sol does not authorize an upstream rewind or source expansion merely to force closure.
+All 37 repaired Views use candidate-specific rationale and `why_this_issue`; the prior generic boilerplate is absent. The 11 Sol-reviewed INSPECT/MAYBE defaults were retained, and no other materiality status changed.
 
-## Current Sol E/M/C review authority
+## Accepted Materiality / Completeness authority
 
-Review:
+Materiality Ledger:
 
-`sources/2026-W33/execution/reviews/w33-evidence-materiality-completeness-sol-review-20260830-r1.md`
+- path: `sources/2026-W33/materiality-ledger-v2.json`
+- SHA-256: `cd29a1f640ce94229ed8c7f0734ddab9554ea5ffb8d4375900fe89f3a31f1891`
+- row count: 41
+- deterministic current-Core derivation from frozen Evidence + repaired View authority
+
+Profile Completeness:
+
+- path: `sources/2026-W33/profile-completeness-v2.json`
+- SHA-256: `9ac456d53a5a5195fc4925a72b3576ebe848a127ad0d5de2275f7d12752e8aea`
+- overall: `INCOMPLETE`
+- `weekly:current-relevance`: `LIMITATION`
+- `weekly:technical-significance`: `LIMITATION`
+- `weekly:carry-over`: `NEEDS_RESEARCH`
+
+`INCOMPLETE` is an accepted explicit limitation, not a failed candidate. Five active W32 carry-over rechecks and MiniMax remain non-selectable HOLD/NEEDS_MORE boundaries under current authority. No upstream rewind or source expansion is authorized merely to force completeness closure.
+
+## Current Sol E/M/C semantic authority
+
+Final Sol re-review:
+
+`sources/2026-W33/execution/reviews/w33-evidence-materiality-completeness-sol-rereview-20260830-r2.md`
 
 Decision:
 
-`REPAIR_REQUIRED / EVIDENCE_LAYER_ACCEPTED_AS_REPAIR_BASIS / EDITION_VIEW_SEMANTIC_REPAIR_REQUIRED / NO_UPSTREAM_SOURCE_EXPANSION`
+`ACCEPT / REPAIR_VERIFIED / EVIDENCE_MATERIALITY_COMPLETENESS_SEMANTICS_FROZEN / APPROVED_FOR_CORE_ADVANCEMENT`
 
-Key decision:
+This supersedes the r1 repair-required decision for advancement readiness while retaining r1 as provenance of the repair reason.
 
-- Evidence bytes remain frozen;
-- six NEEDS_MORE items remain unresolved/HOLD under current authority;
-- no Discovery/Screening rewind;
-- no source expansion;
-- `INCOMPLETE` Completeness may remain after repair;
-- all 37 Edition Views require item-specific rationale and `why_this_issue`;
-- the 11 INSPECT/MAYBE dispositions listed in the Sol review are frozen defaults unless existing Evidence reveals a contradiction;
-- the other 26 statuses must be re-evaluated from existing Evidence while writing item-specific reasoning;
-- new View acceptance, Ledger, and Completeness must be regenerated and returned for Sol re-review.
+The accepted semantic package is exactly:
 
-## Current bounded Luna repair handoff
+1. Evidence acceptance `c86f49...`;
+2. repaired View acceptance `51f4dda...`;
+3. Materiality Ledger SHA `cd29a1...`;
+4. Profile Completeness SHA `9ac456...`.
 
-Current phase-specific execution authority:
+## Current bounded Luna task
 
-`sources/2026-W33/execution/handoffs/w33-evidence-view-semantic-repair-luna-r1.md`
+Current phase-specific handoff:
+
+`sources/2026-W33/execution/handoffs/w33-evidence-materiality-completeness-advance-luna-r1.md`
 
 Status:
 
-`READY_FOR_LUNA / EDITION_VIEW_SEMANTIC_REPAIR_ONLY / STOP_FOR_SOL_REREVIEW`
+`READY_FOR_LUNA / EVIDENCE_MATERIALITY_COMPLETENESS_ADVANCEMENT_ONLY / STOP_AFTER_STATE_TRANSITION`
 
 Luna must:
 
-1. start from the exact current branch SHA supplied by Sol/caller;
-2. preserve Production State byte-for-byte;
-3. preserve accepted Evidence result-set `c86f49...` byte-for-byte;
-4. create a new complete 37-View content-addressed accepted set using only the existing Evidence bytes;
-5. make every rationale and `why_this_issue` candidate-specific and decision-useful;
-6. retain the 11 Sol-reviewed INSPECT/MAYBE defaults absent an exact Evidence contradiction;
-7. explicitly report every status change among the other 26 candidates;
-8. regenerate the 41-row Materiality Ledger deterministically from the new View acceptance;
-9. regenerate/revalidate Profile Completeness without forcing a desired status;
-10. commit the bounded repair plus one Luna repair session;
-11. stop before any checkpoint/`ADVANCE_STAGE`.
+1. start from the exact branch SHA supplied by Sol/caller;
+2. verify the exact four frozen E/M/C artifacts and Sol r2 review;
+3. create/validate a request-only operator commit;
+4. execute the canonical bridge from `CANDIDATES_NORMALIZED`;
+5. create the canonical `CANDIDATES_NORMALIZED` Stage Checkpoint with checkpoint set `evidence`, `materiality`, `completeness`;
+6. advance exactly once to `EVIDENCE_REVIEWED`;
+7. verify `next_action=stage:selection`;
+8. commit/push bridge/checkpoint/State/session provenance;
+9. stop for Sol before any Selection reasoning or artifact creation.
 
 ## Current semantic status
 
-`EVIDENCE_FROZEN / EDITION_VIEW_SEMANTIC_REPAIR_READY_FOR_LUNA / LIFECYCLE_ADVANCEMENT_BLOCKED`
+`EVIDENCE_MATERIALITY_COMPLETENESS_SEMANTICS_FROZEN / CORE_ADVANCEMENT_READY`
 
-Do not begin Selection and do not advance to `EVIDENCE_REVIEWED` until:
+Do **not** begin Selection yet. Selection begins only after:
 
-1. Luna commits the repaired View set and regenerated derived artifacts;
-2. Sol re-reviews the exact repaired bytes and passes them;
-3. Sol creates a separate deterministic advancement handoff;
-4. the Core transition to `EVIDENCE_REVIEWED` completes.
+1. Luna executes the E/M/C deterministic transition;
+2. Production State reaches `EVIDENCE_REVIEWED`;
+3. Sol verifies the exact checkpoint/State transition; and
+4. Sol defines the Selection policy/rubric and bounded Luna proposal handoff.
+
+## Unresolved boundaries carried forward
+
+- MiniMax: no dated qualifying W33 event body -> HOLD.
+- Five active W32 carry-over rechecks: no fresh W33 first-party delta in frozen authority -> HOLD.
+- GLM-5.3: detailed coding/cyber/benchmark/local-weight claims remain constrained by direct-page/chronology limits.
+- Vendor/project/author/RSS/index claims remain attributed, not independently reproduced.
+- Duplicate single-home/carry-over resolution is Selection work.
+- X remains discovery/community context only, never technical authority.
+- Historical State/Core checkpoint-layout mismatch remains a separate nonblocking maintenance concern under the passing agent-first stage path.
+
+No Human Exception Gate is active for these bounded limitations.
 
 ## Sol/Luna responsibility model
 
@@ -206,7 +248,7 @@ Authoritative model:
 
 `Sol policy/rubric/constraints -> Luna collection/analysis/proposal/materialization -> Sol semantic review -> Luna deterministic advancement`
 
-In the current repair, factual collection is already frozen. Luna's job is semantic proposal repair/materialization under the existing rubric; Sol will accept/revise/reject the repaired View authority.
+For the current step, semantics are frozen. Luna performs deterministic advancement only. After the transition, Sol owns Selection policy/rubric definition before Luna may propose Selection outcomes.
 
 ## Crash restart order
 
@@ -220,7 +262,10 @@ On a new session, read in order:
 6. `sources/2026-W33/execution/sessions/w33-luna-evidence-materiality-completeness-20260830-r1.md`
 7. `sources/2026-W33/execution/reviews/w33-evidence-materiality-completeness-sol-review-20260830-r1.md`
 8. `sources/2026-W33/execution/handoffs/w33-evidence-view-semantic-repair-luna-r1.md`
-9. latest Luna View-repair session, if any
-10. latest later Sol re-review, if any
+9. `sources/2026-W33/execution/sessions/w33-luna-evidence-view-semantic-repair-20260830-r1.md`
+10. `sources/2026-W33/execution/reviews/w33-evidence-materiality-completeness-sol-rereview-20260830-r2.md`
+11. `sources/2026-W33/execution/handoffs/w33-evidence-materiality-completeness-advance-luna-r1.md`
+12. latest Luna E/M/C advancement session, if any
+13. latest Sol E/M/C advancement verification, if any
 
-Resume from the first uncompleted repair/re-review/advancement step. Do not repeat Discovery, Screening, or Evidence research merely because the previous chat session was lost.
+Resume from the first uncompleted advancement/review/Selection-policy step. Do not repeat Discovery, Screening, Evidence research, or the View repair merely because a prior chat session was lost.
