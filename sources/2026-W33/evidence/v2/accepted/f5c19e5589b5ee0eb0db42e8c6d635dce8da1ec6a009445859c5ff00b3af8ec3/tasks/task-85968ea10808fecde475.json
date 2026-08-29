@@ -1,0 +1,70 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "evidence_task_id": "evidence:2026-W33:6368dfff7e6dfe69",
+  "discovery_ids": [
+    "base-arxiv-2608_09666v1"
+  ],
+  "source_records": [
+    {
+      "source_type": "paper",
+      "collector_id": "arxiv-api",
+      "collector_run_id": "arxiv-api-2026-W33-20260822T154529Z",
+      "observed_at": "2026-08-22T15:45:29Z",
+      "title": "Open Evaluation Agent: Efficient and Promptable Evaluation of Visual Generative Models",
+      "locator": "http://arxiv.org/abs/2608.09666v1",
+      "raw_paths": [
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-ai.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-cl.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-lg.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-cv.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-dc.atom",
+        "sources/2026-W33/collectors/arxiv/runs/20260822T154529Z/raw/cs-cr.atom"
+      ],
+      "published_at": "2026-08-10T14:42:10Z",
+      "summary_text": "Recent advances in visual generative models have enabled high-quality image and video generation, but evaluating these models often demands sampling hundreds or thousands of images or videos, which is computationally expensive. Existing evaluation methods also rely on rigid pipelines that overlook specific user needs and provide numerical results without clear explanations. Mimicking how humans quickly form impressions of a model's capabilities from only a few samples, we propose the Evaluation Agent framework, which employs human-like strategies for efficient, dynamic, multi-round evaluations, offering detailed, user-tailored analyses. Given a natural-language evaluation request, the agent decomposes it into sub-aspects, generates targeted prompts, samples images or videos from the evaluated model, invokes suitable evaluation tools, and iteratively updates its plan from the observed evidence, covering both predefined benchmark dimensions and open-ended user concerns. The framework is thus efficient, promptable, explainable, and scalable across models and tools. Experiments show that Evaluation Agent reduces evaluation time to 10% of traditional methods while delivering comparable results. We further introduce Open Evaluation Agent (Open-EA) by constructing EA-CoT-10K, a corpus of history-conditioned step-level instruction-tuning records derived from multi-round evaluation rollouts, and training EA-3B from Qwen2.5-3B-Instruct as a local planning backbone that preserves the structured reasoning, tool invocation, and summary protocol of the API-based agent while reducing dependence on proprietary backbones. Experiments validate the API-based agent on established T2I/T2V benchmarks and open-ended queries, and evaluate Open-EA on four in-domain and three out-of-domain T2V generator families, showing partial cross-family transfer of the learned policy.",
+      "metadata": {
+        "authors": [
+          "Shulin Tian",
+          "Ziqi Huang",
+          "Fan Zhang",
+          "Hongyuan Zhu",
+          "Yu Qiao",
+          "Ziwei Liu"
+        ],
+        "categories": [
+          "cs.AI"
+        ],
+        "primary_category": "cs.AI",
+        "updated": "2026-08-10T14:42:10Z",
+        "links": [
+          {
+            "href": "https://arxiv.org/abs/2608.09666v1",
+            "rel": "alternate",
+            "type": "text/html"
+          },
+          {
+            "href": "https://arxiv.org/pdf/2608.09666v1",
+            "rel": "related",
+            "type": "application/pdf"
+          }
+        ]
+      }
+    }
+  ],
+  "verification_targets": [
+    "Review full paper/method/results/limitations before promotion; abstract alone is insufficient for strong claims."
+  ],
+  "screening_basis": {
+    "screening_acceptance_sha256": "8d7cac2f809114608225bea517aba91c66105395f57f8333766da550eb16c3e0",
+    "decisions": [
+      {
+        "discovery_id": "base-arxiv-2608_09666v1",
+        "decision": "KEEP",
+        "scope_tags": [
+          "paper-candidate"
+        ]
+      }
+    ]
+  }
+}
