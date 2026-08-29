@@ -53,7 +53,8 @@ Current Screening chain:
 
 - Sol Screening semantic pass: `sources/2026-W33/execution/sessions/w33-sol-screening-20260829-r6.md`
 - Post-r6 recovery record: `sources/2026-W33/execution/sessions/w33-sol-screening-materialization-recovery-20260830-r7.md`
-- Sol/Luna plan through Architecture Review: `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r2.md`
+- Current Sol/Luna plan through Architecture Review: `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r3.md`
+- Superseded historical plan: `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r2.md`
 
 ## Current semantic status
 
@@ -68,14 +69,20 @@ Do not begin Evidence work until:
 3. deterministic Screening checkpoint/`ADVANCE_STAGE` completes; and
 4. Production State records `CANDIDATES_NORMALIZED`.
 
-## Role split through Architecture Review
+## Current Sol/Luna responsibility model
 
-- Sol: define each phase policy and exact Luna handoff; decide source/evidence boundaries, Materiality, Selection, carry-over/single-home treatment, and Architecture; review every Luna candidate before lifecycle advancement.
-- Luna: perform bounded source-local collection, policy-driven organization, schema-conforming materialization, validators, deterministic Core/Git operations, and exact work recording.
+The authoritative model is defined by r3:
+
+`Sol policy/rubric/constraints -> Luna collection/analysis/proposal/materialization -> Sol semantic review -> Luna deterministic advancement`
+
+- Sol: define scope, policy, rubrics, source/evidence authority, constraints, required proposal dimensions, and stop conditions; review and accept/revise/reject Luna's semantic proposals.
+- Luna: perform bounded source-local collection, organize evidence, analyze under Sol-defined criteria, propose Materiality/INSPECT/MAYBE resolution/Selection/Architecture outcomes, materialize Core artifacts, run validators and approved Core/Git operations, and record exact execution provenance.
+- Luna proposals are not authority until Sol review passes.
+- Sol does not need to pre-decide every item-level Materiality, Selection, or Architecture choice when the evaluation policy is sufficiently explicit; Luna may generate the first proposal under that policy.
 - Core v2: deterministic schema/invariant/provenance/checkpoint/lifecycle enforcement.
 - Human: perform Architecture Review after Sol has reviewed the Architecture artifacts and Core has reached `ARCHITECTURE_ESTABLISHED` / `ARCHITECTURE_REVIEW`.
 
-Luna must not invent scope, add unapproved sources, promote X/community material to technical authority, make Selection/Architecture decisions, or infer Human Gate outcomes. Ambiguity is surfaced to Sol rather than guessed.
+Luna must not invent scope, broaden allowed sources, change Sol rubrics, promote X/community material to technical authority, guess unresolved source conflicts, treat its own proposal as final authority, or infer Human Gate decisions.
 
 ## Crash restart order
 
@@ -84,8 +91,9 @@ On a new session, read in order:
 1. `sources/2026-W33/production-state.json`
 2. this `sources/2026-W33/execution/index.md`
 3. `sources/2026-W33/execution/sessions/w33-sol-screening-materialization-recovery-20260830-r7.md`
-4. `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r2.md`
-5. latest Luna session record, if any
-6. latest Sol review record, if any
+4. `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r3.md`
+5. latest phase-specific Sol handoff, if newer than r3
+6. latest Luna session record, if any
+7. latest Sol review record, if any
 
-Then resume from the first uncompleted candidate/review/advancement step. Do not repeat already committed collection merely because the prior chat session was lost.
+Then resume from the first uncompleted candidate/proposal/review/advancement step. Do not repeat already committed collection merely because the prior chat session was lost.
