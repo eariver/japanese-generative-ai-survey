@@ -93,9 +93,26 @@ The authoritative Production State after advancement is:
 
 ## Evidence / Materiality / Completeness policy
 
-Current phase-specific Sol handoff:
+Current effective Sol handoff is the following pair, with r2 winning on conflicts:
 
-`sources/2026-W33/execution/handoffs/w33-evidence-materiality-completeness-luna-r1.md`
+1. detailed base procedure: `sources/2026-W33/execution/handoffs/w33-evidence-materiality-completeness-luna-r1.md`
+2. **current corrective authority**: `sources/2026-W33/execution/handoffs/w33-evidence-materiality-completeness-luna-r2.md`
+
+Do **not** execute r1 standalone. Sol's post-commit audit found that r1 section 9 misstated W33 Production Profile dimensions. r2 corrects that defect before any Luna execution.
+
+The exact W33 Profile scope dimensions are:
+
+- `current relevance`
+- `technical significance`
+- `carry-over obligations`
+
+The exact W33 initial obligations are:
+
+- `weekly:current-relevance` → `current relevance`
+- `weekly:technical-significance` → `technical significance`
+- `weekly:carry-over` → `carry-over obligations`
+
+`originality`, `independent-verification`, and `ecosystem-impact` are **not** W33 Profile scope dimensions. They may be analytical considerations only; they must not be emitted as Edition View scope-dimension values or invented as Completeness obligations.
 
 The current Core phase structure is:
 
@@ -113,6 +130,7 @@ Key policy:
 - INSPECT/MAYBE and carry-over records should be resolved as far as the bound source permits;
 - duplicate groups are not collapsed during Evidence;
 - the Materiality Ledger must be current-Core deterministic derivation, not hand-edited;
+- Profile Completeness must preserve all three W33 initial obligations, including `weekly:carry-over`;
 - Profile Completeness status must be preserved as Core derives it; do not force `READY`;
 - Luna must stop before checkpoint/`ADVANCE_STAGE` for Sol semantic review.
 
@@ -140,7 +158,8 @@ Screening chain:
 
 Current phase:
 
-- current E/M/C Luna handoff: `sources/2026-W33/execution/handoffs/w33-evidence-materiality-completeness-luna-r1.md`
+- detailed E/M/C base handoff: `sources/2026-W33/execution/handoffs/w33-evidence-materiality-completeness-luna-r1.md`
+- current E/M/C corrective authority: `sources/2026-W33/execution/handoffs/w33-evidence-materiality-completeness-luna-r2.md`
 
 Historical superseded operating plan:
 
@@ -148,22 +167,23 @@ Historical superseded operating plan:
 
 ## Current semantic status
 
-`EVIDENCE_MATERIALITY_COMPLETENESS_HANDOFF_READY / CANDIDATE_PENDING`
+`EVIDENCE_MATERIALITY_COMPLETENESS_R2_HANDOFF_READY / CANDIDATE_PENDING`
 
-Screening is complete through deterministic lifecycle advancement and has passed Sol verification. The next bounded operation is Luna creation of the Evidence / Materiality / Completeness **candidate** under the current phase-specific Sol handoff.
+Screening is complete through deterministic lifecycle advancement and has passed Sol verification. The next bounded operation is Luna creation of the Evidence / Materiality / Completeness **candidate** under r1 + r2, with r2 authoritative on conflicts.
 
 Luna must:
 
 1. start from the exact current branch SHA supplied by Sol/caller;
-2. generate exactly 37 current-Core Evidence tasks from the accepted 41-record Screening set;
-3. perform bounded source-local factual research under the frozen source authority;
-4. materialize complete Evidence results;
-5. propose Weekly Edition Evidence Views / Materiality under the Sol rubric;
-6. accept the View set using current Core;
-7. deterministically derive the 41-row Materiality Ledger;
-8. build/validate Profile Completeness;
-9. commit candidate artifacts plus its Luna session record;
-10. stop for Sol review with Production State still `CANDIDATES_NORMALIZED`.
+2. read r1 and then r2 before production writes;
+3. generate exactly 37 current-Core Evidence tasks from the accepted 41-record Screening set;
+4. perform bounded source-local factual research under the frozen source authority;
+5. materialize complete Evidence results;
+6. propose Weekly Edition Evidence Views / Materiality under the Sol rubric using only the exact Profile dimensions;
+7. accept the View set using current Core;
+8. deterministically derive the 41-row Materiality Ledger;
+9. build/validate Profile Completeness with all three initial obligations retained;
+10. commit candidate artifacts plus its Luna session record;
+11. stop for Sol review with Production State still `CANDIDATES_NORMALIZED`.
 
 Do not begin Selection until:
 
@@ -193,7 +213,8 @@ On a new session, read in order:
 3. `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r3.md`
 4. `sources/2026-W33/execution/reviews/w33-screening-advance-sol-review-20260830-r1.md`
 5. `sources/2026-W33/execution/handoffs/w33-evidence-materiality-completeness-luna-r1.md`
-6. latest Luna E/M/C session record, if any
-7. latest Sol E/M/C review record, if any
+6. `sources/2026-W33/execution/handoffs/w33-evidence-materiality-completeness-luna-r2.md`
+7. latest Luna E/M/C session record, if any
+8. latest Sol E/M/C review record, if any
 
 Then resume from the first uncompleted candidate/review/advancement step. Do not repeat already committed Screening work merely because the prior chat session was lost.
