@@ -75,6 +75,8 @@ The direct legacy validator path reports an implementation-basis mismatch if cal
 
 ## Candidate commit boundary
 
+- Candidate materialization commit / ending SHA: `5c42802e954e0c48881e77a02e80f12f291b5edd`.
+- Candidate commit parent: `3efd960e06f731cae4e2e6d671f99aff88a58c19`.
 - Candidate commit includes exactly these seven paths:
   - `sources/2026-W33/screening/v2/accepted/648a1e8861c8edccb19d27623ba7dd8107d890c6f12fc88b7193ad99eb661706/package.json`
   - `sources/2026-W33/screening/v2/accepted/648a1e8861c8edccb19d27623ba7dd8107d890c6f12fc88b7193ad99eb661706/input/batches/batch-001.jsonl`
