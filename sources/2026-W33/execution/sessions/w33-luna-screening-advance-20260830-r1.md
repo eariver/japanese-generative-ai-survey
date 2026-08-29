@@ -95,7 +95,13 @@ Production State after execution:
 - Terminal reason: `null`
 - Appended history edge: `DISCOVERY_COLLECTED -> CANDIDATES_NORMALIZED`, bound to implementation/event SHA `fa83972e887d506d69b19a450a1f3858747c7db5`.
 
-Execution/result commit local and GitHub canonical SHAs will be recorded when the result commit is finalized. The local/GitHub SHA distinction is transport-only; generated trees and file bytes are preserved.
+Execution/result commit:
+
+- Local SHA: `fa8018c00c6ab44dd19bed6caeffa866fe886cc7`
+- GitHub canonical SHA: `5b433d494a46cba7fad2503b23b35372b3c3240b`
+- Parent: local request `0e93d080257389b57e160be0fffb4bda6311e13e`; GitHub request `fa83972e887d506d69b19a450a1f3858747c7db5`
+- Local/GitHub result tree: `991b6d399a84c30331d2cb248e282d07f9279258`
+- The local/GitHub SHA distinction is transport-only; generated trees and file bytes are preserved.
 
 ## Validation
 
@@ -131,6 +137,8 @@ Execution/result commit will contain exactly the bridge outputs, Production Stat
 - `sources/2026-W33/orchestration/v2/checkpoints/DISCOVERY_COLLECTED.json`
 - `sources/2026-W33/production-state.json`
 - `sources/2026-W33/execution/sessions/w33-luna-screening-advance-20260830-r1.md`
+
+The session SHA update itself is a follow-on bookkeeping commit changing only this session record; it does not change the deterministic execution outputs or Production State semantics.
 
 No `execution/index.md` update was needed because the existing index already points to this handoff and the resulting lifecycle. Existing untracked `w33-luna-discovery-rebuild.patch` and transient Python cache remain outside the commits.
 
