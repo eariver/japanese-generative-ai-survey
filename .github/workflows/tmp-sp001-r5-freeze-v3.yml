@@ -86,6 +86,7 @@ jobs:
           assert approval['publication_candidate_sha256'] == '1fc60a3437ed27e48c558fc75098114c6b6ddfef234bef685f57357c1a49d632'
 
           candidate_path = pub/'publication-candidate-v2.json'
+          assert core.sha256_file(candidate_path) == approval['publication_candidate_sha256']
           candidate = publication.validate_candidate(root, candidate_path, issue_id='SP001')
           assert candidate['candidate_sha256'] == '8f3bc5d851b306e75929fc9bfeb06cf3a584530f92b5088eae4323480b2a5bc0'
           assert candidate['pdf']['sha256'] == approval['pdf_sha256']
@@ -120,16 +121,24 @@ jobs:
           result_path = run_root/'core-stage-contract.json'
           artifacts = {'freeze-record': freeze_path, 'release-manifest': manifest_path}
 
-          # survey_stage_validation_v2._prior_artifacts predates the Human Gate
-          # compact provenance special-case already implemented by agent.validate_agent_state.
-          # Mirror that canonical special-case at runtime: Publication Preview approval
-          # provenance is Human authority, not an Agent Stage Checkpoint.
+          # The Publication Preview checkpoint provenance is intentionally replaced
+          # by Human approval authority when APPROVED. Mirror agent.validate_agent_state:
+          # do not parse that approval snapshot as an Agent Stage Checkpoint. Then
+          # recover the exact approved Publication Candidate from the approval's
+          # immutable file-SHA binding because the replaced provenance otherwise
+          # removes that prior artifact from the stage semantic map.
           original_prior_artifacts = stage_validation._prior_artifacts
           def prior_artifacts_with_human_gate_special_case(repo_root, state_value):
               adjusted = deepcopy(state_value)
-              if adjusted.get('human_gates', {}).get('publication_preview') == 'approved':
+              approved = adjusted.get('human_gates', {}).get('publication_preview') == 'approved'
+              if approved:
                   adjusted['checkpoint_provenance']['publication_preview'] = None
-              return original_prior_artifacts(repo_root, adjusted)
+              result = original_prior_artifacts(repo_root, adjusted)
+              if approved:
+                  if core.sha256_file(candidate_path) != approval['publication_candidate_sha256']:
+                      raise RuntimeError('approved Publication Candidate authority drift')
+                  result['publication-candidate'] = candidate_path
+              return result
           stage_validation._prior_artifacts = prior_artifacts_with_human_gate_special_case
           try:
               stage_validation.validate_stage(root, cfg, state_path, artifacts, result_path, now)
@@ -141,8 +150,8 @@ jobs:
             {
               'check_id': agent.CORE_STAGE_REVIEW_ID,
               'kind': 'DETERMINISTIC',
-              'executor': 'survey_stage_validation_v2 with canonical Human Gate provenance special-case',
-              'evidence': 'Canonical Core RELEASE_CANDIDATE -> FROZEN stage contract validated against the exact r5 Publication Candidate, Human Publication Preview approval r3, candidate-bound pre-preview VISUAL review, Freeze record and Release Manifest. Publication Preview approval provenance was treated as Human authority exactly as agent.validate_agent_state already specifies, rather than as a prior Stage Checkpoint.',
+              'executor': 'survey_stage_validation_v2 with canonical Human Gate provenance handling',
+              'evidence': 'Canonical Core RELEASE_CANDIDATE -> FROZEN semantics validated against the exact r5 Publication Candidate, Human Publication Preview approval r3, candidate-bound pre-preview VISUAL review, Freeze record and Release Manifest. Human approval provenance was excluded from Stage Checkpoint parsing and the exact approved Candidate was recovered only through the approval snapshot immutable file-SHA binding.',
               'result_path': str(result_path.relative_to(root)),
             },
             {
@@ -179,8 +188,10 @@ jobs:
             'known_core_freeze_boundary_defects': [
               'survey_profiled_freeze_v2.build_profiled_freeze still calls legacy publication.validate_visual_review instead of validating the current candidate-bound pre-preview VISUAL review.',
               'survey_stage_validation_v2._prior_artifacts treats Publication Preview Human approval provenance as an Agent Stage Checkpoint, unlike agent.validate_agent_state which correctly special-cases it.',
+              'Replacing publication_preview checkpoint provenance with Human approval authority removes the prior publication-candidate artifact from survey_stage_validation_v2 merged stage artifacts; Freeze semantics nevertheless require that exact approved Candidate.',
             ],
             'approved_candidate_sha256': candidate['candidate_sha256'],
+            'approved_candidate_file_sha256': core.sha256_file(candidate_path),
             'approved_pdf_sha256': approval['pdf_sha256'],
             'pdf_byte_count': candidate['pdf']['byte_count'],
             'page_count': candidate['pdf']['page_count'],
