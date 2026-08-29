@@ -54,13 +54,16 @@ Current Screening chain:
 - Sol Screening semantic pass: `sources/2026-W33/execution/sessions/w33-sol-screening-20260829-r6.md`
 - Post-r6 recovery record: `sources/2026-W33/execution/sessions/w33-sol-screening-materialization-recovery-20260830-r7.md`
 - Current Sol/Luna plan through Architecture Review: `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r3.md`
+- Current phase-specific Luna handoff: `sources/2026-W33/execution/handoffs/w33-screening-materialization-luna-r1.md`
 - Superseded historical plan: `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r2.md`
 
 ## Current semantic status
 
-`SCREENING_SEMANTIC_AUTHORITY_READY / CORE_MATERIALIZATION_PENDING`
+`SCREENING_S1_HANDOFF_READY_FOR_LUNA / CORE_MATERIALIZATION_PENDING`
 
-The 41-record Discovery package is Core-accepted and Production State is already `DISCOVERY_COLLECTED`. Sol has completed semantic Screening and committed the authoritative 41-decision seed. The next bounded production operation is Luna materialization of current-Core Screening artifacts from that exact seed. Luna must stop before lifecycle advancement so Sol can review the materialized result set.
+The 41-record Discovery package is Core-accepted and Production State is already `DISCOVERY_COLLECTED`. Sol has completed semantic Screening and committed the authoritative 41-decision seed. Sol has now committed the bounded Screening S1 Luna handoff. The next production operation is Luna materialization of current-Core Screening artifacts from that exact seed.
+
+Luna must start from the exact current branch SHA supplied by Sol/caller, perform only the bounded S1 handoff, commit the materialized Screening candidate plus its session record, and stop before lifecycle advancement for Sol review.
 
 Do not begin Evidence work until:
 
@@ -92,7 +95,7 @@ On a new session, read in order:
 2. this `sources/2026-W33/execution/index.md`
 3. `sources/2026-W33/execution/sessions/w33-sol-screening-materialization-recovery-20260830-r7.md`
 4. `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r3.md`
-5. latest phase-specific Sol handoff, if newer than r3
+5. `sources/2026-W33/execution/handoffs/w33-screening-materialization-luna-r1.md`
 6. latest Luna session record, if any
 7. latest Sol review record, if any
 
