@@ -1,0 +1,53 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "from_state": "ISSUE_INITIALIZED",
+  "to_state": "DISCOVERY_COLLECTED",
+  "checkpoints": [
+    "discovery"
+  ],
+  "recorded_at": "2026-08-29T11:39:02Z",
+  "implementation": {
+    "repository_commit_sha": "229fd354cdb4d5c11775d40f96ae462acc72d283",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "e6ae2637fe2ecb41351193075c79b5829d83d12884cd011a78f593ff77c1c8d1",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "discovery-acceptance",
+      "path": "sources/2026-W33/discovery/discovery-accepted-v2.json",
+      "sha256": "62a37710b4f41df752fecf03b987baff423a40849bcfeb6e2f72f2d13fa39302"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request w33-discovery-advance-20260829-r1.",
+      "result": {
+        "path": "sources/2026-W33/execution/bridge-runs/w33-discovery-advance-20260829-r1/core-stage-contract.json",
+        "sha256": "93f6f319c7165080a80240e75190f9b4aa60ff65beea9c5822f5b393501f2991"
+      }
+    },
+    {
+      "check_id": "SOL_DISCOVERY_SEMANTIC_REVIEW",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "ACCEPT. Sol reviewed the 41-record W33 Discovery set, exact required X Source Intake binding, restored Raw provenance, and the four approved first-party model gap-fill records. Review authority: sources/2026-W33/execution/reviews/w33-discovery-sol-review-20260829-r4.md.",
+      "result": null
+    }
+  ],
+  "summary": "Accept the Sol-reviewed 41-record 2026-W33 Discovery graph and COMPLETE required X Source Intake, then advance deterministically from ISSUE_INITIALIZED to DISCOVERY_COLLECTED."
+}
