@@ -7,13 +7,13 @@ This file is the crash-recovery entry point for the current W33 production run. 
 - Work branch: `weekly/2026-W33-v2-work`
 - Reviewed main: `6267de3f6876f491950139757bfdf1085fc07bdc`
 - Production State: `sources/2026-W33/production-state.json`
-- Current lifecycle: `DISCOVERY_COLLECTED`
-- Current machine action: `stage:screening`
+- Current lifecycle: `CANDIDATES_NORMALIZED`
+- Current machine action: `stage:evidence-materiality-completeness`
 - Target Human Gate: `ARCHITECTURE_REVIEW`
 - Core implementation authority recorded by Production State: `02ba8323c80ac52ab407ff3199ed344907a170b2`
 - Orchestrator: `survey-production-core-v2/0.15-postintegration-transport-thematic`
 
-The current lifecycle above remains authoritative until the separately authorized Screening advancement task commits a validated Core transition.
+Screening advancement has been executed and Sol-verified. Evidence / Materiality / Completeness is now the active candidate phase, but lifecycle advancement to `EVIDENCE_REVIEWED` is **not authorized** until the Luna candidate passes Sol review.
 
 ## Current Discovery authority
 
@@ -46,26 +46,62 @@ Canonical current-Core materialization:
 - record count: 41
 - aggregate: KEEP 26 / INSPECT 8 / MAYBE 3 / DROP 4
 
-Sol review:
+Sol Screening materialization review:
 
 - `sources/2026-W33/execution/reviews/w33-screening-sol-review-20260830-r1.md`
 - decision: `ACCEPT / APPROVED_FOR_CORE_ADVANCEMENT`
 
-The pre-Luna expected content-addressed result-set id calculated by Sol matched the Luna materialization exactly. Screening semantic/materialization review is complete; only deterministic Screening checkpoint / lifecycle advancement remains.
+## Screening advancement authority
 
-## Screening transport provenance
+Canonical remote advancement chain:
 
-Luna Screening S1 began from:
+- exact start: `0c4ac45a69279ed35dd0ef81f605649a23394dd2`
+- request commit: `fa83972e7f44bf90af51ef8b49837c6914ca1c5f`
+- deterministic execution commit: `5b433d494a46cba7fad2503b23b35372b3c3240b`
+- final Luna remote head: `e9221c0915e2b0e79411903479a056699612062a`
 
-`3efd960e06f731cae4e2e6d671f99aff88a58c19`
+Canonical advancement artifacts:
 
-Canonical GitHub transport commits are:
+- request: `sources/2026-W33/execution/requests/w33-screening-advance-20260830-r1.json`
+- bridge run: `sources/2026-W33/execution/bridge-runs/w33-screening-advance-20260830-r1/`
+- Screening checkpoint: `sources/2026-W33/orchestration/v2/checkpoints/DISCOVERY_COLLECTED.json`
+- Luna advancement session: `sources/2026-W33/execution/sessions/w33-luna-screening-advance-20260830-r1.md`
+- Sol advancement verification: `sources/2026-W33/execution/reviews/w33-screening-advance-sol-review-20260830-r1.md`
+- Sol decision: `ACCEPT / STATE_TRANSITION_VERIFIED / READY_FOR_EVIDENCE_POLICY`
 
-- candidate materialization: `28d5a3d1cf9d0fc2ac1a46e1cf5b1341004d502a`
-- final Luna S1 GitHub head: `06fbb821da523782266b2bd39ee04cc66ea637c8`
-- final GitHub tree: `ee42701c20971e0d94fbcddea08e507efb0d629c`
+The Luna session preserves worker-local request/result commit SHAs that differ from the remote GitHub commit objects because authenticated ordinary Git push was unavailable and GitHub API reconstruction was used. Those local identities are historical transport provenance only. Repository recovery must use the canonical GitHub chain above and the Sol advancement review as reconciliation authority.
 
-The Luna worker record contains local Git commit identities produced before GitHub API reconstruction. Those local SHAs are historical worker transport provenance only. Repository recovery must use the canonical GitHub SHAs above and the Sol review's transport reconciliation note.
+The authoritative Production State now records:
+
+- lifecycle `CANDIDATES_NORMALIZED`
+- next action `stage:evidence-materiality-completeness`
+- Screening checkpoint `passed`
+- Evidence / Materiality / Completeness checkpoints `pending`
+
+## Evidence / Materiality / Completeness policy
+
+Current phase-specific Sol handoff:
+
+`sources/2026-W33/execution/handoffs/w33-evidence-materiality-completeness-luna-r1.md`
+
+The current Core phase structure is:
+
+`37 active Screening records -> Evidence Tasks -> factual Evidence Cards -> Weekly Edition Evidence Views -> deterministic 41-row Materiality Ledger -> Profile Completeness`
+
+Key policy:
+
+- exact active Evidence task count: 37 = KEEP 26 + INSPECT 8 + MAYBE 3;
+- the four DROP records receive no Evidence task;
+- Evidence Card sources must remain within each task's accepted Discovery source record;
+- a better/new URL discovered during research is a `SOURCE_GAP`, not automatic new Evidence authority;
+- X/community is discovery/context only and cannot support technical claims;
+- Luna may propose Edition View Materiality under the frozen Sol rubric: `MATERIAL`, `CONTEXT`, `NON_MATERIAL`, `HOLD`;
+- KEEP does not imply MATERIAL;
+- INSPECT/MAYBE and carry-over records should be resolved as far as the bound source permits;
+- duplicate groups are not collapsed during Evidence;
+- the Materiality Ledger must be current-Core deterministic derivation, not hand-edited;
+- Profile Completeness status must be preserved as Core derives it; do not force READY;
+- Luna must stop before checkpoint/`ADVANCE_STAGE` for Sol semantic review.
 
 ## Latest semantic/work records
 
@@ -77,7 +113,7 @@ Historical Discovery chain:
 - Sol review session: `sources/2026-W33/execution/sessions/w33-sol-discovery-review-20260829-r4.md`
 - Sol Discovery acceptance session: `sources/2026-W33/execution/sessions/w33-sol-discovery-acceptance-20260829-r5.md`
 
-Current Screening chain:
+Screening chain:
 
 - Sol Screening semantic pass: `sources/2026-W33/execution/sessions/w33-sol-screening-20260829-r6.md`
 - Post-r6 recovery record: `sources/2026-W33/execution/sessions/w33-sol-screening-materialization-recovery-20260830-r7.md`
@@ -85,20 +121,43 @@ Current Screening chain:
 - Screening materialization handoff: `sources/2026-W33/execution/handoffs/w33-screening-materialization-luna-r1.md`
 - Luna Screening materialization session: `sources/2026-W33/execution/sessions/w33-luna-screening-materialization-20260830-r1.md`
 - Sol Screening materialization review: `sources/2026-W33/execution/reviews/w33-screening-sol-review-20260830-r1.md`
-- Current phase-specific Luna handoff: `sources/2026-W33/execution/handoffs/w33-screening-advance-luna-r1.md`
-- Superseded historical plan: `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r2.md`
+- Screening advancement handoff: `sources/2026-W33/execution/handoffs/w33-screening-advance-luna-r1.md`
+- Luna Screening advancement session: `sources/2026-W33/execution/sessions/w33-luna-screening-advance-20260830-r1.md`
+- Sol Screening advancement verification: `sources/2026-W33/execution/reviews/w33-screening-advance-sol-review-20260830-r1.md`
+
+Current phase:
+
+- current E/M/C Luna handoff: `sources/2026-W33/execution/handoffs/w33-evidence-materiality-completeness-luna-r1.md`
+
+Historical superseded operating plan:
+
+- `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r2.md`
 
 ## Current semantic status
 
-`SCREENING_SOL_REVIEW_PASSED / DETERMINISTIC_ADVANCEMENT_READY_FOR_LUNA`
+`EVIDENCE_MATERIALITY_COMPLETENESS_HANDOFF_READY / CANDIDATE_PENDING`
 
-The 41-record Screening semantic seed and current-Core content-addressed materialization have passed Sol review. The next bounded task is **only** the deterministic Screening checkpoint / `ADVANCE_STAGE` operation authorized by:
+Screening is complete through deterministic lifecycle advancement and has passed Sol verification. The next bounded operation is Luna creation of the Evidence / Materiality / Completeness **candidate** under the current phase-specific Sol handoff.
 
-`sources/2026-W33/execution/handoffs/w33-screening-advance-luna-r1.md`
+Luna must:
 
-Luna must start from the exact current branch SHA supplied by Sol/caller, create the immutable operator request, execute the canonical bridge, advance exactly once to `CANDIDATES_NORMALIZED`, commit the resulting checkpoint/state/bridge provenance, and stop for Sol verification.
+1. start from the exact current branch SHA supplied by Sol/caller;
+2. generate exactly 37 current-Core Evidence tasks from the accepted 41-record Screening set;
+3. perform bounded source-local factual research under the frozen source authority;
+4. materialize complete Evidence results;
+5. propose Weekly Edition Evidence Views / Materiality under the Sol rubric;
+6. accept the View set using current Core;
+7. deterministically derive the 41-row Materiality Ledger;
+8. build/validate Profile Completeness;
+9. commit candidate artifacts plus its Luna session record;
+10. stop for Sol review with Production State still `CANDIDATES_NORMALIZED`.
 
-Do not begin Evidence work until Production State actually records `CANDIDATES_NORMALIZED` and Sol has authored the Evidence / Materiality / Completeness policy.
+Do not begin Selection until:
+
+1. the E/M/C candidate is committed;
+2. Sol semantic review passes;
+3. a separate deterministic E/M/C checkpoint/`ADVANCE_STAGE` task completes; and
+4. Production State records `EVIDENCE_REVIEWED`.
 
 ## Current Sol/Luna responsibility model
 
@@ -107,13 +166,10 @@ The authoritative model is defined by r3:
 `Sol policy/rubric/constraints -> Luna collection/analysis/proposal/materialization -> Sol semantic review -> Luna deterministic advancement`
 
 - Sol: define scope, policy, rubrics, source/evidence authority, constraints, required proposal dimensions, and stop conditions; review and accept/revise/reject Luna's semantic proposals.
-- Luna: perform bounded source-local collection, organize evidence, analyze under Sol-defined criteria, propose Materiality/INSPECT/MAYBE resolution/Selection/Architecture outcomes, materialize Core artifacts, run validators and approved Core/Git operations, and record exact execution provenance.
+- Luna: perform bounded source-local collection, organize evidence, analyze under Sol-defined criteria, propose Materiality/INSPECT/MAYBE resolution/Selection/Architecture outcomes where authorized, materialize Core artifacts, run validators and approved Git/Core operations, and record exact execution provenance.
 - Luna proposals are not authority until Sol review passes.
-- Sol does not need to pre-decide every item-level Materiality, Selection, or Architecture choice when the evaluation policy is sufficiently explicit; Luna may generate the first proposal under that policy.
-- Core v2: deterministic schema/invariant/provenance/checkpoint/lifecycle enforcement.
-- Human: perform Architecture Review after Sol has reviewed the Architecture artifacts and Core has reached `ARCHITECTURE_ESTABLISHED` / `ARCHITECTURE_REVIEW`.
-
-Luna must not invent scope, broaden allowed sources, change Sol rubrics, promote X/community material to technical authority, guess unresolved source conflicts, treat its own proposal as final authority, or infer Human Gate decisions.
+- Core v2 owns deterministic schema/invariant/provenance/checkpoint/lifecycle enforcement.
+- Human performs Architecture Review after Sol has reviewed Architecture artifacts and Core reaches `ARCHITECTURE_ESTABLISHED` / `ARCHITECTURE_REVIEW`.
 
 ## Crash restart order
 
@@ -122,9 +178,9 @@ On a new session, read in order:
 1. `sources/2026-W33/production-state.json`
 2. this `sources/2026-W33/execution/index.md`
 3. `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r3.md`
-4. `sources/2026-W33/execution/reviews/w33-screening-sol-review-20260830-r1.md`
-5. `sources/2026-W33/execution/handoffs/w33-screening-advance-luna-r1.md`
-6. latest Luna advancement session record, if any
-7. latest later Sol review/policy record, if any
+4. `sources/2026-W33/execution/reviews/w33-screening-advance-sol-review-20260830-r1.md`
+5. `sources/2026-W33/execution/handoffs/w33-evidence-materiality-completeness-luna-r1.md`
+6. latest Luna E/M/C session record, if any
+7. latest Sol E/M/C review record, if any
 
-Then resume from the first uncompleted advancement/policy/candidate/review step. Do not repeat already committed Screening materialization merely because the prior chat session was lost.
+Then resume from the first uncompleted candidate/review/advancement step. Do not repeat already committed Screening work merely because the prior chat session was lost.
