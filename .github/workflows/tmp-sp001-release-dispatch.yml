@@ -1,0 +1,34 @@
+name: Temporary SP001 canonical release dispatch
+
+on:
+  push:
+    branches: [transport/sp001-release-dispatch-20260829]
+    paths:
+      - 'sources/SP001/publication/v2/tmp-release-dispatch-trigger.txt'
+
+permissions:
+  actions: write
+  contents: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify clean main authority and dispatch canonical release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          expected_main='dd1ad1e9f5f0aa2a930f3866b5347e9194cafa37'
+          actual_main="$(gh api "repos/${REPOSITORY}/git/ref/heads/main" --jq '.object.sha')"
+          test "$actual_main" = "$expected_main" || { echo "main moved: expected=$expected_main actual=$actual_main" >&2; exit 78; }
+          gh workflow run survey-production-v2-release.yml \
+            --repo "$REPOSITORY" \
+            --ref main \
+            -f issue_id=SP001 \
+            -f production_state_sha256=83ff4f6a544b4f88905ddbbc51dd239534045e8a25bba07ec96a54c872cd317c \
+            -f release_manifest_sha256=e2f82c5d9a0fcddc9a58855f3a9fa144fd6a3aa46190acbe6fda79ab6bb5a09a \
+            -f confirmation=release:SP001
+          echo 'Canonical SP001 release dispatched against exact clean main authority.'
