@@ -3,7 +3,7 @@
   "issue_id": "SP001",
   "research_profile": "THEMATIC",
   "publication_profile": "LONGFORM_SPECIAL",
-  "lifecycle_state": "FROZEN",
+  "lifecycle_state": "RELEASED",
   "profile": {
     "path": "sources/SP001/production-profile.json",
     "sha256": "18ebde4c2893cd804b375bf5a724973f9dea7b936238625dee810c26549091bf"
@@ -37,8 +37,8 @@
     }
   },
   "target_gate": "ARCHITECTURE_REVIEW",
-  "next_action": "stage:release",
-  "terminal_reason": null,
+  "next_action": null,
+  "terminal_reason": "COMPLETE",
   "exception_gate": {
     "status": "inactive",
     "reason": null
@@ -55,7 +55,7 @@
     "validation": "passed",
     "publication_preview": "passed",
     "freeze": "passed",
-    "release": "pending"
+    "release": "passed"
   },
   "checkpoint_provenance": {
     "discovery": {
@@ -102,7 +102,10 @@
       "path": "sources/SP001/orchestration/v2/checkpoints/RELEASE_CANDIDATE.json",
       "sha256": "3bfb7bcf1e12bc203287ea268daec18a564281ab584b76176b9608949fd76528"
     },
-    "release": null
+    "release": {
+      "path": "sources/SP001/orchestration/v2/checkpoints/FROZEN.json",
+      "sha256": "8ec285249243c5658c4fadf75b7e0d4561c144dcae2a47c188f7cde576f50424"
+    }
   },
   "legacy_compatibility": {
     "mode": "NON_AUTHORITATIVE_READ_ONLY",
@@ -170,6 +173,12 @@
       "to": "FROZEN",
       "recorded_at": "2026-08-29T00:39:50Z",
       "repository_commit_sha": "cb1f8fa3d6c9a7885092e549a0c0a27b08b20eeb"
+    },
+    {
+      "from": "FROZEN",
+      "to": "RELEASED",
+      "recorded_at": "2026-08-29T00:57:23Z",
+      "repository_commit_sha": "dd1ad1e9f5f0aa2a930f3866b5347e9194cafa37"
     }
   ]
 }
