@@ -69,16 +69,18 @@ jobs:
           state = core.load_json(state_path)
           assert state['lifecycle_state'] == 'RELEASE_CANDIDATE'
           assert state['human_gates']['publication_preview'] == 'approved'
-          assert state['next_action'] == 'RUN_FREEZE'
+          assert state['next_action'] == 'stage:freeze'
           approval_ref = state['human_gate_provenance']['publication_preview']
           approval_path = root/approval_ref['path']
           approval_sha_before = core.sha256_file(approval_path)
           review_index = source_root/'gates/review-index.json'
           review_index_sha_before = core.sha256_file(review_index)
           approval = publication.validate_preview_approval(root, approval_path, issue_id='SP001')
-          assert approval['revision'] == 3
-          assert approval['reviewed_repository_commit_sha'] == '5de21e4a66a1ab480dc0abcaf4971cc1fefb47d8'
+          review = core.load_json(source_root/'gates/reviews/publication-r3.json')
+          assert review['revision'] == 3 and review['decision'] == 'APPROVED'
+          assert review['reviewed_repository_commit_sha'] == '5de21e4a66a1ab480dc0abcaf4971cc1fefb47d8'
           assert approval['pdf_sha256'] == '9f6bef98d15bfaec1ea2aec3972005487c28e44ec84762e4fbaa51639d7fe1b2'
+          assert approval['publication_candidate_sha256'] == '1fc60a3437ed27e48c558fc75098114c6b6ddfef234bef685f57357c1a49d632'
 
           candidate_path = pub/'publication-candidate-v2.json'
           candidate = publication.validate_candidate(root, candidate_path, issue_id='SP001')
@@ -142,7 +144,7 @@ jobs:
             'approved_pdf_sha256': approval['pdf_sha256'],
             'pdf_byte_count': candidate['pdf']['byte_count'],
             'page_count': candidate['pdf']['page_count'],
-            'publication_preview_revision': approval['revision'],
+            'publication_preview_revision': review['revision'],
             'freeze_record': {'path': str(freeze_path.relative_to(root)), 'sha256': core.sha256_file(freeze_path)},
             'release_manifest': {'path': str(manifest_path.relative_to(root)), 'sha256': core.sha256_file(manifest_path), 'release_identity': manifest['release_identity']},
             'stage_checkpoint': {'path': str(checkpoint.relative_to(root)), 'sha256': core.sha256_file(checkpoint)},
