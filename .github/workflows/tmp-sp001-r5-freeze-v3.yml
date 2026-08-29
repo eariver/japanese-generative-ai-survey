@@ -27,6 +27,7 @@ jobs:
             config \
             schemas \
             scripts \
+            docs \
             sources/SP001 \
             surveys/special/SP001 \
             templates/survey \
@@ -104,8 +105,6 @@ jobs:
           assert bundle['production_profile'] == {'path': str(profile_path.relative_to(root)), 'sha256': core.sha256_file(profile_path)}
           assert bundle['publication_profile'] == profile['publication_profile']
 
-          # Canonical publication Freeze validates the candidate-bound pre-preview
-          # publication-review-record-v2 VISUAL authority.
           now = datetime.now(timezone.utc)
           freeze_path = pub/'freeze-record-v2.json'
           manifest_path = pub/'release-manifest-v2.json'
@@ -121,12 +120,6 @@ jobs:
           result_path = run_root/'core-stage-contract.json'
           artifacts = {'freeze-record': freeze_path, 'release-manifest': manifest_path}
 
-          # The Publication Preview checkpoint provenance is intentionally replaced
-          # by Human approval authority when APPROVED. Mirror agent.validate_agent_state:
-          # do not parse that approval snapshot as an Agent Stage Checkpoint. Then
-          # recover the exact approved Publication Candidate from the approval's
-          # immutable file-SHA binding because the replaced provenance otherwise
-          # removes that prior artifact from the stage semantic map.
           original_prior_artifacts = stage_validation._prior_artifacts
           def prior_artifacts_with_human_gate_special_case(repo_root, state_value):
               adjusted = deepcopy(state_value)
