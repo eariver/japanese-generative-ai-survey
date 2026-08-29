@@ -1,0 +1,50 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "PKG-1-PLURAL-FOUNDATIONS",
+  "draft_version": "v2.0",
+  "status": "REVISED",
+  "basis": {
+    "draft_package_sha256": "0c5d4dd3671a020d0e8e83ad93051bf05df221d32ee9d8b406f7987db2f42cfc",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project drafting; Issue #400 Publication Preview revision; exact accepted Evidence/Architecture constrained",
+    "generated_at": "2026-08-27T17:20:00Z",
+    "run_reference": "SP001 Publication Preview revision r2 after Human REQUEST_CHANGES"
+  },
+  "headline": "中国open-model史は、最初から複数の系譜だった",
+  "deck": "2022–2024年のGLM-130B、Baichuan 2、DeepSeek LLMをsource-specific chronologyとして並べると、2026年のfrontierを後から一つの直系系譜へ還元できない。",
+  "deck_attribution_mode": "ATTRIBUTED",
+  "deck_evidence_refs": [
+    {"evidence_task_id":"evidence:SP001:65713fcea4fed72a","kind":"CLAIM","evidence_id":"claim-sp001-d009-01","subject_id":"glm-130b","subject_role":"PRIMARY_SUBJECT"},
+    {"evidence_task_id":"evidence:SP001:1c44a6ef76242055","kind":"CLAIM","evidence_id":"claim-sp001-d019-01","subject_id":"baichuan-2","subject_role":"PRIMARY_SUBJECT"},
+    {"evidence_task_id":"evidence:SP001:dcc22d5fb97ef241","kind":"CLAIM","evidence_id":"claim-sp001-d001-01","subject_id":"deepseek-llm","subject_role":"PRIMARY_SUBJECT"}
+  ],
+  "blocks": [
+    {"block_id":"p1-h-history","block_type":"HEADING","text":"前史を単一の勝者史観にしない","attribution_mode":"NONE","evidence_refs":[]},
+    {"block_id":"p1-chronology","block_type":"TABLE","text":"一次資料で固定できる初期anchorは、2022-10-05のGLM-130B、2023-09-18のBaichuan 2、2024-01-05のDeepSeek LLMである。順番は確認できるが、日付の近さだけでは直接の技術継承を意味しない。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP001:65713fcea4fed72a","kind":"EVENT","evidence_id":"event-sp001-d009","subject_id":"glm-130b","subject_role":"PRIMARY_SUBJECT"},{"evidence_task_id":"evidence:SP001:1c44a6ef76242055","kind":"EVENT","evidence_id":"event-sp001-d019","subject_id":"baichuan-2","subject_role":"PRIMARY_SUBJECT"},{"evidence_task_id":"evidence:SP001:dcc22d5fb97ef241","kind":"EVENT","evidence_id":"event-sp001-d001","subject_id":"deepseek-llm","subject_role":"PRIMARY_SUBJECT"}]},
+    {"block_id":"p1-glm-anchor","block_type":"PARAGRAPH","text":"GLM-130Bはlarge bilingual pre-trained modelとして早い時点に現れ、後年のGLM familyを読む際の歴史的anchorになる。ここで重要なのは、後年のagentic GLMを2022年へ遡及投影することではなく、中国発の大規模モデル研究がすでに複数の設計文脈を持っていたことを確認する点である。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP001:65713fcea4fed72a","kind":"CLAIM","evidence_id":"claim-sp001-d009-01","subject_id":"glm-130b","subject_role":"PRIMARY_SUBJECT"}]},
+    {"block_id":"p1-baichuan","block_type":"PARAGRAPH","text":"Baichuan 2は2023年のopen-model familyとして、この時期のecosystemがDeepSeek、Qwen、GLM、Kimiの四系列だけで構成されていたわけではないことを示す。したがって本巻ではBaichuan 2を2026年frontierの代表ではなく、plural ecosystemを確立するcontextとして置く。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP001:1c44a6ef76242055","kind":"CLAIM","evidence_id":"claim-sp001-d019-01","subject_id":"baichuan-2","subject_role":"PRIMARY_SUBJECT"}]},
+    {"block_id":"p1-deepseek-baseline","block_type":"PARAGRAPH","text":"DeepSeek LLMは7B/67B、2T-tokenの中国語・英語pretraining、scaling-law、SFT/DPOというfoundation baselineを示す。後のDeepSeek-V2やR1を理解するには、最初からreasoning専用familyだったとみなすのではなく、この汎用foundation設計から効率化とpost-trainingが別々の設計課題として分化した、と読む必要がある。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP001:dcc22d5fb97ef241","kind":"CLAIM","evidence_id":"claim-sp001-d001-01","subject_id":"deepseek-llm","subject_role":"PRIMARY_SUBJECT"}]},
+    {"block_id":"p1-open-meaning","block_type":"PARAGRAPH","text":"この前史で「open」を一語で処理すると、公開されたmodel artifact、weight access、repository code、再配布、商用利用、training recipeの再現可能性が混ざる。一次資料はartifactごとの公開事実を支えるが、条件がfamily横断で同一だったとは示していない。本巻では以後も公開形態とlicense authorityを分離する。","attribution_mode":"MIXED","evidence_refs":[{"evidence_task_id":"evidence:SP001:65713fcea4fed72a","kind":"CLAIM","evidence_id":"claim-sp001-d009-01","subject_id":"glm-130b","subject_role":"PRIMARY_SUBJECT"},{"evidence_task_id":"evidence:SP001:1c44a6ef76242055","kind":"CLAIM","evidence_id":"claim-sp001-d019-01","subject_id":"baichuan-2","subject_role":"PRIMARY_SUBJECT"},{"evidence_task_id":"evidence:SP001:dcc22d5fb97ef241","kind":"CLAIM","evidence_id":"claim-sp001-d001-01","subject_id":"deepseek-llm","subject_role":"PRIMARY_SUBJECT"}]},
+    {"block_id":"p1-tech-notes","block_type":"NOTE","text":"Technical Notes — GLM-130B: bilingual/pretraining scopeとopen-model/access claimsを一次資料で確認。Baichuan 2: release chronology、model/open-weight claims、license/commercial-use boundaryを確認。DeepSeek LLM: 7B/67B、2T-token、open-source/open-weight terminologyとlicense boundaryを確認。これらは後年のcheckpoint性能を代替する証拠ではない。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP001:65713fcea4fed72a","kind":"CLAIM","evidence_id":"claim-sp001-d009-01","subject_id":"glm-130b","subject_role":"PRIMARY_SUBJECT"},{"evidence_task_id":"evidence:SP001:1c44a6ef76242055","kind":"CLAIM","evidence_id":"claim-sp001-d019-01","subject_id":"baichuan-2","subject_role":"PRIMARY_SUBJECT"},{"evidence_task_id":"evidence:SP001:dcc22d5fb97ef241","kind":"CLAIM","evidence_id":"claim-sp001-d001-01","subject_id":"deepseek-llm","subject_role":"PRIMARY_SUBJECT"}]},
+    {"block_id":"PKG-1-PLURAL-FOUNDATIONS-boundaries","block_type":"CLAIM_BOUNDARY","text":"読解上の境界: publication dateの近さだけで直接影響関係を主張しない。Baichuan 2、GLM-130B、DeepSeek LLMはplural ecosystemと各family anchorのためのsupporting evidenceであり、2026 frontier性能の代表値にはしない。","attribution_mode":"NONE","evidence_refs":[]}
+  ],
+  "must_cover_coverage": [
+    {"requirement":"SP001-O01","block_ids":["p1-h-history","p1-chronology","p1-glm-anchor","p1-baichuan","p1-deepseek-baseline","p1-open-meaning","p1-tech-notes","PKG-1-PLURAL-FOUNDATIONS-boundaries"]},
+    {"requirement":"SP001-O02","block_ids":["p1-h-history","p1-chronology","p1-glm-anchor","p1-baichuan","p1-deepseek-baseline","p1-open-meaning","p1-tech-notes","PKG-1-PLURAL-FOUNDATIONS-boundaries"]},
+    {"requirement":"SP001-O06","block_ids":["p1-h-history","p1-chronology","p1-glm-anchor","p1-baichuan","p1-deepseek-baseline","p1-open-meaning","p1-tech-notes","PKG-1-PLURAL-FOUNDATIONS-boundaries"]}
+  ],
+  "boundary_dispositions": [
+    {"boundary":"publication dateの近さだけで直接影響関係を主張しない。","handling":"EXPLICITLY_STATED","block_ids":["PKG-1-PLURAL-FOUNDATIONS-boundaries"],"rationale":"Approved Architecture boundary is preserved explicitly in the revised reader-facing Draft Result."},
+    {"boundary":"Baichuan 2、GLM-130B、DeepSeek LLMはplural ecosystemと各family anchorのためのsupporting evidenceとして扱い、2026 frontier性能を代表させない。","handling":"EXPLICITLY_STATED","block_ids":["PKG-1-PLURAL-FOUNDATIONS-boundaries"],"rationale":"Approved Architecture boundary is preserved explicitly in the revised reader-facing Draft Result."}
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}

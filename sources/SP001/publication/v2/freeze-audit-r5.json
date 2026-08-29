@@ -1,0 +1,42 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "status": "PASS",
+  "kind": "DETERMINISTIC_CANONICAL_FREEZE_WITH_PROFILE_VALIDATION",
+  "recorded_at": "2026-08-29T00:39:59Z",
+  "implementation_commit_sha": "cb1f8fa3d6c9a7885092e549a0c0a27b08b20eeb",
+  "known_core_freeze_boundary_defects": [
+    "survey_profiled_freeze_v2.build_profiled_freeze still calls legacy publication.validate_visual_review instead of validating the current candidate-bound pre-preview VISUAL review.",
+    "survey_stage_validation_v2._prior_artifacts treats Publication Preview Human approval provenance as an Agent Stage Checkpoint, unlike agent.validate_agent_state which correctly special-cases it.",
+    "Replacing publication_preview checkpoint provenance with Human approval authority removes the prior publication-candidate artifact from survey_stage_validation_v2 merged stage artifacts; Freeze semantics nevertheless require that exact approved Candidate.",
+    "stage-checkpoint-v2.schema.json requires visual-review-record for RELEASE_CANDIDATE -> FROZEN while survey_stage_validation_v2 current artifact admission allows only the configured freeze-record/release-manifest pair."
+  ],
+  "approved_candidate_sha256": "8f3bc5d851b306e75929fc9bfeb06cf3a584530f92b5088eae4323480b2a5bc0",
+  "approved_candidate_file_sha256": "1fc60a3437ed27e48c558fc75098114c6b6ddfef234bef685f57357c1a49d632",
+  "approved_pdf_sha256": "9f6bef98d15bfaec1ea2aec3972005487c28e44ec84762e4fbaa51639d7fe1b2",
+  "pdf_byte_count": 322250,
+  "page_count": 14,
+  "publication_preview_revision": 3,
+  "release_identity": "special/SP001",
+  "visual_review_record": {
+    "path": "sources/SP001/publication/v2/visual-review-v2.json",
+    "sha256": "d9564c42a2e7fb0ef7a65dfe4d8485f1fd3f9904c757fb3b8f65ae3cac84f1e3",
+    "source": "candidate-bound pre-preview VISUAL review; no new review synthesized"
+  },
+  "freeze_record": {
+    "path": "sources/SP001/publication/v2/freeze-record-v2.json",
+    "sha256": "c2a924e60a67b41dd1314079980bb653e2ee8db24efd13301ccf2d43c5a7caf0"
+  },
+  "release_manifest": {
+    "path": "sources/SP001/publication/v2/release-manifest-v2.json",
+    "sha256": "e2f82c5d9a0fcddc9a58855f3a9fa144fd6a3aa46190acbe6fda79ab6bb5a09a"
+  },
+  "stage_checkpoint": {
+    "path": "sources/SP001/orchestration/v2/checkpoints/RELEASE_CANDIDATE.json",
+    "sha256": "3bfb7bcf1e12bc203287ea268daec18a564281ab584b76176b9608949fd76528"
+  },
+  "human_review_authority_unchanged": true,
+  "review_index_unchanged": true,
+  "final_lifecycle_state": "FROZEN",
+  "final_state_sha256": "83ff4f6a544b4f88905ddbbc51dd239534045e8a25bba07ec96a54c872cd317c"
+}
