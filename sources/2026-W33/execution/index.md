@@ -34,6 +34,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Deterministic Core: schema/invariant/provenance/checkpoint/lifecycle execution only; it does not make editorial judgments or Human Gate decisions.
 - Human: explicit normal-Gate decisions and genuine Owner Exception decisions.
 - Luna must not invent scope, add unapproved sources to close gaps, perform cross-document interpretation, decide Selection/Architecture, or infer Human Gate decisions. Ambiguity returns to Sol as `PARTIAL`, `UNRESOLVED`, `NEEDS_SOL_REVIEW`, or equivalent task-specific review status.
+- **Luna session continuity:** use one continuing Work/GPT-5.6 Luna chat for successive bounded tasks by default. Open a new Luna chat only if the current Work chat reaches its session/context limit or otherwise cannot continue. Even within one continuing chat, every task must bind an exact repository start SHA and repository handoff path.
 
 ## Recovery / work records
 
@@ -41,6 +42,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Initial Core 0.15 session: `sessions/w33-core015-20260829-r1.md`
 - Sol/Luna transition session: `sessions/w33-sol-luna-transition-20260829-r2.md`
 - Latest Sol specification session: `sessions/w33-sol-discovery-spec-20260829-r3.md`
+- Luna continuity policy: `sessions/w33-sol-luna-continuity-policy-20260829-r4.md`
 - **Active Luna task:** `handoffs/w33-discovery-rebuild-luna-r1.md`
 - Active Luna task endpoint: materialize and commit the Discovery candidate; **do not advance Production State**; return to Sol for semantic review.
 
