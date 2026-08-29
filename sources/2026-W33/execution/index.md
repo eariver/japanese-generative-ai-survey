@@ -13,6 +13,8 @@ This file is the crash-recovery entry point for the current W33 production run. 
 - Core implementation authority recorded by Production State: `02ba8323c80ac52ab407ff3199ed344907a170b2`
 - Orchestrator: `survey-production-core-v2/0.15-postintegration-transport-thematic`
 
+The current lifecycle above remains authoritative until the separately authorized Screening advancement task commits a validated Core transition.
+
 ## Current Discovery authority
 
 - Discovery: `sources/2026-W33/discovery/discovery-v2.jsonl`
@@ -24,20 +26,46 @@ This file is the crash-recovery entry point for the current W33 production run. 
 - Acceptance SHA-256: `62a37710b4f41df752fecf03b987baff423a40849bcfeb6e2f72f2d13fa39302`
 - Graph SHA-256: `f7ba629fffb48921b139034c4d44941507b83594f76a59dd9151c5270a995eff`
 
-## Current Screening semantic authority
+## Current Screening authority
+
+Semantic seed:
 
 - Sol semantic seed: `sources/2026-W33/screening/sol-screening-decisions-r1.json`
 - Semantic-authority commit: `f9803239613f2208eb5eaf7ff56826031268728f`
 - Semantic-authority Git blob: `ba649d6e805bac5316b88a78d259a3de97f839b2`
 - Decisions: KEEP 26 / INSPECT 8 / MAYBE 3 / DROP 4 / total 41
-- Canonical current-Core Screening materialization: **pending**
-- Screening lifecycle advancement: **not yet authorized**
 
-A session-local expected content-addressed Screening result-set id was calculated as:
+Canonical current-Core materialization:
 
-`648a1e8861c8edccb19d27623ba7dd8107d890c6f12fc88b7193ad99eb661706`
+- accepted run: `sources/2026-W33/screening/v2/accepted/648a1e8861c8edccb19d27623ba7dd8107d890c6f12fc88b7193ad99eb661706/`
+- acceptance: `sources/2026-W33/screening/v2/accepted/648a1e8861c8edccb19d27623ba7dd8107d890c6f12fc88b7193ad99eb661706/screening-accepted.json`
+- result-set SHA-256: `648a1e8861c8edccb19d27623ba7dd8107d890c6f12fc88b7193ad99eb661706`
+- acceptance SHA-256: `3ca7c986bb5857fe71ba9348dfda69b8e96320a36eda021b2a5dff39462ce84b`
+- package SHA-256: `186b2c0227af0faa405d0618c7fa5e0849075ec51d51d7da013f626801a10da7`
+- batch count: 1
+- record count: 41
+- aggregate: KEEP 26 / INSPECT 8 / MAYBE 3 / DROP 4
 
-This is a validation expectation only, not acceptance authority. See r7 below.
+Sol review:
+
+- `sources/2026-W33/execution/reviews/w33-screening-sol-review-20260830-r1.md`
+- decision: `ACCEPT / APPROVED_FOR_CORE_ADVANCEMENT`
+
+The pre-Luna expected content-addressed result-set id calculated by Sol matched the Luna materialization exactly. Screening semantic/materialization review is complete; only deterministic Screening checkpoint / lifecycle advancement remains.
+
+## Screening transport provenance
+
+Luna Screening S1 began from:
+
+`3efd960e06f731cae4e2e6d671f99aff88a58c19`
+
+Canonical GitHub transport commits are:
+
+- candidate materialization: `28d5a3d1cf9d0fc2ac1a46e1cf5b1341004d502a`
+- final Luna S1 GitHub head: `06fbb821da523782266b2bd39ee04cc66ea637c8`
+- final GitHub tree: `ee42701c20971e0d94fbcddea08e507efb0d629c`
+
+The Luna worker record contains local Git commit identities produced before GitHub API reconstruction. Those local SHAs are historical worker transport provenance only. Repository recovery must use the canonical GitHub SHAs above and the Sol review's transport reconciliation note.
 
 ## Latest semantic/work records
 
@@ -54,23 +82,23 @@ Current Screening chain:
 - Sol Screening semantic pass: `sources/2026-W33/execution/sessions/w33-sol-screening-20260829-r6.md`
 - Post-r6 recovery record: `sources/2026-W33/execution/sessions/w33-sol-screening-materialization-recovery-20260830-r7.md`
 - Current Sol/Luna plan through Architecture Review: `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r3.md`
-- Current phase-specific Luna handoff: `sources/2026-W33/execution/handoffs/w33-screening-materialization-luna-r1.md`
+- Screening materialization handoff: `sources/2026-W33/execution/handoffs/w33-screening-materialization-luna-r1.md`
+- Luna Screening materialization session: `sources/2026-W33/execution/sessions/w33-luna-screening-materialization-20260830-r1.md`
+- Sol Screening materialization review: `sources/2026-W33/execution/reviews/w33-screening-sol-review-20260830-r1.md`
+- Current phase-specific Luna handoff: `sources/2026-W33/execution/handoffs/w33-screening-advance-luna-r1.md`
 - Superseded historical plan: `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r2.md`
 
 ## Current semantic status
 
-`SCREENING_S1_HANDOFF_READY_FOR_LUNA / CORE_MATERIALIZATION_PENDING`
+`SCREENING_SOL_REVIEW_PASSED / DETERMINISTIC_ADVANCEMENT_READY_FOR_LUNA`
 
-The 41-record Discovery package is Core-accepted and Production State is already `DISCOVERY_COLLECTED`. Sol has completed semantic Screening and committed the authoritative 41-decision seed. Sol has now committed the bounded Screening S1 Luna handoff. The next production operation is Luna materialization of current-Core Screening artifacts from that exact seed.
+The 41-record Screening semantic seed and current-Core content-addressed materialization have passed Sol review. The next bounded task is **only** the deterministic Screening checkpoint / `ADVANCE_STAGE` operation authorized by:
 
-Luna must start from the exact current branch SHA supplied by Sol/caller, perform only the bounded S1 handoff, commit the materialized Screening candidate plus its session record, and stop before lifecycle advancement for Sol review.
+`sources/2026-W33/execution/handoffs/w33-screening-advance-luna-r1.md`
 
-Do not begin Evidence work until:
+Luna must start from the exact current branch SHA supplied by Sol/caller, create the immutable operator request, execute the canonical bridge, advance exactly once to `CANDIDATES_NORMALIZED`, commit the resulting checkpoint/state/bridge provenance, and stop for Sol verification.
 
-1. Screening materialization is committed;
-2. Sol review passes;
-3. deterministic Screening checkpoint/`ADVANCE_STAGE` completes; and
-4. Production State records `CANDIDATES_NORMALIZED`.
+Do not begin Evidence work until Production State actually records `CANDIDATES_NORMALIZED` and Sol has authored the Evidence / Materiality / Completeness policy.
 
 ## Current Sol/Luna responsibility model
 
@@ -93,10 +121,10 @@ On a new session, read in order:
 
 1. `sources/2026-W33/production-state.json`
 2. this `sources/2026-W33/execution/index.md`
-3. `sources/2026-W33/execution/sessions/w33-sol-screening-materialization-recovery-20260830-r7.md`
-4. `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r3.md`
-5. `sources/2026-W33/execution/handoffs/w33-screening-materialization-luna-r1.md`
-6. latest Luna session record, if any
-7. latest Sol review record, if any
+3. `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r3.md`
+4. `sources/2026-W33/execution/reviews/w33-screening-sol-review-20260830-r1.md`
+5. `sources/2026-W33/execution/handoffs/w33-screening-advance-luna-r1.md`
+6. latest Luna advancement session record, if any
+7. latest later Sol review/policy record, if any
 
-Then resume from the first uncompleted candidate/proposal/review/advancement step. Do not repeat already committed collection merely because the prior chat session was lost.
+Then resume from the first uncompleted advancement/policy/candidate/review step. Do not repeat already committed Screening materialization merely because the prior chat session was lost.
