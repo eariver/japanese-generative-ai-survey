@@ -1,0 +1,70 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "from_state": "CANDIDATES_NORMALIZED",
+  "to_state": "EVIDENCE_REVIEWED",
+  "checkpoints": [
+    "evidence",
+    "materiality",
+    "completeness"
+  ],
+  "recorded_at": "2026-08-25T00:25:00Z",
+  "implementation": {
+    "repository_commit_sha": "0f7b0f95c91889f8c087dc361b9b6079e7271ece",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "e12fcc83ec0b9771b9c8ba43bbf867f418ecb695b74d25e7fcb6daf699ab04ac",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "edition-views-acceptance",
+      "path": "sources/SP001/evidence/v2/views/accepted/4478306c4b6949fc9aa6677a801048891da5a0dd0369e627db4b86189e459bf2/edition-views-accepted.json",
+      "sha256": "9474a19ab2bdcf375e6ebb11851331d2a3b515e36035d7a2f4f3375b692406f1"
+    },
+    {
+      "name": "evidence-acceptance",
+      "path": "sources/SP001/evidence/v2/accepted/3785dc9ee87378b6682cc6d45a064cba1c9325bba4339dc04e460d441dcfb430/evidence-accepted.json",
+      "sha256": "782420a59ff3298c2702b91cf2a866069e05678fb635f68cb460cb29d6bec3e4"
+    },
+    {
+      "name": "materiality-ledger",
+      "path": "sources/SP001/materiality-ledger-v2.json",
+      "sha256": "1f8f7b611ea661aac4c7ff70c28efddeb8d95f19a0d53ee3f63e8b35780b1618"
+    },
+    {
+      "name": "profile-completeness",
+      "path": "sources/SP001/profile-completeness-v2.json",
+      "sha256": "86d7c3f4ea462f4b1d5f24ac33f9b0b451cd0cf9305d598abb5360c8d6be31cd"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request postintegration-sp001-evidence-r3.",
+      "result": {
+        "path": "sources/SP001/execution/bridge-runs/postintegration-sp001-evidence-r3/core-stage-contract.json",
+        "sha256": "e9d74883b5fe3d40b86e2c7eab0c8bfc3739241f957d441556d0b5fc8a75340f"
+      }
+    },
+    {
+      "check_id": "SP001_EVIDENCE_MATERIALITY_CLOSURE_R3",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "Fresh Evidence closure contains exactly 11 factual Evidence Cards and 11 Thematic Edition Views with no silent Discovery drop. All seven Profile obligations are SATISFIED. Closure is LIMITED with one mechanically derived expansion pass, zero open material obligations, and explicit residual limits for artifact-specific 2026 licenses and non-comparable frontier benchmark conditions.",
+      "result": null
+    }
+  ],
+  "summary": "Revalidate corrected fresh SP001 Evidence, Thematic Views, Materiality Ledger and Completeness closure and advance to EVIDENCE_REVIEWED."
+}
