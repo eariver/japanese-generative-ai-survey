@@ -1,0 +1,20 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "research_profile": "WEEKLY",
+  "evidence_task_id": "evidence:2026-W33:9ce38eb6f5c6bf91",
+  "evidence_sha256": "b1d15247995e76552a2447b96078f3d49cd65ca15a01401abfd6621e47036ea9",
+  "materiality": {
+    "status": "MATERIAL",
+    "rationale": "OasisKV presents lookahead sparse prefetching that keeps relevant KV entries in HBM while using higher-capacity memory tiers, with author-measured accuracy and throughput results on vLLM; it matters as a concrete memory-scaling design, while those measurements remain author-reported."
+  },
+  "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+  ],
+  "profile_annotations": {
+    "why_this_issue": "This candidate matters because serving beyond HBM is a practical scaling constraint: OasisKV connects tiered memory placement to the latency and quality trade-offs that a Weekly infrastructure item should surface.",
+    "window_relation": "MAIN_EVENT",
+    "carry_over": false
+  }
+}
