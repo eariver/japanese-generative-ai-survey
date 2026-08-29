@@ -1,0 +1,81 @@
+name: Temporary W33 Core 0.15 rebuild
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/temp_w33_core015_rebuild.py'
+      - '.github/workflows/temp-w33-core015-rebuild.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout transport branch
+        uses: actions/checkout@v4
+        with:
+          path: transport
+          fetch-depth: 1
+
+      - name: Checkout canonical W33 branch
+        uses: actions/checkout@v4
+        with:
+          ref: weekly/2026-W33-v2-work
+          path: repo
+          fetch-depth: 0
+          token: ${{ github.token }}
+
+      - name: Fetch frozen W33 semantic source branches
+        working-directory: repo
+        run: |
+          git fetch origin \
+            temp/w33-architecture-stage:refs/remotes/origin/temp/w33-architecture-stage \
+            archive/pre-core015-2026-W33-v2-work-20260829:refs/remotes/origin/archive/pre-core015-2026-W33-v2-work-20260829
+          test "$(git rev-parse HEAD)" = "b4f9062ab5fa6986464e7fcb27196176f78238f3"
+
+      - name: Install Core Python dependencies
+        working-directory: repo
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r config/survey-production-v2-requirements.txt
+
+      - name: Rebuild W33 to Architecture Review
+        run: |
+          python transport/scripts/temp_w33_core015_rebuild.py --repo-root repo
+
+      - name: Validate edition-local change boundary
+        working-directory: repo
+        run: |
+          git diff --check
+          python - <<'PY'
+          import subprocess
+          changed = subprocess.check_output(
+              ['git', 'status', '--porcelain=v1'], text=True
+          ).splitlines()
+          if not changed:
+              raise SystemExit('runner produced no W33 changes')
+          bad = []
+          for row in changed:
+              path = row[3:]
+              if ' -> ' in path:
+                  path = path.split(' -> ', 1)[1]
+              if not path.startswith('sources/2026-W33/'):
+                  bad.append(path)
+          if bad:
+              raise SystemExit(f'non-W33 changes detected: {bad}')
+          print(f'validated {len(changed)} edition-local changed paths')
+          PY
+
+      - name: Commit and push canonical W33 authority
+        working-directory: repo
+        env:
+          TARGET_BRANCH: weekly/2026-W33-v2-work
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sources/2026-W33
+          git commit -m 'Rebuild 2026-W33 to Architecture Review under Core 0.15'
+          git push origin HEAD:${TARGET_BRANCH}
