@@ -1,0 +1,87 @@
+name: Temporary SP001 release provenance recovery v2
+
+on:
+  push:
+    branches: [transport/sp001-release-dispatch-20260829]
+    paths:
+      - 'sources/SP001/publication/v2/tmp-release-recovery-v2-trigger.txt'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify exact main and materialize recovery executor
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          expected='dd1ad1e9f5f0aa2a930f3866b5347e9194cafa37'
+          actual="$(gh api "repos/${REPOSITORY}/git/ref/heads/main" --jq '.object.sha')"
+          test "$actual" = "$expected" || { echo "main moved: expected=$expected actual=$actual" >&2; exit 78; }
+          git clone --depth 50 --branch main "https://x-access-token:${GH_TOKEN}@github.com/${REPOSITORY}.git" repo
+          cd repo
+          test "$(git rev-parse HEAD)" = "$expected"
+          git fetch --depth 1 origin transport/sp001-release-dispatch-20260829
+          git show FETCH_HEAD:sources/SP001/publication/v2/tmp_release_recovery_v2.py > /tmp/sp001-release-recovery.py
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Core v2 dependencies
+        working-directory: repo
+        run: python -m pip install -r config/survey-production-v2-requirements.txt
+
+      - name: Reconcile existing public Release exact bytes
+        working-directory: repo
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          tag='special/SP001'; title='Japanese Generative AI Technical Survey Special — SP001'; asset='Japanese_Generative_AI_Technical_Survey_Special_SP001.pdf'
+          target='dd1ad1e9f5f0aa2a930f3866b5347e9194cafa37'; sha='9f6bef98d15bfaec1ea2aec3972005487c28e44ec84762e4fbaa51639d7fe1b2'; bytes='322250'
+          meta="$(gh release view "$tag" --repo "$REPOSITORY" --json url,tagName,name,isDraft,isPrerelease,targetCommitish,assets)"
+          test "$(printf '%s' "$meta" | jq -r '.tagName')" = "$tag"
+          test "$(printf '%s' "$meta" | jq -r '.name')" = "$title"
+          test "$(printf '%s' "$meta" | jq -r '.isDraft')" = 'false'
+          test "$(printf '%s' "$meta" | jq -r '.isPrerelease')" = 'false'
+          test "$(printf '%s' "$meta" | jq -r '.targetCommitish')" = "$target"
+          test "$(printf '%s' "$meta" | jq --arg n "$asset" '[.assets[]|select(.name==$n)]|length')" = '1'
+          rm -rf release-verify && mkdir release-verify
+          gh release download "$tag" --repo "$REPOSITORY" --dir release-verify --pattern "$asset"
+          test "$(sha256sum "release-verify/$asset" | awk '{print $1}')" = "$sha"
+          test "$(wc -c < "release-verify/$asset" | tr -d ' ')" = "$bytes"
+          printf '%s' "$meta" | jq -r '.url' > /tmp/release-url.txt
+
+      - name: Build validated RELEASED provenance
+        working-directory: repo
+        run: PYTHONPATH=. python /tmp/sp001-release-recovery.py
+
+      - name: Commit post-release provenance and open PR
+        working-directory: repo
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          expected='dd1ad1e9f5f0aa2a930f3866b5347e9194cafa37'
+          actual="$(gh api "repos/${REPOSITORY}/git/ref/heads/main" --jq '.object.sha')"
+          test "$actual" = "$expected" || { echo "main moved before provenance PR: expected=$expected actual=$actual" >&2; exit 78; }
+          branch="provenance/sp001-release-20260829-${GITHUB_RUN_ID}"
+          git checkout -b "$branch"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sources/SP001
+          git diff --cached --check
+          git commit -m 'Record SP001 release provenance'
+          git push origin "$branch"
+          gh pr create --repo "$REPOSITORY" --base main --head "$branch" --title 'Record SP001 release provenance' --body 'Post-release provenance for the Human-authorized SP001 Freeze/Release. Public Release `special/SP001` was created by canonical Release run 33224802636 and its downloaded PDF was exact-byte verified (`9f6bef98...`, 322250 bytes). The canonical run stopped after publication because `survey_release_checkpoint_v2.py` omits the `CORE_STAGE_CONTRACT` review required by `agent.advance_with_checkpoint`. This bounded reconciliation re-verifies the existing Release and adds only the deterministic report, Release Record, FROZEN→RELEASED checkpoint and final Production State; publication bytes and Core files are unchanged.'
