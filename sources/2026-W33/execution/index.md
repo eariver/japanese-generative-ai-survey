@@ -7,43 +7,78 @@ Repository state is authoritative over chat history.
 - Work branch: `weekly/2026-W33-v2-work`
 - Reviewed main: `6267de3f6876f491950139757bfdf1085fc07bdc`
 - Production State: `sources/2026-W33/production-state.json`
-- Current State SHA-256: `5267993b1988bf0032f706cfba164ed278712a0b706311026e2e95d31fd37149`
+- Current State SHA-256: `2112dddfa5c6f8f55ec3d497ee4a633e16d2d1899436270d76f6423ec30f0d08`
 - Current lifecycle: `ARCHITECTURE_ESTABLISHED`
-- Current machine action: `ARCHITECTURE_REVIEW`
-- Terminal reason: `HUMAN_GATE_REACHED`
+- Current machine action: `stage:drafting-synthesis`
+- Terminal reason: `null`
 - Discovery / Screening / Evidence / Materiality / Completeness / Selection / Architecture: `passed`
-- Architecture Review Human Gate in State: `pending`
-- Architecture Review provenance in State: `null`
-- Drafting/publication remains unauthorized until r3 approval is canonically materialized.
+- Architecture Review Human Gate: `approved`
+- Draft checkpoint: `pending`
+- Publication Preview: `pending`
+- Exception Gate: `inactive`
 
 Human Architecture Review history:
 
-- r1: `REQUEST_CHANGES`
-- r2: `REQUEST_CHANGES`
-- r3: **Owner explicitly decided `APPROVED`; canonical Core materialization pending**
+1. r1: `REQUEST_CHANGES`
+2. r2: `REQUEST_CHANGES`
+3. r3: `APPROVED`
 
-## Owner Architecture Review r3 decision — explicit and frozen
+## Owner Architecture Review r3 — canonical approval established
 
-Decision reference:
+Owner decision reference:
 
 `sources/2026-W33/execution/reviews/w33-owner-architecture-review-decision-20260831-r3.md`
 
-Human decision:
+Canonical approval:
 
-`APPROVED`
+`sources/2026-W33/gates/architecture-approval.json`
 
-Owner findings:
+- SHA-256: `9d9e73a91adc0a62e30c1a35682766a6d2f1b817891d9737d82af63eb2c70025`
+- decision: `APPROVED`
+- reviewed by: `Owner`
+- reviewed Architecture SHA-256: `8bc68693e182dbda9d7067e9bc127bf69548aba87ccd3078cb744bd991c6b406`
+- Review Summary SHA-256: `88c029b4bdc7944e1b6f213f0e05c4a8a650cec229bfeafc14c3cc0272410ccb`
+- Review Attention SHA-256: `b3bd9ef809076bf22e08da89347028bdee620bf26f8dd08abdf0255c5b75e489`
 
-- current W33 Architecture content is sufficient;
-- no Architecture changes are requested;
-- production should continue;
-- future Architecture Reviews should use the same chapter-by-chapter overview plus corresponding candidate/source-type presentation used for r3, including source taxonomy and bounded HOLD/REJECT notes before the Human decision.
+Immutable approval snapshot:
 
-The future-review presentation preference is process/presentation guidance only. It does not modify current W33 Architecture bytes and is not a revision request.
+`sources/2026-W33/gates/reviews/approvals/architecture-r3.json`
 
-Canonical r3 approval materialization must use `RECORD_ARCHITECTURE_APPROVAL`, `expected_revision = 3`, `reviewed_by = Owner`, and the decision reference above. The trusted operator request must bind `reviewed_repository_commit_sha` exactly to its request-only commit parent.
+- byte-identical to canonical approval
+- same SHA-256: `9d9e73a91adc0a62e30c1a35682766a6d2f1b817891d9737d82af63eb2c70025`
 
-## Current repaired upstream authority
+Human Gate review record:
+
+`sources/2026-W33/gates/reviews/architecture-r3.json`
+
+- revision: `3`
+- decision: `APPROVED`
+- requested changes: `null`
+- regeneration boundary: `null`
+
+Approval materialization chain:
+
+- Exact Starting SHA: `a7a64d033630b5d0231150c955f162c5dc903056`
+- request-only: `abcfc726d17dba2ee3b1e61e907ed8fd35b7064a`
+- bridge result: `8e78aab5a6bcdea9fbe0246c86e9d494b67200be`
+- final Luna bookkeeping: `00a0ded1e9713fd615d3a2e584829b23560aad3c`
+- workflow run: `33326247373`
+- preflight / execute: PASS / PASS
+- canonical operation: `RECORD_ARCHITECTURE_APPROVAL` exactly once
+
+Luna session:
+
+`sources/2026-W33/execution/sessions/w33-luna-architecture-approval-20260831-r3.md`
+
+Sol verification:
+
+`sources/2026-W33/execution/reviews/w33-architecture-approval-materialization-sol-review-20260831-r1.md`
+
+Decision:
+
+`ACCEPT / ARCHITECTURE_REVIEW_R3_APPROVAL_VERIFIED / DRAFTING_AUTHORIZED / READY_FOR_DRAFT_CANDIDATE_MATERIALIZATION`
+
+## Current upstream authority
 
 Discovery:
 
@@ -51,18 +86,17 @@ Discovery:
 - records: 41
 - acceptance SHA-256: `777414eefad7280d45fc847dd44a0bdeeef225b6dd0c3e1f4b90bc8b1acb7995`
 
-Revised Screening:
+Screening:
 
-- result-set: `0723540ccade3bb9ac5fdcc1d120df8f060d2d2a5e6d2b56d26cc3c6ed41c08a`
 - acceptance SHA-256: `e6f0392004191b4668e4231c57839044e4b08ff1e32763403f2d92630b0b0a0f`
 - KEEP 31 / INSPECT 3 / MAYBE 3 / DROP 4
 
-Current Evidence:
+Evidence:
 
 - acceptance SHA-256: `2d3dd740adcefeec7fb32f3aba97f90e19eed8dfe4ff10a0096605c34cc98632`
 - VERIFIED 24 / PARTIAL 12 / NEEDS_MORE 1 / REJECTED 0
 
-Current Edition Views:
+Edition Views:
 
 - acceptance SHA-256: `cafad25cc8e1ddeba63da0ed96c35fe986ccd6c386e451735215a00eb19fd242`
 - MATERIAL 25 / CONTEXT 10 / HOLD 1 / NON_MATERIAL 1
@@ -70,47 +104,41 @@ Current Edition Views:
 Materiality Ledger:
 
 - SHA-256: `2b771fec7405ed81a72bb60eeb686a680f3d4537969b9f20c65eda8b48df5c9f`
-- rows: 41
 
 Profile Completeness:
 
 - SHA-256: `d3dfe4cc3e9b55dbbd5254f9fe61dacdfb6eda1771b9bba13deafe3279d9e08b`
-- `weekly:current-relevance = LIMITATION`
-- `weekly:technical-significance = LIMITATION`
-- `weekly:carry-over = SATISFIED`
+- current-relevance: `LIMITATION`
+- technical-significance: `LIMITATION`
+- carry-over: `SATISFIED`
 - overall: `LIMITED`
-- open `NEEDS_RESEARCH` obligations: 0
-
-## Current revised Selection authority — checkpointed
+- open `NEEDS_RESEARCH`: 0
 
 Candidate Matrix:
 
-- path: `sources/2026-W33/candidate-matrix-v2.json`
 - SHA-256: `4ff1a622a05e4b559d4531e2361e5b10d34affbc8cc5a244105cf1d994c9bc08`
 - candidates: 37
-- MATERIAL 25 / CONTEXT 10 / HOLD 1 / NON_MATERIAL 1
-- VERIFIED 24 / PARTIAL 12 / NEEDS_MORE 1 / REJECTED 0
 
 Candidate Selection:
 
-- path: `sources/2026-W33/candidate-selection-v2.json`
 - SHA-256: `7d7b56c27fa31c17d1ee00f8a508d6afb96802990d33fb0d6ef848d1e6f9df7e`
 - SELECTED 28 / HOLD 1 / REJECT 8 / INSPECT 0
 - PRIMARY 21 / SUPPORTING 7
-- MiniMax is the sole HOLD
-- five repaired W32 carry-over candidates are explicit REJECT dispositions.
+- MiniMax: sole HOLD
+- five repaired W32 carry-over candidates: explicit REJECT dispositions
 
-## Current revised Architecture authority — checkpointed
+## Approved Architecture authority
 
 Issue Architecture:
 
-- path: `sources/2026-W33/architecture-v2.json`
+`sources/2026-W33/architecture-v2.json`
+
 - SHA-256: `8bc68693e182dbda9d7067e9bc127bf69548aba87ccd3078cb744bd991c6b406`
-- status: `PROPOSED`
+- status: `PROPOSED` plus separate canonical Human Approval Record
 - packages: 7
 - selected placements: PRIMARY 21 / SUPPORTING 7
-- target pages: 18 / hard max 24
-- selected exceptions: none
+- target pages: 18
+- hard maximum: 24
 
 Packages:
 
@@ -122,16 +150,16 @@ Packages:
 6. `w33-multimodal-media`
 7. `w33-week-in-review`
 
-Final package `w33-week-in-review`:
+`w33-week-in-review`:
 
-- role: `WEEKLY_SYNTHESIS / WEEK_IN_REVIEW`
-- PRIMARY placements: `[]`
-- SUPPORTING placements: `[]`
-- drafting order: 7
+- mandatory `WEEKLY_SYNTHESIS / WEEK_IN_REVIEW`
+- direct Architecture placements: none
+- final drafting order: 7
 - target pages: 2
-- no synthetic candidate;
-- factual authority reused only from prior substantive packages;
-- must synthesize what changed, why it matters, and what to watch next.
+- factual authority comes only from cross-package Draft-time references canonically derived from already placed candidates
+- must answer what changed, why it matters, and what to watch next
+
+Reviewed-main `scripts/survey_drafting_v2.py` explicitly supports exactly one final empty-placement cross-package synthesis package without mutating Architecture destination semantics.
 
 Architecture Review Summary:
 
@@ -144,83 +172,71 @@ Architecture Review Attention:
 - SHA-256: `b3bd9ef809076bf22e08da89347028bdee620bf26f8dd08abdf0255c5b75e489`
 - total/shown: 25/25
 - overflow: 0
-- truncated: false
 
-## Architecture r3 gate materialization — verified
-
-Canonical chain:
-
-- starting SHA: `7fa7969a2629453fabe847325224323797571a2a`
-- request-only commit: `106b9298baa048777ba5da1d1b24df69b83ed7cd`
-- bridge result commit: `c101e44703ce36c07d6fa162971d88a1f997c0e7`
-- final Luna bookkeeping SHA: `3a3c7d3dbb7d91c2ec3c98978749a9026318c21d`
-- workflow run: `33324287133`
-- preflight: PASS
-- execute: PASS
-
-Transition:
-
-`SELECTION_COMPLETE -> ARCHITECTURE_ESTABLISHED`
-
-Architecture checkpoint:
-
-`sources/2026-W33/orchestration/v2/checkpoints/SELECTION_COMPLETE.json`
-
-- checkpoint set exactly `architecture`
-- current three Architecture-stage hashes bound exactly
-- `CORE_STAGE_CONTRACT = PASS`
-- `SOL_ARCHITECTURE_REVISION_SEMANTIC_REVIEW = PASS`
-
-Sol verification:
-
-`sources/2026-W33/execution/reviews/w33-architecture-revision-advance-sol-review-20260831-r1.md`
-
-Decision:
-
-`ACCEPT / STATE_TRANSITION_VERIFIED / ARCHITECTURE_REVIEW_R3_REACHED / READY_FOR_OWNER_DECISION`
-
-## Current bounded task — deterministic r3 APPROVED materialization
+## Current bounded task — complete Draft candidate set
 
 Handoff:
 
-`sources/2026-W33/execution/handoffs/w33-architecture-approval-materialize-luna-r1.md`
+`sources/2026-W33/execution/handoffs/w33-draft-candidate-set-luna-r1.md`
 
-Objective exactly:
+The next Luna unit is intentionally larger while preserving a cheap rollback boundary.
 
-- record the already-made Owner `APPROVED` decision as Architecture Review revision 3;
-- use canonical `RECORD_ARCHITECTURE_APPROVAL` through the trusted operator bridge;
-- create canonical Architecture approval authority and immutable r3 approval snapshot;
-- create `gates/reviews/architecture-r3.json` and append r3 to `gates/review-index.json`;
-- resolve `human_gates.architecture_review` to `approved` without changing lifecycle;
-- stop before Drafting.
+Luna may, in one bounded task:
 
-Expected post-State under current reviewed Core:
+- derive all 7 canonical Draft Packages;
+- generate all 7 Draft Results;
+- perform deterministic validation;
+- perform cross-package semantic/editorial self-review;
+- repair Draft content defects and rerun validation;
+- build canonical Weekly Profile Synthesis Input;
+- generate and validate Weekly Profile Synthesis Result;
+- commit only candidate artifacts and one Luna session record.
 
-- lifecycle: `ARCHITECTURE_ESTABLISHED`
-- `human_gates.architecture_review = approved`
-- Architecture approval provenance: canonical `gates/architecture-approval.json`
-- next action: `stage:drafting-synthesis`
-- terminal reason: `null`
-- Architecture checkpoint: passed
-- Draft checkpoint: pending
-- no new lifecycle history edge for approval.
+Luna MUST NOT:
+
+- change Production State;
+- create the Draft Stage Checkpoint;
+- execute `ADVANCE_STAGE`;
+- create operator bridge requests/runs;
+- begin reader/publication validation;
+- add new research or Evidence;
+- modify approved Architecture/upstream authority/shared Core.
+
+Expected candidate paths:
+
+`sources/2026-W33/drafting/v2/luna-r1/**`
 
 Expected stop:
 
-`ARCHITECTURE_APPROVED_READY_FOR_SOL_DRAFTING_POLICY`
+`DRAFT_CANDIDATE_SET_READY_FOR_SOL_REVIEW`
+
+After Luna completion, Sol performs whole-set semantic/editorial review while State is still `ARCHITECTURE_ESTABLISHED`. Only after Sol accepts the complete Draft set should the deterministic Draft checkpoint/transition be materialized.
+
+## Batching policy from this point
+
+Use larger Luna work units for expensive model-assisted generation and local repair, but place a Sol review boundary **before** any checkpoint that would make a broad semantic rollback expensive.
+
+Preferred pattern:
+
+1. Luna generates a complete bounded candidate set and self-repairs it.
+2. Sol reviews the complete semantic surface.
+3. If accepted, deterministic Core advancement is materialized.
+4. The next large Luna unit begins from the newly accepted checkpoint.
+
+This is the default balance between throughput and rework risk for the remainder of W33 unless a stage has a cheaper/narrower natural boundary.
 
 ## Crash restart order
 
 1. `sources/2026-W33/production-state.json`
 2. this index
-3. `sources/2026-W33/execution/reviews/w33-owner-architecture-review-decision-20260831-r3.md`
-4. `sources/2026-W33/execution/handoffs/w33-architecture-approval-materialize-luna-r1.md`
-5. `sources/2026-W33/gates/review-index.json`
-6. `sources/2026-W33/architecture-v2.json`
-7. `sources/2026-W33/architecture-review-summary-v2.json`
-8. `sources/2026-W33/architecture-review-attention-v2.json`
-9. `sources/2026-W33/orchestration/v2/checkpoints/SELECTION_COMPLETE.json`
-10. latest Luna r3 approval materialization result, if any
-11. latest Sol r3 approval verification, if any
+3. `sources/2026-W33/gates/architecture-approval.json`
+4. `sources/2026-W33/gates/reviews/architecture-r3.json`
+5. `sources/2026-W33/architecture-v2.json`
+6. `sources/2026-W33/architecture-review-summary-v2.json`
+7. `sources/2026-W33/architecture-review-attention-v2.json`
+8. `sources/2026-W33/execution/reviews/w33-architecture-approval-materialization-sol-review-20260831-r1.md`
+9. `sources/2026-W33/execution/handoffs/w33-draft-candidate-set-luna-r1.md`
+10. latest `w33-luna-draft-candidate-set-20260831-r1.md`, if present
+11. latest Sol Draft candidate review, if present
 
-Do not repeat Discovery, Screening, E/M/C, Selection, Architecture revision, Architecture gate materialization, or Owner Architecture Review because chat history is missing. The Owner decision is already `APPROVED`; current next operation is deterministic approval materialization only.
+Do not repeat Discovery, Screening, E/M/C, Selection, Architecture revision, Architecture advancement, Owner Architecture Review, or Architecture approval materialization because chat history is missing. Current next work is complete Draft candidate materialization under the bounded handoff above.
