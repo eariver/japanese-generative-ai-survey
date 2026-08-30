@@ -197,6 +197,23 @@ Decision:
 
 Supplementary legacy validators reported pre-existing compatibility/record-format debt, but the canonical agent-first state validation, current-stage Core contract, checkpoint, receipt, and resulting State all passed without workaround. No shared Core or historical record was modified to suppress those reports.
 
+## Human Architecture Review preparation
+
+The Owner requested a review-preparation pass before making the Human Gate decision. This pass is deliberately non-authoritative and may not decide or execute the Human Gate.
+
+Current Luna handoff:
+
+`sources/2026-W33/execution/handoffs/w33-architecture-human-review-prep-luna-r1.md`
+
+Required Luna outputs:
+
+- `sources/2026-W33/execution/review-packets/w33-architecture-human-review-prep-r1.md`
+- `sources/2026-W33/execution/sessions/w33-luna-architecture-human-review-prep-20260830-r1.md`
+
+The handoff freezes the three formal gate-input JSON files and Production State, prohibits external research and Human decision recording, and requires a complete six-package digest, 28-candidate placement audit, all-34-item attention digest, five-carry-over blocker dossier, and neutral Core Human-Gate decision map.
+
+The Exact Starting SHA for Luna is supplied externally at invocation and must be the current remote branch HEAD containing this index and handoff.
+
 ## Current Human Architecture Review surface
 
 Human Gate is reached but not decided.
@@ -217,13 +234,13 @@ Sol recommendation:
 
 ## Current semantic status
 
-`ARCHITECTURE_ESTABLISHED / ARCHITECTURE_REVIEW / HUMAN_GATE_REACHED / REVIEW_SUMMARY_BLOCKED_BY_CARRY_OVER_COMPLETENESS`
+`ARCHITECTURE_ESTABLISHED / ARCHITECTURE_REVIEW / HUMAN_GATE_REACHED / HUMAN_REVIEW_PREPARATION_READY_FOR_LUNA / REVIEW_SUMMARY_BLOCKED_BY_CARRY_OVER_COMPLETENESS`
 
 Current ownership:
 
-- Human: decide the Architecture Review action.
-- Sol: formulate/review the revision scope and semantic authority after the Human decision.
-- Luna: no new task until a concrete Human-approved revision/materialization handoff exists.
+- Human: decision remains pending until review-preparation material is inspected.
+- Sol: owns the frozen semantic authority and will review any Luna-prepared packet before the Human Gate decision is acted on.
+- Luna: prepare the non-authoritative Human Review packet under `w33-architecture-human-review-prep-luna-r1.md`; make no Human decision and perform no source expansion.
 
 ## Crash restart order
 
@@ -240,6 +257,9 @@ On a new session, read in order:
 9. `sources/2026-W33/execution/handoffs/w33-architecture-advance-to-review-luna-r1.md`
 10. `sources/2026-W33/execution/sessions/w33-luna-architecture-advance-20260830-r1.md`
 11. `sources/2026-W33/execution/reviews/w33-architecture-advance-sol-review-20260830-r1.md`
-12. latest Human Architecture Review action, if any
+12. `sources/2026-W33/execution/handoffs/w33-architecture-human-review-prep-luna-r1.md`
+13. latest Luna Human Review preparation packet/session, if any
+14. latest Sol review of that preparation, if any
+15. latest Human Architecture Review action, if any
 
-Resume from the first uncompleted Human Architecture Review/revision step. Do not repeat Discovery, Screening, Evidence research, Edition View repair, E/M/C advancement, Selection, Architecture proposal, or Architecture gate materialization merely because chat history was lost.
+Resume from the first uncompleted Human Architecture Review preparation/review step. Do not repeat Discovery, Screening, Evidence research, Edition View repair, E/M/C advancement, Selection, Architecture proposal, or Architecture gate materialization merely because chat history was lost.
