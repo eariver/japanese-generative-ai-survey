@@ -7,14 +7,14 @@ This file is the crash-recovery entry point for the current W33 production run. 
 - Work branch: `weekly/2026-W33-v2-work`
 - Reviewed main: `6267de3f6876f491950139757bfdf1085fc07bdc`
 - Production State: `sources/2026-W33/production-state.json`
-- Current lifecycle: `ISSUE_INITIALIZED`
-- Current machine action: `stage:discovery`
+- Current lifecycle: `DISCOVERY_COLLECTED`
+- Current machine action: `stage:screening`
 - Target Human Gate: `ARCHITECTURE_REVIEW`
 - Human Architecture Review history: r1 `REQUEST_CHANGES`, r2 `REQUEST_CHANGES`
 - Active regeneration boundary: `ISSUE_INITIALIZED`
 - Drafting/publication remains unauthorized.
 
-Architecture Review r2 rolled the run back to `ISSUE_INITIALIZED` because fresh first-party repair of five W32 carry-over obligations had to enter through Discovery authority. The Core rollback completed successfully and all machine checkpoints are currently pending.
+Architecture Review r2 rolled the run back to `ISSUE_INITIALIZED` so five unresolved W32 carry-over obligations could receive fresh first-party Discovery authority. That repair has now been accepted and deterministically advanced to `DISCOVERY_COLLECTED`.
 
 ## Human revision authority
 
@@ -29,23 +29,19 @@ Decision:
 
 Owner-required downstream outcomes:
 
-1. repair Discovery source authority for the five active W32 carry-over obligations;
-2. rerun downstream Core stages from repaired Discovery;
+1. close or explicitly dispose the five W32 carry-over obligations from fresh first-party authority;
+2. rerun affected downstream stages;
 3. regenerate Architecture with an explicit mandatory `WEEKLY_SYNTHESIS / WEEK_IN_REVIEW` chapter;
 4. preserve the previously accepted six substantive packages, 28-candidate placement strategy, target 18 pages / hard maximum 24 pages, and Agent Reliability comparative-synthesis constraint unless newly accepted evidence justifies a change.
 
-## Repaired Discovery authority — Sol accepted
+## Current repaired Discovery authority
 
-Luna repair range:
-
-`457c75a923a459f31733e8cb4a1b8c5d159f39a7 -> b7df5119bf1e6622fca30f6fbfc85113ecb17583 -> 41bbee74dc14b99369afbeeffaa4f2e84397ba7a`
-
-Repaired Discovery:
+Discovery:
 
 - path: `sources/2026-W33/discovery/discovery-v2.jsonl`
 - SHA-256: `6e6590b5b8153ccc8590c3230ed3b7605c0a9805b636081babc3247f0442bfbd`
 - records: 41
-- exact Discovery ID set unchanged
+- exact Discovery ID set unchanged from the original W33 set
 - non-target parsed records unchanged: 36/36
 
 Exactly five records were rebound to fresh first-party authority:
@@ -56,19 +52,7 @@ Exactly five records were rebound to fresh first-party authority:
 4. `carry-w32-openai-gpt56-update`
 5. `carry-w32-repowise`
 
-Accepted source-local outcomes:
-
-- Claude Opus 4.1 retirement established for 2026-08-05 on Anthropic-operated platforms;
-- concrete 2026-08-03 GitHub Copilot cloud-agent reasoning/comment-automation updates established, narrower than the old shorthand;
-- Kimi K3 GitHub Copilot availability established for 2026-08-06 with rollout/policy boundaries;
-- distinct 2026-08-06 GPT-5.6 Sol/Luna ChatGPT update established, not the original GPT-5.6 launch, with Work/Codex non-change preserved;
-- Repowise project/tool and benchmark methodology established, with all performance claims retained as project-reported and no independent reproduction claim.
-
-Luna session:
-
-`sources/2026-W33/execution/sessions/w33-luna-discovery-carryover-repair-20260830-r1.md`
-
-Sol review:
+Sol semantic review:
 
 `sources/2026-W33/execution/reviews/w33-discovery-carryover-repair-sol-review-20260830-r1.md`
 
@@ -76,63 +60,94 @@ Decision:
 
 `ACCEPT / FIVE_CARRYOVER_SOURCE_AUTHORITY_REPAIRED / HANDOFF_ORIGIN_TYPO_CORRECTED / APPROVED_FOR_DISCOVERY_ADVANCEMENT`
 
-### Provenance correction
+The five records remain `provenance.origin = GAP_FILL` because that is the actual Starting Discovery authority. The earlier handoff text saying `CARRY_OVER` was a Sol typo; Luna correctly preserved repository authority.
 
-The repair handoff accidentally wrote that the five records should preserve `provenance.origin = CARRY_OVER`. The actual Starting Discovery authority has all five records as `GAP_FILL` with `weekly:carry-over` obligations. Luna correctly preserved the actual Starting provenance. This is a Sol handoff typo, not a worker defect. No provenance migration is required.
+## Current Discovery acceptance and checkpoint
 
-## X authority
+Canonical acceptance:
 
-X Source Intake remains byte-identical and COMPLETE:
+- path: `sources/2026-W33/discovery/discovery-accepted-v2.json`
+- SHA-256: `777414eefad7280d45fc847dd44a0bdeeef225b6dd0c3e1f4b90bc8b1acb7995`
+- repaired Discovery SHA: `6e6590b5b8153ccc8590c3230ed3b7605c0a9805b636081babc3247f0442bfbd`
+- X Source Intake SHA: `4e90919e54f2f32b2e010fed57b23d94799a88fe2330e9ee8a090c54953905f6`
+- record count: 41
 
-- path: `sources/2026-W33/external/x/x-source-intake-v2.json`
-- SHA-256: `4e90919e54f2f32b2e010fed57b23d94799a88fe2330e9ee8a090c54953905f6`
+Advancement request:
 
-No X recollection is authorized for this revision.
+`sources/2026-W33/execution/requests/w33-discovery-repair-advance-20260830-r1.json`
 
-## Stale Discovery acceptance
+Event/request commit:
 
-Current canonical path:
+`46dc068b1d74a9c18d43b4712b2b6e73ee035186`
 
-`sources/2026-W33/discovery/discovery-accepted-v2.json`
+Bridge receipt:
 
-still binds the pre-repair Discovery SHA-256:
+`sources/2026-W33/execution/bridge-runs/w33-discovery-repair-advance-20260830-r1/receipt.json`
 
-`632ba2335e5b937e9c6401c965edba735637631c7ef66551a070d7455a82f3b0`
+- status: PASS
+- lifecycle: `DISCOVERY_COLLECTED`
 
-It is therefore stale and must not be reused for the new checkpoint.
+Checkpoint:
 
-The next task must regenerate/replace it from the repaired Discovery SHA `6e6590b5...` plus unchanged X SHA `4e90919e...`, validate it under current reviewed-main Core, and then perform exactly one deterministic transition.
+`sources/2026-W33/orchestration/v2/checkpoints/ISSUE_INITIALIZED.json`
 
-## Current Luna task
+- checkpoint SHA-256: `54a6297242ec380df00ee0a19d86b689e4fe8fcdde37f928449633531c2697d2`
+- Discovery checkpoint: passed
+- Screening and all later checkpoints: pending
 
-Handoff:
+Luna session:
 
-`sources/2026-W33/execution/handoffs/w33-discovery-repair-advance-luna-r1.md`
+`sources/2026-W33/execution/sessions/w33-luna-discovery-repair-advance-20260830-r1.md`
 
-Objective:
+Sol advancement verification:
 
-`ISSUE_INITIALIZED -> DISCOVERY_COLLECTED`
+`sources/2026-W33/execution/reviews/w33-discovery-repair-advance-sol-review-20260830-r1.md`
 
-only.
+Decision:
 
-Required sequence:
+`ACCEPT / STATE_TRANSITION_VERIFIED / REPAIRED_DISCOVERY_AUTHORITY_ESTABLISHED / READY_FOR_SCREENING_REVISION`
 
-1. regenerate and replace `discovery-accepted-v2.json` in an acceptance-materialization commit;
-2. create request-only `w33-discovery-repair-advance-20260830-r1.json`;
-3. dispatch through the canonical Core operator bridge;
-4. verify new `ISSUE_INITIALIZED.json` checkpoint and `DISCOVERY_COLLECTED / stage:screening` State;
-5. create the Luna session record;
-6. stop before Screening.
+## Current Screening revision policy
+
+Historical accepted Screening remains immutable history:
+
+`sources/2026-W33/screening/v2/accepted/648a1e8861c8edccb19d27623ba7dd8107d890c6f12fc88b7193ad99eb661706/`
+
+It cannot serve as the current Screening checkpoint because its package basis pins the pre-repair Discovery/State bytes.
+
+Current handoff:
+
+`sources/2026-W33/execution/handoffs/w33-screening-revision-luna-r1.md`
+
+Required approach:
+
+1. prepare a fresh Screening package from current `DISCOVERY_COLLECTED` State and repaired Discovery;
+2. produce exactly 41 decisions as required by Core;
+3. carry forward the historical decision objects exactly for the 36 non-target Discovery records;
+4. revise only the five repaired carry-over records;
+5. all five revised records are frozen to `KEEP` / confidence `high` by Sol;
+6. accept a new content-addressed Screening result-set;
+7. validate it canonically;
+8. stop for Sol review without `ADVANCE_STAGE`.
+
+Expected revised counts:
+
+- KEEP 31
+- INSPECT 3
+- MAYBE 3
+- DROP 4
+
+The five repaired records move from historical `INSPECT` to `KEEP` because the prior `INSPECT` reason was insufficient source identity/content and that defect is now repaired. Screening is research-scope triage, not final Materiality. Temporal/materiality limitations must remain for Evidence/Materiality disposition.
 
 Expected Luna success status:
 
-`DISCOVERY_COLLECTED_READY_FOR_SOL_SCREENING_POLICY`
+`SCREENING_REVISION_CANDIDATE_READY_FOR_SOL_REVIEW`
 
-## Historical downstream artifacts
+## Historical downstream authority
 
-Pre-r2 Screening/Evidence/View/Materiality/Completeness/Selection/Architecture artifacts remain in the repository for history/provenance but are no longer checkpoint authority after the r2 rollback. They must not be mechanically treated as current results.
+Pre-r2 Screening/Evidence/View/Materiality/Completeness/Selection/Architecture artifacts remain in the repository for history/provenance only until regenerated and re-checkpointed.
 
-Notable historical identities include:
+Notable historical identities:
 
 - old Screening result-set: `648a1e8861c8edccb19d27623ba7dd8107d890c6f12fc88b7193ad99eb661706`
 - old Evidence result-set: `c86f49f8cb9a627fe45ebc9ae49826bdec83de5ab9061c0ee7236f1a2a0ba524`
@@ -141,37 +156,35 @@ Notable historical identities include:
 - old Selection: SELECTED 28 / HOLD 6 / REJECT 3
 - old Architecture: six substantive packages, target 18 pages / cap 24 pages
 
-The revision must rerun affected stages from the new Discovery checkpoint and explicitly dispose the five carry-over obligations from the repaired first-party basis.
+Do not silently reuse these as current checkpoint authority.
 
 ## Architecture requirements that must survive regeneration
 
-Preserve unless newly accepted evidence justifies a change:
+Preserve unless newly accepted evidence justifies change:
 
-- the six substantive W33 packages;
+- six substantive W33 packages;
 - 28-candidate placement strategy;
 - target 18 pages / hard maximum 24 pages;
-- `w33-agent-evaluation-reliability` as comparative synthesis rather than candidate-by-candidate mini-articles.
+- `w33-agent-evaluation-reliability` as comparative synthesis.
 
-Mandatory addition:
+Mandatory addition before the next Human Architecture Review:
 
-- an explicit independent `WEEKLY_SYNTHESIS / WEEK_IN_REVIEW` chapter in every Weekly issue;
-- it must summarize what changed across the week, why it matters, and what to watch next;
-- it must be a formal Architecture element, not page-plan prose only.
+- explicit independent `WEEKLY_SYNTHESIS / WEEK_IN_REVIEW` chapter;
+- summarize what changed across the week, why it matters, and what to watch next;
+- formal Architecture element, not page-plan prose only.
 
 ## Crash restart order
 
 On a new session, read in order:
 
 1. `sources/2026-W33/production-state.json`
-2. this `sources/2026-W33/execution/index.md`
-3. `sources/2026-W33/gates/review-index.json`
-4. `sources/2026-W33/gates/reviews/architecture-r2.json`
-5. `sources/2026-W33/execution/reviews/w33-architecture-revision-boundary-sol-correction-20260830-r1.md`
-6. `sources/2026-W33/execution/reviews/w33-architecture-revision-r2-sol-review-20260830-r1.md`
-7. `sources/2026-W33/execution/sessions/w33-luna-discovery-carryover-repair-20260830-r1.md`
-8. `sources/2026-W33/execution/reviews/w33-discovery-carryover-repair-sol-review-20260830-r1.md`
-9. `sources/2026-W33/execution/handoffs/w33-discovery-repair-advance-luna-r1.md`
-10. latest Luna repaired-Discovery advancement session, if any
-11. latest Sol advancement verification, if any
+2. this index
+3. `sources/2026-W33/gates/reviews/architecture-r2.json`
+4. `sources/2026-W33/execution/reviews/w33-discovery-carryover-repair-sol-review-20260830-r1.md`
+5. `sources/2026-W33/execution/sessions/w33-luna-discovery-repair-advance-20260830-r1.md`
+6. `sources/2026-W33/execution/reviews/w33-discovery-repair-advance-sol-review-20260830-r1.md`
+7. `sources/2026-W33/execution/handoffs/w33-screening-revision-luna-r1.md`
+8. latest Luna revised-Screening session/result, if any
+9. latest Sol review of revised Screening, if any
 
-Do not repeat the five-source research after it has been accepted merely because chat history is missing. Current semantic authority is the repaired 41-record Discovery basis above; the next operation is deterministic Discovery advancement only.
+Do not repeat the five-source Discovery research or Discovery advancement merely because chat history is missing. Current next task is the bounded revised Screening run only.
