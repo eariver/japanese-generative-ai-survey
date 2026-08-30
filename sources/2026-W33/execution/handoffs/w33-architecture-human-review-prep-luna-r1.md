@@ -5,7 +5,9 @@ Status: `READY_FOR_LUNA / HUMAN_REVIEW_PREPARATION_ONLY / NO_HUMAN_DECISION`
 Issue: `2026-W33`  
 Repo: `eariver/japanese-generative-ai-survey`  
 Branch: `weekly/2026-W33-v2-work`  
-Exact Starting SHA: `79d93427ef84894ef24b11f519b9ef8191fb4c37`
+Handoff creation basis SHA: `79d93427ef84894ef24b11f519b9ef8191fb4c37`
+
+The **Exact Starting SHA for Luna is supplied externally with the invocation** and must be the current remote branch HEAD that already contains this handoff. Do not infer or substitute it from the creation-basis SHA above.
 
 ## 1. Objective
 
@@ -26,7 +28,7 @@ Do not perform any new research merely to make the review surface look ready.
 
 ## 2. Authority and required read order
 
-At task start, first verify that the remote branch HEAD is exactly the Exact Starting SHA above. If it is not exact, perform **no GitHub writes** and stop with `AUTHORITY_DRIFT_NEEDS_SOL_REVIEW`.
+At task start, first verify that the remote branch HEAD is exactly the **caller-supplied Exact Starting SHA**. If it is not exact, perform **no GitHub writes** and stop with `AUTHORITY_DRIFT_NEEDS_SOL_REVIEW`.
 
 If it matches, read in this order:
 
@@ -240,7 +242,7 @@ The review packet is **non-authoritative explanatory material**. It must promine
 The session record must contain:
 
 - branch;
-- exact start SHA;
+- caller-supplied exact start SHA;
 - ending GitHub SHA;
 - every file read materially for the analysis;
 - the exact four frozen SHA-256 values rechecked;
@@ -283,8 +285,8 @@ Do not:
 
 Before committing, verify:
 
-- remote start SHA matched exactly;
-- only the two allowlisted files are changed from the Exact Starting SHA;
+- remote branch HEAD matched the caller-supplied Exact Starting SHA;
+- only the two allowlisted files are changed from that Exact Starting SHA;
 - all formal gate inputs retain the expected SHA-256 values;
 - Production State retains the expected SHA-256 value and remains `ARCHITECTURE_ESTABLISHED / ARCHITECTURE_REVIEW / HUMAN_GATE_REACHED / pending`;
 - the packet covers all 6 packages;
