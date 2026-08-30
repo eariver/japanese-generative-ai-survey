@@ -3,18 +3,16 @@
   "issue_id": "2026-W33",
   "research_profile": "WEEKLY",
   "basis": {
-    "architecture_sha256": "84663aef1d557bcebaf1b0b8897207c537e48bbb4e410f55985296076ea2302e",
+    "architecture_sha256": "8bc68693e182dbda9d7067e9bc127bf69548aba87ccd3078cb744bd991c6b406",
     "production_profile_sha256": "19303fcc8499a9cd7303991e69cfc0777a716db897537f50c5a9cff8dcb3f72b",
-    "profile_completeness_sha256": "9ac456d53a5a5195fc4925a72b3576ebe848a127ad0d5de2275f7d12752e8aea",
-    "materiality_ledger_sha256": "cd29a1f640ce94229ed8c7f0734ddab9554ea5ffb8d4375900fe89f3a31f1891",
-    "candidate_matrix_sha256": "1b660291564bda5f30debd86bb6911eb53edf06e8f735710f84652d972c4d198",
-    "candidate_selection_sha256": "9c6997d2ed3921a847db5e001ec9377189bb25d5475454593f23016308557005"
+    "profile_completeness_sha256": "d3dfe4cc3e9b55dbbd5254f9fe61dacdfb6eda1771b9bba13deafe3279d9e08b",
+    "materiality_ledger_sha256": "2b771fec7405ed81a72bb60eeb686a680f3d4537969b9f20c65eda8b48df5c9f",
+    "candidate_matrix_sha256": "4ff1a622a05e4b559d4531e2361e5b10d34affbc8cc5a244105cf1d994c9bc08",
+    "candidate_selection_sha256": "7d7b56c27fa31c17d1ee00f8a508d6afb96802990d33fb0d6ef848d1e6f9df7e"
   },
   "readiness": {
-    "status": "BLOCKED",
-    "errors": [
-      "Profile Completeness is INCOMPLETE; Architecture Review is not ready"
-    ]
+    "status": "READY_FOR_ARCHITECTURE_REVIEW",
+    "errors": []
   },
   "discovery": {
     "total": 41,
@@ -39,42 +37,43 @@
     "total": 41,
     "counts": {
       "DROP": 4,
-      "INSPECT": 8,
-      "KEEP": 26,
+      "INSPECT": 3,
+      "KEEP": 31,
       "MAYBE": 3
     }
   },
   "evidence": {
     "total": 37,
     "counts": {
-      "NEEDS_MORE": 6,
-      "PARTIAL": 11,
-      "VERIFIED": 20
+      "NEEDS_MORE": 1,
+      "PARTIAL": 12,
+      "VERIFIED": 24
     }
   },
   "materiality": {
     "total": 41,
     "counts": {
-      "CONTEXT": 6,
+      "CONTEXT": 10,
       "DUPLICATE": 2,
       "EXCLUDED": 2,
-      "HOLD": 6,
-      "MATERIAL": 25
+      "HOLD": 1,
+      "MATERIAL": 25,
+      "NON_MATERIAL": 1
     }
   },
   "selection": {
     "total": 37,
     "counts": {
-      "HOLD": 6,
-      "REJECT": 3,
+      "HOLD": 1,
+      "REJECT": 8,
       "SELECTED": 28
     }
   },
   "completeness": {
-    "overall_status": "INCOMPLETE",
+    "overall_status": "LIMITED",
     "obligation_counts": {
       "LIMITATION": 2,
-      "NEEDS_RESEARCH": 1
+      "SATISFIED": 1
     }
   },
   "major_material_destinations": [
@@ -123,6 +122,15 @@
       "exception_reason": null
     },
     {
+      "candidate_id": "candidate:2026-W33:2196b30d61a7d4d5",
+      "title": "Copilot cloud-agent reasoning control and comment-triggered automations",
+      "materiality": "CONTEXT",
+      "selection_disposition": "REJECT",
+      "destination_kind": "NOT_SELECTED",
+      "destinations": [],
+      "exception_reason": "Fresh GitHub authority closes the carry-over with an August 3 feature update, but the event is pre-window relative to W33. Retain it as resolved context in provenance, not as a selected W33 Architecture item."
+    },
+    {
       "candidate_id": "candidate:2026-W33:2680059eda6bb020",
       "title": "Agent Skills Can Be Harmful: An Empirical Study of Skill-Induced Failures in LLM Agents",
       "materiality": "MATERIAL",
@@ -132,6 +140,15 @@
         "w33-agent-evaluation-reliability"
       ],
       "exception_reason": null
+    },
+    {
+      "candidate_id": "candidate:2026-W33:2ca10d280e456f7f",
+      "title": "GPT-5.6 Sol/Luna ChatGPT August update",
+      "materiality": "CONTEXT",
+      "selection_disposition": "REJECT",
+      "destination_kind": "NOT_SELECTED",
+      "destinations": [],
+      "exception_reason": "Fresh OpenAI authority closes the August 6 ChatGPT update and keeps it distinct from the original GPT-5.6 launch, but it is pre-window for W33 and should not consume a W33 Architecture placement."
     },
     {
       "candidate_id": "candidate:2026-W33:495c437f7961dcef",
@@ -361,6 +378,15 @@
       "exception_reason": "Reject as a post-cutoff Aug-18 index entry whose partial chronology duplicates the selected Aug-14 GLM-5.3 event and supplies no independent W33 technical detail; retaining it would inflate the event count."
     },
     {
+      "candidate_id": "candidate:2026-W33:dd58aff40dc7d0f9",
+      "title": "Kimi K3 in GitHub Copilot",
+      "materiality": "CONTEXT",
+      "selection_disposition": "REJECT",
+      "destination_kind": "NOT_SELECTED",
+      "destinations": [],
+      "exception_reason": "Fresh GitHub authority closes the August 6 availability/rollout carry-over, but the event is pre-window for W33. It remains resolved context and is not a separate W33 Architecture item."
+    },
+    {
       "candidate_id": "candidate:2026-W33:e2d4c5e6687a1d91",
       "title": "llama.cpp b10369",
       "materiality": "MATERIAL",
@@ -412,28 +438,39 @@
         "w33-cyber-access-governance"
       ],
       "exception_reason": null
+    },
+    {
+      "candidate_id": "candidate:2026-W33:f0414d90204e46fe",
+      "title": "Claude Opus 4.1 retirement",
+      "materiality": "CONTEXT",
+      "selection_disposition": "REJECT",
+      "destination_kind": "NOT_SELECTED",
+      "destinations": [],
+      "exception_reason": "Fresh Anthropic authority closes the June 5 deprecation / August 5 retirement chronology. The retirement is pre-window for W33, so the carry-over is closed without selecting it into W33 Architecture."
     }
   ],
   "residual_limitations": [
-    "Five active W32 carry-over rechecks remain NEEDS_RESEARCH/HOLD because the accepted bound source is only the prior-week authority; no new first-party source may be added in this candidate task.",
-    "Some index-level and vendor/project/author-reported claims remain subject to Sol semantic review and are not independent reproductions."
+    "The MiniMax official-index capture does not expose a dated qualifying W33 event body; its Evidence remains NEEDS_MORE and its Edition View remains HOLD.",
+    "Some vendor-, project-, and author-reported claims, index-level evidence, and the GLM-5.3 direct-page limitation remain bounded and require attribution or limit independent reproduction.",
+    "RepoWise project chronology is not sufficient to establish a qualifying W33 delta; its PARTIAL factual card is retained for audit context while Edition View marks it NON_MATERIAL."
   ],
   "architecture": {
     "status": "PROPOSED",
     "editorial_thesis": "W33の生成AIは、単発のモデル性能競争だけでなく、モデル/APIの利用形態、実運用を支えるserving/runtime、そしてagent systemの評価・信頼性設計が同時に前進した週として読む。モデル発表を羅列せず、「何が使えるようになったか」「どう運用するか」「どう測り、壊れ方を捉えるか」を一つの技術潮流として構成する。",
-    "package_count": 6,
+    "package_count": 7,
     "packages": [
       "Frontier Models & Access — 性能競争から「どう使えるか」へ",
       "Cyber Access & Governance — 高能力モデルを誰に、どの境界で開くか",
       "Serving & Runtime — 新モデルを「使える」に変える実装層",
       "Inference Systems Deep Dive — KVメモリとdecodingをどう組み替えるか",
       "Agent Reliability — interfaceよりscaffolding、成功率より失敗の構造",
-      "Multimodal & Media — 生成・編集・理解をworkflowでつなぐ"
+      "Multimodal & Media — 生成・編集・理解をworkflowでつなぐ",
+      "W33総括 — モデル/API、実装、Agent Reliabilityが同時に前進した週"
     ],
     "page_plan": {
       "target_pages": 18,
       "max_pages": 24,
-      "notes": "W32's approximately 18-page weekly-magazine architecture is used only as editorial precedent. W33 should fit six substantive packages plus cover/contents/synthesis/source notes; selected-candidate count must not determine page count."
+      "notes": "W33は六つのsubstantive packageに加え、毎号必須の独立したWEEKLY_SYNTHESIS / WEEK_IN_REVIEW packageを最終章として持つ。六つのsubstantive packageは計14ページ、総括章は2ページを目安とし、残りをcover/contents/source notesへ配分する。selected-candidate countはpage countを決めない。"
     }
   }
 }

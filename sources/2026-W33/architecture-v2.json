@@ -6,10 +6,10 @@
   "status": "PROPOSED",
   "basis": {
     "production_profile_sha256": "19303fcc8499a9cd7303991e69cfc0777a716db897537f50c5a9cff8dcb3f72b",
-    "profile_completeness_sha256": "9ac456d53a5a5195fc4925a72b3576ebe848a127ad0d5de2275f7d12752e8aea",
-    "materiality_ledger_sha256": "cd29a1f640ce94229ed8c7f0734ddab9554ea5ffb8d4375900fe89f3a31f1891",
-    "candidate_matrix_sha256": "1b660291564bda5f30debd86bb6911eb53edf06e8f735710f84652d972c4d198",
-    "candidate_selection_sha256": "9c6997d2ed3921a847db5e001ec9377189bb25d5475454593f23016308557005"
+    "profile_completeness_sha256": "d3dfe4cc3e9b55dbbd5254f9fe61dacdfb6eda1771b9bba13deafe3279d9e08b",
+    "materiality_ledger_sha256": "2b771fec7405ed81a72bb60eeb686a680f3d4537969b9f20c65eda8b48df5c9f",
+    "candidate_matrix_sha256": "4ff1a622a05e4b559d4531e2361e5b10d34affbc8cc5a244105cf1d994c9bc08",
+    "candidate_selection_sha256": "7d7b56c27fa31c17d1ee00f8a508d6afb96802990d33fb0d6ef848d1e6f9df7e"
   },
   "editorial_thesis": "W33の生成AIは、単発のモデル性能競争だけでなく、モデル/APIの利用形態、実運用を支えるserving/runtime、そしてagent systemの評価・信頼性設計が同時に前進した週として読む。モデル発表を羅列せず、「何が使えるようになったか」「どう運用するか」「どう測り、壊れ方を捉えるか」を一つの技術潮流として構成する。",
   "architecture_goals": [
@@ -19,12 +19,13 @@
     "research paperは可能な限り技術的問いごとに束ね、one-paper-one-articleを避ける。",
     "各候補を消費するpackageにEvidenceの制限とattribution boundaryを保持する。",
     "X/community evidenceはcontextual signalに限定する。",
-    "未解決carry-overを黙って削除・昇格せず、Human review blockerとして可視化する。"
+    "fresh first-party authorityで解消したcarry-overはSelectionの明示的dispositionを尊重し、W33の新規developmentとして再混入させない。",
+    "毎号必須のWEEKLY_SYNTHESIS / WEEK_IN_REVIEW章を独立した最終packageとして設け、六つのsubstantive packageを横断して「今週何が変わったか・なぜ重要か・次に何を見るか」を総括する。"
   ],
   "page_plan": {
     "target_pages": 18,
     "max_pages": 24,
-    "notes": "W32's approximately 18-page weekly-magazine architecture is used only as editorial precedent. W33 should fit six substantive packages plus cover/contents/synthesis/source notes; selected-candidate count must not determine page count."
+    "notes": "W33は六つのsubstantive packageに加え、毎号必須の独立したWEEKLY_SYNTHESIS / WEEK_IN_REVIEW packageを最終章として持つ。六つのsubstantive packageは計14ページ、総括章は2ページを目安とし、残りをcover/contents/source notesへ配分する。selected-candidate countはpage countを決めない。"
   },
   "packages": [
     {
@@ -231,12 +232,44 @@
         "target_pages": 2,
         "layout_note": "研究評価とworkflow runtimeを左右に分け、最後に接続可能な範囲だけを示す。"
       }
+    },
+    {
+      "package_id": "w33-week-in-review",
+      "title": "W33総括 — モデル/API、実装、Agent Reliabilityが同時に前進した週",
+      "purpose": "六つのsubstantive packageを横断し、W33を単発ニュースの集合ではなく、モデル/APIのaccess surface、serving/runtime実装、推論システム、agent reliability、multimodal workflowが同時に動いた週として総括する。各章の要約を繰り返すのではなく、変化の方向・技術的含意・次週以降の観測点を一つの編集判断として示す。",
+      "primary_candidate_ids": [],
+      "supporting_candidate_ids": [],
+      "must_cover_requirements": [
+        "六つのsubstantive packageから、W33全体として何が変わったかを三点以内の横断的な変化として抽出する。",
+        "モデル性能の単純比較ではなく、access / deployment / runtime / evaluation-reliabilityの連鎖として、なぜその変化が実運用上重要かを説明する。",
+        "次週以降に追うべき観測点を、Evidenceで残ったlimitationsや未解決境界に接続して提示する。",
+        "各substantive packageの内容を順番に再要約するだけの章にしない。比較・因果・共通パターンを優先する。",
+        "総括章自身では新しい外部事実・新しいcandidate・新しいsourceを導入せず、前六章が所有するfactual placementsだけをcross-package reuseする。",
+        "HOLDまたはREJECTされた候補を、総括章だけでW33 factual developmentへ復活させない。",
+        "Profile CompletenessはLIMITEDでありREADYではないことを尊重し、残存limitationsを消して断定を強めない。"
+      ],
+      "boundaries": [
+        "Cross-package synthesis may reuse only factual candidate placements already owned by the six substantive packages; it must not create independent factual authority.",
+        "Vendor/project/author-reported claims retain their original attribution and measurement boundaries in synthesis.",
+        "MiniMax remains an unresolved HOLD lead and must not become a W33 factual claim through synthesis.",
+        "Resolved pre-window carry-over records and RepoWise non-inclusion remain provenance/disposition outcomes, not new W33 Architecture placements."
+      ],
+      "drafting_order": 7,
+      "profile_extensions": {
+        "weekly_angle": "六章を横断して今週の変化・意味・次の観測点を一つの編集判断へまとめる。",
+        "cross_package_synthesis": true,
+        "factual_authority_policy": "Reuse only factual placements owned by prior packages; introduce no new source or candidate."
+      },
+      "publication_extensions": {
+        "section_kind": "WEEK_IN_REVIEW",
+        "target_pages": 2,
+        "layout_note": "三つ程度の横断的変化を軸に、what changed / why it matters / what to watch next の順で短く総括する。"
+      }
     }
   ],
   "selected_exceptions": [],
   "profile_extensions": {
     "weekly_thesis": "W33はモデル/APIの利用形態、serving/runtime、agent evaluation/reliabilityが同時に進んだ週として、28 selected candidateを六つの編集packageへ圧縮して読む。",
-    "carry_over_gate_status": "BLOCKED_BY_ACCEPTED_INCOMPLETE_COMPLETENESS",
     "community_signal_policy": "X/community is context only."
   },
   "publication_extensions": {
