@@ -7,34 +7,38 @@ This file is the crash-recovery entry point for the current W33 production run. 
 - Work branch: `weekly/2026-W33-v2-work`
 - Reviewed main: `6267de3f6876f491950139757bfdf1085fc07bdc`
 - Production State: `sources/2026-W33/production-state.json`
-- Current lifecycle: `SELECTION_COMPLETE`
-- Current machine action: `stage:architecture`
+- Current lifecycle: `ARCHITECTURE_ESTABLISHED`
+- Current machine action: `ARCHITECTURE_REVIEW`
 - Target Human Gate: `ARCHITECTURE_REVIEW`
+- Terminal reason: `HUMAN_GATE_REACHED`
+- Human Architecture Review: `pending`
 - Core implementation authority recorded at initialization: `02ba8323c80ac52ab407ff3199ed344907a170b2`
 - Orchestrator: `survey-production-core-v2/0.15-postintegration-transport-thematic`
 
-Discovery, Screening, Evidence, Materiality, Completeness, Selection, and the PROPOSED Architecture semantics have completed Sol review at their current boundaries. The Architecture proposal is frozen for deterministic Human-Gate materialization. Production State has not yet advanced for Architecture.
+Discovery, Screening, Evidence, Materiality, Completeness, Selection, Architecture proposal, Sol Architecture semantic review, and deterministic Architecture advancement have reached their accepted current boundaries. The ordinary Human Architecture Review gate is now materialized.
 
-No Human approval/revision, Drafting, synthesis, manuscript, PDF, or publication work is authorized until the ordinary Architecture Review gate is materialized and acted on.
+No Human approval/revision decision, Drafting, synthesis, manuscript, PDF, publication preview, freeze, or release has been authorized yet.
 
 ## Current Production State
 
-Authoritative State before Architecture materialization:
+Authoritative State after Architecture advancement:
 
-- SHA-256: `15be77ab1902510131b3ffb765b2c1c13f86800cf0dadd07a7d03a5c5cdb8c9d`
-- lifecycle: `SELECTION_COMPLETE`
-- next action: `stage:architecture`
-- terminal reason: null
+- SHA-256: `70240ce6abcaeab4721f92c6c758750291418a33e03d581f7bbdabe2972ec922`
+- lifecycle: `ARCHITECTURE_ESTABLISHED`
+- next action: `ARCHITECTURE_REVIEW`
+- terminal reason: `HUMAN_GATE_REACHED`
 - Discovery: passed
 - Screening: passed
 - Evidence: passed
 - Materiality: passed
 - Completeness checkpoint: passed
 - Selection: passed
-- Architecture: pending
-- Architecture Review: pending
+- Architecture: passed
+- Architecture Review Human Gate: pending
+- Publication Preview Human Gate: pending
+- Architecture Review provenance: null
 
-The distinction between the passed Completeness **checkpoint** and semantic Profile Completeness `INCOMPLETE` is intentional: the artifact is structurally valid and accepted, but it contains an unresolved `NEEDS_RESEARCH` obligation.
+The distinction between the passed Completeness machine checkpoint and semantic Profile Completeness `INCOMPLETE` is intentional: the completeness artifact is structurally accepted, but it contains an unresolved `NEEDS_RESEARCH` obligation that blocks Architecture Review readiness.
 
 ## Frozen upstream authority
 
@@ -45,7 +49,6 @@ The distinction between the passed Completeness **checkpoint** and semantic Prof
 - Discovery SHA-256: `632ba2335e5b937e9c6401c965edba735637631c7ef66551a070d7455a82f3b0`
 - Screening result-set: `648a1e8861c8edccb19d27623ba7dd8107d890c6f12fc88b7193ad99eb661706`
 - Screening: KEEP 26 / INSPECT 8 / MAYBE 3 / DROP 4
-- Sol Screening review: `sources/2026-W33/execution/reviews/w33-screening-sol-review-20260830-r1.md`
 
 ### Evidence / Materiality / Completeness
 
@@ -75,6 +78,8 @@ Profile Completeness:
 - `weekly:technical-significance`: `LIMITATION`
 - `weekly:carry-over`: `NEEDS_RESEARCH`
 
+Five active W32 carry-over rechecks remain `NEEDS_RESEARCH/HOLD` because no fresh first-party W33 delta was authorized in the accepted Evidence corpus. MiniMax is the sixth HOLD candidate but is not one of those carry-over obligations.
+
 Final Sol E/M/C review:
 
 `sources/2026-W33/execution/reviews/w33-evidence-materiality-completeness-sol-rereview-20260830-r2.md`
@@ -83,9 +88,7 @@ Decision:
 
 `ACCEPT / REPAIR_VERIFIED / EVIDENCE_MATERIALITY_COMPLETENESS_SEMANTICS_FROZEN / APPROVED_FOR_CORE_ADVANCEMENT`
 
-Five active W32 carry-over rechecks remain `NEEDS_RESEARCH/HOLD` because no fresh first-party W33 delta was authorized in the accepted Evidence corpus. MiniMax is the sixth HOLD candidate but is not one of those carry-over obligations.
-
-## Frozen Selection authority
+### Selection
 
 Candidate Matrix:
 
@@ -108,33 +111,7 @@ Decision:
 
 `ACCEPT / SELECTION_SEMANTICS_FROZEN / APPROVED_FOR_CORE_ADVANCEMENT`
 
-Selection advancement canonical chain:
-
-`7d5e5d4521c5c723535760e59f1aa11db8f918fc -> d8678be9140fc11b6233847d19ad96533dcbffda -> 8ad2dc9a2ee9f7d892b9729b42c94d4af749d9ff -> ffce5f4ae592a8f8e25f6354bf94e5abc2aa9016`
-
-Sol advancement verification:
-
-`sources/2026-W33/execution/reviews/w33-selection-advance-sol-review-20260830-r1.md`
-
-Decision:
-
-`ACCEPT / STATE_TRANSITION_VERIFIED / ARCHITECTURE_POLICY_READY_WITH_COMPLETENESS_BLOCKER`
-
-## Frozen W33 Architecture proposal
-
-Luna Architecture handoff:
-
-`sources/2026-W33/execution/handoffs/w33-architecture-luna-r1.md`
-
-Luna proposal range:
-
-`3a293b5ee6874f08f68c8f2a6dac1c8bf4c3c5d0 -> ae465560a7baad2302924fb7b393f479bc57218f`
-
-Luna session:
-
-`sources/2026-W33/execution/sessions/w33-luna-architecture-20260830-r1.md`
-
-The proposal range added exactly four paths: Issue Architecture, Review Summary, Review Attention, and the Luna session. Production State remained byte-identical.
+## Frozen W33 Architecture
 
 Issue Architecture:
 
@@ -146,9 +123,9 @@ Issue Architecture:
 - package count: 6
 - placements: PRIMARY 21 / SUPPORTING 7; all 28 SELECTED candidates placed according to Selection usage
 - target pages: 18
-- maximum pages: 24
+- hard maximum pages: 24
 
-Exact substantive package IDs:
+Exact six substantive package IDs:
 
 1. `w33-frontier-models-access`
 2. `w33-cyber-access-governance`
@@ -170,14 +147,7 @@ Architecture Review Attention:
 - SHA-256: `0e65dfc83153621012090d6489bbeba7669f880700be390e08608e9e334689f7`
 - total 34 / shown 34 / overflow 0 / truncated false
 
-Luna deterministic checks:
-
-- Architecture semantic/schema validation: PASS
-- Review Summary exact deterministic derivation: PASS
-- Review Attention validation: PASS
-- current-stage `CORE_STAGE_CONTRACT`: PASS for the `SELECTION_COMPLETE -> ARCHITECTURE_ESTABLISHED` contract
-
-Sol Architecture review:
+Sol Architecture semantic review:
 
 `sources/2026-W33/execution/reviews/w33-architecture-sol-review-20260830-r1.md`
 
@@ -185,51 +155,75 @@ Decision:
 
 `ACCEPT / ARCHITECTURE_SEMANTICS_FROZEN / EXPECTED_COMPLETENESS_BLOCKER_CONFIRMED / APPROVED_FOR_GATE_MATERIALIZATION`
 
-The sole blocker is a frozen upstream Completeness obligation, not an Architecture structural defect. Do not rewrite accepted upstream artifacts in place and do not suppress the blocker.
+Architecture is structurally and editorially accepted. The sole blocker is a frozen upstream Completeness obligation, not an Architecture defect.
 
 Drafting constraint: `w33-agent-evaluation-reliability` must remain a comparative synthesis, not a sequence of one-candidate mini-articles.
 
-## Current bounded Luna task
+## Architecture deterministic advancement
 
-Current handoff:
+Advancement handoff:
 
 `sources/2026-W33/execution/handoffs/w33-architecture-advance-to-review-luna-r1.md`
 
-Status:
+Canonical chain:
 
-`READY_FOR_LUNA / ARCHITECTURE_GATE_MATERIALIZATION_ONLY / STOP_AT_HUMAN_GATE`
+`17eb6273c3a878b42073cf4b04c9d528897670dc -> 5f8eb479577e6fd3f16ce76f6460e525c92252ac -> 68c0983da066da6e3af4bc8dd00cad046385fb1e -> b82ef01051e1eb61d519fd6e376621d9fc196633`
 
-Luna must:
+- request commit: `5f8eb479577e6fd3f16ce76f6460e525c92252ac`
+- bridge result commit: `68c0983da066da6e3af4bc8dd00cad046385fb1e`
+- Luna bookkeeping commit: `b82ef01051e1eb61d519fd6e376621d9fc196633`
+- request operation: `ADVANCE_STAGE`
+- request SHA-256: `8c90d1cc6558550633382f0d006f706452963a87a8939e5bd0c63a373f997dbf`
+- Core Stage Contract SHA-256: `989520a114ff6ea18499fb8ad03fbb3c0ddbab3550ad180328e2bfe5010defea`
+- Core Stage Contract: PASS
+- bridge receipt SHA-256: `5078428907815757d6f2e2b17d4190c9bd0f392f7b669d98add4c8505b770bd2`
+- bridge receipt: PASS
+- Stage Checkpoint: `sources/2026-W33/orchestration/v2/checkpoints/SELECTION_COMPLETE.json`
+- Stage Checkpoint SHA-256: `02b141cc227b5436a6a45cfc6bead9f3b49a2739b470e92f4a5489bee9371a8c`
+- lifecycle edge: `SELECTION_COMPLETE -> ARCHITECTURE_ESTABLISHED`
+- resulting State SHA-256: `70240ce6abcaeab4721f92c6c758750291418a33e03d581f7bbdabe2972ec922`
 
-1. start from the exact branch SHA supplied by Sol/caller;
-2. verify the exact frozen Architecture artifacts and current `SELECTION_COMPLETE` State;
-3. create one immutable `ADVANCE_STAGE` request-only commit for the three Architecture review artifacts;
-4. execute the canonical agent-first bridge without modifying those artifacts;
-5. require current-stage Core contract PASS;
-6. materialize at most the exact `SELECTION_COMPLETE -> ARCHITECTURE_ESTABLISHED` edge and `architecture` checkpoint if Core accepts it;
-7. preserve Review Summary `BLOCKED` with exactly the known Completeness error;
-8. record exactly how Core materializes lifecycle, next_action, Human Gate status, terminal_reason, checkpoint, and history;
-9. if Core refuses advancement due the BLOCKED Summary, fail closed and return the exact error;
-10. stop for Sol/Human in either case.
+Luna session:
 
-No Human Architecture approval, Architecture revision request, new research, upstream regeneration, Drafting, synthesis, manuscript, PDF, or publication work is allowed in this task.
+`sources/2026-W33/execution/sessions/w33-luna-architecture-advance-20260830-r1.md`
 
-## Human Gate semantics
+Sol advancement verification:
 
-Current Core distinguishes:
+`sources/2026-W33/execution/reviews/w33-architecture-advance-sol-review-20260830-r1.md`
 
-- valid Architecture stage artifacts / current-stage contract; and
-- Human Architecture Review readiness.
+Decision:
 
-The frozen Review Summary is `BLOCKED`, so no Architecture Approval Record should be created from the current bytes. The materialization task exists to expose the ordinary Human Gate state without hiding that blocker. Once the gate is materialized, the Human/Sol layer decides the formal gate action. Drafting cannot begin unless a later authoritative review surface is `READY_FOR_ARCHITECTURE_REVIEW` and a valid Architecture Approval Record exists.
+`ACCEPT / STATE_TRANSITION_VERIFIED / HUMAN_ARCHITECTURE_REVIEW_REACHED_WITH_COMPLETENESS_BLOCKER`
 
-Do not pre-create a revision request before the Human Gate is reached. Do not guess a regeneration boundary before the Human decision is recorded.
+Supplementary legacy validators reported pre-existing compatibility/record-format debt, but the canonical agent-first state validation, current-stage Core contract, checkpoint, receipt, and resulting State all passed without workaround. No shared Core or historical record was modified to suppress those reports.
+
+## Current Human Architecture Review surface
+
+Human Gate is reached but not decided.
+
+Current frozen Architecture is acceptable on structure and editorial semantics. However the deterministic Review Summary is `BLOCKED`, so a valid Architecture Approval Record must not be created from the current bytes.
+
+The blocking semantic obligation is `weekly:carry-over = NEEDS_RESEARCH`, representing five active W32 carry-over rechecks still at `NEEDS_MORE/HOLD` under accepted Evidence authority.
+
+This is an ordinary Architecture Review/revision condition, not a Human Exception Gate.
+
+Sol recommendation:
+
+- do not approve for Drafting from the current blocked review surface;
+- use the Human Architecture Review revision path;
+- require an explicit upstream regeneration boundary sufficient to close or explicitly dispose the five carry-over obligations;
+- do not silently rewrite frozen Evidence, Completeness, Selection, or Architecture bytes in place;
+- do not begin Drafting until regenerated downstream authority produces a ready Architecture Review Summary and a valid Human approval record.
 
 ## Current semantic status
 
-`SELECTION_COMPLETE / ARCHITECTURE_SEMANTICS_FROZEN / GATE_MATERIALIZATION_READY / REVIEW_SUMMARY_BLOCKED_BY_CARRY_OVER_COMPLETENESS`
+`ARCHITECTURE_ESTABLISHED / ARCHITECTURE_REVIEW / HUMAN_GATE_REACHED / REVIEW_SUMMARY_BLOCKED_BY_CARRY_OVER_COMPLETENESS`
 
-No Human Exception Gate is active. This is the ordinary Architecture Review/revision surface.
+Current ownership:
+
+- Human: decide the Architecture Review action.
+- Sol: formulate/review the revision scope and semantic authority after the Human decision.
+- Luna: no new task until a concrete Human-approved revision/materialization handoff exists.
 
 ## Crash restart order
 
@@ -237,15 +231,15 @@ On a new session, read in order:
 
 1. `sources/2026-W33/production-state.json`
 2. this `sources/2026-W33/execution/index.md`
-3. `sources/2026-W33/execution/handoffs/w33-screening-to-architecture-review-sol-luna-r3.md`
-4. `sources/2026-W33/execution/reviews/w33-evidence-materiality-completeness-sol-rereview-20260830-r2.md`
-5. `sources/2026-W33/execution/reviews/w33-selection-sol-review-20260830-r1.md`
-6. `sources/2026-W33/execution/reviews/w33-selection-advance-sol-review-20260830-r1.md`
-7. `sources/2026-W33/execution/handoffs/w33-architecture-luna-r1.md`
-8. `sources/2026-W33/execution/sessions/w33-luna-architecture-20260830-r1.md`
-9. `sources/2026-W33/execution/reviews/w33-architecture-sol-review-20260830-r1.md`
-10. `sources/2026-W33/execution/handoffs/w33-architecture-advance-to-review-luna-r1.md`
-11. latest Architecture advancement Luna session, if any
+3. `sources/2026-W33/execution/reviews/w33-evidence-materiality-completeness-sol-rereview-20260830-r2.md`
+4. `sources/2026-W33/execution/reviews/w33-selection-sol-review-20260830-r1.md`
+5. `sources/2026-W33/execution/reviews/w33-selection-advance-sol-review-20260830-r1.md`
+6. `sources/2026-W33/execution/handoffs/w33-architecture-luna-r1.md`
+7. `sources/2026-W33/execution/sessions/w33-luna-architecture-20260830-r1.md`
+8. `sources/2026-W33/execution/reviews/w33-architecture-sol-review-20260830-r1.md`
+9. `sources/2026-W33/execution/handoffs/w33-architecture-advance-to-review-luna-r1.md`
+10. `sources/2026-W33/execution/sessions/w33-luna-architecture-advance-20260830-r1.md`
+11. `sources/2026-W33/execution/reviews/w33-architecture-advance-sol-review-20260830-r1.md`
 12. latest Human Architecture Review action, if any
 
-Resume from the first uncompleted gate-materialization/Human-review step. Do not repeat Discovery, Screening, Evidence research, Edition View repair, E/M/C advancement, Selection, or Architecture proposal merely because chat history was lost.
+Resume from the first uncompleted Human Architecture Review/revision step. Do not repeat Discovery, Screening, Evidence research, Edition View repair, E/M/C advancement, Selection, Architecture proposal, or Architecture gate materialization merely because chat history was lost.
