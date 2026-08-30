@@ -1,0 +1,85 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "evidence_task_id": "evidence:2026-W33:9ce38eb6f5c6bf91",
+  "basis": {
+    "task_sha256": "8b52d5e6f821b0298c01d7d1e219c9e356d2d346b62eefe366e80ab33509da5e",
+    "screening_acceptance_sha256": "e6f0392004191b4668e4231c57839044e4b08ff1e32763403f2d92630b0b0a0f",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "entity:w33:base-arxiv-2608-08097v1",
+      "canonical_name": "OasisKV: Scaling In-Decode KV Cache Beyond HBM with Lookahead Sparse Prefetching",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "http://arxiv.org/abs/2608.08097v1"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "entity:w33:base-arxiv-2608-08097v1",
+    "artifact_type": "PAPER",
+    "canonical_name": "OasisKV: Scaling In-Decode KV Cache Beyond HBM with Lookahead Sparse Prefetching",
+    "canonical_url": "http://arxiv.org/abs/2608.08097v1"
+  },
+  "temporal": {
+    "observed_at": "2026-08-29T18:00:00+00:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08-08T12:27:03Z",
+        "subject_id": "entity:w33:base-arxiv-2608-08097v1",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "http://arxiv.org/abs/2608.08097v1",
+      "source_class": "PRIMARY_PAPER",
+      "title": "OasisKV: Scaling In-Decode KV Cache Beyond HBM with Lookahead Sparse Prefetching",
+      "published_at": "2026-08-08T12:27:03Z",
+      "accessed_at": "2026-08-29T18:00:00+00:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The paper presents OasisKV, a lookahead sparse-prefetching design that stores only relevant KV entries in HBM while using higher-capacity memory tiers; it reports author-measured accuracy and throughput results on vLLM.",
+      "subject_id": "entity:w33:base-arxiv-2608-08097v1",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Source-local factual statement; attribution and evidence boundary are retained."
+    }
+  ],
+  "metrics": [],
+  "limitations": [],
+  "verification": {
+    "targets": [
+      {
+        "target": "Verify workload, accuracy trade-offs, memory assumptions, and throughput comparisons.",
+        "status": "VERIFIED",
+        "finding": "The bound source explicitly addresses this target at source-local level; reported evaluation/performance remains attributed.",
+        "subject_ids": [
+          "entity:w33:base-arxiv-2608-08097v1"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
