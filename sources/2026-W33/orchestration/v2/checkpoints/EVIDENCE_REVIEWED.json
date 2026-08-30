@@ -1,0 +1,58 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "from_state": "EVIDENCE_REVIEWED",
+  "to_state": "SELECTION_COMPLETE",
+  "checkpoints": [
+    "selection"
+  ],
+  "recorded_at": "2026-08-30T09:47:00Z",
+  "implementation": {
+    "repository_commit_sha": "4b8f3a4b02242d124920516ee398c82b5db57374",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "e6ae2637fe2ecb41351193075c79b5829d83d12884cd011a78f593ff77c1c8d1",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "candidate-matrix",
+      "path": "sources/2026-W33/candidate-matrix-v2.json",
+      "sha256": "1b660291564bda5f30debd86bb6911eb53edf06e8f735710f84652d972c4d198"
+    },
+    {
+      "name": "candidate-selection",
+      "path": "sources/2026-W33/candidate-selection-v2.json",
+      "sha256": "9c6997d2ed3921a847db5e001ec9377189bb25d5475454593f23016308557005"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request w33-selection-replay-20260830-r1.",
+      "result": {
+        "path": "sources/2026-W33/execution/bridge-runs/w33-selection-replay-20260830-r1/core-stage-contract.json",
+        "sha256": "74fad947be0bfe14e4aea4185e4a5c8672250c9a672f9b2c009498bd8b0bd9ec"
+      }
+    },
+    {
+      "check_id": "SOL_SELECTION_SEMANTIC_REVIEW",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "Procedural replay only. Reuse the unchanged previously Sol-accepted W33 Candidate Matrix and Candidate Selection solely to return to Architecture Review for correction of the Human regeneration boundary. Original semantic authority: sources/2026-W33/execution/reviews/w33-selection-sol-review-20260830-r1.md. Boundary-correction authority: sources/2026-W33/execution/reviews/w33-architecture-revision-boundary-sol-correction-20260830-r1.md.",
+      "result": null
+    }
+  ],
+  "summary": "Procedurally replay the unchanged previously accepted W33 Candidate Matrix and Candidate Selection from EVIDENCE_REVIEWED to SELECTION_COMPLETE solely to return to Architecture Review for Human regeneration-boundary correction."
+}
