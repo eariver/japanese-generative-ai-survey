@@ -5,7 +5,7 @@ Decision: `REQUEST_CHANGES`
 Issue: `2026-W33`  
 Gate: `ARCHITECTURE_REVIEW`  
 Human-selected regeneration boundary: `CANDIDATES_NORMALIZED`  
-Reviewed repository commit: `818383914cacbe6b26bdcbd5d27ee84921a62ed4`  
+Original Human-reviewed surface commit: `818383914cacbe6b26bdcbd5d27ee84921a62ed4`  
 Reviewed by: `Owner`  
 Reviewed at: `2026-08-30T18:33:00+09:00`
 
@@ -19,9 +19,21 @@ as the regeneration boundary.
 
 This is a Human Architecture Review `REQUEST_CHANGES` decision, not an Architecture approval for Drafting.
 
-## Reviewed surface
+## Reviewed surface and connector-safe provenance
 
-The decision is against the Architecture Review surface present at reviewed repository commit `818383914cacbe6b26bdcbd5d27ee84921a62ed4`, including the exact frozen formal gate inputs:
+The Human decision was made against the Architecture Review surface retained at commit `818383914cacbe6b26bdcbd5d27ee84921a62ed4`, including the exact frozen formal gate inputs below.
+
+The connector-safe operator bridge additionally requires the request field `reviewed_repository_commit_sha` to equal the **exact parent of the immutable request-only commit**. Therefore, at materialization time, Core transport provenance may name a later retained parent commit than `818383...` only if all of the following remain true:
+
+- the Production State bytes are identical to the Human-reviewed State bytes;
+- all three configured Architecture Review gate-input bytes are identical to the Human-reviewed gate-input bytes;
+- the later parent only adds non-gate review/provenance material and does not alter the reviewed formal surface;
+- the request parent remains reachable from the canonical work branch;
+- the request itself is a request-only commit as required by the bridge.
+
+This transport requirement does not change the Human decision or regeneration boundary. The canonical Human Gate record must bind the exact transport-admitted parent commit and prove the reviewed State/gate bytes are identical.
+
+Formal reviewed gate inputs:
 
 - `sources/2026-W33/architecture-v2.json`
   - SHA-256: `84663aef1d557bcebaf1b0b8897207c537e48bbb4e410f55985296076ea2302e`
