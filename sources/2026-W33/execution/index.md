@@ -7,17 +7,17 @@ Repository state is authoritative over chat history.
 - Work branch: `weekly/2026-W33-v2-work`
 - Reviewed main: `6267de3f6876f491950139757bfdf1085fc07bdc`
 - Production State: `sources/2026-W33/production-state.json`
-- Current lifecycle: `CANDIDATES_NORMALIZED`
-- Current machine action: `stage:evidence-materiality-completeness`
+- Current lifecycle: `EVIDENCE_REVIEWED`
+- Current machine action: `stage:selection`
 - Discovery checkpoint: `passed`
 - Screening checkpoint: `passed`
-- Evidence / Materiality / Completeness checkpoints: `pending`
+- Evidence / Materiality / Completeness checkpoints: `passed`
 - Target Human Gate: `ARCHITECTURE_REVIEW`
 - Human Architecture Review history: r1 `REQUEST_CHANGES`, r2 `REQUEST_CHANGES`
 - Active regeneration boundary: `ISSUE_INITIALIZED`
 - Drafting/publication remains unauthorized.
 
-Architecture Review r2 required fresh first-party repair of five W32 carry-over records plus a mandatory Weekly synthesis chapter in regenerated Architecture. Discovery repair and revised Screening are complete and checkpointed. The regenerated E/M/C candidate is now Sol-accepted and awaits deterministic advancement only.
+Architecture Review r2 required fresh first-party repair of five W32 carry-over records plus a mandatory Weekly synthesis chapter in regenerated Architecture. Discovery repair and revised Screening are complete and checkpointed. The Sol-accepted regenerated E/M/C authority was advanced deterministically to `EVIDENCE_REVIEWED` and now awaits Selection revision policy.
 
 ## Human revision requirements that remain authoritative
 
@@ -141,7 +141,7 @@ This closes the former Architecture blocker. Do not convert legitimate residual 
 
 Historical E/M/C authorities (`c86f49...`, `51f4dd...`, old Ledger SHA `cd29...`, old `INCOMPLETE` Completeness SHA `9ac456...`) remain provenance only and must not be used as current checkpoint authority.
 
-## Current bounded task — deterministic E/M/C advancement
+## Completed bounded task — deterministic E/M/C advancement
 
 Handoff:
 
@@ -163,6 +163,21 @@ Expected successful stop:
 `EVIDENCE_REVIEWED_READY_FOR_SOL_SELECTION_REVISION`
 
 No E/M/C semantic modification, external research, Selection, Architecture, Human Gate, Drafting, or advancement beyond `EVIDENCE_REVIEWED` is authorized.
+
+## Deterministic E/M/C advancement — verified
+
+- request-only commit: `439875192bfe19fc6ece1cc8481361ed16b94065`
+- transport: Issue #448 comment `/survey-core-execute 439875192bfe19fc6ece1cc8481361ed16b94065`
+- trusted workflow run: `33315533922` (#265), preflight PASS / execute PASS
+- transition: `CANDIDATES_NORMALIZED -> EVIDENCE_REVIEWED`
+- bridge output commit: `5676580c6886f2808a167a2c57c4f9fd5a033e3b`
+- checkpoint: `sources/2026-W33/orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json`
+- checkpoint SHA-256: `8bd15f9f44f7807ee3e6ac6190c74340eb83ad5d`
+- resulting State SHA-256: `b546d8856ed60579c35627dfbe010a7c44ca0bacb526fe7a99b7cf8326a2aee7`
+- Evidence / Materiality / Completeness checkpoints: `passed`; Selection and Architecture remain `pending`
+- terminal reason: `null`
+
+The four frozen E/M/C artifact bytes were unchanged. No Selection, Architecture, Human Gate, Drafting, or later advancement was executed.
 
 ## Architecture requirements after Selection regeneration
 
@@ -187,7 +202,8 @@ Before the next Human Architecture Review, regenerated Architecture must:
 8. `sources/2026-W33/profile-completeness-v2.json`
 9. `sources/2026-W33/execution/reviews/w33-evidence-materiality-completeness-revision-sol-review-20260830-r1.md`
 10. `sources/2026-W33/execution/handoffs/w33-evidence-materiality-completeness-revision-advance-luna-r1.md`
-11. latest Luna advancement session/result, if any
-12. latest Sol advancement verification, if any
+11. `sources/2026-W33/execution/sessions/w33-luna-evidence-materiality-completeness-revision-advance-20260830-r1.md`
+12. `sources/2026-W33/execution/bridge-runs/w33-evidence-materiality-completeness-revision-advance-20260830-r1/receipt.json`
+13. latest Sol advancement verification, if any
 
 Do not repeat Discovery, Screening, or E/M/C research merely because chat history is missing. Current next operation is deterministic E/M/C advancement only.
