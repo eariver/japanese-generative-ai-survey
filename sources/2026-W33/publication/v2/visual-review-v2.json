@@ -1,0 +1,57 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "review_kind": "VISUAL",
+  "status": "PASSED",
+  "production_profile": {
+    "path": "sources/2026-W33/production-profile.json",
+    "sha256": "19303fcc8499a9cd7303991e69cfc0777a716db897537f50c5a9cff8dcb3f72b"
+  },
+  "reader_manuscript": {
+    "path": "sources/2026-W33/publication/v2/reader-manuscript-v2.json",
+    "sha256": "4fc617a3179a01647fd0bff3411151cf3e7baf58bb38c04e1889a4789db7582e"
+  },
+  "source": {
+    "path": "surveys/weekly/2026-W33/main.tex",
+    "sha256": "d09a97a0bc8c54f6230235929ad351391e1e8662959a4a809fe6bba235cc4f4c",
+    "byte_count": 1199
+  },
+  "pdf": {
+    "path": "surveys/weekly/2026-W33/main.pdf",
+    "sha256": "4f1028c221101cd21cf300a3916c9d4b7cf589b5f672a0f97f61aa6afc992243",
+    "byte_count": 270201
+  },
+  "page_count": 11,
+  "checks": [
+    {
+      "check_id": "WEEKLY_RENDERED_PAGE_REVIEW",
+      "status": "PASS",
+      "detail": "The exact repository PDF was visually inspected page by page after CI artifact verification: 11 of 11 pages reviewed, with no clipping, missing glyphs, blocking overflow, broken box borders, or unreadable layout detected.",
+      "evidence_locations": [
+        "surveys/weekly/2026-W33/main.pdf",
+        "PDF SHA-256: 4f1028c221101cd21cf300a3916c9d4b7cf589b5f672a0f97f61aa6afc992243",
+        "PDF pages 1–11 individually inspected",
+        "reader-layout:cover",
+        "reader-layout:two-column-narrative",
+        "reader-layout:source-notes-and-references"
+      ]
+    },
+    {
+      "check_id": "EXACT_PDF_VISUAL_REVIEW",
+      "status": "PASS",
+      "detail": "The reviewed bytes are the exact successful CI artifact bytes: artifact PDF digest matched main.pdf.sha256, and the committed GitHub blob was re-fetched and base64-matched byte-for-byte before page review.",
+      "evidence_locations": [
+        "GitHub Actions workflow run 33398104252: final publication-warning gate PASS",
+        "GitHub Actions artifact 9760255099: main.pdf",
+        "GitHub Actions artifact 9760255099: main.pdf.sha256",
+        "repository PDF blob 9c0de61f6469e2f40ca81c293a541f4669f95bbc",
+        "PDF pages 1–11 individually inspected"
+      ]
+    }
+  ],
+  "reviewed_by": "ChatGPT GPT-5.6 Codex Luna",
+  "recorded_at": "2026-08-31T13:52:09Z",
+  "review_sha256": "ce54bfbc169297066ee7a5d5300250a8b28d589ec9d77151aa5fc7233010f61c"
+}
