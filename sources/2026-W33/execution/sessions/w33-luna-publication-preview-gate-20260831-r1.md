@@ -15,10 +15,11 @@ and the second canonical advancement to the Publication Preview Human Gate.
 The reader prose, TeX source, exact PDF bytes, semantic content, layout,
 Evidence attribution, limitations, and review conclusions were not changed.
 
-No Web, Google Drive, raw-source, fresh Evidence, new candidate, or new
-Architecture placement was introduced. No shared Core, config, schema, style,
-workflow, or non-edition authority was modified. No Publication Preview
-decision, freeze, release, or merge was performed.
+No Web, Google Drive, raw-source, or fresh Evidence was introduced, and no
+additional candidate or Architecture placement was added beyond the one
+handoff-authorized canonical Publication Candidate. No shared Core, config,
+schema, style, workflow, or non-edition authority was modified. No Publication
+Preview decision, freeze, release, or merge was performed.
 
 ## Exact visual-review repair
 
