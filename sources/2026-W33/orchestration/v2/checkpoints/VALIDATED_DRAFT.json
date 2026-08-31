@@ -1,0 +1,51 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "from_state": "VALIDATED_DRAFT",
+  "to_state": "RELEASE_CANDIDATE",
+  "checkpoints": [],
+  "recorded_at": "2026-08-31T15:20:00Z",
+  "implementation": {
+    "repository_commit_sha": "d747fd9097fcf092e34291d08e664590da878819",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "e6ae2637fe2ecb41351193075c79b5829d83d12884cd011a78f593ff77c1c8d1",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "publication-candidate",
+      "path": "sources/2026-W33/publication/v2/publication-candidate-v2.json",
+      "sha256": "e97b5d9005cd4636014ec722cc995296dd77aa7b89f7a9096190bdb44cad1bf1"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request w33-publication-candidate-advance-20260831-r1.",
+      "result": {
+        "path": "sources/2026-W33/execution/bridge-runs/w33-publication-candidate-advance-20260831-r1/core-stage-contract.json",
+        "sha256": "978d452be69a51aa5561c9555c4fb97a88e4639f63dc8b3d8cc7d448b358de23"
+      }
+    },
+    {
+      "check_id": "SOL_VALIDATED_DRAFT_PROVENANCE_REPAIR_REVIEW",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "CONDITIONAL_ACCEPT / EXACT_PDF_AND_LAYOUT_VERIFIED / STALE_VISUAL_PROVENANCE_REPAIR_REQUIRED / AUTHORIZED_FOR_VALIDATION_AND_PUBLICATION_CANDIDATE_ADVANCEMENT_AFTER_EXACT_REPAIR. Sol authorized deterministic Publication Candidate generation and advancement after the four exact provenance replacements, with no new prose, review conclusion, evidence, source, or PDF. Review authority: sources/2026-W33/execution/reviews/w33-validated-draft-layout-polish-sol-review-20260831-r2.md.",
+      "result": null
+    }
+  ],
+  "summary": "Adopt and validate the canonical W33 Publication Candidate generated solely from the already-reviewed Reader Manuscript, validated source, exact PDF, Quality Bundle, Semantic Review, and repaired Visual Review, then advance exactly once from VALIDATED_DRAFT to RELEASE_CANDIDATE."
+}
