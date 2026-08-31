@@ -1,0 +1,27 @@
+\section{Agent Reliability}
+\sectionkicker{FAILURE ATTRIBUTION}
+\begin{wideflow}
+{\Large\bfseries Agentの評価を、成功率から失敗の場所へ}\par
+\smallskip
+{\color{SurveyMuted}今週のagent研究は、モデルの賢さを一つの数値で競うより、scaffolding、planning、tool call、transaction、red teaming、skillのどこで信頼性が崩れるかを測る方向へ進む。}\par
+\end{wideflow}
+
+評価対象を失敗の発生層でそろえる。
+
+\begin{themeoverview}[信頼性を層別に測る]
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.27\linewidth}X@{}}
+Scaffolding / interface & 七つのagent scaffoldingと五つのlanguage modelを一つのsoftware taskで比較し、repository-state completionとscaffolding依存のcost variationを見る\cite{scaffolding}。\\
+Requirements / planning & SWE-RPGは163 tasks・31 repositoriesでrequirementとplanningの参照を検証し、implicit-requirement recoveryをbottleneckとして診断する\cite{swe-rpg}。\\
+Function call & PluginEvalはdeterministic validation、real API execution、adversarial negativesでfine-grained error attributionを行う\cite{plugineval}。\\
+Transaction & Agentic Transactionはsemantic atomicity、consistency、isolation、durabilityをagent systemの設計対象として定義する\cite{agentic-transaction}。\\
+Red teaming / skills & REDAgentBenchはisolated sandboxとstate/receipt verificationで実行可能な攻撃測定を組み、SkillTriageの研究はloaded skillによるfailureとefficiency regressionをpaired differential analysisで帰属する\cite{redagentbench,skilltriage}。
+\end{tabularx}
+\end{themeoverview}
+
+この並べ方から見える共通点は、失敗をagentの内側の一つの能力へ押し込めないことだ。scaffoldingは同じmodelでも作業の進み方とcostを変え、requirements/planningは問題文に埋まった意図の回収を問う。function callはAPIを実際に通して誤りの種類を分解し、transaction設計は長い処理の途中状態を守る。さらにred-team環境は実行結果を検証し、skill研究は追加された手順そのものが機能失敗や効率低下を生む可能性を測る。
+
+したがって、成功率の大小だけでは信頼性の中身が分からない。completion check、implicit requirement、function-call error taxonomy、state/receipt、ACID semantics、skill-induced failureは、成功したかどうかの手前にある原因と再現条件を別々に記録する。これらは各paperが報告するbenchmarkやenvironmentの範囲での結果であり、すべてのagentやtaskへ一般化した主張としては扱わない。
+
+\begin{claimboundary}[読者の問い]
+「agentが賢いか」だけでなく、どの層を測り、どの状態を成功とし、失敗をinterface、planning、tool call、transaction、red-team環境、skillのどこへ帰属できるかを問う。評価がこの粒度まで下りれば、モデルの更新とsystemの設計変更を切り分けながら、再現可能なreliabilityの改善を追える。
+\end{claimboundary}

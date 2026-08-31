@@ -1,0 +1,30 @@
+\section{Week in Review}
+\sectionkicker{WEEKLY SYNTHESIS}
+\begin{wideflow}
+{\Large\bfseries 今週は、モデルの利用条件まで動いた}\par
+\smallskip
+{\color{SurveyMuted}モデル/APIの入口、runtime、agent・multimodalの測定が一つの連鎖として見え始めた。ここでは前六章の材料を、出来事の順番ではなく、利用条件がどこで変わったかという横断軸で読む。}\par
+\end{wideflow}
+
+\subsection*{今週何が変わったか}
+\begin{enumerate}[leftmargin=1.6em]
+\item \textbf{入口が分岐した。} API preview、GA API/app/web、open weights、partner channelが並び、モデルの存在と利用可能性を同じ語で扱えなくなった。Cyberのprogram accessも含め、誰がどの目的でどの経路を通るかがavailabilityの一部になった。
+\item \textbf{運用の層が動いた。} serving framework、local runtime、front-end/cache、low-level kernelが別々の実装面を更新し、KVのplacement・prefetchやdecoding policyまでが「モデルを動かす」条件として前景化した。
+\item \textbf{確かめる単位が細かくなった。} agentではscaffolding、requirements/planning、function call、transaction、red teaming、skillの失敗箇所を分け、multimodalでは理解・生成編集・runtimeの接点を分けて測る方向が見えた。
+\end{enumerate}
+
+\subsection*{なぜそれらが一緒に重要なのか}
+新しいaccess surfaceは、対応するruntimeがあって初めて運用へ届く。runtimeの効率はmemory placementやdecoding policyに左右され、agentやmultimodalの実用性は、tool・状態・workflowを含む評価で初めて確かめられる。今週の変化は、モデルを手に入れる入口、動かし方、壊れ方の測り方が別々のニュースではなく、利用条件を構成する連鎖として見えるようになった点にある。
+
+ただし、この連鎖は製品間の直接的な互換性を意味しない。各release、paper、program recordは固有の主体・環境・測定条件を持つ。したがって、accessの拡大を性能の向上へ、runtimeの更新を全モデルの対応へ、細かなbenchmarkを一般のagent reliabilityへ自動的に変換してはいけない。
+
+\begin{communitynote}[Weekly Community Movement --- context only]
+X上のcommunity signalは、今週のモデルやruntimeに対する関心の向きを補助的に見るための背景材料である。ここから新しい発売事実、性能結果、互換性を導かない。本文ではXの反応をtechnical authorityから分離し、確認可能なfirst-party、repository、paperの記録だけを実質的な根拠として扱う\cite{w33-community}。
+\end{communitynote}
+
+\subsection*{次に何を見るべきか}
+次週以降は、連鎖のどこが実証されるかを追う。UltrafastのpreviewとGA、速度値、GLM-5.3のdirect-page・benchmark・cyber・local-weight timing、Daybreakのmodel/access scopeとBedrock境界はまだ詳細化されていない。VoiceDesignerもmodel/data contribution、baseline、evaluation、noveltyの捕捉が足りない。さらに、runtimeや論文の評価は、それぞれのモデル・環境・条件から外へ一般化できるかを確認する必要がある。
+
+\begin{claimboundary}[Week in Reviewの境界]
+この章は、前六章がすでに扱う材料を横断して編集した独立章であり、新しい外部事実、candidate、sourceを追加していない。採用されなかった保留・除外対象を、総括だけで今週の事実へ復活させない。Profile CompletenessがLIMITEDであることも踏まえ、残存limitationsを次の観測点として残す。
+\end{claimboundary}

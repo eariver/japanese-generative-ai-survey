@@ -1,0 +1,25 @@
+\section{Multimodal \& Media}
+\sectionkicker{WORKFLOW SURFACES}
+\begin{wideflow}
+{\Large\bfseries マルチモーダルを、モデル名ではなくworkflowで読む}\par
+\smallskip
+{\color{SurveyMuted}VideoGAIA、VoiceDesigner、ComfyUIは、理解・生成編集・実装runtimeという異なる接点を持つ。研究上の能力と実用workflowを直結させず、どこまでつながるかを境界付きで見る。}\par
+\end{wideflow}
+
+三つの接点を同じ「multimodal capability」として潰さない。
+
+\begin{themeoverview}[理解・生成編集・runtime]
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.27\linewidth}X@{}}
+理解・評価 & VideoGAIAはmulti-turn、tool-augmented video understanding benchmarkで、model-human co-designedの271 tasksと各instanceのthree-expert verificationを記述する\cite{videogaia}。\\
+生成・編集 & VoiceDesignerはhybrid data pipelineとdiffusion transformerでtext-to-voice generationとeditingをunifyすると記述されるが、詳細なbaseline resultsは確認できる資料にはない\cite{voicedesigner}。\\
+Workflow runtime & ComfyUI v0.31.0のrelease notesはFlux 3 video、Wan-Animate2、関連するgenerative-media supportに加え、runtimeとmemoryの変更を列挙する\cite{comfyui}。
+\end{tabularx}
+\end{themeoverview}
+
+共通するのは、単一のmodel rankingではなく、workflowのどこを成立させるかという視点である。VideoGAIAは動画を理解するagentのmulti-turnとtool useを評価する。VoiceDesignerは生成と編集を一つのmodel/data pipelineへ寄せる。ComfyUIは複数のmedia modelを実際の制作環境へ組み込むruntime側を更新する。この三つは、理解・生成編集・実装という連続した工程を照らすが、確認できる資料は相互の直接的なinteroperabilityまでは示していない。
+
+\begin{claimboundary}[接続を急がない]
+VoiceDesignerについては、generation/editing unificationという著者の記述を、modelやdata contribution、baseline、evaluation、noveltyが確定したという意味へ広げない。確認できる資料が部分的であるため、詳細な比較は未解決として残す。また、VideoGAIAの評価設計とComfyUIのruntime supportを、研究modelがそのまま制作workflowで動く証拠とは扱わない。
+\end{claimboundary}
+
+次に見るべきなのは、理解・生成編集・runtimeの接続点が実際に検証されるかである。VideoGAIAではtool protocolとhuman validationがどの範囲を測るか、VoiceDesignerでは未提示のbaselineとevaluationがどこまで補われるか、ComfyUIでは列挙されたsupportがどのworkflowで再現できるかを追う。現時点で確定できるのは、三つの層が同じ方向を向き始めたことまでである。

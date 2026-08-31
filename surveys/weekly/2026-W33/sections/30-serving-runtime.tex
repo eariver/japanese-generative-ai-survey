@@ -1,0 +1,26 @@
+\section{Serving \& Runtime}
+\sectionkicker{IMPLEMENTATION LAYERS}
+\begin{wideflow}
+{\Large\bfseries モデルを「使える」に変える、四つの実装層}\par
+\smallskip
+{\color{SurveyMuted}vLLM、llama.cpp、SGLang、FlashInferの動きは別々のrelease noteではない。serving framework、local runtime、front-end/cache、low-level kernelが、それぞれ異なる場所で運用の成立条件を動かしている。}\par
+\end{wideflow}
+
+同じ「support」でも、動かしている層が違う。
+
+\begin{themeoverview}[四層の実装地図]
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.28\linewidth}X@{}}
+Full serving framework & vLLM v0.27.0はKimi K3のfull-stack support、新しいmodel integration、PyTorch/Triton upgrade、KV/offload・disaggregation・serving機能をまとめて扱う\cite{vllm}。\\
+Local inference runtime & llama.cpp b10369はPocket-TTS supportとconvolution-to-GEMM実装を追加する\cite{llamacpp}。\\
+Front-end / cache behavior & SGLang v0.5.17はRust server front end、session-aware radix caching、serving/runtime変更を記述する\cite{sglang}。\\
+Low-level kernel & FlashInfer v0.6.17はMoE expert parallelism、SM12x FP4 fixes、unified MXFP4 APIs、decode coverageを記述する\cite{flashinfer}。
+\end{tabularx}
+\end{themeoverview}
+
+この四層を分けると、availabilityがruntime supportに依存する理由が見える。full-stack側ではvLLMがモデル統合とserving機能を一つの更新に束ね、SGLangはfront endとcacheの側から運用面を支える。FlashInferはその下でdecodeや低レベル実行を担い、llama.cppはlocal runtimeで別の利用面を開く。つまり、モデルを取得できることと、選んだ環境で継続的に運用できることは同じ条件ではない。
+
+\begin{technicalnote}[Releaseを層で読む]
+release noteにある機能追加と性能改善を同じ強さの事実として読まない。とくにllama.cppのtiming figuresはproject-reportedとして扱い、vLLM、SGLang、FlashInferのperformanceをここで独立測定結果へ拡張しない。今回の比較軸は「何層が変わったか」であり、数値の横比較ではない。
+\end{technicalnote}
+
+実運用での次の問いは、「モデルを持っているか」だけでは足りない。どのserving frameworkが統合し、どのlocal runtimeが動かし、front end/cacheが状態を扱い、kernel層がdecodeを支えるのかを確認する必要がある。モデル競争の裏側で、実装競争が利用条件を組み替えている。
