@@ -1,0 +1,78 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "from_state": "DRAFT_COMPLETE",
+  "to_state": "VALIDATED_DRAFT",
+  "checkpoints": [
+    "validation"
+  ],
+  "recorded_at": "2026-08-31T23:56:00Z",
+  "implementation": {
+    "repository_commit_sha": "8ae502663830d1fe43b5bae5b2ef9508f7517cf8",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "e6ae2637fe2ecb41351193075c79b5829d83d12884cd011a78f593ff77c1c8d1",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "publication-pdf",
+      "path": "surveys/weekly/2026-W33/main.pdf",
+      "sha256": "13dbc6b2637e5097f82962e6e23413865e04c9a4ae5be035414d594ae19c18ce"
+    },
+    {
+      "name": "quality-regression-bundle",
+      "path": "sources/2026-W33/publication/v2/quality-regression-bundle-v2.json",
+      "sha256": "854b9c00516e68e88329c1bf10722ebd58f94fd7d93b13d6fb6126795f0bf3d3"
+    },
+    {
+      "name": "reader-manuscript",
+      "path": "sources/2026-W33/publication/v2/reader-manuscript-v2.json",
+      "sha256": "fe5a8c55ce147dfaff7df61dcb1346a7d7ec09cf24abea267879afbc3103c03a"
+    },
+    {
+      "name": "semantic-review",
+      "path": "sources/2026-W33/publication/v2/semantic-editorial-review-v2.json",
+      "sha256": "829e5464b7722050c77694eb8a21aa2ea8bed346f4c74d05cd611a13d6419e15"
+    },
+    {
+      "name": "validated-source",
+      "path": "surveys/weekly/2026-W33/main.tex",
+      "sha256": "44ef2580c072c7295d052311fca2a9a3a5bf165c7eab19a1375b1f729e8e55a0"
+    },
+    {
+      "name": "visual-review",
+      "path": "sources/2026-W33/publication/v2/visual-review-v2.json",
+      "sha256": "4db164a14b414094b74e4ffed630a37019d49fdaf333683da525be08361dc918"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request w33-validated-draft-advance-20260901-r2.",
+      "result": {
+        "path": "sources/2026-W33/execution/bridge-runs/w33-validated-draft-advance-20260901-r2/core-stage-contract.json",
+        "sha256": "086b1b94913e6ffc53fbb64fc4f45f174865b4c8e010bbf4836baee402ccf4d3"
+      }
+    },
+    {
+      "check_id": "SOL_ISSUE_433_REPAIR_REVIEW",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "ACCEPT / ISSUE_433_READER_TRANSFORMATION_RESOLVED / EXACT_PDF_AND_VALIDATION_AUTHORITY_VERIFIED / AUTHORIZED_FOR_VALIDATION_AND_PUBLICATION_PREVIEW_ADVANCEMENT. Review authority: sources/2026-W33/execution/reviews/w33-publication-preview-issue433-sol-review-20260901-r2.md. Frozen source SHA-256 44ef2580c072c7295d052311fca2a9a3a5bf165c7eab19a1375b1f729e8e55a0; exact PDF SHA-256 13dbc6b2637e5097f82962e6e23413865e04c9a4ae5be035414d594ae19c18ce; repaired validation authorities are unchanged.",
+      "result": null
+    }
+  ],
+  "summary": "Validate the Sol-accepted repaired W33 reader/publication authority under the complete DRAFT_COMPLETE stage contract and advance exactly once from DRAFT_COMPLETE to VALIDATED_DRAFT. Do not modify the frozen source, bibliography, PDF, or repaired validation authorities."
+}
