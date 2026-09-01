@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2020-Y",
+  "package_id": "access-api",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "basis": {
+    "draft_package_sha256": "77d6d5d799baf1ceb4d88de6e8400a2dade2abf9e5d9730bd1dbff9d506bff19",
+    "prompt_id": "article-drafting-v0.1",
+    "prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project drafting; no paid inference-provider API",
+    "generated_at": "2026-08-21T01:14:05+09:00",
+    "run_reference": "ChatGPT session 2026-08-21: after explicit Architecture approval, drafted all 11 ARTICLE_DRAFTING packages from the immutable Evidence-bound Draft Packages. The synthesis-transition package is reader-facing as '総括――scaleから多層システムへ：2021年への橋'."
+  },
+  "headline": "モデルから入口へ――APIが変えたaccess boundary",
+  "deck": "GPT-3のようなfrontier modelが存在することと、外部の開発者がその能力へ接続できることは別の出来事である。2020年6月のOpenAI APIは、汎用的なtext-in / text-out interfaceを通じてmodel accessをserviceとして提供する境界を明示した。研究成果の公開、model weightの配布、technology license、API accessを区別することが、2020年以降の生成AI史を読むうえで重要になる。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-2020-Y:item-official-feed-3b6a4c260e20b9c08d5d-a213e104c9",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "service-boundary",
+      "block_type": "PARAGRAPH",
+      "text": "OpenAIのfirst-party資料は、2020年6月に新しいAI modelへアクセスするためのAPIを公開し、汎用的な『text in, text out』interfaceとして説明した。ここでの構造変化は、model architectureやtraining recipeそのものではない。frontier capabilityへ到達する入口が、paperを読みmodelを再実装する経路とは別に、remote serviceとして設計されたことにある。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2020-Y:item-official-feed-3b6a4c260e20b9c08d5d-a213e104c9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "access-taxonomy",
+      "block_type": "PARAGRAPH",
+      "text": "この境界を『公開された』の一語でまとめると、後年の変化を見誤る。paper publicationは研究記録への公開、open-source / open-weight releaseはartifact自体の配布、technology licenseは利用権の契約、APIはproviderが保持するmodelへservice経由で接続するaccess surfaceである。2020年のOpenAI APIは、この最後の形態が生成AIの主要なdistribution modelになり得ることを早い段階で示した。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2020-Y:item-official-feed-3b6a4c260e20b9c08d5d-a213e104c9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "handoff-2021",
+      "block_type": "PARAGRAPH",
+      "text": "2020年時点のAPIは、後年の巨大なapplication ecosystemが完成したことを意味しない。むしろ重要なのは、model本体と利用interfaceが分離したことである。この分離は2021年にAPI availability、独立provider、open-weight modelといった複数のaccess surfaceが比較可能になる前提を作った。2020年は、その入口が独立した設計対象として可視化された年と位置付けられる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2020-Y:item-official-feed-3b6a4c260e20b9c08d5d-a213e104c9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "claim-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "APIの用途、汎用性、性能や安全性についてOpenAIが示した説明はproject側の主張である。本稿はAPIというaccess boundaryの存在と2020年の位置付けを一次資料で確認しているが、API経由のmodel能力を独立評価したものではない。またAPI accessをmodel weightの公開やtechnology licenseと同一視しない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2020-Y:item-official-feed-3b6a4c260e20b9c08d5d-a213e104c9",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "API launch as service boundary",
+      "block_ids": [
+        "service-boundary"
+      ]
+    },
+    {
+      "requirement": "access versus release versus license",
+      "block_ids": [
+        "access-taxonomy"
+      ]
+    },
+    {
+      "requirement": "handoff to 2021 API availability and independent providers",
+      "block_ids": [
+        "handoff-2021"
+      ]
+    }
+  ],
+  "boundary_coverage": [
+    {
+      "requirement": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    }
+  ],
+  "late_breaking_acknowledged": false
+}

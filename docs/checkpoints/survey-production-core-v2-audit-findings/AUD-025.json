@@ -1,0 +1,30 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-025",
+  "edition": "CORE-V2",
+  "stage": "WU-011_SECOND_AUDIT",
+  "observed_problem": "The production-control adopt-stage operation executes exactly one deterministic action and commits its result, but when that transition reaches ARCHITECTURE_ESTABLISHED or RELEASE_CANDIDATE it does not persist the newly current HUMAN_GATE Action Spec. The approval operations search the committed orchestration/specs directory for that exact Human Gate spec and therefore have no canonical input to approve.",
+  "expected_behavior": "A one-stage production adoption that lands on a pending Human Gate must persist the current terminal HUMAN_GATE Action Spec, without executing any additional deterministic stage, before committing the work branch. Approval workflows must then consume that exact State-bound spec.",
+  "actual_behavior": "After the Architecture stage or Publication Candidate stage, execute-current returns with the transitioned State but only the executed stage spec/result exists. A second unmodeled local planning/commit step is required before approve-architecture or approve-publication-preview can succeed, so the canonical workflow path is incomplete.",
+  "production_workaround": "External W33/SP001 production remains blocked until the coherent Core v2 candidate is Human-reviewed and merged; canonical adoption now persists the terminal Human/Exception/Complete Action Spec without executing an extra deterministic stage.",
+  "classification": {
+    "scope": "CORE",
+    "defect_kind": "ORCHESTRATION",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "d6e9c1f70702953b0239034d9b46eecd98706621",
+    "relevant_artifacts": [
+      "scripts/survey_orchestrator_v2.py",
+      ".github/workflows/survey-production-v2-control.yml",
+      "tests/test_survey_orchestrator_v2.py",
+      "tests/test_survey_pilot_bootstrap_v2.py"
+    ],
+    "human_review_reference": null
+  },
+  "improvement_action": "Make execute-current persist a second, non-executed terminal Action Spec when the one adopted action transitions onto a Human/Exception/Complete terminal plan; expose the persisted terminal spec path in its result and add a regression proving one deterministic action reaches a Human Gate with both the stage result and exact terminal spec committed while drafting remains unexecuted.",
+  "regression_fixture": "tests/test_survey_orchestrator_v2.py",
+  "resolved_by_repair_set_id": null,
+  "status": "FIXED_GENERIC"
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-043",
+  "edition": "CORE-V2",
+  "stage": "WU-012_POST_CHANGE_FIVE_PERSPECTIVE_AUDIT",
+  "observed_problem": "Core v2 release_identity built LONGFORM_SPECIAL tags directly from issue_id. Retrospective Period Profiles use internal issue IDs such as SP-2025-H2 while the established public Special identity is the survey slug 2025-H2 (for example tag special/2025-H2 and asset Japanese_Generative_AI_Technical_Survey_Special_2025-H2.pdf). The v2 path would therefore have produced special/SP-2025-H2 and an SP-prefixed asset/title for Period editions.",
+  "expected_behavior": "Internal source issue identity and public publication slug must remain distinct where the repository already distinguishes them. Release identity/title/asset naming must derive from the authoritative Production Profile publication path/slug so Retrospective Period preserves established Special identities while stand-alone Thematic editions such as SP001 remain unchanged.",
+  "actual_behavior": "scripts/survey_profiled_freeze_v2.py now derives the public issue slug from the exact Production Profile paths.survey_root basename and derives release identity from that slug plus publication_profile. Profile-aware Freeze/Manifest creation preserves the internal issue ID while writing the correct public tag. The release workflow rederives the same expected tag and public slug from the exact State-bound Production Profile, rejects Manifest divergence, and uses the public slug for title/asset naming. Regressions cover internal SP-2025-H2 -> public special/2025-H2 as well as unchanged SP001 and Weekly identities.",
+  "production_workaround": null,
+  "classification": {
+    "scope": "PUBLICATION_PROFILE",
+    "defect_kind": "IDENTITY",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "2f3c9b10c031cf0d8e5cc114fb93e481e90fffac",
+    "relevant_artifacts": [
+      "scripts/survey_profiled_freeze_v2.py",
+      ".github/workflows/survey-production-v2-release.yml",
+      "scripts/survey_period_v2.py",
+      "sources/SP-2025-H2/release-manifest.json",
+      "tests/test_survey_profiled_freeze_v2.py"
+    ],
+    "human_review_reference": "Post-change five-perspective audit requested by Owner, 2026-08-22"
+  },
+  "improvement_action": "Separated internal issue identity from Profile-derived public publication slug and applied the public slug consistently to Freeze/Manifest/Release tag/title/asset authority.",
+  "regression_fixture": "tests/test_survey_profiled_freeze_v2.py",
+  "resolved_by_repair_set_id": "REPAIR-WU012-2026-08-22",
+  "status": "FIXED_GENERIC"
+}

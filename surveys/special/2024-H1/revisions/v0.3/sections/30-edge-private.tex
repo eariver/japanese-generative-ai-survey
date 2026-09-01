@@ -1,0 +1,19 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{小型化は「弱い巨大モデル」ではない――端末とprivate cloudから逆算する設計}
+\label{pkg:edge-private}
+\noindent\textbf{Phi-3、MobileLLM、Apple Foundation Modelsが示したのは、small modelをparameter削減版として扱うのではなく、端末上のlatency、memory、privacy、電力、private-cloud連携という配置条件から設計し直す流れだった。}\autocite{src-86ea660dfc62,src-c89d38f0e830,src-e78721484043}
+
+2024年上期のsmall/on-device modelは、単に巨大モデルを縮小する競争ではなかった。MicrosoftのPhi-3 family、MobileLLMの研究、Appleのon-device/server foundation model構成はいずれも、限られたmemoryやlatency、privacy requirementsを前提に、どこで推論するかからmodel architectureを考える方向を強めた。MobileLLMに関する技術的評価は論文著者の報告に基づく。\autocite{src-86ea660dfc62,src-c89d38f0e830,src-e78721484043}
+
+
+特にAppleの構成は、on-deviceだけですべてを完結させる発想ではなく、端末で処理する範囲とserver/private-cloud側へ渡す範囲を分ける配置設計を前景化した。これは「localかcloudか」という二者択一ではなく、privacy、計算量、応答性を踏まえて推論経路を切り替えるsystem architectureとして読むべきである。\autocite{src-c89d38f0e830}
+
+
+Phi-3はsmall/on-device model familyとして展開された。MobileLLMはsub-billion parameter帯を対象にarchitecture choicesを検証し、OpenELMやGemma familyも小型・公開モデルの設計空間を広げた。BitNet b1.58は低ビットweight表現を研究対象にした。MobileLLMとBitNetの性能・効率評価は、それぞれ論文著者の報告として扱う。\autocite{src-0395647db4a8,src-4d404eabda6e,src-86ea660dfc62,src-e78721484043,src-fb3cf48135e8}
+
+
+\begin{claimboundary}
+研究paper上のmobile実験、公開checkpoint、製品としてのon-device実装は同じ成熟度ではない。parameter scaleや端末実行の実証は各sourceの条件に依存し、一般的な端末性能を保証するものではない。本稿ではprototype、model release、product architectureを分離して扱う。\autocite{src-556c0edcf39c,src-86ea660dfc62,src-c89d38f0e830,src-e78721484043}
+\end{claimboundary}
+
+この軸が重要なのは、frontier modelの巨大化と矛盾しないからだ。高性能なcloud modelと、小さくprivateに配置できるedge modelは競合するだけでなく補完関係を持つ。2024-H1には「最も賢い一つのモデル」ではなく、処理場所ごとに異なるmodelを組み合わせる発想が現実的な設計課題になった。MobileLLMの実用性評価は著者報告の範囲に留める。\autocite{src-86ea660dfc62,src-c89d38f0e830,src-e78721484043}

@@ -1,0 +1,385 @@
+name: Survey Production Core v2 operator bridge
+
+# Security boundary: both accepted transports are loaded from default-branch
+# authority. The work-branch request commit is data only until this trusted
+# workflow proves reviewed-main, request-only, and protected-authority invariants.
+# Before admission, every Python helper runs in isolated mode so repository-local
+# modules from the untrusted checkout cannot influence parsing or trust decisions.
+on:
+  issue_comment:
+    types:
+      - created
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+
+concurrency:
+  group: >-
+    survey-production-v2-operator-bridge-${{ github.event_name }}-${{ github.event.comment.id }}-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
+  cancel-in-progress: false
+
+env:
+  OPERATOR_QUEUE_ISSUE: '448'
+  OPERATOR_COMMAND_PREFIX: '/survey-core-execute '
+  OPERATOR_PR_TITLE_PREFIX: 'Survey Core operator transport:'
+
+jobs:
+  operator-preflight:
+    if: >-
+      (
+        github.event_name == 'issue_comment' &&
+        github.event.issue.number == 448 &&
+        startsWith(github.event.comment.body, '/survey-core-execute ') &&
+        github.actor != 'github-actions[bot]' &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+      ) || (
+        github.event_name == 'pull_request_target' &&
+        github.event.pull_request.base.ref == 'main' &&
+        github.event.pull_request.head.repo.full_name == github.repository &&
+        startsWith(github.event.pull_request.title, 'Survey Core operator transport:') &&
+        github.actor != 'github-actions[bot]' &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.pull_request.author_association)
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      request_path: ${{ steps.preflight.outputs.request_path }}
+      request_head_sha: ${{ steps.command.outputs.request_head_sha }}
+      request_head_branch: ${{ steps.preflight.outputs.request_head_branch }}
+      reviewed_main_sha: ${{ steps.preflight.outputs.reviewed_main_sha }}
+    steps:
+      - name: Parse exact operator command or trusted PR head
+        id: command
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          PR_HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -euo pipefail
+          case "$EVENT_NAME" in
+            issue_comment)
+              if [[ ! "$COMMENT_BODY" =~ ^/survey-core-execute\ ([0-9a-f]{40})$ ]]; then
+                echo "Operator command must be exactly: /survey-core-execute <lowercase-40-hex-request-commit>" >&2
+                exit 1
+              fi
+              request_head_sha="${BASH_REMATCH[1]}"
+              ;;
+            pull_request_target)
+              if [[ "$PR_BASE_REF" != "main" || "$PR_HEAD_REPO" != "$GITHUB_REPOSITORY" ]]; then
+                echo "Operator transport PR must be same-repository and target main." >&2
+                exit 1
+              fi
+              if [[ "$PR_TITLE" != "$OPERATOR_PR_TITLE_PREFIX"* ]]; then
+                echo "Operator transport PR title does not use the reserved prefix." >&2
+                exit 1
+              fi
+              if [[ ! "$PR_HEAD_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+                echo "Operator transport PR head must be exact lowercase 40-hex." >&2
+                exit 1
+              fi
+              git check-ref-format --branch "$PR_HEAD_REF" >/dev/null
+              request_head_sha="$PR_HEAD_SHA"
+              ;;
+            *)
+              echo "Unsupported operator transport event: $EVENT_NAME" >&2
+              exit 1
+              ;;
+          esac
+          echo "request_head_sha=$request_head_sha" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout exact untrusted request commit as data
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ steps.command.outputs.request_head_sha }}
+          fetch-depth: 0
+
+      - name: Trusted reviewed-main and request-only preflight
+        id: preflight
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          REQUEST_HEAD_SHA: ${{ steps.command.outputs.request_head_sha }}
+        run: |
+          set -euo pipefail
+
+          if [[ "$(git rev-parse HEAD)" != "$REQUEST_HEAD_SHA" ]]; then
+            echo "Trusted operator preflight did not checkout the exact requested commit." >&2
+            exit 1
+          fi
+
+          mapfile -t added_requests < <(
+            git diff-tree --diff-filter=A --no-commit-id --name-only -r "$REQUEST_HEAD_SHA" -- \
+              ':(glob)sources/**/execution/requests/*.json'
+          )
+          if [[ "${#added_requests[@]}" -ne 1 ]]; then
+            echo "Expected exactly one newly added operator request; found ${#added_requests[@]}" >&2
+            exit 1
+          fi
+
+          mapfile -t changed < <(git diff-tree --no-commit-id --name-only -r "$REQUEST_HEAD_SHA")
+          if [[ "${#changed[@]}" -ne 1 || "${changed[0]}" != "${added_requests[0]}" ]]; then
+            echo "Operator request commit must contain only the immutable request file." >&2
+            printf 'Changed: %s\n' "${changed[@]}" >&2
+            exit 1
+          fi
+
+          request_path="${added_requests[0]}"
+
+          # The checkout is still untrusted here. Isolated mode (-I) prevents
+          # repository-local json.py/sitecustomize/etc. from entering sys.path.
+          reviewed_main_sha="$(
+            python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["reviewed_main_sha"])' \
+              "$request_path"
+          )"
+          request_work_branch="$(
+            python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["work_branch"])' \
+              "$request_path"
+          )"
+          operation_kind="$(
+            python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["kind"])' \
+              "$request_path"
+          )"
+
+          git check-ref-format --branch "$request_work_branch" >/dev/null
+          if [[ "$EVENT_NAME" == "pull_request_target" && "$request_work_branch" != "$PR_HEAD_REF" ]]; then
+            echo "Operator transport PR head branch must equal request work_branch." >&2
+            echo "PR head:        $PR_HEAD_REF" >&2
+            echo "request branch: $request_work_branch" >&2
+            exit 1
+          fi
+          if [[ ! "$reviewed_main_sha" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "reviewed_main_sha must be exact lowercase 40-hex." >&2
+            exit 1
+          fi
+
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          canonical_work_ref="refs/remotes/origin/$request_work_branch"
+          git fetch --no-tags origin \
+            "refs/heads/$request_work_branch:$canonical_work_ref"
+
+          remote_work_head="$(git rev-parse "$canonical_work_ref")"
+          if [[ "$remote_work_head" != "$REQUEST_HEAD_SHA" ]]; then
+            echo "Operator request commit must be the exact current canonical work-branch head." >&2
+            echo "requested: $REQUEST_HEAD_SHA" >&2
+            echo "work head: $remote_work_head" >&2
+            exit 1
+          fi
+
+          git cat-file -e "$reviewed_main_sha^{commit}"
+          if ! git merge-base --is-ancestor "$reviewed_main_sha" refs/remotes/origin/main; then
+            echo "reviewed_main_sha is not an ancestor of current main." >&2
+            exit 1
+          fi
+
+          request_parent="$REQUEST_HEAD_SHA^"
+          request_parent_sha="$(git rev-parse "$request_parent")"
+          if ! git merge-base --is-ancestor "$reviewed_main_sha" "$request_parent"; then
+            echo "Operator work branch is not descended from reviewed_main_sha." >&2
+            exit 1
+          fi
+
+          case "$operation_kind" in
+            INITIALIZE_WEEKLY|INITIALIZE_RETROSPECTIVE|INITIALIZE_THEMATIC)
+              execution_main_sha="$(
+                python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["execution_record"]["reviewed_main_sha"])' \
+                  "$request_path"
+              )"
+              if [[ "$execution_main_sha" != "$reviewed_main_sha" ]]; then
+                echo "Initialization execution record reviewed_main_sha must equal request reviewed_main_sha." >&2
+                exit 1
+              fi
+              ;;
+            RECORD_ARCHITECTURE_APPROVAL|REQUEST_ARCHITECTURE_REVISION|RECORD_PUBLICATION_PREVIEW_APPROVAL|REQUEST_PUBLICATION_PREVIEW_REVISION)
+              human_reviewed_sha="$(
+                python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["operation"]["reviewed_repository_commit_sha"])' \
+                  "$request_path"
+              )"
+              if [[ ! "$human_reviewed_sha" =~ ^[0-9a-f]{40}$ ]]; then
+                echo "reviewed_repository_commit_sha must be exact lowercase 40-hex." >&2
+                exit 1
+              fi
+              if [[ "$human_reviewed_sha" != "$request_parent_sha" ]]; then
+                echo "Human Gate request must bind reviewed_repository_commit_sha to the request-only commit parent." >&2
+                echo "request parent: $request_parent_sha" >&2
+                echo "request value:  $human_reviewed_sha" >&2
+                exit 1
+              fi
+              ;;
+          esac
+
+          # Resolve protected paths from reviewed-main authority, never from
+          # untrusted work-branch config. The helper itself is also isolated.
+          mapfile -t protected_paths < <(
+            python3 -I - "$reviewed_main_sha" <<'PY'
+          import json
+          import subprocess
+          import sys
+
+          reviewed = sys.argv[1]
+          raw = subprocess.check_output(
+              ["git", "show", f"{reviewed}:config/survey-production-v2.json"],
+              text=True,
+          )
+          cfg = json.loads(raw)
+          paths = [".github/workflows", "config", "schemas", "scripts"]
+          paths.extend(cfg.get("implementation_control_roots", []))
+          for group in cfg.get("contract_files", {}).values():
+              paths.extend(group)
+          for path in sorted(set(paths)):
+              print(path)
+          PY
+          )
+
+          if ! git diff --quiet "$reviewed_main_sha" "$request_parent" -- "${protected_paths[@]}"; then
+            echo "Shared Core or contract authority drifted from reviewed_main_sha before operator execution." >&2
+            git diff --name-only "$reviewed_main_sha" "$request_parent" -- "${protected_paths[@]}" >&2
+            exit 1
+          fi
+
+          {
+            echo "request_path=$request_path"
+            echo "request_head_branch=$request_work_branch"
+            echo "reviewed_main_sha=$reviewed_main_sha"
+          } >> "$GITHUB_OUTPUT"
+
+  operator-execute:
+    needs: operator-preflight
+    if: needs.operator-preflight.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      REQUEST_PATH: ${{ needs.operator-preflight.outputs.request_path }}
+      REQUEST_HEAD_SHA: ${{ needs.operator-preflight.outputs.request_head_sha }}
+      REQUEST_HEAD_BRANCH: ${{ needs.operator-preflight.outputs.request_head_branch }}
+      REVIEWED_MAIN_SHA: ${{ needs.operator-preflight.outputs.reviewed_main_sha }}
+    steps:
+      - name: Checkout exact admitted request commit
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.operator-preflight.outputs.request_head_sha }}
+          fetch-depth: 0
+
+      - name: Confirm canonical work branch and reviewed main have not moved out of authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          canonical_work_ref="refs/remotes/origin/$REQUEST_HEAD_BRANCH"
+          git fetch --no-tags origin \
+            "refs/heads/$REQUEST_HEAD_BRANCH:$canonical_work_ref"
+          remote_work_head="$(git rev-parse "$canonical_work_ref")"
+          if [[ "$remote_work_head" != "$REQUEST_HEAD_SHA" ]]; then
+            echo "Canonical work branch moved after trusted preflight; refusing stale execution." >&2
+            exit 1
+          fi
+
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          git cat-file -e "$REVIEWED_MAIN_SHA^{commit}"
+          if ! git merge-base --is-ancestor "$REVIEWED_MAIN_SHA" refs/remotes/origin/main; then
+            echo "reviewed_main_sha ceased to be an ancestor of current main." >&2
+            exit 1
+          fi
+
+      - name: Materialize reviewed-main trusted Core runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          trusted_runtime="$RUNNER_TEMP/survey-core-reviewed-main-runtime"
+          rm -rf "$trusted_runtime"
+          mkdir -p "$trusted_runtime"
+          git cat-file -e "$REVIEWED_MAIN_SHA:scripts/survey_core_execution_bridge_v2.py"
+          git archive "$REVIEWED_MAIN_SHA" scripts | tar -x -C "$trusted_runtime"
+          test -f "$trusted_runtime/scripts/survey_core_execution_bridge_v2.py"
+          echo "TRUSTED_CORE_RUNTIME=$trusted_runtime" >> "$GITHUB_ENV"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Core dependencies
+        run: python -I -m pip install -r "$GITHUB_WORKSPACE/config/survey-production-v2-requirements.txt"
+
+      - name: Execute canonical deterministic Core operation
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Canonical source: scripts/survey_core_execution_bridge_v2.py.
+          # Import/startup occurs from the reviewed-main-only trusted runtime;
+          # the admitted checkout is passed only as repository data/write target.
+          (
+            cd "$TRUSTED_CORE_RUNTIME"
+            env -u PYTHONPATH -u PYTHONHOME \
+              python -m scripts.survey_core_execution_bridge_v2 \
+                --repo-root "$GITHUB_WORKSPACE" \
+                --request "$GITHUB_WORKSPACE/$REQUEST_PATH" \
+                --event-sha "$REQUEST_HEAD_SHA" \
+                --ref-name "$REQUEST_HEAD_BRANCH"
+          ) > "$RUNNER_TEMP/operator-bridge-result.json"
+          cat "$RUNNER_TEMP/operator-bridge-result.json"
+
+      - name: Enforce edition-local write boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_root="$(
+            python -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["source_root"])' \
+              "$RUNNER_TEMP/operator-bridge-result.json"
+          )"
+          request_root="$source_root/execution/requests/"
+          mapfile -t dirty < <(
+            {
+              git diff --name-only
+              git ls-files --others --exclude-standard
+            } | sed '/^$/d' | sort -u
+          )
+          if [[ "${#dirty[@]}" -eq 0 ]]; then
+            echo "Bridge produced no repository changes." >&2
+            exit 1
+          fi
+          for path in "${dirty[@]}"; do
+            case "$path" in
+              "$source_root"/*) ;;
+              *)
+                echo "Bridge attempted write outside edition source root: $path" >&2
+                exit 1
+                ;;
+            esac
+            case "$path" in
+              "$request_root"*)
+                echo "Bridge must not mutate immutable request authority: $path" >&2
+                exit 1
+                ;;
+            esac
+          done
+
+      - name: Commit deterministic edition-local outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_root="$(
+            python -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["source_root"])' \
+              "$RUNNER_TEMP/operator-bridge-result.json"
+          )"
+          request_id="$(
+            python -I -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["request_id"])' \
+              "$RUNNER_TEMP/operator-bridge-result.json"
+          )"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- "$source_root"
+          git commit -m "Execute Core operator request $request_id"
+          git push --force-with-lease="refs/heads/$REQUEST_HEAD_BRANCH:$REQUEST_HEAD_SHA" \
+            origin "HEAD:refs/heads/$REQUEST_HEAD_BRANCH"

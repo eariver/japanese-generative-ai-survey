@@ -1,0 +1,40 @@
+\documentclass[lualatex,a4paper,10pt]{jlreq}
+\usepackage{jgaisurvey}
+\usepackage{balance}
+\addbibresource{references.bib}
+
+\surveysetup
+  {2026-W33}
+  {Japanese Generative AI Technical Survey}
+  {2026-08-17}
+  {2026-08-14 18:00 America/New\_York}
+\surveyeditiondescriptor{週刊Technical Survey}
+
+\surveycoverstory
+  {モデルの利用条件まで動いた}
+  {W33は、モデル/APIの入口、実装runtime、そしてagent・multimodalを含む評価の粒度が同時に動いた週だった。使えること、動かせること、確かめられることを一つの線で読み直す。}
+  {FEATURE: ACCESS SURFACES \quad / \quad DEEP DIVE: RUNTIME \& INFERENCE \quad / \quad REVIEW: WHAT TO WATCH}
+
+\begin{document}
+
+\surveycover
+\clearpage
+\input{sections/00-frontmatter}
+
+\clearpage
+\twocolumn
+\input{sections/10-frontier-models-access}
+\input{sections/20-cyber-access-governance}
+\input{sections/30-serving-runtime}
+\input{sections/40-memory-decoding-systems}
+\input{sections/50-agent-evaluation-reliability}
+\input{sections/60-multimodal-media}
+\input{sections/70-week-in-review}
+\balance
+
+\clearpage
+\onecolumn
+\input{sections/99-source-notes}
+\printbibliography[title={References}]
+
+\end{document}

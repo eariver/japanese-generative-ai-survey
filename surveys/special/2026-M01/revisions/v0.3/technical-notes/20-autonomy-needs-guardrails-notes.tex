@@ -1,0 +1,94 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{AutonomyにはGuardrailが要る — Prompt InjectionとData Exfiltration: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+Safe URL / agent link data-exfiltration safeguards & 主要資料 & セキュリティ関連 & 2026-01-28 (セキュリティ技術解説) \\
+Prompt Injection Attacks on Agentic Coding Assistants & 補足資料 & 論文 & 2026-01-24 (論文投稿) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{Safe URL / agent link data-exfiltration safeguards}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & セキュリティ関連 \\
+時系列 & 2026-01-28 (セキュリティ技術解説) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIは1月28日、prompt injectionされた内容がAgentにURL取得を促し、会話由来の秘密情報をURLへ載せて外部へ送出し得るdata-exfiltration脅威を説明した。
+\item \textbf{一次情報で確認できる事実}: 説明されたsafeguardは、独立にpublicと確認されたURLのみ自動取得を許し、それ以外はfetchを遮断するか明示的なuser actionを要求する。OpenAIはこれをdefense-in-depthの一層として位置付ける。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 対象はURL-based exfiltrationであり、任意のweb contentが安全であることやprompt injection全般の解決を示すものではない。
+\item \textbf{分析上の留意点}: security propertyはOpenAIによる実装説明であり、本サーベイでは独立したpenetration testを実施していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/ai-agent-link-safety}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Prompt Injection Attacks on Agentic Coding Assistants}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Narek Maloyan and Dmitry Namiot \\
+種別 & 論文 \\
+時系列 & 2026-01-24 (論文投稿) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 本論文はagentic coding assistant、skills、tools、protocol ecosystemにまたがるprompt-injection攻撃を整理するSystematization of Knowledgeで、3次元のattack taxonomyを提案する。
+\item \textbf{Author claim}: abstractは78研究、42攻撃手法、18防御機構の統合を報告する。攻撃・防御の集計値は著者によるmeta-analysisであり、新規のcontrolled benchmarkではない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 異質な研究を束ねたliterature synthesisであるため、集計率を単一の再現可能な実験結果として扱わない。
+\item \textbf{分析上の留意点}: 保持sourceは1月時点のarXiv v1であり、その後の研究によって脅威・防御の全体像は更新され得る。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2601.17548v1}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

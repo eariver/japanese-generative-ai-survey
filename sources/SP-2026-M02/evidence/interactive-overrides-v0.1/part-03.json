@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M02",
+  "overrides": [
+    {
+      "evidence_task_id": "evidence:SP-2026-M02:item-official-index-zai-release-notes-409a030c15",
+      "artifact": {"canonical_name": "GLM-5", "artifact_type": "OPEN_WEIGHT", "organization": "Z.ai"},
+      "events": [{"event_type": "OPEN_WEIGHT_MODEL_RELEASE", "event_date": "2026-02-12"}],
+      "claims": [
+        {"text": "Z.ai released GLM-5 on 2026-02-12 and described it as targeting complex systems engineering and long-horizon agentic tasks.", "evidence_class": "PRIMARY_FACT"},
+        {"text": "The first-party release describes 744B total parameters with 40B active, 28.5T pre-training tokens, DeepSeek Sparse Attention integration, and asynchronous RL infrastructure named slime.", "evidence_class": "PRIMARY_FACT"},
+        {"text": "The released weights are described as MIT licensed with deployment paths through frameworks including vLLM and SGLang.", "evidence_class": "PRIMARY_FACT"},
+        {"text": "Benchmark rankings and claims that GLM-5 closes the gap with frontier proprietary models are vendor claims.", "evidence_class": "VENDOR_CLAIM"}
+      ],
+      "limitations": ["Architecture/training figures are first-party technical disclosures, not independently audited.", "Benchmark superiority statements remain vendor-reported.", "The model’s release and license can be verified independently from its claimed performance."],
+      "unresolved_questions": [],
+      "candidate_recommendation": "CANDIDATE",
+      "why_this_special": "GLM-5 is a major February open-weight model whose stated target—complex systems engineering and long-horizon agentic tasks—closely matches the month’s broader agentic-engineering convergence.",
+      "rationale": "Primary-source evidence supports Candidate Selection for a material February 2026 technical change."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M02:series-comfyui-february-98142d6f93",
+      "artifact": {"canonical_name": "ComfyUI v0.15.x February workflow updates", "artifact_type": "FRAMEWORK", "organization": "Comfy-Org"},
+      "events": [{"event_type": "PROJECT_RELEASE", "event_date": "2026-02-24"}, {"event_type": "PROJECT_RELEASE", "event_date": "2026-02-26"}],
+      "claims": [
+        {"text": "ComfyUI v0.15.0 was published on 2026-02-24 and included native text-generation support, audio-related nodes, API-node additions, and image/video workflow changes.", "evidence_class": "PRIMARY_FACT", "source_indexes": [1]},
+        {"text": "v0.15.1 followed on 2026-02-26 as the next patch in the same line.", "evidence_class": "PRIMARY_FACT", "source_indexes": [2]},
+        {"text": "Performance fixes or improvements described in release notes are project claims unless independently measured.", "evidence_class": "PROJECT_CLAIM", "source_indexes": [1,2]}
+      ],
+      "limitations": ["The retained series contains only v0.15.0 and v0.15.1, while the repository had multiple February releases; it should not be presented as a complete monthly changelog.", "The release is broad and incremental rather than a single month-defining architectural milestone."],
+      "unresolved_questions": [],
+      "candidate_recommendation": "HOLD",
+      "why_this_special": "Useful ecosystem context showing ComfyUI expanding across text, audio, hosted model nodes, and image/video workflows, but not strong enough to become a core February story.",
+      "rationale": "Retain as supporting/background evidence; do not allocate a standalone core story unless Architecture needs it."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3",
+      "artifact": {"canonical_name": "OpenAI Codex February stack: app, GPT-5.3-Codex, System Card, and Codex-Spark", "artifact_type": "MODEL_UPDATE", "organization": "OpenAI"},
+      "events": [
+        {"event_type": "AGENT_PRODUCT_RELEASE", "event_date": "2026-02-02", "source_indexes": [4]},
+        {"event_type": "MODEL_RELEASE", "event_date": "2026-02-05", "source_indexes": [2]},
+        {"event_type": "SYSTEM_CARD_PUBLICATION", "event_date": "2026-02-05", "source_indexes": [1]},
+        {"event_type": "RESEARCH_PREVIEW", "event_date": "2026-02-12", "source_indexes": [3]}
+      ],
+      "claims": [
+        {"text": "OpenAI introduced the Codex app on 2026-02-02 as a workspace for managing multiple coding agents and long-running parallel work.", "evidence_class": "PRIMARY_FACT", "source_indexes": [4]},
+        {"text": "OpenAI introduced GPT-5.3-Codex on 2026-02-05 for coding plus longer-running research, tool use, and complex execution tasks.", "evidence_class": "PRIMARY_FACT", "source_indexes": [2]},
+        {"text": "The GPT-5.3-Codex System Card was published on 2026-02-05 and applies OpenAI’s Preparedness Framework cybersecurity evaluation to the model.", "evidence_class": "PRIMARY_FACT", "source_indexes": [1]},
+        {"text": "OpenAI introduced GPT-5.3-Codex-Spark on 2026-02-12 as a research-preview model designed for realtime coding interaction.", "evidence_class": "PRIMARY_FACT", "source_indexes": [3]},
+        {"text": "Claims such as GPT-5.3-Codex being 25% faster and Codex-Spark exceeding 1,000 tokens/s on Cerebras hardware are vendor-reported performance claims.", "evidence_class": "VENDOR_CLAIM", "source_indexes": [2,3]}
+      ],
+      "limitations": ["The Evidence task intentionally groups four related first-party items; drafting must keep product, base model, system-card, and specialized Spark boundaries explicit.", "Performance and benchmark comparisons are vendor-reported.", "Codex-Spark’s throughput statement depends on specialized Cerebras hardware and research-preview conditions.", "Cyber capability classification must reproduce the System Card’s stated threshold/precaution boundary rather than exaggerating it."],
+      "unresolved_questions": [],
+      "candidate_recommendation": "CANDIDATE",
+      "why_this_special": "The clearest February package showing coding moving from a single model toward a persistent agent workspace, long-running tool-using execution, explicit cyber-risk evaluation, and a low-latency interactive variant.",
+      "rationale": "Primary-source evidence supports Candidate Selection for a material February 2026 technical change."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M02:series-transformers-february-bb7267a89b",
+      "artifact": {"canonical_name": "Transformers v5.1 / v5.2 model-family integrations", "artifact_type": "FRAMEWORK", "organization": "Hugging Face"},
+      "events": [{"event_type": "PROJECT_RELEASE", "event_date": "2026-02-05", "source_indexes": [1]}, {"event_type": "PROJECT_RELEASE", "event_date": "2026-02-16", "source_indexes": [2]}],
+      "claims": [
+        {"text": "Transformers v5.2.0 was published on 2026-02-16 with explicit support additions for VoxtralRealtime, GLM-5, Qwen3.5/Qwen3.5 MoE, and the VibeVoice Acoustic Tokenizer.", "evidence_class": "PRIMARY_FACT", "source_indexes": [2]},
+        {"text": "The VoxtralRealtime implementation describes streaming ASR using an audio encoder plus Mistral-based language-model decoder with time conditioning and causal-convolution caches.", "evidence_class": "PROJECT_CLAIM", "source_indexes": [2]},
+        {"text": "Transformers v5.1.0 was published earlier in February and included additional model-family integrations such as GLM-OCR.", "evidence_class": "PRIMARY_FACT", "source_indexes": [1]},
+        {"text": "Vendor performance descriptions quoted inside the Transformers release notes are not independent Hugging Face validation.", "evidence_class": "INFERENCE", "source_indexes": [2]}
+      ],
+      "limitations": ["Framework integration proves implementation/support landed in Transformers; it does not independently validate the model vendors’ benchmark claims.", "v5.1.0 is supporting context; v5.2.0 is the materially stronger February integration milestone.", "The v5.2 release also contains breaking interface changes, so model support should not be reduced to a simple compatibility list."],
+      "unresolved_questions": [],
+      "candidate_recommendation": "CANDIDATE",
+      "why_this_special": "Transformers v5.2 is unusually useful ecosystem evidence because one mid-February release integrates GLM-5, Qwen3.5, Voxtral Realtime, and VibeVoice components, showing how rapidly the model-release wave entered the common implementation layer.",
+      "rationale": "Primary-source evidence supports Candidate Selection for a material February 2026 technical change."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M02:series-vllm-february-a6b9cdefea",
+      "artifact": {"canonical_name": "vLLM v0.15.1 / v0.16.0", "artifact_type": "FRAMEWORK", "organization": "vLLM Project"},
+      "events": [{"event_type": "PROJECT_RELEASE", "event_date": "2026-02-04", "source_indexes": [1]}, {"event_type": "PROJECT_RELEASE", "event_date": "2026-02-25", "source_indexes": [2]}],
+      "claims": [
+        {"text": "vLLM v0.16.0 was published on 2026-02-25; its release notes state that the branch was cut on 2026-02-08.", "evidence_class": "PRIMARY_FACT", "source_indexes": [2]},
+        {"text": "v0.16.0 added a WebSocket-based Realtime API with streaming-audio/Voxtral realtime support, Responses API improvements, tool-calling fixes, unified parallel drafting, and major XPU changes.", "evidence_class": "PRIMARY_FACT", "source_indexes": [2]},
+        {"text": "The release reports 30.8% end-to-end throughput improvement and 31.8% TPOT improvement for async scheduling plus pipeline parallelism; these are project-reported measurements.", "evidence_class": "PROJECT_CLAIM", "source_indexes": [2]},
+        {"text": "v0.15.1 was published on 2026-02-04 and serves as earlier-month context, but v0.16.0 carries the stronger February systems signal.", "evidence_class": "PRIMARY_FACT", "source_indexes": [1,2]}
+      ],
+      "limitations": ["The v0.16.0 branch-cut date means it cannot be used as evidence that every late-February model change was already integrated.", "Performance figures are project release-note measurements and are not independently reproduced.", "The series groups one patch and one major release; architecture should center v0.16.0."],
+      "unresolved_questions": [],
+      "candidate_recommendation": "CANDIDATE",
+      "why_this_special": "vLLM v0.16.0 provides strong systems evidence that realtime audio, Responses/tool APIs, speculative decoding, parallel scheduling, and heterogeneous hardware support were becoming first-class serving concerns in the same month.",
+      "rationale": "Primary-source evidence supports Candidate Selection for a material February 2026 technical change."
+    }
+  ]
+}

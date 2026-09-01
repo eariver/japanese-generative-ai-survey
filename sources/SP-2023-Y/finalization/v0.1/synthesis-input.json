@@ -1,0 +1,1023 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2023-Y",
+  "status": "post-draft-synthesis-input-ready",
+  "basis": {
+    "architecture_input_sha256": "e96a3b2cb75a10458a5acd95c47e897126055f3142458a021b92fc020c7272be",
+    "architecture_plan_sha256": "46d938945d5403fc9b7d07cea2b5474125bf8b0f74c0fed7c5088dfedb9f8130",
+    "article_prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c",
+    "article_drafts": [
+      {
+        "package_id": "frontier-interface",
+        "article_draft_sha256": "4ffb39b874582a16d85baef1e533de0f3bb088e3b6bfbb1e1f08b13a047cdfe5"
+      },
+      {
+        "package_id": "open-weight-ecosystem",
+        "article_draft_sha256": "188eddd4bb08d43629cf323b8a774fd898ed1eac26922e2048a7b31a03a7512d"
+      },
+      {
+        "package_id": "tool-action-layer",
+        "article_draft_sha256": "f381247209558cdef2dde7edda3a1fc17022e05ccc8a7bb3ecc2969d411bb3d9"
+      },
+      {
+        "package_id": "runtime-adaptation",
+        "article_draft_sha256": "e8db692f194ebb32edc1e24972a183a19e4c1da9e320dc8da9b8b974b1076488"
+      },
+      {
+        "package_id": "reasoning-retrieval-architecture",
+        "article_draft_sha256": "e4c7023a3087d6bad3778e38de85ea97493ea969c207ce3dbdac2d4e3a58adde"
+      },
+      {
+        "package_id": "generative-media",
+        "article_draft_sha256": "7c490bdbb80ea8e1217fa7bea54dc25db2d422457ef8a320bd262350f4408696"
+      },
+      {
+        "package_id": "evaluation-control",
+        "article_draft_sha256": "765297b24442273c97267314bc0f2cba0ff9081da6b92c8b9ef158fdc29cde09"
+      },
+      {
+        "package_id": "annual-chronology",
+        "article_draft_sha256": "f6f17d2b29ed808a9cde21be69cbd3b20d4051a4a36b19467b6832654c916035"
+      },
+      {
+        "package_id": "annual-synthesis",
+        "article_draft_sha256": "c2ba499e6a719404fa9be7760cf6a6045174455ad7c87435acce054b0be25cfb"
+      }
+    ]
+  },
+  "editorial_thesis": "2023年、生成AIは単一の巨大言語モデルやチャットボットを競う段階から、長文脈・マルチモーダルなフロンティア、公開weightsの多様なモデル群、外部ツールと接続するaction layer、低コスト化する学習・推論runtime、独立した生成メディア、そして評価・安全制御を含む多層のシステム／生態系へ拡張した。",
+  "cover_anchor_candidates": [
+    "frontier-interface",
+    "open-weight-ecosystem",
+    "tool-action-layer"
+  ],
+  "articles": [
+    {
+      "package_id": "frontier-interface",
+      "package_type": "LEAD",
+      "drafting_order": 2,
+      "page_target": 8,
+      "late_breaking": false,
+      "editorial_angle": "GPT-4、Claude、Geminiを順位表ではなく、長文脈・視覚/音声・API/端末配置を含む利用可能なインタラクション層の変化として比較する。",
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "headline": "フロンティア競争は、性能表からインタラクション設計へ",
+      "deck": "2023年のフロンティアモデル競争では、単一の能力指標だけでなく、長い入力、画像を含む入力、APIや製品を介した利用形態までが同時に設計対象になった。GPT-4系、Claude系、PaLM 2からGeminiへの流れを、モデルそのものとユーザーが触れるインタラクション層を分けて読む。",
+      "blocks": [
+        {
+          "block_id": "h-model-interface",
+          "block_type": "HEADING",
+          "text": "モデル能力と利用面を分けて読む",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "frontier-shift",
+          "block_type": "PARAGRAPH",
+          "text": "2023年の重要な変化は、フロンティアモデルの比較対象が「どのモデルが最も賢いか」という一軸から外れたことである。GPT-4系、Claude系、GoogleのPaLM 2からGeminiへの展開は、モデル能力だけでなく、入力可能な情報の種類、扱える文脈、APIや製品への配置を含む複合的な競争を可視化した。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "three-surfaces",
+          "block_type": "PARAGRAPH",
+          "text": "この競争を技術的に読むときは、少なくとも三つの面を分離すると整理しやすい。第一はモデルが扱える情報と推論能力、第二は利用者が実際に入力・出力できるインターフェース、第三はAPIや製品としての提供範囲である。同じモデル系列の名称が使われていても、この三面が同時に更新されるとは限らない。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "comparison-frame",
+          "block_type": "PARAGRAPH",
+          "text": "したがって、年次比較の単位も単純なモデル名ではなくなる。ある系列が長い入力を前面に出し、別の系列が画像入力や端末配置を強調した場合、それらを一つのベンチマーク順位だけで並べると設計上の差が消える。2023年は「何点取るモデルか」に加えて「どの情報を、どの場所で、どの形で扱わせるか」が競争軸になった年として読むべきである。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "h-context",
+          "block_type": "HEADING",
+          "text": "長文脈は「入る長さ」と「使える長さ」が違う",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "context-effective",
+          "block_type": "PARAGRAPH",
+          "text": "長いcontext windowは、それだけで長文脈を一様に有効利用できることを意味しない。年内には長文脈を前面に出す製品更新が続く一方、Lost in the Middleのような研究は、入力長の上限と情報を実際に取り出して使えることを区別すべきだという技術的境界を示した。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "context-system-effect",
+          "block_type": "PARAGRAPH",
+          "text": "この区別はapplication設計にも影響する。入力上限が伸びれば、分割・検索・要約の必要性がただ消えるわけではなく、重要情報の配置、検索との併用、長い履歴をどこまで保持するかという設計判断が残る。長文脈はRAG等の周辺技術を単純に不要にする機能ではなく、system側が選べる情報供給戦略を増やしたと捉える方が安全である。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "context-evaluation",
+          "block_type": "PARAGRAPH",
+          "text": "評価も同様に、最大token数と実用上の成功率を分けなければならない。長い入力を受け付けること、途中に置かれた情報を見つけること、複数箇所の証拠を統合することは別の課題である。2023年の長文脈競争は、仕様表に新しい数字を追加しただけでなく、「文脈能力をどう測るか」という評価問題を前景化した。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "h-multimodal",
+          "block_type": "HEADING",
+          "text": "multimodalはモデルと製品の二つの意味を持つ",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "multimodal-interface",
+          "block_type": "PARAGRAPH",
+          "text": "multimodalという語も、モデル内部の表現と製品インターフェースを分けて扱う必要がある。GPT-4VやGeminiのようなモデル系列の展開と、画像・音声を受け付ける製品機能は同じ時点・同じ提供範囲とは限らない。本稿では「モデルが何を扱えると発表されたか」と「利用者がどの形で使えたか」を別の状態として記述する。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "multimodal-design",
+          "block_type": "PARAGRAPH",
+          "text": "利用面から見ると、画像を受け付けられることは単に入力形式が一つ増えることではない。利用者が文字で説明していた対象を直接提示できるため、interactionの設計そのものが変わる。一方で、画像を見られることと、画像中のすべての情報を安定して解釈できることは同義ではないため、製品UIが能力の不確実性を吸収する役割も大きくなる。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "device-placement",
+          "block_type": "PARAGRAPH",
+          "text": "Geminiの年末の展開では、同じfamily名の下でもクラウド側のフロンティアモデルと端末側の小型配置を分けて考える必要があることも明瞭になった。これは「最大能力のモデルをどこでも使う」という発想から、latency、privacy、計算資源などの制約に応じてmodel tierを配置する発想への広がりとして読める。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "h-availability",
+          "block_type": "HEADING",
+          "text": "発表と利用可能性を同じ日付にしない",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "availability-boundary",
+          "block_type": "PARAGRAPH",
+          "text": "研究発表、モデル発表、preview、API提供、端末や製品への配置は別々の出来事である。2023年のフロンティア競争を後知恵で一本化せず、それぞれの時点で公開されていた提供形態を保存することで、技術的能力と実利用可能性を混同しない。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "lifecycle-reading",
+          "block_type": "PARAGRAPH",
+          "text": "このlifecycle分離は、年次史では特に重要である。あるfamilyが後の時点で広く利用可能になっていても、その状態を初回発表日に遡らせると、当時の開発者が実際に選べた技術を誤って再構成してしまう。Detailed Chronologyではfamilyの物語を保ちながら、公開状態の遷移を独立イベントとして残す。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "frontier-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "各社や著者が提示した性能・能力評価は一次資料に帰属する主張であり、本稿はそれを独立再現した比較順位へ換算しない。ここで比較するのは、2023年にどの設計面が競争軸として現れたかである。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    },
+    {
+      "package_id": "open-weight-ecosystem",
+      "package_type": "FEATURE",
+      "drafting_order": 3,
+      "page_target": 8,
+      "late_breaking": false,
+      "editorial_angle": "LLaMA/Llama 2、Falcon、Qwen、Mistral/Mixtralを通じ、weights公開、license、instruction tuning、専門化、規模・言語・効率の多様化を分離して描く。",
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "headline": "LLaMAからMixtralへ――open weightsは生態系になった",
+      "deck": "2023年は、公開されたweightsを起点に、規模、言語、専門化、効率、配布条件の異なるモデル系列が並走し始めた年だった。LLaMA/Llama 2、Falcon、Qwen、Mistral/Mixtralを通じて、open weightsをopen sourceやopen trainingと同一視せず、その多様化を追う。",
+      "blocks": [
+        {
+          "block_id": "h-open-boundary",
+          "block_type": "HEADING",
+          "text": "「open」を一つの属性にしない",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "open-not-one",
+          "block_type": "PARAGRAPH",
+          "text": "openという一語で括られがちなモデル群の公開範囲は同じではない。weightsが取得できること、利用条件が広いこと、学習データや学習手順まで再現可能であることは別の軸である。2023年のopen-weight拡大は、単一の公開モデルが現れたというより、異なる公開境界を持つ複数の系列が競争可能になった出来事として読む方が正確である。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "license-access",
+          "block_type": "PARAGRAPH",
+          "text": "モデルの技術的特徴だけでなく、licenseとaccessの条件が利用可能性を規定する。Llama 2以降の広い利用、FalconやQwenなど他系列の登場、Mistral系の公開は、weights公開の有無だけでは説明できない実装・再配布上の差を伴う。したがって本稿では「open」という形容ではなく、公開された成果物と利用条件を分けて記述する。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "reproducibility-axis",
+          "block_type": "PARAGRAPH",
+          "text": "この区別は再現性の議論でも重要になる。weightsが入手できれば推論やfine-tuningの実験はしやすくなるが、元のpretrainingを追試できることまでは保証しない。反対に、学習工程の透明性を高めるにはdata、code、recipe、checkpointなど別の成果物が必要になる。open-weight ecosystemは再現性を完成させたのではなく、どこまで公開されれば何を検証できるかという段階差を明確にした。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "h-ecosystem",
+          "block_type": "HEADING",
+          "text": "単発モデルからfamilyと派生用途へ",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "family-specialization",
+          "block_type": "PARAGRAPH",
+          "text": "年の進行とともに、open-weightモデルは単発のbase modelからfamilyへ拡張した。汎用モデルに加え、instruction tuning、codeなどの専門化、複数サイズ、複数言語への展開が進み、利用者は一つの代表モデルを選ぶのではなく、用途と計算資源に合わせて系列内外を比較するようになった。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "selection-problem",
+          "block_type": "PARAGRAPH",
+          "text": "選択肢が増えたことで、モデル選定の問いも変わった。最大規模のモデルを使うかどうかだけでなく、対象言語、用途、hardware予算、再配布条件、fine-tuningの必要性を合わせて判断する必要がある。これはopen-weightの価値を単純な「無料で使えるモデル」に還元せず、deployment設計の自由度として捉える視点につながる。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "downstream-stack",
+          "block_type": "PARAGRAPH",
+          "text": "weightsが手元に来ると、次に問題になるのは動かし方である。量子化、fine-tuning、serving、API互換性などの周辺実装が価値を左右し、open-weightの拡大はruntime/adaptation layerの需要を強くした。2023年のopen ecosystemはモデル配布だけで閉じず、その周辺にあるtoolingやdeployment技術と結び付いて初めて実利用の選択肢になった。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "h-diversity",
+          "block_type": "HEADING",
+          "text": "規模・言語・効率という複数の差別化軸",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "scale-language",
+          "block_type": "PARAGRAPH",
+          "text": "Falcon、Qwen、Mistralなどが加わることで、open-weight側にも単一企業・単一地域だけではない多様なfamilyが並んだ。この多様化は性能順位だけでなく、扱う言語やmodel size、利用条件といった異なる差別化軸を持ち込んだ。open ecosystemの競争は「誰が最強モデルを公開したか」より、どの制約条件に対して選択肢を提供したかを見る方が実態に近い。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "moe-transition",
+          "block_type": "PARAGRAPH",
+          "text": "年末のMixtralは、この多様化にarchitectureの選択肢をさらに加えた。ここで重要なのはMoEが既存方式を置き換えたと結論することではなく、公開weightsの世界でもparameter countだけでない効率設計が主要な比較軸へ入った点である。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "architecture-choice",
+          "block_type": "PARAGRAPH",
+          "text": "MoEのような設計が注目されると、モデル規模の表記だけでは計算コストや利用特性を説明しにくくなる。総parameter数、実際に使われる計算、memory、serving方法は別の変数であり、open-weight側でもmodel architectureとruntimeを一緒に評価する必要が生まれる。これは次章の「モデルを動かす技術」が独立した競争軸になったこととも接続する。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "h-meaning",
+          "block_type": "HEADING",
+          "text": "open-weight化が変えたのは比較可能性の範囲",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "ecosystem-meaning",
+          "block_type": "PARAGRAPH",
+          "text": "2023年の変化を年次的にまとめると、open-weightの重要性は「閉じたモデルの代替品ができた」ことだけではない。複数familyを同じhardwareやtoolchain上で比較し、用途別にadaptし、local/deployment条件を選ぶ余地が増えたことで、モデルの価値が周辺stackとの組み合わせで決まる生態系へ移った点にある。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "open-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "各プロジェクトや著者による性能比較は、その評価条件に基づく主張として扱う。公開範囲が広いことも、性能や再現性が自動的に保証されることを意味しない。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    },
+    {
+      "package_id": "tool-action-layer",
+      "package_type": "FEATURE",
+      "drafting_order": 4,
+      "page_target": 7,
+      "late_breaking": false,
+      "editorial_angle": "Toolformerの研究的発想からPlugins、Function Calling、GPTs/Assistantsへ、自然言語生成と外部実行を結ぶaction layerの形成を追う。",
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "headline": "生成から行動へ――Tool UseがAPI層を作った",
+      "deck": "2023年には、言語モデルが文章を返すだけでなく、外部機能を選び、構造化された呼び出しへ接続する設計が製品・APIの中心へ入った。Toolformerの研究的発想とOpenAIのPlugins、Function Calling、GPTs/Assistantsの展開を、tool selectionと実行主体を分けて整理する。",
+      "blocks": [
+        {
+          "block_id": "h-output-action",
+          "block_type": "HEADING",
+          "text": "文章を返すモデルから、外部処理を選ぶモデルへ",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "selection-execution",
+          "block_type": "PARAGRAPH",
+          "text": "tool useでは、モデルが「何を呼ぶべきか」を決めることと、外部システムが実際に副作用を伴う処理を実行することを分ける必要がある。自然言語の生成能力が高くても、実行権限、引数検証、失敗時の扱いは別のsystem layerである。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "pipeline-model",
+          "block_type": "PARAGRAPH",
+          "text": "実装を抽象化すると、model outputから外部actionへは少なくとも「候補toolの選択」「machine-readableな引数生成」「host側の検証」「実行」「結果の観測」「次の生成」という段階がある。この分解を持つと、モデルの誤りと実行基盤の誤り、権限設計の誤りを別々に扱える。tool useがsystem designとして重要なのは、この境界が明示的に設計できるためである。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "h-research-product",
+          "block_type": "HEADING",
+          "text": "研究上のtool useと、配備されたAPIは同じではない",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "research-product",
+          "block_type": "PARAGRAPH",
+          "text": "Toolformerはモデルが外部ツール利用を学習する研究方向を示した。一方、PluginsやFunction Callingは開発者が接続先と構造を定義する製品・API面の仕組みである。両者は同じ「tool use」という語で呼べても、研究上の問いと配備上の責任分界は異なる。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "research-to-interface",
+          "block_type": "PARAGRAPH",
+          "text": "研究側が「どのtoolをいつ使うか」を学習問題として扱うのに対し、product側では、開発者がschema、権限、呼び出し先を定義し、モデルを制御されたinterfaceへ閉じ込めることが重要になる。この差は、agentという語を使うときにも残る。自律性を高めることと、安全に外部機能へ接続することは別の設計目標である。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "h-structured",
+          "block_type": "HEADING",
+          "text": "structured outputは信頼性の境界になる",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "structured-interface",
+          "block_type": "PARAGRAPH",
+          "text": "Function Callingのような構造化インターフェースは、自由文から外部実行へ直接飛ぶのではなく、モデル出力を機械可読な境界へ落とし込む考え方を前面に出した。この境界は利便性だけでなく、検証、再試行、権限管理を実装する場所にもなる。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "validation-loop",
+          "block_type": "PARAGRAPH",
+          "text": "構造化された呼び出しでも、引数が妥当とは限らない。そのためhost側は型だけでなく、許容範囲、対象resource、実行権限、confirmationの要否を判断する必要がある。モデルを「toolを呼べる主体」として扱うほど、validationやauthorizationをモデル外へ置く設計原則が重要になる。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "observation-loop",
+          "block_type": "PARAGRAPH",
+          "text": "toolの戻り値を次のprompt contextへ戻す設計では、外部世界の観測と生成を反復できる。これは静的な質問応答から一歩進む一方、失敗した実行結果や不完全な観測を次の判断材料にする危険も生む。loopを長くするほど、stop condition、error handling、human confirmationをどこに置くかがsystem behaviorを左右する。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "h-platform",
+          "block_type": "HEADING",
+          "text": "tool accessがapplication-facing layerへ広がる",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "action-layer",
+          "block_type": "PARAGRAPH",
+          "text": "年末までにGPTsやAssistantsへ連なる製品面が現れたことで、tool accessは個別デモではなくapplication-facing layerとして認識されやすくなった。2023年の転換は「モデルが何でも自律実行できるようになった」ことではなく、生成と実行の間に明示的なinterfaceが必要だと広く実装されたことである。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "application-contract",
+          "block_type": "PARAGRAPH",
+          "text": "このinterfaceがあると、application側はモデルを万能なブラックボックスとして扱わず、「利用可能なtool集合」と「許可された引数」を契約として持てる。結果としてmodel providerのAPI設計とapplication architectureが接続され、tool schemaはprompt engineeringだけでなくsoftware interface designの一部になる。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "agent-boundary",
+          "block_type": "PARAGRAPH",
+          "text": "ここからagent的なsystemへ発展するとしても、2023年のEvidenceから無制限な自律実行を一般化するべきではない。むしろtool/action layerの成立は、model reasoning、external execution、permission、observationを分けて組み合わせる必要性を示した。後のagent設計を理解する土台は、まずこの責任分界にある。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "tool-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "tool-useの信頼性や有効性に関する評価は、研究・プロジェクト・vendorの条件に依存する。本稿では機構の成立と公開形態を扱い、それらの性能主張を独立再現済みの事実とはみなさない。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    },
+    {
+      "package_id": "runtime-adaptation",
+      "package_type": "DEEP_DIVE",
+      "drafting_order": 5,
+      "page_target": 8,
+      "late_breaking": false,
+      "editorial_angle": "学習済みモデルそのものではなく、fine-tuning memory、attention kernel、KV-cache/serving、small-model設計が実用可能性を決めるsystems layerとして立ち上がったことを示す。",
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "headline": "モデルを動かす技術が競争軸になった",
+      "deck": "2023年には、モデルの規模や能力だけでなく、限られたmemoryでどう適応させ、attentionをどう高速化し、同時要求をどう捌くかが実用性を左右する独立した技術面になった。QLoRA、FlashAttention-2、vLLM/PagedAttention、Phi-2を、学習・推論・servingの異なる制約への応答として読む。",
+      "blocks": [
+        {
+          "block_id": "h-cost-planes",
+          "block_type": "HEADING",
+          "text": "training・adaptation・inference・servingは別の予算を持つ",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "adapt-vs-infer",
+          "block_type": "PARAGRAPH",
+          "text": "QLoRAが向き合うのは主として既存モデルを限られた計算資源でfine-tuningする側の制約であり、FlashAttention-2はattention計算の効率、vLLM/PagedAttentionは推論時のmemory管理とservingを主眼とする。同じ「効率化」でも、最適化する段階とボトルネックは異なる。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "budget-decomposition",
+          "block_type": "PARAGRAPH",
+          "text": "model lifecycleを分解すると、pretrainingの巨大な一回費用だけでなく、用途別のadaptation、各requestのinference、継続的なserving capacityが別々に現れる。ある手法が一つの段階を安くしても、別の段階のcostを自動的に下げるわけではない。この分解があると、効率化技術を「速いモデル」という一語で混ぜずに比較できる。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "h-adaptation",
+          "block_type": "HEADING",
+          "text": "adaptation costを下げると用途別モデルが作りやすくなる",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "qlora-role",
+          "block_type": "PARAGRAPH",
+          "text": "QLoRAが示した方向の意味は、巨大モデルのpretrainingそのものを安価にすることではなく、既存weightsを用途に合わせて調整する際のmemory pressureを下げることにある。adaptationの入口が広がれば、単一の汎用モデルをそのまま使う以外に、domainやtaskごとの調整を検討しやすくなる。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "adaptation-boundary",
+          "block_type": "PARAGRAPH",
+          "text": "ただし、memory効率が改善しても、data preparation、evaluation、deploymentまで自動化されるわけではない。fine-tuningを実行可能にする技術と、望ましいbehaviorを得るための学習設計は別問題である。2023年は「調整できること」と「調整後に何が良くなるか」を分ける必要性も強めた。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "h-kernel",
+          "block_type": "HEADING",
+          "text": "同じモデルでもkernelで実行特性は変わる",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "flash-role",
+          "block_type": "PARAGRAPH",
+          "text": "FlashAttention-2が属する層では、model architectureを変えずにattention computationの実装を改善する。これはalgorithm名やparameter数だけ見ても分からない差である。GPU上のmemory movementやparallelismの扱いが変われば、同じ数学的処理でも実行時間と利用可能なsequence長に影響しうる。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "kernel-system",
+          "block_type": "PARAGRAPH",
+          "text": "この種の最適化は、モデル研究とsystems研究の境界を曖昧にする。新しいmodel capabilityを提案していなくても、既存モデルを現実的なlatencyやmemory budgetで動かせる範囲を変えるからである。2023年には「モデルの論文」と「実装の論文」を別世界として扱いにくくなった。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "h-serving",
+          "block_type": "HEADING",
+          "text": "一件の推論と、多数の要求を捌くservingは違う",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "serving-layer",
+          "block_type": "PARAGRAPH",
+          "text": "モデルが一度応答できることと、多数の要求を安定して処理できることも別問題である。vLLM/PagedAttentionの登場は、KV-cacheを含むruntime側の資源管理が、モデル選定と同じ程度にdeployment設計へ影響しうることを可視化した。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "throughput-latency",
+          "block_type": "PARAGRAPH",
+          "text": "servingではthroughputとlatency、memory occupancy、request長、同時実行数が相互に影響する。そのためprojectが示すthroughput改善をmodel capabilityの向上として読むべきではない。runtime optimizationは「同じ能力を何人に、どの待ち時間で提供できるか」という別の性能面を扱う。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "api-consequence",
+          "block_type": "PARAGRAPH",
+          "text": "serving layerが成熟すると、application側は巨大モデルの内部実装よりAPI surfaceを意識するようになる。同時にprovider側ではcache、batching、schedulerなどがeconomicsを左右する。tool/action layerがapplication interfaceを作ったのに対し、serving layerはそのinterfaceを継続的に成立させる裏側の基盤である。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "h-small",
+          "block_type": "HEADING",
+          "text": "小型モデルは別の制約条件を選ぶ設計",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "small-model",
+          "block_type": "PARAGRAPH",
+          "text": "Phi-2のような小型モデルへの関心は、parameter scaleだけを増やす以外の設計空間も示した。ここでは小型であること自体を優位性と断定せず、data qualityや用途、hardware制約と組み合わせて「必要な能力をどの資源予算で実現するか」という問いが強まったことを重視する。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "portfolio-view",
+          "block_type": "PARAGRAPH",
+          "text": "フロンティア最大モデルと小型モデルは、必ずしも同じ役割を競う必要がない。cloudで最大能力を使う設計、端末や局所環境で小さなモデルを使う設計、taskに応じて複数tierを組み合わせる設計は別々に成立する。model portfolioという見方をすると、runtimeとmodel sizeは一体のdeployment decisionになる。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "systems-layer",
+          "block_type": "PARAGRAPH",
+          "text": "2023年のsystems面の変化は、モデル能力を「学習済みweightsの属性」だけで語れなくした。適応コスト、kernel、cache、serving、モデルサイズが相互に作用し、同じモデルでも運用可能性が大きく変わるという認識が、研究と実装の両側で前面に出た。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "benchmark-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "QLoRA、FlashAttention-2、vLLM、Phi-2に関する速度・memory・品質などの数値は、それぞれの著者やproject/vendorが設定した実験条件に依存する。異なるhardware・workload・benchmarkを横断して一つの優劣表へ変換しない。",
+          "attribution_mode": "MIXED"
+        }
+      ]
+    },
+    {
+      "package_id": "reasoning-retrieval-architecture",
+      "package_type": "DEEP_DIVE",
+      "drafting_order": 6,
+      "page_target": 8,
+      "late_breaking": false,
+      "editorial_angle": "Tree of Thoughts、DPO、Self-RAG、Mambaを一列の流行として扱わず、推論時探索・post-training・retrieval-control・sequence architectureという別レイヤへの設計空間拡張として整理する。",
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "headline": "推論・検索・学習後最適化、そしてTransformerの外側へ",
+      "deck": "2023年の研究は、一つの「次世代LLM手法」へ収束したのではない。Tree of Thoughts、DPO、Self-RAG、Mambaは、それぞれ推論時探索、post-training、retrieval-control、sequence architectureという異なる層を広げた。設計空間の拡張として並べることで、何が同じ問題で何が別問題かを明確にする。",
+      "blocks": [
+        {
+          "block_id": "h-map",
+          "block_type": "HEADING",
+          "text": "同じ「賢くする研究」でも操作する場所が違う",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "layer-map",
+          "block_type": "PARAGRAPH",
+          "text": "Tree of Thoughts、DPO、Self-RAG、Mambaを横並びにするとき、まず操作対象を分ける必要がある。Tree of Thoughtsは推論時の探索、DPOは学習後の選好調整、Self-RAGは生成と検索の制御、Mambaはsequenceを処理するarchitectureそのものに焦点を置く。これらを一つの性能トレンドとして混ぜると、どの層を変えて結果を得ているのかが見えなくなる。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "design-space",
+          "block_type": "PARAGRAPH",
+          "text": "この分解が2023年を読むうえで重要なのは、scaleだけが改良手段ではなくなったからである。学習済みモデルを固定して推論過程を変える、preference dataでbehaviorを調整する、外部知識との往復を設計する、sequence operatorを変えるという複数の入口が同時に見えるようになった。競争はparameter countだけでなく、どのlayerへ計算と制御を置くかへ広がった。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "h-reasoning",
+          "block_type": "HEADING",
+          "text": "推論時に探索を増やすという設計",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "reasoning-search",
+          "block_type": "PARAGRAPH",
+          "text": "Tree of Thoughtsは、単一の逐次生成だけでなく、複数の候補状態を探索・評価する推論時の計算構造を研究対象にした。この方向は「モデルそのものを大きくする」以外に、推論プロセスの編成で結果を変える設計余地があることを示す。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "reasoning-cost",
+          "block_type": "PARAGRAPH",
+          "text": "推論時探索を導入すると、品質だけでなく計算予算の配分が問題になる。候補を増やす、途中評価を入れる、探索を打ち切るといった選択は、latencyと計算量を増やしうる。つまりreasoning methodはmodel capabilityの上に乗るruntime policyでもあり、常に最大限探索することが実用上の最適解とは限らない。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "reasoning-control",
+          "block_type": "PARAGRAPH",
+          "text": "探索を使う場合、どの候補を良いと判定するかという評価器も必要になる。その評価が同じモデルの自己評価であれ外部規則であれ、生成と選択を分けることでsystem側にcontrol pointが生まれる。tool/action layerと同じく、強い生成能力だけでなく、途中状態を観測して次の処理を選ぶ構造が重要になる。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "h-posttraining",
+          "block_type": "HEADING",
+          "text": "post-trainingは推論方法ではなくbehaviorを変える",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "post-training",
+          "block_type": "PARAGRAPH",
+          "text": "DPOはpretrainingや推論時探索とは異なり、人間の選好情報を用いるpost-trainingの設計を簡素化する方向に位置する。ここで扱うのはモデルが推論中に考える方法ではなく、どの応答傾向を学習後に選好させるかという別レイヤである。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "preference-interface",
+          "block_type": "PARAGRAPH",
+          "text": "preference optimizationでは、何を好ましい応答とみなすかが学習interfaceになる。algorithmを簡素化しても、preference dataの品質、比較基準、対象domainが消えるわけではない。post-trainingの進歩は「alignmentが解決した」ことではなく、base modelの後段でbehaviorを設計する技術が独立した研究領域になったことを示す。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "h-retrieval",
+          "block_type": "HEADING",
+          "text": "検索を固定pipelineから制御loopへ",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "retrieval-control",
+          "block_type": "PARAGRAPH",
+          "text": "Self-RAGはretrievalを常時付加する固定pipelineではなく、生成過程と検索・自己評価を結び付ける制御問題として扱う方向を示した。retrievalの有無、参照結果の使い方、生成の自己点検を一つのsystem loopとして設計する発想である。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "retrieval-choice",
+          "block_type": "PARAGRAPH",
+          "text": "検索を使うsystemでは、検索するかどうか、何をqueryにするか、得たdocumentをどこまで信用するか、回答に反映できたかという判断が連鎖する。context windowが伸びても、この判断連鎖が自動的に不要になるわけではない。long contextとretrievalは代替関係だけでなく、情報供給の異なる制御手段として併存する。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "h-architecture",
+          "block_type": "HEADING",
+          "text": "sequence architectureの探索が再び広がる",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "mamba-space",
+          "block_type": "PARAGRAPH",
+          "text": "Mambaは年末に、attention中心のTransformerとは異なるsequence modelingの選択肢として注目を集めた。ただし2023年時点のEvidenceから「Transformerが置き換えられた」と結論することはできない。重要なのは、長いsequenceと計算効率をめぐるarchitecture探索が再び広がったことである。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "architecture-runtime",
+          "block_type": "PARAGRAPH",
+          "text": "新しいsequence architectureを評価するときも、論文上の計算量だけでなくkernelやhardwareとの相性、学習安定性、既存toolchainとの統合を考える必要がある。architecture innovationとruntime engineeringは分離できず、Mambaの登場は「モデルの構造」と「モデルを動かす実装」の境界を改めて意識させる出来事でもあった。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "synthesis-design-space",
+          "block_type": "PARAGRAPH",
+          "text": "四つの方向をまとめると、2023年の研究は「より大きなTransformerを作る」以外の設計変数を増やした。推論時に計算を使う、post-trainingでbehaviorを変える、外部検索とのloopを作る、sequence operator自体を変える。それぞれの成果を同じランキングに押し込むのではなく、どのlayerを操作する手法かを識別することが、その後の組み合わせを理解する前提になる。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "reason-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "各論文・projectが報告する性能向上は、それぞれの課題設定と評価条件に基づく。ここでは互いに異なるレイヤの研究を共通ランキングへ置かず、2023年に設計可能な場所が増えたという年次的意味を抽出する。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    },
+    {
+      "package_id": "generative-media",
+      "package_type": "FEATURE",
+      "drafting_order": 7,
+      "page_target": 8,
+      "late_breaking": false,
+      "editorial_angle": "DALL-E 3、SDXL/Turbo、Stable Video Diffusion、Firefly/Generative Fillを通じ、画像・動画生成が研究デモからAPI・open model・既存制作ツールへの統合へ分岐したことを描く。",
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "headline": "生成メディアが、独立した製品・モデルスタックになった",
+      "deck": "2023年の画像・動画生成では、単発の研究デモだけでなく、open model、API、会話UI、既存制作ソフトへの統合という複数の公開形態が並んだ。DALL-E 3、SDXL/Turbo、Stable Video Diffusion、Adobe Firefly/Generative Fillを通じて、生成メディアが独立した技術・製品層へ分岐した過程を追う。",
+      "blocks": [
+        {
+          "block_id": "h-surfaces",
+          "block_type": "HEADING",
+          "text": "同じ生成でも公開surfaceが違う",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "multiple-surfaces",
+          "block_type": "PARAGRAPH",
+          "text": "生成メディアの進歩は「新しい画像モデルが出た」という一列の出来事ではない。DALL-E 3は会話型製品との接続、SDXL系はmodel releaseと高速化、Stable Video Diffusionは動画生成、Fireflyは既存クリエイティブツールとの統合という異なるsurfaceを持つ。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "release-vs-integration",
+          "block_type": "PARAGRAPH",
+          "text": "研究・モデル公開、API提供、製品機能への統合は区別すべきである。ユーザーが利用できる生成機能の価値はmodel qualityだけでなく、prompt作成支援、編集workflow、配布形態、既存アプリケーションとの接続によっても変わる。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "distribution-axis",
+          "block_type": "PARAGRAPH",
+          "text": "配布形態の違いは、誰がどこでgeneration pipelineを制御できるかにも関係する。APIや統合製品ではprovider側の更新がそのまま利用体験へ反映されやすい。一方、download可能なmodelでは実行環境やworkflowを利用者側が組み替えられる余地が大きい。2023年は画像生成でこの二つの経路が明確に並走した。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "h-workflow",
+          "block_type": "HEADING",
+          "text": "model qualityから制作workflowへ",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "conversation-workflow",
+          "block_type": "PARAGRAPH",
+          "text": "DALL-E 3のように会話UIと接続されると、画像生成は一回のpromptから画像を返すだけでなく、意図の言語化、修正指示、再生成という対話loopの中へ入る。ここではlanguage modelとimage modelの役割を同一視せず、promptを組み立てる層と画像を生成する層が連携するsystemとして見ることが重要になる。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "editing-workflow",
+          "block_type": "PARAGRAPH",
+          "text": "Firefly/Generative Fillのような既存編集環境への統合では、生成は完成画像を一から作る機能だけではなく、局所編集や制作工程の一操作になる。生成AIが「専用サイトで使うモデル」から「既存softwareの中に埋め込まれた機能」へ移ることで、評価対象も単体outputからworkflow全体へ広がる。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "speed-workflow",
+          "block_type": "PARAGRAPH",
+          "text": "SDXL Turboのような高速化方向やGenerative Fillのような編集統合は、生成品質だけでなくiteration timeとworkflowへの組み込みが競争軸になることを示した。生成モデルは単体アプリではなく、制作工程の一部として評価され始めた。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "latency-creative-loop",
+          "block_type": "PARAGRAPH",
+          "text": "制作では一回の最高品質より、試行回数と待ち時間が重要な場面も多い。生成が速くなれば、promptや編集条件を変えて複数案を比較するloopを短くできる。そのためfast generationは単なるbenchmark上の速度ではなく、人間がmodel outputを評価し次の指示を出すinteraction cadenceを変える技術でもある。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "h-image-video",
+          "block_type": "HEADING",
+          "text": "画像から動画へ――同じ生成でも制約は増える",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "image-video",
+          "block_type": "PARAGRAPH",
+          "text": "画像生成と動画生成も同じ成熟度として扱えない。Stable Video Diffusionの登場は、画像で進んだ生成モデルの公開・利用パターンが動画へ拡張され始めたことを示すが、対象となる出力、計算量、評価方法、製品化の境界は異なる。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "temporal-output",
+          "block_type": "PARAGRAPH",
+          "text": "動画では個々のframe品質だけでなく、時間方向の一貫性やmotionを扱う必要があるため、静止画と同じ評価軸だけでは足りない。さらにsequenceが増えるほど計算・memory・出力sizeも大きくなる。2023年のvideo generationは完成された代替手段というより、生成メディアstackが時間軸を持つ出力へ拡張し始めた段階として位置付ける。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "h-stack",
+          "block_type": "HEADING",
+          "text": "生成メディアも多層systemとして見る",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "media-stack",
+          "block_type": "PARAGRAPH",
+          "text": "年末までの流れをまとめると、生成メディアはmodel weightsだけでなく、prompt/interface、runtime、編集workflow、distributionを含むstackへ広がった。open model、hosted API、会話型製品、desktop application integrationは同じ技術を別の場所に載せただけではなく、利用者が制御できる範囲とiteration loopを変える異なるproduct architectureである。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "evaluation-media",
+          "block_type": "PARAGRAPH",
+          "text": "この多層化により、比較の仕方も難しくなる。model outputの好み、生成速度、編集しやすさ、tool integrationは別の指標であり、一つのscoreへまとめると製品の違いを見失う。年間史では「どのモデルが最も高品質か」ではなく、生成能力がどのworkflowへ組み込まれたかを軸に変化を追う。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "media-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "画質、速度、創造性、安全性などの比較値は、各vendor/project/authorの条件に依存する。本稿はrelease形態と技術方向を整理し、異なる評価条件を独立した共通ランキングへ換算しない。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    },
+    {
+      "package_id": "evaluation-control",
+      "package_type": "FEATURE",
+      "drafting_order": 8,
+      "page_target": 8,
+      "late_breaking": false,
+      "editorial_angle": "Arena/MT-Benchの比較評価と、Constitution/RSP/Preparedness/agent governanceを、性能競争の付録ではなく強いモデルを運用するためのevaluation/control layerとして並置する。",
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "headline": "能力を測り、制御する層が追いつき始めた",
+      "deck": "強いモデルが増えるほど、「何が強いのかをどう比較するか」と「どの能力をどの条件で運用するか」が独立した問題になった。Chatbot Arena/MT-Benchと、OpenAI・Anthropicのalignment / governance面の取り組みを、evaluation layerとcontrol layerの形成として並べる。",
+      "blocks": [
+        {
+          "block_id": "h-evaluation",
+          "block_type": "HEADING",
+          "text": "強いモデルが増えると比較方法そのものが問題になる",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "evaluation-shared",
+          "block_type": "PARAGRAPH",
+          "text": "Chatbot ArenaとMT-Benchは、モデル比較を個々の発表資料だけに閉じず、複数モデルを同じ評価surfaceへ載せる方向を押し出した。とくに人間の選好を含む比較は、単一の自動benchmarkとは異なる情報を与える一方、それ自体が絶対的な能力真値になるわけではない。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "evaluation-surface",
+          "block_type": "PARAGRAPH",
+          "text": "共通の比較surfaceが重要なのは、vendorごとの発表値だけでは条件を揃えにくいからである。同じpromptを与える、複数modelをblindに比較する、一定形式のtaskを使うといった仕組みは、少なくとも比較の入口を共有できる。ただし、その入口を共有しても全用途の能力を一つの数字にまとめられるわけではない。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "benchmark-boundary",
+          "block_type": "PARAGRAPH",
+          "text": "benchmark scoreやhuman preferenceは、task設計、prompt、比較対象、評価者構成などに依存する。Arena/MT-Benchを共通比較基盤として評価しても、そこから全用途の総合順位を導くことはしない。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "preference-meaning",
+          "block_type": "PARAGRAPH",
+          "text": "人間の選好を使う評価には、正解ラベルを作りにくい会話品質を比較できる利点がある一方、評価者が何を好むかという別の変数が入る。文章の自然さ、慎重さ、詳細さ、task達成度は同じ尺度ではない。human preferenceを取り入れることは評価を完全にするのではなく、能力測定に人間側の目的関数を明示的に加えることである。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "h-control",
+          "block_type": "HEADING",
+          "text": "評価とcontrol policyは役割が違う",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "control-policy",
+          "block_type": "PARAGRAPH",
+          "text": "OpenAIとAnthropicの年内のalignment / governance関連の取り組みは、モデルの能力向上とは別に、利用・評価・scale-upの条件を定義するcontrol surfaceが必要だという問題設定を明示した。研究結果、内部評価、公開policyは同じ証拠種別ではないため、本稿では区別して扱う。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "evaluation-vs-policy",
+          "block_type": "PARAGRAPH",
+          "text": "evaluationはmodel behaviorを観測する仕組みであり、policyは観測結果や想定riskをどの運用判断へ結び付けるかを定める仕組みである。両者を混同すると、scoreが高いことを安全性の証明とみなしたり、policyが存在することを技術的有効性の証明とみなしたりする。2023年は測定と運用判断をつなぐinterfaceが必要だと認識され始めた段階である。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "h-threshold",
+          "block_type": "HEADING",
+          "text": "能力の増加と運用条件を結び付ける",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "risk-thresholds",
+          "block_type": "PARAGRAPH",
+          "text": "年末に向かうにつれ、将来のより強い能力をどのthresholdで評価し、どの運用条件と結び付けるかが公開policyの論点として前面に出た。ここで重要なのは具体的な安全性が達成済みとみなすことではなく、capability growthとcontrol obligationを結び付ける枠組み自体が明示されたことである。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "threshold-design",
+          "block_type": "PARAGRAPH",
+          "text": "threshold型の考え方では、すべてのmodel releaseへ同じcontrolを適用するのではなく、能力やriskの水準に応じて評価・配備条件を強めることを目指す。これは計測がcontrolの前提になることを意味する一方、どの能力を測るか、thresholdをどう定義するか、想定外の能力をどう扱うかという未解決問題を残す。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "agentic-control",
+          "block_type": "PARAGRAPH",
+          "text": "tool/action layerが広がるほど、出力contentだけでなく外部actionを伴うbehaviorをどう評価するかも重要になる。agentic riskを考える場合、モデルが何を生成したかだけでなく、何を選択し、どの権限で実行し、失敗からどう続行したかというsystem-level observationが必要になる。control layerはmodel cardの付録ではなくapplication architectureへ近づいていく。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "h-coupling",
+          "block_type": "HEADING",
+          "text": "能力競争とevaluation/controlは同時に進む",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "coupled-layer",
+          "block_type": "PARAGRAPH",
+          "text": "2023年のevaluation/controlを能力向上の「後処理」とみなすと、年内の構造変化を見誤る。フロンティアmodel、open-weight family、tool-using systemが増えるほど、比較対象と運用条件も増えた。評価基盤とcontrol policyは強いmodelの後に追いついたというより、多様化したsystemを運用可能な対象として扱うための別layerとして同時に形成された。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "open-questions",
+          "block_type": "PARAGRAPH",
+          "text": "年末時点で残った問いは、どのbenchmarkを信頼するかだけではない。用途別評価をどう組み合わせるか、human preferenceの偏りをどう理解するか、capability評価をどの配備条件へ結び付けるか、policyが想定していない新しいbehaviorをどう扱うか。evaluation/control layerの成立は問題の解決ではなく、管理すべき変数を明示したことに意味がある。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "control-boundary",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "評価結果と安全・alignment上の主張は、それぞれのproject/vendorが示した条件と範囲に帰属する。本稿はpolicyの存在や問題設定を一次資料で確認するが、有効性を独立に実証したとは扱わない。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    },
+    {
+      "package_id": "annual-chronology",
+      "package_type": "WATCHLIST_CHRONOLOGY",
+      "drafting_order": 9,
+      "page_target": 8,
+      "late_breaking": false,
+      "editorial_angle": "本文でstory/trajectoryへ圧縮した release、paper initial publication、preview、API/product availability、policy/control milestoneを日付順に再展開する。",
+      "boundaries": [],
+      "headline": "Detailed Chronology――圧縮した物語の外側に、出来事を残す",
+      "deck": "年間本文はstoryとtrajectoryへ圧縮するが、歴史記録としてはrelease、paper initial publication、preview、API/product availability、policy/control milestoneを同一視できない。本節では、年次叙述で失われやすいevent-levelの差を読むための基準を明示する。",
+      "blocks": [
+        {
+          "block_id": "distinct-states",
+          "block_type": "PARAGRAPH",
+          "text": "年間の出来事は、研究論文の初出、モデル発表、preview、一般提供、API利用可能化、製品統合、policy公開など複数の状態に分かれる。物語上ひとつの系列にまとめる場合でも、これらを同じ日付・同じ公開状態へ潰してはならない。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "no-backprojection",
+          "block_type": "PARAGRAPH",
+          "text": "後年に広く普及した機能であっても、2023年のある時点で同じ範囲に提供されていたとは限らない。年末時点の状態や2026年から見た重要性を、年初の利用可能性へ逆投影しないことをchronologyの基本原則とする。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "date-precision",
+          "block_type": "PARAGRAPH",
+          "text": "一次資料が日付まで示す場合と、月単位・publication lifecycleのみが確認できる場合を区別する。精度が不足する出来事に推測で日付を補わず、sourceが持つ時間精度をそのまま残す。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "chronology-materialization",
+          "block_type": "PARAGRAPH",
+          "text": "本節のevent indexは、受理済みScreeningで明示的なpublished_atを持つretain済み記録から決定論的に再展開する。日付不明の記録は推測して補わず監査に未解決として残し、source locatorは読者向け本文とは別のauditで保持する。",
+          "attribution_mode": "NONE"
+        }
+      ]
+    },
+    {
+      "package_id": "annual-synthesis",
+      "package_type": "SECTION",
+      "drafting_order": 10,
+      "page_target": 6,
+      "late_breaking": false,
+      "editorial_angle": "各章の再要約ではなく、年初と年末で設計空間がどう変わったか、何が未解決のまま2024へ持ち越されたかを統合する。",
+      "boundaries": [],
+      "headline": "2023年総括――「モデル」から「システム／生態系」へ",
+      "deck": "2023年を一つの年として読むと、生成AIの設計対象はモデルweightsだけに留まらなくなった。インタラクション、公開モデル群、tool/action、runtime、retrieval/post-training、生成メディア、evaluation/controlが別々の層として立ち上がり、相互の制約を受けるシステムとして見えるようになった。",
+      "blocks": [
+        {
+          "block_id": "h-cross-period",
+          "block_type": "HEADING",
+          "text": "一年の前半と後半で、同じ言葉の指す範囲が広がった",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "cross-period",
+          "block_type": "PARAGRAPH",
+          "text": "年初には「より強い基盤モデル」が議論の中心に見えやすかったが、年を通じて利用形態と実装層が増えた。年末を同じ尺度で見ると、モデルの出力品質だけでなく、どの入力を扱い、どの外部機能へ接続し、どの資源で運用し、どう評価・制御するかまでが設計問題として分化している。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "phase-a",
+          "block_type": "PARAGRAPH",
+          "text": "1〜3月の段階では、フロンティア側の能力拡張とopen-weight側の追試・派生利用が並行して見え始めた。この時点では両者を「閉鎖モデル対公開モデル」という対立で読むこともできたが、年が進むにつれて両陣営ともruntime、tool、evaluationなど共通のsystem課題へ直面する。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "phase-b",
+          "block_type": "PARAGRAPH",
+          "text": "4〜6月になると、fine-tuning、evaluation、tool interface、servingのような周辺技術が独立した名前と実装を持ち始める。ここで重要なのは、モデル本体の進歩が止まったのではなく、強いモデルを利用可能なsystemへ変換する作業が別の技術課題として可視化されたことである。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "phase-cd",
+          "block_type": "PARAGRAPH",
+          "text": "後半ではopen-weight familyの多様化、長文脈、生成メディアの製品統合、tool/actionの拡張が同時に進み、年末にはMoEや代替sequence architecture、capability-awareなcontrol policyまでが同じ技術史の中に現れる。年内の出来事を四半期ごとに切るより、modelを中心に複数layerが増殖した過程として見る方が連続性を保てる。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "h-reclass",
+          "block_type": "HEADING",
+          "text": "媒体別の出来事を、設計layerへ再分類する",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "reclassification",
+          "block_type": "PARAGRAPH",
+          "text": "この変化は、2023年の出来事を「モデル発表」「論文」「画像生成」といった媒体別に並べるだけでは捉えにくい。annual scaleでは、同じモデル系列でもinterface、deployment、runtime、controlの異なる層にまたがるため、生成AIを多層system/ecosystemとして再分類する方が技術的な因果を説明しやすい。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "layer-model",
+          "block_type": "PARAGRAPH",
+          "text": "本版が採用した七つのtrajectoryは、それぞれ独立した流行一覧ではない。frontier interactionは入力と利用面、open-weight ecosystemはmodel choice、tool/actionは外部実行、runtime/adaptationはresource、reasoning/retrieval/architectureはalgorithmic control、generative mediaは出力workflow、evaluation/controlは測定と運用条件を扱う。違いは「何を最適化するlayerか」にある。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "same-artifact-many-layers",
+          "block_type": "PARAGRAPH",
+          "text": "一つのartifactが複数layerへ影響することもある。長文脈modelはinterfaceだけでなくserving memoryとevaluationを難しくし、open-weight modelはruntime toolingとadaptationを活性化し、tool-using applicationはcontrol policyに新しい観測対象を加える。したがって「一つの出来事を一つの章に分類する」のではなく、章ごとに同じsystemを異なる断面から見る方がよい。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "h-cross-layer",
+          "block_type": "HEADING",
+          "text": "layer間の依存関係が生成AIをsystemにした",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "cross-layer",
+          "block_type": "PARAGRAPH",
+          "text": "open weightsの拡大はruntime・fine-tuning効率への需要を強め、tool interfaceの整備はreliabilityとgovernanceの境界を明確にし、長文脈やmultimodal化は評価方法を複雑にした。各層は独立に発展したのではなく、別の層へ新しい制約を渡しながら設計空間を広げた。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "capability-to-runtime",
+          "block_type": "PARAGRAPH",
+          "text": "能力面が進歩すると、runtime側にはより大きなmemory、長いsequence、複数modalityを扱う要求が生まれる。runtime側の効率が上がると、今度はmodelをより多くのapplicationへ配置できる。能力とsystemsは主従関係ではなく、片方の改善がもう片方の利用可能な設計領域を広げる循環を持つ。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "action-to-control",
+          "block_type": "PARAGRAPH",
+          "text": "tool/action layerでは、生成した文章が外部世界への操作へ接続されることで、controlの対象がcontentからbehaviorへ広がる。評価も「回答が正しいか」だけでなく「どのtoolを選び、どの権限で何を実行したか」を観測する必要が生じる。agent的systemを理解するには、model reasoningだけでなくinterfaceとcontrolを同時に見る必要がある。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "media-to-workflow",
+          "block_type": "PARAGRAPH",
+          "text": "生成メディアでも同じ構造が見える。画像modelの品質が上がるだけでなく、会話UI、編集software、低latency generationが結び付くことで、model outputは制作workflowの一要素になる。application integrationが進むほど、model単体のbenchmarkだけでは価値を説明できなくなる。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "h-unresolved",
+          "block_type": "HEADING",
+          "text": "2023年末に残った境界は、翌年以降の設計課題になる",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "unresolved",
+          "block_type": "PARAGRAPH",
+          "text": "一方、2023年末でも未解決の境界は多い。公称context長と実効利用、vendor benchmarkと独立評価、open weightsと再現可能なopen training、tool selectionと安全な実行、生成品質と制作workflow、capability評価と実効的なgovernanceは同一視できない。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "boundary-method",
+          "block_type": "PARAGRAPH",
+          "text": "これらの境界を「まだ解決していない欠点」として消すのではなく、技術史の状態として残すことが重要である。2023年の発表を後の知識で補正して完成品のように見せると、当時どの問題が開いていたかが分からなくなる。annual retrospectiveは進歩の列挙だけでなく、年末時点で未解決だったinterfaceを保存する役割を持つ。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "h-thesis",
+          "block_type": "HEADING",
+          "text": "年間 thesis――モデル競争から多層system設計へ",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "annual-thesis",
+          "block_type": "PARAGRAPH",
+          "text": "したがって2023年の年次的な転換は「ある一つのモデルが勝った」ことではなく、生成AIがモデル単体の競争から、多層の技術スタックと生態系を設計する競争へ移ったことにある。この見取り図が、次の時期に現れるon-device、agent、serving、multimodal、controlの議論を読むための座標系になる。",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "annual-implication",
+          "block_type": "PARAGRAPH",
+          "text": "この座標系では、新しいmodel releaseだけを追っても全体像はつかめない。model familyの更新に加えて、どのinterfaceが追加されたか、どのruntime制約が緩和されたか、どの外部actionへ接続されたか、どの評価/controlが導入されたかを見る必要がある。2023年は、その読み方を要求するほど生成AIの技術面が多層化した最初の一年として位置付けられる。",
+          "attribution_mode": "NONE"
+        }
+      ]
+    }
+  ],
+  "constraints": {
+    "language": "ja",
+    "max_this_week_signals": 5,
+    "no_new_external_facts": true,
+    "summarize_only_validated_article_text": true,
+    "late_breaking_boundary_required": true,
+    "page_references_must_use_package_ids": true
+  }
+}

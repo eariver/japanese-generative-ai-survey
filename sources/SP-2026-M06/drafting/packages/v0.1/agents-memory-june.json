@@ -1,0 +1,348 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M06",
+  "package_id": "agents-memory-june",
+  "draft_source_mode": "EVIDENCE_PACKAGE",
+  "execution_stage": "ARTICLE_DRAFTING",
+  "basis": {
+    "architecture_plan_sha256": "a1e41c37d9a50febdc514a78ad11a8f6f3982ad54e3e1407ba0825bb6b436e14",
+    "architecture_input_sha256": "9ef859922a401e29a219a63dce6e1051d202e15cd60f54040ee23777e71e1ff5",
+    "evidence_reviewed_sha256": "97d30e9a821aabaad5f910c2c3ecb87e0633ae4d5b85561f0b6f89cfc27ab111"
+  },
+  "package": {
+    "title": "Agents & Memory — 長時間動作を支える状態とスケジューリング",
+    "package_type": "SECTION",
+    "page_target": 5,
+    "editorial_angle": "Agentを一回のtool callではなく、複数call/toolのスケジューリング、永続memory、context transformationを伴う長時間システムとして整理する。",
+    "must_cover": [
+      "SwarmXのagentic workload framing",
+      "ChatGPT Dreamingのmemory architectureとstaged rollout",
+      "SmoothAgentのcontext transformationはauthor-reported systems researchとして扱う",
+      "model intelligenceとruntime/memory systemを混同しない"
+    ],
+    "boundaries": [
+      "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review.",
+      "The source is first-party OpenAI material. Capability, benchmark, efficiency, or performance statements remain vendor claims unless explicitly described as externally reproduced."
+    ],
+    "late_breaking": false,
+    "drafting_order": 3
+  },
+  "primary_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M06",
+      "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-21401v2-4165ae826f",
+      "task_file": "item-arxiv-2606-21401v2-4165ae826f.json",
+      "run_file": "item-arxiv-2606-21401v2-4165ae826f.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+        "generated_at": "2026-08-11T07:05:00Z",
+        "run_reference": "June 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "63b67e91bc4733a26b2185e2c85d1ca40ecc8cde8eff526780da52737821ca4a",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M06",
+        "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-21401v2-4165ae826f",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "SwarmX: Agentic Scheduling for Low-Latency Agentic Systems",
+          "artifact_type": "PAPER",
+          "organization": "Paper authors",
+          "canonical_url": "http://arxiv.org/abs/2606.21401v2"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-06-19",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PAPER_RELEASE",
+              "event_date": "2026-06-19",
+              "source_published_at": "2026-06-19T13:11:15Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-11T07:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "http://arxiv.org/abs/2606.21401v2",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Primary source 1: http://arxiv.org/abs/2606.21401v2",
+            "published_at": null,
+            "accessed_at": "2026-08-11T07:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The authors propose SwarmX, a scheduler designed around multi-call and tool-using agent workloads rather than independent inference requests.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify production/evaluation workloads",
+              "status": "VERIFIED",
+              "finding": "SwarmX targets agentic workloads composed of model calls and tool executions; the paper reports production-scale cluster context and evaluation of scheduling for GPU/CPU resources.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "This June paper materially informs the month-level theme and is suitable for Candidate Selection.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-paper evidence supports Candidate Selection."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M06",
+      "evidence_task_id": "evidence:SP-2026-M06:item-official-feed-c3ab33c62226049804cd-d14cbef1ed",
+      "task_file": "item-official-feed-c3ab33c62226049804cd-d14cbef1ed.json",
+      "run_file": "item-official-feed-c3ab33c62226049804cd-d14cbef1ed.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+        "generated_at": "2026-08-11T07:05:00Z",
+        "run_reference": "June 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "4bbb9f9c401c51b399cad8ee4764c003e6e848c4fe6b1c123aaa1dfbd49321ce",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M06",
+        "evidence_task_id": "evidence:SP-2026-M06:item-official-feed-c3ab33c62226049804cd-d14cbef1ed",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "ChatGPT Dreaming memory architecture",
+          "artifact_type": "PRODUCT",
+          "organization": "OpenAI",
+          "canonical_url": "https://openai.com/index/chatgpt-memory-dreaming"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-06-04",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PRODUCT_ROLLOUT",
+              "event_date": "2026-06-04",
+              "source_published_at": "2026-06-04T09:00:00Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-11T07:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://openai.com/index/chatgpt-memory-dreaming",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://openai.com/index/chatgpt-memory-dreaming",
+            "published_at": null,
+            "accessed_at": "2026-08-11T07:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "OpenAI launched a more capable and compute-efficient ChatGPT memory architecture built on dreaming, with a reviewable memory summary and staged rollout.",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The source is first-party OpenAI material. Capability, benchmark, efficiency, or performance statements remain vendor claims unless explicitly described as externally reproduced.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify what changed in memory architecture/behavior",
+              "status": "VERIFIED",
+              "finding": "The source describes the new memory architecture and rollout; the approximately 5x compute reduction for serving Free users is a vendor-reported engineering claim.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "This first-party June item materially changes a core model, agent, safety, science, or infrastructure theme.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "First-party June evidence supports Candidate Selection."
+        }
+      }
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M06",
+      "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2607-00151v1-972482f7af",
+      "task_file": "item-arxiv-2607-00151v1-972482f7af.json",
+      "run_file": "item-arxiv-2607-00151v1-972482f7af.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+        "generated_at": "2026-08-11T07:05:00Z",
+        "run_reference": "June 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "17386ff53521d500ab2476abf3b984dd14b69b05e096704c3a3e5a94839dd47e",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M06",
+        "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2607-00151v1-972482f7af",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "SmoothAgent: Efficient Long-Horizon LLM-Based Agent Serving with Lookahead Context Engineering",
+          "artifact_type": "PAPER",
+          "organization": "Paper authors",
+          "canonical_url": "http://arxiv.org/abs/2607.00151v1"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-06-30",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PAPER_RELEASE",
+              "event_date": "2026-06-30",
+              "source_published_at": "2026-06-30T20:27:49Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-11T07:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "http://arxiv.org/abs/2607.00151v1",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Primary source 1: http://arxiv.org/abs/2607.00151v1",
+            "published_at": null,
+            "accessed_at": "2026-08-11T07:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The authors propose SmoothAgent to execute context transformations ahead of time so long-horizon agent serving can preserve low TTFT.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify lookahead mechanism and measured TTFT/latency effects",
+              "status": "VERIFIED",
+              "finding": "SmoothAgent identifies KV-cache invalidation and re-prefill as context-transformation overhead, then uses asynchronous lookahead transformations and a lookahead-aware scheduler; the authors report up to 11.9x TTFT reduction.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "This June paper materially informs the month-level theme and is suitable for Candidate Selection.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-paper evidence supports Candidate Selection."
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION",
+    "cover_headline_finalization_forbidden": true,
+    "this_week_summary_forbidden": true
+  }
+}

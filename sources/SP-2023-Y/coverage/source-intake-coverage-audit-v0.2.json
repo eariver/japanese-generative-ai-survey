@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2023-Y",
+  "audit_version": "v0.2",
+  "supersedes": "sources/SP-2023-Y/coverage/source-intake-coverage-audit-v0.1.json",
+  "status": "COMPLETE_WITH_LIMITATIONS",
+  "coverage": {
+    "start": "2023-01-01T00:00:00Z",
+    "end": "2023-12-31T23:59:59Z",
+    "retrospective_as_of": "2026-08-16T13:24:00Z"
+  },
+  "base_intake": {
+    "actions_run_id": 31949971827,
+    "artifact_id": 9264669203,
+    "artifact_digest": "sha256:de9e7175385575c6b365688beb9cb0e04faabca1f1f272258137c3ac55063d8a",
+    "overall_status": "success",
+    "normalized_record_count": 63831,
+    "counts_by_source_type": {
+      "arxiv_paper": 63729,
+      "official_feed_item": 65,
+      "official_index_snapshot": 21,
+      "github_release": 16
+    }
+  },
+  "supplemental_gap_fill": {
+    "plan": "sources/SP-2023-Y/coverage/supplemental-source-plan-v0.1.json",
+    "collection_record": "sources/SP-2023-Y/coverage/supplemental-source-collection-v0.1.json",
+    "planned_count": 38,
+    "collected_count": 38,
+    "status": "COLLECTED",
+    "normalized_total_after_gap_fill": 63869
+  },
+  "temporal_skew": {
+    "quarter_unique_arxiv_papers": {
+      "Q1": 13235,
+      "Q2": 16843,
+      "Q3": 15907,
+      "Q4": 17744
+    },
+    "assessment": "No catastrophic calendar interval hole was found. The dominant completeness risk was category/query capping rather than a missing quarter."
+  },
+  "arxiv_cap_audit": {
+    "query_slice_count": 72,
+    "configured_max_results_per_query": 2000,
+    "cap_hit_count": 23,
+    "assessment": "A successful base collector run is not an exhaustiveness proof. Targeted exact-paper checks were required for material research claims; Mamba (arXiv:2312.00752) was a confirmed material omission from a capped December cs.LG slice and was restored through supplemental collection."
+  },
+  "source_plane_status": {
+    "frontier_models_long_context_multimodal": "AUDITED",
+    "open_weight_model_ecosystem": "AUDITED",
+    "reasoning_retrieval_tool_action": "AUDITED",
+    "serving_inference_adaptation_local_runtime": "AUDITED_WITH_LIMITATION",
+    "generative_media": "AUDITED",
+    "evaluation_safety_alignment_control": "AUDITED",
+    "architecture_diversification": "AUDITED"
+  },
+  "residual_limitations": [
+    "Twenty-three capped arXiv month/category slices prevent any claim of exhaustive research-paper collection; targeted material-paper checks mitigate editorial gaps but do not make the base corpus exhaustive.",
+    "Current publisher index snapshots cannot prove that every 2023 first-party item remains linked today; exact historical first-party pages were collected where the coverage audit identified material gaps.",
+    "A planned exact historical llama.cpp commit locator returned 404 during deterministic collection. No replacement source was invented; commit-level local-runtime history therefore remains an explicit limitation.",
+    "Runway Gen-2's living first-party research page preserves system identity but does not by itself establish every historical public-availability transition with day-level precision.",
+    "Absence from a present-day publisher index, release feed, or capped category slice is not treated as evidence that an event did not occur."
+  ],
+  "screening_boundary": {
+    "complete_normalized_input_count": 63869,
+    "reviewed_keep_record_count": 78,
+    "policy": "All normalized records remained auditable; non-promoted records were deterministically materialized as DROP after annual coverage review rather than removed from Raw provenance."
+  },
+  "single_volume_assessment": {
+    "status": "SUPPORTED",
+    "exception_gate_required": false,
+    "rationale": "The audited material forms interacting annual trajectories across frontier interaction, open weights, tool/action interfaces, runtime/adaptation, reasoning/retrieval/architecture, generative media, and evaluation/control. The evidence does not require two independent historical eras or a cadence split."
+  }
+}

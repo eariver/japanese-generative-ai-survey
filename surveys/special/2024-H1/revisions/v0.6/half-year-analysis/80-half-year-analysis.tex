@@ -1,0 +1,22 @@
+\section{半年単位で再分類する}
+月ごとの出来事をそのまま並べると、2024年上期は「モデルが多数出た半年」に見える。しかし半年単位で再分類すると、競争軸は少なくとも四つの設計問題へ収束する。第一は、GPT-4oやGemini 1.5に代表される\textbf{interaction surface}であり、長文脈・画像・音声を別機能として足すのではなく、利用者との入出力系として統合する方向である\autocite{src-2d3a533e91db,src-28ee6f0f00f4}。第二は、Llama 3、OLMo、OpenELM、Phi-3などが示した\textbf{distribution / deployment}の分岐で、open weights、再現可能性、端末実行、private deploymentが「同じモデルをどこで使うか」ではなく設計条件そのものになった\autocite{src-f9616f30e8f5,src-8ccec4bc715c,src-c8b746c6316b,src-e78721484043}。
+
+第三は、Jamba、Mamba-2、BitNet、LongRoPEに見られる\textbf{architecture / efficiency}の探索である。ここではDense Transformerの規模拡大だけでなく、状態空間、hybrid構成、量子化を前提とした表現、長文脈拡張など、計算量・メモリ・context lengthの制約を設計空間として扱う動きが並行した\autocite{src-b5fbfc0d43e4,src-0cba3ed32188,src-e0e69bb00ff7}。第四は、Command R、SWE-agent、OSWorld、NVIDIA NIM、FineWebにまたがる\textbf{execution / operations}である。モデルの出力品質だけではなく、retrieval、tool use、computer environment、serving、data constructionまで含めて実用能力が決まるという見方が強くなった\autocite{src-77e35e5f22be,src-1c9f1d22c176,src-70b5d4b3bedd,src-054d1f81750b,src-51631a225b70}。
+
+この再分類で重要なのは、四分類が相互排他的ではない点である。2024 H1の特徴は「新しいカテゴリが増えた」ことではなく、モデル、interaction、deployment、executionを一つのsystem stackとして同時に設計しなければ競争力を説明できなくなったことにある。
+
+\section{Cross-month Comparison}
+\textbf{1--2月}には、LongRoPE、MobileLLM、BitNet b1.58、Gemini 1.5、Soraのように、context length、small-model efficiency、低bit表現、長文脈multimodality、動画生成という個別の制約突破が目立った\autocite{src-e0e69bb00ff7,src-86ea660dfc62,src-28ee6f0f00f4,src-0fe343211040}。この段階では、後に一つのsystem stackへ接続される要素が、それぞれ研究・preview・個別productの形で姿を現している。
+
+\textbf{3--4月}になると、Jamba、DBRX、Command R、Llama 3、Phi-3、OpenELM、Infini-attentionなどを通じて、architecture、open model、RAG/tool use、edge deploymentが互いに近づく\autocite{src-b5fbfc0d43e4,src-77e35e5f22be,src-f9616f30e8f5,src-e78721484043,src-c8b746c6316b,src-2eb2353f0533}。焦点は「モデルを発表したか」から、「どの計算制約・公開形態・実行環境を前提にモデルを成立させるか」へ広がった。
+
+\textbf{5--6月}にはGPT-4o、Google I/Oの生成メディア群、SWE-agent、OSWorld、Kling、Stable Diffusion 3、NVIDIA NIM、FineWebなどが同じ期間に重なる\autocite{src-2d3a533e91db,src-0f33134a9129,src-1c9f1d22c176,src-70b5d4b3bedd,src-9c32b95d27a7,src-36cdd427b766,src-054d1f81750b,src-51631a225b70}。上期後半では、multimodal interaction、生成メディア、agent evaluation、serving/dataが同時進行し、個別モデルの性能比較だけでは市場・研究の動きを説明しにくくなった。
+
+したがって上期の時間的変化は、単純な「前半より後半のモデルが高性能」という序列ではない。前半に現れた個別の技術制約が、中盤でdistributionとarchitectureの選択肢へ広がり、後半でinteraction・action・operationsへ接続されるという\textbf{問題設定の拡張}として読む方が整合的である。
+
+\section{Cross-layer Synthesis}
+2024 H1の各layerは独立に進化したのではない。長文脈はRAGやagentが扱える作業範囲を拡大する一方、contextを長くするだけでは実行系の信頼性やcostは解決しない。open model stackとsmall/on-device modelは配置の自由度を高めるが、その価値はserving、tooling、data、ライセンス条件と組み合わせて初めて具体化する。multimodal modelと動画・画像生成はinteraction surfaceを拡張するが、同時にbehavior control、jailbreak、interpretabilityの論点を前面化させた。
+
+この相互作用を一つの因果図として見ると、\textbf{能力の拡張 → 配置先の多様化 → 行動範囲の拡大 → 運用・制御面の要求増加}という循環が見える。GPT-4oのnative multimodal interaction、Command Rのretrieval/tool-oriented positioning、SWE-agent/OSWorldのaction evaluation、NVIDIA NIMのserving、Anthropicのinterpretability研究は、異なるlayerに属しながら「モデルを実システムの一部として評価する」という同じ方向へ収束している\autocite{src-2d3a533e91db,src-77e35e5f22be,src-1c9f1d22c176,src-70b5d4b3bedd,src-054d1f81750b,src-4ff5ab7d45bc}。
+
+ここからH1末時点で残る問いも明確になる。第一に、長文脈・multimodality・tool useを統合したsystemが、どの評価軸で一貫して比較できるのか。第二に、open weights / on-device / hosted APIという配置の違いを跨いで、安全性と更新可能性をどう維持するのか。第三に、生成から行動へ進むほど重要になるserving、observability、permission、data provenanceを、モデル評価とどう結合するのかである。これらは後知恵でH1を書き換えるための論点ではなく、2024年6月末までに選定Evidenceから確認できる構造変化を、次の半年へ持ち越される設計問題として整理したものである。

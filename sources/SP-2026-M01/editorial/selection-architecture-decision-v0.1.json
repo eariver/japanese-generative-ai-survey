@@ -1,0 +1,177 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M01",
+  "selection_version": "v0.1",
+  "approved_by": "assistant-editorial-pipeline",
+  "approved_at": "2026-08-13T05:29:00Z",
+  "selection_assignments": [
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76",
+      "role": "FEATURE_CORE",
+      "rationale": "The strongest January architecture anchor: the Codex agent loop and in-house data agent expose harness logic, layered context, memory, tool orchestration, and access-control boundaries beyond the base model."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-anthropic-news-afddcb8068",
+      "role": "SECTION_CORE",
+      "rationale": "Cowork provides a clear desktop-agent execution surface while the new Claude constitution makes the behavioral-control layer explicit in the same month."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-google-gemini-api-re-d5b8ea25b2",
+      "role": "SECTION_CORE",
+      "rationale": "Gemini API Computer Use and external-input expansion are direct API-level evidence that frontier models were being connected to action tools and larger external context."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-mistral-news-e5054b4c4c",
+      "role": "SECTION_CORE",
+      "rationale": "Vibe 2.0 shows terminal-native coding agents evolving toward configurable subagents, skills, clarification loops, and explicit user-control mechanisms."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:duplicate-hint-openai-agent-security-jan-e3b7cdc137",
+      "role": "SECTION_CORE",
+      "rationale": "OpenAI's safe-URL engineering note is direct production evidence that greater browsing/action autonomy creates a concrete data-exfiltration control problem."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-arxiv-2601-17548v1-5a10976468",
+      "role": "SUPPORTING_EVIDENCE",
+      "rationale": "The prompt-injection systematization provides independent research context for the security boundary across coding assistants, tools, skills, and protocol ecosystems."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-arxiv-2601-22149v2-316b4642be",
+      "role": "SECTION_CORE",
+      "rationale": "DynaWeb is a concrete training response to the cost, instability, and risk of allowing web agents to learn directly on the live web."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-arxiv-2601-22511v2-df6f8833e4",
+      "role": "SECTION_CORE",
+      "rationale": "SYNTHAGENT complements DynaWeb with synthetic tasks, simulated tools, user simulation, and rubric rewards for training smaller tool-using agents."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-alibaba-model-studio-154c528d30",
+      "role": "SECTION_CORE",
+      "rationale": "Qwen3-Max January updates provide the model/API side of tool-native reasoning, including built-in retrieval, extraction, and code-interpreter use during thinking."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-zai-release-notes-409a030c15",
+      "role": "SECTION_CORE",
+      "rationale": "GLM-4.7-Flash and GLM-Image provide a lightweight/open-model and multimodal counterpoint, with same-month downstream runtime integration."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:series-transformers-january-01def3d72a",
+      "role": "SECTION_CORE",
+      "rationale": "Transformers v5 is a major common-tooling transition and compact evidence that the open ecosystem was standardizing fast-changing model families, loading, tokenization, and quantization paths."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:series-vllm-january-91cad48301",
+      "role": "SECTION_CORE",
+      "rationale": "vLLM v0.14.0/v0.15.0 provides the strongest high-throughput serving/runtime anchor, including async scheduling, tool/API changes, and rapid new-model absorption."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M01:item-github-release-sgl-project-sglang-v-46461c1047",
+      "role": "SUPPORTING_EVIDENCE",
+      "rationale": "SGLang v0.5.8 independently confirms rapid January runtime uptake across new model families, diffusion serving, long-context execution, and inference mechanisms."
+    }
+  ],
+  "architecture_proposal": {
+    "architecture_version": "v0.1",
+    "editorial_thesis": "2026年1月は、生成AIの競争軸が『より強いモデル』だけでは説明できなくなり、AIを実際に仕事へ接続するharness・context・memory・computer/terminal use・tool execution・access control・serving runtimeが前景化し始めた月だった。desktop/coding agentの実行面が広がる一方で、prompt injectionやdata exfiltrationへの防御、live webを避けたagent training、そして新モデルを即座に吸収するopen runtimeが同時進行し、agentic engineeringが完成したというより、agentを一つのモデルではなくexecution stackとして捉えるための構成要素と責務分担が立ち上がった。",
+    "architecture_goals": [
+      "OpenAI、Anthropic、Google、Mistralのagent関連更新を製品比較ではなく、harness・context・action surface・human controlという共通アーキテクチャ軸で整理する。",
+      "1月をagentic engineeringの完成・収束とは表現せず、責務がbase modelからharness・context・tool/runtime・securityへ分散し始めたexecution stackの立ち上がりとして位置付け、2月のagentic engineeringへの収束と役割を分ける。",
+      "agent autonomyの拡大とsecurity boundaryを同じ物語として扱い、prompt injectionとURL data exfiltrationを単なる脆弱性一覧ではなく設計制約として説明する。",
+      "DynaWebとSYNTHAGENTを、live environment依存を下げながらtool-using agentを訓練する2つの異なるアプローチとして比較する。",
+      "Qwen3-Max、GLM-4.7-Flash/GLM-Imageをモデルランキングにせず、tool-native reasoning・lightweight/open deployment・multimodal integrationの文脈で位置付ける。",
+      "Transformers v5、vLLM、SGLangを、新モデルやagent APIが共通実装・serving層へ吸収される速度を示すsystems evidenceとして統合する。",
+      "benchmark、速度、memory、attack/defense率などの数値はvendor/project/author claimとして明示し、release・API・architectureの一次資料factと分離する。",
+      "arXivのbounded collection、GitHub release depth、living official index、community research無効というSource Intake制約を完全性主張へ持ち込まない。",
+      "M02〜M07との連続性は1月のCandidate Selectionや事実認定の根拠には使用せず、本文末総括で、1月に立ち上がったagent execution・security/control・agent training・tool-native model/API・serving/runtimeの論点が後続Specialへどう接続するかをreader-facingな見取り図として示す。後続月の個別事実を1月へ遡及させない。",
+      "本文の最後に独立した総括packageを置き、各章の横断的含意、1月という月の位置付け、後続Specialへの接続点をまとめる。単巻32ページ目標、最大40ページを維持し、13 Candidateを5つの技術パッケージへ再クラスタリングした上で、総括2ページを加えplanned 34ページとする。"
+    ],
+    "cover_anchor_candidates": [
+      "agent-stack-leaves-chat",
+      "autonomy-needs-guardrails",
+      "runtime-catches-the-agent-wave"
+    ],
+    "packages": [
+      {
+        "package_id": "frontmatter-month-map",
+        "title": "1月の技術地図と読み方",
+        "package_type": "FRONTMATTER",
+        "primary_evidence_task_ids": [],
+        "supporting_evidence_task_ids": [],
+        "page_target": 2,
+        "editorial_angle": "対象期間とEvidence境界を先に示し、1月を『agent execution stackの前景化』として読むための月間chronologyを提示する。",
+        "must_cover": ["2026-01-01〜2026-01-31 UTCの対象期間", "PRIMARY_FACTとvendor/project/author claimの区別", "Source Intakeのcoverage limitations", "retrospective current-reconstructionであること"]
+      },
+      {
+        "package_id": "agent-stack-leaves-chat",
+        "title": "AgentはChatを出る — Harness・Context・Computer/Terminal Use",
+        "package_type": "LEAD",
+        "primary_evidence_task_ids": ["evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76", "evidence:SP-2026-M01:item-official-index-anthropic-news-afddcb8068", "evidence:SP-2026-M01:item-official-index-google-gemini-api-re-d5b8ea25b2", "evidence:SP-2026-M01:item-official-index-mistral-news-e5054b4c4c"],
+        "supporting_evidence_task_ids": [],
+        "page_target": 7,
+        "editorial_angle": "Codex agent loop、OpenAI data agent、Claude Cowork、Gemini Computer Use、Mistral Vibe 2.0を横断し、品質を決める主体がbase modelからharness・context・tools・control loopへ広がったことを示す。",
+        "must_cover": ["OpenAI Codex loopのuser/model/tools/history/context-window orchestration", "in-house data agentのlayered context・memory・pass-through access controlとinternal-only境界", "Cowork research previewとClaude constitutionの役割差", "Gemini Computer Useのpreview model identifier境界", "Vibe 2.0のsubagents・skills・clarification/control mechanisms", "後日のavailabilityを1月時点へ逆投影しない"]
+      },
+      {
+        "package_id": "autonomy-needs-guardrails",
+        "title": "AutonomyにはGuardrailが要る — Prompt InjectionとData Exfiltration",
+        "package_type": "DEEP_DIVE",
+        "primary_evidence_task_ids": ["evidence:SP-2026-M01:duplicate-hint-openai-agent-security-jan-e3b7cdc137"],
+        "supporting_evidence_task_ids": ["evidence:SP-2026-M01:item-arxiv-2601-17548v1-5a10976468"],
+        "page_target": 5,
+        "editorial_angle": "agentがweb・tool・fileへアクセスするほど、prompt injectionが情報流出や外部actionへ直結する。OpenAIのsafe-URL機構を具体例に、独立研究のattack taxonomyで一般化可能範囲を整理する。",
+        "must_cover": ["URL-based data-exfiltration threat model", "publicly observed URLのautomatic retrievalとblock/user-action境界", "defense-in-depthでありprompt injection一般解決ではないこと", "SoKの78 studies/42 attacks/18 defenses等はauthor-reported synthesisであること", "coding assistants・skills・tools・protocol ecosystemへの攻撃面拡大"]
+      },
+      {
+        "package_id": "training-agents-offline",
+        "title": "Live Webに出さずにAgentを鍛える — World ModelとSynthetic Tools",
+        "package_type": "COMPARISON",
+        "primary_evidence_task_ids": ["evidence:SP-2026-M01:item-arxiv-2601-22149v2-316b4642be", "evidence:SP-2026-M01:item-arxiv-2601-22511v2-df6f8833e4"],
+        "supporting_evidence_task_ids": [],
+        "page_target": 5,
+        "editorial_angle": "DynaWebのlearned web world modelとSYNTHAGENTのsynthetic task/tool/user simulationを比較し、real environment cost・privacy・instabilityを避けるagent training設計を見る。",
+        "must_cover": ["DynaWebのpage-representation predictionとmodel-based RL rollout", "SYNTHAGENTのsynthetic tasks・mock tools・LLM user simulator・rubric rewards", "WebArena/WebVoyagerや14-dataset結果をauthor claimとして分離", "synthetic/simulated environmentとlive adversarial environmentのdistribution gap", "arXiv後日改訂版を使う場合もJanuary chronologyはoriginal submissionで固定"]
+      },
+      {
+        "package_id": "tool-native-models",
+        "title": "Model側もTool-Nativeへ — Qwen3-Max・GLM-4.7-Flash・GLM-Image",
+        "package_type": "FEATURE",
+        "primary_evidence_task_ids": ["evidence:SP-2026-M01:item-official-index-alibaba-model-studio-154c528d30", "evidence:SP-2026-M01:item-official-index-zai-release-notes-409a030c15"],
+        "supporting_evidence_task_ids": ["evidence:SP-2026-M01:item-github-release-sgl-project-sglang-v-46461c1047"],
+        "page_target": 5,
+        "editorial_angle": "agent harnessだけでなくmodel/API自体がretrieval・extraction・code execution・multimodal generationを前提にし始めたことを、QwenとGLM系で整理する。",
+        "must_cover": ["qwen3-max-2026-01-23のregional availability境界", "thinking中のweb search・web extraction・code interpreter", "GLM-ImageとGLM-4.7-Flashを単一architectureとして混同しない", "vendor comparative claimsを独立検証済みと扱わない", "SGLang day-zero supportをimplementation uptake evidenceとして扱う"]
+      },
+      {
+        "package_id": "runtime-catches-the-agent-wave",
+        "title": "Runtimeは同じ月に何を吸収したか — Transformers v5・vLLM・SGLang",
+        "package_type": "DEEP_DIVE",
+        "primary_evidence_task_ids": ["evidence:SP-2026-M01:series-transformers-january-01def3d72a", "evidence:SP-2026-M01:series-vllm-january-91cad48301"],
+        "supporting_evidence_task_ids": ["evidence:SP-2026-M01:item-github-release-sgl-project-sglang-v-46461c1047"],
+        "page_target": 5,
+        "editorial_angle": "Transformers v5の共通実装刷新とvLLM/SGLangのserving evolutionを通じ、モデル・tool API・diffusion・long-context changesがruntimeへどれだけ速く流れ込んだかを見る。",
+        "must_cover": ["Transformers v5のmajor-version/breaking-change境界とWeightConverter/tokenizer changes", "vLLM v0.14.0のasync scheduling default化とunsupported configurations", "vLLM v0.15.0のKimi-K2.5 architecture supportはdownstream uptake evidenceとして扱う", "SGLang v0.5.8のGLM-4.7-Flash・diffusion・long-context support", "runtime speedup/TTFT/memory数値はproject claimとして扱う"]
+      },
+      {
+        "package_id": "closing-synthesis",
+        "title": "総括 — 1月に立ち上がったAgent Execution Stack",
+        "package_type": "SECTION",
+        "primary_evidence_task_ids": [],
+        "supporting_evidence_task_ids": ["evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76", "evidence:SP-2026-M01:duplicate-hint-openai-agent-security-jan-e3b7cdc137", "evidence:SP-2026-M01:item-arxiv-2601-22149v2-316b4642be", "evidence:SP-2026-M01:item-official-index-alibaba-model-studio-154c528d30", "evidence:SP-2026-M01:series-vllm-january-91cad48301"],
+        "page_target": 2,
+        "editorial_angle": "本文最後の総括として、個別発表を再列挙するのではなく、1月にbase modelからharness/context/action surface、security/control、agent training、tool-native model/API、serving/runtimeへ責務が分散し始めたことを束ねる。2月以降への接続は後続月の具体的な出来事を1月へ遡及させず、『1月にどの技術課題と構成要素が立ち上がったか』というreader-facingな継続線として示す。",
+        "must_cover": ["1月全体を『agentic engineeringの完成』ではなく『agent execution stackの立ち上がり』として総括する", "harness/context/tool execution・security/control・training environment・tool-native model/API・serving/runtimeを後続Specialへ接続する観察軸として示す", "2月〜7月の個別イベント、性能値、提供状況を1月の事実認定へ遡及させない", "本文の最終メッセージとして、1月に確認できた変化とliving index・later revision等に残る未確定境界を分けて示す"]
+      },
+      {
+        "package_id": "references-method",
+        "title": "参考文献・一次資料・検証メモ",
+        "package_type": "REFERENCES",
+        "primary_evidence_task_ids": [],
+        "supporting_evidence_task_ids": [],
+        "page_target": 3,
+        "editorial_angle": "採用候補とHOLD/REJECT判断、claim class、chronology、collector coverageを監査可能にまとめる。",
+        "must_cover": ["一次資料一覧", "HOLD: GiG / Agent-RRM / SGLang Gateway / ChatGPT Health / Prism / DeepMind index / Kimi / MiniMax", "REJECT: DeepSeek January chronology check", "living index・bounded arXiv/GitHub collector constraints", "community research disabled"]
+      }
+    ]
+  }
+}

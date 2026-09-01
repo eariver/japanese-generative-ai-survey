@@ -1,0 +1,157 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2021-Y",
+  "coverage": {
+    "start": "2021-01-01T00:00:00Z",
+    "end": "2021-12-31T23:59:59Z",
+    "retrospective_as_of": "2026-08-18T22:52:00Z"
+  },
+  "status": "GAP_FILL_REQUIRED",
+  "base_intake": {
+    "actions_run_id": 32192163817,
+    "artifact_id": 9345351492,
+    "artifact_digest": "sha256:594860ee027966205925a7eb2e566e233e2191d791bc789753a22df5d014ed39",
+    "overall_status": "success",
+    "collector_count": 14,
+    "screening_record_count": 49917,
+    "counts_by_source_type": {
+      "arxiv_paper": 49876,
+      "official_feed_item": 20,
+      "official_index_snapshot": 21,
+      "github_release": 0
+    },
+    "raw_file_count": 101,
+    "interpretation": "Canonical base intake is the preserved broad discovery baseline. It is not treated as a historical completeness proof."
+  },
+  "within_year_temporal_skew_audit": {
+    "diagnostic_slices": "calendar quarters and months; audit-only, not publication units",
+    "monthly_unique_arxiv_papers": [
+      {"month": "2021-01", "count": 3197},
+      {"month": "2021-02", "count": 3660},
+      {"month": "2021-03", "count": 4475},
+      {"month": "2021-04", "count": 4500},
+      {"month": "2021-05", "count": 4172},
+      {"month": "2021-06", "count": 4798},
+      {"month": "2021-07", "count": 3918},
+      {"month": "2021-08", "count": 3717},
+      {"month": "2021-09", "count": 4470},
+      {"month": "2021-10", "count": 4729},
+      {"month": "2021-11", "count": 4033},
+      {"month": "2021-12", "count": 4207}
+    ],
+    "quarter_unique_arxiv_papers": {"Q1": 11332, "Q2": 13470, "Q3": 12105, "Q4": 12969},
+    "assessment": "No catastrophic temporal hole is visible in the base arXiv intake. Every month contains more than 3,000 unique papers. Q2 is the densest quarter and Q1 the sparsest; the material completeness risk is capped cs.LG slices plus present-day publisher-index archival loss, not an empty calendar interval."
+  },
+  "arxiv_cap_audit": {
+    "configured_max_results_per_query": 2000,
+    "query_slice_count": 72,
+    "cap_hit_count": 10,
+    "monthly_cap_hits": [
+      {"month": "2021-01", "unique_papers": 3197, "cap_hit_categories": []},
+      {"month": "2021-02", "unique_papers": 3660, "cap_hit_categories": ["cs-lg"]},
+      {"month": "2021-03", "unique_papers": 4475, "cap_hit_categories": ["cs-lg"]},
+      {"month": "2021-04", "unique_papers": 4500, "cap_hit_categories": ["cs-lg"]},
+      {"month": "2021-05", "unique_papers": 4172, "cap_hit_categories": ["cs-lg"]},
+      {"month": "2021-06", "unique_papers": 4798, "cap_hit_categories": ["cs-lg"]},
+      {"month": "2021-07", "unique_papers": 3918, "cap_hit_categories": ["cs-lg"]},
+      {"month": "2021-08", "unique_papers": 3717, "cap_hit_categories": []},
+      {"month": "2021-09", "unique_papers": 4470, "cap_hit_categories": ["cs-lg"]},
+      {"month": "2021-10", "unique_papers": 4729, "cap_hit_categories": ["cs-lg"]},
+      {"month": "2021-11", "unique_papers": 4033, "cap_hit_categories": ["cs-lg"]},
+      {"month": "2021-12", "unique_papers": 4207, "cap_hit_categories": ["cs-lg"]}
+    ],
+    "assessment": "Ten month/category slices hit the configured 2,000-result ceiling, all in cs.LG; January and August did not. Base arXiv success therefore cannot establish research completeness. Material papers are checked by exact identity before annual Selection."
+  },
+  "source_planes": [
+    {
+      "plane": "parameter_efficient_adaptation_instruction_and_human_feedback",
+      "status": "COVERED_WITH_TARGETED_CHECKS",
+      "notes": "Base intake preserves Prefix-Tuning, Prompt Tuning, LoRA, FLAN, T0, the book-summarization human-feedback paper and OpenAI first-party book-summarization page. These establish adaptation and steering without requiring gap-fill for already-preserved lifecycle boundaries."
+    },
+    {
+      "plane": "multimodal_representation_and_generative_media",
+      "status": "COVERED_WITH_TARGETED_CHECKS",
+      "notes": "Base intake preserves first-party DALL-E and CLIP items plus their primary papers, ALIGN, Frozen multimodal few-shot learning, Diffusion Models Beat GANs, CogView, GLIDE and Latent Diffusion. Exact primary identities are available despite broad-category capping."
+    },
+    {
+      "plane": "scale_sparse_systems_and_model_access",
+      "status": "GAP_FILL_REQUIRED",
+      "notes": "Base intake preserves Switch Transformers, ZeRO-Infinity, GLaM and Gopher primary papers, but not the material contemporary access/release boundaries for GPT-J-6B, Jurassic-1 or MT-NLG, nor a first-party Gopher announcement. Targeted first-party/maintainer records are required."
+    },
+    {
+      "plane": "code_generation_and_developer_interfaces",
+      "status": "GAP_FILL_REQUIRED",
+      "notes": "Base intake preserves APPS, the Codex technical paper and OpenAI first-party Codex research/product items. GitHub Copilot technical preview is a distinct deployed developer-interface event outside the configured base official-page watchlist and requires gap-fill."
+    },
+    {
+      "plane": "retrieval_grounding_dialogue_and_tool_use",
+      "status": "GAP_FILL_REQUIRED",
+      "notes": "Base intake preserves RETRO and WebGPT primary papers plus OpenAI first-party WebGPT. LaMDA dialogue framing and DeepMind first-party Gopher/RETRO chronology are absent from normalized base events and require exact first-party gap-fill."
+    },
+    {
+      "plane": "evaluation_risk_and_foundation_model_framing",
+      "status": "COVERED_WITH_TARGETED_CHECKS",
+      "notes": "Base intake preserves the Foundation Models report, TruthfulQA paper and OpenAI first-party item, Training Verifiers / GSM8K, the language-model ethical/social-risk taxonomy, and OpenAI behavior-curation evidence. These support evaluation and risk framing without a census of every benchmark."
+    },
+    {
+      "plane": "runtime_and_infrastructure",
+      "status": "COVERED_WITH_LIMITATIONS",
+      "notes": "Base intake preserves ZeRO-Infinity and OpenAI Triton first-party release. The configured GitHub Release watchlist contributes no normalized 2021 releases and is oriented toward projects material in later years; commit-level runtime history is not reconstructed exhaustively."
+    }
+  ],
+  "base_exact_primary_items": {
+    "openai_rss": [
+      {"screening_id": "official-feed:f14c51ae873c7721b098", "event": "DALL-E first-party research release", "date": "2021-01-05"},
+      {"screening_id": "official-feed:bc37d5969edc18ccd84d", "event": "CLIP first-party research release", "date": "2021-01-05"},
+      {"screening_id": "official-feed:4748993efd3bf170e1c5", "event": "Large-language-model capabilities/limitations and societal-impact framing", "date": "2021-02-04"},
+      {"screening_id": "official-feed:b148f67806152803c5ee", "event": "GPT-3 application ecosystem", "date": "2021-03-25"},
+      {"screening_id": "official-feed:49090b5da7f8294943b4", "event": "Curated-data language-model behavior training", "date": "2021-06-10"},
+      {"screening_id": "official-feed:47d0c87b08f0e1f11715", "event": "Codex technical evaluation", "date": "2021-07-07"},
+      {"screening_id": "official-feed:03e8feb802d3a2648af4", "event": "Triton open-source GPU programming", "date": "2021-07-28"},
+      {"screening_id": "official-feed:5a992319f41ed1bcd275", "event": "OpenAI Codex product/research announcement", "date": "2021-08-10"},
+      {"screening_id": "official-feed:c16f4ae139bfe9058ec3", "event": "TruthfulQA first-party evaluation framing", "date": "2021-09-08"},
+      {"screening_id": "official-feed:7f768525daf55aabfdf2", "event": "Summarizing books with human feedback", "date": "2021-09-23"},
+      {"screening_id": "official-feed:34f845c1e7102eae7122", "event": "Training verifiers / math word problems", "date": "2021-10-29"},
+      {"screening_id": "official-feed:b50beb89f16ff8d60dc4", "event": "OpenAI API no-waitlist availability", "date": "2021-11-18"},
+      {"screening_id": "official-feed:e6c9dffd1960774fbf2b", "event": "GPT-3 customization/fine-tuning availability", "date": "2021-12-14"},
+      {"screening_id": "official-feed:bb1464aabad937f897db", "event": "WebGPT first-party research announcement", "date": "2021-12-16"}
+    ],
+    "research_papers": [
+      {"screening_id": "arxiv:2101.00190v1", "event": "Prefix-Tuning", "date": "2021-01-01"},
+      {"screening_id": "arxiv:2101.03961v3", "event": "Switch Transformers", "date": "2021-01-11"},
+      {"screening_id": "arxiv:2102.12092v2", "event": "DALL-E technical paper", "date": "2021-02-24"},
+      {"screening_id": "arxiv:2103.00020v1", "event": "CLIP technical paper", "date": "2021-02-26"},
+      {"screening_id": "arxiv:2104.08691v2", "event": "Prompt Tuning", "date": "2021-04-18"},
+      {"screening_id": "arxiv:2104.07857v1", "event": "ZeRO-Infinity", "date": "2021-04-16"},
+      {"screening_id": "arxiv:2105.05233v4", "event": "Diffusion Models Beat GANs", "date": "2021-05-11"},
+      {"screening_id": "arxiv:2105.09938v3", "event": "APPS code benchmark", "date": "2021-05-20"},
+      {"screening_id": "arxiv:2106.09685v2", "event": "LoRA", "date": "2021-06-17"},
+      {"screening_id": "arxiv:2107.03374v2", "event": "Codex technical paper", "date": "2021-07-07"},
+      {"screening_id": "arxiv:2108.07258v3", "event": "Foundation Models report", "date": "2021-08-16"},
+      {"screening_id": "arxiv:2109.01652v5", "event": "FLAN", "date": "2021-09-03"},
+      {"screening_id": "arxiv:2109.07958v2", "event": "TruthfulQA", "date": "2021-09-08"},
+      {"screening_id": "arxiv:2109.10862v2", "event": "Recursive book summarization with human feedback", "date": "2021-09-22"},
+      {"screening_id": "arxiv:2110.08207v3", "event": "T0 / multitask prompted training", "date": "2021-10-15"},
+      {"screening_id": "arxiv:2110.14168v2", "event": "Training Verifiers / GSM8K", "date": "2021-10-27"},
+      {"screening_id": "arxiv:2112.04359v1", "event": "Ethical and social risks of language models", "date": "2021-12-08"},
+      {"screening_id": "arxiv:2112.04426v3", "event": "RETRO", "date": "2021-12-08"},
+      {"screening_id": "arxiv:2112.06905v2", "event": "GLaM", "date": "2021-12-13"},
+      {"screening_id": "arxiv:2112.09332v3", "event": "WebGPT", "date": "2021-12-17"},
+      {"screening_id": "arxiv:2112.10741v3", "event": "GLIDE", "date": "2021-12-20"},
+      {"screening_id": "arxiv:2112.10752v2", "event": "Latent Diffusion Models", "date": "2021-12-20"},
+      {"screening_id": "arxiv:2112.11446v2", "event": "Gopher", "date": "2021-12-08"}
+    ]
+  },
+  "supplemental_plan": "sources/SP-2021-Y/coverage/supplemental-source-plan-v0.1.json",
+  "residual_limitations": [
+    "Present-day official index snapshots cannot prove that every 2021 publisher item remains linked or unchanged.",
+    "Ten capped cs.LG month slices may omit non-headline research; exact checks protect material editorial anchors but do not make the full research intake exhaustive.",
+    "The configured GitHub Release collector is oriented toward projects that became material later and returned no normalized 2021 release records; commit-level or non-Release runtime history is therefore not reconstructed exhaustively.",
+    "Some 2021 product/research announcements moved or were edited after publication; exact first-party or maintainer URLs are preserved where recoverable, while later page edits remain a hindsight limitation.",
+    "A supplemental first-party page establishes the publisher-defined announcement/access boundary, not independent reproduction of vendor capability claims."
+  ],
+  "single_volume_preliminary_assessment": {
+    "status": "SUPPORTED_PENDING_EVIDENCE",
+    "rationale": "The year has a coherent annual arc from the post-GPT-3 pretrained model as a monolithic capability object toward a reusable substrate surrounded by adaptation/steering, multimodal generation, code interfaces, model-access surfaces, sparse/retrieval systems, and explicit evaluation/risk layers. These trajectories interact strongly enough for one annual synthesis; no H1/H2 split trigger is visible at coverage-audit stage."
+  }
+}

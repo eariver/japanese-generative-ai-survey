@@ -1,0 +1,301 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2025-H2",
+  "edition_kind": "RETROSPECTIVE_PERIOD",
+  "lifecycle_state": "FROZEN",
+  "revision": "v0.1",
+  "calendar": {
+    "editorial_cutoff": "2025-12-31T23:59:59Z",
+    "cutoff_timezone": "UTC",
+    "collection_window_start": "2025-07-01T00:00:00Z",
+    "collection_window_end": "2025-12-31T23:59:59Z",
+    "collection_anchor_at": "2025-12-31T23:59:59Z",
+    "retrospective_as_of": "2026-08-13T22:08:00Z",
+    "frozen_at": "2026-08-14T13:58:00+09:00"
+  },
+  "gates": {
+    "raw_sources_preserved": "passed",
+    "candidate_inventory": "passed",
+    "evidence_normalized": "passed",
+    "candidate_selection": "passed",
+    "issue_architecture": "passed",
+    "article_draft": "passed",
+    "claim_and_chronology_validation": "passed",
+    "latex_build": "passed",
+    "visual_review": "passed",
+    "freeze": "passed"
+  },
+  "automation": {
+    "human_gate_model": "ARCHITECTURE_PUBLICATION_PREVIEW_WITH_EXCEPTION",
+    "unattended_public_release": false,
+    "human_gate_required_for_selection": false,
+    "human_gate_required_for_architecture": true,
+    "human_gate_required_for_publication_preview": true,
+    "human_gate_required_for_visual_review": false,
+    "human_gate_required_for_freeze": false,
+    "human_gate_required_for_public_release": false,
+    "publication_preview_authorizes": [
+      "visual_review",
+      "freeze",
+      "work_pr_merge",
+      "public_release"
+    ],
+    "exception_gate": "ON_DEMAND"
+  },
+  "provenance": {
+    "edition_manifest": "specials/2025-H2/edition.json",
+    "candidate_selection": {
+      "path": "sources/SP-2025-H2/selection/candidate-selection-v0.1.json",
+      "sha256": "6a9ae04bdbef4cf2fc23f4971b531e59ffda7d5a54f6bb31c34981731dd55821",
+      "matrix_path": "sources/SP-2025-H2/selection/candidate-matrix-v0.1.json",
+      "matrix_sha256": "d86378369413bb2babda9c0be4899e14d5bd5ee7ace7e72dc924ab774d1ff994",
+      "approval_reference": "Internal Candidate Selection checkpoint for SP-2025-H2 from accepted Evidence run a974864a3662814f75402e7e4bfbc281e75b436ce552013a43490b3c3b077753; this is not a Human Gate Architecture approval. The user requested autonomous progress through Architecture Review only."
+    },
+    "issue_architecture": {
+      "path": "sources/SP-2025-H2/architecture/issue-architecture-v0.1.json",
+      "sha256": "20522c77374c66a329ddc2a92cdadfeb5495293279a136db5dd3d192e4c9657a",
+      "approved_at": "2026-08-14T08:03:44+09:00",
+      "approval_reference": "Human Gate 1 approval by eariver in ChatGPT on 2026-08-14 JST; authorization limited to SP-2025-H2 Architecture approval and Draft Package preparation."
+    },
+    "article_draft": {
+      "result_set_path": "sources/SP-2025-H2/drafting/runs/0144aa74008f30340b253e2a61fb1c768108a1889d136b5a025441777a895286",
+      "result_set_sha256": "0144aa74008f30340b253e2a61fb1c768108a1889d136b5a025441777a895286",
+      "acceptance_sha256": "e19f68135833377c28cdaca7ef9ca2144023034e07d4152570341525913846c9",
+      "article_draft_count": 7,
+      "generated_at": "2026-08-14T08:19:55+09:00"
+    },
+    "issue_synthesis": {
+      "input_path": "sources/SP-2025-H2/finalization/v0.1/synthesis-input.json",
+      "input_sha256": "f7694be568eedcf027e1930f2c4d2a04545294f8aebf405e2eee8ca7d2d5d2db",
+      "result_path": "sources/SP-2025-H2/finalization/v0.1/synthesis-result.json",
+      "result_sha256": "c03e46224f9f2617bc3fc24e78dff2b81074c2940eedc5563aa2ce6e0fd9ebbb",
+      "validation_sha256": "886d7a26b9b19b4222b805d10a2e542a5330d14f18a33d0d9b6a3cd29dd75957",
+      "generated_at": "2026-08-14T08:39:51+09:00"
+    },
+    "claim_and_chronology_validation": {
+      "path": "sources/SP-2025-H2/finalization/v0.1/claim-chronology-audit.json",
+      "sha256": "a492aae3c40bc234fbd398882171358542a2ba76fe4f093142ac636749ae164d"
+    },
+    "validated_issue_source": {
+      "path": "surveys/special/2025-H2/revisions/v0.8/source-manifest.json",
+      "sha256": "cc8197316c681199a496f3e55b85d99603488d8808940b53cd49ec154eb05e8a",
+      "source_version": "v0.8",
+      "layout_mode": "mixed: narrative articles two-column via local multicols; theme synthesis and Technical Notes one-column full-width",
+      "layout_revision_sha256": "3b2dcbf724cbccc9f08b12943dc65e384318eb48dc73e935ee6f18b1bff7b9f7",
+      "reader_facing_technical_notes": true
+    },
+    "reader_layout_revision": {
+      "source_version": "v0.8",
+      "layout_revision_path": "sources/SP-2025-H2/editorial/layout-revision-v0.8.json",
+      "layout_revision_sha256": "3b2dcbf724cbccc9f08b12943dc65e384318eb48dc73e935ee6f18b1bff7b9f7",
+      "reason": "Issue #54 Human Visual Review of v0.7 found residual machine-style casing in reader-facing Technical Notes. Derive a presentation-only revision that canonicalizes known product/model/event spellings and revalidates taxonomy fields while preserving Evidence, dates, accepted Article Draft prose, theme synthesis, half-year analysis, and References compaction."
+    },
+    "latex_build": {
+      "workflow_run_id": 31770513698,
+      "pdf_sha256": "17a9c92956ff36d2dc43822c285cc8ec3ce3bd728a30d2f449cfe8fde678bc8e",
+      "page_count": 30,
+      "source_version": "v0.8",
+      "validated_issue_source_path": "worktree/surveys/special/2025-H2/revisions/v0.8/source-manifest.json",
+      "validated_issue_source_sha256": "cc8197316c681199a496f3e55b85d99603488d8808940b53cd49ec154eb05e8a",
+      "page_budget": {
+        "soft_target": 64,
+        "hard_max": 96,
+        "below_soft_target": true,
+        "policy": "manifest-soft-target-hard-ceiling"
+      },
+      "build_style": {
+        "control_commit_sha": "d4dc4b9322a98868c0126319525cb8834028852b",
+        "path": "templates/survey/jgaisurvey.sty",
+        "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+      }
+    },
+    "publication_preview": {
+      "path": "sources/SP-2025-H2/visual-review/v0.8/approval.json",
+      "sha256": "56475636374fa9738fa40445b2806dee17df0b5efd7a92aa36f4dfcf3fc5df1b",
+      "approved_at": "2026-08-14T13:58:00+09:00",
+      "approval_reference": "Human Gate 2 Publication Preview approval by eariver in ChatGPT on 2026-08-14 JST; exact SP-2025-H2 v0.8 PDF sha256 17a9c92956ff36d2dc43822c285cc8ec3ce3bd728a30d2f449cfe8fde678bc8e approved; authorization includes visual_review, freeze, work_pr_merge, and public_release.",
+      "source_version": "v0.8",
+      "pdf_sha256": "17a9c92956ff36d2dc43822c285cc8ec3ce3bd728a30d2f449cfe8fde678bc8e",
+      "authorizes": [
+        "visual_review",
+        "freeze",
+        "work_pr_merge",
+        "public_release"
+      ]
+    },
+    "visual_review": {
+      "path": "sources/SP-2025-H2/visual-review/v0.8/approval.json",
+      "sha256": "56475636374fa9738fa40445b2806dee17df0b5efd7a92aa36f4dfcf3fc5df1b",
+      "approved_at": "2026-08-14T13:58:00+09:00",
+      "approval_reference": "Human Gate 2 Publication Preview approval by eariver in ChatGPT on 2026-08-14 JST; exact SP-2025-H2 v0.8 PDF sha256 17a9c92956ff36d2dc43822c285cc8ec3ce3bd728a30d2f449cfe8fde678bc8e approved; authorization includes visual_review, freeze, work_pr_merge, and public_release.",
+      "source_version": "v0.8",
+      "pdf_sha256": "17a9c92956ff36d2dc43822c285cc8ec3ce3bd728a30d2f449cfe8fde678bc8e",
+      "authority": "PUBLICATION_PREVIEW_APPROVAL"
+    },
+    "freeze_candidate": {
+      "path": "sources/SP-2025-H2/freeze/freeze-candidate.json",
+      "sha256": "3d7943c6f25025011e1a610ce24c7470c538b9c37f2b23fc2eacb9d758bde825",
+      "status": "READY_FOR_DETERMINISTIC_FREEZE",
+      "release_identity_mode": "ISSUE_ONLY",
+      "release_tag": "special/2025-H2",
+      "authority": "PUBLICATION_PREVIEW_APPROVAL"
+    },
+    "freeze": {
+      "path": "sources/SP-2025-H2/freeze/freeze.json",
+      "sha256": "40f1fbd50e55a8db9f0c5e7dcf0a3de8182eb09da58dde304a804d9fb7303735",
+      "frozen_at": "2026-08-14T13:58:00+09:00",
+      "approval_reference": "Human Gate 2 Publication Preview approval by eariver in ChatGPT on 2026-08-14 JST; exact SP-2025-H2 v0.8 PDF sha256 17a9c92956ff36d2dc43822c285cc8ec3ce3bd728a30d2f449cfe8fde678bc8e approved; authorization includes visual_review, freeze, work_pr_merge, and public_release.",
+      "release_authority": "PUBLICATION_PREVIEW_APPROVAL",
+      "release_identity_mode": "ISSUE_ONLY",
+      "release_tag": "special/2025-H2",
+      "release_manifest_path": "sources/SP-2025-H2/release-manifest.json",
+      "release_manifest_sha256": "4196c91c4d658af59328108de79bac1888c89046b43b477932bbd7b92dbbf51e",
+      "current_release_path": "surveys/special/2025-H2/CURRENT_RELEASE.md",
+      "current_release_sha256": "0d001091d36a1ea9f92a87e2336e6f656a0c4b30c560456cc77fbd8732098742"
+    }
+  },
+  "provenance_history": {
+    "validated_issue_source": [
+      {
+        "path": "surveys/special/2025-H2/source-manifest.json",
+        "sha256": "dbe142f75b109cb7cbb6ca5784cdf060fd2ce77b0ec37ec32e6c96d63e3f2340",
+        "period_consistency": true
+      },
+      {
+        "path": "surveys/special/2025-H2/revisions/v0.2/source-manifest.json",
+        "sha256": "348db18c6a6991e979c513e488a3d0ea41807b21e52898bb20226445398675b7",
+        "source_version": "v0.2",
+        "expansion_basis": "selected Evidence cards only",
+        "typography_revision": "v0.4-reference-title-cleanup",
+        "layout_mode": "balanced-local-multicol-narrative-full-width-evidence",
+        "prebuild_layout": true,
+        "reader_facing_notes_language": "ja-reader-summary-v1",
+        "reader_facing_technical_notes": true,
+        "period_consistency": true
+      },
+      {
+        "path": "surveys/special/2025-H2/revisions/v0.3/source-manifest.json",
+        "sha256": "26912f4cf0a4b8808578886dfa792e03783d0deffa216612fd248d9aa1ae4b8b",
+        "source_version": "v0.3",
+        "expansion_basis": "selected Evidence cards only",
+        "typography_revision": "v0.4-reference-title-cleanup",
+        "layout_mode": "balanced-local-multicol-narrative-full-width-evidence",
+        "prebuild_layout": true,
+        "reader_facing_notes_language": "ja-reader-summary-v1",
+        "reader_facing_technical_notes": true,
+        "period_consistency": true
+      },
+      {
+        "path": "surveys/special/2025-H2/revisions/v0.4/source-manifest.json",
+        "sha256": "3b30afb6a3ff62980b08e2598460c823b6987e07584fa89af3e2257d4b23c686",
+        "source_version": "v0.4",
+        "expansion_basis": "selected Evidence cards only",
+        "typography_revision": "v0.4-reference-title-cleanup",
+        "layout_mode": "balanced-local-multicol-narrative-full-width-evidence",
+        "prebuild_layout": true,
+        "reader_facing_notes_language": "ja-reader-summary-v1",
+        "reader_facing_technical_notes": true,
+        "period_consistency": true
+      },
+      {
+        "path": "surveys/special/2025-H2/revisions/v0.5/source-manifest.json",
+        "sha256": "28af2596eccfbac0e02fbaff5cc209766302732e57e4c3b36753bed27ffdaa12",
+        "source_version": "v0.5",
+        "layout_mode": "mixed-local-two-column-narrative-full-width-evidence",
+        "editorial_supplement_sha256": "76349cbeff1e4b085e091cd48d68be00c6fd5fe4ec7874791c6c4de963848df6"
+      },
+      {
+        "path": "surveys/special/2025-H2/revisions/v0.6/source-manifest.json",
+        "sha256": "56c4139c37f4e0b5fbe2f9a1510831088be1b99e4dac6ebb8cf952400a6a42af",
+        "source_version": "v0.6",
+        "layout_mode": "mixed: narrative articles two-column via local multicols; theme synthesis and Technical Notes one-column full-width",
+        "layout_revision_sha256": "4a4d72ea28ca7faa204b3ff72edcade76aca1a8d4ddfe5263b116ad8b64e7eef"
+      },
+      {
+        "path": "surveys/special/2025-H2/revisions/v0.7/source-manifest.json",
+        "sha256": "0a5821e29ad1e1c02a6374892f37f9ef61012a5637aa5f3d713073442c9428cf",
+        "source_version": "v0.7",
+        "layout_mode": "mixed: narrative articles two-column via local multicols; theme synthesis and Technical Notes one-column full-width",
+        "layout_revision_sha256": "5672094a62085a069a7167a0e4b676389275645ce1962c0bd6168d5227f759c3"
+      }
+    ],
+    "latex_build": [
+      {
+        "workflow_run_id": 31760794301,
+        "pdf_sha256": "3826fbf53eeb1eda38137f02a57f8eda943dddb7b863aaa3fa44ce59743a4e10",
+        "page_count": 32,
+        "source_version": "v0.4",
+        "validated_issue_source_path": "worktree/surveys/special/2025-H2/revisions/v0.4/source-manifest.json",
+        "validated_issue_source_sha256": "3b30afb6a3ff62980b08e2598460c823b6987e07584fa89af3e2257d4b23c686",
+        "page_budget": {
+          "soft_target": 64,
+          "hard_max": 96,
+          "below_soft_target": true,
+          "policy": "manifest-soft-target-hard-ceiling"
+        },
+        "build_style": {
+          "control_commit_sha": "95065825f9b8aec4d037c35c84c5a5c1e6bca2f7",
+          "path": "templates/survey/jgaisurvey.sty",
+          "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+        }
+      },
+      {
+        "workflow_run_id": 31761834664,
+        "pdf_sha256": "8eda9815c6de6d3a4f2bad3d3131d0005d9c684fff91175e435d46fb25d73d00",
+        "page_count": 37,
+        "source_version": "v0.5",
+        "validated_issue_source_path": "worktree/surveys/special/2025-H2/revisions/v0.5/source-manifest.json",
+        "validated_issue_source_sha256": "28af2596eccfbac0e02fbaff5cc209766302732e57e4c3b36753bed27ffdaa12",
+        "page_budget": {
+          "soft_target": 64,
+          "hard_max": 96,
+          "below_soft_target": true,
+          "policy": "manifest-soft-target-hard-ceiling"
+        },
+        "build_style": {
+          "control_commit_sha": "95065825f9b8aec4d037c35c84c5a5c1e6bca2f7",
+          "path": "templates/survey/jgaisurvey.sty",
+          "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+        }
+      },
+      {
+        "workflow_run_id": 31762644856,
+        "pdf_sha256": "ff5bf4043f149618bff500e01b4b9280ce1d5a1a3648a5e49f7573471fc95b93",
+        "page_count": 34,
+        "source_version": "v0.6",
+        "validated_issue_source_path": "worktree/surveys/special/2025-H2/revisions/v0.6/source-manifest.json",
+        "validated_issue_source_sha256": "56c4139c37f4e0b5fbe2f9a1510831088be1b99e4dac6ebb8cf952400a6a42af",
+        "page_budget": {
+          "soft_target": 64,
+          "hard_max": 96,
+          "below_soft_target": true,
+          "policy": "manifest-soft-target-hard-ceiling"
+        },
+        "build_style": {
+          "control_commit_sha": "1967050832039e9ea2a180f2804b433ff2de0b21",
+          "path": "templates/survey/jgaisurvey.sty",
+          "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+        }
+      },
+      {
+        "workflow_run_id": 31768100017,
+        "pdf_sha256": "23d844aa3ea52d9a63f82c948cdb534f06d050eea9e12a25ed6ad9dea8af6db4",
+        "page_count": 30,
+        "source_version": "v0.7",
+        "validated_issue_source_path": "worktree/surveys/special/2025-H2/revisions/v0.7/source-manifest.json",
+        "validated_issue_source_sha256": "0a5821e29ad1e1c02a6374892f37f9ef61012a5637aa5f3d713073442c9428cf",
+        "page_budget": {
+          "soft_target": 64,
+          "hard_max": 96,
+          "below_soft_target": true,
+          "policy": "manifest-soft-target-hard-ceiling"
+        },
+        "build_style": {
+          "control_commit_sha": "1feacf3519009f2ebc3bb1657da4ad0161fad3a9",
+          "path": "templates/survey/jgaisurvey.sty",
+          "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+        }
+      }
+    ]
+  }
+}

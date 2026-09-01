@@ -1,0 +1,303 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M03",
+  "package_id": "safety-security-control-march",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "basis": {
+    "draft_package_sha256": "e59f54160bf057ee483b76c6a44d26ca2c06b04afa2d61de1aa84d58c5062505",
+    "prompt_id": "article-drafting-v0.1",
+    "prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project drafting; no paid inference-provider API",
+    "generated_at": "2026-08-13T00:17:40+09:00",
+    "run_reference": "ChatGPT interactive M03 article drafting after Architecture approval 2026-08-13 JST"
+  },
+  "headline": "Safety, Security & Control — 実行するAIをどこで止めるか",
+  "deck": "Prompt injection、instruction hierarchy、tool privilege、system prompt、CoT monitoring、security agent。3月の安全性議論は「危険な入力を防ぐ」だけでなく、実行権限と監視を含む多層のsystem designへ広がった。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-2026-M03:item-official-feed-3dec299964e674ad1760-ec7abcad08",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28013v3-ec6fa1ee54",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M03:item-official-feed-18b7ee4fe5e46ca112b5-a83ea91301",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M03:item-official-feed-b4b340379768876cac65-8ba43fcdcf",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "opening-h",
+      "block_type": "HEADING",
+      "text": "防御対象はpromptだけではない",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "opening",
+      "block_type": "PARAGRAPH",
+      "text": "Agentが外部data、tool、file、browser、code executionへ接続されるほど、安全性は一つのfilterでは閉じなくなる。3月の一次資料と研究では、prompt injectionへのsystem-level defense、instruction hierarchy、system prompt configuration、real-world tool privilege、chain-of-thought monitorability、coding-agent monitoring、application-security agentが並んだ。共通項は、能力そのものより「どの入力を信頼し、どの権限を与え、何を監視するか」を設計対象にしたことにある。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-official-feed-3dec299964e674ad1760-ec7abcad08",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28013v3-ec6fa1ee54",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-official-feed-18b7ee4fe5e46ca112b5-a83ea91301",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-official-feed-b4b340379768876cac65-8ba43fcdcf",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-25056v1-1e830587be",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28166v2-1bdb24a748",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-official-feed-287a6bf6715408113f4b-6178681c01",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-official-feed-5becf449a527f5c9c85c-7510a164b3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "injection-h",
+      "block_type": "HEADING",
+      "text": "Prompt injection: attack chainと防御境界を分けて見る",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "injection",
+      "block_type": "PARAGRAPH",
+      "text": "OpenAIはagent workflowでrisky actionを制約しsensitive dataを守るというprompt-injection対策を説明した。一方Kill-Chain CanariesはauthorsがEXPOSED→PERSISTED→RELAYED→EXECUTEDの段階で攻撃進行を追跡する方法を提示している。PhishNChipsの研究はsystem promptとmodelの組み合わせ自体がsecurity variableになり得ると報告した。防御の有無だけでなく、どの段階で攻撃が残存・伝播・実行へ進むか、configurationがattack surfaceをどう変えるかを分けて評価する必要がある。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-official-feed-3dec299964e674ad1760-ec7abcad08",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28013v3-ec6fa1ee54",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-25056v1-1e830587be",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "authority-h",
+      "block_type": "HEADING",
+      "text": "Instruction hierarchyとleast privilege",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "authority",
+      "block_type": "PARAGRAPH",
+      "text": "Instruction hierarchyは、system/developer/userなど異なるtrust levelの指示が衝突したとき、どれを優先するかをmodel behaviorへ組み込む方向である。これに対しGrantBoxはauthorsがreal-world toolsを使うagentのprivilege usageを評価するsandboxとして提案した。前者が「どの指示を信頼するか」、後者が「どの操作権限まで許すか」を扱い、両者を分離することでtool authorizationとmodel alignmentを同一視せずに済む。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-official-feed-18b7ee4fe5e46ca112b5-a83ea91301",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28166v2-1bdb24a748",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "monitor-h",
+      "block_type": "HEADING",
+      "text": "実行中のmonitorabilityとsecurity agent",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "monitor",
+      "block_type": "PARAGRAPH",
+      "text": "OpenAIはCoT-Controlを通じ、reasoning modelがchain-of-thoughtを自在に制御しにくいことをmonitorability上の安全性と結び付けて説明した。さらに内部coding agentではchain-of-thought monitoringをmisalignment兆候の検出に使う運用を公表している。同月のCodex Security research previewは、project contextを解析して脆弱性の検出・検証・修正支援を行うapplication-security agentとして位置付けられた。監視とsecurity agentは用途が異なるが、agentを「生成器」ではなく継続的に観測・制御する実行主体として扱う流れを示す。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-official-feed-287a6bf6715408113f4b-6178681c01",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-official-feed-b4b340379768876cac65-8ba43fcdcf",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-official-feed-5becf449a527f5c9c85c-7510a164b3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "claim-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "Claim Boundary: OpenAIの防御・monitoring・Codex Securityに関するeffectivenessはfirst-party claimであり、本誌は検出率やpatch品質を独立再現していない。arXiv研究のattack/defense結果もauthor-reportedである。v2/v3 locatorの論文はMarch初回投稿日をchronologyに使い、後日revisionの記述を3月時点へ遡及させない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-official-feed-3dec299964e674ad1760-ec7abcad08",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28013v3-ec6fa1ee54",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-official-feed-b4b340379768876cac65-8ba43fcdcf",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-25056v1-1e830587be",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-arxiv-2603-28166v2-1bdb24a748",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M03:item-official-feed-5becf449a527f5c9c85c-7510a164b3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "prompt injectionのattack/defense boundary",
+      "block_ids": [
+        "injection",
+        "claim-boundary"
+      ]
+    },
+    {
+      "requirement": "instruction hierarchy",
+      "block_ids": [
+        "authority"
+      ]
+    },
+    {
+      "requirement": "least privilege / tool authorization",
+      "block_ids": [
+        "authority"
+      ]
+    },
+    {
+      "requirement": "CoT monitorabilityと運用監視",
+      "block_ids": [
+        "monitor"
+      ]
+    },
+    {
+      "requirement": "Codex Securityのeffectivenessはvendor claimとして扱う",
+      "block_ids": [
+        "monitor",
+        "claim-boundary"
+      ]
+    }
+  ],
+  "boundary_coverage": [
+    {
+      "requirement": "First-party chronology is verified; capability/evaluation claims remain vendor-reported unless independently reproduced.",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    },
+    {
+      "requirement": "Separate March-submission claims from later-revision changes before drafting.",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    },
+    {
+      "requirement": "Paper results and benchmarks are author-reported and not independently reproduced.",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    },
+    {
+      "requirement": "Locator is arXiv v3; March chronology uses the initial publication date, so later-revision changes must not be back-attributed.",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    },
+    {
+      "requirement": "The preserved feed establishes the described internal monitoring approach but does not independently reproduce detection rates or prove transfer to other agent deployments.",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    },
+    {
+      "requirement": "Locator is arXiv v2; March chronology uses the initial publication date, so later-revision changes must not be back-attributed.",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    },
+    {
+      "requirement": "The preserved first-party feed verifies March chronology and the product description, but does not independently establish vulnerability-detection effectiveness or patch quality.",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    }
+  ],
+  "late_breaking_acknowledged": false
+}

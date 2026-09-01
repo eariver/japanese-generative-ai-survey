@@ -1,0 +1,30 @@
+\section{X Community Watch: 発表後に何を試したか}
+\sectionkicker{Social Observation / Main vs Post-Cutoff}
+
+\textbf{このページはmodel capabilityを証明する欄ではない。} Grok Reaction Passで取得した具体的なX postをEditorial Cutoff前後へ正規化し、「技術コミュニティが何を試し、何を疑ったか」を横断して読む。技術的事実の確定は各本記事のprimary sourceへ委ねる。
+
+\begin{communitynote}[Astra --- excitementからproof detailへ]
+Cutoff前のAstra反応は、problem listとLean certificate、計算コストへの驚きだけでは終わらなかった。research ``taste''や公開成功例のselection biasを問う投稿、Connes rigidityのLean artifactを直接読み前提条件を確認する投稿まで現れた\cite{astra-x-deredleritt3r,astra-x-manuflog}。Scientific reasoningでは、headlineより\textbf{artifactを読めること自体}がcommunity scrutinyを誘発している。
+\end{communitynote}
+
+\begin{communitynote}[MiniMax H3 --- announcementからlocal workflowへ]
+Main windowで確認できた強いsignalはMiniMax公式のopen-weight / ComfyUI導線だった\cite{minimax-h3-x-openweights}。一方、RTX 5090でのtiming比較、distilled LoRA、multi-shot + audioといったhands-on activityは主にCutoff直後に集中した\cite{h3-x-local-5090,h3-x-multishot-audio}。したがって今号では「Cutoff前からlocal実行への関心があり、直後に実験が増えた」と時系列を分ける。
+\end{communitynote}
+
+\begin{communitynote}[Kimi K3 --- ``8 GBで動く''の次にsystems costを見る]
+Cutoff前には、expertをdiskからstreamするpure-C実装でpeak RAM約8.24 GBというcommunity claimが大きく注目された\cite{kimi-k3-x-lowram}。しかし後続では巨大storageと低throughputが問題になった\cite{kimi-k3-x-practicality}。ここから見えるのは勝敗ではなく、\textbf{RAMを減らせばI/Oとlatencyへcostが移る}というlocal inferenceの現実である。
+\end{communitynote}
+
+\begin{communitynote}[Qwen3.8-Max --- rankingとopen-weight期待を分ける]
+Qwen3.8-Maxではagent / coding rankingやmultimodal testが共有され、同時にopen-weight化への期待が強かった\cite{qwen38-x-ranking}。ただしW32時点で確認できたPreview availabilityと、将来weightsが公開されるという期待は別の事実である。Reaction signalが強くても、\textbf{期待されたeventを既成事実へ変換しない}ことが必要になる。
+\end{communitynote}
+
+\begin{communitynote}[Claude Tag --- agent productからgovernanceへ]
+Claude Tag周辺ではpersistent team agentの便利さだけでなく、Open Tagのようなself-host alternativeを通じてmodel choice、data residency、vendor lock-in、IP / governanceが議論された\cite{claude-tag-x-opentag,claude-tag-x-governance}。agentがchannelとdataへ常駐するほど、communityの関心も「賢さ」から\textbf{誰がcontrol planeを持つか}へ広がる。
+\end{communitynote}
+
+\begin{claimboundary}[Reaction volumeを人気投票にしない]
+今回のReaction Passは代表postを収集したもので、X全体のsentiment surveyではない。engagement数はplatform表示や観測時点に依存し、投稿者の独立性も異なる。したがって「communityの何\%が賛成」といった量的結論には使わない。またDeepSeek-V4-Flash-0731の代表反応は今回すべてCutoff後だったため、Main Community Watchには混ぜない。
+\end{claimboundary}
+
+W32で目立ったのは、announcementを読むだけでなく、proof artifactを掘る、local workflowへ落とす、極端なmemory trade-offを試す、open alternativeを作る、といった\textbf{release後の行動}である。Xを使う価値は性能事実を確定することではなく、primary sourceだけでは見えにくい「次にどこが検証対象になったか」を早く拾える点にある。

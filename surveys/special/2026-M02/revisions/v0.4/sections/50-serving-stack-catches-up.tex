@@ -1,0 +1,30 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{Serving Stackは同じ月に何を吸収したか}
+\label{pkg:serving-stack-catches-up}
+\noindent\textbf{frontier modelの発表速度が上がるほど、実用上の律速点はserving/runtimeへ移る。2月のvLLM、SGLang、Transformersを見ると、realtime audio、Responses/tool API、new model families、MoE、multimodal supportが同じ月の実装課題として一気に流れ込んでいる。}\autocite{src-5041feb6f87f,src-5bc0746a47c6,src-a43d64987293}
+
+vLLMは2月4日のv0.15.1を経て、2月25日にv0.16.0を公開した。後者のrelease noteはbranch cutが2月8日だったことも明記している。本号ではv0.15.1を月初のcontextとし、より強いsystems signalを持つv0.16.0を中心に読む。branch cutという時間境界がある以上、2月後半に登場した全model changeがv0.16.0へ既に取り込まれていた、とrelease日だけから推論することはできない。\autocite{src-5041feb6f87f,src-67307025f5d9}
+
+
+v0.16.0で目立つのは、WebSocket-based Realtime APIとstreaming audio / Voxtral realtime support、Responses APIの改善、tool-calling fixes、unified parallel drafting、XPU関連の大きな変更が同じreleaseへ並んだことだ。これはserving engineがtext completionを高速に返すだけでは足りず、音声stream、tool protocol、agent-style response surface、複数のdecoding/scheduling経路を同時に扱う必要が出てきたことを示す。model capabilityの拡張がruntime APIの複雑さへ直結している。\autocite{src-5041feb6f87f}
+
+
+\begin{claimboundary}
+vLLM release noteはasync schedulingとpipeline parallelismの組み合わせについて、end-to-end throughput 30.8\%改善、TPOT 31.8\%改善と報告している。ただし、これはproject-reported measurementであり、本稿で再現したbenchmarkではない。serving stackの技術方向を説明する材料にはなるが、環境を越えた一般性能として扱わない。\autocite{src-5041feb6f87f,src-67307025f5d9}
+\end{claimboundary}
+
+SGLang v0.5.9は2月24日に公開され、Kimi-K2.5、GLM-5、Qwen3.5、MiniMax M2.5を含む新しいmodel familiesに加え、multimodal/diffusion model supportを広げた。Anthropic-compatible API endpointやinference、MoE、multimodal、diffusion runtimeの変更も同時に入っている。model providerごとのreleaseを横断してruntimeが吸収する様子が一つのrelease noteに集約されており、2月の『model wave』をsystems側から確認できる。\autocite{src-5bc0746a47c6}
+
+
+\begin{claimboundary}
+SGLangが報告するoverlapped LoRA loadingのTTFT低減や、Blackwell上のDeepSeek V3.2 NSA accelerationはproject claimである。また『supportが入った』ことは、そのmodel familyが同一条件で同等品質・同等performanceを持つことを意味しない。implementation availabilityとmodel evaluationは別の層として扱う。\autocite{src-5bc0746a47c6}
+\end{claimboundary}
+
+Transformers v5.2.0は2月16日にVoxtralRealtime、GLM-5、Qwen3.5/Qwen3.5 MoE、VibeVoice Acoustic Tokenizerをsupportへ加えた。v5.1.0も同月前半に存在するが、複数の2月model familyが一度にcommon implementation layerへ到達したという意味ではv5.2が強いmilestoneである。vLLMやSGLangがserving engineとしてproduction pathを広げる一方、Transformersはmodel implementationの共通入口を更新しており、同じmodel waveを異なる層で受け止めている。\autocite{src-0bd04783f97b,src-a43d64987293}
+
+
+\begin{claimboundary}
+Transformersへのintegrationはimplementation/supportの成立を示すが、vendor benchmarkを独立に検証するものではない。またv5.2にはbreaking interface changesも含まれている。したがって、support listが増えたことを『ecosystem互換性が単純に改善した』とだけ評価せず、API・interface changeを含むmigration costも同じreleaseの一部として見る必要がある。\autocite{src-0bd04783f97b,src-a43d64987293}
+\end{claimboundary}
+
+2月のsystems側から見える最大の変化は、servingがmodel release後の単なる最適化工程ではなく、model capabilityを成立させる機能層になったことだ。realtime audioにはstreaming API、agentにはtool/Responses surface、MoEや新architectureにはkernel・scheduler・hardware supportが要る。3月以降を見る際には、新modelの能力表だけでなく、その機能がcommon frameworkとserving engineへ到達したか、どのAPI contractで利用可能になったかまで見なければ、実用上の進展を測れない。\autocite{src-5041feb6f87f,src-5bc0746a47c6,src-a43d64987293}

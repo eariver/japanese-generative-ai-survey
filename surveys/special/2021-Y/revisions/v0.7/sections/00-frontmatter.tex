@@ -1,0 +1,20 @@
+% Generated from validated synthesis. Do not hand-edit.
+\section*{Retrospective Signals}
+\addcontentsline{toc}{section}{Retrospective Signals}
+\smallskip
+\noindent\textbf{pretraining後の適応と振る舞い設計が独立した} Prefix TuningとPrompt Tuning、LoRA、FLAN、T0、人間フィードバック、verifierを分けて見ると、基盤モデルの後段にadaptationとsteeringという複数の操作点が現れた。 \hfill{\footnotesize p.~\pageref{pkg:adaptation-efficient-tuning} / p.~\pageref{pkg:instruction-human-feedback}}\par
+\smallskip
+\noindent\textbf{scaleとaccessはmodel本体の外側へ広がった} sparsity、memory/offload、distributed training、dense/sparse設計と、API・open weights・独立providerというaccess surfaceが別々のsystem layerとして前景化した。 \hfill{\footnotesize p.~\pageref{pkg:scale-sparse-systems} / p.~\pageref{pkg:access-distribution}}\par
+\smallskip
+\noindent\textbf{視覚との接続はrepresentationとgenerationに分化した} CLIPとDALL-Eを区別し、さらにdiffusion、text guidance、latent-space efficiencyを追うと、multimodal substrateとgenerative mediaが複数の技術系統として並行していたことが分かる。 \hfill{\footnotesize p.~\pageref{pkg:multimodal-substrate} / p.~\pageref{pkg:diffusion-media}}\par
+\smallskip
+\noindent\textbf{生成能力がdeveloper workflowと外部情報へ接続された} CodexとCopilotはmodel capabilityからdeveloper interfaceへの接続を、LaMDA、RETRO、WebGPTはdialogue、retrieval、web-grounded interactionという異なる外部接続を示した。 \hfill{\footnotesize p.~\pageref{pkg:code-developer-interface} / p.~\pageref{pkg:dialogue-retrieval-grounding}}\par
+\smallskip
+\noindent\textbf{評価・リスクが独立layerとなり、2022年への接続条件が揃った} Foundation Models framing、truthfulness evaluation、risk taxonomyを能力競争の付録ではなく独立layerとして扱い、Detailed Chronologyと総括では、2021年に分離した各layerが2022年にどう統合されるかを整理する。 \hfill{\footnotesize p.~\pageref{pkg:evaluation-risk-foundation} / p.~\pageref{pkg:annual-chronology} / p.~\pageref{pkg:synthesis-transition-2022}}\par
+\medskip
+\begin{claimboundary}[Retrospective scope]
+本号は2021年を後日確認可能になった一次情報も用いて再構成するRetrospective Specialである。Coverage Periodと制作時点を同一視せず、vendor / project / author claimの境界は各記事とTechnical Notesで明示する。
+\end{claimboundary}
+\medskip
+\setcounter{tocdepth}{1}
+\tableofcontents

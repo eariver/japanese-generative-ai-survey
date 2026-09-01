@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2024-H2",
+  "status": "COMPLETE_WITH_LIMITATIONS",
+  "architecture_ready": true,
+  "coverage": {
+    "start": "2024-07-01T00:00:00Z",
+    "end": "2024-12-31T23:59:59Z"
+  },
+  "base_intake": {
+    "workflow_run_id": 31801182128,
+    "normalized_record_count": 5881,
+    "counts": {
+      "paper": 5738,
+      "github_release": 41,
+      "official_feed_item": 81,
+      "official_index_snapshot": 21
+    },
+    "paper_month_distribution": {
+      "2024-07": 942,
+      "2024-08": 946,
+      "2024-09": 962,
+      "2024-10": 973,
+      "2024-11": 935,
+      "2024-12": 980
+    },
+    "role": "BROAD_SEED_NOT_EXHAUSTIVE"
+  },
+  "supplemental_gap_fill": {
+    "plan_count": 3,
+    "collected_record_count": 74,
+    "plans": [
+      {
+        "revision": "v0.1",
+        "planned": 51,
+        "collected": 51,
+        "focus": "material item-level first-party vendor/model/API/research events absent from or non-itemized by the base watchlists"
+      },
+      {
+        "revision": "v0.2",
+        "planned": 9,
+        "collected": 9,
+        "focus": "native full-duplex speech, hybrid SSM/MoE, attention kernels, and open video-generation ecosystems"
+      },
+      {
+        "revision": "v0.3",
+        "planned": 14,
+        "collected": 14,
+        "focus": "load-bearing papers explicitly absent from the normalized base index because of arXiv result truncation"
+      }
+    ]
+  },
+  "audited_source_intake_record_count": 5955,
+  "screening": {
+    "accepted_run_sha": "4963aaff872e85aaedcb0cb0fab19f7303dc9b5a50e2b03715b81a1e948cfb98",
+    "input_record_count": 5955,
+    "reviewed_record_count": 5955,
+    "keep": 89,
+    "drop": 5866,
+    "maybe": 0,
+    "inspect": 0,
+    "verification_queue_count": 89
+  },
+  "evidence": {
+    "accepted_run_sha": "02f0e0194c71f93c28570c0f357b8d1be5ca72a073cc1d42509f0a700cfc5551",
+    "evidence_task_count": 85,
+    "validated_run_count": 85,
+    "card_status_counts": {
+      "VERIFIED": 85,
+      "PARTIAL": 0,
+      "NEEDS_MORE": 0,
+      "REJECTED": 0
+    },
+    "recommendation_counts": {
+      "CANDIDATE": 73,
+      "HOLD": 12,
+      "INSPECT_MORE": 0,
+      "REJECT": 0
+    }
+  },
+  "coverage_findings": [
+    "The original one-query-per-category retrospective arXiv collector collapsed the six-month paper pool onto December because of descending order plus max_results=200; the Special collector was corrected to calendar-month partitioning before this audit was accepted.",
+    "Even after temporal partitioning, all 36 month/category arXiv queries reached max_results=200. The base paper pool is therefore broad but not exhaustive.",
+    "The official-page watchlist initially omitted or under-itemized several material actors. The shared watchlist and procedures were broadened, and item-level first-party gap-fill was added without replacing the base intake.",
+    "Supplemental pages are preserved as Raw bytes and pass through the same Screening/Evidence boundary as base records; they are not direct editorial insertions.",
+    "The v0.3 paper supplement restores 14 load-bearing H2 papers known to be absent because of arXiv truncation; it is not an assertion that every truncated paper was recovered."
+  ],
+  "residual_limitations": [
+    "No finite static watchlist or capped arXiv discovery run proves exhaustive capture of every material 2024-H2 event or paper.",
+    "Some current vendor index/living pages can omit or relocate historical item-level pages; unresolved chronology must remain bounded by preserved Raw sources and explicit HOLD/claim qualification.",
+    "Historical community/X reaction research is disabled for half-year retrospectives and is not part of this Source Intake.",
+    "Vendor/project/author benchmark and performance claims are primary-source claims, not independent reproduction."
+  ],
+  "decision": "Coverage is sufficient to proceed to Candidate Selection and Architecture because the canonical base intake was preserved, temporal collapse was repaired, material source-plane gaps were audited and gap-filled through canonical provenance, and remaining incompleteness is explicit rather than silently treated as absence."
+}

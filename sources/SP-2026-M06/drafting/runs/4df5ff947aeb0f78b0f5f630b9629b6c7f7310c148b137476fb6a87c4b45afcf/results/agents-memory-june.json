@@ -1,0 +1,220 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M06",
+  "package_id": "agents-memory-june",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "basis": {
+    "draft_package_sha256": "f192a083c5587e4b7f54778a2bea27c891b83862d9046ed3c1ef36dd7a423a7c",
+    "prompt_id": "article-drafting-v0.1",
+    "prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project drafting; no paid inference-provider API",
+    "generated_at": "2026-08-11T19:20:21+09:00",
+    "run_reference": "ChatGPT interactive article drafting 2026-08-11 JST: six complete evidence-linked June article bodies prepared from the approved 36-page Special Architecture; no paid inference-provider API."
+  },
+  "headline": "Agents & Memory — 長時間動作は「モデルの賢さ」だけでは成立しない",
+  "deck": "6月のagent研究と製品更新では、複数のmodel callとtool実行をどうscheduleするか、過去の情報をどうmemoryとして保持するか、長いcontextの再処理をどう抑えるかが前面に出た。長時間agentは、model intelligenceにruntime・memory・context engineeringを重ねたsystemとして見る必要がある。",
+  "deck_attribution_mode": "FACTUAL",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-21401v2-4165ae826f",
+      "kind": "EVENT",
+      "evidence_id": "event-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M06:item-official-feed-c3ab33c62226049804cd-d14cbef1ed",
+      "kind": "EVENT",
+      "evidence_id": "event-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2607-00151v1-972482f7af",
+      "kind": "EVENT",
+      "evidence_id": "event-1"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "system-heading",
+      "block_type": "HEADING",
+      "text": "Agentを一回の推論ではなく実行系として捉える",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "swarmx",
+      "block_type": "PARAGRAPH",
+      "text": "SwarmXの著者らは、agentic workloadを独立した推論requestの集合ではなく、model callとtool executionが連鎖するworkloadとして扱い、その前提でschedulerを設計した。agentが長く動くほど、GPU計算だけでなくCPU側toolや依存関係を含むscheduleがlatencyへ効いてくるという問題設定である。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-21401v2-4165ae826f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "memory-heading",
+      "block_type": "HEADING",
+      "text": "永続memoryはcontext長とは別の設計問題",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "dreaming",
+      "block_type": "PARAGRAPH",
+      "text": "OpenAIはChatGPTのmemoryを「dreaming」を用いる新architectureへ移し、reviewableなmemory summaryとstaged rolloutを組み合わせたと説明している。ここで扱われているのは単なるcontext window延長ではなく、継続利用の履歴をどの形で再構成し、次の会話へ持ち越すかというproduct-levelのstate managementである。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M06:item-official-feed-c3ab33c62226049804cd-d14cbef1ed",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "context-heading",
+      "block_type": "HEADING",
+      "text": "context transformationを先回りする",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "smoothagent",
+      "block_type": "PARAGRAPH",
+      "text": "SmoothAgentの著者らは、長時間agentでcontext transformationが起きるたびにKV cacheが無効化され、re-prefillが発生するoverheadへ着目した。提案手法はcontext変換をahead-of-timeで進め、TTFTを抑えることを狙うsystems researchであり、報告された効果は著者のevaluation条件に依存する。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2607-00151v1-972482f7af",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "three-layers",
+      "block_type": "TABLE",
+      "text": "| 層 | 6月に見えた課題 | 代表例 |\n|---|---|---|\n| Scheduling | model/toolを含む複数stepの資源配分 | SwarmX |\n| Persistent state | 過去情報の選別・再構成・reviewability | ChatGPT Dreaming |\n| Context serving | context変換後の再処理とlatency | SmoothAgent |",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-21401v2-4165ae826f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M06:item-official-feed-c3ab33c62226049804cd-d14cbef1ed",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2607-00151v1-972482f7af",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "system-synthesis",
+      "block_type": "PARAGRAPH",
+      "text": "この3つをまとめると、agent性能をmodel benchmarkだけで予測することは難しい。長時間taskでは、何を覚えるか、いつtoolを動かすか、contextをどのタイミングで変換するかがsystem-levelの失敗率や応答性を左右する。model intelligenceとruntime/memory qualityは別の評価軸として持つべきである。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-21401v2-4165ae826f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M06:item-official-feed-c3ab33c62226049804cd-d14cbef1ed",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2607-00151v1-972482f7af",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "boundary-paper",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "SwarmXとSmoothAgentの性能・latency評価は論文著者が構成した環境での報告であり、production一般で同じ改善幅を保証するものではない。問題設定とmechanismを重視し、数値は独立再現済みとして扱わない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-21401v2-4165ae826f",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2607-00151v1-972482f7af",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        }
+      ]
+    },
+    {
+      "block_id": "boundary-openai",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "ChatGPT Dreamingの能力やcompute efficiencyに関する説明はOpenAIのfirst-party報告である。staged rolloutやreviewable summaryという製品挙動と、効率改善の主張は分離して読む必要がある。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M06:item-official-feed-c3ab33c62226049804cd-d14cbef1ed",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "SwarmXのagentic workload framing",
+      "block_ids": [
+        "swarmx"
+      ]
+    },
+    {
+      "requirement": "ChatGPT Dreamingのmemory architectureとstaged rollout",
+      "block_ids": [
+        "dreaming"
+      ]
+    },
+    {
+      "requirement": "SmoothAgentのcontext transformationはauthor-reported systems researchとして扱う",
+      "block_ids": [
+        "smoothagent",
+        "boundary-paper"
+      ]
+    },
+    {
+      "requirement": "model intelligenceとruntime/memory systemを混同しない",
+      "block_ids": [
+        "system-synthesis"
+      ]
+    }
+  ],
+  "boundary_coverage": [
+    {
+      "requirement": "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review.",
+      "block_ids": [
+        "boundary-paper"
+      ]
+    },
+    {
+      "requirement": "The source is first-party OpenAI material. Capability, benchmark, efficiency, or performance statements remain vendor claims unless explicitly described as externally reproduced.",
+      "block_ids": [
+        "boundary-openai"
+      ]
+    }
+  ],
+  "late_breaking_acknowledged": false
+}

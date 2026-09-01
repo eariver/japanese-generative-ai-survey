@@ -1,0 +1,656 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M06",
+  "package_id": "inference-serving-june",
+  "draft_source_mode": "EVIDENCE_PACKAGE",
+  "execution_stage": "ARTICLE_DRAFTING",
+  "basis": {
+    "architecture_plan_sha256": "a1e41c37d9a50febdc514a78ad11a8f6f3982ad54e3e1407ba0825bb6b436e14",
+    "architecture_input_sha256": "9ef859922a401e29a219a63dce6e1051d202e15cd60f54040ee23777e71e1ff5",
+    "evidence_reviewed_sha256": "97d30e9a821aabaad5f910c2c3ecb87e0633ae4d5b85561f0b6f89cfc27ab111"
+  },
+  "package": {
+    "title": "Inference & Serving — モデルの外側で進む最適化",
+    "package_type": "DEEP_DIVE",
+    "page_target": 6,
+    "editorial_angle": "Jalapeño、vLLM、SGLang、FlashInferを主軸に、MoebiusとHMA-Serveを補助線として、accelerator・parallelism・kernel・runtimeの各層がモデル進化と同時に更新されたことを説明する。",
+    "must_cover": [
+      "Jalapeñoはengineering sample段階で最終performance measurement前であること",
+      "vLLM/SGLang/FlashInferのJune release内容",
+      "Moebiusのruntime parallelism switch",
+      "HMA-Serveのmemory-heterogeneous disaggregated serving",
+      "project/author benchmarkを一般性能保証へ拡張しない"
+    ],
+    "boundaries": [
+      "The source is first-party OpenAI material. Capability, benchmark, efficiency, or performance statements remain vendor claims unless explicitly described as externally reproduced.",
+      "GitHub release notes are primary project evidence for release contents, but project performance claims are not independently reproduced here.",
+      "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review."
+    ],
+    "late_breaking": false,
+    "drafting_order": 4
+  },
+  "primary_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M06",
+      "evidence_task_id": "evidence:SP-2026-M06:item-official-feed-855db08b75f6ecdec51e-80a5df82a3",
+      "task_file": "item-official-feed-855db08b75f6ecdec51e-80a5df82a3.json",
+      "run_file": "item-official-feed-855db08b75f6ecdec51e-80a5df82a3.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+        "generated_at": "2026-08-11T07:05:00Z",
+        "run_reference": "June 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "821e50b39b516212ea71299b1790d465dbd0d34663f15c21524e7f06cd9115cb",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M06",
+        "evidence_task_id": "evidence:SP-2026-M06:item-official-feed-855db08b75f6ecdec51e-80a5df82a3",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Jalapeño inference chip",
+          "artifact_type": "OTHER",
+          "organization": "OpenAI & Broadcom",
+          "canonical_url": "https://openai.com/index/openai-broadcom-jalapeno-inference-chip"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-06-24",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "HARDWARE_ANNOUNCEMENT",
+              "event_date": "2026-06-24",
+              "source_published_at": "2026-06-24T06:00:00Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-11T07:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://openai.com/index/openai-broadcom-jalapeno-inference-chip",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://openai.com/index/openai-broadcom-jalapeno-inference-chip",
+            "published_at": null,
+            "accessed_at": "2026-08-11T07:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "OpenAI and Broadcom introduced Jalapeño, a custom LLM inference processor; engineering samples were running ML workloads at target frequency/power while final performance measurement was still underway.",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The source is first-party OpenAI material. Capability, benchmark, efficiency, or performance statements remain vendor claims unless explicitly described as externally reproduced.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify chip identity, intended workload and deployment claims",
+              "status": "VERIFIED",
+              "finding": "Chip identity and intended inference workload are verified; performance-per-watt claims are preliminary vendor results, with a detailed report promised later.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "This first-party June item materially changes a core model, agent, safety, science, or infrastructure theme.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "First-party June evidence supports Candidate Selection."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M06",
+      "evidence_task_id": "evidence:SP-2026-M06:item-github-release-vllm-project-vllm-v0-56abd4df4f",
+      "task_file": "item-github-release-vllm-project-vllm-v0-56abd4df4f.json",
+      "run_file": "item-github-release-vllm-project-vllm-v0-56abd4df4f.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+        "generated_at": "2026-08-11T07:05:00Z",
+        "run_reference": "June 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "c17a3da1aa67ad4dbf957fdddd0505d059618f77807f6a02b6f748e681e75ef5",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M06",
+        "evidence_task_id": "evidence:SP-2026-M06:item-github-release-vllm-project-vllm-v0-56abd4df4f",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "vLLM v0.24.0",
+          "artifact_type": "FRAMEWORK",
+          "organization": "vLLM Project",
+          "canonical_url": "https://github.com/vllm-project/vllm/releases/tag/v0.24.0"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-06-29",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-06-29",
+              "source_published_at": "2026-06-29T19:41:59Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-11T07:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://github.com/vllm-project/vllm/releases/tag/v0.24.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Primary source 1: https://github.com/vllm-project/vllm/releases/tag/v0.24.0",
+            "published_at": null,
+            "accessed_at": "2026-08-11T07:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The release adds MiniMax-M3 support and continues DeepSeek-V4, Model Runner V2, diffusion-model and expert-parallel serving work.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "GitHub release notes are primary project evidence for release contents, but project performance claims are not independently reproduced here.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify MiniMax-M3 support and serving changes",
+              "status": "VERIFIED",
+              "finding": "The v0.24.0 notes explicitly add MiniMax-M3 and document the requested serving-stack changes.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "This release materially changes June inference/serving capability.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Material serving-stack release suitable for Candidate Selection."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M06",
+      "evidence_task_id": "evidence:SP-2026-M06:item-github-release-sgl-project-sglang-v-64c3048ca8",
+      "task_file": "item-github-release-sgl-project-sglang-v-64c3048ca8.json",
+      "run_file": "item-github-release-sgl-project-sglang-v-64c3048ca8.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+        "generated_at": "2026-08-11T07:05:00Z",
+        "run_reference": "June 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "92fa91f078f79169e7316911c0bb49440fcf13fb0f90c58496bce43c36883320",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M06",
+        "evidence_task_id": "evidence:SP-2026-M06:item-github-release-sgl-project-sglang-v-64c3048ca8",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "SGLang v0.5.14",
+          "artifact_type": "FRAMEWORK",
+          "organization": "SGLang Project",
+          "canonical_url": "https://github.com/sgl-project/sglang/releases/tag/v0.5.14"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-06-26",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-06-26",
+              "source_published_at": "2026-06-26T22:57:30Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-11T07:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://github.com/sgl-project/sglang/releases/tag/v0.5.14",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Primary source 1: https://github.com/sgl-project/sglang/releases/tag/v0.5.14",
+            "published_at": null,
+            "accessed_at": "2026-08-11T07:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The release adds support for GLM-5.2, Kimi K2.7 Code and other new models, together with serving/kernel changes including DeepSeek-family work.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "GitHub release notes are primary project evidence for release contents, but project performance claims are not independently reproduced here.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify headline serving changes and performance-claim context",
+              "status": "VERIFIED",
+              "finding": "The v0.5.14 release notes document the requested model-support changes; any performance statements remain project-reported.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "This release materially changes June inference/serving capability.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Material serving-stack release suitable for Candidate Selection."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M06",
+      "evidence_task_id": "evidence:SP-2026-M06:item-github-release-flashinfer-ai-flashi-a92bf9d6cd",
+      "task_file": "item-github-release-flashinfer-ai-flashi-a92bf9d6cd.json",
+      "run_file": "item-github-release-flashinfer-ai-flashi-a92bf9d6cd.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+        "generated_at": "2026-08-11T07:05:00Z",
+        "run_reference": "June 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "b79ce794bac1a7c8702a4d8eb2ae2e5e261a6b52784c70c93efbe88c20df2991",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M06",
+        "evidence_task_id": "evidence:SP-2026-M06:item-github-release-flashinfer-ai-flashi-a92bf9d6cd",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "FlashInfer v0.6.13",
+          "artifact_type": "FRAMEWORK",
+          "organization": "FlashInfer Project",
+          "canonical_url": "https://github.com/flashinfer-ai/flashinfer/releases/tag/v0.6.13"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-06-24",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-06-24",
+              "source_published_at": "2026-06-24T22:36:15Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-11T07:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://github.com/flashinfer-ai/flashinfer/releases/tag/v0.6.13",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Primary source 1: https://github.com/flashinfer-ai/flashinfer/releases/tag/v0.6.13",
+            "published_at": null,
+            "accessed_at": "2026-08-11T07:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The release contains Blackwell/GQA decode, attention/MoE, quantization and autotuning kernel/backend changes.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "GitHub release notes are primary project evidence for release contents, but project performance claims are not independently reproduced here.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "identify material kernel/backend changes",
+              "status": "VERIFIED",
+              "finding": "The release notes provide the material kernel/backend changes requested by the task.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "This release materially changes June inference/serving capability.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Material serving-stack release suitable for Candidate Selection."
+        }
+      }
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M06",
+      "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-26607v1-2d0c18d545",
+      "task_file": "item-arxiv-2606-26607v1-2d0c18d545.json",
+      "run_file": "item-arxiv-2606-26607v1-2d0c18d545.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+        "generated_at": "2026-08-11T07:05:00Z",
+        "run_reference": "June 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "7081f9770f9123c13369fa8fbb6cbde09c59b041f31ead9e628dbc9d6cdf1bfc",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M06",
+        "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-26607v1-2d0c18d545",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Moebius: Serving Mixture-of-Expert Models with Seamless Runtime Parallelism Switch",
+          "artifact_type": "PAPER",
+          "organization": "Paper authors",
+          "canonical_url": "http://arxiv.org/abs/2606.26607v1"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-06-25",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PAPER_RELEASE",
+              "event_date": "2026-06-25",
+              "source_published_at": "2026-06-25T05:10:20Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-11T07:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "http://arxiv.org/abs/2606.26607v1",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Primary source 1: http://arxiv.org/abs/2606.26607v1",
+            "published_at": null,
+            "accessed_at": "2026-08-11T07:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The authors propose Moebius to switch MoE serving between expert and tensor parallel layouts at runtime without restarting the engine.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify evaluation setup and switching overhead",
+              "status": "VERIFIED",
+              "finding": "Moebius evaluates runtime switching between tensor parallelism and expert parallelism for MoE serving; its experiments include Qwen3-235B-A22B on an 8xH200 node and report sub-second switching overhead.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "This June paper materially informs the month-level theme and is suitable for Candidate Selection.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-paper evidence supports Candidate Selection."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M06",
+      "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-29986v1-362da4ce89",
+      "task_file": "item-arxiv-2606-29986v1-362da4ce89.json",
+      "run_file": "item-arxiv-2606-29986v1-362da4ce89.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+        "generated_at": "2026-08-11T07:05:00Z",
+        "run_reference": "June 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "1492354c4708690e70fcc1445be7684efaa1d33d841191d9a7da76eea298041f",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M06",
+        "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-29986v1-362da4ce89",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "HBM Is Not All You Need: Efficient Disaggregated LLM Serving across Memory-heterogeneous Accelerators",
+          "artifact_type": "PAPER",
+          "organization": "Paper authors",
+          "canonical_url": "http://arxiv.org/abs/2606.29986v1"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-06-29",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PAPER_RELEASE",
+              "event_date": "2026-06-29",
+              "source_published_at": "2026-06-29T09:00:38Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-11T07:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "http://arxiv.org/abs/2606.29986v1",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Primary source 1: http://arxiv.org/abs/2606.29986v1",
+            "published_at": null,
+            "accessed_at": "2026-08-11T07:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The authors propose HMA-Serve for disaggregated LLM serving across memory-heterogeneous accelerators.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify architecture and evaluated hardware",
+              "status": "VERIFIED",
+              "finding": "HMA-Serve disaggregates prefill and decode across memory-heterogeneous accelerators, including cross-vendor configurations, and evaluates four Qwen3 model sizes over three production traces.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "This June paper materially informs the month-level theme and is suitable for Candidate Selection.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-paper evidence supports Candidate Selection."
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION",
+    "cover_headline_finalization_forbidden": true,
+    "this_week_summary_forbidden": true
+  }
+}

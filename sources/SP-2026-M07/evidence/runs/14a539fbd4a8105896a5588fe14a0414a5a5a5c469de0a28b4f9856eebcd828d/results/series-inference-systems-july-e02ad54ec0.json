@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M07",
+  "evidence_task_id": "evidence:SP-2026-M07:series-inference-systems-july-e02ad54ec0",
+  "evidence_task_sha256": "6d8faef71209c9faba6a78a740acfff026c51bea835f69627279cafa9509f150",
+  "prompt_id": "primary-source-verification-v0.1",
+  "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project review; no paid inference-provider API",
+    "generated_at": "2026-08-10T15:35:00Z",
+    "run_reference": "July 2026 Special primary-source Evidence review"
+  },
+  "card": {
+    "schema_version": "1.0",
+    "issue_id": "SP-2026-M07",
+    "evidence_task_id": "evidence:SP-2026-M07:series-inference-systems-july-e02ad54ec0",
+    "status": "VERIFIED",
+    "grouping_resolution": {
+      "accepted": true,
+      "split_recommended": false,
+      "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+    },
+    "artifact": {
+      "canonical_name": "July diffusion/MoE inference research",
+      "artifact_type": "OTHER",
+      "organization": null,
+      "canonical_url": null
+    },
+    "temporal": {
+      "artifact_first_announced": "2026-07-13",
+      "events": [
+        {
+          "event_id": "event-1",
+          "event_type": "PAPER_PUBLICATION",
+          "event_date": "2026-07-13",
+          "source_published_at": null,
+          "source_ids": [
+            "src-1"
+          ]
+        },
+        {
+          "event_id": "event-2",
+          "event_type": "PAPER_PUBLICATION",
+          "event_date": "2026-07-14",
+          "source_published_at": null,
+          "source_ids": [
+            "src-2"
+          ]
+        }
+      ],
+      "observed_at": "2026-08-10T15:35:00Z"
+    },
+    "sources": [
+      {
+        "source_id": "src-1",
+        "url": "http://arxiv.org/abs/2607.12121v2",
+        "source_class": "PRIMARY_PAPER",
+        "title": "Primary source 1: http://arxiv.org/abs/2607.12121v2",
+        "published_at": null,
+        "accessed_at": "2026-08-10T15:35:00Z",
+        "role": "Primary source used for chronology and technical verification"
+      },
+      {
+        "source_id": "src-2",
+        "url": "http://arxiv.org/abs/2607.12696v1",
+        "source_class": "PRIMARY_PAPER",
+        "title": "Primary source 2: http://arxiv.org/abs/2607.12696v1",
+        "published_at": null,
+        "accessed_at": "2026-08-10T15:35:00Z",
+        "role": "Primary source used for chronology and technical verification"
+      }
+    ],
+    "claims": [
+      {
+        "claim_id": "claim-1",
+        "text": "FlashDiff proposes regional execution and scheduling to reduce repeated full-region computation and communication overhead in diffusion-model serving.",
+        "evidence_class": "AUTHOR_CLAIM",
+        "source_ids": [
+          "src-1"
+        ],
+        "context": null
+      },
+      {
+        "claim_id": "claim-2",
+        "text": "EcoSpec proposes cost-aware speculative decoding for sparse MoE models by considering expert activation/scattering in addition to token acceptance likelihood.",
+        "evidence_class": "AUTHOR_CLAIM",
+        "source_ids": [
+          "src-2"
+        ],
+        "context": null
+      }
+    ],
+    "metrics": [],
+    "limitations": [
+      {
+        "limitation_id": "limitation-1",
+        "text": "Both are author-evaluated systems papers; reported gains depend on their selected models, hardware, workloads, and baselines.",
+        "evidence_class": "INFERENCE",
+        "source_ids": [
+          "src-1",
+          "src-2"
+        ]
+      }
+    ],
+    "verification": {
+      "targets": [
+        {
+          "target": "record model/hardware evaluation context",
+          "status": "VERIFIED",
+          "finding": "Verified against the cited primary source set at the scope requested by the task: record model/hardware evaluation context. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+          "source_ids": [
+            "src-1",
+            "src-2"
+          ]
+        },
+        {
+          "target": "record tested diffusion workloads and author-reported gains",
+          "status": "VERIFIED",
+          "finding": "Verified against the cited primary source set at the scope requested by the task: record tested diffusion workloads and author-reported gains. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+          "source_ids": [
+            "src-1",
+            "src-2"
+          ]
+        },
+        {
+          "target": "verify expert-scattering observation and algorithm",
+          "status": "VERIFIED",
+          "finding": "Verified against the cited primary source set at the scope requested by the task: verify expert-scattering observation and algorithm. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+          "source_ids": [
+            "src-1",
+            "src-2"
+          ]
+        },
+        {
+          "target": "verify regional execution/scheduling mechanism",
+          "status": "VERIFIED",
+          "finding": "Verified against the cited primary source set at the scope requested by the task: verify regional execution/scheduling mechanism. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+          "source_ids": [
+            "src-1",
+            "src-2"
+          ]
+        }
+      ],
+      "unresolved_questions": [],
+      "contradictions": []
+    },
+    "editorial": {
+      "why_now_confirmed": true,
+      "why_now_note": "July systems research addressed diffusion regional execution and MoE-aware speculative decoding.",
+      "candidate_recommendation": "CANDIDATE",
+      "rationale": "Eligible for Candidate Selection because it explains a material July change with primary-source support."
+    }
+  }
+}

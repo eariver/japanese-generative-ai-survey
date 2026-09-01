@@ -1,0 +1,256 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{年次総括――2022年に変わった設計空間、変わらなかった制約: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\smallskip
+\noindent{\small\textit{Technical Notesでは、一次資料から確認した公開・提供・研究上の事実を記載する。数値・能力評価や提供元・著者による比較表現は、独立再現済みの結果ではなく帰属claimとして扱う。}}\par
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+InstructGPT & 補足資料 & モデル & — \\
+Chinchilla & 補足資料 & モデル & — \\
+DALL-E 2 & 補足資料 & モデル & — \\
+Stable Diffusion & 補足資料 & オープンウェイト & — \\
+ReAct & 補足資料 & 論文 & — \\
+ChatGPT research preview & 補足資料 & PRODUCT & — \\
+HELM & 補足資料 & 評価ベンチマーク & — \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{InstructGPT}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & モデル \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIの選定済み一次資料では、対象event近傍の一次資料から 1.3B parameter scale / model-selected external API calls を確認できる。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2203.02155v1}}
+\item {\scriptsize\url{https://openai.com/index/instruction-following}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Chinchilla}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Google DeepMind \\
+種別 & モデル \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Google DeepMindの選定済み一次資料では、対象event近傍の一次資料から compute-optimal scaling を確認できる。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2203.15556v1}}
+\item {\scriptsize\url{https://deepmind.google/blog/an-empirical-analysis-of-compute-optimal-large-language-model-training/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{DALL-E 2}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & モデル \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIの選定済み一次資料では、対象event近傍の一次資料から autoregressive modeling を確認できる。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2204.06125v1}}
+\item {\scriptsize\url{https://openai.com/index/dall-e-api-now-available-in-public-beta}}
+\item {\scriptsize\url{https://openai.com/index/dall-e-now-available-in-beta}}
+\item {\scriptsize\url{https://openai.com/index/dall-e-now-available-without-waitlist}}
+\item {\scriptsize\url{https://openai.com/index/hierarchical-text-conditional-image-generation-with-clip-latents}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Stable Diffusion}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Stability AI / collaborators \\
+種別 & オープンウェイト \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Stability AI / collaboratorsの選定済み一次資料では、Stability AIは2022年8月10日にStable Diffusionをまずresearcher向けにreleaseし、model weightsはaccess取得後にHugging Faceで提供、codeとmodel cardも公開する段階的releaseとして位置付けた。 8月22日のpublic releaseではweights・model card・codeを一般公開し、Creative ML OpenRAIL-M licenseの下でcommercial/non-commercial利用を認める公開境界へ移行した。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://stability.ai/news-updates/stable-diffusion-announcement}}
+\item {\scriptsize\url{https://stability.ai/news-updates/stable-diffusion-public-release}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{ReAct}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & authors \\
+種別 & 論文 \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: authorsの選定済み一次資料では、ReActはlanguage modelにreasoning traceとtask-specific actionをinterleaveして生成させ、推論側でaction planを追跡・更新しつつ、action側で外部knowledge baseやenvironmentから追加情報を取得する構成を提案した。 論文ではHotpotQA・FEVERでWikipedia APIとのinteractionを、ALFWorld・WebShopでinteractive decision makingを扱い、reasoningとactionを別々ではなく一つのtask-solving trajectoryとして接続した。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2210.03629v3}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{ChatGPT research preview}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & 製品 \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIの選定済み一次資料では、OpenAIは2022年11月30日にChatGPTをconversational interactionを前面に出したresearch previewとして公開し、follow-up questionへの応答、誤りの認識、誤った前提への異議、不適切なrequestの拒否をdialogue format上の挙動として説明した。 この公開は後年の一般的なChatGPT製品状態を遡及させるものではなく、2022年末時点の対話UIとresearch-preview availabilityの境界として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/chatgpt}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{HELM}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Stanford CRFM / authors \\
+種別 & 評価ベンチマーク \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Stanford CRFM / authorsの選定済み一次資料では、HELMはlanguage modelを少数のaccuracy指標だけで比較せず、複数scenarioと複数metricを組み合わせてholisticに評価するframeworkとして提案された。 評価面にはaccuracyだけでなくcalibration・robustness・fairness・bias・toxicity・efficiencyなどを含め、model comparisonのcoverageそのものをoperating constraintとして扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2211.09110v2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

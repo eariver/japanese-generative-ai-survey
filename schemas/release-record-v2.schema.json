@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/release-record-v2.schema.json",
+  "title": "Survey Production Core v2 Release Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "issue_id", "release_identity", "status", "release_manifest_path", "release_manifest_sha256", "merge_verification_path", "merge_verification_sha256", "pdf_sha256", "released_at", "release_reference"],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "issue_id": {"type": "string", "minLength": 1},
+    "release_identity": {"type": "string", "minLength": 1},
+    "status": {"const": "RELEASED"},
+    "release_manifest_path": {"type": "string", "minLength": 1},
+    "release_manifest_sha256": {"$ref": "#/$defs/sha256"},
+    "merge_verification_path": {"type": "string", "minLength": 1},
+    "merge_verification_sha256": {"$ref": "#/$defs/sha256"},
+    "pdf_sha256": {"$ref": "#/$defs/sha256"},
+    "released_at": {"type": "string", "format": "date-time"},
+    "release_reference": {"type": "string", "minLength": 1}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

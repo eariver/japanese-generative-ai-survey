@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M07",
+  "package_id": "paper-watch-july",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "headline": "Paper Watch — DiffusionGemmaは自己回帰以外の道をどこまで開くか",
+  "deck": "7月31日に公開されたDiffusionGemmaは、Gemma系MoEを基盤にblockwise iterative refinementを使うexperimental open-weight discrete-diffusion language modelとして提示された。速度・品質の報告は興味深いが、現段階ではauthor-controlled evaluationとして読む必要がある。",
+  "deck_attribution_mode": "ATTRIBUTED",
+  "deck_evidence_refs": [
+    {"evidence_task_id":"evidence:SP-2026-M07:item-arxiv-2608-00146v1-7b3dbb80d8","kind":"EVENT","evidence_id":"event-1"},
+    {"evidence_task_id":"evidence:SP-2026-M07:item-arxiv-2608-00146v1-7b3dbb80d8","kind":"CLAIM","evidence_id":"claim-1"}
+  ],
+  "blocks": [
+    {"block_id":"idea-heading","block_type":"HEADING","text":"tokenを左から一つずつ確定しない設計","attribution_mode":"NONE","evidence_refs":[]},
+    {"block_id":"architecture","block_type":"PARAGRAPH","text":"DiffusionGemmaのpaperは、experimentalなopen-weight discrete-diffusion language modelとしてmodelを説明している。基盤にはGemma-familyのMoEを用い、生成ではblockwise iterative refinementを採用する。自己回帰modelが既確定prefixの後ろへtokenを伸ばすのに対し、block内を反復的にrefineするという別のgeneration patternを検討する点がPaper Watchとしての中心である。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP-2026-M07:item-arxiv-2608-00146v1-7b3dbb80d8","kind":"CLAIM","evidence_id":"claim-1"}]},
+    {"block_id":"why-watch","block_type":"PARAGRAPH","text":"この方向が重要なのは、language modelの推論効率を『同じautoregressive decodingをどう高速化するか』だけで考えなくてよい可能性を示すからだ。serving側でspeculative decodingやcache最適化が進む一方、generation processそのものを変える研究は、将来runtimeの前提を変える余地がある。ただし現時点でそれを既存方式の置き換えと断言できるEvidenceはない。","attribution_mode":"INFERENCE","evidence_refs":[{"evidence_task_id":"evidence:SP-2026-M07:item-arxiv-2608-00146v1-7b3dbb80d8","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2026-M07:item-arxiv-2608-00146v1-7b3dbb80d8","kind":"LIMITATION","evidence_id":"limitation-1"}]},
+    {"block_id":"reported-results","block_type":"PARAGRAPH","text":"authorsはsamplerのspeed/quality resultを報告し、single H100での高いdecoding throughputを含む結果を提示している。これらは研究の可能性を評価する材料にはなるが、独立した再現実験ではなく、sampler、model configuration、hardware条件に結び付いたstudy resultである。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP-2026-M07:item-arxiv-2608-00146v1-7b3dbb80d8","kind":"CLAIM","evidence_id":"claim-2"}]},
+    {"block_id":"paper-boundary","block_type":"CLAIM_BOUNDARY","text":"DiffusionGemmaのtechnical reportはexperimental modelに対するauthor-controlled evaluationである。speed/quality resultはsampler、model configuration、hardware setupへ依存するため、本誌ではautoregressive modelに対する一般的な優位性としては扱わない。","attribution_mode":"INFERENCE","evidence_refs":[{"evidence_task_id":"evidence:SP-2026-M07:item-arxiv-2608-00146v1-7b3dbb80d8","kind":"LIMITATION","evidence_id":"limitation-1"}]},
+    {"block_id":"watch-heading","block_type":"HEADING","text":"次に見るべきもの","attribution_mode":"NONE","evidence_refs":[]},
+    {"block_id":"watch-next","block_type":"PARAGRAPH","text":"このpaperの価値は、7月時点で勝者を決めることではなく、open-weightで異なるdecoding paradigmを試せるartifactが現れたことにある。今後は独立再現、serving stackでのsupport、実workloadでのquality/latency trade-offが積み上がるかを見て初めて、discrete diffusionが研究上のalternativeから実用的な選択肢へ進むかを判断できる。","attribution_mode":"INFERENCE","evidence_refs":[{"evidence_task_id":"evidence:SP-2026-M07:item-arxiv-2608-00146v1-7b3dbb80d8","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2026-M07:item-arxiv-2608-00146v1-7b3dbb80d8","kind":"LIMITATION","evidence_id":"limitation-1"}]}
+  ],
+  "must_cover_coverage": [
+    {"requirement":"blockwise iterative refinement","block_ids":["architecture"]},
+    {"requirement":"open-weight experimental modelとしての位置付け","block_ids":["architecture","watch-next"]},
+    {"requirement":"speed/qualityはauthor-reportedであること","block_ids":["reported-results","paper-boundary"]}
+  ],
+  "boundary_coverage": [
+    {"requirement":"The technical report is an author-controlled evaluation of an experimental model; speed and quality results depend on its sampler, model configuration, and hardware setup.","block_ids":["paper-boundary"]}
+  ],
+  "late_breaking_acknowledged": false
+}

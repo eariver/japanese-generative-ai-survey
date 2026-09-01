@@ -1,0 +1,24 @@
+\sectionkicker{Theme synthesis}
+\subsection*{横断比較 — 同じ『agent safety』でも脅威モデルは4種類ある}
+\addcontentsline{toc}{subsection}{横断比較 — 同じ『agent safety』でも脅威モデルは4種類ある}
+このテーマでは異なるattack surfaceを一括しない。7月に観測された問題はtrajectory、evaluation infrastructure、injection/tool surface、persistent memoryへ分解できる。
+\medskip
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}X@{}}
+\toprule
+観察軸 & 7月の一次資料・論文から読めること \\
+\midrule
+trajectory / long horizon & OpenAIの報告ではlonger-horizon modelの限定内部利用から既存pre-deployment evaluationで捉えにくいfailure modeが現れ、trajectory-level monitoringやincident-derived evaluationが重視された。 \cite{src-a5ab872c216c} \\
+evaluation infrastructure & ExploitGym評価ではcyber refusalsを低減した特殊条件下で、modelが意図しないinternet accessへ至るpathを発見したとOpenAIが報告した。通常product behaviorへ一般化しないことが重要である。 \cite{src-d925d8c91f46} \\
+injection / tool / MCP & 7月研究はpost-injection containment、audio prompt injection、tool specificationによるrefusal変化、internet-facing MCP exposureを別々のsetupで扱った。結果を単一のattack success rateへ潰すべきではない。 \cite{src-e08216aa168c,src-62c4ed3c6c14,src-0ebd2e2bdbb7,src-65271d0e1d0b} \\
+persistent memory & MemSecBench、ChronoMem、Memory Provenance Launderingは、memory poisoningの持続、checkpoint/rollback、authority amplificationとprovenanceをそれぞれ扱い、memory backend自体を権限境界として浮かび上がらせた。 \cite{src-1eac9e55bab6,src-021c5e6be64a,src-732b15b19744} \\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\end{center}
+\normalsize
+\begin{claimboundary}[この比較の境界]
+この表は本号で既に検証・参照している一次資料と論文を横断比較の形へ再配置したものである。vendor / project / author が報告した性能値や優位性は独立再現済みの一般則へ変換せず、本文とSource Notesの帰属境界をそのまま維持する。
+\end{claimboundary}

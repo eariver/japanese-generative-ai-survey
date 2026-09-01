@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2022-Y",
+  "package_id": "evaluation-layer",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "headline": "強いモデルを、何で測るのか――benchmarkからevaluation infrastructureへ",
+  "deck": "能力がtask、modality、利用形態へ広がるほど、単一のscoreでmodelを代表させることは難しくなる。BIG-benchは広いtask集合による評価を押し広げ、HELMは複数scenarioとmetricを組み合わせたholistic evaluationを前面に出した。2022年には評価そのものが、強いmodelを比較・運用するための独立したinfrastructureになり始めた。",
+  "deck_attribution_mode": "INFERENCE",
+  "deck_evidence_refs": [
+    {"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2211-09110v2-97b9e2540d","kind":"CLAIM","evidence_id":"claim-1"},
+    {"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2206-04615v3-9bd4be11d4","kind":"CLAIM","evidence_id":"claim-1"}
+  ],
+  "blocks": [
+    {"block_id":"breadth-to-holistic","block_type":"PARAGRAPH","text":"BIG-benchとHELMを並べると、2022年のevaluationが単純なbenchmark追加ではなかったことが見える。BIG-benchは多数のtaskを通じてmodel capabilityの幅を測る方向を強くし、HELMはscenario、metric、modelを組み合わせて性能だけでなく複数の観点を同じ評価surface上で扱う方向を示した。benchmark breadthとholistic evaluationは重なる部分を持つが、前者がtask coverageを広げる問題、後者が評価軸そのものを体系化する問題として区別できる。","attribution_mode":"INFERENCE","evidence_refs":[{"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2206-04615v3-9bd4be11d4","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2211-09110v2-97b9e2540d","kind":"CLAIM","evidence_id":"claim-1"}]},
+    {"block_id":"reported-not-reproduced","block_type":"PARAGRAPH","text":"ただし、評価項目が増えれば自動的に比較の客観性が完成するわけではない。各論文で報告されたscoreや比較は、使用model、prompt、dataset、metric、実行条件を含む著者側のevaluation setupに依存する。本サーベイはBIG-benchやHELMに記載された結果を一次資料として扱うが、それを独立再現済みの普遍的順位として再提示しない。","attribution_mode":"INFERENCE","evidence_refs":[{"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2211-09110v2-97b9e2540d","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2206-04615v3-9bd4be11d4","kind":"CLAIM","evidence_id":"claim-1"}]},
+    {"block_id":"operating-constraint","block_type":"PARAGRAPH","text":"evaluation coverageは、研究結果を発表するときだけ必要なものでもない。modelがcode、dialogue、media、retrievalなど異なる用途へ広がると、どのscenarioを測っていないか自体がdeployment判断の制約になる。測定対象が狭ければ、強いscoreがsystem全体の信頼性を代表しているように誤読される。2022年の評価研究は、model capabilityの拡大に合わせて『何を測るかを設計する』作業をoperating layerへ近付けた。","attribution_mode":"INFERENCE","evidence_refs":[{"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2211-09110v2-97b9e2540d","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2206-04615v3-9bd4be11d4","kind":"CLAIM","evidence_id":"claim-1"}]},
+    {"block_id":"evaluation-boundary","block_type":"CLAIM_BOUNDARY","text":"本節で扱うbenchmark結果は著者報告に帰属する。異なるmodel、prompt、dataset、metric間のscoreを本サーベイ独自の統一尺度へ変換せず、評価coverageと評価設計が2022年にどのような技術課題として現れたかを論点とする。","attribution_mode":"INFERENCE","evidence_refs":[{"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2211-09110v2-97b9e2540d","kind":"LIMITATION","evidence_id":"limitation-1"},{"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2206-04615v3-9bd4be11d4","kind":"LIMITATION","evidence_id":"limitation-1"}]}
+  ],
+  "must_cover_coverage": [
+    {"requirement":"benchmark breadth versus holistic evaluation","block_ids":["breadth-to-holistic"]},
+    {"requirement":"author-reported evaluation versus independent reproduction","block_ids":["reported-not-reproduced"]},
+    {"requirement":"evaluation coverage as an operating constraint","block_ids":["operating-constraint"]}
+  ],
+  "boundary_coverage": [
+    {"requirement":"Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.","block_ids":["evaluation-boundary"]}
+  ],
+  "late_breaking_acknowledged": false
+}

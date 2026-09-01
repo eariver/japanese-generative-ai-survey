@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M02",
+  "package_id": "agentic-engineering-frontier",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "headline": "Coding ModelからAgentic Engineeringへ",
+  "deck": "2026年2月、OpenAIとAnthropicの更新は、coding性能だけでなく、複数agentの管理、長時間のtool-using execution、computer use、低latency interactionへと射程を広げた。モデル単体の能力ではなく、仕事を継続して実行する系としてAIを設計する競争が前面に出た。",
+  "deck_attribution_mode": "FACTUAL",
+  "deck_evidence_refs": [
+    {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "CLAIM", "evidence_id": "claim-1"},
+    {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "CLAIM", "evidence_id": "claim-2"},
+    {"evidence_task_id": "evidence:SP-2026-M02:item-official-index-anthropic-news-afddcb8068", "kind": "CLAIM", "evidence_id": "claim-1"},
+    {"evidence_task_id": "evidence:SP-2026-M02:item-official-index-anthropic-news-afddcb8068", "kind": "CLAIM", "evidence_id": "claim-2"}
+  ],
+  "blocks": [
+    {
+      "block_id": "openai-february-sequence",
+      "block_type": "PARAGRAPH",
+      "text": "OpenAI側では、2月2日のCodex app、2月5日のGPT-5.3-CodexとSystem Card、2月12日のGPT-5.3-Codex-Sparkという順で更新が続いた。ここで重要なのは、四つを一つの『新モデル』として潰さないことだ。Codex appは複数のcoding agentと長時間の並列作業を管理するworkspace、GPT-5.3-Codexはcodingに加えてresearch・tool use・複雑なexecutionを担うモデル、System Cardはその安全性評価、Sparkはrealtime coding interactionを狙うresearch previewであり、同じ流れに属しながら役割は異なる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "EVENT", "evidence_id": "event-1"},
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "EVENT", "evidence_id": "event-2"},
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "EVENT", "evidence_id": "event-3"},
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "EVENT", "evidence_id": "event-4"},
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "LIMITATION", "evidence_id": "limitation-1"}
+      ]
+    },
+    {
+      "block_id": "workspace-not-chatbox",
+      "block_type": "PARAGRAPH",
+      "text": "Codex appが示した変化は、AI codingの操作単位を一往復のprompt-responseから、複数agentが並行して進める作業へ移した点にある。GPT-5.3-Codexも長時間のresearchやtool use、複雑なexecutionを対象に掲げており、UIとモデルの双方で『一度答える』より『仕事を持ち続ける』方向が明確になった。これはcoding benchmarkの更新だけでは説明しにくい、実行系としての設計変更である。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "CLAIM", "evidence_id": "claim-1"},
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "CLAIM", "evidence_id": "claim-2"}
+      ]
+    },
+    {
+      "block_id": "anthropic-sustained-work",
+      "block_type": "PARAGRAPH",
+      "text": "Anthropicも同じ月に、2月5日のClaude Opus 4.6と2月17日のClaude Sonnet 4.6を通じて、codingだけでなくsustained agentic work、computer use、agent planning、knowledge workへ重点を広げた。Sonnet 4.6では1M-token context windowが示されたが、発表時点ではbetaである。Opus 4.6とSonnet 4.6は二つの独立記事に分解するより、2月中に続いた同一方向の更新として読む方が技術的な連続性を捉えやすい。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id": "evidence:SP-2026-M02:item-official-index-anthropic-news-afddcb8068", "kind": "CLAIM", "evidence_id": "claim-1"},
+        {"evidence_task_id": "evidence:SP-2026-M02:item-official-index-anthropic-news-afddcb8068", "kind": "CLAIM", "evidence_id": "claim-2"},
+        {"evidence_task_id": "evidence:SP-2026-M02:item-official-index-anthropic-news-afddcb8068", "kind": "LIMITATION", "evidence_id": "limitation-1"},
+        {"evidence_task_id": "evidence:SP-2026-M02:item-official-index-anthropic-news-afddcb8068", "kind": "LIMITATION", "evidence_id": "limitation-3"}
+      ]
+    },
+    {
+      "block_id": "agentic-engineering-common-axis",
+      "block_type": "PARAGRAPH",
+      "text": "両社の一次資料を共通軸で並べると、競争の焦点は『codeを生成できるか』から、長いcontextを保持し、toolやcomputerを使い、途中状態を抱えたまま作業を継続できるかへ移っている。OpenAIでは複数agentを扱うworkspaceとlong-running execution、Anthropicではsustained agentic workとcomputer use・planningが前面に出た。2月をagentic engineeringへの収束として捉える根拠は、この実行時間と作業面の拡張にある。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "CLAIM", "evidence_id": "claim-1"},
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "CLAIM", "evidence_id": "claim-2"},
+        {"evidence_task_id": "evidence:SP-2026-M02:item-official-index-anthropic-news-afddcb8068", "kind": "CLAIM", "evidence_id": "claim-1"},
+        {"evidence_task_id": "evidence:SP-2026-M02:item-official-index-anthropic-news-afddcb8068", "kind": "CLAIM", "evidence_id": "claim-2"}
+      ]
+    },
+    {
+      "block_id": "spark-realtime-branch",
+      "block_type": "PARAGRAPH",
+      "text": "同じagentic engineeringでも、Sparkは別の枝を示す。GPT-5.3-Codex-Sparkはrealtime coding interaction向けのresearch previewとして位置付けられた。OpenAIは1,000 tokens/s超というthroughputを掲げているが、これはCerebrasの専用hardwareとresearch-preview条件に依存するvendor claimである。したがって『通常のCodexが常時その速度で動く』と一般化してはならない。ここで見えるのは、長時間自律実行とは反対側にある、人間との低latencyな往復を最適化する設計軸だ。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "CLAIM", "evidence_id": "claim-4"},
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "CLAIM", "evidence_id": "claim-5"},
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "LIMITATION", "evidence_id": "limitation-3"}
+      ]
+    },
+    {
+      "block_id": "safety-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "長時間・tool-usingな実行能力が高まるほど、安全性評価はモデルの付録ではなく実行系の設計条件になる。GPT-5.3-CodexのSystem CardはPreparedness Frameworkのcybersecurity評価を適用している。ただし、その分類はSystem Cardが記載したthresholdとprecautionの文脈で読む必要があり、『危険な能力が確立した』といった強い表現へ置き換えることはできない。2月の技術的ポイントは、agentic capabilityの拡張と同時に、その実行可能性をどの境界で制御するかが同じ製品系列の論点として現れたことにある。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "CLAIM", "evidence_id": "claim-3"},
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "LIMITATION", "evidence_id": "limitation-4"}
+      ]
+    },
+    {
+      "block_id": "benchmark-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "性能比較には明確な境界を置く。GPT-5.3-Codexの速度向上やSparkのthroughput、Claude 4.6系のbenchmark・比較性能はいずれも各社の発表に基づくvendor claimであり、本稿で独立再現した値ではない。モデルのrelease、対象task、preview/betaといった一次資料で固定できる事実と、優位性を示す比較値は同じ確度で扱わない。agentic engineeringの方向性はbenchmarkの順位ではなく、製品とモデルが実際にどの実行surfaceへ拡張されたかから読む。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "CLAIM", "evidence_id": "claim-5"},
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "LIMITATION", "evidence_id": "limitation-2"},
+        {"evidence_task_id": "evidence:SP-2026-M02:item-official-index-anthropic-news-afddcb8068", "kind": "CLAIM", "evidence_id": "claim-3"},
+        {"evidence_task_id": "evidence:SP-2026-M02:item-official-index-anthropic-news-afddcb8068", "kind": "LIMITATION", "evidence_id": "limitation-2"}
+      ]
+    },
+    {
+      "block_id": "two-timescales",
+      "block_type": "PARAGRAPH",
+      "text": "2月のagentic engineeringには二つの時間軸が同居している。一つは、複数agentやlong-running research、computer useのようにAIへ長い仕事を任せる方向。もう一つは、Sparkのように人間とのrealtimeなcoding loopを短くする方向である。自律時間を延ばすことと対話遅延を縮めることは一見逆向きだが、どちらも『AIを実際の作業工程へ埋め込む』ための最適化である。3月以降を見る際にも、単純なmodel scoreより、この二つの時間軸と安全な制御面がどこまで実装へ落ちるかが重要な観察点になる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "CLAIM", "evidence_id": "claim-1"},
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "CLAIM", "evidence_id": "claim-4"},
+        {"evidence_task_id": "evidence:SP-2026-M02:item-official-index-anthropic-news-afddcb8068", "kind": "CLAIM", "evidence_id": "claim-2"},
+        {"evidence_task_id": "evidence:SP-2026-M02:series-openai-codex-february-07803c17e3", "kind": "LIMITATION", "evidence_id": "limitation-4"}
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {"requirement": "Codex app→GPT-5.3-Codex→System Card→Sparkの2月内chronology", "block_ids": ["openai-february-sequence"]},
+    {"requirement": "Claude Opus 4.6 / Sonnet 4.6のagentic workと1M-context beta", "block_ids": ["anthropic-sustained-work"]},
+    {"requirement": "性能値をvendor claimとして分離", "block_ids": ["spark-realtime-branch", "benchmark-boundary"]},
+    {"requirement": "Codex cyber capability classificationの過大解釈禁止", "block_ids": ["safety-boundary"]}
+  ],
+  "boundary_coverage": [
+    {"requirement": "The Evidence task intentionally groups four related first-party items; drafting must keep product, base model, system-card, and specialized Spark boundaries explicit.", "block_ids": ["openai-february-sequence"]},
+    {"requirement": "Performance and benchmark comparisons are vendor-reported.", "block_ids": ["benchmark-boundary"]},
+    {"requirement": "Codex-Spark’s throughput statement depends on specialized Cerebras hardware and research-preview conditions.", "block_ids": ["spark-realtime-branch"]},
+    {"requirement": "Cyber capability classification must reproduce the System Card’s stated threshold/precaution boundary rather than exaggerating it.", "block_ids": ["safety-boundary"]},
+    {"requirement": "This Evidence task groups two related February model releases rather than treating them as independent articles.", "block_ids": ["anthropic-sustained-work"]},
+    {"requirement": "Capability and benchmark comparisons are vendor-reported and are not independently reproduced here.", "block_ids": ["benchmark-boundary"]},
+    {"requirement": "Availability and 1M-context status must preserve announcement-time beta/product boundaries.", "block_ids": ["anthropic-sustained-work"]}
+  ],
+  "late_breaking_acknowledged": false
+}

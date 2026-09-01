@@ -1,0 +1,317 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2020-Y",
+  "architecture_version": "v0.1",
+  "status": "APPROVED",
+  "basis": {
+    "architecture_input_sha256": "1fd1b973655f1bddfc4b68394b03b7a617f16a69fae0d0ad5793dbea082dda4e",
+    "selection_sha256": "dbc38ba4a81a267d2cd332aa9b418fd628beb338f0b30012456ad4594103f599",
+    "matrix_sha256": "dc57528e28cc380e8def58c6c34d8ba71c67c6caa88bbdb98a9a813d8e26cdaa"
+  },
+  "approval": {
+    "approved_by": "eariver",
+    "approved_at": "2026-08-21T01:04:24+09:00",
+    "approval_reference": "User explicitly approved SP-2020-Y Architecture Review in ChatGPT on 2026-08-21 JST and requested continuation. The synthesis package will be reader-facing as '総括――scaleから多層システムへ：2021年への橋' without changing the approved structural role or evidence allocation."
+  },
+  "editorial_thesis": "2020年、生成AIは単なる『巨大モデル競争』から、scaleを設計原理として明示し、その能力をfew-shot/in-context behavior、API access、retrieval、human feedback、dialogue、distributed systems、image/audio/diffusion generationへ枝分かれさせ始めた。Scaling LawsとGPT-3はscaleからcapabilityへ向かう軸を、OpenAI APIはaccess/distribution境界を、REALMとRAGはmodel-external knowledgeを、MeenaとBlenderBotはdialogue system designを、DeepSpeed/ZeROとGShardはscaleを成立させるsystems layerを、DDPM・score-SDEとImage GPT・Taming Transformersは複数のgenerative-media系譜を、human-feedback summarizationとtoxicity/bias評価はsteering/evaluation/risk layerの萌芽を示した。2020年は、2021年の『同じ基盤を再利用・適応・接続する多層システム』への前段として読む。",
+  "architecture_goals": [
+    "Scaling LawsとGPT-3を同一視せず、前者のempirical scaling relationと後者のfew-shot/in-context task behaviorを分離して説明する。",
+    "API access、technology license、open-source/open-weightを同じ『公開』に潰さず、利用権・配布・service interfaceの境界を保つ。",
+    "REALM、DPR、RAGをretrieval-augmented pretraining、retriever infrastructure、retrieval-conditioned generationとして区別する。",
+    "MeenaとBlenderBotを単なるchatbot比較にせず、scale/evaluationとsystem recipe/releaseという異なる設計焦点で読む。",
+    "DeepSpeed/ZeRO、GShard、Turing-NLGをparameter数ランキングではなく、memory、partitioning、conditional computation、distributed trainingのscale成立条件として整理する。",
+    "Image GPT、Taming Transformers、Jukeboxをdiffusionと同じ生成系譜にまとめず、autoregressive/discrete/audioの別分岐として扱う。",
+    "DDPM、DDIM、score-SDEを同義語にせず、probabilistic diffusion、sampling formulation、score/SDE unificationの差を保持する。",
+    "Learning to Summarize from Human Feedbackを後年のRLHF stackと遡及的に同一視せず、2020年時点のpreference-feedback steeringとして記述する。",
+    "StereoSet、RealToxicityPrompts、CrowS-Pairsを万能なsafety評価とは扱わず、bias/toxic degenerationを測る限定されたevaluation evidenceとして読む。",
+    "paper初出、first-party publication、API launch、license/releaseをDetailed Chronologyで別イベントとして保持する。",
+    "45,112件のbase intakeと4件のtargeted supplemental gap-fillを網羅性の証明とはせず、6件のcs.LG cap-hitと現存publisher indexの限界をArchitecture Reviewで開示する。",
+    "2020年の事実と2026年時点のhindsightを分離し、vendor/project/authorの性能・安全性主張は一次資料へ帰属させる。",
+    "一冊構成を維持し、Evidence上のcoherenceが崩れる場合のみException Gateで分冊を再検討する。"
+  ],
+  "page_budget": {
+    "target": 96,
+    "max": 144,
+    "planned": 96.0
+  },
+  "cover": {
+    "headline_deferred": true,
+    "headline": null,
+    "anchor_candidates": [
+      "scale-to-interface",
+      "retrieval-and-dialogue",
+      "diffusion-media-branching"
+    ]
+  },
+  "packages": [
+    {
+      "package_id": "frontmatter",
+      "title": "2020年を読むための地図――scaleから分岐する生成AI",
+      "package_type": "FRONTMATTER",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [],
+      "page_target": 6,
+      "editorial_angle": "対象期間、一次資料の読み分け、coverage audit、paper/release/API/licenseの境界、hindsightの扱いを先に固定する。",
+      "must_cover": [
+        "2020 calendar-year coverage and retrospective-as-of boundary",
+        "45,112-record base intake plus four targeted first-party gap fills",
+        "six capped cs.LG slices and residual completeness limits",
+        "Event -> Story unit -> Annual trajectory compression"
+      ],
+      "boundaries": [],
+      "late_breaking": false,
+      "drafting_order": 1
+    },
+    {
+      "package_id": "scale-laws-gpt3",
+      "title": "規模が設計原理になる――Scaling LawsからGPT-3へ",
+      "package_type": "LEAD",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2020-Y:item-arxiv-2001-08361v1-7b4284c583",
+        "evidence:SP-2020-Y:series-openai-gpt3-2020-38ff81374e"
+      ],
+      "supporting_evidence_task_ids": [],
+      "page_target": 8,
+      "editorial_angle": "scaleを単なるparameter競争ではなく、compute/data/model-sizeの設計則とfew-shot/in-context behaviorの結合として読む。",
+      "must_cover": [
+        "empirical scaling-law framing",
+        "GPT-3 few-shot/in-context evaluation framing",
+        "author-claimed results versus independent reproduction"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 2
+    },
+    {
+      "package_id": "access-api",
+      "title": "モデルから入口へ――APIが変えたaccess boundary",
+      "package_type": "COMPARISON",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2020-Y:item-official-feed-3b6a4c260e20b9c08d5d-a213e104c9"
+      ],
+      "supporting_evidence_task_ids": [],
+      "page_target": 8,
+      "editorial_angle": "frontier capabilityをservice interfaceとして利用する境界を、paper publicationやtechnology licenseと分離して整理する。",
+      "must_cover": [
+        "API launch as service boundary",
+        "access versus release versus license",
+        "handoff to 2021 API availability and independent providers"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 3
+    },
+    {
+      "package_id": "systems-scale",
+      "title": "巨大化を成立させる裏側――ZeROとGShard",
+      "package_type": "DEEP_DIVE",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2020-Y:item-official-index-supplemental-microso-51b2ba4938",
+        "evidence:SP-2020-Y:item-arxiv-2006-16668v1-7db7eaceba"
+      ],
+      "supporting_evidence_task_ids": [],
+      "page_target": 8,
+      "editorial_angle": "memory/optimizer-state partitioning、sharding、conditional computationをparameter countとは別のsystems layerとして扱う。",
+      "must_cover": [
+        "memory and optimizer-state constraints",
+        "distributed sharding",
+        "conditional computation",
+        "systems layer as prerequisite for scale"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 4
+    },
+    {
+      "package_id": "retrieval-grounding",
+      "title": "知識を重みに閉じ込めない――REALMからRAGへ",
+      "package_type": "FEATURE",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2020-Y:series-meta-rag-2020-1ab61ce220"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2020-Y:item-arxiv-2002-08909v1-7fd53aedce"
+      ],
+      "page_target": 8,
+      "editorial_angle": "external retrievalをpretraining/knowledge accessからgenerationへ接続する流れとして読み、後年のgrounded systemsへの系譜を示す。",
+      "must_cover": [
+        "retrieval-augmented pretraining",
+        "retrieval-conditioned generation",
+        "external knowledge versus parametric memory"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 5
+    },
+    {
+      "package_id": "dialogue-systems",
+      "title": "会話はscaleだけでは解けない――MeenaとBlenderBot",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2020-Y:item-arxiv-2001-09977v3-a25c1d61e6",
+        "evidence:SP-2020-Y:series-meta-blenderbot-2020-865ab3340a"
+      ],
+      "supporting_evidence_task_ids": [],
+      "page_target": 8,
+      "editorial_angle": "open-domain dialogueを大規模化・human evaluationとsystem recipe/releaseの二つの設計方向から比較する。",
+      "must_cover": [
+        "open-domain dialogue scaling",
+        "dialogue evaluation framing",
+        "system recipe and release boundary"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 6
+    },
+    {
+      "package_id": "media-autoregressive",
+      "title": "言語の外へ――Image GPTと離散visual token",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2020-Y:item-official-feed-d46ff01d5c8d30a8b59a-07bee80475",
+        "evidence:SP-2020-Y:item-arxiv-2012-09841v3-7f879534f3"
+      ],
+      "supporting_evidence_task_ids": [],
+      "page_target": 8,
+      "editorial_angle": "autoregressive modelingとdiscrete representationによるvisual generationをdiffusionとは別系譜として整理する。",
+      "must_cover": [
+        "autoregressive image modeling",
+        "discrete visual representations",
+        "contrast with diffusion branch"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 7
+    },
+    {
+      "package_id": "diffusion-score",
+      "title": "もう一つの生成系譜――DDPMからscore-SDEへ",
+      "package_type": "FEATURE",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2020-Y:item-arxiv-2006-11239v2-e4d5ff5015",
+        "evidence:SP-2020-Y:item-arxiv-2011-13456v2-ceeaf475ea"
+      ],
+      "supporting_evidence_task_ids": [],
+      "page_target": 8,
+      "editorial_angle": "denoising diffusionとscore-based/SDE formulationを2021年以降のdiffusion隆盛を知るhindsightから切り離し、2020年の技術分岐として読む。",
+      "must_cover": [
+        "DDPM formulation",
+        "score-based/SDE unification",
+        "avoid projecting later product success backward"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 8
+    },
+    {
+      "package_id": "feedback-steering",
+      "title": "振る舞いを人間から学ぶ――summarization feedback",
+      "package_type": "FEATURE",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2020-Y:series-openai-summary-hf-2020-7e51a1bb32"
+      ],
+      "supporting_evidence_task_ids": [],
+      "page_target": 8,
+      "editorial_angle": "preference feedbackをpost-training/steering layerの萌芽として扱い、後年のRLHFとの連続性と非同一性を明示する。",
+      "must_cover": [
+        "human preference feedback",
+        "summarization task boundary",
+        "precursor rather than full later RLHF stack"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 9
+    },
+    {
+      "package_id": "evaluation-risk",
+      "title": "能力の裏側を測る――toxicityとbiasの評価",
+      "package_type": "COMPARISON",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2020-Y:item-arxiv-2009-11462v2-65eb0da3fc"
+      ],
+      "page_target": 4,
+      "editorial_angle": "toxicity/bias benchmark群を安全性の総合評価とは扱わず、pretrained/generative model behaviorを測る評価層が独立し始めた証拠として置く。",
+      "must_cover": [
+        "toxic degeneration evaluation",
+        "stereotype/social-bias context",
+        "scope limits of benchmark evidence"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 10
+    },
+    {
+      "package_id": "annual-chronology",
+      "title": "Detailed Chronology――2020年の技術境界を時系列で追う",
+      "package_type": "WATCHLIST_CHRONOLOGY",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [],
+      "page_target": 8,
+      "editorial_angle": "paper、first-party publication、API、license、releaseを混同せず、年内の技術的な順序を復元する。",
+      "must_cover": [
+        "paper versus release dates",
+        "Q1 scale/dialogue/retrieval/systems",
+        "Q2 GPT-3/API/media/diffusion concentration",
+        "Q3 feedback/risk/access",
+        "Q4 diffusion refinement and visual-token branch"
+      ],
+      "boundaries": [],
+      "late_breaking": false,
+      "drafting_order": 11
+    },
+    {
+      "package_id": "synthesis-transition-2021",
+      "title": "2021年への橋――モデルそのものから多層システムへ",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [],
+      "page_target": 8,
+      "editorial_angle": "2020年に分岐したscale/access/retrieval/dialogue/media/feedback/evaluationの各層が、2021年に再利用・適応・接続される構造へ移ることを総括する。",
+      "must_cover": [
+        "what genuinely changed in 2020",
+        "what remained immature",
+        "handoff to SP-2021-Y without hindsight collapse"
+      ],
+      "boundaries": [],
+      "late_breaking": false,
+      "drafting_order": 12
+    },
+    {
+      "package_id": "references",
+      "title": "References and source notes",
+      "package_type": "REFERENCES",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [],
+      "page_target": 6,
+      "editorial_angle": "一次資料、source-role、chronology boundary、coverage limitationを追跡可能にする。",
+      "must_cover": [
+        "primary source references",
+        "source-role notes",
+        "coverage and provenance notes"
+      ],
+      "boundaries": [],
+      "late_breaking": false,
+      "drafting_order": 13
+    }
+  ],
+  "this_week_summary_written_last": true
+}

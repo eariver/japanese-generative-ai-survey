@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2022-Y",
+  "source_version": "v0.10",
+  "audit_kind": "PRE_PUBLICATION_PREVIEW_RENDER_INSPECTION",
+  "human_gate_record": false,
+  "visual_review_gate_mutated": false,
+  "publication_preview_approval_recorded": false,
+  "pdf": {
+    "workflow_run_id": 32146682277,
+    "artifact_id": 9328144490,
+    "artifact_name": "japanese-generative-ai-survey-special-2022-Y-v0.10-sparse",
+    "pdf_sha256": "df943e4e9764e70b27bb90a54a305adf95e457400655ef9b034dec4f88034701",
+    "page_count": 37,
+    "page_size": "A4",
+    "source_manifest_sha256": "6a520358ac2b190c06c954286bfcd049587cb5c45e057d4e4593aae2adcaa7d4",
+    "tex_log_clean": true,
+    "tex_log_gate_findings": []
+  },
+  "inspection": {
+    "renderer": "Poppler pdftoppm via /home/oai/skills/pdfs/scripts/render_pdf.py",
+    "render_dpi": 160,
+    "pages_rendered": 37,
+    "pages_visually_inspected": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37],
+    "contact_sheet_count": 10,
+    "individual_high_attention_pages": [2,8,9,12,13,29,34,37],
+    "checks": {
+      "clipped_or_margin_overflow_text": 0,
+      "overlapping_text_or_boxes": 0,
+      "broken_or_missing_glyphs": 0,
+      "black_square_glyphs": 0,
+      "toc_layout_defects": 0,
+      "technical_note_box_break_defects": 0,
+      "chronology_layout_defects": 0,
+      "reference_layout_defects": 0,
+      "reader_visible_placeholder_or_internal_qa_leakage": 0
+    },
+    "observations": [
+      "Pages 9 and 29 retain substantial whitespace at chapter boundaries; inspection confirms this is the result of deliberate next-chapter page starts rather than clipped, missing, or overflowed content.",
+      "Breakable Technical Notes continue cleanly across page boundaries where required, including the FlashAttention, Imagen/AudioLM, LaMDA/alignment, and annual-synthesis sequences.",
+      "Detailed Chronology remains legible through the final December entries and all visible reference markers render normally.",
+      "References / Source Notes render through entry 59 without clipping or malformed URL layout."
+    ],
+    "result": "PASS"
+  },
+  "page_budget": {
+    "soft_target": 96,
+    "hard_max": 144,
+    "actual": 37,
+    "below_soft_target": true,
+    "assessment": "Allowed by manifest-soft-target-hard-ceiling policy; no padding was added solely to reach the soft target."
+  },
+  "next_gate": "HUMAN_PUBLICATION_PREVIEW",
+  "note": "This audit records pre-gate editorial/render inspection only. Per docs/special-human-gates.md, the canonical visual_review machine checkpoint is derived only after Human Publication Preview approval of these exact PDF bytes."
+}

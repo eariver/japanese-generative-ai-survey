@@ -1,0 +1,216 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M01",
+  "edition_kind": "RETROSPECTIVE_PERIOD",
+  "lifecycle_state": "FROZEN",
+  "revision": "v0.1",
+  "calendar": {
+    "editorial_cutoff": "2026-01-31T23:59:59Z",
+    "cutoff_timezone": "UTC",
+    "collection_window_start": "2026-01-01T00:00:00Z",
+    "collection_window_end": "2026-01-31T23:59:59Z",
+    "collection_anchor_at": "2026-01-31T23:59:59Z",
+    "retrospective_as_of": "2026-08-13T04:25:14Z",
+    "frozen_at": "2026-08-13T21:01:00+09:00"
+  },
+  "gates": {
+    "raw_sources_preserved": "passed",
+    "candidate_inventory": "passed",
+    "evidence_normalized": "passed",
+    "candidate_selection": "passed",
+    "issue_architecture": "passed",
+    "article_draft": "passed",
+    "claim_and_chronology_validation": "passed",
+    "latex_build": "passed",
+    "visual_review": "passed",
+    "freeze": "passed"
+  },
+  "automation": {
+    "human_gate_model": "ARCHITECTURE_PUBLICATION_PREVIEW_WITH_EXCEPTION",
+    "unattended_public_release": false,
+    "human_gate_required_for_selection": false,
+    "human_gate_required_for_architecture": true,
+    "human_gate_required_for_publication_preview": true,
+    "human_gate_required_for_visual_review": false,
+    "human_gate_required_for_freeze": false,
+    "human_gate_required_for_public_release": false,
+    "publication_preview_authorizes": [
+      "visual_review",
+      "freeze",
+      "work_pr_merge",
+      "public_release"
+    ],
+    "exception_gate": "ON_DEMAND"
+  },
+  "provenance": {
+    "edition_manifest": "specials/2026-M01/edition.json",
+    "candidate_selection": {
+      "path": "sources/SP-2026-M01/selection/candidate-selection-v0.1.json",
+      "sha256": "40354e6a94c83e2e0c1591abba1ddf3b8feec9379121c659b327266d298f89d7",
+      "matrix_path": "sources/SP-2026-M01/selection/candidate-matrix-v0.1.json",
+      "matrix_sha256": "8e77ef2967eaad545dd4ee2237a22b22c8bce212c5e9a52b0b8b64d76bb9c5af",
+      "approval_reference": "Internal editorial checkpoint by GPT-5.6 Sol on 2026-08-13 after complete SP-2026-M01 Evidence normalization. All 13 CANDIDATE rows assigned editorial roles and clustered into a 32-page single-volume Architecture proposal. This reference is explicitly not Human Gate 1 approval."
+    },
+    "issue_architecture": {
+      "path": "sources/SP-2026-M01/architecture/issue-architecture-v0.1.json",
+      "sha256": "d614537d751a79e102eddedaf5587ee1bc8123f75b3fb79c9903b9134d9df539",
+      "approved_at": "2026-08-13T14:57:53+09:00",
+      "approval_reference": "Human Gate 1 approval by eariver in ChatGPT on 2026-08-13 JST: approved SP-2026-M01 Architecture v0.1 after cross-checking M02-M07 continuity and adding an independent two-page closing synthesis. Approved framing is January as the rise of the Agent Execution Stack, distinct from February's convergence into agentic engineering; planned 34 pages within the 40-page maximum. User then explicitly instructed proceeding to the next Human Gate."
+    },
+    "article_draft": {
+      "result_set_path": "sources/SP-2026-M01/drafting/runs/a694c96de10e2ab51057683a5b6c51342705affca4500d769b949b6c454cf822",
+      "result_set_sha256": "a694c96de10e2ab51057683a5b6c51342705affca4500d769b949b6c454cf822",
+      "acceptance_sha256": "d433a2c51d7a25a2fd66832e205e1f555d4dd80d9c263283f20b284eba148a50",
+      "article_draft_count": 6,
+      "generated_at": "2026-08-13T15:08:53+09:00"
+    },
+    "issue_synthesis": {
+      "input_path": "sources/SP-2026-M01/finalization/v0.1/synthesis-input.json",
+      "input_sha256": "5392e9594152f8662300b60fce78593f94fd49eb01a9fe62def82d7e57867b7d",
+      "result_path": "sources/SP-2026-M01/finalization/v0.1/synthesis-result.json",
+      "result_sha256": "8951c3463edee787e0c8e79930ecd00a3a7632ee8ef6560df4cc7c20fa3d6853",
+      "validation_sha256": "42c19e1e429ebd7db069c49580e93467b0c136e1c981d6c9c80b6cec0165b180",
+      "generated_at": "2026-08-13T15:13:04+09:00"
+    },
+    "claim_and_chronology_validation": {
+      "path": "sources/SP-2026-M01/finalization/v0.1/claim-chronology-audit.json",
+      "sha256": "e82ed5fbf24996f2a9ccab154cb375687bf61bd064ea9687f02c8b3228c6c8b4"
+    },
+    "validated_issue_source": {
+      "path": "surveys/special/2026-M01/revisions/v0.6/source-manifest.json",
+      "sha256": "b89b48b4a16db15dece0a82890fb82296dff35c2ca67edaf42c15ad9ed707dde",
+      "source_version": "v0.6",
+      "layout_mode": "mixed: narrative articles two-column via local multicols; theme synthesis and Technical Notes one-column full-width",
+      "layout_revision_sha256": "9316064c2ecf7a1fe0c98c7e1ba33ae3a4266198ebbebf81c16ffe515ba8ba87"
+    },
+    "reader_layout_revision": {
+      "source_version": "v0.6",
+      "layout_revision_path": "sources/SP-2026-M01/editorial/layout-revision-v0.6.json",
+      "layout_revision_sha256": "9316064c2ecf7a1fe0c98c7e1ba33ae3a4266198ebbebf81c16ffe515ba8ba87",
+      "reason": "Apply Human Visual Review findings from Issues #55, #78, #122 and #123 to SP-2026-M01 while preserving accepted Article Draft sections, selected Evidence, and the existing v0.5 Theme Synthesis panels."
+    },
+    "latex_build": {
+      "workflow_run_id": 31686654949,
+      "pdf_sha256": "590cd6f5a6ddd1ba758335ffce2e33059e10196b655306c6e0638cc4abd0923f",
+      "page_count": 29,
+      "source_version": "v0.6",
+      "validated_issue_source_path": "worktree/surveys/special/2026-M01/revisions/v0.6/source-manifest.json",
+      "validated_issue_source_sha256": "b89b48b4a16db15dece0a82890fb82296dff35c2ca67edaf42c15ad9ed707dde",
+      "page_budget": {
+        "soft_target": 32,
+        "hard_max": 40,
+        "below_soft_target": true,
+        "policy": "soft-target-hard-ceiling"
+      },
+      "build_style": {
+        "control_commit_sha": "06862b84114f3cf23ff1f6c552246ff6b5ef4a3a",
+        "path": "templates/survey/jgaisurvey.sty",
+        "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+      }
+    },
+    "publication_preview": {
+      "path": "sources/SP-2026-M01/visual-review/v0.6/approval.json",
+      "sha256": "e3d539b7073a784b826644143459f0abd4046fef29ab8abb11b81ad339780196",
+      "approved_at": "2026-08-13T21:01:00+09:00",
+      "approval_reference": "Human Gate 2 approval by eariver in ChatGPT on 2026-08-13 21:01 JST: user explicitly stated『フリーズを承認します、リリースしてください。』 This approves the exact SP-2026-M01 Publication Preview source v0.6, 29 pages, PDF SHA-256 590cd6f5a6ddd1ba758335ffce2e33059e10196b655306c6e0638cc4abd0923f, and authorizes deterministic Visual Review recording, Freeze, work PR merge, and public release.",
+      "source_version": "v0.6",
+      "pdf_sha256": "590cd6f5a6ddd1ba758335ffce2e33059e10196b655306c6e0638cc4abd0923f",
+      "authorizes": [
+        "visual_review",
+        "freeze",
+        "work_pr_merge",
+        "public_release"
+      ]
+    },
+    "visual_review": {
+      "path": "sources/SP-2026-M01/visual-review/v0.6/approval.json",
+      "sha256": "e3d539b7073a784b826644143459f0abd4046fef29ab8abb11b81ad339780196",
+      "approved_at": "2026-08-13T21:01:00+09:00",
+      "approval_reference": "Human Gate 2 approval by eariver in ChatGPT on 2026-08-13 21:01 JST: user explicitly stated『フリーズを承認します、リリースしてください。』 This approves the exact SP-2026-M01 Publication Preview source v0.6, 29 pages, PDF SHA-256 590cd6f5a6ddd1ba758335ffce2e33059e10196b655306c6e0638cc4abd0923f, and authorizes deterministic Visual Review recording, Freeze, work PR merge, and public release.",
+      "source_version": "v0.6",
+      "pdf_sha256": "590cd6f5a6ddd1ba758335ffce2e33059e10196b655306c6e0638cc4abd0923f",
+      "authority": "PUBLICATION_PREVIEW_APPROVAL"
+    },
+    "freeze_candidate": {
+      "path": "sources/SP-2026-M01/freeze/freeze-candidate.json",
+      "sha256": "d095d515ab71b7b3dc8bac7047b2f13be1d2721f7456810d38dced7fb40858e3",
+      "status": "READY_FOR_DETERMINISTIC_FREEZE",
+      "release_identity_mode": "ISSUE_ONLY",
+      "release_tag": "special/2026-M01",
+      "authority": "PUBLICATION_PREVIEW_APPROVAL"
+    },
+    "freeze": {
+      "path": "sources/SP-2026-M01/freeze/freeze.json",
+      "sha256": "c238fb9daf59efd1a376d0315ab761c8ae8e04b84fbb2e95f77ccefbdabb92ce",
+      "frozen_at": "2026-08-13T21:01:00+09:00",
+      "approval_reference": "Human Gate 2 approval by eariver in ChatGPT on 2026-08-13 21:01 JST: user explicitly stated『フリーズを承認します、リリースしてください。』 This approves the exact SP-2026-M01 Publication Preview source v0.6, 29 pages, PDF SHA-256 590cd6f5a6ddd1ba758335ffce2e33059e10196b655306c6e0638cc4abd0923f, and authorizes deterministic Visual Review recording, Freeze, work PR merge, and public release.",
+      "release_authority": "PUBLICATION_PREVIEW_APPROVAL",
+      "release_identity_mode": "ISSUE_ONLY",
+      "release_tag": "special/2026-M01",
+      "release_manifest_path": "sources/SP-2026-M01/release-manifest.json",
+      "release_manifest_sha256": "ed0b48ed5e538330a7d0b490e820e2ccaae4c6f536358a78dc03adf5875c97af",
+      "current_release_path": "surveys/special/2026-M01/CURRENT_RELEASE.md",
+      "current_release_sha256": "c56132b168e1c8a53955bb8933039d7196add1b97ae54e42653c8d2a0d2a7d1b"
+    }
+  },
+  "provenance_history": {
+    "validated_issue_source": [
+      {
+        "path": "surveys/special/2026-M01/source-manifest.json",
+        "sha256": "1d8f8627e509b33988bb69079122a5626ae0700f4bc2069b8856f92ee6e7dded",
+        "period_consistency": true
+      },
+      {
+        "path": "surveys/special/2026-M01/revisions/v0.2/source-manifest.json",
+        "sha256": "826840b4c763faecd1aaea1e31bc5982f6b6002db7fa8556bf49d3ac949f6f46",
+        "source_version": "v0.2",
+        "expansion_basis": "selected Evidence cards only",
+        "typography_revision": "v0.4-reference-title-cleanup",
+        "reader_facing_notes_language": "ja-reader-summary-v1",
+        "reader_facing_technical_notes": true,
+        "period_consistency": true
+      },
+      {
+        "path": "surveys/special/2026-M01/revisions/v0.3/source-manifest.json",
+        "sha256": "676c021673f4755330f289248db6fdf497f59f90b01efc26f0e2ab368917ad6a",
+        "source_version": "v0.3",
+        "expansion_basis": "selected Evidence cards only",
+        "typography_revision": "v0.4-reference-title-cleanup",
+        "layout_mode": "balanced-local-multicol-narrative-full-width-evidence",
+        "prebuild_layout": true,
+        "reader_facing_notes_language": "ja-reader-summary-v1",
+        "reader_facing_technical_notes": true,
+        "period_consistency": true
+      },
+      {
+        "path": "surveys/special/2026-M01/revisions/v0.4/source-manifest.json",
+        "sha256": "d09a8b7ef7aebd9512cb17245ad7de0d19ed897bb403c655b139e26a038e7633",
+        "source_version": "v0.4",
+        "layout_mode": "mixed-local-two-column-narrative-full-width-evidence",
+        "editorial_supplement_sha256": "05176899a30910a8aa81e7ac70e83610e45146e93050f5b6d23c312262aeb407"
+      },
+      {
+        "path": "surveys/special/2026-M01/revisions/v0.5/source-manifest.json",
+        "sha256": "1b942aabee932445186348029307038082dabdd87eccd4b30634fc025ee3d46b",
+        "source_version": "v0.5",
+        "layout_mode": "mixed-local-two-column-narrative-full-width-evidence",
+        "editorial_supplement_sha256": "3f3b66ab5b30d749daa386db3f324491bbcdf2adc830608a80ace8781252a78d"
+      }
+    ],
+    "latex_build": [
+      {
+        "workflow_run_id": 31681119485,
+        "pdf_sha256": "82b9a87c4e6328dd8c3e51ae23a03eef1cb156db91ae31b03c29521c51b1b4da",
+        "page_count": 32,
+        "source_version": "v0.5",
+        "validated_issue_source_path": "worktree/surveys/special/2026-M01/revisions/v0.5/source-manifest.json",
+        "validated_issue_source_sha256": "1b942aabee932445186348029307038082dabdd87eccd4b30634fc025ee3d46b",
+        "build_style": {
+          "control_commit_sha": "3a61d382b167f0ccd9f0cc5c06fc9c0b25f479ec",
+          "path": "templates/survey/jgaisurvey.sty",
+          "sha256": "561daa0add48331b872f3125a1fb0c657512668d10c20d17c5e6cf2f7db43fff"
+        }
+      }
+    ]
+  }
+}

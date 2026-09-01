@@ -1,0 +1,117 @@
+\documentclass[lualatex,a4paper,11pt]{jlreq}
+\usepackage{jgaisurvey}
+\usepackage{needspace}
+\usepackage{multicol}
+\addbibresource{references.bib}
+
+% Special-local long-form presentation. Shared weekly source remains unchanged.
+\geometry{left=22mm,right=22mm,top=30mm,bottom=30mm,headsep=5mm,footskip=10mm}
+\setlength{\headheight}{14.5pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1em}
+\newtcolorbox{technicalnote}[2]{
+  enhanced,breakable,colback=SurveySoft,colframe=SurveyAccent,
+  boxrule=0.65pt,arc=1mm,title={#1 \hfill \footnotesize #2},fonttitle=\bfseries,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=4mm,after skip=3mm
+}
+
+\surveysetup
+  {SP-2026-M02}
+  {Japanese Generative AI Technical Survey}
+  {Special / Coverage 2026-02-01 -- 2026-02-28 / Retrospective as of 2026-08-13}
+  {Coverage window: 2026-02-01 -- 2026-02-28 UTC}
+\surveyeditiondescriptor{Retrospective Survey}
+\surveycoverstory
+  {モデル競争からAgentic Engineeringへ}
+  {2026年2月、生成AIの競争軸はモデル単体の性能から、長時間の実行、tool利用、realtime interaction、specialized reasoning、そしてそれらを支えるruntimeへ広がった。AIを『答えるモデル』ではなく『仕事を継続する技術stack』として組み上げる転換を追う。}
+  {Coding ModelからAgentic Engineeringへ \quad / \quad Open ModelsもAgent Stackへ — Qwen・GLM・MiniMax \quad / \quad Serving Stackは同じ月に何を吸収したか}
+
+\setlength{\columnsep}{6mm}
+\setlength{\multicolsep}{0.8em plus 0.2em minus 0.1em}
+
+\begin{document}
+\surveycover
+\clearpage
+\input{sections/00-frontmatter}
+
+\clearpage
+\section{Coding ModelからAgentic Engineeringへ}
+\label{pkg:agentic-engineering-frontier}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/01-agentic-engineering-frontier-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/01-agentic-engineering-frontier-wide}
+\medskip
+\input{technical-notes/10-agentic-engineering-frontier-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Open ModelsもAgent Stackへ — Qwen・GLM・MiniMax}
+\label{pkg:open-model-agent-stack}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/02-open-model-agent-stack-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/02-open-model-agent-stack-wide}
+\medskip
+\input{technical-notes/20-open-model-agent-stack-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{RealtimeとMultimodalがInteractionを変える}
+\label{pkg:realtime-multimodal-interaction}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/03-realtime-multimodal-interaction-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/03-realtime-multimodal-interaction-wide}
+\medskip
+\input{technical-notes/30-realtime-multimodal-interaction-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{汎用Agent競争の外側 — Deep Thinkと科学推論}
+\label{pkg:specialized-reasoning-science}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/04-specialized-reasoning-science-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/04-specialized-reasoning-science-wide}
+\medskip
+\input{technical-notes/40-specialized-reasoning-science-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Serving Stackは同じ月に何を吸収したか}
+\label{pkg:serving-stack-catches-up}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/05-serving-stack-catches-up-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/05-serving-stack-catches-up-wide}
+\medskip
+\input{technical-notes/50-serving-stack-catches-up-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{総括 — 2月が残した技術的な転換点}
+\label{pkg:closing-synthesis}
+\vspace{0.15em}
+\begin{multicols}{2}
+\input{layout-bodies/06-closing-synthesis-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/06-closing-synthesis-wide}
+\medskip
+\input{technical-notes/60-closing-synthesis-notes}
+
+\Needspace{0.30\textheight}
+\bigskip
+\printbibliography[title={References / Source Notes}]
+\end{document}

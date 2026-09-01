@@ -1,0 +1,278 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{Inference-time Computeが新しい能力軸になる: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+OpenAI o1 H2 lifecycle & 主要資料 & モデル更新 & 2024-09-12, 2024-12-05, 2024-12-17     \\
+QwQ-32B-Preview & 主要資料 & オープンウェイト & 2024-11-28     \\
+DeepSeek-R1-Lite-Preview & 主要資料 & モデル & 2024-11-20     \\
+Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters & 主要資料 & 論文 & 2024-08-06     \\
+FrontierMath: A Benchmark for Evaluating Advanced Mathematical Reasoning in AI & 主要資料 & 論文 & 2024-11-07     \\
+Automated Reasoning checks for Amazon Bedrock Guardrails & 主要資料 & 安全性事象 & 2024-12-03     \\
+Deliberative alignment: reasoning enables safer language models & 補足資料 & 安全性事象 & 2024-12-20     \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{OpenAI o1 H2 lifecycle}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & モデル更新 \\
+時系列 & 2024-09-12, 2024-12-05, 2024-12-17 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 一次資料で「OpenAI o1 H2 lifecycle」を確認できる。数値や能力に関する評価は、提供元・プロジェクト・著者の主張として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 一次資料で確認できる範囲の事実を記録しており、提供元・プロジェクト・著者による評価を独立再現済みの結果として扱わない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/introducing-chatgpt-pro}}
+\item {\scriptsize\url{https://openai.com/index/introducing-openai-o1-preview}}
+\item {\scriptsize\url{https://openai.com/index/o1-and-new-tools-for-developers}}
+\item {\scriptsize\url{https://openai.com/index/openai-o1-mini-advancing-cost-efficient-reasoning}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{QwQ-32B-Preview}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Qwen \\
+種別 & オープンウェイト \\
+時系列 & 2024-11-28 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 一次資料で「QwQ-32B-Preview」を確認できる。数値や能力に関する評価は、提供元・プロジェクト・著者の主張として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 一次資料で確認できる範囲の事実を記録しており、提供元・プロジェクト・著者による評価を独立再現済みの結果として扱わない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://qwenlm.github.io/blog/qwq-32b-preview/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{DeepSeek-R1-Lite-Preview}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & DeepSeek \\
+種別 & モデル \\
+時系列 & 2024-11-20 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 一次資料で「DeepSeek-R1-Lite-Preview」を確認できる。数値や能力に関する評価は、提供元・プロジェクト・著者の主張として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 一次資料で確認できる範囲の事実を記録しており、提供元・プロジェクト・著者による評価を独立再現済みの結果として扱わない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://api-docs.deepseek.com/news/news1120}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2024-08-06 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 一次資料で「Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters」を確認できる。数値や能力に関する評価は、提供元・プロジェクト・著者の主張として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 一次資料で確認できる範囲の事実を記録しており、提供元・プロジェクト・著者による評価を独立再現済みの結果として扱わない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://arxiv.org/abs/2408.03314}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{FrontierMath: A Benchmark for Evaluating Advanced Mathematical Reasoning in AI}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2024-11-07 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 一次資料で「FrontierMath: A Benchmark for Evaluating Advanced Mathematical Reasoning in AI」を確認できる。数値や能力に関する評価は、提供元・プロジェクト・著者の主張として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 一次資料で確認できる範囲の事実を記録しており、提供元・プロジェクト・著者による評価を独立再現済みの結果として扱わない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://arxiv.org/abs/2411.04872}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Automated Reasoning checks for Amazon Bedrock Guardrails}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & AWS \\
+種別 & 安全性事象 \\
+時系列 & 2024-12-03 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 一次資料で「Automated Reasoning checks for Amazon Bedrock Guardrails」を確認できる。数値や能力に関する評価は、提供元・プロジェクト・著者の主張として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 一次資料で確認できる範囲の事実を記録しており、提供元・プロジェクト・著者による評価を独立再現済みの結果として扱わない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://aws.amazon.com/blogs/aws/prevent-factual-errors-from-llm-hallucinations-with-mathematically-sound-automated-reasoning-checks-preview/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Deliberative alignment: reasoning enables safer language models}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & 安全性事象 \\
+時系列 & 2024-12-20 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 一次資料で「Deliberative alignment: reasoning enables safer language models」を確認できる。数値や能力に関する評価は、提供元・プロジェクト・著者の主張として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 一次資料で確認できる範囲の事実を記録しており、提供元・プロジェクト・著者による評価を独立再現済みの結果として扱わない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/deliberative-alignment}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

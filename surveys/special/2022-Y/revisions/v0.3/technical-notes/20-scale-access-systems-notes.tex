@@ -1,0 +1,220 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{スケールの意味が変わった――Chinchilla、PaLM、OPT/BLOOM、FlashAttention: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\smallskip
+\noindent{\small\textit{Technical Notesでは、一次資料から確認した公開・提供・研究上の事実を記載する。数値・能力評価や提供元・著者による比較表現は、独立再現済みの結果ではなく帰属claimとして扱う。}}\par
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+Chinchilla & 主要資料 & モデル & — \\
+PaLM & 主要資料 & モデル & — \\
+OPT-175B & 主要資料 & オープンウェイト & — \\
+BLOOM & 主要資料 & オープンウェイト & — \\
+FlashAttention & 主要資料 & 論文 & — \\
+GLM-130B & 補足資料 & オープンウェイト & — \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{Chinchilla}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Google DeepMind \\
+種別 & モデル \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Google DeepMindの選定済み一次資料では、対象event近傍の一次資料から compute-optimal scaling を確認できる。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2203.15556v1}}
+\item {\scriptsize\url{https://deepmind.google/blog/an-empirical-analysis-of-compute-optimal-large-language-model-training/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{PaLM}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Google Research \\
+種別 & モデル \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Google Researchの選定済み一次資料では、対象event近傍の一次資料から 540B parameter scale を確認できる。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2204.02311v5}}
+\item {\scriptsize\url{https://research.google/blog/pathways-language-model-palm-scaling-to-540-billion-parameters-for-breakthrough-performance/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{OPT-175B}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Meta AI \\
+種別 & オープンウェイト \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Meta AIの選定済み一次資料では、OPTは125Mから175B parameterまでのdecoder-only pretrained Transformer群として提示され、研究者がlarge language modelのweightsを直接調査できるaccessを主眼の一つに置いた。 論文と同時期の公開では、model weightsだけでなく、学習時のinfrastructure上の課題を記録したlogbookと実験用codeも研究再現性のための構成要素として扱われた。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2205.01068v4}}
+\item {\scriptsize\url{https://ai.meta.com/blog/democratizing-access-to-large-scale-language-models-with-opt-175b/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{BLOOM}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & BigScience / Hugging Face \\
+種別 & オープンウェイト \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: BigScience / Hugging Faceの選定済み一次資料では、対象event近傍の一次資料から 176B parameter scale / decoder-only Transformer / 100B parameter scale を確認できる。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2211.05100v4}}
+\item {\scriptsize\url{https://huggingface.co/blog/bloom}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{FlashAttention}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & authors \\
+種別 & 論文 \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: authorsの選定済み一次資料では、FlashAttentionはGPU memory hierarchy上のread/write量を明示的に考慮するIO-awareなexact attention algorithmとして提案された。 algorithmはtilingによってHBMとon-chip SRAMの間のmemory accessを削減し、近似attentionへ置き換えずにself-attentionのsystems bottleneckへ対処する。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2205.14135v2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{GLM-130B}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Tsinghua / authors \\
+種別 & オープンウェイト \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Tsinghua / authorsの選定済み一次資料では、対象event近傍の一次資料から 130B parameter scale を確認できる。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2210.02414v2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

@@ -1,0 +1,328 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{Half-year Synthesis — 進歩の単位はModelからExecution Stackへ: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+ChatGPT agent & 補足資料 & Agent & 2025-07-17 (Agent（公開）); 2025-07-17 (System Card公開)      \\
+Claude 4.5 model and agent platform sequence & 補足資料 & モデル更新 & 2025-09-29 (Claude Sonnet 4.5（公開）); 2025-10-15 (Claude Haiku 4.5（公開）); 2025-11-24 (Claude Opus 4.5（公開）)      \\
+Gemini API H2 2025 lifecycle & 補足資料 & API & 2025-07-07 (Batch Mode（公開）); 2025-07-17 (Veo 3（Preview）); 2025-07-22 (Gemini 2.5 Flash-Lite（公開）); 2025-08-14 (Imagen 4（一般提供）); 2025-08-26 (Gemini 2.5 Image（Preview）); 2025-09-09 (Veo 3（一般提供）); 2025-09-25 (Robotics-ER 1.5（Preview）); 2025-10-07 (Computer Use（Preview）); 2025-10-15 (Veo 3.1（Preview）); 2025-11-18 (Gemini 3 Pro（Preview）); 2025-12-11 (Interactions API / Deep Research（Preview）); 2025-12-17 (Gemini 3 Flash（Preview）)      \\
+GPT-5 release / developer API / safe-completions & 補足資料 & モデル & 2025-08-07 (モデル公開); 2025-08-07 (API公開); 2025-08-07 (安全手法（公開）)      \\
+gpt-oss-120b / gpt-oss-20b & 補足資料 & オープンウェイト & 2025-08-05 (オープンウェイト公開); 2025-08-05 (Model Card（公開）)      \\
+Google DeepMind H2 world-model, robotics, and agent research & 補足資料 & モデル更新 & 2025-08-05 (Genie 3（発表）); 2025-09-25 (Gemini Robotics 1.5（発表）); 2025-11-13 (SIMA 2（発表）); 2025-11-18 (Gemini 3（発表）)      \\
+vLLM v0.10→v0.13 & 補足資料 & Framework & 2025-07-24 (Runtime（公開）); 2025-10-02 (Runtime（公開）); 2025-12-19 (Runtime（公開）)      \\
+OpenAI–Anthropic joint safety evaluation & 補足資料 & 安全性関連 & 2025-08-27 (複数組織安全性評価)      \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{ChatGPT agent}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & Agent \\
+時系列 & 2025-07-17 (Agent（公開）); 2025-07-17 (System Card公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIは7月17日、調査、ブラウザ操作、コード／ツール実行をユーザーの指示下で行うChatGPT agentを公開した。
+\item \textbf{一次情報で確認できる事実}: 同日公開のSystem Cardは、agentic systemに対して評価したリスクとcontrolの境界を記録した。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 「ChatGPT agent」の扱いでは、一次資料で確認できる範囲、提供時点、評価条件を維持し、記載範囲を超えて一般化しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/chatgpt-agent-system-card}}
+\item {\scriptsize\url{https://openai.com/index/introducing-chatgpt-agent}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Claude 4.5 model and agent platform sequence}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Anthropic \\
+種別 & モデル更新 \\
+時系列 & 2025-09-29 (Claude Sonnet 4.5（公開）); 2025-10-15 (Claude Haiku 4.5（公開）); 2025-11-24 (Claude Opus 4.5（公開）) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Anthropicは9月29日、Claude Sonnet 4.5を、Claude Codeの更新およびClaude Agent SDKとあわせて公開した。
+\item \textbf{一次情報で確認できる事実}: Anthropicは10月15日にClaude Haiku 4.5、11月24日にClaude Opus 4.5を公開し、いずれもAPIで提供した。
+\item \textbf{分析上の留意点}: Anthropicの2025年後半の系列では、モデル公開がコーディング、Computer Use、コンテキスト・メモリ、エージェント構築の各利用面と結び付いて展開された。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 保存したnewsroomのスナップショットはページ分割された継続更新型indexで、先頭HTMLは主に2026年の項目を示していた。2025年後半の年表は、個別のAnthropic公式ページを追跡して再構成した。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://www.anthropic.com/news}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Gemini API H2 2025 lifecycle}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Google \\
+種別 & API \\
+時系列 & 2025-07-07 (Batch Mode（公開）); 2025-07-17 (Veo 3（Preview）); 2025-07-22 (Gemini 2.5 Flash-Lite（公開）); 2025-08-14 (Imagen 4（一般提供）); 2025-08-26 (Gemini 2.5 Image（Preview）); 2025-09-09 (Veo 3（一般提供）); 2025-09-25 (Robotics-ER 1.5（Preview）); 2025-10-07 (Computer Use（Preview）); 2025-10-15 (Veo 3.1（Preview）); 2025-11-18 (Gemini 3 Pro（Preview）); 2025-12-11 (Interactions API / Deep Research（Preview）); 2025-12-17 (Gemini 3 Flash（Preview）) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Gemini APIの変更履歴には、非同期バッチ処理、Embedding、動画、画像、ネイティブ音声、ロボティクス、Computer Use、Gemini 3、統合Interactions API、Deep Research agentにまたがる高密度な2025年後半の更新が記録されている。
+\item \textbf{一次情報で確認できる事実}: 変更履歴はPreview、一般提供、非推奨化、停止を明示的に区別しており、これらの提供状態自体が技術年表の一部である。
+\item \textbf{一次情報で確認できる事実}: Gemini 3 Pro Previewは11月18日にAPIへ追加され、Gemini 3 Flash Previewは12月17日に続いた。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: この変更履歴はサービス／APIの年表であり、上流の研究・モデル公開年表ではない。Previewから一般提供への移行や停止を、最初のモデル発表と同一イベントへ統合しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://ai.google.dev/gemini-api/docs/changelog}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{GPT-5 release / developer API / safe-completions}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & モデル \\
+時系列 & 2025-08-07 (モデル公開); 2025-08-07 (API公開); 2025-08-07 (安全手法（公開）) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIは8月7日、GPT-5を発表し、同日にAPI提供を開始して、開発者向けcontrolとcoding／tool-useの利用面を示した。
+\item \textbf{一次情報で確認できる事実}: 同日、GPT-5に関連する安全学習手法としてsafe-completionsを公開し、hard refusalだけに依存しない出力中心の制御方式を説明した。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 「GPT-5 release / developer API / safe-completions」の扱いでは、一次資料で確認できる範囲、提供時点、評価条件を維持し、記載範囲を超えて一般化しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/gpt-5-safe-completions}}
+\item {\scriptsize\url{https://openai.com/index/introducing-gpt-5}}
+\item {\scriptsize\url{https://openai.com/index/introducing-gpt-5-for-developers}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{gpt-oss-120b / gpt-oss-20b}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & オープンウェイト \\
+時系列 & 2025-08-05 (オープンウェイト公開); 2025-08-05 (Model Card（公開）) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIは8月5日、gpt-oss-120bとgpt-oss-20bをApache 2.0とusage policyの下で公開するオープンウェイト推論モデルとしてリリースした。
+\item \textbf{Vendor claim}: OpenAIは両モデルをreasoning／tool useとlocal・self-hosted deployment向けに位置付けた。性能評価はmodel card／提供元のclaimとして扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 「gpt-oss-120b / gpt-oss-20b」の扱いでは、一次資料で確認できる範囲、提供時点、評価条件を維持し、記載範囲を超えて一般化しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/gpt-oss-model-card}}
+\item {\scriptsize\url{https://openai.com/index/introducing-gpt-oss}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Google DeepMind H2 world-model, robotics, and agent research}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Google DeepMind \\
+種別 & モデル更新 \\
+時系列 & 2025-08-05 (Genie 3（発表）); 2025-09-25 (Gemini Robotics 1.5（発表）); 2025-11-13 (SIMA 2（発表）); 2025-11-18 (Gemini 3（発表）) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Google DeepMindは8月5日、リアルタイムで対話可能なworld modelとしてGenie 3を発表した。
+\item \textbf{一次情報で確認できる事実}: Google DeepMindは9月25日、物理行動と身体化推論・ツール利用を組み合わせるGemini Robotics 1.5とRobotics-ER 1.5を発表した。Robotics-ER 1.5はGemini APIで提供され、Robotics 1.5は一部パートナー向けに限定された。
+\item \textbf{一次情報で確認できる事実}: 11月13日のSIMA 2はGeminiの推論を3D世界のエージェントへ統合し、11月18日にはより広範なfrontier modelとしてGemini 3が続いた。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 保存したDeepMindのindexスナップショットはページ分割されており、先頭ページだけでは2025年後半の完全な記録にならないため、個別の公式ページを用いて検証した。
+\item \textbf{分析上の留意点}: 研究プロトタイプ、一部パートナー限定のロボティクス提供、一般提供されるAPIモデルは、それぞれ異なる提供状態として区別する。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://deepmind.google/blog/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{vLLM v0.10→v0.13}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & vLLM project \\
+種別 & Framework \\
+時系列 & 2025-07-24 (Runtime（公開）); 2025-10-02 (Runtime（公開）); 2025-12-19 (Runtime（公開）) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Project claim}: vLLMの公式release historyは7月24日のv0.10、10月2日のv0.11、12月19日のv0.13を記録し、半年を通じてserving runtimeが継続更新されたことを示す。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 「vLLM v0.10→v0.13」の扱いでは、一次資料で確認できる範囲、提供時点、評価条件を維持し、記載範囲を超えて一般化しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://github.com/vllm-project/vllm/releases/tag/v0.10.0}}
+\item {\scriptsize\url{https://github.com/vllm-project/vllm/releases/tag/v0.11.0}}
+\item {\scriptsize\url{https://github.com/vllm-project/vllm/releases/tag/v0.13.0}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{OpenAI–Anthropic joint safety evaluation}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI / Anthropic \\
+種別 & 安全性関連 \\
+時系列 & 2025-08-27 (複数組織安全性評価) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIとAnthropicは共同評価を公開し、両社が互いのモデルを対象に、ミスアラインメント、指示追従、ハルシネーション、ジェイルブレイクなどの安全性観点を評価した。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: ここで確認できるのは一次資料に記録された範囲の事実であり、ベンダー・プロジェクト・著者による評価を独立再現された結果として扱うものではない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/openai-anthropic-safety-evaluation}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

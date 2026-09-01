@@ -1,0 +1,128 @@
+\documentclass[lualatex,a4paper,11pt]{jlreq}
+\usepackage{jgaisurvey}
+\usepackage{multicol}
+\addbibresource{references.bib}
+
+% Special-local long-form presentation. Shared weekly source remains unchanged.
+\geometry{margin=22mm,headsep=5mm,footskip=10mm}
+\setlength{\headheight}{14.5pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1em}
+\newtcolorbox{technicalnote}[2]{
+  enhanced,breakable,colback=SurveySoft,colframe=SurveyAccent,
+  boxrule=0.65pt,arc=1mm,title={#1 \hfill \footnotesize #2},fonttitle=\bfseries,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=4mm,after skip=3mm
+}
+
+\surveysetup
+  {SP-2023-Y}
+  {Japanese Generative AI Technical Survey}
+  {Special / Coverage 2023-01-01 -- 2023-12-31 / Retrospective as of 2026-08-16}
+  {Coverage window: 2023-01-01 -- 2023-12-31 UTC}
+\surveyeditiondescriptor{Retrospective Survey}
+\surveycoverstory
+  {モデルから、生成AIシステムの時代へ}
+  {2023年、生成AIの競争はモデル単体の性能から、長文脈とマルチモーダルな利用、公開モデルの生態系、外部機能への接続、学習・推論を支える実装層までを組み合わせる多層の設計競争へ広がった。}
+  {フロンティア競争は性能表から長文脈・マルチモーダルなインタラクションへ \quad / \quad LLaMAからMixtralへ――open weightsが単一モデルではなく生態系になった \quad / \quad 生成から行動へ――Plugin、Function Calling、Tool UseがAPI層を作った}
+
+\setlength{\columnsep}{6mm}
+\setlength{\multicolsep}{0.8em plus 0.2em minus 0.1em}
+
+\begin{document}
+\surveycover
+\clearpage
+\input{sections/00-frontmatter}
+
+\clearpage
+\section{フロンティア競争は、性能表からインタラクション設計へ}
+\label{pkg:frontier-interface}
+\input{layout-standfirsts/frontier-interface}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/frontier-interface}
+\end{multicols}
+\input{technical-notes/10-frontier-interface-notes}
+
+\clearpage
+\section{LLaMAからMixtralへ――open weightsは生態系になった}
+\label{pkg:open-weight-ecosystem}
+\input{layout-standfirsts/open-weight-ecosystem}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/open-weight-ecosystem}
+\end{multicols}
+\input{technical-notes/20-open-weight-ecosystem-notes}
+
+\clearpage
+\section{生成から行動へ――Tool UseがAPI層を作った}
+\label{pkg:tool-action-layer}
+\input{layout-standfirsts/tool-action-layer}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/tool-action-layer}
+\end{multicols}
+\input{technical-notes/30-tool-action-layer-notes}
+
+\clearpage
+\section{モデルを動かす技術が競争軸になった}
+\label{pkg:runtime-adaptation}
+\input{layout-standfirsts/runtime-adaptation}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/runtime-adaptation}
+\end{multicols}
+\input{technical-notes/40-runtime-adaptation-notes}
+
+\clearpage
+\section{推論・検索・学習後最適化、そしてTransformerの外側へ}
+\label{pkg:reasoning-retrieval-architecture}
+\input{layout-standfirsts/reasoning-retrieval-architecture}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/reasoning-retrieval-architecture}
+\end{multicols}
+\input{technical-notes/50-reasoning-retrieval-architecture-notes}
+
+\clearpage
+\section{生成メディアが、独立した製品・モデルスタックになった}
+\label{pkg:generative-media}
+\input{layout-standfirsts/generative-media}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/generative-media}
+\end{multicols}
+\input{technical-notes/60-generative-media-notes}
+
+\clearpage
+\section{能力を測り、制御する層が追いつき始めた}
+\label{pkg:evaluation-control}
+\input{layout-standfirsts/evaluation-control}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/evaluation-control}
+\end{multicols}
+\input{technical-notes/70-evaluation-control-notes}
+
+\clearpage
+\section{Detailed Chronology――圧縮した物語の外側に、出来事を残す}
+\label{pkg:annual-chronology}
+\input{layout-standfirsts/annual-chronology}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/annual-chronology}
+\end{multicols}
+\input{technical-notes/80-annual-chronology-notes}
+
+\clearpage
+\section{2023年総括――「モデル」から「システム／生態系」へ}
+\label{pkg:annual-synthesis}
+\input{layout-standfirsts/annual-synthesis}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/annual-synthesis}
+\end{multicols}
+\input{technical-notes/90-annual-synthesis-notes}
+
+\clearpage
+\printbibliography[title={References / Source Notes}]
+\end{document}

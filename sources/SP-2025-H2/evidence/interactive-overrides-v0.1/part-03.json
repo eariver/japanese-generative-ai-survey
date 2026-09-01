@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2025-H2",
+  "overrides": [
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:item-official-index-zai-release-notes-409a030c15",
+      "artifact": {"canonical_name": "GLM / AutoGLM H2 2025 lifecycle", "artifact_type": "MODEL_UPDATE", "organization": "Z.ai"},
+      "events": [{"event_type": "GLM_4_5_RELEASE", "event_date": "2025-07-28"}, {"event_type": "GLM_4_5V_RELEASE", "event_date": "2025-08-11"}, {"event_type": "GLM_4_6_RELEASE", "event_date": "2025-09-30"}, {"event_type": "GLM_4_6V_RELEASE", "event_date": "2025-12-08"}, {"event_type": "AUTOGLM_PHONE_MULTILINGUAL", "event_date": "2025-12-11"}, {"event_type": "GLM_4_7_RELEASE", "event_date": "2025-12-22"}],
+      "claims": [{"text": "Z.ai's release notes record GLM-4.5 on July 28 as a native agentic LLM, GLM-4.5V on August 11 as a vision reasoning model, and GLM-4.6 on September 30 as a coding-focused model with a 200K context window.", "evidence_class": "PRIMARY_FACT"}, {"text": "December entries add GLM-4.6V, AutoGLM-Phone-Multilingual for screen-driven mobile actions, and GLM-4.7 with coding/reasoning/agentic updates.", "evidence_class": "PRIMARY_FACT"}],
+      "limitations": ["Performance superlatives in the release notes are vendor claims; use only release identity, dates, stated feature scope, and clearly attributed evaluation claims."],
+      "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "Adds a model family where coding, multimodal reasoning, and explicit mobile-action agents converge over the half-year.", "canonical_url": "https://docs.z.ai/release-notes/new-released"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:series-oa-atlas-93e282cc32",
+      "artifact": {"canonical_name": "ChatGPT Atlas / OWL / prompt-injection hardening", "artifact_type": "AGENT", "organization": "OpenAI"},
+      "events": [{"event_type": "ATLAS_LAUNCH", "event_date": "2025-10-21"}, {"event_type": "OWL_ARCHITECTURE_PUBLICATION", "event_date": "2025-10-30"}, {"event_type": "ATLAS_SECURITY_HARDENING", "event_date": "2025-12-22"}],
+      "claims": [{"text": "OpenAI launched ChatGPT Atlas on October 21 as a browser with ChatGPT built in, with initial macOS availability.", "evidence_class": "PRIMARY_FACT"}, {"text": "OpenAI later described OWL as the architecture behind Atlas and published a December hardening update focused on prompt-injection attacks.", "evidence_class": "PRIMARY_FACT"}],
+      "limitations": [], "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "A single release arc connects an action-capable browser surface, its implementation architecture, and a concrete security-control problem within the same half-year.", "canonical_url": "https://openai.com/index/introducing-chatgpt-atlas", "grouping_note": "Keep grouped as one Atlas story package, but retain launch, architecture publication, and security hardening as three separate dated events."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:series-oa-chatgpt-agent-41b09142b4",
+      "artifact": {"canonical_name": "ChatGPT agent", "artifact_type": "AGENT", "organization": "OpenAI"},
+      "events": [{"event_type": "AGENT_LAUNCH", "event_date": "2025-07-17"}, {"event_type": "SYSTEM_CARD_PUBLICATION", "event_date": "2025-07-17"}],
+      "claims": [{"text": "OpenAI launched ChatGPT agent with research, browser automation, and code/tool execution capabilities under user guidance.", "evidence_class": "PRIMARY_FACT"}, {"text": "A system card published the same day documented the evaluated risk/control boundary for the agentic system.", "evidence_class": "PRIMARY_FACT"}],
+      "limitations": [], "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "Provides the early-H2 anchor for the shift from conversational assistance to user-visible action execution.", "canonical_url": "https://openai.com/index/introducing-chatgpt-agent", "grouping_note": "Announcement and system card are one release package with separate product and safety evidence."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:series-oa-gpt-oss-ca4a8f2a95",
+      "artifact": {"canonical_name": "gpt-oss-120b / gpt-oss-20b", "artifact_type": "OPEN_WEIGHT", "organization": "OpenAI"},
+      "events": [{"event_type": "OPEN_WEIGHT_RELEASE", "event_date": "2025-08-05"}, {"event_type": "MODEL_CARD_PUBLICATION", "event_date": "2025-08-05"}],
+      "claims": [{"text": "OpenAI released gpt-oss-120b and gpt-oss-20b as open-weight reasoning models under Apache 2.0 plus its usage policy.", "evidence_class": "PRIMARY_FACT"}, {"text": "The release positioned the models for reasoning/tool use and efficient local or self-hosted deployment; detailed performance remains vendor/model-card attributed.", "evidence_class": "VENDOR_CLAIM"}],
+      "limitations": ["Open weights do not imply an unrestricted data/training disclosure; openness should be described specifically in terms of weights/license and deployment."],
+      "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "Reintroduced OpenAI into open-weight deployment and immediately created a runtime-integration event across the ecosystem.", "canonical_url": "https://openai.com/index/introducing-gpt-oss", "grouping_note": "Release announcement and model card are one open-weight package."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:series-oa-gpt5-d90a8cae40",
+      "artifact": {"canonical_name": "GPT-5 release / developer API / safe-completions", "artifact_type": "MODEL", "organization": "OpenAI"},
+      "events": [{"event_type": "MODEL_RELEASE", "event_date": "2025-08-07"}, {"event_type": "API_RELEASE", "event_date": "2025-08-07"}, {"event_type": "SAFETY_METHOD_PUBLICATION", "event_date": "2025-08-07"}],
+      "claims": [{"text": "OpenAI announced GPT-5 and API availability on August 7, with developer controls and coding/tool-use positioning.", "evidence_class": "PRIMARY_FACT"}, {"text": "OpenAI published safe-completions as an output-centric safety-training approach associated with GPT-5 rather than relying only on hard refusals.", "evidence_class": "PRIMARY_FACT"}],
+      "limitations": ["Benchmark and 'best' claims remain vendor-attributed; release, API availability, model identity, controls, and safety-method publication are primary facts."],
+      "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "The central August model release simultaneously changed the frontier model, developer surface, and safety-training story, making it a useful cross-layer anchor.", "canonical_url": "https://openai.com/index/introducing-gpt-5", "grouping_note": "Treat consumer/model, API/developer, and safe-completions pages as one GPT-5 release package with separate events."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:series-oa-sora2-dd9d8f230a",
+      "artifact": {"canonical_name": "Sora 2", "artifact_type": "MODEL", "organization": "OpenAI"},
+      "events": [{"event_type": "VIDEO_AUDIO_MODEL_RELEASE", "event_date": "2025-09-30"}, {"event_type": "SYSTEM_CARD_PUBLICATION", "event_date": "2025-09-30"}],
+      "claims": [{"text": "OpenAI released Sora 2 with synchronized dialogue/sound effects and a new Sora app surface.", "evidence_class": "PRIMARY_FACT"}, {"text": "The same-day system card documents safety evaluation and mitigation for the video-and-audio model.", "evidence_class": "PRIMARY_FACT"}],
+      "limitations": [], "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "Represents native audio-video generation becoming a first-class model/product stack rather than a text-only frontier story.", "canonical_url": "https://openai.com/index/sora-2", "grouping_note": "Model announcement and system card are one multimodal release package."
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:series-sglang-h2-17aa4e2a64",
+      "artifact": {"canonical_name": "SGLang v0.5.1→v0.5.6", "artifact_type": "FRAMEWORK", "organization": "SGLang project"},
+      "events": [{"event_type": "RUNTIME_RELEASE", "event_date": "2025-08-23"}, {"event_type": "RUNTIME_RELEASE", "event_date": "2025-12-03"}],
+      "claims": [{"text": "SGLang v0.5.1 included runtime/disaggregated-transfer and long-context/model-support work; v0.5.6 added support for DeepSeek V3.2/V3.2 Speciale, diffusion models, JIT kernels, and further model/runtime optimizations.", "evidence_class": "PROJECT_CLAIM"}],
+      "limitations": ["Release-note feature/performance statements are project claims; no independent benchmark reproduction is implied."],
+      "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "Shows serving infrastructure absorbing new model families and modalities within weeks or months of upstream releases.", "canonical_url": "https://github.com/sgl-project/sglang/releases"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:series-tensorrt-h2-f352c9873f",
+      "artifact": {"canonical_name": "TensorRT-LLM v1.0→v1.1", "artifact_type": "FRAMEWORK", "organization": "NVIDIA"},
+      "events": [{"event_type": "RUNTIME_STABLE_RELEASE", "event_date": "2025-09-24"}, {"event_type": "RUNTIME_RELEASE", "event_date": "2025-12-19"}],
+      "claims": [{"text": "TensorRT-LLM 1.0 made its PyTorch-based architecture and LLM API stable/default and expanded model/LoRA/hardware support; v1.1 continued the late-period runtime line.", "evidence_class": "PROJECT_CLAIM"}],
+      "limitations": ["Feature and performance descriptions are NVIDIA project claims and are hardware/configuration dependent."],
+      "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "Provides vendor-optimized serving evidence that runtime APIs and architecture were stabilizing while model support churn continued.", "canonical_url": "https://github.com/NVIDIA/TensorRT-LLM/releases"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:series-transformers-h2-1299e5aa8a",
+      "artifact": {"canonical_name": "Transformers v4.54→v4.57 model/runtime uptake", "artifact_type": "FRAMEWORK", "organization": "Hugging Face"},
+      "events": [{"event_type": "LIBRARY_RELEASE", "event_date": "2025-07-25"}, {"event_type": "GPT_OSS_INTEGRATION_RELEASE", "event_date": "2025-08-05"}, {"event_type": "MULTIMODAL_MODEL_UPTAKE_RELEASE", "event_date": "2025-10-03"}],
+      "claims": [{"text": "Transformers v4.54 highlighted kernels and Transformers Serve; v4.55 added immediate gpt-oss support; v4.57 added Qwen3-Next, Qwen3-VL, Qwen3-OMNI MoE and other new model families.", "evidence_class": "PROJECT_CLAIM"}, {"text": "The gpt-oss integration release occurred the same day as the upstream gpt-oss announcement, illustrating very short model-to-library uptake for a coordinated release.", "evidence_class": "INFERENCE"}],
+      "limitations": ["Library support date is an integration event and must not be used as the upstream model's original release date."],
+      "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "Links upstream model churn to practical local/self-hosted integration and shows the library layer increasingly carrying serving/runtime concerns.", "canonical_url": "https://github.com/huggingface/transformers/releases"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2025-H2:series-vllm-h2-c06db6d580",
+      "artifact": {"canonical_name": "vLLM v0.10→v0.13", "artifact_type": "FRAMEWORK", "organization": "vLLM project"},
+      "events": [{"event_type": "RUNTIME_RELEASE", "event_date": "2025-07-24"}, {"event_type": "RUNTIME_RELEASE", "event_date": "2025-10-02"}, {"event_type": "RUNTIME_RELEASE", "event_date": "2025-12-19"}],
+      "claims": [{"text": "vLLM v0.10 began V0 engine cleanup; v0.11 completed removal of V0 so V1 became the only engine and changed CUDA graph defaults; v0.13 continued model/tool-parser support and breaking configuration changes.", "evidence_class": "PROJECT_CLAIM"}],
+      "limitations": ["Project release notes establish software changes and dates; performance implications vary by workload and hardware."],
+      "unresolved_questions": [], "candidate_recommendation": "CANDIDATE", "why_this_special": "Provides a longitudinal serving-runtime spine across the half-year, useful for separating model announcements from the infrastructure needed to operate them.", "canonical_url": "https://github.com/vllm-project/vllm/releases"
+    }
+  ]
+}

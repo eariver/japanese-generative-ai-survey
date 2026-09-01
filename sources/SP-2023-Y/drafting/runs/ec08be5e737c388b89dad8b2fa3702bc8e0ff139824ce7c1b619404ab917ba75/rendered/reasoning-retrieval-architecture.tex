@@ -1,0 +1,19 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{推論・検索・学習後最適化、そしてTransformerの外側へ}
+\noindent\textbf{2023年の研究は、一つの「次世代LLM手法」へ収束したのではない。Tree of Thoughts、DPO、Self-RAG、Mambaは、それぞれ推論時探索、post-training、retrieval-control、sequence architectureという異なる層を広げた。設計空間の拡張として並べることで、何が同じ問題で何が別問題かを明確にする。}\autocite{src-21aef0026892,src-5dd64e15cc75,src-8a38211129c4,src-e413c7ab8da4}
+
+Tree of Thoughtsは、単一の逐次生成だけでなく、複数の候補状態を探索・評価する推論時の計算構造を研究対象にした。この方向は「モデルそのものを大きくする」以外に、推論プロセスの編成で結果を変える設計余地があることを示す。\autocite{src-8a38211129c4}
+
+
+DPOはpretrainingや推論時探索とは異なり、人間の選好情報を用いるpost-trainingの設計を簡素化する方向に位置する。ここで扱うのはモデルが推論中に考える方法ではなく、どの応答傾向を学習後に選好させるかという別レイヤである。\autocite{src-21aef0026892}
+
+
+Self-RAGはretrievalを常時付加する固定pipelineではなく、生成過程と検索・自己評価を結び付ける制御問題として扱う方向を示した。retrievalの有無、参照結果の使い方、生成の自己点検を一つのsystem loopとして設計する発想である。\autocite{src-e413c7ab8da4}
+
+
+Mambaは年末に、attention中心のTransformerとは異なるsequence modelingの選択肢として注目を集めた。ただし2023年時点のEvidenceから「Transformerが置き換えられた」と結論することはできない。重要なのは、長いsequenceと計算効率をめぐるarchitecture探索が再び広がったことである。\autocite{src-5dd64e15cc75}
+
+
+\begin{claimboundary}
+各論文・projectが報告する性能向上は、それぞれの課題設定と評価条件に基づく。ここでは互いに異なるレイヤの研究を共通ランキングへ置かず、2023年に設計可能な場所が増えたという年次的意味を抽出する。\autocite{src-8a38211129c4}
+\end{claimboundary}

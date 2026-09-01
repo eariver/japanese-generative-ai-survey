@@ -1,0 +1,26 @@
+\sectionkicker{Theme synthesis}
+\subsection*{横断整理 — 1月に立ち上がったExecution Stackの6層}
+\addcontentsline{toc}{subsection}{横断整理 — 1月に立ち上がったExecution Stackの6層}
+個別発表をもう一度列挙するのではなく、本号で確認した1月のEvidenceを責務の層へ写像すると、Agentをbase modelだけでは説明しにくくなった理由が見える。これは後続月の事実を持ち込む図ではなく、1月時点で立ち上がった観察軸である。
+\medskip
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}X@{}}
+\toprule
+観察軸 & 1月の一次資料・論文から読めること \\
+\midrule
+harness & Codex loopではuser、model、tools、history、context-window managementをharnessが編成する。Agentの実行品質を左右する責務がmodel inferenceの外側に明示された。 \cite{src-fa5410010e0a,src-ae10eb4597fe} \\
+context / access & in-house data agentはmetadata、annotations、institutional knowledge、memory、runtime contextとpass-through access controlを組み合わせる。internal case studyであり普遍benchmarkではないが、contextとpermissionが独立設計層であることを示す。 \cite{src-fa5410010e0a,src-ae10eb4597fe} \\
+security / control & Safe URLの設計ではURL provenanceに応じてautomatic retrieval、block、explicit user actionを分ける。外部actionが増えるほどsecurity boundaryとhuman confirmationがexecution stackの一部になる。 \cite{src-0d2abbb0fa62} \\
+training environment & DynaWebはlearned web world modelをrollout環境として使い、live web依存を下げる方向を示した。simulation gapを残しつつ、Agent trainingのenvironment自体が設計対象として現れる。 \cite{src-85bc3e4f7b39} \\
+tool-native API & Qwen3-Maxのmanaged lifecycleではthinking中のweb search、web extraction、code interpreterが記録される。tool executionがharnessだけでなくmodel/API surfaceにも入る。 \cite{src-eac8dfbeb78c} \\
+serving / runtime & vLLMは1月に二つのreleaseを重ね、async scheduling、tool/API、model architecture、streaming inputなどを更新した。new workloadを受け止めるruntimeもAgent execution stackの下支えとして変化していた。 \cite{src-3bc80a3c7870,src-d9f9de620203} \\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\end{center}
+\normalsize
+\begin{claimboundary}[この比較の境界]
+この表は本号で既に検証・参照している一次資料と論文を横断比較の形へ再配置したものである。vendor / project / author が報告した性能値や優位性は独立再現済みの一般則へ変換せず、本文とSource Notesの帰属境界をそのまま維持する。
+\end{claimboundary}

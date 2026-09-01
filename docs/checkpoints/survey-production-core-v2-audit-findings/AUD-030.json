@@ -1,0 +1,33 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-030",
+  "edition": "CORE-V2",
+  "stage": "WU-012_AGENT_FIRST_REAUDIT",
+  "observed_problem": "RETROSPECTIVE_PERIOD is declared as a first-class Research Profile with BOUNDED_PERIOD semantics, but ChatGPT has no simple canonical v2 helper equivalent to Weekly/Thematic initialization. A future month/half/year/custom retrospective would require reconstructing deterministic dates/paths/profile fields by hand or falling back to legacy bootstrap knowledge.",
+  "expected_behavior": "Provide a small generic Period bootstrap/profile helper that converts an explicit bounded-period specification into a schema-valid Production Profile/State and points ChatGPT to the applicable period guide. The helper exists for efficiency and consistency; it does not encode period-specific editorial judgment.",
+  "actual_behavior": "scripts/survey_period_v2.py now resolves configured monthly/half-year/annual periods and arbitrary bounded custom specs into the generic RETROSPECTIVE_PERIOD/LONGFORM_SPECIAL Profile, supports side-effect-free plan/resume semantics, and points the agent to the applicable period guide.",
+  "production_workaround": null,
+  "classification": {
+    "scope": "PERIOD_PROFILE",
+    "defect_kind": "ORCHESTRATION",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "9349bd52641d3433cc219adea6565f44fe3dbf09",
+    "relevant_artifacts": [
+      "config/survey-production-v2.json",
+      "scripts/survey_production_v2.py",
+      "scripts/survey_period_v2.py",
+      "tests/test_survey_period_v2.py",
+      "docs/half-year-retrospective-specials.md",
+      "docs/annual-retrospective-specials.md",
+      "docs/survey-production-core-v2-session-bootstrap.md"
+    ],
+    "human_review_reference": "User premise correction and ChatGPT-first pre-approval re-audit, 2026-08-22"
+  },
+  "improvement_action": "Implemented by WU-012E with a lightweight generic bounded-Period planner/initializer; research/editorial decisions remain ChatGPT-owned.",
+  "regression_fixture": "tests/test_survey_period_v2.py",
+  "resolved_by_repair_set_id": null,
+  "status": "FIXED_GENERIC"
+}

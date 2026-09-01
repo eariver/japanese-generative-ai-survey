@@ -1,0 +1,63 @@
+\documentclass[lualatex,a4paper,11pt]{jlreq}
+\usepackage{jgaisurvey}
+\addbibresource{references.bib}
+
+% Special-local long-form presentation. Shared weekly source remains unchanged.
+\geometry{margin=22mm,headsep=5mm,footskip=10mm}
+\setlength{\headheight}{14.5pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1em}
+\newtcolorbox{technicalnote}[2]{
+  enhanced,breakable,colback=SurveySoft,colframe=SurveyAccent,
+  boxrule=0.65pt,arc=1mm,title={#1 \hfill \footnotesize #2},fonttitle=\bfseries,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=4mm,after skip=3mm
+}
+
+\surveysetup
+  {SP-2026-M04}
+  {Japanese Generative AI Technical Survey}
+  {Special / Coverage 2026-04-01 -- 2026-04-30 / Retrospective as of 2026-08-12}
+  {Coverage window: 2026-04-01 -- 2026-04-30 UTC}
+\surveyeditiondescriptor{Retrospective Survey}
+\surveycoverstory
+  {2026年4月 — AI競争は一つの軸ではなくなった}
+  {GPT-5.5やClaude Opus 4.7の更新と並行して、multimodal、agent tooling、serving、実行境界の評価、科学特化が別々の方向へ伸び始めた。5月以降の実行環境化へつながる『分化の月』を振り返る。}
+  {Frontier Models — 春の更新波、競争軸が分かれ始める \quad / \quad Multimodal \& Interfaces — 画像・音声・視覚の入口が増える \quad / \quad Agents \& Tooling — Agentが開発・操作の現場へ入る}
+
+\begin{document}
+\surveycover
+\clearpage
+\input{sections/00-frontmatter}
+
+\clearpage
+\input{sections/10-frontier-models-april}
+\input{technical-notes/10-frontier-models-april-notes}
+\Needspace{0.45\textheight}
+\bigskip
+\input{sections/20-multimodal-interfaces-april}
+\input{technical-notes/20-multimodal-interfaces-april-notes}
+\Needspace{0.45\textheight}
+\bigskip
+\input{sections/30-agents-tooling-april}
+\input{technical-notes/30-agents-tooling-april-notes}
+\Needspace{0.45\textheight}
+\bigskip
+\input{sections/40-inference-serving-april}
+\input{technical-notes/40-inference-serving-april-notes}
+\Needspace{0.45\textheight}
+\bigskip
+\input{sections/50-evaluation-safety-sandbox-april}
+\input{technical-notes/50-evaluation-safety-sandbox-april-notes}
+\Needspace{0.45\textheight}
+\bigskip
+\input{sections/60-ai-science-april}
+\input{technical-notes/60-ai-science-april-notes}
+\Needspace{0.45\textheight}
+\bigskip
+\input{sections/70-paper-watch-april}
+\input{technical-notes/70-paper-watch-april-notes}
+
+\Needspace{0.35\textheight}
+\bigskip
+\printbibliography[title={References / Source Notes}]
+\end{document}

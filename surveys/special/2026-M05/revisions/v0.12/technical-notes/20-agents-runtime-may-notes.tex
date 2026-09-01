@@ -1,0 +1,186 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{Agents \& Runtime — Codexを安全に長く動かす実行環境: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+Running Codex safely at OpenAI & 主要資料 & Agent & 2026-05-08 (公式公開) \\
+Building a safe, effective sandbox to enable Codex on Windows & 主要資料 & Agent & 2026-05-13 (公式公開) \\
+Kimi Code CLI May 2026 lifecycle & 主要資料 & 公式情報 & 2026-05 (製品公開); 2026-05-26 (製品更新); 2026-05-27 (製品更新); 2026-05-28 (製品更新); 2026-05-29 (製品更新) \\
+Mistral May 2026 technical releases & 主要資料 & 公式情報 & 2026-05-23 (Agent公開); 2026-05-22 (製品公開); 2026-05-28 (Agent公開); 2026-05-27 (研究公開) \\
+Agentic AI Workload Characteristics & 補足資料 & 論文 & 2026-05-25 (論文公開) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{Running Codex safely at OpenAI}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & Agent \\
+時系列 & 2026-05-08 (公式公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 保存済み一次資料では「Running Codex safely at OpenAI」が2026-05-08に確認できる。
+\item \textbf{Vendor claim}: OpenAIの公式feedでは、社内Codex運用の安全設計としてsandboxing、approval、network policy、agent-native telemetryを説明している。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 当該first-party feedは公開時系列とvendorが説明したscopeの確認には使えるが、詳細なcapability・benchmark・safety上の主張は本号で独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/running-codex-safely}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Building a safe, effective sandbox to enable Codex on Windows}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & Agent \\
+時系列 & 2026-05-13 (公式公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 保存済み一次資料では「Building a safe, effective sandbox to enable Codex on Windows」が2026-05-13に確認できる。
+\item \textbf{Vendor claim}: OpenAIの公式feedでは、Windows向けCodex sandboxについて、file accessとnetwork accessを制御する設計を説明している。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 当該first-party feedは公開時系列とvendorが説明したscopeの確認には使えるが、詳細なcapability・benchmark・safety上の主張は本号で独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/building-codex-windows-sandbox}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Kimi Code CLI May 2026 lifecycle}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Moonshot AI \\
+種別 & 公式情報 \\
+時系列 & 2026-05 (製品公開); 2026-05-26 (製品更新); 2026-05-27 (製品更新); 2026-05-28 (製品更新); 2026-05-29 (製品更新) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 保存済み一次資料ではKimi CodeのMay 2026 changelogを確認できる。
+\item \textbf{Vendor claim}: Kimi Code changelogでは、5月の初回releaseと5月26〜29日の連続更新を記録し、OpenAI-compatible reasoning model support、plugin system、scheduled task、自動permission handling、GitHub plugin install、default step limitの撤廃などを挙げている。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 当該first-party indexは掲載された時系列の確認には使えるが、capability / benchmarkの説明はvendor claimであり、月精度の日付は日単位へ補完しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://www.kimi.com/code/docs/en/kimi-code/whats-new.html}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Mistral May 2026 technical releases}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Mistral AI \\
+種別 & 公式情報 \\
+時系列 & 2026-05-23 (Agent公開); 2026-05-22 (製品公開); 2026-05-28 (Agent公開); 2026-05-27 (研究公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 保存済み一次資料ではMistral newsのMay 2026 snapshotを確認できる。
+\item \textbf{Vendor claim}: Mistralのnews snapshotでは、5月23日のremote agents、5月22日のMCP-enabled Studio toolingとWorkflows public preview、5月28日のVibe long-horizon Work/Code modes、5月27〜28日のPhysics AI関連発表を記録している。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 当該first-party indexは掲載された時系列の確認には使えるが、capability / benchmarkの説明はvendor claimであり、月精度の日付は日単位へ補完しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://mistral.ai/news/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Agentic AI Workload Characteristics}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-05-25 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 保存済み一次資料では「Agentic AI Workload Characteristics」が2026-05-25に確認できる。
+\item \textbf{Author claim}: 論文では、ReAct型agent workloadをend-to-endで観測し、複数benchmark/model構成にわたる反復model call、tool実行、増大するcontextを特徴づけている。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: arXivの原メタデータ／abstractは一次論文資料として扱うが、実験結果と一般化可能性はAuthor claimであり、本号では独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2605.26297v1}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip

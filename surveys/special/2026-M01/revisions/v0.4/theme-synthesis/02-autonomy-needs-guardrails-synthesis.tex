@@ -1,0 +1,24 @@
+\sectionkicker{Theme synthesis}
+\subsection*{横断比較 — Prompt Injectionはどの境界を越えるのか}
+\addcontentsline{toc}{subsection}{横断比較 — Prompt Injectionはどの境界を越えるのか}
+Agentがweb、tool、fileへ接続されると、prompt injectionは単なる誤応答ではなく情報flowとexternal actionの問題になる。1月の資料は、具体的なURL exfiltration対策と広い攻撃taxonomyを異なるEvidence classとして示した。
+\medskip
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}X@{}}
+\toprule
+観察軸 & 7月の一次資料・論文から読めること \\
+\midrule
+脅威の具体形 & OpenAIのSafe URL設計は、攻撃者が生成させたURLを通じてデータを外部へ送るURL-based exfiltrationを具体的なthreat modelとして扱う。任意のweb content全般が安全になることを意味しない。 \cite{src-0d2abbb0fa62} \\
+automatic execution境界 & publicly observed URLは自動retrievalの対象になり得る一方、未知または危険なURLではblockやuser actionへ切り替える設計が説明された。autonomyを維持する範囲とhuman confirmationへ戻す範囲の分離が中心になる。 \cite{src-0d2abbb0fa62} \\
+攻撃面の広がり & prompt-injection SoKはcoding assistants、skills、tools、protocol ecosystemを含む研究群を整理し、攻撃がprompt本文だけで閉じないことを示す。ただし集計値は異質な研究を束ねたauthor-reported synthesisである。 \cite{src-e9010a7fe30b} \\
+防御Evidenceの境界 & Safe URLは実装側のdefense-in-depth、SoKは文献側のtaxonomyであり、どちらもprompt injection一般を解決済みとする根拠ではない。実装claimと研究surveyを同じ強さの実証結果として扱わないことが重要である。 \cite{src-0d2abbb0fa62,src-e9010a7fe30b} \\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\end{center}
+\normalsize
+\begin{claimboundary}[この比較の境界]
+この表は本号で既に検証・参照している一次資料と論文を横断比較の形へ再配置したものである。vendor / project / author が報告した性能値や優位性は独立再現済みの一般則へ変換せず、本文とSource Notesの帰属境界をそのまま維持する。
+\end{claimboundary}

@@ -1,0 +1,49 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\noindent\textbf{Codexのsandbox、Windows上の隔離、Kimi Code CLI、MistralのMCP／workflow更新。5月はagentを単発のtool callではなく、権限・network・state・長時間taskを抱える実行環境として設計する動きが前面に出た。}\autocite{src-4a3442a5ca8c,src-66be12207714,src-9191d43918fc,src-ac04c00cf21f,src-d8b7c1c36830}
+
+\subsection{5月の変化を一つのsystemとして読む}
+
+Agentが長く動くほど、モデルの推論能力だけではシステムを説明できなくなる。file systemへ何を見せるか、networkをどこまで許可するか、どの操作でapprovalを要求するか、CLIやMCPを通じて何を接続するか。5月の一次資料は、こうしたruntime側の条件がagent capabilityと同じくらい重要になっていることを示している。\autocite{src-4a3442a5ca8c,src-66be12207714,src-9191d43918fc,src-ac04c00cf21f,src-d8b7c1c36830}
+
+
+\subsection{Running Codex safely at OpenAI}
+
+OpenAIは5月8日、内部でCodexを運用する際のsandbox、approval、network policy、agent-native telemetryを説明した。これは「agentに何ができるか」より「実行時に何を許し、何を観測し、どこで人間承認を入れるか」を中心にした資料であり、agent運用がcontrol-plane設計へ移ったことを示す。\autocite{src-66be12207714}
+
+
+\subsection{Codex on Windows — sandbox設計}
+
+5月13日のWindows向けCodex sandboxでは、file accessとnetwork accessを制御する設計が説明された。OSが変われば利用できるisolation primitiveも変わるため、agent sandboxは抽象的な安全機能ではなく、host platform固有のengineering問題でもある。\autocite{src-4a3442a5ca8c}
+
+
+\subsection{Kimi Code CLI — May lifecycle}
+
+Kimi Code CLIは5月中にproduct releaseと複数updateを重ねた。日単位で確定できる更新と月精度に留まる項目が混在するため、本稿では無理に一つのrelease dayへ束ねず、coding agentがCLI surfaceで継続更新されていたMay lifecycleとして扱う。\autocite{src-9191d43918fc}
+
+
+\subsection{Mistral — MCP・workflow・remote agents}
+
+MistralのMay snapshotでは、22日のMCP-enabled Studio toolingとWorkflows public preview、23日のremote agents、28日のVibe long-horizon Work/Code modesなどが並ぶ。agent featureがchat UIの追加機能ではなく、workflow、remote execution、MCP接続へ広がる方向が見える。\autocite{src-d8b7c1c36830}
+
+
+\subsection{Agentic Workloads — repeated callsと成長するcontext}
+
+この論文はReAct型agent workloadをend-to-endで観測し、反復するmodel call、tool execution、増大するcontextを一体のworkloadとして特徴づける。結果は著者報告だが、serving側から見てもagent requestが単発inferenceとは異なるstateful workloadになるという論点を補強する。\autocite{src-ac04c00cf21f}
+
+
+\subsection{Theme Synthesis}
+
+共通項は「agentを実行主体として扱う」ことにある。sandboxやapprovalは能力を下げるための付属物ではなく、長時間taskを現実の開発環境へ接続するためのcontrol planeである。一方、ReAct型workloadの特性に関する研究結果は著者報告であり、特定benchmarkやmodel構成を超えた一般則としては扱わない。\autocite{src-4a3442a5ca8c,src-66be12207714,src-9191d43918fc,src-ac04c00cf21f,src-d8b7c1c36830}
+
+
+\begin{claimboundary}
+Claim Boundary: first-party sourceは公開日とsource ownerが説明したscopeを確認する一次資料だが、capability・benchmark・safety・performanceの優位性まで独立検証したものではない。\autocite{src-4a3442a5ca8c,src-66be12207714,src-9191d43918fc,src-ac04c00cf21f,src-d8b7c1c36830}
+\end{claimboundary}
+
+\begin{claimboundary}
+Claim Boundary: first-party indexは掲載されたchronologyを確認する資料だが、capabilityやbenchmark表現はvendor claimである。また月精度の日付は日単位へ補完しない。\autocite{src-4a3442a5ca8c,src-66be12207714,src-9191d43918fc,src-ac04c00cf21f,src-d8b7c1c36830}
+\end{claimboundary}
+
+\begin{claimboundary}
+Claim Boundary: 原論文は研究内容を確認する一次資料だが、benchmark結果・speedup・attack success・quality比較は著者報告であり、本稿で独立再現した結果ではない。\autocite{src-4a3442a5ca8c,src-66be12207714,src-9191d43918fc,src-ac04c00cf21f,src-d8b7c1c36830}
+\end{claimboundary}

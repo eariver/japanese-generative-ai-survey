@@ -1,0 +1,252 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{Inference \& Serving — 新しいworkloadに備える基盤: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+Scepsy: Serving Agentic Workflows Using Aggregate LLM Pipelines & 主要資料 & 論文 & 2026-04-16 (論文公開) \\
+vllm-project/vllm v0.19.0 & 主要資料 & Framework & 2026-04-03 (プロジェクト公開) \\
+KAIROS: Stateful, Context-Aware Power-Efficient Agentic Inference Serving & 補足資料 & 論文 & 2026-04-17 (論文公開) \\
+ReaLB: Real-Time Load Balancing for Multimodal MoE Inference & 補足資料 & 論文 & 2026-04-21 (論文公開) \\
+CacheFlow: Efficient LLM Serving with 3D-Parallel KV Cache Restoration & 補足資料 & 論文 & 2026-04-28 (論文公開) \\
+Pythia: Exploiting Workflow Predictability for Efficient Agent-Native LLM Serving & 補足資料 & 論文 & 2026-04-28 (論文公開) \\
+vllm-project/vllm v0.20.0 & 補足資料 & Framework & 2026-04-27 (プロジェクト公開) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{Scepsy: Serving Agentic Workflows Using Aggregate LLM Pipelines}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-04-16 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: Scepsyは、複数LLMから成る任意のagentic workflowをGPU cluster上へ効率よくscheduleするserving systemとして提案されている。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 結果や比較は論文著者による報告であり、本サーベイでは独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2604.15186v1}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{vllm-project/vllm v0.19.0}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & vLLM Project \\
+種別 & Framework \\
+時系列 & 2026-04-03 (プロジェクト公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Project claim}: vLLM v0.19.0はGemma 4 architectureのfull support、speculative decodingを伴うzero-bubble asynchronous scheduling、multimodal／cache管理関連の変更を記録している。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: リリースノートはプロジェクトの更新時期と記載された変更を確認する一次資料だが、すべての環境での性能や互換性を独立検証するものではない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://github.com/vllm-project/vllm/releases/tag/v0.19.0}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{KAIROS: Stateful, Context-Aware Power-Efficient Agentic Inference Serving}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-04-17 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: KAIROSは、agentic AI servingのcontextを考慮して消費電力を最適化するsystemとして提案されている。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 結果や比較は論文著者による報告であり、本サーベイでは独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2604.16682v1}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{ReaLB: Real-Time Load Balancing for Multimodal MoE Inference}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-04-21 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes coherent tail group
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: ReaLBは、multimodal MoE（MMoE）推論向けのreal-time load balancing手法で、著者はscheduling overheadを追加しない設計を主張している。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 結果や比較は著者報告で独立再現していない。保持している版は2026年5月9日更新だが、4月のchronologyは4月21日の初回投稿に基づくため、5月以降の本文変更を4月時点へ帰属させない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2604.19503v3}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{CacheFlow: Efficient LLM Serving with 3D-Parallel KV Cache Restoration}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-04-28 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: CacheFlowは、KV cacheの復元を多次元の並列実行問題として捉え直すrestoration frameworkとして提案されている。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 結果や比較は論文著者による報告であり、本サーベイでは独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2604.25080v1}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Pythia: Exploiting Workflow Predictability for Efficient Agent-Native LLM Serving}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-04-28 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: Pythiaは、serving layerの簡潔なinterfaceからworkflow semanticsを取り込み、multi-agent servingを最適化するsystemとして提案されている。throughputやjob completion timeの改善値は著者報告である。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 結果や比較は著者報告で独立再現していない。保持している版は2026年5月14日更新だが、4月のchronologyは4月28日の初回投稿に基づくため、5月以降の本文変更を4月時点へ帰属させない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2604.25899v2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{vllm-project/vllm v0.20.0}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & vLLM Project \\
+種別 & Framework \\
+時系列 & 2026-04-27 (プロジェクト公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Project claim}: vLLM v0.20.0はinitial DeepSeek V4 supportと、それに関連するserving/runtime変更をrelease notesに記録している。
+\end{itemize}
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: リリースノートはプロジェクトの更新時期と記載された変更を確認する一次資料だが、すべての環境での性能や互換性を独立検証するものではない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://github.com/vllm-project/vllm/releases/tag/v0.20.0}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\endgroup
+\end{technicalnote}
+\medskip

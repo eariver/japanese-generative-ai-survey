@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2022-Y",
+  "package_id": "scale-access-systems",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "headline": "スケールの意味が変わった――parameter数だけでは語れない2022年",
+  "deck": "ChinchillaとPaLMは巨大モデルの設計を、単なるparameter数ではなくtraining computeとdata配分の問題として見せた。同時にOPT、BLOOM、GLM-130Bは『誰がどの形でモデルへアクセスできるか』を競争軸へ押し上げ、FlashAttentionはmemory/IO効率が実装可能な規模そのものを左右するsystems layerを前景化した。",
+  "deck_attribution_mode": "INFERENCE",
+  "deck_evidence_refs": [
+    {"evidence_task_id":"evidence:SP-2022-Y:series-deepmind-chinchilla-2022-5b525aa5b1","kind":"CLAIM","evidence_id":"claim-1"},
+    {"evidence_task_id":"evidence:SP-2022-Y:series-google-palm-2022-e32fe307df","kind":"CLAIM","evidence_id":"claim-1"},
+    {"evidence_task_id":"evidence:SP-2022-Y:series-meta-opt-2022-cdfb37dc91","kind":"CLAIM","evidence_id":"claim-1"},
+    {"evidence_task_id":"evidence:SP-2022-Y:series-bigscience-bloom-2022-3ccba48437","kind":"CLAIM","evidence_id":"claim-1"},
+    {"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2205-14135v2-cc91f9cd62","kind":"CLAIM","evidence_id":"claim-1"},
+    {"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2210-02414v2-5153c06014","kind":"CLAIM","evidence_id":"claim-1"}
+  ],
+  "blocks": [
+    {"block_id":"compute-optimal","block_type":"PARAGRAPH","text":"2022年のscale競争では、『大きいほどよい』という単純な読み方に修正が入った。Chinchillaはmodel sizeだけでなくtraining computeとtraining dataの配分を問題にし、PaLMは大規模モデルの能力拡張を示す主要系列として並んだ。両者をparameter数だけで比較するのではなく、限られたcompute budgetをどのようにmodelとdataへ割り当てるかまで含めてscale設計を読む必要がある。","attribution_mode":"INFERENCE","evidence_refs":[{"evidence_task_id":"evidence:SP-2022-Y:series-deepmind-chinchilla-2022-5b525aa5b1","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2022-Y:series-google-palm-2022-e32fe307df","kind":"CLAIM","evidence_id":"claim-1"}]},
+    {"block_id":"access-not-one-word","block_type":"PARAGRAPH","text":"同じ年、scaleの議論はaccessの議論とも結び付いた。OPT、BLOOM、GLM-130Bは、大規模モデルを研究者や開発者がどの形で検証・利用できるかという別の軸を可視化した。ただし、model weightsへアクセスできること、source codeが公開されること、training dataやtraining recipeまで公開されること、license上の再利用条件が広いことは同義ではない。本稿ではopen access、open weights、open-source、open-trainingを意図的に分離する。","attribution_mode":"INFERENCE","evidence_refs":[{"evidence_task_id":"evidence:SP-2022-Y:series-meta-opt-2022-cdfb37dc91","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2022-Y:series-bigscience-bloom-2022-3ccba48437","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2210-02414v2-5153c06014","kind":"CLAIM","evidence_id":"claim-1"}]},
+    {"block_id":"systems-layer","block_type":"PARAGRAPH","text":"FlashAttentionが示したのは、model architectureやparameter数とは別に、memory hierarchyとIO効率が現実のtraining/inferenceを制約するというsystems側の問題である。attention計算をどう実装するかは単なる最適化の後処理ではなく、扱えるsequence長、必要memory、実行速度といった実用上の設計空間へ直接影響する。2022年には、frontier capabilityを支えるsystems engineeringが独立した技術層として見え始めた。","attribution_mode":"INFERENCE","evidence_refs":[{"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2205-14135v2-cc91f9cd62","kind":"CLAIM","evidence_id":"claim-1"}]},
+    {"block_id":"three-constraints","block_type":"PARAGRAPH","text":"この三つの流れを並べると、2022年のscaleは少なくとも三種類の制約へ分解できる。第一にtraining computeとdata配分、第二にweightsや研究資産へのaccess、第三にmemory/IOを含むruntime efficiencyである。どれも最終的なmodel capabilityと無関係ではないが、同じ尺度では測れない。最大parameter数だけを年表に並べるより、能力を実現・検証・配布できる条件が多層化した年として整理する方が技術的な変化を捉えやすい。","attribution_mode":"INFERENCE","evidence_refs":[{"evidence_task_id":"evidence:SP-2022-Y:series-deepmind-chinchilla-2022-5b525aa5b1","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2022-Y:series-google-palm-2022-e32fe307df","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2022-Y:series-meta-opt-2022-cdfb37dc91","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2022-Y:series-bigscience-bloom-2022-3ccba48437","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2205-14135v2-cc91f9cd62","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2210-02414v2-5153c06014","kind":"CLAIM","evidence_id":"claim-1"}]},
+    {"block_id":"scale-boundary","block_type":"CLAIM_BOUNDARY","text":"各モデルや各論文の性能評価、compute効率、access上の利点は、それぞれの一次資料が提示した条件に帰属する。本稿は異なるbenchmark、training条件、公開条件を一つの独立再現ランキングへ換算しない。","attribution_mode":"INFERENCE","evidence_refs":[{"evidence_task_id":"evidence:SP-2022-Y:series-deepmind-chinchilla-2022-5b525aa5b1","kind":"LIMITATION","evidence_id":"limitation-1"},{"evidence_task_id":"evidence:SP-2022-Y:item-arxiv-2205-14135v2-cc91f9cd62","kind":"LIMITATION","evidence_id":"limitation-1"}]}
+  ],
+  "must_cover_coverage": [
+    {"requirement":"parameter scale versus compute-optimal training","block_ids":["compute-optimal"]},
+    {"requirement":"open access/open weights versus open-source/open-training","block_ids":["access-not-one-word"]},
+    {"requirement":"training/inference system efficiency versus model capability","block_ids":["systems-layer"]}
+  ],
+  "boundary_coverage": [
+    {"requirement":"Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.","block_ids":["scale-boundary"]}
+  ],
+  "late_breaking_acknowledged": false
+}

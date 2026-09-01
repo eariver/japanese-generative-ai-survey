@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/x-source-intake-v2.schema.json",
+  "title": "Survey Production Core v2 X Source Intake Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "issue_id",
+    "production_profile",
+    "research_profile",
+    "policy",
+    "series_context",
+    "decision",
+    "rationale",
+    "drive_handoff",
+    "runs",
+    "status"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "issue_id": {"type": "string", "minLength": 1},
+    "production_profile": {"$ref": "#/$defs/authority"},
+    "research_profile": {"enum": ["WEEKLY", "RETROSPECTIVE_PERIOD", "THEMATIC"]},
+    "policy": {"enum": ["REQUIRED_BY_PROFILE", "CHATGPT_DECIDES"]},
+    "series_context": {"enum": [null, "GENERATIVE_AI_FOUNDATIONS"]},
+    "decision": {"enum": ["REQUIRED", "NOT_REQUIRED"]},
+    "rationale": {"type": "string", "minLength": 1},
+    "drive_handoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "root_folder_name", "category", "edition_folder"],
+      "properties": {
+        "provider": {"const": "GOOGLE_DRIVE"},
+        "root_folder_name": {"const": "Grok_X_SourseIntake"},
+        "category": {
+          "enum": [
+            "Weekly",
+            "Retrospective_Special",
+            "Thematic_Special",
+            "Generative_AI_Foundations"
+          ]
+        },
+        "edition_folder": {"type": "string", "minLength": 1}
+      }
+    },
+    "runs": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/run"}
+    },
+    "status": {"enum": ["AWAITING_GROK", "COMPLETE"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"decision": {"const": "REQUIRED"}}, "required": ["decision"]},
+      "then": {"properties": {"runs": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"decision": {"const": "NOT_REQUIRED"}}, "required": ["decision"]},
+      "then": {
+        "properties": {
+          "runs": {"maxItems": 0},
+          "status": {"const": "COMPLETE"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {"const": "REQUIRED"},
+          "status": {"const": "COMPLETE"}
+        },
+        "required": ["decision", "status"]
+      },
+      "then": {
+        "properties": {
+          "runs": {
+            "items": {
+              "allOf": [
+                {"$ref": "#/$defs/run"},
+                {"properties": {"result": {"$ref": "#/$defs/result"}}}
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "rawAuthority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "byte_count"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "byte_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "purpose",
+        "research_questions",
+        "coverage_focus",
+        "time_scope",
+        "run_folder",
+        "task_file_name",
+        "drive_task_path",
+        "expected_result_filename",
+        "task",
+        "result"
+      ],
+      "properties": {
+        "run_id": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+        "purpose": {"type": "string", "minLength": 1},
+        "research_questions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "coverage_focus": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "time_scope": {"type": "string", "minLength": 1},
+        "run_folder": {"type": "string", "minLength": 1},
+        "task_file_name": {"const": "grok-task.md"},
+        "drive_task_path": {"type": "string", "minLength": 1},
+        "expected_result_filename": {"type": "string", "minLength": 1},
+        "task": {"$ref": "#/$defs/authority"},
+        "result": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/result"}
+          ]
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "drive_file_name",
+        "observed_at",
+        "imported_at",
+        "raw",
+        "discovery_disposition",
+        "discovery_ids",
+        "rationale"
+      ],
+      "properties": {
+        "status": {"enum": ["SUCCESS", "PARTIAL", "INSUFFICIENT_EVIDENCE", "NO_MATERIAL_SIGNAL"]},
+        "drive_file_name": {"type": "string", "minLength": 1},
+        "observed_at": {"type": "string", "format": "date-time"},
+        "imported_at": {"type": "string", "format": "date-time"},
+        "raw": {"$ref": "#/$defs/rawAuthority"},
+        "discovery_disposition": {"enum": ["DISCOVERY_RECORDED", "NO_MATERIAL_DISCOVERY"]},
+        "discovery_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "rationale": {"type": "string", "minLength": 1}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"discovery_disposition": {"const": "DISCOVERY_RECORDED"}},
+            "required": ["discovery_disposition"]
+          },
+          "then": {"properties": {"discovery_ids": {"minItems": 1}}}
+        },
+        {
+          "if": {
+            "properties": {"discovery_disposition": {"const": "NO_MATERIAL_DISCOVERY"}},
+            "required": ["discovery_disposition"]
+          },
+          "then": {"properties": {"discovery_ids": {"maxItems": 0}}}
+        }
+      ]
+    }
+  }
+}

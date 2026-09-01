@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/eariver/japanese-generative-ai-survey/schemas/evidence-run.schema.json",
+  "title": "Survey Evidence Runner Output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "issue_id", "evidence_task_id", "evidence_task_sha256", "prompt_id", "prompt_sha256", "runner", "card"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "issue_id": { "type": "string", "pattern": "^(?:[0-9]{4}-W[0-9]{2}|SP-[A-Za-z0-9][A-Za-z0-9._-]{2,63})$" },
+    "evidence_task_id": { "type": "string", "minLength": 1 },
+    "evidence_task_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "prompt_id": { "const": "primary-source-verification-v0.1" },
+    "prompt_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "runner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "model", "invocation", "generated_at"],
+      "properties": {
+        "provider": { "type": "string", "minLength": 1 },
+        "model": { "type": "string", "minLength": 1 },
+        "invocation": { "type": "string", "minLength": 1 },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "run_reference": { "type": ["string", "null"] }
+      }
+    },
+    "card": { "$ref": "evidence-card.schema.json" }
+  }
+}

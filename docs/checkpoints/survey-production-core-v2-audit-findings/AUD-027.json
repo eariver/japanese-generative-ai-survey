@@ -1,0 +1,32 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-027",
+  "edition": "CORE-V2",
+  "stage": "WU-012_AGENT_FIRST_REAUDIT",
+  "observed_problem": "Profile Completeness is structurally explicit but current Core guidance does not sufficiently distinguish a reasoned ChatGPT completeness judgment from a ceremonial status row. Empty discovery/evidence references can be legitimate for a negative search result, but the record currently has no canonical agent-review expectation explaining what was searched, what was not found, what remains uncertain, and why the edition is ready or limited.",
+  "expected_behavior": "ChatGPT remains the authority for research-completeness judgment. The production guide/checklist must require a substantive per-obligation rationale, explicit unresolved limitations, and a distinction between searched-with-no-material-result and not-yet-searched. Deterministic validation checks record structure/traceability and must not pretend to prove open-ended research completeness or impose source/story quotas.",
+  "actual_behavior": "The agent-first authority/bootstrap and Issue Prevention Checklist now require substantive search/coverage rationale, gap-fill/negative-result accounting, residual uncertainty and reasoned readiness while retaining deterministic validation only for structure/traceability.",
+  "production_workaround": null,
+  "classification": {
+    "scope": "CORE",
+    "defect_kind": "COVERAGE",
+    "confidence": "high"
+  },
+  "requires_regression": false,
+  "provenance": {
+    "source_commit": "9349bd52641d3433cc219adea6565f44fe3dbf09",
+    "relevant_artifacts": [
+      "scripts/survey_completeness_v2.py",
+      "schemas/profile-completeness-result.schema.json",
+      "docs/survey-production-core-v2-historical-invariants.md",
+      "docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md",
+      "docs/survey-production-core-v2-issue-prevention-checklist.md",
+      "docs/survey-production-core-v2-session-bootstrap.md"
+    ],
+    "human_review_reference": "User premise correction and ChatGPT-first pre-approval re-audit, 2026-08-22"
+  },
+  "improvement_action": "Implemented by WU-012A/D: require ChatGPT to record meaningful search/coverage rationale and limitations, while keeping completeness qualitative and avoiding arbitrary machine proof or source-count quotas.",
+  "regression_fixture": null,
+  "resolved_by_repair_set_id": null,
+  "status": "FIXED_GENERIC"
+}

@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M06",
+  "evidence_task_id": "evidence:SP-2026-M06:item-github-release-flashinfer-ai-flashi-a92bf9d6cd",
+  "evidence_task_sha256": "b79ce794bac1a7c8702a4d8eb2ae2e5e261a6b52784c70c93efbe88c20df2991",
+  "prompt_id": "primary-source-verification-v0.1",
+  "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+    "generated_at": "2026-08-11T07:05:00Z",
+    "run_reference": "June 2026 Special primary-source Evidence review"
+  },
+  "card": {
+    "schema_version": "1.0",
+    "issue_id": "SP-2026-M06",
+    "evidence_task_id": "evidence:SP-2026-M06:item-github-release-flashinfer-ai-flashi-a92bf9d6cd",
+    "status": "VERIFIED",
+    "grouping_resolution": {
+      "accepted": true,
+      "split_recommended": false,
+      "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+    },
+    "artifact": {
+      "canonical_name": "FlashInfer v0.6.13",
+      "artifact_type": "FRAMEWORK",
+      "organization": "FlashInfer Project",
+      "canonical_url": "https://github.com/flashinfer-ai/flashinfer/releases/tag/v0.6.13"
+    },
+    "temporal": {
+      "artifact_first_announced": "2026-06-24",
+      "events": [
+        {
+          "event_id": "event-1",
+          "event_type": "PROJECT_RELEASE",
+          "event_date": "2026-06-24",
+          "source_published_at": "2026-06-24T22:36:15Z",
+          "source_ids": [
+            "src-1"
+          ]
+        }
+      ],
+      "observed_at": "2026-08-11T07:05:00Z"
+    },
+    "sources": [
+      {
+        "source_id": "src-1",
+        "url": "https://github.com/flashinfer-ai/flashinfer/releases/tag/v0.6.13",
+        "source_class": "PRIMARY_REPOSITORY",
+        "title": "Primary source 1: https://github.com/flashinfer-ai/flashinfer/releases/tag/v0.6.13",
+        "published_at": null,
+        "accessed_at": "2026-08-11T07:05:00Z",
+        "role": "Primary source used for chronology and technical verification"
+      }
+    ],
+    "claims": [
+      {
+        "claim_id": "claim-1",
+        "text": "The release contains Blackwell/GQA decode, attention/MoE, quantization and autotuning kernel/backend changes.",
+        "evidence_class": "PROJECT_CLAIM",
+        "source_ids": [
+          "src-1"
+        ],
+        "context": null
+      }
+    ],
+    "metrics": [],
+    "limitations": [
+      {
+        "limitation_id": "limitation-1",
+        "text": "GitHub release notes are primary project evidence for release contents, but project performance claims are not independently reproduced here.",
+        "evidence_class": "INFERENCE",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "verification": {
+      "targets": [
+        {
+          "target": "identify material kernel/backend changes",
+          "status": "VERIFIED",
+          "finding": "The release notes provide the material kernel/backend changes requested by the task.",
+          "source_ids": [
+            "src-1"
+          ]
+        }
+      ],
+      "unresolved_questions": [],
+      "contradictions": []
+    },
+    "editorial": {
+      "why_now_confirmed": true,
+      "why_now_note": "This release materially changes June inference/serving capability.",
+      "candidate_recommendation": "CANDIDATE",
+      "rationale": "Material serving-stack release suitable for Candidate Selection."
+    }
+  }
+}

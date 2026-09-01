@@ -1,0 +1,33 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-028",
+  "edition": "CORE-V2",
+  "stage": "WU-012_AGENT_FIRST_REAUDIT",
+  "observed_problem": "Weekly Evidence/View contracts carry why_this_issue and related Weekly semantics, but Core v2 does not yet make Issue #9 a mandatory stage-aware ChatGPT editorial review before Publication Preview. Without that explicit review contract, why-this-week, one substantive Late Breaking home, reader-facing Watchlist semantics and removal of pipeline-management/TODO prose can depend on reviewer memory.",
+  "expected_behavior": "Weekly production guidance must require ChatGPT to inspect the final reader-facing draft for Issue #9 concerns and record a concise PASS/FINDING review. Deterministic helpers may catch crisp leakage patterns, but nuanced Weekly editorial judgment remains agent-owned and must not pollute generic Core semantics.",
+  "actual_behavior": "The canonical Issue Prevention Checklist now contains a Weekly overlay for why-this-issue, Late Breaking, Watchlist and carry-over semantics, and the agent-first bootstrap requires applicable ChatGPT editorial/research review before advancing. Semantic review remains Weekly/Profile-owned rather than a generic deterministic validator.",
+  "production_workaround": null,
+  "classification": {
+    "scope": "WEEKLY_PROFILE",
+    "defect_kind": "EDITORIAL",
+    "confidence": "high"
+  },
+  "requires_regression": false,
+  "provenance": {
+    "source_commit": "9349bd52641d3433cc219adea6565f44fe3dbf09",
+    "relevant_artifacts": [
+      "scripts/survey_evidence_v2.py",
+      "scripts/survey_draft_profile_v2.py",
+      "docs/editorial-specification.md",
+      "docs/survey-production-core-v2-historical-invariants.md",
+      "docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md",
+      "docs/survey-production-core-v2-issue-prevention-checklist.md",
+      "docs/survey-production-core-v2-session-bootstrap.md"
+    ],
+    "human_review_reference": "Issue #9 and ChatGPT-first pre-approval re-audit"
+  },
+  "improvement_action": "Implemented by WU-012D/F as a mandatory Weekly agent review overlay; no brittle semantic validator is required for open-ended prose judgment.",
+  "regression_fixture": null,
+  "resolved_by_repair_set_id": null,
+  "status": "FIXED_GENERIC"
+}

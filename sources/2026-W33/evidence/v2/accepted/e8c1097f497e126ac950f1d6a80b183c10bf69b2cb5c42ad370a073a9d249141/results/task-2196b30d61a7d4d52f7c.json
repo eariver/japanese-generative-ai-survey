@@ -1,0 +1,174 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "evidence_task_id": "evidence:2026-W33:64fbde0bd85c605f",
+  "basis": {
+    "task_sha256": "e3c8d87133ed744b3a187e29b0065bb62ed0d776af780c5ecd81894d32912d74",
+    "screening_acceptance_sha256": "e6f0392004191b4668e4231c57839044e4b08ff1e32763403f2d92630b0b0a0f",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "entity:w33:carry-w32-copilot-cloud-agent",
+      "canonical_name": "Copilot cloud agent August 3 update",
+      "entity_type": "AGENT",
+      "organization": "GitHub",
+      "canonical_url": "https://github.blog/changelog/2026-08-03-customize-the-reasoning-level-for-copilot-cloud-agent/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "entity:w33:carry-w32-copilot-cloud-agent",
+    "artifact_type": "AGENT",
+    "canonical_name": "Copilot cloud-agent reasoning control and comment-triggered automations",
+    "canonical_url": "https://github.blog/changelog/2026-08-03-customize-the-reasoning-level-for-copilot-cloud-agent/"
+  },
+  "temporal": {
+    "observed_at": "2026-08-30T10:16:12Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "CLOUD_AGENT_FEATURE_UPDATE",
+        "event_date": "2026-08-03",
+        "subject_id": "entity:w33:carry-w32-copilot-cloud-agent",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.blog/changelog/2026-08-03-customize-the-reasoning-level-for-copilot-cloud-agent/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "GitHub Copilot cloud-agent August 3 updates (bound Discovery source)",
+      "published_at": "2026-08-03",
+      "accessed_at": "2026-08-30T10:16:12Z",
+      "role": "Bound GitHub first-party changelog source record; its bound Raw set includes the August 3 reasoning and comment-automation entries."
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "GitHub says that users delegating a task to Copilot cloud agent can set the reasoning level for models that support the control.",
+      "subject_id": "entity:w33:carry-w32-copilot-cloud-agent",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": null
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "GitHub describes the reasoning level as controlling how much the model reasons before responding, with higher levels potentially using more tokens and credits; the setting is selected with the model when a task starts.",
+      "subject_id": "entity:w33:carry-w32-copilot-cloud-agent",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": null
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "GitHub lists the reasoning-level control as available on paid Copilot plans that include cloud agent: Pro, Pro+, Business, Enterprise, and Max.",
+      "subject_id": "entity:w33:carry-w32-copilot-cloud-agent",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": null
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "GitHub says Copilot cloud-agent automations can be configured to run when an issue comment or pull-request comment is created, with examples including documentation updates, error investigation, and follow-up tasks.",
+      "subject_id": "entity:w33:carry-w32-copilot-cloud-agent",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": null
+    },
+    {
+      "statement_id": "claim-5",
+      "text": "GitHub states that Copilot Business and Enterprise users need the Copilot cloud-agent policy enabled by an administrator for the comment-triggered automation feature.",
+      "subject_id": "entity:w33:carry-w32-copilot-cloud-agent",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": null
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "The bound source covers the August 3 reasoning-level and comment-triggered automation updates only; it does not establish a new model launch or aggregate older June/July cloud-agent functionality.",
+      "subject_id": "entity:w33:carry-w32-copilot-cloud-agent",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Temporal and scope boundary stated by the bound changelogs."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Availability, supported models, plans, token/credit effects, and administrator policy are GitHub changelog claims and are not independently tested here.",
+      "subject_id": "entity:w33:carry-w32-copilot-cloud-agent",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "verify exact feature/plan/admin-policy boundaries;",
+        "status": "VERIFIED",
+        "finding": "The bound August 3 changelog source identifies the feature, paid-plan availability, and Business/Enterprise administrator-policy boundary.",
+        "subject_ids": [
+          "entity:w33:carry-w32-copilot-cloud-agent"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "keep the August update separate from older June/July cloud-agent features;",
+        "status": "VERIFIED",
+        "finding": "The card isolates the August reasoning and comment-triggered automation updates and does not combine them with older June/July features.",
+        "subject_ids": [
+          "entity:w33:carry-w32-copilot-cloud-agent"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "determine later whether it is current W33 materiality or carry-over closure/context.",
+        "status": "NOT_APPLICABLE",
+        "finding": "The factual August 3 update is closed; the later pre-window carry-over/context treatment belongs to the Edition Evidence View.",
+        "subject_ids": [
+          "entity:w33:carry-w32-copilot-cloud-agent"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

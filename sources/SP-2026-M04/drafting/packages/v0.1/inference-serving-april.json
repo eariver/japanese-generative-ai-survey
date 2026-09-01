@@ -1,0 +1,701 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M04",
+  "package_id": "inference-serving-april",
+  "draft_source_mode": "EVIDENCE_PACKAGE",
+  "execution_stage": "ARTICLE_DRAFTING",
+  "basis": {
+    "architecture_plan_sha256": "e5e2fe97ace893e66a5a8233df2340f6df088d2d74a22acedc0c6355ff50be82",
+    "architecture_input_sha256": "b3c769aadb04a1205b955055bcb2734079bec5a967e8ea2552dc6f9327137c02",
+    "evidence_reviewed_sha256": "e703a517b59f20fd9392d82ae9aad67c1f5c6f8cd9f9dff6409f0a53386f6b2f"
+  },
+  "package": {
+    "title": "Inference & Serving — 新しいworkloadに備える基盤",
+    "package_type": "DEEP_DIVE",
+    "page_target": 6,
+    "editorial_angle": "agentic workflow、multimodal MoE、KV cache restoration、workflow-aware scheduling、vLLM releaseを一つの実行効率論に潰さず、新しいworkloadがserving設計を変え始めた初期段階として説明する。",
+    "must_cover": [
+      "Scepsyのaggregate LLM pipeline framing",
+      "vLLM v0.19.0のGemma 4/async scheduling変化とv0.20.0のDeepSeek V4対応",
+      "KAIROS/Pythiaのagent-native serving設計",
+      "CacheFlow/ReaLBのcache・multimodal serving観点",
+      "author/project performance claimsを一般性能保証へ拡張しない"
+    ],
+    "boundaries": [
+      "Results and comparisons are author-reported from the paper and are not independently reproduced in this survey.",
+      "Release notes establish project chronology and documented changes, but do not independently validate performance or compatibility claims across all deployments.",
+      "Separate claims already present in the April initial submission from changes introduced by the later retained revision before reader-facing drafting.",
+      "Results and comparisons are author-reported from the paper and are not independently reproduced in this survey. The retained locator is a later revision updated 2026-05-09; April chronology refers to the initial submission date 2026-04-21, so post-April textual changes must not be attributed to the April state.",
+      "Results and comparisons are author-reported from the paper and are not independently reproduced in this survey. The retained locator is a later revision updated 2026-05-14; April chronology refers to the initial submission date 2026-04-28, so post-April textual changes must not be attributed to the April state."
+    ],
+    "late_breaking": false,
+    "drafting_order": 5
+  },
+  "primary_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M04",
+      "evidence_task_id": "evidence:SP-2026-M04:item-arxiv-2604-15186v1-34a750887a",
+      "task_file": "item-arxiv-2604-15186v1-34a750887a.json",
+      "run_file": "item-arxiv-2604-15186v1-34a750887a.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material; pre-selection append-only revision after raw-snapshot self-audit; no paid inference-provider API",
+        "generated_at": "2026-08-12T03:29:00Z",
+        "run_reference": "April 2026 Special primary-source Evidence review, revision 1"
+      },
+      "evidence_task_sha256": "75c329d0bb7d4386af0a707a9e9b070fc630643d0250eb650fb7b1d18045836f",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M04",
+        "evidence_task_id": "evidence:SP-2026-M04:item-arxiv-2604-15186v1-34a750887a",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Scepsy: Serving Agentic Workflows Using Aggregate LLM Pipelines",
+          "artifact_type": "PAPER",
+          "organization": null,
+          "canonical_url": "http://arxiv.org/abs/2604.15186v1"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-04-16",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PAPER_RELEASE",
+              "event_date": "2026-04-16",
+              "source_published_at": "2026-04-16T16:15:29Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-12T03:29:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "http://arxiv.org/abs/2604.15186v1",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Primary source 1: http://arxiv.org/abs/2604.15186v1",
+            "published_at": null,
+            "accessed_at": "2026-08-12T03:29:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "We describe Scepsy, a new agentic serving system that efficiently schedules arbitrary multi-LLM agentic workflows onto a GPU cluster.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Paper abstract / author description; technical results remain author-reported."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Results and comparisons are author-reported from the paper and are not independently reproduced in this survey.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Scepsy: Serving Agentic Workflows Using Aggregate LLM Pipelines captures a technically material April 2026 development in the survey lanes B, G, H; it is retained for cross-candidate comparison, not automatically selected.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-paper evidence supports comparison as an April technical candidate."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M04",
+      "evidence_task_id": "evidence:SP-2026-M04:item-github-release-vllm-project-vllm-v0-9261ec7e2e",
+      "task_file": "item-github-release-vllm-project-vllm-v0-9261ec7e2e.json",
+      "run_file": "item-github-release-vllm-project-vllm-v0-9261ec7e2e.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material; pre-selection append-only revision after raw-snapshot self-audit; no paid inference-provider API",
+        "generated_at": "2026-08-12T03:29:00Z",
+        "run_reference": "April 2026 Special primary-source Evidence review, revision 1"
+      },
+      "evidence_task_sha256": "7b0fa82e2b8d7c71e37107d361d0e9ba4615e5fbc09ee1570c3b2476f05c21e7",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M04",
+        "evidence_task_id": "evidence:SP-2026-M04:item-github-release-vllm-project-vllm-v0-9261ec7e2e",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "vllm-project/vllm v0.19.0",
+          "artifact_type": "FRAMEWORK",
+          "organization": "vLLM Project",
+          "canonical_url": "https://github.com/vllm-project/vllm/releases/tag/v0.19.0"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-04-03",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-04-03",
+              "source_published_at": "2026-04-03T02:19:12Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-12T03:29:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://github.com/vllm-project/vllm/releases/tag/v0.19.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Primary source 1: https://github.com/vllm-project/vllm/releases/tag/v0.19.0",
+            "published_at": null,
+            "accessed_at": "2026-08-12T03:29:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "vLLM v0.19.0 adds full Gemma 4 architecture support and zero-bubble asynchronous scheduling with speculative decoding, alongside broader multimodal and cache-management changes.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Feature/support statement from the project release notes; performance or compatibility generalizations remain project claims."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Release notes establish project chronology and documented changes, but do not independently validate performance or compatibility claims across all deployments.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "This project release shows how April model and agent advances propagated into the open inference/developer stack, which is necessary context for the period reconstruction.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Material ecosystem/runtime event suitable for Candidate Selection comparison."
+        }
+      }
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M04",
+      "evidence_task_id": "evidence:SP-2026-M04:item-arxiv-2604-16682v1-eb48c9a1f4",
+      "task_file": "item-arxiv-2604-16682v1-eb48c9a1f4.json",
+      "run_file": "item-arxiv-2604-16682v1-eb48c9a1f4.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material; pre-selection append-only revision after raw-snapshot self-audit; no paid inference-provider API",
+        "generated_at": "2026-08-12T03:29:00Z",
+        "run_reference": "April 2026 Special primary-source Evidence review, revision 1"
+      },
+      "evidence_task_sha256": "72e0954722fc429883953a93bb9431e3146cb92c6b6510ed1a5b508e0d61e15d",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M04",
+        "evidence_task_id": "evidence:SP-2026-M04:item-arxiv-2604-16682v1-eb48c9a1f4",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "KAIROS: Stateful, Context-Aware Power-Efficient Agentic Inference Serving",
+          "artifact_type": "PAPER",
+          "organization": null,
+          "canonical_url": "http://arxiv.org/abs/2604.16682v1"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-04-17",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PAPER_RELEASE",
+              "event_date": "2026-04-17",
+              "source_published_at": "2026-04-17T20:39:25Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-12T03:29:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "http://arxiv.org/abs/2604.16682v1",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Primary source 1: http://arxiv.org/abs/2604.16682v1",
+            "published_at": null,
+            "accessed_at": "2026-08-12T03:29:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "We present KAIROS, a context-aware power optimization system for agentic AI serving.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Paper abstract / author description; technical results remain author-reported."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Results and comparisons are author-reported from the paper and are not independently reproduced in this survey.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "KAIROS: Stateful, Context-Aware Power-Efficient Agentic Inference Serving captures a technically material April 2026 development in the survey lanes B, G, H, I; it is retained for cross-candidate comparison, not automatically selected.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-paper evidence supports comparison as an April technical candidate."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M04",
+      "evidence_task_id": "evidence:SP-2026-M04:item-arxiv-2604-19503v3-ad177536bd",
+      "task_file": "item-arxiv-2604-19503v3-ad177536bd.json",
+      "run_file": "item-arxiv-2604-19503v3-ad177536bd.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material; pre-selection append-only revision after raw-snapshot self-audit; no paid inference-provider API",
+        "generated_at": "2026-08-12T03:29:00Z",
+        "run_reference": "April 2026 Special primary-source Evidence review, revision 1"
+      },
+      "evidence_task_sha256": "06fb16bb12bd51796356522e615ab50bd952b0e017fed165bbe29e89d5cd11e5",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M04",
+        "evidence_task_id": "evidence:SP-2026-M04:item-arxiv-2604-19503v3-ad177536bd",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "ReaLB: Real-Time Load Balancing for Multimodal MoE Inference",
+          "artifact_type": "PAPER",
+          "organization": null,
+          "canonical_url": "http://arxiv.org/abs/2604.19503v3"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-04-21",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PAPER_RELEASE",
+              "event_date": "2026-04-21",
+              "source_published_at": "2026-04-21T14:22:04Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-12T03:29:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "http://arxiv.org/abs/2604.19503v3",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Primary source 1: http://arxiv.org/abs/2604.19503v3",
+            "published_at": null,
+            "accessed_at": "2026-08-12T03:29:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "We propose ReaLB, a real-time load balancing method for multimodal MoE (MMoE) inference that introduces zero scheduling overhead.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Paper abstract / author description; technical results remain author-reported."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Results and comparisons are author-reported from the paper and are not independently reproduced in this survey. The retained locator is a later revision updated 2026-05-09; April chronology refers to the initial submission date 2026-04-21, so post-April textual changes must not be attributed to the April state.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [],
+          "unresolved_questions": [
+            "Separate claims already present in the April initial submission from changes introduced by the later retained revision before reader-facing drafting."
+          ],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "ReaLB: Real-Time Load Balancing for Multimodal MoE Inference captures a technically material April 2026 development in the survey lanes C, G, H; it is retained for cross-candidate comparison, not automatically selected.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-paper evidence supports comparison as an April technical candidate."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M04",
+      "evidence_task_id": "evidence:SP-2026-M04:item-arxiv-2604-25080v1-bf1448d0ee",
+      "task_file": "item-arxiv-2604-25080v1-bf1448d0ee.json",
+      "run_file": "item-arxiv-2604-25080v1-bf1448d0ee.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material; pre-selection append-only revision after raw-snapshot self-audit; no paid inference-provider API",
+        "generated_at": "2026-08-12T03:29:00Z",
+        "run_reference": "April 2026 Special primary-source Evidence review, revision 1"
+      },
+      "evidence_task_sha256": "c55acf9c51d062c01083c0b762ef5e2b88b51f892b6932f26cd0d78a3e1ffbe8",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M04",
+        "evidence_task_id": "evidence:SP-2026-M04:item-arxiv-2604-25080v1-bf1448d0ee",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "CacheFlow: Efficient LLM Serving with 3D-Parallel KV Cache Restoration",
+          "artifact_type": "PAPER",
+          "organization": null,
+          "canonical_url": "http://arxiv.org/abs/2604.25080v1"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-04-28",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PAPER_RELEASE",
+              "event_date": "2026-04-28",
+              "source_published_at": "2026-04-28T00:24:29Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-12T03:29:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "http://arxiv.org/abs/2604.25080v1",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Primary source 1: http://arxiv.org/abs/2604.25080v1",
+            "published_at": null,
+            "accessed_at": "2026-08-12T03:29:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "We present CacheFlow, a KV cache restoration framework that rethinks cache restoration as a multi-dimensional parallel execution problem.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Paper abstract / author description; technical results remain author-reported."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Results and comparisons are author-reported from the paper and are not independently reproduced in this survey.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "CacheFlow: Efficient LLM Serving with 3D-Parallel KV Cache Restoration captures a technically material April 2026 development in the survey lanes G, H, I; it is retained for cross-candidate comparison, not automatically selected.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-paper evidence supports comparison as an April technical candidate."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M04",
+      "evidence_task_id": "evidence:SP-2026-M04:item-arxiv-2604-25899v2-7eabefb147",
+      "task_file": "item-arxiv-2604-25899v2-7eabefb147.json",
+      "run_file": "item-arxiv-2604-25899v2-7eabefb147.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material; pre-selection append-only revision after raw-snapshot self-audit; no paid inference-provider API",
+        "generated_at": "2026-08-12T03:29:00Z",
+        "run_reference": "April 2026 Special primary-source Evidence review, revision 1"
+      },
+      "evidence_task_sha256": "064dc1d77add5223377b71877c23c11cd5f41250653fc1879babf21d96bd62b1",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M04",
+        "evidence_task_id": "evidence:SP-2026-M04:item-arxiv-2604-25899v2-7eabefb147",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Pythia: Exploiting Workflow Predictability for Efficient Agent-Native LLM Serving",
+          "artifact_type": "PAPER",
+          "organization": null,
+          "canonical_url": "http://arxiv.org/abs/2604.25899v2"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-04-28",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PAPER_RELEASE",
+              "event_date": "2026-04-28",
+              "source_published_at": "2026-04-28T17:41:53Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-12T03:29:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "http://arxiv.org/abs/2604.25899v2",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Primary source 1: http://arxiv.org/abs/2604.25899v2",
+            "published_at": null,
+            "accessed_at": "2026-08-12T03:29:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "To address these challenges, we propose Pythia, a multi-agent serving system that captures workflow semantics through a simple interface at the serving layer, unlocking new optimization opportunities and substantially improving throughput and job completion time over state-of-the-art baselines.",
+            "evidence_class": "AUTHOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Paper abstract / author description; technical results remain author-reported."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Results and comparisons are author-reported from the paper and are not independently reproduced in this survey. The retained locator is a later revision updated 2026-05-14; April chronology refers to the initial submission date 2026-04-28, so post-April textual changes must not be attributed to the April state.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [],
+          "unresolved_questions": [
+            "Separate claims already present in the April initial submission from changes introduced by the later retained revision before reader-facing drafting."
+          ],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Pythia: Exploiting Workflow Predictability for Efficient Agent-Native LLM Serving captures a technically material April 2026 development in the survey lanes B, G, H; it is retained for cross-candidate comparison, not automatically selected.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-paper evidence supports comparison as an April technical candidate."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M04",
+      "evidence_task_id": "evidence:SP-2026-M04:item-github-release-vllm-project-vllm-v0-7b234ef127",
+      "task_file": "item-github-release-vllm-project-vllm-v0-7b234ef127.json",
+      "run_file": "item-github-release-vllm-project-vllm-v0-7b234ef127.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material; pre-selection append-only revision after raw-snapshot self-audit; no paid inference-provider API",
+        "generated_at": "2026-08-12T03:29:00Z",
+        "run_reference": "April 2026 Special primary-source Evidence review, revision 1"
+      },
+      "evidence_task_sha256": "09610443d0c238e5b84f5426c2f2376a2047b4da239bb1c2b0df558c95ac780e",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M04",
+        "evidence_task_id": "evidence:SP-2026-M04:item-github-release-vllm-project-vllm-v0-7b234ef127",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "vllm-project/vllm v0.20.0",
+          "artifact_type": "FRAMEWORK",
+          "organization": "vLLM Project",
+          "canonical_url": "https://github.com/vllm-project/vllm/releases/tag/v0.20.0"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-04-27",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-04-27",
+              "source_published_at": "2026-04-27T21:20:28Z",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-12T03:29:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://github.com/vllm-project/vllm/releases/tag/v0.20.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Primary source 1: https://github.com/vllm-project/vllm/releases/tag/v0.20.0",
+            "published_at": null,
+            "accessed_at": "2026-08-12T03:29:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "vLLM v0.20.0 includes initial DeepSeek V4 support and associated serving/runtime changes recorded by the project.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Feature/support statement from the project release notes; performance or compatibility generalizations remain project claims."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Release notes establish project chronology and documented changes, but do not independently validate performance or compatibility claims across all deployments.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "This project release shows how April model and agent advances propagated into the open inference/developer stack, which is necessary context for the period reconstruction.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Material ecosystem/runtime event suitable for Candidate Selection comparison."
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION",
+    "cover_headline_finalization_forbidden": true,
+    "this_week_summary_forbidden": true
+  }
+}

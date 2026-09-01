@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/eariver/japanese-generative-ai-survey/schemas/special-edition-manifest.schema.json",
+  "title": "Japanese Generative AI Technical Survey Special Edition Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "special_id", "special_slug", "display_label", "series_title", "edition_kind", "status", "coverage", "topic_scope", "community_research", "editorial_policy", "page_budget", "paths"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "special_id": { "type": "string", "pattern": "^SP-[A-Za-z0-9][A-Za-z0-9._-]{2,63}$" },
+    "special_slug": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{2,63}$" },
+    "display_label": { "type": "string", "minLength": 1 },
+    "series_title": { "const": "Japanese Generative AI Technical Survey Special" },
+    "edition_kind": { "enum": ["RETROSPECTIVE_PERIOD", "THEMATIC"] },
+    "status": { "enum": ["PLANNED", "ACTIVE", "FROZEN"] },
+    "coverage": {
+      "type": "object", "additionalProperties": false,
+      "required": ["start", "end", "timezone", "retrospective_as_of"],
+      "properties": {
+        "start": { "type": "string", "format": "date-time" },
+        "end": { "type": "string", "format": "date-time" },
+        "timezone": { "type": "string", "minLength": 1 },
+        "retrospective_as_of": { "type": "string", "format": "date-time" }
+      }
+    },
+    "topic_scope": { "type": ["string", "null"] },
+    "community_research": {
+      "type": "object", "additionalProperties": false,
+      "required": ["mode", "reason"],
+      "properties": {
+        "mode": { "enum": ["DISABLED", "OPTIONAL", "ENABLED"] },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    },
+    "editorial_policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["retrospective_method", "why_this_special_required", "primary_sources_required"],
+      "properties": {
+        "retrospective_method": { "enum": ["CURRENT_RECONSTRUCTION", "CONTEMPORANEOUS_ONLY"] },
+        "why_this_special_required": { "const": true },
+        "primary_sources_required": { "const": true }
+      }
+    },
+    "page_budget": {
+      "type": "object", "additionalProperties": false,
+      "required": ["target", "max"],
+      "properties": {
+        "target": { "type": "integer", "minimum": 8, "maximum": 64 },
+        "max": { "type": "integer", "minimum": 8, "maximum": 96 }
+      }
+    },
+    "paths": {
+      "type": "object", "additionalProperties": false,
+      "required": ["survey_root", "source_root", "work_branch"],
+      "properties": {
+        "survey_root": { "type": "string", "minLength": 1 },
+        "source_root": { "type": "string", "minLength": 1 },
+        "work_branch": { "type": "string", "pattern": "^special/[A-Za-z0-9][A-Za-z0-9._-]{2,63}-work$" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "edition_kind": { "const": "RETROSPECTIVE_PERIOD" } } },
+      "then": { "properties": { "topic_scope": { "type": "null" }, "community_research": { "properties": { "mode": { "enum": ["DISABLED", "OPTIONAL"] } } } } }
+    },
+    {
+      "if": { "properties": { "edition_kind": { "const": "THEMATIC" } } },
+      "then": { "properties": { "topic_scope": { "type": "string", "minLength": 1 } } }
+    }
+  ]
+}

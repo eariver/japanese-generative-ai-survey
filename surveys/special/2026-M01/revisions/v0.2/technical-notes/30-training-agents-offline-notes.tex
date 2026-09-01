@@ -1,0 +1,94 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{Live Webに出さずにAgentを鍛える — World ModelとSynthetic Tools: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+DynaWeb: Model-Based Reinforcement Learning of Web Agents & 主要資料 & 論文 & 2026-01-29 (論文投稿) \\
+SYNTHAgent: synthetic tasks, simulated tools, rubric rewards & 主要資料 & 論文 & 2026-01-30 (論文投稿) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{DynaWeb: Model-Based Reinforcement Learning of Web Agents}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Hang Ding et al. \\
+種別 & 論文 \\
+時系列 & 2026-01-29 (論文投稿) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: DynaWebはAgent actionからpage representationを予測するweb world modelを学習し、それをmodel-based reinforcement learningのrollout用synthetic environmentとして利用する。
+\item \textbf{Author claim}: 論文はopen-source web-agent modelについてWebArenaとWebVoyagerでの改善を報告しているが、これは著者報告の実験結果である。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: simulated web world modelは、敵対的かつ動的なlive webの挙動と大きく異なる可能性がある。
+\item \textbf{分析上の留意点}: locatorは1月後に更新されたarXiv v2であるため、chronologyは1月のoriginal submissionを基準とする。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2601.22149v2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{SYNTHAgent: synthetic tasks, simulated tools, rubric rewards}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Yuanjie Lyu et al. \\
+種別 & 論文 \\
+時系列 & 2026-01-30 (論文投稿) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: SYNTHAgentはtool-use taskとmock tool environmentを合成し、不足するprivate information向けにLLM user simulatorを用い、task-level rubric rewardを構成する。
+\item \textbf{Author claim}: 論文は14のmath・search・tool-use datasetで改善を報告し、小型modelが大型baselineを上回る例も示すが、いずれも著者報告値である。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: synthetic environmentは安定性を与える一方、実APIの障害や敵対的条件を過小表現する可能性がある。
+\item \textbf{分析上の留意点}: locatorは1月後に更新されたv2であるため、chronologyはoriginal submission dateを用いる。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2601.22511v2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

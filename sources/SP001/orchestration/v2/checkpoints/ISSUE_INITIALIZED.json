@@ -1,0 +1,53 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP001",
+  "from_state": "ISSUE_INITIALIZED",
+  "to_state": "DISCOVERY_COLLECTED",
+  "checkpoints": [
+    "discovery"
+  ],
+  "recorded_at": "2026-08-24T23:42:00Z",
+  "implementation": {
+    "repository_commit_sha": "7b702f304f38278148020107a590a42d0e0c7dc7",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "e12fcc83ec0b9771b9c8ba43bbf867f418ecb695b74d25e7fcb6daf699ab04ac",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "discovery-acceptance",
+      "path": "sources/SP001/discovery/discovery-accepted-v2.json",
+      "sha256": "0c68e6b138faaba6229e748379b2b932803474ea30d6027d3546c8ff39cbb179"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request postintegration-sp001-discovery-r2.",
+      "result": {
+        "path": "sources/SP001/execution/bridge-runs/postintegration-sp001-discovery-r2/core-stage-contract.json",
+        "sha256": "ec71fdfb0630be04f69f821c1684be7e56f8cee4c7a3cd38a8ed213f0cde72b3"
+      }
+    },
+    {
+      "check_id": "SP001_FRESH_PRIMARY_DISCOVERY_REVIEW",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "Fresh post-integration Discovery uses 11 current primary/official technical sources mapped across all seven SP001 obligations; X is explicitly NOT_REQUIRED for this technical-history Thematic profile; archived pre-redesign acceptance bytes were not imported.",
+      "result": null
+    }
+  ],
+  "summary": "Validate fresh SP001 canonical Discovery and advance to DISCOVERY_COLLECTED."
+}

@@ -1,0 +1,182 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2022-Y",
+  "review_version": "v0.1",
+  "status": "HUMAN_REVIEW_REQUIRED",
+  "architecture_plan": "sources/SP-2022-Y/architecture/issue-architecture-v0.1.json",
+  "architecture_status": "PROPOSED",
+  "coverage": {
+    "start": "2022-01-01T00:00:00Z",
+    "end": "2022-12-31T23:59:59Z",
+    "retrospective_as_of": "2026-08-17T15:15:00Z"
+  },
+  "source_intake": {
+    "base_normalized_records": 53957,
+    "supplemental_gap_fill_records": 10,
+    "normalized_total": 53967,
+    "coverage_audit_status": "COMPLETE_WITH_LIMITATIONS",
+    "coverage_audit": "sources/SP-2022-Y/coverage/source-intake-coverage-audit-v0.2.json",
+    "arxiv_query_slices": 72,
+    "arxiv_cap_hit_slices": 10,
+    "temporal_skew_assessment": "No catastrophic calendar interval hole; every month contains thousands of unique arXiv records. Dense cs.LG/cs.CV slice capping and mutable publisher archives are the material completeness risks."
+  },
+  "screening_and_evidence": {
+    "screening_keep_records": 59,
+    "screening_result_set_sha256": "a022e2440dba5d006544a5a291e6abda14d119b14318eb606c9ee2f5741ff962",
+    "evidence_task_count": 44,
+    "evidence_candidate_recommendations": 35,
+    "evidence_hold_recommendations": 9,
+    "evidence_run_sha256": "8e363f2e46b65ecb4009c0dc8e1ad3fb20895b206e038ac7b049d4a1b7ce69d9"
+  },
+  "selection": {
+    "status": "APPROVED_INTERNAL_CHECKPOINT",
+    "selected_candidate_count": 35,
+    "role_counts": {
+      "FEATURE_CORE": 7,
+      "SECTION_CORE": 9,
+      "SUPPORTING_EVIDENCE": 19
+    },
+    "hold_out_count": 9,
+    "selection_sha256": "71f9038b6d534c5ec2b4c0acb1242651b9109003bcae9cfcb989c0b72a071271",
+    "approval_authority": "special-editorial-pipeline",
+    "human_architecture_approval_implied": false
+  },
+  "year_wide_normalization": {
+    "screening_observations": 59,
+    "normalized_evidence_tasks": 44,
+    "grouped_series_count": 12,
+    "important_identity_and_lifecycle_decisions": [
+      "InstructGPT, Chinchilla, PaLM, OPT, Flamingo, AlphaCode, VPT, Whisper and reward-model overoptimization pair paper and first-party observations into family/story Evidence while preserving source-specific chronology.",
+      "DALL-E 2 groups research paper/announcement, beta, waitlist removal and API public-beta observations into one lifecycle Evidence task; those states remain separate reader-facing chronology events.",
+      "Stable Diffusion groups the 2022 researcher-release and public-release observations into one model-family Evidence task while retaining the two availability boundaries independently.",
+      "BLOOM groups the July launch/access event with the later primary paper; release chronology is not replaced by paper-publication chronology.",
+      "OPT/BLOOM/GLM-130B are treated as model-access/open-weight evidence without equating weight access with open-source or open-training.",
+      "ChatGPT is treated as a November 2022 research-preview/product-interface boundary, not as proof that the later mature ChatGPT platform already existed in 2022."
+    ],
+    "chronology_conflicts": {
+      "blocking_conflicts": 0,
+      "assessment": "No unresolved contradiction blocks Architecture. Several sources expose different dates because announcement, paper publication, beta/GA/API/open-weight availability are distinct lifecycle states; these are preserved rather than forced into one date."
+    }
+  },
+  "annual_phase_candidates": [
+    {
+      "phase": "A",
+      "approximate_span": "January-March",
+      "interpretation": "Instruction following, explicit reasoning methods, dialogue modeling and compute-optimal scaling turn model behavior and training allocation into independent design questions."
+    },
+    {
+      "phase": "B",
+      "approximate_span": "April-June",
+      "interpretation": "Frontier scale, multimodal/image generation, model access, attention-system efficiency and deployed coding assistance become parallel technical layers around the foundation model."
+    },
+    {
+      "phase": "C",
+      "approximate_span": "July-September",
+      "interpretation": "Open model/data distribution and diffusion-based media generation accelerate; personalization, video/audio/3D research, speech interfaces and dialogue safety broaden the ecosystem."
+    },
+    {
+      "phase": "D",
+      "approximate_span": "October-December",
+      "interpretation": "Reasoning connects to action/retrieval, evaluation becomes more systematic, and late-year dialogue/product/control work culminates in ChatGPT, Constitutional AI and synthetic-instruction methods."
+    }
+  ],
+  "story_units": [
+    "InstructGPT lifecycle and the rise of post-training for instruction following",
+    "Chain-of-Thought and related explicit reasoning/decoding methods",
+    "Chinchilla and PaLM: compute allocation versus frontier scale",
+    "OPT/BLOOM/GLM-130B: large-model access and open-weight distinctions",
+    "Flamingo and multimodal visual-language modeling",
+    "DALL-E 2 lifecycle from research to beta, broad access and API",
+    "Stable Diffusion public release plus LAION/personalization ecosystem",
+    "Generative media broadening into video, audio and 3D",
+    "AlphaCode/Codex/Copilot: code generation from research benchmark to developer product",
+    "VPT/ReAct/Atlas: generation linked to action and retrieval",
+    "FlashAttention: memory/IO efficiency as a model-enabling systems constraint",
+    "BIG-bench/HELM: evaluation infrastructure for heterogeneous capabilities",
+    "LaMDA/Whisper/ChatGPT: dialogue and interface productization",
+    "Helpful-harmless RLHF, Sparrow, reward-model limits and Constitutional AI: control-layer formation"
+  ],
+  "annual_trajectories": [
+    "steering and reasoning: post-training, instruction tuning, prompting and synthetic instructions become separate ways to shape model behavior",
+    "scale, access and systems: compute/data allocation, model distribution and memory/IO efficiency qualify raw parameter-scale competition",
+    "multimodal and generative media: visual-language and image generation expand into an open data/model ecosystem and into video/audio/3D",
+    "code, action and retrieval: model outputs connect to developer workflows, environments and external knowledge rather than remaining text-only artifacts",
+    "dialogue interface and control: speech/dialogue products expose the need for alignment, rule-based control and reward-objective scrutiny",
+    "evaluation layer: broad and holistic evaluation becomes infrastructure for comparing increasingly heterogeneous systems"
+  ],
+  "cross_period_comparison_candidates": [
+    "early-year model behavior work versus late-year product/interface integration",
+    "closed/research-only model access versus summer open-weight/open-data distribution",
+    "image-generation research systems versus public local/open-weight diffusion ecosystems",
+    "generation-as-output versus generation feeding code, action and retrieval interfaces",
+    "capability benchmark expansion versus late-year holistic evaluation and control requirements"
+  ],
+  "annual_reclassification_candidates": [
+    "Treat instruction following/reasoning as a steering layer distinct from pretraining scale.",
+    "Treat model access, data access and runtime efficiency as separate systems/distribution constraints rather than model-quality properties.",
+    "Treat generative media as an ecosystem of models, data, personalization and release surfaces rather than an image-model leaderboard.",
+    "Treat code generation, retrieval and environment action as an emerging action/interface layer.",
+    "Treat evaluation and alignment/control as operating layers required by increasingly capable deployed systems."
+  ],
+  "cross_layer_synthesis_candidates": [
+    "InstructGPT-style post-training and dialogue interfaces connect model behavior design directly to user-facing product behavior.",
+    "Chinchilla-style compute allocation and FlashAttention-style systems efficiency show that capability scaling is constrained by training and memory/IO systems, not only architecture size.",
+    "Stable Diffusion plus LAION/personalization evidence shows how model release, open data and local execution can change the innovation surface independently of frontier-model scale.",
+    "Copilot/ReAct/Atlas connect model reasoning to external execution or knowledge, increasing both utility and control requirements.",
+    "ChatGPT/Sparrow/Constitutional AI/HELM show productization, evaluation and control becoming coupled rather than separable postscript concerns."
+  ],
+  "editorial_thesis": "2022年、生成AIは単純なモデル規模の競争から、指示追従・推論を引き出すsteering/post-training、計算量とアクセスを制約として扱うscale/systems、画像から動画・音声・3Dへ広がる生成メディアとopen distribution、コード・検索・環境へ接続するaction interface、そして評価・alignment/controlを伴う対話製品という多層のシステムへ移行した。ChatGPTはこの転換の突然の起点ではなく、年内に積み上がった設計レイヤが対話UI上で統合された年末の境界として位置付ける。",
+  "architecture": {
+    "package_count": 10,
+    "substantive_trajectory_packages": 6,
+    "page_budget_target": 96,
+    "page_budget_max": 144,
+    "planned_pages": 68,
+    "packages": [
+      "frontmatter",
+      "steering-reasoning",
+      "scale-access-systems",
+      "multimodal-media",
+      "code-action-retrieval",
+      "dialogue-interface-control",
+      "evaluation-layer",
+      "annual-chronology",
+      "annual-synthesis",
+      "references"
+    ],
+    "approximate_reader_facing_chronology_events": "45-55 provisional material events; exact count is deferred to chronology assembly after Architecture approval",
+    "architecture_input_sha256": "bc115232e1a11ac0baff8aec7f366fd5bba3c3d02269619418c5da009c03abd1",
+    "selection_sha256": "71f9038b6d534c5ec2b4c0acb1242651b9109003bcae9cfcb989c0b72a071271",
+    "matrix_sha256": "4ba9df73889125a209bcf58f3377aff7b935ccaa89502e943e6b793f53679466"
+  },
+  "notable_hold_outs": [
+    "Self-Consistency",
+    "STaR",
+    "CogVideo",
+    "Parti",
+    "Minerva",
+    "Prompt-to-Prompt",
+    "Imagen Video",
+    "Phenaki",
+    "Point-E"
+  ],
+  "residual_claim_boundaries": [
+    "Vendor, project and author performance/capability evaluations remain attributed rather than treated as independently reproduced results.",
+    "Research paper publication, first-party announcement, preview/beta/GA/API/open-weight availability remain distinct chronology states.",
+    "Open weights/access are not treated as equivalent to open-source or open-training.",
+    "Current publisher indexes and capped arXiv slices cannot establish historical absence.",
+    "The configured GitHub release watchlist does not provide exhaustive commit-level 2022 runtime history.",
+    "Later 2023+ product maturity and ecosystem outcomes are not back-projected into the 2022 coverage window."
+  ],
+  "single_volume_coherence": {
+    "status": "SUPPORTED",
+    "exception_gate_required": false,
+    "assessment": "The six proposed trajectories interact strongly across model behavior, compute/access constraints, media distribution, action interfaces, dialogue/control and evaluation. The annual thesis is stronger than a mechanical H1/H2 split, and the 68-page proposal remains well inside the configured 144-page maximum."
+  },
+  "human_gate": {
+    "name": "Architecture Review",
+    "required": true,
+    "approval_recorded": false,
+    "reader_facing_drafting_started": false
+  }
+}

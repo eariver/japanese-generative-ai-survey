@@ -1,0 +1,41 @@
+{
+  "schema_version":"1.0",
+  "issue_id":"SP-2026-M03",
+  "package_id":"agents-runtime-long-horizon-march",
+  "draft_version":"v0.1",
+  "status":"DRAFT",
+  "headline":"Agents, Runtime & Long-horizon Work — モデルを実行環境へ置く",
+  "deck":"Responses APIのcomputer environment、long-horizon reliability、deep research verification、agent memory。3月には、Agentを単なるtool callではなく、shell・container・file・stateと長時間評価を伴うsystemとして捉える材料が揃い始めた。",
+  "deck_attribution_mode":"MIXED",
+  "deck_evidence_refs":[
+    {"evidence_task_id":"evidence:SP-2026-M03:item-official-feed-01572b4c34e91a630132-b0632bf738","kind":"CLAIM","evidence_id":"claim-1"},
+    {"evidence_task_id":"evidence:SP-2026-M03:item-arxiv-2603-29231v1-b4c15e89ab","kind":"CLAIM","evidence_id":"claim-1"},
+    {"evidence_task_id":"evidence:SP-2026-M03:item-arxiv-2603-28376v1-a5fdd72d0d","kind":"CLAIM","evidence_id":"claim-1"},
+    {"evidence_task_id":"evidence:SP-2026-M03:item-arxiv-2603-29493v4-111840a73c","kind":"CLAIM","evidence_id":"claim-1"}
+  ],
+  "blocks":[
+    {"block_id":"opening-h","block_type":"HEADING","text":"Agentは最大テーマではない、それでも構造変化は見える","attribution_mode":"NONE","evidence_refs":[]},
+    {"block_id":"opening","block_type":"PARAGRAPH","text":"3月のCandidate surfaceではAgent/Runtime単独の件数はSystemsやSecurityを下回る。したがって今月全体を「Agentの月」と呼ぶのは強すぎる。一方で、Responses APIのcomputer environment、long-horizon reliability、verification-centric deep research、memory frameworkという材料は、modelを実行環境・状態・評価と結びつける方向が具体化していたことを示す。","attribution_mode":"MIXED","evidence_refs":[{"evidence_task_id":"evidence:SP-2026-M03:item-official-feed-01572b4c34e91a630132-b0632bf738","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2026-M03:item-arxiv-2603-29231v1-b4c15e89ab","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2026-M03:item-arxiv-2603-28376v1-a5fdd72d0d","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2026-M03:item-arxiv-2603-29493v4-111840a73c","kind":"CLAIM","evidence_id":"claim-1"}]},
+    {"block_id":"runtime-h","block_type":"HEADING","text":"Responses API: shell・container・files・tools・stateを持つruntime","attribution_mode":"NONE","evidence_refs":[]},
+    {"block_id":"runtime","block_type":"PARAGRAPH","text":"OpenAIは3月11日、Responses API、shell tool、hosted containersを組み合わせ、files、tools、stateを持つagent runtimeを構築したと説明した。ここで変わるのはmodelの推論能力そのものではなく、推論結果を実際のcomputer environmentで継続的なactionへ変換する周辺systemである。","attribution_mode":"ATTRIBUTED","evidence_refs":[{"evidence_task_id":"evidence:SP-2026-M03:item-official-feed-01572b4c34e91a630132-b0632bf738","kind":"CLAIM","evidence_id":"claim-1"}]},
+    {"block_id":"reliability-h","block_type":"HEADING","text":"Long-horizonではpass@1だけでは足りない","attribution_mode":"NONE","evidence_refs":[]},
+    {"block_id":"reliability","block_type":"PARAGRAPH","text":"Beyond pass@1はauthorsが、task durationが伸びるにつれてreliabilityの性質が分岐し、短時間taskのpass@1ではその差を捉えにくいと主張する。Agentを長く動かすなら、一回の成功率だけでなく、途中失敗、回復、累積的な安定性をどう評価するかが別の問題になる。","attribution_mode":"MIXED","evidence_refs":[{"evidence_task_id":"evidence:SP-2026-M03:item-arxiv-2603-29231v1-b4c15e89ab","kind":"CLAIM","evidence_id":"claim-1"}]},
+    {"block_id":"memory-h","block_type":"HEADING","text":"Memoryとverificationをruntimeの一部として扱う","attribution_mode":"NONE","evidence_refs":[]},
+    {"block_id":"memory","block_type":"PARAGRAPH","text":"Marco DeepResearchはauthorsがQA data synthesisやtrajectory constructionなど複数段階へverificationを組み込むdeep research designを提案した。MemFactoryはmemory-augmented agents向けにtrainingとinferenceを統合するmodular frameworkを提示している。長時間Agentでは「何を覚えるか」と「途中結果をどう確かめるか」がmodel外部の設計変数になる。","attribution_mode":"MIXED","evidence_refs":[{"evidence_task_id":"evidence:SP-2026-M03:item-arxiv-2603-28376v1-a5fdd72d0d","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2026-M03:item-arxiv-2603-29493v4-111840a73c","kind":"CLAIM","evidence_id":"claim-1"}]},
+    {"block_id":"synth","block_type":"PARAGRAPH","text":"この4件だけで3月をAgent中心の転換点と断定する必要はない。ただし、execution environment、long-horizon evaluation、verification、memoryという構成要素が同じ月に並んだことで、model capabilityをsystemとして運用するための論点が輪郭を持ち始めていた、と位置付けることはできる。","attribution_mode":"MIXED","evidence_refs":[{"evidence_task_id":"evidence:SP-2026-M03:item-official-feed-01572b4c34e91a630132-b0632bf738","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2026-M03:item-arxiv-2603-29231v1-b4c15e89ab","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2026-M03:item-arxiv-2603-28376v1-a5fdd72d0d","kind":"CLAIM","evidence_id":"claim-1"},{"evidence_task_id":"evidence:SP-2026-M03:item-arxiv-2603-29493v4-111840a73c","kind":"CLAIM","evidence_id":"claim-1"}]},
+    {"block_id":"claim-boundary","block_type":"CLAIM_BOUNDARY","text":"Claim Boundary: Responses API runtimeの安全性・scalabilityはOpenAIのfirst-party説明であり、本誌が独立検証したものではない。long-horizon、deep research、memory frameworkの結果はauthorsによる報告である。MemFactoryは現在v4 locatorを参照するため、March chronologyは初回投稿を基準にし、後日revisionの内容を3月へ遡及させない。","attribution_mode":"MIXED","evidence_refs":[{"evidence_task_id":"evidence:SP-2026-M03:item-official-feed-01572b4c34e91a630132-b0632bf738","kind":"LIMITATION","evidence_id":"limitation-1"},{"evidence_task_id":"evidence:SP-2026-M03:item-arxiv-2603-29231v1-b4c15e89ab","kind":"LIMITATION","evidence_id":"limitation-1"},{"evidence_task_id":"evidence:SP-2026-M03:item-arxiv-2603-28376v1-a5fdd72d0d","kind":"LIMITATION","evidence_id":"limitation-1"},{"evidence_task_id":"evidence:SP-2026-M03:item-arxiv-2603-29493v4-111840a73c","kind":"LIMITATION","evidence_id":"limitation-2"}]}
+  ],
+  "must_cover_coverage":[
+    {"requirement":"shell / hosted containers / files / tools / state","block_ids":["runtime"]},
+    {"requirement":"long-horizon reliabilityとpass@1の限界","block_ids":["reliability"]},
+    {"requirement":"memoryとverification","block_ids":["memory"]},
+    {"requirement":"agent cluster自体はM03最大ではないという位置づけ","block_ids":["opening","synth"]}
+  ],
+  "boundary_coverage":[
+    {"requirement":"First-party chronology is verified; capability/evaluation claims remain vendor-reported unless independently reproduced.","block_ids":["claim-boundary"]},
+    {"requirement":"Paper results and benchmarks are author-reported and not independently reproduced.","block_ids":["claim-boundary"]},
+    {"requirement":"Separate March-submission claims from later-revision changes before drafting.","block_ids":["claim-boundary"]},
+    {"requirement":"Locator is arXiv v4; March chronology uses the initial publication date, so later-revision changes must not be back-attributed.","block_ids":["claim-boundary"]}
+  ],
+  "late_breaking_acknowledged":false
+}

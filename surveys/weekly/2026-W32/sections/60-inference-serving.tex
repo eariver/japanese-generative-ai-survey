@@ -1,0 +1,35 @@
+\section{Inference / Serving: 実装の現実とdisaggregationの条件}
+\sectionkicker{LLM Serving in the Wild / HeteroPanacea / SGLang}
+
+\textbf{Servingで知りたいことは二つある。実際のOSSでは何が使われているのか。そして、より細かく処理を分離すれば本当に速くなるのか。}
+W32の2本のsystems paperは、この二つを異なる方法で扱った。\textit{LLM Serving in the Wild}はGitHub repositoryを掘るempirical study、\textit{When Does Disaggregation Pay?}はworkloadとhardwareを振るsimulation studyである\cite{serving-in-the-wild-paper,disaggregation-paper}。
+
+\subsection*{Public GitHubで見えるserving stack}
+
+\textit{LLM Serving in the Wild}はvLLM、SGLang、TensorRT-LLM、LMDeploy、FlashInferの5 frameworkについて、framework固有のPython API/importをpublic GitHubから探索し、inactive/personal/immature repository等をfilterしてunique repository単位で数える。著者報告のfiltered sampleでは、vLLMが1,821 repository、SGLang 54、FlashInfer 52、LMDeploy 45、TensorRT-LLM 15だった\cite{serving-in-the-wild-paper}。
+
+数字の差は大きいが、これは\textbf{market shareではない}。対象はpublic GitHub上のPython repositoryに限られ、API検出がproduction trafficを証明するわけでもない。一方で、star/fork popularityとobserved adoptionが一致しない例や、FlashInfer+vLLMなど複数framework/optimizationを組み合わせるrepositoryがあることは、実装現場を読むempirical snapshotとして有用である。
+
+\begin{claimboundary}[1,821 repositories $\neq$ production market share]
+この値は著者のGitHub Search API、Python-only、filtering methodology内のunique repository countである。private deployment、non-Python stack、実際のrequest volumeは測っていない。
+\end{claimboundary}
+
+\subsection*{Disaggregationは「細かく分けるほど良い」わけではない}
+
+\textit{When Does Disaggregation Pay?}はprefill/decodeだけでなくattention/FFNまで分けるPDAFを含むdesign spaceを、HeteroPanacea simulatorで探索する。重要なのはheadlineの最大値ではなく、\textbf{decode-heavyまたはbalanced workloadではnon-disaggregated構成が勝つ}という条件付きの結論である\cite{disaggregation-paper}。
+
+著者はspecialized custom-NPU design spaceでtraditional serving比最大2.06倍のthroughputを報告するが、これはsimulation結果であり、4-way PDAFが安定して効くのはattentionとFFNへ本当に異なるhardwareを割り当てられる場合である。commercial GPUでは追加分割が常に得になるわけではない。またsimulator validationはB200 server上のcomponent measurementが中心で、end-to-end scheduler/batching stack全体をproduction環境で再現したものではない\cite{disaggregation-paper}。
+
+\begin{tcolorbox}[enhanced,breakable,colback=SurveySoft,colframe=SurveyRule,boxrule=0.4pt,arc=1mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm]
+\textbf{Serving設計の読み方}\par\smallskip
+\textbf{Framework adoption}: popularityではなく、実際のcode integrationを別に見る。\par
+\textbf{Disaggregation}: workload ratioとinterconnect costがoverheadを回収できるかを見る。\par
+\textbf{Hardware specialization}: attention/FFNを分ける価値は、異なるstageへ本当に異なるdevice特性を与えられるかで変わる。\par
+\textbf{Quantization}: どのstageが低precisionを許容するかもtask依存になり得る。
+\end{tcolorbox}
+
+\begin{latebreaking}[SGLang v0.5.17 --- paperの議論がrelease stackへ接続する]
+Cutoff後の8月8日、SGLang v0.5.17はKimi K3とMiniMax H3のday-0 supportを追加した\cite{sglang-0517}。これは上の論文結果を検証するbenchmarkではないが、frontier/open modelが出た直後にserving framework側へmodel-specific optimization・tool-call・multimodal generation pathが追加される現在の速度を示す。Servingは「modelをloadできるか」から、modelごとのattention、cache、parallelism、offload、I/O contractへ急速に具体化している。
+\end{latebreaking}
+
+今週のsystems側から得られる教訓は単純である。\textbf{best serving architectureは固定解ではない。}何を採用しているかというecosystemの現実と、input/output ratio、model structure、memory、network、hardware specializationというworkload-specific条件を同時に見なければ、最適化のheadlineだけが独り歩きする。

@@ -1,0 +1,51 @@
+\section{半年単位で再分類する — ModelからExecution / Deployment Stackへ}
+2024年後半の出来事をvendor別・model family別ではなく、半年を通じて変化した責任層で再分類すると、少なくとも
+\textbf{Model / Inference / Execution / Deployment / Control} の5層に分けて読む必要がある。
+open-weightや小型modelの増加はModel資産の選択肢を広げた一方、reasoningでは推論時の計算配分が独立した設計対象になり、
+search・tool call・Computer Use・protocolはExecution surfaceを増やした。
+さらにquantization・serving・local/hostedの選択はDeploymentを独立問題にし、grounding・evaluation・moderation・prompt injection対策はControlをmodel capabilityから分離した。
+この再分類では「より強いmodelが出た」という一軸ではなく、各層をどのように組み合わせるかがsystem能力を決め始めたことを重視する。
+\autocite{src-9cf289b414fd,src-ee43656ed6da}
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}p{0.17\linewidth}X X@{}}
+\toprule
+責任層 & 2024-H2で前景化した問い & 半年末の読み方 \\
+\midrule
+Model & weights、license、training artifacts、size / architectureをどう選ぶか & openを二値でなく配備可能性の束として比較する \\
+Inference & 推論時に計算をどこまで使うか & reasoningをmodel名だけでなくtest-time computeの層として扱う \\
+Execution & search、tool、GUI、protocolへどう接続するか & Agentという一語をexecution primitiveへ分解する \\
+Deployment & latency、memory、quantization、local / hostedをどう最適化するか & runtimeを能力の後処理ではなくsystem設計へ含める \\
+Control & 外部接続したsystemをどう評価・制御するか & grounding、evaluation、安全性を独立したcontrol layerとして追う \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Cross-month Comparison — Jul--Aug / Sep--Oct / Nov--Dec}
+月ごとの出来事を同じ責任層で追うと、半年内の重心移動が見える。
+\textbf{7--8月}はopen-weight、小型化、multimodal理解などModel / Deployment側の選択肢拡大が目立つ。
+\textbf{9--10月}にはreasoning、Realtime、retrieval、Computer UseなどInference / Execution側が前景化し、
+\textbf{11--12月}にはMCP、reasoning previewの拡大、video/open media、model familyの高速更新が重なった。
+後半ほど「modelを選ぶ」だけではなく、「modelを外部surface・runtime・controlへどう接続するか」を同時に読む必要が増えている。
+\autocite{src-bcbc025369e3,src-ee43656ed6da}
+
+この変化は単一の技術が半年を通じて置き換わったというより、先に増えたModel / Deploymentの選択肢へ
+Inference / Execution / Controlが順次接続され、比較単位がstackへ拡張したものと読む方が整合的である。
+したがってJul--Augのopen modelとNov--Decのprotocolを直接「勝敗」で比較するのではなく、
+それぞれが異なる責任層を埋めた出来事として位置づける。
+\autocite{src-9cf289b414fd,src-3278a129a17e}
+
+\section{Cross-layer Synthesis — 層間依存がsystem能力を決め始める}
+半年単位で重要なのは各layerの増加だけでなく、layer間の依存が明示的になったことである。
+
+\begin{itemize}[leftmargin=1.5em,itemsep=0.45em]
+\item \textbf{Reasoning $\times$ Execution}: inference-time computeを増やしても、検索・tool・GUI actionへ接続できなければ外部世界での実行にはならない。逆にexecution surfaceだけを増やしても、長い手順での判断・検証が安定するとは限らない。
+\item \textbf{Open Weight $\times$ Deployment / Runtime}: weightsの入手可能性はlocal deploymentの必要条件の一つにすぎず、license、quantization、memory、serving runtimeが実際の配備可能性を左右する。
+\item \textbf{Multimodal $\times$ Serving}: vision、Realtime audio、image / video generationは同じmultimodalという名称でもI/O・latency・runtime要件が異なり、model capabilityと提供surfaceを分けて比較する必要がある。
+\item \textbf{Execution $\times$ Control}: search、Computer Use、tool / protocol接続が増えるほど、prompt injection、grounding、moderation、evaluation、authorizationの境界がsystem設計上の制約になる。
+\end{itemize}
+\autocite{src-3278a129a17e,src-9cf289b414fd}
+
+この三つの分析層を踏まえると、次のHalf-year Synthesisは個別releaseの再列挙ではなく、
+「2024-H2にどの責任がmodel外へ分化し、どの層同士が結合し始めたか」を統合する締めとして読める。

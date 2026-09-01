@@ -1,0 +1,600 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M01",
+  "package_id": "agent-stack-leaves-chat",
+  "draft_source_mode": "EVIDENCE_PACKAGE",
+  "execution_stage": "ARTICLE_DRAFTING",
+  "basis": {
+    "architecture_plan_sha256": "d614537d751a79e102eddedaf5587ee1bc8123f75b3fb79c9903b9134d9df539",
+    "architecture_input_sha256": "15b5b0ada0063ec02efe41326b9f822d6f9e16189dc73468eb1c737b5fb6076e",
+    "evidence_reviewed_sha256": "153ea4d424328621be8afd4567cd7dc7d68411f77b929a46664215899422b2e8"
+  },
+  "package": {
+    "title": "AgentはChatを出る — Harness・Context・Computer/Terminal Use",
+    "package_type": "LEAD",
+    "page_target": 7,
+    "editorial_angle": "Codex agent loop、OpenAI data agent、Claude Cowork、Gemini Computer Use、Mistral Vibe 2.0を横断し、品質を決める主体がbase modelからharness・context・tools・control loopへ広がったことを示す。",
+    "must_cover": [
+      "OpenAI Codex loopのuser/model/tools/history/context-window orchestration",
+      "in-house data agentのlayered context・memory・pass-through access controlとinternal-only境界",
+      "Cowork research previewとClaude constitutionの役割差",
+      "Gemini Computer Useのpreview model identifier境界",
+      "Vibe 2.0のsubagents・skills・clarification/control mechanisms",
+      "後日のavailabilityを1月時点へ逆投影しない"
+    ],
+    "boundaries": [
+      "The two sources describe different systems and should remain separately attributed even when used as one architecture cluster.",
+      "The in-house data-agent lessons are organizational case-study evidence and should not be generalized as a universal architecture benchmark.",
+      "Cowork was a research preview, so announcement-time product boundaries must not be generalized to later availability.",
+      "The constitution describes intended behavior and training guidance; actual model outputs may not always follow its ideals, as Anthropic itself notes.",
+      "Computer Use support is tied to preview model identifiers and must preserve announcement-time preview/deprecation status.",
+      "The changelog establishes API availability, not independent quality or safety of computer-use behavior.",
+      "The announcement is vendor-authored; claims about productivity or model quality are not independently reproduced.",
+      "Devstral 2 itself predates January, so the month-level event is the Vibe 2.0 agent/harness update rather than a new underlying model family."
+    ],
+    "late_breaking": false,
+    "drafting_order": 2
+  },
+  "primary_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M01",
+      "evidence_task_id": "evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76",
+      "task_file": "series-openai-agent-systems-january-3d9dd98e76.json",
+      "run_file": "series-openai-agent-systems-january-3d9dd98e76.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material and first-party item-level verification; no paid inference-provider API",
+        "generated_at": "2026-08-13T04:49:00Z",
+        "run_reference": "January 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "751fbaf669b7fdcc4208c71b45353c24a1fe9408f0453b5e644c6923b5a0ebb9",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M01",
+        "evidence_task_id": "evidence:SP-2026-M01:series-openai-agent-systems-january-3d9dd98e76",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Grouping accepted as an editorial series on agent-system architecture; claims remain source-specific."
+        },
+        "artifact": {
+          "canonical_name": "OpenAI January agent-system engineering: Codex loop and in-house data agent",
+          "artifact_type": "AGENT",
+          "organization": "OpenAI",
+          "canonical_url": null
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-01-23",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "ENGINEERING_NOTE",
+              "event_date": "2026-01-23",
+              "source_published_at": null,
+              "source_ids": [
+                "src-2"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "ENGINEERING_NOTE",
+              "event_date": "2026-01-29",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T04:49:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://openai.com/index/inside-our-in-house-data-agent",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://openai.com/index/inside-our-in-house-data-agent",
+            "published_at": null,
+            "accessed_at": "2026-08-13T04:49:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          },
+          {
+            "source_id": "src-2",
+            "url": "https://openai.com/index/unrolling-the-codex-agent-loop",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 2: https://openai.com/index/unrolling-the-codex-agent-loop",
+            "published_at": null,
+            "accessed_at": "2026-08-13T04:49:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "OpenAI’s Codex article describes the agent loop as the harness logic orchestrating the user, model inference, tools, conversation history, and context-window management.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-2"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "OpenAI’s in-house data-agent article describes an internal-only GPT-5.2 agent with layered context (metadata, human annotations, code enrichment, institutional knowledge, memory, runtime context) and pass-through access controls.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-3",
+            "text": "The data agent is explicitly an internal tool rather than a public product; examples of faster analysis and improved reliability are OpenAI-reported experience, not an independent benchmark.",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The two sources describe different systems and should remain separately attributed even when used as one architecture cluster.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ]
+          },
+          {
+            "limitation_id": "limitation-2",
+            "text": "The in-house data-agent lessons are organizational case-study evidence and should not be generalized as a universal architecture benchmark.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify January chronology, agent-loop components, tool/execution boundaries, context handling, and distinguish implementation description from benchmark claims",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: verify January chronology, agent-loop components, tool/execution boundaries, context handling, and distinguish implementation description from benchmark claims. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            },
+            {
+              "target": "verify January chronology, internal-only deployment boundary, context/memory layers, permission model, security controls, and avoid generalizing internal results to public products",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: verify January chronology, internal-only deployment boundary, context/memory layers, permission model, security controls, and avoid generalizing internal results to public products. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Together they expose the harness/context/security layers increasingly responsible for agent quality beyond the base model.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-source evidence supports Candidate Selection for a material January 2026 technical change."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M01",
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-anthropic-news-afddcb8068",
+      "task_file": "item-official-index-anthropic-news-afddcb8068.json",
+      "run_file": "item-official-index-anthropic-news-afddcb8068.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material and first-party item-level verification; no paid inference-provider API",
+        "generated_at": "2026-08-13T04:49:00Z",
+        "run_reference": "January 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "4258e4a1803d084400b97ea3cc47b3c7cd24c653254c5dfe3c4ef8a9eef7a345",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M01",
+        "evidence_task_id": "evidence:SP-2026-M01:item-official-index-anthropic-news-afddcb8068",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Claude Cowork research preview and new Claude constitution",
+          "artifact_type": "AGENT",
+          "organization": "Anthropic",
+          "canonical_url": "https://www.anthropic.com/news"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-01-12",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "RESEARCH_PREVIEW",
+              "event_date": "2026-01-12",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "MODEL_BEHAVIOR_POLICY_RELEASE",
+              "event_date": "2026-01-22",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T04:49:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://www.anthropic.com/news",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://www.anthropic.com/news",
+            "published_at": null,
+            "accessed_at": "2026-08-13T04:49:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "Anthropic’s January 13 Labs announcement states that Cowork launched as a research preview the previous day to bring Claude’s agentic capabilities to desktop workflows.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "Anthropic published Claude’s new constitution on January 22 and states that the document is a crucial part of its model training process that directly shapes Claude behavior.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Cowork was a research preview, so announcement-time product boundaries must not be generalized to later availability.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          },
+          {
+            "limitation_id": "limitation-2",
+            "text": "The constitution describes intended behavior and training guidance; actual model outputs may not always follow its ideals, as Anthropic itself notes.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "extract January Cowork/Labs and constitution-related items; verify exact dates, research-preview/product boundaries, agent execution surface, policy/training role, and availability",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: extract January Cowork/Labs and constitution-related items; verify exact dates, research-preview/product boundaries, agent execution surface, policy/training role, and availability. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Pairs the expansion of desktop agent action surfaces with an explicit behavioral/training control layer, making autonomy and governance visible in the same month.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-source evidence supports Candidate Selection for a material January 2026 technical change."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M01",
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-google-gemini-api-re-d5b8ea25b2",
+      "task_file": "item-official-index-google-gemini-api-re-d5b8ea25b2.json",
+      "run_file": "item-official-index-google-gemini-api-re-d5b8ea25b2.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material and first-party item-level verification; no paid inference-provider API",
+        "generated_at": "2026-08-13T04:49:00Z",
+        "run_reference": "January 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "ef236a04fd0f7f6181b92b7a865d268560f92f829f79c8919ba736102ec47d85",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M01",
+        "evidence_task_id": "evidence:SP-2026-M01:item-official-index-google-gemini-api-re-d5b8ea25b2",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Gemini API January 2026 tool and lifecycle updates",
+          "artifact_type": "API",
+          "organization": "Google",
+          "canonical_url": "https://ai.google.dev/gemini-api/docs/changelog"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-01-29",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "API_TOOL_RELEASE",
+              "event_date": "2026-01-29",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "API_LIFECYCLE_FEATURE",
+              "event_date": "2026-01-12",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-3",
+              "event_type": "API_INPUT_EXPANSION",
+              "event_date": "2026-01-08",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T04:49:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://ai.google.dev/gemini-api/docs/changelog",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://ai.google.dev/gemini-api/docs/changelog",
+            "published_at": null,
+            "accessed_at": "2026-08-13T04:49:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The Gemini API changelog records Computer Use tool support for gemini-3-pro-preview and gemini-3-flash-preview on January 29.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "The changelog records a model lifecycle feature on January 12 and support for Cloud Storage/public/private pre-signed database URLs as input sources, with a 100 MB file limit, on January 8.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-3",
+            "text": "The changelog also records Veo 4K/portrait-output changes and several alias/deprecation events during January.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Computer Use support is tied to preview model identifiers and must preserve announcement-time preview/deprecation status.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          },
+          {
+            "limitation_id": "limitation-2",
+            "text": "The changelog establishes API availability, not independent quality or safety of computer-use behavior.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "extract January entries; verify exact model identifiers, dates, modalities, tool capabilities, preview/stable status, and deprecations",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: extract January entries; verify exact model identifiers, dates, modalities, tool capabilities, preview/stable status, and deprecations. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Concrete API-level evidence that frontier models were being connected to action tools and larger external data inputs, while lifecycle management became explicit.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-source evidence supports Candidate Selection for a material January 2026 technical change."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M01",
+      "evidence_task_id": "evidence:SP-2026-M01:item-official-index-mistral-news-e5054b4c4c",
+      "task_file": "item-official-index-mistral-news-e5054b4c4c.json",
+      "run_file": "item-official-index-mistral-news-e5054b4c4c.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material and first-party item-level verification; no paid inference-provider API",
+        "generated_at": "2026-08-13T04:49:00Z",
+        "run_reference": "January 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "3902458926614761a977bf3df8a00b05b95bc3141e8b8055e2574de379e189c8",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M01",
+        "evidence_task_id": "evidence:SP-2026-M01:item-official-index-mistral-news-e5054b4c4c",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Mistral Vibe 2.0",
+          "artifact_type": "AGENT",
+          "organization": "Mistral AI",
+          "canonical_url": "https://mistral.ai/news/"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-01-27",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PRODUCT_RELEASE",
+              "event_date": "2026-01-27",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T04:49:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://mistral.ai/news/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://mistral.ai/news/",
+            "published_at": null,
+            "accessed_at": "2026-08-13T04:49:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "Mistral released Vibe 2.0 on January 27 as a terminal-native coding agent powered by the Devstral 2 model family.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "The release added custom subagents, multi-choice clarifications, slash-command skills, unified agent modes, and automatic updates, with availability on Le Chat Pro/Team plus PAYG or BYOK paths.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "The announcement is vendor-authored; claims about productivity or model quality are not independently reproduced.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          },
+          {
+            "limitation_id": "limitation-2",
+            "text": "Devstral 2 itself predates January, so the month-level event is the Vibe 2.0 agent/harness update rather than a new underlying model family.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "extract January Vibe/Devstral items; verify chronology, terminal-agent architecture, subagent/skills behavior, model identity, availability, and benchmark attribution",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: extract January Vibe/Devstral items; verify chronology, terminal-agent architecture, subagent/skills behavior, model identity, availability, and benchmark attribution. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "A direct peer to Codex-style terminal agents, showing agent orchestration moving into configurable subagents, skills, and clarification/control mechanisms.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-source evidence supports Candidate Selection for a material January 2026 technical change."
+        }
+      }
+    }
+  ],
+  "supporting_evidence": [],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION",
+    "cover_headline_finalization_forbidden": true,
+    "this_week_summary_forbidden": true
+  }
+}

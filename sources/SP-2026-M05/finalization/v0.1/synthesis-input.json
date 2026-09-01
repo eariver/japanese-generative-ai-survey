@@ -1,0 +1,661 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M05",
+  "status": "post-draft-synthesis-input-ready",
+  "basis": {
+    "architecture_input_sha256": "e3b7c8b38d9a84a0ac39b63d8c61bb8661ed0ae22abfb189260dc3e955200c21",
+    "architecture_plan_sha256": "72c4d01a0793dc87be1c4b9efe3bb0c174661955eb9f0c53f1782c3b64018dfa",
+    "article_prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c",
+    "article_drafts": [
+      {
+        "package_id": "frontier-models-may",
+        "article_draft_sha256": "67b2b734c5556d205e0f136c04dc72dcee19cbbc9555edbb27ff315a644f84fd"
+      },
+      {
+        "package_id": "agents-runtime-may",
+        "article_draft_sha256": "ff548ca0b0930738ae8de9052dc2124aec58100862012afde52a28e5851ab91e"
+      },
+      {
+        "package_id": "inference-serving-may",
+        "article_draft_sha256": "5fc12744f025c49d32f1410146141887f5a73d4de2c38b6405830ef5375c7de4"
+      },
+      {
+        "package_id": "agent-safety-security-may",
+        "article_draft_sha256": "a2838e14bd27a7ef23ad57a1880ad4e47fd5b177a438b332dc30cb2fddd14f6c"
+      },
+      {
+        "package_id": "capability-evaluation-may",
+        "article_draft_sha256": "ded6c0858773616121f6fcb44438d00e448bd303d577c73011cda087b665bfa0"
+      },
+      {
+        "package_id": "paper-watch-may",
+        "article_draft_sha256": "2f40980b9f20389d9e57e9724adca4dd6e2f6c1aebb62e08cc18a1b31ac93887"
+      }
+    ]
+  },
+  "editorial_thesis": "2026年5月は、frontier modelの更新と並行して、agentの実運用がsandbox・権限・長期state・retrieval・serving最適化へ広がり、生成AIの競争軸がモデル単体から実行環境全体へ移った月だった。",
+  "cover_anchor_candidates": [
+    "frontier-models-may",
+    "agents-runtime-may"
+  ],
+  "articles": [
+    {
+      "package_id": "frontier-models-may",
+      "package_type": "FEATURE",
+      "drafting_order": 2,
+      "page_target": 7,
+      "late_breaking": false,
+      "editorial_angle": "GPT-5.5 Instant、Anthropic、Gemini/DeepMind、Alibaba、Realtime voiceを単純ランキングせず、モデル更新がAPI lifecycle・音声対話・提供形態へ広がった月として比較する。",
+      "boundaries": [
+        "The preserved first-party feed item is authoritative for publication chronology and vendor-described scope; detailed capability, benchmark, or safety claims were not independently reproduced.",
+        "The preserved first-party index is authoritative for the listed chronology, but capability/benchmark descriptions remain vendor claims and month-only dates retain month precision."
+      ],
+      "headline": "Frontier Models & Voice — 5月、モデル更新は「使い方」の更新へ広がった",
+      "deck": "GPT-5.5 Instant、Claude Opus 4.8、Gemini API、DeepMindの研究系更新、そしてRealtime voice。2026年5月は、モデル名の世代交代だけでなく、API lifecycle、agent利用、音声対話という提供面が同時に動いた。",
+      "blocks": [
+        {
+          "block_id": "opening-heading",
+          "block_type": "HEADING",
+          "text": "5月の変化を一つのsystemとして読む",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "opening",
+          "block_type": "PARAGRAPH",
+          "text": "5月のfrontier model競争を一列のbenchmark表へ縮めると、今月の変化を見落とす。実際に一次資料へ並んだのは、ChatGPTのdefault model更新、AnthropicのOpus級モデル更新、Gemini APIのGAとManaged Agents、DeepMindの複数研究・モデル発信、そしてvoice APIの更新だった。利用者にとって重要なのは、能力の大小だけでなく「どのsurfaceから、どのmodalで、どの更新速度で使えるか」である。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "item-01-heading",
+          "block_type": "HEADING",
+          "text": "GPT-5.5 Instant: smarter, clearer, and more personalized",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-01",
+          "block_type": "PARAGRAPH",
+          "text": "OpenAIは5月5日、ChatGPTのdefault modelに関するGPT-5.5 Instant更新を公表した。一次資料で確認できるのは更新の存在と日付であり、回答品質、hallucination低減、personalization改善といった効果はOpenAI自身の説明として読む必要がある。重要なのは、frontier modelの更新が新しいmodel IDの追加だけでなく、日常的に使われるdefault experienceの更新として現れた点だ。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-02-heading",
+          "block_type": "HEADING",
+          "text": "Anthropic May 2026 technical releases",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-02",
+          "block_type": "PARAGRAPH",
+          "text": "Anthropicのnewsroom snapshotでは5月28日にClaude Opus 4.8が記録され、coding、agentic task、professional work、long-running work向けのOpus級upgradeとして説明されている。ここでもcapability評価はAnthropicによる主張であり、本稿ではrelease chronologyと利用領域の広がりを事実層から分けて扱う。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-03-heading",
+          "block_type": "HEADING",
+          "text": "Gemini API May 2026 lifecycle",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-03",
+          "block_type": "PARAGRAPH",
+          "text": "Gemini APIの5月は、5日のmultimodal File Search、7日のGemini 3.1 Flash-Lite GA、19日のGemini 3.5 Flash GAとManaged Agents public preview、28日のnative visual model GAなど、modelとAPI機能のlifecycleが複数回動いた。API利用者にとっては「新モデルが出た」ことと同じくらい、GA／preview／feature追加の状態遷移が設計条件になる。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-04-heading",
+          "block_type": "HEADING",
+          "text": "Google DeepMind May 2026 releases",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-04",
+          "block_type": "PARAGRAPH",
+          "text": "Google DeepMindの5月snapshotにはGemini 3.5、Gemini Omni、Gemini for Science、Co-Scientistが並ぶ。ただしこのEvidenceは月単位のchronologyであり、日付を補完してはいけない。個々の性能優位を断定するより、frontier modelとAI-for-scienceが同じ月の研究面で並行して更新されたことを確認する材料として使う。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-05-heading",
+          "block_type": "HEADING",
+          "text": "Advancing voice intelligence with new models in the API",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-05",
+          "block_type": "PARAGRAPH",
+          "text": "OpenAIは5月7日、API向けの新しいrealtime voice modelを公表し、speech reasoning、translation、transcriptionなどの用途を説明した。音声AIではmodel qualityだけでなくturn-takingやlatencyがUXを直接左右するため、voice modelの更新はserving architectureと切り離して評価しにくい。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-06-heading",
+          "block_type": "HEADING",
+          "text": "Alibaba Model Studio May 2026 model lifecycle",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-06",
+          "block_type": "PARAGRAPH",
+          "text": "Alibaba Model StudioのMay lifecycleは、中国系model ecosystemでもmodel catalogが継続的に更新されることを示す補助線になる。本稿では個別benchmarkの比較には使わず、regionやmodel familyを含むmanaged model surfaceが動いていたというchronology contextに限定して用いる。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-07-heading",
+          "block_type": "HEADING",
+          "text": "How OpenAI delivers low-latency voice AI at scale",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-07",
+          "block_type": "PARAGRAPH",
+          "text": "OpenAIのlow-latency voice infrastructureに関する説明は、realtime voiceを単なるmodel releaseではなくserving problemとして読む材料になる。低遅延化の仕組みや効果はfirst-partyの説明であり、独立したperformance保証ではないが、voice UXがmodelとinfrastructureの共同設計であることは明確だ。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "theme-synthesis-heading",
+          "block_type": "HEADING",
+          "text": "Theme Synthesis",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "theme-synthesis",
+          "block_type": "PARAGRAPH",
+          "text": "5月のfrontier領域では、モデル本体と利用surfaceを切り分けて評価する必要がさらに強まった。closed/API提供ではlifecycle変更が設計条件になり、voiceではモデル能力と低遅延配信の両方が体験を決める。したがって本稿では各社の性能表現を横断ランキングへ変換せず、公開形態・利用経路・更新単位の差を中心に読む。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "claim-boundary-1",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Claim Boundary: first-party sourceは公開日とsource ownerが説明したscopeを確認する一次資料だが、capability・benchmark・safety・performanceの優位性まで独立検証したものではない。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "claim-boundary-2",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Claim Boundary: first-party indexは掲載されたchronologyを確認する資料だが、capabilityやbenchmark表現はvendor claimである。また月精度の日付は日単位へ補完しない。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    },
+    {
+      "package_id": "agents-runtime-may",
+      "package_type": "SECTION",
+      "drafting_order": 3,
+      "page_target": 5,
+      "late_breaking": false,
+      "editorial_angle": "agentをmodelの付属機能ではなく、sandbox、権限、長時間workload、CLI/MCP統合を備えた実行環境として整理する。",
+      "boundaries": [
+        "The preserved first-party feed item is authoritative for publication chronology and vendor-described scope; detailed capability, benchmark, or safety claims were not independently reproduced.",
+        "The preserved first-party index is authoritative for the listed chronology, but capability/benchmark descriptions remain vendor claims and month-only dates retain month precision.",
+        "The preserved original arXiv metadata/abstract is primary-paper evidence, but experimental results and generalization are author-reported and were not independently reproduced in this Evidence review."
+      ],
+      "headline": "Agents & Runtime — 「賢いAgent」より先に、どこで何を許すか",
+      "deck": "Codexのsandbox、Windows上の隔離、Kimi Code CLI、MistralのMCP／workflow更新。5月はagentを単発のtool callではなく、権限・network・state・長時間taskを抱える実行環境として設計する動きが前面に出た。",
+      "blocks": [
+        {
+          "block_id": "opening-heading",
+          "block_type": "HEADING",
+          "text": "5月の変化を一つのsystemとして読む",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "opening",
+          "block_type": "PARAGRAPH",
+          "text": "Agentが長く動くほど、モデルの推論能力だけではシステムを説明できなくなる。file systemへ何を見せるか、networkをどこまで許可するか、どの操作でapprovalを要求するか、CLIやMCPを通じて何を接続するか。5月の一次資料は、こうしたruntime側の条件がagent capabilityと同じくらい重要になっていることを示している。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "item-01-heading",
+          "block_type": "HEADING",
+          "text": "Running Codex safely at OpenAI",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-01",
+          "block_type": "PARAGRAPH",
+          "text": "OpenAIは5月8日、内部でCodexを運用する際のsandbox、approval、network policy、agent-native telemetryを説明した。これは「agentに何ができるか」より「実行時に何を許し、何を観測し、どこで人間承認を入れるか」を中心にした資料であり、agent運用がcontrol-plane設計へ移ったことを示す。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-02-heading",
+          "block_type": "HEADING",
+          "text": "Building a safe, effective sandbox to enable Codex on Windows",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-02",
+          "block_type": "PARAGRAPH",
+          "text": "5月13日のWindows向けCodex sandboxでは、file accessとnetwork accessを制御する設計が説明された。OSが変われば利用できるisolation primitiveも変わるため、agent sandboxは抽象的な安全機能ではなく、host platform固有のengineering問題でもある。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-03-heading",
+          "block_type": "HEADING",
+          "text": "Kimi Code CLI May 2026 lifecycle",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-03",
+          "block_type": "PARAGRAPH",
+          "text": "Kimi Code CLIは5月中にproduct releaseと複数updateを重ねた。日単位で確定できる更新と月精度に留まる項目が混在するため、本稿では無理に一つのrelease dayへ束ねず、coding agentがCLI surfaceで継続更新されていたMay lifecycleとして扱う。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-04-heading",
+          "block_type": "HEADING",
+          "text": "Mistral May 2026 technical releases",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-04",
+          "block_type": "PARAGRAPH",
+          "text": "MistralのMay snapshotでは、22日のMCP-enabled Studio toolingとWorkflows public preview、23日のremote agents、28日のVibe long-horizon Work/Code modesなどが並ぶ。agent featureがchat UIの追加機能ではなく、workflow、remote execution、MCP接続へ広がる方向が見える。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-05-heading",
+          "block_type": "HEADING",
+          "text": "Agentic AI Workload Characteristics",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-05",
+          "block_type": "PARAGRAPH",
+          "text": "この論文はReAct型agent workloadをend-to-endで観測し、反復するmodel call、tool execution、増大するcontextを一体のworkloadとして特徴づける。結果は著者報告だが、serving側から見てもagent requestが単発inferenceとは異なるstateful workloadになるという論点を補強する。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "theme-synthesis-heading",
+          "block_type": "HEADING",
+          "text": "Theme Synthesis",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "theme-synthesis",
+          "block_type": "PARAGRAPH",
+          "text": "共通項は「agentを実行主体として扱う」ことにある。sandboxやapprovalは能力を下げるための付属物ではなく、長時間taskを現実の開発環境へ接続するためのcontrol planeである。一方、ReAct型workloadの特性に関する研究結果は著者報告であり、特定benchmarkやmodel構成を超えた一般則としては扱わない。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "claim-boundary-1",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Claim Boundary: first-party sourceは公開日とsource ownerが説明したscopeを確認する一次資料だが、capability・benchmark・safety・performanceの優位性まで独立検証したものではない。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "claim-boundary-2",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Claim Boundary: first-party indexは掲載されたchronologyを確認する資料だが、capabilityやbenchmark表現はvendor claimである。また月精度の日付は日単位へ補完しない。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "claim-boundary-3",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Claim Boundary: 原論文は研究内容を確認する一次資料だが、benchmark結果・speedup・attack success・quality比較は著者報告であり、本稿で独立再現した結果ではない。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    },
+    {
+      "package_id": "inference-serving-may",
+      "package_type": "DEEP_DIVE",
+      "drafting_order": 4,
+      "page_target": 6,
+      "late_breaking": false,
+      "editorial_angle": "vLLM・SGLang・FlashInferのMay releaseを主軸に、KV cache reuseとMoE expert reuse研究を補助線として、モデル外側の実行効率化を説明する。",
+      "boundaries": [
+        "Official repository release notes verify release chronology and listed implementation changes; project performance claims and cross-hardware generalization were not independently reproduced.",
+        "The preserved original arXiv metadata/abstract is primary-paper evidence, but experimental results and generalization are author-reported and were not independently reproduced in this Evidence review."
+      ],
+      "headline": "Inference & Serving — 5月、最適化はcache・MoE・kernel・runtimeをまたいだ",
+      "deck": "vLLM、SGLang、FlashInferのreleaseが続く一方、研究側ではKV cache再利用やMoE expert reuseが掘り下げられた。モデルの外側にあるserving stackは、単一kernelではなく複数layerの協調問題になっている。",
+      "blocks": [
+        {
+          "block_id": "opening-heading",
+          "block_type": "HEADING",
+          "text": "5月の変化を一つのsystemとして読む",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "opening",
+          "block_type": "PARAGRAPH",
+          "text": "同じモデルでも、どのruntime・attention backend・cache方針・parallelism・kernelで動かすかによって実運用の制約は大きく変わる。5月はvLLM、SGLang、FlashInferがそれぞれ継続的に更新され、研究側でもlong-context KV reuseやmemory-constrained MoE inferenceが別の角度から扱われた。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "item-01-heading",
+          "block_type": "HEADING",
+          "text": "vllm-project/vllm May 2026 release series",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-01",
+          "block_type": "PARAGRAPH",
+          "text": "vLLMは5月4日のv0.20.1、15日のv0.21.0、29日のv0.22.0と更新を重ねた。release notesではDeepSeek V4 hardening、KV/offload、attention backend、Model Runner V2、speculative/disaggregated servingなどが扱われており、serving engineが複数のmodel familyとruntime techniqueを同時に吸収している。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-02-heading",
+          "block_type": "HEADING",
+          "text": "sgl-project/sglang May 2026 release series",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-02",
+          "block_type": "PARAGRAPH",
+          "text": "SGLangは5月5日のv0.5.11と16日のv0.5.12で、speculative decoding、disaggregated prefix caching、model support、DeepSeek V4 inference pathなどを更新した。個別のthroughput値ではなく、prefix/cacheとmodel-specific executionが同じrelease seriesで進んでいる点に注目したい。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-03-heading",
+          "block_type": "HEADING",
+          "text": "Release v0.6.12",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-03",
+          "block_type": "PARAGRAPH",
+          "text": "FlashInfer v0.6.12は5月29日に公開され、release notesにはNVFP4 quantization、MoE kernel、GQA/MLA path、model/backend supportが並ぶ。kernel layerでもquantization・attention・MoEが密接に結び付いており、frontier model対応が低level runtimeへ波及している。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-04-heading",
+          "block_type": "HEADING",
+          "text": "Adaptive KV Cache Reuse for Fast Long-Context LLM Serving",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-04",
+          "block_type": "PARAGRAPH",
+          "text": "CacheTuneは、厳密なprefix一致だけに頼らず、attention関係を保つため必要なcontextを適応的に再計算しながらKV cacheを再利用する設計を提案する。これは著者による研究結果であり、一般的なspeedup保証ではないが、long-context servingで「何を再利用できるか」自体を最適化対象にする方向を示す。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-05-heading",
+          "block_type": "HEADING",
+          "text": "ReMoE: Boosting Expert Reuse through Router Fine-Tuning in Memory-Constrained MoE LLM Inference",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-05",
+          "block_type": "PARAGRAPH",
+          "text": "ReMoEはmemory-constrainedなMoE inferenceでexpert reuseを高めるためrouter fine-tuningを利用する。MoE servingでは計算量だけでなくexpert weightのresident／transfer costが問題になるため、model architectureとruntime memory制約の境界を跨ぐ研究として位置付けられる。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "theme-synthesis-heading",
+          "block_type": "HEADING",
+          "text": "Theme Synthesis",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "theme-synthesis",
+          "block_type": "PARAGRAPH",
+          "text": "ここで重要なのは、個々のproject benchmarkを一つの勝敗表へ混ぜないことだ。release noteは実装変更の一次資料だが性能値はproject条件に依存し、論文のspeedupも著者が選んだmodel・hardware・workload・baselineに依存する。5月の意味は、最適化対象がcacheからexpert、kernel、runtimeまでstack全体へ広がった点にある。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "claim-boundary-1",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Claim Boundary: GitHub release notesはrelease chronologyと記載された実装変更を確認する一次資料だが、projectが示すperformanceやcross-hardwareな一般化は本稿で独立再現していない。",
+          "attribution_mode": "INFERENCE"
+        },
+        {
+          "block_id": "claim-boundary-2",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Claim Boundary: 原論文は研究内容を確認する一次資料だが、benchmark結果・speedup・attack success・quality比較は著者報告であり、本稿で独立再現した結果ではない。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    },
+    {
+      "package_id": "agent-safety-security-may",
+      "package_type": "DEEP_DIVE",
+      "drafting_order": 5,
+      "page_target": 6,
+      "late_breaking": false,
+      "editorial_angle": "persistent control、memory poisoning、retrieval degradation、adaptive detector allocationを別々のthreat modelとして扱い、長時間agentの制御境界を整理する。",
+      "boundaries": [
+        "The preserved original arXiv metadata/abstract is primary-paper evidence, but experimental results and generalization are author-reported and were not independently reproduced in this Evidence review."
+      ],
+      "headline": "Agent Safety & Security — 攻撃はpromptから記憶とworkspaceへ伸びる",
+      "deck": "persistent control、agent memory poisoning、retrieval経由のalignment低下、adaptive detector allocation。5月の研究は、長時間agentでは「一度の危険なprompt」だけを守ればよいわけではないことを示した。",
+      "blocks": [
+        {
+          "block_id": "opening-heading",
+          "block_type": "HEADING",
+          "text": "5月の変化を一つのsystemとして読む",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "opening",
+          "block_type": "PARAGRAPH",
+          "text": "tool-using agentの安全性をprompt injectionだけで語ると、長時間化によって増える状態を取りこぼす。workspaceへ残るcontrol-like content、会話から選択的に書き込まれるlong-term memory、retrieval結果、detectorをどこへ配分するかというruntime判断は、それぞれ異なるattack surfaceである。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "item-01-heading",
+          "block_type": "HEADING",
+          "text": "From Prompt Injection to Persistent Control: Defending Agentic Harness Against Trojan Backdoors",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-01",
+          "block_type": "PARAGRAPH",
+          "text": "ClawTrojanはlocal agentic harnessを対象に、prompt injectionを一度きりの指示改変ではなく、workspaceへ残る情報を介したmulti-step persistent controlとしてモデル化する。著者はDASGuardによるuntrusted control-like contentのtrace／removalも提案し、simulated workspaceで高いASRを報告しているが、その数値は特定環境での著者評価に限定される。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-02-heading",
+          "block_type": "HEADING",
+          "text": "Hijacking Agent Memory: Stealthy Trojan Attacks Through Conversational Interaction",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-02",
+          "block_type": "PARAGRAPH",
+          "text": "MemPoisonは会話を通じてselective long-term memory pipelineへtriggerとpayloadを結び付け、後続interactionで悪性挙動を誘発する攻撃を扱う。著者は複数domain・memory mechanismで高いattack successを報告するが、重要なのは数値そのものより、memory writeが新しいtrust boundaryになるという点だ。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-03-heading",
+          "block_type": "HEADING",
+          "text": "Relevance as a Vulnerability: How Web Retrieval Degrades Safety Alignment in LLM Agents",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-03",
+          "block_type": "PARAGRAPH",
+          "text": "この研究は、retrievalで「関連性の高い」情報を取り込むことが必ずしもsafety alignmentと一致しないという問題を扱う。retrieverが有用性を最大化するほど、安全性の低いcontextも強く注入され得るという構造は、RAG／web agentでrelevanceとtrustを別軸に設計する必要性を示す。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-04-heading",
+          "block_type": "HEADING",
+          "text": "Send a SCOUT First: Pre-hoc Reasoning for Adaptive Detector Allocation in Prompt-Injection Defense",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-04",
+          "block_type": "PARAGRAPH",
+          "text": "SCOUTは、すべてのinputへ同じ防御costを掛けるのではなく、pre-hoc reasoningでriskを見積もってdetector allocationを適応させる方向を提案する。防御性能は著者評価に依存するが、agent securityをstatic filterではなくruntime resource allocationとして考える点が特徴的だ。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "theme-synthesis-heading",
+          "block_type": "HEADING",
+          "text": "Theme Synthesis",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "theme-synthesis",
+          "block_type": "PARAGRAPH",
+          "text": "これらの研究をまとめて「agentは危険」と一般化するのは不正確だ。ClawTrojan、MemPoison、retrieval degradation、SCOUTは攻撃者能力・対象component・評価環境が異なる。共通して見えるのは、長時間agentでは権限だけでなくprovenance、state更新、retrieval、monitoring policyまでcontrol boundaryとして扱う必要がある、という設計上の問いである。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "claim-boundary-1",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Claim Boundary: 原論文は研究内容を確認する一次資料だが、benchmark結果・speedup・attack success・quality比較は著者報告であり、本稿で独立再現した結果ではない。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    },
+    {
+      "package_id": "capability-evaluation-may",
+      "package_type": "FEATURE",
+      "drafting_order": 6,
+      "page_target": 5,
+      "late_breaking": false,
+      "editorial_angle": "離散幾何の具体的研究成果を、単なる能力自慢ではなく、standard benchmark外の能力と第三者評価の設計を考える入口として扱う。",
+      "boundaries": [
+        "The preserved first-party feed item is authoritative for publication chronology and vendor-described scope; detailed capability, benchmark, or safety claims were not independently reproduced."
+      ],
+      "headline": "Capability & Evaluation — benchmarkの外で起きた成果をどう読むか",
+      "deck": "OpenAIは5月、モデルが離散幾何の長年の予想を反証したと報告した。同じ月には第三者評価のplaybookも公開された。単一の印象的成果を一般能力へ拡張せず、何をもって能力の証拠とするかを考える。",
+      "blocks": [
+        {
+          "block_id": "opening-heading",
+          "block_type": "HEADING",
+          "text": "5月の変化を一つのsystemとして読む",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "opening",
+          "block_type": "PARAGRAPH",
+          "text": "standard benchmarkは比較可能性を与える一方、実際の研究課題で現れる能力をすべて覆うわけではない。5月20日にOpenAIが公表した離散幾何の事例は、その意味で強いattentionを集めるタイプの成果である。しかし、一次資料はOpenAI自身の説明であり、そこから「数学全般で人間を超えた」といった広い結論を導くことはできない。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "item-01-heading",
+          "block_type": "HEADING",
+          "text": "An OpenAI model has disproved a central conjecture in discrete geometry",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-01",
+          "block_type": "PARAGRAPH",
+          "text": "OpenAIは5月20日、同社modelがunit-distance problemに関する長年の予想を反証したと報告した。公開日と「OpenAIがそう報告した」ことは確認できるが、数学的成果の意味やmodelの寄与範囲はfirst-party説明に依存する。本稿ではこの事例を、benchmark外のreal research taskで現れるcapabilityをどう検証するかという問題設定へつなげる。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-02-heading",
+          "block_type": "HEADING",
+          "text": "A shared playbook for trustworthy third party evaluations",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-02",
+          "block_type": "PARAGRAPH",
+          "text": "5月29日、OpenAIはfrontier modelのthird-party evaluationについて、capability、safeguard、evaluation validityを扱うplaybookを公表した。評価者の独立性だけでなく、test conditionやmeasurement validityまで設計対象にする考え方は、印象的な単発成果を一般能力へ拡張しないための補助線になる。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "theme-synthesis-heading",
+          "block_type": "HEADING",
+          "text": "Theme Synthesis",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "theme-synthesis",
+          "block_type": "PARAGRAPH",
+          "text": "重要なのは成果の派手さより、評価のchain of custodyである。誰が課題を設定し、model outputをどう検証し、第三者がどこまで再評価できるか。5月末のthird-party evaluation playbookは、capabilityだけでなくsafeguardやevaluation validityを評価対象に含める方向を示す。個別の成功例と一般的な能力評価を分離することが、frontier modelを読むうえでますます重要になっている。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "claim-boundary-1",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Claim Boundary: first-party sourceは公開日とsource ownerが説明したscopeを確認する一次資料だが、capability・benchmark・safety・performanceの優位性まで独立検証したものではない。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    },
+    {
+      "package_id": "paper-watch-may",
+      "package_type": "PAPER_WATCH",
+      "drafting_order": 7,
+      "page_target": 2,
+      "late_breaking": false,
+      "editorial_angle": "AgenticVBench、production inference benchmarkのmeasurement bias、Representation Forcingを短く並べ、5月の研究側で評価方法とmultimodal統合がどう動いたかを見る。",
+      "boundaries": [
+        "The preserved original arXiv metadata/abstract is primary-paper evidence, but experimental results and generalization are author-reported and were not independently reproduced in this Evidence review."
+      ],
+      "headline": "Paper Watch — Agentを測る、測定器を疑う、modalの壁を外す",
+      "deck": "AgenticVBench、production inference benchmarkのmeasurement bias、Representation Forcing。5月の論文から、agent評価、serving測定、unified multimodalという三つの研究方向を短く追う。",
+      "blocks": [
+        {
+          "block_id": "opening-heading",
+          "block_type": "HEADING",
+          "text": "5月の変化を一つのsystemとして読む",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "opening",
+          "block_type": "PARAGRAPH",
+          "text": "Paper Watchでは、今月の主軸記事と重なるが独立した論点を持つ3本を取り上げる。いずれも原論文は一次資料だが、ここで紹介する性能・比較・有効性は著者報告であり、独立再現済みの結論ではない。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "item-01-heading",
+          "block_type": "HEADING",
+          "text": "AgenticVBench: Can AI Agents Complete Real-World Post-Production Tasks?",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-01",
+          "block_type": "PARAGRAPH",
+          "text": "AgenticVBenchはtext、image、audio、video、planning、tool useを組み合わせるreal-world post-production workflowを100 taskで評価するbenchmarkを提案する。著者報告では最良stackも約30%をわずかに超える程度で、現実的なmultimodal workflowが依然難しいことを示すが、model ranking自体は評価構成に依存する。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-02-heading",
+          "block_type": "HEADING",
+          "text": "Identifying and Mitigating Systemic Measurement Bias in Production LLM Inference Benchmarks",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-02",
+          "block_type": "PARAGRAPH",
+          "text": "この論文はproduction LLM inference benchmarkのclient-side measurementにsystemic biasが入り得ると指摘し、Python GILがTTFT／TPOT観測へ与える影響をqueueing analysisで扱う。serving性能を比較するとき、serverだけでなくmeasurement tool自身を検証対象にする必要があるという方法論的警告である。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "item-03-heading",
+          "block_type": "HEADING",
+          "text": "Representation Forcing for Bottleneck-Free Unified Multimodal Models",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "item-03",
+          "block_type": "PARAGRAPH",
+          "text": "Representation Forcingはunified multimodal modelでmodal間のrepresentation bottleneckを減らす設計を提案する。ここでは著者の性能比較を独立事実とは扱わず、text・visionなどを一つのmodelへ統合する際にintermediate representation設計が重要な研究対象になっていることを紹介する。",
+          "attribution_mode": "ATTRIBUTED"
+        },
+        {
+          "block_id": "theme-synthesis-heading",
+          "block_type": "HEADING",
+          "text": "Theme Synthesis",
+          "attribution_mode": "NONE"
+        },
+        {
+          "block_id": "theme-synthesis",
+          "block_type": "PARAGRAPH",
+          "text": "3本に共通するのは、モデルそのものだけでなく「どう測るか」「どこで表現を分けるか」がsystem capabilityを左右する点である。agent taskの現実性、benchmark clientの測定bias、multimodal representationのbottleneckはいずれも、数字だけでは見えにくい設計条件を前景化している。",
+          "attribution_mode": "MIXED"
+        },
+        {
+          "block_id": "claim-boundary-1",
+          "block_type": "CLAIM_BOUNDARY",
+          "text": "Claim Boundary: 原論文は研究内容を確認する一次資料だが、benchmark結果・speedup・attack success・quality比較は著者報告であり、本稿で独立再現した結果ではない。",
+          "attribution_mode": "INFERENCE"
+        }
+      ]
+    }
+  ],
+  "constraints": {
+    "language": "ja",
+    "max_this_week_signals": 5,
+    "no_new_external_facts": true,
+    "summarize_only_validated_article_text": true,
+    "late_breaking_boundary_required": true,
+    "page_references_must_use_package_ids": true
+  }
+}

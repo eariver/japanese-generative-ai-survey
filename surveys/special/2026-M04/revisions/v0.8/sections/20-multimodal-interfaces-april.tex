@@ -1,0 +1,55 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{Multimodal \& Interfaces — 4月、画像・音声・視覚は別々の入口から広がった}
+\label{pkg:multimodal-interfaces-april}
+\noindent\textbf{ChatGPT Images 2.0、MiniCPM-o 4.5、Voxtral TTS、GLM-5V-Turbo、SpatialFusion、World2VLM。4月は「multimodal」という一語の内側で、生成・対話・agent perception・空間表現が別々に伸び始めた。}\autocite{src-0f697d747d9c,src-d113b486a585,src-d33ba68aac3c,src-d8b7c1c36830}
+
+\subsection{Multimodalは一つの機能ではなくなった}
+
+4月のmultimodal領域では、画像を生成するモデル、音声で双方向にやり取りするモデル、voice agent向けTTS、視覚情報をagentの行動へ接続するモデル、3Dや動的空間を扱う研究が同時に現れた。これらを一括して「multimodal性能が上がった」と表現すると、入出力interfaceと内部表現、生成と理解、リアルタイム対話という異なる課題を混同する。4月はむしろ、後の統合multimodalへ向かう複数の入口が別々に伸びた時期として捉えたい。\autocite{src-0f697d747d9c,src-3fa7f7c1140f,src-d113b486a585,src-d33ba68aac3c,src-d8b7c1c36830,src-fec81b98fdc8}
+
+
+\subsection{ChatGPT Images 2.0 — 生成surfaceの更新}
+
+OpenAIは4月21日にChatGPT Images 2.0を公表した。一次資料はrelease chronologyを固定し、OpenAIはtext rendering、multilingual support、visual reasoningなどの改善を説明している。ただしこれらの品質評価はvendor claimであり、本稿では独立benchmarkのようには扱わない。重要なのは、画像生成が独立した画像toolではなくChatGPTという対話surfaceの中で更新され、生成・編集・推論を一つの利用体験へ寄せる方向が続いた点である。\autocite{src-0f697d747d9c}
+
+
+\subsection{MiniCPM-o 4.5 — full-duplex interactionという別の課題}
+
+MiniCPM-o 4.5の論文は4月30日の初回投稿で、real-time full-duplex omni-modal interactionを目標として掲げる。ここで焦点になるのは静的な画像理解のaccuracyだけではなく、音声や視覚を含むstreamを処理しながら対話を継続するinteraction modelである。full-duplexという設計目標は、入力を受け終えてから一度だけ応答する従来のturn-based interfaceとは異なるsystem requirementを示す。ただし性能やhuman-likeという評価は著者側の主張であり、再現済みの一般性能としては扱わない。\autocite{src-d33ba68aac3c}
+
+
+\subsection{Voxtral TTS — voice agentの出力側}
+
+Mistralの保存news snapshotは4月27日にVoxtral TTSを記録し、open-weightsのtext-to-speech modelとしてvoice agent用途を説明している。TTSはLLMの推論能力そのものではないが、agentが人間と継続的に関わる場合には発話生成がinterfaceの一部になる。fast、adaptable、lifelikeといった品質表現はvendor descriptionとして境界を保ちつつ、open-weight speech generationがagent stackへ組み込める部品として登場したというchronologyは4月の分化を示す。\autocite{src-d8b7c1c36830}
+
+
+\subsection{GLM-5V-Turbo — multimodal理解をagentへ接続する}
+
+GLM-5V-Turboの論文は4月29日に初回投稿され、multimodal agents向けのnative foundation modelを目指すと説明する。Z.aiのrelease notesでも4月1日に同名モデルがmultimodal agent workflow向けとして記録されており、視覚理解を単独benchmarkで終わらせず、tool useや行動へ接続する方向が見える。ただし本稿で論文を参照するときは、保持locatorが5月12日のlater revisionである点に注意し、4月時点に存在したclaimと後日追加された記述を混ぜない。\autocite{src-d113b486a585}
+
+
+\subsection{SpatialFusionとWorld2VLM — 空間をどう内部化するか}
+
+SpatialFusionはunified image generation modelへ3D geometric awarenessをinternalizeするframeworkを、World2VLMはgenerative world modelのspatial imaginationをvision-language modelへdistillするtraining frameworkを提案する。片方は生成モデル内部の幾何表現、もう片方はdynamic spatial reasoningへ向けた知識移送という異なる問題設定であり、同じ「3D対応」として単純化すべきではない。両者とも4月29日のprimary-paper evidenceに基づくauthor-reported researchであり、実験結果の一般化は行わない。\autocite{src-3fa7f7c1140f,src-fec81b98fdc8}
+
+
+\subsection{Theme Synthesis — 生成、対話、行動、空間}
+
+4月のmultimodalを通して見えるのは、画像・音声・視覚を一つの巨大モデルへ統合したという完成図ではなく、生成surface、full-duplex interaction、speech output、agent perception、spatial representationという要件が同時に立ち上がったことだ。7月のようなリアルタイム統合を語るにはまだ早い一方、その後の統合を必要にする部品はすでに揃い始めている。この段階差を残すことで、後続号の進展を単なるモデル名の更新ではなくsystem integrationの深化として読める。\autocite{src-0f697d747d9c,src-3fa7f7c1140f,src-d113b486a585,src-d33ba68aac3c,src-d8b7c1c36830,src-fec81b98fdc8}
+
+
+\begin{claimboundary}
+Claim Boundary: ChatGPT Images 2.0のreleaseとOpenAIが説明したscopeは一次資料で確認できるが、生成品質や性能優位は独立再現された評価ではない。\autocite{src-0f697d747d9c}
+\end{claimboundary}
+
+\begin{claimboundary}
+Claim Boundary: MiniCPM-o 4.5、SpatialFusion、World2VLMなどの研究結果は著者報告であり、本稿は論文の問題設定と4月のchronologyを使う。比較結果を任意のmodel／hardwareへ一般化しない。\autocite{src-3fa7f7c1140f,src-d33ba68aac3c,src-fec81b98fdc8}
+\end{claimboundary}
+
+\begin{claimboundary}
+Chronology Boundary: 後日改訂されたarXiv論文では、4月の初回投稿に存在した内容とlater revisionで追加・変更された本文を分離する。特にGLM-5V-Turboは保持locatorが2026年5月12日更新であり、その改訂内容を4月の出来事として遡及させない。\autocite{src-d113b486a585}
+\end{claimboundary}
+
+\begin{claimboundary}
+Claim Boundary: Mistral newsの保存indexは具体的な4月entryを確認するために使い、現在のsite状態や不足するdetailから過去内容を推測しない。\autocite{src-d8b7c1c36830}
+\end{claimboundary}

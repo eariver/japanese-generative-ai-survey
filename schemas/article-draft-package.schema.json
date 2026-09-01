@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/eariver/japanese-generative-ai-survey/schemas/article-draft-package.schema.json",
+  "title": "Weekly Survey Article Draft Package Input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "issue_id",
+    "package_id",
+    "draft_source_mode",
+    "execution_stage",
+    "basis",
+    "package",
+    "primary_evidence",
+    "supporting_evidence",
+    "drafting_constraints"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "issue_id": { "type": "string", "pattern": "^[0-9]{4}-W[0-9]{2}$" },
+    "package_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,63}$" },
+    "draft_source_mode": { "enum": ["EVIDENCE_PACKAGE", "ISSUE_SYNTHESIS", "REFERENCES_GENERATED"] },
+    "execution_stage": { "enum": ["ARTICLE_DRAFTING", "POST_DRAFT_SUMMARY", "REFERENCE_GENERATION"] },
+    "basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["architecture_plan_sha256", "architecture_input_sha256", "evidence_reviewed_sha256"],
+      "properties": {
+        "architecture_plan_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "architecture_input_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "evidence_reviewed_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "package_type",
+        "page_target",
+        "editorial_angle",
+        "must_cover",
+        "boundaries",
+        "late_breaking",
+        "drafting_order"
+      ],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "package_type": { "type": "string", "minLength": 1 },
+        "page_target": { "type": "number", "exclusiveMinimum": 0 },
+        "editorial_angle": { "type": "string", "minLength": 1 },
+        "must_cover": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "boundaries": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "late_breaking": { "type": "boolean" },
+        "drafting_order": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "primary_evidence": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "supporting_evidence": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "drafting_constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "language",
+        "raw_sources_forbidden",
+        "unknowns_remain_unknown",
+        "citation_granularity",
+        "cover_headline_finalization_forbidden",
+        "this_week_summary_forbidden"
+      ],
+      "properties": {
+        "language": { "const": "ja" },
+        "raw_sources_forbidden": { "const": true },
+        "unknowns_remain_unknown": { "const": true },
+        "citation_granularity": { "const": "EVENT_CLAIM_METRIC_LIMITATION" },
+        "cover_headline_finalization_forbidden": { "const": true },
+        "this_week_summary_forbidden": { "type": "boolean" }
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+\sectionkicker{Theme synthesis}
+\subsection*{横断比較 — Runtimeは何を同じ月に吸収したか}
+\addcontentsline{toc}{subsection}{横断比較 — Runtimeは何を同じ月に吸収したか}
+1月のruntime更新は単一の高速化競争ではない。model architecture、weight loading、tokenizer、scheduler、tool/API compatibility、long-contextやdiffusion servingまで、異なる変化を共通実装層が短い周期で受け止めていた。
+\medskip
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}X@{}}
+\toprule
+観察軸 & 1月の一次資料・論文から読めること \\
+\midrule
+major-version interface & Transformers v5は5年ぶりのmajor releaseとして大きなAPI変更を導入した。new model supportだけでなく、共通library側の契約そのものを更新するeventだった。 \cite{src-152188dd686e,src-9f7ae4228266} \\
+loading / tokenizer & v5ではdynamic weight-loading／WeightConverter設計、tokenizer変更、quantization／loading整理、deprecated pathからのmigrationなどが説明された。modelの増加を受け止めるloader/interface層も変わる。 \cite{src-152188dd686e,src-9f7ae4228266} \\
+rapid model integration & v5.0.0rc3はstable release直前にGLM-4.7、GLM-Image、MiniMax-M2 supportを追加した。RCとstableは同日であり、stable v5を主要event、rc3をintegration速度のsupporting evidenceとして読む。 \cite{src-152188dd686e,src-9f7ae4228266} \\
+compatibility boundary & Transformersのlibrary supportが示すのはimplementation compatibilityであり、model endorsementや独立測定されたqualityではない。runtime uptakeと性能評価を分離する必要がある。 \cite{src-152188dd686e,src-9f7ae4228266} \\
+async default & vLLM v0.14.0はasync schedulingをdefaultで有効化し、engine、tool-calling、API、model supportを多数更新した。release notes自身がbreaking changeとunsupported configurationを明記する。 \cite{src-3bc80a3c7870,src-d9f9de620203} \\
+second release & 9日後のvLLM v0.15.0はKimi-K2.5 architecture support、pipeline parallelismへのasync scheduling拡張、streaming input、quantization、platform更新を加えた。一つのatomic featureではなく連続的runtime evolutionである。 \cite{src-3bc80a3c7870,src-d9f9de620203} \\
+workload expansion & SGLang v0.5.8はGLM-4.7-Flash day-zero supportに加え、diffusion serving、FlashAttention 4 decoding、long-context／disaggregated-serving変更を含む。LLM servingだけに閉じないworkload面が同時に広がった。 \cite{src-6a97353d35a9} \\
+performance claims & vLLMのspeedupやSGLangのdiffusion高速化・TTFT改善などはproject-reportedでconfiguration、model、hardwareに依存する。release noteはimplementation changeの一次資料として使い、速度の一般則には変換しない。 \cite{src-3bc80a3c7870,src-d9f9de620203,src-6a97353d35a9} \\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\end{center}
+\normalsize
+\begin{claimboundary}[この比較の境界]
+この表は本号で既に検証・参照している一次資料と論文を横断比較の形へ再配置したものである。vendor / project / author が報告した性能値や優位性は独立再現済みの一般則へ変換せず、本文とSource Notesの帰属境界をそのまま維持する。
+\end{claimboundary}

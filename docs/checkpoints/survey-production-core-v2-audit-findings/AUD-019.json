@@ -1,0 +1,31 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-019",
+  "edition": "CORE-V2",
+  "stage": "WU-011_FULL_CANDIDATE_AUDIT",
+  "observed_problem": "The v2 quality/publication chain treats the candidate PDF as a repository-local path that must remain readable in later checkouts, while current issue-only production preserves approved PDFs as exact GitHub Actions artifacts and re-fetches them by run/artifact identity plus PDF SHA-256.",
+  "expected_behavior": "Publication authority must preserve one durable exact-byte PDF identity from quality validation through Publication Preview, Visual Review, Freeze, merge verification, and Release without requiring generated PDFs to be committed to Git merely to survive between production actions.",
+  "actual_behavior": "quality-regression-bundle-v2 and publication-candidate-v2 encode only repository-local PDF paths, and survey_publication_v2 reopens those paths during later validation. A normal artifact-backed build therefore cannot be resumed in a fresh production checkout under the v2 contract.",
+  "production_workaround": "External W33/SP001 production remains blocked until the coherent Core v2 candidate is Human-reviewed and merged; the generic durable PDF authority repair is implemented and regression-covered on this branch.",
+  "classification": {
+    "scope": "PUBLICATION_PROFILE",
+    "defect_kind": "TRACEABILITY",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "a85f046de9ca7f52fa353b4c9b55b65d2215b4e6",
+    "relevant_artifacts": [
+      "schemas/quality-regression-bundle-v2.schema.json",
+      "schemas/publication-candidate-v2.schema.json",
+      "scripts/survey_quality_v2.py",
+      "scripts/survey_publication_v2.py",
+      ".github/workflows/accept-special-publication-preview-issue-only.yml"
+    ],
+    "human_review_reference": null
+  },
+  "improvement_action": "Generalize v2 PDF authority to a durable exact-byte binary reference that supports Actions-artifact provenance and deterministic rehydration/verification, then carry that same authority through quality, preview, freeze, merge verification, and release.",
+  "regression_fixture": "tests/test_survey_publication_v2.py",
+  "resolved_by_repair_set_id": null,
+  "status": "FIXED_GENERIC"
+}

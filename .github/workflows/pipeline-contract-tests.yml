@@ -1,0 +1,71 @@
+name: Pipeline contract tests
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/**'
+      - 'tests/**'
+      - 'schemas/**'
+      - 'config/**'
+      - 'templates/survey/**'
+      - '.github/workflows/*.yml'
+  pull_request:
+    paths:
+      - 'scripts/**'
+      - 'tests/**'
+      - 'schemas/**'
+      - 'config/**'
+      - 'templates/survey/**'
+      - '.github/workflows/*.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pipeline-contract-tests-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Survey Production Core v2 test dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install -r config/survey-production-v2-requirements.txt
+
+      - name: Validate JSON configuration and schemas
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' path; do
+            echo "Validating JSON: ${path}"
+            python -m json.tool "$path" >/dev/null
+          done < <(find config schemas -type f -name '*.json' -print0 | sort -z)
+
+          while IFS= read -r -d '' manifest; do
+            echo "Validating release manifest: ${manifest}"
+            python -m json.tool "$manifest" >/dev/null
+          done < <(find sources -mindepth 2 -maxdepth 2 -type f -name 'release-manifest.json' -print0 | sort -z)
+
+      - name: Compile Python modules
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q scripts tests
+
+      - name: Run pipeline unit tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_*.py' -v

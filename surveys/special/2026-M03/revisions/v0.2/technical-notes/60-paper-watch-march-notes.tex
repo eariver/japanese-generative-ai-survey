@@ -1,0 +1,199 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{Paper Watch — 評価・攻撃・効率の注目研究: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+TaxBreak: Unmasking the Hidden Costs of LLM Inference Through Overhead Decomposition & 主要資料 & 論文 & 2026-03-12 (論文公開) \\
+Claudini: Autoresearch Discovers State-of-the-Art Adversarial Attack Algorithms for LLMs & 主要資料 & 論文 & 2026-03-25 (論文公開) \\
+CDH-Bench: A Commonsense-Driven Hallucination Benchmark for Evaluating Visual Fidelity in Vision-Language Models & 主要資料 & 論文 & 2026-03-30 (論文公開) \\
+MiroEval: Benchmarking Multimodal Deep Research Agents in Process and Outcome & 主要資料 & 論文 & 2026-03-30 (論文公開) \\
+ELT-Bench-Verified: Benchmark Quality Issues Underestimate AI Agent Capabilities & 主要資料 & 論文 & 2026-03-31 (論文公開) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{TaxBreak: Unmasking the Hidden Costs of LLM Inference Through Overhead Decomposition}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-03-12 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: 著者らは、host側から観測できるorchestration overheadを、framework translation、CUDA library translation、kernel launch pathの3要素へ分解するtrace-driven手法TaxBreakを提案している。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 論文中の結果・ベンチマーク値は著者報告であり、本サーベイでは独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2603.12465v1}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Claudini: Autoresearch Discovers State-of-the-Art Adversarial Attack Algorithms for LLMs}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-03-25 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: 著者らは、AI agentがLLMに対する新規adversarial attack algorithmを発見し、white-box jailbreakingやprompt injection評価を前進させ得ると報告している。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 論文中の結果・ベンチマーク値は著者報告であり、本サーベイでは独立再現していない。
+\item \textbf{分析上の留意点}: 参照先はarXiv v2だが、3月の時系列は初回公開日を基準とする。後日の改訂内容を3月時点へ遡及して扱わない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2603.24511v2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{CDH-Bench: A Commonsense-Driven Hallucination Benchmark for Evaluating Visual Fidelity in Vision-Language Models}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-03-30 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: 著者らは、visual evidenceとcommonsenseが明示的に衝突する条件を作り、Vision-Language Modelのvisual fidelityを評価するCDH-Benchを提案している。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 論文中の結果・ベンチマーク値は著者報告であり、本サーベイでは独立再現していない。
+\item \textbf{分析上の留意点}: 参照先はarXiv v2だが、3月の時系列は初回公開日を基準とする。後日の改訂内容を3月時点へ遡及して扱わない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2603.27982v2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{MiroEval: Benchmarking Multimodal Deep Research Agents in Process and Outcome}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-03-30 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: 著者らは、deep research systemのprocessとoutcomeを評価するbenchmark/evaluation frameworkとしてMiroEvalを提案している。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 論文中の結果・ベンチマーク値は著者報告であり、本サーベイでは独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2603.28407v1}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{ELT-Bench-Verified: Benchmark Quality Issues Underestimate AI Agent Capabilities}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-03-31 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: 著者らは、LLMによるroot-cause analysisと人手検証を組み合わせ、benchmark qualityを監査するAuditor-Corrector手法を提案している。人手検証のinter-annotator agreementはFleiss' kappa=0.85と報告されている。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 論文中の結果・ベンチマーク値は著者報告であり、本サーベイでは独立再現していない。
+\item \textbf{分析上の留意点}: 参照先はarXiv v2だが、3月の時系列は初回公開日を基準とする。後日の改訂内容を3月時点へ遡及して扱わない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2603.29399v2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

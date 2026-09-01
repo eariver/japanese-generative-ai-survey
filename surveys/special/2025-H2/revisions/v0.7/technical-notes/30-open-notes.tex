@@ -1,0 +1,247 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{Open Weightと非US Model Family — Qwen・DeepSeek・Kimi・Mistral・GLM: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+gpt-oss-120b / gpt-oss-20b & 主要資料 & オープンウェイト & 2025-08-05 (オープンウェイト公開); 2025-08-05 (Model Card（公開）)    \\
+Qwen / Alibaba Model Studio H2 2025 lifecycle & 補足資料 & モデル更新 & 2025-07-22 (Qwen3 CODER（公開）); 2025-09-11 (Qwen3 NEXT（公開）); 2025-09-23 (Qwen3 CODER（更新）); 2025-11-03 (Qwen3 MAX（Preview）); 2025-12-04 (Qwen3 OMNI（更新）); 2025-12-31 (Qwen Image MAX（公開）)    \\
+DeepSeek V3.1→V3.2 API lifecycle & 補足資料 & モデル更新 & 2025-08-21 (V3.1 API（更新）); 2025-09-22 (V3.1 Terminus API（更新）); 2025-09-29 (V3.2 Exp API（更新）); 2025-12-01 (V3.2 API（更新）)    \\
+Kimi K2 / K2 Thinking lifecycle & 補足資料 & モデル更新 & 2025-07-11 (Kimi K2（公開）); 2025-09-05 (Kimi K2（更新）); 2025-11-06 (Kimi K2 THINKING（公開）)    \\
+Mistral H2 2025 model and agent stack & 補足資料 & モデル更新 & 2025-07-10 (DEVSTRAL（更新）); 2025-07-15 (VOXTRAL（公開）); 2025-07-17 (Le Chat Deep 研究); 2025-07-30 (Codestral 25 08); 2025-09-02 (Le Chat MCP Memory); 2025-10-24 (Mistral AI Studio); 2025-12-02 (Mistral 3（公開）); 2025-12-09 (Devstral 2（公開）)    \\
+GLM / AutoGLM H2 2025 lifecycle & 補足資料 & モデル更新 & 2025-07-28 (GLM 4 5（公開）); 2025-08-11 (GLM 4.5V（公開）); 2025-09-30 (GLM 4 6（公開）); 2025-12-08 (GLM 4.6V（公開）); 2025-12-11 (AutoGLM Phone Multilingual); 2025-12-22 (GLM 4 7（公開）)    \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{gpt-oss-120b / gpt-oss-20b}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & オープンウェイト \\
+時系列 & 2025-08-05 (オープンウェイト公開); 2025-08-05 (Model Card（公開）) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIは8月5日、gpt-oss-120bとgpt-oss-20bをApache 2.0とusage policyの下で公開するオープンウェイト推論モデルとしてリリースした。
+\item \textbf{Vendor claim}: OpenAIは両モデルをreasoning／tool useとlocal・self-hosted deployment向けに位置付けた。性能評価はmodel card／提供元のclaimとして扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 「gpt-oss-120b / gpt-oss-20b」の扱いでは、一次資料で確認できる範囲、提供時点、評価条件を維持し、記載範囲を超えて一般化しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/gpt-oss-model-card}}
+\item {\scriptsize\url{https://openai.com/index/introducing-gpt-oss}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Qwen / Alibaba Model Studio H2 2025 lifecycle}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Alibaba Cloud / Qwen \\
+種別 & モデル更新 \\
+時系列 & 2025-07-22 (Qwen3 CODER（公開）); 2025-09-11 (Qwen3 NEXT（公開）); 2025-09-23 (Qwen3 CODER（更新）); 2025-11-03 (Qwen3 MAX（Preview）); 2025-12-04 (Qwen3 OMNI（更新）); 2025-12-31 (Qwen Image MAX（公開）) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Alibaba Model Studioは7月22日、Qwen3を基盤とし、エージェント、ツール呼び出し、環境との相互作用に対応するコードモデルとしてQwen3-Coderを記録した。
+\item \textbf{分析上の留意点}: このライフサイクルページからは、単一モデルの更新ではなく、長文脈・推論、コーディング、Vision/Omni、音声、画像生成など複数のモデル系列が2025年後半を通じて拡張されたことが読み取れる。
+\item \textbf{一次情報で確認できる事実}: 提供情報は地域や日付付きスナップショットを区別しており、モデルの識別と配備上の提供状況は、上流のモデル公開やオープンウェイト発表とは分けて扱う必要がある。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: Model Studioのページは継続更新される配備カタログであり、公開、スナップショット、地域別提供、後日のグローバル提供が混在する。これらを一つの上流モデル公開日に統合しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://www.alibabacloud.com/help/en/model-studio/newly-released-models}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{DeepSeek V3.1→V3.2 API lifecycle}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & DeepSeek \\
+種別 & モデル更新 \\
+時系列 & 2025-08-21 (V3.1 API（更新）); 2025-09-22 (V3.1 Terminus API（更新）); 2025-09-29 (V3.2 Exp API（更新）); 2025-12-01 (V3.2 API（更新）) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: DeepSeekのAPI変更履歴には、8月21日のV3.1、9月22日のV3.1-Terminus、9月29日のV3.2-Exp、12月1日のV3.2が記録されている。
+\item \textbf{一次情報で確認できる事実}: 変更履歴では、deepseek-chatとdeepseek-reasonerを、これらのモデル版における非ThinkingモードとThinkingモードへ対応付けている。
+\item \textbf{一次情報で確認できる事実}: V3.2-Specialeは、ツール呼び出し非対応かつ明示的な期限を持つ一時エンドポイントで提供され、安定版V3.2サービスとは同一ではない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: これらの日付が示すのはDeepSeek APIサービスの遷移であり、明記されていない上流の学習完了日やチェックポイント公開日を推定しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://api-docs.deepseek.com/updates/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Kimi K2 / K2 Thinking lifecycle}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Moonshot AI / Kimi \\
+種別 & モデル更新 \\
+時系列 & 2025-07-11 (Kimi K2（公開）); 2025-09-05 (Kimi K2（更新）); 2025-11-06 (Kimi K2 THINKING（公開）) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Kimiの公式プラットフォームは、7月11日のKimi K2、9月5日のコーディング／コンテキスト面の更新、11月6日のKimi K2 Thinkingを記録している。
+\item \textbf{Vendor claim}: K2 Thinkingは、推論とツール利用を交互に行う「thinking agent model」としてベンダーから位置付けられた。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: ハッシュ固定したKimi Codeの「What's New」は継続更新される製品文書で、現在の表示履歴はより後の時期から始まるため、個別年表はKimiの公式ブログ／変更履歴と照合した。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://www.kimi.com/code/docs/en/kimi-code/whats-new.html}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Mistral H2 2025 model and agent stack}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Mistral AI \\
+種別 & モデル更新 \\
+時系列 & 2025-07-10 (DEVSTRAL（更新）); 2025-07-15 (VOXTRAL（公開）); 2025-07-17 (Le Chat Deep 研究); 2025-07-30 (Codestral 25 08); 2025-09-02 (Le Chat MCP Memory); 2025-10-24 (Mistral AI Studio); 2025-12-02 (Mistral 3（公開）); 2025-12-09 (Devstral 2（公開）) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Mistral AIの公式news indexは、7月10日のDevstral更新、7月15日のVoxtral公開から、12月2日のMistral 3、12月9日のDevstral 2まで、モデル・code・agent／platform周辺の更新を記録している。
+\item \textbf{一次情報で確認できる事実}: 同期間にはLe Chat Deep Research、Codestral 25.08、Le Chat MCP／Memory、Mistral AI Studioも記録され、単一モデルreleaseだけでなく利用・開発surfaceの更新が並行した。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 「Mistral H2 2025 model and agent stack」の扱いでは、一次資料で確認できる範囲、提供時点、評価条件を維持し、記載範囲を超えて一般化しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://mistral.ai/news/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{GLM / AutoGLM H2 2025 lifecycle}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Z.ai \\
+種別 & モデル更新 \\
+時系列 & 2025-07-28 (GLM 4 5（公開）); 2025-08-11 (GLM 4.5V（公開）); 2025-09-30 (GLM 4 6（公開）); 2025-12-08 (GLM 4.6V（公開）); 2025-12-11 (AutoGLM Phone Multilingual); 2025-12-22 (GLM 4 7（公開）) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Z.aiの公式release notesは、7月28日のGLM-4.5、8月11日のGLM-4.5V、9月30日のGLM-4.6、12月8日のGLM-4.6V、12月22日のGLM-4.7を記録している。
+\item \textbf{一次情報で確認できる事実}: 12月11日にはAutoGLM Phoneの多言語版も記録され、モデルfamily更新とaction-oriented product展開が並行した。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 「GLM / AutoGLM H2 2025 lifecycle」の扱いでは、一次資料で確認できる範囲、提供時点、評価条件を維持し、記載範囲を超えて一般化しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://docs.z.ai/release-notes/new-released}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

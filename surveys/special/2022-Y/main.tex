@@ -1,0 +1,39 @@
+% WORKSPACE ENTRY POINT — NOT THE CANONICAL FROZEN RELEASE SOURCE. See CURRENT_RELEASE.md.
+\documentclass[lualatex,a4paper,10pt]{jlreq}
+\usepackage{../../../templates/survey/jgaisurvey}
+\addbibresource{references.bib}
+
+\surveysetup
+  {SP-2022-Y}
+  {Japanese Generative AI Technical Survey Special}
+  {Coverage: 2022-01-01 -- 2022-12-31 / Retrospective as of 2026-08-17}
+  {Coverage window: 2022-01-01 -- 2022-12-31 UTC}
+\surveyeditiondescriptor{Retrospective Technical Survey}
+
+\surveycoverstory
+  {モデルを大きくする時代から、生成AIシステムを設計する時代へ}
+  {2022年、生成AIはparameter規模の競争だけでは説明できなくなった。指示追従と推論を引き出すsteering、computeとaccessを扱うsystems、画像から音声・動画・3Dへ広がる生成メディア、code・action・retrievalへの接続、そして対話UIを支えるevaluationとcontrolが独立した設計層として立ち上がった。}
+  {大きさの次に問われたもの――モデルをどう振る舞わせ、どう考えさせるか \quad / \quad 画像生成の年、だけではない――multimodalと生成メディアが生態系になった2022年 \quad / \quad ChatGPTは突然の起点ではない――対話UIとcontrol layerが収束した年末}
+
+\begin{document}
+
+\surveycover
+\clearpage
+\input{sections/00-frontmatter}
+
+\clearpage
+\twocolumn
+\input{sections/10-steering-reasoning}
+\input{sections/20-scale-access-systems}
+\input{sections/30-multimodal-media}
+\input{sections/40-code-action-retrieval}
+\input{sections/50-dialogue-interface-control}
+\input{sections/60-evaluation-layer}
+\input{sections/70-annual-chronology}
+\input{sections/80-annual-synthesis}
+
+\clearpage
+\onecolumn
+\printbibliography[title={References / Source Notes}]
+
+\end{document}

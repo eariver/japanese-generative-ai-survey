@@ -1,0 +1,174 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2025-H1",
+  "package_id": "control",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "basis": {
+    "draft_package_sha256": "639547d2418c025c1a1fa158440e3c47cd45e7f47da196845d021e9517e970fe",
+    "prompt_id": "article-drafting-v0.1",
+    "prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project drafting; no paid inference-provider API",
+    "generated_at": "2026-08-14T16:33:11+09:00",
+    "run_reference": "Interactive GPT-5.6 Sol drafting for SP-2025-H1 after explicit Human Gate 1 approval; evidence-bound drafting only, preserving the approved Architecture and Control-package caveat."
+  },
+  "headline": "Execution LayerにはControlが要る — H1に現れたSearch・Safeguard・Interpretabilityの萌芽",
+  "deck": "外部情報へ接続し行動するsystemが増えると、能力の追加と同時にtrust boundaryの設計が必要になる。2025年前半では、そのcontrol layerはまだ統一された体系ではなく、search、safeguard、interpretabilityとして分散して現れた。",
+  "deck_attribution_mode": "FACTUAL",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "anthropic-websearch-product",
+      "kind": "EVENT",
+      "evidence_id": "e"
+    },
+    {
+      "evidence_task_id": "meta-llama-guard4",
+      "kind": "EVENT",
+      "evidence_id": "e"
+    },
+    {
+      "evidence_task_id": "anthropic-tracing",
+      "kind": "EVENT",
+      "evidence_id": "e"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "search-product-api",
+      "block_type": "PARAGRAPH",
+      "text": "Anthropicは3月にClaude productへweb searchをpreviewとして追加し、5月にはMessages API向けweb search toolを公開した。user-facing product featureとdeveloper-facing tool APIは別のeventであり、同じ検索機能でもcontrol pointが異なる。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "anthropic-websearch-product",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        },
+        {
+          "evidence_task_id": "anthropic-websearch-api",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        }
+      ]
+    },
+    {
+      "block_id": "trust-boundary",
+      "block_type": "PARAGRAPH",
+      "text": "外部検索やtool接続は、modelが閉じたcontextだけで答える場合とは異なるtrust boundaryを作る。H1の直接Evidenceではweb search product/APIがその変化を示しており、MCPを含むより広いtool protocolの詳細はAgent章のexecution surfaceとして分けて扱う。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "anthropic-websearch-product",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        },
+        {
+          "evidence_task_id": "anthropic-websearch-api",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        }
+      ]
+    },
+    {
+      "block_id": "guard4",
+      "block_type": "PARAGRAPH",
+      "text": "4月末のLlama Guard 4とprotection toolsは、multimodal systemに対するsafeguardをmodel/platform側の独立したcontrol componentとして提示した。base modelの能力向上と安全制御の更新を同じrelease identityに畳み込まない。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "meta-llama-guard4",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        }
+      ]
+    },
+    {
+      "block_id": "interpretability",
+      "block_type": "PARAGRAPH",
+      "text": "3月27日のAnthropic研究はlarge language modelの内部思考をtraceするinterpretability researchとして位置付けられる。内部機構を観測・理解しようとする研究はcontrolに重要だが、それ自体をdeployment safeguardや事故防止機構と同一視することはできない。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "anthropic-tracing",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        }
+      ]
+    },
+    {
+      "block_id": "control-emergent",
+      "block_type": "PARAGRAPH",
+      "text": "H1時点のEvidenceは、H2のような成熟したcontrol stackを示すにはまだ薄い。それでもsearch接続、safeguard model、interpretabilityが同じ半年に前景化したことは、execution surfaceの拡大がcontrol/observabilityを別層として要求し始めた兆候として読める。",
+      "attribution_mode": "FACTUAL",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "anthropic-websearch-api",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        },
+        {
+          "evidence_task_id": "meta-llama-guard4",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        },
+        {
+          "evidence_task_id": "anthropic-tracing",
+          "kind": "EVENT",
+          "evidence_id": "e"
+        }
+      ]
+    },
+    {
+      "block_id": "control-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "本章はH1に確認できるcontrol-related evidenceの範囲に限定する。各仕組みの実効性、攻撃耐性、事故低減効果を一次資料の存在だけから推定しない。",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "Claude product web searchとAPI web searchを別eventとして扱う",
+      "block_ids": [
+        "search-product-api"
+      ]
+    },
+    {
+      "requirement": "MCP/search等の外部tool接続が新しいtrust boundaryを作ること",
+      "block_ids": [
+        "trust-boundary"
+      ]
+    },
+    {
+      "requirement": "Llama Guard 4をcontrol-layer evidenceとして扱う",
+      "block_ids": [
+        "guard4"
+      ]
+    },
+    {
+      "requirement": "interpretability researchをproduct safeguardと同一視しない",
+      "block_ids": [
+        "interpretability"
+      ]
+    },
+    {
+      "requirement": "Control章のEvidence密度はH1時点の萌芽として記述する",
+      "block_ids": [
+        "control-emergent"
+      ]
+    }
+  ],
+  "boundary_coverage": [
+    {
+      "requirement": "Primary-source reconstruction establishes the dated event and stated scope; vendor performance claims are not independently reproduced.",
+      "block_ids": [
+        "control-boundary"
+      ]
+    }
+  ],
+  "late_breaking_acknowledged": false
+}

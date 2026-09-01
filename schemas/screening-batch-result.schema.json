@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/eariver/japanese-generative-ai-survey/schemas/screening-batch-result.schema.json",
+  "title": "Survey Screening Batch Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "issue_id", "batch_id", "input_batch_sha256", "prompt_id", "prompt_sha256", "runner", "decisions"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "issue_id": { "type": "string", "pattern": "^(?:[0-9]{4}-W[0-9]{2}|SP-[A-Za-z0-9][A-Za-z0-9._-]{2,63})$" },
+    "batch_id": { "type": "string", "pattern": "^batch-[0-9]{3}$" },
+    "input_batch_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "prompt_id": { "type": "string", "minLength": 1 },
+    "prompt_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "runner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "model", "invocation", "generated_at"],
+      "properties": {
+        "provider": { "type": "string", "minLength": 1 },
+        "model": { "type": "string", "minLength": 1 },
+        "invocation": { "type": "string", "minLength": 1 },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "run_reference": { "type": ["string", "null"] }
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["screening_id", "decision", "reason", "why_now", "topic_lanes", "duplicate_group", "verification_targets", "confidence"],
+        "properties": {
+          "screening_id": { "type": "string", "minLength": 1 },
+          "decision": { "enum": ["KEEP", "MAYBE", "DROP", "INSPECT"] },
+          "reason": { "type": "string", "minLength": 1 },
+          "why_now": { "type": ["string", "null"] },
+          "topic_lanes": { "type": "array", "uniqueItems": true, "items": { "enum": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"] } },
+          "duplicate_group": { "type": ["string", "null"] },
+          "verification_targets": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "confidence": { "enum": ["low", "medium", "high"] }
+        }
+      }
+    }
+  }
+}

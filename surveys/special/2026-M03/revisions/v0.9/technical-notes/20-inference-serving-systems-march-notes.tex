@@ -1,0 +1,318 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{Inference, Serving \& Systems — AIをどう動かすか: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+TensorRT-LLM v1.3 release-candidate series & 主要資料 & Framework & 2026-03-03 (プロジェクト公開); 2026-03-31 (プロジェクト公開) \\
+NCCL EP: Towards a Unified Expert Parallel Communication API for NCCL & 主要資料 & 論文 & 2026-03-13 (論文公開) \\
+Parallelizing Tool Execution and LLM Generation for Low-Latency Agent Serving & 主要資料 & 論文 & 2026-03-19 (論文公開) \\
+vLLM v0.18.0 & 主要資料 & Framework & 2026-03-20 (プロジェクト公開) \\
+TensorRT-LLM v1.2.0 & 主要資料 & Framework & 2026-03-12 (プロジェクト公開) \\
+Cornserve: A Distributed Serving System for Any-to-Any Multimodal Models & 補足資料 & 論文 & 2026-03-12 (論文公開) \\
+The Workload-Router-Pool Architecture for LLM Inference Optimization: A Vision Paper from the vLLM Semantic Router Project & 補足資料 & 論文 & 2026-03-22 (論文公開) \\
+Understand and Accelerate Memory Processing Pipeline for Large Language Model Inference & 補足資料 & 論文 & 2026-03-30 (論文公開) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{TensorRT-LLM v1.3 release-candidate series}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & NVIDIA \\
+種別 & Framework \\
+時系列 & 2026-03-03 (プロジェクト公開); 2026-03-31 (プロジェクト公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Project claim}: NVIDIAのTensorRT-LLM release notesでは、3月のv1.3 release candidate系列でFLUX pipeline、B300 VLM support、dynamic KV-cache quota resizing、KVCache v2/MTP、Python KV transceiver、Qwen3.5 NVFP4、request priority、reusable KV block、FlexKV、prefix-affinity routing、MoE servingなどの追加が記録されている。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 対象はstable v1.3ではなくpre-releaseのv1.3 release candidate系列である。release notes上のperformance・compatibility claimは独立benchmarkしておらず、別件のstable v1.2.0と混同しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://github.com/NVIDIA/TensorRT-LLM/releases/tag/v1.3.0rc10}}
+\item {\scriptsize\url{https://github.com/NVIDIA/TensorRT-LLM/releases/tag/v1.3.0rc6}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{NCCL EP: Towards a Unified Expert Parallel Communication API for NCCL}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-03-13 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: 著者らは、NCCLのDevice APIだけを用いて構築したMoE向け通信ライブラリNCCL EP（Expert Parallelism）を提示している。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 論文中の結果・ベンチマーク値は著者報告であり、本サーベイでは独立再現していない。
+\item \textbf{分析上の留意点}: 参照先はarXiv v3だが、3月の時系列は初回公開日を基準とする。後日の改訂内容を3月時点へ遡及して扱わない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2603.13606v3}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Parallelizing Tool Execution and LLM Generation for Low-Latency Agent Serving}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-03-19 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: 著者らは、反復するagent patternから将来のtool invocationを予測し、LLM生成中に投機実行するtool-aware serving system、PASTEを提案している。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 論文中の結果・ベンチマーク値は著者報告であり、本サーベイでは独立再現していない。
+\item \textbf{分析上の留意点}: 参照先はarXiv v3だが、3月の時系列は初回公開日を基準とする。後日の改訂内容を3月時点へ遡及して扱わない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2603.18897v3}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{vLLM v0.18.0}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & vLLM Project \\
+種別 & Framework \\
+時系列 & 2026-03-20 (プロジェクト公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Project claim}: vLLMプロジェクトのrelease notesでは、v0.18.0で新しい--grpc flagによるgRPC serving supportが追加され、既存のHTTP/REST interfaceと並ぶRPC-based servingが可能になったとされている。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: release notesに記載されたperformance・compatibility上の効果はproject側の報告であり、本サーベイでは独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://github.com/vllm-project/vllm/releases/tag/v0.18.0}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{TensorRT-LLM v1.2.0}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & NVIDIA \\
+種別 & Framework \\
+時系列 & 2026-03-12 (プロジェクト公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Project claim}: TensorRT-LLMプロジェクトのrelease notesでは、v1.2.0でK-EXAONE、Nemotron Nano V3、Qwen3-Next、Qwen3-VLのbeta support追加が記載されている。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: release notesに記載されたperformance・compatibility上の効果はproject側の報告であり、本サーベイでは独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://github.com/NVIDIA/TensorRT-LLM/releases/tag/v1.2.0}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Cornserve: A Distributed Serving System for Any-to-Any Multimodal Models}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-03-12 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: 著者らは、汎用的なAny-to-Anyモデルを対象とする分散serving systemとしてCornserveを提案している。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 論文中の結果・ベンチマーク値は著者報告であり、本サーベイでは独立再現していない。
+\item \textbf{分析上の留意点}: 参照先はarXiv v2だが、3月の時系列は初回公開日を基準とする。後日の改訂内容を3月時点へ遡及して扱わない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2603.12118v2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{The Workload-Router-Pool Architecture for LLM Inference Optimization: A Vision Paper from the vLLM Semantic Router Project}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-03-22 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: 著者らは、vLLM Semantic Routerの取り組みとして、signal-driven routing、context-length pool routing、semantic cache、policy conflict detection、安全性分類などを含む幅広いrouting機構を整理している。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 論文中の結果・ベンチマーク値は著者報告であり、本サーベイでは独立再現していない。
+\item \textbf{分析上の留意点}: 参照先はarXiv v2だが、3月の時系列は初回公開日を基準とする。後日の改訂内容を3月時点へ遡及して扱わない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2603.21354v2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Understand and Accelerate Memory Processing Pipeline for Large Language Model Inference}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2026-03-30 (論文公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{Author claim}: 著者らは、LLM inferenceのmemory処理最適化をPrepare Memory、Compute Relevancy、Retrieval、Apply to Inferenceの4段階pipelineとして統一的に整理できると報告している。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 論文中の結果・ベンチマーク値は著者報告であり、本サーベイでは独立再現していない。
+\item \textbf{分析上の留意点}: 参照先はarXiv v3だが、3月の時系列は初回公開日を基準とする。後日の改訂内容を3月時点へ遡及して扱わない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2603.29002v3}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

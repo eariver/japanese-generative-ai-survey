@@ -1,0 +1,20 @@
+% Generated from validated synthesis. Do not hand-edit.
+\section*{Retrospective Signals}
+\addcontentsline{toc}{section}{Retrospective Signals}
+\smallskip
+\noindent\textbf{scaleがparameter数から設計原理へ変わった} Scaling Lawsはcompute・data・model sizeの関係を設計対象として整理し、GPT-3はfrontier scaleをfew-shot / in-context behaviorへ接続した。2020年の中心は『最大model』という順位ではなく、scaleがtrainingとtask adaptationの双方を規定する軸になったことにある。 \hfill{\footnotesize p.~\pageref{pkg:scale-laws-gpt3} / p.~\pageref{pkg:systems-scale}}\par
+\smallskip
+\noindent\textbf{modelの外側にaccessとexternal knowledgeが現れた} OpenAI APIはfrontier capabilityへのservice interfaceを、REALMとRAGはparameterだけに閉じないknowledge accessを示した。model本体・利用surface・外部corpusという別々のlayerが分離し始めた。 \hfill{\footnotesize p.~\pageref{pkg:access-api} / p.~\pageref{pkg:retrieval-grounding}}\par
+\smallskip
+\noindent\textbf{会話と巨大trainingは独立したsystem problemになった} MeenaとBlenderBotはconversation-specific evaluationとsystem recipeを、DeepSpeedとZeRO、GShardはmemory・sharding・conditional computationを前景化した。model architectureだけでは生成AIを説明できない領域が増えた。 \hfill{\footnotesize p.~\pageref{pkg:dialogue-systems} / p.~\pageref{pkg:systems-scale}}\par
+\smallskip
+\noindent\textbf{generative mediaは一つの方式へ収束していなかった} Image GPTとTaming Transformersがautoregressive / discrete representation系を、DDPMとscore-SDEがdiffusion / score-based系を形成した。2020年末の重要点は後年の勝者を先取りすることではなく、複数の生成原理が並立していたことにある。 \hfill{\footnotesize p.~\pageref{pkg:media-autoregressive} / p.~\pageref{pkg:diffusion-score}}\par
+\smallskip
+\noindent\textbf{人間の好みと望ましくない挙動がmodel外のlayerになった} human-feedback summarizationはhuman preferenceを使うsteeringの操作点を、RealToxicityPromptsはtoxic degenerationのevaluation surfaceを示した。総括では、2020年に分離したこれらのlayerが2021年のadaptation・distribution・groundingへどう接続するかを、hindsightを抑えて整理する。 \hfill{\footnotesize p.~\pageref{pkg:feedback-steering} / p.~\pageref{pkg:evaluation-risk} / p.~\pageref{pkg:synthesis-transition-2021}}\par
+\medskip
+\begin{claimboundary}[Retrospective scope]
+本号は2020年を後日確認可能になった一次情報も用いて再構成するRetrospective Specialである。Coverage Periodと制作時点を同一視せず、vendor / project / author claimの境界は各記事とTechnical Notesで明示する。
+\end{claimboundary}
+\medskip
+\setcounter{tocdepth}{1}
+\tableofcontents

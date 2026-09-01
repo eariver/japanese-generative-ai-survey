@@ -1,0 +1,262 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2021-Y",
+  "package_id": "synthesis-transition-2022",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "basis": {
+    "draft_package_sha256": "bce6092b06f8a7076d8944f9bb1a6b3e734a2c30f257f71d450b6662bc9e85c8",
+    "prompt_id": "article-drafting-v0.1",
+    "prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project drafting; no paid inference-provider API",
+    "generated_at": "2026-08-19T23:39:58+09:00",
+    "run_reference": "Autonomous reader-facing drafting under Architecture Review approval granted 2026-08-19 JST; exact immutable SP-2021-Y Draft Packages only. R2 repairs the fail-closed Evidence-coverage omission for Training Verifiers / GSM8K in evaluation-risk-foundation; no Architecture change. The synthesis-transition-2022 package serves as both the 2021 annual synthesis and transition into SP-2022-Y."
+  },
+  "headline": "総括――分離したレイヤが2022年の統合へ向かうまで",
+  "deck": "2021年を一言でまとめるなら、巨大なpretrained modelそのものから、その基盤を適応し、配布し、外部へ接続し、評価する多層systemへ視点が広がった年である。ただし年末までに完成した統合製品があったわけではない。GLIDE、Latent Diffusion Models、MT-NLG、language-model risk taxonomyが示すように、media、systems、evaluationの構成要素はまだ別々に発達していた。その分離こそが2022年への出発点になった。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-10741v3-d87dee8fea",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-10752v2-9c69f1c355",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2021-Y:item-official-index-supplemental-microso-3ecfa0080c",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-04359v1-0001ee7f15",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "annual-summary",
+      "block_type": "PARAGRAPH",
+      "text": "本号で追ってきた2021年の変化は、一つのmodel familyや一社の製品史には収まらない。adaptation、steering、scale/systems、access/distribution、multimodal media、developer interface、dialogue/retrieval/grounding、evaluation/riskというlayerが、それぞれ独立した設計問題として見えるようになったことが年次の核心である。年末の資料でも、MT-NLGはscale systems、GLIDEとLatent Diffusion Modelsはgenerative media、language-model risk taxonomyはevaluation/riskという異なる問題を担っている。2021年の総括は、この分離した設計空間が成立したことに置くべきである。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-official-index-supplemental-microso-3ecfa0080c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-10741v3-d87dee8fea",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-10752v2-9c69f1c355",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-04359v1-0001ee7f15",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "established-2021",
+      "block_type": "PARAGRAPH",
+      "text": "2021年末までに genuinely established と言えるのは、『後の生成AI stackが完成した』ことではなく、modelの外側に複数の設計leverが存在することが技術記録として明確になったことである。scaleではfrontier trainingを支えるsystemsが独立問題となり、mediaではtext-guided diffusionとlatent-space efficiencyが別々の方向を示し、evaluation側ではriskを分類して扱う枠組みが現れた。つまり、能力を一つの巨大modelへ集約して説明するだけでは足りない状態には既に到達していた。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-official-index-supplemental-microso-3ecfa0080c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-10741v3-d87dee8fea",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-10752v2-9c69f1c355",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-04359v1-0001ee7f15",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "unresolved-2022",
+      "block_type": "PARAGRAPH",
+      "text": "一方、2021年末にはまだ解けていない問いが多い。分離したlayerを利用者向けsystemの中でどう組み合わせるか、steeringやevaluationをどこまで一般化できるか、model accessとdistributionをどう広げるか、media generationをどのようなruntimeとinterfaceで提供するかは、翌年に持ち越される。GLIDEやLatent Diffusion Modelsが後の画像生成へつながる技術部品を示していても、2021年の時点で2022年のecosystem全体が成立していたわけではない。『部品が見えた』ことと『統合された』ことを区別する必要がある。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-10741v3-d87dee8fea",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-10752v2-9c69f1c355",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "no-inevitability",
+      "block_type": "PARAGRAPH",
+      "text": "ここで後知恵を最も警戒すべきなのは、2021年をChatGPTやStable Diffusionの『前史』としてだけ読むことである。後に重要になった技術を知っていると、当時の複数の研究線が最初から一つの製品へ収束する運命だったように見える。しかし2021年の一次資料が示すのは、scale、media、riskなどの設計が別々に進んでいたことまでであり、その後の統合形態はまだ確定していない。連続性は認めても、必然性を発明してはいけない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-official-index-supplemental-microso-3ecfa0080c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-10741v3-d87dee8fea",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-04359v1-0001ee7f15",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "transition-2022",
+      "block_type": "PARAGRAPH",
+      "text": "SP-2022-Yへの連続性は、2021年に分離して見えたlayerが翌年どのように接続されるか、という問いに置く。2022年側ではinstruction following、compute/data allocation、multimodal media、open distribution、action/retrieval、evaluation、dialogue/controlといった設計がより密接に組み合わされ、生成AIを一つのmodelではなくsystem stackとして読む必要がさらに強くなる。2021年版はその結論を先取りするのではなく、統合前の部品表と設計境界を提供する役割を担う。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-10741v3-d87dee8fea",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-10752v2-9c69f1c355",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-official-index-supplemental-microso-3ecfa0080c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-04359v1-0001ee7f15",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "annual-thesis",
+      "block_type": "PARAGRAPH",
+      "text": "したがって2021年の年次結論は、『巨大モデルの年』でも『対話AI前夜』でもない。巨大なpretrained modelを共通基盤として、その周囲に適応、steering、systems、distribution、media、interface、retrieval、evaluationという独立layerが立ち上がり始めた年である。2022年はそれらの一部を接続し、利用者が触れられる生成AI systemへ近づけていく。2021年の意義は、その統合に必要な設計空間が既に多層化していたことを、後年の結果とは切り分けて確認できる点にある。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-official-index-supplemental-microso-3ecfa0080c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-10741v3-d87dee8fea",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-10752v2-9c69f1c355",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-04359v1-0001ee7f15",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "claim-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この総括は、承認済みArchitectureと一次資料で確認した2021年のtrajectoryを年次構造へ圧縮した編集上の推論である。各author/vendorの性能・効率・risk評価を独立再現済みの事実へ変換せず、2022年以降に実現した統合状態を2021年へ逆投影しない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-10741v3-d87dee8fea",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-10752v2-9c69f1c355",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-official-index-supplemental-microso-3ecfa0080c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2021-Y:item-arxiv-2112-04359v1-0001ee7f15",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "what is genuinely established by end-2021",
+      "block_ids": [
+        "established-2021"
+      ]
+    },
+    {
+      "requirement": "what remains unresolved until 2022",
+      "block_ids": [
+        "unresolved-2022"
+      ]
+    },
+    {
+      "requirement": "avoid hindsight-driven inevitability",
+      "block_ids": [
+        "no-inevitability"
+      ]
+    },
+    {
+      "requirement": "continuity with SP-2022-Y",
+      "block_ids": [
+        "transition-2022"
+      ]
+    }
+  ],
+  "boundary_coverage": [
+    {
+      "requirement": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    }
+  ],
+  "late_breaking_acknowledged": false
+}

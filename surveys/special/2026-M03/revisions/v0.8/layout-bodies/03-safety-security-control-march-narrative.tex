@@ -1,0 +1,31 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\begingroup\raggedright
+\subsection{防御対象はpromptだけではない}
+\par\endgroup
+
+Agentが外部data、tool、file、browser、code executionへ接続されるほど、安全性は一つのfilterでは閉じなくなる。3月の一次資料と研究では、prompt injectionへのsystem-level defense、instruction hierarchy、system prompt configuration、real-world tool privilege、chain-of-thought monitorability、coding-agent monitoring、application-security agentが並んだ。共通項は、能力そのものより「どの入力を信頼し、どの権限を与え、何を監視するか」を設計対象にしたことにある。\autocite{src-18b7ee4fe5e4,src-287a6bf67154,src-3dec299964e6,src-549bffaad22c,src-5becf449a527,src-87dacccfecfd,src-b4b340379768,src-e627c8192172}
+
+
+\begingroup\raggedright
+\subsection{Prompt injection: attack chainと防御境界を分けて見る}
+\par\endgroup
+
+OpenAIはagent workflowでrisky actionを制約しsensitive dataを守るというprompt-injection対策を説明した。一方Kill-Chain CanariesはauthorsがEXPOSED→PERSISTED→RELAYED→EXECUTEDの段階で攻撃進行を追跡する方法を提示している。PhishNChipsの研究はsystem promptとmodelの組み合わせ自体がsecurity variableになり得ると報告した。防御の有無だけでなく、どの段階で攻撃が残存・伝播・実行へ進むか、configurationがattack surfaceをどう変えるかを分けて評価する必要がある。\autocite{src-3dec299964e6,src-87dacccfecfd,src-e627c8192172}
+
+
+\begingroup\raggedright
+\subsection{Instruction hierarchyとleast privilege}
+\par\endgroup
+
+\begingroup\raggedright
+Instruction hierarchyは、system/developer/userなど異なるtrust levelの指示が衝突したとき、どれを優先するかをmodel behaviorへ組み込む方向である。これに対しGrantBoxはauthorsがreal-world toolsを使うagentのprivilege usageを評価するsandboxとして提案した。前者が「どの指示を信頼するか」、後者が「どの操作権限まで許すか」を扱い、両者を分離することでtool authorizationとmodel alignmentを同一視せずに済む。\autocite{src-18b7ee4fe5e4,src-549bffaad22c}
+\par\endgroup
+
+
+\begingroup\raggedright
+\subsection{実行中のmonitorabilityとsecurity agent}
+\par\endgroup
+
+OpenAIはCoT-Controlを通じ、reasoning modelがchain-of-thoughtを自在に制御しにくいことをmonitorability上の安全性と結び付けて説明した。さらに内部coding agentではchain-of-thought monitoringをmisalignment兆候の検出に使う運用を公表している。同月のCodex Security research previewは、project contextを解析して脆弱性の検出・検証・修正支援を行うapplication-security agentとして位置付けられた。監視とsecurity agentは用途が異なるが、agentを「生成器」ではなく継続的に観測・制御する実行主体として扱う流れを示す。\autocite{src-287a6bf67154,src-5becf449a527,src-b4b340379768}
+
+

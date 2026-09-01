@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/profile-completeness-result.schema.json",
+  "title": "Survey Production Core v2 Profile Completeness Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "issue_id", "research_profile", "basis", "overall_status", "obligations", "residual_limitations", "closure"],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "issue_id": {"type": "string", "minLength": 1},
+    "research_profile": {"enum": ["WEEKLY", "RETROSPECTIVE_PERIOD", "THEMATIC"]},
+    "basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["production_profile_sha256", "materiality_ledger_sha256"],
+      "properties": {
+        "production_profile_sha256": {"$ref": "#/$defs/sha256"},
+        "materiality_ledger_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "overall_status": {"enum": ["READY", "LIMITED", "INCOMPLETE"]},
+    "obligations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["obligation_id", "dimension", "description", "status", "discovery_ids", "evidence_task_ids", "rationale"],
+        "properties": {
+          "obligation_id": {"type": "string", "minLength": 1},
+          "dimension": {"type": "string", "minLength": 1},
+          "description": {"type": "string", "minLength": 1},
+          "status": {"enum": ["SATISFIED", "LIMITATION", "NEEDS_RESEARCH", "NOT_APPLICABLE"]},
+          "discovery_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "evidence_task_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "rationale": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "residual_limitations": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "closure": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["expansion_passes", "final_pass_new_sources", "final_pass_new_material_obligations", "final_pass_new_material_obligations_open", "targeted_gap_fill_completed", "open_material_obligations", "limitations", "status"],
+          "properties": {
+            "expansion_passes": {"type": "integer", "minimum": 1},
+            "final_pass_new_sources": {"type": "integer", "minimum": 0},
+            "final_pass_new_material_obligations": {"type": "integer", "minimum": 0},
+            "final_pass_new_material_obligations_open": {"type": "integer", "minimum": 0},
+            "targeted_gap_fill_completed": {"type": "boolean"},
+            "open_material_obligations": {"type": "integer", "minimum": 0},
+            "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}},
+            "status": {"enum": ["COMPLETE", "LIMITED", "NEEDS_RESEARCH"]}
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

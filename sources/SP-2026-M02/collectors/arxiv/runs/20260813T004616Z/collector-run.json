@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M02",
+  "run_id": "arxiv-api-SP-2026-M02-20260813T004616Z",
+  "stage": "paper-discovery",
+  "collector": {
+    "id": "arxiv-api",
+    "provider": "arXiv",
+    "model": null,
+    "prompt_id": null,
+    "prompt_version": null,
+    "prompt_hash": null
+  },
+  "time": {
+    "started_at": null,
+    "completed_at": "2026-08-13T00:46:16Z",
+    "observed_at": "2026-08-13T00:46:16Z",
+    "collection_window_start": "2026-02-01T00:00:00Z",
+    "collection_window_end": "2026-02-28T23:59:59Z",
+    "editorial_cutoff": "2026-02-28T23:59:59Z"
+  },
+  "inputs": [
+    "config/source-intake.json",
+    "weekly plan"
+  ],
+  "outputs": [
+    {
+      "path": "sources/SP-2026-M02/collectors/arxiv/runs/20260813T004616Z/raw/cs-ai.atom",
+      "sha256": "867163ac6c3760e98d4b7cc6c4c79bf94eceb205f7692d85e4e6cc10f3fb8ab0",
+      "bytes": 489193
+    },
+    {
+      "path": "sources/SP-2026-M02/collectors/arxiv/runs/20260813T004616Z/raw/cs-cl.atom",
+      "sha256": "ea008156c5c0fa96b52c18de8028ae108d817b31879b3599650cae0061113eed",
+      "bytes": 482397
+    },
+    {
+      "path": "sources/SP-2026-M02/collectors/arxiv/runs/20260813T004616Z/raw/cs-lg.atom",
+      "sha256": "df4aec6c3448092b9d4f2033654aa3bdbe0ab7eb74aaeb211392ae6879f1c88c",
+      "bytes": 471197
+    },
+    {
+      "path": "sources/SP-2026-M02/collectors/arxiv/runs/20260813T004616Z/raw/cs-cv.atom",
+      "sha256": "c5bf5f7036a327fb6273f011641473fc6c66750c745f73bdb1794a092dd1b3d1",
+      "bytes": 481070
+    },
+    {
+      "path": "sources/SP-2026-M02/collectors/arxiv/runs/20260813T004616Z/raw/cs-dc.atom",
+      "sha256": "c503b1e608ae8821fcfa78fff4184b1605a9f0bb06a68f321d8ce6f6907eb5af",
+      "bytes": 481325
+    },
+    {
+      "path": "sources/SP-2026-M02/collectors/arxiv/runs/20260813T004616Z/raw/cs-cr.atom",
+      "sha256": "2bf173e935ab9b6039fd4c00a1c46ea1035d573685dc21c897293c24ecfc6243",
+      "bytes": 478116
+    },
+    {
+      "path": "sources/SP-2026-M02/collectors/arxiv/runs/20260813T004616Z/summary.json",
+      "sha256": "4d9fc05a8201c345ac9a902d0b73cd1157d7021d934665e4587f81301c425082",
+      "bytes": 2147942
+    }
+  ],
+  "tool_access": [
+    "HTTPS GET https://export.arxiv.org/api/query"
+  ],
+  "status": "success",
+  "notes": [
+    "Raw Atom responses are preserved unchanged; summary.json is collector-derived metadata for later screening.",
+    "Transient arXiv HTTP 429/5xx and transport timeout failures use configured conservative retry/backoff before the query is marked failed."
+  ]
+}

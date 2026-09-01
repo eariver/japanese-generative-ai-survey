@@ -1,0 +1,388 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M05",
+  "package_id": "agents-runtime-may",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "basis": {
+    "draft_package_sha256": "d23081363e9009bf130c5300995c128eb57d2e9906d7fcb48cfbe55a0d31c808",
+    "prompt_id": "article-drafting-v0.1",
+    "prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project drafting; no paid inference-provider API",
+    "generated_at": "2026-08-12T01:27:28+09:00",
+    "run_reference": "May 2026 Special drafting after June/July granularity comparison; next Human Gate is Preview review."
+  },
+  "headline": "Agents & Runtime — 「賢いAgent」より先に、どこで何を許すか",
+  "deck": "Codexのsandbox、Windows上の隔離、Kimi Code CLI、MistralのMCP／workflow更新。5月はagentを単発のtool callではなく、権限・network・state・長時間taskを抱える実行環境として設計する動きが前面に出た。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-2026-M05:item-official-feed-66be1220771465af8b1a-7856302980",
+      "kind": "CLAIM",
+      "evidence_id": "claim-reviewed-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M05:item-official-feed-4a3442a5ca8c193564d3-64f2b96644",
+      "kind": "CLAIM",
+      "evidence_id": "claim-reviewed-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M05:item-official-index-kimi-code-whats-new-788743b9bb",
+      "kind": "CLAIM",
+      "evidence_id": "claim-reviewed-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M05:item-official-index-mistral-news-e5054b4c4c",
+      "kind": "CLAIM",
+      "evidence_id": "claim-reviewed-1"
+    },
+    {
+      "evidence_task_id": "evidence:SP-2026-M05:item-arxiv-2605-26297v1-3ac98fa507",
+      "kind": "CLAIM",
+      "evidence_id": "claim-reviewed-1"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "opening-heading",
+      "block_type": "HEADING",
+      "text": "5月の変化を一つのsystemとして読む",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "opening",
+      "block_type": "PARAGRAPH",
+      "text": "Agentが長く動くほど、モデルの推論能力だけではシステムを説明できなくなる。file systemへ何を見せるか、networkをどこまで許可するか、どの操作でapprovalを要求するか、CLIやMCPを通じて何を接続するか。5月の一次資料は、こうしたruntime側の条件がagent capabilityと同じくらい重要になっていることを示している。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-feed-66be1220771465af8b1a-7856302980",
+          "kind": "CLAIM",
+          "evidence_id": "claim-reviewed-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-feed-4a3442a5ca8c193564d3-64f2b96644",
+          "kind": "CLAIM",
+          "evidence_id": "claim-reviewed-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-index-kimi-code-whats-new-788743b9bb",
+          "kind": "CLAIM",
+          "evidence_id": "claim-reviewed-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-index-mistral-news-e5054b4c4c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-reviewed-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-arxiv-2605-26297v1-3ac98fa507",
+          "kind": "CLAIM",
+          "evidence_id": "claim-reviewed-1"
+        }
+      ]
+    },
+    {
+      "block_id": "item-01-heading",
+      "block_type": "HEADING",
+      "text": "Running Codex safely at OpenAI",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "item-01",
+      "block_type": "PARAGRAPH",
+      "text": "OpenAIは5月8日、内部でCodexを運用する際のsandbox、approval、network policy、agent-native telemetryを説明した。これは「agentに何ができるか」より「実行時に何を許し、何を観測し、どこで人間承認を入れるか」を中心にした資料であり、agent運用がcontrol-plane設計へ移ったことを示す。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-feed-66be1220771465af8b1a-7856302980",
+          "kind": "CLAIM",
+          "evidence_id": "claim-reviewed-1"
+        }
+      ]
+    },
+    {
+      "block_id": "item-02-heading",
+      "block_type": "HEADING",
+      "text": "Building a safe, effective sandbox to enable Codex on Windows",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "item-02",
+      "block_type": "PARAGRAPH",
+      "text": "5月13日のWindows向けCodex sandboxでは、file accessとnetwork accessを制御する設計が説明された。OSが変われば利用できるisolation primitiveも変わるため、agent sandboxは抽象的な安全機能ではなく、host platform固有のengineering問題でもある。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-feed-4a3442a5ca8c193564d3-64f2b96644",
+          "kind": "CLAIM",
+          "evidence_id": "claim-reviewed-1"
+        }
+      ]
+    },
+    {
+      "block_id": "item-03-heading",
+      "block_type": "HEADING",
+      "text": "Kimi Code CLI May 2026 lifecycle",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "item-03",
+      "block_type": "PARAGRAPH",
+      "text": "Kimi Code CLIは5月中にproduct releaseと複数updateを重ねた。日単位で確定できる更新と月精度に留まる項目が混在するため、本稿では無理に一つのrelease dayへ束ねず、coding agentがCLI surfaceで継続更新されていたMay lifecycleとして扱う。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-index-kimi-code-whats-new-788743b9bb",
+          "kind": "CLAIM",
+          "evidence_id": "claim-reviewed-1"
+        }
+      ]
+    },
+    {
+      "block_id": "item-04-heading",
+      "block_type": "HEADING",
+      "text": "Mistral May 2026 technical releases",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "item-04",
+      "block_type": "PARAGRAPH",
+      "text": "MistralのMay snapshotでは、22日のMCP-enabled Studio toolingとWorkflows public preview、23日のremote agents、28日のVibe long-horizon Work/Code modesなどが並ぶ。agent featureがchat UIの追加機能ではなく、workflow、remote execution、MCP接続へ広がる方向が見える。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-index-mistral-news-e5054b4c4c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-reviewed-1"
+        }
+      ]
+    },
+    {
+      "block_id": "item-05-heading",
+      "block_type": "HEADING",
+      "text": "Agentic AI Workload Characteristics",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "item-05",
+      "block_type": "PARAGRAPH",
+      "text": "この論文はReAct型agent workloadをend-to-endで観測し、反復するmodel call、tool execution、増大するcontextを一体のworkloadとして特徴づける。結果は著者報告だが、serving側から見てもagent requestが単発inferenceとは異なるstateful workloadになるという論点を補強する。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-arxiv-2605-26297v1-3ac98fa507",
+          "kind": "CLAIM",
+          "evidence_id": "claim-reviewed-1"
+        }
+      ]
+    },
+    {
+      "block_id": "theme-synthesis-heading",
+      "block_type": "HEADING",
+      "text": "Theme Synthesis",
+      "attribution_mode": "NONE",
+      "evidence_refs": []
+    },
+    {
+      "block_id": "theme-synthesis",
+      "block_type": "PARAGRAPH",
+      "text": "共通項は「agentを実行主体として扱う」ことにある。sandboxやapprovalは能力を下げるための付属物ではなく、長時間taskを現実の開発環境へ接続するためのcontrol planeである。一方、ReAct型workloadの特性に関する研究結果は著者報告であり、特定benchmarkやmodel構成を超えた一般則としては扱わない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-feed-66be1220771465af8b1a-7856302980",
+          "kind": "CLAIM",
+          "evidence_id": "claim-reviewed-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-feed-4a3442a5ca8c193564d3-64f2b96644",
+          "kind": "CLAIM",
+          "evidence_id": "claim-reviewed-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-index-kimi-code-whats-new-788743b9bb",
+          "kind": "CLAIM",
+          "evidence_id": "claim-reviewed-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-index-mistral-news-e5054b4c4c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-reviewed-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-arxiv-2605-26297v1-3ac98fa507",
+          "kind": "CLAIM",
+          "evidence_id": "claim-reviewed-1"
+        }
+      ]
+    },
+    {
+      "block_id": "claim-boundary-1",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "Claim Boundary: first-party sourceは公開日とsource ownerが説明したscopeを確認する一次資料だが、capability・benchmark・safety・performanceの優位性まで独立検証したものではない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-feed-66be1220771465af8b1a-7856302980",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-feed-4a3442a5ca8c193564d3-64f2b96644",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-index-kimi-code-whats-new-788743b9bb",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-index-mistral-news-e5054b4c4c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-arxiv-2605-26297v1-3ac98fa507",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        }
+      ]
+    },
+    {
+      "block_id": "claim-boundary-2",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "Claim Boundary: first-party indexは掲載されたchronologyを確認する資料だが、capabilityやbenchmark表現はvendor claimである。また月精度の日付は日単位へ補完しない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-feed-66be1220771465af8b1a-7856302980",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-feed-4a3442a5ca8c193564d3-64f2b96644",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-index-kimi-code-whats-new-788743b9bb",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-index-mistral-news-e5054b4c4c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-arxiv-2605-26297v1-3ac98fa507",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        }
+      ]
+    },
+    {
+      "block_id": "claim-boundary-3",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "Claim Boundary: 原論文は研究内容を確認する一次資料だが、benchmark結果・speedup・attack success・quality比較は著者報告であり、本稿で独立再現した結果ではない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-feed-66be1220771465af8b1a-7856302980",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-feed-4a3442a5ca8c193564d3-64f2b96644",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-index-kimi-code-whats-new-788743b9bb",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-official-index-mistral-news-e5054b4c4c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        },
+        {
+          "evidence_task_id": "evidence:SP-2026-M05:item-arxiv-2605-26297v1-3ac98fa507",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "Running Codex safelyの運用境界",
+      "block_ids": [
+        "opening",
+        "theme-synthesis"
+      ]
+    },
+    {
+      "requirement": "Windows sandboxの設計意図",
+      "block_ids": [
+        "opening",
+        "theme-synthesis"
+      ]
+    },
+    {
+      "requirement": "Kimi Code CLIのMay lifecycle",
+      "block_ids": [
+        "opening",
+        "theme-synthesis"
+      ]
+    },
+    {
+      "requirement": "Mistralのagent/MCP/workflow更新",
+      "block_ids": [
+        "opening",
+        "theme-synthesis"
+      ]
+    },
+    {
+      "requirement": "agentic workload researchはauthor-reported supporting evidenceとして扱う",
+      "block_ids": [
+        "opening",
+        "theme-synthesis"
+      ]
+    }
+  ],
+  "boundary_coverage": [
+    {
+      "requirement": "The preserved first-party feed item is authoritative for publication chronology and vendor-described scope; detailed capability, benchmark, or safety claims were not independently reproduced.",
+      "block_ids": [
+        "claim-boundary-1"
+      ]
+    },
+    {
+      "requirement": "The preserved first-party index is authoritative for the listed chronology, but capability/benchmark descriptions remain vendor claims and month-only dates retain month precision.",
+      "block_ids": [
+        "claim-boundary-2"
+      ]
+    },
+    {
+      "requirement": "The preserved original arXiv metadata/abstract is primary-paper evidence, but experimental results and generalization are author-reported and were not independently reproduced in this Evidence review.",
+      "block_ids": [
+        "claim-boundary-3"
+      ]
+    }
+  ],
+  "late_breaking_acknowledged": false
+}

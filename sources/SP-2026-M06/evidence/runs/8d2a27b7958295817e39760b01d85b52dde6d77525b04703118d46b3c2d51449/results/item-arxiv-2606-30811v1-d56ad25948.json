@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M06",
+  "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-30811v1-d56ad25948",
+  "evidence_task_sha256": "4b31f0873d267cdbf43fb0e7a3ab02063705fac800c9392d4c169e5352c87c43",
+  "prompt_id": "primary-source-verification-v0.1",
+  "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+    "generated_at": "2026-08-11T07:05:00Z",
+    "run_reference": "June 2026 Special primary-source Evidence review"
+  },
+  "card": {
+    "schema_version": "1.0",
+    "issue_id": "SP-2026-M06",
+    "evidence_task_id": "evidence:SP-2026-M06:item-arxiv-2606-30811v1-d56ad25948",
+    "status": "VERIFIED",
+    "grouping_resolution": {
+      "accepted": true,
+      "split_recommended": false,
+      "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+    },
+    "artifact": {
+      "canonical_name": "AVTok: 1D Unified Tokenization for Holistic Audio-Video Generation",
+      "artifact_type": "PAPER",
+      "organization": "Paper authors",
+      "canonical_url": "http://arxiv.org/abs/2606.30811v1"
+    },
+    "temporal": {
+      "artifact_first_announced": "2026-06-29",
+      "events": [
+        {
+          "event_id": "event-1",
+          "event_type": "PAPER_RELEASE",
+          "event_date": "2026-06-29",
+          "source_published_at": "2026-06-29T18:35:17Z",
+          "source_ids": [
+            "src-1"
+          ]
+        }
+      ],
+      "observed_at": "2026-08-11T07:05:00Z"
+    },
+    "sources": [
+      {
+        "source_id": "src-1",
+        "url": "http://arxiv.org/abs/2606.30811v1",
+        "source_class": "PRIMARY_PAPER",
+        "title": "Primary source 1: http://arxiv.org/abs/2606.30811v1",
+        "published_at": null,
+        "accessed_at": "2026-08-11T07:05:00Z",
+        "role": "Primary source used for chronology and technical verification"
+      }
+    ],
+    "claims": [
+      {
+        "claim_id": "claim-1",
+        "text": "The authors propose AVTok, a unified one-dimensional tokenizer for paired audio-video generation.",
+        "evidence_class": "AUTHOR_CLAIM",
+        "source_ids": [
+          "src-1"
+        ],
+        "context": null
+      }
+    ],
+    "metrics": [],
+    "limitations": [
+      {
+        "limitation_id": "limitation-1",
+        "text": "The evidence is the authors' arXiv paper/model card and reported evaluations; results are not independently reproduced in this Evidence review.",
+        "evidence_class": "INFERENCE",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "verification": {
+      "targets": [
+        {
+          "target": "verify architecture and generation comparisons",
+          "status": "VERIFIED",
+          "finding": "AVTok uses a shared encoder-decoder, modality-specific queries, and a unified 1D codebook for audio-video tokenization; the authors evaluate reconstruction plus downstream audio-to-video, video-to-audio, and joint generation.",
+          "source_ids": [
+            "src-1"
+          ]
+        }
+      ],
+      "unresolved_questions": [],
+      "contradictions": []
+    },
+    "editorial": {
+      "why_now_confirmed": true,
+      "why_now_note": "This June paper is technically valid but is retained as supporting/Paper Watch material unless Candidate Selection has room.",
+      "candidate_recommendation": "HOLD",
+      "rationale": "Primary-paper evidence is valid but lower priority than stronger June themes."
+    }
+  }
+}

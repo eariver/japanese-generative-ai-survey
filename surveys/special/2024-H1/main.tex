@@ -1,0 +1,40 @@
+% WORKSPACE ENTRY POINT — NOT THE CANONICAL FROZEN RELEASE SOURCE. See CURRENT_RELEASE.md.
+\documentclass[lualatex,a4paper,10pt]{jlreq}
+\usepackage{../../../templates/survey/jgaisurvey}
+\addbibresource{references.bib}
+
+\surveysetup
+  {SP-2024-H1}
+  {Japanese Generative AI Technical Survey Special}
+  {Coverage: 2024-01-01 -- 2024-06-30 / Retrospective as of 2026-08-15}
+  {Coverage window: 2024-01-01 -- 2024-06-30 UTC}
+\surveyeditiondescriptor{Retrospective Technical Survey}
+
+\surveycoverstory
+  {モデル単体からシステム競争へ}
+  {2024年上期、生成AIの競争はフロンティアモデルの性能だけでなく、マルチモーダル対話、open model stack、端末配置、代替アーキテクチャ、ツールやエージェント、生成メディア、制御、servingまでを組み合わせる多層の設計競争へ広がった。}
+  {フロンティアモデルは、会話相手からマルチモーダルな対話基盤へ \quad / \quad Open weightsの先へ――再現できるモデルスタックという競争 \quad / \quad 小型化は「弱い巨大モデル」ではない――端末とprivate cloudから逆算する設計}
+
+\begin{document}
+
+\surveycover
+\clearpage
+\input{sections/00-frontmatter}
+
+\clearpage
+\twocolumn
+\input{sections/10-frontier-interaction}
+\input{sections/20-open-ecosystem}
+\input{sections/30-edge-private}
+\input{sections/40-architecture-efficiency}
+\input{sections/50-action-rag-agents}
+\input{sections/60-generative-media}
+\input{sections/70-safety-control}
+\input{sections/80-systems-data}
+\input{sections/90-conclusion}
+
+\clearpage
+\onecolumn
+\printbibliography[title={References / Source Notes}]
+
+\end{document}

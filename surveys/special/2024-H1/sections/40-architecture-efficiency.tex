@@ -1,0 +1,19 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{Dense Transformerだけではない――2024 H1に広がった設計空間}
+\label{pkg:architecture-efficiency}
+\noindent\textbf{Jamba、Mamba-2、BitNet b1.58、LongRoPEは、Transformerを単純に大きくする以外の道を示した。SSM、MoE、低ビット表現、長文脈拡張を、memory・throughput・contextという制約への異なる回答として整理する。BitNetとLongRoPEの性能評価は論文著者の報告に基づく。}\autocite{src-0cba3ed32188,src-b5fbfc0d43e4,src-e0e69bb00ff7,src-fb3cf48135e8}
+
+2024年上期のarchitecture研究を横断すると、共通しているのは「より大きなdense Transformer」を唯一の解としない姿勢である。Jambaはhybrid architecture、Mamba-2はstate-space architectureの発展を示し、BitNet b1.58は低ビットweight表現、LongRoPEは長文脈拡張を研究対象にした。BitNetとLongRoPEの技術評価は各論文著者の報告として扱う。\autocite{src-0cba3ed32188,src-b5fbfc0d43e4,src-e0e69bb00ff7,src-fb3cf48135e8}
+
+
+Jamba、Mixtral 8x22B、DeepSeek-V2のようなモデルは、dense設計だけではないhybrid/sparseな構成を競争軸へ持ち込んだ。ここではarchitectureとserving implementationが密接に結びつくため、理論上のparameter効率と実際のhardware上の速度を同一視できない。\autocite{src-05f98c47f3e8,src-b5fbfc0d43e4,src-d9d69089eb6a}
+
+
+BitNet b1.58はweight representationの制約に、LongRoPEとInfini-attentionはcontext lengthとmemoryの制約に向き合った。これらは同じ性能指標を改善する研究ではなく、学習・推論時にどこでcostが発生するかを別々の層で組み替える試みである。LongRoPEのcontext拡張と品質評価、BitNetの効率評価は論文著者の報告であり、一般条件へそのまま外挿しない。\autocite{src-2eb2353f0533,src-e0e69bb00ff7,src-fb3cf48135e8}
+
+
+\begin{claimboundary}
+各paperやvendorが報告するspeedup、memory削減、context length、benchmark結果は、それぞれのmodel・hardware・evaluation setupに依存する。本稿は設計原理の違いを比較するものであり、これらの数値を独立再現済みの共通尺度として扱わない。\autocite{src-0cba3ed32188,src-b5fbfc0d43e4,src-e0e69bb00ff7,src-fb3cf48135e8}
+\end{claimboundary}
+
+この半年に確立したのは特定architectureの勝利ではなく、設計空間の再拡大だった。attentionをどう構成するか、どこにsparsityを入れるか、weightをどの表現で持つか、contextをどの方法で伸ばすかという選択が、model qualityと並ぶengineering変数として前面に出た。BitNetとLongRoPEについては著者報告の範囲で位置付ける。\autocite{src-05f98c47f3e8,src-0cba3ed32188,src-b5fbfc0d43e4,src-d9d69089eb6a,src-e0e69bb00ff7,src-fb3cf48135e8}

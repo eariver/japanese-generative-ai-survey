@@ -1,0 +1,57 @@
+\section{総括 — 7月の変化を『モデル』から『動くシステム』へつなぐ}
+\label{sec:retrospective-synthesis}
+\noindent\textbf{本号で扱った6テーマは、独立したニュース群として読むこともできる。しかし7月の一次資料と研究を順に重ねると、モデルそのものの更新、interactionの拡張、それを実行するserving、長時間動作するagent、そして接続・記憶・時間軸によって広がる安全境界まで、一つのsystem stackとして連続して読むことができる。ここでは各章の結論を振り返り、どこが接続し、どこはまだ独立した論点なのかを整理する。}
+\medskip
+\begin{multicols}{2}
+\Needspace{5\baselineskip}
+\subsection{Frontier Models — 性能だけでなく、利用経路までが競争面になった}
+第1章で確認したGPT-5.6、Claude Opus 5、Gemini 3.6 Flash、DeepSeek V4-Flash、Kimi K3は、同じ一枚のbenchmark表へ押し込めるより、managed product/APIかopenな配布か、GA・preview・betaのどの段階か、codingやagentの実行環境へどう接続されるかを分けて読む方が7月の変化を正確に捉えられる。モデル更新は単独artifactの公開ではなく、利用者が実際に選ぶdelivery surfaceと一体化しつつある。 \cite{src-dca7adc62d79,src-e19fbb75eb44,src-eb71f165025c,src-f6aa679babd7,src-a24fd97eb3d0,src-e547d0d8cbe3,src-9191d43918fc}
+
+\Needspace{5\baselineskip}
+\subsection{Multimodal — capabilityの追加からinteraction設計へ}
+第2章では、MiniMax H3、GPT-Live、Qwen-Audio 3.0/Wan 2.7が同じ意味でmultimodalなのではないことを見た。cross-modal referenceを含む統合生成、simultaneous listening/speakingを中心にしたreal-time loop、regionやvariantを伴うservice availabilityは、それぞれ異なる層の前進である。共通するのは、modalitiesの数そのものより、時間軸を持つinteractionと実際に呼び出せるserviceへ評価対象が広がっている点である。 \cite{src-d8e13386974c,src-3fb14968493d,src-eac8dfbeb78c}
+
+\Needspace{5\baselineskip}
+\subsection{Inference \& Serving — capabilityを運用可能にする層が独立した設計対象になった}
+第3章のvLLM、SGLang、FlashInferは、frontier modelやmultimodal modelの更新を受け止めるruntime側も固定された土台ではないことを示した。default execution path、speculative decoding、MoE kernel、Blackwell対応など、最適化対象はmodel architectureとhardwareに応じて動く。FlashDiffやEcoSpecの研究も含めると、servingは『完成したmodelを載せるだけの層』ではなく、実行コストとlatencyを決めるarchitectureとして読む必要がある。 \cite{src-76c7b104c7df,src-b811cc97eff4,src-5a9041d41ad0,src-bf2a6d1b9b56,src-b80517d03022,src-020bbc9ce508,src-50e29a09d75a,src-d6756f2b6aa6}
+
+\Needspace{5\baselineskip}
+\subsection{Agents — 推論を長時間動かすと、状態とコストが累積する}
+第4章では、LoopsBenchとAgentStreamが評価対象を独立taskからdependencyやstreamへ広げ、AAFLOW+、SpecBox、TokTierがKV state、sandbox startup、tokenizationというruntime上の累積コストを別々に扱った。ここから見えるのは、agentを一回のtool callとして評価するだけでは足りないということだ。長時間化すると、model outputだけでなく、履歴をどう保持し、環境をどう準備し、同じprefixをどう再利用するかまでsystem behaviorの一部になる。 \cite{src-30d9d574d4a1,src-4141dfcd9b12,src-4051106eaef3,src-2266222d4bb7,src-6513817b493c}
+
+\Needspace{5\baselineskip}
+\subsection{Agent Safety \& Security — 長時間化したsystemでは守る境界も増える}
+第5章で分離したtrajectory、evaluation infrastructure、injection/tool/MCP、persistent memoryは、同じ『agent safety』という語で呼べても脅威モデルが異なる。一方、第4章との関係は明確で、agentが長く動き、外部環境へ接続し、状態を持ち越すほど、監視対象と権限境界も増える。ただしこれは個々の研究結果から『agentsは一般に危険である』と結論することとは別であり、それぞれのsetupと権限条件を維持したまま対策を設計する必要がある。 \cite{src-a5ab872c216c,src-d925d8c91f46,src-e08216aa168c,src-62c4ed3c6c14,src-0ebd2e2bdbb7,src-65271d0e1d0b,src-1eac9e55bab6,src-021c5e6be64a,src-732b15b19744}
+
+\Needspace{5\baselineskip}
+\subsection{Paper Watch — generation process自体も固定された前提ではない}
+第6章のDiffusionGemmaは、本号の他テーマほど成熟したproduct trendを示すものではないためPaper Watchに留めた。それでもblockwise iterative refinementを使うdiscrete diffusion language modelという実験は、現在のservingやagent runtimeが暗黙に置いているautoregressive generationの前提まで将来変わり得ることを思い出させる。速度や品質はauthor-reported evaluationの範囲であり、7月時点で既存方式の代替が確立したとは扱わない。 \cite{src-ab19992e4c80}
+
+\end{multicols}
+\Needspace{0.34\textheight}
+\sectionkicker{Cross-chapter synthesis}
+\subsection*{各章はどうつながるか}
+\addcontentsline{toc}{subsection}{各章はどうつながるか}
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\linewidth}{@{}p{0.26\linewidth}X@{}}
+\toprule
+接続する章 & 本号で見える構造的な関係 \\
+\midrule
+Frontier Models $\rightarrow$ Multimodal & モデルの競争面がdelivery surfaceまで広がるのと並行して、利用者が触れるinteraction surfaceも音声・動画・cross-modal reference・real-time loopへ拡張した。両者は『model名』だけでは採用判断が閉じないという点で接続する。 \cite{src-dca7adc62d79,src-e19fbb75eb44,src-eb71f165025c,src-9191d43918fc,src-d8e13386974c,src-3fb14968493d} \\
+Frontier / Multimodal $\rightarrow$ Inference \& Serving & model architecture、modalities、latency要求、hardware targetが増えるほど、runner・speculation・kernel・schedulerを含む実行層の設計差が実利用へ影響する。7月は上位modelとservingの更新が同時に観測された月として読める。 \cite{src-3fb14968493d,src-76c7b104c7df,src-b811cc97eff4,src-5a9041d41ad0,src-bf2a6d1b9b56,src-b80517d03022,src-020bbc9ce508} \\
+Inference \& Serving $\rightarrow$ Agents & agent workloadでは一回のrequest latencyだけでなく、KV stateの再利用、sandbox startup、append-heavy tokenizationなど長時間実行特有のcostが表面化する。serving最適化の対象がrequestからworkflowへ広がる関係として整理できる。 \cite{src-50e29a09d75a,src-d6756f2b6aa6,src-4051106eaef3,src-2266222d4bb7,src-6513817b493c} \\
+Agents $\rightarrow$ Agent Safety \& Security & 長時間のtask dependency、外部tool、sandbox、persistent stateが増えるほど、trajectory監視、環境権限、injection surface、memory provenanceという別々の安全境界が必要になる。関係は構造的だが、各研究のattack successや安全性を相互に一般化するものではない。 \cite{src-30d9d574d4a1,src-4141dfcd9b12,src-4051106eaef3,src-2266222d4bb7,src-6513817b493c,src-e08216aa168c,src-62c4ed3c6c14,src-0ebd2e2bdbb7,src-65271d0e1d0b,src-1eac9e55bab6,src-021c5e6be64a,src-732b15b19744} \\
+Paper Watch $\rightarrow$ Inference \& Serving & generation processがautoregressive一辺倒でなくなれば、現在のserving stackが最適化しているdecode pathやschedulerの前提も将来変わり得る。DiffusionGemmaはその可能性を示す研究上の観測点であり、現時点のproduction移行を意味しない。 \cite{src-ab19992e4c80,src-50e29a09d75a,src-d6756f2b6aa6} \\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\end{center}
+\normalsize
+\begin{claimboundary}[この総括の境界]
+この最終章の章間関係は、各章で検証済みの出来事・研究を同一月のsystem stackとして再配置した編集上のsynthesisである。個々の更新の間に直接の因果関係が実証されたことを意味せず、vendor/project/author-reportedな性能・優位性の帰属境界も各章から変更しない。
+\end{claimboundary}
+\subsection*{7月をどう位置づけるか}
+\addcontentsline{toc}{subsection}{7月をどう位置づけるか}
+7月を一つの言葉でまとめるなら、本号が観測したのは『最も強いmodelは何か』という問いだけでは生成AIを説明しきれなくなったことだ。modelの提供形態、interaction、runtime、長時間workflow、安全境界までを一続きのsystemとして見なければ、実際の技術変化を取りこぼす。一方で各層の進歩は同じ成熟度ではなく、vendor release、open-source implementation、author-evaluated researchを同じ確度へ均してはいけない。今後のWeeklyとSpecialでも、このsystem-levelの接続を追いながら、claimの出所と成熟度を分離して観測することが重要になる。 \cite{src-dca7adc62d79,src-e19fbb75eb44,src-eb71f165025c,src-d8e13386974c,src-76c7b104c7df,src-b811cc97eff4,src-30d9d574d4a1,src-4141dfcd9b12,src-e08216aa168c,src-62c4ed3c6c14,src-0ebd2e2bdbb7,src-65271d0e1d0b,src-ab19992e4c80}

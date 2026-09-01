@@ -1,0 +1,30 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-029",
+  "edition": "CORE-V2",
+  "stage": "WU-012_AGENT_FIRST_REAUDIT",
+  "observed_problem": "The current Quality Bundle uses one universal list of eleven all-PASS rows for every edition and does not distinguish deterministic checks from ChatGPT semantic/visual review. This over-applies Long-form concerns to Weekly and encourages treating agent-authored editorial judgments as if they must be executable validators.",
+  "expected_behavior": "Quality review must be Profile/Publication-aware and explicitly classify checks as DETERMINISTIC, AGENT_SEMANTIC or AGENT_VISUAL. Only deterministic checks require executable validator/result provenance. Agent semantic/visual checks are reasoned review records tied to the reviewed source/PDF revision. Inapplicable checks are absent rather than ceremonially passed.",
+  "actual_behavior": "config/survey-production-v2.json and scripts/survey_quality_v2.py now derive applicable checks from Core + Research Profile + Publication Profile and distinguish DETERMINISTIC, AGENT_SEMANTIC and AGENT_VISUAL. Deterministic rows require result authority; agent rows require reasoned evidence and may not claim deterministic result authority.",
+  "production_workaround": null,
+  "classification": {
+    "scope": "QUALITY_CONTRACT",
+    "defect_kind": "CORRECTNESS",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "9349bd52641d3433cc219adea6565f44fe3dbf09",
+    "relevant_artifacts": [
+      "scripts/survey_quality_v2.py",
+      "tests/test_survey_quality_v2.py",
+      "config/survey-production-v2.json",
+      "docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md"
+    ],
+    "human_review_reference": "User premise correction and ChatGPT-first pre-approval re-audit, 2026-08-22"
+  },
+  "improvement_action": "Implemented by WU-012F: profile-aware DETERMINISTIC/AGENT_SEMANTIC/AGENT_VISUAL review kinds with exact revision binding and no ceremonial inapplicable rows.",
+  "regression_fixture": "tests/test_survey_quality_v2.py",
+  "resolved_by_repair_set_id": null,
+  "status": "FIXED_GENERIC"
+}

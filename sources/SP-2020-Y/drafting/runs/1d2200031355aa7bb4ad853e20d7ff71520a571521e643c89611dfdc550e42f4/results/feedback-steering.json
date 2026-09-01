@@ -1,0 +1,125 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2020-Y",
+  "package_id": "feedback-steering",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "basis": {
+    "draft_package_sha256": "c3cccfb5febf62adbde97fdadaf50ddd26d742f66f651548341ec62ef1dc5101",
+    "prompt_id": "article-drafting-v0.1",
+    "prompt_sha256": "c51d1be0c5ad25f564a69b0529bdefb39ccf63778aaedd1a2c5def5bd5bd943c"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project drafting; no paid inference-provider API",
+    "generated_at": "2026-08-21T01:14:05+09:00",
+    "run_reference": "ChatGPT session 2026-08-21: after explicit Architecture approval, drafted all 11 ARTICLE_DRAFTING packages from the immutable Evidence-bound Draft Packages. The synthesis-transition package is reader-facing as '総括――scaleから多層システムへ：2021年への橋'."
+  },
+  "headline": "振る舞いを人間から学ぶ――summarization feedback",
+  "deck": "pretraining lossやautomatic metricだけでは、人間が本当に望むoutputと一致しないことがある。2020年のLearning to summarize from human feedbackは、人間によるsummary比較からpreference modelを学習し、それをrewardとしてpolicyをfine-tuneする構成を示した。これは後年のRLHFを完成形のまま先取りした出来事ではないが、model behaviorをhuman preferenceでsteerするpost-training layerが独立した研究課題になった重要な境界である。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-2020-Y:series-openai-summary-hf-2020-7e51a1bb32",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "human-preference",
+      "block_type": "PARAGRAPH",
+      "text": "この研究では、人間が複数のsummaryを比較してどちらを好むかというdataを収集し、そのcomparisonからhuman preferenceを予測するmodelを学習する。そこから得たreward signalを使ってsummarization policyをreinforcement learningで調整する。重要なのは、training targetを既存referenceやROUGEのようなproxyだけに置かず、人間の比較判断そのものをoptimization loopへ入れたことにある。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2020-Y:series-openai-summary-hf-2020-7e51a1bb32",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "summarization-boundary",
+      "block_type": "PARAGRAPH",
+      "text": "ただし、この結果を『general-purpose assistant alignmentが完成した』と読み替えてはいけない。対象はsummarizationであり、RedditのTL;DR dataを中心とした明確なtask boundaryがある。2020年の技術史として押さえるべきなのは、pretrained language modelの後段にhuman preferenceを使ったbehavior optimizationという操作点が実証的に置かれたことである。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2020-Y:series-openai-summary-hf-2020-7e51a1bb32",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "rlhf-precursor",
+      "block_type": "PARAGRAPH",
+      "text": "後年のRLHFという語から遡って見ると、preference data、reward model、reinforcement-learning policy optimizationという構成要素に連続性は見える。しかし2020年時点では、instruction-following assistant、large-scale deployment、安全性policy、system-level alignmentが一体化した後年のproduct stackはまだ存在しない。本号ではこの研究を『preference-feedback steeringの前段』として位置付け、後年の完成形を当年へ投影しない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2020-Y:series-openai-summary-hf-2020-7e51a1bb32",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "steering-layer",
+      "block_type": "PARAGRAPH",
+      "text": "Scaling LawsやGPT-3がpretrainingとin-context capabilityを、APIがaccessを、RAGがexternal knowledgeを扱ったのに対し、human-feedback summarizationはmodelの振る舞いをpretraining後にどう変えるかという別layerを示す。2020年には、生成AIを理解する単位がmodel architectureだけでは足りず、post-training objectiveまで含むsystemへ広がり始めていた。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2020-Y:series-openai-summary-hf-2020-7e51a1bb32",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1"
+        }
+      ]
+    },
+    {
+      "block_id": "claim-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "human-feedback trainingがsummary品質を改善したという評価、transfer結果、reward modelの一般化などはauthor / project側の報告である。本稿はpreference-feedbackをtraining loopへ組み込む構成と2020年の位置付けを一次資料から確認しているが、性能やalignment効果を独立再現したものではない。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-2020-Y:series-openai-summary-hf-2020-7e51a1bb32",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "human preference feedback",
+      "block_ids": [
+        "human-preference"
+      ]
+    },
+    {
+      "requirement": "summarization task boundary",
+      "block_ids": [
+        "summarization-boundary"
+      ]
+    },
+    {
+      "requirement": "precursor rather than full later RLHF stack",
+      "block_ids": [
+        "rlhf-precursor"
+      ]
+    }
+  ],
+  "boundary_coverage": [
+    {
+      "requirement": "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.",
+      "block_ids": [
+        "claim-boundary"
+      ]
+    }
+  ],
+  "late_breaking_acknowledged": false
+}

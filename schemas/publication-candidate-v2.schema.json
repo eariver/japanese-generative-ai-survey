@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/publication-candidate-v2.schema.json",
+  "title": "Survey Production Core v2 Publication Candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "issue_id",
+    "publication_profile",
+    "status",
+    "reader_manuscript",
+    "source",
+    "pdf",
+    "quality_bundle",
+    "semantic_review",
+    "visual_review",
+    "candidate_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "issue_id": {"type": "string", "minLength": 1},
+    "publication_profile": {"enum": ["WEEKLY_MAGAZINE", "LONGFORM_SPECIAL"]},
+    "status": {"const": "READY_FOR_PUBLICATION_PREVIEW"},
+    "reader_manuscript": {"$ref": "#/$defs/artifact"},
+    "source": {"$ref": "#/$defs/artifact"},
+    "pdf": {"$ref": "#/$defs/pdfAuthority"},
+    "quality_bundle": {"$ref": "#/$defs/artifact"},
+    "semantic_review": {"$ref": "#/$defs/artifact"},
+    "visual_review": {"$ref": "#/$defs/artifact"},
+    "candidate_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "byte_count"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "byte_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "actionsArtifact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["repository", "workflow_run_id", "artifact_id", "artifact_name", "artifact_digest"],
+      "properties": {
+        "repository": {"type": "string", "pattern": "^[^/]+/[^/]+$"},
+        "workflow_run_id": {"type": "integer", "minimum": 1},
+        "artifact_id": {"type": "integer", "minimum": 1},
+        "artifact_name": {"type": "string", "minLength": 1},
+        "artifact_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "pdfAuthority": {
+      "type": "object", "additionalProperties": false,
+      "required": ["storage", "path", "sha256", "byte_count", "page_count", "actions_artifact"],
+      "properties": {
+        "storage": {"enum": ["REPOSITORY_FILE", "GITHUB_ACTIONS_ARTIFACT"]},
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "byte_count": {"type": "integer", "minimum": 1},
+        "page_count": {"type": "integer", "minimum": 1},
+        "actions_artifact": {"oneOf": [{"$ref": "#/$defs/actionsArtifact"}, {"type": "null"}]}
+      },
+      "allOf": [
+        {"if": {"properties": {"storage": {"const": "REPOSITORY_FILE"}}}, "then": {"properties": {"actions_artifact": {"type": "null"}}}},
+        {"if": {"properties": {"storage": {"const": "GITHUB_ACTIONS_ARTIFACT"}}}, "then": {"properties": {"actions_artifact": {"$ref": "#/$defs/actionsArtifact"}}}}
+      ]
+    }
+  }
+}

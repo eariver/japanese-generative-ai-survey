@@ -1,0 +1,321 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2024-H1",
+  "architecture_version": "v0.2",
+  "status": "APPROVED",
+  "basis": {
+    "architecture_input_sha256": "f223194f692fc953e3f1bc5d7902a17669733edef8f26bd46eee66f2a6a2c941",
+    "selection_sha256": "6602edd0127845baeac6bb65c3e4f6f362b0e04553ad7ab21f2c73c02edaac54",
+    "matrix_sha256": "a15b35d8d1026edd5237b6d447e9341a0231d9aba32544dba875dd8c0d2abd18"
+  },
+  "approval": {
+    "approved_by": "eariver",
+    "approved_at": "2026-08-15T22:34:36+09:00",
+    "approval_reference": "Human Architecture Review approval by eariver in ChatGPT on 2026-08-15 for SP-2024-H1 Architecture v0.2, including the 3-page concluding synthesis immediately before references."
+  },
+  "editorial_thesis": "2024年上期、生成AIの競争軸は単一モデルのベンチマーク性能から、長文脈・ネイティブ/統合マルチモーダル、open model stack、小型/on-device、代替アーキテクチャ、tool/agent、生成メディア、serving/data、そして安全性・解釈可能性を含む多層のシステム設計へ拡張した。",
+  "architecture_goals": [
+    "GPT-4o、Gemini 1.5、Claude 3系を単なるモデル順位ではなくインタラクション層の変化として位置付ける。",
+    "open weights、open training、license/data/training artifactsを混同せず、OLMo・Llama 3・DeepSeek-V2等の違いを明示する。",
+    "小型/on-device、MoE/SSM/低ビット/長文脈、serving/dataをモデル能力を成立させる設計制約として扱う。",
+    "RAG/tool/agentと生成メディアを独立した能力面として整理し、preview・release・availabilityの境界を保存する。",
+    "安全性、behavior specification、interpretabilityを能力向上の付録ではなく制御面の同時進化として扱う。",
+    "vendor/project/authorの性能主張は一次情報に帰属させ、retrospective hindsightと当時確定していた事実を分離する。",
+    "本文末の総括では各章を単純反復せず、2024-H1の構造変化を統合し、H2へ持ち越された論点を当時の境界を保って示す。"
+  ],
+  "page_budget": {
+    "target": 64,
+    "max": 96,
+    "planned": 64.0
+  },
+  "cover": {
+    "headline_deferred": true,
+    "headline": null,
+    "anchor_candidates": [
+      "frontier-interaction",
+      "open-ecosystem",
+      "edge-private"
+    ]
+  },
+  "packages": [
+    {
+      "package_id": "frontmatter",
+      "title": "2024 H1を読むための地図",
+      "package_type": "FRONTMATTER",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [],
+      "page_target": 3,
+      "editorial_angle": "半年間の時系列、用語、open-weight/open-training、preview/release/availabilityの読み分けを先に固定する。",
+      "must_cover": [
+        "coverage window and retrospective-as-of boundary",
+        "source-intake coverage audit and evidence attribution policy"
+      ],
+      "boundaries": [],
+      "late_breaking": false,
+      "drafting_order": 1
+    },
+    {
+      "package_id": "frontier-interaction",
+      "title": "フロンティアモデルは「会話するモデル」からマルチモーダルな対話基盤へ",
+      "package_type": "LEAD",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2024-H1:item-official-feed-2d3a533e91db8cea0f48-a91052b9ff",
+        "evidence:SP-2024-H1:series-gemini15-lineage-69bf2d8acb",
+        "evidence:SP-2024-H1:series-claude3-lineage-30b9150888"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H1:item-arxiv-2403-09629v2-3e1efe2d1e",
+        "evidence:SP-2024-H1:item-arxiv-2404-07143v2-9fe62232b0",
+        "evidence:SP-2024-H1:series-chameleon-event-a2a3889c24"
+      ],
+      "page_target": 8,
+      "editorial_angle": "長文脈、視覚、音声、低遅延を別々のベンチマークではなく、ユーザーが触れる統合インタラクション層の変化として比較する。",
+      "must_cover": [
+        "native/early-fusion versus composed multimodality",
+        "context-window announcement versus actual availability",
+        "vendor capability claims remain attributed"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 2
+    },
+    {
+      "package_id": "open-ecosystem",
+      "title": "Open weightsから「再現できるモデルスタック」へ",
+      "package_type": "FEATURE",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2024-H1:item-official-index-supplemental-meta-ll-6853b7b5a9",
+        "evidence:SP-2024-H1:series-olmo-lineage-beb6f920a3",
+        "evidence:SP-2024-H1:series-deepseek-v2-lineage-42737841bd"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H1:item-official-index-supplemental-databri-3508d0001e",
+        "evidence:SP-2024-H1:item-official-index-supplemental-mistral-9ae62fe6d3",
+        "evidence:SP-2024-H1:item-official-index-supplemental-qwen2-2-9a60a7cbf4",
+        "evidence:SP-2024-H1:series-gemma-family-73c494c390",
+        "evidence:SP-2024-H1:series-openelm-event-748574cab6"
+      ],
+      "page_target": 8,
+      "editorial_angle": "Llama 3の規模、OLMoのopen-training、DeepSeek-V2の効率設計を軸に、単なるweight公開と学習再現性を分離して整理する。",
+      "must_cover": [
+        "open-weight versus open-training distinction",
+        "license/data/training-artifact boundaries",
+        "MoE efficiency claims remain source-attributed"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 3
+    },
+    {
+      "package_id": "edge-private",
+      "title": "小型化は縮小版ではない――端末・プライバシー・ローカル実行",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2024-H1:item-official-index-supplemental-apple-f-e433f4ee0a",
+        "evidence:SP-2024-H1:series-phi3-lineage-6c8357b4b7",
+        "evidence:SP-2024-H1:item-arxiv-2402-14905v2-f9d5ab8dd7"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H1:series-openelm-event-748574cab6",
+        "evidence:SP-2024-H1:series-gemma-family-73c494c390",
+        "evidence:SP-2024-H1:item-arxiv-2402-17764v1-cf7e0465e5"
+      ],
+      "page_target": 7,
+      "editorial_angle": "小型モデルを性能劣化版ではなく、on-device/private-cloudという配置制約から逆算した設計軸として扱う。",
+      "must_cover": [
+        "on-device versus server/private-cloud boundary",
+        "parameter scale and deployment claims",
+        "research prototype versus product availability"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 4
+    },
+    {
+      "package_id": "architecture-efficiency",
+      "title": "Dense Transformerだけではなくなった設計空間",
+      "package_type": "DEEP_DIVE",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2024-H1:item-official-index-supplemental-ai21-ja-97a4f32859",
+        "evidence:SP-2024-H1:item-arxiv-2405-21060v1-34ab887f2a",
+        "evidence:SP-2024-H1:item-arxiv-2402-17764v1-cf7e0465e5",
+        "evidence:SP-2024-H1:item-arxiv-2402-13753v1-a5ead6bb56"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H1:item-arxiv-2404-07143v2-9fe62232b0",
+        "evidence:SP-2024-H1:item-official-index-supplemental-mistral-9ae62fe6d3",
+        "evidence:SP-2024-H1:series-deepseek-v2-lineage-42737841bd"
+      ],
+      "page_target": 8,
+      "editorial_angle": "SSM/attention hybrid、MoE、低ビット、長文脈拡張を、学習・推論・メモリの制約に対する複数の回答として横断比較する。",
+      "must_cover": [
+        "architecture versus implementation optimization",
+        "claimed context length versus effective quality",
+        "research-paper results remain author claims"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 5
+    },
+    {
+      "package_id": "action-rag-agents",
+      "title": "生成から行動へ――RAG、Tool Use、Computer Use",
+      "package_type": "FEATURE",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2024-H1:series-command-r-lineage-c82e93228a",
+        "evidence:SP-2024-H1:item-arxiv-2405-15793v3-c96c8e0f14",
+        "evidence:SP-2024-H1:item-arxiv-2404-07972v2-3eaaf90bd1"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H1:item-official-feed-d1406200c99ecf17fe68-ec72b5918c",
+        "evidence:SP-2024-H1:item-arxiv-2403-09629v2-3e1efe2d1e"
+      ],
+      "page_target": 7,
+      "editorial_angle": "知識を返すモデルから、検索・ツール・コンピュータ環境に接続して仕事を進めるシステムへの移行を追う。",
+      "must_cover": [
+        "RAG versus tool-use versus autonomous action",
+        "benchmark environment versus deployed agent",
+        "execution introduces new reliability/control boundaries"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 6
+    },
+    {
+      "package_id": "generative-media",
+      "title": "動画・画像生成が研究デモから競争軸へ",
+      "package_type": "FEATURE",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2024-H1:item-official-feed-0fe3432110402a0f01ed-dc6498b5a9",
+        "evidence:SP-2024-H1:item-official-index-supplemental-google-19d2b4aad7",
+        "evidence:SP-2024-H1:series-sd3-lifecycle-0d32ed5873",
+        "evidence:SP-2024-H1:item-official-index-supplemental-kuaisho-7faf816b33"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H1:item-official-index-supplemental-runway-576da4da6d",
+        "evidence:SP-2024-H1:series-chameleon-event-a2a3889c24",
+        "evidence:SP-2024-H1:item-official-feed-2d3a533e91db8cea0f48-a91052b9ff"
+      ],
+      "page_target": 8,
+      "editorial_angle": "Soraを単独の象徴にせず、Veo/Imagen 3、SD3、Kling、Gen-3まで含む生成メディア競争と公開形態の違いを描く。",
+      "must_cover": [
+        "research preview versus public/API/open release",
+        "video/image model capability claims remain attributed",
+        "multimodal understanding and media generation are distinct axes"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 7
+    },
+    {
+      "package_id": "safety-control",
+      "title": "能力拡張と同時に増えた制御面",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2024-H1:item-official-index-supplemental-anthrop-1e34b43c2f",
+        "evidence:SP-2024-H1:series-anthropic-interpretability-ccc4f27ac2",
+        "evidence:SP-2024-H1:item-official-feed-d1406200c99ecf17fe68-ec72b5918c"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H1:series-claude3-lineage-30b9150888",
+        "evidence:SP-2024-H1:series-gemini15-lineage-69bf2d8acb"
+      ],
+      "page_target": 5,
+      "editorial_angle": "長文脈が新しい攻撃面を作る一方、behavior specificationとmechanistic interpretabilityが制御可能性を別レイヤで扱い始めたことを示す。",
+      "must_cover": [
+        "behavior policy versus model internals",
+        "jailbreak result scope and threat-model boundary",
+        "interpretability demonstration versus general control guarantee"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 8
+    },
+    {
+      "package_id": "systems-data",
+      "title": "モデル性能を実用能力に変えるServingとData",
+      "package_type": "COMPARISON",
+      "primary_evidence_task_ids": [
+        "evidence:SP-2024-H1:item-official-index-supplemental-nvidia-2ded866237",
+        "evidence:SP-2024-H1:item-arxiv-2406-17557v2-5212a27e0b"
+      ],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H1:item-arxiv-2404-07143v2-9fe62232b0",
+        "evidence:SP-2024-H1:item-official-index-supplemental-meta-ll-6853b7b5a9",
+        "evidence:SP-2024-H1:series-olmo-lineage-beb6f920a3"
+      ],
+      "page_target": 4,
+      "editorial_angle": "モデル本体だけでは説明できないH1の進歩を、推論パッケージングとpretraining-data engineeringの両端から補う。",
+      "must_cover": [
+        "deployment packaging versus model architecture",
+        "dataset curation versus model capability causality",
+        "systems/data evidence as enabling layers"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 9
+    },
+    {
+      "package_id": "conclusion",
+      "title": "総括――2024 H1に何が変わったのか",
+      "package_type": "SECTION",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [
+        "evidence:SP-2024-H1:item-official-feed-2d3a533e91db8cea0f48-a91052b9ff",
+        "evidence:SP-2024-H1:item-official-index-supplemental-meta-ll-6853b7b5a9",
+        "evidence:SP-2024-H1:item-official-index-supplemental-apple-f-e433f4ee0a",
+        "evidence:SP-2024-H1:item-official-index-supplemental-ai21-ja-97a4f32859",
+        "evidence:SP-2024-H1:series-command-r-lineage-c82e93228a",
+        "evidence:SP-2024-H1:item-official-feed-0fe3432110402a0f01ed-dc6498b5a9",
+        "evidence:SP-2024-H1:series-anthropic-interpretability-ccc4f27ac2",
+        "evidence:SP-2024-H1:item-official-index-supplemental-nvidia-2ded866237"
+      ],
+      "page_target": 3,
+      "editorial_angle": "各章の要約を並べ直すのではなく、モデル単体の性能競争から、インタラクション・公開形態・配置・アーキテクチャ・行動・メディア・制御・運用を含むシステム競争へ移った半年として論点を収束させる。H2への接続はretrospective hindsightで過去を書き換えず、2024-H1末時点で残った問いとして示す。",
+      "must_cover": [
+        "synthesize structural shift from model race to system stack",
+        "connect multimodality/open/edge/action/media/control/serving without repeating chapter summaries",
+        "separate 2024-H1 established facts from retrospective hindsight and identify H2 transition questions"
+      ],
+      "boundaries": [
+        "Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction."
+      ],
+      "late_breaking": false,
+      "drafting_order": 10
+    },
+    {
+      "package_id": "references",
+      "title": "年表・参照・境界メモ",
+      "package_type": "REFERENCES",
+      "primary_evidence_task_ids": [],
+      "supporting_evidence_task_ids": [],
+      "page_target": 3,
+      "editorial_angle": "半年のイベント年表、一次情報参照、preview/release/availabilityおよびopennessの境界を索引化する。",
+      "must_cover": [
+        "chronology index",
+        "primary-source references",
+        "retrospective boundary notes"
+      ],
+      "boundaries": [],
+      "late_breaking": false,
+      "drafting_order": 11
+    }
+  ],
+  "this_week_summary_written_last": true
+}

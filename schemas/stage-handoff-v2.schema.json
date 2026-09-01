@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/stage-handoff-v2.schema.json",
+  "title": "Survey Production Core v2 Stage Handoff",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "issue_id",
+    "lifecycle_state",
+    "handler",
+    "basis",
+    "inputs",
+    "outputs"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "issue_id": {"type": "string", "minLength": 1},
+    "lifecycle_state": {
+      "enum": [
+        "ISSUE_INITIALIZED",
+        "DISCOVERY_COLLECTED",
+        "CANDIDATES_NORMALIZED",
+        "EVIDENCE_REVIEWED",
+        "SELECTION_COMPLETE",
+        "ARCHITECTURE_ESTABLISHED",
+        "DRAFT_COMPLETE",
+        "VALIDATED_DRAFT",
+        "RELEASE_CANDIDATE",
+        "FROZEN"
+      ]
+    },
+    "handler": {"type": "string", "minLength": 1},
+    "basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "production_state_sha256",
+        "production_profile_sha256",
+        "pipeline_contract_sha256",
+        "quality_contract_sha256",
+        "implementation_commit_sha"
+      ],
+      "properties": {
+        "production_state_sha256": {"$ref": "#/$defs/sha256"},
+        "production_profile_sha256": {"$ref": "#/$defs/sha256"},
+        "pipeline_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "quality_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "implementation_commit_sha": {"$ref": "#/$defs/gitsha"}
+      }
+    },
+    "inputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/inputRef"}
+    },
+    "outputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/outputRef"}
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "gitsha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "safePath": {
+      "type": "string",
+      "minLength": 1,
+      "not": {"pattern": "(^/|(^|/)\\.\\.(/|$)|\\\\)"}
+    },
+    "inputRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "path", "sha256"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "path": {"$ref": "#/$defs/safePath"},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "outputRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "checkpoint", "path", "sha256"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "checkpoint": {
+          "type": ["string", "null"],
+          "enum": [
+            null,
+            "discovery",
+            "screening",
+            "evidence",
+            "materiality",
+            "completeness",
+            "selection",
+            "architecture",
+            "draft",
+            "validation",
+            "freeze",
+            "release"
+          ]
+        },
+        "path": {"$ref": "#/$defs/safePath"},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}

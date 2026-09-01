@@ -1,0 +1,58 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{2023年総括――「モデル」から「システム／生態系」へ}
+\label{pkg:annual-synthesis}
+\noindent\textbf{2023年を一つの年として読むと、生成AIの設計対象はモデルweightsだけに留まらなくなった。インタラクション、公開モデル群、tool/action、runtime、retrieval/post-training、生成メディア、evaluation/controlが別々の層として立ち上がり、相互の制約を受けるシステムとして見えるようになった。}
+
+\subsection{一年の前半と後半で、同じ言葉の指す範囲が広がった}
+
+年初には「より強い基盤モデル」が議論の中心に見えやすかったが、年を通じて利用形態と実装層が増えた。年末を同じ尺度で見ると、モデルの出力品質だけでなく、どの入力を扱い、どの外部機能へ接続し、どの資源で運用し、どう評価・制御するかまでが設計問題として分化している。
+
+
+1〜3月の段階では、フロンティア側の能力拡張とopen-weight側の追試・派生利用が並行して見え始めた。この時点では両者を「閉鎖モデル対公開モデル」という対立で読むこともできたが、年が進むにつれて両陣営ともruntime、tool、evaluationなど共通のsystem課題へ直面する。
+
+
+4〜6月になると、fine-tuning、evaluation、tool interface、servingのような周辺技術が独立した名前と実装を持ち始める。ここで重要なのは、モデル本体の進歩が止まったのではなく、強いモデルを利用可能なsystemへ変換する作業が別の技術課題として可視化されたことである。
+
+
+後半ではopen-weight familyの多様化、長文脈、生成メディアの製品統合、tool/actionの拡張が同時に進み、年末にはMoEや代替sequence architecture、capability-awareなcontrol policyまでが同じ技術史の中に現れる。年内の出来事を四半期ごとに切るより、modelを中心に複数layerが増殖した過程として見る方が連続性を保てる。
+
+
+\subsection{媒体別の出来事を、設計layerへ再分類する}
+
+この変化は、2023年の出来事を「モデル発表」「論文」「画像生成」といった媒体別に並べるだけでは捉えにくい。annual scaleでは、同じモデル系列でもinterface、deployment、runtime、controlの異なる層にまたがるため、生成AIを多層system/ecosystemとして再分類する方が技術的な因果を説明しやすい。
+
+
+本版が採用した七つのtrajectoryは、それぞれ独立した流行一覧ではない。frontier interactionは入力と利用面、open-weight ecosystemはmodel choice、tool/actionは外部実行、runtime/adaptationはresource、reasoning/retrieval/architectureはalgorithmic control、generative mediaは出力workflow、evaluation/controlは測定と運用条件を扱う。違いは「何を最適化するlayerか」にある。
+
+
+一つのartifactが複数layerへ影響することもある。長文脈modelはinterfaceだけでなくserving memoryとevaluationを難しくし、open-weight modelはruntime toolingとadaptationを活性化し、tool-using applicationはcontrol policyに新しい観測対象を加える。したがって「一つの出来事を一つの章に分類する」のではなく、章ごとに同じsystemを異なる断面から見る方がよい。
+
+
+\subsection{layer間の依存関係が生成AIをsystemにした}
+
+open weightsの拡大はruntime・fine-tuning効率への需要を強め、tool interfaceの整備はreliabilityとgovernanceの境界を明確にし、長文脈やmultimodal化は評価方法を複雑にした。各層は独立に発展したのではなく、別の層へ新しい制約を渡しながら設計空間を広げた。
+
+
+能力面が進歩すると、runtime側にはより大きなmemory、長いsequence、複数modalityを扱う要求が生まれる。runtime側の効率が上がると、今度はmodelをより多くのapplicationへ配置できる。能力とsystemsは主従関係ではなく、片方の改善がもう片方の利用可能な設計領域を広げる循環を持つ。
+
+
+tool/action layerでは、生成した文章が外部世界への操作へ接続されることで、controlの対象がcontentからbehaviorへ広がる。評価も「回答が正しいか」だけでなく「どのtoolを選び、どの権限で何を実行したか」を観測する必要が生じる。agent的systemを理解するには、model reasoningだけでなくinterfaceとcontrolを同時に見る必要がある。
+
+
+生成メディアでも同じ構造が見える。画像modelの品質が上がるだけでなく、会話UI、編集software、低latency generationが結び付くことで、model outputは制作workflowの一要素になる。application integrationが進むほど、model単体のbenchmarkだけでは価値を説明できなくなる。
+
+
+\subsection{2023年末に残った境界は、翌年以降の設計課題になる}
+
+一方、2023年末でも未解決の境界は多い。公称context長と実効利用、vendor benchmarkと独立評価、open weightsと再現可能なopen training、tool selectionと安全な実行、生成品質と制作workflow、capability評価と実効的なgovernanceは同一視できない。
+
+
+これらの境界を「まだ解決していない欠点」として消すのではなく、技術史の状態として残すことが重要である。2023年の発表を後の知識で補正して完成品のように見せると、当時どの問題が開いていたかが分からなくなる。annual retrospectiveは進歩の列挙だけでなく、年末時点で未解決だったinterfaceを保存する役割を持つ。
+
+
+\subsection{年間 thesis――モデル競争から多層system設計へ}
+
+したがって2023年の年次的な転換は「ある一つのモデルが勝った」ことではなく、生成AIがモデル単体の競争から、多層の技術スタックと生態系を設計する競争へ移ったことにある。この見取り図が、次の時期に現れるon-device、agent、serving、multimodal、controlの議論を読むための座標系になる。
+
+
+この座標系では、新しいmodel releaseだけを追っても全体像はつかめない。model familyの更新に加えて、どのinterfaceが追加されたか、どのruntime制約が緩和されたか、どの外部actionへ接続されたか、どの評価/controlが導入されたかを見る必要がある。2023年は、その読み方を要求するほど生成AIの技術面が多層化した最初の一年として位置付けられる。

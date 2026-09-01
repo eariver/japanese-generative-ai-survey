@@ -1,0 +1,150 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{推論・検索・学習後最適化、そしてTransformerの外側へ: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\smallskip
+\noindent{\small\textit{Technical Notesでは、一次資料から確認した公開・提供・研究上の事実を記載する。数値・能力評価や提供元・著者による比較表現は、独立再現済みの結果ではなく帰属claimとして扱う。}}\par
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+Tree of Thoughts & 主要資料 & 論文 & — \\
+Direct Preference Optimization (DPO) & 主要資料 & 論文 & — \\
+Self-RAG & 主要資料 & 論文 & — \\
+Mamba & 主要資料 & 論文 & — \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{Tree of Thoughts}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & authors \\
+種別 & 論文 \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: authorsの選定済み一次資料では、Tree of Thoughts (ToT) は一つの chain を直進するのではなく、問題解決途中の coherent text unit を thought として複数保持し、tree search で候補を探索する推論枠組みを提案する。 language model 自身による state evaluation と、lookahead / backtracking を組み合わせることで、途中の選択を評価して別枝へ戻れる構成になっている。 Game of 24 などで報告された改善幅は著者らの prompting / search setup に依存する実験結果として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2305.10601v2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Direct Preference Optimization (DPO)}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & authors \\
+種別 & 論文 \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: authorsの選定済み一次資料では、DPO は KL-constrained reward maximization の optimal policy と reward function の関係を closed form で書き換え、preference data から policy を直接最適化する目的関数を導出する。 この定式化により explicit reward model の学習と、その後の reinforcement-learning loop を分離して実行する必要をなくし、policy model に対する classification-style loss として学習できる。 論文の human-preference / benchmark 比較は著者実験として扱い、すべての alignment 条件で RLHF を代替できるという一般化はしない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2305.18290v3}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Self-RAG}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & authors \\
+種別 & 論文 \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: authorsの選定済み一次資料では、Self-RAG は retrieval-augmented generation を常時固定的に行うのではなく、model が必要時に passages を retrieve し、生成結果と取得文書を reflection tokens で自己評価する枠組みを提案する。 reflection tokens は retrieval の必要性、retrieved passage の relevance、response の support / quality などを明示的な制御信号として扱い、inference 時の retrieval と generation を適応的に調整する。 fact verification や QA 等での性能比較は原著者の評価として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2310.11511v1}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Mamba}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & authors \\
+種別 & 論文 \\
+時系列 & — \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: authorsの選定済み一次資料では、Mamba は structured state-space model (SSM) に input-dependent selection mechanism を導入し、SSM parameters を入力に応じて変化させる selective state-space architecture を提案する。 selection により従来の time-invariant SSM が苦手とする content-based reasoning を扱いつつ、hardware-aware parallel recurrent algorithm によって recurrent form と parallel training の両立を狙う。 sequence length に対する計算量や throughput、language modeling benchmark の優位性は論文著者の実験条件に基づく主張として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://arxiv.org/abs/2312.00752}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

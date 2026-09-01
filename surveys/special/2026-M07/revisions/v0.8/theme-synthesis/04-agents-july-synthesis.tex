@@ -1,0 +1,25 @@
+\sectionkicker{Theme synthesis}
+\subsection*{横断比較 — 長時間agentで累積する5種類の状態とコスト}
+\addcontentsline{toc}{subsection}{横断比較 — 長時間agentで累積する5種類の状態とコスト}
+agentを長時間動かすと、問題はmodel qualityだけではなくなる。7月の研究群を並べると、task dependency、streaming adaptation、KV state、sandbox startup、tokenizationという異なる累積コストが見えてくる。
+\medskip
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}X@{}}
+\toprule
+観察軸 & 7月の一次資料・論文から読めること \\
+\midrule
+task dependency & LoopsBenchは112のdependency-structured taskを8言語・9 domainにまたがって構成し、前段の成果が後続taskへ影響するcoding loopを評価対象にした。 \cite{src-30d9d574d4a1,src-4141dfcd9b12} \\
+streaming adaptation & AgentStreamはisolatedだけでなくsequential / interleaved streaming-task settingでself-evolving agentを評価し、履歴を持つtask streamへの適応を前面に出した。 \cite{src-30d9d574d4a1,src-4141dfcd9b12} \\
+context state reuse & AAFLOW+は再利用可能なKV cacheをrequest-local optimizationではなくmulti-agent pipelineのdistributed workflow objectとして扱う。 \cite{src-4051106eaef3,src-2266222d4bb7,src-6513817b493c} \\
+isolation startup & SpecBoxはsandboxをspeculativeにpreallocate/prewarmし、resource消費とcold-start tail latencyを明示的に交換する設計を提案する。 \cite{src-4051106eaef3,src-2266222d4bb7,src-6513817b493c} \\
+front-end tokenization & TokTierはappend-heavy sessionでの反復long-prefix tokenizationをbottleneckとして扱い、exact stateful CPU/GPU tokenizationを提案する。 \cite{src-4051106eaef3,src-2266222d4bb7,src-6513817b493c} \\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\end{center}
+\normalsize
+\begin{claimboundary}[この比較の境界]
+この表は本号で既に検証・参照している一次資料と論文を横断比較の形へ再配置したものである。vendor / project / author が報告した性能値や優位性は独立再現済みの一般則へ変換せず、本文とSource Notesの帰属境界をそのまま維持する。
+\end{claimboundary}

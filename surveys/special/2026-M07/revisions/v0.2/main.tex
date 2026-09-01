@@ -1,0 +1,52 @@
+\documentclass[lualatex,a4paper,11pt]{jlreq}
+\usepackage{jgaisurvey}
+\addbibresource{references.bib}
+
+% Special-local long-form presentation. Shared weekly source remains unchanged.
+\geometry{margin=22mm,headsep=5mm,footskip=10mm}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1em}
+\newtcolorbox{technicalnote}[2]{
+  enhanced,breakable,colback=SurveySoft,colframe=SurveyAccent,
+  boxrule=0.65pt,arc=1mm,title={#1 \hfill \footnotesize #2},fonttitle=\bfseries,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=4mm,after skip=3mm
+}
+
+\surveysetup
+  {SP-2026-M07}
+  {Japanese Generative AI Technical Survey}
+  {Special / Coverage 2026-07-01 -- 2026-07-31 / Retrospective as of 2026-08-10}
+  {Coverage window: 2026-07-01 -- 2026-07-31 UTC}
+\surveyeditiondescriptor{Retrospective Technical Survey}
+\surveycoverstory
+  {2026年7月 — モデル競争の次へ}
+  {フロンティアモデルの世代交代と同時に、リアルタイムmultimodal、serving runtime、長時間agent、安全境界まで実行系全体が動いた1か月を振り返る。}
+  {Frontier Models — 7月、競争軸は「一番強いモデル」から分岐した \quad / \quad Multimodal — 「生成できる」から、リアルタイムに行き来できるへ}
+
+\begin{document}
+\surveycover
+\clearpage
+\input{sections/00-frontmatter}
+
+\clearpage
+\input{sections/10-frontier-models-july}
+\input{technical-notes/10-frontier-models-july-notes}
+\clearpage
+\input{sections/20-multimodal-july}
+\input{technical-notes/20-multimodal-july-notes}
+\clearpage
+\input{sections/30-inference-serving-july}
+\input{technical-notes/30-inference-serving-july-notes}
+\clearpage
+\input{sections/40-agents-july}
+\input{technical-notes/40-agents-july-notes}
+\clearpage
+\input{sections/50-agent-safety-security-july}
+\input{technical-notes/50-agent-safety-security-july-notes}
+\clearpage
+\input{sections/60-paper-watch-july}
+\input{technical-notes/60-paper-watch-july-notes}
+
+\clearpage
+\printbibliography[title={References / Source Notes}]
+\end{document}

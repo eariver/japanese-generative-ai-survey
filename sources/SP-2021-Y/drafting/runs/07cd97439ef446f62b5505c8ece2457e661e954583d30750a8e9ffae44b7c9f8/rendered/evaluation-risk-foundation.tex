@@ -1,0 +1,25 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{強さだけでは測れない――Foundation Models、TruthfulQA、リスク分類}
+\noindent\textbf{2021年には、能力を伸ばす研究と並行して『何を基盤と呼ぶのか』『何を測るべきか』『どのような害を区別するか』『生成結果をどう評価するか』という評価・リスクの言語も整い始めた。Foundation Models report、TruthfulQA、language-model risk taxonomy、Training Verifiers / GSM8Kは、性能競争の付録ではなく、再利用されるmodelをsystemとして評価する独立layerの成立を示す。}\autocite{src-20fd9bba2e7a,src-34f845c1e710,src-750bc3eeb1bc,src-8536f9ceae6d,src-c16f4ae139bf,src-d9549fe4ff37}
+
+Foundation Models reportが同時代的に与えた重要な枠組みは、大規模pretrained modelを単独のtask modelとしてではなく、多数のdownstream systemsが依存する基盤として考える視点である。基盤を再利用するほど、上流の設計・データ・挙動が下流へ波及するという問題設定が重要になる。これは本号全体で追ってきたadaptation、access、interfaceのtrajectoryを、model単体ではなくdependencyを持つsystemとして読むための概念的な接着剤になる。\autocite{src-d9549fe4ff37}
+
+
+TruthfulQAは、model performanceを知識量やtask accuracyだけでなくtruthfulnessという別の観点から評価する系統を代表する。能力が高いことと、望ましい・信頼できる応答を返すことは同じ尺度ではない。2021年にこの種のbenchmarkが技術記録へ入ったことは、モデルが広く再利用されるほど『できるか』だけでなく『どのように誤るか』を測る必要が強くなるというevaluation layerの拡張として読める。\autocite{src-8536f9ceae6d,src-c16f4ae139bf}
+
+
+Ethical and social risks of harm from Language Modelsは、language modelに伴うriskを明示的に分類し、議論対象を一つの曖昧な『AI safety』へまとめないための補助線を提供する。risk taxonomyの意義は、性能指標の外側にある影響を技術議論から切り離さず、異なるharmを別々の観測・緩和問題として扱えるようにする点にある。本稿では個々のriskの発生確率や解決策までを一次資料以上に一般化しない。\autocite{src-20fd9bba2e7a}
+
+
+Training Verifiers / GSM8Kは、生成器の出力そのものだけでなく、候補を評価する側を独立させる設計を示す。ここでは後年のreasoning systemを2021年へ逆投影せず、verifierが『生成能力』だけでなく『どの出力を採用するか』を技術問題として切り出したevaluation-sideの補助線として扱う。同じEvidenceはsteeringの章ではverifier-based reasoningへの橋として扱ったが、この章では生成と評価を分離する構造に焦点を置く。\autocite{src-34f845c1e710,src-750bc3eeb1bc}
+
+
+四つを合わせると、2021年には評価対象そのものが広がったことが分かる。Foundation Models framingはupstream/downstream dependenceを、TruthfulQAはtruthfulnessというbehavioral evaluationを、risk taxonomyは社会的・倫理的harmの分類を、verifierは生成候補を評価する補助系を前面に出した。つまり、modelの『強さ』だけを一つのleaderboardで測る発想から、再利用される基盤がどこで失敗し、どの出力を採用し、どこへ影響を伝播させるかを多面的に評価する発想へ移行する入口ができた。\autocite{src-20fd9bba2e7a,src-34f845c1e710,src-750bc3eeb1bc,src-8536f9ceae6d,src-c16f4ae139bf,src-d9549fe4ff37}
+
+
+この章では、benchmark、verifier、risk analysisの存在を『問題が証明された』『推論が解決された』『安全性が測定済み』という断定へ変換しない。Foundation Models reportの枠組み、TruthfulQAの評価結果、Training Verifiers / GSM8Kの評価、risk taxonomyの分類は、それぞれauthorsが提示した研究成果である。Surveyとして行うのは、それらが同じ年に能力競争とは別のevaluation/risk layerを形成したという編集上の統合である。\autocite{src-20fd9bba2e7a,src-34f845c1e710,src-750bc3eeb1bc,src-8536f9ceae6d,src-c16f4ae139bf,src-d9549fe4ff37}
+
+
+\begin{claimboundary}
+author/vendorによる性能・truthfulness・verifier・riskの評価は、一次資料で検証対象を確認した範囲に留め、独立再現済みの事実へ変換しない。評価指標やtaxonomy自体にもscopeがあり、2021年の資料だけで後年のreasoningや安全性問題全体を解決済みとも未解決とも断定しない。\autocite{src-20fd9bba2e7a,src-34f845c1e710,src-750bc3eeb1bc,src-8536f9ceae6d,src-c16f4ae139bf,src-d9549fe4ff37}
+\end{claimboundary}

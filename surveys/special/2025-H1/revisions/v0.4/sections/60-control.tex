@@ -1,0 +1,23 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{Execution LayerにはControlが要る — H1に現れたSearch・Safeguard・Interpretabilityの萌芽}
+\label{pkg:control}
+\noindent\textbf{外部情報へ接続し行動するsystemが増えると、能力の追加と同時にtrust boundaryの設計が必要になる。2025年前半では、そのcontrol layerはまだ統一された体系ではなく、search、safeguard、interpretabilityとして分散して現れた。}\autocite{src-383476bdf62e,src-6e15bd50b7db,src-fdc10e3226e6}
+
+Anthropicは3月にClaude productへweb searchをpreviewとして追加し、5月にはMessages API向けweb search toolを公開した。user-facing product featureとdeveloper-facing tool APIは別のeventであり、同じ検索機能でもcontrol pointが異なる。\autocite{src-6e15bd50b7db,src-e31c642d34b6}
+
+
+外部検索やtool接続は、modelが閉じたcontextだけで答える場合とは異なるtrust boundaryを作る。H1の直接Evidenceではweb search product/APIがその変化を示しており、MCPを含むより広いtool protocolの詳細はAgent章のexecution surfaceとして分けて扱う。\autocite{src-6e15bd50b7db,src-e31c642d34b6}
+
+
+4月末のLlama Guard 4とprotection toolsは、multimodal systemに対するsafeguardをmodel/platform側の独立したcontrol componentとして提示した。base modelの能力向上と安全制御の更新を同じrelease identityに畳み込まない。\autocite{src-383476bdf62e}
+
+
+3月27日のAnthropic研究はlarge language modelの内部思考をtraceするinterpretability researchとして位置付けられる。内部機構を観測・理解しようとする研究はcontrolに重要だが、それ自体をdeployment safeguardや事故防止機構と同一視することはできない。\autocite{src-fdc10e3226e6}
+
+
+H1時点のEvidenceは、H2のような成熟したcontrol stackを示すにはまだ薄い。それでもsearch接続、safeguard model、interpretabilityが同じ半年に前景化したことは、execution surfaceの拡大がcontrol/observabilityを別層として要求し始めた兆候として読める。\autocite{src-383476bdf62e,src-e31c642d34b6,src-fdc10e3226e6}
+
+
+\begin{claimboundary}
+本章はH1に確認できるcontrol-related evidenceの範囲に限定する。各仕組みの実効性、攻撃耐性、事故低減効果を一次資料の存在だけから推定しない。
+\end{claimboundary}

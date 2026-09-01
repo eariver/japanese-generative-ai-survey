@@ -1,0 +1,277 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{Dense Transformerだけではなくなった設計空間: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\smallskip
+\noindent{\small\textit{Technical Notesでは、一次資料から確認した公開・提供・研究上の事実を記載する。数値・能力評価や提供元・著者による比較表現は、独立再現済みの結果ではなく帰属claimとして扱う。}}\par
+\medskip
+\subsection*{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+Jamba & 主要資料 & モデル & 2024-03-28     \\
+Mamba-2 / Structured State Space Duality & 主要資料 & 論文 & 2024-05-31     \\
+BitNet b1.58 & 主要資料 & 論文 & 年表対象日付なし \\
+LongRoPE & 主要資料 & 論文 & 年表対象日付なし \\
+Infini-attention & 補足資料 & 論文 & 2024-04-10     \\
+Mixtral 8x22B & 補足資料 & オープンウェイト & 2024-04-17     \\
+DeepSeek-V2 / DeepSeek-Coder-V2 & 補足資料 & オープンウェイト & 2024-05-06, 2024-06-17     \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\Needspace{0.38\textheight}
+\begin{technicalnote}{Jamba}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & AI21 Labs \\
+種別 & モデル \\
+時系列 & 2024-03-28 \\
+\end{tabularx}
+\smallskip
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes event-only fact/source tail group
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: AI21 Labsの一次資料により、Jambaについて2024-03-28にモデル発表を確認した。 JambaはTransformer、Mamba SSM、Mixture-of-Expertsを組み合わせたhybrid architectureで、AI21は52B total parametersのうちinference時に12Bをactiveにする構成と説明している。1/8層をTransformer layerとするblocks-and-layers設計、256K context、Apache 2.0のopen weightsが公開時点の主要仕様で、throughput/benchmark値はAI21による評価として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://www.ai21.com/blog/announcing-jamba/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\Needspace{0.38\textheight}
+\begin{technicalnote}{Mamba-2 / Structured State Space Duality}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 2024-05-31 \\
+\end{tabularx}
+\smallskip
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes event-only fact/source tail group
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 提供元の一次資料により、Mamba-2 / Structured State Space Dualityについて2024-05-31にPaper First Submissionを確認した。 Mamba-2論文はstate space modelとattention-like computationをStructured State Space Duality (SSD)として結び付け、SSMのsequence transformationをsemiseparable structured matrixとして扱えることを示す。このdual viewを用いてMamba-2 coreを再設計し、matrix-multiplication friendlyなtraining algorithmとrecurrent inferenceを両立させる。速度・品質の数値比較は著者報告として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2405.21060v1}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\Needspace{0.38\textheight}
+\begin{technicalnote}{BitNet b1.58}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 年表対象日付なし \\
+\end{tabularx}
+\smallskip
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes event-only fact/source tail group
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 選定済み一次資料では、BitNet b1.58はTransformerのLinear層のweightsを\{-1, 0, 1\}のternary値で表し、weight 1個あたり約1.58 bitという表現を学習時から前提にするBitNet変種である。論文は同parameter scaleのfull-precision Transformerとのperplexity・end-task比較と、乗算・memory footprint・energy面の効率化を報告しているが、数値性能とhardware効率は著者の評価条件に依存する。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2402.17764v1}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\Needspace{0.38\textheight}
+\begin{technicalnote}{LongRoPE}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & - \\
+種別 & 論文 \\
+時系列 & 年表対象日付なし \\
+\end{tabularx}
+\smallskip
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes event-only fact/source tail group
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: 選定済み一次資料では、対象event近傍の一次資料から 8K context を確認できる。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2402.13753v1}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\Needspace{0.38\textheight}
+\begin{technicalnote}{Infini-attention}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Google \\
+種別 & 論文 \\
+時系列 & 2024-04-10 \\
+\end{tabularx}
+\smallskip
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes event-only fact/source tail group
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Googleの一次資料により、Infini-attentionについて2024-04-10にPaper First Submissionを確認した。 Infini-attentionは、通常のattention blockへcompressive memoryを組み込み、masked local attentionとlong-term linear attentionを単一Transformer block内で扱う構成である。著者らはbounded memory/computationを保った長文脈処理とstreaming inferenceを目的として提示しており、長文脈タスク上の性能値は著者報告として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2404.07143v2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\Needspace{0.38\textheight}
+\begin{technicalnote}{Mixtral 8x22B}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Mistral AI \\
+種別 & オープンウェイト \\
+時系列 & 2024-04-17 \\
+\end{tabularx}
+\smallskip
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes event-only fact/source tail group
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Mistral AIの一次資料により、Mixtral 8x22Bについて2024-04-17にモデル公開を確認した。 Mixtral 8x22Bはsparse Mixture-of-Expertsモデルで、総141B parametersのうち推論時のactive parametersは39BとMistral AIが説明している。64K-token context、native function calling、Apache 2.0でのweights公開が同じリリースの主要仕様であり、性能比較はMistral AIによる評価として扱う。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://mistral.ai/news/mixtral-8x22b}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\Needspace{0.38\textheight}
+\begin{technicalnote}{DeepSeek-V2 / DeepSeek-Coder-V2}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & DeepSeek \\
+種別 & オープンウェイト \\
+時系列 & 2024-05-06, 2024-06-17 \\
+\end{tabularx}
+\smallskip
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes event-only fact/source tail group
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: DeepSeekの一次資料により、DeepSeek-V2 / DeepSeek-Coder-V2について2024-05-06にモデル公開、2024-06-17にモデル公開を確認した。 対象event近傍の一次資料から source links in search answers / Mixture-of-Experts (MoE) / KV-cache を確認できる。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://github.com/deepseek-ai/DeepSeek-Coder-V2}}
+\item {\scriptsize\url{https://github.com/deepseek-ai/DeepSeek-V2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

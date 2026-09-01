@@ -1,0 +1,160 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{LLaMAからMixtralへ――open weightsが単一モデルではなく生態系になった: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\smallskip
+\noindent{\small\textit{Technical Notesでは、一次資料から確認した公開・提供・研究上の事実を記載する。数値・能力評価や提供元・著者による比較表現は、独立再現済みの結果ではなく帰属claimとして扱う。}}\par
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+LLaMA / Llama 2 / Code Llama 2023 & 主要資料 & オープンウェイト & 2023-02-24, 2023-02-27, 2023-07-18, 2023-08-24 \\
+Mistral 7B / Mixtral & 主要資料 & オープンウェイト & 2023-09-27, 2023-10-10, 2023-12-11 \\
+Falcon 40B / 180B & 補足資料 & オープンウェイト & 2023-05-25, 2023-09-06, 2023-11-28 \\
+Qwen 2023 family & 補足資料 & オープンウェイト & 2023-09-28 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{LLaMA / Llama 2 / Code Llama 2023}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Meta \\
+種別 & オープンウェイト \\
+時系列 & 2023-02-24, 2023-02-27, 2023-07-18, 2023-08-24 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Metaの選定済み一次資料では、対象event近傍の一次資料から 7B parameter scale / 65B parameter scale / 13B parameter scale / 33B parameter scale を確認できる。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2302.13971v1}}
+\item {\scriptsize\url{http://arxiv.org/abs/2307.09288v2}}
+\item {\scriptsize\url{http://arxiv.org/abs/2308.12950v3}}
+\item {\scriptsize\url{https://ai.meta.com/blog/code-llama-large-language-model-coding/}}
+\item {\scriptsize\url{https://ai.meta.com/blog/large-language-model-llama-meta-ai/}}
+\item {\scriptsize\url{https://ai.meta.com/blog/llama-2/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Mistral 7B / Mixtral}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Mistral AI \\
+種別 & オープンウェイト \\
+時系列 & 2023-09-27, 2023-10-10, 2023-12-11 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Mistral AIの選定済み一次資料では、Mistral 7B v0.1 は 7.3B parameter model で、Grouped-Query Attention (GQA) と Sliding Window Attention (SWA) を組み合わせる。Mistral AI の公開説明では SWA の各層が直前 4,096 hidden states を参照する構成で、固定 window により KV cache を rotating buffer へ制限できる。 Mistral 7B は Apache 2.0 license で公開され、local download、主要 cloud、Hugging Face などを通じた利用経路が示された。Mistral 7B Instruct は instruction data で fine-tune した別 variant として扱う。 Mixtral 8x7B は decoder-only sparse mixture-of-experts model で、各 layer の feed-forward block に8 expert groupsを持ち、router が token ごとに2 expertを選択する。公開説明では総 parameter 数 46.7B に対し token ごとの active parameters は 12.9B とされる。 Mixtral 8x7B は 32K context と Apache 2.0 open weights として公開された。Mixtral 8x7B Instruct は supervised fine-tuning と DPO を施した別 variantであり、Mistral platform 上の mistral-small beta endpoint という hosted availability と open weights の公開を区別する。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2310.06825v1}}
+\item {\scriptsize\url{https://mistral.ai/news/announcing-mistral-7b/}}
+\item {\scriptsize\url{https://mistral.ai/news/mixtral-of-experts/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Falcon 40B / 180B}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Technology Innovation Institute \\
+種別 & オープンウェイト \\
+時系列 & 2023-05-25, 2023-09-06, 2023-11-28 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Technology Innovation Instituteの選定済み一次資料では、Falcon 40B は40B parameter、1T tokens で学習された foundation model として2023年5月に model weights を含む形で研究・商用利用向けに公開された。TII の同時説明では Falcon 7.5B / 1.3B と RefinedWeb dataset も open-source release 群に含められている。 Falcon 180B は2023年9月に180B parameter、3.5T tokens で学習された model として公開され、研究者と商用利用者向けの open-access boundary が明示された。Falcon 180B TII License は Apache 2.0 を基礎とする別ライセンスとして記録する。 Falcon technical report は 7B・40B・180B の causal decoder-only series と、Falcon-180B の 3.5T tokens 超の pretraining、最大 4,096 A100s を用いる custom distributed training stack を記述している。 同 technical report は 600B-token web-dataset extract と Falcon model series の公開も報告する。benchmark 上の優劣は著者・TII側の評価として扱い、独立再現済みとはしない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2311.16867v2}}
+\item {\scriptsize\url{https://www.tii.ae/index.php/news/uaes-technology-innovation-institute-launches-open-source-falcon-40b-large-language-model}}
+\item {\scriptsize\url{https://www.tii.ae/news/technology-innovation-institute-introduces-worlds-most-powerful-open-llm-falcon-180b}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Qwen 2023 family}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Qwen Team \\
+種別 & オープンウェイト \\
+時系列 & 2023-09-28 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Qwen Teamの選定済み一次資料では、Qwen technical report は base pretrained model の Qwen と、SFT / RLHF などで human alignment を行った Qwen-Chat を区別し、Code-Qwen・Math-Qwen-Chat といった domain specialization、および Qwen-Chat の tool-use / planning を別の model / capability scope として記述する。 Qwen Team の後年の公式 release-history table は、2023年の open-source chronology として Qwen-7B を8月3日、Qwen-14B を9月25日、Qwen-1.8B と Qwen-72B を11月30日と記録している。この表は2023年イベントを回顧的に記録する資料であり、ページ自体の公開日を2023年の出来事として扱わない。 同 release-history table では Qwen-7B / 1.8B / 72B に32K、Qwen-14B に8K の max length が記録される一方、base model と chat model、各 model size の release / context specification を相互に一般化しない。 公式説明では tool use を ReAct-format data で学習し、function calling・code interpreter・Hugging Face agent をサポートするとする。これは Qwen project / chat-agent 系の提供能力として扱い、すべての base checkpoint の一様な能力とはみなさない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2309.16609v1}}
+\item {\scriptsize\url{https://qwenlm.github.io/blog/qwen/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

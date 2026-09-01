@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2020-Y",
+  "package_id": "diffusion-score",
+  "draft_version": "v0.1",
+  "status": "DRAFT",
+  "headline": "もう一つの生成系譜――DDPMからscore-SDEへ",
+  "deck": "2020年の画像生成史を後年のdiffusion boomから逆算すると、当時の技術分岐を見失う。DDPMはnoiseを段階的に加えるforward processと、その逆方向を学習するdenoising generative modelを明確にした。score-based generative modeling through SDEsはscore matching系とdiffusion系を連続時間のstochastic differential equationとして統一的に捉える枠組みを提示した。2020年末には、autoregressive系とは異なる生成原理が独立した研究軸になっていた。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {"evidence_task_id":"evidence:SP-2020-Y:item-arxiv-2006-11239v2-e4d5ff5015","kind":"CLAIM","evidence_id":"claim-1"},
+    {"evidence_task_id":"evidence:SP-2020-Y:item-arxiv-2011-13456v2-ceeaf475ea","kind":"CLAIM","evidence_id":"claim-1"}
+  ],
+  "blocks": [
+    {
+      "block_id": "ddpm-formulation",
+      "block_type": "PARAGRAPH",
+      "text": "Denoising Diffusion Probabilistic Modelsは、dataへ小さなnoiseを段階的に加えて単純なdistributionへ近づけるforward diffusion processと、その逆過程を学習してsampleを生成するprobabilistic modelを扱った。年次的に重要なのは、generationを左から右へtokenを予測するautoregressive processとしてだけでなく、noiseからdataへ戻す反復的denoising processとして構成する設計が主要な研究系譜になった点にある。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id":"evidence:SP-2020-Y:item-arxiv-2006-11239v2-e4d5ff5015","kind":"CLAIM","evidence_id":"claim-1"}
+      ]
+    },
+    {
+      "block_id": "score-sde",
+      "block_type": "PARAGRAPH",
+      "text": "Score-Based Generative Modeling through Stochastic Differential Equationsは、noise levelごとのscore functionを学ぶscore-based modelとdiffusion probabilistic modelを、連続時間のSDEという共通言語で整理した。forward SDEがdataを既知のnoise distributionへ変換し、reverse-time SDEがscoreを使って生成過程を記述するという見方により、それまで近接していた研究系統の関係が明示された。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id":"evidence:SP-2020-Y:item-arxiv-2011-13456v2-ceeaf475ea","kind":"CLAIM","evidence_id":"claim-1"}
+      ]
+    },
+    {
+      "block_id": "historical-boundary",
+      "block_type": "PARAGRAPH",
+      "text": "ただし、2020年のDDPMやscore-SDEを見て『Stable Diffusion時代が始まった』と書くのはhindsightの過剰投影である。当年に確認できるのは、diffusion / score-based generationが技術的に有力な独立系譜として構造化され、samplingやrepresentationを含む研究課題が形成されたことまでだ。後年のtext conditioning、latent-space efficiency、consumer productへの展開は、その後の別のeventとして切り分ける。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id":"evidence:SP-2020-Y:item-arxiv-2006-11239v2-e4d5ff5015","kind":"CLAIM","evidence_id":"claim-1"},
+        {"evidence_task_id":"evidence:SP-2020-Y:item-arxiv-2011-13456v2-ceeaf475ea","kind":"CLAIM","evidence_id":"claim-1"}
+      ]
+    },
+    {
+      "block_id": "branching",
+      "block_type": "PARAGRAPH",
+      "text": "Image GPTやTaming Transformersのようなautoregressive / discrete-token系と並べると、2020年末には画像generationに単一の設計原理が存在しなかったことが見える。sequenceを順次予測する系、離散representationをmodelingする系、noiseから反復的にsampleを復元する系が並立していた。このpluralityこそ、2021年以降のgenerative mediaが急速に展開する前段である。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id":"evidence:SP-2020-Y:item-arxiv-2006-11239v2-e4d5ff5015","kind":"CLAIM","evidence_id":"claim-1"},
+        {"evidence_task_id":"evidence:SP-2020-Y:item-arxiv-2011-13456v2-ceeaf475ea","kind":"CLAIM","evidence_id":"claim-1"}
+      ]
+    },
+    {
+      "block_id": "claim-boundary",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "DDPMとscore-SDEのsample quality、likelihood、benchmarkや他手法との比較は各authorの報告であり、本稿が独立再現したものではない。本号は、denoising diffusionとscore/SDE formulationが2020年に独立した生成系譜として記録されたことを一次資料から確認する。",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {"evidence_task_id":"evidence:SP-2020-Y:item-arxiv-2006-11239v2-e4d5ff5015","kind":"LIMITATION","evidence_id":"limitation-1"},
+        {"evidence_task_id":"evidence:SP-2020-Y:item-arxiv-2011-13456v2-ceeaf475ea","kind":"LIMITATION","evidence_id":"limitation-1"}
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {"requirement":"DDPM formulation","block_ids":["ddpm-formulation"]},
+    {"requirement":"score-based/SDE unification","block_ids":["score-sde"]},
+    {"requirement":"avoid projecting later product success backward","block_ids":["historical-boundary"]}
+  ],
+  "boundary_coverage": [
+    {"requirement":"Primary-source verification establishes the bounded facts recorded here; it does not convert vendor, project, or author evaluations into independent reproduction.","block_ids":["claim-boundary"]}
+  ],
+  "late_breaking_acknowledged": false
+}

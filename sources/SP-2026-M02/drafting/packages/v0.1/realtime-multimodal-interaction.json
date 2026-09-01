@@ -1,0 +1,506 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M02",
+  "package_id": "realtime-multimodal-interaction",
+  "draft_source_mode": "EVIDENCE_PACKAGE",
+  "execution_stage": "ARTICLE_DRAFTING",
+  "basis": {
+    "architecture_plan_sha256": "ea684e639bfea5705eb85df9bee0d3eb130a8d43ae5df2d27af471df6ffa6056",
+    "architecture_input_sha256": "8031c74a3c50fbc9cc80ec05300dd12c1990718d8debbbddab3c8918f465de3f",
+    "evidence_reviewed_sha256": "8dc2a5d9b326891ba7ab219a1ba72f7a275b71e79cf3fcde75d698769a6f5569"
+  },
+  "package": {
+    "title": "RealtimeとMultimodalがInteractionを変える",
+    "package_type": "FEATURE",
+    "page_target": 5,
+    "editorial_angle": "Voxtral Realtimeのstreaming speechとGemini 3.1 Flash Image Previewを中心に、agentic workとは別のinteraction速度・modal breadthの進展を整理する。",
+    "must_cover": [
+      "Voxtral Realtimeのopen-weight/Apache-2.0、4B、13 languages",
+      "latency/WERをvendor claimとして扱う",
+      "Gemini 3.1 Flash Image Previewのpreview status",
+      "Transformers v5.2による実装層への到達"
+    ],
+    "boundaries": [
+      "Sub-200ms latency and accuracy comparisons are vendor-reported and depend on the stated serving configuration.",
+      "Open-weight/license status does not imply every surrounding hosted service component is open source.",
+      "The task source is Mistral’s news index; item-level wording must remain consistent with the February launch article.",
+      "Both highlighted model identifiers were preview-stage February releases; drafting must not describe them as generally stable at that date.",
+      "The API changelog is chronology evidence and does not independently validate quality/benchmark claims.",
+      "This task combines a reasoning/tool-use model update and an image-generation model update; architecture should split their editorial roles if needed.",
+      "Framework integration proves implementation/support landed in Transformers; it does not independently validate the model vendors’ benchmark claims.",
+      "v5.1.0 is supporting context; v5.2.0 is the materially stronger February integration milestone.",
+      "The v5.2 release also contains breaking interface changes, so model support should not be reduced to a simple compatibility list."
+    ],
+    "late_breaking": false,
+    "drafting_order": 4
+  },
+  "primary_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M02",
+      "evidence_task_id": "evidence:SP-2026-M02:item-official-index-mistral-news-e5054b4c4c",
+      "task_file": "item-official-index-mistral-news-e5054b4c4c.json",
+      "run_file": "item-official-index-mistral-news-e5054b4c4c.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material and first-party item-level verification; no paid inference-provider API",
+        "generated_at": "2026-08-13T01:05:00Z",
+        "run_reference": "February 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "be1138c13d9989978bcb3a23afdc83ea4c1404e781a19b94ac7143555f597428",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M02",
+        "evidence_task_id": "evidence:SP-2026-M02:item-official-index-mistral-news-e5054b4c4c",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Voxtral Transcribe 2 / Voxtral Realtime",
+          "artifact_type": "OPEN_WEIGHT",
+          "organization": "Mistral AI",
+          "canonical_url": "https://mistral.ai/news/"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-02-04",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "MODEL_RELEASE",
+              "event_date": "2026-02-04",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T01:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://mistral.ai/news/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://mistral.ai/news/",
+            "published_at": null,
+            "accessed_at": "2026-08-13T01:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "Mistral announced the Voxtral Transcribe 2 family on 2026-02-04, including a realtime streaming speech-to-text model.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "The realtime model was released as open weights under Apache 2.0 and described as a 4B-parameter streaming ASR model supporting 13 languages.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-3",
+            "text": "Latency, word-error-rate, and price/performance comparisons in the launch material are vendor claims.",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Sub-200ms latency and accuracy comparisons are vendor-reported and depend on the stated serving configuration.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          },
+          {
+            "limitation_id": "limitation-2",
+            "text": "Open-weight/license status does not imply every surrounding hosted service component is open source.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          },
+          {
+            "limitation_id": "limitation-3",
+            "text": "The task source is Mistral’s news index; item-level wording must remain consistent with the February launch article.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "extract February Voxtral/voice items; verify model identity, open-weight/license status, realtime mechanism, language scope, latency claim attribution, and chronology",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: extract February Voxtral/voice items; verify model identity, open-weight/license status, realtime mechanism, language scope, latency claim attribution, and chronology. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Voxtral Realtime makes realtime speech a concrete February systems/model axis, broadening the Special beyond text-centric coding agents.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-source evidence supports Candidate Selection for a material February 2026 technical change."
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M02",
+      "evidence_task_id": "evidence:SP-2026-M02:item-official-index-google-gemini-api-re-d5b8ea25b2",
+      "task_file": "item-official-index-google-gemini-api-re-d5b8ea25b2.json",
+      "run_file": "item-official-index-google-gemini-api-re-d5b8ea25b2.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material and first-party item-level verification; no paid inference-provider API",
+        "generated_at": "2026-08-13T01:05:00Z",
+        "run_reference": "February 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "a6d0ac525111e5c8b04ee1803d70209d090a359e01275adb675dc9a5054bfa94",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M02",
+        "evidence_task_id": "evidence:SP-2026-M02:item-official-index-google-gemini-api-re-d5b8ea25b2",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Gemini 3.1 Pro / Gemini 3.1 Flash Image February API releases",
+          "artifact_type": "MODEL_UPDATE",
+          "organization": "Google",
+          "canonical_url": "https://ai.google.dev/gemini-api/docs/changelog"
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-02-19",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "API_MODEL_RELEASE",
+              "event_date": "2026-02-19",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "API_MODEL_RELEASE",
+              "event_date": "2026-02-26",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T01:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://ai.google.dev/gemini-api/docs/changelog",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "Primary source 1: https://ai.google.dev/gemini-api/docs/changelog",
+            "published_at": null,
+            "accessed_at": "2026-08-13T01:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "The Gemini API changelog records Gemini 3.1 Pro Preview on 2026-02-19 and a custom-tools endpoint that prioritizes user-defined tools alongside built-in execution capabilities.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "The changelog records Gemini 3.1 Flash Image Preview (Nano Banana 2) on 2026-02-26 as a speed/high-volume image-generation release.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-3",
+            "text": "Performance and quality superiority claims associated with these previews remain vendor claims.",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Both highlighted model identifiers were preview-stage February releases; drafting must not describe them as generally stable at that date.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          },
+          {
+            "limitation_id": "limitation-2",
+            "text": "The API changelog is chronology evidence and does not independently validate quality/benchmark claims.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          },
+          {
+            "limitation_id": "limitation-3",
+            "text": "This task combines a reasoning/tool-use model update and an image-generation model update; architecture should split their editorial roles if needed.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "extract February model/API release-note entries and verify identifiers, dates, modalities, preview/stable status, and deprecations",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: extract February model/API release-note entries and verify identifiers, dates, modalities, preview/stable status, and deprecations. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Captures the late-February evolution of the general Gemini API surface across reasoning/tool use and high-throughput image generation.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-source evidence supports Candidate Selection for a material February 2026 technical change."
+        }
+      }
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "schema_version": "1.0",
+      "issue_id": "SP-2026-M02",
+      "evidence_task_id": "evidence:SP-2026-M02:series-transformers-february-bb7267a89b",
+      "task_file": "series-transformers-february-bb7267a89b.json",
+      "run_file": "series-transformers-february-bb7267a89b.json",
+      "runner": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "invocation": "interactive ChatGPT project primary-source Evidence review using preserved Source Intake material and first-party item-level verification; no paid inference-provider API",
+        "generated_at": "2026-08-13T01:05:00Z",
+        "run_reference": "February 2026 Special primary-source Evidence review"
+      },
+      "evidence_task_sha256": "5a6cdd877f095c424044716585c7283d41342d920f6e0ca863a89c549e532bb2",
+      "prompt_id": "primary-source-verification-v0.1",
+      "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+      "card": {
+        "schema_version": "1.0",
+        "issue_id": "SP-2026-M02",
+        "evidence_task_id": "evidence:SP-2026-M02:series-transformers-february-bb7267a89b",
+        "status": "VERIFIED",
+        "grouping_resolution": {
+          "accepted": true,
+          "split_recommended": false,
+          "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+        },
+        "artifact": {
+          "canonical_name": "Transformers v5.1 / v5.2 model-family integrations",
+          "artifact_type": "FRAMEWORK",
+          "organization": "Hugging Face",
+          "canonical_url": null
+        },
+        "temporal": {
+          "artifact_first_announced": "2026-02-05",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-02-05",
+              "source_published_at": null,
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "event_id": "event-2",
+              "event_type": "PROJECT_RELEASE",
+              "event_date": "2026-02-16",
+              "source_published_at": null,
+              "source_ids": [
+                "src-2"
+              ]
+            }
+          ],
+          "observed_at": "2026-08-13T01:05:00Z"
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://github.com/huggingface/transformers/releases/tag/v5.1.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Primary source 1: https://github.com/huggingface/transformers/releases/tag/v5.1.0",
+            "published_at": null,
+            "accessed_at": "2026-08-13T01:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          },
+          {
+            "source_id": "src-2",
+            "url": "https://github.com/huggingface/transformers/releases/tag/v5.2.0",
+            "source_class": "PRIMARY_REPOSITORY",
+            "title": "Primary source 2: https://github.com/huggingface/transformers/releases/tag/v5.2.0",
+            "published_at": null,
+            "accessed_at": "2026-08-13T01:05:00Z",
+            "role": "Primary source used for chronology and technical verification"
+          }
+        ],
+        "claims": [
+          {
+            "claim_id": "claim-1",
+            "text": "Transformers v5.2.0 was published on 2026-02-16 with explicit support additions for VoxtralRealtime, GLM-5, Qwen3.5/Qwen3.5 MoE, and the VibeVoice Acoustic Tokenizer.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-2"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-2",
+            "text": "The VoxtralRealtime implementation describes streaming ASR using an audio encoder plus Mistral-based language-model decoder with time conditioning and causal-convolution caches.",
+            "evidence_class": "PROJECT_CLAIM",
+            "source_ids": [
+              "src-2"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-3",
+            "text": "Transformers v5.1.0 was published earlier in February and included additional model-family integrations such as GLM-OCR.",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": null
+          },
+          {
+            "claim_id": "claim-4",
+            "text": "Vendor performance descriptions quoted inside the Transformers release notes are not independent Hugging Face validation.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-2"
+            ],
+            "context": null
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "limitation_id": "limitation-1",
+            "text": "Framework integration proves implementation/support landed in Transformers; it does not independently validate the model vendors’ benchmark claims.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ]
+          },
+          {
+            "limitation_id": "limitation-2",
+            "text": "v5.1.0 is supporting context; v5.2.0 is the materially stronger February integration milestone.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ]
+          },
+          {
+            "limitation_id": "limitation-3",
+            "text": "The v5.2 release also contains breaking interface changes, so model support should not be reduced to a simple compatibility list.",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1",
+              "src-2"
+            ]
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "verify newly supported families such as GLM-OCR and whether any change deserves distinct Special coverage",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: verify newly supported families such as GLM-OCR and whether any change deserves distinct Special coverage. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            },
+            {
+              "target": "verify release chronology, newly supported model families, implementation scope, breaking changes, and whether listed integrations are complete model support or narrower components",
+              "status": "VERIFIED",
+              "finding": "Verified against the cited primary source set at the scope requested by the task: verify release chronology, newly supported model families, implementation scope, breaking changes, and whether listed integrations are complete model support or narrower components. Any numerical/capability result remains attributed according to the Evidence classes in this card.",
+              "source_ids": [
+                "src-1",
+                "src-2"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        },
+        "editorial": {
+          "why_now_confirmed": true,
+          "why_now_note": "Transformers v5.2 is unusually useful ecosystem evidence because one mid-February release integrates GLM-5, Qwen3.5, Voxtral Realtime, and VibeVoice components, showing how rapidly the model-release wave entered the common implementation layer.",
+          "candidate_recommendation": "CANDIDATE",
+          "rationale": "Primary-source evidence supports Candidate Selection for a material February 2026 technical change."
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION",
+    "cover_headline_finalization_forbidden": true,
+    "this_week_summary_forbidden": true
+  }
+}

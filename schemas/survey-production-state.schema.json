@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/survey-production-state.schema.json",
+  "title": "Survey Production Core v2 Production State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "issue_id", "research_profile", "publication_profile",
+    "lifecycle_state", "profile", "contract", "implementation", "human_gates",
+    "human_gate_provenance", "target_gate", "next_action", "terminal_reason",
+    "exception_gate", "machine_checkpoints", "checkpoint_provenance",
+    "legacy_compatibility", "history"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "issue_id": {"type": "string", "minLength": 1},
+    "research_profile": {"enum": ["WEEKLY", "RETROSPECTIVE_PERIOD", "THEMATIC"]},
+    "publication_profile": {"enum": ["WEEKLY_MAGAZINE", "LONGFORM_SPECIAL"]},
+    "lifecycle_state": {"$ref": "#/$defs/lifecycle"},
+    "profile": {"$ref": "#/$defs/artifactAuthority"},
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pipeline_contract_version", "pipeline_contract_sha256",
+        "quality_contract_version", "quality_contract_sha256",
+        "research_profile_version", "research_profile_sha256",
+        "publication_profile_version", "publication_profile_sha256"
+      ],
+      "properties": {
+        "pipeline_contract_version": {"type": "string", "minLength": 1},
+        "pipeline_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "quality_contract_version": {"type": "string", "minLength": 1},
+        "quality_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "research_profile_version": {"type": "string", "minLength": 1},
+        "research_profile_sha256": {"$ref": "#/$defs/sha256"},
+        "publication_profile_version": {"type": "string", "minLength": 1},
+        "publication_profile_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "implementation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["repository_commit_sha", "orchestrator_version"],
+      "properties": {
+        "repository_commit_sha": {"$ref": "#/$defs/gitsha"},
+        "orchestrator_version": {"type": "string", "minLength": 1}
+      }
+    },
+    "human_gates": {
+      "type": "object", "additionalProperties": false,
+      "required": ["architecture_review", "publication_preview"],
+      "properties": {
+        "architecture_review": {"enum": ["pending", "approved", "rejected"]},
+        "publication_preview": {"enum": ["pending", "approved", "rejected"]}
+      }
+    },
+    "human_gate_provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["architecture_review", "publication_preview"],
+      "properties": {
+        "architecture_review": {"$ref": "#/$defs/nullableAuthority"},
+        "publication_preview": {"$ref": "#/$defs/nullableAuthority"}
+      }
+    },
+    "target_gate": {"enum": ["ARCHITECTURE_REVIEW", "PUBLICATION_PREVIEW"]},
+    "next_action": {"type": ["string", "null"]},
+    "terminal_reason": {"enum": [null, "HUMAN_GATE_REACHED", "EXCEPTION_GATE_REQUIRED", "COMPLETE"]},
+    "exception_gate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "reason"],
+      "properties": {
+        "status": {"enum": ["inactive", "required", "resolved"]},
+        "reason": {"type": ["string", "null"]}
+      }
+    },
+    "machine_checkpoints": {"$ref": "#/$defs/checkpointStatusMap"},
+    "checkpoint_provenance": {"$ref": "#/$defs/checkpointAuthorityMap"},
+    "legacy_compatibility": {
+      "type": "object", "additionalProperties": false,
+      "required": ["mode", "legacy_state_path", "legacy_state_present", "legacy_state_sha256"],
+      "properties": {
+        "mode": {"const": "NON_AUTHORITATIVE_READ_ONLY"},
+        "legacy_state_path": {"type": "string", "minLength": 1},
+        "legacy_state_present": {"type": "boolean"},
+        "legacy_state_sha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]}
+      }
+    },
+    "history": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["from", "to", "recorded_at", "repository_commit_sha"],
+        "properties": {
+          "from": {"oneOf": [{"$ref": "#/$defs/lifecycle"}, {"type": "null"}]},
+          "to": {"$ref": "#/$defs/lifecycle"},
+          "recorded_at": {"type": "string", "format": "date-time"},
+          "repository_commit_sha": {"$ref": "#/$defs/gitsha"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "gitsha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "artifactAuthority": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/sha256"}}
+    },
+    "nullableAuthority": {"oneOf": [{"$ref": "#/$defs/artifactAuthority"}, {"type": "null"}]},
+    "checkpointStatus": {"enum": ["pending", "passed", "failed"]},
+    "checkpointStatusMap": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "discovery", "screening", "evidence", "materiality", "completeness",
+        "selection", "architecture", "draft", "validation", "publication_preview", "freeze", "release"
+      ],
+      "properties": {
+        "discovery": {"$ref": "#/$defs/checkpointStatus"},
+        "screening": {"$ref": "#/$defs/checkpointStatus"},
+        "evidence": {"$ref": "#/$defs/checkpointStatus"},
+        "materiality": {"$ref": "#/$defs/checkpointStatus"},
+        "completeness": {"$ref": "#/$defs/checkpointStatus"},
+        "selection": {"$ref": "#/$defs/checkpointStatus"},
+        "architecture": {"$ref": "#/$defs/checkpointStatus"},
+        "draft": {"$ref": "#/$defs/checkpointStatus"},
+        "validation": {"$ref": "#/$defs/checkpointStatus"},
+        "publication_preview": {"$ref": "#/$defs/checkpointStatus"},
+        "freeze": {"$ref": "#/$defs/checkpointStatus"},
+        "release": {"$ref": "#/$defs/checkpointStatus"}
+      }
+    },
+    "checkpointAuthorityMap": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "discovery", "screening", "evidence", "materiality", "completeness",
+        "selection", "architecture", "draft", "validation", "publication_preview", "freeze", "release"
+      ],
+      "properties": {
+        "discovery": {"$ref": "#/$defs/nullableAuthority"},
+        "screening": {"$ref": "#/$defs/nullableAuthority"},
+        "evidence": {"$ref": "#/$defs/nullableAuthority"},
+        "materiality": {"$ref": "#/$defs/nullableAuthority"},
+        "completeness": {"$ref": "#/$defs/nullableAuthority"},
+        "selection": {"$ref": "#/$defs/nullableAuthority"},
+        "architecture": {"$ref": "#/$defs/nullableAuthority"},
+        "draft": {"$ref": "#/$defs/nullableAuthority"},
+        "validation": {"$ref": "#/$defs/nullableAuthority"},
+        "publication_preview": {"$ref": "#/$defs/nullableAuthority"},
+        "freeze": {"$ref": "#/$defs/nullableAuthority"},
+        "release": {"$ref": "#/$defs/nullableAuthority"}
+      }
+    },
+    "lifecycle": {"enum": [
+      "ISSUE_INITIALIZED", "DISCOVERY_COLLECTED", "CANDIDATES_NORMALIZED",
+      "EVIDENCE_REVIEWED", "SELECTION_COMPLETE", "ARCHITECTURE_ESTABLISHED",
+      "DRAFT_COMPLETE", "VALIDATED_DRAFT", "RELEASE_CANDIDATE", "FROZEN", "RELEASED"
+    ]}
+  }
+}

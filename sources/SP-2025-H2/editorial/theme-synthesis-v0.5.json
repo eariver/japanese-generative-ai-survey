@@ -1,0 +1,257 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2025-H2",
+  "revision": "v0.5",
+  "purpose": "Restore half-year comparison depth from already-selected Evidence after full-page render QA found the accepted article summaries too compressed for Publication Preview.",
+  "constraints": {
+    "new_external_evidence_allowed": false,
+    "selected_evidence_only": true,
+    "paper_watch_supplement": false
+  },
+  "themes": [
+    {
+      "package_id": "agent",
+      "title": "横断比較 — Agent能力はどの層へ移ったか",
+      "intro": "2025年後半のagent系更新は、単にbase modelの推論能力を上げる話ではなく、browser、code/tool execution、context、SDK、評価・改善ループ、service lifecycleへ実行面を広げた。ここでは各社の更新を同じ製品比較に潰さず、能力が置かれた層を分けて読む。",
+      "rows": [
+        {
+          "dimension": "user-facing action surface",
+          "observation": "ChatGPT agentはresearch、browser automation、code/tool executionを一つのuser-facing productへまとめ、同日にsystem cardも公開した。action surfaceとcontrol boundaryが同じrelease packageで前景化した。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:series-oa-chatgpt-agent-41b09142b4"]
+        },
+        {
+          "dimension": "modelとagent platformの結合",
+          "observation": "AnthropicのSonnet 4.5、Haiku 4.5、Opus 4.5はAPI提供だけでなくClaude CodeやAgent SDKなどの利用面と結び付いて展開された。living newsroomのため、半年の順序はitem-level chronologyとして扱う。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:item-official-index-anthropic-news-afddcb8068"]
+        },
+        {
+          "dimension": "service lifecycle",
+          "observation": "Gemini APIではvideo/image、robotics、Computer Use、Gemini 3、Interactions APIなどがpreview・GA・更新として並ぶ。これらはupstream model announcementと同一の日付・identityへ統合しない。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:item-official-index-google-gemini-api-re-d5b8ea25b2"]
+        },
+        {
+          "dimension": "build-evaluate-improve loop",
+          "observation": "AgentKit、Evals、RFT for agentsはagent構築だけでなく評価と改善を反復するengineering layerを示し、Codexの更新はterminal・IDE・web・mobileをまたぐcoding-agent surfaceを広げた。",
+          "evidence_task_ids": [
+            "evidence:SP-2025-H2:item-official-feed-0661418088b8e2710c8e-65d3c9a193",
+            "evidence:SP-2025-H2:item-official-feed-6deeebce1719b9f21b32-837ba14bfc"
+          ]
+        }
+      ]
+    },
+    {
+      "package_id": "model",
+      "title": "横断比較 — 単発Launchでは追えないfamily lifecycle",
+      "intro": "GPT-5系列は一回の発表で閉じず、base release、developer API、安全手法、後続世代、coding specializationへ分岐した。半年の変化を読むには、同じfamily名に属していてもevent identityを分離する必要がある。",
+      "rows": [
+        {
+          "dimension": "release packageの起点",
+          "observation": "8月のGPT-5はmodel release、developer API、safe-completionsなどを同日のrelease packageとして持つ一方、それぞれの事実と評価claimは別の境界で扱う。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:series-oa-gpt5-d90a8cae40"]
+        },
+        {
+          "dimension": "family更新",
+          "observation": "11月のGPT-5.1と12月のGPT-5.2は8月launchの追記ではなく、別の日付を持つmodel-family eventとして残す。family名の連続性とrelease identityは同じではない。",
+          "evidence_task_ids": [
+            "evidence:SP-2025-H2:item-official-feed-5bea303cfdb176bb1a01-f1c915a303",
+            "evidence:SP-2025-H2:item-official-feed-55da04f42e321f995dad-c0e2883961"
+          ]
+        },
+        {
+          "dimension": "coding specialization",
+          "observation": "Codex-MaxとGPT-5.2-Codexはfamily更新をcoding用途へspecializeした別eventとして位置付ける。base model releaseとcoding product/modelの公開を同じ出来事にはしない。",
+          "evidence_task_ids": [
+            "evidence:SP-2025-H2:item-official-feed-10ab1c39be1497734c70-6925368411",
+            "evidence:SP-2025-H2:item-official-feed-cd8d6c8023f2f56d4036-961d055191"
+          ]
+        },
+        {
+          "dimension": "評価claimの境界",
+          "observation": "各releaseで提示されたbenchmarkや優位性表現はvendor-attributed claimのまま維持する。一次資料から確定できるrelease、API availability、model identity、control情報とは分けて読む。",
+          "evidence_task_ids": [
+            "evidence:SP-2025-H2:series-oa-gpt5-d90a8cae40",
+            "evidence:SP-2025-H2:item-official-feed-55da04f42e321f995dad-c0e2883961"
+          ]
+        }
+      ]
+    },
+    {
+      "package_id": "open",
+      "title": "横断比較 — Open Weightとmanaged lifecycleを分けて読む",
+      "intro": "gpt-oss、Qwen、DeepSeek、Kimi、Mistral、GLMは一つのランキングへ並べるより、weights/license、self-host、managed API、regional availability、coding/tool surfaceという採用条件の違いとして比較した方が2025年後半の変化を捉えやすい。",
+      "rows": [
+        {
+          "dimension": "open-weight deployment",
+          "observation": "gpt-ossはopen-weight reasoning modelをlocal/self-hosted deploymentの選択肢として提示した。ただしweightsの公開はtraining dataや学習過程の全面開示を意味しない。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:series-oa-gpt-oss-ca4a8f2a95"]
+        },
+        {
+          "dimension": "catalog・regional availability",
+          "observation": "Alibaba Model Studioはmodel release、snapshot、region別availability、後日のglobal availabilityを同じliving catalogに持つため、catalog上の日付をupstream model releaseへ短絡させない。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:item-official-index-alibaba-model-studio-154c528d30"]
+        },
+        {
+          "dimension": "API service transition",
+          "observation": "DeepSeekの更新はstable/experimental endpointやservice transitionを含む。API上の切替日はcheckpoint publicationやtraining completionの代替日付ではない。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:item-official-index-deepseek-api-updates-72fd8b1ca6"]
+        },
+        {
+          "dimension": "coding/product surface",
+          "observation": "Kimi Codeの更新はcoding agent/productのliving historyとして、Mistralのnewsは公開chronologyとして有用だが、両者ともindexから得られる範囲とitem-levelの主張を分けて扱う。",
+          "evidence_task_ids": [
+            "evidence:SP-2025-H2:item-official-index-kimi-code-whats-new-788743b9bb",
+            "evidence:SP-2025-H2:item-official-index-mistral-news-e5054b4c4c"
+          ]
+        },
+        {
+          "dimension": "release scopeとvendor claim",
+          "observation": "GLM/AutoGLM系列はrelease identity、日付、feature scopeを一次情報として扱い、性能superlativeはvendor claimとして明示する。open/deploymentの比較を性能順位へ変換しない。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:item-official-index-zai-release-notes-409a030c15"]
+        }
+      ]
+    },
+    {
+      "package_id": "multi",
+      "title": "横断比較 — Multimodalからinteraction/action spaceへ",
+      "intro": "video generation、world model、roboticsは同じmultimodalという語で括れてもavailabilityと目的が異なる。2025年後半は生成modalitiesの増加だけでなく、環境理解・予測・physical actionへ接続する研究と製品面が並行した。",
+      "rows": [
+        {
+          "dimension": "interactive world / robotics",
+          "observation": "DeepMindのGenie 3、Gemini Robotics 1.5、SIMA 2などはinteractive world、robotics、3D agentを別eventとして展開した。research prototype、partner access、API availabilityを一つのrelease状態へ統合しない。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:item-official-index-google-deepmind-blog-9b2b580695"]
+        },
+        {
+          "dimension": "audio-video generation",
+          "observation": "Sora 2はvideo generationにaudioを含むrelease identityを持つ。生成modalitiesの拡大はroboticsやworld-model研究と関連づけて読めるが、同一product categoryではない。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:series-oa-sora2-dd9d8f230a"]
+        },
+        {
+          "dimension": "model/product family",
+          "observation": "MiniMaxのM2、Hailuo 2.3、M2.1は同社内でもmodel/product surfaceが異なる。client-rendered indexの境界を保ち、item-level release identityを使って整理する。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:item-official-index-minimax-news-8be7d33438"]
+        },
+        {
+          "dimension": "availabilityの読み分け",
+          "observation": "この章の各eventはresearch announcement、limited access、managed API、product rolloutなど提供状態が異なる。技術方向が近いことと、同じ条件で利用可能であることを混同しない。",
+          "evidence_task_ids": [
+            "evidence:SP-2025-H2:item-official-index-google-deepmind-blog-9b2b580695",
+            "evidence:SP-2025-H2:series-oa-sora2-dd9d8f230a",
+            "evidence:SP-2025-H2:item-official-index-minimax-news-8be7d33438"
+          ]
+        }
+      ]
+    },
+    {
+      "package_id": "runtime",
+      "title": "横断比較 — Model Churnを吸収する4つのruntime面",
+      "intro": "半年のmodel更新を実際に動かす側では、engine migration、distributed/long-context support、hardware-specific optimization、library integrationが別々の速度で進んだ。runtime supportの日付はmodelのrelease chronologyとは別の技術史として残す。",
+      "rows": [
+        {
+          "dimension": "serving engine transition",
+          "observation": "vLLMはv0.10からv0.11で旧V0 engineの整理・削除を進め、V1を中心にconfigurationやmodel/tool supportを更新し、v0.13まで継続した。性能影響はworkloadとhardwareに依存する。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:series-vllm-h2-c06db6d580"]
+        },
+        {
+          "dimension": "distributed / long-context support",
+          "observation": "SGLangはruntime/disaggregated-transfer、long-context、model supportを更新し、後半にはDeepSeek V3.2系やdiffusion/JITなど対応面を広げた。release-note性能表現はproject claimである。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:series-sglang-h2-17aa4e2a64"]
+        },
+        {
+          "dimension": "hardware-specific runtime",
+          "observation": "TensorRT-LLMのrelease系列はmodel supportやserving/runtime機能を進めたが、性能記述はNVIDIAのproject claimでありhardware/configuration条件から切り離さない。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:series-tensorrt-h2-f352c9873f"]
+        },
+        {
+          "dimension": "library integration",
+          "observation": "Transformersのmodel/runtime uptakeはdownstream integration eventである。library support日をupstream modelのoriginal release dateとして扱うとchronologyが崩れる。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:series-transformers-h2-1299e5aa8a"]
+        },
+        {
+          "dimension": "downstream uptakeという別時系列",
+          "observation": "4系列を並べると、新モデルへの対応はmodel announcementと同時ではなく、frameworkごとのrelease cadenceで吸収される。deployabilityはmodel単体ではなくdownstream stackにも依存する。",
+          "evidence_task_ids": [
+            "evidence:SP-2025-H2:series-vllm-h2-c06db6d580",
+            "evidence:SP-2025-H2:series-transformers-h2-1299e5aa8a"
+          ]
+        }
+      ]
+    },
+    {
+      "package_id": "control",
+      "title": "横断比較 — Autonomy拡大に追従した4つのcontrol面",
+      "intro": "2025年後半のcontrol layerは一つのsafety scoreへ収束していない。cross-lab evaluation、agent/browser hardening、policy-conditioned classification、schemingのcontrolled evaluationという異なる問題設定を分離すると、action surfaceの拡大に対して何を制御しようとしていたかが見える。",
+      "rows": [
+        {
+          "dimension": "cross-lab evaluation",
+          "observation": "OpenAIとAnthropicは互いのmodelを複数のsafety dimensionで評価する共同結果を公開した。これは重要なcross-lab evidenceだが、独立第三者benchmarkへ読み替えない。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:item-official-feed-ad13fe7d3321b824a618-aeb0fa89f4"]
+        },
+        {
+          "dimension": "browser / prompt-injection hardening",
+          "observation": "ChatGPT Atlasのlaunch、OWL architecture publication、12月のprompt-injection hardeningは一つのrelease arcに属しつつ別eventである。hardeningはprompt injection一般の解決を意味しない。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:series-oa-atlas-93e282cc32"]
+        },
+        {
+          "dimension": "policy-conditioned classification",
+          "observation": "gpt-oss-safeguardはpolicy-conditioned safety classification向けのopen-weight reasoning modelとして紹介された。gpt-oss本体の一般的な能力・公開条件と同一視しない。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:item-official-feed-2081c76ea2b4319d2ba2-225a091e4c"]
+        },
+        {
+          "dimension": "schemingのcontrolled evaluation",
+          "observation": "scheming detection/mitigation研究はcontrolled evaluationで得られた結果として扱う。実験条件を外してdeployed-model behavior全般へ一般化しない。",
+          "evidence_task_ids": ["evidence:SP-2025-H2:item-official-feed-bef6cbe2a83e51bc89a8-5f3fd437ab"]
+        }
+      ]
+    },
+    {
+      "package_id": "synth",
+      "title": "横断比較 — 2025年後期をExecution Stackとして読み直す",
+      "intro": "半年を通して一貫して増えたのはmodel名だけではない。model family、agent execution、open deployment、multimodal/action space、runtime、controlがそれぞれ別のchronologyを持ちながら依存し始めたため、技術動向の観測単位をstackへ広げる必要がある。",
+      "rows": [
+        {
+          "dimension": "7〜8月: layerの立ち上がり",
+          "observation": "ChatGPT agent、GPT-5、gpt-ossなどはaction surface、frontier family、open-weight deploymentという異なるlayerを早い段階で前景化した。",
+          "evidence_task_ids": [
+            "evidence:SP-2025-H2:series-oa-chatgpt-agent-41b09142b4",
+            "evidence:SP-2025-H2:series-oa-gpt5-d90a8cae40",
+            "evidence:SP-2025-H2:series-oa-gpt-oss-ca4a8f2a95"
+          ]
+        },
+        {
+          "dimension": "9〜10月: 実行系の接続",
+          "observation": "agent/coding platform、browser/computer-use、runtime integrationが重なり、model capabilityを実際のactionへ接続するharnessとdownstream implementationの重要性が増した。",
+          "evidence_task_ids": [
+            "evidence:SP-2025-H2:item-official-index-anthropic-news-afddcb8068",
+            "evidence:SP-2025-H2:series-vllm-h2-c06db6d580"
+          ]
+        },
+        {
+          "dimension": "後半: family churnとcontrol",
+          "observation": "Anthropicのmodel family更新が続く一方、cross-lab safety evaluationなどcontrol layerも独立したengineering concernとして前景化した。",
+          "evidence_task_ids": [
+            "evidence:SP-2025-H2:item-official-index-anthropic-news-afddcb8068",
+            "evidence:SP-2025-H2:item-official-feed-ad13fe7d3321b824a618-aeb0fa89f4"
+          ]
+        },
+        {
+          "dimension": "identityを分ける必要",
+          "observation": "model announcement、API/service availability、product rollout、runtime integrationは同じ日付・同じ意味ではない。半年を正しく比較するにはこのidentity separationが必須になった。",
+          "evidence_task_ids": [
+            "evidence:SP-2025-H2:item-official-index-google-gemini-api-re-d5b8ea25b2",
+            "evidence:SP-2025-H2:series-vllm-h2-c06db6d580"
+          ]
+        },
+        {
+          "dimension": "2025年末に残った境界",
+          "observation": "open weightsと全面的なtraining transparency、research prototypeとGA、runtime supportとproduction validation、controlled safety evaluationとdeployed behaviorは依然として別物である。stack化は境界を消すのではなく、むしろ明示する必要を増やした。",
+          "evidence_task_ids": [
+            "evidence:SP-2025-H2:series-oa-gpt-oss-ca4a8f2a95",
+            "evidence:SP-2025-H2:item-official-index-google-deepmind-blog-9b2b580695",
+            "evidence:SP-2025-H2:series-vllm-h2-c06db6d580",
+            "evidence:SP-2025-H2:item-official-feed-ad13fe7d3321b824a618-aeb0fa89f4"
+          ]
+        }
+      ]
+    }
+  ]
+}

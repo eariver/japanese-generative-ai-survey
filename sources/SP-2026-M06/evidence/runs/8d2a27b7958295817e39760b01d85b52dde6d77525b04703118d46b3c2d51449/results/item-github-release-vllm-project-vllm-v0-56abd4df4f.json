@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2026-M06",
+  "evidence_task_id": "evidence:SP-2026-M06:item-github-release-vllm-project-vllm-v0-56abd4df4f",
+  "evidence_task_sha256": "c17a3da1aa67ad4dbf957fdddd0505d059618f77807f6a02b6f748e681e75ef5",
+  "prompt_id": "primary-source-verification-v0.1",
+  "prompt_sha256": "c76baafb0bfdc1d3b3f859aec7f878a43e88372690055599f7317aaba9dde08a",
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "invocation": "interactive ChatGPT project review; primary-source Evidence only; no paid inference-provider API",
+    "generated_at": "2026-08-11T07:05:00Z",
+    "run_reference": "June 2026 Special primary-source Evidence review"
+  },
+  "card": {
+    "schema_version": "1.0",
+    "issue_id": "SP-2026-M06",
+    "evidence_task_id": "evidence:SP-2026-M06:item-github-release-vllm-project-vllm-v0-56abd4df4f",
+    "status": "VERIFIED",
+    "grouping_resolution": {
+      "accepted": true,
+      "split_recommended": false,
+      "note": "Screening grouping retained for verification; source-specific attribution remains explicit."
+    },
+    "artifact": {
+      "canonical_name": "vLLM v0.24.0",
+      "artifact_type": "FRAMEWORK",
+      "organization": "vLLM Project",
+      "canonical_url": "https://github.com/vllm-project/vllm/releases/tag/v0.24.0"
+    },
+    "temporal": {
+      "artifact_first_announced": "2026-06-29",
+      "events": [
+        {
+          "event_id": "event-1",
+          "event_type": "PROJECT_RELEASE",
+          "event_date": "2026-06-29",
+          "source_published_at": "2026-06-29T19:41:59Z",
+          "source_ids": [
+            "src-1"
+          ]
+        }
+      ],
+      "observed_at": "2026-08-11T07:05:00Z"
+    },
+    "sources": [
+      {
+        "source_id": "src-1",
+        "url": "https://github.com/vllm-project/vllm/releases/tag/v0.24.0",
+        "source_class": "PRIMARY_REPOSITORY",
+        "title": "Primary source 1: https://github.com/vllm-project/vllm/releases/tag/v0.24.0",
+        "published_at": null,
+        "accessed_at": "2026-08-11T07:05:00Z",
+        "role": "Primary source used for chronology and technical verification"
+      }
+    ],
+    "claims": [
+      {
+        "claim_id": "claim-1",
+        "text": "The release adds MiniMax-M3 support and continues DeepSeek-V4, Model Runner V2, diffusion-model and expert-parallel serving work.",
+        "evidence_class": "PROJECT_CLAIM",
+        "source_ids": [
+          "src-1"
+        ],
+        "context": null
+      }
+    ],
+    "metrics": [],
+    "limitations": [
+      {
+        "limitation_id": "limitation-1",
+        "text": "GitHub release notes are primary project evidence for release contents, but project performance claims are not independently reproduced here.",
+        "evidence_class": "INFERENCE",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "verification": {
+      "targets": [
+        {
+          "target": "verify MiniMax-M3 support and serving changes",
+          "status": "VERIFIED",
+          "finding": "The v0.24.0 notes explicitly add MiniMax-M3 and document the requested serving-stack changes.",
+          "source_ids": [
+            "src-1"
+          ]
+        }
+      ],
+      "unresolved_questions": [],
+      "contradictions": []
+    },
+    "editorial": {
+      "why_now_confirmed": true,
+      "why_now_note": "This release materially changes June inference/serving capability.",
+      "candidate_recommendation": "CANDIDATE",
+      "rationale": "Material serving-stack release suitable for Candidate Selection."
+    }
+  }
+}

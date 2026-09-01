@@ -1,0 +1,141 @@
+\documentclass[lualatex,a4paper,11pt]{jlreq}
+\usepackage{jgaisurvey}
+\usepackage{multicol}
+\addbibresource{references.bib}
+
+% Special-local long-form presentation. Shared weekly source remains unchanged.
+\geometry{margin=22mm,headsep=5mm,footskip=10mm}
+\setlength{\headheight}{14.5pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1em}
+\newtcolorbox{technicalnote}[2]{
+  enhanced,breakable,colback=SurveySoft,colframe=SurveyAccent,
+  boxrule=0.65pt,arc=1mm,title={#1 \hfill \footnotesize #2},fonttitle=\bfseries,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=4mm,after skip=3mm
+}
+
+\surveysetup
+  {SP-2024-H1}
+  {Japanese Generative AI Technical Survey}
+  {Special / Coverage 2024-01-01 -- 2024-06-30 / Retrospective as of 2026-08-15}
+  {Coverage window: 2024-01-01 -- 2024-06-30 UTC}
+\surveyeditiondescriptor{Retrospective Survey}
+\surveycoverstory
+  {モデル単体からシステム競争へ}
+  {2024年上期、生成AIの競争はフロンティアモデルの性能だけでなく、マルチモーダル対話、open model stack、端末配置、代替アーキテクチャ、ツールやエージェント、生成メディア、制御、servingまでを組み合わせる多層の設計競争へ広がった。}
+  {フロンティアモデルは「会話するモデル」からマルチモーダルな対話基盤へ \quad / \quad Open weightsから「再現できるモデルスタック」へ \quad / \quad 小型化は縮小版ではない――端末・プライバシー・ローカル実行}
+
+\setlength{\columnsep}{6mm}
+\setlength{\multicolsep}{0.8em plus 0.2em minus 0.1em}
+
+\begin{document}
+\surveycover
+\clearpage
+\input{sections/00-frontmatter}
+
+\clearpage
+\section{フロンティアモデルは、会話相手からマルチモーダルな対話基盤へ}
+\label{pkg:frontier-interaction}
+\input{layout-standfirsts/frontier-interaction}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/frontier-interaction}
+\end{multicols}
+\input{technical-notes/10-frontier-interaction-notes}
+
+\clearpage
+\section{Open weightsの先へ――再現できるモデルスタックという競争}
+\label{pkg:open-ecosystem}
+\input{layout-standfirsts/open-ecosystem}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/open-ecosystem}
+\end{multicols}
+\input{technical-notes/20-open-ecosystem-notes}
+
+\clearpage
+\section{小型化は「弱い巨大モデル」ではない――端末とprivate cloudから逆算する設計}
+\label{pkg:edge-private}
+\input{layout-standfirsts/edge-private}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/edge-private}
+\end{multicols}
+\input{technical-notes/30-edge-private-notes}
+
+\clearpage
+\section{Dense Transformerだけではない――2024 H1に広がった設計空間}
+\label{pkg:architecture-efficiency}
+\input{layout-standfirsts/architecture-efficiency}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/architecture-efficiency}
+\end{multicols}
+\input{technical-notes/40-architecture-efficiency-notes}
+
+\clearpage
+\section{生成から行動へ――RAG、Tool Use、Computer Useの接続}
+\label{pkg:action-rag-agents}
+\input{layout-standfirsts/action-rag-agents}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/action-rag-agents}
+\end{multicols}
+\input{technical-notes/50-action-rag-agents-notes}
+
+\clearpage
+\section{動画・画像生成が研究デモから競争軸へ}
+\label{pkg:generative-media}
+\input{layout-standfirsts/generative-media}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/generative-media}
+\end{multicols}
+\input{technical-notes/60-generative-media-notes}
+
+\clearpage
+\section{能力拡張と同時に増えた制御面――長文脈、behavior、interpretability}
+\label{pkg:safety-control}
+\input{layout-standfirsts/safety-control}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/safety-control}
+\end{multicols}
+\input{technical-notes/70-safety-control-notes}
+
+\clearpage
+\section{モデル性能を実用能力に変えるServingとData}
+\label{pkg:systems-data}
+\input{layout-standfirsts/systems-data}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/systems-data}
+\end{multicols}
+\input{technical-notes/80-systems-data-notes}
+
+\clearpage
+\input{half-year-analysis/80-half-year-analysis}
+
+\clearpage
+\section{総括――2024 H1に何が変わったのか}
+\label{pkg:conclusion}
+\input{layout-standfirsts/conclusion}
+\medskip
+\begin{multicols}{2}
+\input{layout-bodies/conclusion}
+\end{multicols}
+
+\section{Detailed Chronology}
+\label{sec:detailed-chronology}
+\input{layout-bodies/chronology}
+
+\clearpage
+\noindent{\small\textit{以下のReferencesは本号のchronology・技術確認・横断分析に用いた一次資料である。各entryでは識別・追跡に必要な資料名、組織、URL、参照日を示す。}}\par
+\smallskip
+% half-year final bibliography compaction
+\begingroup
+\footnotesize
+\setlength{\bibitemsep}{0pt}
+\printbibliography[title={References / Source Notes}]
+\endgroup
+\end{document}

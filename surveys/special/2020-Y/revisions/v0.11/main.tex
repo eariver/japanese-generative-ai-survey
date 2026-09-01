@@ -1,0 +1,215 @@
+\documentclass[lualatex,a4paper,11pt]{jlreq}
+\usepackage{jgaisurvey}
+\usepackage{needspace}
+\usepackage{multicol}
+\addbibresource{references.bib}
+
+% Special-local long-form presentation. Shared weekly source remains unchanged.
+\geometry{margin=22mm,headsep=5mm,footskip=10mm}
+\setlength{\headheight}{14.5pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1em}
+\newtcolorbox{technicalnote}[2]{
+  enhanced,breakable,colback=SurveySoft,colframe=SurveyAccent,
+  boxrule=0.65pt,arc=1mm,title={#1 \hfill \footnotesize #2},fonttitle=\bfseries,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=4mm,after skip=3mm
+}
+
+\surveysetup
+  {SP-2020-Y}
+  {Japanese Generative AI Technical Survey}
+  {Special / Coverage 2020-01-01 -- 2020-12-31 / Retrospective as of 2026-08-20}
+  {Coverage window: 2020-01-01 -- 2020-12-31 UTC}
+\surveyeditiondescriptor{Retrospective Survey}
+\surveycoverstory
+  {scaleから、接続される生成AIシステムへ}
+  {2020年、生成AIは『巨大なmodelを作る』だけの競争から外へ広がった。Scaling LawsとGPT-3がscaleとfew-shot capabilityを結び、APIがaccessを、retrievalが外部知識を、dialogueが会話固有のsystem designを、ZeROとGShardがtraining infrastructureを、diffusionとvisual-token系が新しい生成mediaを、human feedbackとtoxicity evaluationがsteering / risk layerを可視化した。これらはまだ一つのproductへ統合されていない。その分岐こそが2021年の多層system化への入口だった。}
+  {規模が設計原理になる――Scaling LawsからGPT-3へ \quad / \quad 知識を重みに閉じ込めない――REALMからRAGへ \quad / \quad 2021年への橋――モデルそのものから多層システムへ}
+
+\setlength{\columnsep}{6mm}
+\setlength{\multicolsep}{0.8em plus 0.2em minus 0.1em}
+
+\begin{document}
+\surveycover
+\clearpage
+\input{sections/00-frontmatter}
+
+\clearpage
+\section{規模が設計原理になる――Scaling LawsからGPT-3へ}
+\label{pkg:scale-laws-gpt3}
+\vspace{0.15em}
+\input{layout-bodies/01-scale-laws-gpt3-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/01-scale-laws-gpt3-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/01-scale-laws-gpt3-wide}
+\medskip
+\input{technical-notes/10-scale-laws-gpt3-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{モデルから入口へ――APIが変えたaccess boundary}
+\label{pkg:access-api}
+\vspace{0.15em}
+\input{layout-bodies/02-access-api-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/02-access-api-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/02-access-api-wide}
+\medskip
+\input{technical-notes/20-access-api-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{巨大化を成立させる裏側――ZeROとGShard}
+\label{pkg:systems-scale}
+\vspace{0.15em}
+\input{layout-bodies/03-systems-scale-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/03-systems-scale-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/03-systems-scale-wide}
+\medskip
+\input{technical-notes/30-systems-scale-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{知識を重みに閉じ込めない――REALMからRAGへ}
+\label{pkg:retrieval-grounding}
+\vspace{0.15em}
+\input{layout-bodies/04-retrieval-grounding-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/04-retrieval-grounding-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/04-retrieval-grounding-wide}
+\medskip
+\input{technical-notes/40-retrieval-grounding-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{会話はscaleだけでは解けない――MeenaとBlenderBot}
+\label{pkg:dialogue-systems}
+\vspace{0.15em}
+\input{layout-bodies/05-dialogue-systems-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/05-dialogue-systems-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/05-dialogue-systems-wide}
+\medskip
+\input{technical-notes/50-dialogue-systems-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{言語の外へ――Image GPTと離散visual token}
+\label{pkg:media-autoregressive}
+\vspace{0.15em}
+\input{layout-bodies/06-media-autoregressive-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/06-media-autoregressive-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/06-media-autoregressive-wide}
+\medskip
+\input{technical-notes/60-media-autoregressive-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{もう一つの生成系譜――DDPMからscore-SDEへ}
+\label{pkg:diffusion-score}
+\vspace{0.15em}
+\input{layout-bodies/07-diffusion-score-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/07-diffusion-score-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/07-diffusion-score-wide}
+\medskip
+\input{technical-notes/70-diffusion-score-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{振る舞いを人間から学ぶ――summarization feedback}
+\label{pkg:feedback-steering}
+\vspace{0.15em}
+\input{layout-bodies/08-feedback-steering-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/08-feedback-steering-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/08-feedback-steering-wide}
+\medskip
+\input{technical-notes/80-feedback-steering-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{能力の裏側を測る――toxicityとbiasの評価}
+\label{pkg:evaluation-risk}
+\vspace{0.15em}
+\input{layout-bodies/09-evaluation-risk-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/09-evaluation-risk-narrative}
+\end{multicols}
+\Needspace{5\baselineskip}
+\input{layout-bodies/09-evaluation-risk-wide}
+\medskip
+\input{technical-notes/90-evaluation-risk-notes}
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{Detailed Chronology――2020年の技術境界を時系列で追う}
+\label{pkg:annual-chronology}
+\vspace{0.15em}
+\input{layout-bodies/10-annual-chronology-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/10-annual-chronology-narrative}
+\end{multicols}
+\medskip
+\subsection*{Objective event index}
+\input{layout-bodies/annual-chronology-objective-index}
+\medskip
+% zero-card Technical Notes suppressed by #271
+
+\Needspace{0.45\textheight}
+\bigskip
+\section{総括――scaleから多層システムへ：2021年への橋}
+\label{pkg:synthesis-transition-2021}
+\vspace{0.15em}
+\input{layout-bodies/11-synthesis-transition-2021-standfirst}
+\vspace{0.20em}
+\begin{multicols}{2}
+\input{layout-bodies/11-synthesis-transition-2021-narrative}
+\end{multicols}
+\medskip
+% zero-card Technical Notes suppressed by #271
+
+\Needspace{0.30\textheight}
+\bigskip
+\noindent{\small Referencesには本文・Detailed Chronologyの検証に用いた一次資料の識別情報とURLを掲載する。各entryに共通する用途説明はここに集約する。}\par
+\smallskip
+% annual References two-column final compaction
+\section*{References / Source Notes}
+\addcontentsline{toc}{section}{References / Source Notes}
+\begingroup
+\scriptsize
+\setlength{\bibitemsep}{0pt}
+\begin{multicols}{2}
+\raggedright
+\printbibliography[heading=none]
+\end{multicols}
+\endgroup
+\end{document}

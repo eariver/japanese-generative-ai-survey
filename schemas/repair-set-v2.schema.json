@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/repair-set-v2.schema.json",
+  "title": "Survey Production Core v2 Repair Set",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "repair_set_id", "finding_ids", "affected_components", "actual_layers_changed", "disposition", "implementation_commits", "regression_fixtures", "compatibility_impact", "validation_results", "verification_editions", "status"],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "repair_set_id": {"type": "string", "minLength": 1},
+    "finding_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "affected_components": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "actual_layers_changed": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"enum": ["EDITION_LOCAL", "WEEKLY_PROFILE", "PERIOD_PROFILE", "THEMATIC_PROFILE", "CORE", "PUBLICATION_PROFILE", "QUALITY_CONTRACT", "SERIES_LAYER"]}
+    },
+    "disposition": {"enum": ["LOCAL_ONLY", "PROFILE_FIX", "CORE_FIX", "PUBLICATION_FIX", "QUALITY_CONTRACT_FIX", "SERIES_FIX", "DEFERRED"]},
+    "implementation_commits": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[0-9a-f]{40}$"}},
+    "regression_fixtures": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "compatibility_impact": {"type": "string", "minLength": 1},
+    "validation_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["check", "status", "reference"],
+        "properties": {
+          "check": {"type": "string", "minLength": 1},
+          "status": {"enum": ["PASS", "FAIL", "PENDING"]},
+          "reference": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "verification_editions": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "status": {"enum": ["PROPOSED", "IMPLEMENTED", "VALIDATED", "DEFERRED", "CLOSED"]}
+  }
+}

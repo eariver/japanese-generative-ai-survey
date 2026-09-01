@@ -1,0 +1,252 @@
+issue_id: "2026-W32"
+status: "release-candidate-v0.2-frozen"
+editorial_structure_status: "established-v0.1"
+article_drafting_status: "all-packages-drafted-validated-polished-and-frozen-v0.2"
+editorial_cutoff: "2026-08-07T18:00:00-04:00"
+editorial_cutoff_timezone: "America/New_York"
+observation_window_start: "2026-08-01T00:00:00-04:00"
+
+principles:
+  - "Grok trend observations are discovery signals, not technical fact evidence."
+  - "X reaction evidence proves that a reaction was observed, not that technical claims inside the post are true."
+  - "Technical claims are normalized against primary sources before editorial use."
+  - "Main-window and post-cutoff community reactions are kept separate."
+  - "Vendor/author benchmark claims retain attribution and setup boundaries."
+  - "Candidate selection precedes issue architecture; issue architecture precedes article drafting."
+  - "Cover framing is derived after body drafting; it must not drive candidate selection."
+  - "Downstream drafts consume normalized/verified evidence rather than raw collector output when a verified layer exists."
+  - "A frozen revision is not silently modified; subsequent content changes require a new revision."
+
+artifacts:
+  candidate_inventory:
+    index: "sources/2026-W32/candidates/index.yaml"
+    readme: "sources/2026-W32/candidates/README.md"
+    record_count: 35
+    status: "evidence-normalized"
+
+  current_candidate_matrix:
+    path: "sources/2026-W32/candidate-matrix-v0.2.md"
+    status: "current"
+    note: "Supersedes candidate-matrix.md. Google Agent Quality Flywheel chronology was subsequently normalized to the 2026-06-30 primary blog publication in its candidate record."
+
+  verification_backlog:
+    path: "sources/2026-W32/verification-backlog-v0.2.md"
+    status: "priority-a-closed-selection-dependent-backlog-remains"
+
+  candidate_selection:
+    human_readable: "sources/2026-W32/candidate-selection-v0.1.md"
+    machine_readable: "sources/2026-W32/candidate-selection.yaml"
+    status: "complete"
+
+  issue_architecture:
+    path: "sources/2026-W32/issue-architecture-v0.1.md"
+    target_pages: 18
+    status: "established"
+    note: "The frozen v0.2 release candidate is 16 pages; weak material was not added solely to reach the provisional target."
+
+  draft_validation:
+    path: "sources/2026-W32/draft-validation-v0.1.md"
+    status: "passed-for-v0.1-full-pdf"
+    citation_keys_used: 36
+    bibliography_entries: 36
+    missing_citation_keys: 0
+    unused_bibliography_entries: 0
+    chronology_conflicts: 0
+
+  editorial_polish:
+    path: "sources/2026-W32/editorial-polish-v0.1.md"
+    status: "applied-and-full-rebuilt"
+    cover_headline: "モデルの外側へ"
+    full_issue_rebuild: "passed"
+
+  final_claim_review:
+    path: "sources/2026-W32/final-claim-review-v0.1.md"
+    status: "passed"
+    reviewed_claim_groups: 10
+    blocking_findings: 0
+    remaining_freeze_blocker: null
+
+  ci_validation_r1:
+    path: "sources/2026-W32/ci-validation-v0.2-r1.md"
+    status: "superseded-by-r2"
+    note: "r1 compiled successfully but visual review found one stale hard-coded Astra page reference."
+
+  freeze_record:
+    path: "sources/2026-W32/freeze-v0.2.md"
+    status: "frozen-release-candidate"
+
+  editorial_style_guide:
+    path: "docs/editorial-style-guide.md"
+    version: "v0.1"
+    status: "active"
+
+  latex_environment:
+    issue_root: "surveys/weekly/2026-W32/main.tex"
+    style: "templates/survey/jgaisurvey.sty"
+    bibliography: "surveys/weekly/2026-W32/references.bib"
+    workflow: ".github/workflows/build-weekly-survey.yml"
+    engine: "LuaLaTeX"
+    japanese_layout: "jlreq + LuaTeX-ja + HaranoAji"
+    texlive_ci: "2026"
+    frozen_source_revision: "v0.2"
+    pdf_producing_commit: "6fa5d5d74bdcd063458a6f3e97197a32051f77a1"
+    github_actions_run: 31350762039
+    github_actions_job: 93340968221
+    github_actions_artifact_id: 9048888577
+    github_actions_artifact_name: "japanese-generative-ai-survey-2026-W32"
+    artifact_zip_digest: "sha256:7dd0ffa07eac2ba6b42a2f2e724f7473c68d36fb96339c822d987179dcd78342"
+    artifact_expires_at: "2026-08-24T02:50:05Z"
+    extracted_pdf_sha256: "6507d866476820931af62daa29975698e3ee6849800cf2ce15706680e4f57c21"
+    current_page_count: 16
+    current_full_build_status: "passed-and-frozen"
+    validation:
+      workflow_conclusion: "success"
+      latexmk: "passed"
+      biber: "passed"
+      final_tex_log_gate: "passed"
+      unresolved_citations: 0
+      unresolved_references: 0
+      overfull_boxes: 0
+      underfull_boxes: 0
+      missing_glyphs: 0
+      visual_render_review: "passed across all 16 pages"
+      pdf_preflight: "passed"
+      page_size: "A4 on all 16 pages"
+      encrypted: false
+      embedded_fonts: true
+      regression_diff: "r1-to-r2 changes limited to pages 13-14 as expected after dynamic Astra page-reference fix"
+    cover_smoke_test:
+      status: "passed"
+      engine: "LuaLaTeX"
+      page_size: "A4"
+      visual_review: "passed"
+      fixes:
+        - "removed awkward Survey title hyphenation"
+        - "shortened anchor line to avoid isolated trailing word"
+        - "rebalanced cover metadata columns"
+
+  article_drafts:
+    - path: "surveys/weekly/2026-W32/sections/00-frontmatter.tex"
+      package: "contents-this-week-in-ai"
+      status: "frozen-v0.2"
+    - path: "surveys/weekly/2026-W32/sections/10-lead-astra.tex"
+      package: "openai-astra-lead"
+      status: "frozen-v0.2"
+    - path: "surveys/weekly/2026-W32/sections/20-minimax-h3.tex"
+      package: "minimax-h3-feature"
+      status: "frozen-v0.2"
+    - path: "surveys/weekly/2026-W32/sections/30-model-open-weight.tex"
+      package: "model-open-weight-comparison"
+      status: "frozen-v0.2"
+    - path: "surveys/weekly/2026-W32/sections/40-agent-coding.tex"
+      package: "agent-coding"
+      status: "frozen-v0.2"
+    - path: "surveys/weekly/2026-W32/sections/50-safety-deep-dive.tex"
+      package: "safety-deep-dive"
+      status: "frozen-v0.2"
+    - path: "surveys/weekly/2026-W32/sections/60-inference-serving.tex"
+      package: "inference-serving"
+      status: "frozen-v0.2"
+    - path: "surveys/weekly/2026-W32/sections/70-memory-paper-watch.tex"
+      package: "memory-paper-watch"
+      status: "frozen-v0.2"
+    - path: "surveys/weekly/2026-W32/sections/80-x-community-watch.tex"
+      package: "x-community-watch"
+      status: "frozen-v0.2"
+    - path: "surveys/weekly/2026-W32/sections/90-late-breaking.tex"
+      package: "late-breaking"
+      status: "frozen-v0.2"
+    - path: "surveys/weekly/2026-W32/sections/95-watchlist-chronology.tex"
+      package: "watchlist-chronology"
+      status: "frozen-v0.2"
+    - path: "surveys/weekly/2026-W32/sections/99-source-notes.tex"
+      package: "references-source-notes"
+      status: "frozen-v0.2"
+
+  grok_trend_raw:
+    - path: "sources/2026-W32/grok/raw/x-trend-sensor-2026-08-09.md"
+      prompt_version: "x-trend-sensor-v0.2"
+      status: "raw"
+    - path: "sources/2026-W32/grok/raw/x-trend-sensor-2026-08-09-v0.4-rerun.md"
+      prompt_version: "x-trend-sensor-v0.4"
+      run_type: "coverage-regression-rerun"
+      status: "raw"
+
+  grok_reaction_raw:
+    - path: "sources/2026-W32/grok/reactions/raw/x-community-reaction-2026-08-09-v0.1.md"
+      prompt_version: "x-community-reaction-evidence-v0.1"
+      evidence_scope: "social-reaction"
+      status: "raw"
+
+  normalized_social_evidence:
+    path: "sources/2026-W32/evidence/social/x-community-reaction-normalized-v0.1.md"
+    status: "normalized"
+
+  grok_derived_technical_screening:
+    path: "sources/2026-W32/evidence/technical/verified-candidates-v0.1.md"
+    status: "screening-complete"
+
+  paper_evidence:
+    index: "sources/2026-W32/evidence/papers/index.yaml"
+    reviewed_records: 7
+    status: "review-complete-for-current-paper-pool"
+
+verification_stage_results:
+  priority_a:
+    status: "closed"
+    resolutions:
+      - candidate: "meta-muse-code-spark-1.2"
+        result: "rejected-for-w32-unconfirmed"
+      - candidate: "anthropic-skill-plugin-security-scanning"
+        result: "real March feature; rejected as new W32 event"
+      - candidate: "openai-astra-cyber-critical-late"
+        result: "verified primary; drafted as Late Breaking"
+      - candidate: "xai-imagine-image-2.0"
+        result: "rejected-for-w32-unconfirmed"
+
+  additional_resolutions:
+    - candidate: "openai-external-cyber-eval-boundary-event"
+      result: "verified 2026-08-04 primary event; drafted in Safety Deep Dive"
+    - candidate: "sglang-v0.5.17"
+      result: "verified 2026-08-08 Late Breaking release; drafted as model-to-serving follow-through"
+    - candidate: "grok-build-harness-open-source"
+      result: "verified 2026-07-15 underlying release; drafted as W32 pre-window relevance"
+    - candidate: "minimax-h3"
+      result: "public H3 model IDs and released FL2VA/Ref2VA checkpoint partitions confirmed through the SGLang primary cookbook; exact first-public timestamp remains unresolved"
+    - candidate: "google-agent-evaluation-flywheel"
+      result: "primary publication chronology normalized to 2026-06-30; drafted as pre-window methodological relevance"
+
+  reviewed_papers:
+    - "paper-livemem"
+    - "paper-llm-serving-in-the-wild"
+    - "paper-when-does-disaggregation-pay"
+    - "paper-sparseety"
+    - "paper-prweaver"
+    - "paper-from-social-coding-to-agentic-coding"
+    - "mistral-shieldstral"
+
+selection_summary:
+  feature_core: 4
+  section_core: 6
+  paper_watch: 6
+  late_breaking: 2
+  chronology: 1
+  watchlist_context: 4
+  hold_out: 6
+  exclude_w32: 6
+  note: "Supporting X reaction streams are consumed as evidence and are not counted as duplicate stories."
+
+next_stage:
+  name: "frozen-release-candidate"
+  prerequisites: "all editorial, evidence, CI, preflight, and visual gates passed"
+  tasks:
+    - "Do not silently modify v0.2."
+    - "If a substantive correction is required, create a new revision and repeat affected validation gates."
+    - "Use the frozen v0.2 source and build provenance as the baseline for weekly-pipeline automation work."
+  page_budget_decision: "16 pages accepted as the final v0.2 release-candidate length."
+  constraints:
+    - "Do not promote HOLD_OUT items without candidate-specific verification."
+    - "Keep objective event chronology separate from X momentum."
+    - "Keep post-cutoff items explicitly Late Breaking/follow-up."
+    - "Do not equate source volume or X engagement with editorial importance."
+    - "Do not reuse vendor or author benchmark claims without attribution and setup context."

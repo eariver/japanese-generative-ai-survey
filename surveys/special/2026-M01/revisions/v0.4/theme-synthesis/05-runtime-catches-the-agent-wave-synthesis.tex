@@ -1,0 +1,24 @@
+\sectionkicker{Theme synthesis}
+\subsection*{横断比較 — Runtimeは何を同じ月に吸収したか}
+\addcontentsline{toc}{subsection}{横断比較 — Runtimeは何を同じ月に吸収したか}
+1月のruntime更新は単一の高速化競争ではない。model architecture、weight loading、tokenizer、scheduler、tool/API compatibility、long-contextやdiffusion servingまで、異なる変化を共通実装層が短い周期で受け止めていた。
+\medskip
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}X@{}}
+\toprule
+観察軸 & 7月の一次資料・論文から読めること \\
+\midrule
+library / model integration & Transformers v5はbreaking API、weight loading、tokenizerの変更とともにGLM-4.7、GLM-Image、MiniMax-M2などのsupportを取り込んだ。model familyの増加が共通libraryのinterface設計へ波及している。 \cite{src-152188dd686e,src-9f7ae4228266} \\
+serving scheduler / API & vLLMの1月releaseではasync scheduling、model architecture support、tool/APIやruntimeの変更が同時に進んだ。serving層はthroughputだけでなくagent-facing API compatibilityも吸収対象になっている。 \cite{src-3bc80a3c7870,src-d9f9de620203} \\
+workload expansion & SGLang v0.5.8ではdiffusion serving、long-context/disaggregated serving、new model supportなどが一つのreleaseに束ねられた。LLM servingだけに閉じないruntime surfaceの拡張として読める。 \cite{src-6a97353d35a9} \\
+Evidenceの読み分け & Transformers、vLLM、SGLangのrelease notesはimplementation uptakeを確かめる一次資料として強い一方、速度や性能の優位性はmodel・hardware・workload条件に依存する。supportの存在と性能評価を分離する。 \cite{src-152188dd686e,src-9f7ae4228266,src-3bc80a3c7870,src-d9f9de620203,src-6a97353d35a9} \\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\end{center}
+\normalsize
+\begin{claimboundary}[この比較の境界]
+この表は本号で既に検証・参照している一次資料と論文を横断比較の形へ再配置したものである。vendor / project / author が報告した性能値や優位性は独立再現済みの一般則へ変換せず、本文とSource Notesの帰属境界をそのまま維持する。
+\end{claimboundary}

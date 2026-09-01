@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-2020-Y",
+  "coverage": {
+    "start": "2020-01-01T00:00:00Z",
+    "end": "2020-12-31T23:59:59Z",
+    "retrospective_as_of": "2026-08-20T13:28:52Z"
+  },
+  "status": "COMPLETE_WITH_LIMITATIONS",
+  "base_intake": {
+    "actions_run_id": 32374891915,
+    "artifact_id": 9409730222,
+    "artifact_digest": "sha256:63365e94a1717badc06bd29e4130278b18222d3a7abe1917e95584fe0ee5c254",
+    "collector_count": 14,
+    "screening_record_count": 45112,
+    "counts_by_source_type": {
+      "arxiv_paper": 45076,
+      "official_feed_item": 15,
+      "official_index_snapshot": 21,
+      "github_release": 0
+    },
+    "raw_file_count_before_gap_fill": 101,
+    "interpretation": "Canonical base intake is the preserved broad discovery baseline and is not treated as a historical completeness proof."
+  },
+  "supplemental_gap_fill": {
+    "plan": "sources/SP-2020-Y/coverage/supplemental-source-plan-v0.1.json",
+    "collection_record": "sources/SP-2020-Y/coverage/supplemental-source-collection-v0.1.json",
+    "collector_run_id": "official-pages-SP-2020-Y-20260820T141915Z",
+    "planned_count": 4,
+    "collected_count": 4,
+    "normalized_total_after_gap_fill": 45116,
+    "raw_file_count_after_gap_fill": 105,
+    "screening_ids": [
+      "official-index:supplemental-microsoft-turing-nlg-20200213",
+      "official-index:supplemental-microsoft-deepspeed-zero-20200213",
+      "official-index:supplemental-meta-blenderbot-20200429",
+      "official-index:supplemental-meta-rag-20200928"
+    ],
+    "assessment": "All four material first-party release/access gaps identified by v0.1 were collected successfully and verified to enter canonical Screening normalization. No unresolved gap requires an Exception Gate."
+  },
+  "within_year_temporal_skew_audit": {
+    "monthly_unique_arxiv_papers": [
+      {"month":"2020-01","count":2522},{"month":"2020-02","count":3358},{"month":"2020-03","count":3458},{"month":"2020-04","count":3897},{"month":"2020-05","count":3691},{"month":"2020-06","count":4015},{"month":"2020-07","count":4068},{"month":"2020-08","count":3432},{"month":"2020-09","count":3582},{"month":"2020-10","count":4897},{"month":"2020-11","count":4018},{"month":"2020-12","count":4138}
+    ],
+    "quarter_unique_arxiv_papers": {"Q1":9338,"Q2":11603,"Q3":11082,"Q4":13053},
+    "assessment": "No catastrophic calendar interval hole is visible. Every month contains more than 2,500 unique arXiv papers; Q4 is densest and Q1 sparsest. Remaining completeness risk comes from capped query slices and surviving publisher indexes rather than an empty period."
+  },
+  "arxiv_cap_audit": {
+    "query_slice_count": 72,
+    "configured_max_results_per_query": 2000,
+    "cap_hit_count": 6,
+    "cap_hit_slices": ["2020-02/cs.LG","2020-06/cs.LG","2020-07/cs.LG","2020-10/cs.LG","2020-11/cs.LG","2020-12/cs.LG"],
+    "assessment": "Six cs.LG month slices hit the configured result ceiling. Exact-identity checks protect material selected anchors, but the broad intake cannot establish historical absence or a complete census."
+  },
+  "source_planes": [
+    {"plane":"scaling_few_shot_and_model_access","status":"COVERED_WITH_LIMITATIONS","anchors":["Scaling Laws","GPT-3","OpenAI API","Turing-NLG","Microsoft GPT-3 license"]},
+    {"plane":"retrieval_grounded_generation","status":"COVERED_WITH_LIMITATIONS","anchors":["REALM","Dense Passage Retrieval","RAG paper","Meta RAG first-party boundary"]},
+    {"plane":"open_domain_dialogue","status":"COVERED_WITH_LIMITATIONS","anchors":["Meena","BlenderBot paper","BlenderBot first-party release"]},
+    {"plane":"diffusion_score_and_generative_media","status":"COVERED_WITH_LIMITATIONS","anchors":["DDPM","DDIM","score-SDE","Image GPT","Taming Transformers","Jukebox"]},
+    {"plane":"human_feedback_steering","status":"COVERED_WITH_LIMITATIONS","anchors":["Learning to Summarize from Human Feedback","OpenAI first-party publication"]},
+    {"plane":"evaluation_bias_and_toxicity","status":"COVERED_WITH_LIMITATIONS","anchors":["StereoSet","RealToxicityPrompts","CrowS-Pairs"]},
+    {"plane":"large_scale_training_systems_and_data","status":"COVERED_WITH_LIMITATIONS","anchors":["DeepSpeed/ZeRO","GShard","Turing-NLG","The Pile raw observation"]}
+  ],
+  "screening_boundary": {
+    "accepted_result_set_sha256": "f754d133c23d3322462a3ff61a1c368c6d97dc521f7c496c5a2881c3fa5fe211",
+    "keep_count": 28,
+    "note": "Coverage observations not promoted by Screening remain preserved in Raw/base intake. The Pile is retained as a year-boundary raw observation but was not promoted into the 2020 Evidence set."
+  },
+  "residual_limitations": [
+    "Present-day official index snapshots cannot prove that every 2020 publisher item remains linked or byte-identical to its original publication state.",
+    "Six capped cs.LG month slices may omit non-headline research; exact checks protect material editorial anchors but do not make the research intake exhaustive.",
+    "The configured GitHub Release watchlist targets projects material mainly in later years and yields no normalized 2020 release records; commit-level ecosystem history is not reconstructed exhaustively.",
+    "Some first-party pages have moved or been edited since 2020; supplemental capture establishes recoverable publisher-defined release/access boundaries, not independent reproduction of capability claims.",
+    "Representative bias/toxicity benchmarks establish an evaluation trajectory without claiming an exhaustive 2020 safety-evaluation census."
+  ],
+  "single_volume_assessment": {
+    "status": "SUPPORTED",
+    "exception_gate_required": false,
+    "rationale": "Scaling, model access, retrieval, dialogue, systems scaling, generative-media branching, feedback steering and evaluation/risk form interacting year-scale trajectories with a coherent handoff into 2021. No Evidence-backed need for an H1/H2 split is visible."
+  }
+}

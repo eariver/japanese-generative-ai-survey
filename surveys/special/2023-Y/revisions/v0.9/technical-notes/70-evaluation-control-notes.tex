@@ -1,0 +1,123 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{能力を測り、制御する層が追いつき始めた: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\smallskip
+\noindent{\small\textit{Technical Notesでは、一次資料から確認した公開・提供・研究上の事実を記載する。数値・能力評価や提供元・著者による比較表現は、独立再現済みの結果ではなく帰属claimとして扱う。}}\par
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+Chatbot Arena / MT-Bench & 主要資料 & 評価ベンチマーク & 2023-05-03, 2023-06-09, 2023-06-22 \\
+OpenAI 2023 alignment and agent-governance work & 主要資料 & 安全性・ガバナンス & 2023-05-31, 2023-10-26, 2023-12-14 \\
+Anthropic Constitutional AI / Responsible Scaling Policy & 主要資料 & 安全性・ガバナンス & 2023-05-09, 2023-09-19 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{Chatbot Arena / MT-Bench}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & LMSYS Org \\
+種別 & 評価ベンチマーク \\
+時系列 & 2023-05-03, 2023-06-09, 2023-06-22 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: LMSYS Orgの選定済み一次資料では、Chatbot Arena は匿名化した2モデルの回答を user が pairwise に比較する公開評価基盤として開始され、human preference を継続的に収集する evaluation surface を形成した。 MT-Bench は multi-turn question set と LLM-as-a-judge を用いて chatbot の会話能力を評価する benchmark として提案され、Arena の human-vote signal と補完関係に置かれた。 leaderboard / Elo ranking と judge agreement は LMSYS の収集条件・judge model・時点に依存するため、恒久的な絶対順位とは扱わない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2306.05685v4}}
+\item {\scriptsize\url{https://www.lmsys.org/blog/2023-05-03-arena/}}
+\item {\scriptsize\url{https://www.lmsys.org/blog/2023-06-22-leaderboard/}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{OpenAI 2023 alignment and agent-governance work}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & 安全性・ガバナンス \\
+時系列 & 2023-05-31, 2023-10-26, 2023-12-14 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIの選定済み一次資料では、2023年5月の process-supervision work は最終回答だけを reward する outcome supervision と対比し、reasoning の各 correct step を reward する training setup を提示した。数学性能や alignment 上の利点は OpenAI の研究結果として扱う。 2023年10月の frontier-risk / preparedness 公表では catastrophic-risk preparedness を明示的な対象とし、Preparedness team の設置と challenge の開始を含む control-design trajectory が示された。 2023年12月の Practices for Governing Agentic AI Systems は agentic capability に対する governance practices を論じる publication として扱い、論文・policy proposal の公表を既に deployed された production control と同一視しない。 同月の weak-to-strong generalization は weak supervisors から stronger models を制御できるかを問う superalignment research direction と initial results を提示した。結果の有効性は OpenAI の研究主張であり、一般的な強モデル制御が確立した証拠とは扱わない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/frontier-risk-and-preparedness}}
+\item {\scriptsize\url{https://openai.com/index/improving-mathematical-reasoning-with-process-supervision}}
+\item {\scriptsize\url{https://openai.com/index/practices-for-governing-agentic-ai-systems}}
+\item {\scriptsize\url{https://openai.com/index/weak-to-strong-generalization}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Anthropic Constitutional AI / Responsible Scaling Policy}{主要資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Anthropic \\
+種別 & 安全性・ガバナンス \\
+時系列 & 2023-05-09, 2023-09-19 \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Anthropicの選定済み一次資料では、Claude's Constitution の説明では Constitutional AI は explicit principles を使い、supervised phase で model が原応答を critique / revise し、reinforcement-learning phase では constitution に基づく AI-generated feedback で harmless output を選ぶという2段階の training process として説明される。 Anthropic は Constitutional AI を human feedback のみに依存しない scalable oversight / transparency の方法として位置づけるが、helpfulness / harmlessness の改善結果は Anthropic 側の評価として扱う。 2023年9月の Responsible Scaling Policy は catastrophic-risk potential に応じて safety / security / operational standard を強める AI Safety Levels (ASL) を定義し、ASL-1、ASL-2、ASL-3 以降を capability/risk threshold として区別した。 RSP は scaling が必要な safety procedures への compliance を上回る場合に training を一時停止する含意を持ち、ASL-3 model の adversarial testing / deployment constraints などを提示した。これは Anthropic board-approved policy の early iteration として扱い、業界全体の標準や既存製品全般の状態へ一般化しない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://www.anthropic.com/news/anthropics-responsible-scaling-policy}}
+\item {\scriptsize\url{https://www.anthropic.com/news/claudes-constitution}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

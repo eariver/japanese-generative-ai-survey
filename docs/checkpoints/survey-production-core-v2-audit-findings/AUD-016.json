@@ -1,0 +1,29 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-016",
+  "edition": "CORE-V2",
+  "stage": "WU-010_REAUDIT",
+  "observed_problem": "The original retry policy applied the same automatic retry semantics to local deterministic work and external workflow dispatch.",
+  "expected_behavior": "Retry policy is action-kind/stage-specific; WORKFLOW_DISPATCH is non-retryable by default and retry requires explicit idempotency or reconciliation authority.",
+  "actual_behavior": "An ambiguous external dispatch failure could be retried and launch duplicate work.",
+  "production_workaround": null,
+  "classification": {
+    "scope": "CORE",
+    "defect_kind": "ORCHESTRATION",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "f6ec62603ca126acf532c7288863db3ad4fc7e6d",
+    "relevant_artifacts": [
+      "config/survey-production-v2.json",
+      "schemas/action-spec-v2.schema.json",
+      "scripts/survey_orchestrator_v2.py"
+    ],
+    "human_review_reference": "human-re-audit:2026-08-22:WU-010"
+  },
+  "improvement_action": "Split retry policies by action kind and require explicit idempotency authority before a workflow dispatch may be retried.",
+  "regression_fixture": "tests/test_survey_orchestrator_v2.py",
+  "resolved_by_repair_set_id": null,
+  "status": "FIXED_GENERIC"
+}

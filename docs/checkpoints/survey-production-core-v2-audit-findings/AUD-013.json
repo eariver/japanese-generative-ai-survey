@@ -1,0 +1,29 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-013",
+  "edition": "CORE-V2",
+  "stage": "WU-010_REAUDIT",
+  "observed_problem": "Machine checkpoints could be marked passed from handler output shape/path/SHA without implementation-controlled semantic validation of the exact artifacts.",
+  "expected_behavior": "A machine checkpoint becomes passed only after the configured implementation-controlled validator accepts the exact outputs and an immutable validation attestation is pinned in Production State.",
+  "actual_behavior": "Handler success was sufficient to advance checkpoints, allowing semantically invalid synthetic Architecture bytes to reach Architecture Review.",
+  "production_workaround": null,
+  "classification": {
+    "scope": "CORE",
+    "defect_kind": "CORRECTNESS",
+    "confidence": "high"
+  },
+  "requires_regression": true,
+  "provenance": {
+    "source_commit": "f6ec62603ca126acf532c7288863db3ad4fc7e6d",
+    "relevant_artifacts": [
+      "scripts/survey_orchestrator_v2.py",
+      "scripts/survey_production_v2.py",
+      "schemas/stage-validation-attestation-v2.schema.json"
+    ],
+    "human_review_reference": "human-re-audit:2026-08-22:WU-010"
+  },
+  "improvement_action": "Separate handlers from semantic validators; require exact-byte Validation Attestations and State-pinned checkpoint provenance before lifecycle advancement or Human Gate use.",
+  "regression_fixture": "tests/test_survey_orchestrator_v2.py",
+  "resolved_by_repair_set_id": null,
+  "status": "FIXED_GENERIC"
+}

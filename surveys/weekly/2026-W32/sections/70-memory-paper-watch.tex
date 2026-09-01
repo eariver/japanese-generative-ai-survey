@@ -1,0 +1,28 @@
+\section{Memory Spotlight + Research Paper Watch}
+\sectionkicker{LiveMem / Agentic Coding Simulation}
+
+\subsection*{LiveMem --- contextを増やすのではなく、stateを残す}
+
+\textbf{長期memoryの議論は、context windowを何tokenまで伸ばすか、あるいはRAGで何を取り戻すかに寄りがちである。} LiveMemは別の設計点を試す。active attentionにはbounded KV windowを残しながら、各attention layerに固定容量のrecurrent stateを持つside branchを加え、古いKV pageがevictされた後もtask-relevantな影響をstateとして引き継ぐ\cite{livemem-paper}。
+
+base modelはQwen3-4B-Instruct-2507で、main attentionは最近のcontextを精密に保持し、Gated DeltaNet-2 branchがtokenごとにpersistent stateを更新する。serving上もnormal KV pageとper-request recurrent slotを分け、KVをFIFOで解放してもstateはgeneration終了まで残る。つまりLiveMemの中心は「巨大context」ではなく、\textbf{context turnoverを前提にしたinference-state lifecycle}である\cite{livemem-paper}。
+
+著者報告のbounded-context aggregateではLiveMem-RLが0.519、RAG 0.458、base Qwen3-4B 0.451などを上回る。ただしTTL全体ではContext2LoRAがLiveMem-RLを上回るなど、全taskでbestではない\cite{livemem-paper}。
+
+\begin{claimboundary}[Memory stateはarchiveではない]
+LiveMemのrecurrent stateは固定容量で\textbf{lossy}である。論文Appendix Eでは、needleがactive KVから消えた後のexact recallは低く、著者自身がarbitrary token-level historyの再構成には向かないと結論している。したがって「RAG不要」「すべてを記憶」「unlimited context」とは書けない。exact archival recallにはretrieval/external storeとの併用が必要である\cite{livemem-paper}。
+\end{claimboundary}
+
+この境界こそLiveMemの面白さである。人間のworking memoryもarchiveそのものではないように、LLMでも「直近の精密なcontext」と「過去から圧縮されたstate」を別のresourceとして扱う設計が考えられる。長時間agentやconversationで重要なのは、何token保存したかより、\textbf{何をstateへ残し、何を捨て、必要なexact evidenceをどこから再取得するか}というmemory hierarchyになる。
+
+\subsection*{Paper Watch: Coding agentはOSS communityをどう変えるか --- ただしsimulationである}
+
+\textit{From Social Coding to Agentic Coding}は、1,084人のhistorical GitHub developerとrepository関係を初期状態に使ったLLM-based multi-agent simulationで、coding agentの有無を4週間比較する\cite{agentic-coding-paper}。著者報告ではCA条件でplanned taskが約1.34倍、completed taskが約1.39倍、median completion timeが45分から20分へ低下する。同時にdirect human-human interactionの比率が32.4\%から11.6\%へ下がり、agent-mediated modeが増える。
+
+さらに、simulationで生成されたpublic recordを使うretrieval benchmarkでは、real-human corpusのPublic Knowledge Coverage 81.1\%に対しCA corpusは22.3\%と報告される\cite{agentic-coding-paper}。著者は、privateなagent assistanceがproductivityを上げる一方、public issue/PR discussionとして残るknowledge externalityを弱める可能性を仮説として提示する。
+
+\begin{claimboundary}[39\% productivity gainは実世界の測定値ではない]
+これはreal developerへcoding agentを導入したfield experimentではなく、GitHub historyでgroundingした\textbf{counterfactual multi-agent simulation}である。adoption rule、agent behavior、2018年のhistorical setting、retrieval metricはいずれもsimulator設計に依存する。論文自身もsimulation外への含意をhypothesisとして扱っている\cite{agentic-coding-paper}。
+\end{claimboundary}
+
+この論文はAgent \& Coding欄のproduct/harness/evaluation議論への社会技術的なcounterpointになる。agentの価値をtask completionだけで測ると、review discussion、issue history、設計判断の記録といった\textbf{他者が後から利用できるpublic knowledge}が評価軸から落ちる可能性がある。まだ実証ではないが、agent導入評価に「成果物以外に何が残るか」を加える問いとしては重要である。

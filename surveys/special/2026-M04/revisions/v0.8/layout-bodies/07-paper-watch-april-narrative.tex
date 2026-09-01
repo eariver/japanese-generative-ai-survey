@@ -1,0 +1,38 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\noindent\textbf{Skill poisoning、asynchronous RL、speculative rollout、live benchmark、tool-use tax。4月末の研究は一方向へ収束せず、Agent時代のsystem costと評価境界を別々の角度から掘り始めた。}\autocite{src-0d99a9f2485e,src-56e226358d6f,src-6bd60c76cba7,src-841d4b563b9d,src-8e578daed9ed}
+
+\subsection{Paper Watch — 同じ結論ではなく、次の問題設定を見る}
+
+4月末のresearchには、agent security、RL system、rollout acceleration、live benchmark、tool-use evaluationという異なる問いが並んだ。これらを一つのtrend scoreへ集約するより、「今後どこがボトルネックになると研究者が見ていたか」を読む方が有益だ。以下の5件は互いの代替案ではなく、それぞれ別のlayerでagentic systemの課題を切り出したものとして扱う。\autocite{src-0d99a9f2485e,src-56e226358d6f,src-6bd60c76cba7,src-841d4b563b9d,src-8e578daed9ed}
+
+
+\subsection{RouteGuard — skill poisoningを実行前に検知する}
+
+RouteGuardは4月24日に、LLM agentへ与えられるskillがpoisoningされる脅威を対象とし、response-conditioned attentionとhidden-state alignmentを組み合わせてagent execution前に検知するfrozen-backbone detectorを提案した。問題設定は「外部toolが危険か」一般ではなく、agentが利用するskill／instruction経路へ悪意ある振る舞いが埋め込まれるケースに絞られている。検出性能はauthor-reportedである。\autocite{src-0d99a9f2485e}
+
+
+\subsection{DORA — asynchronous RL rolloutをsystemとしてorchestrateする}
+
+DORAは4月29日の初回投稿で、language model trainingにおけるasynchronous rolloutを対象に、Dynamic ORchestration for Asynchronous Rolloutというalgorithm-system co-designを提案した。問題はagent利用そのものより、post-training時にrollout生成とtraining側の進行をどう非同期に組み合わせ、resourceを使うかにある。保持locatorは7月20日のlater revisionであり、4月初稿にない実験・設計変更を4月へ戻して説明しない。\autocite{src-6bd60c76cba7}
+
+
+\subsection{Speculative decoding — RL rolloutをlosslessに速められるか}
+
+4月29日の論文は、RL post-training rolloutへspeculative decodingをsystem-integratedに導入し、target modelのoutput distributionを保つlossless acceleration primitiveとして検討する。inference servingで知られるspeculative decodingをtraining pipelineのrollout生成へ持ち込む問題設定であり、モデルの学習algorithm自体を置き換えるものではない。速度改善などの結果はpaper authorsによる評価として読む。\autocite{src-8e578daed9ed}
+
+
+\subsection{Claw-Eval-Live — benchmarkを現実のworkflow変化へ追随させる}
+
+Claw-Eval-Liveは4月30日の初回投稿で、evolving real-world workflowを対象に、refreshable signal layerとreproducibleなtime-stamped release snapshotを分離するlive agent benchmarkを提案した。固定benchmarkが古くなる問題へ、評価対象を更新可能にしつつ再現可能なsnapshotも残すという設計で応える。保持locatorは翌5月1日のrevisionを含むため、4月号では初回投稿時点と翌日の改訂を混同しない。\autocite{src-841d4b563b9d}
+
+
+\subsection{Tool-Use Tax — toolがあるだけで能力は増えるのか}
+
+Are Tools All We Need?は4月30日に、tool useを加えたときのperformance gapを、prompt formattingのcost、tool-calling protocolのoverhead、実際にtoolを実行して得られるgainへ分解するFactorized Intervention Frameworkを提案した。問題設定の価値は「toolは有効／無効」という二択ではなく、agent benchmarkで観測される差のうち何がprotocol overheadで、何がexternal actionの利益なのかを分離しようとする点にある。\autocite{src-56e226358d6f}
+
+
+\subsection{五つの論点を一つの物語にしない}
+
+RouteGuardはsecurity、DORAとspeculative rollout研究はtraining system、Claw-Eval-Liveはevaluation freshness、Tool-Use Taxはtool protocolの測定を扱う。共通しているのはagentic workloadの周囲で従来見えにくかったcostやfailure modeを明示化しようとする姿勢だが、そこから一つの技術結論を導く必要はない。Paper Watchとして重要なのは、4月末に次の研究課題が複数方向へ開いたことを記録することである。\autocite{src-0d99a9f2485e,src-56e226358d6f,src-6bd60c76cba7,src-841d4b563b9d,src-8e578daed9ed}
+
+

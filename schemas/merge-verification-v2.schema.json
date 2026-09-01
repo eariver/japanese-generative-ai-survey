@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/merge-verification-v2.schema.json",
+  "title": "Survey Production Core v2 Merge Verification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "issue_id", "status", "release_manifest_path", "release_manifest_sha256", "merged_commit_sha", "source_sha256", "pdf_sha256", "verified_at"],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "issue_id": {"type": "string", "minLength": 1},
+    "status": {"const": "VERIFIED"},
+    "release_manifest_path": {"type": "string", "minLength": 1},
+    "release_manifest_sha256": {"$ref": "#/$defs/sha256"},
+    "merged_commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "source_sha256": {"$ref": "#/$defs/sha256"},
+    "pdf_sha256": {"$ref": "#/$defs/sha256"},
+    "verified_at": {"type": "string", "format": "date-time"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

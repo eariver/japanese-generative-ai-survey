@@ -1,0 +1,23 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\noindent\textbf{7月31日に公開されたDiffusionGemmaは、Gemma系MoEを基盤にblockwise iterative refinementを使うexperimental open-weight discrete-diffusion language modelとして提示された。速度・品質の報告は興味深いが、現段階ではauthor-controlled evaluationとして読む必要がある。}\autocite{src-ab19992e4c80}
+
+\par\medskip
+\subsection{tokenを左から一つずつ確定しない設計}
+
+DiffusionGemmaのpaperは、experimentalなopen-weight discrete-diffusion language modelとしてmodelを説明している。基盤にはGemma-familyのMoEを用い、生成ではblockwise iterative refinementを採用する。自己回帰modelが既確定prefixの後ろへtokenを伸ばすのに対し、block内を反復的にrefineするという別のgeneration patternを検討する点がPaper Watchとしての中心である。\autocite{src-ab19992e4c80}
+
+
+この方向が重要なのは、language modelの推論効率を『同じautoregressive decodingをどう高速化するか』だけで考えなくてよい可能性を示すからだ。serving側でspeculative decodingやcache最適化が進む一方、generation processそのものを変える研究は、将来runtimeの前提を変える余地がある。ただし現時点でそれを既存方式の置き換えと断言できるEvidenceはない。\autocite{src-ab19992e4c80}
+
+
+authorsはsamplerのspeed/quality resultを報告し、single H100での高いdecoding throughputを含む結果を提示している。これらは研究の可能性を評価する材料にはなるが、独立した再現実験ではなく、sampler、model configuration、hardware条件に結び付いたstudy resultである。\autocite{src-ab19992e4c80}
+
+
+\begin{claimboundary}
+DiffusionGemmaのtechnical reportはexperimental modelに対するauthor-controlled evaluationである。speed/quality resultはsampler、model configuration、hardware setupへ依存するため、本誌ではautoregressive modelに対する一般的な優位性としては扱わない。\autocite{src-ab19992e4c80}
+\end{claimboundary}
+
+\par\medskip
+\subsection{次に見るべきもの}
+
+このpaperの価値は、7月時点で勝者を決めることではなく、open-weightで異なるdecoding paradigmを試せるartifactが現れたことにある。今後は独立再現、serving stackでのsupport、実workloadでのquality/latency trade-offが積み上がるかを見て初めて、discrete diffusionが研究上のalternativeから実用的な選択肢へ進むかを判断できる。\autocite{src-ab19992e4c80}

@@ -1,0 +1,28 @@
+{
+  "schema_version": "2.0-rc1",
+  "finding_id": "AUD-031",
+  "edition": "CORE-V2",
+  "stage": "WU-012_AGENT_FIRST_REAUDIT",
+  "observed_problem": "The first pre-approval audit treated the absence of a machine-readable Series state/lineage/evidence engine as a blocker for Generative AI Foundations. Under the corrected ChatGPT-first premise, that requirement is premature: the existing living series design memo already carries the evolving lineage graph, volume dependencies, merge/split/resequence policy, open research questions and dated frontier snapshots needed for an agent-operated series.",
+  "expected_behavior": "Initial Foundations production should use the living repository-owned series plan as its outer research authority while each volume performs normal Thematic Evidence work. Add a lightweight shared source/evidence index only when real cross-volume production demonstrates repeated lookup/drift cost that justifies it. Do not require a full Series workflow engine before the first volume.",
+  "actual_behavior": "docs/generative-ai-foundations-special-series.md already provides substantial series architecture guidance, while the earlier AUD-031 remediation would have duplicated that guidance into schemas/state before production evidence showed a need.",
+  "production_workaround": "No machine Series engine is required for PR #310 approval. Preserve the living series document and revisit shared indexing after actual Foundations work exposes a concrete repeated-cost or consistency problem.",
+  "classification": {
+    "scope": "SERIES_LAYER",
+    "defect_kind": "OTHER",
+    "confidence": "high"
+  },
+  "requires_regression": false,
+  "provenance": {
+    "source_commit": "9349bd52641d3433cc219adea6565f44fe3dbf09",
+    "relevant_artifacts": [
+      "docs/generative-ai-foundations-special-series.md",
+      "docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md"
+    ],
+    "human_review_reference": "User premise correction and ChatGPT-first pre-approval re-audit, 2026-08-22"
+  },
+  "improvement_action": "DEFER machine Series state/graph/evidence-engine work. During real Foundations production, use the living series plan plus normal per-volume Thematic records; create a lightweight shared evidence/index layer later only if actual repeated work demonstrates value.",
+  "regression_fixture": null,
+  "resolved_by_repair_set_id": null,
+  "status": "DEFERRED"
+}

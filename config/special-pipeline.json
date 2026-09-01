@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0",
+  "series_name": "Japanese Generative AI Technical Survey Special",
+  "policy": {
+    "human_gate_model": "ARCHITECTURE_PUBLICATION_PREVIEW_WITH_EXCEPTION",
+    "human_gate_required_for_initialization": false,
+    "start_prompt_authorizes_initialization": true,
+    "initialization_actions_authorized": [
+      "create_init_branch",
+      "write_edition_manifest",
+      "write_initial_pipeline_state",
+      "open_and_merge_init_pr",
+      "create_work_branch"
+    ],
+    "unattended_public_release": false,
+    "human_gate_required_for_selection": false,
+    "human_gate_required_for_architecture": true,
+    "human_gate_required_for_publication_preview": true,
+    "human_gate_required_for_visual_review": false,
+    "human_gate_required_for_freeze": false,
+    "human_gate_required_for_public_release": false,
+    "publication_preview_authorizes": [
+      "visual_review",
+      "freeze",
+      "work_pr_merge",
+      "public_release"
+    ],
+    "exception_gate": {
+      "mode": "ON_DEMAND",
+      "principle": "Require human input only when a new editorial or publication decision is needed; deterministic recovery that preserves approved content and provenance does not create a new Human Gate.",
+      "triggers": [
+        "evidence_is_insufficient_for_a_reasonable_architecture",
+        "material_source_conflict_requires_editorial_judgment",
+        "material_architecture_change_after_architecture_approval",
+        "material_content_change_after_publication_preview_approval",
+        "approved_pdf_or_source_provenance_cannot_be_preserved",
+        "publication_scope_or_identity_must_deviate_from_normal_policy"
+      ],
+      "non_triggers": [
+        "retryable_collection_or_ci_failure",
+        "layout_only_repair_before_publication_preview",
+        "merge_conflict_resolvable_without_changing_approved_source_or_pdf",
+        "mechanical_release_retry_with_identical_frozen_bytes"
+      ]
+    },
+    "raw_collector_output_is_immutable": true,
+    "frozen_revision_is_immutable": true,
+    "retrospective_grok_default": "DISABLED",
+    "thematic_grok_default": "OPTIONAL"
+  },
+  "lifecycle_states": [
+    "ISSUE_INITIALIZED",
+    "DISCOVERY_COLLECTED",
+    "CANDIDATES_NORMALIZED",
+    "EVIDENCE_REVIEWED",
+    "SELECTION_COMPLETE",
+    "ARCHITECTURE_ESTABLISHED",
+    "DRAFT_COMPLETE",
+    "VALIDATED_DRAFT",
+    "RELEASE_CANDIDATE",
+    "FROZEN"
+  ],
+  "historical_granularity": {
+    "policy_version": "2.0",
+    "monthly": {
+      "periods": [
+        { "label": "2026/1", "special_slug": "2026-M01", "start": "2026-01-01", "end": "2026-01-31" },
+        { "label": "2026/2", "special_slug": "2026-M02", "start": "2026-02-01", "end": "2026-02-28" },
+        { "label": "2026/3", "special_slug": "2026-M03", "start": "2026-03-01", "end": "2026-03-31" },
+        { "label": "2026/4", "special_slug": "2026-M04", "start": "2026-04-01", "end": "2026-04-30" },
+        { "label": "2026/5", "special_slug": "2026-M05", "start": "2026-05-01", "end": "2026-05-31" },
+        { "label": "2026/6", "special_slug": "2026-M06", "start": "2026-06-01", "end": "2026-06-30" },
+        { "label": "2026/7", "special_slug": "2026-M07", "start": "2026-07-01", "end": "2026-07-31" }
+      ],
+      "note": "Monthly retrospective Specials are intentionally limited to January-July 2026, immediately before the Weekly series. Older periods use lower temporal resolution unless a thematic Special is justified."
+    },
+    "half_year": {
+      "periods": [
+        { "label": "2024/前半", "special_slug": "2024-H1", "start": "2024-01-01", "end": "2024-06-30" },
+        { "label": "2024/後半", "special_slug": "2024-H2", "start": "2024-07-01", "end": "2024-12-31" },
+        { "label": "2025/前半", "special_slug": "2025-H1", "start": "2025-01-01", "end": "2025-06-30" },
+        { "label": "2025/後半", "special_slug": "2025-H2", "start": "2025-07-01", "end": "2025-12-31" }
+      ],
+      "note": "Half-year retrospectives use natural calendar halves. This avoids arbitrary November/May anchors and reduces volume count relative to monthly coverage."
+    },
+    "annual": {
+      "periods": [
+        { "label": "2020", "special_slug": "2020-Y", "start": "2020-01-01", "end": "2020-12-31" },
+        { "label": "2021", "special_slug": "2021-Y", "start": "2021-01-01", "end": "2021-12-31" },
+        { "label": "2022", "special_slug": "2022-Y", "start": "2022-01-01", "end": "2022-12-31" },
+        { "label": "2023", "special_slug": "2023-Y", "start": "2023-01-01", "end": "2023-12-31" }
+      ],
+      "note": "2023 remains annual by default despite its high event density. Re-splitting it requires an explicit later editorial decision based on actual Candidate/Evidence density, not anticipation alone."
+    },
+    "deferred_history": {
+      "before": "2020-01-01",
+      "status": "DEFERRED",
+      "note": "2010s and earlier are historical-era material rather than current retrospective cadence. If pursued later, prefer broad 5-year or 10-year volumes (for example 2015-2019 and 2010-2014) or thematic Specials."
+    }
+  },
+  "paths": {
+    "edition_manifest": "specials/{special_slug}/edition.json",
+    "survey_root": "surveys/special/{special_slug}",
+    "source_root": "sources/{special_id}",
+    "work_branch": "special/{special_slug}-work"
+  }
+}

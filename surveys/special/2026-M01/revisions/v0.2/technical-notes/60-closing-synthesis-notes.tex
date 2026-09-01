@@ -1,0 +1,216 @@
+\sectionkicker{Source-backed technical notes}
+\subsection*{総括 — 1月に立ち上がったAgent Execution Stack: Technical Notes}
+本欄は記事本文で圧縮した一次資料上の情報を、比較・再検証しやすい形で整理したものである。時系列、確認済みの主張、留意点、一次資料URLを掲載する。
+\medskip
+\subsection*{Theme at a glance}
+\addcontentsline{toc}{subsection}{Theme at a glance}
+\begin{center}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.20\linewidth}p{0.10\linewidth}p{0.14\linewidth}X@{}}
+\toprule
+資料 & 位置づけ & 種別 & 時系列 \\
+\midrule
+OpenAI January agent-system engineering: Codex loop and in-house data agent & 補足資料 & Agent & 2026-01-23 (技術解説); 2026-01-29 (技術解説) \\
+Safe URL / agent link data-exfiltration safeguards & 補足資料 & セキュリティ関連 & 2026-01-28 (セキュリティ技術解説) \\
+DynaWeb: Model-Based Reinforcement Learning of Web Agents & 補足資料 & 論文 & 2026-01-29 (論文投稿) \\
+Qwen3-Max January Model Studio updates & 補足資料 & モデル更新 & 2026-01-27 (Model Studio提供開始) \\
+vLLM v0.14.0 and v0.15.0 & 補足資料 & Framework & 2026-01-20 (プロジェクト公開); 2026-01-29 (プロジェクト公開) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\normalsize
+
+\begin{technicalnote}{OpenAI January agent-system engineering: Codex loop and in-house data agent}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & Agent \\
+時系列 & 2026-01-23 (技術解説); 2026-01-29 (技術解説) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIのCodex記事はagent loopを、user、model inference、tools、conversation history、context-window managementを編成するharness logicとして説明する。
+\item \textbf{一次情報で確認できる事実}: OpenAIのin-house data-agent記事は、metadata、human annotation、code enrichment、institutional knowledge、memory、runtime contextを重ね、pass-through access controlを用いるinternal-only GPT-5.2 agentを説明する。
+\item \textbf{Vendor claim}: data agentはpublic productではなくinternal toolであり、分析高速化やreliability向上の例はOpenAIの運用経験で、独立benchmarkではない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 二つのsourceは異なるsystemを説明しており、一つのarchitecture clusterで扱う場合も帰属を分ける必要がある。
+\item \textbf{分析上の留意点}: in-house data agentの知見は組織内case studyであり、普遍的なarchitecture benchmarkへ一般化しない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/inside-our-in-house-data-agent}}
+\item {\scriptsize\url{https://openai.com/index/unrolling-the-codex-agent-loop}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Safe URL / agent link data-exfiltration safeguards}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & OpenAI \\
+種別 & セキュリティ関連 \\
+時系列 & 2026-01-28 (セキュリティ技術解説) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: OpenAIは1月28日、prompt injectionされた内容がAgentにURL取得を促し、会話由来の秘密情報をURLへ載せて外部へ送出し得るdata-exfiltration脅威を説明した。
+\item \textbf{一次情報で確認できる事実}: 説明されたsafeguardは、独立にpublicと確認されたURLのみ自動取得を許し、それ以外はfetchを遮断するか明示的なuser actionを要求する。OpenAIはこれをdefense-in-depthの一層として位置付ける。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: 対象はURL-based exfiltrationであり、任意のweb contentが安全であることやprompt injection全般の解決を示すものではない。
+\item \textbf{分析上の留意点}: security propertyはOpenAIによる実装説明であり、本サーベイでは独立したpenetration testを実施していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://openai.com/index/ai-agent-link-safety}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{DynaWeb: Model-Based Reinforcement Learning of Web Agents}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Hang Ding et al. \\
+種別 & 論文 \\
+時系列 & 2026-01-29 (論文投稿) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: DynaWebはAgent actionからpage representationを予測するweb world modelを学習し、それをmodel-based reinforcement learningのrollout用synthetic environmentとして利用する。
+\item \textbf{Author claim}: 論文はopen-source web-agent modelについてWebArenaとWebVoyagerでの改善を報告しているが、これは著者報告の実験結果である。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: simulated web world modelは、敵対的かつ動的なlive webの挙動と大きく異なる可能性がある。
+\item \textbf{分析上の留意点}: locatorは1月後に更新されたarXiv v2であるため、chronologyは1月のoriginal submissionを基準とする。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{http://arxiv.org/abs/2601.22149v2}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{Qwen3-Max January Model Studio updates}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & Alibaba Cloud / Qwen \\
+種別 & モデル更新 \\
+時系列 & 2026-01-27 (Model Studio提供開始) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: Alibaba Cloud Model Studioはqwen3-max-2026-01-23を1月27日のinternational availabilityとして記録し、thinking/non-thinking modeの統合とthinking中のweb search・web extraction・code interpreter利用を説明する。
+\item \textbf{一次情報で確認できる事実}: 同じlifecycle pageは1月4日、tool-oriented／codingやmultimodal modelを含む複数のQwen3・Wan 2.6系について広範なglobal availabilityを記録している。
+\item \textbf{Vendor claim}: lifecycle catalog内の比較的なcapability表現はvendor報告であり、本サーベイでは独立再現していない。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: Model Studioのavailability dateはregionにより異なり得るため、記載されたdeployment regionへscopeを限定する必要がある。
+\item \textbf{分析上の留意点}: lifecycle pageはliving documentationであるため、現在のdefault aliasではなくdated entryを1月chronologyの基準とする。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://www.alibabacloud.com/help/en/model-studio/newly-released-models}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip
+
+\begin{technicalnote}{vLLM v0.14.0 and v0.15.0}{補足資料}
+\begingroup
+% reader-facing Technical Notes break policy
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.22\linewidth}X@{}}
+組織 & vLLM Project \\
+種別 & Framework \\
+時系列 & 2026-01-20 (プロジェクト公開); 2026-01-29 (プロジェクト公開) \\
+\end{tabularx}
+\smallskip
+{\bfseries 一次資料から整理したtechnical points}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{一次情報で確認できる事実}: vLLM v0.14.0はasync schedulingをdefaultで有効化し、engine、tool-calling、API、model supportを多数更新した。release notesはこれをbreaking changeとし、unsupported configurationも明記する。
+\item \textbf{一次情報で確認できる事実}: vLLM v0.15.0はnew model supportにKimi-K2.5 architectureを追加し、async schedulingをpipeline parallelismへ拡張したほか、streaming input、quantization、platformも更新した。
+\item \textbf{Project claim}: release notes内のspeedup値はproject報告であり、configurationに依存する。
+\end{itemize}
+\begin{minipage}{\linewidth}
+% reader-facing Technical Notes generic boundary/source tail group
+{\bfseries 読む際の境界}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.35em]
+\item \textbf{分析上の留意点}: seriesは9日間隔の二つのreleaseを含むため、一つのatomic featureではなくserving／runtime evolutionとして要約する。
+\item \textbf{分析上の留意点}: projectのperformance claimは独立再現していない。
+\end{itemize}
+\begin{samepage}
+{\bfseries 一次資料}
+\begingroup\sloppy
+\Urlmuskip=0mu plus 2mu\relax
+\begin{itemize}[leftmargin=1.5em,itemsep=0.25em]
+\item {\scriptsize\url{https://github.com/vllm-project/vllm/releases/tag/v0.14.0}}
+\item {\scriptsize\url{https://github.com/vllm-project/vllm/releases/tag/v0.15.0}}
+\end{itemize}
+\endgroup
+\end{samepage}
+\end{minipage}
+\endgroup
+\end{technicalnote}
+\medskip

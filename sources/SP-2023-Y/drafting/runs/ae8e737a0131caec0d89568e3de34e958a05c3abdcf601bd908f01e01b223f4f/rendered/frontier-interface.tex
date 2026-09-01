@@ -1,0 +1,48 @@
+% Generated from validated Article Draft Result. Do not hand-edit; revise the structured draft instead.
+\section{フロンティア競争は、性能表からインタラクション設計へ}
+\noindent\textbf{2023年のフロンティアモデル競争では、単一の能力指標だけでなく、長い入力、画像を含む入力、APIや製品を介した利用形態までが同時に設計対象になった。GPT-4系、Claude系、PaLM 2からGeminiへの流れを、モデルそのものとユーザーが触れるインタラクション層を分けて読む。}\autocite{src-013fa77665db,src-2b6af707f3ef,src-3375c5d27d9b,src-39071a9443e5,src-5bfa9c93d034,src-93d355bf8806,src-a3dead6cff65,src-a95452783369,src-b1525886b462,src-db671ee1d1b8,src-e116708067ab,src-f5041642fb21,src-f951bda6a0f4,src-fd9cb9c0061f}
+
+\subsection{モデル能力と利用面を分けて読む}
+
+2023年の重要な変化は、フロンティアモデルの比較対象が「どのモデルが最も賢いか」という一軸から外れたことである。GPT-4系、Claude系、GoogleのPaLM 2からGeminiへの展開は、モデル能力だけでなく、入力可能な情報の種類、扱える文脈、APIや製品への配置を含む複合的な競争を可視化した。\autocite{src-013fa77665db,src-3375c5d27d9b,src-39071a9443e5,src-5bfa9c93d034,src-93d355bf8806,src-a3dead6cff65,src-a95452783369,src-b1525886b462,src-db671ee1d1b8,src-f5041642fb21,src-f951bda6a0f4,src-fd9cb9c0061f}
+
+
+この競争を技術的に読むときは、少なくとも三つの面を分離すると整理しやすい。第一はモデルが扱える情報と推論能力、第二は利用者が実際に入力・出力できるインターフェース、第三はAPIや製品としての提供範囲である。同じモデル系列の名称が使われていても、この三面が同時に更新されるとは限らない。\autocite{src-013fa77665db,src-3375c5d27d9b,src-39071a9443e5,src-5bfa9c93d034,src-93d355bf8806,src-a3dead6cff65,src-a95452783369,src-b1525886b462,src-db671ee1d1b8,src-f5041642fb21,src-f951bda6a0f4,src-fd9cb9c0061f}
+
+
+したがって、年次比較の単位も単純なモデル名ではなくなる。ある系列が長い入力を前面に出し、別の系列が画像入力や端末配置を強調した場合、それらを一つのベンチマーク順位だけで並べると設計上の差が消える。2023年は「何点取るモデルか」に加えて「どの情報を、どの場所で、どの形で扱わせるか」が競争軸になった年として読むべきである。\autocite{src-3375c5d27d9b,src-5bfa9c93d034,src-93d355bf8806,src-a3dead6cff65,src-a95452783369,src-db671ee1d1b8,src-e116708067ab,src-f951bda6a0f4,src-fd9cb9c0061f}
+
+
+\subsection{長文脈は「入る長さ」と「使える長さ」が違う}
+
+長いcontext windowは、それだけで長文脈を一様に有効利用できることを意味しない。年内には長文脈を前面に出す製品更新が続く一方、Lost in the Middleのような研究は、入力長の上限と情報を実際に取り出して使えることを区別すべきだという技術的境界を示した。\autocite{src-013fa77665db,src-2b6af707f3ef,src-39071a9443e5,src-93d355bf8806,src-a3dead6cff65,src-b1525886b462,src-db671ee1d1b8,src-f5041642fb21,src-fd9cb9c0061f}
+
+
+この区別はapplication設計にも影響する。入力上限が伸びれば、分割・検索・要約の必要性がただ消えるわけではなく、重要情報の配置、検索との併用、長い履歴をどこまで保持するかという設計判断が残る。長文脈はRAG等の周辺技術を単純に不要にする機能ではなく、system側が選べる情報供給戦略を増やしたと捉える方が安全である。\autocite{src-013fa77665db,src-2b6af707f3ef,src-39071a9443e5,src-b1525886b462,src-f5041642fb21}
+
+
+評価も同様に、最大token数と実用上の成功率を分けなければならない。長い入力を受け付けること、途中に置かれた情報を見つけること、複数箇所の証拠を統合することは別の課題である。2023年の長文脈競争は、仕様表に新しい数字を追加しただけでなく、「文脈能力をどう測るか」という評価問題を前景化した。\autocite{src-013fa77665db,src-2b6af707f3ef,src-39071a9443e5,src-b1525886b462,src-f5041642fb21}
+
+
+\subsection{multimodalはモデルと製品の二つの意味を持つ}
+
+multimodalという語も、モデル内部の表現と製品インターフェースを分けて扱う必要がある。GPT-4VやGeminiのようなモデル系列の展開と、画像・音声を受け付ける製品機能は同じ時点・同じ提供範囲とは限らない。本稿では「モデルが何を扱えると発表されたか」と「利用者がどの形で使えたか」を別の状態として記述する。\autocite{src-3375c5d27d9b,src-5bfa9c93d034,src-93d355bf8806,src-a3dead6cff65,src-a95452783369,src-db671ee1d1b8,src-f951bda6a0f4,src-fd9cb9c0061f}
+
+
+利用面から見ると、画像を受け付けられることは単に入力形式が一つ増えることではない。利用者が文字で説明していた対象を直接提示できるため、interactionの設計そのものが変わる。一方で、画像を見られることと、画像中のすべての情報を安定して解釈できることは同義ではないため、製品UIが能力の不確実性を吸収する役割も大きくなる。\autocite{src-3375c5d27d9b,src-5bfa9c93d034,src-93d355bf8806,src-a3dead6cff65,src-a95452783369,src-db671ee1d1b8,src-f951bda6a0f4,src-fd9cb9c0061f}
+
+
+Geminiの年末の展開では、同じfamily名の下でもクラウド側のフロンティアモデルと端末側の小型配置を分けて考える必要があることも明瞭になった。これは「最大能力のモデルをどこでも使う」という発想から、latency、privacy、計算資源などの制約に応じてmodel tierを配置する発想への広がりとして読める。\autocite{src-93d355bf8806,src-a3dead6cff65,src-db671ee1d1b8,src-e116708067ab,src-fd9cb9c0061f}
+
+
+\subsection{発表と利用可能性を同じ日付にしない}
+
+研究発表、モデル発表、preview、API提供、端末や製品への配置は別々の出来事である。2023年のフロンティア競争を後知恵で一本化せず、それぞれの時点で公開されていた提供形態を保存することで、技術的能力と実利用可能性を混同しない。\autocite{src-013fa77665db,src-3375c5d27d9b,src-39071a9443e5,src-5bfa9c93d034,src-93d355bf8806,src-a3dead6cff65,src-a95452783369,src-b1525886b462,src-db671ee1d1b8,src-e116708067ab,src-f5041642fb21,src-f951bda6a0f4,src-fd9cb9c0061f}
+
+
+このlifecycle分離は、年次史では特に重要である。あるfamilyが後の時点で広く利用可能になっていても、その状態を初回発表日に遡らせると、当時の開発者が実際に選べた技術を誤って再構成してしまう。Detailed Chronologyではfamilyの物語を保ちながら、公開状態の遷移を独立イベントとして残す。\autocite{src-013fa77665db,src-3375c5d27d9b,src-39071a9443e5,src-5bfa9c93d034,src-93d355bf8806,src-a3dead6cff65,src-a95452783369,src-b1525886b462,src-db671ee1d1b8,src-f5041642fb21,src-f951bda6a0f4,src-fd9cb9c0061f}
+
+
+\begin{claimboundary}
+各社や著者が提示した性能・能力評価は一次資料に帰属する主張であり、本稿はそれを独立再現した比較順位へ換算しない。ここで比較するのは、2023年にどの設計面が競争軸として現れたかである。\autocite{src-3375c5d27d9b,src-5bfa9c93d034,src-a95452783369,src-f951bda6a0f4}
+\end{claimboundary}

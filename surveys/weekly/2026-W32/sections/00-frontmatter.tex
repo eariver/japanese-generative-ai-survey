@@ -1,0 +1,46 @@
+\section*{Contents}
+\begin{tabularx}{0.98\linewidth}{@{}>{\bfseries}p{0.28\linewidth}X@{}}
+Lead Story & OpenAI Astra --- scientific reasoningをmanuscriptとLean certificateでどう検査するか \\
+Multimodal Feature & MiniMax H3 --- model releaseからlocal workflow / servingへ \\
+Model \& Open Weight & Qwen3.8-Max / DeepSeek-V4-Flash-0731 / Kimi K3 \\
+Agent \& Coding & team agent / open harness / evaluation flywheel \\
+Deep Dive & Safetyはmodelの外側まで広がる \\
+Inference / Serving & OSS adoptionの現実とdisaggregationが得になる条件 \\
+Memory + Paper Watch & LiveMemのstate continuity / Agentic Coding simulation \\
+X Community Watch & 発表後に何を試し、何を疑ったか \\
+Late Breaking & Astra cyber capability / SGLang v0.5.17 \\
+Watchlist + Chronology & Qwen Image 3.0 / Grok Voice alias switch \\
+\end{tabularx}
+
+\vspace{4mm}
+\section*{This Week in AI}
+
+\begin{tcolorbox}[enhanced,colback=SurveySoft,colframe=SurveyRule,boxrule=0.4pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm]
+\textbf{1. Scientific reasoningは「点数」から「検査可能な成果物」へ。}\quad
+OpenAI Astraの数学・理論CS成果は、benchmarkの順位ではなく、manuscriptとLean certificateを伴うresearch claimとして出てきた\cite{openai-astra-ten-advances}。今週の焦点は「何問解いたか」より、AI生成研究をどのEvidence chainで評価するかにある。
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced,colback=SurveySoft,colframe=SurveyRule,boxrule=0.4pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm]
+\textbf{2. Open / local AIは、公開後のecosystemが勝負を決める。}\quad
+MiniMax H3、Kimi K3、DeepSeekでは、weightsの有無だけでなく、ComfyUI、LoRA、disk streaming、SGLang integrationといった\textbf{実際に動かすための層}が話題の中心になった\cite{minimax-h3-blog,kimi-k3-hf,sglang-0517}。
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced,colback=SurveySoft,colframe=SurveyRule,boxrule=0.4pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm]
+\textbf{3. Safety boundaryはmodel checkpointの外側へ。}\quad
+OpenAIのthird-party cyber evaluation、PRWeaver、SparSEEtyを並べると、network / credential、review context、serving access patternといった\textbf{周辺systemの設計}が安全性を左右する\cite{openai-third-party-cyber-evals,prweaver-paper,sparseety-paper}。
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced,colback=SurveySoft,colframe=SurveyRule,boxrule=0.4pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm]
+\textbf{4. Agent競争はmodelからproduct / harness / evaluationへ。}\quad
+Claude Tag、Grok Build、Google Agent Quality Flywheelはすべてpre-windowのartifactだが、W32候補を横断すると、agentの競争軸がteam integration、orchestration、regression evaluationへ広がっている\cite{claude-tag-announcement,grok-build-open-source,google-agent-quality-flywheel}。
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced,colback=SurveySoft,colframe=SurveyRule,boxrule=0.4pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm]
+\textbf{5. 長期memoryは「残す」と「取り戻す」を分けて設計する。}\quad
+LiveMemはbounded KVを維持しながらpersistent recurrent stateを残すが、そのstateはlossyでexact archiveではない\cite{livemem-paper}。長時間agentではstate continuityとretrievalを競合技術ではなくmemory hierarchyとして捉える視点が重要になる。
+\end{tcolorbox}
+
+\vspace{2mm}
+\footnotesize
+\textbf{Editorial boundary:} 通常本文のCutoffは2026-08-07 18:00 America/New\_York。Cutoff後の重要事項はLate Breakingへ分離した。X由来の記述はcommunity observationであり、technical factの根拠にはprimary / technical sourceを用いる。
+\normalsize
