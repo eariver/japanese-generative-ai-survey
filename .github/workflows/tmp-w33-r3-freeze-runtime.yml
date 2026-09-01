@@ -1,0 +1,92 @@
+name: Temporary W33 r3 bounded canonical freeze
+
+on:
+  push:
+    branches: [weekly/2026-W33-v2-work]
+    paths:
+      - 'sources/2026-W33/publication/v2/tmp-w33-r3-freeze-trigger.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  freeze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sparse clone exact trigger head
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git clone --depth 80 --filter=blob:none --sparse --branch weekly/2026-W33-v2-work "$url" repo
+          cd repo
+          git sparse-checkout set .github/workflows config schemas scripts docs sources/2026-W33 surveys/weekly/2026-W33 templates/survey tests
+          actual=$(git rev-parse HEAD)
+          test "$actual" = "$GITHUB_SHA" || { echo "branch moved trigger=$GITHUB_SHA cloned=$actual"; exit 78; }
+          git fetch --depth 1 origin main
+          test "$(git rev-parse FETCH_HEAD)" = "6267de3f6876f491950139757bfdf1085fc07bdc" || { echo 'main moved from reviewed Core authority'; exit 78; }
+          git diff --quiet FETCH_HEAD HEAD -- config schemas scripts || { echo 'protected Core drift relative to reviewed main'; exit 1; }
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Core v2 dependencies
+        working-directory: repo
+        run: python -m pip install -r config/survey-production-v2-requirements.txt
+
+      - name: Execute bounded canonical Freeze alignment
+        working-directory: repo
+        run: PYTHONPATH=. python sources/2026-W33/publication/v2/tmp_w33_r3_freeze_runtime.py
+
+      - name: Final fail-closed Freeze validation
+        working-directory: repo
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=. python - <<'PY'
+          from pathlib import Path
+          from scripts import survey_agent_control_v2 as agent
+          from scripts import survey_production_v2 as core
+          from scripts import survey_profiled_freeze_v2 as profiled
+          from scripts import survey_publication_v2 as publication
+          root=Path('.').resolve(); cfg=core.load_json(root/'config/survey-production-v2.json')
+          state=core.load_json(root/'sources/2026-W33/production-state.json')
+          assert state['lifecycle_state']=='FROZEN'
+          assert state['human_gates']['publication_preview']=='approved'
+          assert state['machine_checkpoints']['freeze']=='passed' and state['machine_checkpoints']['release']=='pending'
+          assert state['next_action']=='stage:release'
+          assert agent.validate_agent_state(root,cfg,state)==[]
+          profile=core.load_json(root/state['profile']['path'])
+          candidate=publication.validate_candidate(root,root/'sources/2026-W33/publication/v2/publication-candidate-v2.json',issue_id='2026-W33')
+          approval=publication.validate_preview_approval(root,root/'sources/2026-W33/gates/publication-preview-approval.json',issue_id='2026-W33')
+          manifest=publication.validate_release_manifest(root,root/'sources/2026-W33/publication/v2/release-manifest-v2.json')
+          assert candidate['pdf']['sha256']==approval['pdf_sha256']==manifest['pdf_sha256']=='1885762325c33b575dd6e789dc53f7ed1c30483a9928b6dbf9537ad0e05661f5'
+          assert candidate['pdf']['byte_count']==274472 and candidate['pdf']['page_count']==11
+          assert manifest['release_identity']==profiled.release_identity(profile)=='weekly/2026-W33'
+          print('W33 r3 deterministic Freeze PASS')
+          PY
+
+      - name: Commit frozen authority and remove temporary transport
+        working-directory: repo
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/tmp-w33-r3-freeze-runtime.yml
+          rm -f sources/2026-W33/publication/v2/tmp-w33-r3-freeze-trigger.txt
+          rm -f sources/2026-W33/publication/v2/tmp_w33_r3_freeze_runtime.py
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          find . -name '*.pyc' -delete
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'Freeze W33 r3 approved Publication Preview'
+          git fetch --depth 1 origin weekly/2026-W33-v2-work
+          remote_head=$(git rev-parse FETCH_HEAD)
+          test "$remote_head" = "$GITHUB_SHA" || { echo "remote moved trigger=$GITHUB_SHA remote=$remote_head"; exit 78; }
+          git push origin HEAD:weekly/2026-W33-v2-work
