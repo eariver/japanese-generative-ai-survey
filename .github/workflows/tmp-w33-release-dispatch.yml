@@ -1,0 +1,62 @@
+name: W33 bounded release dispatch transport
+
+on:
+  push:
+    branches:
+      - weekly/2026-W33-v2-work
+    paths:
+      - .github/workflows/tmp-w33-release-dispatch.yml
+
+permissions:
+  actions: write
+  contents: write
+
+jobs:
+  dispatch-canonical-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout transport branch
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Verify exact frozen main authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "095c7d24403fde9388d1227b0c7e90deddd33f09"
+          state_sha="$(git show origin/main:sources/2026-W33/production-state.json | sha256sum | awk '{print $1}')"
+          manifest_sha="$(git show origin/main:sources/2026-W33/publication/v2/release-manifest-v2.json | sha256sum | awk '{print $1}')"
+          test "$state_sha" = "66f684a842ee149fc0df02c34ef509f370349bad582049061642ded10f724060"
+          test "$manifest_sha" = "0919aeb0f522ef181a17d7302133f3b081399f7e072a9225bbee6fff4113059c"
+
+      - name: Dispatch canonical Core v2 release workflow
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api --method POST \
+            "repos/${GITHUB_REPOSITORY}/actions/workflows/survey-production-v2-release.yml/dispatches" \
+            --input - <<'JSON'
+          {
+            "ref": "main",
+            "inputs": {
+              "issue_id": "2026-W33",
+              "production_state_sha256": "66f684a842ee149fc0df02c34ef509f370349bad582049061642ded10f724060",
+              "release_manifest_sha256": "0919aeb0f522ef181a17d7302133f3b081399f7e072a9225bbee6fff4113059c",
+              "confirmation": "release:2026-W33"
+            }
+          }
+          JSON
+
+      - name: Remove disposable transport from work branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/tmp-w33-release-dispatch.yml
+          git commit -m 'Remove W33 bounded release dispatch transport'
+          git push origin HEAD:weekly/2026-W33-v2-work
