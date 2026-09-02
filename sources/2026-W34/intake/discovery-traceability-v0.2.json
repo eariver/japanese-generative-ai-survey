@@ -1,0 +1,1853 @@
+{
+  "schema_version": "0.2",
+  "issue_id": "2026-W34",
+  "record_status": "PRE_SCREENING_CANONICALIZED",
+  "generated_at": "2026-09-02T16:41:07Z",
+  "canonical_window": {
+    "local_start": "2026-08-14T18:00:00-04:00",
+    "local_end": "2026-08-21T18:00:00-04:00",
+    "timezone": "America/New_York",
+    "interval": "[start,end)",
+    "utc_start": "2026-08-14T22:00:00Z",
+    "utc_end": "2026-08-21T22:00:00Z"
+  },
+  "authority_boundary": {
+    "production_profile": {
+      "path": "sources/2026-W34/production-profile.json",
+      "sha256": "a6e3eb3006dde95da008876486cbfc7fdce75f507f7efcd6b0fcaba5e154b21a"
+    },
+    "production_state": {
+      "path": "sources/2026-W34/production-state.json",
+      "git_blob_sha": "87e6ada23ffacf85d9bb0ad96a4e777217260356",
+      "lifecycle_state": "ISSUE_INITIALIZED",
+      "next_action": "stage:discovery"
+    },
+    "formal_discovery_acceptance": {
+      "executed": false,
+      "status": "BLOCKED_BY_BOUNDED_SCOPE",
+      "note": "The valid X manifest/import does not itself advance production lifecycle; no ISSUE_INITIALIZED -> DISCOVERY_COLLECTED acceptance was run."
+    },
+    "screening_selection_architecture": {
+      "executed": false
+    }
+  },
+  "source_layers": [
+    {
+      "layer": "Sol",
+      "authority": "temporary/non-canonical Discovery completeness working record",
+      "source_path": "sources/2026-W34/intake/working-set/sol-discovery-event-inventory-v0.2.md",
+      "records_expected": 105,
+      "records_accounted": 105,
+      "raw_bytes_present": true,
+      "notes": "All W34-C001..W34-C105 event-level records are retained; no Sol-only materiality deletion."
+    },
+    {
+      "layer": "DailyX",
+      "authority": "post/topic X observation traceability",
+      "source_path": "sources/2026-W34/intake/working-set/dailyx-candidate-crosswalk-v0.1.md",
+      "records_expected": 76,
+      "records_accounted": 76,
+      "raw_bytes_present": true,
+      "notes": "Every topic row is retained and maps to one or more event-level IDs; X is community signal only."
+    },
+    {
+      "layer": "Weekly Grok r2 corrected",
+      "authority": "post-level URL and window classification/count authority",
+      "source_path": "sources/2026-W34/external/x/weekly-x-2026-W34-r2/raw/x-url-ledger.corrected.tsv",
+      "records_expected": 47,
+      "records_accounted": 47,
+      "raw_bytes_present": true,
+      "notes": "Corrected ledger, not corrected narrative prose, controls 10/20/17."
+    },
+    {
+      "layer": "Weekly Grok r2 candidate crosswalk",
+      "authority": "pre-Screening mapping traceability",
+      "source_path": "sources/2026-W34/intake/working-set/grok-r2-candidate-crosswalk-v0.1.md",
+      "records_expected": 47,
+      "records_accounted": 47,
+      "raw_bytes_present": true,
+      "notes": "All exact ledger URLs map to the Sol event inventory."
+    },
+    {
+      "layer": "configured GitHub Releases",
+      "authority": "canonical non-X collector Raw",
+      "source_path": "sources/2026-W34/collectors/github-releases/runs/20260902T121634Z/",
+      "records_expected": 7,
+      "records_accounted": 7,
+      "raw_bytes_present": true,
+      "notes": "Existing seven Raw response bodies are immutable; five window matches remain unscreened."
+    },
+    {
+      "layer": "canonical arXiv collector retry",
+      "authority": "canonical non-X collector provenance",
+      "source_path": "sources/2026-W34/collectors/arxiv/runs/20260902T164107Z/",
+      "records_expected": 6,
+      "records_accounted": 0,
+      "raw_bytes_present": false,
+      "notes": "RETRY_REQUIRED; exact failure recorded before HTTP."
+    },
+    {
+      "layer": "configured official-page collector retry",
+      "authority": "canonical non-X snapshot provenance",
+      "source_path": "sources/2026-W34/collectors/official-pages/runs/20260902T164107Z/",
+      "records_expected": 22,
+      "records_accounted": 0,
+      "raw_bytes_present": false,
+      "notes": "RETRY_REQUIRED; all pages blocked before HTTP."
+    },
+    {
+      "layer": "carry-over",
+      "authority": "W34 carry-over ledger",
+      "source_path": "sources/2026-W34/carryover/carryover-ledger-v0.1.json",
+      "records_expected": 1,
+      "records_accounted": 1,
+      "raw_bytes_present": false,
+      "notes": "MiniMax HOLD_OUT rechecked and remains RECHECKED_UNRESOLVED."
+    }
+  ],
+  "imported_working_set_files": [
+    {
+      "path": "sources/2026-W34/intake/working-set/sol-discovery-event-inventory-v0.2.md",
+      "source_title": "W34_Sol_Discovery_Candidate_Inventory_v0.2",
+      "source_layer": "Sol",
+      "authority_class": "temporary non-canonical discovery completeness working record",
+      "sha256": "6153a02519acd5494146bfcfb9e826414fff08c406cead144f0c29ec77223c41",
+      "bytes": 31172
+    },
+    {
+      "path": "sources/2026-W34/intake/working-set/dailyx-candidate-crosswalk-v0.1.md",
+      "source_title": "W34_DailyX_Candidate_Crosswalk_v0.1",
+      "source_layer": "DailyX",
+      "authority_class": "X observation traceability crosswalk",
+      "sha256": "b29aed8ab4b1dde2f1dad6ad465d0290c3ffade35a8c7d3133fabb2faf9392ca",
+      "bytes": 13098
+    },
+    {
+      "path": "sources/2026-W34/intake/working-set/grok-r2-candidate-crosswalk-v0.1.md",
+      "source_title": "W34_GrokR2_Candidate_Crosswalk_v0.1",
+      "source_layer": "Weekly Grok r2 corrected",
+      "authority_class": "candidate crosswalk / pre-Screening traceability",
+      "sha256": "c9eaf17d48b442cbb6f624f2f305590b16cf44a72e2ad7995adc72c25c4272c7",
+      "bytes": 9212
+    },
+    {
+      "path": "sources/2026-W34/external/x/weekly-x-2026-W34-r2/grok-task.md",
+      "source_title": "grok-task.md",
+      "source_layer": "Weekly Grok r2 task",
+      "authority_class": "task authority",
+      "sha256": "e97bbd06846955842f86129ed17eb4a6708aa6de337ba9cf997927f33a99a2f0",
+      "bytes": 11686
+    },
+    {
+      "path": "sources/2026-W34/external/x/weekly-x-2026-W34-r2/raw/grok-x-result.corrected.md",
+      "source_title": "grok-x-result.corrected.md",
+      "source_layer": "Weekly Grok r2 corrected",
+      "authority_class": "X Raw Observation / community signal",
+      "sha256": "43b0923bbd68ef9d9d9d4bf501a773cd4b4e4cdd881339d9591d97e7951f86ca",
+      "bytes": 23612
+    },
+    {
+      "path": "sources/2026-W34/external/x/weekly-x-2026-W34-r2/raw/x-url-ledger.corrected.tsv",
+      "source_title": "x-url-ledger.corrected.tsv",
+      "source_layer": "Weekly Grok r2 corrected",
+      "authority_class": "post-level window classification/count authority",
+      "sha256": "931e2da8fb9e4bc4b46cecb550f3948506f1c9a29e052f7f4cc64207e64fc214",
+      "bytes": 10024
+    },
+    {
+      "path": "sources/2026-W34/external/x/weekly-x-2026-W34-r2/raw/search-accounting.corrected.md",
+      "source_title": "search-accounting.corrected.md",
+      "source_layer": "Weekly Grok r2 corrected",
+      "authority_class": "search accounting / provenance supplement",
+      "sha256": "16ed23190d12b11b26716a0dc031f25840758022729f3367d1a16094234a35c1",
+      "bytes": 3555
+    },
+    {
+      "path": "sources/2026-W34/external/x/weekly-x-2026-W34-r2/raw/correction-report.md",
+      "source_title": "correction-report.md",
+      "source_layer": "Weekly Grok r2 corrected",
+      "authority_class": "classification correction validation",
+      "sha256": "d03c0ac7b139f864bd06f91b4e7a578d8e0318dacb1cc2cde323512fa3109690",
+      "bytes": 1942
+    }
+  ],
+  "inventory_accounting": {
+    "sol_event_inventory": {
+      "expected": 105,
+      "accounted": 105,
+      "unmapped_event_ids": [],
+      "event_ids": [
+        "W34-C001",
+        "W34-C002",
+        "W34-C003",
+        "W34-C004",
+        "W34-C005",
+        "W34-C006",
+        "W34-C007",
+        "W34-C008",
+        "W34-C009",
+        "W34-C010",
+        "W34-C011",
+        "W34-C012",
+        "W34-C013",
+        "W34-C014",
+        "W34-C015",
+        "W34-C016",
+        "W34-C017",
+        "W34-C018",
+        "W34-C019",
+        "W34-C020",
+        "W34-C021",
+        "W34-C022",
+        "W34-C023",
+        "W34-C024",
+        "W34-C025",
+        "W34-C026",
+        "W34-C027",
+        "W34-C028",
+        "W34-C029",
+        "W34-C030",
+        "W34-C031",
+        "W34-C032",
+        "W34-C033",
+        "W34-C034",
+        "W34-C035",
+        "W34-C036",
+        "W34-C037",
+        "W34-C038",
+        "W34-C039",
+        "W34-C040",
+        "W34-C041",
+        "W34-C042",
+        "W34-C043",
+        "W34-C044",
+        "W34-C045",
+        "W34-C046",
+        "W34-C047",
+        "W34-C048",
+        "W34-C049",
+        "W34-C050",
+        "W34-C051",
+        "W34-C052",
+        "W34-C053",
+        "W34-C054",
+        "W34-C055",
+        "W34-C056",
+        "W34-C057",
+        "W34-C058",
+        "W34-C059",
+        "W34-C060",
+        "W34-C061",
+        "W34-C062",
+        "W34-C063",
+        "W34-C064",
+        "W34-C065",
+        "W34-C066",
+        "W34-C067",
+        "W34-C068",
+        "W34-C069",
+        "W34-C070",
+        "W34-C071",
+        "W34-C072",
+        "W34-C073",
+        "W34-C074",
+        "W34-C075",
+        "W34-C076",
+        "W34-C077",
+        "W34-C078",
+        "W34-C079",
+        "W34-C080",
+        "W34-C081",
+        "W34-C082",
+        "W34-C083",
+        "W34-C084",
+        "W34-C085",
+        "W34-C086",
+        "W34-C087",
+        "W34-C088",
+        "W34-C089",
+        "W34-C090",
+        "W34-C091",
+        "W34-C092",
+        "W34-C093",
+        "W34-C094",
+        "W34-C095",
+        "W34-C096",
+        "W34-C097",
+        "W34-C098",
+        "W34-C099",
+        "W34-C100",
+        "W34-C101",
+        "W34-C102",
+        "W34-C103",
+        "W34-C104",
+        "W34-C105"
+      ],
+      "source_path": "sources/2026-W34/intake/working-set/sol-discovery-event-inventory-v0.2.md"
+    },
+    "dailyx_topics": {
+      "expected": 76,
+      "accounted": 76,
+      "unmapped_topic_keys": [],
+      "source_path": "sources/2026-W34/intake/working-set/dailyx-candidate-crosswalk-v0.1.md",
+      "rows": [
+        {
+          "daily_file": "2026-08-16_0700.md.txt",
+          "topic_no": 1,
+          "topic_title": "Anthropic Claude text watermarking discussions and technical explanations",
+          "candidate_ids": [
+            "W34-C002"
+          ],
+          "mapping_note": "Claude watermark",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-16_0700.md.txt",
+          "topic_no": 2,
+          "topic_title": "GLM-5.3 free access promotion and benchmark claims by Z.ai / Zhipu community",
+          "candidate_ids": [
+            "W34-C001"
+          ],
+          "mapping_note": "GLM-5.3",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-16_0700.md.txt",
+          "topic_no": 3,
+          "topic_title": "DeepSeek V4-Pro / V4 Flash usage demos, pricing mentions, and comparisons",
+          "candidate_ids": [
+            "W34-C040"
+          ],
+          "mapping_note": "DeepSeek V4-Pro pricing/access",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-16_0700.md.txt",
+          "topic_no": 4,
+          "topic_title": "Gemini 3.7 Flash computer-use and coding performance evaluations",
+          "candidate_ids": [
+            "W34-C041"
+          ],
+          "mapping_note": "Gemini 3.7 adoption/usage",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-16_0700.md.txt",
+          "topic_no": 5,
+          "topic_title": "Elon Musk comments on Grok 4.6 capabilities and progress",
+          "candidate_ids": [
+            "W34-C042"
+          ],
+          "mapping_note": "Grok 4.6 adoption/integration",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-16_0700.md.txt",
+          "topic_no": 6,
+          "topic_title": "Comparisons of frontier models including Muse Spark, Qwen, Kimi K3 performance anomalies",
+          "candidate_ids": [
+            "W34-C064",
+            "W34-C039",
+            "W34-C042"
+          ],
+          "mapping_note": "frontier comparison context + referenced models",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-16_0700.md.txt",
+          "topic_no": 7,
+          "topic_title": "AWS open-source Dogwood policy language for agent tool call sequences",
+          "candidate_ids": [
+            "W34-C069"
+          ],
+          "mapping_note": "Dogwood base release/background",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-16_0700.md.txt",
+          "topic_no": 8,
+          "topic_title": "Discussions on AI agent harnesses and DarwinX-style evolution (related research mentions)",
+          "candidate_ids": [
+            "W34-C085"
+          ],
+          "mapping_note": "agent harness / DarwinX research",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-16_0700.md.txt",
+          "topic_no": 9,
+          "topic_title": "Pricing pressures and Chinese vs Western model economics",
+          "candidate_ids": [
+            "W34-C063"
+          ],
+          "mapping_note": "model pricing/economics context",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-16_0700.md.txt",
+          "topic_no": 10,
+          "topic_title": "User demos of long-running agent tasks with Grok 4.6 and other models",
+          "candidate_ids": [
+            "W34-C042"
+          ],
+          "mapping_note": "Grok 4.6 long-running agent usage",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-16_0700.md.txt",
+          "topic_no": 11,
+          "topic_title": "Qwen-3.8 series local performance claims vs Gemini",
+          "candidate_ids": [
+            "W34-C039",
+            "W34-C044"
+          ],
+          "mapping_note": "Qwen3.8 local performance",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-16_0700.md.txt",
+          "topic_no": 12,
+          "topic_title": "Broader community notes on model density of releases in mid-August",
+          "candidate_ids": [
+            "W34-C064"
+          ],
+          "mapping_note": "release-density context",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-17_0700.md.txt",
+          "topic_no": 1,
+          "topic_title": "Stripe、OpenRouterを70億ドル超で買収へ（報道）",
+          "candidate_ids": [
+            "W34-C003"
+          ],
+          "mapping_note": "OpenRouter/Stripe",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-17_0700.md.txt",
+          "topic_no": 2,
+          "topic_title": "OpenAI、Preparednessチームを解散（報道）",
+          "candidate_ids": [
+            "W34-C061"
+          ],
+          "mapping_note": "Preparedness-team report / contested context",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-17_0700.md.txt",
+          "topic_no": 3,
+          "topic_title": "AWS、Dogwoodをオープンソース化（エージェントポリシー言語）",
+          "candidate_ids": [
+            "W34-C069"
+          ],
+          "mapping_note": "Dogwood original release pre-window",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-17_0700.md.txt",
+          "topic_no": 4,
+          "topic_title": "AWS DynamoDBにネイティブベクトル検索を追加",
+          "candidate_ids": [
+            "W34-C068"
+          ],
+          "mapping_note": "DynamoDB Vector Search pre-window",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-17_0700.md.txt",
+          "topic_no": 5,
+          "topic_title": "Anthropic Claudeのテキスト透かし（EU AI Act対応）に関する議論継続",
+          "candidate_ids": [
+            "W34-C002"
+          ],
+          "mapping_note": "Claude watermark",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-17_0700.md.txt",
+          "topic_no": 6,
+          "topic_title": "AIチャットボットがpig-butchering詐欺で人間を上回る成功率を示した研究",
+          "candidate_ids": [
+            "W34-C051"
+          ],
+          "mapping_note": "pig-butchering research",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-17_0700.md.txt",
+          "topic_no": 7,
+          "topic_title": "ChatGPT Mac版「Computer History」機能のプライバシー懸念",
+          "candidate_ids": [
+            "W34-C052"
+          ],
+          "mapping_note": "ChatGPT Computer History",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-17_0700.md.txt",
+          "topic_no": 8,
+          "topic_title": "米国、同盟国に中国主導AI枠組みとの「二者択一」を要求する動き",
+          "candidate_ids": [
+            "W34-C058"
+          ],
+          "mapping_note": "US/China AI coalition pressure",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-17_0700.md.txt",
+          "topic_no": 9,
+          "topic_title": "AutoDesign: 長時間エージェント設計のためのメタハーネス最適化論文",
+          "candidate_ids": [
+            "W34-C050"
+          ],
+          "mapping_note": "AutoDesign",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-17_0700.md.txt",
+          "topic_no": 10,
+          "topic_title": "Renormalising Generative Models for Active Inference論文",
+          "candidate_ids": [
+            "W34-C084"
+          ],
+          "mapping_note": "active inference paper pre-window",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-17_0700.md.txt",
+          "topic_no": 11,
+          "topic_title": "Anthropic Q2売上急増などの企業動向共有",
+          "candidate_ids": [
+            "W34-C059"
+          ],
+          "mapping_note": "Anthropic business context",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-17_0700.md.txt",
+          "topic_no": 12,
+          "topic_title": "その他エージェント・モデル関連の小規模言及",
+          "candidate_ids": [
+            "W34-C064",
+            "W34-C085"
+          ],
+          "mapping_note": "misc agent/model mentions",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-18_0700.md.txt",
+          "topic_no": 1,
+          "topic_title": "NVIDIA / OpenAI / SB Energy PORTS-Pike Ohio data-center partnership",
+          "candidate_ids": [
+            "W34-C026"
+          ],
+          "mapping_note": "PORTS-Pike",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-18_0700.md.txt",
+          "topic_no": 2,
+          "topic_title": "Stripe reportedly finalizes acquisition of OpenRouter for >$7B",
+          "candidate_ids": [
+            "W34-C003"
+          ],
+          "mapping_note": "OpenRouter/Stripe",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-18_0700.md.txt",
+          "topic_no": 3,
+          "topic_title": "Qwen3.8-27B open-weight model performance and edge/local deployments",
+          "candidate_ids": [
+            "W34-C039",
+            "W34-C043"
+          ],
+          "mapping_note": "Qwen3.8 open-weight/local deployment",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-18_0700.md.txt",
+          "topic_no": 4,
+          "topic_title": "GitHub worldwide outage (17 Aug) and impact on AI coding tools",
+          "candidate_ids": [
+            "W34-C062"
+          ],
+          "mapping_note": "GitHub outage context",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-18_0700.md.txt",
+          "topic_no": 5,
+          "topic_title": "Anthropic Claude text watermarking (SynthID-Text style) — ongoing discussion",
+          "candidate_ids": [
+            "W34-C002"
+          ],
+          "mapping_note": "Claude watermark",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-18_0700.md.txt",
+          "topic_no": 6,
+          "topic_title": "Seedance 2.5 AI video model availability in the US",
+          "candidate_ids": [
+            "W34-C053"
+          ],
+          "mapping_note": "Seedance 2.5 US availability claim",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-18_0700.md.txt",
+          "topic_no": 7,
+          "topic_title": "Broader open-model and agentic progress mentions (GLM-5.3, MiniMax, DeepSeek-V4 etc.)",
+          "candidate_ids": [
+            "W34-C064",
+            "W34-C001",
+            "W34-C040"
+          ],
+          "mapping_note": "broad open-model/agent discussion",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-18_0700.md.txt",
+          "topic_no": 8,
+          "topic_title": "MediaTek / automotive edge AI integration of Qwen-3.8 27B",
+          "candidate_ids": [
+            "W34-C054"
+          ],
+          "mapping_note": "MediaTek/Qwen edge deployment",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-19_0700.md.txt",
+          "topic_no": 1,
+          "topic_title": "OpenAI launches ChatGPT for Teens",
+          "candidate_ids": [
+            "W34-C004"
+          ],
+          "mapping_note": "ChatGPT for Teens",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-19_0700.md.txt",
+          "topic_no": 2,
+          "topic_title": "OpenAI temporarily pauses RL training on latest models for safeguards",
+          "candidate_ids": [
+            "W34-C005"
+          ],
+          "mapping_note": "OpenAI cyber pacing / RL pause",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-19_0700.md.txt",
+          "topic_no": 3,
+          "topic_title": "Anthropic annualized revenue surpasses $65B amid IPO speculation",
+          "candidate_ids": [
+            "W34-C059"
+          ],
+          "mapping_note": "Anthropic business context",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-19_0700.md.txt",
+          "topic_no": 4,
+          "topic_title": "Anthropic adding invisible watermarks to Claude-generated text",
+          "candidate_ids": [
+            "W34-C002"
+          ],
+          "mapping_note": "Claude watermark",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-19_0700.md.txt",
+          "topic_no": 5,
+          "topic_title": "ByteDance signs Hollywood IP pact covering Seedance and Seedream",
+          "candidate_ids": [
+            "W34-C057"
+          ],
+          "mapping_note": "ByteDance–MPA IP agreement",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-19_0700.md.txt",
+          "topic_no": 6,
+          "topic_title": "CISA flags critical RCE in Ray AI framework, 3-day patch deadline",
+          "candidate_ids": [
+            "W34-C006"
+          ],
+          "mapping_note": "Ray CISA KEV",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-19_0700.md.txt",
+          "topic_no": 7,
+          "topic_title": "Alipay launches full-stack agentic commerce platform",
+          "candidate_ids": [
+            "W34-C007"
+          ],
+          "mapping_note": "Alipay agentic commerce",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-19_0700.md.txt",
+          "topic_no": 8,
+          "topic_title": "OpenAI internal security and monitoring enhancements (related to RL pause)",
+          "candidate_ids": [
+            "W34-C005"
+          ],
+          "mapping_note": "OpenAI security/monitoring enhancements",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-20_0700.md",
+          "topic_no": 1,
+          "topic_title": "OpenAI: Zero Data Retention継続とPrivate Safety Processingプレビュー",
+          "candidate_ids": [
+            "W34-C008"
+          ],
+          "mapping_note": "OpenAI ZDR / Private Safety Processing",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-20_0700.md",
+          "topic_no": 2,
+          "topic_title": "Anthropic: Claudeによるタンパク質バインダーde novo設計実験",
+          "candidate_ids": [
+            "W34-C009"
+          ],
+          "mapping_note": "Claude protein design",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-20_0700.md",
+          "topic_no": 3,
+          "topic_title": "Anthropic Claudeテキスト透かし（watermark）への反応",
+          "candidate_ids": [
+            "W34-C002"
+          ],
+          "mapping_note": "Claude watermark",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-20_0700.md",
+          "topic_no": 4,
+          "topic_title": "xAI Grok 4.6 がAmazon Bedrockで利用可能に",
+          "candidate_ids": [
+            "W34-C023"
+          ],
+          "mapping_note": "Grok 4.6 Bedrock",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-20_0700.md",
+          "topic_no": 5,
+          "topic_title": "Alibaba Qwen3.8-27B のローカル性能・採用議論",
+          "candidate_ids": [
+            "W34-C039",
+            "W34-C044"
+          ],
+          "mapping_note": "Qwen3.8 local/adoption",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-20_0700.md",
+          "topic_no": 6,
+          "topic_title": "DeepSeek V4 Pro / Flash 関連の利用・比較",
+          "candidate_ids": [
+            "W34-C040"
+          ],
+          "mapping_note": "DeepSeek V4-Pro/Flash usage",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-20_0700.md",
+          "topic_no": 7,
+          "topic_title": "AWS Bedrock AgentCore Payments 一般提供開始",
+          "candidate_ids": [
+            "W34-C010"
+          ],
+          "mapping_note": "AgentCore Payments",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-20_0700.md",
+          "topic_no": 8,
+          "topic_title": "OpenAI ChatGPT for Teens 関連議論の継続",
+          "candidate_ids": [
+            "W34-C004"
+          ],
+          "mapping_note": "ChatGPT for Teens follow-up",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-20_0700.md",
+          "topic_no": 9,
+          "topic_title": "StripeによるOpenRouter買収関連言及",
+          "candidate_ids": [
+            "W34-C003"
+          ],
+          "mapping_note": "OpenRouter/Stripe follow-up",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-20_0700.md",
+          "topic_no": 10,
+          "topic_title": "Grok関連のその他アップデート（Voice, Buildなど）",
+          "candidate_ids": [
+            "W34-C067",
+            "W34-C025"
+          ],
+          "mapping_note": "Grok voice/build misc",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-20_0700.md",
+          "topic_no": 11,
+          "topic_title": "Microsoft Copilot脆弱性パッチ関連",
+          "candidate_ids": [
+            "W34-C055"
+          ],
+          "mapping_note": "Copilot CoSnitch",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-20_0700.md",
+          "topic_no": 12,
+          "topic_title": "その他オープンモデル・エージェント・研究動向",
+          "candidate_ids": [
+            "W34-C064",
+            "W34-C085"
+          ],
+          "mapping_note": "misc open-model/agent/research",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-21_0700.md.txt",
+          "topic_no": 1,
+          "topic_title": "Anthropic Claude Platform: Computer Use / Skills API / Files API 一般提供開始",
+          "candidate_ids": [
+            "W34-C011"
+          ],
+          "mapping_note": "Claude agent tools GA",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-21_0700.md.txt",
+          "topic_no": 2,
+          "topic_title": "Google Gemma オープンモデル群が10億ダウンロードを突破",
+          "candidate_ids": [
+            "W34-C027"
+          ],
+          "mapping_note": "Gemma 1B downloads",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-21_0700.md.txt",
+          "topic_no": 3,
+          "topic_title": "StripeによるOpenRouter買収に関する議論継続",
+          "candidate_ids": [
+            "W34-C003"
+          ],
+          "mapping_note": "OpenRouter/Stripe discussion",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-21_0700.md.txt",
+          "topic_no": 4,
+          "topic_title": "OpenAIがNVIDIA Vera Rubinラックを訓練インフラで稼働",
+          "candidate_ids": [
+            "W34-C035"
+          ],
+          "mapping_note": "Vera Rubin racks",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-21_0700.md.txt",
+          "topic_no": 5,
+          "topic_title": "NVIDIA NeMo Switchyardによるエージェント向けモデルルーティング",
+          "candidate_ids": [
+            "W34-C070"
+          ],
+          "mapping_note": "NeMo Switchyard base release/background",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-21_0700.md.txt",
+          "topic_no": 6,
+          "topic_title": "UnslothによるQwen3.8-27B GGUF最適化リリース",
+          "candidate_ids": [
+            "W34-C043"
+          ],
+          "mapping_note": "Qwen3.8 Unsloth/GGUF",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-21_0700.md.txt",
+          "topic_no": 7,
+          "topic_title": "Slack Code: AIエージェント向け専用チャンネル機能",
+          "candidate_ids": [
+            "W34-C012"
+          ],
+          "mapping_note": "Slack Code",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-21_0700.md.txt",
+          "topic_no": 8,
+          "topic_title": "Meta Muse SparkによるMac向けシステムレベルディクテーション",
+          "candidate_ids": [
+            "W34-C056"
+          ],
+          "mapping_note": "Meta AI Mac/Muse Spark",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-21_0700.md.txt",
+          "topic_no": 9,
+          "topic_title": "Liquid AI LFM2.5-DSpark 推論高速化",
+          "candidate_ids": [
+            "W34-C013"
+          ],
+          "mapping_note": "LFM2.5-DSpark",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-21_0700.md.txt",
+          "topic_no": 10,
+          "topic_title": "Micron Research Labs 発表（メモリ・AI研究ハブ）",
+          "candidate_ids": [
+            "W34-C028"
+          ],
+          "mapping_note": "Micron Research Labs",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-21_0700.md.txt",
+          "topic_no": 11,
+          "topic_title": "OpenAI Macアプリ Computer History機能（EEA等向け）",
+          "candidate_ids": [
+            "W34-C052"
+          ],
+          "mapping_note": "Computer History regional expansion",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-21_0700.md.txt",
+          "topic_no": 12,
+          "topic_title": "Qwen3.8-Max Frontend Codeリーダーボード上位報告",
+          "candidate_ids": [
+            "W34-C039",
+            "W34-C044"
+          ],
+          "mapping_note": "Qwen3.8 frontend benchmark",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-22_0700.md.txt",
+          "topic_no": 1,
+          "topic_title": "Ox Alpha（匿名ステルスモデル）の登場とコミュニティ検証",
+          "candidate_ids": [
+            "W34-C065"
+          ],
+          "mapping_note": "Ox Alpha",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-22_0700.md.txt",
+          "topic_no": 2,
+          "topic_title": "X Ads MCPのローンチ（AIエージェントによる広告管理）",
+          "candidate_ids": [
+            "W34-C016"
+          ],
+          "mapping_note": "X Ads MCP",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-22_0700.md.txt",
+          "topic_no": 3,
+          "topic_title": "OpenAIによるGPT-5.6 SolのAPI価格引き下げ",
+          "candidate_ids": [
+            "W34-C017"
+          ],
+          "mapping_note": "GPT-5.6 Sol pricing",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-22_0700.md.txt",
+          "topic_no": 4,
+          "topic_title": "DeepSeek-V4-Flash-Vision-ExpとFiles APIの公開",
+          "candidate_ids": [
+            "W34-C022"
+          ],
+          "mapping_note": "DeepSeek Vision Exp",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-22_0700.md.txt",
+          "topic_no": 5,
+          "topic_title": "Anthropicが元Google TPU創設者Amir Salekを採用",
+          "candidate_ids": [
+            "W34-C060"
+          ],
+          "mapping_note": "Anthropic hire context",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-22_0700.md.txt",
+          "topic_no": 6,
+          "topic_title": "Grok 4.6のCursorBench #1とコスト効率、Vertex AI対応",
+          "candidate_ids": [
+            "W34-C024",
+            "W34-C042"
+          ],
+          "mapping_note": "Grok 4.6 Vertex + benchmark",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-22_0700.md.txt",
+          "topic_no": 7,
+          "topic_title": "SenseNova-U1.5（SenseTime）オープンソース画像生成・編集モデル",
+          "candidate_ids": [
+            "W34-C038"
+          ],
+          "mapping_note": "SenseNova-U1.5",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-22_0700.md.txt",
+          "topic_no": 8,
+          "topic_title": "Pika Speech（高効率TTSモデル）の詳細公開",
+          "candidate_ids": [
+            "W34-C020"
+          ],
+          "mapping_note": "Pika Speech/audio family",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-22_0700.md.txt",
+          "topic_no": 9,
+          "topic_title": "MiniMax Design（エージェント型広告・コンテンツ制作アプリ）",
+          "candidate_ids": [
+            "W34-C037"
+          ],
+          "mapping_note": "MiniMax Design",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-22_0700.md.txt",
+          "topic_no": 10,
+          "topic_title": "Google DeepMindのゲーム研究パートナーシップ（Fenris Creations）",
+          "candidate_ids": [
+            "W34-C036"
+          ],
+          "mapping_note": "DeepMind games research",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-22_0700.md.txt",
+          "topic_no": 11,
+          "topic_title": "Grok Botのアクセス拡大",
+          "candidate_ids": [
+            "W34-C066"
+          ],
+          "mapping_note": "Grok Bot access expansion",
+          "mapped": true
+        },
+        {
+          "daily_file": "2026-08-22_0700.md.txt",
+          "topic_no": 12,
+          "topic_title": "Grok Buildの継続的改善",
+          "candidate_ids": [
+            "W34-C025",
+            "W34-C067"
+          ],
+          "mapping_note": "Grok Build improvement",
+          "mapped": true
+        }
+      ]
+    },
+    "grok_r2_corrected_urls": {
+      "expected": 47,
+      "accounted": 47,
+      "unmapped_urls": [],
+      "source_path": "sources/2026-W34/intake/working-set/grok-r2-candidate-crosswalk-v0.1.md",
+      "classification_authority": "sources/2026-W34/external/x/weekly-x-2026-W34-r2/raw/x-url-ledger.corrected.tsv",
+      "rows": [
+        {
+          "row": 1,
+          "x_url": "https://x.com/elonmusk/status/2088138697002668110",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            1
+          ],
+          "observation_summary": "Amplifies CursorBench #1 ranking for Grok 4.6 coding",
+          "candidate_ids": [
+            "W34-C042"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 2,
+          "x_url": "https://x.com/elonmusk/status/2088127459971522726",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            1
+          ],
+          "observation_summary": "Highlights multimodal image/video upgrade and productivity claim",
+          "candidate_ids": [
+            "W34-C042"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 3,
+          "x_url": "https://x.com/elonmusk/status/2088100521261359218",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            1
+          ],
+          "observation_summary": "States best evaluated with Grok Build harness",
+          "candidate_ids": [
+            "W34-C042",
+            "W34-C025"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 4,
+          "x_url": "https://x.com/elonmusk/status/2088033597999473050",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            1
+          ],
+          "observation_summary": "Endorsement in independent test quote chain",
+          "candidate_ids": [
+            "W34-C042"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 5,
+          "x_url": "https://x.com/elonmusk/status/2087970387002855683",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            1
+          ],
+          "observation_summary": "Amplifies GPQA Diamond 94.9% claim",
+          "candidate_ids": [
+            "W34-C042"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 6,
+          "x_url": "https://x.com/XFreeze/status/2088137836079804882",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            1
+          ],
+          "observation_summary": "Original CursorBench ranking post",
+          "candidate_ids": [
+            "W34-C042"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 7,
+          "x_url": "https://x.com/yunta_tsai/status/2088062294119104944",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            1,
+            10
+          ],
+          "observation_summary": "Independent multimodal video understanding productivity observation",
+          "candidate_ids": [
+            "W34-C042"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 8,
+          "x_url": "https://x.com/ArthurMacwaters/status/2088044880379761103",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            1
+          ],
+          "observation_summary": "Notes Grok 4.6 optimization for Grok Build",
+          "candidate_ids": [
+            "W34-C042",
+            "W34-C025"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 9,
+          "x_url": "https://x.com/MiaAI_lab/status/2087857449172689240",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            1
+          ],
+          "observation_summary": "8-hour kernel/modding test claiming parity with Kimi K3",
+          "candidate_ids": [
+            "W34-C042"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 10,
+          "x_url": "https://x.com/cb_doge/status/2087953922229170682",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            1
+          ],
+          "observation_summary": "GPQA Diamond ranking post",
+          "candidate_ids": [
+            "W34-C042"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 11,
+          "x_url": "https://x.com/Google/status/2088396439198089236",
+          "window_status": "ORDINARY_WINDOW",
+          "topic_cluster_id": [
+            2
+          ],
+          "observation_summary": "Official day-after Gemini 3.7 Flash coding/agents positioning",
+          "candidate_ids": [
+            "W34-C041"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 12,
+          "x_url": "https://x.com/Google/status/2088396450258391370",
+          "window_status": "ORDINARY_WINDOW",
+          "topic_cluster_id": [
+            2
+          ],
+          "observation_summary": "Calls for user-built examples",
+          "candidate_ids": [
+            "W34-C041"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 13,
+          "x_url": "https://x.com/Google/status/2088366086316315080",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            2
+          ],
+          "observation_summary": "Video demo of design adherence and one-shot game",
+          "candidate_ids": [
+            "W34-C041"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 14,
+          "x_url": "https://x.com/Google/status/2088366088509591790",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            2
+          ],
+          "observation_summary": "Links primary blog post",
+          "candidate_ids": [
+            "W34-C041"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 15,
+          "x_url": "https://x.com/Google/status/2088345261164617842",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            2
+          ],
+          "observation_summary": "Cross-promotion with GeminiApp",
+          "candidate_ids": [
+            "W34-C041"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 16,
+          "x_url": "https://x.com/Motion_Viz/status/2090924251520065713",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            2
+          ],
+          "observation_summary": "1-prompt memory transfer setup report",
+          "candidate_ids": [
+            "W34-C041"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 17,
+          "x_url": "https://x.com/deftdawg/status/2090947274272645212",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            2
+          ],
+          "observation_summary": "Reports filesystem inspection regression on Gemini 3.7-flash high",
+          "candidate_ids": [
+            "W34-C041"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 18,
+          "x_url": "https://x.com/10xmylife/status/2090746640495964545",
+          "window_status": "ORDINARY_WINDOW",
+          "topic_cluster_id": [
+            2
+          ],
+          "observation_summary": "Endorsement for Chinese writing tasks",
+          "candidate_ids": [
+            "W34-C041"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 19,
+          "x_url": "https://x.com/deepseek_ai/status/2087864585504305397",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            3
+          ],
+          "observation_summary": "Official DeepSeek-V4-Pro launch with agent upgrades and API support",
+          "candidate_ids": [
+            "W34-C040"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 20,
+          "x_url": "https://x.com/deepseek_ai/status/2087864589895798968",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            3,
+            12
+          ],
+          "observation_summary": "Peak/off-peak API pricing update effective Aug 16",
+          "candidate_ids": [
+            "W34-C040"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 21,
+          "x_url": "https://x.com/0xkydo/status/2090894947335750142",
+          "window_status": "ORDINARY_WINDOW",
+          "topic_cluster_id": [
+            4,
+            8
+          ],
+          "observation_summary": "Detailed 3.3x MLX decode speedup results and methodology",
+          "candidate_ids": [
+            "W34-C044"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 22,
+          "x_url": "https://x.com/julianharris/status/2090950801099256146",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            4,
+            8
+          ],
+          "observation_summary": "Frames open-weights innovation pace and Mac speedup",
+          "candidate_ids": [
+            "W34-C044"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 23,
+          "x_url": "https://x.com/doodlestein/status/2090866739705737599",
+          "window_status": "ORDINARY_WINDOW",
+          "topic_cluster_id": [
+            4,
+            11
+          ],
+          "observation_summary": "Shares uncensored weights and ban-anticipation note",
+          "candidate_ids": [
+            "W34-C044"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 24,
+          "x_url": "https://x.com/doodlestein/status/2090866417482510497",
+          "window_status": "ORDINARY_WINDOW",
+          "topic_cluster_id": [
+            4,
+            11
+          ],
+          "observation_summary": "Notes near-zero refusal after abliteration with capability retention",
+          "candidate_ids": [
+            "W34-C044"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 25,
+          "x_url": "https://x.com/MaxForAI/status/2090920962296578081",
+          "window_status": "ORDINARY_WINDOW",
+          "topic_cluster_id": [
+            4
+          ],
+          "observation_summary": "Detailed Chinese summary of abliteration method and metrics",
+          "candidate_ids": [
+            "W34-C044"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 26,
+          "x_url": "https://x.com/NullContex1s/status/2090922565539917905",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            4
+          ],
+          "observation_summary": "Reports 1.7M HF downloads and multimodal capability",
+          "candidate_ids": [
+            "W34-C039",
+            "W34-C044"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 27,
+          "x_url": "https://x.com/Oluwaphilemon1/status/2090951888552301053",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            4
+          ],
+          "observation_summary": "Local DGX Spark comparative runs including Qwen3.8-Max",
+          "candidate_ids": [
+            "W34-C039",
+            "W34-C044"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 28,
+          "x_url": "https://x.com/tlanderso/status/2090951328843620464",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            4
+          ],
+          "observation_summary": "Qualitative writing-style comparison vs GLM",
+          "candidate_ids": [
+            "W34-C039",
+            "W34-C044",
+            "W34-C001"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 29,
+          "x_url": "https://x.com/kocer_eth/status/2088776558668288410",
+          "window_status": "ORDINARY_WINDOW",
+          "topic_cluster_id": [
+            5,
+            9
+          ],
+          "observation_summary": "Free GLM-5.3 trial details and benchmark claims",
+          "candidate_ids": [
+            "W34-C001"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 30,
+          "x_url": "https://x.com/e_go0309/status/2090952085240266836",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            5,
+            12
+          ],
+          "observation_summary": "100M free GLM-5.3 tokens promo",
+          "candidate_ids": [
+            "W34-C001"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 31,
+          "x_url": "https://x.com/Da7_Tech/status/2090926178232123654",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            5
+          ],
+          "observation_summary": "Speculates Ox-Alpha identity and compute source",
+          "candidate_ids": [
+            "W34-C065",
+            "W34-C001"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 32,
+          "x_url": "https://x.com/TheoryoftheDog/status/2090951993497960613",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            5
+          ],
+          "observation_summary": "Notes GLM 5.3 Flash multimodal",
+          "candidate_ids": [
+            "W34-C001"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 33,
+          "x_url": "https://x.com/velkan_gst/status/2090951516551053358",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            5
+          ],
+          "observation_summary": "Personal high-volume free-token usage signal",
+          "candidate_ids": [
+            "W34-C001"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 34,
+          "x_url": "https://x.com/NVIDIAAI/status/2088339706752983230",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            6
+          ],
+          "observation_summary": "Introduces NeMo Switchyard routing library",
+          "candidate_ids": [
+            "W34-C070"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 35,
+          "x_url": "https://x.com/NVIDIAAI/status/2087662769512571010",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            6
+          ],
+          "observation_summary": "Partner post-training examples for Nemotron Lightning",
+          "candidate_ids": [
+            "W34-C070"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 36,
+          "x_url": "https://x.com/NVIDIAAI/status/2087258724654284971",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            6
+          ],
+          "observation_summary": "Dataset release (pre-window background)",
+          "candidate_ids": [
+            "W34-C070"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 37,
+          "x_url": "https://x.com/NVIDIAAI/status/2087173733823680855",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            6
+          ],
+          "observation_summary": "Weights availability (pre-window background)",
+          "candidate_ids": [
+            "W34-C070"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 38,
+          "x_url": "https://x.com/huggingface/status/2088301795890044975",
+          "window_status": "BACKGROUND_ONLY",
+          "topic_cluster_id": [
+            7
+          ],
+          "observation_summary": "State of Open Models Summer 2026 summary",
+          "candidate_ids": [
+            "W34-C089"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 39,
+          "x_url": "https://x.com/kimmonismus/status/2089790124825456738",
+          "window_status": "ORDINARY_WINDOW",
+          "topic_cluster_id": [
+            11
+          ],
+          "observation_summary": "Pace-of-progress safety commentary quoting Amodei",
+          "candidate_ids": [
+            "W34-C090"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 40,
+          "x_url": "https://x.com/Oluwaphilemon1/status/2090947609166807459",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            4
+          ],
+          "observation_summary": "Local comparative token generation runs",
+          "candidate_ids": [
+            "W34-C039",
+            "W34-C044"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 41,
+          "x_url": "https://x.com/ai_hakase_/status/2090939762571952461",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            4
+          ],
+          "observation_summary": "Points to abliterated Qwen3.8 collection",
+          "candidate_ids": [
+            "W34-C044"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 42,
+          "x_url": "https://x.com/akira_papa_IT/status/2090951192033800241",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            4,
+            8
+          ],
+          "observation_summary": "Announces local LLM seminar covering Qwen3.8-27B",
+          "candidate_ids": [
+            "W34-C043",
+            "W34-C044"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 43,
+          "x_url": "https://x.com/Motion_Viz/status/2090948266695577972",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            2
+          ],
+          "observation_summary": "Follow-up on Hermes + OpenRouter + Ox-alpha setup",
+          "candidate_ids": [
+            "W34-C041",
+            "W34-C065"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 44,
+          "x_url": "https://x.com/uygnod/status/2090945798926442687",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            2
+          ],
+          "observation_summary": "Amplifies Chinese writing endorsement for Gemini 3.7",
+          "candidate_ids": [
+            "W34-C041"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 45,
+          "x_url": "https://x.com/GameelRealtors/status/2090949634977939856",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            2
+          ],
+          "observation_summary": "Mentions Gemini 3.7 PRO",
+          "candidate_ids": [
+            "W34-C041"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 46,
+          "x_url": "https://x.com/BitPuPu/status/2088777637883969797",
+          "window_status": "ORDINARY_WINDOW",
+          "topic_cluster_id": [
+            4,
+            5
+          ],
+          "observation_summary": "Daily tech summary including Qwen3.8-27B and GLM-5.3",
+          "candidate_ids": [
+            "W34-C039",
+            "W34-C001"
+          ],
+          "mapped": true
+        },
+        {
+          "row": 47,
+          "x_url": "https://x.com/sealook/status/2090951755236511999",
+          "window_status": "LATE_BREAKING",
+          "topic_cluster_id": [
+            5
+          ],
+          "observation_summary": "Links Z.AI funding context",
+          "candidate_ids": [
+            "W34-C001"
+          ],
+          "mapped": true
+        }
+      ]
+    },
+    "corrected_grok_window_counts": {
+      "ordinary_window": 10,
+      "background_only": 20,
+      "late_breaking": 17,
+      "expected": "10/20/17",
+      "validated": true
+    }
+  },
+  "x_boundary": {
+    "raw_observation_only": true,
+    "community_signal_only": true,
+    "x_only_technical_evidence": false,
+    "agreement_between_x_posts_is_not_technical_evidence": true,
+    "stale_corrected_narrative_is_not_count_authority": true
+  },
+  "carryover": {
+    "ledger_path": "sources/2026-W34/carryover/carryover-ledger-v0.1.json",
+    "expected": 1,
+    "accounted": 1,
+    "status": "RECHECKED_UNRESOLVED",
+    "pending_recheck_count": 0,
+    "promotion_to_current": false
+  },
+  "collector_retry": {
+    "arxiv": {
+      "result": "RETRY_REQUIRED",
+      "raw_count": 0,
+      "summary_path": "sources/2026-W34/collectors/arxiv/runs/20260902T164107Z/summary.json"
+    },
+    "official_pages": {
+      "result": "RETRY_REQUIRED",
+      "raw_count": 0,
+      "summary_path": "sources/2026-W34/collectors/official-pages/runs/20260902T164107Z/summary.json"
+    },
+    "github_releases": {
+      "result": "SUCCESS",
+      "raw_count": 7,
+      "immutable_existing_raw": true
+    }
+  },
+  "lane_readiness": [
+    {
+      "lane": "model/reasoning",
+      "status": "SEED_PRESENT",
+      "represented_source_families": "Sol event inventory, DailyX, Grok, non-X manual leads",
+      "canonical_primary_raw": "Configured GitHub Releases Raw is present; no candidate-level first-party Raw beyond that configured set.",
+      "quiet_finding": "No quiet finding; blocked official/arXiv lanes prevent completeness claim.",
+      "remaining_gap": "Candidate-level first-party capture and screening remain; blocked official/arXiv lanes remain open."
+    },
+    {
+      "lane": "agents/coding",
+      "status": "SEED_PRESENT",
+      "represented_source_families": "Sol/DailyX/Grok/non-X",
+      "canonical_primary_raw": "No lane-wide candidate-level first-party Raw beyond configured GitHub Releases; X rows remain community leads.",
+      "quiet_finding": "No quiet finding.",
+      "remaining_gap": "First-party capture and screening remain."
+    },
+    {
+      "lane": "multimodal",
+      "status": "SEED_PRESENT",
+      "represented_source_families": "Sol/DailyX/Grok/non-X",
+      "canonical_primary_raw": "No canonical arXiv Raw and no configured official HTML snapshots; GitHub Releases Raw does not close this lane.",
+      "quiet_finding": "No quiet finding.",
+      "remaining_gap": "Retry arXiv/official collectors and capture candidate-level first-party sources."
+    },
+    {
+      "lane": "image",
+      "status": "PARTIAL",
+      "represented_source_families": "Sol/DailyX/Grok/non-X",
+      "canonical_primary_raw": "No image-first in-window release established by canonical Raw.",
+      "quiet_finding": "Not qualified as quiet.",
+      "remaining_gap": "Targeted official capture and chronology verification remain."
+    },
+    {
+      "lane": "video",
+      "status": "PARTIAL",
+      "represented_source_families": "Sol/DailyX/Grok/non-X",
+      "canonical_primary_raw": "No in-window video release established by canonical Raw; prominent leads include boundary/post-cutoff items.",
+      "quiet_finding": "Not qualified as quiet.",
+      "remaining_gap": "Verify in-window first-party release evidence and boundary chronology."
+    },
+    {
+      "lane": "audio/music",
+      "status": "SEED_PRESENT",
+      "represented_source_families": "Sol/DailyX/non-X",
+      "canonical_primary_raw": "Stable Audio lead is in-window in existing non-X observations; no canonical candidate-level Raw captured for the full lane.",
+      "quiet_finding": "Not qualified as quiet.",
+      "remaining_gap": "Candidate verification and first-party Raw capture remain."
+    },
+    {
+      "lane": "open-weight/local AI",
+      "status": "SEED_PRESENT",
+      "represented_source_families": "Sol/DailyX/Grok/non-X",
+      "canonical_primary_raw": "No candidate-level model-card/license/weights Raw captured for the full lane.",
+      "quiet_finding": "Not qualified as quiet.",
+      "remaining_gap": "Verify model card, license, weights and technical scope before Evidence."
+    },
+    {
+      "lane": "serving/systems",
+      "status": "CANONICAL_SEED_PRESENT",
+      "represented_source_families": "GitHub Releases Raw plus Sol/DailyX/Grok",
+      "canonical_primary_raw": "Existing GitHub Releases Raw is complete for the configured seven repositories.",
+      "quiet_finding": "No quiet finding.",
+      "remaining_gap": "Transformers/FlashInfer matches remain unscreened leads."
+    },
+    {
+      "lane": "memory/retrieval",
+      "status": "SEED_PRESENT",
+      "represented_source_families": "Sol/DailyX/Grok/non-X",
+      "canonical_primary_raw": "No lane-wide candidate-level first-party Raw beyond configured collectors; implementation posts are leads.",
+      "quiet_finding": "Not qualified as quiet.",
+      "remaining_gap": "Technical scope checks and primary capture remain."
+    },
+    {
+      "lane": "evaluation",
+      "status": "PARTIAL",
+      "represented_source_families": "Sol/DailyX/Grok/non-X",
+      "canonical_primary_raw": "No methodology/primary snapshots for benchmark figures were captured by canonical collectors.",
+      "quiet_finding": "Not qualified as quiet.",
+      "remaining_gap": "Methodology/primary snapshots and non-X verification remain."
+    },
+    {
+      "lane": "safety/security",
+      "status": "SEED_PRESENT",
+      "represented_source_families": "Sol/DailyX/Grok/non-X",
+      "canonical_primary_raw": "No lane-wide primary Raw beyond configured collectors; research/speculative observations remain bounded.",
+      "quiet_finding": "Not qualified as quiet.",
+      "remaining_gap": "Primary authority capture and scope verification remain."
+    },
+    {
+      "lane": "other emerging technology",
+      "status": "SEED_PRESENT",
+      "represented_source_families": "Sol/DailyX/non-X",
+      "canonical_primary_raw": "No full canonical collector coverage; product/ecosystem context remains separated from technical Evidence.",
+      "quiet_finding": "Not qualified as quiet.",
+      "remaining_gap": "Full canonical intake and primary-source verification remain."
+    }
+  ],
+  "readiness": {
+    "for_sol_independent_completeness_judgment": true,
+    "formal_discovery_acceptance_ready": false,
+    "reason": "All supplied working-set observations and required crosswalks are accounted with explicit collector/capture gaps; Sol must make the independent completeness judgment."
+  }
+}
