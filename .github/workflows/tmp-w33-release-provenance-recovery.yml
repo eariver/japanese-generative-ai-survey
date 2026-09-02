@@ -1,0 +1,190 @@
+name: W33 bounded post-release provenance recovery
+
+on:
+  push:
+    branches:
+      - weekly/2026-W33-v2-work
+    paths:
+      - .github/workflows/tmp-w33-release-provenance-recovery.yml
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify exact main and clone recovery authority
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          expected='095c7d24403fde9388d1227b0c7e90deddd33f09'
+          actual="$(gh api "repos/${REPOSITORY}/git/ref/heads/main" --jq '.object.sha')"
+          test "$actual" = "$expected" || { echo "main moved: expected=$expected actual=$actual" >&2; exit 78; }
+          git clone --depth 50 --branch main "https://x-access-token:${GH_TOKEN}@github.com/${REPOSITORY}.git" repo
+          cd repo
+          test "$(git rev-parse HEAD)" = "$expected"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Core v2 dependencies
+        working-directory: repo
+        run: python -m pip install -r config/survey-production-v2-requirements.txt
+
+      - name: Reconcile existing public Release exact bytes
+        working-directory: repo
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          tag='weekly/2026-W33'
+          title='Japanese Generative AI Technical Survey — 2026-W33'
+          asset='Japanese_Generative_AI_Technical_Survey_2026-W33.pdf'
+          target='095c7d24403fde9388d1227b0c7e90deddd33f09'
+          sha='1885762325c33b575dd6e789dc53f7ed1c30483a9928b6dbf9537ad0e05661f5'
+          bytes='274472'
+          meta="$(gh release view "$tag" --repo "$REPOSITORY" --json url,tagName,name,isDraft,isPrerelease,targetCommitish,assets)"
+          test "$(printf '%s' "$meta" | jq -r '.tagName')" = "$tag"
+          test "$(printf '%s' "$meta" | jq -r '.name')" = "$title"
+          test "$(printf '%s' "$meta" | jq -r '.isDraft')" = 'false'
+          test "$(printf '%s' "$meta" | jq -r '.isPrerelease')" = 'false'
+          test "$(printf '%s' "$meta" | jq -r '.targetCommitish')" = "$target"
+          test "$(printf '%s' "$meta" | jq --arg n "$asset" '[.assets[]|select(.name==$n)]|length')" = '1'
+          rm -rf release-verify && mkdir release-verify
+          gh release download "$tag" --repo "$REPOSITORY" --dir release-verify --pattern "$asset"
+          test "$(sha256sum "release-verify/$asset" | awk '{print $1}')" = "$sha"
+          test "$(wc -c < "release-verify/$asset" | tr -d ' ')" = "$bytes"
+          printf '%s' "$meta" | jq -r '.url' > /tmp/w33-release-url.txt
+
+      - name: Build validated RELEASED provenance
+        working-directory: repo
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/w33-release-recovery.py <<'PY'
+          from datetime import datetime, timezone
+          from pathlib import Path
+          import json
+          from scripts import survey_agent_control_v2 as agent
+          from scripts import survey_production_v2 as core
+          from scripts import survey_publication_v2 as publication
+          from scripts import survey_schema_v2 as schema_gate
+
+          root=Path('.').resolve(); cfg=core.load_json(root/core.DEFAULT_CONFIG)
+          source=root/'sources/2026-W33'; state_path=source/'production-state.json'; state=core.load_json(state_path)
+          assert state['lifecycle_state']=='FROZEN' and state['next_action']=='stage:release'
+          assert core.sha256_file(state_path)=='66f684a842ee149fc0df02c34ef509f370349bad582049061642ded10f724060'
+          assert agent.validate_agent_state(root,cfg,state)==[]
+          manifest=source/'publication/v2/release-manifest-v2.json'
+          assert core.sha256_file(manifest)=='0919aeb0f522ef181a17d7302133f3b081399f7e072a9225bbee6fff4113059c'
+          m=publication.validate_release_manifest(root,manifest)
+          assert m['release_identity']=='weekly/2026-W33' and m['pdf_sha256']=='1885762325c33b575dd6e789dc53f7ed1c30483a9928b6dbf9537ad0e05661f5'
+
+          now=datetime.now(timezone.utc)
+          merge=source/'publication/v2/merge-verification-v2.json'
+          release=source/'publication/v2/release-record-v2.json'
+          publication.build_merge_verification(root,manifest,'095c7d24403fde9388d1227b0c7e90deddd33f09',now,merge)
+          release_url=Path('/tmp/w33-release-url.txt').read_text(encoding='utf-8').strip()
+          publication.build_release_record(root,manifest,merge,now,release_url,release)
+          r=publication.validate_release_record(root,release)
+          assert r['issue_id']=='2026-W33' and r['pdf_sha256']==m['pdf_sha256']
+
+          _,profile,_=agent._profile_and_source(root,cfg,state)
+          artifacts=[agent._named_authority(root,'merge-verification',merge),agent._named_authority(root,'release-record',release)]
+          agent._validate_stage_artifacts(root,cfg,state,profile,artifacts)
+          impl=core.repository_commit_sha(root)
+          assert impl=='095c7d24403fde9388d1227b0c7e90deddd33f09'
+          contract=core.contract_identity(root,cfg,state['research_profile'],state['publication_profile'])
+          profile_path=root/state['profile']['path']
+          run_root=source/'execution/bridge-runs/2026-W33-release-recovery-33573948295'; run_root.mkdir(parents=True,exist_ok=True)
+          report_path=run_root/'core-stage-contract.json'
+          report={
+            'schema_version':'2.0-rc1','check_id':agent.CORE_STAGE_REVIEW_ID,'status':'PASS','issue_id':'2026-W33',
+            'from_state':'FROZEN','to_state':'RELEASED',
+            'production_state':{'path':str(state_path.relative_to(root)),'sha256':core.sha256_file(state_path)},
+            'production_profile':{'path':str(profile_path.relative_to(root)),'sha256':core.sha256_file(profile_path)},
+            'implementation_commit_sha':impl,'contract':contract,'artifacts':artifacts,'recorded_at':core.iso_utc(now),
+          }
+          core.write_json(report_path,report)
+          result_auth=agent._authority(root,report_path,'Release CORE_STAGE_CONTRACT result')
+          release_auth=agent._authority(root,release,'Release Record')
+          payload={
+            'schema_version':'2.0-rc1','issue_id':'2026-W33','from_state':'FROZEN','to_state':'RELEASED','checkpoints':['release'],
+            'recorded_at':core.iso_utc(now),
+            'implementation':{'repository_commit_sha':impl,'orchestrator_version':cfg['orchestrator_version']},
+            'contract':contract,'artifacts':artifacts,
+            'reviews':[
+              {'check_id':agent.CORE_STAGE_REVIEW_ID,'kind':'DETERMINISTIC','status':'PASS','executor':'post-release exact-byte reconciliation recovery','evidence':'Existing public weekly/2026-W33 Release target and downloaded asset were independently revalidated against the exact frozen main, Release Manifest, PDF SHA-256 and byte count before lifecycle adoption.','result':result_auth},
+              {'check_id':'RELEASE_EXACT_BYTE_RECONCILIATION','kind':'DETERMINISTIC','status':'PASS','executor':'survey-production-v2-release.yml run 33573948295 plus bounded reconciliation','evidence':'Public issue-only Release identity, target and downloaded asset bytes were reconciled against the frozen Release Manifest; canonical run 33573948295 created and exact-byte verified the Release before the repository provenance helper defect stopped adoption.','result':release_auth},
+            ],
+            'summary':'Exact frozen 2026-W33 publication bytes were publicly released and independently reconciled; repository provenance was adopted after supplying the deterministic Core report omitted by the current Release checkpoint helper.'
+          }
+          schema_gate.validate_instance(payload,root/agent.CHECKPOINT_SCHEMA,label='Recovered Release Stage Checkpoint')
+          cp=agent.canonical_checkpoint_path(root,cfg,state)
+          assert not cp.exists(), cp
+          core.write_json(cp,payload)
+          updated=agent.advance_with_checkpoint(root,cfg,state_path,cp)
+          assert updated['lifecycle_state']=='RELEASED' and updated['machine_checkpoints']['release']=='passed'
+          errors=agent.validate_agent_state(root,cfg,updated)
+          assert errors==[], errors
+
+          audit={
+            'schema_version':'2.0-rc1','issue_id':'2026-W33','status':'PASS','kind':'BOUNDED_POST_RELEASE_PROVENANCE_RECOVERY',
+            'recorded_at':core.iso_utc(datetime.now(timezone.utc)),'frozen_main_commit':'095c7d24403fde9388d1227b0c7e90deddd33f09',
+            'release_workflow_run_id':33573948295,'release_identity':'weekly/2026-W33','release_url':release_url,
+            'pdf_sha256':'1885762325c33b575dd6e789dc53f7ed1c30483a9928b6dbf9537ad0e05661f5','pdf_byte_count':274472,
+            'failure_recovered':'survey_release_checkpoint_v2.py omits CORE_STAGE_CONTRACT review required by agent.advance_with_checkpoint',
+            'public_release_created_and_exact_bytes_verified_before_failure':True,
+            'public_release_reconciled_exact_bytes_again':True,
+            'release_record':{'path':str(release.relative_to(root)),'sha256':core.sha256_file(release)},
+            'merge_verification':{'path':str(merge.relative_to(root)),'sha256':core.sha256_file(merge)},
+            'stage_checkpoint':{'path':str(cp.relative_to(root)),'sha256':core.sha256_file(cp)},
+            'core_stage_contract':{'path':str(report_path.relative_to(root)),'sha256':core.sha256_file(report_path)},
+            'final_state_sha256':core.sha256_file(state_path),'final_lifecycle_state':'RELEASED',
+            'final_next_action':updated.get('next_action'),'final_terminal_reason':updated.get('terminal_reason')
+          }
+          core.write_json(source/'publication/v2/release-recovery-audit-r1.json',audit)
+          print(json.dumps(audit,ensure_ascii=False,indent=2))
+          PY
+          PYTHONPATH=. python /tmp/w33-release-recovery.py
+
+      - name: Commit bounded post-release provenance branch
+        working-directory: repo
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          expected='095c7d24403fde9388d1227b0c7e90deddd33f09'
+          actual="$(gh api "repos/${REPOSITORY}/git/ref/heads/main" --jq '.object.sha')"
+          test "$actual" = "$expected" || { echo "main moved before provenance branch: expected=$expected actual=$actual" >&2; exit 78; }
+          branch="provenance/w33-release-20260902-${GITHUB_RUN_ID}"
+          git checkout -b "$branch"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sources/2026-W33
+          git diff --cached --check
+          expected_files=$(cat <<'EOF'
+          sources/2026-W33/execution/bridge-runs/2026-W33-release-recovery-33573948295/core-stage-contract.json
+          sources/2026-W33/orchestration/v2/checkpoints/FROZEN.json
+          sources/2026-W33/production-state.json
+          sources/2026-W33/publication/v2/merge-verification-v2.json
+          sources/2026-W33/publication/v2/release-record-v2.json
+          sources/2026-W33/publication/v2/release-recovery-audit-r1.json
+          EOF
+          )
+          actual_files="$(git diff --cached --name-only | sort)"
+          test "$actual_files" = "$(printf '%s\n' "$expected_files" | sort)" || { echo 'unexpected recovery diff:' >&2; printf '%s\n' "$actual_files" >&2; exit 2; }
+          git commit -m 'Record W33 release provenance'
+          git push origin "$branch"
+          echo "provenance_branch=$branch" >> "$GITHUB_STEP_SUMMARY"
