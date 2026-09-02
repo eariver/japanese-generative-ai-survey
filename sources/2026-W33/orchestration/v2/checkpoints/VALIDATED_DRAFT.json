@@ -1,0 +1,51 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "from_state": "VALIDATED_DRAFT",
+  "to_state": "RELEASE_CANDIDATE",
+  "checkpoints": [],
+  "recorded_at": "2026-09-01T16:55:00Z",
+  "implementation": {
+    "repository_commit_sha": "f5ef3e94276eb52b35bdac6dffa3ce7a2c170837",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "e6ae2637fe2ecb41351193075c79b5829d83d12884cd011a78f593ff77c1c8d1",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "publication-candidate",
+      "path": "sources/2026-W33/publication/v2/publication-candidate-v2.json",
+      "sha256": "aa223f35eb12af7f1046b612aa44354d02bcf0a8e6f8d31b0ba39b7bd05aa021"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request w33-publication-candidate-advance-20260901-r3-recovery1.",
+      "result": {
+        "path": "sources/2026-W33/execution/bridge-runs/w33-publication-candidate-advance-20260901-r3-recovery1/core-stage-contract.json",
+        "sha256": "6bc190af92ee3a05c9dad49d9ccb14c77fca588ea9fdb0337d6e8a822a2e6e3f"
+      }
+    },
+    {
+      "check_id": "LUNA_ISSUE_433_REPAIR_CANDIDATE_VALIDATION_REVIEW",
+      "kind": "AGENT_EDITORIAL",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Codex Luna",
+      "evidence": "ACCEPT / ISSUE_433_READER_TRANSFORMATION_RESOLVED / REPLACEMENT_PUBLICATION_CANDIDATE_VALIDATED / AUTHORIZED_FOR_PUBLICATION_PREVIEW_GATE. The replacement candidate was generated only after the Owner-directed one-line VoiceDesigner bibliography repair and binds the current Reader Manuscript, exact repository PDF, Quality Bundle, Semantic/Editorial Review, and Exact-PDF Visual Review. Candidate file SHA-256 aa223f35eb12af7f1046b612aa44354d02bcf0a8e6f8d31b0ba39b7bd05aa021; candidate_sha256 f3e0ae94ae51e7b5f5374d68c66ecaf688f0d7d43c5db85bc656925a6d07333e; PDF SHA-256 1885762325c33b575dd6e789dc53f7ed1c30483a9928b6dbf9537ad0e05661f5, 11 pages, 274472 bytes. Existing Sol acceptance scope is preserved and no new Human decision is created.",
+      "result": null
+    }
+  ],
+  "summary": "Validate the replacement W33 Publication Candidate from the current repaired authority and advance exactly once from VALIDATED_DRAFT to RELEASE_CANDIDATE, materializing the pending Publication Preview Human Gate without recording a Human decision."
+}

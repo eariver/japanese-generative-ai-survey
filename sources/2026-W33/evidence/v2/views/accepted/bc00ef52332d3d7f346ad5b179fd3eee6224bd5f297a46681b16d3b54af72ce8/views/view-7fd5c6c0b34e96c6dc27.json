@@ -1,0 +1,20 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "research_profile": "WEEKLY",
+  "evidence_task_id": "evidence:2026-W33:3d2faf889cc9e270",
+  "evidence_sha256": "fb28e66b197fe94dd5ae9784b4c37d1d67d42fc020d92c5db55aa743d3083f8d",
+  "materiality": {
+    "status": "MATERIAL",
+    "rationale": "vToken decouples logical token liveness from physical KV blocks through indirection and asynchronous repacking while preserving PagedAttention and CUDA Graph compatibility in vLLM; it matters as a concrete approach to reclaimable serving memory without discarding existing execution paths."
+  },
+  "scope_dimensions": [
+    "current relevance",
+    "technical significance"
+  ],
+  "profile_annotations": {
+    "why_this_issue": "This candidate is relevant because KV-cache fragmentation and reclamation directly constrain long-context serving; vToken connects a systems change to compatibility with the serving primitives operators already use.",
+    "window_relation": "MAIN_EVENT",
+    "carry_over": false
+  }
+}

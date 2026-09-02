@@ -1,0 +1,30 @@
+\section{Frontier Models \& Access}
+\sectionkicker{ACCESS SURFACES}
+\begin{wideflow}
+{\Large\bfseries モデルの強さより、どの入口で使えるか}\par
+\smallskip
+{\color{SurveyMuted}W33のモデル動向は、API preview、GA、open weights、partner channelという異なるaccess surfaceの同時進展として読む。ただし、速度値・詳細仕様・一覧情報には未解決の境界が残る。}\par
+\end{wideflow}
+
+今週の入口は一つではない。DeepSeekのAPI changelogは8月13日のDeepSeek-V4-ProのGA updateをapp、web、API横断で記録し、GoogleのAPI changelogはGemini 3.7 FlashのGAを同日付で記録する\cite{deepseek-updates,gemini-flash,gemini-changelog}。Qwenのfirst-party repositoryは、Qwen3.8-2.4T-A95Bを8月12日、27Bを8月14日に、Hugging Face HubとModelScope経由で利用可能になったものとして記載している\cite{qwen38}。ここではGAとopen weightsを同じ「発表」として数えず、利用者が触れる面の違いとして並べる。
+
+\begin{themeoverview}[四つのaccess surface]
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{0.25\linewidth}X@{}}
+API preview & GPT-5.6 Sol UltrafastはAPI tierとして記述されるが、previewとGAの切り分けは未解決\cite{ultrafast}。\\
+GA API / app / web & DeepSeek-V4-ProとGemini 3.7 Flashは、それぞれの公式更新情報でGAとして記録される。\\
+Open weights & Qwen3.8は複数サイズがHugging Face HubとModelScope経由で記載される。\\
+API + partner & Grok 4.6はAPIとpartner availabilityを伴うreleaseとして記述される\cite{grok46}。
+\end{tabularx}
+\end{themeoverview}
+
+この表は同じ製品形態を意味するものではなく、公開情報から読み取れるdeployment surfaceの比較である。モデルを取得できることと、特定のAPI、アプリ、web面、partner面で利用できることを一つのavailabilityへ潰さない。
+
+\begin{claimboundary}[未解決の境界]
+OpenAIの公開説明はUltrafastをvendor-statedの速度主張とともに記述するが、previewとGAの分離、速度値の検証は残っている。GLM-5.3はcoding/cyber framingと8月14日のevent dateまでは確認できる一方、direct page bodyがなく、benchmark、cybersecurity、local-weight timingの詳細は未解決である\cite{glm53}。GeminiのAPI changelogとxAIのnews listは公開時期や提供面を補う情報であり、詳細仕様の根拠にはしない\cite{gemini-changelog,xai-news}。
+\end{claimboundary}
+
+だから読者が問うべきなのは「新しいモデルが出たか」だけではない。どのaccess modeで、どのdeployment surfaceから触れられ、どの部分が提供元の主張として残り、どの部分がまだ検証待ちなのかである。個別の発表、更新一覧、周辺の反応を同じ発売実績として数えないことが、この週の変化を正しく読む条件になる。
+
+\begin{technicalnote}[公開情報の境界]
+X上のコミュニティの反応は関心の方向を示す背景にとどめる。技術仕様、性能、互換性は公式資料、論文、repositoryの記録から読み取り、Xの反応だけから新しいlaunchや性能を推論しない\cite{w33-community}。
+\end{technicalnote}

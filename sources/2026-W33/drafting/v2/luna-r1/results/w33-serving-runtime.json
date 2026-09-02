@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "w33-serving-runtime",
+  "draft_version": "v1.0",
+  "status": "DRAFT",
+  "basis": {
+    "draft_package_sha256": "bc4a2e296463e437fd61294ec6583fac79bf88bef09cf435bfc8b979307b4231",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "OpenAI",
+    "model": "GPT-5 Codex",
+    "invocation": "ChatGPT Work Mode canonical Drafting v2 bounded run",
+    "generated_at": "2026-08-30T18:18:37Z",
+    "run_reference": null
+  },
+  "headline": "モデルを「使える」に変える、四つの実装層",
+  "deck": "vLLM、llama.cpp、SGLang、FlashInferの動きは別々のrelease noteではない。serving framework、local runtime、front-end/cache、low-level kernelが、それぞれ異なる場所で実運用の成立条件を動かしている。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {"evidence_task_id":"evidence:2026-W33:60255c39b9f87212","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-vllm-project-vllm-v0-27-0","subject_role":"PRIMARY_SUBJECT"},
+    {"evidence_task_id":"evidence:2026-W33:6e624289e3689101","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-ggml-org-llama-cpp-b10369","subject_role":"PRIMARY_SUBJECT"},
+    {"evidence_task_id":"evidence:2026-W33:02b041c3a0c539b4","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-sgl-project-sglang-v0-5-17","subject_role":"PRIMARY_SUBJECT"},
+    {"evidence_task_id":"evidence:2026-W33:e5d17ec955c40750","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-flashinfer-ai-flashinfer-v0-6-17","subject_role":"PRIMARY_SUBJECT"}
+  ],
+  "blocks": [
+    {
+      "block_id": "serving-layers",
+      "block_type": "TABLE",
+      "text": "同じ「support」でも、動かしている層が違う。\nFull serving framework：vLLM v0.27.0はKimi K3のfull-stack support、新しいmodel integration、PyTorch/Triton upgrade、KV/offload・disaggregation・serving機能をまとめて扱う。\nLocal inference runtime：llama.cpp b10369はPocket-TTS supportとconvolution-to-GEMM実装を追加する。\nFront-end / cache behavior：SGLang v0.5.17はRust server front end、session-aware radix caching、serving/runtime変更を記述する。\nLow-level kernel：FlashInfer v0.6.17はMoE expert parallelism、SM12x FP4 fixes、unified MXFP4 APIs、decode coverageを記述する。",
+      "attribution_mode": "ATTRIBUTED",
+      "evidence_refs": [
+        {"evidence_task_id":"evidence:2026-W33:60255c39b9f87212","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-vllm-project-vllm-v0-27-0","subject_role":"PRIMARY_SUBJECT"},
+        {"evidence_task_id":"evidence:2026-W33:6e624289e3689101","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-ggml-org-llama-cpp-b10369","subject_role":"PRIMARY_SUBJECT"},
+        {"evidence_task_id":"evidence:2026-W33:02b041c3a0c539b4","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-sgl-project-sglang-v0-5-17","subject_role":"PRIMARY_SUBJECT"},
+        {"evidence_task_id":"evidence:2026-W33:e5d17ec955c40750","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-flashinfer-ai-flashinfer-v0-6-17","subject_role":"PRIMARY_SUBJECT"}
+      ]
+    },
+    {
+      "block_id": "serving-chain",
+      "block_type": "PARAGRAPH",
+      "text": "この四層を分けると、availabilityがruntime supportに依存する理由が見える。full-stack側ではvLLMがモデル統合とserving機能を一つの更新に束ね、SGLangはday-zero servingとfront end/cacheの側から同じ運用面を支える。FlashInferはその下でdecodeや低レベルの実行を担い、llama.cppはlocal runtimeで別の利用面を開く。つまり、モデルを取得できることと、選んだ環境で継続的に運用できることは同じ条件ではない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id":"evidence:2026-W33:60255c39b9f87212","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-vllm-project-vllm-v0-27-0","subject_role":"PRIMARY_SUBJECT"},
+        {"evidence_task_id":"evidence:2026-W33:02b041c3a0c539b4","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-sgl-project-sglang-v0-5-17","subject_role":"PRIMARY_SUBJECT"},
+        {"evidence_task_id":"evidence:2026-W33:e5d17ec955c40750","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-flashinfer-ai-flashinfer-v0-6-17","subject_role":"PRIMARY_SUBJECT"},
+        {"evidence_task_id":"evidence:2026-W33:6e624289e3689101","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-ggml-org-llama-cpp-b10369","subject_role":"PRIMARY_SUBJECT"}
+      ]
+    },
+    {
+      "block_id": "serving-attribution",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "ただし、release notesにある機能追加と性能改善を同じ強さの事実として読んではいけない。とくにllama.cppのtiming figuresはproject-reportedとして扱い、vLLM、SGLang、FlashInferのperformanceをここで独立測定結果へ拡張しない。今回の比較軸は「何層が変わったか」であり、数値の横比較ではない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id":"evidence:2026-W33:6e624289e3689101","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-ggml-org-llama-cpp-b10369","subject_role":"PRIMARY_SUBJECT"},
+        {"evidence_task_id":"evidence:2026-W33:60255c39b9f87212","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-vllm-project-vllm-v0-27-0","subject_role":"PRIMARY_SUBJECT"},
+        {"evidence_task_id":"evidence:2026-W33:02b041c3a0c539b4","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-sgl-project-sglang-v0-5-17","subject_role":"PRIMARY_SUBJECT"},
+        {"evidence_task_id":"evidence:2026-W33:e5d17ec955c40750","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-flashinfer-ai-flashinfer-v0-6-17","subject_role":"PRIMARY_SUBJECT"}
+      ]
+    },
+    {
+      "block_id": "serving-reader-question",
+      "block_type": "PARAGRAPH",
+      "text": "読者が次にモデルのavailabilityを見るときは、「モデルを持っているか」だけでなく、どのserving frameworkが統合し、どのlocal runtimeが動かし、front end/cacheが状態を扱い、kernel層がdecodeを支えるのかを問いたい。releaseを四本のニュースに分けず、実運用へ変換する層の連鎖として読むことで、モデル競争の裏側にある実装競争が見えてくる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {"evidence_task_id":"evidence:2026-W33:60255c39b9f87212","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-vllm-project-vllm-v0-27-0","subject_role":"PRIMARY_SUBJECT"},
+        {"evidence_task_id":"evidence:2026-W33:6e624289e3689101","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-ggml-org-llama-cpp-b10369","subject_role":"PRIMARY_SUBJECT"},
+        {"evidence_task_id":"evidence:2026-W33:02b041c3a0c539b4","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-sgl-project-sglang-v0-5-17","subject_role":"PRIMARY_SUBJECT"},
+        {"evidence_task_id":"evidence:2026-W33:e5d17ec955c40750","kind":"CLAIM","evidence_id":"claim-1","subject_id":"entity:w33:base-github-release-flashinfer-ai-flashinfer-v0-6-17","subject_role":"PRIMARY_SUBJECT"}
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {"requirement":"full serving framework、local inference runtime、front-end/cache behavior、low-level kernelを別の技術層として区別する。","block_ids":["serving-layers"]},
+    {"requirement":"新モデルのavailabilityがruntime supportに依存することを示し、各project releaseを独立launch記事へ増殖させない。","block_ids":["serving-chain"]},
+    {"requirement":"project-reported performanceやtimingを使う場合は報告主体と測定条件を保持する。","block_ids":["serving-attribution"]},
+    {"requirement":"読者が問うべき『モデルを持っているか』から『どのruntime層が実運用を成立させるか』への因果をpackageで示す。","block_ids":["serving-chain","serving-reader-question"]}
+  ],
+  "boundary_dispositions": [],
+  "profile_extensions": {
+    "weekly_angle": "releaseを消費可能なruntimeへ変換する実装層の競争としてservingを配置する。",
+    "window_policy": "Preserve Candidate Matrix window_relation and carry-over semantics; do not backdate post-cutoff/context records.",
+    "attribution_policy": "Preserve Evidence attribution and unresolved boundaries exactly."
+  },
+  "publication_extensions": {
+    "section_kind": "SYSTEMS",
+    "target_pages": 2,
+    "layout_note": "frameworkからkernelまでの層構造と役割を図解的に整理する。"
+  }
+}

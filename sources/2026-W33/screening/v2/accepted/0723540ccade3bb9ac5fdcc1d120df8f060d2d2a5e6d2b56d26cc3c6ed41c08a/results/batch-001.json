@@ -1,0 +1,633 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W33",
+  "batch_id": "batch-001",
+  "basis": {
+    "package_sha256": "047f595c0b8216a780c4b5c11d9e0cfa9a263e5ec35aa4287f15aae82bdfbd46",
+    "batch_sha256": "85577066e4120b402847b6715cab87a556a1b53d3baa3ce9ccf4be0952ba2ffd",
+    "profile_sha256": "19303fcc8499a9cd7303991e69cfc0777a716db897537f50c5a9cff8dcb3f72b",
+    "state_sha256": "6ef1fb8724989ed69251bef0a77421339933133feccb21781fa688f0b17f997d",
+    "prompt_sha256": "3e45900ead73688eab8734036e6e476c1ec4f1a7ce38da42d5ca52a68ef0a862",
+    "result_contract_sha256": "a05b65b41efbcaf654df5c3c5944254a76d93d8a28cab961f2c06f6d580da5a2"
+  },
+  "decisions": [
+    {
+      "discovery_id": "base-github-release-sgl-project-sglang-v0_5_17",
+      "decision": "KEEP",
+      "reason": "Material in-window serving/runtime release with new model support and execution-path changes.",
+      "scope_tags": [
+        "inference-serving",
+        "agent-runtime",
+        "model-support"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Verify tagged-release feature scope and separate implementation facts from performance claims."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-github-release-flashinfer-ai-flashinfer-v0_6_17",
+      "decision": "KEEP",
+      "reason": "Material in-window inference-kernel and MoE expert-parallelism release with hardware/runtime fixes.",
+      "scope_tags": [
+        "inference-serving",
+        "kernels",
+        "moe"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Confirm tagged-release changes and performance-claim basis."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-github-release-huggingface-transformers-v5_15_0",
+      "decision": "KEEP",
+      "reason": "In-window framework release with meaningful current-model and runtime support changes.",
+      "scope_tags": [
+        "frameworks",
+        "model-support",
+        "developer-tools"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Identify user-visible model/API/runtime changes and any preview or breaking boundaries."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-github-release-vllm-project-vllm-v0_27_0",
+      "decision": "KEEP",
+      "reason": "Material serving release with contemporary model support, Model Runner V2, disaggregation, and hardware-path changes.",
+      "scope_tags": [
+        "inference-serving",
+        "model-support",
+        "runtime"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Verify release feature scope and benchmark/performance claims."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-github-release-Comfy-Org-ComfyUI-v0_31_0",
+      "decision": "KEEP",
+      "reason": "Meaningful in-window open generative-media tooling release with current image/video model support and execution changes.",
+      "scope_tags": [
+        "generative-media",
+        "developer-tools",
+        "model-support"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Confirm newly shipped model integrations and runtime/speed changes."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-github-release-ggml-org-llama_cpp-b10369",
+      "decision": "KEEP",
+      "reason": "Release extends local inference into Pocket-TTS/audio-generation support beyond routine maintenance.",
+      "scope_tags": [
+        "local-ai",
+        "audio-generation",
+        "inference-runtime"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Verify Pocket-TTS support; treat timing improvements as project-reported until evidenced."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-official-feed-081601c279be28d3ef5a",
+      "decision": "KEEP",
+      "reason": "Primary in-window GPT-5.6-Cyber/Daybreak governed-cybersecurity deployment announcement.",
+      "scope_tags": [
+        "frontier-models",
+        "cybersecurity",
+        "deployment"
+      ],
+      "duplicate_group": "openai-daybreak",
+      "verification_targets": [
+        "Verify model/access scope, safeguards, and general-versus-program availability."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-official-feed-29b0e61ec6cd1ed38342",
+      "decision": "KEEP",
+      "reason": "Primary Daybreak partner announcement adds distinct deployment/access context.",
+      "scope_tags": [
+        "frontier-models",
+        "cybersecurity",
+        "partnerships"
+      ],
+      "duplicate_group": "openai-daybreak",
+      "verification_targets": [
+        "Resolve overlap and retain partner-specific evidence only."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-official-feed-5d3aff0aba5d0b8a3f2e",
+      "decision": "KEEP",
+      "reason": "Primary AWS Bedrock/Daybreak announcement adds a distinct cloud-distribution dimension.",
+      "scope_tags": [
+        "frontier-models",
+        "cloud",
+        "cybersecurity"
+      ],
+      "duplicate_group": "openai-daybreak",
+      "verification_targets": [
+        "Verify Bedrock availability boundaries and deduplicate shared Daybreak claims."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-official-feed-c0986f6628d189a1ac37",
+      "decision": "KEEP",
+      "reason": "Primary Ultrafast preview is a material GPT-5.6 Sol latency/throughput product event.",
+      "scope_tags": [
+        "frontier-models",
+        "inference-serving",
+        "product"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Separate preview from GA and verify latency/throughput figures."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-official-index-xai-news",
+      "decision": "KEEP",
+      "reason": "Official index contains qualifying W33 events including Grok Bot, Grok 4.6, and GitHub Copilot distribution.",
+      "scope_tags": [
+        "frontier-models",
+        "agents",
+        "distribution"
+      ],
+      "duplicate_group": "grok-4.6",
+      "verification_targets": [
+        "Resolve exact event sources and deduplicate Grok 4.6 against dedicated gap-fill evidence."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-official-index-google-gemini-api-release-notes",
+      "decision": "KEEP",
+      "reason": "Official API chronology explicitly contains the in-window Gemini 3.7 Flash GA event.",
+      "scope_tags": [
+        "frontier-models",
+        "api",
+        "model-release"
+      ],
+      "duplicate_group": "gemini-3.7-flash",
+      "verification_targets": [
+        "Use dedicated first-party captures for technical claims and retain this primarily for chronology."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-official-index-deepseek-api-updates",
+      "decision": "KEEP",
+      "reason": "Official changelog contains a qualifying in-window V4-Pro GA/update with agent relevance.",
+      "scope_tags": [
+        "frontier-models",
+        "api",
+        "agents"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Resolve exact V4-Pro release/update semantics and event-level first-party detail."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-official-index-zai-release-notes",
+      "decision": "INSPECT",
+      "reason": "GLM-5.3 is present but first-party chronology conflicts across available surfaces.",
+      "scope_tags": [
+        "frontier-models",
+        "model-release"
+      ],
+      "duplicate_group": "glm-5.3",
+      "verification_targets": [
+        "Resolve Aug-14 versus Aug-18 chronology and deduplicate against the gap-fill record."
+      ],
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "base-official-index-nvidia-generative-ai-blog",
+      "decision": "DROP",
+      "reason": "Captured index does not expose a qualifying W33 event with sufficient event-level specificity.",
+      "scope_tags": [
+        "ecosystem-index"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Retain Raw only as Discovery audit trail."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-official-index-meta-ai-blog",
+      "decision": "DROP",
+      "reason": "Captured index does not establish a qualifying W33 generative-AI event.",
+      "scope_tags": [
+        "ecosystem-index"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Retain Raw only as Discovery audit trail."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-official-index-qwen-blog",
+      "decision": "DROP",
+      "reason": "Captured blog snapshot is stale for W33 and is superseded by dedicated Qwen3.8 first-party gap-fill evidence.",
+      "scope_tags": [
+        "ecosystem-index"
+      ],
+      "duplicate_group": "qwen3.8-27b",
+      "verification_targets": [
+        "Use the dedicated Qwen3.8 first-party capture."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-official-index-minimax-news",
+      "decision": "INSPECT",
+      "reason": "Dynamic shell capture does not expose enough in-window article content to decide materiality.",
+      "scope_tags": [
+        "frontier-models",
+        "ecosystem-index"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Resolve whether a qualifying W33 MiniMax event exists on the official site."
+      ],
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "base-arxiv-2608_09072v1",
+      "decision": "KEEP",
+      "reason": "SWE-RPG adds diagnostic evaluation of coding agents across requirements, planning, code generation, and executable patch success.",
+      "scope_tags": [
+        "agents",
+        "coding-agents",
+        "evaluation"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Verify benchmark design, task composition, evaluated systems, and the implicit-requirement bottleneck."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-arxiv-2608_08654v1",
+      "decision": "KEEP",
+      "reason": "Controlled MCP-versus-CLI study directly tests agent scaffolding, tool interface, cost, and task execution.",
+      "scope_tags": [
+        "agents",
+        "tool-use",
+        "mcp"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Inspect experimental controls, single-task generalizability, scaffold/model coverage, and cost attribution."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-arxiv-2608_11888v1",
+      "decision": "KEEP",
+      "reason": "Empirical study attributes functional failures and efficiency regressions to reusable agent skills.",
+      "scope_tags": [
+        "agents",
+        "agent-skills",
+        "safety",
+        "evaluation"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Verify attribution method, benchmark coverage, and failure/efficiency taxonomy."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-arxiv-2608_14718v1",
+      "decision": "KEEP",
+      "reason": "VideoGAIA is a tool-augmented multi-turn video benchmark for general AI assistants with substantial frontier-model headroom.",
+      "scope_tags": [
+        "multimodal",
+        "agents",
+        "evaluation",
+        "video"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Verify task construction, tool protocol, model set, human validation, and headline comparisons."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-arxiv-2608_13613v1",
+      "decision": "MAYBE",
+      "reason": "VoiceDesigner is a relevant unified diffusion framework for text-to-voice generation/editing, but weekly materiality needs novelty inspection.",
+      "scope_tags": [
+        "generative-audio",
+        "diffusion",
+        "multimodal"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Inspect model/data contributions, baselines, evaluation, and novelty of generation/editing unification."
+      ],
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "base-arxiv-2608_08097v1",
+      "decision": "KEEP",
+      "reason": "OasisKV targets the LLM-serving memory bottleneck with lookahead sparse KV prefetching beyond HBM.",
+      "scope_tags": [
+        "inference-serving",
+        "kv-cache",
+        "systems"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Verify workload, accuracy trade-offs, memory assumptions, and throughput comparisons."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-arxiv-2608_13263v1",
+      "decision": "KEEP",
+      "reason": "vToken provides token-level virtualization and asynchronous repacking for reclaimable KV caches while preserving serving compatibility.",
+      "scope_tags": [
+        "inference-serving",
+        "kv-cache",
+        "vllm"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Verify compatibility, baseline, reclamation, concurrency, and throughput results."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-arxiv-2608_08700v1",
+      "decision": "KEEP",
+      "reason": "PluginEval provides execution-backed diagnostic evaluation for function/tool calling with adversarial negatives and fine-grained attribution.",
+      "scope_tags": [
+        "agents",
+        "tool-use",
+        "function-calling",
+        "evaluation"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Inspect benchmark construction, real-API validation, judge calibration, model coverage, and error taxonomy."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-arxiv-2608_10669v1",
+      "decision": "KEEP",
+      "reason": "REDAgentBench measures agent safety with executable red teaming and state-grounded verification rather than opaque aggregate ASR alone.",
+      "scope_tags": [
+        "agents",
+        "safety",
+        "security",
+        "evaluation"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Verify sandbox design, ASR definitions, harness effects, and policy-reminder intervention."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-arxiv-2608_09666v1",
+      "decision": "MAYBE",
+      "reason": "Open Evaluation Agent is relevant agentic generative-media evaluation work, but this is a journal extension and the W33 novelty delta needs inspection.",
+      "scope_tags": [
+        "agents",
+        "generative-media",
+        "evaluation"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Separate new Open-EA/training/evaluation contributions from the earlier ACL 2025 work."
+      ],
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "base-arxiv-2608_11742v1",
+      "decision": "KEEP",
+      "reason": "Ripple-Pivot Search proposes training-free active parallel decoding for diffusion LLMs with material claimed wall-clock speedups.",
+      "scope_tags": [
+        "diffusion-llm",
+        "inference",
+        "decoding"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Verify decoder baselines, workloads, quality preservation, KV integration, and speedup methodology."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "base-arxiv-2608_13900v1",
+      "decision": "MAYBE",
+      "reason": "Agentic Transaction proposes semantic ACID guarantees for long-horizon agents, but conceptual and performance claims require closer validation.",
+      "scope_tags": [
+        "agents",
+        "reliability",
+        "systems"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Inspect semantic ACID definitions, implementation mechanisms, benchmark setup, and reported improvement."
+      ],
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "x-weekly-signal-wave",
+      "decision": "KEEP",
+      "reason": "Canonical X wave is useful for timely community/discovery signals but is non-authoritative for technical claims.",
+      "scope_tags": [
+        "community-signal",
+        "discovery"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Use X only for targeting/context and replace technical claims with primary evidence."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "carry-w32-openai-gpt56-update",
+      "decision": "KEEP",
+      "reason": "OpenAI first-party product and Deployment Safety pages establish a distinct August 6 GPT-5.6 Sol/Luna ChatGPT update, resolving the prior chronology uncertainty and justifying Evidence verification.",
+      "scope_tags": [
+        "carry-over",
+        "frontier-models"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "distinguish the August 6 ChatGPT update from the original GPT-5.6 launch;",
+        "preserve the explicit Work/Codex unchanged boundary;",
+        "keep product/reliability/safety figures OpenAI-attributed;",
+        "determine later the correct W33 materiality/context disposition."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "carry-w32-kimi-k3-copilot",
+      "decision": "KEEP",
+      "reason": "GitHub first-party changelog establishes Kimi K3 Copilot availability, rollout/resumption, named surfaces, and administrator-policy boundaries, making the carry-over suitable for Evidence verification.",
+      "scope_tags": [
+        "carry-over",
+        "frontier-models",
+        "developer-tools"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "verify rollout date, pause/resumption, surfaces/plans, hosting/billing, and admin-policy scope;",
+        "do not import independent Kimi benchmark claims;",
+        "determine later whether the pre-window event is material, contextual, or simply closes the carry-over obligation."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "carry-w32-copilot-cloud-agent",
+      "decision": "KEEP",
+      "reason": "GitHub first-party August 3 changelogs establish concrete cloud-agent updates for reasoning-level control and comment-triggered automations, resolving the prior source-identity uncertainty.",
+      "scope_tags": [
+        "carry-over",
+        "coding-agents",
+        "developer-tools"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "verify exact feature/plan/admin-policy boundaries;",
+        "keep the August update separate from older June/July cloud-agent features;",
+        "determine later whether it is current W33 materiality or carry-over closure/context."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "carry-w32-claude-retirement",
+      "decision": "KEEP",
+      "reason": "Anthropic first-party documentation establishes the exact Claude Opus 4.1 retirement chronology and affected Anthropic-platform scope, so the carry-over is sufficiently grounded for Evidence verification.",
+      "scope_tags": [
+        "carry-over",
+        "model-lifecycle"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "verify the August 5 retirement versus June 5 deprecation chronology;",
+        "preserve Anthropic-operated versus partner-operated platform scope;",
+        "determine later whether this is W33 materiality, carry-over closure, or contextual disposition."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "carry-w32-repowise",
+      "decision": "KEEP",
+      "reason": "Repowise first-party project and benchmark repositories establish project identity, tool surface, benchmark/reproduction methodology, and bounded project-reported work-reduction claims, providing sufficient basis for Evidence verification even though publication timing/materiality remains a later question.",
+      "scope_tags": [
+        "carry-over",
+        "coding-agents",
+        "developer-tools"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "verify benchmark/run chronology and exact methodological scope;",
+        "retain small-n, judge-noise, caching, credential, and repository/task-scope limitations;",
+        "distinguish retrieval/work reduction from general task success;",
+        "treat all performance claims as project-reported and determine later whether the item is W33 material or carry-over context only."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "carry-w32-qwen38-27b",
+      "decision": "DROP",
+      "reason": "Superseded for W33 by the dedicated first-party Qwen3.8 open-weight expansion gap-fill.",
+      "scope_tags": [
+        "carry-over",
+        "frontier-models",
+        "open-weights"
+      ],
+      "duplicate_group": "qwen3.8-27b",
+      "verification_targets": [
+        "Use the W33 Qwen3.8 gap-fill authority."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "gapfill-model-grok-4_6",
+      "decision": "KEEP",
+      "reason": "Dedicated first-party Grok 4.6 capture closes the required weekly model-coverage obligation.",
+      "scope_tags": [
+        "frontier-models",
+        "model-release"
+      ],
+      "duplicate_group": "grok-4.6",
+      "verification_targets": [
+        "Extract exact first-party capabilities/availability and deduplicate xAI index signals."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "gapfill-model-qwen3_8-open-weight-expansion",
+      "decision": "KEEP",
+      "reason": "Dedicated Qwen3.8 first-party capture establishes the in-window open-weight expansion and closes the weekly coverage gap.",
+      "scope_tags": [
+        "frontier-models",
+        "open-weights",
+        "model-release"
+      ],
+      "duplicate_group": "qwen3.8-27b",
+      "verification_targets": [
+        "Verify variants, release dates, license/availability, and architecture/capability claims."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "gapfill-model-gemini-3_7-flash",
+      "decision": "KEEP",
+      "reason": "Dedicated Google first-party material establishes Gemini 3.7 Flash GA and event-level technical authority.",
+      "scope_tags": [
+        "frontier-models",
+        "api",
+        "model-release"
+      ],
+      "duplicate_group": "gemini-3.7-flash",
+      "verification_targets": [
+        "Verify GA scope, model characteristics, and relevant pricing/limits; deduplicate the API index."
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "gapfill-model-glm-5_3",
+      "decision": "INSPECT",
+      "reason": "Dedicated GLM-5.3 capture establishes model identity but remains partial because chronology/direct-page access is incomplete.",
+      "scope_tags": [
+        "frontier-models",
+        "model-release"
+      ],
+      "duplicate_group": "glm-5.3",
+      "verification_targets": [
+        "Resolve first-party date/applicability and bounded technical details without non-authoritative substitution."
+      ],
+      "confidence": "medium"
+    }
+  ]
+}
