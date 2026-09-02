@@ -25,6 +25,7 @@ This index is the edition-local navigation record. Machine lifecycle authority r
 - Discovery candidate: `sources/2026-W34/discovery/discovery-v2.jsonl` (40 records / 40 unique IDs)
 - Event crosswalk: `sources/2026-W34/discovery/event-discovery-crosswalk-v0.1.json` (105/105, 0 silently dropped)
 - Temporary acceptance validation: PASS; `discovery-accepted-v2.json` was not committed
+- Materialization commit: `11f3c9359ba33f800fe6ba1401e5d28b6d33aaf6`; read-back PASS; closure SHA is reported in the completion report
 - Raw index: 47 entries (11 pre-existing preserved, 36 added); Raw integrity PASS
 
 ## DailyX / Grok / GitHub
@@ -45,7 +46,7 @@ This index is the edition-local navigation record. Machine lifecycle authority r
 ## Execution records
 
 - Historical sessions remain unchanged, including earlier `IN_PROGRESS` records; this is a new bounded materialization session.
-- Current session: `sources/2026-W34/execution/sessions/w34-luna-discovery-materialization-20260903-r1.md` (`IN_PROGRESS — closure pending`)
+- Current session: `sources/2026-W34/execution/sessions/w34-luna-discovery-materialization-20260903-r1.md` (`BOUNDED_COMPLETE_HANDOFF_TO_SOL`)
 - Optional validation artifact: `sources/2026-W34/execution/luna/w34-discovery-materialization-r1/materialization-validation-v0.1.json`
 
 ## Forbidden actions explicitly not performed
@@ -58,4 +59,4 @@ This index is the edition-local navigation record. Machine lifecycle authority r
 
 ## Current disposition
 
-`BOUNDED_DISCOVERY_MATERIALIZATION_IN_PROGRESS`
+`BOUNDED_DISCOVERY_MATERIALIZATION_COMPLETE_HANDOFF_TO_SOL`

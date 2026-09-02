@@ -1,6 +1,6 @@
 # W34 Luna Discovery materialization session — 2026-09-03 r1
 
-Status: **IN_PROGRESS — bounded materialization commit closure pending**
+Status: **BOUNDED_COMPLETE_HANDOFF_TO_SOL**
 Issue / edition: `2026-W34`
 Branch: `weekly/2026-W34-v2-work`
 Exact Starting SHA: `1c50f06ff4412cea81efc5d0ca3c28b3dc52f940`
@@ -78,12 +78,14 @@ DailyX provenance manifest: `sources/2026-W34/external/x/dailyx/dailyx-source-pr
 
 The formal `DISCOVERY_COLLECTED` acceptance and any lifecycle advancement are **not executed**. Screening, Evidence acceptance, Materiality, Completeness overwrite, Candidate Selection, Architecture, Human Gate decision, reader-facing draft, Freeze, and Release are all **not executed**. `production-state.json` is not changed.
 
-Historical sessions that remain `IN_PROGRESS` are not rewritten. This bounded session records their operational supersession/closure boundary and hands the candidate to Sol for semantic/provenance review after the final closure commit.
+Historical sessions that remain `IN_PROGRESS` are not rewritten. This bounded session records their operational supersession/closure boundary and hands the candidate to Sol for semantic/provenance review. The first materialization commit was read back successfully; this closure update records the completed handoff.
 
 ## Commit ledger
 
-- First materialization commit SHA: `PENDING` (will be recorded in the bounded closure update).
-- Ending branch SHA: `PENDING`.
+- Read-back verification of the first commit: PASS; 37 changed paths, production state byte-identical, and no forbidden paths.
+
+- First materialization commit SHA: `11f3c9359ba33f800fe6ba1401e5d28b6d33aaf6`.
+- Ending branch SHA: the closure commit returned by GitHub for this session; it is recorded in the final completion report.
 - Exact changed paths in this bounded session:
 
 - sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/arxiv-agent-inheritance.json
