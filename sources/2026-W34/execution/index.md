@@ -1,6 +1,6 @@
 # Survey Production execution index — 2026-W34
 
-This is the current human-readable navigation record for the edition. Machine lifecycle authority remains `sources/2026-W34/production-state.json`.
+This index is the edition-local navigation record. Machine lifecycle authority remains `sources/2026-W34/production-state.json`.
 
 ## Current authority
 
@@ -8,59 +8,54 @@ This is the current human-readable navigation record for the edition. Machine li
 - Research Profile: `WEEKLY`
 - Publication Profile: `WEEKLY_MAGAZINE`
 - Work branch: `weekly/2026-W34-v2-work`
-- Exact Starting SHA for this bounded continuation: `402b95790207ac1d01823f756e69e1d6da281f38`
+- Exact Starting SHA for this bounded materialization: `1c50f06ff4412cea81efc5d0ca3c28b3dc52f940`
 - Reviewed `main`: `c7a898889463b049dea4ee7337ee16ad5fbf3191`
-- Parent handoff boundary: `ed05b69f75a0f8421018f9f3196bc1641a04ef3b`
-- Run started: `2026-09-02T16:41:07Z`
-- Requested stop: `ARCHITECTURE_REVIEW`
+- Run started: `2026-09-02T17:36:01Z`
+- Requested bounded stop: `SOL_REVIEW`
 - Production Profile: `sources/2026-W34/production-profile.json`
 - Production State: `sources/2026-W34/production-state.json`
 - Current State SHA-256: `f151e195018b1a164cc74f68ea27fea4bb388767a3054eb0007982388a19d39e`
 - Current lifecycle: `ISSUE_INITIALIZED`
-- Current terminal reason: `none`
 - Current next action: `stage:discovery`
+- Production State before/after: byte-identical; no lifecycle write
 
-## Human Gates
+## W34 window and materialization
 
-- Architecture Review: `pending`
-- Publication Preview: `pending`
-- Detailed review records: none recorded yet
+- Canonical window: `[2026-08-14T18:00:00-04:00, 2026-08-21T18:00:00-04:00)`, `America/New_York`
+- Discovery candidate: `sources/2026-W34/discovery/discovery-v2.jsonl` (40 records / 40 unique IDs)
+- Event crosswalk: `sources/2026-W34/discovery/event-discovery-crosswalk-v0.1.json` (105/105, 0 silently dropped)
+- Temporary acceptance validation: PASS; `discovery-accepted-v2.json` was not committed
+- Raw index: 47 entries (11 pre-existing preserved, 36 added); Raw integrity PASS
 
-## Grok/X
+## DailyX / Grok / GitHub
 
-- Profile applicability policy: `REQUIRED_BY_PROFILE`
-- Canonical manifest: `external/x/x-source-intake-v2.json` (`COMPLETE`)
-- Corrected Raw result: `external/x/weekly-x-2026-W34-r2/raw/grok-x-result.corrected.md`
-- Corrected ledger authority: `external/x/weekly-x-2026-W34-r2/raw/x-url-ledger.corrected.tsv`
-- Required run status: `COMPLETE / PRE-SCREENING-DISPOSITIONED`
-- Window counts: `10 ORDINARY_WINDOW / 20 BACKGROUND_ONLY / 17 LATE_BREAKING`
-- Discovery acceptance: `NOT EXECUTED; remains outside this bounded assignment`
+- DailyX exact import: 7/7 files under `sources/2026-W34/external/x/dailyx/raw/`; provenance manifest `sources/2026-W34/external/x/dailyx/dailyx-source-provenance-v0.1.json`; 76/76 topics accounted
+- Corrected Grok r2: existing Raw reused; 47/47 URLs; classification authority remains `x-url-ledger.corrected.tsv`: 10/20/17
+- GitHub Releases: existing 7 immutable response Raw objects reused, 5 in-window matches; no broad rerun
+- DailyX and Grok remain separately attributable; X observations are not technical Evidence
 
-## Non-X Source Intake
+## Non-X and retry status
 
-- Historical initial report: `sources/2026-W34/source-intake-report.json`
-- GitHub Releases run: `collectors/github-releases/runs/20260902T121634Z/` (`SUCCESS`, 7 Raw files, 5 window matches; immutable)
-- arXiv retry: `collectors/arxiv/runs/20260902T164107Z/` (`RETRY_REQUIRED`, 0 Raw)
-- Official-page retry: `collectors/official-pages/runs/20260902T164107Z/` (`RETRY_REQUIRED`, 0 Raw)
-- Sol/DailyX/Grok traceability: `intake/discovery-traceability-v0.2.json`
-- Readiness audit: `intake/discovery-readiness-v0.2.md`
-- Carry-over ledger: `carryover/carryover-ledger-v0.1.json` (`RECHECKED_UNRESOLVED`, 1 entry)
-- Raw index: `raw-index.json` (7 pre-existing GitHub objects plus 4 new corrected Grok Raw/provenance objects)
-- Manual observations remain leads/locators only; no Evidence acceptance.
+- Bounded source-local capture run: `sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/` (23 Raw captures; exact HTTP bytes not claimed)
+- Canonical arXiv retry: `RETRY_REQUIRED`, Raw 0, blocked before HTTP
+- Configured official-page retry: `RETRY_REQUIRED`, Raw 0, blocked before HTTP, 22 page gaps retained
+- Existing carry-over: one `RECHECKED_UNRESOLVED`; no promotion
+- Source Intake handoff: Raw-backed Discovery candidate and explicit traceability are ready for Sol's independent semantic/provenance review
 
-## Bounded continuation
+## Execution records
 
-- Prior historical sessions: `sessions/w34-luna-initial-20260902-r1.md`, `sessions/w34-luna-non-x-intake-20260902-r1.md` (both remain historically `IN_PROGRESS`)
-- Current session: `sessions/w34-luna-discovery-readiness-20260902-r1.md` (`BOUNDED_ASSIGNMENT_COMPLETE`)
-- Sol handoff: `handoffs/w34-luna-sol-completeness-handoff-20260902-r1.md` (`READY_FOR_SOL_INDEPENDENT_COMPLETENESS_JUDGMENT`)
-- No historical session was rewritten; current session provides operational supersession and closure.
+- Historical sessions remain unchanged, including earlier `IN_PROGRESS` records; this is a new bounded materialization session.
+- Current session: `sources/2026-W34/execution/sessions/w34-luna-discovery-materialization-20260903-r1.md` (`IN_PROGRESS — closure pending`)
+- Optional validation artifact: `sources/2026-W34/execution/luna/w34-discovery-materialization-r1/materialization-validation-v0.1.json`
 
-## Deviations / failures
+## Forbidden actions explicitly not performed
 
-- arXiv and official-page collectors were retried from the current execution surface but were blocked before HTTP. Exact evidence is in their run summaries; status remains `RETRY_REQUIRED`.
-- Existing GitHub Releases Raw is immutable.
-- Candidate-specific first-party capture and chronology gaps remain explicit.
+- No W34 reinitialization; no formal `DISCOVERY_COLLECTED` acceptance or lifecycle advancement
+- No Screening, Evidence acceptance, Materiality/completeness override, Selection, Architecture, Human Gate decision, reader-facing draft, Freeze, or Release
+- No `production-state.json`, shared Core, or W33 changes
+- No force/reset/rewrite/rebase and no new branch
+- No X-to-X technical Evidence; no silently dropped Sol/DailyX/Grok observations
 
-## Final disposition
+## Current disposition
 
-`BOUNDED_COMPLETE_HANDOFF_TO_SOL`
+`BOUNDED_DISCOVERY_MATERIALIZATION_IN_PROGRESS`

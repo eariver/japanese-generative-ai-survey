@@ -1,0 +1,201 @@
+{
+  "schema_version": "0.1",
+  "issue_id": "2026-W34",
+  "validation_run_id": "w34-discovery-materialization-r1",
+  "validated_at": "2026-09-02T17:36:01Z",
+  "task_boundary": "temporary Discovery acceptance build/validation only; no lifecycle write",
+  "start_guard": {
+    "branch": "weekly/2026-W34-v2-work",
+    "exact_starting_sha": "1c50f06ff4412cea81efc5d0ca3c28b3dc52f940",
+    "remote_head_verified": true
+  },
+  "reviewed_main_pin": "c7a898889463b049dea4ee7337ee16ad5fbf3191",
+  "production_state_before": {
+    "lifecycle": "ISSUE_INITIALIZED",
+    "next_action": "stage:discovery",
+    "state_sha256": "f151e195018b1a164cc74f68ea27fea4bb388767a3054eb0007982388a19d39e"
+  },
+  "production_state_after": {
+    "lifecycle": "ISSUE_INITIALIZED",
+    "next_action": "stage:discovery",
+    "state_sha256": "f151e195018b1a164cc74f68ea27fea4bb388767a3054eb0007982388a19d39e",
+    "byte_identical": true
+  },
+  "discovery": {
+    "path": "sources/2026-W34/discovery/discovery-v2.jsonl",
+    "record_count": 40,
+    "unique_discovery_id_count": 40,
+    "raw_backed_records": 40,
+    "all_raw_paths_indexed": true,
+    "discovery_jsonl_sha256": "64b46891bf48a2d2091164f284dd4dd7dbf4eb1c4b9e13a46f70915c1223d426"
+  },
+  "event_traceability": {
+    "sol_event_inventory": {
+      "expected_event_count": 105,
+      "accounted_event_count": 105,
+      "missing_event_ids": [],
+      "duplicate_event_ids": [],
+      "silently_dropped_event_ids": []
+    },
+    "dailyx_topics": {
+      "expected_topic_count": 76,
+      "accounted_topic_count": 76,
+      "mapped_true_count": 76,
+      "missing_topic_rows": [],
+      "source_file_count": 7,
+      "raw_paths": [
+        "sources/2026-W34/external/x/dailyx/raw/2026-08-16_0700.md",
+        "sources/2026-W34/external/x/dailyx/raw/2026-08-17_0700.md",
+        "sources/2026-W34/external/x/dailyx/raw/2026-08-18_0700.md",
+        "sources/2026-W34/external/x/dailyx/raw/2026-08-19_0700.md",
+        "sources/2026-W34/external/x/dailyx/raw/2026-08-20_0700.md",
+        "sources/2026-W34/external/x/dailyx/raw/2026-08-21_0700.md",
+        "sources/2026-W34/external/x/dailyx/raw/2026-08-22_0700.md"
+      ]
+    },
+    "grok_r2_urls": {
+      "expected_url_count": 47,
+      "accounted_url_count": 47,
+      "unique_url_count": 47,
+      "missing_rows": [],
+      "classification_counts": {
+        "BACKGROUND_ONLY": 20,
+        "ORDINARY_WINDOW": 10,
+        "LATE_BREAKING": 17
+      },
+      "ledger_path": "sources/2026-W34/external/x/weekly-x-2026-W34-r2/raw/x-url-ledger.corrected.tsv",
+      "corrected_result_path": "sources/2026-W34/external/x/weekly-x-2026-W34-r2/raw/grok-x-result.corrected.md"
+    },
+    "carry_over": {
+      "expected_obligation_count": 1,
+      "represented_obligation_count": 1,
+      "status": "RECHECKED_UNRESOLVED",
+      "promotion_to_current": false
+    },
+    "source_raw_materialization": {
+      "event_count": 105,
+      "events_with_explicit_discovery_mapping": 105,
+      "events_with_bounded_gap_capture": 29,
+      "missing_event_ids": [],
+      "silently_dropped_event_ids": []
+    }
+  },
+  "dailyx": {
+    "manifest_path": "sources/2026-W34/external/x/dailyx/dailyx-source-provenance-v0.1.json",
+    "imported_file_count": 7,
+    "topic_count": 76,
+    "topic_count_accounted": 76,
+    "raw_integrity": true
+  },
+  "grok": {
+    "manifest_path": "sources/2026-W34/external/x/x-source-intake-v2.json",
+    "result_raw_path": "sources/2026-W34/external/x/weekly-x-2026-W34-r2/raw/grok-x-result.corrected.md",
+    "ledger_path": "sources/2026-W34/external/x/weekly-x-2026-W34-r2/raw/x-url-ledger.corrected.tsv",
+    "url_count": 47,
+    "accounted_url_count": 47,
+    "classification_counts": {
+      "ORDINARY_WINDOW": 10,
+      "BACKGROUND_ONLY": 20,
+      "LATE_BREAKING": 17
+    },
+    "narrative_not_used_as_authority": true
+  },
+  "github_releases": {
+    "existing_raw_count": 7,
+    "immutable_reuse": true,
+    "raw_index_entries_unchanged": true
+  },
+  "collector_retries": {
+    "arxiv": {
+      "result": "RETRY_REQUIRED",
+      "raw_count": 0,
+      "blocked_phase": "before_http_request",
+      "attempted_endpoint": "https://export.arxiv.org/api/query",
+      "failure_evidence": "ProcessFailed { message: \"network approval was cancelled before a decision was returned\" }",
+      "residual_gap": "configured six-query canonical arXiv collector has no response Raw; six locator observations remain authority gaps"
+    },
+    "official_pages": {
+      "result": "RETRY_REQUIRED",
+      "raw_count": 0,
+      "configured_page_count": 22,
+      "blocked_phase": "before_http_request",
+      "attempted_endpoint": "https://openai.com/news/rss.xml",
+      "failure_evidence": "ProcessFailed { message: \"network approval was cancelled before a decision was returned\" }",
+      "residual_gap": "22 configured official-page snapshots have no response Raw; source-local captures remain explicitly bounded"
+    }
+  },
+  "source_local_captures": {
+    "run_id": "w34-discovery-materialization-r1",
+    "raw_count": 23,
+    "raw_paths": [
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/openai-api-regional-processing.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/openai-chatgpt-release-notes.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/google-gemini-3-7-flash.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/mistral-agentic-search.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/deepseek-v4-flash-vision-exp.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/xai-api-changelog.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/aws-vector-solutions.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/stability-stable-audio.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/runway-changelog.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/zai-glm-5-3.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/qwen3-8-27b.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/arxiv-scienceflow.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/arxiv-lapf.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/arxiv-agent-inheritance.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/arxiv-egogazelite.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/arxiv-embodied-security.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/arxiv-corun.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/minimax-music-3.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/minimax-h3.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/nvidia-ai-ecosystem.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/google-omni-1-1-flash.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/google-transcribe.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/sol-baseline-locator-observations.json"
+    ],
+    "all_explicitly_non_exact_http_bytes": true
+  },
+  "raw_index": {
+    "path": "sources/2026-W34/raw-index.json",
+    "entry_count": 47,
+    "old_entry_count": 11,
+    "new_entries_added": 36,
+    "old_entries_preserved": true,
+    "integrity": "PASS"
+  },
+  "temporary_acceptance_candidate": {
+    "status": "PASS",
+    "artifact_not_committed": true,
+    "artifact_path": "temporary://w34-discovery-materialization-r1/discovery-accepted-v2.json",
+    "schema_version": "2.0-rc1",
+    "discovery_path": "sources/2026-W34/discovery/discovery-v2.jsonl",
+    "x_source_intake_path": "sources/2026-W34/external/x/x-source-intake-v2.json",
+    "discovery_sha256": "64b46891bf48a2d2091164f284dd4dd7dbf4eb1c4b9e13a46f70915c1223d426",
+    "x_source_intake_sha256": "895af1c7e69c4e7e14c3f5bbfb47301c45dc3678a6b637bb41b50c766a0aad5b",
+    "record_count": 40,
+    "graph_sha256": "8482d202710e5f9b5c196f265bc398a9f6ef7bbe305cdcbbc19041072f6617f6",
+    "schema_required_fields_present": true,
+    "raw_refs": "PASS",
+    "x_integration": "PASS",
+    "graph_validation": "PASS"
+  },
+  "carry_over": {
+    "expected": 1,
+    "represented": 1,
+    "status": "RECHECKED_UNRESOLVED",
+    "promotion_to_current": false
+  },
+  "scope_guard": {
+    "formal_discovery_collected_acceptance": false,
+    "screening": false,
+    "evidence_acceptance": false,
+    "materiality": false,
+    "selection": false,
+    "architecture": false,
+    "human_gate": false,
+    "reader_facing_draft": false,
+    "freeze": false,
+    "release": false,
+    "shared_core_changed": false,
+    "w33_changed": false
+  }
+}
