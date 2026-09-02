@@ -1,0 +1,272 @@
+{
+  "schema_version": "0.1",
+  "issue_id": "2026-W34",
+  "generated_at": "2026-09-02T12:26:00Z",
+  "profile": {
+    "research_profile": "WEEKLY",
+    "publication_profile": "WEEKLY_MAGAZINE",
+    "temporal_policy": "ROLLING_WINDOW",
+    "window_start": "2026-08-14T18:00:00-04:00",
+    "window_end": "2026-08-21T18:00:00-04:00",
+    "cutoff": "2026-08-21T18:00:00-04:00",
+    "timezone": "America/New_York"
+  },
+  "collector_inventory": {
+    "configured_collectors": [
+      {
+        "id": "arxiv-api",
+        "configured": true,
+        "run_id": "arxiv-api-2026-W34-20260902T121634Z",
+        "status": "BLOCKED",
+        "configured_queries": 6,
+        "raw_files": 0,
+        "manual_primary_locators": 6
+      },
+      {
+        "id": "github-releases",
+        "configured": true,
+        "run_id": "github-releases-2026-W34-20260902T121634Z",
+        "status": "SUCCESS",
+        "configured_repositories": 7,
+        "raw_files": 7,
+        "window_matches": 5
+      },
+      {
+        "id": "official-pages",
+        "configured": true,
+        "run_id": "official-pages-2026-W34-20260902T121634Z",
+        "status": "BLOCKED",
+        "configured_pages": 22,
+        "raw_files": 0,
+        "manual_primary_locators": 16
+      }
+    ],
+    "github_release_repositories": [
+      {
+        "repository": "sgl-project/sglang",
+        "returned_release_count": 59,
+        "window_match_count": 0,
+        "raw_path": "sources/2026-W34/collectors/github-releases/runs/20260902T121634Z/raw/sgl-project__sglang.json",
+        "raw_sha256": "acab64f7e4eb53f3d5bc1dd0cdc12e38af3fe7685d9a9d630c2365cb9ad0c9d2",
+        "raw_bytes": 1839084
+      },
+      {
+        "repository": "vllm-project/vllm",
+        "returned_release_count": 100,
+        "window_match_count": 0,
+        "raw_path": "sources/2026-W34/collectors/github-releases/runs/20260902T121634Z/raw/vllm-project__vllm.json",
+        "raw_sha256": "f721e05263b81a7d6ebd89111118ff3f1b642f0af39990eb5976180ecd481300",
+        "raw_bytes": 3340585
+      },
+      {
+        "repository": "ggml-org/llama.cpp",
+        "returned_release_count": 100,
+        "window_match_count": 0,
+        "raw_path": "sources/2026-W34/collectors/github-releases/runs/20260902T121634Z/raw/ggml-org__llama.cpp.json",
+        "raw_sha256": "67aab2db721e6a32ac320f01e4f58995e5207a440186d56c4da9813b29015e8d",
+        "raw_bytes": 5257525
+      },
+      {
+        "repository": "huggingface/transformers",
+        "returned_release_count": 100,
+        "window_match_count": 1,
+        "raw_path": "sources/2026-W34/collectors/github-releases/runs/20260902T121634Z/raw/huggingface__transformers.json",
+        "raw_sha256": "2a843332a5f95495ac372fa9e947c73a90e5dc93320f6461718c0d65cea8b6f9",
+        "raw_bytes": 1323799
+      },
+      {
+        "repository": "NVIDIA/TensorRT-LLM",
+        "returned_release_count": 88,
+        "window_match_count": 0,
+        "raw_path": "sources/2026-W34/collectors/github-releases/runs/20260902T121634Z/raw/nvidia__tensorrt-llm.json",
+        "raw_sha256": "d711b2ebb37cba888013ce125315c90b446721c0f194159fbb9622ca09598f9a",
+        "raw_bytes": 1854867
+      },
+      {
+        "repository": "flashinfer-ai/flashinfer",
+        "returned_release_count": 100,
+        "window_match_count": 4,
+        "raw_path": "sources/2026-W34/collectors/github-releases/runs/20260902T121634Z/raw/flashinfer-ai__flashinfer.json",
+        "raw_sha256": "38b84f21f373b9eec2f9a3a672253fdf2acad7c88464108bf4974fae92b94526",
+        "raw_bytes": 1805968
+      },
+      {
+        "repository": "Comfy-Org/ComfyUI",
+        "returned_release_count": 100,
+        "window_match_count": 0,
+        "raw_path": "sources/2026-W34/collectors/github-releases/runs/20260902T121634Z/raw/comfy-org__comfyui.json",
+        "raw_sha256": "0f30ad5cd1261b8655a62cd5ac3fc6e0a17bea28a903fab63f27b6f06e40bc6f",
+        "raw_bytes": 1012899
+      }
+    ],
+    "official_page_count": 22,
+    "arxiv_query_count": 6
+  },
+  "manual_primary_pass": {
+    "observation_file": "sources/2026-W34/intake/non-x-primary-observations-v0.1.json",
+    "observation_count": 22,
+    "source_kinds": {
+      "official_publisher_page": 15,
+      "official_project_repo": 1,
+      "arxiv_primary": 6
+    },
+    "raw_imported": false
+  },
+  "coverage": [
+    {
+      "lane": "model/reasoning",
+      "status": "SEED_PRESENT",
+      "lead_ids": [
+        "lead:openai-api-regional-processing",
+        "lead:google-gemini-3-7-flash",
+        "lead:zai-glm-5-3",
+        "lead:qwen3-8-27b"
+      ],
+      "gap": "Google Gemini 3.7 is pre-window; in-window vendor/model leads still need canonical page capture and screening."
+    },
+    {
+      "lane": "agents/coding",
+      "status": "SEED_PRESENT",
+      "lead_ids": [
+        "lead:mistral-agentic-search",
+        "lead:deepseek-v4-flash-vision-exp",
+        "lead:zai-glm-5-3",
+        "lead:arxiv-lapf",
+        "lead:arxiv-scienceflow"
+      ],
+      "gap": "No current Discovery records may be created until canonical collector gaps and Grok/X are resolved."
+    },
+    {
+      "lane": "multimodal",
+      "status": "SEED_PRESENT",
+      "lead_ids": [
+        "lead:deepseek-v4-flash-vision-exp",
+        "lead:qwen3-8-27b",
+        "lead:arxiv-egogazelite",
+        "lead:arxiv-embodied-security"
+      ],
+      "gap": "Raw arXiv and official HTML snapshots are missing in this run."
+    },
+    {
+      "lane": "image",
+      "status": "PARTIAL",
+      "lead_ids": [
+        "lead:xai-api-changelog",
+        "lead:qwen3-8-27b"
+      ],
+      "gap": "No image-first in-window release was canonically captured; targeted official page scan remains required."
+    },
+    {
+      "lane": "video",
+      "status": "PARTIAL",
+      "lead_ids": [
+        "lead:runway-changelog",
+        "lead:minimax-h3",
+        "lead:google-omni-1-1-flash"
+      ],
+      "gap": "Available prominent leads are pre-window or post-cutoff; no in-window video release is established."
+    },
+    {
+      "lane": "audio/music",
+      "status": "SEED_PRESENT",
+      "lead_ids": [
+        "lead:stability-stable-audio",
+        "lead:minimax-music-3",
+        "lead:google-transcribe"
+      ],
+      "gap": "Stable Audio is in-window; MiniMax and Google entries are boundary/post-cutoff and must remain dated."
+    },
+    {
+      "lane": "open-weight/local AI",
+      "status": "SEED_PRESENT",
+      "lead_ids": [
+        "lead:qwen3-8-27b",
+        "lead:zai-glm-5-3",
+        "lead:minimax-h3",
+        "lead:minimax-music-3"
+      ],
+      "gap": "Model card/license/weight availability details remain unverified for Evidence."
+    },
+    {
+      "lane": "serving/systems",
+      "status": "CANONICAL_SEED_PRESENT",
+      "lead_ids": [
+        "lead:openai-api-regional-processing",
+        "lead:qwen3-8-27b",
+        "lead:arxiv-egogazelite"
+      ],
+      "gap": "GitHub release Raw is complete; Transformers/FlashInfer matches are still only unscreened leads."
+    },
+    {
+      "lane": "memory/retrieval",
+      "status": "SEED_PRESENT",
+      "lead_ids": [
+        "lead:mistral-agentic-search",
+        "lead:aws-vector-solutions",
+        "lead:arxiv-scienceflow"
+      ],
+      "gap": "Implementation posts need technical scope checks and must be separated from model-release claims."
+    },
+    {
+      "lane": "evaluation",
+      "status": "PARTIAL",
+      "lead_ids": [
+        "lead:mistral-agentic-search",
+        "lead:deepseek-v4-flash-vision-exp",
+        "lead:arxiv-corun",
+        "lead:arxiv-embodied-security"
+      ],
+      "gap": "Benchmark figures are not imported into Evidence; primary snapshots and evaluation methodology checks remain."
+    },
+    {
+      "lane": "safety/security",
+      "status": "SEED_PRESENT",
+      "lead_ids": [
+        "lead:zai-glm-5-3",
+        "lead:arxiv-agent-inheritance",
+        "lead:arxiv-embodied-security"
+      ],
+      "gap": "Speculative and research leads are deliberately not treated as operational facts."
+    },
+    {
+      "lane": "other emerging technology",
+      "status": "SEED_PRESENT",
+      "lead_ids": [
+        "lead:openai-chatgpt-release-notes",
+        "lead:openai-api-regional-processing",
+        "lead:nvidia-ai-ecosystem",
+        "lead:arxiv-agent-inheritance"
+      ],
+      "gap": "Keep product/ecosystem context separate from technical Evidence and await full canonical intake."
+    }
+  ],
+  "carryover": {
+    "ledger_path": "sources/2026-W34/carryover/carryover-ledger-v0.1.json",
+    "expected_count": 1,
+    "status": "RECHECKED_UNRESOLVED",
+    "pending_recheck_count": 0
+  },
+  "grok_x": {
+    "profile_policy": "REQUIRED_BY_PROFILE",
+    "task_prepared": false,
+    "drive_task_path": null,
+    "result_imported": false,
+    "disposition": null,
+    "discovery_acceptance": "BLOCKED",
+    "reason": "Weekly mandatory Grok/X run has not been canonically imported and dispositioned."
+  },
+  "readiness": {
+    "non_x_source_intake": "PARTIAL_CANONICAL_READY",
+    "canonical_github_releases": "READY",
+    "canonical_arxiv": "RETRY_REQUIRED",
+    "canonical_official_pages": "RETRY_REQUIRED",
+    "carryover_recheck": "RECORDED",
+    "coverage_gap_audit": "RECORDED",
+    "discovery_advance_allowed": false,
+    "residual_tasks": [
+      "Retry arXiv and configured official-page collectors with exact Raw-byte preservation.",
+      "Prepare/execute the Weekly Grok/X task through the configured Human-mediated Drive handoff; import exact result bytes and record disposition.",
+      "Only after those conditions, run Discovery acceptance; do not perform Screening/Evidence/Selection in this task."
+    ]
+  }
+}

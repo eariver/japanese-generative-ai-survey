@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "2026-W34",
+  "generated_at": "2026-09-02T12:26:00Z",
+  "mode": "INITIALIZATION_AND_NON_X_SOURCE_INTAKE_READINESS",
+  "starting_guard": {
+    "expected_sha": "db82247760a75793a88999d7b2ed3f11c76b6ab7",
+    "verified_remote_sha": "db82247760a75793a88999d7b2ed3f11c76b6ab7",
+    "verified": true
+  },
+  "initialization": {
+    "request_commit": "bdbc2126e5ad75de7a66ee32c2f495cc987a452c",
+    "generated_initialization_head": "7ddfcda0c67b335268a5b14de2d281fce388afa4",
+    "reviewed_main_sha": "c7a898889463b049dea4ee7337ee16ad5fbf3191",
+    "current_lifecycle": "ISSUE_INITIALIZED",
+    "state_sha256": "f151e195018b1a164cc74f68ea27fea4bb388767a3054eb0007982388a19d39e"
+  },
+  "collection_window": {
+    "start": "2026-08-14T18:00:00-04:00",
+    "end": "2026-08-21T18:00:00-04:00",
+    "cutoff": "2026-08-21T18:00:00-04:00",
+    "timezone": "America/New_York"
+  },
+  "artifacts": {
+    "github_summary": "sources/2026-W34/collectors/github-releases/runs/20260902T121634Z/summary.json",
+    "arxiv_summary": "sources/2026-W34/collectors/arxiv/runs/20260902T121634Z/summary.json",
+    "official_pages_summary": "sources/2026-W34/collectors/official-pages/runs/20260902T121634Z/summary.json",
+    "raw_index": "sources/2026-W34/raw-index.json",
+    "source_inventory": "sources/2026-W34/intake/non-x-source-inventory-v0.1.json",
+    "primary_observations": "sources/2026-W34/intake/non-x-primary-observations-v0.1.json",
+    "coverage_gap": "sources/2026-W34/intake/non-x-coverage-gap-v0.1.md",
+    "carryover_ledger": "sources/2026-W34/carryover/carryover-ledger-v0.1.json"
+  },
+  "collector_status": {
+    "github_releases": {
+      "status": "SUCCESS",
+      "repositories": 7,
+      "raw_files": 7,
+      "window_matches": 5
+    },
+    "arxiv_api": {
+      "status": "BLOCKED",
+      "configured_queries": 6,
+      "raw_files": 0
+    },
+    "official_pages": {
+      "status": "BLOCKED",
+      "configured_pages": 22,
+      "raw_files": 0
+    }
+  },
+  "carryover": {
+    "status": "RECHECKED_UNRESOLVED",
+    "expected_entries": 1,
+    "pending_recheck_count": 0
+  },
+  "grok_x": {
+    "profile_policy": "REQUIRED_BY_PROFILE",
+    "task_prepared": false,
+    "drive_task_path": null,
+    "result_imported": false,
+    "disposition": null,
+    "discovery_acceptance": "BLOCKED"
+  },
+  "readiness": {
+    "non_x_source_intake": "PARTIAL_CANONICAL_READY",
+    "canonical_github_releases": "READY",
+    "canonical_arxiv": "RETRY_REQUIRED",
+    "canonical_official_pages": "RETRY_REQUIRED",
+    "carryover_recheck": "RECORDED",
+    "coverage_gap_audit": "RECORDED",
+    "discovery_advance_allowed": false,
+    "residual_tasks": [
+      "Retry arXiv and configured official-page collectors with exact Raw-byte preservation.",
+      "Prepare/execute the Weekly Grok/X task through the configured Human-mediated Drive handoff; import exact result bytes and record disposition.",
+      "Only after those conditions, run Discovery acceptance; do not perform Screening/Evidence/Selection in this task."
+    ]
+  },
+  "scope_guard": {
+    "screening": "NOT_RUN",
+    "evidence": "NOT_RUN",
+    "selection": "NOT_RUN",
+    "architecture": "NOT_RUN",
+    "drafting": "NOT_RUN",
+    "publication": "NOT_RUN"
+  }
+}

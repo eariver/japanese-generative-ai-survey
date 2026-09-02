@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "2026-W34",
+  "collector": "arxiv-api",
+  "observed_at": "2026-09-02T12:26:00Z",
+  "collection_window_start": "2026-08-14T18:00:00-04:00",
+  "collection_window_end": "2026-08-21T18:00:00-04:00",
+  "editorial_cutoff": "2026-08-21T18:00:00-04:00",
+  "status": "blocked",
+  "configured_query_count": 6,
+  "queries": [
+    {
+      "id": "cs-ai",
+      "endpoint": "https://export.arxiv.org/api/query",
+      "raw_path": null,
+      "status": "not_run",
+      "attempt_count": 0
+    },
+    {
+      "id": "cs-cl",
+      "endpoint": "https://export.arxiv.org/api/query",
+      "raw_path": null,
+      "status": "not_run",
+      "attempt_count": 0
+    },
+    {
+      "id": "cs-lg",
+      "endpoint": "https://export.arxiv.org/api/query",
+      "raw_path": null,
+      "status": "not_run",
+      "attempt_count": 0
+    },
+    {
+      "id": "cs-cv",
+      "endpoint": "https://export.arxiv.org/api/query",
+      "raw_path": null,
+      "status": "not_run",
+      "attempt_count": 0
+    },
+    {
+      "id": "cs-dc",
+      "endpoint": "https://export.arxiv.org/api/query",
+      "raw_path": null,
+      "status": "not_run",
+      "attempt_count": 0
+    },
+    {
+      "id": "cs-cr",
+      "endpoint": "https://export.arxiv.org/api/query",
+      "raw_path": null,
+      "status": "not_run",
+      "attempt_count": 0
+    }
+  ],
+  "errors": [
+    {
+      "error_code": "EXECUTION_SURFACE_SCOPE",
+      "message": "The canonical arXiv HTTPS endpoint could not be reached from the approved repository connector; the web tool also rejected the export.arxiv.org API URL as unsafe. No substitute content was stored under Raw.",
+      "remediation": "Retry the repository-configured source_intake.py run in an execution surface with outbound HTTPS to export.arxiv.org; preserve each Atom response unchanged."
+    }
+  ],
+  "manual_primary_locator_count": 6,
+  "manual_primary_locator_ids": [
+    "lead:arxiv-scienceflow",
+    "lead:arxiv-lapf",
+    "lead:arxiv-embodied-security",
+    "lead:arxiv-egogazelite",
+    "lead:arxiv-agent-inheritance",
+    "lead:arxiv-corun"
+  ],
+  "notes": [
+    "Manual arXiv page observations are recorded separately as lead-only locators and do not satisfy the canonical Raw collector requirement.",
+    "No arXiv item was promoted to a Discovery or Evidence record."
+  ]
+}

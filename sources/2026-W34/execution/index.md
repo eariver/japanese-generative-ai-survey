@@ -33,12 +33,26 @@ This is the current human-readable navigation record for the edition. Machine li
 ## Grok/X
 
 - Profile applicability policy: `REQUIRED_BY_PROFILE`
+- Required run status: NOT_IMPORTED
 - Latest Drive task-file path/reference: none recorded yet
 - Latest result disposition: none recorded yet
+- Discovery acceptance: BLOCKED until the Weekly Grok/X result is canonically imported and dispositioned.
+
+## Non-X Source Intake
+
+- Intake report: sources/2026-W34/source-intake-report.json
+- GitHub Releases run: collectors/github-releases/runs/20260902T121634Z/ (SUCCESS, 7 Raw files, 5 window matches)
+- arXiv API run: collectors/arxiv/runs/20260902T121634Z/ (BLOCKED, retry required; no Raw substitute)
+- Official pages run: collectors/official-pages/runs/20260902T121634Z/ (BLOCKED, retry required; no Raw substitute)
+- Source inventory: intake/non-x-source-inventory-v0.1.json
+- Coverage/gap audit: intake/non-x-coverage-gap-v0.1.md
+- Carry-over ledger: carryover/carryover-ledger-v0.1.json (RECHECKED_UNRESOLVED, 1 entry)
+- Raw index: raw-index.json
+- Manual observations remain lead-only and unscreened.
 
 ## Deviations
 
-- None recorded at initialization.
+- EDITION_LOCAL: arXiv and official-page exact-byte collectors require retry in an HTTPS-enabled execution surface; manual observations do not satisfy the Raw contract.
 
 ## Shared Core defects
 
@@ -47,6 +61,7 @@ This is the current human-readable navigation record for the edition. Machine li
 ## Sessions
 
 - `sessions/w34-luna-initial-20260902-r1.md`
+- `sessions/w34-luna-non-x-intake-20260902-r1.md`
 
 ## Final disposition
 

@@ -20,6 +20,7 @@ Started: `2026-09-02T12:06:54Z`
 
 - Initialized the canonical edition-local execution record tree.
 - Replace/add concise stage-grouped bullets here as material production actions occur.
+- Follow-up non-X intake session: sessions/w34-luna-non-x-intake-20260902-r1.md.
 
 ## External handoff
 
@@ -27,7 +28,7 @@ Started: `2026-09-02T12:06:54Z`
 
 ## Deviations / failures
 
-- None recorded yet. Classify material failures as `EDITION_LOCAL`, `TRANSIENT_EXECUTION`, or `SHARED_CORE_DEFECT`.
+- No failure recorded in the initialization action itself. The follow-up intake session records edition-local collector gaps.
 
 ## End state
 
