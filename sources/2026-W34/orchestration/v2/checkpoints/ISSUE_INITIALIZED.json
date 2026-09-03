@@ -1,0 +1,53 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W34",
+  "from_state": "ISSUE_INITIALIZED",
+  "to_state": "DISCOVERY_COLLECTED",
+  "checkpoints": [
+    "discovery"
+  ],
+  "recorded_at": "2026-09-03T01:01:17Z",
+  "implementation": {
+    "repository_commit_sha": "bf5af8408a8ee09254f3bba83e6fa51ab289750a",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "e6ae2637fe2ecb41351193075c79b5829d83d12884cd011a78f593ff77c1c8d1",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "3a36dceaaae9ff89f87a176287470fb0a8f2bfd7b580db416779eae826817f23",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "discovery-acceptance",
+      "path": "sources/2026-W34/discovery/discovery-accepted-v2.json",
+      "sha256": "a4ea877be54ef04e739ba3de96b732e6bd02ba3345ab8bc58f6d9ff77cbfb8b5"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_core_execution_bridge_v2",
+      "evidence": "Canonical Core stage contract validated for immutable request w34-discovery-advance-20260903-r1.",
+      "result": {
+        "path": "sources/2026-W34/execution/bridge-runs/w34-discovery-advance-20260903-r1/core-stage-contract.json",
+        "sha256": "c638eea77c7351baa4cc1ef8b9e3bc22752c6160e0d18fd4b12669f08f2030e0"
+      }
+    },
+    {
+      "check_id": "SOL_W34_DISCOVERY_COMPLETENESS_AND_BINDING_REVIEW",
+      "kind": "AGENT_RESEARCH",
+      "status": "PASS",
+      "executor": "ChatGPT GPT-5.6 Sol",
+      "evidence": "Sol accepted the W34 semantic Discovery completeness baseline and the exact X-manifest binding correction. Authorities: sources/2026-W34/execution/decisions/sol-discovery-completeness-20260903-r1.md and sources/2026-W34/execution/findings/sol-discovery-materialization-review-20260903-r1.md. The actual reviewed-main Core validation is recorded at sources/2026-W34/execution/luna/w34-discovery-binding-repair-r1/real-core-validation-v0.1.json: validate_manifest PASS, build_acceptance PASS, validate_acceptance PASS, 40 records, graph SHA 4f639cffa8f2815fa874bf260fad6b34e050a614b1b825dbf063a3b5b0b6d6ba, and corrected X Discovery ID w34-grok-r2-corrected-47-url-ledger bound to the imported Grok Raw.",
+      "result": null
+    }
+  ],
+  "summary": "Advance the Sol-reviewed, actual-current-Core-validated 40-record W34 Discovery graph and COMPLETE corrected X Source Intake deterministically from ISSUE_INITIALIZED to DISCOVERY_COLLECTED. Preserve 105/105 event traceability, DailyX 76/76, corrected Grok 47/47 with 10/20/17 classification, immutable existing Raw, and the retained carry-over. Stop at DISCOVERY_COLLECTED / stage:screening; do not execute Screening or any later stage."
+}
