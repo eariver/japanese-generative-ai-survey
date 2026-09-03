@@ -1,0 +1,143 @@
+{
+  "schema_version": "0.1",
+  "status": "PENDING_POST_COMMIT_REMOTE_VERIFICATION",
+  "issue_id": "2026-W34",
+  "branch": "weekly/2026-W34-v2-work",
+  "exact_starting_sha": "10204e45c50c644b3f31b54b07b017da450a4ce0",
+  "recorded_at": "2026-09-03T16:36:11Z",
+  "corrupted_input_before": {
+    "path": "sources/2026-W34/screening/input/event-discovery-v2.jsonl",
+    "git_blob_sha": "20b394ea7bb0ca4cb32a90f31678d1045678255b",
+    "byte_count": 210060,
+    "sha256": "a15ddbde1bc3b35ab158d68a50313294091aa33f2d942d2e24d3d578f5344321",
+    "strict_utf8_jsonl_parse": "FAIL",
+    "decode_exception": "'utf-8' codec can't decode byte 0xaa in position 1: invalid start byte"
+  },
+  "reconstruction": {
+    "source_authority_order": [
+      "sources/2026-W34/screening/input/event-discovery-crosswalk-v0.1.json",
+      "sources/2026-W34/intake/working-set/sol-discovery-event-inventory-v0.2.md",
+      "sources/2026-W34/discovery/discovery-v2.jsonl",
+      "existing Raw paths named by the crosswalk",
+      "scripts/survey_screening_v2.py current Discovery contract"
+    ],
+    "corrupted_bytes_salvaged": false,
+    "canonical_path_replaced_only_after_candidate_validation": true,
+    "candidate_path": "temporary local path outside repository canonical target",
+    "pre_commit_sha256": "b63d053f4ea83f3f8150aeb1e3bd196a5d55903d27176fe7a350cf16ebbd5c9e",
+    "pre_commit_byte_count": 291114,
+    "pre_commit_utf8_jsonl_parse": "PASS",
+    "pre_commit_validate_discovery_set": "PASS",
+    "pre_commit_schema_validation": "PASS",
+    "record_count": 105,
+    "unique_discovery_id_count": 105,
+    "event_accounting": {
+      "expected": "W34-C001 through W34-C105",
+      "mapped": "105/105",
+      "missing": 0,
+      "duplicate": 0,
+      "silently_dropped": 0
+    },
+    "parent_validation": {
+      "accepted_graph_path": "sources/2026-W34/discovery/discovery-v2.jsonl",
+      "accepted_graph_record_count": 40,
+      "all_parent_ids_exist": true,
+      "invalid_parent_ids": []
+    },
+    "raw_path_validation": {
+      "event_count_with_raw_paths": 105,
+      "unique_raw_path_count": 36,
+      "all_raw_paths_exist": true,
+      "missing_raw_paths": []
+    },
+    "provenance": {
+      "origin": "REFERENCE_EXPANSION",
+      "parent_refs_from_crosswalk": true,
+      "source_locator_type_from_crosswalk": true,
+      "event_identity_and_qualifiers_from_crosswalk_inventory": true,
+      "screening_decision_embedded": false,
+      "x_or_community_observations_promoted_to_technical_evidence": false
+    }
+  },
+  "source_traceability": {
+    "dailyx": {
+      "source_file_count": 7,
+      "topic_rows_accounted": 76,
+      "topic_rows_expected": 76,
+      "authority_class": "DISCOVERY_AND_COMMUNITY_SIGNAL_ONLY",
+      "technical_evidence_accepted": false,
+      "event_records_with_dailyx_raw": 56
+    },
+    "grok_r2": {
+      "unique_url_count": 47,
+      "url_rows_accounted": 47,
+      "url_rows_expected": 47,
+      "classification_counts": {
+        "ORDINARY_WINDOW": 10,
+        "BACKGROUND_ONLY": 20,
+        "LATE_BREAKING": 17
+      },
+      "authority_class": "X_RAW_OBSERVATION_ONLY",
+      "technical_evidence_accepted": false,
+      "event_records_with_grok_raw": 12
+    },
+    "carry_over": {
+      "accepted_parent": "w34-carryover-minimax-unresolved",
+      "status": "RECHECKED_UNRESOLVED",
+      "represented": true,
+      "promotion_to_current": false,
+      "event_records_with_carryover_raw": 2
+    }
+  },
+  "immutable_baseline": {
+    "production_state_path": "sources/2026-W34/production-state.json",
+    "production_state_sha256_before": "2eaa0dbb1a6bdee745b2fb836a9fc6ad70c46bded86b51faf313cf5e3e512768",
+    "production_state_lifecycle": "DISCOVERY_COLLECTED",
+    "production_state_next_action": "stage:screening",
+    "accepted_discovery_acceptance_path": "sources/2026-W34/discovery/discovery-accepted-v2.json",
+    "accepted_discovery_acceptance_sha256": "a4ea877be54ef04e739ba3de96b732e6bd02ba3345ab8bc58f6d9ff77cbfb8b5",
+    "accepted_discovery_graph_path": "sources/2026-W34/discovery/discovery-v2.jsonl",
+    "accepted_discovery_graph_sha256": "8a176af94ccd245a7651a7a292d001cff9cef355b1320f4a73278ee9f2e5216c",
+    "accepted_discovery_graph_record_count": 40,
+    "discovery_checkpoint_path": "sources/2026-W34/orchestration/v2/checkpoints/ISSUE_INITIALIZED.json",
+    "discovery_checkpoint_sha256": "01e036c627f05130eecfe7dd1349afe5ed6461eec2f698bc62035acce8a12e32",
+    "crosswalk_path": "sources/2026-W34/screening/input/event-discovery-crosswalk-v0.1.json",
+    "crosswalk_sha256": "34491ec5f4620f25cdaff4ebe61f7cc92b02fe7f7cfebfdcb548a6347672e4ff",
+    "crosswalk_record_count": 105
+  },
+  "post_commit_remote_verification": {
+    "status": "PENDING",
+    "repair_commit_sha": null,
+    "post_commit_remote_sha256": null,
+    "post_commit_remote_byte_count": null,
+    "pre_post_sha256_equal": null,
+    "pre_post_byte_count_equal": null,
+    "remote_utf8_jsonl_parse": null,
+    "remote_validate_discovery_set": null
+  },
+  "agent_first_package_preparation": {
+    "status": "PENDING_AFTER_REMOTE_INTEGRITY",
+    "agent_state_validation": null,
+    "wrapper": "scripts/survey_agent_tool_v2.py",
+    "helper": "scripts/survey_screening_v2.py",
+    "implementation_sha": null,
+    "package_path": null,
+    "package_record_count": null,
+    "package_batch_count": null
+  },
+  "scope_guard": {
+    "screening_decisions_created": false,
+    "screening_results_created": false,
+    "screening_acceptance_created": false,
+    "production_state_modified": false,
+    "accepted_discovery_modified": false,
+    "discovery_checkpoint_modified": false,
+    "crosswalk_modified": false,
+    "existing_raw_modified": false,
+    "shared_core_modified": false,
+    "w33_modified": false,
+    "lifecycle_advanced": false,
+    "force_reset_rewrite_rebase_used": false,
+    "new_branch_created": false
+  }
+}
