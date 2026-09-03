@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1",
-  "status": "PENDING_POST_COMMIT_REMOTE_VERIFICATION",
+  "status": "READY_FOR_SOL_SCREENING",
   "issue_id": "2026-W34",
   "branch": "weekly/2026-W34-v2-work",
   "exact_starting_sha": "10204e45c50c644b3f31b54b07b017da450a4ce0",
@@ -106,24 +106,93 @@
     "crosswalk_record_count": 105
   },
   "post_commit_remote_verification": {
-    "status": "PENDING",
-    "repair_commit_sha": null,
-    "post_commit_remote_sha256": null,
-    "post_commit_remote_byte_count": null,
-    "pre_post_sha256_equal": null,
-    "pre_post_byte_count_equal": null,
-    "remote_utf8_jsonl_parse": null,
-    "remote_validate_discovery_set": null
+    "status": "PASS",
+    "repair_commit_sha": "270b4da28d6d295ecbf5292abbbe837d52890e58",
+    "remote_branch_head": "270b4da28d6d295ecbf5292abbbe837d52890e58",
+    "github_fetch_file_blob_sha": "774f6165b76245df7526083461e99b23d4d5f4bc",
+    "remote_git_blob_sha": "774f6165b76245df7526083461e99b23d4d5f4bc",
+    "post_commit_remote_sha256": "b63d053f4ea83f3f8150aeb1e3bd196a5d55903d27176fe7a350cf16ebbd5c9e",
+    "post_commit_remote_byte_count": 291114,
+    "pre_post_sha256_equal": true,
+    "pre_post_byte_count_equal": true,
+    "remote_utf8_jsonl_parse": "PASS",
+    "remote_validate_discovery_set": "PASS",
+    "remote_record_count": 105,
+    "remote_unique_discovery_id_count": 105,
+    "remote_event_accounting": {
+      "expected": "W34-C001 through W34-C105",
+      "mapped": "105/105",
+      "missing": 0,
+      "duplicate": 0
+    },
+    "fresh_remote_checkout": "/workspace/scratch/cd5235cf5616/w34-repair-remote"
   },
   "agent_first_package_preparation": {
-    "status": "PENDING_AFTER_REMOTE_INTEGRITY",
-    "agent_state_validation": null,
+    "status": "PASS",
+    "agent_state_validation": {
+      "function": "survey_agent_control_v2.validate_agent_state",
+      "status": "PASS",
+      "lifecycle_state": "DISCOVERY_COLLECTED",
+      "next_action": "stage:screening",
+      "discovery_checkpoint": "passed",
+      "screening_checkpoint": "pending"
+    },
     "wrapper": "scripts/survey_agent_tool_v2.py",
     "helper": "scripts/survey_screening_v2.py",
-    "implementation_sha": null,
-    "package_path": null,
-    "package_record_count": null,
-    "package_batch_count": null
+    "helper_invocation_mode": "wrapper_runpy_agent_first_override",
+    "implementation_sha": "270b4da28d6d295ecbf5292abbbe837d52890e58",
+    "implementation_sha_is_current_checkout_head": true,
+    "direct_helper_prepare_invocation": false,
+    "package_path": "sources/2026-W34/screening/v2/prepared/w34-event-screening-r1/package.json",
+    "package_sha256": "547305a3991a5a1e7f633ef2b0188bb4e44c916fc19a1b307778c7e01434e84a",
+    "package_schema_version": "2.0-rc1",
+    "package_issue_id": "2026-W34",
+    "package_research_profile": "WEEKLY",
+    "package_record_count": 105,
+    "package_batch_count": 3,
+    "basis": {
+      "discovery_path": "sources/2026-W34/screening/input/event-discovery-v2.jsonl",
+      "discovery_sha256": "b63d053f4ea83f3f8150aeb1e3bd196a5d55903d27176fe7a350cf16ebbd5c9e",
+      "state_sha256": "2eaa0dbb1a6bdee745b2fb836a9fc6ad70c46bded86b51faf313cf5e3e512768"
+    },
+    "batches": [
+      {
+        "batch_id": "batch-001",
+        "record_count": 43,
+        "sha256": "6ff2bf503d59d866d0840b1d90fcb1f151f6e638ebd7f8faa142dea2f0ff3228"
+      },
+      {
+        "batch_id": "batch-002",
+        "record_count": 44,
+        "sha256": "d406a8f9aeff7e7e26b1f52ea40d422492ee078c9a50057fd6536cfb5963f11e"
+      },
+      {
+        "batch_id": "batch-003",
+        "record_count": 18,
+        "sha256": "5041f5904f76caaa25e2bf6c006ca3b42fa9a4eae8d253fd8ddfc008d7a12204"
+      }
+    ],
+    "batch_id_union": {
+      "count": 105,
+      "expected_event_level_ids": "w34-event-c001 through w34-event-c105",
+      "missing": 0,
+      "duplicate": 0,
+      "exact": true
+    },
+    "prompt": {
+      "path": "config/prompts/source-screening-v2.md",
+      "sha256": "3e45900ead73688eab8734036e6e476c1ec4f1a7ce38da42d5ca52a68ef0a862",
+      "validation": "PASS"
+    },
+    "result_contract": {
+      "path": "schemas/screening-v2-batch-result.schema.json",
+      "sha256": "a05b65b41efbcaf654df5c3c5944254a76d93d8a28cab961f2c06f6d580da5a2",
+      "validation": "PASS"
+    },
+    "package_basis_validation": "PASS",
+    "package_schema_validation": "PASS",
+    "screening_results_created": false,
+    "screening_acceptance_created": false
   },
   "scope_guard": {
     "screening_decisions_created": false,
@@ -139,5 +208,24 @@
     "lifecycle_advanced": false,
     "force_reset_rewrite_rebase_used": false,
     "new_branch_created": false
-  }
+  },
+  "accepted_artifact_postcheck": {
+    "production_state_sha256_after": "2eaa0dbb1a6bdee745b2fb836a9fc6ad70c46bded86b51faf313cf5e3e512768",
+    "production_state_byte_identical": true,
+    "accepted_discovery_acceptance_sha256_after": "a4ea877be54ef04e739ba3de96b732e6bd02ba3345ab8bc58f6d9ff77cbfb8b5",
+    "accepted_discovery_graph_sha256_after": "8a176af94ccd245a7651a7a292d001cff9cef355b1320f4a73278ee9f2e5216c",
+    "crosswalk_sha256_after": "34491ec5f4620f25cdaff4ebe61f7cc92b02fe7f7cfebfdcb548a6347672e4ff",
+    "accepted_discovery_and_crosswalk_byte_identical": true,
+    "lifecycle_state_after": "DISCOVERY_COLLECTED",
+    "next_action_after": "stage:screening",
+    "screening_ready_for_sol": true
+  },
+  "unresolved_gaps_preserved": [
+    "Existing authority and chronology qualifiers remain in the crosswalk/inventory.",
+    "DailyX and Grok/X remain discovery/community observations and are not technical Evidence.",
+    "Existing primary capture gaps and inherited Raw-index SHA metadata gaps were not changed.",
+    "No semantic Screening disposition was applied."
+  ],
+  "completed_at": "2026-09-03T16:41:00Z",
+  "final_status": "READY_FOR_SOL_SCREENING"
 }

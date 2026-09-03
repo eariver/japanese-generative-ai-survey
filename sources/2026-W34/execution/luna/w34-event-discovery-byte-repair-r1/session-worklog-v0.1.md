@@ -1,6 +1,6 @@
 # W34 Luna event-level Discovery byte-integrity repair — 2026-09-04 r1
 
-Status: **PENDING_POST_COMMIT_REMOTE_VERIFICATION**
+Status: **READY_FOR_SOL_SCREENING**
 
 Issue / edition: `2026-W34`  
 Branch: `weekly/2026-W34-v2-work`  
@@ -32,6 +32,25 @@ The corrupted file was not opened for salvage. A fresh candidate was generated f
 - Pre-commit byte count: `291114`
 
 The canonical input replacement is permitted only after these checks. The next bounded action is a fast-forward repair commit followed by exact remote-byte readback and fresh-checkout validation.
+
+## Repair commit and remote read-back
+
+- Repair commit: `270b4da28d6d295ecbf5292abbbe837d52890e58`
+- Remote branch HEAD: `270b4da28d6d295ecbf5292abbbe837d52890e58`
+- GitHub file blob: `774f6165b76245df7526083461e99b23d4d5f4bc`
+- Remote SHA-256 / bytes: `b63d053f4ea83f3f8150aeb1e3bd196a5d55903d27176fe7a350cf16ebbd5c9e` / `291114`
+- Pre/post SHA-256 equality: `PASS`
+- Pre/post byte-count equality: `PASS`
+- Remote strict UTF-8/JSONL parse: `PASS`
+- Fresh remote checkout actual `survey_screening_v2.validate_discovery_set()`: `PASS`
+
+## Agent-first package preparation
+
+On the fresh checkout at the repair commit, `survey_agent_control_v2.validate_agent_state()` passed for `DISCOVERY_COLLECTED / stage:screening`, with Discovery checkpoint `passed` and Screening checkpoint `pending`. The canonical `scripts/survey_agent_tool_v2.py` wrapper then ran `scripts/survey_screening_v2.py prepare` with implementation SHA `270b4da28d6d295ecbf5292abbbe837d52890e58`.
+
+The prepared package is `sources/2026-W34/screening/v2/prepared/w34-event-screening-r1/package.json`: schema `2.0-rc1`, issue `2026-W34`, profile `WEEKLY`, 105 records, and three batches (43/44/18). Its discovery basis binds the repaired file at SHA-256 `b63d053f4ea83f3f8150aeb1e3bd196a5d55903d27176fe7a350cf16ebbd5c9e`; package schema, basis, batch hashes/ID union, prompt hash, and result-contract hash all pass.
+
+No Screening decisions, result files, acceptance, lifecycle advance, Evidence, Materiality, Completeness, Selection, Architecture, or Human Gate action was performed. Production State, accepted Discovery, Discovery checkpoint, crosswalk, existing Raw, shared Core, and W33 remain unchanged.
 
 ## Scope guard
 
