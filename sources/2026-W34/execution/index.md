@@ -8,25 +8,26 @@ This index is the edition-local navigation record. Machine lifecycle authority r
 - Research Profile: `WEEKLY`
 - Publication Profile: `WEEKLY_MAGAZINE`
 - Work branch: `weekly/2026-W34-v2-work`
-- Exact Starting SHA for this bounded materialization: `1c50f06ff4412cea81efc5d0ca3c28b3dc52f940`
+- Exact Starting SHA for this bounded binding-repair/advance: `adea56f9341c51a54210d5ce9f3844e9ca91bf5d`
 - Reviewed `main`: `c7a898889463b049dea4ee7337ee16ad5fbf3191`
-- Run started: `2026-09-02T17:36:01Z`
-- Requested bounded stop: `SOL_REVIEW`
+- Run started: `2026-09-02T23:44:32Z`
+- Requested bounded stop: `DISCOVERY_COLLECTED / stage:screening`
 - Production Profile: `sources/2026-W34/production-profile.json`
 - Production State: `sources/2026-W34/production-state.json`
 - Current State SHA-256: `f151e195018b1a164cc74f68ea27fea4bb388767a3054eb0007982388a19d39e`
-- Current lifecycle: `ISSUE_INITIALIZED`
-- Current next action: `stage:discovery`
-- Production State before/after: byte-identical; no lifecycle write
+- Current lifecycle before formal bridge: `ISSUE_INITIALIZED`
+- Current next action before formal bridge: `stage:discovery`
+- Production State before formal bridge: `ISSUE_INITIALIZED`; no lifecycle write before bridge
 
 ## W34 window and materialization
 
 - Canonical window: `[2026-08-14T18:00:00-04:00, 2026-08-21T18:00:00-04:00)`, `America/New_York`
 - Discovery candidate: `sources/2026-W34/discovery/discovery-v2.jsonl` (40 records / 40 unique IDs)
 - Event crosswalk: `sources/2026-W34/discovery/event-discovery-crosswalk-v0.1.json` (105/105, 0 silently dropped)
-- Temporary acceptance validation: PASS; `discovery-accepted-v2.json` was not committed
-- Materialization commit: `11f3c9359ba33f800fe6ba1401e5d28b6d33aaf6`; read-back PASS; closure SHA is reported in the completion report
-- Raw index: 47 entries (11 pre-existing preserved, 36 added); Raw integrity PASS
+- Actual reviewed-main Core validation: PASS; `validate_manifest`, `build_acceptance`, and `validate_acceptance` all passed
+- Discovery acceptance: 40 records / 40 unique IDs; graph SHA `4f639cffa8f2815fa874bf260fad6b34e050a614b1b825dbf063a3b5b0b6d6ba`; canonical artifact prepared for formal `ADVANCE_STAGE`
+- Binding-repair validation: `sources/2026-W34/execution/luna/w34-discovery-binding-repair-r1/real-core-validation-v0.1.json`
+- Raw index: 47 entries (11 pre-existing preserved, 36 added); all paths/byte counts present; 11 inherited SHA metadata mismatches retained without modification
 
 ## DailyX / Grok / GitHub
 
@@ -45,13 +46,14 @@ This index is the edition-local navigation record. Machine lifecycle authority r
 
 ## Execution records
 
-- Historical sessions remain unchanged, including earlier `IN_PROGRESS` records; this is a new bounded materialization session.
-- Current session: `sources/2026-W34/execution/sessions/w34-luna-discovery-materialization-20260903-r1.md` (`BOUNDED_COMPLETE_HANDOFF_TO_SOL`)
-- Optional validation artifact: `sources/2026-W34/execution/luna/w34-discovery-materialization-r1/materialization-validation-v0.1.json`
+- Historical sessions remain unchanged, including earlier `IN_PROGRESS` records; this is a new bounded repair/advance session.
+- Historical materialization session: `sources/2026-W34/execution/sessions/w34-luna-discovery-materialization-20260903-r1.md` (`BOUNDED_COMPLETE_HANDOFF_TO_SOL`)
+- Current session: `sources/2026-W34/execution/sessions/w34-luna-discovery-binding-repair-20260903-r1.md` (`REAL_CORE_VALIDATION_PASS / FORMAL_ADVANCE_PENDING`)
+- Real-Core validation artifact: `sources/2026-W34/execution/luna/w34-discovery-binding-repair-r1/real-core-validation-v0.1.json`
 
 ## Forbidden actions explicitly not performed
 
-- No W34 reinitialization; no formal `DISCOVERY_COLLECTED` acceptance or lifecycle advancement
+- No W34 reinitialization; no formal `DISCOVERY_COLLECTED` acceptance or lifecycle advancement before the gated bridge
 - No Screening, Evidence acceptance, Materiality/completeness override, Selection, Architecture, Human Gate decision, reader-facing draft, Freeze, or Release
 - No `production-state.json`, shared Core, or W33 changes
 - No force/reset/rewrite/rebase and no new branch
@@ -59,4 +61,4 @@ This index is the edition-local navigation record. Machine lifecycle authority r
 
 ## Current disposition
 
-`BOUNDED_DISCOVERY_MATERIALIZATION_COMPLETE_HANDOFF_TO_SOL`
+`REAL_CORE_VALIDATION_PASS_READY_FOR_FORMAL_DISCOVERY_ADVANCE`

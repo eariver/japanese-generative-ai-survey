@@ -1,0 +1,213 @@
+{
+  "schema_version": "0.1",
+  "issue_id": "2026-W34",
+  "validation_run_id": "w34-discovery-binding-repair-r1",
+  "validated_at": "2026-09-02T23:44:32Z",
+  "task_boundary": "Sol-corrected X-manifest to Discovery binding verification plus actual Core Discovery acceptance proof; no Screening",
+  "branch": "weekly/2026-W34-v2-work",
+  "exact_starting_sha": "adea56f9341c51a54210d5ce9f3844e9ca91bf5d",
+  "reviewed_main": {
+    "commit_sha": "c7a898889463b049dea4ee7337ee16ad5fbf3191",
+    "scripts.survey_x_intake_v2": {
+      "function": "validate_manifest",
+      "blob_sha": "1b6dcac1cd110931d7e29924a9ce6b91de3190f1"
+    },
+    "scripts.survey_discovery_v2": {
+      "functions": ["build_acceptance", "validate_acceptance"],
+      "blob_sha": "4436879545ee4e1935cd7e0b1dc18e5c69900ac9"
+    },
+    "scripts.survey_core_execution_bridge_v2": {
+      "function": "execute_request",
+      "blob_sha": "54f6bb15d580c94eff2f3cb5fd26a5e68edb800d"
+    },
+    "protected_core_drift_paths": [],
+    "protected_core_drift": false
+  },
+  "sol_binding_authority": {
+    "decision_path": "sources/2026-W34/execution/decisions/sol-discovery-completeness-20260903-r1.md",
+    "review_path": "sources/2026-W34/execution/findings/sol-discovery-materialization-review-20260903-r1.md",
+    "x_manifest_discovery_disposition": "DISCOVERY_RECORDED",
+    "x_manifest_discovery_ids": ["w34-grok-r2-corrected-47-url-ledger"],
+    "grok_discovery_record_present": true,
+    "grok_raw_directly_bound": true,
+    "grok_raw_path": "sources/2026-W34/external/x/weekly-x-2026-W34-r2/raw/grok-x-result.corrected.md"
+  },
+  "actual_core_execution": {
+    "python_runtime": "repo-fixed config/survey-production-v2-requirements.txt in repo-external temporary venv",
+    "x_manifest_validation": {
+      "function": "scripts.survey_x_intake_v2.validate_manifest",
+      "require_complete": true,
+      "status": "PASS",
+      "manifest_status": "COMPLETE",
+      "run_count": 1,
+      "manifest_path": "sources/2026-W34/external/x/x-source-intake-v2.json",
+      "manifest_sha256": "702881aa75cc09ff3e65f52220e47076c8f67a8c97a36d4e4aea87e41f5a98b2"
+    },
+    "temporary_acceptance": {
+      "function_build": "scripts.survey_discovery_v2.build_acceptance",
+      "function_validate": "scripts.survey_discovery_v2.validate_acceptance",
+      "output_path": "/tmp/w34-discovery-binding-repair-core-74jv7x85/discovery-accepted-v2.json",
+      "newly_created": true,
+      "build_status": "PASS",
+      "validate_status": "PASS",
+      "record_count": 40,
+      "unique_discovery_id_count": 40,
+      "graph_sha256": "4f639cffa8f2815fa874bf260fad6b34e050a614b1b825dbf063a3b5b0b6d6ba",
+      "discovery_jsonl_sha256": "8a176af94ccd245a7651a7a292d001cff9cef355b1320f4a73278ee9f2e5216c",
+      "x_manifest_sha256": "702881aa75cc09ff3e65f52220e47076c8f67a8c97a36d4e4aea87e41f5a98b2",
+      "acceptance_sha256": "a4ea877be54ef04e739ba3de96b732e6bd02ba3345ab8bc58f6d9ff77cbfb8b5",
+      "acceptance_byte_count": 39638,
+      "x_integration": "PASS",
+      "graph_validation": "PASS",
+      "normalized_raw_ref_count": 43,
+      "unique_normalized_raw_path_count": 43,
+      "all_normalized_raw_refs_exist_and_hash": true
+    },
+    "canonical_acceptance": {
+      "path": "sources/2026-W34/discovery/discovery-accepted-v2.json",
+      "generated_by": "scripts.survey_discovery_v2.build_acceptance",
+      "validated_by": "scripts.survey_discovery_v2.validate_acceptance",
+      "status": "PASS",
+      "record_count": 40,
+      "graph_sha256": "4f639cffa8f2815fa874bf260fad6b34e050a614b1b825dbf063a3b5b0b6d6ba",
+      "sha256": "a4ea877be54ef04e739ba3de96b732e6bd02ba3345ab8bc58f6d9ff77cbfb8b5",
+      "temporary_and_canonical_graph_match": true
+    }
+  },
+  "traceability": {
+    "discovery_record_count": 40,
+    "unique_discovery_id_count": 40,
+    "event_crosswalk_path": "sources/2026-W34/discovery/event-discovery-crosswalk-v0.1.json",
+    "event_crosswalk_expected": 105,
+    "event_crosswalk_accounted": 105,
+    "event_crosswalk_missing": [],
+    "event_crosswalk_duplicates": [],
+    "event_crosswalk_105_of_105": true,
+    "dailyx_files": 7,
+    "dailyx_topic_rows": 76,
+    "dailyx_topic_rows_accounted": 76,
+    "grok_urls": 47,
+    "grok_unique_urls": 47,
+    "grok_classification_counts": {
+      "ORDINARY_WINDOW": 10,
+      "BACKGROUND_ONLY": 20,
+      "LATE_BREAKING": 17
+    },
+    "grok_classification_authority": "sources/2026-W34/external/x/weekly-x-2026-W34-r2/raw/x-url-ledger.corrected.tsv",
+    "grok_narrative_used_as_count_authority": false,
+    "carry_over": {
+      "expected": 1,
+      "represented": 1,
+      "status": "RECHECKED_UNRESOLVED",
+      "promotion_to_current": false
+    }
+  },
+  "dailyx_integrity": {
+    "manifest_path": "sources/2026-W34/external/x/dailyx/dailyx-source-provenance-v0.1.json",
+    "authority_class": "DISCOVERY_AND_COMMUNITY_SIGNAL_ONLY",
+    "drive_folder_id": "1VVAqP1ylgywdrOfl2ghS9l00yiu7ThtY",
+    "policy_file_id": "1ojlz497AMiG7JGYWBrAXNjHhuhho3YgJ",
+    "source_file_count": 7,
+    "exact_returned_bytes_and_manifest_hashes": true,
+    "raw_paths": [
+      "sources/2026-W34/external/x/dailyx/raw/2026-08-16_0700.md",
+      "sources/2026-W34/external/x/dailyx/raw/2026-08-17_0700.md",
+      "sources/2026-W34/external/x/dailyx/raw/2026-08-18_0700.md",
+      "sources/2026-W34/external/x/dailyx/raw/2026-08-19_0700.md",
+      "sources/2026-W34/external/x/dailyx/raw/2026-08-20_0700.md",
+      "sources/2026-W34/external/x/dailyx/raw/2026-08-21_0700.md",
+      "sources/2026-W34/external/x/dailyx/raw/2026-08-22_0700.md"
+    ]
+  },
+  "grok_integrity": {
+    "result_path": "sources/2026-W34/external/x/weekly-x-2026-W34-r2/raw/grok-x-result.corrected.md",
+    "result_sha256": "43b0923bbd68ef9d9d9d4bf501a773cd4b4e4cdd881339d9591d97e7951f86ca",
+    "ledger_path": "sources/2026-W34/external/x/weekly-x-2026-W34-r2/raw/x-url-ledger.corrected.tsv",
+    "ledger_sha256": "931e2da8fb9e4bc4b46cecb550f3948506f1c9a29e052f7f4cc64207e64fc214",
+    "immutable_reuse": true,
+    "classification_counts_10_20_17": true
+  },
+  "github_releases_integrity": {
+    "raw_count": 7,
+    "immutable_reuse": true,
+    "preexisting_raw_tree_paths_changed_from_materialization_start": 0,
+    "raw_bytes_changed": false,
+    "note": "Four existing GitHub Releases raw-index SHA fields are inherited metadata mismatches; their repository blobs and byte counts are unchanged and the current Discovery Core raw-ref normalization hashes the current bytes. raw-index is not edited in this binding-repair task."
+  },
+  "raw_index_audit": {
+    "path": "sources/2026-W34/raw-index.json",
+    "entry_count": 47,
+    "all_paths_exist": true,
+    "all_byte_counts_match": true,
+    "index_sha256_matches_current_bytes": false,
+    "inherited_sha_mismatch_count": 11,
+    "inherited_sha_mismatch_paths": [
+      "sources/2026-W34/collectors/github-releases/runs/20260902T121634Z/raw/vllm-project__vllm.json",
+      "sources/2026-W34/collectors/github-releases/runs/20260902T121634Z/raw/ggml-org__llama.cpp.json",
+      "sources/2026-W34/collectors/github-releases/runs/20260902T121634Z/raw/flashinfer-ai__flashinfer.json",
+      "sources/2026-W34/collectors/github-releases/runs/20260902T121634Z/raw/comfy-org__comfyui.json",
+      "sources/2026-W34/external/x/dailyx/dailyx-source-provenance-v0.1.json",
+      "sources/2026-W34/intake/working-set/sol-discovery-event-inventory-v0.2.md",
+      "sources/2026-W34/intake/working-set/dailyx-candidate-crosswalk-v0.1.md",
+      "sources/2026-W34/intake/working-set/grok-r2-candidate-crosswalk-v0.1.md",
+      "sources/2026-W34/carryover/carryover-ledger-v0.1.json",
+      "sources/2026-W34/intake/non-x-primary-observations-v0.1.json",
+      "sources/2026-W34/collectors/sol-approved-primary-gapfill/runs/w34-discovery-materialization-r1/raw/sol-baseline-locator-observations.json"
+    ],
+    "disposition": "RETAINED_INHERITED_GAP_NOT_MODIFIED"
+  },
+  "collector_retry_status_preserved": {
+    "arxiv": {
+      "result": "RETRY_REQUIRED",
+      "raw_count": 0,
+      "failure_phase": "before_http_request"
+    },
+    "official_pages": {
+      "result": "RETRY_REQUIRED",
+      "raw_count": 0,
+      "configured_page_count": 22,
+      "failure_phase": "before_http_request"
+    }
+  },
+  "source_local_captures": {
+    "preexisting_materialization_count": 23,
+    "new_in_binding_repair_task": 0,
+    "exact_http_bytes_claimed": false
+  },
+  "production_state_before_advancement": {
+    "path": "sources/2026-W34/production-state.json",
+    "sha256": "f151e195018b1a164cc74f68ea27fea4bb388767a3054eb0007982388a19d39e",
+    "lifecycle_state": "ISSUE_INITIALIZED",
+    "next_action": "stage:discovery",
+    "machine_checkpoint_discovery": "pending",
+    "byte_identical_before_request": true
+  },
+  "execution_record_continuity": {
+    "historical_in_progress_sessions_unchanged": true,
+    "closure_session": "sources/2026-W34/execution/sessions/w34-luna-discovery-binding-repair-20260903-r1.md",
+    "supersession_boundary": "The new bounded session closes/hands off the prior materialization operational boundary without rewriting historical IN_PROGRESS facts."
+  },
+  "scope_guard": {
+    "discovery_scope_changed": false,
+    "production_state_changed_before_formal_advance": false,
+    "formal_discovery_collected_acceptance_before_bridge": false,
+    "screening": false,
+    "evidence_acceptance": false,
+    "materiality": false,
+    "selection": false,
+    "architecture": false,
+    "human_gate": false,
+    "reader_facing_draft": false,
+    "freeze": false,
+    "release": false,
+    "shared_core_changed": false,
+    "w33_changed": false,
+    "force_reset_rewrite_rebase": false
+  },
+  "exceptions": {
+    "initial_environment_attempt": "ModuleNotFoundError: jsonschema",
+    "remediation": "Installed only the exact repository-pinned requirements into a repo-external temporary venv; the subsequent actual Core run passed.",
+    "actual_core_exception": null
+  },
+  "status": "REAL_CORE_VALIDATION_PASS_READY_FOR_FORMAL_ADVANCE"
+}
