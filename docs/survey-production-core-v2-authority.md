@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Design Authority Index
 
-Status: `CANONICAL POST-INTEGRATION CORE AUTHORITY / SCREENING EXPANSION + ACTIVE-ACCEPTANCE REPAIR / PRE-FREEZE CANDIDATE`
+Status: `CANONICAL POST-INTEGRATION CORE AUTHORITY / SCREENING EXPANSION + ACTIVE-ACCEPTANCE REPAIR / PRE-FREEZE / PRE-AUDIT CANDIDATE`
 Established: 2026-08-22 JST  
 Current maintenance branch: `fix/core-v2-screening-expansion-authority-20260904`
 Integration PR: normal draft PR for this candidate; exact PR metadata is external to the candidate tree

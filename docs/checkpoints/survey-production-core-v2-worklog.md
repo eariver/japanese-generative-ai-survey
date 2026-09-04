@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Work Log
 
-Status: `POST-INTEGRATION CORE CANDIDATE / SCREENING AUTHORITY REPAIRED / PRE-FREEZE`
+Status: `POST-INTEGRATION CORE CANDIDATE / SCREENING AUTHORITY REPAIRED / PRE-FREEZE / PRE-AUDIT CANDIDATE`
 Established: 2026-08-22 JST  
 Last updated: 2026-09-04 JST
 Current maintenance branch: `fix/core-v2-screening-expansion-authority-20260904`
