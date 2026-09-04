@@ -1,25 +1,25 @@
 # Survey Production Core v2 — Design Authority Index
 
-Status: `CANONICAL IMPROVEMENT-BRANCH AUTHORITY / WU-012 + AUD-046 + AUD-047 REPAIRS IMPLEMENTED / PRE-AUDIT CANDIDATE`  
+Status: `CANONICAL POST-INTEGRATION CORE AUTHORITY / SCREENING EXPANSION + ACTIVE-ACCEPTANCE REPAIR / PRE-FREEZE CANDIDATE`
 Established: 2026-08-22 JST  
-Working branch: `refactor/survey-production-core-v2`  
-Draft implementation PR: `#310`  
+Current maintenance branch: `fix/core-v2-screening-expansion-authority-20260904`
+Integration PR: normal draft PR for this candidate; exact PR metadata is external to the candidate tree
 Final-audit rule: `docs/survey-production-core-v2-final-audit-rule.md`
 
 ## 1. Purpose and current boundary
 
 This index identifies the live semantic authority for Survey Production Core v2 while preserving earlier design/audit documents as historical reasoning.
 
-Current `main` remains the production source of truth until PR #310 is explicitly Human-reviewed and merged. This file is authoritative only for the improvement branch until that merge.
+Current `main` is the production source of truth at the reviewed baseline `c7a898889463b049dea4ee7337ee16ad5fbf3191`. The historical implementation PR #310 and post-integration repair PR #452 are already merged. This file is the current Core authority for the maintenance candidate branch above; it does not authorize a merge or substitute for the later fixed-head audit and Human review.
 
 Historical candidate audits are not reusable as current approval evidence:
 
 - `2f3c9b10c031cf0d8e5cc114fb93e481e90fffac` was invalidated by AUD-039 through AUD-044;
 - `68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d` was invalidated by AUD-045;
 - `705937af2eb45d5ba361fe748d7a622110bcb27c` completed the then-current five-point audit, but was invalidated by AUD-046 after the Owner clarified the required Grok/X Source Intake architecture;
-- AUD-047 subsequently made autonomous progression / stop discipline an independent sixth acceptance point, so the next final audit must be a fresh six-point audit on a later unchanged head.
+- AUD-047 added autonomous progression / stop discipline as an independent acceptance dimension. The canonical final audit has since been fixed at seven points, with Human Gate round-trip viability as Point 7. The next final audit must be a fresh seven-point audit on one later unchanged head.
 
-The candidate tree intentionally stops at an **audit-stable pre-audit state**. Exact final PASS evidence belongs in PR/Human-review metadata keyed to one unchanged candidate SHA; do not mutate the candidate merely to record that PASS.
+The candidate tree intentionally stops at an **audit-stable pre-freeze state**. Exact final PASS evidence belongs in PR/Human-review metadata keyed to one unchanged candidate SHA; do not mutate the candidate merely to record that PASS.
 
 ## 2. Fundamental operating model
 
@@ -75,7 +75,7 @@ For Survey Production Core v2 improvement work, use:
 
 | Document | Current status | Role |
 |---|---|---|
-| `docs/survey-production-core-v2-final-audit-rule.md` | `CANONICAL PRE-MERGE REVIEW RULE` | all-changes-first/fixed-head six-point audit and invalidation semantics |
+| `docs/survey-production-core-v2-final-audit-rule.md` | `CANONICAL PRE-MERGE REVIEW RULE` | all-changes-first/fixed-head seven-point audit and invalidation semantics |
 | `docs/survey-production-core-v2-agent-first-reaudit-2026-08-22.md` | `AUTHORITATIVE OPERATOR-MODEL RE-AUDIT` | corrected ChatGPT/tool boundary |
 | `docs/checkpoints/survey-production-core-v2-worklog.md` | `CANONICAL PRE-AUDIT WORK STATUS` | implementation status and external final-validation handoff |
 | `docs/survey-production-core-v2-improvement-plan.md` | `ACTIVE CONSOLIDATED PLAN / REPAIRS IMPLEMENTED` | architecture, rationale and rollout |
@@ -222,6 +222,13 @@ Initialization implementation identity is historical provenance, not an edition-
 
 Compact checkpoints must carry `CORE_STAGE_CONTRACT` validation binding exact State/Profile/current tool/current contract/artifacts. Discovery Acceptance transitively binds the completed X Source Intake manifest and imported Raw authority. A same-named file is never sufficient proof of validity.
 
+The current maintenance candidate adds two generic authority distinctions without creating a new lifecycle or Human Gate:
+
+- **root Discovery authority** is the formally accepted Discovery set; the **effective downstream Discovery basis** may be that root or a mechanically validated derived Screening expansion. A derived basis is legal only when every accepted root remains accounted for and all parent, Raw, source-identity, obligation, issue, and duplicate-ID invariants pass.
+- **historical Screening acceptances** are immutable content-addressed evidence; the **active Screening acceptance** is only the exact `screening-acceptance` artifact adopted by the passed State-bound Screening Stage Checkpoint. Directory count, mtime, digest order, and latest-file heuristics are never authority.
+
+After Screening advancement, Evidence, Materiality, Completeness, Selection, and Architecture follow the same active Screening/effective Discovery authority chain. Production editions do not repair shared Core in place; Core repairs are reviewed on the dedicated maintenance branch before edition use.
+
 ## 9. Canonical orchestration model
 
 Normal local production is:
@@ -244,7 +251,7 @@ Canonical `config/survey-production-v2.json` keeps `stage_plan[*].handoff_requir
 
 The production-facing prevention authority is `docs/survey-production-core-v2-issue-prevention-checklist.md`. Crisp failures should have small reliable deterministic protection; semantic/visual judgment remains explicit ChatGPT responsibility rather than brittle automation.
 
-AUD-046 adds X applicability/evidence-boundary/result-disposition protection. AUD-047 adds stop-discipline protection: having only two formal Human Gates is insufficient if ChatGPT still repeatedly pauses during routine work.
+AUD-046 adds X applicability/evidence-boundary/result-disposition protection. AUD-047 adds stop-discipline protection: having only two formal Human Gates is insufficient if ChatGPT still repeatedly pauses during routine work. The current maintenance candidate additionally closes the generic Screening expansion authority and active-acceptance selection gaps described in the current pre-freeze instruction.
 
 ## 11. Finding disposition
 
@@ -268,21 +275,22 @@ Intentional `DEFERRED`:
 - AUD-031 — machine Series engine remains premature;
 - AUD-033 — exhaustive synthetic future-edition matrix remains unnecessary before real Pilots.
 
-Repair Set `REPAIR-WU012-2026-08-22` remains `IMPLEMENTED`, not `VALIDATED/CLOSED`, until real W33/SP001 verification editions exist.
+Repair Set `REPAIR-WU012-2026-08-22` remains `IMPLEMENTED`, not `VALIDATED/CLOSED`, until the required post-integration verification editions exist. The current Screening expansion/active-acceptance repair is a separate pre-freeze Core candidate and is not treated as final-audit PASS evidence.
 
 ## 12. Pre-audit validation boundary
 
 The required external validation sequence is:
 
-1. all five CI cross-regression families pass on one unchanged candidate head;
+1. finish all candidate changes, synchronize authority, and obtain exact-head diagnostic CI;
 2. freeze that exact head;
-3. run all **six** acceptance points from zero on that unchanged head:
+3. run all **seven** acceptance points from zero on that unchanged head:
    1. Weekly viability;
    2. Special viability;
    3. Generality;
    4. historical/clarified requirement recurrence prevention;
    5. control proportionality;
    6. autonomous progression / stop discipline;
+   7. Human Gate round-trip viability;
 4. any candidate-tree mutation invalidates the entire audit;
 5. an unchanged all-PASS result is recorded in PR/Human-review metadata with exact head SHA and CI run IDs.
 
@@ -298,9 +306,9 @@ Do not confuse five CI families with six acceptance points.
 
 ## 13. Pre-audit handoff and production boundary
 
-PR #310 remains draft and unmerged. W33, W34, SP001, SP002 and SP003 remain unstarted.
+PR #310 and the post-integration repair PR #452 are historical merged implementation PRs. The current candidate is carried only on `fix/core-v2-screening-expansion-authority-20260904`; its normal integration PR is draft review metadata and must not be merged by this task. W33 is an immutable released edition, and W34 is an active production-regression edition with read-only fixture use in this maintenance task. SP001, SP002, and SP003 remain outside this Core candidate's production scope.
 
-Once Authority, Worklog, Repair Set, implementation and tests agree, freeze the exact branch head, obtain five-family green CI, and run the mandatory six-point audit without changing the candidate.
+Once Authority, Worklog, Repair Set, implementation and tests agree, freeze the exact branch head, obtain the required exact-head CI, and run the mandatory seven-point audit without changing the candidate.
 
 If any audit point requires a repository change:
 
@@ -310,9 +318,9 @@ record/classify finding
 -> repair + synchronize
 -> rerun five-family CI
 -> freeze new head
--> rerun all six acceptance points from point 1
+-> rerun all seven acceptance points from point 1
 ```
 
-If all six pass on an unchanged head, record that exact-SHA result in PR/Human-review metadata and present the candidate for Human full-candidate review. Do not commit a post-audit PASS document into the audited tree.
+If all seven pass on an unchanged head, record that exact-SHA result in PR/Human-review metadata and present the candidate for Human full-candidate review. Do not commit a post-audit PASS document into the audited tree.
 
 Do not start any Pilot before explicit Human approval and merge.
