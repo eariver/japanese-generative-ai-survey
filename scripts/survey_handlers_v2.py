@@ -190,9 +190,14 @@ def validate_screening(repo_root, cfg, state, spec, handoff, implementation_sha)
     accepted = screening.validate_acceptance(repo_root, acceptance_path, implementation_sha)
     if accepted["issue_id"] != state["issue_id"]:
         raise StageContractError("Screening acceptance issue identity mismatch")
+    effective = screening.resolve_effective_discovery_basis(
+        repo_root, acceptance_path.parent / "package.json", implementation_sha
+    )
+    if effective["path"].resolve() != discovery_path.resolve():
+        raise StageContractError("Stage Handoff Discovery is not the effective Screening Discovery basis")
     _same_authority(handoff, "inputs", "screening-acceptance", "outputs", "screening")
     package = core.load_json(acceptance_path.parent / "package.json")
-    if package.get("basis", {}).get("discovery_sha256") != core.sha256_file(discovery_path):
+    if package.get("basis", {}).get("discovery_sha256") != effective["sha256"]:
         raise StageContractError("Screening acceptance does not bind Stage Handoff Discovery bytes")
 
 

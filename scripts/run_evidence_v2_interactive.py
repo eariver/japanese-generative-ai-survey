@@ -28,6 +28,7 @@ from scripts import survey_discovery_v2 as discovery
 from scripts import survey_evidence_v2 as evidence
 from scripts import survey_production_v2 as core
 from scripts import survey_schema_v2 as schema_gate
+from scripts import survey_screening_v2 as screening
 
 INPUT_NAME = "interactive-evidence.json"
 AUDIT_NAME = "interactive-audit.json"
@@ -520,8 +521,7 @@ def run(repo_root: Path, state_path: Path, input_path: Path) -> dict[str, Any]:
     source_root = core.repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
     discovery_acceptance_path = source_root / "discovery/discovery-accepted-v2.json"
     accepted_discovery = discovery.validate_acceptance(repo_root, discovery_acceptance_path)
-    discovery_path = core.repo_local_path(repo_root, accepted_discovery["discovery_path"], "accepted Discovery JSONL")
-    discovery_records = accepted_discovery["records"]
+    root_discovery_path = core.repo_local_path(repo_root, accepted_discovery["discovery_path"], "accepted Discovery JSONL")
 
     screening_roots = list((source_root / "screening/v2/accepted").glob("*/screening-accepted.json"))
     if len(screening_roots) != 1:
@@ -529,6 +529,14 @@ def run(repo_root: Path, state_path: Path, input_path: Path) -> dict[str, Any]:
     screening_acceptance_path = screening_roots[0]
 
     implementation_sha = core.repository_commit_sha(repo_root)
+    effective = screening.resolve_effective_discovery_basis(
+        repo_root,
+        screening_acceptance_path.parent / "package.json",
+        implementation_sha,
+        accepted_root_path=root_discovery_path,
+    )
+    discovery_path = effective["path"]
+    discovery_records = effective["records"]
     with tempfile.TemporaryDirectory() as temp:
         temp_root = Path(temp)
         package_root = temp_root / "evidence-package"

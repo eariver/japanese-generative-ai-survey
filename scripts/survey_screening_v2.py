@@ -222,6 +222,232 @@ def _rel(repo_root: Path, path: Path) -> str:
     return str(path.resolve().relative_to(repo_root.resolve()))
 
 
+def _repo_file(repo_root: Path, value: str, label: str) -> Path:
+    """Resolve one repository-local, regular file without following a symlink."""
+
+    path = core.repo_local_path(repo_root, value, label)
+    if path.is_symlink() or not path.is_file():
+        raise ValueError(f"{label} missing or unsafe: {value}")
+    return path
+
+
+def _source_identity(record: dict[str, Any]) -> tuple[str, str, str, str]:
+    source = record["source"]
+    return tuple(source[key] for key in ("source_type", "collector_id", "collector_run_id", "locator"))
+
+
+def _raw_paths(record: dict[str, Any]) -> set[str]:
+    return set(record["source"]["raw_paths"])
+
+
+def validate_discovery_expansion(
+    repo_root: Path,
+    root_records: list[dict[str, Any]],
+    derived_records: list[dict[str, Any]],
+    issue_id: str,
+) -> dict[str, list[str]]:
+    """Validate a derived Screening Discovery set against an accepted root graph.
+
+    The derived set declares its expansion scope through exact ``parent_refs``.
+    A root outside that declared scope is retained as an auditable unaccounted
+    root only when neither its Raw paths nor its stable source identity is used
+    by a child.  If either is used without declaring the root, the child cannot
+    be silently rooted elsewhere and validation fails closed.
+    """
+
+    validate_discovery_set(root_records, issue_id)
+    validate_discovery_set(derived_records, issue_id)
+    root_by_id = {record["discovery_id"]: record for record in root_records}
+    derived_ids = {record["discovery_id"] for record in derived_records}
+    root_ids = set(root_by_id)
+    overlap = sorted(root_ids & derived_ids)
+    if overlap:
+        raise ValueError(f"derived Discovery reuses accepted root Discovery ID: {overlap}")
+
+    accounted_root_ids: set[str] = set()
+    child_raw_paths: set[str] = set()
+    child_identities: set[tuple[str, str, str, str]] = set()
+    for child in derived_records:
+        child_id = child["discovery_id"]
+        provenance = child["provenance"]
+        origin = provenance["origin"]
+        if origin not in EXPANSION_REQUIRING_PARENT:
+            raise ValueError(
+                f"derived Discovery {child_id} must use a parent-requiring expansion origin; got {origin}"
+            )
+        parent_refs = provenance["parent_refs"]
+        if not parent_refs:
+            raise ValueError(f"derived Discovery {child_id} requires at least one accepted root parent")
+        unknown = sorted(set(parent_refs) - root_ids)
+        if unknown:
+            raise ValueError(
+                f"derived Discovery {child_id} has parent_ref outside accepted root Discovery IDs: {unknown}"
+            )
+        parents = [root_by_id[parent_id] for parent_id in parent_refs]
+        accounted_root_ids.update(parent_refs)
+
+        parent_raw_paths = set().union(*(_raw_paths(parent) for parent in parents))
+        child_paths = _raw_paths(child)
+        missing_raw = sorted(child_paths - parent_raw_paths)
+        if missing_raw:
+            raise ValueError(
+                f"derived Discovery {child_id} uses Raw path outside declared parent Raw union: {missing_raw}"
+            )
+        for raw_path in child_paths:
+            _repo_file(repo_root, raw_path, f"derived Discovery {child_id} Raw path")
+
+        child_identity = _source_identity(child)
+        parent_identities = {_source_identity(parent) for parent in parents}
+        if child_identity not in parent_identities:
+            raise ValueError(
+                f"derived Discovery {child_id} source identity is not rooted in a declared accepted parent"
+            )
+        child_raw_paths.update(child_paths)
+        child_identities.add(child_identity)
+
+        parent_obligations = set().union(
+            *(set(parent["provenance"]["obligation_ids"]) for parent in parents)
+        )
+        child_obligations = set(provenance["obligation_ids"])
+        invented = sorted(child_obligations - parent_obligations)
+        if invented:
+            raise ValueError(
+                f"derived Discovery {child_id} invents obligations outside declared parent union: {invented}"
+            )
+
+    unaccounted_root_ids = sorted(root_ids - accounted_root_ids)
+    for root_id in unaccounted_root_ids:
+        root = root_by_id[root_id]
+        if _raw_paths(root) & child_raw_paths or _source_identity(root) in child_identities:
+            raise ValueError(
+                f"accepted root Discovery silently omitted from derived parent closure: {root_id}"
+            )
+
+    return {
+        "accounted_root_ids": sorted(accounted_root_ids),
+        "unaccounted_root_ids": unaccounted_root_ids,
+    }
+
+
+def _canonical_root_acceptance(
+    repo_root: Path, package: dict[str, Any]
+) -> tuple[Path, Path | None]:
+    """Return the State-bound accepted Discovery path and acceptance, if present."""
+
+    basis = package.get("basis")
+    if not isinstance(basis, dict):
+        raise ValueError("Screening package basis is missing")
+    state_path = _repo_file(repo_root, basis.get("state_path"), "Screening package State")
+    state = core.load_json(state_path)
+    if state.get("issue_id") != package.get("issue_id"):
+        raise ValueError("Screening package State/Discovery issue identity divergence")
+    profile_ref = state.get("profile")
+    if not isinstance(profile_ref, dict):
+        raise ValueError("Screening package State profile authority is missing")
+    profile_path = _repo_file(repo_root, profile_ref.get("path"), "Screening package Profile")
+    profile = core.load_json(profile_path)
+    source_root = core.repo_local_path(
+        repo_root, profile.get("paths", {}).get("source_root"), "Production Profile source_root"
+    )
+    acceptance_path = source_root / "discovery/discovery-accepted-v2.json"
+    if acceptance_path.is_symlink():
+        raise ValueError("accepted Discovery acceptance is symlinked")
+    if not acceptance_path.is_file():
+        return source_root / "discovery/discovery-v2.jsonl", None
+    return acceptance_path, acceptance_path
+
+
+def resolve_effective_discovery_basis(
+    repo_root: Path,
+    package_path: Path,
+    implementation_sha: str | None = None,
+    accepted_root_path: Path | None = None,
+) -> dict[str, Any]:
+    """Resolve the root or mechanically validated derived Discovery basis.
+
+    ``accepted_root_path`` is used by stage validation to bind the resolver to
+    the exact accepted Discovery artifact in the Stage/Checkpoint authority.
+    It is intentionally optional for legacy direct-basis unit fixtures that do
+    not materialize a Discovery acceptance artifact.
+    """
+
+    del implementation_sha
+    repo_root = repo_root.resolve()
+    package_path = package_path.resolve()
+    package = core.load_json(package_path)
+    basis = package.get("basis")
+    if not isinstance(basis, dict):
+        raise ValueError("Screening package basis is missing")
+    derived_path = _repo_file(repo_root, basis.get("discovery_path"), "Screening package Discovery")
+    derived_sha256 = core.sha256_file(derived_path)
+    if derived_sha256 != basis.get("discovery_sha256"):
+        raise ValueError("Screening package basis drift: discovery_sha256")
+    derived_records = read_jsonl(derived_path)
+    validate_discovery_set(derived_records, package["issue_id"])
+
+    acceptance_path, acceptance_marker = _canonical_root_acceptance(repo_root, package)
+    if acceptance_marker is None:
+        if accepted_root_path is not None:
+            raise ValueError("accepted Discovery authority is missing for derived Screening basis")
+        return {
+            "mode": "DIRECT",
+            "path": derived_path,
+            "discovery_path": derived_path,
+            "sha256": derived_sha256,
+            "root_path": derived_path,
+            "root_sha256": derived_sha256,
+            "root_records": derived_records,
+            "records": derived_records,
+            "accounted_root_ids": sorted(row["discovery_id"] for row in derived_records),
+            "unaccounted_root_ids": [],
+        }
+
+    from scripts import survey_discovery_v2 as discovery
+
+    accepted = discovery.validate_acceptance(repo_root, acceptance_path)
+    root_path = _repo_file(repo_root, accepted["discovery_path"], "accepted Discovery JSONL")
+    if accepted_root_path is not None and root_path.resolve() != accepted_root_path.resolve():
+        raise ValueError("Screening package root Discovery differs from accepted Stage Discovery authority")
+    root_sha256 = core.sha256_file(root_path)
+    if root_sha256 != accepted["discovery_sha256"]:
+        raise ValueError("accepted Discovery JSONL SHA drift")
+    root_records = read_jsonl(root_path)
+    validate_discovery_set(root_records, package["issue_id"])
+    accepted_ids = {row["discovery_id"] for row in accepted["records"]}
+    root_ids = {row["discovery_id"] for row in root_records}
+    if accepted_ids != root_ids:
+        raise ValueError("accepted Discovery graph IDs differ from accepted Discovery JSONL")
+
+    if derived_path.resolve() == root_path.resolve():
+        if derived_sha256 != root_sha256:
+            raise ValueError("direct Screening basis does not bind accepted Discovery bytes")
+        return {
+            "mode": "DIRECT",
+            "path": root_path,
+            "discovery_path": root_path,
+            "sha256": root_sha256,
+            "root_path": root_path,
+            "root_sha256": root_sha256,
+            "root_records": root_records,
+            "records": root_records,
+            "accounted_root_ids": sorted(root_ids),
+            "unaccounted_root_ids": [],
+        }
+
+    accounting = validate_discovery_expansion(repo_root, root_records, derived_records, package["issue_id"])
+    return {
+        "mode": "DERIVED_EXPANSION",
+        "path": derived_path,
+        "discovery_path": derived_path,
+        "sha256": derived_sha256,
+        "root_path": root_path,
+        "root_sha256": root_sha256,
+        "root_records": root_records,
+        "records": derived_records,
+        **accounting,
+    }
+
+
 def prepare_package(
     repo_root: Path,
     state_path: Path,
@@ -478,6 +704,7 @@ def validate_acceptance(repo_root: Path, acceptance_path: Path, implementation_s
     digest = _result_set_digest(acceptance["package_sha256"], accepted_batches, flattened)
     if acceptance["result_set_sha256"] != digest or run_dir.name != digest:
         raise ValueError("Screening acceptance content-addressed identity mismatch")
+    resolve_effective_discovery_basis(repo_root, package_path, implementation_sha)
     return acceptance
 
 

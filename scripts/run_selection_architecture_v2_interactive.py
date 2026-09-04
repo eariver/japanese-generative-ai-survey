@@ -24,6 +24,7 @@ from scripts import survey_discovery_v2 as discovery
 from scripts import survey_production_v2 as core
 from scripts import survey_review_attention_v2 as review_attention
 from scripts import survey_schema_v2 as schema_gate
+from scripts import survey_screening_v2 as screening
 
 INPUT_NAME = "interactive-selection-architecture.json"
 
@@ -177,13 +178,20 @@ def run(repo_root: Path, state_path: Path, input_path: Path) -> dict[str, Any]:
     source_root = core.repo_local_path(repo_root, profile["paths"]["source_root"], "paths.source_root")
     discovery_acceptance_path = source_root / "discovery/discovery-accepted-v2.json"
     accepted_discovery = discovery.validate_acceptance(repo_root, discovery_acceptance_path)
-    discovery_path = core.repo_local_path(repo_root, accepted_discovery["discovery_path"], "accepted Discovery JSONL")
+    root_discovery_path = core.repo_local_path(repo_root, accepted_discovery["discovery_path"], "accepted Discovery JSONL")
     screening_path = _single(list((source_root / "screening/v2/accepted").glob("*/screening-accepted.json")), "accepted Screening run")
     evidence_path = _single(list((source_root / "evidence/v2/accepted").glob("*/evidence-accepted.json")), "accepted Evidence run")
     views_path = _single(list((source_root / "evidence/v2/views/accepted").glob("*/edition-views-accepted.json")), "accepted Edition View run")
     ledger_path = source_root / "materiality-ledger-v2.json"
     completeness_path = source_root / "profile-completeness-v2.json"
     implementation_sha = core.repository_commit_sha(repo_root)
+    effective = screening.resolve_effective_discovery_basis(
+        repo_root,
+        screening_path.parent / "package.json",
+        implementation_sha,
+        accepted_root_path=root_discovery_path,
+    )
+    discovery_path = effective["path"]
 
     matrix_path = source_root / "candidate-matrix-v2.json"
     selection_path = source_root / "candidate-selection-v2.json"
