@@ -182,12 +182,9 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         self.assertIn("rerun Points 1–7 from Point 1", final_rule)
         self.assertIn("Human Gate round-trip viability", final_rule)
         self.assertIn("default-branch `issue_comment` authority", final_rule)
-        w33_state = core.load_json(Path("sources/2026-W33/production-state.json"))
-        sp001_state = core.load_json(Path("sources/SP001/production-state.json"))
-        self.assertEqual(w33_state["issue_id"], "2026-W33")
-        self.assertEqual(w33_state["lifecycle_state"], "RELEASED")
-        self.assertEqual(sp001_state["issue_id"], "SP001")
-        self.assertEqual(sp001_state["lifecycle_state"], "RELEASED")
+        self.assertIn("W33 is an immutable released edition", authority)
+        self.assertIn("W34 is an active production-regression edition", authority)
+        self.assertIn("SP001, SP002, and SP003 remain outside this Core candidate's production scope", authority)
 
 
 if __name__ == "__main__":
