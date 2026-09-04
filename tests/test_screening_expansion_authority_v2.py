@@ -81,19 +81,31 @@ class SurveyScreeningExpansionAuthorityV2Tests(unittest.TestCase):
                 "child-2", "REFERENCE_EXPANSION", "raw/shared.json", "https://example.invalid/root-a",
                 parent_refs=["root-a"], obligation_ids=["obligation:scope"], research_pass=1,
             ),
+            self._record(
+                "child-3", "REFERENCE_EXPANSION", "raw/shared.json", "https://example.invalid/root-a",
+                parent_refs=["root-a", "root-b"], obligation_ids=["obligation:scope"], research_pass=1,
+            ),
         ]
         return root_records, children
 
-    def test_valid_one_to_many_expansion_is_rooted_and_surfaces_disjoint_roots(self) -> None:
-        with self.subTest("one-to-many"):
-            with tempfile.TemporaryDirectory() as raw_root:
-                root = Path(raw_root)
-                root_records, children = self._root_and_children(root)
-                result = screening.validate_discovery_expansion(
-                    root, root_records, children, "SP-EXPANSION"
+    def test_valid_expansion_requires_and_accounts_every_root(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_root:
+            root = Path(raw_root)
+            root_records, children = self._root_and_children(root)
+            result = screening.validate_discovery_expansion(
+                root, root_records, children, "SP-EXPANSION"
+            )
+            self.assertEqual(result["accounted_root_ids"], ["root-a", "root-b"])
+            self.assertNotIn("unaccounted_root_ids", result)
+
+    def test_silent_root_omission_fails_even_without_raw_or_identity_overlap(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_root:
+            root = Path(raw_root)
+            root_records, children = self._root_and_children(root)
+            with self.assertRaisesRegex(ValueError, "silently omitted.*root-b"):
+                screening.validate_discovery_expansion(
+                    root, root_records, children[:2], "SP-EXPANSION"
                 )
-                self.assertEqual(result["accounted_root_ids"], ["root-a"])
-                self.assertEqual(result["unaccounted_root_ids"], ["root-b"])
 
     def test_expansion_fail_close_cases(self) -> None:
         with tempfile.TemporaryDirectory() as raw_root:
@@ -105,26 +117,28 @@ class SurveyScreeningExpansionAuthorityV2Tests(unittest.TestCase):
                 "other parent set": (lambda row: row["provenance"].update({"parent_refs": ["other-issue:root"]}), "outside accepted root"),
                 "invented Raw": (lambda row: row["source"].update({"raw_paths": ["raw/invented.json"]}), "outside declared parent Raw union"),
                 "unrelated source": (lambda row: row["source"].update({"locator": "https://example.invalid/unrelated"}), "source identity"),
-                "silent root omission": (lambda row: row["provenance"].update({"parent_refs": ["root-a"]}), "silently omitted"),
                 "unrelated BASE substitution": (lambda row: row.update({"discovery_id": "unrelated", "provenance": {
                     "origin": "BASE", "research_pass": 0, "parent_refs": [], "obligation_ids": [], "reason": "unrelated valid record"
                 }}), "parent-requiring expansion origin"),
+                "obligation invention": (lambda row: row["provenance"].update({"obligation_ids": ["obligation:scope", "obligation:invented"]}), "invents obligations"),
             }
             for label, (mutate, message) in cases.items():
                 with self.subTest(label=label):
                     candidate = copy.deepcopy(children)
-                    if label == "silent root omission":
-                        root_for_case = copy.deepcopy(root_records)
-                        root_for_case[1]["source"]["raw_paths"] = ["raw/shared.json"]
-                        candidate[0]["source"]["locator"] = "https://example.invalid/root-a"
-                        with self.assertRaisesRegex(ValueError, message):
-                            screening.validate_discovery_expansion(root, root_for_case, candidate, "SP-EXPANSION")
-                        continue
                     mutate(candidate[0])
                     if label == "invented Raw":
                         (root / "raw/invented.json").write_text('{"fixture":"invented"}\n', encoding="utf-8")
                     with self.assertRaisesRegex(ValueError, message):
                         screening.validate_discovery_expansion(root, root_records, candidate, "SP-EXPANSION")
+
+    def test_duplicate_derived_id_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_root:
+            root = Path(raw_root)
+            root_records, children = self._root_and_children(root)
+            duplicate = copy.deepcopy(children)
+            duplicate[1]["discovery_id"] = duplicate[0]["discovery_id"]
+            with self.assertRaisesRegex(ValueError, "duplicate discovery_id"):
+                screening.validate_discovery_expansion(root, root_records, duplicate, "SP-EXPANSION")
 
     def test_derived_screening_and_evidence_use_event_ids(self) -> None:
         helper = screening_tests.SurveyScreeningV2Tests(
@@ -195,7 +209,7 @@ class SurveyScreeningExpansionAuthorityV2Tests(unittest.TestCase):
             resolved = screening.resolve_effective_discovery_basis(root, package_path)
             self.assertEqual(resolved["mode"], "DERIVED_EXPANSION")
             self.assertEqual(
-                {row["discovery_id"] for row in resolved["records"]}, {"child-1", "child-2"}
+                {row["discovery_id"] for row in resolved["records"]}, {"child-1", "child-2", "child-3"}
             )
             evidence_package = evidence.prepare_evidence_package(
                 root,
@@ -206,10 +220,10 @@ class SurveyScreeningExpansionAuthorityV2Tests(unittest.TestCase):
                 IMPLEMENTATION_SHA,
             )
             evidence_payload = core.load_json(evidence_package)
-            self.assertEqual(len(evidence_payload["tasks"]), 2)
+            self.assertEqual(len(evidence_payload["tasks"]), 3)
             self.assertEqual(
                 {row["discovery_ids"][0] for row in evidence_payload["tasks"]},
-                {"child-1", "child-2"},
+                {"child-1", "child-2", "child-3"},
             )
 
             unrelated_path = root / "sources/SP-EXPANSION/screening/input/unrelated.jsonl"

@@ -249,10 +249,10 @@ def validate_discovery_expansion(
     """Validate a derived Screening Discovery set against an accepted root graph.
 
     The derived set declares its expansion scope through exact ``parent_refs``.
-    A root outside that declared scope is retained as an auditable unaccounted
-    root only when neither its Raw paths nor its stable source identity is used
-    by a child.  If either is used without declaring the root, the child cannot
-    be silently rooted elsewhere and validation fails closed.
+    Every accepted root must be included in that parent closure. A derived set
+    that silently drops even a disjoint root is invalid: downstream expansion
+    must account for the complete accepted root graph, not merely the subset
+    whose Raw paths or source identities happen to be reused.
     """
 
     validate_discovery_set(root_records, issue_id)
@@ -265,8 +265,6 @@ def validate_discovery_expansion(
         raise ValueError(f"derived Discovery reuses accepted root Discovery ID: {overlap}")
 
     accounted_root_ids: set[str] = set()
-    child_raw_paths: set[str] = set()
-    child_identities: set[tuple[str, str, str, str]] = set()
     for child in derived_records:
         child_id = child["discovery_id"]
         provenance = child["provenance"]
@@ -302,9 +300,6 @@ def validate_discovery_expansion(
             raise ValueError(
                 f"derived Discovery {child_id} source identity is not rooted in a declared accepted parent"
             )
-        child_raw_paths.update(child_paths)
-        child_identities.add(child_identity)
-
         parent_obligations = set().union(
             *(set(parent["provenance"]["obligation_ids"]) for parent in parents)
         )
@@ -316,16 +311,14 @@ def validate_discovery_expansion(
             )
 
     unaccounted_root_ids = sorted(root_ids - accounted_root_ids)
-    for root_id in unaccounted_root_ids:
-        root = root_by_id[root_id]
-        if _raw_paths(root) & child_raw_paths or _source_identity(root) in child_identities:
-            raise ValueError(
-                f"accepted root Discovery silently omitted from derived parent closure: {root_id}"
-            )
+    if accounted_root_ids != root_ids:
+        raise ValueError(
+            "accepted root Discovery silently omitted from derived parent closure: "
+            f"unaccounted_root_ids={unaccounted_root_ids}"
+        )
 
     return {
         "accounted_root_ids": sorted(accounted_root_ids),
-        "unaccounted_root_ids": unaccounted_root_ids,
     }
 
 
@@ -399,7 +392,6 @@ def resolve_effective_discovery_basis(
             "root_records": derived_records,
             "records": derived_records,
             "accounted_root_ids": sorted(row["discovery_id"] for row in derived_records),
-            "unaccounted_root_ids": [],
         }
 
     from scripts import survey_discovery_v2 as discovery
@@ -431,7 +423,6 @@ def resolve_effective_discovery_basis(
             "root_records": root_records,
             "records": root_records,
             "accounted_root_ids": sorted(root_ids),
-            "unaccounted_root_ids": [],
         }
 
     accounting = validate_discovery_expansion(repo_root, root_records, derived_records, package["issue_id"])
