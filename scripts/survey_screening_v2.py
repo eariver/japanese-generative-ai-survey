@@ -439,6 +439,56 @@ def resolve_effective_discovery_basis(
     }
 
 
+def resolve_active_screening_acceptance(
+    repo_root: Path,
+    state_path: Path,
+    implementation_sha: str | None = None,
+) -> dict[str, Any]:
+    """Resolve and validate the Screening acceptance adopted by State.
+
+    Once Screening has advanced, the accepted-directory contents are
+    historical storage.  The passed Screening Stage Checkpoint is the only
+    active-authority selector; its exact artifact is then revalidated under
+    the current Screening contract.
+    """
+    repo_root = repo_root.resolve()
+    state_path = state_path.resolve()
+    state = core.load_json(state_path)
+    if state.get("lifecycle_state") not in core.LIFECYCLE:
+        raise ValueError("Production State lifecycle_state invalid")
+    if core.LIFECYCLE.index(state["lifecycle_state"]) <= core.LIFECYCLE.index("DISCOVERY_COLLECTED"):
+        raise ValueError(
+            "active Screening acceptance requires a post-Screening Production State"
+        )
+    cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
+    current_impl = core.repository_commit_sha(repo_root, implementation_sha)
+    from scripts import survey_agent_control_v2 as agent
+
+    resolved = agent.resolve_checkpoint_artifact(
+        repo_root,
+        cfg,
+        state,
+        "screening",
+        "screening-acceptance",
+    )
+    acceptance_path = resolved["artifact_path"]
+    # Screening packages are commonly created immediately before the
+    # Screening -> Candidates transition and therefore retain the exact State
+    # SHA from that earlier lifecycle boundary. The reviewed agent-first
+    # compatibility scope rechecks that historical package/acceptance binding
+    # while still validating the current State and current Core contract.
+    from scripts import survey_agent_tool_v2 as runtime_tool
+
+    with runtime_tool.current_stage_basis_override():
+        acceptance = validate_acceptance(repo_root, acceptance_path, current_impl)
+    return {
+        **resolved,
+        "path": acceptance_path,
+        "acceptance": acceptance,
+        "implementation_sha": current_impl,
+    }
+
+
 def prepare_package(
     repo_root: Path,
     state_path: Path,

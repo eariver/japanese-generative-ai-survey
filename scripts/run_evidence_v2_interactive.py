@@ -523,12 +523,11 @@ def run(repo_root: Path, state_path: Path, input_path: Path) -> dict[str, Any]:
     accepted_discovery = discovery.validate_acceptance(repo_root, discovery_acceptance_path)
     root_discovery_path = core.repo_local_path(repo_root, accepted_discovery["discovery_path"], "accepted Discovery JSONL")
 
-    screening_roots = list((source_root / "screening/v2/accepted").glob("*/screening-accepted.json"))
-    if len(screening_roots) != 1:
-        raise ValueError(f"interactive Evidence requires exactly one accepted Screening run, found {len(screening_roots)}")
-    screening_acceptance_path = screening_roots[0]
-
     implementation_sha = core.repository_commit_sha(repo_root)
+    active_screening = screening.resolve_active_screening_acceptance(
+        repo_root, state_path, implementation_sha
+    )
+    screening_acceptance_path = active_screening["path"]
     effective = screening.resolve_effective_discovery_basis(
         repo_root,
         screening_acceptance_path.parent / "package.json",

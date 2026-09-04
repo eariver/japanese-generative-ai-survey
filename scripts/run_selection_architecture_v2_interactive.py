@@ -179,12 +179,14 @@ def run(repo_root: Path, state_path: Path, input_path: Path) -> dict[str, Any]:
     discovery_acceptance_path = source_root / "discovery/discovery-accepted-v2.json"
     accepted_discovery = discovery.validate_acceptance(repo_root, discovery_acceptance_path)
     root_discovery_path = core.repo_local_path(repo_root, accepted_discovery["discovery_path"], "accepted Discovery JSONL")
-    screening_path = _single(list((source_root / "screening/v2/accepted").glob("*/screening-accepted.json")), "accepted Screening run")
     evidence_path = _single(list((source_root / "evidence/v2/accepted").glob("*/evidence-accepted.json")), "accepted Evidence run")
     views_path = _single(list((source_root / "evidence/v2/views/accepted").glob("*/edition-views-accepted.json")), "accepted Edition View run")
     ledger_path = source_root / "materiality-ledger-v2.json"
     completeness_path = source_root / "profile-completeness-v2.json"
     implementation_sha = core.repository_commit_sha(repo_root)
+    screening_path = screening.resolve_active_screening_acceptance(
+        repo_root, state_path, implementation_sha
+    )["path"]
     effective = screening.resolve_effective_discovery_basis(
         repo_root,
         screening_path.parent / "package.json",

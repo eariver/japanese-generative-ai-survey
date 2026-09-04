@@ -393,6 +393,106 @@ def validate_agent_state(repo_root: Path, cfg: dict[str, Any], state: dict[str, 
     return errors
 
 
+def resolve_checkpoint_artifact(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    state: dict[str, Any],
+    checkpoint: str,
+    artifact_name: str,
+) -> dict[str, Any]:
+    """Resolve one exact artifact adopted by a passed Stage Checkpoint.
+
+    A content-addressed artifact directory is historical storage, not active
+    authority.  Active authority is the artifact explicitly carried by the
+    State-bound Stage Checkpoint.  This resolver centralizes that rule for
+    downstream helpers and fails closed on every ambiguous or drifted link.
+    """
+    if checkpoint not in core.CHECKPOINTS:
+        raise AgentControlError(f"unsupported checkpoint: {checkpoint}")
+    if not isinstance(artifact_name, str) or not artifact_name.strip():
+        raise AgentControlError("checkpoint artifact name must be non-empty")
+
+    state_errors = validate_agent_state(repo_root, cfg, state)
+    if state_errors:
+        raise AgentControlError(
+            "Production State invalid before checkpoint artifact resolution: "
+            + "; ".join(state_errors)
+        )
+
+    if state.get("machine_checkpoints", {}).get(checkpoint) != "passed":
+        raise AgentControlError(f"checkpoint {checkpoint} is not passed")
+    provenance = state.get("checkpoint_provenance", {})
+    authority = provenance.get(checkpoint)
+    if not isinstance(authority, dict):
+        raise AgentControlError(f"checkpoint {checkpoint} requires exactly one provenance authority")
+
+    checkpoint_errors = _validate_checkpoint_record(
+        repo_root, cfg, state, checkpoint, authority
+    )
+    if checkpoint_errors:
+        raise AgentControlError(
+            f"checkpoint {checkpoint} authority invalid: " + "; ".join(checkpoint_errors)
+        )
+    checkpoint_path = core.repo_local_path(
+        repo_root, authority["path"], f"checkpoint {checkpoint}"
+    )
+    checkpoint_raw_path = repo_root / authority["path"]
+    if checkpoint_raw_path.is_symlink() or not checkpoint_raw_path.is_file():
+        raise AgentControlError(f"checkpoint {checkpoint} path is missing or unsafe")
+    checkpoint_record = schema_gate.load_and_validate_json(
+        checkpoint_path,
+        repo_root / CHECKPOINT_SCHEMA,
+        label=f"Stage Checkpoint {checkpoint}",
+    )
+    producer = _producer_for_checkpoint(cfg, checkpoint)
+    if producer is None:
+        raise AgentControlError(f"checkpoint {checkpoint} has no lifecycle producer")
+    producer_stage = cfg["orchestration"]["stage_plan"].get(producer[0])
+    if not isinstance(producer_stage, dict) or set(checkpoint_record["checkpoints"]) != set(
+        producer_stage.get("checkpoints", [])
+    ):
+        raise AgentControlError(
+            f"checkpoint {checkpoint} checkpoint set does not match its lifecycle stage"
+        )
+    try:
+        _artifact_map(checkpoint_record["artifacts"])
+    except (KeyError, TypeError) as exc:
+        raise AgentControlError(
+            f"checkpoint {checkpoint} artifact authority is malformed"
+        ) from exc
+    matches = [
+        row for row in checkpoint_record["artifacts"]
+        if row.get("name") == artifact_name
+    ]
+    if len(matches) != 1:
+        raise AgentControlError(
+            f"checkpoint {checkpoint} must contain exactly one {artifact_name} artifact; "
+            f"found {len(matches)}"
+        )
+    artifact = matches[0]
+    artifact_path = core.repo_local_path(
+        repo_root, artifact.get("path"), f"checkpoint artifact {artifact_name}"
+    )
+    artifact_raw_path = repo_root / artifact["path"]
+    if artifact_raw_path.is_symlink() or artifact_path.is_symlink() or not artifact_path.is_file():
+        raise AgentControlError(
+            f"checkpoint artifact {artifact_name} missing or unsafe: {artifact.get('path')}"
+        )
+    actual_sha = core.sha256_file(artifact_path)
+    if actual_sha != artifact.get("sha256"):
+        raise AgentControlError(
+            f"checkpoint artifact {artifact_name} SHA drift: {artifact.get('path')}"
+        )
+    return {
+        "checkpoint": checkpoint,
+        "checkpoint_path": checkpoint_path,
+        "checkpoint_authority": deepcopy(authority),
+        "checkpoint_record": checkpoint_record,
+        "artifact": deepcopy(artifact),
+        "artifact_path": artifact_path,
+    }
+
+
 def verify_agent_state_basis(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any]) -> None:
     errors = validate_agent_state(repo_root, cfg, state)
     if errors:
