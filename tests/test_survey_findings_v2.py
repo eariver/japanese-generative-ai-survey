@@ -146,7 +146,7 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         self.assertTrue(all(value["status"] == "FIXED_GENERIC" for value in audit_findings))
         self.assertTrue(all(value["resolved_by_repair_set_id"] is None for value in audit_findings))
 
-    def test_wu011_repair_set_remains_historical_and_current_premerge_boundary_is_repository_owned(self) -> None:
+    def test_wu011_repair_set_remains_historical_and_current_release_boundary_is_repository_owned(self) -> None:
         audit_root = Path("docs/checkpoints/survey-production-core-v2-audit-findings")
         audit_findings = [core.load_json(audit_root / f"AUD-{number:03d}.json") for number in range(19, 27)]
         repair = core.load_json(audit_root / "WU-011-repair-set.json")
@@ -182,8 +182,12 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         self.assertIn("rerun Points 1–7 from Point 1", final_rule)
         self.assertIn("Human Gate round-trip viability", final_rule)
         self.assertIn("default-branch `issue_comment` authority", final_rule)
-        self.assertFalse(Path("sources/2026-W33/production-state.json").exists())
-        self.assertFalse(Path("sources/SP001/production-state.json").exists())
+        w33_state = core.load_json(Path("sources/2026-W33/production-state.json"))
+        sp001_state = core.load_json(Path("sources/SP001/production-state.json"))
+        self.assertEqual(w33_state["issue_id"], "2026-W33")
+        self.assertEqual(w33_state["lifecycle_state"], "RELEASED")
+        self.assertEqual(sp001_state["issue_id"], "SP001")
+        self.assertEqual(sp001_state["lifecycle_state"], "RELEASED")
 
 
 if __name__ == "__main__":

@@ -42,10 +42,29 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
             },
         )
 
+    @staticmethod
+    def _ready_to_initialize_status(repo_root: Path, cfg: dict, pilot: dict):
+        source_root = pilot["expected_paths"]["source_root"]
+        return (
+            {
+                "status": "READY_TO_INITIALIZE",
+                "profile_path": f"{source_root}/production-profile.json",
+                "state_path": f"{source_root}/production-state.json",
+                "profile_exists": False,
+                "state_exists": False,
+                "lifecycle_state": None,
+            },
+            None,
+        )
+
     def test_w33_initializes_but_sp001_first_requires_internal_scope_materialization(self) -> None:
         recorded_at = core.parse_instant("2026-08-22T11:18:00+09:00")
-        w33 = bootstrap.build_plan(self.root, "W33", recorded_at)
-        sp001 = bootstrap.build_plan(self.root, "SP001", recorded_at)
+        missing_scope = self.root / "__test_missing_thematic_scope__" / "research-scope-v2.json"
+        with mock.patch.object(bootstrap, "_repository_status", side_effect=self._ready_to_initialize_status), mock.patch.object(
+            bootstrap, "_scope_spec_path", return_value=missing_scope
+        ):
+            w33 = bootstrap.build_plan(self.root, "W33", recorded_at)
+            sp001 = bootstrap.build_plan(self.root, "SP001", recorded_at)
 
         self.assertEqual(w33["next_operation"], "INITIALIZE")
         self.assertEqual((w33["profile"]["research_profile"], w33["profile"]["publication_profile"]), ("WEEKLY", "WEEKLY_MAGAZINE"))
@@ -55,8 +74,6 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.assertEqual(sp001["scope_materialization"]["planning_authority"]["entry"], "TS-001")
         self.assertEqual(sp001["scope_materialization"]["planning_authority"]["path"], "docs/thematic-special-backlog.md")
         self.assertIn("not a Human Gate", sp001["scope_materialization"]["instruction"])
-        self.assertFalse((self.root / "sources/2026-W33/production-state.json").exists())
-        self.assertFalse((self.root / "sources/SP001/production-state.json").exists())
 
     def test_sp001_profile_is_materialized_from_current_backlog_authority_not_registry_copy(self) -> None:
         recorded_at = core.parse_instant("2026-08-22T11:18:00+09:00")
@@ -64,7 +81,9 @@ class SurveyPilotBootstrapV2Tests(unittest.TestCase):
         self.addCleanup(temp.cleanup)
         scope_path = Path(temp.name) / "research-scope-v2.json"
         self.write_sp001_scope(scope_path)
-        with mock.patch.object(bootstrap, "_scope_spec_path", return_value=scope_path):
+        with mock.patch.object(bootstrap, "_repository_status", side_effect=self._ready_to_initialize_status), mock.patch.object(
+            bootstrap, "_scope_spec_path", return_value=scope_path
+        ):
             plan = bootstrap.build_plan(self.root, "SP001", recorded_at)
         self.assertEqual(plan["next_operation"], "INITIALIZE")
         profile = plan["profile"]
