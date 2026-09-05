@@ -8,6 +8,7 @@ import shutil
 from pathlib import Path
 from typing import Any
 
+from scripts import survey_agent_control_v2 as agent
 from scripts import survey_drafting_v2 as drafting
 from scripts import survey_longform_publication_v2 as longform
 from scripts import survey_production_v2 as core
@@ -25,11 +26,6 @@ def _safe(root: Path, raw: str, label: str) -> Path:
     except ValueError as exc: raise ValueError(f"{label} escapes repository: {raw}") from exc
     if path.is_symlink() or not path.is_file(): raise ValueError(f"{label} missing or unsafe: {raw}")
     return path
-
-def _find_sha(root: Path, expected_sha: str, name: str) -> Path:
-    matches=[p for p in root.rglob(name) if p.is_file() and not p.is_symlink() and core.sha256_file(p)==expected_sha]
-    if len(matches)!=1: raise ValueError(f"{name} SHA must resolve exactly once: {expected_sha} -> {matches}")
-    return matches[0]
 
 def _write_json(path: Path, value: Any) -> None:
     if path.exists(): raise ValueError(f"refusing to overwrite publication artifact: {path}")
@@ -112,6 +108,10 @@ def main() -> int:
     initial=lifecycle=="DRAFT_COMPLETE" and state.get("next_action")=="stage:semantic-publication-validation"
     revision=lifecycle=="RELEASE_CANDIDATE" and state.get("next_action")=="PUBLICATION_PREVIEW" and state.get("human_gates",{}).get("publication_preview")=="pending"
     if not (initial or revision): raise SystemExit("semantic publication requires DRAFT_COMPLETE or pending RELEASE_CANDIDATE Publication Preview State")
+    cfg=_load(root/core.DEFAULT_CONFIG)
+    state_errors=agent.validate_agent_state(root,cfg,state)
+    if state_errors: raise SystemExit("Production State invalid before semantic publication: "+"; ".join(state_errors))
+    active_evidence_views=agent.resolve_active_evidence_views(root,cfg,state)
     issue_id=state["issue_id"]; profile_path=_safe(root,state["profile"]["path"],"Production Profile"); profile=_load(profile_path)
     if profile.get("publication_profile")!="LONGFORM_SPECIAL": raise SystemExit("this renderer currently requires LONGFORM_SPECIAL")
     source_root=(root/profile["paths"]["source_root"]).resolve(); survey_root=(root/profile["paths"]["survey_root"]).resolve(); source_root.relative_to(root); survey_root.relative_to(root)
@@ -137,7 +137,9 @@ def main() -> int:
         if evidence_acceptance_sha is None: evidence_acceptance_sha=ea
         elif evidence_acceptance_sha!=ea: raise SystemExit("Draft packages disagree on Evidence acceptance authority")
         ordered.append((spec,package,result))
-    acceptance=_find_sha(source_root/"evidence",evidence_acceptance_sha,"evidence-accepted.json"); evidence_payload=_load(acceptance.parent/"interactive-evidence.json"); records={r["discovery_id"]:r for r in evidence_payload["records"]}
+    acceptance=active_evidence_views["evidence_path"]
+    if core.sha256_file(acceptance)!=evidence_acceptance_sha: raise SystemExit("Draft Evidence basis differs from checkpoint-bound Evidence acceptance")
+    evidence_payload=_load(acceptance.parent/"interactive-evidence.json"); records={r["discovery_id"]:r for r in evidence_payload["records"]}
     validation_plans=[{"package_id":result["package_id"],"evidence_discovery_ids":_assigned_ids(spec)} for spec,_,result in ordered]
     normalized_revision=longform.validate_revision(data.get("longform_revision"),validation_plans,records); data["longform_revision"]=normalized_revision
     cited=[]

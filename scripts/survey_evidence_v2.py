@@ -11,11 +11,13 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import shutil
 from pathlib import Path
 from typing import Any
 
 from scripts import survey_production_v2 as core
+from scripts import survey_schema_v2 as schema_gate
 from scripts import survey_screening_v2 as screening
 
 PROMPT_PATH = Path("config/prompts/evidence-verification-v2.md")
@@ -23,6 +25,7 @@ PACKAGE_SCHEMA = Path("schemas/evidence-v2-run-package.schema.json")
 TASK_SCHEMA = Path("schemas/evidence-v2-task.schema.json")
 CARD_SCHEMA = Path("schemas/evidence-v2-card.schema.json")
 VIEW_SCHEMA = Path("schemas/edition-evidence-view.schema.json")
+SUPPLEMENT_SCHEMA = Path("schemas/evidence-authority-supplement-v2.schema.json")
 LEDGER_SCHEMA = Path("schemas/materiality-ledger.schema.json")
 COMPLETENESS_SCHEMA = Path("schemas/profile-completeness-result.schema.json")
 
@@ -38,6 +41,29 @@ EVIDENCE_CLASSES = {
 SUBJECT_ROLES = {"PRIMARY_SUBJECT", "COMPARATOR", "RELATED"}
 VIEW_MATERIALITY = {"MATERIAL", "CONTEXT", "NON_MATERIAL", "HOLD"}
 OBLIGATION_STATUS = {"SATISFIED", "LIMITATION", "NEEDS_RESEARCH", "NOT_APPLICABLE"}
+SOURCE_CLASS_MAP = {
+    "PRIMARY_OFFICIAL": "PRIMARY_OFFICIAL",
+    "PRIMARY_PAPER": "PRIMARY_PAPER",
+    "PRIMARY_REPOSITORY": "PRIMARY_REPOSITORY",
+    "SOCIAL": "SOCIAL",
+    "SECONDARY": "SECONDARY",
+    "SECONDARY_INVESTOR_ACCOUNT": "SECONDARY",
+    "paper": "PRIMARY_PAPER",
+    "github-release": "PRIMARY_REPOSITORY",
+    "official-feed-item": "PRIMARY_OFFICIAL",
+    "official-index": "PRIMARY_OFFICIAL",
+    "first_party_release_or_docs": "PRIMARY_OFFICIAL",
+    "first_party_official": "PRIMARY_OFFICIAL",
+    "government_security_authority": "PRIMARY_OFFICIAL",
+    "vendor_technical": "PRIMARY_OFFICIAL",
+    "repository_release": "PRIMARY_REPOSITORY",
+    "arxiv_primary": "PRIMARY_PAPER",
+    "dailyx_x_observation": "SOCIAL",
+    "github_release_api_response": "PRIMARY_REPOSITORY",
+    "official_project_repo": "PRIMARY_REPOSITORY",
+    "official_publisher_page": "PRIMARY_OFFICIAL",
+    "sol_working_set_observation": "SECONDARY",
+}
 
 
 def _rel(repo_root: Path, path: Path) -> str:
@@ -47,8 +73,20 @@ def _rel(repo_root: Path, path: Path) -> str:
 def _repo_file(repo_root: Path, relative: str, label: str) -> Path:
     if not isinstance(relative, str) or not relative:
         raise ValueError(f"{label} path missing")
+    if Path(relative).is_absolute() or "\\" in relative or ".." in Path(relative).parts:
+        raise ValueError(f"{label} must be a repository-relative path without traversal")
     root = repo_root.resolve()
-    path = (root / relative).resolve()
+    candidate = root / relative
+    try:
+        candidate.relative_to(root)
+    except ValueError as exc:
+        raise ValueError(f"{label} escapes repository root: {relative}") from exc
+    current = root
+    for part in Path(relative).parts:
+        current = current / part
+        if current.is_symlink():
+            raise ValueError(f"{label} may not traverse symlinked path: {relative}")
+    path = candidate.resolve()
     try:
         path.relative_to(root)
     except ValueError as exc:
@@ -56,6 +94,324 @@ def _repo_file(repo_root: Path, relative: str, label: str) -> Path:
     if path.is_symlink() or not path.is_file():
         raise ValueError(f"{label} missing or symlinked: {relative}")
     return path
+
+
+def _repo_output_path(repo_root: Path, relative: str, label: str) -> Path:
+    """Validate a repository-local output path without requiring it to exist."""
+    if not isinstance(relative, str) or not relative:
+        raise ValueError(f"{label} path missing")
+    if Path(relative).is_absolute() or "\\" in relative or ".." in Path(relative).parts:
+        raise ValueError(f"{label} must be a repository-relative path without traversal")
+    root = repo_root.resolve()
+    candidate = root / relative
+    current = root
+    for part in Path(relative).parts:
+        current = current / part
+        if current.is_symlink():
+            raise ValueError(f"{label} may not traverse symlinked path: {relative}")
+    path = candidate.resolve()
+    try:
+        path.relative_to(root)
+    except ValueError as exc:
+        raise ValueError(f"{label} escapes repository root") from exc
+    if candidate.exists() and not candidate.is_file():
+        raise ValueError(f"{label} is not a regular file: {relative}")
+    return path
+
+
+def _raw_repo_relative(repo_root: Path, path: Path, label: str) -> str:
+    """Return a non-resolved repository-relative path for symlink checks."""
+    root = repo_root.resolve()
+    candidate = path if path.is_absolute() else root / path
+    raw = Path(os.path.abspath(str(candidate)))
+    try:
+        relative = raw.relative_to(root)
+    except ValueError as exc:
+        raise ValueError(f"{label} must be repository-local: {path}") from exc
+    return relative.as_posix()
+
+
+def _source_class(source_type: Any) -> str:
+    value = SOURCE_CLASS_MAP.get(source_type)
+    if value is not None:
+        return value
+    if not isinstance(source_type, str) or not source_type.strip():
+        raise ValueError(f"unsupported source_type for Evidence authority: {source_type!r}")
+    normalized = source_type.strip().lower().replace("-", "_")
+    if any(token in normalized for token in ("social", "dailyx", "x_observation")):
+        return "SOCIAL"
+    if any(token in normalized for token in ("paper", "research", "arxiv", "proceedings", "conference")):
+        return "PRIMARY_PAPER"
+    if any(token in normalized for token in ("repository", "github", "gitlab", "source_code")):
+        return "PRIMARY_REPOSITORY"
+    if normalized in {"secondary", "secondary_reporting", "working_set_observation"}:
+        return "SECONDARY"
+    if any(token in normalized for token in (
+        "first_party", "official", "government", "vendor", "authority", "security",
+        "release", "product", "technical", "documentation", "announcement", "changelog",
+    )):
+        return "PRIMARY_OFFICIAL"
+    raise ValueError(f"unsupported source_type for Evidence authority: {source_type!r}")
+
+
+def _supplement_source_file(repo_root: Path, raw_path: Any, source_root: Path) -> Path:
+    if not isinstance(raw_path, str) or not raw_path:
+        raise ValueError("Evidence Authority Supplement raw_path is required")
+    root = repo_root.resolve()
+    if Path(raw_path).is_absolute() or "\\" in raw_path or ".." in Path(raw_path).parts:
+        raise ValueError("Evidence Authority Supplement raw_path must be repository-relative without traversal")
+    candidate = root / raw_path
+    try:
+        candidate.relative_to(root)
+    except ValueError as exc:
+        raise ValueError("Evidence Authority Supplement raw_path escapes repository") from exc
+    current = root
+    for part in Path(raw_path).parts:
+        current = current / part
+        if current.is_symlink():
+            raise ValueError(f"Evidence Authority Supplement raw_path traverses symlink: {raw_path}")
+    path = core.repo_local_path(repo_root, raw_path, "Evidence Authority Supplement raw_path")
+    try:
+        path.relative_to(source_root.resolve())
+    except ValueError as exc:
+        raise ValueError("Evidence Authority Supplement raw_path crosses issue source_root") from exc
+    if path.is_symlink() or not path.is_file():
+        raise ValueError(f"Evidence Authority Supplement Raw file missing or unsafe: {raw_path}")
+    return path
+
+
+def validate_evidence_authority_supplement(
+    repo_root: Path,
+    supplement_path: Path,
+    implementation_sha: str | None = None,
+    *,
+    expected_issue_id: str | None = None,
+    expected_source_root: Path | None = None,
+    expected_discovery_path: Path | None = None,
+    expected_screening_acceptance_path: Path | None = None,
+    screening_acceptance: dict[str, Any] | None = None,
+    discoveries: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Validate an additive, post-Screening authority manifest and its Raw bytes.
+
+    A supplement is deliberately narrower than Discovery: every row must point
+    at an existing non-DROP Discovery task, and every factual source remains
+    explicitly task-bound in the Evidence package before a Card can cite it.
+    """
+    supplement_path = _repo_file(
+        repo_root,
+        _raw_repo_relative(repo_root, supplement_path, "Evidence Authority Supplement"),
+        "Evidence Authority Supplement",
+    )
+    manifest = schema_gate.load_and_validate_json(
+        supplement_path,
+        repo_root / SUPPLEMENT_SCHEMA,
+        label="Evidence Authority Supplement",
+    )
+    if expected_issue_id is not None and manifest["issue_id"] != expected_issue_id:
+        raise ValueError("Evidence Authority Supplement issue identity mismatch")
+    basis = manifest["basis"]
+    source_root = core.repo_local_path(repo_root, basis["source_root"], "Evidence supplement source_root")
+    if not source_root.is_dir():
+        raise ValueError("Evidence supplement source_root is missing")
+    if expected_source_root is not None and source_root.resolve() != expected_source_root.resolve():
+        raise ValueError("Evidence Authority Supplement source_root mismatch")
+
+    discovery_path = _repo_file(repo_root, basis["discovery_path"], "Evidence supplement Discovery")
+    screening_path = _repo_file(repo_root, basis["screening_acceptance_path"], "Evidence supplement Screening acceptance")
+    if core.sha256_file(discovery_path) != basis["discovery_sha256"]:
+        raise ValueError("Evidence Authority Supplement Discovery SHA drift")
+    if core.sha256_file(screening_path) != basis["screening_acceptance_sha256"]:
+        raise ValueError("Evidence Authority Supplement Screening acceptance SHA drift")
+    if expected_discovery_path is not None and discovery_path.resolve() != expected_discovery_path.resolve():
+        raise ValueError("Evidence Authority Supplement Discovery path mismatch")
+    if expected_screening_acceptance_path is not None and screening_path.resolve() != expected_screening_acceptance_path.resolve():
+        raise ValueError("Evidence Authority Supplement Screening acceptance path mismatch")
+
+    if screening_acceptance is None or discoveries is None:
+        if implementation_sha is not None:
+            screening_acceptance, _, discoveries = validate_screening_acceptance(
+                repo_root,
+                screening_path,
+                discovery_path,
+                manifest["issue_id"],
+                implementation_sha,
+            )
+        else:
+            screening_acceptance = core.load_json(screening_path)
+            discoveries = screening.read_jsonl(discovery_path)
+    if not isinstance(screening_acceptance, dict) or screening_acceptance.get("issue_id") != manifest["issue_id"]:
+        raise ValueError("Evidence Authority Supplement Screening issue identity mismatch")
+    if not isinstance(discoveries, list) or any(
+        not isinstance(row, dict) or row.get("issue_id") != manifest["issue_id"]
+        for row in discoveries
+    ):
+        raise ValueError("Evidence Authority Supplement Discovery issue identity mismatch")
+    discovery_ids = {row.get("discovery_id") for row in discoveries if isinstance(row, dict)}
+    decisions = {
+        row.get("discovery_id"): row.get("decision")
+        for row in (screening_acceptance or {}).get("decisions", [])
+        if isinstance(row, dict)
+    }
+
+    seen_ids: set[str] = set()
+    seen_bindings: set[tuple[str, str]] = set()
+    for index, entry in enumerate(manifest["sources"]):
+        prefix = f"Evidence Authority Supplement sources[{index}]"
+        source_id = entry["supplement_source_id"]
+        if source_id in seen_ids:
+            raise ValueError(f"duplicate Evidence Authority Supplement source ID: {source_id}")
+        seen_ids.add(source_id)
+        discovery_id = entry["discovery_id"]
+        task_id = entry["evidence_task_id"]
+        if discovery_id not in discovery_ids:
+            raise ValueError(f"{prefix} references unknown Discovery ID: {discovery_id}")
+        if discovery_id not in decisions:
+            raise ValueError(f"{prefix} references a Discovery without a Screening decision: {discovery_id}")
+        if decisions.get(discovery_id) == "DROP":
+            raise ValueError(f"{prefix} may not target a DROP Discovery task: {discovery_id}")
+        if task_id != stable_task_id(manifest["issue_id"], discovery_id):
+            raise ValueError(f"{prefix} Evidence task identity does not match Discovery ID")
+        if entry["source_class"] != _source_class(entry["source_type"]):
+            raise ValueError(f"{prefix} source_class does not match source_type")
+        binding = (task_id, entry["locator"])
+        if binding in seen_bindings:
+            raise ValueError(f"duplicate/ambiguous Evidence Authority Supplement binding: {binding}")
+        seen_bindings.add(binding)
+        try:
+            core.parse_instant(entry["accessed_at"])
+            if entry["published_at"] is not None:
+                core.parse_instant(entry["published_at"])
+        except (KeyError, ValueError) as exc:
+            raise ValueError(f"{prefix} timestamp invalid") from exc
+        raw = _supplement_source_file(repo_root, entry["raw_path"], source_root)
+        if raw.stat().st_size != entry["byte_count"]:
+            raise ValueError(f"{prefix} byte_count drift: {entry['raw_path']}")
+        if core.sha256_file(raw) != entry["raw_sha256"]:
+            raise ValueError(f"{prefix} Raw SHA drift: {entry['raw_path']}")
+    return manifest
+
+
+def build_evidence_authority_supplement(
+    repo_root: Path,
+    issue_id: str,
+    source_root: Path,
+    discovery_path: Path,
+    screening_acceptance_path: Path,
+    sources: list[dict[str, Any]],
+    output_path: Path,
+    *,
+    supplement_id: str,
+    implementation_sha: str | None = None,
+) -> Path:
+    """Materialize and validate an edition-local authority supplement manifest."""
+    output_rel = _raw_repo_relative(repo_root, output_path, "Evidence Authority Supplement output")
+    output_path = _repo_output_path(repo_root, output_rel, "Evidence Authority Supplement output")
+    if output_path.exists():
+        raise ValueError(f"refusing to overwrite Evidence Authority Supplement: {output_path}")
+    payload = {
+        "schema_version": "2.0-rc1",
+        "supplement_id": supplement_id,
+        "issue_id": issue_id,
+        "basis": {
+            "source_root": _rel(repo_root, source_root),
+            "discovery_path": _rel(repo_root, discovery_path),
+            "discovery_sha256": core.sha256_file(discovery_path),
+            "screening_acceptance_path": _rel(repo_root, screening_acceptance_path),
+            "screening_acceptance_sha256": core.sha256_file(screening_acceptance_path),
+        },
+        "sources": sources,
+    }
+    schema_gate.validate_instance(
+        payload,
+        repo_root / SUPPLEMENT_SCHEMA,
+        label="Evidence Authority Supplement",
+    )
+    core.write_json(output_path, payload)
+    try:
+        validate_evidence_authority_supplement(
+            repo_root,
+            output_path,
+            implementation_sha,
+            expected_issue_id=issue_id,
+            expected_source_root=source_root,
+            expected_discovery_path=discovery_path,
+            expected_screening_acceptance_path=screening_acceptance_path,
+        )
+    except Exception:
+        output_path.unlink(missing_ok=True)
+        raise
+    return output_path
+
+
+def _supplement_entries_for_package(
+    repo_root: Path,
+    package: dict[str, Any],
+    *,
+    implementation_sha: str | None = None,
+    screening_acceptance: dict[str, Any] | None = None,
+    discoveries: list[dict[str, Any]] | None = None,
+) -> dict[str, dict[str, Any]]:
+    authority = package.get("authority_supplement")
+    if authority is None:
+        return {}
+    if not isinstance(authority, dict) or set(authority) != {"path", "sha256"}:
+        raise ValueError("Evidence package authority_supplement fields invalid")
+    path = _repo_file(repo_root, authority["path"], "Evidence Authority Supplement manifest")
+    if core.sha256_file(path) != authority["sha256"]:
+        raise ValueError("Evidence Authority Supplement manifest SHA drift")
+    manifest = validate_evidence_authority_supplement(
+        repo_root,
+        path,
+        implementation_sha,
+        expected_issue_id=package["issue_id"],
+        expected_discovery_path=repo_root / package["basis"]["discovery_path"],
+        expected_screening_acceptance_path=repo_root / package["basis"]["screening_acceptance_path"],
+        screening_acceptance=screening_acceptance,
+        discoveries=discoveries,
+    )
+    result: dict[str, dict[str, Any]] = {}
+    for entry in manifest["sources"]:
+        if entry["supplement_source_id"] in result:
+            raise ValueError("Evidence Authority Supplement source IDs are ambiguous")
+        result[entry["supplement_source_id"]] = entry
+    return result
+
+
+def task_authority_sources(
+    repo_root: Path,
+    task: dict[str, Any],
+    package: dict[str, Any],
+) -> dict[str, dict[str, Any]]:
+    """Return only exact Discovery/supplement sources explicitly bound to *task*."""
+    result: dict[str, dict[str, Any]] = {}
+    for index, source in enumerate(task.get("source_records", []), start=1):
+        result[f"src-{index}"] = {
+            "url": source.get("locator"),
+            "source_class": _source_class(source.get("source_type")),
+            "title": source.get("title") or source.get("locator"),
+            "published_at": source.get("published_at"),
+            "accessed_at": None,
+            "role": "Discovery-bounded source used for factual verification",
+            "supplement": False,
+        }
+    supplement_ids = task.get("authority_supplement_source_ids", [])
+    if supplement_ids:
+        entries = _supplement_entries_for_package(repo_root, package)
+        for source_id in supplement_ids:
+            entry = entries.get(source_id)
+            if entry is None:
+                raise ValueError(f"Evidence Task references unbound supplement source: {source_id}")
+            result[source_id] = {
+                "url": entry["locator"],
+                "source_class": entry["source_class"],
+                "title": entry["title"],
+                "published_at": entry["published_at"],
+                "accessed_at": entry["accessed_at"],
+                "role": f"Post-Screening exact authority supplement: {entry['relation']}",
+                "supplement": True,
+            }
+    return result
 
 
 def _exact_regular_files(directory: Path, expected: set[str], label: str) -> dict[str, Path]:
@@ -155,6 +511,7 @@ def prepare_evidence_package(
     screening_acceptance_path: Path,
     output_dir: Path,
     implementation_sha: str,
+    supplement_manifest_path: Path | None = None,
 ) -> Path:
     cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
     state = core.load_json(state_path)
@@ -169,8 +526,39 @@ def prepare_evidence_package(
         raise ValueError("Screening acceptance was produced from a different Production State")
     discovery_map = {row["discovery_id"]: row for row in discoveries}
     decisions = {row["discovery_id"]: row for row in acceptance["decisions"]}
+    supplement_entries: dict[str, dict[str, Any]] = {}
+    supplement_authority: dict[str, str] | None = None
+    if supplement_manifest_path is not None:
+        supplement_manifest_path = _repo_file(
+            repo_root,
+            _raw_repo_relative(repo_root, supplement_manifest_path, "Evidence Authority Supplement manifest"),
+            "Evidence Authority Supplement manifest",
+        )
+        manifest = validate_evidence_authority_supplement(
+            repo_root,
+            supplement_manifest_path,
+            implementation_sha,
+            expected_issue_id=issue_id,
+            expected_source_root=core.repo_local_path(
+                repo_root, profile["paths"]["source_root"], "paths.source_root"
+            ),
+            expected_discovery_path=discovery_path,
+            expected_screening_acceptance_path=screening_acceptance_path,
+            screening_acceptance=acceptance,
+            discoveries=discoveries,
+        )
+        supplement_entries = {
+            entry["supplement_source_id"]: entry for entry in manifest["sources"]
+        }
+        supplement_authority = {
+            "path": _rel(repo_root, supplement_manifest_path),
+            "sha256": core.sha256_file(supplement_manifest_path),
+        }
 
-    for required in (PROMPT_PATH, PACKAGE_SCHEMA, TASK_SCHEMA, CARD_SCHEMA):
+    required_contracts = (PROMPT_PATH, PACKAGE_SCHEMA, TASK_SCHEMA, CARD_SCHEMA)
+    if supplement_manifest_path is not None:
+        required_contracts = (*required_contracts, SUPPLEMENT_SCHEMA)
+    for required in required_contracts:
         _repo_file(repo_root, str(required), f"Evidence v2 contract {required.name}")
     if output_dir.exists() and any(output_dir.iterdir()):
         raise ValueError(f"refusing to overwrite non-empty Evidence package directory: {output_dir}")
@@ -199,6 +587,13 @@ def prepare_evidence_package(
                 }],
             },
         }
+        task_supplement_ids = sorted(
+            source_id
+            for source_id, entry in supplement_entries.items()
+            if entry["evidence_task_id"] == task_id
+        )
+        if task_supplement_ids:
+            task["authority_supplement_source_ids"] = task_supplement_ids
         filename = task_filename(task_id)
         path = task_dir / filename
         core.write_json(path, task)
@@ -207,6 +602,7 @@ def prepare_evidence_package(
             "path": f"tasks/{filename}",
             "sha256": core.sha256_file(path),
             "discovery_ids": [discovery_id],
+            **({"authority_supplement_source_ids": task_supplement_ids} if task_supplement_ids else {}),
         })
 
     package = {
@@ -235,10 +631,19 @@ def prepare_evidence_package(
             "Factual Evidence contains no Weekly why_now, Thematic lineage role, or Candidate Selection recommendation.",
             "Every event/claim/metric/limitation binds an explicit subject entity and subject role.",
             "Comparator-owned facts remain bound to comparator entities.",
-            "Evidence sources must already be represented by the task's Discovery source records.",
+            "Evidence sources must be represented by the task's Discovery source records or an exact validated Evidence Authority Supplement.",
             "Only a complete exact one-result-per-task set may be accepted.",
         ],
     }
+    if supplement_authority is not None:
+        package["authority_supplement"] = supplement_authority
+        package["contracts"]["supplement"] = {
+            "path": str(SUPPLEMENT_SCHEMA),
+            "sha256": core.sha256_file(repo_root / SUPPLEMENT_SCHEMA),
+        }
+        package["rules"].append(
+            "Post-Screening authority is eligible only through an exact validated Evidence Authority Supplement source ID bound to this task."
+        )
     package_path = output_dir / "package.json"
     core.write_json(package_path, package)
     return package_path
@@ -246,11 +651,12 @@ def prepare_evidence_package(
 
 def _validate_task(task: dict[str, Any], meta: dict[str, Any], acceptance_sha: str) -> list[str]:
     errors: list[str] = []
-    expected_keys = {
+    required_keys = {
         "schema_version", "issue_id", "evidence_task_id", "discovery_ids",
         "source_records", "verification_targets", "screening_basis",
     }
-    if set(task) != expected_keys:
+    optional_keys = {"authority_supplement_source_ids"}
+    if set(task) - required_keys - optional_keys or not required_keys.issubset(task):
         return ["Evidence Task fields invalid"]
     if task["schema_version"] != "2.0-rc1" or task["evidence_task_id"] != meta["evidence_task_id"]:
         errors.append("Evidence Task identity mismatch")
@@ -258,6 +664,14 @@ def _validate_task(task: dict[str, Any], meta: dict[str, Any], acceptance_sha: s
         errors.append("WU-007 Evidence Task must bind exactly its declared Discovery ID")
     if not isinstance(task["source_records"], list) or len(task["source_records"]) != len(task["discovery_ids"]):
         errors.append("Evidence Task source_records must match Discovery cardinality")
+    supplement_ids = task.get("authority_supplement_source_ids")
+    if supplement_ids is not None:
+        if (
+            not isinstance(supplement_ids, list)
+            or len(supplement_ids) != len(set(supplement_ids))
+            or any(not isinstance(value, str) or not value for value in supplement_ids)
+        ):
+            errors.append("Evidence Task authority_supplement_source_ids must be unique strings")
     screening_basis = task.get("screening_basis")
     if not isinstance(screening_basis, dict) or screening_basis.get("screening_acceptance_sha256") != acceptance_sha:
         errors.append("Evidence Task Screening basis mismatch")
@@ -276,11 +690,11 @@ def validate_evidence_package_basis(
     package: dict[str, Any],
     implementation_sha: str,
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
-    expected_keys = {
+    required_keys = {
         "schema_version", "issue_id", "research_profile", "basis", "prompt",
         "contracts", "tasks", "expected_outputs", "rules",
     }
-    if set(package) != expected_keys or package.get("schema_version") != "2.0-rc1":
+    if set(package) - required_keys - {"authority_supplement"} or not required_keys.issubset(package) or package.get("schema_version") != "2.0-rc1":
         raise ValueError("Evidence package fields/schema_version invalid")
     cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
     basis = package["basis"]
@@ -302,6 +716,14 @@ def validate_evidence_package_basis(
         path = _repo_file(repo_root, meta["path"], f"Evidence contract {key}")
         if core.sha256_file(path) != meta.get("sha256"):
             raise ValueError(f"Evidence contract drift: {meta['path']}")
+    supplement_entries: dict[str, dict[str, Any]] = {}
+    if "authority_supplement" in package:
+        supplement_meta = package["contracts"].get("supplement")
+        if not isinstance(supplement_meta, dict) or supplement_meta.get("path") != str(SUPPLEMENT_SCHEMA):
+            raise ValueError("Evidence supplement contract metadata missing")
+        supplement_schema_path = _repo_file(repo_root, supplement_meta["path"], "Evidence supplement contract")
+        if core.sha256_file(supplement_schema_path) != supplement_meta.get("sha256"):
+            raise ValueError("Evidence supplement contract drift")
     prompt = package["prompt"]
     prompt_path = _repo_file(repo_root, prompt["path"], "Evidence prompt")
     if prompt["path"] != str(PROMPT_PATH) or core.sha256_file(prompt_path) != prompt["sha256"]:
@@ -336,7 +758,9 @@ def validate_evidence_package_basis(
     task_discovery: list[str] = []
     tasks: list[dict[str, Any]] = []
     for meta in task_meta:
-        if not isinstance(meta, dict) or set(meta) != {"evidence_task_id", "path", "sha256", "discovery_ids"}:
+        meta_required = {"evidence_task_id", "path", "sha256", "discovery_ids"}
+        meta_optional = {"authority_supplement_source_ids"}
+        if not isinstance(meta, dict) or set(meta) - meta_required - meta_optional or not meta_required.issubset(meta):
             raise ValueError("Evidence task metadata fields invalid")
         task_ids.append(meta["evidence_task_id"])
         task_paths.append(meta["path"])
@@ -350,6 +774,10 @@ def validate_evidence_package_basis(
         errors = _validate_task(task, meta, basis["screening_acceptance_sha256"])
         if errors:
             raise ValueError(f"Evidence Task {meta['evidence_task_id']} invalid: {'; '.join(errors)}")
+        if "authority_supplement_source_ids" in meta and meta["authority_supplement_source_ids"] != task.get("authority_supplement_source_ids"):
+            raise ValueError(
+                f"Evidence Task metadata supplement bindings differ: {meta['evidence_task_id']}"
+            )
         tasks.append(task)
     if len(task_ids) != len(set(task_ids)) or len(task_paths) != len(set(task_paths)):
         raise ValueError("Evidence package contains duplicate task identities/paths")
@@ -359,6 +787,30 @@ def validate_evidence_package_basis(
         row["discovery_id"] for row in acceptance["decisions"]
     }:
         raise ValueError("Evidence package inherited inconsistent Discovery/Screening basis")
+    if "authority_supplement" in package:
+        supplement_entries = _supplement_entries_for_package(
+            repo_root,
+            package,
+            implementation_sha=implementation_sha,
+            screening_acceptance=acceptance,
+            discoveries=discoveries,
+        )
+        bound: dict[str, int] = {}
+        task_by_id = {task["evidence_task_id"]: task for task in tasks}
+        for task in tasks:
+            for source_id in task.get("authority_supplement_source_ids", []):
+                entry = supplement_entries.get(source_id)
+                if entry is None:
+                    raise ValueError(f"Evidence Task references unknown supplement source: {source_id}")
+                if entry["evidence_task_id"] != task["evidence_task_id"] or entry["discovery_id"] not in task["discovery_ids"]:
+                    raise ValueError(f"Evidence supplement source is bound to the wrong task: {source_id}")
+                bound[source_id] = bound.get(source_id, 0) + 1
+        if set(bound) != set(supplement_entries) or any(count != 1 for count in bound.values()):
+            raise ValueError("every Evidence supplement source must be bound exactly once by its task")
+    elif any("authority_supplement_source_ids" in task for task in tasks):
+        raise ValueError("Evidence Task supplement sources require an Evidence Authority Supplement manifest")
+    elif "supplement" in package["contracts"]:
+        raise ValueError("Evidence supplement contract requires an Evidence Authority Supplement manifest")
     return acceptance, tasks
 
 
@@ -379,7 +831,12 @@ def _check_subject_role(
 
 
 def validate_evidence_card(
-    card: dict[str, Any], task: dict[str, Any], task_sha: str, package: dict[str, Any]
+    card: dict[str, Any],
+    task: dict[str, Any],
+    task_sha: str,
+    package: dict[str, Any],
+    *,
+    repo_root: Path | None = None,
 ) -> list[str]:
     errors: list[str] = []
     if set(card) != CARD_KEYS:
@@ -418,14 +875,42 @@ def validate_evidence_card(
     if len(source_ids) != len(sources) or any(not isinstance(x, str) or not x for x in source_ids) or len(source_ids) != len(set(source_ids)):
         return errors + ["Evidence Card source_id values must be unique non-empty strings"]
     source_set = set(source_ids)
-    allowed_locators = {
-        row.get("locator") for row in task.get("source_records", []) if isinstance(row, dict)
-    }
+    allowed_sources: dict[str, dict[str, Any]] = {}
+    if package.get("authority_supplement") is not None:
+        if repo_root is None:
+            errors.append("Evidence Authority Supplement source binding requires repository validation context")
+        else:
+            try:
+                allowed_sources = task_authority_sources(repo_root, task, package)
+            except (OSError, ValueError, json.JSONDecodeError) as exc:
+                errors.append(str(exc))
+    else:
+        allowed_sources = {
+            f"src-{index}": {
+                "url": source.get("locator"),
+                "supplement": False,
+            }
+            for index, source in enumerate(task.get("source_records", []), start=1)
+            if isinstance(source, dict)
+        }
+    allowed_locators = {value.get("url") for value in allowed_sources.values()}
     for source in sources:
-        if source.get("url") not in allowed_locators:
+        source_id = source.get("source_id")
+        authority_source = allowed_sources.get(source_id)
+        if package.get("authority_supplement") is None:
+            unbound = source.get("url") not in allowed_locators
+        else:
+            unbound = authority_source is None or source.get("url") not in allowed_locators or source.get("url") != authority_source.get("url")
+        if unbound:
             errors.append(
-                f"Evidence source {source.get('source_id')} was not represented by the task Discovery source; add it through Discovery/Screening first"
+                f"Evidence source {source.get('source_id')} was not explicitly bound to this Evidence task; add it through Discovery/Screening first or use an exact Evidence Authority Supplement"
             )
+        elif package.get("authority_supplement") is not None and authority_source is not None and authority_source.get("supplement"):
+            for key in ("url", "source_class", "title", "published_at", "accessed_at"):
+                if source.get(key) != authority_source.get(key):
+                    errors.append(
+                        f"Evidence supplement source {source_id} {key} differs from exact authority manifest"
+                    )
         try:
             core.parse_instant(str(source.get("accessed_at", "")))
         except ValueError:
@@ -539,7 +1024,7 @@ def accept_evidence_results(
         task = core.load_json(task_path)
         result_path = files[Path(meta["path"]).name]
         card = core.load_json(result_path)
-        errors = validate_evidence_card(card, task, meta["sha256"], package)
+        errors = validate_evidence_card(card, task, meta["sha256"], package, repo_root=repo_root)
         if errors:
             raise ValueError(f"Evidence Card {meta['evidence_task_id']} invalid: {'; '.join(errors)}")
         entries.append({
@@ -618,7 +1103,13 @@ def validate_evidence_acceptance(
         if row.get("filename") != name or core.sha256_file(result_files[name]) != row.get("sha256"):
             raise ValueError(f"accepted Evidence result changed: {row['evidence_task_id']}")
         card = core.load_json(result_files[name])
-        errors = validate_evidence_card(card, core.load_json(task_files[name]), meta["sha256"], package)
+        errors = validate_evidence_card(
+            card,
+            core.load_json(task_files[name]),
+            meta["sha256"],
+            package,
+            repo_root=repo_root,
+        )
         if errors or card.get("status") != row.get("status") or row.get("discovery_ids") != meta["discovery_ids"]:
             raise ValueError(f"accepted Evidence result metadata/card divergence: {row['evidence_task_id']}")
     digest = _evidence_result_set_digest(acceptance["package_sha256"], entries)

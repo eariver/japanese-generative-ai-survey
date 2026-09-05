@@ -60,6 +60,7 @@ VERIFY_STATUS = {"VERIFIED", "UNRESOLVED", "CONTRADICTED", "NOT_APPLICABLE"}
 MATERIALITY = {"MATERIAL", "CONTEXT", "NON_MATERIAL", "HOLD"}
 LINEAGE_ROLES = {"CORE", "BRIDGE", "CONTEXT", "PARALLEL", "COMPETING", "COUNTEREXAMPLE"}
 OBLIGATION_STATUS = {"SATISFIED", "LIMITATION", "NEEDS_RESEARCH", "NOT_APPLICABLE"}
+WEEKLY_WINDOW_RELATIONS = {"MAIN_EVENT", "PRE_WINDOW_RELEVANCE", "POST_CUTOFF", "CARRY_OVER", "OTHER"}
 
 
 def _rel(repo_root: Path, path: Path) -> str:
@@ -108,7 +109,8 @@ def _validate_record(row: Any, profile: dict[str, Any]) -> dict[str, Any]:
         "scope_dimensions", "lineage_role", "branch_ids", "transition_ids",
         "inheritance_note", "historical_attribution_caveat",
     }
-    if set(row) != required:
+    optional = {"source_bindings", "window_relation", "carry_over"}
+    if set(row) - required - optional or not required.issubset(row):
         raise ValueError(f"interactive Evidence record fields invalid: {row.get('discovery_id')}")
     discovery_id = row.get("discovery_id")
     if not _nonempty(discovery_id):
@@ -166,6 +168,14 @@ def _validate_record(row: Any, profile: dict[str, Any]) -> dict[str, Any]:
         raise ValueError(f"{discovery_id}: REJECTED Evidence must be NON_MATERIAL")
     if row["status"] == "NEEDS_MORE" and row["materiality"] != "HOLD":
         raise ValueError(f"{discovery_id}: NEEDS_MORE Evidence must be HOLD")
+    if "source_bindings" in row and not _string_list(row["source_bindings"], allow_empty=False):
+        raise ValueError(f"{discovery_id}: source_bindings must be a unique non-empty string array")
+    if "window_relation" in row and not _nonempty(row["window_relation"]):
+        raise ValueError(f"{discovery_id}: window_relation must be a non-empty string")
+    if "window_relation" in row and row["window_relation"] not in WEEKLY_WINDOW_RELATIONS:
+        raise ValueError(f"{discovery_id}: window_relation is not a valid Weekly relation")
+    if "carry_over" in row and not isinstance(row["carry_over"], bool):
+        raise ValueError(f"{discovery_id}: carry_over must be boolean")
 
     allowed_dims = set(profile["research_scope"]["scope_dimensions"])
     dims = row.get("scope_dimensions")
@@ -226,7 +236,12 @@ def _validate_completeness_input(value: Any, profile: dict[str, Any]) -> dict[st
     return value
 
 
-def validate_interactive_input(value: dict[str, Any], profile: dict[str, Any], expected_ids: set[str]) -> tuple[dict[str, dict[str, Any]], dict[str, str], dict[str, Any]]:
+def validate_interactive_input(
+    value: dict[str, Any],
+    profile: dict[str, Any],
+    expected_ids: set[str],
+    task_source_ids: dict[str, set[str]] | None = None,
+) -> tuple[dict[str, dict[str, Any]], dict[str, str], dict[str, Any]]:
     if set(value) != {"schema_version", "issue_id", "runner", "records", "completeness"}:
         raise ValueError("interactive Evidence input fields invalid")
     if value.get("schema_version") != "2.0-rc1" or value.get("issue_id") != profile["issue_id"]:
@@ -241,6 +256,18 @@ def validate_interactive_input(value: dict[str, Any], profile: dict[str, Any], e
         did = row["discovery_id"]
         if did in by_id:
             raise ValueError(f"duplicate interactive Evidence discovery_id: {did}")
+        if task_source_ids is not None:
+            allowed = task_source_ids.get(did)
+            if allowed is None:
+                raise ValueError(f"{did}: interactive Evidence task source authority is missing")
+            bindings = row.get("source_bindings")
+            if bindings is None:
+                if len(allowed) > 1:
+                    raise ValueError(
+                        f"{did}: source_bindings is required when multiple task-bound sources exist"
+                    )
+            elif not set(bindings).issubset(allowed):
+                raise ValueError(f"{did}: source_bindings contains an unbound task source")
         by_id[did] = row
     if set(by_id) != expected_ids:
         raise ValueError(
@@ -250,7 +277,22 @@ def validate_interactive_input(value: dict[str, Any], profile: dict[str, Any], e
     return by_id, runner, completeness_input
 
 
-def _build_card(task: dict[str, Any], meta: dict[str, Any], package: dict[str, Any], record: dict[str, Any], runner: dict[str, str]) -> dict[str, Any]:
+def _build_card(
+    repo_root: Path,
+    task: dict[str, Any],
+    meta: dict[str, Any],
+    package: dict[str, Any],
+    record: dict[str, Any],
+    runner: dict[str, str],
+) -> dict[str, Any]:
+    source_authorities = evidence.task_authority_sources(repo_root, task, package)
+    if not source_authorities:
+        raise ValueError(f"{task['evidence_task_id']}: task has no bound source authority")
+    selected_ids = record.get("source_bindings")
+    if selected_ids is None:
+        selected_ids = ["src-1"]
+    if not selected_ids or any(source_id not in source_authorities for source_id in selected_ids):
+        raise ValueError(f"{task['evidence_task_id']}: source_bindings must explicitly select task-bound sources")
     source_record = task["source_records"][0]
     locator = source_record.get("locator")
     if not _nonempty(locator):
@@ -259,16 +301,19 @@ def _build_card(task: dict[str, Any], meta: dict[str, Any], package: dict[str, A
     if entity["canonical_url"] is None:
         entity["canonical_url"] = locator
     entity_id = entity["entity_id"]
-    source_id = "src-1"
-    source = {
-        "source_id": source_id,
-        "url": locator,
-        "source_class": _source_class(source_record.get("source_type")),
-        "title": source_record.get("title") or locator,
-        "published_at": source_record.get("published_at"),
-        "accessed_at": runner["generated_at"],
-        "role": "Discovery-bounded source used for factual verification",
-    }
+    sources: list[dict[str, Any]] = []
+    for source_id in selected_ids:
+        authority = source_authorities[source_id]
+        sources.append({
+            "source_id": source_id,
+            "url": authority["url"],
+            "source_class": authority["source_class"],
+            "title": authority["title"],
+            "published_at": authority["published_at"],
+            "accessed_at": authority["accessed_at"] or runner["generated_at"],
+            "role": authority["role"],
+        })
+    source_ids = list(selected_ids)
 
     claims: list[dict[str, Any]] = []
     for index, item in enumerate(record["claims"], start=1):
@@ -278,7 +323,7 @@ def _build_card(task: dict[str, Any], meta: dict[str, Any], package: dict[str, A
             "subject_id": entity_id,
             "subject_role": "PRIMARY_SUBJECT",
             "evidence_class": item["evidence_class"],
-            "source_ids": [source_id],
+            "source_ids": source_ids,
             "context": item["context"],
         })
     limitations: list[dict[str, Any]] = []
@@ -289,7 +334,7 @@ def _build_card(task: dict[str, Any], meta: dict[str, Any], package: dict[str, A
             "subject_id": entity_id,
             "subject_role": "PRIMARY_SUBJECT",
             "evidence_class": "INFERENCE",
-            "source_ids": [source_id],
+            "source_ids": source_ids,
             "context": "Evidence boundary retained for downstream editorial use.",
         })
 
@@ -309,7 +354,7 @@ def _build_card(task: dict[str, Any], meta: dict[str, Any], package: dict[str, A
             "status": item["status"],
             "finding": item["finding"],
             "subject_ids": [entity_id],
-            "source_ids": [source_id],
+            "source_ids": source_ids,
         })
         if item["status"] == "UNRESOLVED":
             unresolved.append(f"{target}: {item['finding']}")
@@ -317,16 +362,17 @@ def _build_card(task: dict[str, Any], meta: dict[str, Any], package: dict[str, A
             contradictions.append(f"{target}: {item['finding']}")
 
     events: list[dict[str, Any]] = []
-    published = source_record.get("published_at")
-    if published is not None:
-        events.append({
-            "event_id": "event-1",
-            "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
-            "event_date": str(published),
-            "subject_id": entity_id,
-            "subject_role": "PRIMARY_SUBJECT",
-            "source_ids": [source_id],
-        })
+    for index, source_id in enumerate(source_ids, start=1):
+        published = source_authorities[source_id].get("published_at")
+        if published is not None:
+            events.append({
+                "event_id": f"event-{index}",
+                "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+                "event_date": str(published),
+                "subject_id": entity_id,
+                "subject_role": "PRIMARY_SUBJECT",
+                "source_ids": [source_id],
+            })
 
     return {
         "schema_version": "2.0-rc1",
@@ -350,7 +396,7 @@ def _build_card(task: dict[str, Any], meta: dict[str, Any], package: dict[str, A
             "observed_at": runner["generated_at"],
             "events": events,
         },
-        "sources": [source],
+        "sources": sources,
         "claims": claims,
         "metrics": [],
         "limitations": limitations,
@@ -372,8 +418,19 @@ def _build_view(profile: dict[str, Any], task_id: str, evidence_sha: str, record
             "inheritance_note": record["inheritance_note"],
             "historical_attribution_caveat": record["historical_attribution_caveat"],
         }
+    elif profile["research_profile"] == "WEEKLY":
+        annotations = {
+            "why_this_issue": record["materiality_rationale"],
+            "window_relation": record.get("window_relation", "MAIN_EVENT"),
+            "carry_over": bool(record.get("carry_over", False)),
+        }
+    elif profile["research_profile"] == "RETROSPECTIVE_PERIOD":
+        annotations = {
+            "period_role": record["materiality_rationale"],
+            "chronology_relevance": record["materiality"] != "NON_MATERIAL",
+        }
     else:
-        raise ValueError("interactive Evidence runner currently requires explicit Profile annotation support; only THEMATIC is implemented")
+        raise ValueError("unsupported research profile for interactive Edition View")
     return {
         "schema_version": "2.0-rc1",
         "issue_id": profile["issue_id"],
@@ -504,10 +561,17 @@ def _archive_input(repo_root: Path, evidence_acceptance_path: Path, input_path: 
     return audit
 
 
-def run(repo_root: Path, state_path: Path, input_path: Path) -> dict[str, Any]:
+def run(
+    repo_root: Path,
+    state_path: Path,
+    input_path: Path,
+    supplement_manifest_path: Path | None = None,
+) -> dict[str, Any]:
     repo_root = repo_root.resolve()
     state_path = state_path.resolve()
     input_path = input_path.resolve()
+    if supplement_manifest_path is not None:
+        supplement_manifest_path = supplement_manifest_path.resolve()
     cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
     state = core.load_json(state_path)
     errors = agent.validate_agent_state(repo_root, cfg, state)
@@ -547,13 +611,22 @@ def run(repo_root: Path, state_path: Path, input_path: Path) -> dict[str, Any]:
                 screening_acceptance_path,
                 package_root,
                 implementation_sha,
+                supplement_manifest_path,
             )
         package = core.load_json(package_path)
         task_meta = {meta["discovery_ids"][0]: meta for meta in package["tasks"]}
         expected_ids = set(task_meta)
+        task_source_ids = {
+            did: set(evidence.task_authority_sources(
+                repo_root,
+                core.load_json(package_path.parent / meta["path"]),
+                package,
+            ))
+            for did, meta in task_meta.items()
+        }
         interactive_doc = core.load_json(input_path)
         records_by_id, runner, completeness_input = validate_interactive_input(
-            interactive_doc, profile, expected_ids
+            interactive_doc, profile, expected_ids, task_source_ids
         )
 
         results_dir = temp_root / "evidence-results"
@@ -561,8 +634,10 @@ def run(repo_root: Path, state_path: Path, input_path: Path) -> dict[str, Any]:
         for did in sorted(task_meta):
             meta = task_meta[did]
             task = core.load_json(package_path.parent / meta["path"])
-            card = _build_card(task, meta, package, records_by_id[did], runner)
-            errors = evidence.validate_evidence_card(card, task, meta["sha256"], package)
+            card = _build_card(repo_root, task, meta, package, records_by_id[did], runner)
+            errors = evidence.validate_evidence_card(
+                card, task, meta["sha256"], package, repo_root=repo_root
+            )
             if errors:
                 raise ValueError(f"interactive Evidence Card {did} invalid: {'; '.join(errors)}")
             core.write_json(results_dir / Path(meta["path"]).name, card)
@@ -682,6 +757,7 @@ def main() -> int:
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--state", required=True)
     parser.add_argument("--input", required=True)
+    parser.add_argument("--supplement")
     args = parser.parse_args()
     root = Path(args.repo_root).resolve()
     state = Path(args.state)
@@ -690,8 +766,11 @@ def main() -> int:
         state = root / state
     if not input_path.is_absolute():
         input_path = root / input_path
+    supplement_path = Path(args.supplement) if args.supplement else None
+    if supplement_path is not None and not supplement_path.is_absolute():
+        supplement_path = root / supplement_path
     try:
-        print(json.dumps(run(root, state, input_path), ensure_ascii=False, indent=2))
+        print(json.dumps(run(root, state, input_path, supplement_path), ensure_ascii=False, indent=2))
         return 0
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         print(str(exc), file=__import__("sys").stderr)

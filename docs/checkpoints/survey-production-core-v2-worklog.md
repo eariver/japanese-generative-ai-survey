@@ -1,12 +1,12 @@
 # Survey Production Core v2 — Work Log
 
-Status: `POST-INTEGRATION CORE CANDIDATE / SCREENING AUTHORITY REPAIRED / PRE-FREEZE / PRE-AUDIT CANDIDATE`
+Status: `POST-INTEGRATION CORE CANDIDATE / PRE-HUMAN EVIDENCE-REGENERATION REPAIR / PRE-SOL REVIEW`
 Established: 2026-08-22 JST  
 Last updated: 2026-09-05 JST
-Current maintenance branch: `fix/core-v2-screening-expansion-authority-20260904`
+Current maintenance branch: `fix/core-v2-pre-human-evidence-regeneration-20260905`
 Historical implementation PRs: `#310` and post-integration repair `#452` (merged)
-Current integration PR: `#483`, normal draft review PR for this candidate; not an operator transport
-Production source of truth: current `main` at reviewed baseline `c7a898889463b049dea4ee7337ee16ad5fbf3191`
+Current integration PR: none created by this repair; this branch is not an operator transport and must not be merged by this task
+Production source of truth: current `main` at reviewed baseline `a9f121f0d65591f52b53515712d7c0bae573b2ef`
 Semantic authority: `docs/survey-production-core-v2-authority.md`  
 Final-audit rule: `docs/survey-production-core-v2-final-audit-rule.md`
 
@@ -27,8 +27,8 @@ Historical audit attempts remain evidence only:
 ## 2. Stable pre-audit snapshot
 
 - Repository: `eariver/japanese-generative-ai-survey`
-- Maintenance branch: `fix/core-v2-screening-expansion-authority-20260904`
-- Production `main`: `c7a898889463b049dea4ee7337ee16ad5fbf3191` at the current reviewed baseline.
+- Maintenance branch: `fix/core-v2-pre-human-evidence-regeneration-20260905`
+- Production `main`: `a9f121f0d65591f52b53515712d7c0bae573b2ef` at the current reviewed baseline.
 - PR #310: historical implementation PR, merged.
 - PR #452: historical post-integration operator/Thematic repair PR, merged; its narrow amendment remains current authority where applicable.
 - WU-010R: historical `COMPLETE / SECOND-AUDIT GREEN`.
@@ -132,6 +132,14 @@ Quality review remains `DETERMINISTIC / AGENT_SEMANTIC / AGENT_VISUAL`. Applicab
 The current maintenance candidate keeps the accepted root Discovery separate from the effective downstream Discovery basis. Derived Screening Discovery is valid only through complete mechanically validated accepted-root provenance closure; arbitrary unrelated substitution, Raw/source/obligation drift, and silent root loss remain fail-closed.
 
 Historical content-addressed Screening acceptances remain immutable. After Screening advancement, downstream helpers resolve only the exact `screening-acceptance` artifact adopted by the passed State-bound Screening Stage Checkpoint. Directory count, mtime, digest order, and latest-file heuristics are not authority. Evidence, Materiality, Completeness, Selection, and Architecture use the same effective derived basis.
+
+### H — Pre-Human Evidence regeneration repair (2026-09-05)
+
+The maintenance candidate adds a supported operator-side invalidation for an exact, unpresented pending Human Gate surface. It is distinct from Human `REQUEST_CHANGES`: `human_decision=false`, no Human review index row is written, no Human revision/provenance is created, and no active Human approval may be crossed. The operation validates the exact prior State/Gate inputs and reachable work-branch commit, derives the safe regeneration boundary from Core config, supersedes affected mutable canonical singleton/checkpoint files, records their prior path/SHA authority, and derives the resumable State through the existing Core state-control machinery.
+
+Post-Screening authority expansion is represented by an edition-local Evidence Authority Supplement. Each exact Raw body is bound to one non-DROP Discovery/Evidence task with source class, locator, chronology, retrieval provenance, byte count, and SHA-256. Evidence Cards may cite only the task's Discovery source or explicitly bound supplement source; Screening decisions/history are not rewritten.
+
+Active Evidence and Edition View acceptance is resolved from the passed State-bound Evidence Stage Checkpoint and exact named artifacts. The View acceptance must bind the same Evidence acceptance SHA. Historical accepted runs remain immutable and may coexist.
 
 ## 7. Finding / Repair Set status
 

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import copy
+import hashlib
+import json
 import shutil
 import tempfile
 import unittest
@@ -544,6 +546,167 @@ class SurveyEvidenceV2Tests(unittest.TestCase):
             ),
             [],
         )
+
+    def test_evidence_authority_supplement_binds_exact_raw_source_and_card(self) -> None:
+        root, profile_path, state_path, discovery_path, screening_acceptance, _, _, _ = self.make_chain(
+            include_drop=True
+        )
+        issue_root = root / "sources/SP001"
+        raw_path = issue_root / "raw/authority.html"
+        raw_path.parent.mkdir(parents=True, exist_ok=True)
+        raw_path.write_bytes(b"exact primary authority bytes\n")
+        task_id = evidence.stable_task_id("SP001", "target-source")
+        source_id = "supplement-src-" + "1" * 16
+        source = {
+            "supplement_source_id": source_id,
+            "discovery_id": "target-source",
+            "evidence_task_id": task_id,
+            "locator": "https://example.invalid/authority",
+            "source_type": "paper",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Exact authority",
+            "published_at": "2026-08-22T00:00:00Z",
+            "accessed_at": "2026-08-23T00:00:00Z",
+            "raw_path": raw_path.relative_to(root).as_posix(),
+            "raw_sha256": hashlib.sha256(raw_path.read_bytes()).hexdigest(),
+            "byte_count": raw_path.stat().st_size,
+            "relation": "post-Screening exact authority for the target task",
+        }
+        manifest_path = evidence.build_evidence_authority_supplement(
+            root,
+            "SP001",
+            issue_root,
+            discovery_path,
+            screening_acceptance,
+            [source],
+            root / "sources/SP001/evidence-authority-supplement.json",
+            supplement_id="supplement-test-r1",
+            implementation_sha=IMPLEMENTATION_SHA,
+        )
+        package_path = evidence.prepare_evidence_package(
+            root,
+            state_path,
+            discovery_path,
+            screening_acceptance,
+            root / "sources/SP001/evidence/v2/supplement-package",
+            IMPLEMENTATION_SHA,
+            manifest_path,
+        )
+        package = core.load_json(package_path)
+        evidence.validate_evidence_package_basis(root, package_path, package, IMPLEMENTATION_SHA)
+        meta = next(row for row in package["tasks"] if row["evidence_task_id"] == task_id)
+        task = core.load_json(package_path.parent / meta["path"])
+        self.assertEqual(task["authority_supplement_source_ids"], [source_id])
+        authorities = evidence.task_authority_sources(root, task, package)
+        self.assertEqual(authorities[source_id]["url"], source["locator"])
+
+        card = self.card_for_task(root, package_path, meta)
+        card_source = card["sources"][0]
+        card_source.update({
+            "source_id": source_id,
+            "url": source["locator"],
+            "source_class": source["source_class"],
+            "title": source["title"],
+            "published_at": source["published_at"],
+            "accessed_at": source["accessed_at"],
+        })
+        for item in card["claims"] + card["limitations"]:
+            item["source_ids"] = [source_id]
+        for item in card["verification"]["targets"]:
+            item["source_ids"] = [source_id]
+        self.assertEqual(
+            evidence.validate_evidence_card(card, task, meta["sha256"], package, repo_root=root),
+            [],
+        )
+        card["sources"][0]["url"] = "https://example.invalid/unbound"
+        self.assertIn(
+            "not explicitly bound",
+            "; ".join(evidence.validate_evidence_card(card, task, meta["sha256"], package, repo_root=root)),
+        )
+
+    def test_evidence_authority_supplement_rejects_drop_unknown_path_sha_and_symlink(self) -> None:
+        root, _, _, discovery_path, screening_acceptance, _, _, _ = self.make_chain(include_drop=True)
+        issue_root = root / "sources/SP001"
+        raw_path = issue_root / "raw/authority.html"
+        raw_path.parent.mkdir(parents=True, exist_ok=True)
+        raw_path.write_bytes(b"exact bytes")
+        base = {
+            "supplement_source_id": "supplement-src-" + "2" * 16,
+            "discovery_id": "target-source",
+            "evidence_task_id": evidence.stable_task_id("SP001", "target-source"),
+            "locator": "https://example.invalid/authority",
+            "source_type": "paper",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Exact authority",
+            "published_at": None,
+            "accessed_at": "2026-08-23T00:00:00Z",
+            "raw_path": raw_path.relative_to(root).as_posix(),
+            "raw_sha256": hashlib.sha256(raw_path.read_bytes()).hexdigest(),
+            "byte_count": raw_path.stat().st_size,
+            "relation": "exact authority",
+        }
+
+        def write_manifest(name: str, source: dict) -> Path:
+            path = root / "sources/SP001" / name
+            payload = {
+                "schema_version": "2.0-rc1",
+                "supplement_id": name,
+                "issue_id": "SP001",
+                "basis": {
+                    "source_root": "sources/SP001",
+                    "discovery_path": discovery_path.relative_to(root).as_posix(),
+                    "discovery_sha256": core.sha256_file(discovery_path),
+                    "screening_acceptance_path": screening_acceptance.relative_to(root).as_posix(),
+                    "screening_acceptance_sha256": core.sha256_file(screening_acceptance),
+                },
+                "sources": [source],
+            }
+            core.write_json(path, payload)
+            return path
+
+        drop = copy.deepcopy(base)
+        drop["supplement_source_id"] = "supplement-src-" + "3" * 16
+        drop["discovery_id"] = "irrelevant-source"
+        drop["evidence_task_id"] = evidence.stable_task_id("SP001", "irrelevant-source")
+        with self.assertRaisesRegex(ValueError, "DROP"):
+            evidence.validate_evidence_authority_supplement(
+                root, write_manifest("drop.json", drop), expected_issue_id="SP001"
+            )
+
+        unknown = copy.deepcopy(base)
+        unknown["supplement_source_id"] = "supplement-src-" + "4" * 16
+        unknown["discovery_id"] = "unknown"
+        unknown["evidence_task_id"] = evidence.stable_task_id("SP001", "unknown")
+        with self.assertRaisesRegex(ValueError, "unknown Discovery"):
+            evidence.validate_evidence_authority_supplement(
+                root, write_manifest("unknown.json", unknown), expected_issue_id="SP001"
+            )
+
+        escaped = copy.deepcopy(base)
+        escaped["supplement_source_id"] = "supplement-src-" + "5" * 16
+        escaped["raw_path"] = "../outside.raw"
+        with self.assertRaisesRegex(ValueError, "relative without traversal|escapes"):
+            evidence.validate_evidence_authority_supplement(
+                root, write_manifest("escaped.json", escaped), expected_issue_id="SP001"
+            )
+
+        drift = copy.deepcopy(base)
+        drift["supplement_source_id"] = "supplement-src-" + "6" * 16
+        drift["raw_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "Raw SHA drift"):
+            evidence.validate_evidence_authority_supplement(
+                root, write_manifest("drift.json", drift), expected_issue_id="SP001"
+            )
+
+        symlink = issue_root / "raw/link.html"
+        symlink.symlink_to(raw_path)
+        linked = copy.deepcopy(base)
+        linked["supplement_source_id"] = "supplement-src-" + "7" * 16
+        linked["raw_path"] = symlink.relative_to(root).as_posix()
+        with self.assertRaisesRegex(ValueError, "symlink"):
+            evidence.validate_evidence_authority_supplement(
+                root, write_manifest("symlink.json", linked), expected_issue_id="SP001"
+            )
 
 
 if __name__ == "__main__":

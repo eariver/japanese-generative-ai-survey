@@ -1,16 +1,16 @@
 # Survey Production Core v2 — Design Authority Index
 
-Status: `CANONICAL POST-INTEGRATION CORE AUTHORITY / SCREENING EXPANSION + ACTIVE-ACCEPTANCE REPAIR / PRE-FREEZE / PRE-AUDIT CANDIDATE`
+Status: `CANONICAL POST-INTEGRATION CORE AUTHORITY / PRE-HUMAN EVIDENCE-REGENERATION REPAIR / PRE-AUDIT CANDIDATE / PRE-SOL REVIEW`
 Established: 2026-08-22 JST  
-Current maintenance branch: `fix/core-v2-screening-expansion-authority-20260904`
-Integration PR: normal draft PR for this candidate; exact PR metadata is external to the candidate tree
+Current maintenance branch: `fix/core-v2-pre-human-evidence-regeneration-20260905`
+Integration PR: none created by this repair; this maintenance branch is the reviewable Core candidate and must not be merged by this task
 Final-audit rule: `docs/survey-production-core-v2-final-audit-rule.md`
 
 ## 1. Purpose and current boundary
 
 This index identifies the live semantic authority for Survey Production Core v2 while preserving earlier design/audit documents as historical reasoning.
 
-Current `main` is the production source of truth at the reviewed baseline `c7a898889463b049dea4ee7337ee16ad5fbf3191`. The historical implementation PR #310 and post-integration repair PR #452 are already merged. This file is the current Core authority for the maintenance candidate branch above; it does not authorize a merge or substitute for the later fixed-head audit and Human review.
+Current `main` is the production source of truth at the reviewed baseline `a9f121f0d65591f52b53515712d7c0bae573b2ef`. The historical implementation PR #310 and post-integration repair PR #452 are already merged. This file is the current Core authority for the maintenance candidate branch above; it does not authorize a merge or substitute for later fixed-head audit and Human review.
 
 Historical candidate audits are not reusable as current approval evidence:
 
@@ -230,6 +230,12 @@ The current maintenance candidate adds two generic authority distinctions withou
 
 After Screening advancement, Evidence, Materiality, Completeness, Selection, and Architecture follow the same active Screening/effective Discovery authority chain. Production editions do not repair shared Core in place; Core repairs are reviewed on the dedicated maintenance branch before edition use.
 
+The 2026-09-05 pre-Human repair adds three generic authority distinctions without changing the lifecycle or Human Gate count:
+
+- an unpresented, still-pending Human Gate surface may be invalidated by an explicit operator operation at a configured safe regeneration boundary; this is not Human `REQUEST_CHANGES`, creates no Human review record, does not increment Human revision, and never crosses an active Human approval boundary;
+- post-Screening primary authority may enter Evidence only through an exact, edition-local **Evidence Authority Supplement** manifest whose Raw bytes, SHA-256, byte count, issue/task identity, and Screening basis validate; Screening decisions and accepted Screening history remain unchanged;
+- active Evidence and Edition View acceptance is resolved from the passed State-bound Evidence Stage Checkpoint and its exact named artifacts, with the View acceptance cross-bound to that exact Evidence acceptance. Historical accepted runs remain immutable and are not selected by directory order, mtime, or latest heuristics.
+
 ## 9. Canonical orchestration model
 
 Normal local production is:
@@ -307,7 +313,7 @@ Do not confuse five CI families with seven acceptance points.
 
 ## 13. Pre-audit handoff and production boundary
 
-PR #310 and the post-integration repair PR #452 are historical merged implementation PRs. The current candidate is carried only on `fix/core-v2-screening-expansion-authority-20260904`; its normal integration PR is draft review metadata and must not be merged by this task. W33 is an immutable released edition and SP001 is an immutable released historical edition; W34 is an active production-regression edition with read-only fixture use in this maintenance task. SP001, SP002, and SP003 remain outside this Core candidate's production scope: SP001 is already released, while SP002/SP003 have no canonical production state or work branch in current `main`.
+PR #310 and the post-integration repair PR #452 are historical merged implementation PRs. The current repair candidate is carried only on `fix/core-v2-pre-human-evidence-regeneration-20260905`; it must not be merged by this task. W33 is an immutable released edition and SP001 is an immutable released historical edition; W34 is an active production-regression edition used only as an exact read-only temporary fixture in this maintenance task. SP001, SP002, and SP003 remain outside this Core candidate's production scope: SP001 is already released, while SP002/SP003 have no canonical production state or work branch in the reviewed `main`.
 
 Once Authority, Worklog, Repair Set, implementation and tests agree, freeze the exact branch head, obtain the required exact-head CI, and run the mandatory seven-point audit without changing the candidate.
 
