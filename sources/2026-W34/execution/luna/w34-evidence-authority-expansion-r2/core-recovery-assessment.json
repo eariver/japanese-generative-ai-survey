@@ -1,0 +1,71 @@
+{
+  "schema_version": "0.1",
+  "issue_id": "2026-W34",
+  "session_id": "w34-evidence-authority-expansion-r2",
+  "assessment": "PRE_HUMAN_EVIDENCE_REGENERATION_CORE_GAP",
+  "assessment_scope": "Read-only inspection of reviewed Core main and current W34 state; no Core or canonical W34 artifact was written.",
+  "exact_start_sha": "6f3d45ef30036df91e1c75f31e9c0e547de411a7",
+  "reviewed_main_sha": "a9f121f0d65591f52b53515712d7c0bae573b2ef",
+  "branch": "weekly/2026-W34-v2-work",
+  "current_state_before_repair": {
+    "lifecycle": "ARCHITECTURE_ESTABLISHED",
+    "next_action": "ARCHITECTURE_REVIEW",
+    "terminal_reason": "HUMAN_GATE_REACHED",
+    "human_architecture_review_exists": false,
+    "architecture_review_round": 0
+  },
+  "supported_pre_human_regeneration_mechanism": {
+    "available": false,
+    "conclusion": "The reviewed Core exposes forward-only stage transitions and Human-gated revision invalidation, but no supported operator-only rewind, invalidation, or regeneration from an unpresented Architecture Review surface.",
+    "inspected_core_paths": [
+      {
+        "path": "scripts/survey_agent_control_v2.py",
+        "finding": "validate_agent_state enforces the current lifecycle; build_stage_checkpoint rejects a non-null terminal_reason; advance_with_checkpoint permits only one exact forward transition; CLI exposes forward advance and Human approval operations, not pre-Human regeneration."
+      },
+      {
+        "path": "scripts/survey_stage_validation_v2.py",
+        "finding": "validate_stage rejects local transitions while State is waiting at HUMAN_GATE_REACHED and validates Evidence, Edition Views, Materiality, Completeness, Selection, and Architecture only at their forward stage boundaries."
+      },
+      {
+        "path": "scripts/run_evidence_v2_interactive.py",
+        "finding": "The Evidence runner requires CANDIDATES_NORMALIZED, refuses overwrite of existing canonical ledgers, and has no operator-only entry point from ARCHITECTURE_ESTABLISHED."
+      },
+      {
+        "path": "scripts/run_evidence_v2_agent_first.py",
+        "finding": "The agent-first wrapper preserves accepted upstream authority and residual limitations; it does not rewind State or invalidate an unpresented gate."
+      },
+      {
+        "path": "scripts/run_selection_architecture_v2_interactive.py",
+        "finding": "Selection and Architecture regeneration requires EVIDENCE_REVIEWED and refuses overwrite of current matrix, selection, architecture, review, and attention artifacts."
+      },
+      {
+        "path": "scripts/survey_orchestrator_v2.py",
+        "finding": "A terminal HUMAN_GATE_REACHED State plans a HUMAN_GATE action handled by human:architecture-review; no pre-Human repair branch is planned."
+      },
+      {
+        "path": "scripts/survey_human_gate_v2.py",
+        "finding": "The only revision route requires an explicit Human REQUEST_CHANGES record with reviewer, timestamp, reference, and reviewed commit; using it here would invent a Human decision."
+      },
+      {
+        "path": "scripts/survey_production_v2.py",
+        "finding": "State transitions are exactly one step forward and do not include a backward transition from the Architecture Human Gate."
+      },
+      {
+        "path": "schemas/operator-execution-request-v2.schema.json",
+        "finding": "Supported revision operations require Human review fields; no pre-Human operator recovery operation is defined."
+      },
+      {
+        "path": "config/survey-production-v2.json",
+        "finding": "Architecture revision boundaries exist only within the Human review revision contract; they do not authorize an operator-created revision round."
+      }
+    ]
+  },
+  "legal_consequence": "Do not call Human REQUEST_CHANGES, do not increment a review round, do not alter production-state.json, do not delete passed checkpoints, and do not run formal Evidence-to-Architecture regeneration.",
+  "research_action_taken": "Completed additive, edition-local primary-source search and exact-body capture attempts for all 80 non-DROP tasks; see verification-ledger.json and source-retrieval-provenance.json.",
+  "formal_regeneration": {
+    "performed": false,
+    "reason": "Unsupported at the current terminal Human Gate without a real Human decision.",
+    "canonical_artifacts_changed": false
+  },
+  "stop_status": "NEEDS_SOL_REVIEW / PRE_HUMAN_EVIDENCE_REGENERATION_CORE_GAP"
+}
