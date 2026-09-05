@@ -44,8 +44,8 @@ The 80 non-DROP accepted Evidence tasks were each given a task-specific primary-
 - Retrieval targets attempted: 83
 - Newly captured exact, substantive authority target bodies: 61 (60 unique SHA-256 bodies; the OpenAI API changelog was intentionally captured under two task relations)
 - Non-substantive success bodies retained for provenance: 4
-- HTTP error responses retained for provenance: 3
-- Timeout/empty-body attempts retained for provenance: 15
+- HTTP error responses retained for provenance: 4
+- Timeout/empty-body attempts retained for provenance: 14
 
 See `verification-ledger.json` for the task-level ledger and `source-retrieval-provenance.json` for every response body/header outcome. The existing Transformers v5.15.1 primary raw record was retained unchanged and referenced as a regression source; it is not counted as newly captured.
 
