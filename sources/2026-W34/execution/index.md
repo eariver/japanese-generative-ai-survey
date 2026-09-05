@@ -81,6 +81,25 @@ The reviewed `main@a9f121f...` was merged normally into W34 as `b8a0ae502fd03d17
 
 W34 remains bounded at `CANDIDATES_NORMALIZED` / the configured evidence-stage action. No Evidence acceptance or later stage work has been performed.
 
+## External sidecar QA pilot
+
+Edition-local pilot authority:
+
+`sources/2026-W34/execution/findings/sol-external-sidecar-qa-pilot-plan-20260905-r1.md`
+
+Current reviewed sidecar SHAs for W34 pilot execution:
+
+- Publication Boundary Validator: `eariver/publication-boundary-redteam@7b9de2105c690daaafa6698c1791d51ca84a92c0`
+- Survey Core v2 Authority Auditor + read-only production adapter: `eariver/survey-core-v2-authority-auditor@c5f09d463b21c914d9c59b34597858f6182fc244`
+
+Sol review of the production adapter:
+
+`sources/2026-W34/execution/reviews/sol-authority-auditor-production-adapter-review-20260905-r1.md`
+
+Disposition: `PASS_FOR_W34_READ_ONLY_SIDECAR_PILOT`.
+
+The auditor baseline `main@4f88e55c66646a350ed286683f98b0cbca61f633` remains historical benchmark provenance. The W34 adapter SHA is not Survey Core authority. Both sidecars remain execution-deferred until after Human Architecture Review and do not add lifecycle states, Human Gates, Production State authority, or workflows.
+
 ## Relevant historical and current execution records
 
 - Discovery materialization: `sources/2026-W34/execution/sessions/w34-luna-discovery-materialization-20260903-r1.md`
@@ -90,16 +109,16 @@ W34 remains bounded at `CANDIDATES_NORMALIZED` / the configured evidence-stage a
 - Screening materialization: `sources/2026-W34/execution/luna/w34-screening-materialization-r1/`
 - post-#483 Core sync and Screening recovery: `sources/2026-W34/execution/luna/w34-post-483-core-sync-screening-recovery-r1/`
 
-## Not performed in this bounded recovery
+## Not performed in bounded Screening recovery / sidecar review
 
 - no Production State manual edit; formal State transition used current agent-first Core machinery
 - no Discovery rollback/reacceptance or accepted Discovery/checkpoint rewrite
 - no historical Screening acceptance or 105 Sol decision mutation
 - no Evidence acceptance, Materiality, Completeness, Selection, Architecture, Human Gate, drafting, Freeze, or Release
-- no external sidecar tool execution
+- no external sidecar tool execution against W34 artifacts
 - no W33/SP001/SP002/SP003 changes
 - no force/reset/rewrite/rebase
 
 ## Current disposition
 
-`READY_FOR_SOL_EVIDENCE / CANDIDATES_NORMALIZED / STAGE_EVIDENCE_HANDOFF`
+`READY_FOR_EVIDENCE_MATERIALITY_COMPLETENESS / CANDIDATES_NORMALIZED`
