@@ -3,7 +3,7 @@
   "issue_id": "2026-W34",
   "research_profile": "WEEKLY",
   "publication_profile": "WEEKLY_MAGAZINE",
-  "lifecycle_state": "CANDIDATES_NORMALIZED",
+  "lifecycle_state": "ARCHITECTURE_ESTABLISHED",
   "profile": {
     "path": "sources/2026-W34/production-profile.json",
     "sha256": "a6e3eb3006dde95da008876486cbfc7fdce75f507f7efcd6b0fcaba5e154b21a"
@@ -31,8 +31,8 @@
     "publication_preview": null
   },
   "target_gate": "ARCHITECTURE_REVIEW",
-  "next_action": "stage:evidence-materiality-completeness",
-  "terminal_reason": null,
+  "next_action": "ARCHITECTURE_REVIEW",
+  "terminal_reason": "HUMAN_GATE_REACHED",
   "exception_gate": {
     "status": "inactive",
     "reason": null
@@ -40,11 +40,11 @@
   "machine_checkpoints": {
     "discovery": "passed",
     "screening": "passed",
-    "evidence": "pending",
-    "materiality": "pending",
-    "completeness": "pending",
-    "selection": "pending",
-    "architecture": "pending",
+    "evidence": "passed",
+    "materiality": "passed",
+    "completeness": "passed",
+    "selection": "passed",
+    "architecture": "passed",
     "draft": "pending",
     "validation": "pending",
     "publication_preview": "pending",
@@ -60,11 +60,26 @@
       "path": "sources/2026-W34/orchestration/v2/checkpoints/DISCOVERY_COLLECTED.json",
       "sha256": "ed6003009d0ed4ee97a5cfde93143b2e3e0ead41c3965eff28d71f2fc6836e68"
     },
-    "evidence": null,
-    "materiality": null,
-    "completeness": null,
-    "selection": null,
-    "architecture": null,
+    "evidence": {
+      "path": "sources/2026-W34/orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json",
+      "sha256": "160d82df07d26cae0e9581a03f0e98a7ef50a9227dd24cb59d78bc25eaa992ab"
+    },
+    "materiality": {
+      "path": "sources/2026-W34/orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json",
+      "sha256": "160d82df07d26cae0e9581a03f0e98a7ef50a9227dd24cb59d78bc25eaa992ab"
+    },
+    "completeness": {
+      "path": "sources/2026-W34/orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json",
+      "sha256": "160d82df07d26cae0e9581a03f0e98a7ef50a9227dd24cb59d78bc25eaa992ab"
+    },
+    "selection": {
+      "path": "sources/2026-W34/orchestration/v2/checkpoints/EVIDENCE_REVIEWED.json",
+      "sha256": "ff3192f105fe82f2a121c07ce47f45d4d6e6e64dede88d2a03db15fbea2ea43f"
+    },
+    "architecture": {
+      "path": "sources/2026-W34/orchestration/v2/checkpoints/SELECTION_COMPLETE.json",
+      "sha256": "0a955606c9082831027a50cd3cb22460079011001938e920bc8b63b6bdae152c"
+    },
     "draft": null,
     "validation": null,
     "publication_preview": null,
@@ -95,6 +110,24 @@
       "to": "CANDIDATES_NORMALIZED",
       "recorded_at": "2026-09-05T07:05:00Z",
       "repository_commit_sha": "b8a0ae502fd03d17bcb4f5d9e1f67a26c77ab30e"
+    },
+    {
+      "from": "CANDIDATES_NORMALIZED",
+      "to": "EVIDENCE_REVIEWED",
+      "recorded_at": "2026-09-05T08:05:00Z",
+      "repository_commit_sha": "f853073ac0316e170845cab78608f1c0df3537c1"
+    },
+    {
+      "from": "EVIDENCE_REVIEWED",
+      "to": "SELECTION_COMPLETE",
+      "recorded_at": "2026-09-05T08:35:00Z",
+      "repository_commit_sha": "f853073ac0316e170845cab78608f1c0df3537c1"
+    },
+    {
+      "from": "SELECTION_COMPLETE",
+      "to": "ARCHITECTURE_ESTABLISHED",
+      "recorded_at": "2026-09-05T09:05:00Z",
+      "repository_commit_sha": "f853073ac0316e170845cab78608f1c0df3537c1"
     }
   ]
 }
