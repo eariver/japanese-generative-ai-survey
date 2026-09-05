@@ -3,8 +3,10 @@
 
 The runner is profile-neutral and preserves the Core v2 factual/editorial split:
 - one explicit interactive record is required for every non-DROP Evidence task;
-- factual Evidence Cards are generated only from the Discovery-bounded source
-  already carried by each task;
+- factual Evidence Cards cite only a Discovery-bounded source or an exact
+  task-bound Evidence Authority Supplement source;
+- interactive records require common factual fields plus only the fields
+  belonging to the active Research Profile;
 - Edition Views carry Profile-specific materiality/lineage annotations;
 - Materiality Ledger is derived by the canonical implementation; and
 - Completeness retains every Profile/named obligation and is validated by the
@@ -61,6 +63,20 @@ MATERIALITY = {"MATERIAL", "CONTEXT", "NON_MATERIAL", "HOLD"}
 LINEAGE_ROLES = {"CORE", "BRIDGE", "CONTEXT", "PARALLEL", "COMPETING", "COUNTEREXAMPLE"}
 OBLIGATION_STATUS = {"SATISFIED", "LIMITATION", "NEEDS_RESEARCH", "NOT_APPLICABLE"}
 WEEKLY_WINDOW_RELATIONS = {"MAIN_EVENT", "PRE_WINDOW_RELEVANCE", "POST_CUTOFF", "CARRY_OVER", "OTHER"}
+COMMON_RECORD_FIELDS = {
+    "discovery_id", "status", "entity", "artifact_type", "claims",
+    "limitations", "verification", "materiality", "materiality_rationale",
+    "scope_dimensions",
+}
+THEMATIC_RECORD_FIELDS = {
+    "lineage_role", "branch_ids", "transition_ids", "inheritance_note",
+    "historical_attribution_caveat",
+}
+WEEKLY_RECORD_FIELDS = {"window_relation", "carry_over"}
+# Retrospective period semantics are materialized in the Edition View from the
+# common materiality/chronology inputs; no Thematic or Weekly-only record
+# fields are part of this interactive input contract.
+RETROSPECTIVE_RECORD_FIELDS: set[str] = set()
 
 
 def _rel(repo_root: Path, path: Path) -> str:
@@ -103,14 +119,18 @@ def _validate_runner(value: Any) -> dict[str, str]:
 def _validate_record(row: Any, profile: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(row, dict):
         raise ValueError("interactive Evidence record must be an object")
-    required = {
-        "discovery_id", "status", "entity", "artifact_type", "claims",
-        "limitations", "verification", "materiality", "materiality_rationale",
-        "scope_dimensions", "lineage_role", "branch_ids", "transition_ids",
-        "inheritance_note", "historical_attribution_caveat",
-    }
-    optional = {"source_bindings", "window_relation", "carry_over"}
-    if set(row) - required - optional or not required.issubset(row):
+    research_profile = profile.get("research_profile")
+    if research_profile == "THEMATIC":
+        profile_fields = THEMATIC_RECORD_FIELDS
+    elif research_profile == "WEEKLY":
+        profile_fields = WEEKLY_RECORD_FIELDS
+    elif research_profile == "RETROSPECTIVE_PERIOD":
+        profile_fields = RETROSPECTIVE_RECORD_FIELDS
+    else:
+        raise ValueError(f"unsupported research profile for interactive Evidence: {research_profile!r}")
+    required = COMMON_RECORD_FIELDS | profile_fields
+    allowed = required | {"source_bindings"}
+    if set(row) - allowed or not required.issubset(row):
         raise ValueError(f"interactive Evidence record fields invalid: {row.get('discovery_id')}")
     discovery_id = row.get("discovery_id")
     if not _nonempty(discovery_id):
@@ -170,25 +190,27 @@ def _validate_record(row: Any, profile: dict[str, Any]) -> dict[str, Any]:
         raise ValueError(f"{discovery_id}: NEEDS_MORE Evidence must be HOLD")
     if "source_bindings" in row and not _string_list(row["source_bindings"], allow_empty=False):
         raise ValueError(f"{discovery_id}: source_bindings must be a unique non-empty string array")
-    if "window_relation" in row and not _nonempty(row["window_relation"]):
-        raise ValueError(f"{discovery_id}: window_relation must be a non-empty string")
-    if "window_relation" in row and row["window_relation"] not in WEEKLY_WINDOW_RELATIONS:
-        raise ValueError(f"{discovery_id}: window_relation is not a valid Weekly relation")
-    if "carry_over" in row and not isinstance(row["carry_over"], bool):
-        raise ValueError(f"{discovery_id}: carry_over must be boolean")
+    if research_profile == "WEEKLY":
+        if not _nonempty(row["window_relation"]):
+            raise ValueError(f"{discovery_id}: window_relation must be a non-empty string")
+        if row["window_relation"] not in WEEKLY_WINDOW_RELATIONS:
+            raise ValueError(f"{discovery_id}: window_relation is not a valid Weekly relation")
+        if not isinstance(row["carry_over"], bool):
+            raise ValueError(f"{discovery_id}: carry_over must be boolean")
 
     allowed_dims = set(profile["research_scope"]["scope_dimensions"])
     dims = row.get("scope_dimensions")
     if not _string_list(dims) or any(item not in allowed_dims for item in dims):
         raise ValueError(f"{discovery_id}: scope_dimensions invalid")
-    if row.get("lineage_role") not in LINEAGE_ROLES:
-        raise ValueError(f"{discovery_id}: invalid lineage_role")
-    for key in ("branch_ids", "transition_ids"):
-        if not _string_list(row.get(key)):
-            raise ValueError(f"{discovery_id}: {key} invalid")
-    for key in ("inheritance_note", "historical_attribution_caveat"):
-        if row.get(key) is not None and not isinstance(row.get(key), str):
-            raise ValueError(f"{discovery_id}: {key} must be string/null")
+    if research_profile == "THEMATIC":
+        if row.get("lineage_role") not in LINEAGE_ROLES:
+            raise ValueError(f"{discovery_id}: invalid lineage_role")
+        for key in ("branch_ids", "transition_ids"):
+            if not _string_list(row.get(key)):
+                raise ValueError(f"{discovery_id}: {key} invalid")
+        for key in ("inheritance_note", "historical_attribution_caveat"):
+            if row.get(key) is not None and not isinstance(row.get(key), str):
+                raise ValueError(f"{discovery_id}: {key} must be string/null")
     return row
 
 
