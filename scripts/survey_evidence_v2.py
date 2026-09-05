@@ -127,13 +127,15 @@ def validate_screening_acceptance(
     if package["issue_id"] != issue_id or package["research_profile"] != acceptance["research_profile"]:
         raise ValueError("Screening package/acceptance profile identity mismatch")
 
-    expected_discovery = (repo_root / package["basis"]["discovery_path"]).resolve()
+    effective = screening.resolve_effective_discovery_basis(
+        repo_root, package_path, implementation_sha
+    )
+    expected_discovery = effective["path"].resolve()
     if expected_discovery != discovery_path.resolve():
         raise ValueError("Screening acceptance points at a different Discovery set")
-    if core.sha256_file(discovery_path) != package["basis"]["discovery_sha256"]:
+    if core.sha256_file(discovery_path) != effective["sha256"]:
         raise ValueError("Screening acceptance Discovery bytes changed")
-    discoveries = screening.read_jsonl(discovery_path)
-    screening.validate_discovery_set(discoveries, issue_id)
+    discoveries = effective["records"]
     expected_ids = {row["discovery_id"] for row in discoveries}
     decisions = acceptance["decisions"]
     if not isinstance(decisions, list):

@@ -203,7 +203,7 @@ def _evidence_basis(
     artifacts: dict[str, Path],
     implementation_sha: str,
 ) -> dict[str, Path]:
-    discovery_path = _discovery_path(repo_root, artifacts, state["issue_id"])
+    root_discovery_path = _discovery_path(repo_root, artifacts, state["issue_id"])
     screening_path, evidence_path, views_path, ledger_path, completeness_path = _require(
         artifacts,
         "screening-acceptance",
@@ -212,6 +212,14 @@ def _evidence_basis(
         "materiality-ledger",
         "profile-completeness",
     )
+    package_path = screening_path.parent / "package.json"
+    effective = screening.resolve_effective_discovery_basis(
+        repo_root,
+        package_path,
+        implementation_sha,
+        accepted_root_path=root_discovery_path,
+    )
+    discovery_path = effective["path"]
     evidence.validate_screening_acceptance(repo_root, screening_path, discovery_path, state["issue_id"], implementation_sha)
     evidence.validate_evidence_acceptance(repo_root, evidence_path, implementation_sha)
     evidence.validate_edition_views_acceptance(repo_root, profile_path, evidence_path, views_path, implementation_sha)
@@ -311,9 +319,12 @@ def _validate_stage_semantics(
         accepted = screening.validate_acceptance(repo_root, screening_path, implementation_sha)
         if accepted["issue_id"] != state["issue_id"]:
             raise StageValidationError("Screening acceptance issue identity mismatch")
-        package = core.load_json(screening_path.parent / "package.json")
-        if package.get("basis", {}).get("discovery_path") != _rel(repo_root, discovery_path):
-            raise StageValidationError("Screening acceptance is not based on accepted Discovery authority")
+        screening.resolve_effective_discovery_basis(
+            repo_root,
+            screening_path.parent / "package.json",
+            implementation_sha,
+            accepted_root_path=discovery_path,
+        )
         return
 
     if lifecycle == "CANDIDATES_NORMALIZED":
