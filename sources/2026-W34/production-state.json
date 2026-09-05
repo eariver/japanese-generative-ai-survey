@@ -3,7 +3,7 @@
   "issue_id": "2026-W34",
   "research_profile": "WEEKLY",
   "publication_profile": "WEEKLY_MAGAZINE",
-  "lifecycle_state": "DISCOVERY_COLLECTED",
+  "lifecycle_state": "CANDIDATES_NORMALIZED",
   "profile": {
     "path": "sources/2026-W34/production-profile.json",
     "sha256": "a6e3eb3006dde95da008876486cbfc7fdce75f507f7efcd6b0fcaba5e154b21a"
@@ -31,7 +31,7 @@
     "publication_preview": null
   },
   "target_gate": "ARCHITECTURE_REVIEW",
-  "next_action": "stage:screening",
+  "next_action": "stage:evidence-materiality-completeness",
   "terminal_reason": null,
   "exception_gate": {
     "status": "inactive",
@@ -39,7 +39,7 @@
   },
   "machine_checkpoints": {
     "discovery": "passed",
-    "screening": "pending",
+    "screening": "passed",
     "evidence": "pending",
     "materiality": "pending",
     "completeness": "pending",
@@ -56,7 +56,10 @@
       "path": "sources/2026-W34/orchestration/v2/checkpoints/ISSUE_INITIALIZED.json",
       "sha256": "01e036c627f05130eecfe7dd1349afe5ed6461eec2f698bc62035acce8a12e32"
     },
-    "screening": null,
+    "screening": {
+      "path": "sources/2026-W34/orchestration/v2/checkpoints/DISCOVERY_COLLECTED.json",
+      "sha256": "ed6003009d0ed4ee97a5cfde93143b2e3e0ead41c3965eff28d71f2fc6836e68"
+    },
     "evidence": null,
     "materiality": null,
     "completeness": null,
@@ -86,6 +89,12 @@
       "to": "DISCOVERY_COLLECTED",
       "recorded_at": "2026-09-03T01:01:17Z",
       "repository_commit_sha": "bf5af8408a8ee09254f3bba83e6fa51ab289750a"
+    },
+    {
+      "from": "DISCOVERY_COLLECTED",
+      "to": "CANDIDATES_NORMALIZED",
+      "recorded_at": "2026-09-05T07:05:00Z",
+      "repository_commit_sha": "b8a0ae502fd03d17bcb4f5d9e1f67a26c77ab30e"
     }
   ]
 }

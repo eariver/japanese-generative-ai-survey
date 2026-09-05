@@ -8,11 +8,11 @@ This is the edition-local navigation record. Machine lifecycle authority remains
 - Research Profile: `WEEKLY`
 - Publication Profile: `WEEKLY_MAGAZINE`
 - Work branch: `weekly/2026-W34-v2-work`
-- Reviewed `main`: `c7a898889463b049dea4ee7337ee16ad5fbf3191`
-- Current lifecycle: `DISCOVERY_COLLECTED`
-- Current next action: `stage:screening`
+- Reviewed `main`: `a9f121f0d65591f52b53515712d7c0bae573b2ef`
+- Current lifecycle: `CANDIDATES_NORMALIZED`
+- Current next action: `stage:evidence-materiality-completeness`
 - Discovery checkpoint: `passed`
-- Screening checkpoint: `pending`
+- Screening checkpoint: `passed`
 - Human gates: Architecture Review pending; Publication Preview pending
 
 ## Accepted Discovery and event-level Screening basis
@@ -21,9 +21,11 @@ This is the edition-local navigation record. Machine lifecycle authority remains
   - 40 records / 40 unique IDs
 - accepted Discovery acceptance: `sources/2026-W34/discovery/discovery-accepted-v2.json`
 - event-level Screening Discovery expansion: `sources/2026-W34/screening/input/event-discovery-v2.jsonl`
-  - 105 records / 105 unique IDs
+  - 110 records / 110 unique IDs
   - W34-C001–W34-C105: 105/105, missing 0, duplicate 0
-- event-level crosswalk: `sources/2026-W34/screening/input/event-discovery-crosswalk-v0.1.json`
+  - five Sol-authorized `COVERAGE_PASSTHROUGH` children complete accepted-root closure
+- historical event-level crosswalk (retained immutable): `sources/2026-W34/screening/input/event-discovery-crosswalk-v0.1.json`
+- current corrected crosswalk: `sources/2026-W34/screening/input/event-discovery-crosswalk-v0.2.json`
 - DailyX: 7/7 files, 76/76 topics
 - Grok r2: 47/47 URLs; 10 ordinary / 20 background / 17 late-breaking
 - carry-over: one `RECHECKED_UNRESOLVED`; no promotion
@@ -34,60 +36,70 @@ Sol semantic authority:
 
 `sources/2026-W34/screening/decisions/sol-screening-decision-authority-20260904-r1.json`
 
+Coverage supplement:
+
+`sources/2026-W34/screening/decisions/sol-screening-coverage-supplement-20260905-r1.json`
+
 Decision counts:
 
 - KEEP: 45
 - MAYBE: 19
 - INSPECT: 16
-- DROP: 25
-- TOTAL: 105
+- DROP: 30
+- TOTAL: 110
 
 Prepared package:
 
-`sources/2026-W34/screening/v2/prepared/w34-event-screening-r1/package.json`
+`sources/2026-W34/screening/v2/prepared/w34-event-screening-r2/package.json`
 
-Formal Screening acceptance is valid:
+Historical 105-record acceptance remains immutable:
 
 `sources/2026-W34/screening/v2/accepted/2ab82c6b52b26fc01cc6a82d20da08ef4b37dadaf2ff1b0e5a570f50652b3662/screening-accepted.json`
 
 - result-set SHA: `2ab82c6b52b26fc01cc6a82d20da08ef4b37dadaf2ff1b0e5a570f50652b3662`
 - 105 records / 3 batches
+- historical validation on its original 105-record basis: PASS
+
+Corrected current Screening acceptance:
+
+`sources/2026-W34/screening/v2/accepted/5692a79ac20f4376beee02758754a71b771ed78ff30b675d2fa8177af7f65e98/screening-accepted.json`
+
+- result-set SHA: `5692a79ac20f4376beee02758754a71b771ed78ff30b675d2fa8177af7f65e98`
+- 110 records / 3 batches
 - Screening acceptance validation: PASS
+- current-Core stage validation: PASS
+- accepted-root accounting: 40/40, unaccounted 0
+- expected future non-DROP Evidence tasks: 80
 
-## Current blocker
+The passed Screening Stage Checkpoint at `sources/2026-W34/orchestration/v2/checkpoints/DISCOVERY_COLLECTED.json` binds the corrected acceptance by exact path and SHA. `resolve_active_screening_acceptance()` returns only this corrected run; it does not scan accepted directories or select by ordering/mtime/latest heuristics.
 
-Formal stage validation for `DISCOVERY_COLLECTED -> CANDIDATES_NORMALIZED` fails with:
+## Recovery execution
 
-`Screening acceptance is not based on accepted Discovery authority`
+The reviewed `main@a9f121f...` was merged normally into W34 as `b8a0ae502fd03d17bcb4f5d9e1f67a26c77ab30e`. The corrected basis and formal advance are recorded under:
 
-The validator requires Screening to use the original accepted 40-record Discovery path exactly, while the valid Screening acceptance uses the 105-record provenance-preserving event-level expansion required for downstream event-level Evidence tasks.
+`sources/2026-W34/execution/luna/w34-post-483-core-sync-screening-recovery-r1/`
 
-This is recorded as a shared-Core defect at:
+W34 remains bounded at `CANDIDATES_NORMALIZED` / the configured evidence-stage action. No Evidence acceptance or later stage work has been performed.
 
-`sources/2026-W34/execution/defects/core-v2-screening-expansion-authority-20260904.md`
-
-Per `AGENTS.md`, no shared-Core file is repaired on the edition branch. W34 remains frozen at `DISCOVERY_COLLECTED / stage:screening` pending separately reviewed Core repair.
-
-## Relevant execution records
+## Relevant historical and current execution records
 
 - Discovery materialization: `sources/2026-W34/execution/sessions/w34-luna-discovery-materialization-20260903-r1.md`
 - Discovery binding repair: `sources/2026-W34/execution/sessions/w34-luna-discovery-binding-repair-20260903-r1.md`
 - Screening granularity expansion: `sources/2026-W34/execution/luna/w34-screening-granularity-expansion-r1/`
 - event JSONL byte repair: `sources/2026-W34/execution/luna/w34-event-discovery-byte-repair-r1/`
 - Screening materialization: `sources/2026-W34/execution/luna/w34-screening-materialization-r1/`
+- post-#483 Core sync and Screening recovery: `sources/2026-W34/execution/luna/w34-post-483-core-sync-screening-recovery-r1/`
 
-## Forbidden while Core repair is pending
+## Not performed in this bounded recovery
 
-- no Production State manual edit
-- no Discovery rollback/reacceptance
-- no accepted Discovery/checkpoint rewrite
-- no Screening decision reinterpretation
-- no manual lifecycle advancement
-- no Evidence/Materiality/Completeness/Selection/Architecture
-- no shared-Core edits on the W34 branch
-- no W33 changes
+- no Production State manual edit; formal State transition used current agent-first Core machinery
+- no Discovery rollback/reacceptance or accepted Discovery/checkpoint rewrite
+- no historical Screening acceptance or 105 Sol decision mutation
+- no Evidence acceptance, Materiality, Completeness, Selection, Architecture, Human Gate, drafting, Freeze, or Release
+- no external sidecar tool execution
+- no W33/SP001/SP002/SP003 changes
 - no force/reset/rewrite/rebase
 
 ## Current disposition
 
-`SCREENING_ACCEPTED / SHARED_CORE_EXPANSION_AUTHORITY_BLOCKER / CORE_MAINTENANCE_REQUIRED`
+`READY_FOR_SOL_EVIDENCE / CANDIDATES_NORMALIZED / STAGE_EVIDENCE_HANDOFF`
