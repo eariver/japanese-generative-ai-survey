@@ -238,7 +238,7 @@ Pre-merge genericity is structural:
 - Profile-selected research/publication behavior;
 - living Series guidance for evolving Foundations volumes.
 
-AUD-033 intentionally defers exhaustive hypothetical future-edition matrices. Real W33/SP001 followed by W34/SP002/SP003 provide stronger post-merge evidence.
+AUD-033 intentionally defers exhaustive hypothetical future-edition matrices. The completed W33/SP001 production runs and the active W34 read-only regression fixture provide concrete evidence; SP002/SP003 have no canonical production state or work branch in the current repository and remain future, explicitly scoped coverage.
 
 ## 12. Repair status
 
@@ -261,7 +261,7 @@ Intentional `DEFERRED`:
 - AUD-031 — machine Series engine;
 - AUD-033 — exhaustive synthetic future-edition matrix.
 
-`REPAIR-WU012-2026-08-22` remains `IMPLEMENTED`, not `VALIDATED/CLOSED`, until real W33/SP001 verification occurs.
+`REPAIR-WU012-2026-08-22` remains `IMPLEMENTED`, not `VALIDATED/CLOSED`, pending explicit approval/merge of this candidate and fresh post-integration validation. The completed W33/SP001 runs are historical production evidence, not pending cold-start verification editions.
 
 ## 13. Mandatory final candidate rule
 
@@ -288,13 +288,15 @@ Before explicit Human approval + merge:
 
 - PR #310 is a historical merged implementation PR; current integration review continues in draft PR #483, which remains open and unmerged;
 - `main` remains production authority;
-- W33/SP001 and other Core-v2 Pilots remain unstarted;
+- W33 and SP001 are already released historical editions in `main`; their immutable production records are not cold-start validation for this candidate;
+- W34 is the active production-regression edition on its canonical work branch and is read-only from this maintenance branch;
+- SP002/SP003 have no canonical production-state file or canonical work branch in current `main` and remain future/outside this candidate's scope;
 - frozen historical releases remain immutable.
 
 After approval + merge:
 
 1. merged `main` becomes source of truth;
-2. run W33 and SP001 as first real verification editions;
-3. classify concrete findings and repair the narrowest correct layer;
-4. follow with W34 and SP002/SP003;
+2. perform a fresh, explicitly scoped post-integration validation matrix; do not restart completed W33/SP001 editions merely as "first" verification;
+3. classify concrete findings and repair the narrowest correct layer in the appropriate maintenance surface;
+4. use W34 and any subsequently initialized SP002/SP003 runs only under their own canonical edition authority;
 5. add deferred machinery only when production demonstrates need.

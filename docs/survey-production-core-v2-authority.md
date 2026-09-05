@@ -161,7 +161,7 @@ An Exception Gate is justified only for a genuine unresolved Owner decision. Ret
 8. Foundations uses the living series memo and the `GENERATIVE_AI_FOUNDATIONS` Drive category when X is material.
 9. X/Grok is Discovery/community-signal input, not direct technical Evidence authority.
 10. Frozen historical releases remain immutable.
-11. W33 and SP001 are first real post-merge validation editions, not generic design templates.
+11. Completed W33/SP001 production runs are historical validation evidence, not generic design templates; any new post-integration validation must be fresh and explicitly scoped.
 12. W33/SP001-specific editorial scope must not leak into generic Core code.
 13. Retrospective Period may use internal `SP-...` source identity while public release identity derives from exact Profile `survey_root`.
 14. A bounded Retrospective Period cannot initialize before its configured period end.
@@ -307,7 +307,7 @@ Do not confuse five CI families with seven acceptance points.
 
 ## 13. Pre-audit handoff and production boundary
 
-PR #310 and the post-integration repair PR #452 are historical merged implementation PRs. The current candidate is carried only on `fix/core-v2-screening-expansion-authority-20260904`; its normal integration PR is draft review metadata and must not be merged by this task. W33 is an immutable released edition, and W34 is an active production-regression edition with read-only fixture use in this maintenance task. SP001, SP002, and SP003 remain outside this Core candidate's production scope.
+PR #310 and the post-integration repair PR #452 are historical merged implementation PRs. The current candidate is carried only on `fix/core-v2-screening-expansion-authority-20260904`; its normal integration PR is draft review metadata and must not be merged by this task. W33 is an immutable released edition and SP001 is an immutable released historical edition; W34 is an active production-regression edition with read-only fixture use in this maintenance task. SP001, SP002, and SP003 remain outside this Core candidate's production scope: SP001 is already released, while SP002/SP003 have no canonical production state or work branch in current `main`.
 
 Once Authority, Worklog, Repair Set, implementation and tests agree, freeze the exact branch head, obtain the required exact-head CI, and run the mandatory seven-point audit without changing the candidate.
 
@@ -324,4 +324,4 @@ record/classify finding
 
 If all seven pass on an unchanged head, record that exact-SHA result in PR/Human-review metadata and present the candidate for Human full-candidate review. Do not commit a post-audit PASS document into the audited tree.
 
-Do not start any Pilot before explicit Human approval and merge.
+Do not start any new Core-v2 production validation run, or cold-start a completed W33/SP001 edition, before explicit Human approval and merge.

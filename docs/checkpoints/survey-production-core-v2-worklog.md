@@ -34,12 +34,13 @@ Historical audit attempts remain evidence only:
 - WU-010R: historical `COMPLETE / SECOND-AUDIT GREEN`.
 - WU-011: historical `COMPLETE / SECOND-AUDIT GREEN`; its exact-byte/Raw safety evidence remains historical evidence for its then-current scope.
 - WU-012: `POST-INTEGRATION REPAIRS IMPLEMENTED / PRE-FREEZE CANDIDATE`.
-- WU-012 Repair Set: `REPAIR-WU012-2026-08-22`, status `IMPLEMENTED`; it remains not `VALIDATED/CLOSED` until real W33/SP001 verification editions exist.
+- WU-012 Repair Set: `REPAIR-WU012-2026-08-22`, status `IMPLEMENTED`; it remains not `VALIDATED/CLOSED` pending explicit approval/merge of this candidate and fresh post-integration validation. Completed W33/SP001 runs are historical evidence, not pending cold starts.
 - AUD-031 / AUD-033 remain intentionally `DEFERRED`.
 - AUD-027–030, AUD-032, AUD-034–047 are `FIXED_GENERIC` where applicable.
 - W33: released historical edition; its production artifacts remain immutable.
+- SP001: released historical edition; its production artifacts remain immutable.
 - W34: active production-regression edition; this maintenance branch uses only its exact read-only fixture and does not write the W34 branch.
-- SP001, SP002, SP003: outside this Core maintenance candidate's production scope.
+- SP002, SP003: no canonical production-state file or canonical work branch in current `main`; outside this Core maintenance candidate's production scope.
 
 ## 3. Operating premise
 
@@ -146,7 +147,7 @@ Intentional `DEFERRED`:
 - AUD-031 — machine Series engine; add only if real Foundations production demonstrates need.
 - AUD-033 — exhaustive hypothetical future-edition matrix; use small structural tests + real Pilots.
 
-`REPAIR-WU012-2026-08-22` remains `IMPLEMENTED`, not `VALIDATED/CLOSED`, because W33/SP001 production verification remains intentionally pending.
+`REPAIR-WU012-2026-08-22` remains `IMPLEMENTED`, not `VALIDATED/CLOSED`, because this candidate still awaits explicit approval/merge and fresh post-integration validation. W33/SP001 production runs are complete historical evidence.
 
 ## 8. External final-validation handoff
 
