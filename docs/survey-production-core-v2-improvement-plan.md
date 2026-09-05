@@ -2,8 +2,9 @@
 
 Status: `WU-012 + AUD-046 + AUD-047 REPAIRS IMPLEMENTED / AUDIT-STABLE PRE-AUDIT CANDIDATE`  
 Established: 2026-08-22 JST  
-Working branch: `refactor/survey-production-core-v2`  
-Production source of truth until merge: current `main`  
+Current maintenance branch: `fix/core-v2-screening-expansion-authority-20260904`
+Production source of truth: current `main` at reviewed baseline `c7a898889463b049dea4ee7337ee16ad5fbf3191`; this candidate is not merged
+Current integration PR: `#483` (draft, unmerged; normal review metadata)
 Operator-model authority: `docs/survey-production-core-v2-authority.md`  
 Final-audit rule: `docs/survey-production-core-v2-final-audit-rule.md`
 
@@ -41,8 +42,9 @@ Before merge, evaluate in this strict order:
 4. **Historical/clarified requirement recurrence prevention** — known Human Review failures and later clarified production requirements have durable prevention ownership.
 5. **Control proportionality** — avoid unnecessary gates, ceremony and brittle validators once 1–4 are protected.
 6. **Autonomous progression / stop discipline** — after target + requested Gate, ChatGPT does not repeatedly stop for routine internal work. Only normal Human Gates, a genuine Owner-level Exception Gate, or unavoidable manual Grok instruction/result transport may interrupt progress.
+7. **Human Gate round-trip viability** — Architecture Review and exact-byte Publication Preview preserve durable reviewed-commit, approval, revision, cross-gate, and connector-safe round-trip authority.
 
-The sixth point is an independent acceptance condition, not merely a style preference.
+These seven points are the canonical fixed-head final-audit contract; each is evaluated from zero on one unchanged candidate SHA.
 
 ## 3. Core/Profile architecture
 
@@ -252,7 +254,7 @@ Key late repairs:
 - AUD-044 bounded Period completion guard;
 - AUD-045 audit-stable status synchronization;
 - AUD-046 formal Grok/X + Google Drive Source Intake;
-- AUD-047 autonomous progression / stop discipline as sixth acceptance point.
+- AUD-047 autonomous progression / stop discipline as an independent final-audit point.
 
 Intentional `DEFERRED`:
 
@@ -269,20 +271,22 @@ The candidate tree remains a stable pre-audit snapshot:
 finish all repository-side changes
 -> obtain five CI cross-regression families green on one exact head
 -> freeze that head
--> audit all six acceptance points from zero on the unchanged SHA
+-> audit all seven acceptance points from zero on the unchanged SHA
 ```
 
-The five CI families are unchanged. The six acceptance points are Weekly viability, Special viability, generality, recurrence prevention, control proportionality, and autonomous progression/stop discipline.
+The five CI families are unchanged. The seven acceptance points are Weekly viability, Special viability, generality, historical/clarified recurrence prevention, control proportionality, autonomous progression/stop discipline, and Human Gate round-trip viability.
 
-Any candidate-tree mutation invalidates the entire audit. After repair, rerun CI, freeze a new head, and rerun **all six points from point 1**.
+Any candidate-tree mutation invalidates the entire audit. After repair, rerun CI, freeze a new head, and rerun **all seven points from point 1**.
 
 The final PASS is recorded outside the candidate tree in PR/Human-review metadata keyed to exact audited SHA and CI run IDs.
+
+The prior frozen candidate `c565a3254ad303bd276edee55b2b1e6e0a1c91a7` is historical only: its audit was invalidated by a current-facing authority wording contradiction. No CI or audit result from that SHA is carried forward.
 
 ## 14. Rollout boundary
 
 Before explicit Human approval + merge:
 
-- PR #310 stays draft/open/unmerged;
+- PR #310 is a historical merged implementation PR; current integration review continues in draft PR #483, which remains open and unmerged;
 - `main` remains production authority;
 - W33/SP001 and other Core-v2 Pilots remain unstarted;
 - frozen historical releases remain immutable.

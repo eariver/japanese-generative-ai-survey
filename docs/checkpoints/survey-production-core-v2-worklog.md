@@ -2,10 +2,10 @@
 
 Status: `POST-INTEGRATION CORE CANDIDATE / SCREENING AUTHORITY REPAIRED / PRE-FREEZE / PRE-AUDIT CANDIDATE`
 Established: 2026-08-22 JST  
-Last updated: 2026-09-04 JST
+Last updated: 2026-09-05 JST
 Current maintenance branch: `fix/core-v2-screening-expansion-authority-20260904`
 Historical implementation PRs: `#310` and post-integration repair `#452` (merged)
-Current integration PR: normal draft review PR for this candidate; not an operator transport
+Current integration PR: `#483`, normal draft review PR for this candidate; not an operator transport
 Production source of truth: current `main` at reviewed baseline `c7a898889463b049dea4ee7337ee16ad5fbf3191`
 Semantic authority: `docs/survey-production-core-v2-authority.md`  
 Final-audit rule: `docs/survey-production-core-v2-final-audit-rule.md`
@@ -22,6 +22,7 @@ Historical audit attempts remain evidence only:
 - `68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d` was invalidated by AUD-045;
 - `705937af2eb45d5ba361fe748d7a622110bcb27c` completed the then-current five-point audit but was invalidated by AUD-046 when the Owner clarified formal Grok/X Source Intake + Google Drive handoff;
 - AUD-047 then made autonomous progression / stop discipline an independent acceptance dimension. The canonical final audit now has seven fixed points, with Human Gate round-trip viability as Point 7.
+- `c565a3254ad303bd276edee55b2b1e6e0a1c91a7` reached the pre-audit freeze boundary, but its subsequent audit was invalidated by a current-facing authority wording contradiction. Its CI/audit evidence is historical only; the replacement candidate requires fresh synchronization, exact-head CI, and a new freeze.
 
 ## 2. Stable pre-audit snapshot
 

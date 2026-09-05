@@ -17,6 +17,7 @@ Historical candidate audits are not reusable as current approval evidence:
 - `2f3c9b10c031cf0d8e5cc114fb93e481e90fffac` was invalidated by AUD-039 through AUD-044;
 - `68213aaca4ef6d47cf4c06dfe7ae501e3db78b6d` was invalidated by AUD-045;
 - `705937af2eb45d5ba361fe748d7a622110bcb27c` completed the then-current five-point audit, but was invalidated by AUD-046 after the Owner clarified the required Grok/X Source Intake architecture;
+- `c565a3254ad303bd276edee55b2b1e6e0a1c91a7` reached the pre-audit freeze boundary, but its subsequent audit was invalidated by a current-facing six-point wording contradiction in this authority; its CI/audit evidence is historical only and is not reusable for the replacement candidate;
 - AUD-047 added autonomous progression / stop discipline as an independent acceptance dimension. The canonical final audit has since been fixed at seven points, with Human Gate round-trip viability as Point 7. The next final audit must be a fresh seven-point audit on one later unchanged head.
 
 The candidate tree intentionally stops at an **audit-stable pre-freeze state**. Exact final PASS evidence belongs in PR/Human-review metadata keyed to one unchanged candidate SHA; do not mutate the candidate merely to record that PASS.
@@ -302,7 +303,7 @@ The five CI families remain:
 4. Pipeline contract tests;
 5. Weekly pipeline spine + committed Raw integrity.
 
-Do not confuse five CI families with six acceptance points.
+Do not confuse five CI families with seven acceptance points.
 
 ## 13. Pre-audit handoff and production boundary
 
