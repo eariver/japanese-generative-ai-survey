@@ -2,8 +2,9 @@
 
 Status: `WU-012 + AUD-046 + AUD-047 REPAIRS IMPLEMENTED / AUDIT-STABLE PRE-AUDIT CANDIDATE`  
 Established: 2026-08-22 JST  
-Working branch: `refactor/survey-production-core-v2`  
-Production source of truth until merge: current `main`  
+Current maintenance branch: `fix/core-v2-screening-expansion-authority-20260904`
+Production source of truth: current `main` at reviewed baseline `c7a898889463b049dea4ee7337ee16ad5fbf3191`; this candidate is not merged
+Current integration PR: `#483` (draft, unmerged; normal review metadata)
 Operator-model authority: `docs/survey-production-core-v2-authority.md`  
 Final-audit rule: `docs/survey-production-core-v2-final-audit-rule.md`
 
@@ -41,8 +42,9 @@ Before merge, evaluate in this strict order:
 4. **Historical/clarified requirement recurrence prevention** — known Human Review failures and later clarified production requirements have durable prevention ownership.
 5. **Control proportionality** — avoid unnecessary gates, ceremony and brittle validators once 1–4 are protected.
 6. **Autonomous progression / stop discipline** — after target + requested Gate, ChatGPT does not repeatedly stop for routine internal work. Only normal Human Gates, a genuine Owner-level Exception Gate, or unavoidable manual Grok instruction/result transport may interrupt progress.
+7. **Human Gate round-trip viability** — Architecture Review and exact-byte Publication Preview preserve durable reviewed-commit, approval, revision, cross-gate, and connector-safe round-trip authority.
 
-The sixth point is an independent acceptance condition, not merely a style preference.
+These seven points are the canonical fixed-head final-audit contract; each is evaluated from zero on one unchanged candidate SHA.
 
 ## 3. Core/Profile architecture
 
@@ -236,7 +238,7 @@ Pre-merge genericity is structural:
 - Profile-selected research/publication behavior;
 - living Series guidance for evolving Foundations volumes.
 
-AUD-033 intentionally defers exhaustive hypothetical future-edition matrices. Real W33/SP001 followed by W34/SP002/SP003 provide stronger post-merge evidence.
+AUD-033 intentionally defers exhaustive hypothetical future-edition matrices. The completed W33/SP001 production runs and the active W34 read-only regression fixture provide concrete evidence; SP002/SP003 have no canonical production state or work branch in the current repository and remain future, explicitly scoped coverage.
 
 ## 12. Repair status
 
@@ -252,14 +254,14 @@ Key late repairs:
 - AUD-044 bounded Period completion guard;
 - AUD-045 audit-stable status synchronization;
 - AUD-046 formal Grok/X + Google Drive Source Intake;
-- AUD-047 autonomous progression / stop discipline as sixth acceptance point.
+- AUD-047 autonomous progression / stop discipline as an independent final-audit point.
 
 Intentional `DEFERRED`:
 
 - AUD-031 — machine Series engine;
 - AUD-033 — exhaustive synthetic future-edition matrix.
 
-`REPAIR-WU012-2026-08-22` remains `IMPLEMENTED`, not `VALIDATED/CLOSED`, until real W33/SP001 verification occurs.
+`REPAIR-WU012-2026-08-22` remains `IMPLEMENTED`, not `VALIDATED/CLOSED`, pending explicit approval/merge of this candidate and fresh post-integration validation. The completed W33/SP001 runs are historical production evidence, not pending cold-start verification editions.
 
 ## 13. Mandatory final candidate rule
 
@@ -269,28 +271,32 @@ The candidate tree remains a stable pre-audit snapshot:
 finish all repository-side changes
 -> obtain five CI cross-regression families green on one exact head
 -> freeze that head
--> audit all six acceptance points from zero on the unchanged SHA
+-> audit all seven acceptance points from zero on the unchanged SHA
 ```
 
-The five CI families are unchanged. The six acceptance points are Weekly viability, Special viability, generality, recurrence prevention, control proportionality, and autonomous progression/stop discipline.
+The five CI families are unchanged. The seven acceptance points are Weekly viability, Special viability, generality, historical/clarified recurrence prevention, control proportionality, autonomous progression/stop discipline, and Human Gate round-trip viability.
 
-Any candidate-tree mutation invalidates the entire audit. After repair, rerun CI, freeze a new head, and rerun **all six points from point 1**.
+Any candidate-tree mutation invalidates the entire audit. After repair, rerun CI, freeze a new head, and rerun **all seven points from point 1**.
 
 The final PASS is recorded outside the candidate tree in PR/Human-review metadata keyed to exact audited SHA and CI run IDs.
+
+The prior frozen candidate `c565a3254ad303bd276edee55b2b1e6e0a1c91a7` is historical only: its audit was invalidated by a current-facing authority wording contradiction. No CI or audit result from that SHA is carried forward.
 
 ## 14. Rollout boundary
 
 Before explicit Human approval + merge:
 
-- PR #310 stays draft/open/unmerged;
+- PR #310 is a historical merged implementation PR; current integration review continues in draft PR #483, which remains open and unmerged;
 - `main` remains production authority;
-- W33/SP001 and other Core-v2 Pilots remain unstarted;
+- W33 and SP001 are already released historical editions in `main`; their immutable production records are not cold-start validation for this candidate;
+- W34 is the active production-regression edition on its canonical work branch and is read-only from this maintenance branch;
+- SP002/SP003 have no canonical production-state file or canonical work branch in current `main` and remain future/outside this candidate's scope;
 - frozen historical releases remain immutable.
 
 After approval + merge:
 
 1. merged `main` becomes source of truth;
-2. run W33 and SP001 as first real verification editions;
-3. classify concrete findings and repair the narrowest correct layer;
-4. follow with W34 and SP002/SP003;
+2. perform a fresh, explicitly scoped post-integration validation matrix; do not restart completed W33/SP001 editions merely as "first" verification;
+3. classify concrete findings and repair the narrowest correct layer in the appropriate maintenance surface;
+4. use W34 and any subsequently initialized SP002/SP003 runs only under their own canonical edition authority;
 5. add deferred machinery only when production demonstrates need.

@@ -146,7 +146,7 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         self.assertTrue(all(value["status"] == "FIXED_GENERIC" for value in audit_findings))
         self.assertTrue(all(value["resolved_by_repair_set_id"] is None for value in audit_findings))
 
-    def test_wu011_repair_set_remains_historical_and_current_premerge_boundary_is_repository_owned(self) -> None:
+    def test_wu011_repair_set_remains_historical_and_current_release_boundary_is_repository_owned(self) -> None:
         audit_root = Path("docs/checkpoints/survey-production-core-v2-audit-findings")
         audit_findings = [core.load_json(audit_root / f"AUD-{number:03d}.json") for number in range(19, 27)]
         repair = core.load_json(audit_root / "WU-011-repair-set.json")
@@ -182,8 +182,9 @@ class SurveyFindingsV2Tests(unittest.TestCase):
         self.assertIn("rerun Points 1–7 from Point 1", final_rule)
         self.assertIn("Human Gate round-trip viability", final_rule)
         self.assertIn("default-branch `issue_comment` authority", final_rule)
-        self.assertFalse(Path("sources/2026-W33/production-state.json").exists())
-        self.assertFalse(Path("sources/SP001/production-state.json").exists())
+        self.assertIn("W33 is an immutable released edition", authority)
+        self.assertIn("W34 is an active production-regression edition", authority)
+        self.assertIn("SP001, SP002, and SP003 remain outside this Core candidate's production scope", authority)
 
 
 if __name__ == "__main__":

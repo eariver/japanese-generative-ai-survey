@@ -1,8 +1,8 @@
 # Survey Production Core v2 — Post-integration operator/Thematic amendment
 
-Status: `CURRENT NARROW AUTHORITY AMENDMENT / PR #452 REVIEW PENDING`  
+Status: `CURRENT NARROW AUTHORITY AMENDMENT / PR #452 INTEGRATED`
 Established: 2026-08-25 JST  
-Repair branch: `maintenance/core-v2-postintegration-transport-thematic`
+Historical repair branch: `maintenance/core-v2-postintegration-transport-thematic`
 
 ## 1. Scope and precedence
 
@@ -15,7 +15,7 @@ For **PI-001 operator transport** and **PI-002 Thematic initialization only**, t
 - `docs/survey-production-core-v2-github-actions-policy.md`;
 - `docs/survey-production-core-v2-final-audit-rule.md` where the old wording describes the sole connector transport rather than the Issue transport specifically.
 
-All other lifecycle, Human-Gate, trust-root, reviewed-main, execution-record, publication, and seven-point audit requirements remain unchanged. This amendment does not make PR #452 merge-ready by itself; exact-head CI, fresh fixed-head audit, and explicit Human merge approval remain mandatory.
+All other lifecycle, Human-Gate, trust-root, reviewed-main, execution-record, publication, and seven-point audit requirements remain unchanged. PR #452 is already merged into `main`; this amendment remains the narrow current authority for the integrated transport/Thematic behavior. Exact-head CI, a fresh fixed-head seven-point audit, and explicit Human merge approval remain mandatory for any later candidate.
 
 ## 2. PI-001 — connector-safe transport is dual-trigger, single executor
 
@@ -70,16 +70,10 @@ Raw Core thematic specs remain backward compatible. If a raw spec and request bo
 
 ## 4. Production-validation consequence
 
-The W33 request `52e5615cf745bdb2d239336241d7bb86a18cd7fd` remains failed historical evidence. It must never be relabeled as a successful initialization.
+Current repository reality records W33 and SP001 as `RELEASED` on `main`. Their completed production runs are historical evidence and remain immutable; they are not pending cold-start validation for this maintenance candidate. W34 remains an active `DISCOVERY_COLLECTED` production-regression edition on its canonical work branch and is read-only from this Core maintenance branch. SP002/SP003 have no canonical production-state file or canonical work branch in current `main`.
 
-After PR #452 has exact-head CI PASS, is frozen and freshly audited, receives explicit Human approval, and is integrated unchanged:
+The W33 request `52e5615cf745bdb2d239336241d7bb86a18cd7fd` remains failed historical evidence. It must never be relabeled as a successful initialization, even though the later W33 release record is successful.
 
-1. synchronize that reviewed `main` into W33 and SP001 work branches;
-2. leave the failed W33 request/history intact;
-3. create a new immutable request-only commit for the clean rerun;
-4. exercise the connector-native PR transport in real branch execution and confirm bot writeback/receipt;
-5. run SP001 `INITIALIZE_THEMATIC` from its existing canonical `research-scope-v2.json`, explicit `OPEN_HISTORY_AS_OF`, canonical survey root, and fresh request timestamp;
-6. continue both editions through canonical lifecycle validation to `ARCHITECTURE_REVIEW` unless another shared-Core defect is exposed;
-7. then continue the remaining Retrospective / Foundations / generalization matrix required by the final audit authority.
+Following the unchanged integration of PR #452, with the later exact-head CI, freeze, fresh seven-point audit, and explicit Human approval still required for candidate acceptance, any additional production validation after this candidate is approved and merged must be a fresh, explicitly scoped run. It must not cold-start completed W33/SP001 editions merely to satisfy the former "first verification" sequence. New W34/SP002/SP003 validation uses each edition's own canonical authority and does not repair shared Core in place.
 
 If the live PR transport or canonical Thematic initialization fails after reviewed integration, that run is new failed production evidence and Core returns to maintenance again; it is not repaired in-place inside an edition.
