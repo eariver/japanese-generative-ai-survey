@@ -37,12 +37,6 @@ def _rel(root: Path, path: Path) -> str:
     return str(path.resolve().relative_to(root.resolve()))
 
 
-def _single(paths: list[Path], label: str) -> Path:
-    if len(paths) != 1:
-        raise ValueError(f"interactive Selection/Architecture requires exactly one {label}, found {len(paths)}")
-    return paths[0]
-
-
 def _unique_strings(value: Any, label: str, *, allow_empty: bool = True) -> list[str]:
     if not isinstance(value, list) or (not allow_empty and not value) or any(not _nonempty(x) for x in value):
         raise ValueError(f"{label} must be a {'non-empty ' if not allow_empty else ''}string array")
@@ -179,11 +173,12 @@ def run(repo_root: Path, state_path: Path, input_path: Path) -> dict[str, Any]:
     discovery_acceptance_path = source_root / "discovery/discovery-accepted-v2.json"
     accepted_discovery = discovery.validate_acceptance(repo_root, discovery_acceptance_path)
     root_discovery_path = core.repo_local_path(repo_root, accepted_discovery["discovery_path"], "accepted Discovery JSONL")
-    evidence_path = _single(list((source_root / "evidence/v2/accepted").glob("*/evidence-accepted.json")), "accepted Evidence run")
-    views_path = _single(list((source_root / "evidence/v2/views/accepted").glob("*/edition-views-accepted.json")), "accepted Edition View run")
     ledger_path = source_root / "materiality-ledger-v2.json"
     completeness_path = source_root / "profile-completeness-v2.json"
     implementation_sha = core.repository_commit_sha(repo_root)
+    active_evidence_views = agent.resolve_active_evidence_views(repo_root, cfg, state)
+    evidence_path = active_evidence_views["evidence_path"]
+    views_path = active_evidence_views["views_path"]
     screening_path = screening.resolve_active_screening_acceptance(
         repo_root, state_path, implementation_sha
     )["path"]

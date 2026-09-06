@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/eariver/japanese-generative-ai-survey/schemas/evidence-authority-supplement-v2.schema.json",
+  "title": "Survey Production Core v2 Evidence Authority Supplement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "supplement_id", "issue_id", "basis", "sources"],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "supplement_id": {"type": "string", "minLength": 1},
+    "issue_id": {"type": "string", "minLength": 1},
+    "basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_root",
+        "discovery_path",
+        "discovery_sha256",
+        "screening_acceptance_path",
+        "screening_acceptance_sha256"
+      ],
+      "properties": {
+        "source_root": {"type": "string", "minLength": 1},
+        "discovery_path": {"type": "string", "minLength": 1},
+        "discovery_sha256": {"$ref": "#/$defs/sha256"},
+        "screening_acceptance_path": {"type": "string", "minLength": 1},
+        "screening_acceptance_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/source"}
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "supplement_source_id",
+        "discovery_id",
+        "evidence_task_id",
+        "locator",
+        "source_type",
+        "source_class",
+        "title",
+        "published_at",
+        "accessed_at",
+        "raw_path",
+        "raw_sha256",
+        "byte_count",
+        "relation"
+      ],
+      "properties": {
+        "supplement_source_id": {"type": "string", "pattern": "^supplement-src-[0-9a-f]{16}$"},
+        "discovery_id": {"type": "string", "minLength": 1},
+        "evidence_task_id": {"type": "string", "minLength": 1},
+        "locator": {"type": "string", "minLength": 1},
+        "source_type": {"type": "string", "minLength": 1},
+        "source_class": {"enum": ["PRIMARY_OFFICIAL", "PRIMARY_PAPER", "PRIMARY_REPOSITORY", "SECONDARY"]},
+        "title": {"type": "string", "minLength": 1},
+        "published_at": {"type": ["string", "null"], "format": "date-time"},
+        "accessed_at": {"type": "string", "format": "date-time"},
+        "raw_path": {"type": "string", "minLength": 1},
+        "raw_sha256": {"$ref": "#/$defs/sha256"},
+        "byte_count": {"type": "integer", "minimum": 1},
+        "relation": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

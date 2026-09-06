@@ -9,6 +9,15 @@
     "schema_version": {"const": "2.0-rc1"},
     "issue_id": {"type": "string", "minLength": 1},
     "research_profile": {"enum": ["WEEKLY", "RETROSPECTIVE_PERIOD", "THEMATIC"]},
+    "authority_supplement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
     "basis": {
       "type": "object",
       "additionalProperties": false,
@@ -64,6 +73,15 @@
             "path": {"const": "schemas/evidence-v2-card.schema.json"},
             "sha256": {"$ref": "#/$defs/sha256"}
           }
+        },
+        "supplement": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "sha256"],
+          "properties": {
+            "path": {"const": "schemas/evidence-authority-supplement-v2.schema.json"},
+            "sha256": {"$ref": "#/$defs/sha256"}
+          }
         }
       }
     },
@@ -77,7 +95,8 @@
           "evidence_task_id": {"type": "string", "minLength": 1},
           "path": {"type": "string", "pattern": "^tasks/task-[0-9a-f]{20}\\.json$"},
           "sha256": {"$ref": "#/$defs/sha256"},
-          "discovery_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+          "discovery_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "authority_supplement_source_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^supplement-src-[0-9a-f]{16}$"}}
         }
       }
     },

@@ -15,6 +15,7 @@ import shutil
 from pathlib import Path
 from typing import Any
 
+from scripts import survey_agent_control_v2 as agent
 from scripts import survey_drafting_v2 as drafting
 from scripts import survey_production_v2 as core
 from scripts.render_article_draft_tex import tex_escape
@@ -162,8 +163,18 @@ def _section_label(plan: dict[str, Any]) -> str:
 def _records_from_authorities(
     source_root: Path,
     evidence_acceptance_sha: str,
+    evidence_acceptance_path: Path | None = None,
 ) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, str]]]:
-    acceptance_path = _find_sha(source_root / "evidence", evidence_acceptance_sha, "evidence-accepted.json")
+    if evidence_acceptance_path is None:
+        # Kept for direct helper compatibility. Production execution supplies
+        # the State/checkpoint-resolved path below.
+        acceptance_path = _find_sha(source_root / "evidence", evidence_acceptance_sha, "evidence-accepted.json")
+    else:
+        acceptance_path = evidence_acceptance_path.resolve()
+        if not acceptance_path.is_file() or acceptance_path.is_symlink():
+            raise ValueError("checkpoint-bound Evidence acceptance is missing or unsafe")
+        if core.sha256_file(acceptance_path) != evidence_acceptance_sha:
+            raise ValueError("checkpoint-bound Evidence acceptance SHA drift")
     acceptance = _load(acceptance_path)
     accepted_status: dict[str, str] = {}
     for result in acceptance.get("results", []):
@@ -352,6 +363,11 @@ def main() -> int:
     state = _load(state_path)
     if state.get("lifecycle_state") != "DRAFT_COMPLETE" or state.get("next_action") != "stage:semantic-publication-validation":
         raise SystemExit("semantic publication requires DRAFT_COMPLETE State")
+    cfg = _load(root / core.DEFAULT_CONFIG)
+    state_errors = agent.validate_agent_state(root, cfg, state)
+    if state_errors:
+        raise SystemExit("Production State invalid before semantic publication: " + "; ".join(state_errors))
+    active_evidence_views = agent.resolve_active_evidence_views(root, cfg, state)
 
     issue_id = state["issue_id"]
     profile_path = _safe(root, state["profile"]["path"], "Production Profile")
@@ -419,7 +435,9 @@ def main() -> int:
 
     if evidence_acceptance_sha is None:
         raise SystemExit("Weekly Architecture contains no draftable packages")
-    records, authority = _records_from_authorities(source_root, evidence_acceptance_sha)
+    records, authority = _records_from_authorities(
+        source_root, evidence_acceptance_sha, active_evidence_views["evidence_path"]
+    )
 
     cited: list[str] = []
     for _, spec, _, _ in ordered:
