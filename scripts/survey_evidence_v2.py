@@ -285,7 +285,10 @@ def validate_evidence_authority_supplement(
         except (KeyError, ValueError) as exc:
             raise ValueError(f"{prefix} timestamp invalid") from exc
         raw = _supplement_source_file(repo_root, entry["raw_path"], source_root)
-        if raw.stat().st_size != entry["byte_count"]:
+        actual_byte_count = raw.stat().st_size
+        if actual_byte_count < 1:
+            raise ValueError(f"{prefix} Raw body must be non-empty: {entry['raw_path']}")
+        if actual_byte_count != entry["byte_count"]:
             raise ValueError(f"{prefix} byte_count drift: {entry['raw_path']}")
         if core.sha256_file(raw) != entry["raw_sha256"]:
             raise ValueError(f"{prefix} Raw SHA drift: {entry['raw_path']}")

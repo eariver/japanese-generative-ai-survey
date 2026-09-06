@@ -7,9 +7,11 @@ import shutil
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from scripts import survey_evidence_v2 as evidence
 from scripts import survey_production_v2 as core
+from scripts import survey_schema_v2 as schema_gate
 from scripts import survey_screening_v2 as screening
 
 
@@ -698,6 +700,14 @@ class SurveyEvidenceV2Tests(unittest.TestCase):
                 root, write_manifest("drift.json", drift), expected_issue_id="SP001"
             )
 
+        byte_drift = copy.deepcopy(base)
+        byte_drift["supplement_source_id"] = "supplement-src-" + "8" * 16
+        byte_drift["byte_count"] += 1
+        with self.assertRaisesRegex(ValueError, "byte_count drift"):
+            evidence.validate_evidence_authority_supplement(
+                root, write_manifest("byte-drift.json", byte_drift), expected_issue_id="SP001"
+            )
+
         symlink = issue_root / "raw/link.html"
         symlink.symlink_to(raw_path)
         linked = copy.deepcopy(base)
@@ -707,6 +717,63 @@ class SurveyEvidenceV2Tests(unittest.TestCase):
             evidence.validate_evidence_authority_supplement(
                 root, write_manifest("symlink.json", linked), expected_issue_id="SP001"
             )
+
+    def test_zero_byte_authority_fails_schema_and_independent_runtime_without_output(self) -> None:
+        root, _, _, discovery_path, screening_acceptance, _, _, _ = self.make_chain()
+        issue_root = root / "sources/SP001"
+        raw_path = issue_root / "raw/empty-authority.bin"
+        raw_path.parent.mkdir(parents=True, exist_ok=True)
+        raw_path.write_bytes(b"")
+        source = {
+            "supplement_source_id": "supplement-src-" + "9" * 16,
+            "discovery_id": "target-source",
+            "evidence_task_id": evidence.stable_task_id("SP001", "target-source"),
+            "locator": "https://example.invalid/empty-authority",
+            "source_type": "paper",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Empty authority",
+            "published_at": None,
+            "accessed_at": "2026-08-23T00:00:00Z",
+            "raw_path": raw_path.relative_to(root).as_posix(),
+            "raw_sha256": hashlib.sha256(b"").hexdigest(),
+            "byte_count": 0,
+            "relation": "zero-byte authority rejection fixture",
+        }
+        payload = {
+            "schema_version": "2.0-rc1",
+            "supplement_id": "supplement-zero-byte",
+            "issue_id": "SP001",
+            "basis": {
+                "source_root": "sources/SP001",
+                "discovery_path": discovery_path.relative_to(root).as_posix(),
+                "discovery_sha256": core.sha256_file(discovery_path),
+                "screening_acceptance_path": screening_acceptance.relative_to(root).as_posix(),
+                "screening_acceptance_sha256": core.sha256_file(screening_acceptance),
+            },
+            "sources": [source],
+        }
+        with self.assertRaisesRegex(schema_gate.SchemaConformanceError, "minimum"):
+            schema_gate.validate_instance(
+                payload,
+                root / evidence.SUPPLEMENT_SCHEMA,
+                label="Evidence Authority Supplement",
+            )
+
+        output_path = issue_root / "zero-byte-supplement.json"
+        with mock.patch.object(evidence.schema_gate, "validate_instance", return_value=None):
+            with self.assertRaisesRegex(ValueError, "Raw body must be non-empty"):
+                evidence.build_evidence_authority_supplement(
+                    root,
+                    "SP001",
+                    issue_root,
+                    discovery_path,
+                    screening_acceptance,
+                    [source],
+                    output_path,
+                    supplement_id="supplement-zero-byte",
+                    implementation_sha=IMPLEMENTATION_SHA,
+                )
+        self.assertFalse(output_path.exists(), "rejected zero-byte supplement left residual output")
 
 
 if __name__ == "__main__":
