@@ -247,7 +247,7 @@ class OperatorPendingGateInvalidationTests(unittest.TestCase):
                 expected_revision=1,
                 reviewed_commit_sha=reviewed,
             )
-            with self.assertRaisesRegex(ValueError, "requires pending ARCHITECTURE_ESTABLISHED"):
+            with self.assertRaisesRegex(ValueError, "not pending"):
                 self._invalidate(fixture, expected_head=reviewed, invalidated_commit=reviewed)
 
     def test_lifecycle_mismatch_is_rejected(self) -> None:
@@ -256,6 +256,56 @@ class OperatorPendingGateInvalidationTests(unittest.TestCase):
         fixture._advance_to_selection()
         with self.assertRaisesRegex(ValueError, "requires pending ARCHITECTURE_ESTABLISHED"):
             self._invalidate(fixture)
+
+    def test_requested_gate_must_match_configured_current_gate_not_eventual_target(self) -> None:
+        fixture = self._pending_architecture_fixture("PUBLICATION_PREVIEW")
+        self.addCleanup(fixture.doCleanups)
+        with self.assertRaisesRegex(ValueError, "current Gate mismatch"):
+            human_gate.invalidate_pending_gate(
+                fixture.root,
+                fixture.cfg,
+                fixture.state_path,
+                "PUBLICATION_PREVIEW",
+                "CANDIDATES_NORMALIZED",
+                "requested eventual gate must not override current Architecture Gate",
+                "operator-test",
+                fixture.impl,
+                invalidated_commit_sha=fixture.impl,
+            )
+
+    def test_architecture_pending_invalidation_preserves_eventual_publication_target(self) -> None:
+        fixture = self._pending_architecture_fixture("PUBLICATION_PREVIEW")
+        self.addCleanup(fixture.doCleanups)
+        prior_state = core.load_json(fixture.state_path)
+        reviewed = fixture._snapshot_review_commit()
+        with mock.patch.object(core, "repository_commit_sha", return_value=reviewed):
+            state, record_path, _ = human_gate.invalidate_pending_gate(
+                fixture.root,
+                fixture.cfg,
+                fixture.state_path,
+                "ARCHITECTURE_REVIEW",
+                "CANDIDATES_NORMALIZED",
+                "regenerate before presenting the current Architecture Gate",
+                "operator-test",
+                reviewed,
+                invalidated_commit_sha=reviewed,
+            )
+
+        self.assertEqual(state["lifecycle_state"], "CANDIDATES_NORMALIZED")
+        self.assertEqual(state["target_gate"], "PUBLICATION_PREVIEW")
+        self.assertEqual(state["human_gates"]["architecture_review"], "pending")
+        self.assertIsNone(state["human_gate_provenance"]["architecture_review"])
+        self.assertEqual(core.load_json(record_path)["gate"], "ARCHITECTURE_REVIEW")
+        self.assertEqual(prior_state["target_gate"], "PUBLICATION_PREVIEW")
+        validated = human_gate.validate_operator_invalidation_record(
+            fixture.root, record_path, expected_issue_id=fixture.issue_id
+        )
+        self.assertEqual(validated["gate"], "ARCHITECTURE_REVIEW")
+        review_index = fixture.source_root / fixture.cfg["state_authority"]["human_review_index_path"]
+        self.assertEqual(
+            core.load_json(review_index)["reviews"] if review_index.exists() else [],
+            [],
+        )
 
     def test_terminal_reason_mismatch_is_rejected(self) -> None:
         fixture = self._pending_architecture_fixture()

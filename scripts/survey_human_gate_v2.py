@@ -361,6 +361,54 @@ def _validate_gate_pending(state: dict[str, Any], gate: str) -> None:
         raise HumanGateError(f"{gate} decision requires pending {expected_state} Human Gate")
 
 
+def _current_pending_gate(
+    cfg: dict[str, Any],
+    state: dict[str, Any],
+    *,
+    requested_gate: str | None = None,
+) -> str:
+    """Derive the currently stopped Human Gate from lifecycle authority.
+
+    target_gate is the eventual run destination, not the identity of the Gate
+    currently awaiting presentation. The configured lifecycle mapping, pending
+    status, null provenance, and terminal reason together define the only
+    operator-invalidatable pending surface.
+    """
+    lifecycle = state.get("lifecycle_state")
+    gate_at_state = cfg.get("orchestration", {}).get("gate_at_state")
+    if not isinstance(gate_at_state, dict):
+        raise HumanGateError("orchestration.gate_at_state is missing or invalid")
+    current_gate = gate_at_state.get(lifecycle)
+    if current_gate not in GATE_KEYS:
+        if requested_gate in GATE_KEYS and lifecycle != GATE_STATES[requested_gate]:
+            raise HumanGateError(
+                f"{requested_gate} decision requires pending {GATE_STATES[requested_gate]} Human Gate"
+            )
+        raise HumanGateError(
+            f"current lifecycle {lifecycle!r} has no configured pending Human Gate"
+        )
+    if GATE_STATES[current_gate] != lifecycle:
+        raise HumanGateError(
+            f"configured current Human Gate {current_gate} does not match lifecycle {lifecycle}"
+        )
+    human_gates = state.get("human_gates")
+    provenance = state.get("human_gate_provenance")
+    gate_key = GATE_KEYS[current_gate]
+    if not isinstance(human_gates, dict) or human_gates.get(gate_key) != "pending":
+        raise HumanGateError(
+            f"current {current_gate} Human Gate is not pending"
+        )
+    if not isinstance(provenance, dict) or provenance.get(gate_key) is not None:
+        raise HumanGateError(
+            f"current {current_gate} Human Gate has active provenance"
+        )
+    if state.get("terminal_reason") != "HUMAN_GATE_REACHED":
+        raise HumanGateError(
+            "operator pending-Gate invalidation requires HUMAN_GATE_REACHED"
+        )
+    return current_gate
+
+
 def _require_review_commit(repo_root: Path, commit_sha: str) -> None:
     try:
         subprocess.run(
@@ -953,7 +1001,7 @@ def validate_operator_invalidation_record(
     if prior_state.get("issue_id") != payload["issue_id"]:
         raise HumanGateError("operator invalidation prior State issue identity mismatch")
     gate = payload["gate"]
-    gate_key = GATE_KEYS[gate]
+    cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
     try:
         subprocess.run(
             ["git", "check-ref-format", "--branch", payload["work_branch"]],
@@ -964,12 +1012,11 @@ def validate_operator_invalidation_record(
     except (OSError, subprocess.CalledProcessError) as exc:
         raise HumanGateError("operator invalidation work_branch is invalid") from exc
     _require_review_commit_reachable(repo_root, commit_sha, payload["work_branch"])
-    if prior_state.get("lifecycle_state") != GATE_STATES[gate] or prior_state.get("target_gate") != gate:
-        raise HumanGateError("operator invalidation prior State Gate/lifecycle mismatch")
-    if prior_state.get("terminal_reason") != "HUMAN_GATE_REACHED":
-        raise HumanGateError("operator invalidation prior State is not a pending Human Gate surface")
-    if prior_state.get("human_gates", {}).get(gate_key) != "pending" or prior_state.get("human_gate_provenance", {}).get(gate_key) is not None:
-        raise HumanGateError("operator invalidation prior State contains a Human decision/provenance")
+    current_gate = _current_pending_gate(cfg, prior_state, requested_gate=gate)
+    if current_gate != gate:
+        raise HumanGateError(
+            f"operator invalidation prior State current Gate mismatch: requested {gate}, current {current_gate}"
+        )
 
     names: set[str] = set()
     for row in payload["prior_gate_inputs"]:
@@ -1052,15 +1099,11 @@ def invalidate_pending_gate(
         raise HumanGateError("operator pending-Gate invalidation requires expected_work_branch_head")
 
     state, profile, source_root = _state_context(repo_root, cfg, state_path)
-    _validate_gate_pending(state, gate)
-    if state.get("target_gate") != gate:
-        raise HumanGateError("operator pending-Gate invalidation target_gate mismatch")
-    if state.get("terminal_reason") != "HUMAN_GATE_REACHED":
-        raise HumanGateError("operator pending-Gate invalidation requires HUMAN_GATE_REACHED")
-    gate_key = GATE_KEYS[gate]
-    if state.get("human_gate_provenance", {}).get(gate_key) is not None:
-        raise HumanGateError("operator pending-Gate invalidation requires null Human Gate provenance")
-    if state.get("machine_checkpoints", {}).get("architecture") != "passed" and gate == "ARCHITECTURE_REVIEW":
+    current_gate = _current_pending_gate(cfg, state, requested_gate=gate)
+    if current_gate != gate:
+        raise HumanGateError(
+            f"operator pending-Gate invalidation current Gate mismatch: requested {gate}, current {current_gate}"
+        )    if state.get("machine_checkpoints", {}).get("architecture") != "passed" and gate == "ARCHITECTURE_REVIEW":
         raise HumanGateError("Architecture pending-Gate invalidation requires a passed Architecture checkpoint")
     if state.get("human_gates", {}).get("architecture_review") == "approved" and gate == "PUBLICATION_PREVIEW":
         raise HumanGateError("operator invalidation cannot cross an active Human Architecture approval")
