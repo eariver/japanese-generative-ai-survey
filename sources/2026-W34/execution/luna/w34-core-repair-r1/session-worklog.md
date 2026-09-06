@@ -68,6 +68,9 @@ Historical accepted Evidence/View runs remain immutable and coexist with the new
 - Architecture Review: pending, provenance null
 - Publication Preview: pending, provenance null
 - Final Production State SHA-256 before canonical commit: `585f95681ba5501edf782479a1ceb0bb211a49b0261c0ea0934e5d023842909c`
+- Canonical review-surface remote commit: `d436e2b1b4a181557170dc784c58994a0a9c8538`
+- Canonical review-surface tree: `63437319bbf30d04416e3016e9d1554a835dc42f`
+- Canonical review-surface parent: `01e1bc5920ef13b2797e5d538950c630a5b80855`
 
 ## Explicit non-actions
 
@@ -78,4 +81,4 @@ Historical accepted Evidence/View runs remain immutable and coexist with the new
 - Drafting / Publication Candidate / Publication Preview / Freeze / Release: not started
 - Shared-Core writes after integrating reviewed main: `0`
 - W34 branch writes are limited to the normal integration, operator invalidation, and this canonical regeneration record.
-- The exact final remote review-surface commit SHA is recorded in the final handoff record after the non-force push.
+- The exact final remote review-surface commit SHA is `d436e2b1b4a181557170dc784c58994a0a9c8538`; this is the commit presented for Human Architecture Review.
