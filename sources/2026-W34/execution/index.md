@@ -8,7 +8,9 @@ This is the edition-local navigation record. Machine lifecycle authority remains
 - Research Profile: `WEEKLY`
 - Publication Profile: `WEEKLY_MAGAZINE`
 - Work branch: `weekly/2026-W34-v2-work`
-- Reviewed `main`: `a9f121f0d65591f52b53515712d7c0bae573b2ef`
+- Pre-integration reviewed semantic baseline: `a9f121f0d65591f52b53515712d7c0bae573b2ef`
+- Current reviewed/integrated Core authority: `main@d54f9c7b3a7cef064c6701ab864daab27118cdce`
+- W34 Core integration merge commit: `fb83242ddd35f8cf468941f8a76a4bafb331939f`
 - Current lifecycle: `ARCHITECTURE_ESTABLISHED`
 - Current next action: `ARCHITECTURE_REVIEW`
 - Current terminal reason: `HUMAN_GATE_REACHED`
@@ -79,17 +81,23 @@ The passed Screening Stage Checkpoint at `sources/2026-W34/orchestration/v2/chec
 
 ## Evidence, Materiality, and Completeness
 
-Evidence was prepared from the active corrected Screening acceptance through the current agent-first Core machinery. The W34 source taxonomy was mapped to the generic Evidence source classes without changing shared Core or promoting X/community observations.
+The historical Evidence and Edition View acceptances remain immutable. The current active authorities were regenerated after PR #484 Core integration and are selected from the passed Stage Checkpoint provenance, not by accepted-directory ordering.
 
-- Evidence package basis: active corrected Screening acceptance above; 80 non-DROP tasks
-- accepted Evidence: `sources/2026-W34/evidence/v2/accepted/917f6b5d958d0782e9994a699899145c7fc5f11e0cc9525625385427ce721452/evidence-accepted.json`
-  - 80/80 Evidence results; all `PARTIAL` with authority/chronology limitations retained
-- accepted Edition Views: `sources/2026-W34/evidence/v2/views/accepted/9545fae97069d7f68bde2c725eb80731561c0366bfdbc20f7ac98b1893514b4f/edition-views-accepted.json`
-  - `MATERIAL 1 / CONTEXT 45 / HOLD 34`
+- historical accepted Evidence: `sources/2026-W34/evidence/v2/accepted/917f6b5d958d0782e9994a699899145c7fc5f11e0cc9525625385427ce721452/evidence-accepted.json`
+  - retained immutable; 80/80 historical `PARTIAL`
+- historical accepted Edition Views: `sources/2026-W34/evidence/v2/views/accepted/9545fae97069d7f68bde2c725eb80731561c0366bfdbc20f7ac98b1893514b4f/edition-views-accepted.json`
+  - retained immutable; historical `MATERIAL 1 / CONTEXT 45 / HOLD 34`
+- Evidence Authority Supplement: `sources/2026-W34/execution/luna/w34-core-repair-r1/evidence-authority-supplement.json`
+  - 61 substantive exact authority bodies / 60 unique SHA-256 values / 50 task bindings
+- active Evidence acceptance: `sources/2026-W34/evidence/v2/accepted/377134b62c98bf0b65a7cf8cda1ef538eac0e2afcd7aa9aeeeda0f1d09493ada/evidence-accepted.json`
+  - `VERIFIED 32 / PARTIAL 27 / NEEDS_MORE 14 / REJECTED 7`
+- active Edition Views acceptance: `sources/2026-W34/evidence/v2/views/accepted/bcaa69b03f5d2ae6ba6024474b13fa36cd4b2382c4d1e1ac76dc36edeab9f81e/edition-views-accepted.json`
+  - `MATERIAL 1 / CONTEXT 41 / HOLD 31 / NON_MATERIAL 7`
 - Materiality Ledger: `sources/2026-W34/materiality-ledger-v2.json`
+  - `MATERIAL 1 / CONTEXT 41 / HOLD 31 / NON_MATERIAL 7 / DUPLICATE 4 / EXCLUDED 26`
 - Profile Completeness: `sources/2026-W34/profile-completeness-v2.json`
   - overall status: `LIMITED`; current-relevance and technical-significance limitations are explicit; carry-over is explicitly disposed
-- Current-Core Evidence/Views/Materiality/Completeness validation: PASS
+- Current-Core Evidence/Views/Materiality/Completeness validation: PASS; `CANDIDATES_NORMALIZED` Stage Checkpoint binds the active Evidence/View/Materiality/Completeness set exactly
 
 DailyX, Grok, X, and Sol working-set records remain discovery/community or authority-gap signals. They were not promoted to direct technical Evidence. The exact immutable GitHub Releases response for Transformers v5.15.1 supplies the one bounded in-window repository verification, while its release-note technical claims remain publisher claims.
 
@@ -98,7 +106,7 @@ DailyX, Grok, X, and Sol working-set records remain discovery/community or autho
 - Candidate Matrix: `sources/2026-W34/candidate-matrix-v2.json` — 80 candidates
 - Candidate Selection: `sources/2026-W34/candidate-selection-v2.json`
   - `SELECTED 1 / HOLD 64 / INSPECT 15`
-  - one exact-Raw developer-tooling candidate selected; unresolved authority-gap candidates retained without unsupported promotion
+  - fresh basis binds the active Evidence/View/Materiality/Completeness authorities; one exact-Raw developer-tooling candidate selected; unresolved authority-gap candidates retained without unsupported promotion
 - Issue Architecture: `sources/2026-W34/architecture-v2.json` — `PROPOSED`
 - Architecture Review Summary: `sources/2026-W34/architecture-review-summary-v2.json` — `READY_FOR_ARCHITECTURE_REVIEW`
 - Architecture Review Attention: `sources/2026-W34/architecture-review-attention-v2.json`
@@ -107,11 +115,17 @@ The exact review surface consists of the current `production-state.json`, the th
 
 ## Current-stage execution records
 
-This continuation is recorded under:
+The post-PR #484 production continuation is recorded under:
 
-`sources/2026-W34/execution/luna/w34-evidence-through-architecture-r1/`
+`sources/2026-W34/execution/luna/w34-core-repair-r1/`
 
-It contains the Evidence, Selection, and Architecture stage-contract reports/reviews and the session worklog. The canonical `reviewed_repository_commit_sha` is the exact W34 branch head verified after the final push and reported in the completion report; the review tree must not be mutated after that verification.
+It contains the operator invalidation output, Supplement, fresh interactive inputs, Evidence/Selection/Architecture stage-contract reports, and the final state transition records. The prior `w34-evidence-through-architecture-r1` directory remains historical and is not the active authority.
+
+Operator invalidation record:
+
+`sources/2026-W34/execution/operator-invalidations/architecture-invalidation-0001.json`
+
+It records `human_decision=false`, sequence `1`, the exact pre-invalidation State/Gate inputs, the `CANDIDATES_NORMALIZED` boundary, and the superseded mutable canonical paths. No Human review index row or Human decision was created.
 
 ## Recovery execution (historical)
 

@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W34",
+  "evidence_task_id": "evidence:2026-W34:6d559cce9ec948b3",
+  "basis": {
+    "task_sha256": "f618c68bf08fdde774fb7dfe899be3a3fc559aaa6534d8ea75f256c56e1ec2ea",
+    "screening_acceptance_sha256": "04743e36762b58e6d850f6a63c89470f6f4f1c8ba0f80c76426e686b629bbee9",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "w34-evidence-entity-w34-event-c048",
+      "canonical_name": "Transformers v5.15.1 release",
+      "entity_type": "FRAMEWORK",
+      "organization": "huggingface/transformers",
+      "canonical_url": "https://api.github.com/repos/huggingface/transformers/releases?per_page=100"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "w34-evidence-entity-w34-event-c048",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "Transformers v5.15.1 release",
+    "canonical_url": "https://api.github.com/repos/huggingface/transformers/releases?per_page=100"
+  },
+  "temporal": {
+    "observed_at": "2026-09-07T00:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://api.github.com/repos/huggingface/transformers/releases?per_page=100",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "Transformers v5.15.1 release",
+      "published_at": null,
+      "accessed_at": "2026-09-07T00:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The exact committed GitHub Releases response lists Patch release: v5.15.1 (tag v5.15.1) with published_at 2026-08-19T10:50:47Z, which is inside the configured W34 window.",
+      "subject_id": "w34-evidence-entity-w34-event-c048",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Bound to the immutable canonical GitHub Releases API Raw recorded by the task."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The release body states that the patch addresses DFlash/MTP candidate-generator issues and an accelerator image-processing issue; this is a project release-note claim.",
+      "subject_id": "w34-evidence-entity-w34-event-c048",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "The claim is quoted only as a publisher/project assertion from the exact API response; no independent reproduction is asserted."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "The release API bytes are exact and immutable, but the technical changes in the release body were not independently reproduced in this Evidence run.",
+      "subject_id": "w34-evidence-entity-w34-event-c048",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "In-window configured collector match; significance to be screened from release notes.",
+        "status": "VERIFIED",
+        "finding": "The committed immutable GitHub Releases API response contains the named v5.15.1 release, published 2026-08-19T10:50:47Z within the W34 window; its release-note technical delta is retained as a publisher claim and is not independently reproduced.",
+        "subject_ids": [
+          "w34-evidence-entity-w34-event-c048"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

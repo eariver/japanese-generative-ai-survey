@@ -1,0 +1,63 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W34",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "status": "PROPOSED",
+  "basis": {
+    "production_profile_sha256": "a6e3eb3006dde95da008876486cbfc7fdce75f507f7efcd6b0fcaba5e154b21a",
+    "profile_completeness_sha256": "4da8785863be5904f0f4decb843b3d580a88419a2d1222ce5d310881ec887424",
+    "materiality_ledger_sha256": "0c160b6f2555277ebd3ab51252882063430356c6f09bc87d7e6d269a69b57696",
+    "candidate_matrix_sha256": "98977612bdd152ec03c9d8c6fcb2f3f37efd2e0e6fccafb46b56d32ab302a651",
+    "candidate_selection_sha256": "160e3ae0fda3d8432707566b445740e5f3cf67102355fc5824762aefde50090c"
+  },
+  "editorial_thesis": "Present one rigorously verified W34 technical change while making the remaining authority and chronology boundaries explicit for review.",
+  "architecture_goals": [
+    "Lead with the verified in-window technical change.",
+    "Keep unresolved candidates as bounded internal context rather than unsupported claims.",
+    "Preserve Weekly chronology, authority, and carry-over limitations through review."
+  ],
+  "page_plan": {
+    "target_pages": 2,
+    "max_pages": 3,
+    "notes": "Architecture-only structure; reader-facing drafting is deferred until after Human Architecture Review."
+  },
+  "packages": [
+    {
+      "package_id": "w34-package-01",
+      "title": "Verified developer-tooling change",
+      "purpose": "Anchor the proposed Weekly architecture in the one candidate with exact immutable repository Raw chronology while retaining its publisher-claim boundary.",
+      "primary_candidate_ids": [
+        "candidate:2026-W34:e019cc9cdd7f4cae"
+      ],
+      "supporting_candidate_ids": [],
+      "must_cover_requirements": [
+        "weekly:current-relevance",
+        "weekly:technical-significance"
+      ],
+      "boundaries": [
+        "The release API bytes are exact and immutable, but the technical changes in the release body were not independently reproduced in this Evidence run."
+      ],
+      "drafting_order": 1,
+      "profile_extensions": {
+        "review_note": "Technical delta requires post-review drafting discipline."
+      },
+      "publication_extensions": {
+        "section_role": "WEEKLY_MAGAZINE:technical-update"
+      }
+    }
+  ],
+  "selected_exceptions": [],
+  "profile_extensions": {
+    "review_scope": "Architecture review only; no reader-facing prose or Human decision recorded.",
+    "authority_boundary": "DailyX/Grok/X and Sol observations remain non-technical Evidence."
+  },
+  "publication_extensions": {
+    "deferred_until": "ARCHITECTURE_REVIEW approval"
+  },
+  "human_review": {
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "review_reference": null
+  }
+}
