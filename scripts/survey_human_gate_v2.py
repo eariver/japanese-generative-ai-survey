@@ -1103,7 +1103,8 @@ def invalidate_pending_gate(
     if current_gate != gate:
         raise HumanGateError(
             f"operator pending-Gate invalidation current Gate mismatch: requested {gate}, current {current_gate}"
-        )    if state.get("machine_checkpoints", {}).get("architecture") != "passed" and gate == "ARCHITECTURE_REVIEW":
+        )
+    if state.get("machine_checkpoints", {}).get("architecture") != "passed" and gate == "ARCHITECTURE_REVIEW":
         raise HumanGateError("Architecture pending-Gate invalidation requires a passed Architecture checkpoint")
     if state.get("human_gates", {}).get("architecture_review") == "approved" and gate == "PUBLICATION_PREVIEW":
         raise HumanGateError("operator invalidation cannot cross an active Human Architecture approval")
