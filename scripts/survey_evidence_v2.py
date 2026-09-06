@@ -63,6 +63,39 @@ SOURCE_CLASS_MAP = {
     "official_project_repo": "PRIMARY_REPOSITORY",
     "official_publisher_page": "PRIMARY_OFFICIAL",
     "sol_working_set_observation": "SECONDARY",
+    # These values are part of the existing Weekly fixtures.  They are
+    # deliberately classified by their established provenance, rather than
+    # by words appearing in the value itself.
+    "github-changelog": "PRIMARY_OFFICIAL",
+    "github-repository": "PRIMARY_REPOSITORY",
+    "official-index-snapshot": "PRIMARY_OFFICIAL",
+    "official-page": "PRIMARY_OFFICIAL",
+    "prior-week-authority": "SECONDARY",
+    "x-community-signal": "SOCIAL",
+    # W34's Discovery vocabulary includes these edition-local observations.
+    "carryover_recheck": "SECONDARY",
+    "grok_x_observation_corrected_r2": "SOCIAL",
+    "sol_discovery_working_record": "SECONDARY",
+    # Exact source_type values used by the W34 post-Screening supplement.
+    "first_party_product_release": "PRIMARY_OFFICIAL",
+    "first_party_product_changelog": "PRIMARY_OFFICIAL",
+    "first_party_product_docs": "PRIMARY_OFFICIAL",
+    "first_party_repository": "PRIMARY_REPOSITORY",
+    "primary_research_record": "PRIMARY_PAPER",
+    "primary_research_pdf": "PRIMARY_PAPER",
+    "first_party_announcement": "PRIMARY_OFFICIAL",
+    "first_party_research_publication": "PRIMARY_PAPER",
+    "first_party_vendor_blog": "PRIMARY_OFFICIAL",
+    "first_party_product_release_notes": "PRIMARY_OFFICIAL",
+    "first_party_product_announcement": "PRIMARY_OFFICIAL",
+    "first_party_safety_publication": "PRIMARY_OFFICIAL",
+    "first_party_product_safety_publication": "PRIMARY_OFFICIAL",
+    "first_party_technical_example": "PRIMARY_OFFICIAL",
+    "vendor_technical_blog": "PRIMARY_OFFICIAL",
+    "official_conference_paper": "PRIMARY_PAPER",
+    "vulnerability_authority_api": "PRIMARY_OFFICIAL",
+    "industry_rights_authority": "PRIMARY_OFFICIAL",
+    "government_security_mirror": "PRIMARY_OFFICIAL",
 }
 
 
@@ -137,20 +170,6 @@ def _source_class(source_type: Any) -> str:
         return value
     if not isinstance(source_type, str) or not source_type.strip():
         raise ValueError(f"unsupported source_type for Evidence authority: {source_type!r}")
-    normalized = source_type.strip().lower().replace("-", "_")
-    if any(token in normalized for token in ("social", "dailyx", "x_observation")):
-        return "SOCIAL"
-    if any(token in normalized for token in ("paper", "research", "arxiv", "proceedings", "conference")):
-        return "PRIMARY_PAPER"
-    if any(token in normalized for token in ("repository", "github", "gitlab", "source_code")):
-        return "PRIMARY_REPOSITORY"
-    if normalized in {"secondary", "secondary_reporting", "working_set_observation"}:
-        return "SECONDARY"
-    if any(token in normalized for token in (
-        "first_party", "official", "government", "vendor", "authority", "security",
-        "release", "product", "technical", "documentation", "announcement", "changelog",
-    )):
-        return "PRIMARY_OFFICIAL"
     raise ValueError(f"unsupported source_type for Evidence authority: {source_type!r}")
 
 
@@ -891,6 +910,7 @@ def validate_evidence_card(
         allowed_sources = {
             f"src-{index}": {
                 "url": source.get("locator"),
+                "source_class": _source_class(source.get("source_type")),
                 "supplement": False,
             }
             for index, source in enumerate(task.get("source_records", []), start=1)
@@ -900,6 +920,18 @@ def validate_evidence_card(
     for source in sources:
         source_id = source.get("source_id")
         authority_source = allowed_sources.get(source_id)
+        if authority_source is None:
+            # Existing Discovery Cards use their own source-id namespace
+            # (for example, ``source-1``) while the Core authority map uses
+            # deterministic ``src-N`` keys.  Preserve that legacy contract
+            # only for an unambiguous Discovery locator; supplement sources
+            # still require their explicit supplement_source_id.
+            discovery_matches = [
+                value for value in allowed_sources.values()
+                if not value.get("supplement") and value.get("url") == source.get("url")
+            ]
+            if len(discovery_matches) == 1:
+                authority_source = discovery_matches[0]
         if package.get("authority_supplement") is None:
             unbound = source.get("url") not in allowed_locators
         else:
@@ -907,6 +939,10 @@ def validate_evidence_card(
         if unbound:
             errors.append(
                 f"Evidence source {source.get('source_id')} was not explicitly bound to this Evidence task; add it through Discovery/Screening first or use an exact Evidence Authority Supplement"
+            )
+        elif authority_source is not None and source.get("source_class") != authority_source.get("source_class"):
+            errors.append(
+                f"Evidence source {source_id} source_class does not match task-bound authority class {authority_source.get('source_class')}"
             )
         elif package.get("authority_supplement") is not None and authority_source is not None and authority_source.get("supplement"):
             for key in ("url", "source_class", "title", "published_at", "accessed_at"):

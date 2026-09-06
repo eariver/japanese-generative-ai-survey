@@ -383,6 +383,89 @@ class SurveyEvidenceV2Tests(unittest.TestCase):
         card["sources"][0]["url"] = "https://example.invalid/hidden-new-source"
         self.assertIn("add it through Discovery/Screening first", "; ".join(evidence.validate_evidence_card(card, task, meta["sha256"], package)))
 
+    def test_source_type_taxonomy_is_explicit_and_rejects_lexical_spoofing(self) -> None:
+        supported = {
+            "PRIMARY_OFFICIAL": "PRIMARY_OFFICIAL",
+            "PRIMARY_PAPER": "PRIMARY_PAPER",
+            "PRIMARY_REPOSITORY": "PRIMARY_REPOSITORY",
+            "SOCIAL": "SOCIAL",
+            "SECONDARY": "SECONDARY",
+            "paper": "PRIMARY_PAPER",
+            "github-release": "PRIMARY_REPOSITORY",
+            "github-repository": "PRIMARY_REPOSITORY",
+            "github-changelog": "PRIMARY_OFFICIAL",
+            "official-feed-item": "PRIMARY_OFFICIAL",
+            "official-index": "PRIMARY_OFFICIAL",
+            "official-index-snapshot": "PRIMARY_OFFICIAL",
+            "official-page": "PRIMARY_OFFICIAL",
+            "first_party_release_or_docs": "PRIMARY_OFFICIAL",
+            "first_party_official": "PRIMARY_OFFICIAL",
+            "government_security_authority": "PRIMARY_OFFICIAL",
+            "vendor_technical": "PRIMARY_OFFICIAL",
+            "repository_release": "PRIMARY_REPOSITORY",
+            "arxiv_primary": "PRIMARY_PAPER",
+            "dailyx_x_observation": "SOCIAL",
+            "x-community-signal": "SOCIAL",
+            "github_release_api_response": "PRIMARY_REPOSITORY",
+            "official_project_repo": "PRIMARY_REPOSITORY",
+            "official_publisher_page": "PRIMARY_OFFICIAL",
+            "carryover_recheck": "SECONDARY",
+            "grok_x_observation_corrected_r2": "SOCIAL",
+            "prior-week-authority": "SECONDARY",
+            "sol_discovery_working_record": "SECONDARY",
+            "sol_working_set_observation": "SECONDARY",
+            "first_party_product_release": "PRIMARY_OFFICIAL",
+            "first_party_product_changelog": "PRIMARY_OFFICIAL",
+            "first_party_product_docs": "PRIMARY_OFFICIAL",
+            "first_party_repository": "PRIMARY_REPOSITORY",
+            "primary_research_record": "PRIMARY_PAPER",
+            "primary_research_pdf": "PRIMARY_PAPER",
+            "first_party_announcement": "PRIMARY_OFFICIAL",
+            "first_party_research_publication": "PRIMARY_PAPER",
+            "first_party_vendor_blog": "PRIMARY_OFFICIAL",
+            "first_party_product_release_notes": "PRIMARY_OFFICIAL",
+            "first_party_product_announcement": "PRIMARY_OFFICIAL",
+            "first_party_safety_publication": "PRIMARY_OFFICIAL",
+            "first_party_product_safety_publication": "PRIMARY_OFFICIAL",
+            "first_party_technical_example": "PRIMARY_OFFICIAL",
+            "vendor_technical_blog": "PRIMARY_OFFICIAL",
+            "official_conference_paper": "PRIMARY_PAPER",
+            "vulnerability_authority_api": "PRIMARY_OFFICIAL",
+            "industry_rights_authority": "PRIMARY_OFFICIAL",
+            "government_security_mirror": "PRIMARY_OFFICIAL",
+        }
+        for source_type, expected in supported.items():
+            with self.subTest(source_type=source_type):
+                self.assertEqual(evidence._source_class(source_type), expected)
+
+        for source_type in (
+            "not-an-official-source",
+            "vendor-rumor",
+            "research-commentary",
+            "not-a-repository",
+            "github-discussion",
+            "totally-arbitrary-source",
+        ):
+            with self.subTest(source_type=source_type):
+                with self.assertRaisesRegex(ValueError, "unsupported source_type"):
+                    evidence._source_class(source_type)
+
+    def test_discovery_source_class_must_match_derived_authority_without_supplement(self) -> None:
+        root, _, _, _, _, package_path, _, _ = self.make_chain()
+        package = core.load_json(package_path)
+        meta = package["tasks"][0]
+        task = core.load_json(package_path.parent / meta["path"])
+        card = self.card_for_task(root, package_path, meta)
+        self.assertEqual(
+            evidence.validate_evidence_card(card, task, meta["sha256"], package),
+            [],
+        )
+        card["sources"][0]["source_class"] = "SOCIAL"
+        self.assertIn(
+            "source_class does not match task-bound authority class PRIMARY_PAPER",
+            "; ".join(evidence.validate_evidence_card(card, task, meta["sha256"], package)),
+        )
+
     def test_issue_191_comparator_owned_metric_cannot_bind_primary_subject(self) -> None:
         root, _, _, _, _, package_path, _, _ = self.make_chain()
         package = core.load_json(package_path)
@@ -603,6 +686,18 @@ class SurveyEvidenceV2Tests(unittest.TestCase):
         self.assertEqual(authorities[source_id]["url"], source["locator"])
 
         card = self.card_for_task(root, package_path, meta)
+        # A package supplement does not make a Discovery-origin Card exempt
+        # from the derived Discovery authority class check.
+        self.assertEqual(
+            evidence.validate_evidence_card(card, task, meta["sha256"], package, repo_root=root),
+            [],
+        )
+        card["sources"][0]["source_class"] = "SOCIAL"
+        self.assertIn(
+            "source_class does not match task-bound authority class PRIMARY_PAPER",
+            "; ".join(evidence.validate_evidence_card(card, task, meta["sha256"], package, repo_root=root)),
+        )
+        card["sources"][0]["source_class"] = source["source_class"]
         card_source = card["sources"][0]
         card_source.update({
             "source_id": source_id,
@@ -698,6 +793,14 @@ class SurveyEvidenceV2Tests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Raw SHA drift"):
             evidence.validate_evidence_authority_supplement(
                 root, write_manifest("drift.json", drift), expected_issue_id="SP001"
+            )
+
+        class_mismatch = copy.deepcopy(base)
+        class_mismatch["supplement_source_id"] = "supplement-src-" + "a" * 16
+        class_mismatch["source_class"] = "PRIMARY_OFFICIAL"
+        with self.assertRaisesRegex(ValueError, "source_class does not match source_type"):
+            evidence.validate_evidence_authority_supplement(
+                root, write_manifest("class-mismatch.json", class_mismatch), expected_issue_id="SP001"
             )
 
         byte_drift = copy.deepcopy(base)
