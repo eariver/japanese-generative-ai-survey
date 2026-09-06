@@ -10,7 +10,7 @@ Final-audit rule: `docs/survey-production-core-v2-final-audit-rule.md`
 
 This index identifies the live semantic authority for Survey Production Core v2 while preserving earlier design/audit documents as historical reasoning.
 
-Current `main` is the production source of truth at the reviewed baseline `a9f121f0d65591f52b53515712d7c0bae573b2ef`. The historical implementation PR #310 and post-integration repair PR #452 are already merged. This file is the current Core authority for the maintenance candidate branch above; it does not authorize a merge or substitute for later fixed-head audit and Human review.
+Current `main` is the production source of truth at the current structural-recovery HEAD `d8fa79ef2affacec49a47e6fc88018fb99f36899`. That HEAD is a structural-recovery descendant of the pre-incident reviewed semantic/tree baseline `a9f121f0d65591f52b53515712d7c0bae573b2ef`; both commits resolve to exact tree `b6c1b2cbc13165e64ac1d88d4d36b7515f7494da`, with zero changed files and zero content delta. The current main SHA is authoritative for repository reality; `a9f121f0d65591f52b53515712d7c0bae573b2ef` remains the pre-incident reviewed baseline and is not a substitute for the current HEAD. The historical implementation PR #310 and post-integration repair PR #452 are already merged. This file is the current Core authority for the maintenance candidate branch above; it does not authorize a merge or substitute for later fixed-head audit and Human review.
 
 Historical candidate audits are not reusable as current approval evidence:
 

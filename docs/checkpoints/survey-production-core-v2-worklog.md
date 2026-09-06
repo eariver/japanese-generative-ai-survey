@@ -6,7 +6,7 @@ Last updated: 2026-09-06 JST
 Current maintenance branch: `fix/core-v2-pre-human-evidence-regeneration-20260905`
 Historical implementation PRs: `#310` and post-integration repair `#452` (merged)
 Current integration PR: `#484` — `Survey Production Core v2: pre-Human Evidence regeneration repair` (`draft` / `open` / `unmerged`); this branch is a normal draft integration review surface, not an operator transport, and must not be merged by this task
-Production source of truth: current `main` at reviewed baseline `a9f121f0d65591f52b53515712d7c0bae573b2ef`
+Production source of truth: current `main` at structural-recovery HEAD `d8fa79ef2affacec49a47e6fc88018fb99f36899`; structural-recovery descendant of pre-incident reviewed semantic/tree baseline `a9f121f0d65591f52b53515712d7c0bae573b2ef`, exact tree `b6c1b2cbc13165e64ac1d88d4d36b7515f7494da`, zero changed files/content delta
 Semantic authority: `docs/survey-production-core-v2-authority.md`  
 Final-audit rule: `docs/survey-production-core-v2-final-audit-rule.md`
 
@@ -28,7 +28,7 @@ Historical audit attempts remain evidence only:
 
 - Repository: `eariver/japanese-generative-ai-survey`
 - Maintenance branch: `fix/core-v2-pre-human-evidence-regeneration-20260905`
-- Production `main`: `a9f121f0d65591f52b53515712d7c0bae573b2ef` at the current reviewed baseline.
+- Production `main`: `d8fa79ef2affacec49a47e6fc88018fb99f36899` at the current structural-recovery HEAD. It is a structural-recovery descendant of pre-incident reviewed baseline `a9f121f0d65591f52b53515712d7c0bae573b2ef`; both have exact tree `b6c1b2cbc13165e64ac1d88d4d36b7515f7494da` and zero content delta. Current main SHA remains authoritative for repository reality.
 - PR #310: historical implementation PR, merged.
 - PR #452: historical post-integration operator/Thematic repair PR, merged; its narrow amendment remains current authority where applicable.
 - WU-010R: historical `COMPLETE / SECOND-AUDIT GREEN`.
