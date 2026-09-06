@@ -1,13 +1,17 @@
 from __future__ import annotations
 
 import copy
+import hashlib
+import json
 import shutil
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from scripts import survey_evidence_v2 as evidence
 from scripts import survey_production_v2 as core
+from scripts import survey_schema_v2 as schema_gate
 from scripts import survey_screening_v2 as screening
 
 
@@ -379,6 +383,89 @@ class SurveyEvidenceV2Tests(unittest.TestCase):
         card["sources"][0]["url"] = "https://example.invalid/hidden-new-source"
         self.assertIn("add it through Discovery/Screening first", "; ".join(evidence.validate_evidence_card(card, task, meta["sha256"], package)))
 
+    def test_source_type_taxonomy_is_explicit_and_rejects_lexical_spoofing(self) -> None:
+        supported = {
+            "PRIMARY_OFFICIAL": "PRIMARY_OFFICIAL",
+            "PRIMARY_PAPER": "PRIMARY_PAPER",
+            "PRIMARY_REPOSITORY": "PRIMARY_REPOSITORY",
+            "SOCIAL": "SOCIAL",
+            "SECONDARY": "SECONDARY",
+            "paper": "PRIMARY_PAPER",
+            "github-release": "PRIMARY_REPOSITORY",
+            "github-repository": "PRIMARY_REPOSITORY",
+            "github-changelog": "PRIMARY_OFFICIAL",
+            "official-feed-item": "PRIMARY_OFFICIAL",
+            "official-index": "PRIMARY_OFFICIAL",
+            "official-index-snapshot": "PRIMARY_OFFICIAL",
+            "official-page": "PRIMARY_OFFICIAL",
+            "first_party_release_or_docs": "PRIMARY_OFFICIAL",
+            "first_party_official": "PRIMARY_OFFICIAL",
+            "government_security_authority": "PRIMARY_OFFICIAL",
+            "vendor_technical": "PRIMARY_OFFICIAL",
+            "repository_release": "PRIMARY_REPOSITORY",
+            "arxiv_primary": "PRIMARY_PAPER",
+            "dailyx_x_observation": "SOCIAL",
+            "x-community-signal": "SOCIAL",
+            "github_release_api_response": "PRIMARY_REPOSITORY",
+            "official_project_repo": "PRIMARY_REPOSITORY",
+            "official_publisher_page": "PRIMARY_OFFICIAL",
+            "carryover_recheck": "SECONDARY",
+            "grok_x_observation_corrected_r2": "SOCIAL",
+            "prior-week-authority": "SECONDARY",
+            "sol_discovery_working_record": "SECONDARY",
+            "sol_working_set_observation": "SECONDARY",
+            "first_party_product_release": "PRIMARY_OFFICIAL",
+            "first_party_product_changelog": "PRIMARY_OFFICIAL",
+            "first_party_product_docs": "PRIMARY_OFFICIAL",
+            "first_party_repository": "PRIMARY_REPOSITORY",
+            "primary_research_record": "PRIMARY_PAPER",
+            "primary_research_pdf": "PRIMARY_PAPER",
+            "first_party_announcement": "PRIMARY_OFFICIAL",
+            "first_party_research_publication": "PRIMARY_PAPER",
+            "first_party_vendor_blog": "PRIMARY_OFFICIAL",
+            "first_party_product_release_notes": "PRIMARY_OFFICIAL",
+            "first_party_product_announcement": "PRIMARY_OFFICIAL",
+            "first_party_safety_publication": "PRIMARY_OFFICIAL",
+            "first_party_product_safety_publication": "PRIMARY_OFFICIAL",
+            "first_party_technical_example": "PRIMARY_OFFICIAL",
+            "vendor_technical_blog": "PRIMARY_OFFICIAL",
+            "official_conference_paper": "PRIMARY_PAPER",
+            "vulnerability_authority_api": "PRIMARY_OFFICIAL",
+            "industry_rights_authority": "PRIMARY_OFFICIAL",
+            "government_security_mirror": "PRIMARY_OFFICIAL",
+        }
+        for source_type, expected in supported.items():
+            with self.subTest(source_type=source_type):
+                self.assertEqual(evidence._source_class(source_type), expected)
+
+        for source_type in (
+            "not-an-official-source",
+            "vendor-rumor",
+            "research-commentary",
+            "not-a-repository",
+            "github-discussion",
+            "totally-arbitrary-source",
+        ):
+            with self.subTest(source_type=source_type):
+                with self.assertRaisesRegex(ValueError, "unsupported source_type"):
+                    evidence._source_class(source_type)
+
+    def test_discovery_source_class_must_match_derived_authority_without_supplement(self) -> None:
+        root, _, _, _, _, package_path, _, _ = self.make_chain()
+        package = core.load_json(package_path)
+        meta = package["tasks"][0]
+        task = core.load_json(package_path.parent / meta["path"])
+        card = self.card_for_task(root, package_path, meta)
+        self.assertEqual(
+            evidence.validate_evidence_card(card, task, meta["sha256"], package),
+            [],
+        )
+        card["sources"][0]["source_class"] = "SOCIAL"
+        self.assertIn(
+            "source_class does not match task-bound authority class PRIMARY_PAPER",
+            "; ".join(evidence.validate_evidence_card(card, task, meta["sha256"], package)),
+        )
+
     def test_issue_191_comparator_owned_metric_cannot_bind_primary_subject(self) -> None:
         root, _, _, _, _, package_path, _, _ = self.make_chain()
         package = core.load_json(package_path)
@@ -544,6 +631,252 @@ class SurveyEvidenceV2Tests(unittest.TestCase):
             ),
             [],
         )
+
+    def test_evidence_authority_supplement_binds_exact_raw_source_and_card(self) -> None:
+        root, profile_path, state_path, discovery_path, screening_acceptance, _, _, _ = self.make_chain(
+            include_drop=True
+        )
+        issue_root = root / "sources/SP001"
+        raw_path = issue_root / "raw/authority.html"
+        raw_path.parent.mkdir(parents=True, exist_ok=True)
+        raw_path.write_bytes(b"exact primary authority bytes\n")
+        task_id = evidence.stable_task_id("SP001", "target-source")
+        source_id = "supplement-src-" + "1" * 16
+        source = {
+            "supplement_source_id": source_id,
+            "discovery_id": "target-source",
+            "evidence_task_id": task_id,
+            "locator": "https://example.invalid/authority",
+            "source_type": "paper",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Exact authority",
+            "published_at": "2026-08-22T00:00:00Z",
+            "accessed_at": "2026-08-23T00:00:00Z",
+            "raw_path": raw_path.relative_to(root).as_posix(),
+            "raw_sha256": hashlib.sha256(raw_path.read_bytes()).hexdigest(),
+            "byte_count": raw_path.stat().st_size,
+            "relation": "post-Screening exact authority for the target task",
+        }
+        manifest_path = evidence.build_evidence_authority_supplement(
+            root,
+            "SP001",
+            issue_root,
+            discovery_path,
+            screening_acceptance,
+            [source],
+            root / "sources/SP001/evidence-authority-supplement.json",
+            supplement_id="supplement-test-r1",
+            implementation_sha=IMPLEMENTATION_SHA,
+        )
+        package_path = evidence.prepare_evidence_package(
+            root,
+            state_path,
+            discovery_path,
+            screening_acceptance,
+            root / "sources/SP001/evidence/v2/supplement-package",
+            IMPLEMENTATION_SHA,
+            manifest_path,
+        )
+        package = core.load_json(package_path)
+        evidence.validate_evidence_package_basis(root, package_path, package, IMPLEMENTATION_SHA)
+        meta = next(row for row in package["tasks"] if row["evidence_task_id"] == task_id)
+        task = core.load_json(package_path.parent / meta["path"])
+        self.assertEqual(task["authority_supplement_source_ids"], [source_id])
+        authorities = evidence.task_authority_sources(root, task, package)
+        self.assertEqual(authorities[source_id]["url"], source["locator"])
+
+        card = self.card_for_task(root, package_path, meta)
+        # A package supplement does not make a Discovery-origin Card exempt
+        # from the derived Discovery authority class check.
+        self.assertEqual(
+            evidence.validate_evidence_card(card, task, meta["sha256"], package, repo_root=root),
+            [],
+        )
+        card["sources"][0]["source_class"] = "SOCIAL"
+        self.assertIn(
+            "source_class does not match task-bound authority class PRIMARY_PAPER",
+            "; ".join(evidence.validate_evidence_card(card, task, meta["sha256"], package, repo_root=root)),
+        )
+        card["sources"][0]["source_class"] = source["source_class"]
+        card_source = card["sources"][0]
+        card_source.update({
+            "source_id": source_id,
+            "url": source["locator"],
+            "source_class": source["source_class"],
+            "title": source["title"],
+            "published_at": source["published_at"],
+            "accessed_at": source["accessed_at"],
+        })
+        for item in card["claims"] + card["limitations"]:
+            item["source_ids"] = [source_id]
+        for item in card["verification"]["targets"]:
+            item["source_ids"] = [source_id]
+        self.assertEqual(
+            evidence.validate_evidence_card(card, task, meta["sha256"], package, repo_root=root),
+            [],
+        )
+        card["sources"][0]["url"] = "https://example.invalid/unbound"
+        self.assertIn(
+            "not explicitly bound",
+            "; ".join(evidence.validate_evidence_card(card, task, meta["sha256"], package, repo_root=root)),
+        )
+
+    def test_evidence_authority_supplement_rejects_drop_unknown_path_sha_and_symlink(self) -> None:
+        root, _, _, discovery_path, screening_acceptance, _, _, _ = self.make_chain(include_drop=True)
+        issue_root = root / "sources/SP001"
+        raw_path = issue_root / "raw/authority.html"
+        raw_path.parent.mkdir(parents=True, exist_ok=True)
+        raw_path.write_bytes(b"exact bytes")
+        base = {
+            "supplement_source_id": "supplement-src-" + "2" * 16,
+            "discovery_id": "target-source",
+            "evidence_task_id": evidence.stable_task_id("SP001", "target-source"),
+            "locator": "https://example.invalid/authority",
+            "source_type": "paper",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Exact authority",
+            "published_at": None,
+            "accessed_at": "2026-08-23T00:00:00Z",
+            "raw_path": raw_path.relative_to(root).as_posix(),
+            "raw_sha256": hashlib.sha256(raw_path.read_bytes()).hexdigest(),
+            "byte_count": raw_path.stat().st_size,
+            "relation": "exact authority",
+        }
+
+        def write_manifest(name: str, source: dict) -> Path:
+            path = root / "sources/SP001" / name
+            payload = {
+                "schema_version": "2.0-rc1",
+                "supplement_id": name,
+                "issue_id": "SP001",
+                "basis": {
+                    "source_root": "sources/SP001",
+                    "discovery_path": discovery_path.relative_to(root).as_posix(),
+                    "discovery_sha256": core.sha256_file(discovery_path),
+                    "screening_acceptance_path": screening_acceptance.relative_to(root).as_posix(),
+                    "screening_acceptance_sha256": core.sha256_file(screening_acceptance),
+                },
+                "sources": [source],
+            }
+            core.write_json(path, payload)
+            return path
+
+        drop = copy.deepcopy(base)
+        drop["supplement_source_id"] = "supplement-src-" + "3" * 16
+        drop["discovery_id"] = "irrelevant-source"
+        drop["evidence_task_id"] = evidence.stable_task_id("SP001", "irrelevant-source")
+        with self.assertRaisesRegex(ValueError, "DROP"):
+            evidence.validate_evidence_authority_supplement(
+                root, write_manifest("drop.json", drop), expected_issue_id="SP001"
+            )
+
+        unknown = copy.deepcopy(base)
+        unknown["supplement_source_id"] = "supplement-src-" + "4" * 16
+        unknown["discovery_id"] = "unknown"
+        unknown["evidence_task_id"] = evidence.stable_task_id("SP001", "unknown")
+        with self.assertRaisesRegex(ValueError, "unknown Discovery"):
+            evidence.validate_evidence_authority_supplement(
+                root, write_manifest("unknown.json", unknown), expected_issue_id="SP001"
+            )
+
+        escaped = copy.deepcopy(base)
+        escaped["supplement_source_id"] = "supplement-src-" + "5" * 16
+        escaped["raw_path"] = "../outside.raw"
+        with self.assertRaisesRegex(ValueError, "relative without traversal|escapes"):
+            evidence.validate_evidence_authority_supplement(
+                root, write_manifest("escaped.json", escaped), expected_issue_id="SP001"
+            )
+
+        drift = copy.deepcopy(base)
+        drift["supplement_source_id"] = "supplement-src-" + "6" * 16
+        drift["raw_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "Raw SHA drift"):
+            evidence.validate_evidence_authority_supplement(
+                root, write_manifest("drift.json", drift), expected_issue_id="SP001"
+            )
+
+        class_mismatch = copy.deepcopy(base)
+        class_mismatch["supplement_source_id"] = "supplement-src-" + "a" * 16
+        class_mismatch["source_class"] = "PRIMARY_OFFICIAL"
+        with self.assertRaisesRegex(ValueError, "source_class does not match source_type"):
+            evidence.validate_evidence_authority_supplement(
+                root, write_manifest("class-mismatch.json", class_mismatch), expected_issue_id="SP001"
+            )
+
+        byte_drift = copy.deepcopy(base)
+        byte_drift["supplement_source_id"] = "supplement-src-" + "8" * 16
+        byte_drift["byte_count"] += 1
+        with self.assertRaisesRegex(ValueError, "byte_count drift"):
+            evidence.validate_evidence_authority_supplement(
+                root, write_manifest("byte-drift.json", byte_drift), expected_issue_id="SP001"
+            )
+
+        symlink = issue_root / "raw/link.html"
+        symlink.symlink_to(raw_path)
+        linked = copy.deepcopy(base)
+        linked["supplement_source_id"] = "supplement-src-" + "7" * 16
+        linked["raw_path"] = symlink.relative_to(root).as_posix()
+        with self.assertRaisesRegex(ValueError, "symlink"):
+            evidence.validate_evidence_authority_supplement(
+                root, write_manifest("symlink.json", linked), expected_issue_id="SP001"
+            )
+
+    def test_zero_byte_authority_fails_schema_and_independent_runtime_without_output(self) -> None:
+        root, _, _, discovery_path, screening_acceptance, _, _, _ = self.make_chain()
+        issue_root = root / "sources/SP001"
+        raw_path = issue_root / "raw/empty-authority.bin"
+        raw_path.parent.mkdir(parents=True, exist_ok=True)
+        raw_path.write_bytes(b"")
+        source = {
+            "supplement_source_id": "supplement-src-" + "9" * 16,
+            "discovery_id": "target-source",
+            "evidence_task_id": evidence.stable_task_id("SP001", "target-source"),
+            "locator": "https://example.invalid/empty-authority",
+            "source_type": "paper",
+            "source_class": "PRIMARY_PAPER",
+            "title": "Empty authority",
+            "published_at": None,
+            "accessed_at": "2026-08-23T00:00:00Z",
+            "raw_path": raw_path.relative_to(root).as_posix(),
+            "raw_sha256": hashlib.sha256(b"").hexdigest(),
+            "byte_count": 0,
+            "relation": "zero-byte authority rejection fixture",
+        }
+        payload = {
+            "schema_version": "2.0-rc1",
+            "supplement_id": "supplement-zero-byte",
+            "issue_id": "SP001",
+            "basis": {
+                "source_root": "sources/SP001",
+                "discovery_path": discovery_path.relative_to(root).as_posix(),
+                "discovery_sha256": core.sha256_file(discovery_path),
+                "screening_acceptance_path": screening_acceptance.relative_to(root).as_posix(),
+                "screening_acceptance_sha256": core.sha256_file(screening_acceptance),
+            },
+            "sources": [source],
+        }
+        with self.assertRaisesRegex(schema_gate.SchemaConformanceError, "minimum"):
+            schema_gate.validate_instance(
+                payload,
+                root / evidence.SUPPLEMENT_SCHEMA,
+                label="Evidence Authority Supplement",
+            )
+
+        output_path = issue_root / "zero-byte-supplement.json"
+        with mock.patch.object(evidence.schema_gate, "validate_instance", return_value=None):
+            with self.assertRaisesRegex(ValueError, "Raw body must be non-empty"):
+                evidence.build_evidence_authority_supplement(
+                    root,
+                    "SP001",
+                    issue_root,
+                    discovery_path,
+                    screening_acceptance,
+                    [source],
+                    output_path,
+                    supplement_id="supplement-zero-byte",
+                    implementation_sha=IMPLEMENTATION_SHA,
+                )
+        self.assertFalse(output_path.exists(), "rejected zero-byte supplement left residual output")
 
 
 if __name__ == "__main__":

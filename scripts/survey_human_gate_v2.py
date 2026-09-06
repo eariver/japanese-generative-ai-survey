@@ -27,10 +27,12 @@ from typing import Any
 from scripts import survey_agent_control_v2 as agent
 from scripts import survey_production_v2 as core
 from scripts import survey_publication_v2 as publication
+from scripts import survey_review_attention_v2 as review_attention
 from scripts import survey_schema_v2 as schema_gate
 
 REVIEW_RECORD_SCHEMA = Path("schemas/human-gate-review-record-v2.schema.json")
 REVIEW_INDEX_SCHEMA = Path("schemas/human-gate-review-index-v2.schema.json")
+OPERATOR_INVALIDATION_SCHEMA = Path("schemas/operator-pending-gate-invalidation-v2.schema.json")
 GATE_KEYS = {
     "ARCHITECTURE_REVIEW": "architecture_review",
     "PUBLICATION_PREVIEW": "publication_preview",
@@ -209,6 +211,22 @@ def _expand_gate_path(template: str, profile: dict[str, Any]) -> str:
     return value
 
 
+def _raw_repo_file(repo_root: Path, relative: str, label: str) -> Path:
+    """Resolve a repository-relative file without following symlink components."""
+    if not core._safe_relative_repo_path(relative):
+        raise HumanGateError(f"{label} must be a safe repository-relative path")
+    root = repo_root.resolve()
+    raw = root / relative
+    current = root
+    for part in Path(relative).parts:
+        current = current / part
+        if current.is_symlink():
+            raise HumanGateError(f"{label} may not traverse a symlink: {relative}")
+    if not raw.is_file():
+        raise HumanGateError(f"{label} missing or unsafe: {relative}")
+    return raw
+
+
 def _reviewed_artifacts(
     repo_root: Path,
     cfg: dict[str, Any],
@@ -343,6 +361,73 @@ def _validate_gate_pending(state: dict[str, Any], gate: str) -> None:
         raise HumanGateError(f"{gate} decision requires pending {expected_state} Human Gate")
 
 
+def _current_pending_gate(
+    cfg: dict[str, Any],
+    state: dict[str, Any],
+    *,
+    requested_gate: str | None = None,
+) -> str:
+    """Derive the currently stopped Human Gate from lifecycle authority.
+
+    target_gate is the eventual run destination, not the identity of the Gate
+    currently awaiting presentation. The configured lifecycle mapping, pending
+    status, null provenance, and terminal reason together define the only
+    operator-invalidatable pending surface.
+    """
+    lifecycle = state.get("lifecycle_state")
+    gate_at_state = cfg.get("orchestration", {}).get("gate_at_state")
+    if not isinstance(gate_at_state, dict):
+        raise HumanGateError("orchestration.gate_at_state is missing or invalid")
+    current_gate = gate_at_state.get(lifecycle)
+    if current_gate not in GATE_KEYS:
+        if requested_gate in GATE_KEYS and lifecycle != GATE_STATES[requested_gate]:
+            raise HumanGateError(
+                f"{requested_gate} decision requires pending {GATE_STATES[requested_gate]} Human Gate"
+            )
+        raise HumanGateError(
+            f"current lifecycle {lifecycle!r} has no configured pending Human Gate"
+        )
+    if GATE_STATES[current_gate] != lifecycle:
+        raise HumanGateError(
+            f"configured current Human Gate {current_gate} does not match lifecycle {lifecycle}"
+        )
+    human_gates = state.get("human_gates")
+    provenance = state.get("human_gate_provenance")
+    gate_key = GATE_KEYS[current_gate]
+    if not isinstance(human_gates, dict) or human_gates.get(gate_key) != "pending":
+        raise HumanGateError(
+            f"current {current_gate} Human Gate is not pending"
+        )
+    if not isinstance(provenance, dict) or provenance.get(gate_key) is not None:
+        raise HumanGateError(
+            f"current {current_gate} Human Gate has active provenance"
+        )
+    if state.get("terminal_reason") != "HUMAN_GATE_REACHED":
+        raise HumanGateError(
+            "operator pending-Gate invalidation requires HUMAN_GATE_REACHED"
+        )
+    return current_gate
+
+
+def _historical_core_config(repo_root: Path, commit_sha: str) -> dict[str, Any]:
+    """Load the canonical Core config bytes from an invalidated commit."""
+    config_path = core.DEFAULT_CONFIG.as_posix()
+    raw = _committed_file_bytes(repo_root, commit_sha, config_path)
+    try:
+        config = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise HumanGateError(
+            "invalidated repository commit Core config is not valid UTF-8 JSON"
+        ) from exc
+    if not isinstance(config, dict):
+        raise HumanGateError("invalidated repository commit Core config is not an object")
+    gate_at_state = config.get("orchestration", {}).get("gate_at_state")
+    if not isinstance(gate_at_state, dict):
+        raise HumanGateError(
+            "invalidated repository commit Core config lacks orchestration.gate_at_state"
+        )
+    return config
+
 def _require_review_commit(repo_root: Path, commit_sha: str) -> None:
     try:
         subprocess.run(
@@ -358,6 +443,18 @@ def _require_review_commit(repo_root: Path, commit_sha: str) -> None:
 
 
 def _require_review_commit_reachable(repo_root: Path, commit_sha: str, work_branch: str) -> None:
+    ref, label = _work_branch_ref(repo_root, work_branch)
+    reachable = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", commit_sha, ref],
+        cwd=repo_root,
+    )
+    if reachable.returncode != 0:
+        raise HumanGateError(
+            f"Human Gate reviewed repository commit is not reachable from canonical work branch {label}: {commit_sha}"
+        )
+
+
+def _work_branch_ref(repo_root: Path, work_branch: str) -> tuple[str, str]:
     try:
         subprocess.run(
             ["git", "check-ref-format", "--branch", work_branch],
@@ -379,22 +476,35 @@ def _require_review_commit_reachable(repo_root: Path, commit_sha: str, work_bran
     else:
         ref = f"refs/heads/{work_branch}"
         label = work_branch
+    return ref, label
 
+
+def _require_expected_branch_head(
+    repo_root: Path,
+    work_branch: str,
+    expected_branch_head: str,
+) -> None:
+    if len(expected_branch_head) != 40 or any(c not in "0123456789abcdef" for c in expected_branch_head):
+        raise HumanGateError("expected work branch head must be a lowercase 40-hex SHA")
+    ref, label = _work_branch_ref(repo_root, work_branch)
     present = subprocess.run(
         ["git", "show-ref", "--verify", "--quiet", ref],
         cwd=repo_root,
     )
     if present.returncode != 0:
         raise HumanGateError(
-            f"Human Gate reviewed repository commit is not retained on canonical work branch {label}; push/fetch the review surface first"
+            f"canonical work branch {label} is unavailable; push/fetch the pending Gate surface first"
         )
-    reachable = subprocess.run(
-        ["git", "merge-base", "--is-ancestor", commit_sha, ref],
+    actual = subprocess.run(
+        ["git", "rev-parse", "--verify", ref],
         cwd=repo_root,
+        check=True,
+        capture_output=True,
+        text=True,
     )
-    if reachable.returncode != 0:
+    if actual.stdout.strip() != expected_branch_head:
         raise HumanGateError(
-            f"Human Gate reviewed repository commit is not reachable from canonical work branch {label}: {commit_sha}"
+            f"stale pending Gate surface: expected {label} head {expected_branch_head}, found {actual.stdout.strip()}"
         )
 
 
@@ -627,7 +737,11 @@ def _superseded_checkpoint_paths(
             continue
         authority = state.get("checkpoint_provenance", {}).get(checkpoint)
         if isinstance(authority, dict):
-            path = core.repo_local_path(repo_root, authority["path"], f"superseded checkpoint {checkpoint}")
+            path = _raw_repo_file(
+                repo_root,
+                authority["path"],
+                f"superseded checkpoint {checkpoint}",
+            )
             try:
                 path.resolve().relative_to(source_root.resolve())
             except ValueError as exc:
@@ -636,12 +750,99 @@ def _superseded_checkpoint_paths(
 
     start = core.LIFECYCLE.index(regeneration_boundary)
     end = core.LIFECYCLE.index(GATE_STATES[gate])
-    checkpoint_dir = source_root / cfg["state_authority"]["agent_checkpoint_dir"]
     for state_name in core.LIFECYCLE[start:end]:
-        path = checkpoint_dir / f"{state_name}.json"
+        path = source_root / cfg["state_authority"]["agent_checkpoint_dir"] / f"{state_name}.json"
+        relative = _rel(repo_root, path)
+        if path.is_symlink() or (path.exists() and not path.is_file()):
+            raise HumanGateError(f"superseded checkpoint is missing or unsafe: {relative}")
         if path.exists():
-            paths[_rel(repo_root, path)] = path
+            paths[relative] = path
     return [paths[key] for key in sorted(paths)]
+
+
+def _superseded_canonical_artifacts(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    profile: dict[str, Any],
+    source_root: Path,
+    regeneration_boundary: str,
+    gate: str,
+) -> list[tuple[str, Path]]:
+    """Resolve configured mutable singleton artifacts that block regeneration."""
+    configured = cfg["orchestration"].get("canonical_regeneration_artifacts")
+    if not isinstance(configured, list):
+        raise HumanGateError("Core lacks canonical_regeneration_artifacts cleanup authority")
+    seen_names: set[str] = set()
+    seen_paths: set[str] = set()
+    boundary_index = core.LIFECYCLE.index(regeneration_boundary)
+    gate_index = core.LIFECYCLE.index(GATE_STATES[gate])
+    resolved: list[tuple[str, Path]] = []
+    for index, item in enumerate(configured):
+        if not isinstance(item, dict) or set(item) != {"name", "path", "owner_state"}:
+            raise HumanGateError(f"canonical regeneration cleanup entry {index} is malformed")
+        name = item["name"]
+        owner_state = item["owner_state"]
+        if not isinstance(name, str) or not name or name in seen_names:
+            raise HumanGateError("canonical regeneration cleanup names must be unique")
+        if owner_state not in core.LIFECYCLE:
+            raise HumanGateError(f"canonical regeneration cleanup owner state is invalid: {owner_state}")
+        seen_names.add(name)
+        if not (boundary_index <= core.LIFECYCLE.index(owner_state) < gate_index):
+            continue
+        relative = _expand_gate_path(item["path"], profile)
+        raw = repo_root / relative
+        current = repo_root.resolve()
+        for part in Path(relative).parts:
+            current = current / part
+            if current.is_symlink():
+                raise HumanGateError(
+                    f"canonical regeneration artifact is missing or unsafe: {relative}"
+                )
+        if raw.exists() and not raw.is_file():
+            raise HumanGateError(
+                f"canonical regeneration artifact is missing or unsafe: {relative}"
+            )
+        path = core.repo_local_path(
+            repo_root,
+            relative,
+            f"canonical regeneration artifact {name}",
+        )
+        try:
+            path.resolve().relative_to(source_root.resolve())
+        except ValueError as exc:
+            raise HumanGateError(
+                f"canonical regeneration artifact escapes source_root: {item['path']}"
+            ) from exc
+        rel = _rel(repo_root, path)
+        if rel in seen_paths:
+            raise HumanGateError("canonical regeneration cleanup paths must be unique")
+        seen_paths.add(rel)
+        if path.is_symlink() or (path.exists() and not path.is_file()):
+            raise HumanGateError(f"canonical regeneration artifact is missing or unsafe: {rel}")
+        resolved.append((name, path))
+    return sorted(resolved, key=lambda row: _rel(repo_root, row[1]))
+
+
+def _superseded_paths_for_regeneration(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    state: dict[str, Any],
+    profile: dict[str, Any],
+    source_root: Path,
+    regeneration_boundary: str,
+    gate: str,
+) -> tuple[list[Path], list[tuple[str, Path]]]:
+    checkpoint_paths = _superseded_checkpoint_paths(
+        repo_root, cfg, state, source_root, regeneration_boundary, gate
+    )
+    canonical = _superseded_canonical_artifacts(
+        repo_root, cfg, profile, source_root, regeneration_boundary, gate
+    )
+    all_paths: dict[str, Path] = {
+        _rel(repo_root, path): path for path in checkpoint_paths
+    }
+    all_paths.update({_rel(repo_root, path): path for _, path in canonical})
+    return [all_paths[key] for key in sorted(all_paths)], canonical
 
 
 def _superseded_gate_authority_paths(
@@ -670,8 +871,12 @@ def _revised_state(
     state: dict[str, Any],
     gate: str,
     regeneration_boundary: str,
+    *,
+    allowed_boundaries: list[str] | None = None,
 ) -> dict[str, Any]:
-    allowed = cfg["orchestration"].get("human_gate_revision_boundaries", {}).get(gate, [])
+    allowed = allowed_boundaries
+    if allowed is None:
+        allowed = cfg["orchestration"].get("human_gate_revision_boundaries", {}).get(gate, [])
     if regeneration_boundary not in allowed:
         raise HumanGateError(
             f"regeneration boundary {regeneration_boundary!r} is not allowed for {gate}; allowed={allowed}"
@@ -710,6 +915,354 @@ def _revised_state(
     if errors:
         raise HumanGateError("refusing inconsistent Human Gate revision State: " + "; ".join(errors))
     return updated
+
+
+def _validate_pending_gate_surface(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    state: dict[str, Any],
+    profile: dict[str, Any],
+    gate: str,
+) -> list[dict[str, str]]:
+    """Validate the exact unpresented Gate surface before operator invalidation."""
+    for item in cfg["orchestration"]["gate_inputs"][gate]:
+        _raw_repo_file(
+            repo_root,
+            _expand_gate_path(item["path"], profile),
+            f"Human Gate input {item['name']}",
+        )
+    artifacts = _reviewed_artifacts(repo_root, cfg, state, profile, gate)
+    if gate == "ARCHITECTURE_REVIEW":
+        architecture_path = next(row["path"] for row in artifacts if row["name"] == "issue-architecture")
+        summary_path = next(row["path"] for row in artifacts if row["name"] == "architecture-review-summary")
+        attention_path = next(row["path"] for row in artifacts if row["name"] == "architecture-review-attention")
+        architecture = schema_gate.load_and_validate_json(
+            core.repo_local_path(repo_root, architecture_path, "Architecture Gate input"),
+            repo_root / Path("schemas/issue-architecture-v2.schema.json"),
+            label="Architecture Gate input",
+        )
+        summary = schema_gate.load_and_validate_json(
+            core.repo_local_path(repo_root, summary_path, "Architecture Review Summary Gate input"),
+            repo_root / Path("schemas/architecture-review-summary-v2.schema.json"),
+            label="Architecture Review Summary Gate input",
+        )
+        attention = core.repo_local_path(repo_root, attention_path, "Architecture Review Attention Gate input")
+        review_attention.validate_attention(repo_root, attention)
+        if architecture.get("issue_id") != state["issue_id"] or architecture.get("status") != "PROPOSED":
+            raise HumanGateError("Architecture Gate input is not the current PROPOSED Architecture for this issue")
+        if summary.get("issue_id") != state["issue_id"] or summary.get("readiness", {}).get("status") != "READY_FOR_ARCHITECTURE_REVIEW":
+            raise HumanGateError("Architecture Review Summary Gate input is not ready for review")
+        if summary.get("basis", {}).get("architecture_sha256") != core.sha256_file(
+            core.repo_local_path(repo_root, architecture_path, "Architecture Gate input")
+        ):
+            raise HumanGateError("Architecture Review Summary Gate input does not bind exact Architecture bytes")
+    elif gate == "PUBLICATION_PREVIEW":
+        candidate = next(row["path"] for row in artifacts if row["name"] == "publication-candidate")
+        publication.validate_candidate(
+            repo_root,
+            core.repo_local_path(repo_root, candidate, "Publication Candidate Gate input"),
+            issue_id=state["issue_id"],
+        )
+    return artifacts
+
+
+def _operator_record_dir(source_root: Path, cfg: dict[str, Any]) -> Path:
+    raw = cfg["state_authority"].get("operator_invalidation_dir")
+    if not isinstance(raw, str) or not core._safe_relative_repo_path(raw):
+        raise HumanGateError("state_authority.operator_invalidation_dir must be a safe relative path")
+    return source_root / raw
+
+
+def _validate_committed_authority(
+    repo_root: Path,
+    commit_sha: str,
+    ref: dict[str, Any],
+    label: str,
+) -> bytes:
+    if not isinstance(ref, dict) or set(ref) != {"path", "sha256"}:
+        raise HumanGateError(f"{label} authority fields invalid")
+    if not core._safe_relative_repo_path(ref.get("path")):
+        raise HumanGateError(f"{label} path must be a safe repository-relative path")
+    raw = _committed_file_bytes(repo_root, commit_sha, ref["path"])
+    if core.sha256_bytes(raw) != ref["sha256"]:
+        raise HumanGateError(f"{label} SHA does not match invalidated repository commit")
+    return raw
+
+
+def validate_operator_invalidation_record(
+    repo_root: Path,
+    record_path: Path,
+    *,
+    expected_issue_id: str | None = None,
+) -> dict[str, Any]:
+    """Validate immutable operator provenance against the invalidated commit."""
+    record_path = core.repo_local_path(
+        repo_root,
+        _rel(repo_root, record_path),
+        "operator invalidation record",
+    )
+    payload = schema_gate.load_and_validate_json(
+        record_path,
+        repo_root / OPERATOR_INVALIDATION_SCHEMA,
+        label="Operator Pending Gate Invalidation",
+    )
+    if expected_issue_id is not None and payload["issue_id"] != expected_issue_id:
+        raise HumanGateError("operator invalidation record issue identity mismatch")
+    commit_sha = payload["invalidated_repository_commit_sha"]
+    _require_review_commit(repo_root, commit_sha)
+    state_raw = _validate_committed_authority(
+        repo_root, commit_sha, payload["prior_state"], "operator invalidation prior State"
+    )
+    try:
+        prior_state = json.loads(state_raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise HumanGateError("operator invalidation prior State is not valid JSON") from exc
+    if prior_state.get("issue_id") != payload["issue_id"]:
+        raise HumanGateError("operator invalidation prior State issue identity mismatch")
+    gate = payload["gate"]
+    cfg = _historical_core_config(repo_root, commit_sha)
+    try:
+        subprocess.run(
+            ["git", "check-ref-format", "--branch", payload["work_branch"]],
+            cwd=repo_root,
+            check=True,
+            capture_output=True,
+        )
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise HumanGateError("operator invalidation work_branch is invalid") from exc
+    _require_review_commit_reachable(repo_root, commit_sha, payload["work_branch"])
+    current_gate = _current_pending_gate(cfg, prior_state, requested_gate=gate)
+    if current_gate != gate:
+        raise HumanGateError(
+            f"operator invalidation prior State current Gate mismatch: requested {gate}, current {current_gate}"
+        )
+
+    names: set[str] = set()
+    for row in payload["prior_gate_inputs"]:
+        if row["name"] in names:
+            raise HumanGateError("operator invalidation prior Gate inputs are ambiguous")
+        names.add(row["name"])
+        _validate_committed_authority(
+            repo_root,
+            commit_sha,
+            {"path": row["path"], "sha256": row["sha256"]},
+            f"operator invalidation Gate input {row['name']}",
+        )
+    checkpoints: set[str] = set()
+    for row in payload["invalidated_checkpoint_authority"]:
+        if row["checkpoint"] in checkpoints:
+            raise HumanGateError("operator invalidation checkpoint authority is ambiguous")
+        if row["checkpoint"] not in core.CHECKPOINTS:
+            raise HumanGateError("operator invalidation checkpoint authority is unknown")
+        checkpoints.add(row["checkpoint"])
+        _validate_committed_authority(repo_root, commit_sha, {"path": row["path"], "sha256": row["sha256"]}, f"operator invalidation checkpoint {row['checkpoint']}")
+    canonical_names: set[str] = set()
+    canonical_paths: set[str] = set()
+    for row in payload["superseded_canonical_paths"]:
+        if row["name"] in canonical_names or row["path"] in canonical_paths:
+            raise HumanGateError("operator invalidation canonical cleanup authority is ambiguous")
+        canonical_names.add(row["name"])
+        canonical_paths.add(row["path"])
+        _validate_committed_authority(repo_root, commit_sha, {"path": row["path"], "sha256": row["sha256"]}, f"operator invalidation canonical artifact {row['name']}")
+    return payload
+
+
+def _load_operator_invalidation_records(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    source_root: Path,
+    issue_id: str,
+) -> list[dict[str, Any]]:
+    directory = _operator_record_dir(source_root, cfg)
+    if not directory.exists():
+        return []
+    if directory.is_symlink() or not directory.is_dir():
+        raise HumanGateError("operator invalidation record directory is missing or unsafe")
+    paths = sorted(directory.glob("*.json"))
+    if any(
+        path.is_symlink() or not path.is_file() or path.suffix != ".json"
+        for path in directory.iterdir()
+    ):
+        raise HumanGateError("operator invalidation record directory may contain regular JSON files only")
+    records = [
+        validate_operator_invalidation_record(repo_root, path, expected_issue_id=issue_id)
+        for path in paths
+    ]
+    sequences = sorted(record["sequence"] for record in records)
+    if sequences != list(range(1, len(records) + 1)):
+        raise HumanGateError("operator invalidation sequences must be contiguous")
+    return records
+
+
+def invalidate_pending_gate(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    state_path: Path,
+    gate: str,
+    regeneration_boundary: str,
+    reason: str,
+    operator_reference: str,
+    expected_work_branch_head: str,
+    *,
+    invalidated_commit_sha: str | None = None,
+    recorded_at: datetime | None = None,
+) -> tuple[dict[str, Any], Path, list[str]]:
+    """Invalidate an unpresented pending Human Gate without creating a Human record."""
+    if gate not in GATE_KEYS:
+        raise HumanGateError(f"unsupported Human Gate: {gate}")
+    if not isinstance(reason, str) or not reason.strip():
+        raise HumanGateError("operator pending-Gate invalidation requires a non-empty reason")
+    if not isinstance(operator_reference, str) or not operator_reference.strip():
+        raise HumanGateError("operator pending-Gate invalidation requires operator_reference")
+    if not isinstance(expected_work_branch_head, str) or not expected_work_branch_head.strip():
+        raise HumanGateError("operator pending-Gate invalidation requires expected_work_branch_head")
+
+    state, profile, source_root = _state_context(repo_root, cfg, state_path)
+    current_gate = _current_pending_gate(cfg, state, requested_gate=gate)
+    if current_gate != gate:
+        raise HumanGateError(
+            f"operator pending-Gate invalidation current Gate mismatch: requested {gate}, current {current_gate}"
+        )
+    if state.get("machine_checkpoints", {}).get("architecture") != "passed" and gate == "ARCHITECTURE_REVIEW":
+        raise HumanGateError("Architecture pending-Gate invalidation requires a passed Architecture checkpoint")
+    if state.get("human_gates", {}).get("architecture_review") == "approved" and gate == "PUBLICATION_PREVIEW":
+        raise HumanGateError("operator invalidation cannot cross an active Human Architecture approval")
+
+    allowed = cfg["orchestration"].get("operator_pending_gate_invalidation_boundaries", {}).get(gate, [])
+    if regeneration_boundary not in allowed:
+        raise HumanGateError(
+            f"operator regeneration boundary {regeneration_boundary!r} is not allowed for {gate}; allowed={allowed}"
+        )
+    index = _load_review_index(repo_root, cfg, source_root, state["issue_id"])
+    if index.get("reviews"):
+        raise HumanGateError("operator pending-Gate invalidation requires no Human review records")
+
+    invalidated_commit_sha = invalidated_commit_sha or core.repository_commit_sha(repo_root)
+    current_head = core.repository_commit_sha(repo_root)
+    if current_head != invalidated_commit_sha:
+        raise HumanGateError(
+            f"stale pending Gate surface: checkout HEAD {current_head} differs from invalidated commit {invalidated_commit_sha}"
+        )
+    _require_expected_branch_head(repo_root, profile["paths"]["work_branch"], expected_work_branch_head)
+    artifacts = _validate_pending_gate_surface(repo_root, cfg, state, profile, gate)
+    reviewed_state = _authority(repo_root, state_path)
+    commit_sha = _review_commit(
+        repo_root,
+        invalidated_commit_sha,
+        profile["paths"]["work_branch"],
+        reviewed_state,
+        artifacts,
+    )
+    if commit_sha != invalidated_commit_sha:
+        raise HumanGateError("invalidated repository commit identity changed during preflight")
+
+    updated = _revised_state(
+        repo_root,
+        cfg,
+        state,
+        gate,
+        regeneration_boundary,
+        allowed_boundaries=list(allowed),
+    )
+    cleanup_paths, canonical = _superseded_paths_for_regeneration(
+        repo_root, cfg, state, profile, source_root, regeneration_boundary, gate
+    )
+    record_dir = _operator_record_dir(source_root, cfg)
+    existing_records = _load_operator_invalidation_records(
+        repo_root, cfg, source_root, state["issue_id"]
+    )
+    sequence = len(existing_records) + 1
+    record_path = record_dir / f"{GATE_SLUGS[gate]}-invalidation-{sequence:04d}.json"
+    if record_path.exists():
+        raise HumanGateError(f"refusing operator invalidation record overwrite: {_rel(repo_root, record_path)}")
+    if record_path in cleanup_paths:
+        raise HumanGateError("operator invalidation record path is also a cleanup target")
+
+    invalidated_checkpoints: list[dict[str, str]] = []
+    keep = _completed_checkpoints(cfg, regeneration_boundary)
+    for checkpoint in core.CHECKPOINTS:
+        if checkpoint in keep:
+            continue
+        authority = state.get("checkpoint_provenance", {}).get(checkpoint)
+        if isinstance(authority, dict):
+            path = core.repo_local_path(repo_root, authority["path"], f"invalidated checkpoint {checkpoint}")
+            invalidated_checkpoints.append({
+                "checkpoint": checkpoint,
+                "path": _rel(repo_root, path),
+                "sha256": core.sha256_file(path),
+            })
+    canonical_rows = [
+        {"name": name, "path": _rel(repo_root, path), "sha256": core.sha256_file(path)}
+        for name, path in canonical
+        if path.exists()
+    ]
+    seed = {
+        "issue_id": state["issue_id"],
+        "gate": gate,
+        "sequence": sequence,
+        "prior_state": reviewed_state,
+        "prior_gate_inputs": artifacts,
+        "invalidated_repository_commit_sha": commit_sha,
+        "regeneration_boundary": regeneration_boundary,
+        "operator_reference": operator_reference.strip(),
+    }
+    record = {
+        "schema_version": "2.0-rc1",
+        "issue_id": state["issue_id"],
+        "gate": gate,
+        "invalidation_id": f"operator-invalidation:{state['issue_id']}:{GATE_SLUGS[gate]}:{sequence}:{core.sha256_object(seed)[:16]}",
+        "sequence": sequence,
+        "human_decision": False,
+        "prior_state": reviewed_state,
+        "prior_gate_inputs": artifacts,
+        "invalidated_repository_commit_sha": commit_sha,
+        "work_branch": profile["paths"]["work_branch"],
+        "expected_work_branch_head": expected_work_branch_head,
+        "regeneration_boundary": regeneration_boundary,
+        "reason": reason.strip(),
+        "operator_reference": operator_reference.strip(),
+        "invalidated_checkpoint_authority": sorted(invalidated_checkpoints, key=lambda row: row["checkpoint"]),
+        "superseded_canonical_paths": sorted(canonical_rows, key=lambda row: row["path"]),
+        "recorded_at": core.iso_utc(recorded_at or datetime.now().astimezone()),
+    }
+    schema_gate.validate_instance(
+        record,
+        repo_root / OPERATOR_INVALIDATION_SCHEMA,
+        label="Operator Pending Gate Invalidation",
+    )
+
+    state_bytes = state_path.read_bytes()
+    snapshots = {path: path.read_bytes() for path in cleanup_paths if path.exists()}
+    removed: list[str] = []
+    try:
+        for path in cleanup_paths:
+            if path.exists():
+                if path.is_symlink() or not path.is_file():
+                    raise HumanGateError(f"operator cleanup target became unsafe: {_rel(repo_root, path)}")
+                path.unlink()
+                removed.append(_rel(repo_root, path))
+        record_dir.mkdir(parents=True, exist_ok=True)
+        core.write_json(record_path, record)
+        core.write_json(state_path, updated)
+        validate_operator_invalidation_record(
+            repo_root, record_path, expected_issue_id=state["issue_id"]
+        )
+        final_errors = agent.validate_agent_state(repo_root, cfg, core.load_json(state_path))
+        if final_errors:
+            raise HumanGateError(
+                "operator invalidation did not produce resumable State: " + "; ".join(final_errors)
+            )
+    except Exception as exc:
+        if record_path.exists():
+            record_path.unlink(missing_ok=True)
+        state_path.write_bytes(state_bytes)
+        for path, raw in snapshots.items():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(raw)
+        if isinstance(exc, HumanGateError):
+            raise
+        raise HumanGateError(f"operator pending-Gate invalidation rolled back: {exc}") from exc
+    return updated, record_path, sorted(removed)
 
 
 def request_changes(
@@ -754,8 +1307,8 @@ def request_changes(
         artifacts,
     )
     updated = _revised_state(repo_root, cfg, state, gate, regeneration_boundary)
-    superseded = _superseded_checkpoint_paths(
-        repo_root, cfg, state, source_root, regeneration_boundary, gate
+    superseded, _ = _superseded_paths_for_regeneration(
+        repo_root, cfg, state, profile, source_root, regeneration_boundary, gate
     )
     superseded.extend(
         _superseded_gate_authority_paths(
@@ -877,11 +1430,44 @@ def main() -> int:
         child.add_argument("--review-reference", required=True)
         child.add_argument("--reviewed-commit-sha")
 
+    invalidate = sub.add_parser("invalidate-pending-gate")
+    invalidate.add_argument("--state", required=True)
+    invalidate.add_argument("--gate", required=True, choices=sorted(GATE_KEYS))
+    invalidate.add_argument("--regeneration-boundary", required=True)
+    invalidate.add_argument("--reason", required=True)
+    invalidate.add_argument("--operator-reference", required=True)
+    invalidate.add_argument("--expected-work-branch-head", required=True)
+    invalidate.add_argument("--invalidated-commit-sha")
+    invalidate.add_argument("--recorded-at")
+
     args = parser.parse_args()
     root = Path(args.repo_root).resolve()
     try:
         cfg = core.load_json(_path(root, args.config))
         state_path = _path(root, args.state)
+        if args.command == "invalidate-pending-gate":
+            state, record, removed = invalidate_pending_gate(
+                root,
+                cfg,
+                state_path,
+                args.gate,
+                args.regeneration_boundary,
+                args.reason,
+                args.operator_reference,
+                args.expected_work_branch_head,
+                invalidated_commit_sha=args.invalidated_commit_sha,
+                recorded_at=core.parse_instant(args.recorded_at) if args.recorded_at else datetime.now().astimezone(),
+            )
+            print(json.dumps({
+                "state": _rel(root, state_path),
+                "lifecycle_state": state["lifecycle_state"],
+                "next_action": state["next_action"],
+                "terminal_reason": state["terminal_reason"],
+                "operator_invalidation_record": _rel(root, record),
+                "removed_paths": removed,
+                "human_decision": False,
+            }, ensure_ascii=False, indent=2))
+            return 0
         reviewed_at = core.parse_instant(args.reviewed_at)
         common = {
             "expected_revision": args.expected_revision,

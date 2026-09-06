@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from scripts import survey_agent_control_v2 as agent
 from scripts import survey_drafting_v2 as drafting
 from scripts import survey_production_v2 as core
 
@@ -24,21 +25,6 @@ def _load(path: Path) -> dict[str, Any]:
 
 def _rel(root: Path, path: Path) -> str:
     return str(path.resolve().relative_to(root.resolve())).replace('\\', '/')
-
-
-def _find_sha(root: Path, expected_sha: str, label: str) -> Path:
-    matches=[]
-    for path in root.rglob('*.json'):
-        if any(part in {'draft','publication'} for part in path.parts):
-            continue
-        try:
-            if core.sha256_file(path) == expected_sha:
-                matches.append(path)
-        except OSError:
-            pass
-    if len(matches) != 1:
-        raise ValueError(f'{label} SHA must resolve exactly once under source_root: {expected_sha} -> {matches}')
-    return matches[0]
 
 
 def _screening_path(root: Path, source_root: Path) -> Path:
@@ -59,6 +45,10 @@ def _upstream(root: Path, state_path: Path) -> dict[str, Path]:
         raise ValueError('interactive Drafting requires ARCHITECTURE_ESTABLISHED State')
     if state.get('human_gates',{}).get('architecture_review') != 'approved':
         raise ValueError('interactive Drafting requires approved Architecture Review')
+    cfg = _load(root / core.DEFAULT_CONFIG)
+    state_errors = agent.validate_agent_state(root, cfg, state)
+    if state_errors:
+        raise ValueError('Production State invalid before interactive Drafting: ' + '; '.join(state_errors))
     profile_path=root/state['profile']['path']
     profile=_load(profile_path)
     source_root=root/profile['paths']['source_root']
@@ -73,8 +63,13 @@ def _upstream(root: Path, state_path: Path) -> dict[str, Path]:
         raise ValueError('accepted Discovery JSONL missing')
     matrix_path=source_root/'candidate-matrix-v2.json'
     matrix=_load(matrix_path)
-    evidence_path=_find_sha(source_root/'evidence', matrix['basis']['evidence_acceptance_sha256'], 'Evidence acceptance')
-    views_path=_find_sha(source_root/'evidence', matrix['basis']['edition_views_acceptance_sha256'], 'Edition Views acceptance')
+    active = agent.resolve_active_evidence_views(root, cfg, state)
+    evidence_path = active['evidence_path']
+    views_path = active['views_path']
+    if matrix.get('basis', {}).get('evidence_acceptance_sha256') != core.sha256_file(evidence_path):
+        raise ValueError('Candidate Matrix does not bind checkpoint-bound Evidence acceptance')
+    if matrix.get('basis', {}).get('edition_views_acceptance_sha256') != core.sha256_file(views_path):
+        raise ValueError('Candidate Matrix does not bind checkpoint-bound Edition Views acceptance')
     approval_ref=state.get('human_gate_provenance',{}).get('architecture_review')
     if not isinstance(approval_ref,dict) or not isinstance(approval_ref.get('path'),str):
         raise ValueError('Architecture approval provenance missing')

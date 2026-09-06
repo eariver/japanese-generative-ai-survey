@@ -28,6 +28,7 @@
       "schemas/operator-execution-request-v2.schema.json",
       "schemas/human-gate-review-record-v2.schema.json",
       "schemas/human-gate-review-index-v2.schema.json",
+      "schemas/operator-pending-gate-invalidation-v2.schema.json",
       "schemas/survey-discovery-record.schema.json",
       "schemas/discovery-acceptance-v2.schema.json",
       "schemas/screening-v2-run-package.schema.json",
@@ -36,6 +37,7 @@
       "schemas/evidence-v2-run-package.schema.json",
       "schemas/evidence-v2-task.schema.json",
       "schemas/evidence-v2-card.schema.json",
+      "schemas/evidence-authority-supplement-v2.schema.json",
       "schemas/edition-evidence-view.schema.json",
       "schemas/materiality-ledger.schema.json",
       "schemas/profile-completeness-result.schema.json",
@@ -242,6 +244,26 @@
         "VALIDATED_DRAFT"
       ]
     },
+    "operator_pending_gate_invalidation_boundaries": {
+      "ARCHITECTURE_REVIEW": [
+        "ISSUE_INITIALIZED",
+        "DISCOVERY_COLLECTED",
+        "CANDIDATES_NORMALIZED",
+        "EVIDENCE_REVIEWED",
+        "SELECTION_COMPLETE"
+      ],
+      "PUBLICATION_PREVIEW": []
+    },
+    "canonical_regeneration_artifacts": [
+      {"name": "materiality-ledger", "path": "{source_root}/materiality-ledger-v2.json", "owner_state": "CANDIDATES_NORMALIZED"},
+      {"name": "profile-completeness", "path": "{source_root}/profile-completeness-v2.json", "owner_state": "CANDIDATES_NORMALIZED"},
+      {"name": "candidate-matrix", "path": "{source_root}/candidate-matrix-v2.json", "owner_state": "EVIDENCE_REVIEWED"},
+      {"name": "candidate-selection", "path": "{source_root}/candidate-selection-v2.json", "owner_state": "EVIDENCE_REVIEWED"},
+      {"name": "selection-architecture-input", "path": "{source_root}/orchestration/v2/interactive/selection-architecture-input.json", "owner_state": "EVIDENCE_REVIEWED"},
+      {"name": "issue-architecture", "path": "{source_root}/architecture-v2.json", "owner_state": "SELECTION_COMPLETE"},
+      {"name": "architecture-review-summary", "path": "{source_root}/architecture-review-summary-v2.json", "owner_state": "SELECTION_COMPLETE"},
+      {"name": "architecture-review-attention", "path": "{source_root}/architecture-review-attention-v2.json", "owner_state": "SELECTION_COMPLETE"}
+    ],
     "stage_plan": {
       "ISSUE_INITIALIZED": {
         "action_kind": "LOCAL_SCRIPT",
@@ -371,6 +393,7 @@
     "legacy_mode": "NON_AUTHORITATIVE_READ_ONLY",
     "checkpoint_attestation_dir": "orchestration/v2/attestations",
     "agent_checkpoint_dir": "orchestration/v2/checkpoints",
+    "operator_invalidation_dir": "execution/operator-invalidations",
     "architecture_approval_path": "gates/architecture-approval.json",
     "publication_preview_approval_path": "gates/publication-preview-approval.json",
     "human_review_dir": "gates/reviews",

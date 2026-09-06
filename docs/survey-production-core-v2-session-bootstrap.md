@@ -1,6 +1,6 @@
 # Survey Production Core v2 — agent session bootstrap
 
-Status: `POST-INTEGRATION OPERATOR/THEMATIC AMENDMENT SYNCHRONIZED / REAUDIT PENDING`  
+Status: `POST-INTEGRATION / PRE-HUMAN EVIDENCE-REGENERATION REPAIR SYNCHRONIZED / SOL REVIEW PENDING`
 Applies to: Weekly, Retrospective Period, standalone Thematic, and guided Special series work  
 Primary operator: **ChatGPT**
 
@@ -138,6 +138,8 @@ Canonical Human Gate Core rejects a decision unless the named commit:
 - contains exact current reviewed State/Gate-input bytes;
 - for Publication Preview, contains exact Candidate-bound PDF.
 
+When Architecture Review is still pending, its surface has not been presented, and no Human review record or provenance exists, Core also supports an explicit operator-side pending-Gate invalidation. It uses only configured safe regeneration boundaries, records immutable non-Human provenance, rewinds State/checkpoints through Core, and does not create `REQUEST_CHANGES`, `APPROVED`, a Human revision, `reviewed_by`, or `reviewed_at`. Publication Preview cannot use this operation to cross an active Architecture approval.
+
 Connector-safe execution additionally binds the same reviewed commit to the immutable request-only commit parent. Do not substitute the later request/event commit.
 
 ## 7. Research → Architecture loop
@@ -155,6 +157,8 @@ Profile/State
 -> exact stage validation/checkpoint
 -> ARCHITECTURE_REVIEW
 ```
+
+If a post-Screening authority gap is found before that first Human presentation, retain exact Raw bytes and retrieval provenance in an edition-local Evidence Authority Supplement. The supplement preserves the accepted Screening decision and binds only explicitly named sources to the corresponding Evidence Task/Card.
 
 ## 8. Architecture Review
 
@@ -250,6 +254,8 @@ Keep distinct:
 - operator transport event (Issue comment or transport PR);
 - trusted default-branch operator workflow run;
 - bot output commit.
+
+For Evidence and Edition Views, resolve the active accepted pair only as `Production State -> passed Evidence Stage Checkpoint -> exact named artifact -> exact path/SHA validation`; historical accepted directories are immutable storage, not an authority selector.
 
 ## 14. Core candidate audit rule
 

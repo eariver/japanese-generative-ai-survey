@@ -493,6 +493,42 @@ def resolve_checkpoint_artifact(
     }
 
 
+def resolve_active_evidence_views(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    state: dict[str, Any],
+) -> dict[str, Any]:
+    """Resolve the active Evidence and Edition View pair from one checkpoint.
+
+    Historical accepted directories may contain any number of immutable runs;
+    only the exact artifacts named by the State-bound CANDIDATES_NORMALIZED
+    checkpoint are eligible. The View acceptance must also bind that exact
+    Evidence acceptance, preventing a cross-run join.
+    """
+    evidence = resolve_checkpoint_artifact(
+        repo_root, cfg, state, "evidence", "evidence-acceptance"
+    )
+    views = resolve_checkpoint_artifact(
+        repo_root, cfg, state, "evidence", "edition-views-acceptance"
+    )
+    if evidence["checkpoint_authority"] != views["checkpoint_authority"]:
+        raise AgentControlError(
+            "active Evidence and Edition View authorities must come from the same Stage Checkpoint"
+        )
+    view_acceptance = core.load_json(views["artifact_path"])
+    expected_evidence_sha = core.sha256_file(evidence["artifact_path"])
+    if view_acceptance.get("evidence_acceptance_sha256") != expected_evidence_sha:
+        raise AgentControlError(
+            "active Edition View acceptance does not bind the checkpoint-bound Evidence acceptance"
+        )
+    return {
+        "evidence": evidence,
+        "views": views,
+        "evidence_path": evidence["artifact_path"],
+        "views_path": views["artifact_path"],
+    }
+
+
 def verify_agent_state_basis(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any]) -> None:
     errors = validate_agent_state(repo_root, cfg, state)
     if errors:
