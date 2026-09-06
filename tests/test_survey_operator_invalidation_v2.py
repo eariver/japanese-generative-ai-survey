@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import copy
+import os
 import shutil
+import subprocess
+import tempfile
 import unittest
 from datetime import datetime, timezone
 from pathlib import Path
@@ -158,6 +161,69 @@ class OperatorPendingGateInvalidationTests(unittest.TestCase):
             )
         return fixture, reviewed_commit, result[1]
 
+
+    @staticmethod
+    def _snapshot_config_commit(fixture, config_path: Path) -> str:
+        fd, index_name = tempfile.mkstemp(prefix="survey-operator-config-index-")
+        os.close(fd)
+        index_path = Path(index_name)
+        index_path.unlink()
+        env = os.environ.copy()
+        env["GIT_INDEX_FILE"] = str(index_path)
+        try:
+            subprocess.run(
+                ["git", "read-tree", fixture._review_tip],
+                cwd=fixture.root,
+                env=env,
+                check=True,
+                capture_output=True,
+            )
+            blob = subprocess.run(
+                ["git", "hash-object", "-w", str(config_path)],
+                cwd=fixture.root,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            rel = config_path.relative_to(fixture.root).as_posix()
+            subprocess.run(
+                ["git", "update-index", "--add", "--cacheinfo", f"100644,{blob},{rel}"],
+                cwd=fixture.root,
+                env=env,
+                check=True,
+                capture_output=True,
+            )
+            tree = subprocess.run(
+                ["git", "write-tree"],
+                cwd=fixture.root,
+                env=env,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            commit = subprocess.run(
+                [
+                    "git", "-c", "user.name=Survey Operator Fixture",
+                    "-c", "user.email=survey-operator@example.invalid",
+                    "commit-tree", tree, "-p", fixture._review_tip,
+                    "-m", "Historical Core config drift fixture",
+                ],
+                cwd=fixture.root,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+        finally:
+            index_path.unlink(missing_ok=True)
+        subprocess.run(
+            ["git", "update-ref", fixture.remote_ref, commit],
+            cwd=fixture.root,
+            check=True,
+            capture_output=True,
+        )
+        fixture._review_tip = commit
+        return commit
+
     def _write_existing_review_row(self, fixture) -> None:
         state = core.load_json(fixture.state_path)
         profile = core.load_json(fixture.profile_path)
@@ -306,6 +372,60 @@ class OperatorPendingGateInvalidationTests(unittest.TestCase):
             core.load_json(review_index)["reviews"] if review_index.exists() else [],
             [],
         )
+
+
+    def test_historical_record_validation_ignores_current_config_drift(self) -> None:
+        fixture = self._pending_architecture_fixture("PUBLICATION_PREVIEW")
+        self.addCleanup(fixture.doCleanups)
+        config_path = fixture.root / core.DEFAULT_CONFIG
+        original_config = config_path.read_bytes()
+        reviewed = fixture._snapshot_review_commit()
+        with mock.patch.object(core, "repository_commit_sha", return_value=reviewed):
+            _, record_path, _ = self._invalidate(
+                fixture,
+                expected_head=reviewed,
+                invalidated_commit=reviewed,
+            )
+
+        drifted = core.load_json(config_path)
+        drifted["orchestration"]["gate_at_state"]["ARCHITECTURE_ESTABLISHED"] = "PUBLICATION_PREVIEW"
+        core.write_json(config_path, drifted)
+        try:
+            validated = human_gate.validate_operator_invalidation_record(
+                fixture.root, record_path, expected_issue_id=fixture.issue_id
+            )
+            self.assertEqual(validated["gate"], "ARCHITECTURE_REVIEW")
+        finally:
+            config_path.write_bytes(original_config)
+
+    def test_historical_committed_config_gate_drift_fails_closed(self) -> None:
+        fixture = self._pending_architecture_fixture()
+        self.addCleanup(fixture.doCleanups)
+        config_path = fixture.root / core.DEFAULT_CONFIG
+        original_config = config_path.read_bytes()
+        reviewed = fixture._snapshot_review_commit()
+        drifted = core.load_json(config_path)
+        drifted["orchestration"]["gate_at_state"]["ARCHITECTURE_ESTABLISHED"] = "PUBLICATION_PREVIEW"
+        core.write_json(config_path, drifted)
+        drifted_commit = self._snapshot_config_commit(fixture, config_path)
+        config_path.write_bytes(original_config)
+
+        try:
+            with mock.patch.object(core, "repository_commit_sha", return_value=reviewed):
+                _, record_path, _ = self._invalidate(
+                    fixture,
+                    expected_head=drifted_commit,
+                    invalidated_commit=reviewed,
+                )
+            record = core.load_json(record_path)
+            record["invalidated_repository_commit_sha"] = drifted_commit
+            core.write_json(record_path, record)
+            with self.assertRaisesRegex(ValueError, "configured current Human Gate"):
+                human_gate.validate_operator_invalidation_record(
+                    fixture.root, record_path, expected_issue_id=fixture.issue_id
+                )
+        finally:
+            config_path.write_bytes(original_config)
 
     def test_terminal_reason_mismatch_is_rejected(self) -> None:
         fixture = self._pending_architecture_fixture()

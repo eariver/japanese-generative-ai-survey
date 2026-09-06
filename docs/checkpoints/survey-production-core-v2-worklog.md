@@ -2,10 +2,10 @@
 
 Status: `POST-INTEGRATION CORE CANDIDATE / PRE-HUMAN EVIDENCE-REGENERATION REPAIR / PRE-SOL REVIEW`
 Established: 2026-08-22 JST  
-Last updated: 2026-09-05 JST
+Last updated: 2026-09-06 JST
 Current maintenance branch: `fix/core-v2-pre-human-evidence-regeneration-20260905`
 Historical implementation PRs: `#310` and post-integration repair `#452` (merged)
-Current integration PR: none created by this repair; this branch is not an operator transport and must not be merged by this task
+Current integration PR: `#484` — `Survey Production Core v2: pre-Human Evidence regeneration repair` (`draft` / `open` / `unmerged`); this branch is a normal draft integration review surface, not an operator transport, and must not be merged by this task
 Production source of truth: current `main` at reviewed baseline `a9f121f0d65591f52b53515712d7c0bae573b2ef`
 Semantic authority: `docs/survey-production-core-v2-authority.md`  
 Final-audit rule: `docs/survey-production-core-v2-final-audit-rule.md`

@@ -409,6 +409,25 @@ def _current_pending_gate(
     return current_gate
 
 
+def _historical_core_config(repo_root: Path, commit_sha: str) -> dict[str, Any]:
+    """Load the canonical Core config bytes from an invalidated commit."""
+    config_path = core.DEFAULT_CONFIG.as_posix()
+    raw = _committed_file_bytes(repo_root, commit_sha, config_path)
+    try:
+        config = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise HumanGateError(
+            "invalidated repository commit Core config is not valid UTF-8 JSON"
+        ) from exc
+    if not isinstance(config, dict):
+        raise HumanGateError("invalidated repository commit Core config is not an object")
+    gate_at_state = config.get("orchestration", {}).get("gate_at_state")
+    if not isinstance(gate_at_state, dict):
+        raise HumanGateError(
+            "invalidated repository commit Core config lacks orchestration.gate_at_state"
+        )
+    return config
+
 def _require_review_commit(repo_root: Path, commit_sha: str) -> None:
     try:
         subprocess.run(
@@ -1001,7 +1020,7 @@ def validate_operator_invalidation_record(
     if prior_state.get("issue_id") != payload["issue_id"]:
         raise HumanGateError("operator invalidation prior State issue identity mismatch")
     gate = payload["gate"]
-    cfg = core.load_json(repo_root / core.DEFAULT_CONFIG)
+    cfg = _historical_core_config(repo_root, commit_sha)
     try:
         subprocess.run(
             ["git", "check-ref-format", "--branch", payload["work_branch"]],

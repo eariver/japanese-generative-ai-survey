@@ -3,7 +3,7 @@
 Status: `CANONICAL POST-INTEGRATION CORE AUTHORITY / PRE-HUMAN EVIDENCE-REGENERATION REPAIR / PRE-AUDIT CANDIDATE / PRE-SOL REVIEW`
 Established: 2026-08-22 JST  
 Current maintenance branch: `fix/core-v2-pre-human-evidence-regeneration-20260905`
-Integration PR: none created by this repair; this maintenance branch is the reviewable Core candidate and must not be merged by this task
+Integration PR: `#484` — `Survey Production Core v2: pre-Human Evidence regeneration repair` (`draft` / `open` / `unmerged`); this branch is the normal draft integration review surface and must not be merged by this task
 Final-audit rule: `docs/survey-production-core-v2-final-audit-rule.md`
 
 ## 1. Purpose and current boundary
