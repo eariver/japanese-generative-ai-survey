@@ -71,10 +71,11 @@ Remote W34 HEAD remained exactly df3d0dfe11a1cc99dd7698e1bc9b2a47e2dc3c0f; no W3
 
 - focused operator invalidation, Human Gate, agent-control, stage-validation, Evidence, interactive Evidence, and Selection/Architecture tests: 57 passed;
 - full operator invalidation suite: 24 passed;
-- syntax/compile validation and git diff --check: required before final commit and recorded with the final candidate;
+- local full Python diagnostic: 773 tests, 2 failures, 3 errors, 6 skipped; the failures/errors were outside this bounded repair and came from absent W32/release/Special fixtures plus an existing incomplete-checkout operator CLI contract mismatch; the fresh repository CI above passed;
+- syntax/compile validation: PASS; git diff --check: PASS;
 - workflow count: exactly 7;
 - main remote remained a9f121f0d65591f52b53515712d7c0bae573b2ef;
-- fresh CI for the final candidate: pending until the normal branch update completes.
+- fresh CI for candidate 7be85c2041f6481252f244e520d9255991b6e43c: PASS — Survey Production Core v2 CI run 34020270531; Pipeline contract tests run 34020270540.
 
 ## Non-actions and remaining limits
 
