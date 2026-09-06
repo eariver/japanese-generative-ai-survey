@@ -6,7 +6,7 @@ Last updated: 2026-09-06 JST
 Current maintenance branch: `fix/core-v2-pre-human-evidence-regeneration-20260905`
 Historical implementation PRs: `#310` and post-integration repair `#452` (merged)
 Current integration PR: `#484` — `Survey Production Core v2: pre-Human Evidence regeneration repair` (`draft` / `open` / `unmerged`); this branch is a normal draft integration review surface, not an operator transport, and must not be merged by this task
-Production source of truth: current `main` at structural-recovery HEAD `d8fa79ef2affacec49a47e6fc88018fb99f36899`; structural-recovery descendant of pre-incident reviewed semantic/tree baseline `a9f121f0d65591f52b53515712d7c0bae573b2ef`, exact tree `b6c1b2cbc13165e64ac1d88d4d36b7515f7494da`, zero changed files/content delta
+Production source of truth: current `main` at structural-recovery HEAD `2adcffdc8741605cd56a984e9fc509b6066172e1`; transparent structural-recovery descendant of `d8fa79ef2affacec49a47e6fc88018fb99f36899`, which is a structural-recovery descendant of pre-incident reviewed semantic/tree baseline `a9f121f0d65591f52b53515712d7c0bae573b2ef`; all three resolve to exact tree `b6c1b2cbc13165e64ac1d88d4d36b7515f7494da`, with zero changed files/content delta between the reviewed tree states. `d8fa79ef...` remains historical execution/base evidence for the completed repair runs; candidate `5b1f72c...` is semantically unchanged by this reconciliation.
 Semantic authority: `docs/survey-production-core-v2-authority.md`  
 Final-audit rule: `docs/survey-production-core-v2-final-audit-rule.md`
 
@@ -28,7 +28,7 @@ Historical audit attempts remain evidence only:
 
 - Repository: `eariver/japanese-generative-ai-survey`
 - Maintenance branch: `fix/core-v2-pre-human-evidence-regeneration-20260905`
-- Production `main`: `d8fa79ef2affacec49a47e6fc88018fb99f36899` at the current structural-recovery HEAD. It is a structural-recovery descendant of pre-incident reviewed baseline `a9f121f0d65591f52b53515712d7c0bae573b2ef`; both have exact tree `b6c1b2cbc13165e64ac1d88d4d36b7515f7494da` and zero content delta. Current main SHA remains authoritative for repository reality.
+- Production `main`: `2adcffdc8741605cd56a984e9fc509b6066172e1` at the current structural-recovery HEAD. It is a transparent structural-recovery descendant of `d8fa79ef2affacec49a47e6fc88018fb99f36899`, itself descended from pre-incident reviewed baseline `a9f121f0d65591f52b53515712d7c0bae573b2ef`; all three have exact tree `b6c1b2cbc13165e64ac1d88d4d36b7515f7494da` and zero content delta between the reviewed tree states. Current main SHA remains authoritative for repository reality; `d8fa79ef...` remains historical execution/base evidence for the completed repair runs.
 - PR #310: historical implementation PR, merged.
 - PR #452: historical post-integration operator/Thematic repair PR, merged; its narrow amendment remains current authority where applicable.
 - WU-010R: historical `COMPLETE / SECOND-AUDIT GREEN`.
