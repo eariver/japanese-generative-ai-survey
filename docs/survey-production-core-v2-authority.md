@@ -380,7 +380,7 @@ Because the current amendment changes shared semantic operating authority, its r
 
 PR #310, PR #452, and PR #484 are historical merged implementation PRs. The current governance amendment is carried only on `fix/core-v2-sol-luna-review-governance-20260907` until reviewed integration.
 
-W33 and released Specials remain immutable historical editions. Active edition production branches must not edit this shared-Core candidate in place.
+W33 is an immutable released edition. Released Specials are also immutable historical editions. Active edition production branches must not edit this shared-Core candidate in place.
 
 Once Authority, governance, bootstrap, checklist and implementation expectations agree, freeze the exact branch head, obtain applicable validation, and review the candidate without changing it.
 
