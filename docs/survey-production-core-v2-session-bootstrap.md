@@ -1,6 +1,6 @@
 # Survey Production Core v2 — agent session bootstrap
 
-Status: `POST-INTEGRATION / PRE-HUMAN EVIDENCE-REGENERATION REPAIR SYNCHRONIZED / SOL REVIEW PENDING`
+Status: `POST-INTEGRATION / SOL-LUNA REVIEW GOVERNANCE AMENDMENT / REVIEW PENDING`
 Applies to: Weekly, Retrospective Period, standalone Thematic, and guided Special series work  
 Primary operator: **ChatGPT**
 
@@ -24,7 +24,7 @@ Normal pauses are limited to:
 4. permitted Human-mediated Grok Drive task-file path handoff;
 5. recorded blocking shared-Core defect.
 
-Routine search refinement, Source Intake, Screening, Evidence, Selection, drafting, QA, layout repair, transient tool/CI retry, and normal `REQUEST_CHANGES` are not extra Human Gates.
+Routine search refinement, Source Intake, Screening, Evidence, Selection, drafting, QA, layout repair, transient tool/CI retry, and normal `REQUEST_CHANGES` are not extra Human Gates. Mandatory internal Sol supervisory reviews are also not Human Gates; they are required quality controls and may cause autonomous research/gap-fill before the requested Gate is presented.
 
 ## 2. Session-start authority
 
@@ -33,11 +33,14 @@ Read current reviewed `main`, then at minimum:
 1. `AGENTS.md`;
 2. Core authority/redesign authority and any current narrow amendment;
 3. this bootstrap;
-4. issue-prevention checklist;
-5. X/Grok intake policy;
-6. execution-record policy;
-7. applicable Profile/period/thematic/series guide;
-8. current Profile/State/review index/execution index if resuming.
+4. `docs/survey-production-core-v2-sol-luna-review-governance.md`;
+5. issue-prevention checklist;
+6. X/Grok intake policy;
+7. execution-record policy;
+8. applicable Profile/period/thematic/series guide;
+9. current Profile/State/review index/execution index if resuming.
+
+The Sol/Luna governance document is mandatory for every Weekly/Special start or resume. Do not treat it as optional background reading.
 
 Repository state outranks chat history.
 
@@ -125,7 +128,7 @@ Human Gate operations only record already explicit Human input.
 
 Before presenting either normal Human Gate:
 
-1. finish all current Gate inputs;
+1. finish all current Gate inputs and every mandatory internal review that applies;
 2. commit exact current Production State + configured Gate inputs;
 3. **push/retain that commit on the Profile-bound canonical work branch**;
 4. record that exact commit as `reviewed_repository_commit_sha`;
@@ -144,25 +147,51 @@ Connector-safe execution additionally binds the same reviewed commit to the immu
 
 ## 7. Research → Architecture loop
 
-Normal autonomous progression:
+Normal autonomous progression includes explicit Sol supervisory checkpoints:
 
 ```text
 Profile/State
 -> Source Intake + research expansion
+-> Discovery materialization
+-> Sol Discovery completeness review
 -> Screening
--> Evidence verification
--> materiality/completeness closure
--> Selection
--> Architecture
+-> Evidence verification + iterative authority gap fill
+-> SOL_EVIDENCE_REVIEW_READY
+-> Sol authority-consumption review
+-> additional Evidence gap fill when required
+-> Sol materiality / Selection review
+-> Architecture preparation under Sol-owned semantics
+-> Sol Architecture review + Human-facing dossier
 -> exact stage validation/checkpoint
 -> ARCHITECTURE_REVIEW
 ```
 
+Luna/Work may execute the bulk retrieval, normalization, Evidence tasks, gap-fill retrieval, and deterministic regeneration. It must not substitute its own completion judgment for the Sol supervisory checkpoints defined in `docs/survey-production-core-v2-sol-luna-review-governance.md`.
+
 If a post-Screening authority gap is found before that first Human presentation, retain exact Raw bytes and retrieval provenance in an edition-local Evidence Authority Supplement. The supplement preserves the accepted Screening decision and binds only explicitly named sources to the corresponding Evidence Task/Card.
+
+Binding a primary source into a Supplement or Evidence Card is not proof that its substantive content was consumed. Before Selection/Architecture, Sol must distinguish authority not found, retrieval failed, captured-but-unconsumed, and consumed authority.
 
 ## 8. Architecture Review
 
-At pending Architecture Review, present committed Architecture + review summary + review-attention authority.
+At pending Architecture Review, present the exact committed Architecture surface **and** the mandatory Human-facing dossier defined in `docs/survey-production-core-v2-sol-luna-review-governance.md`.
+
+The first presentation of each Architecture revision must include, at minimum:
+
+- exact reviewed commit/revision/state;
+- research coverage and independent Discovery-completeness findings;
+- Evidence status and authority-consumption findings;
+- major candidate/disposition map, including important unselected candidates;
+- negative-space/omission review;
+- editorial thesis and package order;
+- page/section allocation;
+- materially plausible alternative Architecture(s) considered;
+- known limitations/risks;
+- Sol blocking/non-blocking findings and recommendation.
+
+Do **not** request Human approval from a short `READY_FOR_ARCHITECTURE_REVIEW` status summary. Machine readiness and deterministic validation do not establish research sufficiency.
+
+If `SELECTED <= 1` while `non-DROP >= 20` or `VERIFIED >= 10`, a documented Sol compression audit is mandatory before approval can be recommended.
 
 ### APPROVED
 
@@ -178,6 +207,8 @@ Then continue to drafting.
 ### REQUEST_CHANGES
 
 Require explicit requested changes and allowed pre-Architecture regeneration boundary. Core records rN, invalidates only affected downstream authority, and returns to the selected boundary. ChatGPT repairs and returns to Architecture Review rN+1.
+
+If the requested change concerns research completeness or authority consumption, prefer a bounded stop at a fresh Sol Evidence Review before allowing Selection/Architecture to be trusted again.
 
 ## 9. Reader-facing authorship and QA
 
@@ -215,7 +246,7 @@ Core then:
 4. supersedes/removes that active canonical Architecture approval;
 5. clears active Architecture provenance and marks Architecture Review pending;
 6. invalidates downstream checkpoints from selected boundary;
-7. resumes research/Selection/Architecture work;
+7. resumes research/Selection/Architecture work, including mandatory Sol supervisory reviews;
 8. stops at Architecture Review rN+1 before new drafting/publication can continue.
 
 This is normal dependency-aware revision, not an Exception Gate.
@@ -256,6 +287,8 @@ Keep distinct:
 - bot output commit.
 
 For Evidence and Edition Views, resolve the active accepted pair only as `Production State -> passed Evidence Stage Checkpoint -> exact named artifact -> exact path/SHA validation`; historical accepted directories are immutable storage, not an authority selector.
+
+Sol supervisory review records must identify the exact active Evidence/View authority they reviewed. A later regenerated Evidence run invalidates any semantic conclusion that depended on the previous active pair.
 
 ## 14. Core candidate audit rule
 
