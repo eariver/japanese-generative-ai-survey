@@ -2,15 +2,19 @@
 
 ## Survey Production Core v2 bootstrap
 
-For Weekly/Special start/resume requests, use current reviewed `main` as source of truth and read `docs/survey-production-core-v2-session-bootstrap.md` plus the applicable Profile/period/thematic/series guide.
+For Weekly/Special start/resume requests, use current reviewed `main` as source of truth and read `docs/survey-production-core-v2-session-bootstrap.md`, `docs/survey-production-core-v2-sol-luna-review-governance.md`, plus the applicable Profile/period/thematic/series guide.
 
 The user only needs to identify the target and desired Human Gate. Do not ask them to restate repository-owned mechanics.
 
 ChatGPT is the primary research/editorial/publication operator. Deterministic scripts and GitHub Actions protect exact identities/provenance/invariants/build/release integrity; they do not replace research/editorial judgment or make Human Gate decisions.
 
+The supervising Sol/reviewer role and Luna/Work execution role must follow `docs/survey-production-core-v2-sol-luna-review-governance.md`. Execution-agent completion, deterministic validation, or `READY_FOR_ARCHITECTURE_REVIEW` status never substitutes for the required independent Sol research/authority-consumption review or the full Human-facing Architecture Review dossier.
+
 ## Continuous progression
 
 Do not stop for ordinary internal work. Source Intake, search expansion, Screening, Evidence, completeness/materiality, Selection, Architecture preparation, reader-facing authorship, synthesis, deterministic QA, semantic/editorial QA, PDF build, visual QA, transient retry, and edition-local repair are autonomous work toward the requested Gate.
+
+Autonomous progression includes the mandatory internal Sol supervisory checkpoints defined by `docs/survey-production-core-v2-sol-luna-review-governance.md`; those checkpoints are not extra Human Gates and must not be skipped merely to keep one Luna/Work run continuous.
 
 The two normal Human Gates are:
 
