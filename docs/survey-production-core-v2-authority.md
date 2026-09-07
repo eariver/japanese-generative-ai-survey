@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Design Authority Index
 
-Status: `CANONICAL POST-INTEGRATION CORE AUTHORITY / SOL-LUNA REVIEW GOVERNANCE AMENDMENT CANDIDATE / PRE-AUDIT`
+Status: `CANONICAL POST-INTEGRATION CORE AUTHORITY / SOL-LUNA REVIEW GOVERNANCE AMENDMENT / PRE-AUDIT CANDIDATE`
 Established: 2026-08-22 JST  
 Current maintenance branch: `fix/core-v2-sol-luna-review-governance-20260907`
 Prior integration PR: `#484` — `Survey Production Core v2: pre-Human Evidence regeneration repair` — merged into `main`
