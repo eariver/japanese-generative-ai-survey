@@ -1,0 +1,45 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W34",
+  "from_state": "ISSUE_INITIALIZED",
+  "to_state": "DISCOVERY_COLLECTED",
+  "checkpoints": [
+    "discovery"
+  ],
+  "recorded_at": "2026-09-07T16:30:30Z",
+  "implementation": {
+    "repository_commit_sha": "78589c27ac836da74c6105ba0433fdd190ec2e9e",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "704eacb989bd01cb08dd225f133e73c0505c77d52456fb6bd02c13fa3b8ca2e1",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "discovery-acceptance",
+      "path": "sources/2026-W34/discovery/discovery-accepted-v2.json",
+      "sha256": "322274af3e1b90da7a52af0bc39954d1cb4bf743a190374b5f857d3ac4389bd5"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "Core stage-contract validation passed for ISSUE_INITIALIZED -> DISCOVERY_COLLECTED against the canonical Discovery acceptance. This mechanical PASS does not constitute Sol's independent Discovery completeness review; the Sol review remains the required next supervisory boundary.",
+      "result": {
+        "path": "sources/2026-W34/execution/luna/w34-architecture-r2-research-sufficiency-revision-r1/validation/core-discovery-stage-validation.json",
+        "sha256": "54718e4dbc3e4a64adc6f5de7f52f4f9f16c013a3f1de918d27db41e28670ae5"
+      }
+    }
+  ],
+  "summary": "Fresh W34 Source Intake and Core Discovery materialization completed; independent Sol Discovery completeness and negative-space review is required before any Screening or downstream filtering."
+}
