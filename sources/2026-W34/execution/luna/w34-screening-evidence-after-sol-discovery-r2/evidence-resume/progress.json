@@ -1251,7 +1251,43 @@
   "state-advance-to-EVIDENCE_REVIEWED",
   "handoff"
  ],
- "last_committed_batch": null,
- "canonical_state": "CANDIDATES_NORMALIZED (not advanced until full materialization)",
- "memory_env": "Ubuntu 8GB; batch<=20 tasks/batch; retrieval concurrency<=2 (no new retrieval needed: bodies already captured)"
+ "last_committed_batch": "batch4 f062a12386d20a96d91eebe4d2d9f083181cd644 (bodies complete)",
+ "canonical_state": "EVIDENCE_REVIEWED (advanced 2026-09-09 via exact Core stage validation)",
+ "memory_env": "Ubuntu 8GB; batch<=20 tasks/batch; retrieval concurrency<=2 (no new retrieval needed: bodies already captured)",
+ "checkpoint_batches": [
+  {
+   "n": 1,
+   "sha": "37b6bb0220a76ac40ad13dcb208634c101c7e727",
+   "content": "task-local inputs+ledger+scripts+resume log+progress"
+  },
+  {
+   "n": 2,
+   "sha": "87f5ea3405d65a54c359d9215472c5b79302e409",
+   "content": "arxiv HTML bodies x319"
+  },
+  {
+   "n": 3,
+   "sha": "a3c7c61886987fff0974648a55ed13aee2c3da52",
+   "content": "official bodies x104"
+  },
+  {
+   "n": 4,
+   "sha": "f062a12386d20a96d91eebe4d2d9f083181cd644",
+   "content": "arxiv PDF/TXT x24 + provenance x3"
+  }
+ ],
+ "canonical_outputs": {
+  "evidence_acceptance": "sources/2026-W34/evidence/v2/accepted/647cde464d92935c1ca633ade62bcbf7ebe88c458cc8b3848bae8d2fc4794831/evidence-accepted.json (409 results)",
+  "views_acceptance": "sources/2026-W34/evidence/v2/views/accepted/e2e644bcc97ac664949b272fca919923385af6192c65b5a3566e30382b0ca7ba/edition-views-accepted.json (409 views)",
+  "materiality_ledger": "sources/2026-W34/materiality-ledger-v2.json (439 rows)",
+  "profile_completeness": "sources/2026-W34/profile-completeness-v2.json (LIMITED)"
+ },
+ "memory_report": {
+  "oom_occurred": false,
+  "min_avail_gb": 4.3,
+  "batch_reductions": 0,
+  "restarts_this_run": 0,
+  "timeout_kills_this_run": 3,
+  "note": "kills were tool wall-clock caps on the ~1.2s/full-revalidation Core path, not memory; 4.3-4.7GB available throughout"
+ }
 }
