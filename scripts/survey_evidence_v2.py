@@ -76,6 +76,16 @@ SOURCE_CLASS_MAP = {
     "carryover_recheck": "SECONDARY",
     "grok_x_observation_corrected_r2": "SOCIAL",
     "sol_discovery_working_record": "SECONDARY",
+    # W34 fresh gap-fill Discovery collectors (accepted canonical Discovery).
+    # Added 2026-09-09 after edition-found fail-closed gap blocked fresh
+    # Evidence (see sources/2026-W34/execution/luna/
+    # w34-screening-evidence-after-sol-discovery-r2/defects/
+    # shared-core-evidence-source-map-gap.md). Classes mirror siblings.
+    "arxiv_atom_snapshot": "PRIMARY_PAPER",
+    "official_web_fallback_observation": "PRIMARY_OFFICIAL",
+    "official_release_notes_snapshot": "PRIMARY_OFFICIAL",
+    "official_rss_index_snapshot": "PRIMARY_OFFICIAL",
+    "official_research_index_snapshot": "PRIMARY_OFFICIAL",
     # Exact source_type values used by the W34 post-Screening supplement.
     "first_party_product_release": "PRIMARY_OFFICIAL",
     "first_party_product_changelog": "PRIMARY_OFFICIAL",
