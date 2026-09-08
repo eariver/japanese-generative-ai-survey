@@ -14,21 +14,21 @@ Existing branch only:
 
 `weekly/2026-W34-v2-work`
 
-Exact Starting SHA:
+The exact W34 Starting SHA and tree are intentionally **not self-anchored in this committed instruction file**. Committing this instruction necessarily advances the branch, so a SHA embedded here would immediately become stale.
 
-`457d2f57d65f80d44f19240a3e6660190dbe1acc`
+Before any write, Luna/Work must receive the current exact W34 branch SHA/tree from the external Sol handoff message and verify read-only that:
 
-Expected Starting Tree:
+```text
+origin/weekly/2026-W34-v2-work == externally supplied exact Starting SHA
+```
 
-`9a6c95482cb6581a7406550843dc56d05e2777ba`
+The reviewed Core authority remains:
 
-Reviewed Core main:
+`origin/main == 0a47a9b85108c5a2e9644037e7c0fb48b5bd96dc`
 
-`0a47a9b85108c5a2e9644037e7c0fb48b5bd96dc`
+If the external exact W34 SHA/tree is absent, or either remote ref differs, make zero writes, report the actual refs, and stop.
 
-Before any write, verify remote branch HEAD and remote main exactly match these SHAs.
-
-If either differs, make zero writes, report actual SHAs, and stop.
+The externally supplied SHA/tree overrides any historical parent SHA mentioned in earlier handoffs. Do not infer the starting SHA from timestamps, local checkout state, or this file's parent.
 
 Do not create a new/fallback/repair/review/iteration branch. No force push, reset, rebase, or history rewrite.
 
@@ -43,7 +43,7 @@ Read from current reviewed main and W34 branch:
 5. `sources/2026-W34/execution/reviews/sol-discovery-completeness-review-20260908-r1.md`
 6. `sources/2026-W34/execution/luna/w34-architecture-r2-research-sufficiency-revision-r1/discovery-research-dossier.md`
 7. `sources/2026-W34/execution/luna/w34-architecture-r2-research-sufficiency-revision-r1/sol-discovery-review-handoff.md`
-8. current canonical Discovery, State, Production Profile, and 105-event inventory
+8. current canonical Discovery, State, Production Profile, and event-level inventory
 
 The Sol review is authoritative for this bounded gap-fill execution.
 
@@ -123,25 +123,18 @@ Requirements:
 1. Do not recollect arXiv unless the existing Raw is corrupt or incomplete.
 2. Do not use a fixed hand-selected ID list as the sole extraction mechanism.
 3. Build a broad reviewable shortlist from the collected entries.
-4. Preserve at least:
-   - arXiv ID
-   - title
-   - published timestamp
-   - categories
-   - candidate technical lane
-   - concise relevance rationale
-   - duplicate/merge relationship when applicable
+4. Preserve at least arXiv ID, title, published timestamp, categories, candidate technical lane, concise relevance rationale, and duplicate/merge relationship when applicable.
 5. Record the triage method and counts at each step.
 6. A broad deterministic title/abstract keyword prefilter is permitted only as an assistive high-recall pass; document its vocabulary and do not treat it as semantic truth.
 7. Do not impose a target paper count or story quota.
 8. Do not make Materiality/Selection decisions.
 9. Keep plausible research candidates even if later Evidence may reject them.
 
-Create a durable arXiv triage artifact under a new bounded execution subdirectory for this run so Sol can inspect the shortlist and the rejected/merged rationale.
+Create a durable arXiv triage artifact under the new bounded execution directory so Sol can inspect the shortlist and rejected/merged rationale.
 
 ## 6. Fresh event-level Discovery inventory
 
-The old event-level inventory contains 105 events, while the canonical fresh graph added 15 Discovery leads.
+The old event-level inventory contains 105 events, while the prior refresh added 15 Discovery leads to the canonical graph.
 
 Before Screening can ever resume, create a new event-level inventory revision that reconciles:
 
@@ -166,7 +159,7 @@ Do not attach Screening, Materiality, Selection, or Architecture dispositions be
 
 ## 7. Canonical Discovery regeneration
 
-Use the reviewed repository-owned Core mechanisms to regenerate and validate canonical Discovery from the corrected research basis.
+Use reviewed repository-owned Core mechanisms to regenerate and validate canonical Discovery from the corrected research basis.
 
 Do not hand-edit accepted authority merely to make validation pass.
 
