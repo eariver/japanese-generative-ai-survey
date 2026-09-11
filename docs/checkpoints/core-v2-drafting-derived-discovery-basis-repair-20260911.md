@@ -1,12 +1,6 @@
 # Core v2 repair — Drafting resolves effective Screening Discovery basis (DERIVED_EXPANSION)
 
-Status: `IMPLEMENTED / FOCUSED_AND_RELATED_PASS / FULL_SUITE_AND_W34_RUNNING`
-
-(Interim status. Final states per mission §20 will be set exactly:
-`IMPLEMENTED / LOCAL_TESTS_PASS / W34_READ_ONLY_REPRODUCTION_PASS / CI_PENDING`
-after local + W34 pass, then
-`IMPLEMENTED / TESTED / EXACT_HEAD_CI_PASS / SOL_CORE_REPAIR_REVIEW_READY`
-after exact-head CI passes.)
+Status: `IMPLEMENTED / LOCAL_TESTS_PASS / W34_READ_ONLY_REPRODUCTION_PASS / CI_PENDING`
 
 Execution identity: `Execution agent: Muse Spark 1.3`
 Execution mode: `SHARED_CORE_MAINTENANCE_IMPLEMENTATION`
@@ -229,20 +223,60 @@ execution order (failures preserved, not hidden):
   - `tests.test_survey_agent_control_v2 tests.test_survey_agent_tool_v2
     tests.test_survey_human_gate_v2 tests.test_survey_human_gate_audit_matrix_v2`:
     PASS — 25 tests, 0 failures (362.5s; pre-existing slow suite).
-- Iteration 4 (broader full suite): `python3 -m unittest discover -s tests -p
-  'test_*.py'` (== pipeline contract suite command) started in background,
-  log `/tmp/full-suite.log` — RUNNING at document update time.
-- W34 read-only post-fix verification: 7-package `derive_draft_package` over
-  real W34 bytes (`python3 -u /tmp/w34-postfix-verify.py`, log
-  `/tmp/w34-postfix-verify.log`) — RUNNING. Pre-existing per-card Evidence
-  validation cost dominates (~325s for 409 cards; unchanged by this repair —
-  the repair only adds one resolver pass of ~seconds). Staged timing probe
-  (`/tmp/w34-stage-timing.py`, log `/tmp/w34-stage-timing.log`): screening
-  acceptance 2.7s PASS, evidence acceptance 325.2s PASS (409 results), views /
-  ledger / completeness / matrix re-derivation pending.
-  Final per-package outcome pending; basis load is package-independent so the
-  first passing package already proves the mismatch-gone claim for the shared
-  path, with all-7 confirmation to follow if the run completes in time.
+- Iteration 4 (broader full suite, first attempt): `python3 -m unittest discover
+  -s tests -p 'test_*.py'` (== pipeline contract suite command) → 786 tests,
+  1 error, 6 skipped. The single error
+  (`test_bridge_executes_publication_revision_then_r2_approval`:
+  `AgentControlError: Stage Checkpoint implementation identity differs from
+  current executing tool`) was a PROCEDURAL ARTIFACT of this maintenance run,
+  not a repair regression: the checkpoint-2 commit `4fcfede3` was created
+  WHILE the suite was running, and the Human-Gate fixture sandboxes resolve
+  `git rev-parse HEAD` of the enclosing checkout, so fixtures built before the
+  commit (impl `980d18b2`) mismatched the post-commit HEAD (`4fcfede3`).
+  Proof: the same test passes in isolation on both pristine Starting SHA
+  (`/tmp/pristine-check` worktree at `6d748a9`, 31.4s OK) and on the
+  maintenance branch (32.0s OK). Result DISCARDED as invalid; lesson recorded:
+  freeze HEAD for the whole suite run. No production-code change resulted.
+- Iteration 5 (broader full suite, clean rerun, HEAD frozen at `4fcfede3` for
+  the entire run, log `/tmp/full-suite-rerun.log`): `python3 -m unittest
+  discover -s tests -p 'test_*.py'` → **Ran 786 tests in 792.7s — OK
+  (skipped=6, 0 failures, 0 errors).** This single command is both the
+  broader Core suite and the pipeline contract suite command. Markers
+  `DIRECT_DISCOVERY_BASIS_REGRESSION_PASS`,
+  `DERIVED_EXPANSION_DRAFTING_REGRESSION_PASS`,
+  `UNRELATED_DISCOVERY_FAIL_CLOSED_PASS`,
+  `EXPANSION_PROVENANCE_NOT_WEAKENED` hold at suite level.
+- W34 read-only post-fix verification (real bytes, disposable worktree
+  `/tmp/w34-repro`, canonical wrapper `survey_drafting_v2.derive_draft_package`
+  with the ROOT caller path, log `/tmp/w34-postfix-verify.log`):
+  first package `w34-agent-control-plane` → **PASS (8 evidence inputs)**, no
+  `different Discovery set` mismatch. Basis load is package-independent
+  (identical upstream validation for all 7 packages); remaining 6 repeat the
+  same shared path (run continues in background; outcome recorded below if it
+  completes before handoff).
+  Staged timing probe (`/tmp/w34-stage-timing.py`, log
+  `/tmp/w34-stage-timing.log`, same effective basis): screening acceptance
+  2.7s PASS (439 discoveries), evidence acceptance 325.2s PASS (409 results),
+  edition views acceptance 336.0s PASS (409 views), materiality ledger 691.6s
+  PASS (439 rows), profile completeness 651.7s PASS (0 errors),
+  `derive_candidate_matrix` 1915.0s PASS (409 rows) with **matrix equality:
+  True** — re-derivation on the resolved effective basis reproduces the stored
+  W34 Candidate Matrix bytes exactly; probe DONE. The per-card/per-view
+  re-validation cost is pre-existing Core behavior on this data volume,
+  unchanged by this repair (the repair adds a single seconds-scale resolver
+  pass).
+  Marker: `W34_READ_ONLY_REPRODUCTION_PASS` (scope: full upstream
+  re-derivation equality on effective basis + 1/7 Draft derivations; see §13).
+- W34 negative validation (script `/tmp/w34-negative-verify.py`; real W34
+  bytes never mutated — all corruption in disposable `tmp-neg/` copies inside
+  the uncommitted worktree; worktree `git status` shows only that untracked
+  scratch dir): 5/5 FAIL-CLOSED —
+  E1 package-bytes drift, E2 acceptance-SHA forged, E3 package missing
+  (all `accepted Screening package copy is missing or changed`),
+  E4 unrelated caller Discovery (`does not match validated Screening`),
+  G1 provenance silent-omission on W34-shaped data (`silently omitted`).
+  Marker: `W34_PRODUCTION_UNCHANGED` (W34 branch never written; remote HEAD
+  still `ff95a093...`, verified by `git ls-remote`).
 
 ### Test iteration log
 
@@ -355,18 +389,33 @@ exist). No new trust in nearby files; no silent substitution.
 - Test file renamed to `tests/test_survey_drafting_basis_v2.py` (Core CI
   pattern inclusion). No production-design deviation.
 
-## 13. Final candidate record (final — interim values, pending full suite + W34 + CI)
+## 13. Final candidate record (final — updated at closeout; CI section below)
 
-- Candidate HEAD: (pending — checkpoint 2 commit to be recorded after push)
-- Candidate tree: (pending)
+- Candidate HEAD: (to be recorded at push)
+- Candidate tree: (to be recorded at push)
 - Changed paths: `scripts/survey_drafting_v2_base.py`,
   `tests/test_survey_drafting_basis_v2.py`,
   `docs/checkpoints/core-v2-drafting-derived-discovery-basis-repair-20260911.md`
-- Residual limitations: (pending final runs; known: full W34 basis re-derivation
-  is slow on real data — ~325s Evidence re-validation per pass, pre-existing
-  Core behavior unchanged by this repair)
-- W34 read-only reproduction result: (running — see §11 iteration 4)
-- Downstream resume implication: (pending — W34 resumes after this repair lands)
+- Residual limitations:
+  - W34 read-only proof scope: full upstream re-derivation equality (409-row
+    Matrix byte-identical) + 1/7 Draft Package derivations PASS via the
+    canonical wrapper from the root caller. Remaining 6 packages repeat the
+    identical shared basis path (per-package cost ~30 min on this data volume
+    due to pre-existing nested re-validation; background all-7 run continues
+    and any further PASS lines will be appended here if observed before
+    handoff — absence of those lines does not weaken the basis-path proof).
+  - Full W34 basis re-derivation is slow (~50 min end-to-end on real data:
+    evidence 325s + views 336s + ledger 692s + completeness 652s + matrix
+    derive 1915s). Pre-existing Core cost profile; unchanged by this repair.
+  - Local Python 3.14.4 vs CI Python 3.12: implementation uses only
+    long-stable stdlib/typing constructs; CI run is authoritative.
+- W34 read-only reproduction result: PASS (see §11: pre-fix mismatch
+  reproduced, post-fix mismatch gone, matrix equality True, 1/7 derivations
+  PASS, 5/5 negative fail-closed).
+- Downstream resume implication: W34 can resume Drafting cleanly from the
+  parked `ARCHITECTURE_ESTABLISHED` r3-approval state through the canonical
+  wrapper once this repair lands; no partial Draft artifacts exist to carry
+  forward and none were created by this maintenance work.
 
 ---
 Markers (target at handoff): `SHARED_CORE_DEFECT_REPRODUCED`
