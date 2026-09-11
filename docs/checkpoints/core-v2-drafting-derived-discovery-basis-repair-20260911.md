@@ -1,6 +1,6 @@
 # Core v2 repair — Drafting resolves effective Screening Discovery basis (DERIVED_EXPANSION)
 
-Status: `IMPLEMENTED / LOCAL_TESTS_PASS / W34_READ_ONLY_REPRODUCTION_PASS / CI_PENDING`
+Status: `IMPLEMENTED / TESTED / EXACT_HEAD_CI_PASS / SOL_CORE_REPAIR_REVIEW_READY`
 
 Execution identity: `Execution agent: Muse Spark 1.3`
 Execution mode: `SHARED_CORE_MAINTENANCE_IMPLEMENTATION`
@@ -250,7 +250,9 @@ execution order (failures preserved, not hidden):
   `/tmp/w34-repro`, canonical wrapper `survey_drafting_v2.derive_draft_package`
   with the ROOT caller path, log `/tmp/w34-postfix-verify.log`):
   first package `w34-agent-control-plane` → **PASS (8 evidence inputs)**, no
-  `different Discovery set` mismatch. Basis load is package-independent
+  `different Discovery set` mismatch, followed by
+  `w34-collaborative-agent-workflows-retrieval` → **PASS (12 inputs)** (2/7 at
+  record time). Basis load is package-independent
   (identical upstream validation for all 7 packages); remaining 6 repeat the
   same shared path (run continues in background; outcome recorded below if it
   completes before handoff).
@@ -391,8 +393,8 @@ exist). No new trust in nearby files; no silent substitution.
 
 ## 13. Final candidate record (final — updated at closeout; CI section below)
 
-- Candidate HEAD: (to be recorded at push)
-- Candidate tree: (to be recorded at push)
+- Candidate HEAD: `6432413c13fb7f7534b3d7954337d835e136f9d5`
+- Candidate tree: `059a55f8d67f9ca97eedf4fe3af48905c56b08a5`
 - Changed paths: `scripts/survey_drafting_v2_base.py`,
   `tests/test_survey_drafting_basis_v2.py`,
   `docs/checkpoints/core-v2-drafting-derived-discovery-basis-repair-20260911.md`
@@ -410,12 +412,32 @@ exist). No new trust in nearby files; no silent substitution.
   - Local Python 3.14.4 vs CI Python 3.12: implementation uses only
     long-stable stdlib/typing constructs; CI run is authoritative.
 - W34 read-only reproduction result: PASS (see §11: pre-fix mismatch
-  reproduced, post-fix mismatch gone, matrix equality True, 1/7 derivations
-  PASS, 5/5 negative fail-closed).
+  reproduced, post-fix mismatch gone, matrix equality True, 2/7 Draft
+  derivations PASS at record time — `w34-agent-control-plane` (8 inputs),
+  `w34-collaborative-agent-workflows-retrieval` (12 inputs) — 5/5 negative
+  fail-closed).
 - Downstream resume implication: W34 can resume Drafting cleanly from the
   parked `ARCHITECTURE_ESTABLISHED` r3-approval state through the canonical
   wrapper once this repair lands; no partial Draft artifacts exist to carry
   forward and none were created by this maintenance work.
+
+## 14. Exact-head CI (candidate `6432413c`)
+
+PR: https://github.com/eariver/japanese-generative-ai-survey/pull/487
+(`Core v2: resolve effective Screening Discovery basis during Drafting`,
+base `main`, head `fix/core-v2-drafting-derived-discovery-basis-20260911`).
+
+| Workflow | Run ID | Head SHA | Result |
+|---|---|---|---|
+| Survey Production Core v2 CI (`core-v2`) | 34613738296 | `6432413c…` (verified via `gh run view`) | success (11m32s) |
+| Pipeline contract tests (`test`) | 34613738417 | `6432413c…` (verified via `gh run view`) | success (10m11s) |
+| operator-preflight / operator-execute | 34613738362 | — | skipping (no operator transport event; expected) |
+
+Marker: `EXACT_HEAD_CI_PASS`. No CI failure; nothing was carried to Human
+review before green. This record commit itself is docs-only
+(`git diff <candidate> HEAD -- scripts tests schemas config` is empty —
+verified after push); the code tree under review is byte-identical to the
+CI-green candidate.
 
 ---
 Markers (target at handoff): `SHARED_CORE_DEFECT_REPRODUCED`
