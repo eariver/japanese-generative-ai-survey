@@ -1,6 +1,12 @@
 # Core v2 repair — Drafting resolves effective Screening Discovery basis (DERIVED_EXPANSION)
 
-Status: `PLANNED / IMPLEMENTATION_PENDING / TESTS_PENDING`
+Status: `IMPLEMENTED / FOCUSED_AND_RELATED_PASS / FULL_SUITE_AND_W34_RUNNING`
+
+(Interim status. Final states per mission §20 will be set exactly:
+`IMPLEMENTED / LOCAL_TESTS_PASS / W34_READ_ONLY_REPRODUCTION_PASS / CI_PENDING`
+after local + W34 pass, then
+`IMPLEMENTED / TESTED / EXACT_HEAD_CI_PASS / SOL_CORE_REPAIR_REVIEW_READY`
+after exact-head CI passes.)
 
 Execution identity: `Execution agent: Muse Spark 1.3`
 Execution mode: `SHARED_CORE_MAINTENANCE_IMPLEMENTATION`
@@ -92,9 +98,11 @@ Drafting API callers.
   resolve + identity-check + pass effective path).
 - Minimal test fixture/helper adjustments only if an existing helper interface
   forces it; existing `resolve_effective_discovery_basis()` API reuse first.
-- New focused regression test file (e.g.
-  `tests/test_survey_drafting_effective_discovery_basis.py`) if no natural
-  existing file fits; prefer extending existing Drafting tests where natural.
+- New focused regression test file
+  `tests/test_survey_drafting_basis_v2.py` (renamed from the task's example so
+  the Core CI `test_survey_*_v2.py` pattern also matches) — requirements A–G +
+  Drafting integration regression (DIRECT + DERIVED_EXPANSION, incl. synthesis
+  wrapper path)
 
 ## 5. Non-goals
 
@@ -182,9 +190,59 @@ No hand-authored Draft/approval/state/index bypass records.
 
 ## 11. Tests / results
 
-`PENDING — no test result claimed yet.` No test has been executed for this repair;
-no PASS is claimed. Iteration log follows in execution order (failures preserved,
-not hidden):
+No PASS is claimed for suites that have not been executed. Iteration log in
+execution order (failures preserved, not hidden):
+
+### Test iteration log
+
+- Iteration 0 (pre-fix reproduction, read-only, disposable worktree
+  `/tmp/w34-repro` at `ff95a093...`, maintenance-branch code at base commit
+  `980d18b2` with production code still at Starting-SHA state):
+  command: `python3 /tmp/w34-defect-repro.py`
+  result: REPRODUCED — `validate_candidate_matrix` with the canonical root
+  Discovery path returned
+  `['Screening acceptance points at a different Discovery set']`;
+  resolver mode `DERIVED_EXPANSION`, root 369 records, effective 439 records,
+  caller==trusted root True, caller==trusted effective False.
+  Marker: `SHARED_CORE_DEFECT_REPRODUCED`.
+- Iteration 1 (focused new regression, post-fix):
+  command: `python3 -m unittest tests.test_survey_drafting_basis_v2 -v`
+  (8 tests; file renamed from the task's example name so it matches the Core CI
+  pattern `test_survey_*_v2.py` as well as `test_*.py`)
+  result: PASS — 8 tests, 0 failures, 0 skipped (~4s).
+- Iteration 2 (guard proof that the new tests detect the defect):
+  `git stash push -- scripts/survey_drafting_v2_base.py` (pre-fix production
+  code), reran `test_derived_expansion_from_root_caller_passes` → FAILED with
+  `ValueError: WU-009 upstream Architecture basis invalid: Screening acceptance
+  points at a different Discovery set` (2 errors: THEMATIC + WEEKLY subtests);
+  `git stash pop` restored the fix. The regression test guards the defect.
+- Iteration 3 (related existing suites, post-fix):
+  - `tests.test_survey_drafting_v2 tests.test_survey_drafting_integrity_v2
+    tests.test_survey_draft_profile_v2
+    tests.test_survey_interactive_drafting_cross_package_refs_v2`:
+    PASS — 13 tests, 0 failures.
+  - `tests.test_screening_expansion_authority_v2 tests.test_survey_screening_v2
+    tests.test_survey_active_screening_acceptance_v2`: PASS — 22 tests, 0 failures.
+  - `tests.test_survey_evidence_v2`: PASS — 12 tests, 0 failures.
+  - `tests.test_survey_architecture_v2 tests.test_build_draft_packages
+    tests.test_survey_drafting_historical_json_binding_v2`: PASS — 15 tests, 0 failures.
+  - `tests.test_survey_agent_control_v2 tests.test_survey_agent_tool_v2
+    tests.test_survey_human_gate_v2 tests.test_survey_human_gate_audit_matrix_v2`:
+    PASS — 25 tests, 0 failures (362.5s; pre-existing slow suite).
+- Iteration 4 (broader full suite): `python3 -m unittest discover -s tests -p
+  'test_*.py'` (== pipeline contract suite command) started in background,
+  log `/tmp/full-suite.log` — RUNNING at document update time.
+- W34 read-only post-fix verification: 7-package `derive_draft_package` over
+  real W34 bytes (`python3 -u /tmp/w34-postfix-verify.py`, log
+  `/tmp/w34-postfix-verify.log`) — RUNNING. Pre-existing per-card Evidence
+  validation cost dominates (~325s for 409 cards; unchanged by this repair —
+  the repair only adds one resolver pass of ~seconds). Staged timing probe
+  (`/tmp/w34-stage-timing.py`, log `/tmp/w34-stage-timing.log`): screening
+  acceptance 2.7s PASS, evidence acceptance 325.2s PASS (409 results), views /
+  ledger / completeness / matrix re-derivation pending.
+  Final per-package outcome pending; basis load is package-independent so the
+  first passing package already proves the mismatch-gone claim for the shared
+  path, with all-7 confirmation to follow if the run completes in time.
 
 ### Test iteration log
 
@@ -220,26 +278,95 @@ not hidden):
 
 ## 12. Repair content (final)
 
-PENDING — implementation not started.
+### Changed files
 
-- Changed files: (pending)
-- Function-level changes: (pending)
-- Why root/effective mismatch resolves: (pending)
-- DIRECT impact: (pending)
-- DERIVED_EXPANSION impact: (pending)
-- Fail-closed preservation: (pending)
-- Design deviations from §3 with reasons: (pending)
+- `scripts/survey_drafting_v2_base.py` (production repair only; +53 lines):
+  - new import `from scripts import survey_screening_v2 as screening`
+    (cycle-safe: `survey_evidence_v2` already imports it at top level; the
+    screening module only imports `survey_production_v2` at top level);
+  - new helper `_resolve_effective_screening_discovery(repo_root,
+    screening_path, discovery_path, implementation_sha) -> Path`;
+  - `_load_drafting_basis()` now passes the helper's trusted effective path
+    (instead of the verbatim caller path) into
+    `architecture.validate_candidate_matrix(...)`.
+- `tests/test_survey_drafting_basis_v2.py` (new, 8 tests; name chosen so both
+  CI patterns match: Core CI `test_survey_*_v2.py` and pipeline contracts
+  `test_*.py`).
+- This document (updated in place).
 
-## 13. Final candidate record (final)
+No schema / config / lifecycle / Human Gate / data-model changes. No
+`survey_screening_v2.py` helper changes were needed — the existing API was
+reused as-is. No `run_drafting_synthesis_v2_interactive.py` change — it flows
+through the repaired loader.
 
-PENDING.
+### Function-level changes
 
-- Candidate HEAD: (pending)
+`_resolve_effective_screening_discovery` (all generic, no issue/profile/count
+literals):
+1. loads the Screening acceptance (`screening-accepted.json`); missing/invalid
+   bytes → `ValueError` fail closed;
+2. requires a non-empty `package_sha256` binding in the acceptance;
+3. derives sibling `package.json`; rejects symlink/missing (`is_symlink() or
+   not is_file()`); requires actual SHA == acceptance `package_sha256`
+   (same message as the downstream Evidence check:
+   `accepted Screening package copy is missing or changed`);
+4. reuses `screening.validate_package_basis(...)` (profile/state/discovery
+   SHAs, prompt/result contracts, State basis — identical to what downstream
+   re-checks);
+5. reuses `screening.resolve_effective_discovery_basis(...)` as the single
+   source of truth for trusted root path / trusted effective path / mode
+   (expansion provenance validation untouched);
+6. admits caller Discovery only if its resolved absolute path equals the
+   trusted root OR the trusted effective path; any third path → `ValueError`
+   (`Drafting Discovery basis does not match validated Screening
+   root/effective Discovery basis`); returns the trusted effective path.
+
+### Why the root/effective mismatch resolves
+
+Downstream `evidence.validate_screening_acceptance` demands caller path ==
+effective path. Previously Drafting forwarded the canonical root path, which
+differs from effective exactly when the Screening package is a validated
+`DERIVED_EXPANSION`. Now Drafting resolves root→effective through the same
+validated authority and forwards the effective path, so re-derivation compares
+identical bytes. `DIRECT` (root == effective) resolves to the caller path
+itself — behavior identical to before (locked by
+`test_direct_basis_resolution_is_identity`).
+
+### DIRECT impact
+
+None (identity). Existing Drafting/Screening/Evidence/Architecture suites pass
+unchanged.
+
+### DERIVED_EXPANSION impact
+
+Repaired: root callers and effective callers both pass; synthesis wrapper
+shares the loader so both its paths are repaired (ordinary path locked by
+wrapper-level test, synthesis path locked by `pkg-002` test).
+
+### Fail-closed preservation
+
+Unrelated Discovery rejected; sibling missing/SHA-mismatch rejected; derived
+drift rejected (package-declared SHA); provenance corruption blocked at the
+shared resolver (acceptance cannot be produced, so Drafting input can never
+exist). No new trust in nearby files; no silent substitution.
+
+### Design deviations from §3 with reasons
+
+- Test file renamed to `tests/test_survey_drafting_basis_v2.py` (Core CI
+  pattern inclusion). No production-design deviation.
+
+## 13. Final candidate record (final — interim values, pending full suite + W34 + CI)
+
+- Candidate HEAD: (pending — checkpoint 2 commit to be recorded after push)
 - Candidate tree: (pending)
-- Changed paths: (pending)
-- Residual limitations: (pending)
-- W34 read-only reproduction result: (pending)
-- Downstream resume implication: (pending)
+- Changed paths: `scripts/survey_drafting_v2_base.py`,
+  `tests/test_survey_drafting_basis_v2.py`,
+  `docs/checkpoints/core-v2-drafting-derived-discovery-basis-repair-20260911.md`
+- Residual limitations: (pending final runs; known: full W34 basis re-derivation
+  is slow on real data — ~325s Evidence re-validation per pass, pre-existing
+  Core behavior unchanged by this repair)
+- W34 read-only reproduction result: (running — see §11 iteration 4)
+- Downstream resume implication: (pending — W34 resumes after this repair lands)
 
 ---
 Markers (target at handoff): `SHARED_CORE_DEFECT_REPRODUCED`
