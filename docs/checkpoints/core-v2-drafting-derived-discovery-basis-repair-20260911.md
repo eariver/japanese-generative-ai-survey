@@ -439,6 +439,18 @@ review before green. This record commit itself is docs-only
 verified after push); the code tree under review is byte-identical to the
 CI-green candidate.
 
+Post-push update: the record commit `e5ca2b7c` also received full exact-head
+CI (both workflows trigger on PR synchronize):
+
+| Workflow | Run ID | Head SHA | Result |
+|---|---|---|---|
+| Survey Production Core v2 CI (`core-v2`) | 34615005422 | `e5ca2b7c…` (verified via `gh run view`) | success (8m59s) |
+| Pipeline contract tests (`test`) | 34615005439 | `e5ca2b7c…` (verified via `gh run view`) | success (8m29s) |
+
+Final head `e5ca2b7c` / tree `8e36aa743711ec8b963934301ce665aa1b704a56`
+is therefore green on its exact bytes as well; its code tree
+(`scripts tests schemas config`) is byte-identical to candidate `6432413c`.
+
 ---
 Markers (target at handoff): `SHARED_CORE_DEFECT_REPRODUCED`
 `REPAIR_POLICY_DOCUMENTED_BEFORE_CODE_CHANGE`
