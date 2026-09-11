@@ -19,6 +19,7 @@ from typing import Any
 from scripts import survey_architecture_v2 as architecture
 from scripts import survey_evidence_v2 as evidence
 from scripts import survey_production_v2 as core
+from scripts import survey_screening_v2 as screening
 
 APPROVAL_SCHEMA = Path("schemas/architecture-approval-record-v2.schema.json")
 DRAFT_PACKAGE_SCHEMA = Path("schemas/draft-v2-package.schema.json")
@@ -133,6 +134,60 @@ def validate_architecture_approval(
     return errors
 
 
+def _resolve_effective_screening_discovery(
+    repo_root: Path,
+    screening_path: Path,
+    discovery_path: Path,
+    implementation_sha: str,
+) -> Path:
+    """Resolve the canonical effective Screening Discovery basis for Drafting.
+
+    Screening supports both ``DIRECT`` (root == effective) and validated
+    ``DERIVED_EXPANSION`` bases. Drafting callers canonically supply the root
+    Discovery path, while Candidate Matrix re-derivation requires the effective
+    path. This helper reuses
+    :func:`survey_screening_v2.resolve_effective_discovery_basis` as the single
+    source of truth, verifies the sibling Screening package binding instead of
+    trusting nearby files, and only admits a caller Discovery that is exactly
+    the resolver-certified root or effective path. Anything else fails closed.
+    """
+
+    try:
+        acceptance = core.load_json(screening_path)
+    except (OSError, ValueError) as exc:
+        raise ValueError(
+            f"Drafting Screening acceptance is missing or invalid: {screening_path}"
+        ) from exc
+    package_sha256 = acceptance.get("package_sha256")
+    if not isinstance(package_sha256, str) or not package_sha256.strip():
+        raise ValueError("Drafting Screening acceptance does not bind a Screening package")
+    package_path = screening_path.parent / "package.json"
+    if package_path.is_symlink() or not package_path.is_file():
+        raise ValueError("accepted Screening package copy is missing or changed")
+    if core.sha256_file(package_path) != package_sha256:
+        raise ValueError("accepted Screening package copy is missing or changed")
+    package = core.load_json(package_path)
+    screening.validate_package_basis(repo_root, package_path, package, implementation_sha)
+    effective = screening.resolve_effective_discovery_basis(
+        repo_root, package_path, implementation_sha
+    )
+    trusted_effective = effective["path"].resolve()
+    trusted_root = effective["root_path"].resolve()
+    try:
+        caller = discovery_path.resolve()
+    except OSError as exc:
+        raise ValueError(
+            "Drafting Discovery basis does not match validated Screening "
+            "root/effective Discovery basis"
+        ) from exc
+    if caller != trusted_root and caller != trusted_effective:
+        raise ValueError(
+            "Drafting Discovery basis does not match validated Screening "
+            "root/effective Discovery basis"
+        )
+    return effective["path"]
+
+
 def _load_drafting_basis(
     repo_root: Path,
     profile_path: Path,
@@ -161,7 +216,9 @@ def _load_drafting_basis(
         matrix,
         repo_root,
         profile_path,
-        discovery_path,
+        _resolve_effective_screening_discovery(
+            repo_root, screening_path, discovery_path, implementation_sha
+        ),
         screening_path,
         evidence_path,
         views_path,
