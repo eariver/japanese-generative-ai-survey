@@ -1,9 +1,10 @@
 # Survey Production Core v2 — Design Authority Index
 
-Status: `CANONICAL POST-INTEGRATION CORE AUTHORITY / SOL-LUNA REVIEW GOVERNANCE AMENDMENT / PRE-AUDIT CANDIDATE`
+Status: `CANONICAL POST-INTEGRATION CORE AUTHORITY / WEEKLY BIBLIOGRAPHY PUBLICATION-BOUNDARY REPAIR PRE-FREEZE RECONCILIATION`
 Established: 2026-08-22 JST  
-Current maintenance branch: `fix/core-v2-sol-luna-review-governance-20260907`
-Prior integration PR: `#484` — `Survey Production Core v2: pre-Human Evidence regeneration repair` — merged into `main`
+Current maintenance branch: `fix/core-v2-weekly-bibliography-publication-boundary-20260912`
+Current integration PR: `#488` — `Core v2: remove internal Evidence/materiality metadata from Weekly bibliography` (`draft` / `open` / `unmerged`)
+Prior integration PRs: `#484`, `#485`, `#486`, `#487` — all merged into `main` (historical integration evidence)
 Final-audit rule: `docs/survey-production-core-v2-final-audit-rule.md`
 Mandatory research/review governance: `docs/survey-production-core-v2-sol-luna-review-governance.md`
 
@@ -11,9 +12,9 @@ Mandatory research/review governance: `docs/survey-production-core-v2-sol-luna-r
 
 This index identifies the live semantic authority for Survey Production Core v2 while preserving earlier design/audit documents as historical reasoning.
 
-Current `main` is the production source of truth at `d54f9c7b3a7cef064c6701ab864daab27118cdce`, tree `b47b416f9520fd3a4f76769f8b8918f25893645c`, after Human-reviewed PR #484 integration. Earlier structural-recovery and pre-incident baselines remain historical execution evidence only. Repository reality outranks stale historical wording in older records.
+Current `main` is the production source of truth at `005e59841272464307386abfc11f5b09228f0814`, tree `25f65fa91abdb2d5fe601e4a66d3b38a585060d8`, after merged PR #484 (pre-Human Evidence regeneration repair), PR #485 (Sol/Luna review governance), PR #486 (Evidence source-class map), and PR #487 (drafting derived-Discovery basis). Earlier `main` states, including `d54f9c7b3a7cef064c6701ab864daab27118cdce` and the structural-recovery lineage, remain historical execution evidence only. Repository reality outranks stale historical wording in older records.
 
-The current maintenance branch is a separate shared-Core documentation/governance amendment. It does not modify an edition production branch and does not by itself authorize integration into `main`.
+The current maintenance branch carries a separate shared-Core Weekly bibliography publication-boundary repair in pre-freeze review/reconciliation. It does not modify an edition production branch, has created no W34 Publication Candidate, is not frozen, has received no seven-point PASS, and has no Human approval; by itself it does not authorize integration into `main`.
 
 Historical candidate audits are not reusable as current approval evidence:
 
@@ -338,14 +339,16 @@ The 2026-09-07 Human finding adds the following recurring protections:
 - AUD-046 — formal Grok/X Source Intake + Google Drive handoff
 - AUD-047 — autonomous progression / stop discipline as an independent acceptance condition
 
-Current governance amendment finding: `IMPLEMENTED_ON_MAINTENANCE_BRANCH / REVIEW_PENDING`.
+Prior governance amendment finding (integrated via PR #485): formerly `IMPLEMENTED_ON_MAINTENANCE_BRANCH / REVIEW_PENDING`, now historical integration evidence.
+
+Current Weekly bibliography repair finding: `PREFREEZE_REPAIR_REQUIRED_CURRENT_CORE_AUTHORITY_SYNC` — implementation direction/scope accepted in Sol pre-freeze review; this authority reconciliation is the blocking repair; candidate not frozen; no seven-point PASS; no Human approval.
 
 Intentional `DEFERRED`:
 
 - AUD-031 — machine Series engine remains premature;
 - AUD-033 — exhaustive synthetic future-edition matrix remains unnecessary before real Pilots.
 
-Repair Set `REPAIR-WU012-2026-08-22` remains historical implementation evidence. The present Sol/Luna governance amendment is a separate shared-Core candidate and is not final-audit PASS evidence until reviewed/integrated.
+Repair Set `REPAIR-WU012-2026-08-22` remains historical implementation evidence. The Sol/Luna governance amendment was integrated via PR #485 and is no longer a pending candidate. The present Weekly bibliography publication-boundary repair is a separate shared-Core candidate and is not final-audit PASS evidence until reviewed/integrated.
 
 ## 12. Pre-audit validation boundary
 
@@ -374,13 +377,13 @@ The five CI families remain:
 
 Do not confuse five CI families with seven acceptance points.
 
-Because the current amendment changes shared semantic operating authority, its review must explicitly test that mandatory Sol checkpoints do not become extra Human confirmation gates and that the Human Architecture dossier requirement does not weaken exact-byte/reviewed-commit Gate identity.
+Because the integrated governance amendment changed shared semantic operating authority, its review had to explicitly test that mandatory Sol checkpoints do not become extra Human confirmation gates and that the Human Architecture dossier requirement does not weaken exact-byte/reviewed-commit Gate identity.
 
 ## 13. Pre-audit handoff and production boundary
 
-PR #310, PR #452, and PR #484 are historical merged implementation PRs. The current governance amendment is carried only on `fix/core-v2-sol-luna-review-governance-20260907` until reviewed integration.
+PR #310, PR #452, PR #484, PR #485, PR #486, and PR #487 are historical merged implementation PRs. The current Weekly bibliography publication-boundary repair is carried only on `fix/core-v2-weekly-bibliography-publication-boundary-20260912` as draft PR #488 until reviewed integration; it is in pre-freeze review/reconciliation, not frozen, with no seven-point PASS and no Human approval.
 
-W33 is an immutable released edition. Released Specials are also immutable historical editions. W34 is an active production-regression edition and remains on its canonical production branch; this shared-Core maintenance candidate does not modify W34 production bytes. SP001, SP002, and SP003 remain outside this Core candidate's production scope: SP001 is already released, while SP002/SP003 have no canonical production state or work branch in reviewed `main`. Active edition production branches must not edit this shared-Core candidate in place.
+W33 is an immutable released edition. Released Specials are also immutable historical editions. W34 is an active production-regression edition and remains read-only on its canonical production branch at `c1703f772837317b81735cd4cc851c715fff1a3b`; this shared-Core maintenance candidate does not modify W34 production bytes and has created no W34 Publication Candidate. SP001, SP002, and SP003 remain outside this Core candidate's production scope: SP001 is already released, while SP002/SP003 have no canonical production state or work branch in reviewed `main`. Active edition production branches must not edit this shared-Core candidate in place.
 
 Once Authority, governance, bootstrap, checklist and implementation expectations agree, freeze the exact branch head, obtain applicable validation, and review the candidate without changing it.
 

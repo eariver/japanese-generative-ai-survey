@@ -1,12 +1,12 @@
 # Survey Production Core v2 — Work Log
 
-Status: `POST-INTEGRATION CORE CANDIDATE / PRE-HUMAN EVIDENCE-REGENERATION REPAIR / PRE-SOL REVIEW`
+Status: `WEEKLY BIBLIOGRAPHY PUBLICATION-BOUNDARY REPAIR / PRE-FREEZE AUTHORITY RECONCILIATION / PRE-SOL REVIEW`
 Established: 2026-08-22 JST  
-Last updated: 2026-09-06 JST
-Current maintenance branch: `fix/core-v2-pre-human-evidence-regeneration-20260905`
-Historical implementation PRs: `#310` and post-integration repair `#452` (merged)
-Current integration PR: `#484` — `Survey Production Core v2: pre-Human Evidence regeneration repair` (`draft` / `open` / `unmerged`); this branch is a normal draft integration review surface, not an operator transport, and must not be merged by this task
-Production source of truth: current `main` at structural-recovery HEAD `2adcffdc8741605cd56a984e9fc509b6066172e1`; transparent structural-recovery descendant of `d8fa79ef2affacec49a47e6fc88018fb99f36899`, which is a structural-recovery descendant of pre-incident reviewed semantic/tree baseline `a9f121f0d65591f52b53515712d7c0bae573b2ef`; all three resolve to exact tree `b6c1b2cbc13165e64ac1d88d4d36b7515f7494da`, with zero changed files/content delta between the reviewed tree states. `d8fa79ef...` remains historical execution/base evidence for the completed repair runs; candidate `5b1f72c...` is semantically unchanged by this reconciliation.
+Last updated: 2026-09-12 JST
+Current maintenance branch: `fix/core-v2-weekly-bibliography-publication-boundary-20260912`
+Historical implementation PRs: `#310`, `#452`, `#484`, `#485`, `#486`, `#487` (all merged)
+Current integration PR: `#488` — `Core v2: remove internal Evidence/materiality metadata from Weekly bibliography` (`draft` / `open` / `unmerged`); this branch is a normal draft integration review surface, not an operator transport, and must not be merged by this task
+Production source of truth: current `main` at `005e59841272464307386abfc11f5b09228f0814`, tree `25f65fa91abdb2d5fe601e4a66d3b38a585060d8`, after merged PR #484 (pre-Human Evidence regeneration repair), PR #485 (Sol/Luna review governance), PR #486 (Evidence source-class map), and PR #487 (drafting derived-Discovery basis). The prior structural-recovery lineage (`2adcffdc8741605cd56a984e9fc509b6066172e1`, descendant of `d8fa79ef2affacec49a47e6fc88018fb99f36899`, descendant of pre-incident reviewed baseline `a9f121f0d65591f52b53515712d7c0bae573b2ef`, all resolving to exact tree `b6c1b2cbc13165e64ac1d88d4d36b7515f7494da`) remains historical execution/base evidence for the completed repair runs; the bibliography repair candidate is semantically a Weekly reader-facing serialization-boundary change only.
 Semantic authority: `docs/survey-production-core-v2-authority.md`  
 Final-audit rule: `docs/survey-production-core-v2-final-audit-rule.md`
 
@@ -27,8 +27,10 @@ Historical audit attempts remain evidence only:
 ## 2. Stable pre-audit snapshot
 
 - Repository: `eariver/japanese-generative-ai-survey`
-- Maintenance branch: `fix/core-v2-pre-human-evidence-regeneration-20260905`
-- Production `main`: `2adcffdc8741605cd56a984e9fc509b6066172e1` at the current structural-recovery HEAD. It is a transparent structural-recovery descendant of `d8fa79ef2affacec49a47e6fc88018fb99f36899`, itself descended from pre-incident reviewed baseline `a9f121f0d65591f52b53515712d7c0bae573b2ef`; all three have exact tree `b6c1b2cbc13165e64ac1d88d4d36b7515f7494da` and zero content delta between the reviewed tree states. Current main SHA remains authoritative for repository reality; `d8fa79ef...` remains historical execution/base evidence for the completed repair runs.
+- Maintenance branch: `fix/core-v2-weekly-bibliography-publication-boundary-20260912`
+- Current integration PR: `#488` (`draft` / `open` / `unmerged` review surface for the Weekly bibliography publication-boundary repair)
+- Current candidate state: pre-freeze authority reconciliation per Sol finding `PREFREEZE_REPAIR_REQUIRED_CURRENT_CORE_AUTHORITY_SYNC`; not frozen; no seven-point PASS; no Human approval; no W34 Publication Candidate created
+- Production `main`: `005e59841272464307386abfc11f5b09228f0814`, tree `25f65fa91abdb2d5fe601e4a66d3b38a585060d8`, after merged PRs #484, #485, #486, #487. The prior structural-recovery lineage (`2adcffdc8741605cd56a984e9fc509b6066172e1`, descended from `d8fa79ef2affacec49a47e6fc88018fb99f36899`, descended from pre-incident baseline `a9f121f0d65591f52b53515712d7c0bae573b2ef`; all resolving to exact tree `b6c1b2cbc13165e64ac1d88d4d36b7515f7494da`) remains historical execution/base evidence for the completed repair runs. Current main SHA remains authoritative for repository reality.
 - PR #310: historical implementation PR, merged.
 - PR #452: historical post-integration operator/Thematic repair PR, merged; its narrow amendment remains current authority where applicable.
 - WU-010R: historical `COMPLETE / SECOND-AUDIT GREEN`.
@@ -39,7 +41,7 @@ Historical audit attempts remain evidence only:
 - AUD-027–030, AUD-032, AUD-034–047 are `FIXED_GENERIC` where applicable.
 - W33: released historical edition; its production artifacts remain immutable.
 - SP001: released historical edition; its production artifacts remain immutable.
-- W34: active production-regression edition; this maintenance branch uses only its exact read-only fixture and does not write the W34 branch.
+- W34: active production-regression edition; this maintenance branch uses only its exact read-only fixture at `c1703f772837317b81735cd4cc851c715fff1a3b` (tree `46baf8cf9f086f0842b3af22f37cef2707d5b563`) and does not write the W34 branch; no W34 Publication Candidate has been created as part of this Core repair.
 - SP002, SP003: no canonical production-state file or canonical work branch in current `main`; outside this Core maintenance candidate's production scope.
 
 ## 3. Operating premise

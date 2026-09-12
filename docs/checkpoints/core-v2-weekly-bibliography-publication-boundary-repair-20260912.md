@@ -215,3 +215,13 @@ Plan: disposable checkout of `eariver/publication-boundary-redteam@7b9de2105c690
 ## 20. Sol review readiness
 
 `READY_FOR_SOL_FIXED_HEAD_REVIEW` (to be confirmed with final SHA/tree in section 18 after push + read-back). No merges, no W34/main writes beyond the maintenance branch, no Human decisions generated, no Publication Candidate created.
+
+## 21. Pre-freeze authority reconciliation (Sol `PREFREEZE_REPAIR_REQUIRED_CURRENT_CORE_AUTHORITY_SYNC`)
+
+Sol accepted the bibliography implementation direction/scope but blocked freeze: `docs/survey-production-core-v2-authority.md` and `docs/checkpoints/survey-production-core-v2-worklog.md` still named stale current `main`/branch/PR (`d54f9c7b...`, 20260907 governance branch, PR #484 / `2adcffdc...`, 20260905 branch).
+
+Bounded repair on this same branch, bibliography code/tests byte-identical (verified pre-commit):
+- `docs/survey-production-core-v2-authority.md`: current `main@005e5984...` / tree `25f65fa9...`; PRs #484–487 as merged history; current branch + draft PR #488; pre-freeze (not frozen, no PASS, no approval) state; W34 read-only `c1703f77...`, no Candidate created.
+- `docs/checkpoints/survey-production-core-v2-worklog.md`: same synchronization (status/branch/PRs/main/W34/no-Candidate); prior SHAs retained as historical evidence.
+- Other docs inspected: dated `docs/checkpoints/2026-09-0*` records are historical execution evidence (preserved); `docs/survey-production-core-v2-improvement-plan.md` and `docs/survey-production-core-v2-production-feedback-backlog.md` carry stale program/track headers of the same textual class, but synchronizing them to bibliography-repair authority would misattribute program ownership — left for Sol disposition, explicitly not rewritten here.
+- This section is the bounded reconciliation checkpoint. Fresh exact-head/PR-merge-context CI required for the replacement candidate; `8bb3f42a...` runs are diagnostic/historical after mutation. No freeze, no seven-point audit, no Human approval request, no merge in this task.
