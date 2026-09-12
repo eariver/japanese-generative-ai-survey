@@ -138,6 +138,11 @@ T13 full-fidelity disposable proof on exact W34 fixture copy (`f50d2291`, local-
 - post-advance `validate_agent_state` → PASS; `DRAFT_COMPLETE.json` byte-identical; arch approved, preview pending
 - Real W34 branch untouched (remote HEAD still `f50d2291`; proof confined to disposable worktree, since removed).
 
-## 7. Validation / docs / PR / freeze / audit / CI (to be filled)
+## 7. Validation / docs / PR / freeze / audit / CI
 
-PENDING.
+- Focused suite 13/13; neighboring suites 29/29; full contract 332 tests 0 failures (6 legacy skips); compile clean.
+- Docs: authority.md §8 mechanism paragraph; worklog §6 entry; this worklog.
+- Draft PR: #489 (open, draft, unmerged).
+- Pre-freeze review: 7 paths (2 implementation, 1 schema, 1 test, 3 docs); no W34 artifacts; no workflow drift (7 intact); authority prose matches implementation.
+- Freeze: the head resulting from committing this worklog finalization (recorded in PR #489 metadata, not in-tree). No tree mutation after freeze.
+- Seven-point audit: PR #489 audit metadata/comment (outside the frozen tree). Exact-head CI: PR checks on the frozen head.
