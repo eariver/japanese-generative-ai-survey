@@ -38,8 +38,9 @@ from scripts import survey_schema_v2 as schema_gate
 CHECKPOINT_SCHEMA = Path("schemas/stage-checkpoint-v2.schema.json")
 STATE_SCHEMA = Path("schemas/survey-production-state.schema.json")
 REVALIDATION_SCHEMA = Path("schemas/publication-surface-revalidation.schema.json")
-REVALIDATION_FILENAME = "publication-surface-revalidation.json"
+REVALIDATION_BASENAME = "publication-surface-revalidation"
 REVALIDATION_REASON_CLASSES = {"REVIEWED_CORE_CHANGE"}
+REVALIDATION_CHAIN_LIMIT = 32
 REVIEW_KINDS = {"DETERMINISTIC", "AGENT_RESEARCH", "AGENT_EDITORIAL", "AGENT_VISUAL"}
 CORE_STAGE_REVIEW_ID = "CORE_STAGE_CONTRACT"
 
@@ -549,9 +550,26 @@ def verify_agent_state_basis(repo_root: Path, cfg: dict[str, Any], state: dict[s
         raise AgentControlError("Production State is not safely resumable: " + "; ".join(errors))
 
 
-def _revalidation_path(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any]) -> Path:
+def _revalidation_record_path(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any], sequence: int) -> Path:
     _, _, source_root = _profile_and_source(repo_root, cfg, state)
-    return source_root / "publication" / "v2" / REVALIDATION_FILENAME
+    return source_root / "publication" / "v2" / f"{REVALIDATION_BASENAME}-r{sequence}.json"
+
+
+def _revalidation_existing_sequences(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any]) -> list[int]:
+    _, _, source_root = _profile_and_source(repo_root, cfg, state)
+    directory = source_root / "publication" / "v2"
+    sequences: list[int] = []
+    if not directory.is_dir():
+        return sequences
+    for child in sorted(directory.iterdir()):
+        if child.is_symlink() or not child.is_file():
+            continue
+        name = child.name
+        if name.startswith(REVALIDATION_BASENAME + "-r") and name.endswith(".json"):
+            middle = name[len(REVALIDATION_BASENAME) + 2:-len(".json")]
+            if middle.isdigit() and not middle.startswith("0") and not child.is_symlink():
+                sequences.append(int(middle))
+    return sorted(sequences)
 
 
 def _revalidation_surface_roots(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any]) -> tuple[Path, Path]:
@@ -570,33 +588,170 @@ def _revalidation_row_path(repo_root: Path, raw: str, label: str) -> Path:
     return path
 
 
+def _load_revalidation_record(
+    repo_root: Path, ref: dict[str, Any], label: str
+) -> tuple[dict[str, Any] | None, str | None]:
+    """Load one revalidation record file with structural validation.
+
+    Returns (record, error). Error is a single string; None means success.
+    """
+    if not isinstance(ref, dict) or set(ref) != {"path", "sha256"}:
+        return None, f"{label} authority fields invalid"
+    try:
+        path = core.repo_local_path(repo_root, ref["path"], label)
+    except (TypeError, ValueError) as exc:
+        return None, str(exc)
+    if path.is_symlink() or not path.is_file():
+        return None, f"{label} missing or unsafe"
+    if core.sha256_file(path) != ref.get("sha256"):
+        return None, f"{label} SHA mismatch"
+    try:
+        record = schema_gate.load_and_validate_json(
+            path, repo_root / REVALIDATION_SCHEMA, label="Publication Surface Revalidation"
+        )
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        return None, f"{label} invalid: {exc}"
+    return record, None
+
+
+def _check_revalidation_chain(
+    repo_root: Path, record: dict[str, Any]
+) -> list[str]:
+    """Walk the immutable supersession chain; every link must exist byte-identical."""
+    errors: list[str] = []
+    seen: set[str] = set()
+    current: dict[str, Any] | None = record
+    for _ in range(REVALIDATION_CHAIN_LIMIT):
+        if current is None:
+            return errors
+        link = current.get("supersedes")
+        if link is None:
+            return errors
+        linked, error = _load_revalidation_record(repo_root, link, "superseded revalidation record")
+        if error is not None:
+            errors.append(error)
+            return errors
+        assert linked is not None
+        digest = core.sha256_file(
+            core.repo_local_path(repo_root, link["path"], "superseded revalidation record")
+        )
+        if digest in seen:
+            errors.append("publication revalidation supersession chain cycle")
+            return errors
+        seen.add(digest)
+        if linked.get("issue_id") != record.get("issue_id"):
+            errors.append("publication revalidation chain issue identity mismatch")
+            return errors
+        current = linked
+    errors.append("publication revalidation supersession chain too deep")
+    return errors
+
+
+def _check_revalidation_agreement(
+    repo_root: Path, cfg: dict[str, Any], state: dict[str, Any], record: dict[str, Any]
+) -> list[str]:
+    """Require post-decision states to agree with Human-approved bytes.
+
+    A revalidation record established pre-decision stays usable afterwards only
+    while it binds exactly the PDF bytes the Human decisions approved. Any
+    divergence (e.g. swapped live bytes with a forged consistent record) fails.
+    """
+    errors: list[str] = []
+    record_pdf = ((record.get("validation") or {}).get("pdf") or {}).get("sha256")
+    gates = state.get("human_gates", {})
+    provenance = state.get("human_gate_provenance", {})
+    checkpoints = state.get("machine_checkpoints", {})
+    _, _, source_root = _profile_and_source(repo_root, cfg, state)
+    if gates.get("publication_preview") != "pending" or provenance.get("publication_preview") is not None:
+        approval_ref = provenance.get("publication_preview")
+        if not isinstance(approval_ref, dict) or set(approval_ref) != {"path", "sha256"}:
+            errors.append("decided Publication Preview lacks gate provenance for revalidation agreement")
+        else:
+            try:
+                approval_path = core.repo_local_path(repo_root, approval_ref["path"], "Publication Preview approval")
+            except (TypeError, ValueError) as exc:
+                errors.append(str(exc))
+            else:
+                if approval_path.is_symlink() or not approval_path.is_file():
+                    errors.append("Publication Preview approval missing for revalidation agreement")
+                elif core.sha256_file(approval_path) != approval_ref.get("sha256"):
+                    errors.append("Publication Preview approval provenance drift for revalidation agreement")
+                else:
+                    try:
+                        approval = core.load_json(approval_path)
+                    except (OSError, ValueError, json.JSONDecodeError) as exc:
+                        errors.append(f"Publication Preview approval unreadable for revalidation agreement: {exc}")
+                    else:
+                        if (
+                            approval.get("decision") != "APPROVED"
+                            or approval.get("gate") != "PUBLICATION_PREVIEW"
+                            or approval.get("issue_id") != state.get("issue_id")
+                        ):
+                            errors.append("Publication Preview approval identity invalid for revalidation agreement")
+                        elif approval.get("pdf_sha256") != record_pdf:
+                            errors.append("active revalidation PDF diverges from Human-approved Publication Preview bytes")
+    if checkpoints.get("freeze") == "passed":
+        freeze_path = source_root / "publication" / "v2" / "freeze-record-v2.json"
+        try:
+            freeze = core.load_json(freeze_path)
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            errors.append(f"freeze record unreadable for revalidation agreement: {exc}")
+        else:
+            if freeze.get("pdf_sha256") != record_pdf:
+                errors.append("active revalidation PDF diverges from Freeze record bytes")
+    if checkpoints.get("release") == "passed":
+        manifest_path = source_root / "publication" / "v2" / "release-manifest-v2.json"
+        try:
+            manifest = core.load_json(manifest_path)
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            errors.append(f"release manifest unreadable for revalidation agreement: {exc}")
+        else:
+            if manifest.get("pdf_sha256") != record_pdf:
+                errors.append("active revalidation PDF diverges from Release Manifest bytes")
+    return errors
+
+
 def resolve_active_publication_revalidation(
     repo_root: Path, cfg: dict[str, Any], state: dict[str, Any]
 ) -> tuple[dict[str, Any] | None, list[str]]:
-    """Load and fully re-derive the active publication-surface revalidation basis.
+    """Resolve the State-bound active publication-surface revalidation basis.
 
-    Returns (record, errors). (None, []) when no record exists. A present but
-    invalid record is a fail-closed error, never silently ignored. Validity is
-    re-derived live from current bytes on every call; nothing is trusted on age.
+    The record is authoritative only through the exact {path, sha256} reference
+    in production-state.json. A schema-valid file at a canonical location with
+    no State reference is inert and never consulted. Returns (record, errors);
+    (None, []) when the State carries no reference. A referenced-but-invalid
+    record is a fail-closed error, never a fallback to old behavior.
     """
     try:
-        record_path = _revalidation_path(repo_root, cfg, state)
         publication_dir, survey_root = _revalidation_surface_roots(repo_root, cfg, state)
     except (OSError, ValueError, KeyError) as exc:
         return None, [f"publication revalidation basis unresolvable: {exc}"]
-    if record_path.is_symlink() or not record_path.is_file():
+    pointer = state.get("publication_revalidation_provenance")
+    if pointer is None:
         return None, []
-    try:
-        record = schema_gate.load_and_validate_json(
-            record_path, repo_root / REVALIDATION_SCHEMA, label="Publication Surface Revalidation"
-        )
-    except (OSError, ValueError, json.JSONDecodeError) as exc:
-        return None, [f"publication revalidation record invalid: {exc}"]
+    record, error = _load_revalidation_record(repo_root, pointer, "active publication revalidation authority")
+    if error is not None:
+        return None, [error]
+    assert record is not None
     errors: list[str] = []
     if record.get("issue_id") != state.get("issue_id"):
         errors.append("publication revalidation issue identity mismatch")
     if record.get("reason_class") not in REVALIDATION_REASON_CLASSES:
         errors.append("publication revalidation reason class unrecognized")
+    establishment = record.get("establishment", {})
+    for key, expected in (
+        ("lifecycle", "VALIDATED_DRAFT"),
+        ("architecture_review", "approved"),
+        ("publication_preview", "pending"),
+        ("freeze", "pending"),
+        ("release", "pending"),
+    ):
+        if establishment.get(key) != expected:
+            errors.append(f"publication revalidation establishment not pre-decision sanctioned: {key}")
+    try:
+        core.parse_instant(str(establishment.get("recorded_at", "")))
+    except ValueError:
+        errors.append("publication revalidation establishment recorded_at invalid")
     prior_ref = record.get("prior_checkpoint")
     if not isinstance(prior_ref, dict) or set(prior_ref) != {"path", "sha256"}:
         errors.append("publication revalidation prior checkpoint authority fields invalid")
@@ -698,6 +853,8 @@ def resolve_active_publication_revalidation(
     else:
         if core.sha256_file(pdf_path) != pdf_ref.get("sha256") or pdf_path.stat().st_size != pdf_ref.get("byte_count"):
             errors.append("revalidation PDF drift")
+    errors.extend(_check_revalidation_chain(repo_root, record))
+    errors.extend(_check_revalidation_agreement(repo_root, cfg, state, record))
     if errors:
         return None, errors
     return record, []
@@ -1197,18 +1354,29 @@ def revalidate_publication_surface(
             raise AgentControlError(f"publication revalidation quality check not PASS: {check.get('check_id')}")
         bundle_checks.append({"check_id": check.get("check_id"), "status": "PASS"})
     pdf_ref = bundle_doc.get("pdf", {})
-    record_path = _revalidation_path(repo_root, cfg, state)
-    existing_chain = None
-    if record_path.exists():
-        prior_chain, chain_errors = resolve_active_publication_revalidation(repo_root, cfg, state)
-        if prior_chain is not None:
+    sequences = _revalidation_existing_sequences(repo_root, cfg, state)
+    supersedes: dict[str, str] | None = None
+    pointer = state.get("publication_revalidation_provenance")
+    if pointer is not None:
+        active, active_errors = resolve_active_publication_revalidation(repo_root, cfg, state)
+        if active is not None:
             raise AgentControlError("active publication revalidation already exists; nothing to supersede")
-        if not chain_errors:
+        if not active_errors:
             raise AgentControlError("publication revalidation record state ambiguous")
+        if not isinstance(pointer, dict) or set(pointer) != {"path", "sha256"}:
+            raise AgentControlError("publication revalidation State authority fields invalid")
         try:
-            existing_chain = core.load_json(record_path)
-        except (OSError, ValueError, json.JSONDecodeError) as exc:
-            raise AgentControlError(f"stale publication revalidation record unreadable: {exc}") from exc
+            stale_path = core.repo_local_path(repo_root, pointer["path"], "stale revalidation record")
+        except (TypeError, ValueError) as exc:
+            raise AgentControlError(str(exc)) from exc
+        if stale_path.is_symlink() or not stale_path.is_file():
+            raise AgentControlError("superseded revalidation record missing; cannot chain history")
+        supersedes = {"path": pointer["path"], "sha256": core.sha256_file(stale_path)}
+    sequence = (max(sequences) + 1) if sequences else 1
+    record_path = _revalidation_record_path(repo_root, cfg, state, sequence)
+    if record_path.exists():
+        raise AgentControlError("publication revalidation sequence collision")
+    establishment_state_sha = core.sha256_file(state_path)
     payload = {
         "schema_version": "2.0-rc1",
         "issue_id": state["issue_id"],
@@ -1233,12 +1401,31 @@ def revalidate_publication_surface(
         },
         "executor": executor.strip(),
         "recorded_at": core.iso_utc(recorded_at),
-        "superseded_revalidation": existing_chain,
+        "supersedes": supersedes,
+        "establishment": {
+            "state_sha256": establishment_state_sha,
+            "lifecycle": "VALIDATED_DRAFT",
+            "architecture_review": "approved",
+            "publication_preview": "pending",
+            "freeze": "pending",
+            "release": "pending",
+            "implementation_commit_sha": core.repository_commit_sha(repo_root, implementation_sha),
+            "recorded_at": core.iso_utc(recorded_at),
+        },
     }
     schema_gate.validate_instance(payload, repo_root / REVALIDATION_SCHEMA, label="Publication Surface Revalidation")
-    if record_path.exists():
-        record_path.unlink()
     core.write_json(record_path, payload)
+    updated = deepcopy(state)
+    updated["publication_revalidation_provenance"] = {
+        "path": str(record_path.resolve().relative_to(repo_root.resolve())),
+        "sha256": core.sha256_file(record_path),
+    }
+    core.write_json(state_path, updated)
+    post_errors = validate_agent_state(repo_root, cfg, core.load_json(state_path))
+    if post_errors:
+        raise AgentControlError(
+            "revalidation established but resulting State invalid: " + "; ".join(post_errors)
+        )
     return record_path
 
 

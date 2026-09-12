@@ -17,7 +17,8 @@
     "core",
     "executor",
     "recorded_at",
-    "superseded_revalidation"
+    "supersedes",
+    "establishment"
   ],
   "properties": {
     "schema_version": {"const": "2.0-rc1"},
@@ -39,11 +40,34 @@
     "core": {"$ref": "#/$defs/core"},
     "executor": {"type": "string", "minLength": 1},
     "recorded_at": {"type": "string", "format": "date-time"},
-    "superseded_revalidation": {
-      "anyOf": [
-        {"type": "null"},
-        {"type": "object"}
-      ]
+    "supersedes": {
+      "description": "Exact authority reference to the prior revalidation record this round supersedes, or null for the first round. The referenced file must remain immutable on disk.",
+      "oneOf": [{"$ref": "#/$defs/authority"}, {"type": "null"}]
+    },
+    "establishment": {
+      "description": "Provenance snapshot proving the record was established under sanctioned pre-decision conditions. Audit evidence reviewed alongside operation gates; post-decision agreement with Human-approved bytes is enforced separately.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state_sha256",
+        "lifecycle",
+        "architecture_review",
+        "publication_preview",
+        "freeze",
+        "release",
+        "implementation_commit_sha",
+        "recorded_at"
+      ],
+      "properties": {
+        "state_sha256": {"$ref": "#/$defs/sha256"},
+        "lifecycle": {"const": "VALIDATED_DRAFT"},
+        "architecture_review": {"const": "approved"},
+        "publication_preview": {"const": "pending"},
+        "freeze": {"const": "pending"},
+        "release": {"const": "pending"},
+        "implementation_commit_sha": {"$ref": "#/$defs/gitsha"},
+        "recorded_at": {"type": "string", "format": "date-time"}
+      }
     }
   },
   "$defs": {

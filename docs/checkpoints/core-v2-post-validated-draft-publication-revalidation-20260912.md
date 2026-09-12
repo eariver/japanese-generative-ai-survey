@@ -138,11 +138,22 @@ T13 full-fidelity disposable proof on exact W34 fixture copy (`f50d2291`, local-
 - post-advance `validate_agent_state` → PASS; `DRAFT_COMPLETE.json` byte-identical; arch approved, preview pending
 - Real W34 branch untouched (remote HEAD still `f50d2291`; proof confined to disposable worktree, since removed).
 
-## 7. Validation / docs / PR / freeze / audit / CI
+## 7. Validation / docs / PR / freeze / audit / CI (v1 candidate, historical)
 
 - Focused suite 13/13; neighboring suites 29/29; full contract 332 tests 0 failures (6 legacy skips); compile clean.
 - Docs: authority.md §8 mechanism paragraph; worklog §6 entry; this worklog.
 - Draft PR: #489 (open, draft, unmerged).
 - Pre-freeze review: 7 paths (2 implementation, 1 schema, 1 test, 3 docs); no W34 artifacts; no workflow drift (7 intact); authority prose matches implementation.
-- Freeze: the head resulting from committing this worklog finalization (recorded in PR #489 metadata, not in-tree). No tree mutation after freeze.
-- Seven-point audit: PR #489 audit metadata/comment (outside the frozen tree). Exact-head CI: PR checks on the frozen head.
+- Freeze (v1, superseded by Human REQUEST_CHANGES): `2d8f7d2f...` / tree `aff9f5cd...`. Seven-point audit 7/7 PASS recorded on PR #489; exact-head CI green. Verdicts NOT inherited by the hardened candidate (fresh audit required).
+
+## 8. Human-REQUEST_CHANGES hardening (State-bound active authority)
+
+Human review found the v1 authority model asymmetric: checkpoint/approval/gate provenance is State SHA-bound, but revalidation was canonical-path-discovered; negatives proved API refusal, not forgery inertness; second-round history lived only as embedded JSON.
+
+Hardening (same branch, prior audit not inherited):
+- State schema gains optional `publication_revalidation_provenance: {path, sha256} | null`; the operation sets it (provenance-only state change; no gate/lifecycle/history edits, no Human decision).
+- Versioned immutable records `publication-surface-revalidation-rN.json`; `supersedes` is an exact `{path, sha256}` link (never a free-form copy); old rounds stay byte-identical on disk.
+- Establishment snapshot in each record (pre-pointer state SHA, sanctioned gate values, prior checkpoint, implementation commit, timestamp).
+- Checker additionally enforces post-decision agreement: active record PDF bytes must equal Human-approved/freeze/release bytes when those checkpoints exist. A byte-identical forgery asserts no new authority (divergence always fails closed); authorship fidelity remains git-history reviewable like all authority objects.
+- N1–N10 regression tests (23/23 total with T1–T13-shape suite); W34 disposable proof re-executed on exact `f50d2291` (establishment → state PASS → stage PASS → advance RELEASE_CANDIDATE, DRAFT_COMPLETE.json untouched, real branch untouched).
+- No Weekly Publication Authorization gate object exists anywhere in code/config/docs; the design preserves the actual two-gate model and generates/authorizes no Human decision of any kind.

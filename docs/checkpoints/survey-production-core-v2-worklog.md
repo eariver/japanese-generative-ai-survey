@@ -119,7 +119,7 @@ Quality review remains `DETERMINISTIC / AGENT_SEMANTIC / AGENT_VISUAL`. Applicab
 
 ## 6. Post-completion repairs
 
-- **Post-VALIDATED_DRAFT publication revalidation:** `revalidate-publication-surface` rebinds legitimately regenerated publication bytes with new immutable authority (prior checkpoints never rewritten); VALIDATED_DRAFT-only, Architecture approval preserved, two Human Gates unchanged.
+- **Post-VALIDATED_DRAFT publication revalidation:** `revalidate-publication-surface` rebinds legitimately regenerated publication bytes with new immutable authority (prior checkpoints never rewritten); active record exact-byte bound from Production State (`publication_revalidation_provenance`), versioned `...-rN.json` chain with exact supersession links, establishment snapshot, and post-decision Human-approved-byte agreement; VALIDATED_DRAFT-only, Architecture approval preserved, two Human Gates unchanged.
 
 - **AUD-039:** exact semantic stage validation through `scripts/survey_stage_validation_v2.py` + mandatory `CORE_STAGE_CONTRACT`.
 - **AUD-040:** reviewed generic fixes must be integrated into the edition work branch before use.

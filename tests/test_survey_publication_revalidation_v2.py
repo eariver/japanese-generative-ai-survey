@@ -171,9 +171,10 @@ class Fixture:
         approval = core.load_json(self.src / "gates" / "architecture-approval.json")
         assert not drafting_base.validate_architecture_approval(approval, arch, summ, ISSUE)
 
-    def _write_pdf(self) -> None:
+    def _write_pdf(self, version: int = 1) -> None:
         writer = PdfWriter()
         writer.add_blank_page(width=595, height=842)
+        writer.add_metadata({"/Title": "fixture-publication-v%d" % version})
         with (self.survey / "main.pdf").open("wb") as handle:
             writer.write(handle)
 
@@ -187,7 +188,7 @@ class Fixture:
             "  url = {https://example.invalid/%d},\n  urldate = {2026-08-28}\n}\n" % (version, version, version),
             encoding="utf-8",
         )
-        self._write_pdf()
+        self._write_pdf(version)
 
     def _contract_report(self, record_path: Path, from_state: str, to_state: str, artifacts: list) -> Path:
         report_path = record_path.parent / (record_path.stem + "-core-contract.json")
@@ -617,7 +618,7 @@ class PublicationRevalidationTests(unittest.TestCase):
             state_path = fix.src / "production-state.json"
             self.regenerate(fix)
             pre = agent.validate_agent_state(self.root, self.cfg, core.load_json(state_path))
-            self.assertEqual(len([e for e in pre if "drift" in e]), 5, pre)
+            self.assertEqual(len([e for e in pre if "drift" in e]), 6, pre)
             agent.revalidate_publication_surface(
                 self.root, self.cfg, state_path, "REVIEWED_CORE_CHANGE",
                 "W34-defect-shape reproduction", EXECUTOR, T0 + timedelta(hours=1), None,
@@ -672,6 +673,324 @@ class PublicationRevalidationTests(unittest.TestCase):
             record = core.load_json(record_path)
             self.assertTrue(any("survey-special" in r["path"] for r in record["superseded_artifacts"]))
             self.assertEqual(agent.validate_agent_state(self.root, self.cfg, core.load_json(fix.src / "production-state.json")), [])
+        finally:
+            temp.cleanup()
+
+    def _pointer(self, fix: Fixture) -> dict | None:
+        import json as _json
+
+        return _json.loads((fix.src / "production-state.json").read_text(encoding="utf-8")).get(
+            "publication_revalidation_provenance"
+        )
+
+    def _write_state_pointer(self, fix: Fixture, pointer: dict | None) -> None:
+        import json as _json
+
+        state_path = fix.src / "production-state.json"
+        state = _json.loads(state_path.read_text(encoding="utf-8"))
+        if pointer is None:
+            state.pop("publication_revalidation_provenance", None)
+        else:
+            state["publication_revalidation_provenance"] = pointer
+        state_path.write_text(_json.dumps(state), encoding="utf-8")
+
+    def _operate(self, fix: Fixture, reason: str = "fixture reviewed core change"):
+        return agent.revalidate_publication_surface(
+            self.root, self.cfg, fix.src / "production-state.json", "REVIEWED_CORE_CHANGE",
+            reason, EXECUTOR, T0 + timedelta(hours=1), None,
+        )
+
+    def test_n1_unreferenced_forged_record_inert(self) -> None:
+        import json as _json
+        import shutil as _shutil
+
+        temp, fix = self.make_fixture()
+        try:
+            self.regenerate(fix)
+            record_path = self._operate(fix)
+            saved = _json.loads(record_path.read_text(encoding="utf-8"))
+            self._write_state_pointer(fix, None)
+            forged = fix.src / "publication" / "v2" / "publication-surface-revalidation-r9.json"
+            _shutil.copyfile(record_path, forged)
+            record, errors = agent.resolve_active_publication_revalidation(
+                self.root, self.cfg, core.load_json(fix.src / "production-state.json"))
+            self.assertIsNone(record)
+            self.assertEqual(errors, [])
+            drift = agent.validate_agent_state(self.root, self.cfg, core.load_json(fix.src / "production-state.json"))
+            self.assertTrue(any("drift" in e for e in drift), drift)
+            self.assertEqual(saved["issue_id"], ISSUE)
+        finally:
+            temp.cleanup()
+
+    def test_n2_state_authority_sha_mismatch(self) -> None:
+        temp, fix = self.make_fixture()
+        try:
+            self.regenerate(fix)
+            self._operate(fix)
+            pointer = self._pointer(fix)
+            assert pointer is not None
+            pointer = dict(pointer)
+            pointer["sha256"] = "0" * 64
+            self._write_state_pointer(fix, pointer)
+            _, errors = agent.resolve_active_publication_revalidation(
+                self.root, self.cfg, core.load_json(fix.src / "production-state.json"))
+            self.assertTrue(any("SHA mismatch" in e for e in errors), errors)
+        finally:
+            temp.cleanup()
+
+    def test_n3_referenced_record_tamper(self) -> None:
+        temp, fix = self.make_fixture()
+        try:
+            self.regenerate(fix)
+            record_path = self._operate(fix)
+            text = record_path.read_text(encoding="utf-8")
+            record_path.write_text(text + " ", encoding="utf-8")
+            _, errors = agent.resolve_active_publication_revalidation(
+                self.root, self.cfg, core.load_json(fix.src / "production-state.json"))
+            self.assertTrue(errors, "tampered record must fail closed")
+        finally:
+            temp.cleanup()
+
+    def _approve_preview(self, fix: Fixture):
+        cand_path = fix.src / "publication" / "v2" / "publication-candidate-v2.json"
+        publication.build_candidate(
+            self.root, ISSUE, "WEEKLY_MAGAZINE",
+            fix.src / "publication" / "v2" / "reader-manuscript-v2.json",
+            fix.survey / "main.tex", fix.survey / "main.pdf", 1,
+            fix.src / "publication" / "v2" / "quality-regression-bundle-v2.json",
+            fix.src / "publication" / "v2" / "semantic-editorial-review-v2.json",
+            fix.src / "publication" / "v2" / "visual-review-v2.json",
+            cand_path,
+        )
+        report_path = fix.src / "execution" / "stage-report.json"
+        stage_validation.validate_stage(
+            self.root, self.cfg, fix.src / "production-state.json",
+            {"publication-candidate": cand_path}, report_path, T0 + timedelta(hours=2),
+        )
+        reviews_path = fix.src / "execution" / "reviews.json"
+        core.write_json(reviews_path, {"reviews": [{
+            "check_id": "CORE_STAGE_CONTRACT", "kind": "DETERMINISTIC",
+            "executor": "fixture", "evidence": "n4 advance",
+            "result_path": str(report_path.relative_to(self.root)),
+        }]})
+        agent.advance_with_checkpoint(
+            self.root, self.cfg, fix.src / "production-state.json",
+            agent.build_stage_checkpoint(
+                self.root, self.cfg, fix.src / "production-state.json",
+                {"publication-candidate": cand_path}, reviews_path,
+                "n4 advance", T0 + timedelta(hours=3), None),
+        )
+        agent.approve_publication_preview(
+            self.root, self.cfg, fix.src / "production-state.json",
+            "fixture-human", T0 + timedelta(hours=4), "fixture-preview-r1",
+        )
+
+    def _swap_live_pdf(self, fix: Fixture) -> tuple[str, int]:
+        from pypdf import PdfWriter as _Writer
+
+        writer = _Writer()
+        writer.add_blank_page(width=100, height=100)
+        writer.add_blank_page(width=100, height=100)
+        with (fix.survey / "main.pdf").open("wb") as handle:
+            writer.write(handle)
+        return core.sha256_file(fix.survey / "main.pdf"), (fix.survey / "main.pdf").stat().st_size
+
+    def test_n4_post_preview_forged_activation_fails(self) -> None:
+        import json as _json
+
+        temp, fix = self.make_fixture()
+        try:
+            self.regenerate(fix)
+            record_path = self._operate(fix)
+            self._approve_preview(fix)
+            state = core.load_json(fix.src / "production-state.json")
+            self.assertEqual(state["human_gates"]["publication_preview"], "approved")
+            record, errors = agent.resolve_active_publication_revalidation(self.root, self.cfg, state)
+            self.assertIsNotNone(record)
+            self.assertEqual(errors, [])
+            p2_sha, p2_bytes = self._swap_live_pdf(fix)
+            forged = _json.loads(record_path.read_text(encoding="utf-8"))
+            forged["validation"]["pdf"] = {"path": forged["validation"]["pdf"]["path"],
+                                           "sha256": p2_sha, "byte_count": p2_bytes, "page_count": 2}
+            for row in forged["superseded_artifacts"]:
+                if row["name"] == "publication-pdf":
+                    row["new_sha256"] = p2_sha
+                    row["byte_count"] = p2_bytes
+            forged_path = fix.src / "publication" / "v2" / "publication-surface-revalidation-r2.json"
+            forged_path.write_text(_json.dumps(forged), encoding="utf-8")
+            self._write_state_pointer(
+                fix, {"path": str(forged_path.relative_to(self.root)),
+                      "sha256": core.sha256_file(forged_path)})
+            _, errors = agent.resolve_active_publication_revalidation(
+                self.root, self.cfg, core.load_json(fix.src / "production-state.json"))
+            self.assertTrue(any("diverges from Human-approved" in e for e in errors), errors)
+        finally:
+            temp.cleanup()
+
+    def test_n5_post_freeze_forged_activation_fails(self) -> None:
+        import json as _json
+
+        temp, fix = self.make_fixture()
+        try:
+            self.regenerate(fix)
+            record_path = self._operate(fix)
+            state_path = fix.src / "production-state.json"
+            state = _json.loads(state_path.read_text(encoding="utf-8"))
+            state["machine_checkpoints"]["freeze"] = "passed"
+            state_path.write_text(_json.dumps(state), encoding="utf-8")
+            freeze_path = fix.src / "publication" / "v2" / "freeze-record-v2.json"
+            live_pdf_sha = core.sha256_file(fix.survey / "main.pdf")
+            freeze_path.write_text(_json.dumps({
+                "schema_version": "2.0-rc1", "issue_id": ISSUE, "status": "FROZEN",
+                "publication_candidate_path": "x", "publication_candidate_sha256": "0" * 64,
+                "publication_preview_approval_path": "x", "publication_preview_approval_sha256": "0" * 64,
+                "visual_review_path": "x", "visual_review_sha256": "0" * 64,
+                "source_path": "x", "source_sha256": "0" * 64,
+                "pdf_path": str((fix.survey / "main.pdf").relative_to(self.root)),
+                "pdf_sha256": live_pdf_sha, "page_count": 1, "frozen_at": core.iso_utc(T0),
+            }), encoding="utf-8")
+            p2_sha, p2_bytes = self._swap_live_pdf(fix)
+            forged = _json.loads(record_path.read_text(encoding="utf-8"))
+            forged["validation"]["pdf"] = {"path": forged["validation"]["pdf"]["path"],
+                                           "sha256": p2_sha, "byte_count": p2_bytes, "page_count": 2}
+            for row in forged["superseded_artifacts"]:
+                if row["name"] == "publication-pdf":
+                    row["new_sha256"] = p2_sha
+                    row["byte_count"] = p2_bytes
+            forged_path = fix.src / "publication" / "v2" / "publication-surface-revalidation-r2.json"
+            forged_path.write_text(_json.dumps(forged), encoding="utf-8")
+            self._write_state_pointer(
+                fix, {"path": str(forged_path.relative_to(self.root)),
+                      "sha256": core.sha256_file(forged_path)})
+            _, errors = agent.resolve_active_publication_revalidation(
+                self.root, self.cfg, core.load_json(state_path))
+            self.assertTrue(any("Freeze record bytes" in e for e in errors), errors)
+        finally:
+            temp.cleanup()
+
+    def test_n6_immutable_multi_round_chain(self) -> None:
+        import json as _json
+
+        temp, fix = self.make_fixture()
+        try:
+            self.regenerate(fix, version=2)
+            r1_path = self._operate(fix, "round one")
+            r1_sha = core.sha256_file(r1_path)
+            self.regenerate(fix, version=3)
+            r2_path = self._operate(fix, "round two")
+            self.assertTrue(r1_path.is_file())
+            self.assertEqual(core.sha256_file(r1_path), r1_sha)
+            r2 = _json.loads(r2_path.read_text(encoding="utf-8"))
+            self.assertEqual(r2["supersedes"], {"path": str(r1_path.relative_to(self.root)), "sha256": r1_sha})
+            pointer = self._pointer(fix)
+            assert pointer is not None
+            self.assertEqual(pointer["path"], str(r2_path.relative_to(self.root)))
+            self.assertEqual(pointer["sha256"], core.sha256_file(r2_path))
+            record, errors = agent.resolve_active_publication_revalidation(
+                self.root, self.cfg, core.load_json(fix.src / "production-state.json"))
+            self.assertIsNotNone(record)
+            self.assertEqual(errors, [])
+            self.assertEqual(agent.validate_agent_state(self.root, self.cfg, core.load_json(fix.src / "production-state.json")), [])
+        finally:
+            temp.cleanup()
+
+    def test_n7_historical_chain_tamper_fails(self) -> None:
+        temp, fix = self.make_fixture()
+        try:
+            self.regenerate(fix, version=2)
+            r1_path = self._operate(fix, "round one")
+            self.regenerate(fix, version=3)
+            self._operate(fix, "round two")
+            text = r1_path.read_text(encoding="utf-8")
+            r1_path.write_text(text.replace("round one", "round ONE"), encoding="utf-8")
+            _, errors = agent.resolve_active_publication_revalidation(
+                self.root, self.cfg, core.load_json(fix.src / "production-state.json"))
+            self.assertTrue(errors, "tampered chain history must fail closed")
+        finally:
+            temp.cleanup()
+
+    def test_n8_unrelated_historical_record_inert(self) -> None:
+        import json as _json
+        import shutil as _shutil
+
+        temp, fix = self.make_fixture()
+        try:
+            self.regenerate(fix)
+            record_path = self._operate(fix)
+            stray = fix.src / "publication" / "v2" / "publication-surface-revalidation-r9.json"
+            _shutil.copyfile(record_path, stray)
+            record, errors = agent.resolve_active_publication_revalidation(
+                self.root, self.cfg, core.load_json(fix.src / "production-state.json"))
+            self.assertIsNotNone(record)
+            self.assertEqual(errors, [])
+            active_path = self._pointer(fix)
+            assert active_path is not None
+            self.assertEqual(active_path["path"], str(record_path.relative_to(self.root)))
+            self.assertNotEqual(active_path["path"], str(stray.relative_to(self.root)))
+            self.assertEqual(_json.loads(record_path.read_text(encoding="utf-8"))["issue_id"], ISSUE)
+        finally:
+            temp.cleanup()
+
+    def test_n9_gate_separation(self) -> None:
+        import json as _json
+
+        temp, fix = self.make_fixture()
+        try:
+            before_gates = _json.loads((fix.src / "production-state.json").read_text(encoding="utf-8"))["human_gates"]
+            before_prov = _json.loads((fix.src / "production-state.json").read_text(encoding="utf-8"))["human_gate_provenance"]
+            self.regenerate(fix)
+            self._operate(fix)
+            after = _json.loads((fix.src / "production-state.json").read_text(encoding="utf-8"))
+            self.assertEqual(after["human_gates"], before_gates)
+            self.assertEqual(after["human_gate_provenance"]["architecture_review"], before_prov["architecture_review"])
+            self.assertIsNone(after["human_gate_provenance"]["publication_preview"])
+            self.assertEqual(after["human_gates"]["publication_preview"], "pending")
+            self.assertFalse((fix.src / "gates" / "publication-preview-approval.json").exists())
+            self.assertEqual(after["lifecycle_state"], "VALIDATED_DRAFT")
+        finally:
+            temp.cleanup()
+
+    def test_n10_full_weekly_chain_no_human_decision(self) -> None:
+        import json as _json
+
+        temp, fix = self.make_fixture()
+        try:
+            self.regenerate(fix)
+            self._operate(fix)
+            cand_path = fix.src / "publication" / "v2" / "publication-candidate-v2.json"
+            publication.build_candidate(
+                self.root, ISSUE, "WEEKLY_MAGAZINE",
+                fix.src / "publication" / "v2" / "reader-manuscript-v2.json",
+                fix.survey / "main.tex", fix.survey / "main.pdf", 1,
+                fix.src / "publication" / "v2" / "quality-regression-bundle-v2.json",
+                fix.src / "publication" / "v2" / "semantic-editorial-review-v2.json",
+                fix.src / "publication" / "v2" / "visual-review-v2.json",
+                cand_path,
+            )
+            report_path = fix.src / "execution" / "stage-report.json"
+            stage_validation.validate_stage(
+                self.root, self.cfg, fix.src / "production-state.json",
+                {"publication-candidate": cand_path}, report_path, T0 + timedelta(hours=2),
+            )
+            reviews_path = fix.src / "execution" / "reviews.json"
+            core.write_json(reviews_path, {"reviews": [{
+                "check_id": "CORE_STAGE_CONTRACT", "kind": "DETERMINISTIC",
+                "executor": "fixture", "evidence": "n10 chain",
+                "result_path": str(report_path.relative_to(self.root)),
+            }]})
+            updated = agent.advance_with_checkpoint(
+                self.root, self.cfg, fix.src / "production-state.json",
+                agent.build_stage_checkpoint(
+                    self.root, self.cfg, fix.src / "production-state.json",
+                    {"publication-candidate": cand_path}, reviews_path,
+                    "n10 advance", T0 + timedelta(hours=3), None),
+            )
+            self.assertEqual(updated["lifecycle_state"], "RELEASE_CANDIDATE")
+            self.assertEqual(updated["human_gates"]["publication_preview"], "pending")
+            self.assertIsNone(updated["human_gate_provenance"]["publication_preview"])
+            self.assertFalse((fix.src / "gates" / "publication-preview-approval.json").exists())
+            self.assertEqual(agent.validate_agent_state(self.root, self.cfg, updated), [])
+            self.assertEqual(_json.loads((fix.src / "gates" / "architecture-approval.json").read_text(encoding="utf-8"))["decision"], "APPROVED")
         finally:
             temp.cleanup()
 
