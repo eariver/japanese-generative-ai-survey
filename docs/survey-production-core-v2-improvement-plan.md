@@ -2,9 +2,10 @@
 
 Status: `WU-012 + AUD-046 + AUD-047 REPAIRS IMPLEMENTED / AUDIT-STABLE PRE-AUDIT CANDIDATE`  
 Established: 2026-08-22 JST  
-Current maintenance branch: `fix/core-v2-screening-expansion-authority-20260904`
-Production source of truth: current `main` at reviewed baseline `c7a898889463b049dea4ee7337ee16ad5fbf3191`; this candidate is not merged
-Current integration PR: `#483` (draft, unmerged; normal review metadata)
+Current maintenance branch: `fix/core-v2-weekly-bibliography-publication-boundary-20260912`
+Production source of truth: current `main` at `005e59841272464307386abfc11f5b09228f0814`, tree `25f65fa91abdb2d5fe601e4a66d3b38a585060d8`, after merged PRs #484, #485, #486, #487
+Current integration PR: `#488` — `Core v2: remove internal Evidence/materiality metadata from Weekly bibliography` (`draft` / `open` / `unmerged`); pre-freeze candidate with no seven-point PASS, no Human approval, not merged
+W34 is read-only from this maintenance branch; no W34 Publication Candidate has been created by this repair
 Operator-model authority: `docs/survey-production-core-v2-authority.md`  
 Final-audit rule: `docs/survey-production-core-v2-final-audit-rule.md`
 
@@ -286,7 +287,7 @@ The prior frozen candidate `c565a3254ad303bd276edee55b2b1e6e0a1c91a7` is histori
 
 Before explicit Human approval + merge:
 
-- PR #310 is a historical merged implementation PR; current integration review continues in draft PR #483, which remains open and unmerged;
+- PR #310, PR #452, PR #483, PR #484, PR #485, PR #486, and PR #487 are historical merged implementation PRs; current integration review continues in draft PR #488, which remains open and unmerged;
 - `main` remains production authority;
 - W33 and SP001 are already released historical editions in `main`; their immutable production records are not cold-start validation for this candidate;
 - W34 is the active production-regression edition on its canonical work branch and is read-only from this maintenance branch;
