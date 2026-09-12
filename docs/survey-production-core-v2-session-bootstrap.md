@@ -1,6 +1,6 @@
 # Survey Production Core v2 — agent session bootstrap
 
-Status: `POST-INTEGRATION / SOL-LUNA REVIEW GOVERNANCE AMENDMENT / REVIEW PENDING`
+Status: `CANONICAL POST-INTEGRATION AGENT-FIRST SESSION BOOTSTRAP / SOL-LUNA REVIEW GOVERNANCE INTEGRATED`
 Applies to: Weekly, Retrospective Period, standalone Thematic, and guided Special series work  
 Primary operator: **ChatGPT**
 
