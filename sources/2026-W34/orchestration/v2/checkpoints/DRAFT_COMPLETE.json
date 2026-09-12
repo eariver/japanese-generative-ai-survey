@@ -1,0 +1,70 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W34",
+  "from_state": "DRAFT_COMPLETE",
+  "to_state": "VALIDATED_DRAFT",
+  "checkpoints": [
+    "validation"
+  ],
+  "recorded_at": "2026-09-12T03:12:24Z",
+  "implementation": {
+    "repository_commit_sha": "b96ab053216c5e5e05c3f2132a0ba25c6e93d4b5",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "704eacb989bd01cb08dd225f133e73c0505c77d52456fb6bd02c13fa3b8ca2e1",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "publication-pdf",
+      "path": "surveys/weekly/2026-W34/main.pdf",
+      "sha256": "d4123cdaaa266d489468bffdf1ba25c3f2e75390f0c0f0641779d47d5c1d346d"
+    },
+    {
+      "name": "quality-regression-bundle",
+      "path": "sources/2026-W34/publication/v2/quality-regression-bundle-v2.json",
+      "sha256": "1b57561d5e8017433376c42af705cf677b1c5147176006cf0c2c347eb16889dc"
+    },
+    {
+      "name": "reader-manuscript",
+      "path": "sources/2026-W34/publication/v2/reader-manuscript-v2.json",
+      "sha256": "ab9a210f22171f4b5b24faa4900792c8486c2dd7c558acb9e3c5ad32ead93391"
+    },
+    {
+      "name": "semantic-review",
+      "path": "sources/2026-W34/publication/v2/semantic-editorial-review-v2.json",
+      "sha256": "9851e3a25ea8a81abf8c87c25c4196a179f507846b54dd1f5d6303a81bebdd1f"
+    },
+    {
+      "name": "validated-source",
+      "path": "surveys/weekly/2026-W34/main.tex",
+      "sha256": "2c41cc6fdec3142d9fa48d404b1bf0ad41d41fba164dcb020af02d6af4cd3f36"
+    },
+    {
+      "name": "visual-review",
+      "path": "sources/2026-W34/publication/v2/visual-review-v2.json",
+      "sha256": "7d9bfc3126b56d4386ff95c3176ca441a776aa8c50b0711e4a207c029139ad19"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "W34 post-Core487 validation resume r1 (Muse Spark 1.3 EXPERIMENTAL_LUNA_ROLE_SUBSTITUTION): reader manuscript + exact TeX/PDF (12 pages, CI success run 34669447838) + quality bundle (3 deterministic PASS) + semantic (11 PASS) + visual (2 PASS). Machine validation only.",
+      "result": {
+        "path": "sources/2026-W34/execution/luna/w34-post-core487-drafting-resume-r1/validation/validation-stage-validation-r1.json",
+        "sha256": "666e451f4a99c93eda55941ee880e55a20743a2ddec6e67da371941101394558"
+      }
+    }
+  ],
+  "summary": "W34 post-Core487 validation resume r1: reader/publication validation + exact PDF to VALIDATED_DRAFT"
+}

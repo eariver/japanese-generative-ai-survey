@@ -38,6 +38,14 @@ Role boundary: bounded Drafting/Profile Synthesis execution through canonical re
 - Markers: `ARCHITECTURE_R3_HUMAN_APPROVAL_PRESERVED`, `REVIEWED_CORE_487_INTEGRATED`, `DERIVED_EXPANSION_DRAFTING_BASIS_REPAIR_ACTIVE`, `DRAFT_COMPLETE`.
 - Next: reader/publication validation + PDF → `VALIDATED_DRAFT` (not in this commit).
 
+## Validation to VALIDATED_DRAFT (same run, continued)
+
+- Authored reader-facing `surveys/weekly/2026-W34/main.tex` (+ 9 sections, `references.bib` with 41 Evidence-card publisher authorities, `jgaisurvey.sty`) from canonical Draft Results.
+- Two minimal TeX-rendering normalizations (Draft authority unchanged): simplified-Chinese glyph outside HaranoAji coverage (`页面`→`ページ`) after CI missing-character gate failure; synthesis boundary wording without internal HOLD label per reader-facing guard.
+- CI `build-weekly-survey` success run `34669447838`: exact `main.pdf` (12 pages, unencrypted, within 26-page max; compact layout retains all 41 placed candidates, no content dropped).
+- Built `publication/v2/reader-manuscript-v2.json`, `quality-regression-bundle-v2.json` (3 deterministic PASS), `semantic-editorial-review-v2.json` (11 PASS), `visual-review-v2.json` (2 PASS) via canonical Core binders with ChatGPT semantic/editorial + exact-PDF visual QA.
+- Stage validation PASS → checkpoint `orchestration/v2/checkpoints/DRAFT_COMPLETE.json`, State → `VALIDATED_DRAFT`, next `stage:publication-candidate`.
+
 ## Deviations / failures
 
-- None. No shared-Core edit on this branch. No Publication Preview decision generated.
+- CI TeX-log gate failure (missing CJK glyph) repaired as above; rebuilt PDF green. No shared-Core edit. No Publication Preview decision generated.
