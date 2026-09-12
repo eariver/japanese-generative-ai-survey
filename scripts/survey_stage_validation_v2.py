@@ -121,9 +121,20 @@ def _profile(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any]) -> tup
     return path, payload
 
 
-def _prior_artifacts(repo_root: Path, state: dict[str, Any]) -> dict[str, Path]:
+def _prior_artifacts(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any]) -> dict[str, Path]:
     result: dict[str, Path] = {}
     seen_checkpoint_paths: set[str] = set()
+    revalidation, revalidation_errors = agent.resolve_active_publication_revalidation(repo_root, cfg, state)
+    if revalidation_errors:
+        raise StageValidationError("active publication revalidation invalid: " + "; ".join(revalidation_errors))
+    superseded: dict[tuple[str, str], str] = {}
+    bound_prior: str | None = None
+    if revalidation is not None:
+        bound_prior = revalidation["prior_checkpoint"]["path"]
+        superseded = {
+            (row["name"], row["path"]): row["new_sha256"]
+            for row in revalidation.get("superseded_artifacts", [])
+        }
     for ref in state.get("checkpoint_provenance", {}).values():
         if ref is None:
             continue
@@ -137,7 +148,10 @@ def _prior_artifacts(repo_root: Path, state: dict[str, Any]) -> dict[str, Path]:
             raise StageValidationError("prior Stage Checkpoint issue identity mismatch")
         for row in record.get("artifacts", []):
             artifact = core.repo_local_path(repo_root, row["path"], f"prior artifact {row['name']}")
-            if artifact.is_symlink() or not artifact.is_file() or core.sha256_file(artifact) != row["sha256"]:
+            expected = row["sha256"]
+            if bound_prior is not None and rel == bound_prior:
+                expected = superseded.get((row["name"], row["path"]), expected)
+            if artifact.is_symlink() or not artifact.is_file() or core.sha256_file(artifact) != expected:
                 raise StageValidationError(f"prior Stage Checkpoint artifact drift: {row['name']}")
             existing = result.get(row["name"])
             if existing is not None and existing.resolve() != artifact.resolve():
@@ -524,7 +538,7 @@ def validate_stage(
 
     profile_path, profile = _profile(repo_root, cfg, state)
     current = _current_artifacts(repo_root, state, supplied)
-    prior = _prior_artifacts(repo_root, state)
+    prior = _prior_artifacts(repo_root, cfg, state)
     artifacts = _merge_artifacts(prior, current)
     current_impl = core.repository_commit_sha(repo_root)
 

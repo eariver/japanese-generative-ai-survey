@@ -280,6 +280,8 @@ The 2026-09-05 pre-Human repair adds three generic authority distinctions withou
 
 The 2026-09-07 governance amendment adds a further semantic distinction: **authority capture/binding is not authority consumption**. Sol must inspect whether relevant substantive bytes were actually converted into bounded Evidence claims before relying on unresolved/materiality/Selection outcomes.
 
+The post-VALIDATED_DRAFT publication revalidation mechanism (`revalidate-publication-surface`) covers the case where reviewed shared-Core changes legitimately regenerate publication-facing bytes after validation: it establishes new immutable authority that explicitly supersedes the prior validation checkpoint for bounded publication-surface roles only (reader manuscript, PDF, quality bundle, semantic/visual reviews under publication/survey roots), verifies every other checkpoint-bound byte unchanged, re-runs the existing publication QA validators, and preserves Architecture approval and the two Human Gates. Historical checkpoints are never rewritten. It runs only at VALIDATED_DRAFT with Architecture approved, preview/freeze/release pending, and no Exception Gate; it never bypasses or overwrites a Human decision.
+
 ## 9. Canonical orchestration model
 
 Normal local production is:
