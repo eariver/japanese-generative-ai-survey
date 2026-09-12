@@ -1,6 +1,6 @@
 # Survey Production Core v2 — Design Authority Index
 
-Status: `CANONICAL POST-INTEGRATION CORE AUTHORITY / WEEKLY BIBLIOGRAPHY PUBLICATION-BOUNDARY REPAIR PRE-FREEZE RECONCILIATION`
+Status: `CANONICAL POST-INTEGRATION CORE AUTHORITY / WEEKLY BIBLIOGRAPHY PUBLICATION-BOUNDARY REPAIR PRE-AUDIT CANDIDATE / PRE-FREEZE AUTHORITY RECONCILIATION`
 Established: 2026-08-22 JST  
 Current maintenance branch: `fix/core-v2-weekly-bibliography-publication-boundary-20260912`
 Current integration PR: `#488` — `Core v2: remove internal Evidence/materiality metadata from Weekly bibliography` (`draft` / `open` / `unmerged`)
