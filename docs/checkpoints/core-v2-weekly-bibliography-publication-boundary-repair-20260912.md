@@ -195,9 +195,15 @@ Plan: disposable checkout of `eariver/publication-boundary-redteam@7b9de2105c690
 - Local exact-head equivalent at candidate HEAD: full Core contract `test_survey_*_v2.py` (318 tests, 0 failures, 6 intentional legacy skips) + `compileall` OK — see section 14.
 - Remote CI (`survey-production-v2-ci.yml`, `pipeline-contract-tests.yml`, weekly build) runs on push of the maintenance branch; status to be recorded after push (read-back step). No candidate mutation after CI green except the worklog finalization commits recorded in section 18; if any further change becomes necessary, CI must be re-run.
 
-## 18. Candidate commit SHA/tree (to be filled)
+## 18. Candidate commit SHA/tree
 
-PENDING.
+- Code freeze candidate (pushed, remote read-back match confirmed):
+  - commit `66cb9fc4e26be37b0d99113988cc065fd07e0438`
+  - tree `72e9cfb7ab522a779d15ccb519397d7e8f1e9a85`
+  - parent `e4eddfbde3eb409bb758157e2abf16d5e0ebe0d2` (fix commit; grandparent = reviewed main `005e5984...`)
+  - changed paths vs reviewed main (exactly the 3 allowed): `scripts/survey_weekly_semantic_publication_v2.py`, `tests/test_survey_semantic_publication_v2.py`, `docs/checkpoints/core-v2-weekly-bibliography-publication-boundary-repair-20260912.md`
+  - remote read-back: `git ls-remote` returns `66cb9fc4...` for the maintenance branch — match.
+- This section itself is finalized in a worklog-only closeout commit on top (no code/test changes after the freeze above); final HEAD + remote read-back recorded in section 20 return data. Remote CI re-runs on each push; worklog-only delta does not affect contract verdicts (section 14 ran at the frozen code bytes).
 
 ## 19. Residual limitations
 
