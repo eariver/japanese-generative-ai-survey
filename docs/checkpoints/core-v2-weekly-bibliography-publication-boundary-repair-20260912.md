@@ -158,28 +158,54 @@ No other paths touched. `git status` shows only these (plus transient `__pycache
 
 - Focused: `python3 -m unittest tests.test_survey_semantic_publication_v2 -v` — 5/5 OK (4 pre-existing + 1 new `test_bib_text_omits_internal_evidence_materiality`).
 - Relevant subset: `test_survey_semantic_publication_v2 + test_survey_publication_v2 + test_merge_generated_bibliography + test_survey_reader_fidelity_v2 + test_weekly_pipeline` — 38/38 OK in 6.6 s.
-- Full Core contract (`test_survey_*_v2.py` discover): chunked run results below (PENDING at time of writing; to be filled).
+- Full Core contract (`test_survey_*_v2.py`, all 51 modules, per-module chunks with `TMPDIR` on home disk because `/tmp` tmpfs pressure stalled git-heavy tests): **318 tests, 0 failures, 6 intentional skips**.
+  - chunk_00: 38 OK; chunk_01: 70 OK; chunk_02: 52 OK (6 skipped); chunk_03: 55 OK (human_gate 5, interactive 5, operator_invalidation 24, operator_workflow 5, orchestrator_provenance 1, orchestrator_v2 + pdf_inspection 15); chunk_04: 71 OK; chunk_05: 32 OK.
+  - The 6 skips are explicit legacy-Handoff audit/compatibility skips (`test_survey_handoff_request_v2`, `test_survey_handoff_v2`), pre-existing and unrelated.
+  - `python3 -m compileall -q scripts tests`: OK; one pre-existing `SyntaxWarning` in untouched `scripts/normalize_special_legacy_partial_enums.py` (invalid escape `\_`), present on reviewed main, unrelated.
+  - `test_survey_human_gate_v2` / `test_survey_operator_invalidation_v2` are slow here (git-subprocess-heavy; 38 s and 149 s single-module runs) but green; neither imports the repaired module (verified by grep: no `weekly_semantic_publication` in their import chains), so no causal link to this repair is possible.
+  - No test file other than `tests/test_survey_semantic_publication_v2.py` was modified; no failures concealed.
 
-## 15. Disposable W34 reproduction (to be filled; read-only fixture, no remote W34 writes)
+## 15. Disposable W34 reproduction (read-only fixture, no remote W34 writes) — DONE
 
-Plan: local disposable clone/worktree of W34 HEAD `c1703f77...`; temporarily apply maintenance candidate renderer change; regenerate publication artifacts from existing validated inputs via canonical commands; verify: bibliography entries = 41, citation identity = 41, cite keys unchanged, internal Evidence/materiality leakage = 0 (`rg -n 'Core v2|Evidence: (VERIFIED|PARTIAL)|materiality: (MATERIAL|CONTEXT)|SELECTED|HOLD' surveys/weekly/2026-W34` reader-facing matches attributable to repair = 0; audit/provenance-internal occurrences out of scope), PDF build PASS, canonical validation PASS, package identity remains 7, no lifecycle/Human advancement, no Candidate creation.
+Fixture: local detached worktree `/tmp/opencode/w34-repro` at W34 HEAD `c1703f77...` (local git metadata only; never committed, never pushed). Candidate renderer temporarily copied over the worktree's byte-identical pre-fix file (SHA `e7de616a...` verified before overwrite). Disposable driver `/tmp/opencode/w34-bib-regen-driver.py` (outside any repo, not committed).
 
-## 16. Sidecar reproduction (Publication Boundary Validator; to be filled)
+Pre-existing boundary finding (no edition-local repair performed): renderer `main()` / `_records_from_authorities()` cannot run end-to-end on the W34 tree because `sources/2026-W34/discovery/discovery-accepted-v2.json` uses the root `w34-gapfill-*` namespace (369 rows) while Matrix (409 rows), Evidence acceptance, Ledger, Draft packages and synthesis spec all use the effective `w34-event-*` namespace. The failing function is byte-identical pre/post fix and the failure precedes any `_bib_text` call, so this predates the repair and is unrelated to the note-leak defect. W34 tree also contains no `validated-source-manifest.json` / `interactive-semantic-publication-input.json` (artifacts were authored via the drafting-agent flow, not this renderer). Recorded for Sol (section 19); not repaired here per scope/STOP rules.
+
+Repair-boundary verification (existing validated inputs only): 7 architecture-ordered packages -> spec deck/block dids, deduped -> **41 cited dids**; Evidence/Materiality/HOLD-bar cross-checks PASS for all 41 against Evidence acceptance `8437905d...`, Matrix and Ledger; regenerated keys == committed bib keys **41/41 in order**; `urldate 2026-08-21` consistent; byte delta (327 -> 286 lines) = exactly 41 `note` lines removed (40x VERIFIED/MATERIAL + 1x PARTIAL/MATERIAL on `w2026w34w34eventc055` CoSnitch, authority-consistent) + 41 `urldate` comma normalizations, nothing else changed; leak check (prescribed pattern via `grep -P`, `rg` unavailable) **0 matches** vs baseline 41; stdlib BibTeX check (41 `@online`, unique keys, fields exactly `[title, author, url, urldate]`, braces balanced); 7 package dirs untouched; no lifecycle/Human advancement, no Candidate creation.
+
+PDF build: **environmentally impossible here** (no latexmk/lualatex/biber, no docker; CI uses texlive 2026 action). Delta-safety: only the optional biblatex `note` field removed from a CI-green bib (run `34669447838`, 12 pages); field removal cannot introduce undefined references, missing characters, or overfull boxes. Exact PDF rebuild deferred to CI on the pushed branch / Sol review.
+
+Plan: local disposable clone/worktree of W34 HEAD `c1703f77...` (SUPERSEDED by the DONE record above; the canonical full-`main()` regeneration proved impossible for the pre-existing Discovery-namespace reason documented there, so verification was performed on the exact repair boundary instead, with no edition-local repair and no invented production commands).
+
+## 16. Sidecar reproduction (Publication Boundary Validator) — DONE (plan line retained below for audit)
+
+- Pinned tool `eariver/publication-boundary-redteam` freshly cloned outside the Survey repo at `/tmp/opencode/pb-redteam`; HEAD `== 7b9de2105c690daaafa6698c1791d51ca84a92c0` (clean status).
+- Scan inputs `/tmp/opencode/w34-validator-input/surveys/weekly/2026-W34/`: unchanged W34 `main.tex` + `sections/*.tex`, regenerated `references.bib` (SHA `1d3fecf3...`).
+- Command (pilot-equivalent): `PYTHONPATH=<redteam>/src python3 -m publication_boundary.cli main.tex sections/*.tex references.bib --profile weekly --format json`.
+- Result: aggregate `NEEDS_REVIEW` (exit 1), 11 targets (10 PASS / 1 NEEDS_REVIEW / 0 FAIL), 1 finding total (0 HARD_FAIL).
+  - `references.bib` = **PASS**, 0 findings: `RULE-BIB-INTERNAL-TAG-LEAK` 0, `RULE-TERM-CORE-EVIDENCE-NOTE` 0, `RULE-TERM-CORE-V2` 0, `RULE-TERM-MATERIALITY-FIELD` 0. All four acceptance conditions met.
+  - Before/after: `FAIL` 164 HARD_FAIL + 1 REVIEW_REQUIRED (165 findings) -> `NEEDS_REVIEW` 0 HARD_FAIL + 1 REVIEW_REQUIRED (1 finding).
+  - Residual: the known `sections/20-agent-workflows.tex` `RULE-BOUNDARY-MISSING-EXPECTED-FRAMING` REVIEW_REQUIRED persists by design (Mistral-reported prose; publication text untouched per non-goals). Its presence is not repair failure.
+- Raw output retained at `/tmp/opencode/w34-validator-output.json` (disposable, outside repo).
 
 Plan: disposable checkout of `eariver/publication-boundary-redteam@7b9de2105c690daaafa6698c1791d51ca84a92c0` outside the Survey repo; scan disposable regenerated `main.tex`, `sections/*.tex`, `references.bib` as in pilot. Acceptance: `references.bib` PASS, bibliography HARD_FAIL 0, `RULE-BIB-INTERNAL-TAG-LEAK` 0, `RULE-TERM-CORE-EVIDENCE-NOTE` 0, `RULE-TERM-CORE-V2` 0, `RULE-TERM-MATERIALITY-FIELD` 0. Known `sections/20-agent-workflows.tex` `RULE-BOUNDARY-MISSING-EXPECTED-FRAMING` REVIEW_REQUIRED (Mistral-reported prose) is out of scope and must remain untouched; its presence is not repair failure.
 
-## 17. Exact-head CI (to be filled)
+## 17. Exact-head CI
 
-PENDING.
+- Local exact-head equivalent at candidate HEAD: full Core contract `test_survey_*_v2.py` (318 tests, 0 failures, 6 intentional legacy skips) + `compileall` OK — see section 14.
+- Remote CI (`survey-production-v2-ci.yml`, `pipeline-contract-tests.yml`, weekly build) runs on push of the maintenance branch; status to be recorded after push (read-back step). No candidate mutation after CI green except the worklog finalization commits recorded in section 18; if any further change becomes necessary, CI must be re-run.
 
 ## 18. Candidate commit SHA/tree (to be filled)
 
 PENDING.
 
-## 19. Residual limitations (to be filled)
+## 19. Residual limitations
 
-PENDING (anticipated: section-20 REVIEW_REQUIRED persists by design; validator stays non-authoritative).
+1. `sections/20-agent-workflows.tex` `RULE-BOUNDARY-MISSING-EXPECTED-FRAMING` REVIEW_REQUIRED persists by design (section 16); validator remains a non-authoritative second opinion.
+2. Local PDF rebuild impossible (no TeX toolchain); exact-PDF verification deferred to branch CI / Sol review (section 15 delta-safety argument).
+3. Pre-existing observation for Sol (out of scope, not repaired): `_records_from_authorities()` joins the Candidate Matrix against root-namespace `discovery-accepted-v2.json`, but W34's Matrix uses the effective `w34-event-*` namespace (DERIVED_EXPANSION), so full renderer `main()` cannot run on the W34 tree. Any future end-to-end use of this renderer on expansion-basis editions needs a reviewed Core decision on effective-basis resolution in the publication path — separate maintenance, not this repair.
+4. Environment substitutions recorded, none affecting verdicts: `pytest` -> repo-contract `unittest`; `rg` -> `grep -P` (identical PCRE); `TMPDIR` on home disk for git-heavy tests (`/tmp` tmpfs pressure).
 
 ## 20. Sol review readiness
 
-PENDING. Final state target: `READY_FOR_SOL_FIXED_HEAD_REVIEW` with no merges, no W34/main writes beyond the maintenance branch, no Human decisions generated.
+`READY_FOR_SOL_FIXED_HEAD_REVIEW` (to be confirmed with final SHA/tree in section 18 after push + read-back). No merges, no W34/main writes beyond the maintenance branch, no Human decisions generated, no Publication Candidate created.
