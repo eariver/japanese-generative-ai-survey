@@ -55,6 +55,28 @@ class WeeklySemanticPublicationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "profile_synthesis.current_interpretation"):
             weekly._closing_summary(architecture)
 
+    def test_bib_text_omits_internal_evidence_materiality(self):
+        record = {
+            "entity": {
+                "canonical_name": "Example Source Title",
+                "canonical_url": "https://example.com/source",
+                "organization": "ExampleOrg",
+            },
+            "status": "VERIFIED",
+            "materiality": "MATERIAL",
+        }
+        text = weekly._bib_text("w2026w34example001", record, "2026-08-21")
+        self.assertIn("w2026w34example001", text)
+        self.assertIn("Example Source Title", text)
+        self.assertIn("https://example.com/source", text)
+        self.assertIn("2026-08-21", text)
+        self.assertIn("@online{w2026w34example001,", text)
+        self.assertNotIn("Core v2", text)
+        self.assertNotIn("Evidence:", text)
+        self.assertNotIn("VERIFIED", text)
+        self.assertNotIn("materiality", text)
+        self.assertNotIn("MATERIAL", text)
+
     def test_input_heading_is_architecture_bound(self):
         data = {
             "schema_version": "2.0-rc1",

@@ -64,15 +64,14 @@ def _bib_text(key: str, record: dict[str, Any], urldate: str) -> str:
     title = str(entity["canonical_name"]).replace("{", "\\{").replace("}", "\\}")
     org = str(entity.get("organization") or "Unknown").replace("{", "\\{").replace("}", "\\}")
     url = str(entity["canonical_url"])
-    status = str(record.get("status") or "UNKNOWN")
-    materiality = str(record.get("materiality") or "UNKNOWN")
+    # Reader-facing boundary: internal Evidence/materiality authority stays in
+    # repository manifests/ledgers and must never serialize into BibTeX.
     return (
         f"@online{{{key},\n"
         f"  title = {{{{{title}}}}},\n"
         f"  author = {{{{{org}}}}},\n"
         f"  url = {{{url}}},\n"
-        f"  urldate = {{{urldate}}},\n"
-        f"  note = {{Core v2 Evidence: {status}; materiality: {materiality}}}\n"
+        f"  urldate = {{{urldate}}}\n"
         "}"
     )
 
