@@ -26,6 +26,21 @@ class BibliographyAccessProvenanceUnitTests(unittest.TestCase):
         self.assertEqual(full, "2026-08-24")
         self.assertEqual(d, "2026-08-24")
 
+    def test_parse_access_date_preserves_explicit_offset_calendar_date(self):
+        # 2026-08-14T23:30:00-04:00 is 2026-08-15T03:30:00Z in UTC.
+        # The contract requires preserving the explicit offset calendar date (2026-08-14),
+        # rather than silently shifting to 2026-08-15 due to UTC normalization.
+        full, d = provenance.parse_access_date("2026-08-14T23:30:00-04:00")
+        self.assertEqual(full, "2026-08-14T23:30:00-04:00")
+        self.assertEqual(d, "2026-08-14")
+        self.assertNotEqual(d, "2026-08-15")
+
+        # Positive offset across day boundary: 2026-08-15T01:30:00+09:00 is 2026-08-14T16:30:00Z
+        full, d = provenance.parse_access_date("2026-08-15T01:30:00+09:00")
+        self.assertEqual(full, "2026-08-15T01:30:00+09:00")
+        self.assertEqual(d, "2026-08-15")
+        self.assertNotEqual(d, "2026-08-14")
+
     def test_parse_access_date_invalid_fails_closed(self):
         for invalid in ["", "   ", "not-a-date", "2026/08/24", None, 12345]:
             with self.assertRaises(ValueError):
@@ -318,65 +333,111 @@ class BibliographyAccessProvenanceContractTests(unittest.TestCase):
         )
 
     def test_b9_w34_read_only_fixture_regression(self):
-        """B9: Verify W34 fixture provenance: 41 citations, accessed_at on 2026-09-08, and c066 repair."""
-        cmd = [
+        """B9: Verify all 41 W34 cited records resolve canonical access provenance on 2026-09-08 and verify c066 repair."""
+        cmd = ["git", "cat-file", "-e", "6f68fd09955302fd87e5ec0ce77ff06ccaec8448"]
+        proc = subprocess.run(cmd, capture_output=True)
+        if proc.returncode != 0:
+            self.skipTest("W34 fixture commit 6f68fd09955302fd87e5ec0ce77ff06ccaec8448 not available")
+
+        # 1. Obtain all 41 cited Discovery IDs from W34 publication authority
+        draft_cmd = [
+            "git",
+            "show",
+            "6f68fd09955302fd87e5ec0ce77ff06ccaec8448:sources/2026-W34/draft/v2/interactive-drafting-synthesis-input.json",
+        ]
+        draft_proc = subprocess.run(draft_cmd, capture_output=True, text=True, check=True)
+        draft_data = json.loads(draft_proc.stdout)
+        cited_dids: list[str] = []
+        for pkg in draft_data.get("packages", []):
+            cited_dids.extend(pkg.get("deck_discovery_ids", []))
+            for block in pkg.get("blocks", []):
+                cited_dids.extend(block.get("discovery_ids", []))
+        cited_dids = list(dict.fromkeys(cited_dids))
+        self.assertEqual(len(cited_dids), 41, "W34 publication authority must contain exactly 41 cited Discovery IDs")
+
+        # 2. Obtain canonical bibliography URLs from W34 references.bib via canonical citation keys
+        bib_cmd = [
             "git",
             "show",
             "6f68fd09955302fd87e5ec0ce77ff06ccaec8448:surveys/weekly/2026-W34/references.bib",
         ]
-        proc = subprocess.run(cmd, capture_output=True, text=True)
-        if proc.returncode != 0:
-            self.skipTest("W34 fixture commit 6f68fd09955302fd87e5ec0ce77ff06ccaec8448 not available")
+        bib_proc = subprocess.run(bib_cmd, capture_output=True, text=True, check=True)
+        bib_content = bib_proc.stdout
+        bib_url_by_key: dict[str, str] = {}
+        current_key = None
+        for line in bib_content.splitlines():
+            if line.startswith("@online{"):
+                current_key = line.split("{")[1].split(",")[0].strip()
+            elif current_key and "url = {" in line:
+                u = line.split("url = {")[1].split("}")[0].strip()
+                bib_url_by_key[current_key] = u
+                current_key = None
 
-        bib_content = proc.stdout
-        bib_keys = [
-            line.split("{")[1].split(",")[0].strip()
-            for line in bib_content.splitlines()
-            if line.startswith("@online{")
-        ]
-        self.assertEqual(len(bib_keys), 41, "W34 bibliography must contain exactly 41 cited items")
+        canonical_url_by_did: dict[str, str] = {}
+        for did in cited_dids:
+            expected_key = "w2026w34" + did.lower().replace("-", "").replace(".", "")
+            self.assertIn(expected_key, bib_url_by_key, f"Missing citation key {expected_key} in references.bib")
+            canonical_url_by_did[did] = bib_url_by_key[expected_key]
 
-        # Load W34 evidence acceptance from fixture commit
-        acc_cmd = [
-            "git",
-            "show",
-            "6f68fd09955302fd87e5ec0ce77ff06ccaec8448:sources/2026-W34/evidence/v2/accepted/647cde464d92935c1ca633ade62bcbf7ebe88c458cc8b3848bae8d2fc4794831/evidence-accepted.json",
-        ]
-        acc_proc = subprocess.run(acc_cmd, capture_output=True, text=True)
-        self.assertEqual(acc_proc.returncode, 0)
-        acceptance = json.loads(acc_proc.stdout)
+        self.assertEqual(len(canonical_url_by_did), 41, "Must resolve canonical URL for all 41 cited IDs")
 
-        # Verify c066 card specifically
-        c066_task = None
-        for res in acceptance["results"]:
-            if "w34-event-c066" in res["discovery_ids"]:
-                c066_task = res
-                break
-        self.assertIsNotNone(c066_task)
+        # 3. Load checkpoint-bound accepted Evidence fixture at W34 commit using production helper
+        acc_rel = "sources/2026-W34/evidence/v2/accepted/647cde464d92935c1ca633ade62bcbf7ebe88c458cc8b3848bae8d2fc4794831"
+        with tempfile.TemporaryDirectory() as tmp:
+            archive_proc = subprocess.run(
+                ["git", "archive", "6f68fd09955302fd87e5ec0ce77ff06ccaec8448", acc_rel],
+                capture_output=True,
+                check=True,
+            )
+            subprocess.run(["tar", "-x", "-C", tmp], input=archive_proc.stdout, check=True)
 
-        card_cmd = [
-            "git",
-            "show",
-            f"6f68fd09955302fd87e5ec0ce77ff06ccaec8448:sources/2026-W34/evidence/v2/accepted/647cde464d92935c1ca633ade62bcbf7ebe88c458cc8b3848bae8d2fc4794831/results/{c066_task['filename']}",
-        ]
-        card_proc = subprocess.run(card_cmd, capture_output=True, text=True)
-        self.assertEqual(card_proc.returncode, 0)
-        c066_card = json.loads(card_proc.stdout)
-        self.assertEqual(len(c066_card["sources"]), 1)
-        source = c066_card["sources"][0]
-        self.assertEqual(source["url"], "https://x.ai/news/grok-bot-more-plans")
-        self.assertEqual(source["accessed_at"], "2026-09-08T14:52:53Z")
+            acc_path = Path(tmp) / acc_rel / "evidence-accepted.json"
+            self.assertTrue(acc_path.is_file(), f"Accepted evidence file missing: {acc_path}")
+            evidence_sources = provenance.load_evidence_sources(acc_path)
 
-        # Resolve provenance for c066
-        prov = provenance.resolve_source_access_provenance(
-            c066_card["sources"], source["url"], "w34-event-c066"
-        )
-        self.assertEqual(prov["urldate"], "2026-09-08")
-        self.assertEqual(prov["source_accessed_at"], "2026-09-08T14:52:53Z")
+            # 4. For each of the 41 cited IDs, invoke production provenance resolver and assert 2026-09-08
+            resolved_count = 0
+            c066_prov = None
+            for did in cited_dids:
+                ev_info = evidence_sources.get(did)
+                self.assertIsNotNone(ev_info, f"Accepted evidence must contain entry for {did}")
+                sources = ev_info.get("sources")
+                self.assertTrue(sources, f"Accepted evidence entry for {did} must have sources")
+                url = canonical_url_by_did[did]
 
-        # Verify that old W34 bib had cutoff 2026-08-21, and new resolved date is 2026-09-08
-        self.assertIn("@online{w2026w34w34eventc066,", bib_content)
-        self.assertNotEqual(prov["urldate"], "2026-08-21")
+                prov = provenance.resolve_source_access_provenance(
+                    sources,
+                    canonical_url=url,
+                    did=did,
+                    explicit_source_id=ev_info.get("explicit_source_id"),
+                )
+                self.assertEqual(
+                    prov["urldate"],
+                    "2026-09-08",
+                    f"Cited ID {did} canonical urldate must be 2026-09-08",
+                )
+                self.assertTrue(
+                    prov["source_accessed_at"].startswith("2026-09-08"),
+                    f"Cited ID {did} source_accessed_at must be on 2026-09-08",
+                )
+                resolved_count += 1
+                if did == "w34-event-c066":
+                    c066_prov = prov
+
+            self.assertEqual(
+                resolved_count,
+                41,
+                "Exactly 41/41 cited W34 records must resolve canonical access provenance",
+            )
+
+            # 5. Separately preserve detailed c066 chronology assertion
+            self.assertIsNotNone(c066_prov, "w34-event-c066 must be among resolved citations")
+            self.assertEqual(c066_prov["source_accessed_at"], "2026-09-08T14:52:53Z")
+            self.assertEqual(c066_prov["urldate"], "2026-09-08")
+            # In W34 references.bib prior to repair, c066 had urldate = {2026-08-21} (cutoff)
+            self.assertIn("@online{w2026w34w34eventc066,", bib_content)
+            self.assertNotEqual(c066_prov["urldate"], "2026-08-21")  # Not the event cutoff date
+            self.assertNotEqual(c066_prov["urldate"], "2026-08-26")  # Not the revised page date
 
     def test_sp001_read_only_fixture_access_provenance(self):
         """SP001 fixture: all 11 accepted evidence sources resolve to 2026-08-24."""

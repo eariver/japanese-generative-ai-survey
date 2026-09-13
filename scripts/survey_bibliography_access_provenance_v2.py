@@ -17,20 +17,29 @@ from scripts import survey_production_v2 as core
 def parse_access_date(value: str) -> tuple[str, str]:
     """Validate *value* as an ISO-8601 timestamp or date and return (full_timestamp, YYYY-MM-DD).
 
+    The urldate represents the calendar date of the canonical accessed_at value itself,
+    preserving its explicit offset/date semantics; it is not silently shifted by UTC normalization.
     Fails closed if *value* is not a valid timestamp or date.
     """
     if not isinstance(value, str) or not value.strip():
         raise ValueError(f"access timestamp missing or empty: {value!r}")
     raw = value.strip()
     try:
-        dt = core.parse_instant(raw)
-        return raw, dt.strftime("%Y-%m-%d")
+        d = datetime.date.fromisoformat(raw)
+        return raw, d.isoformat()
     except ValueError:
-        try:
-            d = datetime.date.fromisoformat(raw)
-            return raw, d.isoformat()
-        except ValueError as exc:
-            raise ValueError(f"invalid access timestamp or date: {value!r}") from exc
+        pass
+
+    try:
+        core.parse_instant(raw)
+    except ValueError as exc:
+        raise ValueError(f"invalid access timestamp or date: {value!r}") from exc
+
+    try:
+        dt = datetime.datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        return raw, dt.date().isoformat()
+    except ValueError as exc:
+        raise ValueError(f"invalid access timestamp or date: {value!r}") from exc
 
 
 def resolve_source_access_provenance(

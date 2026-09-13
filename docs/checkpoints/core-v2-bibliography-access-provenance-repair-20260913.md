@@ -52,7 +52,7 @@ All start guards were verified prior to write operations:
 ### A. Shared Provenance Helper (`scripts/survey_bibliography_access_provenance_v2.py`)
 Created a dedicated module providing:
 - `parse_access_date(value: str) -> tuple[str, str]`:
-  Validates ISO-8601 instant or date strings using `core.parse_instant` and `datetime.date.fromisoformat`. Returns `(full_timestamp, YYYY-MM-DD)`. Fails closed on invalid or blank timestamps.
+  Validates ISO-8601 instant or date strings using `core.parse_instant` and `datetime.date.fromisoformat`. Derives the bibliography calendar date `YYYY-MM-DD` while preserving explicit offset semantics (e.g. `2026-08-14T23:30:00-04:00` -> `2026-08-14`, not shifted to `2026-08-15` by UTC normalization). Fails closed on invalid or blank timestamps.
 - `resolve_source_access_provenance(sources, canonical_url, did, explicit_source_id=None) -> dict[str, Any]`:
   - Enforces URL matching against the canonical bibliography URL.
   - Handles single-source and multi-source cards.
@@ -88,11 +88,19 @@ Implemented in [`tests/test_survey_bibliography_access_provenance_v2.py`](file:/
 - **B7**: Ambiguous access provenance fails closed unless explicitly disambiguated.
 - **B8**: Citation keys, URL, title, organization, status, materiality, and citation ordering remain unchanged.
 - **B9**: Fixture compatibility:
-  - W34 read-only fixture regression verifies all 41 references resolve to canonical access on `2026-09-08` and proves `w34-event-c066` repair (`2026-09-08` vs old `2026-08-21`).
-  - SP001 read-only fixture regression verifies all 11 accepted evidence sources resolve to `2026-08-24T17:24:00Z` and `urldate` `2026-08-24`.
+  - W34 read-only fixture regression:
+    1. Obtains all 41 cited Discovery IDs from W34 publication authority (`sources/2026-W34/draft/v2/interactive-drafting-synthesis-input.json`).
+    2. Maps canonical bibliography URLs from W34 `references.bib` via canonical citation keys.
+    3. Loads checkpoint-bound accepted Evidence fixture (`sources/2026-W34/evidence/v2/accepted/647cde464d92935c1ca633ade62bcbf7ebe88c458cc8b3848bae8d2fc4794831/`) via production helper `provenance.load_evidence_sources()`.
+    4. Invokes production provenance resolver `provenance.resolve_source_access_provenance()` for each cited ID, asserting canonical `urldate == "2026-09-08"` and `source_accessed_at` on `2026-09-08`.
+    5. Asserts exactly 41/41 resolved successfully.
+    6. Separately preserves detailed `c066` chronology assertion (`accessed_at` = `2026-09-08T14:52:53Z` -> `urldate` = `2026-09-08`, differing from event cutoff `2026-08-21` and page re-date `2026-08-26`).
+  - SP001 read-only fixture regression: verifies all 11 accepted evidence sources resolve to `2026-08-24T17:24:00Z` and `urldate` `2026-08-24`.
+- **Unit Tests**:
+  - `test_parse_access_date_preserves_explicit_offset_calendar_date`: verifies offset timestamps crossing UTC day boundaries (e.g. `2026-08-14T23:30:00-04:00` -> `2026-08-14`, not `2026-08-15`).
 
 ### Test Suite Execution
-- `python3 -m unittest tests/test_survey_bibliography_access_provenance_v2.py -v`: 14/14 PASS (0.019s).
-- `python3 -m unittest discover -s tests -p 'test_survey_*_v2.py'`: 364/364 PASS (skipped=6).
+- `python3 -m unittest tests/test_survey_bibliography_access_provenance_v2.py -v`: 15/15 PASS (0.200s).
+- `python3 -m unittest discover -s tests -p 'test_survey_*_v2.py'`: 365/365 PASS (skipped=6).
 - `python3 -m compileall -q scripts tests`: PASS (0 errors).
 - JSON syntax validation for `config/` and `schemas/`: PASS.
