@@ -2,11 +2,11 @@
 
 Execution agent: Muse Spark 1.3 / EXPERIMENTAL_LUNA_ROLE_SUBSTITUTION
 Date: 2026-09-13 JST
-Starting W34: `39ced1de...` (reviewed Core #489 integrated: parents `f50d2291...` + `658ae823...`)
+Starting W34: `39ced1de...` (reviewed Core #489 integrated: parents `f50d2291...` + `14781409...`)
 
 ## Authority
 
-- Reviewed main `14781409...` (PR #489 merge; parents `005e5984...` + `f3203f4e...`) integrated via normal merge, no conflicts (W34 production paths untouched by merge).
+- Reviewed main `14781409...` (PR #489 merge; parents `658ae823...` + `f3cdd485...`) integrated via normal merge, no conflicts (W34 production paths untouched by merge).
 - Phase-B inspection: VALIDATED_DRAFT / stage:publication-candidate, arch approved, preview pending, DRAFT_COMPLETE.json immutable, publication bytes = post-#488 regenerated (bib `1d3fecf3...`, tex `2c41cc6f...`, pdf `f7403b0a...` 12 pages), expected 5-drift defect shape confirmed.
 
 ## Phase C — sanctioned revalidation
