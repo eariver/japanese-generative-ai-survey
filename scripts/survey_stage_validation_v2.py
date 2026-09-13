@@ -459,6 +459,15 @@ def _validate_stage_semantics(
                 raise StageValidationError(f"{label} review does not bind exact validated source")
             if review["pdf"]["path"] != _rel(repo_root, pdf_path) or review["pdf"]["sha256"] != core.sha256_file(pdf_path):
                 raise StageValidationError(f"{label} review does not bind exact publication PDF")
+        gate_path = current.get("reader-surface-gate")
+        if gate_path is not None:
+            gate_record = schema_gate.load_and_validate_json(
+                gate_path, repo_root / Path("schemas/reader-surface-gate-v2.schema.json"), label="Reader-Surface Gate"
+            )
+            if gate_record.get("status") != "PASSED":
+                raise StageValidationError("Reader-Surface Gate status must be PASSED")
+            if gate_record.get("issue_id") != state["issue_id"]:
+                raise StageValidationError("Reader-Surface Gate issue identity mismatch")
         return
 
     if lifecycle == "VALIDATED_DRAFT":

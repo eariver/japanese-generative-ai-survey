@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import Any
 
 from scripts import survey_longform_publication_v2_base as _base
+from scripts import survey_reader_surface_gate_v2 as surface_gate
 from scripts.render_article_draft_tex import tex_escape
 
 # Re-export the base contract and strengthen its reader-text validator in place.
@@ -19,6 +20,20 @@ FORBIDDEN_READER_PATTERNS = tuple(_base.FORBIDDEN_READER_PATTERNS) + (
     "本Evidence",
 )
 _base.FORBIDDEN_READER_PATTERNS = FORBIDDEN_READER_PATTERNS
+
+_ORIGINAL_READER_TEXT = _base._reader_text
+
+
+def _strengthened_reader_text(value: Any, label: str) -> str:
+    text = _base._nonempty(value, label)
+    findings = surface_gate.scan_reader_text_lines([text], label, "longform-revision")
+    blocking = [f for f in findings if f.severity == "BLOCKING" and f.disposition == "UNRESOLVED"]
+    if blocking:
+        raise ValueError(f"{label} leaks production metadata: {blocking[0].text_span}")
+    return _ORIGINAL_READER_TEXT(value, label)
+
+
+_base._reader_text = _strengthened_reader_text
 
 
 def _cite(ids: list[str], bib_key_by_did: dict[str, str]) -> str:

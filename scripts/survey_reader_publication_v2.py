@@ -19,6 +19,7 @@ from pypdf import PdfReader
 from scripts import survey_production_v2 as core
 from scripts import survey_quality_v2 as quality
 from scripts import survey_reader_fidelity_v2 as fidelity
+from scripts import survey_reader_surface_gate_v2 as surface_gate
 from scripts import survey_schema_v2 as schema_gate
 
 MANUSCRIPT_SCHEMA = Path("schemas/reader-manuscript-v2.schema.json")
@@ -170,6 +171,7 @@ def _required_reader_requirements(profile: dict[str, Any]) -> set[str]:
 def _validate_manifest_semantics(
     repo_root: Path,
     payload: dict[str, Any],
+    suppressions: list[dict[str, Any]] | None = None,
 ) -> tuple[Path, dict[str, Any], Path]:
     issue_id = payload["issue_id"]
     profile_path = _validate_artifact_ref(
@@ -269,6 +271,26 @@ def _validate_manifest_semantics(
         payload["reader_requirements"],
         profile["publication_profile"],
     )
+
+    # #434 / #491: Pre-publication reader-surface gate: fail fast before
+    # expensive TeX/layout/PDF compilation or candidate assembly if reader-facing
+    # text contains prohibited internal pipeline/screening/architecture leakage.
+    actual_suppressions = suppressions
+    if actual_suppressions is None:
+        source_root_rel = profile.get("paths", {}).get("source_root")
+        if source_root_rel:
+            sup_path = (
+                repo_root
+                / source_root_rel
+                / "publication"
+                / "v2"
+                / "reader-surface-suppressions-v2.json"
+            )
+            if sup_path.is_file():
+                actual_suppressions = core.load_json(sup_path)
+    surface_gate.validate_manuscript_surface(
+        repo_root, payload, suppressions=actual_suppressions
+    )
     return source_path, profile, architecture_path
 
 
@@ -285,6 +307,8 @@ def build_manuscript_manifest(
     authored_by: str,
     recorded_at: datetime,
     output_path: Path,
+    *,
+    suppressions: list[dict[str, Any]] | None = None,
 ) -> Path:
     profile_path, profile = _profile(repo_root, production_profile_path, issue_id)
     architecture_file, _, approval_file = _architecture_authority(
@@ -324,7 +348,7 @@ def build_manuscript_manifest(
         repo_root / MANUSCRIPT_SCHEMA,
         label="Reader Manuscript Manifest",
     )
-    _validate_manifest_semantics(repo_root, payload)
+    _validate_manifest_semantics(repo_root, payload, suppressions=suppressions)
     if output_path.exists():
         raise ValueError(f"refusing to overwrite Reader Manuscript Manifest: {output_path}")
     core.write_json(output_path, payload)
@@ -336,6 +360,7 @@ def validate_manuscript_manifest(
     path: Path,
     *,
     issue_id: str | None = None,
+    suppressions: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     payload = schema_gate.load_and_validate_json(
         path,
@@ -365,7 +390,7 @@ def validate_manuscript_manifest(
     }
     if payload["manifest_sha256"] != core.sha256_object(base):
         raise ValueError("Reader Manuscript content digest mismatch")
-    _validate_manifest_semantics(repo_root, payload)
+    _validate_manifest_semantics(repo_root, payload, suppressions=suppressions)
     return payload
 
 

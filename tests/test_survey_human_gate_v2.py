@@ -404,7 +404,7 @@ class SurveyHumanGateV2Tests(unittest.TestCase):
         body = (
             f"Revision {revision} records the reader-facing round-trip result using a source-bounded technical narrative. "
             "It explains what changed, why the transition matters, how the reviewed authority is preserved, "
-            "and which limitations remain rather than merely naming the approved Architecture requirement. "
+            "and which technical limitations remain across the analyzed deployments. "
         ) * 24
         return (
             "\\section{Final synthesis}\n"

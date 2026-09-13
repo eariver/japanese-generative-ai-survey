@@ -19,6 +19,7 @@ from scripts import survey_agent_control_v2 as agent
 from scripts import survey_bibliography_access_provenance_v2 as provenance_resolver
 from scripts import survey_drafting_v2 as drafting
 from scripts import survey_production_v2 as core
+from scripts import survey_reader_surface_gate_v2 as surface_gate
 from scripts.render_article_draft_tex import tex_escape
 
 
@@ -420,12 +421,22 @@ def main() -> int:
     if syn_errors:
         raise SystemExit("upstream Profile Synthesis invalid: " + "; ".join(syn_errors))
 
-    profile_payload = synthesis_result.get("profile_payload")
-    current_interpretation = profile_payload.get("current_interpretation") if isinstance(profile_payload, dict) else None
-    if not isinstance(current_interpretation, str) or not current_interpretation.strip():
-        raise SystemExit("Weekly Profile Synthesis lacks profile_payload.current_interpretation required by Architecture")
-    if current_interpretation not in data["final_summary"]["paragraphs"]:
-        raise SystemExit("Weekly final summary must preserve exact profile_synthesis.current_interpretation as an approved source paragraph")
+    publication_payload = synthesis_result.get("publication_payload")
+    if isinstance(publication_payload, dict) and publication_payload.get("closing_synthesis"):
+        closing_text = publication_payload["closing_synthesis"]
+    elif isinstance(publication_payload, dict) and publication_payload.get("current_interpretation"):
+        closing_text = publication_payload["current_interpretation"]
+    else:
+        profile_payload = synthesis_result.get("profile_payload")
+        closing_text = profile_payload.get("current_interpretation") if isinstance(profile_payload, dict) else None
+    if not isinstance(closing_text, str) or not closing_text.strip():
+        raise SystemExit("Weekly Profile Synthesis lacks reader-facing synthesis text required by Architecture")
+    syn_findings = surface_gate.scan_reader_text_lines([closing_text], "Profile Synthesis", str(synthesis_result_path))
+    syn_blocking = [f for f in syn_findings if f.severity == "BLOCKING" and f.disposition == "UNRESOLVED"]
+    if syn_blocking:
+        raise SystemExit(f"Weekly synthesis paragraph leaks production metadata: {syn_blocking[0].text_span} ({syn_blocking[0].reason})")
+    if closing_text not in data["final_summary"]["paragraphs"]:
+        raise SystemExit("Weekly final summary must preserve exact approved synthesis paragraph")
 
     semantic_archive = _load(source_root / "draft/v2/interactive-drafting-synthesis-input.json")
     spec_by_id = {row["package_id"]: row for row in semantic_archive["packages"]}
