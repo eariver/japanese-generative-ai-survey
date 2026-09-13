@@ -23,9 +23,8 @@ class WeeklySemanticPublicationTests(unittest.TestCase):
                 }
             }
         }
-        display, boundary, urldate = weekly._window(profile)
+        display, boundary = weekly._window(profile)
         self.assertEqual(display, "2026-08-14")
-        self.assertEqual(urldate, "2026-08-14")
         self.assertEqual(
             boundary,
             "Window: 2026-08-07 18:00 - 2026-08-14 18:00 America/New_York",

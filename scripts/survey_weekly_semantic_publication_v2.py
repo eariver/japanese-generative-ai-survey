@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Any
 
 from scripts import survey_agent_control_v2 as agent
+from scripts import survey_bibliography_access_provenance_v2 as provenance_resolver
 from scripts import survey_drafting_v2 as drafting
 from scripts import survey_production_v2 as core
 from scripts.render_article_draft_tex import tex_escape
@@ -59,11 +60,18 @@ def _write_json(path: Path, value: Any) -> None:
     core.write_json(path, value)
 
 
-def _bib_text(key: str, record: dict[str, Any], urldate: str) -> str:
+def _bib_text(key: str, record: dict[str, Any], urldate: str | None = None) -> str:
     entity = record["entity"]
     title = str(entity["canonical_name"]).replace("{", "\\{").replace("}", "\\}")
     org = str(entity.get("organization") or "Unknown").replace("{", "\\{").replace("}", "\\}")
     url = str(entity["canonical_url"])
+    resolved_urldate = urldate or record.get("urldate")
+    if not resolved_urldate:
+        raw_ts = record.get("source_accessed_at") or record.get("accessed_at")
+        if raw_ts:
+            _, resolved_urldate = provenance_resolver.parse_access_date(raw_ts)
+    if not resolved_urldate:
+        raise ValueError(f"bibliography entry {key} lacks canonical access date")
     # Reader-facing boundary: internal Evidence/materiality authority stays in
     # repository manifests/ledgers and must never serialize into BibTeX.
     return (
@@ -71,7 +79,7 @@ def _bib_text(key: str, record: dict[str, Any], urldate: str) -> str:
         f"  title = {{{{{title}}}}},\n"
         f"  author = {{{{{org}}}}},\n"
         f"  url = {{{url}}},\n"
-        f"  urldate = {{{urldate}}}\n"
+        f"  urldate = {{{resolved_urldate}}}\n"
         "}"
     )
 
@@ -82,7 +90,7 @@ def _cite(keys: list[str]) -> str:
     return " \\cite{" + ",".join(keys) + "}"
 
 
-def _window(profile: dict[str, Any]) -> tuple[str, str, str]:
+def _window(profile: dict[str, Any]) -> tuple[str, str]:
     temporal = profile.get("research_scope", {}).get("temporal_policy", {})
     if temporal.get("mode") != "ROLLING_WINDOW":
         raise ValueError("WEEKLY_MAGAZINE semantic publication requires ROLLING_WINDOW temporal policy")
@@ -98,7 +106,7 @@ def _window(profile: dict[str, Any]) -> tuple[str, str, str]:
     start_display = start[:16].replace("T", " ")
     end_display = end[:16].replace("T", " ")
     boundary = f"Window: {start_display} - {end_display} {timezone}"
-    return display_date, boundary, display_date
+    return display_date, boundary
 
 
 def _closing_summary(architecture: dict[str, Any]) -> tuple[str, str]:
@@ -216,6 +224,8 @@ def _records_from_authorities(
             raise ValueError(f"accepted Discovery duplicates Discovery ID: {did}")
         discovery_rows[did] = row
 
+    evidence_sources = provenance_resolver.load_evidence_sources(acceptance_path)
+
     records: dict[str, dict[str, Any]] = {}
     for row in matrix.get("rows", []):
         title = row.get("title")
@@ -238,14 +248,29 @@ def _records_from_authorities(
             locator = discovery_row.get("source_locator")
             if not isinstance(locator, str) or not locator.strip():
                 raise ValueError(f"accepted Discovery lacks source locator: {did}")
+            canonical_url = locator.strip()
+
+            ev_info = evidence_sources.get(did)
+            if ev_info is None or not ev_info.get("sources"):
+                raise ValueError(f"cited Discovery ID {did} has no accepted Evidence source access provenance")
+
+            provenance = provenance_resolver.resolve_source_access_provenance(
+                ev_info["sources"],
+                canonical_url=canonical_url,
+                did=did,
+                explicit_source_id=ev_info.get("explicit_source_id"),
+            )
+
             records[did] = {
                 "entity": {
                     "canonical_name": title.strip(),
-                    "canonical_url": locator.strip(),
+                    "canonical_url": canonical_url,
                     "organization": None,
                 },
                 "status": matrix_status,
                 "materiality": matrix_materiality,
+                "source_accessed_at": provenance["source_accessed_at"],
+                "urldate": provenance["urldate"],
             }
 
     authority = {
@@ -471,12 +496,12 @@ def main() -> int:
     style_source = root / STYLE_PATH
     shutil.copyfile(style_source, survey_root / "jgaisurvey.sty")
 
-    display_date, boundary, urldate = _window(profile)
+    display_date, boundary = _window(profile)
     bib_key_by_did = {
         did: "w" + issue_id.lower().replace("-", "").replace(".", "") + did.lower().replace("-", "")
         for did in cited
     }
-    bib = "\n\n".join(_bib_text(bib_key_by_did[did], records[did], urldate) for did in cited) + "\n"
+    bib = "\n\n".join(_bib_text(bib_key_by_did[did], records[did], records[did]["urldate"]) for did in cited) + "\n"
     (survey_root / "references.bib").write_text(bib, encoding="utf-8")
     tex = _render_tex(issue_id, display_date, boundary, data, ordered, bib_key_by_did)
     (survey_root / "main.tex").write_text(tex, encoding="utf-8")
@@ -550,6 +575,7 @@ def main() -> int:
                 "canonical_url": records[did]["entity"]["canonical_url"],
                 "materiality": records[did]["materiality"],
                 "status": records[did]["status"],
+                "source_accessed_at": records[did]["source_accessed_at"],
             }
             for did in cited
         ],
