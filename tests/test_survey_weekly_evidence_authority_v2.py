@@ -25,6 +25,13 @@ class WeeklyEvidenceAuthorityJoinTests(unittest.TestCase):
                     {
                         "discovery_ids": ["d1"],
                         "status": "VERIFIED",
+                        "sources": [
+                            {
+                                "source_id": "src-1",
+                                "url": "https://example.com/source",
+                                "accessed_at": "2026-08-14T12:00:00Z",
+                            }
+                        ],
                     }
                 ],
             },
@@ -89,6 +96,8 @@ class WeeklyEvidenceAuthorityJoinTests(unittest.TestCase):
             self.assertEqual(records["d1"]["entity"]["canonical_url"], "https://example.com/source")
             self.assertEqual(records["d1"]["status"], "VERIFIED")
             self.assertEqual(records["d1"]["materiality"], "MATERIAL")
+            self.assertEqual(records["d1"]["source_accessed_at"], "2026-08-14T12:00:00Z")
+            self.assertEqual(records["d1"]["urldate"], "2026-08-14")
             self.assertEqual(authority["evidence_acceptance"]["sha256"], acceptance_sha)
 
     def test_join_fails_closed_on_evidence_status_drift(self):
