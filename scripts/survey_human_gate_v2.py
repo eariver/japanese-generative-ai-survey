@@ -893,6 +893,12 @@ def _revised_state(
             continue
         updated["machine_checkpoints"][checkpoint] = "pending"
         updated["checkpoint_provenance"][checkpoint] = None
+    if "validation" not in keep:
+        # The active revalidation basis is bound to the validation checkpoint.
+        # Invalidating that checkpoint orphans the pointer, so revision clears it
+        # deterministically. The historical record file itself is never touched
+        # here; unreferenced it is inert historical evidence.
+        updated["publication_revalidation_provenance"] = None
     updated["lifecycle_state"] = regeneration_boundary
     updated["history"] = updated["history"][: target_index + 1]
 
