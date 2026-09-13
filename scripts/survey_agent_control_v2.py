@@ -43,6 +43,7 @@ REVALIDATION_REASON_CLASSES = {"REVIEWED_CORE_CHANGE"}
 REVALIDATION_CHAIN_LIMIT = 32
 REVIEW_KINDS = {"DETERMINISTIC", "AGENT_RESEARCH", "AGENT_EDITORIAL", "AGENT_VISUAL"}
 CORE_STAGE_REVIEW_ID = "CORE_STAGE_CONTRACT"
+RELEASE_RECONCILIATION_REVIEW_ID = "RELEASE_EXACT_BYTE_RECONCILIATION"
 
 
 class AgentControlError(ValueError):
@@ -199,6 +200,42 @@ def _validate_core_stage_report(
         raise AgentControlError("CORE_STAGE_CONTRACT artifacts differ from Stage Checkpoint artifacts")
 
 
+def _validate_release_reconciliation_review(
+    repo_root: Path,
+    cfg: dict[str, Any],
+    state: dict[str, Any],
+    artifacts: list[dict[str, Any]],
+    reviews: list[dict[str, Any]],
+) -> None:
+    matches = [row for row in reviews if row.get("check_id") == RELEASE_RECONCILIATION_REVIEW_ID]
+    if len(matches) != 1:
+        raise AgentControlError(f"Release Stage Checkpoint requires exactly one {RELEASE_RECONCILIATION_REVIEW_ID} review")
+    review = matches[0]
+    if review.get("kind") != "DETERMINISTIC" or review.get("status") != "PASS":
+        raise AgentControlError(f"{RELEASE_RECONCILIATION_REVIEW_ID} must be a deterministic PASS review")
+    result_ref = review.get("result")
+    if not isinstance(result_ref, dict) or set(result_ref) != {"path", "sha256"}:
+        raise AgentControlError(f"{RELEASE_RECONCILIATION_REVIEW_ID} requires deterministic result authority")
+    record_path = core.repo_local_path(repo_root, result_ref["path"], f"{RELEASE_RECONCILIATION_REVIEW_ID} result")
+    if record_path.is_symlink() or not record_path.is_file() or core.sha256_file(record_path) != result_ref["sha256"]:
+        raise AgentControlError(f"{RELEASE_RECONCILIATION_REVIEW_ID} result authority drift")
+    try:
+        release = publication.validate_release_record(repo_root, record_path)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        raise AgentControlError(f"invalid Release Record authority: {exc}") from exc
+    if release.get("issue_id") != state.get("issue_id"):
+        raise AgentControlError("Release Record issue_id mismatch")
+    artifact_map = _artifact_map(artifacts)
+    release_art = artifact_map.get("release-record")
+    if not release_art or release_art.get("path") != result_ref["path"] or release_art.get("sha256") != result_ref["sha256"]:
+        raise AgentControlError("release-record artifact does not match RELEASE_EXACT_BYTE_RECONCILIATION result")
+    merge_art = artifact_map.get("merge-verification")
+    if not merge_art:
+        raise AgentControlError("Release Stage Checkpoint missing merge-verification artifact")
+    if release.get("merge_verification_path") != merge_art.get("path") or release.get("merge_verification_sha256") != merge_art.get("sha256"):
+        raise AgentControlError("Release Record does not bind Stage Checkpoint merge-verification authority")
+
+
 def _validate_checkpoint_record(repo_root: Path, cfg: dict[str, Any], state: dict[str, Any], checkpoint: str, authority: dict[str, Any], revalidation: dict[str, Any] | None = None) -> list[str]:
     errors: list[str] = []
     if not isinstance(authority, dict) or set(authority) != {"path", "sha256"}:
@@ -253,20 +290,30 @@ def _validate_checkpoint_record(repo_root: Path, cfg: dict[str, Any], state: dic
                 continue
             if not result_path.is_file() or core.sha256_file(result_path) != result.get("sha256"):
                 errors.append(f"deterministic review result drift: {row.get('check_id')}")
-    if from_state != "FROZEN":
-        historical_state = dict(state)
-        historical_state["lifecycle_state"] = from_state
+    historical_state = dict(state)
+    historical_state["lifecycle_state"] = from_state
+    try:
+        _validate_core_stage_report(
+            repo_root,
+            cfg,
+            historical_state,
+            record.get("artifacts", []),
+            record.get("reviews", []),
+            expected_contract=record.get("contract"),
+            expected_implementation_sha=record.get("implementation", {}).get("repository_commit_sha"),
+        )
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        errors.append(str(exc))
+    if from_state == "FROZEN":
         try:
-            _validate_core_stage_report(
+            _validate_release_reconciliation_review(
                 repo_root,
                 cfg,
                 historical_state,
                 record.get("artifacts", []),
                 record.get("reviews", []),
-                expected_contract=record.get("contract"),
-                expected_implementation_sha=record.get("implementation", {}).get("repository_commit_sha"),
             )
-        except (OSError, ValueError, json.JSONDecodeError) as exc:
+        except (AgentControlError, OSError, ValueError, json.JSONDecodeError) as exc:
             errors.append(str(exc))
     return errors
 
@@ -1034,6 +1081,14 @@ def advance_with_checkpoint(repo_root: Path, cfg: dict[str, Any], state_path: Pa
         expected_contract=current_contract,
         expected_implementation_sha=current_impl,
     )
+    if state["lifecycle_state"] == "FROZEN":
+        _validate_release_reconciliation_review(
+            repo_root,
+            cfg,
+            state,
+            record["artifacts"],
+            record["reviews"],
+        )
     authority = _authority(repo_root, checkpoint_path, "Stage Checkpoint")
     updated = deepcopy(state)
     for checkpoint in stage.get("checkpoints", []):
