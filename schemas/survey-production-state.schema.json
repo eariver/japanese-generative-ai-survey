@@ -10,8 +10,7 @@
     "human_gate_provenance", "target_gate", "next_action", "terminal_reason",
     "exception_gate", "machine_checkpoints", "checkpoint_provenance",
     "legacy_compatibility", "history"
-  ],
-  "properties": {
+  ],  "properties": {
     "schema_version": {"const": "2.0-rc1"},
     "issue_id": {"type": "string", "minLength": 1},
     "research_profile": {"enum": ["WEEKLY", "RETROSPECTIVE_PERIOD", "THEMATIC"]},
@@ -75,6 +74,7 @@
     },
     "machine_checkpoints": {"$ref": "#/$defs/checkpointStatusMap"},
     "checkpoint_provenance": {"$ref": "#/$defs/checkpointAuthorityMap"},
+    "publication_revalidation_provenance": {"$ref": "#/$defs/nullableAuthority"},
     "legacy_compatibility": {
       "type": "object", "additionalProperties": false,
       "required": ["mode", "legacy_state_path", "legacy_state_present", "legacy_state_sha256"],
