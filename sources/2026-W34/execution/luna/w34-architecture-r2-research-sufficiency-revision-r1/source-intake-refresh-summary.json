@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "2026-W34",
+  "execution_id": "w34-architecture-r2-research-sufficiency-revision-r1",
+  "window": {
+    "start": "2026-08-14T18:00:00-04:00",
+    "end": "2026-08-21T18:00:00-04:00",
+    "timezone": "America/New_York",
+    "comparison_window_utc": "[2026-08-14T22:00:00Z,2026-08-21T22:00:00Z)"
+  },
+  "runs": {
+    "arxiv": {
+      "run_id": "arxiv-api-2026-W34-20260907T161121Z",
+      "status": "success",
+      "lanes": ["cs.AI", "cs.CL", "cs.CR", "cs.CV", "cs.DC", "cs.LG"],
+      "raw_outputs": 6,
+      "unique_entry_count": 2296,
+      "window_candidates_observed": 8
+    },
+    "github_releases": {
+      "run_id": "github-releases-2026-W34-20260907T161442Z",
+      "status": "success",
+      "repositories_checked": 7,
+      "releases_returned": 648,
+      "window_matches": 5,
+      "matches": [
+        "huggingface/transformers:v5.15.1",
+        "flashinfer-ai/flashinfer:nightly-v0.6.18-20260819",
+        "flashinfer-ai/flashinfer:nightly-v0.6.18-20260818",
+        "flashinfer-ai/flashinfer:nightly-v0.6.18-20260817",
+        "flashinfer-ai/flashinfer:nightly-v0.6.18-20260816"
+      ]
+    },
+    "official_pages": {
+      "run_id": "official-pages-2026-W34-20260907T161655Z",
+      "status": "partial",
+      "configured_pages": 22,
+      "fetched_pages": 17,
+      "failed_pages": 5,
+      "failures": [
+        "Alibaba Model Studio timeout",
+        "x.ai/news HTTP 403",
+        "Microsoft Azure AI blog timeout",
+        "AWS ML blog timeout",
+        "IBM announcements timeout"
+      ]
+    }
+  },
+  "existing_intake": {
+    "x_grok_reused": true,
+    "second_grok_run": false,
+    "existing_primary_raw_reused": true
+  },
+  "coverage_interpretation": [
+    "The arXiv and GitHub lanes completed successfully; official-page coverage is partial and the failed surfaces remain explicit gaps for Sol review.",
+    "The run is a recall-oriented Source Intake refresh. It does not assert Discovery completeness and performs no Screening, Evidence, Materiality, Selection, or Architecture judgment.",
+    "Canonical Discovery binds the selected raw snapshots used for the 15 new leads; the full collector reports remain execution provenance."
+  ]
+}

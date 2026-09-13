@@ -1,0 +1,710 @@
+    Kinematic Knowledge Maps for Pattern Alignment:
+      Structured Latent Representational Learning in
+                Multimodal Gait Analysis
+                                           Dong. Chen, Zonglin. He, and Kenneth MC. Cheung
+
+
+
+
+                                                                                M
+                                                                                                   I. INTRODUCTION
+   Abstract—Multimodal clinical AI is limited by weakly aligned                              ULTIMODAL machine learning in clinical settings
+inputs and the absence of domain-specific interpretable
+representations, particularly when learning from dense video
+                                                                                            must reconcile heterogeneous sensing streams—
+stream, structured time-series, and template-based kinematic text.                          raw video, derived time series, and text that are
+Here we present ScoliDetect, an explainable framework for                       rarely synchronized in time or semantics. When modalities are
+adolescent idiopathic scoliosis screening from monocular gait                   misaligned, fusion models encode spurious context; when
+video, built around a kinematic knowledge map (KKM) and                         models lack structured intermediates, explanations collapse to
+complementary template-based kinematic text derived from per-                   opaque pixel saliency. These challenges are acute in periodic
+sequence pose statics. KKM is a fixed-index structured
+representation that encodes gait features across absolute
+                                                                                biological motion, where gait phase, acquisition protocol, and
+                                                                                operator variability jointly determine whether a system
+providing anchor-referenced multimodal fusion and factor-level                  generalizes across sites or memorizes deployment context.
+interpretation. We integrate video, KKM, and template-based                        Adolescent Idiopathic Scoliosis (AIS) is a three-
+kinematic text through bidirectional cross-attention with latent-               dimensional spinal deformity affecting 1-5% of adolescents,
+bottleneck aggregation. In a multicenter cohort (n = 1,858 after                characterized by a lateral curvature exceeding 10° with
+exclusions), prespecified supervised ablations on an external
+screening cohort show that KKM-mediated multimodal fusion
+                                                                                vertebral rotation[1-4]. Late detection increases the risk of
+outperforms unimodal models and late concatenation. Under a                     progression beyond 50°, with substantially higher morbidity
+staged training protocol, trimodal contrastive pretraining is                   and treatment cost than early monitoring[2, 5-7]. Population
+applied after architecture selection as representation                          school screening, long established in Hong Kong and similar
+initialization, improving external ROC-AUC from 0.961 to 0.972.                 programs, relies on forward bending test (FBT), scoliometer
+Furthermore, the structured nature of the KKM provides                          measurement of angle of trunk rotation (ATR) and Moiré
+inherent, factor-level attributions mapped directly to specific
+kinematic phases and skeletal indices, offering verifiable
+                                                                                topography, followed by radiographic confirmation when
+interpretability. The results demonstrate that embedding explicit               indicated[8-10] (Fig. 1a, right background). Meta-analyses
+structural topologies into latent spaces significantly enhances                 and large cohort studies report meaningful sensitivity but
+both the generalization and explainability of multimodal pattern                limited positive predictive value and continued reliance on
+analysis systems.                                                               surface deformity, privacy-preserving facilities, trained
+                                                                                personnel, and avoidable radiation when referrals escalate[10,
+Index Terms—Adolescent idiopathic scoliosis, Human motion                       11]. Reported global operating points for conventional school
+analysis, Multimodal Learning, Structured latent spaces, Pattern
+alignment                                                                       screening modalities are summarized in Fig. 1b[10]. Gait
+                                                                                kinematics and spinal alignment differ systematically between
+                                                                                AIS and controls[12-14], motivating screening approaches that
+                                                                                do not require disrobing and can be deployed with brief
+   We            acknowledge            funding          support          by
+Sanming Project of Medicine in Shenzhen, China (No. SZSM202211004);
+                                                                                operator training.
+Shenzhen Science and Technology Program (No. KJZD20240903102759061);               Existing AI approaches of AIS have improved static
+Shenzhen-Hong Kong Cooperation Zone for Technology and Innovation               screening from postural photographs[15, 16], ultrasound[17,
+(No. HZQSWS-KCCYB-2024055). Corresponding author: Kenneth MC,
+Cheung.
+                                                                                18], smartphone back images[19-21], or Cobb-angle
+   Dong. Chen is with the Department of Orthopaedics & Traumatology,            measurement on radiographs[22-24]. These pipelines largely
+University of Hong Kong, Hong Kong, China. And the Univerisity of Hong          ignore the dynamic gait asymmetries that emerge early in
+Kong      -     Shenzhen      hospital,     Shenzhen,      China     (e-mail:   biomechanical compensation[12, 25]. Recent gait-based
+olichen@connect.hku.hk).
+   Zonglin. He is with the Department of Orthopaedics & Traumatology,           models use end-to-end video or skeleton graphs[26-28], but
+University    of    Hong     Kong,      Hong    Kong,      China.    (e-mail:   they instantiate two recurring limitations in multimodal
+leonhe@connect.hku.hk).                                                         scientific AI. (i) modality dropping or naive fusion—unimodal
+   Kenneth MC. Cheung is with the Department of Orthopaedics &
+Traumatology, University of Hong Kong, Hong Kong, China. And the                pipelines disregard complementary pixels or kinematics,
+Univerisity of Hong Kong - Shenzhen hospital, Shenzhen, China (e-mail:          whereas late concatenation fails when streams are temporally
+cheungmc@hku.hk).                                                               misaligned; and (ii) post-hoc explainability—saliency on
+   The      code      is     available      at:    https://github.com/Oli21-
+chen/ScoliDetect_HKU_SpineSeek_AISscreening                                     pixels or joints does not yield stable, named factors tied to
+                                                                                model inputs. We hypothesize that when labels are scarce and
+explanations must be auditable, a predefined representation,       template-based kinematic text are produced by different
+such as KKM, can improve both multimodal integration and           pipelines, run on different temporal grids, and are sensitive to
+interpretability relative to end-to-end fusion alone.              capture protocol and operator behavior. Under such temporal
+   In that case, we propose ScoliDetect, an explainable            and semantic misalignment, implicit fusion and contrastive
+multimodal framework for AIS screening from monocular gait         objectives can absorb site-specific acquisition context rather
+video (Fig. 1a) based on kinematic knowledge map (KKM)             than transferable motion structure. Late concatenation of
+and its template-based kinematic text (Fig. 1c). Radiographic      independently encoded streams[32] further fails when token
+severity in the development cohorts is shown in Fig. 1d. This      axes are not comparable across modalities. ScoliDetect treats
+study is built with following three aspects:                       explicit registration and a shared structured intermediate as
+   (1) Fixed-index structured latent (KKM). KKM serializes         first-class design choices, and uses prespecified supervised
+each aligned gait cycle as a predefined factor grid spanning       ablations on a held-out cohort to test fusion hypotheses under
+absolute motion, self-skeleton configuration, and joint–joint      fixed training protocols. Contrastive pretraining appears only
+signal correlation. The same index set supports frame filtering,   after the fusion architecture is selected, as encoder
+template-based kinematic text generation, and factor-level         initialization rather than as the primary evidence base.
+readouts that share coordinates with fusion.
+                                                                   B. Video, Pose, and Gait Pattern Analysis
+   (2) Supervised fusion with latent-bottleneck aggregation.
+Video and KKM are integrated through bidirectional cross-            Spatiotemporal Transformers are standard encoders for
+attention and Perceiver-style latent-bottleneck compression.       video understanding[34], with rotary or factorized positional
+Prespecified supervised ablations on a held-out external           schemes supporting long clips[35]. Human motion analysis
+screening cohort evaluate unimodal baselines, fusion variants,     often derives skeleton sequences from pose estimators[36, 37].
+and late concatenation; trimodal contrastive pretraining is        For scoliosis-related gait, primary studies report asymmetry in
+applied only after this architecture is fixed, as encoder          trunk and limb kinematics[12-14], and meta-analyses
+initialization rather than as an open-ended contrastive search.    summarize altered gait kinematics and lower-limb
+   (3) Temporal registration and structural interpretability.      coordination[12, 25]. Recent computational approaches
+Gait cycles are aligned by removing stationary frames,             classify scoliosis from gait video or skeleton sequences[26-28],
+synchronizing motion onset, and peak-anchoring on the              including dual-representation design and graph convolutional
+aggregated KKM trajectory, so video and KKM tokens refer           models on skeleton trajectories. These pipelines advance
+to comparable phases before fusion or pretraining. Because         application performance but are predominantly unimodal or
+each KKM dimension is domain-tagged, explanations are read         fuse streams with limited alignment machinery, and they
+out at factor indices and gait phases via encoder temporal         explain predictions through saliency rather than named factors
+attention and attention-weighted gradients; we treat these         indexed to predefined model coordinates[16]. On the other
+readouts as attributional correlates, not causal claims.           hand, Pose-estimation quality itself affects scoliosis screening
+   We evaluate ScoliDetect in a multicenter observational          relative to radiographic reference, reinforcing the need for
+cohort (n = 1,858 after exclusions) with patient-level             structured intermediates when pixel-level evidence is noisy.
+partitioning, external school screening validation, prespecified     ScoliDetect constructs a fixed-index kinematic knowledge
+ablations, subject-level bootstrap inference.                      map from hybrid pose-estimator outputs, uses the KKM
+                                                                   trajectory to filter and peak-anchor video frames, and fuses the
+                     II. RELATED WORK                              aligned video and KKM streams through index-biased
+                                                                   bidirectional cross-attention with a Perceiver-style latent
+A. Multimodal Representation and Cross-Modal Fusion                bottleneck (Fig. 1c). Template-based kinematic text, generated
+  Multimodal learning aligns heterogeneous sensing streams,        from the same per-sequence pose statistics, is encoded
+such as vision, audio, and language, in a shared representation    independently and concatenated with the pooled video–KKM
+space. Contrastive pretraining aligns paired modalities with       representation at the classification head, forming the full
+InfoNCE-style objectives[29, 30], and recent variants refine       trimodal model (KVT) without routing text through the video–
+image–text alignment at scale[31]. Cross-modal Transformers        KKM cross-attention stack.
+fuse unaligned token sequences through attention[32], while
+                                                                   C. AI for Scoliosis and Population Screening
+Perceiver-style architectures compress long inputs through a
+fixed latent bottleneck before downstream prediction[33].            Adolescent idiopathic scoliosis affects a substantial fraction
+These designs are effective when modalities are approximately      of adolescents[1-4]. Population programs rely on forward-
+co-registered or when alignment can be learned implicitly          bending tests, scoliometer readings, and Moiré topography,
+from large paired corpora.                                         with radiographic confirmation when indicated[8-10]. Meta-
+  Periodic motion in the wild violates these assumptions.          analyses document meaningful sensitivity but limited positive
+Monocular gait video, kinematic knowledge map, and                 predictive value at typical prevalence[10, 11]. Deep learning
+                                                                   has improved static screening from photographs[15, 16],
+Fig. 1. Adolescent idiopathic scoliosis (AIS) screening context. (a) Monocular gait video capture under a standardized walking
+protocol (left) compared with conventional screening modalities that often require disrobing, specialist examination, or radiation
+(right): visual inspection, radiography, forward-bending test (FBT), Moiré topography, and scoliometer measurement. (b)
+Reported sensitivity and specificity of population screening modalities from meta-analyses and cohort studies[10] (points
+coloured by positive predictive value, PPV). (c) Overview of the kinematic pipeline: gait video is converted to a kinematic
+knowledge map (KKM) and template-based kinematic text for multimodal learning. (d) Distribution of maximum Cobb angle
+among participants with radiography (DKC cohort, n = 299; HKU-SZ cohort, n = 820), with reference lines at 10° and 15°.
+
+ultrasound[17, 18], smartphone surface images[19-21], and         kinematic text from per-sequence pose statistics.
+radiographs[22-24], but these methods use single-time-point         Multimodal learning (Fig. 3). Registered inputs are encoded
+anatomy rather than periodic gait compensation. ScoliDetect       and fused as follows: (iv) modality-specific encoders for video,
+evaluates monocular walking video on an external school-          KKM, and text; (v) index-biased bidirectional cross-attention
+screening cohort; AIS serves as a stress test for misaligned      with a Perceiver-style latent bottleneck for video–KKM fusion
+multimodal video rather than as the primary pattern-analysis      (KV); and (vi) late concatenation of the text embedding with
+contribution. Operator-capture reporting follows early-stage      pooled video – KKM features at the screening head (KVT).
+clinical-AI guidance[38].                                         Factor-indexed interpretability readouts are computed on the
+                                                                  KKM grid used by the fusion path. Training objectives and
+                 III. PROPOSED METHOD                             implementation details are given in Sections III-H and IV-D.
+A. Overview                                                       B. Problem Formulation
+   ScoliDetect maps a monocular gait clip to a binary                Each sample comprises a monocular gait video clip V, an
+screening logit through two coupled stages: fixed-index           aligned KKM tensor K ∈ ℝ��×� with F = 238 predefined
+representation construction and multimodal fusion with a          factors, and template-based kinematic text T generated from
+screening head.                                                   per-sequence pose statistics. After peak-anchored registration,
+   Representation construction (Fig. 2). Raw video is             video and KKM share a normalized gait-phase axis but with
+converted into aligned inputs for learning: (i) hybrid pose       different resolution.
+estimation and target-subject selection; (ii) scale-invariant        Factor indices of KKM are fixed before training and
+joint normalization and fixed-index KKM construction over         partition into absolute motion (0 – 63), self-skeleton
+motion, skeleton-configuration, and signal-cross-correlation      configuration (64 – 171), and joint-joint signal correlation
+domains; and (iii) peak-anchored temporal registration of         (172 – 237) domains; full factor definitions are listed in the
+video and KKM, together with generation of template-based         supplementary material.
+Fig. 2. Multimodal data construction and kinematic semantic alignment. (a) Hybrid pose estimation and fixed-index KKM
+construction. (b) Progressive temporal registration from onset to peak anchor. (c) template-based kinematic text generation from
+per-sequence statistics.
+
+                                                                     the midpoint of the hip:
+C. Pose Estimation and Target Selection                                   1
+                                                                     ot = pt,Lhip + pt,Rhip                                        (2)
+   Joint landmarks are extracted with a hybrid bottom-up and              2
+top-down pose estimator[36, 37]. The bottom-up branch
+detects all joints and groups them into skeletons, improving         and all joints are shifted to this origin:
+robustness to occlusion; the top-down branch detects each            pt,k = pt,k − ot                                              (3)
+person and estimates joints per identity, improving temporal
+consistency. In multi-person scenes, the target subject is the           (S2) Dynamic pose scaling. To compensate for variable
+candidate closest to the central screen, matched from bottom-        subject-camera distance, we compute a per-frame scale factor
+up proposals to a top-down reference skeleton (Fig. 2a).             st . First, the torso size is defined as the Euclidean distance
+   In multi-person scenes, we select the target subject closest      between the shoulder centre and the hip centre:
+                                                                                           hip
+to the central screen by matching bottom-up candidates to the        �torso
+                                                                      �     = �shoulder
+                                                                                 �      − �� 2                                   (4)
+top-down reference. Let the top-down estimator produce a
+reference joint set �� , where �� denotes the pixel coordinates of      Then, the maximum distance from any joint to the origin is:
+the kth joint. Let the bottom-up estimator yields ��,� candidate     �� = max ��,� 2                                           (5)
+skeletons, the target skeleton is selected as                                 �
+                1 �
+�∗ = ������
+                � �=1
+                         ∥ ��,� − �� ∥22                      (1)       The final pose scale is:
+           ��
+                                                                     �� = max (2.5�torso
+                                                                                     �   , �� )                                   (6)
+D. Scale-Invariant Normalization and KKM Construction
+   Raw 2D joint coordinates from monocular frontal video                where the multiplier 2.5 follows the heuristic from
+depend on camera height pose and subject distance. Each              BlazePose[36] to ensure that even when the subject is far from
+frame is re-centered on the hip midpoint, scaled by a torso-         the camera, the scale is not dominated by a single outlier joint.
+derived factor, and divided by the maximum joint distance to            (S3) Coordinate normalization. Finally, all origin-shifted
+obtain scale-invariant trajectories (Fig. 2b).                       coordinates are divided by the pose scale:
+   For each frame t, let �� = {��,� }��=1 be the raw pixel           ��,� = ��,� /��                                               (7)
+coordinates of skeletal keypoints. The scale normalization
+proceeds in three steps:                                               The resulting ��,� are invariant to camera height pose and
+   (S1) Origin transformation. The subject-specific origin is
+subject distance while preserving pathological asymmetries         generated from per-sequence pose statistics (mean and
+(e.g., pelvic tilt or shoulder height difference) because the      standard deviation of step width, trunk shift, and joint angles)
+same scale factor is applied to all joints within a frame. These   using category-specific templates (normal, single thoracic,
+normalized trajectories are used as the input for all subsequent   single lumbar, multi-curve); template rules are given in the
+KKM feature computations.                                          supplementary material.
+   The KKM operationalizes a structured-latent hypothesis:
+                                                                   F. Modality-Specific Encoders
+holistic gait can be approximated by a fixed dictionary of
+interpretable kinematic factors. Full factor definitions and          Each modality is mapped to a shared hidden dimension
+formulas are provided in the Supplementary method section.         before fusion (Fig. 3a). The video encoder uses a Video
+Domain-wise magnitude normalization is applied before              Vision Transformer (ViViT)[34] on 32 × 224 × 224 clips with
+model input formatting.                                            1 × 16 × 16 spatiotemporal voxels and rotary position
+                                                                   embeddings (RoPE)[35]. The KKM encoder is a standard
+E. Temporal Alignment and Kinematic Text                           Transformer[34] with RoPE on temporal tokens. Text is
+   Video and KKM streams are temporally registered using the       encoded with a pretrained Sentence Transformer (all-MiniLM-
+summed KKM trajectory (Fig. 2c). Stationary leading frames         L6-v2)[39] followed by a two-layer MLP projection
+are removed; remaining sequences are coarse-aligned by             (LayerNorm in pretraining, dynamic Tanh normalization
+motion onset and fine-aligned by peak anchoring of the             during fine-tuning [40].
+summed KKM curve. template-based kinematic text is
+
+
+
+
+Fig. 3. Multimodal learning: contrastive alignment, supervised fusion, and structural explanation. (a) Trimodal contrastive
+pretraining (InfoNCE). (b) Supervised KVT head (cross-attention, Perceiver-style fusion, late text concat). (c) Fixed-index KKM
+domains with top-k readouts.
+                                                                while preserving within-sequence ordering, each resampled
+G. Multimodal Fusion Architecture                                                                                       �       �
+   Fusion couples video and KKM through index-biased track is min–max normalized to [0, 1], yielding �� and �� .
+                                                                                                                            �→�
+bidirectional cross-attention and a Perceiver-style latent Pairwise absolute differences define a distance matrix �              ∈
+                                                                  �� � ��
+bottleneck[33, 41]. Template-based kinematic text does not ℝ              . The distances are converted into an additive attention
+enter the video-KKM cross-attention stack; �� is late- bias that softly encourages attention between temporally co-
+concatenated at the classification head (KVT), as shown in Fig. located tokens:
+                                                                                              �    �
+3b.                                                             ��→� = − ���→�   �,� = − � �� − ��                           (11)
+                                                                                   ⊤
+    For each mini-batch sample, one-dimensional index tracks ��→� = ��→�                                                     (12)
+are provided for video and KKM token sequences �� ∈ ℝ��
+and �� ∈ ℝ�� ,where �� and �� are the numbers of tokens            where � ≥ 0 controls bias strength. Bias tensors are
+entering cross-attention. This allows coarse frame-level or broadcast over heads to match multi-head attention layout and
+clinical indices to be registered with encoder token grids.     added to raw attention logits before softmax in the
+   To remove absolute scale differences between modalities
+corresponding cross-attention blocks.                                                                                   (a)
+                                                                      For a batch of N triplets { Vi , Ki , T }Bi=1 , let zi denote the
+   Inspired from the previous studies[33, 41], we maintain a       ℓ2 -normalized embedding of modality a . Pairwise similarity
+learnable latent array �� ∈ ℝ�×� , with M bottleneck tokens        matrices are
+and hidden size d. After the bidirectional video-KKM cross-                      (�)
+                                                                                       ⊤
+                                                                                             (�)
+attention stack, we denote the resulting token sequences by        ��� [�, �] = ��          �� /�����                            (20)
+�� ∈ ℝ�� ×� and �� ∈ ℝ��×� . For each bottleneck layer ℓ , we      where τtemp is a learnable temperature. The symmetric CLIP-
+update the latents in two cross-attention steps: latent queries    style[29, 31] objective is applied to each modality pair; the
+attend to video tokens as keys/values, then the same latent        total pretraining loss is
+queries attend to KKM tokens as keys/values,                       ℒ��� = ℒ�� + ℒ�� + ℒ��                                  (21)
+�ℓ = ��ℓ� �ℓ−� , �� ; ��→� , �ℓ = ��ℓ� �ℓ , �� ; ��→�     (13)
+                                                                      For supervised fine-tuning, let �� ∈ {0,1} be the ground-
+  where ��ℓ�   and ��ℓ� are multi-head cross-attention blocks      truth label and �� = �(�� ) be the predicted probability, the
+with latent queries and modality tokens as keys and values.        focal loss is
+                                                                               1 �               �
+Unlike the main video–KKM cross-attention path, these              ℒ����� =−        � 1 − ��,� log(��,� ),                 (22)
+                                                                               � �=1 �,�
+bottleneck blocks do not apply the temporal resolution index
+bias. The fused bottleneck summary used downstream is              where � ∈ [0,1] controls class weighting and � ≥ 0 is the
+obtained by mean-pooling over the latent tokens after the last     focusing parameter. An optional auxiliary symmetric
+layer, followed by a modality-specific normalization block:        InfoNCE[29, 30] term ℒaux over projected video and KKM
+             1 �
+� = ����(           �ℓ )                                 (14)      features yields
+             � �=1 �
+                                                                   ℒ = ℒ����� + �ℒ���                                  (23)
+   In parallel for the two modalities, each sequence �� and ��
+is reduced to a single vector by gated token pooling, then         where ������ ≥ 0 controls the strength of auxiliary multimodal
+passed through modality-specific normalization:                    alignment.
+�� = ����� ����� �� , �� = ����� ����� ��                  (15)
+                                                                   I. Factor-level Interpretability
+   The shared bottleneck vector � is mapped with learned              Interpretability is structural on the KKM grid and
+linear maps and added to both modality sequences:                  attributional at inference (Fig. 3c). Each input dimension maps
+�� ← �� + �� �, �� ← �� + �� �                      (16)           to a predefined factor index; native KKM temporal attention
+                                                                   and attention-times-gradient maps rank factors and gait phases
+   These vectors �� and �� , are then used together with the       for a fixed classifier. These readouts indicate correlates of the
+text branch �� for the final classifier input.                     prediction, not causal mechanisms.
+                                                                      The attribution map is
+� = �� ; �� ; �� ∈ ℝ��+��+��                           (17)
+                                                                                       ��
+  This vector is processed by a two-layer multilayer               �(�, �) = �� ⋅                                                (24)
+                                                                                     ���,�
+perceptron (MLP) with intermediate normalization,
+nonlinearity and dropout regularization:
+                                                                   where Kt,f is the KKM input at time t and feature f , y is the
+� = ������� � ���� �� � + �1                               (18)    screening logit, and αt is the normalized temporal attention
+� = �� � + �2                                              (19)    from the KKM encoder. Top-K factors are reported per
+                                                                   domain (motion, self-skeleton, signal cross-correlation).
+   In our implementation, Norm is layer normalization and �
+is ReLU activation function. The scalar output y is the                                IV. EXPERIMENTAL SETUP
+classification logit for the binary endpoint.
+                                                                   A. Ethics and Participants
+                                                                      AIS gait screening was conducted at The Duchess of Kent
+H. Optimization Objectives                                         Children's Hospital (DKC) between October 2021 and
+   Training is staged: trimodal contrastive pretraining aligns     December 2022; the University of Hong Kong - Shenzhen
+video, KKM, and text in a shared 512-dimensional space using       Hospital (HKU-SZ) between July 2022 and November 2025;
+symmetric InfoNCE losses[29, 31] on all modality pairs; this       and Shenzhen Hong Kong Pui Kiu College Longhua Xinyi
+stage initializes encoders only after the fusion architecture is   School (Pui Kiu) between May 2024 and July 2024. This
+fixed by supervised ablations. Supervised fine-tuning uses         study was approved by the Institutional Review Board of The
+focal loss[42] for class imbalance and an optional symmetric       University of Hong Kong/Hospital Authority Hong Kong
+video–KKM InfoNCE term weighted by λ (Equations below).            West Cluster (Ref No.: UW 21-511) and the University of
+Scratch baselines randomize all weights under the same             Hong Kong - Shenzhen Hospital Review Board (Ref No.
+schedule. Optimizer settings and learning-rate schedules are       Hkuszh2023020). All participants or their guardians provided
+specified in Section IV-D.                                         written informed consent after explanation of study purpose
+and procedures. Inclusion criteria was independent ambulation
+without assistive devices. Exclusion criteria were documented
+gait impairment, other musculoskeletal disorders affecting
+walking, prior mobility-related surgery, or severe lower- or
+upper-limb deformities that could confound gait analysis.
+   Nine non-specialist operators (four medical students, two
+engineering doctoral candidates, two nurses, one school
+teacher) completed data collection in a hospital gait laboratory,
+outpatient corridors, and school classrooms. After a
+standardized briefing, median hands-on capture time was 30
+min per operator (range 10–20 min training; 87 independent
+sessions: medical students, n = 15; engineering students, n =
+44; nurses, n = 20; school teacher, n = 8). Checklist-based
+protocol adherence was high for tripod placement, recording
+start, and upload; minor lighting or positioning deviations did     Fig. 4. Multicenter recruitment and participant-level data
+not prevent successful capture, and no operator required            partitioning (enrolled n = 1,974; analyzed n = 1,858). Datasets
+retraining.                                                         1–4 defined by analytic role.
+
+B. Data Collection                                                                                  TABLE I
+   Gait videos were acquired at 1080p and 30 fps using a                  DEMOGRAPHIC CHARACTERISTICS OF MULTI-
+tripod-mounted camera at 1.5 ± 0.1 m height under a                               CENTER DATASETS
+                                                                    Attribute            DKC                HKU-SZ             School
+standardized walking protocol. Protocol adherence was
+                                                                    Participants, n      299                820                739
+assessed per session with a fixed checklist: (1) correct tripod     Gender (F:M)         213:86             531:289            412:327
+height 4 ± 0.1m, (2) subject visible full torso on screen, (3)      Age (mean ± SD,      14.97 ± 2.23       14.58 ± 6.25       —
+recording started after ≥ 1s still standing, (4) continuous walk    y)
+without pause, (5) successful upload.                               Cobb angle           30.83 ± 12.31      15.63 ± 11.04      —
+                                                                    (mean ± SD, °)
+C. Data Partition                                                   AIS:Non-AIS          282:17             523:297            155 controls
+   At DKC, 37 participants without radiographic                        a PK school controls (n = 155) had radiographic confirmation of Cobb ≤
+                                                                    10° and contribute all PK negatives in external evaluation, pooled with DKC
+measurements were excluded, leaving 299 (Dataset 1) for             non-AIS samples as shared negatives (n = 172).
+external evaluation. At HKU-SZ, 79 without radiographs were
+excluded, leaving 820 (Dataset 2), split into training (n = 656)
+and validation (n = 164). Among school participants, 584            E. Training Details
+formed Dataset 3 (school screening cohort) and 155 formed              All models were implemented in PyTorch and trained on
+Dataset 4 (PK): pre-selected controls with radiographic             NVIDIA A100 (40 GB) GPUs, with random seeds fixed to 42
+confirmation of non-scoliosis (Cobb ≤10°), used together with       for reproducibility. The AdamW optimizer was used with β1=
+DK non-AIS cases as shared negative set (n = 172) in external       0.9, β2= 0.98, weight decay=0.1. A cosine annealing learning
+subgroup and screening analyses. After exclusions, 1,858            rate schedule with 5% linear warmup was applied in all
+participants contributed to model development and evaluation        experiments. For trimodal pretraining, the batch size was 64
+(Fig. 4; Table I). Pretraining combined Datasets 2 and 3 (n =       and the model was trained for 200 epochs, using early
+1,404); the external test set combined Datasets 1 and 4 (n =        stopping if the validation loss did not improve for 20
+454).                                                               consecutive epochs. The learning rate was initialized at 1×10−4
+                                                                    and decayed to a minimum of 1 × 10 − 6. For supervised fine ‑
+D. Subgroup Method
+                                                                    tuning (SFT) optimization, we used a lower learning rate
+   ROC-AUC confidence intervals and pairwise subgroup               range (8×10 −6 to 1×10 −7) to stabilize downstream adaptation,
+contrasts used participant-level bootstrap resampling (2,000        with a batch size of 32 and up to 100 epochs (early stopping
+replicates, fixed seed where applicable). For each replicate,       patience of 15). Scratch baselines followed the same schedule
+participants were resampled with replacement and AUC was            as SFT but with all weights randomly initialized.
+recomputed on the induced sample set. Paired ΔAUC between              In pretraining, the multimodal backbone was optimized to
+subgroups used the same bootstrap draw for both strata.             learn transferable cross‑modal representations before any task‑
+Multiplicity adjustment across pairwise comparisons used the        specific supervision. During SFT, pretrained encoder weights
+Holm procedure.                                                     initialized the downstream model, and we employed a staged
+                                                                    optimization procedure. First, only the task ‑ specific heads
+                                                                    were trained for 20 epochs while all encoders remained frozen.
+                                                                    Second, the last two encoder blocks of each modality were
+                                                                    unfrozen, and joint training continued for 30 epochs (epochs
+                                                                    21 – 50). Finally, all remaining encoder blocks were unfrozen
+and the entire model was fine‑tuned jointly for the remaining        On internal validation, Transformer-based backbones
+50 epochs (epochs 51–100).                                        showed comparable discrimination and consistently
+                                                                  outperformed pretrained ResNet variants. On the external test
+               V. EXPERIMENTAL RESULTS                            set, all Transformer models improved relative to their internal
+                                                                  validation performance, with ViViT (scratch) reaching an
+A. Overall Screening Performance
+                                                                  AUC of 0.961. The best overall result was obtained by ViViT
+   On the hold-out external screening cohort (n = 454), the       with trimodal pretraining followed by supervised fine-tuning,
+selected KVT model reached ROC-AUC 0.972 after trimodal           achieving an external AUC of 0.972 (Table IV).
+encoder pretraining and supervised fine-tuning. Prespecified         The internal-to-external performance shift likely reflects
+supervised ablations on the same cohort (Fig. 5a; Table II)—      cohort heterogeneity rather than backbone instability. Internal
+not backbone choice—provide the primary evidence for              validation contains a higher proportion of self-referred
+multimodal design; encoder comparisons are reported as            hospital cases, whereas external evaluation is dominated by
+robustness checks.                                                protocol-driven school screening data (DKC Dataset 1 and PK
+   Video-only, KKM-only, KV, and KVT variants exhibit a           controls) acquired under more standardized conditions. This
+monotonic gain in external AUC (0.784 → 0.927 → 0.947             acquisition consistency is associated with a more stable gait
+→ 0.961); pretraining improves KVT to 0.972. With                 phenotype distribution and improved external ranking
+modalities and pretraining fixed, latent-bottleneck fusion        performance.
+exceeds late concatenation followed by an MLP (0.972 vs.                                        TABLE IV
+0.967, ∆ AUC = +0.005). Component ablation on the fixed                  VIDEO ENCODER BACKBONE COMPARISON
+KVT architecture (Fig. 5b; Table III) showed contributions        Visual backbone  Internal val. AUC External test AUC
+                                                                  R(2+1)D-18            0.751                  0.377
+from auxiliary video–KKM InfoNCE, bottleneck fusion,
+                                                                  (pretrained)
+bidirectional cross-attention, and temporal-alignment features;   R3D-18 (pretrained)   0.743                  0.641
+removing temporal alignment reduced performance to 0.943.         Video Swin            0.813                  0.913
+                                                                  TimeSformer           0.826                  0.924
+                            TABLE II                              ViViT                 0.787                  0.961
+    MODALITY ABLATION ON THE HOLD-OUT TEST                        ViViT (pretrained)    0.656                  0.972
+                 SET (N = 454)
+Variant        Pretraining     AUC                                C. Subgroup Evaluation
+Video only            --                      0.784                  We tested whether external performance varied across
+KKM only              --                      0.927
+                                                                  Cobb-angle severity and curve phenotype on the external test
+KV (video + KKM)      --                      0.947
+                                                                  set. Each stratum reused the same shared-negative set,
+KVT + concatenate     No                      0.961
+KVT + concatenate     Yes                     0.967               comprising all DKC non-AIS patches union all PK control
+KVT + latent-         Yes                     0.972               patches (n = 172 negatives). Uncertainty was estimated with
+bottleneck                                                        subject-level bootstrap (2,000 resamples). Subgroup contrasts
+                                                                  used paired bootstrap ΔAUC with Holm adjustment for
+                            TABLE III
+                                                                  multiplicity. Because screening prevalence is low, we also
+       COMPONET ABLATION OF THE KVT MODEL
+                                                                  report fixed high-sensitivity operating points (sensitivity ≥
+                ARCHITECTURE
+                                                                  0.95) with projected PPV, NPV, and false positives per 1,000
+Configuration                                         AUC
+KVT+ concatenate (w/o pretrained)                     0.961       screened at 5% assumed prevalence.
+w/o auxiliary video–KKM InfoNCE                       0.957          a) Severity subgroups: Severity was defined as mild (10° ≤
+w/o bottleneck fusion                                 0.950       Cobb < 25° ), moderate (25° ≤ Cobb ≤ 40° ), and severe
+w/o bidirectional video–KKM cross-attention           0.949       (Cobb > 40°) among DKC AIS-positive samples in the
+w/o phase-index / temporal alignment                  0.943       subgroup file. ROC-AUC was 0.972 [0.952–0.989] (Table V).
+                                                                  Pairwise ΔAUC values were near zero, all bootstrap intervals
+                                                                  included zero, and Holm-adjusted p-values were 1.0 (Table
+                                                                  VI). At sensitivity ≥ 0.95, specificity ranged from 0.919 to
+                                                                  0.930, with projected false positives per 1,000 screened of
+                                                                  roughly 66–77; projected PPV was about 0.38–0.42 and
+                                                                  projected NPV ≥ 0.997 (Table VII).
+                                                                                                TABLE V
+                                                                             CURVE SEVERITY SUBGROUP WITH
+                                                                                    UNCERTAINTY
+                                                                  Group            N (pos/neg)        AUC              95% CI
+Fig. 5. External ROC curves (n = 454). (a) Modality/fusion        Mild             274 (102/172)      0.9725           [0.9521,
+ablation. (b) Component ablation. AUC values in Tables II                                                              0.9888]
+and III.                                                          Moderate         288 (116/172)      0.9711           [0.9507,
+                                                                                                                       0.9879]
+B. Backbone Robustness                                            Severe           236 (64/172)       0.9746           [0.9551,
+                                                            0.9897]            Single           −0.0032         [−0.0135,      0.463         1
+  Mild: 10° ≤ Cobb < 25°; moderate: 25° ≤ Cobb ≤ 40°; severe: Cobb > 40°       thoracic −                       0.0053]
+among DKC AIS-positive samples.                                                Multi-curve
+                                                                               Single lumbar    −0.0042         [−0.0172,      0.479         1
+                              TABLE VI                                         − Multi-curve                    0.0072]
+       PAIRWISE ΔAUC OF CURVE SEVERITY GROUPS
+Comparison        ΔAUC            95% CI           p (raw)         p (Holm)                                  TABLE X
+Mild −            0.0013          [−0.0056,        0.726           1              CURVE TYPE STRATA AT SENSITIVITY TARGET ≥
+Moderate                          0.0088]                                                          0.95
+Mild − Severe     −0.0021         [−0.0109,        0.565           1           Group     Threshol      Sensitivity    Specificity      PPV       NPV
+                                  0.0053]                                                d                                             (5%)      (5%)
+Moderate −        −0.0034         [−0.0124,        0.350           1           Overall   0.4274        0.9504         0.9302           0.4176    0.9972
+Severe                            0.0042]                                      Single    0.3601        1.000          0.9012           0.3475    1.000
+                                                                               thoraci
+                              TABLE VII                                        c
+          CURVE SEVERITY STRATA AT SENSITIVITY                                 Single    0.4095        0.9615         0.9128           0.3672    0.9978
+                    TARGET ≥ 0.95                                              lumbar
+Group         Threshol     Sensitivit     Specificit       PPV         NPV     Multi-    0.4274        0.9612         0.9302           0.4203    0.9978
+              d            y              y                (5%)        (5%)    curve
+Mild          0.4274       0.951          0.9302           0.417       0.997     PPV and NPV projected at 5% assumed screening prevalence.
+                                                           7           2
+Moderat       0.4184       0.9569         0.9186           0.382       0.997   D. Factor-Level Interpretability
+e                                                          2           5          We tested whether the fixed KVT classifier relies on
+Severe        0.4281       0.9688         0.9302           0.422       0.998   consistent kinematic evidence across AIS phenotypes on the
+                                                           2           2       external (DKC) cohort. Using attention-times-gradient
+  PPV and NPV projected at 5% assumed screening prevalence.
+                                                                               attribution, we summarized, for each subgroup, mean temporal
+                                                                               attention, domain-wise attribution mass over the gait cycle,
+   b) Curve-type subgroups: Curve-type labels are defined at
+                                                                               and the top-ranked KKM factors.
+the cases level. ROC-AUC was 0.972 [0.953-0.989] (Table
+                                                                                  Across general, single-thoracic, single-lumbar, and multi-
+VIII). Pairwise ΔAUC estimates were small and non-
+                                                                               curve strata (n = 282, 50, 26, and 206 AIS-positive
+significant after Holm adjustment (Table IX). At target
+                                                                               participants, respectively), the two highest-attribution factors
+sensitivity ≥ 0.95, subgroup-specific specificity ranged from
+                                                                               were the same: motion index 8 (horizontal position of the right
+0.901 to 0.930, with projected false positives per 1,000
+                                                                               ear) and skeleton index 142 (angle between upper extremities).
+screened between approximately 66 and 94; projected PPV
+                                                                               Higher ranks were dominated by skeleton indices in all strata;
+ranged from about 0.35 to 0.42, and projected NPV was ≥
+                                                                               motion indices appeared intermittently in the top 20. Top-
+0.997 (Table X). Thus the numerically low projected PPV
+                                                                               factor magnitudes were similar across strata (for example,
+values reflect the chosen prevalence (5%) and sensitivity-first
+                                                                               motion 8: 0.029 ± 0.002 thoracic vs 0.031 ± 0.003 lumbar vs
+policy, not a collapse of model ranking performance within
+                                                                               0.031 ± 0.001 multi) (Fig. 6c-f).
+strata.
+                             TABLE VIII                                           Domain dynamics (Fig. 6b) showed stable relative mass
+       CURVE TYPE SUBGROUP WITH UNCERTAINTY                                    across the gait cycle, with temporal attention increasing
+Group              N (pos/neg)          AUC                95% CI              toward later phases of the normalized sequence (Fig. 6a).
+Overall            454 (282/172)        0.9724             [0.9527,            These patterns support a stable, skeleton-oriented attributional
+                                                           0.9890]             template across curve locations. They are not causal claims:
+Single thoracic    222 (50/172)         0.9701             [0.9486,            rankings describe correlates of a fixed supervised model, not
+                                                           0.9871]
+                                                                               interventions on individual factors.
+Single lumbar      198 (26/172)         0.9691             [0.9455,
+                                                           0.9876]
+Multi-curve        378 (206/172)        0.9734             [0.9537,
+                                                           0.9899]
+
+                              TABLE IX
+          PAIRWISE ΔAUC OF CURVE TYPE GROUPS
+Comparison        ΔAUC            95% CI           p (raw)         p (Holm)
+Overall −         0.0023          [−0.0044,        0.508           1
+Single                            0.0108]
+thoracic
+Overall −         0.0033          [−0.0061,        0.549           1
+                                                                               Fig. 6. Factor-level interpretability on the external test set. (a)
+Single lumbar                     0.0156]
+Overall −         −0.0010         [−0.0033,        0.315           1           Temporal attention. (b) Domain attribution vs. gait phase. (c)–
+Multi-curve                       0.0009]                                      (f) Top-20 factors by subgroup.
+Single            0.0010          [−0.0125,        0.892           1
+thoracic −                        0.0150]                                      E. Input-level heterogeneity across datasets
+Single lumbar                                                                     To characterize cross-site differences in model inputs, we
+compared KKM statistics between the internal development            visualization.
+cohort (HKU-SZ, n = 820) and the external test cohort (n =             Deployment and intended use. ScoliDetect is intended as an
+454 participant-level patches). The element-wise mean               assistive referral-triage aid under standardized monocular
+difference map (Fig. 7a) shows channel-specific shifts and          capture for school nurses, primary-care staff, and trained
+stronger late-time structure. Per-patch Frobenius norms (Fig.       screening personnel—not as a substitute for clinical
+7b) are more concentrated externally, whereas the internal          examination or radiography. Brief training and checklist-based
+cohort has a broader distribution with heavier upper tails. Joint   capture were feasible in nine operators without retraining,
+PCA of vectorized KKMs (Fig. 7c) places external samples in         supporting task shifting of video acquisition away from
+a compact neighbourhood, while internal samples span a wider        specialist technicians when supervision and protocol
+region with isolated outliers; PC1 and PC2 explain 86.8% and        compliance are maintained.
+4.9% of variance, respectively.                                        The KKM encodes a testable inductive bias: periodic gait in
+   Greater internal dispersion aligns with lower internal           screening can be approximated by a named factor basis
+validation AUC versus external performance for comparable           that should be temporally aligned with video before cross-
+ViViT-based models (e.g., 0.787 vs. 0.961 under cohort shift),      modal attention. Prespecified supervised ablations on the
+consistent with referral and acquisition heterogeneity on the       external cohort provide the primary evidence that KKM
+hospital development arm rather than mismatched prediction          semantics complement pixels, that index-biased bidirectional
+targets across sites.                                               cross-attention with latent-bottleneck aggregation outperforms
+                                                                    late concatenation, and that auxiliary video-KKM InfoNCE,
+                                                                    bottleneck fusion, cross-attention, and peak-anchored
+                                                                    registration each contribute measurably. Trimodal contrastive
+                                                                    pretraining was applied only after architecture selection, to
+                                                                    initialize encoders rather than to justify fusion design.
+                                                                    Backbone comparisons further suggest that the recipe
+                                                                    transfers across Transformer video encoders under the fixed
+                                                                    KVT protocol.
+                                                                       External ranking was stable across severity and curve-
+                                                                    type subgroups, with pairwise ∆AUC contrasts near zero after
+                                                                    multiplicity adjustment. Input-level geometry clarifies the
+                                                                    internal and external performance gap: development KKMs
+                                                                    are more dispersed, with heavier tails, than the compact
+                                                                    external manifold observed under standardized school capture,
+                                                                    consistent with referral heterogeneity on the hospital
+                                                                    development arm rather than mismatched prediction targets.
+                                                                    When acquisition compresses kinematic variability through
+                                                                    protocol compliance, cross-modal integration becomes more
+Fig. 7. Cross-cohort KKM geometry under acquisition shift. (a)      reliable—a deployability lesson that argues for monitoring
+Mean difference map. (b) Per-patch Frobenius norm (n = 820          input dispersion before cross-site rollout. High external ROC-
+vs. 454). (c) Joint PCA (PC1 86.8%; PC2 4.9%).                      AUC should not be equated with standalone diagnostic utility:
+                                                                    at a 5% assumed prevalence and sensitivity greater than 0.95,
+                      VI. DISCUSSION                                projected PPV remains modest. ScoliDetect is therefore
+   This work treats AIS screening as a pattern-analysis             intended as an assistive referral-triage aid under
+problem under weakly aligned multimodal inputs, such as             standardized monocular capture and brief checklist-based
+monocular video, a derived structured time series, and              training was feasible in nine operators without model
+template-based kinematic text produced on mismatched                retraining.
+temporal grids and noise profiles. The core finding is that a          Interpretability is structurally indexed but attributionally
+fixed-index kinematic knowledge map provides a shared,              bounded. Because each KKM dimension maps to a predefined
+auditable coordinate system in which modalities can be              factor, readouts can be audited in biomechanical terms.
+registered before fusion, yielding stronger and more                However, gradient-based rankings describe correlates of a
+interpretable models than pixel-only or late-concatenation          fixed classifier, not causal effects of interventions on
+baselines. On held-out external data, ScoliDetect (i) improves      individual factors. The same top skeleton-oriented factors
+discrimination as structured kinematic mediation and latent-        across phenotypes suggest stable reasoning under fixed
+bottleneck fusion are added, (ii) remains stable across severity    indexing rather than phenotype-specific saliency maps, but
+and curve-type strata under subject-level bootstrap inference,      prospective reader or interventional studies are needed to test
+and (iii) yields consistent factor-level attributions across        whether such readouts improve trust, audit, or failure detection
+phenotypes. These outcomes follow from elevating                    in deployment.
+representation design, fusion architecture, and indexed                Several limitations include (i) internal data dominated by a
+explanation to primary learning objectives rather than post-hoc     single hospital with many self-referred cases, limiting
+generalization of low internal performance to other                  [4]    M. Mohamed, J. Trivedi, N. Davidson, and S.
+unconstrained settings; (ii) rule-generated kinematic text                  Munigangaiah, "Adolescent idiopathic scoliosis: a
+rather than clinician narrative, so part of the multimodal gain             review of current concepts," Orthopaedics and
+may reflect template regularization; and (iii) gradient-based               Trauma, vol. 34, no. 6, pp. 338-345, 2020.
+factor ranking at inference, which supports biomechanical            [5]    A. H. Jinnah, K. A. Lynch, T. R. Wood, and M. S.
+audit but not standalone referral decisions. Feasibility testing            Hughes, "Adolescent idiopathic scoliosis: advances
+with briefly trained operators supports standardized capture                in diagnosis and management," Current reviews in
+but not outcome effectiveness.                                              musculoskeletal medicine, vol. 18, no. 2, pp. 54-60,
+                                                                            2025.
+                                                                     [6]    S.-H. Yu, C.-M. Ng, J. P.-Y. Cheung, and G. K.-H.
+                      VII. CONCLUSION
+                                                                            Shea, "Post-maturity progression in adolescent
+   We presented SCOLIDETECT, a multimodal framework                         idiopathic scoliosis curves of 40° to 50°," JBJS, vol.
+that aligns monocular gait video to a fixed-index kinematic                 105, no. 4, pp. 277-285, 2023.
+knowledge map and template-based kinematic text through              [7]    T.-C. A. Hoelen, P. C. Willems, J. J. Arts, G. van
+explicit temporal registration, index-biased video-KKM fusion,              Mastrigt, and S. Evers, "The economic and societal
+and late text concatenation at the screening head. On a                     burden associated with adolescent idiopathic scoliosis:
+multicenter cohort with patient-level partitioning and external             A burden-of-disease study protocol," North American
+school-screening validation, structured kinematic mediation                 Spine Society Journal (NASSJ), vol. 14, p. 100231,
+and Perceiver-style latent-bottleneck fusion improved                       2023.
+discrimination over unimodal and late-fusion baselines,              [8]    K. D. K. Luk et al., "Clinical Effectiveness of School
+remained stable across severity and curve-type subgroups, and               Screening for Adolescent Idiopathic Scoliosis: A
+supported factor-level explanations tied to model structure                 Large Population-Based Retrospective Cohort
+rather than post-hoc pixel saliency alone. Standardized capture             Study," Spine, vol. 35, no. 17, pp. 1607-1614, 2010,
+was feasible with briefly trained non-clinical operators,                   doi: 10.1097/BRS.0b013e3181c7cb8c.
+                                                                     [9]    C. Lam et al., "Effectiveness and Cost Burden of
+positioning the system as referral triage under protocol rather
+                                                                            School Screening for Adolescent Idiopathic Scoliosis:
+than radiographic diagnosis.
+                                                                            A Systematic Review and Meta-Analysis," Spine, vol.
+   Although developed for AIS screening, the framework
+                                                                            51,    no.      3,    pp.   208-216,     2026,     doi:
+applies broadly wherever video is paired with derived time                  10.1097/brs.0000000000005565.
+series and template-based language, and where explanations           [10]   J. Dunn, N. B. Henrikson, C. C. Morrison, P. R. Blasi,
+must remain aligned with a predefined representational                      M. Nguyen, and J. S. Lin, "Screening for adolescent
+schema. Extending the same fixed-index contract to other                    idiopathic scoliosis: evidence report and systematic
+periodic motion domains and testing it under prospective,                   review for the US preventive services task force,"
+multi-site deployment is a natural next step for pattern-                   Jama, vol. 319, no. 2, pp. 173-187, 2018.
+analysis methods that must remain auditable as they cross            [11]   D. Y. T. Fong et al., "A Meta-Analysis of the Clinical
+acquisition boundaries.                                                     Effectiveness of School Scoliosis Screening," Spine,
+                                                                            vol. 35, no. 10, pp. 1061-1071, 2010, doi:
+                      ACKNOWLEDGMENT                                        10.1097/BRS.0b013e3181bcc835.
+   We        acknowledge          funding        support        by   [12]   J. H. Yang, S. W. Suh, P. S. Sung, and W. H. Park,
+Sanming Project of Medicine in Shenzhen, China (No. SZSM                    "Asymmetrical gait in adolescents with idiopathic
+                                                                            scoliosis," (in eng), Eur Spine J, vol. 22, no. 11, pp.
+202211004);                    Shenzhen                    Science
+                                                                            2407-13, Nov 2013, doi: 10.1007/s00586-013-2845-y.
+and Technology Program (No. KJZD20240903102759061);
+                                                                     [13]   I. A. Kramers-de Quervain, R. Müller, A. Stacoff, D.
+Shenzhen-Hong Kong Cooperation Zone for Technology and                      Grob, and E. Stüssi, "Gait analysis in patients with
+Innovation (No. HZQSWS-KCCYB-2024055). The funder                           idiopathic scoliosis," (in eng), Eur Spine J, vol. 13,
+played no role in study design, data collection, analysis and               no. 5, pp. 449-56, Aug 2004, doi: 10.1007/s00586-
+interpretation of data, or the writing of this manuscript.                  003-0588-x.
+                                                                     [14]   F. Khorramroo, R. Rajabi, and S. H. Mousavi, "Gait
+                          REFERENCES                                        kinetics in individuals with scoliosis: a systematic
+[1]      J. C. Cheng et al., "Adolescent idiopathic scoliosis,"             review and meta analysis," BMC Musculoskeletal
+         Nature Reviews Disease Primers, vol. 1, no. 1, p.                  Disorders, vol. 26, no. 1, p. 710, 2025/07/26 2025,
+         15030, 2015/09/24 2015, doi: 10.1038/nrdp.2015.30.                 doi: 10.1186/s12891-025-08941-0.
+[2]      S. L. Weinstein, L. A. Dolan, J. C. Cheng, A.               [15]   J. Yang et al., "Development and validation of deep
+         Danielsson, and J. A. Morcuende, "Adolescent                       learning algorithms for scoliosis screening using back
+         idiopathic scoliosis," The lancet, vol. 371, no. 9623,             images," Communications Biology, vol. 2, no. 1, p.
+         pp. 1527-1537, 2008.                                               390, 2019/10/25 2019, doi: 10.1038/s42003-019-
+[3]      F. Altaf, A. Gibson, Z. Dannawi, and H. Noordeen,                  0635-8.
+         "Adolescent idiopathic scoliosis," Bmj, vol. 346,           [16]   G. Goto, K. Ariga, N. Tanaka, K. Oda, H. Haro, and
+         2013.                                                              T. Ohba, "Clinical Significance of Pose Estimation
+                                                                            Methods Compared with Radiographic Parameters in
+       Adolescent Patients with Idiopathic Scoliosis," (in               Computing and Computer-Assisted Intervention, pp.
+       eng), Spine Surg Relat Res, vol. 8, no. 5, pp. 485-493,           464-474, 2025.
+       Sep 27 2024, doi: 10.22603/ssrr.2023-0269.                 [28]   Z. Peng et al., "Graph convolutional networks for 3D
+[17]   H. Du et al., "Validity and reliability of 3D automatic           skeleton-based scoliosis screening using gait
+       ultrasound imaging for measuring coronal and                      sequences," The Visual Computer, vol. 41, no. 9, pp.
+       sagittal angles in idiopathic scoliosis," Scientific              6823-6835, 2025/07/01 2025, doi: 10.1007/s00371-
+       Reports, vol. 15, no. 1, p. 33558, 2025/09/29 2025,               025-03983-w.
+       doi: 10.1038/s41598-025-18538-1.                           [29]   A. Radford et al., "Learning transferable visual
+[18]   C. K. Kwan et al., "Three-dimensional (3D)                        models from natural language supervision,"
+       ultrasound imaging for quantitative assessment of                 International conference on machine learning, pp.
+       frontal cobb angles in patients with idiopathic                   8748-8763, 2021.
+       scoliosis - a systematic review and meta-analysis,"        [30]   A. v. d. Oord, Y. Li, and O. Vinyals, "Representation
+       (in eng), BMC Musculoskelet Disord, vol. 26, no. 1, p.            learning with contrastive predictive coding," arXiv
+       222, Mar 5 2025, doi: 10.1186/s12891-025-08467-5.                 preprint arXiv:1807.03748, 2018.
+[19]   T. Zhang et al., "Deep Learning Model to Classify          [31]   X. Zhai, B. Mustafa, A. Kolesnikov, and L. Beyer,
+       and Monitor Idiopathic Scoliosis in Adolescents                   "Sigmoid loss for language image pre-training,"
+       Using a Single Smartphone Photograph," JAMA                       Proceedings of the IEEE/CVF international
+       Network Open, vol. 6, no. 8, pp. e2330617-e2330617,               conference on computer vision, pp. 11975-11986,
+       2023, doi: 10.1001/jamanetworkopen.2023.30617.                    2023.
+[20]   Z. He et al., "Conditional generative adversarial          [32]   Y.-H. H. Tsai, S. Bai, P. P. Liang, J. Z. Kolter, L.-P.
+       network-assisted system for radiation-free evaluation             Morency, and R. Salakhutdinov, "Multimodal
+       of scoliosis using a single smartphone photograph: a              transformer for unaligned multimodal language
+       model development and validation study," (in eng),                sequences," in Proceedings of the 57th annual
+       EClinicalMedicine, vol. 75, p. 102779, Sep 2024, doi:             meeting of the association for computational
+       10.1016/j.eclinm.2024.102779.                                     linguistics, 2019, pp. 6558-6569.
+[21]   M. S. Rohde et al., "Smartphone-based surface              [33]   A. Jaegle, F. Gimeno, A. Brock, O. Vinyals, A.
+       topography app accurately detects clinically                      Zisserman, and J. Carreira, "Perceiver: General
+       significant scoliosis," (in eng), Spine Deform, vol. 13,          perception with iterative attention," in International
+       no. 4, pp. 1051-1057, Jul 2025, doi: 10.1007/s43390-              conference on machine learning, 2021: PMLR, pp.
+       025-01062-7.                                                      4651-4664.
+[22]   M. V. García, J. B. Bouza-Rodríguez, and A.                [34]   A. Arnab, M. Dehghani, G. Heigold, C. Sun, M.
+       Comesaña-Campos, "Convolutional Neural Network-                   Lučić, and C. Schmid, "Vivit: A video vision
+       Based Approach for Cobb Angle Measurement Using                   transformer," Proceedings of the IEEE/CVF
+       Mask R-CNN," (in eng), Diagnostics (Basel), vol. 15,              international conference on computer vision, pp.
+       no.       9,       Apr         23        2025,      doi:          6836-6846, 2021.
+       10.3390/diagnostics15091066.                               [35]   J. Su, M. Ahmed, Y. Lu, S. Pan, W. Bo, and Y. Liu,
+[23]   Y. Zhu et al., "Deep learning in Cobb angle                       "Roformer: Enhanced transformer with rotary
+       automated measurement on X-rays: a systematic                     position embedding," Neurocomputing, vol. 568, p.
+       review and meta-analysis," (in eng), Spine Deform,                127063, 2024.
+       vol. 13, no. 1, pp. 19-27, Jan 2025, doi:                  [36]   V. Bazarevsky, I. Grishchenko, K. Raveendran, T.
+       10.1007/s43390-024-00954-4.                                       Zhu, F. Zhang, and M. Grundmann, "Blazepose: On-
+[24]   L. Xie et al., "Automatically measuring the Cobb                  device real-time body pose tracking," arXiv preprint
+       angle and screening for scoliosis on chest radiograph             arXiv:2006.10204, 2020.
+       with a novel artificial intelligence method," (in eng),    [37]   M. Yaseen, "What is YOLOv9: An in-depth
+       Am J Transl Res, vol. 14, no. 11, pp. 7880-7888,                  exploration of the internal features of the next-
+       2022.                                                             generation object detector," arXiv preprint
+[25]   F. Khorramroo, S. H. Mousavi, and R. Rajabi,                      arXiv:2409.07813, 2024.
+       "Effects of spinal deformities on lower limb               [38]   B. Vasey et al., "Reporting guideline for the early
+       kinematics during walking: a systematic review and                stage clinical evaluation of decision support systems
+       meta-analysis," Scientific Reports, vol. 15, no. 1, p.            driven by artificial intelligence: DECIDE-AI," (in
+       4608, 2025.                                                       eng), Bmj, vol. 377, p. e070904, May 18 2022, doi:
+[26]   Z. Zhou, J. Liang, Z. Peng, C. Fan, F. An, and S. Yu,             10.1136/bmj-2022-070904.
+       "Gait patterns as biomarkers: A video-based                [39]   N. Reimers and I. Gurevych, "Sentence-bert:
+       approach for classifying scoliosis," International                Sentence embeddings using siamese bert-networks,"
+       conference on medical image computing and                         Proceedings of the 2019 conference on empirical
+       computer-assisted intervention, pp. 284-294, 2024.                methods in natural language processing and the 9th
+[27]   Z. Zhou, Z. Peng, D. Jin, C. Fan, F. An, and S. Yu,               international joint conference on natural language
+       "Pose as        Clinical     Prior: Learning       Dual           processing (EMNLP-IJCNLP), pp. 3982-3992, 2019.
+       Representations       for      Scoliosis     Screening,"   [40]   J. Zhu, X. Chen, K. He, Y. LeCun, and Z. Liu,
+       International Conference on Medical Image                         "Transformers without normalization," Proceedings
+       of the computer vision and pattern recognition
+       conference, pp. 14901-14911, 2025.
+[41]   Y.-H. H. Tsai, S. Bai, P. P. Liang, J. Z. Kolter, L.-P.
+       Morency, and R. Salakhutdinov, "Multimodal
+       transformer for unaligned multimodal language
+       sequences," Proceedings of the 57th annual meeting
+       of the association for computational linguistics, pp.
+       6558-6569, 2019.
+[42]   T.-Y. Lin, P. Goyal, R. Girshick, K. He, and P.
+       Dollár, "Focal loss for dense object detection," in
+       Proceedings of the IEEE international conference on
+       computer vision, 2017, pp. 2980-2988.
+

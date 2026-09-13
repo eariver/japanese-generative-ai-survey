@@ -1,0 +1,777 @@
+Specification Portability Across LLM Development
+       Agents: Cross-Agent Compatibility in
+     Specification-Driven Software Migration
+            Oleg Grynets ​                                   Oleksii Ilchuk​                               Dariia Zatulna​
+           EPAM Systems​                                    EPAM Systems​                                  EPAM Systems​
+       McLean, Virginia, USA​                                 Lviv, Ukraine​                                Lviv, Ukraine​
+      oleg_grynets@epam.com                            oleksii_ilchuk@epam.com                       dariia_zatulna@epam.com
+
+
+                                                         Vasyl Lyashkevych
+                                                           EPAM Systems
+                                                            Lviv, Ukraine
+                                                   vasyl_lyashkevych@epam.com
+
+    Abstract—Large Language Models (LLMs) are increasingly           LLM-based agent can interpret a high-level task, decompose
+used in specification-driven software development, where             it, invoke tools, generate artifacts, and iteratively refine an
+specifications become operational artifacts that directly guide      implementation [1]. Specification-driven development
+implementation agents.          This raises an         important     (SDD) extends this transition by making a specification an
+interoperability question: whether a specification created or        operational input to the development process rather than
+structured within one LLM development environment can be             only a descriptive document. The idea has historical roots in
+reliably consumed by another agent without degrading                 Agile      Specification-Driven      Development,        where
+implementation quality. This paper investigates cross-agent          specifications, contracts, and tests were integrated into the
+specification portability using Oracle-to-PostgreSQL migration
+                                                                     development workflow [2]. In contemporary LLM-assisted
+as a controlled software transformation task. The study
+combines two experimental stages. First, a specification-first
+                                                                     development, however, specifications may directly guide
+migration pipeline was evaluated on 1,006 PL/SQL files, of           autonomous code generation and therefore become an
+which 623 were successfully regenerated and 380 generated            intermediate representation between software intent and
+scripts executed successfully in PostgreSQL 16. Second,              implementation [3].
+cross-agent experiments were conducted on a dataset of 1,802             This change is particularly relevant to software
+Oracle       scripts     with     corresponding      PostgreSQL      migration. Database migration between heterogeneous
+implementations using Amazon Kiro, Google Gemini, and
+                                                                     database management systems requires preservation of
+GitHub Copilot, with Claude Code and Cursor included in the
+                                                                     application semantics while transforming dialect-specific
+initial single-agent evaluation. Native and foreign specifications
+were assessed using Token F1, exact match, SQL syntax                constructs, data types, built-in functions, procedural logic,
+validity, AST exact match, AST mean similarity, and                  triggers, exception handling, sequences, packages, and other
+immediate runnability. The results show that specification size      platform-dependent elements. LLM-supported SQL
+alone does not predict implementation quality and that               translation can automate portions of this work, but direct
+cross-agent transfer can produce substantial agent-dependent         source-to-target generation may introduce semantic drift and
+degradation. The strongest replicated case occurred when             reduce transformation traceability [4]. A specification-based
+Gemini directly consumed a Kiro-origin specification,                Code–Text–Code approach addresses this limitation by
+producing a Token F1 of 0.035, SQL syntax validity of 2.33%,         introducing an intermediate textual representation that
+and AST mean similarity of 0.015. Rewrite, compression, and          captures behavior, identifiers, computational flow,
+retrieval-augmented specification ingestion were further             conditions, dependencies, side effects, and domain intent
+evaluated as adaptation strategies. Rewriting substantially          before target code is generated [5]. In this interpretation,
+improved Gemini in the tested configuration, compression did         migration becomes a controlled transformation through an
+not provide a universal benefit, and retrieval-augmented             intermediate specification rather than direct syntactic
+ingestion was the only common strategy represented on the            translation.
+per-agent Pareto frontiers of both Gemini and Copilot. The
+findings suggest that specifications in heterogeneous SDD                The importance of the intermediate representation is also
+workflows should not automatically be treated as agent-neutral       supported by related work on architecture-level knowledge
+artifacts and motivate explicit consideration of specification       representation and specification-controlled software
+portability, agent-specific interpretation, and retrieval-based      generation. A unified architecture metamodel can provide
+access in multi-agent software engineering.                          structured context across representation layers [6], while
+                                                                     security-oriented SDD research shows that information
+   Keywords—specification-driven development, specification          required for downstream implementation must be made
+portability, cross-agent compatibility, large language models,       operational and traceable in a specification rather than
+multi-agent software engineering, Oracle-to-PostgreSQL               remaining implicit [7]. Token-optimization experiments in
+migration, retrieval-augmented generation.
+                                                                     Oracle-to-PostgreSQL migration further demonstrate that
+                    I.​       INTRODUCTION                           reducing context is not equivalent to preserving useful
+                                                                     context: aggressive information reduction may increase
+    Large language models (LLMs) are increasingly                    efficiency while damaging semantic preservation, whereas
+integrated into software engineering workflows for code              selective strategies may retain substantially more
+generation, translation, program repair, documentation,              transformation quality [8]. These findings motivate
+testing, and software modernization. This transition is              investigation of not only what information is contained in a
+accompanied by a shift from conventional prompt-based                specification, but also how that information is represented
+assistance toward agentic development, in which an                   and consumed.
+
+
+
+XXX-X-XXXX-XXXX-X/XX/$XX.00 ©20XX IEEE
+    The problem becomes more complex in multi-agent             context, and selective access to its relevant portions may
+software engineering. An implementation workflow may            constitute an alternative to complete direct ingestion.
+use different agents for requirements processing,
+specification generation, implementation, testing, migration,       The emergence of multi-agent development frameworks
+or validation. Dynamic orchestration research consequently      makes specification transfer even more consequential.
+treats agents as specialized components whose roles and         ChatDev distributes software-development activities among
+interaction paths may change at runtime [9].                    communicating agents participating in design, coding, and
+Specification-driven synthesis research similarly treats the    testing [22]. MetaGPT similarly organizes specialized
+specification as a first-class artifact from which generated    agents around standardized operating procedures and
+software artifacts can be produced and regenerated [10]. At     intermediate artifacts [23]. Such architectures demonstrate
+the same time, studies of LLM-mediated software                 that software generation no longer necessarily occurs inside
+development identify security, reliability, and behavioral      a single agent/model interaction. Instead, artifacts created by
+risks associated with generated code [11], reinforcing the      one role can become inputs to another. This makes the
+need for controlled intermediate representations and            interoperability of intermediate artifacts—requirements,
+validation. Thus, heterogeneous agent workflows introduce       specifications, designs, tests, and code—a practical
+an additional question that is not addressed by merely          multi-agent software-engineering problem.
+improving a single model or a single prompt: whether a              Requirements representation also influences generated
+specification prepared in one agent environment remains         behavior. Test-driven interactive code generation has been
+operationally effective when transferred to another.            proposed as a mechanism for formalizing ambiguous intent
+    This question is important because current empirical        before accepting generated implementations [24].
+evidence on LLM-based software engineering consistently         Repository-level code question answering studies further
+shows strong sensitivity to context and task structure. A       show that retrieval and self-alignment can improve an
+systematic review of LLM applications in software               LLM's access to distributed software context [25].
+engineering identifies code generation as one of the            Retrieval-augmented code generation has also demonstrated
+dominant research areas while also emphasizing unresolved       benefits for programming languages with limited training
+challenges related to reliability, evaluation, context, and     resources when appropriate examples or documentation are
+practical software-engineering integration [13]. Empirical      retrieved [26]. ClarifyGPT, in turn, showed that ambiguous
+research on LLM code generation additionally demonstrates       natural-language requirements can lead to divergent
+substantial nondeterminism: repeated requests can produce       implementations and that explicit clarification of the
+structurally and behaviorally different implementations even    requirement can improve generated-code correctness [27].
+for the same task, which complicates reproducibility and the    Collectively, these studies indicate that generation quality
+interpretation of single-run comparisons [14]. These            depends not only on model capability but also on the
+findings imply that variation observed after transferring a     structure, completeness, accessibility, and interpretation of
+specification cannot automatically be attributed to             the information provided to the model.
+specification quality alone.                                        Despite this progress, existing research primarily
+    The difficulty grows as the generated artifact becomes      evaluates model capability, repository context, retrieval
+larger and more dependent on external context. SWE-bench        mechanisms, requirements clarification, or collaboration
+demonstrated that real-world software engineering tasks         among agents. The portability of a complete software
+require models to coordinate changes across functions,          specification between heterogeneous LLM development
+classes, files, execution environments, and long contexts       agents remains insufficiently characterized. In particular, it
+[15]. EvalPlus similarly showed that apparently correct         is unclear whether a specification that produces acceptable
+generated programs may fail when subjected to substantially     implementation behavior with the agent for which it was
+expanded functional testing [16]. At class level, ClassEval     generated will retain this effectiveness when consumed by
+found that model performance decreases when generation          another implementation agent, and whether adaptation
+moves from isolated methods to collections of                   strategies can reduce incompatibility.
+interdependent program elements [17]. DevEval extends this          The present study investigates this problem using
+observation to real repositories, where requirements and        Oracle-to-PostgreSQL      migration     as    a controlled
+implementation depend on repository-level structure and         software-transformation task. The experimental study
+dependencies [18]. These studies collectively indicate that     consists of two complementary stages. In the first study, a
+lexical similarity or isolated code-generation success is       specification-first Oracle-to-PostgreSQL pipeline was
+insufficient for evaluating complex LLM-mediated                evaluated on 1,006 PL/SQL source files. Of these, 623 files
+transformations.                                                were successfully regenerated, and 380 of the regenerated
+    Context availability is another critical factor.            files subsequently executed successfully in a PostgreSQL 16
+CrossCodeEval demonstrates that cross-file code                 environment. The experiment also showed substantial
+completion becomes substantially more difficult when            differences among database-object categories, with tables
+relevant external context is absent and that providing          reaching approximately 85% regeneration success while
+appropriate context improves completion quality [19].           procedural and dependency-sensitive constructs remained
+RepoCoder addresses this problem using iterative retrieval      more difficult.
+and generation at repository level [20], while Repoformer           The second study extended the experiment to
+shows that retrieval itself should be selective because         cross-agent specification transfer. A dataset of 1,802 Oracle
+irrelevant retrieved context can reduce robustness and          scripts with corresponding PostgreSQL scripts was used to
+efficiency [21]. These results are directly relevant to         evaluate specifications and implementations involving
+specification ingestion: a long specification should not        Amazon Kiro, Google Gemini, GitHub Copilot, and, during
+necessarily be interpreted as a single undifferentiated         the initial stage, Claude Code and Cursor. The measured
+                                                                dimensions included Token F1, exact match, SQL syntax
+validity, AST exact match, AST mean similarity, and              conditions, side effects, data dependencies, and
+immediate runnability. Native and foreign specifications         domain-specific intent, thereby reducing reliance on surface
+were compared, followed by experiments with specification        syntax. This concept is particularly relevant to
+rewriting,         summarization/compression,           and      Oracle-to-PostgreSQL migration because source and target
+retrieval-augmented ingestion. The resulting measurements        systems share SQL foundations while differing substantially
+showed that specification length alone did not explain           in dialect-specific and procedural constructs.
+code-generation quality and that the effect of using a
+specification originating from another agent was strongly            Architecture-oriented work further indicates that
+agent-dependent. In particular, the substantial degradation      generated software artifacts can benefit from structured
+observed when Gemini directly consumed a Kiro-origin             representations at several abstraction levels [6]. Similarly,
+specification was reproduced in a second run.                    specification-driven intelligent-monitoring synthesis treats
+Retrieval-augmented ingestion did not dominate every             the specification as an explicit artifact from which
+individual metric but was the only common ingestion              implementation elements are generated and regenerated
+strategy represented on the per-agent Pareto frontiers           [10]. Security Knowledge Transition research extends this
+reported for both Gemini and Copilot.                            perspective by representing relations between software
+                                                                 entities,    threats,   risks,    requirements,     controls,
+    Based on these observations, this paper addresses the        implementation rules, and verification evidence explicitly in
+following research questions:                                    an SDD artifact [7]. These studies collectively motivate
+                                                                 treating the specification as an operational knowledge
+   RQ1: How does the origin of a specification affect            representation rather than merely a large natural-language
+implementation quality when the specification is transferred     prompt.
+between heterogeneous LLM development agents?
+                                                                     However, none of these works establishes that a
+    RQ2: Are differences in generated-code quality               specification representation remains equally effective across
+sufficiently explained by specification size, or do              heterogeneous implementation agents. The present study
+specification representation and agent-specific interpretation   therefore focuses on the transition: “Source artifact →
+also affect the result?                                          specification → heterogeneous implementation agent →
+    RQ3: To what extent can rewriting, compression, or           target artifact”.
+retrieval-augmented     ingestion     mitigate degradation           The empirical question is not whether specifications are
+associated with a foreign specification?                         useful in principle, but whether their effectiveness is
+   RQ4: Which specification-ingestion strategy provides          preserved when the producer and consumer environments
+the most robust trade-off across the evaluated                   differ.
+implementation agents?
+                                                                 B.​ LLM Code Generation and Evaluation
+    The contribution of the study is therefore empirical             Research on LLMs for software engineering has
+rather than a claim of universal agent incompatibility. The      expanded rapidly. The systematic review by Hou et al.
+paper       (i)    combines        a     specification-driven    organizes     existing     LLM      applications     across
+Oracle-to-PostgreSQL migration pipeline with controlled          software-engineering tasks and identifies code generation,
+cross-agent specification-transfer experiments; (ii) evaluates   testing, maintenance, and program understanding as major
+native and foreign specifications using lexical, syntactic,      research directions while emphasizing open issues related to
+structural, and operational metrics; (iii) compares direct,      robustness and evaluation [13].
+rewritten,      compressed,     and      retrieval-augmented
+specification ingestion using only the measured                      A major limitation in LLM-based code-generation
+experimental configurations; and (iv) identifies specification   experiments is nondeterministic behavior. Ouyang et al.
+portability as an open problem for heterogeneous                 evaluated    829     code-generation    problems    across
+specification-driven development.                                CodeContests, APPS, and HumanEval and found
+                                                                 considerable output variation across repeated requests;
+                 II.​      RELATED WORK                          importantly, setting temperature to zero did not eliminate
+                                                                 nondeterminism [14]. This is methodologically relevant to
+A.​ Specification-Driven and Specification-Based Software        cross-agent comparison and supports the need to interpret
+    Development                                                  individual cross-agent runs cautiously and to replicate
+    Specification-driven development has its foundations in      anomalous results.
+software-engineering approaches in which explicit
+specifications constrain implementation and verification.            Evaluation methodology itself is also important. Liu et
+Ostroff et al. combined test-driven development and design       al. introduced EvalPlus to extend the test coverage of
+by contract within Agile Specification-Driven Development        established      program-synthesis       benchmarks       and
+[2]. The recent adoption of LLM agents substantially             demonstrated that generated programs considered correct
+changes the role of these specifications because they can        under limited tests may fail additional functional cases [16].
+now be consumed directly during code generation rather           Similarly, Du et al. introduced ClassEval for class-level
+than serving exclusively as human-oriented artifacts [3].        generation and showed that models perform substantially
+                                                                 worse when tasks include several interdependent code units
+   For migration and reengineering, an intermediate              rather than isolated functions [17].
+specification   can     also  separate     source-language
+representation from target-language generation. The                  Repository-oriented   benchmarks strengthen this
+Specification-Based Code–Text–Code approach transforms           observation.     SWE-bench     contains    2,294     real
+source code into a neutral textual description before            software-engineering problems derived from GitHub issues
+generating the target implementation [5]. The specification      and requires models to reason over repositories and
+can capture program behavior, identifiers, control               execution environments [15]. DevEval provides 1,825
+                                                                 samples from 115 repositories with requirements, source
+repositories, reference code, and dependency annotations         development roles [22]. MetaGPT similarly uses specialized
+and demonstrates the additional difficulty of generation in      agents and standardized operating procedures to organize
+realistic repository contexts [18]. These works support the      collaborative problem solving and software production [23].
+multidimensional evaluation adopted in the present study:
+Token F1 and exact match alone cannot establish that                 Related orchestration work explores dynamic
+migrated code is syntactically, structurally, or operationally   composition of specialized agents, including runtime
+correct.                                                         decomposition and the recruitment of new agents when a
+                                                                 fixed workflow is insufficient [9]. These systems establish
+    Accordingly, the provided migration experiments use          the broader architectural motivation for the present research:
+several complementary measures: Token F1, exact match,           in an agentic software-development pipeline, the agent
+SQL syntax validity, AST exact match, AST mean                   generating an intermediate artifact does not necessarily have
+similarity, and immediate runnability. These metrics are         to be the same agent consuming it.
+retained exactly as defined in the supplied experimental
+study and are not supplemented here with unmeasured                 Nevertheless, multi-agent studies generally concentrate
+performance results.                                             on task decomposition, communication protocols, role
+                                                                 specialization, workflow organization, and collective
+C.​ Context, Retrieval, and Specification Ingestion              quality. They do not directly quantify whether a
+    A central issue in repository-level generation is            specification   generated    under     one    development
+identifying which information should be exposed to the           agent/framework     remains     an     equally    effective
+model. CrossCodeEval shows that generation quality is            implementation artifact for another agent. The cross-agent
+strongly affected by access to cross-file dependencies and       experiments in this study address this narrower issue by
+provides a benchmark explicitly requiring such external          explicitly     exchanging      specifications     between
+context [19]. RepoCoder combines similarity-based retrieval      implementation environments.
+with iterative retrieval and generation and reports              E.​ Requirements Ambiguity, Intent, and Intermediate
+improvements over in-file and simpler retrieval baselines            Representations
+[20].
+                                                                     The effectiveness of generated code depends on the
+    Repoformer adds an important qualification: retrieval is     quality and determinacy of the information provided to a
+not always beneficial. Its selective-retrieval architecture is   model. Fakhoury et al. proposed test-driven interactive code
+motivated by evidence that irrelevant or noisy retrieved         generation in which tests help distinguish alternative
+context can harm code completion, and it learns whether          behaviors that may arise from ambiguous intent [24].
+retrieval should be applied for a particular generation step     ClarifyGPT likewise detects ambiguous requirements and
+[21]. This observation is particularly relevant to long          generates clarification questions before final code
+specifications. More available specification text does not       generation; its empirical evaluation showed that requirement
+necessarily imply more useful context for a particular           clarification can improve code-generation performance [27].
+implementation operation.
+                                                                     These studies are relevant because specifications are
+    Repository-level code QA also benefits from                  intended to reduce the ambiguity of direct natural-language
+retrieval-aware techniques. Strich et al. combine                requests. However, eliminating semantic ambiguity at the
+self-alignment and RAG pipelines to improve understanding        requirements level does not automatically establish
+of source semantics, file dependencies, and repository-level     representation invariance across agents. Two specifications
+metadata [25]. Dutta et al. similarly investigate                may describe the same target functionality while organizing
+retrieval-augmented code generation in low-resource              instructions, constraints, dependencies, examples, and
+programming languages, where relevant examples and               implementation guidance differently.
+documentation provide information unavailable from model
+parameters alone [26].                                              This issue is visible in the supplied cross-agent
+                                                                 experiments. Kiro generated the largest specification,
+    These works provide literature support for evaluating        approximately 1,597 lines, whereas Gemini generated a
+retrieval in the present study, while the performance claims     considerably smaller specification, approximately 193 lines.
+for RAG are based on the cross-agent experiment reported         Nevertheless, larger specification size did not correspond to
+in this paper. In that experiment, agents were given retrieval   universally stronger implementation results. Furthermore,
+tools for specification access and prevented from consuming      asking Gemini to rewrite a Kiro-origin specification into its
+the complete specification directly. The measured results did    preferred representation substantially changed the measured
+not establish RAG as universally superior on every metric;       outcome, whereas the same strategy did not provide a
+rather, RAG was the only common evaluated strategy that          universal improvement for Copilot. These results motivate
+appeared on the reported per-agent Pareto frontiers for both     separating specification completeness from agent-specific
+Gemini and Copilot.                                              specification interpretability.
+    This distinction is important: repository-level RAG          F.​ Database Migration and Context Optimization
+literature   motivates      the strategy,  whereas   the             Database dialect migration provides an especially useful
+Oracle-to-PostgreSQL experiments reported here determine         case for studying specification portability because
+its observed effectiveness.                                      transformation correctness includes both syntactic and
+D.​ Multi-Agent Software Engineering                             semantic constraints. Direct SQL translation can be
+                                                                 complicated by dialect-specific constructs and by the need
+    Modern LLM-based software engineering increasingly
+                                                                 to     preserve     procedural    behavior     [4].     The
+distributes work among specialized agents. ChatDev models
+                                                                 Specification-Based Code–Text–Code approach motivates
+software development through communicating agents
+                                                                 an explicit intermediate representation for such
+participating in design, coding, and testing and treats agent
+                                                                 transformation [5].
+communication as a mechanism for coordinating specialized
+    Existing    token-optimization     experiments       for          When the specification itself is generated by another
+Oracle-to-PostgreSQL migration further show that context           agent:
+manipulation should be treated as a quality-cost trade-off
+rather than simple shortening [8]. That study evaluated                                         𝑆 = 𝑆(𝐴𝑔,​ 𝑅, 𝐾)​               ​       (2)
+several transformations and showed that aggressive
+reduction can remove semantically important information.           where 𝐴𝑔 – specification-generating agent; 𝑅 – source
+The present cross-agent experiment addresses a different but       requirements or source artifact; 𝐾 – available contextual
+related problem. Instead of optimizing token count as the          knowledge.
+primary objective, it compares several ways of exposing a
+foreign specification to an implementation agent: direct              Thus:
+ingestion, rewriting, summarization/compression, and                                         𝑄𝑐𝑜𝑑𝑒​ = 𝑓(𝐴𝑔,​ 𝐴𝑖,​ 𝑆, 𝐼𝑠,​ 𝐶)​           (3)
+retrieval-augmented access.
+                                                                   where 𝑄𝑐𝑜𝑑𝑒 is the resulting implementation quality.
+G.​ Research Gap
+    The literature establishes five relevant observations.            The central hypothesis is therefore:
+    First, specifications and intermediate representations can        H1: Specifications generated within different LLM agent
+provide additional control and traceability in LLM-mediated        environments are not universally portable across
+software      transformation      [2],    [5]–[7].    Second,      implementation agents.
+code-generation quality decreases as tasks require broader
+structural and repository context [15], [17]–[19]. Third,             Three secondary hypotheses are considered:
+retrieval can improve access to relevant distributed context,         H2: Specification length alone is not a sufficient
+but indiscriminate retrieval can also introduce ineffective or     predictor of generated implementation quality.
+harmful information [20], [21], [25], [26]. Fourth,
+multi-agent frameworks increasingly pass development                  H3: Representation adaptation can reduce cross-agent
+artifacts among specialized agents [22], [23]. Fifth,              compatibility loss, but its effectiveness is agent-dependent.
+ambiguity and representation of requirements materially               H4: Retrieval-based specification ingestion provides a
+affect generated-code behavior [24], [27].                         comparatively robust strategy across the evaluated
+   However, these lines of research do not establish               heterogeneous agents.
+whether an SDD specification can be considered
+agent-neutral.                                                         IV.​         CROSS-AGENT SPECIFICATION PORTABILITY
+                                                                      We define specification portability as the capability of a
+    The remaining gap can therefore be formulated as               specification produced or organized under one
+follows: “Existing LLM-based software-engineering                  development-agent     environment      to     preserve    its
+research studies specification quality, code-generation            implementation effectiveness when consumed by another
+capability, context retrieval, requirements clarification,         development agent.
+repository-level generation, and multi-agent collaboration,
+but provides limited empirical evidence on whether a                  Let     𝑄𝑚(𝐴𝑗,​ 𝑆𝑖​)    represent          implementation     quality
+specification originating from one LLM development-agent           obtained by agent 𝐴𝑗 using a specification originating from
+environment preserves its implementation effectiveness
+when consumed by another heterogeneous agent”.                     agent 𝐴𝑖. The native quality is:
+    The present study addresses this gap through native- and                                    𝑄𝑚(𝐴𝑗,​ 𝑆𝑗​).​         ​        ​       (4)
+foreign-specification          experiments         in       an
+Oracle-to-PostgreSQL migration setting. Its conclusions are           Because implementation quality is evaluated through
+deliberately restricted to the observed agents, specifications,    multiple metrics, cross-agent compatibility is defined
+ingestion strategies, dataset, and metrics. The study does not     separately for each quality metric m:
+claim that foreign specifications universally decrease
+                                                                                                              𝑄 (𝐴 ,​𝑆 ​)
+generation quality; rather, it evaluates whether cross-agent                                      (𝑚)    𝑚 𝐽 𝑖
+                                                                                                𝐶𝑖→𝑗 = 𝑄 (𝐴          ​,​        ​       (5)
+specification effects exist in the supplied experimental                                              ​
+                                                                                                            ,​𝑆 ​)+ϵ
+                                                                                                              𝑚    𝑗   𝑗
+
+setting and which of the tested ingestion strategies are most
+robust under those conditions.                                     where 𝑄𝑚 denotes the value of quality metric 𝑚, such as
+                                                                   Token F1, SQL Syntax Validity, AST Mean Similarity, or
+               III.​      RESEARCH PROBLEM                         Immediate Runnability; ϵ prevents numerical instability for
+    Current SDD implicitly encourages the conceptual               metrics approaching zero.
+relation 𝑆→𝐼, where specification 𝑆 determines
+                                                                      Interpretation is straightforward:
+implementation 𝐼.
+                                                                                                           (𝑚)
+   For heterogeneous agentic development, however, we                                                     𝐶𝑖→𝑗 ​≈1,​        ​           (6)
+propose the extended relationship:
+                                                                      indicates approximate portability:
+                          𝐼 = 𝐺(𝑆, 𝐴, 𝐼𝑠,​ 𝐶),​   ​          (1)
+                                                                                                           (𝑚)
+                                                                                                          𝐶𝑖→𝑗 < 1,​        ​           (7)
+where 𝑆 – specification; 𝐴 – implementation agent; 𝐼𝑠 –
+specification-ingestion strategy; 𝐶 – task and contextual             indicates compatibility loss; and
+conditions; 𝐺 – implementation-generation process.                                                         (𝑚)
+                                                                                                          𝐶𝑖→𝑗 > 1,​        ​           (8)
+indicates that the foreign representation provides an                          First, irrelevant input is removed, reducing token
+advantage for the target agent.                                             consumption.
+   Because generation quality is multidimensional, 𝑄                            Second, each independently generated object receives its
+should not normally be represented by a single raw metric.                  own specification. Consequently, if a generated target object
+We define:                                                                  is incorrect, only that object must be regenerated instead of
+                                                                            the complete source file.
+                𝑄 = ⟨𝐹1,​ 𝐸, 𝑉𝑆𝑄𝐿,​ 𝑀𝐴𝑆𝑇,​ 𝑆𝐴𝑆𝑇,​ 𝑅⟩,​                (9)
+                                                                               The agent loop then produces a specification and derives
+where 𝐹1 – Token 𝐹1; 𝐸 – exact-match rate; 𝑉𝑆𝑄𝐿 – SQL                       PostgreSQL code from that specification. The internal
+                                                                            execution of the agent loop is shown in Fig. 2. The sequence
+syntax validity; 𝑀𝐴𝑆𝑇 – AST exact-match rate; 𝑆𝐴𝑆𝑇 – AST
+                                                                            coordinates the application layer, agent controller, LLM, and
+similarity; 𝑅 – immediate runnability.                                      MCP-based tools while controlling iterative tool invocation
+                                                                            and termination.
+   This yields a compatibility matrix:
+
+
+
+
+                                                .​     ​            (10)
+   Importantly:
+                            𝐶𝑖→𝑗​ ≠ 𝐶𝑗→𝑖​.​ ​              ​        (11)
+
+in general.
+    Cross-agent compatibility should therefore be regarded
+as directional, not symmetric.
+   This interpretation corresponds closely to the empirical
+observations obtained in the experiments.
+                    V.​          METHODOLOGY
+A.​ Stage 1: Specification-Driven Migration Pipeline
+    The overall specification-driven migration workflow is
+illustrated in Fig. 1. Source SQL is first preprocessed and
+decomposed into database objects before the agent generates                     Fig. 2. Sequence of interactions within the specification-driven agent
+an intermediate specification and subsequently derives the                                                    loop.
+target PostgreSQL implementation.                                               The loop repeatedly supplies the model with messages
+                                                                            and available tool schemas, executes requested tools, and
+                                                                            returns their results to the agent context. Execution
+                                                                            terminates when the agent explicitly invokes the finishing
+                                                                            operation, returns no further tool calls, or reaches the
+                                                                            iteration limit. This mechanism supports iterative
+                                                                            specification and code refinement while maintaining explicit
+                                                                            execution control.
+                                                                               Two models             were      evaluated        in    the     initial
+                                                                            implementation:
+                                                                                          ​      GPT-oss-120b;
+                                                                                          ​      GPT-o4-mini.
+                                                                               Average token consumption was approximately 2,000
+                                                                            tokens per iteration, with approximately three iterations on
+                                                                            average; smaller objects could require approximately 900
+                                                                            tokens and larger ones up to approximately 3,000.
+                                                                            B.​ Stage 2: Cross-Agent Experiment
+    Fig. 1. Specification-driven Oracle-to-PostgreSQL migration pipeline.       The second stage changed the experimental unit from
+                                                                            migration objects to the relationship between specification
+    As shown in Fig. 1, preprocessing separates                             origin and implementation agent.
+deterministic source-code preparation from LLM-mediated
+specification and code generation. This object-level                            Before cross-agent transfer was introduced, each
+decomposition reduces unnecessary input context and                         development environment was evaluated in a native
+allows individual migration objects to be regenerated                       single-agent workflow in which specification generation,
+independently when conversion fails.                                        human review, code generation, and testing were performed
+                                                                            iteratively within the same agent environment. This baseline
+   Object-level decomposition has two purposes.                             workflow is shown in Fig. 3.
+                                                                                       ●​   cursors;
+                                                                                       ●​   collections;
+                                                                                       ●​   exception handlers;
+                                                                                       ●​   preservation of unsupported Oracle constructs;
+                                                                                       ●​   remediation notes;
+                                                                                       ●​   structured conversion reports;
+                                                                                       ●​   optional reference-database access;
+                                                                                       ●​   CLI operation;
+                                                                                       ●​   AST/grammar-based structural parsing;
+                                                                                       ●​   unit and property-based testing.
+                                                                                      The evaluation dataset contained 1,802 Oracle scripts
+                                                                                   with corresponding PostgreSQL scripts, varying in length
+                                                                                   and complexity.
+                                                                                                  VI.​           EVALUATION METRICS
+                                                                                      The following metrics were used.
+                                                                                      1. Token F1. Token-level similarity between generated
+                                                                                   and expected outputs:
+                                                                                                                      2𝑃𝑅
+     Fig. 3. Native single-agent specification-driven development workflow                                   𝐹1​ = 𝑃+𝑅 .​ ​           ​       (12)
+                      used in the preliminary evaluation.
+                                                                                      2. Exact Match. Percentage of generated outputs
+   The workflow establishes the native condition in which
+                                                                                   identical to expected target scripts.
+the same agent environment is responsible for producing
+and subsequently consuming the specification.                                         3. SQL Syntax Validity. Percentage of outputs
+                                                                                   recognized as syntactically valid SQL using sqlglot.
+    Because the original single-agent experiment was not
+initially designed as a controlled baseline for cross-agent                            4. Immediate Runnability. Percentage of generated
+comparison, the native configurations of Kiro, Gemini, and                         scripts that could execute without additional manual
+Copilot were rerun before the cross-agent experiments. The                         modifications in the experimental database environment.
+resulting baseline measurements are summarized in Table I.
+                                                                                       The original study explicitly notes that this value should
+           TABLE I. ​NATIVE-SPECIFICATION BASELINE PERFORMANCE                     be interpreted as a lower bound, because testing was
+                                                                                   performed against an empty live database with generated
+ Framework +     Token     Exact   SQL Syntax AST Exact   AST Mean     Runnable,
+    Agent         F1      Match, % Validity, % Match, %   Similarity      %        stubs rather than the exact production schema.
+Amazon Kiro      0.3652     0.33      33.74      0.33       0.2073       0.72
+                                                                                      5. AST Exact Match. Percentage of converted scripts
+Spec Kit +        0.75     13.15      43.51     12.76       0.2566        0
+GitHub Copilot                                                                     whose parsed abstract syntax tree exactly matched the
+Antigravity +
+Gemini
+                  0.73     13.32      45.54     12.98        0.69        2.22      expected output.
+                                                                                      6. AST Mean Similarity. Average structural similarity
+   The later cross-agent experiments modify this condition                         between generated and expected ASTs.
+by retaining the specification artifact while changing the                            These measures intentionally distinguish            lexical,
+implementation agent.                                                              syntactic, structural, and operational quality.
+     Five environments were initially investigated:                                                      VII.​        RESULTS
+      ●​      Amazon Kiro;                                                         A.​ Feasibility of Specification-Driven Migration
+      ●​      Google Gemini / Antigravity;
+      ●​      GitHub Copilot / Spec Kit;                                               The initial specification-driven pipeline processed:
+      ●​      Claude Code;                                                                                        𝑁 = 1006
+      ●​      Cursor.
+                                                                                      PL/SQL source files.
+   Because of pricing constraints, the systematic
+cross-agent stage concentrated primarily on Kiro, Gemini,                             Of these,
+and Copilot.                                                                                               623/1006≈61. 9%,
+   Agents received the same functional request for a                                  were successfully regenerated.
+deterministic Oracle-to-PostgreSQL migration utility.
+                                                                                      Execution in PostgreSQL 16 subsequently showed that:
+     The requested system included support for:
+                                                                                                             380/623≈61.0%
+      ●​      SQL datatype conversions;
+      ●​      built-in functions;                                                     of generated scripts executed successfully.
+      ●​      sequences;
+                                                                                       Tables were the most successful object category, with an
+      ●​      set operators;
+                                                                                   approximately 85% regeneration success rate, closely
+      ●​      stored procedures;
+                                                                                   followed by views and triggers. Queries performed worst in
+      ●​      functions;
+                                                                                   that experiment, and procedures, functions, indexes, and
+      ●​      triggers;
+                                                                                   other schema-dependent constructs remained substantially
+      ●​      packages;
+                                                                                   more difficult.
+    These results established that SDD-based migration was                                     𝑄𝑠𝑝𝑒𝑐​ = 𝑓(𝐾𝑐,​ 𝑆𝑡,​ 𝐷, 𝐼𝑎,​ 𝑇),​       ​            (13)
+feasible but did not yet explain what properties of a
+specification contributed to successful downstream                          where 𝐾𝑐 – relevant knowledge coverage; 𝑆𝑡 – structural
+generation.                                                                 organization; 𝐷 – determinacy; 𝐼𝑎 – agent interpretability; 𝑇
+B.​ Specification Size Does Not Explain Quality                             – traceability.
+    The first cross-agent observation concerns specification                C.​ Native and Foreign Specification Behavior
+size. Kiro produced the largest specification, approximately
+1,597 lines, whereas Gemini produced a specification of                         The key experimental modification was to separate:
+approximately 193 lines. Nevertheless, the largest                               ●​ native specification — generated within the target
+specification did not lead to the strongest implementation                           agent environment;
+across evaluated metrics.                                                        ●​ foreign specification — generated within another
+                                                                                     agent environment.
+   After tuning, the reported results are shown in Table II.                    The complete set of evaluated native and cross-agent
+    The result provides direct evidence against a simplistic                specification combinations is summarized in Table III.
+relation 𝑄𝑠𝑝𝑒𝑐​∝∣𝑆∣.                                                        Configurations that were not executed are marked as not
+                                                                            evaluated.
+   A more appropriate interpretation is:
+
+                                      TABLE II. ​               TUNED SINGLE-AGENT MIGRATION PERFORMANCE
+       Agent/environment         Token F1         Exact match, %       SQL validity, %     AST exact, %         AST similarity        Runnable, %
+Amazon Kiro                        0.56                12.04                57.8              12.98                 0.40                 14.76
+Spec Kit + Copilot                 0.73                12.76               73.03              12.65                 0.55                 17.48
+Claude Code                        0.73                12.87               56.21              12.49                 0.41                  4.11
+Antigravity + Gemini               0.70                11.99               60.16              18.68                 0.67                 28.75
+Cursor                             0.69                12.10               65.98              16.11                 0.44                 7.49
+
+
+                                   TABLE III. ​            CROSS-AGENT SPECIFICATION TRANSFER PERFORMANCE
+  Implementation Agent     Specification Used       Token F1     Exact Match,   SQL Syntax          AST Exact       AST Mean          Runnable, %
+                                                                      %         Validity, %         Match, %        Similarity
+Kiro                             Kiro                0.365           0.33          33.74              0.33            0.2073               0.72
+Kiro                            Gemini               0.71           13.15          43.51              20.03            0.31                2.22
+Kiro                            Copilot               —               —             —                  —                —                   —
+Gemini                           Kiro                0.68            0.56            0                  0              0.08                0.17
+Gemini                          Gemini               0.73           13.32          45.54              12.98            0.69                2.22
+Gemini                          Copilot               —               —             —                  —                —                   —
+Copilot                          Kiro                0.69            12.4          43.4               17.39            0.55                2.38
+Copilot                         Gemini               0.665           12.8           63                19.9             0.514         Not implemented
+Copilot                         Copilot              0.75           13.15          43.51              12.76            0.257                 0
+
+                                          TABLE IV. ​            REPLICATED GEMINI–KIRO TRANSFER RESULT
+   Implementation agent    Specification origin      Token F1      Exact match, SQL validity, % AST exact,        AST similarity      Runnable, %
+                                                                        %                          %
+          Gemini                  Kiro                  0.035          0.39          2.33         0.39                   0.015               1.22
+
+
+    The results (Table III) show that the effect of                         conditions remaining relatively stable and in others
+specification transfer is asymmetric and agent-dependent.                   benefiting from a foreign specification.
+The most pronounced degradation occurred for Gemini                            This supports the directional model:
+using a Kiro-origin specification, whereas other                                                𝐶𝐾𝑖𝑟𝑜→𝐺𝑒𝑚𝑖𝑛𝑖​ ≠ 𝐶𝐺𝑒𝑚𝑖𝑛𝑖→𝐾𝑖𝑟𝑜​ (14)
+foreign-specification combinations retained or improved                     and more generally:
+individual metrics.                                                                                              𝐶𝑖→𝑗​ ≠ 𝐶𝑗→𝑖​.​ ​                  (15)
+    The present study addresses this gap through measured
+native- and foreign-specification experiments in an                         D.​ Specification Adaptation Strategies
+Oracle-to-PostgreSQL migration setting. One of the most
+important observations occurred when Gemini implemented                         Rewrite. The implementation agent was asked to rewrite
+from a Kiro specification.                                                  the foreign specification into its preferred representation
+    The first cross-agent run showed substantial degradation.               before code generation.
+Because this result was anomalous, the Gemini–Kiro                              For Gemini consuming Kiro specifications, rewriting
+configuration was repeated independently; the replicated                    substantially improved several metrics relative to the failed
+measurements are reported in Table IV. The replicated run                   direct foreign-spec condition.
+confirmed the same qualitative failure pattern, with Token                               TABLE V. ​FOREIGN-SPECIFICATION REWRITING RESULTS
+F1 of 0.035, SQL Syntax Validity of 2.33%, and AST Mean
+Similarity of 0.015.                                                        Agent Origin Token  Exact      SQL        AST      AST      Runnable,
+                                                                                           F1  match, % validity, % exact, % similarity    %
+    However, the same effect was not universal across all                   Gemini Kiro   0.68  13.15      43.62      13.10     0.22       0
+agents. Copilot behaved substantially differently, in some                  Copilot Kiro     0.60       0        14.09           0   0.034          0
+    The result is particularly informative because the                           exhibits     substantial    degradation    under      direct
+knowledge source remained Kiro's specification, while its                        foreign-specification ingestion, whereas Copilot remains
+representation was transformed before implementation.                            comparatively stable in several tested conditions. As a
+    This suggests that part of cross-agent degradation may                       result, the global Pareto frontier is dominated by Copilot
+arise from representation compatibility rather than purely                       configurations. This difference indicates that cross-agent
+from missing knowledge.                                                          specification effects are agent-dependent rather than
+    Specification Compression. A second strategy reduced                         uniform across development environments.
+specification length through summarization.                                          Because the global frontier can be dominated by the
+                                                                                 generally stronger configurations of one agent, a per-agent
+    TABLE VI. ​             FOREIGN-SPECIFICATION COMPRESSION RESULTS            comparison provides a more informative view of strategy
+ Implementation Specification Token Exact     SQL       AST AST Mean Runnable,   robustness. Fig. 5 therefore evaluates the Pareto frontier
+      Agent         Origin       F1  Match, Syntax     Exact Similarity      %
+                                       %    Validity, Match,                     separately for Gemini and Copilot when both operate on a
+                                               %         %                       Kiro-origin specification.
+Copilot         Kiro          0.72  12.71  43.90      19.48  0.24       0.22
+
+
+    The experiment did not provide evidence that simple
+length     reduction     universally solves specification
+incompatibility.
+    This is consistent with the earlier observation that length
+itself is not an adequate proxy for operational specification
+quality.
+    Retrieval-Augmented Specification Ingestion. In the
+third strategy, agents were prevented from directly reading
+the complete specification and instead received retrieval
+tools for selective specification access.
+    The RAG-based strategy did not outperform all                                    Fig. 5. Per-agent Pareto frontiers of specification-ingestion strategies
+alternative ingestion approaches across every metric.                                   for Gemini and Copilot using a Kiro-origin specification.
+However, it was the only common strategy represented on                              The per-agent analysis shows that the optimal strategy
+the per-agent Pareto frontiers for both Gemini and Copilot,                      differs between implementation agents. However, RAG is
+indicating the most consistent cross-agent trade-off among                       the only evaluated ingestion strategy represented on the
+the evaluated strategies.                                                        Pareto frontier of both agents. This does not establish RAG
+    The reported results are shown in Table VII.                                 as universally optimal, but it identifies retrieval-based
+                                                                                 specification access as the most robust common strategy
+   TABLE VII. ​            RETRIEVAL-AUGMENTED SPECIFICATION INGESTION
+                                  RESULTS                                        among the tested alternatives when cross-agent
+                                                                                 compatibility is unknown.
+Agent      Spec    Token Exact     SQL        AST      AST      Runnable,
+          origin    F1 match, % validity, % exact, % similarity    %             E.​ Proposed Specification Portability Model
+Gemini    Kiro     0.57    13.40     13.82      20.20     0.32         1.80
+Copilot   Kiro     0.69    12.76     43.51      12.99     0.285        0.28
+                                                                                     Based on the empirical results, we propose that SDD
+                                                                                 systems distinguish at least four properties of a
+    RAG therefore did not simply dominate every other                            specification:
+strategy on every metric. Its significance is different. To                                            𝑆 = ⟨𝐾, 𝑅, 𝐷, 𝐺⟩,​      ​       (16)
+compare the observed strategies across agents, SQL Syntax                        where 𝐾 – knowledge contained by the specification; 𝑅 –
+Validity and AST Mean Similarity were considered jointly.                        representation and organization; 𝐷 – dependency structure;
+These metrics represent complementary properties of the                          𝐺 – granularity.
+generated migration output: syntactic validity and structural                        The     effective   specification received by an
+similarity to the expected PostgreSQL implementation. Fig.                       implementation agent is then:
+4 summarizes their behavior across increasing levels of                                                  𝑆′ = 𝑇(𝑆, 𝐼𝑠,​ 𝐴𝑖​),​   ​     (17)
+specification foreignness and shows the corresponding                            where 𝑇 represents the ingestion/adaptation mechanism.
+global Pareto frontier.                                                            For direct ingestion: 𝑇𝑑𝑖𝑟𝑒𝑐𝑡​(𝑆) = 𝑆.
+                                                                                    For rewriting: 𝑇𝑟𝑒𝑤𝑟𝑖𝑡𝑒​(𝑆, 𝐴𝑖​) = 𝑆𝐴𝑖​.
+
+                                                                                    For compression: 𝑇𝑐𝑜𝑚𝑝𝑟𝑒𝑠𝑠​(𝑆) = 𝑆.
+                                                                                    For RAG: 𝑇𝑅𝐴𝐺​(𝑆, 𝑞) = {𝑏𝑘​∈𝑆∣𝑟𝑒𝑙𝑒𝑣𝑎𝑛𝑐𝑒(𝑏𝑘,​ 𝑞) > θ}.
+                                                                                    Thus implementation becomes:
+                                                                                               𝐶𝑜𝑑𝑒𝑇​ = 𝐺(𝐴𝑖,​ 𝑇(𝑆, 𝐼𝑠,​ 𝐴𝑖​), 𝐶).
+                                                                                     This model distinguishes an important point:
+                                                                                 “Specification information content and operational
+                                                                                 effectiveness are not identical”.
+     Fig. 4. Effect of specification foreignness and ingestion strategy on           Two specifications may express approximately the same
+    SQL syntax validity, AST similarity, and the global Pareto frontier.         functional intention but trigger substantially different
+   The figure highlights different responses of Gemini and                       downstream behavior in heterogeneous agents.
+Copilot to increasing specification foreignness. Gemini
+F.​ Specification Portability as Knowledge Transition             require specification adaptation or an alternative ingestion
+    The results can be connected to a broader SDD principle.      strategy.
+    A           conventional          view         assumes:           The results also suggest that multi-agent SDD systems
+“Knowledge→Specification→Code”.                                   should distinguish between the semantic content of a
+    However, multi-agent SDD actually involves:                   specification and the way this content is presented to a
+                        𝐾→𝑆𝐴 ​→   𝐴2​→𝐼𝐴 ​.                       particular agent. Instead of maintaining several completely
+                                ​   1       2                     independent specifications, a common specification could
+   At every transition, some portion of operational               be preserved while different agents receive adapted or
+knowledge may become:                                             selectively retrieved views of it.
+    ●​ preserved;                                                     Among the evaluated strategies, retrieval-based access
+    ●​ reformulated;                                              appears to be the most robust common option when
+    ●​ omitted;                                                   compatibility between agents is unknown, although the
+    ●​ duplicated;                                                current experiments are not sufficient to claim that RAG is
+    ●​ ambiguously interpreted;                                   universally optimal.
+    ●​ given different priority.
+   We therefore distinguish:                                      X.​       CONNECTION WITH A FORMAL SPECIFICATION MODEL
+   Knowledge preservation: 𝐾(𝑆𝐴 ​)≈𝐾(𝑆𝐴 ​).                           The cross-agent results also support the use of a
+                                        𝑖           𝑗
+                                                                  structured rather than purely linear specification
+   Operational interpretation preservation:                       representation. A specification can be considered as a set of
+                    𝐺(𝐴𝑗,​ 𝑆𝐴 ​)≈𝐺(𝐴𝑗,​ 𝑆𝐴 ​)​ .                  semantic     blocks     containing    requirements,     rules,
+                                𝑖               𝑗
+
+    These distinctions explain why preserving specification       dependencies, decisions, and unresolved questions. An
+content does not necessarily preserve implementation              implementation agent does not necessarily need the
+behavior across heterogeneous agents. The experimental            complete specification for every task; it may instead receive
+results indicate that the same specification may be               only the blocks relevant to the current implementation
+interpreted differently depending on the implementation           object and their dependencies.
+agent and ingestion strategy. Therefore, specification                This interpretation provides a natural extension of the
+portability should be evaluated not only in terms of              current RAG experiment. Instead of retrieving fragments
+information preservation, but also through the quality of the     only through textual or semantic similarity, future
+resulting implementation. This perspective provides the           implementations could retrieve specification blocks
+basis for interpreting the cross-agent results discussed in the   according to explicit dependency relations. Such an
+following section.                                                approach could reduce unnecessary context while
+                                                                  preserving the information required for implementation.
+                   VIII.​       DISCUSSION                            Thus, the formal specification model and the cross-agent
+    The experiments show that specification quality cannot        experiments lead to a common architectural direction:
+be explained by specification size alone. Kiro produced the       maintain a structured specification as the stable source of
+largest specification, while Gemini generated a much shorter      knowledge and provide agent-specific views of this
+one, yet the larger specification did not consistently produce    specification during implementation. This could reduce
+better code. More importantly, cross-agent transfer produced      dependence on the writing style or context organization of a
+strongly agent-dependent results. Gemini showed                   particular LLM agent.
+substantial degradation when directly using a Kiro-origin                           XI.​       CONCLUSION
+specification, and this behavior was reproduced in a second
+run.                                                                  This study investigated whether specifications used in
+    The adaptation experiments indicate that representation       LLM-based specification-driven development can be
+also matters. Rewriting the foreign specification                 reliably transferred between heterogeneous development
+substantially improved Gemini’s results, while the same           agents. The initial Oracle-to-PostgreSQL migration
+                                                                  experiment confirmed the practical feasibility of a
+strategy was less effective for Copilot. Compression did not
+                                                                  specification-first approach: 623 of 1,006 PL/SQL files
+provide a universal improvement. RAG also did not                 were successfully regenerated, and 380 of the regenerated
+dominate all metrics, but it was the only common strategy         scripts executed successfully in PostgreSQL 16.
+appearing on the per-agent Pareto frontiers for both Gemini
+and Copilot.                                                          The cross-agent experiments showed that specification
+    Therefore, the results do not support a general claim that    effectiveness is agent-dependent. Specification size alone
+foreign specifications are inherently worse. Rather, they         did not explain implementation quality, and transferring a
+suggest that specification effectiveness depends on the           specification between agents could substantially change the
+interaction between its representation, its origin, and the       result. The strongest observed case was the degradation of
+implementation agent.                                             Gemini when directly consuming a Kiro-origin
+                                                                  specification, which was reproduced in a repeated run.
+   IX.​        IMPLICATIONS FOR MULTI-AGENT SOFTWARE                  The evaluated adaptation strategies produced different
+                         ENGINEERING                              effects across agents. Rewriting substantially improved
+    The findings have direct implications for multi-agent         Gemini’s results in the tested configuration, while
+development workflows. A specification successfully used          compression did not provide a universal benefit. RAG did
+by one agent should not automatically be treated as equally       not outperform all alternatives on every metric, but it was
+suitable for another agent. Agent substitution may therefore      the only common ingestion strategy represented on the
+                                                                  per-agent Pareto frontiers for both Gemini and Copilot.
+    Overall, the results suggest that specifications in                        [17]​ X. Du, M. Liu, K. Wang, H. Wang, J. Liu, Y. Chen, J. Feng, C. Sha,
+heterogeneous SDD workflows should not automatically be                              X. Peng, and Y. Lou, “Evaluating large language models in class-level
+                                                                                     code generation,” in Proc. IEEE/ACM 46th Int. Conf. Software
+treated as agent-neutral artifacts. Their effectiveness                              Engineering (ICSE), Lisbon, Portugal, 2024, pp. 982–994, doi:
+depends not only on the information they contain, but also                           10.1145/3597503.3639219.
+on how that information is structured, transferred, and                        [18]​ J. Li et al., “DevEval: A manually-annotated code generation
+interpreted by the implementation agent. This motivates                              benchmark aligned with real-world code repositories,” in Findings of
+further research on specification portability, structured                            the Association for Computational Linguistics: ACL 2024, Bangkok,
+specification representations, agent-specific adaptation, and                        Thailand, 2024, pp. 3603–3614, doi:
+                                                                                     10.18653/v1/2024.findings-acl.214.
+dependency-aware retrieval for multi-agent software
+engineering.                                                                   [19]​ Y. Ding et al., “CrossCodeEval: A diverse and multilingual
+                                                                                     benchmark for cross-file code completion,” in Advances in Neural
+                                                                                     Information Processing Systems, vol. 36, 2023, doi:
+                               REFERENCES                                            10.52202/075280-2023.
+[1]​ R. Sapkota, K. I. Roumeliotis, and M. Karkee, “AI agents vs. agentic
+                                                                               [20]​ F. Zhang, B. Chen, Y. Zhang, J. Keung, J. Liu, D. Zan, Y. Mao, J.-G.
+     AI: A conceptual taxonomy, applications and challenges,” arXiv
+                                                                                     Lou, and W. Chen, “RepoCoder: Repository-level code completion
+     preprint arXiv:2505.10468, 2025.
+                                                                                     through iterative retrieval and generation,” in Proc. 2023 Conf.
+[2]​ J. S. Ostroff, D. Makalsky, and R. F. Paige, “Agile                             Empirical Methods in Natural Language Processing (EMNLP),
+     specification-driven development,” in Proc. 5th Int. Conf. Extreme              Singapore, 2023, pp. 2471–2484, doi:
+     Programming and Agile Processes in Software Engineering (XP),                   10.18653/v1/2023.emnlp-main.151.
+     Lecture Notes in Computer Science, vol. 3092. Berlin, Germany:
+                                                                               [21]​ D. Wu, W. U. Ahmad, D. Zhang, M. K. Ramanathan, and X. Ma,
+     Springer, 2004, pp. 104–112.
+                                                                                     “Repoformer: Selective retrieval for repository-level code
+[3]​ D. B. Piskala, “Spec-driven development: From code to contract in               completion,” in Proc. 41st Int. Conf. Machine Learning (ICML), vol.
+     the age of AI coding assistants,” arXiv preprint arXiv:2602.00180,              235, 2024, pp. 53270–53290.
+     2026.
+                                                                               [22]​ C. Qian et al., “ChatDev: Communicative agents for software
+[4]​ W. Zhou, Y. Gao, X. Zhou, and G. Li, “CrackSQL: A hybrid SQL                    development,” in Proc. 62nd Annu. Meeting Association for
+     dialect translation system powered by large language models,” arXiv             Computational Linguistics (ACL), Volume 1: Long Papers, Bangkok,
+     preprint arXiv:2504.00882, 2025.                                                Thailand, 2024, pp. 15174–15186, doi:
+                                                                                     10.18653/v1/2024.acl-long.810.
+[5]​ O. Grynets, V. Lyashkevych, A. Dolichnyi, R. Piznak, T. Zelenyy, and
+     V. Morozov, “Specification-based Code–Text–Code reengineering for         [23]​ S. Hong et al., “MetaGPT: Meta programming for a multi-agent
+     LLM-mediated software evolution,” arXiv preprint                                collaborative framework,” in Proc. 12th Int. Conf. Learning
+     arXiv:2605.25232, 2026, doi: 10.48550/arXiv.2605.25232.                         Representations (ICLR), 2024.
+[6]​ O. Grynets and V. Lyashkevych, “Unified architecture metamodel of         [24]​ S. Fakhoury, A. Naik, G. Sakkas, S. Chakraborty, M. Musuvathi, and
+     information systems developed by generative AI,” arXiv preprint                 S. K. Lahiri, “Exploring the effectiveness of LLM based test-driven
+     arXiv:2604.00171, 2026.                                                         interactive code generation: User study and empirical evaluation,” in
+                                                                                     Proc. IEEE/ACM 46th Int. Conf. Software Engineering: Companion
+[7]​ O. Grynets, A. Salyk, V. Lyashkevych, O. Kaskun, and D.                         Proceedings (ICSE-Companion), 2024, pp. 390–391, doi:
+     Zhuravchak, “Specification-driven development benchmark: Security               10.1145/3639478.3643525.
+     knowledge transition,” arXiv preprint arXiv:2606.00167, 2026.
+                                                                               [25]​ J. Strich, F. Schneider, I. Nikishina, and C. Biemann, “On improving
+[8]​ O. Grynets, D. Babarytskyi, and V. Lyashkevych, “Token                          repository-level code QA for large language models,” in Proc. 62nd
+     optimization strategies for LLM-based Oracle-to-PostgreSQL                      Annu. Meeting Association for Computational Linguistics, Student
+     migration,” arXiv preprint arXiv:2605.28557, 2026, doi:                         Research Workshop, Bangkok, Thailand, 2024, pp. 209–244, doi:
+     10.48550/arXiv.2605.28557.                                                      10.18653/v1/2024.acl-srw.28.
+[9]​ V. Kutsan and V. Lyashkevych, “Semantic Kernel usage for                  [26]​ A. Dutta, M. Singh, G. Verbruggen, S. Gulwani, and V. Le, “RAR:
+     orchestration of multi-agent LLM-based systems to solve the tasks               Retrieval-augmented retrieval for code generation in low resource
+     which require dynamic involvement of new agents,” in Proc. 6th Int.             languages,” in Proc. 2024 Conf. Empirical Methods in Natural
+     Sci. Pract. Conf. Science and Information Technologies in the Modern            Language Processing (EMNLP), Miami, FL, USA, 2024, pp.
+     World, Athens, Greece, 2026, pp. 514–519, doi:                                  21506–21515, doi: 10.18653/v1/2024.emnlp-main.1199.
+     10.70286/ISU-15.04.2026.021.
+                                                                               [27]​ F. Mu, L. Shi, S. Wang, Z. Yu, B. Zhang, C. Wang, S. Liu, and Q.
+[10]​ V. Y. Lyashkevych, “Evolution-aware specification-driven synthesis             Wang, “ClarifyGPT: A framework for enhancing LLM-based code
+      of intelligent monitoring systems by large language models,”                   generation via requirements clarification,” Proc. ACM Softw. Eng.,
+      Informatics and Mathematical Methods in Simulation, vol. 16, no. 3,            vol. 1, no. FSE, Art. no. 103, pp. 2332–2354, 2024, doi:
+      pp. 424–432, 2026, doi: 10.15276/imms.v16.no3.424.                             10.1145/3660810.
+[11]​ M. Y. Lyashkevych, V. Y. Lyashkevych, and R. Y. Shuvar, “Security
+      and other risks related to LLM-based software development,”
+      Ukrainian Journal of Information Technology, vol. 7, no. 1, pp.
+      86–96, 2025, doi: 10.23939/ujit2025.01.086.
+[12]​ Y. Tao, Y. Qin, and Y. Liu, “Retrieval-augmented code generation: A
+      survey with focus on repository-level approaches,” arXiv preprint
+      arXiv:2510.04905, 2025.
+[13]​ X. Hou et al., “Large language models for software engineering: A
+      systematic literature review,” ACM Trans. Softw. Eng. Methodol.,
+      vol. 33, no. 8, Art. no. 220, pp. 1–79, 2024, doi: 10.1145/3695988.
+[14]​ S. Ouyang, J. M. Zhang, M. Harman, and M. Wang, “An empirical
+      study of the non-determinism of ChatGPT in code generation,” ACM
+      Trans. Softw. Eng. Methodol., 2024, doi: 10.1145/3697010.
+[15]​ C. E. Jimenez, J. Yang, A. Wettig, S. Yao, K. Pei, O. Press, and K. R.
+      Narasimhan, “SWE-bench: Can language models resolve real-world
+      GitHub issues?” in Proc. 12th Int. Conf. Learning Representations
+      (ICLR), 2024.
+[16]​ J. Liu, C. S. Xia, Y. Wang, and L. Zhang, “Is your code generated by
+      ChatGPT really correct? Rigorous evaluation of large language
+      models for code generation,” in Advances in Neural Information
+      Processing Systems, vol. 36, 2023.
+

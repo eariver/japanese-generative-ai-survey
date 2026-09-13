@@ -1,0 +1,127 @@
+{
+  "schema_version": "0.1",
+  "issue_id": "2026-W34",
+  "task": "SOL_SCREENING_MATERIALIZATION_AND_ADVANCE",
+  "status": "NEEDS_SOL_REVIEW",
+  "branch": "weekly/2026-W34-v2-work",
+  "exact_starting_sha": "3371ba18fb8058a50585cefd0b87ed59e44b10bb",
+  "local_checkout_sha": "3371ba18fb8058a50585cefd0b87ed59e44b10bb",
+  "remote_start_head_verified": true,
+  "production_state": {
+    "path": "sources/2026-W34/production-state.json",
+    "before_sha256": "2eaa0dbb1a6bdee745b2fb836a9fc6ad70c46bded86b51faf313cf5e3e512768",
+    "after_sha256": "2eaa0dbb1a6bdee745b2fb836a9fc6ad70c46bded86b51faf313cf5e3e512768",
+    "before_lifecycle_state": "DISCOVERY_COLLECTED",
+    "before_next_action": "stage:screening",
+    "after_lifecycle_state": "DISCOVERY_COLLECTED",
+    "after_next_action": "stage:screening",
+    "byte_identical": true
+  },
+  "immutable_inputs": {
+    "sol_authority_path": "sources/2026-W34/screening/decisions/sol-screening-decision-authority-20260904-r1.json",
+    "sol_authority_sha256": "cce45a687301d34e2fb7fb4f4d746c8cfc9309d102a468ad47a929c9ec5eaeb5",
+    "package_path": "sources/2026-W34/screening/v2/prepared/w34-event-screening-r1/package.json",
+    "package_sha256": "547305a3991a5a1e7f633ef2b0188bb4e44c916fc19a1b307778c7e01434e84a",
+    "event_discovery_path": "sources/2026-W34/screening/input/event-discovery-v2.jsonl",
+    "event_discovery_sha256": "b63d053f4ea83f3f8150aeb1e3bd196a5d55903d27176fe7a350cf16ebbd5c9e",
+    "accepted_discovery_path": "sources/2026-W34/discovery/discovery-v2.jsonl",
+    "accepted_discovery_sha256": "8a176af94ccd245a7651a7a292d001cff9cef355b1320f4a73278ee9f2e5216c",
+    "accepted_discovery_acceptance_path": "sources/2026-W34/discovery/discovery-accepted-v2.json",
+    "accepted_discovery_acceptance_sha256": "a4ea877be54ef04e739ba3de96b732e6bd02ba3345ab8bc58f6d9ff77cbfb8b5",
+    "event_crosswalk_path": "sources/2026-W34/screening/input/event-discovery-crosswalk-v0.1.json",
+    "event_crosswalk_sha256": "34491ec5f4620f25cdaff4ebe61f7cc92b02fe7f7cfebfdcb548a6347672e4ff"
+  },
+  "materialization": {
+    "record_count": 105,
+    "unique_discovery_id_count": 105,
+    "event_accounting": {
+      "range": "W34-C001-W34-C105",
+      "accounted": 105,
+      "missing": 0,
+      "duplicate": 0,
+      "extra": 0
+    },
+    "decision_counts": {
+      "KEEP": 45,
+      "MAYBE": 19,
+      "INSPECT": 16,
+      "DROP": 25,
+      "TOTAL": 105
+    },
+    "batches": [
+      {
+        "batch_id": "batch-001",
+        "record_count": 43,
+        "input_sha256": "6ff2bf503d59d866d0840b1d90fcb1f151f6e638ebd7f8faa142dea2f0ff3228",
+        "result_path": "sources/2026-W34/screening/v2/prepared/w34-event-screening-r1/results/batch-001.json",
+        "result_sha256": "0691a8216421922d1d0779f3fe01bcc00a82fffabe87bd3719cd808b916a2c58"
+      },
+      {
+        "batch_id": "batch-002",
+        "record_count": 44,
+        "input_sha256": "d406a8f9aeff7e7e26b1f52ea40d422492ee078c9a50057fd6536cfb5963f11e",
+        "result_path": "sources/2026-W34/screening/v2/prepared/w34-event-screening-r1/results/batch-002.json",
+        "result_sha256": "122c71f7171bc616ecbf7246e4451d4eedf2a6f945a8d393dc50177658991799"
+      },
+      {
+        "batch_id": "batch-003",
+        "record_count": 18,
+        "input_sha256": "5041f5904f76caaa25e2bf6c006ca3b42fa9a4eae8d253fd8ddfc008d7a12204",
+        "result_path": "sources/2026-W34/screening/v2/prepared/w34-event-screening-r1/results/batch-003.json",
+        "result_sha256": "402123cc9b8b9f205bf9223f82ef27bea9fdadcfe05ed6dea76fba6bd9a3478d"
+      }
+    ],
+    "validate_results": "PASS",
+    "decision_authority_unchanged": true,
+    "event_discovery_unchanged": true,
+    "crosswalk_unchanged": true,
+    "accepted_discovery_unchanged": true,
+    "raw_bindings_validated": true,
+    "parent_discovery_ids_validated": true
+  },
+  "formal_screening_acceptance": {
+    "status": "PASS",
+    "mechanism": "scripts/survey_agent_tool_v2.py -> scripts/survey_screening_v2.py accept",
+    "acceptance_path": "sources/2026-W34/screening/v2/accepted/2ab82c6b52b26fc01cc6a82d20da08ef4b37dadaf2ff1b0e5a570f50652b3662/screening-accepted.json",
+    "result_set_sha256": "2ab82c6b52b26fc01cc6a82d20da08ef4b37dadaf2ff1b0e5a570f50652b3662",
+    "package_sha256": "547305a3991a5a1e7f633ef2b0188bb4e44c916fc19a1b307778c7e01434e84a",
+    "record_count": 105,
+    "batch_count": 3,
+    "agent_state_validation": "PASS",
+    "acceptance_validation": "PASS",
+    "implementation_sha": "3371ba18fb8058a50585cefd0b87ed59e44b10bb"
+  },
+  "formal_advance": {
+    "attempted": false,
+    "operator_request_created": false,
+    "stage_checkpoint_created": false,
+    "current_core_stage_validation": "FAIL",
+    "command": "scripts/survey_stage_validation_v2.py --state sources/2026-W34/production-state.json --artifact screening-acceptance=<accepted screening-accepted.json> --output sources/2026-W34/execution/luna/w34-screening-materialization-r1/core-stage-contract-v0.1.json",
+    "exact_exception": "Screening acceptance is not based on accepted Discovery authority",
+    "mismatch": {
+      "accepted_discovery_authority_path": "sources/2026-W34/discovery/discovery-v2.jsonl",
+      "screening_package_basis_discovery_path": "sources/2026-W34/screening/input/event-discovery-v2.jsonl",
+      "accepted_discovery_record_count": 40,
+      "event_level_screening_input_record_count": 105
+    },
+    "disposition": "NEEDS_SOL_REVIEW"
+  },
+  "forbidden_work_not_performed": [
+    "Production State manual edit",
+    "Discovery rollback or reacceptance",
+    "prepared package rebuild",
+    "Screening result reinterpretation",
+    "Evidence verification or acceptance",
+    "Materiality",
+    "Completeness",
+    "Candidate Selection",
+    "Architecture",
+    "Human Gate decision",
+    "reader-facing draft",
+    "Freeze",
+    "Release",
+    "shared Core modification",
+    "W33 modification",
+    "force/reset/rewrite/rebase"
+  ]
+}

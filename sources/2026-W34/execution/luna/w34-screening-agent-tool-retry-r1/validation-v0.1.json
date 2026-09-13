@@ -1,0 +1,151 @@
+{
+  "schema_version": "0.1",
+  "status": "NEEDS_SOL_REVIEW",
+  "status_reason": "The canonical agent-first wrapper passed State validation but the existing committed event-level Discovery input could not be decoded as UTF-8 JSONL before package generation.",
+  "issue_id": "2026-W34",
+  "branch": "weekly/2026-W34-v2-work",
+  "exact_starting_sha": "7375afc11dc7a8cf3d9e1ba6f6a135252a42bbf2",
+  "current_checkout_head": "7375afc11dc7a8cf3d9e1ba6f6a135252a42bbf2",
+  "recorded_at": "2026-09-03T15:42:09Z",
+  "agent_state_validation": {
+    "function": "survey_agent_control_v2.validate_agent_state",
+    "status": "PASS",
+    "production_state_path": "sources/2026-W34/production-state.json",
+    "production_state_sha256": "2eaa0dbb1a6bdee745b2fb836a9fc6ad70c46bded86b51faf313cf5e3e512768",
+    "lifecycle_state": "DISCOVERY_COLLECTED",
+    "next_action": "stage:screening",
+    "machine_checkpoints": {
+      "discovery": "passed",
+      "screening": "pending"
+    }
+  },
+  "canonical_wrapper_execution": {
+    "wrapper": "scripts/survey_agent_tool_v2.py",
+    "helper": "scripts/survey_screening_v2.py",
+    "helper_invocation_mode": "wrapper_runpy_agent_first_override",
+    "implementation_sha_passed": "7375afc11dc7a8cf3d9e1ba6f6a135252a42bbf2",
+    "implementation_sha_is_current_checkout_head": true,
+    "direct_helper_invocation_executed_in_this_retry": false,
+    "state_validation_before_helper": "PASS",
+    "prepare_command": "prepare --state sources/2026-W34/production-state.json --discovery sources/2026-W34/screening/input/event-discovery-v2.jsonl --output-dir sources/2026-W34/screening/v2/prepared/w34-event-screening-r1 --max-records 50 --max-json-chars 120000 --implementation-sha 7375afc11dc7a8cf3d9e1ba6f6a135252a42bbf2",
+    "status": "FAIL",
+    "exit_code": 2,
+    "failure_phase": "inside helper process while read_jsonl decoded the existing Discovery input; before package directory/batch generation",
+    "exact_exception": "'utf-8' codec can't decode byte 0xaa in position 1: invalid start byte",
+    "output_directory_created": false,
+    "package_created": false
+  },
+  "event_level_input": {
+    "path": "sources/2026-W34/screening/input/event-discovery-v2.jsonl",
+    "scope_was_not_rebuilt_or_modified": true,
+    "historical_validation_record": {
+      "path": "sources/2026-W34/execution/luna/w34-screening-granularity-expansion-r1/validation-v0.1.json",
+      "sha256": "9fdf49f8057da23082d96cc1485c6e3d1fa0f3c2271786885e45db1bfbbfb68f",
+      "recorded_record_count": 105,
+      "recorded_unique_discovery_id_count": 105,
+      "recorded_sha256": "5dbdcbfd70dc1e4605560dc06fc89e940141116b0bf9bf8eefaef6f8bf9f2332",
+      "unchanged_from_exact_starting_tree": true
+    },
+    "current_committed_bytes": {
+      "byte_count": 210060,
+      "sha256": "a15ddbde1bc3b35ab158d68a50313294091aa33f2d942d2e24d3d578f5344321",
+      "utf8_jsonl_parse": "FAIL",
+      "decode_exception": "'utf-8' codec can't decode byte 0xaa in position 1: invalid start byte"
+    },
+    "retry_package_record_count": null,
+    "retry_package_unique_id_count": null,
+    "retry_package_count_status": "NOT_AVAILABLE_BECAUSE_INPUT_DECODE_FAILED"
+  },
+  "crosswalk_validation": {
+    "path": "sources/2026-W34/screening/input/event-discovery-crosswalk-v0.1.json",
+    "sha256": "34491ec5f4620f25cdaff4ebe61f7cc92b02fe7f7cfebfdcb548a6347672e4ff",
+    "record_count": 105,
+    "unique_event_id_count": 105,
+    "expected_event_range": "W34-C001 through W34-C105",
+    "accounted": "105/105",
+    "missing_event_ids": [],
+    "duplicate_event_ids": [],
+    "silently_dropped_event_ids": [],
+    "event_discovery_id_count_recorded": 105,
+    "event_discovery_ids_recorded_unique": 105,
+    "accepted_parent_record_count": 40,
+    "all_parent_ids_exist": true,
+    "invalid_parent_ids": [],
+    "raw_path_validation": {
+      "event_count_with_raw_paths": 105,
+      "unique_raw_path_count": 36,
+      "all_raw_paths_exist": true,
+      "missing_raw_paths": []
+    }
+  },
+  "source_traceability": {
+    "dailyx": {
+      "source_file_count": 7,
+      "topic_rows_accounted": 76,
+      "topic_rows_expected": 76,
+      "technical_evidence_accepted": false,
+      "authority_class": "DISCOVERY_AND_COMMUNITY_SIGNAL_ONLY"
+    },
+    "grok_r2": {
+      "unique_url_count": 47,
+      "url_rows_accounted": 47,
+      "url_rows_expected": 47,
+      "classification_counts": {
+        "ORDINARY_WINDOW": 10,
+        "BACKGROUND_ONLY": 20,
+        "LATE_BREAKING": 17
+      },
+      "technical_evidence_accepted": false,
+      "authority_class": "X_RAW_OBSERVATION_ONLY"
+    },
+    "carry_over": {
+      "accepted_parent": "w34-carryover-minimax-unresolved",
+      "status": "RECHECKED_UNRESOLVED",
+      "promotion_to_current": false,
+      "represented": true
+    }
+  },
+  "accepted_discovery_immutability": {
+    "acceptance_path": "sources/2026-W34/discovery/discovery-accepted-v2.json",
+    "acceptance_record_count": 40,
+    "acceptance_sha256": "a4ea877be54ef04e739ba3de96b732e6bd02ba3345ab8bc58f6d9ff77cbfb8b5",
+    "accepted_discovery_path": "sources/2026-W34/discovery/discovery-v2.jsonl",
+    "accepted_discovery_record_count": 40,
+    "accepted_discovery_sha256": "8a176af94ccd245a7651a7a292d001cff9cef355b1320f4a73278ee9f2e5216c",
+    "accepted_graph_sha256": "4f639cffa8f2815fa874bf260fad6b34e050a614b1b825dbf063a3b5b0b6d6ba",
+    "checkpoint_path": "sources/2026-W34/orchestration/v2/checkpoints/ISSUE_INITIALIZED.json",
+    "checkpoint_sha256": "01e036c627f05130eecfe7dd1349afe5ed6461eec2f698bc62035acce8a12e32",
+    "unchanged_from_exact_starting_tree": true
+  },
+  "prior_direct_failure_diagnostic": {
+    "path": "sources/2026-W34/execution/luna/w34-screening-granularity-expansion-r1/validation-v0.1.json",
+    "sha256_before": "9fdf49f8057da23082d96cc1485c6e3d1fa0f3c2271786885e45db1bfbbfb68f",
+    "modified_in_retry": false
+  },
+  "production_state": {
+    "path": "sources/2026-W34/production-state.json",
+    "sha256_before": "2eaa0dbb1a6bdee745b2fb836a9fc6ad70c46bded86b51faf313cf5e3e512768",
+    "sha256_after": "2eaa0dbb1a6bdee745b2fb836a9fc6ad70c46bded86b51faf313cf5e3e512768",
+    "byte_identical_before_after": true,
+    "lifecycle_state_before": "DISCOVERY_COLLECTED",
+    "lifecycle_state_after": "DISCOVERY_COLLECTED",
+    "next_action_before": "stage:screening",
+    "next_action_after": "stage:screening"
+  },
+  "scope_guard": {
+    "screening_decisions_created": false,
+    "screening_results_created": false,
+    "screening_acceptance_created": false,
+    "candidates_normalized_advanced": false,
+    "evidence_materiality_completeness_selection_architecture_performed": false,
+    "production_state_modified": false,
+    "accepted_discovery_modified": false,
+    "discovery_checkpoint_modified": false,
+    "shared_core_modified": false,
+    "w33_modified": false,
+    "force_reset_rewrite_rebase_used": false,
+    "new_branch_created": false
+  },
+  "next_authority_action": "Sol review of the committed event-level input integrity anomaly is required before another package attempt; do not repair or rebuild the immutable input in this retry.",
+  "final_status": "NEEDS_SOL_REVIEW"
+}

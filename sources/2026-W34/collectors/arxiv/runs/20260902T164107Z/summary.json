@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "2026-W34",
+  "collector": "arxiv-api",
+  "observed_at": "2026-09-02T16:41:07Z",
+  "collection_window_start": "2026-08-14T22:00:00Z",
+  "collection_window_end": "2026-08-21T22:00:00Z",
+  "configured_query_count": 6,
+  "queries": [
+    {
+      "id": "cs-ai",
+      "search_query": "cat:cs.AI",
+      "endpoint": "https://export.arxiv.org/api/query",
+      "status": "NOT_ATTEMPTED_BLOCKED_BEFORE_HTTP",
+      "attempt_count": 0,
+      "raw_path": null
+    },
+    {
+      "id": "cs-cl",
+      "search_query": "cat:cs.CL",
+      "endpoint": "https://export.arxiv.org/api/query",
+      "status": "NOT_ATTEMPTED_BLOCKED_BEFORE_HTTP",
+      "attempt_count": 0,
+      "raw_path": null
+    },
+    {
+      "id": "cs-lg",
+      "search_query": "cat:cs.LG",
+      "endpoint": "https://export.arxiv.org/api/query",
+      "status": "NOT_ATTEMPTED_BLOCKED_BEFORE_HTTP",
+      "attempt_count": 0,
+      "raw_path": null
+    },
+    {
+      "id": "cs-cv",
+      "search_query": "cat:cs.CV",
+      "endpoint": "https://export.arxiv.org/api/query",
+      "status": "NOT_ATTEMPTED_BLOCKED_BEFORE_HTTP",
+      "attempt_count": 0,
+      "raw_path": null
+    },
+    {
+      "id": "cs-dc",
+      "search_query": "cat:cs.DC",
+      "endpoint": "https://export.arxiv.org/api/query",
+      "status": "NOT_ATTEMPTED_BLOCKED_BEFORE_HTTP",
+      "attempt_count": 0,
+      "raw_path": null
+    },
+    {
+      "id": "cs-cr",
+      "search_query": "cat:cs.CR",
+      "endpoint": "https://export.arxiv.org/api/query",
+      "status": "NOT_ATTEMPTED_BLOCKED_BEFORE_HTTP",
+      "attempt_count": 0,
+      "raw_path": null
+    }
+  ],
+  "entries": [],
+  "unique_entry_count": 0,
+  "errors": [],
+  "retry": {
+    "result": "RETRY_REQUIRED",
+    "raw_count": 0,
+    "blocked_phase": "before_http_request",
+    "execution_surface": "container exec_command network boundary",
+    "exact_failure_evidence": [
+      "ProcessFailed { message: \"network approval was cancelled before a decision was returned\" }"
+    ],
+    "canonical_collector_invocation": "The configured endpoint was probed from the current execution surface; the network gate prevented the canonical HTTP request from starting. No manual arXiv locator was promoted to Raw.",
+    "secondary_probe": {
+      "surface": "web.open (non-canonical and not used as Raw)",
+      "result": "URL https://export.arxiv.org/api/query?... is not safe to open (non-retryable error)"
+    }
+  }
+}
