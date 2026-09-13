@@ -196,6 +196,15 @@ class RevalidationRevisionTests(unittest.TestCase):
         pointer["sha256"] = "0" * 64
         state["publication_revalidation_provenance"] = pointer
         state_path.write_text(_json.dumps(state), encoding="utf-8")
+        corrupt_state_bytes = state_path.read_bytes()
+        review_record_path = fix.src / "gates" / "reviews" / "publication-r1.json"
+        review_index_path = fix.src / "gates" / "review-index.json"
+        self.assertFalse(review_record_path.exists())
+        self.assertFalse(review_index_path.exists())
+        validation_checkpoint = fix.src / "orchestration" / "v2" / "checkpoints" / "DRAFT_COMPLETE.json"
+        candidate_checkpoint = fix.src / "orchestration" / "v2" / "checkpoints" / "VALIDATED_DRAFT.json"
+        self.assertTrue(validation_checkpoint.is_file())
+        self.assertTrue(candidate_checkpoint.is_file())
         commit = self._snapshot_review_commit(fix)
         with self.assertRaises((human_gate.HumanGateError, agent.AgentControlError)):
             human_gate.request_publication_preview_revision(
@@ -204,11 +213,15 @@ class RevalidationRevisionTests(unittest.TestCase):
                 T0 + timedelta(hours=4), "review:publication:corrupt",
                 expected_revision=1, reviewed_commit_sha=commit,
             )
-        self.assertEqual(state_path.read_bytes(), state_path.read_bytes())  # no crash
+        self.assertEqual(state_path.read_bytes(), corrupt_state_bytes)
         # No review record must have been created.
-        self.assertFalse((fix.src / "gates" / "reviews" / "publication-r1.json").exists())
-        # Restore for cleanup consistency (temp dir will be removed anyway).
-        state_path.write_bytes(before_bytes)
+        self.assertFalse(review_record_path.exists())
+        # No review index must have been created as a side effect.
+        self.assertFalse(review_index_path.exists())
+        # No other canonical Human Gate output may have been written.
+        self.assertFalse((fix.src / "gates" / "reviews" / "approvals" / "publication-r1.json").exists())
+        self.assertTrue(validation_checkpoint.is_file())
+        self.assertTrue(candidate_checkpoint.is_file())
 
     def test_r5_historical_record_retained_byte_identical(self) -> None:
         _, fix = self.make_fixture()
