@@ -167,6 +167,64 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
         references_bib = survey_root / "references.bib"
         return profile_path, arch_path, approval_path, main_tex, references_bib
 
+    def _build_valid_manifest(self) -> tuple[Path, Path, Path, Path]:
+        profile, arch, app, main_tex, bib = self._setup_edition(
+            "2026-W35", "WEEKLY", "WEEKLY_MAGAZINE", ["Explain agent workflows"]
+        )
+        main_tex.write_text(
+            "\\section{Agent Workflows}\n"
+            "This section surveys autonomous execution patterns and coordination mechanisms.\n",
+            encoding="utf-8",
+        )
+        bib.write_text(
+            "@online{source2026,\n"
+            "  title = {{Enterprise Autonomous Workflows}},\n"
+            "  author = {{Tech Org}},\n"
+            "  url = {https://example.com/spec},\n"
+            "  urldate = {2026-09-14}\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        coverage = [
+            {
+                "package_id": "PKG-1",
+                "requirement": "Explain agent workflows",
+                "status": "FULFILLED",
+                "reader_locations": ["main.tex:section1"],
+                "detail": "Prose explains agent coordination directly",
+            }
+        ]
+        reader_reqs = [
+            {
+                "requirement_id": "FINAL_SYNTHESIS",
+                "status": "FULFILLED",
+                "reader_locations": ["main.tex:summary"],
+                "detail": "Synthesis summary",
+            },
+            {
+                "requirement_id": "WEEKLY_COMMUNITY_MOVEMENT",
+                "status": "FULFILLED",
+                "reader_locations": ["main.tex:community"],
+                "detail": "Community movement",
+            },
+        ]
+        m_out = self.root / "sources/2026-W35/publication/v2/reader-manuscript-v2.json"
+        m_path = reader.build_manuscript_manifest(
+            self.root,
+            "2026-W35",
+            profile,
+            arch,
+            app,
+            main_tex,
+            [{"role": "BIBLIOGRAPHY", "path": str(bib.relative_to(self.root))}],
+            coverage,
+            reader_reqs,
+            "ChatGPT",
+            self.now,
+            m_out,
+        )
+        return profile, main_tex, bib, m_path
+
     def test_clean_reader_prose_passes_gate(self) -> None:
         """Clean reader-facing prose passes with 0 blocking findings."""
         profile, arch, app, main_tex, bib = self._setup_edition(
@@ -232,7 +290,10 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
             m_out,
         )
 
-        report = surface_gate.evaluate_reader_surface_gate(self.root, m_path)
+        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
+        report = surface_gate.evaluate_reader_surface_gate(
+            self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now
+        )
         self.assertEqual(report["status"], "PASSED")
         self.assertEqual(report["summary"]["blocking_findings"], 0)
         self.assertIn("gate_sha256", report)
@@ -607,8 +668,9 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
             suppressions=suppressions,
         )
 
+        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
         report = surface_gate.evaluate_reader_surface_gate(
-            self.root, m_path, suppressions=suppressions
+            self.root, m_path, semantic_authority=sem_auth, suppressions=suppressions, recorded_at=self.now
         )
         self.assertEqual(report["status"], "PASSED")
         self.assertEqual(report["summary"]["blocking_findings"], 0)
@@ -667,8 +729,9 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
             }
         ]
 
+        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
         report_fail = surface_gate.evaluate_reader_surface_gate(
-            self.root, m_path, semantic_review_findings=sem_findings
+            self.root, m_path, semantic_authority=sem_auth, semantic_review_findings=sem_findings, recorded_at=self.now
         )
         self.assertEqual(report_fail["status"], "FAILED")
         self.assertEqual(report_fail["summary"]["blocking_findings"], 1)
@@ -676,7 +739,7 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
         # Normalized semantic finding
         sem_findings[0]["disposition"] = "NORMALIZED"
         report_pass = surface_gate.evaluate_reader_surface_gate(
-            self.root, m_path, semantic_review_findings=sem_findings
+            self.root, m_path, semantic_authority=sem_auth, semantic_review_findings=sem_findings, recorded_at=self.now
         )
         self.assertEqual(report_pass["status"], "PASSED")
         self.assertEqual(report_pass["summary"]["blocking_findings"], 0)
@@ -706,6 +769,156 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
                 with self.assertRaises(ValueError) as ctx:
                     longform_pub._strengthened_reader_text(leaked, "test_field")
                 self.assertIn("leaks production metadata", str(ctx.exception))
+
+    def test_missing_semantic_authority_fails(self) -> None:
+        """Omitting machine-checkable semantic_authority raises ValueError and cannot PASS."""
+        _, _, _, m_path = self._build_valid_manifest()
+        with self.assertRaises(ValueError) as ctx:
+            surface_gate.evaluate_reader_surface_gate(self.root, m_path, semantic_authority=None)
+        self.assertIn("Reader-Surface Gate requires machine-checkable semantic_authority", str(ctx.exception))
+
+    def test_semantic_authority_surface_sha_mismatch_fails(self) -> None:
+        """Semantic authority bound to wrong primary surface SHA triggers blocking finding."""
+        _, main_tex, _, m_path = self._build_valid_manifest()
+        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
+        sem_auth["surface_sha256"] = "f" * 64
+        report = surface_gate.evaluate_reader_surface_gate(
+            self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now
+        )
+        self.assertEqual(report["status"], "FAILED")
+        self.assertTrue(any(f["finding_id"] == "RSG-SEM-SURFACE-SHA-MISMATCH" for f in report["findings"]))
+
+    def test_semantic_authority_non_pass_fails(self) -> None:
+        """Semantic authority with non-PASS status/decision triggers blocking finding."""
+        _, main_tex, _, m_path = self._build_valid_manifest()
+        sem_auth = surface_gate.build_semantic_authority(
+            main_tex, decision="FAIL", status="FAILED", recorded_at=self.now
+        )
+        report = surface_gate.evaluate_reader_surface_gate(
+            self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now
+        )
+        self.assertEqual(report["status"], "FAILED")
+        self.assertTrue(any(f["finding_id"] == "RSG-SEM-AUTHORITY-FAILED" for f in report["findings"]))
+
+    def test_validate_reader_surface_gate_valid_passes(self) -> None:
+        """Independent validator passes a well-formed, untampered Reader-Surface Gate."""
+        _, main_tex, _, m_path = self._build_valid_manifest()
+        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
+        gate_path = self.root / "sources/2026-W35/publication/v2/reader-surface-gate-v2.json"
+        surface_gate.evaluate_reader_surface_gate(
+            self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now, output_path=gate_path
+        )
+        res = surface_gate.validate_reader_surface_gate(
+            self.root, gate_path, issue_id="2026-W35", publication_profile="WEEKLY_MAGAZINE"
+        )
+        self.assertEqual(res["status"], "PASSED")
+        self.assertEqual(res["gate_sha256"], core.sha256_object({k: v for k, v in res.items() if k != "gate_sha256"}))
+
+    def test_validate_reader_surface_gate_tampered_gate_sha_fails(self) -> None:
+        """Independent validator catches fabricated or tampered gate_sha256."""
+        _, main_tex, _, m_path = self._build_valid_manifest()
+        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
+        gate_path = self.root / "sources/2026-W35/publication/v2/reader-surface-gate-v2.json"
+        surface_gate.evaluate_reader_surface_gate(
+            self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now, output_path=gate_path
+        )
+        data = core.load_json(gate_path)
+        data["gate_sha256"] = "0" * 64
+        core.write_json(gate_path, data)
+        with self.assertRaises(ValueError) as ctx:
+            surface_gate.validate_reader_surface_gate(self.root, gate_path)
+        self.assertIn("digest mismatch", str(ctx.exception))
+
+    def test_validate_reader_surface_gate_stale_surface_sha_or_bytes_fails(self) -> None:
+        """Independent validator catches drifted or mutated on-disk surface bytes."""
+        _, main_tex, _, m_path = self._build_valid_manifest()
+        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
+        gate_path = self.root / "sources/2026-W35/publication/v2/reader-surface-gate-v2.json"
+        surface_gate.evaluate_reader_surface_gate(
+            self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now, output_path=gate_path
+        )
+        # Mutate main_tex on disk after gate evaluation
+        main_tex.write_text(main_tex.read_text(encoding="utf-8") + "% mutated comment\n", encoding="utf-8")
+        with self.assertRaises(ValueError) as ctx:
+            surface_gate.validate_reader_surface_gate(self.root, gate_path)
+        self.assertIn("drifted", str(ctx.exception))
+
+    def test_validate_reader_surface_gate_identity_mismatch_fails(self) -> None:
+        """Independent validator rejects issue_id or publication_profile identity mismatch."""
+        _, main_tex, _, m_path = self._build_valid_manifest()
+        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
+        gate_path = self.root / "sources/2026-W35/publication/v2/reader-surface-gate-v2.json"
+        surface_gate.evaluate_reader_surface_gate(
+            self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now, output_path=gate_path
+        )
+        with self.assertRaises(ValueError) as ctx:
+            surface_gate.validate_reader_surface_gate(self.root, gate_path, issue_id="2026-W36")
+        self.assertIn("issue_id mismatch", str(ctx.exception))
+        with self.assertRaises(ValueError) as ctx2:
+            surface_gate.validate_reader_surface_gate(self.root, gate_path, publication_profile="SPECIAL_EDITION")
+        self.assertIn("publication_profile mismatch", str(ctx2.exception))
+
+    def test_validate_reader_surface_gate_unresolved_blocking_finding_fails(self) -> None:
+        """Independent validator rejects gate record containing unresolved blocking findings."""
+        _, main_tex, _, m_path = self._build_valid_manifest()
+        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
+        gate_path = self.root / "sources/2026-W35/publication/v2/reader-surface-gate-v2.json"
+        surface_gate.evaluate_reader_surface_gate(
+            self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now, output_path=gate_path
+        )
+        data = core.load_json(gate_path)
+        data["findings"].append({
+            "finding_id": "TEST-BLOCKING",
+            "rule_id": "RSG-SEM-PROCESS-LEAKAGE",
+            "artifact": "surveys/weekly/2026-W35/main.tex",
+            "path": "surveys/weekly/2026-W35/main.tex",
+            "field_or_block": "Section 1",
+            "locator": "line 1",
+            "text_span": "leaked process text",
+            "severity": "BLOCKING",
+            "reason": "Process leakage",
+            "proposed_normalization": "Fix",
+            "disposition": "UNRESOLVED",
+        })
+        base = {k: v for k, v in data.items() if k != "gate_sha256"}
+        data["gate_sha256"] = core.sha256_object(base)
+        core.write_json(gate_path, data)
+        with self.assertRaises(ValueError) as ctx:
+            surface_gate.validate_reader_surface_gate(self.root, gate_path)
+        self.assertIn("unresolved blocking finding", str(ctx.exception))
+
+    def test_missing_publication_payload_refuses_fallback(self) -> None:
+        """Weekly reader-facing synthesis refuses fallback to internal profile_payload."""
+        # When publication_payload is absent
+        syn_no_pub = {"profile_payload": {"current_interpretation": "fallback text"}}
+        pub = syn_no_pub.get("publication_payload")
+        self.assertFalse(isinstance(pub, dict) and bool(pub))
+
+        # When publication_payload is empty dict
+        syn_empty_pub = {"publication_payload": {}, "profile_payload": {"current_interpretation": "fallback text"}}
+        pub2 = syn_empty_pub.get("publication_payload")
+        self.assertFalse(isinstance(pub2, dict) and bool(pub2))
+
+        # When publication_payload has neither closing_synthesis nor current_interpretation
+        syn_no_text = {"publication_payload": {"other": 123}, "profile_payload": {"current_interpretation": "fallback text"}}
+        closing = syn_no_text["publication_payload"].get("closing_synthesis") or syn_no_text["publication_payload"].get("current_interpretation")
+        self.assertIsNone(closing)
+
+    def test_pre_tex_structured_reader_surface_validation_catches_leakage(self) -> None:
+        """Pre-TeX structured reader-facing scan detects blocking leakage before TeX generation."""
+        leaked_closing = "Selection r2 で Package 4 に配置した Discovery observation に基づく。"
+        findings = surface_gate.scan_reader_text_lines([leaked_closing], "Profile Synthesis closing_synthesis", "loc")
+        blocking = [f for f in findings if f.severity == "BLOCKING" and f.disposition == "UNRESOLVED"]
+        self.assertGreater(len(blocking), 0)
+        self.assertTrue(any("Selection r2" in f.text_span for f in blocking))
+
+    def test_missing_reader_surface_gate_artifact_blocks_stage(self) -> None:
+        """DRAFT_COMPLETE and VALIDATED_DRAFT require reader-surface-gate artifact."""
+        from scripts import survey_stage_validation_v2 as stage_validation
+        self.assertIn("reader-surface-gate", stage_validation.REQUIRED_CURRENT["DRAFT_COMPLETE"])
+        with self.assertRaises(stage_validation.StageValidationError) as ctx:
+            stage_validation._require({"reader-manuscript": Path("m")}, "reader-surface-gate")
+        self.assertIn("reader-surface-gate", str(ctx.exception))
 
 
 if __name__ == "__main__":

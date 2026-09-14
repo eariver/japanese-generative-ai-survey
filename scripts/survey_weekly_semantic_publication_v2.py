@@ -422,15 +422,15 @@ def main() -> int:
         raise SystemExit("upstream Profile Synthesis invalid: " + "; ".join(syn_errors))
 
     publication_payload = synthesis_result.get("publication_payload")
-    if isinstance(publication_payload, dict) and publication_payload.get("closing_synthesis"):
-        closing_text = publication_payload["closing_synthesis"]
-    elif isinstance(publication_payload, dict) and publication_payload.get("current_interpretation"):
-        closing_text = publication_payload["current_interpretation"]
-    else:
-        profile_payload = synthesis_result.get("profile_payload")
-        closing_text = profile_payload.get("current_interpretation") if isinstance(profile_payload, dict) else None
+    if not isinstance(publication_payload, dict) or not publication_payload:
+        raise SystemExit(
+            "Weekly Profile Synthesis lacks authoritative publication_payload; refusing fallback to internal profile_payload"
+        )
+    closing_text = publication_payload.get("closing_synthesis") or publication_payload.get("current_interpretation")
     if not isinstance(closing_text, str) or not closing_text.strip():
-        raise SystemExit("Weekly Profile Synthesis lacks reader-facing synthesis text required by Architecture")
+        raise SystemExit(
+            "Weekly Profile Synthesis publication_payload lacks non-empty closing_synthesis / current_interpretation; refusing fallback"
+        )
     syn_findings = surface_gate.scan_reader_text_lines([closing_text], "Profile Synthesis", str(synthesis_result_path))
     syn_blocking = [f for f in syn_findings if f.severity == "BLOCKING" and f.disposition == "UNRESOLVED"]
     if syn_blocking:
@@ -489,6 +489,39 @@ def main() -> int:
         entity = row.get("entity") or {}
         if not entity.get("canonical_name") or not entity.get("canonical_url"):
             raise SystemExit(f"cited authority lacks canonical bibliography metadata: {did}")
+
+    # Pre-TeX Structured Reader-Surface Validation (Gate Ordering / Finding 5)
+    reader_elements: list[tuple[str, str, str]] = [
+        (closing_text, "Profile Synthesis closing_synthesis", str(synthesis_result_path)),
+    ]
+    for p_idx, p in enumerate(data.get("final_summary", {}).get("paragraphs", [])):
+        reader_elements.append((p, f"final_summary paragraph {p_idx+1}", str(input_path)))
+    if data.get("headline"):
+        reader_elements.append((data["headline"], "issue headline", str(input_path)))
+    if data.get("deck"):
+        reader_elements.append((data["deck"], "issue deck", str(input_path)))
+    for plan, spec, package, result in ordered:
+        pid = plan["package_id"]
+        reader_elements.append((spec["headline"], f"package {pid} headline", str(spec_by_id[pid])))
+        reader_elements.append((spec["deck"], f"package {pid} deck", str(spec_by_id[pid])))
+        for b_idx, block in enumerate(spec["blocks"]):
+            reader_elements.append(
+                (block["text"], f"package {pid} block {block.get('block_id', b_idx+1)}", str(spec_by_id[pid]))
+            )
+
+    pre_tex_findings: list[surface_gate.SurfaceFinding] = []
+    for text, label, loc in reader_elements:
+        f_list = surface_gate.scan_reader_text_lines([text], label, loc)
+        pre_tex_findings.extend(f_list)
+
+    blocking_pre_tex = [
+        f for f in pre_tex_findings if f.severity == "BLOCKING" and f.disposition == "UNRESOLVED"
+    ]
+    if blocking_pre_tex:
+        first = blocking_pre_tex[0]
+        raise SystemExit(
+            f"Pre-TeX reader-facing validation FAILED: {first.artifact} leaks production metadata: {first.text_span!r} ({first.reason})"
+        )
 
     survey_root.mkdir(parents=True, exist_ok=True)
     publication_root = source_root / "publication/v2"

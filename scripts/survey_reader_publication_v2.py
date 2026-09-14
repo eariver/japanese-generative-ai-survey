@@ -633,3 +633,63 @@ def validate_review_record(
     )
     core.parse_instant(payload["recorded_at"])
     return payload
+
+
+def build_reader_surface_gate(
+    repo_root: Path,
+    manuscript_path: Path,
+    semantic_review_path: Path,
+    *,
+    suppressions_path: Path | None = None,
+    output_path: Path | None = None,
+    evaluated_by: str = "Core v2 Pre-Publication Reader-Surface Gate",
+    recorded_at: datetime | None = None,
+) -> Path:
+    manuscript_file = _safe_file(repo_root, manuscript_path, "Reader Manuscript Manifest")
+    manuscript = validate_manuscript_manifest(repo_root, manuscript_file)
+    semantic_record = validate_review_record(
+        repo_root, semantic_review_path, issue_id=manuscript["issue_id"], expected_kind="SEMANTIC_EDITORIAL"
+    )
+    if semantic_record["source"]["sha256"] != manuscript["primary_source"]["sha256"]:
+        raise ValueError("semantic review does not bind exact Reader Manuscript primary source bytes")
+    suppressions: list[dict[str, Any]] = []
+    if suppressions_path is not None and suppressions_path.is_file():
+        suppressions = core.load_json(suppressions_path)
+    else:
+        profile_path = _validate_artifact_ref(repo_root, manuscript["production_profile"], "Review Production Profile")
+        _, profile = _profile(repo_root, profile_path, manuscript["issue_id"])
+        source_root_rel = profile.get("paths", {}).get("source_root")
+        if source_root_rel:
+            auto_sup = repo_root / source_root_rel / "publication" / "v2" / "reader-surface-suppressions-v2.json"
+            if auto_sup.is_file():
+                suppressions = core.load_json(auto_sup)
+
+    semantic_authority = {
+        "status": semantic_record.get("status", "PASSED"),
+        "decision": "PASS",
+        "reviewed_by": semantic_record["reviewed_by"],
+        "surface_sha256": semantic_record["source"]["sha256"],
+        "recorded_at": semantic_record["recorded_at"],
+        "review_path": _rel(repo_root, semantic_review_path),
+        "review_sha256": core.sha256_file(semantic_review_path),
+        "summary": "Bound publication SEMANTIC_EDITORIAL review passed",
+    }
+
+    out = output_path
+    if out is None:
+        source_root_path = repo_root / manuscript["production_profile"]["path"]
+        _, prof = _profile(repo_root, source_root_path, manuscript["issue_id"])
+        src_root = prof.get("paths", {}).get("source_root", f"sources/{manuscript['issue_id']}")
+        out = repo_root / src_root / "publication" / "v2" / "reader-surface-gate-v2.json"
+
+    surface_gate.evaluate_reader_surface_gate(
+        repo_root,
+        manuscript_file,
+        semantic_authority=semantic_authority,
+        suppressions=suppressions,
+        evaluated_by=evaluated_by,
+        recorded_at=recorded_at or datetime.now(timezone.utc),
+        output_path=out,
+    )
+    return out
+

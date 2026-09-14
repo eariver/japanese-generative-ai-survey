@@ -267,6 +267,7 @@ class Fixture:
                         ("quality-regression-bundle", "quality-regression-bundle-v2.json"),
                         ("semantic-review", "semantic-editorial-review-v2.json"),
                         ("visual-review", "visual-review-v2.json"),
+                        ("reader-surface-gate", "reader-surface-gate-v2.json"),
                     ]
                 ] + [
                     {"name": "publication-pdf", "path": str((self.survey / "main.pdf").relative_to(self.repo)),
@@ -363,6 +364,14 @@ class Fixture:
             self.repo, pub / "reader-manuscript-v2.json", self.survey / "main.pdf", 1,
             "VISUAL", vis_checks, EXECUTOR, T0, pub / "visual-review-v2.json",
         )
+        reader.build_reader_surface_gate(
+            self.repo,
+            pub / "reader-manuscript-v2.json",
+            pub / "semantic-editorial-review-v2.json",
+            output_path=pub / "reader-surface-gate-v2.json",
+            evaluated_by=EXECUTOR,
+            recorded_at=T0,
+        )
 
     def _write_state(self, provisional: bool = False) -> None:
         states = ["ISSUE_INITIALIZED", "DISCOVERY_COLLECTED", "CANDIDATES_NORMALIZED",
@@ -434,7 +443,8 @@ class PublicationRevalidationTests(unittest.TestCase):
 
     def regenerate(self, fix: Fixture, version: int = 2) -> None:
         for name in ("reader-manuscript-v2.json", "quality-regression-bundle-v2.json",
-                     "semantic-editorial-review-v2.json", "visual-review-v2.json"):
+                     "semantic-editorial-review-v2.json", "visual-review-v2.json",
+                     "reader-surface-gate-v2.json"):
             (fix.src / "publication" / "v2" / name).unlink()
         fix._publication_files(version=version)
         fix._publication_authority()
@@ -618,7 +628,7 @@ class PublicationRevalidationTests(unittest.TestCase):
             state_path = fix.src / "production-state.json"
             self.regenerate(fix)
             pre = agent.validate_agent_state(self.root, self.cfg, core.load_json(state_path))
-            self.assertEqual(len([e for e in pre if "drift" in e]), 6, pre)
+            self.assertEqual(len([e for e in pre if "drift" in e]), 7, pre)
             agent.revalidate_publication_surface(
                 self.root, self.cfg, state_path, "REVIEWED_CORE_CHANGE",
                 "W34-defect-shape reproduction", EXECUTOR, T0 + timedelta(hours=1), None,

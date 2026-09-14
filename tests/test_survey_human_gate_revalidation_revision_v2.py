@@ -88,8 +88,9 @@ class RevalidationRevisionTests(unittest.TestCase):
 
     def _regenerate(self, fix: Fixture, version: int = 2) -> None:
         for name in ("reader-manuscript-v2.json", "quality-regression-bundle-v2.json",
-                     "semantic-editorial-review-v2.json", "visual-review-v2.json"):
-            (fix.src / "publication" / "v2" / name).unlink()
+                     "semantic-editorial-review-v2.json", "visual-review-v2.json",
+                     "reader-surface-gate-v2.json"):
+            (fix.src / "publication" / "v2" / name).unlink(missing_ok=True)
         fix._publication_files(version=version)
         fix._publication_authority()
 
@@ -242,6 +243,7 @@ class RevalidationRevisionTests(unittest.TestCase):
             "quality-regression-bundle": fix.src / "publication" / "v2" / "quality-regression-bundle-v2.json",
             "semantic-review": fix.src / "publication" / "v2" / "semantic-editorial-review-v2.json",
             "visual-review": fix.src / "publication" / "v2" / "visual-review-v2.json",
+            "reader-surface-gate": fix.src / "publication" / "v2" / "reader-surface-gate-v2.json",
         }
         report_path = fix.src / "execution" / "stage-report-r2.json"
         stage_validation.validate_stage(
@@ -314,6 +316,7 @@ class RevalidationRevisionTests(unittest.TestCase):
             "quality-regression-bundle": fix.src / "publication" / "v2" / "quality-regression-bundle-v2.json",
             "semantic-review": fix.src / "publication" / "v2" / "semantic-editorial-review-v2.json",
             "visual-review": fix.src / "publication" / "v2" / "visual-review-v2.json",
+            "reader-surface-gate": fix.src / "publication" / "v2" / "reader-surface-gate-v2.json",
         }
         report_path = fix.src / "execution" / "stage-report-r7.json"
         stage_validation.validate_stage(self.root, self.cfg, state_path, validation_artifacts, report_path, T0 + timedelta(hours=5))

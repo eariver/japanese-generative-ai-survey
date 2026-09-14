@@ -732,10 +732,38 @@ def scan_publication_payload(
     return findings
 
 
+def build_semantic_authority(
+    primary_source_path: Path,
+    *,
+    reviewed_by: str = "ChatGPT",
+    decision: str = "PASS",
+    status: str = "PASSED",
+    review_path: Path | None = None,
+    review_sha256: str | None = None,
+    summary: str = "Semantic reader-facing surface review passed with zero process leakage",
+    recorded_at: datetime | None = None,
+) -> dict[str, Any]:
+    """Helper to construct a machine-checkable semantic review authority object."""
+    ts = recorded_at or datetime.now(timezone.utc)
+    res: dict[str, Any] = {
+        "status": status,
+        "decision": decision,
+        "reviewed_by": reviewed_by,
+        "surface_sha256": core.sha256_file(primary_source_path),
+        "recorded_at": core.iso_utc(ts),
+        "summary": summary,
+    }
+    if review_path is not None:
+        res["review_path"] = str(review_path).replace("\\", "/")
+        res["review_sha256"] = review_sha256 or core.sha256_file(review_path)
+    return res
+
+
 def evaluate_reader_surface_gate(
     repo_root: Path,
     manuscript_path: Path,
     *,
+    semantic_authority: dict[str, Any] | None = None,
     suppressions: list[dict[str, Any]] | None = None,
     semantic_review_findings: list[dict[str, Any]] | None = None,
     synthesis_result_path: Path | None = None,
@@ -747,9 +775,20 @@ def evaluate_reader_surface_gate(
 
     Scans all declared reader-facing source files, bibliography, synthesis
     publication payload, and manifest details. Evaluates lexical lint and
-    semantic review findings, applies suppressions, and returns a structured
-    gate report conforming to schemas/reader-surface-gate-v2.schema.json.
+    mandatory machine-checkable semantic review authority, applies suppressions,
+    and returns a structured gate report conforming to
+    schemas/reader-surface-gate-v2.schema.json.
     """
+    if semantic_authority is None:
+        raise ValueError(
+            "Reader-Surface Gate requires machine-checkable semantic_authority; omitting semantic review cannot PASS"
+        )
+    if not isinstance(semantic_authority, dict):
+        raise ValueError("semantic_authority must be an object")
+    for req_key in ("status", "decision", "reviewed_by", "surface_sha256", "recorded_at"):
+        if not semantic_authority.get(req_key):
+            raise ValueError(f"semantic_authority missing required field: {req_key}")
+
     ts = recorded_at or datetime.now(timezone.utc)
     m_file = _safe_file(repo_root, manuscript_path, "Reader Manuscript Manifest")
     manuscript = schema_gate.load_and_validate_json(
@@ -853,9 +892,49 @@ def evaluate_reader_surface_gate(
             )
             all_findings.extend(syn_findings)
 
-    # 5. Semantic Review Findings (Layer 2)
-    if semantic_review_findings:
-        for idx, sem in enumerate(semantic_review_findings):
+    # 5. Semantic Review Findings & Authority Checks (Layer 2)
+    sem_status = semantic_authority.get("status")
+    sem_decision = semantic_authority.get("decision")
+    sem_surface_sha = semantic_authority.get("surface_sha256")
+    if sem_surface_sha != primary_ref["sha256"]:
+        all_findings.append(
+            SurfaceFinding(
+                finding_id="RSG-SEM-SURFACE-SHA-MISMATCH",
+                rule_id="RSG-SEM-PROCESS-LEAKAGE",
+                artifact="Semantic Review Authority",
+                path=primary_ref["path"],
+                field_or_block="surface_sha256",
+                locator="semantic_authority",
+                text_span=str(sem_surface_sha),
+                severity="BLOCKING",
+                reason=f"semantic authority surface_sha256 {sem_surface_sha} does not match primary source sha256 {primary_ref['sha256']}",
+                proposed_normalization="Re-evaluate semantic review on exact current primary source bytes",
+                disposition="UNRESOLVED",
+            )
+        )
+    if sem_status != "PASSED" or sem_decision != "PASS":
+        all_findings.append(
+            SurfaceFinding(
+                finding_id="RSG-SEM-AUTHORITY-FAILED",
+                rule_id="RSG-SEM-PROCESS-LEAKAGE",
+                artifact="Semantic Review Authority",
+                path=primary_ref["path"],
+                field_or_block="status/decision",
+                locator="semantic_authority",
+                text_span=f"{sem_status}/{sem_decision}",
+                severity="BLOCKING",
+                reason="Semantic review authority did not yield PASS decision",
+                proposed_normalization="Resolve semantic review findings to obtain PASS authority",
+                disposition="UNRESOLVED",
+            )
+        )
+
+    all_sem_findings = list(semantic_review_findings or [])
+    if isinstance(semantic_authority.get("findings"), list):
+        all_sem_findings.extend(semantic_authority["findings"])
+
+    if all_sem_findings:
+        for idx, sem in enumerate(all_sem_findings):
             if not isinstance(sem, dict):
                 continue
             fid = sem.get("finding_id") or f"RSG-SEM-PROCESS-LEAKAGE-{idx+1}"
@@ -901,7 +980,12 @@ def evaluate_reader_surface_gate(
         1 for f in all_findings if f.disposition == "NORMALIZED"
     )
 
-    verdict = "PASSED" if blocking_count == 0 else "FAILED"
+    authority_clean = (
+        sem_status == "PASSED"
+        and sem_decision == "PASS"
+        and sem_surface_sha == primary_ref["sha256"]
+    )
+    verdict = "PASSED" if (blocking_count == 0 and authority_clean) else "FAILED"
 
     rules_checked_dicts = [asdict(r) for r in RULES]
 
@@ -924,6 +1008,16 @@ def evaluate_reader_surface_gate(
         },
         "evaluated_by": evaluated_by,
         "recorded_at": core.iso_utc(ts),
+        "semantic_authority": {
+            "status": semantic_authority.get("status", "FAILED"),
+            "decision": semantic_authority.get("decision", "FAIL"),
+            "reviewed_by": str(semantic_authority.get("reviewed_by", "")),
+            "surface_sha256": str(semantic_authority.get("surface_sha256", "")),
+            "recorded_at": str(semantic_authority.get("recorded_at", core.iso_utc(ts))),
+            **({"review_path": semantic_authority["review_path"]} if "review_path" in semantic_authority else {}),
+            **({"review_sha256": semantic_authority["review_sha256"]} if "review_sha256" in semantic_authority else {}),
+            **({"summary": semantic_authority["summary"]} if "summary" in semantic_authority else {}),
+        },
     }
 
     report = dict(base)
@@ -939,10 +1033,136 @@ def evaluate_reader_surface_gate(
     return report
 
 
+def validate_reader_surface_gate(
+    repo_root: Path,
+    path: Path,
+    *,
+    issue_id: str | None = None,
+    publication_profile: str | None = None,
+) -> dict[str, Any]:
+    """Independently validate a Reader-Surface Gate record.
+
+    Verifies:
+      1. Schema validity.
+      2. Issue identity and publication profile identity.
+      3. Report status == PASSED and summary verdict == PASSED with 0 blocking findings.
+      4. gate_sha256 recomputation over all canonical digest fields.
+      5. Scanned surfaces existence, exact sha256 and byte counts matching current disk files.
+      6. Required semantic review authority present, status PASSED, decision PASS,
+         and surface_sha256 matching exact primary source bytes.
+      7. No unresolved blocking findings.
+    """
+    gate_file = _safe_file(repo_root, path, "Reader-Surface Gate record")
+    payload = schema_gate.load_and_validate_json(
+        gate_file, repo_root / SURFACE_GATE_SCHEMA, label="Reader-Surface Gate"
+    )
+    if issue_id is not None and payload.get("issue_id") != issue_id:
+        raise ValueError(
+            f"Reader-Surface Gate issue_id mismatch: expected {issue_id}, got {payload.get('issue_id')}"
+        )
+    if publication_profile is not None and payload.get("publication_profile") != publication_profile:
+        raise ValueError(
+            f"Reader-Surface Gate publication_profile mismatch: expected {publication_profile}, got {payload.get('publication_profile')}"
+        )
+    if payload.get("status") != "PASSED":
+        raise ValueError(f"Reader-Surface Gate status must be PASSED, got {payload.get('status')}")
+
+    summary = payload.get("summary", {})
+    if summary.get("verdict") != "PASSED":
+        raise ValueError(f"Reader-Surface Gate summary verdict must be PASSED, got {summary.get('verdict')}")
+    if summary.get("blocking_findings", 0) != 0:
+        raise ValueError(f"Reader-Surface Gate contains {summary.get('blocking_findings')} unresolved blocking finding(s)")
+
+    # 4. gate_sha256 recalculation
+    digest_fields = (
+        "schema_version",
+        "issue_id",
+        "publication_profile",
+        "status",
+        "scanned_surfaces",
+        "rules_checked",
+        "suppressions",
+        "findings",
+        "summary",
+        "evaluated_by",
+        "recorded_at",
+        "semantic_authority",
+    )
+    base = {key: payload[key] for key in digest_fields}
+    expected_gate_sha = core.sha256_object(base)
+    if payload.get("gate_sha256") != expected_gate_sha:
+        raise ValueError(
+            f"Reader-Surface Gate digest mismatch: expected {expected_gate_sha}, got {payload.get('gate_sha256')}"
+        )
+
+    # 5. Scanned surfaces verification against current files on disk
+    scanned = payload.get("scanned_surfaces", [])
+    if not scanned:
+        raise ValueError("Reader-Surface Gate record contains no scanned surfaces")
+    primary_surfaces = [s for s in scanned if s.get("kind") == "PRIMARY_SOURCE"]
+    if not primary_surfaces:
+        raise ValueError("Reader-Surface Gate lacks PRIMARY_SOURCE in scanned surfaces")
+
+    for s in scanned:
+        rel = s["path"]
+        target = core.repo_local_path(repo_root, rel, f"scanned surface {rel}")
+        if not target.is_file():
+            raise ValueError(f"Reader-Surface Gate scanned surface missing on disk: {rel}")
+        actual_bytes = target.read_bytes()
+        actual_sha = core.sha256_bytes(actual_bytes)
+        if actual_sha != s["sha256"]:
+            raise ValueError(
+                f"Reader-Surface Gate scanned surface bytes drifted for {rel}: "
+                f"recorded {s['sha256']}, current disk {actual_sha}"
+            )
+        if len(actual_bytes) != s["byte_count"]:
+            raise ValueError(
+                f"Reader-Surface Gate scanned surface byte_count drifted for {rel}: "
+                f"recorded {s['byte_count']}, current disk {len(actual_bytes)}"
+            )
+
+    # 6. Required semantic review authority verification
+    sem = payload.get("semantic_authority")
+    if not isinstance(sem, dict):
+        raise ValueError("Reader-Surface Gate record missing required semantic_authority object")
+    if sem.get("status") != "PASSED" or sem.get("decision") != "PASS":
+        raise ValueError(
+            f"Reader-Surface Gate semantic review authority not PASS: status={sem.get('status')}, decision={sem.get('decision')}"
+        )
+    if not sem.get("reviewed_by") or not isinstance(sem.get("reviewed_by"), str):
+        raise ValueError("Reader-Surface Gate semantic review authority lacks reviewed_by identity")
+    primary_sha = primary_surfaces[0]["sha256"]
+    if sem.get("surface_sha256") != primary_sha:
+        raise ValueError(
+            f"Reader-Surface Gate semantic authority surface_sha256 {sem.get('surface_sha256')} "
+            f"does not bind exact primary source bytes {primary_sha}"
+        )
+    if "review_path" in sem:
+        rev_file = core.repo_local_path(repo_root, sem["review_path"], "semantic review record")
+        if not rev_file.is_file():
+            raise ValueError(f"Reader-Surface Gate referenced semantic review record missing on disk: {sem['review_path']}")
+        if "review_sha256" in sem:
+            file_sha = core.sha256_file(rev_file)
+            rev_doc = core.load_json(rev_file)
+            doc_sha = rev_doc.get("review_sha256")
+            if sem["review_sha256"] not in (file_sha, doc_sha):
+                raise ValueError("Reader-Surface Gate referenced semantic review record sha256 mismatch")
+
+    # 7. Unresolved blocking findings verification
+    for f in payload.get("findings", []):
+        if f.get("severity") == "BLOCKING" and f.get("disposition") == "UNRESOLVED":
+            raise ValueError(
+                f"Reader-Surface Gate has unresolved blocking finding: {f.get('finding_id')} ({f.get('text_span')})"
+            )
+
+    return payload
+
+
 def validate_manuscript_surface(
     repo_root: Path,
     manuscript: dict[str, Any],
     suppressions: list[dict[str, Any]] | None = None,
+    semantic_authority: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Fail-fast reader surface validation for a validated manuscript manifest.
 
@@ -995,6 +1215,44 @@ def validate_manuscript_surface(
         )
         all_findings.extend(findings)
 
+    # Semantic review authority check if supplied
+    if semantic_authority is not None:
+        sem_status = semantic_authority.get("status")
+        sem_decision = semantic_authority.get("decision")
+        sem_surface_sha = semantic_authority.get("surface_sha256")
+        if sem_surface_sha != primary_ref["sha256"]:
+            all_findings.append(
+                SurfaceFinding(
+                    finding_id="RSG-SEM-SURFACE-SHA-MISMATCH",
+                    rule_id="RSG-SEM-PROCESS-LEAKAGE",
+                    artifact="Semantic Review Authority",
+                    path=primary_ref["path"],
+                    field_or_block="surface_sha256",
+                    locator="semantic_authority",
+                    text_span=str(sem_surface_sha),
+                    severity="BLOCKING",
+                    reason=f"semantic authority surface_sha256 {sem_surface_sha} does not match primary source sha256 {primary_ref['sha256']}",
+                    proposed_normalization="Re-evaluate semantic review on exact current primary source bytes",
+                    disposition="UNRESOLVED",
+                )
+            )
+        if sem_status != "PASSED" or sem_decision != "PASS":
+            all_findings.append(
+                SurfaceFinding(
+                    finding_id="RSG-SEM-AUTHORITY-FAILED",
+                    rule_id="RSG-SEM-PROCESS-LEAKAGE",
+                    artifact="Semantic Review Authority",
+                    path=primary_ref["path"],
+                    field_or_block="status/decision",
+                    locator="semantic_authority",
+                    text_span=f"{sem_status}/{sem_decision}",
+                    severity="BLOCKING",
+                    reason="Semantic review authority did not yield PASS decision",
+                    proposed_normalization="Resolve semantic review findings to obtain PASS authority",
+                    disposition="UNRESOLVED",
+                )
+            )
+
     blocking = [
         f for f in all_findings
         if f.severity == "BLOCKING" and f.disposition == "UNRESOLVED"
@@ -1029,9 +1287,15 @@ def main() -> int:
     scan_m = sub.add_parser("scan-manuscript", help="Scan a reader manuscript manifest and its files")
     scan_m.add_argument("--manuscript", required=True, help="Path to reader-manuscript-v2.json")
     scan_m.add_argument("--suppressions", help="Path to suppressions JSON array")
+    scan_m.add_argument("--semantic-authority", help="Path to semantic authority JSON object or review record")
     scan_m.add_argument("--semantic-review", help="Path to semantic review findings JSON array")
     scan_m.add_argument("--synthesis-result", help="Path to profile-synthesis-result.json")
     scan_m.add_argument("--output", help="Path to write reader-surface-gate-v2.json report")
+
+    val_g = sub.add_parser("validate-gate", help="Independently validate a reader-surface-gate-v2.json record")
+    val_g.add_argument("--gate", required=True, help="Path to reader-surface-gate-v2.json")
+    val_g.add_argument("--issue-id", help="Expected issue_id")
+    val_g.add_argument("--profile", help="Expected publication_profile")
 
     scan_f = sub.add_parser("scan-file", help="Scan an individual TeX or BibTeX file")
     scan_f.add_argument("--file", required=True, help="Path to TeX or BibTeX file")
@@ -1039,6 +1303,20 @@ def main() -> int:
 
     args = parser.parse_args()
     repo_root = Path(args.repo_root).resolve()
+
+    if args.command == "validate-gate":
+        gate_path = Path(args.gate)
+        if not gate_path.is_absolute():
+            gate_path = repo_root / gate_path
+        try:
+            payload = validate_reader_surface_gate(
+                repo_root, gate_path, issue_id=args.issue_id, publication_profile=args.profile
+            )
+            print(f"PASSED: Reader-Surface Gate valid for {payload['issue_id']} ({payload['publication_profile']})")
+            return 0
+        except ValueError as exc:
+            print(f"FAILED: {exc}")
+            return 1
 
     if args.command == "scan-file":
         target = Path(args.file)
@@ -1069,6 +1347,21 @@ def main() -> int:
         suppressions = []
         if args.suppressions:
             suppressions = core.load_json(Path(args.suppressions))
+        sem_authority = None
+        if args.semantic_authority:
+            sem_data = core.load_json(Path(args.semantic_authority))
+            if "review_kind" in sem_data and sem_data.get("review_kind") == "SEMANTIC_EDITORIAL":
+                sem_authority = {
+                    "status": sem_data.get("status", "PASSED"),
+                    "decision": "PASS",
+                    "reviewed_by": sem_data.get("reviewed_by", "ChatGPT"),
+                    "surface_sha256": sem_data.get("source", {}).get("sha256"),
+                    "recorded_at": sem_data.get("recorded_at"),
+                    "review_path": str(Path(args.semantic_authority).relative_to(repo_root)),
+                    "review_sha256": sem_data.get("review_sha256"),
+                }
+            else:
+                sem_authority = sem_data
         sem_findings = []
         if args.semantic_review:
             sem_findings = core.load_json(Path(args.semantic_review))
@@ -1086,6 +1379,7 @@ def main() -> int:
         report = evaluate_reader_surface_gate(
             repo_root,
             m_path,
+            semantic_authority=sem_authority,
             suppressions=suppressions,
             semantic_review_findings=sem_findings,
             synthesis_result_path=syn_path,

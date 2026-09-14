@@ -16,6 +16,7 @@
     "summary",
     "evaluated_by",
     "recorded_at",
+    "semantic_authority",
     "gate_sha256"
   ],
   "properties": {
@@ -128,6 +129,27 @@
     },
     "evaluated_by": {"type": "string", "minLength": 1},
     "recorded_at": {"type": "string", "format": "date-time"},
+    "semantic_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "decision",
+        "reviewed_by",
+        "surface_sha256",
+        "recorded_at"
+      ],
+      "properties": {
+        "status": {"enum": ["PASSED", "FAILED"]},
+        "decision": {"enum": ["PASS", "FAIL"]},
+        "reviewed_by": {"type": "string", "minLength": 1},
+        "surface_sha256": {"$ref": "#/$defs/sha256"},
+        "recorded_at": {"type": "string", "format": "date-time"},
+        "review_path": {"type": "string", "minLength": 1},
+        "review_sha256": {"$ref": "#/$defs/sha256"},
+        "summary": {"type": "string"}
+      }
+    },
     "gate_sha256": {"$ref": "#/$defs/sha256"}
   },
   "$defs": {
