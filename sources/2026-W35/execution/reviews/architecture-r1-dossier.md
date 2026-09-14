@@ -5,7 +5,7 @@ Sol-owned review surface for the pending Human Architecture Review. Read this be
 ## 1. Exact review identity
 
 - Edition `2026-W35`, revision r1, Research Profile WEEKLY, Publication Profile WEEKLY_MAGAZINE.
-- Reviewed repository commit SHA: `TBD_AT_COMMIT` (updated to the exact pushed W35-branch commit at presentation).
+- Reviewed repository commit SHA: `676160e325db35840af1f36b8cac8c3dad54beb4` (updated to the exact pushed W35-branch commit at presentation).
 - Lifecycle `ARCHITECTURE_ESTABLISHED`, next action `ARCHITECTURE_REVIEW`, terminal `HUMAN_GATE_REACHED`.
 - Canonical window (Core-governed): `[2026-08-21T18:00:00-04:00, 2026-08-28T18:00:00-04:00)` ET; UTC classification `[2026-08-21T22:00:00Z, 2026-08-28T22:00:00Z)`.
 - Production Line `production/survey-core-v2 @ 774dd39a` (unchanged); reviewed `main @ 774dd39a`; no Core repairs; W35 never merges to main under current policy.

@@ -8,7 +8,8 @@ Branch: `weekly/2026-W35-v2-work`
 - Starting W35 SHA/tree (r2 resume): `977bb50ad96912e86962eda4e4771ed9ca85262b` / `cd8f36d7829e9f019fffed35ab2f2e35e9826306`
 - Reviewed main SHA/tree: `774dd39a951c9ac3818e83dfffd4c7666efb0a20` / `cd46a6f7a6dcc4031e76220cea4c52c7dd1fc481`
 - Production Line starting/current SHA: `774dd39a951c9ac3818e83dfffd4c7666efb0a20` (unchanged; no Core repair)
-- Ending W35 SHA/tree: recorded in `execution/reviews/architecture-r1.md` (exact pushed commit; this file names the same commit)
+- Production HEAD under review: `676160e325db35840af1f36b8cac8c3dad54beb4` / `b3f62e3c334fcf8cc263676f7f5800924d73883d` (all Gate inputs + dossier v1)
+- Presentation/shell commit: recorded in `execution/reviews/architecture-r1.md` (touches review-shell files only; Gate-input SHAs prove byte identity)
 - Accepted Grok Raw: `sources/2026-W35/external/x/weekly-x-2026-W35/raw/grok-x-result-r3.md`
 - Grok Raw SHA-256: `5d1ee181cce891f6e944679bd82262e81e3cfa98b545b5e028e00faf782fdc81`
 - Grok Raw bytes: `21589` (r2 GitHub-byte authority; one-space transfer normalization vs Drive text, ledger-unaffecting)

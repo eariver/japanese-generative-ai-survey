@@ -3,7 +3,7 @@
 ## Reviewed authority
 
 - Edition: `2026-W35` (WEEKLY + WEEKLY_MAGAZINE), target gate `ARCHITECTURE_REVIEW`
-- Reviewed repository commit SHA: `TBD_AT_COMMIT` (this shell is updated to the exact pushed commit before presentation; only those committed bytes are the review surface)
+- Reviewed repository commit SHA: `676160e325db35840af1f36b8cac8c3dad54beb4` (production HEAD under review; Gate inputs below are content-addressed and byte-identical in the presentation shell commit recorded at the foot of this file)
 - Lifecycle: `ARCHITECTURE_ESTABLISHED`; terminal `HUMAN_GATE_REACHED`
 - Gate inputs (exact bytes under review):
   - `sources/2026-W35/architecture-v2.json`
