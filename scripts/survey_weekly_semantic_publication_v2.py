@@ -380,6 +380,12 @@ def main() -> int:
     ap.add_argument("--repo-root", default=".")
     ap.add_argument("--state", required=True)
     ap.add_argument("--input", required=True)
+    ap.add_argument("--semantic-review", default=None, help="Path to reader-surface-semantic-review-v2.json")
+    ap.add_argument(
+        "--materialize-surface-only",
+        action="store_true",
+        help="Materialize pre-TeX structured reader surface without TeX generation",
+    )
     args = ap.parse_args()
 
     root = Path(args.repo_root).resolve()
@@ -491,6 +497,34 @@ def main() -> int:
             raise SystemExit(f"cited authority lacks canonical bibliography metadata: {did}")
 
     # Pre-TeX Structured Reader-Surface Validation (Gate Ordering / Finding 5)
+    publication_root = source_root / "publication/v2"
+    publication_root.mkdir(parents=True, exist_ok=True)
+
+    packages_input = [
+        {
+            "package_id": plan["package_id"],
+            "headline": spec["headline"],
+            "deck": spec["deck"],
+            "blocks": [
+                {"block_id": b["block_id"], "text": b["text"]}
+                for b in spec["blocks"]
+            ],
+        }
+        for plan, spec, package, result in ordered
+    ]
+    surface_input_path = publication_root / "reader-surface-input-v2.json"
+    surface_gate.build_weekly_reader_surface_input(
+        root,
+        issue_id,
+        "WEEKLY_MAGAZINE",
+        closing_text,
+        list(data.get("final_summary", {}).get("paragraphs", [])),
+        packages_input,
+        headline=data.get("cover", {}).get("headline") or data.get("headline"),
+        deck=data.get("cover", {}).get("deck") or data.get("deck"),
+        output_path=surface_input_path,
+    )
+
     reader_elements: list[tuple[str, str, str]] = [
         (closing_text, "Profile Synthesis closing_synthesis", str(synthesis_result_path)),
     ]
@@ -523,9 +557,42 @@ def main() -> int:
             f"Pre-TeX reader-facing validation FAILED: {first.artifact} leaks production metadata: {first.text_span!r} ({first.reason})"
         )
 
+    if args.materialize_surface_only:
+        print(json.dumps({
+            "issue_id": issue_id,
+            "structured_surface": str(surface_input_path.relative_to(root)),
+            "surface_sha256": core.sha256_file(surface_input_path),
+            "status": "SURFACE_MATERIALIZED",
+        }, indent=2))
+        return 0
+
+    sem_rev_path = (
+        Path(args.semantic_review)
+        if args.semantic_review
+        else (publication_root / "reader-surface-semantic-review-v2.json")
+    )
+    if not sem_rev_path.is_file():
+        raise SystemExit(
+            f"Pre-TeX semantic review artifact missing on disk: {sem_rev_path}; TeX/BibTeX materialization prohibited until semantic review PASS"
+        )
+
+    try:
+        validated_sem = surface_gate.load_and_validate_semantic_review(
+            root,
+            sem_rev_path,
+            expected_issue_id=issue_id,
+            expected_publication_profile="WEEKLY_MAGAZINE",
+            expected_surface_path=surface_input_path,
+            expected_surface_sha256=core.sha256_file(surface_input_path),
+            require_pass=True,
+        )
+    except Exception as exc:
+        raise SystemExit(f"Pre-TeX semantic review validation FAILED: {exc}")
+
+    if validated_sem.get("decision") != "PASS" or validated_sem.get("unresolved_blocking_count", 0) > 0:
+        raise SystemExit("Pre-TeX semantic review did not yield PASS decision; TeX/BibTeX materialization prohibited")
+
     survey_root.mkdir(parents=True, exist_ok=True)
-    publication_root = source_root / "publication/v2"
-    publication_root.mkdir(parents=True, exist_ok=True)
     quality_root = publication_root / "quality"
     quality_root.mkdir(parents=True, exist_ok=True)
     for path in (

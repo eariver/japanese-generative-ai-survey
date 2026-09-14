@@ -39,7 +39,8 @@
               "SUPPORTING_SOURCE",
               "BIBLIOGRAPHY",
               "SYNTHESIS_PAYLOAD",
-              "MANUSCRIPT_MANIFEST"
+              "MANUSCRIPT_MANIFEST",
+              "STRUCTURED_READER_SURFACE"
             ]
           },
           "byte_count": {"type": "integer", "minimum": 0}
@@ -137,14 +138,18 @@
         "decision",
         "reviewed_by",
         "surface_sha256",
-        "recorded_at"
+        "recorded_at",
+        "review_path",
+        "review_sha256"
       ],
       "properties": {
         "status": {"enum": ["PASSED", "FAILED"]},
         "decision": {"enum": ["PASS", "FAIL"]},
         "reviewed_by": {"type": "string", "minLength": 1},
+        "surface_path": {"type": "string", "minLength": 1},
         "surface_sha256": {"$ref": "#/$defs/sha256"},
         "recorded_at": {"type": "string", "format": "date-time"},
+        "reviewed_at": {"type": "string", "format": "date-time"},
         "review_path": {"type": "string", "minLength": 1},
         "review_sha256": {"$ref": "#/$defs/sha256"},
         "summary": {"type": "string"}

@@ -20,18 +20,8 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
         self.root = Path(self.temp.name)
 
         # Copy necessary schemas and configuration
-        for rel in [
-            core.DEFAULT_CONFIG,
-            reader.MANUSCRIPT_SCHEMA,
-            reader.REVIEW_SCHEMA,
-            reader.ARCHITECTURE_SCHEMA,
-            reader.ARCHITECTURE_APPROVAL_SCHEMA,
-            reader.REVIEW_CONTRACT,
-            surface_gate.SURFACE_GATE_SCHEMA,
-        ]:
-            dst = self.root / rel
-            dst.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(self.source_root / rel, dst)
+        shutil.copytree(self.source_root / "schemas", self.root / "schemas")
+        shutil.copytree(self.source_root / "config", self.root / "config")
 
         self.now = datetime(2026, 9, 14, 12, 0, tzinfo=timezone.utc)
         self.dummy_sha = "a" * 64
@@ -130,12 +120,31 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
                         "boundaries": ["Boundaries"],
                         "drafting_order": 1,
                         "profile_extensions": {},
-                        "publication_extensions": {},
+                        "publication_extensions": {"section_label": "pkg1"} if publication_profile == "WEEKLY_MAGAZINE" else {},
                     }
                 ],
                 "selected_exceptions": [],
-                "profile_extensions": {},
-                "publication_extensions": {},
+                "profile_extensions": (
+                    {
+                        "weekly_closing_summary": {
+                            "required": True,
+                            "source": "profile_synthesis.current_interpretation",
+                        }
+                    }
+                    if publication_profile == "WEEKLY_MAGAZINE"
+                    else {}
+                ),
+                "publication_extensions": (
+                    {
+                        "closing_summary": {
+                            "required": True,
+                            "heading": "今週の総括",
+                            "placement": "after_body_before_references",
+                        }
+                    }
+                    if publication_profile == "WEEKLY_MAGAZINE"
+                    else {}
+                ),
                 "human_review": {
                     "reviewed_by": "reviewer",
                     "reviewed_at": "2026-09-14T12:00:00Z",
@@ -225,6 +234,106 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
         )
         return profile, main_tex, bib, m_path
 
+    def _create_semantic_surface_and_review(
+        self,
+        issue_id: str = "2026-W35",
+        publication_profile: str = "WEEKLY_MAGAZINE",
+        *,
+        surface_path: Path | None = None,
+        decision: str = "PASS",
+        findings: list[dict[str, Any]] | None = None,
+        summary: str = "Semantic review passed",
+        unresolved_blocking: bool = False,
+    ) -> tuple[Path, Path, dict[str, Any]]:
+        pub_v2 = self.root / f"sources/{issue_id}/publication/v2"
+        pub_v2.mkdir(parents=True, exist_ok=True)
+        if surface_path is None:
+            surface_path = surface_gate.build_weekly_reader_surface_input(
+                self.root,
+                issue_id,
+                publication_profile,
+                "Autonomous agents operate independently within defined boundaries.",
+                ["Final summary overview of agent advancements and safety guards."],
+                [
+                    {
+                        "package_id": "PKG-1",
+                        "headline": "Agent Workflows",
+                        "deck": "Autonomous patterns overview",
+                        "blocks": [{"block_id": "b1", "text": "Prose explaining agent coordination directly."}],
+                    }
+                ],
+                headline="Weekly Agent Systems",
+                deck="Comprehensive coverage of autonomous patterns",
+                output_path=pub_v2 / "reader-surface-input-v2.json",
+            )
+        rev_path = pub_v2 / "reader-surface-semantic-review-v2.json"
+
+        actual_findings = list(findings or [])
+        if unresolved_blocking:
+            actual_findings.append({
+                "finding_id": "FINDING-BLOCKING-1",
+                "locator": "Paragraph 1",
+                "text_span": "leaked internal process reference",
+                "severity": "BLOCKING",
+                "reason": "Internal process leakage",
+                "proposed_normalization": "Remove internal process reference",
+                "disposition": "UNRESOLVED",
+            })
+
+        if decision == "PASS" and any(
+            f.get("severity") == "BLOCKING"
+            and f.get("disposition", "UNRESOLVED") not in ("SUPPRESSED", "NORMALIZED", "RESOLVED")
+            for f in actual_findings
+        ):
+            surface_rel = str(surface_path.relative_to(self.root)).replace("\\", "/")
+            base = {
+                "schema_version": "2.0-rc1",
+                "issue_id": issue_id,
+                "publication_profile": publication_profile,
+                "reviewed_surface": {
+                    "path": surface_rel,
+                    "sha256": core.sha256_file(surface_path),
+                },
+                "decision": "PASS",
+                "reviewed_by": "ChatGPT",
+                "reviewed_at": core.iso_utc(self.now),
+                "recorded_at": core.iso_utc(self.now),
+                "status": "PASSED",
+                "findings": actual_findings,
+                "summary": summary,
+            }
+            base["review_sha256"] = core.sha256_object(base)
+            core.write_json(rev_path, base)
+            rev_doc = base
+        else:
+            rev_doc = surface_gate.build_semantic_review_record(
+                self.root,
+                issue_id,
+                publication_profile,
+                surface_path,
+                decision=decision,
+                reviewed_by="ChatGPT",
+                findings=actual_findings,
+                output_path=rev_path,
+                recorded_at=self.now,
+                summary=summary,
+            )
+
+        sem_auth = {
+            "status": "PASSED" if decision == "PASS" else "FAILED",
+            "decision": decision,
+            "reviewed_by": "ChatGPT",
+            "surface_path": str(surface_path.relative_to(self.root)).replace("\\", "/"),
+            "surface_sha256": core.sha256_file(surface_path),
+            "recorded_at": core.iso_utc(self.now),
+            "reviewed_at": core.iso_utc(self.now),
+            "review_path": str(rev_path.relative_to(self.root)).replace("\\", "/"),
+            "review_sha256": rev_doc["review_sha256"],
+            "summary": summary,
+        }
+        return surface_path, rev_path, sem_auth
+
+
     def test_clean_reader_prose_passes_gate(self) -> None:
         """Clean reader-facing prose passes with 0 blocking findings."""
         profile, arch, app, main_tex, bib = self._setup_edition(
@@ -290,7 +399,9 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
             m_out,
         )
 
-        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
+        surface_path, rev_path, sem_auth = self._create_semantic_surface_and_review(
+            "2026-W35", "WEEKLY_MAGAZINE"
+        )
         report = surface_gate.evaluate_reader_surface_gate(
             self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now
         )
@@ -668,7 +779,9 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
             suppressions=suppressions,
         )
 
-        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
+        surface_path, rev_path, sem_auth = self._create_semantic_surface_and_review(
+            "2026-W35", "WEEKLY_MAGAZINE"
+        )
         report = surface_gate.evaluate_reader_surface_gate(
             self.root, m_path, semantic_authority=sem_auth, suppressions=suppressions, recorded_at=self.now
         )
@@ -729,7 +842,9 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
             }
         ]
 
-        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
+        surface_path, rev_path, sem_auth = self._create_semantic_surface_and_review(
+            "2026-W35", "WEEKLY_MAGAZINE"
+        )
         report_fail = surface_gate.evaluate_reader_surface_gate(
             self.root, m_path, semantic_authority=sem_auth, semantic_review_findings=sem_findings, recorded_at=self.now
         )
@@ -779,8 +894,8 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
 
     def test_semantic_authority_surface_sha_mismatch_fails(self) -> None:
         """Semantic authority bound to wrong primary surface SHA triggers blocking finding."""
-        _, main_tex, _, m_path = self._build_valid_manifest()
-        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
+        _, _, _, m_path = self._build_valid_manifest()
+        _, _, sem_auth = self._create_semantic_surface_and_review()
         sem_auth["surface_sha256"] = "f" * 64
         report = surface_gate.evaluate_reader_surface_gate(
             self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now
@@ -790,10 +905,8 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
 
     def test_semantic_authority_non_pass_fails(self) -> None:
         """Semantic authority with non-PASS status/decision triggers blocking finding."""
-        _, main_tex, _, m_path = self._build_valid_manifest()
-        sem_auth = surface_gate.build_semantic_authority(
-            main_tex, decision="FAIL", status="FAILED", recorded_at=self.now
-        )
+        _, _, _, m_path = self._build_valid_manifest()
+        _, _, sem_auth = self._create_semantic_surface_and_review(decision="FAIL")
         report = surface_gate.evaluate_reader_surface_gate(
             self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now
         )
@@ -802,8 +915,8 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
 
     def test_validate_reader_surface_gate_valid_passes(self) -> None:
         """Independent validator passes a well-formed, untampered Reader-Surface Gate."""
-        _, main_tex, _, m_path = self._build_valid_manifest()
-        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
+        _, _, _, m_path = self._build_valid_manifest()
+        _, _, sem_auth = self._create_semantic_surface_and_review()
         gate_path = self.root / "sources/2026-W35/publication/v2/reader-surface-gate-v2.json"
         surface_gate.evaluate_reader_surface_gate(
             self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now, output_path=gate_path
@@ -816,8 +929,8 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
 
     def test_validate_reader_surface_gate_tampered_gate_sha_fails(self) -> None:
         """Independent validator catches fabricated or tampered gate_sha256."""
-        _, main_tex, _, m_path = self._build_valid_manifest()
-        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
+        _, _, _, m_path = self._build_valid_manifest()
+        _, _, sem_auth = self._create_semantic_surface_and_review()
         gate_path = self.root / "sources/2026-W35/publication/v2/reader-surface-gate-v2.json"
         surface_gate.evaluate_reader_surface_gate(
             self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now, output_path=gate_path
@@ -831,22 +944,24 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
 
     def test_validate_reader_surface_gate_stale_surface_sha_or_bytes_fails(self) -> None:
         """Independent validator catches drifted or mutated on-disk surface bytes."""
-        _, main_tex, _, m_path = self._build_valid_manifest()
-        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
+        _, _, _, m_path = self._build_valid_manifest()
+        surface_path, _, sem_auth = self._create_semantic_surface_and_review()
         gate_path = self.root / "sources/2026-W35/publication/v2/reader-surface-gate-v2.json"
         surface_gate.evaluate_reader_surface_gate(
             self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now, output_path=gate_path
         )
-        # Mutate main_tex on disk after gate evaluation
-        main_tex.write_text(main_tex.read_text(encoding="utf-8") + "% mutated comment\n", encoding="utf-8")
+        # Mutate surface_path on disk after gate evaluation
+        surface_data = core.load_json(surface_path)
+        surface_data["closing_synthesis"] += " (mutated)"
+        core.write_json(surface_path, surface_data)
         with self.assertRaises(ValueError) as ctx:
             surface_gate.validate_reader_surface_gate(self.root, gate_path)
         self.assertIn("drifted", str(ctx.exception))
 
     def test_validate_reader_surface_gate_identity_mismatch_fails(self) -> None:
         """Independent validator rejects issue_id or publication_profile identity mismatch."""
-        _, main_tex, _, m_path = self._build_valid_manifest()
-        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
+        _, _, _, m_path = self._build_valid_manifest()
+        _, _, sem_auth = self._create_semantic_surface_and_review()
         gate_path = self.root / "sources/2026-W35/publication/v2/reader-surface-gate-v2.json"
         surface_gate.evaluate_reader_surface_gate(
             self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now, output_path=gate_path
@@ -860,8 +975,8 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
 
     def test_validate_reader_surface_gate_unresolved_blocking_finding_fails(self) -> None:
         """Independent validator rejects gate record containing unresolved blocking findings."""
-        _, main_tex, _, m_path = self._build_valid_manifest()
-        sem_auth = surface_gate.build_semantic_authority(main_tex, recorded_at=self.now)
+        _, _, _, m_path = self._build_valid_manifest()
+        _, _, sem_auth = self._create_semantic_surface_and_review()
         gate_path = self.root / "sources/2026-W35/publication/v2/reader-surface-gate-v2.json"
         surface_gate.evaluate_reader_surface_gate(
             self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now, output_path=gate_path
@@ -886,6 +1001,214 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
         with self.assertRaises(ValueError) as ctx:
             surface_gate.validate_reader_surface_gate(self.root, gate_path)
         self.assertIn("unresolved blocking finding", str(ctx.exception))
+
+    # Required Tests A through I (Issue #434 final bounded correction)
+    def test_required_a_synthetic_pass_rejection(self) -> None:
+        """Test A: Synthetic PASS rejection - clean surface + fabricated dict without review artifact fails."""
+        _, main_tex, _, m_path = self._build_valid_manifest()
+        fabricated_auth = {
+            "status": "PASSED",
+            "decision": "PASS",
+            "reviewed_by": "ChatGPT",
+            "surface_sha256": core.sha256_file(main_tex),
+            "recorded_at": core.iso_utc(self.now),
+        }
+        with self.assertRaises(ValueError) as ctx:
+            surface_gate.evaluate_reader_surface_gate(
+                self.root, m_path, semantic_authority=fabricated_auth, recorded_at=self.now
+            )
+        self.assertIn("synthetic PASS dictionary is rejected", str(ctx.exception))
+
+    def test_required_b_missing_review_artifact(self) -> None:
+        """Test B: Missing review artifact - review_path pointing to non-existent file fails."""
+        _, main_tex, _, m_path = self._build_valid_manifest()
+        sem_auth = {
+            "status": "PASSED",
+            "decision": "PASS",
+            "reviewed_by": "ChatGPT",
+            "surface_sha256": core.sha256_file(main_tex),
+            "recorded_at": core.iso_utc(self.now),
+            "review_path": "sources/2026-W35/publication/v2/non-existent-review.json",
+            "review_sha256": "0" * 64,
+        }
+        with self.assertRaises(ValueError) as ctx:
+            surface_gate.evaluate_reader_surface_gate(
+                self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now
+            )
+        self.assertIn("missing on disk", str(ctx.exception))
+
+    def test_required_c_corrupt_review_digest(self) -> None:
+        """Test C: Missing / corrupt review digest fails validation."""
+        surface_path, rev_path, sem_auth = self._create_semantic_surface_and_review()
+        rev_data = core.load_json(rev_path)
+        rev_data["review_sha256"] = "f" * 64
+        core.write_json(rev_path, rev_data)
+        sem_auth["review_sha256"] = "f" * 64
+        _, _, _, m_path = self._build_valid_manifest()
+        with self.assertRaises(ValueError) as ctx:
+            surface_gate.evaluate_reader_surface_gate(
+                self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now
+            )
+        self.assertIn("digest mismatch", str(ctx.exception))
+
+    def test_required_d_surface_mismatch(self) -> None:
+        """Test D: Surface mismatch - review bound to drifted surface bytes fails."""
+        _, _, _, m_path = self._build_valid_manifest()
+        other_file = self.root / "sources/2026-W35/publication/v2/other-surface.json"
+        other_file.parent.mkdir(parents=True, exist_ok=True)
+        other_file.write_text('{"other": 1}', encoding="utf-8")
+        _, _, sem_auth = self._create_semantic_surface_and_review(surface_path=other_file)
+        other_file.write_text('{"other": 2}', encoding="utf-8")
+        with self.assertRaises(ValueError) as ctx:
+            surface_gate.evaluate_reader_surface_gate(
+                self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now
+            )
+        self.assertIn("drifted", str(ctx.exception))
+
+    def test_required_e_review_decision_fail(self) -> None:
+        """Test E: Review decision FAIL triggers gate failure."""
+        _, _, _, m_path = self._build_valid_manifest()
+        _, _, sem_auth_fail = self._create_semantic_surface_and_review(decision="FAIL")
+        report = surface_gate.evaluate_reader_surface_gate(
+            self.root, m_path, semantic_authority=sem_auth_fail, recorded_at=self.now
+        )
+        self.assertEqual(report["status"], "FAILED")
+        self.assertEqual(report["summary"]["verdict"], "FAILED")
+
+    def test_required_f_blocking_finding_remains(self) -> None:
+        """Test F: Blocking finding remains - decision forged to PASS with unresolved finding fails."""
+        _, _, _, m_path = self._build_valid_manifest()
+        _, _, sem_auth_forged = self._create_semantic_surface_and_review(
+            decision="PASS", unresolved_blocking=True
+        )
+        with self.assertRaises(ValueError) as ctx:
+            surface_gate.evaluate_reader_surface_gate(
+                self.root, m_path, semantic_authority=sem_auth_forged, recorded_at=self.now
+            )
+        self.assertIn("unresolved blocking finding", str(ctx.exception))
+
+    def test_required_g_valid_persisted_semantic_review_passes(self) -> None:
+        """Test G: Valid persisted semantic review PASS passes gate and independent validation."""
+        _, _, _, m_path = self._build_valid_manifest()
+        surface_path, rev_path, sem_auth = self._create_semantic_surface_and_review()
+        gate_path = self.root / "sources/2026-W35/publication/v2/reader-surface-gate-v2.json"
+        report = surface_gate.evaluate_reader_surface_gate(
+            self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now, output_path=gate_path
+        )
+        self.assertEqual(report["status"], "PASSED")
+        self.assertEqual(report["summary"]["blocking_findings"], 0)
+        validated = surface_gate.validate_reader_surface_gate(
+            self.root, gate_path, issue_id="2026-W35", publication_profile="WEEKLY_MAGAZINE"
+        )
+        self.assertEqual(validated["status"], "PASSED")
+
+    def test_required_h_pre_tex_ordering_missing_review_blocks_tex(self) -> None:
+        """Test H: Pre-TeX ordering - missing or failing review prevents survey_root creation and TeX writing."""
+        from scripts import survey_weekly_semantic_publication_v2 as weekly_pub
+        profile_path, arch_path, approval_path, main_tex, references_bib = self._setup_edition(
+            "2026-W35", "WEEKLY", "WEEKLY_MAGAZINE", ["Explain agent workflows"]
+        )
+        survey_root = self.root / "surveys/weekly/2026-W35"
+        if survey_root.exists():
+            shutil.rmtree(survey_root)
+        self.assertFalse(survey_root.exists())
+
+        source_root = self.root / "sources/2026-W35"
+        pub_v2 = source_root / "publication/v2"
+        pub_v2.mkdir(parents=True, exist_ok=True)
+        draft_v2 = source_root / "draft/v2"
+        draft_v2.mkdir(parents=True, exist_ok=True)
+
+        core.write_json(draft_v2 / "interactive-drafting-synthesis-input.json", {
+            "packages": [{
+                "package_id": "PKG-1",
+                "headline": "Agent Workflows",
+                "deck": "Autonomous patterns overview",
+                "deck_discovery_ids": [],
+                "blocks": [{"block_id": "b1", "text": "Prose explaining agent coordination.", "discovery_ids": []}],
+            }]
+        })
+        pkg_dir = draft_v2 / "packages" / "PKG-1"
+        pkg_dir.mkdir(parents=True, exist_ok=True)
+        core.write_json(pkg_dir / "draft-package.json", {
+            "basis": {"evidence_acceptance_sha256": self.dummy_sha}
+        })
+        core.write_json(pkg_dir / "draft-result.json", {
+            "package_id": "PKG-1",
+            "headline": "Agent Workflows",
+            "deck": "Autonomous patterns overview",
+            "blocks": [{"block_id": "b1", "block_type": "PROSE", "text": "Prose explaining agent coordination."}],
+        })
+        core.write_json(draft_v2 / "profile-synthesis-input.json", {})
+        core.write_json(draft_v2 / "profile-synthesis-result.json", {
+            "publication_payload": {
+                "closing_synthesis": "Autonomous agents operate independently within defined boundaries."
+            }
+        })
+        input_data = {
+            "schema_version": "2.0-rc1",
+            "issue_id": "2026-W35",
+            "runner": "WEEKLY_MAGAZINE",
+            "cover": {"headline": "Weekly Agent Systems", "deck": "Comprehensive coverage", "anchors": ["Agent Workflows"]},
+            "frontmatter": {"heading": "Frontmatter", "lede": "Lede text", "scope_notes": ["Note 1"]},
+            "final_summary": {
+                "heading": "今週の総括",
+                "paragraphs": [
+                    "First substantive overview paragraph of generative AI advancements in this weekly window.",
+                    "Second detailed analytical paragraph examining practical adoption patterns and production architectures.",
+                    "Autonomous agents operate independently within defined boundaries.",
+                ],
+            },
+        }
+        input_path = source_root / "semantic-pub-input.json"
+        core.write_json(input_path, input_data)
+        state = {
+            "issue_id": "2026-W35",
+            "lifecycle_state": "DRAFT_COMPLETE",
+            "next_action": "stage:semantic-publication-validation",
+            "profile": {"path": f"sources/2026-W35/production-profile.json"},
+        }
+        state_path = source_root / "production-state.json"
+        core.write_json(state_path, state)
+
+        # Run with missing semantic review -> SystemExit before survey_root.mkdir
+        import sys
+        import unittest.mock
+        old_argv = sys.argv
+        with unittest.mock.patch.object(weekly_pub.agent, "validate_agent_state", return_value=[]), \
+             unittest.mock.patch.object(weekly_pub.agent, "resolve_active_evidence_views", return_value={"evidence_path": "dummy"}), \
+             unittest.mock.patch.object(weekly_pub.drafting, "validate_synthesis_result", return_value=[]), \
+             unittest.mock.patch.object(weekly_pub.drafting, "validate_draft_result", return_value=[]), \
+             unittest.mock.patch.object(weekly_pub, "_records_from_authorities", return_value=({}, {})):
+            try:
+                sys.argv = [
+                    "survey_weekly_semantic_publication_v2.py",
+                    "--repo-root", str(self.root),
+                    "--state", str(state_path),
+                    "--input", str(input_path),
+                ]
+                with self.assertRaises(SystemExit) as ctx:
+                    weekly_pub.main()
+                self.assertIn("Pre-TeX semantic review artifact missing", str(ctx.exception))
+                # Verify survey_root was NOT created
+                self.assertFalse(survey_root.exists())
+                self.assertFalse((survey_root / "main.tex").exists())
+                self.assertFalse((survey_root / "references.bib").exists())
+            finally:
+                sys.argv = old_argv
+
+    def test_required_i_stale_review_after_payload_mutation(self) -> None:
+        """Test I: Stale review after payload mutation - modifying surface payload fails."""
+        _, _, _, m_path = self._build_valid_manifest()
+        surface_path, rev_path, sem_auth = self._create_semantic_surface_and_review()
+        surface_data = core.load_json(surface_path)
+        surface_data["closing_synthesis"] += " (mutated)"
+        core.write_json(surface_path, surface_data)
+        with self.assertRaises(ValueError) as ctx:
+            surface_gate.evaluate_reader_surface_gate(
+                self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now
+            )
+        self.assertIn("drifted", str(ctx.exception))
 
     def test_missing_publication_payload_refuses_fallback(self) -> None:
         """Weekly reader-facing synthesis refuses fallback to internal profile_payload."""

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/reader-surface-semantic-review-v2.schema.json",
+  "title": "Survey Production Core v2 Pre-Publication Reader-Surface Semantic Review Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "issue_id",
+    "publication_profile",
+    "reviewed_surface",
+    "decision",
+    "reviewed_by",
+    "reviewed_at",
+    "findings",
+    "review_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0-rc1"},
+    "issue_id": {"type": "string", "minLength": 1},
+    "publication_profile": {"enum": ["WEEKLY_MAGAZINE", "LONGFORM_SPECIAL"]},
+    "reviewed_surface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "decision": {"enum": ["PASS", "FAIL"]},
+    "reviewed_by": {"type": "string", "minLength": 1},
+    "reviewed_at": {"type": "string", "format": "date-time"},
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "review_kind": {"enum": ["SEMANTIC_EDITORIAL", "VISUAL"]},
+    "status": {"enum": ["PASSED", "FAILED"]},
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "finding_id",
+          "locator",
+          "text_span",
+          "severity",
+          "reason",
+          "proposed_normalization",
+          "disposition"
+        ],
+        "properties": {
+          "finding_id": {"type": "string", "minLength": 1},
+          "rule_id": {"type": "string", "minLength": 1},
+          "artifact": {"type": "string", "minLength": 1},
+          "path": {"type": "string", "minLength": 1},
+          "field_or_block": {"type": "string", "minLength": 1},
+          "locator": {"type": "string", "minLength": 1},
+          "text_span": {"type": "string"},
+          "severity": {"enum": ["BLOCKING", "WARNING", "INFO", "SUPPRESSED"]},
+          "reason": {"type": "string", "minLength": 1},
+          "proposed_normalization": {"type": "string"},
+          "disposition": {"enum": ["UNRESOLVED", "SUPPRESSED", "NORMALIZED", "RESOLVED"]}
+        }
+      }
+    },
+    "summary": {"type": "string"},
+    "review_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
