@@ -19,6 +19,7 @@ from scripts import survey_agent_control_v2 as agent
 from scripts import survey_bibliography_access_provenance_v2 as provenance_resolver
 from scripts import survey_drafting_v2 as drafting
 from scripts import survey_production_v2 as core
+from scripts import survey_reader_surface_gate_v2 as surface_gate
 from scripts.render_article_draft_tex import tex_escape
 
 
@@ -379,6 +380,12 @@ def main() -> int:
     ap.add_argument("--repo-root", default=".")
     ap.add_argument("--state", required=True)
     ap.add_argument("--input", required=True)
+    ap.add_argument("--semantic-review", default=None, help="Path to reader-surface-semantic-review-v2.json")
+    ap.add_argument(
+        "--materialize-surface-only",
+        action="store_true",
+        help="Materialize pre-TeX structured reader surface without TeX generation",
+    )
     args = ap.parse_args()
 
     root = Path(args.repo_root).resolve()
@@ -420,12 +427,22 @@ def main() -> int:
     if syn_errors:
         raise SystemExit("upstream Profile Synthesis invalid: " + "; ".join(syn_errors))
 
-    profile_payload = synthesis_result.get("profile_payload")
-    current_interpretation = profile_payload.get("current_interpretation") if isinstance(profile_payload, dict) else None
-    if not isinstance(current_interpretation, str) or not current_interpretation.strip():
-        raise SystemExit("Weekly Profile Synthesis lacks profile_payload.current_interpretation required by Architecture")
-    if current_interpretation not in data["final_summary"]["paragraphs"]:
-        raise SystemExit("Weekly final summary must preserve exact profile_synthesis.current_interpretation as an approved source paragraph")
+    publication_payload = synthesis_result.get("publication_payload")
+    if not isinstance(publication_payload, dict) or not publication_payload:
+        raise SystemExit(
+            "Weekly Profile Synthesis lacks authoritative publication_payload; refusing fallback to internal profile_payload"
+        )
+    closing_text = publication_payload.get("closing_synthesis") or publication_payload.get("current_interpretation")
+    if not isinstance(closing_text, str) or not closing_text.strip():
+        raise SystemExit(
+            "Weekly Profile Synthesis publication_payload lacks non-empty closing_synthesis / current_interpretation; refusing fallback"
+        )
+    syn_findings = surface_gate.scan_reader_text_lines([closing_text], "Profile Synthesis", str(synthesis_result_path))
+    syn_blocking = [f for f in syn_findings if f.severity == "BLOCKING" and f.disposition == "UNRESOLVED"]
+    if syn_blocking:
+        raise SystemExit(f"Weekly synthesis paragraph leaks production metadata: {syn_blocking[0].text_span} ({syn_blocking[0].reason})")
+    if closing_text not in data["final_summary"]["paragraphs"]:
+        raise SystemExit("Weekly final summary must preserve exact approved synthesis paragraph")
 
     semantic_archive = _load(source_root / "draft/v2/interactive-drafting-synthesis-input.json")
     spec_by_id = {row["package_id"]: row for row in semantic_archive["packages"]}
@@ -479,9 +496,103 @@ def main() -> int:
         if not entity.get("canonical_name") or not entity.get("canonical_url"):
             raise SystemExit(f"cited authority lacks canonical bibliography metadata: {did}")
 
-    survey_root.mkdir(parents=True, exist_ok=True)
+    # Pre-TeX Structured Reader-Surface Validation (Gate Ordering / Finding 5)
     publication_root = source_root / "publication/v2"
     publication_root.mkdir(parents=True, exist_ok=True)
+
+    packages_input = [
+        {
+            "package_id": plan["package_id"],
+            "headline": spec["headline"],
+            "deck": spec["deck"],
+            "blocks": [
+                {"block_id": b["block_id"], "text": b["text"]}
+                for b in spec["blocks"]
+            ],
+        }
+        for plan, spec, package, result in ordered
+    ]
+    surface_input_path = publication_root / "reader-surface-input-v2.json"
+    surface_gate.build_weekly_reader_surface_input(
+        root,
+        issue_id,
+        "WEEKLY_MAGAZINE",
+        closing_text,
+        list(data.get("final_summary", {}).get("paragraphs", [])),
+        packages_input,
+        headline=data.get("cover", {}).get("headline") or data.get("headline"),
+        deck=data.get("cover", {}).get("deck") or data.get("deck"),
+        output_path=surface_input_path,
+    )
+
+    reader_elements: list[tuple[str, str, str]] = [
+        (closing_text, "Profile Synthesis closing_synthesis", str(synthesis_result_path)),
+    ]
+    for p_idx, p in enumerate(data.get("final_summary", {}).get("paragraphs", [])):
+        reader_elements.append((p, f"final_summary paragraph {p_idx+1}", str(input_path)))
+    if data.get("headline"):
+        reader_elements.append((data["headline"], "issue headline", str(input_path)))
+    if data.get("deck"):
+        reader_elements.append((data["deck"], "issue deck", str(input_path)))
+    for plan, spec, package, result in ordered:
+        pid = plan["package_id"]
+        reader_elements.append((spec["headline"], f"package {pid} headline", str(spec_by_id[pid])))
+        reader_elements.append((spec["deck"], f"package {pid} deck", str(spec_by_id[pid])))
+        for b_idx, block in enumerate(spec["blocks"]):
+            reader_elements.append(
+                (block["text"], f"package {pid} block {block.get('block_id', b_idx+1)}", str(spec_by_id[pid]))
+            )
+
+    pre_tex_findings: list[surface_gate.SurfaceFinding] = []
+    for text, label, loc in reader_elements:
+        f_list = surface_gate.scan_reader_text_lines([text], label, loc)
+        pre_tex_findings.extend(f_list)
+
+    blocking_pre_tex = [
+        f for f in pre_tex_findings if f.severity == "BLOCKING" and f.disposition == "UNRESOLVED"
+    ]
+    if blocking_pre_tex:
+        first = blocking_pre_tex[0]
+        raise SystemExit(
+            f"Pre-TeX reader-facing validation FAILED: {first.artifact} leaks production metadata: {first.text_span!r} ({first.reason})"
+        )
+
+    if args.materialize_surface_only:
+        print(json.dumps({
+            "issue_id": issue_id,
+            "structured_surface": str(surface_input_path.relative_to(root)),
+            "surface_sha256": core.sha256_file(surface_input_path),
+            "status": "SURFACE_MATERIALIZED",
+        }, indent=2))
+        return 0
+
+    sem_rev_path = (
+        Path(args.semantic_review)
+        if args.semantic_review
+        else (publication_root / "reader-surface-semantic-review-v2.json")
+    )
+    if not sem_rev_path.is_file():
+        raise SystemExit(
+            f"Pre-TeX semantic review artifact missing on disk: {sem_rev_path}; TeX/BibTeX materialization prohibited until semantic review PASS"
+        )
+
+    try:
+        validated_sem = surface_gate.load_and_validate_semantic_review(
+            root,
+            sem_rev_path,
+            expected_issue_id=issue_id,
+            expected_publication_profile="WEEKLY_MAGAZINE",
+            expected_surface_path=surface_input_path,
+            expected_surface_sha256=core.sha256_file(surface_input_path),
+            require_pass=True,
+        )
+    except Exception as exc:
+        raise SystemExit(f"Pre-TeX semantic review validation FAILED: {exc}")
+
+    if validated_sem.get("decision") != "PASS" or validated_sem.get("unresolved_blocking_count", 0) > 0:
+        raise SystemExit("Pre-TeX semantic review did not yield PASS decision; TeX/BibTeX materialization prohibited")
+
+    survey_root.mkdir(parents=True, exist_ok=True)
     quality_root = publication_root / "quality"
     quality_root.mkdir(parents=True, exist_ok=True)
     for path in (

@@ -30,6 +30,7 @@ from scripts import survey_production_v2 as core
 from scripts import survey_publication_v2 as publication
 from scripts import survey_quality_v2 as quality
 from scripts import survey_reader_publication_v2 as reader
+from scripts import survey_reader_surface_gate_v2 as surface_gate
 from scripts import survey_review_attention_v2 as review_attention
 from scripts import survey_schema_v2 as schema_gate
 from scripts import survey_screening_v2 as screening
@@ -69,6 +70,7 @@ REQUIRED_CURRENT = {
         "quality-regression-bundle",
         "semantic-review",
         "visual-review",
+        "reader-surface-gate",
     },
     "VALIDATED_DRAFT": {"publication-candidate"},
     "RELEASE_CANDIDATE": {"freeze-record", "release-manifest"},
@@ -423,7 +425,15 @@ def _validate_stage_semantics(
         return
 
     if lifecycle == "DRAFT_COMPLETE":
-        manuscript_path, source_path, pdf_path, bundle_path, semantic_path, visual_path = _require(
+        (
+            manuscript_path,
+            source_path,
+            pdf_path,
+            bundle_path,
+            semantic_path,
+            visual_path,
+            gate_path,
+        ) = _require(
             current,
             "reader-manuscript",
             "validated-source",
@@ -431,6 +441,7 @@ def _validate_stage_semantics(
             "quality-regression-bundle",
             "semantic-review",
             "visual-review",
+            "reader-surface-gate",
         )
         manuscript = reader.validate_manuscript_manifest(repo_root, manuscript_path, issue_id=state["issue_id"])
         if manuscript["research_profile"] != profile["research_profile"] or manuscript["publication_profile"] != profile["publication_profile"]:
@@ -459,11 +470,28 @@ def _validate_stage_semantics(
                 raise StageValidationError(f"{label} review does not bind exact validated source")
             if review["pdf"]["path"] != _rel(repo_root, pdf_path) or review["pdf"]["sha256"] != core.sha256_file(pdf_path):
                 raise StageValidationError(f"{label} review does not bind exact publication PDF")
+        try:
+            surface_gate.validate_reader_surface_gate(
+                repo_root,
+                gate_path,
+                issue_id=state["issue_id"],
+                publication_profile=profile["publication_profile"],
+            )
+        except ValueError as exc:
+            raise StageValidationError(f"Reader-Surface Gate validation failed: {exc}") from exc
         return
 
     if lifecycle == "VALIDATED_DRAFT":
         (candidate_path,) = _require(current, "publication-candidate")
-        manuscript_path, source_path, pdf_path, bundle_path, semantic_path, visual_path = _require(
+        (
+            manuscript_path,
+            source_path,
+            pdf_path,
+            bundle_path,
+            semantic_path,
+            visual_path,
+            gate_path,
+        ) = _require(
             artifacts,
             "reader-manuscript",
             "validated-source",
@@ -471,6 +499,7 @@ def _validate_stage_semantics(
             "quality-regression-bundle",
             "semantic-review",
             "visual-review",
+            "reader-surface-gate",
         )
         candidate = publication.validate_candidate(repo_root, candidate_path, issue_id=state["issue_id"])
         if candidate["publication_profile"] != profile["publication_profile"]:
@@ -491,6 +520,15 @@ def _validate_stage_semantics(
             or candidate["pdf"]["byte_count"] != pdf_path.stat().st_size
         ):
             raise StageValidationError("Publication Candidate does not bind exact publication PDF bytes")
+        try:
+            surface_gate.validate_reader_surface_gate(
+                repo_root,
+                gate_path,
+                issue_id=state["issue_id"],
+                publication_profile=profile["publication_profile"],
+            )
+        except ValueError as exc:
+            raise StageValidationError(f"Reader-Surface Gate validation failed: {exc}") from exc
         return
 
     if lifecycle == "RELEASE_CANDIDATE":

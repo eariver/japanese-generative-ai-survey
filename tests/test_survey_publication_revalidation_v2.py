@@ -267,6 +267,7 @@ class Fixture:
                         ("quality-regression-bundle", "quality-regression-bundle-v2.json"),
                         ("semantic-review", "semantic-editorial-review-v2.json"),
                         ("visual-review", "visual-review-v2.json"),
+                        ("reader-surface-gate", "reader-surface-gate-v2.json"),
                     ]
                 ] + [
                     {"name": "publication-pdf", "path": str((self.survey / "main.pdf").relative_to(self.repo)),
@@ -363,6 +364,55 @@ class Fixture:
             self.repo, pub / "reader-manuscript-v2.json", self.survey / "main.pdf", 1,
             "VISUAL", vis_checks, EXECUTOR, T0, pub / "visual-review-v2.json",
         )
+        sem_surface_path = pub / "reader-surface-input-v2.json"
+        core.write_json(sem_surface_path, {
+            "schema_version": "2.0-rc1",
+            "issue_id": ISSUE,
+            "publication_profile": "WEEKLY_MAGAZINE",
+            "headline": "Weekly Survey",
+            "deck": "Weekly survey deck",
+            "closing_synthesis": "Weekly survey closing synthesis.",
+            "final_summary": {
+                "heading": "Summary",
+                "paragraphs": ["Substantive summary paragraph 1.", "Substantive summary paragraph 2."],
+            },
+            "packages": [],
+        })
+        sem_rev_path = pub / "reader-surface-semantic-review-v2.json"
+        sem_rev_base = {
+            "schema_version": "2.0-rc1",
+            "issue_id": ISSUE,
+            "publication_profile": "WEEKLY_MAGAZINE",
+            "review_kind": "SEMANTIC_EDITORIAL",
+            "reviewed_surface": {
+                "path": str(sem_surface_path.relative_to(self.repo)).replace("\\", "/"),
+                "sha256": core.sha256_file(sem_surface_path),
+            },
+            "checks": [
+                {
+                    "check_id": "READER_PIPELINE_INDEPENDENCE",
+                    "status": "PASS",
+                    "detail": "Prose is independently understandable without internal pipeline knowledge.",
+                    "evidence_locations": [f"{sem_surface_path.name}:closing_synthesis"],
+                }
+            ],
+            "decision": "PASS",
+            "reviewed_by": EXECUTOR,
+            "reviewed_at": core.iso_utc(T0),
+            "status": "PASSED",
+            "findings": [],
+            "summary": "Pre-TeX semantic editorial review passed",
+        }
+        sem_rev_base["review_sha256"] = core.sha256_object(sem_rev_base)
+        core.write_json(sem_rev_path, sem_rev_base)
+        reader.build_reader_surface_gate(
+            self.repo,
+            pub / "reader-manuscript-v2.json",
+            sem_rev_path,
+            output_path=pub / "reader-surface-gate-v2.json",
+            evaluated_by=EXECUTOR,
+            recorded_at=T0,
+        )
 
     def _write_state(self, provisional: bool = False) -> None:
         states = ["ISSUE_INITIALIZED", "DISCOVERY_COLLECTED", "CANDIDATES_NORMALIZED",
@@ -434,7 +484,8 @@ class PublicationRevalidationTests(unittest.TestCase):
 
     def regenerate(self, fix: Fixture, version: int = 2) -> None:
         for name in ("reader-manuscript-v2.json", "quality-regression-bundle-v2.json",
-                     "semantic-editorial-review-v2.json", "visual-review-v2.json"):
+                     "semantic-editorial-review-v2.json", "visual-review-v2.json",
+                     "reader-surface-gate-v2.json"):
             (fix.src / "publication" / "v2" / name).unlink()
         fix._publication_files(version=version)
         fix._publication_authority()
@@ -618,7 +669,7 @@ class PublicationRevalidationTests(unittest.TestCase):
             state_path = fix.src / "production-state.json"
             self.regenerate(fix)
             pre = agent.validate_agent_state(self.root, self.cfg, core.load_json(state_path))
-            self.assertEqual(len([e for e in pre if "drift" in e]), 6, pre)
+            self.assertEqual(len([e for e in pre if "drift" in e]), 7, pre)
             agent.revalidate_publication_surface(
                 self.root, self.cfg, state_path, "REVIEWED_CORE_CHANGE",
                 "W34-defect-shape reproduction", EXECUTOR, T0 + timedelta(hours=1), None,

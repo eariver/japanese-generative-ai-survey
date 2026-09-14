@@ -19,6 +19,7 @@ from pypdf import PdfReader
 from scripts import survey_production_v2 as core
 from scripts import survey_quality_v2 as quality
 from scripts import survey_reader_fidelity_v2 as fidelity
+from scripts import survey_reader_surface_gate_v2 as surface_gate
 from scripts import survey_schema_v2 as schema_gate
 
 MANUSCRIPT_SCHEMA = Path("schemas/reader-manuscript-v2.schema.json")
@@ -170,6 +171,7 @@ def _required_reader_requirements(profile: dict[str, Any]) -> set[str]:
 def _validate_manifest_semantics(
     repo_root: Path,
     payload: dict[str, Any],
+    suppressions: list[dict[str, Any]] | None = None,
 ) -> tuple[Path, dict[str, Any], Path]:
     issue_id = payload["issue_id"]
     profile_path = _validate_artifact_ref(
@@ -269,6 +271,26 @@ def _validate_manifest_semantics(
         payload["reader_requirements"],
         profile["publication_profile"],
     )
+
+    # #434 / #491: Pre-publication reader-surface gate: fail fast before
+    # expensive TeX/layout/PDF compilation or candidate assembly if reader-facing
+    # text contains prohibited internal pipeline/screening/architecture leakage.
+    actual_suppressions = suppressions
+    if actual_suppressions is None:
+        source_root_rel = profile.get("paths", {}).get("source_root")
+        if source_root_rel:
+            sup_path = (
+                repo_root
+                / source_root_rel
+                / "publication"
+                / "v2"
+                / "reader-surface-suppressions-v2.json"
+            )
+            if sup_path.is_file():
+                actual_suppressions = core.load_json(sup_path)
+    surface_gate.validate_manuscript_surface(
+        repo_root, payload, suppressions=actual_suppressions
+    )
     return source_path, profile, architecture_path
 
 
@@ -285,6 +307,8 @@ def build_manuscript_manifest(
     authored_by: str,
     recorded_at: datetime,
     output_path: Path,
+    *,
+    suppressions: list[dict[str, Any]] | None = None,
 ) -> Path:
     profile_path, profile = _profile(repo_root, production_profile_path, issue_id)
     architecture_file, _, approval_file = _architecture_authority(
@@ -324,7 +348,7 @@ def build_manuscript_manifest(
         repo_root / MANUSCRIPT_SCHEMA,
         label="Reader Manuscript Manifest",
     )
-    _validate_manifest_semantics(repo_root, payload)
+    _validate_manifest_semantics(repo_root, payload, suppressions=suppressions)
     if output_path.exists():
         raise ValueError(f"refusing to overwrite Reader Manuscript Manifest: {output_path}")
     core.write_json(output_path, payload)
@@ -336,6 +360,7 @@ def validate_manuscript_manifest(
     path: Path,
     *,
     issue_id: str | None = None,
+    suppressions: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     payload = schema_gate.load_and_validate_json(
         path,
@@ -365,7 +390,7 @@ def validate_manuscript_manifest(
     }
     if payload["manifest_sha256"] != core.sha256_object(base):
         raise ValueError("Reader Manuscript content digest mismatch")
-    _validate_manifest_semantics(repo_root, payload)
+    _validate_manifest_semantics(repo_root, payload, suppressions=suppressions)
     return payload
 
 
@@ -608,3 +633,72 @@ def validate_review_record(
     )
     core.parse_instant(payload["recorded_at"])
     return payload
+
+
+def build_reader_surface_gate(
+    repo_root: Path,
+    manuscript_path: Path,
+    semantic_review_path: Path,
+    *,
+    suppressions_path: Path | None = None,
+    output_path: Path | None = None,
+    evaluated_by: str = "Core v2 Pre-Publication Reader-Surface Gate",
+    recorded_at: datetime | None = None,
+) -> Path:
+    manuscript_file = _safe_file(repo_root, manuscript_path, "Reader Manuscript Manifest")
+    manuscript = validate_manuscript_manifest(repo_root, manuscript_file)
+    validated_sem = surface_gate.load_and_validate_reader_surface_semantic_review(
+        repo_root,
+        semantic_review_path,
+        expected_issue_id=manuscript["issue_id"],
+        expected_publication_profile=manuscript["publication_profile"],
+        require_pass=True,
+    )
+    surface_sha = validated_sem["surface_sha256"]
+    surface_path = validated_sem["surface_path"]
+    reviewed_by = validated_sem["reviewed_by"]
+    recorded_at = validated_sem["recorded_at"]
+    review_sha = validated_sem["review_sha256"]
+
+    suppressions: list[dict[str, Any]] = []
+    if suppressions_path is not None and suppressions_path.is_file():
+        suppressions = core.load_json(suppressions_path)
+    else:
+        profile_path = _validate_artifact_ref(repo_root, manuscript["production_profile"], "Review Production Profile")
+        _, profile = _profile(repo_root, profile_path, manuscript["issue_id"])
+        source_root_rel = profile.get("paths", {}).get("source_root")
+        if source_root_rel:
+            auto_sup = repo_root / source_root_rel / "publication" / "v2" / "reader-surface-suppressions-v2.json"
+            if auto_sup.is_file():
+                suppressions = core.load_json(auto_sup)
+
+    semantic_authority = {
+        "status": "PASSED",
+        "decision": "PASS",
+        "reviewed_by": reviewed_by,
+        "surface_path": surface_path,
+        "surface_sha256": surface_sha,
+        "recorded_at": recorded_at,
+        "review_path": _rel(repo_root, semantic_review_path),
+        "review_sha256": review_sha,
+        "summary": "Bound semantic review passed",
+    }
+
+    out = output_path
+    if out is None:
+        source_root_path = repo_root / manuscript["production_profile"]["path"]
+        _, prof = _profile(repo_root, source_root_path, manuscript["issue_id"])
+        src_root = prof.get("paths", {}).get("source_root", f"sources/{manuscript['issue_id']}")
+        out = repo_root / src_root / "publication" / "v2" / "reader-surface-gate-v2.json"
+
+    surface_gate.evaluate_reader_surface_gate(
+        repo_root,
+        manuscript_file,
+        semantic_authority=semantic_authority,
+        suppressions=suppressions,
+        evaluated_by=evaluated_by,
+        recorded_at=recorded_at or datetime.now(timezone.utc),
+        output_path=out,
+    )
+    return out
+
