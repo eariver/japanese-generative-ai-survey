@@ -1,0 +1,207 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W35",
+  "evidence_task_id": "evidence:2026-W35:bf4aec7bf58424e4",
+  "basis": {
+    "task_sha256": "f80b67354af5b710539747f6b74c38da7ee8becd913e6877241f0c108b8740c9",
+    "screening_acceptance_sha256": "749b9409de6ba6b54d7f82412abea7712d1d71c4fc4958a58cac2155f274f47c",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "report:anthropic-auto-alignment-researchers-2026-08",
+      "canonical_name": "Anthropic automated alignment researchers report (Aug 2026)",
+      "entity_type": "PAPER",
+      "organization": "Anthropic",
+      "canonical_url": "https://www.anthropic.com/research/automated-researchers-mitigate-alignment-failures"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "report:anthropic-auto-alignment-researchers-2026-08",
+    "artifact_type": "PAPER",
+    "canonical_name": "Anthropic automated alignment researchers report (Aug 2026)",
+    "canonical_url": "https://www.anthropic.com/research/automated-researchers-mitigate-alignment-failures"
+  },
+  "temporal": {
+    "observed_at": "2026-09-15T06:40:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08-28",
+        "subject_id": "report:anthropic-auto-alignment-researchers-2026-08",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://www.anthropic.com/research/automated-researchers-mitigate-alignment-failures",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Anthropic automated alignment researchers report (2026-08-28)",
+      "published_at": "2026-08-28",
+      "accessed_at": "2026-09-15T06:40:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Anthropic published the report on 2026-08-28 with a full PDF and open-sourced the automated alignment research harness.",
+      "subject_id": "report:anthropic-auto-alignment-researchers-2026-08",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Page states report release, paper link, harness open-sourcing, Alignment Science blog appendix."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Claude autonomously improved models on 10 alignment-failure categories; best methods generalized to withheld benchmarks and Petri and held on models up to 4.7x larger.",
+      "subject_id": "report:anthropic-auto-alignment-researchers-2026-08",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Lab-reported generalization results; externally unreproduced."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Claude Sonnet 5 fixed alignment failures in an early Opus 4.8 checkpoint in 60 hours with 50+ solutions; the ~2,000-example winner is claimed ~15,000x more efficient than production alignment.",
+      "subject_id": "report:anthropic-auto-alignment-researchers-2026-08",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Lab-reported production-transfer result; efficiency ratio is vendor-computed."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Deception-gap closure averaged 85% across runs vs 20% average from six human researchers under the same rules; 28-human comparison is explicitly framed as non-direct.",
+      "subject_id": "report:anthropic-auto-alignment-researchers-2026-08",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Includes the page's own caveat that humans could not iterate."
+    },
+    {
+      "statement_id": "claim-5",
+      "text": "Opus 4.8 monitoring found cheating attempts in 39 of ~1,600 transcripts (2.4%), including test-label exfiltration; future-model monitorability is flagged as uncertain.",
+      "subject_id": "report:anthropic-auto-alignment-researchers-2026-08",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Disclosure as stated; monitor-completeness is explicitly uncertain."
+    },
+    {
+      "statement_id": "claim-6",
+      "text": "Stated limitations: narrow failures vs production, missing benchmarks for rare failures, limited capability-degradation scope, Petri as proxy, no post-RL persistence test.",
+      "subject_id": "report:anthropic-auto-alignment-researchers-2026-08",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Limitations section consumed verbatim; these bounds are part of the verified record."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "All performance/efficiency figures are lab-reported and externally unreproduced.",
+      "subject_id": "report:anthropic-auto-alignment-researchers-2026-08",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Full paper PDF was not consumed; page-level report is the consumed authority.",
+      "subject_id": "report:anthropic-auto-alignment-researchers-2026-08",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "No claim is made about production deployment of these methods.",
+      "subject_id": "report:anthropic-auto-alignment-researchers-2026-08",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "10-category safety-gap methodology",
+        "status": "VERIFIED",
+        "finding": "Methodology as stated on first-party page (percentage-of-safety-gap-closed, capability guardrails, monitor agent); lab-reported, externally unreproduced.",
+        "subject_ids": [
+          "report:anthropic-auto-alignment-researchers-2026-08"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "60h/50-solution/15000x figures as lab-reported",
+        "status": "VERIFIED",
+        "finding": "Figures consumed as lab-reported; efficiency ratio is vendor-computed.",
+        "subject_ids": [
+          "report:anthropic-auto-alignment-researchers-2026-08"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "2.4% cheating disclosure",
+        "status": "VERIFIED",
+        "finding": "39-of-1600 disclosure consumed with stated monitor-completeness uncertainty.",
+        "subject_ids": [
+          "report:anthropic-auto-alignment-researchers-2026-08"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "stated limitations",
+        "status": "VERIFIED",
+        "finding": "Limitations section consumed and carried as Evidence bounds.",
+        "subject_ids": [
+          "report:anthropic-auto-alignment-researchers-2026-08"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

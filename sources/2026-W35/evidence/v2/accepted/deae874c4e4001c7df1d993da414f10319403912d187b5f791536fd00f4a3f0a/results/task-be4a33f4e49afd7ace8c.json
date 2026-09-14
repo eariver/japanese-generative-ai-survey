@@ -1,0 +1,179 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W35",
+  "evidence_task_id": "evidence:2026-W35:78faa6871005d1b7",
+  "basis": {
+    "task_sha256": "80a7dc3ad1df5b9dfddda23d47731bbb99bfd2401769b6a684530f6c196d3c22",
+    "screening_acceptance_sha256": "749b9409de6ba6b54d7f82412abea7712d1d71c4fc4958a58cac2155f274f47c",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "model:zai-glm-5-3-flash",
+      "canonical_name": "Z.ai GLM-5.3-Flash (Ox Alpha)",
+      "entity_type": "MODEL",
+      "organization": "Z.ai",
+      "canonical_url": "https://siliconangle.com/2026/08/26/z-ai-open-sources-ox-alpha-model-as-glm-5-3-flash/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model:zai-glm-5-3-flash",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "Z.ai GLM-5.3-Flash (Ox Alpha)",
+    "canonical_url": "https://siliconangle.com/2026/08/26/z-ai-open-sources-ox-alpha-model-as-glm-5-3-flash/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-15T06:40:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08-26",
+        "subject_id": "model:zai-glm-5-3-flash",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://siliconangle.com/2026/08/26/z-ai-open-sources-ox-alpha-model-as-glm-5-3-flash/",
+      "source_class": "SECONDARY",
+      "title": "Z.ai GLM-5.3-Flash (Ox Alpha) open weights under MIT (2026-08-26)",
+      "published_at": "2026-08-26",
+      "accessed_at": "2026-09-15T06:40:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Z.ai confirmed on 2026-08-26 that stealth preview Ox Alpha (OpenRouter, free from 08-20) is GLM-5.3-Flash with MIT-licensed HF weights.",
+      "subject_id": "model:zai-glm-5-3-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Reveal facts via secondary + official X ledger rows; Z.ai blog + HF card are verification targets."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported specs: 320B MoE / 18B active, 1M-token multimodal input, 131K-token output, sparse + linear attention, 30T-token training.",
+      "subject_id": "model:zai-glm-5-3-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Spec figures relayed; need HF card verification."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Vendor-claimed benchmark results (GDPval-AA v2 top vs Opus 4.8 / GPT-5.6 Terra / Gemini 3.7 Flash; AutomationBench 2nd) and 10x cost claim are unreproduced.",
+      "subject_id": "model:zai-glm-5-3-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Explicitly publisher-only until independent reproduction."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Anonymous-preview usage volume figures (20-42T tokens) are platform/press-reported and inconsistent across accounts.",
+      "subject_id": "model:zai-glm-5-3-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Treat as momentum color, not measurement."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "No Z.ai first-party page or HF card retrieved; promotion pricing vs list pricing needs primary.",
+      "subject_id": "model:zai-glm-5-3-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "'Trained on Chinese chips' claim is unnamed/unsourced; dual context-window figures need reconciliation.",
+      "subject_id": "model:zai-glm-5-3-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "MIT weight availability",
+        "status": "UNRESOLVED",
+        "finding": "Pending Z.ai blog / HF card verification; official X rows corroborate in the Grok record.",
+        "subject_ids": [
+          "model:zai-glm-5-3-flash"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "320B/18B + 1M ctx specs",
+        "status": "UNRESOLVED",
+        "finding": "Secondary-relayed; pending HF card verification.",
+        "subject_ids": [
+          "model:zai-glm-5-3-flash"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "GDPval-AA v2 vendor claim as unreproduced",
+        "status": "UNRESOLVED",
+        "finding": "Publisher-only until independent reproduction.",
+        "subject_ids": [
+          "model:zai-glm-5-3-flash"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "Ox Alpha preview chronology",
+        "status": "UNRESOLVED",
+        "finding": "Secondary-relayed with official-X corroboration; pending Z.ai primary.",
+        "subject_ids": [
+          "model:zai-glm-5-3-flash"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "MIT weight availability: Pending Z.ai blog / HF card verification; official X rows corroborate in the Grok record.",
+      "320B/18B + 1M ctx specs: Secondary-relayed; pending HF card verification.",
+      "GDPval-AA v2 vendor claim as unreproduced: Publisher-only until independent reproduction.",
+      "Ox Alpha preview chronology: Secondary-relayed with official-X corroboration; pending Z.ai primary."
+    ],
+    "contradictions": []
+  }
+}

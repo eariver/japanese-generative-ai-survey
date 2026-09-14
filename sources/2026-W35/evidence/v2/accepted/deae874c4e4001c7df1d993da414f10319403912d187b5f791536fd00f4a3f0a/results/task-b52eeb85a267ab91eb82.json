@@ -1,0 +1,144 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W35",
+  "evidence_task_id": "evidence:2026-W35:01158aaf101b96a7",
+  "basis": {
+    "task_sha256": "ac22d4f4a5f966eecadf5c37e45c8022a8550eb040bf625f9298900cfcad080d",
+    "screening_acceptance_sha256": "749b9409de6ba6b54d7f82412abea7712d1d71c4fc4958a58cac2155f274f47c",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "model:tencent-hy4-preview",
+      "canonical_name": "Tencent Hy4 preview",
+      "entity_type": "MODEL",
+      "organization": "Tencent",
+      "canonical_url": "https://www.reuters.com/world/asia-pacific/chinas-tencent-releases-new-open-source-ai-model-coding-research-tasks-2026-08-28/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model:tencent-hy4-preview",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "Tencent Hy4 preview",
+    "canonical_url": "https://www.reuters.com/world/asia-pacific/chinas-tencent-releases-new-open-source-ai-model-coding-research-tasks-2026-08-28/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-15T06:40:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08-28T09:37:00Z",
+        "subject_id": "model:tencent-hy4-preview",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://www.reuters.com/world/asia-pacific/chinas-tencent-releases-new-open-source-ai-model-coding-research-tasks-2026-08-28/",
+      "source_class": "SECONDARY",
+      "title": "Tencent Hy4 preview open-source MoE (2026-08-28)",
+      "published_at": "2026-08-28T09:37:00Z",
+      "accessed_at": "2026-09-15T06:40:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Tencent released the Hy4 preview on 2026-08-28 via Hugging Face for software engineering, research, and financial analysis.",
+      "subject_id": "model:tencent-hy4-preview",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Reuters-reported release fact; Tencent HF post is verification target."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported design: 770B-parameter MoE with ~49B active per text request; CodeBuddy/WorkBuddy integration planned.",
+      "subject_id": "model:tencent-hy4-preview",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Tencent figures as relayed."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Tencent's own caveat: the early-release model can over-deliberate and over-verify answers, matching community overthinking notes.",
+      "subject_id": "model:tencent-hy4-preview",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Caveat corroborated across Reuters and X ledger rows."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "No Tencent first-party post retrieved; rankings/benchmarks absent from the consumed authority.",
+      "subject_id": "model:tencent-hy4-preview",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "End-of-window timing (08-28) leaves minimal independent-testing footprint inside the window.",
+      "subject_id": "model:tencent-hy4-preview",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "770B/49B figures",
+        "status": "UNRESOLVED",
+        "finding": "Tencent figures as relayed; pending Tencent primary.",
+        "subject_ids": [
+          "model:tencent-hy4-preview"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "preview status + over-verification caveat",
+        "status": "UNRESOLVED",
+        "finding": "Relayed; pending Tencent HF/blog verification.",
+        "subject_ids": [
+          "model:tencent-hy4-preview"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "770B/49B figures: Tencent figures as relayed; pending Tencent primary.",
+      "preview status + over-verification caveat: Relayed; pending Tencent HF/blog verification."
+    ],
+    "contradictions": []
+  }
+}

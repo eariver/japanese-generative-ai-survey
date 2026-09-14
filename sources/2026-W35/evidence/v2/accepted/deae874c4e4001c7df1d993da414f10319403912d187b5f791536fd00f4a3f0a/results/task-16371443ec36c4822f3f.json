@@ -1,0 +1,178 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W35",
+  "evidence_task_id": "evidence:2026-W35:d28c0b6606a81213",
+  "basis": {
+    "task_sha256": "42925bfc92573e6e3313d572d9e6c0239251bbe45df6ea79685cd3f503ef8d78",
+    "screening_acceptance_sha256": "749b9409de6ba6b54d7f82412abea7712d1d71c4fc4958a58cac2155f274f47c",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "model:qwen3-8-flash-next",
+      "canonical_name": "Qwen3.8-Flash-Next",
+      "entity_type": "MODEL",
+      "organization": "Alibaba Qwen",
+      "canonical_url": "https://www.orcarouter.ai/blog/qwen-4-leak-vllm-fuse-op"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model:qwen3-8-flash-next",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "Qwen3.8-Flash-Next",
+    "canonical_url": "https://www.orcarouter.ai/blog/qwen-4-leak-vllm-fuse-op"
+  },
+  "temporal": {
+    "observed_at": "2026-09-15T06:40:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08-26",
+        "subject_id": "model:qwen3-8-flash-next",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://www.orcarouter.ai/blog/qwen-4-leak-vllm-fuse-op",
+      "source_class": "SECONDARY",
+      "title": "Qwen3.8-Flash-Next open weights, preview of Qwen4 architecture (2026-08-26)",
+      "published_at": "2026-08-26",
+      "accessed_at": "2026-09-15T06:40:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Qwen3.8-Flash-Next shipped open weights on 2026-08-26 (HF + ModelScope, qwen-community-1.0): 125B MoE / ~6B active + 51B n-gram table, 262K context, multimodal; card frames it as a preview of the Qwen4 architecture (model_type=qwen4_exp).",
+      "subject_id": "model:qwen3-8-flash-next",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Card facts as relayed by technical secondary; HF card is verification target."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "vLLM PR #53909 (qwen4 fuse op) and SGLang PR #36585 (Qwen4Exp native support, agent-authored, failing CI) corroborate serving-side preparation for the qwen4_exp line.",
+      "subject_id": "model:qwen3-8-flash-next",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Secondary author's PR reading; PRs open/unmerged, direction signal only."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Card benchmarks (DeepSWE 1.1 58.7, SWE-bench Pro 62.5, LiveCodeBench v6 91.9) and SGLang day-0 serving claims (540 tok/s) are unaudited.",
+      "subject_id": "model:qwen3-8-flash-next",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Explicitly unreproduced; promise, not measurement."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Qwen 4 proper is unreleased (no date/card/weights); the September roadmap window is rumor.",
+      "subject_id": "model:qwen3-8-flash-next",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Analytical distinction drawn from absence of any release artifact; must be preserved downstream."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "No HF card or engine PR retrieved directly; all PR claims are relayed readings.",
+      "subject_id": "model:qwen3-8-flash-next",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "License terms of qwen-community-1.0 not verified from primary.",
+      "subject_id": "model:qwen3-8-flash-next",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "125B/6B/51B spec sheet",
+        "status": "UNRESOLVED",
+        "finding": "Card facts as relayed; pending HF card verification.",
+        "subject_ids": [
+          "model:qwen3-8-flash-next"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "qwen-community-1.0 license",
+        "status": "UNRESOLVED",
+        "finding": "License terms not verified from primary.",
+        "subject_ids": [
+          "model:qwen3-8-flash-next"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "PR existence as direction signal only",
+        "status": "UNRESOLVED",
+        "finding": "Open/unmerged PRs cannot establish serving facts.",
+        "subject_ids": [
+          "model:qwen3-8-flash-next"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "Qwen 4 unreleased",
+        "status": "VERIFIED",
+        "finding": "No release artifact located; absence confirmed by check; roadmap window is rumor.",
+        "subject_ids": [
+          "model:qwen3-8-flash-next"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "125B/6B/51B spec sheet: Card facts as relayed; pending HF card verification.",
+      "qwen-community-1.0 license: License terms not verified from primary.",
+      "PR existence as direction signal only: Open/unmerged PRs cannot establish serving facts."
+    ],
+    "contradictions": []
+  }
+}

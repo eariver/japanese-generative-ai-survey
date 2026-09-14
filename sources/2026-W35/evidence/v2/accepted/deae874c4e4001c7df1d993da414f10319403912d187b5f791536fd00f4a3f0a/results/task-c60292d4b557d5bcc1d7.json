@@ -1,0 +1,188 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W35",
+  "evidence_task_id": "evidence:2026-W35:221bbc48b241d7de",
+  "basis": {
+    "task_sha256": "eb71fcbf8e452cd3b8d13f735d98f323c02d8968da6845f5585db65c5451baab",
+    "screening_acceptance_sha256": "749b9409de6ba6b54d7f82412abea7712d1d71c4fc4958a58cac2155f274f47c",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "model-family:ibm-granite-4-2",
+      "canonical_name": "IBM Granite 4.2",
+      "entity_type": "MODEL_FAMILY",
+      "organization": "IBM Research",
+      "canonical_url": "https://data-today.net/granite-4-2-native-reasoning-open-weights/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model-family:ibm-granite-4-2",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "IBM Granite 4.2",
+    "canonical_url": "https://data-today.net/granite-4-2-native-reasoning-open-weights/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-15T06:40:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08-26",
+        "subject_id": "model-family:ibm-granite-4-2",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://data-today.net/granite-4-2-native-reasoning-open-weights/",
+      "source_class": "SECONDARY",
+      "title": "IBM Granite 4.2 reasoning + agentic RL under Apache 2.0 (2026-08-25)",
+      "published_at": "2026-08-26",
+      "accessed_at": "2026-09-15T06:40:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "IBM Research published Granite 4.2 on 2026-08-25: dense 3B/8B/30B reasoning LLMs with a three-way thinking switch and 512K context.",
+      "subject_id": "model-family:ibm-granite-4-2",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Event facts via detailed secondary; IBM primary + HF collection are verification targets."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "8B/30B models complete a multi-stage async-GRPO agentic RL pipeline (SWE -> Terminal -> Search) in real sandboxed environments; 3B stops after foundational RL.",
+      "subject_id": "model-family:ibm-granite-4-2",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Pipeline detail as relayed; training-environment claims need IBM primary."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "All weights, instruct checkpoints, and quantized variants ship under Apache 2.0 with OpenAI-compatible tool calling via vLLM.",
+      "subject_id": "model-family:ibm-granite-4-2",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "License/scope claim needs HF verification before downstream license assertions."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "The agentic corpus is 69% software-engineering-skewed; IBM's own benchmark numbers are independently unverified.",
+      "subject_id": "model-family:ibm-granite-4-2",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Secondary author's caveats, adopted as Evidence bounds."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "No IBM first-party page or HF card was retrieved in this run; all release facts are relayed.",
+      "subject_id": "model-family:ibm-granite-4-2",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Architecture/training figures (15T tokens, 7.2M SFT samples, layer counts) are unconfirmed.",
+      "subject_id": "model-family:ibm-granite-4-2",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Non-coding transfer of agentic training is unproven.",
+      "subject_id": "model-family:ibm-granite-4-2",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Apache 2.0 license scope",
+        "status": "UNRESOLVED",
+        "finding": "Pending IBM Research / HF verification before downstream license assertions.",
+        "subject_ids": [
+          "model-family:ibm-granite-4-2"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "agentic RL pipeline claims",
+        "status": "UNRESOLVED",
+        "finding": "Relayed pipeline detail; pending IBM primary.",
+        "subject_ids": [
+          "model-family:ibm-granite-4-2"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "SWE-skew caveat",
+        "status": "VERIFIED",
+        "finding": "Caveat recorded from the consumed secondary; bounds all downstream use.",
+        "subject_ids": [
+          "model-family:ibm-granite-4-2"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "vendor benchmarks as unreproduced",
+        "status": "VERIFIED",
+        "finding": "No independent reproduction in consumed authority; relayed as vendor figures.",
+        "subject_ids": [
+          "model-family:ibm-granite-4-2"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "Apache 2.0 license scope: Pending IBM Research / HF verification before downstream license assertions.",
+      "agentic RL pipeline claims: Relayed pipeline detail; pending IBM primary."
+    ],
+    "contradictions": []
+  }
+}

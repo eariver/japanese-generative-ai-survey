@@ -1,0 +1,132 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W35",
+  "evidence_task_id": "evidence:2026-W35:dd398c3889b855e6",
+  "basis": {
+    "task_sha256": "c98c8b7a565d05685ac2680d53e0b28b8565454fe175100d88b10df05cfae04e",
+    "screening_acceptance_sha256": "749b9409de6ba6b54d7f82412abea7712d1d71c4fc4958a58cac2155f274f47c",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "product:harness-agent-ready",
+      "canonical_name": "Harness Agent-Ready Code Repository + AI Code Review",
+      "entity_type": "PRODUCT",
+      "organization": "Harness",
+      "canonical_url": "https://www.prnewswire.com/news-releases/harness-launches-code-repository-with-ai-code-review-for-agent-ready-development-302861964.html"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "product:harness-agent-ready",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Harness Agent-Ready Code Repository + AI Code Review",
+    "canonical_url": "https://www.prnewswire.com/news-releases/harness-launches-code-repository-with-ai-code-review-for-agent-ready-development-302861964.html"
+  },
+  "temporal": {
+    "observed_at": "2026-09-15T06:40:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08-27T15:06:00Z",
+        "subject_id": "product:harness-agent-ready",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://www.prnewswire.com/news-releases/harness-launches-code-repository-with-ai-code-review-for-agent-ready-development-302861964.html",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Harness Agent-Ready Code Repository + AI Code Review (2026-08-27)",
+      "published_at": "2026-08-27T15:06:00Z",
+      "accessed_at": "2026-09-15T06:40:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Harness launched both capabilities on 2026-08-27 via company release: repo scale-tested to thousands of simultaneous PRs/commits with MCP + CLI human/agent surfaces.",
+      "subject_id": "product:harness-agent-ready",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor-issued release text consumed; scale figures are company-claimed."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Free 50GB start with GitHub/GitLab/Bitbucket/Azure migration carried by CLI; tech-lead-style AI code review framing is vendor positioning.",
+      "subject_id": "product:harness-agent-ready",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Offer + framing as issued; availability CTA bounds it (demo-gated)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "All capability/scale claims are company-claimed without independent evaluation.",
+      "subject_id": "product:harness-agent-ready",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "No pricing beyond free tier, no regions, no customer evidence in the consumed authority.",
+      "subject_id": "product:harness-agent-ready",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "scale + MCP/CLI + migration facts",
+        "status": "VERIFIED",
+        "finding": "Vendor release text consumed; claims bounded as vendor-claimed.",
+        "subject_ids": [
+          "product:harness-agent-ready"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "review framing as vendor-claimed",
+        "status": "UNRESOLVED",
+        "finding": "No evaluation authority available for review-quality claims.",
+        "subject_ids": [
+          "product:harness-agent-ready"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "review framing as vendor-claimed: No evaluation authority available for review-quality claims."
+    ],
+    "contradictions": []
+  }
+}
