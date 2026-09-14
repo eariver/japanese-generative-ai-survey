@@ -37,7 +37,6 @@ SURFACE_GATE_SCHEMA = Path("schemas/reader-surface-gate-v2.schema.json")
 MANUSCRIPT_SCHEMA = Path("schemas/reader-manuscript-v2.schema.json")
 SURFACE_INPUT_SCHEMA = Path("schemas/reader-surface-input-v2.schema.json")
 SEMANTIC_REVIEW_SCHEMA = Path("schemas/reader-surface-semantic-review-v2.schema.json")
-PUBLICATION_REVIEW_SCHEMA = Path("schemas/publication-review-record-v2.schema.json")
 
 
 @dataclass(frozen=True)
@@ -893,75 +892,7 @@ def build_weekly_reader_surface_input(
     return out
 
 
-def build_semantic_review_record(
-    repo_root: Path,
-    issue_id: str,
-    publication_profile: str,
-    surface_path: Path | str,
-    *,
-    decision: str = "PASS",
-    reviewed_by: str = "ChatGPT",
-    findings: list[dict[str, Any]] | None = None,
-    output_path: Path | str | None = None,
-    recorded_at: datetime | None = None,
-    summary: str | None = None,
-) -> dict[str, Any]:
-    """Construct, validate and optionally persist a pre-TeX semantic review record."""
-    surface_file, surface_rel = _resolve_repo_path(repo_root, surface_path, "reviewed surface")
-    if not surface_file.is_file():
-        raise ValueError(f"Reviewed surface file missing on disk: {surface_path}")
-    surface_sha256 = core.sha256_file(surface_file)
-
-    if decision not in ("PASS", "FAIL"):
-        raise ValueError(f"Invalid decision: {decision}; must be 'PASS' or 'FAIL'")
-
-    all_findings = list(findings or [])
-    unresolved_blocking = [
-        f for f in all_findings
-        if f.get("severity") == "BLOCKING"
-        and f.get("disposition", "UNRESOLVED") not in ("SUPPRESSED", "NORMALIZED", "RESOLVED")
-    ]
-    if decision == "PASS" and unresolved_blocking:
-        raise ValueError(
-            f"Cannot create PASS semantic review record with {len(unresolved_blocking)} unresolved blocking finding(s)"
-        )
-
-    ts_str = _iso_or_now(recorded_at)
-    base: dict[str, Any] = {
-        "schema_version": "2.0-rc1",
-        "issue_id": issue_id,
-        "publication_profile": publication_profile,
-        "reviewed_surface": {
-            "path": surface_rel,
-            "sha256": surface_sha256,
-        },
-        "decision": decision,
-        "reviewed_by": reviewed_by,
-        "reviewed_at": ts_str,
-        "recorded_at": ts_str,
-        "status": "PASSED" if decision == "PASS" else "FAILED",
-        "findings": all_findings,
-    }
-    if summary:
-        base["summary"] = summary
-
-    review_sha256 = core.sha256_object(base)
-    record = dict(base)
-    record["review_sha256"] = review_sha256
-
-    schema_gate.validate_instance(
-        record, repo_root / SEMANTIC_REVIEW_SCHEMA, label="Semantic Review Record"
-    )
-
-    if output_path is not None:
-        out_file, _ = _resolve_repo_path(repo_root, output_path, "semantic review output path")
-        out_file.parent.mkdir(parents=True, exist_ok=True)
-        core.write_json(out_file, record)
-
-    return record
-
-
-def load_and_validate_semantic_review(
+def load_and_validate_reader_surface_semantic_review(
     repo_root: Path,
     review_path: Path | str,
     *,
@@ -973,17 +904,18 @@ def load_and_validate_semantic_review(
 ) -> dict[str, Any]:
     """Independently load and validate a persisted semantic review record from disk.
 
-    Enforces all 10 independent verification rules:
+    Enforces all strict Reader-Surface Semantic Review verification rules:
       1. Repository-local regular file exists on disk.
-      2. Schema validity against SEMANTIC_REVIEW_SCHEMA or PUBLICATION_REVIEW_SCHEMA.
-      3. Digest validity: review_sha256 recomputation over all canonical digest fields.
-      4. issue_id matches.
-      5. publication_profile matches.
-      6. Reviewed surface path matches if expected.
-      7. Current on-disk bytes of reviewed surface match recorded surface SHA-256 (catches stale reviews).
-      8. decision == PASS.
-      9. Zero unresolved blocking findings.
-      10. reviewed_by identity and reviewed_at timestamp presence.
+      2. Strictly validates against SEMANTIC_REVIEW_SCHEMA (reader-surface-semantic-review-v2).
+         Legacy publication-review-record-v2 fallback is strictly prohibited.
+      3. review_kind must be 'SEMANTIC_EDITORIAL'. VISUAL reviews are rejected.
+      4. Digest validity: review_sha256 matches recomputation over all fields except review_sha256.
+      5. Reviewed surface existence, repository-local path, and unmutated disk bytes SHA-256 match.
+      6. Required semantic check 'READER_PIPELINE_INDEPENDENCE' must be present, substantive, and PASS.
+      7. All semantic checks must contain non-empty detail and substantive evidence_locations.
+      8. If decision == PASS, all checks must have status == 'PASS', and unresolved blocking count == 0.
+      9. Identity matches expected_issue_id and expected_publication_profile.
+      10. reviewed_by and reviewed_at/recorded_at presence.
     """
     review_file, review_rel = _resolve_repo_path(repo_root, review_path, "semantic review record")
     if not review_file.is_file():
@@ -993,62 +925,70 @@ def load_and_validate_semantic_review(
     if not isinstance(raw, dict):
         raise ValueError(f"Semantic review record must be a JSON object: {review_path}")
 
-    if "reviewed_surface" in raw:
-        schema_gate.validate_instance(
-            raw, repo_root / SEMANTIC_REVIEW_SCHEMA, label="Semantic Review Record"
-        )
-        base = {k: v for k, v in raw.items() if k != "review_sha256"}
-        expected_digest = core.sha256_object(base)
-        if raw.get("review_sha256") != expected_digest:
-            raise ValueError(
-                f"Semantic review record digest mismatch: expected {expected_digest}, got {raw.get('review_sha256')}"
-            )
-        surface_rel = raw["reviewed_surface"]["path"]
-        surface_sha = raw["reviewed_surface"]["sha256"]
-        decision = raw["decision"]
-        status = raw.get("status", "PASSED" if decision == "PASS" else "FAILED")
-        findings = raw.get("findings", [])
-        unresolved_blocking = sum(
-            1 for f in findings
-            if f.get("severity") == "BLOCKING"
-            and f.get("disposition", "UNRESOLVED") not in ("SUPPRESSED", "NORMALIZED", "RESOLVED")
-        )
-    elif "source" in raw and raw.get("review_kind") == "SEMANTIC_EDITORIAL":
-        schema_gate.validate_instance(
-            raw, repo_root / PUBLICATION_REVIEW_SCHEMA, label="Publication Review Record"
-        )
-        digest_fields = (
-            "schema_version",
-            "issue_id",
-            "research_profile",
-            "publication_profile",
-            "review_kind",
-            "status",
-            "production_profile",
-            "reader_manuscript",
-            "source",
-            "pdf",
-            "page_count",
-            "checks",
-            "reviewed_by",
-            "recorded_at",
-        )
-        base = {k: raw[k] for k in digest_fields}
-        expected_digest = core.sha256_object(base)
-        if raw.get("review_sha256") != expected_digest:
-            raise ValueError(
-                f"Publication review record digest mismatch: expected {expected_digest}, got {raw.get('review_sha256')}"
-            )
-        surface_rel = raw["source"]["path"]
-        surface_sha = raw["source"]["sha256"]
-        status = raw["status"]
-        decision = "PASS" if status == "PASSED" else "FAIL"
-        findings = []
-        unresolved_blocking = sum(1 for c in raw.get("checks", []) if c.get("status") != "PASS")
-    else:
+    if "reviewed_surface" not in raw or raw.get("review_kind") != "SEMANTIC_EDITORIAL":
         raise ValueError(
-            f"Unrecognized semantic review record schema at {review_path}; must be reader-surface-semantic-review-v2 or publication-review-record-v2"
+            f"Invalid semantic review record at {review_path}: must be reader-surface-semantic-review-v2 "
+            f"with review_kind='SEMANTIC_EDITORIAL'. Legacy publication-review-record-v2 fallback is prohibited."
         )
+
+    schema_gate.validate_instance(
+        raw, repo_root / SEMANTIC_REVIEW_SCHEMA, label="Semantic Review Record"
+    )
+    base = {k: v for k, v in raw.items() if k != "review_sha256"}
+    expected_digest = core.sha256_object(base)
+    if raw.get("review_sha256") != expected_digest:
+        raise ValueError(
+            f"Semantic review record digest mismatch: expected {expected_digest}, got {raw.get('review_sha256')}"
+        )
+
+    surface_rel = raw["reviewed_surface"]["path"]
+    surface_sha = raw["reviewed_surface"]["sha256"]
+    decision = raw["decision"]
+    status = raw.get("status", "PASSED" if decision == "PASS" else "FAILED")
+    findings = raw.get("findings", [])
+    unresolved_blocking = sum(
+        1 for f in findings
+        if f.get("severity") == "BLOCKING"
+        and f.get("disposition", "UNRESOLVED") not in ("SUPPRESSED", "NORMALIZED", "RESOLVED")
+    )
+
+    # Substantive semantic checks verification
+    checks = raw.get("checks", [])
+    if not isinstance(checks, list) or not checks:
+        raise ValueError("Semantic review record lacks required checks array")
+
+    pipeline_check = None
+    for c in checks:
+        if c.get("check_id") == "READER_PIPELINE_INDEPENDENCE":
+            pipeline_check = c
+            break
+
+    if pipeline_check is None:
+        raise ValueError(
+            "Semantic review record missing required semantic check 'READER_PIPELINE_INDEPENDENCE'"
+        )
+
+    for c in checks:
+        cid = c.get("check_id")
+        detail = c.get("detail", "")
+        locs = c.get("evidence_locations", [])
+        if not isinstance(detail, str) or not detail.strip():
+            raise ValueError(f"Semantic check '{cid}' has empty detail")
+        if not isinstance(locs, list) or not locs or not all(isinstance(loc, str) and loc.strip() for loc in locs):
+            raise ValueError(f"Semantic check '{cid}' lacks substantive evidence_locations")
+
+    if decision == "PASS":
+        if pipeline_check.get("status") != "PASS":
+            raise ValueError(
+                "Semantic review decision is PASS but required check 'READER_PIPELINE_INDEPENDENCE' status is not PASS"
+            )
+        failed_checks = [c.get("check_id") for c in checks if c.get("status") != "PASS"]
+        if failed_checks:
+            raise ValueError(
+                f"Semantic review decision is PASS but check(s) failed: {', '.join(failed_checks)}"
+            )
+        if status != "PASSED":
+            raise ValueError(f"Semantic review decision is PASS but status is {status}")
 
     # Identity checks
     if expected_issue_id is not None and raw.get("issue_id") != expected_issue_id:
@@ -1061,7 +1001,7 @@ def load_and_validate_semantic_review(
         )
 
     # Reviewed surface disk verification (stale review check)
-    surface_file = core.repo_local_path(repo_root, surface_rel, f"reviewed surface {surface_rel}")
+    surface_file, _ = _resolve_repo_path(repo_root, surface_rel, f"reviewed surface {surface_rel}")
     if not surface_file.is_file():
         raise ValueError(f"Reviewed surface file missing on disk: {surface_rel}")
     current_disk_sha = core.sha256_file(surface_file)
@@ -1071,7 +1011,7 @@ def load_and_validate_semantic_review(
         )
 
     if expected_surface_path is not None:
-        expected_rel = _rel(repo_root, expected_surface_path)
+        _, expected_rel = _resolve_repo_path(repo_root, expected_surface_path, "expected surface")
         if surface_rel != expected_rel:
             raise ValueError(
                 f"Reviewed surface path mismatch: expected {expected_rel}, got {surface_rel}"
@@ -1107,12 +1047,16 @@ def load_and_validate_semantic_review(
         "surface_sha256": surface_sha,
         "recorded_at": recorded_at,
         "reviewed_at": raw.get("reviewed_at") or recorded_at,
-        "review_path": _rel(repo_root, review_file),
+        "review_path": review_rel,
         "review_sha256": raw["review_sha256"],
+        "checks": checks,
         "findings": findings,
         "unresolved_blocking_count": unresolved_blocking,
         "summary": raw.get("summary", ""),
     }
+
+
+load_and_validate_semantic_review = load_and_validate_reader_surface_semantic_review
 
 
 def build_semantic_authority(
@@ -1129,10 +1073,10 @@ def build_semantic_authority(
     if review_path is None:
         raise ValueError(
             "build_semantic_authority() cannot synthesize PASS; a validated persisted semantic review "
-            "artifact on disk is required via review_path or load_and_validate_semantic_review()."
+            "artifact on disk is required via review_path or load_and_validate_reader_surface_semantic_review()."
         )
     root = repo_root or Path(".")
-    return load_and_validate_semantic_review(root, review_path)
+    return load_and_validate_reader_surface_semantic_review(root, review_path)
 
 
 def evaluate_reader_surface_gate(

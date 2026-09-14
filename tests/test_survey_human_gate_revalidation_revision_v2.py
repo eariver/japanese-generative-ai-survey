@@ -89,6 +89,7 @@ class RevalidationRevisionTests(unittest.TestCase):
     def _regenerate(self, fix: Fixture, version: int = 2) -> None:
         for name in ("reader-manuscript-v2.json", "quality-regression-bundle-v2.json",
                      "semantic-editorial-review-v2.json", "visual-review-v2.json",
+                     "reader-surface-input-v2.json", "reader-surface-semantic-review-v2.json",
                      "reader-surface-gate-v2.json"):
             (fix.src / "publication" / "v2" / name).unlink(missing_ok=True)
         fix._publication_files(version=version)

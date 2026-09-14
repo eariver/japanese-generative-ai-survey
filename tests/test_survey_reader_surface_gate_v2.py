@@ -280,50 +280,42 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
                 "disposition": "UNRESOLVED",
             })
 
-        if decision == "PASS" and any(
-            f.get("severity") == "BLOCKING"
-            and f.get("disposition", "UNRESOLVED") not in ("SUPPRESSED", "NORMALIZED", "RESOLVED")
-            for f in actual_findings
-        ):
-            surface_rel = str(surface_path.relative_to(self.root)).replace("\\", "/")
-            base = {
-                "schema_version": "2.0-rc1",
-                "issue_id": issue_id,
-                "publication_profile": publication_profile,
-                "reviewed_surface": {
-                    "path": surface_rel,
-                    "sha256": core.sha256_file(surface_path),
-                },
-                "decision": "PASS",
-                "reviewed_by": "ChatGPT",
-                "reviewed_at": core.iso_utc(self.now),
-                "recorded_at": core.iso_utc(self.now),
-                "status": "PASSED",
-                "findings": actual_findings,
-                "summary": summary,
+        surface_rel = str(surface_path.relative_to(self.root)).replace("\\", "/")
+        actual_checks = [
+            {
+                "check_id": "READER_PIPELINE_INDEPENDENCE",
+                "status": "PASS" if decision == "PASS" and not unresolved_blocking else "FAIL",
+                "detail": "Prose is independently understandable without pipeline knowledge.",
+                "evidence_locations": [f"{surface_path.name}:closing_synthesis"],
             }
-            base["review_sha256"] = core.sha256_object(base)
-            core.write_json(rev_path, base)
-            rev_doc = base
-        else:
-            rev_doc = surface_gate.build_semantic_review_record(
-                self.root,
-                issue_id,
-                publication_profile,
-                surface_path,
-                decision=decision,
-                reviewed_by="ChatGPT",
-                findings=actual_findings,
-                output_path=rev_path,
-                recorded_at=self.now,
-                summary=summary,
-            )
-
-        sem_auth = {
-            "status": "PASSED" if decision == "PASS" else "FAILED",
+        ]
+        base = {
+            "schema_version": "2.0-rc1",
+            "issue_id": issue_id,
+            "publication_profile": publication_profile,
+            "review_kind": "SEMANTIC_EDITORIAL",
+            "reviewed_surface": {
+                "path": surface_rel,
+                "sha256": core.sha256_file(surface_path),
+            },
+            "checks": actual_checks,
             "decision": decision,
             "reviewed_by": "ChatGPT",
-            "surface_path": str(surface_path.relative_to(self.root)).replace("\\", "/"),
+            "reviewed_at": core.iso_utc(self.now),
+            "recorded_at": core.iso_utc(self.now),
+            "status": "PASSED" if decision == "PASS" and not unresolved_blocking else "FAILED",
+            "findings": actual_findings,
+            "summary": summary,
+        }
+        base["review_sha256"] = core.sha256_object(base)
+        core.write_json(rev_path, base)
+        rev_doc = base
+
+        sem_auth = {
+            "status": "PASSED" if decision == "PASS" and not unresolved_blocking else "FAILED",
+            "decision": decision,
+            "reviewed_by": "ChatGPT",
+            "surface_path": surface_rel,
             "surface_sha256": core.sha256_file(surface_path),
             "recorded_at": core.iso_utc(self.now),
             "reviewed_at": core.iso_utc(self.now),
@@ -1002,9 +994,26 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
             surface_gate.validate_reader_surface_gate(self.root, gate_path)
         self.assertIn("unresolved blocking finding", str(ctx.exception))
 
-    # Required Tests A through I (Issue #434 final bounded correction)
-    def test_required_a_synthetic_pass_rejection(self) -> None:
-        """Test A: Synthetic PASS rejection - clean surface + fabricated dict without review artifact fails."""
+    # Section 14 Tests A through J (PR #496 final closure)
+    def test_required_a_production_synthetic_builder_absent(self) -> None:
+        """Test A: Production synthetic builder absent - shared production API cannot manufacture PASS."""
+        # 1. build_semantic_review_record must be completely removed from production module
+        self.assertFalse(
+            hasattr(surface_gate, "build_semantic_review_record"),
+            "build_semantic_review_record must not exist in shared production code",
+        )
+        # 2. build_semantic_authority with surface path only must raise ValueError
+        surface_path = self.root / "sources/2026-W35/publication/v2/reader-surface-input-v2.json"
+        with self.assertRaises(ValueError) as ctx:
+            surface_gate.build_semantic_authority(surface_path)
+        self.assertIn("cannot synthesize PASS", str(ctx.exception))
+
+        # 3. build_semantic_authority with no args must raise ValueError
+        with self.assertRaises(ValueError) as ctx2:
+            surface_gate.build_semantic_authority()
+        self.assertIn("cannot synthesize PASS", str(ctx2.exception))
+
+        # 4. evaluate_reader_surface_gate with fabricated dictionary without persisted review fails
         _, main_tex, _, m_path = self._build_valid_manifest()
         fabricated_auth = {
             "status": "PASSED",
@@ -1013,82 +1022,103 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
             "surface_sha256": core.sha256_file(main_tex),
             "recorded_at": core.iso_utc(self.now),
         }
-        with self.assertRaises(ValueError) as ctx:
+        with self.assertRaises(ValueError) as ctx3:
             surface_gate.evaluate_reader_surface_gate(
                 self.root, m_path, semantic_authority=fabricated_auth, recorded_at=self.now
             )
-        self.assertIn("synthetic PASS dictionary is rejected", str(ctx.exception))
+        self.assertIn("synthetic PASS dictionary is rejected", str(ctx3.exception))
 
-    def test_required_b_missing_review_artifact(self) -> None:
-        """Test B: Missing review artifact - review_path pointing to non-existent file fails."""
-        _, main_tex, _, m_path = self._build_valid_manifest()
-        sem_auth = {
-            "status": "PASSED",
-            "decision": "PASS",
-            "reviewed_by": "ChatGPT",
-            "surface_sha256": core.sha256_file(main_tex),
-            "recorded_at": core.iso_utc(self.now),
-            "review_path": "sources/2026-W35/publication/v2/non-existent-review.json",
-            "review_sha256": "0" * 64,
-        }
-        with self.assertRaises(ValueError) as ctx:
-            surface_gate.evaluate_reader_surface_gate(
-                self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now
-            )
-        self.assertIn("missing on disk", str(ctx.exception))
-
-    def test_required_c_corrupt_review_digest(self) -> None:
-        """Test C: Missing / corrupt review digest fails validation."""
+    def test_required_b_missing_semantic_checks(self) -> None:
+        """Test B: Missing semantic checks - decision=PASS and findings=[] without required checks fails."""
         surface_path, rev_path, sem_auth = self._create_semantic_surface_and_review()
-        rev_data = core.load_json(rev_path)
-        rev_data["review_sha256"] = "f" * 64
-        core.write_json(rev_path, rev_data)
-        sem_auth["review_sha256"] = "f" * 64
-        _, _, _, m_path = self._build_valid_manifest()
-        with self.assertRaises(ValueError) as ctx:
-            surface_gate.evaluate_reader_surface_gate(
-                self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now
-            )
-        self.assertIn("digest mismatch", str(ctx.exception))
+        # Overwrite rev_path with missing checks or checks=[]
+        raw = core.load_json(rev_path)
+        raw["checks"] = []
+        base = {k: v for k, v in raw.items() if k != "review_sha256"}
+        raw["review_sha256"] = core.sha256_object(base)
+        core.write_json(rev_path, raw)
 
-    def test_required_d_surface_mismatch(self) -> None:
-        """Test D: Surface mismatch - review bound to drifted surface bytes fails."""
-        _, _, _, m_path = self._build_valid_manifest()
-        other_file = self.root / "sources/2026-W35/publication/v2/other-surface.json"
-        other_file.parent.mkdir(parents=True, exist_ok=True)
-        other_file.write_text('{"other": 1}', encoding="utf-8")
-        _, _, sem_auth = self._create_semantic_surface_and_review(surface_path=other_file)
-        other_file.write_text('{"other": 2}', encoding="utf-8")
         with self.assertRaises(ValueError) as ctx:
-            surface_gate.evaluate_reader_surface_gate(
-                self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now
-            )
-        self.assertIn("drifted", str(ctx.exception))
-
-    def test_required_e_review_decision_fail(self) -> None:
-        """Test E: Review decision FAIL triggers gate failure."""
-        _, _, _, m_path = self._build_valid_manifest()
-        _, _, sem_auth_fail = self._create_semantic_surface_and_review(decision="FAIL")
-        report = surface_gate.evaluate_reader_surface_gate(
-            self.root, m_path, semantic_authority=sem_auth_fail, recorded_at=self.now
+            surface_gate.load_and_validate_reader_surface_semantic_review(self.root, rev_path)
+        self.assertTrue(
+            "checks" in str(ctx.exception).lower() or "schema" in str(ctx.exception).lower()
         )
-        self.assertEqual(report["status"], "FAILED")
-        self.assertEqual(report["summary"]["verdict"], "FAILED")
 
-    def test_required_f_blocking_finding_remains(self) -> None:
-        """Test F: Blocking finding remains - decision forged to PASS with unresolved finding fails."""
-        _, _, _, m_path = self._build_valid_manifest()
-        _, _, sem_auth_forged = self._create_semantic_surface_and_review(
-            decision="PASS", unresolved_blocking=True
-        )
+        # Also test with checks present but missing READER_PIPELINE_INDEPENDENCE
+        raw["checks"] = [{
+            "check_id": "OTHER_CHECK",
+            "status": "PASS",
+            "detail": "Some detail",
+            "evidence_locations": ["loc1"],
+        }]
+        base = {k: v for k, v in raw.items() if k != "review_sha256"}
+        raw["review_sha256"] = core.sha256_object(base)
+        core.write_json(rev_path, raw)
+
+        with self.assertRaises(ValueError) as ctx2:
+            surface_gate.load_and_validate_reader_surface_semantic_review(self.root, rev_path)
+        self.assertIn("READER_PIPELINE_INDEPENDENCE", str(ctx2.exception))
+
+    def test_required_c_empty_semantic_check_evidence(self) -> None:
+        """Test C: Empty semantic check evidence - detail="" or evidence_locations=[] fails."""
+        surface_path, rev_path, sem_auth = self._create_semantic_surface_and_review()
+        raw = core.load_json(rev_path)
+
+        # Empty detail
+        raw["checks"] = [{
+            "check_id": "READER_PIPELINE_INDEPENDENCE",
+            "status": "PASS",
+            "detail": "   ",
+            "evidence_locations": ["loc1"],
+        }]
+        base = {k: v for k, v in raw.items() if k != "review_sha256"}
+        raw["review_sha256"] = core.sha256_object(base)
+        core.write_json(rev_path, raw)
+
         with self.assertRaises(ValueError) as ctx:
-            surface_gate.evaluate_reader_surface_gate(
-                self.root, m_path, semantic_authority=sem_auth_forged, recorded_at=self.now
-            )
-        self.assertIn("unresolved blocking finding", str(ctx.exception))
+            surface_gate.load_and_validate_reader_surface_semantic_review(self.root, rev_path)
+        self.assertTrue(
+            "empty detail" in str(ctx.exception) or "schema" in str(ctx.exception).lower()
+        )
 
-    def test_required_g_valid_persisted_semantic_review_passes(self) -> None:
-        """Test G: Valid persisted semantic review PASS passes gate and independent validation."""
+        # Empty evidence_locations
+        raw["checks"] = [{
+            "check_id": "READER_PIPELINE_INDEPENDENCE",
+            "status": "PASS",
+            "detail": "Substantive detail text",
+            "evidence_locations": [],
+        }]
+        base = {k: v for k, v in raw.items() if k != "review_sha256"}
+        raw["review_sha256"] = core.sha256_object(base)
+        core.write_json(rev_path, raw)
+
+        with self.assertRaises(ValueError) as ctx2:
+            surface_gate.load_and_validate_reader_surface_semantic_review(self.root, rev_path)
+        self.assertTrue(
+            "evidence_locations" in str(ctx2.exception) or "schema" in str(ctx2.exception).lower()
+        )
+
+    def test_required_d_required_semantic_check_fail(self) -> None:
+        """Test D: Required semantic check FAIL - READER_PIPELINE_INDEPENDENCE=FAIL prevents overall review PASS."""
+        surface_path, rev_path, sem_auth = self._create_semantic_surface_and_review()
+        raw = core.load_json(rev_path)
+        raw["checks"] = [{
+            "check_id": "READER_PIPELINE_INDEPENDENCE",
+            "status": "FAIL",
+            "detail": "Failed independence",
+            "evidence_locations": ["loc1"],
+        }]
+        raw["decision"] = "PASS"
+        base = {k: v for k, v in raw.items() if k != "review_sha256"}
+        raw["review_sha256"] = core.sha256_object(base)
+        core.write_json(rev_path, raw)
+
+        with self.assertRaises(ValueError) as ctx:
+            surface_gate.load_and_validate_reader_surface_semantic_review(self.root, rev_path)
+        self.assertIn("status is not PASS", str(ctx.exception))
+
+    def test_required_e_authentic_pass(self) -> None:
+        """Test E: Authentic PASS - bound to exact surface, correct review kind, required check PASS, valid digest."""
         _, _, _, m_path = self._build_valid_manifest()
         surface_path, rev_path, sem_auth = self._create_semantic_surface_and_review()
         gate_path = self.root / "sources/2026-W35/publication/v2/reader-surface-gate-v2.json"
@@ -1097,13 +1127,117 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
         )
         self.assertEqual(report["status"], "PASSED")
         self.assertEqual(report["summary"]["blocking_findings"], 0)
+        self.assertEqual(report["semantic_authority"]["decision"], "PASS")
+
+        # Independent gate validation
         validated = surface_gate.validate_reader_surface_gate(
             self.root, gate_path, issue_id="2026-W35", publication_profile="WEEKLY_MAGAZINE"
         )
         self.assertEqual(validated["status"], "PASSED")
 
-    def test_required_h_pre_tex_ordering_missing_review_blocks_tex(self) -> None:
-        """Test H: Pre-TeX ordering - missing or failing review prevents survey_root creation and TeX writing."""
+    def test_required_f_legacy_publication_review_rejected(self) -> None:
+        """Test F: Legacy publication review rejected - valid publication-review-record-v2 fails pre-TeX gate."""
+        _, main_tex, _, m_path = self._build_valid_manifest()
+        # Build a valid legacy publication-review-record-v2 (post-TeX style)
+        legacy_path = self.root / "sources/2026-W35/publication/v2/legacy-pub-review.json"
+        main_pdf = self.root / "surveys/weekly/2026-W35/main.pdf"
+        main_pdf.parent.mkdir(parents=True, exist_ok=True)
+        main_pdf.write_bytes(b"%PDF-1.4 dummy")
+        legacy_base = {
+            "schema_version": "2.0-rc1",
+            "issue_id": "2026-W35",
+            "research_profile": "WEEKLY",
+            "publication_profile": "WEEKLY_MAGAZINE",
+            "review_kind": "SEMANTIC_EDITORIAL",
+            "status": "PASSED",
+            "production_profile": {
+                "path": "sources/2026-W35/production-profile.json",
+                "sha256": "0" * 64,
+            },
+            "reader_manuscript": {
+                "path": "sources/2026-W35/publication/v2/reader-manuscript-v2.json",
+                "sha256": "0" * 64,
+            },
+            "source": {
+                "path": "surveys/weekly/2026-W35/main.tex",
+                "sha256": core.sha256_file(main_tex),
+            },
+            "pdf": {
+                "path": "surveys/weekly/2026-W35/main.pdf",
+                "sha256": core.sha256_file(main_pdf),
+            },
+            "page_count": 1,
+            "checks": [{"check_id": "SEM_CHECK", "status": "PASS", "detail": "ok", "evidence_locations": ["main.tex"]}],
+            "reviewed_by": "ChatGPT",
+            "recorded_at": core.iso_utc(self.now),
+        }
+        legacy_base["review_sha256"] = core.sha256_object(legacy_base)
+        core.write_json(legacy_path, legacy_base)
+
+        # 1. Direct validator must reject legacy review
+        with self.assertRaises(ValueError) as ctx:
+            surface_gate.load_and_validate_reader_surface_semantic_review(self.root, legacy_path)
+        self.assertTrue(
+            "reader-surface-semantic-review-v2" in str(ctx.exception)
+            or "reviewed_surface" in str(ctx.exception)
+            or "schema" in str(ctx.exception).lower()
+        )
+
+        # 2. build_reader_surface_gate must reject legacy review without fallback
+        with self.assertRaises(ValueError) as ctx2:
+            reader.build_reader_surface_gate(
+                self.root,
+                m_path,
+                legacy_path,
+                output_path=self.root / "sources/2026-W35/publication/v2/reader-surface-gate-v2.json",
+                evaluated_by="ChatGPT",
+                recorded_at=self.now,
+            )
+        self.assertTrue(
+            "reader-surface-semantic-review-v2" in str(ctx2.exception)
+            or "reviewed_surface" in str(ctx2.exception)
+            or "schema" in str(ctx2.exception).lower()
+        )
+
+    def test_required_g_malformed_new_review_does_not_fallback(self) -> None:
+        """Test G: Malformed new review does not fallback - corrupted review fails closed."""
+        surface_path, rev_path, sem_auth = self._create_semantic_surface_and_review()
+        # Corrupt review digest
+        raw = core.load_json(rev_path)
+        raw["review_sha256"] = "f" * 64
+        core.write_json(rev_path, raw)
+
+        with self.assertRaises(ValueError) as ctx:
+            surface_gate.load_and_validate_reader_surface_semantic_review(self.root, rev_path)
+        self.assertIn("digest mismatch", str(ctx.exception))
+
+        # Corrupt review kind to VISUAL
+        raw["review_kind"] = "VISUAL"
+        base = {k: v for k, v in raw.items() if k != "review_sha256"}
+        raw["review_sha256"] = core.sha256_object(base)
+        core.write_json(rev_path, raw)
+
+        with self.assertRaises(ValueError) as ctx2:
+            surface_gate.load_and_validate_reader_surface_semantic_review(self.root, rev_path)
+        self.assertTrue(
+            "SEMANTIC_EDITORIAL" in str(ctx2.exception) or "schema" in str(ctx2.exception).lower()
+        )
+
+    def test_required_h_stale_new_review(self) -> None:
+        """Test H: Stale new review - modifying surface payload after review creation fails validation."""
+        _, _, _, m_path = self._build_valid_manifest()
+        surface_path, rev_path, sem_auth = self._create_semantic_surface_and_review()
+        surface_data = core.load_json(surface_path)
+        surface_data["closing_synthesis"] += " (mutated after review)"
+        core.write_json(surface_path, surface_data)
+        with self.assertRaises(ValueError) as ctx:
+            surface_gate.evaluate_reader_surface_gate(
+                self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now
+            )
+        self.assertIn("drifted", str(ctx.exception))
+
+    def test_required_i_missing_review_blocks_tex(self) -> None:
+        """Test I: Missing review blocks TeX - publication script refuses to create survey_root without review."""
         from scripts import survey_weekly_semantic_publication_v2 as weekly_pub
         profile_path, arch_path, approval_path, main_tex, references_bib = self._setup_edition(
             "2026-W35", "WEEKLY", "WEEKLY_MAGAZINE", ["Explain agent workflows"]
@@ -1197,18 +1331,155 @@ class SurveyReaderSurfaceGateV2Tests(unittest.TestCase):
             finally:
                 sys.argv = old_argv
 
-    def test_required_i_stale_review_after_payload_mutation(self) -> None:
-        """Test I: Stale review after payload mutation - modifying surface payload fails."""
-        _, _, _, m_path = self._build_valid_manifest()
-        surface_path, rev_path, sem_auth = self._create_semantic_surface_and_review()
-        surface_data = core.load_json(surface_path)
-        surface_data["closing_synthesis"] += " (mutated)"
-        core.write_json(surface_path, surface_data)
-        with self.assertRaises(ValueError) as ctx:
-            surface_gate.evaluate_reader_surface_gate(
-                self.root, m_path, semantic_authority=sem_auth, recorded_at=self.now
-            )
-        self.assertIn("drifted", str(ctx.exception))
+    def test_required_j_review_fail_blocks_tex(self) -> None:
+        """Test J: Review FAIL blocks TeX - valid review with decision=FAIL prohibits TeX generation."""
+        from scripts import survey_weekly_semantic_publication_v2 as weekly_pub
+        profile_path, arch_path, approval_path, main_tex, references_bib = self._setup_edition(
+            "2026-W35", "WEEKLY", "WEEKLY_MAGAZINE", ["Explain agent workflows"]
+        )
+        survey_root = self.root / "surveys/weekly/2026-W35"
+        if survey_root.exists():
+            shutil.rmtree(survey_root)
+        self.assertFalse(survey_root.exists())
+
+        source_root = self.root / "sources/2026-W35"
+        pub_v2 = source_root / "publication/v2"
+        pub_v2.mkdir(parents=True, exist_ok=True)
+        draft_v2 = source_root / "draft/v2"
+        draft_v2.mkdir(parents=True, exist_ok=True)
+
+        core.write_json(draft_v2 / "interactive-drafting-synthesis-input.json", {
+            "packages": [{
+                "package_id": "PKG-1",
+                "headline": "Agent Workflows",
+                "deck": "Autonomous patterns overview",
+                "deck_discovery_ids": [],
+                "blocks": [{"block_id": "b1", "text": "Prose explaining agent coordination.", "discovery_ids": []}],
+            }]
+        })
+        pkg_dir = draft_v2 / "packages" / "PKG-1"
+        pkg_dir.mkdir(parents=True, exist_ok=True)
+        core.write_json(pkg_dir / "draft-package.json", {
+            "basis": {"evidence_acceptance_sha256": self.dummy_sha}
+        })
+        core.write_json(pkg_dir / "draft-result.json", {
+            "package_id": "PKG-1",
+            "headline": "Agent Workflows",
+            "deck": "Autonomous patterns overview",
+            "blocks": [{"block_id": "b1", "block_type": "PROSE", "text": "Prose explaining agent coordination."}],
+        })
+        core.write_json(draft_v2 / "profile-synthesis-input.json", {})
+        core.write_json(draft_v2 / "profile-synthesis-result.json", {
+            "publication_payload": {
+                "closing_synthesis": "Autonomous agents operate independently within defined boundaries."
+            }
+        })
+        input_data = {
+            "schema_version": "2.0-rc1",
+            "issue_id": "2026-W35",
+            "runner": "WEEKLY_MAGAZINE",
+            "cover": {"headline": "Weekly Agent Systems", "deck": "Comprehensive coverage", "anchors": ["Agent Workflows"]},
+            "frontmatter": {"heading": "Frontmatter", "lede": "Lede text", "scope_notes": ["Note 1"]},
+            "final_summary": {
+                "heading": "今週の総括",
+                "paragraphs": [
+                    "First substantive overview paragraph of generative AI advancements in this weekly window.",
+                    "Second detailed analytical paragraph examining practical adoption patterns and production architectures.",
+                    "Autonomous agents operate independently within defined boundaries.",
+                ],
+            },
+        }
+        input_path = source_root / "semantic-pub-input.json"
+        core.write_json(input_path, input_data)
+        state = {
+            "issue_id": "2026-W35",
+            "lifecycle_state": "DRAFT_COMPLETE",
+            "next_action": "stage:semantic-publication-validation",
+            "profile": {"path": f"sources/2026-W35/production-profile.json"},
+        }
+        state_path = source_root / "production-state.json"
+        core.write_json(state_path, state)
+
+        # Create structured reader surface input
+        surface_path = pub_v2 / "reader-surface-input-v2.json"
+        surface_gate.build_weekly_reader_surface_input(
+            self.root,
+            "2026-W35",
+            "WEEKLY_MAGAZINE",
+            closing_synthesis="Autonomous agents operate independently within defined boundaries.",
+            final_summary_paragraphs=input_data["final_summary"]["paragraphs"],
+            packages=[{
+                "package_id": "PKG-1",
+                "headline": "Agent Workflows",
+                "deck": "Autonomous patterns overview",
+                "blocks": [{"block_id": "b1", "text": "Prose explaining agent coordination."}],
+            }],
+            headline=input_data["cover"]["headline"],
+            deck=input_data["cover"]["deck"],
+            output_path=surface_path,
+        )
+
+        # Create valid review with decision="FAIL"
+        rev_path = pub_v2 / "reader-surface-semantic-review-v2.json"
+        rev_base = {
+            "schema_version": "2.0-rc1",
+            "issue_id": "2026-W35",
+            "publication_profile": "WEEKLY_MAGAZINE",
+            "review_kind": "SEMANTIC_EDITORIAL",
+            "reviewed_surface": {
+                "path": str(surface_path.relative_to(self.root)).replace("\\", "/"),
+                "sha256": core.sha256_file(surface_path),
+            },
+            "checks": [{
+                "check_id": "READER_PIPELINE_INDEPENDENCE",
+                "status": "FAIL",
+                "detail": "Prose relies on pipeline internals",
+                "evidence_locations": ["reader-surface-input-v2.json:closing_synthesis"],
+            }],
+            "decision": "FAIL",
+            "reviewed_by": "ChatGPT",
+            "reviewed_at": core.iso_utc(self.now),
+            "recorded_at": core.iso_utc(self.now),
+            "status": "FAILED",
+            "findings": [{
+                "finding_id": "F1",
+                "locator": "closing_synthesis",
+                "text_span": "leaked",
+                "severity": "BLOCKING",
+                "reason": "Process leakage",
+                "proposed_normalization": "Fix",
+                "disposition": "UNRESOLVED",
+            }],
+            "summary": "Semantic review rejected",
+        }
+        rev_base["review_sha256"] = core.sha256_object(rev_base)
+        core.write_json(rev_path, rev_base)
+
+        import sys
+        import unittest.mock
+        old_argv = sys.argv
+        with unittest.mock.patch.object(weekly_pub.agent, "validate_agent_state", return_value=[]), \
+             unittest.mock.patch.object(weekly_pub.agent, "resolve_active_evidence_views", return_value={"evidence_path": "dummy"}), \
+             unittest.mock.patch.object(weekly_pub.drafting, "validate_synthesis_result", return_value=[]), \
+             unittest.mock.patch.object(weekly_pub.drafting, "validate_draft_result", return_value=[]), \
+             unittest.mock.patch.object(weekly_pub, "_records_from_authorities", return_value=({}, {})):
+            try:
+                sys.argv = [
+                    "survey_weekly_semantic_publication_v2.py",
+                    "--repo-root", str(self.root),
+                    "--state", str(state_path),
+                    "--input", str(input_path),
+                    "--semantic-review", str(rev_path),
+                ]
+                with self.assertRaises(SystemExit) as ctx:
+                    weekly_pub.main()
+                self.assertTrue(
+                    "FAILED" in str(ctx.exception) or "prohibited" in str(ctx.exception) or "PASS" in str(ctx.exception)
+                )
+                self.assertFalse(survey_root.exists())
+                self.assertFalse((survey_root / "main.tex").exists())
+            finally:
+                sys.argv = old_argv
 
     def test_missing_publication_payload_refuses_fallback(self) -> None:
         """Weekly reader-facing synthesis refuses fallback to internal profile_payload."""

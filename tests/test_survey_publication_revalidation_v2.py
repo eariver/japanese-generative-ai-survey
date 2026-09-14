@@ -364,10 +364,51 @@ class Fixture:
             self.repo, pub / "reader-manuscript-v2.json", self.survey / "main.pdf", 1,
             "VISUAL", vis_checks, EXECUTOR, T0, pub / "visual-review-v2.json",
         )
+        sem_surface_path = pub / "reader-surface-input-v2.json"
+        core.write_json(sem_surface_path, {
+            "schema_version": "2.0-rc1",
+            "issue_id": ISSUE,
+            "publication_profile": "WEEKLY_MAGAZINE",
+            "headline": "Weekly Survey",
+            "deck": "Weekly survey deck",
+            "closing_synthesis": "Weekly survey closing synthesis.",
+            "final_summary": {
+                "heading": "Summary",
+                "paragraphs": ["Substantive summary paragraph 1.", "Substantive summary paragraph 2."],
+            },
+            "packages": [],
+        })
+        sem_rev_path = pub / "reader-surface-semantic-review-v2.json"
+        sem_rev_base = {
+            "schema_version": "2.0-rc1",
+            "issue_id": ISSUE,
+            "publication_profile": "WEEKLY_MAGAZINE",
+            "review_kind": "SEMANTIC_EDITORIAL",
+            "reviewed_surface": {
+                "path": str(sem_surface_path.relative_to(self.repo)).replace("\\", "/"),
+                "sha256": core.sha256_file(sem_surface_path),
+            },
+            "checks": [
+                {
+                    "check_id": "READER_PIPELINE_INDEPENDENCE",
+                    "status": "PASS",
+                    "detail": "Prose is independently understandable without internal pipeline knowledge.",
+                    "evidence_locations": [f"{sem_surface_path.name}:closing_synthesis"],
+                }
+            ],
+            "decision": "PASS",
+            "reviewed_by": EXECUTOR,
+            "reviewed_at": core.iso_utc(T0),
+            "status": "PASSED",
+            "findings": [],
+            "summary": "Pre-TeX semantic editorial review passed",
+        }
+        sem_rev_base["review_sha256"] = core.sha256_object(sem_rev_base)
+        core.write_json(sem_rev_path, sem_rev_base)
         reader.build_reader_surface_gate(
             self.repo,
             pub / "reader-manuscript-v2.json",
-            pub / "semantic-editorial-review-v2.json",
+            sem_rev_path,
             output_path=pub / "reader-surface-gate-v2.json",
             evaluated_by=EXECUTOR,
             recorded_at=T0,
