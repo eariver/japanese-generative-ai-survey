@@ -1,4 +1,4 @@
-# Human Architecture Review — 2026-W35 r2 (PENDING, no decision recorded)
+# Human Architecture Review — 2026-W35 r2 (APPROVED)
 
 ## Reviewed authority
 
@@ -14,15 +14,15 @@
 
 ## Human decision
 
-`PENDING` — no r2 decision has been recorded. The only valid decisions are `APPROVED` or `REQUEST_CHANGES`. The r1 decision is not reused as r2 approval.
+`APPROVED` — Human Owner approved the exact r2 Architecture bytes at reviewed production authority `7692f618488fe27bf298a7a90648a009ae9b0ffb` (presentation shell `840fc1ce40e5ef759feee8d4fcb86945318057a2`). Recorded via canonical `survey_human_gate_v2.py record-architecture-approval` (revision 2, reviewed_at `2026-09-15T12:53:29Z`, reference `sources/2026-W35/execution/requests/sol-w35-architecture-review-r2-approved-through-publication-preview-20260915.md`). Machine record: `gates/reviews/architecture-r2.json` + immutable snapshot `gates/reviews/approvals/architecture-r2.json` + review index.
 
 ## Requested changes
 
-None (no r2 review performed yet).
+None (APPROVED).
 
 ## Regeneration boundary
 
-None selected (no r2 review performed yet). Allowed pre-Architecture boundaries on REQUEST_CHANGES: ISSUE_INITIALIZED, DISCOVERY_COLLECTED, CANDIDATES_NORMALIZED, EVIDENCE_REVIEWED, SELECTION_COMPLETE.
+None (APPROVED).
 
 ## Shared-Core implication
 

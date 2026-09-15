@@ -1,0 +1,730 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W35",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "w35-open-efficient-turn",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "68eb440af4645ecf7dcbd725bdd7f14cc05a2a32d33103c30f96ce07c8834d07",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "generated_at": "2026-09-15T13:10:00+09:00",
+    "invocation": "W35 Architecture r2 APPROVED bounded drafting run; exact accepted Evidence and approved Architecture constrained",
+    "model": "Muse Spark 1.3",
+    "provider": "Muse Spark",
+    "run_reference": "W35 r2 approval through publication preview 20260915"
+  },
+  "headline": "公開の重みは構造で競う",
+  "deck": "大きなMoEの公開と予告が並んだ週だが、動作規模の小ささも利用条件もモデルごとに確かめるべきで、ひと括りの効率物語にはしない。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:2026-W35:78faa6871005d1b7",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "model:zai-glm-5-3-flash",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W35:78faa6871005d1b7",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "model:zai-glm-5-3-flash",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W35:78faa6871005d1b7",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "model:zai-glm-5-3-flash",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W35:78faa6871005d1b7",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "model:zai-glm-5-3-flash",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W35:d28c0b6606a81213",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "model:qwen3-8-flash-next",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W35:d28c0b6606a81213",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "model:qwen3-8-flash-next",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W35:d28c0b6606a81213",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "model:qwen3-8-flash-next",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:2026-W35:d28c0b6606a81213",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "model:qwen3-8-flash-next",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p1-glm",
+      "block_type": "PARAGRAPH",
+      "text": "8月26日に報じられたZ.aiのGLM-5.3-Flashは、8月20日からOpenRouter上で無償のステルス preview として現れていたOx Alphaがその正体だったという時系列で語られている。320BのMoEに対して動作時約18Bという規模感はこのモデル固有の数値として伝えられ、比率にして約5.6%に相当するが、他のモデルに広げられる性質ではない。重みのMIT提供は公式の重み置き場での確認を待つ段階であり、1Mトークンの入力や131Kの出力、疎注意と線形注意の併用、30Tトークンの学習といった仕様も報道経由の数値として扱う。GDPval-AAでの上位やAutomationBenchでの2位、10倍の費用主張はいずれも提供側の発表として受け止め、独立の再現を待つ。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W35:78faa6871005d1b7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "model:zai-glm-5-3-flash",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:78faa6871005d1b7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "model:zai-glm-5-3-flash",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:78faa6871005d1b7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "model:zai-glm-5-3-flash",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:78faa6871005d1b7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "model:zai-glm-5-3-flash",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:78faa6871005d1b7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "model:zai-glm-5-3-flash",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:78faa6871005d1b7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "model:zai-glm-5-3-flash",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p1-qwen",
+      "block_type": "PARAGRAPH",
+      "text": "8月26日に重みが公開されたQwen3.8-Flash-Nextは、125BのMoEに対して動作時約6Bに51Bのn-gram表を伴う構成として報じられ、比率にして約4.8%という低さはあくまでこのモデル固有の話である。カード上のmodel_typeがQwen4系の実験名を示すことから次世代旗艦の予告として読めるが、Qwen 4そのものが出たわけではなく、期日や重み、カードは確認されていない。利用条件のqwen-community-1.0の条文も一次資料での確認を待つ。vLLMやSGLangへの対応 pull request は未結合の方向付けに留まり、DeepSWEやSWE-bench Pro、LiveCodeBenchの数値やSGLangでの秒間540トークンという提供側数値は再現前の主張として区別する。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W35:d28c0b6606a81213",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "model:qwen3-8-flash-next",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:d28c0b6606a81213",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "model:qwen3-8-flash-next",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:d28c0b6606a81213",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "model:qwen3-8-flash-next",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:d28c0b6606a81213",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "model:qwen3-8-flash-next",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:d28c0b6606a81213",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "model:qwen3-8-flash-next",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:d28c0b6606a81213",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "model:qwen3-8-flash-next",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p1-hy4",
+      "block_type": "PARAGRAPH",
+      "text": "8月28日に報じられたTencentのHy4は、符号処理や研究、金融分析向けの preview として重み置き場経由で出たという位置づけである。770BのMoEに対して要求あたり約49Bが動くという規模感はこの preview 固有の数値として報じられ、比率にして約6.4%に相当する。CodeBuddyやWorkBuddyとの連携は予定として語られる。提供側自身が初期版は考え過ぎや検証過多になり得ると述べている点は重要で、読者はこの注意書きごと受け止める必要がある。順位や測定値の裏づけは今回の資料にはなく、窓末の公表ゆえ独立の検証の足跡もまだ薄い。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W35:01158aaf101b96a7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "model:tencent-hy4-preview",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:01158aaf101b96a7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "model:tencent-hy4-preview",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:01158aaf101b96a7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "model:tencent-hy4-preview",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:01158aaf101b96a7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "model:tencent-hy4-preview",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:01158aaf101b96a7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "model:tencent-hy4-preview",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p1-signal",
+      "block_type": "PARAGRAPH",
+      "text": "この3件の周りでは読者の関心も集まり、公式の発信に複数の独立した言及が重なる様子が観察記録に残る。ただし観察記録は関心の方向を示すだけで、仕様や測定値、日付、利用条件、公開事実の根拠にはならない。仕様や価格の断片が一人歩きしても、重み置き場や一次発表での確認を欠く限り事実としては扱わない。一方、IBMが8月25日に示したGranite 4.2は3B、8B、30Bの高密度モデル群で、8Bと30Bに複数段の強化学習による道具型訓練を施した点が特徴として報じられる。Apache 2.0の表示は重み置き場での確認を待ち、学習資料の7割近くが符号寄りという偏りは読みの前提として残す。測定値は提供側の数値であり、符号外への転移は確かめられていない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W35:5248649a30c0bd46",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "x-observation:w35-grok-r3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:5248649a30c0bd46",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "x-observation:w35-grok-r3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:5248649a30c0bd46",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "x-observation:w35-grok-r3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:5248649a30c0bd46",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "x-observation:w35-grok-r3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:5248649a30c0bd46",
+          "kind": "CLAIM",
+          "evidence_id": "claim-5",
+          "subject_id": "x-observation:w35-grok-r3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:5248649a30c0bd46",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "x-observation:w35-grok-r3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:5248649a30c0bd46",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "x-observation:w35-grok-r3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:5248649a30c0bd46",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "x-observation:w35-grok-r3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:221bbc48b241d7de",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "model-family:ibm-granite-4-2",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:221bbc48b241d7de",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "model-family:ibm-granite-4-2",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:221bbc48b241d7de",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "model-family:ibm-granite-4-2",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:221bbc48b241d7de",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "model-family:ibm-granite-4-2",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:221bbc48b241d7de",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "model-family:ibm-granite-4-2",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:221bbc48b241d7de",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "model-family:ibm-granite-4-2",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:221bbc48b241d7de",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "model-family:ibm-granite-4-2",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "w35-open-efficient-turn-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: No cluster-wide activation-ratio claim: sub-5% characterization is Qwen-specific at most under current Evidence / No cluster-wide license or offload/memory-mechanism claim for the P1 cluster / Vendor benchmarks stay publisher-only until reproduced / Qwen 4 flagship must not be presented as released / License assertions require HF verification / No Z.ai first-party page or HF card retrieved; promotion pricing vs list pricing needs primary. / 'Trained on Chinese chips' claim is unnamed/unsourced; dual context-window figures need reconciliation. / MIT weight availability: Pending Z.ai blog / HF card verification; official X rows corroborate in the Grok record. / 320B/18B + 1M ctx specs: Secondary-relayed; pending HF card verification. / GDPval-AA v2 vendor claim as unreproduced: Publisher-only until independent reproduction. / Ox Alpha preview chronology: Secondary-relayed with official-X corroboration; pending Z.ai primary. / No HF card or engine PR retrieved directly; all PR claims are relayed readings. / License terms of qwen-community-1.0 not verified from primary. / 125B/6B/51B spec sheet: Card facts as relayed; pending HF card verification. / qwen-community-1.0 license: License terms not verified from primary. / PR existence as direction signal only: Open/unmerged PRs cannot establish serving facts. / No Tencent first-party post retrieved; rankings/benchmarks absent from the consumed authority. / End-of-window timing (08-28) leaves minimal independent-testing footprint inside the window. / 770B/49B figures: Tencent figures as relayed; pending Tencent primary. / preview status + over-verification caveat: Relayed; pending Tencent HF/blog verification. / X observation only: no technical specification, benchmark value, date, license, or release fact is established by this record. / Low-engagement and Japanese-language posts from the original run are under-enumerated in the ledger. / Late-breaking rows are contextual only and must not enter ordinary-window totals. / primary-source verification for GLM/Qwen/Hy4 technical claims: All X-carried specs/benchmarks/prices require primary-source verification before VERIFIED Evidence. / No IBM first-party page or HF card was retrieved in this run; all release facts are relayed. / Architecture/training figures (15T tokens, 7.2M SFT samples, layer counts) are unconfirmed. / Non-coding transfer of agentic training is unproven. / Apache 2.0 license scope: Pending IBM Research / HF verification before downstream license assertions. / agentic RL pipeline claims: Relayed pipeline detail; pending IBM primary.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:2026-W35:78faa6871005d1b7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "model:zai-glm-5-3-flash",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:78faa6871005d1b7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "model:zai-glm-5-3-flash",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:d28c0b6606a81213",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "model:qwen3-8-flash-next",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:d28c0b6606a81213",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "model:qwen3-8-flash-next",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:01158aaf101b96a7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "model:tencent-hy4-preview",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:01158aaf101b96a7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "model:tencent-hy4-preview",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:5248649a30c0bd46",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "x-observation:w35-grok-r3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:5248649a30c0bd46",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "x-observation:w35-grok-r3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:5248649a30c0bd46",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "x-observation:w35-grok-r3",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:221bbc48b241d7de",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "model-family:ibm-granite-4-2",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:221bbc48b241d7de",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "model-family:ibm-granite-4-2",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:2026-W35:221bbc48b241d7de",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "model-family:ibm-granite-4-2",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "GLM-5.3-Flash reveal + Ox Alpha preview chronology, model-specific only (PARTIAL: relayed 18B/320B ~=5.6% active; MIT weights UNRESOLVED)",
+      "block_ids": [
+        "p1-glm",
+        "p1-qwen",
+        "p1-hy4",
+        "p1-signal",
+        "w35-open-efficient-turn-boundaries"
+      ]
+    },
+    {
+      "requirement": "Qwen3.8-Flash-Next specs + preview-vs-Qwen-4 distinction, model-specific only (PARTIAL: relayed ~6B/125B ~=4.8% active is Qwen-specific; qwen-community-1.0 terms UNRESOLVED)",
+      "block_ids": [
+        "p1-glm",
+        "p1-qwen",
+        "p1-hy4",
+        "p1-signal",
+        "w35-open-efficient-turn-boundaries"
+      ]
+    },
+    {
+      "requirement": "Hy4 preview specs, model-specific only (PARTIAL: relayed ~49B/770B ~=6.4% active; preview status explicit; over-verification caveat load-bearing)",
+      "block_ids": [
+        "p1-glm",
+        "p1-qwen",
+        "p1-hy4",
+        "p1-signal",
+        "w35-open-efficient-turn-boundaries"
+      ]
+    },
+    {
+      "requirement": "Licenses stated per-model only with exact authority (no cluster-wide license common fact)",
+      "block_ids": [
+        "p1-glm",
+        "p1-qwen",
+        "p1-hy4",
+        "p1-signal",
+        "w35-open-efficient-turn-boundaries"
+      ]
+    },
+    {
+      "requirement": "X momentum as community signal only; no X-only spec promotion",
+      "block_ids": [
+        "p1-glm",
+        "p1-qwen",
+        "p1-hy4",
+        "p1-signal",
+        "w35-open-efficient-turn-boundaries"
+      ]
+    },
+    {
+      "requirement": "Granite 4.2 agent-RL breadth with SWE-skew caveat (PARTIAL)",
+      "block_ids": [
+        "p1-glm",
+        "p1-qwen",
+        "p1-hy4",
+        "p1-signal",
+        "w35-open-efficient-turn-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "No cluster-wide activation-ratio claim: sub-5% characterization is Qwen-specific at most under current Evidence",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "No cluster-wide license or offload/memory-mechanism claim for the P1 cluster",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Vendor benchmarks stay publisher-only until reproduced",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Qwen 4 flagship must not be presented as released",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "License assertions require HF verification",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "No Z.ai first-party page or HF card retrieved; promotion pricing vs list pricing needs primary.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "'Trained on Chinese chips' claim is unnamed/unsourced; dual context-window figures need reconciliation.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "MIT weight availability: Pending Z.ai blog / HF card verification; official X rows corroborate in the Grok record.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "320B/18B + 1M ctx specs: Secondary-relayed; pending HF card verification.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "GDPval-AA v2 vendor claim as unreproduced: Publisher-only until independent reproduction.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Ox Alpha preview chronology: Secondary-relayed with official-X corroboration; pending Z.ai primary.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "No HF card or engine PR retrieved directly; all PR claims are relayed readings.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "License terms of qwen-community-1.0 not verified from primary.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "125B/6B/51B spec sheet: Card facts as relayed; pending HF card verification.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "qwen-community-1.0 license: License terms not verified from primary.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "PR existence as direction signal only: Open/unmerged PRs cannot establish serving facts.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "No Tencent first-party post retrieved; rankings/benchmarks absent from the consumed authority.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "End-of-window timing (08-28) leaves minimal independent-testing footprint inside the window.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "770B/49B figures: Tencent figures as relayed; pending Tencent primary.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "preview status + over-verification caveat: Relayed; pending Tencent HF/blog verification.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "X observation only: no technical specification, benchmark value, date, license, or release fact is established by this record.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Low-engagement and Japanese-language posts from the original run are under-enumerated in the ledger.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Late-breaking rows are contextual only and must not enter ordinary-window totals.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "primary-source verification for GLM/Qwen/Hy4 technical claims: All X-carried specs/benchmarks/prices require primary-source verification before VERIFIED Evidence.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "No IBM first-party page or HF card was retrieved in this run; all release facts are relayed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Architecture/training figures (15T tokens, 7.2M SFT samples, layer counts) are unconfirmed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Non-coding transfer of agentic training is unproven.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Apache 2.0 license scope: Pending IBM Research / HF verification before downstream license assertions.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "agentic RL pipeline claims: Relayed pipeline detail; pending IBM primary.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "w35-open-efficient-turn-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}
