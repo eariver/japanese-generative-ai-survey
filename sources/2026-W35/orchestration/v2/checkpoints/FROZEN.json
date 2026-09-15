@@ -1,0 +1,61 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W35",
+  "from_state": "FROZEN",
+  "to_state": "RELEASED",
+  "checkpoints": [
+    "release"
+  ],
+  "recorded_at": "2026-09-15T16:29:43Z",
+  "implementation": {
+    "repository_commit_sha": "2cc6721cad14233beac538ade23d74be0d2092cd",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "merge-verification",
+      "path": "sources/2026-W35/publication/v2/merge-verification-v2.json",
+      "sha256": "82f9ac2931ef3f8c699173b306310df131957036d40e08c69e232948da6b66be"
+    },
+    {
+      "name": "release-record",
+      "path": "sources/2026-W35/publication/v2/release-record-v2.json",
+      "sha256": "cfc84486a4fc6fc69844a6b7a9796e31e7bc75f0b79fcf08f7aecfd96861f252"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey-production-v2-release.yml",
+      "evidence": "Exact pre-transition Production State, Production Profile, Core contract identity, implementation identity, and stage release artifacts were verified before release adoption.",
+      "result": {
+        "path": "sources/2026-W35/publication/v2/core-stage-contract-v2.json",
+        "sha256": "5da019f2f2f0a09ed502e6c5e6912ebc403b5a0791e040e4dc8ba8aeb01e4e8e"
+      }
+    },
+    {
+      "check_id": "RELEASE_EXACT_BYTE_RECONCILIATION",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey-production-v2-release.yml",
+      "evidence": "Public issue-only Release identity, target and downloaded asset bytes were reconciled against the frozen Release Manifest before adoption.",
+      "result": {
+        "path": "sources/2026-W35/publication/v2/release-record-v2.json",
+        "sha256": "cfc84486a4fc6fc69844a6b7a9796e31e7bc75f0b79fcf08f7aecfd96861f252"
+      }
+    }
+  ],
+  "summary": "Exact frozen publication bytes were released or reconciled idempotently, CORE_STAGE_CONTRACT was verified, and the immutable Release Record was validated."
+}
