@@ -35,8 +35,24 @@ Started: `2026-09-15T21:45:00+09:00` (JST)
 
 - None at drafting stage. Reader/publication validation + PDF build + candidate + Preview dossier continue in this run.
 
-## End state of this commit
+## Validation to VALIDATED_DRAFT (same run, continued)
 
-- Lifecycle: `DRAFT_COMPLETE`
-- Next action: `stage:reader-publication-validation`
-- Session status: `IN_PROGRESS_TO_PUBLICATION_PREVIEW`
+- Built `publication/v2/reader-manuscript-v2.json` via canonical binder (20 must-cover rows + FINAL_SYNTHESIS/WEEKLY_COMMUNITY_MOVEMENT, 10 supporting files).
+- Built 3 deterministic checks (identifier-preservation, pdf-preflight via CI run 34972809068, subject-entity binding 17/17) + `quality-regression-bundle-v2.json` (3 PASS).
+- Built pre-TeX structured surface + persisted semantic review PASS + `reader-surface-gate-v2.json` PASS.
+- Genuine ChatGPT semantic/editorial QA (11 PASS) + exact-PDF visual QA (2 PASS, 8 pages, text-extraction clean) via canonical review binders.
+- Stage validation PASS → checkpoint `orchestration/v2/checkpoints/DRAFT_COMPLETE.json`, State → `VALIDATED_DRAFT`, next `stage:publication-candidate`.
+
+## Publication Candidate to RELEASE_CANDIDATE (same run, continued)
+
+- Built `publication/v2/publication-candidate-v2.json` (candidate SHA `3195f74c…`) binding exact manuscript/source/PDF/bundle/reviews.
+- Stage validation PASS → checkpoint `orchestration/v2/checkpoints/VALIDATED_DRAFT.json`, State → `RELEASE_CANDIDATE`, next `PUBLICATION_PREVIEW`, terminal `HUMAN_GATE_REACHED`.
+- Production commit `d1d6bdc67` (State + Candidate + Candidate-bound PDF 8 pages/285365 bytes/SHA `6115f0a7…`).
+- Created Human-facing Publication Preview r1 shell + dossier referencing `d1d6bdc67`; no Preview decision recorded; no Freeze/Release.
+
+## End state
+
+- Lifecycle: `RELEASE_CANDIDATE`
+- Next action: `PUBLICATION_PREVIEW` (Human decision only)
+- Terminal reason: `HUMAN_GATE_REACHED`
+- Session status: `COMPLETE_AT_GATE`
