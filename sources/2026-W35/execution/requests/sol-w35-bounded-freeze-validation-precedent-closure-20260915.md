@@ -8,10 +8,10 @@ Date: `2026-09-15 JST`
 
 Complete `2026-W35` from the preserved Human-approved `RELEASE_CANDIDATE` frontier through canonical Freeze, main integration, exact-byte public Release, and terminal `RELEASED / COMPLETE`, while **keeping shared Core bytes frozen** for the separate J-GAS refactor analysis.
 
-Two shared-Core maintenance defects are intentionally deferred:
+Shared-Core maintenance defects are intentionally deferred under GitHub Issue #497 and the W35 edition defect records:
 
-- Issue #497 — profile-aware Freeze incorrectly requires the legacy post-approval visual schema.
-- Issue #498 — `survey_stage_validation_v2._prior_artifacts()` treats Human Publication Preview approval provenance as a Stage Checkpoint.
+- profile-aware Freeze incorrectly requires the legacy post-approval visual schema;
+- `survey_stage_validation_v2._prior_artifacts()` treats Human Publication Preview approval provenance as a Stage Checkpoint.
 
 This request authorizes only the same bounded Freeze/Human-Gate artifact-admission correction already used to close W34. It does **not** authorize any persistent Core edit.
 
@@ -23,13 +23,7 @@ Existing branch only:
 
 `weekly/2026-W35-v2-work`
 
-Exact Starting SHA:
-
-`d334e3f51cc6e0fe86324eeab79b46af1ced2c48`
-
-Expected Starting Tree:
-
-`529d0773e21a623291e316ca6bd92a204fff9f81`
+Exact Starting SHA and Tree are supplied by the Sol handoff message and must be verified read-only before any write.
 
 Expected remote `main`:
 
@@ -39,7 +33,7 @@ Expected remote `production/survey-core-v2`:
 
 `774dd39a951c9ac3818e83dfffd4c7666efb0a20`
 
-Before any write, verify all four values read-only. Also verify the current W35 State remains:
+Also verify the current W35 State remains:
 
 - lifecycle `RELEASE_CANDIDATE`
 - Architecture Review `approved`
@@ -87,7 +81,7 @@ Do not advance `production/survey-core-v2`.
 
 Do not open or merge a Core repair PR in this execution.
 
-Issues #497 and #498 are the durable maintenance obligations.
+Issue #497 plus the two W35 defect records are the durable maintenance obligations.
 
 ## 5. Freeze artifact generation — required compatibility primitive
 
@@ -122,7 +116,7 @@ No legacy post-approval visual record may be invented.
 
 ## 6. Freeze stage validation — W34 precedent bounded correction
 
-The unmodified `survey_stage_validation_v2.py` currently fails before evaluating the W35 Freeze artifacts because `_prior_artifacts()` reads `checkpoint_provenance.publication_preview` as though it were a Stage Checkpoint. This is Issue #498 and is outside edition repair.
+The unmodified `survey_stage_validation_v2.py` currently fails before evaluating the W35 Freeze artifacts because `_prior_artifacts()` reads `checkpoint_provenance.publication_preview` as though it were a Stage Checkpoint. This is a deferred shared-Core defect and is outside edition repair.
 
 For this W35 closure only, use the **same semantic correction already recorded in W34 Freeze provenance**:
 
@@ -145,7 +139,7 @@ Create edition-local validation provenance under a clearly named W35 execution d
 
 1. a `CORE_STAGE_CONTRACT` PASS report matching current `schemas/stage-checkpoint-v2.schema.json` expectations;
 2. a review record that explicitly names the executor as `survey_stage_validation_v2 with bounded Freeze/Human-Gate artifact admission correction`;
-3. evidence text stating that this is the W34 precedent correction and referencing Issue #498;
+3. evidence text stating that this is the W34 precedent correction and referencing GitHub Issue #497 plus `sources/2026-W35/execution/defects/w35-freeze-prior-checkpoint-provenance-core-defect-20260915.md`;
 4. the three Freeze checkpoint artifacts required by current schema:
    - `freeze-record`
    - `release-manifest`
@@ -233,7 +227,7 @@ Before reporting success, read back and report:
 Do not:
 
 - modify shared Core
-- close Issues #497/#498
+- close Issue #497
 - create fallback/repair/review branches
 - force push
 - reset/rebase/squash/history rewrite
@@ -250,7 +244,7 @@ STOP without improvisation if:
 - starting guards mismatch;
 - approved bytes drift;
 - compatibility Freeze output fails normal Release Manifest validation;
-- corrected Freeze semantic validation fails for any reason other than the known Issue #498 prior-provenance admission defect;
+- corrected Freeze semantic validation fails for any reason other than the known prior-provenance admission defect;
 - controller rejects the resulting deterministic report/checkpoint;
 - main integration changes frozen publication bytes;
 - release exact-byte reconciliation fails;
