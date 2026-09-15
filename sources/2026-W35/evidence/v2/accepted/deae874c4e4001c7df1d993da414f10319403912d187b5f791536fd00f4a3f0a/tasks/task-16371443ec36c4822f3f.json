@@ -1,0 +1,52 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W35",
+  "evidence_task_id": "evidence:2026-W35:d28c0b6606a81213",
+  "discovery_ids": [
+    "w35-primary-qwen38flashnext-20260826"
+  ],
+  "source_records": [
+    {
+      "source_type": "SECONDARY",
+      "collector_id": "primary-webfetch",
+      "collector_run_id": "w35-primary-20260915-r1",
+      "observed_at": "2026-09-15T05:30:00Z",
+      "title": "Qwen3.8-Flash-Next open weights, preview of Qwen4 architecture (2026-08-26)",
+      "locator": "https://www.orcarouter.ai/blog/qwen-4-leak-vllm-fuse-op",
+      "raw_paths": [
+        "sources/2026-W35/collectors/primary/runs/20260915T040000Z/qwen38flashnext-orcarouter-20260826.md"
+      ],
+      "published_at": "2026-08-26",
+      "summary_text": "125B MoE / ~6B active + 51B n-gram table, 262K ctx (1M YaRN), multimodal; qwen-community-1.0; model_type=qwen4_exp; HyperConnection/QSA/PLE architecture; vLLM #53909 + SGLang #36585 (Argus, failing CI) kernel work; SGLang day-0 NVFP4 post (540 tok/s claim, unaudited); vendor card benchmarks unreproduced; Qwen 4 flagship itself UNRELEASED.",
+      "metadata": {
+        "authority_class": "SECONDARY_TECHNICAL",
+        "lanes": [
+          "A",
+          "G",
+          "H",
+          "J"
+        ]
+      }
+    }
+  ],
+  "verification_targets": [
+    "125B/6B/51B spec sheet",
+    "qwen-community-1.0 license",
+    "PR existence as direction signal only",
+    "Qwen 4 unreleased"
+  ],
+  "screening_basis": {
+    "screening_acceptance_sha256": "749b9409de6ba6b54d7f82412abea7712d1d71c4fc4958a58cac2155f274f47c",
+    "decisions": [
+      {
+        "discovery_id": "w35-primary-qwen38flashnext-20260826",
+        "decision": "KEEP",
+        "scope_tags": [
+          "open-weight",
+          "serving",
+          "evaluation"
+        ]
+      }
+    ]
+  }
+}

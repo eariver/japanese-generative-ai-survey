@@ -1,0 +1,166 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W35",
+  "evidence_task_id": "evidence:2026-W35:990baf956faa7065",
+  "basis": {
+    "task_sha256": "fa2df281fb499e76878b796524b3961f99d543ccd3bd135709325a07b92989b0",
+    "screening_acceptance_sha256": "749b9409de6ba6b54d7f82412abea7712d1d71c4fc4958a58cac2155f274f47c",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "product:vscode-1-135-ahp",
+      "canonical_name": "VS Code 1.135 Agent Host Protocol",
+      "entity_type": "PRODUCT",
+      "organization": "Microsoft",
+      "canonical_url": "https://byteiota.com/vs-code-1-135-agent-host-protocol-ships-sessions-go-portable/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "product:vscode-1-135-ahp",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "VS Code 1.135 Agent Host Protocol",
+    "canonical_url": "https://byteiota.com/vs-code-1-135-agent-host-protocol-ships-sessions-go-portable/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-15T06:40:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08-27",
+        "subject_id": "product:vscode-1-135-ahp",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://byteiota.com/vs-code-1-135-agent-host-protocol-ships-sessions-go-portable/",
+      "source_class": "SECONDARY",
+      "title": "VS Code 1.135 Agent Host Protocol + portable sessions (shipped 2026-08-26)",
+      "published_at": "2026-08-27",
+      "accessed_at": "2026-09-15T06:40:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "VS Code 1.135 shipped 2026-08-26 with the Agent Host Protocol: MIT-licensed draft spec decoupling agent sessions from editor windows (JSON-RPC/WebSocket).",
+      "subject_id": "product:vscode-1-135-ahp",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Release facts via dev press; VS Code release notes + AHP spec are verification targets."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Portable sessions surface recent Copilot CLI/app, Claude Code, and Codex sessions across windows.",
+      "subject_id": "product:vscode-1-135-ahp",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Surface list as relayed; subscription/visibility conditions need primary."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Rubber Duck cross-family reviewer is claimed to close 74.7% of the Sonnet-to-Opus gap on the hardest SWE-Bench Pro class; benefit on average tasks is smaller.",
+      "subject_id": "product:vscode-1-135-ahp",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Press-reported benchmark framing; unverified and explicitly caveated even in-source."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "AHP is pre-1.0 with unstable wire types; production-CI adoption is explicitly discouraged.",
+      "subject_id": "product:vscode-1-135-ahp",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Instability warning adopted as a hard downstream bound."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "No Microsoft first-party notes or spec retrieved; all facts relayed.",
+      "subject_id": "product:vscode-1-135-ahp",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Rubber Duck figures must not enter prose as measurements.",
+      "subject_id": "product:vscode-1-135-ahp",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "AHP draft status + MIT license",
+        "status": "UNRESOLVED",
+        "finding": "Pending VS Code release-notes/spec verification.",
+        "subject_ids": [
+          "product:vscode-1-135-ahp"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "portable-session surface list",
+        "status": "UNRESOLVED",
+        "finding": "Relayed surface list; subscription conditions need primary.",
+        "subject_ids": [
+          "product:vscode-1-135-ahp"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "Rubber Duck claim as unverified",
+        "status": "VERIFIED",
+        "finding": "Recorded as unverified press-reported claim; must not enter prose as measurement.",
+        "subject_ids": [
+          "product:vscode-1-135-ahp"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "AHP draft status + MIT license: Pending VS Code release-notes/spec verification.",
+      "portable-session surface list: Relayed surface list; subscription conditions need primary."
+    ],
+    "contradictions": []
+  }
+}

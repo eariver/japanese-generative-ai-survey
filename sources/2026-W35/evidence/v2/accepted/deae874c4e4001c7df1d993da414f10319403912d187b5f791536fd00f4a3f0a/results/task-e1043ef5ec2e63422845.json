@@ -1,0 +1,165 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W35",
+  "evidence_task_id": "evidence:2026-W35:8da4c0e132449556",
+  "basis": {
+    "task_sha256": "1aefc53874ba161b17993902054757b44325febce3f2504001434bc98974b2bc",
+    "screening_acceptance_sha256": "749b9409de6ba6b54d7f82412abea7712d1d71c4fc4958a58cac2155f274f47c",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "model:iapp-openthai-2-0",
+      "canonical_name": "OpenThai 2.0",
+      "entity_type": "MODEL",
+      "organization": "iApp Technology / AIEAT",
+      "canonical_url": "https://iapp.co.th/blog/openthai2p0-launch"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model:iapp-openthai-2-0",
+    "artifact_type": "OPEN_WEIGHT",
+    "canonical_name": "OpenThai 2.0",
+    "canonical_url": "https://iapp.co.th/blog/openthai2p0-launch"
+  },
+  "temporal": {
+    "observed_at": "2026-09-15T06:40:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08-27",
+        "subject_id": "model:iapp-openthai-2-0",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://iapp.co.th/blog/openthai2p0-launch",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenThai 2.0 Thai vision-language 27B under Apache 2.0 (2026-08-27)",
+      "published_at": "2026-08-27",
+      "accessed_at": "2026-09-15T06:40:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "iApp + AIEAT released OpenThai 2.0 on 2026-08-27: 27B Qwen3.8-based Thai vision-language model, Apache 2.0, free HF weights.",
+      "subject_id": "model:iapp-openthai-2-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "First-party launch post consumed in full."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Vendor-measured results: Thai-reading CER wins (handwriting 0.261 vs 0.649; gazette 0.126 vs 0.370), OpenThaiEval 0.842, IFEval-TH 0.795, HumanEval 0.957, BFCL 0.820 / multi-turn 0.775.",
+      "subject_id": "model:iapp-openthai-2-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor-measured on own suite; unreproduced, clearly marked as measured-by-vendor."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Published losses (Typhoon-OCR 1.5 on clean lines, scene text weakest, table parity), 5 formats incl. NVFP4, MTP head +50% on H100, 3-stage LoRA on 143K verified rows, 8xH100 via Siam AI.",
+      "subject_id": "model:iapp-openthai-2-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Training/reproducibility account as stated; losses section is part of the verified record."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Free browser demo and hosted endpoint free until 2026-09-30 (30 req/min).",
+      "subject_id": "model:iapp-openthai-2-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Access terms as stated."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "All benchmark figures are vendor-measured without independent reproduction.",
+      "subject_id": "model:iapp-openthai-2-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Thai-specific claims are not evaluable in this run beyond the vendor's account.",
+      "subject_id": "model:iapp-openthai-2-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Apache 2.0 + HF weights",
+        "status": "VERIFIED",
+        "finding": "Consumed first-party launch post.",
+        "subject_ids": [
+          "model:iapp-openthai-2-0"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "vendor-measured numbers as vendor-measured",
+        "status": "UNRESOLVED",
+        "finding": "Vendor-measured; independent reproduction absent.",
+        "subject_ids": [
+          "model:iapp-openthai-2-0"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "published losses",
+        "status": "VERIFIED",
+        "finding": "Losses section consumed as part of the verified record.",
+        "subject_ids": [
+          "model:iapp-openthai-2-0"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "vendor-measured numbers as vendor-measured: Vendor-measured; independent reproduction absent."
+    ],
+    "contradictions": []
+  }
+}

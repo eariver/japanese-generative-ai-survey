@@ -1,0 +1,143 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W35",
+  "evidence_task_id": "evidence:2026-W35:959881fd925957c8",
+  "basis": {
+    "task_sha256": "9276e3005e4be89acfa4ff0b2293ae4a37f2c0ce94bdf7d00c8fefac53b91156",
+    "screening_acceptance_sha256": "749b9409de6ba6b54d7f82412abea7712d1d71c4fc4958a58cac2155f274f47c",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "product:gpt-5-6-in-kiro",
+      "canonical_name": "GPT-5.6 family in AWS Kiro",
+      "entity_type": "PRODUCT",
+      "organization": "OpenAI / AWS",
+      "canonical_url": "https://openai.com/index/gpt-5-6-in-kiro/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "product:gpt-5-6-in-kiro",
+    "artifact_type": "INTEGRATION",
+    "canonical_name": "GPT-5.6 family in AWS Kiro",
+    "canonical_url": "https://openai.com/index/gpt-5-6-in-kiro/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-15T06:40:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08-24",
+        "subject_id": "product:gpt-5-6-in-kiro",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://openai.com/index/gpt-5-6-in-kiro/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenAI GPT-5.6 family in AWS Kiro (2026-08-24)",
+      "published_at": "2026-08-24",
+      "accessed_at": "2026-09-15T06:40:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "OpenAI announced on 2026-08-24 that the GPT-5.6 family (Sol, Terra, Luna) is available in Kiro with continued joint OpenAI-AWS optimization.",
+      "subject_id": "product:gpt-5-6-in-kiro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Dated first-party announcement page consumed in full."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Kiro is described as a spec-driven development agent (requirements -> designs -> tasks, property-based testing, checkpoint reviews).",
+      "subject_id": "product:gpt-5-6-in-kiro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Capability description as announced; product framing."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Joint testing found GPT-5.6 Terra completing successful Terminal-Bench 2.1 tasks in Kiro at roughly 82% cost reduction.",
+      "subject_id": "product:gpt-5-6-in-kiro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor-reported joint figure; methodology and baselines undisclosed on the page."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Terminal-Bench figure is vendor-reported without published methodology; no independent reproduction.",
+      "subject_id": "product:gpt-5-6-in-kiro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "No pricing, availability-region, or model-card facts are established by this page.",
+      "subject_id": "product:gpt-5-6-in-kiro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Sol/Terra/Luna availability claim",
+        "status": "VERIFIED",
+        "finding": "Dated first-party announcement page.",
+        "subject_ids": [
+          "product:gpt-5-6-in-kiro"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "Terminal-Bench 2.1 figure as vendor-reported",
+        "status": "UNRESOLVED",
+        "finding": "Vendor-reported without published methodology.",
+        "subject_ids": [
+          "product:gpt-5-6-in-kiro"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "Terminal-Bench 2.1 figure as vendor-reported: Vendor-reported without published methodology."
+    ],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W35",
+  "from_state": "ISSUE_INITIALIZED",
+  "to_state": "DISCOVERY_COLLECTED",
+  "checkpoints": [
+    "discovery"
+  ],
+  "recorded_at": "2026-09-14T21:21:00Z",
+  "implementation": {
+    "repository_commit_sha": "977bb50ad96912e86962eda4e4771ed9ca85262b",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "discovery-acceptance",
+      "path": "sources/2026-W35/discovery/discovery-accepted-v2.json",
+      "sha256": "cecdd2b5624fca8572f9bdfc38790a6b69b4abd8d56dd2800ef4a514d089c98e"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "Fresh 20-record W35 Discovery (1 Sol-reviewed Grok r3 X-ledger record + 19 W35-window primary/secondary retrieval records, canonical closed-vocabulary source_type) validated against COMPLETE X manifest; X 35/25/0/10 accounting bound. Machine validation only; Sol supervisory reviews still required downstream.",
+      "result": {
+        "path": "sources/2026-W35/execution/validation/discovery-stage-validation-r1.json",
+        "sha256": "0d0b9e041e0f1bb5c7354ac5194cd3693acb35925d53e4f82e2bce4387b355d3"
+      }
+    }
+  ],
+  "summary": "W35 Discovery collected: 20 fresh records (Grok r3 X ledger + 19 primary retrievals, canonical source_type vocabulary); X manifest COMPLETE."
+}

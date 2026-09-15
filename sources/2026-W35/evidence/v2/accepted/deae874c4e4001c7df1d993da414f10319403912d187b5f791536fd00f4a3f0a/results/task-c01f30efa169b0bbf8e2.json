@@ -1,0 +1,141 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W35",
+  "evidence_task_id": "evidence:2026-W35:c4a643aaf349bed1",
+  "basis": {
+    "task_sha256": "c42494b5820057ef63d93ea96dc8b21668f3bc045966b499409a1c5ce426f65f",
+    "screening_acceptance_sha256": "749b9409de6ba6b54d7f82412abea7712d1d71c4fc4958a58cac2155f274f47c",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "product:vllm-0-28-0",
+      "canonical_name": "vLLM v0.28.0",
+      "entity_type": "FRAMEWORK",
+      "organization": "vLLM project",
+      "canonical_url": "https://github.com/vllm-project/vllm/releases/tag/v0.28.0"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "product:vllm-0-28-0",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "vLLM v0.28.0",
+    "canonical_url": "https://github.com/vllm-project/vllm/releases/tag/v0.28.0"
+  },
+  "temporal": {
+    "observed_at": "2026-09-15T06:40:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08-26T09:46:00Z",
+        "subject_id": "product:vllm-0-28-0",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.28.0",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "vLLM v0.28.0 release (2026-08-26): 584 commits, Kimi-K3 push, new models",
+      "published_at": "2026-08-26T09:46:00Z",
+      "accessed_at": "2026-09-15T06:40:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "vLLM v0.28.0 shipped 2026-08-26 (584 commits / 270 contributors): Kimi-K3 perf push, DeepSeek V4 sparse MLA, Runner V2 E/P/D, tiered KV offload, Rust/gRPC frontend, Mamba prefix-cache default.",
+      "subject_id": "product:vllm-0-28-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "First-party release notes consumed; shipped-feature facts."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "New models: Muse Glimmer, Ling 3.0 Flash (BF16/MTP/FP8/MXFP4), Dots3 NOTE, Interns2mobius; Qwen3.8 on ROCm; GLM-5.2 CuTe skinny GEMM.",
+      "subject_id": "product:vllm-0-28-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Model-support list as shipped in the notes."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Breaking changes: bitsandbytes out-of-tree, Transformers 5.15, removed kv-scale/dtype overrides, reasoning_content removal; security: audio sample-rate DoS fix, --api-key gating warning.",
+      "subject_id": "product:vllm-0-28-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Breaking/security section as shipped."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Performance figures inside (1.5-3x kernels, 60% TTFT, 17 GiB saved) are project-reported without independent audit.",
+      "subject_id": "product:vllm-0-28-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Post-window commits noted on-page are out of scope.",
+      "subject_id": "product:vllm-0-28-0",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "release date + highlights as shipped",
+        "status": "VERIFIED",
+        "finding": "First-party release notes are the consumed authority.",
+        "subject_ids": [
+          "product:vllm-0-28-0"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "new-model + breaking-change lists",
+        "status": "VERIFIED",
+        "finding": "Lists as shipped in the release notes.",
+        "subject_ids": [
+          "product:vllm-0-28-0"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W35",
+  "evidence_task_id": "evidence:2026-W35:34fc38f19acddf5f",
+  "discovery_ids": [
+    "w35-primary-grith-20260825"
+  ],
+  "source_records": [
+    {
+      "source_type": "PRIMARY_OFFICIAL",
+      "collector_id": "primary-webfetch",
+      "collector_run_id": "w35-primary-20260915-r1",
+      "observed_at": "2026-09-15T05:30:00Z",
+      "title": "grith v0.3.2 OS-level security proxy for coding agents (2026-08-25)",
+      "locator": "https://grith.ai/blog/grith-is-live",
+      "raw_paths": [
+        "sources/2026-W35/collectors/primary/runs/20260915T040000Z/grith-launch-20260825.md"
+      ],
+      "published_at": "2026-08-25",
+      "summary_text": "ptrace + seccomp-BPF syscall interception, 18 deterministic filters, ALLOW/QUEUE/DENY verdicts, 0.02ms median scoring; MPL-2.0 repo, free core (2-session cap); Linux-only (macOS/Windows v2.0); cosign/SLSA/SBOM; stated escape-class gaps; 752 /proc/environ-read trace motivation.",
+      "metadata": {
+        "authority_class": "PRIMARY_OFFICIAL",
+        "lanes": [
+          "B",
+          "K"
+        ]
+      }
+    }
+  ],
+  "verification_targets": [
+    "ptrace/seccomp mechanism + verdicts",
+    "MPL-2.0 + Linux-only scope",
+    "stated gaps",
+    "trace figures as vendor-reported"
+  ],
+  "screening_basis": {
+    "screening_acceptance_sha256": "749b9409de6ba6b54d7f82412abea7712d1d71c4fc4958a58cac2155f274f47c",
+    "decisions": [
+      {
+        "discovery_id": "w35-primary-grith-20260825",
+        "decision": "KEEP",
+        "scope_tags": [
+          "agents-coding",
+          "safety",
+          "security"
+        ]
+      }
+    ]
+  }
+}

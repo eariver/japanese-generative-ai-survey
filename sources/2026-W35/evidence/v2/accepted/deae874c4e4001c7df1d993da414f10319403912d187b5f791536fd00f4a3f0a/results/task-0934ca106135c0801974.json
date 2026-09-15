@@ -1,0 +1,176 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W35",
+  "evidence_task_id": "evidence:2026-W35:34fc38f19acddf5f",
+  "basis": {
+    "task_sha256": "021190fbec8cb1924a3cbb047eddeac3abea61852295f04c3fe0661f72a562df",
+    "screening_acceptance_sha256": "749b9409de6ba6b54d7f82412abea7712d1d71c4fc4958a58cac2155f274f47c",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "product:grith",
+      "canonical_name": "grith OS-level agent security proxy",
+      "entity_type": "PRODUCT",
+      "organization": "grith (Field Logic Ltd)",
+      "canonical_url": "https://grith.ai/blog/grith-is-live"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "product:grith",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "grith OS-level agent security proxy",
+    "canonical_url": "https://grith.ai/blog/grith-is-live"
+  },
+  "temporal": {
+    "observed_at": "2026-09-15T06:40:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08-25",
+        "subject_id": "product:grith",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://grith.ai/blog/grith-is-live",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "grith v0.3.2 OS-level security proxy for coding agents (2026-08-25)",
+      "published_at": "2026-08-25",
+      "accessed_at": "2026-09-15T06:40:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "grith v0.3.2 launched 2026-08-25 for Linux x86_64/arm64 with a public MPL-2.0 repository and a free security core (2-session cap).",
+      "subject_id": "product:grith",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "First-party launch post consumed in full."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Enforcement: ptrace + seccomp-BPF syscall interception, 18 deterministic filters (static, pattern, contextual), no LLM in the path; ALLOW/QUEUE/DENY verdicts at 3.0/8.0 thresholds; 0.02ms median scoring.",
+      "subject_id": "product:grith",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Mechanism as stated by the vendor about its own product."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Release path v0.2.2-v0.3.2 (escape-class enforcement on by default, arm64, credential-store fixes, outcome-aware egress) and stated gaps (supervised-tree boundary, no VM/container replacement) are documented in-post.",
+      "subject_id": "product:grith",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Changelog + gaps consumed; gaps are binding downstream bounds."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Motivation traces (752 /proc/environ reads; Codex credential-sweep freeze) are vendor-reported measurements with public methodology claimed.",
+      "subject_id": "product:grith",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor-reported; methodology not independently checked."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Vendor's own measurements are unreproduced; effectiveness claims beyond the mechanism description are not established.",
+      "subject_id": "product:grith",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Linux-only scope excludes macOS/Windows through v2.0.",
+      "subject_id": "product:grith",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "ptrace/seccomp mechanism + verdicts",
+        "status": "VERIFIED",
+        "finding": "Consumed first-party launch post.",
+        "subject_ids": [
+          "product:grith"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "MPL-2.0 + Linux-only scope",
+        "status": "VERIFIED",
+        "finding": "Consumed first-party launch post.",
+        "subject_ids": [
+          "product:grith"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "stated gaps",
+        "status": "VERIFIED",
+        "finding": "Gaps consumed and binding downstream.",
+        "subject_ids": [
+          "product:grith"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "trace figures as vendor-reported",
+        "status": "UNRESOLVED",
+        "finding": "Vendor-reported motivation measurements; reproduction out of scope.",
+        "subject_ids": [
+          "product:grith"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "trace figures as vendor-reported: Vendor-reported motivation measurements; reproduction out of scope."
+    ],
+    "contradictions": []
+  }
+}
