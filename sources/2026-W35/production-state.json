@@ -3,7 +3,7 @@
   "issue_id": "2026-W35",
   "research_profile": "WEEKLY",
   "publication_profile": "WEEKLY_MAGAZINE",
-  "lifecycle_state": "DRAFT_COMPLETE",
+  "lifecycle_state": "RELEASE_CANDIDATE",
   "profile": {
     "path": "sources/2026-W35/production-profile.json",
     "sha256": "79480909c78f36ab87c0e83778ec1a2f725296383103515ff49e4089436db26e"
@@ -34,8 +34,8 @@
     "publication_preview": null
   },
   "target_gate": "ARCHITECTURE_REVIEW",
-  "next_action": "stage:reader-publication-validation",
-  "terminal_reason": null,
+  "next_action": "PUBLICATION_PREVIEW",
+  "terminal_reason": "HUMAN_GATE_REACHED",
   "exception_gate": {
     "status": "inactive",
     "reason": null
@@ -49,7 +49,7 @@
     "selection": "passed",
     "architecture": "passed",
     "draft": "passed",
-    "validation": "pending",
+    "validation": "passed",
     "publication_preview": "pending",
     "freeze": "pending",
     "release": "pending"
@@ -87,7 +87,10 @@
       "path": "sources/2026-W35/orchestration/v2/checkpoints/ARCHITECTURE_ESTABLISHED.json",
       "sha256": "d4fe4ddb07ea626b2bb2d2ea781a149487a20a5ddb9f82ab787ac58a9cb4c1c5"
     },
-    "validation": null,
+    "validation": {
+      "path": "sources/2026-W35/orchestration/v2/checkpoints/DRAFT_COMPLETE.json",
+      "sha256": "14847240e3e9f63aa532528a37c6d577d1336c9038ca1047eedb79025bfe7db0"
+    },
     "publication_preview": null,
     "freeze": null,
     "release": null
@@ -140,6 +143,18 @@
       "to": "DRAFT_COMPLETE",
       "recorded_at": "2026-09-15T12:59:24Z",
       "repository_commit_sha": "11edca1c2076952740edef448c2749a1d6014357"
+    },
+    {
+      "from": "DRAFT_COMPLETE",
+      "to": "VALIDATED_DRAFT",
+      "recorded_at": "2026-09-15T13:13:36Z",
+      "repository_commit_sha": "dac2730606adfff052c9456505283ec3b873e35c"
+    },
+    {
+      "from": "VALIDATED_DRAFT",
+      "to": "RELEASE_CANDIDATE",
+      "recorded_at": "2026-09-15T13:13:56Z",
+      "repository_commit_sha": "dac2730606adfff052c9456505283ec3b873e35c"
     }
   ],
   "publication_revalidation_provenance": null
