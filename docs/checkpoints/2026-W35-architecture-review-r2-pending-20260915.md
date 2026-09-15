@@ -10,6 +10,7 @@ Branch: `weekly/2026-W35-v2-work`
 - r1 presentation shell: `a5ab5113ce3d3ab41cdbd1a8121d534c4c5fd455`
 - Reviewed main / Production Line: `774dd39a` (both unchanged throughout)
 - Ending W35 SHA/tree: recorded in `execution/reviews/architecture-r2.md` (exact pushed commit)
+- Ending production HEAD: `7692f618488fe27bf298a7a90648a009ae9b0ffb` / `6f812fe30c7b714a0b5cd719f6e51e3dfa710066` (r2 Architecture bytes + r1 decision record)
 
 ## Human decision authority (r1)
 
