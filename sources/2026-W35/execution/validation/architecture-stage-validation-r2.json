@@ -1,16 +1,19 @@
 {
   "schema_version": "2.0-rc1",
+  "check_id": "CORE_STAGE_CONTRACT",
+  "status": "PASS",
   "issue_id": "2026-W35",
   "from_state": "SELECTION_COMPLETE",
   "to_state": "ARCHITECTURE_ESTABLISHED",
-  "checkpoints": [
-    "architecture"
-  ],
-  "recorded_at": "2026-09-15T00:22:00Z",
-  "implementation": {
-    "repository_commit_sha": "e68acba3744d87b618dc757b33e3f278a0bbb4ae",
-    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  "production_state": {
+    "path": "sources/2026-W35/production-state.json",
+    "sha256": "85a06e91273a1ff1ee01d509b6800d01a91e5403625af8e322b23ece1e6ca1a2"
   },
+  "production_profile": {
+    "path": "sources/2026-W35/production-profile.json",
+    "sha256": "79480909c78f36ab87c0e83778ec1a2f725296383103515ff49e4089436db26e"
+  },
+  "implementation_commit_sha": "e68acba3744d87b618dc757b33e3f278a0bbb4ae",
   "contract": {
     "pipeline_contract_version": "2.0-rc1",
     "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
@@ -38,18 +41,5 @@
       "sha256": "908b5cca93d1bc8980c7bee7896033f7b358cbf3a0e987ccf41f47fbeb648d37"
     }
   ],
-  "reviews": [
-    {
-      "check_id": "CORE_STAGE_CONTRACT",
-      "kind": "DETERMINISTIC",
-      "status": "PASS",
-      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
-      "evidence": "W35 r2 Architecture regenerated from unchanged SELECTION_COMPLETE per Human r1 REQUEST_CHANGES: thesis + P1 framing corrected to Evidence boundary (no cluster-wide sub-5%/license/offload claims; per-model ratios and license states bounded); 5 packages, membership, order, roles unchanged; Selection byte-identical (03ea06e7); summary READY_FOR_ARCHITECTURE_REVIEW; attention byte-identical to r1. Machine validation only; Human r2 decision still required.",
-      "result": {
-        "path": "sources/2026-W35/execution/validation/architecture-stage-validation-r2.json",
-        "sha256": "bf46d9612478566f91a6731d18c376f19bf10f6f6ac45affdca494aac4819e32"
-      }
-    }
-  ],
-  "summary": "W35 Architecture r2 established from SELECTION_COMPLETE per Human r1 REQUEST_CHANGES; thesis/P1 corrected; Selection byte-identical."
+  "recorded_at": "2026-09-15T00:20:00Z"
 }

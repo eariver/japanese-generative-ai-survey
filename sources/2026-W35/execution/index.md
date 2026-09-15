@@ -16,7 +16,9 @@ This is the current human-readable navigation record for the edition. Machine li
 - Current State SHA-256: `7eba58b385166a980e18c3d28291824158c6547227ba8c210060432310c9f331`
 - Current lifecycle: `ARCHITECTURE_ESTABLISHED`
 - Current terminal reason: `HUMAN_GATE_REACHED`
-- Current next action: `ARCHITECTURE_REVIEW` (Human decision only; no further autonomous advancement)
+- Current next action: `ARCHITECTURE_REVIEW` (Human r2 decision only; no further autonomous advancement)
+- r1 Human decision: `REQUEST_CHANGES` (revision 1, boundary `SELECTION_COMPLETE`; record `gates/reviews/architecture-r1.json`)
+- r2 review: pending (shell `execution/reviews/architecture-r2.md`, dossier `architecture-r2-dossier.md`)
 - Production Line authority: `production/survey-core-v2 @ 774dd39a951c9ac3818e83dfffd4c7666efb0a20` (created this session from reviewed main; unchanged since)
 - W35 branch basis: `weekly/2026-W35-v2-work` from Production Line head (never branched directly from main)
 - Main invariant: `main` remains review target only; no Core repair merged to main (none exists)
@@ -58,7 +60,8 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - `sessions/w35-sol-initialize-through-architecture-review-20260915-r1.md`
 - `sessions/w35-pre-discovery-research-prep-20260915-r1.md` (non-authoritative preparation input)
-- `sessions/w35-sol-resume-grok-r3-through-architecture-review-20260915-r1.md` (this resume run)
+- `sessions/w35-sol-resume-grok-r3-through-architecture-review-20260915-r1.md` (resume run to r1 Gate)
+- `sessions/w35-architecture-r1-request-changes-bounded-regen-20260915-r1.md` (this r1→r2 bounded run)
 
 ## Sol supervisory reviews
 
@@ -72,4 +75,4 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`FRESH_HUMAN_ARCHITECTURE_REVIEW_REQUIRED`
+`FRESH_HUMAN_ARCHITECTURE_REVIEW_R2_PENDING`
