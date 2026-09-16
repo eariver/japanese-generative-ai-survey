@@ -1,0 +1,178 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W36",
+  "evidence_task_id": "evidence:2026-W36:444dfcbcc81c5174",
+  "basis": {
+    "task_sha256": "13a7b25739e4804f5d7d36e470622fb3a0e7b705d14a88e1ccb67bbd1a09b443",
+    "screening_acceptance_sha256": "83279d88e23e380a2d4a3e51b16be71f03c3040989c6272e1112193f7cf18991",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "Atlas",
+      "canonical_url": "https://www.worldlabs.ai/blog/atlas",
+      "entity_id": "model:world-labs-atlas",
+      "entity_type": "MODEL",
+      "organization": "World Labs"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model:world-labs-atlas",
+    "artifact_type": "MODEL_UPDATE",
+    "canonical_name": "Atlas",
+    "canonical_url": "https://www.worldlabs.ai/blog/atlas"
+  },
+  "temporal": {
+    "observed_at": "2026-09-17T00:45:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-01",
+        "subject_id": "model:world-labs-atlas",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://www.worldlabs.ai/blog/atlas",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "World Labs Atlas omni world model (spatial generation/reconstruction/sim)",
+      "published_at": "2026-09-01",
+      "accessed_at": "2026-09-17T00:45:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "World Labs introduced Atlas on 2026-09-01 as an omni world model for spatial intelligence that natively operates on text, images, video, and 3D, described as a multimodal autoregressive diffusion transformer combining inputs into a shared spatial context.",
+      "subject_id": "model:world-labs-atlas",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Primary official World Labs blog; architecture and omni-input statements from vendor announcement."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Atlas spans camera-controlled generation (up to 1 minute of 1440p video from reference images with pixel-level camera geometry), spatial reconstruction with explicit 3D outputs (point clouds / Gaussian splats), space-time simulation including reframing and Real-to-Sim robotics, and text-to-image / 360-panorama generation; it will power future versions of Marble and other World Labs products.",
+      "subject_id": "model:world-labs-atlas",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Capability enumeration and Marble product-line statement from the same official announcement."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Atlas is entering early access with select partners, with no general availability claimed in the retrieved announcement text.",
+      "subject_id": "model:world-labs-atlas",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Availability status stated in the Build with Atlas section of the official blog."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Atlas outperforms recent video models at camera-controlled generation (vendor-cited voter shares vs MiniMax H3, Gemini Omni Flash, Happy Horse 1.1, FLUX 3, Seedance 2.5) and outperforms specialized open-source reconstruction models across DTU, ETH3D, KITTI, NRGBD, 7-Scenes, T&T, and ScanNet.",
+      "subject_id": "model:world-labs-atlas",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor-reported third-party human ratings and benchmark lists; methodology and raw results not independently re-verified from this source."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Single vendor announcement source; performance and scaling claims not independently replicated.",
+      "subject_id": "model:world-labs-atlas",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Interactive demos, images, and omitted footer truncated in edition-local storage.",
+      "subject_id": "model:world-labs-atlas",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Scaling trend (performance improves with compute) is forward-looking vendor expectation.",
+      "subject_id": "model:world-labs-atlas",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "task scope as vendor-described",
+        "status": "UNRESOLVED",
+        "finding": "Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification.",
+        "subject_ids": [
+          "model:world-labs-atlas"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "human-preference vs baselines as vendor-reported",
+        "status": "UNRESOLVED",
+        "finding": "Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification.",
+        "subject_ids": [
+          "model:world-labs-atlas"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "early-access limitation",
+        "status": "UNRESOLVED",
+        "finding": "Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification.",
+        "subject_ids": [
+          "model:world-labs-atlas"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "task scope as vendor-described: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification.",
+      "human-preference vs baselines as vendor-reported: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification.",
+      "early-access limitation: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification."
+    ],
+    "contradictions": []
+  }
+}

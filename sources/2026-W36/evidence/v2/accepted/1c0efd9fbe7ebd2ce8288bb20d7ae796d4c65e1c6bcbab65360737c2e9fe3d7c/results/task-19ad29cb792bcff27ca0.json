@@ -1,0 +1,188 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W36",
+  "evidence_task_id": "evidence:2026-W36:9c8122e477b5b257",
+  "basis": {
+    "task_sha256": "28fb883fb095fcc660e36f3cf7877c5954d1ad800ebdc4a4319230d2cfc3943d",
+    "screening_acceptance_sha256": "83279d88e23e380a2d4a3e51b16be71f03c3040989c6272e1112193f7cf18991",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "canonical_name": "GLM-5.3 (zai-org full weights)",
+      "canonical_url": "https://huggingface.co/zai-org/GLM-5.3",
+      "entity_id": "model:zai-glm-5-3",
+      "entity_type": "MODEL",
+      "organization": "Z.ai"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model:zai-glm-5-3",
+    "artifact_type": "OTHER",
+    "canonical_name": "GLM-5.3 (zai-org full weights)",
+    "canonical_url": "https://huggingface.co/zai-org/GLM-5.3"
+  },
+  "temporal": {
+    "observed_at": "2026-09-17T00:45:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08-28",
+        "subject_id": "model:zai-glm-5-3",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://huggingface.co/zai-org/GLM-5.3",
+      "source_class": "SECONDARY",
+      "title": "Z.ai GLM-5.3 HF weights/model card (license, serving, boundary date)",
+      "published_at": "2026-08-28",
+      "accessed_at": "2026-09-17T00:45:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The zai-org/GLM-5.3 Hugging Face repository exposes full weights (753B parameters; BF16/F8_E4M3/F32 safetensors) with Transformers, vLLM, SGLang, KTransformers, Unsloth, and Docker serving paths; reasoning_effort accepts low/high/max (default max) and the card references paper arXiv 2602.15763.",
+      "subject_id": "model:zai-glm-5-3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Retrieved HF model-card content consumed; repo facts transcribed as observed."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Card-reported gains over GLM-5.2 from post-training only include +50% on the in-house Z.ai Code Bench, open-source SOTA on Terminal Bench 3.0 and Agents' Last Exam, CyberGym 84.5 SOTA with doubled exploitation-chain gains, plus table figures such as Terminal Bench 2.1 88.2, AutomationBench 48.2, and GDPval-AA v2 1769.",
+      "subject_id": "model:zai-glm-5-3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Card-reported benchmark table; externally unreproduced in this run."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "The card License field reads glm-5.3 (custom), which is distinct from the MIT grant associated with the GLM-5.3-Flash variant; no MIT license is established for these full GLM-5.3 weights in the consumed authority.",
+      "subject_id": "model:zai-glm-5-3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "License-field transcription as observed; license text itself was not consumed, so downstream use must not assert MIT terms."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "The edition-attributed date 2026-08-28 carries UTC-hour uncertainty because the retrieved markdown shows no explicit publication date; the record is treated as an ordinary-window boundary item with medium confidence rather than a carry-over.",
+      "subject_id": "model:zai-glm-5-3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Boundary disposition from collector provenance note plus the W36 window opening at 2026-08-28 22:00 UTC; date-only attribution cannot resolve the hour."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "UTC hour on 2026-08-28 is unresolved, so window placement is medium-confidence ordinary-boundary; hour-level precision must not be asserted.",
+      "subject_id": "model:zai-glm-5-3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "All benchmark-table figures are card-reported and externally unreproduced.",
+      "subject_id": "model:zai-glm-5-3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "License nuance rests on the license-field label only; full glm-5.3 license text was not consumed, and MIT terms from the Flash variant must not be carried over.",
+      "subject_id": "model:zai-glm-5-3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-4",
+      "text": "Download/like counters are platform telemetry, not capability evidence.",
+      "subject_id": "model:zai-glm-5-3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "license identity (GLM-5.3 vs Flash MIT)",
+        "status": "VERIFIED",
+        "finding": "License field reads glm-5.3 in the consumed authority; no MIT grant for these weights is established, and Flash MIT must not be carried over.",
+        "subject_ids": [
+          "model:zai-glm-5-3"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "param/precision/arxiv as card-stated",
+        "status": "UNRESOLVED",
+        "finding": "Card-reported figures recorded; independent reproduction absent.",
+        "subject_ids": [
+          "model:zai-glm-5-3"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "weights-push UTC hour unresolved",
+        "status": "UNRESOLVED",
+        "finding": "Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification.",
+        "subject_ids": [
+          "model:zai-glm-5-3"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "param/precision/arxiv as card-stated: Card-reported figures recorded; independent reproduction absent.",
+      "weights-push UTC hour unresolved: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification."
+    ],
+    "contradictions": []
+  }
+}

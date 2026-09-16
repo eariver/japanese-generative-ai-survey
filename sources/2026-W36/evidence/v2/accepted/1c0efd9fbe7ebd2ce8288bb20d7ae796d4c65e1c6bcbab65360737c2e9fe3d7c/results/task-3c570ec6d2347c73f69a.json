@@ -1,0 +1,174 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W36",
+  "evidence_task_id": "evidence:2026-W36:0e71cd1f701e3043",
+  "basis": {
+    "task_sha256": "f1ef818aec415623569825b07ba08753c2b1b4fa69c995df1201dc83c2946653",
+    "screening_acceptance_sha256": "83279d88e23e380a2d4a3e51b16be71f03c3040989c6272e1112193f7cf18991",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "canonical_name": "Gemini 3.8 Flash (DeepMind model card)",
+      "canonical_url": "https://deepmind.google/models/model-cards/gemini-3-8-flash",
+      "entity_id": "model:google-gemini-3-8-flash-card",
+      "entity_type": "MODEL",
+      "organization": "Google DeepMind"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model:google-gemini-3-8-flash-card",
+    "artifact_type": "MODEL_UPDATE",
+    "canonical_name": "Gemini 3.8 Flash (DeepMind model card)",
+    "canonical_url": "https://deepmind.google/models/model-cards/gemini-3-8-flash"
+  },
+  "temporal": {
+    "observed_at": "2026-09-17T00:45:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-02",
+        "subject_id": "model:google-gemini-3-8-flash-card",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://deepmind.google/models/model-cards/gemini-3-8-flash",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Google Gemini 3.8 Flash model card (evals, safety, context)",
+      "published_at": "2026-09-02",
+      "accessed_at": "2026-09-17T00:45:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The Gemini 3.8 Flash model card was published in September 2026, describes the model as based on Gemini 3.7 Flash, and states 1M-token multimodal input context with 64K-token text output across app, Enterprise Agent Platform, AI Studio, API, AI Mode, and Antigravity channels.",
+      "subject_id": "model:google-gemini-3-8-flash-card",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "First-party model card header and Model Information/Distribution sections consumed verbatim."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Card-reported results excerpt: DeepSWE v1.1 73.7% (vs 65.3%), GDPVal-AA v2 Elo 1545 (vs 1482), Finance Agent v2 61.4%, Legal Agent 10.0%, Terminal-bench 2.1 89.4%, HLE-Verified 54.9%, OSWorld-2.0 partial 59.0%, CharXiv 86.2%, LVBench 87.8/87.1, with listed frontier-model comparators.",
+      "subject_id": "model:google-gemini-3-8-flash-card",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Card-reported table excerpt; card points to a separate evals-methodology page for approach details."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Card states known limitations (hallucinations, higher token use at high effort; knowledge cutoff March 2026 with some domains at January 2025) and safety deltas vs 3.7 Flash including slightly regressed non-English safety, plus a Frontier assessment inferring 3.8 Flash is unlikely to reach T/CCLs from 3.7 Flash results.",
+      "subject_id": "model:google-gemini-3-8-flash-card",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Intended Usage/Limitations and safety sections as stated; inference-from-3.7 is the card's own stated basis."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "The card's eval table complements the Keyword blog but does not independently confirm it: cross-source reconciliation requires the unexamined evals-methodology page.",
+      "subject_id": "model:google-gemini-3-8-flash-card",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Analytical bound from the card's own pointer to the evals-methodology page, which was not consumed."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Card evals-methodology page was not consumed, so benchmark approach, sampling, and comparator runs are unverified.",
+      "subject_id": "model:google-gemini-3-8-flash-card",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "All card benchmark figures are vendor-reported and externally unreproduced.",
+      "subject_id": "model:google-gemini-3-8-flash-card",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Frontier no-T/CCL conclusion for 3.8 Flash is inferred from 3.7 Flash assessment, not a fresh 3.8 evaluation.",
+      "subject_id": "model:google-gemini-3-8-flash-card",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "context/output limits and cutoff as card-stated",
+        "status": "VERIFIED",
+        "finding": "First-party model card consumed; lineage, context/output, and channels verified as stated.",
+        "subject_ids": [
+          "model:google-gemini-3-8-flash-card"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "eval deltas as vendor-reported",
+        "status": "VERIFIED",
+        "finding": "Figures transcribed as card-reported; independent reproduction absent.",
+        "subject_ids": [
+          "model:google-gemini-3-8-flash-card"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "T/CCL assessment as vendor-stated",
+        "status": "VERIFIED",
+        "finding": "First-party model card consumed; lineage, context/output, and channels verified as stated.",
+        "subject_ids": [
+          "model:google-gemini-3-8-flash-card"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,196 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W36",
+  "evidence_task_id": "evidence:2026-W36:3f6ccff22815742a",
+  "basis": {
+    "task_sha256": "0e1ee7204f2d8f902eec0bdf3c7929fcc0d37b1f720b0bea3e95d451d27f467a",
+    "screening_acceptance_sha256": "83279d88e23e380a2d4a3e51b16be71f03c3040989c6272e1112193f7cf18991",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "Anthropic Fermat Lean formalization",
+      "canonical_url": "https://www.anthropic.com/research/formalizing-fermats-last-theorem",
+      "entity_id": "project:anthropic-fermat-lean-formalization",
+      "entity_type": "OTHER",
+      "organization": "Anthropic"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "project:anthropic-fermat-lean-formalization",
+    "artifact_type": "OTHER",
+    "canonical_name": "Anthropic Fermat Lean formalization",
+    "canonical_url": "https://www.anthropic.com/research/formalizing-fermats-last-theorem"
+  },
+  "temporal": {
+    "observed_at": "2026-09-17T00:45:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-04",
+        "subject_id": "project:anthropic-fermat-lean-formalization",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://www.anthropic.com/research/formalizing-fermats-last-theorem",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Anthropic Fermat Lean formalization science article (11 days, 13M lines)",
+      "published_at": "2026-09-04",
+      "accessed_at": "2026-09-17T00:45:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Anthropic dated Sep 4 reports the first complete computer-checked Fermat proof in Lean: ~11 days largely autonomous, 13M Lean lines, 29,500 theorems used in the final proof (30,300 proved), following a simplified Darmon-Diamond-Taylor version of Wiles.",
+      "subject_id": "project:anthropic-fermat-lean-formalization",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor research article; scale figures vendor-reported."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Dozens of Claude agents via a Claude Code harness on the Prove2Me platform (theorem DAG, split statement/proof compilation, natural-language search/reuse) consumed ~6B output tokens from a general internal model roughly comparable to Claude Fable 5.1; human input was limited to high-level prompts, with ~7% of non-boilerplate lines from failed early attempts.",
+      "subject_id": "project:anthropic-fermat-lean-formalization",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor process account; model identity is approximate."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "The finished proof was checked by Lean using only its 3 standard axioms, and a comparator confirmed the statement matches Mathlib's own FLT statement.",
+      "subject_id": "project:anthropic-fermat-lean-formalization",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Verification facts as stated; Lean/comparator rerun is not performed by this record."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Reviewer Kevin Buzzard is quoted calling it an extraordinary autoformalization achievement proving FLT on mathematics axioms alone with robust multi-layered artefacts, supporting automatic formalization of the literature and referee-load reduction.",
+      "subject_id": "project:anthropic-fermat-lean-formalization",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Reviewer quote as published on the vendor page; independent reverification separate."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "GitHub proof contents were not replayed or rebuilt under this record; repo verification belongs to the companion GitHub record.",
+      "subject_id": "project:anthropic-fermat-lean-formalization",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Walkthrough, footnotes, and excerpted agent-thinking quotes are truncated in retrieval and not independently checked.",
+      "subject_id": "project:anthropic-fermat-lean-formalization",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Model identity (roughly Fable 5.1 comparable) and compute/cost are approximate or unstated.",
+      "subject_id": "project:anthropic-fermat-lean-formalization",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-4",
+      "text": "Novel-mathematics distinction (verification, not a new proof idea) must be preserved downstream.",
+      "subject_id": "project:anthropic-fermat-lean-formalization",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "11-day/13M/29.5K figures as vendor-reported",
+        "status": "VERIFIED",
+        "finding": "Consumed from the dated first-party article; figures vendor-reported.",
+        "subject_ids": [
+          "project:anthropic-fermat-lean-formalization"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "Prove2Me method as vendor-described",
+        "status": "VERIFIED",
+        "finding": "Consumed from the dated first-party article; figures vendor-reported.",
+        "subject_ids": [
+          "project:anthropic-fermat-lean-formalization"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "Lean 3-axiom boundary",
+        "status": "VERIFIED",
+        "finding": "Consumed as stated verification facts; rerun out of scope here.",
+        "subject_ids": [
+          "project:anthropic-fermat-lean-formalization"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "Buzzard review scope",
+        "status": "VERIFIED",
+        "finding": "Quotes consumed as published reviewer statements.",
+        "subject_ids": [
+          "project:anthropic-fermat-lean-formalization"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

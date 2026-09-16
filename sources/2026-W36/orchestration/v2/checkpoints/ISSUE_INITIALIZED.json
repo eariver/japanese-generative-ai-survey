@@ -1,0 +1,45 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W36",
+  "from_state": "ISSUE_INITIALIZED",
+  "to_state": "DISCOVERY_COLLECTED",
+  "checkpoints": [
+    "discovery"
+  ],
+  "recorded_at": "2026-09-16T15:30:00Z",
+  "implementation": {
+    "repository_commit_sha": "aa423ad479eec123f6bacaf08d30e81682de2b36",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "discovery-acceptance",
+      "path": "sources/2026-W36/discovery/discovery-accepted-v2.json",
+      "sha256": "c104ad751e93bd3e6b6b305fdb87a7106a623b4f6bc067b26fc61c0ca99e7adc"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "Fresh 19-record W36 Discovery (1 Sol-reviewed Grok r4 X-ledger record + 18 W36-window primary retrieval records across 12 lanes, canonical closed-vocabulary source_type) validated against COMPLETE X manifest; X 15/12/0/3 accounting bound. Machine validation only; Sol supervisory reviews still required downstream.",
+      "result": {
+        "path": "sources/2026-W36/execution/validation/discovery-stage-validation-r1.json",
+        "sha256": "b8139b26edce72099e72da61d4381e9bcd3a1fca01bc7810c28a246036c76e7f"
+      }
+    }
+  ],
+  "summary": "W36 Discovery accepted: 19 records (1 Grok r4 X-ledger + 18 W36-window primaries across 12 lanes); X 15/12/0/3 bound."
+}

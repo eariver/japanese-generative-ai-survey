@@ -9,15 +9,15 @@ This is the current human-readable navigation record for the edition. Machine li
 - Publication Profile: `WEEKLY_MAGAZINE`
 - Work branch: `weekly/2026-W36-v2-work`
 - Start-of-run reviewed `main`: `5acbff8528890ed9fc324c0227e6c4e43067c438`
-- Run started: `2026-09-16T14:04:14Z`
+- Run started: `2026-09-16T14:04:14Z`; resumed from accepted Grok r4: `2026-09-17T00:08:00+09:00 JST`
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/2026-W36/production-profile.json`
 - Production State: `sources/2026-W36/production-state.json`
-- Current State SHA-256: `b7116d2aa904d5f71bf6ef9704cee3c5c3e24685132a3aaa0b69b82324c92ed9`
-- Current lifecycle: `ISSUE_INITIALIZED`
-- Current terminal reason: `AWAITING_GROK_BLOCKED`
-- Current next action: `import Grok result -> record-result -> stage:discovery`
-- Formal Discovery: `not accepted` (count = 0)
+- Current State SHA-256: see `production-state.json` (lifecycle `ARCHITECTURE_ESTABLISHED`)
+- Current lifecycle: `ARCHITECTURE_ESTABLISHED`
+- Current terminal reason: `HUMAN_GATE_REACHED`
+- Current next action: `ARCHITECTURE_REVIEW` (Human decision only)
+- Formal Discovery: `accepted` (count = 19; graph `9c55b223`)
 - Core changes: `0`
 - Human decisions: `0`
 - Pinned Production Line: `production/survey-core-v2 @ 774dd39a951c9ac3818e83dfffd4c7666efb0a20` (untouched)
@@ -28,9 +28,9 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Human Gates
 
-- Architecture Review: `pending`
+- Architecture Review: `pending` (r1 shell + 12-element dossier presented; no decision recorded or inferred)
 - Publication Preview: `pending`
-- Detailed review records: none recorded yet
+- Detailed review records: `execution/reviews/architecture-r1.md` (PENDING), `execution/reviews/architecture-r1-dossier.md`
 
 ## Publication Candidate
 
@@ -46,13 +46,22 @@ This is the current human-readable navigation record for the edition. Machine li
 - Latest Drive task-file path/reference: `Grok_X_SourseIntake/Weekly/2026-W36/weekly-x-2026-W36/grok-task.md`
 - Intended Drive result folder: `Grok_X_SourseIntake/Weekly/2026-W36/weekly-x-2026-W36`
 - Expected result filename: `grok-x-result.md`
-- Latest result disposition: `AWAITING_GROK` (no Raw result yet; manifest
-  `sources/2026-W36/external/x/x-source-intake-v2.json`)
+- Accepted result: `grok-x-result-r4.md` (24219B / `a94f543d`; observed `2026-09-16T14:51:00Z`; manifest
+  `sources/2026-W36/external/x/x-source-intake-v2.json` COMPLETE, SUCCESS / DISCOVERY_RECORDED)
+- Canonical X accounting: 15 unique / 12 ordinary (3 official + 9 independent, 8 accounts) / 0 background / 3 late-breaking; 7 new r4 URLs
+
+## Pipeline aggregates (r1)
+
+- Discovery: 19 (BASE 19)
+- Screening: 19 KEEP / 0 DROP (result set `f55a2285`)
+- Evidence: 13 VERIFIED / 6 PARTIAL (set `1c0efd9f`); views `aab96ba6`
+- Materiality: 18 MATERIAL / 1 CONTEXT; Completeness: LIMITED (3/3 SATISFIED)
+- Selection: 18 SELECTED / 1 HOLD; Architecture: 6 packages, READY_FOR_ARCHITECTURE_REVIEW
+- Carry-over: zero formal inherited obligations (W35 RELEASED scanned; no carry roles); no W35 copy; Grok SELECTED never copied
 
 ## Deviations
 
-- None. Contract-compliant `AWAITING_GROK_BLOCKED` stop (missing required X input), not an
-  Exception Gate. Issue #497 + known release-workflow CLI defect intentionally untouched.
+- None blocking. Four issue-local vocabulary defects repaired edition-locally with full downstream regeneration (verification status enum, PROJECT entity/artifact types, missing closure, target-string mismatch, exception rules). No Core defect; no repair branch. Issue #497 + known release-workflow CLI defect intentionally untouched.
 
 ## Shared Core defects
 
@@ -69,11 +78,13 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - `sessions/w36-sol-initialize-through-architecture-review-20260916-r1.md`
 - `sessions/w36-pre-discovery-research-prep-20260916-r1.md` (non-authoritative preparation input)
+- `sessions/w36-sol-resume-grok-r4-through-architecture-review-20260917-r1.md` (r4 through Architecture Review; COMPLETE_AT_GATE)
 
 ## Instruction authority
 
 - `requests/w36-sol-initialize-through-architecture-review-20260916-r1.md`
+- `requests/sol-w36-resume-from-grok-r4-through-architecture-review-20260917.md` (execution contract for this run)
 
 ## Final disposition
 
-`AWAITING_GROK_BLOCKED`
+`HUMAN_GATE_REACHED` (fresh Human Architecture Review pending; no Draft; no Human decision recorded or inferred)

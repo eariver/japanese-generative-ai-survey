@@ -1,0 +1,50 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W36",
+  "evidence_task_id": "evidence:2026-W36:9c8122e477b5b257",
+  "discovery_ids": [
+    "w36-primary-glm53-weights-20260828"
+  ],
+  "source_records": [
+    {
+      "source_type": "SECONDARY",
+      "collector_id": "primary-webfetch",
+      "collector_run_id": "w36-primary-20260917-r1",
+      "observed_at": "2026-09-17T00:00:00Z",
+      "title": "Z.ai GLM-5.3 HF weights/model card (license, serving, boundary date)",
+      "locator": "https://huggingface.co/zai-org/GLM-5.3",
+      "raw_paths": [
+        "sources/2026-W36/collectors/primary/runs/20260917T000000Z/zai-glm53-hf-weights-20260828.md"
+      ],
+      "published_at": "2026-08-28",
+      "summary_text": "GLM-5.3 HF card (boundary ~Aug 28, UTC hour unverified): 753B MoE, GLM-5.3 license (not MIT; Flash is MIT); 50% Code Bench claim; SGLang/vLLM serving. Date sensitivity flagged.",
+      "metadata": {
+        "authority_class": "SECONDARY_TECHNICAL",
+        "lanes": [
+          "A",
+          "G"
+        ]
+      }
+    }
+  ],
+  "verification_targets": [
+    "license identity (GLM-5.3 vs Flash MIT)",
+    "param/precision/arxiv as card-stated",
+    "weights-push UTC hour unresolved"
+  ],
+  "screening_basis": {
+    "screening_acceptance_sha256": "83279d88e23e380a2d4a3e51b16be71f03c3040989c6272e1112193f7cf18991",
+    "decisions": [
+      {
+        "discovery_id": "w36-primary-glm53-weights-20260828",
+        "decision": "KEEP",
+        "scope_tags": [
+          "open-weight",
+          "license",
+          "serving",
+          "boundary-date"
+        ]
+      }
+    ]
+  }
+}

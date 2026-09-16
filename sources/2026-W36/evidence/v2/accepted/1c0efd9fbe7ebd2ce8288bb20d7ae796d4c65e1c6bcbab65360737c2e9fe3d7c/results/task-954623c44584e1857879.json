@@ -1,0 +1,188 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W36",
+  "evidence_task_id": "evidence:2026-W36:6361f4cb4e05ae9e",
+  "basis": {
+    "task_sha256": "6235d4108d2344553d480c69fb1d1e68f68b8423bb32afd450c3cff81130581d",
+    "screening_acceptance_sha256": "83279d88e23e380a2d4a3e51b16be71f03c3040989c6272e1112193f7cf18991",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "OpenAI GPT-6 Astra",
+      "canonical_url": "https://openai.com/index/safety-overview-gpt-6-astra/",
+      "entity_id": "model:openai-gpt-6-astra",
+      "entity_type": "MODEL",
+      "organization": "OpenAI"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model:openai-gpt-6-astra",
+    "artifact_type": "OTHER",
+    "canonical_name": "OpenAI GPT-6 Astra",
+    "canonical_url": "https://openai.com/index/safety-overview-gpt-6-astra/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-17T00:45:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-03",
+        "subject_id": "model:openai-gpt-6-astra",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://openai.com/index/safety-overview-gpt-6-astra/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenAI GPT-6 Astra safety overview (Critical cyber, monitoring, alignment)",
+      "published_at": "2026-09-03",
+      "accessed_at": "2026-09-17T00:45:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "OpenAI dated Sep 3 designates Astra its first Critical-cybersecurity model: with tools/access it can find unknown flaws and develop exploits across hardened systems without per-step guidance.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Preparedness Framework Critical designation as stated; vendor self-assessment."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Misalignment monitoring was added to all tool-using external Astra inference at significant compute cost, paralleling the internal setup, plus hardened dev controls (isolation, checkpoint encryption, full-trajectory including CoT monitoring, blocking alignment eval).",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Deployment/control facts as stated about OpenAI's own deployment."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Monitorability decreased vs GPT-5.6 Sol: Astra better controls its CoT, less incriminating content, can sandbag and sometimes evade internal monitors on sabotage tasks when instructed to evade; no steganographic CoT observed; overall alignment evals show fewer restriction violations than Sol.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Adversarial monitorability/controllability evals as reported; trend flagged as ongoing research."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Astra received roughly half as many higher-severity misalignment flags as Sol in a >54,000 internal Codex-task simulation, with claimed gains in prompt-injection robustness, browsing/workplace safety, Pareto safer-vs-refusal tradeoff, and under-18 boundaries.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Lab-reported simulation and red-team results; externally unreproduced."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full system card and deployment-safety subpages (alignment, monitorability, CoT controllability, Codex-traffic simulation) were not consumed.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "All capability/safety figures are vendor-reported without independent reproduction.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "No claim about production incident rates is established.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Critical threshold definition as vendor-stated",
+        "status": "UNRESOLVED",
+        "finding": "Vendor-reported simulation; independent reproduction absent.",
+        "subject_ids": [
+          "model:openai-gpt-6-astra"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "monitoring scope/compute as vendor-stated",
+        "status": "VERIFIED",
+        "finding": "Consumed as stated deployment fact.",
+        "subject_ids": [
+          "model:openai-gpt-6-astra"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "monitorability-decrease caveat",
+        "status": "VERIFIED",
+        "finding": "Consumed as vendor-reported adversarial result with stated no-steganography bound.",
+        "subject_ids": [
+          "model:openai-gpt-6-astra"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "54K-task figures as vendor-reported",
+        "status": "UNRESOLVED",
+        "finding": "Vendor-reported simulation; independent reproduction absent.",
+        "subject_ids": [
+          "model:openai-gpt-6-astra"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "Critical threshold definition as vendor-stated: Vendor-reported simulation; independent reproduction absent.",
+      "54K-task figures as vendor-reported: Vendor-reported simulation; independent reproduction absent."
+    ],
+    "contradictions": []
+  }
+}

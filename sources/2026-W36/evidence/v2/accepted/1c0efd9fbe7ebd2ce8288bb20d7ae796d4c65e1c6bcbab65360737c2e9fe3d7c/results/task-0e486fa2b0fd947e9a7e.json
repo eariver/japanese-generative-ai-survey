@@ -1,0 +1,185 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W36",
+  "evidence_task_id": "evidence:2026-W36:5101a921d7297fd5",
+  "basis": {
+    "task_sha256": "a250e0c2737a3919924b47b49b936029b5a5932bb9fb987bb14156faa8e9eef5",
+    "screening_acceptance_sha256": "83279d88e23e380a2d4a3e51b16be71f03c3040989c6272e1112193f7cf18991",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "anthropics/fermats-last-theorem Lean repo",
+      "canonical_url": "https://github.com/anthropics/fermats-last-theorem",
+      "entity_id": "project:anthropics-fermats-last-theorem-repo",
+      "entity_type": "OTHER",
+      "organization": "Anthropic"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "project:anthropics-fermats-last-theorem-repo",
+    "artifact_type": "OTHER",
+    "canonical_name": "anthropics/fermats-last-theorem Lean repo",
+    "canonical_url": "https://github.com/anthropics/fermats-last-theorem"
+  },
+  "temporal": {
+    "observed_at": "2026-09-17T00:45:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-04",
+        "subject_id": "project:anthropics-fermats-last-theorem-repo",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/anthropics/fermats-last-theorem",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Anthropic Fermat Lean GitHub repo (statement, axioms, triple-check)",
+      "published_at": "2026-09-04",
+      "accessed_at": "2026-09-17T00:45:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The repo declares fermat_last_theorem for n>=3 over positive naturals, and FinalCheck requires exactly Lean's 3 standard axioms with no sorry, deriving Mathlib's own FermatLastTheorem from it.",
+      "subject_id": "project:anthropics-fermats-last-theorem-repo",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Front-page statement and FinalCheck gate as stated."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Verification as stated: from-scratch lake build on Lean 4.33.1 with Mathlib v4.33.0 checked all 60,475 repo modules in the Lean kernel; comparator v4.33.0 returned Your solution is okay; independent nanoda 0.4.13 Rust kernel accepted 1,052,234 declarations with no errors.",
+      "subject_id": "project:anthropics-fermats-last-theorem-repo",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Triple-check account as stated; build was not rerun by this record."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Hygiene and packaging as stated: no axiom/sorry/native_decide/unsafe/extern/implemented_by/partial/#eval; ~390MB offline html with 29,511 theorems and 1,450 definition modules; Apache 2.0 research artifact, not maintained, crediting Imperial FLT, flt-regular, and Mathlib.",
+      "subject_id": "project:anthropics-fermats-last-theorem-repo",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Repo front-page packaging/license/attribution facts."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Self-check requirements as stated: Linux/macOS, elan for Lean 4.33.1, network Mathlib fetch/compile, ~5GB per job (some modules 36GB), ~67GB disk plus deletable C files (~220GB), ~5h32m at 96 jobs, comparator ~14h46m.",
+      "subject_id": "project:anthropics-fermats-last-theorem-repo",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Reproduction-cost facts as stated by the publisher."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Page shows no explicit publication date; 2026-09-04 is edition-attributed from the linked science article.",
+      "subject_id": "project:anthropics-fermats-last-theorem-repo",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "No build, comparator run, or nanoda rerun was performed; all checks are consumed as stated.",
+      "subject_id": "project:anthropics-fermats-last-theorem-repo",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "PROOF-PATH, ATTRIBUTION, formalization.yaml, lake files, and html contents were not individually consumed.",
+      "subject_id": "project:anthropics-fermats-last-theorem-repo",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-4",
+      "text": "Star/fork/issue counts are fetch-time only.",
+      "subject_id": "project:anthropics-fermats-last-theorem-repo",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "statement/axiom enforcement as repo-stated",
+        "status": "VERIFIED",
+        "finding": "Consumed from the repo front page as stated.",
+        "subject_ids": [
+          "project:anthropics-fermats-last-theorem-repo"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "build/comparator/nanoda claims as repo-stated",
+        "status": "VERIFIED",
+        "finding": "Consumed as stated checks; independent rerun not performed.",
+        "subject_ids": [
+          "project:anthropics-fermats-last-theorem-repo"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "attribution to Imperial/flt-regular/Mathlib",
+        "status": "VERIFIED",
+        "finding": "Consumed from the front-page license/attribution section.",
+        "subject_ids": [
+          "project:anthropics-fermats-last-theorem-repo"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

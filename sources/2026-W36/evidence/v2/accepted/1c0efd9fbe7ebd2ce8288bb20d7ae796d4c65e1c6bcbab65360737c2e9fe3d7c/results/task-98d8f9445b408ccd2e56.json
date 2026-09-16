@@ -1,0 +1,178 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W36",
+  "evidence_task_id": "evidence:2026-W36:6d4cc3a808ecf77f",
+  "basis": {
+    "task_sha256": "ceda8d09b034ac6e8f86660916b53e389c1915a37ca9724f51e35767129f33d2",
+    "screening_acceptance_sha256": "83279d88e23e380a2d4a3e51b16be71f03c3040989c6272e1112193f7cf18991",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "canonical_name": "FUSE: An Evaluating Framework for Dangerous Capabilities of LLMs",
+      "canonical_url": "https://arxiv.org/abs/2609.02168",
+      "entity_id": "paper:fuse-260902168",
+      "entity_type": "PAPER",
+      "organization": null
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "paper:fuse-260902168",
+    "artifact_type": "PAPER",
+    "canonical_name": "FUSE: An Evaluating Framework for Dangerous Capabilities of LLMs",
+    "canonical_url": "https://arxiv.org/abs/2609.02168"
+  },
+  "temporal": {
+    "observed_at": "2026-09-17T00:45:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-02",
+        "subject_id": "paper:fuse-260902168",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2609.02168",
+      "source_class": "PRIMARY_PAPER",
+      "title": "FUSE dangerous-capability evaluation framework (K/D/H, 12 LLMs)",
+      "published_at": "2026-09-02",
+      "accessed_at": "2026-09-17T00:45:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "arXiv:2609.02168 titled FUSE: An Evaluating Framework for Dangerous Capabilities of LLMs by Jin, Zhang, Chen, Liu, Lin, Huang, Liu, and Yang was submitted 2026-09-02 (v1) under cs.AI with CC BY 4.0.",
+      "subject_id": "paper:fuse-260902168",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Bibliographic facts from arXiv abstract page including submission history and license."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The authors present a modular framework evaluating each model through three orthogonal pipelines (Knowledge, Defense, Harm) under a unified protocol, aggregating into a standardized dangerous-capability profile with pluggable scenario seeds, knowledge banks, hazard queries, and judge rubrics; the chemical-biological instantiation is complemented by a cyber pilot demonstrating protocol transfer.",
+      "subject_id": "paper:fuse-260902168",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Framework design as stated in the paper abstract; full-text mechanics not verified from this abstract-only source."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Instantiating with a chemical-biological module on 12 commercial LLMs from four families, the authors report sharply divergent K/D/H profiles: models with comparable knowledge differ in refusal resilience, strong defenders do not generate less harmful content when they comply, and family-level patterns separate Claude, DeepSeek, and GPT models.",
+      "subject_id": "paper:fuse-260902168",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Horizontal-comparison findings as stated in the abstract; underlying scores and model lists require full text."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Tracking K, D, and H against release dates, the authors report dangerous capability has not monotonically declined (newer models deepen knowledge while only partially improving defense), with reliability via cross-judge bootstrap rho above 0.79 for 4 of 5 judges and K-D-H inter-correlations rho in [0.32, 0.52].",
+      "subject_id": "paper:fuse-260902168",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Temporal and reliability findings as stated in the abstract; trend and correlation statistics require full-text verification."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Abstract-only evidence; full PDF/HTML/TeX source not consumed, so methods, model lists, scores, and statistics are unverified.",
+      "subject_id": "paper:fuse-260902168",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Commercial-model and family-level comparisons depend on undisclosed-per-abstract sampling and judging details.",
+      "subject_id": "paper:fuse-260902168",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Governance implications are author-framed; no independent replication attempted.",
+      "subject_id": "paper:fuse-260902168",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "K/D/H method as paper-described",
+        "status": "UNRESOLVED",
+        "finding": "Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification.",
+        "subject_ids": [
+          "paper:fuse-260902168"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "12-model/family scope as paper-stated",
+        "status": "UNRESOLVED",
+        "finding": "Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification.",
+        "subject_ids": [
+          "paper:fuse-260902168"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "rho/erosion findings as paper-reported",
+        "status": "UNRESOLVED",
+        "finding": "K/D/H design, 12-model CB evaluation, temporal trend, and reliability statistics rest on abstract-level author claims pending full-text review.",
+        "subject_ids": [
+          "paper:fuse-260902168"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "K/D/H method as paper-described: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification.",
+      "12-model/family scope as paper-stated: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification.",
+      "rho/erosion findings as paper-reported: K/D/H design, 12-model CB evaluation, temporal trend, and reliability statistics rest on abstract-level author claims pending full-text review."
+    ],
+    "contradictions": []
+  }
+}
