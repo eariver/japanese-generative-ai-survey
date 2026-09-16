@@ -1,16 +1,19 @@
 {
   "schema_version": "2.0-rc1",
+  "check_id": "CORE_STAGE_CONTRACT",
+  "status": "PASS",
   "issue_id": "2026-W36",
   "from_state": "SELECTION_COMPLETE",
   "to_state": "ARCHITECTURE_ESTABLISHED",
-  "checkpoints": [
-    "architecture"
-  ],
-  "recorded_at": "2026-09-16T17:00:00Z",
-  "implementation": {
-    "repository_commit_sha": "d30949b0ba9d892505d9f2c5100da57171e273f1",
-    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  "production_state": {
+    "path": "sources/2026-W36/production-state.json",
+    "sha256": "8806bd07ee09258316cd675df0843c96318f1a1344b9789ca1b6555e3e2d77ec"
   },
+  "production_profile": {
+    "path": "sources/2026-W36/production-profile.json",
+    "sha256": "b9c9bd6d932c8f26e06950b251e9747316a9999f1fc3f7862fab6441ff40dc54"
+  },
+  "implementation_commit_sha": "d30949b0ba9d892505d9f2c5100da57171e273f1",
   "contract": {
     "pipeline_contract_version": "2.0-rc1",
     "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
@@ -38,18 +41,5 @@
       "sha256": "7ba86acffcc8c071307cf5936096bcd474e1e4ea8bb3d317f83e92de059c621d"
     }
   ],
-  "reviews": [
-    {
-      "check_id": "CORE_STAGE_CONTRACT",
-      "kind": "DETERMINISTIC",
-      "status": "PASS",
-      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
-      "evidence": "W36 r2 Architecture regenerated bounded from SELECTION_COMPLETE per r1 REQUEST_CHANGES: identical 6 packages/membership/order/roles/goals; ONLY thesis corrected (RC-1: agreement != ownership; pledge bounds preserved). Upstream frozen: Discovery 19 / Screening 19 KEEP / Evidence 13+6 / Materiality 18+1 / Selection 18+1 byte-identical. Summary READY_FOR_ARCHITECTURE_REVIEW; attention byte-identical to r1. Machine validation only; Human r2 Gate still pending.",
-      "result": {
-        "path": "sources/2026-W36/execution/validation/architecture-stage-validation-r2.json",
-        "sha256": "bee10faed5ef13667662b4440070247997d2ce51805e48ba7058f8417d57bfd1"
-      }
-    }
-  ],
-  "summary": "W36 Architecture r2 established (RC-1 corrected): 6 packages over 18 SELECTED; READY_FOR_ARCHITECTURE_REVIEW."
+  "recorded_at": "2026-09-16T15:53:53Z"
 }

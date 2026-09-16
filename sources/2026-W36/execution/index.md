@@ -28,9 +28,9 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Human Gates
 
-- Architecture Review: `pending` (r1 shell + 12-element dossier presented; no decision recorded or inferred)
+- Architecture Review: `pending` (r1 `REQUEST_CHANGES` recorded canonically; fresh r2 shell + 12-element dossier presented; no r2 decision recorded or inferred)
 - Publication Preview: `pending`
-- Detailed review records: `execution/reviews/architecture-r1.md` (PENDING), `execution/reviews/architecture-r1-dossier.md`
+- Detailed review records: `execution/reviews/architecture-r1.md` (REQUEST_CHANGES r1), `execution/reviews/architecture-r1-dossier.md` (r1), `execution/reviews/architecture-r2.md` (PENDING r2), `execution/reviews/architecture-r2-dossier.md` (r2); canonical `gates/reviews/architecture-r1.json` + `gates/review-index.json`
 
 ## Publication Candidate
 
@@ -56,7 +56,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Screening: 19 KEEP / 0 DROP (result set `f55a2285`)
 - Evidence: 13 VERIFIED / 6 PARTIAL (set `1c0efd9f`); views `aab96ba6`
 - Materiality: 18 MATERIAL / 1 CONTEXT; Completeness: LIMITED (3/3 SATISFIED)
-- Selection: 18 SELECTED / 1 HOLD; Architecture: 6 packages, READY_FOR_ARCHITECTURE_REVIEW
+- Selection: 18 SELECTED / 1 HOLD; Architecture r2: 6 packages, READY_FOR_ARCHITECTURE_REVIEW (RC-1 thesis corrected; packages/membership unchanged; matrix/selection byte-identical)
 - Carry-over: zero formal inherited obligations (W35 RELEASED scanned; no carry roles); no W35 copy; Grok SELECTED never copied
 
 ## Deviations
@@ -79,12 +79,19 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/w36-sol-initialize-through-architecture-review-20260916-r1.md`
 - `sessions/w36-pre-discovery-research-prep-20260916-r1.md` (non-authoritative preparation input)
 - `sessions/w36-sol-resume-grok-r4-through-architecture-review-20260917-r1.md` (r4 through Architecture Review; COMPLETE_AT_GATE)
+- `sessions/w36-architecture-r1-request-changes-bounded-regen-20260917-r2.md` (r1 REQUEST_CHANGES bounded regen; COMPLETE_AT_GATE)
 
 ## Instruction authority
 
 - `requests/w36-sol-initialize-through-architecture-review-20260916-r1.md`
-- `requests/sol-w36-resume-from-grok-r4-through-architecture-review-20260917.md` (execution contract for this run)
+- `requests/sol-w36-resume-from-grok-r4-through-architecture-review-20260917.md` (execution contract for the r1 run)
+- `requests/sol-w36-architecture-review-r1-request-changes-20260917.md` (Human/Sol review authority supplied by execution request; r1 decision + RC-1/RC-2 + SELECTION_COMPLETE boundary)
+
+## Provenance correction (RC-2)
+
+- `execution/decisions/sol-w36-supervisory-reviews-20260917-r1.md` preserved byte-identical as worker-generated pre-gate check (not independent Sol authority)
+- Classification: `execution/decisions/w36-worker-pregate-review-provenance-20260917-r2.md`; r2 dossier cites imported authority + Worker/Operator validation only
 
 ## Final disposition
 
-`HUMAN_GATE_REACHED` (fresh Human Architecture Review pending; no Draft; no Human decision recorded or inferred)
+`HUMAN_GATE_REACHED` (fresh Human Architecture Review r2 pending; no Draft; no Human r2 decision recorded or inferred)
