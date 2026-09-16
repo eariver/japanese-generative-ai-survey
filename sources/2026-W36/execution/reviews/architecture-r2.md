@@ -3,7 +3,7 @@
 ## Reviewed authority
 
 - Edition: `2026-W36` (WEEKLY + WEEKLY_MAGAZINE), target gate `ARCHITECTURE_REVIEW`
-- Reviewed repository commit SHA: TBD at commit time (r2 production HEAD under review; exact SHA/tree recorded here before presentation)
+- Reviewed repository commit SHA: `3e1e0fc3b802bf388e56486c638acba35b7bc2ae` (tree `f0aa9bbd5ad1b4ff3cf987688087f4d5ac1aa1eb`; r2 production HEAD under review)
 - r1 reviewed commit: `0295bd08c6b46a5b1be3a10051970d9e749cc73b` (tree `c5111e91509d6b68a28be2b7520ab54acee43bdd`); r1 decision `REQUEST_CHANGES` (canonical record `sources/2026-W36/gates/reviews/architecture-r1.json`)
 - RC-1 disposition: corrected (thesis uses agreed/announced + pledge language; package boundary `Deal announced, not closed` preserved; no stale completed-acquisition wording in regenerated surfaces)
 - RC-2 disposition: worker pre-gate artifact classified via `execution/decisions/w36-worker-pregate-review-provenance-20260917-r2.md`; r2 dossier does not cite it as independent Sol authority; r1 decision recorded via proper Human Gate provenance

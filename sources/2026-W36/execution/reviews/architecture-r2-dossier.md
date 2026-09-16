@@ -5,7 +5,7 @@ Edition `2026-W36` (WEEKLY + WEEKLY_MAGAZINE). Lifecycle `ARCHITECTURE_ESTABLISH
 ## 1. Exact review identity
 
 - Edition/revision: `2026-W36` r2; research profile `WEEKLY`, publication profile `WEEKLY_MAGAZINE`.
-- Reviewed repository commit SHA: TBD at commit time (r2 production HEAD; exact SHA/tree recorded in `architecture-r2.md` before presentation).
+- Reviewed repository commit SHA: `3e1e0fc3b802bf388e56486c638acba35b7bc2ae` (tree `f0aa9bbd5ad1b4ff3cf987688087f4d5ac1aa1eb`; r2 production HEAD; exact SHA/tree recorded in `architecture-r2.md` before presentation).
 - r1 reviewed commit: `0295bd08c6b46a5b1be3a10051970d9e749cc73b` (tree `c5111e91509d6b68a28be2b7520ab54acee43bdd`); r1 decision `REQUEST_CHANGES` recorded in `sources/2026-W36/gates/reviews/architecture-r1.json` (reviewed-by Human Owner; Human/Sol review authority supplied by execution request).
 - Start-of-run reviewed `main`: `5acbff8528890ed9fc324c0227e6c4e43067c438`; pinned Production Line `production/survey-core-v2 @ 774dd39a951c9ac3818e83dfffd4c7666efb0a20` (untouched; verified at every write boundary).
 - Current lifecycle/Gate state: `ARCHITECTURE_ESTABLISHED` / `ARCHITECTURE_REVIEW` pending / Publication Preview pending.
