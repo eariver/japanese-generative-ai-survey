@@ -13,13 +13,13 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `PUBLICATION_PREVIEW` (via r2-APPROVED execution contract `requests/sol-w36-architecture-review-r2-approved-through-publication-preview-20260917.md`)
 - Production Profile: `sources/2026-W36/production-profile.json`
 - Production State: `sources/2026-W36/production-state.json`
-- Current State SHA-256: see `production-state.json` (lifecycle `RELEASE_CANDIDATE`)
-- Current lifecycle: `RELEASE_CANDIDATE`
-- Current terminal reason: `HUMAN_GATE_REACHED`
-- Current next action: `PUBLICATION_PREVIEW` (Human decision only)
+- Current State SHA-256: see `production-state.json` (lifecycle `DRAFT_COMPLETE` after canonical r1 `REQUEST_CHANGES` rollback)
+- Current lifecycle: `DRAFT_COMPLETE`
+- Current terminal reason: `null` (mid-regeneration; blocked — see Shared Core defects)
+- Current next action: `stage:reader-publication-validation` (blocked)
 - Formal Discovery: `accepted` (count = 19; graph `9c55b223`)
 - Core changes: `0`
-- Human decisions: `1` recorded canonically (Architecture Review r2 `APPROVED`); Publication Preview r1 `PENDING` (no decision)
+- Human decisions: `2` recorded canonically (Architecture Review r2 `APPROVED`; Publication Preview r1 `REQUEST_CHANGES` revision 1, reviewed `c4ab0455`, boundary `DRAFT_COMPLETE`); Publication Preview r2 not yet created
 - Pinned Production Line: `production/survey-core-v2 @ 774dd39a951c9ac3818e83dfffd4c7666efb0a20` (untouched)
 - W36 branch basis: `weekly/2026-W36-v2-work` from exact main `5acbff85` (remote read-back verified)
 - Canonical ordinary window: ET `[2026-08-28T18:00:00-04:00, 2026-09-04T18:00:00-04:00)` /
@@ -29,7 +29,7 @@ This is the current human-readable navigation record for the edition. Machine li
 ## Human Gates
 
 - Architecture Review: `approved` (r1 `REQUEST_CHANGES` preserved; r2 `APPROVED` recorded canonically revision 2, reviewed `3e1e0fc3`)
-- Publication Preview: `pending` (fresh r1 shell + dossier presented; no decision recorded or inferred)
+- Publication Preview: `r1 REQUEST_CHANGES recorded` (revision 1, reviewed `c4ab0455`, boundary `DRAFT_COMPLETE`); r2 shell not yet created (regen blocked — see Shared Core defects)
 - Detailed review records: `execution/reviews/architecture-r1.md` (REQUEST_CHANGES r1), `execution/reviews/architecture-r1-dossier.md` (r1), `execution/reviews/architecture-r2.md` (APPROVED r2), `execution/reviews/architecture-r2-dossier.md` (r2), `execution/reviews/publication-preview-r1.md` (PENDING r1), `execution/reviews/publication-preview-r1-dossier.md` (r1); canonical `gates/reviews/architecture-r1.json`, `gates/reviews/architecture-r2.json` (+ immutable snapshot), `gates/review-index.json`
 
 ## Publication Candidate
@@ -65,7 +65,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Shared Core defects
 
-- None discovered in this run. No repair branch or PR exists.
+- `defects/w36-r2-reader-surface-suppression-plumbing-blocker-20260917.md` (BLOCKING, recorded 2026-09-17): mandated #502 immutable blob permalink trips frozen-Core `RSG-LEX-INTERNAL-PATHS`; file-based audited suppressions are inert (object loads but never matches; array crashes loader) and review builders/validators expose no suppression passthrough. No Core repair branch or PR exists (Core frozen for this run).
 
 ## Pre-Discovery research preparation
 
@@ -81,6 +81,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/w36-sol-resume-grok-r4-through-architecture-review-20260917-r1.md` (r4 through Architecture Review; COMPLETE_AT_GATE)
 - `sessions/w36-architecture-r1-request-changes-bounded-regen-20260917-r2.md` (r1 REQUEST_CHANGES bounded regen; COMPLETE_AT_GATE)
 - `sessions/w36-r2-approved-through-publication-preview-20260917-r1.md` (r2 APPROVED through Publication Preview r1 pending; COMPLETE_AT_GATE)
+- `sessions/w36-r1-request-changes-regen-blocked-20260917-r1.md` (r1 REQUEST_CHANGES regen for #434/#500/#501/#502; STOPPED_AT_BLOCKER before Preview r2 — see Shared Core defects)
 
 ## Instruction authority
 
@@ -88,6 +89,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `requests/sol-w36-resume-from-grok-r4-through-architecture-review-20260917.md` (execution contract for the r1 run)
 - `requests/sol-w36-architecture-review-r1-request-changes-20260917.md` (Human/Sol review authority supplied by execution request; r1 decision + RC-1/RC-2 + SELECTION_COMPLETE boundary)
 - `requests/sol-w36-architecture-review-r2-approved-through-publication-preview-20260917.md` (execution contract for the r2-APPROVED-through-Preview run; Human r2 APPROVED + Publication Preview mission, no Freeze/Release)
+- `requests/sol-w36-publication-preview-r1-request-changes-issues-434-500-501-502-20260917.md` (execution contract for the r1-REQUEST_CHANGES regen run; Human Preview r1 REQUEST_CHANGES + DRAFT_COMPLETE boundary for #434/#500/#501/#502, no Freeze/Release)
 
 ## Provenance correction (RC-2)
 
@@ -96,4 +98,4 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`HUMAN_GATE_REACHED` (fresh Human Publication Preview r1 pending at reviewed commit `c4ab0455`; Architecture Review r2 APPROVED; no Publication Preview decision recorded or inferred; no Freeze; no Release)
+`HUMAN_GATE_REACHED` (fresh Human Publication Preview r1 pending at reviewed commit `c4ab0455`; Architecture Review r2 APPROVED; r1 `REQUEST_CHANGES` recorded canonically with `DRAFT_COMPLETE` boundary; r2 regen STOPPED_AT_BLOCKER before Preview r2 — no new Publication Preview decision recorded or inferred; no Freeze; no Release)
