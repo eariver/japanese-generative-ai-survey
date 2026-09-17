@@ -1,10 +1,10 @@
-# Human Architecture Review — 2026-W36 r2 (PENDING)
+# Human Architecture Review — 2026-W36 r2 (APPROVED)
 
 ## Reviewed authority
 
 - Edition: `2026-W36` (WEEKLY + WEEKLY_MAGAZINE), target gate `ARCHITECTURE_REVIEW`
 - Reviewed repository commit SHA: `3e1e0fc3b802bf388e56486c638acba35b7bc2ae` (tree `f0aa9bbd5ad1b4ff3cf987688087f4d5ac1aa1eb`; r2 production HEAD under review)
-- r1 reviewed commit: `0295bd08c6b46a5b1be3a10051970d9e749cc73b` (tree `c5111e91509d6b68a28be2b7520ab54acee43bdd`); r1 decision `REQUEST_CHANGES` (canonical record `sources/2026-W36/gates/reviews/architecture-r1.json`)
+- r1 reviewed commit: `0295bd08c6b46a5b1be3a10051970d9e749cc73b`; r1 decision `REQUEST_CHANGES` (canonical record `sources/2026-W36/gates/reviews/architecture-r1.json`)
 - RC-1 disposition: corrected (thesis uses agreed/announced + pledge language; package boundary `Deal announced, not closed` preserved; no stale completed-acquisition wording in regenerated surfaces)
 - RC-2 disposition: worker pre-gate artifact classified via `execution/decisions/w36-worker-pregate-review-provenance-20260917-r2.md`; r2 dossier does not cite it as independent Sol authority; r1 decision recorded via proper Human Gate provenance
 - Regeneration boundary used: `SELECTION_COMPLETE`
@@ -27,4 +27,16 @@ NVIDIA agreed to acquire Hugging Face while pledging to preserve its open, compu
 
 ## Human decision
 
-`PENDING` — no r2 decision recorded or inferred. Options after reading the dossier: `APPROVED` or `REQUEST_CHANGES` (with requested changes + allowed pre-Architecture regeneration boundary).
+`APPROVED` — Human Owner approved the exact r2 Architecture bytes at reviewed production authority `3e1e0fc3b802bf388e56486c638acba35b7bc2ae` (presentation shell `21f97abc5e495a63ff398961747e1c1bda010bcf`). Recorded via canonical `survey_human_gate_v2.py record-architecture-approval` (revision 2, reviewed_at `2026-09-17T00:09:00Z`, reference `sources/2026-W36/execution/requests/sol-w36-architecture-review-r2-approved-through-publication-preview-20260917.md`). Machine record: `gates/reviews/architecture-r2.json` + immutable snapshot `gates/reviews/approvals/architecture-r2.json` + review index.
+
+## Requested changes
+
+None (APPROVED).
+
+## Regeneration boundary
+
+None (APPROVED).
+
+## Shared-Core implication
+
+None. No Core defect encountered in the approval run; no repair branch or PR; `main` and Production Line untouched and unmerged by design.
