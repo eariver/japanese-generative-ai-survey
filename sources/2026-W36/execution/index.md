@@ -10,16 +10,16 @@ This is the current human-readable navigation record for the edition. Machine li
 - Work branch: `weekly/2026-W36-v2-work`
 - Start-of-run reviewed `main`: `5acbff8528890ed9fc324c0227e6c4e43067c438`
 - Run started: `2026-09-16T14:04:14Z`; resumed from accepted Grok r4: `2026-09-17T00:08:00+09:00 JST`
-- Requested stop: `ARCHITECTURE_REVIEW`
+- Requested stop: `PUBLICATION_PREVIEW` (via r2-APPROVED execution contract `requests/sol-w36-architecture-review-r2-approved-through-publication-preview-20260917.md`)
 - Production Profile: `sources/2026-W36/production-profile.json`
 - Production State: `sources/2026-W36/production-state.json`
-- Current State SHA-256: see `production-state.json` (lifecycle `ARCHITECTURE_ESTABLISHED`)
-- Current lifecycle: `ARCHITECTURE_ESTABLISHED`
+- Current State SHA-256: see `production-state.json` (lifecycle `RELEASE_CANDIDATE`)
+- Current lifecycle: `RELEASE_CANDIDATE`
 - Current terminal reason: `HUMAN_GATE_REACHED`
-- Current next action: `ARCHITECTURE_REVIEW` (Human decision only)
+- Current next action: `PUBLICATION_PREVIEW` (Human decision only)
 - Formal Discovery: `accepted` (count = 19; graph `9c55b223`)
 - Core changes: `0`
-- Human decisions: `0`
+- Human decisions: `1` recorded canonically (Architecture Review r2 `APPROVED`); Publication Preview r1 `PENDING` (no decision)
 - Pinned Production Line: `production/survey-core-v2 @ 774dd39a951c9ac3818e83dfffd4c7666efb0a20` (untouched)
 - W36 branch basis: `weekly/2026-W36-v2-work` from exact main `5acbff85` (remote read-back verified)
 - Canonical ordinary window: ET `[2026-08-28T18:00:00-04:00, 2026-09-04T18:00:00-04:00)` /
@@ -28,15 +28,15 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Human Gates
 
-- Architecture Review: `pending` (r1 `REQUEST_CHANGES` recorded canonically; fresh r2 shell + 12-element dossier presented; no r2 decision recorded or inferred)
-- Publication Preview: `pending`
-- Detailed review records: `execution/reviews/architecture-r1.md` (REQUEST_CHANGES r1), `execution/reviews/architecture-r1-dossier.md` (r1), `execution/reviews/architecture-r2.md` (PENDING r2), `execution/reviews/architecture-r2-dossier.md` (r2); canonical `gates/reviews/architecture-r1.json` + `gates/review-index.json`
+- Architecture Review: `approved` (r1 `REQUEST_CHANGES` preserved; r2 `APPROVED` recorded canonically revision 2, reviewed `3e1e0fc3`)
+- Publication Preview: `pending` (fresh r1 shell + dossier presented; no decision recorded or inferred)
+- Detailed review records: `execution/reviews/architecture-r1.md` (REQUEST_CHANGES r1), `execution/reviews/architecture-r1-dossier.md` (r1), `execution/reviews/architecture-r2.md` (APPROVED r2), `execution/reviews/architecture-r2-dossier.md` (r2), `execution/reviews/publication-preview-r1.md` (PENDING r1), `execution/reviews/publication-preview-r1-dossier.md` (r1); canonical `gates/reviews/architecture-r1.json`, `gates/reviews/architecture-r2.json` (+ immutable snapshot), `gates/review-index.json`
 
 ## Publication Candidate
 
-- Current Human review target: none recorded yet
-- Candidate SHA-256: none
-- PDF SHA-256: none
+- Current Human review target: Publication Preview r1 at reviewed commit `c4ab045548ebf279209862bf62bd6f9725082fb8`
+- Candidate SHA-256: `0c4ea8733d9c7c682db5770c6e8e690750bd479d10b0440c38ce4767b07a60b8`
+- PDF SHA-256: `b5893f4809a7004fa7890e7817e3e8ca08056f401f699562ece3607f67111dc0` (12 pages, 360121 bytes, `surveys/weekly/2026-W36/main.pdf`)
 
 ## Grok/X
 
@@ -80,12 +80,14 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/w36-pre-discovery-research-prep-20260916-r1.md` (non-authoritative preparation input)
 - `sessions/w36-sol-resume-grok-r4-through-architecture-review-20260917-r1.md` (r4 through Architecture Review; COMPLETE_AT_GATE)
 - `sessions/w36-architecture-r1-request-changes-bounded-regen-20260917-r2.md` (r1 REQUEST_CHANGES bounded regen; COMPLETE_AT_GATE)
+- `sessions/w36-r2-approved-through-publication-preview-20260917-r1.md` (r2 APPROVED through Publication Preview r1 pending; COMPLETE_AT_GATE)
 
 ## Instruction authority
 
 - `requests/w36-sol-initialize-through-architecture-review-20260916-r1.md`
 - `requests/sol-w36-resume-from-grok-r4-through-architecture-review-20260917.md` (execution contract for the r1 run)
 - `requests/sol-w36-architecture-review-r1-request-changes-20260917.md` (Human/Sol review authority supplied by execution request; r1 decision + RC-1/RC-2 + SELECTION_COMPLETE boundary)
+- `requests/sol-w36-architecture-review-r2-approved-through-publication-preview-20260917.md` (execution contract for the r2-APPROVED-through-Preview run; Human r2 APPROVED + Publication Preview mission, no Freeze/Release)
 
 ## Provenance correction (RC-2)
 
@@ -94,4 +96,4 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`HUMAN_GATE_REACHED` (fresh Human Architecture Review r2 pending; no Draft; no Human r2 decision recorded or inferred)
+`HUMAN_GATE_REACHED` (fresh Human Publication Preview r1 pending at reviewed commit `c4ab0455`; Architecture Review r2 APPROVED; no Publication Preview decision recorded or inferred; no Freeze; no Release)
