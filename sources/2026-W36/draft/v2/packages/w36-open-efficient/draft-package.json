@@ -1,0 +1,1340 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W36",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "w36-open-efficient",
+  "basis": {
+    "production_profile_sha256": "b9c9bd6d932c8f26e06950b251e9747316a9999f1fc3f7862fab6441ff40dc54",
+    "architecture_sha256": "7ba86acffcc8c071307cf5936096bcd474e1e4ea8bb3d317f83e92de059c621d",
+    "architecture_review_summary_sha256": "dbd0bf1c6c39075a435e7369577c7a2b1959ab750c2f88b6d0ded6fbcbc43abf",
+    "architecture_approval_sha256": "082d9874bca0990b4c3c8f6810410a3c14e0ee8b4e4dadd4e97008bf101d0a3a",
+    "candidate_matrix_sha256": "6eeae3f2d281a72c112e5adfc61ff272a17e0564b0c95c5cee221aa6a654a064",
+    "candidate_selection_sha256": "735b1f5ca162311f922cdec9233474bc62d6f434f3ec569f690dedd398b067ca",
+    "evidence_acceptance_sha256": "63f9244ef47c43b2ca00c8a0585bb139ba0a07ab62a3f1ce5b13b1933d669d2b"
+  },
+  "package": {
+    "title": "Open weights go full-lifecycle",
+    "purpose": "Show the open releases with license and date precision: full-artifact fleet plus boundary-dated weights.",
+    "drafting_order": 3,
+    "primary_candidate_ids": [
+      "candidate:2026-W36:8bb8d26564f848db",
+      "candidate:2026-W36:19ad29cb792bcff2"
+    ],
+    "supporting_candidate_ids": [],
+    "must_cover_requirements": [
+      "K2 six-scale Apache 2.0 + MoVA/524K + audit correction (bounded)",
+      "GLM-5.3 weights/license/serving with UTC-hour bound (bounded)"
+    ],
+    "boundaries": [
+      "Apache 2.0 covers models/code, not datasets",
+      "GLM MIT applies to Flash only, not full weights",
+      "GLM window placement is medium-confidence boundary",
+      "All class-ranking and score claims are vendor-reported and externally unreproduced.",
+      "MoVA efficiency interpretation (~4B-active near-32B behavior) is a vendor design claim without independent serving verification.",
+      "Dataset-license heterogeneity means Apache 2.0 must not be asserted over datasets.",
+      "UTC hour on 2026-08-28 is unresolved, so window placement is medium-confidence ordinary-boundary; hour-level precision must not be asserted.",
+      "All benchmark-table figures are card-reported and externally unreproduced.",
+      "License nuance rests on the license-field label only; full glm-5.3 license text was not consumed, and MIT terms from the Flash variant must not be carried over.",
+      "Download/like counters are platform telemetry, not capability evidence.",
+      "param/precision/arxiv as card-stated: Card-reported figures recorded; independent reproduction absent.",
+      "weights-push UTC hour unresolved: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification."
+    ]
+  },
+  "candidate_matrix": {
+    "schema_version": "2.0-rc1",
+    "issue_id": "2026-W36",
+    "research_profile": "WEEKLY",
+    "basis": {
+      "production_profile_sha256": "b9c9bd6d932c8f26e06950b251e9747316a9999f1fc3f7862fab6441ff40dc54",
+      "profile_completeness_sha256": "4f7f79e845a6d21dbb473ac337d8e192344f65688c7426eb56141ebb6f2ee79c",
+      "materiality_ledger_sha256": "761a2ac7700bedee5a0793d5ff26f1230de936dd0c2fffaec85ceef21c42192c",
+      "evidence_acceptance_sha256": "63f9244ef47c43b2ca00c8a0585bb139ba0a07ab62a3f1ce5b13b1933d669d2b",
+      "edition_views_acceptance_sha256": "0f67fe6f86d14b16b964d6192c5ac1297a8f20011f44a37b7e632798e66293b0"
+    },
+    "rows": [
+      {
+        "candidate_id": "candidate:2026-W36:09afe4f80cf4b7a7",
+        "evidence_task_id": "evidence:2026-W36:01f3d1ac0af5cb49",
+        "discovery_ids": [
+          "w36-primary-copilot-harness-20260902"
+        ],
+        "evidence_sha256": "22fc74d0b34a1384c96b1424786f5eca631dfb2c820dbe98f109baab169702bc",
+        "edition_view_sha256": "945a79755dbbd78e6a450fd308b41b6da5c819937938826d90bcc4669bc2763a",
+        "title": "GitHub Copilot harness",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Vendor blog only; no independent verification of reasoning quality, tool-use reliability, or sandbox guarantees.",
+          "Many adjacent capabilities are in preview with behavior and availability subject to change.",
+          "Model availability (e.g., Claude Sonnet 5, GPT-5.5 Chat) is stated without pricing, region, or limit details.",
+          "model availability as vendor-stated: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: GA harness plus skills, MCP-as-tools, Work IQ, and memory advances the enterprise agent plane (reasoning, context, tool use, identity, telemetry); material agent-infrastructure signal for the window.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:ed3fa065d89eabd1",
+        "evidence_task_id": "evidence:2026-W36:092f12ee97664fc8",
+        "discovery_ids": [
+          "w36-primary-nvidia-hf-20260903"
+        ],
+        "evidence_sha256": "cacc254b854cf92fdb4be783dbbed184cd0932c968a730cb69d6ff39344a770f",
+        "edition_view_sha256": "356bd9aaaef7431d1964d5cfe5a83352197e2298ea6ea5e1197bb03f6003ed68",
+        "title": "NVIDIA agreement to acquire Hugging Face (September 2026)",
+        "artifact_type": "OTHER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Agreement announced, not a closed deal: closing terms, timeline, and regulatory outcomes are not established by this source.",
+          "Platform-scale and contribution figures are vendor-stated and unreproduced.",
+          "Openness commitments are forward-looking pledges, not verifiable current-state facts.",
+          "no HF-blog citation: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: largest open-ecosystem ownership event of the window; price, scale, and openness pledges are directly material to open-weights governance and platform-neutrality questions.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:3c570ec6d2347c73",
+        "evidence_task_id": "evidence:2026-W36:0e71cd1f701e3043",
+        "discovery_ids": [
+          "w36-primary-gemini38-card-20260902"
+        ],
+        "evidence_sha256": "315fbc1eb5682c57c2f64440165c1c2d7736028852b93493d25a3dda1d812c40",
+        "edition_view_sha256": "5b1f19bcbdb4e282957644b1b8d392dd29e19dbca6c70cd5302c3ede1ea42e1f",
+        "title": "Gemini 3.8 Flash (DeepMind model card)",
+        "artifact_type": "MODEL_UPDATE",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Card evals-methodology page was not consumed, so benchmark approach, sampling, and comparator runs are unverified.",
+          "All card benchmark figures are vendor-reported and externally unreproduced.",
+          "Frontier no-T/CCL conclusion for 3.8 Flash is inferred from 3.7 Flash assessment, not a fresh 3.8 evaluation."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: companion detail to the Gemini 3.8 Flash release record; bounds benchmark reuse with card-exact numbers and the methodology-not-consumed caveat rather than duplicating the release event.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:8bb8d26564f848db",
+        "evidence_task_id": "evidence:2026-W36:1d20920a9f228651",
+        "discovery_ids": [
+          "w36-primary-k2-horizon-20260903"
+        ],
+        "evidence_sha256": "583b362bf70d7859554bc9df323b8a80de8a0909750c96b1f1f134964c1837be",
+        "edition_view_sha256": "21a13f6fe780630bdd04ee49eb1f19ece99854fcfb1c926e776e0035d749090e",
+        "title": "K2 Horizon open model fleet",
+        "artifact_type": "OTHER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "All class-ranking and score claims are vendor-reported and externally unreproduced.",
+          "MoVA efficiency interpretation (~4B-active near-32B behavior) is a vendor design claim without independent serving verification.",
+          "Dataset-license heterogeneity means Apache 2.0 must not be asserted over datasets."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: the window's most comprehensive open release (full-lifecycle artifacts across six scales with an honest benchmark audit); license clarity plus SOTA-small-model claims make it technically significant.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:5b367b73a0f7aa02",
+        "evidence_task_id": "evidence:2026-W36:247123f8b5712c51",
+        "discovery_ids": [
+          "w36-primary-pics-20260901"
+        ],
+        "evidence_sha256": "c63339b5342f4e3e27cb2dec8b9b5d373d976b844014f61bc9e30d8af7b0dae9",
+        "edition_view_sha256": "bd404d8c70b27a51341f66d9550302d9fde22015afbd20a08c477bf7967a0d1e",
+        "title": "Google Pics",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Vendor announcement only; no independent hands-on verification of edit quality, latency, or Workspace integration depth.",
+          "Rollout is forward-looking (coming weeks); actual entitlement timing may vary.",
+          "Underlying Nano Banana model details not evidenced in this source."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: Pics productizes image generation and editing inside Workspace distribution (Docs/Slides/Drive) for Pro/Ultra and business tiers; material productization step for the window.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:f137aec6f0f41f1e",
+        "evidence_task_id": "evidence:2026-W36:250c122534314d01",
+        "discovery_ids": [
+          "w36-primary-gemini38-20260902"
+        ],
+        "evidence_sha256": "5ec0e6543e348685a6fffdde1c2b8ba6a9d257e815d73a8d44d0d8437be1d8b0",
+        "edition_view_sha256": "2ddd40b7e7b6038eaf0d98ecf7103598fae3a7d8dffc6771a0bc191865619878",
+        "title": "Gemini 3.8 Flash / Gemini 3.8 Flash Cyber",
+        "artifact_type": "MODEL_UPDATE",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "All benchmark, patch-recall, and discovery figures are vendor-reported without consumed methodology.",
+          "Internal 20-language benchmark is undisclosed; CyberGym/CWE-Bench runs are Google-reported.",
+          "Wiz/Chrome-team attributions are relayed by Google, not independently verified."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: frontier workhorse-plus-cyber release pairing agentic coding gains with defender-gated vuln-discovery/patching claims; central to the agents/coding and security lanes.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:94537bdac061eb86",
+        "evidence_task_id": "evidence:2026-W36:3326048ea4ecc9f9",
+        "discovery_ids": [
+          "w36-primary-fable-mythos-20260901"
+        ],
+        "evidence_sha256": "f6ba79c5829c16b94174e19e09f8b4bc34759706679a6b596d3286b0ab983b3f",
+        "edition_view_sha256": "f94e902a3cedc096b303f137d11de03662a5ac437698e701e81e39dc7f738ffd",
+        "title": "Claude Fable 5.1 / Claude Mythos 5.1",
+        "artifact_type": "MODEL_UPDATE",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "All benchmark and safety-evaluation figures are lab-reported and externally unreproduced.",
+          "Mythos vetting criteria and watermark detection API preview scope are announced programs, not observed deployments.",
+          "Science anecdotes are vendor-selected case reports, not controlled evidence."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: flagship proprietary coding/knowledge-work release with a dual-safeguard deployment model and priced efficiency claim; core agents/coding-lane evidence with strict vendor-reported bounds.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:ecb8137a183abd8c",
+        "evidence_task_id": "evidence:2026-W36:336f00d027dc06ed",
+        "discovery_ids": [
+          "w36-grok-r4-15-url-ledger"
+        ],
+        "evidence_sha256": "949765d715ea8f02048be22a2acafdd0237c24626518b1023e859d771c1e7edc",
+        "edition_view_sha256": "988874412a3c65d5c7cea337d7f59a6990555ed2fa90161b069260713b0a56da",
+        "title": "W36 Grok/X r4 observation corpus",
+        "artifact_type": "OTHER",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 4,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "X observation only: no technical specification, benchmark, valuation, autonomy, exploit-rate, license, or release fact is established by this record.",
+          "URL_UNRECOVERED aggregates from earlier revisions remain outside canonical counts; X search surfaces are incomplete.",
+          "Engagement snapshots are fetch-time only.",
+          "Late-breaking rows must not enter ordinary-window totals.",
+          "primary-source verification for Astra/Fermat/HF/Fable/Gemini/GLM/Muse technical claims: Benchmarks, prices, TPS, exploit claims, and availability require primary documents."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: required Weekly community-signal authority; grounds momentum/adoption/reproduction observations and the lane negative-space audit.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:d14596231c86ff51",
+        "evidence_task_id": "evidence:2026-W36:39a4a7b12b070f4a",
+        "discovery_ids": [
+          "w36-primary-muse-spark-20260902"
+        ],
+        "evidence_sha256": "1bf32af342b859f5b2b9e48e0c92074a10bc3d2f777499224e52884e98254158",
+        "edition_view_sha256": "f9a3840da3b11cfb18f1dfbdc92c8822396bfcb06e30bb328ffd47766d16caef",
+        "title": "Muse Spark 1.3",
+        "artifact_type": "MODEL_UPDATE",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Benchmark scorecard image values and the linked evaluation methodology report were not consumed; no benchmark figure may enter prose from this record.",
+          "Efficiency (~20%/~25%) and safety-robustness figures are vendor-reported and unreproduced.",
+          "The open-weights release and bigger models are roadmap statements, not shipped facts.",
+          "methodology link not consumed: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: significant proprietary agentic-coding update with availability and efficiency claims; benchmark silence is an explicit bound, not a gap to fill by inference.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:d1e43cedbcb039b6",
+        "evidence_task_id": "evidence:2026-W36:3f6ccff22815742a",
+        "discovery_ids": [
+          "w36-primary-fermat-science-20260904"
+        ],
+        "evidence_sha256": "54dbd91a0fec74e038ae892b9d5698ddac4c3b66676eb3b21bc0805099d23f63",
+        "edition_view_sha256": "fb288064d1dcd25af2b371eb658dcb780f828d933d049ba52ee7517844b706e7",
+        "title": "Anthropic Fermat Lean formalization",
+        "artifact_type": "OTHER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 4,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "GitHub proof contents were not replayed or rebuilt under this record; repo verification belongs to the companion GitHub record.",
+          "Walkthrough, footnotes, and excerpted agent-thinking quotes are truncated in retrieval and not independently checked.",
+          "Model identity (roughly Fable 5.1 comparable) and compute/cost are approximate or unstated.",
+          "Novel-mathematics distinction (verification, not a new proof idea) must be preserved downstream."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: largest-scale formal-verification and multi-agent result of the window with explicit verification hooks to the repo record.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:793f2ff36e68b1e2",
+        "evidence_task_id": "evidence:2026-W36:4391ab13b7a65f50",
+        "discovery_ids": [
+          "w36-primary-kilo-jetbrains-20260901"
+        ],
+        "evidence_sha256": "df528766143b540b7e4158e0ecc55ab1f01afe32b099e11b94a4373056e7007c",
+        "edition_view_sha256": "9a67f6f102d72ed09dff55da1da887bee9984af96c4cf176c303c77e40cb6f2f",
+        "title": "Kilo for JetBrains",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Vendor blog only; parallel-agent isolation, Run Configuration adaptation, and remote-development behavior not independently tested.",
+          "600+ model count and data-use badge coverage are point-in-time vendor statements.",
+          "Product Hunt launch-day reception and pricing or credit costs not evidenced in this source."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: Kilo advances the coding-agent plane with isolated-worktree parallelism, run/debug integration, and model-agnostic routing inside JetBrains; material developer-workflow signal for the window.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:cacb11d97b20a0f2",
+        "evidence_task_id": "evidence:2026-W36:444dfcbcc81c5174",
+        "discovery_ids": [
+          "w36-primary-atlas-20260901"
+        ],
+        "evidence_sha256": "c94e39bbd9b60e24424b88571d8bc6525ea995d146cba26a7a743630781f2ae6",
+        "edition_view_sha256": "a0af24588581cb8351fe41f79bca68bb11a7196636c5c4438642c454e32ef8ec",
+        "title": "Atlas",
+        "artifact_type": "MODEL_UPDATE",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Single vendor announcement source; performance and scaling claims not independently replicated.",
+          "Interactive demos, images, and omitted footer truncated in edition-local storage.",
+          "Scaling trend (performance improves with compute) is forward-looking vendor expectation.",
+          "task scope as vendor-described: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification.",
+          "human-preference vs baselines as vendor-reported: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification.",
+          "early-access limitation: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: Atlas is a new omni spatial world model spanning generation, reconstruction, and simulation with explicit 3D outputs and robotics relevance; core spatial-intelligence advance for the window.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:85895f75f64b07a2",
+        "evidence_task_id": "evidence:2026-W36:4810a44923de43e2",
+        "discovery_ids": [
+          "w36-primary-astra-launch-20260903"
+        ],
+        "evidence_sha256": "a769cbc7abc694760e9c81775b674623ea6236b51ee861995b6cedf77d4c4dc4",
+        "edition_view_sha256": "bbcbbafeb155e23434e94b87f15ad0166aee3e7471687f83b67b6e4b79df17fd",
+        "title": "OpenAI GPT-6 Astra",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 4,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Page retrieval shows no explicit date display; 2026-09-03 is edition-attributed from launch corroboration.",
+          "Retrieval is truncated: citations, footnotes, and chart values beyond the cited OSWorld/Math/ARC/ExploitBench/SRE figures were not consumed and are not asserted.",
+          "Full system card was not consumed.",
+          "All benchmark/latency figures are vendor-reported without independent reproduction."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: flagship frontier launch binding availability, pricing, computer-use, cyber, and alignment claims for downstream selection.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:0e486fa2b0fd947e",
+        "evidence_task_id": "evidence:2026-W36:5101a921d7297fd5",
+        "discovery_ids": [
+          "w36-primary-fermat-github-20260904"
+        ],
+        "evidence_sha256": "094eea8ecfd483402cf6609c8ded3e7903579ca6883e9d995e806ca9b0d9dbba",
+        "edition_view_sha256": "43b7d957c56493d4242501a6cabff347befbd641f48d2393dff312fdd011d797",
+        "title": "anthropics/fermats-last-theorem Lean repo",
+        "artifact_type": "OTHER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 4,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Page shows no explicit publication date; 2026-09-04 is edition-attributed from the linked science article.",
+          "No build, comparator run, or nanoda rerun was performed; all checks are consumed as stated.",
+          "PROOF-PATH, ATTRIBUTION, formalization.yaml, lake files, and html contents were not individually consumed.",
+          "Star/fork/issue counts are fetch-time only."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: independently checkable formal-proof artifact backing the week's highest-profile verification claim.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:954623c44584e185",
+        "evidence_task_id": "evidence:2026-W36:6361f4cb4e05ae9e",
+        "discovery_ids": [
+          "w36-primary-astra-safety-20260903"
+        ],
+        "evidence_sha256": "de9a3774561b9a3293d0a428ae8f9241d36ebd363b76f064a930fb8af82e6331",
+        "edition_view_sha256": "9be3a2997852e4277ddee0fa97b9167b2a93de3747a7ca7d2873b43fcf049ee3",
+        "title": "OpenAI GPT-6 Astra",
+        "artifact_type": "OTHER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Full system card and deployment-safety subpages (alignment, monitorability, CoT controllability, Codex-traffic simulation) were not consumed.",
+          "All capability/safety figures are vendor-reported without independent reproduction.",
+          "No claim about production incident rates is established.",
+          "Critical threshold definition as vendor-stated: Vendor-reported simulation; independent reproduction absent.",
+          "54K-task figures as vendor-reported: Vendor-reported simulation; independent reproduction absent."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: first Critical-cyber designation plus broad monitoring and an adverse monitorability trend; central safety-lane evidence.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:98d8f9445b408ccd",
+        "evidence_task_id": "evidence:2026-W36:6d4cc3a808ecf77f",
+        "discovery_ids": [
+          "w36-primary-fuse-20260902"
+        ],
+        "evidence_sha256": "ee220bedab0c9cbd47760f12c8c76341c476bd1f2422a47ff879ebeddae63d0c",
+        "edition_view_sha256": "8123ebc256120fa334b2babc46cd8247a47faffdb58df2f5cda1644806e15c9f",
+        "title": "FUSE: An Evaluating Framework for Dangerous Capabilities of LLMs",
+        "artifact_type": "PAPER",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 3,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Abstract-only evidence; full PDF/HTML/TeX source not consumed, so methods, model lists, scores, and statistics are unverified.",
+          "Commercial-model and family-level comparisons depend on undisclosed-per-abstract sampling and judging details.",
+          "Governance implications are author-framed; no independent replication attempted.",
+          "K/D/H method as paper-described: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification.",
+          "12-model/family scope as paper-stated: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification.",
+          "rho/erosion findings as paper-reported: K/D/H design, 12-model CB evaluation, temporal trend, and reliability statistics rest on abstract-level author claims pending full-text review."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: FUSE offers a standardized K/D/H dangerous-capability evaluation methodology with cross-model and temporal safety findings; material methods and governance signal for the window.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:19ad29cb792bcff2",
+        "evidence_task_id": "evidence:2026-W36:9c8122e477b5b257",
+        "discovery_ids": [
+          "w36-primary-glm53-weights-20260828"
+        ],
+        "evidence_sha256": "9295712de99e4e1dab2aedcebd3c8c9be5c679e091b9ec1a18a6943327fb6f5d",
+        "edition_view_sha256": "6d408b5419da7ca7f444c953c7d1a6c0efde98bb64599d8ced30f45098d153ac",
+        "title": "GLM-5.3 (zai-org full weights)",
+        "artifact_type": "OTHER",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 4,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "UTC hour on 2026-08-28 is unresolved, so window placement is medium-confidence ordinary-boundary; hour-level precision must not be asserted.",
+          "All benchmark-table figures are card-reported and externally unreproduced.",
+          "License nuance rests on the license-field label only; full glm-5.3 license text was not consumed, and MIT terms from the Flash variant must not be carried over.",
+          "Download/like counters are platform telemetry, not capability evidence.",
+          "param/precision/arxiv as card-stated: Card-reported figures recorded; independent reproduction absent.",
+          "weights-push UTC hour unresolved: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: boundary-dated full-weight open release with exceptional card-reported coding/cyber figures; medium date confidence and the custom-license nuance are load-bearing bounds for any downstream selection.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:ad1c9ad4de493ee9",
+        "evidence_task_id": "evidence:2026-W36:b1a79636a4585547",
+        "discovery_ids": [
+          "w36-primary-falh3max-20260901"
+        ],
+        "evidence_sha256": "ebaa36d91b841189ba86d8151460ec1ae074969d36d3687018e1462a969aa9ee",
+        "edition_view_sha256": "4d38bf5316e04a3555c8d4c1b3baf6328da99eb0c7033744d1d0d60e407fad46",
+        "title": "H3 Max",
+        "artifact_type": "MODEL_UPDATE",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Authority is vendor-via-PR, not first-party docs or independently fetched leaderboards.",
+          "Independent rankings are date-bound to August 26, 2026 and may have changed; fal internal head-to-head testing against 12 models not reproducible from this source.",
+          "MiniMax H3 team quote embedded in fal release; partnership framing is vendor-presented.",
+          "ranking Elo as cited with date: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: H3 Max asserts a quality-latency-cost Pareto shift in video generation (frontier quality at faster-than-real-time) with date-bound #1 leaderboard claims; material video-model signal for the window.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W36:1ea524df93fa71d4",
+        "evidence_task_id": "evidence:2026-W36:c132407bcfa5603c",
+        "discovery_ids": [
+          "w36-primary-astra-path-20260901"
+        ],
+        "evidence_sha256": "c39fa8acbfcd40e6c2bbfceeb984aa1089c631e9bf4fb52ce32ae414edacf82f",
+        "edition_view_sha256": "0f9e226d5a4eaff26eaba3443f07266e700c2e8a2efaabcd321f03ec69a733a3",
+        "title": "OpenAI GPT-6 Astra",
+        "artifact_type": "OTHER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 4,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Astra system card at launch was not consumed; only this pre-launch safeguards article was.",
+          "Hugging Face incident technical-report PDF and Preparedness Framework update were not consumed.",
+          "Expert hardened browser/OS exploit-chain assessments lack published methodology for independent check.",
+          "All eval figures are vendor self-report."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Sol: pre-launch Critical-capability evidence with concrete eval figures and a documented training-pause safeguard decision.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      }
+    ],
+    "summary": {
+      "candidate_count": 19,
+      "materiality_counts": {
+        "CONTEXT": 1,
+        "MATERIAL": 18
+      },
+      "evidence_status_counts": {
+        "PARTIAL": 6,
+        "VERIFIED": 13
+      }
+    }
+  },
+  "evidence_acceptance": {
+    "schema_version": "2.0-rc1",
+    "issue_id": "2026-W36",
+    "research_profile": "WEEKLY",
+    "result_set_sha256": "1c0efd9fbe7ebd2ce8288bb20d7ae796d4c65e1c6bcbab65360737c2e9fe3d7c",
+    "package_sha256": "00d125574fa3882315652a2a5408af3d9247b059aacb8bed21332417a94805d1",
+    "screening_acceptance_sha256": "83279d88e23e380a2d4a3e51b16be71f03c3040989c6272e1112193f7cf18991",
+    "result_count": 19,
+    "results": [
+      {
+        "evidence_task_id": "evidence:2026-W36:01f3d1ac0af5cb49",
+        "discovery_ids": [
+          "w36-primary-copilot-harness-20260902"
+        ],
+        "sha256": "22fc74d0b34a1384c96b1424786f5eca631dfb2c820dbe98f109baab169702bc",
+        "status": "VERIFIED",
+        "filename": "task-09afe4f80cf4b7a75fbe.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:092f12ee97664fc8",
+        "discovery_ids": [
+          "w36-primary-nvidia-hf-20260903"
+        ],
+        "sha256": "cacc254b854cf92fdb4be783dbbed184cd0932c968a730cb69d6ff39344a770f",
+        "status": "VERIFIED",
+        "filename": "task-ed3fa065d89eabd1d637.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:0e71cd1f701e3043",
+        "discovery_ids": [
+          "w36-primary-gemini38-card-20260902"
+        ],
+        "sha256": "315fbc1eb5682c57c2f64440165c1c2d7736028852b93493d25a3dda1d812c40",
+        "status": "PARTIAL",
+        "filename": "task-3c570ec6d2347c73f69a.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:1d20920a9f228651",
+        "discovery_ids": [
+          "w36-primary-k2-horizon-20260903"
+        ],
+        "sha256": "583b362bf70d7859554bc9df323b8a80de8a0909750c96b1f1f134964c1837be",
+        "status": "VERIFIED",
+        "filename": "task-8bb8d26564f848db84c0.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:247123f8b5712c51",
+        "discovery_ids": [
+          "w36-primary-pics-20260901"
+        ],
+        "sha256": "c63339b5342f4e3e27cb2dec8b9b5d373d976b844014f61bc9e30d8af7b0dae9",
+        "status": "VERIFIED",
+        "filename": "task-5b367b73a0f7aa02a85e.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:250c122534314d01",
+        "discovery_ids": [
+          "w36-primary-gemini38-20260902"
+        ],
+        "sha256": "5ec0e6543e348685a6fffdde1c2b8ba6a9d257e815d73a8d44d0d8437be1d8b0",
+        "status": "VERIFIED",
+        "filename": "task-f137aec6f0f41f1e76a8.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:3326048ea4ecc9f9",
+        "discovery_ids": [
+          "w36-primary-fable-mythos-20260901"
+        ],
+        "sha256": "f6ba79c5829c16b94174e19e09f8b4bc34759706679a6b596d3286b0ab983b3f",
+        "status": "VERIFIED",
+        "filename": "task-94537bdac061eb86ff76.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:336f00d027dc06ed",
+        "discovery_ids": [
+          "w36-grok-r4-15-url-ledger"
+        ],
+        "sha256": "949765d715ea8f02048be22a2acafdd0237c24626518b1023e859d771c1e7edc",
+        "status": "PARTIAL",
+        "filename": "task-ecb8137a183abd8c3ad7.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:39a4a7b12b070f4a",
+        "discovery_ids": [
+          "w36-primary-muse-spark-20260902"
+        ],
+        "sha256": "1bf32af342b859f5b2b9e48e0c92074a10bc3d2f777499224e52884e98254158",
+        "status": "PARTIAL",
+        "filename": "task-d14596231c86ff51fafb.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:3f6ccff22815742a",
+        "discovery_ids": [
+          "w36-primary-fermat-science-20260904"
+        ],
+        "sha256": "54dbd91a0fec74e038ae892b9d5698ddac4c3b66676eb3b21bc0805099d23f63",
+        "status": "VERIFIED",
+        "filename": "task-d1e43cedbcb039b65990.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:4391ab13b7a65f50",
+        "discovery_ids": [
+          "w36-primary-kilo-jetbrains-20260901"
+        ],
+        "sha256": "df528766143b540b7e4158e0ecc55ab1f01afe32b099e11b94a4373056e7007c",
+        "status": "VERIFIED",
+        "filename": "task-793f2ff36e68b1e25994.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:444dfcbcc81c5174",
+        "discovery_ids": [
+          "w36-primary-atlas-20260901"
+        ],
+        "sha256": "c94e39bbd9b60e24424b88571d8bc6525ea995d146cba26a7a743630781f2ae6",
+        "status": "VERIFIED",
+        "filename": "task-cacb11d97b20a0f2e1a0.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:4810a44923de43e2",
+        "discovery_ids": [
+          "w36-primary-astra-launch-20260903"
+        ],
+        "sha256": "a769cbc7abc694760e9c81775b674623ea6236b51ee861995b6cedf77d4c4dc4",
+        "status": "VERIFIED",
+        "filename": "task-85895f75f64b07a29ab1.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:5101a921d7297fd5",
+        "discovery_ids": [
+          "w36-primary-fermat-github-20260904"
+        ],
+        "sha256": "094eea8ecfd483402cf6609c8ded3e7903579ca6883e9d995e806ca9b0d9dbba",
+        "status": "VERIFIED",
+        "filename": "task-0e486fa2b0fd947e9a7e.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:6361f4cb4e05ae9e",
+        "discovery_ids": [
+          "w36-primary-astra-safety-20260903"
+        ],
+        "sha256": "de9a3774561b9a3293d0a428ae8f9241d36ebd363b76f064a930fb8af82e6331",
+        "status": "VERIFIED",
+        "filename": "task-954623c44584e1857879.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:6d4cc3a808ecf77f",
+        "discovery_ids": [
+          "w36-primary-fuse-20260902"
+        ],
+        "sha256": "ee220bedab0c9cbd47760f12c8c76341c476bd1f2422a47ff879ebeddae63d0c",
+        "status": "PARTIAL",
+        "filename": "task-98d8f9445b408ccd2e56.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:9c8122e477b5b257",
+        "discovery_ids": [
+          "w36-primary-glm53-weights-20260828"
+        ],
+        "sha256": "9295712de99e4e1dab2aedcebd3c8c9be5c679e091b9ec1a18a6943327fb6f5d",
+        "status": "PARTIAL",
+        "filename": "task-19ad29cb792bcff27ca0.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:b1a79636a4585547",
+        "discovery_ids": [
+          "w36-primary-falh3max-20260901"
+        ],
+        "sha256": "ebaa36d91b841189ba86d8151460ec1ae074969d36d3687018e1462a969aa9ee",
+        "status": "PARTIAL",
+        "filename": "task-ad1c9ad4de493ee95998.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W36:c132407bcfa5603c",
+        "discovery_ids": [
+          "w36-primary-astra-path-20260901"
+        ],
+        "sha256": "c39fa8acbfcd40e6c2bbfceeb984aa1089c631e9bf4fb52ce32ae414edacf82f",
+        "status": "VERIFIED",
+        "filename": "task-1ea524df93fa71d49946.json"
+      }
+    ]
+  },
+  "evidence_inputs": [
+    {
+      "candidate_id": "candidate:2026-W36:8bb8d26564f848db",
+      "architecture_usage": "PRIMARY",
+      "evidence_task_id": "evidence:2026-W36:1d20920a9f228651",
+      "evidence_sha256": "583b362bf70d7859554bc9df323b8a80de8a0909750c96b1f1f134964c1837be",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W36",
+        "evidence_task_id": "evidence:2026-W36:1d20920a9f228651",
+        "basis": {
+          "task_sha256": "39cad1a4c02a932b12588c58f9614ade82723067d4ab0ef2c08f1d0863227fe2",
+          "screening_acceptance_sha256": "83279d88e23e380a2d4a3e51b16be71f03c3040989c6272e1112193f7cf18991",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "VERIFIED",
+        "entities": [
+          {
+            "canonical_name": "K2 Horizon open model fleet",
+            "canonical_url": "https://ifm.ai/blog/k2/",
+            "entity_id": "model-family:ifm-k2-horizon",
+            "entity_type": "MODEL",
+            "organization": "Institute of Foundation Models"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "model-family:ifm-k2-horizon",
+          "artifact_type": "OTHER",
+          "canonical_name": "K2 Horizon open model fleet",
+          "canonical_url": "https://ifm.ai/blog/k2/"
+        },
+        "temporal": {
+          "observed_at": "2026-09-17T00:45:00+09:00",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2026-09-03",
+              "subject_id": "model-family:ifm-k2-horizon",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://ifm.ai/blog/k2/",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "IFM K2 Horizon open fleet (Apache 2.0, MoVA, 524K context)",
+            "published_at": "2026-09-03",
+            "accessed_at": "2026-09-17T00:45:00+09:00",
+            "role": "Discovery-bounded source used for factual verification"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "IFM released the K2 Horizon fleet on 2026-09-03: six connected models (375B-A23B, 36B-A4B, 32B, 7B, 3.7B, 0.9B) with artifacts on Hugging Face collection IFM/k2-horizon, GitHub code, and Weights & Biases.",
+            "subject_id": "model-family:ifm-k2-horizon",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Dated first-party IFM announcement consumed; fleet composition and artifact locations as stated."
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "Models and code ship under Apache 2.0 while datasets carry their applicable licenses (for example ODC-BY) with construction/mixing disclosure where redistribution is impossible; all six sizes include quantization support with day-zero vLLM, SGLang, and Ollama support.",
+            "subject_id": "model-family:ifm-k2-horizon",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "License and serving statements as issued; per-dataset terms require per-artifact checks."
+          },
+          {
+            "statement_id": "claim-3",
+            "text": "Vendor-reported performance: 0.9B/3.7B/7B state-of-the-art in their size classes; 36B-A4B near dense-32B performance at ~4B active parameters via the MoVA sparse-attention design; 32B and 375B-A23B among the top in their classes.",
+            "subject_id": "model-family:ifm-k2-horizon",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Lab-reported class rankings and scores; externally unreproduced in this run."
+          },
+          {
+            "statement_id": "claim-4",
+            "text": "Per-model openness inventory covers training data or data recipe, training code, configurations, intermediate checkpoints, fine-grained logs, evaluation results, and final weights; pretraining is ~20T tokens per model with 100M+ post-training tasks, and the page discloses a TerminalBench 2.1 audit correction from 70.2% to 66.9% after removing 24 flagged trials.",
+            "subject_id": "model-family:ifm-k2-horizon",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Openness and training account as stated; the audit correction is part of the verified record and bounds benchmark reuse."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "All class-ranking and score claims are vendor-reported and externally unreproduced.",
+            "subject_id": "model-family:ifm-k2-horizon",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-2",
+            "text": "MoVA efficiency interpretation (~4B-active near-32B behavior) is a vendor design claim without independent serving verification.",
+            "subject_id": "model-family:ifm-k2-horizon",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-3",
+            "text": "Dataset-license heterogeneity means Apache 2.0 must not be asserted over datasets.",
+            "subject_id": "model-family:ifm-k2-horizon",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "Apache 2.0 + artifact scope as vendor-stated",
+              "status": "VERIFIED",
+              "finding": "Models/code Apache 2.0 with datasets under applicable licenses; scope distinction consumed as stated.",
+              "subject_ids": [
+                "model-family:ifm-k2-horizon"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "target": "MoVA/524288 as vendor-specified",
+              "status": "VERIFIED",
+              "finding": "Rankings transcribed as lab-reported; independent reproduction absent.",
+              "subject_ids": [
+                "model-family:ifm-k2-horizon"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "target": "audit correction as vendor-disclosed",
+              "status": "VERIFIED",
+              "finding": "Rankings transcribed as lab-reported; independent reproduction absent.",
+              "subject_ids": [
+                "model-family:ifm-k2-horizon"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [],
+          "contradictions": []
+        }
+      }
+    },
+    {
+      "candidate_id": "candidate:2026-W36:19ad29cb792bcff2",
+      "architecture_usage": "PRIMARY",
+      "evidence_task_id": "evidence:2026-W36:9c8122e477b5b257",
+      "evidence_sha256": "9295712de99e4e1dab2aedcebd3c8c9be5c679e091b9ec1a18a6943327fb6f5d",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W36",
+        "evidence_task_id": "evidence:2026-W36:9c8122e477b5b257",
+        "basis": {
+          "task_sha256": "28fb883fb095fcc660e36f3cf7877c5954d1ad800ebdc4a4319230d2cfc3943d",
+          "screening_acceptance_sha256": "83279d88e23e380a2d4a3e51b16be71f03c3040989c6272e1112193f7cf18991",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "PARTIAL",
+        "entities": [
+          {
+            "canonical_name": "GLM-5.3 (zai-org full weights)",
+            "canonical_url": "https://huggingface.co/zai-org/GLM-5.3",
+            "entity_id": "model:zai-glm-5-3",
+            "entity_type": "MODEL",
+            "organization": "Z.ai"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "model:zai-glm-5-3",
+          "artifact_type": "OTHER",
+          "canonical_name": "GLM-5.3 (zai-org full weights)",
+          "canonical_url": "https://huggingface.co/zai-org/GLM-5.3"
+        },
+        "temporal": {
+          "observed_at": "2026-09-17T00:45:00+09:00",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2026-08-28",
+              "subject_id": "model:zai-glm-5-3",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://huggingface.co/zai-org/GLM-5.3",
+            "source_class": "SECONDARY",
+            "title": "Z.ai GLM-5.3 HF weights/model card (license, serving, boundary date)",
+            "published_at": "2026-08-28",
+            "accessed_at": "2026-09-17T00:45:00+09:00",
+            "role": "Discovery-bounded source used for factual verification"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "The zai-org/GLM-5.3 Hugging Face repository exposes full weights (753B parameters; BF16/F8_E4M3/F32 safetensors) with Transformers, vLLM, SGLang, KTransformers, Unsloth, and Docker serving paths; reasoning_effort accepts low/high/max (default max) and the card references paper arXiv 2602.15763.",
+            "subject_id": "model:zai-glm-5-3",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Retrieved HF model-card content consumed; repo facts transcribed as observed."
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "Card-reported gains over GLM-5.2 from post-training only include +50% on the in-house Z.ai Code Bench, open-source SOTA on Terminal Bench 3.0 and Agents' Last Exam, CyberGym 84.5 SOTA with doubled exploitation-chain gains, plus table figures such as Terminal Bench 2.1 88.2, AutomationBench 48.2, and GDPval-AA v2 1769.",
+            "subject_id": "model:zai-glm-5-3",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Card-reported benchmark table; externally unreproduced in this run."
+          },
+          {
+            "statement_id": "claim-3",
+            "text": "The card License field reads glm-5.3 (custom), which is distinct from the MIT grant associated with the GLM-5.3-Flash variant; no MIT license is established for these full GLM-5.3 weights in the consumed authority.",
+            "subject_id": "model:zai-glm-5-3",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "License-field transcription as observed; license text itself was not consumed, so downstream use must not assert MIT terms."
+          },
+          {
+            "statement_id": "claim-4",
+            "text": "The edition-attributed date 2026-08-28 carries UTC-hour uncertainty because the retrieved markdown shows no explicit publication date; the record is treated as an ordinary-window boundary item with medium confidence rather than a carry-over.",
+            "subject_id": "model:zai-glm-5-3",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Boundary disposition from collector provenance note plus the W36 window opening at 2026-08-28 22:00 UTC; date-only attribution cannot resolve the hour."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "UTC hour on 2026-08-28 is unresolved, so window placement is medium-confidence ordinary-boundary; hour-level precision must not be asserted.",
+            "subject_id": "model:zai-glm-5-3",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-2",
+            "text": "All benchmark-table figures are card-reported and externally unreproduced.",
+            "subject_id": "model:zai-glm-5-3",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-3",
+            "text": "License nuance rests on the license-field label only; full glm-5.3 license text was not consumed, and MIT terms from the Flash variant must not be carried over.",
+            "subject_id": "model:zai-glm-5-3",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-4",
+            "text": "Download/like counters are platform telemetry, not capability evidence.",
+            "subject_id": "model:zai-glm-5-3",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "license identity (GLM-5.3 vs Flash MIT)",
+              "status": "VERIFIED",
+              "finding": "License field reads glm-5.3 in the consumed authority; no MIT grant for these weights is established, and Flash MIT must not be carried over.",
+              "subject_ids": [
+                "model:zai-glm-5-3"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "target": "param/precision/arxiv as card-stated",
+              "status": "UNRESOLVED",
+              "finding": "Card-reported figures recorded; independent reproduction absent.",
+              "subject_ids": [
+                "model:zai-glm-5-3"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "target": "weights-push UTC hour unresolved",
+              "status": "UNRESOLVED",
+              "finding": "Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification.",
+              "subject_ids": [
+                "model:zai-glm-5-3"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "param/precision/arxiv as card-stated: Card-reported figures recorded; independent reproduction absent.",
+            "weights-push UTC hour unresolved: Sol: target carried from Screening; consumed authority bounds the finding to the cited source as stated, pending further verification."
+          ],
+          "contradictions": []
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION"
+  },
+  "profile_extensions": {},
+  "publication_extensions": {}
+}
