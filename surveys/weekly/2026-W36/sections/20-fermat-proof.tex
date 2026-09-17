@@ -3,17 +3,17 @@
 \begin{wideflow}
 {\Large\bfseries Fermatを機械で確かめる}\par
 \smallskip
-{\color{SurveyMuted}最大級の計算機検査の到達を、再走可能な記録の境界ごと示す。}\par
+{\color{SurveyMuted}最大級の計算機検査という到達を、再実行可能な記録の境界とともに示す。}\par
 \end{wideflow}
 
-9月4日付の報告でAnthropicは、Leanによる初の完全な計算機検査済みFermat証明を示した\cite{fermatscience}。およそ11日間でほぼ自律的に、1300万行のLean行、最終証明に用いた定理が約2万9500件（証明した総数は約3万300件）という規模感である。WilesのDarmon・Diamond・Taylor版の簡略化に沿う。数十のClaude道具がClaude Code harnessとProve2Me基盤（定理DAG、文と証明の分離compile、自然文の探索と再利用）の上で動き、内部の汎用模型（Claude Fable 5.1相当とされる）から約60億の出力tokenを消費し、人の入力は高位の促しに限られ、失敗した初期試行の定型外の約7\%が残ったとされる。模型の同一性や計算量や費用は概算か不記載であり、規模や自律の主張は資料の範囲で受け止める。これは新しい数学的証明の着想ではなく、形式化と機械検査による検証である。査読者Kevin Buzzardの賛辞の引用は著者側の記録として扱う。道筋や脚注、道具の思考抜粋の引用は取得が打ち切りであり独立に確かめていない。
+9月4日付の報告でAnthropicは、Leanによる初の完全な計算機検査済みFermat証明を示した\cite{fermatscience}。およそ11日間でほぼ自律的に、1300万行のLeanコード、最終証明に用いた定理が約2万9500件（証明した総数は約3万300件）という規模感である。WilesのDarmon・Diamond・Taylor版の簡略化に沿う。数十のClaudeエージェントがClaude CodeハーネスとProve2Me基盤（定理DAG、文と証明の分離コンパイル、自然文の探索と再利用）の上で動き、内部の汎用モデル（Claude Fable 5.1相当とされる）から約60億の出力トークンを消費し、人の入力は高レベルなプロンプトに限られ、失敗した初期試行に由来する定型外の約7\%が残ったとされる。モデルの同一性や計算量や費用は概算か不記載であり、規模や自律の主張は資料の範囲で受け止める。これは新しい数学的証明の着想ではなく、形式化と機械検査による検証である。査読者Kevin Buzzardの賛辞の引用は著者側の記録として扱う。手順解説や脚注、モデルの思考抜粋の引用は取得範囲外であり独立に確かめていない。
 
 \begin{claimboundary}[検証と着想の境界]
-これは新しい証明の着想ではなく検証である。規模と自律は資料の範囲で受け止め、模型の同一性や費用を断定しない。
+これは新しい証明の着想ではなく検証である。規模と自律は資料の範囲で受け止め、モデルの同一性や費用を断定しない。
 \end{claimboundary}
 
-付随するGitHub置き場は、正の自然数のnが3以上のfermat\_last\_theoremを宣言し、FinalCheckがLeanの標準3公理のみをsorryなしで要求し、Mathlib自身のFermatLastTheoremをそこから導くと述べる\cite{fermatgithub}。検証の記録として、Lean 4.33.1とMathlib v4.33.0での一からのlake buildが置き場の60475 moduleをLean核で検査し、comparator v4.33.0がYour solution is okayを返し、独立のnanoda 0.4.13 Rust核が105万2234宣言を誤りなしで受けたことが示される。衛生面ではaxiom、sorry、native\_decide、unsafe、extern、implemented\_by、partial、\#evalの不在、約390MBのoffline html（定理29511件、定義module 1450件）、Apache 2.0の研究物で保守対象外、Imperial FLTやflt-regularやMathlibへの謝辞が添えられる。自己検査の要件（LinuxとmacOS、elan、網経由のMathlib取得とcompile、仕事あたり約5GB・一部moduleは36GB、約67GBの磁気域に消せるC物で約220GB、96仕事で約5時間32分、comparator約14時間46分）も記録の範囲で押さえる。頁面に明示の公表日はなく、9月4日は連動記事からの版による帰属である。buildやcomparatorやnanodaの再走はここでは行っておらず、検査は言明通りに消費する。PROOF-PATHやATTRIBUTION、formalization.yaml、lake物、html中身は個別に消費していない。星やforkや課題の数は取得時点のものである。
+付随するGitHubリポジトリは、正の自然数のnが3以上のfermat\_last\_theoremを宣言し、FinalCheckがLeanの標準3公理のみをsorryなしで要求し、Mathlib自身のFermatLastTheoremをそこから導くと述べる\cite{fermatgithub}。検証の記録として、Lean 4.33.1とMathlib v4.33.0での一からのlakeビルドがリポジトリの60475モジュールをLeanカーネルで検査し、comparator v4.33.0がYour solution is okayを返し、独立のRust製nanoda 0.4.13カーネルが105万2234件の宣言を誤りなしで受けたことが示される。健全性の面ではaxiom、sorry、native\_decide、unsafe、extern、implemented\_by、partial、\#evalの不在、約390MBのオフラインHTML（定理29511件、定義モジュール1450件）、Apache 2.0の研究用成果物で保守対象外、Imperial FLTやflt-regularやMathlibへの謝辞が添えられる。セルフチェックの要件（LinuxとmacOS、elan、ネットワーク経由のMathlib取得とコンパイル、ジョブあたり約5GB・一部モジュールは36GB、約67GBのディスク領域に加え削除可能なCファイル分として約220GB、96ジョブで約5時間32分、comparator約14時間46分）も記録の範囲で押さえる。頁面に明示の公表日はなく、9月4日は関連記事にもとづき本号で付した日付である。ビルドやcomparatorやnanodaの再実行はここでは行っておらず、検査結果は言明通りに受け止める。検証経路や帰属表示、formalization.yaml、ビルド成果物、HTML中身は個別に確認していない。スターやフォーク、課題の数は取得時点のものである。
 
-\begin{technicalnote}[再走の境界]
-置き場の検査記録は言明通りに消費する。再走や再buildはここでは行っておらず、個別物の内容は主張しない\cite{fermatgithub}。
+\begin{technicalnote}[再実行の境界]
+リポジトリの検査記録は言明通りに受け止める。再実行や再ビルドはここでは行っておらず、個別の内容は主張しない\cite{fermatgithub}。
 \end{technicalnote}
