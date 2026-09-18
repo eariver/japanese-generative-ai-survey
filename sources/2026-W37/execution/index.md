@@ -31,14 +31,14 @@ This is the current human-readable navigation record for the edition. Machine li
 ## Human Gates
 
 - Architecture Review: `approved` (Human r1 for r2 content, reviewed `55e700a34765654cd2ced0c2a454d4fb3433dd4f`)
-- Publication Preview: `pending` (fresh r2 shell/dossier at `execution/reviews/publication-preview-r2.md`, reviewed authority commit `74400d716e703c12efee97707ff0ee97d47f98a8`; Human r1 REQUEST_CHANGES preserved as `gates/reviews/publication-r1.json`)
+- Publication Preview: `pending` (fresh r2 shell/dossier at `execution/reviews/publication-preview-r2.md`, reviewed authority commit `8dfb83499f839907d180d9a06bd155cc12fb27d6`; Human r1/r2 REQUEST_CHANGES preserved as `gates/reviews/publication-r1.json`/`gates/reviews/publication-r2.json`)
 - Detailed review records: Architecture r1 APPROVED recorded; Publication Preview r1 PENDING (no decision invented)
 
 ## Publication Candidate
 
-- Current Human review target: `sources/2026-W37/publication/v2/publication-candidate-v2.json` (candidate SHA `8f74d379ccf7df181b8fbe0890d4774573f6c273c046ec44f15a80a184b3ab6b`)
-- Candidate file SHA-256: `eea9212fa615378503bcd6138aca52e2ed703f55c779f56619450d49cd68cc0a`
-- PDF: `surveys/weekly/2026-W37/main.pdf` (11 pages, 309850 bytes, SHA `c2298653e959388f359c5dadf0121e28684950343e874c2305179b4c0aa5f4fe`, CI run `35369856431`)
+- Current Human review target: `sources/2026-W37/publication/v2/publication-candidate-v2.json` (candidate SHA `e7f18eb2584c2c4575e15bd2be59abc5e8c9a687b238285343139c81332e53f1`)
+- Candidate file SHA-256: `62d4d42bf9b293ded34e2124bb4d7bcfef8ff577456fba35cd827682f10c3dab`
+- PDF: `surveys/weekly/2026-W37/main.pdf` (11 pages, 309033 bytes, SHA `9e957ca2d48dd95091e0013c0f2d23f1570ad9fac89b131365259f1c8e948e56`, CI run `35375978076`)
 
 ## Grok/X
 
