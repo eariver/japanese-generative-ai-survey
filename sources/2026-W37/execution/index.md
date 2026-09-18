@@ -13,7 +13,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/2026-W37/production-profile.json`
 - Production State: `sources/2026-W37/production-state.json`
-- Current State SHA-256: `see production-state.json (RELEASE_CANDIDATE)`
+- Current State SHA-256: `see production-state.json (RELEASE_CANDIDATE r2)`
 - Current lifecycle: `RELEASE_CANDIDATE`
 - Current terminal reason: `HUMAN_GATE_REACHED`
 - Current next action: `PUBLICATION_PREVIEW` (Human decision only; no Freeze/Release)
@@ -31,14 +31,14 @@ This is the current human-readable navigation record for the edition. Machine li
 ## Human Gates
 
 - Architecture Review: `approved` (Human r1 for r2 content, reviewed `55e700a34765654cd2ced0c2a454d4fb3433dd4f`)
-- Publication Preview: `pending` (fresh r1 shell/dossier at `execution/reviews/publication-preview-r1.md`, reviewed authority commit `8057a468897f67d3a11bd9287f6f56f0485877ce`)
+- Publication Preview: `pending` (fresh r2 shell/dossier at `execution/reviews/publication-preview-r2.md`, reviewed authority commit `74400d716e703c12efee97707ff0ee97d47f98a8`; Human r1 REQUEST_CHANGES preserved as `gates/reviews/publication-r1.json`)
 - Detailed review records: Architecture r1 APPROVED recorded; Publication Preview r1 PENDING (no decision invented)
 
 ## Publication Candidate
 
-- Current Human review target: `sources/2026-W37/publication/v2/publication-candidate-v2.json` (candidate SHA `1dfb87957cbab69e30c08a45c66e72b28c72d74d1272a3c3815ab6844445bef6`)
-- Candidate file SHA-256: `31d4ec4d21e43f56678cb19f7341f11039bb03c8420d78b526fd5ac1eaf513ce`
-- PDF: `surveys/weekly/2026-W37/main.pdf` (10 pages, 301238 bytes, SHA `08ceb5e9c90b2bf25541bb61e6b14e5b2cdc7fe48635d85c5ab798606b88fd4d`, CI run `35365392701`)
+- Current Human review target: `sources/2026-W37/publication/v2/publication-candidate-v2.json` (candidate SHA `8f74d379ccf7df181b8fbe0890d4774573f6c273c046ec44f15a80a184b3ab6b`)
+- Candidate file SHA-256: `eea9212fa615378503bcd6138aca52e2ed703f55c779f56619450d49cd68cc0a`
+- PDF: `surveys/weekly/2026-W37/main.pdf` (11 pages, 309850 bytes, SHA `c2298653e959388f359c5dadf0121e28684950343e874c2305179b4c0aa5f4fe`, CI run `35369856431`)
 
 ## Grok/X
 
