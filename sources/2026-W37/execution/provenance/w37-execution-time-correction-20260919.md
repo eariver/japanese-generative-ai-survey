@@ -174,3 +174,52 @@ Until generic Core hardening in Issue #507 is reviewed:
 - do not rewrite immutable historical records merely to cosmetically normalize timestamps.
 
 Future Human decisions after this ledger must use actual timezone-aware wall-clock time and must be checked not to post-date the commit containing the decision record.
+
+
+## 10. r3 recurrence / inherited monotonicity constraint
+
+Publication Preview r3 was generated after this ledger was first created.
+
+New Human/Worker review timestamps are correct and are not future-dated:
+
+- Human Publication Preview r2 review:
+  - recorded value: `2026-09-18T17:37:47Z`
+  - containing commit: `a28800cb0328abfdf5033f2a80144b80359be3e9`
+  - commit time: `2026-09-18T17:43:03Z`
+  - result: `VALID / NOT FUTURE_DATED`
+- Worker Draft r3 boundary QA:
+  - reviewed_at: `2026-09-19T02:39:00+09:00` = `2026-09-18T17:39:00Z`
+  - containing commit: `a28800cb0328abfdf5033f2a80144b80359be3e9`
+  - commit time: `2026-09-18T17:43:03Z`
+  - result: `VALID / NOT FUTURE_DATED`
+- Worker reader/semantic/editorial/visual reviews:
+  - recorded/reviewed_at: `2026-09-18T17:47:29Z`
+  - containing production commit: `8dfb83499f839907d180d9a06bd155cc12fb27d6`
+  - commit time: `2026-09-18T17:48:03Z`
+  - result: `VALID / NOT FUTURE_DATED`.
+
+However, the regenerated Production State contains new transition `recorded_at` values:
+
+- Draft complete: `2026-09-19T00:30:00Z`
+- Validated draft: `2026-09-19T00:31:00Z`
+- Release candidate: `2026-09-19T00:32:00Z`.
+
+These are future-dated relative to the actual commits that already contain them:
+
+- Draft r3 / Human revision commit `a28800cb0328abfdf5033f2a80144b80359be3e9` — `2026-09-18T17:43:03Z`
+- Publication authority commit `8dfb83499f839907d180d9a06bd155cc12fb27d6` — `2026-09-18T17:48:03Z`
+- Preview r3 shell commit `d2a4958d4c8f6fa55f3cfa5b6cf94f03c70a0ca7` — `2026-09-18T17:49:06Z`.
+
+Disposition:
+
+`INVALID_AS_ACTUAL_WALL_CLOCK_TIME / INHERITED_MONOTONIC_STATE_HISTORY`
+
+The r3 worker explicitly disclosed that current Core preserved monotonically increasing machine-transition times after earlier future-dated history. This does not make those values valid wall-clock times.
+
+Do not quote `00:30Z / 00:31Z / 00:32Z` as actual event times.
+
+For r3 audit chronology, use Git commit ordering and the valid Human/Worker review timestamps above. The lifecycle transitions themselves remain authoritative as state identities, but their `recorded_at` wall-clock fields do not.
+
+No publication-content bytes, Human decisions, Architecture authority, Draft claims, PDF bytes, or Publication Candidate identity are invalidated by this metadata defect.
+
+A generic Core fix remains tracked in Issue #507.
