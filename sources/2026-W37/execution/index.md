@@ -13,30 +13,32 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/2026-W37/production-profile.json`
 - Production State: `sources/2026-W37/production-state.json`
-- Current State SHA-256: `edcd51daf03a8b1050d7ddfe30f1b26753dfa896a0d492329f01023d6d42f192`
-- Current lifecycle: `ARCHITECTURE_ESTABLISHED`
+- Current State SHA-256: `see production-state.json (RELEASE_CANDIDATE)`
+- Current lifecycle: `RELEASE_CANDIDATE`
 - Current terminal reason: `HUMAN_GATE_REACHED`
-- Current next action: `ARCHITECTURE_REVIEW` (independent review first, then Human decision)
+- Current next action: `PUBLICATION_PREVIEW` (Human decision only; no Freeze/Release)
 - Formal Discovery: `accepted, preserved` (count = 14: 1 Grok r3 X-ledger + 13 W37-window primaries/secondaries)
 - Screening r2: `13 KEEP / 1 DROP` (neutral worker provenance; Fusion KEEP on verified 17:00Z ordinary)
 - Evidence r2: `11 VERIFIED + 2 PARTIAL` (views + materiality + completeness LIMITED 3/3 SATISFIED)
 - Selection r2: `12 SELECTED / 1 HOLD` (7 packages, READY_FOR_ARCHITECTURE_REVIEW)
-- Architecture r2: `ESTABLISHED` (deterministic PASS; RC-1..RC-5 repairs; independent review pending, 0 worker authority claims)
-- Human decisions: `0` (r2 PENDING; prior r1 `REQUEST_CHANGES` was independent-review verdict, not a Human decision)
+- Architecture r2 content: `APPROVED` by Human (canonical review r1, revision 1 from empty index, reviewed `55e700a34765654cd2ced0c2a454d4fb3433dd4f`, Architecture SHA `81e87a64c2418c71340ee8cc1dec28267a55055d2c02d7dbb06e33623efdfcfb`; record `gates/reviews/architecture-r1.json`, snapshot `gates/reviews/approvals/architecture-r1.json`)
+- Human decisions: `1` (Architecture r1 APPROVED; Publication Preview r1 PENDING)
+- Draft: `7/7 packages ESTABLISHED` (DRAFT_COMPLETE)
+- Publication: `manuscript + 10-page CI PDF (301238B, SHA 08ceb5e9) + bundle + 11 semantic + 2 visual + gate PASSED` (VALIDATED_DRAFT -> RELEASE_CANDIDATE)
 - Shared-Core changed paths: `0`
 - Canonical ordinary window: ET `[2026-09-04T18:00:00-04:00, 2026-09-11T18:00:00-04:00)` / UTC `[2026-09-04T22:00:00Z, 2026-09-11T22:00:00Z)` / JST `[2026-09-05T07:00:00+09:00, 2026-09-12T07:00:00+09:00)`, end-exclusive
 
 ## Human Gates
 
-- Architecture Review: `pending` (r2 shell + worker dossier at `execution/reviews/architecture-r2.md`, reviewed commit `55e700a34765654cd2ced0c2a454d4fb3433dd4f`; r1 shell/dossier preserved as invalidated history)
-- Publication Preview: `pending`
-- Detailed review records: no Human decision recorded (APPROVED/REQUEST_CHANGES not invented)
+- Architecture Review: `approved` (Human r1 for r2 content, reviewed `55e700a34765654cd2ced0c2a454d4fb3433dd4f`)
+- Publication Preview: `pending` (fresh r1 shell/dossier at `execution/reviews/publication-preview-r1.md`, reviewed authority commit `8057a468897f67d3a11bd9287f6f56f0485877ce`)
+- Detailed review records: Architecture r1 APPROVED recorded; Publication Preview r1 PENDING (no decision invented)
 
 ## Publication Candidate
 
-- Current Human review target: none recorded yet
-- Candidate SHA-256: none
-- PDF SHA-256: none
+- Current Human review target: `sources/2026-W37/publication/v2/publication-candidate-v2.json` (candidate SHA `1dfb87957cbab69e30c08a45c66e72b28c72d74d1272a3c3815ab6844445bef6`)
+- Candidate file SHA-256: `31d4ec4d21e43f56678cb19f7341f11039bb03c8420d78b526fd5ac1eaf513ce`
+- PDF: `surveys/weekly/2026-W37/main.pdf` (10 pages, 301238 bytes, SHA `08ceb5e9c90b2bf25541bb61e6b14e5b2cdc7fe48635d85c5ab798606b88fd4d`, CI run `35365392701`)
 
 ## Grok/X
 
