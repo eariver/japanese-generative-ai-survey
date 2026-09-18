@@ -13,22 +13,22 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/2026-W37/production-profile.json`
 - Production State: `sources/2026-W37/production-state.json`
-- Current State SHA-256: `560f0fda6e17c45f94d2b31526c577c42b2e178f5eb048d651b6cfd7067f91dd`
+- Current State SHA-256: `edcd51daf03a8b1050d7ddfe30f1b26753dfa896a0d492329f01023d6d42f192`
 - Current lifecycle: `ARCHITECTURE_ESTABLISHED`
 - Current terminal reason: `HUMAN_GATE_REACHED`
-- Current next action: `ARCHITECTURE_REVIEW` (Human decision only)
-- Formal Discovery: `accepted` (count = 14: 1 Grok r3 X-ledger + 13 W37-window primaries/secondaries)
-- Screening: `13 KEEP / 1 DROP` (rumor-only GLM-5.5)
-- Evidence: `11 VERIFIED + 2 PARTIAL` (views + materiality + completeness LIMITED 3/3 SATISFIED)
-- Selection: `12 SELECTED / 1 HOLD` (7 packages, READY_FOR_ARCHITECTURE_REVIEW)
-- Architecture: `ESTABLISHED` (Sol-owned, 0 blocking)
-- Human decisions: `0` (r1 PENDING, no decision inferred)
+- Current next action: `ARCHITECTURE_REVIEW` (independent review first, then Human decision)
+- Formal Discovery: `accepted, preserved` (count = 14: 1 Grok r3 X-ledger + 13 W37-window primaries/secondaries)
+- Screening r2: `13 KEEP / 1 DROP` (neutral worker provenance; Fusion KEEP on verified 17:00Z ordinary)
+- Evidence r2: `11 VERIFIED + 2 PARTIAL` (views + materiality + completeness LIMITED 3/3 SATISFIED)
+- Selection r2: `12 SELECTED / 1 HOLD` (7 packages, READY_FOR_ARCHITECTURE_REVIEW)
+- Architecture r2: `ESTABLISHED` (deterministic PASS; RC-1..RC-5 repairs; independent review pending, 0 worker authority claims)
+- Human decisions: `0` (r2 PENDING; prior r1 `REQUEST_CHANGES` was independent-review verdict, not a Human decision)
 - Shared-Core changed paths: `0`
 - Canonical ordinary window: ET `[2026-09-04T18:00:00-04:00, 2026-09-11T18:00:00-04:00)` / UTC `[2026-09-04T22:00:00Z, 2026-09-11T22:00:00Z)` / JST `[2026-09-05T07:00:00+09:00, 2026-09-12T07:00:00+09:00)`, end-exclusive
 
 ## Human Gates
 
-- Architecture Review: `pending` (r1 shell + 12-element dossier at `execution/reviews/architecture-r1.md`, reviewed commit `1bef366ac8e21641027ddb9feda6263c0ed01aa4`)
+- Architecture Review: `pending` (r2 shell + worker dossier at `execution/reviews/architecture-r2.md`, reviewed commit `55e700a34765654cd2ced0c2a454d4fb3433dd4f`; r1 shell/dossier preserved as invalidated history)
 - Publication Preview: `pending`
 - Detailed review records: no Human decision recorded (APPROVED/REQUEST_CHANGES not invented)
 
@@ -62,16 +62,21 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - `sessions/w37-sol-initialize-through-grok-handoff-20260918-r1.md`
 - `sessions/w37-pre-discovery-research-prep-20260918-r1.md` (non-authoritative pre-Discovery input, NOT Discovery)
-- `sessions/w37-sol-resume-grok-r3-through-architecture-review-20260918-r1.md` (COMPLETE_AT_GATE)
+- `sessions/w37-sol-resume-grok-r3-through-architecture-review-20260918-r1.md` (superseded r1 run; worker files retained as `WORKER_SELF_REVIEW / NON_AUTHORITATIVE_AS_SOL`)
+- `sessions/w37-sol-r1-request-changes-regenerate-r2-20260919.md` (COMPLETE_AT_GATE)
 
-## Sol supervisory reviews (same run)
+## Review provenance in this run
 
-- `reviews/sol-w37-discovery-completeness-20260918.md` (NON_BLOCKING)
-- `reviews/sol-w37-evidence-authority-consumption-20260918.md` (CLEAN)
-- `reviews/sol-w37-materiality-selection-20260918.md` (CLEAN)
-- `reviews/sol-w37-architecture-20260918.md` (OWNED, 0 blocking)
-- `reviews/architecture-r1.md` (PENDING shell) + `reviews/architecture-r1-dossier.md` (12-element dossier)
+- Prior independent authority: `reviews/sol-w37-architecture-r1-independent-review-20260919.md` (`REQUEST_CHANGES`, not a Human decision); r1 surface invalidated as unpresented (`execution/operator-invalidations/architecture-invalidation-0001.json`, boundary `DISCOVERY_COLLECTED`)
+- Historical r1 worker files (`sol-w37-discovery-completeness-20260918.md`, `sol-w37-evidence-authority-consumption-20260918.md`, `sol-w37-materiality-selection-20260918.md`, `sol-w37-architecture-20260918.md`): preserved, classified `WORKER_SELF_REVIEW / NON_AUTHORITATIVE_AS_SOL`
+- r2 worker dossier (`reviews/architecture-r2-dossier.md`) claims no independent review; r2 awaits independent review
+- No new file framed as an independent review was generated in this run
+
+## Historical r1 worker files (superseded, preserved)
+
+- `reviews/sol-w37-discovery-completeness-20260918.md`, `reviews/sol-w37-evidence-authority-consumption-20260918.md`, `reviews/sol-w37-materiality-selection-20260918.md`, `reviews/sol-w37-architecture-20260918.md`: `WORKER_SELF_REVIEW / NON_AUTHORITATIVE_AS_SOL`
+- `reviews/architecture-r1.md` (invalidated unpresented shell) + `reviews/architecture-r1-dossier.md`
 
 ## Final disposition
 
-`ARCHITECTURE_ESTABLISHED / HUMAN_GATE_REACHED / fresh Human Architecture Review pending (r1)`
+`ARCHITECTURE_ESTABLISHED / HUMAN_GATE_REACHED / fresh r2 Architecture Review pending independent review`
