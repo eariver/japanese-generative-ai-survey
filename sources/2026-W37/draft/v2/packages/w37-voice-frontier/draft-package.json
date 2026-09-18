@@ -1,0 +1,849 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "research_profile": "WEEKLY",
+  "publication_profile": "WEEKLY_MAGAZINE",
+  "package_id": "w37-voice-frontier",
+  "basis": {
+    "production_profile_sha256": "e7b4eecf01d03c34bc54178cc2637538d37466462efe366224cc7f6369fc8e75",
+    "architecture_sha256": "81e87a64c2418c71340ee8cc1dec28267a55055d2c02d7dbb06e33623efdfcfb",
+    "architecture_review_summary_sha256": "aa8919bd6e39fa0ee6b03af89b9d3ea5665ace23112ef431c498dd714fb4e140",
+    "architecture_approval_sha256": "1a9d27454cfd5a8dd4840be3ef7ccd59ca389145e4970281f47cc24c1f4d33d9",
+    "candidate_matrix_sha256": "dfc33524532142c5c0432bdac687a5aa0660cf9977ac5cf06e6422b8bf5bad7b",
+    "candidate_selection_sha256": "8e9684b4c33d5d4409990e1afbfacf578a8d30f3102e81b15765680f8bfb0692",
+    "evidence_acceptance_sha256": "eee40f69c897d7d26df05a9cdbeb31149ecb5bad7d7965285cfab0cfb210d35f"
+  },
+  "package": {
+    "title": "A separate voice layer",
+    "purpose": "Present the Sep 10 GPT-Live-1 API as a full-duplex voice layer delegating to Astra or third-party backends, not as an Astra package.",
+    "drafting_order": 2,
+    "primary_candidate_ids": [
+      "candidate:2026-W37:5f09245b12682bae"
+    ],
+    "supporting_candidate_ids": [],
+    "must_cover_requirements": [
+      "Full-duplex/delegation boundary as stated (bounded)",
+      "0.05 USD per min availability as stated (bounded)",
+      "Bench figures vendor-reported (bounded)"
+    ],
+    "boundaries": [
+      "Methodology not consumed; language/telephone scope incomplete.",
+      "Full Duplex Bench/Tau3 methodology, sampling, comparator runs not consumed.",
+      "Language/dialect coverage and telephony provider scope not fully bounded in source.",
+      "Customer quotes vendor-selected; no independent deployment verification.",
+      "benchmark-methodology: Full Duplex Bench/Tau3 methodology not consumed; vendor-reported.",
+      "language-coverage: Language/dialect/telephone scope not fully bounded."
+    ]
+  },
+  "candidate_matrix": {
+    "schema_version": "2.0-rc1",
+    "issue_id": "2026-W37",
+    "research_profile": "WEEKLY",
+    "basis": {
+      "production_profile_sha256": "e7b4eecf01d03c34bc54178cc2637538d37466462efe366224cc7f6369fc8e75",
+      "profile_completeness_sha256": "e46ab505cefd987ec9e2c3264aa7fe43fa24cd55795580704df06ad524958f61",
+      "materiality_ledger_sha256": "a0cfbd74eb2e9a6e7d9baf124f52ecb258cbb1b5d7a24d7982c00442c50c4f43",
+      "evidence_acceptance_sha256": "eee40f69c897d7d26df05a9cdbeb31149ecb5bad7d7965285cfab0cfb210d35f",
+      "edition_views_acceptance_sha256": "97f1df14fd6654cf722477dd75654af239ce4834549183c86a8a0a4fdbb10c4c"
+    },
+    "rows": [
+      {
+        "candidate_id": "candidate:2026-W37:39964455ffb4f307",
+        "evidence_task_id": "evidence:2026-W37:10b365dd3145105b",
+        "discovery_ids": [
+          "w37-primary-swe2-20260910"
+        ],
+        "evidence_sha256": "a0874c4fa9048392f26475901bb379cbed16ba5e7ecdb7e4bfaf61ea4fe8c600",
+        "edition_view_sha256": "daa9ba4195058215e0c491a44b848470c058031d75481640ae90ad3bfddb04ed",
+        "title": "Cognition SWE-2",
+        "artifact_type": "MODEL",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "All benchmarks vendor-run or vendor-compiled; independent reproduction absent.",
+          "Cost figures assume list pricing incl discounts; task-distribution sensitivity vendor-described.",
+          "K3 base RL headroom vendor-interpreted.",
+          "cost-repro: List-pricing costs; independent reproduction absent."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Worker: Sep 10 coding model is an ordinary W37 event with benchmark/cost/harness bounds.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W37:e63ace9f3af3d667",
+        "evidence_task_id": "evidence:2026-W37:212ccdc534720a7b",
+        "discovery_ids": [
+          "w37-primary-astra-finserv-20260910"
+        ],
+        "evidence_sha256": "2f67b75e7522cd9ee1225e8e7485225e7c2af8d7e80d9c5ceab894a359d1debe",
+        "edition_view_sha256": "108b789cf870bf3dbc01a40f782a456c4d30997bbc3878c8e56e0849ca426336",
+        "title": "ChatGPT for Financial Services",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "OfficeQA/BoxBench/slide-creation methodology pages not consumed; benchmark sampling/judging unverified.",
+          "Pricing, entitlement limits, region availability not stated in source.",
+          "Data-accuracy/latency improvements vendor-described without independent testing.",
+          "pricing/entitlement-limits: Pricing/entitlement/region limits not stated in source.",
+          "benchmark-methodology: OfficeQA/BoxBench methodology not consumed; vendor-reported."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Worker: Sep 10 Financial Services on Astra is an ordinary W37 vertical-packaging event with data/benchmark/governance bounds.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W37:2b0520ad6ba44da4",
+        "evidence_task_id": "evidence:2026-W37:24a50cc1c3a5efb5",
+        "discovery_ids": [
+          "w37-primary-fusion-20260911"
+        ],
+        "evidence_sha256": "cff8c3468c5387d41288a037d1fb706d0383943d19f7365f779918e4ff902fa8",
+        "edition_view_sha256": "bd4a5a2fa47e70727f8c6b79ee718a3343360a96c7cc291247c423b3ec01f1d4",
+        "title": "Devin Fusion harness",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Partnered eval methodology/sampling not consumed beyond vendor summary.",
+          "39 percent headline is max across table, not uniform; per-benchmark deltas must be cited.",
+          "Generalization to untested lead/sidekick pairs not established.",
+          "eval-repro: Partnered tables vendor-presented; independent reproduction absent.",
+          "pair-generality: Untested lead/sidekick pairs not established."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Worker: verified-ordinary harness efficiency is ordinary W37 agent-plane evidence with partnered-eval bounds.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W37:27b2f55e965e2f96",
+        "evidence_task_id": "evidence:2026-W37:2fff077251308cbf",
+        "discovery_ids": [
+          "w37-primary-anthropic-threat-20260910"
+        ],
+        "evidence_sha256": "6a00eebb39b5efc232443be9c7dc44ecbd42618a4c90603a379425ce79ea507b",
+        "edition_view_sha256": "f501b3cdb1f4c7cca96ea4bfd0979989a5045320dbb48268d629e771c1cc90f5",
+        "title": "Anthropic Threat Intel Sep 2026",
+        "artifact_type": "OTHER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Full PDF/IOCs not consumed; excerpts cover scope plus case classes only.",
+          "Attribution vendor-consistent with public reporting, not independently verified here.",
+          "Distillation naming detail from Sep 11 timeline is late-breaking detail, excluded from ordinary facts; report itself Sep 10 is ordinary.",
+          "case-repro: Vendor investigations; independent reproduction absent; notable-examples bound.",
+          "distillation-attribution: Sep 11 naming detail late-breaking; report Sep 10 ordinary only."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Worker: Sep 10 safety report is the ordinary W37 technical safety package with notable-examples bounds.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W37:8260a01dcf87f3ca",
+        "evidence_task_id": "evidence:2026-W37:335665a454392617",
+        "discovery_ids": [
+          "w37-primary-ling-vl-20260910"
+        ],
+        "evidence_sha256": "d40406ea253488535cdb9940748c659ac819c8637514a8c88cb260d373f1d3c5",
+        "edition_view_sha256": "cb5c0d97a25c2d3f4223b8567c3bfc2b7d9e9fb72c2f0df6c4d7bcdf87bbd581",
+        "title": "Ling-3.0-flash-VL",
+        "artifact_type": "MODEL",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "HF page shows no explicit publication date; Sep 4/8/10 phasing from secondary; hour-level precision not asserted.",
+          "All benchmark figures card-reported; independent reproduction absent.",
+          "Video efficacy vendor-described.",
+          "repo-hour: Sep 4 hour unresolved; Sep 8/10 bindings establish ordinary.",
+          "benchmark-repro: Card-reported; independent reproduction absent."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Worker: ordinary W37 multimodal open evidence with date/benchmark bounds.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W37:3c7ce05fa6175bd6",
+        "evidence_task_id": "evidence:2026-W37:658089d51b9356d6",
+        "discovery_ids": [
+          "w37-grok-r3-45-url-ledger"
+        ],
+        "evidence_sha256": "bbf642a08c2829b4badda5dcc57e45f0f57246d60faec2240e93d40578a349ec",
+        "edition_view_sha256": "43c965448e8f8afb0e136bee61055ca06f43f183f6f903483be61eaeadea27ad",
+        "title": "W37 Grok/X r3 observation corpus",
+        "artifact_type": "OTHER",
+        "evidence_status": "PARTIAL",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "X observation only: no technical specification, benchmark, price, license, architecture, or release fact is established by this record.",
+          "Derived summary counts in r3 prose corrected by the archived r3 correction review; row-level ledger governs.",
+          "Late-breaking rows must not enter ordinary-window totals.",
+          "primary-verification-c1-c4: Companion primary records verify C1-C4; X itself establishes no technical fact; no promotion enforced."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Worker: required community-signal basis; grounds momentum and lane negative-space audit without establishing technical facts.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W37:e47062de36139b43",
+        "evidence_task_id": "evidence:2026-W37:8c92923f2ef2f392",
+        "discovery_ids": [
+          "w37-primary-north-translate-20260910"
+        ],
+        "evidence_sha256": "fe4cf4dee0e5acc07abbc6e1afb865a47e22ee8b93ca755e8292f00c7b5a9155",
+        "edition_view_sha256": "83a8bd57922db0e3661f1693d8bc96fdf8de13a5efddfc209169cb5af2668eaf",
+        "title": "North Small Translate",
+        "artifact_type": "MODEL",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "WMT26 judge and sampling not independently verified; per-language tables not consumed.",
+          "Throughput/cost internal tests vendor-described.",
+          "CC BY-NC blocks commercial use; Vault license required for production.",
+          "judge-bias: WMT26 via judge model; independent verification absent."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Worker: Sep 10 translation MoE is ordinary W37 vertical open-weights evidence with judge/license bounds.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W37:109134b5b9124277",
+        "evidence_task_id": "evidence:2026-W37:940b1747cf992f23",
+        "discovery_ids": [
+          "w37-primary-deepseek-v41-flash-20260910"
+        ],
+        "evidence_sha256": "2c125e4f0fe8c4b8441f0daa920c5055bfb86a147a9cbb6d7b55e856eeeaa297",
+        "edition_view_sha256": "49877d8e539ed3925aea22fdc5794805820435eb9bf46493b2020881724e98b0",
+        "title": "DeepSeek V4.1 Flash",
+        "artifact_type": "MODEL",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 4,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Benchmark tables/images truncated in edition-local HTML; per-benchmark methodology/sampling not consumed beyond vendor summary.",
+          "Named third parties behind multiple-party testing not disclosed in source.",
+          "Serving support vendor-promised; engine support state fetch-time.",
+          "third-party-test-identity: Multiple parties unnamed; independent reproduction absent.",
+          "serving-support: Engine support vendor-promised; fetch-time state."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Worker: Sep 10 efficient release is an ordinary W37 event with architecture/vendor-comparison/future-routing bounds.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W37:9168688f632457c0",
+        "evidence_task_id": "evidence:2026-W37:99e8d5bb6927d040",
+        "discovery_ids": [
+          "w37-primary-agents-api-20260910"
+        ],
+        "evidence_sha256": "2c9654a3138e9b4f41001faeee788b75ca5c8872e79f7f84720fadec356b9561",
+        "edition_view_sha256": "2a2519470a55f3568155e8b832338d3cc72b2cb072c745ad5c9bed8a192d0233",
+        "title": "Agents API (Codex harness)",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Public-beta scope/GA timeline not stated; rate limits/regions not in source.",
+          "Partner integration depth and VPC/security specifics vendor-described without independent testing.",
+          "Customer quotes vendor-selected.",
+          "GA-scope: Public-beta scope/GA timeline not stated.",
+          "pricing-limits: Rate/region limits not in source; no added fee stated."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Worker: Sep 10 harness API is an ordinary W37 agent-infrastructure event with beta/sandbox/subagent bounds.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W37:2c2e3e5bad47e960",
+        "evidence_task_id": "evidence:2026-W37:b1bda50606263c03",
+        "discovery_ids": [
+          "w37-secondary-safety-resignation-20260909"
+        ],
+        "evidence_sha256": "23d0a72dbeaf5d73ca9e94904b756632e37526bf78562b71fe692873188322b4",
+        "edition_view_sha256": "42efe3f48ed6d9ea414a0a0b4dd426cce9323f390cdaec4b4a59454737962393",
+        "title": "Coxon resignation discourse",
+        "artifact_type": "OTHER",
+        "evidence_status": "PARTIAL",
+        "materiality": "CONTEXT",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 1,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Secondary news only; X post bodies not independently retrieved; no technical model fact established.",
+          "Quotes are reported speech, not verified technical claims.",
+          "Non-response noted in source.",
+          "x-primary-text: Secondary only; X primary not bound; no technical promotion."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Worker: safety-discourse context for review attention only; carries no selected Architecture weight and appears in no thesis or package requirement.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W37:0c973d3a64548dc6",
+        "evidence_task_id": "evidence:2026-W37:b2309a56c9969593",
+        "discovery_ids": [
+          "w37-primary-minicpm5-2b-20260907"
+        ],
+        "evidence_sha256": "a73155f5ffdd8c5e91c24964195457b2c692340a326c3fc7d56f4e9cae7965a2",
+        "edition_view_sha256": "1d5f24cd8cddc3cc7394249ebb1ef5c3999d04874f964b289afbc87dccdecedb",
+        "title": "MiniCPM5-2B",
+        "artifact_type": "MODEL",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "All benchmark figures card-reported and externally unreproduced.",
+          "Release-day attribution Sep 7 from recipe/secondary; hour-level precision not asserted.",
+          "Quant/serving performance across chips vendor-described.",
+          "benchmark-repro: Card-reported; independent reproduction absent.",
+          "quant-performance: Quant/chip performance vendor-described."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Worker: Sep 7 open-efficient release is an ordinary W37 event with license/date/benchmark bounds.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W37:634af5f564387c0c",
+        "evidence_task_id": "evidence:2026-W37:d5d0132417eb8db2",
+        "discovery_ids": [
+          "w37-primary-deepseek-api-20260910"
+        ],
+        "evidence_sha256": "653fa9ca0d4da8439652e57507282ed54450811d50e40d80be4c2e6f5db79d3c",
+        "edition_view_sha256": "648d33227c9c4340ee04bc2a3aeaab07391b2769176fb12f97300be883769d78",
+        "title": "DeepSeek V4.1 Flash API binding",
+        "artifact_type": "OTHER",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 2,
+          "metric_count": 0,
+          "limitation_count": 2,
+          "unresolved_question_count": 0,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Per-token price table values in images not fully consumed.",
+          "V4.1-Pro launch date not in source."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Worker: API operational companion to launch record; binds IDs/retirement/pricing with future-routing boundary.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      },
+      {
+        "candidate_id": "candidate:2026-W37:5f09245b12682bae",
+        "evidence_task_id": "evidence:2026-W37:e8e026fa956342ad",
+        "discovery_ids": [
+          "w37-primary-gpt-live-api-20260910"
+        ],
+        "evidence_sha256": "031422eb2c24837217e699e9f3dc8e255b7809335fdd882c308832d80496beac",
+        "edition_view_sha256": "246392b34a77a3e13a618c466f1d94d642b2983246f000310f049903dbe39806",
+        "title": "GPT-Live-1 in API",
+        "artifact_type": "PRODUCT",
+        "evidence_status": "VERIFIED",
+        "materiality": "MATERIAL",
+        "scope_dimensions": [
+          "current relevance",
+          "technical significance"
+        ],
+        "comparison": {
+          "source_count": 1,
+          "claim_count": 3,
+          "metric_count": 0,
+          "limitation_count": 3,
+          "unresolved_question_count": 2,
+          "contradiction_count": 0,
+          "entity_count": 1
+        },
+        "remaining_boundaries": [
+          "Full Duplex Bench/Tau3 methodology, sampling, comparator runs not consumed.",
+          "Language/dialect coverage and telephony provider scope not fully bounded in source.",
+          "Customer quotes vendor-selected; no independent deployment verification.",
+          "benchmark-methodology: Full Duplex Bench/Tau3 methodology not consumed; vendor-reported.",
+          "language-coverage: Language/dialect/telephone scope not fully bounded."
+        ],
+        "profile_extensions": {
+          "why_this_issue": "Worker: Sep 10 voice API is an ordinary W37 event as a distinct voice layer with delegation/pricing/bench bounds.",
+          "window_relation": "MAIN_EVENT",
+          "carry_over": false
+        }
+      }
+    ],
+    "summary": {
+      "candidate_count": 13,
+      "materiality_counts": {
+        "CONTEXT": 1,
+        "MATERIAL": 12
+      },
+      "evidence_status_counts": {
+        "PARTIAL": 2,
+        "VERIFIED": 11
+      }
+    }
+  },
+  "evidence_acceptance": {
+    "schema_version": "2.0-rc1",
+    "issue_id": "2026-W37",
+    "research_profile": "WEEKLY",
+    "result_set_sha256": "931e9abdf082a43a058e96263ea9711b007857ebb4ad1d113ac94f854679cba4",
+    "package_sha256": "29e13f0844637d5476ad85272770b1fcc7d6850ccf3cc1118bc4a40c6413913d",
+    "screening_acceptance_sha256": "06cecd69db58ae4e9d28f81a69cf7bb8fcc1982ea0b51a39aa88efa5f48e2e9b",
+    "result_count": 13,
+    "results": [
+      {
+        "evidence_task_id": "evidence:2026-W37:10b365dd3145105b",
+        "discovery_ids": [
+          "w37-primary-swe2-20260910"
+        ],
+        "sha256": "a0874c4fa9048392f26475901bb379cbed16ba5e7ecdb7e4bfaf61ea4fe8c600",
+        "status": "VERIFIED",
+        "filename": "task-39964455ffb4f30717ea.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W37:212ccdc534720a7b",
+        "discovery_ids": [
+          "w37-primary-astra-finserv-20260910"
+        ],
+        "sha256": "2f67b75e7522cd9ee1225e8e7485225e7c2af8d7e80d9c5ceab894a359d1debe",
+        "status": "VERIFIED",
+        "filename": "task-e63ace9f3af3d667cc7a.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W37:24a50cc1c3a5efb5",
+        "discovery_ids": [
+          "w37-primary-fusion-20260911"
+        ],
+        "sha256": "cff8c3468c5387d41288a037d1fb706d0383943d19f7365f779918e4ff902fa8",
+        "status": "VERIFIED",
+        "filename": "task-2b0520ad6ba44da43c66.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W37:2fff077251308cbf",
+        "discovery_ids": [
+          "w37-primary-anthropic-threat-20260910"
+        ],
+        "sha256": "6a00eebb39b5efc232443be9c7dc44ecbd42618a4c90603a379425ce79ea507b",
+        "status": "VERIFIED",
+        "filename": "task-27b2f55e965e2f964d6c.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W37:335665a454392617",
+        "discovery_ids": [
+          "w37-primary-ling-vl-20260910"
+        ],
+        "sha256": "d40406ea253488535cdb9940748c659ac819c8637514a8c88cb260d373f1d3c5",
+        "status": "VERIFIED",
+        "filename": "task-8260a01dcf87f3caf4af.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W37:658089d51b9356d6",
+        "discovery_ids": [
+          "w37-grok-r3-45-url-ledger"
+        ],
+        "sha256": "bbf642a08c2829b4badda5dcc57e45f0f57246d60faec2240e93d40578a349ec",
+        "status": "PARTIAL",
+        "filename": "task-3c7ce05fa6175bd6be83.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W37:8c92923f2ef2f392",
+        "discovery_ids": [
+          "w37-primary-north-translate-20260910"
+        ],
+        "sha256": "fe4cf4dee0e5acc07abbc6e1afb865a47e22ee8b93ca755e8292f00c7b5a9155",
+        "status": "VERIFIED",
+        "filename": "task-e47062de36139b43e7f0.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W37:940b1747cf992f23",
+        "discovery_ids": [
+          "w37-primary-deepseek-v41-flash-20260910"
+        ],
+        "sha256": "2c125e4f0fe8c4b8441f0daa920c5055bfb86a147a9cbb6d7b55e856eeeaa297",
+        "status": "VERIFIED",
+        "filename": "task-109134b5b9124277aad1.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W37:99e8d5bb6927d040",
+        "discovery_ids": [
+          "w37-primary-agents-api-20260910"
+        ],
+        "sha256": "2c9654a3138e9b4f41001faeee788b75ca5c8872e79f7f84720fadec356b9561",
+        "status": "VERIFIED",
+        "filename": "task-9168688f632457c0dd29.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W37:b1bda50606263c03",
+        "discovery_ids": [
+          "w37-secondary-safety-resignation-20260909"
+        ],
+        "sha256": "23d0a72dbeaf5d73ca9e94904b756632e37526bf78562b71fe692873188322b4",
+        "status": "PARTIAL",
+        "filename": "task-2c2e3e5bad47e9604744.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W37:b2309a56c9969593",
+        "discovery_ids": [
+          "w37-primary-minicpm5-2b-20260907"
+        ],
+        "sha256": "a73155f5ffdd8c5e91c24964195457b2c692340a326c3fc7d56f4e9cae7965a2",
+        "status": "VERIFIED",
+        "filename": "task-0c973d3a64548dc68e0f.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W37:d5d0132417eb8db2",
+        "discovery_ids": [
+          "w37-primary-deepseek-api-20260910"
+        ],
+        "sha256": "653fa9ca0d4da8439652e57507282ed54450811d50e40d80be4c2e6f5db79d3c",
+        "status": "VERIFIED",
+        "filename": "task-634af5f564387c0c30e0.json"
+      },
+      {
+        "evidence_task_id": "evidence:2026-W37:e8e026fa956342ad",
+        "discovery_ids": [
+          "w37-primary-gpt-live-api-20260910"
+        ],
+        "sha256": "031422eb2c24837217e699e9f3dc8e255b7809335fdd882c308832d80496beac",
+        "status": "VERIFIED",
+        "filename": "task-5f09245b12682baebc42.json"
+      }
+    ]
+  },
+  "evidence_inputs": [
+    {
+      "candidate_id": "candidate:2026-W37:5f09245b12682bae",
+      "architecture_usage": "PRIMARY",
+      "evidence_task_id": "evidence:2026-W37:e8e026fa956342ad",
+      "evidence_sha256": "031422eb2c24837217e699e9f3dc8e255b7809335fdd882c308832d80496beac",
+      "evidence_card": {
+        "schema_version": "2.0-rc1",
+        "issue_id": "2026-W37",
+        "evidence_task_id": "evidence:2026-W37:e8e026fa956342ad",
+        "basis": {
+          "task_sha256": "5fa25e593f0d545a4ffe2129aaf01b0a47a4a625e352abf4926968a1f55510e2",
+          "screening_acceptance_sha256": "06cecd69db58ae4e9d28f81a69cf7bb8fcc1982ea0b51a39aa88efa5f48e2e9b",
+          "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+          "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+        },
+        "status": "VERIFIED",
+        "entities": [
+          {
+            "canonical_name": "GPT-Live-1 in API",
+            "canonical_url": "https://openai.com/index/introducing-gpt-live-1-in-the-api",
+            "entity_id": "product:openai-gpt-live-1-api",
+            "entity_type": "PRODUCT",
+            "organization": "OpenAI"
+          }
+        ],
+        "artifact": {
+          "primary_subject_id": "product:openai-gpt-live-1-api",
+          "artifact_type": "PRODUCT",
+          "canonical_name": "GPT-Live-1 in API",
+          "canonical_url": "https://openai.com/index/introducing-gpt-live-1-in-the-api"
+        },
+        "temporal": {
+          "observed_at": "2026-09-19T00:20:00Z",
+          "events": [
+            {
+              "event_id": "event-1",
+              "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+              "event_date": "2026-09-10",
+              "subject_id": "product:openai-gpt-live-1-api",
+              "subject_role": "PRIMARY_SUBJECT",
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ]
+        },
+        "sources": [
+          {
+            "source_id": "src-1",
+            "url": "https://openai.com/index/introducing-gpt-live-1-in-the-api",
+            "source_class": "PRIMARY_OFFICIAL",
+            "title": "OpenAI GPT-Live-1 in API (full-duplex voice, delegation)",
+            "published_at": "2026-09-10",
+            "accessed_at": "2026-09-19T00:20:00Z",
+            "role": "Discovery-bounded source used for factual verification"
+          }
+        ],
+        "claims": [
+          {
+            "statement_id": "claim-1",
+            "text": "OpenAI Sep 10 launches GPT-Live-1 in the API as a separate full-duplex voice layer: single-model listen plus speak; it delegates reasoning/tool calls to a backend text model such as GPT-6 Astra or a third-party model; it is not itself an Astra package.",
+            "subject_id": "product:openai-gpt-live-1-api",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Key strengths and architecture sections as stated; product boundary preserved."
+          },
+          {
+            "statement_id": "claim-2",
+            "text": "Full Duplex Bench plus-30pp over GPT-Realtime-2.1; Tau3 number 1 with Astra medium; early-user reports; 12-plus voices; ASR transcripts/keyword biasing.",
+            "subject_id": "product:openai-gpt-live-1-api",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "VENDOR_CLAIM",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evaluations and customers sections; vendor-reported without consumed methodology."
+          },
+          {
+            "statement_id": "claim-3",
+            "text": "Available at 0.05 USD per min voice layer; pair with backend model/harness; custom voices via sales.",
+            "subject_id": "product:openai-gpt-live-1-api",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "PRIMARY_FACT",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Pricing and Availability as stated."
+          }
+        ],
+        "metrics": [],
+        "limitations": [
+          {
+            "statement_id": "limitation-1",
+            "text": "Full Duplex Bench/Tau3 methodology, sampling, comparator runs not consumed.",
+            "subject_id": "product:openai-gpt-live-1-api",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-2",
+            "text": "Language/dialect coverage and telephony provider scope not fully bounded in source.",
+            "subject_id": "product:openai-gpt-live-1-api",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          },
+          {
+            "statement_id": "limitation-3",
+            "text": "Customer quotes vendor-selected; no independent deployment verification.",
+            "subject_id": "product:openai-gpt-live-1-api",
+            "subject_role": "PRIMARY_SUBJECT",
+            "evidence_class": "INFERENCE",
+            "source_ids": [
+              "src-1"
+            ],
+            "context": "Evidence boundary retained for downstream editorial use."
+          }
+        ],
+        "verification": {
+          "targets": [
+            {
+              "target": "benchmark-methodology",
+              "status": "UNRESOLVED",
+              "finding": "Full Duplex Bench/Tau3 methodology not consumed; vendor-reported.",
+              "subject_ids": [
+                "product:openai-gpt-live-1-api"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            },
+            {
+              "target": "language-coverage",
+              "status": "UNRESOLVED",
+              "finding": "Language/dialect/telephone scope not fully bounded.",
+              "subject_ids": [
+                "product:openai-gpt-live-1-api"
+              ],
+              "source_ids": [
+                "src-1"
+              ]
+            }
+          ],
+          "unresolved_questions": [
+            "benchmark-methodology: Full Duplex Bench/Tau3 methodology not consumed; vendor-reported.",
+            "language-coverage: Language/dialect/telephone scope not fully bounded."
+          ],
+          "contradictions": []
+        }
+      }
+    }
+  ],
+  "drafting_constraints": {
+    "language": "ja",
+    "raw_sources_forbidden": true,
+    "unknowns_remain_unknown": true,
+    "citation_granularity": "EVENT_CLAIM_METRIC_LIMITATION"
+  },
+  "profile_extensions": {},
+  "publication_extensions": {}
+}
