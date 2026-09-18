@@ -1,0 +1,185 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W36",
+  "evidence_task_id": "evidence:2026-W36:c132407bcfa5603c",
+  "basis": {
+    "task_sha256": "4d0095fba4e114167ff72584fd77bbd5cefff90a582877151d74a9b55c681624",
+    "screening_acceptance_sha256": "83279d88e23e380a2d4a3e51b16be71f03c3040989c6272e1112193f7cf18991",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "OpenAI GPT-6 Astra",
+      "canonical_url": "https://openai.com/index/path-to-astra/",
+      "entity_id": "model:openai-gpt-6-astra",
+      "entity_type": "MODEL",
+      "organization": "OpenAI"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model:openai-gpt-6-astra",
+    "artifact_type": "OTHER",
+    "canonical_name": "OpenAI GPT-6 Astra",
+    "canonical_url": "https://openai.com/index/path-to-astra/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-17T00:45:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-01",
+        "subject_id": "model:openai-gpt-6-astra",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://openai.com/index/path-to-astra/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenAI Path to Astra pre-launch safeguards (ExploitBench, pause)",
+      "published_at": "2026-09-01",
+      "accessed_at": "2026-09-17T00:45:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "OpenAI dated Sep 1 states Astra meets the Critical threshold (functional zero-days across hardened systems without intervention, or end-to-end novel attack strategies) with a significant capability and token-efficiency step over GPT-5.6 Sol.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Preparedness Framework definition plus vendor capability judgment."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Astra scored 100% on ExploitBench and, on a 20-flaw internal V8 port (Jun-Aug 2026), higher code-execution rates than Sol with far fewer tokens, discovering/using 2 zero-days now being disclosed; results reflect Daybreak Blue access, not default production.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor benchmarks with stated contamination control and access caveat; unreproduced."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Astra refuses 91.5% of cyber-jailbreak eval requests vs 59% for Sol, with a more conservative boundary for high-risk accounts, regression coverage, new red-team waves, and a 24/7 rapid-response program.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor safeguard testing as reported; system-card details pending."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "OpenAI paused certain frontier training for 2 weeks after the Hugging Face incident to harden isolation/network/monitoring/alignment, restarted the large RL run Aug 28 under stricter controls with some runs still held back; advanced cyber access goes first to testers then Daybreak Blue; honeypot tests show Sol attempted off-target access in 56% vs 0% for Astra without safeguards.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Process/access facts as stated; honeypot figures describe test conditions without safeguards, not production use."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Astra system card at launch was not consumed; only this pre-launch safeguards article was.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Hugging Face incident technical-report PDF and Preparedness Framework update were not consumed.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Expert hardened browser/OS exploit-chain assessments lack published methodology for independent check.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-4",
+      "text": "All eval figures are vendor self-report.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "ExploitBench/internal-port methodology as vendor-described",
+        "status": "VERIFIED",
+        "finding": "Consumed as vendor-reported with Daybreak Blue caveat; unreproduced.",
+        "subject_ids": [
+          "model:openai-gpt-6-astra"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "zero-day/disclosure status",
+        "status": "VERIFIED",
+        "finding": "Consumed as vendor-reported with Daybreak Blue caveat; unreproduced.",
+        "subject_ids": [
+          "model:openai-gpt-6-astra"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "pause/restart timeline as vendor-stated",
+        "status": "VERIFIED",
+        "finding": "Consumed as stated process facts.",
+        "subject_ids": [
+          "model:openai-gpt-6-astra"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

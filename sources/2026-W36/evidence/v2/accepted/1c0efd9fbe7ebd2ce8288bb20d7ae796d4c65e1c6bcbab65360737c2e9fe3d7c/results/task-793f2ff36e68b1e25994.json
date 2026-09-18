@@ -1,0 +1,163 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W36",
+  "evidence_task_id": "evidence:2026-W36:4391ab13b7a65f50",
+  "basis": {
+    "task_sha256": "98c71708562b68b59a358d6e03cd02edf7ca9481609ed358de9f141d73324735",
+    "screening_acceptance_sha256": "83279d88e23e380a2d4a3e51b16be71f03c3040989c6272e1112193f7cf18991",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "Kilo for JetBrains",
+      "canonical_url": "https://blog.kilo.ai/p/kilo-for-jetbrains-a-multi-agent-control-room",
+      "entity_id": "product:kilo-for-jetbrains",
+      "entity_type": "PRODUCT",
+      "organization": "Kilo"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "product:kilo-for-jetbrains",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Kilo for JetBrains",
+    "canonical_url": "https://blog.kilo.ai/p/kilo-for-jetbrains-a-multi-agent-control-room"
+  },
+  "temporal": {
+    "observed_at": "2026-09-17T00:45:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-01",
+        "subject_id": "product:kilo-for-jetbrains",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://blog.kilo.ai/p/kilo-for-jetbrains-a-multi-agent-control-room",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Kilo Code JetBrains multi-agent control room (worktrees, runs, PRs)",
+      "published_at": "2026-09-01",
+      "accessed_at": "2026-09-17T00:45:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Kilo announced on 2026-09-01 that Kilo for JetBrains, a native Kotlin plugin built for JetBrains split mode, now operates as a multi-agent control room for running parallel coding agents without leaving JetBrains.",
+      "subject_id": "product:kilo-for-jetbrains",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Primary official Kilo Blog retrieved 2026-09-17."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Each task runs in its own isolated git worktree with its own branch, working directory, uncommitted changes, and session history; worktrees can be created from a base branch, an existing branch, or a pasted GitHub PR URL, managed in the Agent Manager, with a Continue in Worktree action for promoting exploratory sessions.",
+      "subject_id": "product:kilo-for-jetbrains",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Parallel-worktree model and creation flows stated in the official announcement."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Kilo adapts existing Run Configurations to the selected worktree, surfaces running processes plus Build/Rebuild in the Agent Manager, supports one-click full-frame debugging with frame reuse, and shows linked PR number/title/state with worktree-to-base comparison and separated uncommitted versus branch diffs plus file/line counts.",
+      "subject_id": "product:kilo-for-jetbrains",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Run, debug, and GitHub-context behaviors stated in the official announcement."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Kilo offers 600+ switchable models via credits or BYOK with per-agent model pinning, a separate small model for frequent low-cost operations, data-use badges and org-level provider/model controls, all powered by the shared open-source Kilo CLI runtime and kilo.jsonc across CLI, VS Code, JetBrains, and cloud.",
+      "subject_id": "product:kilo-for-jetbrains",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Model-routing, governance, shared-runtime, and install-matrix statements from the official announcement."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Vendor blog only; parallel-agent isolation, Run Configuration adaptation, and remote-development behavior not independently tested.",
+      "subject_id": "product:kilo-for-jetbrains",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "600+ model count and data-use badge coverage are point-in-time vendor statements.",
+      "subject_id": "product:kilo-for-jetbrains",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Product Hunt launch-day reception and pricing or credit costs not evidenced in this source.",
+      "subject_id": "product:kilo-for-jetbrains",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "worktree/isolation behavior as vendor-described",
+        "status": "VERIFIED",
+        "finding": "Isolated worktrees, Run Configuration adaptation, Agent Manager, PR linkage, and Continue in Worktree confirmed in announcement text.",
+        "subject_ids": [
+          "product:kilo-for-jetbrains"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "model count/channel as vendor-stated",
+        "status": "VERIFIED",
+        "finding": "600+ models, Kilo CLI shared runtime, kilo.jsonc portability, and install scope confirmed as stated; live catalog and cross-surface parity not independently checked.",
+        "subject_ids": [
+          "product:kilo-for-jetbrains"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

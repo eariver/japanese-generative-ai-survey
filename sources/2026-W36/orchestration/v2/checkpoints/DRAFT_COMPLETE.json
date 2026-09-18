@@ -1,0 +1,75 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W36",
+  "from_state": "DRAFT_COMPLETE",
+  "to_state": "VALIDATED_DRAFT",
+  "checkpoints": [
+    "validation"
+  ],
+  "recorded_at": "2026-09-18T01:24:23Z",
+  "implementation": {
+    "repository_commit_sha": "52bb2f6c95d3e465a92573db922acec0ef33d31a",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "publication-pdf",
+      "path": "surveys/weekly/2026-W36/main.pdf",
+      "sha256": "07defd592672f609b2b40041f3f3afcfb4918a78e2005a1cb3a7cbd0c7d346d1"
+    },
+    {
+      "name": "quality-regression-bundle",
+      "path": "sources/2026-W36/publication/v2/quality-regression-bundle-v2.json",
+      "sha256": "3bc100e355885ab91e23613c8f8b3e65dfc5fd96c70a86bb380c6818131d21ff"
+    },
+    {
+      "name": "reader-manuscript",
+      "path": "sources/2026-W36/publication/v2/reader-manuscript-v2.json",
+      "sha256": "496486544135cb13f87d74161ed05f8820d65aabf4623503d4deff84dd9ca01b"
+    },
+    {
+      "name": "reader-surface-gate",
+      "path": "sources/2026-W36/publication/v2/reader-surface-gate-v2.json",
+      "sha256": "a4b1e738eeab96f0d6943775c909c158a84d8ee96118d30005c069d92ae4268a"
+    },
+    {
+      "name": "semantic-review",
+      "path": "sources/2026-W36/publication/v2/semantic-editorial-review-v2.json",
+      "sha256": "13bc718c71523167d72101b5423ed405661282925718d1fd42b361b544de4cff"
+    },
+    {
+      "name": "validated-source",
+      "path": "surveys/weekly/2026-W36/main.tex",
+      "sha256": "e6d98ccde634f0077ce547c7089f8da420ecbc9fe0d367bb1d29b4b103c898d3"
+    },
+    {
+      "name": "visual-review",
+      "path": "sources/2026-W36/publication/v2/visual-review-v2.json",
+      "sha256": "61b6c9fd280d5f8ae85228d33adbbbde76203ea986849fbb8b422d7a14fb7bf9"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "W36 DRAFT_COMPLETE reader-publication validation r2: exact 12-page CI PDF pinned (359750 bytes, SHA 07defd59); reader manuscript binds 6 packages and 20 must-cover rows with Issue #502 comment citation; quality bundle with 3 deterministic PASS; persisted surface semantic review PASS; reader-surface gate PASSED with 0 findings and 0 suppressions; ChatGPT semantic/editorial QA 11 PASS and exact-PDF visual QA 2 PASS on exact bytes. Machine validation only.",
+      "result": {
+        "path": "sources/2026-W36/execution/validation/reader-publication-stage-validation-r2.json",
+        "sha256": "61f8f7b6abbbf1a29fab7a8faee2d0ebcda186b2e51b416397bb5960074272ee"
+      }
+    }
+  ],
+  "summary": "W36 DRAFT_COMPLETE -> VALIDATED_DRAFT r2: Issue #502 comment citation, suppression-free gate PASS, fresh 12-page PDF"
+}

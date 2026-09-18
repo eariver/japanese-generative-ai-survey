@@ -1,0 +1,19 @@
+\section{Open Weights Go Full-Lifecycle}
+\sectionkicker{OPEN EFFICIENT}
+\begin{wideflow}
+{\Large\bfseries 公開ウェイトはライフサイクル全体で競う}\par
+\smallskip
+{\color{SurveyMuted}成果物全体の公開と条件付きの重みを、ライセンスと日付の精度とともに示す。}\par
+\end{wideflow}
+
+9月3日にIFMが出したK2 Horizonは、375B-A23B、36B-A4B、32B、7B、3.7B、0.9Bの6モデルからなるフリートで、Hugging FaceのコレクションとGitHubのコード、Weights \& Biasesに成果物が置かれる\cite{k2horizon}。モデルとコードはApache 2.0で出るが、データセットは適用される条件（例ODC-BY）に従い、作り方や混合方法の開示は再配布できない範囲での開示が添えられる。Apache 2.0をデータセットに広げて書かない。6規模とも量子化に対応し、初日からvLLM、SGLang、Ollamaが動くとされる。提供側の性能主張は、0.9B・3.7B・7Bが各規模で最上位、36B-A4BがMoVAのスパースアテンション設計で約40億の動作パラメーターにより高密度32B級に迫る、32Bと375B-A23Bが各級の上位という内容である。いずれも提供側の数値であり、独立の再現を待つ。MoVAの効率解釈も提供側の設計主張であり、独立の検証はない。公開内容の内訳は、学習データやデータ調合法、学習コード、設定、中間チェックポイント、細粒度のログ、評価結果、最終重みが規模ごとに示され、事前学習はモデルあたり約20Tトークン、事後学習は1億超のタスクとされる。TerminalBench 2.1の監査訂正（フラグ付き24試行を除き70.2\%から66.9\%へ）が開示された点は記録の範囲で押さえる。
+
+\begin{claimboundary}[ライセンスの境界]
+Apache 2.0はモデルとコードの話であり、データセットに広げない。順位と効率の主張は提供側の報告であり、独立の再現を待つ。
+\end{claimboundary}
+
+8月28日に置かれたzai-orgのGLM-5.3は全重み（753Bパラメーター、BF16・F8\_E4M3・F32のsafetensors）を開き、Transformers、vLLM、SGLang、KTransformers、Unsloth、Dockerでの実行に対応し、reasoning\_effortのlow・high・max（既定値はmax）、論文arXiv 2602.15763への言及がモデルカードに示される\cite{glm53weights}。GLM-5.2からの伸びとして、自社のZ.ai Code Benchでの50\%増、Terminal Bench 3.0とAgents' Last Examの公開最上位、CyberGym 84.5の最上位と悪用連鎖の倍増、Terminal Bench 2.1の88.2、AutomationBenchの48.2、GDPval-AA v2の1769といった表中の値はすべてモデルカードの報告であり、外部の再現はない。モデルカードのLicense欄はglm-5.3（独自）と読み、Flash系に付くMITライセンスを全重みに当てはめない。ライセンス全文は確認していない。取得できたmarkdownに明示の公表日がなく、8月28日の協定時（UTC）の時刻は未確定のため、対象週への配置は中確度の境界扱いとし、時刻単位の断定はしない。ダウンロード数やいいね数は公開基盤側のテレメトリであり、能力の証拠にはしない。
+
+\begin{technicalnote}[日付とライセンスの注意]
+8月28日の協定時（UTC）の時刻は未確定であり、対象週への配置は中確度にとどめる。Flash系のMITライセンスを全重みに当てはめない\cite{glm53weights}。
+\end{technicalnote}

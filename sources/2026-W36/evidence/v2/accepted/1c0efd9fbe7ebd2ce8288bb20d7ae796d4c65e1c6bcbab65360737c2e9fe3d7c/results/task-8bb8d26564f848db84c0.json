@@ -1,0 +1,174 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W36",
+  "evidence_task_id": "evidence:2026-W36:1d20920a9f228651",
+  "basis": {
+    "task_sha256": "39cad1a4c02a932b12588c58f9614ade82723067d4ab0ef2c08f1d0863227fe2",
+    "screening_acceptance_sha256": "83279d88e23e380a2d4a3e51b16be71f03c3040989c6272e1112193f7cf18991",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "K2 Horizon open model fleet",
+      "canonical_url": "https://ifm.ai/blog/k2/",
+      "entity_id": "model-family:ifm-k2-horizon",
+      "entity_type": "MODEL",
+      "organization": "Institute of Foundation Models"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model-family:ifm-k2-horizon",
+    "artifact_type": "OTHER",
+    "canonical_name": "K2 Horizon open model fleet",
+    "canonical_url": "https://ifm.ai/blog/k2/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-17T00:45:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-03",
+        "subject_id": "model-family:ifm-k2-horizon",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://ifm.ai/blog/k2/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "IFM K2 Horizon open fleet (Apache 2.0, MoVA, 524K context)",
+      "published_at": "2026-09-03",
+      "accessed_at": "2026-09-17T00:45:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "IFM released the K2 Horizon fleet on 2026-09-03: six connected models (375B-A23B, 36B-A4B, 32B, 7B, 3.7B, 0.9B) with artifacts on Hugging Face collection IFM/k2-horizon, GitHub code, and Weights & Biases.",
+      "subject_id": "model-family:ifm-k2-horizon",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Dated first-party IFM announcement consumed; fleet composition and artifact locations as stated."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Models and code ship under Apache 2.0 while datasets carry their applicable licenses (for example ODC-BY) with construction/mixing disclosure where redistribution is impossible; all six sizes include quantization support with day-zero vLLM, SGLang, and Ollama support.",
+      "subject_id": "model-family:ifm-k2-horizon",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "License and serving statements as issued; per-dataset terms require per-artifact checks."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Vendor-reported performance: 0.9B/3.7B/7B state-of-the-art in their size classes; 36B-A4B near dense-32B performance at ~4B active parameters via the MoVA sparse-attention design; 32B and 375B-A23B among the top in their classes.",
+      "subject_id": "model-family:ifm-k2-horizon",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Lab-reported class rankings and scores; externally unreproduced in this run."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Per-model openness inventory covers training data or data recipe, training code, configurations, intermediate checkpoints, fine-grained logs, evaluation results, and final weights; pretraining is ~20T tokens per model with 100M+ post-training tasks, and the page discloses a TerminalBench 2.1 audit correction from 70.2% to 66.9% after removing 24 flagged trials.",
+      "subject_id": "model-family:ifm-k2-horizon",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Openness and training account as stated; the audit correction is part of the verified record and bounds benchmark reuse."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "All class-ranking and score claims are vendor-reported and externally unreproduced.",
+      "subject_id": "model-family:ifm-k2-horizon",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "MoVA efficiency interpretation (~4B-active near-32B behavior) is a vendor design claim without independent serving verification.",
+      "subject_id": "model-family:ifm-k2-horizon",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Dataset-license heterogeneity means Apache 2.0 must not be asserted over datasets.",
+      "subject_id": "model-family:ifm-k2-horizon",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Apache 2.0 + artifact scope as vendor-stated",
+        "status": "VERIFIED",
+        "finding": "Models/code Apache 2.0 with datasets under applicable licenses; scope distinction consumed as stated.",
+        "subject_ids": [
+          "model-family:ifm-k2-horizon"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "MoVA/524288 as vendor-specified",
+        "status": "VERIFIED",
+        "finding": "Rankings transcribed as lab-reported; independent reproduction absent.",
+        "subject_ids": [
+          "model-family:ifm-k2-horizon"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "audit correction as vendor-disclosed",
+        "status": "VERIFIED",
+        "finding": "Rankings transcribed as lab-reported; independent reproduction absent.",
+        "subject_ids": [
+          "model-family:ifm-k2-horizon"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

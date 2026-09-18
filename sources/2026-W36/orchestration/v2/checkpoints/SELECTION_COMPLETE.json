@@ -1,0 +1,55 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W36",
+  "from_state": "SELECTION_COMPLETE",
+  "to_state": "ARCHITECTURE_ESTABLISHED",
+  "checkpoints": [
+    "architecture"
+  ],
+  "recorded_at": "2026-09-16T17:00:00Z",
+  "implementation": {
+    "repository_commit_sha": "d30949b0ba9d892505d9f2c5100da57171e273f1",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "architecture-review-attention",
+      "path": "sources/2026-W36/architecture-review-attention-v2.json",
+      "sha256": "0b795d1e184940de6f317136a3cfe612f499c02e6cb901851db33c09ddf01fd5"
+    },
+    {
+      "name": "architecture-review-summary",
+      "path": "sources/2026-W36/architecture-review-summary-v2.json",
+      "sha256": "dbd0bf1c6c39075a435e7369577c7a2b1959ab750c2f88b6d0ded6fbcbc43abf"
+    },
+    {
+      "name": "issue-architecture",
+      "path": "sources/2026-W36/architecture-v2.json",
+      "sha256": "7ba86acffcc8c071307cf5936096bcd474e1e4ea8bb3d317f83e92de059c621d"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "W36 r2 Architecture regenerated bounded from SELECTION_COMPLETE per r1 REQUEST_CHANGES: identical 6 packages/membership/order/roles/goals; ONLY thesis corrected (RC-1: agreement != ownership; pledge bounds preserved). Upstream frozen: Discovery 19 / Screening 19 KEEP / Evidence 13+6 / Materiality 18+1 / Selection 18+1 byte-identical. Summary READY_FOR_ARCHITECTURE_REVIEW; attention byte-identical to r1. Machine validation only; Human r2 Gate still pending.",
+      "result": {
+        "path": "sources/2026-W36/execution/validation/architecture-stage-validation-r2.json",
+        "sha256": "bee10faed5ef13667662b4440070247997d2ce51805e48ba7058f8417d57bfd1"
+      }
+    }
+  ],
+  "summary": "W36 Architecture r2 established (RC-1 corrected): 6 packages over 18 SELECTED; READY_FOR_ARCHITECTURE_REVIEW."
+}

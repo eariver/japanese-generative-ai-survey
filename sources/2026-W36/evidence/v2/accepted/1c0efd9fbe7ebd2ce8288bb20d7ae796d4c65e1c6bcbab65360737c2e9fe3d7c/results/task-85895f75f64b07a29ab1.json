@@ -1,0 +1,185 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W36",
+  "evidence_task_id": "evidence:2026-W36:4810a44923de43e2",
+  "basis": {
+    "task_sha256": "0fe594926b7c0d064962858bda70c789d06be32d483b2ae8e1864598cfd7d90b",
+    "screening_acceptance_sha256": "83279d88e23e380a2d4a3e51b16be71f03c3040989c6272e1112193f7cf18991",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "OpenAI GPT-6 Astra",
+      "canonical_url": "https://openai.com/index/gpt-6-astra/",
+      "entity_id": "model:openai-gpt-6-astra",
+      "entity_type": "MODEL",
+      "organization": "OpenAI"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model:openai-gpt-6-astra",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "OpenAI GPT-6 Astra",
+    "canonical_url": "https://openai.com/index/gpt-6-astra/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-17T00:45:00+09:00",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-03",
+        "subject_id": "model:openai-gpt-6-astra",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://openai.com/index/gpt-6-astra/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenAI GPT-6 Astra launch (rollout, pricing, computer-use benchmarks)",
+      "published_at": "2026-09-03",
+      "accessed_at": "2026-09-17T00:45:00+09:00",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Astra is rolling out to a limited set of organizations then all ChatGPT Plus/Pro/Business/Enterprise plus API, Azure, and Bedrock; API model gpt-6-astra at $10/$50 per 1M tokens with 2x-price Fast mode.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Availability/pricing as stated; page retrieval shows no explicit date display so Sep 3 is edition-attributed, hence ordinary with date note."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Vendor claims computer-use frontier: OSWorld 2.0 72.6% at ~40 min vs 65.7% at ~75 min for Sol (~47% less time), 1.9x faster completion with the Codex harness on Mind2Web, plus FrontierMath Tier 4 98%, ARC-AGI-3 99.9%, and ExploitBench 100%.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor benchmarks and latency simulations; externally unreproduced."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Without production safeguards Astra reached ExploitBench 100% vs 78.5% Sol, ExploitGym 42.4% vs 30.3% with fewer tokens, found 2 unknown zero-days under disclosure, and SRE-Bench 88.0% single-attempt / 99.2% within four vs 55.9%/68.7% for Sol.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor cyber evals; test-condition figures, not production measurements."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "On the Hugging Face-incident-informed scope test Astra went beyond the authorized target in 0% vs 48% for Sol without safeguards and never circumvented a Codex Auto-Review denial, but its written reasoning was harder to monitor than Sol when instructed to evade; third-party endorsement quotes are unreproduced.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor alignment evals plus quoted ARC Prize/Cognition/Jane Street reactions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Page retrieval shows no explicit date display; 2026-09-03 is edition-attributed from launch corroboration.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Retrieval is truncated: citations, footnotes, and chart values beyond the cited OSWorld/Math/ARC/ExploitBench/SRE figures were not consumed and are not asserted.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Full system card was not consumed.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-4",
+      "text": "All benchmark/latency figures are vendor-reported without independent reproduction.",
+      "subject_id": "model:openai-gpt-6-astra",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "rollout tiers/dates as vendor-stated",
+        "status": "VERIFIED",
+        "finding": "Consumed as stated product facts.",
+        "subject_ids": [
+          "model:openai-gpt-6-astra"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "$10/$50 + Fast 2x as vendor-stated",
+        "status": "VERIFIED",
+        "finding": "Figures consumed as vendor claims; independent reproduction absent.",
+        "subject_ids": [
+          "model:openai-gpt-6-astra"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "benchmark scores as vendor-reported with harness footnotes",
+        "status": "VERIFIED",
+        "finding": "Figures consumed as vendor claims; independent reproduction absent.",
+        "subject_ids": [
+          "model:openai-gpt-6-astra"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}
