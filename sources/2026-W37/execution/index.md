@@ -46,7 +46,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Latest Drive task-file path/reference: `Grok_X_SourseIntake/Weekly/2026-W37/weekly-x-2026-W37/grok-task.md`
 - Intended Drive result folder: `Grok_X_SourseIntake/Weekly/2026-W37/weekly-x-2026-W37`
 - Expected result filename: `grok-x-result.md`
-- Latest result disposition: `SUCCESS` (r3 `grok-x-result-r3.md`, 14803B/`318ed342`, observed 2026-09-18T13:55:00Z; manifest `COMPLETE`, DISCOVERY_RECORDED `w37-grok-r3-45-url-ledger`; Sol review PASS_WITH_DERIVED_COUNT_CORRECTIONS, 45/24/1/20, 12 ordinary INDEPENDENT)
+- Latest result disposition: `SUCCESS` (r3 `grok-x-result-r3.md`, 14803B/`318ed342`, observed 2026-09-18T13:55:00Z; manifest `COMPLETE`, DISCOVERY_RECORDED `w37-grok-r3-45-url-ledger`; archived correction review `sol-grok-x-r3-review-20260918.md` verdict PASS_WITH_DERIVED_COUNT_CORRECTIONS, 45/24/1/20, 12 ordinary INDEPENDENT)
 - No Drive access attempted from Muse; no connector searched for or installed.
 
 ## Deviations
