@@ -1,0 +1,154 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "evidence_task_id": "evidence:2026-W37:658089d51b9356d6",
+  "basis": {
+    "task_sha256": "acacefcc412e8c0a852f41116ba76a4198df4e16564f6e1745d6b27b4963c390",
+    "screening_acceptance_sha256": "10530320da67797c5d81c0f46aa587f2f8c5d397976c373b97a84fe8a60aae96",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "canonical_name": "W37 Grok/X r3 observation corpus",
+      "canonical_url": "grok-task:weekly-x-2026-W37",
+      "entity_id": "x-observation:w37-grok-r3",
+      "entity_type": "OTHER",
+      "organization": null
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "x-observation:w37-grok-r3",
+    "artifact_type": "OTHER",
+    "canonical_name": "W37 Grok/X r3 observation corpus",
+    "canonical_url": "grok-task:weekly-x-2026-W37"
+  },
+  "temporal": {
+    "observed_at": "2026-09-18T23:25:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-18T13:55:00+00:00",
+        "subject_id": "x-observation:w37-grok-r3",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "grok-task:weekly-x-2026-W37",
+      "source_class": "SOCIAL",
+      "title": "W37 Grok/X r3 ledger (45 URLs: 24 ordinary / 1 pre-window / 20 late-breaking)",
+      "published_at": "2026-09-18T13:55:00+00:00",
+      "accessed_at": "2026-09-18T23:25:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The r3 ledger persists 45 exact direct X status URLs with Sol-corrected canonical classes: 24 ORDINARY_WINDOW, 1 PRE_WINDOW_CARRY_IN, 20 LATE_BREAKING (Snowflake-reconstructed).",
+      "subject_id": "x-observation:w37-grok-r3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Verifiable by recounting r3 tables against UTC window [2026-09-04T22:00Z, 2026-09-11T22:00Z)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Ordinary signal covers C1 Astra (6 URLs), C2 DeepSeek (8), C3 SWE-2/Fusion (4), C4 MiniCPM (4), C6 North (2); C5/C7/C8/C9/C10 have zero ordinary direct URLs (Late Breaking only or none).",
+      "subject_id": "x-observation:w37-grok-r3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Candidate ordinary table plus Sol correction (C1 2 INDEPENDENT+1 COMMUNITY+1 OFFICIAL; C6 2 COMMUNITY)."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "12 ordinary role-INDEPENDENT accounts (19 ordinary accounts: 12 INDEPENDENT/4 OFFICIAL/3 COMMUNITY); mandatory expansion floor cleared (12>=6).",
+      "subject_id": "x-observation:w37-grok-r3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Sol recount correcting r3 derived counts (35 total accounts, not 32; 19 ordinary, not 20)."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "No benchmark, price, license, architecture, availability, or safety fact is established by X; all technical claims require primary verification.",
+      "subject_id": "x-observation:w37-grok-r3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary; X remains Raw Observation."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "X observation only: no technical specification, benchmark, price, license, architecture, or release fact is established by this record.",
+      "subject_id": "x-observation:w37-grok-r3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Derived summary counts in r3 prose corrected by Sol review (35/19/2+1+1); row-level ledger governs.",
+      "subject_id": "x-observation:w37-grok-r3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Late-breaking rows must not enter ordinary-window totals.",
+      "subject_id": "x-observation:w37-grok-r3",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "primary-verification-c1-c4",
+        "status": "UNRESOLVED",
+        "finding": "Companion primary records verify C1-C4; X itself establishes no technical fact; no promotion enforced.",
+        "subject_ids": [
+          "x-observation:w37-grok-r3"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "primary-verification-c1-c4: Companion primary records verify C1-C4; X itself establishes no technical fact; no promotion enforced."
+    ],
+    "contradictions": []
+  }
+}

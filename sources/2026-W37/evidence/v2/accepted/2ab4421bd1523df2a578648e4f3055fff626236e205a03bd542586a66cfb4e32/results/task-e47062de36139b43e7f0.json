@@ -1,0 +1,154 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "evidence_task_id": "evidence:2026-W37:8c92923f2ef2f392",
+  "basis": {
+    "task_sha256": "7f47efb2439bb7779d36b74477fb5e05efb96d295a65aac17ea1dc6fbb5e99d2",
+    "screening_acceptance_sha256": "10530320da67797c5d81c0f46aa587f2f8c5d397976c373b97a84fe8a60aae96",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "North Small Translate",
+      "canonical_url": "https://cohere.com/blog/north-small-translate",
+      "entity_id": "model:cohere-north-small-translate",
+      "entity_type": "MODEL",
+      "organization": "Cohere"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model:cohere-north-small-translate",
+    "artifact_type": "MODEL",
+    "canonical_name": "North Small Translate",
+    "canonical_url": "https://cohere.com/blog/north-small-translate"
+  },
+  "temporal": {
+    "observed_at": "2026-09-18T23:25:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-10",
+        "subject_id": "model:cohere-north-small-translate",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://cohere.com/blog/north-small-translate",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Cohere North Small Translate (218B MoE, WMT26 83.6, CC BY-NC)",
+      "published_at": "2026-09-10",
+      "accessed_at": "2026-09-18T23:25:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Cohere Sep 10 releases North-Small-Translate-1.0: MoE 218B total 25B active 16K/16K 50+ langs; CC BY-NC 4.0 research; RWS/Language Weaver partnership; HF + docs + tech report.",
+      "subject_id": "model:cohere-north-small-translate",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Snapshot + availability as stated."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "WMT26 All Languages 83.60 (agentic 84.36) vs Qwen 397B 81.56, GLM 5.2 FP8 76.50, DeepL NextGen 81.37, Gemma 31B 79.46, Google Translate 68.20; judged with GPT-5.6-Sol; regional/long-context/throughput/cost breakdowns as stated.",
+      "subject_id": "model:cohere-north-small-translate",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Benchmark sections; judge + vendor-test bounds."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Throughput 1.4x vs Gemma 31B (112 vs 81 TOPS low, 39 vs 30 high); long-context 48.9 vs Google 21.3/Gemma 19.4; $0.000676/task 661 tokens (80.1) vs Gemini Pro $0.038928.",
+      "subject_id": "model:cohere-north-small-translate",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Efficiency sections; internal-test bounds."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "WMT26 judge (GPT-5.6-Sol) and sampling not independently verified; per-language tables not consumed.",
+      "subject_id": "model:cohere-north-small-translate",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Throughput/cost internal tests on identical hardware vendor-described.",
+      "subject_id": "model:cohere-north-small-translate",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "CC BY-NC blocks commercial use; Model Vault license required for production (funnel bound).",
+      "subject_id": "model:cohere-north-small-translate",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "judge-bias",
+        "status": "UNRESOLVED",
+        "finding": "WMT26 via GPT-5.6-Sol judge; independent verification absent.",
+        "subject_ids": [
+          "model:cohere-north-small-translate"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "commercial-license",
+        "status": "VERIFIED",
+        "finding": "CC BY-NC research + Vault funnel consumed as stated.",
+        "subject_ids": [
+          "model:cohere-north-small-translate"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "judge-bias: WMT26 via GPT-5.6-Sol judge; independent verification absent."
+    ],
+    "contradictions": []
+  }
+}

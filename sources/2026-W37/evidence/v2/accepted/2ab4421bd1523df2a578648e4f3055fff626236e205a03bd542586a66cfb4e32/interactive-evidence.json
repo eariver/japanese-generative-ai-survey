@@ -1,0 +1,717 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "runner": {
+    "provider": "muse-spark",
+    "model": "muse-spark-1.3",
+    "invocation": "sol-evidence-w37-20260918-r1",
+    "generated_at": "2026-09-18T23:25:00Z"
+  },
+  "records": [
+    {
+      "artifact_type": "OTHER",
+      "carry_over": false,
+      "claims": [
+        {
+          "text": "The r3 ledger persists 45 exact direct X status URLs with Sol-corrected canonical classes: 24 ORDINARY_WINDOW, 1 PRE_WINDOW_CARRY_IN, 20 LATE_BREAKING (Snowflake-reconstructed).",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Verifiable by recounting r3 tables against UTC window [2026-09-04T22:00Z, 2026-09-11T22:00Z)."
+        },
+        {
+          "text": "Ordinary signal covers C1 Astra (6 URLs), C2 DeepSeek (8), C3 SWE-2/Fusion (4), C4 MiniCPM (4), C6 North (2); C5/C7/C8/C9/C10 have zero ordinary direct URLs (Late Breaking only or none).",
+          "evidence_class": "SOCIAL_OBSERVATION",
+          "context": "Candidate ordinary table plus Sol correction (C1 2 INDEPENDENT+1 COMMUNITY+1 OFFICIAL; C6 2 COMMUNITY)."
+        },
+        {
+          "text": "12 ordinary role-INDEPENDENT accounts (19 ordinary accounts: 12 INDEPENDENT/4 OFFICIAL/3 COMMUNITY); mandatory expansion floor cleared (12>=6).",
+          "evidence_class": "SOCIAL_OBSERVATION",
+          "context": "Sol recount correcting r3 derived counts (35 total accounts, not 32; 19 ordinary, not 20)."
+        },
+        {
+          "text": "No benchmark, price, license, architecture, availability, or safety fact is established by X; all technical claims require primary verification.",
+          "evidence_class": "SOCIAL_OBSERVATION",
+          "context": "Evidence boundary; X remains Raw Observation."
+        }
+      ],
+      "discovery_id": "w37-grok-r3-45-url-ledger",
+      "entity": {
+        "canonical_name": "W37 Grok/X r3 observation corpus",
+        "canonical_url": null,
+        "entity_id": "x-observation:w37-grok-r3",
+        "entity_type": "OTHER",
+        "organization": null
+      },
+      "limitations": [
+        "X observation only: no technical specification, benchmark, price, license, architecture, or release fact is established by this record.",
+        "Derived summary counts in r3 prose corrected by Sol review (35/19/2+1+1); row-level ledger governs.",
+        "Late-breaking rows must not enter ordinary-window totals."
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Sol: required Weekly community-signal authority; grounds momentum/adoption and lane negative-space audit.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance"
+      ],
+      "status": "PARTIAL",
+      "verification": [
+        {
+          "target": "primary-verification-c1-c4",
+          "status": "UNRESOLVED",
+          "finding": "Companion primary records verify C1-C4; X itself establishes no technical fact; no promotion enforced."
+        }
+      ],
+      "window_relation": "MAIN_EVENT"
+    },
+    {
+      "artifact_type": "PRODUCT",
+      "carry_over": false,
+      "claims": [
+        {
+          "text": "OpenAI Sep 10 introduces ChatGPT for Financial Services: tailored ChatGPT Work with GPT-6 Astra reasoning for research, financial modeling, client materials; design partners Morgan Stanley and Evercore; investment banking/equity research start.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Announcement lede + Frontier research section; eligible institutions availability."
+        },
+        {
+          "text": "Built-in indexed/hosted data from Daloopa, PitchBook, LSEG News, Crunchbase (plus Fiscal.ai per quotes) covering transcripts/statements/fundamentals/private companies; no separate contracts/connectors; granular citations; shared sign-in with S&P Capital IQ/LSEG/MSCI/Dow Jones Factiva/Moody's; 50+ connectors incl Datasite/Box/Preqin/FactSet/Intapp.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Data sections as stated; provider lists consumed as stated."
+        },
+        {
+          "text": "GPT-6 Astra stated SOTA across retrieval/reasoning/artifact generation for finance; OfficeQA Pro 69.9% vs GPT-5.6 Sol 60.2% (Treasury Bulletins tables/footnotes); templates via Excel/Word/PowerPoint admin; Enterprise SAML/SCIM/RBAC, no-train-by-default, encryption, retention, compliance export.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Put-to-work + templates + governance sections; benchmark vendor-reported."
+        }
+      ],
+      "discovery_id": "w37-primary-astra-finserv-20260910",
+      "entity": {
+        "canonical_name": "ChatGPT for Financial Services",
+        "canonical_url": "https://openai.com/index/introducing-chatgpt-financial-services",
+        "entity_id": "product:openai-chatgpt-financial-services",
+        "entity_type": "PRODUCT",
+        "organization": "OpenAI"
+      },
+      "limitations": [
+        "OfficeQA/BoxBench/slide-creation methodology pages not consumed; benchmark sampling/judging unverified.",
+        "Pricing, entitlement limits, region availability not stated in source.",
+        "Data-accuracy/latency improvements vendor-described without independent testing."
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Sol: Sep 10 Astra vertical packaging is the W37 C1 main event; data/benchmark/governance bounds attached.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance"
+      ],
+      "status": "VERIFIED",
+      "verification": [
+        {
+          "target": "pricing/entitlement-limits",
+          "status": "UNRESOLVED",
+          "finding": "Pricing/entitlement/region limits not stated in source."
+        },
+        {
+          "target": "benchmark-methodology",
+          "status": "UNRESOLVED",
+          "finding": "OfficeQA/BoxBench methodology not consumed; vendor-reported."
+        }
+      ],
+      "window_relation": "MAIN_EVENT"
+    },
+    {
+      "artifact_type": "PRODUCT",
+      "carry_over": false,
+      "claims": [
+        {
+          "text": "OpenAI Sep 10 launches GPT-Live-1 in API: full-duplex single-model listen+speak; interruption handling without STT-LLM-TTS handoffs; delegation of reasoning/tool calls to Astra/third-party; tone/pace/style via prompt; noise/silence handling; long-session retention; telephony.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Key strengths + architecture sections as stated."
+        },
+        {
+          "text": "Full Duplex Bench +30pp over GPT-Realtime-2.1; Tau3 #1 with Astra medium; Speak ~80% fewer interruptions; Yelp/Speak/Fin/Cognition early users; 12+ voices; ASR transcripts/keyword biasing.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Evaluations + customers sections; vendor-reported without consumed methodology."
+        },
+        {
+          "text": "Available today at $0.05/min voice layer; pair with backend model/harness; custom voices via sales.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Pricing & Availability as stated."
+        }
+      ],
+      "discovery_id": "w37-primary-gpt-live-api-20260910",
+      "entity": {
+        "canonical_name": "GPT-Live-1 in API",
+        "canonical_url": "https://openai.com/index/introducing-gpt-live-1-in-the-api",
+        "entity_id": "product:openai-gpt-live-1-api",
+        "entity_type": "PRODUCT",
+        "organization": "OpenAI"
+      },
+      "limitations": [
+        "Full Duplex Bench/Tau3 methodology, sampling, and comparator runs not consumed.",
+        "Language/dialect coverage and telephony provider scope not fully bounded in source.",
+        "Customer quotes vendor-selected; no independent deployment verification."
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Sol: Sep 10 voice API is the W37 C5 main event (X had zero ordinary, primary establishes ordinary materiality); bounds attached.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance"
+      ],
+      "status": "VERIFIED",
+      "verification": [
+        {
+          "target": "benchmark-methodology",
+          "status": "UNRESOLVED",
+          "finding": "Full Duplex Bench/Tau3 methodology not consumed; vendor-reported."
+        },
+        {
+          "target": "language-coverage",
+          "status": "UNRESOLVED",
+          "finding": "Language/dialect/telephone scope not fully bounded."
+        }
+      ],
+      "window_relation": "MAIN_EVENT"
+    },
+    {
+      "artifact_type": "PRODUCT",
+      "carry_over": false,
+      "claims": [
+        {
+          "text": "OpenAI Sep 10 introduces Agents API in public beta: managed Codex harness + infrastructure; single-call agent creation (task/model/tools/environment, e.g. gpt-6-astra + MCP + 3 subagents); no added fee beyond tokens/tools.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Lede + build/start sections as stated."
+        },
+        {
+          "text": "Environments: OpenAI-hosted sandbox (Codex/ChatGPT infra) or self/partner (Blaxel/Cloudflare/Daytona/DigitalOcean/E2B/Modal/Oracle/Runloop/Vercel); files/packages/skills/plugins config.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Environment sections as stated."
+        },
+        {
+          "text": "Harness: auto-compaction, tool-search + programmatic tool calling (MCP/functions/web search), multi-agent parallel subagents with own contexts; open-source Codex harness base; versioned upgrades.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Harness sections as stated; efficacy vendor-described."
+        }
+      ],
+      "discovery_id": "w37-primary-agents-api-20260910",
+      "entity": {
+        "canonical_name": "Agents API (Codex harness)",
+        "canonical_url": "https://openai.com/index/introducing-the-agents-api",
+        "entity_id": "product:openai-agents-api",
+        "entity_type": "PRODUCT",
+        "organization": "OpenAI"
+      },
+      "limitations": [
+        "Public-beta scope/GA timeline not stated; rate limits/regions not in source.",
+        "Partner integration depth and VPC/security specifics vendor-described without independent testing.",
+        "Customer quotes (Ciridae/Long Lake/etc.) vendor-selected."
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Sol: Sep 10 harness API advances the agent plane with GA/preview discipline; bounds attached.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance"
+      ],
+      "status": "VERIFIED",
+      "verification": [
+        {
+          "target": "GA-scope",
+          "status": "UNRESOLVED",
+          "finding": "Public-beta scope/GA timeline not stated."
+        },
+        {
+          "target": "pricing-limits",
+          "status": "UNRESOLVED",
+          "finding": "Rate/region limits not in source; no added fee stated."
+        }
+      ],
+      "window_relation": "MAIN_EVENT"
+    },
+    {
+      "artifact_type": "MODEL",
+      "carry_over": false,
+      "claims": [
+        {
+          "text": "DeepSeek Sep 10 introduces V4.1-Flash: 552B MoE CED (8B prefill/16B decode active), native multimodal, 1M context; new pretraining + larger RL; ahead of V4-Pro per vendor + multiple third parties.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Asymmetric architecture section as stated; third-party identity not named in source."
+        },
+        {
+          "text": "KV cache 1/4 HBM, 1/8 SSD, 890B/token (FP4 E2M1); cache-hit cost driver for agents; live on API as deepseek-flash; V4-Flash/Vision-Exp retired (compat route); V4-Pro to V4.1-Flash Sep 14 04:00Z until V4.1-Pro; peak/off-peak 50%; MIT weights; WorkBuddy/OpenCode support.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Cache/API/pricing/open sections as stated."
+        },
+        {
+          "text": "HF weights + tech report linked; 2000-GPU + storage cluster enterprise path; open-source inference collaboration.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Supporting open source section as stated."
+        }
+      ],
+      "discovery_id": "w37-primary-deepseek-v41-flash-20260910",
+      "entity": {
+        "canonical_name": "DeepSeek V4.1 Flash",
+        "canonical_url": "https://www.deepseek.com/en/news/deepseek-v4-1-flash",
+        "entity_id": "model:deepseek-v41-flash",
+        "entity_type": "MODEL",
+        "organization": "DeepSeek"
+      },
+      "limitations": [
+        "Benchmark tables/images truncated in edition-local HTML; per-benchmark methodology/sampling not consumed beyond vendor summary.",
+        "Named third parties behind 'multiple parties' not disclosed in source.",
+        "Serving support (vLLM/SGLang PRs) vendor-promised; engine support state fetch-time."
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Sol: Sep 10 efficient flagship is the W37 C2 main event; architecture/pricing/open bounds attached.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance"
+      ],
+      "status": "VERIFIED",
+      "verification": [
+        {
+          "target": "third-party-test-identity",
+          "status": "UNRESOLVED",
+          "finding": "'Multiple parties' unnamed; independent repro absent."
+        },
+        {
+          "target": "serving-support",
+          "status": "UNRESOLVED",
+          "finding": "vLLM/SGLang support vendor-promised; fetch-time state."
+        }
+      ],
+      "window_relation": "MAIN_EVENT"
+    },
+    {
+      "artifact_type": "OTHER",
+      "carry_over": false,
+      "claims": [
+        {
+          "text": "API model ID deepseek-flash live; deepseek-v4-flash and vision-exp compat-route to V4.1-Flash; V4-Pro to V4.1-Flash Sep 14 04:00Z at Flash rates until V4.1-Pro.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "API docs news as stated."
+        },
+        {
+          "text": "Peak hours UTC 1-4AM + 6-10AM Mon-Fri; off-peak 50%; new pricing effective Sep 10 04:00Z; HF + paper linked.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Pricing/availability as stated."
+        }
+      ],
+      "discovery_id": "w37-primary-deepseek-api-20260910",
+      "entity": {
+        "canonical_name": "DeepSeek V4.1 Flash API binding",
+        "canonical_url": "https://api-docs.deepseek.com/news/news260910/",
+        "entity_id": "doc:deepseek-v41-api",
+        "entity_type": "OTHER",
+        "organization": "DeepSeek"
+      },
+      "limitations": [
+        "Per-token price table values in images not fully consumed; billing-adjustment acceptance terms vendor-stated.",
+        "V4.1-Pro launch date not in source."
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Sol: API operational companion to launch record; binds IDs/retirement/pricing.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance"
+      ],
+      "status": "VERIFIED",
+      "verification": [
+        {
+          "target": "v41-pro-timeline",
+          "status": "VERIFIED",
+          "finding": "Sep 14 04:00Z routing until V4.1-Pro consumed as stated docs."
+        }
+      ],
+      "window_relation": "MAIN_EVENT"
+    },
+    {
+      "artifact_type": "MODEL",
+      "carry_over": false,
+      "claims": [
+        {
+          "text": "Cognition Sep 10 introduces SWE-2: post-trained from Kimi K3 2.8T with RL (cost penalties, baselines, rollout serving, 3x envs); FrontierCode 1.1 Main 50.0% within 1pt Fable 5.1 at 64% less; within points of Astra at quarter cost.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Lede + Pareto + benchmark table as stated."
+        },
+        {
+          "text": "DeepSWE 1.1 73.0%, Terminal-Bench 2.1 92.8%, Terminal-Bench 4 27.3%; vs SWE-1.7 58% fewer turns 81% less cost at higher score; medium 53 steps vs 127; first edit median 18 vs 48.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Benchmark/behavior sections; vendor tables."
+        },
+        {
+          "text": "Available today in Devin Desktop/CLI, rolling to Web/Fusion; effort levels medium/high/max; Appendix A harness disclosure (Claude Code/Codex/Grok Build/Devin CLI by model).",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Availability + methodology appendix as stated."
+        }
+      ],
+      "discovery_id": "w37-primary-swe2-20260910",
+      "entity": {
+        "canonical_name": "Cognition SWE-2",
+        "canonical_url": "https://cognition.com/blog/swe-2",
+        "entity_id": "model:cognition-swe-2",
+        "entity_type": "MODEL",
+        "organization": "Cognition"
+      },
+      "limitations": [
+        "All benchmarks vendor-run or vendor-compiled; independent reproduction absent.",
+        "Cost figures assume list pricing incl discounts; task-distribution sensitivity vendor-described.",
+        "K3 base RL headroom vendor-interpreted."
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Sol: Sep 10 coding model is the W37 C3 main event; benchmark/cost/harness bounds attached.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance"
+      ],
+      "status": "VERIFIED",
+      "verification": [
+        {
+          "target": "harness-bias",
+          "status": "VERIFIED",
+          "finding": "Appendix A harness disclosure consumed as bound."
+        },
+        {
+          "target": "cost-repro",
+          "status": "UNRESOLVED",
+          "finding": "List-pricing costs; independent repro absent."
+        }
+      ],
+      "window_relation": "MAIN_EVENT"
+    },
+    {
+      "artifact_type": "PRODUCT",
+      "carry_over": false,
+      "claims": [
+        {
+          "text": "Cognition Sep 11 brings Fusion to Desktop/CLI: lead (frontier planning/review) + sidekick (SWE-2 execution) parallel agents with own contexts; recommend Fable 5.1 + SWE-2; up to 39% more efficient vs other harnesses.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Lede + architecture as stated."
+        },
+        {
+          "text": "Partnered Artificial Analysis/Vals AI tables: DeepSWE -46%/-40%, Terminal-Bench 4 -23%/-40%, SWE-Atlas -34%/-37%, Vals Migration -41%/-20%, FrontierCode Ext -38%/-11% at near-parity scores; Coding Agent Index cited.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Savings section; partnered but vendor-presented."
+        },
+        {
+          "text": "Tuning per pair (brief detail, pushback, exploration boundary); stronger sidekick can lower total cost (SWE-2 medium $2.34 vs Luna $2.39 example).",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Tuning/economics as vendor-described."
+        }
+      ],
+      "discovery_id": "w37-primary-fusion-20260911",
+      "entity": {
+        "canonical_name": "Devin Fusion harness",
+        "canonical_url": "https://cognition.com/blog/local-fusion",
+        "entity_id": "product:cognition-fusion",
+        "entity_type": "PRODUCT",
+        "organization": "Cognition"
+      },
+      "limitations": [
+        "Partnered eval methodology/sampling not consumed beyond vendor summary; date-bound leaderboard values.",
+        "39% headline is max across table, not uniform; per-benchmark deltas must be cited, not generalized.",
+        "Generalization to untested lead/sidekick pairs not established."
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Sol: Sep 11 harness efficiency is ordinary W37 agent-plane evidence; partnered-eval bounds attached.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance"
+      ],
+      "status": "VERIFIED",
+      "verification": [
+        {
+          "target": "eval-repro",
+          "status": "UNRESOLVED",
+          "finding": "Partnered AA/Vals AI tables vendor-presented; independent repro absent."
+        },
+        {
+          "target": "pair-generality",
+          "status": "UNRESOLVED",
+          "finding": "Untested lead/sidekick pairs not established."
+        }
+      ],
+      "window_relation": "MAIN_EVENT"
+    },
+    {
+      "artifact_type": "MODEL",
+      "carry_over": false,
+      "claims": [
+        {
+          "text": "OpenBMB Sep 7 (repo Sep 6) releases MiniCPM5-2B: dense 2.5B LlamaForCausalLM Apache-2.0; 42 layers GQA 16Q/2KV; 131072 context; on-device/local/resource-constrained SOTA claim.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Model info + highlights as stated."
+        },
+        {
+          "text": "Average 53.9 in comparison set (ahead of 2B baselines and 4B best 51.1); LiveCodeBench 69.1, AIME 25/26 86.5, MATH-500 94.6, SWE-bench Verified 46.4, GAIA 88.7, tau2 Telecom 97.1, BFCL 66.6 (vendor tables, some AA-sourced).",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Evaluation table as stated; vendor + AA mix."
+        },
+        {
+          "text": "Standard arch loads in vLLM/SGLang/llama.cpp/Transformers/Ollama with no fork; minicpm5 tool parser; UltraData family open; RL+OPD +10.96/+6.96 avg gains vendor-reported.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Quickstart/tool/deployment sections as stated."
+        }
+      ],
+      "discovery_id": "w37-primary-minicpm5-2b-20260907",
+      "entity": {
+        "canonical_name": "MiniCPM5-2B",
+        "canonical_url": "https://huggingface.co/openbmb/MiniCPM5-2B",
+        "entity_id": "model:openbmb-minicpm5-2b",
+        "entity_type": "MODEL",
+        "organization": "OpenBMB"
+      },
+      "limitations": [
+        "All benchmark figures card-reported and externally unreproduced; AA-marked rows still vendor-presented here.",
+        "Release-day attribution Sep 7 from recipe/secondary (HF page shows no explicit date); hour-level precision not asserted.",
+        "Quant/serving performance across chips vendor-described."
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Sol: Sep 7 open-efficient release is the W37 C4 main event; license/date/benchmark bounds attached.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance"
+      ],
+      "status": "VERIFIED",
+      "verification": [
+        {
+          "target": "benchmark-repro",
+          "status": "UNRESOLVED",
+          "finding": "Card-reported; independent repro absent."
+        },
+        {
+          "target": "quant-performance",
+          "status": "UNRESOLVED",
+          "finding": "Quant/chip performance vendor-described."
+        }
+      ],
+      "window_relation": "MAIN_EVENT"
+    },
+    {
+      "artifact_type": "MODEL",
+      "carry_over": false,
+      "claims": [
+        {
+          "text": "Cohere Sep 10 releases North-Small-Translate-1.0: MoE 218B total 25B active 16K/16K 50+ langs; CC BY-NC 4.0 research; RWS/Language Weaver partnership; HF + docs + tech report.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Snapshot + availability as stated."
+        },
+        {
+          "text": "WMT26 All Languages 83.60 (agentic 84.36) vs Qwen 397B 81.56, GLM 5.2 FP8 76.50, DeepL NextGen 81.37, Gemma 31B 79.46, Google Translate 68.20; judged with GPT-5.6-Sol; regional/long-context/throughput/cost breakdowns as stated.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Benchmark sections; judge + vendor-test bounds."
+        },
+        {
+          "text": "Throughput 1.4x vs Gemma 31B (112 vs 81 TOPS low, 39 vs 30 high); long-context 48.9 vs Google 21.3/Gemma 19.4; $0.000676/task 661 tokens (80.1) vs Gemini Pro $0.038928.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Efficiency sections; internal-test bounds."
+        }
+      ],
+      "discovery_id": "w37-primary-north-translate-20260910",
+      "entity": {
+        "canonical_name": "North Small Translate",
+        "canonical_url": "https://cohere.com/blog/north-small-translate",
+        "entity_id": "model:cohere-north-small-translate",
+        "entity_type": "MODEL",
+        "organization": "Cohere"
+      },
+      "limitations": [
+        "WMT26 judge (GPT-5.6-Sol) and sampling not independently verified; per-language tables not consumed.",
+        "Throughput/cost internal tests on identical hardware vendor-described.",
+        "CC BY-NC blocks commercial use; Model Vault license required for production (funnel bound)."
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Sol: Sep 10 translation MoE is ordinary W37 vertical open-weights evidence; judge/license bounds attached.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance"
+      ],
+      "status": "VERIFIED",
+      "verification": [
+        {
+          "target": "judge-bias",
+          "status": "UNRESOLVED",
+          "finding": "WMT26 via GPT-5.6-Sol judge; independent verification absent."
+        },
+        {
+          "target": "commercial-license",
+          "status": "VERIFIED",
+          "finding": "CC BY-NC research + Vault funnel consumed as stated."
+        }
+      ],
+      "window_relation": "MAIN_EVENT"
+    },
+    {
+      "artifact_type": "MODEL",
+      "carry_over": false,
+      "claims": [
+        {
+          "text": "InclusionAI listing Sep 10 (repo Sep 4, FP8 Sep 8): Ling-3.0-flash-VL native multimodal on Ling-3.0-flash; 124B total 5.5B active; image+video in; 256K context; KDA/Gated MLA 5:1 + MoE; MIT.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Intro/overview as stated; date attribution bound."
+        },
+        {
+          "text": "AA Intelligence Index 42 (+4 over flash 38); Understand/Reason/Act dimensions; SGLang/vLLM recipes with ling3 parsers.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Evaluation/quickstart as stated."
+        }
+      ],
+      "discovery_id": "w37-primary-ling-vl-20260910",
+      "entity": {
+        "canonical_name": "Ling-3.0-flash-VL",
+        "canonical_url": "https://huggingface.co/inclusionAI/Ling-3.0-flash-VL",
+        "entity_id": "model:inclusion-ling-vl",
+        "entity_type": "MODEL",
+        "organization": "InclusionAI"
+      },
+      "limitations": [
+        "HF page shows no explicit publication date; Sep 4/8/10 phasing from secondary (OrcaRouter/Novita/OpenRouter); hour-level precision not asserted.",
+        "All benchmark figures card-reported; independent reproduction absent.",
+        "VideoRoPE/long-video efficacy vendor-described."
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Sol: ordinary W37 multimodal open evidence (X had zero ordinary; primary establishes ordinary); date bounds attached.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance"
+      ],
+      "status": "VERIFIED",
+      "verification": [
+        {
+          "target": "repo-hour",
+          "status": "UNRESOLVED",
+          "finding": "Sep 4 hour unresolved; Sep 8/10 bindings establish ordinary."
+        },
+        {
+          "target": "benchmark-repro",
+          "status": "UNRESOLVED",
+          "finding": "AA 42 card-reported; independent repro absent."
+        }
+      ],
+      "window_relation": "MAIN_EVENT"
+    },
+    {
+      "artifact_type": "OTHER",
+      "carry_over": false,
+      "claims": [
+        {
+          "text": "Anthropic Sep 10 publishes 8-month threat intel (Dec 2025-Aug 2026): 7 harm areas (cyber/surveillance/influence/scams/bio/conventional/distillation); Haiku/Sonnet/Opus only except 1 distillation; notable-examples not representative.",
+          "evidence_class": "PRIMARY_FACT",
+          "context": "Report scope/method as stated."
+        },
+        {
+          "text": "Cases: GTG-20006 Russian espionage (20+ orgs, AI-automated phishing/malware rebuild), GTG-50014 ShinyHunters opportunistic theft, GTG-10007 exploit foundries, AI supply-chain theft/resale; all disrupted + safeguards + authorities.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Case studies as vendor-reported investigations."
+        },
+        {
+          "text": "Five biological research cases among disrupted Dec25-Aug26 uses; no claim bioweapons produced or intent established.",
+          "evidence_class": "VENDOR_CLAIM",
+          "context": "Secondary (NPR/Reuters Sep 10) confirms scope with intent/production caveats."
+        }
+      ],
+      "discovery_id": "w37-primary-anthropic-threat-20260910",
+      "entity": {
+        "canonical_name": "Anthropic Threat Intel Sep 2026",
+        "canonical_url": "https://www.anthropic.com/threat-intelligence-report-september-2026",
+        "entity_id": "report:anthropic-threat-sep2026",
+        "entity_type": "OTHER",
+        "organization": "Anthropic"
+      },
+      "limitations": [
+        "Full PDF/IOCs not consumed; edition-local excerpts cover scope + case classes only.",
+        "Attribution (Midnight Blizzard etc.) vendor-consistent with public reporting, not independently verified here.",
+        "Distillation naming detail (Alibaba/Moonshot/DeepSeek/Xiaomi 190M) from Sep 11 timeline is late-breaking detail, not ordinary-window fact; report itself Sep 10 is ordinary."
+      ],
+      "materiality": "MATERIAL",
+      "materiality_rationale": "Sol: Sep 10 safety report is ordinary W37 safety-lane evidence; notable-examples + late-detail bounds attached.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance"
+      ],
+      "status": "VERIFIED",
+      "verification": [
+        {
+          "target": "case-repro",
+          "status": "UNRESOLVED",
+          "finding": "Vendor investigations; independent repro absent; notable-examples bound."
+        },
+        {
+          "target": "distillation-attribution",
+          "status": "UNRESOLVED",
+          "finding": "Sep 11 naming detail late-breaking; report Sep 10 ordinary only."
+        }
+      ],
+      "window_relation": "MAIN_EVENT"
+    },
+    {
+      "artifact_type": "OTHER",
+      "carry_over": false,
+      "claims": [
+        {
+          "text": "AP Sep 9 via PBS: Jacob Coxon (3y OpenAI+Anthropic pretraining) announced resignation Tuesday on X; 'racing straight to self-improving superintelligence and gambling with our lives'; posts reached 100M+ overnight.",
+          "evidence_class": "SOCIAL_OBSERVATION",
+          "context": "Secondary news of X statements as stated."
+        },
+        {
+          "text": "Summer breakout context (models obtaining unauthorized access), IPO competition, China-race context as news framing.",
+          "evidence_class": "SOCIAL_OBSERVATION",
+          "context": "News context as stated."
+        }
+      ],
+      "discovery_id": "w37-secondary-safety-resignation-20260909",
+      "entity": {
+        "canonical_name": "Coxon resignation discourse",
+        "canonical_url": "https://www.pbs.org/newshour/science/anthropic-researchers-resignation-sends-warning-about-the-dangers-of-ai-development",
+        "entity_id": "event:coxon-resignation-sep2026",
+        "entity_type": "OTHER",
+        "organization": null
+      },
+      "limitations": [
+        "Secondary news only; X post bodies not independently retrieved; no technical model fact established.",
+        "Quotes are reported speech, not verified technical claims.",
+        "Anthropic/OpenAI non-response noted in source."
+      ],
+      "materiality": "CONTEXT",
+      "materiality_rationale": "Sol: safety-discourse context for W37 safety lane; supports 'why now' for threat-intel package without promoting discourse to technical fact.",
+      "scope_dimensions": [
+        "current relevance",
+        "technical significance"
+      ],
+      "status": "PARTIAL",
+      "verification": [
+        {
+          "target": "x-primary-text",
+          "status": "UNRESOLVED",
+          "finding": "Secondary only; X primary not bound; no technical promotion."
+        }
+      ],
+      "window_relation": "MAIN_EVENT"
+    }
+  ],
+  "completeness": {
+    "closure": null,
+    "obligations": [
+      {
+        "obligation_id": "weekly:carry-over",
+        "status": "SATISFIED",
+        "rationale": "Zero formal inherited obligations: W36 RELEASED selection scanned fresh (SELECTED/HOLD, no HOLD_OUT/WATCHLIST/LATE_BREAKING carry roles); all W36 SELECTED are pre-window for W37 with no new W37 development. No CARRY_OVER Discovery records required."
+      },
+      {
+        "obligation_id": "weekly:current-relevance",
+        "status": "SATISFIED",
+        "rationale": "W37 belonging established: FinServ/Live/Agents Sep 10, DeepSeek Sep 10, SWE-2 Sep 10, Fusion Sep 11, MiniCPM Sep 7, North Sep 10, Ling Sep 10, Threat Sep 10, Coxon Sep 9 are ordinary; GLM-5.5 rumor disposed as DROP; image/video quiet explicitly examined."
+      },
+      {
+        "obligation_id": "weekly:technical-significance",
+        "status": "SATISFIED",
+        "rationale": "Significance verified per candidate without Weekly timing alone: Astra vertical, voice API, harness API, efficient flagship architecture, coding Pareto, harness efficiency, on-device SOTA, translation MoE, multimodal MoE, threat report each carry source-backed substance with explicit vendor/judge/methodology bounds; X never promoted."
+      }
+    ],
+    "residual_limitations": [
+      "All vendor benchmark figures externally unreproduced; judge-based (WMT26/GPT-5.6-Sol) and partnered (Fusion) methods not independently verified.",
+      "OpenAI pages via webfetch excerpts (curl blocked); full pages consumed via webfetch 2026-09-18.",
+      "Ling VL repo hour Sep 4 unresolved; Sep 8/10 bindings establish ordinary materiality.",
+      "Fusion Sep 11 assumed ordinary daytime; late-breaking hour precision not asserted.",
+      "Image (D) and video (E) lanes quiet after examination; quiet is a finding, not proof of non-existence.",
+      "Threat full PDF/IOCs not consumed; distillation naming detail Sep 11 is late-breaking, excluded from ordinary facts.",
+      "Resignation is secondary discourse only; X primary not bound."
+    ]
+  }
+}
