@@ -55,6 +55,182 @@ Operational rules:
 5. The result remains Raw Observation. Downstream ChatGPT performs primary-source verification, repository import, and Discovery disposition.
 6. Do not treat a missing ChatGPT-side Grok connector as relevant; this run is intentionally invoked by Human-mediated Drive task-file handoff.
 
+
+---
+
+# W37 Sol Hardening Addendum — URL breadth, low-yield expansion, and open-world discovery
+
+Status: `W37_EDITION_LOCAL / PRE_GROK_REVIEW_R2`
+
+This addendum is mandatory for this W37 run. It strengthens the current Common Policy v1 and Weekly Overlay v1 without changing the evidence boundary: X remains Raw Observation / community signal, never final technical Evidence authority.
+
+## 1. Search phases
+
+Perform all of the following before finalizing the result.
+
+### Phase 1 — complete A–L lane scan
+
+Run the Weekly Overlay A–L coverage scan as written. Do not stop after finding several high-salience known releases.
+
+For **any** lane that ends the first pass as `NONE_FOUND`, `NONE_FOUND_CONFIRMED`, or `UNCERTAIN`, record the searches performed. C/D/E/F still require the existing targeted second pass. Other weak lanes may trigger the run-level expansion rules below.
+
+### Phase 2 — open-world / unknown-unknown discovery
+
+After the lane scan, run at least one independent open-world pass whose purpose is to discover topics that were **not supplied or anticipated by this task**.
+
+This pass must include:
+
+1. vendor/model/project-name-agnostic generative-AI technical searches;
+2. inspection of independent developers, researchers, OSS maintainers, evaluators, and operators;
+3. keyword snowballing from at least the material unfamiliar terms/projects/accounts discovered during the pass;
+4. at least one-hop graph expansion from promising posts through quote-posts, replies, related accounts, maintainers, repositories, papers, or newly surfaced terminology when available;
+5. explicit attention to grassroots runtime/inference work, quantization, reproduction failures, benchmark regressions, agent/MCP/harness tooling, security incidents, emerging multimodal/audio/video workflows, undocumented operational constraints, and fast-moving research adoption;
+6. retention of material candidates that do not fit neatly into the pre-existing 12-lane vocabulary.
+
+Do not merely rerun the known-event list with broader keywords.
+
+Every candidate must record one or more discovery origins from:
+
+- `KNOWN_EVENT_FOLLOWUP`
+- `LANE_SEARCH`
+- `OPEN_WORLD_X`
+- `ACCOUNT_GRAPH_EXPANSION`
+- `KEYWORD_SNOWBALL`
+- `LATE_BREAKING`
+
+The final result must contain either:
+
+- **Unexpected / Open-world discoveries** — list every material or potentially material candidate found through the open-world pass; or
+- **No unexpected material discovery after open-world pass** — state this explicitly and summarize what open-world searches/expansions were attempted.
+
+## 2. Candidate-level X provenance
+
+Do not provide only prose summaries for strong topics. Keep a **full deduplicated candidate pool** including selected and useful non-selected candidates.
+
+For every plausible material candidate, record at least:
+
+- stable candidate heading or local candidate ID;
+- coverage lane(s);
+- discovery origin(s);
+- underlying event;
+- underlying event date/time if known;
+- X momentum start/peak/persistence if observable;
+- why now;
+- representative X post URLs;
+- each representative account;
+- post date/time when available;
+- account/source role: `OFFICIAL`, `INDEPENDENT`, or `COMMUNITY`;
+- unique X URL count for the candidate;
+- independent-account count for the candidate;
+- source-breadth classification;
+- community reaction / counter-signal;
+- primary-source candidate(s);
+- verification-needed claims;
+- confidence;
+- candidate disposition for this Raw intake.
+
+Use these source-breadth classifications:
+
+- `MULTI_ACCOUNT_X` — supported by two or more independent/non-affiliated accounts;
+- `SINGLE_SOURCE_X` — only one usable X source/account supports the observation;
+- `OFFICIAL_ONLY_X` — usable X signal is only first-party/official;
+- `UNVERIFIED_X_REFERENCE` — the observation could not be bound to a valid X post URL.
+
+A candidate may remain useful when single-source, but **do not describe broad community momentum or sustained cross-account discussion unless at least two independent/non-affiliated accounts support that claim**.
+
+Do not promote `UNVERIFIED_X_REFERENCE` into a material community-movement claim.
+
+## 3. Run-level low-yield diagnostic and mandatory expansion
+
+The following numbers are **under-search diagnostics, not publication quotas and not completeness criteria**.
+
+After the initial A–L scan plus the first open-world pass, calculate:
+
+- unique ordinary-window X post URLs;
+- unique independent accounts;
+- deduplicated candidate-pool size;
+- number of lanes ending `NONE_FOUND`, `NONE_FOUND_CONFIRMED`, or `UNCERTAIN`;
+- proportion of strong candidates that are `SINGLE_SOURCE_X` or `OFFICIAL_ONLY_X`.
+
+Trigger a **mandatory expansion pass** if **any** of the following is true:
+
+- fewer than **12 unique ordinary-window X post URLs**;
+- fewer than **6 unique independent accounts**;
+- fewer than **8 deduplicated candidates** in the full candidate pool;
+- **4 or more lanes** remain `NONE_FOUND` / `NONE_FOUND_CONFIRMED` / `UNCERTAIN`;
+- more than half of the strong candidates are `SINGLE_SOURCE_X` or `OFFICIAL_ONLY_X`.
+
+The expansion pass must:
+
+1. revisit every weak lane with different terminology/search framing;
+2. broaden independent-account/developer/researcher/OSS-maintainer searches;
+3. continue keyword snowballing from newly found entities;
+4. expand at least the strongest unfamiliar candidate through related posts/accounts/artifacts;
+5. look specifically for disagreement, failed reproduction, constraints, and low-engagement but technically concrete observations.
+
+**Do not keep searching merely until the diagnostic numbers are met.** One complete mandatory expansion pass is required when triggered. After that pass, if the numbers remain low, report the low yield honestly as a potentially quiet week or access/search limitation. Never invent candidates or URLs to satisfy a threshold.
+
+## 4. URL integrity and deduplication
+
+- Use direct X post/status URLs whenever available, not search-result URLs.
+- Never fabricate a post URL from an account name or quoted text.
+- Deduplicate the same post when seen through multiple searches.
+- Preserve distinct posts from the same account as distinct URLs but count the account once in account metrics.
+- Keep official posts and independent/community posts distinguishable.
+- When a candidate is based on an X thread, preserve the direct URLs needed to audit the relevant posts rather than citing only the account profile.
+
+## 5. Full candidate pool — no early silent drop
+
+The result must include a section **Full deduplicated candidate pool**.
+
+Do not list only the final strongest topics. Include plausible material candidates that were considered and not selected for the top set.
+
+Use a Raw-intake disposition such as:
+
+- `STRONG_CANDIDATE`
+- `CANDIDATE_NOT_SELECTED`
+- `SINGLE_SOURCE_X`
+- `LOW_CONFIDENCE`
+- `LATE_BREAKING`
+- `NO_MATERIAL_SIGNAL`
+
+A candidate omitted from the strong set must still be visible in this pool when it had enough substance to be considered.
+
+## 6. Required run-health summary
+
+Near the end of the result, include a **Run-health / breadth audit** with at least:
+
+- total unique X post URLs;
+- ordinary-window unique X post URLs;
+- Late Breaking unique X post URLs;
+- total unique accounts;
+- unique independent accounts;
+- unique official accounts;
+- full candidate-pool count;
+- strong-candidate count;
+- non-selected candidate count;
+- `MULTI_ACCOUNT_X` / `SINGLE_SOURCE_X` / `OFFICIAL_ONLY_X` / `UNVERIFIED_X_REFERENCE` counts;
+- candidates discovered via `OPEN_WORLD_X`, `ACCOUNT_GRAPH_EXPANSION`, or `KEYWORD_SNOWBALL`;
+- lane-by-lane final coverage status;
+- whether the low-yield expansion trigger fired;
+- what expansion actions were performed if it fired;
+- remaining access/search limitations.
+
+These metrics are diagnostic context for downstream Sol review; they are not evidence of technical truth.
+
+## 7. Downstream provenance boundary
+
+When X observation materially influences a candidate, preserve the direct X URL(s) so downstream ChatGPT can trace:
+
+`Grok Raw -> Discovery/raw reference -> community context -> Selection/Architecture role -> reader-facing community/source-note surface`
+
+where applicable.
+
+Do not replace an auditable URL with a vague statement such as "people on X discussed this."
+
+Technical claims still require separate primary/authoritative verification downstream.
+
+
 ---
 
 # Grok X Source Intake — Common Policy v1
