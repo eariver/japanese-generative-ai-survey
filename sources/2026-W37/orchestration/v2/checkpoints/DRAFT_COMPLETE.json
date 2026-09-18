@@ -1,0 +1,75 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "from_state": "DRAFT_COMPLETE",
+  "to_state": "VALIDATED_DRAFT",
+  "checkpoints": [
+    "validation"
+  ],
+  "recorded_at": "2026-09-19T00:31:00Z",
+  "implementation": {
+    "repository_commit_sha": "a28800cb0328abfdf5033f2a80144b80359be3e9",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "publication-pdf",
+      "path": "surveys/weekly/2026-W37/main.pdf",
+      "sha256": "9e957ca2d48dd95091e0013c0f2d23f1570ad9fac89b131365259f1c8e948e56"
+    },
+    {
+      "name": "quality-regression-bundle",
+      "path": "sources/2026-W37/publication/v2/quality-regression-bundle-v2.json",
+      "sha256": "7b2b474aa146f6deee818d04d7071d360cecdc86fe48373bed10b9b2ad0a3ef0"
+    },
+    {
+      "name": "reader-manuscript",
+      "path": "sources/2026-W37/publication/v2/reader-manuscript-v2.json",
+      "sha256": "9206c4cfe627366292e013aef9ad6d2d01df4205163eeb05bcd8d40685516730"
+    },
+    {
+      "name": "reader-surface-gate",
+      "path": "sources/2026-W37/publication/v2/reader-surface-gate-v2.json",
+      "sha256": "d250d98c8eb23ba860b03a3eb30a98e1194461220af999f624f852cac67eefdf"
+    },
+    {
+      "name": "semantic-review",
+      "path": "sources/2026-W37/publication/v2/semantic-editorial-review-v2.json",
+      "sha256": "277fe4bed85204b15bfc01a25018a9798eab1cf218c17708282bd6437a93581d"
+    },
+    {
+      "name": "validated-source",
+      "path": "surveys/weekly/2026-W37/main.tex",
+      "sha256": "8a1233d43f98e882f783e5b62ea9ce3fb7ae265a26e45b09afbd5d12cc7e4324"
+    },
+    {
+      "name": "visual-review",
+      "path": "sources/2026-W37/publication/v2/visual-review-v2.json",
+      "sha256": "1ccede46589b2e7f0a43833263d6bde10d7964c63bc4e8b9b89c85cae4e074a6"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "W37 Draft r3 #434-repaired reader-publication validation: exact 11-page CI PDF with 19/19 citation binding, deterministic bundle PASS, Worker/Agent semantic/editorial 11 PASS, Worker/Agent visual 2 PASS, lexical gate PASSED. Machine validation only.",
+      "result": {
+        "path": "sources/2026-W37/execution/validation/reader-publication-stage-validation-r3.json",
+        "sha256": "f8f0487bada4780fa565db21fbf96398b7fe8d92da164305e786bdad57f06f7f"
+      }
+    }
+  ],
+  "summary": "W37 Draft r3 reader-publication validation PASS: exact manuscript/source/11-page PDF/bundle/Worker reviews with 19/19 citations; advance DRAFT_COMPLETE -> VALIDATED_DRAFT."
+}
