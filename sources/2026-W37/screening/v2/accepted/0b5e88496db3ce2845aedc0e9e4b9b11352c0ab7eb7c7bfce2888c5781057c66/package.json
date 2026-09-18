@@ -1,0 +1,46 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "research_profile": "WEEKLY",
+  "basis": {
+    "profile_path": "sources/2026-W37/production-profile.json",
+    "profile_sha256": "e7b4eecf01d03c34bc54178cc2637538d37466462efe366224cc7f6369fc8e75",
+    "state_path": "sources/2026-W37/production-state.json",
+    "state_sha256": "f84d4fa9e455ad68fb4e00011af3fc16f25fed76fed9e1276dd7c5455a398191",
+    "discovery_path": "sources/2026-W37/discovery/discovery-v2.jsonl",
+    "discovery_sha256": "79a467a5e81d4fcead11e66847ec31a6e1dd67c11fb5f8f249cfc60226bf0832"
+  },
+  "prompt": {
+    "path": "config/prompts/source-screening-v2.md",
+    "sha256": "3e45900ead73688eab8734036e6e476c1ec4f1a7ce38da42d5ca52a68ef0a862"
+  },
+  "result_contract": {
+    "path": "schemas/screening-v2-batch-result.schema.json",
+    "sha256": "a05b65b41efbcaf654df5c3c5944254a76d93d8a28cab961f2c06f6d580da5a2"
+  },
+  "input": {
+    "record_count": 14,
+    "batch_policy": {
+      "max_records": 50,
+      "max_json_chars": 120000
+    },
+    "batches": [
+      {
+        "batch_id": "batch-001",
+        "path": "input/batches/batch-001.jsonl",
+        "record_count": 14,
+        "sha256": "f472c9128ccf5f8a1d39d8f3fa731de18e64d969b14ae28346f9b2a7426adf49"
+      }
+    ]
+  },
+  "expected_outputs": {
+    "file_pattern": "results/batch-###.json",
+    "one_result_per_batch": true,
+    "schema_version": "2.0-rc1"
+  },
+  "rules": [
+    "Exactly one decision is required for every discovery record and no extra discovery_id is allowed.",
+    "Core Screening uses free-form scope_tags; Weekly why_now and fixed A-L topic lanes are not result fields.",
+    "Discovery provenance is not evidence of materiality; uncertain records remain INSPECT/MAYBE until verified."
+  ]
+}

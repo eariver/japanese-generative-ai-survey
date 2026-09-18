@@ -1,0 +1,155 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "evidence_task_id": "evidence:2026-W37:e8e026fa956342ad",
+  "basis": {
+    "task_sha256": "5fa25e593f0d545a4ffe2129aaf01b0a47a4a625e352abf4926968a1f55510e2",
+    "screening_acceptance_sha256": "06cecd69db58ae4e9d28f81a69cf7bb8fcc1982ea0b51a39aa88efa5f48e2e9b",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "GPT-Live-1 in API",
+      "canonical_url": "https://openai.com/index/introducing-gpt-live-1-in-the-api",
+      "entity_id": "product:openai-gpt-live-1-api",
+      "entity_type": "PRODUCT",
+      "organization": "OpenAI"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "product:openai-gpt-live-1-api",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "GPT-Live-1 in API",
+    "canonical_url": "https://openai.com/index/introducing-gpt-live-1-in-the-api"
+  },
+  "temporal": {
+    "observed_at": "2026-09-19T00:20:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-10",
+        "subject_id": "product:openai-gpt-live-1-api",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://openai.com/index/introducing-gpt-live-1-in-the-api",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenAI GPT-Live-1 in API (full-duplex voice, delegation)",
+      "published_at": "2026-09-10",
+      "accessed_at": "2026-09-19T00:20:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "OpenAI Sep 10 launches GPT-Live-1 in the API as a separate full-duplex voice layer: single-model listen plus speak; it delegates reasoning/tool calls to a backend text model such as GPT-6 Astra or a third-party model; it is not itself an Astra package.",
+      "subject_id": "product:openai-gpt-live-1-api",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Key strengths and architecture sections as stated; product boundary preserved."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Full Duplex Bench plus-30pp over GPT-Realtime-2.1; Tau3 number 1 with Astra medium; early-user reports; 12-plus voices; ASR transcripts/keyword biasing.",
+      "subject_id": "product:openai-gpt-live-1-api",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evaluations and customers sections; vendor-reported without consumed methodology."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Available at 0.05 USD per min voice layer; pair with backend model/harness; custom voices via sales.",
+      "subject_id": "product:openai-gpt-live-1-api",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Pricing and Availability as stated."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full Duplex Bench/Tau3 methodology, sampling, comparator runs not consumed.",
+      "subject_id": "product:openai-gpt-live-1-api",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Language/dialect coverage and telephony provider scope not fully bounded in source.",
+      "subject_id": "product:openai-gpt-live-1-api",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Customer quotes vendor-selected; no independent deployment verification.",
+      "subject_id": "product:openai-gpt-live-1-api",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "benchmark-methodology",
+        "status": "UNRESOLVED",
+        "finding": "Full Duplex Bench/Tau3 methodology not consumed; vendor-reported.",
+        "subject_ids": [
+          "product:openai-gpt-live-1-api"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "language-coverage",
+        "status": "UNRESOLVED",
+        "finding": "Language/dialect/telephone scope not fully bounded.",
+        "subject_ids": [
+          "product:openai-gpt-live-1-api"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "benchmark-methodology: Full Duplex Bench/Tau3 methodology not consumed; vendor-reported.",
+      "language-coverage: Language/dialect/telephone scope not fully bounded."
+    ],
+    "contradictions": []
+  }
+}
