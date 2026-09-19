@@ -1,0 +1,66 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W38",
+  "from_state": "RELEASE_CANDIDATE",
+  "to_state": "FROZEN",
+  "checkpoints": [
+    "freeze"
+  ],
+  "recorded_at": "2026-09-19T10:47:27Z",
+  "implementation": {
+    "repository_commit_sha": "da1b4d3a1d553c36cdc266755dd4d7f20f79894f",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "freeze-record",
+      "path": "sources/2026-W38/publication/v2/freeze-record-v2.json",
+      "sha256": "a35a2de66586b064080a1a6a3c7cd16299f0e4b2b76f7f955839ec0a5e075119"
+    },
+    {
+      "name": "release-manifest",
+      "path": "sources/2026-W38/publication/v2/release-manifest-v2.json",
+      "sha256": "deb59f3467a0c260351b96cc5a3d5de81828925b9456d83440b4dd01981b9827"
+    },
+    {
+      "name": "visual-review-record",
+      "path": "sources/2026-W38/publication/v2/visual-review-v2.json",
+      "sha256": "6c35f867c706899fa47d78381037bb22e4245fbee4a71afff56664b669b9c4f9"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_stage_validation_v2 with bounded Freeze/Human-Gate artifact admission correction",
+      "evidence": "Canonical RELEASE_CANDIDATE -> FROZEN semantics validated against the exact approved W38 Publication Candidate (candidate file f3fadf14, internal 8aeb4dc4), Human Publication Preview r2 approval (d7723112), candidate-bound pre-preview VISUAL review, Freeze record and Release Manifest. Bounded Freeze/Human-Gate artifact admission correction applied runtime-only per W34/W35/W36/W37 precedent; no shared-Core change.",
+      "result": {
+        "path": "sources/2026-W38/execution/validation/freeze-stage-validation.json",
+        "sha256": "5a7481600849bc3afb01c0fc7125b2e2101ce88ed4381cc23a4775d19e6b5e93"
+      }
+    },
+    {
+      "check_id": "stage:freeze",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "survey_publication_v2.build_freeze + profile identity validation",
+      "evidence": "Freeze binds exact PDF SHA-256 3829c1660b55dbe808b3dec2ee14535bbba60ec6e5268f9a91276b71fae54933, 347330 bytes, 11 pages. visual-review-record is the already candidate-bound pre-preview VISUAL review; no post-approval review was invented. Production Profile and Quality Bundle bind WEEKLY_MAGAZINE and release identity weekly/2026-W38.",
+      "result": {
+        "path": "sources/2026-W38/execution/validation/freeze-stage-validation.json",
+        "sha256": "5a7481600849bc3afb01c0fc7125b2e2101ce88ed4381cc23a4775d19e6b5e93"
+      }
+    }
+  ],
+  "summary": "Freeze exact W38 r2 Human-approved Publication Preview bytes using the canonical candidate-bound visual authority and profile-verified weekly Release identity."
+}
