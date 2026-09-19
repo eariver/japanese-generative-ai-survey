@@ -1,0 +1,154 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W38",
+  "evidence_task_id": "evidence:2026-W38:7b03840a2ce915a7",
+  "basis": {
+    "task_sha256": "51e5c4f4793c2b216263cb73393ad796efa2863e5651f3555e17fa7176a2aa83",
+    "screening_acceptance_sha256": "5479635d63917c87e71aba6e52397c636800e80ccd6bdd05e38fd8516eacc668",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "Life Sciences Verification Program",
+      "canonical_url": "https://www.anthropic.com/news/life-sciences-verification-program",
+      "entity_id": "product:anthropic-lsvp",
+      "entity_type": "PRODUCT",
+      "organization": "Anthropic"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "product:anthropic-lsvp",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Life Sciences Verification Program",
+    "canonical_url": "https://www.anthropic.com/news/life-sciences-verification-program"
+  },
+  "temporal": {
+    "observed_at": "2026-09-19T05:55:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-17T00:00:00Z",
+        "subject_id": "product:anthropic-lsvp",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://www.anthropic.com/news/life-sciences-verification-program",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Anthropic: Life Sciences Verification Program (Sep 17)",
+      "published_at": "2026-09-17T00:00:00Z",
+      "accessed_at": "2026-09-19T05:55:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Anthropic Sep 17 launches Life Sciences Verification Program (beta, teams/institutions; individual plans later): Mythos, Opus, Sonnet with refined biology-permissive safeguards for drug discovery, research biology, clinical development, manufacturing; dozens onboarded via early access; hundreds expected first week.",
+      "subject_id": "product:anthropic-lsvp",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Announcement lede and availability as stated."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Standard Use grants (whole teams, yearly renewal; Mythos 5.1, Opus 5, Sonnet 5) vs High-risk Use add-on (single project, 6-month renewal, removes life-science blocks; Opus 5/Sonnet 5 today, Mythos limited pending US-government coordination); verification of credentials/security/ethics oversight; other safeguards (cyber) remain.",
+      "subject_id": "product:anthropic-lsvp",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Grants section as stated."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Shared-responsibility offline monitoring against stated use-cases (access compromise, insider, agent misuse); 30-day retention for flagged traffic, compartmentalized, excluded from training and life-science teams; EFS integration explored; first-party console + Enterprise/Team surfaces (no third-party platforms; no BAA orgs).",
+      "subject_id": "product:anthropic-lsvp",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Monitoring section as stated."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Mythos 5.1 release timing/identity not evidenced on this page (association only); do not date Mythos 5.1 from here.",
+      "subject_id": "product:anthropic-lsvp",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Dual-use risk framing is vendor context; wider community risk discussion retained as context only.",
+      "subject_id": "product:anthropic-lsvp",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Enrollment and retention figures are vendor-stated plans.",
+      "subject_id": "product:anthropic-lsvp",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "grant-mechanics",
+        "status": "VERIFIED",
+        "finding": "Grant types, renewal terms, model scope, retention, and surface limits verified as stated on page.",
+        "subject_ids": [
+          "product:anthropic-lsvp"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "mythos-release-timing",
+        "status": "UNRESOLVED",
+        "finding": "Mythos 5.1 launch date/identity not established from this page; association-only.",
+        "subject_ids": [
+          "product:anthropic-lsvp"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "mythos-release-timing: Mythos 5.1 launch date/identity not established from this page; association-only."
+    ],
+    "contradictions": []
+  }
+}

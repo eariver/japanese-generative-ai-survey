@@ -1,0 +1,62 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W38",
+  "from_state": "CANDIDATES_NORMALIZED",
+  "to_state": "EVIDENCE_REVIEWED",
+  "checkpoints": [
+    "evidence",
+    "materiality",
+    "completeness"
+  ],
+  "recorded_at": "2026-09-19T06:12:00Z",
+  "implementation": {
+    "repository_commit_sha": "15f337d9c8d2e0a15d7b6b19dae8e829addea75b",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "edition-views-acceptance",
+      "path": "sources/2026-W38/evidence/v2/views/accepted/ba38042497676350c5744b707890ca083d4fd1618dce23b15b50ff6b14698056/edition-views-accepted.json",
+      "sha256": "e840cb8d0a911433d3eba65c3d790c3f81906890de56083cd73f6047b50760fa"
+    },
+    {
+      "name": "evidence-acceptance",
+      "path": "sources/2026-W38/evidence/v2/accepted/2fb0718c2e3feba332258adaf49db3d78235624ba2d661ac93ec09953d73bc99/evidence-accepted.json",
+      "sha256": "cdb3426c91a4aaeadf659167937fade6b86fdb95eeae9c0213ed5bfd4fe1fe4c"
+    },
+    {
+      "name": "materiality-ledger",
+      "path": "sources/2026-W38/materiality-ledger-v2.json",
+      "sha256": "25e369ed24ea64d4378db57b76d11e115ea739d781a73fa2f9134b6c8d95bf58"
+    },
+    {
+      "name": "profile-completeness",
+      "path": "sources/2026-W38/profile-completeness-v2.json",
+      "sha256": "222393c2af2e5fca97dae03de4ce28c332fe7bcb6085e09b36d07167dd0783b3"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "W38 Evidence 12 (9 VERIFIED + 3 PARTIAL) with views/materiality/completeness LIMITED 3/3 SATISFIED; Sol authority-consumption CLEAN with source-backed limits.",
+      "result": {
+        "path": "sources/2026-W38/execution/validation/evidence-stage-validation-r1.json",
+        "sha256": "ac351a70a721cffcca575c736f604acf231933bffa89360291a6221a66745d31"
+      }
+    }
+  ],
+  "summary": "W38 Evidence reviewed: 9 VERIFIED + 3 PARTIAL; materiality + completeness LIMITED with 3/3 obligations SATISFIED; Sol consumption CLEAN."
+}

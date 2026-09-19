@@ -68,4 +68,8 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`ISSUE_INITIALIZED / X_COMPLETE / DISCOVERY_ACCEPTED` (formal Discovery = 13, Screening/Evidence/Selection/Architecture pending, Human decisions = 0, shared-Core changed paths = 0)
+`ARCHITECTURE_ESTABLISHED / fresh Human Architecture Review pending` (Discovery = 13, Screening = 12 KEEP / 1 DROP, Evidence = 9 VERIFIED + 3 PARTIAL, Selection = 11 SELECTED / 1 HOLD, Architecture = 7 packages READY_FOR_ARCHITECTURE_REVIEW, Human decisions = 0, shared-Core changed paths = 0)
+
+## Gate
+
+- Human Architecture Review r1: `execution/reviews/architecture-r1.md` + dossier `execution/reviews/architecture-r1-dossier.md` (PENDING, no decision)

@@ -1,0 +1,44 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W38",
+  "evidence_task_id": "evidence:2026-W38:231b1adfa78cac23",
+  "discovery_ids": [
+    "w38-carryover-deepseek-routing-20260914"
+  ],
+  "source_records": [
+    {
+      "collector_id": "secondary-websearch",
+      "collector_run_id": "w38-carryover-20260919-r1",
+      "locator": "websearch:deepseek-v41-routing-sep14 (Pandaily Sep 14; TNW Sep 10; Apidog Sep 14)",
+      "metadata": {
+        "authority_class": "SECONDARY",
+        "evidence_gap": "primary api-docs.deepseek.com changelog capture open"
+      },
+      "observed_at": "2026-09-19T00:00:00Z",
+      "published_at": "2026-09-14T04:00:00Z",
+      "raw_paths": [
+        "sources/2026-W38/collectors/primary/runs/20260919T000000Z/carryover-deepseek-glm-20260914.md"
+      ],
+      "source_type": "SECONDARY",
+      "summary_text": "DeepSeek V4-Pro API traffic routes to V4.1-Flash at Flash rates from Sep 14 04:00Z until V4.1-Pro ships (secondary-verified occurrence in W38 window). V4.1-Flash 552B MoE MIT weights; V4.1-Pro dateless. Operational note, not new model release.",
+      "title": "Carry-over: DeepSeek V4-Pro routing occurred Sep 14"
+    }
+  ],
+  "verification_targets": [
+    "primary-docs-capture"
+  ],
+  "screening_basis": {
+    "screening_acceptance_sha256": "5479635d63917c87e71aba6e52397c636800e80ccd6bdd05e38fd8516eacc668",
+    "decisions": [
+      {
+        "discovery_id": "w38-carryover-deepseek-routing-20260914",
+        "decision": "KEEP",
+        "scope_tags": [
+          "current-relevance",
+          "carry-over",
+          "serving"
+        ]
+      }
+    ]
+  }
+}

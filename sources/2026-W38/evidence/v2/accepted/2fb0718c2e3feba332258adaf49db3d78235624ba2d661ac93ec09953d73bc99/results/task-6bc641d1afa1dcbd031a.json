@@ -1,0 +1,143 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W38",
+  "evidence_task_id": "evidence:2026-W38:62ce6fe9f89fc14a",
+  "basis": {
+    "task_sha256": "fa1ddd409d8dcf868f4b83c7323475b28371ea3244d7a0e3256610b9bb4b71ff",
+    "screening_acceptance_sha256": "5479635d63917c87e71aba6e52397c636800e80ccd6bdd05e38fd8516eacc668",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "Anthropic R&D pace measurements",
+      "canonical_url": "https://www.anthropic.com/institute/measuring-pace-of-ai-development",
+      "entity_id": "benchmark:anthropic-rd-automation-index",
+      "entity_type": "BENCHMARK",
+      "organization": "Anthropic"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "benchmark:anthropic-rd-automation-index",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "Anthropic R&D pace measurements",
+    "canonical_url": "https://www.anthropic.com/institute/measuring-pace-of-ai-development"
+  },
+  "temporal": {
+    "observed_at": "2026-09-19T05:55:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-17T00:00:00Z",
+        "subject_id": "benchmark:anthropic-rd-automation-index",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://www.anthropic.com/institute/measuring-pace-of-ai-development",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Anthropic Institute: measuring pace of AI development (Sep 17)",
+      "published_at": "2026-09-17T00:00:00Z",
+      "accessed_at": "2026-09-19T05:55:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Anthropic Institute Sep 17 publishes three pace metrics: R&D Automation Index (Epoch AL scale; Claude leads 26% AL4, >90% AL3+, zero AL5; ~15k-task July-2026 frozen basket, person-time weights, judge-agreement checks); agent oversight (~30k concurrent agents; online 100% pre-execution, >1B decisions, 0.002%/1-per-47k blocked; offline 100% ingested, ~100k transcripts/week triaged, ~50/week human-escalated); compute allocation Jul 13-20 (6% safety of R&D, 12% of AI-driven R&D, conservative, excludes classifier overhead).",
+      "subject_id": "benchmark:anthropic-rd-automation-index",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Institute post sections (1)-(3) as stated; August-2026 snapshots with stated methods and appendix."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "No dedicated biomolecular-optimization repository, report PDF, or experimental-validation outcome is evidenced on this page; methodology/limits appendix explicitly bounds judge dependence, frozen basket, and one-week compute snapshot.",
+      "subject_id": "benchmark:anthropic-rd-automation-index",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Page scope as consumed; no repo/report links for biomolecular optimization on this page."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Metrics are first-party reported August snapshots with stated methods; not independently reproduced; must not generalize to industry or September current values.",
+      "subject_id": "benchmark:anthropic-rd-automation-index",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Biomolecular-optimization repo/report/validation NOT located in this pass; closest GitHub refs are secondary-sourced only.",
+      "subject_id": "benchmark:anthropic-rd-automation-index",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Compute snapshot is one fungible-pool week, not a fixed allocation.",
+      "subject_id": "benchmark:anthropic-rd-automation-index",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "methodology-limits",
+        "status": "VERIFIED",
+        "finding": "Methodology, snapshot scope, and stated limits (judge dependence, frozen basket, one-week compute) verified as bounded on page.",
+        "subject_ids": [
+          "benchmark:anthropic-rd-automation-index"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "biomolecular-repo-gap",
+        "status": "UNRESOLVED",
+        "finding": "Dedicated biomolecular-optimization primary not located; must not be claimed; X technical implications remain unverified leads.",
+        "subject_ids": [
+          "benchmark:anthropic-rd-automation-index"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "biomolecular-repo-gap: Dedicated biomolecular-optimization primary not located; must not be claimed; X technical implications remain unverified leads."
+    ],
+    "contradictions": []
+  }
+}
