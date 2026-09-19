@@ -13,16 +13,17 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/2026-W38/production-profile.json`
 - Production State: `sources/2026-W38/production-state.json`
-- Current State SHA-256: `e7e9203c962f5b61133555370d3478e32c0aa1abc56d99a5c8cbf2cbab1608a0`
-- Current lifecycle: `ISSUE_INITIALIZED`
-- Current terminal reason: `none`
-- Current next action: `stage:discovery`
+- Current State SHA-256: `0542a1bfdcc83851da8d0c2e512065752faeeb78c25d5d3102c5a05f797b00ed`
+- Current lifecycle: `ARCHITECTURE_ESTABLISHED`
+- Current terminal reason: `HUMAN_GATE_REACHED`
+- Current next action: `ARCHITECTURE_REVIEW`
 
 ## Human Gates
 
-- Architecture Review: `pending`
+- Architecture Review: `pending` (r1 superseded for decision by timestamp-provenance repair — historical bytes retained; r2 is the current pending Human target)
 - Publication Preview: `pending`
-- Detailed review records: none recorded yet
+- Detailed review records: r1 shell/dossier (historical), r2 shell/dossier (current pending target)
+- Timestamp correction ledger: `sources/2026-W38/execution/provenance/w38-execution-time-correction-20260919.md` (r1 `NOT_PRESENTABLE_FOR_DECISION_DUE_TO_TIMESTAMP_PROVENANCE`; State/validation historical `recorded_at` values invalid as wall-clock times; lifecycle/state identities remain authoritative)
 
 ## Publication Candidate
 
@@ -54,7 +55,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Deviations
 
-- None. Contract-compliant blocking stop at `ISSUE_INITIALIZED / AWAITING_GROK`; formal Discovery (count = 0) and Screening/Evidence/Selection/Architecture/Draft not started; Human decisions = 0.
+- Timestamp provenance repair (Issue #507 recurrence): pre-Human-Gate metadata-only correction via `execution/provenance/w38-execution-time-correction-20260919.md`. r1 review surface preserved but not usable for decision; fresh r2 surface generated with actual wall-clock provenance. No semantic regeneration; no Human decision recorded. Historic note: the original run stopped contract-compliantly at `ISSUE_INITIALIZED / AWAITING_GROK` before Grok r2 return; formal Discovery and later stages have since completed (see Final disposition).
 
 ## Shared Core defects
 
@@ -64,7 +65,8 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - `sessions/w38-sol-initialize-through-grok-handoff-20260919-r1.md`
 - `sessions/w38-pre-discovery-research-prep-20260919-r1.md` (non-authoritative pre-Discovery input, NOT Discovery)
-- `sessions/w38-sol-resume-grok-r2-through-architecture-review-20260919-r1.md` (this run: sync + r2 intake + Discovery + Architecture pipeline)
+- `sessions/w38-sol-resume-grok-r2-through-architecture-review-20260919-r1.md` (sync + r2 intake + Discovery + Architecture pipeline)
+- `sessions/w38-timestamp-provenance-repair-20260919-r1.md` (metadata-only timestamp repair + fresh r2 review surface; no semantic regeneration)
 
 ## Final disposition
 
@@ -72,4 +74,5 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Gate
 
-- Human Architecture Review r1: `execution/reviews/architecture-r1.md` + dossier `execution/reviews/architecture-r1-dossier.md` (PENDING, no decision)
+- Human Architecture Review r1: `execution/reviews/architecture-r1.md` + dossier `execution/reviews/architecture-r1-dossier.md` (historical bytes retained; superseded for Human decision by timestamp-provenance repair, no decision was recorded on r1)
+- Human Architecture Review r2: `execution/reviews/architecture-r2.md` + dossier `execution/reviews/architecture-r2-dossier.md` (current PENDING Human target, same Architecture triple + correction ledger)
