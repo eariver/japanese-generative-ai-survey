@@ -13,7 +13,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/2026-W37/production-profile.json`
 - Production State: `sources/2026-W37/production-state.json`
-- Current State SHA-256: `see production-state.json (RELEASE_CANDIDATE r2)`
+- Current State SHA-256: `see production-state.json (RELEASE_CANDIDATE r4)`
 - Current lifecycle: `RELEASE_CANDIDATE`
 - Current terminal reason: `HUMAN_GATE_REACHED`
 - Current next action: `PUBLICATION_PREVIEW` (Human decision only; no Freeze/Release)
@@ -22,17 +22,17 @@ This is the current human-readable navigation record for the edition. Machine li
 - Evidence r2: `11 VERIFIED + 2 PARTIAL` (views + materiality + completeness LIMITED 3/3 SATISFIED)
 - Selection r2: `12 SELECTED / 1 HOLD` (7 packages, READY_FOR_ARCHITECTURE_REVIEW)
 - Architecture r2 content: `APPROVED` by Human (canonical review r1, revision 1 from empty index, reviewed `55e700a34765654cd2ced0c2a454d4fb3433dd4f`, Architecture SHA `81e87a64c2418c71340ee8cc1dec28267a55055d2c02d7dbb06e33623efdfcfb`; record `gates/reviews/architecture-r1.json`, snapshot `gates/reviews/approvals/architecture-r1.json`)
-- Human decisions: `1` (Architecture r1 APPROVED; Publication Preview r1 PENDING)
+- Human decisions: `4` (Architecture r1 APPROVED; Publication Preview r1/r2/r3 REQUEST_CHANGES; Preview r4 PENDING, not counted as decision)
 - Draft: `7/7 packages ESTABLISHED` (DRAFT_COMPLETE)
-- Publication: `manuscript + 10-page CI PDF (301238B, SHA 08ceb5e9) + bundle + 11 semantic + 2 visual + gate PASSED` (VALIDATED_DRAFT -> RELEASE_CANDIDATE)
+- Publication: `manuscript + 11-page CI PDF (309187B, SHA 09dea4e7) + bundle + 11 semantic + 2 visual + gate PASSED` (VALIDATED_DRAFT -> RELEASE_CANDIDATE)
 - Shared-Core changed paths: `0`
 - Canonical ordinary window: ET `[2026-09-04T18:00:00-04:00, 2026-09-11T18:00:00-04:00)` / UTC `[2026-09-04T22:00:00Z, 2026-09-11T22:00:00Z)` / JST `[2026-09-05T07:00:00+09:00, 2026-09-12T07:00:00+09:00)`, end-exclusive
 
 ## Human Gates
 
 - Architecture Review: `approved` (Human r1 for r2 content, reviewed `55e700a34765654cd2ced0c2a454d4fb3433dd4f`)
-- Publication Preview: `pending` (fresh r2 shell/dossier at `execution/reviews/publication-preview-r2.md`, reviewed authority commit `07da54bfe3c1bc186abf7016486a4a6768f322c5`; Human r1/r2/r3 REQUEST_CHANGES preserved as `gates/reviews/publication-r1.json`/`gates/reviews/publication-r2.json`/`gates/reviews/publication-r3.json`)
-- Detailed review records: Architecture r1 APPROVED recorded; Publication Preview r1 PENDING (no decision invented)
+- Publication Preview: `pending` (fresh r4 shell/dossier at `execution/reviews/publication-preview-r4.md` / `execution/reviews/publication-preview-r4-dossier.md`, reviewed authority commit `07da54bfe3c1bc186abf7016486a4a6768f322c5`; Human r1/r2/r3 REQUEST_CHANGES preserved as `gates/reviews/publication-r1.json`/`gates/reviews/publication-r2.json`/`gates/reviews/publication-r3.json`)
+- Detailed review records: Architecture r1 APPROVED recorded; Publication Preview r1/r2/r3 REQUEST_CHANGES preserved; Preview r4 PENDING (no decision invented)
 
 ## Publication Candidate
 
@@ -71,7 +71,7 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - Prior independent authority: `reviews/sol-w37-architecture-r1-independent-review-20260919.md` (`REQUEST_CHANGES`, not a Human decision); r1 surface invalidated as unpresented (`execution/operator-invalidations/architecture-invalidation-0001.json`, boundary `DISCOVERY_COLLECTED`)
 - Historical r1 worker files (`sol-w37-discovery-completeness-20260918.md`, `sol-w37-evidence-authority-consumption-20260918.md`, `sol-w37-materiality-selection-20260918.md`, `sol-w37-architecture-20260918.md`): preserved, classified `WORKER_SELF_REVIEW / NON_AUTHORITATIVE_AS_SOL`
-- r2 worker dossier (`reviews/architecture-r2-dossier.md`) claims no independent review; r2 awaits independent review
+- r4 worker dossier (`reviews/publication-preview-r4-dossier.md`) claims no independent Sol review and no Human decision; r4 awaits independent Sol review and Human decision
 - No new file framed as an independent review was generated in this run
 
 ## Historical r1 worker files (superseded, preserved)
@@ -81,4 +81,4 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`ARCHITECTURE_ESTABLISHED / HUMAN_GATE_REACHED / fresh r2 Architecture Review pending independent review`
+`RELEASE_CANDIDATE / HUMAN_GATE_REACHED / fresh r4 Publication Preview pending independent Sol review and Human decision`
