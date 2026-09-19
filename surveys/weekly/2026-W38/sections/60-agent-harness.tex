@@ -1,0 +1,15 @@
+\section{Harness Efficiency: Codebase Investigation}
+\sectionkicker{AGENT HARNESS}
+\begin{wideflow}
+{\Large\bfseries 広い目標を具体の改善へ：Code Scans}\par
+\smallskip
+{\color{SurveyMuted}9月16日のコード調査プロダクトを、仕組みと試用結果の留保とともに示す。}\par
+\end{wideflow}
+
+9月16日、CognitionはDevinの新機能「Code Scans」を発表した\cite{devin}。広い開発目標を告げると、コード基盤を調べ、所見を吟味し、プルリクエストを開く内容で、入り口はDevinウェブアプリの/scan、文書頁が添えられる。仕組みは「Agentic MapReduce」（Devin Security Swarm由来）と説明される4段階で、計画（リポジトリを調べて関連規則を定める）、分割（規則を回して束に分ける）、並列調査（並列エージェントが調べる）、統合（最後のエージェントが束ねて重複を除き優先づける）から成り、選んだ束はすべて処理するという完全性がうたわれる。対象の一覧には性能、データベース問い合わせ、試験網羅、死滅コード、品質、整理、計測、利用しやすさ、遵守、移行計画、SEO、独自定義が並ぶ。
+
+試用の成果として示されるのは、Philips Digital Computational Pathologyでのプルリクエスト採用率96\%、700時間超の工数節約（短い試用期間の値）、DioxusのRustコンパイル時走査での58.6秒から21.0秒（64\%減、22ワークスペース）、devin.aiとcognition.comのSEO走査での健全性87から92、低速頁73\%減、代替文の欠落解消などである\cite{devin}。いずれも一次側が示す試用の値であり、独立した再現はない。仕組み自体もベンダー側の説明の設計であり、調査の質や網羅の独立した測定はない。
+
+\begin{claimboundary}[試用値の境界]
+採用率や工数、走査の前後差は一次側が示す試用の値であり、独立した再現はない。仕組みの説明を質や網羅の測定に読み替えない。
+\end{claimboundary}
