@@ -10,24 +10,30 @@ This is the current human-readable navigation record for the edition. Machine li
 - Work branch: `weekly/2026-W38-v2-work`
 - Start-of-run reviewed `main`: `2ab91516e89b8d706bfe143ebc0e435fa5735e7a`
 - Run started: `2026-09-19T03:34:37Z`
-- Requested stop: `ARCHITECTURE_REVIEW`
+- Requested stop: `PUBLICATION_PREVIEW` (via `sol-w38-architecture-r2-approved-through-publication-preview-20260919.md`)
 - Production Profile: `sources/2026-W38/production-profile.json`
 - Production State: `sources/2026-W38/production-state.json`
-- Current State SHA-256: `0542a1bfdcc83851da8d0c2e512065752faeeb78c25d5d3102c5a05f797b00ed`
-- Current lifecycle: `ARCHITECTURE_ESTABLISHED`
+- Current State SHA-256: `2372b415f8382f084d763f91bf71aad8c41f2ab8d7e4bcee7f7bfe963327ddbe`
+- Current lifecycle: `RELEASE_CANDIDATE`
 - Current terminal reason: `HUMAN_GATE_REACHED`
-- Current next action: `ARCHITECTURE_REVIEW`
+- Current next action: `PUBLICATION_PREVIEW`
 
 ## Human Gates
 
-- Architecture Review: `pending` (r1 superseded for decision by timestamp-provenance repair — historical bytes retained; r2 is the current pending Human target)
-- Publication Preview: `pending`
-- Detailed review records: r1 shell/dossier (historical), r2 shell/dossier (current pending target)
+- Architecture Review: `APPROVED` (canonical revision 1 for Human-facing r2 content; reviewed `56b6d3d65c5b4105a410e61a22eb083e66fa344c`, reviewed_at `2026-09-19T05:46:14Z`; record `gates/reviews/architecture-r1.json`, immutable snapshot `gates/reviews/approvals/architecture-r1.json`; r1 surface superseded for decision, historical bytes retained, no decision ever recorded on r1)
+- Publication Preview: `pending` (fresh r1 shell/dossier is the current Human target; no decision recorded)
+- Detailed review records: architecture r1 shell/dossier (historical), architecture r2 shell/dossier (approved content), publication-preview r1 shell/dossier (current pending target)
 - Timestamp correction ledger: `sources/2026-W38/execution/provenance/w38-execution-time-correction-20260919.md` (r1 `NOT_PRESENTABLE_FOR_DECISION_DUE_TO_TIMESTAMP_PROVENANCE`; State/validation historical `recorded_at` values invalid as wall-clock times; lifecycle/state identities remain authoritative)
+- Downstream monotonicity note: `sources/2026-W38/execution/provenance/w38-downstream-monotonicity-note-20260919.md` (Stage history `06:47/06:48/06:49Z` monotonicity-preserving, not wall-clock)
+- Validation-report recovery note: `sources/2026-W38/execution/provenance/w38-validation-report-recovery-20260919.md` (deleted deterministic report recovered byte-identical, verified against sealed checkpoint SHA)
 
 ## Publication Candidate
 
-- Current Human review target: none recorded yet
+- Current Human review target: `f2306ce407a6dc5c79e0125e3c5e8f49f04bba61` (exact branch commit with State + Candidate + Candidate-bound PDF)
+- Candidate SHA-256: `43c7d33a457d74b04cbba571e006453f8cea27f4dab134e6265bb55f115ce409`
+- PDF: `surveys/weekly/2026-W38/main.pdf` (11 pages, 344241 bytes, SHA-256 `767f4d98c366ae3c7247da635a6ea0b68753f58327104287ab4fb9d8ec9a2543`, CI run `35425249262`, artifact `10577998030`)
+- Preview shell: `execution/reviews/publication-preview-r1.md` (SHA-256 `39d1dca71ae498002e041398c57e28d074642301fffcc5a5838ddc8a83fdc8de`)
+- Preview dossier: `execution/reviews/publication-preview-r1-dossier.md` (SHA-256 `1664442719a550d6cf8741fc7d30200a86022fa37f41a0c537934b893ff2bf2a`)
 - Candidate SHA-256: none
 - PDF SHA-256: none
 
@@ -55,7 +61,8 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Deviations
 
-- Timestamp provenance repair (Issue #507 recurrence): pre-Human-Gate metadata-only correction via `execution/provenance/w38-execution-time-correction-20260919.md`. r1 review surface preserved but not usable for decision; fresh r2 surface generated with actual wall-clock provenance. No semantic regeneration; no Human decision recorded. Historic note: the original run stopped contract-compliantly at `ISSUE_INITIALIZED / AWAITING_GROK` before Grok r2 return; formal Discovery and later stages have since completed (see Final disposition).
+- Timestamp provenance repair (Issue #507 recurrence): pre-Human-Gate metadata-only correction via `execution/provenance/w38-execution-time-correction-20260919.md`. r1 review surface preserved but not usable for decision; fresh r2 surface generated with actual wall-clock provenance. No semantic regeneration. Historic note: the original run stopped contract-compliantly at `ISSUE_INITIALIZED / AWAITING_GROK` before Grok r2 return; formal Discovery and later stages have since completed.
+- Downstream run: Human Architecture r2 `APPROVED` canonically recorded (revision 1, reviewed `56b6d3d65`, `2026-09-19T05:46:14Z` actual wall clock); frozen upstream carried through Draft → TeX → CI PDF → manuscript/bundle/reviews → Candidate → `RELEASE_CANDIDATE`. Stage history `06:47/06:48/06:49Z` values are monotonicity-preserving per `w38-downstream-monotonicity-note-20260919.md`. One worker incident (deleted deterministic validation report) recovered byte-identical with sealed-SHA verification per `w38-validation-report-recovery-20260919.md`; no semantic impact. One pre-commit TeX typo repaired; no semantic change.
 
 ## Shared Core defects
 
@@ -67,12 +74,14 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/w38-pre-discovery-research-prep-20260919-r1.md` (non-authoritative pre-Discovery input, NOT Discovery)
 - `sessions/w38-sol-resume-grok-r2-through-architecture-review-20260919-r1.md` (sync + r2 intake + Discovery + Architecture pipeline)
 - `sessions/w38-timestamp-provenance-repair-20260919-r1.md` (metadata-only timestamp repair + fresh r2 review surface; no semantic regeneration)
+- `sessions/w38-r2-approved-through-publication-preview-20260919.md` (r2 APPROVED through Publication Preview r1 PENDING; Draft/TeX/CI-PDF/manuscript/bundle/reviews/candidate pipeline)
 
 ## Final disposition
 
-`ARCHITECTURE_ESTABLISHED / fresh Human Architecture Review pending` (Discovery = 13, Screening = 12 KEEP / 1 DROP, Evidence = 9 VERIFIED + 3 PARTIAL, Selection = 11 SELECTED / 1 HOLD, Architecture = 7 packages READY_FOR_ARCHITECTURE_REVIEW, Human decisions = 0, shared-Core changed paths = 0)
+`RELEASE_CANDIDATE / fresh Human Publication Preview r1 pending` (Discovery = 13, Screening = 12 KEEP / 1 DROP, Evidence = 9 VERIFIED + 3 PARTIAL, Selection = 11 SELECTED / 1 HOLD, Architecture = 7 packages, Draft = 7/7, PDF = 11 pages, Candidate READY_FOR_PUBLICATION_PREVIEW, Human decisions = 1 Architecture APPROVED + 0 Preview, shared-Core changed paths = 0)
 
 ## Gate
 
 - Human Architecture Review r1: `execution/reviews/architecture-r1.md` + dossier `execution/reviews/architecture-r1-dossier.md` (historical bytes retained; superseded for Human decision by timestamp-provenance repair, no decision was recorded on r1)
-- Human Architecture Review r2: `execution/reviews/architecture-r2.md` + dossier `execution/reviews/architecture-r2-dossier.md` (current PENDING Human target, same Architecture triple + correction ledger)
+- Human Architecture Review r2: `execution/reviews/architecture-r2.md` + dossier `execution/reviews/architecture-r2-dossier.md` (approved content; canonical decision record `gates/reviews/architecture-r1.json` revision 1 + immutable snapshot `gates/reviews/approvals/architecture-r1.json`)
+- Human Publication Preview r1: `execution/reviews/publication-preview-r1.md` + dossier `execution/reviews/publication-preview-r1-dossier.md` (current PENDING Human target bound to reviewed commit `f2306ce4`; no decision recorded)
