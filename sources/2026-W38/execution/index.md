@@ -38,8 +38,19 @@ This is the current human-readable navigation record for the edition. Machine li
 - Latest Drive task-file path/reference: `Grok_X_SourseIntake/Weekly/2026-W38/weekly-x-2026-W38/grok-task.md`
 - Intended Drive result folder: `Grok_X_SourseIntake/Weekly/2026-W38/weekly-x-2026-W38`
 - Expected result filename: `grok-x-result.md`
-- Latest result disposition: `AWAITING_GROK` (no result yet; manifest `sources/2026-W38/external/x/x-source-intake-v2.json` validates with `--allow-awaiting`)
+- Accepted result: `grok-x-result-r2.md` (Drive file ID `19YOzmzkuGn8Elk23tsQH3V6eUM7Jayru`), imported exact repository Raw `sources/2026-W38/external/x/weekly-x-2026-W38/raw/grok-x-result-r2.md` (bytes `16022`, SHA-256 `dac7e19fefcd2760efe82e4e602c8faa0f819b39866c0cffca6f6f02cc9e2634`, revision `r2`)
+- Sol review: `sources/2026-W38/execution/reviews/sol-grok-x-r2-review-20260919.md` (`PASS_WITH_DERIVED_COUNT_CORRECTIONS`; row-level 25-URL ledger accepted; corrected counts: 25 total / 23 ordinary / 2 late-breaking / 15 ordinary accounts [7 independent + 3 official + 5 community]; C1 ordinary URLs 7; C2 class `MULTI_ACCOUNT_X`; C3 `OFFICIAL_ONLY_X`)
+- r1 disposition: historical failed Raw on Drive only (`REQUEST_CORRECTION`, never imported as canonical result)
+- Manifest `sources/2026-W38/external/x/x-source-intake-v2.json` status `COMPLETE` (run `weekly-x-2026-W38`, `SUCCESS`, `DISCOVERY_RECORDED` -> `w38-grok-r2-25-url-ledger`); Raw front-matter `observed_at` preserved exactly but NOT used as machine execution provenance (Sol timestamp caveat recorded in record rationale)
 - No Drive access attempted from Muse; no connector searched for or installed.
+
+## Discovery
+
+- Discovery JSONL: `sources/2026-W38/discovery/discovery-v2.jsonl` (13 records: 1 X seed + 10 fresh primaries + 2 W37 carry-over revalidations)
+- Discovery acceptance: `sources/2026-W38/discovery/discovery-accepted-v2.json` (graph validated; X integration validated)
+- Collector run: `w38-primary-20260919-r1` (10 webfetch-excerpt raws under `sources/2026-W38/collectors/primary/runs/20260919T000000Z/`) + `w38-carryover-20260919-r1` (carry-over verification note)
+- Sol completeness review: `sources/2026-W38/execution/reviews/sol-w38-discovery-completeness-20260919.md` (`NON_BLOCKING_WITH_INDIVIDUAL_LIMITS`)
+- Lane coverage: A/B/C/D/F/G/H/J/K/L covered; E partial (creator-tool video only); I quiet (legitimate after check)
 
 ## Deviations
 
@@ -53,7 +64,8 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - `sessions/w38-sol-initialize-through-grok-handoff-20260919-r1.md`
 - `sessions/w38-pre-discovery-research-prep-20260919-r1.md` (non-authoritative pre-Discovery input, NOT Discovery)
+- `sessions/w38-sol-resume-grok-r2-through-architecture-review-20260919-r1.md` (this run: sync + r2 intake + Discovery + Architecture pipeline)
 
 ## Final disposition
 
-`ISSUE_INITIALIZED / AWAITING_GROK / BLOCKED_ON_EXTERNAL_HANDOFF` (formal Discovery = 0, Human decisions = 0, shared-Core changed paths = 0)
+`ISSUE_INITIALIZED / X_COMPLETE / DISCOVERY_ACCEPTED` (formal Discovery = 13, Screening/Evidence/Selection/Architecture pending, Human decisions = 0, shared-Core changed paths = 0)
