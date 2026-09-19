@@ -1,0 +1,45 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "from_state": "DISCOVERY_COLLECTED",
+  "to_state": "CANDIDATES_NORMALIZED",
+  "checkpoints": [
+    "screening"
+  ],
+  "recorded_at": "2026-09-19T00:12:00Z",
+  "implementation": {
+    "repository_commit_sha": "822c6612e0fed447aacc0375d3de25508d90b0a3",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "screening-acceptance",
+      "path": "sources/2026-W37/screening/v2/accepted/0b5e88496db3ce2845aedc0e9e4b9b11352c0ab7eb7c7bfce2888c5781057c66/screening-accepted.json",
+      "sha256": "06cecd69db58ae4e9d28f81a69cf7bb8fcc1982ea0b51a39aa88efa5f48e2e9b"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "r2 Screening 13 KEEP / 1 DROP with worker-attributed neutral reasons; Fusion KEEP on verified first-party published_time 2026-09-11T17:00:00Z ordinary; GLM rumor DROP. Machine validation only; independent review pending.",
+      "result": {
+        "path": "sources/2026-W37/execution/validation/screening-stage-validation-r2.json",
+        "sha256": "478d492849dc6bdf75a6f3907864ab75ddb263868c0cb804e4cad498c4ddb202"
+      }
+    }
+  ],
+  "summary": "W37 Screening r2: 13 KEEP / 1 DROP with neutral worker provenance; Fusion ordinary on verified published_time."
+}

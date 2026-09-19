@@ -1,0 +1,155 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "evidence_task_id": "evidence:2026-W37:b2309a56c9969593",
+  "basis": {
+    "task_sha256": "46451d73ef8ad3919f7ae40d7d3cfa12984424f93d9bc08d33245c575ad1998f",
+    "screening_acceptance_sha256": "10530320da67797c5d81c0f46aa587f2f8c5d397976c373b97a84fe8a60aae96",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "MiniCPM5-2B",
+      "canonical_url": "https://huggingface.co/openbmb/MiniCPM5-2B",
+      "entity_id": "model:openbmb-minicpm5-2b",
+      "entity_type": "MODEL",
+      "organization": "OpenBMB"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model:openbmb-minicpm5-2b",
+    "artifact_type": "MODEL",
+    "canonical_name": "MiniCPM5-2B",
+    "canonical_url": "https://huggingface.co/openbmb/MiniCPM5-2B"
+  },
+  "temporal": {
+    "observed_at": "2026-09-18T23:25:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-07",
+        "subject_id": "model:openbmb-minicpm5-2b",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://huggingface.co/openbmb/MiniCPM5-2B",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenBMB MiniCPM5-2B (2.5B dense, Apache 2.0, 128K, SOTA)",
+      "published_at": "2026-09-07",
+      "accessed_at": "2026-09-18T23:25:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "OpenBMB Sep 7 (repo Sep 6) releases MiniCPM5-2B: dense 2.5B LlamaForCausalLM Apache-2.0; 42 layers GQA 16Q/2KV; 131072 context; on-device/local/resource-constrained SOTA claim.",
+      "subject_id": "model:openbmb-minicpm5-2b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Model info + highlights as stated."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Average 53.9 in comparison set (ahead of 2B baselines and 4B best 51.1); LiveCodeBench 69.1, AIME 25/26 86.5, MATH-500 94.6, SWE-bench Verified 46.4, GAIA 88.7, tau2 Telecom 97.1, BFCL 66.6 (vendor tables, some AA-sourced).",
+      "subject_id": "model:openbmb-minicpm5-2b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evaluation table as stated; vendor + AA mix."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Standard arch loads in vLLM/SGLang/llama.cpp/Transformers/Ollama with no fork; minicpm5 tool parser; UltraData family open; RL+OPD +10.96/+6.96 avg gains vendor-reported.",
+      "subject_id": "model:openbmb-minicpm5-2b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Quickstart/tool/deployment sections as stated."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "All benchmark figures card-reported and externally unreproduced; AA-marked rows still vendor-presented here.",
+      "subject_id": "model:openbmb-minicpm5-2b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Release-day attribution Sep 7 from recipe/secondary (HF page shows no explicit date); hour-level precision not asserted.",
+      "subject_id": "model:openbmb-minicpm5-2b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Quant/serving performance across chips vendor-described.",
+      "subject_id": "model:openbmb-minicpm5-2b",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "benchmark-repro",
+        "status": "UNRESOLVED",
+        "finding": "Card-reported; independent repro absent.",
+        "subject_ids": [
+          "model:openbmb-minicpm5-2b"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "quant-performance",
+        "status": "UNRESOLVED",
+        "finding": "Quant/chip performance vendor-described.",
+        "subject_ids": [
+          "model:openbmb-minicpm5-2b"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "benchmark-repro: Card-reported; independent repro absent.",
+      "quant-performance: Quant/chip performance vendor-described."
+    ],
+    "contradictions": []
+  }
+}

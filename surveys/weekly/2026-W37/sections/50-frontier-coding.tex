@@ -1,0 +1,15 @@
+\section{Coding Efficiency Pushes}
+\sectionkicker{FRONTIER CODING}
+\begin{wideflow}
+{\Large\bfseries SWE-2、コーディング性能とコスト効率を両立}\par
+\smallskip
+{\color{SurveyMuted}9月10日のSWE-2を、ベンチマークスコアとステップ数、コストの3方向から、ベンダー側の数値の範囲でたどる。}\par
+\end{wideflow}
+
+9月10日、CognitionはコーディングモデルSWE-2を発表した\cite{swe2}。Kimi K3（2.8Tパラメーター）をベースに強化学習を重ねたモデルで、FrontierCode 1.1メインテーブルで50.0\%、Fable 5.1の50.9\%に1ポイント差まで迫りながら64\%低コストとされる。Astraの53.3\%には数ポイント差で4分の1のコストという対比も示される。DeepSWE 1.1で73.0\%、Terminal-Bench 2.1で92.8\%、Terminal-Bench 4で27.3\%が掲げられる。SWE-1.7との比較では平均ステップ数58\%減・コスト81\%減も示される。いずれもベンダー側が計測または収集した数値であり、独立した再現はない。コストは定価ベースに割引を織り込む計算で、タスク分布による変動はベンダー側の説明として受け止める。K3の伸びしろに関する解釈もベンダー側の見方として扱う。
+
+提供形態はDevin DesktopとCLIから始まり、WebとFusionへ拡大する計画とされる\cite{swe2}。タスク難易度の設定やハーネス開示の付録がある。比較方法の注記では、公開値のある組み合わせはその値を引き、なければ開発元のハーネスで計測するとされ、AnthropicはClaude Code、OpenAIはCodex、xAIはGrok Build、オープンモデルはDevin CLIとされる。学習手法の節（ペナルティや報酬設計、ロールアウト、学習データ）はベンダー側の記述として扱い、再実行の証拠にはしない。
+
+\begin{claimboundary}[コーディング評価の境界]
+数値はベンダー側が計測または収集したものであり、独立した再現はない。コストは定価ベースの計算である。
+\end{claimboundary}

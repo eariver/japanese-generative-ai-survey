@@ -1,0 +1,155 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "evidence_task_id": "evidence:2026-W37:2fff077251308cbf",
+  "basis": {
+    "task_sha256": "a65370000160836b251973c5bd1786de580911f1403d23396808a3bf8ec61670",
+    "screening_acceptance_sha256": "10530320da67797c5d81c0f46aa587f2f8c5d397976c373b97a84fe8a60aae96",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "Anthropic Threat Intel Sep 2026",
+      "canonical_url": "https://www.anthropic.com/threat-intelligence-report-september-2026",
+      "entity_id": "report:anthropic-threat-sep2026",
+      "entity_type": "OTHER",
+      "organization": "Anthropic"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "report:anthropic-threat-sep2026",
+    "artifact_type": "OTHER",
+    "canonical_name": "Anthropic Threat Intel Sep 2026",
+    "canonical_url": "https://www.anthropic.com/threat-intelligence-report-september-2026"
+  },
+  "temporal": {
+    "observed_at": "2026-09-18T23:25:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-10",
+        "subject_id": "report:anthropic-threat-sep2026",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://www.anthropic.com/threat-intelligence-report-september-2026",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Anthropic Threat Intel Sep 2026 (Dec25-Aug26 misuse, 7 harm areas)",
+      "published_at": "2026-09-10",
+      "accessed_at": "2026-09-18T23:25:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Anthropic Sep 10 publishes 8-month threat intel (Dec 2025-Aug 2026): 7 harm areas (cyber/surveillance/influence/scams/bio/conventional/distillation); Haiku/Sonnet/Opus only except 1 distillation; notable-examples not representative.",
+      "subject_id": "report:anthropic-threat-sep2026",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Report scope/method as stated."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Cases: GTG-20006 Russian espionage (20+ orgs, AI-automated phishing/malware rebuild), GTG-50014 ShinyHunters opportunistic theft, GTG-10007 exploit foundries, AI supply-chain theft/resale; all disrupted + safeguards + authorities.",
+      "subject_id": "report:anthropic-threat-sep2026",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Case studies as vendor-reported investigations."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Five biological research cases among disrupted Dec25-Aug26 uses; no claim bioweapons produced or intent established.",
+      "subject_id": "report:anthropic-threat-sep2026",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Secondary (NPR/Reuters Sep 10) confirms scope with intent/production caveats."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full PDF/IOCs not consumed; edition-local excerpts cover scope + case classes only.",
+      "subject_id": "report:anthropic-threat-sep2026",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Attribution (Midnight Blizzard etc.) vendor-consistent with public reporting, not independently verified here.",
+      "subject_id": "report:anthropic-threat-sep2026",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Distillation naming detail (Alibaba/Moonshot/DeepSeek/Xiaomi 190M) from Sep 11 timeline is late-breaking detail, not ordinary-window fact; report itself Sep 10 is ordinary.",
+      "subject_id": "report:anthropic-threat-sep2026",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "case-repro",
+        "status": "UNRESOLVED",
+        "finding": "Vendor investigations; independent repro absent; notable-examples bound.",
+        "subject_ids": [
+          "report:anthropic-threat-sep2026"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "distillation-attribution",
+        "status": "UNRESOLVED",
+        "finding": "Sep 11 naming detail late-breaking; report Sep 10 ordinary only.",
+        "subject_ids": [
+          "report:anthropic-threat-sep2026"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "case-repro: Vendor investigations; independent repro absent; notable-examples bound.",
+      "distillation-attribution: Sep 11 naming detail late-breaking; report Sep 10 ordinary only."
+    ],
+    "contradictions": []
+  }
+}

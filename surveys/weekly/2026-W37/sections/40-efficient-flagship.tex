@@ -1,0 +1,19 @@
+\section{Efficient Flagship, Vendor-Framed}
+\sectionkicker{EFFICIENT FLAGSHIP}
+\begin{wideflow}
+{\Large\bfseries DeepSeek V4.1-Flash、発表の範囲で読む}\par
+\smallskip
+{\color{SurveyMuted}9月10日のDeepSeek V4.1-Flashを、上位モデル超えの断定ではなくベンダー報告として受け止め、9月14日のルーティング変更は今後の運用として分ける。}\par
+\end{wideflow}
+
+9月10日、DeepSeekはV4.1-Flashを発表した\cite{deepseekflash}。552B規模のMoE（Mixture-of-Experts）で、新しいCausal Encoder-Decoderアーキテクチャにより入力処理で8B、出力生成で16Bのパラメーターが動作し、ネイティブなマルチモーダル理解と100万トークンのコンテキストを持つとされる。事前学習の刷新と大規模な強化学習によるポストトレーニングが添えられる。モデルウェイトはMITライセンスで公開され、APIではdeepseek-flashとして提供される。旧来のV4-FlashやVision-Expは廃止され、互換ルートが用意されるとされる。KVキャッシュは前世代比でHBMが4分の1、SSDが8分の1と説明され、エージェント利用のコストに効くとされる。本号ではベンチマーク表・図の詳細な検証までは行っておらず、評価手法はベンダー側の説明の範囲で扱う。推論エンジン対応は今後の展開の段階であり、本号で確認した範囲と切り分ける。
+
+性能比較の表現は慎重に扱う。ベンダー側は複数の外部組織によるテストを引きつつ、V4-Proを含むフラグシップモデル群を上回ると述べるが、テスト主体の名称は明かされず、独立した再現もない\cite{deepseekflash}。本号では「V4.1-FlashがV4-Proに勝つ」と断定せず、ベンダー報告として書き分ける。9月14日4時（世界時）にV4-Pro宛てリクエストをV4.1-Flashへルーティングする案内は、ウィンドウ内の文書で予告されたウィンドウ後の運用であり\cite{deepseekapi}、今週発生した出来事として書かない。ウィンドウ内の料金改定（9月10日4時から有効、ピーク外は半額の時間帯あり）は別に発生した事実として扱い、トークン単価表の詳細は本号の検証範囲外であることを添える。V4.1-Proのリリース日は資料に見当たらない。
+
+\begin{claimboundary}[比較と日付の境界]
+テスト主体の名称は明かされていない。9月14日の切り替えは今後の運用であり、今週の出来事ではない。単価表の詳細は本号の検証範囲外である。
+\end{claimboundary}
+
+\begin{communitynote}[X / Community observation --- context only]
+9月10日6時10分（世界時）の公式発信に、独立したテストや計測の報告が重なる様子が観察される\cite{w37x-deepseek-official,w37x-deepseek-ind}。うかがえるのは導入や計測への関心であり、性能や料金の根拠にはならない。
+\end{communitynote}

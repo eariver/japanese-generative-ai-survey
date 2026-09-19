@@ -1,0 +1,45 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "from_state": "ISSUE_INITIALIZED",
+  "to_state": "DISCOVERY_COLLECTED",
+  "checkpoints": [
+    "discovery"
+  ],
+  "recorded_at": "2026-09-18T23:11:00Z",
+  "implementation": {
+    "repository_commit_sha": "b6c5f9afb4db9e42f2ccb5f63b5da86771001406",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "666f8a064b190ffd35216e26d6fdf2dd0fa932cac7b1b0d6448e262ded77b9a8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "99adff93ff443e02bdcce639ce5fc4d4c959ee45a804da70efc4277db57fdddb"
+  },
+  "artifacts": [
+    {
+      "name": "discovery-acceptance",
+      "path": "sources/2026-W37/discovery/discovery-accepted-v2.json",
+      "sha256": "9d01ea07bd5280622862ce7470babbc6f49fa471a0ef5d55d17b8cf38f6ff5ff"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "Fresh 14-record W37 Discovery (1 Sol-reviewed Grok r3 X-ledger + 13 W37-window primary/secondary retrievals across 12 lanes) validated against COMPLETE X manifest; X 45/24/1/20 accounting bound. Machine validation only; Sol completeness review non-blocking downstream.",
+      "result": {
+        "path": "sources/2026-W37/execution/validation/discovery-stage-validation-r1.json",
+        "sha256": "dc8d03736d48ca712ef6d9a4b12ea52e58ca585676b68994d5469eb358391f60"
+      }
+    }
+  ],
+  "summary": "W37 Discovery accepted: 14 records (1 Grok r3 X-ledger + 13 W37-window primaries/secondaries across 12 lanes); X 45/24/1/20 bound."
+}

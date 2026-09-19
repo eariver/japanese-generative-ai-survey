@@ -1,0 +1,166 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "evidence_task_id": "evidence:2026-W37:940b1747cf992f23",
+  "basis": {
+    "task_sha256": "fa7e38bae2535ef9e7b16d49d30cea47179909209d020d1fd5dae0dbed5a7dff",
+    "screening_acceptance_sha256": "06cecd69db58ae4e9d28f81a69cf7bb8fcc1982ea0b51a39aa88efa5f48e2e9b",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "DeepSeek V4.1 Flash",
+      "canonical_url": "https://www.deepseek.com/en/news/deepseek-v4-1-flash",
+      "entity_id": "model:deepseek-v41-flash",
+      "entity_type": "MODEL",
+      "organization": "DeepSeek"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model:deepseek-v41-flash",
+    "artifact_type": "MODEL",
+    "canonical_name": "DeepSeek V4.1 Flash",
+    "canonical_url": "https://www.deepseek.com/en/news/deepseek-v4-1-flash"
+  },
+  "temporal": {
+    "observed_at": "2026-09-19T00:20:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-10",
+        "subject_id": "model:deepseek-v41-flash",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://www.deepseek.com/en/news/deepseek-v4-1-flash",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "DeepSeek V4.1 Flash launch (552B MoE, CED, KV cache, pricing)",
+      "published_at": "2026-09-10",
+      "accessed_at": "2026-09-19T00:20:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "DeepSeek Sep 10 introduces V4.1-Flash: 552B MoE CED (8B prefill/16B decode active), native multimodal, 1M context; new pretraining plus larger RL.",
+      "subject_id": "model:deepseek-v41-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Architecture section as stated."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "DeepSeek reports benchmark results ahead of flagship models including V4-Pro, citing tests by multiple unnamed parties; independent reproduction absent, so comparative performance stays vendor-attributed.",
+      "subject_id": "model:deepseek-v41-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Vendor comparative claim with unnamed third parties; not independently established."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "KV cache 1/4 HBM, 1/8 SSD; live on API as deepseek-flash; V4-Flash/Vision-Exp retired with compat route; MIT weights; partner support stated.",
+      "subject_id": "model:deepseek-v41-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Cache/API/open sections as stated."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "In-window API docs describe a future Sep 14 04:00Z routing of V4-Pro requests to V4.1-Flash until V4.1-Pro; that routing is a post-window future operation, not an occurred W37 event. In-window pricing/economics (peak/off-peak 50 percent, effective Sep 10 04:00Z) are separate occurred facts.",
+      "subject_id": "model:deepseek-v41-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Temporal boundary: document in-window, operation post-window."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Benchmark tables/images truncated in edition-local HTML; per-benchmark methodology/sampling not consumed beyond vendor summary.",
+      "subject_id": "model:deepseek-v41-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Named third parties behind multiple-party testing not disclosed in source.",
+      "subject_id": "model:deepseek-v41-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Serving support vendor-promised; engine support state fetch-time.",
+      "subject_id": "model:deepseek-v41-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "third-party-test-identity",
+        "status": "UNRESOLVED",
+        "finding": "Multiple parties unnamed; independent reproduction absent.",
+        "subject_ids": [
+          "model:deepseek-v41-flash"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "serving-support",
+        "status": "UNRESOLVED",
+        "finding": "Engine support vendor-promised; fetch-time state.",
+        "subject_ids": [
+          "model:deepseek-v41-flash"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "third-party-test-identity: Multiple parties unnamed; independent reproduction absent.",
+      "serving-support: Engine support vendor-promised; fetch-time state."
+    ],
+    "contradictions": []
+  }
+}

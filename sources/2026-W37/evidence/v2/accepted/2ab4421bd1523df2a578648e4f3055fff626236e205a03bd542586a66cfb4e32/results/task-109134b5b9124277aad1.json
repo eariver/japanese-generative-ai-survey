@@ -1,0 +1,155 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "evidence_task_id": "evidence:2026-W37:940b1747cf992f23",
+  "basis": {
+    "task_sha256": "8571f9a7c3f066dded6223203db6c1edc7a2df53b9f850d847ed67cfb0b89a2b",
+    "screening_acceptance_sha256": "10530320da67797c5d81c0f46aa587f2f8c5d397976c373b97a84fe8a60aae96",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "DeepSeek V4.1 Flash",
+      "canonical_url": "https://www.deepseek.com/en/news/deepseek-v4-1-flash",
+      "entity_id": "model:deepseek-v41-flash",
+      "entity_type": "MODEL",
+      "organization": "DeepSeek"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model:deepseek-v41-flash",
+    "artifact_type": "MODEL",
+    "canonical_name": "DeepSeek V4.1 Flash",
+    "canonical_url": "https://www.deepseek.com/en/news/deepseek-v4-1-flash"
+  },
+  "temporal": {
+    "observed_at": "2026-09-18T23:25:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-10",
+        "subject_id": "model:deepseek-v41-flash",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://www.deepseek.com/en/news/deepseek-v4-1-flash",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "DeepSeek V4.1 Flash launch (552B MoE, CED, KV cache, pricing)",
+      "published_at": "2026-09-10",
+      "accessed_at": "2026-09-18T23:25:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "DeepSeek Sep 10 introduces V4.1-Flash: 552B MoE CED (8B prefill/16B decode active), native multimodal, 1M context; new pretraining + larger RL; ahead of V4-Pro per vendor + multiple third parties.",
+      "subject_id": "model:deepseek-v41-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Asymmetric architecture section as stated; third-party identity not named in source."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "KV cache 1/4 HBM, 1/8 SSD, 890B/token (FP4 E2M1); cache-hit cost driver for agents; live on API as deepseek-flash; V4-Flash/Vision-Exp retired (compat route); V4-Pro to V4.1-Flash Sep 14 04:00Z until V4.1-Pro; peak/off-peak 50%; MIT weights; WorkBuddy/OpenCode support.",
+      "subject_id": "model:deepseek-v41-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Cache/API/pricing/open sections as stated."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "HF weights + tech report linked; 2000-GPU + storage cluster enterprise path; open-source inference collaboration.",
+      "subject_id": "model:deepseek-v41-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Supporting open source section as stated."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Benchmark tables/images truncated in edition-local HTML; per-benchmark methodology/sampling not consumed beyond vendor summary.",
+      "subject_id": "model:deepseek-v41-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Named third parties behind 'multiple parties' not disclosed in source.",
+      "subject_id": "model:deepseek-v41-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Serving support (vLLM/SGLang PRs) vendor-promised; engine support state fetch-time.",
+      "subject_id": "model:deepseek-v41-flash",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "third-party-test-identity",
+        "status": "UNRESOLVED",
+        "finding": "'Multiple parties' unnamed; independent repro absent.",
+        "subject_ids": [
+          "model:deepseek-v41-flash"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "serving-support",
+        "status": "UNRESOLVED",
+        "finding": "vLLM/SGLang support vendor-promised; fetch-time state.",
+        "subject_ids": [
+          "model:deepseek-v41-flash"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "third-party-test-identity: 'Multiple parties' unnamed; independent repro absent.",
+      "serving-support: vLLM/SGLang support vendor-promised; fetch-time state."
+    ],
+    "contradictions": []
+  }
+}

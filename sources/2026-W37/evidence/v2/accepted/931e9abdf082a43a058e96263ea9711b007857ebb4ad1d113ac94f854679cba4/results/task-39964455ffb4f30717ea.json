@@ -1,0 +1,154 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "evidence_task_id": "evidence:2026-W37:10b365dd3145105b",
+  "basis": {
+    "task_sha256": "6198091c622225613d6d27b117d550374710fc1dc3d0402a6b6ea9e38804dcfe",
+    "screening_acceptance_sha256": "06cecd69db58ae4e9d28f81a69cf7bb8fcc1982ea0b51a39aa88efa5f48e2e9b",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "Cognition SWE-2",
+      "canonical_url": "https://cognition.com/blog/swe-2",
+      "entity_id": "model:cognition-swe-2",
+      "entity_type": "MODEL",
+      "organization": "Cognition"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "model:cognition-swe-2",
+    "artifact_type": "MODEL",
+    "canonical_name": "Cognition SWE-2",
+    "canonical_url": "https://cognition.com/blog/swe-2"
+  },
+  "temporal": {
+    "observed_at": "2026-09-19T00:20:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-10",
+        "subject_id": "model:cognition-swe-2",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://cognition.com/blog/swe-2",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Cognition SWE-2 (Kimi K3 post-train, FrontierCode 50.0%, cost)",
+      "published_at": "2026-09-10",
+      "accessed_at": "2026-09-19T00:20:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Cognition Sep 10 introduces SWE-2: post-trained from Kimi K3 2.8T with RL; FrontierCode 1.1 Main 50.0 percent within 1pt Fable 5.1 at 64 percent less; within points of Astra at quarter cost (all vendor-reported).",
+      "subject_id": "model:cognition-swe-2",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Lede, Pareto, benchmark table as stated."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "DeepSWE 1.1 73.0 percent, Terminal-Bench 2.1 92.8 percent, Terminal-Bench 4 27.3 percent; 58 percent fewer turns and 81 percent less cost vs SWE-1.7 at higher score (vendor tables).",
+      "subject_id": "model:cognition-swe-2",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Benchmark/behavior sections; vendor tables."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Available in Devin Desktop/CLI, rolling to Web/Fusion; effort levels; harness-disclosure appendix noted.",
+      "subject_id": "model:cognition-swe-2",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Availability and methodology appendix as stated."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "All benchmarks vendor-run or vendor-compiled; independent reproduction absent.",
+      "subject_id": "model:cognition-swe-2",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Cost figures assume list pricing incl discounts; task-distribution sensitivity vendor-described.",
+      "subject_id": "model:cognition-swe-2",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "K3 base RL headroom vendor-interpreted.",
+      "subject_id": "model:cognition-swe-2",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "harness-bias",
+        "status": "VERIFIED",
+        "finding": "Harness disclosure consumed as bound.",
+        "subject_ids": [
+          "model:cognition-swe-2"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "cost-repro",
+        "status": "UNRESOLVED",
+        "finding": "List-pricing costs; independent reproduction absent.",
+        "subject_ids": [
+          "model:cognition-swe-2"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "cost-repro: List-pricing costs; independent reproduction absent."
+    ],
+    "contradictions": []
+  }
+}

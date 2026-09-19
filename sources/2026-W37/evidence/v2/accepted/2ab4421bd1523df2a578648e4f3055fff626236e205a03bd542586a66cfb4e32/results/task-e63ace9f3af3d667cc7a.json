@@ -1,0 +1,155 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "evidence_task_id": "evidence:2026-W37:212ccdc534720a7b",
+  "basis": {
+    "task_sha256": "66a04f81efd9e83c642bfdb292410d6bb55bc3b7b6995def0de37ec85c5f2bde",
+    "screening_acceptance_sha256": "10530320da67797c5d81c0f46aa587f2f8c5d397976c373b97a84fe8a60aae96",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "ChatGPT for Financial Services",
+      "canonical_url": "https://openai.com/index/introducing-chatgpt-financial-services",
+      "entity_id": "product:openai-chatgpt-financial-services",
+      "entity_type": "PRODUCT",
+      "organization": "OpenAI"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "product:openai-chatgpt-financial-services",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "ChatGPT for Financial Services",
+    "canonical_url": "https://openai.com/index/introducing-chatgpt-financial-services"
+  },
+  "temporal": {
+    "observed_at": "2026-09-18T23:25:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-10",
+        "subject_id": "product:openai-chatgpt-financial-services",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://openai.com/index/introducing-chatgpt-financial-services",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "OpenAI ChatGPT for Financial Services (Astra, Work, data, templates)",
+      "published_at": "2026-09-10",
+      "accessed_at": "2026-09-18T23:25:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "OpenAI Sep 10 introduces ChatGPT for Financial Services: tailored ChatGPT Work with GPT-6 Astra reasoning for research, financial modeling, client materials; design partners Morgan Stanley and Evercore; investment banking/equity research start.",
+      "subject_id": "product:openai-chatgpt-financial-services",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Announcement lede + Frontier research section; eligible institutions availability."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Built-in indexed/hosted data from Daloopa, PitchBook, LSEG News, Crunchbase (plus Fiscal.ai per quotes) covering transcripts/statements/fundamentals/private companies; no separate contracts/connectors; granular citations; shared sign-in with S&P Capital IQ/LSEG/MSCI/Dow Jones Factiva/Moody's; 50+ connectors incl Datasite/Box/Preqin/FactSet/Intapp.",
+      "subject_id": "product:openai-chatgpt-financial-services",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Data sections as stated; provider lists consumed as stated."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "GPT-6 Astra stated SOTA across retrieval/reasoning/artifact generation for finance; OfficeQA Pro 69.9% vs GPT-5.6 Sol 60.2% (Treasury Bulletins tables/footnotes); templates via Excel/Word/PowerPoint admin; Enterprise SAML/SCIM/RBAC, no-train-by-default, encryption, retention, compliance export.",
+      "subject_id": "product:openai-chatgpt-financial-services",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Put-to-work + templates + governance sections; benchmark vendor-reported."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "OfficeQA/BoxBench/slide-creation methodology pages not consumed; benchmark sampling/judging unverified.",
+      "subject_id": "product:openai-chatgpt-financial-services",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Pricing, entitlement limits, region availability not stated in source.",
+      "subject_id": "product:openai-chatgpt-financial-services",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Data-accuracy/latency improvements vendor-described without independent testing.",
+      "subject_id": "product:openai-chatgpt-financial-services",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "pricing/entitlement-limits",
+        "status": "UNRESOLVED",
+        "finding": "Pricing/entitlement/region limits not stated in source.",
+        "subject_ids": [
+          "product:openai-chatgpt-financial-services"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "benchmark-methodology",
+        "status": "UNRESOLVED",
+        "finding": "OfficeQA/BoxBench methodology not consumed; vendor-reported.",
+        "subject_ids": [
+          "product:openai-chatgpt-financial-services"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "pricing/entitlement-limits: Pricing/entitlement/region limits not stated in source.",
+      "benchmark-methodology: OfficeQA/BoxBench methodology not consumed; vendor-reported."
+    ],
+    "contradictions": []
+  }
+}

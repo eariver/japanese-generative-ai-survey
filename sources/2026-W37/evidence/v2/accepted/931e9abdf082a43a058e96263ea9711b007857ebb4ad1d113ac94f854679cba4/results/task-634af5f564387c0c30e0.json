@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "evidence_task_id": "evidence:2026-W37:d5d0132417eb8db2",
+  "basis": {
+    "task_sha256": "78d8fb3616f0ea8c80ae07cbe5654bd8cc7632bf4787076c34a7d0047419bc44",
+    "screening_acceptance_sha256": "06cecd69db58ae4e9d28f81a69cf7bb8fcc1982ea0b51a39aa88efa5f48e2e9b",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "DeepSeek V4.1 Flash API binding",
+      "canonical_url": "https://api-docs.deepseek.com/news/news260910/",
+      "entity_id": "doc:deepseek-v41-api",
+      "entity_type": "OTHER",
+      "organization": "DeepSeek"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "doc:deepseek-v41-api",
+    "artifact_type": "OTHER",
+    "canonical_name": "DeepSeek V4.1 Flash API binding",
+    "canonical_url": "https://api-docs.deepseek.com/news/news260910/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-19T00:20:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-10",
+        "subject_id": "doc:deepseek-v41-api",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://api-docs.deepseek.com/news/news260910/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "DeepSeek V4.1 Flash API docs (model ID, retirement, pricing)",
+      "published_at": "2026-09-10",
+      "accessed_at": "2026-09-19T00:20:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "API model ID deepseek-flash live; retired IDs compat-route to V4.1-Flash; docs describe future Sep 14 04:00Z V4-Pro routing at Flash rates until V4.1-Pro (post-window operation).",
+      "subject_id": "doc:deepseek-v41-api",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "API docs news as stated with temporal boundary."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Peak hours and off-peak 50 percent; new pricing effective Sep 10 04:00Z; HF plus paper linked.",
+      "subject_id": "doc:deepseek-v41-api",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Pricing/availability as stated."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Per-token price table values in images not fully consumed.",
+      "subject_id": "doc:deepseek-v41-api",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "V4.1-Pro launch date not in source.",
+      "subject_id": "doc:deepseek-v41-api",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "v41-pro-timeline",
+        "status": "VERIFIED",
+        "finding": "Sep 14 future routing described as future operation; in-window pricing consumed as stated.",
+        "subject_ids": [
+          "doc:deepseek-v41-api"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

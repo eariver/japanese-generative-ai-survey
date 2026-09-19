@@ -1,0 +1,155 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "2026-W37",
+  "evidence_task_id": "evidence:2026-W37:24a50cc1c3a5efb5",
+  "basis": {
+    "task_sha256": "949d8bdff1ad891d9ebedcb546a92b1a5011e545dabf45847f775eb6906c19c2",
+    "screening_acceptance_sha256": "06cecd69db58ae4e9d28f81a69cf7bb8fcc1982ea0b51a39aa88efa5f48e2e9b",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "canonical_name": "Devin Fusion harness",
+      "canonical_url": "https://cognition.com/blog/local-fusion",
+      "entity_id": "product:cognition-fusion",
+      "entity_type": "PRODUCT",
+      "organization": "Cognition"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "product:cognition-fusion",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Devin Fusion harness",
+    "canonical_url": "https://cognition.com/blog/local-fusion"
+  },
+  "temporal": {
+    "observed_at": "2026-09-19T00:20:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-11",
+        "subject_id": "product:cognition-fusion",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://cognition.com/blog/local-fusion",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Cognition Fusion in Devin Desktop/CLI (lead/sidekick, 39% efficiency)",
+      "published_at": "2026-09-11",
+      "accessed_at": "2026-09-19T00:20:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Cognition introduces Fusion for Desktop/CLI: lead (frontier planning/review) plus sidekick (SWE-2 execution) parallel agents with own contexts; Fable 5.1 plus SWE-2 recommended; up to 39 percent more efficient vs other harnesses (maximum, vendor-presented).",
+      "subject_id": "product:cognition-fusion",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Lede and architecture as stated; 39 percent is table maximum, not uniform."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "First-party page metadata establishes article published_time 2026-09-11T10:00:00-07:00, i.e. 2026-09-11T17:00:00Z, inside the ordinary window (end 22:00Z); preserved in collectors/primary/runs/20260919T000000Z/cognition-fusion-published-time-20260911.md. The prior calendar-date assumption is withdrawn.",
+      "subject_id": "product:cognition-fusion",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Verified timestamp basis; ordinary classification now exact-metadata grounded."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Partnered Artificial Analysis/Vals AI tables with per-benchmark cost/score deltas at near-parity scores.",
+      "subject_id": "product:cognition-fusion",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Savings section; partnered but vendor-presented."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Partnered eval methodology/sampling not consumed beyond vendor summary.",
+      "subject_id": "product:cognition-fusion",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "39 percent headline is max across table, not uniform; per-benchmark deltas must be cited.",
+      "subject_id": "product:cognition-fusion",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Generalization to untested lead/sidekick pairs not established.",
+      "subject_id": "product:cognition-fusion",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "eval-repro",
+        "status": "UNRESOLVED",
+        "finding": "Partnered tables vendor-presented; independent reproduction absent.",
+        "subject_ids": [
+          "product:cognition-fusion"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "pair-generality",
+        "status": "UNRESOLVED",
+        "finding": "Untested lead/sidekick pairs not established.",
+        "subject_ids": [
+          "product:cognition-fusion"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "eval-repro: Partnered tables vendor-presented; independent reproduction absent.",
+      "pair-generality: Untested lead/sidekick pairs not established."
+    ],
+    "contradictions": []
+  }
+}
