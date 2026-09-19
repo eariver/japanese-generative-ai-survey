@@ -232,6 +232,174 @@ Do not replace an auditable URL with a vague statement such as "people on X disc
 Technical claims still require separate primary/authoritative verification downstream.
 
 
+## 8. Temporal integrity gate — do not trust prose timestamps alone
+
+W37 exposed a concrete failure mode: URLs that were described as ordinary-window posts were later found, from their X status IDs, to be pre-window or Late Breaking. W38 must prevent that class of error before the result is finalized.
+
+For **every retained direct X status URL**:
+
+1. canonicalize the URL to the status identity `x.com/<account>/status/<status_id>` and ignore tracking/query parameters for deduplication;
+2. record the numeric `status_id`;
+3. independently determine the post UTC time from the X/Twitter Snowflake status ID when the ID is a canonical Snowflake;
+4. if an X-visible timestamp is also available, record it separately and compare it with the Snowflake-derived UTC value;
+5. classify the row using the canonical UTC authority only:
+   - `PRE_WINDOW_CARRY_IN` if before `2026-09-11T22:00:00Z`;
+   - `ORDINARY_WINDOW` if `>= 2026-09-11T22:00:00Z` and `< 2026-09-18T22:00:00Z`;
+   - `LATE_BREAKING` if `>= 2026-09-18T22:00:00Z`;
+   - `TIME_UNVERIFIED` if a trustworthy UTC timestamp cannot be established;
+6. exclude `TIME_UNVERIFIED` rows from ordinary-window breadth metrics and from strong ordinary-window community-momentum claims.
+
+The end boundary is strictly exclusive. Search operators such as `since:` / `until:`, search-result ordering, UI-relative time labels, or prose-reported dates are **not sufficient temporal authority**.
+
+If the displayed/observed timestamp disagrees materially with the status-ID-derived time, flag `TIMESTAMP_CONFLICT`, preserve both values, and do not silently choose a convenient window classification.
+
+## 9. Account-role and affiliation discipline
+
+W37 also exposed a count error where `COMMUNITY` accounts were accidentally counted as `INDEPENDENT`. Prevent that explicitly.
+
+Use the existing roles with these operational meanings:
+
+- `OFFICIAL`: first-party company/project/model/repository/maintainer account speaking for the artifact or organization;
+- `INDEPENDENT`: non-affiliated actor providing first-hand technical testing, reproduction, benchmark/evaluation work, integration experience, measurement, or substantive original technical analysis;
+- `COMMUNITY`: commentary, aggregation, news/media relaying, reposting, enthusiasm/reaction, or other secondary observation that does not meet the first-hand independent technical criterion.
+
+If affiliation or role is unclear, classify conservatively as `COMMUNITY` and add a role note. Do not upgrade ambiguity into `INDEPENDENT`.
+
+Multiple accounts controlled by or clearly affiliated with the same organization/project/media group do not constitute independent corroboration merely because the handles differ.
+
+For every candidate, report separately:
+
+- unique ordinary-window URLs;
+- unique ordinary-window accounts;
+- ordinary-window `INDEPENDENT` account count;
+- ordinary-window `OFFICIAL` account count;
+- ordinary-window `COMMUNITY` account count.
+
+Only role-`INDEPENDENT` accounts count toward the run-level independent-account low-yield diagnostic.
+
+A multi-account community observation may still be retained, but do not describe it as independent technical reproduction/testing unless at least two non-affiliated role-`INDEPENDENT` accounts actually support that claim.
+
+## 10. Final direct-X ledger is the arithmetic source of truth
+
+The final result must include one **Final direct-X ledger** with one row per unique retained status ID.
+
+Minimum columns:
+
+- canonical X URL;
+- status ID;
+- account;
+- role;
+- candidate ID(s);
+- discovery origin(s);
+- Snowflake-derived UTC timestamp or `TIME_UNVERIFIED`;
+- observed/displayed timestamp when available;
+- temporal class;
+- role/affiliation note where needed.
+
+All run-health and candidate-level counts must be **recomputed from this final ledger**, not copied from search notes or earlier drafts.
+
+Before finalizing, reconcile at least:
+
+- total unique direct status IDs = PRE_WINDOW + ORDINARY + LATE_BREAKING + TIME_UNVERIFIED;
+- ordinary unique accounts = distinct accounts on ordinary rows;
+- ordinary independent accounts = distinct ordinary accounts whose role is exactly `INDEPENDENT`;
+- each candidate's ordinary/late/pre-window URL counts against the ledger;
+- source-breadth classification against the role-aware ordinary rows;
+- expansion-trigger inputs against the same ledger.
+
+The same status ID may map to more than one candidate, but it counts **once** in run-level unique-URL metrics.
+
+The final result must state:
+
+`LEDGER_COUNT_CONSISTENCY: PASS`
+
+only after these reconciliations succeed.
+
+If a discrepancy is found, correct the derived summary before final output and briefly record what was corrected. Do not emit a knowingly inconsistent final summary.
+
+## 11. Ordinary-window isolation
+
+Late Breaking and pre-window carry-in may be useful context, but they must not inflate ordinary W38 breadth.
+
+For each strong candidate, explicitly show ordinary-window support separately from:
+
+- pre-window carry-in;
+- Late Breaking;
+- TIME_UNVERIFIED.
+
+The candidate's ordinary-window source-breadth classification must be based only on ordinary-window rows.
+
+A candidate supported only after the cutoff must be labeled `LATE_BREAKING` for W38 and must not be promoted into the ordinary-window strong set merely because post-cutoff X activity is large.
+
+## 12. Anti-blindspot search pass
+
+In addition to the existing open-world pass, perform at least one deliberate anti-blindspot pass that is not English-only.
+
+At minimum:
+
+- include Japanese technical-community searches;
+- include ecosystem-appropriate non-English terminology when a discovered project/model community is materially non-English (for example Chinese-language terminology for Chinese-origin model/runtime ecosystems);
+- search both high-engagement and low-engagement/recent technical observations where X permits;
+- inspect repository/Hugging Face/paper/project names discovered during open-world search as new X search pivots.
+
+This is not a language quota. If a language pass yields no material signal, record that negative result.
+
+## 13. Primary-source-candidate URL integrity
+
+Primary-source candidates are leads for downstream Sol verification, not technical authority yet.
+
+Do not invent or guess a primary-source URL from a project/model name.
+
+For each primary-source candidate:
+
+- provide a direct URL only when actually observed/verified during the run;
+- otherwise record the source name/type plus `PRIMARY_SOURCE_TO_LOCATE`;
+- distinguish official documentation/repository/model-card/paper URLs from third-party summaries.
+
+A plausible-looking but unverified URL is worse than an explicit unresolved source lead.
+
+## 14. Strong-candidate adversarial check
+
+For every strong candidate, perform at least one targeted search for one or more of:
+
+- failed reproduction;
+- contradictory benchmark/evaluation;
+- operational limitation;
+- regression;
+- quota/rate-limit/friction;
+- security/safety concern;
+- correction/retraction;
+- evidence that apparent momentum is merely syndicated reposting.
+
+Record either the concrete counter-signal(s) or:
+
+`NO_COUNTER_SIGNAL_FOUND_AFTER_TARGETED_SEARCH`
+
+with a short note on what was searched.
+
+This does not require false balance; it is an anti-confirmation-bias check.
+
+## 15. Finalization completeness gate
+
+Do not finalize the Grok result unless all of these are present:
+
+- complete A-L coverage audit;
+- open-world discovery result;
+- anti-blindspot pass result;
+- full deduplicated candidate pool;
+- final direct-X ledger;
+- row-level temporal classes;
+- role-aware candidate counts;
+- low-yield trigger decision and expansion log if triggered;
+- run-health/breadth audit;
+- ledger count reconciliation with `LEDGER_COUNT_CONSISTENCY: PASS`;
+- strong-candidate counter-signal checks;
+- explicit access/search limitations.
+
+If X access/search quality is degraded enough that these cannot be completed, report `INCOMPLETE_DUE_TO_ACCESS_LIMITATION` rather than claiming complete coverage.
+
+
+
 ---
 
 # Grok X Source Intake — Common Policy v1
