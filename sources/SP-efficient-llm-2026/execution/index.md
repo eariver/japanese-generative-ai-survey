@@ -40,6 +40,18 @@ This is the current human-readable navigation record for the edition. Machine li
 - Bridge requests: `execution/requests/init-thematic-20260922-01.json`, `execution/requests/advance-discovery-20260922-01.json`
 - Bridge receipts: `execution/bridge-runs/init-thematic-20260922-01/receipt.json`, `execution/bridge-runs/advance-discovery-20260922-01/receipt.json`
 
+## Discovery expansion r2 (Sol R1 gap-fill; lifecycle unchanged)
+
+- Collector run: `efficient-llm-discovery-r2` (observed 2026-09-21T17:30:00Z)
+- Raw lanes: 7 files `raw/discovery-observations-r2-*.md` (S101–S142: dist-training, KV-mgmt, cond-depth,
+  harnesses, capstone-firstparty, routing-lowbit, data-jev)
+- Discovery JSONL: `discovery/discovery-v2-r2.jsonl` (42 records EFF-D101–EFF-D142, GAP_FILL/pass 1)
+- Acceptance: `discovery/discovery-accepted-v2-r2.json` (record_count 42, standalone-validated)
+- Combined inventory: 100 (r1) + 42 (r2) = 142 Discovery records
+- Ledger: `execution/gap-fill/r2-sol-r1-dispositions.md` (G01–G20 dispositions + NOT_FOUND registry)
+- r1 provenance preserved: r1 files untouched, r1 acceptance re-validated intact
+- Session: `sessions/ts001-reissue-discovery-r2-20260922.md`
+
 ## Grok/X
 
 - Profile applicability policy: `CHATGPT_DECIDES`
@@ -61,8 +73,9 @@ This is the current human-readable navigation record for the edition. Machine li
 ## Sessions
 
 - `sessions/ts001-reissue-discovery-20260922.md`
+- `sessions/ts001-reissue-discovery-r2-20260922.md`
 
 ## Final disposition
 
-`DISCOVERY_COLLECTED / AWAITING_SOL_DISCOVERY_COMPLETENESS_REVIEW` — terminal stop for this run.
+`DISCOVERY_COLLECTED / AWAITING_SOL_COMPLETENESS_REVIEW` (r2) — terminal stop for this run.
 No Sol/Human decision fabricated. Next step requires independent Sol review (Sol / GPT-5.6).
