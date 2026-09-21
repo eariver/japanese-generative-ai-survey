@@ -83,6 +83,8 @@ This is the current human-readable navigation record for the edition. Machine li
 - Expected Drive result path: `Grok_X_SourseIntake/Thematic_Special/efficient-llm-2026/efficient-llm-reception-pass-01/x-reception-result.md`
 - Result: pending (no Grok run, no Drive action by Muse)
 - Pre-Grok Sol review: `execution/reviews/sol-pre-grok-reception-task-review-r1.md` (Sol / GPT-5.6, PASS, DRIVE_HANDOFF_AUTHORIZED)
+- X reception reviews: r1 `execution/reviews/sol-x-reception-r1-review-20260922.md` (REQUEST_CORRECTION — six records only, no ledger; NOT imported); r2 `execution/reviews/sol-x-reception-r2-review-20260922.md` (REQUEST_CORRECTION — FIRST_HAND recount 17/3/7 vs claimed 19/3/5, no consistency token, bad observed_at; NOT imported); r3 `execution/reviews/sol-x-reception-r3-review-20260922.md` (Sol / GPT-5.6 PASS / IMPORT_AUTHORIZED — 27 records / 27 URLs / 24 accounts / 20 independent; Drive ID `181CYeFFZDtucPikWJr3EzWZGycdF_Mxo`, 30213 bytes, SHA `b3a8a0404e6d4a1abfaa6bde54c4a6f5d7979ec24870bcd629865f8443377d79`)
+- r3 import status: `EXACT_RAW_BYTES_UNAVAILABLE` — Muse has no Drive channel; no Raw import, no manifest completion, no X Discovery record, no F1–F4, no refresh performed. Resume criteria in `sessions/ts001-reissue-x-r3-import-blocked-20260922.md` (verify 30213 bytes + SHA before any import).
 - Boundary: machine lifecycle stays `DISCOVERY_COLLECTED`; operational interpretation `TECHNICAL_DISCOVERY_CANONICAL / TARGETED_X_SOURCE_INTAKE_REOPENED / AWAITING_GROK`; Screening NOT authorized until X result disposition + canonical Discovery refresh
 - Session: `sessions/ts001-reissue-x-reception-prep-20260922.md`
 
@@ -103,7 +105,8 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/ts001-reissue-discovery-r3-20260922.md`
 - `sessions/ts001-reissue-discovery-refresh-20260922.md`
 - `sessions/ts001-reissue-x-reception-prep-20260922.md`
+- `sessions/ts001-reissue-x-r3-import-blocked-20260922.md`
 
 ## Final disposition
 
-`DISCOVERY_COLLECTED / TECHNICAL_DISCOVERY_CANONICAL / TARGETED_X_SOURCE_INTAKE_REOPENED / AWAITING_GROK` — targeted X reception task ready, awaiting Sol Drive transport. No Screening executed. No Grok run claimed. No X COMPLETE claimed. No Sol/Human decision fabricated beyond recorded Sol reviews.
+`DISCOVERY_COLLECTED / TECHNICAL_DISCOVERY_CANONICAL / TARGETED_X_SOURCE_INTAKE_REOPENED / AWAITING_GROK` — Sol X r3 PASS recorded with byte-acceptance criteria, but exact r3 bytes unavailable to Muse (`EXACT_RAW_BYTES_UNAVAILABLE`): manifest still `AWAITING_GROK`, canonical Discovery still 161, Screening still pending and not authorized. No Screening executed. No Grok run claimed. No X COMPLETE claimed. No Sol/Human decision fabricated beyond recorded Sol reviews.
