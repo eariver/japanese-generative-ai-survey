@@ -47,7 +47,15 @@ This is the current human-readable navigation record for the edition. Machine li
   harnesses, capstone-firstparty, routing-lowbit, data-jev)
 - Discovery JSONL: `discovery/discovery-v2-r2.jsonl` (42 records EFF-D101–EFF-D142, GAP_FILL/pass 1)
 - Acceptance: `discovery/discovery-accepted-v2-r2.json` (record_count 42, standalone-validated)
-- Combined inventory: 100 (r1) + 42 (r2) = 142 Discovery records
+- Combined inventory: 100 (r1) + 42 (r2) + 19 (r3) = 161 Discovery records
+- r3: collector run `efficient-llm-discovery-r3`; 4 Raw files (S143–S161: conditional-memory,
+  test-time-compute, model-routing, D09-check); `discovery/discovery-v2-r3.jsonl` (GAP_FILL/pass 2,
+  obligations EFF-O13/14/15); acceptance `discovery-accepted-v2-r3.json` (19 records)
+- Ledgers: `execution/gap-fill/r2-sol-r1-dispositions.md`, `execution/gap-fill/r3-final-dispositions.md`
+  (cross-cutting nine-axes hypothesis recorded; carried-forward limitations bounded)
+- r1/r2 provenance preserved: files untouched, acceptances re-validated intact
+- Session: `sessions/ts001-reissue-discovery-r2-20260922.md`
+- Session: `sessions/ts001-reissue-discovery-r3-20260922.md`
 - Ledger: `execution/gap-fill/r2-sol-r1-dispositions.md` (G01–G20 dispositions + NOT_FOUND registry)
 - r1 provenance preserved: r1 files untouched, r1 acceptance re-validated intact
 - Session: `sessions/ts001-reissue-discovery-r2-20260922.md`
@@ -77,5 +85,5 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`DISCOVERY_COLLECTED / AWAITING_SOL_COMPLETENESS_REVIEW` (r2) — terminal stop for this run.
+`DISCOVERY_COLLECTED / FINAL SOL COMPLETENESS REVIEW REQUIRED` (r3) — terminal stop for this run.
 No Sol/Human decision fabricated. Next step requires independent Sol review (Sol / GPT-5.6).
