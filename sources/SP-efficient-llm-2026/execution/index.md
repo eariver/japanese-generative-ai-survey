@@ -13,10 +13,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/SP-efficient-llm-2026/production-profile.json`
 - Production State: `sources/SP-efficient-llm-2026/production-state.json`
-- Current State SHA-256: `901c204f839ac7ac7a6fb89f1912744236a7841d812d9c53127b3ecd32bdea75`
+- Current State SHA-256: `8f0d37807a22c8cea94559c122474f58f7a4a0e43ee3884867f65e25ca90f0b1`
 - Current lifecycle: `DISCOVERY_COLLECTED`
 - Current terminal reason: `none`
-- Current next action: `stage:screening` (NOT AUTHORIZED this run — terminal stop is Sol Discovery completeness review)
+- Current next action: `stage:screening` (NOT EXECUTED — awaiting separately specified targeted X/community reception pass)
 
 ## Human Gates
 
@@ -30,12 +30,12 @@ This is the current human-readable navigation record for the edition. Machine li
 - Candidate SHA-256: none
 - PDF SHA-256: none
 
-## Discovery (terminal stop this run)
+## Discovery (r1 base; superseded as canonical by refresh below)
 
 - Collector run: `efficient-llm-discovery-r1` (observed 2026-09-21T17:00:00Z)
 - Raw lanes: 12 files `raw/discovery-observations-*.md` (S01–S100) + `raw/discovery-negative-space-2026-09-21.md` (G01–G11)
-- Discovery JSONL: `discovery/discovery-v2.jsonl` (100 records EFF-D001–EFF-D100, all BASE/pass 0)
-- Acceptance: `discovery/discovery-accepted-v2.json` (record_count 100, SHA `6c8f26006b1fc4381f3a0ee349f9d2f253a387ecb2e5775d76ef90581bf226fa`)
+- r1 records adopted into canonical `discovery/discovery-v2.jsonl` (161 records total; see refresh section); standalone r2/r3 companion files retained as immutable provenance
+- Prior r1 canonical bytes preserved under `execution/discovery-refresh-after-sol-pass/prior-authority/`
 - Stage checkpoint: `orchestration/v2/checkpoints/ISSUE_INITIALIZED.json` (CORE_STAGE_CONTRACT PASS)
 - Bridge requests: `execution/requests/init-thematic-20260922-01.json`, `execution/requests/advance-discovery-20260922-01.json`
 - Bridge receipts: `execution/bridge-runs/init-thematic-20260922-01/receipt.json`, `execution/bridge-runs/advance-discovery-20260922-01/receipt.json`
@@ -60,6 +60,18 @@ This is the current human-readable navigation record for the edition. Machine li
 - r1 provenance preserved: r1 files untouched, r1 acceptance re-validated intact
 - Session: `sessions/ts001-reissue-discovery-r2-20260922.md`
 
+## Discovery canonical refresh (Sol PASS adopted; lifecycle unchanged)
+
+- Sol Discovery Completeness Review: `PASS` (Sol / GPT-5.6) — `execution/reviews/sol-discovery-completeness-review-pass.md`
+- Canonical Discovery JSONL: `discovery/discovery-v2.jsonl` (161 records EFF-D001–EFF-D161: r1 BASE 100 + r2 GAP_FILL 42 + r3 GAP_FILL 19; SHA `a94d8cbb64e1049480ea13690e7584e79ed6cdf7b830ba150f594e046880f53d`)
+- Canonical acceptance: `discovery/discovery-accepted-v2.json` (record_count 161, Core-built; SHA `3aa62c4218df55155e99a8eb5de3158a4b5e0ac950a9ddbffcc6099f2f69e79c`)
+- Stage checkpoint: `orchestration/v2/checkpoints/ISSUE_INITIALIZED.json` (refreshed via `CURRENT_CORE_DISCOVERY_STAGE_BUILDER_REPLAY`, W34 precedent `8a937da`; SHA `28cdd7755b8cb003c9917e8899f95e3a31468162c583474ad4021b4fa51611ca`)
+- Prior authority snapshot: `execution/discovery-refresh-after-sol-pass/prior-authority/` (exact pre-refresh bytes)
+- Refresh tooling/validation: `execution/discovery-refresh-after-sol-pass/refresh_discovery_checkpoint.py`, `validation/`
+- r2/r3 standalone artifacts unchanged and still valid; EFF-O13/14/15 retained as Discovery provenance (no profile/Core edits)
+- Screening preflight: real resolver → `DIRECT`, 161 effective records; Screening NOT executed
+- Session: `sessions/ts001-reissue-discovery-refresh-20260922.md`
+
 ## Grok/X
 
 - Profile applicability policy: `CHATGPT_DECIDES`
@@ -82,8 +94,9 @@ This is the current human-readable navigation record for the edition. Machine li
 
 - `sessions/ts001-reissue-discovery-20260922.md`
 - `sessions/ts001-reissue-discovery-r2-20260922.md`
+- `sessions/ts001-reissue-discovery-r3-20260922.md`
+- `sessions/ts001-reissue-discovery-refresh-20260922.md`
 
 ## Final disposition
 
-`DISCOVERY_COLLECTED / FINAL SOL COMPLETENESS REVIEW REQUIRED` (r3) — terminal stop for this run.
-No Sol/Human decision fabricated. Next step requires independent Sol review (Sol / GPT-5.6).
+`DISCOVERY_COLLECTED / TECHNICAL_DISCOVERY_CANONICAL / AWAITING_TARGETED_X_RECEPTION_PASS` — Sol-reviewed 161-record canonical Discovery adopted. No Screening executed. No Sol/Human decision fabricated beyond the recorded Sol PASS. Next step is the separately specified targeted X/community reception pass.
