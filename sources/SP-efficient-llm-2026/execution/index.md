@@ -75,10 +75,16 @@ This is the current human-readable navigation record for the edition. Machine li
 ## Grok/X
 
 - Profile applicability policy: `CHATGPT_DECIDES`
-- Decision: `NOT_REQUIRED` for first run (primary map first; Sol designs later reception pass)
-- Manifest: `external/x/x-source-intake-v2.json` (COMPLETE, zero runs)
-- Latest Drive task-file path/reference: none (no Grok task created)
-- Latest result disposition: none (no collection)
+- Initial decision: `NOT_REQUIRED` for first run (primary map first; Sol designs later reception pass)
+- Current decision: `REQUIRED` — one bounded reception/deployment pass (`efficient-llm-reception-pass-01`); Human-requested practical dimension became material after Sol technical Discovery PASS (which remains valid)
+- Manifest: `external/x/x-source-intake-v2.json` (`REQUIRED / AWAITING_GROK`)
+- Repository task: `external/x/efficient-llm-reception-pass-01/grok-task.md` (20555 bytes, SHA `c1150730c6a0a758c4fd2e85928e593e49484765c4fe68864fe784fdde9220e2`)
+- Expected Drive task path: `Grok_X_SourseIntake/Thematic_Special/efficient-llm-2026/efficient-llm-reception-pass-01/grok-task.md`
+- Expected Drive result path: `Grok_X_SourseIntake/Thematic_Special/efficient-llm-2026/efficient-llm-reception-pass-01/x-reception-result.md`
+- Result: pending (no Grok run, no Drive action by Muse)
+- Pre-Grok Sol review: `execution/reviews/sol-pre-grok-reception-task-review-r1.md` (Sol / GPT-5.6, PASS, DRIVE_HANDOFF_AUTHORIZED)
+- Boundary: machine lifecycle stays `DISCOVERY_COLLECTED`; operational interpretation `TECHNICAL_DISCOVERY_CANONICAL / TARGETED_X_SOURCE_INTAKE_REOPENED / AWAITING_GROK`; Screening NOT authorized until X result disposition + canonical Discovery refresh
+- Session: `sessions/ts001-reissue-x-reception-prep-20260922.md`
 
 ## Deviations
 
@@ -96,7 +102,8 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/ts001-reissue-discovery-r2-20260922.md`
 - `sessions/ts001-reissue-discovery-r3-20260922.md`
 - `sessions/ts001-reissue-discovery-refresh-20260922.md`
+- `sessions/ts001-reissue-x-reception-prep-20260922.md`
 
 ## Final disposition
 
-`DISCOVERY_COLLECTED / TECHNICAL_DISCOVERY_CANONICAL / AWAITING_TARGETED_X_RECEPTION_PASS` — Sol-reviewed 161-record canonical Discovery adopted. No Screening executed. No Sol/Human decision fabricated beyond the recorded Sol PASS. Next step is the separately specified targeted X/community reception pass.
+`DISCOVERY_COLLECTED / TECHNICAL_DISCOVERY_CANONICAL / TARGETED_X_SOURCE_INTAKE_REOPENED / AWAITING_GROK` — targeted X reception task ready, awaiting Sol Drive transport. No Screening executed. No Grok run claimed. No X COMPLETE claimed. No Sol/Human decision fabricated beyond recorded Sol reviews.
