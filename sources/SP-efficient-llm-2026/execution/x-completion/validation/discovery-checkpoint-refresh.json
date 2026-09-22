@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "issue_id": "SP-efficient-llm-2026",
+  "method": "CURRENT_CORE_DISCOVERY_STAGE_BUILDER_REPLAY",
+  "precedent": "8a937da02cc9578b15421c99f7ea543d9dbc83fe (W34 refresh Discovery after Sol gap-fill review)",
+  "prior_refresh": "5b2286ffe (TS-001 161-record canonicalization)",
+  "reason": "The bounded Sol supervisory loop refreshed canonical Discovery (adopting valid standalone r2/r3 gap-fill artifacts) while the current State was already DISCOVERY_COLLECTED; Core's one-step lifecycle contract was honored using a validated ISSUE_INITIALIZED replay fixture.",
+  "prior_state": {
+    "path": "sources/SP-efficient-llm-2026/production-state.json",
+    "sha256": "8f0d37807a22c8cea94559c122474f58f7a4a0e43ee3884867f65e25ca90f0b1"
+  },
+  "prior_checkpoint": {
+    "path": "sources/SP-efficient-llm-2026/orchestration/v2/checkpoints/ISSUE_INITIALIZED.json",
+    "sha256": "28cdd7755b8cb003c9917e8899f95e3a31468162c583474ad4021b4fa51611ca"
+  },
+  "stage_validation": {
+    "path": "sources/SP-efficient-llm-2026/execution/x-completion/validation/core-discovery-stage-validation-x.json",
+    "sha256": "8450e8f30c8c4231e015169f32711155db2da7a96f7c82d896a072cb0b497d7a"
+  },
+  "stage_reviews": {
+    "path": "sources/SP-efficient-llm-2026/execution/x-completion/validation/discovery-stage-reviews-x.json",
+    "sha256": "416bfad86a610f4a3343756c6ac377f0aec6ae7110ee4d3e32aaf73caaddbfcb"
+  },
+  "new_checkpoint": {
+    "path": "sources/SP-efficient-llm-2026/orchestration/v2/checkpoints/ISSUE_INITIALIZED.json",
+    "sha256": "e69777f5cbaf64b7e19681c0abb490d53f9819cc0b96bffd4c179bef9ac739b1"
+  },
+  "new_state": {
+    "path": "sources/SP-efficient-llm-2026/production-state.json",
+    "sha256": "f51495989c0f7a510835350ed4be981b0dcdc01ca44e2afcae9d6575e2eaaae7"
+  },
+  "from_state": "ISSUE_INITIALIZED",
+  "to_state": "DISCOVERY_COLLECTED",
+  "screening_executed": false,
+  "sol_x_r3": "PASS / IMPORT_AUTHORIZED (Sol / GPT-5.6; execution/reviews/sol-x-reception-r3-review-20260922.md)"
+}

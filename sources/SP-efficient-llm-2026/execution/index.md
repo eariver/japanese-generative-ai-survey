@@ -13,10 +13,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/SP-efficient-llm-2026/production-profile.json`
 - Production State: `sources/SP-efficient-llm-2026/production-state.json`
-- Current State SHA-256: `8f0d37807a22c8cea94559c122474f58f7a4a0e43ee3884867f65e25ca90f0b1`
-- Current lifecycle: `DISCOVERY_COLLECTED`
+- Current State SHA-256: `5b5f351762e183ea0aa4830d0f1a2b895d27aed6b71923bad78195f1be4dd7ae`
+- Current lifecycle: `CANDIDATES_NORMALIZED`
 - Current terminal reason: `none`
-- Current next action: `stage:screening` (NOT EXECUTED — awaiting separately specified targeted X/community reception pass)
+- Current next action: `stage:evidence-materiality-completeness` (NOT ENTERED — stop is Sol screening review)
 
 ## Human Gates
 
@@ -77,7 +77,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Profile applicability policy: `CHATGPT_DECIDES`
 - Initial decision: `NOT_REQUIRED` for first run (primary map first; Sol designs later reception pass)
 - Current decision: `REQUIRED` — one bounded reception/deployment pass (`efficient-llm-reception-pass-01`); Human-requested practical dimension became material after Sol technical Discovery PASS (which remains valid)
-- Manifest: `external/x/x-source-intake-v2.json` (`REQUIRED / AWAITING_GROK`)
+- Manifest: `external/x/x-source-intake-v2.json` (`REQUIRED / COMPLETE`; r3 SUCCESS, DISCOVERY_RECORDED [EFF-D162])
 - Repository task: `external/x/efficient-llm-reception-pass-01/grok-task.md` (20555 bytes, SHA `c1150730c6a0a758c4fd2e85928e593e49484765c4fe68864fe784fdde9220e2`)
 - Expected Drive task path: `Grok_X_SourseIntake/Thematic_Special/efficient-llm-2026/efficient-llm-reception-pass-01/grok-task.md`
 - Expected Drive result path: `Grok_X_SourseIntake/Thematic_Special/efficient-llm-2026/efficient-llm-reception-pass-01/x-reception-result.md`
@@ -106,7 +106,19 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/ts001-reissue-discovery-refresh-20260922.md`
 - `sessions/ts001-reissue-x-reception-prep-20260922.md`
 - `sessions/ts001-reissue-x-r3-import-blocked-20260922.md`
+- `sessions/ts001-reissue-x-completion-screening-20260922.md`
+
+## Screening (COMPLETE — awaiting Sol review)
+
+- Canonical Discovery at Screening: 165 records (`7074cef2…`); acceptance 165 via Core tooling.
+- New this run: `discovery/discovery-v2-r4.jsonl` (EFF-D162 X ledger + F1–F3 EFF-D163–165, GAP_FILL/pass 3); F4 `INDEPENDENT_WRITEUP_NOT_RESOLVED`; raw `raw/discovery-observations-r4-x-followup.md`.
+- X manifest COMPLETE (r3 SUCCESS, DISCOVERY_RECORDED [EFF-D162]).
+- Screening acceptance: `screening/v2/accepted/24bac6aa5c849eb2f6ac46f2162c7333137230cfec2610e908815a0e591b045d/screening-accepted.json` (DIRECT basis, 165 records).
+- Dispositions: 135 KEEP / 20 MAYBE / 5 INSPECT / 5 DROP (DROPs are collector-parked D140 D158 D159 D160 D161; no primary/capstone authority dropped; X D162 KEEP with boundary).
+- Checkpoint: `orchestration/v2/checkpoints/DISCOVERY_COLLECTED.json`; lifecycle `CANDIDATES_NORMALIZED`; Evidence NOT entered.
+- Sol review package: `execution/reviews/screening-review-package-r1.md` (no compression trigger).
+- Run tooling: `execution/x-completion/` (prior-authority, refresh/advance scripts, decisions provenance, validation).
 
 ## Final disposition
 
-`DISCOVERY_COLLECTED / TECHNICAL_DISCOVERY_CANONICAL / TARGETED_X_SOURCE_INTAKE_REOPENED / AWAITING_GROK` — Sol X r3 PASS recorded with byte-acceptance criteria, but exact r3 bytes unavailable to Muse (`EXACT_RAW_BYTES_UNAVAILABLE`): manifest still `AWAITING_GROK`, canonical Discovery still 161, Screening still pending and not authorized. No Screening executed. No Grok run claimed. No X COMPLETE claimed. No Sol/Human decision fabricated beyond recorded Sol reviews.
+`SCREENING_COMPLETED / AWAITING_SOL_SCREENING_REVIEW` (machine lifecycle `CANDIDATES_NORMALIZED`) — canonical Screening done and validated over 165-record DIRECT Discovery. Evidence not entered. No Sol/Human decision fabricated beyond recorded Sol reviews.

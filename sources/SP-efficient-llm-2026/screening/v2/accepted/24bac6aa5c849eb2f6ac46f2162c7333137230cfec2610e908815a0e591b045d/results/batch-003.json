@@ -1,0 +1,702 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "batch_id": "batch-003",
+  "basis": {
+    "package_sha256": "9e922066747704157e6243d9bbee4224bc531a78da0290eeb09e186347970508",
+    "batch_sha256": "148cab870b9fdd8ff03fd65e28a25f7c94b6a34258897e210b78b24e1484eda7",
+    "profile_sha256": "22f2e822732e4f34446be832933ac31f61ceb90f828c20d196710818721b1117",
+    "state_sha256": "f51495989c0f7a510835350ed4be981b0dcdc01ca44e2afcae9d6575e2eaaae7",
+    "prompt_sha256": "3e45900ead73688eab8734036e6e476c1ec4f1a7ce38da42d5ca52a68ef0a862",
+    "result_contract_sha256": "a05b65b41efbcaf654df5c3c5944254a76d93d8a28cab961f2c06f6d580da5a2"
+  },
+  "decisions": [
+    {
+      "discovery_id": "EFF-D101",
+      "decision": "KEEP",
+      "reason": "Megatron-LM tensor parallelism; SCALE/PLACE mechanism, not arithmetic reduction.",
+      "scope_tags": [
+        "scaling-training"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D102",
+      "decision": "KEEP",
+      "reason": "GPipe micro-batch pipeline + recompute; bubble/memory tradeoff origin.",
+      "scope_tags": [
+        "scaling-training"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D103",
+      "decision": "KEEP",
+      "reason": "ZeRO sharded states; FIT (memory) mechanism for trillion-parameter training.",
+      "scope_tags": [
+        "scaling-training"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D104",
+      "decision": "KEEP",
+      "reason": "ZeRO-Offload/Infinity heterogeneous memory; ancestor of host-offload inference thinking.",
+      "scope_tags": [
+        "scaling-training"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D105",
+      "decision": "KEEP",
+      "reason": "Activation checkpointing recompute-for-memory EXCHANGE; direction must stay explicit.",
+      "scope_tags": [
+        "scaling-training"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D106",
+      "decision": "KEEP",
+      "reason": "FSDP PyTorch-native ZeRO-3-class sharding; current-stack lineage.",
+      "scope_tags": [
+        "scaling-training"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D107",
+      "decision": "KEEP",
+      "reason": "DeepSpeed-Ulysses sequence parallelism; training-side context parallelism.",
+      "scope_tags": [
+        "scaling-training"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D108",
+      "decision": "KEEP",
+      "reason": "Ring Attention blockwise + ring KV exchange; closes r1 G08 absentee.",
+      "scope_tags": [
+        "scaling-training"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D109",
+      "decision": "KEEP",
+      "reason": "H2O score-driven eviction; category-(3) eviction anchor.",
+      "scope_tags": [
+        "attention-kv",
+        "serving"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D110",
+      "decision": "KEEP",
+      "reason": "StreamingLLM sink + window policy; constrains all eviction claims.",
+      "scope_tags": [
+        "attention-kv",
+        "serving"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D111",
+      "decision": "KEEP",
+      "reason": "SnapKV prompt observation-window voting; prompt-aware category (3).",
+      "scope_tags": [
+        "attention-kv",
+        "serving"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D112",
+      "decision": "KEEP",
+      "reason": "PyramidKV layer-wise budgets; layer-heterogeneity relevant to CSA2 sharing.",
+      "scope_tags": [
+        "attention-kv",
+        "serving"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D113",
+      "decision": "KEEP",
+      "reason": "vLLM automatic prefix caching; granularity contrast vs SGLang radix tree.",
+      "scope_tags": [
+        "serving"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "version binding"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D114",
+      "decision": "KEEP",
+      "reason": "LMCache engine-independent reuse/offload/disaggregation; Mooncake backend.",
+      "scope_tags": [
+        "attention-kv",
+        "serving"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "version binding"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D115",
+      "decision": "KEEP",
+      "reason": "Mixture-of-Depths per-token depth routing; explicitly NOT MoE — precision matters to routing lane.",
+      "scope_tags": [
+        "moe-routing"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "EFF-D116",
+      "decision": "KEEP",
+      "reason": "LayerSkip same-model draft + verify; bridges conditional depth and decoding.",
+      "scope_tags": [
+        "decoding",
+        "moe-routing"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D117",
+      "decision": "MAYBE",
+      "reason": "DeeBERT minimal early-exit precedent; no LLM-scale claim — bounding only.",
+      "scope_tags": [
+        "moe-routing"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "low"
+    },
+    {
+      "discovery_id": "EFF-D118",
+      "decision": "KEEP",
+      "reason": "MLPerf Inference scenario-bound comparability proof (arrival, latency bounds, SLO, audit).",
+      "scope_tags": [
+        "benchmark-methodology"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D119",
+      "decision": "INSPECT",
+      "reason": "GenAI-Perf locator captured but AIPerf-as-product NOT located; product identity unresolved.",
+      "scope_tags": [
+        "benchmark-methodology"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "locate/confirm AIPerf product identity"
+      ],
+      "confidence": "low"
+    },
+    {
+      "discovery_id": "EFF-D120",
+      "decision": "MAYBE",
+      "reason": "LLMPerf included for its caveats; teaches incomparability, not ground truth.",
+      "scope_tags": [
+        "benchmark-methodology"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "caveat scope"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "EFF-D121",
+      "decision": "KEEP",
+      "reason": "lm-evaluation-harness accuracy-side standard; same-name/different-harness discipline.",
+      "scope_tags": [
+        "benchmark-methodology"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D122",
+      "decision": "KEEP",
+      "reason": "HELM multi-metric transparency-first harness; reproducibility anchor.",
+      "scope_tags": [
+        "benchmark-methodology"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D123",
+      "decision": "KEEP",
+      "reason": "V4.1-Flash technical report: CED 8B/16B, pure CSA2, FP4-KV in training, Engram, eval appendix with scaffolds.",
+      "scope_tags": [
+        "attention-kv",
+        "capstone-2026",
+        "decoding",
+        "quantization"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "scaffold/version binding"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D124",
+      "decision": "KEEP",
+      "reason": "V4 technical report: 1.6T/49B Pro + 284B/13B Flash first-party anchor with FLOPs/KV ratios.",
+      "scope_tags": [
+        "attention-kv",
+        "capstone-2026",
+        "moe-routing",
+        "quantization"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "ratio conditions"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D125",
+      "decision": "KEEP",
+      "reason": "V3.2 report: DSA lightning indexer under MLA with long-context signal; closes r1 G03.",
+      "scope_tags": [
+        "attention-kv",
+        "capstone-2026"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D126",
+      "decision": "KEEP",
+      "reason": "V3.2-Exp launch + API docs: efficiency-to-price transmission event with kernels + weights.",
+      "scope_tags": [
+        "capstone-2026"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "price/artifact identity"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "EFF-D127",
+      "decision": "KEEP",
+      "reason": "Qwen Flash-Next GitHub source of truth: preview-vs-production BOUND, runtime matrix, SWE-Pro footnote normalization.",
+      "scope_tags": [
+        "attention-kv",
+        "benchmark-methodology",
+        "capstone-2026"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "bound/footnote verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D128",
+      "decision": "KEEP",
+      "reason": "GLM-5 technical report: 744B/40B first-party ground with cross-lab DSA adoption evidence.",
+      "scope_tags": [
+        "attention-kv",
+        "capstone-2026"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D129",
+      "decision": "KEEP",
+      "reason": "zai-org/GLM-5 GitHub: IndexShare FLOPs, MTP acceptance, deployment matrix; IndexPool unresolved.",
+      "scope_tags": [
+        "capstone-2026",
+        "decoding"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "IndexPool resolution"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D130",
+      "decision": "KEEP",
+      "reason": "GLM-5.3-Flash first-party checkpoint identity (MIT, fp8, glm5_next, BF16 sibling).",
+      "scope_tags": [
+        "capstone-2026"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D131",
+      "decision": "KEEP",
+      "reason": "Z.ai GLM-5.3-Flash docs overview; relative attention/KV ratios vendor-quarantined.",
+      "scope_tags": [
+        "capstone-2026"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "ratio quarantine"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "EFF-D132",
+      "decision": "KEEP",
+      "reason": "KDA open kernel + vLLM path; deployability proof beyond paper.",
+      "scope_tags": [
+        "attention-kv",
+        "capstone-2026",
+        "serving"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "numerics/perf at Evidence"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D133",
+      "decision": "KEEP",
+      "reason": "Expert Choice experts-choose-tokens; third routing point vs top-k vs aux-loss-free.",
+      "scope_tags": [
+        "moe-routing"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D134",
+      "decision": "KEEP",
+      "reason": "MegaBlocks block-sparse MoE GEMMs; compute twin to DeepEP communication twin.",
+      "scope_tags": [
+        "moe-routing",
+        "serving"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D135",
+      "decision": "KEEP",
+      "reason": "BitNet b1.58 ternary lineage; industrial deployment still open.",
+      "scope_tags": [
+        "quantization"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "deployment status"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "EFF-D136",
+      "decision": "KEEP",
+      "reason": "OCP MX v1.0 spec; format authority behind V4-line FP4 claims.",
+      "scope_tags": [
+        "quantization"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D137",
+      "decision": "KEEP",
+      "reason": "MX semantics paper; native-low-bit vs PTQ evidence-class distinction.",
+      "scope_tags": [
+        "quantization"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D138",
+      "decision": "KEEP",
+      "reason": "Training-data dedup: selection-driven token efficiency without architecture change.",
+      "scope_tags": [
+        "scaling-training"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D139",
+      "decision": "KEEP",
+      "reason": "DoReMi mixture optimization; allocation as composition, not just quantity.",
+      "scope_tags": [
+        "scaling-training"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D140",
+      "decision": "DROP",
+      "reason": "Collector-flagged park-leaning: synthetic quality-over-quantity with indirect relevance to serving-cost thesis; no distinct efficiency mechanism for this Special.",
+      "scope_tags": [
+        "scaling-training"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "EFF-D141",
+      "decision": "KEEP",
+      "reason": "Jev 1.13 Models page: versioned IDs, alias-drift warning, rate limits; card equivalent.",
+      "scope_tags": [
+        "specialization-jev"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "version/alias binding"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D142",
+      "decision": "KEEP",
+      "reason": "TypeSafe API reference: answer schema + distribution-derived confidence; records the NOT FOUND for calibration protocol as a finding.",
+      "scope_tags": [
+        "specialization-jev"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "calibration protocol gap"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D143",
+      "decision": "KEEP",
+      "reason": "Engram paper: O(1) n-gram lookup, deterministic host offload, U-shaped sparsity allocation; conditional-memory lane origin.",
+      "scope_tags": [
+        "conditional-memory"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D144",
+      "decision": "KEEP",
+      "reason": "Official Engram implementation; addressing/offload implementation evidence.",
+      "scope_tags": [
+        "conditional-memory"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D145",
+      "decision": "KEEP",
+      "reason": "Qwen N-gram vs Engram lineage assessment with ancestry explicitly NOT inferred; boundary honesty is the contribution.",
+      "scope_tags": [
+        "capstone-2026",
+        "conditional-memory"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "EFF-D146",
+      "decision": "MAYBE",
+      "reason": "kNN-LM explicit-corpus retrieval precedent; boundary-sharpening only vs static lookup.",
+      "scope_tags": [
+        "conditional-memory"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "EFF-D147",
+      "decision": "MAYBE",
+      "reason": "RETRO chunked cross-attention precedent; closes the precedent sweep, boundary role only.",
+      "scope_tags": [
+        "conditional-memory"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "discovery_id": "EFF-D148",
+      "decision": "KEEP",
+      "reason": "Snell test-time scaling origin: test-time over parameters for reasoning, difficulty dependence.",
+      "scope_tags": [
+        "test-time-compute"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D149",
+      "decision": "KEEP",
+      "reason": "s1 budget forcing + s1K SFT + sequential/parallel taxonomy; benchmark-specific claims to verify.",
+      "scope_tags": [
+        "test-time-compute"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "claim scope"
+      ],
+      "confidence": "high"
+    },
+    {
+      "discovery_id": "EFF-D150",
+      "decision": "INSPECT",
+      "reason": "ThinkPrune RL pruning record with body unread; weight vs substitute unresolved per collection note.",
+      "scope_tags": [
+        "test-time-compute"
+      ],
+      "duplicate_group": null,
+      "verification_targets": [
+        "Evidence-stage full-body verification",
+        "confirm body weight or substitute"
+      ],
+      "confidence": "low"
+    }
+  ]
+}
