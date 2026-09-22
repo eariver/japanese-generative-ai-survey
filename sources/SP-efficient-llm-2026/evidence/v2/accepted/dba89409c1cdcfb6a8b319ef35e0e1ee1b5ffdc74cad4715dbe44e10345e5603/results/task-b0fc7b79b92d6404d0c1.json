@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:99f84178c00c4c6d",
+  "basis": {
+    "task_sha256": "d490a4b97ce43e395c07375ad3d6427fdf5dae1b8862f3c18beb9d9e76969e60",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "mmlu-pro",
+      "canonical_name": "MMLU-Pro (Wang et al., 2024)",
+      "entity_type": "PAPER",
+      "organization": "Independent",
+      "canonical_url": "https://arxiv.org/abs/2406.01574"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "mmlu-pro",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "MMLU-Pro (Wang et al., 2024)",
+    "canonical_url": "https://arxiv.org/abs/2406.01574"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-06-13",
+        "subject_id": "mmlu-pro",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2406.01574",
+      "source_class": "PRIMARY_PAPER",
+      "title": "MMLU-Pro",
+      "published_at": "2024-06-13",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "MMLU-Pro revises MMLU toward reasoning-focused questions with expanded choices, serving as the broad-knowledge seed benchmark.",
+      "subject_id": "mmlu-pro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Design facts; abstract-level (2406.01574)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Any capstone citation of MMLU-Pro-class numbers requires version, harness, and reasoning-budget binding.",
+      "subject_id": "mmlu-pro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Methodological rule."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body construction details and option-count tables not consumed.",
+      "subject_id": "mmlu-pro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2406.01574): reasoning-focused revision confirmed; full body outstanding.",
+        "subject_ids": [
+          "mmlu-pro"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "version pin",
+        "status": "UNRESOLVED",
+        "finding": "No single version pinned for capstone citations; binding rule recorded instead.",
+        "subject_ids": [
+          "mmlu-pro"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "version pin: No single version pinned for capstone citations; binding rule recorded instead."
+    ],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:fdb03808269b515f",
+  "basis": {
+    "task_sha256": "30521d6784d6125bca0785bb78e65a4df8912235e0ac1d105716b99e875d31ec",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "awq-2023",
+      "canonical_name": "AWQ: Activation-aware Weight Quantization for On-Device LLM Compression and Acceleration (Lin et al., 2023)",
+      "entity_type": "PAPER",
+      "organization": "MIT",
+      "canonical_url": "https://arxiv.org/abs/2306.00978"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "awq-2023",
+    "artifact_type": "PAPER",
+    "canonical_name": "AWQ: Activation-aware Weight Quantization for On-Device LLM Compression and Acceleration (Lin et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2306.00978"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-06-01",
+        "subject_id": "awq-2023",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2306.00978",
+      "source_class": "PRIMARY_PAPER",
+      "title": "AWQ: Activation-aware Weight Quantization (Lin et al.)",
+      "published_at": "2023-06-01",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "AWQ protects salient weights identified via activation statistics, achieving strong 4-bit weight-only quantization from tiny calibration sets.",
+      "subject_id": "awq-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline mechanism + data-efficiency claim; abstract-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Salience-aware protection is the PTQ branch most directly continued by importance-matrix/mixed-quantization practice in local inference (llama.cpp k-quants).",
+      "subject_id": "awq-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Lineage linkage to D050."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body salience analysis and on-device tables not consumed.",
+      "subject_id": "awq-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2306.00978): activation-aware salient-weight mechanism confirmed; full body outstanding.",
+        "subject_ids": [
+          "awq-2023"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

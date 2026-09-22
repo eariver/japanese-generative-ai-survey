@@ -1,0 +1,111 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:39c76370b9a6dae6",
+  "basis": {
+    "task_sha256": "9e039a5746a5353536c5c94bddea38bbfb5d774d6ca8af4eff68bf0d12449f3c",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "aime-maa",
+      "canonical_name": "AIME / MAA competition authority",
+      "entity_type": "ORGANIZATION",
+      "organization": "Mathematical Association of America",
+      "canonical_url": "https://maa.org/math-competitions"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "aime-maa",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "AIME / MAA competition authority",
+    "canonical_url": "https://maa.org/math-competitions"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://maa.org/math-competitions",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "AIME / MAA competition authority",
+      "published_at": null,
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The MAA owns the AIME competition problem stream reused across math reasoning evaluations (AIME24 and year variants).",
+      "subject_id": "aime-maa",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Ownership-level; corroborated by D150's AIME24 evaluation."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Generation, year, and contamination-interval conditions must bind any AIME-derived figure.",
+      "subject_id": "aime-maa",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Methodological rule."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Authority page not consumed; year/CI conditions outstanding.",
+      "subject_id": "aime-maa",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "UNRESOLVED",
+        "finding": "Locator-only; authority page outstanding.",
+        "subject_ids": [
+          "aime-maa"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "generation/year conditions",
+        "status": "UNRESOLVED",
+        "finding": "Year/CI pins enforced as rule; no citation audited.",
+        "subject_ids": [
+          "aime-maa"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "Evidence-stage full-body verification: Locator-only; authority page outstanding.",
+      "generation/year conditions: Year/CI pins enforced as rule; no citation audited."
+    ],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:8b6dcca90557bdbb",
+  "basis": {
+    "task_sha256": "eb509a11007f609b9f6304c5903b245c5ba93c200a28d3e1afebfe11e6bdeddd",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "qwen38-github",
+      "canonical_name": "QwenLM/Qwen3.8-Flash-Next GitHub (report + README source of truth)",
+      "entity_type": "PRODUCT",
+      "organization": "Alibaba Qwen",
+      "canonical_url": "https://github.com/QwenLM/Qwen3.8-Flash-Next"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "qwen38-github",
+    "artifact_type": "MODEL",
+    "canonical_name": "QwenLM/Qwen3.8-Flash-Next GitHub (report + README source of truth)",
+    "canonical_url": "https://github.com/QwenLM/Qwen3.8-Flash-Next"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08",
+        "subject_id": "qwen38-github",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/QwenLM/Qwen3.8-Flash-Next",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "QwenLM/Qwen3.8-Flash-Next GitHub (report + README source of truth)",
+      "published_at": "2026-08",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The repo binds the Flash-Next (preview, 262K context) vs Flash (production API, 1M + tools) variant distinction, preventing cross-variant number mixing.",
+      "subject_id": "qwen38-github",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Variant-boundary fact; central to valid Qwen citation."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "SGLang/vLLM/TokenSpeed/KTransformers runtime matrix and SWE-Pro footnote normalization are documented at repo level.",
+      "subject_id": "qwen38-github",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Coverage-level; runtime facts consistent with D054/D163."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Repo not fetched; footnote text and runtime matrix outstanding.",
+      "subject_id": "qwen38-github",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Variant-boundary role recorded; repo body outstanding.",
+        "subject_ids": [
+          "qwen38-github"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "bound/footnote verification",
+        "status": "UNRESOLVED",
+        "finding": "SWE-Pro footnote text not extracted; normalization claim unconfirmed.",
+        "subject_ids": [
+          "qwen38-github"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "bound/footnote verification: SWE-Pro footnote text not extracted; normalization claim unconfirmed."
+    ],
+    "contradictions": []
+  }
+}

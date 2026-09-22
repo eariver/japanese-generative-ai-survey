@@ -70,7 +70,7 @@ Counts on current canonical bytes: 67 projected / 93 passthrough / 160 tasks
   locators + rule IDs (160 rows).
 - `task-targets.json` — per-task verification targets dumped from the
   Core-built normal package (input contract for r2 authorship).
-- `validation-report.json` — frozen validation outcomes + identity audit.
+- `validation-report.md` — frozen validation outcomes + identity audit.
 
 ## Resume / re-execution
 

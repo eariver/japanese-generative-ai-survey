@@ -76,9 +76,11 @@ COMPLETENESS_R2 = {
  "closure": {
   "targeted_gap_fill_completed": True,
   "limitations": [
-   "Wrong-identity locators cited via frozen supplement, not rewritten (see residual).",
-   "Section/ablation detail outstanding per-record (see residual).",
-   "Jev independent evidence thin; AIPerf open; watches unconfirmed (see residual).",
+   "Canonical Discovery locators for D005/D061/D062/D093/D094/D098/D112/D117/D139 remain wrong-identity bytes; citing authority is the frozen-validated supplement (amendment deferred to Sol).",
+   "Full-body section/ablation detail outstanding for most paper records as stated per-record; abstract-scope records retained only where claims are scoped accordingly.",
+   "Jev independent reproduction/evaluation remains thin; vendor claims quarantined, not promoted.",
+   "AIPerf standalone product surface unconsumed (successor named in captured docs); MiniMax/gpt-oss mechanism contributions unconfirmed (watches held).",
+   "Per-figure benchmark pins (V4.1 appendix, Qwen ablations, Kimi tables, routing/TTC results) and version pins (kernels, repos, harnesses) outstanding as stated per-record limitations.",
   ],
   "status": "LIMITED",
  },

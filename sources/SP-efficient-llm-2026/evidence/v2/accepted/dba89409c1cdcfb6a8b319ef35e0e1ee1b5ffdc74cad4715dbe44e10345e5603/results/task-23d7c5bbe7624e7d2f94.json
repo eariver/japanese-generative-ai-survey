@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:502b5bb71b7fe8f2",
+  "basis": {
+    "task_sha256": "b450fb304cc1d3a47873b9b06776d7e2e93eac655df3fcb1a04893cb9ed95ba8",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "effort-control-binding",
+      "canonical_name": "Current-model effort-control binding (V4.1 + Qwen)",
+      "entity_type": "PRODUCT",
+      "organization": "DeepSeek-AI/Alibaba Qwen",
+      "canonical_url": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "effort-control-binding",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Current-model effort-control binding (V4.1 + Qwen)",
+    "canonical_url": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09",
+        "subject_id": "effort-control-binding",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Current-model effort-control binding (V4.1 + Qwen)",
+      "published_at": "2026-09",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "V4.1 exposes numeric reasoning effort 1-100 with penalty tables; Qwen exposes enable_thinking/reasoning_effort tiers — explicit-budget class controls in production interfaces.",
+      "subject_id": "effort-control-binding",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Interface facts; V4.1 numeric semantics corroborated by consumed D163 recipe (effort mapping, max-tokens interaction)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Effort 60-80 recovers most of effort-100 accuracy at well under half the tokens per the V4.1 report lineage, the production form of the overthinking finding.",
+      "subject_id": "effort-control-binding",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Report-lineage figure via D163 recipe context; workload-bound."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Card/interface pages not fetched separately; Qwen-side tier semantics at summary level.",
+      "subject_id": "effort-control-binding",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Effort-control role corroborated via consumed D163 (numeric effort, mapping tables, budget-room warnings); card bodies outstanding.",
+        "subject_ids": [
+          "effort-control-binding"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

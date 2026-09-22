@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:8ec72a4d273f8dfc",
+  "basis": {
+    "task_sha256": "1000922654714596ec634e685ac6b2a6f0dd59dc7500ff9cedd15279b7ee36dc",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "nim-glm53-card",
+      "canonical_name": "NVIDIA NIM GLM-5.3-Flash card",
+      "entity_type": "ORGANIZATION",
+      "organization": "NVIDIA",
+      "canonical_url": "https://build.nvidia.com/z-ai/glm-5-3-flash"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "nim-glm53-card",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "NVIDIA NIM GLM-5.3-Flash card",
+    "canonical_url": "https://build.nvidia.com/z-ai/glm-5-3-flash"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-15",
+        "subject_id": "nim-glm53-card",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://build.nvidia.com/z-ai/glm-5-3-flash",
+      "source_class": "SECONDARY",
+      "title": "NVIDIA NIM GLM-5.3-Flash card",
+      "published_at": "2026-09-15",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The NIM card describes hybrid KDA+sparse-MLA + FP8 deployment facts for GLM-5.3-Flash.",
+      "subject_id": "nim-glm53-card",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Card-level; hybrid direction consistent with D128/D129."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The card's KDA label collides with Kimi Delta Attention naming and is explicitly left unresolved here.",
+      "subject_id": "nim-glm53-card",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Collision boundary; disambiguation deferred."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Page not fetched; KDA expansion unverified.",
+      "subject_id": "nim-glm53-card",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Card role confirmed; collision flagged, not resolved.",
+        "subject_ids": [
+          "nim-glm53-card"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "KDA disambiguation",
+        "status": "UNRESOLVED",
+        "finding": "Whether the card's KDA denotes a distinct mechanism is open; no conflation made.",
+        "subject_ids": [
+          "nim-glm53-card"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "KDA disambiguation: Whether the card's KDA denotes a distinct mechanism is open; no conflation made."
+    ],
+    "contradictions": []
+  }
+}

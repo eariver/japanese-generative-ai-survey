@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:dee697144790afc0",
+  "basis": {
+    "task_sha256": "ce7e7c7335944679b25058a727aae17ed3994bf057a042223fa40eb0a0be8df3",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "streamingllm-2023",
+      "canonical_name": "Efficient Streaming Language Models with Attention Sinks (Xiao et al., 2023)",
+      "entity_type": "PAPER",
+      "organization": "MIT/Harvard",
+      "canonical_url": "https://arxiv.org/abs/2309.17453"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "streamingllm-2023",
+    "artifact_type": "PAPER",
+    "canonical_name": "Efficient Streaming Language Models with Attention Sinks (Xiao et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2309.17453"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-09",
+        "subject_id": "streamingllm-2023",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2309.17453",
+      "source_class": "PRIMARY_PAPER",
+      "title": "StreamingLLM / attention sinks",
+      "published_at": "2023-09",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "StreamingLLM shows that retaining initial-token 'attention sink' KV plus a sliding window recovers window-attention performance for streaming generation.",
+      "subject_id": "streamingllm-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline phenomenon + policy; abstract consumed (2309.17453)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The sink phenomenon constrains every eviction policy: any eviction scheme must account for sink tokens or regress.",
+      "subject_id": "streamingllm-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Constraint significance."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body sink-emergence analysis not consumed.",
+      "subject_id": "streamingllm-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2309.17453): attention-sink + window policy confirmed; full body outstanding.",
+        "subject_ids": [
+          "streamingllm-2023"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -13,10 +13,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/SP-efficient-llm-2026/production-profile.json`
 - Production State: `sources/SP-efficient-llm-2026/production-state.json`
-- Current State SHA-256: `5b5f351762e183ea0aa4830d0f1a2b895d27aed6b71923bad78195f1be4dd7ae`
-- Current lifecycle: `CANDIDATES_NORMALIZED`
+- Current State SHA-256: `e5f1875fbe9352d0bc33c85f62fef220d39ec66b84a683376c3962bd2832792c`
+- Current lifecycle: `EVIDENCE_REVIEWED`
 - Current terminal reason: `none`
-- Current next action: `stage:evidence-materiality-completeness` (NOT ENTERED — stop is Sol screening review)
+- Current next action: `stage:selection` (NOT ENTERED — stop is Sol evidence review)
 
 ## Human Gates
 
@@ -108,6 +108,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/ts001-reissue-x-r3-import-blocked-20260922.md`
 - `sessions/ts001-reissue-x-completion-screening-20260922.md`
 - `sessions/ts001-reissue-evidence-20260922.md`
+- `sessions/ts001-reissue-evidence-compat-20260922.md`
 
 ## Screening (COMPLETE — Sol PASS recorded; package corrected)
 
@@ -122,7 +123,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Sol Screening review: `execution/reviews/sol-screening-review-pass-20260922.md` (Sol / GPT-5.6, `PASS / PROCEED_TO_EVIDENCE`; acceptance unchanged; Selection NOT authorized).
 - Run tooling: `execution/x-completion/` (prior-authority, refresh/advance scripts, decisions provenance, validation).
 
-## Evidence (STAGE-BLOCKED by shared-Core defect; Luna input ready)
+## Evidence (first attempt STAGE-BLOCKED — historical; superseded below)
 
 - Canonical Evidence/Materiality/Completeness production run did NOT complete: `run_evidence_v2_interactive.py` fail-closes with `unsupported source_type for Evidence authority: 'PRIMARY_DOC'` (first failure on EFF-D004). No Evidence/Views/Ledger/Completeness artifact was produced.
 - Defect: `execution/defects/shared-core-evidence-source-map-gap-20260922.md` — Core v2 Evidence `SOURCE_CLASS_MAP` lacks 10 Thematic Discovery source types (PRIMARY_DOC 13, PRIMARY_REPO 21, PRIMARY_ANNOUNCEMENT 8, PRIMARY_MODEL_CARD 6, PRIMARY_SPEC 4, SECONDARY_REFERENCE 8, SECONDARY_TECHNICAL 4, RUNTIME_RECIPE 1, PACKAGING_DOCS 1, RUNTIME_PR 1 = 67/160 tasks). Runnable: 93 (PRIMARY_PAPER 92 + x-community-signal 1). Shared Core unchanged; no silent patch; failed run is failed evidence.
@@ -132,6 +133,51 @@ This is the current human-readable navigation record for the edition. Machine li
 - Lifecycle remains `CANDIDATES_NORMALIZED`; Selection NOT started. Resume: reviewed Core map repair → clean re-run of preserved input → `EVIDENCE_REVIEWED` → Sol authority-consumption/materiality review.
 - Session: `sessions/ts001-reissue-evidence-20260922.md`.
 
+## Evidence (ACCEPTED via frozen-Core compatibility; Sol review due)
+
+- Compatibility authority: `execution/compat/evidence-source-class-projection/`
+  (README, adapter scripts, persisted `compat-package/` SHA `60860c88…`,
+  `projection-ledger.json` 160 rows, `task-targets.json`,
+  `validation-report.md`). Projection: 160 tasks, 67 projected / 93
+  per-type (PRIMARY_DOC 13, PRIMARY_REPO 21, PRIMARY_ANNOUNCEMENT 8,
+  PRIMARY_MODEL_CARD 6, PRIMARY_SPEC 4, SECONDARY_REFERENCE 8,
+  SECONDARY_TECHNICAL 4, RUNTIME_RECIPE 1, PACKAGING_DOCS 1, RUNTIME_PR 1);
+  §7 field-identity held; `COMPATIBILITY_REPRODUCIBILITY: PASS`; frozen
+  `validate_evidence_package_basis` PASS. CV2-DM-016 stays OPEN_CORE.
+- Supplement r1: `external/evidence-supplement/evidence-authority-supplement-r1.json`
+  (SHA `62031208…`; 13 sources / 1,275,978 Raw bytes under `raw/`; frozen-built
+  + frozen-validated). All 9 wrong-identity arXiv locators independently
+  re-verified; Sarathi-Serve 2403.02310 confirmed as same-line 2024 follow-up
+  and bound additively; DeeBERT independently resolved (2004.12993).
+  Canonical Discovery locators preserved untouched.
+- Fresh input r2: `execution/evidence-interactive-input-r2/` (JSON SHA
+  `5f8395d0…`; 160 records; 148 PARTIAL / 12 VERIFIED; 137 MATERIAL /
+  23 CONTEXT / 0 HOLD; 11 supplement-bound; r1 input preserved). Deeper
+  body consumption: ThinkPrune/overthinking/Snell/s1/FrugalGPT/RouteLLM/
+  EAGLE/MTP/V4.1/Qwen/Kimi/V3.2/V4/Engram sections + DSA launch page.
+- Frozen chain outputs (all frozen-judged): Evidence acceptance `dba89409…`
+  (160 Cards: PARTIAL 148 / VERIFIED 12); Views acceptance `2bf475f5…`
+  (160); ledger `materiality-ledger-v2.json` (165 rows: MATERIAL 137 /
+  CONTEXT 23 / EXCLUDED 5); completeness `profile-completeness-v2.json`
+  (LIMITED; 15 obligations: 3 SATISFIED / 12 LIMITATION incl. O13–O15 rows
+  with Profile-declared dimensions, required by the frozen named-obligation
+  guard; deviation documented in driver).
+- Advance: `execution/evidence-stage-advance/validation/` (stage validation
+  PASS + reviews) → checkpoint `orchestration/v2/checkpoints/CANDIDATES_NORMALIZED.json`
+  (SHA `b69d2a0b…`) → lifecycle `EVIDENCE_REVIEWED` (State SHA `e5f1875f…`;
+  next_action `stage:selection`, NOT entered).
+- Authority-consumption package r2 (supersedes blocked r1):
+  `execution/reviews/evidence-authority-consumption-package-r2.md`.
+- Sessions: `sessions/ts001-reissue-evidence-20260922.md` (blocked run, history),
+  `sessions/ts001-reissue-evidence-compat-20260922.md` (this run).
+
 ## Final disposition
 
-`SCREENING_CORRECTED_SOL_PASS / EVIDENCE_STAGE_BLOCKED_BY_SHARED_CORE_DEFECT / SELECTION_NOT_STARTED` (machine lifecycle `CANDIDATES_NORMALIZED`) — Screening corrected (r2) with Sol PASS recorded; canonical Evidence input (160 records) authored and preserved; Evidence production run fail-closed on the recorded shared-Core source-map defect with Core unchanged. No failed-run verdict carried forward.
+`EVIDENCE_ACCEPTED_SOL_REVIEW_READY / SELECTION NOT STARTED` (machine lifecycle
+`EVIDENCE_REVIEWED`) — Evidence/Materiality/Completeness completed through
+frozen-Core compatibility (`WORKAROUND_VALIDATED`; CV2-DM-016 remains
+`OPEN_CORE`): 160 Evidence Cards + 160 Edition Views accepted, Materiality
+Ledger built (MATERIAL 137 / CONTEXT 23 / EXCLUDED 5), Profile Completeness
+LIMITED (15 obligations incl. O13–O15). Sol authority-consumption/materiality
+review due next; Selection not entered. No Sol/Human decision fabricated
+beyond recorded Sol reviews.

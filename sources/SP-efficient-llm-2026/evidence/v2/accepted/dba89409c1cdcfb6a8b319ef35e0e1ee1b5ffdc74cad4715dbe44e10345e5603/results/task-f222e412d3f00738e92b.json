@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:24470a0e00e95a70",
+  "basis": {
+    "task_sha256": "909b3e633b99cc33423ad39bfbc6fcccfcc9c471a9f7fb5bbf77a4e0df5b5bce",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "hf-transformers-glm5-next",
+      "canonical_name": "HF transformers GLM5-next doc (hybrid sparse+linear, mHC, 30T)",
+      "entity_type": "ORGANIZATION",
+      "organization": "Hugging Face",
+      "canonical_url": "https://raw.githubusercontent.com/huggingface/transformers/main/docs/source/en/model_doc/glm5_next.md"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "hf-transformers-glm5-next",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "HF transformers GLM5-next doc (hybrid sparse+linear, mHC, 30T)",
+    "canonical_url": "https://raw.githubusercontent.com/huggingface/transformers/main/docs/source/en/model_doc/glm5_next.md"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08-26",
+        "subject_id": "hf-transformers-glm5-next",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://raw.githubusercontent.com/huggingface/transformers/main/docs/source/en/model_doc/glm5_next.md",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "HF transformers GLM5-next doc (hybrid sparse+linear, mHC, 30T)",
+      "published_at": "2026-08-26",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The transformers doc specifies the GLM5-next hybrid sparse+linear attention with mHC trained on 30T tokens.",
+      "subject_id": "hf-transformers-glm5-next",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Documentation-level; consistent with GLM-5 DSA-adoption line (D128)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The transformers implementation excludes the MTP layer, so MTP acceptance gains (D129) do not transfer to this port.",
+      "subject_id": "hf-transformers-glm5-next",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Coverage limitation with direct serving implications."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Doc page not fetched; coverage facts scoped to Discovery summary.",
+      "subject_id": "hf-transformers-glm5-next",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Port role and MTP-exclusion fact recorded; doc body outstanding.",
+        "subject_ids": [
+          "hf-transformers-glm5-next"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "MTP exclusion; vendor ratios",
+        "status": "VERIFIED",
+        "finding": "MTP exclusion recorded as coverage fact; 3.0x/4.4x ratios carried as vendor-relative only.",
+        "subject_ids": [
+          "hf-transformers-glm5-next"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

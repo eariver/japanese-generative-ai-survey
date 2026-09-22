@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:4284b43272ff4ce9",
+  "basis": {
+    "task_sha256": "88829ab33fa67a14f6fd787113c9ec44a91fea1a4ba776d892cc4082044d5d76",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "bitnet-2023",
+      "canonical_name": "BitNet: Scaling 1-bit Transformers for Large Language Models (Wang et al., 2023)",
+      "entity_type": "PAPER",
+      "organization": "Microsoft Research",
+      "canonical_url": "https://arxiv.org/abs/2310.11453"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "bitnet-2023",
+    "artifact_type": "PAPER",
+    "canonical_name": "BitNet: Scaling 1-bit Transformers for Large Language Models (Wang et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2310.11453"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-10-17",
+        "subject_id": "bitnet-2023",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2310.11453",
+      "source_class": "PRIMARY_PAPER",
+      "title": "BitNet: Scaling 1-bit Transformers (Wang et al.)",
+      "published_at": "2023-10-17",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "BitNet trains 1-bit (binary) Transformers natively with scaling behavior competitive with full precision, opening the native-low-bit training direction.",
+      "subject_id": "bitnet-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline direction + scaling claim; abstract-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Industrial deployment of native 1-bit beyond Microsoft remains open; the Special treats BitNet as direction evidence, not deployment evidence.",
+      "subject_id": "bitnet-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Adoption-status boundary."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body training-stability analysis not consumed.",
+      "subject_id": "bitnet-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2310.11453): native 1-bit training direction confirmed; full body outstanding.",
+        "subject_ids": [
+          "bitnet-2023"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "adoption status",
+        "status": "UNRESOLVED",
+        "finding": "Non-MSR industrial adoption not confirmed this pass; recorded as open, not as negative.",
+        "subject_ids": [
+          "bitnet-2023"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "adoption status: Non-MSR industrial adoption not confirmed this pass; recorded as open, not as negative."
+    ],
+    "contradictions": []
+  }
+}

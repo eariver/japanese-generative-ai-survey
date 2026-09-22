@@ -46,6 +46,76 @@ STATE_REL = SOURCE_ROOT_REL + "/production-state.json"
 COMPAT_PACKAGE_REL = ("sources/SP-efficient-llm-2026/execution/compat/"
                       "evidence-source-class-projection/compat-package/package.json")
 
+# Edition-authored rows for Discovery-named obligations outside the Profile's
+# initial set (gap-fill lanes). Dimensions are Profile-declared; ID lists use
+# the frozen builder's mechanical derivation; statuses/rationales are Luna
+# provisional annotations exactly like the input-supplied initial rows.
+EXTRA_OBLIGATIONS = [
+    {
+        "obligation_id": "EFF-O13",
+        "dimension": "attention_sequence_kv_cache",
+        "description": ("Conditional memory via scalable lookup (Engram) as a sparsity axis "
+                        "complementary to MoE conditional computation, with retrieval-precedent "
+                        "boundaries (kNN-LM, RETRO) and Qwen-PLE parallel-lineage assessment."),
+        "status": "LIMITATION",
+        "rationale": ("Engram paper consumed at body level with allocation law and delta table; "
+                      "official repo release-level; Qwen-PLE lineage ruled parallel/unresolved; "
+                      "kNN-LM/RETRO boundary precedents consumed. Static-lookup fusion and "
+                      "allocation-curve detail outstanding as stated per-record limitations."),
+    },
+    {
+        "obligation_id": "EFF-O14",
+        "dimension": "decoding_acceleration",
+        "description": ("Test-time compute scaling: compute-optimal allocation, budget forcing, "
+                        "learned chain-of-thought pruning (ThinkPrune), overthinking and "
+                        "early stopping, adaptive-TTC taxonomy, and production effort-control "
+                        "binding."),
+        "status": "LIMITATION",
+        "rationale": ("Snell/s1/ThinkPrune/overthinking bodies consumed with headline numbers; "
+                      "effort-control binding corroborated via consumed recipe; survey "
+                      "follow-up pools (D152/D156) deferred to Sol gap-fill judgment; "
+                      "per-table ablations outstanding as stated per-record limitations."),
+    },
+    {
+        "obligation_id": "EFF-O15",
+        "dimension": "inference_kernels_serving",
+        "description": ("Model routing and cascading at inference time: FrugalGPT cascade origin, "
+                        "RouteLLM preference-data routing, 2026 survey unification, and "
+                        "router-fragility limitation evidence."),
+        "status": "LIMITATION",
+        "rationale": ("FrugalGPT body results and RouteLLM data pipeline consumed; survey "
+                      "unifier secondary-by-design with follow-ups deferred; fragility "
+                      "counterexample bounds routing-gain claims; D158 is an accepted "
+                      "Screening DROP. Results-table detail outstanding as stated."),
+    },
+]
+
+
+def _extra_obligation_rows(discovery_records, ledger) -> list:
+    ledger_task_by_discovery = {
+        row["discovery_id"]: list(row["evidence_task_ids"]) for row in ledger["rows"]
+    }
+    rows = []
+    for spec in EXTRA_OBLIGATIONS:
+        oid = spec["obligation_id"]
+        declaring = sorted(
+            row["discovery_id"] for row in discovery_records
+            if oid in row.get("provenance", {}).get("obligation_ids", []))
+        if not declaring:
+            raise ValueError(f"extra obligation {oid} names no Discovery records")
+        task_ids = sorted({
+            task_id for did in declaring for task_id in ledger_task_by_discovery.get(did, [])})
+        rows.append({
+            "obligation_id": oid,
+            "dimension": spec["dimension"],
+            "description": spec["description"],
+            "status": spec["status"],
+            "discovery_ids": declaring,
+            "evidence_task_ids": task_ids,
+            "rationale": spec["rationale"],
+        })
+    return rows
+
 
 def main() -> int:
     root = Path(".").resolve()
@@ -151,6 +221,17 @@ def main() -> int:
             raise ValueError(f"refusing to overwrite Profile Completeness: {completeness_path}")
         result = runner_mod._build_completeness(
             root, profile, profile_path, discovery_records, ledger_path, ledger, completeness_input)
+        # Frozen _build_completeness emits Profile initial obligations only, but
+        # the frozen profile guard (survey_completeness_v2) additionally requires
+        # every obligation ID named in Discovery provenance (here the r2/r3
+        # gap-fill lanes EFF-O13/O14/O15) to appear as a row. Those rows are
+        # edition-authored here with the frozen builder's own mechanical
+        # derivation for discovery_ids/evidence_task_ids; every judgment step
+        # below (shape, dimension membership, references, closure derivation,
+        # overall status) is still performed by the unchanged frozen
+        # validators. No frozen derivation is altered.
+        result["obligations"] = list(result["obligations"]) + _extra_obligation_rows(
+            discovery_records, ledger)
         schema_gate.validate_instance(
             result, root / "schemas/profile-completeness-result.schema.json", label="Profile Completeness")
         with agent_tool.current_stage_basis_override():

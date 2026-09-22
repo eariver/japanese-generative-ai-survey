@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:653cfe1ad7f00519",
+  "basis": {
+    "task_sha256": "b680c90784ba06892e3f782088a4f5d6cb4fafb836d9bb5c415b96f8d78a4cd2",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "ulysses-2023",
+      "canonical_name": "DeepSpeed-Ulysses: System Optimizations for Enabling Training of Extreme Long Sequence Transformer Models (Jacobs et al., 2023)",
+      "entity_type": "PAPER",
+      "organization": "Microsoft Research",
+      "canonical_url": "https://arxiv.org/abs/2309.14509"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ulysses-2023",
+    "artifact_type": "PAPER",
+    "canonical_name": "DeepSpeed-Ulysses: System Optimizations for Enabling Training of Extreme Long Sequence Transformer Models (Jacobs et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2309.14509"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-09",
+        "subject_id": "ulysses-2023",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2309.14509",
+      "source_class": "PRIMARY_PAPER",
+      "title": "DeepSpeed-Ulysses (sequence parallelism)",
+      "published_at": "2023-09",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "DeepSpeed-Ulysses partitions along the sequence dimension with all-to-all head exchange, enabling extreme-long-sequence training where batch/tensor/pipeline parallelism do not reach.",
+      "subject_id": "ulysses-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline mechanism; abstract consumed (2309.14509)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Sequence parallelism is the training-side complement to inference-side context extension (YaRN, ring attention).",
+      "subject_id": "ulysses-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Complementarity framing with D108."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body communication-efficiency analysis not consumed.",
+      "subject_id": "ulysses-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2309.14509): sequence-parallel mechanism confirmed; full body outstanding.",
+        "subject_ids": [
+          "ulysses-2023"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

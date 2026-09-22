@@ -1,0 +1,25 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "research_profile": "THEMATIC",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:30f5654e93328f92",
+  "evidence_sha256": "eeb16053eddcb903c30ae38ec11a33e36d9128ea7b2cb462be988b6addfa9ee2",
+  "materiality": {
+    "status": "MATERIAL",
+    "rationale": "IO-aware EXACT attention; tiling + online softmax; implementation efficiency, not approximation."
+  },
+  "scope_dimensions": [
+    "attention_sequence_kv_cache"
+  ],
+  "profile_annotations": {
+    "lineage_role": "CORE",
+    "branch_ids": [
+      "attention-kv"
+    ],
+    "transition_ids": [
+      "naive-to-io-aware-attention"
+    ],
+    "inheritance_note": null,
+    "historical_attribution_caveat": "Speedups are hardware- and shape-conditional; exactness claim is the durable part, not any single speedup factor."
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:89ac03731df4162b",
+  "basis": {
+    "task_sha256": "16b8e871959567615efbdbf7e086749b4ed69701bb7f82454498709ce76c2754",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "mixtral-2024",
+      "canonical_name": "Mixtral of Experts (Jiang et al., 2024)",
+      "entity_type": "PAPER",
+      "organization": "Mistral AI",
+      "canonical_url": "https://arxiv.org/abs/2401.04088"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "mixtral-2024",
+    "artifact_type": "PAPER",
+    "canonical_name": "Mixtral of Experts (Jiang et al., 2024)",
+    "canonical_url": "https://arxiv.org/abs/2401.04088"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-01-08",
+        "subject_id": "mixtral-2024",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2401.04088",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Mixtral of Experts (Jiang et al.)",
+      "published_at": "2024-01-08",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Mixtral is an 8x7B open-weight MoE activating ~13B parameters per token via top-2 routing, demonstrating competitive sparse-activation quality outside large closed labs.",
+      "subject_id": "mixtral-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Widely reported headline facts; abstract-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Its release marks the open-weights inflection for MoE serving concerns (expert residency, offload, routing overhead) in the community lane.",
+      "subject_id": "mixtral-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Editorial significance for the D07 local-inference thread."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body routing analyses and benchmark tables not consumed; active-param figure stated at established level.",
+      "subject_id": "mixtral-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2401.04088): 8x7B MoE identity confirmed; full body outstanding.",
+        "subject_ids": [
+          "mixtral-2024"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:f23d8e73f5fbd7e8",
+  "basis": {
+    "task_sha256": "b4ae6c030c845048149e06e0b1a982d43417e43c1f212fcb30203810979a5b46",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "flashattention3-2024",
+      "canonical_name": "FlashAttention-3: Fast and Accurate Attention with Asynchrony and Low-precision (Shah et al., 2024)",
+      "entity_type": "PAPER",
+      "organization": "Princeton/Columbia/NVIDIA",
+      "canonical_url": "https://arxiv.org/abs/2407.08608"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "flashattention3-2024",
+    "artifact_type": "PAPER",
+    "canonical_name": "FlashAttention-3: Fast and Accurate Attention with Asynchrony and Low-precision (Shah et al., 2024)",
+    "canonical_url": "https://arxiv.org/abs/2407.08608"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-07-10",
+        "subject_id": "flashattention3-2024",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2407.08608",
+      "source_class": "PRIMARY_PAPER",
+      "title": "FlashAttention-3 (Shah et al.)",
+      "published_at": "2024-07-10",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "FlashAttention-3 exploits Hopper asynchrony and low-precision (FP8) paths for further attention speedups at preserved accuracy.",
+      "subject_id": "flashattention3-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline mechanism; abstract-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "FA3 is the Special's canonical instance of hardware-conditional gains: same mathematics, different realized efficiency per accelerator generation.",
+      "subject_id": "flashattention3-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Editorial framing for D01 hardware binding."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body async-pipeline details and Hopper benchmark tables not consumed.",
+      "subject_id": "flashattention3-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2407.08608): asynchrony + low-precision mechanism confirmed; full-body tables outstanding.",
+        "subject_ids": [
+          "flashattention3-2024"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "hardware conditions",
+        "status": "VERIFIED",
+        "finding": "Hopper-conditionality recorded from the paper's own framing; no cross-hardware generalization made.",
+        "subject_ids": [
+          "flashattention3-2024"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

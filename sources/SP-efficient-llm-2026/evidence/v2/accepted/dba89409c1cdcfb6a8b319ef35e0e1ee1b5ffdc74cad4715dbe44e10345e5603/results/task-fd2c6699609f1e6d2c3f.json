@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:2473d6aebf4893eb",
+  "basis": {
+    "task_sha256": "801c14d49e594fe5950e94100e91abcc29ce7df9991bb013826079412dcc5980",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "pagedattention-vllm-2023",
+      "canonical_name": "Efficient Memory Management for LLM Serving with PagedAttention (Kwon et al., SOSP'23)",
+      "entity_type": "PAPER",
+      "organization": "Berkeley/Sky Lab",
+      "canonical_url": "https://arxiv.org/abs/2309.06180"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "pagedattention-vllm-2023",
+    "artifact_type": "PAPER",
+    "canonical_name": "Efficient Memory Management for LLM Serving with PagedAttention (Kwon et al., SOSP'23)",
+    "canonical_url": "https://arxiv.org/abs/2309.06180"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-09-12",
+        "subject_id": "pagedattention-vllm-2023",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2309.06180",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Efficient Memory Management for LLM Serving with PagedAttention / vLLM (SOSP'23)",
+      "published_at": "2023-09-12",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "PagedAttention manages KV cache in non-contiguous blocks, eliminating fragmentation and enabling continuous batching at high throughput.",
+      "subject_id": "pagedattention-vllm-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline mechanism + effects; abstract-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Block-level KV management is the memory-management substrate on which prefix caching, disaggregation, and offload later build.",
+      "subject_id": "pagedattention-vllm-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Substrate significance for D113/D114/D059-D061."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body block-table design and throughput tables not consumed.",
+      "subject_id": "pagedattention-vllm-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2309.06180): paged KV + continuous batching confirmed; full body outstanding.",
+        "subject_ids": [
+          "pagedattention-vllm-2023"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

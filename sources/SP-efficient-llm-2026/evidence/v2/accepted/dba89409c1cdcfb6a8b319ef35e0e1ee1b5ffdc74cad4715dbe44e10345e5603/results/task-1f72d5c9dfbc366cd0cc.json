@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:09954c962da34ee3",
+  "basis": {
+    "task_sha256": "db03ad4d13ed56973a004a1b8f6e89a961824185900bbf81c27a3120911ea9a7",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "sglang-paper-2023",
+      "canonical_name": "SGLang: Efficient Execution of Structured Language Model Programs (Zheng et al., 2023)",
+      "entity_type": "PAPER",
+      "organization": "Berkeley",
+      "canonical_url": "https://arxiv.org/abs/2312.07104"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "sglang-paper-2023",
+    "artifact_type": "PAPER",
+    "canonical_name": "SGLang: Efficient Execution of Structured Language Model Programs (Zheng et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2312.07104"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-12-18",
+        "subject_id": "sglang-paper-2023",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2312.07104",
+      "source_class": "PRIMARY_PAPER",
+      "title": "SGLang: Efficient Execution of Structured Language Model Programs",
+      "published_at": "2023-12-18",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "SGLang introduces RadixAttention for prefix reuse across structured multi-call programs plus a compressed finite-state machine for constrained decoding.",
+      "subject_id": "sglang-paper-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline mechanisms; abstract-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Program-level reuse directly addresses serving waste in agentic multi-call workloads, the Special's 'serving waste' thesis instance.",
+      "subject_id": "sglang-paper-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Editorial significance."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body scheduler design and speedup tables not consumed.",
+      "subject_id": "sglang-paper-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2312.07104): RadixAttention + program execution confirmed; full body outstanding.",
+        "subject_ids": [
+          "sglang-paper-2023"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

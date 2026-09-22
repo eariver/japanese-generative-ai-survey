@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:b4561355f5d40979",
+  "basis": {
+    "task_sha256": "2ee2111eae81d49fe7edffe18e8578646280e20e4cdf1909ebea3643b1369579",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "megablocks-2022",
+      "canonical_name": "MegaBlocks: Efficient Sparse Training with Mixture-of-Experts (Gale et al., 2022)",
+      "entity_type": "PAPER",
+      "organization": "Stanford/NVIDIA",
+      "canonical_url": "https://arxiv.org/abs/2211.15841"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "megablocks-2022",
+    "artifact_type": "PAPER",
+    "canonical_name": "MegaBlocks: Efficient Sparse Training with Mixture-of-Experts (Gale et al., 2022)",
+    "canonical_url": "https://arxiv.org/abs/2211.15841"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-11",
+        "subject_id": "megablocks-2022",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2211.15841",
+      "source_class": "PRIMARY_PAPER",
+      "title": "MegaBlocks (MoE compute substrate)",
+      "published_at": "2022-11",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "MegaBlocks reformulates MoE as block-sparse operations with dedicated GPU kernels, never dropping tokens and reaching 40% end-to-end training speedups over Tutel (2.4x over Megatron-LM DNNs).",
+      "subject_id": "megablocks-2022",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline mechanism + figures; abstract consumed (2211.15841)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "MegaBlocks is the compute twin to DeepEP's communication twin (D064).",
+      "subject_id": "megablocks-2022",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Twin framing."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body kernel design and speedup tables not consumed.",
+      "subject_id": "megablocks-2022",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2211.15841): block-sparse MoE + figures confirmed; full body outstanding.",
+        "subject_ids": [
+          "megablocks-2022"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

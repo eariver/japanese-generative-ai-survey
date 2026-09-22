@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:61f066a7c8ff3324",
+  "basis": {
+    "task_sha256": "0b06cb3cc0d11edc2259c815854bc527a465d708b7fcc4b500352753d4383d74",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "deepinfra-v4-pricing",
+      "canonical_name": "DeepInfra V4 Flash API pricing snapshot",
+      "entity_type": "ORGANIZATION",
+      "organization": "DeepInfra",
+      "canonical_url": "https://deepinfra.com/deepseek-ai/DeepSeek-V4-Flash/api"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "deepinfra-v4-pricing",
+    "artifact_type": "API",
+    "canonical_name": "DeepInfra V4 Flash API pricing snapshot",
+    "canonical_url": "https://deepinfra.com/deepseek-ai/DeepSeek-V4-Flash/api"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-20",
+        "subject_id": "deepinfra-v4-pricing",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://deepinfra.com/deepseek-ai/DeepSeek-V4-Flash/api",
+      "source_class": "SECONDARY",
+      "title": "DeepInfra V4 Flash API pricing snapshot",
+      "published_at": "2026-09-20",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "DeepInfra publishes a V4-Flash API price sample usable as one transaction-price datapoint in the economics lane.",
+      "subject_id": "deepinfra-v4-pricing",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Sample-level; not official pricing."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "API economics require model/version binding plus date binding; undated samples are not comparable across time.",
+      "subject_id": "deepinfra-v4-pricing",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Methodological boundary."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Page not fetched; price figures not extracted.",
+      "subject_id": "deepinfra-v4-pricing",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Sample role confirmed; economics-lane boundary recorded.",
+        "subject_ids": [
+          "deepinfra-v4-pricing"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "official pricing",
+        "status": "UNRESOLVED",
+        "finding": "Official-vs-provider reconciliation not performed; D031 schedule takes precedence.",
+        "subject_ids": [
+          "deepinfra-v4-pricing"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "official pricing: Official-vs-provider reconciliation not performed; D031 schedule takes precedence."
+    ],
+    "contradictions": []
+  }
+}

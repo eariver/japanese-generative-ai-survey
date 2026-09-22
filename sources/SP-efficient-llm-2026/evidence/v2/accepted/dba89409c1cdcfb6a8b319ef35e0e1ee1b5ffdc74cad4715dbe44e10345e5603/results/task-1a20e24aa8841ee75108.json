@@ -1,0 +1,141 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:ae93304a4b09d605",
+  "basis": {
+    "task_sha256": "b6ad88823baf806eb0265e48b4693fd9fe3793f6510efb30c8eba80ff1dd8865",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "ezyang-dsv41-study",
+      "canonical_name": "Infra-oriented V4.1-Flash architecture study (parameter accounting)",
+      "entity_type": "ORGANIZATION",
+      "organization": "Independent study (E. Zheng)",
+      "canonical_url": "https://deepseek-v3.ezyang.com/studies/dsv41-flash.html"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ezyang-dsv41-study",
+    "artifact_type": "PAPER",
+    "canonical_name": "Infra-oriented V4.1-Flash architecture study (parameter accounting)",
+    "canonical_url": "https://deepseek-v3.ezyang.com/studies/dsv41-flash.html"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09",
+        "subject_id": "ezyang-dsv41-study",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://deepseek-v3.ezyang.com/studies/dsv41-flash.html",
+      "source_class": "SECONDARY",
+      "title": "Infra-oriented V4.1-Flash architecture study (parameter accounting)",
+      "published_at": "2026-09",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The study derives 551,566,180,464 backbone parameters (advertised 552B) and 196,928,504,320 Engram parameters (advertised 196B) from safetensors headers of all 48 shards, cross-checked against config.json and inference/model.py, with per-token 16.13B decode / 7.90B prefill under DeepSeek's counting convention.",
+      "subject_id": "ezyang-dsv41-study",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Study page fully consumed this pass (https://deepseek-v3.ezyang.com/studies/dsv41-flash.html); figures are the study's, cross-checked as described on-page."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The 890 bytes/token global-KV headline falls out of the study's CSA2 accounting: 2.5 entries/token x (288B main FP4 + 68B indexer key); SWA caches are bounded and never persisted.",
+      "subject_id": "ezyang-dsv41-study",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Derivation-level; method disclosed on-page (Full/Reindex/Reuse roles, FP4 E2M1 + E4M3/E8M0 scales)."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "The page explicitly discloses AI-drafted, human-unedited status and names its primaries (V4.1 tech-report PDF, checkpoint config.json, reference model.py, safetensors headers).",
+      "subject_id": "ezyang-dsv41-study",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "First-party disclosure on-page; governs the lead-not-authority handling."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Tensor-level derivations not re-verified independently (no checkpoint inspection this pass).",
+      "subject_id": "ezyang-dsv41-study",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Vision tower (485M) and DSpark drafter (14.2B) excluded from backbone counts per stated convention.",
+      "subject_id": "ezyang-dsv41-study",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Study page fully consumed: disclosure, derivation method, parameter/KV figures extracted; independent tensor re-verification outstanding.",
+        "subject_ids": [
+          "ezyang-dsv41-study"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "verify derivations against report/card",
+        "status": "VERIFIED",
+        "finding": "Cross-check chain (report PDF + config + model.py + headers) confirmed as stated on-page; figures match advertised 552B/196B/16B/8B/890B; lead-not-authority handling applied per disclosure.",
+        "subject_ids": [
+          "ezyang-dsv41-study"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

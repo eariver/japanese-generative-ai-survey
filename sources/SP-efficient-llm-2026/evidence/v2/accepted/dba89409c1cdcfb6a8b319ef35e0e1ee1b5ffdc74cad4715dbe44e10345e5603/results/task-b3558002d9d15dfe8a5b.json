@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:cc55ddc035d4e91d",
+  "basis": {
+    "task_sha256": "881485ccc6d740ca50d485c3f83e211dab4354ead539066e0d3ef9235dfe2c3a",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "megatron-lm-2019",
+      "canonical_name": "Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism (Shoeybi et al., 2019)",
+      "entity_type": "PAPER",
+      "organization": "NVIDIA",
+      "canonical_url": "https://arxiv.org/abs/1909.08053"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "megatron-lm-2019",
+    "artifact_type": "PAPER",
+    "canonical_name": "Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism (Shoeybi et al., 2019)",
+    "canonical_url": "https://arxiv.org/abs/1909.08053"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2019-08",
+        "subject_id": "megatron-lm-2019",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1909.08053",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Megatron-LM (tensor model parallelism)",
+      "published_at": "2019-08",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Megatron-LM introduces intra-layer tensor (model) parallelism with minimal communication ops, training 8.3B-parameter Transformers at 15.1 PetaFLOPs with 76% scaling efficiency on 512 GPUs.",
+      "subject_id": "megatron-lm-2019",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline scale + efficiency figures; abstract consumed (1909.08053)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Tensor parallelism is classified SCALE/PLACE in the Special's direction taxonomy: it fits larger models, it does not reduce FLOPs.",
+      "subject_id": "megatron-lm-2019",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Taxonomic classification."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body communication-op design not consumed.",
+      "subject_id": "megatron-lm-2019",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (1909.08053): intra-layer parallelism + scale figures confirmed; full body outstanding.",
+        "subject_ids": [
+          "megatron-lm-2019"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

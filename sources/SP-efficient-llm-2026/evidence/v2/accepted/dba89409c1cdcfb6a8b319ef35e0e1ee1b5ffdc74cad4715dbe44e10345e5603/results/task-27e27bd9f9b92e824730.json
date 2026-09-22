@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:492df8d0c65e7d4a",
+  "basis": {
+    "task_sha256": "48d429b14595f5b51181efe565296b0e211f121a4be2ceae5cdd6eff79795834",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "mixture-of-depths-2024",
+      "canonical_name": "Mixture-of-Depths: Dynamically allocating compute in transformer-based language models (Raposo et al., 2024)",
+      "entity_type": "PAPER",
+      "organization": "Google DeepMind",
+      "canonical_url": "https://arxiv.org/abs/2404.02258"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "mixture-of-depths-2024",
+    "artifact_type": "PAPER",
+    "canonical_name": "Mixture-of-Depths: Dynamically allocating compute in transformer-based language models (Raposo et al., 2024)",
+    "canonical_url": "https://arxiv.org/abs/2404.02258"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-04",
+        "subject_id": "mixture-of-depths-2024",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2404.02258",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Mixture-of-Depths (Raposo et al.)",
+      "published_at": "2024-04",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Mixture-of-Depths caps per-layer participating tokens with top-k routing, allocating FLOPs non-uniformly across sequence and depth under a static compute graph.",
+      "subject_id": "mixture-of-depths-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline mechanism; abstract consumed (2404.02258)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The routing object (depth participation) differs categorically from MoE expert routing; the shared name is a known confusion source.",
+      "subject_id": "mixture-of-depths-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Disambiguation boundary."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body capacity/allocation analysis not consumed.",
+      "subject_id": "mixture-of-depths-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2404.02258): depth-routing mechanism confirmed; full body outstanding.",
+        "subject_ids": [
+          "mixture-of-depths-2024"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:8ffb8da4034204e8",
+  "basis": {
+    "task_sha256": "216efe0fb696c7179af03391f7fa4452b0d878c511dc62afbcdb5df976c16198",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "deepep",
+      "canonical_name": "DeepEP (DeepSeek expert-parallel communication library)",
+      "entity_type": "PRODUCT",
+      "organization": "DeepSeek-AI",
+      "canonical_url": "https://github.com/deepseek-ai/DeepEP"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "deepep",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "DeepEP (DeepSeek expert-parallel communication library)",
+    "canonical_url": "https://github.com/deepseek-ai/DeepEP"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/deepseek-ai/DeepEP",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "DeepEP (DeepSeek expert-parallel communication library)",
+      "published_at": null,
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "DeepEP provides high-throughput expert-parallel dispatch/combine communication for MoE training and inference at DeepSeek scale.",
+      "subject_id": "deepep",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Library-role level; consistent with V3/V4 FP8-MoE training claims."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "DeepEP is the communication twin to MegaBlocks' compute twin in the MoE systems story.",
+      "subject_id": "deepep",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Twin framing with D134."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Library code and benchmark numbers not consumed.",
+      "subject_id": "deepep",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Communication-library role corroborated via V-line training records; code audit outstanding.",
+        "subject_ids": [
+          "deepep"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "version binding at Evidence",
+        "status": "UNRESOLVED",
+        "finding": "No version pin extracted.",
+        "subject_ids": [
+          "deepep"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "version binding at Evidence: No version pin extracted."
+    ],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "research_profile": "THEMATIC",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:d057b0f86e206bce",
+  "evidence_sha256": "bd80a7fc6a1e09210065140f3bd9904f6337619ddca874fe8485300d0c0c478d",
+  "materiality": {
+    "status": "CONTEXT",
+    "rationale": "kNN-LM explicit-corpus retrieval precedent; boundary-sharpening only vs static lookup."
+  },
+  "scope_dimensions": [
+    "attention_sequence_kv_cache",
+    "conditional_compute_moe"
+  ],
+  "profile_annotations": {
+    "lineage_role": "BRIDGE",
+    "branch_ids": [
+      "conditional-memory"
+    ],
+    "transition_ids": [
+      "parametric-to-retrieval-interpolation"
+    ],
+    "inheritance_note": null,
+    "historical_attribution_caveat": "Query-time ANN retrieval over explicit corpora differs categorically from O(1) static N-gram lookup; precedent role only."
+  }
+}

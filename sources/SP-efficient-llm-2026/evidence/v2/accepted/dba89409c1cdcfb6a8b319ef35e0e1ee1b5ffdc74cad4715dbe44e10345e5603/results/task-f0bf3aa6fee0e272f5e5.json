@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:a1f9be873c45a5f3",
+  "basis": {
+    "task_sha256": "0d25368d54f6bcea03e43e07919b322a0ab31f4d24d34e4ce6f12666c709e0fd",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "hinton-distillation-2015",
+      "canonical_name": "Distilling the Knowledge in a Neural Network (Hinton et al., 2015)",
+      "entity_type": "PAPER",
+      "organization": "Google",
+      "canonical_url": "https://arxiv.org/abs/1503.02531"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "hinton-distillation-2015",
+    "artifact_type": "PAPER",
+    "canonical_name": "Distilling the Knowledge in a Neural Network (Hinton et al., 2015)",
+    "canonical_url": "https://arxiv.org/abs/1503.02531"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2015-03-09",
+        "subject_id": "hinton-distillation-2015",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1503.02531",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Distilling the Knowledge in a Neural Network (Hinton et al.)",
+      "published_at": "2015-03-09",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Hinton et al. introduce knowledge distillation via softened teacher targets, framing the quality/capacity tradeoff that governs all later distillation work.",
+      "subject_id": "hinton-distillation-2015",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Foundational mechanism + framing; abstract-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Soft-target distillation is the origin retained after the D159/D160 drops for the reader-facing decoder/reasoning history.",
+      "subject_id": "hinton-distillation-2015",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Screening-rationale linkage."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body temperature experiments not consumed.",
+      "subject_id": "hinton-distillation-2015",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (1503.02531): soft-target distillation confirmed; full body outstanding.",
+        "subject_ids": [
+          "hinton-distillation-2015"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

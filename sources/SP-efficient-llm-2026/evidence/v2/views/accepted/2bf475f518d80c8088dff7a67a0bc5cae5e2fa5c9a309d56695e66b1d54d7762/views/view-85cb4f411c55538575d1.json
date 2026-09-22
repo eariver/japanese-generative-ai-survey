@@ -1,0 +1,27 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "research_profile": "THEMATIC",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:d1592f4bf556f388",
+  "evidence_sha256": "0466424ee85e14bfa8ea542407e5d83437424c3e1ace5abe525b34470f2d693e",
+  "materiality": {
+    "status": "MATERIAL",
+    "rationale": "Score-driven eviction (heavy-hitter + recent); category (3) eviction."
+  },
+  "scope_dimensions": [
+    "attention_sequence_kv_cache",
+    "inference_kernels_serving"
+  ],
+  "profile_annotations": {
+    "lineage_role": "CORE",
+    "branch_ids": [
+      "attention-kv",
+      "inference-serving"
+    ],
+    "transition_ids": [
+      "full-cache-to-eviction"
+    ],
+    "inheritance_note": null,
+    "historical_attribution_caveat": "Eviction is lossy by construction; StreamingLLM sink constraints (D110) bound all eviction claims."
+  }
+}

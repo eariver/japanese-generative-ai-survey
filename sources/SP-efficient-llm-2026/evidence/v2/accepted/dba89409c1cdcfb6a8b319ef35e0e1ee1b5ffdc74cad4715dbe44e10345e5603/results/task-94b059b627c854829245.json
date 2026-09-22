@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:004caf543d98a4f3",
+  "basis": {
+    "task_sha256": "8b65fb98d2c29ccedcfeb950207aa3af0ce59d26e026b7b98523eef9efeb1a35",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "flashattention2-2023",
+      "canonical_name": "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning (Dao, 2023)",
+      "entity_type": "PAPER",
+      "organization": "Princeton",
+      "canonical_url": "https://arxiv.org/abs/2307.08691"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "flashattention2-2023",
+    "artifact_type": "PAPER",
+    "canonical_name": "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning (Dao, 2023)",
+    "canonical_url": "https://arxiv.org/abs/2307.08691"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-07-17",
+        "subject_id": "flashattention2-2023",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2307.08691",
+      "source_class": "PRIMARY_PAPER",
+      "title": "FlashAttention-2 (Dao)",
+      "published_at": "2023-07-17",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "FlashAttention-2 reworks parallelism and work partitioning for roughly 2x speedup over FA1 while remaining exactly equivalent attention.",
+      "subject_id": "flashattention2-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline speedup + exactness; abstract-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "KV-cache asymptotics are unchanged by FA2; memory-capacity relief comes from MQA/GQA/MLA/sparse lines, not FlashAttention.",
+      "subject_id": "flashattention2-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Boundary statement for the taxonomy."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body partitioning details and A100/H100 tables not consumed.",
+      "subject_id": "flashattention2-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2307.08691): parallelism rework + ~2x confirmed; full body outstanding.",
+        "subject_ids": [
+          "flashattention2-2023"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:12870c497dc1834f",
+  "basis": {
+    "task_sha256": "90c5b25013a33242b7ad657a392c149b38ca6cb13a2d21115ce5c81e014c8ec0",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "jev-wiki-snapshot",
+      "canonical_name": "Jev wiki: Jev 1.13 model-card facts (jevai.wiki)",
+      "entity_type": "ORGANIZATION",
+      "organization": "Community wiki",
+      "canonical_url": "https://jevai.wiki/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "jev-wiki-snapshot",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Jev wiki: Jev 1.13 model-card facts (jevai.wiki)",
+    "canonical_url": "https://jevai.wiki/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-19",
+        "subject_id": "jev-wiki-snapshot",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://jevai.wiki/",
+      "source_class": "SECONDARY",
+      "title": "Jev wiki: Jev 1.13 model-card facts",
+      "published_at": "2026-09-19",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The wiki snapshot records Jev 1.13 facts (64k context, $0.042/MTok, 70-500ms class) consistent with first-party docs at snapshot date.",
+      "subject_id": "jev-wiki-snapshot",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Corroboration only; values match D141 where overlapping."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The snapshot is not specification authority and must not be cited for version, price, or limit facts.",
+      "subject_id": "jev-wiki-snapshot",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Authority boundary per screening decision."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Snapshot date and edit provenance not established; wiki content mutable.",
+      "subject_id": "jev-wiki-snapshot",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Corroboration role confirmed against consumed D141; snapshot body not independently audited.",
+        "subject_ids": [
+          "jev-wiki-snapshot"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "fact snapshot vs official docs",
+        "status": "VERIFIED",
+        "finding": "Values consistent with official docs; precedence rule (docs over wiki) recorded.",
+        "subject_ids": [
+          "jev-wiki-snapshot"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

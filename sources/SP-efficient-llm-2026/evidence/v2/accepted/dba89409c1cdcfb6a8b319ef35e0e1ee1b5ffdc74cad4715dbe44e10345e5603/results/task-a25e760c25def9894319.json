@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:4c4fe28338bca30a",
+  "basis": {
+    "task_sha256": "f3b24e84714abaf68ddb9a131813d94c93c6bfae37fa7fcaba4e6252bf4d433f",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "glm5-report",
+      "canonical_name": "GLM-5 technical report (Z.ai, 2026)",
+      "entity_type": "PAPER",
+      "organization": "Z.ai",
+      "canonical_url": "https://arxiv.org/abs/2602.15763"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "glm5-report",
+    "artifact_type": "PAPER",
+    "canonical_name": "GLM-5 technical report (Z.ai, 2026)",
+    "canonical_url": "https://arxiv.org/abs/2602.15763"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-02-17",
+        "subject_id": "glm5-report",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2602.15763",
+      "source_class": "PRIMARY_PAPER",
+      "title": "GLM-5 technical report (Z.ai first-party lineage ground)",
+      "published_at": "2026-02-17",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "GLM-5 is a 744B/40B foundation model adopting DSA (cited) with MLA and SimpleGDN, trained with asynchronous RL infrastructure for agentic coding.",
+      "subject_id": "glm5-report",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Report abstract consumed (2602.15763, pub 2026-02-17)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Cross-lab DSA adoption (DeepSeek-originated mechanism in a Z.ai flagship) is independent corroboration of DSA's transferability beyond its home lab.",
+      "subject_id": "glm5-report",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Adoption significance; the Special's strongest portability datapoint."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "RULER ablations in the report link long-context fidelity measurement to the attention-efficiency claim.",
+      "subject_id": "glm5-report",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Ablation-role fact per abstract context."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body DSA-adoption details, RL-infra design, and benchmark tables not consumed.",
+      "subject_id": "glm5-report",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed in full: 744B/40B, DSA adoption, async RL, coding-SOTA framing extracted; full body outstanding.",
+        "subject_ids": [
+          "glm5-report"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

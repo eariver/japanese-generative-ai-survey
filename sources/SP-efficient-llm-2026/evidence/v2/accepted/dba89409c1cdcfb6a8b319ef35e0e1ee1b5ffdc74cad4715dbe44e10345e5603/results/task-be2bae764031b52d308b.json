@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:f7421a7add4c658b",
+  "basis": {
+    "task_sha256": "657365d6046ce50f723fef793184d4d62969fb1fd50ee101741bf6f60119e50e",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "gpipe-2018",
+      "canonical_name": "GPipe: Efficient Training of Giant Neural Networks using Pipeline Parallelism (Huang et al., 2018)",
+      "entity_type": "PAPER",
+      "organization": "Google",
+      "canonical_url": "https://arxiv.org/abs/1811.06965"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "gpipe-2018",
+    "artifact_type": "PAPER",
+    "canonical_name": "GPipe: Efficient Training of Giant Neural Networks using Pipeline Parallelism (Huang et al., 2018)",
+    "canonical_url": "https://arxiv.org/abs/1811.06965"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2018-11",
+        "subject_id": "gpipe-2018",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1811.06965",
+      "source_class": "PRIMARY_PAPER",
+      "title": "GPipe (pipeline parallelism)",
+      "published_at": "2018-11",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "GPipe pipelines layer subsequences across accelerators with micro-batch splitting, achieving near-linear speedups plus activation recomputation for memory.",
+      "subject_id": "gpipe-2018",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline mechanism + effects; abstract consumed (1811.06965)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Pipeline bubbles vs memory savings is the origin tradeoff for all later pipeline schedules.",
+      "subject_id": "gpipe-2018",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Tradeoff significance."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body partitioning algorithm not consumed.",
+      "subject_id": "gpipe-2018",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (1811.06965): pipeline + micro-batch mechanism confirmed; full body outstanding.",
+        "subject_ids": [
+          "gpipe-2018"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

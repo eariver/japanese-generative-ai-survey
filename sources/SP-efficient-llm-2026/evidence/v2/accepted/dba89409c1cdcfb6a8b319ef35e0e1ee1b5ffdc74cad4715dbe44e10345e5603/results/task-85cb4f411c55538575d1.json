@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:d1592f4bf556f388",
+  "basis": {
+    "task_sha256": "a1efd4cca6e300ba06a84e8a28a8054a1ca54d5483dbbe4598a26f368d0ef543",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "h2o-2023",
+      "canonical_name": "H2O: Heavy-Hitter Oracle for Efficient Generative Inference of Large Language Models (Zhang et al., 2023)",
+      "entity_type": "PAPER",
+      "organization": "Princeton",
+      "canonical_url": "https://arxiv.org/abs/2306.14048"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "h2o-2023",
+    "artifact_type": "PAPER",
+    "canonical_name": "H2O: Heavy-Hitter Oracle for Efficient Generative Inference of Large Language Models (Zhang et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2306.14048"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-06",
+        "subject_id": "h2o-2023",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2306.14048",
+      "source_class": "PRIMARY_PAPER",
+      "title": "H2O / Heavy-Hitter Oracle",
+      "published_at": "2023-06",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "H2O keeps heavy-hitter tokens plus recent tokens as the KV cache, observing that small token subsets dominate attention value.",
+      "subject_id": "h2o-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline mechanism + observation; abstract consumed (2306.14048)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "H2O is KV-category (3) eviction in the Special's cache taxonomy, distinct from selection (NSA/DSA), placement (paged/radix), and offload.",
+      "subject_id": "h2o-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Taxonomic classification."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body heavy-hitter analysis and benchmark tables not consumed.",
+      "subject_id": "h2o-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2306.14048): heavy-hitter + recent eviction confirmed; full body outstanding.",
+        "subject_ids": [
+          "h2o-2023"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

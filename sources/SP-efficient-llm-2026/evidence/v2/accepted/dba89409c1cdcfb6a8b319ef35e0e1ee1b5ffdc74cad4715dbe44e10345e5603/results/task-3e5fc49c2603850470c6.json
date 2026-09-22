@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:58933a2e23602cf1",
+  "basis": {
+    "task_sha256": "3d644d6ee0c3fc991db5217486a5e1d670fbcfc2a3f0facb5acef144e09d5f71",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "mooncake-2024",
+      "canonical_name": "Mooncake: A KVCache-centric Disaggregated Architecture for LLM Serving (Qin et al., 2024)",
+      "entity_type": "PAPER",
+      "organization": "Moonshot AI-affiliated",
+      "canonical_url": "https://arxiv.org/abs/2411.01181"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "mooncake-2024",
+    "artifact_type": "PAPER",
+    "canonical_name": "Mooncake: A KVCache-centric Disaggregated Architecture for LLM Serving (Qin et al., 2024)",
+    "canonical_url": "https://arxiv.org/abs/2411.01181"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-06-24T02:05:32Z",
+        "subject_id": "mooncake-2024",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-08a78004c1c2fd3b"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "supplement-src-08a78004c1c2fd3b",
+      "url": "https://arxiv.org/abs/2407.00079",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Mooncake: A KVCache-centric Disaggregated Architecture for LLM Serving (Qin et al.)",
+      "published_at": "2024-06-24T02:05:32Z",
+      "accessed_at": "2026-09-22T14:00:00Z",
+      "role": "Post-Screening exact authority supplement: Corrected authority for pooled-KV disaggregation: bound locator 2411.01181 is unrelated; this arXiv identity record is the true paper."
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Mooncake (arXiv 2407.00079, supplement identity record) disaggregates the KV cache into a pooled store over CPU/DRAM/SSD with RDMA transfer, treating KV as a first-class distributed resource.",
+      "subject_id": "mooncake-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "supplement-src-08a78004c1c2fd3b"
+      ],
+      "context": "Supplement identity-record scope; mechanism at established level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Pooled-KV economics contextualize V4.1's SWA bounded-replay persistent tier (1/8 SSD/host) in the capstone case study.",
+      "subject_id": "mooncake-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "supplement-src-08a78004c1c2fd3b"
+      ],
+      "context": "Cross-record synthesis; V4.1 figures per body-consumed D123."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "The bound Discovery locator (2411.01181) resolves to an unrelated dynamical-systems paper; no claim cites it.",
+      "subject_id": "mooncake-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "supplement-src-08a78004c1c2fd3b"
+      ],
+      "context": "Verified via arXiv API."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full paper body (disaggregation protocol, evaluation) outstanding.",
+      "subject_id": "mooncake-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "supplement-src-08a78004c1c2fd3b"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Canonical locator amendment deferred to Sol.",
+      "subject_id": "mooncake-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "supplement-src-08a78004c1c2fd3b"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Supplement identity record consumed; pooled-KV mechanism corroborated at established level; full-body protocol outstanding.",
+        "subject_ids": [
+          "mooncake-2024"
+        ],
+        "source_ids": [
+          "supplement-src-08a78004c1c2fd3b"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

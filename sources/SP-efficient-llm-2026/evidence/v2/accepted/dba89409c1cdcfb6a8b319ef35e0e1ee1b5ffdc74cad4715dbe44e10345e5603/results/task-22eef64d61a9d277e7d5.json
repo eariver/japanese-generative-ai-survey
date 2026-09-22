@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:f68093e34eeac853",
+  "basis": {
+    "task_sha256": "d373c3ae55fc641dba9bc765afceecd109363741369b0c747c49c84668eac184",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "llamacpp-qwen38-pr",
+      "canonical_name": "llama.cpp Qwen3.8-Flash-Next implementation port (merged PR 27742)",
+      "entity_type": "ORGANIZATION",
+      "organization": "ggml-org/Unsloth",
+      "canonical_url": "https://github.com/ggml-org/llama.cpp/pull/27742"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "llamacpp-qwen38-pr",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "llama.cpp Qwen3.8-Flash-Next implementation port (merged PR 27742)",
+    "canonical_url": "https://github.com/ggml-org/llama.cpp/pull/27742"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/ggml-org/llama.cpp/pull/27742",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "llama.cpp Qwen3.8-Flash-Next implementation port (merged PR 27742: converter, GDN, QSA, PLE)",
+      "published_at": null,
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Merged implementation authority: PR ggml-org/llama.cpp#27742 (Unsloth-authored danielhanchen, merged 2026-08-27 by ngxson, 65 commits) adds qwen4exp arch: converter, GDN text graph with low-rank hyper-connections, MoE 512-expert top-10, QSA sparse attention (budget 2048, ratio 4), host-side PLE n-gram hash (97.7GiB table, 128 shards, splitmix64 2^45 host hashing), stock Qwen3-VL ViT path.",
+      "subject_id": "llamacpp-qwen38-pr",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "PR page fully consumed this pass (conversation + commit messages)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Validation method: wikitext-2 ppl 4.0068 vs 4.0126 reference, 98.0% top-1 prose agreement, QSA-vs-dense bit-identical below budget with 0.975 mean jaccard above, PLE row indices 1024/1024, chunked-prefill bit-identity, test-llama-archs 126 archs green.",
+      "subject_id": "llamacpp-qwen38-pr",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "PR-reported validation; fixture-bound as stated on-PR."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Known implementation gaps documented: PLE conv state across ubatches fixed in-PR with bit-identity proof; test-llama-archs qwen4exp skip resolved (saver uint64 path + key re-emission); quantized-model (UD-IQ1_S) logit delta 2.84e-03 non-identical; shared-file changes additive-only with A/B md5s.",
+      "subject_id": "llamacpp-qwen38-pr",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Gap transparency per PR discussion; AI-usage disclosure (Claude + local models, manual verification) noted."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Port correctness rests on PR-reported validation; no independent rebuild or measurement performed.",
+      "subject_id": "llamacpp-qwen38-pr",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Host-side PLE memory behavior (97.7GiB table, streaming converter, ~300GB RSS peak avoided) is implementation-described.",
+      "subject_id": "llamacpp-qwen38-pr",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "PR page fully consumed: merged status, QSA/PLE support, host-side memory behavior, validation method, known gaps extracted.",
+        "subject_ids": [
+          "llamacpp-qwen38-pr"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

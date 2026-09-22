@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:9e33ee88f3f13f08",
+  "basis": {
+    "task_sha256": "29f3a25e3e6e5a9b5cf893004c3e0e8d54ea6ff6be182b9b3afc590546c23bc9",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "deepseek-v41-launch",
+      "canonical_name": "Introducing DeepSeek-V4.1-Flash (DeepSeek official launch)",
+      "entity_type": "PRODUCT",
+      "organization": "DeepSeek-AI",
+      "canonical_url": "https://www.deepseek.com/en/news/deepseek-v4-1-flash"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "deepseek-v41-launch",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Introducing DeepSeek-V4.1-Flash (DeepSeek official launch)",
+    "canonical_url": "https://www.deepseek.com/en/news/deepseek-v4-1-flash"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-10",
+        "subject_id": "deepseek-v41-launch",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://www.deepseek.com/en/news/deepseek-v4-1-flash",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Introducing DeepSeek-V4.1-Flash (official launch)",
+      "published_at": "2026-09-10",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The launch page announces the 552B MoE with 1/4 HBM and 1/8 SSD KV-cache reductions, live API, and peak/off-peak pricing.",
+      "subject_id": "deepseek-v41-launch",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Announcement-level; ratios corroborated by D123 abstract (890B/tok global, SWA replay persistent)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The launch is the dated efficiency-to-price transmission event for the V4.1 capstone case study.",
+      "subject_id": "deepseek-v41-launch",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Editorial role assignment."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Launch page body not fetched; technical-report URL outstanding at announcement level.",
+      "subject_id": "deepseek-v41-launch",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Announcement role and KV-ratio claims corroborated against D123 abstract; page body outstanding.",
+        "subject_ids": [
+          "deepseek-v41-launch"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "paper/benchmark identity",
+        "status": "UNRESOLVED",
+        "finding": "Launch-bound paper/benchmark URLs not pinned from this page; D123 report covers the technical leg.",
+        "subject_ids": [
+          "deepseek-v41-launch"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "paper/benchmark identity: Launch-bound paper/benchmark URLs not pinned from this page; D123 report covers the technical leg."
+    ],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:3bdc99598e1d27a6",
+  "basis": {
+    "task_sha256": "43196b4df046bdb11ace55ba46beecbddab1c3862caa07b71b75424ca101f6f1",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "vllm-ascend-glm53-tutorial",
+      "canonical_name": "vLLM Ascend GLM-5.3-Flash deployment tutorial",
+      "entity_type": "ORGANIZATION",
+      "organization": "vLLM Ascend project",
+      "canonical_url": "https://docs.vllm.ai/projects/ascend/en/latest/tutorials/models/GLM5.3-Flash.html"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "vllm-ascend-glm53-tutorial",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "vLLM Ascend GLM-5.3-Flash deployment tutorial",
+    "canonical_url": "https://docs.vllm.ai/projects/ascend/en/latest/tutorials/models/GLM5.3-Flash.html"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08",
+        "subject_id": "vllm-ascend-glm53-tutorial",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://docs.vllm.ai/projects/ascend/en/latest/tutorials/models/GLM5.3-Flash.html",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "vLLM Ascend GLM-5.3-Flash deployment tutorial",
+      "published_at": "2026-08",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The Ascend tutorial documents quantized GLM-5.3-Flash (320B/18B) serving with MTP speculative configuration and tool/reasoning parsers.",
+      "subject_id": "vllm-ascend-glm53-tutorial",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Tutorial-role level; MTP/quantization corroborated by D129/D164."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "NPU-backend coverage proves the GLM deployment matrix extends beyond CUDA, material to the serving-systems lane.",
+      "subject_id": "vllm-ascend-glm53-tutorial",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Coverage significance."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Tutorial page not fetched; claims scoped to Discovery summary with corroboration.",
+      "subject_id": "vllm-ascend-glm53-tutorial",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Tutorial role and MTP/quantization facts corroborated via D129/D164; page body outstanding.",
+        "subject_ids": [
+          "vllm-ascend-glm53-tutorial"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "tutorial/model-version binding",
+        "status": "UNRESOLVED",
+        "finding": "Exact tutorial-to-checkpoint version pin not extracted.",
+        "subject_ids": [
+          "vllm-ascend-glm53-tutorial"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "tutorial/model-version binding: Exact tutorial-to-checkpoint version pin not extracted."
+    ],
+    "contradictions": []
+  }
+}

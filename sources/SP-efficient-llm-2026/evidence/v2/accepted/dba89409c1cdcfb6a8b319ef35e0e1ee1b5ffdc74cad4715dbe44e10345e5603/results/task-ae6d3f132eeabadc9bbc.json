@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:8e6f96477576b4ea",
+  "basis": {
+    "task_sha256": "59c2632266b918a80616783bc2ca4fa76d26b6e1d83c5b20735ecf17d858e6b3",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "nsa-2025",
+      "canonical_name": "Native Sparse Attention: Hardware-Aligned and Natively Trainable Sparse Attention (Yuan et al., 2025)",
+      "entity_type": "PAPER",
+      "organization": "DeepSeek-AI/Univ. of Washington",
+      "canonical_url": "https://arxiv.org/abs/2502.11089"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "nsa-2025",
+    "artifact_type": "PAPER",
+    "canonical_name": "Native Sparse Attention: Hardware-Aligned and Natively Trainable Sparse Attention (Yuan et al., 2025)",
+    "canonical_url": "https://arxiv.org/abs/2502.11089"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-02-17",
+        "subject_id": "nsa-2025",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2502.11089",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Native Sparse Attention (Yuan et al.)",
+      "published_at": "2025-02-17",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "NSA trains a hierarchical compress-select-slide sparse attention end-to-end with hardware-aligned kernels, separating it from inference-only sparsification retrofits.",
+      "subject_id": "nsa-2025",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline mechanism; abstract-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "NSA vs DSA vs CSA vs QSA disambiguation is load-bearing for the Special: different indexers, different sharing, different training regimes.",
+      "subject_id": "nsa-2025",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Taxonomic boundary statement."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body kernel details and speedup tables not consumed.",
+      "subject_id": "nsa-2025",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2502.11089): hierarchical natively-trainable sparse attention confirmed; full body outstanding.",
+        "subject_ids": [
+          "nsa-2025"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "disambiguation vs DSA/CSA/QSA",
+        "status": "VERIFIED",
+        "finding": "NSA identity separated from DSA (D125), CSA/CSA2 (D124/D123), QSA (D008) at mechanism level.",
+        "subject_ids": [
+          "nsa-2025"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

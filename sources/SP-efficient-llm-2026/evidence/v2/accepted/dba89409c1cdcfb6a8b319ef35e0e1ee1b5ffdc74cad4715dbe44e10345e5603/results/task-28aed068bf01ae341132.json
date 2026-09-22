@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:21dfcc5a3e58f933",
+  "basis": {
+    "task_sha256": "42041f1dbacdb2f0b6dbe7d2084dc7ebe793e81653ce6b98e6857e296acf9b30",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "sparsegpt-2023",
+      "canonical_name": "SparseGPT: Massive Language Models Can Be Accurately Pruned in One-Shot (Frantar & Alistarh, 2023)",
+      "entity_type": "PAPER",
+      "organization": "IST Austria",
+      "canonical_url": "https://arxiv.org/abs/2301.00774"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "sparsegpt-2023",
+    "artifact_type": "PAPER",
+    "canonical_name": "SparseGPT: Massive Language Models Can Be Accurately Pruned in One-Shot (Frantar & Alistarh, 2023)",
+    "canonical_url": "https://arxiv.org/abs/2301.00774"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-01-03",
+        "subject_id": "sparsegpt-2023",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2301.00774",
+      "source_class": "PRIMARY_PAPER",
+      "title": "SparseGPT (Frantar & Alistarh)",
+      "published_at": "2023-01-03",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "SparseGPT prunes LLMs to 50-60% unstructured sparsity in one shot without retraining via the Optimal Brain Surgeon solver family.",
+      "subject_id": "sparsegpt-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline sparsity + no-retraining claims; abstract-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "SparseGPT bounds the no-retraining half of the pruning story; the recovery-pipeline half (retraining after pruning) remains thin, which is why Wanda's metric-only role was dropped.",
+      "subject_id": "sparsegpt-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Screening-rationale linkage (D161)."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body OBS solver derivations and perplexity tables not consumed.",
+      "subject_id": "sparsegpt-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2301.00774): one-shot 50-60% pruning confirmed; full body outstanding.",
+        "subject_ids": [
+          "sparsegpt-2023"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

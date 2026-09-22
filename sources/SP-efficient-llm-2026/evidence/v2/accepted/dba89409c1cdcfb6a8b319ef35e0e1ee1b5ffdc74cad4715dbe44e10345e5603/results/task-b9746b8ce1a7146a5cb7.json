@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:1249d127cabfe78e",
+  "basis": {
+    "task_sha256": "7cf25c4b4703d3f39244d12208d9566c34591d6a972e5875fb5d3f9b7cfd2c1a",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "lambda-v4-flash-page",
+      "canonical_name": "DeepSeek-V4-Flash provider page (Lambda)",
+      "entity_type": "ORGANIZATION",
+      "organization": "Lambda",
+      "canonical_url": "https://lambda.ai/inference-models/deepseek-ai/deepseek-v4-flash"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "lambda-v4-flash-page",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "DeepSeek-V4-Flash provider page (Lambda)",
+    "canonical_url": "https://lambda.ai/inference-models/deepseek-ai/deepseek-v4-flash"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-04-27",
+        "subject_id": "lambda-v4-flash-page",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://lambda.ai/inference-models/deepseek-ai/deepseek-v4-flash",
+      "source_class": "SECONDARY",
+      "title": "DeepSeek-V4-Flash provider page (specs + throughput)",
+      "published_at": "2026-04-27",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The Lambda page mirrors V4-Flash spec facts (284B/13B, mHC, Muon 32T, FP4+FP8) with provider-measured throughput figures.",
+      "subject_id": "lambda-v4-flash-page",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "SOCIAL_OBSERVATION",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Mirror-level; spec facts consistent with D017/D124."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Provider throughput numbers are configuration-bound observations, not architecture facts.",
+      "subject_id": "lambda-v4-flash-page",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Boundary statement."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Page not fetched; provider figures not extracted or compared.",
+      "subject_id": "lambda-v4-flash-page",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Mirror role confirmed; spec consistency with first-party records noted.",
+        "subject_ids": [
+          "lambda-v4-flash-page"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "provider measurement conditions",
+        "status": "UNRESOLVED",
+        "finding": "Measurement conditions not extracted; figures excluded from fact claims.",
+        "subject_ids": [
+          "lambda-v4-flash-page"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "provider measurement conditions: Measurement conditions not extracted; figures excluded from fact claims."
+    ],
+    "contradictions": []
+  }
+}

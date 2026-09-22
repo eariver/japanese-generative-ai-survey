@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:b5d4b9763960cee7",
+  "basis": {
+    "task_sha256": "c0d9f6b4db9006c90a3bb0c0f1a29075797a2c92fda2481d835f045d8f344cb5",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "dspark-bundle",
+      "canonical_name": "DSpark evidence bundle (vLLM deepseek_v41 docs + Dynamo recipe)",
+      "entity_type": "PRODUCT",
+      "organization": "DeepSeek-AI/vLLM/NVIDIA",
+      "canonical_url": "https://docs.vllm.ai/en/latest/api/vllm/models/deepseek_v41/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "dspark-bundle",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "DSpark evidence bundle (vLLM deepseek_v41 docs + Dynamo recipe)",
+    "canonical_url": "https://docs.vllm.ai/en/latest/api/vllm/models/deepseek_v41/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://docs.vllm.ai/en/latest/api/vllm/models/deepseek_v41/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "DSpark evidence bundle (vLLM deepseek_v41 + Dynamo recipe)",
+      "published_at": null,
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "DSpark drafts 5-token blocks semi-autoregressively (3 stages x 128 routed experts, Markov bias + confidence heads) with in-checkpoint drafter weights (~14B) and adaptive verification on NVIDIA.",
+      "subject_id": "dspark-bundle",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Implementation facts fully consumed via the D163 recipe page."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "V4.1 drops the V3/V4-trained MTP module; DSpark is the only speculative method for the checkpoint, a deliberate architecture substitution.",
+      "subject_id": "dspark-bundle",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Substitution fact per D163; corroborated by D123 abstract's DSpark-era framing."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "No paper-grade ablations exist; acceptance numbers are workload-measured only (InferenceX golden 3.51 in benchmark config).",
+      "subject_id": "dspark-bundle",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "DSpark mechanism fully consumed via D163 recipe page (incl. NVIDIA adaptive-verification vs AMD refusal hardware conditions); no paper body outstanding because none exists.",
+        "subject_ids": [
+          "dspark-bundle"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:366a595212d83a25",
+  "basis": {
+    "task_sha256": "88c069930b61631d83f6f990b25dc714362df43b64bae040b41b7711a7bae4d3",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "shazeer-sparse-moe-2017",
+      "canonical_name": "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer (Shazeer et al., 2017)",
+      "entity_type": "PAPER",
+      "organization": "Google",
+      "canonical_url": "https://arxiv.org/abs/1701.06538"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "shazeer-sparse-moe-2017",
+    "artifact_type": "PAPER",
+    "canonical_name": "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer (Shazeer et al., 2017)",
+    "canonical_url": "https://arxiv.org/abs/1701.06538"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2017-01-23",
+        "subject_id": "shazeer-sparse-moe-2017",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1701.06538",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Outrageously Large Neural Networks: Sparsely-Gated MoE (Shazeer et al.)",
+      "published_at": "2017-01-23",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Shazeer et al. introduce learned sparse top-1/top-k gating with an auxiliary load-balancing loss, separating parameter capacity from per-token compute.",
+      "subject_id": "shazeer-sparse-moe-2017",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Textbook-level established result; abstract-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The gating + load-balance formulation is the mechanism ancestor of GShard, Switch, and all later top-k routing variants in this Special.",
+      "subject_id": "shazeer-sparse-moe-2017",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Lineage synthesis across D011-D015."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body gating equations and LSTM experimental tables not consumed; mechanism stated at survey level.",
+      "subject_id": "shazeer-sparse-moe-2017",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (1701.06538): sparsely-gated MoE layer, load balancing confirmed; full body outstanding.",
+        "subject_ids": [
+          "shazeer-sparse-moe-2017"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

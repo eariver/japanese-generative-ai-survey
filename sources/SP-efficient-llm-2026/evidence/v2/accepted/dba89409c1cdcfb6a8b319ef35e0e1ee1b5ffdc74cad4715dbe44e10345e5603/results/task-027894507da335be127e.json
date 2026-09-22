@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:323df0154216724e",
+  "basis": {
+    "task_sha256": "629d450b7e08621b05a61b90a0e0dea552f2a557bbd416d507f8c92f8c16379a",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "deepseek-v3-report",
+      "canonical_name": "DeepSeek-V3 Technical Report (2024)",
+      "entity_type": "PAPER",
+      "organization": "DeepSeek-AI",
+      "canonical_url": "https://arxiv.org/abs/2412.19437"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "deepseek-v3-report",
+    "artifact_type": "PAPER",
+    "canonical_name": "DeepSeek-V3 Technical Report (2024)",
+    "canonical_url": "https://arxiv.org/abs/2412.19437"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-12-27",
+        "subject_id": "deepseek-v3-report",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2412.19437",
+      "source_class": "PRIMARY_PAPER",
+      "title": "DeepSeek-V3 Technical Report (FP8 training at scale; MTP objective)",
+      "published_at": "2024-12-27",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "DeepSeek-V3 trains a 671B-parameter MoE with FP8 mixed precision at scale, demonstrating production FP8 training via fine-grained quantization and the DeepGEMM/DeepEP stack.",
+      "subject_id": "deepseek-v3-report",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Abstract-level; headline architecture and precision facts."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "V3 introduces Multi-Token Prediction as a pretraining objective, the mechanism later reused for target-native speculative decoding in 2026 capstones.",
+      "subject_id": "deepseek-v3-report",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "MTP objective origin within the DeepSeek line."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full 2412.19437 body (training infra, evaluation tables) not consumed; no benchmark numbers quoted.",
+      "subject_id": "deepseek-v3-report",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2412.19437): 671B MoE, FP8 training, MTP objective confirmed at headline level; full-body tables outstanding.",
+        "subject_ids": [
+          "deepseek-v3-report"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

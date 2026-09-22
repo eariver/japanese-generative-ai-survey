@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:ba7f8e43dcbf1260",
+  "basis": {
+    "task_sha256": "b215b1b74efb64b2f33115f0815ff7edeac99ce65940f00e038634362f30f9de",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "gqa-2023",
+      "canonical_name": "GQA: Training Generalized Multi-Query Transformers from Multi-Head Checkpoints (Ainslie et al., 2023)",
+      "entity_type": "PAPER",
+      "organization": "Google",
+      "canonical_url": "https://arxiv.org/abs/2305.13245"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "gqa-2023",
+    "artifact_type": "PAPER",
+    "canonical_name": "GQA: Training Generalized Multi-Query Transformers from Multi-Head Checkpoints (Ainslie et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2305.13245"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-05-31",
+        "subject_id": "gqa-2023",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2305.13245",
+      "source_class": "PRIMARY_PAPER",
+      "title": "GQA: Training Generalized Multi-Query Transformers (Ainslie et al.)",
+      "published_at": "2023-05-31",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "GQA groups query heads over shared KV heads and can be reached by uptraining from MHA checkpoints, making it the industry-default KV saver before MLA.",
+      "subject_id": "gqa-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline mechanism + uptraining facts; abstract-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Uptraining convertibility is what made GQA deployable without full retraining, the property later demanded of sparse-attention retrofits.",
+      "subject_id": "gqa-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Interpretive significance at survey level."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body uptraining cost tables not consumed.",
+      "subject_id": "gqa-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2305.13245): grouped-query + uptraining mechanism confirmed; full body outstanding.",
+        "subject_ids": [
+          "gqa-2023"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

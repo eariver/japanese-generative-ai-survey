@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:05b03e0cb53f1a35",
+  "basis": {
+    "task_sha256": "186534e008141e7568a39422d5a8e9b72c471b0c003ed1bfa931812ab77d0fa1",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "kimi-linear-repo",
+      "canonical_name": "MoonshotAI/Kimi-Linear (GitHub)",
+      "entity_type": "PRODUCT",
+      "organization": "Moonshot AI",
+      "canonical_url": "https://github.com/MoonshotAI/Kimi-Linear"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "kimi-linear-repo",
+    "artifact_type": "MODEL",
+    "canonical_name": "MoonshotAI/Kimi-Linear (GitHub)",
+    "canonical_url": "https://github.com/MoonshotAI/Kimi-Linear"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-10-29",
+        "subject_id": "kimi-linear-repo",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/MoonshotAI/Kimi-Linear",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "MoonshotAI/Kimi-Linear (KDA kernel, vLLM, checkpoints)",
+      "published_at": "2025-10-29",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The Kimi-Linear repository publishes the KDA kernel, vLLM integration path, and model checkpoints, constituting deployment authority beyond the paper.",
+      "subject_id": "kimi-linear-repo",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Release-existence level; code unaudited."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Open checkpoints enable third-party fair-comparison reproduction of D027's claims, which is currently the missing independent leg.",
+      "subject_id": "kimi-linear-repo",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Reproduction-pathway statement."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Codebase not cloned or audited; no independent reproduction executed this pass.",
+      "subject_id": "kimi-linear-repo",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Repository role as deployment authority confirmed at release-existence level; code audit outstanding.",
+        "subject_ids": [
+          "kimi-linear-repo"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "kernel/runtime version binding",
+        "status": "UNRESOLVED",
+        "finding": "Exact kernel/runtime commit pins not extracted; deferred to Sol gap-fill judgment.",
+        "subject_ids": [
+          "kimi-linear-repo"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "kernel/runtime version binding: Exact kernel/runtime commit pins not extracted; deferred to Sol gap-fill judgment."
+    ],
+    "contradictions": []
+  }
+}

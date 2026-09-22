@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:d057b0f86e206bce",
+  "basis": {
+    "task_sha256": "f47b535880ae73b4120b620faf7843375e8f25873a309a2238cc0161e9970eaf",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "knn-lm-2019",
+      "canonical_name": "Generalization through Memorization: Nearest Neighbor Language Models (Khandelwal et al., 2019)",
+      "entity_type": "PAPER",
+      "organization": "NYU/Facebook",
+      "canonical_url": "https://arxiv.org/abs/1911.00172"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "knn-lm-2019",
+    "artifact_type": "PAPER",
+    "canonical_name": "Generalization through Memorization: Nearest Neighbor Language Models (Khandelwal et al., 2019)",
+    "canonical_url": "https://arxiv.org/abs/1911.00172"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2019-11",
+        "subject_id": "knn-lm-2019",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1911.00172",
+      "source_class": "PRIMARY_PAPER",
+      "title": "kNN-LM (retrieval-interpolation precedent)",
+      "published_at": "2019-11",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "kNN-LM interpolates a frozen LM with kNN over an explicit datastore, cutting Wikitext-103 perplexity to 15.79 (-2.9) with no training and enabling domain adaptation by datastore swap.",
+      "subject_id": "knn-lm-2019",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline results; abstract consumed (1911.00172)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Explicit-corpus query-time retrieval sharpens the boundary of Engram-style static lookup by contrast, and nothing more.",
+      "subject_id": "knn-lm-2019",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Boundary role."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body interpolation analysis not consumed.",
+      "subject_id": "knn-lm-2019",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (1911.00172): kNN interpolation + perplexity confirmed; full body outstanding.",
+        "subject_ids": [
+          "knn-lm-2019"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

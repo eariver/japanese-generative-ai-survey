@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:ee6d3b0c9866827b",
+  "basis": {
+    "task_sha256": "87f47e5e6371ed65c0cd07914d607f928520dd7c3f730b3e66fc60981af08f88",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "genai-perf",
+      "canonical_name": "GenAI-Perf — NVIDIA Triton Inference Server (tooling docs)",
+      "entity_type": "PRODUCT",
+      "organization": "NVIDIA",
+      "canonical_url": "https://github.com/triton-inference-server/perf_analyzer"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "genai-perf",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "GenAI-Perf — NVIDIA Triton Inference Server (tooling docs)",
+    "canonical_url": "https://github.com/triton-inference-server/perf_analyzer"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "supplement-src-6fe51b459a274631",
+      "url": "https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/perf_analyzer/genai-perf/README.html",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "GenAI-Perf — NVIDIA Triton Inference Server (tooling docs: metrics, load model, logging)",
+      "published_at": null,
+      "accessed_at": "2026-09-22T14:00:00Z",
+      "role": "Post-Screening exact authority supplement: Actual NVIDIA/Triton GenAI-Perf tooling authority: output-token throughput, TTFT, ITL, request throughput under specified load; notes GenAI-Perf phase-out in favor of AIPerf (product surface still open)."
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "GenAI-Perf (supplement Raw: official Triton docs) measures output-token throughput, time to first token, inter-token latency, and request throughput under specified concurrency/rate load, with console tables plus CSV/JSON logging; it lives in triton-inference-server/perf_analyzer under genai-perf/, matching the bound repo locator.",
+      "subject_id": "genai-perf",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "supplement-src-6fe51b459a274631"
+      ],
+      "context": "Docs bytes consumed (install, quickstart, metrics sections)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The captured docs state GenAI-Perf is being phased out in favor of AIPerf for new benchmarking needs; no standalone AIPerf product surface was located.",
+      "subject_id": "genai-perf",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "supplement-src-6fe51b459a274631"
+      ],
+      "context": "Successor pointer per docs; product gap preserved."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "perf_analyzer repo itself not cloned; metric semantics rest on docs.",
+      "subject_id": "genai-perf",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "supplement-src-6fe51b459a274631"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "AIPerf product identity beyond the successor pointer remains open.",
+      "subject_id": "genai-perf",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "supplement-src-6fe51b459a274631"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Docs Raw consumed: location, metrics, load model, logging confirmed.",
+        "subject_ids": [
+          "genai-perf"
+        ],
+        "source_ids": [
+          "supplement-src-6fe51b459a274631"
+        ]
+      },
+      {
+        "target": "locate/confirm AIPerf product identity",
+        "status": "UNRESOLVED",
+        "finding": "Successor named only; standalone product surface not located. Limitation preserved, not closed by assertion.",
+        "subject_ids": [
+          "genai-perf"
+        ],
+        "source_ids": [
+          "supplement-src-6fe51b459a274631"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "locate/confirm AIPerf product identity: Successor named only; standalone product surface not located. Limitation preserved, not closed by assertion."
+    ],
+    "contradictions": []
+  }
+}

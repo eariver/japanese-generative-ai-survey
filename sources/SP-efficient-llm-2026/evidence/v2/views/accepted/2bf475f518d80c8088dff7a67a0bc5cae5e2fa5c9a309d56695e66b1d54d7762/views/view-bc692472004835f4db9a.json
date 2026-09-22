@@ -1,0 +1,29 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "research_profile": "THEMATIC",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:420bc86ebf52a9b1",
+  "evidence_sha256": "a137eab76e641ee0320dfb41bd9cc9598d5ed89648f343476c32b6aca4d99d1d",
+  "materiality": {
+    "status": "MATERIAL",
+    "rationale": "Fine-grained FP8 matmul; kernel half of FP8 training/inference."
+  },
+  "scope_dimensions": [
+    "inference_kernels_serving",
+    "precision_quantization_compression",
+    "scaling_and_training_efficiency"
+  ],
+  "profile_annotations": {
+    "lineage_role": "CORE",
+    "branch_ids": [
+      "inference-serving",
+      "scaling-training",
+      "precision-quantization"
+    ],
+    "transition_ids": [
+      "cublas-to-fp8-gemm"
+    ],
+    "inheritance_note": null,
+    "historical_attribution_caveat": "Repo not audited; kernel-role facts at release level."
+  }
+}
