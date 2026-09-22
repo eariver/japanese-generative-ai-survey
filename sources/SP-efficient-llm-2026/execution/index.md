@@ -172,6 +172,28 @@ This is the current human-readable navigation record for the edition. Machine li
 - Sessions: `sessions/ts001-reissue-evidence-20260922.md` (blocked run, history),
   `sessions/ts001-reissue-evidence-compat-20260922.md` (this run).
 
+
+## Publication Preview (r1 prep; Human decision pending)
+
+- Lifecycle: `RELEASE_CANDIDATE` / next `PUBLICATION_PREVIEW` / terminal `HUMAN_GATE_REACHED`
+  (advanced `VALIDATED_DRAFT -> RELEASE_CANDIDATE` 2026-09-22T19:15:00Z).
+- Human Architecture approval r1 recorded canonically (Human Owner APPROVED,
+  reviewed `25dac3b18`, `gates/reviews/architecture-r1.json` + snapshot + review index).
+- Drafting: 9/9 packages + profile synthesis via `run_drafting_synthesis_v2_agent.py`,
+  advanced `ARCHITECTURE_ESTABLISHED -> DRAFT_COMPLETE` (checkpoint `ARCHITECTURE_ESTABLISHED.json`).
+- Reader publication: `surveys/special/efficient-llm-2026/main.tex` (293,423 bytes) +
+  `references.bib` (110 entries); CI PDF 66 pages, 850,455 bytes,
+  SHA `bc6e280c668a4a17ff98dae58fc574cdce701cce9dd8926eb8b1138e82a46e0b`
+  (run 35773857901, zero blocking findings).
+- QA: manuscript + quality bundle (4 DETERMINISTIC PASS) + semantic review
+  (9 checks PASS incl. below-target density disposition 66/76) + visual review
+  (5 checks PASS, exact-PDF visual QA sampled) + reader-surface gate PASSED.
+- Candidate: `publication/v2/publication-candidate-v2.json`
+  (`76191e9b…`, READY_FOR_PUBLICATION_PREVIEW), checkpoint `VALIDATED_DRAFT.json`.
+- Operator package: `execution/reviews/publication-preview-prep-r1.md`.
+- Publication Preview: pending. Freeze: pending. Release: pending.
+- Shared Core v2 unchanged; CV2-DM-016/017 OPEN; no new Core defect.
+
 ## Final disposition
 
 `ARCHITECTURE ESTABLISHED / HUMAN ARCHITECTURE REVIEW PENDING / CORE V2 UNCHANGED`

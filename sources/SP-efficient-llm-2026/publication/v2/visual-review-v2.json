@@ -1,0 +1,77 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "review_kind": "VISUAL",
+  "status": "PASSED",
+  "production_profile": {
+    "path": "sources/SP-efficient-llm-2026/production-profile.json",
+    "sha256": "22f2e822732e4f34446be832933ac31f61ceb90f828c20d196710818721b1117"
+  },
+  "reader_manuscript": {
+    "path": "sources/SP-efficient-llm-2026/publication/v2/reader-manuscript-v2.json",
+    "sha256": "f99c3b9353e978aec009871875a0df77d30b7be387b2c90ede15ac44aacbd693"
+  },
+  "source": {
+    "path": "surveys/special/efficient-llm-2026/main.tex",
+    "sha256": "b09ab3516afaadb5e0f64e21515d2e71dd43cbb926c657e40d48b939dc54b44c",
+    "byte_count": 293423
+  },
+  "pdf": {
+    "path": "surveys/special/efficient-llm-2026/main.pdf",
+    "sha256": "bc6e280c668a4a17ff98dae58fc574cdce701cce9dd8926eb8b1138e82a46e0b",
+    "byte_count": 850455
+  },
+  "page_count": 66,
+  "checks": [
+    {
+      "check_id": "EXACT_PDF_VISUAL_REVIEW",
+      "status": "PASS",
+      "detail": "Exact 66-page PDF visually reviewed: no clipping, overflow, broken tables, bad breaks, orphaned headings, citation overflow, footnote collisions, blank pages, illegible tables, header/footer corruption, line-breaking defects, broken URLs, or bibliography layout faults. Glossary split into three breakable tables; appendix tables within margins.",
+      "evidence_locations": [
+        "surveys/special/efficient-llm-2026/main.pdf: pages 1-66",
+        "publication/v2/deterministic/pdf-preflight.json"
+      ]
+    },
+    {
+      "check_id": "LONGFORM_MIXED_LAYOUT",
+      "status": "PASS",
+      "detail": "Balanced two-column narrative via multicols (all subsections inside); full-width tables and boxes as wide surfaces; one-column references; TOC with section hierarchy.",
+      "evidence_locations": [
+        "reader-layout:wide-surfaces-full-width",
+        "reader-layout:references-one-column",
+        "reader-layout:balanced-two-column-narrative"
+      ]
+    },
+    {
+      "check_id": "LONGFORM_PAGE_BALANCE",
+      "status": "PASS",
+      "detail": "66 pages within 64-96 soft band; no padded pages; no near-blank pages (min page non-whitespace chars verified); multicols balance without stranded columns.",
+      "evidence_locations": [
+        "surveys/special/efficient-llm-2026/main.pdf: pages 1-66",
+        "page-plan:66/76"
+      ]
+    },
+    {
+      "check_id": "TECHNICAL_NOTES_TAIL_NEEDSPACE",
+      "status": "PASS",
+      "detail": "Appendix technical-note tables guarded by Needspace; tail notes not stranded; glossary split across pages without orphaned headers.",
+      "evidence_locations": [
+        "surveys/special/efficient-llm-2026/main.pdf: pages 53-56",
+        "surveys/special/efficient-llm-2026/main.tex: Needspace guards"
+      ]
+    },
+    {
+      "check_id": "TOC_HIERARCHY",
+      "status": "PASS",
+      "detail": "TOC lists 10 numbered sections with numbered subsections and page numbers; unnumbered frontmatter/appendix excluded from numbered hierarchy as designed.",
+      "evidence_locations": [
+        "surveys/special/efficient-llm-2026/main.pdf: pages 4-5"
+      ]
+    }
+  ],
+  "reviewed_by": "ChatGPT (Muse Spark)",
+  "recorded_at": "2026-09-22T19:06:00Z",
+  "review_sha256": "538403722c5f13802ce1bd3d519f2733ae80d965865bd4746ab1bbbf3238359b"
+}

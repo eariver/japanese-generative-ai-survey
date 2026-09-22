@@ -1,0 +1,53 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "review_kind": "SEMANTIC_EDITORIAL",
+  "reviewed_surface": {
+    "path": "surveys/special/efficient-llm-2026/main.tex",
+    "sha256": "b09ab3516afaadb5e0f64e21515d2e71dd43cbb926c657e40d48b939dc54b44c"
+  },
+  "checks": [
+    {
+      "check_id": "READER_PIPELINE_INDEPENDENCE",
+      "status": "PASS",
+      "detail": "Reader TeX carries approved claim boundaries into prose, tables, and boundary boxes without internal pipeline vocabulary; editorial prose guard PASS on main.tex and references.bib with zero blocking findings and zero suppressions.",
+      "evidence_locations": [
+        "surveys/special/efficient-llm-2026/main.tex: Sections 1-10",
+        "editorial prose guard PASS 2/2"
+      ]
+    },
+    {
+      "check_id": "EVIDENCE_BOUND_FIDELITY",
+      "status": "PASS",
+      "detail": "All 9 packages preserve approved claim boundaries; Jev bounded as current specialization case; GLM D128 abstract-scope guard explicit; GGUF-format guard sentence present; vendor ratios quarantined; no cross-condition comparisons.",
+      "evidence_locations": [
+        "surveys/special/efficient-llm-2026/main.tex: Sections 7-8",
+        "draft/v2/packages: 9/9 results"
+      ]
+    },
+    {
+      "check_id": "LONGFORM_COVERAGE",
+      "status": "PASS",
+      "detail": "All 17 must-cover requirements map to numbered Sections 1-9; FINAL_SYNTHESIS maps to Section 10; deterministic fidelity resolves every claimed location to a non-empty block.",
+      "evidence_locations": [
+        "publication/v2/reader-manuscript-v2.json: architecture_coverage",
+        "publication/v2/reader-manuscript-v2.json: reader_requirements"
+      ]
+    },
+    {
+      "check_id": "SYNTHESIS_CLOSURE",
+      "status": "PASS",
+      "detail": "Closing synthesis binds branch transitions, competing relations, unresolved lineage, and attribution boundaries from the profile synthesis without new factual claims.",
+      "evidence_locations": [
+        "surveys/special/efficient-llm-2026/main.tex: Section 10",
+        "draft/v2/profile-synthesis-result.json"
+      ]
+    }
+  ],
+  "decision": "PASS",
+  "reviewed_by": "ChatGPT (Muse Spark)",
+  "reviewed_at": "2026-09-22T19:05:00Z",
+  "findings": [],
+  "review_sha256": "87c155e03848ce9bd5dd341c5507a55b11848271b0324ba26a250e9ca5f3eb88"
+}
