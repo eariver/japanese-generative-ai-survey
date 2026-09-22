@@ -458,6 +458,42 @@ Required future Core direction when maintenance resumes:
 - add cross-profile regression coverage proving every source type accepted into canonical Discovery/Screening is either Evidence-classifiable or rejected before Screening.
 
 
+---
+
+### CV2-DM-017 — Completeness builder omits Discovery-added obligations required by its validator
+
+Status: `OPEN_CORE / EDITION_WORKAROUND`  
+Category: Completeness / obligation materialization  
+Tracking: [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/issues/515)  
+First reproduction: `SP-efficient-llm-2026`  
+Latest reproduction: `SP-efficient-llm-2026`
+
+During the frozen-Core Evidence compatibility execution for `SP-efficient-llm-2026`, the current interactive Completeness builder and validator exposed a second generic contract mismatch.
+
+The edition's canonical Discovery gap-fill introduced edition-local obligations `EFF-O13`, `EFF-O14`, and `EFF-O15` in Discovery provenance. The frozen interactive builder `run_evidence_v2_interactive._build_completeness` materializes the Production Profile's initial obligations only, while the frozen Completeness validator additionally requires every obligation ID named by Discovery provenance to appear in the Completeness result.
+
+Consequently, a builder-produced payload is incomplete relative to its own downstream validator whenever a valid Discovery expansion introduces new obligation IDs after Profile initialization.
+
+Direct reproduction/evidence:
+
+- `sources/SP-efficient-llm-2026/execution/compat/evidence-source-class-projection/run_frozen_evidence_chain.py`
+- `sources/SP-efficient-llm-2026/execution/compat/evidence-source-class-projection/validation-report.md`
+- `sources/SP-efficient-llm-2026/profile-completeness-v2.json`
+
+The edition-local compatibility path appends the three exact Discovery-declared rows with mechanically derived Discovery/Evidence bindings and then submits the full payload to the **unchanged frozen Completeness schema and validator**. Shared Core remains unchanged.
+
+This workaround does not close the generic defect.
+
+Required future Core direction when maintenance resumes:
+
+- make the canonical Completeness builder enumerate the same obligation authority set that the validator requires;
+- define the supported lifecycle for obligations introduced by post-initialization Discovery/gap-fill;
+- either materialize Discovery-added obligations deterministically or reject unsupported obligation introduction before downstream Evidence;
+- preserve exact Profile dimension membership and Discovery/Evidence binding checks;
+- add regression coverage for Thematic Discovery expansion that adds valid new obligation IDs after initialization;
+- ensure builder output validates without edition-authored structural completion rows.
+
+
 ## 6. Items intentionally not treated as current shared-Core defects
 
 The following edition issues are closed because their edition-level acceptance criteria are satisfied:
@@ -525,7 +561,7 @@ A batch repair may close multiple `CV2-DM` items, but each item must receive its
 | `2026-W36` | backfilled in r0.1 | DM-004, DM-005, DM-006, DM-011, DM-012 | Release workflow defect first confirmed; reader-surface suppression blocker; W36 publication issues repaired edition-locally. |
 | `2026-W37` | backfilled in r0.1 | DM-007, DM-008, DM-009, DM-010, DM-014 | X intake/reviewer authority/timestamp/layout findings; release defect recurred. |
 | `2026-W38` | reviewed in r0.1 | DM-003, DM-013; DM-004/009/012/014 recurred | TypeSafe temporal authority and 25-row ledger repaired edition-locally; Freeze/release compatibility still required. |
-| `SP-efficient-llm-2026` | guarded-stop review in r0.2 | DM-016 | Evidence blocked by source-class map mismatch after canonical Screening; deterministic edition-local compatibility authorized, shared Core remains frozen. |
+| `SP-efficient-llm-2026` | Evidence-review update in r0.3 | DM-016, DM-017 | Source-class projection workaround validated; Completeness builder/validator obligation mismatch also exposed and handled edition-locally; shared Core remains frozen. |
 
 Next required update: `SP-efficient-llm-2026` final closure review, or the next Weekly/Special guarded stop or closure if it occurs first.
 
@@ -535,6 +571,7 @@ Next required update: `SP-efficient-llm-2026` final closure review, or the next 
 | --- | --- | --- | --- |
 | `r0.1` | 2026-09-20 | `2026-W38` | Initial consolidated deferred-maintenance inventory. Backfilled W35-W38 defect records, post-freeze Issues, release recovery evidence, and relevant pre-freeze Publication Boundary carry-over. Established Core pause policy, stable CV2-DM IDs, per-edition update contract, restart contract, and tracker Issue #515. |
 | `r0.2` | 2026-09-22 | `SP-efficient-llm-2026` guarded stop | Added CV2-DM-016 for the Evidence source-class map mismatch exposed by the Efficient LLM Thematic. Recorded deterministic edition-local compatibility as the production workaround while shared Core remains frozen. |
+| `r0.3` | 2026-09-22 | `SP-efficient-llm-2026` Evidence review | Added CV2-DM-017 for the Completeness builder/validator obligation-materialization mismatch exposed when Discovery-added EFF-O13/O14/O15 reached the frozen Completeness stage. |
 
 ## 11. Reference authority
 
