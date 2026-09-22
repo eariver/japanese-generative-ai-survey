@@ -1,0 +1,286 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "p1-bottleneck",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "54bfa156ed3c990236528a0d97996b24c0adb7a986aa105177f2c8e84680d045",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse Spark",
+    "model": "muse-spark-1.3",
+    "invocation": "TS-001 reissue drafting-synthesis: 9-package Japanese long-form synthesis from approved Architecture r1; evidence-bounded prose with vendor-claim quarantine and abstract-scope guards",
+    "generated_at": "2026-09-23T02:01:17.448426+09:00",
+    "run_reference": "ts001-reissue-drafting-v1-20260922"
+  },
+  "headline": "効率とは何を削ることか、契約としての整理",
+  "deck": "学習の規模則とデータ配分の見直し、推論の段階分離を束ね、何を減らすのかを名指しする契約を結ぶ。効率の比較を意味あるものにするための見取り図である。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:7567ccf72dd9d16b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "chinchilla-2022",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:7567ccf72dd9d16b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "chinchilla-2022",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p1-contract",
+      "block_type": "PARAGRAPH",
+      "text": "効率が良いという言葉は、大規模言語モデルの文脈では、それだけでは何も約束しない。学習に要する計算量を減らしたのか、配備後の推論の応答を速くしたのか、同じ費用でさばける要求数を増やしたのか。これらを区別せずに手法だけを並べれば、後のあらゆる比較は意味を失う。本稿が最初に結ぶのは、その混乱を避けるための契約、すなわちどこが詰まるのかを見定める見取り図である。出発点は学習と推論の分離である。学習は一度きりの巨大な投資であり、モデル規模と学習データ量と投下する計算量の配分が問われる。損失をどこまで下げるかが中心であり、使った資源は一度支払えば済む。これに対して推論は、配備後に繰り返し発生し続ける継続費用であり、使われ方によって効き方が変わる。同じ速さであっても、ひとつの応答が返るまでの待ち時間である遅延と、単位時間あたりに処理できる要求量であるスループットは別の軸である。対話の応答性を高めることと、同時接続の捌き量を増やすことは、同じ工夫では解けない場合が多い。さらに、トークンあたりの単価を下げたことと、ひとつの仕事を終えるまでの総費用を下げたことも等しくない。短い生成を安く大量に回せたとしても、長い文脈の読解や複数段階の推論を要する仕事の費用が下がらなければ、利用者にとっての効率は改善しない。計算か記憶容量か帯域か通信か、総パラメータか有効に働く部分か、固定資産としての重みか文脈に応じて膨らむ生成時の中間記憶か。総量の大きさと実際に働く有効部分の大きさを混同せず、固定資産と変動費を分けて考える習慣が、以降の節約策を見極める土台になる。この契約なくして高速化や軽量化を語れば、遅延の改善か捌き量の改善か、固定費の削減か変動費の削減かが曖昧になり、読み手は判断を誤る。削減対象が違えば選ぶべき節約策も評価の物差しも変わるという当然の事実から出発したい。何を減らすのかを名指しすることこそ、本特集の効率論の出発点であり、以降の手法を読み解く際の共通言語なのである。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:48a69625e2503fca",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "kaplan-scaling-laws-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:48a69625e2503fca",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "kaplan-scaling-laws-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:48a69625e2503fca",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "kaplan-scaling-laws-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p1-scaling-law",
+      "block_type": "PARAGRAPH",
+      "text": "学習側の物差しとして長く参照されてきたのは、言語モデルの損失がモデル規模とデータ量と計算量に対してべき乗則に従って滑らかに減少するという見方である。ここで重要なのは係数の具体値ではなく、大きくすれば損失が下がるという関係の形そのものである。この形が、濃密なモデルを前提とした規模拡大の議論の土台になり、研究開発の資源配分を正当化してきた。まず大きなモデルを作り、後から小さく使うという発想も、この方向性の共有に支えられている。規模の拡大が性能の向上に結びつくという経験は、多くの開発の指針として機能し、計算量の投下を正当化する根拠になった。しかしこの関係は、あくまで学習時の損失に関する見取り図であり、配備後の推論費用の内訳を解消するものではない。規模だけを信奉すれば、保持すべき重みは増え、それを読み出す帯域の負担も増し、複数装置にまたがる通信の重さも増す。演算器の処理能力と、記憶容量と、読み出しの帯域と、装置間の通信は、それぞれ異なる局面で律速になる。損失の低下と引き換えに配備の重さが増すという緊張関係がここに生まれる。総パラメータを増やすことと、実際に応答生成に効く有効な働きを増やすことが同じとは限らない点も見逃せない。規模を大きくすることだけでは推論の詰まりは解消されず、文脈が長くなるほど中間記憶の圧迫が増し、同時実行が増えるほど帯域と通信の重さが増すという別の勘定が要る。後の見直しがこの土台を起点に配分の問い直しへ向かったのも、方向性と内訳が別物だからである。規模の物差しを無条件の正解とせず、学習の効率と推論の律速を別の勘定で捉え直すこと。損失の形だけを借り、推論の内訳は別の物差しで測る姿勢が効率の議論を曇らせない作法である。べき乗則が示すのは学習の方向性であり、推論の契約を代替するものではない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:48a69625e2503fca",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "kaplan-scaling-laws-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:48a69625e2503fca",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "kaplan-scaling-laws-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:48a69625e2503fca",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "kaplan-scaling-laws-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p1-data-allocation",
+      "block_type": "PARAGRAPH",
+      "text": "学習の資源配分を問い直したのは、従来の大型モデルは投じた規模に見合う学習トークンを使い切れておらず、過小学習の状態にあったという指摘である。器だけを大きくし、中身の学習が追いついていない状態では、投下した計算量が見合いの損失低下に結びつかない。大きな可能性を持ちながら学び足りないまま残されることは、資源の使い方として無駄が大きい。そこでモデル規模と学習トークン数をほぼ均等に伸ばす配分が代表的な処方箋として示され、パラメータあたり約二〇トークンという目安が広く知られるようになった。肝心なのは、この数値を普遍の定数として扱わないことである。本稿が依拠する範囲では、それは特定の条件のもとで導かれた見出しとしての提案であり、どのような規模や構成にも当てはまる法則ではない。条件や構成が変われば望ましい配分も変わり得るという留保つきで受け止める必要がある。この留保を忘れないことが重要である。むしろ要点は、効率の問いがモデルの大きさだけでなく、データの割り当て方へと移った点にある。同じ計算量を使うなら、巨大な器を不十分なデータで鍛えるよりも、規模とデータの釣り合いを取り直す方が損失の低減に資するという視点転換である。この転換は、学習に使うトークンをいかに有効に配分し無駄を減らすかという、その後の議論の土台になる。データの質と量の配分を問い直す視点が、無駄の少ない学習への関心を呼び起こした点にこそ意義がある。闇雲に総パラメータ数を増やすことと、実際に応答生成に寄与する有効な部分を厚くすることは同じではない。総量と有効量を区別し、トークンあたりの単価ではなく、ひとつの仕事を終えるまでの費用で考える習慣がここから要請される。訓練の不足を規模の不足と取り違えず、配分の考え方として受け止めること。目安の数値だけを切り取って独り歩きさせないことが、学習効率を論じる際の契約の要である。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:7567ccf72dd9d16b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "chinchilla-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:7567ccf72dd9d16b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "chinchilla-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:7567ccf72dd9d16b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "chinchilla-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p1-serving-split",
+      "block_type": "PARAGRAPH",
+      "text": "推論側の詰まりを可視化したのは、生成過程を一括処理から反復単位の細粒度な管理へと変えた発想である。生成は、入力全体を一気に読み込んで内部状態を構築する前処理であるプリフィル段階と、トークンをひとつずつ逐次的に生み出す復号であるデコード段階に分かれる。前者は並列に処理しやすく演算が律速になりやすいのに対し、後者は直前の結果に依存して逐次に進むため、重みの読み出しや蓄積された中間記憶の保持と読み出しが律速になりやすい。従来のように要求をひとまとまりとして最後まで占有させる方式では、長い生成が短い要求を待たせ、遅延とスループットの両方が損なわれる。待ち行列の先頭にある長い仕事が後続を塞ぐ構図は、対話的な利用では致命的であり、全体の捌き量を押し下げる。そこで導入されたのが、反復のたびに待ち行列を見直し、段階の異なる要求をきめ細かく詰め合わせる継続的なスケジューリングの考え方である。必要に応じて生成の途中でも新規要求を組み入れ、処理の選択的な束ね方を工夫することで、装置の空きを減らすことができる。分散した装置群の上でも反復単位の管理を徹底する発想は、その後のスケジューラ設計の起点になる考え方であり、段階の分離が運用の柔軟性を生むことを示した。段階の性質の違いを運用に持ち込んだ点に、この発想の要がある。プリフィルとデコードを分けて扱うことで、演算に適した仕事と記憶の読み出しに縛られる仕事を混在させ、全体の捌き量と応答性を両立させる道が開ける。ここで効く区別が、重みと中間記憶の違いである。重みはモデルに固有の固定資産であり記憶容量を占有する。一方、逐次生成に伴って蓄積されるキーとバリューの中間記憶であるKVキャッシュは、文脈の長さや同時処理数に応じて膨らむ変動費であり、容量と帯域の両面から圧迫する。計算能力と記憶容量と帯域と通信のどれが詰まっているのかを名指しし、遅延とスループットのどちらを改善したいのかを明確にすること。それが推論の効率化の前提であり、手法の評価軸を定める作業にほかならない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:41094b396ae4cb15",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "orca-osdi22",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:41094b396ae4cb15",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "orca-osdi22",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:41094b396ae4cb15",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "orca-osdi22",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p1-scope-contract",
+      "block_type": "PARAGRAPH",
+      "text": "以上の見取り図は、あえて限定された範囲の主張だけに依拠していることを明示しておきたい。規模と損失の関係については、べき乗則という関係の形を取り出すにとどめ、係数の具体値や実験条件の細部には立ち入らない。損失が滑らかに下がるという方向性を共有するだけで、個別の数値を再現することまでは約束しない。学習トークンの配分についても、代表的な目安を見出しとして紹介するにとどめ、普遍の定数としては扱わない。条件が変われば最適な配分も変わり得るという留保が、この契約には含まれる。生成の管理方式についても、反復単位でプリフィルとデコードを分けて扱うという設計思想の水準にとどめ、具体的な処理手順の細部や数値化された高速化の幅には踏み込まない。処理の束ね方の工夫が有効であるという方向性を共有するだけで、個別環境での速さの幅までは約束しない。異なる条件で測られた性能値を直接並べて優劣を論じることも、本稿では行わない。測定条件や文脈長や同時実行数が異なれば、律速要因そのものが変わり、数値の比較が詰まりの比較にならないからである。異なる土俵の数値を並べた速さ比べは、効率の議論をむしろ曇らせる。学習の物差しを推論の評価に流用せず、推論の工夫を学習の成果と混同しないこと。守備範囲を明示した上で物差しを共有することこそ、効率の比較を実りあるものにする条件である。本稿が約束するのは削減対象の名指しである。学習か推論か、プリフィルかデコードか、演算か容量か帯域か通信か、遅延かスループットか、総量か有効量か、重みかKVキャッシュか、トークン単価か仕事単価か。以降の各論は、この物差しに沿って読まれることを前提とする。適用範囲を超えた一般化を避け、条件付きの主張は条件付きのまま受け止めること。それが本特集の効率論を読み解く際の作法であり、本稿の守備範囲の宣言である。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:7567ccf72dd9d16b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "chinchilla-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:7567ccf72dd9d16b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "chinchilla-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:7567ccf72dd9d16b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "chinchilla-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:41094b396ae4cb15",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "orca-osdi22",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:41094b396ae4cb15",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "orca-osdi22",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:41094b396ae4cb15",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "orca-osdi22",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p1-bottleneck-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: Abstract-scope paper sections retained only where claims are scoped accordingly; no naked cross-condition comparison. / Full-body coefficient tables and experimental setup not consumed; claims scoped to abstract-level scaling form. / Full-body isoFLOP curves and ablation tables not consumed; ratio quoted as the paper's headline prescription, not a universal constant. / Full-body scheduling algorithm details and throughput numbers not consumed; no numeric speedup quoted.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:48a69625e2503fca",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "kaplan-scaling-laws-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:7567ccf72dd9d16b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "chinchilla-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:41094b396ae4cb15",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "orca-osdi22",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "EFF-O01",
+      "block_ids": [
+        "p1-contract",
+        "p1-scaling-law",
+        "p1-data-allocation",
+        "p1-serving-split",
+        "p1-scope-contract",
+        "p1-bottleneck-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "Abstract-scope paper sections retained only where claims are scoped accordingly; no naked cross-condition comparison.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p1-bottleneck-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body coefficient tables and experimental setup not consumed; claims scoped to abstract-level scaling form.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p1-bottleneck-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body isoFLOP curves and ablation tables not consumed; ratio quoted as the paper's headline prescription, not a universal constant.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p1-bottleneck-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body scheduling algorithm details and throughput numbers not consumed; no numeric speedup quoted.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p1-bottleneck-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}

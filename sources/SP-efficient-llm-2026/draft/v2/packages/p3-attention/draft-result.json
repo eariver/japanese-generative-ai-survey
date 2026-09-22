@@ -1,0 +1,1063 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "p3-attention",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "9131c7fdfd5df10b4598994679bea3ecd62a719654241d4b5cf2a124c27838fc",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse Spark",
+    "model": "muse-spark-1.3",
+    "invocation": "TS-001 reissue drafting-synthesis: 9-package Japanese long-form synthesis from approved Architecture r1; evidence-bounded prose with vendor-claim quarantine and abstract-scope guards",
+    "generated_at": "2026-09-23T02:01:17.448426+09:00",
+    "run_reference": "ts001-reissue-drafting-v1-20260922"
+  },
+  "headline": "正確さを保って運ぶか、運ぶ中身を変えるか──注意と記憶の節約術",
+  "deck": "共有化された鍵・値から厳密な入出力最適化、疎化と線形化、保存の削減と再利用、条件付きの深さと記憶まで、計算を変えない工夫と構造を変える設計を区別して整理する。由来の未確定な系譜は断定しない。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:30f5654e93328f92",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "flashattention-2022",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:30f5654e93328f92",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "flashattention-2022",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:5e09bbc97f0fb5da",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "kimi-linear-2025",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:5e09bbc97f0fb5da",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "kimi-linear-2025",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:aa4a83320569040d",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "engram-paper-2026",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:aa4a83320569040d",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "engram-paper-2026",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p3-attention-b01",
+      "block_type": "PARAGRAPH",
+      "text": "長い文脈を扱うほど推論時の記憶は膨らむ。その最初の絞り込みは、鍵と値の持ち方を変えることから始まった。すべての照会頭が独自の鍵と値を抱える方式では、系列が延びるにつれて保持すべき状態が増え続け、復号の足かせになる。そこで単一の鍵・値頭をすべての照会頭で共有する方式が提案され、保持量を仕組みとして削る最も素朴な一歩になった。品質面の代償の詳細な数値表は要約の範囲外として、確立した機構の水準で押さえ、数値の優劣比較には踏み込まない。続いて登場した束ねる共有方式は、複数の照会頭を少数の鍵・値頭に寄せることで、削減幅と表現力の折り合いをつけ直したものとされる。学習済みの重みを起点に作り替えに近い形で移行できる点が実用上の鍵であり、全面学習なしに導入できる移行可能性が普及を後押ししたという整理である。作り直しのコスト表の全文には踏み込まず、見出しの性質として述べる。この共有化の系譜は、後に続く潜在圧縮の系譜へ連なるものとして位置づけられ、本特集の注意削減史の起点になる。配置の現場では既存資産を生かせることが重く、作り直しの可否が採否を分けたという読みである。一方、近似を一切入れずに速くする道もある。注意計算そのものは厳密に保ったまま、行列の分割と正規化の逐次化によって高帯域記憶との往復を減らし、実時間の効率を高める手法がそれだ。複雑さの証明や速度表の水準には踏み込まず、厳密さと入出力効率の両立という役割で押さえる。計算結果を変えずに入出力の動かし方だけを磨くのか、それとも計算や保存の対象そのものを変えるのか。この区別が本節全体の物差しになる。以降の疎化・線形化・状態削減・再利用のいずれも、どちらの側に立つのかを意識して読み分けたい。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:6f06664f78d4a54f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "mqa-2019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:6f06664f78d4a54f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "mqa-2019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:6f06664f78d4a54f",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "mqa-2019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:ba7f8e43dcbf1260",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "gqa-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:ba7f8e43dcbf1260",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "gqa-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:ba7f8e43dcbf1260",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "gqa-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:30f5654e93328f92",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "flashattention-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:30f5654e93328f92",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "flashattention-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:30f5654e93328f92",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "flashattention-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-attention-b02",
+      "block_type": "PARAGRAPH",
+      "text": "すべてのトークンを見る代わりに、見るべき場所だけを選ぶ。疎化の考え方はその一言に尽きるが、学習の段階から組み込むのか、できあがった模型に後から付けるのかで性質は大きく異なる。階層的な圧縮と選択と局所走査を組み合わせ、実行環境に寄せた実装とともに最初から学習する方式は、推論時だけの刈り込みとは一線を画すとされる。具体的な実装の内部構造や速度表の水準には踏み込まず、確立した役割として押さえる。索引器の作りや共有の方式や学習形態の違いを取り違えないことが重要であり、似た名称の疎注意群の混同を防ぐことが特集全体の用語の要になる。名称の似た仕組みは索引の担い手も共有の単位も学習の前提も異なり、並べて論じる際は対象の取り違えに注意したい。対照的に、窓の中だけを見る局所注意は実績ある枯れた形であり、共有化された鍵・値の仕組みと組み合わせた運用例が生産的な基準になった。窓幅の外側を捨てる潔さが長い系列の扱いを現実的にし、切り分け表の全文には踏み込まず基準として扱う。以降の疎な大域設計や窓の再生をうたう仕組みは、この基準との対比で理解するのが見通しがよい。局所に閉じるのか大域の選択を残すのかという設計の分岐が読みどころであり、局所基準の存在が疎化の主張を落ち着いて評価させる。新しい疎注意の登場を告げる公式発表は、告知の範囲として受け止める。既存基盤の上に新しい機構を載せ、長い文脈の学習と推論の効率化をうたう内容であり、利用面の提供開始と重み・報告書・実装の公開が合わせて告げられた。索引の数式や等価性の検証手順は報告書側に属し、発表文書の守備範囲を超える。発表時点の価格改定の扱いも告知の水準にとどめ、効率と価格の伝達の速さを断定しない。発表と報告を対にして読み、役割の違いを保ちたい。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8e6f96477576b4ea",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "nsa-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8e6f96477576b4ea",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "nsa-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8e6f96477576b4ea",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "nsa-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:6d577fabc40c9e66",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "mistral-7b-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:6d577fabc40c9e66",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "mistral-7b-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:6d577fabc40c9e66",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "mistral-7b-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5b73033bfa25650a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepseek-v32exp-dsa-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5b73033bfa25650a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepseek-v32exp-dsa-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5b73033bfa25650a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "deepseek-v32exp-dsa-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5b73033bfa25650a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseek-v32exp-dsa-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5b73033bfa25650a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "deepseek-v32exp-dsa-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-attention-b03",
+      "block_type": "PARAGRAPH",
+      "text": "疎化の中身を報告書の該当節の範囲でたどる。新しい疎注意は、少数の軽量な索引機構で関連の強い受け手を選び出し、細かい粒度で注目対象を絞る設計とされる。共有化された潜在の枠組みの中で、既存基盤からの継続学習によって唯一の構造変更として導入された点が特徴づけられる。作り直しなしに近い移行が、運用面の受け入れを左右したという読みである。実装の低精度化の可否など細部の断定は避け、該当節の記述の水準で述べる。等価性に関する報告は抜粋の範囲にとどめ、温め手順や網羅的な切り分けの細部には踏み込まない。互角性の主張は変種や評価条件に縛られるものとして、確立した水準を超えて引用せず、最高到達点の列挙もしない。特定競技の到達点は高計算量の変種に縛られるものとして、一般の性質に拡大しない。一方、回帰的な記憶の側にも系譜がある。差分規則による記憶更新に調節の門を加えた方式は、従来の回帰型の記憶制御を強めたものとして位置づけられ、後に続く線形注意系の直接の親になると整理されている。門の切り分けの全文には踏み込まず、見出しの機構として述べ、傍証の範囲の系譜として扱う。その子にあたる線形注意の提案は、門をさらに細かくし、区分的な計算法と全域注意との交互配置で大域の流れを保つ設計を報告する。公開された実装や重みとの整合は配置可能性の傍証にとどめる。比較表の数値は該当節の範囲として扱い、独立した再現は未確定とする。実装や重みの公開、既存の提供基盤との互換性は配置可能性の傍証にとどめ、報告書の利用条件が再利用に制約を課す点にも留意する。由来の細部や性能の断定は避け、節範囲の読みとして閉じる。異なる頭文字の混同にも触れず、対象の機構だけを述べる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d55d1f65341bb12e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepseek-v32-report",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d55d1f65341bb12e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepseek-v32-report",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d55d1f65341bb12e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseek-v32-report",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:0afc0add02d6e35c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "gated-deltanet-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:0afc0add02d6e35c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "gated-deltanet-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:0afc0add02d6e35c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "gated-deltanet-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5e09bbc97f0fb5da",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "kimi-linear-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5e09bbc97f0fb5da",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "kimi-linear-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5e09bbc97f0fb5da",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "kimi-linear-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-attention-b04",
+      "block_type": "PARAGRAPH",
+      "text": "回帰と疎注意を組み合わせた実装点も現れている。一方の陣営の公開情報は、層ごとの外部記憶表をホスト側に置き、回帰層と疎注意層を一定比率で積む構成や、予測層の扱いを定めたものとして、要約と傍証の範囲で整理する。書面の本文を直接確認していないため、細部の断定は避け、確立した構成の水準で述べる。大規模な表を抱えることの含意は、記憶と演算の交換という本特集の問題意識に重なる。表を大きくすれば演算は節約できるが、置き場所と運び方が新たな制約になるという構図である。構成の読みは要約の範囲に縛られ、本文の取得後に改めて確かめる余地を残す。自己報告の評価値は検証待ちの提供者主張として隔離し、引用しない。数値の隔離は不信ではなく、検証の順序を守る手続きである。運用条件の異なる数値を混ぜないことが、読みの作法になる。ここで系譜の扱いが要になる。外部表を持つ設計と後に述べる条件付き記憶の提案との間に、導出関係を示す記述は収集範囲では見つかっていない。似た圧力への収束的な応答、すなわち並行ないし未確定の関係として扱い、影響関係を主張しないのが正しい。この探索が網羅的であるとはうたわず、相手側の由来文書が後に公になる可能性を留保する。収集時点の否定を恒久の否定に拡大しないことが、系譜の作法になる。一方、線形注意側の実行可能実装は、報告を超えた配置可能性の傍証になる。第三者による実装と提供基盤での経路が報告の公開主張と整合し、紙の上を超えて動くことを示す。ただし数値や精度の水準、性能の事実には踏み込まず、引用しない。呼称の衝突が未解決の別ラベルには触れず、混同を避けて対象だけを扱う。実装の存在は可能性を示すが、正しさの確定ではなく、符号や数値の水準は未収集として残す。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:cde3c5f4aa684e5d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "qwen38-flash-next-card",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:cde3c5f4aa684e5d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "qwen38-flash-next-card",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:cde3c5f4aa684e5d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "qwen38-flash-next-card",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:555787013650fb17",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "qwen-engram-lineage",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:555787013650fb17",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "qwen-engram-lineage",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:555787013650fb17",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "qwen-engram-lineage",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:abce30ccc43cf2d3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "kda-fla-impl",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:abce30ccc43cf2d3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "kda-fla-impl",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:abce30ccc43cf2d3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "kda-fla-impl",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-attention-b05",
+      "block_type": "PARAGRAPH",
+      "text": "保持する鍵と値を削る方向は、選ぶ仕組みを変えずに捨て方を工夫する。重要度の高い少数の受け手と直近の履歴だけを残す方式は、注意の値に効くのはごく一部のトークンだという観察に立つ。削除の分類の上では、選択や配置や退避とは異なる除去の位置づけになり、特集の保存分類の目安になる。詳細な分析や評価表の全文には踏み込まず、確立した着想として押さえる。除去は計算を変えない分、適用の条件を誤ると静かに劣化する点に注意したい。残す基準の設計が運用の成否を分ける。対象の選び方と残す量の決め方が、実務上の要点になる。冒頭のトークンが吸い寄せる現象への対処も欠かせない。最初の受け手の鍵と値を残し、窓と組み合わせることで窓注意の性能を取り戻す工夫が示され、あらゆる除去方策はこの吸着を織り込まなければ後退するという制約になった。出現の仕組みの全文には踏み込まず、現象と方策の水準で述べる。吸着の存在は除去の自由度に上限を課し、削り方の設計条件になる。制約を無視した削減は見かけの節約に終わる点が教訓である。層ごとの配分を変える発想もある。層によって注意の散らばりが違うことを利用し、保持枠を層間で山形に配る設計であり、層の不均一性に目を向ける視点が特徴である。本文の具体的な算法や評価の全文は未収集として、数値の比較には踏み込まない。層の不均一性への着目は、後の層間共有の検討につながるものとして位置づける。いずれも計算式を近似するのではなく残す量と場所を絞る工夫であり、冒頭の物差しでは保存側の節約にあたる。除去と選択と配置と退避の四分法を意識して読みたい。削る前の基準の理解が、削った後の不調の診断を助ける視点になる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d1592f4bf556f388",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "h2o-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d1592f4bf556f388",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "h2o-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d1592f4bf556f388",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "h2o-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:dee697144790afc0",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "streamingllm-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:dee697144790afc0",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "streamingllm-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:dee697144790afc0",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "streamingllm-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:188be0fda314917b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "pyramidkv-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:188be0fda314917b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "pyramidkv-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:188be0fda314917b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "pyramidkv-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:188be0fda314917b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "pyramidkv-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:188be0fda314917b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "pyramidkv-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-attention-b06",
+      "block_type": "PARAGRAPH",
+      "text": "作った鍵と値を使い回すことも大きな節約になる。接頭辞の再利用を自動化する仕組みは、鍵と値の塊に印をつけて要求間で共有し、塊粒度の再利用を担う。文書の本文を直接確認していないため、確立した役割の水準で述べ、細部の断定は避ける。粒度の異なる木構造的な管理方式と構造的に対照をなし、どちらが他方を包むものでもないという整理である。粒度の違いは優劣ではなく、要求の重なり方に応じた使い分けの問題として読むのがよい。一方、特定の実行基盤から切り離して再利用や退避や分離を担う層もある。実装の細部や対応表の全文には踏み込まず、組み合わせ可能性を示す例として位置づけ、再利用と退避にまたがる性格を押さえる。特定基盤に縛られないことが、提供形態の選択肢を広げる点に意義がある。注意の数学を変えずに再計算を省く点で、提供時の節約にあたり、構造側の変更とは区別したい。条件付きの記憶という別の方向もある。古いエヌグラム埋め込みを現代化し、字句の圧縮やハッシュや文脈に応じた調節や多分岐の統合で定数時間の参照を目指す提案である。演算と静的記憶の配分を定式化する点が特徴づけられ、報告の該当範囲で整理する。配分曲線の詳細や学習費用の精算には踏み込まず、具体的な加点の数値列挙もしない。初期層の負担を軽くする働きの分析も、機構の示唆として節範囲で受け止め、深掘りの断定は避ける。実装の展示や図版の水準には踏み込まず、紙の主張の範囲で述べ、再利用との対比を保つ。使い回しと条件付き記憶はどちらも記憶の節約だが、前者が作ったものの再利用、後者が呼び出す記憶の選択という違いがある。呼び出しの選択が演算と記憶の交換点になる。この区別が読みの要になる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:deccb2250a7e1ff9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "vllm-apc-docs",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:deccb2250a7e1ff9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "vllm-apc-docs",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:deccb2250a7e1ff9",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "vllm-apc-docs",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:a868dae3a1b78059",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lmcache",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:a868dae3a1b78059",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lmcache",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:a868dae3a1b78059",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "lmcache",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:aa4a83320569040d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "engram-paper-2026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:aa4a83320569040d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "engram-paper-2026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:aa4a83320569040d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "engram-paper-2026",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-attention-b07",
+      "block_type": "PARAGRAPH",
+      "text": "深さ方向の計算を絞る発想もある。層ごとに上位選択で参加するトークンを絞り、系列と深さにわたって演算量を不均一に配る方式である。静的な計算グラフの下での配分であり、専門家を振り分ける仕組みとは振り分けの対象が分類的に異なる。同名による混同を避けることが読みの要になり、容量や配分の分析の全文には踏み込まない。参加の可否が層ごとに変わることで、系列内の重要度の偏りを計算量に反映させる点が考えどころである。早期に抜ける工夫もある。層の脱落と早期終了の損失で学習し、浅い層でも正確に抜けられるようにしたうえで、浅い層の草案を残りの層で確かめる自己推測につなげる。別の草案模型を要せず、計算と活性を共有する点で、条件付き深さと復号の道をつなぐ橋渡しになり、記憶の面でも身軽さをもたらす。脱落日程や速度表の全文には踏み込まず、確立した機構として述べる。草案と検証を同一模型で担うことが、運用の見通しをよくする。適応計算の先例としては、内部に分類器を添えて曖昧さの指標で動的に抜ける古典的な工夫を、歴史の区切りとしてのみ位置づける。本文の全文は未収集であり、先例の役割を超えて引用しない。対象の同定は要約の範囲にとどめ、細部の断定は避ける。深さの節約は注意の疎化や記憶の削減と直交しうる。どこを見るか、どれだけ残すか、どれだけ深く進むかを別々に絞ることで、正確な計算を保つ工夫と構造を変える設計の組み合わせが見通せる。数値の断定を避け、対象の違いを保ったまま節を閉じる。深さと幅と記憶の三方向を束ねて読みたい。対象の混同を避け、節度ある読みを保ちたい。深さの選択と注意の選択と記憶の選択を別々に扱う視点が、全体の見通しをよくする。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:492df8d0c65e7d4a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "mixture-of-depths-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:492df8d0c65e7d4a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "mixture-of-depths-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:492df8d0c65e7d4a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "mixture-of-depths-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:c0b3a34cd33faf96",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "layerskip-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:c0b3a34cd33faf96",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "layerskip-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:c0b3a34cd33faf96",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "layerskip-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5826c488a1622be2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deebert-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5826c488a1622be2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deebert-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5826c488a1622be2",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deebert-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5826c488a1622be2",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "deebert-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p3-attention-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: D032 VERIFIED launch scope; D125 V3.2 body sections as consumed; D145 parallel-or-unresolved lineage never asserted; KDA-label collision (D085) unresolved and excluded; paper ablation detail outstanding as stated per-record. / Full-body quality-degradation tables not consumed; no numeric tradeoff quoted. / Full-body uptraining cost tables not consumed. / Full-body IO-complexity proofs and benchmark tables not consumed. / Full-body kernel details and speedup tables not consumed. / Fair-comparison per-task tables at section scope; independent reproduction open (D028). / Launch page is announcement scope; indexer equations and parity protocols belong to D125. / V3.2 (non-Exp) page summarized from excerpts only; launch page is the bound authority. / Indexer warm-up protocol and benchmark tables at excerpt scope; full-body ablations outstanding. / Allocation-curve points and training-cost accounting outstanding. / Full-body gating ablations not consumed. / Full-body SWA ablation tables not consumed. / Card page body not fetched; config facts corroborated via D008/D127 only. / Kernel code and benchmark tables not consumed. / Full-body heavy-hitter analysis and benchmark tables not consumed. / Full-body sink-emergence analysis not consumed. / Full paper body (funneling algorithm, evaluations) outstanding. / Canonical locator amendment deferred to Sol. / Docs page not fetched; mechanism scoped to established role. / version binding: No version pin extracted. / Repository not fetched; API/backend matrix outstanding. / Full-body capacity/allocation analysis not consumed. / Full-body dropout-schedule and speedup tables not consumed. / Full paper body outstanding; precedent role only. / Launch/API pages summarized from search excerpts; full pages not consumed. / Kernel code, numerics, and perf numbers not consumed. / numerics/perf at Evidence: Numerics/perf unconsumed; no performance fact cited. / Repo code, demo, and figures not consumed. / Exhaustive derivation-statement search not claimed; Qwen-side provenance docs may postdate this pass.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:6f06664f78d4a54f",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "mqa-2019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:ba7f8e43dcbf1260",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "gqa-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:30f5654e93328f92",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "flashattention-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8e6f96477576b4ea",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "nsa-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5e09bbc97f0fb5da",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "kimi-linear-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5b73033bfa25650a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseek-v32exp-dsa-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5b73033bfa25650a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "deepseek-v32exp-dsa-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d55d1f65341bb12e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseek-v32-report",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:aa4a83320569040d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "engram-paper-2026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:0afc0add02d6e35c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "gated-deltanet-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:6d577fabc40c9e66",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "mistral-7b-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:cde3c5f4aa684e5d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "qwen38-flash-next-card",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:1173800888bed890",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "flashmla",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d1592f4bf556f388",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "h2o-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:dee697144790afc0",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "streamingllm-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:188be0fda314917b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "pyramidkv-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:188be0fda314917b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "pyramidkv-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:deccb2250a7e1ff9",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "vllm-apc-docs",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:a868dae3a1b78059",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "lmcache",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:492df8d0c65e7d4a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "mixture-of-depths-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:c0b3a34cd33faf96",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "layerskip-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5826c488a1622be2",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deebert-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5826c488a1622be2",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "deebert-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5adb69161cb41c30",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseek-v32exp-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:abce30ccc43cf2d3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "kda-fla-impl",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:ac85b7a3c3597196",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "engram-repo",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:555787013650fb17",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "qwen-engram-lineage",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "EFF-O04",
+      "block_ids": [
+        "p3-attention-b01",
+        "p3-attention-b02",
+        "p3-attention-b03",
+        "p3-attention-b04",
+        "p3-attention-b05",
+        "p3-attention-b06",
+        "p3-attention-b07",
+        "p3-attention-boundaries"
+      ]
+    },
+    {
+      "requirement": "EFF-O13",
+      "block_ids": [
+        "p3-attention-b01",
+        "p3-attention-b02",
+        "p3-attention-b03",
+        "p3-attention-b04",
+        "p3-attention-b05",
+        "p3-attention-b06",
+        "p3-attention-b07",
+        "p3-attention-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "D032 VERIFIED launch scope; D125 V3.2 body sections as consumed; D145 parallel-or-unresolved lineage never asserted; KDA-label collision (D085) unresolved and excluded; paper ablation detail outstanding as stated per-record.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body quality-degradation tables not consumed; no numeric tradeoff quoted.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body uptraining cost tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body IO-complexity proofs and benchmark tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body kernel details and speedup tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Fair-comparison per-task tables at section scope; independent reproduction open (D028).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Launch page is announcement scope; indexer equations and parity protocols belong to D125.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "V3.2 (non-Exp) page summarized from excerpts only; launch page is the bound authority.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Indexer warm-up protocol and benchmark tables at excerpt scope; full-body ablations outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Allocation-curve points and training-cost accounting outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body gating ablations not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body SWA ablation tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Card page body not fetched; config facts corroborated via D008/D127 only.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Kernel code and benchmark tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body heavy-hitter analysis and benchmark tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body sink-emergence analysis not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full paper body (funneling algorithm, evaluations) outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Canonical locator amendment deferred to Sol.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Docs page not fetched; mechanism scoped to established role.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "version binding: No version pin extracted.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Repository not fetched; API/backend matrix outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body capacity/allocation analysis not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body dropout-schedule and speedup tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full paper body outstanding; precedent role only.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Launch/API pages summarized from search excerpts; full pages not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Kernel code, numerics, and perf numbers not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "numerics/perf at Evidence: Numerics/perf unconsumed; no performance fact cited.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Repo code, demo, and figures not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Exhaustive derivation-statement search not claimed; Qwen-side provenance docs may postdate this pass.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p3-attention-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}

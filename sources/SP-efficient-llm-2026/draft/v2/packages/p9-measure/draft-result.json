@@ -1,0 +1,753 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "p9-measure",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "114d431d41632f25c63d188209896a76dab6390c654eed6cd16f42f6804fbc57",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse Spark",
+    "model": "muse-spark-1.3",
+    "invocation": "TS-001 reissue drafting-synthesis: 9-package Japanese long-form synthesis from approved Architecture r1; evidence-bounded prose with vendor-claim quarantine and abstract-scope guards",
+    "generated_at": "2026-09-23T02:01:17.448426+09:00",
+    "run_reference": "ts001-reissue-drafting-v1-20260922"
+  },
+  "headline": "速さも正確さも、条件を添えて読む",
+  "deck": "待ち時間と生成間隔と全体処理量を分け、場面の束ねと版と足回りの違いを意識し、区分の異なる数字を混ぜず順位を作らないための読み方をまとめる。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:2efd7620aba89b5b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "mlperf-inference",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:2efd7620aba89b5b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "mlperf-inference",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "swe-bench-pro",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "swe-bench-pro",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "swe-bench-pro",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+      "kind": "CLAIM",
+      "evidence_id": "claim-4",
+      "subject_id": "swe-bench-pro",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:ee6d3b0c9866827b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "genai-perf",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:ee6d3b0c9866827b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "genai-perf",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p9-measure-b01",
+      "block_type": "PARAGRAPH",
+      "text": "推論の速さは一つの数字では語れない。まず応答の出だしまでの待ちと、生成が続く区間の一トークンあたりの間隔と、単位時間あたりの出力と、同時実行や到着率の負荷をかけたときの全体処理量を分けて捉える必要がある。出だしの軽さと生成中の滑らかさと混雑時のさばき量は、同じ工夫で同時に改善するとは限らず、見るべき局面が異なるからである。文脈が長くなれば出だしの読み込みが重くなり、同時実行を束ねれば待ち行列の振る舞いが変わり、装置が変われば同じ模型でも数字が動く。推論に割く手間を増やせば出力が長くなり、単位時間あたりの量の見え方も変わるため、手間の指定を欠いた速さの比較は成り立たない。計測文書に即した道具立ては、これらの指標を負荷条件とともに記録し、人が読む表と機械が読む構造化記録に残すことを求める。同時実行数や要求の送り方、計測区間の切り方、対象装置の特定を欠いた毎秒あたりの量は、再現の手がかりにならない。監査可能性を重んじる方法論が示すのは、到着のさせ方や遅延の上限、装置の同一性まで含めて利用場面を束ねて初めて二つの数字が並べられるという作法である。文書上の注意書きが多い計測枠組みは、数値の出所としてではなく、比較が壊れる理由を教える教材として扱うのが適切である。利用者側の制約や字句分割、標本化条件の違いが混ざれば、同じ名の指標でも中身は別物になる。道具の利用可否や混入への備え、課題を終えるまでの総費用の視点を欠いた速さの議論は、効率の判断をゆがめる。版と足回りの指定を欠いた速さの並置も同じく成り立たず、改訂や足回りの違いは数字の意味を変える。文脈の長さや同時実行の束ね方、装置の特定を欠いた比較は、異なる局面の数字を混ぜることになり、改善の所在を見誤らせる。改善の所在を見誤らないためにも、局面の違いを意識した読みを保つ。後継として名指しされた存在についても、単独の製品としての姿は確認できておらず判断を保留し、断定しない。本文の収集手順や仕様書の細部の読み込みが残る以上、断定的な主張は避ける。個別の数値はここでは引用せず、条件をそろえる読み方だけを確立する。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:ee6d3b0c9866827b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "genai-perf",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:ee6d3b0c9866827b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "genai-perf",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:ee6d3b0c9866827b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "genai-perf",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:ee6d3b0c9866827b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "genai-perf",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2efd7620aba89b5b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "mlperf-inference",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2efd7620aba89b5b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "mlperf-inference",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2efd7620aba89b5b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "mlperf-inference",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:652a24ce17bdd579",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "llmperf-ray",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:652a24ce17bdd579",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "llmperf-ray",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:652a24ce17bdd579",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "llmperf-ray",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p9-measure-b02",
+      "block_type": "PARAGRAPH",
+      "text": "実課題の解決力を測ろうとすれば、現実の開発現場にある課題報告とそれを確かめる試験に行き着く。報告文を読み、関係する保管庫の状態を再現し、修正後に試験の成否で判定するという手順は、選択式の知識問題とは異なる重みを持つ。ただし初期の集め方には壊れた課題や仕様の曖昧さが混ざり、試験を通っても直したことにならない場合や、何を直すべきか定まらない場合が残る。この妥当性の綻びを直視し、人手で選び直した精選版や、長期にわたる作業を想定して作り直した難所版が生まれたのは自然な流れである。難所版では人手で確かめられた課題が複数の保管庫から集められ、公開用と商用と非公開の区分が設けられて、混入や漏えいへの備えが意識されている。ここで守るべき作法は、区分の異なる数字を混ぜて並べないことである。公開の場で見える成績と、別条件の区分の成績は、集め方も漏えいへの備えも異なるため、素朴に比べられない。個々の足回りや道具立ての結び付きの特定は留保されており、本文の詳細な手順の読み込みも残されている。足回りが変われば道具の利用可否や試行の進め方が変わり、同じ模型でも到達点が動くため、足回りの指定を欠いた正確さの比較は土台を欠く。推論に割く手間の違いも結果を左右し、手間を増やせば解ける場合と解けない場合の境界が動く。版の違いは単なる更新ではなく選び直しや判定の厳しさの変更を含むため、版の指定を欠いた並置は意味を持たない。学習時の混入が疑われる場合、見かけの解決は暗記の映し込みかもしれず、集め方の備えとともに読む必要がある。課題を終えるまでの総費用の視点も欠かせず、少ない手間で解くことと時間をかけて解くことは別の効率を示す。要旨に即した設計の理解にとどめ、現物の再実行による裏取りに踏み込まないことが、この節の留保である。したがって個別の数値は隔離し、ここでは妥当性をめぐる設計の系譜だけを学ぶ。見かけの順位を新たに作らないことが、この節の約束である。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:60e718c6f2ddc0bd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "swe-bench-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:60e718c6f2ddc0bd",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "swe-bench-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:60e718c6f2ddc0bd",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "swe-bench-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p9-measure-b03",
+      "block_type": "PARAGRAPH",
+      "text": "端末に向かう代理作業の評価は、応答文の見栄えではなく、操作を終えた後の容器の状態で合否を決める点に特徴がある。命令列を実行し、文書や設定や実行結果が求められた状態に至ったかを、結果に即した試験で確かめる。この考え方は、知識の想起ではなく作業の完遂を問う姿勢を示す。ただし同じ名を掲げていても、改訂を経れば課題集合や判定手順は別物になり得る。名は契約ではないというのが、版の違いが教える第一の教訓である。版の表示を欠いた名指しは、どの課題群でどの判定を受けたかを曖昧にし、時を隔てた比較を壊す。本文の詳細な手順の読み込みが残り、旧版の来歴の特定も留保される以上、版の指定を欠いた言及は慎む必要がある。別の注意例として、評価の足回りの選び方で成績が動くことが記録されている。複数の足回りのうち良い方を採る流儀が残れば、数字は実力だけでなく足回りとの相性をも映す。どの評価枠組みで測ったかという枠組み名自体が、数字の一部をなす。標準化された正確さ側の枠組みが担うのもこの役割であり、枠組み名を欠いた正確さの言及は比較の土台を欠く。道具利用の可否や試行回数の扱い、採点の厳しさが変われば、同じ作業でも到達率は動く。推論に割く手間や文脈の長さ、装置の違いも結果を揺らし、条件の指定を欠いた並置は誤読を招く。学習時の混入への備えや課題を終えるまでの総費用の視点も欠かせず、速さと正確さを切り離した議論は片手落ちになる。要旨に即した設計の理解にとどめ、現物の複製や再実行による裏取りに踏み込まないことが、この節の留保である。到達率の背景にある手間と費用にも目を向ける。条件の開示を求め、開示のない数字を並べない姿勢が、誤った優劣を防ぐ。現物の保管庫や課題設定の細部までは立ち入らず、ここでは個別の数値を引用しない。道具立てと版の特定を欠いた比較をしないことが、誤読を防ぐ近道である。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:15d0641a1704890e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "terminal-bench",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:15d0641a1704890e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "terminal-bench",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:15d0641a1704890e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "terminal-bench",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:15d0641a1704890e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "terminal-bench",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:15d0641a1704890e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "terminal-bench",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:86001d9790ad69a6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepswe-methodology-note",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:86001d9790ad69a6",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepswe-methodology-note",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:86001d9790ad69a6",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepswe-methodology-note",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:808b9a181f32462c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lm-eval-harness",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:808b9a181f32462c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lm-eval-harness",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:808b9a181f32462c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "lm-eval-harness",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p9-measure-b04",
+      "block_type": "PARAGRAPH",
+      "text": "長い文脈をうたう表示と、実際に使える長さは別の事柄である。公称の上限が伸びても、検索や多段階の照合、集約、問いへの応答が、文脈を伸ばすにつれてどこまで保たれるかは改めて確かめねばならない。段階的に長さを上げながら、取り出しや飛び越しのある照合、まとめ上げ、問い応答を等級づける考え方は、このずれを可視化する。有効な長さを等級づけることは、能力の物差しであると同時に、記憶と移動の費用を問う効率の物差しでもある。上限の表示だけを見て、長い文脈がそのまま使えると判断するのは早計である。文脈が伸びれば保持すべき状態が増え、読み込みの重さと保持の費用が増すため、効率の視点を欠いた長さの議論は片手落ちになる。本文の課題群や採点手順の細部の読み込みが残る以上、等級づけの内訳に踏み込んだ断定は避け、要旨に即した理解にとどめる。一方で広い評価を志す立場は、場面と指標と適用条件を掛け合わせ、多面的な報告の透明性を重んじる。一つの代表値に畳み込む前に、どの場面でどの指標をどの適用で測ったかを開くことが、再現への近道になる。販売側の表を検証する側の物差しもここにあり、条件の開示を求める姿勢が共通する。推論に割く手間や道具利用の可否が変われば、長い文脈の活かし方も変わるため、手間と道具の指定を欠いた長さの比較は成り立たない。学習時の混入が疑われる場合、長い文脈の見かけの強さは暗記の映し込みかもしれず、集め方の備えとともに読む必要がある。装置の違いや同時実行の束ね方も結果を揺らすため、条件を添えない長さの優劣は語らない。保持の費用と読み込みの重さを見据え、長い文脈の表示をそのまま実力と受け取らないことが肝要である。条件の開示のない長さの優劣を語らず、報告の透明性を求める姿勢を保つ。個別の数値は隔離し、長い文脈の読み方と報告の構えだけを受け取る。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8cbcfa1bb358ef58",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ruler-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8cbcfa1bb358ef58",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ruler-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8cbcfa1bb358ef58",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "ruler-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8cbcfa1bb358ef58",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ruler-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8cbcfa1bb358ef58",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "ruler-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:bd20cd1208bd6407",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "helm-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:bd20cd1208bd6407",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "helm-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:bd20cd1208bd6407",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "helm-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p9-measure-b05",
+      "block_type": "PARAGRAPH",
+      "text": "数字を並べる前の作法を束ねる。第一に、利用場面の束ねを欠いた比較をしない。到着のさせ方や遅延の上限、装置の同一性まで含めて場面を固定しなければ、速さの数字は比べられない。出だしまでの待ちと生成中の間隔と全体処理量を分け、同時実行や文脈の長さ、装置の違いを添えて読むことが出発点になる。第二に、来歴の異なる区分を混ぜない。公開用と商用と非公開の数字は、集め方も漏えいの備えも異なるため、並置して優劣を語らない。個々の足回りの結び付きの特定が留保される以上、区分と足回りの指定を欠いた正確さの比較は土台を欠く。第三に、版と足回りと道具利用を添える。同じ名の指標でも、改訂や足回り、道具の利用可否、推論に割く手間の違いで意味が変わる。道具を使えるかどうかで作業の進め方が変わり、手間を増やせば解ける範囲が広がる一方で総費用も増すため、速さと正確さを切り離した一面的な比較は誤りになる。注意書きの多い枠組みは数値の出所ではなく比較不能を教える教材として扱い、枠組み名を欠いた正確さの言及は比較の土台を欠くと心得る。第四に、混入と課題完遂の費用を見る。学習時の混入の備えと、応答の速さだけでなく課題を終えるまでの総費用の視点が、効率の判断を補う。計測文書に基づく道具は、負荷条件付きの記録を残す役割にとどめ、現物の保管庫の複製までは立ち入らない。後継として名のみ示された存在の単独の姿は未確認として保留し、推測で補わない。仕様書の細部や個別の足回りの特定が残る以上、断定的な数値の主張はしない。出だしと生成中と全体を分け、版と足回りと道具と手間を添え、区分を混ぜず、混入と総費用を見る。この確認を欠いた数字は並べない。これが誤読を防ぐ約束である。新たな順位付けを作らず、条件付きで読む姿勢だけを持ち帰る。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2efd7620aba89b5b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "mlperf-inference",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2efd7620aba89b5b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "mlperf-inference",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2efd7620aba89b5b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "mlperf-inference",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:ee6d3b0c9866827b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "genai-perf",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:ee6d3b0c9866827b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "genai-perf",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:ee6d3b0c9866827b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "genai-perf",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:ee6d3b0c9866827b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "genai-perf",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p9-measure-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: No headline number travels without methodology and conditions; D093 section-level consumption outstanding; AIPerf product authority unresolved; tooling version pins per-record; D120 teaches incomparability, not ground truth. / Full-body task-collection protocol not consumed. / Full-text section-level consumption outstanding (captured 597KB Raw available for Sol-directed follow-up). / Public vs commercial vs held-out figures must never be mixed; per-figure scaffold pins outstanding. / Canonical locator amendment deferred to Sol. / Full 2.0 body outstanding; v1 original ID unpinned. / Full paper body (task suite, grading protocol) outstanding. / Spec pages not fetched; scenario details at established level. / Standalone DeepSWE primary not located; note body scoped to summary. / standalone DeepSWE primary: Standalone primary outstanding; figures quarantined. / perf_analyzer repo itself not cloned; metric semantics rest on docs. / AIPerf product identity beyond the successor pointer remains open. / locate/confirm AIPerf product identity: Successor named only; standalone product surface not located. Limitation preserved, not closed by assertion. / Repo and caveat docs not fetched; role scoped to screening decision. / Repo and task configs not consumed. / HELM repo and paper body not consumed.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:60e718c6f2ddc0bd",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "swe-bench-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-3",
+          "subject_id": "swe-bench-pro",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:15d0641a1704890e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "terminal-bench",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:15d0641a1704890e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "terminal-bench",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8cbcfa1bb358ef58",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ruler-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8cbcfa1bb358ef58",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "ruler-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2efd7620aba89b5b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "mlperf-inference",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:86001d9790ad69a6",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepswe-methodology-note",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:ee6d3b0c9866827b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "genai-perf",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:ee6d3b0c9866827b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "genai-perf",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:652a24ce17bdd579",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "llmperf-ray",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:808b9a181f32462c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "lm-eval-harness",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:bd20cd1208bd6407",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "helm-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "EFF-O12",
+      "block_ids": [
+        "p9-measure-b01",
+        "p9-measure-b02",
+        "p9-measure-b03",
+        "p9-measure-b04",
+        "p9-measure-b05",
+        "p9-measure-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "No headline number travels without methodology and conditions; D093 section-level consumption outstanding; AIPerf product authority unresolved; tooling version pins per-record; D120 teaches incomparability, not ground truth.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9-measure-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body task-collection protocol not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9-measure-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-text section-level consumption outstanding (captured 597KB Raw available for Sol-directed follow-up).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9-measure-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Public vs commercial vs held-out figures must never be mixed; per-figure scaffold pins outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9-measure-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Canonical locator amendment deferred to Sol.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9-measure-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full 2.0 body outstanding; v1 original ID unpinned.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9-measure-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full paper body (task suite, grading protocol) outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9-measure-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Spec pages not fetched; scenario details at established level.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9-measure-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Standalone DeepSWE primary not located; note body scoped to summary.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9-measure-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "standalone DeepSWE primary: Standalone primary outstanding; figures quarantined.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9-measure-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "perf_analyzer repo itself not cloned; metric semantics rest on docs.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9-measure-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "AIPerf product identity beyond the successor pointer remains open.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9-measure-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "locate/confirm AIPerf product identity: Successor named only; standalone product surface not located. Limitation preserved, not closed by assertion.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9-measure-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Repo and caveat docs not fetched; role scoped to screening decision.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9-measure-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Repo and task configs not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9-measure-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "HELM repo and paper body not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p9-measure-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}
