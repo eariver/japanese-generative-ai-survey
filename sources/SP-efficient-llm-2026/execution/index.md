@@ -13,10 +13,10 @@ This is the current human-readable navigation record for the edition. Machine li
 - Requested stop: `ARCHITECTURE_REVIEW`
 - Production Profile: `sources/SP-efficient-llm-2026/production-profile.json`
 - Production State: `sources/SP-efficient-llm-2026/production-state.json`
-- Current State SHA-256: `e5f1875fbe9352d0bc33c85f62fef220d39ec66b84a683376c3962bd2832792c`
-- Current lifecycle: `EVIDENCE_REVIEWED`
+- Current State SHA-256: `8771a5dee5d73d3f7977509e18c3dc77c1b417684447140e4ecbc4de44120860`
+- Current lifecycle: `ARCHITECTURE_ESTABLISHED`
 - Current terminal reason: `none`
-- Current next action: `stage:selection` (NOT ENTERED — stop is Sol evidence review)
+- Current next action: `ARCHITECTURE_REVIEW` (Human Gate pending — stop; drafting NOT entered)
 
 ## Human Gates
 
@@ -109,6 +109,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/ts001-reissue-x-completion-screening-20260922.md`
 - `sessions/ts001-reissue-evidence-20260922.md`
 - `sessions/ts001-reissue-evidence-compat-20260922.md`
+- `sessions/ts001-reissue-selection-architecture-20260922.md`
 
 ## Screening (COMPLETE — Sol PASS recorded; package corrected)
 
@@ -173,11 +174,68 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`EVIDENCE_ACCEPTED_SOL_REVIEW_READY / SELECTION NOT STARTED` (machine lifecycle
-`EVIDENCE_REVIEWED`) — Evidence/Materiality/Completeness completed through
-frozen-Core compatibility (`WORKAROUND_VALIDATED`; CV2-DM-016 remains
-`OPEN_CORE`): 160 Evidence Cards + 160 Edition Views accepted, Materiality
-Ledger built (MATERIAL 137 / CONTEXT 23 / EXCLUDED 5), Profile Completeness
-LIMITED (15 obligations incl. O13–O15). Sol authority-consumption/materiality
-review due next; Selection not entered. No Sol/Human decision fabricated
-beyond recorded Sol reviews.
+`ARCHITECTURE ESTABLISHED / HUMAN ARCHITECTURE REVIEW PENDING / CORE V2 UNCHANGED`
+(machine lifecycle `ARCHITECTURE_ESTABLISHED`) — Selection and proposed
+Architecture completed through the frozen Core interactive runner under Sol
+Evidence PASS boundaries (`PASS / PROCEED_TO_SELECTION_WITH_SCOPE_BOUNDARIES`,
+Sol / GPT-5.6): 160 Matrix candidates assigned (SELECTED 112 = 53 PRIMARY /
+59 SUPPORTING, HOLD 12, REJECT 33, INSPECT 3), 9-package PROPOSED Architecture
+(target 76 / max 96) with READY_FOR_ARCHITECTURE_REVIEW summary, D128
+abstract-scope correction propagated, X/D164 bounded, Jev mandatory case,
+DROP continuity kept. Human Architecture Review pending; Publication Preview
+pending; no Human approval provenance; drafting not started. Sol Architecture
+review and the Human-facing dossier remain due before any Gate presentation.
+
+## Sol Evidence Review (PASS)
+
+- Review: `execution/reviews/sol-evidence-review-pass-20260922.md` (Sol / GPT-5.6,
+  `PASS / PROCEED_TO_SELECTION_WITH_SCOPE_BOUNDARIES`; materialized by Muse,
+  authorship Sol's; active Evidence `72ba3407…` / Views `364d484a…` bound).
+- Binding directives applied: D128 abstract-scope correction (no
+  four-capstone full-body language; D128 PRIMARY-but-abstract-scope); D162
+  SUPPORTING-only; D164 GGUF/local-only with vendor figures quarantined; Jev
+  mandatory bounded case; no headline-number selection; DROP continuity;
+  explicit MAYBE/INSPECT/watch negative-space rationale.
+- CV2-DM-016 / CV2-DM-017 remain `OPEN_CORE / EDITION_WORKAROUND`; shared Core
+  unchanged (see Final audit).
+
+## Selection (COMPLETE)
+
+- Input builder (edition-local): `execution/selection-architecture-input/build_selection_architecture_input.py`
+  → `execution/selection-architecture-input/interactive-selection-architecture.json`
+  (160/160 Matrix IDs; 112 SELECTED / 33 REJECT / 12 HOLD / 3 INSPECT).
+- Runner: frozen `scripts/run_selection_architecture_v2_interactive.py` →
+  `candidate-matrix-v2.json` (SHA `1dcc2902…`), `candidate-selection-v2.json`
+  (SHA `f91af7cf…`), archived input `orchestration/v2/interactive/selection-architecture-input.json`
+  + `selection-architecture-audit.json`.
+- Advance: `execution/selection-stage-advance/advance_selection.py` (frozen stage
+  validation PASS + reviews) → checkpoint `orchestration/v2/checkpoints/EVIDENCE_REVIEWED.json`
+  (SHA `f0255d39…`) → lifecycle `SELECTION_COMPLETE` (recorded 2026-09-22T17:30:00Z).
+- Safeguards: selected_count 112 within [40, 120]; no trigger fired; explicit
+  per-candidate compression rationale recorded regardless.
+
+## Architecture (ESTABLISHED / PROPOSED — Human review pending)
+
+- 9 packages P1 bottleneck → P9 methodology (structure in
+  `execution/reviews/architecture-review-prep-r1.md` §15); thesis: layered-systems
+  efficiency (not a model ranking); reader title `Efficient Intelligence —
+  LLMを速く、軽く、安くする技術史`; page plan target 76 / max 96.
+- Runner outputs: `architecture-v2.json` (SHA `e214040b…`, PROPOSED, human_review
+  null), `architecture-review-summary-v2.json` (SHA `bc4a40d8…`,
+  READY_FOR_ARCHITECTURE_REVIEW, zero errors), `architecture-review-attention-v2.json`
+  (SHA `970c3231…`).
+- Advance: `execution/architecture-stage-advance/advance_architecture.py` (frozen
+  stage validation PASS + reviews; PROPOSED/null-human-review guards) →
+  checkpoint `orchestration/v2/checkpoints/SELECTION_COMPLETE.json` (SHA
+  `6f5f3fa1…`) → lifecycle `ARCHITECTURE_ESTABLISHED` (recorded 2026-09-22T18:00:00Z).
+- Operator prep package for Sol (NOT the Human dossier):
+  `execution/reviews/architecture-review-prep-r1.md` (22 items + negative-space
+  audit appendix; no structurally serious case; HOLD/INSPECT are intentional).
+- Alternatives A (encyclopedia) / B (model-by-model) / C (pure bottleneck) evaluated
+  and rejected in prep §20; Sol judges.
+
+## Final audit (this run)
+
+- Shared Core diff (scripts/schemas/config/.github/workflows + Core docs):
+  zero changes; CV2-DM-016/017 OPEN_CORE preserved; compatibility stays
+  edition-local; `__pycache__` residue removed before commit.
