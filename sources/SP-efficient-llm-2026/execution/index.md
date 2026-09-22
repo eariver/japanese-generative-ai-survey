@@ -107,18 +107,31 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/ts001-reissue-x-reception-prep-20260922.md`
 - `sessions/ts001-reissue-x-r3-import-blocked-20260922.md`
 - `sessions/ts001-reissue-x-completion-screening-20260922.md`
+- `sessions/ts001-reissue-evidence-20260922.md`
 
-## Screening (COMPLETE — awaiting Sol review)
+## Screening (COMPLETE — Sol PASS recorded; package corrected)
 
 - Canonical Discovery at Screening: 165 records (`7074cef2…`); acceptance 165 via Core tooling.
 - New this run: `discovery/discovery-v2-r4.jsonl` (EFF-D162 X ledger + F1–F3 EFF-D163–165, GAP_FILL/pass 3); F4 `INDEPENDENT_WRITEUP_NOT_RESOLVED`; raw `raw/discovery-observations-r4-x-followup.md`.
 - X manifest COMPLETE (r3 SUCCESS, DISCOVERY_RECORDED [EFF-D162]).
 - Screening acceptance: `screening/v2/accepted/24bac6aa5c849eb2f6ac46f2162c7333137230cfec2610e908815a0e591b045d/screening-accepted.json` (DIRECT basis, 165 records).
-- Dispositions: 135 KEEP / 20 MAYBE / 5 INSPECT / 5 DROP (DROPs are collector-parked D140 D158 D159 D160 D161; no primary/capstone authority dropped; X D162 KEEP with boundary).
-- Checkpoint: `orchestration/v2/checkpoints/DISCOVERY_COLLECTED.json`; lifecycle `CANDIDATES_NORMALIZED`; Evidence NOT entered.
-- Sol review package: `execution/reviews/screening-review-package-r1.md` (no compression trigger).
+- Dispositions: 135 KEEP / 20 MAYBE / 5 INSPECT / 5 DROP (DROPs are accepted PRIMARY_PAPER D140 D158 D159 D160 D161; no primary/capstone authority dropped; X D162 KEEP with boundary).
+- Checkpoint: `orchestration/v2/checkpoints/DISCOVERY_COLLECTED.json`; lifecycle `CANDIDATES_NORMALIZED`.
+- Sol review package r1: `execution/reviews/screening-review-package-r1.md` (preserved as historical output; factually defective counts).
+- Corrected package r2: `execution/reviews/screening-review-package-r2.md` (`CORRECTED / SUPERSEDES_R1_FOR_SOL_REVIEW`; all counts mechanically recomputed from canonical bytes: source-class table, obligation table, O11 32/9/2/0; r1 defect ledger included).
+- Sol Screening review: `execution/reviews/sol-screening-review-pass-20260922.md` (Sol / GPT-5.6, `PASS / PROCEED_TO_EVIDENCE`; acceptance unchanged; Selection NOT authorized).
 - Run tooling: `execution/x-completion/` (prior-authority, refresh/advance scripts, decisions provenance, validation).
+
+## Evidence (STAGE-BLOCKED by shared-Core defect; Luna input ready)
+
+- Canonical Evidence/Materiality/Completeness production run did NOT complete: `run_evidence_v2_interactive.py` fail-closes with `unsupported source_type for Evidence authority: 'PRIMARY_DOC'` (first failure on EFF-D004). No Evidence/Views/Ledger/Completeness artifact was produced.
+- Defect: `execution/defects/shared-core-evidence-source-map-gap-20260922.md` — Core v2 Evidence `SOURCE_CLASS_MAP` lacks 10 Thematic Discovery source types (PRIMARY_DOC 13, PRIMARY_REPO 21, PRIMARY_ANNOUNCEMENT 8, PRIMARY_MODEL_CARD 6, PRIMARY_SPEC 4, SECONDARY_REFERENCE 8, SECONDARY_TECHNICAL 4, RUNTIME_RECIPE 1, PACKAGING_DOCS 1, RUNTIME_PR 1 = 67/160 tasks). Runnable: 93 (PRIMARY_PAPER 92 + x-community-signal 1). Shared Core unchanged; no silent patch; failed run is failed evidence.
+- Preserved Luna input: `execution/evidence-interactive-input/` — 160-record `interactive-evidence.json` (SHA `6cac92b1…`; 155 PARTIAL / 5 VERIFIED; 134 MATERIAL / 24 CONTEXT / 2 HOLD) + generator parts + task-target dump + README with resume criteria. Validated: exact 160-ID coverage, exact per-task verification-target match, Completeness O01–O12 (3 SATISFIED / 9 LIMITATION, LIMITED).
+- Authority-consumption package r1 (stage-blocked): `execution/reviews/evidence-authority-consumption-package-r1.md` — 95 arXiv abstracts + 9 full pages consumed; 9 wrong-identity bound arXiv locators found with verified true identities (gap-fill triggers G-EV-01–11: D005/D061/D062/D093/D094/D098/D112/D117/D139 + DSA URLs + AIPerf successor); INSPECT outcomes (D032/D093 HOLD; D077/D119/D150 PARTIAL); MAYBE outcomes (watches held); capstone/Jev/X/F1–F4/O13–O15/methodology status; bodies-richer-than-claims list; Selection-must-not-proceed reasons.
+- Authority states: CONSUMED (95 abstracts at scope + 9 pages + X ledger); CAPTURED_BUT_UNCONSUMED (54 locator-bound + abstract-only full bodies); RETRIEVAL_FAILED (none); NOT_FOUND (F4, AIPerf product surface, T-Bench v1 ID, DeepSWE primary, Jev independent reproduction + calibration protocol, non-MSR 1-bit deployment).
+- Lifecycle remains `CANDIDATES_NORMALIZED`; Selection NOT started. Resume: reviewed Core map repair → clean re-run of preserved input → `EVIDENCE_REVIEWED` → Sol authority-consumption/materiality review.
+- Session: `sessions/ts001-reissue-evidence-20260922.md`.
 
 ## Final disposition
 
-`SCREENING_COMPLETED / AWAITING_SOL_SCREENING_REVIEW` (machine lifecycle `CANDIDATES_NORMALIZED`) — canonical Screening done and validated over 165-record DIRECT Discovery. Evidence not entered. No Sol/Human decision fabricated beyond recorded Sol reviews.
+`SCREENING_CORRECTED_SOL_PASS / EVIDENCE_STAGE_BLOCKED_BY_SHARED_CORE_DEFECT / SELECTION_NOT_STARTED` (machine lifecycle `CANDIDATES_NORMALIZED`) — Screening corrected (r2) with Sol PASS recorded; canonical Evidence input (160 records) authored and preserved; Evidence production run fail-closed on the recorded shared-Core source-map defect with Core unchanged. No failed-run verdict carried forward.
