@@ -399,6 +399,65 @@ Outstanding generic concerns include:
 
 This item is included as a pre-freeze carry-over because several post-freeze defects depend on or expose remaining gaps in the same boundary.
 
+---
+ 
+### CV2-DM-016 — Evidence source-class map rejects canonical Thematic source types
+
+Status: `OPEN_CORE / EDITION_WORKAROUND`  
+Category: Evidence / authority source classification  
+Tracking: [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/issues/515)  
+First reproduction: `SP-efficient-llm-2026`  
+Latest reproduction: `SP-efficient-llm-2026`
+
+The frozen Production Line accepts an open Discovery `source_type` vocabulary through canonical Discovery and Screening, but the Evidence path later fail-closes against a narrower hard-coded `SOURCE_CLASS_MAP`.
+
+In `SP-efficient-llm-2026`, canonical Screening completed over 165 Discovery records, but the Evidence runner failed at the first `PRIMARY_DOC` task with:
+
+```text
+unsupported source_type for Evidence authority: 'PRIMARY_DOC'
+```
+
+The edition audit found **67 of 160 non-DROP Evidence tasks** bound to 10 canonical Thematic source types that are accepted upstream but missing from the frozen Evidence source-class map:
+
+- `PRIMARY_DOC`
+- `PRIMARY_REPO`
+- `PRIMARY_ANNOUNCEMENT`
+- `PRIMARY_MODEL_CARD`
+- `PRIMARY_SPEC`
+- `SECONDARY_REFERENCE`
+- `SECONDARY_TECHNICAL`
+- `RUNTIME_RECIPE`
+- `PACKAGING_DOCS`
+- `RUNTIME_PR`
+
+Direct evidence:
+
+- `sources/SP-efficient-llm-2026/execution/defects/shared-core-evidence-source-map-gap-20260922.md`
+- blocked Evidence session `sources/SP-efficient-llm-2026/execution/sessions/ts001-reissue-evidence-20260922.md`
+
+The defect is structurally similar to the pre-freeze W34 source-map gap repaired by PR #486, but shared Core modification is currently paused. The edition therefore must not rewrite accepted Discovery identities or patch Core in place.
+
+Authorized edition-local compatibility direction:
+
+- preserve canonical Discovery and Screening bytes;
+- use a deterministic, explicit source-type projection only in derived Evidence Task copies;
+- allow only the reviewed mapping from the 10 Thematic source types to existing frozen Core authority classes;
+- record original/projected task hashes and per-task mapping in an edition-local compatibility ledger;
+- fail closed on any unmapped source type;
+- run the resulting package, Evidence Cards, Edition Views, Materiality and Completeness through the **unmodified frozen Core validators**;
+- use the canonical Evidence Authority Supplement path for corrected/additional post-Screening source bodies rather than rewriting Discovery provenance.
+
+An edition-local compatibility success does **not** close this generic Core defect.
+
+Required future Core direction when maintenance resumes:
+
+- make Discovery/Screening/Evidence source-type admission internally consistent;
+- classify the 10 reviewed Thematic source types explicitly by provenance;
+- remove the duplicate/narrow Evidence-runner source-class map or prove it cannot diverge from the canonical mapping;
+- preserve unknown-source fail-closed behavior;
+- add cross-profile regression coverage proving every source type accepted into canonical Discovery/Screening is either Evidence-classifiable or rejected before Screening.
+
+
 ## 6. Items intentionally not treated as current shared-Core defects
 
 The following edition issues are closed because their edition-level acceptance criteria are satisfied:
@@ -466,14 +525,16 @@ A batch repair may close multiple `CV2-DM` items, but each item must receive its
 | `2026-W36` | backfilled in r0.1 | DM-004, DM-005, DM-006, DM-011, DM-012 | Release workflow defect first confirmed; reader-surface suppression blocker; W36 publication issues repaired edition-locally. |
 | `2026-W37` | backfilled in r0.1 | DM-007, DM-008, DM-009, DM-010, DM-014 | X intake/reviewer authority/timestamp/layout findings; release defect recurred. |
 | `2026-W38` | reviewed in r0.1 | DM-003, DM-013; DM-004/009/012/014 recurred | TypeSafe temporal authority and 25-row ledger repaired edition-locally; Freeze/release compatibility still required. |
+| `SP-efficient-llm-2026` | guarded-stop review in r0.2 | DM-016 | Evidence blocked by source-class map mismatch after canonical Screening; deterministic edition-local compatibility authorized, shared Core remains frozen. |
 
-Next required update: the next Weekly or Special edition closure after `2026-W38`.
+Next required update: `SP-efficient-llm-2026` final closure review, or the next Weekly/Special guarded stop or closure if it occurs first.
 
 ## 10. Revision History
 
 | Revision | Date (JST) | Reviewed through | Change |
 | --- | --- | --- | --- |
 | `r0.1` | 2026-09-20 | `2026-W38` | Initial consolidated deferred-maintenance inventory. Backfilled W35-W38 defect records, post-freeze Issues, release recovery evidence, and relevant pre-freeze Publication Boundary carry-over. Established Core pause policy, stable CV2-DM IDs, per-edition update contract, restart contract, and tracker Issue #515. |
+| `r0.2` | 2026-09-22 | `SP-efficient-llm-2026` guarded stop | Added CV2-DM-016 for the Evidence source-class map mismatch exposed by the Efficient LLM Thematic. Recorded deterministic edition-local compatibility as the production workaround while shared Core remains frozen. |
 
 ## 11. Reference authority
 
