@@ -1,0 +1,126 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "research_scope": {
+    "question": "High-dimensional continuous media — pixels, waveforms, frames, motion, and synchronized sound — became tractable for generative modeling through changes in representation, generative objective, conditioning, control/editing, temporal structure, sampling/runtime, and evaluation. How did those choices evolve across image, speech/voice, music/general audio, and video; what bottleneck did each major transition solve; what trade-offs did it introduce; and how are formerly separate media-generation stacks converging in current multimodal systems?",
+    "inclusion": [
+      "D01 media representation / compression / tokenization：VAEと連続latent、VQ-VAE/VQGAN系離散codebook、latent diffusion用image autoencoder、SoundStream/EnCodec系neural audio codec、semantic/acoustic token分離、video/spatiotemporal tokenizer・VAE、圧縮率・token rate・latent rateと再構成損失が downstream生成fidelity/editabilityをboundする関係",
+      "D02 generative paradigms / objectives：VAE型likelihood、autoregressive media modeling、GAN/adversarial、DDPM、score-based SDE、latent diffusion、DiT/transformer denoiser、flow matching/rectified-flow系、hybrid・distillation目的。architecture（U-Net vs Transformer）とobjective（AR vs adversarial vs diffusion vs flow）を分離し、各遷移のbottleneck・mechanism・quality/diversity/stability/control/compute効果・downside・継承を問う",
+      "D03 conditioning / semantic alignment：class/text conditioning、cross-attention、classifier guidanceとclassifier-free guidance、CLIP/T5等のtext encoder、multi-input/reference conditioning、prompt adherenceとcompositional binding、speech/music/video用conditioning表現。training-time conditioning・inference-time guidance・adapter・in-context referenceを区別",
+      "D04 controllability / reference / identity：edge/depth/pose/segmentation等のspatial control（ControlNet系譜）、adapter/reference encoder、identity/character preservation、style vs content reference、multi-reference、videoのcamera/motion control、audio/music/speechのmelody/rhythm/lyrics/voice/speaker control、controlとdiversity/preservationの衝突時のfailure mode",
+      "D05 editing and preservation：image-to-image、inpainting/outpainting、local/region editing、instruction-based editing、reference editing、multi-turn iterative editing、非target内容のpreservation、audio/speech continuation・infilling、video editing/transformation/reference-preserving modificationをde-novo生成と区別して扱う",
+      "D06 temporal / long-horizon consistency：speech（speaker identity、prosody、timing/rhythm、会話継続、streaming/realtime制約）、music（motif/theme持続、verse/chorus/bridge構造、lyrics/vocal coherence、multi-minute生成、continuation/editing consistency）、video（motion coherence、object permanence/identity、camera continuity、scene/shot continuity、flicker、physics/dynamics主張への慎重さ、同期音声・audiovisual continuity、long-video/extension/multi-shot storytelling）のmodality別問題",
+      "D07 speech / voice lineage：WaveNet、Tacotron系、neural vocoder進化、VITS等のend-to-end生成TTS、neural audio codec、VALL-E系codec language model、zero/few-shot speaker cloning、Voicebox系flow-matching生成・編集、Seamless系expressive multilingual/streaming、2025–2026 native realtime speech-to-speech/audio multimodal systemの専用系譜",
+      "D08 music / general audio lineage：連続性確立のためのearly neural audio/music、Jukebox、AudioLM、MusicLM、MusicGen/AudioCraft、Stable Audio系のlatent-diffusion/DiT audio、long-form商用音楽生成のcapability/ecosystem case、lyrics/vocal構造・制御、editing/continuation、技術的にload-bearingな範囲のrights/training-data/provenance",
+      "D09 video generation lineage：diffusion-era文脈付けに必要なearly learned video、Video Diffusion Models、Imagen Video、Phenaki、latent-video/spatiotemporal diffusion/transformer、image-to-videoとreference-conditioned video、video personalization/editing、Movie Genの技術anchor、現行audio-video joint生成、Wan等のopen-weight/current deployment case",
+      "D10 runtime / deployment / acceleration：latent/token rateのcompute帰結、sampling steps/solver cost、distillation/consistency/few-step/adversarial post-training、解像度・duration scaling、VRAM/memory pressure、time-to-first-output/latency/real-time factor、streaming生成、文書化された範囲のlocal/open-weight実行。視聴覚的に強いmodelもsampling budget次第で非実用的になりうる理由",
+      "D11 evaluation methodology and metric validity：image（FIDと解釈限界、CLIP-based alignment、GenEval、T2I-CompBench等のcompositional diagnostic、human preference方法論）、speech/audio/music（MOS/MUSHRA型human evaluation、WER/content preservation、speaker similarity、prosody/expressivity、Fréchet Audio Distanceと限界、text-audio alignment、music structure/musicality/long-form評価と単純metricの弱さ）、video（VBench等の多次元評価、temporal consistency/flicker、subject/background consistency、motion quality、prompt adherence、audiovisual synchronization、human evaluation方法論）。score報告時はversion・解像度・duration・sampling budget・prompt set・seed・human-study母集団・evaluator modelをbindし、条件差のある横断rankingを禁止する",
+      "D12 multimodal convergence / generation-understanding boundary：text encoder＋分離media generatorからrich multimodal conditioningへの遷移、primary evidenceがある範囲のunified/native multimodal token/latent、image/audio/video referenceをcontextとして消費するgenerator、生成・編集workflowをmaterialに変えるLLM/agent統合、evidence境界を明示した上でのvideo生成とworld-model言語の近接、model surfaceを共有する生成と理解のcase。general perception/VLM史（TS-003）を吸収しない"
+    ],
+    "exclusion": [
+      "TS-003を主目的とする非生成的computer vision技術史（object detection、segmentation、OCR、general visual recognition、VQA、perception-centric spatial/embodied reasoning、general VLM benchmark史）。生成・制御・編集にload-bearingな範囲でのみcross-referenceする",
+      "単純な製品カタログ構成（有名image/audio/video generatorの列挙）や人気投票型ランキングを主目的とする構成",
+      "異なるbenchmark条件（prompt set、解像度・duration・sampling budget、seed、human-study母集団、evaluator model、version）を無視した横断leaderboardや単一scoreによる優劣断定",
+      "非公開architectureのmarketing proseからの推測による断定。closed製品はcapability/workflow/availabilityのauthorityとして扱い、architecture主張には使用しない",
+      "権利・学習データ・policy紛争を主軸とする法務・政治評価の物語。技術的・運用上materialな範囲（watermark、C2PA、voice consent、open-weight license境界等）に限定する",
+      "X投稿や二次報道だけを根拠にmodel specification、benchmark値、release date、歴史的priorityを確定すること"
+    ],
+    "scope_dimensions": [
+      "media_representation_tokenization",
+      "generative_paradigms_objectives",
+      "conditioning_alignment",
+      "control_reference_identity",
+      "editing_preservation",
+      "temporal_long_horizon",
+      "speech_voice_lineage",
+      "music_audio_lineage",
+      "video_lineage",
+      "runtime_deployment",
+      "evaluation_validity",
+      "multimodal_convergence"
+    ],
+    "initial_obligations": [
+      {
+        "description": "VAE、VQ-VAE/VQGAN系離散latent、latent diffusion用image autoencoder、SoundStream/EnCodec系neural audio codec、semantic/acoustic分離、video/spatiotemporal tokenizer・VAEについて、圧縮率・token rate・latent rate・再構成品質等の一次資料を確立し、pixels/waveforms/framesをmodeling可能な長さにした歴史として検証する。",
+        "dimension": "media_representation_tokenization",
+        "obligation_id": "BT-O01"
+      },
+      {
+        "description": "VAE型likelihood、autoregressive、GAN/adversarial、DDPM、score-based SDE、latent diffusion、DiT、flow matching/rectified-flow系、hybrid/distillation目的を一次資料で追跡し、各遷移のbottleneck・mechanism・quality/diversity/stability/control/compute効果・downside・継承を検証する。backboneとobjectiveを分離する。",
+        "dimension": "generative_paradigms_objectives",
+        "obligation_id": "BT-O02"
+      },
+      {
+        "description": "class/text conditioning、cross-attention、classifier guidanceとclassifier-free guidance、CLIP/T5等のtext encoder、multi-input/reference conditioning、prompt adherence/compositional binding、speech/music/video用conditioningを一次資料で検証し、training-time conditioning・inference-time guidance・adapter・in-context referenceを区別する。",
+        "dimension": "conditioning_alignment",
+        "obligation_id": "BT-O03"
+      },
+      {
+        "description": "ControlNet系のspatial control、adapter/reference encoder、identity/character/speaker preservation、style vs content reference、multi-reference、videoのcamera/motion/keyframe制御、music/audioの構造・reference制御を一次資料で検証し、control fidelityをgeneric sample qualityから分離する。",
+        "dimension": "control_reference_identity",
+        "obligation_id": "BT-O04"
+      },
+      {
+        "description": "image-to-image、inpainting/outpainting、local/region editing、instruction-based editing、reference editing、multi-turn iterative editing、非target preserved、audio/speech continuation・infilling、video editing/transformationをde-novo生成と区別して一次資料で検証する。",
+        "dimension": "editing_preservation",
+        "obligation_id": "BT-O05"
+      },
+      {
+        "description": "speech（speaker/prosody/timing/会話継続/streaming）、music（motif/section構造/lyrics-vocal coherence/multi-minute/continuation consistency）、video（motion/object permanence/camera/scene/flicker/physics/同期音声/long-video/multi-shot）のmodality別long-horizon問題を一次資料で検証する。advertised最大durationと実証されたcoherenceを混同しない。",
+        "dimension": "temporal_long_horizon",
+        "obligation_id": "BT-O06"
+      },
+      {
+        "description": "WaveNet、Tacotron系、neural vocoder、VITS、neural codec、VALL-E系codec LM、zero/few-shot cloning、Voicebox系flow-matching生成・編集、Seamless系expressive/streaming、2025–2026 native realtime speech-to-speechの専用系譜を一次資料で追跡し、intelligibility/WER・naturalness・speaker similarity・prosody・latency/streamingをmodality固有評価として検証する。",
+        "dimension": "speech_voice_lineage",
+        "obligation_id": "BT-O07"
+      },
+      {
+        "description": "Jukebox、AudioLM、MusicLM、MusicGen/AudioCraft、Stable Audio系latent-diffusion/DiT audio、long-form商用音楽生成のcapability/ecosystem case、lyrics/vocal構造・制御、editing/continuationを一次資料で追跡し、acoustic fidelityだけでなくsection/motif/lyrics/duration/continuation/inpainting/reference/stemの構造軸を検証する。",
+        "dimension": "music_audio_lineage",
+        "obligation_id": "BT-O08"
+      },
+      {
+        "description": "early video文脈、Video Diffusion Models、Imagen Video、Phenaki、latent/spatiotemporal diffusion・transformer、image-to-video/reference-conditioned video、personalization/editing、Movie Gen、現行audio-video joint生成、Wan等のopen-weight/current deploymentを一次資料で追跡し、identity/object permanence/flicker/motion/camera/scene/multi-shot/prompt timing/physics/同期のfailure次元を検証する。",
+        "dimension": "video_lineage",
+        "obligation_id": "BT-O09"
+      },
+      {
+        "description": "resolution/sample rate/frame rate、duration、latent/token rate、denoising/sampling steps、solver/distillation/few-step、time-to-first-output/real-time factor、VRAM/accelerator、local/open-weight実行、quantization/offloadを一次資料・独立測定で検証する。absentデータを推定で補わない。",
+        "dimension": "runtime_deployment",
+        "obligation_id": "BT-O10"
+      },
+      {
+        "description": "FID・GenEval・T2I-CompBench、MOS/MUSHRA・WER・speaker similarity・Fréchet Audio Distance・text-audio alignment・music構造評価、VBench/VBench-2.0・temporal/identity/motion/prompt adherence/同期・human preference方法論の一次方法論資料を確立し、各metricの測定対象と限界を検証する。leaderboard収集にしない。",
+        "dimension": "evaluation_validity",
+        "obligation_id": "BT-O11"
+      },
+      {
+        "description": "text encoder＋分離generatorからrich multimodal conditioning・unified/native token・reference消費・LLM/agent統合への収束を一次資料で検証し、video生成とworld-model言語の近接をevidence境界付きで扱う。TS-003のperception/VLM史を吸収しない。",
+        "dimension": "multimodal_convergence",
+        "obligation_id": "BT-O12"
+      }
+    ],
+    "temporal_policy": {
+      "mode": "OPEN_HISTORY_AS_OF",
+      "as_of": "2026-09-23T17:03:09Z"
+    }
+  },
+  "paths": {
+    "source_root": "sources/SP-beyond-text-2026",
+    "survey_root": "surveys/special/beyond-text-2026",
+    "work_branch": "special/beyond-text-2026-work"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  }
+}
