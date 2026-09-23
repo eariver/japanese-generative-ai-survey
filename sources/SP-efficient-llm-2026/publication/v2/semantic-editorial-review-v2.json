@@ -11,24 +11,24 @@
   },
   "reader_manuscript": {
     "path": "sources/SP-efficient-llm-2026/publication/v2/reader-manuscript-v2.json",
-    "sha256": "f99c3b9353e978aec009871875a0df77d30b7be387b2c90ede15ac44aacbd693"
+    "sha256": "cf7aca20714a23ba0b909fb62d79fe644c5e1fbc0d68ebc16b883d0a408f416e"
   },
   "source": {
     "path": "surveys/special/efficient-llm-2026/main.tex",
-    "sha256": "b09ab3516afaadb5e0f64e21515d2e71dd43cbb926c657e40d48b939dc54b44c",
-    "byte_count": 293423
+    "sha256": "87bcb707e13cfde7e3d589271415b66e42385d4c7359f3bb492e9adf2d09fabe",
+    "byte_count": 293777
   },
   "pdf": {
     "path": "surveys/special/efficient-llm-2026/main.pdf",
-    "sha256": "bc6e280c668a4a17ff98dae58fc574cdce701cce9dd8926eb8b1138e82a46e0b",
-    "byte_count": 850455
+    "sha256": "8a9a721ac35b2e5baa2e20162b5a6ba4ae63945d512d985484aeae56073a23c1",
+    "byte_count": 850785
   },
   "page_count": 66,
   "checks": [
     {
       "check_id": "ARCHITECTURE_CONTENT_FIDELITY",
       "status": "PASS",
-      "detail": "All 9 packages and 17 must-cover requirements fulfilled in Sections 1-9 with claim boundaries preserved; terminology consistent (MQA/GQA/MLA/DSA/QSA/KDA, PTQ/QAT/native low-bit, prefill/decode, total/active); Jev bounded; 4 capstones present without rank; X/community in allowed supporting role; citations support nearby claims; synthesis not source-list prose.",
+      "detail": "All 9 packages and 17 must-cover requirements fulfilled in Sections 1-9 with claim boundaries preserved; DeepSeek V4.1-Flash now reads as 552B total with 8B input / 16B output asymmetric actives bound to v41report+v41card CED design (no whole-range 一桁B級前後 summary remains; prose and comparison table agree; prefill/input and decode/output consistent; no benchmark ranking); terminology consistent; 4 capstones without rank; citations support nearby claims.",
       "evidence_locations": [
         "package:p1-bottleneck",
         "package:p2-scaling-moe",
@@ -90,16 +90,16 @@
     {
       "check_id": "PUBLICATION_BOUNDARY",
       "status": "PASS",
-      "detail": "No headline numbers without conditions; no leaderboard; vendor claims quarantined; GLM abstract-scope visible; internal IDs absent from reader prose.",
+      "detail": "No headline numbers without conditions; no leaderboard; vendor claims quarantined; GLM abstract-scope visible; citation-policy now reads technical-fact authority as primary/official/implementation/procedure with reception/community only as observation/reproduction leads (not technical-fact grounds); internal IDs absent from reader prose.",
       "evidence_locations": [
-        "surveys/special/efficient-llm-2026/main.tex: Sections 8-9",
+        "surveys/special/efficient-llm-2026/main.tex: Sections 1, 8-9",
         "publication/v2/reader-surface-gate-v2.json"
       ]
     },
     {
       "check_id": "BIBLIOGRAPHY_METADATA",
       "status": "PASS",
-      "detail": "110/110 cited keys resolve to bibliography records with truthful authority notes; three entries carry literal collective authorship where evidence cards name no author; no invented dates (arXiv year-month derived from identifiers; docs carry none).",
+      "detail": "110/110 cited keys resolve to bibliography records with truthful authority notes; DeepSeek numeric claim bound to already-accepted first-party v41report+v41card containing 552B/8B/16B; three entries carry literal collective authorship where evidence cards name no author; no invented dates.",
       "evidence_locations": [
         "surveys/special/efficient-llm-2026/references.bib",
         "publication/v2/deterministic/subject-entity-property-binding.json"
@@ -108,7 +108,7 @@
     {
       "check_id": "POST_TRANSFORM_SEMANTIC_REVALIDATION",
       "status": "PASS",
-      "detail": "Post-TeX semantic revalidation: TeX transform preserves draft claim boundaries and attribution modes; boundary boxes restate draft CLAIM_BOUNDARY dispositions.",
+      "detail": "Post-TeX semantic revalidation: layout-only glossary \\par\\noindent fix preserves all glossary semantics; DeepSeek wording repair preserves publication boundary (no benchmarks, no ranking, no broadened claim); citation-policy repair narrows community authority (observation-only); boundary boxes restate draft CLAIM_BOUNDARY dispositions.",
       "evidence_locations": [
         "surveys/special/efficient-llm-2026/main.tex: claimboundary x10",
         "draft/v2/packages: 9/9 results"
@@ -117,7 +117,7 @@
     {
       "check_id": "SOURCE_SPECIFIC_FAIL_CLOSED_NOTES",
       "status": "PASS",
-      "detail": "Fail-closed notes honored: abstract-scope sections stay abstract; launch pages at announcement scope; port reports as reporter-side records; living docs as pinned-config only; unresolved items (Jev calibration, AIPerf, IndexPool, per-figure pins) left open.",
+      "detail": "Fail-closed notes honored: abstract-scope sections stay abstract; launch pages at announcement scope; port reports as reporter-side records; living docs as pinned-config only; unresolved items left open.",
       "evidence_locations": [
         "surveys/special/efficient-llm-2026/main.tex: Sections 3-4, 7-9"
       ]
@@ -141,7 +141,7 @@
       ]
     }
   ],
-  "reviewed_by": "ChatGPT (Muse Spark)",
-  "recorded_at": "2026-09-22T19:06:00Z",
-  "review_sha256": "66eab7e95899828feece27173529396c3b2c106d7580ffa2017d7b43e5d76ae6"
+  "reviewed_by": "Muse Spark (worker/execution review)",
+  "recorded_at": "2026-09-23T00:37:00Z",
+  "review_sha256": "89033922ad60957f1e766fb68b22c14c8046f1f489f162f68d78c12c7025b0e4"
 }
