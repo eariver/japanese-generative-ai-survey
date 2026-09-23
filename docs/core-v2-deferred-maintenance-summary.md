@@ -70,11 +70,11 @@ Status: `OPEN_CORE / EDITION_WORKAROUND`
 Category: Freeze / authority binding  
 Tracking: [Issue #497](https://github.com/eariver/japanese-generative-ai-survey/issues/497)  
 First post-freeze reproduction: `2026-W35`  
-Latest reproduction: `2026-W38`
+Latest reproduction: `SP-efficient-llm-2026`
 
 The profile-aware Freeze helper expects the legacy post-approval `visual-review-record-v2` shape while current Publication Candidate authority binds the pre-preview `publication-review-record-v2` VISUAL record.
 
-The two contracts are incompatible. W35-W38 therefore used the canonical lower-level `survey_publication_v2.build_freeze` compatibility path instead of repairing shared Core.
+The two contracts are incompatible. W35-W38 therefore used the canonical lower-level `survey_publication_v2.build_freeze` compatibility path instead of repairing shared Core. TS-001 reissue recurred identically (candidate-bound pre-preview VISUAL `fae79e67...` vs legacy `pdf_path` schema) and used the same lower-level path plus the CV2-DM-019 identity correction below.
 
 Evidence:
 
@@ -82,6 +82,7 @@ Evidence:
 - `sources/2026-W36/execution/defects/w36-freeze-core-defects-20260918.md`
 - `sources/2026-W37/execution/defects/w37-freeze-core-defects-20260919.md`
 - `sources/2026-W38/execution/defects/w38-freeze-core-defects-20260919.md`
+- `sources/SP-efficient-llm-2026/execution/defects/ts001-reissue-freeze-core-defects-20260923.md`
 
 Required future Core direction:
 
@@ -97,7 +98,7 @@ Status: `OPEN_CORE / EDITION_WORKAROUND`
 Category: Freeze / provenance typing  
 Tracking: [Issue #497](https://github.com/eariver/japanese-generative-ai-survey/issues/497)  
 First post-freeze reproduction: `2026-W35`  
-Latest reproduction: `2026-W38`
+Latest reproduction: `SP-efficient-llm-2026`
 
 `survey_stage_validation_v2._prior_artifacts()` iterates non-null `checkpoint_provenance` entries and assumes they are Stage Checkpoints. After canonical Publication Preview approval, `checkpoint_provenance.publication_preview` is a Human Gate approval record, not a Stage Checkpoint.
 
@@ -105,7 +106,7 @@ Observed failure:
 
 `prior Stage Checkpoint fails ... stage-checkpoint-v2.schema.json: 'artifacts' is a required property`
 
-W35-W38 used an in-memory admission correction that excludes Human Gate provenance from Stage Checkpoint admission while still validating it through the dedicated Human Gate path.
+W35-W38 used an in-memory admission correction that excludes Human Gate provenance from Stage Checkpoint admission while still validating it through the dedicated Human Gate path. TS-001 reissue recurred identically (`gates/publication-preview-approval.json` `15b88fb2...`) and used the same bounded correction.
 
 Required future Core direction:
 
@@ -122,13 +123,16 @@ Status: `OPEN_CORE / EDITION_WORKAROUND`
 Category: Stage validation / checkpoint provenance completeness  
 Tracking: no dedicated GitHub Issue yet  
 First reproduction: `2026-W38`  
-Latest reproduction: `2026-W38`
+Latest reproduction: `SP-efficient-llm-2026`
 
 W38 Freeze compatibility additionally had to admit the true `VALIDATED_DRAFT -> RELEASE_CANDIDATE` checkpoint record explicitly because the checkpoint file existed and matched the stage record, but the current stage configuration exposed no corresponding `checkpoint_provenance` pointer (`checkpoints: []`).
+
+TS-001 reissue recurred identically: `orchestration/v2/checkpoints/VALIDATED_DRAFT.json` carries the exact r2 `publication-candidate` artifact (`adf22516...`) but is unreferenced by `checkpoint_provenance`; the same bounded admission was applied.
 
 Evidence:
 
 - `sources/2026-W38/execution/defects/w38-freeze-core-defects-20260919.md`
+- `sources/SP-efficient-llm-2026/execution/defects/ts001-reissue-freeze-core-defects-20260923.md`
 
 Required future Core direction:
 
@@ -144,7 +148,7 @@ Status: `OPEN_CORE / EDITION_WORKAROUND`
 Category: Release / post-release provenance closure  
 Tracking: no dedicated GitHub Issue yet  
 First confirmed reproduction: `2026-W36`  
-Latest reproduction: `2026-W38`
+Latest reproduction: `SP-efficient-llm-2026`
 
 The canonical release workflow successfully creates/reconciles the public Release and exact PDF bytes, then fails in the post-release provenance step because it invokes a non-existent `validate-state` CLI subcommand.
 
@@ -153,6 +157,10 @@ Confirmed recurrences:
 - W36 workflow run `35345335385` -> recovery PR #504;
 - W37 workflow run `35418054523` -> recovery PR #510;
 - W38 workflow run `35438708696` -> recovery PR #514.
+- `SP-efficient-llm-2026` workflow run `35863535480` -> recovery PR #524
+  (`special/efficient-llm-2026` Release created and exact-byte reconciled before
+  the sole `validate-state` failure; provenance recovered edition-locally via
+  `survey_release_checkpoint_v2.py` + Python API `validate_agent_state`).
 
 The bounded recovery does **not** recreate or re-upload the public Release. It writes the missing edition-local release provenance using existing canonical helpers and Python API validation.
 
@@ -542,6 +550,65 @@ Required future Core direction when maintenance resumes:
 - prohibit VISUAL PASS when a materially clipped page exists.
 
 
+---
+
+### CV2-DM-019 — Canonical Freeze builder derives release identity from internal issue_id instead of the profile public slug
+
+Status: `OPEN_CORE / EDITION_WORKAROUND`  
+Category: Freeze / public release identity  
+Tracking: [Issue #515](https://github.com/eariver/japanese-generative-ai-survey/issues/515)  
+First reproduction: `SP-efficient-llm-2026`  
+Latest reproduction: `SP-efficient-llm-2026`
+
+`scripts/survey_publication_v2.py::build_freeze` derives the Release Manifest
+identity via `release_identity(publication_profile, issue_id)`. For
+`SP-efficient-llm-2026` (internal issue `SP-efficient-llm-2026`, public survey
+slug `efficient-llm-2026`) the reference canonical build yields
+`special/SP-efficient-llm-2026`.
+
+The frozen release workflow
+(`.github/workflows/survey-production-v2-release.yml`, authority step) mandates:
+
+```text
+tag = manifest['release_identity']
+expected_tag = profiled.release_identity(profile)  # paths.survey_root slug
+if tag != expected_tag: raise SystemExit('Release Manifest public identity mismatch')
+```
+
+i.e. `special/efficient-llm-2026`. A bare-`build_freeze` manifest would therefore
+hard-fail the frozen release for every divergent-slug edition. SP001 never
+exposed this (slug `SP001` == issue_id `SP001`, convergent); divergent-slug
+retrospectives froze under the pre-v2 flow. TS-001 reissue is the first
+divergent-slug LONGFORM_SPECIAL freeze under Core v2.
+
+Edition-local compatibility (TS-001, runtime-only, no Core change):
+
+- Freeze Record written byte-identical to the canonical `build_freeze`
+  reference (same `frozen_at`);
+- Release Manifest byte-identical to the reference EXCEPT `release_identity`
+  (`special/efficient-llm-2026`, the exact value the frozen workflow enforces)
+  and the Freeze path rebound from the reference scratch path to the canonical
+  Freeze path (same SHA); re-validated via `validate_release_manifest`;
+- the resulting public Release (`special/efficient-llm-2026`, canonical run
+  `35863535480`) passed the workflow's identity check, confirming the diagnosis.
+
+Direct evidence:
+
+- `sources/SP-efficient-llm-2026/execution/ts001-freeze-compat-20260923.py`
+- `sources/SP-efficient-llm-2026/execution/defects/ts001-reissue-freeze-core-defects-20260923.md`
+- workflow run `35863535480` (identity check passed; later failed only on CV2-DM-004)
+
+Required future Core direction when maintenance resumes:
+
+- derive the Freeze/Manifest release identity from the Production Profile
+  public slug (single authority with the release workflow), not the internal
+  issue_id;
+- prove profile-aware Freeze and canonical `build_freeze` produce identical
+  Freeze authority and identical Manifest bytes for both convergent and
+  divergent slugs (extends the CV2-DM-001 equivalence requirement);
+- add divergent-slug LONGFORM_SPECIAL regression coverage through the release
+  identity check.
+
 ## 6. Items intentionally not treated as current shared-Core defects
 
 The following edition issues are closed because their edition-level acceptance criteria are satisfied:
@@ -611,8 +678,9 @@ A batch repair may close multiple `CV2-DM` items, but each item must receive its
 | `2026-W38` | reviewed in r0.1 | DM-003, DM-013; DM-004/009/012/014 recurred | TypeSafe temporal authority and 25-row ledger repaired edition-locally; Freeze/release compatibility still required. |
 | `SP-efficient-llm-2026` | Evidence-review update in r0.3 | DM-016, DM-017 | Source-class projection workaround validated; Completeness builder/validator obligation mismatch also exposed and handled edition-locally; shared Core remains frozen. |
 | `SP-efficient-llm-2026` | Publication Preview r2 repair update in r0.4 | DM-018 | Issue #520 gross Overfull/clipping PASS defect recorded as generic QA debt (edition fixed locally with overfull guard + full render); Issue #521 evaluated as EDITION_LOCAL, not added; shared Core implementation unchanged. |
+| `SP-efficient-llm-2026` | Final release closure review in r0.5 | DM-019; DM-001/002/003/004 recurred | New divergent-slug release-identity defect (build_freeze vs profile public slug) recorded with edition-local identity correction; Freeze/Release recurrences documented; DM-016/017/018 unchanged; edition RELEASED/COMPLETE with exact Human-approved PDF; shared Core implementation unchanged. |
 
-Next required update: `SP-efficient-llm-2026` final closure review, or the next Weekly/Special guarded stop or closure if it occurs first.
+Next required update: the next Weekly/Special guarded stop or closure if it occurs first.
 
 ## 10. Revision History
 
@@ -622,6 +690,7 @@ Next required update: `SP-efficient-llm-2026` final closure review, or the next 
 | `r0.2` | 2026-09-22 | `SP-efficient-llm-2026` guarded stop | Added CV2-DM-016 for the Evidence source-class map mismatch exposed by the Efficient LLM Thematic. Recorded deterministic edition-local compatibility as the production workaround while shared Core remains frozen. |
 | `r0.3` | 2026-09-22 | `SP-efficient-llm-2026` Evidence review | Added CV2-DM-017 for the Completeness builder/validator obligation-materialization mismatch exposed when Discovery-added EFF-O13/O14/O15 reached the frozen Completeness stage. |
 | `r0.4` | 2026-09-23 | `SP-efficient-llm-2026` Publication Preview r2 repair | Added CV2-DM-018 for Longform Publication QA passing gross Overfull hbox / rendered clipping (Issue #520, r1 ~70pt p.56 glossary overflow with VISUAL PASS). Recorded edition-local layout fix + overfull guard + full-66pp visual disposition; Issue #521 explicitly EDITION_LOCAL, not added. |
+| `r0.5` | 2026-09-23 | `SP-efficient-llm-2026` final release closure | Added CV2-DM-019 for canonical Freeze builder deriving release identity from internal issue_id instead of the profile public slug (first divergent-slug LONGFORM_SPECIAL freeze; edition-local identity correction, workflow identity check passed). Recorded CV2-DM-001/002/003 Freeze recurrences and CV2-DM-004 Release recurrence (run 35863535480, recovery PR #524); DM-016/017/018 unchanged; edition RELEASED/COMPLETE. |
 
 ## 11. Reference authority
 
@@ -638,7 +707,11 @@ Primary evidence for the current r0.1 inventory:
 - closed edition Issues #500, #502, #511, #512 for deferred generic hardening;
 - [Issue #434](https://github.com/eariver/japanese-generative-ai-survey/issues/434) as a pre-freeze carry-over;
 - W35-W38 edition-local defect records under `sources/<edition>/execution/defects/`;
-- release recovery PRs #504, #510 and #514;
+- release recovery PRs #504, #510, #514 and #524;
+- TS-001 reissue edition-local defect records
+  (`ts001-reissue-freeze-core-defects-20260923.md`,
+  `ts001-reissue-release-recovery-20260923.md`) and compat helper
+  (`execution/ts001-freeze-compat-20260923.py`);
 - historical feedback authority: `docs/survey-production-core-v2-production-feedback-backlog.md`.
 
 When a later revision updates an item, cite the newest direct reproduction evidence while retaining the earlier history above.
