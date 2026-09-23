@@ -493,6 +493,54 @@ Required future Core direction when maintenance resumes:
 - add regression coverage for Thematic Discovery expansion that adds valid new obligation IDs after initialization;
 - ensure builder output validates without edition-authored structural completion rows.
 
+---
+
+### CV2-DM-018 — Longform Publication QA can PASS gross Overfull hbox / rendered clipping
+
+Status: `OPEN_CORE / EDITION_FIXED_CORE_DEFERRED`  
+Category: Publication QA / visual-layout regression  
+Tracking: [Issue #520](https://github.com/eariver/japanese-generative-ai-survey/issues/520)  
+First reproduction: `SP-efficient-llm-2026`  
+Latest reproduction: `SP-efficient-llm-2026`
+
+TS-001 reissue Publication Preview r1 exact PDF (`bc6e280c668a4a17ff98dae58fc574cdce701cce9dd8926eb8b1138e82a46e0b`, 66 pages) contained a visible clipping defect on p.56: the first glossary `tabular` was pushed right by paragraph/table context and overflowed ~70pt beyond text width, cropping definition text.
+
+The r1 build log recorded the corresponding `Overfull \hbox (~70pt)` but Publication Preview prep did not treat it as blocking, and the r1 VISUAL review recorded PASS over the exact clipped bytes. The defect was therefore Human-reported via Issue #520, not machine-blocked.
+
+Source cause (edition-local, layout-only):
+
+```tex
+\subsection*{用語集}
+本巻で使う技術用語の定義を集めたものである。節をまたいで同じ言葉が同じ意味で使われていることを確かめるために置いた。
+\begin{tabular}{@{}p{0.18\textwidth}p{0.75\textwidth}@{}}
+```
+
+Paragraph termination was not explicit between the lead sentence and the first `tabular`, so the table was treated in a bad paragraph/layout context and pushed right. Later p.57/p.58 glossary tables with identical column widths rendered correctly, confirming layout context (not column width) as the cause.
+
+Edition repair (r2, `EDITION_FIXED`):
+
+- minimum layout-only fix: `...置いた。\par` + `\noindent` before the first `tabular`; no glossary content rewrite; no unrelated page redesign;
+- r2 CI build (run `35801995228`, PDF `8a9a721ac35b2e5baa2e20162b5a6ba4ae63945d512d985484aeae56073a23c1`, 66 pages) has max Overfull `10.0pt` (0 BLOCK, 12 REVIEW_REQUIRED at 10.0pt in full-width tables with explicit rendered disposition, 6 RECORD at 8.99pt);
+- p.56 first table fully within bounds with 0 clipping; p.57/p.58 unchanged and correct; full 66pp render with no overlap/cropped/orphan/blank/hole/bibliography regression;
+- edition-local guard `sources/SP-efficient-llm-2026/execution/validation/overfull_hbox_guard.py` (≥20pt BLOCK, 10–20pt REVIEW_REQUIRED, <10pt RECORD) enforced for r2; exact generic threshold remains a deferred Core decision.
+
+Direct evidence:
+
+- [Issue #520](https://github.com/eariver/japanese-generative-ai-survey/issues/520) (r1 commit `1266a5f02…`, PDF `bc6e280c…`, ~70pt log finding, acceptance criteria)
+- r2 repair: `special/efficient-llm-2026-work` Publication Preview r2 (PDF `8a9a721a…`, overfull guard `overfull-guard-r2.json`, visual review full-66pp PASS, prep `publication-preview-prep-r2.md`)
+- Related prior layout series (not duplicates, cited in #520): #79, #106, #400
+
+Issue #521 (`DeepSeek V4.1 Flash 8B input / 16B output` reader wording) was evaluated alongside and is explicitly **not** added as a Core item: it is `EDITION_LOCAL / PUBLICATION_CORRECTNESS` (bounded wording repair, no generic transformation rule found). No Core defect is invented for #521.
+
+Required future Core direction when maintenance resumes:
+
+- make gross TeX overflow detectable before Human Publication Preview;
+- define reviewed blocking/review-required threshold policy;
+- bind build-log overflow findings to rendered-page review;
+- ensure LONGFORM_SPECIAL appendix/glossary pages are included in mandatory rendered review coverage;
+- add a regression fixture reproducing the p.56 glossary paragraph/table context;
+- prohibit VISUAL PASS when a materially clipped page exists.
+
 
 ## 6. Items intentionally not treated as current shared-Core defects
 
@@ -562,6 +610,7 @@ A batch repair may close multiple `CV2-DM` items, but each item must receive its
 | `2026-W37` | backfilled in r0.1 | DM-007, DM-008, DM-009, DM-010, DM-014 | X intake/reviewer authority/timestamp/layout findings; release defect recurred. |
 | `2026-W38` | reviewed in r0.1 | DM-003, DM-013; DM-004/009/012/014 recurred | TypeSafe temporal authority and 25-row ledger repaired edition-locally; Freeze/release compatibility still required. |
 | `SP-efficient-llm-2026` | Evidence-review update in r0.3 | DM-016, DM-017 | Source-class projection workaround validated; Completeness builder/validator obligation mismatch also exposed and handled edition-locally; shared Core remains frozen. |
+| `SP-efficient-llm-2026` | Publication Preview r2 repair update in r0.4 | DM-018 | Issue #520 gross Overfull/clipping PASS defect recorded as generic QA debt (edition fixed locally with overfull guard + full render); Issue #521 evaluated as EDITION_LOCAL, not added; shared Core implementation unchanged. |
 
 Next required update: `SP-efficient-llm-2026` final closure review, or the next Weekly/Special guarded stop or closure if it occurs first.
 
@@ -572,6 +621,7 @@ Next required update: `SP-efficient-llm-2026` final closure review, or the next 
 | `r0.1` | 2026-09-20 | `2026-W38` | Initial consolidated deferred-maintenance inventory. Backfilled W35-W38 defect records, post-freeze Issues, release recovery evidence, and relevant pre-freeze Publication Boundary carry-over. Established Core pause policy, stable CV2-DM IDs, per-edition update contract, restart contract, and tracker Issue #515. |
 | `r0.2` | 2026-09-22 | `SP-efficient-llm-2026` guarded stop | Added CV2-DM-016 for the Evidence source-class map mismatch exposed by the Efficient LLM Thematic. Recorded deterministic edition-local compatibility as the production workaround while shared Core remains frozen. |
 | `r0.3` | 2026-09-22 | `SP-efficient-llm-2026` Evidence review | Added CV2-DM-017 for the Completeness builder/validator obligation-materialization mismatch exposed when Discovery-added EFF-O13/O14/O15 reached the frozen Completeness stage. |
+| `r0.4` | 2026-09-23 | `SP-efficient-llm-2026` Publication Preview r2 repair | Added CV2-DM-018 for Longform Publication QA passing gross Overfull hbox / rendered clipping (Issue #520, r1 ~70pt p.56 glossary overflow with VISUAL PASS). Recorded edition-local layout fix + overfull guard + full-66pp visual disposition; Issue #521 explicitly EDITION_LOCAL, not added. |
 
 ## 11. Reference authority
 
