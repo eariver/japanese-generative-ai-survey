@@ -1,0 +1,143 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:a9c4e8e3d8097c70",
+  "basis": {
+    "task_sha256": "e79b0a4edf14a1ce96b619a780d98f42ed213699a03ec046fb616841f7a9199d",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "deepseek-v41-report",
+      "canonical_name": "DeepSeek-V4.1-Flash technical report (2026)",
+      "entity_type": "PAPER",
+      "organization": "DeepSeek-AI",
+      "canonical_url": "https://arxiv.org/abs/2609.19969"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "deepseek-v41-report",
+    "artifact_type": "PAPER",
+    "canonical_name": "DeepSeek-V4.1-Flash technical report (2026)",
+    "canonical_url": "https://arxiv.org/abs/2609.19969"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-09-18",
+        "subject_id": "deepseek-v41-report",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2609.19969",
+      "source_class": "PRIMARY_PAPER",
+      "title": "DeepSeek-V4.1-Flash technical report (closes r1 G01)",
+      "published_at": "2026-09-18",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "V4.1-Flash: 552B multimodal MoE, 1M context, CED (16B decode / 8B prefill active); pure CSA2 (Full/Reindex/Reuse modes sharing global KV + indexer K) with FP4 global KV in training (marginal degradation) → 890B/tok global (1/4 V4-Flash); SWA Bounded Replay → 1/8 persistent footprint; 45T-token multimodal pretrain.",
+      "subject_id": "deepseek-v41-report",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Body-consumed architecture (§2: CED, CSA2 modes, FP4-KV, SWA replay) + abstract figures."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Post-training pipeline consumed structurally: large-scale agent task synthesis, RL in synthesized tasks, DSec massive-scale agent running, controllable reasoning effort in RL, async post-training infra (length-bias/off-policy mitigation), large-scale on-policy distillation.",
+      "subject_id": "deepseek-v41-report",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Body-consumed §5 structure; per-stage results outstanding."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Evaluation appendix structure consumed: scaffold configurations (B.1), reasoning efforts across scaffolds (B.2), detailed reasoning results (B.3), exponential token penalty (C) — per-figure citation requires appendix pins.",
+      "subject_id": "deepseek-v41-report",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Body-consumed appendix map; figures quarantined pending pins."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Per-figure benchmark numbers and scaffold-config details outstanding; figures cited for no fact.",
+      "subject_id": "deepseek-v41-report",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Training-infra (§3) and data-curation (§4) sections at structural scope.",
+      "subject_id": "deepseek-v41-report",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Body consumed at section level: architecture, post-training pipeline, appendix map extracted; per-figure detail outstanding as limitation.",
+        "subject_ids": [
+          "deepseek-v41-report"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "scaffold/version binding",
+        "status": "UNRESOLVED",
+        "finding": "Appendix B/C per-figure pins not extracted; binding rule recorded, figures quarantined.",
+        "subject_ids": [
+          "deepseek-v41-report"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "scaffold/version binding: Appendix B/C per-figure pins not extracted; binding rule recorded, figures quarantined."
+    ],
+    "contradictions": []
+  }
+}

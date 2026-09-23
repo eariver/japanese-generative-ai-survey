@@ -1,0 +1,97 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:1173800888bed890",
+  "basis": {
+    "task_sha256": "6886066c73ba33482e3fa86c447da9b26f22803f36e75c0f854c18bbd2f541f7",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "flashmla",
+      "canonical_name": "FlashMLA (DeepSeek MLA decode kernel)",
+      "entity_type": "PRODUCT",
+      "organization": "DeepSeek-AI",
+      "canonical_url": "https://github.com/deepseek-ai/FlashMLA"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "flashmla",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "FlashMLA (DeepSeek MLA decode kernel)",
+    "canonical_url": "https://github.com/deepseek-ai/FlashMLA"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/deepseek-ai/FlashMLA",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "FlashMLA (DeepSeek MLA decode kernel)",
+      "published_at": null,
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "FlashMLA is DeepSeek's MLA-optimized decode kernel, the kernel half of the MLA efficiency story complementing the architecture half (V2/V3).",
+      "subject_id": "flashmla",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Role level; corroborated by D078 vLLM sparse-backend record and D057 ETAP paper."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Its sparse backend variant serves V4.1-line decoding in vLLM.",
+      "subject_id": "flashmla",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Backend fact per D078/D163."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Kernel code and benchmark tables not consumed.",
+      "subject_id": "flashmla",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Kernel role corroborated via D057 abstract and D078/D163 records; code audit outstanding.",
+        "subject_ids": [
+          "flashmla"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

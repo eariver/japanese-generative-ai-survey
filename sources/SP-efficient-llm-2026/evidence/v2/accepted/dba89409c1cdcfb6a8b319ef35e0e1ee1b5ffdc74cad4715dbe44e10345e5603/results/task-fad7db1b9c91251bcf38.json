@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:28b1d02d765111b4",
+  "basis": {
+    "task_sha256": "c67d3f467736e095390ec6003d821dc4c11467361334a6c979e6d76ee595477a",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "deepseek-v2-2024",
+      "canonical_name": "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model (2024)",
+      "entity_type": "PAPER",
+      "organization": "DeepSeek-AI",
+      "canonical_url": "https://arxiv.org/abs/2405.04434"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "deepseek-v2-2024",
+    "artifact_type": "PAPER",
+    "canonical_name": "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model (2024)",
+    "canonical_url": "https://arxiv.org/abs/2405.04434"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-05-07",
+        "subject_id": "deepseek-v2-2024",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2405.04434",
+      "source_class": "PRIMARY_PAPER",
+      "title": "DeepSeek-V2: Strong, Economical, Efficient MoE LM",
+      "published_at": "2024-05-07",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "DeepSeek-V2 combines DeepSeekMoE with Multi-Head Latent Attention (MLA) at 236B total / 21B active parameters, making KV-compression and sparse-compute joint first-class claims.",
+      "subject_id": "deepseek-v2-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline architecture facts; abstract-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "V2 is the branch point where MLA enters the DeepSeek line, conditioning DSA/CSA/CSA2 and the V4-line KV story.",
+      "subject_id": "deepseek-v2-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Lineage synthesis across D025/D123-D125."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body MLA formulation and benchmark tables not consumed.",
+      "subject_id": "deepseek-v2-2024",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2405.04434): 236B/21B MoE + MLA identity confirmed; full body outstanding.",
+        "subject_ids": [
+          "deepseek-v2-2024"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

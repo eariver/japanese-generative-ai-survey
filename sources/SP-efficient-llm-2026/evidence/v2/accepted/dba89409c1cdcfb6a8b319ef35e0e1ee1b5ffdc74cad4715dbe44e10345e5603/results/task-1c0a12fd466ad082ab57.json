@@ -1,0 +1,110 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:deccb2250a7e1ff9",
+  "basis": {
+    "task_sha256": "31bc0e7700bb6aa60229cba5a37ecc977a543a6f6e81b2233db9a85b429d737d",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "vllm-apc-docs",
+      "canonical_name": "vLLM Automatic Prefix Caching (documentation)",
+      "entity_type": "ORGANIZATION",
+      "organization": "vLLM Project",
+      "canonical_url": "https://docs.vllm.ai/en/latest/features/automatic_prefix_caching/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "vllm-apc-docs",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "vLLM Automatic Prefix Caching (documentation)",
+    "canonical_url": "https://docs.vllm.ai/en/latest/features/automatic_prefix_caching/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://docs.vllm.ai/en/latest/features/automatic_prefix_caching/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "vLLM Automatic Prefix Caching",
+      "published_at": null,
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "vLLM Automatic Prefix Caching reuses KV blocks across requests via block hashing, the block-granularity member of reuse category (4).",
+      "subject_id": "vllm-apc-docs",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Documentation-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Block-hash granularity contrasts structurally with SGLang's radix-tree prefix management; neither subsumes the other.",
+      "subject_id": "vllm-apc-docs",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Granularity comparison."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Docs page not fetched; mechanism scoped to established role.",
+      "subject_id": "vllm-apc-docs",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Prefix-reuse role recorded at documentation level; page body outstanding.",
+        "subject_ids": [
+          "vllm-apc-docs"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "version binding",
+        "status": "UNRESOLVED",
+        "finding": "No version pin extracted.",
+        "subject_ids": [
+          "vllm-apc-docs"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "version binding: No version pin extracted."
+    ],
+    "contradictions": []
+  }
+}

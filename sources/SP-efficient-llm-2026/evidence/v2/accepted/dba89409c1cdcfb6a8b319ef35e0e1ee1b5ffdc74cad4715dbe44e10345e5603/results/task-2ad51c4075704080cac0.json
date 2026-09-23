@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:eabc25761ace223d",
+  "basis": {
+    "task_sha256": "940050a2449a91936845447dbdca6be6917578a20637876b8c394daa466fa0b9",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "qwen38-next-arch",
+      "canonical_name": "On the Design of Qwen3.8-Next Architecture (Qwen Team, 2026)",
+      "entity_type": "PAPER",
+      "organization": "Alibaba Qwen",
+      "canonical_url": "https://arxiv.org/abs/2608.30320"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "qwen38-next-arch",
+    "artifact_type": "PAPER",
+    "canonical_name": "On the Design of Qwen3.8-Next Architecture (Qwen Team, 2026)",
+    "canonical_url": "https://arxiv.org/abs/2608.30320"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-08-31",
+        "subject_id": "qwen38-next-arch",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2608.30320",
+      "source_class": "PRIMARY_PAPER",
+      "title": "On the Design of Qwen3.8-Next Architecture (technical report)",
+      "published_at": "2026-08-31",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Qwen3.8-Flash-Next (125B/6B + 51B host n-gram): Tab.11 shows Base beating Qwen3.8-27B-Base on all 14 benchmarks and Qwen3.7-Plus-Base on 8/14 (rest within 2.6 pts) at ~1/3 active params, ~1/3 tokens, ~1/9 FLOPs.",
+      "subject_id": "qwen38-next-arch",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Body-consumed Tab.11 context; self-comparison scope retained."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Every candidate change evaluated on three axes (loss+benchmarks; training/prefill/decode cost; hyperparameter/stability effects); Gated Residual (4-branch + elementwise gate); n-gram placement/vocab-allocation sections; Muon sections (which params, fused splitting); batch-warmup-unnecessary + stress-test verification.",
+      "subject_id": "qwen38-next-arch",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Body-consumed structure (§2-§3); per-ablation numbers outstanding."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Loss and downstream accuracy diverge (n-gram vocab lowers loss monotonically, accuracy saturates) — the joint-design thesis.",
+      "subject_id": "qwen38-next-arch",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Body-consumed finding."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Per-ablation tables and QSA evaluation details outstanding; vendor ratios quarantined.",
+      "subject_id": "qwen38-next-arch",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Body consumed at section level with Tab.11 context; ablation tables outstanding as limitation.",
+        "subject_ids": [
+          "qwen38-next-arch"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "vendor-claimed 1/3 tokens / 1/9 FLOPs quarantine",
+        "status": "VERIFIED",
+        "finding": "Ratios carried strictly as vendor self-comparison with benchmark scope.",
+        "subject_ids": [
+          "qwen38-next-arch"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

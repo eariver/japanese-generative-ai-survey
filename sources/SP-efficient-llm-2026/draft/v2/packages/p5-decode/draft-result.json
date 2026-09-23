@@ -1,0 +1,688 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "p5-decode",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "8f1eb2b9111b237a810fe5d2cb29f6a407ed23df46cbbe9c90afbc8b85cdb888",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse Spark",
+    "model": "muse-spark-1.3",
+    "invocation": "TS-001 reissue drafting-synthesis: 9-package Japanese long-form synthesis from approved Architecture r1; evidence-bounded prose with vendor-claim quarantine and abstract-scope guards",
+    "generated_at": "2026-09-23T02:01:17.448426+09:00",
+    "run_reference": "ts001-reissue-drafting-v1-20260922"
+  },
+  "headline": "先読みで待ちを減らし、予算で浪費を削る",
+  "deck": "逐次デコードの待ちはドラフト検証で緩和できる。特徴量先読みと多トークン学習が受容率を押し上げ、実装側の対応が進む。一方でテスト時計算は足し算と引き算の設計問題であり、予算強制と学習的短縮と過思考の知見が運用の予算操作に接続される。直列性と予算浪費は隣接するが別機構として扱い、条件依存と一般化の留保を付けて読む。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:bd7a0a951960f06a",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "leviathan-spec-decoding-2023",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:bd7a0a951960f06a",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "leviathan-spec-decoding-2023",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:8d32aaecfd755f45",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "ttc-snell-2024",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:8d32aaecfd755f45",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "ttc-snell-2024",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:308b2abb8a3f3c62",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "thinkprune-2025",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:308b2abb8a3f3c62",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "thinkprune-2025",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:308b2abb8a3f3c62",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "thinkprune-2025",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p5-decode-b01",
+      "block_type": "PARAGRAPH",
+      "text": "生成モデルの待ち時間の多くは、一トークンずつ順番に確定させなければならない直列性に由来する。高性能な標的モデルを毎ステップ呼び出す方式では、次のトークンを決めるたびに大きな計算を待つことになり、並列計算資源があっても逐次依存が解消されない。投機的デコーディングはこの構造を正面から置き換えるのではなく、小さなドラフト側が複数トークンを先に提案し、標的モデルがそれらをまとめて検証する手順に変える。受け入れられた接頭辞だけを確定し、外れた位置からは標的分布に従って引き直すため、出力の分布を保ったまま無駄な逐次呼び出しを減らせる。標的モデルの再学習を要しない点も重要で、既存の重みをそのまま検証器として使えるため導入障壁が低い。速度の鍵は受容率であり、ドラフト案がどれだけ標的に受け入れられるかが全体の効率を決めるという整理が、以後の研究を貫く評価軸になった。小さなモデルが速くても標的に否認されれば意味がなく、大きなモデルだけでは並列性が活きないという相補性が、この方式の設計感覚である。相補的な定式化は受理判定の条件を明確化し、標的分布の保存を保証する手続きとして分野の起点を固め、後の手法が貪欲性を緩める際の統制された足場を与えた。受容率という単一の物差しに整理されたことで、後の特徴量予測や動的木などの改良も同じ土俵で比較できるようになった。ただし受理条件の厳密な証明や速度表の全体は今回の消費範囲に含まれず、ここでは機構と保証の骨格に限って扱う。バッチサイズや硬件条件による振る舞いの変化も未確定であり、証明の細部や表の再現に踏み込まず、実装条件が変われば受容率も変わり得るという留保を付けて読むのが妥当である。受容率の改善がそのまま体感速度に直結しない条件もあり得る。直列性の緩和と推論予算の節約は隣り合うが別問題である。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:bd7a0a951960f06a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "leviathan-spec-decoding-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:bd7a0a951960f06a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "leviathan-spec-decoding-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:bd7a0a951960f06a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "leviathan-spec-decoding-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:09a5cc42df5c3ee7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "chen-spec-sampling-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:09a5cc42df5c3ee7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "chen-spec-sampling-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:09a5cc42df5c3ee7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "chen-spec-sampling-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p5-decode-b02",
+      "block_type": "PARAGRAPH",
+      "text": "ドラフトの質を上げる方向で転機になったのが、特徴量レベルで先読みする方式である。トークン表層ではなく中間特徴量から次の展開を予測し、単層の軽量復号器と木構造の注意機構で複数候補を束ねて検証する。不確実性の扱いを見直すことで表層予測の限界を越えるという着想が核にあり、単なるヘッド追加ではない設計思想の転換として読める。報告された本文結果では、ドラフト精度の向上と貪欲設定での数倍級の高速化、既存の先読み方式に対する優位、処理量の倍増が示されている。特定の対話モデルでは体感できる水準の差として示されている。基幹モデルの微調整を要せず出力分布を変えない無損失の範囲が保たれ、量子化やコンパイルと組み合わせ可能とされる点も実務上の含意が大きい。先行する多頭方式は、凍結した基幹モデルに軽量な複数ヘッドと木検証を付加し、別個のドラフトモデルを不要にした前例として位置づけられる。貪欲復号での無損失性は保たれる一方、非貪欲生成の品質は限定付きの対象であり、無条件の保証ではないという限定が重要である。発展形では木を文脈依存に動的化し、受理モデルの予測で展開を変えることで高速化が要旨レベルで報告され、受容率の科学が運用の信頼度検証へ接続される流れを作った。ただし木構造や学習データのアブレーションは部分的であり、受理モデルの詳細や速度表の全体は消費範囲外である。バッチサイズ感度や硬件依存の一般化も未確定として残り、単一の測定条件の数値を普遍定数として扱うことはできないという留保が付く。測定条件の違いが受容率に跳ね返る点を見落とさない読み方が要る。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:4712d8e035c5ce9a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "eagle-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:4712d8e035c5ce9a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "eagle-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:4712d8e035c5ce9a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "eagle-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2d5407c168ac8cb0",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "medusa-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2d5407c168ac8cb0",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "medusa-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2d5407c168ac8cb0",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "medusa-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:39d9c4e84186066a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "eagle2-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:39d9c4e84186066a",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "eagle2-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:39d9c4e84186066a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "eagle2-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p5-decode-b03",
+      "block_type": "PARAGRAPH",
+      "text": "複数トークンを同時に学ぶ訓練が、推論の先読みに転用される流れも押さえておきたい。共通胴体の上に独立な複数出力ヘッドを置き、次トークン予測に加えて先のトークンを補助課題として学ぶ方式では、訓練時の追加負担なしに標本効率が上がり、規模が大きいほど効果が伸びると報告されている。符号課題での解決率の上積みが本文結果として示され、単なる復号の工夫ではなく学習そのものの改善として位置づけられる。付随する先読み的復号の付録や情報論的な考察は、学習済みの先読み能力を復号再利用に接続する道筋として、後の実装の参照点になっている。複数エポックや規模横断のアブレーション、付録の導出の細部は構造把握の範囲に留まり、ここでは骨格のみを扱うという境界を守る。現在の実装面では、推論サーバの文書において標的モデル自身の多トークン層が草案を作る方式が案内され、別個のドラフトモデルを要しない運用が示されている。これは巨大モデルの系列で報告される多トークン搭載と整合的であり、文書上の裏づけと下流の配備報告の対応で理解するのが妥当である。ただし文書本文の全体は未取得であり、主張は要約と下流の裏づけに限定され、版や対応状況の下限も確定させない。ベンダ側の速度数値は隔離し、独立の確認が済むまでは引用しない。汎用的な機構理解と配備形態の把握に絞り、数値の一般化は留保するという読み方が、この段階では誠実である。学習の改善と復号の再利用を切り分けつつ接続する視点が肝要であり、補助課題としての先読み学習がそのまま検証負荷の軽減に回る構図を捉える。規模が大きくなるほど先読みの利得が増すという報告は、巨大化と効率化が必ずしも対立しないことを示唆する。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:56ae1de4e4927a86",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "mtp-gloeckle-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:56ae1de4e4927a86",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "mtp-gloeckle-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:56ae1de4e4927a86",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "mtp-gloeckle-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:b88787d501c62098",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "vllm-mtp-docs",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:b88787d501c62098",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "vllm-mtp-docs",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:b88787d501c62098",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "vllm-mtp-docs",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p5-decode-b04",
+      "block_type": "PARAGRAPH",
+      "text": "テスト時計算の配分に目を向けると、大きなモデルに置き換える前に考えるべき選択肢が見えてくる。難易度適応的な検証器探索と分布改訂を組み合わせた最適配分では、素朴な最良候補選択の反復に対して数倍以上の効率改善が本文の要旨として報告されている。浮動小数点演算を揃えた比較では、基礎モデルが無視できない成功率を持つ条件で、小さなモデルにテスト時計算を足した構成が大きなモデルを上回るという条件付きの対比が示されている。検証器の訓練の詳細や改訂モデルのアブレーションは未取得であり、万能の優劣として読むのではなく、基礎能力が残る領域での条件付きの効率論として受け止める必要がある。単純なテスト時拡張の事例では、数万件から千件への難易度と多様性と品質による精選が土台になる。精選には難易度選別や多様性確保や品質判定や汚染除去の検討が伴い、少量でも効く構成を狙う点が要点である。思考を打ち切ったり末尾に待機語を付して延長したりする予算強制が核になり、短すぎる思考を延ばして推論を修復する操作として働く。小規模精選データで調整した三〇B級モデルが競合数学で既存の推論モデルを上回り、テスト時拡張での外挿が報告され、模型と資料の開放が再現の足場になっている。ただし数量や多様性や難易度のアブレーション表、強制と棄却抽出の対比は構造把握の範囲に留まる。検証器の学習条件や硬件依存の振る舞いも未確定であり、数値の一般化は留保される。予算の付け方が結果を左右するという点で、計算資源の配分は模型選択と同等の設計変数である。計算を足す方向と削る方向の対称性が次の論点につながり、足し算の効率と引き算の効率を同じ予算表で考える視点が要る。難易度に応じた探索の濃淡と分布の手直しを組み合わせる考え方は、一律の試行回数からの脱却を促すものである。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8d32aaecfd755f45",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "ttc-snell-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8d32aaecfd755f45",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "ttc-snell-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8d32aaecfd755f45",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ttc-snell-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d7d91c84eaf47155",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "s1-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d7d91c84eaf47155",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "s1-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d7d91c84eaf47155",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "s1-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p5-decode-b05",
+      "block_type": "PARAGRAPH",
+      "text": "長い思考を短く保つ学習的な試みでは、制限を報酬設計に織り込む発想が採られている。制限を越えた出力は報酬計算の前に破棄され、正解であっても報酬が零になる厳格な上限のもとで強化学習を行い、上限を段階的に締めながら、許容できる精度低下の範囲で要点を選び直す。相対精度の低下を抑える基準で検証集合上の要点を選ぶ運用が報告され、無理な短縮で精度を崩さない歯止めになっている。本文の結果表では、蒸留由来の小規模学習対象において、数学や競技系課題の正答率をほぼ保ったまま生成長がおおむね半減する様子が示されている。特定の数学評価では生成長が大幅に縮み、平均でも半分前後へ縮む一方、数学や競技課題の代表値も大きくは崩れない。温度や上位確率や試行回数や上限長を明示した手順とともに示され、評価条件の束縛が明示されている点が重要で、汎用的な短縮保証ではない。発見的な打ち切りではなく学習された方策としてテスト時計算の系譜に位置づけられ、重みを更新する手法と推論時の置換策の境界が保たれている。背景には大規模強化学習で推論能力を引き出し小型高密度模型へ蒸留する流れがあり、対象模型の来歴理解に留めて、管路全体や蒸留評価表の断定には踏み込まない。対象外の規模や数学外課題への一般化は未確定であり、短縮が学習によって獲得された振る舞いである点が重要で、一時的な打ち切り規則とは意味が異なる。訓練費用の会計は抽出されておらず、推論効率の改善と学習費用の総量は切り分けて読む必要がある。評価は特定の模型規模と数学系課題に縛られ、他領域への持ち越しは未検証である。重み自体が短い思考で解く方向に寄せられるため、推論時の置換策と混同しない整理が要り、効率の主張は推論側の長さと精度に限定される。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:308b2abb8a3f3c62",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "thinkprune-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:308b2abb8a3f3c62",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "thinkprune-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:308b2abb8a3f3c62",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "thinkprune-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:308b2abb8a3f3c62",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "thinkprune-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:308b2abb8a3f3c62",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "thinkprune-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:c1d89b42034b880c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepseek-r1-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:c1d89b42034b880c",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepseek-r1-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:c1d89b42034b880c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseek-r1-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p5-decode-b06",
+      "block_type": "PARAGRAPH",
+      "text": "考えさせれば考えさせるほど良いわけではないという観測が、予算設計の現実味を支えている。長い推論では正答率が上がってから下がる山形の推移が見られ、正しかった答えを捨ててしまう反転事象が記録されている。区間推定では長い帯域で過思考が確実に現れる一方、中程度の帯域では境界上にあり、どこから浪費が優位になるかの所在が示されている。計算量を罰則付きの効用で捉える枠組みでは、長い生成が短い生成の数十倍の費用になる算術のもと、費用に敏感な条件では早期停止が同等の精度で大きく節約するという整理が示されている。例示の算術を請求書の実額と混同せず、費用対効果の考え方として読むことが重要である。反転の因果の詳細や完全な要因分解は対象外であり、ここでは現象の所在と費用対効果の考え方に絞るという境界を守る。運用界面では、数値で推論努力を指定し罰則表と連動させる系列と、思考の可否や段階離散の強弱で指定する系列という、明示的予算の操作系が報告されている。一定程度の努力で最大努力の精度の多くを半分以下のトークンで回収するという報告系譜は、過思考の知見の生産形態と読める。ただし界面文書の全体は未取得で、段階意味の把握は要約水準に留まり、課題依存の限定が付く。予算超過の思考が誤りを招く可能性は、単なる無駄遣いを超えた精度上の損失として捉える必要がある。逐次復号の直列性と推論予算の浪費は隣接するが別機構であり、一括りに効率化として語らないことが、この章の結論である。費用感応度の高い運用では、止める判断自体が精度維持の手段になり、明示的予算の操作系は研究知見を製品の選択肢に翻訳したものと読める。復号の待ちと思考の浪費を混同せず、層の異なる無駄として設計する視点が求められる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:35846de6961770e5",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "overthinking-2026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:35846de6961770e5",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "overthinking-2026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:35846de6961770e5",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "overthinking-2026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:502b5bb71b7fe8f2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "effort-control-binding",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:502b5bb71b7fe8f2",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "effort-control-binding",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:502b5bb71b7fe8f2",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "effort-control-binding",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p5-decode-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: Decode seriality and reasoning-budget waste are adjacent, not identical; D150 weight-vs-substitute boundary preserved; D069 distillation claims bounded. / Full-body acceptance-criterion proofs and speedup tables not consumed. / Ablation details (tree structure, training data) at section scope; batch-size sensitivity outstanding. / Multi-epoch/scale ablations and appendix derivations at structural scope. / Verifier-training details (PRM/ORM appendices) and revision-model ablations outstanding. / Ablation tables (quantity/diversity/difficulty, forcing-vs-rejection-sampling) at structural scope. / Generalization beyond R1-Distill-1.5B/AIME24-class math outstanding. / RL training-cost accounting not extracted. / Flip-mechanism causal analysis at section scope; full ablations outstanding. / Card/interface pages not fetched separately; Qwen-side tier semantics at summary level. / Full-body proofs and benchmark tables not consumed. / Full-body tree-construction and speedup tables not consumed. / Full-body acceptance-model details and tables not consumed. / Docs page body not fetched; claims scoped to Discovery summary with downstream corroboration. / runtime version binding: Exact doc revision / supported-version floor not pinned from this page. / Full-body RL pipeline and distillation evaluation tables not consumed.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:bd7a0a951960f06a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "leviathan-spec-decoding-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:4712d8e035c5ce9a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "eagle-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:56ae1de4e4927a86",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "mtp-gloeckle-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8d32aaecfd755f45",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "ttc-snell-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d7d91c84eaf47155",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "s1-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:308b2abb8a3f3c62",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "thinkprune-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:308b2abb8a3f3c62",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "thinkprune-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:35846de6961770e5",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "overthinking-2026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:502b5bb71b7fe8f2",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "effort-control-binding",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:09a5cc42df5c3ee7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "chen-spec-sampling-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2d5407c168ac8cb0",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "medusa-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:39d9c4e84186066a",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "eagle2-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:b88787d501c62098",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "vllm-mtp-docs",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:c1d89b42034b880c",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseek-r1-2025",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "EFF-O05",
+      "block_ids": [
+        "p5-decode-b01",
+        "p5-decode-b02",
+        "p5-decode-b03",
+        "p5-decode-b04",
+        "p5-decode-b05",
+        "p5-decode-b06",
+        "p5-decode-boundaries"
+      ]
+    },
+    {
+      "requirement": "EFF-O14",
+      "block_ids": [
+        "p5-decode-b01",
+        "p5-decode-b02",
+        "p5-decode-b03",
+        "p5-decode-b04",
+        "p5-decode-b05",
+        "p5-decode-b06",
+        "p5-decode-boundaries"
+      ]
+    },
+    {
+      "requirement": "EFF-O09",
+      "block_ids": [
+        "p5-decode-b01",
+        "p5-decode-b02",
+        "p5-decode-b03",
+        "p5-decode-b04",
+        "p5-decode-b05",
+        "p5-decode-b06",
+        "p5-decode-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "Decode seriality and reasoning-budget waste are adjacent, not identical; D150 weight-vs-substitute boundary preserved; D069 distillation claims bounded.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5-decode-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body acceptance-criterion proofs and speedup tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5-decode-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Ablation details (tree structure, training data) at section scope; batch-size sensitivity outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5-decode-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Multi-epoch/scale ablations and appendix derivations at structural scope.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5-decode-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Verifier-training details (PRM/ORM appendices) and revision-model ablations outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5-decode-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Ablation tables (quantity/diversity/difficulty, forcing-vs-rejection-sampling) at structural scope.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5-decode-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Generalization beyond R1-Distill-1.5B/AIME24-class math outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5-decode-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "RL training-cost accounting not extracted.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5-decode-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Flip-mechanism causal analysis at section scope; full ablations outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5-decode-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Card/interface pages not fetched separately; Qwen-side tier semantics at summary level.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5-decode-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body proofs and benchmark tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5-decode-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body tree-construction and speedup tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5-decode-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body acceptance-model details and tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5-decode-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Docs page body not fetched; claims scoped to Discovery summary with downstream corroboration.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5-decode-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "runtime version binding: Exact doc revision / supported-version floor not pinned from this page.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5-decode-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body RL pipeline and distillation evaluation tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p5-decode-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}

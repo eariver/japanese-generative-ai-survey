@@ -1,0 +1,25 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "research_profile": "THEMATIC",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:d4343c0525a61ea8",
+  "evidence_sha256": "c2dfb4cbf08d39a8e57426b2d4dfe13d4aafa7b37569eb9edf64a0442a376ff3",
+  "materiality": {
+    "status": "MATERIAL",
+    "rationale": "Sharded optimizer/gradient/parameter states; FIT (memory), not FLOPs."
+  },
+  "scope_dimensions": [
+    "scaling_and_training_efficiency"
+  ],
+  "profile_annotations": {
+    "lineage_role": "CORE",
+    "branch_ids": [
+      "scaling-training"
+    ],
+    "transition_ids": [
+      "replicated-to-sharded-states"
+    ],
+    "inheritance_note": null,
+    "historical_attribution_caveat": "FIT direction: ZeRO saves memory at communication cost; it does not reduce training FLOPs."
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:5e09bbc97f0fb5da",
+  "basis": {
+    "task_sha256": "7bcbd6e3408f2cbe3a7fbe785c7f1f6badfdddc58d15d88434da279365deb44a",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "kimi-linear-2025",
+      "canonical_name": "Kimi Linear: An Expressive, Efficient Attention Architecture (Moonshot AI, 2025)",
+      "entity_type": "PAPER",
+      "organization": "Moonshot AI",
+      "canonical_url": "https://arxiv.org/abs/2510.26692"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "kimi-linear-2025",
+    "artifact_type": "PAPER",
+    "canonical_name": "Kimi Linear: An Expressive, Efficient Attention Architecture (Moonshot AI, 2025)",
+    "canonical_url": "https://arxiv.org/abs/2510.26692"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-10-29",
+        "subject_id": "kimi-linear-2025",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2510.26692",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Kimi Linear: Expressive, Efficient Attention Architecture",
+      "published_at": "2025-10-29",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "KDA extends GDN with finer gating; bespoke DPLR-variant chunkwise algorithm; KDA/full-attention 3:1 interleave preserving global flow; identical-recipe wins over full MLA with KV -75% and 6x decode @1M (48B/3B); open KDA kernel + vLLM + checkpoints, drop-in compatible (no cache/scheduler changes).",
+      "subject_id": "kimi-linear-2025",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Body-consumed abstract + architecture/results sections."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Report license is CC BY-NC-ND 4.0 — non-commercial, no-derivatives: material reuse constraint for the deployment lane (distinct from model weight licensing).",
+      "subject_id": "kimi-linear-2025",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "License fact from report front matter."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Fair-comparison per-task tables at section scope; independent reproduction open (D028).",
+      "subject_id": "kimi-linear-2025",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Body consumed at section level + license fact; per-task tables outstanding as limitation.",
+        "subject_ids": [
+          "kimi-linear-2025"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "fair-comparison and KV/decode claims",
+        "status": "VERIFIED",
+        "finding": "Identical-recipe protocol + bounds recorded; figures first-party.",
+        "subject_ids": [
+          "kimi-linear-2025"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

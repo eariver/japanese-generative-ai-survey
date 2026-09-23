@@ -1,0 +1,785 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "p6-serving",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "2105cb377a8cb6efa9955a8a65328769dd66a82bfa09fbff88207505517a8de9",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse Spark",
+    "model": "muse-spark-1.3",
+    "invocation": "TS-001 reissue drafting-synthesis: 9-package Japanese long-form synthesis from approved Architecture r1; evidence-bounded prose with vendor-claim quarantine and abstract-scope guards",
+    "generated_at": "2026-09-23T02:01:17.448426+09:00",
+    "run_reference": "ts001-reissue-drafting-v1-20260922"
+  },
+  "headline": "効率的なモデルも、さばき方が粗ければ無駄になる",
+  "deck": "重みを軽くし構造を賢くしても、記憶の断片化や同じ計算の繰り返し、読み込みと生成の噛み合わせの悪さが残れば利益は漏れる。束ね方と使い回し、分担と受け渡し、核と通信と基盤の整え方から、運用で消える無駄をたどる。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:2473d6aebf4893eb",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "pagedattention-vllm-2023",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:2473d6aebf4893eb",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "pagedattention-vllm-2023",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:93112c6b0161c5a4",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "splitwise-2023",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:93112c6b0161c5a4",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "splitwise-2023",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:58933a2e23602cf1",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "mooncake-2024",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:58933a2e23602cf1",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "mooncake-2024",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:58933a2e23602cf1",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "mooncake-2024",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p6-serving-b01",
+      "block_type": "PARAGRAPH",
+      "text": "大規模言語モデルの運用で最初に詰まるのは、重みの大きさではなく生成途中に膨らむ記憶である。要求ごとに文脈長も生成長もばらつくため、連続した広い領域を要求ごとに確保すると隙間が増え、空きがあるのに新規要求を入れられない断片化が起きる。到着順に少しずつ処理を進める束ね方を徹底しようとしても、記憶の置き方が粗ければ待ちが増えるだけであり、同時接続を増やすほど非効率が目立つ。ここでの転換点は、鍵と値の履歴を連続領域として抱え込まず、小さな塊に分けて必要な分だけ結び付けて管理する発想である。塊単位になれば再利用や受け渡しの単位も揃い、空きの再利用が細かく回る。断片化が減ることは単なる節約ではなく、同時処理の自由度を広げる土台になる。到着順に束ね直し、短い生成を長い待ちの隙間に埋め込むような連続的な束ね方は、この記憶管理があって初めて安定する。期限や同時接続数の制約の下では、詰まりの原因が計算量ではなく置き場所の取り合いであることが多く、置き方の巧拙が応答の約束を左右する。塊管理は空きの再利用を細かく回すだけでなく、優先度や期限に応じた差し替えをしやすくし、運用の約束を守りやすくする。その後の接頭辞再利用や分離構成、外部への退避はいずれも、履歴を塊として照合し移動できることを前提にしており、この層の有無が後段の工夫の効きを決める。共通の指示文や文書を毎回計算し直す無駄は、この土台の上で初めて系統的に減らせる。この土台の理解は後段の再利用や分離や退避を読み解く鍵になり、管理の粒度を揃えることが全体の回転を上げる近道である。本稿では詳細な表設計や条件付き測定の全体には踏み込まず、確立した機構としての役割に限って扱う。伝えたいのは、構造が巧妙なモデルでも記憶の管理と束ね方が粗ければ運用の効率は伸びず、運用の無駄は内側の賢さだけでは解消できないという順序である。効率的な構造を持ち込んでも、さばき方が非効率なら利益は漏れる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2473d6aebf4893eb",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "pagedattention-vllm-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2473d6aebf4893eb",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "pagedattention-vllm-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2473d6aebf4893eb",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "pagedattention-vllm-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:deccb2250a7e1ff9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "vllm-apc-docs",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:deccb2250a7e1ff9",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "vllm-apc-docs",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:deccb2250a7e1ff9",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "vllm-apc-docs",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p6-serving-b02",
+      "block_type": "PARAGRAPH",
+      "text": "対話や道具呼び出しを重ねる使い方では、同じ前置きを何度も計算し直す無駄が膨らむ。指示文や文書、会話履歴を共有する要求が並ぶのに、要求ごとに独立に処理すれば同じ接頭辞の計算が繰り返され、待ち時間も資源も漏れ続ける。特に多段階の自動処理では、似た文脈でモデルを何度も呼び出すため、重なりの放置が全体の重さを決めてしまう。呼び出し回数が増えるほど、一回ごとの賢さより重なりをどう捌くかが支配的になる。ここでの工夫は、接頭辞の共有関係を木のように捉え、一致する部分の計算結果を使い回すことである。構造化された複数呼び出しを前提にすると、どの枝がどれだけ共有できるかが見渡せ、再計算の回避が系統的になる。制約付き生成のための状態管理を圧縮して持つ発想も、同じ枝刈りの延長にあり、生成の道筋を共有の単位で捉え直している。さらに、再利用の仕組みを特定の実行機構の内部に閉じ込めず、外部の層として切り出して複数の機構から使えるようにする発想がある。保存や退避や受け渡しを外側で担えば、機構ごとの作り替えなしに再利用と退避を組み合わせられ、構成の変更に強い。使い回しの設計は応答の速さだけでなく費用の読みやすさにも効き、同じ計算を省ける見通しが立てば同時処理の計画が立てやすくなる。粒度の違いも重要で、塊の照合による再利用と木による管理は互いに含み合う関係ではなく、得意な共有の形が異なる。どちらか一方が他方を包摂するものとして語らず、使い分けとして理解すべきである。重なりの管理は一度作れば終わりではなく、利用の変化に合わせて見直す運用作業である。本稿では設計の細部や条件付き評価の全体には踏み込まず、繰り返し呼び出しの無駄を減らす確立した役割に限って述べる。呼び出し回数が増えるほど、モデルの賢さより使い回しの設計が全体の重さを決め、運用の巧拙が勘定に現れる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:09954c962da34ee3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "sglang-paper-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:09954c962da34ee3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "sglang-paper-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:09954c962da34ee3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "sglang-paper-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:a868dae3a1b78059",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lmcache",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:a868dae3a1b78059",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lmcache",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:a868dae3a1b78059",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "lmcache",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p6-serving-b03",
+      "block_type": "PARAGRAPH",
+      "text": "生成は前半と後半で性質が異なる。前半は文脈を一気に読み込む計算中心の段階であり、後半は一つずつ言葉を紡ぐ記憶帯域中心の段階である。両者を同じ資源プールで同じさばき方に縛ると、どちらかに合わせた調整がもう一方の無駄になる。前半の詰まりを捌こうと並べ方を変えれば後半の待ちが延び、後半の応答を守ろうとすれば前半の回転が落ちる。性質の違う仕事を一つの机でこなさせる限り、調整の皺寄せは必ずどこかに出る。ここでの発想は、段階ごとに適した資源の集まりを用意し、役割分担で全体をならすことである。前半向きの集まりと後半向きの集まりに分ければ、それぞれの詰まりに合わせた並べ方ができ、得意な資源に得意な段階を寄せられる。異種の資源を混ぜる場合も、段階の性質に合わせた割り付けが肝になり、計算と帯域の得手不得手を見極める目が要る。ただし分離には代償がある。生成途中の記憶を受け渡す転送が新たに生まれ、特化の利益と受け渡しの費用の釣り合いが問われる。特化の利益は受け渡しの費用を差し引いた残りで評価すべきであり、総量だけでの比較は誤解を招く。記憶を分散した共有資源として束ね、必要に応じて高速な転送で結ぶ考え方は、この釣り合いを運用する土台になる。計算機内の階層や複数台にまたがる置き場所を意識し、記憶を第一級の資源として扱う視点である。段階の性質を見極めずに資源を増やしても、詰まりの場所が移るだけで全体は軽くならない。保持層を厚く持てる構成では再計算の回避が効き、待ちのばらつきを抑えやすくなる一方、保持自体にも費用がかかり置き場所の使い分けが問われる。本稿では分離の配置解析や費用表、分散保持の手順や評価の全体には踏み込まず、確立した役割の範囲で扱い、補完的な記録に基づく部分は抽象の範囲に留める。分離は万能の解ではなく、転送を払ってでも分ける価値がある条件を見極める運用判断であり、効率化の出発点である。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:93112c6b0161c5a4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "splitwise-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:93112c6b0161c5a4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "splitwise-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:93112c6b0161c5a4",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "splitwise-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58933a2e23602cf1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "mooncake-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58933a2e23602cf1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "mooncake-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58933a2e23602cf1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "mooncake-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58933a2e23602cf1",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "mooncake-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58933a2e23602cf1",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "mooncake-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p6-serving-b04",
+      "block_type": "PARAGRAPH",
+      "text": "同時処理では、長い入力の読み込みが短い応答の生成を邪魔するという噛み合わせの悪さが出る。読み込みを一括で入れると生成側が待たされ、生成を優先すると読み込み側の資源が空く。どちらを優先してももう一方が痩せるという構図が、運用の調整を難しくする。泡のような空きを埋める発想が、読み込みを小さな断片に分けて生成の合間に滑り込ませるやり方である。断片化すれば生成の遅れを抑えながら読み込みを進められ、全体の詰まりがほぐれる。読み込みの膨らみが応答の遅れに滲み出さないよう区切り方を整えることが肝であり、詰め込みの巧拙が体感の遅さに直結する。この調整は単なる詰め込みではなく、処理量と応答の遅れの釣り合いをどう取るかという運用の勘所につながる。後続の展開は、その釣り合いを運用条件に合わせて整え、処理量と遅れの折り合いを運用側から捉え直す方向に進んだと位置づけられる。追加的な整理は置き換えではなく積み増しであり、噛み合わせの設計が運用条件ごとに磨かれてきたことを示す。運用条件が変われば最適な区切り方も変わるため、一つの正解を固定せず調整の幅を持たせることが重要になる。噛み合わせの改善は地味だが効果は束ね全体に波及し、同時処理の上限を押し上げる。読み込みと生成を別物として扱わず、一つの流れとして整える視点が要る。本稿では分割手順の細部や得失の分析、評価の全体には踏み込まず、補完的な記録に基づく確立した役割の範囲で述べる。こうしたさばき方の工夫は、実装側の文書や実行経路の選択肢として折りたたまれ、利用者が意識せず恩恵を受ける形に落ち着く。文書で示される対応関係は特定構成での確認に留まり、他構成への転用は慎むべきである。詰まりは構造の巧拙ではなく、噛み合わせの設計で解けることがある。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:9073dccdccc41f52",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "sarathi-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:9073dccdccc41f52",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "sarathi-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:9073dccdccc41f52",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "sarathi-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:9073dccdccc41f52",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "sarathi-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:9073dccdccc41f52",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "sarathi-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2836153a624e03aa",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "vllm-deepseek-v41-docs",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2836153a624e03aa",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "vllm-deepseek-v41-docs",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2836153a624e03aa",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "vllm-deepseek-v41-docs",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p6-serving-b05",
+      "block_type": "PARAGRAPH",
+      "text": "運用の軽さは、待ち行列の工夫だけでは決まらない。復号の核となる計算、専門家並列の通信、数値表現の土台が揃って初めて、待ちを減らす設計が生きる。いくら束ね方を磨いても、一段ごとの計算や受け渡しが重ければ全体は軽くならない。圧縮された注意の復号に寄せた核は、構造側の工夫と対になる実行側の工夫であり、復号の重さを直接引き受ける。構造の効率化だけでは届かない実行の重さを、核の側から引き下げる役割である。多数の専門家に分散する構成では、分散と結合の通信が全体の重さを左右し、通信のさばき方が計算の工夫と同じ重みを持つ。計算の双子に対して通信の双子と呼べる位置づけであり、どちらが欠けても大規模な混合構成は回らない。行列積を細かな粒度で低精度化する土台は、大規模な学習の数値的な成立を支え、学習と運用をつなぐ。形式の工夫を実装に落とす接着剤がなければ、精度と速度の釣り合いは机上の話に留まり、現場の重さは変わらない。複数の技法を一つの実行基盤に同居させる共有核の考え方は、個別の最適化を組み合わせて使えるようにする接着剤である。注意や疎性や推測的生成など、異なる系統の工夫が同じ基盤の上で組み合わさることで、運用全体の無駄が減る。世代の異なる資源への対応も、この共有層が吸収することで運用側の作り替えが抑えられる。核と通信と数値基盤の三層が揃って初めて、待ち行列の工夫が実を結ぶ。いずれか一つが弱いと全体の上限が下がるため、部分最適ではなく全体の釣り合いで見るべきである。本稿では核の実装や数値解析、通信量の測定や対応表の全体には踏み込まず、確立した役割に限って述べ、個別の高速化数値は引用しない。土台が弱ければ上物の工夫は頭打ちになり、土台の整備こそが運用効率の上限を押し上げる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:1173800888bed890",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "flashmla",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:1173800888bed890",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "flashmla",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:1173800888bed890",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "flashmla",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8ffb8da4034204e8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepep",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8ffb8da4034204e8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepep",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8ffb8da4034204e8",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepep",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:420bc86ebf52a9b1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepgemm",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:420bc86ebf52a9b1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepgemm",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:420bc86ebf52a9b1",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepgemm",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p6-serving-b06",
+      "block_type": "PARAGRAPH",
+      "text": "運用の仕上げでは、既存の先読み部品を外して別の推測の仕組みに置き換えるといった選択が現れる。置き換えは単なる取り替えではなく、どの推測だけを正統な手段とするかという設計判断であり、運用の振る舞いを変える。外す理由と選ぶ理由が対になって初めて、置き換えは運用の一貫性を保てる。仕様の置き換えと実行の受け皿は対で進み、文書側の対応と共有核側の対応が揃って初めて通常の選択肢として落ち着く。共有核の整備や実行文書の対応が進めば、置き換えた手段も特定の実行経路に組み込まれ、利用者からは通常の選択肢として見えるようになる。運用者にとっての関心は個別の部品名ではなく、どの組み合わせが約束された振る舞いをするかにあり、文書と実装の対応がその約束を支える。公開された導入手順は生きた文書であり、特定の固定構成での確認はその構成での測定に留まる。他の画像や上限設定、異なる資源量への転用は保証されず、文書の更新に伴う揺らぎを前提に読むべきである。構造の効率と運用の効率は別の勘定であり、両者を混同すると投資の順序を誤る。まず漏れを塞ぎ、次に構造の利益を取り込む順序が堅実である。合成的な受け入れ確認は測定としての意味に留まり、実運用の拒否動作とは切り分けて読むべきである。測定条件を離れた一般化は慎み、作業負荷に結び付いた条件付きの事実として扱う姿勢が要る。論文級の分解評価が存在しない部分については、測定値を一般の速さとして語らず、条件付きの事実に留める。本特集の一貫した含意は、構造が効率的でもさばき方が粗ければ利益は漏れ、運用の設計こそが効率の上限を決めるということである。効率は模型の内部ではなく、記憶と待ちと受け渡しの設計で完成する。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:b5d4b9763960cee7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "dspark-bundle",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:b5d4b9763960cee7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "dspark-bundle",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:b5d4b9763960cee7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "dspark-bundle",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:eb3679083ecd38a3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "flashinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:eb3679083ecd38a3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "flashinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:eb3679083ecd38a3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "flashinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:4603e979402caa89",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "vllm-v41-recipe",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:4603e979402caa89",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "vllm-v41-recipe",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:4603e979402caa89",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "vllm-v41-recipe",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:4603e979402caa89",
+          "kind": "CLAIM",
+          "evidence_id": "claim-4",
+          "subject_id": "vllm-v41-recipe",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:4603e979402caa89",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "vllm-v41-recipe",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:4603e979402caa89",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "vllm-v41-recipe",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p6-serving-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: D061/D062 supplement-bound identities, abstract-scope; D163 AMD-refusal and MTP-module-drop boundaries preserved; release-level recipe authority, line-level detail outstanding. / Full-body block-table design and throughput tables not consumed. / Full-body scheduler design and speedup tables not consumed. / Full-body placement analysis and cost tables not consumed. / Full paper body (disaggregation protocol, evaluation) outstanding. / Canonical locator amendment deferred to Sol. / Full bodies (chunking algorithm, tradeoff analysis, evaluations) outstanding. / No paper-grade ablations exist; acceptance numbers are workload-measured only (InferenceX golden 3.51 in benchmark config). / Kernel code and benchmark tables not consumed. / Library code and benchmark numbers not consumed. / version binding at Evidence: No version pin extracted. / Kernel code and numerics analysis not consumed. / Kernel code and coverage matrix not consumed. / Docs page not fetched separately; claims rest on D163 consumption and Discovery summary. / version binding: Doc-to-release version pin not extracted. / Docs page not fetched; mechanism scoped to established role. / version binding: No version pin extracted. / Repository not fetched; API/backend matrix outstanding. / Recipe is living documentation (nightly drift); pinned-config validation does not transfer to other images or scheduler caps. / Throughput-mode synthetic acceptance is measurement-only; EVAL_ONLY=true (real rejection) governs serving.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2473d6aebf4893eb",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "pagedattention-vllm-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:09954c962da34ee3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "sglang-paper-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:93112c6b0161c5a4",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "splitwise-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58933a2e23602cf1",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "mooncake-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:58933a2e23602cf1",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "mooncake-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:9073dccdccc41f52",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "sarathi-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:9073dccdccc41f52",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "sarathi-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:b5d4b9763960cee7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "dspark-bundle",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:1173800888bed890",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "flashmla",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:8ffb8da4034204e8",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepep",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:420bc86ebf52a9b1",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepgemm",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:eb3679083ecd38a3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "flashinfer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2836153a624e03aa",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "vllm-deepseek-v41-docs",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:deccb2250a7e1ff9",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "vllm-apc-docs",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:a868dae3a1b78059",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "lmcache",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:4603e979402caa89",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "vllm-v41-recipe",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:4603e979402caa89",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "vllm-v41-recipe",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "EFF-O08",
+      "block_ids": [
+        "p6-serving-b01",
+        "p6-serving-b02",
+        "p6-serving-b03",
+        "p6-serving-b04",
+        "p6-serving-b05",
+        "p6-serving-b06",
+        "p6-serving-boundaries"
+      ]
+    },
+    {
+      "requirement": "EFF-O15",
+      "block_ids": [
+        "p6-serving-b01",
+        "p6-serving-b02",
+        "p6-serving-b03",
+        "p6-serving-b04",
+        "p6-serving-b05",
+        "p6-serving-b06",
+        "p6-serving-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "D061/D062 supplement-bound identities, abstract-scope; D163 AMD-refusal and MTP-module-drop boundaries preserved; release-level recipe authority, line-level detail outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body block-table design and throughput tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body scheduler design and speedup tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body placement analysis and cost tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full paper body (disaggregation protocol, evaluation) outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Canonical locator amendment deferred to Sol.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full bodies (chunking algorithm, tradeoff analysis, evaluations) outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "No paper-grade ablations exist; acceptance numbers are workload-measured only (InferenceX golden 3.51 in benchmark config).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Kernel code and benchmark tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Library code and benchmark numbers not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "version binding at Evidence: No version pin extracted.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Kernel code and numerics analysis not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Kernel code and coverage matrix not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Docs page not fetched separately; claims rest on D163 consumption and Discovery summary.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "version binding: Doc-to-release version pin not extracted.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Docs page not fetched; mechanism scoped to established role.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "version binding: No version pin extracted.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Repository not fetched; API/backend matrix outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Recipe is living documentation (nightly drift); pinned-config validation does not transfer to other images or scheduler caps.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Throughput-mode synthetic acceptance is measurement-only; EVAL_ONLY=true (real rejection) governs serving.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p6-serving-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}

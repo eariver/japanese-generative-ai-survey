@@ -1,0 +1,110 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:37ec251ef35b5db8",
+  "basis": {
+    "task_sha256": "53d0cdb4b0069676d4f394821c333b718440c9f5e6f06f0215a516ac64f49c41",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "tensorrt-llm",
+      "canonical_name": "TensorRT-LLM (NVIDIA production kernel stack)",
+      "entity_type": "PRODUCT",
+      "organization": "NVIDIA",
+      "canonical_url": "https://github.com/NVIDIA/TensorRT-LLM"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "tensorrt-llm",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "TensorRT-LLM (NVIDIA production kernel stack)",
+    "canonical_url": "https://github.com/NVIDIA/TensorRT-LLM"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/NVIDIA/TensorRT-LLM",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "TensorRT-LLM (NVIDIA production kernel stack)",
+      "published_at": null,
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "TensorRT-LLM provides day-zero Qwen3.8-Flash-Next support as NVIDIA's production kernel stack.",
+      "subject_id": "tensorrt-llm",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Support fact; consistent with D080 GB300 coverage."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Production-stack support is the deployability leg for the Qwen capstone alongside vLLM/SGLang paths.",
+      "subject_id": "tensorrt-llm",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Coverage significance."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Repository not fetched; supported-version details outstanding.",
+      "subject_id": "tensorrt-llm",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Day-zero support role corroborated via D080 NVIDIA blog record; repo audit outstanding.",
+        "subject_ids": [
+          "tensorrt-llm"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "version/precision binding",
+        "status": "UNRESOLVED",
+        "finding": "Exact supported-version/precision matrix not pinned.",
+        "subject_ids": [
+          "tensorrt-llm"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "version/precision binding: Exact supported-version/precision matrix not pinned."
+    ],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:e1f751a159101aed",
+  "basis": {
+    "task_sha256": "7fbe8e62606dee02784feaef6d21e464073c728c1cfec18bbc39a73bc2d0e4d5",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "typesafe-system-one-concepts",
+      "canonical_name": "TypeSafe docs: System One concepts + Introduction",
+      "entity_type": "PRODUCT",
+      "organization": "TypeSafe AI",
+      "canonical_url": "https://docs.typesafe.ai/concepts/system-one"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "typesafe-system-one-concepts",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "TypeSafe docs: System One concepts + Introduction",
+    "canonical_url": "https://docs.typesafe.ai/concepts/system-one"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://docs.typesafe.ai/concepts/system-one",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "TypeSafe docs: System One concepts + Introduction",
+      "published_at": null,
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "System One models evaluate a state and return typed answers via Choice/Score/Noul primitives with per-output confidence, all questions in parallel.",
+      "subject_id": "typesafe-system-one-concepts",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Concepts page fully consumed this pass."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Calibration is measured across groups of predictions and does not guarantee any individual answer; Jev is text-only, English-primary, with 255-cardinality handling via two-stage score-then-choose.",
+      "subject_id": "typesafe-system-one-concepts",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Documented limits; calibration-group caveat is first-party."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Decomposition guidance (atomic questions, code-side combination, confidence-gated escalation) defines suitable task classes: classify/route/score/extract/branch inside deterministic workflows.",
+      "subject_id": "typesafe-system-one-concepts",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Usage semantics per docs; suitability boundary for the Jev case study."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Behavioral calibration quality and non-English accuracy untested independently.",
+      "subject_id": "typesafe-system-one-concepts",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "API-reference contract details belong to D142, not this page.",
+      "subject_id": "typesafe-system-one-concepts",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Concepts page fully consumed: primitives, calibration semantics, limits, workflow role extracted.",
+        "subject_ids": [
+          "typesafe-system-one-concepts"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

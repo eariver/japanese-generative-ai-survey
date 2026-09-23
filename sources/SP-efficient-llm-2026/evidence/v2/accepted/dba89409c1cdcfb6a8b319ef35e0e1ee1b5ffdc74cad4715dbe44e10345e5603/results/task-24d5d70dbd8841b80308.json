@@ -1,0 +1,110 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:85459117fec5dfad",
+  "basis": {
+    "task_sha256": "703a578caf2d8684bcce17c20920c1ddc7f000a137980ea718fbef910ba480a1",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "glm5-github",
+      "canonical_name": "zai-org/GLM-5 GitHub (IndexShare, MTP, deployment matrix)",
+      "entity_type": "PRODUCT",
+      "organization": "Z.ai",
+      "canonical_url": "https://github.com/zai-org/GLM-5"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "glm5-github",
+    "artifact_type": "MODEL",
+    "canonical_name": "zai-org/GLM-5 GitHub (IndexShare, MTP, deployment matrix)",
+    "canonical_url": "https://github.com/zai-org/GLM-5"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/zai-org/GLM-5",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "zai-org/GLM-5 GitHub (IndexShare, MTP, deployment matrix)",
+      "published_at": null,
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The GLM-5 repo documents IndexShare (2.9x FLOPs at 1M), MTP acceptance gains (+20%), and the SGLang/vLLM/KTransformers/Ascend deployment matrix.",
+      "subject_id": "glm5-github",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Repo-reported figures; deployment-matrix role corroborated by D052/D054."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "IndexPool remains unresolved and is cited for no fact.",
+      "subject_id": "glm5-github",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Boundary statement."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Repo not fetched; IndexShare/MTP figures unconfirmed beyond repo reporting.",
+      "subject_id": "glm5-github",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Deployment-matrix role recorded; repo body outstanding.",
+        "subject_ids": [
+          "glm5-github"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "IndexPool resolution",
+        "status": "UNRESOLVED",
+        "finding": "IndexPool identity unresolved; Sol judgment whether to pursue.",
+        "subject_ids": [
+          "glm5-github"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "IndexPool resolution: IndexPool identity unresolved; Sol judgment whether to pursue."
+    ],
+    "contradictions": []
+  }
+}

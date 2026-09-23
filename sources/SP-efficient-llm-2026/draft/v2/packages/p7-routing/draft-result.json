@@ -1,0 +1,613 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "p7-routing",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "1c1ef1138256bc188586d43b0ab118e825af2757204092bb49308726e56d76ab",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse Spark",
+    "model": "muse-spark-1.3",
+    "invocation": "TS-001 reissue drafting-synthesis: 9-package Japanese long-form synthesis from approved Architecture r1; evidence-bounded prose with vendor-claim quarantine and abstract-scope guards",
+    "generated_at": "2026-09-23T02:01:17.448426+09:00",
+    "run_reference": "ts001-reissue-drafting-v1-20260922"
+  },
+  "headline": "大きなモデルを毎回呼ぶ必要はあるか──安い順に試し、要所で特化型を使う設計",
+  "deck": "すべての問いを最大のモデルに投げるのではなく、安価なモデルから段階的に引き継ぐカスケードと、問いごとに適したモデルへ振り分ける学習型ルーティングを、成果と脆さの両面から整理する。生成を置き換えるものではない特化型の事例も、提供元による主張と未確認の限界を区別して位置づけ、料金や精度の数字は条件付きの報告として読み解く。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:bc0e22ead791eba3",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "frugalgpt-2023",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:bc0e22ead791eba3",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "frugalgpt-2023",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:c5e0f329ab5bec9b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "router-fragility-2026",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:c5e0f329ab5bec9b",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "router-fragility-2026",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:5491a3053d02fc3f",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "typesafe-jev-launch",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:5491a3053d02fc3f",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "typesafe-jev-launch",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:5491a3053d02fc3f",
+      "kind": "CLAIM",
+      "evidence_id": "claim-3",
+      "subject_id": "typesafe-jev-launch",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p7-routing-b1",
+      "block_type": "PARAGRAPH",
+      "text": "すべての問いをいきなり最大のモデルに投げるのではなく、安価で軽いモデルから順に試し、足りなければ強いモデルへ引き継ぐというのがカスケードの基本的な発想である。問いに対する採点器と、どのモデルへ振るかを決める振り分け器、そしてここで止めてよいかを判断する打ち切り判定を組み合わせ、精度を保ちながら全体の計算量や利用料を抑える。プロンプトの工夫や近似による代替も同じ枠組みの中で選択肢として扱われ、手順全体を課題ごとの費用対効果の観点から設計する。ここで見逃せないのは、料金体系がモデルごとに異なる点である。入力と出力のどちらに重く課金するかは一様ではなく、ある組み合わせでは入力が軽く出力が重く、別の組み合わせでは両方に課金されるなど、前提が大きく異なる。しかも料金の並び順自体が対象の課題によって変わるため、予算に余裕がある場合でもどのモデルを選ぶかが効率を左右する。つまりカスケードは単なる節約術ではなく、課題特性と料金構造を踏まえた割り当て問題として理解すべきものである。打ち切りの閾値を緩めれば費用は下がるが取りこぼしが増え、厳しくすれば精度は保たれるが費用が膨らむため、閾値の調整自体が設計の核心になる。運用ではトークン単価ではなく課題完遂あたりの費用で捉え、振り分けの当たり外れを記録して見直す仕組みが欠かせない。ただし本稿では当時の料金体系に基づく報告として扱い、現在の価格にはそのまま当てはめない。最適化の定式化の全体や詳細な数表の再現には立ち入らず、仕組みと考え方に焦点を当てる。評価では同等の精度を保ちながら大幅な削減が報告されているとされるが、条件や対象によって振れ幅がある点に注意が必要である。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:bc0e22ead791eba3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "frugalgpt-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:bc0e22ead791eba3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "frugalgpt-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:bc0e22ead791eba3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "frugalgpt-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p7-routing-b2",
+      "block_type": "PARAGRAPH",
+      "text": "問いごとに強いモデルと弱いモデルを使い分ける学習型の振り分けでは、問いの難しさや性質を見極める予測器が要になる。代表的な手法では、人手の好みデータから勝敗予測を学び、強いモデルが必要な問いだけを強いモデルへ回す。学習には数万件規模の対戦データや、判定的なモデルによる評価で拡張されたデータが用いられ、複数の知識・対話・数学系の評価軸と汚染対策を組み合わせて検証したとされる。対戦データは多様なモデル群から集められ、不足分を機械判定で補うことで規模を確保したと説明されている。狙いは、簡単な問いを安価にさばき、難しい問いだけに高価な計算を充てることで、全体としての費用対効果を高めることにある。ただし好みの分布は時間とともに変わり、学習時の分布と運用時の分布がずれれば予測の当たり外れも変わる。この古びの問題は、振り分けの有効性を条件付きにする本質的な制約である。判定を担うモデル自体の偏りや、評価用データの混入対策の限界も、結果の読み方に影響する。詳細な成果数表や構造の比較検討には立ち入らず、データと予測に基づく振り分けという設計思想と、その前提条件に焦点を当てる。弱いモデルで十分な問いを正しく見分けられれば節約になるが、見誤れば精度が落ち、逆に強いモデルに回しすぎれば費用が膨らむ。振り分け器自体の運用コストや保守も無視できない。したがって学習型振り分けは、万能の節約装置ではなく、分布の近さと見極め精度に依存する条件付きの仕組みとして捉えるべきである。導入時には対象課題での試測と閾値調整、結果の記録と定期的な学び直しの要否の検討が欠かせない。費用の見立てはトークン単価ではなく課題完遂あたりで捉え直す必要がある。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d7c557013c1a26b8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "routellm-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d7c557013c1a26b8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "routellm-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d7c557013c1a26b8",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "routellm-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p7-routing-b3",
+      "block_type": "PARAGRAPH",
+      "text": "振り分けによる節約の話には、必ず留保条件を付けなければならない。好みデータで学んだ振り分け器は、分布が変わると脆さを見せることが指摘されている。学習時と同じような問いが来る間は節約と精度の両立が成り立っても、話題や言い回し、難しさの分布がずれると、強いモデルに回すべき問いを弱いモデルで済ませたり、その逆が起きたりしやすくなる。つまり振り分けの利得は無条件ではなく、振り分け器と課題の相性が保たれている範囲でのみ成立する条件付きのものである。この指摘は、先行する節約の報告を否定するものではなく、正しく使うための条件を付け足す役割を果たす。節約の報告と脆さの指摘は対立するものではなく、後者が前者の適用範囲を明確にする関係にある。どのようなずれに弱く、どのような一致があれば保たれるかは、要約として伝えられている範囲にとどまり、本文の詳細な条件分けには立ち入らない。一般化して語れる段階にはなく、条件の細部は未確認として扱うのが筋である。したがって本稿では、分布が変わっても一律に成り立つ一般則としては扱わず、適用時には対象データでの確認が欠かせないという教訓として位置づける。運用では定期的な見直しと、振り分けの当たり外れを監視する仕組みが前提になる。節約の見込みを語る際には、どの分布で測られた話なのかを添えて読む習慣が重要であり、条件を外して切り取るべきではない。安易な一般化を避け、自前の分布での試測を重ねる姿勢が求められる。振り分けは便利な節約の仕掛けであると同時に、監視と手入れを怠れば静かに劣化する部品でもある。振り分け器の更新を止めたまま運用を続ければ、話題の移り変わりとともに静かに精度が崩れる恐れがある。費用の記録と精度の標本点検を並走させ、閾値の再調整を運用手順に組み込むことが現実的な構えである。節約の期待は、監視と手入れの費用を含めた総費用で評価すべきである。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:c5e0f329ab5bec9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "router-fragility-2026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:c5e0f329ab5bec9b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "router-fragility-2026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:c5e0f329ab5bec9b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "router-fragility-2026",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p7-routing-b4",
+      "block_type": "PARAGRAPH",
+      "text": "生成で長い文章を作る代わりに、状態を受け取って型付きの確率的な答えを返すという特化型の事例がある。並列に動作する標本抽出器と独自の学習手法の組み合わせで作られ、文字列の生成ではなく選択肢の選択や点数付けといった操作を直接行うと説明されている。学習手法の内部詳細は公開されておらず、外形的には並列性と出力の意味づけの範囲で理解するしかない。概念としては、選択や採点などの基本操作に確信度を添えて返し、複数の問いを一括で並列に処理する。確信度は多くの予測を束ねた集計としての較正を意図したもので、個々の答えの正しさを保証するものではないと説明されている。入力は文章のみで英語中心であり、選択肢が多い場合には点数付けの後に選択を行う二段階の扱いが用意されているとされる。型によって誤りが出ない作りであるとも説明されているが、これも提供元による説明の範囲であり、独立した確認は未了として扱う。使い方としては、問いを細かく砕き、組み立ては決定論的な処理側で行い、確信度が低いときだけ上位の処理へ逃がすという分解が推奨されている。分類や振り分け、採点、抽出、分岐といった、流れの中の判断部分に向くという位置づけであり、自由な文章生成を置き換えるものではない。較正の実質的な質や英語以外の精度は独立には確かめられておらず、手元の内容で試すことが前提とされている。契約の細部には立ち入らず、仕組みの割り切りと向き不向きを捉えることが本稿の狙いである。置き換えではなく使い分けの事例として読むべきである。確信度で足切りして人の確認や上位の処理へ回す設計にすれば、誤りの影響を抑えながら自動化率を上げやすい。一方で確信度の質自体が未検証である以上、閾値の決め打ちは危険であり、標本点検との併用が欠かせない。得意な判断切り分けに絞って使うことが、現時点での現実的な使い方である。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5491a3053d02fc3f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "typesafe-jev-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5491a3053d02fc3f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "typesafe-jev-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5491a3053d02fc3f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "typesafe-jev-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5491a3053d02fc3f",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "typesafe-jev-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5491a3053d02fc3f",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "typesafe-jev-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:e1f751a159101aed",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "typesafe-system-one-concepts",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:e1f751a159101aed",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "typesafe-system-one-concepts",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:e1f751a159101aed",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "typesafe-system-one-concepts",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:e1f751a159101aed",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "typesafe-system-one-concepts",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:e1f751a159101aed",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "typesafe-system-one-concepts",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p7-routing-b5",
+      "block_type": "PARAGRAPH",
+      "text": "提供元は、この特化型について高速性と低廉さをうたっている。短時間での応答や、従来の大型モデルに対する大幅な速度・費用の優位が、自社で組んだ業務処理の評価として示されているとされる。ただし測定は特定の手元の環境から行われ、処理手順の作り手や比較対象の動かし方、幻覚率の出典などに偏りがあり得ることが、提供元自身の注意書きとしても開示されている。比較対象の動かし方に独自の包みが挟まる点や、参照回答の偏りなども開示されており、数字を額面通りに受け取ることはできない。したがってこれらは確立した事実ではなく、提供元による主張として受け止める必要がある。独立した再現は未確認であり、速度や価格、処理量の主張はその留保付きで扱う。文書では入力課金で出力無料という料金形や、単位時間あたりの処理量と要求数の上限、要求全体の文脈長の内訳、文章入力のみといった運用条件が示されているとされる。別名指定では背後の版が変わり得るため、応答に含まれる版表示で記録すべきとされ、顧客ごとに個別調整されるものではなく共通の重みを状態や指示で使い分けると説明されている。学習手法の中身は開示されず、共有の重みを使うという説明にとどまる。英語以外の精度は弱いことが明記され、手元の内容での確認が推奨されている。文書通りに振る舞うかどうかも独立には確かめられておらず、運用前の試測と記録が欠かせない点に留意が必要である。価格や処理上限は文書時点の記載であり、将来の変更や別名の指す先の移動によって変わり得る。評価に用いた別名の解決先を記録し、版表示と突き合わせて読む運用が求められる。日本語を含む多言語での弱さが明記されている点も、導入前の確認事項として重い。運用条件の読み違えは、そのまま精度と費用の読み違えにつながる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5491a3053d02fc3f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "typesafe-jev-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5491a3053d02fc3f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "typesafe-jev-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5491a3053d02fc3f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "typesafe-jev-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5491a3053d02fc3f",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "typesafe-jev-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5491a3053d02fc3f",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "typesafe-jev-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:deaa552e6dcabb5b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "typesafe-models-page",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:deaa552e6dcabb5b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "typesafe-models-page",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:deaa552e6dcabb5b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "typesafe-models-page",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:deaa552e6dcabb5b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "typesafe-models-page",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:deaa552e6dcabb5b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "typesafe-models-page",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p7-routing-b6",
+      "block_type": "PARAGRAPH",
+      "text": "この特化型をめぐる外部の情報は、補強的な位置づけにとどまる。有志の覚え書きは、文脈長や料金、応答速度の水準について一次文書と整合的な記録を残しているとされるが、仕様の典拠にはならない。日付や編集経緯が定まらず書き換え可能な性質上、版や価格、上限の確認には使わないのが筋である。覚え書きの内容が一次文書と一致していることは、正確さを裏付ける独立証拠ではなく、あくまで現時点での一致の記録として扱う。愛好者による再現の集積地も、類似の仕組みを試す手がかりを集めている段階とされ、一つひとつの中身を精査したわけではなく、査読を経た独立再現が確認されたわけでもない。評価の状況は手がかり止まりであり、確立した裏付けがある段階にはない。つまり現時点では、仕組みの再現や性能の裏付けは手がかり止まりであり、確立した置き換え技術として扱うことはできない。応答の型や確信度の導出など契約の細部は、照会先の資料に属する事柄であり本稿では立ち入らない。較正を確かめる公開手順も見当たらないというのが現状の記録であり、確信度の読み替えには慎重さが求められる。以上を踏まえ、本稿ではこの事例を、定型の判断を安く速くさばくための現時点での特化策として位置づけ、生成一般の代替とは区別する。導入の可否は、自前の課題での試測と監視を前提に判断すべきであり、主張と限界を切り離さずに読むことが重要である。現時点での特化策という位置づけは、将来の発展を否定するものではなく、確認の水準が上がるまでは代替として語らないという留保である。採用するにしても小さな範囲から試し、確信度の振る舞いと誤りの出方を記録し、置き換えではなく前段のさばき役として使うのが筋である。振り分けの前段に置くなど、全体設計の中での居場所を見定める視点が欠かせない。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:12870c497dc1834f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "jev-wiki-snapshot",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:12870c497dc1834f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "jev-wiki-snapshot",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:12870c497dc1834f",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "jev-wiki-snapshot",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:efa04c22bda6758f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "awesome-jev",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:efa04c22bda6758f",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "awesome-jev",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:efa04c22bda6758f",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "awesome-jev",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2e9cc18a2ca831a7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "typesafe-api-ref",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2e9cc18a2ca831a7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "typesafe-api-ref",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2e9cc18a2ca831a7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "typesafe-api-ref",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p7-routing-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: Jev presented as a current specialization case, never as an established generative-LLM replacement; vendor claims bounded by missing independent reproduction and unresolved public calibration protocol; D157 summary-scope constrains fragility generalizations; D072 explicitly not specification authority. / Independent reproduction of latency/price/accuracy claims outstanding (D073 community leads only). / RLCD algorithm internals not disclosed on this page; architecture detail limited to sampler/output semantics. / Behavioral calibration quality and non-English accuracy untested independently. / API-reference contract details belong to D142, not this page. / Behavioral compliance with documented limits untested independently. / Non-English (incl. CJK) accuracy explicitly weaker; test-on-own-content warning recorded. / Full cascade-optimization formulation outstanding; prices stale by construction. / Savings/results tables not extracted; router-architecture ablations outstanding. / Paper body not consumed; fragility conditions at summary level. / Snapshot date and edit provenance not established; wiki content mutable. / Hub contents not audited lead-by-lead; independent evaluation status remains LOW_SIGNAL per X corpus (D162). / Reference page not fetched; schema/confidence-derivation details outstanding. / calibration protocol gap: No public calibration protocol located; independent evidence NOT FOUND retained.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5491a3053d02fc3f",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "typesafe-jev-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:5491a3053d02fc3f",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "typesafe-jev-launch",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:e1f751a159101aed",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "typesafe-system-one-concepts",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:e1f751a159101aed",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "typesafe-system-one-concepts",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:deaa552e6dcabb5b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "typesafe-models-page",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:deaa552e6dcabb5b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "typesafe-models-page",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:bc0e22ead791eba3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "frugalgpt-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d7c557013c1a26b8",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "routellm-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:c5e0f329ab5bec9b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "router-fragility-2026",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:12870c497dc1834f",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "jev-wiki-snapshot",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:efa04c22bda6758f",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "awesome-jev",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:2e9cc18a2ca831a7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "typesafe-api-ref",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "EFF-O10",
+      "block_ids": [
+        "p7-routing-b1",
+        "p7-routing-b2",
+        "p7-routing-b3",
+        "p7-routing-b4",
+        "p7-routing-b5",
+        "p7-routing-b6",
+        "p7-routing-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "Jev presented as a current specialization case, never as an established generative-LLM replacement; vendor claims bounded by missing independent reproduction and unresolved public calibration protocol; D157 summary-scope constrains fragility generalizations; D072 explicitly not specification authority.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p7-routing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Independent reproduction of latency/price/accuracy claims outstanding (D073 community leads only).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p7-routing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "RLCD algorithm internals not disclosed on this page; architecture detail limited to sampler/output semantics.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p7-routing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Behavioral calibration quality and non-English accuracy untested independently.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p7-routing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "API-reference contract details belong to D142, not this page.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p7-routing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Behavioral compliance with documented limits untested independently.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p7-routing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Non-English (incl. CJK) accuracy explicitly weaker; test-on-own-content warning recorded.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p7-routing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full cascade-optimization formulation outstanding; prices stale by construction.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p7-routing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Savings/results tables not extracted; router-architecture ablations outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p7-routing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Paper body not consumed; fragility conditions at summary level.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p7-routing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Snapshot date and edit provenance not established; wiki content mutable.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p7-routing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Hub contents not audited lead-by-lead; independent evaluation status remains LOW_SIGNAL per X corpus (D162).",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p7-routing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Reference page not fetched; schema/confidence-derivation details outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p7-routing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "calibration protocol gap: No public calibration protocol located; independent evidence NOT FOUND retained.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p7-routing-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}

@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:62312681e205b812",
+  "basis": {
+    "task_sha256": "c4c51b30c677e0254d53b674e5d10be8ae91e4ea82a93db6e3d30ac209145d3e",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "zero-offload-2021",
+      "canonical_name": "ZeRO-Offload: Democratizing Billion-Scale Model Training (Ren et al., 2021)",
+      "entity_type": "PAPER",
+      "organization": "Microsoft Research",
+      "canonical_url": "https://arxiv.org/abs/2101.06840"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "zero-offload-2021",
+    "artifact_type": "PAPER",
+    "canonical_name": "ZeRO-Offload: Democratizing Billion-Scale Model Training (Ren et al., 2021)",
+    "canonical_url": "https://arxiv.org/abs/2101.06840"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2021-01",
+        "subject_id": "zero-offload-2021",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2101.06840",
+      "source_class": "PRIMARY_PAPER",
+      "title": "ZeRO-Offload / ZeRO-Infinity (heterogeneous memory)",
+      "published_at": "2021-01",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "ZeRO-Offload trains 13B+ models on a single GPU by offloading data and compute to CPU with minimized data movement, reaching 40 TFLOPs/GPU on V100 for 10B models.",
+      "subject_id": "zero-offload-2021",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline scale + throughput figures; abstract consumed (2101.06840)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Bandwidth-aware heterogeneous offload is the conceptual ancestor of host-offload inference (Qwen PLE tables, V4.1 Engram CPU offload).",
+      "subject_id": "zero-offload-2021",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Lineage synthesis to D008/D163."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body scheduling design not consumed.",
+      "subject_id": "zero-offload-2021",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2101.06840): heterogeneous offload + 40-TFLOPs figure confirmed; full body outstanding.",
+        "subject_ids": [
+          "zero-offload-2021"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "research_profile": "THEMATIC",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:24470a0e00e95a70",
+  "evidence_sha256": "05b4ebca3ac597ba3d3c974488080914e380659a9e50c0e2130ce545a0014c16",
+  "materiality": {
+    "status": "MATERIAL",
+    "rationale": "HF transformers GLM5-next doc: hybrid sparse+linear, mHC, 30T; vendor ratios; transformers impl excludes MTP layer."
+  },
+  "scope_dimensions": [
+    "attention_sequence_kv_cache",
+    "capstone_2026_models"
+  ],
+  "profile_annotations": {
+    "lineage_role": "CORE",
+    "branch_ids": [
+      "capstone-2026-v41",
+      "attention-kv"
+    ],
+    "transition_ids": [
+      "model-to-framework-port"
+    ],
+    "inheritance_note": null,
+    "historical_attribution_caveat": "3.0x-attention/4.4x-KV ratios are vendor-relative (vs GLM-5.3); framework port coverage (MTP excluded) conditions reuse claims."
+  }
+}

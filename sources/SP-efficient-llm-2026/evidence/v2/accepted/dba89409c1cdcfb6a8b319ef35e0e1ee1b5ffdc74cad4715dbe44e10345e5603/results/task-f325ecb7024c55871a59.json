@@ -1,0 +1,110 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:f5921063de88097f",
+  "basis": {
+    "task_sha256": "b7cae21b90a7f7014a7ea280dbfa0ac60fa0d32087853e11d6e305e65b1ad359",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "sglang",
+      "canonical_name": "SGLang + RadixAttention (sgl-project)",
+      "entity_type": "PRODUCT",
+      "organization": "sgl-project community",
+      "canonical_url": "https://github.com/sgl-project/sglang"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "sglang",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "SGLang + RadixAttention (sgl-project)",
+    "canonical_url": "https://github.com/sgl-project/sglang"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/sgl-project/sglang",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "SGLang + RadixAttention",
+      "published_at": null,
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "SGLang's RadixAttention organizes KV prefixes in a radix tree for cross-request reuse, extending paged management with prefix-aware sharing.",
+      "subject_id": "sglang",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Project-role level; mechanism per D055 paper abstract."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "SGLang serves as day-zero runtime for Qwen3.8-Flash-Next and V4.1 deployment paths per capstone records.",
+      "subject_id": "sglang",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Adoption facts per D127/D129/D163."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Repository not fetched; mechanism details rest on the paper record D055.",
+      "subject_id": "sglang",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Radix-reuse mechanism corroborated via D055 abstract; day-zero role via capstone records; repo audit outstanding.",
+        "subject_ids": [
+          "sglang"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "version binding at Evidence",
+        "status": "UNRESOLVED",
+        "finding": "No version pin extracted.",
+        "subject_ids": [
+          "sglang"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "version binding at Evidence: No version pin extracted."
+    ],
+    "contradictions": []
+  }
+}

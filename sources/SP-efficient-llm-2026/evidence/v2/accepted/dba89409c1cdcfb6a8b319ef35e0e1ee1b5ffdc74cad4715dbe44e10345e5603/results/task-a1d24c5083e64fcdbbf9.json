@@ -1,0 +1,191 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:58e8e9fa36d96a2d",
+  "basis": {
+    "task_sha256": "074b6cdf1765f31c80d937f7bb7bc97c8f5644871dc5041a3feb415e49bf0b6e",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "swe-bench-pro",
+      "canonical_name": "SWE-Bench Pro: Can AI Agents Solve Long-Horizon Software Engineering Tasks? (Deng et al.)",
+      "entity_type": "PAPER",
+      "organization": "Scale AI et al.",
+      "canonical_url": "https://arxiv.org/abs/2503.01324"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "swe-bench-pro",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "SWE-Bench Pro: Can AI Agents Solve Long-Horizon Software Engineering Tasks? (Deng et al.)",
+    "canonical_url": "https://arxiv.org/abs/2503.01324"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-09-21T06:28:17Z",
+        "subject_id": "swe-bench-pro",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-2f561e2e32b9f5f6"
+        ]
+      },
+      {
+        "event_id": "event-2",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-09-21T06:28:17Z",
+        "subject_id": "swe-bench-pro",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "supplement-src-da141b8265766ca3"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "supplement-src-2f561e2e32b9f5f6",
+      "url": "https://arxiv.org/abs/2509.16941",
+      "source_class": "PRIMARY_PAPER",
+      "title": "SWE-Bench Pro: Can AI Agents Solve Long-Horizon Software Engineering Tasks? (Deng et al.)",
+      "published_at": "2025-09-21T06:28:17Z",
+      "accessed_at": "2026-09-22T14:00:00Z",
+      "role": "Post-Screening exact authority supplement: Corrected identity authority for SWE-bench-Pro: bound locator 2503.01324 is an unrelated federated-learning paper; this arXiv identity record is the true benchmark paper."
+    },
+    {
+      "source_id": "supplement-src-da141b8265766ca3",
+      "url": "https://arxiv.org/html/2509.16941v2",
+      "source_class": "PRIMARY_PAPER",
+      "title": "SWE-Bench Pro full text v2 (results: public/commercial splits, frontier <45% Pass@1)",
+      "published_at": "2025-09-21T06:28:17Z",
+      "accessed_at": "2026-09-22T14:00:00Z",
+      "role": "Post-Screening exact authority supplement: Full-text authority for SWE-bench-Pro scale/split/results figures (1,865 problems, 41 repos, public/commercial/held-out, contamination-resistant collection)."
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "SWE-bench-Pro (arXiv 2509.16941, supplement identity + full-text Raws) contains 1,865 human-verified problems across 41 repos with public/commercial/held-out splits and contamination-resistant collection with human augmentation.",
+      "subject_id": "swe-bench-pro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "supplement-src-2f561e2e32b9f5f6",
+        "supplement-src-da141b8265766ca3"
+      ],
+      "context": "Supplement Raw scope (abs record + full-text excerpts)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Frontier models score below 45% Pass@1 on the public set (GPT-5 ~23%, Claude Opus 4.1 ~23%) vs over 70% on SWE-bench Verified — the saturation-gap datapoint motivating Pro.",
+      "subject_id": "swe-bench-pro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "supplement-src-2f561e2e32b9f5f6",
+        "supplement-src-da141b8265766ca3"
+      ],
+      "context": "Results excerpts from the captured full text; harness/scaffold binding outstanding."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "The follow-up SWE-Bench Pro Verified (arXiv 2609.08149) adds anti-hacking controls and LLM-assisted filtering over 731 instances.",
+      "subject_id": "swe-bench-pro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "supplement-src-2f561e2e32b9f5f6",
+        "supplement-src-da141b8265766ca3"
+      ],
+      "context": "Identity-level gap-fill; body not captured."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "The bound Discovery locator (2503.01324) resolves to an unrelated federated-learning paper; no claim cites it.",
+      "subject_id": "swe-bench-pro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "supplement-src-2f561e2e32b9f5f6",
+        "supplement-src-da141b8265766ca3"
+      ],
+      "context": "Verified via arXiv API."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-text section-level consumption outstanding (captured 597KB Raw available for Sol-directed follow-up).",
+      "subject_id": "swe-bench-pro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "supplement-src-2f561e2e32b9f5f6",
+        "supplement-src-da141b8265766ca3"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Public vs commercial vs held-out figures must never be mixed; per-figure scaffold pins outstanding.",
+      "subject_id": "swe-bench-pro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "supplement-src-2f561e2e32b9f5f6",
+        "supplement-src-da141b8265766ca3"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Canonical locator amendment deferred to Sol.",
+      "subject_id": "swe-bench-pro",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "supplement-src-2f561e2e32b9f5f6",
+        "supplement-src-da141b8265766ca3"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Supplement identity + full-text Raws captured and consumed at excerpt scope; section-level read outstanding.",
+        "subject_ids": [
+          "swe-bench-pro"
+        ],
+        "source_ids": [
+          "supplement-src-2f561e2e32b9f5f6",
+          "supplement-src-da141b8265766ca3"
+        ]
+      },
+      {
+        "target": "isolate exact Pro variant + body",
+        "status": "VERIFIED",
+        "finding": "Pro variant isolated (public/commercial/held-out + Verified follow-up); body captured as immutable Raw and bound; deep read deferred with explicit limitation.",
+        "subject_ids": [
+          "swe-bench-pro"
+        ],
+        "source_ids": [
+          "supplement-src-2f561e2e32b9f5f6",
+          "supplement-src-da141b8265766ca3"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

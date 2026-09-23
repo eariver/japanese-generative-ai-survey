@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:6d577fabc40c9e66",
+  "basis": {
+    "task_sha256": "fb82397f98a5141e325d7c631dcd2cc22fb55e08161388166328c988bfd1a9c6",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "mistral-7b-2023",
+      "canonical_name": "Mistral 7B (Jiang et al., 2023)",
+      "entity_type": "PAPER",
+      "organization": "Mistral AI",
+      "canonical_url": "https://arxiv.org/abs/2310.06825"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "mistral-7b-2023",
+    "artifact_type": "PAPER",
+    "canonical_name": "Mistral 7B (Jiang et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2310.06825"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-10-10",
+        "subject_id": "mistral-7b-2023",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2310.06825",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Mistral 7B report (sliding-window attention anchor)",
+      "published_at": "2023-10-10",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The Mistral 7B report establishes sliding-window attention combined with GQA as a production local-attention baseline.",
+      "subject_id": "mistral-7b-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Architecture facts; abstract-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "SWA is the reference local-attention pattern against which NSA/DSA/CSA sparse-global designs and SWA-replay schemes are compared.",
+      "subject_id": "mistral-7b-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Taxonomic role in the Special."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body SWA ablation tables not consumed.",
+      "subject_id": "mistral-7b-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2310.06825): SWA + GQA baseline identity confirmed; full body outstanding.",
+        "subject_ids": [
+          "mistral-7b-2023"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

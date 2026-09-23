@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:f6646a1b6b3869e2",
+  "basis": {
+    "task_sha256": "b3fb12693c8c34fce9275936691b6016aa4329c7772cba20f85a62ed00b3bd95",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "mxfp4-deployment-evidence",
+      "canonical_name": "MXFP4/FP4-expert deployment evidence (V4 line + vLLM dispatch)",
+      "entity_type": "PRODUCT",
+      "organization": "DeepSeek-AI/vLLM",
+      "canonical_url": "https://docs.vllm.ai/en/latest/api/vllm/models/deepseek_v41/"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "mxfp4-deployment-evidence",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "MXFP4/FP4-expert deployment evidence (V4 line + vLLM dispatch)",
+    "canonical_url": "https://docs.vllm.ai/en/latest/api/vllm/models/deepseek_v41/"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://docs.vllm.ai/en/latest/api/vllm/models/deepseek_v41/",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "MXFP4/FP4-expert deployment evidence (V4 line + vLLM dispatch)",
+      "published_at": null,
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "MXFP4 (E2M1 microscaling, 4.25 bits with scale) experts are serving-critical in the 2026 V4-line, dispatched per-expert via expert_dtype paths.",
+      "subject_id": "mxfp4-deployment-evidence",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Deployment facts fully corroborated by consumed D163 recipe (MXFP4 routed experts, UE8M0 scales, B200 paths)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The MXFP4/MXFP8 checkpoint split (FP4 experts, MXFP8 dense, BF16 embeddings/head) is the concrete native-low-bit deployment instance.",
+      "subject_id": "mxfp4-deployment-evidence",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Checkpoint composition per D163."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "vLLM dispatch code not audited; claims rest on recipe documentation.",
+      "subject_id": "mxfp4-deployment-evidence",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "FP4-expert deployment facts consumed via D163 recipe page; dispatch code audit outstanding.",
+        "subject_ids": [
+          "mxfp4-deployment-evidence"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "hardware conditions",
+        "status": "VERIFIED",
+        "finding": "B200-class conditionality for FP4 expert paths confirmed via D163; no cross-hardware generalization.",
+        "subject_ids": [
+          "mxfp4-deployment-evidence"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

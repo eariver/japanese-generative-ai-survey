@@ -1,0 +1,25 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "research_profile": "THEMATIC",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:492df8d0c65e7d4a",
+  "evidence_sha256": "31cfe4afbe16089203ecc86fdc020352e10bbf4f5b434300747d19dc5feb1d1d",
+  "materiality": {
+    "status": "MATERIAL",
+    "rationale": "Per-token depth routing; NOT MoE (depth vs expert routing object differs)."
+  },
+  "scope_dimensions": [
+    "conditional_compute_moe"
+  ],
+  "profile_annotations": {
+    "lineage_role": "CORE",
+    "branch_ids": [
+      "conditional-compute-moe"
+    ],
+    "transition_ids": [
+      "expert-routing-to-depth-routing"
+    ],
+    "inheritance_note": null,
+    "historical_attribution_caveat": "Depth routing routes tokens to layers, not to experts; MoD-vs-MoE conflation prohibited."
+  }
+}

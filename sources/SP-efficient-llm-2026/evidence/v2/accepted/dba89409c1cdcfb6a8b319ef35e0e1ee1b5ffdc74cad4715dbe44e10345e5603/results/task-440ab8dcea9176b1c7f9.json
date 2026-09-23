@@ -1,0 +1,110 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:b88787d501c62098",
+  "basis": {
+    "task_sha256": "5b7771c8fbf54c396c72830820f9d597e4f73e75e4733e904bf4e1c5e45b88ad",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "vllm-mtp-docs",
+      "canonical_name": "vLLM speculative decoding with Multi-Token Prediction (documentation)",
+      "entity_type": "ORGANIZATION",
+      "organization": "vLLM Project",
+      "canonical_url": "https://docs.vllm.ai/en/latest/features/speculative_decoding/mtp"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "vllm-mtp-docs",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "vLLM speculative decoding with Multi-Token Prediction (documentation)",
+    "canonical_url": "https://docs.vllm.ai/en/latest/features/speculative_decoding/mtp"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://docs.vllm.ai/en/latest/features/speculative_decoding/mtp",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "vLLM MTP speculative-decoding documentation",
+      "published_at": null,
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "vLLM documents target-native MTP speculative decoding in which the model's own MTP layers draft, requiring no separate draft model.",
+      "subject_id": "vllm-mtp-docs",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Documentation-level; consistent with D129 GLM MTP deployment matrix."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The documented path is the deployment vehicle for GLM-5.3-Flash DeepSeek-style MTP serving.",
+      "subject_id": "vllm-mtp-docs",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Linkage corroborated by D052/D129."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Docs page body not fetched; claims scoped to Discovery summary with downstream corroboration.",
+      "subject_id": "vllm-mtp-docs",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Documented-path role corroborated via D052/D129 deployment records; page body outstanding.",
+        "subject_ids": [
+          "vllm-mtp-docs"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "runtime version binding",
+        "status": "UNRESOLVED",
+        "finding": "Exact doc revision / supported-version floor not pinned from this page.",
+        "subject_ids": [
+          "vllm-mtp-docs"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "runtime version binding: Exact doc revision / supported-version floor not pinned from this page."
+    ],
+    "contradictions": []
+  }
+}

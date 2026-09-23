@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:35e6870e65717160",
+  "basis": {
+    "task_sha256": "d92a8294371f699f041d9900bd7e16af544da3af0f05014e541b58e80c909938",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "muon-optimizer",
+      "canonical_name": "Muon optimizer reference implementation (Keller Jordan)",
+      "entity_type": "FRAMEWORK",
+      "organization": "Community (Keller Jordan)",
+      "canonical_url": "https://github.com/KellerJordan/Muon"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "muon-optimizer",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "Muon optimizer reference implementation (Keller Jordan)",
+    "canonical_url": "https://github.com/KellerJordan/Muon"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/KellerJordan/Muon",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "Muon optimizer reference implementation",
+      "published_at": null,
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Muon applies Newton-Schulz orthogonalization to gradient updates, reported by Qwen3.8-Flash-Next and DeepSeek-V4-line reports as improving training stability and permitting higher learning rates.",
+      "subject_id": "muon-optimizer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "AUTHOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Adoption facts per D008/D124 abstracts; optimizer theory at established-knowledge level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The bound locator is the community reference implementation, not a paper; no convergence theorem is sourced to it.",
+      "subject_id": "muon-optimizer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Source-class boundary statement."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Repository code and experiment logs not audited; optimizer mathematics stated from community-established descriptions.",
+      "subject_id": "muon-optimizer",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Locator role confirmed (reference implementation); adoption corroborated by two first-party abstracts (2608.30320, 2606.19348).",
+        "subject_ids": [
+          "muon-optimizer"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "adoption claims in capstone reports",
+        "status": "VERIFIED",
+        "finding": "Qwen3.8-Next abstract: Muon shifts optimal LR/batch upward, removes warmup need. V4 abstract: Muon listed as key upgrade.",
+        "subject_ids": [
+          "muon-optimizer"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

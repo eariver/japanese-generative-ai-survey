@@ -1,0 +1,132 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:d42890f1dd0c0f89",
+  "basis": {
+    "task_sha256": "6d8521cb0c17d42857d992ac3277bd38e8e4af742143f926bbe4e20d04078aef",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "unsloth-glm53-docs",
+      "canonical_name": "Unsloth GLM-5.3-Flash local quantization authority (GGUF table, memory-fit guidance)",
+      "entity_type": "ORGANIZATION",
+      "organization": "Unsloth",
+      "canonical_url": "https://unsloth.ai/docs/models/glm-5.3-flash"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "unsloth-glm53-docs",
+    "artifact_type": "PRODUCT",
+    "canonical_name": "Unsloth GLM-5.3-Flash local quantization authority (GGUF table, memory-fit guidance)",
+    "canonical_url": "https://unsloth.ai/docs/models/glm-5.3-flash"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://unsloth.ai/docs/models/glm-5.3-flash",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "Unsloth GLM-5.3-Flash local quantization authority (GGUF table, memory-fit guidance, MTP claim context)",
+      "published_at": null,
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "GGUF availability confirmed: UD-IQ1_S 1-bit 93.09GB through BF16 ~642GB with per-quant top-1/KLD table (1-bit 70.89% top-1, 85% smaller; 3-bit 120GB/81.6%, 4-bit 200GB/92.2%); memory-fit guidance 1-bit ~100GB RAM, 3-bit 128-150GB; llama.cpp + Unsloth Desktop paths with UD-IQ3_XXS demo default.",
+      "subject_id": "unsloth-glm53-docs",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Docs page fully consumed this pass (unsloth.ai/docs/models/glm-5.3-flash); 320B/18B ox-alpha identity, 30T tokens, 1M context, Low/High/Max thinking, temp 1.0/top-p 0.95."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "MTP support implemented in the Unsloth llama.cpp fork (PR unslothai/llama.cpp#61 branch glm5next/upstream; distinct from ggml-org PR 27742 for Qwen); 3.3x-faster-inference claim is vendor-measured (B200 UD-IQ1_S tok/s table, n=2 MTP best) and requires independent confirmation.",
+      "subject_id": "unsloth-glm53-docs",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Implementation existence confirmed; speedup figures quarantined."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "Vendor benchmark table (Terminal-Bench 2.1 84.3, DeepSWE v1.1 63.4, Toolathlon 78.4 vs Opus 4.8/GPT-5.6 Terra/Gemini 3.7 Flash) is harness-bound vendor reporting, cited for no fact.",
+      "subject_id": "unsloth-glm53-docs",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Table quarantined in full."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "GGUF quality figures (top-1/KLD) are Unsloth-measured; independent quantization-quality verification outstanding.",
+      "subject_id": "unsloth-glm53-docs",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "llama.cpp fork PR contents not audited beyond the docs' description.",
+      "subject_id": "unsloth-glm53-docs",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Docs page fully consumed: GGUF table, memory-fit, runtime paths, MTP/fork, benchmarks extracted with boundaries.",
+        "subject_ids": [
+          "unsloth-glm53-docs"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "MTP claim independence",
+        "status": "UNRESOLVED",
+        "finding": "MTP speedup figures vendor-measured only; independent confirmation outstanding.",
+        "subject_ids": [
+          "unsloth-glm53-docs"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "MTP claim independence: MTP speedup figures vendor-measured only; independent confirmation outstanding."
+    ],
+    "contradictions": []
+  }
+}

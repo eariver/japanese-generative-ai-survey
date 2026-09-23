@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:7430354bb419ddef",
+  "basis": {
+    "task_sha256": "78a1c319eba0db18bdf9b352fb7130e060cf263c57f6b107e5277b138f59135e",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "ring-attention-2023",
+      "canonical_name": "Ring Attention with Blockwise Transformers for Near-Infinite Context (Liu et al., 2023)",
+      "entity_type": "PAPER",
+      "organization": "UC Berkeley/Google",
+      "canonical_url": "https://arxiv.org/abs/2310.01889"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "ring-attention-2023",
+    "artifact_type": "PAPER",
+    "canonical_name": "Ring Attention with Blockwise Transformers for Near-Infinite Context (Liu et al., 2023)",
+    "canonical_url": "https://arxiv.org/abs/2310.01889"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-10",
+        "subject_id": "ring-attention-2023",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2310.01889",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Ring Attention (Liu et al.)",
+      "published_at": "2023-10",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Ring Attention distributes blockwise attention/feedforward over devices in a ring with overlapped KV-block communication, extending trainable context by the device-count factor.",
+      "subject_id": "ring-attention-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline mechanism + scaling; abstract consumed (2310.01889)."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The record closes the r1 G08 sequence-parallelism gap in Discovery.",
+      "subject_id": "ring-attention-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Coverage statement."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body overlap analysis not consumed.",
+      "subject_id": "ring-attention-2023",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2310.01889): ring blockwise mechanism confirmed; full body outstanding.",
+        "subject_ids": [
+          "ring-attention-2023"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

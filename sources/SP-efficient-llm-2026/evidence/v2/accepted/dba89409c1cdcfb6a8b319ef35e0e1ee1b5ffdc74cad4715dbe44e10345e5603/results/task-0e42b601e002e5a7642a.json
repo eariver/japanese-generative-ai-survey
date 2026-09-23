@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:0605e6d3a07354b7",
+  "basis": {
+    "task_sha256": "a9eb23acd80355bab4c8c498e603e841dc997a7c2f18e15f62b75078f5a39adf",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "switch-transformer-2021",
+      "canonical_name": "Switch Transformers: Scaling to Trillion Parameter Models (Fedus et al., 2021)",
+      "entity_type": "PAPER",
+      "organization": "Google",
+      "canonical_url": "https://arxiv.org/abs/2101.03961"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "switch-transformer-2021",
+    "artifact_type": "PAPER",
+    "canonical_name": "Switch Transformers: Scaling to Trillion Parameter Models (Fedus et al., 2021)",
+    "canonical_url": "https://arxiv.org/abs/2101.03961"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2021-01-11",
+        "subject_id": "switch-transformer-2021",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2101.03961",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Switch Transformers (Fedus et al.)",
+      "published_at": "2021-01-11",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "Switch simplifies MoE routing to top-1 expert selection with load-balancing loss, trading routing expressivity for reduced communication and simpler dispatch.",
+      "subject_id": "switch-transformer-2021",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Headline result; abstract-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Top-1 vs top-k is the canonical routing-strategy tradeoff referenced when evaluating fine-grained and shared-expert variants (DeepSeekMoE, Qwen).",
+      "subject_id": "switch-transformer-2021",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Taxonomic linkage to D014/D015."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body scaling curves and multilingual tables not consumed.",
+      "subject_id": "switch-transformer-2021",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (2101.03961): top-1 routing simplification confirmed; full body outstanding.",
+        "subject_ids": [
+          "switch-transformer-2021"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

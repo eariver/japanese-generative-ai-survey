@@ -1,0 +1,110 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:a868dae3a1b78059",
+  "basis": {
+    "task_sha256": "cc126dd5de9735b688db3fcb8c9c3269c82fb7604ed4447ea2cca2e05f2e44bf",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "lmcache",
+      "canonical_name": "LMCache (external KV-cache layer)",
+      "entity_type": "PRODUCT",
+      "organization": "LMCache community",
+      "canonical_url": "https://github.com/LMCache/LMCache"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "lmcache",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "LMCache (external KV-cache layer)",
+    "canonical_url": "https://github.com/LMCache/LMCache"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": []
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/LMCache/LMCache",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "LMCache (external KV-cache layer)",
+      "published_at": null,
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "LMCache externalizes KV-cache reuse, offload, and disaggregation from any single engine, with Mooncake-class backends.",
+      "subject_id": "lmcache",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PROJECT_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Project-role level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Engine independence spans reuse category (4) and offload category (5), the composability instance for the serving lane.",
+      "subject_id": "lmcache",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Taxonomic significance."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Repository not fetched; API/backend matrix outstanding.",
+      "subject_id": "lmcache",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "External-KV-layer role recorded at project level; repo audit outstanding.",
+        "subject_ids": [
+          "lmcache"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "version binding",
+        "status": "UNRESOLVED",
+        "finding": "No version pin extracted.",
+        "subject_ids": [
+          "lmcache"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      "version binding: No version pin extracted."
+    ],
+    "contradictions": []
+  }
+}

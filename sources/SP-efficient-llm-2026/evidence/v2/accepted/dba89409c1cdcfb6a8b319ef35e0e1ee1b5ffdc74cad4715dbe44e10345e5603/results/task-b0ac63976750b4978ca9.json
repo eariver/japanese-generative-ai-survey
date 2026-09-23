@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "evidence_task_id": "evidence:SP-efficient-llm-2026:6f06664f78d4a54f",
+  "basis": {
+    "task_sha256": "3a5254df3a28ac9db38949316105ff2c0bdf07398825e9728371f7c767e50870",
+    "screening_acceptance_sha256": "65330476ff975c49fb4510f56d27942ec2b334b8ceed8a66b00639c659ec24fe",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "PARTIAL",
+  "entities": [
+    {
+      "entity_id": "mqa-2019",
+      "canonical_name": "Fast Transformer Decoding: One Write-Head Is All You Need / MQA (Shazeer, 2019)",
+      "entity_type": "PAPER",
+      "organization": "Google",
+      "canonical_url": "https://arxiv.org/abs/1911.02150"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "mqa-2019",
+    "artifact_type": "PAPER",
+    "canonical_name": "Fast Transformer Decoding: One Write-Head Is All You Need / MQA (Shazeer, 2019)",
+    "canonical_url": "https://arxiv.org/abs/1911.02150"
+  },
+  "temporal": {
+    "observed_at": "2026-09-22T15:00:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2019-11-12",
+        "subject_id": "mqa-2019",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1911.02150",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Fast Transformer Decoding: One Write-Head Is All You Need / MQA (Shazeer)",
+      "published_at": "2019-11-12",
+      "accessed_at": "2026-09-22T15:00:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "MQA shares a single key/value head across all query heads, cutting KV-cache footprint by roughly the head-count factor at some quality cost.",
+      "subject_id": "mqa-2019",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Established mechanism; abstract-level."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "MQA opens the KV-sharing lineage continued by GQA and MLA in this Special.",
+      "subject_id": "mqa-2019",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Lineage synthesis to D019/D015."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Full-body quality-degradation tables not consumed; no numeric tradeoff quoted.",
+      "subject_id": "mqa-2019",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Abstract consumed (1911.02150): single-write-head mechanism confirmed; full body outstanding.",
+        "subject_ids": [
+          "mqa-2019"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

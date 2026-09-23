@@ -1,0 +1,777 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-efficient-llm-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "package_id": "p2-scaling-moe",
+  "draft_version": "v1.0",
+  "status": "ESTABLISHED",
+  "basis": {
+    "draft_package_sha256": "a97d8efc6428715db00c3b17665b027da6ac05279f87f02d3c0acf63334ef9bd",
+    "prompt_id": "article-drafting-v2",
+    "prompt_sha256": "b687313312a23025228c16c3f10cb68f669b910cd7215e41886d4dd91f44fe11"
+  },
+  "runner": {
+    "provider": "Muse Spark",
+    "model": "muse-spark-1.3",
+    "invocation": "TS-001 reissue drafting-synthesis: 9-package Japanese long-form synthesis from approved Architecture r1; evidence-bounded prose with vendor-claim quarantine and abstract-scope guards",
+    "generated_at": "2026-09-23T02:01:17.448426+09:00",
+    "run_reference": "ts001-reissue-drafting-v1-20260922"
+  },
+  "headline": "「大きくする」から「必要な部分だけ動かす」へ",
+  "deck": "規模拡大の経験則を起点に、疎な混合専門家の系譜から細分化と共有化、総量と稼働量の経済学へとたどる。学習の割当と組成、常駐と通信の交換関係を整理し、同時代の実装点比較は後の章に譲る。",
+  "deck_attribution_mode": "MIXED",
+  "deck_evidence_refs": [
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:366a595212d83a25",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "shazeer-sparse-moe-2017",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:366a595212d83a25",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "shazeer-sparse-moe-2017",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:43ae3cf2f5ab8adb",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "deepseekmoe-2024",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:43ae3cf2f5ab8adb",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "deepseekmoe-2024",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:28b1d02d765111b4",
+      "kind": "CLAIM",
+      "evidence_id": "claim-1",
+      "subject_id": "deepseek-v2-2024",
+      "subject_role": "PRIMARY_SUBJECT"
+    },
+    {
+      "evidence_task_id": "evidence:SP-efficient-llm-2026:28b1d02d765111b4",
+      "kind": "CLAIM",
+      "evidence_id": "claim-2",
+      "subject_id": "deepseek-v2-2024",
+      "subject_role": "PRIMARY_SUBJECT"
+    }
+  ],
+  "blocks": [
+    {
+      "block_id": "p2-conditional-origin",
+      "block_type": "PARAGRAPH",
+      "text": "言語モデルの規模拡大は、パラメータとデータと計算をそろえて増やすほど性能が伸びるという経験則に支えられてきた。緻密なモデルではすべてのトークンがすべてのパラメータの計算を負担するため、能力を上げようとすればそのまま計算量と費用が膨らみ、記憶容量や装置間通信の壁にも早くぶつかる。何にどれだけ割くかという配分の問題も意識されるようになり、量を積むだけでなく構成を整える視点が生まれた。配分と組成の工夫は後の学習効率の議論へとつながり、疎化と並ぶもう一つの柱になる。この行き詰まりをほどいたのが、容量と計算を切り離す条件付き計算の発想である。学習されたゲーティングがトークンごとにごく一部の専門家だけを選び出し、残りは休ませることで、総パラメータ数を増やしてもトークンあたりの計算を抑えられる。均等に割り振るための補助損失が添えられ、特定の専門家への偏りを抑える仕組みも一体で示されたことが重要である。この組み合わせは後の多様な振り分け方式の起点となり、系統全体を見通す鍵になる。ここでは細かな数式や長期系列での実験表には立ち入らず、仕組みの要点だけを調査水準で受け取る。この着想を巨大規模で現実にする方向へ進めたのが、専門家並列と自動分割の系統である。専門家を複数装置に分散配置し、トークンを振り分けて処理することで、単一装置の記憶容量を超える規模が扱えるようになった。振り分け先があふれた場合の容量係数による扱いや、分割をコンパイラが管理可能にする工夫が、後の兆級モデルの学習基盤の前提となった。翻訳ベンチマークの細部や分割注記の全体には踏み込まず、疎な拡大を可能にした体制側の前進として押さえる。総量と稼働量を分けて考える習慣もここに始まり、後の稼働量と常駐量の経済学へとつながる。同時代の実装点同士の優劣比較はここでは行わず、系譜と割当の仕組みに集中する。この視点が後のすべての効率化の議論の土台になる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:366a595212d83a25",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "shazeer-sparse-moe-2017",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:366a595212d83a25",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "shazeer-sparse-moe-2017",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:366a595212d83a25",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "shazeer-sparse-moe-2017",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d5f319ebd7547eff",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "gshard-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d5f319ebd7547eff",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "gshard-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d5f319ebd7547eff",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "gshard-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-routing-economy",
+      "block_type": "PARAGRAPH",
+      "text": "疎な層をどう振り分けるかは、質と通信と運用の三つ巴の設計問題になった。振り分けを一人だけに絞る方式は、仕組みを単純化し、装置間のやり取りと割り当ての管理を軽くする道を開いた。複数の専門家を見比べる豊かさは薄れる代わりに、実装と拡張の見通しが良くなり、巨大化の実務に適した形となった。トークンあたり一人か複数かという選択は、以降の細分化や共有専門家を評価する際の基準となり、方式の系譜を整理する物差しとして残った。負荷を均すための補助的な仕掛けと一体で運用される点も、以後の方式に受け継がれた共通項であり、偏りと効率の交換関係を考える手がかりになる。ここでは規模拡大曲線や多言語の評価表には踏み込まず、単純化が何を節約し何を手放したかという交換関係だけを調査水準で受け取る。対照的に、専門家側がトークンを選ぶ方式は、視点を反転させたもう一つの到達点である。各専門家が受け持てる量を固定し、トークンごとに選ばれる数が変わるため、容量の管理が明確になり、負荷の偏りへの向き合い方が変わる。あふれや偏りをどう扱うかという容量設計の考え方は、先の容量係数の議論とも通底し、運用の安定に直結する。トークンが専門家を選ぶ方式、専門家がトークンを選ぶ方式、そして後に現れる補助損失を排した方式とで、振り分けの分類軸が整ったことも重要である。事前学習の高速化の定量分析には立ち入らず、方式の違いが通信量や待避や常駐のどこに効くかという水準で整理する。いずれも万能ではなく、装置構成や系列長や運用条件で損得が変わる点に注意が要る。この整理が、細分化と共有化の後継を読み解く土台になり、稼働量と通信の勘所へとつながる。数値の断片的な比較ではなく、条件付きの設計判断として読む姿勢を保ちたい。運用の文脈を添えて理解することが肝になる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:0605e6d3a07354b7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "switch-transformer-2021",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:0605e6d3a07354b7",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "switch-transformer-2021",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:0605e6d3a07354b7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "switch-transformer-2021",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:e4d268c52516fbda",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "expert-choice-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:e4d268c52516fbda",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "expert-choice-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:e4d268c52516fbda",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "expert-choice-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-fine-grained-branch",
+      "block_type": "PARAGRAPH",
+      "text": "専門家を細かく砕き、共通の知識を担う共有専門家を添える設計は、条件付き計算の使い方を一段と経済的にした。細分化された専門家が専門語彙のように振る舞い、汎用的な部分は共有部が引き受けることで、組み合わせの表現力と通信の節度を両立させる狙いがある。装置をまたぐ転送を抑えるため、振り分け先の装置数を絞る工夫も一体で示され、分散時の持ち運びの重さに配慮が及んでいる。専門家数を増やしても稼働させるのは一部という原則は保たれ、総量の拡大がそのまま計算の増大に直結しない点が肝になる。組み合わせの多様さが上がる一方で、管理すべき割当や保持の複雑さも増すため、運用との見合いが問われる。ここでは専門家粒度の走査などの詳細な比較表には踏み込まず、抽象水準の仕組みとして受け取る。この機構を受け継いだ分岐点として、注意機構の圧縮と疎な計算を同時に前面に出した大規模モデルが現れた。総量236Bに対して稼働21Bという姿で示され、鍵と値の保持を圧縮する機構と疎な演算を組み合わせることで、記憶と計算の双方に手を打つ姿勢が明確になった。以降の鍵値圧縮の系統を条件づける出発点としても位置づけられ、系列の記憶と専門家の運用の二つを同時に考える流れが生まれた。定式化の全体や評価表の数値には立ち入らず、確立した水準の構成的事実として押さえる。後の稼働量と常駐量の経済学は、この分岐の延長で理解できる。比較条件の違いを超えた優劣の断定はせず、機構の組み合わせとして読む姿勢を保ちたい。粒度や共有の有無が運用のどこに効くかを見極めることが、この段階での読みどころであり、次の経済学への確かな橋渡しになる。通信と記憶の両面から設計を捉える習慣がここで身につく。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:43ae3cf2f5ab8adb",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepseekmoe-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:43ae3cf2f5ab8adb",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepseekmoe-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:43ae3cf2f5ab8adb",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseekmoe-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:28b1d02d765111b4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepseek-v2-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:28b1d02d765111b4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepseek-v2-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:28b1d02d765111b4",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseek-v2-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-active-residency",
+      "block_type": "PARAGRAPH",
+      "text": "総量と稼働量を分けて見る習慣が定着すると、巨大さの印象は大きく変わる。開かれた重みで広く使われた方式は、8x7B構成でトークンごとに二つの専門家を選び、稼働量を約13Bに抑える姿として確立した水準で知られた。詳細な経路分析や評価表の数値には踏み込まず、構成的事実として受け取る。この公開を境に、専門家の常駐や待避、振り分けの上乗せ費用といった運用の論点が共有の課題となり、研究室の外での手触りが生まれたことが重要である。巨大な重みを手元でどう保持し、必要な分だけをどう載せ替えるかという観点が、効率の議論に定着した。どの専門家が選ばれやすいかという偏りや、載せ替えの頻度が体感速度を左右する点も意識されるようになった。別の大規模な系譜では、総量236Bに対して稼働21Bに抑えられた構成が示され、疎さによる節約が定量的な姿を伴って現れた。こちらも確立した水準の構成的事実として受け取り、注意圧縮の定式化や評価表の数値比較には立ち入らない。二つの事例は、総量の競争から稼働量と常駐量の設計へと関心が移ったことを物語る。計算の節約は記憶の負担と引き換えであり、動かさない重みもどこかに置かねばならず、通信と保持の費用が残る。分散配置では専門家の置き場所と呼び出しの頻度が通信量を左右し、単体装置では載せ替えと待避の設計が使い勝手を決める。運用条件や系列長で損得が変わるため、単純な大小比較は意味を持たない。この交換関係を直視することが、学習基盤と運用の議論への準備になる。優劣の断定ではなく、稼働と常駐の見取り図として読む姿勢が大切である。同時代の実装点同士の比較はここでは行わず、経済学の枠組みの確立に集中して次へ進む。見取り図の共有が後の議論の土台になる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:89ac03731df4162b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "mixtral-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:89ac03731df4162b",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "mixtral-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:89ac03731df4162b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "mixtral-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:28b1d02d765111b4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepseek-v2-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:28b1d02d765111b4",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepseek-v2-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:28b1d02d765111b4",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseek-v2-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-fp8-foundation",
+      "block_type": "PARAGRAPH",
+      "text": "疎な大規模化が現実の学習として回るには、低精度演算の土台が欠かせない。総量671Bの混合専門家モデルで、混合精度による大規模学習が実生産として示されたことは、その結節点である。細かな粒度での量子化と行列演算の積み重ねが支えとなり、数値の安定と速度を両立させる方向が示された。ここでは学習基盤や評価表の全体には踏み込まず、概要水準の構成的事実として受け取り、数値の優劣は論じない。行列演算庫の側では、細粒度の低精度演算を担う実装がこの学習の片翼となり、形式の工夫が大規模学習の実行可能性に直結することが示された。区画ごとの倍率調整が大規模な低精度学習を数値的に成り立たせる要点とされるが、核の符号や数値解析の詳細には立ち入らず、役割水準の理解にとどめる。同じ系譜では、複数トークンの予測を学習目的に取り込む試みも示され、後の対象適合的な推論高速化の起点として位置づけられる。あくまで目的関数の由来として押さえ、速度の定量主張には踏み込まない。疎さと低精度と予測目的の三つが重なったことで、後の実装点の土台が整ったと読むのが自然である。いずれも単独の妙技ではなく、層や記憶や復号と組み合わさって効く点を見落とさないことが重要である。条件の異なる数値を並べた優劣づけはせず、土台の組み合わせとして理解する姿勢を保ちたい。運用の詳細や数値の再現は後の議論に譲り、ここでは系譜の結節として押さえる。学習の成立条件が整って初めて、稼働量の経済学が生きるという順序を見失わないことが大切である。実装点同士の比較は行わず、学習を支える層として整理して次へ進む。効率の層構造を意識することが全体の見通しを確かに良くする。層の重なりとして捉えることが肝になる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:323df0154216724e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepseek-v3-report",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:323df0154216724e",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepseek-v3-report",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:323df0154216724e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseek-v3-report",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:420bc86ebf52a9b1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "deepgemm",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:420bc86ebf52a9b1",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "deepgemm",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:420bc86ebf52a9b1",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepgemm",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-placement-optimizer",
+      "block_type": "PARAGRAPH",
+      "text": "巨大モデルを学習可能にする分割と配置の工夫は、計算を減らす技術ではなく、載せて動かすための技術として区別して理解したい。層内を複数装置に割り付ける並列化は、より大きな模型を収めるための方向であり、演算量そのものを削減するものではない。通信手続きの詳細設計には立ち入らず、配分の文脈での位置づけにとどめる。最適化状態や勾配や重みの重複を排し、装置数に応じて学習可能な規模を伸ばす記憶最適化も、収めるための方向として整理される。通信量の定量分析には踏み込まず、適合のための工夫として受け取る。この二つは分散学習の深掘りではなく、割当の前提として押さえることが本筋であり、本特集では配置と割当の文脈に限定して扱う。並列化の方式名や世代の細部には立ち入らず、載せるための方向という分類だけを受け取る。最適化手法の側では、勾配更新に直交化を用いる実装が参照対象となり、学習の安定や高い学習率の許容が報告として伝えられた。ただし参照先は論文ではなく実装であり、収束定理の根拠として扱わない。符号や実験記録の監査には立ち入らず、共同体の確立した説明の水準で受け取る。採用の事実と理論の水準を混同せず、実装典拠としての役割に限定して読む姿勢が求められる。効率化の系統における最適化の位置は、計算の節約ではなく学習の成立条件にある。割当と安定の二つがそろって初めて、大規模な疎モデルの学習が回り始めるという順序で理解したい。数値の断片比較はせず、前提条件の整備として読むことが大切である。運用条件による違いを捨象した一般化は避け、文脈付きで丁寧に受け取りたい。層構造の一部として位置づけることが確かな理解を深く助ける。割当の視点が全体を見渡す鍵になる。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:cc55ddc035d4e91d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "megatron-lm-2019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:cc55ddc035d4e91d",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "megatron-lm-2019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:cc55ddc035d4e91d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "megatron-lm-2019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d4343c0525a61ea8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "zero-2019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d4343c0525a61ea8",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "zero-2019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d4343c0525a61ea8",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "zero-2019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:35e6870e65717160",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "muon-optimizer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:35e6870e65717160",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "muon-optimizer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:35e6870e65717160",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "muon-optimizer",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-composition-tuning",
+      "block_type": "PARAGRAPH",
+      "text": "量を積む方向と並んで、何をどれだけ混ぜるかという構成の方向が、近年の学習効率のもう一つの柱になった。小規模な代理模型で領域ごとの重みを定め、下流課題の知識なしに混合比を決める試みは、量の拡大を補う構成の工夫として位置づけられる。定式化の全体や領域重みの表には立ち入らず、補完的な記録と概要の水準で受け取る。割当を量だけでなく組成としても捉える視点が、ここでの要点であり、規模拡大の経験則を補完する読みどころになる。詳細な数理や表の再現は求めず、組成設計という考え方の定着として押さえる。所在の正規化の細部には立ち入らず、考え方の水準で受け取る姿勢を保ちたい。知識の蒸留は、教師の柔らかな出力を手がかりに小規模模型へ能力を受け渡す古典的な出発点であり、容量と品質の交換関係を考える枠組みを与えた。温度実験の全体には踏み込まず、系譜上の起点として押さえるにとどめる。後の推論や学習の効率化の議論に連なる指し示しとして配置し、深掘りはしない。低ランク適応は、事前学習済みの重みを凍結し、低ランクの行列だけを学ぶことで微調整の記憶と保存を大幅に軽くする手法として知られる。順位走査の表には立ち入らず、概要水準の仕組みとして受け取る。微調整の効率を事前学習や推論の効率と区別し、費用の分類を整える役割が重要である。いずれも本特集では深掘りではなく、系譜の指し示しとして配置し、詳細は後の運用や実装の文脈に譲る。効率を一枚岩で論じず、局面ごとの費用として分けて考える習慣がここで整い、次の記憶と復号の議論へとつながる。割当と組成の二軸で学習を捉える視点が確かに定着する。分類の定着が後の比較の確かな土台にきっとなる。局面ごとの費用意識が読みの質を高める。",
+      "attribution_mode": "MIXED",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:61c710e7889d8ac5",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "doremi-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:61c710e7889d8ac5",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "doremi-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:61c710e7889d8ac5",
+          "kind": "CLAIM",
+          "evidence_id": "claim-3",
+          "subject_id": "doremi-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:61c710e7889d8ac5",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "doremi-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:61c710e7889d8ac5",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "doremi-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:a1f9be873c45a5f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "hinton-distillation-2015",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:a1f9be873c45a5f3",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "hinton-distillation-2015",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:a1f9be873c45a5f3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "hinton-distillation-2015",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:c74f798635ee9622",
+          "kind": "CLAIM",
+          "evidence_id": "claim-1",
+          "subject_id": "lora-2021",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:c74f798635ee9622",
+          "kind": "CLAIM",
+          "evidence_id": "claim-2",
+          "subject_id": "lora-2021",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:c74f798635ee9622",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "lora-2021",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    },
+    {
+      "block_id": "p2-scaling-moe-boundaries",
+      "block_type": "CLAIM_BOUNDARY",
+      "text": "この節の読解上の境界: D005/D139 supplement-bound identities, abstract-scope; training-parallelism detail bounded to allocation context; contemporary Qwen/GLM comparison deferred to P8. / Full 2412.19437 body (training infra, evaluation tables) not consumed; no benchmark numbers quoted. / Repository code and experiment logs not audited; optimizer mathematics stated from community-established descriptions. / Full-body gating equations and LSTM experimental tables not consumed; mechanism stated at survey level. / Full-body sharding annotations and translation-benchmark tables not consumed. / Full-body scaling curves and multilingual tables not consumed. / Full-body ablation tables (expert granularity sweeps) not consumed. / Full-body MLA formulation and benchmark tables not consumed. / Full-body routing analyses and benchmark tables not consumed; active-param figure stated at established level. / Kernel code and numerics analysis not consumed. / Full-body temperature experiments not consumed. / Full-body rank-sweep tables not consumed. / Full-body communication-op design not consumed. / Full-body communication-volume analysis not consumed. / Full-body pretraining-speedup analysis not consumed. / Full paper body (DRO formulation, domain-weight tables) outstanding. / Canonical locator amendment deferred to Sol.",
+      "attribution_mode": "INFERENCE",
+      "evidence_refs": [
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:323df0154216724e",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseek-v3-report",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:35e6870e65717160",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "muon-optimizer",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:366a595212d83a25",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "shazeer-sparse-moe-2017",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d5f319ebd7547eff",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "gshard-2020",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:0605e6d3a07354b7",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "switch-transformer-2021",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:43ae3cf2f5ab8adb",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseekmoe-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:28b1d02d765111b4",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepseek-v2-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:89ac03731df4162b",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "mixtral-2024",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:420bc86ebf52a9b1",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "deepgemm",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:a1f9be873c45a5f3",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "hinton-distillation-2015",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:c74f798635ee9622",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "lora-2021",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:cc55ddc035d4e91d",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "megatron-lm-2019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:d4343c0525a61ea8",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "zero-2019",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:e4d268c52516fbda",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "expert-choice-2022",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:61c710e7889d8ac5",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-1",
+          "subject_id": "doremi-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        },
+        {
+          "evidence_task_id": "evidence:SP-efficient-llm-2026:61c710e7889d8ac5",
+          "kind": "LIMITATION",
+          "evidence_id": "limitation-2",
+          "subject_id": "doremi-2023",
+          "subject_role": "PRIMARY_SUBJECT"
+        }
+      ]
+    }
+  ],
+  "must_cover_coverage": [
+    {
+      "requirement": "EFF-O02",
+      "block_ids": [
+        "p2-conditional-origin",
+        "p2-routing-economy",
+        "p2-fine-grained-branch",
+        "p2-active-residency",
+        "p2-fp8-foundation",
+        "p2-placement-optimizer",
+        "p2-composition-tuning",
+        "p2-scaling-moe-boundaries"
+      ]
+    },
+    {
+      "requirement": "EFF-O03",
+      "block_ids": [
+        "p2-conditional-origin",
+        "p2-routing-economy",
+        "p2-fine-grained-branch",
+        "p2-active-residency",
+        "p2-fp8-foundation",
+        "p2-placement-optimizer",
+        "p2-composition-tuning",
+        "p2-scaling-moe-boundaries"
+      ]
+    },
+    {
+      "requirement": "EFF-O09",
+      "block_ids": [
+        "p2-conditional-origin",
+        "p2-routing-economy",
+        "p2-fine-grained-branch",
+        "p2-active-residency",
+        "p2-fp8-foundation",
+        "p2-placement-optimizer",
+        "p2-composition-tuning",
+        "p2-scaling-moe-boundaries"
+      ]
+    }
+  ],
+  "boundary_dispositions": [
+    {
+      "boundary": "D005/D139 supplement-bound identities, abstract-scope; training-parallelism detail bounded to allocation context; contemporary Qwen/GLM comparison deferred to P8.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full 2412.19437 body (training infra, evaluation tables) not consumed; no benchmark numbers quoted.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Repository code and experiment logs not audited; optimizer mathematics stated from community-established descriptions.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body gating equations and LSTM experimental tables not consumed; mechanism stated at survey level.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body sharding annotations and translation-benchmark tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body scaling curves and multilingual tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body ablation tables (expert granularity sweeps) not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body MLA formulation and benchmark tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body routing analyses and benchmark tables not consumed; active-param figure stated at established level.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Kernel code and numerics analysis not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body temperature experiments not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body rank-sweep tables not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body communication-op design not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body communication-volume analysis not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full-body pretraining-speedup analysis not consumed.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Full paper body (DRO formulation, domain-weight tables) outstanding.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    },
+    {
+      "boundary": "Canonical locator amendment deferred to Sol.",
+      "handling": "EXPLICITLY_STATED",
+      "block_ids": [
+        "p2-scaling-moe-boundaries"
+      ],
+      "rationale": "Approved Architecture boundary is preserved explicitly in the Draft Result."
+    }
+  ],
+  "profile_extensions": {},
+  "publication_extensions": {}
+}
