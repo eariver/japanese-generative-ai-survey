@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:5b0ffada7797575b",
+  "basis": {
+    "task_sha256": "274d8acd1c22b09a6d0e1871c15a4667853ecf22b36bef3c07b5aa09d00a7bc5",
+    "screening_acceptance_sha256": "d8eaabe990ab3420e30bb852909afc684b1339ae9779dab0519c04dacd9ecc1a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd027",
+      "canonical_name": "Flow Matching for Generative Modeling (Lipman et al.)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2210.02747"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd027",
+    "artifact_type": "PAPER",
+    "canonical_name": "Flow Matching for Generative Modeling (Lipman et al.)",
+    "canonical_url": "https://arxiv.org/abs/2210.02747"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-10",
+        "subject_id": "evr2-btd027",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2210.02747",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Flow Matching for Generative Modeling (Lipman et al.)",
+      "published_at": "2022-10",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines Flow Matching: CNF vector field trained simulation-free by regressing conditional (per-sample) vector fields (CFM, equal gradients per Thm 2); Gaussian conditional paths N(mu_t, sigma_t^2 I) with optimal-transport variant mu=t·x1 giving straight trajectories; same ADM UNet backbone across losses for ablation.",
+      "subject_id": "evr2-btd027",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§3-4."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: CIFAR-10 FM-OT NLL 2.99, FID 6.35, NFE 142 vs DDPM 3.12/7.48/274; ImageNet-64 NLL 3.31/FID 14.45/NFE 138; ImageNet-128 NLL 2.90/FID 20.9; training cost constant.",
+      "subject_id": "evr2-btd027",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§6 tables/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "CIFAR FID higher than tuned literature (backbone not CIFAR-optimised); adaptive-solver NFE still 100+; marginal field not OT-optimal despite conditional OT.",
+      "subject_id": "evr2-btd027",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Trajectory-straightness vs rectified-flow reflow and high-res text-conditional transfer not established.",
+      "subject_id": "evr2-btd027",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML: Abstract, §1-7 (CNF prelims, FM+CFM, Gaussian paths, related, density/sampling-efficiency/conditional exps)). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd027"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

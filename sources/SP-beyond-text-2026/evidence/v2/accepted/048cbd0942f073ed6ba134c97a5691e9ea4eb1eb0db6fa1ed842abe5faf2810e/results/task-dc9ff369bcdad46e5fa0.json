@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:e84001a0c2b8d88a",
+  "basis": {
+    "task_sha256": "953db8c1876422785b56f34f21746abab1493d4f3717279aa09a72fc73e3b1fd",
+    "screening_acceptance_sha256": "d8eaabe990ab3420e30bb852909afc684b1339ae9779dab0519c04dacd9ecc1a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd124",
+      "canonical_name": "Wan-Video/Wan2.2 open-weight video release (Alibaba)",
+      "entity_type": "MODEL",
+      "organization": "Alibaba",
+      "canonical_url": "https://github.com/Wan-Video/Wan2.2"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd124",
+    "artifact_type": "MODEL",
+    "canonical_name": "Wan-Video/Wan2.2 open-weight video release (Alibaba)",
+    "canonical_url": "https://github.com/Wan-Video/Wan2.2"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-07",
+        "subject_id": "evr2-btd124",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/Wan-Video/Wan2.2",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "Wan-Video/Wan2.2 open-weight video release (Alibaba)",
+      "published_at": "2025-07",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The repo documents open Apache-2.0 releases: text-to-video-A14B/image-to-video-A14B MoE 480p/720p, TI2V-5B dense text-to-video+image-to-video 720p@24fps on consumer GPU (4090/24 GB, 5 s under 9 min), S2V-14B audio+image+pose, Animate-14B animation/replacement; ComfyUI/Diffusers/Hub; prompt extension via hosted/local models.",
+      "subject_id": "evr2-btd124",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "README run/architecture sections."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The repo discloses a 2-expert mixture-of-experts layout (high-noise layout expert / low-noise detail expert, 14B active/27B total, SNR threshold), Wan2.2-VAE 4x16x16 (64x) plus patchification to 4x32x32, diffusion training with FSDP/Ulysses; vendor comparisons: MoE lowest validation loss vs prior variants; benchmark chart vs closed models; +65.6% images / +83.2% videos vs 2.1.",
+      "subject_id": "evr2-btd124",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "README MoE/VAE/comparison sections; hyperparams/corpus beyond README undisclosed."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "A14B needs 80 GB single-GPU / 8-GPU multi-GPU; TI2V offload flags; Animate LoRA cross-use not recommended.",
+      "subject_id": "evr2-btd124",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Independent benchmark reproduction and exact corpus/compute not in body; open line frozen at 2.2.",
+      "subject_id": "evr2-btd124",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (Wan2.2 GitHub repo page + README consumed (innovations, news, todo, run commands, efficiency, MoE architecture, hybrid TI2V/VAE, comparisons, license; README + raw README consistent). Weights/code 2025-07-28.). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd124"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "version/checkpoint currency binding; local-runtime binding",
+        "status": "VERIFIED",
+        "finding": "Hardware/version/condition/methodology binding recorded from consumed body sections for downstream reuse.",
+        "subject_ids": [
+          "evr2-btd124"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:4591d019262ceefb",
+  "basis": {
+    "task_sha256": "cfeebac48213a67691d85756a36e7be6e0ba342bf5654ee9af7fcec2ecf3b5fa",
+    "screening_acceptance_sha256": "d8eaabe990ab3420e30bb852909afc684b1339ae9779dab0519c04dacd9ecc1a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd003",
+      "canonical_name": "Generating Diverse High-Fidelity Images with VQ-VAE-2 (Razavi et al.)",
+      "entity_type": "BENCHMARK",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/1906.00446"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd003",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "Generating Diverse High-Fidelity Images with VQ-VAE-2 (Razavi et al.)",
+    "canonical_url": "https://arxiv.org/abs/1906.00446"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2019-06",
+        "subject_id": "evr2-btd003",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/1906.00446",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Generating Diverse High-Fidelity Images with VQ-VAE-2 (Razavi et al.)",
+      "published_at": "2019-06",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source scales VQ-VAE with two-level discrete maps (256px: 32x32 top + 64x64 bottom conditioned on top; FFHQ-1024 adds 128x128), EMA codebooks, feed-forward decoder, and PixelSnail priors; single feed-forward decode runs ~30x faster than pixel-space.",
+      "subject_id": "evr2-btd003",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§3; App Tables 3-4."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: ImageNet-256 NLL top 3.40/3.41 + bottom 3.45/3.45 (train/val); CAS Top-1/Top-5 54.83/77.59 (58.74/80.98 after reconstruction) vs BigGAN-deep 42.65/65.92 vs real 73.09/91.47; FID ~30 to ~10 with classifier rejection at diversity cost.",
+      "subject_id": "evr2-btd003",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§5.2-5.3; train/val conditions in-text."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Latent-space likelihood not comparable across encoders; FID/IS sensitive to VQ blur; prior training 1.6M/754k steps heavy.",
+      "subject_id": "evr2-btd003",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Hierarchical-code cost/coverage vs single-scale successors needs comparison sources.",
+      "subject_id": "evr2-btd003",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML v1: Abstract, §1, §2 Background, §3 hierarchical codes/priors/rejection, §5 FFHQ/NLL/CAS experiments, App hyperparameters). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd003"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

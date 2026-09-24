@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:aef4ce32df2d9308",
+  "basis": {
+    "task_sha256": "d584a507ff887c8d7dd7911be700f3e432f6795bc9e45d1f767389baa4369b57",
+    "screening_acceptance_sha256": "d8eaabe990ab3420e30bb852909afc684b1339ae9779dab0519c04dacd9ecc1a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd030",
+      "canonical_name": "Diffusion Models Beat GANs on Image Synthesis (ADM) (Dhariwal & Nichol)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2105.05233"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd030",
+    "artifact_type": "PAPER",
+    "canonical_name": "Diffusion Models Beat GANs on Image Synthesis (ADM) (Dhariwal & Nichol)",
+    "canonical_url": "https://arxiv.org/abs/2105.05233"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2021-05",
+        "subject_id": "evr2-btd030",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2105.05233",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Diffusion Models Beat GANs on Image Synthesis (ADM) (Dhariwal & Nichol)",
+      "published_at": "2021-05",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source shows diffusion beating GANs via architecture scale (128 base channels, multi-resolution attention, BigGAN resblocks, AdaGN timestep+class conditioning) plus classifier guidance: noisy classifier p_phi(y|xt,t) steers ancestral/DDIM sampling with scale s trading precision vs recall.",
+      "subject_id": "evr2-btd030",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§3-4; Alg 1-2."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: ImageNet-128 ADM-Guided FID 2.97 vs BigGAN 6.02; ImageNet-256 4.59 (25-step 5.44) vs BigGAN 6.95; 256 ADM-Guided+Upsampled 3.94, 512 3.85; LSUN-Bedroom 1.90/Horse 2.57/Cat 5.57 vs StyleGAN 2.35/3.84/7.25.",
+      "subject_id": "evr2-btd030",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§5 tables/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "250-step sampling (25-step viable) still slower than GANs; classifier + large-upsample compute heavy; FID/IS/precision/recall imperfect proxies.",
+      "subject_id": "evr2-btd030",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Guidance mechanism vs classifier-free successor and API-scale text conditioning beyond class labels not established.",
+      "subject_id": "evr2-btd030",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML: Abstract, §1-5 (background, architecture ablations, AdaGN, classifier guidance, LSUN/ImageNet/upsampling results)). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd030"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

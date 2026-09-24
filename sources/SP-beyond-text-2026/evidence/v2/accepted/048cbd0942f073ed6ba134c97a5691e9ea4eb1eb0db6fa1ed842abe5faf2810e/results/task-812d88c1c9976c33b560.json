@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:f1ad7b0d39fc9086",
+  "basis": {
+    "task_sha256": "34e72e24aca4159a5fc6a2709067cdd93dc076af32836dd5037bbd6c247d4c96",
+    "screening_acceptance_sha256": "d8eaabe990ab3420e30bb852909afc684b1339ae9779dab0519c04dacd9ecc1a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd048",
+      "canonical_name": "Imagic: Text-Based Real Image Editing (Kawar et al.)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2209.15146"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd048",
+    "artifact_type": "PAPER",
+    "canonical_name": "Imagic: Text-Based Real Image Editing (Kawar et al.)",
+    "canonical_url": "https://arxiv.org/abs/2209.15146"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-09",
+        "subject_id": "evr2-btd048",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2209.15146",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Imagic: Text-Based Real Image Editing (Kawar et al.)",
+      "published_at": "2022-09",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines Imagic: (A) optimise target embedding toward an optimised embedding with denoising loss (Imagen 64px 100 steps lr 1e-3; SD latent 1000 steps lr 2e-3), (B) finetune UNet plus super-resolution stages fixing the optimised embedding (1500 steps), (C) interpolate eta 0.6-0.8 then generate plus super-resolve with 8 seeds picked best; preservation is background/structure/composition/identity for whole-image non-rigid edits.",
+      "subject_id": "evr2-btd048",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Correct body §§3-4; title/authors verified."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: TEdBench 100 pairs, 9213 two-alternative answers, >70% preference over SDEdit/DDIB/Text2LIVE; eta 0.6-0.8 balances CLIP vs 1-LPIPS average over 150 inputs; cost ~8 min on 2xTPUv4 (Imagen) or 7 min on A100 (SD).",
+      "subject_id": "evr2-btd048",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Correct body §4/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Recorded locator 2209.15146 is a transcription defect; claims rest on verified-correct 2210.09276. Future Discovery repair should correct the locator.",
+      "subject_id": "evr2-btd048",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Too-subtle edits or zoom/camera-angle shifts; eta/seed sensitive; inherits base-model face/bias limits; slow per-image optimisation.",
+      "subject_id": "evr2-btd048",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (Correct body 2210.09276v3 consumed (Abstract, §§1-4, App B-C). Recorded locator 2209.15146 resolves to unrelated ML-stress paper.). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd048"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

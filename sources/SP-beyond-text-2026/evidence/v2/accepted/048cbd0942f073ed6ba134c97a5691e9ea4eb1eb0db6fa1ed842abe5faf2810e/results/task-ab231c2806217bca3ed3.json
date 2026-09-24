@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:15ae2666f78137ec",
+  "basis": {
+    "task_sha256": "2606cd9a36ebb7f75daa84c72f01b39e35146f8944ff984b1ae3bc94c1cef5b5",
+    "screening_acceptance_sha256": "d8eaabe990ab3420e30bb852909afc684b1339ae9779dab0519c04dacd9ecc1a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd100",
+      "canonical_name": "FLUX.2 [klein]: Towards Interactive Visual Intelligence (Black Forest Labs)",
+      "entity_type": "MODEL",
+      "organization": "Black Forest Labs",
+      "canonical_url": "https://bfl.ai/blog/flux2-klein-towards-interactive-visual-intelligence"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd100",
+    "artifact_type": "MODEL",
+    "canonical_name": "FLUX.2 [klein]: Towards Interactive Visual Intelligence (Black Forest Labs)",
+    "canonical_url": "https://bfl.ai/blog/flux2-klein-towards-interactive-visual-intelligence"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2026-01",
+        "subject_id": "evr2-btd100",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://bfl.ai/blog/flux2-klein-towards-interactive-visual-intelligence",
+      "source_class": "PRIMARY_OFFICIAL",
+      "title": "FLUX.2 [klein]: Towards Interactive Visual Intelligence (Black Forest Labs)",
+      "published_at": "2026-01",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The page documents unified text-to-image plus single/multi-reference editing in one model; vendor-stated sub-second (under 0.5 s) inference and 4B fitting ~13 GB VRAM (RTX 3090/4070+); FP8 (1.6x faster/40% less VRAM) and NVFP4 (2.7x/55%) variants; API plus open weights; 9B flow model plus 8B Qwen3 text embedder step-distilled to 4 steps (vendor-disclosed); 9B/4B/Base sizes; 4B Apache 2.0; announcement dated January 15, 2026.",
+      "subject_id": "evr2-btd100",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Page body; independent measurement absent."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Vendor performance claim: matches/exceeds 5x-larger models; Pareto-frontier Elo-vs-latency/VRAM vs Qwen/Z-Image on text-to-image/image-to-image/multi-reference (vendor charts, stated GB200 bf16 config).",
+      "subject_id": "evr2-btd100",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "VENDOR_CLAIM",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Page performance section; vendor charts only."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Vendor speed/quality claims without independent measurement in this body; tokenizer/training undisclosed.",
+      "subject_id": "evr2-btd100",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Training data, tokenizer detail, independent benchmark verification not established.",
+      "subject_id": "evr2-btd100",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (Vendor announcement body consumed (What's New, Model Family 9B/4B/Base, Quantized, Performance Analysis, Resources).). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd100"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "vendor-claim quarantine; architecture non-inference; hardware/configuration binding",
+        "status": "VERIFIED",
+        "finding": "Page claims quarantined as vendor-attributed with stated configs (GB200 bf16 charts, 4B VRAM figure); only the vendor-disclosed flow-model/embedder/distillation facts recorded; tokenizer/training explicitly marked undisclosed.",
+        "subject_ids": [
+          "evr2-btd100"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

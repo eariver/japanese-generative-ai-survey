@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:1ffa583eef7305dc",
+  "basis": {
+    "task_sha256": "5bf501fc85efbdfa8fb2af1aec15b6f20b599d0f3ef1fba48796772e150602ea",
+    "screening_acceptance_sha256": "d8eaabe990ab3420e30bb852909afc684b1339ae9779dab0519c04dacd9ecc1a",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd132",
+      "canonical_name": "F5-TTS: A Fairytaler that Fakes Fluent and Faithful Speech with Flow Matching (Chen et al., ACL 2025)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2410.06885"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd132",
+    "artifact_type": "PAPER",
+    "canonical_name": "F5-TTS: A Fairytaler that Fakes Fluent and Faithful Speech with Flow Matching (Chen et al., ACL 2025)",
+    "canonical_url": "https://arxiv.org/abs/2410.06885"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2024-10",
+        "subject_id": "evr2-btd132",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2410.06885",
+      "source_class": "PRIMARY_PAPER",
+      "title": "F5-TTS: A Fairytaler that Fakes Fluent and Faithful Speech with Flow Matching (Chen et al., ACL 2025)",
+      "published_at": "2024-10",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines F5-TTS: diffusion-Transformer with adaptive layer-norm-zero (22 layers, 16 heads, 1024/2048 dims) plus ConvNeXt-V2 text refinement (4 layers, 335.8M parameters) on padded character-filler input, optimal-transport conditional flow matching, uniform-t training; inference Sway Sampling with Euler solver plus guidance factor 2.",
+      "subject_id": "evr2-btd132",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§§2-3."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: Emilia 95k-hour English+Chinese, 100-dim mel 24 kHz, mask 70-100%, 1.2M updates batch 307200 frames on 8xA100-80G; LibriSpeech-PC 1127-sample 32-evaluation-step word-error 2.42, similarity 0.66, real-time-factor 0.31, 16-step word-error 2.53 with real-time-factor 0.15 on RTX3090-10 s clips (baseline 32-step word-error 2.95, similarity 0.69, real-time-factor 0.68; ground truth 2.23); Seed English 1088-sample word-error 1.83, Chinese 2020-sample 1.56.",
+      "subject_id": "evr2-btd132",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§4/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Offline non-streaming; duration by character ratio; no fine-grained emotion control.",
+      "subject_id": "evr2-btd132",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Universal continuous-representation efficiency not established.",
+      "subject_id": "evr2-btd132",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML: Abstract, §§1-5, Tables 1-2, Figs 2-3). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd132"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

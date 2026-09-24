@@ -17,7 +17,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Current lifecycle: `CANDIDATES_NORMALIZED`
 - Current terminal reason: `none`
 - Current next action: `stage:evidence-materiality-completeness` (HELD — fresh Sol Evidence Semantic Review required first; Materiality/Completeness/Selection/Architecture NOT entered)
-- Operational meaning: `EVIDENCE_BUILT / AWAITING_SOL_EVIDENCE_SEMANTIC_REVIEW`
+- Operational meaning: `EVIDENCE_REBUILT / AWAITING_SOL_EVIDENCE_SEMANTIC_REVIEW_R2` (r1 preserved as history; r2 rebuilt from source bodies; Sol r1 REQUEST_CHANGES E1-E5 repaired)
 
 ## Human Gates
 
@@ -58,12 +58,22 @@ This is the current human-readable navigation record for the edition. Machine li
 - Acceptance: `screening/v2/accepted/2a3e28dacadf9496db9109ff5dde58663767f280766c56b08c7bc03e72689966/screening-accepted.json` (Core `run_screening_v2_interactive`, validated)
 - Stage checkpoint: `orchestration/v2/checkpoints/DISCOVERY_COLLECTED.json` (CORE_STAGE_CONTRACT PASS) → advanced to `CANDIDATES_NORMALIZED`
 
-## Evidence (built, not advanced)
+## Evidence r1 (historical, preserved)
 
-- Input: `execution/x-import-screening-evidence-20260924/evidence-interactive-input.json` (139 records, all PARTIAL; 112 MATERIAL / 27 CONTEXT; 14 Raw lane files + X r3 Raw consumed)
-- Acceptance: `evidence/v2/accepted/f01de6548929c74d9b9715e382027c89e5aa5c780f3865ebbf5e3e3b654985e7/evidence-accepted.json` (139 Cards, canonical validators PASS)
-- Views: `evidence/v2/views/accepted/b7c96f6245c7a58201c1369551b30bea8fb4a1bc388fd706c7eb1741dc26c161463fa9010283e/edition-views-accepted.json` (139 Views, PASS)
-- Compat: `execution/x-import-screening-evidence-20260924/compat/` (37 projected / 102 passthrough, byte-identical reproducibility PASS; see defects record)
+- Input: `execution/x-import-screening-evidence-20260924/evidence-interactive-input.json` (139 records, all PARTIAL)
+- Acceptance: `evidence/v2/accepted/f01de6548929c74d9b9715e382027c89e5aa5c780f3865ebbf5e3e3b654985e7/evidence-accepted.json` (139 Cards; Sol r1 REQUEST_CHANGES E1-E5)
+- Views: `evidence/v2/views/accepted/b7c96f6245c7a58201c1369551b30bea8c215f793235f5d39c4eddc9dfdc41cc/edition-views-accepted.json` (139 Views)
+
+## Evidence r2 (rebuilt from source bodies, not advanced)
+
+- Input: `execution/evidence-semantic-depth-r2/evidence-interactive-input-r2.json` (139 records: VERIFIED 125 / PARTIAL 9 / NEEDS_MORE 5; Layer A factual only, no lineage prose)
+- Acceptance: `evidence/v2/accepted/048cbd0942f073ed6ba134c97a5691e9ea4eb1eb0db6fa1ed842abe5faf2810e/evidence-accepted.json` (139 Cards, canonical validators PASS)
+- Views: `evidence/v2/views/accepted/273e04d410be4e3800a89516399400d626a4dda95f311d37af7040def9553dd4/edition-views-accepted.json` (139 Views, PASS)
+- Access ledger: `execution/evidence-semantic-depth-r2/source-body-access-ledger.json` (139 rows; FULL 125 / PARTIAL 9 / BLOCKED 5)
+- Transition ledger (Layer B): `execution/evidence-semantic-depth-r2/transition-ledger.json` (43 entries, 41 multi-task) + `.md` companion
+- Delta audit: `execution/evidence-semantic-depth-r2/semantic-delta-audit.md`
+- Validation receipt: `execution/evidence-semantic-depth-r2/validation-r2.json` (14/14 PASS)
+- Compat reuse: narrow source-type projection only (37/102); shared Core untouched
 - Ledger/Completeness/advance: NOT performed (stop boundary; State remains `CANDIDATES_NORMALIZED`)
 
 ## Deviations
@@ -79,7 +89,8 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/ts002-beyond-text-discovery-20260924.md`
 - `sessions/ts002-beyond-text-discovery-repair-r2-20260924.md`
 - `sessions/ts002-x-import-screening-evidence-20260924.md`
+- `sessions/ts002-evidence-semantic-depth-r2-20260924.md`
 
 ## Final disposition
 
-`EVIDENCE_BUILT / AWAITING_SOL_EVIDENCE_SEMANTIC_REVIEW` (edition work uncommitted in the worktree for Sol review; Screening passed, Evidence built+validated, Materiality and later stages pending; no Human Gate fabricated)
+`EVIDENCE_REBUILT / AWAITING_SOL_EVIDENCE_SEMANTIC_REVIEW_R2` (r2 committed on the work branch for Sol r2 review; Screening passed, r2 Evidence built+validated, Materiality and later stages pending; no Human Gate fabricated)
