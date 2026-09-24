@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:88f2354f17f87ab2",
+  "basis": {
+    "task_sha256": "6190dea836c2758be36b384a69735038d911dc531370c4a61c9944af51d992c7",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd044",
+      "canonical_name": "SDEdit: Guided Image Synthesis and Editing with SDEs (Meng et al.)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2108.01073"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd044",
+    "artifact_type": "PAPER",
+    "canonical_name": "SDEdit: Guided Image Synthesis and Editing with SDEs (Meng et al.)",
+    "canonical_url": "https://arxiv.org/abs/2108.01073"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2021-08",
+        "subject_id": "evr2-btd044",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2108.01073",
+      "source_class": "PRIMARY_PAPER",
+      "title": "SDEdit: Guided Image Synthesis and Editing with SDEs (Meng et al.)",
+      "published_at": "2021-08",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines SDEdit: noise a guide image to time t0 then reverse a VE/VP SDE with a pretrained score model; t0 in [0.3,0.6] trades guide faithfulness vs realism; masked channel keeps unedited pixels identical (preservation target: guide structure/background identity).",
+      "subject_id": "evr2-btd044",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Correct body §§2-3; title/authors verified."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: LSUN-bedroom human strokes L2 32.55 vs 53.76-101.18 baselines, realism preference 80.34-98.09%, satisfaction 75.43-91.72%; simulated strokes KID 0.0030 vs 0.0464-0.2070; compositing satisfaction +83.73%.",
+      "subject_id": "evr2-btd044",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Correct body §5/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Recorded locator 2108.01049 is a transcription defect; claims rest on verified-correct 2108.01073. Future Discovery repair should correct the locator.",
+      "subject_id": "evr2-btd044",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Needs reasonable guide and t0 search; white-pixel guides need large t0 losing faithfulness.",
+      "subject_id": "evr2-btd044",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (Correct body 2108.01073v2 consumed (Abstract, Intro, §§2-3 method, §5 experiments, App). Recorded locator 2108.01049 resolves to unrelated fluids paper.). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd044"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

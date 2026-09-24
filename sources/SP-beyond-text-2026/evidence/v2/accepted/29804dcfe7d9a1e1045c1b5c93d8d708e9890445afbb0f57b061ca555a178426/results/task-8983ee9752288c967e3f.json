@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:e92a603c08131eb8",
+  "basis": {
+    "task_sha256": "5d0ca702ea9653c1409f749e317f60c140a702c3feea51bed853fd65a9c58a8d",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd025",
+      "canonical_name": "Scalable Diffusion Models with Transformers (DiT) (Peebles & Xie)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2212.09748"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd025",
+    "artifact_type": "PAPER",
+    "canonical_name": "Scalable Diffusion Models with Transformers (DiT) (Peebles & Xie)",
+    "canonical_url": "https://arxiv.org/abs/2212.09748"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-12",
+        "subject_id": "evr2-btd025",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2212.09748",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Scalable Diffusion Models with Transformers (DiT) (Peebles & Xie)",
+      "published_at": "2022-12",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source replaces the UNet denoiser with a Transformer (DiT-S/B/L/XL, patchified Stable-Diffusion VAE latents, adaLN-Zero best): backbone-vs-objective separation landmark; class-dropout enables classifier-free guidance; sampling-compute cannot compensate model-compute.",
+      "subject_id": "evr2-btd025",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§3-5."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: ImageNet-256 XL/2-Guided s=1.5 FID 2.27, sFID 4.60, IS 278.24 at 7M steps vs LDM-4-G 3.60, ADM-G 4.59; ImageNet-512-G FID 3.04; 250-step ancestral sampling; DiT-XL/2 118.6/524.6 GFLOPs vs ADM 1120G.",
+      "subject_id": "evr2-btd025",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§4-5 tables/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "JAX TPU-v3 throughput figures are hardware-bound; FID sensitive to eval suite; pixel-space DiT not tested.",
+      "subject_id": "evr2-btd025",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Scaling vs SiT/flow successors and text-to-image transfer need successor sources.",
+      "subject_id": "evr2-btd025",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML: Abstract, §1-6 (prelims, patchify, adaLN, training, metrics, scaling, sampling-compute), Conclusion). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd025"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:ecdef20e7d799163",
+  "basis": {
+    "task_sha256": "7a8f9fbe6dccd3f8437400732a986794225961c6aa52fc87b5587eba4b23f375",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd082",
+      "canonical_name": "MobileDiffusion: Subsecond Text-to-Image on Mobile (Zhao et al.)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2311.16567"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd082",
+    "artifact_type": "PAPER",
+    "canonical_name": "MobileDiffusion: Subsecond Text-to-Image on Mobile (Zhao et al.)",
+    "canonical_url": "https://arxiv.org/abs/2311.16567"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-11",
+        "subject_id": "evr2-btd082",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2311.16567",
+      "source_class": "PRIMARY_PAPER",
+      "title": "MobileDiffusion: Subsecond Text-to-Image on Mobile (Zhao et al.)",
+      "published_at": "2023-11",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source redesigns diffusion for mobile (UViT: bottleneck transformers 1024 channels, dropped self-attention at 64 and 32/outer-16 keeping cross-attention on 77 tokens, shared key-value 5% saving, swish-for-GELU, relu-attention with 10k finetune, feed-forward 4-to-3 10% saving, separable convolutions, 22-to-11 blocks 386M/182 GFLOPs, VAE f8-c8 plus distilled decoder); UFOGen full-finetune plus diffusion loss best; one-step must support plugins/LoRA/inpainting.",
+      "subject_id": "evr2-btd082",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§§2-3."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: COCO-30k 1-step FID 11.67 / CLIP 0.320 vs UFOGen 12.78/0.317, SnapFusion-8-step 13.5/0.308, SD-50-step 9.62/0.304; 50-step 8.65/0.325; human-preference 26.65 1-step vs 27.30 50-step; iPhone-15-Pro milliseconds 4+92+142=238 1-step vs 646/1740/7429 for longer schedules; 0.2 s 512px generations; 150M-pair training.",
+      "subject_id": "evr2-btd082",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§4/App/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Search cost 512 TPUs x 15 days; relu-attention needs finetune; downstream transfer without retraining retains gap; failures in appendix.",
+      "subject_id": "evr2-btd082",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Explicit VRAM/peak-memory and int8-quantised latency numbers not established beyond float16/int8 motive.",
+      "subject_id": "evr2-btd082",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML 2311.16567v2: Abstract, §§1-5, App A-C). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd082"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "hardware/configuration binding at Evidence",
+        "status": "VERIFIED",
+        "finding": "Hardware/version/condition/methodology binding recorded from consumed body sections for downstream reuse.",
+        "subject_ids": [
+          "evr2-btd082"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

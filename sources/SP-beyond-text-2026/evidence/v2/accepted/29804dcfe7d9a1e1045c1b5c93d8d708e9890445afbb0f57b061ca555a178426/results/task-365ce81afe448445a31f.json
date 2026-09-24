@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:5b38cf1833bd2ba7",
+  "basis": {
+    "task_sha256": "722570519e3465e37bb4de7a977f97a40f2c256a987f6a98ba4050c0e1b6a07d",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd008",
+      "canonical_name": "High-Fidelity Audio Compression with Improved RVQGAN (Descript Audio Codec, DAC) (Kumar et al.)",
+      "entity_type": "BENCHMARK",
+      "organization": "Descript",
+      "canonical_url": "https://arxiv.org/abs/2306.06546"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd008",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "High-Fidelity Audio Compression with Improved RVQGAN (Descript Audio Codec, DAC) (Kumar et al.)",
+    "canonical_url": "https://arxiv.org/abs/2306.06546"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-06",
+        "subject_id": "evr2-btd008",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2306.06546",
+      "source_class": "PRIMARY_PAPER",
+      "title": "High-Fidelity Audio Compression with Improved RVQGAN (Descript Audio Codec, DAC) (Kumar et al.)",
+      "published_at": "2023-06",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines the Descript Audio Codec: SoundStream-style convolutional encoder (22M)/decoder (54M) with Snake activations, stride-512 embeddings (86 Hz at 44.1 kHz), 9x10-bit factorized L2-normalized RVQ (~91x compression), multi-period + multi-band complex-STFT discriminator, no k-means/restarts; open code/weights.",
+      "subject_id": "evr2-btd008",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§3; App."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: 8 kbps Mel 0.93/STFT 1.60/ViSQOL 4.18/SI-SDR 10.75, beating EnCodec-12k on all four; matched-24 kHz 12 kbps Mel 0.74/ViSQOL 4.51/SI-SDR 12.51 vs EnCodec 1.15/4.39/8.44; MUSHRA beats EnCodec at all rates.",
+      "subject_id": "evr2-btd008",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§4 tables/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Still below reference MUSHRA; worse on environmental/glockenspiel/synth; balanced full-band sampling required.",
+      "subject_id": "evr2-btd008",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Generation-downstream gain needs adopter evidence, not codec metrics alone.",
+      "subject_id": "evr2-btd008",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML v2: Abstract, §1-3 (Snake, RVQ, dropout, discriminator, losses), §4 experiments, §5, App). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd008"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

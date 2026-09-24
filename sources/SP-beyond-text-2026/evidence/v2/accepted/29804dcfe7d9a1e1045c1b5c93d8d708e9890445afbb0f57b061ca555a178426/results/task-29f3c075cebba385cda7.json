@@ -1,0 +1,152 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:c0fb87ae414255fb",
+  "basis": {
+    "task_sha256": "51d6081cf6e714c0c011d395c77ff946cb75c916f556cc99549354b7f81348a0",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd062",
+      "canonical_name": "Seamless: Multilingual Expressive and Streaming Speech Translation (SeamlessM4T v2 family) (Meta)",
+      "entity_type": "PAPER",
+      "organization": "Meta",
+      "canonical_url": "https://arxiv.org/abs/2312.05187"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd062",
+    "artifact_type": "PAPER",
+    "canonical_name": "Seamless: Multilingual Expressive and Streaming Speech Translation (SeamlessM4T v2 family) (Meta)",
+    "canonical_url": "https://arxiv.org/abs/2312.05187"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-12",
+        "subject_id": "evr2-btd062",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2312.05187",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Seamless: Multilingual Expressive and Streaming Speech Translation (SeamlessM4T v2 family) (Meta)",
+      "published_at": "2023-12",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines UnitY2: non-autoregressive FastSpeech2-style decoder with hierarchical subword-to-character-to-unit upsampling, unsupervised multilingual character-to-unit aligner as duration teacher, and span-based glancing; 3x speech-to-speech speed-up, decoupling length for partial-input streaming.",
+      "subject_id": "evr2-btd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "v2 body §§3-4; v1 UnitY facts are NOT carried over."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The source defines expressive transfer: Prosody-UnitY2 (phrase-level rate/pauses) plus PRETSSEL (utterance-level voice/style) with an expressivity encoder on source mel plus a textless acoustic model reconstructing 80-dim mel from reduced XLS-R-10k units as target-units-plus-source-mel prompt into HiFi-GAN.",
+      "subject_id": "evr2-btd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "v2 body §4."
+    },
+    {
+      "statement_id": "claim-3",
+      "text": "The source defines SeamlessStreaming: v2 fine-tuned with Efficient Monotonic Multihead Attention per-head stepwise policy with numerically-stable parallel alpha, latency-plus-variance regularization, emission threshold plus non-autoregressive text-to-unit chunking; evaluated by average lagging/length-adaptive lagging/ending offset.",
+      "subject_id": "evr2-btd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "v2 body §5."
+    },
+    {
+      "statement_id": "claim-4",
+      "text": "Reported numbers (v2-Large 2.3B, Fleurs): speech-to-text BLEU X-to-English 26.6 vs v1 24.1 (+10%) vs cascade 22.7 (+17%); speech-to-speech ASR-BLEU X-to-English 29.7 vs 25.8 (+15%), English-to-X 26.1 vs 20.9 (+25%); expressive mDRAL gains over v2 base; streaming threshold-0.5 speech-to-text X-to-English BLEU 20.0/lag 1.68 vs offline 23.7, speech-to-speech ASR-BLEU 22.1/offset 2.79 s vs 29.7.",
+      "subject_id": "evr2-btd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "v2 body §§6-7 tables/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Performance varies by race/accent/gender with ASR gaps propagating to expressive/streaming; distant/low-resource/zero-shot worse; short-form general-domain research-only, long-form degrades, not certified.",
+      "subject_id": "evr2-btd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Expressive sensitivity preserves noise lowering clarity/sound quality; residual added toxicity/bias plus voice-phishing/deepfake misuse only partly damped by watermark.",
+      "subject_id": "evr2-btd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-3",
+      "text": "Long-form/domain-specific/certified efficacy, full elimination of gender/toxicity/noise-propagation gaps, and visual/sign-gesture integration not established.",
+      "subject_id": "evr2-btd062",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "v2 source body consumed (abs + HTML §§1-9 + App: v2/UnitY2, Expressive/PRETSSEL, Streaming/EMMA, eval tables, limits). No v1 fact carried over as v2 fact.",
+        "subject_ids": [
+          "evr2-btd062"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

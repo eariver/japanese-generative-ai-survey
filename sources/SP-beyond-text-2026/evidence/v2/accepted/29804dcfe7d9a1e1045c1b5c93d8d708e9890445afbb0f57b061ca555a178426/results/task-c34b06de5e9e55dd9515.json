@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:193424afc7da74ed",
+  "basis": {
+    "task_sha256": "1acf49411b0d002c28e705ab53886a038148882f955840cda97429049f8b7f30",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd135",
+      "canonical_name": "MTR-DuplexBench: Towards a Comprehensive Evaluation of Multi-Round Conversations for Full-Duplex Speech Language Models (Zhang et al., 2025)",
+      "entity_type": "BENCHMARK",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2511.10262"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd135",
+    "artifact_type": "BENCHMARK",
+    "canonical_name": "MTR-DuplexBench: Towards a Comprehensive Evaluation of Multi-Round Conversations for Full-Duplex Speech Language Models (Zhang et al., 2025)",
+    "canonical_url": "https://arxiv.org/abs/2511.10262"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-11",
+        "subject_id": "evr2-btd135",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2511.10262",
+      "source_class": "PRIMARY_PAPER",
+      "title": "MTR-DuplexBench: Towards a Comprehensive Evaluation of Multi-Round Conversations for Full-Duplex Speech Language Models (Zhang et al., 2025)",
+      "published_at": "2025-11",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines MTR-DuplexBench: segment turns via timestamped transcription plus voice-activity detection plus medium transcription model to large-model adjudication (6 passes, 30% overlap majority-vote median plus merge); assistant window with ground-truth history and muted next-user; 4 dimensions (synthetic conversational, natural dialogue, instruction, safety) with success/GPT-score/refusal plus latency in seconds.",
+      "subject_id": "evr2-btd135",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§§2-3."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: 200 10-round synthetic plus 200 120-second natural dialogues (average 5.88 rounds) plus 300 instruction plus 520 safety items; smooth-conversation success 73.00% round-1 to 57.40% rounds-1-10, interrupt 72.5 to 54.2, pause 93.5 to 84.8, background 53.0 to 25.7, latency ~0.64 s round-1 rising, cascaded ~9-12 s; instruction 68.0 to 41.9% vs baselines 86.5/92.6; safety ~90-91% vs ~99.7%.",
+      "subject_id": "evr2-btd135",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§4/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "2025-11 protocol, adoption unverified; model-judge/segmentation dependence.",
+      "subject_id": "evr2-btd135",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Cross-lab adoption and examiner-free stability not established.",
+      "subject_id": "evr2-btd135",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML: Abstract, §§1-4, Tables 1-7, App A). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd135"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "metric-validity context binding",
+        "status": "VERIFIED",
+        "finding": "Hardware/version/condition/methodology binding recorded from consumed body sections for downstream reuse.",
+        "subject_ids": [
+          "evr2-btd135"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

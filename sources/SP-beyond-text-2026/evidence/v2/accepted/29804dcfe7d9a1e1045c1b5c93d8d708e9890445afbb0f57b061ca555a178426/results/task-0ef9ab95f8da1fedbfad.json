@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:0ae0205f62fa560f",
+  "basis": {
+    "task_sha256": "54c79d67135d4612f71c870ab10a92efc16dc5ab93b2d2b306255710062932fd",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd080",
+      "canonical_name": "LCM-LoRA: A Universal Stable-Diffusion Acceleration Module (Luo et al.)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2311.05556"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd080",
+    "artifact_type": "PAPER",
+    "canonical_name": "LCM-LoRA: A Universal Stable-Diffusion Acceleration Module (Luo et al.)",
+    "canonical_url": "https://arxiv.org/abs/2311.05556"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2023-11",
+        "subject_id": "evr2-btd080",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2311.05556",
+      "source_class": "PRIMARY_PAPER",
+      "title": "LCM-LoRA: A Universal Stable-Diffusion Acceleration Module (Luo et al.)",
+      "published_at": "2023-11",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines LCM-LoRA: LoRA-parameterised consistency acceleration (trainable 67.5M for SD-V1.5 0.98B, 105M for 1.3B, 197M for SDXL 3.5B); acceleration vector plus style vector combinable without training (e.g. 0.8/1.0); neural probability-flow-ODE plug-in with 4-step guidance at 512/1024.",
+      "subject_id": "evr2-btd080",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§§2-3."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported scope: qualitative 4-step 512-V1.5/1024-SDXL/1B generations vs DPM-Solver++ at higher NFE; no FID/CLIP table in this report (defers to LCM).",
+      "subject_id": "evr2-btd080",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§3/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Report-only, no new benchmark; combination weights heuristic; per-model generality needs validation.",
+      "subject_id": "evr2-btd080",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Steps/latency/VRAM/hardware/quantisation numbers not established in consumed body.",
+      "subject_id": "evr2-btd080",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML 2311.05556v1: Abstract, §§1-3). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd080"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

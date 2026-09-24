@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:7bf81f16b93d5b2b",
+  "basis": {
+    "task_sha256": "f92a2abac3f2a06bd19de09333bac73660a082c2c55c1416e68e36c5d9517186",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd012",
+      "canonical_name": "Wan2.2-VAE: high-compression video VAE (Wan-Video)",
+      "entity_type": "FRAMEWORK",
+      "organization": "Alibaba",
+      "canonical_url": "https://github.com/Wan-Video/Wan2.2"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd012",
+    "artifact_type": "FRAMEWORK",
+    "canonical_name": "Wan2.2-VAE: high-compression video VAE (Wan-Video)",
+    "canonical_url": "https://github.com/Wan-Video/Wan2.2"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2025-07",
+        "subject_id": "evr2-btd012",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://github.com/Wan-Video/Wan2.2",
+      "source_class": "PRIMARY_REPOSITORY",
+      "title": "Wan2.2-VAE: high-compression video VAE (Wan-Video)",
+      "published_at": "2025-07",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The repo documents Wan2.2-VAE high-compression video representation: 4x16x16 T-H-W (64x) plus patchification to 4x32x32 total; TI2V-5B unified T2V+I2V runs 5 s 720P at 24 fps in <9 min on a single 24 GB consumer GPU (offload/dtype/T5-CPU).",
+      "subject_id": "evr2-btd012",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "README MoE/VAE/efficiency sections."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "The repo documents a 2-expert MoE layout (high-noise layout expert + low-noise detail expert switched at SNR threshold t_moe): T2V-A14B/I2V-A14B 27B total/14B active; TI2V-5B 5B dense; open weights Apache 2.0; ComfyUI/Diffusers supported.",
+      "subject_id": "evr2-btd012",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "README architecture/run sections."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "README-level disclosure only: no VAE reconstruction/ablation numbers, no training loss/objective, efficiency table values partly image-bound.",
+      "subject_id": "evr2-btd012",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Open line stops at 2.2; 2.5/2.6/2.7/3.0 are API-only.",
+      "subject_id": "evr2-btd012",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (Wan2.2 GitHub repo page + README consumed: header/paper/blog links, T2V/I2V/TI2V/S2V/Animate commands, MoE/VAE exposition, efficiency table, license). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd012"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      },
+      {
+        "target": "hardware/configuration binding at Evidence",
+        "status": "VERIFIED",
+        "finding": "Hardware/version/condition/methodology binding recorded from consumed body sections for downstream reuse.",
+        "subject_ids": [
+          "evr2-btd012"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

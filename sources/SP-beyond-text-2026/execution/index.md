@@ -17,7 +17,7 @@ This is the current human-readable navigation record for the edition. Machine li
 - Current lifecycle: `CANDIDATES_NORMALIZED`
 - Current terminal reason: `none`
 - Current next action: `stage:evidence-materiality-completeness` (HELD — fresh Sol Evidence Semantic Review required first; Materiality/Completeness/Selection/Architecture NOT entered)
-- Operational meaning: `EVIDENCE_REBUILT / AWAITING_SOL_EVIDENCE_SEMANTIC_REVIEW_R2` (r1 preserved as history; r2 rebuilt from source bodies; Sol r1 REQUEST_CHANGES E1-E5 repaired)
+- Operational meaning: `EVIDENCE_REBOUND / AWAITING_SOL_PROVENANCE_READBACK` (24 locator/title provenance rebinds incl. D062 v2 + D089 IEEE + D024 CompVis; r1/r2 preserved; Sol r2 provenance readback pending)
 
 ## Human Gates
 
@@ -90,7 +90,19 @@ This is the current human-readable navigation record for the edition. Machine li
 - `sessions/ts002-beyond-text-discovery-repair-r2-20260924.md`
 - `sessions/ts002-x-import-screening-evidence-20260924.md`
 - `sessions/ts002-evidence-semantic-depth-r2-20260924.md`
+- `sessions/ts002-provenance-rebind-20260924.md`
+
+## Provenance rebind (Sol r2 verdict: semantic PASS, provenance repair only)
+
+- Manifest: `execution/provenance-rebind-20260924/provenance-repair-manifest.json` (24 rows; old locators preserved, no silent substitution)
+- Discovery: 139 records, 24 locator/title/published_at rebinds (21 arXiv + D062 v2 + D089 IEEE + D024 CompVis)
+- Screening replay: same decisions 134/3/2/0 (`screening-accepted`, replayed SHA)
+- Evidence rebound: 139 Cards (126 VERIFIED / 8 PARTIAL / 5 NEEDS_MORE; only D062 promoted via actual v2 body) + 139 Views
+- Transition ledger refreshed (43 entries); access ledger rebound (139 rows)
+- Sol r2 review record: `execution/sol-evidence-semantic-review-r2-20260924.md` (transcribed verdict)
+- Validation receipt: `execution/provenance-rebind-20260924/validation-rebind.json` (18/18 PASS)
+- r1 + r2 result-sets preserved; shared Core untouched; Materiality NOT entered
 
 ## Final disposition
 
-`EVIDENCE_REBUILT / AWAITING_SOL_EVIDENCE_SEMANTIC_REVIEW_R2` (r2 committed on the work branch for Sol r2 review; Screening passed, r2 Evidence built+validated, Materiality and later stages pending; no Human Gate fabricated)
+`EVIDENCE_REBOUND / AWAITING_SOL_PROVENANCE_READBACK` (rebind committed on the work branch for Sol provenance readback; Screening passed, rebound Evidence built+validated, Materiality and later stages pending; no Human Gate fabricated)
