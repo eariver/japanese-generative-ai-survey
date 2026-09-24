@@ -80,7 +80,7 @@ Collector run `beyond-text-discovery-r2` observed `2026-09-24T09:43:32Z`. Bounde
 - Published: 2026-04 (article dated 2026-04-12)
 - Source class: PRIMARY_DOC / role: independent-measurement anchor / modality: image
 - Obligations: BT-O10
-- Summary: Independent FLUX.2-klein-4B measurement with documented methodology (H100 SXM, Diffusers FluxPipeline bf16, flow-matching scheduler): 1024x1024 4-step 0.57s (1.77 img/s), 512x512 4-step 0.19s, VRAM 16-18GB by resolution, 5-10x faster than SDXL on equivalent hardware; explicit statement that diffusion metrics are images/sec, latency/image, VRAM, CLAP alignment (no KV-cache/TTFT). Partially fills G04; vendor sub-second claim now has an independent anchor. [retrieval: SUMMARY_CAPTURED; full-body consumption at Evidence stage]
+- Summary: Independent FLUX.2-klein-4B measurement with documented methodology (H100 SXM, Diffusers FluxPipeline bf16, flow-matching scheduler): 1024x1024 4-step 0.57s (1.77 img/s), 512x512 4-step 0.19s, VRAM 16-18GB by resolution, 5-10x faster than SDXL on equivalent hardware; explicit statement that diffusion metrics are images/sec, latency/image, VRAM, CLIP alignment (no KV-cache/TTFT). Partially fills G04; vendor sub-second claim now has an independent anchor. [retrieval: SUMMARY_CAPTURED; full-body consumption at Evidence stage]
 - Limitation: Single-vendor-lab source (not peer-reviewed); consumer-GPU replication and A100 community figures remain for Evidence/X passes.
 
 ## BT-D138 — FiVE: A Fine-grained Video Editing Benchmark for Evaluating Emerging Diffusion and Rectified Flow Models (Wang, arXiv 2503.13684)
