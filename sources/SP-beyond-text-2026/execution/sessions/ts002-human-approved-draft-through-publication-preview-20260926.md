@@ -150,4 +150,6 @@ Human decision: `ARCHITECTURE_REVIEW / APPROVED` (Human Owner「はい、承認�
 
 ## Final remote HEAD/tree after non-force push
 
-- (recorded after push below)
+- HEAD `5524d73a891245935301fad7e077eec32a34a619`, tree `02e9891d86371f0ca867f6633f834bdd73888964`
+  (origin/special/beyond-text-2026-work fast-forward, non-force; no new/fallback branches;
+  no force push/reset/rebase/history rewrite).
