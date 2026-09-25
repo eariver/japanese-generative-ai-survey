@@ -1,0 +1,77 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "review_kind": "VISUAL",
+  "status": "PASSED",
+  "production_profile": {
+    "path": "sources/SP-beyond-text-2026/production-profile.json",
+    "sha256": "9fb37cbf9c8401f80f898e2c2a62e7e24cd44ec0819fec9e1b1732dbc27a2bdb"
+  },
+  "reader_manuscript": {
+    "path": "sources/SP-beyond-text-2026/publication/v2/reader-manuscript-v2.json",
+    "sha256": "a472b18328bc24ce353af793126c5017a8308ff5608a918dc2af5c51698fed91"
+  },
+  "source": {
+    "path": "surveys/special/beyond-text-2026/main.tex",
+    "sha256": "f4d7f23d55f6f887928ee77631abd1fdbe3e83a54a981b06d7ab9cac8fa27834",
+    "byte_count": 293701
+  },
+  "pdf": {
+    "path": "surveys/special/beyond-text-2026/main.pdf",
+    "sha256": "f7dd6f999f860e41ba00ddef8bce2ef215c4b586acef2506e13835f2cd992985",
+    "byte_count": 1013922
+  },
+  "page_count": 68,
+  "checks": [
+    {
+      "check_id": "EXACT_PDF_VISUAL_REVIEW",
+      "status": "PASS",
+      "detail": "Exact 68-page PDF reviewed: all 68 pages text-verified (min 663 chars, no near-blank page); cover, front matter, TOC, section openings, table pages, capstone, reception, synthesis, and bibliography pages rendered and inspected; no clipping, overflow, broken tables, bad breaks, orphaned headings, citation overflow, header/footer corruption, line-breaking defects, broken URLs, or bibliography layout faults. Single vbox overfull from r1 resolved (r2 CI audit: zero layout findings). Internal-ID redaction verified in rendered capstone page.",
+      "evidence_locations": [
+        "surveys/special/beyond-text-2026/main.pdf: pages 1-68",
+        "publication/v2/deterministic/pdf-preflight.json"
+      ]
+    },
+    {
+      "check_id": "LONGFORM_MIXED_LAYOUT",
+      "status": "PASS",
+      "detail": "Balanced two-column narrative via multicols (all subsections inside); full-width tables as wide surfaces; one-column references; TOC with section hierarchy.",
+      "evidence_locations": [
+        "reader-layout:wide-surfaces-full-width",
+        "reader-layout:references-one-column",
+        "reader-layout:balanced-two-column-narrative"
+      ]
+    },
+    {
+      "check_id": "LONGFORM_PAGE_BALANCE",
+      "status": "PASS",
+      "detail": "68 pages within 64-96 guidance (target 80, below-target disposition recorded in semantic review); no padded pages; no near-blank pages (min page chars verified); multicols balance without stranded columns; capstones compact and reception bounded by design.",
+      "evidence_locations": [
+        "surveys/special/beyond-text-2026/main.pdf: pages 1-68",
+        "page-plan:68/80"
+      ]
+    },
+    {
+      "check_id": "TECHNICAL_NOTES_TAIL_NEEDSPACE",
+      "status": "PASS",
+      "detail": "Boundary boxes and tables guarded by Needspace; tail sections not stranded; synthesis and references transition cleanly without orphaned headers.",
+      "evidence_locations": [
+        "surveys/special/beyond-text-2026/main.pdf: pages 55-68",
+        "surveys/special/beyond-text-2026/main.tex: Needspace guards"
+      ]
+    },
+    {
+      "check_id": "TOC_HIERARCHY",
+      "status": "PASS",
+      "detail": "TOC lists 15 numbered sections with numbered subsections and page numbers; unnumbered front matter excluded from numbered hierarchy as designed.",
+      "evidence_locations": [
+        "surveys/special/beyond-text-2026/main.pdf: pages 4-6"
+      ]
+    }
+  ],
+  "reviewed_by": "ChatGPT (Muse Spark)",
+  "recorded_at": "2026-09-26T02:30:00Z",
+  "review_sha256": "a4295021e35f6f6ca206df9a576eac4908a7b578ebebdcdda68314cfd958c03c"
+}

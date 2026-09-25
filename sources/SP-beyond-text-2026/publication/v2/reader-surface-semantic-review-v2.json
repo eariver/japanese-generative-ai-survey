@@ -1,0 +1,53 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "review_kind": "SEMANTIC_EDITORIAL",
+  "reviewed_surface": {
+    "path": "surveys/special/beyond-text-2026/main.tex",
+    "sha256": "f4d7f23d55f6f887928ee77631abd1fdbe3e83a54a981b06d7ab9cac8fa27834"
+  },
+  "checks": [
+    {
+      "check_id": "READER_PIPELINE_INDEPENDENCE",
+      "status": "PASS",
+      "detail": "Reader TeX carries approved claim boundaries into prose, tables, and boundary boxes without internal pipeline vocabulary: Discovery/Evidence IDs redacted from prose (BT-D059, BT-D134, btd076/106, locator list neutralized 2026-09-26); citations via autocite only; editorial prose guard PASS on main.tex and references.bib with zero suppressions.",
+      "evidence_locations": [
+        "surveys/special/beyond-text-2026/main.tex: Sections 1-15",
+        "editorial prose guard PASS 2/2"
+      ]
+    },
+    {
+      "check_id": "EVIDENCE_BOUND_FIDELITY",
+      "status": "PASS",
+      "detail": "All 14 packages preserve approved claim boundaries; PARTIAL 8 (EDM abstract-only, VALL-E 2 mechanism-only, Movie Gen abstract-only, FID abstract-only, LibriSpeech snippet-only, C2PA homepage-only, Imagen lifecycle-only, Moshi framework-only) and NEEDS_MORE/HOLD 5 fenced in front matter and section boundaries; vendor claims attributed; no cross-condition comparisons.",
+      "evidence_locations": [
+        "surveys/special/beyond-text-2026/main.tex: front matter + Sections 2, 6, 8, 11-13",
+        "draft/v2/packages: 14/14 results"
+      ]
+    },
+    {
+      "check_id": "LONGFORM_COVERAGE",
+      "status": "PASS",
+      "detail": "All 22 must-cover (package, requirement) pairs map to numbered Sections 1-14; FINAL_SYNTHESIS maps to Section 15; deterministic fidelity resolves every claimed location to a non-empty block.",
+      "evidence_locations": [
+        "publication/v2/reader-manuscript-v2.json: architecture_coverage",
+        "publication/v2/reader-manuscript-v2.json: reader_requirements"
+      ]
+    },
+    {
+      "check_id": "SYNTHESIS_CLOSURE",
+      "status": "PASS",
+      "detail": "Closing synthesis binds branch transitions, competing relations, unresolved lineage, and attribution boundaries from the profile synthesis without new factual claims.",
+      "evidence_locations": [
+        "surveys/special/beyond-text-2026/main.tex: Section 15",
+        "draft/v2/profile-synthesis-result.json"
+      ]
+    }
+  ],
+  "decision": "PASS",
+  "reviewed_by": "ChatGPT (Muse Spark)",
+  "reviewed_at": "2026-09-26T02:30:00Z",
+  "findings": [],
+  "review_sha256": "55d8ee5a7b8cdc70f95423532544556ee66193b4a6b1795e3b9e677dc8126e9f"
+}
