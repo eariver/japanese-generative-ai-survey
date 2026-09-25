@@ -71,4 +71,6 @@ Prior Sol r2 PASS (`05b010c39`) explicitly superseded by Issue #529 while open (
 
 ## Final remote HEAD/tree
 
-- (recorded after push)
+- HEAD `761a2b628cb84ca704925c9471089f65923554ff`, tree `6de60197bd02f0f8c9b35ff5fb4f11ffc040dbc9`
+  (origin/special/beyond-text-2026-work fast-forward, non-force; no new/fallback branches;
+  no force push/reset/rebase/history rewrite).
