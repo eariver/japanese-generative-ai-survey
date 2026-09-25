@@ -80,4 +80,6 @@ Prior Sol r3 PASS (`26fabad23`) superseded by Issue #533 while open (not final d
 ## Starting/final HEAD + tree
 
 - Start: HEAD `26fabad2335c09ddc7babe62cf703b1aa5cdbc00`, tree `86509d277592c2b4ddd879fb03d0c8b248d273f1`.
-- Final: (recorded after push)
+- Final: HEAD `91e2a1fa7b0b6e513c4f9778ce9f2bba7c59200c`, tree `f2ca50629307accb4539148ba1a91540e3f8590a`
+  (origin/special/beyond-text-2026-work fast-forward, non-force; no new/fallback branches;
+  no force push/reset/rebase/history rewrite).
