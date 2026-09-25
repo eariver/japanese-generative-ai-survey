@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:8bdca5c7211e2751",
+  "basis": {
+    "task_sha256": "158435a40568b0dbbec526271524e90c8ca9edc927bd3521c3243ee326e75890",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd078",
+      "canonical_name": "Progressive Distillation for Fast Sampling of Diffusion Models (Salimans & Ho)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2202.00512"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd078",
+    "artifact_type": "PAPER",
+    "canonical_name": "Progressive Distillation for Fast Sampling of Diffusion Models (Salimans & Ho)",
+    "canonical_url": "https://arxiv.org/abs/2202.00512"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-02",
+        "subject_id": "evr2-btd078",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2202.00512",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Progressive Distillation for Fast Sampling of Diffusion Models (Salimans & Ho)",
+      "published_at": "2022-02",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines progressive distillation: an N-step teacher's two DDIM steps distilled into a single student step via inverted targets, iterating N to N/2; stable parameterisations (x / x+eps / velocity with truncated-SNR weighting), cosine schedule; same-architecture student.",
+      "subject_id": "evr2-btd078",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§§2-3."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: CIFAR-10 FID 3.0 at 4 steps vs DDIM 4.16 at 100 and 13.36 at 10; 2.57 at 8, 4.51 at 2, 9.12 at 1; ImageNet-64/LSUN-128 near-optimal to 4-8 steps vs sharp DDIM drop below 128; 50k updates per halving (100k to 1-2 steps), total at most original training cost.",
+      "subject_id": "evr2-btd078",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§4/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Degrades at 1-2 steps; no architecture compression; distilled stochastic sampling sits between distilled DDIM and undistilled stochastic.",
+      "subject_id": "evr2-btd078",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Latency/RTF/VRAM/hardware/quantisation/offload numbers not reported in consumed body.",
+      "subject_id": "evr2-btd078",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML 2202.00512v2: Abstract, §§1-5, App B-G). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd078"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

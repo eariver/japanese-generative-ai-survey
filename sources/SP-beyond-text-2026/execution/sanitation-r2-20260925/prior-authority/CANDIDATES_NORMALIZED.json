@@ -1,0 +1,62 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "from_state": "CANDIDATES_NORMALIZED",
+  "to_state": "EVIDENCE_REVIEWED",
+  "checkpoints": [
+    "evidence",
+    "materiality",
+    "completeness"
+  ],
+  "recorded_at": "2026-09-25T12:41:40Z",
+  "implementation": {
+    "repository_commit_sha": "2d848b2c0091fa191375842be96a60a73a6ec417",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "edition-views-acceptance",
+      "path": "sources/SP-beyond-text-2026/evidence/v2/views/accepted/336f93d2e91aa52fe983271068be3227b0589fe9fa0e3c4f645aae0ae7823a73/edition-views-accepted.json",
+      "sha256": "464dd79a9055672d9e848b0d0d6261bbe3c650f2c25a9904c6d2f1722c4d1e1b"
+    },
+    {
+      "name": "evidence-acceptance",
+      "path": "sources/SP-beyond-text-2026/evidence/v2/accepted/29804dcfe7d9a1e1045c1b5c93d8d708e9890445afbb0f57b061ca555a178426/evidence-accepted.json",
+      "sha256": "31503fceffa688d69bab663b0b596fa4e656eda97dc9325f4b96fd29f1c18223"
+    },
+    {
+      "name": "materiality-ledger",
+      "path": "sources/SP-beyond-text-2026/materiality-ledger-v2.json",
+      "sha256": "d229700e5e3fa0f0cc8101860acaa99d314bbf6979e7e2cda79be9fb9134a78b"
+    },
+    {
+      "name": "profile-completeness",
+      "path": "sources/SP-beyond-text-2026/profile-completeness-v2.json",
+      "sha256": "b8b0b102b932ddcbc2484cb9db29f99783bc5684132475fa5a9f00b38ddb1c07"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "Evidence/Materiality/Completeness stage-contract validation passed: rebound Evidence 139 (126 VERIFIED/8 PARTIAL/5 NEEDS_MORE), 139 Views, Materiality Ledger 139 rows (109/5/25), Completeness LIMITED (4 SATISFIED/8 LIMITATION). Machine validation only; Human Architecture Review pending downstream.",
+      "result": {
+        "path": "sources/SP-beyond-text-2026/execution/progress-materiality-architecture-20260925/validation/evidence-stage-validation.json",
+        "sha256": "86c617ee7ef4bdac8722afed61925ecfc27149725de168702489e650bce6e955"
+      }
+    }
+  ],
+  "summary": "TS-002 Evidence/Materiality/Completeness complete over rebound Evidence (126/8/5): 139 Cards+Views accepted, Ledger 109/5/25, Completeness LIMITED with declared barriers. Proceed to Selection; Architecture Review pending."
+}

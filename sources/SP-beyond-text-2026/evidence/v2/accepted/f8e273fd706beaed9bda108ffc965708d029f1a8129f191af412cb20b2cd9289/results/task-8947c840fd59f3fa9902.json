@@ -1,0 +1,119 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "evidence_task_id": "evidence:SP-beyond-text-2026:6d8e8a14407ac19d",
+  "basis": {
+    "task_sha256": "b2a0af8fbc3a84d86e43473ca5c335b56b15501a512969902ff194eaa731197f",
+    "screening_acceptance_sha256": "826833e88e851f69e5bd76a3d2558f0bb4a659aed49bf25e404e0cda1bf6be79",
+    "prompt_sha256": "fc2129ff2d21791a45a8ae2dd754dd7fca1a6101594408b3f51aa13f38a4a64b",
+    "result_contract_sha256": "48568a0ea687257fd368e3d2ea33f560e7c9806aa3a9b9e81136f05f052abc91"
+  },
+  "status": "VERIFIED",
+  "entities": [
+    {
+      "entity_id": "evr2-btd032",
+      "canonical_name": "Classifier-Free Diffusion Guidance (Ho & Salimans)",
+      "entity_type": "PAPER",
+      "organization": null,
+      "canonical_url": "https://arxiv.org/abs/2207.12598"
+    }
+  ],
+  "artifact": {
+    "primary_subject_id": "evr2-btd032",
+    "artifact_type": "PAPER",
+    "canonical_name": "Classifier-Free Diffusion Guidance (Ho & Salimans)",
+    "canonical_url": "https://arxiv.org/abs/2207.12598"
+  },
+  "temporal": {
+    "observed_at": "2026-09-24T14:30:00Z",
+    "events": [
+      {
+        "event_id": "event-1",
+        "event_type": "SOURCE_PUBLICATION_OR_RELEASE",
+        "event_date": "2022-07",
+        "subject_id": "evr2-btd032",
+        "subject_role": "PRIMARY_SUBJECT",
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "src-1",
+      "url": "https://arxiv.org/abs/2207.12598",
+      "source_class": "PRIMARY_PAPER",
+      "title": "Classifier-Free Diffusion Guidance (Ho & Salimans)",
+      "published_at": "2022-07",
+      "accessed_at": "2026-09-24T14:30:00Z",
+      "role": "Discovery-bounded source used for factual verification"
+    }
+  ],
+  "claims": [
+    {
+      "statement_id": "claim-1",
+      "text": "The source defines classifier-free guidance: single network trained jointly conditional+unconditional via random conditioning dropout (p_uncond 0.1-0.2 best); inference-only guidance eps_tilde=(1+w)·eps_cond − w·eps_uncond with swept w; implicit-classifier motivation.",
+      "subject_id": "evr2-btd032",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§3."
+    },
+    {
+      "statement_id": "claim-2",
+      "text": "Reported numbers: 64px best FID 1.55 at w=0.1, IS 260.2 at w=4.0; 128px FID 2.43 at w=0.3 beats ADM-Guided 2.97, IS 421 at w=4.0; costs 2 forward passes vs classifier guidance.",
+      "subject_id": "evr2-btd032",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "PRIMARY_FACT",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "§4 tables/conditions."
+    }
+  ],
+  "metrics": [],
+  "limitations": [
+    {
+      "statement_id": "limitation-1",
+      "text": "Saturated colours at high w; 2 forward passes; diversity loss; ImageNet-class conditioning only.",
+      "subject_id": "evr2-btd032",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    },
+    {
+      "statement_id": "limitation-2",
+      "text": "Text-conditioning transfer and optimal p_uncond beyond tested values not established.",
+      "subject_id": "evr2-btd032",
+      "subject_role": "PRIMARY_SUBJECT",
+      "evidence_class": "INFERENCE",
+      "source_ids": [
+        "src-1"
+      ],
+      "context": "Evidence boundary retained for downstream editorial use."
+    }
+  ],
+  "verification": {
+    "targets": [
+      {
+        "target": "Evidence-stage full-body verification",
+        "status": "VERIFIED",
+        "finding": "Source body consumed (arXiv abs + HTML: Abstract, §1-5 (background, guidance, ImageNet-64/128 sweeps, discussion)). No claim above rests on Discovery summary alone.",
+        "subject_ids": [
+          "evr2-btd032"
+        ],
+        "source_ids": [
+          "src-1"
+        ]
+      }
+    ],
+    "unresolved_questions": [],
+    "contradictions": []
+  }
+}

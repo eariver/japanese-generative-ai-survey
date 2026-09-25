@@ -1,0 +1,50 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "from_state": "EVIDENCE_REVIEWED",
+  "to_state": "SELECTION_COMPLETE",
+  "checkpoints": [
+    "selection"
+  ],
+  "recorded_at": "2026-09-25T12:47:42Z",
+  "implementation": {
+    "repository_commit_sha": "2d848b2c0091fa191375842be96a60a73a6ec417",
+    "orchestrator_version": "survey-production-core-v2/0.15-postintegration-transport-thematic"
+  },
+  "contract": {
+    "pipeline_contract_version": "2.0-rc1",
+    "pipeline_contract_sha256": "ee89796245c22072cec98f34931180214a4928c24f399280793cd6420a4c8e71",
+    "quality_contract_version": "2.0-rc1",
+    "quality_contract_sha256": "b5b955d524fb438c0f1b2c9490bea1da2083e79028d67a55ca424bbfc20f2958",
+    "research_profile_version": "2.0-rc1",
+    "research_profile_sha256": "0f575e6d97caec72b2bf8b7f6b78a562d97ca67b2071193417b968ba3d73e6e8",
+    "publication_profile_version": "2.0-rc1",
+    "publication_profile_sha256": "a6859559dd1b9d42ab8fb4402b74b7bdd8611dbe65c8e02a7b022b545c20f4eb"
+  },
+  "artifacts": [
+    {
+      "name": "candidate-matrix",
+      "path": "sources/SP-beyond-text-2026/candidate-matrix-v2.json",
+      "sha256": "a74d9c4601616ecd6e338d6254c89e6d781b6fc00f566417db70e24a901e09d7"
+    },
+    {
+      "name": "candidate-selection",
+      "path": "sources/SP-beyond-text-2026/candidate-selection-v2.json",
+      "sha256": "e494cf141a061dc1db1c3b9372484e3d0fbf495e88eb5ea930ae3eb546e06b21"
+    }
+  ],
+  "reviews": [
+    {
+      "check_id": "CORE_STAGE_CONTRACT",
+      "kind": "DETERMINISTIC",
+      "status": "PASS",
+      "executor": "Survey Production Core v2 survey_stage_validation_v2.py",
+      "evidence": "Selection stage-contract validation passed: 139 candidates, 134 SELECTED (57 PRIMARY / 77 SUPPORTING) / 5 HOLD / 0 REJECT / 0 INSPECT. Machine validation only; Human Architecture Review pending downstream.",
+      "result": {
+        "path": "sources/SP-beyond-text-2026/execution/progress-materiality-architecture-20260925/validation/selection-stage-validation.json",
+        "sha256": "b50a78429b5b13170c6fdcdaef87f79e1c007055b8b8896672bdefebd08f3858"
+      }
+    }
+  ],
+  "summary": "TS-002 Selection complete: anti-thinness selection over 139 candidates (14 packages; transition ledger mapped; closed products as capability context; X as reception context; 5 blocked HOLD). Proceed to Architecture; Human review pending."
+}

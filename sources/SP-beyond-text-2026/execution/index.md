@@ -17,11 +17,11 @@ This is the current human-readable navigation record for the edition. Machine li
 - Current lifecycle: `ARCHITECTURE_ESTABLISHED`
 - Current terminal reason: `none`
 - Current next action: `ARCHITECTURE_REVIEW` (fresh Human Architecture Review requested; Draft and later stages NOT entered)
-- Operational meaning: `ARCHITECTURE_REVIEW / AWAITING_HUMAN_ARCHITECTURE_DECISION` (rebound Evidence → Materiality → Completeness → Selection → Architecture; Sol provenance readback PASS authorized the advance)
+- Operational meaning: `ARCHITECTURE_REVIEW / AWAITING_HUMAN_ARCHITECTURE_DECISION_R2` (provenance sanitation replay; Sol Architecture r1 REQUEST_CHANGES A1/A2 repaired; design unchanged)
 
 ## Human Gates
 
-- Architecture Review: `pending` (fresh review requested; dossier `execution/architecture-review-dossier-r1.md`; no decision fabricated)
+- Architecture Review: `pending` (r2 review requested after Sol r1 sanitation; dossier `execution/architecture-review-dossier-r2.md` with exact PARTIAL 8 / HOLD 5; no decision fabricated)
 - Publication Preview: `pending`
 - Detailed review records: none recorded yet
 
@@ -114,4 +114,4 @@ This is the current human-readable navigation record for the edition. Machine li
 
 ## Final disposition
 
-`ARCHITECTURE_REVIEW / AWAITING_HUMAN_ARCHITECTURE_DECISION` (dossier committed on the work branch for Human review; Draft and later stages NOT entered; no Human decision fabricated)
+`ARCHITECTURE_REVIEW / AWAITING_HUMAN_ARCHITECTURE_DECISION_R2` (sanitized Evidence f8e273fd + replayed chain + dossier r2 committed for Human r2 review; Draft and later stages NOT entered; no Human decision fabricated)

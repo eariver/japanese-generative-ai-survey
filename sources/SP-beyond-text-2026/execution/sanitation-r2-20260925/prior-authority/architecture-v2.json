@@ -1,0 +1,709 @@
+{
+  "schema_version": "2.0-rc1",
+  "issue_id": "SP-beyond-text-2026",
+  "research_profile": "THEMATIC",
+  "publication_profile": "LONGFORM_SPECIAL",
+  "status": "PROPOSED",
+  "basis": {
+    "production_profile_sha256": "9fb37cbf9c8401f80f898e2c2a62e7e24cd44ec0819fec9e1b1732dbc27a2bdb",
+    "profile_completeness_sha256": "b8b0b102b932ddcbc2484cb9db29f99783bc5684132475fa5a9f00b38ddb1c07",
+    "materiality_ledger_sha256": "d229700e5e3fa0f0cc8101860acaa99d314bbf6979e7e2cda79be9fb9134a78b",
+    "candidate_matrix_sha256": "a74d9c4601616ecd6e338d6254c89e6d781b6fc00f566417db70e24a901e09d7",
+    "candidate_selection_sha256": "e494cf141a061dc1db1c3b9372484e3d0fbf495e88eb5ea930ae3eb546e06b21"
+  },
+  "editorial_thesis": "高次元連続メディア（画素・波形・フレーム・動き・同期音）を生成可能にしたのは、表現・予測/生成目的・条件づけ・制御/編集・時間構造・サンプリング/実行・評価の選択の進化である。本Specialは有名製品のカタログではなく、画像・音声・音楽・映像の各モダリティで「何がボトルネックで、何が変わり、何が改善し、何が悪化し、何が継承されたか」を技術史として構成する。",
+  "architecture_goals": [
+    "Representation-first: raw/media compression/tokenization to be a first-class historical axis.",
+    "Keep architecture, objective, and sampling/inference procedure distinct in every chapter.",
+    "Treat editing/preservation as a separate technical problem from de-novo generation.",
+    "Give speech, music, and video their own mechanism/runtime/evaluation stories (no image-appendix).",
+    "Preserve metric-validity boundaries; never rank across incompatible conditions.",
+    "Keep closed products as capability/workflow/lifecycle cases with attribution; no hidden-architecture inference.",
+    "Keep the convergence question evidence-backed and open; enforce the TS-002/TS-003 boundary."
+  ],
+  "page_plan": {
+    "target_pages": 80,
+    "max_pages": 96,
+    "notes": "Planning envelope 64-96 pages (guidance, not hard cap): representation 8 / paradigms 10 / conditioning 5 / control 5 / editing 5 / speech 9 / music 7 / video 9 / temporal 4 / runtime 5 / evaluation 7 / convergence 4 / capstones 8 / reception 2 / front+back matter 6 (sum 84 incl. rounding); prefer justified depth over artificial compression; do not pad to reach target."
+  },
+  "packages": [
+    {
+      "package_id": "arch-representation",
+      "title": "表現と圧縮：生成可能にする短縮の歴史",
+      "purpose": "Establish representation as the first-class axis: why raw pixels/waveforms/frames are expensive sequences and how continuous latents, discrete codebooks, RVQ neural codecs, semantic/acoustic hierarchies, and spatiotemporal tokenizers made media tractable, with compression/fidelity/editability bounds.",
+      "primary_candidate_ids": [
+        "candidate:SP-beyond-text-2026:3248ed0904b61822",
+        "candidate:SP-beyond-text-2026:33e7532bbafc44bf",
+        "candidate:SP-beyond-text-2026:a195a829e3c5857c",
+        "candidate:SP-beyond-text-2026:6c4e64e74035a9bc",
+        "candidate:SP-beyond-text-2026:9a54e8e68dc573e4",
+        "candidate:SP-beyond-text-2026:056c54fee892ff77"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:SP-beyond-text-2026:d2365fbfbf03090e",
+        "candidate:SP-beyond-text-2026:fd48aa6e36cc11c4",
+        "candidate:SP-beyond-text-2026:0ddc5535b19f6fd5",
+        "candidate:SP-beyond-text-2026:365ce81afe448445",
+        "candidate:SP-beyond-text-2026:8e36301093827b79"
+      ],
+      "must_cover_requirements": [
+        "BT-O01"
+      ],
+      "boundaries": [
+        "Compression-ratio/token-rate claims bind stated configs only; semantic-vs-acoustic split preserved.",
+        "Mean-field-free Gaussian-posterior example only; discrete latents and global-parameter VB deferred in-text.",
+        "Downstream compression/fidelity claims require first-stage autoencoder sources, not this paper alone.",
+        "No joint prior+VQ-VAE training; uniform prior during representation learning; MSE pixel-loss blur noted in-text.",
+        "Codebook-collapse/usage frontier needs successor sources.",
+        "MUSHRA-inspired crowdsourcing (not strict MUSHRA); constant-rate operation; music hardest; enhancement demo is noise-suppression only.",
+        "Rate/quality frontier vs EnCodec/DAC needs matched comparison.",
+        "Discriminator-overpower handled by stochastic updates; 48 kHz+entropy-coding slower than real-time; stereo only via discriminator tweak.",
+        "Semantic-vs-acoustic split needs AudioLM-style hybrid sources.",
+        "Acoustic-only modelling babbles; semantic-only cannot vocode; proper-noun/background-noise ASR errors; piano only continuations beyond speech.",
+        "Long-form structure beyond continuations needs MusicLM/MusicGen successors.",
+        "VQ fidelity bounds generation; fixed 16-frame training; debiased BAIR protocol needed; naive unmasking fails (COMMIT motivation).",
+        "Masked-prior vs diffusion-prior comparison needs successor coverage.",
+        "Latent-space likelihood not comparable across encoders; FID/IS sensitive to VQ blur; prior training 1.6M/754k steps heavy.",
+        "Hierarchical-code cost/coverage vs single-scale successors needs comparison sources.",
+        "Recorded locator 2012.09812 is a transcription defect (resolves to unrelated paper); claims above rest on verified-correct 2012.09841. Future Discovery repair should correct the locator.",
+        "Sliding-window generation needs spatial invariance/conditioning; fixed 16x16 transformer context.",
+        "Heavy compression loses high-frequency detail; CUB specialist gap; rerank-dependent; variable binding/text rendering inconsistent in-text.",
+        "dVAE ceiling vs VQGAN/CLIP-latent successors needs successor sources.",
+        "Still below reference MUSHRA; worse on environmental/glockenspiel/synth; balanced full-band sampling required.",
+        "Generation-downstream gain needs adopter evidence, not codec metrics alone.",
+        "README-level disclosure only: no VAE reconstruction/ablation numbers, no training loss/objective, efficiency table values partly image-bound.",
+        "Open line stops at 2.2; 2.5/2.6/2.7/3.0 are API-only."
+      ],
+      "drafting_order": 1,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "arch-paradigms",
+      "title": "生成パラダイムと目的関数：AR・GAN・拡散・フローの分岐",
+      "purpose": "Trace generative paradigms with architecture kept distinct from objective: autoregressive pixels/transformers, adversarial generation and its retained hybrid roles, DDPM/score-SDE/EDM, latent diffusion, DiT/SiT, flow matching/rectified flow, consistency/distillation; each transition answers bottleneck/mechanism/improvement/trade-off/inheritance.",
+      "primary_candidate_ids": [
+        "candidate:SP-beyond-text-2026:4df54e5c81d42875",
+        "candidate:SP-beyond-text-2026:c98551980c462472",
+        "candidate:SP-beyond-text-2026:f929d15ba6bf05f9",
+        "candidate:SP-beyond-text-2026:b1d7cd9c368e53e8",
+        "candidate:SP-beyond-text-2026:01959df734605ed8",
+        "candidate:SP-beyond-text-2026:36866a8398ea4c0e",
+        "candidate:SP-beyond-text-2026:853e640e3fe64319",
+        "candidate:SP-beyond-text-2026:8983ee9752288c96",
+        "candidate:SP-beyond-text-2026:d537e4ead2e637f0",
+        "candidate:SP-beyond-text-2026:796bdb3f2d0ef671",
+        "candidate:SP-beyond-text-2026:003695aa3063ac0f",
+        "candidate:SP-beyond-text-2026:6330dd467d5a33af"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:SP-beyond-text-2026:6fe1386b51b08cb0",
+        "candidate:SP-beyond-text-2026:3eaa922921272c50",
+        "candidate:SP-beyond-text-2026:ca917014ea38341e",
+        "candidate:SP-beyond-text-2026:89e938b0cb78bb4a",
+        "candidate:SP-beyond-text-2026:fa7e7ce28af6b810"
+      ],
+      "must_cover_requirements": [
+        "BT-O02"
+      ],
+      "boundaries": [
+        "U-Net vs Transformer is architecture; diffusion vs flow is objective; solver/distillation is inference. No cross-condition ranking.",
+        "No explicit density; discriminator must stay synchronised (mode collapse risk); Parzen evaluation high-variance in high dimensions.",
+        "Modern role is vocoder/autoencoder/post-training hybrid, not standalone SOTA.",
+        "Recorded locator 1812.04958 is a transcription defect; claims rest on verified-correct 1812.04948. Future Discovery repair should correct the locator.",
+        "Mixing regularisation slightly distorts W path length; Z input space stays entangled.",
+        "FID/perceptual-path metrics are texture-biased; FID-PPL trade-off on unstructured sets; larger models may help further.",
+        "Matched-resolution/budget GAN-vs-diffusion comparison needs discipline.",
+        "NLL uncompetitive vs other likelihood models; most bits describe imperceptible detail; 1000-step sampling costly (~5 days/50k A100).",
+        "Step-cost reduction requires DDIM/distillation successors.",
+        "FID degrades as trajectory shortens; DDPM-implementation sigma collapses at short trajectories; ODE-vs-probability-flow gap at few steps.",
+        "Few-step SOTA vs LCM/consistency successors not compared here.",
+        "Solver cost still high (1000-2000 evals); VE/VP/sub-VP trade-offs and corrector steps need tuning; architecture gains entangled with sampler gains.",
+        "Solver optimality vs EDM successor and audio/video transfer beyond images.",
+        "Pixel-level detail still limited by first stage; LDM-32 over-compression stagnates; sequential sampling still costly; misuse/bias noted.",
+        "Cross-attention conditioning role needs D03 sources; autoencoder-vs-prior error attribution needs ablations.",
+        "JAX TPU-v3 throughput figures are hardware-bound; FID sensitive to eval suite; pixel-space DiT not tested.",
+        "Scaling vs SiT/flow successors and text-to-image transfer need successor sources.",
+        "CIFAR FID higher than tuned literature (backbone not CIFAR-optimised); adaptive-solver NFE still 100+; marginal field not OT-optimal despite conditional OT.",
+        "Trajectory-straightness vs rectified-flow reflow and high-res text-conditional transfer not established.",
+        "Exact theory needs exact velocity field + unique ODE; estimation error accumulates over many reflows (1 reflow recommended); density smoothing needed for ill-behaved fields.",
+        "Reflow cost vs LCM/consistency comparison and optimal-vs-straight coupling beyond 1D not established.",
+        "Needs Lipschitz + higher-order solver for theorem error rates; continuous-time needs forward-mode JVP; greedy tau search assumes unimodal FID.",
+        "Few-step quality vs LCM/ADD successors and guidance interaction beyond reported tables not established.",
+        "250-step sampling (25-step viable) still slower than GANs; classifier + large-upsample compute heavy; FID/IS/precision/recall imperfect proxies.",
+        "Guidance mechanism vs classifier-free successor and API-scale text conditioning beyond class labels not established.",
+        "Occasional filter-collapse with longer training; no log-likelihood; global-average-pooling stability/speed trade-off noted.",
+        "Stability analysis superseded by StyleGAN-era engineering.",
+        "Sequential generation expensive; 64x64 single-scale weak global structure; size capped by GPU memory/time.",
+        "Cost argument vs Image-Transformer follow-ups.",
+        "Local attention still truncates full context; largest generation 32x32 plus super-resolution only.",
+        "Full-attention DiT-scale comparison needed.",
+        "Abstract-only consumption: preconditioning/schedule/solver ablations, backbone-vs-objective separation, and cross-modal claims are NOT body-established.",
+        "Image-domain ablations and audio/video transfer need full-body plus modality sources.",
+        "Evidence-stage full-body verification: Full body not consumed: arXiv abs consumed (Heusel-style abstract verified: Karras et al., 2022). Full-text HTML 404 + ar5iv LaTeXML fatal; PDF/TeX only, not body-consumed.",
+        "wKL singular as t→1 for Linear/GVP (eta regularisation needed); velocity-score singularity at t=0; sampler discretisation heuristic.",
+        "Flow-vs-diffusion gap vs rectified-flow reflow needs comparison."
+      ],
+      "drafting_order": 2,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "arch-conditioning",
+      "title": "条件づけとアライメント：テキスト・ガイダンス・参照",
+      "purpose": "Cover text conditioning, frozen-encoder findings, classifier and classifier-free guidance with scale trade-offs, expert ensembles, and audio alignment; distinguish training-time conditioning, inference-time guidance, adapters, and in-context reference.",
+      "primary_candidate_ids": [
+        "candidate:SP-beyond-text-2026:d6f6ba1123b0d17b",
+        "candidate:SP-beyond-text-2026:8947c840fd59f3fa",
+        "candidate:SP-beyond-text-2026:62feff6b6ed1d5b1",
+        "candidate:SP-beyond-text-2026:e7d79e5b89cbfe45"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:SP-beyond-text-2026:549e7e6d5435b143",
+        "candidate:SP-beyond-text-2026:102deb9f880802db",
+        "candidate:SP-beyond-text-2026:8f74a4049b4dff87"
+      ],
+      "must_cover_requirements": [
+        "BT-O03"
+      ],
+      "boundaries": [
+        "Prompt adherence is not perceptual or distribution quality; encoder findings are era-specific.",
+        "Weak photorealistic people; ~860M internal+LAION data limits; encoder finding era-specific.",
+        "Super-resolution text-utility ablations beyond reported sweeps not established.",
+        "Saturated colours at high w; 2 forward passes; diversity loss; ImageNet-class conditioning only.",
+        "Text-conditioning transfer and optimal p_uncond beyond tested values not established.",
+        "Recorded locator 2112.02092 is a transcription defect; claims rest on verified-correct 2112.10741. Future Discovery repair should correct the locator.",
+        "Fails unusual objects/scenarios; filtered-300M release retains dataset biases under guidance.",
+        "Ambiguous inputs need prompts; multi-control weighting manual; single-control framing.",
+        "Per-condition dataset sizes beyond the stated robustness curve not established.",
+        "Fails counting; fine-grained gaps (Flowers102/Aircraft ~-10%); bias/surveillance risks stated.",
+        "Generation-relevance only; perception history belongs to TS-003; no generative conditioning quality established.",
+        "Recorded locator 2211.12572 is a transcription defect; claims rest on verified-correct 2211.01324. Future Discovery repair should correct the locator.",
+        "Expert count grows training cost; CLIP-only lacks compositionality, T5-only weaker foregrounds.",
+        "Speech/emotion/keyword tasks near-random; caption-quality bottleneck; AudioSet augmentation hurts.",
+        "Conditioning use in generative audio diffusion and FAD/human alignment validity not established."
+      ],
+      "drafting_order": 3,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "arch-control",
+      "title": "制御と参照：空間・参照・主体性の保存",
+      "purpose": "Cover spatial control (ControlNet lineage, adapters), reference/image-prompt conditioning, few-shot identity preservation, efficient adaptation, and time-varying audio/video control; separate control-signal fidelity from sample quality.",
+      "primary_candidate_ids": [
+        "candidate:SP-beyond-text-2026:ce16ecf1a35b786c",
+        "candidate:SP-beyond-text-2026:55a6204bc2e96d61",
+        "candidate:SP-beyond-text-2026:5b5861ec9fc6d175"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:SP-beyond-text-2026:d75e3bf8e082be67",
+        "candidate:SP-beyond-text-2026:84ae0b7ffeca1753",
+        "candidate:SP-beyond-text-2026:011356767768c879",
+        "candidate:SP-beyond-text-2026:6e2a67eb1f531c94"
+      ],
+      "must_cover_requirements": [
+        "BT-O04"
+      ],
+      "boundaries": [
+        "Control signals as generation controls only (no perception-history retelling); identity claims bind stated protocols.",
+        "Content/style resemblance only; not subject-consistent like DreamBooth/Textual Inversion.",
+        "Identity-preservation metrics vs DreamBooth not established.",
+        "Recorded locator 2208.04111 is a transcription defect; claims rest on verified-correct 2208.12242. Future Discovery repair should correct the locator.",
+        "Rare-context failures, context-appearance entanglement (colour shifts), overfitting near training settings.",
+        "Recorded locator 2311.17058 is a transcription defect; claims rest on verified-correct 2312.03641. Future Discovery repair should correct the locator.",
+        "Joint complex-camera plus complex-trajectory control has low success rate; order matters (camera-before-object); RealEstate10K scene diversity limited.",
+        "Multi-adapter fusion manual; coarse free-hand sketch variance.",
+        "Direct ControlNet-capacity comparison beyond concurrent-work citation not established.",
+        "Cross-task batching hard if merged; MLP/LN/bias excluded; rank tuning needed.",
+        "Diffusion-LoRA media-specific behaviour not evidenced (LLM/NLU/NLG only).",
+        "Needs paired mask-image data; SIMS better FID via retrieval but worse alignment.",
+        "Diffusion-era transfer needs ControlNet linkage; precursor status only.",
+        "Recorded locator 2311.15049 is a transcription defect; claims rest on verified-correct 2311.07069. Future Discovery repair should correct the locator.",
+        "6 s training window (12-24 s extrapolation raises noise, degrades FAD); created controls can sound monotonous; tag-only text, instrumental-only, no vocals."
+      ],
+      "drafting_order": 4,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "arch-editing",
+      "title": "生成から編集へ：保存を伴う改変の系譜",
+      "purpose": "Treat editing as distinct from de-novo generation: stroke guidance, mask-conditioned inpainting, latent local editing, attention-map editing, optimisation editing, instruction editing, and one-shot video editing; capture preservation target, locality, reference constraints, failure modes.",
+      "primary_candidate_ids": [
+        "candidate:SP-beyond-text-2026:e769ee8f766ea7af",
+        "candidate:SP-beyond-text-2026:db4abc4e970faa66",
+        "candidate:SP-beyond-text-2026:8e270d580c850bea",
+        "candidate:SP-beyond-text-2026:1f04c81497357e75"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:SP-beyond-text-2026:1a60f6d58ead1e1a",
+        "candidate:SP-beyond-text-2026:d74d8fd5a1767320",
+        "candidate:SP-beyond-text-2026:812d88c1c9976c33"
+      ],
+      "must_cover_requirements": [
+        "BT-O05"
+      ],
+      "boundaries": [
+        "Preservation claims bind mask/region definitions; per-image optimisation costs stated.",
+        "Recorded locator 2108.01049 is a transcription defect; claims rest on verified-correct 2108.01073. Future Discovery repair should correct the locator.",
+        "Needs reasonable guide and t0 search; white-pixel guides need large t0 losing faithfulness.",
+        "Slow (250x10 evaluations); LPIPS penalises valid diverse fills; thin-structure artefacts; failure cases in App F.",
+        "Wall-clock/VRAM/quantisation and RTF not reported in consumed body.",
+        "Recorded locator 2301.01780 is a transcription defect; claims rest on verified-correct 2211.09800. Future Discovery repair should correct the locator.",
+        "Fails viewpoint/zoom, excessive changes, isolation, swapping/counting/spatial reasoning; inherits SD/GPT-3 biases.",
+        "Multi-object occlusion mixing; ablations show content drift without sparse attention, stagnant motion without inversion, flicker without finetune; inherits T2I object limits.",
+        "VRAM/quantisation/offload and long-horizon consistency numbers not reported.",
+        "Lossy VAE needs optional finetune; pixel stitching seams and Poisson colour-shift; latent optimisation oversmooths; thin masks still fail fine details.",
+        "Exact latency/VRAM/NFE and quantisation numbers not established in consumed excerpt.",
+        "Inversion distortion; needs source prompt; low-resolution attention bottleneck bounds precision; cannot spatially move objects.",
+        "Quantitative fidelity/alignment scores and runtime/VRAM not reported in consumed body.",
+        "Recorded locator 2209.15146 is a transcription defect; claims rest on verified-correct 2210.09276. Future Discovery repair should correct the locator.",
+        "Too-subtle edits or zoom/camera-angle shifts; eta/seed sensitive; inherits base-model face/bias limits; slow per-image optimisation."
+      ],
+      "drafting_order": 5,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "arch-speech",
+      "title": "音声・声の系譜：波形からEnd-to-End、Codec LM、全二重へ",
+      "purpose": "Trace speech from WaveNet raw autoregression through Tacotron/VITS end-to-end, neural vocoders, codec language models, flow-matching generation/editing, versatile controllable TTS, unified translation-task speech, open streaming TTS, and full-duplex dialogue with latency methodology; modality-specific evaluation throughout.",
+      "primary_candidate_ids": [
+        "candidate:SP-beyond-text-2026:e2789a9dc6f8973e",
+        "candidate:SP-beyond-text-2026:ef3cd59dabb5a1a1",
+        "candidate:SP-beyond-text-2026:d199506f83899380",
+        "candidate:SP-beyond-text-2026:c4699173cdda0e99",
+        "candidate:SP-beyond-text-2026:02863ad425b2ee22",
+        "candidate:SP-beyond-text-2026:29f3c075cebba385",
+        "candidate:SP-beyond-text-2026:3c95b26e36ad98c4"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:SP-beyond-text-2026:9429778cecfc5ee1",
+        "candidate:SP-beyond-text-2026:c0d55401dafd5d5a",
+        "candidate:SP-beyond-text-2026:db2f67489bf55852",
+        "candidate:SP-beyond-text-2026:b6b2a786514ebf95",
+        "candidate:SP-beyond-text-2026:ad0acd33b461b025",
+        "candidate:SP-beyond-text-2026:97fb0c6467938fb4",
+        "candidate:SP-beyond-text-2026:3075f35c78cee869",
+        "candidate:SP-beyond-text-2026:6acac74001943d2f"
+      ],
+      "must_cover_requirements": [
+        "BT-O07",
+        "BT-O06"
+      ],
+      "boundaries": [
+        "WER/intelligibility, naturalness, speaker similarity, prosody, latency/streaming kept distinct; vendor evals quarantined.",
+        "Receptive field ~240-300 ms misses long F0/prosody; sequential sampling costly; music lacks long-range coherence.",
+        "Parallel-inference latency and multi-speaker zero-shot similarity scores not established.",
+        "Flow prior essential; single-speaker text preprocessing (IPA/phonemiser) remains; duration instability possible.",
+        "Zero-shot unseen-speaker cloning scores delegated to successor (YourTTS).",
+        "Random-sampling instability/infinite loops; needs 3-second prompt; noisy pseudo-phoneme labels; no streaming.",
+        "Real-time latency and human-parity statistics left to VALL-E 2.",
+        "Needs forced alignments/phone transcripts; vocoder-dependent; detailed §5 tables truncated in fetch.",
+        "Fine-grained latency-vs-evaluations curves and duration-model ablations beyond consumed sections not established.",
+        "Hard-accent prompts weaker (15 s prompt insufficient); reward-hacking (slower/cleaner but less natural); vendor-authored evaluations.",
+        "Model/data scale details and independent reproduction not established.",
+        "Performance varies by race/accent/gender with ASR gaps propagating to expressive/streaming; distant/low-resource/zero-shot worse; short-form general-domain research-only, long-form degrades, not certified.",
+        "Expressive sensitivity preserves noise lowering clarity/sound quality; residual added toxicity/bias plus voice-phishing/deepfake misuse only partly damped by watermark.",
+        "Long-form/domain-specific/certified efficacy, full elimination of gender/toxicity/noise-propagation gaps, and visual/sign-gesture integration not established.",
+        "Research system; production runtime needs independent measurement; evaluation numbers not verified here (evaluation section not consumed).",
+        "Production deployment figures and full quality rankings not established in this consumption.",
+        "Evidence-stage full-body verification: Full body not consumed: arXiv abs + HTML §§1-3.4 and Table 1 consumed (§5 evaluation not consumed).",
+        "Vanilla seq2seq misalignments/repetitions; GRU encoder noisier than CBHG; Griffin-Lim artefacts cap quality.",
+        "Robustness rates and inference-latency numbers vs later non-AR systems not established.",
+        "Recorded locator 1712.05862 is a transcription defect; claims rest on verified-correct 1712.05884. Future Discovery repair should correct the locator.",
+        "Occasional mispronunciation/prosody errors (23/100 unnatural prosody in audit); out-of-domain names weak.",
+        "Needs teacher alignments + distillation; duration error propagates; prosody control limited to rate/breaks.",
+        "Waveform-level fidelity vs GAN/diffusion vocoders not established.",
+        "Multi-period discriminator critical; small-footprint quality gap remains; fine-tuning needed for Tacotron-2-predicted mels.",
+        "Prosody/speaker-similarity control beyond vocoding not established.",
+        "Duration-predictor instability; mispronunciations without phonemes; gender/language imbalance; consistency loss trades naturalness for similarity.",
+        "Streaming latency and codec-LM scaling comparison not established.",
+        "Recorded locator 2406.05358 is a transcription defect; claims rest on verified-correct 2406.05370 (partially consumed). Future Discovery repair should correct the locator.",
+        "Exact parity margins, latency speedups, and hard-sentence stability numbers NOT established (result tables truncated); prompt length/quality/noise dependence; misuse/spoofing risk noted in-text.",
+        "Evidence-stage full-body verification: Full body not consumed: Correct body 2406.05370 consumed partially (Abstract, §§1-3, §4.1; §4.2-4.3 result tables truncated). Recorded locator 2406.05358 resolves to unrelated RL paper.",
+        "vendor-claim quarantine: Not established: body access PARTIAL (Correct body 2406.05370 consumed partially (Abstract, §§1-3, §4.1; §4.2-4.3 result tables truncated). Recorded locator 2406.05358 resolves to unrelated RL paper).",
+        "Offline non-streaming; duration by character ratio; no fine-grained emotion control.",
+        "Universal continuous-representation efficiency not established.",
+        "Latency configuration-bound; English weaker (data imbalance); speaker-similarity metric speaker-verification-dependent.",
+        "Vendor-family benchmark comparability not established."
+      ],
+      "drafting_order": 6,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "arch-music",
+      "title": "音楽・一般音響の系譜：Codec LMと潜在拡散、二つの道",
+      "purpose": "Trace music from hierarchical autoregression through semantic/acoustic staging to controllable single-stage codec music and latent-diffusion audio with theory-attribute control; separate acoustic fidelity, text/music alignment, long-horizon form, lyrics coherence, and continuation/inpainting; validate metrics against human preference.",
+      "primary_candidate_ids": [
+        "candidate:SP-beyond-text-2026:216f786e4a6c406e",
+        "candidate:SP-beyond-text-2026:5a9e05749f6ea9c6",
+        "candidate:SP-beyond-text-2026:66e14a0ed298a0b8",
+        "candidate:SP-beyond-text-2026:68839c715b140471"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:SP-beyond-text-2026:f975ec175171e72e",
+        "candidate:SP-beyond-text-2026:cb6354b21a0484aa",
+        "candidate:SP-beyond-text-2026:a62c201b5fd3ca16",
+        "candidate:SP-beyond-text-2026:e6857ac95104882f"
+      ],
+      "must_cover_requirements": [
+        "BT-O08",
+        "BT-O11"
+      ],
+      "boundaries": [
+        "No ranking across incompatible durations/protocols; FAD/CLAP limits preserved.",
+        "Coherence holds ~24 s top-context then drifts via windowed extension; no repeating chorus/melody memory; novel-style generalisation weak (artist embedding dominates).",
+        "Long-form structure metrics, intelligible-lyrics rates, and motif-level controllability beyond artist/genre/lyrics-window conditioning not established.",
+        "Inherits MuLan failures on negation and temporal ordering; MCC favours own method; 30 s training extended autoregressively, no verse/chorus model; no model release.",
+        "Beat/chord/key-precise controllability and local-fidelity codec comparisons beyond MuLan/MusicCaps conditions not established.",
+        "Classifier-free-guidance-only fine control; flattening best but 6000 vs 1500 steps; chroma degrades objective metrics; melody needs audio-augmentation research.",
+        "Lyrics singing or music-theory (chord/key/beat) control beyond unsupervised chroma-melody similarity not established.",
+        "Recorded locator 2402.10046 is a transcription defect; claims rest on verified-correct 2407.14358. Future Discovery repair should correct the locator.",
+        "Creative-Commons data limits music quality vs closed models; fails connectors and intelligible speech/singing; English-only.",
+        "Still slower than SOTA flows; deeper layers/larger dilations degrade quality; zero-shot denoise/interpolation qualitative only.",
+        "Music long-form structure, lyrics alignment, or motif/controllability not established (local-fidelity waveform diffusion only).",
+        "CLAP text/audio gap remains; abstract captions hurt text-conditioning; ratio-1/2 untrainable on single RTX3090.",
+        "Music-specific long-form/motif/lyrics structure not established (general-audio latent fidelity only).",
+        "Recorded locator 2308.02530 is a transcription defect (plus author mismatch); claims rest on verified-correct 2311.08355. Future Discovery repair should correct the locator.",
+        "Tempo/beat near-parity (captions already carry slow/fast words; beat-extractor noisy); 10 s clips only.",
+        "v3/v3.5-era, not v5/v6; 10-second instrumental only; ElevenLabs thin in corpus.",
+        "Newer commercial models and exact correlation magnitudes not established here."
+      ],
+      "drafting_order": 7,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "arch-video",
+      "title": "映像の系譜：時間的一貫性からメディア基盤へ",
+      "purpose": "Trace video from factorized diffusion and cascaded super-resolution through variable-length tokenizers (barrier noted), data-efficient transfer, motion adapters, staged open models, and open-weight MoE deployment; separate local fidelity, short-range coherence, long-range structure, identity permanence, and continuation.",
+      "primary_candidate_ids": [
+        "candidate:SP-beyond-text-2026:acfacd027894c2f6",
+        "candidate:SP-beyond-text-2026:8f7598c9367c576a",
+        "candidate:SP-beyond-text-2026:42fd6a871de5dada",
+        "candidate:SP-beyond-text-2026:92c06e3139fb1c99"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:SP-beyond-text-2026:8d704cdae72dc462",
+        "candidate:SP-beyond-text-2026:78e2d952c0416766",
+        "candidate:SP-beyond-text-2026:dc9ff369bcdad46e",
+        "candidate:SP-beyond-text-2026:f073782b80bb9459"
+      ],
+      "must_cover_requirements": [
+        "BT-O09",
+        "BT-O06"
+      ],
+      "boundaries": [
+        "Maximum supported duration is not demonstrated coherence; version/checkpoint currency binding required.",
+        "Trains only 16-frame blocks at 64x64/128x128; long video only via autoregressive/temporal-SR guidance; models reflect dataset bias, not released.",
+        "Short-range motion fidelity shown; identity/object permanence beyond 64 frames, long-horizon story structure, AV sync, editing preservation not established.",
+        "Cascade cost/compute heavy; 3D rotation consistency inexact; trained on 14M video-text + 60M image-text + LAION-400M with bias risk; not released.",
+        "Short-range fidelity/style/text-rendering shown; identity permanence over minutes, long-horizon narrative, AV sync, continuation beyond 5.3 s, edit preservation not quantified.",
+        "Recorded locator 2209.14755 is a transcription defect; claims rest on verified-correct 2209.14792. Future Discovery repair should correct the locator.",
+        "Cannot learn text-to-phenomena observable only in video; longer multi-scene/story videos future; web-data social biases exaggerated.",
+        "Short-clip focus; keyframe-at-once costly, sometimes too little motion, slow/high-VRAM sampling; long video needs coarser cascade or video tokeniser plus distillation.",
+        "Short-range motion/continuation from single image shown; durable identity permanence, long-horizon structure, AV sync, editing preservation not established.",
+        "Recorded locator 2307.04790 is a transcription defect; claims rest on verified-correct 2307.04725. Future Discovery repair should correct the locator.",
+        "Video-data quality gap requires adapter; MotionLoRA needs ~50 references; inherits personalised-model misuse risk; depth-control demo from random noise only.",
+        "Page gives no FVD/FID/CLIP scores or conditions, only qualitative claims and dated lifecycle facts.",
+        "Page-listed weaknesses: physics/cause-effect failures, left/right confusion, temporal-trajectory errors, implausible motion, spontaneous entities, morphing, multi-character interaction errors. Architecture undisclosed per page.",
+        "A14B needs 80 GB single-GPU / 8-GPU multi-GPU; TI2V offload flags; Animate LoRA cross-use not recommended.",
+        "Independent benchmark reproduction and exact corpus/compute not in body; open line frozen at 2.2.",
+        "Editing-domain only; pure-generation flow-vs-diffusion ablation thin.",
+        "Pure-generation ablations and hyperparameter-universal superiority not established."
+      ],
+      "drafting_order": 8,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "arch-temporal",
+      "title": "長時間・同期・編集： fidelity を超える評価軸",
+      "purpose": "Consolidate temporal/long-horizon structure across modalities: identity/object permanence, lip/AV synchronization with validity critique, physics/commonsense evaluation with ceilings, multi-round dialogue measurement, and edit preservation; single-sample claims never stand for long-horizon competence.",
+      "primary_candidate_ids": [
+        "candidate:SP-beyond-text-2026:5add97b5cfe2074d"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:SP-beyond-text-2026:a0b89ea0daf3a5a0",
+        "candidate:SP-beyond-text-2026:0f49a8f05a4b0420",
+        "candidate:SP-beyond-text-2026:c34b06de5e9e55dd"
+      ],
+      "must_cover_requirements": [
+        "BT-O06",
+        "BT-O11"
+      ],
+      "boundaries": [
+        "Lip-sync scores are not comparable truth across conditions; physics scores read against validity ceilings.",
+        "2024 model set; binary judgements conflate quality/motion; commonsense more subjective.",
+        "2025-2026 systems and simulator-grounded dynamics not established.",
+        "Metric uses public SyncNet (different data); inherits SyncNet instability; talking-face only.",
+        "Cross-condition lip-sync-distance comparability and general sound-event timing not established.",
+        "Talking-face only; AV metrics need independent adoption; small user study.",
+        "Displacement of lip-sync-distance as standard not established.",
+        "2025-11 protocol, adoption unverified; model-judge/segmentation dependence.",
+        "Cross-lab adoption and examiner-free stability not established."
+      ],
+      "drafting_order": 9,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "arch-runtime",
+      "title": "実行と配備：サンプリング・遅延・VRAM・公開性",
+      "purpose": "Cover runtime economics: distillation/consistency/adversarial few-step lineages, mobile one-step with device timings, independent klein measurement anchoring vendor claims, and open vs closed deployment boundaries; never compare unbound numbers as a leaderboard.",
+      "primary_candidate_ids": [
+        "candidate:SP-beyond-text-2026:2c2b404c38f24571",
+        "candidate:SP-beyond-text-2026:970392e9fa8d3932",
+        "candidate:SP-beyond-text-2026:03095540baee08e7",
+        "candidate:SP-beyond-text-2026:2bcd49728fcd2ab3"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:SP-beyond-text-2026:90d9274e9d56318b",
+        "candidate:SP-beyond-text-2026:0ef9ab95f8da1fed"
+      ],
+      "must_cover_requirements": [
+        "BT-O10"
+      ],
+      "boundaries": [
+        "All runtime numbers bind hardware/config/sampling budget; single-lab limits stated.",
+        "Degrades at 1-2 steps; no architecture compression; distilled stochastic sampling sits between distilled DDIM and undistilled stochastic.",
+        "Latency/RTF/VRAM/hardware/quantisation/offload numbers not reported in consumed body.",
+        "Recorded locator 2311.17049 is a transcription defect; claims rest on verified-correct 2311.17042. Future Discovery repair should correct the locator.",
+        "Slightly lower diversity than teacher; realism vs oversmoothing trade-off; 512px evaluation.",
+        "Search cost 512 TPUs x 15 days; relu-attention needs finetune; downstream transfer without retraining retains gap; failures in appendix.",
+        "Explicit VRAM/peak-memory and int8-quantised latency numbers not established beyond float16/int8 motive.",
+        "Single-vendor-lab source, not peer-reviewed; H100-only; consumer-GPU replication pending.",
+        "A100/consumer replication and vendor-claim parity beyond this configuration not established.",
+        "1-step gap remains; solver/skipping/guidance sensitive; custom sets need finetuning without universal module.",
+        "Inference latency/VRAM/RTF/quantisation/offload not reported in consumed body.",
+        "Report-only, no new benchmark; combination weights heuristic; per-model generality needs validation.",
+        "Steps/latency/VRAM/hardware/quantisation numbers not established in consumed body."
+      ],
+      "drafting_order": 10,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "arch-evaluation",
+      "title": "評価の方法論：指標は交換可能ではない",
+      "purpose": "Establish evaluation as a full package: distribution metrics with limits, compositional diagnostics, human-preference methodology, audio distances with embedding dependence, speech corpora/similarity substrates, video multidimensional suites, and preference-vs-automatic validation; bind version/condition/population for every score.",
+      "primary_candidate_ids": [
+        "candidate:SP-beyond-text-2026:1f6f56ce7608d0bf",
+        "candidate:SP-beyond-text-2026:ea2f90de56851965",
+        "candidate:SP-beyond-text-2026:95710020cbd91b61",
+        "candidate:SP-beyond-text-2026:e0488b58dcc2bf68",
+        "candidate:SP-beyond-text-2026:f03a4a16aad43818"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:SP-beyond-text-2026:c038a5b0192e4879",
+        "candidate:SP-beyond-text-2026:624cae4ccd7ab844",
+        "candidate:SP-beyond-text-2026:30a7dbfd15302f85",
+        "candidate:SP-beyond-text-2026:1b3c991962bfabb4",
+        "candidate:SP-beyond-text-2026:70640359c74cab45"
+      ],
+      "must_cover_requirements": [
+        "BT-O11"
+      ],
+      "boundaries": [
+        "No cross-condition leaderboard; vendor benchmarks quarantined until reproduced.",
+        "Closed COCO-80 vocabulary; photo-trained detector fails on holes/overlaps/clipart; ignores aesthetics/realism.",
+        "Open-vocabulary generalisation beyond tested models not established.",
+        "Self-selected social-media users; NSFW residue; 'superhuman' is vs context-blind annotators, not vs originating users.",
+        "Generalisation beyond tested backbones/guidance scales not established.",
+        "VGGish log-mel input is phase-blind; 1-second windows miss long-term structure; outliers on high/low-pass vs humans.",
+        "Speech/TTS transfer not established (music-enhancement validation only).",
+        "Pipelines inherit backbone biases; static videos can cheat consistency dimensions; text-to-video trails text-to-image (especially SDXL) on multi-object/spatial compositionality.",
+        "Cross-dimension weighting not established (no single score by design).",
+        "Vision-LLM hallucination only mitigated (pre-filtering, redundant questions); per-evaluation model-version snapshots required.",
+        "Longitudinal stability and minute-level plot-summarisation errors (flagged in-text) not established.",
+        "Exact embedding layer, sample sizes, and preprocessing not verified; distribution-level, prompt-blind metric.",
+        "FID values, sample-size requirements, and embedding dependence not established.",
+        "Evidence-stage full-body verification: Full body not consumed: arXiv abs consumed (Heusel et al., NIPS 2017, verified) plus FAD §2 cross-description. Full-text HTML 404 (base+v6) and ar5iv fatal conversion; PDF/TeX only, not body-consumed.",
+        "metric-validity context binding: Not established: body access PARTIAL (arXiv abs consumed (Heusel et al., NIPS 2017, verified) plus FAD §2 cross-description. Full-text HTML 404 (base+v6) and ar5iv fatal conversion; PDF/TeX only, no).",
+        "Recorded locator 1606.03461 is a transcription defect; claims rest on verified-correct 1606.03498. Future Discovery repair should correct the locator.",
+        "Rough guide for independently trained models only; direct optimisation yields adversarial examples; ImageNet-class objectness bias.",
+        "Detector/VQA-bounded; MLLM instability/hallucination; prompts intentionally include physically-impossible compositions.",
+        "Per-model score ordering and MLLM-vs-dedicated-metric winner per subcategory not established.",
+        "Recorded locator 1507.08211 does not resolve to the LibriSpeech paper (transcription defect). Read-speech only; corpus splits, alignment protocol, and baselines not consumed from body.",
+        "Exact splits, alignment method, baseline word-error-rates not established.",
+        "Evidence-stage full-body verification: Full body not consumed: Recorded locator 1507.08211 resolves to unrelated math paper (verified). Corpus facts verified from openSLR/ICASSP-citation snippets only; ICASSP PDF binary unparseable via webfetch.",
+        "Google-internal training sets (150M/1.2M utterances); embedding similarity is not naturalness; no listening tests.",
+        "Open-data replication and validity as a text-to-speech speaker-similarity metric not established."
+      ],
+      "drafting_order": 11,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "arch-convergence",
+      "title": "収束問題：統合モデルか連携する専門家群か",
+      "purpose": "Keep the convergence question evidence-backed: unified encoder-decoder multitask, speech-text LLMs, discrete any-to-any probes, composable diffusion, provenance mechanisms (C2PA/SynthID at stated authority), with TS-002/TS-003 boundary discipline; no predetermined conclusion.",
+      "primary_candidate_ids": [
+        "candidate:SP-beyond-text-2026:31e84593b1a08fa1",
+        "candidate:SP-beyond-text-2026:095fcc640e9d8c6f",
+        "candidate:SP-beyond-text-2026:9504e666bfca53fd"
+      ],
+      "supporting_candidate_ids": [
+        "candidate:SP-beyond-text-2026:aa8184a9e06305e3",
+        "candidate:SP-beyond-text-2026:61cefd1ea8ff6572",
+        "candidate:SP-beyond-text-2026:0ed067538038b16a"
+      ],
+      "must_cover_requirements": [
+        "BT-O12"
+      ],
+      "boundaries": [
+        "Perception/VLM history excluded; convergence claims stay question-framed.",
+        "Recorded locator 2306.12904 is a transcription defect; claims rest on verified-correct 2306.12925. Future Discovery repair should correct the locator.",
+        "Speech+text only (no image/video/music); translation targets largely synthetic; 3-second-prompt voice transfer degrades on shorter prompts.",
+        "Recorded locator 2310.05661 is a transcription defect (plus date mismatch); claims rest on verified-correct 2402.12226. Future Discovery repair should correct the locator.",
+        "Higher multimodal-vs-unimodal loss; tokeniser ceilings capability; 5 s music plus long-sequence context limits dialogue depth; no dedicated any-to-any benchmark.",
+        "Recorded locator 2305.11832 is a transcription defect; claims rest on verified-correct 2305.11846. Future Discovery repair should correct the locator.",
+        "Text-bridge inherits caption gaps; joint metric is encoder-cosine coherence, not fidelity; video temporal-consistency fixes partial.",
+        "VQ-GAN caps dense-output precision; pure Transformer lacks pyramid/loss priors; GRIT Unrestricted-track only.",
+        "Audio/music generation or any-to-any audio conditioning not established (image/text generation tasks only; TS-002/TS-003 boundary).",
+        "Marketing-page scope; no technical manifest, trust-list, or audio/music-binding details; deployment evidence needs vendor/spec sources.",
+        "Any generation-relevant provenance guarantee (signing, tamper-evidence, audio binding, detector robustness) not established.",
+        "Evidence-stage full-body verification: Full body not consumed: https://c2pa.org/ homepage body consumed (hero, how-it-works pointer, adopt-spec link, steering-committee list). Full C2PA specification (manifest/assertions/hash/signing/binding, audio-specific) NOT consumed.",
+        "Product page only; no independent robustness evaluation; audio scope tied to Lyria/NotebookLM; text watermark quality-impact unquantified here; no detection rates, robustness curves, capacity, or audio/music-specific benchmarks on page.",
+        "Detection robustness/false-positive rates or music-generation provenance efficacy beyond claimed invariances not established."
+      ],
+      "drafting_order": 12,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "arch-capstones",
+      "title": "2025-2026 capstone群：能力・workflow・lifecycleの証拠",
+      "purpose": "Retain current systems strictly as capability/workflow/availability/lifecycle cases with vendor claims attributed and undisclosed architecture never inferred; lifecycle transitions (Imagen deprecation, Sora shutdown, Wan open-freeze) as convergence evidence; open-weight anchors carry mechanism weight.",
+      "primary_candidate_ids": [],
+      "supporting_candidate_ids": [
+        "candidate:SP-beyond-text-2026:277d0a5fbd9d48fa",
+        "candidate:SP-beyond-text-2026:ab231c2806217bca",
+        "candidate:SP-beyond-text-2026:64d8ff3262d58b71",
+        "candidate:SP-beyond-text-2026:12d79dd67cadf0ea",
+        "candidate:SP-beyond-text-2026:09156e20b5fc91f9",
+        "candidate:SP-beyond-text-2026:f29d4ddb2ae07f36",
+        "candidate:SP-beyond-text-2026:66bc0ce3f3d58f7e",
+        "candidate:SP-beyond-text-2026:89bafcf70e84ce49",
+        "candidate:SP-beyond-text-2026:23b02943cea656f5",
+        "candidate:SP-beyond-text-2026:9df2b86e7f8b77cf",
+        "candidate:SP-beyond-text-2026:c06a7a15fdb0b9a5",
+        "candidate:SP-beyond-text-2026:79897ab2ea7f79a8",
+        "candidate:SP-beyond-text-2026:d021bf141e2edebf",
+        "candidate:SP-beyond-text-2026:28cd6a657865162a",
+        "candidate:SP-beyond-text-2026:00b598fb23c0a348",
+        "candidate:SP-beyond-text-2026:630812b4b56a54e7",
+        "candidate:SP-beyond-text-2026:5e5aa60f7f22e58e",
+        "candidate:SP-beyond-text-2026:7ce6476352111010",
+        "candidate:SP-beyond-text-2026:bf3d6120aac199d9",
+        "candidate:SP-beyond-text-2026:9e962d1dbbea7566",
+        "candidate:SP-beyond-text-2026:7f07734a16f5c21b",
+        "candidate:SP-beyond-text-2026:b3774d492486791a",
+        "candidate:SP-beyond-text-2026:2c30e143d88343fc",
+        "candidate:SP-beyond-text-2026:72b74840ed3320e5",
+        "candidate:SP-beyond-text-2026:5d1ba20d37a769c2",
+        "candidate:SP-beyond-text-2026:f7315629333b84f5",
+        "candidate:SP-beyond-text-2026:38539dd5f9f7d979"
+      ],
+      "must_cover_requirements": [
+        "BT-O04",
+        "BT-O05",
+        "BT-O06",
+        "BT-O07"
+      ],
+      "boundaries": [
+        "No architecture/training/tokenizer inference from product behavior; version/date binding required.",
+        "Abstract-level only: 30B/73K/16 s figures are vendor claims without consumed method/eval sections; JavaScript-gated body is an access barrier.",
+        "Synchronised-AV fidelity, identity permanence, long-horizon structure, continuation, editing preservation not established.",
+        "Evidence-stage full-body verification: Full body not consumed: Static HTML of the Meta research page consumed (title, date October 16 2024, full abstract, author list). Method/evaluation sections are JavaScript-gated (only 2 renderable text lines); no architecture/latent/training/ev",
+        "Vendor speed/quality claims without independent measurement in this body; tokenizer/training undisclosed.",
+        "Training data, tokenizer detail, independent benchmark verification not established.",
+        "Docs describe surface, not architecture; no absolute publication date exposed.",
+        "Publication date, architecture, training, evaluation not established.",
+        "Vendor evaluations are vendor claims until independently supported; vendor flags finer text-rendering and pixel-edit consistency as future work.",
+        "Architecture, training, eval methodology, license not established.",
+        "Architecture disclosure limited; no mechanism inference permitted; evaluation/safety deferred to system card.",
+        "Architecture, training, tokenizer, independent evaluation not established.",
+        "Reasoning-in-generator claims need model-card authority (see BT-D105); mechanism/eval detail deferred.",
+        "Architecture, training, announcement-level eval numbers not established.",
+        "Card scope is model-specific; cross-model comparison prohibited; hallucinations; poor small/dense text, character-consistency gaps, doodle-ink persistence, spatial left/right confusion listed in-card.",
+        "Training data, tokenizer, license, independent reproduction not established.",
+        "Lifecycle transition is evidence of product direction, not architectural inevitability; marketing-hub scope.",
+        "Imagen dates, capability details, architecture from this locator not established. Retained solely as deprecation/lifecycle context.",
+        "Evidence-stage full-body verification: Full body not consumed: Locator resolves to Nano Banana hub; no Imagen-specific sections/body consumed (product-line redirect/replacement, not fetch error).",
+        "Non-native accents/fluency gaps in some languages; no video/screenshare at launch; real-time-factor numbers need API-doc binding.",
+        "Latency numbers, training data, license not established.",
+        "Pricing/latency figures version-bound.",
+        "Architecture, training, tokenizer not established.",
+        "Card-only scope; independent evaluation absent; hallucinations, jailbreak-resistance work ongoing, occasional slowness/timeouts listed.",
+        "Training data, architecture detail, eval results, license not established.",
+        "Fine timing dialogue-only; longer-scene consistency future work; scene-coherence claims need independent evaluation.",
+        "Training data, eval protocol detail, license not established.",
+        "Closed weights; structure claims bound to card methodology; prohibited-use policy scope; watermarking noted; no numeric limitation list.",
+        "Training data detail, tokenizer, license, duration caps in card not established.",
+        "Marketing-level detail; mechanism claims defer to BT-D111; vendor notes key capabilities still improving.",
+        "Dates, hub-level architecture, training, license not established.",
+        "Version-bound feature surface; open scope small/medium per license.",
+        "Tokenizer detail, training mix, eval numbers, license text not established in note.",
+        "Capability/workflow role only; no architecture/eval authority; entry dates bind per-entry only.",
+        "Model mechanism, training, evaluation not established.",
+        "Vendor claims (best/faster/more expressive) without metrics; v6/v6-wild paid-only; upload/lyric screening safeguards vendor-described; independent validation absent.",
+        "Docs-level authority; evaluation methodology thin; reference guides style, not remix/genre-transfer; v1 deprecation with months notice.",
+        "Architecture, training, evaluation, dates not established.",
+        "Duration/coherence claims need independent verification; vendor acknowledges room on physical plausibility of complex motions and multi-subject interaction stability.",
+        "Independent verification, scores, pricing/limits not in body; architecture undisclosed beyond unified joint-generation functional description.",
+        "Vendor: natural consistent spoken audio for short segments remains active development with sync/incoherent-speech issues; synth-ID plus safety/memorisation checks.",
+        "Parameters, training data/sampler, pricing not in body; architecture undisclosed.",
+        "Vendor flags early/preliminary harness, expects improvement; safety-testing gated rollout.",
+        "Final metrics, pricing, Dev date, compute/data not in body; only unified multimodal flow-matching backbone plus Self-Flow alignment disclosed, otherwise undisclosed.",
+        "Vendor descriptor state-of-the-art motion/prompt-adherence/fidelity with no metric table in body (claim only); caps 10 s/720p; additional inputs not yet supported.",
+        "Release date, scores, backbone, training data not in body; architecture weak.",
+        "No eval/limitation section; version ambiguity (page vs 3.14 banner); exact version must be bound at any reuse with BT-D123.",
+        "Dated release, scores, duration/resolution defaults, pricing not in this body; architecture undisclosed.",
+        "Single-version snapshot; no limitation/eval section; current-status recheck required.",
+        "Pricing, method/training details, later subversions not in body.",
+        "Vendor leap claims without numeric benchmark in body; far-from-perfect disclaimer; safety/consent/provenance controls; compute-limited free limits.",
+        "Architecture, compute/data, scores not in body.",
+        "Consumer-surface scope; final export window conditional; API rows defer to BT-D128.",
+        "Architecture/capability/eval not in scope of this body.",
+        "Version-bound table; recheck at any reuse; no capability/eval content.",
+        "Product export/deletion handling not in this body (see BT-D127)."
+      ],
+      "drafting_order": 13,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    },
+    {
+      "package_id": "arch-reception",
+      "title": "受容と counter-signal：現場の証拠",
+      "purpose": "Preserve community reception/deployment/counter-signal evidence (local friction, consistency reception, side-by-side comparisons, runtime constraints, edit damage, drift/lip-sync failures) with LOW_SIGNAL lanes intact; any technical follow-up must be rebound to primary authority.",
+      "primary_candidate_ids": [],
+      "supporting_candidate_ids": [
+        "candidate:SP-beyond-text-2026:d80053c702204371"
+      ],
+      "must_cover_requirements": [
+        "BT-O10",
+        "BT-O06"
+      ],
+      "boundaries": [
+        "No popularity ranking; X never establishes architecture, dates, licenses, prices, scores, or causal claims.",
+        "Single bounded reception pass materialised as one Discovery record; 27 posts are not 27 technical authorities.",
+        "Any technical follow-up promoted from an X lead must be rebound to primary/independent authority; X never establishes architecture, dates, licenses, prices, scores, or causal claims."
+      ],
+      "drafting_order": 14,
+      "profile_extensions": {},
+      "publication_extensions": {}
+    }
+  ],
+  "selected_exceptions": [],
+  "profile_extensions": {},
+  "publication_extensions": {},
+  "human_review": {
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "review_reference": null
+  }
+}
